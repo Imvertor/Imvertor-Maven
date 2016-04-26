@@ -31,7 +31,7 @@ public class Release {
 	// TODO determine a valid version identifier based on all resources, i.e. java and XSLT 
 	
 	// change version number manually here, on each adaptation made in the imvertor sources! 
-	private static String imvertorVersion = "Imvertor OS 0.87"; // 
+	private static String imvertorVersion = "Imvertor OS 0.88"; // 
 	
 	private static String imvertorSVNVersion = val("$Id: Release.java 7503 2016-04-15 14:46:57Z arjan $");
 	

@@ -28,7 +28,7 @@
     version="2.0">
     
     <!-- 
-     Reporting stylesheet for the Validator step.
+     Reporting stylesheet for the Validator step...
     -->
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-report.xsl"/>
