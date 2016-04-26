@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<imvert:schemas xmlns:imvert="http://www.imvertor.org/schema/system">
+   <imvert:exporter>Enterprise Architect v 2.5</imvert:exporter>
+   <imvert:schema-exported>2014-10-22T10:35:56Z</imvert:schema-exported>
+   <imvert:schema-filter-version>Id: XMI1Imvert.xsl 6904 2014-10-20 14:36:18Z arjan </imvert:schema-filter-version>
+   <imvert:schema-filter-version>Id: Imvert2canonical-BP.xsl 6904 2014-10-20 14:36:18Z arjan </imvert:schema-filter-version>
+   <imvert:schema-filter-version>Id: Imvert2domain.xsl 6904 2014-10-20 14:36:18Z arjan </imvert:schema-filter-version>
+   <imvert:schema-filter-version>Id: Imvert2application.xsl 6904 2014-10-20 14:36:18Z arjan </imvert:schema-filter-version>
+   <imvert:schema-filter-version>Id: Imvert2copydown.xsl 6904 2014-10-20 14:36:18Z arjan </imvert:schema-filter-version>
+   <imvert:schema-filter-version>Id: Imvert2ref.xsl 6904 2014-10-20 14:36:18Z arjan </imvert:schema-filter-version>
+   <imvert:schema-filter-version>Id: Imvert2concreteSchema.xsl 6904 2014-10-20 14:36:18Z arjan </imvert:schema-filter-version>
+   <imvert:schema-filter-version>Id: Imvert2localSchema.xsl 6904 2014-10-20 14:36:18Z arjan </imvert:schema-filter-version>
+   <imvert:schema-filter-version>Id: Imvert2expanddoc.xsl 6904 2014-10-20 14:36:18Z arjan </imvert:schema-filter-version>
+   <imvert:schema-filter-version>Id: Imvert2embellish.xsl 6904 2014-10-20 14:36:18Z arjan </imvert:schema-filter-version>
+   <imvert:latest-svn-revision>$Id$</imvert:latest-svn-revision>
+   <imvert:schema>
+      <imvert:name>Application</imvert:name>
+      <imvert:namespace>http://www.imvertor.org/schema/imvertor/application/v20141001</imvert:namespace>
+      <imvert:result-file-subpath>application/v20141001/Imvertor_Application_v1_0_0.xsd</imvert:result-file-subpath>
+      <imvert:xsd-path>file:/c:/tools/Imvertor/Imvertor-output/applications/Imvertor/Imvertor/20141001/xsd/Imvertor/</imvert:xsd-path>
+      <imvert:result-file-fullpath>file:/c:/tools/Imvertor/Imvertor-output/applications/Imvertor/Imvertor/20141001/xsd/Imvertor/application/v20141001/Imvertor_Application_v1_0_0.xsd</imvert:result-file-fullpath>
+   </imvert:schema>
+</imvert:schemas>

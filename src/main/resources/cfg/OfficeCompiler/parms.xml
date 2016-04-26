@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>Office compiler</name>
+      <version-control>$Id: parms.xml 7453 2016-03-04 10:44:25Z arjan $</version-control>
+   </id>
+   <cli-parms>
+      <cli-parm>
+         <name>createoffice</name>
+         <arg>html|doc</arg>
+         <tip>Create a documentation file in HTML or MsWord format. By default, create none.</tip>
+         <required>false</required>
+      </cli-parm> 
+   </cli-parms>
+   <properties>
+
+      <WORK_OFFICE_FILE>${system/work-imvert-folder-path}/imvertor.25.office.html</WORK_OFFICE_FILE>
+      
+      <IMVERTOR_METAMODEL_Imvertor_OFFICE_XSLPATH>Imvert2office-Kadaster.xsl</IMVERTOR_METAMODEL_Imvertor_OFFICE_XSLPATH>
+      <IMVERTOR_METAMODEL_BOM_OFFICE_XSLPATH>Imvert2office-Kadaster.xsl</IMVERTOR_METAMODEL_BOM_OFFICE_XSLPATH>
+      <IMVERTOR_METAMODEL_ISO19103_OFFICE_XSLPATH>Imvert2office-ISO.xsl</IMVERTOR_METAMODEL_ISO19103_OFFICE_XSLPATH>
+      <IMVERTOR_METAMODEL_KINGSIM_OFFICE_XSLPATH>Imvert2office-KINGSIM.xsl</IMVERTOR_METAMODEL_KINGSIM_OFFICE_XSLPATH>
+      <IMVERTOR_METAMODEL_KINGUGM_OFFICE_XSLPATH>Imvert2office-KINGUGM.xsl</IMVERTOR_METAMODEL_KINGUGM_OFFICE_XSLPATH>
+      <IMVERTOR_METAMODEL_KINGBSM_OFFICE_XSLPATH>Imvert2office-KINGBSM.xsl</IMVERTOR_METAMODEL_KINGBSM_OFFICE_XSLPATH>
+      <IMVERTOR_METAMODEL_Kadaster_OFFICE_XSLPATH>Imvert2office-Kadaster.xsl</IMVERTOR_METAMODEL_Kadaster_OFFICE_XSLPATH>
+      
+   </properties>
+</config>

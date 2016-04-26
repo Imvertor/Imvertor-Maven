@@ -1,0 +1,1019 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:a="http://www.imvertor.org/schema/imvertor/application/v20160201"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.imvertor.org/schema/imvertor/application/v20160201"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="2.0.0-2">
+   <xs:annotation>
+      <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.imvertor.org/schema/imvertor/application</xs:appinfo>
+      <xs:appinfo source="http://www.imvertor.org/schema-info/version">2.0.0</xs:appinfo>
+      <xs:appinfo source="http://www.imvertor.org/schema-info/phase">2</xs:appinfo>
+      <xs:appinfo source="http://www.imvertor.org/schema-info/release">20160201</xs:appinfo>
+      <xs:appinfo source="http://www.imvertor.org/schema-info/generated">2016-02-10T10:15:011Z</xs:appinfo>
+      <xs:appinfo source="http://www.imvertor.org/schema-info/svn">$Id$</xs:appinfo>
+      <xs:documentation source="http://www.imvertor.org/schema-info/file-location">application/v20160201/Imvertor_Application_v2_0_0.xsd</xs:documentation>
+      <xs:documentation source="http://www.imvertor.org/schema-info/conversion">
+        This schema is based on an UML specification, which is transformed by the Imvertor software. Imvertor modules are in the public domain, see http://www.imvertor.org. 
+    </xs:documentation>
+      <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">The schema for the full representation of Imvertor OS applications.
+</xs:documentation>
+   </xs:annotation>
+   <xs:element name="Application" type="a:Application" abstract="false"/>
+   <xs:complexType name="Application" abstract="false">
+      <xs:sequence>
+         <xs:element name="project" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="generated" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="generator" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="exported" type="xs:dateTime" minOccurs="1" maxOccurs="1"/>
+         <xs:element name="exporter" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="localSchemaSvnId" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="conceptualSchemaSvnId" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="filters" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Filter" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="identification" minOccurs="1" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Identifiable" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="packages" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Package" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="localSchemas" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:LocalSchema" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="version" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Svn" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="derivation" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Derivable" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="tags" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:TaggedValue" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Association" type="a:Association" abstract="false"/>
+   <xs:complexType name="Association" abstract="false">
+      <xs:sequence>
+         <xs:element name="aggregation" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="position" type="xs:integer" minOccurs="0" maxOccurs="1"/>
+         <xs:element name="copyDownTypeId" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="sourceNavigable"
+                     type="xs:boolean"
+                     minOccurs="0"
+                     maxOccurs="1"/>
+         <xs:element name="targetNavigable"
+                     type="xs:boolean"
+                     minOccurs="0"
+                     maxOccurs="1"/>
+         <xs:element name="identification" minOccurs="1" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Identifiable" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="release" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Released" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="debug" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Debuggable" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="tags" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:TaggedValue" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="type" minOccurs="1" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Type" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="cardinality" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Cardinal" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="AssociationClass" type="a:AssociationClass" abstract="false"/>
+   <xs:complexType name="AssociationClass" abstract="false">
+      <xs:sequence>
+         <xs:element name="typeName" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="typeId" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="typePackage" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Attribute" type="a:Attribute" abstract="false"/>
+   <xs:complexType name="Attribute" abstract="false">
+      <xs:sequence>
+         <xs:element name="maxLength" type="xs:integer" minOccurs="0" maxOccurs="1"/>
+         <xs:element name="fractionDigits"
+                     type="xs:integer"
+                     minOccurs="0"
+                     maxOccurs="1"/>
+         <xs:element name="totalDigits"
+                     type="xs:integer"
+                     minOccurs="0"
+                     maxOccurs="1"/>
+         <xs:element name="dataLocation" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="position" type="xs:integer" minOccurs="0" maxOccurs="1"/>
+         <xs:element name="attributeTypeName" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="attributeTypeDesignation" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="copyDownTypeId" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="conceptualSchemaType" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="identification" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Identifiable" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="release" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Released" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="debug" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Debuggable" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="tags" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:TaggedValue" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="type" minOccurs="1" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Type" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="cardinality" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Cardinal" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Cardinal" type="a:Cardinal" abstract="false"/>
+   <xs:complexType name="Cardinal" abstract="false">
+      <xs:sequence>
+         <xs:element name="minOccurs" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="maxOccurs" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="minOccursSource" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="maxOccursSource" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Class" type="a:Class" abstract="false"/>
+   <xs:complexType name="Class" abstract="false">
+      <xs:sequence>
+         <xs:element name="abstract" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+         <xs:element name="designation" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="origin" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="pattern" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="union" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="primitive" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="refMaster" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="conceptualSchemaClassName" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="subpackage" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">A subpackage is either a domain package of a package within the domain package.
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="identification" minOccurs="1" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Identifiable" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="release" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Released" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="debug" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Debuggable" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="tags" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:TaggedValue" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="supertypes" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Type" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="attributes" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Attribute" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="associations" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Association" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="enumeration" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Enum" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="associationClasses" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:AssociationClass" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="substtitutions" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Substitution" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Concept" type="a:Concept" abstract="false"/>
+   <xs:complexType name="Concept" abstract="false">
+      <xs:sequence>
+         <xs:element name="uri" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="info" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Conceptual" type="a:Conceptual" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Information on conceptual schema's
+</xs:documentation>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="Conceptual" abstract="false">
+      <xs:sequence>
+         <xs:element name="conceptualSchemaNamespace" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="conceptualSchemaVersion" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="conceptualSchemaPhase" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="conceptualSchemaAuthor" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="conceptualSchemaSvnString" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Debuggable" type="a:Debuggable" abstract="false"/>
+   <xs:complexType name="Debuggable" abstract="false">
+      <xs:sequence>
+         <xs:element name="debug" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Derivable" type="a:Derivable" abstract="false"/>
+   <xs:complexType name="Derivable" abstract="false">
+      <xs:sequence>
+         <xs:element name="derived" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+         <xs:element name="metamodel" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">alleen voor packages
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="supplierProject" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="supplierName" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="supplierRelease" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="supplierPackageName" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Enum" type="a:Enum" abstract="false"/>
+   <xs:complexType name="Enum" abstract="false">
+      <xs:sequence>
+         <xs:element name="value" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">An enumerative value
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Filter" type="a:Filter" abstract="false"/>
+   <xs:complexType name="Filter" abstract="false">
+      <xs:sequence>
+         <xs:element name="name" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="date" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="version" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Identifiable" type="a:Identifiable" abstract="false"/>
+   <xs:complexType name="Identifiable" abstract="false">
+      <xs:sequence>
+         <xs:element name="id" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="name" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="originalName" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="shortName" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="alias" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="namespace" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="stereotype" minOccurs="0" maxOccurs="unbounded">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="trace" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">ID of the supplier if a trace has been set.
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="LocalSchema" type="a:LocalSchema" abstract="false"/>
+   <xs:complexType name="LocalSchema" abstract="false">
+      <xs:sequence>
+         <xs:element name="id" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">An identifier such as "www.opengis.net/gml-3.2(3.2.1-20070906)" which mappes onto a path in the schemas repository
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Package" type="a:Package" abstract="false"/>
+   <xs:complexType name="Package" abstract="false">
+      <xs:sequence>
+         <xs:element name="identification" minOccurs="1" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Identifiable" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="release" minOccurs="1" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Released" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="version" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Svn" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="debug" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Debuggable" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="derivation" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Derivable" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="reference" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Referencing" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="conceptual" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Conceptual" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="tags" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:TaggedValue" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="classes" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Class" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Referencing" type="a:Referencing" abstract="false"/>
+   <xs:complexType name="Referencing" abstract="false">
+      <xs:sequence>
+         <xs:element name="refVersion" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="refRelease" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="refMaster" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Released" type="a:Released" abstract="false"/>
+   <xs:complexType name="Released" abstract="false">
+      <xs:sequence>
+         <xs:element name="documentation" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:any minOccurs="0"
+                          maxOccurs="unbounded"
+                          namespace="##any"
+                          processContents="lax"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="author" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="created" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+         <xs:element name="modified" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+         <xs:element name="version" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="phase" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="release" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="webLocation" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="location" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="concepts" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="a:Concept" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Substitution" type="a:Substitution" abstract="false"/>
+   <xs:complexType name="Substitution" abstract="false">
+      <xs:sequence>
+         <xs:element name="supplier" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="supplierId" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="supplierPackage" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="stereotype" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Svn" type="a:Svn" abstract="false"/>
+   <xs:complexType name="Svn" abstract="false">
+      <xs:sequence>
+         <xs:element name="svnFile" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="svnRevision"
+                     type="xs:integer"
+                     minOccurs="1"
+                     maxOccurs="1"/>
+         <xs:element name="svnDate" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="svnTime" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="svnUser" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="TaggedValue" type="a:TaggedValue" abstract="false"/>
+   <xs:complexType name="TaggedValue" abstract="false">
+      <xs:sequence>
+         <xs:element name="name" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="originalName" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="value" minOccurs="1" maxOccurs="1">
+            <xs:complexType mixed="true"/>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Type" type="a:Type" abstract="false"/>
+   <xs:complexType name="Type" abstract="false">
+      <xs:sequence>
+         <xs:element name="typeName" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="typeId" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="typePackage" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="typePackageId" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="baretype" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="stereotype" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>

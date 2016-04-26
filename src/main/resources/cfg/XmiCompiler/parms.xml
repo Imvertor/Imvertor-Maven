@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>XmiCompiler parameters</name>
+      <version-control>$Id: parms.xml 7492 2016-04-11 09:51:58Z arjan $</version-control>
+   </id>
+   <cli-parms>
+      <cli-parm>
+         <name>refreshxmi</name>
+         <arg>yes|no</arg>
+         <tip>Yes if the XMI file generated from EA must be recreated each time.</tip>
+         <required>false</required>
+      </cli-parm> 
+   </cli-parms>
+
+   <properties>
+
+      <!--  location of xmi / Imvert conversion results -->
+      <WORK_XMI_MASTER_FILE>${system/managedinputfolder}/xmi/export.xmi</WORK_XMI_MASTER_FILE>
+      <WORK_IMVERTOR_BASE_FOLDER>${system/work-folder-path}/imvert</WORK_IMVERTOR_BASE_FOLDER>
+      <WORK_PROPERTIESDUMP_FILE>${system/work-folder-path}/properties.xml</WORK_PROPERTIESDUMP_FILE>
+
+      <WORK_XMI_FOLDER>${system/work-folder-path}/xmi</WORK_XMI_FOLDER>
+
+      <!--  template EAP used as the basis for all working copies -->
+      <TEMPLATE_TEMPLATE_FILE>${system/managedinputfolder}/eap/TEMPLATE.EAP</TEMPLATE_TEMPLATE_FILE>
+      <TEMPLATE_TEMPLATE_FILE_GUID>${system/managedinputfolder}/eap/TEMPLATE.EAP.GUID</TEMPLATE_TEMPLATE_FILE_GUID>
+
+      <!-- path to compacter -->
+      <XMI_COMPACT_XSLPATH>XMI1Compact.xsl</XMI_COMPACT_XSLPATH>
+ 
+   </properties>
+
+</config>

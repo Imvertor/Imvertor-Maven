@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<project-owner>
+    <name>CBNL</name>
+    <parameter name="web-css">../web/css/report.css</parameter> 
+    <parameter name="web-logo">../web/img/logo.jpg</parameter> 
+    <parameter name="pretext-encoding">
+        This schema is based on an UML specification, which is transformed by the Imvertor software. Imvertor modules are in the public domain, see http://www.imvertor.org.
+    </parameter>
+    <!-- 
+        some constructs in UML have a fixed value
+    -->
+    <parameter name="fixed-identification-attribute-name">identificatie</parameter>
+    <parameter name="url-prefix-conceptual-schema">http://www.kadaster.nl/conceptual-schemas/</parameter><!--TODO http://www.kadaster.nl/conceptual-schemas/ niet meer aan kadaster namespaces gebonden wordebn -->
+    <parameter name="url-prefix-schema-waardelijsten">http://www.kadaster.nl/schemas/waardelijsten/</parameter>
+    <parameter name="class-name-waardelijst">Waardelijst</parameter>
+    <!--
+        serialisation parameters, i.e. for translation to XSD or documentation.
+    -->
+    <parameter name="reference-suffix-id">_R</parameter>
+    <parameter name="reference-suffix-name">Ref</parameter>
+    <parameter name="reference-suffix-short">-ref</parameter>
+    <parameter name="name-origin-system">system</parameter>
+    <parameter name="package-name-typen">Typen</parameter>
+    <parameter name="imvertor-translate-association-components">components</parameter>
+    <parameter name="imvertor-translate-suffix-components">Components</parameter>
+    <!-- 
+        other configurable info
+    -->
+    <parameter name="documentation-separator">---</parameter>
+    <parameter name="documentation-newline">&#10;</parameter>
+    <parameter name="concept-documentation-state-obsolete-uri">http://www.cbnl.nl/id/lifecycle/afgekeurd</parameter>
+    
+    <parameter name="local-mapping-notification">
+        This schema is provided by CBNL as a local copy, as a convenience to the user.
+        This schema may itself reference a local copy of the schema originally referenced by URI. 
+        The local reference takes the form of a relative path, and is introduced by CBNL.
+    </parameter>
+    
+    <parameter name="application-version-regex">^\S+$</parameter>
+    <parameter name="domain-version-regex">^\S+$</parameter>
+    
+    <patterns>
+        
+    </patterns>
+    
+</project-owner>

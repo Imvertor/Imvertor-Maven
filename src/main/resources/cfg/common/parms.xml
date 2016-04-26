@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>Standard initial parameters</name>
+      <version-control>$Id: parms.xml 7498 2016-04-15 07:51:23Z arjan $</version-control>
+   </id>
+   
+   <cli-parms>
+      <cli-parm>
+         <name>help</name>
+         <arg>program|license</arg>
+         <tip>Print program help and copyright/license info for this application</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>arguments</name>
+         <arg>filepath</arg>
+         <tip>Path to the file holding (additional) arguments (in the form key = value)</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>language</name>
+         <arg>ISO 639-1</arg>
+         <tip>Langugage of the model configurations in UML. A language code from ISO 639-1. If unspecified or unsupported, assume "en".</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>debug</name>
+         <arg>yes|no</arg>
+         <tip>Yes if run in debug mode</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>task</name>
+         <arg>compile|release</arg>
+         <tip>Set task to compile or release</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>owner</name>
+         <arg>name</arg>
+         <tip>Name of the project owner</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>schemarules</name>
+         <arg>name</arg>
+         <tip>Name of the configuration folder for schema rules</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>tvset</name>
+         <arg>name</arg>
+         <tip>Name of the configuration folder for tagged value set definitions</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>project</name>
+         <arg>name</arg>
+         <tip>Name of the project</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>application</name>
+         <arg>name</arg>
+         <tip>Name of the application, i.e. root package in UML</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>umlfile</name>
+         <arg>filepath</arg>
+         <tip>Path to the input UML file, must be EAP or XMI</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>proxyurl</name>
+         <arg>URL</arg>
+         <tip>Reliable URL for testing internet connection</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>metamodel</name>
+         <arg>name</arg>
+         <tip>Name of metamodel used in UML model</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>forcecompile</name>
+         <arg>yes|no</arg>
+         <tip>Force a compile and ignore possible errors</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>docrelease</name>
+         <arg>YYYYMMDD</arg>
+         <tip>If supplied, this is a documentation release with specified release date</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>suppresswarnings</name>
+         <arg>yes|no</arg>
+         <tip>Yes if warnings should be suppressed in documentation.</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>messagelevel</name>
+         <arg>warning|error</arg>
+         <tip>Set the message level to error (no warnings) or warning (errors and warnings).</tip>
+         <required>false</required>
+      </cli-parm>
+   </cli-parms>
+   
+   <!-- properties zijn directe mapping vanuit imvertor.properties. Die moeten dus later netjes worden verwerkt -->
+   <properties>
+   
+      <!-- default base folder, will be overwritten when more info is available -->
+      <APPLICATION_BASE_FOLDER>${system/managedoutputfolder}/applications/${cli/project}/${cli/application}</APPLICATION_BASE_FOLDER>
+      
+      <!-- folder what will hold the release of this application --> 
+      <APPLICATION_FOLDER>${properties/APPLICATION_BASE_FOLDER}/${appinfo/release}</APPLICATION_FOLDER>
+      
+      <!-- folder what will hold the release of this application when it is invalid, and should not override existing application --> 
+      <INVALID_APPLICATION_FOLDER>${properties/APPLICATION_BASE_FOLDER}/${appinfo/release}-invalid</INVALID_APPLICATION_FOLDER>
+      
+      <!--  Excel to XML -->
+      <WORKBOOK_DTD>${system/etc-folder-path}/dtd/workbook.dtd</WORKBOOK_DTD>
+      <FORMATWORKBOOK_DTD>${system/etc-folder-path}/dtd/formatworkbook.dtd</FORMATWORKBOOK_DTD>
+      
+      <!-- identity transform stylesheet -->
+      <IMVERTOR_IDENTITY_TRANSFORM_XSLPATH>Imvert2identity.xsl</IMVERTOR_IDENTITY_TRANSFORM_XSLPATH>
+      
+      <!--  location of all distributed (and mass integrated) materials: documentation and schemas -->
+      <DISTRIBUTION_FOLDER>${system/managedoutputfolder}/distributions</DISTRIBUTION_FOLDER>
+      <!--  location of result release material (per application) -->
+      <DISTRIBUTION_APPLICATION_FOLDER>${properties/DISTRIBUTION_FOLDER}/${cli/project}/${cli/application}</DISTRIBUTION_APPLICATION_FOLDER>
+   </properties>
+   
+   <system>
+      <configuration-owner-file>${system/cfg-folder-path}/common/owners/${cli/owner}/${cli/owner}.xml</configuration-owner-file>
+      <configuration-tvset-file>${system/cfg-folder-path}/common/tvsets/${cli/owner}/${cli/tvset}.xml</configuration-tvset-file>
+      <configuration-schemarules-file>${system/cfg-folder-path}/common/schemarules/${cli/owner}/${cli/schemarules}.xml</configuration-schemarules-file>
+      <configuration-metamodel-file>${system/cfg-folder-path}/common/metamodels/${cli/owner}/${cli/metamodel}.xml</configuration-metamodel-file>
+   </system>
+   
+</config>

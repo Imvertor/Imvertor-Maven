@@ -1,0 +1,230 @@
+2016-04-26 11:59:53,648 INFO nl.imvertor.ChainTranslateAndReport - [main][Runner.java:252] - Framework version - Imvertor OS 0.87
+2016-04-26 11:59:53,650 INFO nl.imvertor.ChainTranslateAndReport - [main][Runner.java:252] - Chain version - Translate and report 0.9
+2016-04-26 12:15:53,285 INFO nl.imvertor.ChainTranslateAndReport - [main][Runner.java:252] - Framework version - Imvertor OS 0.87
+2016-04-26 12:15:53,288 INFO nl.imvertor.ChainTranslateAndReport - [main][Runner.java:252] - Chain version - Translate and report 0.9
+2016-04-26 12:15:54,152 DEBUG nl.imvertor.common.Configurator - [main][Runner.java:263] - Debugging started.
+2016-04-26 12:15:54,188 INFO nl.imvertor.ChainTranslateAndReport - [main][Runner.java:252] - Processing application green: SampleApplicationBase
+2016-04-26 12:15:54,196 INFO nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:252] - Compiling XMI
+2016-04-26 12:15:54,197 DEBUG nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:263] - Try XMI file at: D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-samples\trunk\SampleBase\SampleBase.1.xmi
+2016-04-26 12:15:54,197 INFO nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:252] - Reading D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-samples\trunk\SampleBase\SampleBase.1.xmi (XMI passed)
+2016-04-26 12:15:54,197 DEBUG nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:263] - Compacting XMI: D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-samples\trunk\SampleBase\SampleBase.1.xmi
+2016-04-26 12:15:54,204 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-samples\trunk\SampleBase\SampleBase.1.xmi using XMI1Compact.xsl
+2016-04-26 12:15:55,021 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using XmiCompiler-report.xsl
+2016-04-26 12:15:55,152 INFO nl.imvertor.XmiTranslator.XmiTranslator - [main][Runner.java:252] - Translating XMI to Imvertor format
+2016-04-26 12:15:55,158 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-samples\trunk\SampleBase\SampleBase.1.xmi.compact.xml using XMI1Imvert.xsl
+2016-04-26 12:15:58,916 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using XmiTranslator-report.xsl
+2016-04-26 12:15:59,024 INFO nl.imvertor.Validator.Validator - [main][Runner.java:252] - Validating model
+2016-04-26 12:15:59,029 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.01.base.xml using Imvert2canonical.xsl
+2016-04-26 12:15:59,106 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.02.1.base.xml using Imvert2canonical-Kadaster.xsl
+2016-04-26 12:15:59,188 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.02.2.base.xml using Imvert2validation-Kadaster.xsl
+2016-04-26 12:15:59,273 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.02.2.base.xml using Imvert2validation.xsl
+2016-04-26 12:15:59,530 INFO nl.imvertor.Validator.Validator - [main][Runner.java:252] - Compiled name: GREEN-SampleApplicationBase-1.0.0-2-20130318-20160426-121554
+2016-04-26 12:15:59,535 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using Validator-report.xsl
+2016-04-26 12:15:59,594 INFO nl.imvertor.ApcModifier.ApcModifier - [main][Runner.java:252] - Processing application configuration information
+2016-04-26 12:15:59,595 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.02.2.base.xml using Imvert2identity.xsl
+2016-04-26 12:15:59,622 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using ApcModifier-report.xsl
+2016-04-26 12:15:59,683 INFO nl.imvertor.ReadmeAnalyzer.ReadmeAnalyzer - [main][Runner.java:252] - Analyzing supplier state
+2016-04-26 12:15:59,711 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using ReadmeAnalyzer-report.xsl
+2016-04-26 12:15:59,824 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using ConceptCollector-report.xsl
+2016-04-26 12:15:59,888 INFO nl.imvertor.ImvertCompiler.ImvertCompiler - [main][Runner.java:252] - Compiling processable Imvertor format
+2016-04-26 12:15:59,889 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.32.apcmerged.xml using Imvert2domain.xsl
+2016-04-26 12:16:00,011 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.03.domains.xml using Imvert2dependencies.xsl
+2016-04-26 12:16:00,074 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.03.domains.xml using Imvert2application.xsl
+2016-04-26 12:16:00,148 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.05.variant.xml using Imvert2copydown.xsl
+2016-04-26 12:16:00,219 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.06.copydown.xml using Imvert2ref.xsl
+2016-04-26 12:16:00,290 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.07.ref.xml using Imvert2concreteSchema.xsl
+2016-04-26 12:16:00,462 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.08.concrete.xml using Imvert2localSchema.xsl
+2016-04-26 12:16:00,545 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.09.local.xml using Imvert2expanddoc.xsl
+2016-04-26 12:16:00,624 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.11.expanddoc.xml using Imvert2derivationTree.xsl
+2016-04-26 12:16:00,713 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.11.expanddoc.xml using Imvert2derivationExpand.xsl
+2016-04-26 12:16:00,917 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.15.2.expand.xml using Imvert2embellish.xsl
+2016-04-26 12:16:00,989 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.12.embellish.xml using Imvert2schema.xsl
+2016-04-26 12:16:01,077 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.12.embellish.xml using Imvert2derivation.xsl
+2016-04-26 12:16:01,162 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using ImvertCompiler-report.xsl
+2016-04-26 12:16:01,416 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using ReleaseComparer-report.xsl
+2016-04-26 12:16:01,482 INFO nl.imvertor.XsdCompiler.XsdCompiler - [main][Runner.java:252] - Compiling XML schemas
+2016-04-26 12:16:01,485 DEBUG nl.imvertor.XsdCompiler.XsdCompiler - [main][Runner.java:263] - Generating XML schemas to D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\app\xsd\SampleApplicationBase
+2016-04-26 12:16:01,486 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.12.embellish.xml using Imvert2XSD-Kadaster.xsl
+2016-04-26 12:16:01,722 DEBUG nl.imvertor.XsdCompiler.XsdCompiler - [main][Runner.java:263] - Appending external schema from: D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-input\trunk\xsd\www.knscm.nl\certificaten(4.1.0-20091215)
+2016-04-26 12:16:01,724 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-input\trunk\xsd\www.knscm.nl\certificaten(4.1.0-20091215)\schemas\test\Certificaten.xsd using localize-xsd.xsl
+2016-04-26 12:16:01,767 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-input\trunk\xsd\www.knscm.nl\certificaten(4.1.0-20091215)\schemas\transfer\Certificaten.xsd using localize-xsd.xsl
+2016-04-26 12:16:01,815 DEBUG nl.imvertor.XsdCompiler.XsdCompiler - [main][Runner.java:263] - Appending external schema from: D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-input\trunk\xsd\www.w3.org\1999-xlink(1.0.0-20010627)
+2016-04-26 12:16:01,817 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-input\trunk\xsd\www.w3.org\1999-xlink(1.0.0-20010627)\xlink\1.0.0\xlinks.xsd using localize-xsd.xsl
+2016-04-26 12:16:01,925 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using XsdCompiler-report.xsl
+2016-04-26 12:16:01,987 INFO nl.imvertor.SchemaValidator.SchemaValidator - [main][Runner.java:252] - Validating XML schemas
+2016-04-26 12:16:02,165 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using SchemaValidator-report.xsl
+2016-04-26 12:16:02,225 INFO nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:252] - Merging version info
+2016-04-26 12:16:02,496 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming C:\Users\arjan\AppData\Local\Temp\mergeVersionsInfo.6620385748538684221.xml using VERSIONS2Imvert.xsl
+2016-04-26 12:16:02,554 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.04.dependencies.xml using VERSIONS2merger.xsl
+2016-04-26 12:16:02,605 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using HistoryCompiler-report.xsl
+2016-04-26 12:16:02,673 INFO nl.imvertor.OfficeCompiler.OfficeCompiler - [main][Runner.java:252] - Creating Office documentation
+2016-04-26 12:16:02,674 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.12.embellish.xml using Imvert2office-Kadaster.xsl
+2016-04-26 12:16:02,895 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using OfficeCompiler-report.xsl
+2016-04-26 12:16:02,948 INFO nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:252] - Creating template XMI
+2016-04-26 12:16:02,949 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-samples\trunk\SampleBase\SampleBase.1.xmi using XMI1Template.xsl
+2016-04-26 12:16:03,207 WARN nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:241] - An UML document can only be generated for EAP source UML files.
+2016-04-26 12:16:03,212 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using EapCompiler-report.xsl
+2016-04-26 12:16:03,263 INFO nl.imvertor.RunAnalyzer.RunAnalyzer - [main][Runner.java:252] - Analyzing this run
+2016-04-26 12:16:03,264 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.24.schema.xml using RunAnalyzer.xsl
+2016-04-26 12:16:03,324 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using RunAnalyzer-report.xsl
+2016-04-26 12:16:03,460 INFO nl.imvertor.Reporter.Reporter - [main][Runner.java:252] - Compiling final report
+2016-04-26 12:16:03,463 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using Reporter-report.xsl
+2016-04-26 12:16:03,607 INFO nl.imvertor.ReadmeCompiler.ReadmeCompiler - [main][Runner.java:252] - Generating readme file
+2016-04-26 12:16:03,613 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.01.base.xml using Imvert2readme.xsl
+2016-04-26 12:16:03,662 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using ReadmeCompiler-report.xsl
+2016-04-26 12:16:03,714 INFO nl.imvertor.ReleaseCompiler.ReleaseCompiler - [main][Runner.java:252] - Compiling ZIP release
+2016-04-26 12:16:03,852 INFO nl.imvertor.ReleaseCompiler.ReleaseCompiler - [main][Runner.java:252] - ZIP release saved at: C:\tools\ImvertorOS\Imvertor-output\releases\GREEN-SampleApplicationBase-1.0.0-2-20130318-20160426-121554.zip
+2016-04-26 12:16:03,968 INFO nl.imvertor.common.Runner - [main][Runner.java:252] - Task succeeds with warnings.
+2016-04-26 12:16:03,968 INFO nl.imvertor.ChainTranslateAndReport - [main][Runner.java:252] - Done, chain process succeeds
+2016-04-26 12:17:02,853 INFO nl.imvertor.ChainTranslateAndReport - [main][Runner.java:252] - Framework version - Imvertor OS 0.87
+2016-04-26 12:17:02,856 INFO nl.imvertor.ChainTranslateAndReport - [main][Runner.java:252] - Chain version - Translate and report 0.9
+2016-04-26 12:17:03,697 DEBUG nl.imvertor.common.Configurator - [main][Runner.java:263] - Debugging started.
+2016-04-26 12:17:03,732 INFO nl.imvertor.ChainTranslateAndReport - [main][Runner.java:252] - Processing application green: SampleApplicationBase
+2016-04-26 12:17:03,738 INFO nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:252] - Compiling XMI
+2016-04-26 12:17:03,739 DEBUG nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:263] - Try XMI file at: D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-samples\trunk\SampleBase\SampleBase.1.xmi
+2016-04-26 12:17:03,739 INFO nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:252] - Reading D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-samples\trunk\SampleBase\SampleBase.1.xmi (XMI passed)
+2016-04-26 12:17:03,740 DEBUG nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:263] - Compacting XMI: D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-samples\trunk\SampleBase\SampleBase.1.xmi
+2016-04-26 12:17:03,746 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-samples\trunk\SampleBase\SampleBase.1.xmi using XMI1Compact.xsl
+2016-04-26 12:17:04,505 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using XmiCompiler-report.xsl
+2016-04-26 12:17:04,633 INFO nl.imvertor.XmiTranslator.XmiTranslator - [main][Runner.java:252] - Translating XMI to Imvertor format
+2016-04-26 12:18:52,187 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-samples\trunk\SampleBase\SampleBase.1.xmi.compact.xml using XMI1Imvert.xsl
+2016-04-26 12:18:55,741 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using XmiTranslator-report.xsl
+2016-04-26 12:18:55,810 INFO nl.imvertor.Validator.Validator - [main][Runner.java:252] - Validating model
+2016-04-26 12:19:02,784 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.01.base.xml using Imvert2canonical.xsl
+2016-04-26 12:19:02,897 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.02.1.base.xml using Imvert2canonical-Kadaster.xsl
+2016-04-26 12:19:02,974 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.02.2.base.xml using Imvert2validation-Kadaster.xsl
+2016-04-26 12:19:03,060 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.02.2.base.xml using Imvert2validation.xsl
+2016-04-26 12:19:03,283 INFO nl.imvertor.Validator.Validator - [main][Runner.java:252] - Compiled name: GREEN-SampleApplicationBase-1.0.0-2-20130318-20160426-121703
+2016-04-26 12:19:03,287 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using Validator-report.xsl
+2016-04-26 12:19:03,391 INFO nl.imvertor.ApcModifier.ApcModifier - [main][Runner.java:252] - Processing application configuration information
+2016-04-26 12:19:03,392 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.02.2.base.xml using Imvert2identity.xsl
+2016-04-26 12:19:03,414 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using ApcModifier-report.xsl
+2016-04-26 12:19:03,471 INFO nl.imvertor.ReadmeAnalyzer.ReadmeAnalyzer - [main][Runner.java:252] - Analyzing supplier state
+2016-04-26 12:19:03,478 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using ReadmeAnalyzer-report.xsl
+2016-04-26 12:19:03,564 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using ConceptCollector-report.xsl
+2016-04-26 12:19:03,624 INFO nl.imvertor.ImvertCompiler.ImvertCompiler - [main][Runner.java:252] - Compiling processable Imvertor format
+2016-04-26 12:19:03,625 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.32.apcmerged.xml using Imvert2domain.xsl
+2016-04-26 12:19:03,701 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.03.domains.xml using Imvert2dependencies.xsl
+2016-04-26 12:19:03,809 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.03.domains.xml using Imvert2application.xsl
+2016-04-26 12:19:03,880 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.05.variant.xml using Imvert2copydown.xsl
+2016-04-26 12:19:03,950 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.06.copydown.xml using Imvert2ref.xsl
+2016-04-26 12:19:04,022 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.07.ref.xml using Imvert2concreteSchema.xsl
+2016-04-26 12:19:04,110 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.08.concrete.xml using Imvert2localSchema.xsl
+2016-04-26 12:19:04,216 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.09.local.xml using Imvert2expanddoc.xsl
+2016-04-26 12:19:04,299 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.11.expanddoc.xml using Imvert2derivationTree.xsl
+2016-04-26 12:19:04,394 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.11.expanddoc.xml using Imvert2derivationExpand.xsl
+2016-04-26 12:19:04,537 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.15.2.expand.xml using Imvert2embellish.xsl
+2016-04-26 12:19:04,647 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.12.embellish.xml using Imvert2schema.xsl
+2016-04-26 12:19:04,736 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.12.embellish.xml using Imvert2derivation.xsl
+2016-04-26 12:19:04,815 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using ImvertCompiler-report.xsl
+2016-04-26 12:19:05,014 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using ReleaseComparer-report.xsl
+2016-04-26 12:19:05,079 INFO nl.imvertor.XsdCompiler.XsdCompiler - [main][Runner.java:252] - Compiling XML schemas
+2016-04-26 12:19:05,081 DEBUG nl.imvertor.XsdCompiler.XsdCompiler - [main][Runner.java:263] - Generating XML schemas to D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\app\xsd\SampleApplicationBase
+2016-04-26 12:19:05,082 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.12.embellish.xml using Imvert2XSD-Kadaster.xsl
+2016-04-26 12:19:05,352 DEBUG nl.imvertor.XsdCompiler.XsdCompiler - [main][Runner.java:263] - Appending external schema from: D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-input\trunk\xsd\www.knscm.nl\certificaten(4.1.0-20091215)
+2016-04-26 12:19:05,354 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-input\trunk\xsd\www.knscm.nl\certificaten(4.1.0-20091215)\schemas\test\Certificaten.xsd using localize-xsd.xsl
+2016-04-26 12:19:05,402 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-input\trunk\xsd\www.knscm.nl\certificaten(4.1.0-20091215)\schemas\transfer\Certificaten.xsd using localize-xsd.xsl
+2016-04-26 12:19:05,443 DEBUG nl.imvertor.XsdCompiler.XsdCompiler - [main][Runner.java:263] - Appending external schema from: D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-input\trunk\xsd\www.w3.org\1999-xlink(1.0.0-20010627)
+2016-04-26 12:19:05,445 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-input\trunk\xsd\www.w3.org\1999-xlink(1.0.0-20010627)\xlink\1.0.0\xlinks.xsd using localize-xsd.xsl
+2016-04-26 12:19:05,498 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using XsdCompiler-report.xsl
+2016-04-26 12:19:05,561 INFO nl.imvertor.SchemaValidator.SchemaValidator - [main][Runner.java:252] - Validating XML schemas
+2016-04-26 12:19:05,728 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using SchemaValidator-report.xsl
+2016-04-26 12:19:05,827 INFO nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:252] - Merging version info
+2016-04-26 12:19:06,052 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming C:\Users\arjan\AppData\Local\Temp\mergeVersionsInfo.1200683868760216266.xml using VERSIONS2Imvert.xsl
+2016-04-26 12:19:06,110 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.04.dependencies.xml using VERSIONS2merger.xsl
+2016-04-26 12:19:06,160 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using HistoryCompiler-report.xsl
+2016-04-26 12:19:06,222 INFO nl.imvertor.OfficeCompiler.OfficeCompiler - [main][Runner.java:252] - Creating Office documentation
+2016-04-26 12:19:06,223 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.12.embellish.xml using Imvert2office-Kadaster.xsl
+2016-04-26 12:19:06,433 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using OfficeCompiler-report.xsl
+2016-04-26 12:19:06,484 INFO nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:252] - Creating template XMI
+2016-04-26 12:19:06,485 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-samples\trunk\SampleBase\SampleBase.1.xmi using XMI1Template.xsl
+2016-04-26 12:19:06,743 WARN nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:241] - An UML document can only be generated for EAP source UML files.
+2016-04-26 12:19:06,748 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using EapCompiler-report.xsl
+2016-04-26 12:19:06,804 INFO nl.imvertor.RunAnalyzer.RunAnalyzer - [main][Runner.java:252] - Analyzing this run
+2016-04-26 12:19:06,805 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.24.schema.xml using RunAnalyzer.xsl
+2016-04-26 12:19:06,858 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using RunAnalyzer-report.xsl
+2016-04-26 12:19:06,932 INFO nl.imvertor.Reporter.Reporter - [main][Runner.java:252] - Compiling final report
+2016-04-26 12:19:06,936 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using Reporter-report.xsl
+2016-04-26 12:19:07,122 INFO nl.imvertor.ReadmeCompiler.ReadmeCompiler - [main][Runner.java:252] - Generating readme file
+2016-04-26 12:19:07,128 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.01.base.xml using Imvert2readme.xsl
+2016-04-26 12:19:07,179 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using ReadmeCompiler-report.xsl
+2016-04-26 12:19:07,231 INFO nl.imvertor.ReleaseCompiler.ReleaseCompiler - [main][Runner.java:252] - Compiling ZIP release
+2016-04-26 12:19:07,343 INFO nl.imvertor.ReleaseCompiler.ReleaseCompiler - [main][Runner.java:252] - ZIP release saved at: C:\tools\ImvertorOS\Imvertor-output\releases\GREEN-SampleApplicationBase-1.0.0-2-20130318-20160426-121703.zip
+2016-04-26 12:19:07,423 INFO nl.imvertor.common.Runner - [main][Runner.java:252] - Task succeeds with warnings.
+2016-04-26 12:19:07,423 INFO nl.imvertor.ChainTranslateAndReport - [main][Runner.java:252] - Done, chain process succeeds
+2016-04-26 13:29:45,314 INFO nl.imvertor.ChainTranslateAndReport - [main][Runner.java:252] - Framework version - Imvertor OS 0.87
+2016-04-26 13:29:45,317 INFO nl.imvertor.ChainTranslateAndReport - [main][Runner.java:252] - Chain version - Translate and report 0.9
+2016-04-26 13:29:46,291 DEBUG nl.imvertor.common.Configurator - [main][Runner.java:263] - Debugging started.
+2016-04-26 13:29:46,328 INFO nl.imvertor.ChainTranslateAndReport - [main][Runner.java:252] - Processing application green: SampleApplicationBase
+2016-04-26 13:29:46,334 INFO nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:252] - Compiling XMI
+2016-04-26 13:29:46,335 DEBUG nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:263] - Try XMI file at: D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-samples\trunk\SampleBase\SampleBase.1.xmi
+2016-04-26 13:29:46,335 INFO nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:252] - Reading D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-samples\trunk\SampleBase\SampleBase.1.xmi (XMI passed)
+2016-04-26 13:29:46,335 DEBUG nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:263] - Compacting XMI: D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-samples\trunk\SampleBase\SampleBase.1.xmi
+2016-04-26 13:29:46,342 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-samples\trunk\SampleBase\SampleBase.1.xmi using XMI1Compact.xsl
+2016-04-26 13:29:47,149 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using XmiCompiler-report.xsl
+2016-04-26 13:29:47,278 INFO nl.imvertor.XmiTranslator.XmiTranslator - [main][Runner.java:252] - Translating XMI to Imvertor format
+2016-04-26 13:29:47,279 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-samples\trunk\SampleBase\SampleBase.1.xmi.compact.xml using XMI1Imvert.xsl
+2016-04-26 13:29:50,919 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using XmiTranslator-report.xsl
+2016-04-26 13:29:50,990 INFO nl.imvertor.Validator.Validator - [main][Runner.java:252] - Validating model
+2016-04-26 13:29:50,992 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.01.base.xml using Imvert2canonical.xsl
+2016-04-26 13:29:51,110 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.02.1.base.xml using Imvert2canonical-Kadaster.xsl
+2016-04-26 13:29:51,187 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.02.2.base.xml using Imvert2validation-Kadaster.xsl
+2016-04-26 13:29:51,275 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.02.2.base.xml using Imvert2validation.xsl
+2016-04-26 13:29:51,529 INFO nl.imvertor.Validator.Validator - [main][Runner.java:252] - Compiled name: GREEN-SampleApplicationBase-1.0.0-2-20130318-20160426-132946
+2016-04-26 13:29:51,533 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using Validator-report.xsl
+2016-04-26 13:29:51,594 INFO nl.imvertor.ApcModifier.ApcModifier - [main][Runner.java:252] - Processing application configuration information
+2016-04-26 13:29:51,595 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.02.2.base.xml using Imvert2identity.xsl
+2016-04-26 13:29:51,615 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using ApcModifier-report.xsl
+2016-04-26 13:29:51,678 INFO nl.imvertor.ReadmeAnalyzer.ReadmeAnalyzer - [main][Runner.java:252] - Analyzing supplier state
+2016-04-26 13:29:51,697 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using ReadmeAnalyzer-report.xsl
+2016-04-26 13:29:51,796 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using ConceptCollector-report.xsl
+2016-04-26 13:29:51,854 INFO nl.imvertor.ImvertCompiler.ImvertCompiler - [main][Runner.java:252] - Compiling processable Imvertor format
+2016-04-26 13:29:51,856 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.32.apcmerged.xml using Imvert2domain.xsl
+2016-04-26 13:29:51,970 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.03.domains.xml using Imvert2dependencies.xsl
+2016-04-26 13:29:52,034 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.03.domains.xml using Imvert2application.xsl
+2016-04-26 13:29:52,115 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.05.variant.xml using Imvert2copydown.xsl
+2016-04-26 13:29:52,179 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.06.copydown.xml using Imvert2ref.xsl
+2016-04-26 13:29:52,252 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.07.ref.xml using Imvert2concreteSchema.xsl
+2016-04-26 13:29:52,454 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.08.concrete.xml using Imvert2localSchema.xsl
+2016-04-26 13:29:52,540 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.09.local.xml using Imvert2expanddoc.xsl
+2016-04-26 13:29:52,618 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.11.expanddoc.xml using Imvert2derivationTree.xsl
+2016-04-26 13:29:52,704 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.11.expanddoc.xml using Imvert2derivationExpand.xsl
+2016-04-26 13:29:52,887 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.15.2.expand.xml using Imvert2embellish.xsl
+2016-04-26 13:29:52,956 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.12.embellish.xml using Imvert2schema.xsl
+2016-04-26 13:29:53,047 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.12.embellish.xml using Imvert2derivation.xsl
+2016-04-26 13:29:53,138 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using ImvertCompiler-report.xsl
+2016-04-26 13:29:53,392 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using ReleaseComparer-report.xsl
+2016-04-26 13:29:53,457 INFO nl.imvertor.XsdCompiler.XsdCompiler - [main][Runner.java:252] - Compiling XML schemas
+2016-04-26 13:29:53,459 DEBUG nl.imvertor.XsdCompiler.XsdCompiler - [main][Runner.java:263] - Generating XML schemas to D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\app\xsd\SampleApplicationBase
+2016-04-26 13:29:53,460 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.12.embellish.xml using Imvert2XSD-Kadaster.xsl
+2016-04-26 13:29:53,693 DEBUG nl.imvertor.XsdCompiler.XsdCompiler - [main][Runner.java:263] - Appending external schema from: D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-input\trunk\xsd\www.knscm.nl\certificaten(4.1.0-20091215)
+2016-04-26 13:29:53,695 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-input\trunk\xsd\www.knscm.nl\certificaten(4.1.0-20091215)\schemas\test\Certificaten.xsd using localize-xsd.xsl
+2016-04-26 13:29:53,743 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-input\trunk\xsd\www.knscm.nl\certificaten(4.1.0-20091215)\schemas\transfer\Certificaten.xsd using localize-xsd.xsl
+2016-04-26 13:29:53,828 DEBUG nl.imvertor.XsdCompiler.XsdCompiler - [main][Runner.java:263] - Appending external schema from: D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-input\trunk\xsd\www.w3.org\1999-xlink(1.0.0-20010627)
+2016-04-26 13:29:53,831 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-input\trunk\xsd\www.w3.org\1999-xlink(1.0.0-20010627)\xlink\1.0.0\xlinks.xsd using localize-xsd.xsl
+2016-04-26 13:29:53,903 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using XsdCompiler-report.xsl
+2016-04-26 13:29:53,963 INFO nl.imvertor.SchemaValidator.SchemaValidator - [main][Runner.java:252] - Validating XML schemas
+2016-04-26 13:29:54,136 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using SchemaValidator-report.xsl
+2016-04-26 13:29:54,190 INFO nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:252] - Merging version info
+2016-04-26 13:29:54,499 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming C:\Users\arjan\AppData\Local\Temp\mergeVersionsInfo.536448527032316971.xml using VERSIONS2Imvert.xsl
+2016-04-26 13:29:54,558 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.04.dependencies.xml using VERSIONS2merger.xsl
+2016-04-26 13:29:54,610 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using HistoryCompiler-report.xsl
+2016-04-26 13:29:54,674 INFO nl.imvertor.OfficeCompiler.OfficeCompiler - [main][Runner.java:252] - Creating Office documentation
+2016-04-26 13:29:54,675 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.12.embellish.xml using Imvert2office-Kadaster.xsl
+2016-04-26 13:29:54,887 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using OfficeCompiler-report.xsl
+2016-04-26 13:29:54,940 INFO nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:252] - Creating template XMI
+2016-04-26 13:29:54,940 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-samples\trunk\SampleBase\SampleBase.1.xmi using XMI1Template.xsl
+2016-04-26 13:29:55,200 WARN nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:241] - An UML document can only be generated for EAP source UML files.
+2016-04-26 13:29:55,204 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using EapCompiler-report.xsl
+2016-04-26 13:29:55,256 INFO nl.imvertor.RunAnalyzer.RunAnalyzer - [main][Runner.java:252] - Analyzing this run
+2016-04-26 13:29:55,257 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.24.schema.xml using RunAnalyzer.xsl
+2016-04-26 13:29:55,310 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using RunAnalyzer-report.xsl
+2016-04-26 13:29:55,445 INFO nl.imvertor.Reporter.Reporter - [main][Runner.java:252] - Compiling final report
+2016-04-26 13:29:55,448 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using Reporter-report.xsl
+2016-04-26 13:29:55,574 INFO nl.imvertor.ReadmeCompiler.ReadmeCompiler - [main][Runner.java:252] - Generating readme file
+2016-04-26 13:29:55,580 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\imvert\imvertor.01.base.xml using Imvert2readme.xsl
+2016-04-26 13:29:55,635 DEBUG nl.imvertor.common.Transformer - [main][Transformer.java:157] - Transforming D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-work\default\parms.xml using ReadmeCompiler-report.xsl
+2016-04-26 13:29:55,690 INFO nl.imvertor.ReleaseCompiler.ReleaseCompiler - [main][Runner.java:252] - Compiling ZIP release
+2016-04-26 13:29:55,800 INFO nl.imvertor.ReleaseCompiler.ReleaseCompiler - [main][Runner.java:252] - ZIP release saved at: C:\tools\ImvertorOS\Imvertor-output\releases\GREEN-SampleApplicationBase-1.0.0-2-20130318-20160426-132946.zip
+2016-04-26 13:29:55,917 INFO nl.imvertor.common.Runner - [main][Runner.java:252] - Task succeeds with warnings.
+2016-04-26 13:29:55,917 INFO nl.imvertor.ChainTranslateAndReport - [main][Runner.java:252] - Done, chain process succeeds

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+    <id>
+        <name>Release comparer</name>
+        <version-control>$Id: parms.xml 7475 2016-03-23 10:54:06Z arjan $</version-control>
+    </id>
+    <cli-parms>
+        <cli-parm>
+            <name>compare</name>
+            <arg>supplier|release|none</arg>
+            <tip>Compare the model to the supplier, a release, or do not compare.</tip>
+            <required>false</required>
+        </cli-parm>
+        <cli-parm>
+            <name>comparewith</name>
+            <arg>YYYYMMDD</arg>
+            <tip>Compare the new model to the same model released at the specified date.</tip>
+            <required>false</required>
+        </cli-parm>
+    </cli-parms>
+
+    <properties>
+
+        <!-- 
+          the folder that holds the compare XSLTs 
+        -->
+        <IMVERTOR_COMPARE_FOLDER>${system/xsl-folder-path}/ReleaseComparer/compare</IMVERTOR_COMPARE_FOLDER>
+
+        <!-- 
+          The XSLT which cleans the model file, based on  the configuration stored in IMVERTOR_COMPARE_CONFIG.
+          Thisis a single generic XSLT.
+        -->
+        <IMVERTOR_COMPARE_CLEAN_XSLPATH>${properties/IMVERTOR_COMPARE_FOLDER}/xsl/Imvert/Imvert2compare-clean.xsl</IMVERTOR_COMPARE_CLEAN_XSLPATH>
+
+        <!-- 
+          The XSLT which simplifies the model. 
+          generates WORK_COMPARE_*_SIMPLE_FILE
+        -->
+        <IMVERTOR_COMPARE_SIMPLE_XSLPATH>${properties/IMVERTOR_COMPARE_FOLDER}/xsl/Imvert/Imvert2compare-simplify.xsl</IMVERTOR_COMPARE_SIMPLE_XSLPATH>
+        <!-- 
+          The XSLT which simplifies the model. 
+          generates WORK_COMPARE_*_SIMPLE_FILE
+         -->
+        <IMVERTOR_COMPARE_LISTING_XSLPATH>${properties/IMVERTOR_COMPARE_FOLDER}/xsl/Imvert/Imvert2compare-listing.xsl</IMVERTOR_COMPARE_LISTING_XSLPATH>
+        <!-- 
+          The XSLT which holds the rules for comparion. This is assumd to be different for each type of metamodel / tagged value set.
+        -->
+        <IMVERTOR_COMPARE_CONFIG>${system/cfg-folder-path}/common/comparerules/${cli/owner}/${cli/comparerules}.xml</IMVERTOR_COMPARE_CONFIG>
+
+        <!-- 
+          the model file is a copy of the model file of the control and test applications 
+        -->
+        <WORK_COMPARE_CONTROL_MODEL_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.1.1.compare-control-model.xml</WORK_COMPARE_CONTROL_MODEL_FILE>
+        <WORK_COMPARE_TEST_MODEL_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.1.2.compare-test-model.xml</WORK_COMPARE_TEST_MODEL_FILE>
+        <!-- 
+          the view file creates a view on the model file by temporarily removing, adding or changing info in that file, 
+          such that a compare produces only relevant dfferences. 
+        -->
+        <WORK_COMPARE_CONTROL_VIEW_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.1.1.compare-control-model.xml</WORK_COMPARE_CONTROL_VIEW_FILE>
+        <WORK_COMPARE_TEST_VIEW_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.1.2.compare-test-model.xml</WORK_COMPARE_TEST_VIEW_FILE>
+        <!-- 
+          the simple file is a representation of the model file in a simple format, suitable for comparing and reporting. 
+        -->
+        <WORK_COMPARE_CONTROL_SIMPLE_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.1.1.compare-control-simple.xml</WORK_COMPARE_CONTROL_SIMPLE_FILE>
+        <WORK_COMPARE_TEST_SIMPLE_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.1.2.compare-test-simple.xml</WORK_COMPARE_TEST_SIMPLE_FILE>
+        <!-- 
+          the name file records names TODO 
+        -->
+        <WORK_COMPARE_CONTROL_NAME_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.1.1.compare-control-name.xml</WORK_COMPARE_CONTROL_NAME_FILE>
+        <WORK_COMPARE_TEST_NAME_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.1.2.compare-test-name.xml</WORK_COMPARE_TEST_NAME_FILE>
+        <!-- 
+          the diff file is the Junit generated xml differencing output. 
+        -->
+        <WORK_COMPARE_DIFF_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.2.compare-diff.xml</WORK_COMPARE_DIFF_FILE>
+        <!-- 
+          the listing file is the XML format that is suitable for processing by teh compare reporter 
+        -->
+        <WORK_COMPARE_LISTING_FILE>${system/work-imvert-folder-path}/imvertor.20.${system/compare-label}.3.compare-listing.xml</WORK_COMPARE_LISTING_FILE>
+
+        <COMPARE_GENERATOR_XSLPATH>${properties/IMVERTOR_COMPARE_FOLDER}/xsl/compare.generator.xsl</COMPARE_GENERATOR_XSLPATH>
+        <COMPARE_GENERATED_XSLPATH>${properties/IMVERTOR_COMPARE_FOLDER}/work/generated.xsl</COMPARE_GENERATED_XSLPATH>
+
+    </properties>
+</config>

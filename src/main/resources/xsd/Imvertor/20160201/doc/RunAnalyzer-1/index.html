@@ -1,0 +1,374 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <title>Imvert - Run analysis</title>
+      <link href="../web/css/report.css" rel="stylesheet">
+   </head>
+   <body>
+      <h1>Runtime parameters passed</h1>
+      <div><a name="d10540e455"></a><h1>Parameters</h1>
+         <div class="intro">
+            <p>
+               Info on the parameters passed for this run, and their values.
+               
+            </p>
+         </div>
+         <table>
+            <tr class="tableHeader">
+               <td>Name</td>
+               <td>Value</td>
+               <td>Args</td>
+               <td>Explain</td>
+               <td>Required?</td>
+               <td>Step</td>
+            </tr>
+            <tr>
+               <td>application</td>
+               <td>Imvertor</td>
+               <td>name</td>
+               <td>Name of the application, i.e. root package in UML</td>
+               <td>true</td>
+               <td>common</td>
+            </tr>
+            <tr>
+               <td>arguments</td>
+               <td>D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS-input\trunk\props\Imvertor.properties</td>
+               <td>filepath</td>
+               <td>Path to the file holding (additional) arguments (in the form key = value)</td>
+               <td>false</td>
+               <td>common</td>
+            </tr>
+            <tr>
+               <td>buildcollection</td>
+               <td>yes</td>
+               <td>yes|no</td>
+               <td>Yes if collections (and referencing) are used, no if referencing is not used</td>
+               <td>false</td>
+               <td>XsdCompiler</td>
+            </tr>
+            <tr>
+               <td>collectionwrappername</td>
+               <td>component</td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>collectionwrappers</td>
+               <td>no</td>
+               <td>yes|no</td>
+               <td>Yes if components within collection must be wrapped in xsd</td>
+               <td>false</td>
+               <td>XsdCompiler</td>
+            </tr>
+            <tr>
+               <td>contactemail</td>
+               <td>modellenbureau@kadaster.nl</td>
+               <td>email-address</td>
+               <td>The email address for support on the (form of the) distributed release</td>
+               <td>false</td>
+               <td>ReadmeCompiler</td>
+            </tr>
+            <tr>
+               <td>contacturl</td>
+               <td>http://www.kadaster.nl/schemas</td>
+               <td>url</td>
+               <td>The URL for support on the (form of the) distributed release</td>
+               <td>false</td>
+               <td>ReadmeCompiler</td>
+            </tr>
+            <tr>
+               <td>createderivedeap</td>
+               <td>yes</td>
+               <td>yes|no</td>
+               <td>Yes if an full EA representation of all derived information should be created</td>
+               <td>false</td>
+               <td>EapCompiler</td>
+            </tr>
+            <tr>
+               <td>createhistory</td>
+               <td>yes</td>
+               <td>yes|no</td>
+               <td>Yes if history info should be read from Excel file</td>
+               <td>true</td>
+               <td>HistoryCompiler</td>
+            </tr>
+            <tr>
+               <td>createoffice</td>
+               <td>html</td>
+               <td>html|doc</td>
+               <td>Create a documentation file in HTML or MsWord format. By default, create none.</td>
+               <td>false</td>
+               <td>OfficeCompiler</td>
+            </tr>
+            <tr>
+               <td>createtemplate</td>
+               <td>yes</td>
+               <td>yes|no</td>
+               <td>Yes if an EAP template should be created for this application</td>
+               <td>false</td>
+               <td>EapCompiler</td>
+            </tr>
+            <tr>
+               <td>createumlreport</td>
+               <td>yes</td>
+               <td>yes|no</td>
+               <td>Yes if an UML report based on EAP should be created</td>
+               <td>false</td>
+               <td>EapCompiler</td>
+            </tr>
+            <tr>
+               <td>createxmlschema</td>
+               <td>yes</td>
+               <td>yes|no</td>
+               <td>Yes if XML schemas must be generated</td>
+               <td>false</td>
+               <td>XsdCompiler</td>
+            </tr>
+            <tr>
+               <td>createziprelease</td>
+               <td>yes</td>
+               <td>yes|no</td>
+               <td>Yes if the released application should be zipped for distribution</td>
+               <td>false</td>
+               <td>ReleaseCompiler</td>
+            </tr>
+            <tr>
+               <td>debug</td>
+               <td>no</td>
+               <td>yes|no</td>
+               <td>Yes if run in debug mode</td>
+               <td>false</td>
+               <td>common</td>
+            </tr>
+            <tr>
+               <td>derivedoc</td>
+               <td>yes</td>
+               <td>yes|no</td>
+               <td>Yes if derivation of documentation is required</td>
+               <td>false</td>
+               <td>ImvertCompiler</td>
+            </tr>
+            <tr>
+               <td>docrelease</td>
+               <td>00000000</td>
+               <td>YYYYMMDD</td>
+               <td>If supplied, this is a documentation release with specified release date</td>
+               <td>false</td>
+               <td>common</td>
+            </tr>
+            <tr>
+               <td>externalurl</td>
+               <td>no</td>
+               <td>yes|no</td>
+               <td>Yes if external schemas must be referened by URL</td>
+               <td>false</td>
+               <td>XsdCompiler</td>
+            </tr>
+            <tr>
+               <td>flattenschemas</td>
+               <td>no</td>
+               <td>yes|no</td>
+               <td>Yes if schemas should also be flattened</td>
+               <td>false</td>
+               <td>XsdCompiler</td>
+            </tr>
+            <tr>
+               <td>forcecompile</td>
+               <td>no</td>
+               <td>yes|no</td>
+               <td>Force a compile and ignore possible errors</td>
+               <td>false</td>
+               <td>common</td>
+            </tr>
+            <tr>
+               <td>hisfile</td>
+               <td>d:\projects\validprojects\Kadaster-IMKAD-2\brk-interfaces\Imvertor\trunk\Imvertor.history.xls</td>
+               <td>filepath</td>
+               <td>Path to the input xls history file</td>
+               <td>false</td>
+               <td>HistoryCompiler</td>
+            </tr>
+            <tr>
+               <td>isbasesupplier</td>
+               <td>no</td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>listsettings</td>
+               <td>no</td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>mapping</td>
+               <td>NEN3610_GML321</td>
+               <td>name</td>
+               <td>Name of a mapping to be used for conceptual schemas</td>
+               <td>false</td>
+               <td>ImvertCompiler</td>
+            </tr>
+            <tr>
+               <td>metamodel</td>
+               <td>Imvertor</td>
+               <td>name</td>
+               <td>Name of metamodel used in UML model</td>
+               <td>true</td>
+               <td>common</td>
+            </tr>
+            <tr>
+               <td>normalizenames</td>
+               <td>yes</td>
+               <td>yes|no</td>
+               <td>Yes if names of classes, attributes and relations should be normalized</td>
+               <td>false</td>
+               <td>Validator</td>
+            </tr>
+            <tr>
+               <td>owner</td>
+               <td>Imvertor</td>
+               <td>name</td>
+               <td>Name of the project owner</td>
+               <td>true</td>
+               <td>common</td>
+            </tr>
+            <tr>
+               <td>project</td>
+               <td>imvertor</td>
+               <td>name</td>
+               <td>Name of the project</td>
+               <td>true</td>
+               <td>common</td>
+            </tr>
+            <tr>
+               <td>proxyurl</td>
+               <td>http://www.google.com</td>
+               <td>URL</td>
+               <td>Reliable URL for testing internet connection</td>
+               <td>true</td>
+               <td>common</td>
+            </tr>
+            <tr>
+               <td>refreshconcepts</td>
+               <td>no</td>
+               <td>yes|no</td>
+               <td>Yes if the concepts should be re-read from RDF triple store</td>
+               <td>false</td>
+               <td>ConceptCollector</td>
+            </tr>
+            <tr>
+               <td>schemarules</td>
+               <td>Kadaster</td>
+               <td>name</td>
+               <td>Name of the configuration folder for schema rules</td>
+               <td>true</td>
+               <td>common</td>
+            </tr>
+            <tr>
+               <td>shortprefix</td>
+               <td>yes</td>
+               <td>yes|no</td>
+               <td>Yes if namespace prefixes for XSDs should be shortened</td>
+               <td>false</td>
+               <td>XsdCompiler</td>
+            </tr>
+            <tr>
+               <td>starthistory</td>
+               <td>20140901</td>
+               <td>YYYYMMDD</td>
+               <td>Release date from which to compile history to be included in documentation; defaults
+                  to most recent previous release
+               </td>
+               <td>false</td>
+               <td>HistoryCompiler</td>
+            </tr>
+            <tr>
+               <td>substitutions</td>
+               <td>no</td>
+               <td>yes|no</td>
+               <td>Yes if substitutions should be generated, in stead of choice groups</td>
+               <td>false</td>
+               <td>XsdCompiler</td>
+            </tr>
+            <tr>
+               <td>task</td>
+               <td>compile</td>
+               <td>compile|release</td>
+               <td>Set task to compile or release</td>
+               <td>true</td>
+               <td>common</td>
+            </tr>
+            <tr>
+               <td>tvset</td>
+               <td>Imvertor</td>
+               <td>name</td>
+               <td>Name of the configuration folder for tagged value set definitions</td>
+               <td>true</td>
+               <td>common</td>
+            </tr>
+            <tr>
+               <td>umlfile</td>
+               <td>d:\projects\validprojects\Kadaster-IMKAD-2\brk-interfaces\Imvertor\trunk\Imvertor.20140901.eap</td>
+               <td>filepath</td>
+               <td>Path to the input UML file, must be EAP or XMI</td>
+               <td>true</td>
+               <td>common</td>
+            </tr>
+            <tr>
+               <td>validatederivation</td>
+               <td>yes</td>
+               <td>yes|no</td>
+               <td>Yes if derivation must be validated</td>
+               <td>false</td>
+               <td>ImvertCompiler</td>
+            </tr>
+            <tr>
+               <td>validatedocmissing</td>
+               <td>yes</td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>validateschema</td>
+               <td>yes</td>
+               <td>yes|no</td>
+               <td>Yes if result schemas must be validated</td>
+               <td>false</td>
+               <td>SchemaValidator</td>
+            </tr>
+            <tr>
+               <td>validatetvassignment</td>
+               <td>yes</td>
+               <td>yes|no</td>
+               <td>Check if tagged values are assigned correctly</td>
+               <td>true</td>
+               <td>Validator</td>
+            </tr>
+            <tr>
+               <td>validatetvmissing</td>
+               <td>no</td>
+               <td>yes|no</td>
+               <td>Check if tagged values that are required are specified</td>
+               <td>true</td>
+               <td>Validator</td>
+            </tr>
+            <tr>
+               <td>zipfile</td>
+               <td>D:/projects/validprojects/Kadaster-Imvertor/Imvertor-OS-output/releases</td>
+               <td>filepath</td>
+               <td>Path to the output zip file holding the complete release</td>
+               <td>true</td>
+               <td>ReleaseCompiler</td>
+            </tr>
+         </table>
+      </div>
+   </body>
+</html>

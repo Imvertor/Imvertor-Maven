@@ -1,0 +1,1330 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <title>Imvert - Imvert compiler</title>
+      <link href="../web/css/report.css" rel="stylesheet">
+   </head>
+   <body>
+      <h1>Quick view</h1>
+      <div>
+         <div class="intro">
+            <p>
+               This table reports all packages, contained classes, and contained properties, i.e.
+               attributes (attrib) and associations (assoc).
+               
+            </p>
+            <p>
+               There are 
+               1 domain packages, with 
+               21 classes, with
+               94 attributes and 
+               39 associations.
+               This may include system generated classes.
+               
+            </p>
+            <p>
+               For each class the following is specified:
+               
+            </p>
+            <ul>
+               <li>Is this a natural root class? Only classes that are nit (indirectly) referenced are
+                  natural roots.
+               </li>
+               <li>P::C in which P = package C = class</li>
+               <li>Stereotype</li>
+               <li>Supertype</li>
+            </ul>
+            <p>
+               For each class property the following is specified:
+               
+            </p>
+            <ul>
+               <li>Number in sequence (order of the elements in the XML schema, higher number after lower
+                  number)
+               </li>
+               <li>P::C.p in which P = package C = class, p = property</li>
+               <li>Type of the property</li>
+               <li>Multiplicity</li>
+               <li>Stereotype</li>
+            </ul>
+         </div>
+         <table>
+            <tr>
+               <td class="vert_spacer">&nbsp;</td>
+            </tr>
+            <tr>
+               <td colspan="100" class="package"><span class="label">Package: </span><span class="value">Application </span><br><span class="label">Namespace: </span><span class="value">http://www.imvertor.org/schema/imvertor/application </span><br><span class="label">Stereo: </span><span class="value">DOMAIN </span><br></td>
+            </tr>
+            <tr class="tableHeader">
+               <td>pos</td>
+               <td>property</td>
+               <td>type</td>
+               <td>min</td>
+               <td>max</td>
+               <td>stereotype</td>
+               <td>origin</td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::Application"></a><span class="label">Name: </span><span class="value">Application::Application </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value">OBJECTTYPE </span><br></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Application<i>.project</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Application<i>.generated</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Application<i>.generator</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Application<i>.exported</i></b> (attrib)</span></td>
+               <td>datetime (DT)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Application<i>.exporter</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Application<i>.localSchemaSvnId</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Application<i>.conceptualSchemaSvnId</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>110</td>
+               <td><span>Application::<b>Application<i>.filters</i></b> (composite)</span></td>
+               <td>Application::Filter</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>110</td>
+               <td><span>Application::<b>Application<i>.identification</i></b> (composite)</span></td>
+               <td>Application::Identifiable</td>
+               <td>1</td>
+               <td>1</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>120</td>
+               <td><span>Application::<b>Application<i>.packages</i></b> (composite)</span></td>
+               <td>Application::Package</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>130</td>
+               <td><span>Application::<b>Application<i>.local-schemas</i></b> (composite)</span></td>
+               <td>Application::LocalSchema</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>130</td>
+               <td><span>Application::<b>Application<i>.version</i></b> (composite)</span></td>
+               <td>Application::Svn</td>
+               <td>0</td>
+               <td>1</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>150</td>
+               <td><span>Application::<b>Application<i>.derivation</i></b> (composite)</span></td>
+               <td>Application::Derivable</td>
+               <td>0</td>
+               <td>1</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>180</td>
+               <td><span>Application::<b>Application<i>.tags</i></b> (composite)</span></td>
+               <td>Application::TaggedValue</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::Association"></a><span class="label">Name: </span><span class="value">Application::Association </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value">GEGEVENSGROEPTYPE </span><br></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Association<i>.aggregation</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Association<i>.position</i></b> (attrib)</span></td>
+               <td>integer (N)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Association<i>.copyDownTypeId</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Association<i>.sourceNavigable</i></b> (attrib)</span></td>
+               <td>boolean (INDIC)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Association<i>.targetNavigable</i></b> (attrib)</span></td>
+               <td>boolean (INDIC)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>110</td>
+               <td><span>Application::<b>Association<i>.identification</i></b> (composite)</span></td>
+               <td>Application::Identifiable</td>
+               <td>1</td>
+               <td>1</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>120</td>
+               <td><span>Application::<b>Association<i>.release</i></b> (composite)</span></td>
+               <td>Application::Released</td>
+               <td>0</td>
+               <td>1</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>140</td>
+               <td><span>Application::<b>Association<i>.debug</i></b> (composite)</span></td>
+               <td>Application::Debuggable</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>180</td>
+               <td><span>Application::<b>Association<i>.tags</i></b> (composite)</span></td>
+               <td>Application::TaggedValue</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>185</td>
+               <td><span>Application::<b>Association<i>.type</i></b> (composite)</span></td>
+               <td>Application::Type</td>
+               <td>1</td>
+               <td>1</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>190</td>
+               <td><span>Application::<b>Association<i>.cardinality</i></b> (composite)</span></td>
+               <td>Application::Cardinal</td>
+               <td>0</td>
+               <td>1</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::AssociationClass"></a><span class="label">Name: </span><span class="value">Application::AssociationClass </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value">GEGEVENSGROEPTYPE </span><br></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>AssociationClass<i>.typeName</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>AssociationClass<i>.typeId</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>AssociationClass<i>.typePackage</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::Attribute"></a><span class="label">Name: </span><span class="value">Application::Attribute </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value">GEGEVENSGROEPTYPE </span><br></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Attribute<i>.maxLength</i></b> (attrib)</span></td>
+               <td>integer (N)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Attribute<i>.fractionDigits</i></b> (attrib)</span></td>
+               <td>integer (N)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Attribute<i>.totalDigits</i></b> (attrib)</span></td>
+               <td>integer (N)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Attribute<i>.dataLocation</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Attribute<i>.position</i></b> (attrib)</span></td>
+               <td>integer (N)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Attribute<i>.attributeTypeName</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Attribute<i>.attributeTypeDesignation</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Attribute<i>.copyDownTypeId</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Attribute<i>.conceptualSchemaType</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>110</td>
+               <td><span>Application::<b>Attribute<i>.identification</i></b> (composite)</span></td>
+               <td>Application::Identifiable</td>
+               <td>0</td>
+               <td>1</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>120</td>
+               <td><span>Application::<b>Attribute<i>.release</i></b> (composite)</span></td>
+               <td>Application::Released</td>
+               <td>0</td>
+               <td>1</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>140</td>
+               <td><span>Application::<b>Attribute<i>.debug</i></b> (composite)</span></td>
+               <td>Application::Debuggable</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>180</td>
+               <td><span>Application::<b>Attribute<i>.tags</i></b> (composite)</span></td>
+               <td>Application::TaggedValue</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>185</td>
+               <td><span>Application::<b>Attribute<i>.type</i></b> (composite)</span></td>
+               <td>Application::Type</td>
+               <td>1</td>
+               <td>1</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>190</td>
+               <td><span>Application::<b>Attribute<i>.cardinality</i></b> (composite)</span></td>
+               <td>Application::Cardinal</td>
+               <td>0</td>
+               <td>1</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::Cardinal"></a><span class="label">Name: </span><span class="value">Application::Cardinal </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value"> </span><br></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Cardinal<i>.minOccurs</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Cardinal<i>.maxOccurs</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Cardinal<i>.minOccursSource</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Cardinal<i>.maxOccursSource</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::Class"></a><span class="label">Name: </span><span class="value">Application::Class </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value">GEGEVENSGROEPTYPE </span><br></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Class<i>.abstract</i></b> (attrib)</span></td>
+               <td>boolean (INDIC)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Class<i>.designation</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Class<i>.origin</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Class<i>.pattern</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Class<i>.union</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Class<i>.primitive</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Class<i>.refMaster</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Class<i>.conceptualSchemaClassName</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Class<i>.subpackage</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>110</td>
+               <td><span>Application::<b>Class<i>.identification</i></b> (composite)</span></td>
+               <td>Application::Identifiable</td>
+               <td>1</td>
+               <td>1</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>120</td>
+               <td><span>Application::<b>Class<i>.release</i></b> (composite)</span></td>
+               <td>Application::Released</td>
+               <td>0</td>
+               <td>1</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>140</td>
+               <td><span>Application::<b>Class<i>.debug</i></b> (composite)</span></td>
+               <td>Application::Debuggable</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>180</td>
+               <td><span>Application::<b>Class<i>.tags</i></b> (composite)</span></td>
+               <td>Application::TaggedValue</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>210</td>
+               <td><span>Application::<b>Class<i>.supertypes</i></b> (composite)</span></td>
+               <td>Application::Type</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>220</td>
+               <td><span>Application::<b>Class<i>.attributes</i></b> (composite)</span></td>
+               <td>Application::Attribute</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>230</td>
+               <td><span>Application::<b>Class<i>.associations</i></b> (composite)</span></td>
+               <td>Application::Association</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>235</td>
+               <td><span>Application::<b>Class<i>.enumeration</i></b> (composite)</span></td>
+               <td>Application::Enum</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>240</td>
+               <td><span>Application::<b>Class<i>.association-classes</i></b> (composite)</span></td>
+               <td>Application::AssociationClass</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>250</td>
+               <td><span>Application::<b>Class<i>.substtitutions</i></b> (composite)</span></td>
+               <td>Application::Substitution</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::Concept"></a><span class="label">Name: </span><span class="value">Application::Concept </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value"> </span><br></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Concept<i>.uri</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td></td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Concept<i>.info</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td></td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::Conceptual"></a><span class="label">Name: </span><span class="value">Application::Conceptual </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value">GEGEVENSGROEPTYPE </span><br></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Conceptual<i>.conceptualSchemaNamespace</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Conceptual<i>.conceptualSchemaVersion</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Conceptual<i>.conceptualSchemaPhase</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Conceptual<i>.conceptualSchemaAuthor</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Conceptual<i>.conceptualSchemaSvnString</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::Debuggable"></a><span class="label">Name: </span><span class="value">Application::Debuggable </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value">GEGEVENSGROEPTYPE </span><br></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Debuggable<i>.debug</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::Derivable"></a><span class="label">Name: </span><span class="value">Application::Derivable </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value">GEGEVENSGROEPTYPE </span><br></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Derivable<i>.derived</i></b> (attrib)</span></td>
+               <td>boolean (INDIC)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Derivable<i>.metamodel</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Derivable<i>.supplierProject</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Derivable<i>.supplierName</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Derivable<i>.supplierRelease</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Derivable<i>.supplierPackageName</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::Enum"></a><span class="label">Name: </span><span class="value">Application::Enum </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value">GEGEVENSGROEPTYPE </span><br></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Enum<i>.value</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::Filter"></a><span class="label">Name: </span><span class="value">Application::Filter </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value">GEGEVENSGROEPTYPE </span><br></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Filter<i>.name</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Filter<i>.date</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Filter<i>.version</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::Identifiable"></a><span class="label">Name: </span><span class="value">Application::Identifiable </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value">GEGEVENSGROEPTYPE </span><br></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Identifiable<i>.id</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Identifiable<i>.name</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Identifiable<i>.originalName</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Identifiable<i>.shortName</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Identifiable<i>.alias</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Identifiable<i>.namespace</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Identifiable<i>.stereotype</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Identifiable<i>.trace</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::LocalSchema"></a><span class="label">Name: </span><span class="value">Application::LocalSchema </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value">GEGEVENSGROEPTYPE </span><br></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>LocalSchema<i>.id</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::Package"></a><span class="label">Name: </span><span class="value">Application::Package </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value">GEGEVENSGROEPTYPE </span><br></td>
+            </tr>
+            <tr>
+               <td>110</td>
+               <td><span>Application::<b>Package<i>.identification</i></b> (composite)</span></td>
+               <td>Application::Identifiable</td>
+               <td>1</td>
+               <td>1</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>120</td>
+               <td><span>Application::<b>Package<i>.release</i></b> (composite)</span></td>
+               <td>Application::Released</td>
+               <td>1</td>
+               <td>1</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>130</td>
+               <td><span>Application::<b>Package<i>.version</i></b> (composite)</span></td>
+               <td>Application::Svn</td>
+               <td>0</td>
+               <td>1</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>140</td>
+               <td><span>Application::<b>Package<i>.debug</i></b> (composite)</span></td>
+               <td>Application::Debuggable</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>150</td>
+               <td><span>Application::<b>Package<i>.derivation</i></b> (composite)</span></td>
+               <td>Application::Derivable</td>
+               <td>0</td>
+               <td>1</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>160</td>
+               <td><span>Application::<b>Package<i>.reference</i></b> (composite)</span></td>
+               <td>Application::Referencing</td>
+               <td>0</td>
+               <td>1</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>170</td>
+               <td><span>Application::<b>Package<i>.conceptual</i></b> (composite)</span></td>
+               <td>Application::Conceptual</td>
+               <td>0</td>
+               <td>1</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>180</td>
+               <td><span>Application::<b>Package<i>.tags</i></b> (composite)</span></td>
+               <td>Application::TaggedValue</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>200</td>
+               <td><span>Application::<b>Package<i>.classes</i></b> (composite)</span></td>
+               <td>Application::Class</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::Referencing"></a><span class="label">Name: </span><span class="value">Application::Referencing </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value">GEGEVENSGROEPTYPE </span><br></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Referencing<i>.refVersion</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Referencing<i>.refRelease</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Referencing<i>.refMaster</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::Released"></a><span class="label">Name: </span><span class="value">Application::Released </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value">GEGEVENSGROEPTYPE </span><br></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Released<i>.documentation</i></b> (attrib)</span></td>
+               <td>#any (ANY)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Released<i>.author</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Released<i>.created</i></b> (attrib)</span></td>
+               <td>datetime (DT)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Released<i>.modified</i></b> (attrib)</span></td>
+               <td>datetime (DT)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Released<i>.version</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Released<i>.phase</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Released<i>.release</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Released<i>.webLocation</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Released<i>.location</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>200</td>
+               <td><span>Application::<b>Released<i>.concepts</i></b> (composite)</span></td>
+               <td>Application::Concept</td>
+               <td>0</td>
+               <td>unbounded</td>
+               <td>GEGEVENSGROEP COMPOSITIE</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::Substitution"></a><span class="label">Name: </span><span class="value">Application::Substitution </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value">GEGEVENSGROEPTYPE </span><br></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Substitution<i>.supplier</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Substitution<i>.supplierId</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Substitution<i>.supplierPackage</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Substitution<i>.stereotype</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::Svn"></a><span class="label">Name: </span><span class="value">Application::Svn </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value">GEGEVENSGROEPTYPE </span><br></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Svn<i>.svnFile</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Svn<i>.svnRevision</i></b> (attrib)</span></td>
+               <td>integer (N)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Svn<i>.svnDate</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Svn<i>.svnTime</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Svn<i>.svnUser</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::TaggedValue"></a><span class="label">Name: </span><span class="value">Application::TaggedValue </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value">GEGEVENSGROEPTYPE </span><br></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>TaggedValue<i>.name</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>TaggedValue<i>.originalName</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>TaggedValue<i>.value</i></b> (attrib)</span></td>
+               <td>#mix (MIX)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="100" class="class"><a name="Application::Type"></a><span class="label">Name: </span><span class="value">Application::Type </span><br><span class="label">Abstract?: </span><span class="value"> </span><br><span class="label">Root?: </span><span class="value">true </span><br><span class="label">Subpackages: </span><span class="value">Application </span><br><span class="label">Stereo: </span><span class="value">GEGEVENSGROEPTYPE </span><br></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Type<i>.typeName</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>1</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Type<i>.typeId</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Type<i>.typePackage</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Type<i>.typePackageId</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Type<i>.baretype</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+            <tr>
+               <td>100</td>
+               <td><span>Application::<b>Type<i>.stereotype</i></b> (attrib)</span></td>
+               <td>char (AN)</td>
+               <td>0</td>
+               <td>1</td>
+               <td>ATTRIBUUTSOORT</td>
+               <td></td>
+            </tr>
+         </table>
+      </div>
+   </body>
+</html>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><imvert-history:versions xmlns:imvert-history="http://www.imvertor.org/schema/history"><imvert-history:filter><imvert-history:name>VERSIONS2merger</imvert-history:name><imvert-history:date>2014-10-22T10:36:00.755+02:00</imvert-history:date><imvert-history:version>$Id: VERSIONS2merger.xsl 6904 2014-10-20 14:36:18Z arjan $</imvert-history:version></imvert-history:filter><imvert-history:variants><imvert-history:variant><imvert-history:version>1.0.0</imvert-history:version><imvert-history:sheet-name>1.0.0</imvert-history:sheet-name><imvert-history:variant-name>Imvertor</imvert-history:variant-name><imvert-history:revisions>
+            <imvert-history:revision nr="1">
+               <imvert-history:rev-number>Imvertor 1.0</imvert-history:rev-number>
+            </imvert-history:revision>
+            <imvert-history:revision nr="6">
+               <imvert-history:rev-number>1.0.0</imvert-history:rev-number>
+               <imvert-history:rev-date>20141001</imvert-history:rev-date>
+               <imvert-history:package>(RELEASE)</imvert-history:package>
+               <imvert-history:date>2014-10-01</imvert-history:date>
+               <imvert-history:contact>Modellenbureau</imvert-history:contact>
+               <imvert-history:change>DRAFT</imvert-history:change>
+               <imvert-history:status>ok</imvert-history:status>
+            </imvert-history:revision>
+         </imvert-history:revisions></imvert-history:variant></imvert-history:variants></imvert-history:versions>

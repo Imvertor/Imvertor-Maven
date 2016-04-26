@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 VNG/KING
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>Compliancy Excel extractor</name>
+      <version-control>$Id: parms.xml 7475 2016-03-23 10:54:06Z arjan $</version-control>
+   </id>
+   <cli-parms>
+      <!-- specifiek voor deze chain -->
+      <cli-parm>
+         <name>cmpfile</name>
+         <arg>path</arg>
+         <tip>Full path to the fill-in compliancy form, in Excel (XSLX) format</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>xsdfile</name>
+         <arg>path</arg>
+         <tip>Full path to the main XML schema to which the generated XML test files must conform</tip>
+         <required>true</required>
+      </cli-parm> 
+      
+      <!-- relevant: -->
+      <cli-parm>
+         <name>owner</name>
+         <arg>name</arg>
+         <tip>Explain</tip>
+         <required>true</required>
+      </cli-parm>
+      <cli-parm>
+         <name>metamodel</name>
+         <arg>name</arg>
+         <tip>Explain</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>project</name>
+         <arg>name</arg>
+         <tip>Explain</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>application</name>
+         <arg>name</arg>
+         <tip>Explain</tip>
+         <required>true</required>
+      </cli-parm> 
+      
+      <!-- niet relevant; anders opzetten: -->
+      <cli-parm>
+         <name>task</name>
+         <arg>compile</arg>
+         <tip>Explain</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>forcecompile</name>
+         <arg>false</arg>
+         <tip>Explain</tip>
+         <required>true</required>
+      </cli-parm> 
+      
+   </cli-parms>
+   
+   <properties>
+      <!--
+         Where to store the xml files?
+      -->
+      <IMVERTOR_COMPLY_EXTRACT_TARGET>${system/work-cmp-folder-path}/xml</IMVERTOR_COMPLY_EXTRACT_TARGET>
+      <!-- 
+         stylesheet to process the __content.xml, extracted from the deserialized template
+      -->
+      <WORK_COMPLY_EXTRACT_XSLPATH>ComplyExtractor-extract.xsl</WORK_COMPLY_EXTRACT_XSLPATH>
+      <!-- 
+         path to temporary output of transforming __content.xml; this is not compressed back into the result Excel.
+      -->
+      <WORK_COMPLY_EXTRACT_FILE>${system/work-imvert-folder-path}/imvertor.60.extractor.xml</WORK_COMPLY_EXTRACT_FILE>
+      <!-- 
+         folder that stores the extracted template (serialized zip) 
+       -->
+      <WORK_COMPLY_TEMPLATE_FOLDERPATH>${system/work-comply-folder-path}/template</WORK_COMPLY_TEMPLATE_FOLDERPATH>
+   </properties>
+</config>

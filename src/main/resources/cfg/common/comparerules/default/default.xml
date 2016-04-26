@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<compare-rules>
+    <!-- 
+        This specification specifies what information in the simplified Imvertor XML file: what should be included in the compare, wand what should be ignored?
+        
+        @use = 
+        D include for documentation release filter: compare of all non-documentary information
+        I include for information compare: full comparison of all informative aspects of the model.
+        V include for derivation filter: compare of all info, exclusig stuff that is application specific such as names and release numbers
+        R include for release filter: compare of all significant (non)-documentary information
+        
+        @level specifies that the element is model or system level
+        
+    --> 
+    
+    <!-- system level -->
+    <elms level="system">
+        <!-- always ignore -->
+        <elm use=""     form="localSchemaSvnId">localSchemaSvnId</elm>
+        <elm use=""     form="conceptualschemaSvnId">conceptualschemaSvnId</elm>
+        <elm use=""     form="refMaster">Reference master</elm>
+        <elm use=""     form="id">Identifier</elm>
+        <elm use=""     form="typeId">ID of the class implementing the type</elm>
+        <elm use=""     form="typePackageId">ID of the package that implements the type</elm>
+        <elm use=""     form="copyDownTypeId">ID of the class from which to down-copy attributes</elm>
+   
+        <!-- include for info compare -->
+        <elm use="I"    form="generated">Generation date</elm>
+        <elm use="I"    form="generator">ID/version of the generator</elm>
+        <elm use="I"    form="exported">Export date</elm>
+        <elm use="I"    form="exporter">ID/version of the exporter</elm>
+        <elm use="I"    form="author">Author</elm>
+        <elm use="I"    form="created">Date of creation</elm>
+        <elm use="I"    form="modified">Date last modified</elm>
+        
+        <elm use="I"    form="svnAuthor">Author in SVN</elm> 
+        <elm use="I"    form="svnFile">File in SVN</elm> 
+        <elm use="I"    form="svnRevision">Revision number in SVN</elm> 
+        <elm use="I"    form="svnDate">Date in SVN</elm> 
+        <elm use="I"    form="svnTime">Time in SVN</elm> 
+        <elm use="I"    form="svnUser">User in SVN</elm>
+        
+        <!-- may usually be ignored as this is expressed in scalar type -->
+        <elm use="I"    form="maxLength">Maximum string length</elm>
+        <elm use="I"    form="fractionDigits">Nr of digits in decimal</elm>
+        <elm use="I"    form="totalDigits">Total number of digits in decimal</elm>
+        
+        <!-- include for info and doc compare -->
+        <elm use="DI"   form="nameApplication">Name of governing application</elm>
+     
+        <!-- include for info and doc and derivation compare -->
+        <elm use="DIV"   form="namePackage">Name of governing package</elm>
+        <elm use="DIV"   form="nameClass">Name of governing class</elm>
+        <elm use="DIV"   form="nameAttribute">Name of governing attribute</elm>
+        <elm use="DIV"   form="nameAssociation">Name of the governing association</elm>
+        <elm use="DIV"   form="designation">Role of the construct</elm>
+        <elm use="DIV"   form="attributeTypeDesignation">Role of the attribute type</elm>
+        <elm use="DIV"   form="origin">Origin</elm>
+    </elms>
+    
+    <!-- model level -->
+    <elms level="model">
+        <!-- always ignore -->
+        <elm use=""      form="filters">Filters</elm>
+        
+        <!-- include for info and derivation compare -->
+        <elm use="IV"    form="webLocation">Reference to the internet</elm>
+        <elm use="IV"    form="documentation">Documentation</elm>
+    
+        <!-- include for info and doc compare -->
+        
+        <!-- include for info and doc and derivation compare -->
+        <elm use="DIV"  form="Application">Application</elm>
+        <elm use="DIV"  form="project">Project</elm>
+        <elm use="DIV"  form="packages">Packages</elm>
+        <elm use="DIV"  form="classes">Classes</elm>
+        <elm use="DIV"  form="supertypes">Supertypes</elm>
+        <elm use="DIV"  form="attributes">Attributes</elm>
+        <elm use="DIV"  form="associations">Associations</elm>
+        <elm use="DIV"  form="enumeration">Enumeration</elm>
+        <elm use="DIV"  form="associationClasses">Association classes</elm>
+        <elm use="DIV"  form="substitutions">Substitutions</elm>
+        <elm use="DIV"  form="localSchemas">Local schemas</elm>
+        
+        <elm use="DIV"  form="Package">Package</elm>
+        
+        <elm use="DIV"  form="Class">Class</elm>
+        <elm use="DIV"  form="abstract">Abstract</elm>
+        <elm use="DIV"  form="pattern">String pattern</elm>
+        <elm use="DIV"  form="union">Union</elm>
+        <elm use="DIV"  form="primitive">Primitive</elm>
+        <elm use="DIV"  form="conceptualSchemaClassName">Conceptual schema class name</elm>
+        <elm use="DIV"  form="subpackage">Subpackage</elm>
+        
+        <elm use="DIV"  form="version">Version number</elm>
+        
+        <elm use="DIV"  form="Type">Type</elm>
+        <elm use="DIV"  form="typeName">Type name</elm>
+        <elm use="DIV"  form="typeId">Type ID</elm>
+        <elm use="DIV"  form="typePackage">Package of the type</elm>
+        <elm use="DIV"  form="typePackageId">ID of the package of the type</elm>
+        <elm use="DIV"  form="baretype">Type as entered</elm>
+        <elm use="DIV"  form="stereotype">Stereotype</elm>
+        
+        <elm use="DIV"  form="Attribute">Attribute</elm>
+        <elm use="DIV"  form="maxLength">Maximum string length</elm>
+        <elm use="DIV"  form="fractionDigits">Nr of digits in decimal</elm>
+        <elm use="DIV"  form="totalDigits">Total number of digits in decimal</elm>
+        <elm use="DIV"  form="dataLocation">Location of the data</elm>
+        <elm use="DIV"  form="position">Position of the element in XML schema</elm>
+        <elm use="DIV"  form="attributeTypeName">Name of the type of the attribute</elm>
+        <elm use="DIV"  form="conceptualSchemaType">Type in the conceptual schema</elm>
+        
+        <elm use="DIV"  form="Association">Association</elm>
+        <elm use="DIV"  form="aggregation">Aggregation</elm>
+        
+        <elm use="DIV"  form="Enum">Enumeration instance</elm>
+        <elm use="DIV"  form="Value">Value of the enumeration</elm>
+        
+        <elm use="DIV"  form="minOccurs">Minimum occurrence (of target)</elm>
+        <elm use="DIV"  form="minOccursSource">Minimum occurrence (of target)</elm>
+        <elm use="DIV"  form="maxOccurs">Maximum occurrence (of source)</elm>
+        <elm use="DIV"  form="maxOccursSource">Maximum occurrence (of source)</elm>
+        
+        <elm use="DIV"  form="AssociationClass">Association class</elm>
+        
+        <elm use="DIV"  form="Substitution">Substitution</elm>
+        <elm use="DIV"  form="supplier">Supplier</elm>
+        <elm use="DIV"  form="supplierId">Supplier ID</elm>
+        <elm use="DIV"  form="supplierPackage">Package of the supplier</elm>
+        <elm use="DIV"  form="supplierPackageName">Name of the supplier package</elm>
+        
+        <elm use="DIV"  form="LocalSchema">Local schema</elm>
+        
+    </elms>
+
+    <!-- for tagged values: -->
+    
+    <elms level="model">
+        <elm use="DIVR"  form="name">Name</elm>
+        <elm use="DIVR"  form="origin">Original name</elm>
+        <elm use="DIVR"  form="value">Value</elm>
+        
+        <!-- 
+            any specific config typically lists the tagged values and the mde in which they shoul be compared. 
+        -->
+        <elms level="model">
+            <elm use="DIVR"  form="tv_(enter name here)">Tagged value: (Enter explain here))</elm>
+        </elms>
+       
+    </elms>
+</compare-rules>

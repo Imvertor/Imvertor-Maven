@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>History compiler</name>
+      <version-control>$Id: parms.xml 7431 2016-02-24 12:46:42Z arjan $</version-control>
+   </id>
+   <cli-parms>
+      <cli-parm>
+         <name>createhistory</name>
+         <arg>yes|no</arg>
+         <tip>Yes if history info should be read from Excel file</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>starthistory</name>
+         <arg>YYYYMMDD</arg>
+         <tip>Release date from which to compile history to be included in documentation; defaults to most recent previous release</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>hisfile</name>
+         <arg>filepath</arg>
+         <tip>Path to the input xls history file</tip>
+         <required>false</required>
+      </cli-parm> 
+   </cli-parms>
+   <properties>
+      
+      <IMVERTOR_VERSIONS_XSLPATH>VERSIONS2Imvert.xsl</IMVERTOR_VERSIONS_XSLPATH>
+      <IMVERTOR_VERSIONS_MERGER_XSLPATH>VERSIONS2merger.xsl</IMVERTOR_VERSIONS_MERGER_XSLPATH>
+   
+      <USER_HISTORY_FILE>${cli/hisfile}</USER_HISTORY_FILE>
+      
+      <WORK_HISTORY_FILE>${system/work-imvert-folder-path}/imvertor.16.history.xml</WORK_HISTORY_FILE>
+      <WORK_VERSIONS_FILE>${system/work-imvert-folder-path}/imvertor.17.versions.xml</WORK_VERSIONS_FILE>
+      
+   </properties>
+</config>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>Release compiler</name>
+      <version-control>$Id: parms.xml 7501 2016-04-15 14:37:27Z arjan $</version-control>
+   </id>
+   <cli-parms>
+      <cli-parm>
+         <name>createziprelease</name>
+         <arg>yes|no</arg>
+         <tip>Yes if the released application should be zipped for distribution</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>zipfile</name>
+         <arg>folderpath</arg>
+         <tip>Path to the output zip folder holding the complete release</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>releasename</name>
+         <arg>template</arg>
+         <tip>Name of the release. May hold placeholders. Will be used as the file name of the ZIP result.</tip>
+         <desc>
+            This is a description string holding any combination of the following placeholders:
+            [project-name] which represents the -project parameter
+            [application-name] which represents the -application parameter
+            [version] which represents the version as specified in the UML
+            [phase] which represents the phase as specified in the UML
+            [release]  which represents the release as specified in the UML
+            [documentation-release]  which represents the -docrelease parameter
+            [generation-id] which represents a unique generation ID based in the date and time
+            
+            For example: -zipfilename release-[project-name]-[application-name]-[version]-[phase]-[release][documentation-release]-[generation-id]
+            May result in: "release-MyProject-MyApplication-MyVersion-2-20160301-at-20160323-102945.zip"
+         </desc>
+         <required>true</required>
+      </cli-parm> 
+      
+   </cli-parms>
+   
+   <properties>
+
+      <!--  location of all zipped applications, convenient for release -->
+      <RELEASES_FOLDER>${system/work-folder-path}/releases</RELEASES_FOLDER>
+      <USER_ZIP_FILE>${cli/zipfile}</USER_ZIP_FILE>
+      <ZIP_APPLICATION_FILE>${properties/RELEASES_FOLDER}/${appinfo/release-name}.zip</ZIP_APPLICATION_FILE>
+      
+   </properties>
+</config>

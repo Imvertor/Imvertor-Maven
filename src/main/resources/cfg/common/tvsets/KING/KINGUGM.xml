@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<tagset xmlns:xi="http://www.w3.org/2001/XInclude">
+    <svn>$Id: KINGUGM.xml 7508 2016-04-21 13:23:52Z arjan $</svn>
+    <name>KINGUGM</name>
+    
+    <tagged-values>
+        
+        <tv norm="space" validate="boolean"  rules="NOC" id="IndicatieKerngegeven">
+            <name lang="nl">Indicatie kerngegeven</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Element</stereo><!--SIM Attribuutsoort-->
+                <stereo required="yes" lang="nl">Relatie</stereo><!--SIM Relatiesoort-->
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="boolean"  rules="NOC" id="IndicatieMateriëleHistorie">
+            <name lang="nl">Indicatie materiële historie</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Element</stereo><!--SIM Attribuutsoort-->
+                <stereo required="yes" lang="nl">Groep</stereo><!--SIM Gegevensgroeptype-->
+                <stereo required="yes" lang="nl">Relatie</stereo><!--SIM Relatiesoort-->
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+                <value>Zie groep</value>
+                <value>Zie regels</value>
+                <value>Ja, zie regels</value>
+                <value>N.v.t.</value>
+            </declared-values>
+        </tv>
+        <tv norm="space" validate="boolean" rules="NOC" id="IndicatieFormeleHistorie">
+            <name lang="nl">Indicatie formele historie</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Element</stereo><!--SIM Attribuutsoort-->
+                <stereo required="yes" lang="nl">Groep</stereo><!--SIM Gegevensgroeptype-->
+                <stereo required="yes" lang="nl">Relatie</stereo><!--SIM Relatiesoort-->
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+                <value>Zie groep</value>
+                <value>N.v.t.</value>
+            </declared-values>
+        </tv>
+        <tv norm="space" id="Patroon"><!-- MIG -->
+            <name lang="nl">Patroon</name>
+            <name lang="en">Pattern</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Element</stereo><!--SIM Attribuutsoort, Referentie element, Union element, Data element-->
+                <stereo required="no" lang="nl">Datatype</stereo>
+                <stereo required="no" lang="nl">Complex datatype</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" validate="boolean" id="MogelijkGeenWaarde">
+            <name lang="nl">Mogelijk geen waarde</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Element</stereo><!--SIM Attribuutsoort -->
+                <stereo required="no" lang="nl">Groep</stereo><!-- SIM: Gegevensgroeptype -->
+                <stereo required="no" lang="nl">Relatie</stereo><!-- SIM: Relatiesoort  -->
+                <stereo required="no" lang="nl">Voidable</stereo>
+            </stereotypes>
+            <declared-values>
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" id="DataLocatie"><!-- MIG -->
+            <name lang="nl">Data locatie</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Tabel-entiteit</stereo><!-- SIM Referentielijst -->
+                <stereo required="no" lang="nl">Element</stereo><!-- SIM Referentie element -->
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="Locatie">
+            <name lang="nl">Locatie</name><!-- MIG -->
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Extern</stereo><!--TODO externals that are conceptuals do not require this tagged value -->
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" origin="system" id="Positie">
+            <name lang="nl">Positie</name>
+            <name lang="en">Position</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Element</stereo><!--SIM Attribuutsoort, Union element, Data element, Referentie element-->
+                <stereo required="no" lang="nl">Relatie</stereo><!-- SIM: Relatiesoort  -->
+                <stereo required="no" lang="nl">Enum</stereo>
+                <stereo required="no" lang="nl">Groep</stereo><!-- SIM Gegevensgroep compositie-->
+                <stereo required="no" lang="#all">#none</stereo> <!-- also allowed on enumeration values that have no enum stereo -->
+            </stereotypes>
+        </tv>
+        
+        <?x POC, verouderd 
+            
+        <tv norm="space" validate="boolean" id="IsFormeel">
+            <name lang="nl">isFormeel</name>
+            <desc>Dit bericht vereist (al dan niet) formele historie.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo lang="nl">Objecttype</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" validate="boolean" id="IsMaterieel">
+            <name lang="nl">isMaterieel</name>
+            <desc>Dit bericht vereist (al dan niet) materiële historie.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo lang="nl">Objecttype</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" validate="boolean" id="IsInkomend">
+            <name lang="nl">isInkomend</name>
+            <desc>Dit bericht is (al dan niet) een inkomend berichttype.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo lang="nl">Objecttype</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" validate="boolean" id="IsSynchroon">
+            <name lang="nl">isSynchroon</name>
+            <desc>Dit bericht is (al dan niet) een synchroon berichttype.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo lang="nl">Objecttype</stereo>
+            </stereotypes>
+        </tv>
+        
+        <!-- 
+            tagged values op vraagberichten 
+        -->
+        <!-- TODO Vaststellen per tagged value of deze derived moeten worden of niet. -->
+        <tv norm="space" validate="eigenschappen" id="ConfigGelijk">
+            <name lang="nl">config-gelijk</name>
+            <derive>no</derive><!-- TODO wat moet dit zijn?-->
+            <stereotypes>
+                <stereo lang="nl">Objecttype</stereo>
+                <stereo lang="nl">Gegevensgroeptype</stereo>
+                <stereo lang="nl">Attribuutsoort</stereo>
+                <stereo lang="nl">Relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" validate="eigenschappen" id="ConfigVanaf">
+            <name lang="nl">config-vanaf</name>
+            <derive>no</derive><!-- TODO wat moet dit zijn?-->
+            <stereotypes>
+                <stereo lang="nl">Objecttype</stereo>
+                <stereo lang="nl">Gegevensgroeptype</stereo>
+                <stereo lang="nl">Attribuutsoort</stereo>
+                <stereo lang="nl">Relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" validate="eigenschappen" id="ConfigTotEnMet">
+            <name lang="nl">config-tot-en-met</name>
+            <derive>no</derive><!-- TODO wat moet dit zijn?-->
+            <stereotypes>
+                <stereo lang="nl">Objecttype</stereo>
+                <stereo lang="nl">Gegevensgroeptype</stereo>
+                <stereo lang="nl">Attribuutsoort</stereo>
+                <stereo lang="nl">Relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" validate="eigenschappen" id="ConfigStart">
+            <name lang="nl">config-start</name>
+            <derive>no</derive><!-- TODO wat moet dit zijn?-->
+            <stereotypes>
+                <stereo lang="nl">Objecttype</stereo>
+                <stereo lang="nl">Gegevensgroeptype</stereo>
+                <stereo lang="nl">Attribuutsoort</stereo>
+                <stereo lang="nl">Relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" validate="eigenschappen" id="ConfigScope">
+            <name lang="nl">config-scope</name>
+            <derive>no</derive><!-- TODO wat moet dit zijn?-->
+            <stereotypes>
+                <stereo lang="nl">Objecttype</stereo>
+                <stereo lang="nl">Gegevensgroeptype</stereo>
+                <stereo lang="nl">Attribuutsoort</stereo>
+                <stereo lang="nl">Relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+        
+        <!-- 
+            tagged values op vrije berichten 
+        -->
+        <tv norm="space" validate="eigenschappen" id="ConfigEntiteit">
+            <name lang="nl">config-entiteit</name>
+            <derive>no</derive><!-- TODO wat moet dit zijn?-->
+            <stereotypes>
+                <stereo lang="nl">Objecttype</stereo>
+                <stereo lang="nl">Gegevensgroeptype</stereo>
+                <stereo lang="nl">Attribuutsoort</stereo>
+                <stereo lang="nl">Relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" validate="eigenschappen" id="ConfigSelectie">
+            <name lang="nl">config-selectie</name>
+            <derive>no</derive><!-- TODO wat moet dit zijn?-->
+            <stereotypes>
+                <stereo lang="nl">Objecttype</stereo>
+                <stereo lang="nl">Gegevensgroeptype</stereo>
+                <stereo lang="nl">Attribuutsoort</stereo>
+                <stereo lang="nl">Relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" validate="eigenschappen" id="ConfigUpdate">
+            <name lang="nl">config-update</name>
+            <derive>no</derive><!-- TODO wat moet dit zijn?-->
+            <stereotypes>
+                <stereo lang="nl">Objecttype</stereo>
+                <stereo lang="nl">Gegevensgroeptype</stereo>
+                <stereo lang="nl">Attribuutsoort</stereo>
+                <stereo lang="nl">Relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+        <!--TODO hier ook antwoord maar dat is ambigue -->
+        
+        
+        <!-- 
+            tagged values op standaard berichten 
+        -->
+        <tv norm="space" validate="eigenschappen" id="ConfigAntwoord">
+            <name lang="nl">config-antwoord</name>
+            <derive>no</derive><!-- TODO wat moet dit zijn?-->
+            <stereotypes>
+                <stereo lang="nl">Objecttype</stereo>
+                <stereo lang="nl">Gegevensgroeptype</stereo>
+                <stereo lang="nl">Attribuutsoort</stereo>
+                <stereo lang="nl">Relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" validate="eigenschappen" id="ConfigKennisgeving">
+            <name lang="nl">config-kennisgeving</name>
+            <derive>no</derive><!-- TODO wat moet dit zijn?-->
+            <stereotypes>
+                <stereo lang="nl">Objecttype</stereo>
+                <stereo lang="nl">Gegevensgroeptype</stereo>
+                <stereo lang="nl">Attribuutsoort</stereo>
+                <stereo lang="nl">Relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+        
+        <!-- 
+            tagged values op berichten 
+        -->
+        <tv norm="space" id="ConfigAfhandeling">
+            <name lang="nl">config-afhandeling</name>
+            <derive>no</derive><!-- TODO wat moet dit zijn?-->
+            <stereotypes>
+                <stereo lang="nl">Objecttype</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="ConfigBerichttype">
+            <name lang="nl">config-berichttypes</name>
+            <derive>no</derive><!-- TODO wat moet dit zijn?-->
+            <stereotypes>
+                <stereo lang="nl">Objecttype</stereo>
+            </stereotypes>
+        </tv>
+        
+        <!-- 
+            verstuffings info 
+        -->
+        <tv norm="space" id="Verstuffing">
+            <name lang="nl">verstuffing</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo lang="nl">Objecttype</stereo>
+                <stereo lang="nl">Attribuutsoort</stereo>
+                <stereo lang="nl">Relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+        ?>
+        
+    </tagged-values>
+</tagset>

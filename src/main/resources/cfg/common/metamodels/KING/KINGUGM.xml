@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
+    <svn>$Id: KINGUGM.xml 7509 2016-04-25 13:30:29Z arjan $</svn>
+    <name>KINGUGM</name>
+    
+    <description>Metamodel for KING/VNG exchange models: uitwisseling gegevensmodel</description>
+    
+    <composition-direction-source>part</composition-direction-source>
+    
+    <naming>
+        <package>
+            <format>UpperCamel</format>
+        </package>
+        <class>
+            <format>UpperCamel</format>
+        </class>
+        <property>
+            <format>LowerCamel</format>
+        </property>
+        <tv>
+            <format>UpperCamel</format>
+        </tv>
+    </naming>
+    
+    <stereotypes xml:id="stereotypes">
+
+        <stereo id="stereotype-name-system-package">
+            <name lang="#all">system</name>
+            <desc>TODO</desc>
+            <construct>package</construct>
+        </stereo>
+
+        <stereo id="stereotype-name-relatieklasse">
+            <name lang="nl">relatie-entiteit</name>
+            <name lang="en">relation entity</name>
+            <desc>TODO</desc>
+            <construct>class</construct>
+        </stereo>
+       
+        <stereo id="stereotype-name-domain-package">
+            <name lang="en">domain</name>
+            <name lang="nl">domein</name>
+            <desc>TODO</desc>
+            <construct>package</construct>
+        </stereo>
+        <stereo id="stereotype-name-subdomain-package">
+            <name lang="en">subdomain</name>
+            <name lang="nl">subdomein</name>
+            <desc>TODO</desc>
+            <construct>package</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-application-package">
+            <name lang="en">application</name>
+            <name lang="nl">toepassing</name>
+            <desc>TODO</desc>
+            <construct>package</construct>
+        </stereo>
+        <stereo id="stereotype-name-project-package">
+            <name lang="en">project</name>
+            <name lang="nl">project</name>
+            <desc>TODO</desc>
+            <construct>package</construct>
+        </stereo>
+        <stereo id="stereotype-name-base-package">
+            <name lang="en">base</name>
+            <name lang="nl">basismodel</name>
+            <desc>TODO</desc>
+            <construct>package</construct>
+        </stereo>
+        <stereo id="stereotype-name-external-package">
+            <name lang="en">external</name>
+            <name lang="nl">extern</name>
+            <desc>TODO</desc>
+            <construct>package</construct>
+        </stereo>
+
+        <stereo id="stereotype-name-composite">
+            <name lang="en">group</name>
+            <name lang="nl">groep</name>
+            <desc>TODO</desc>
+            <construct>class</construct>
+        </stereo>
+        <stereo id="stereotype-name-attribute">
+            <name lang="en">element</name>
+            <name lang="nl">element</name>
+            <desc>TODO</desc>
+            <construct>attribute</construct>
+        </stereo>
+        <stereo id="stereotype-name-relatiesoort">
+            <name lang="en">relation</name>
+            <name lang="nl">relatie</name>
+            <desc>TODO</desc>
+            <construct>association</construct>
+        </stereo>
+        <stereo id="stereotype-name-externekoppeling">
+            <name lang="nl">externe koppeling</name>
+            <name lang="en">external link</name>
+            <desc>TODO</desc>
+            <construct>association</construct>
+        </stereo>
+        <!-- IM-215 -->
+        <stereo id="stereotype-name-data-element">
+            <name lang="nl">data element</name>
+            <name lang="nl">MUG data element</name><!-- PATCH -->
+            <name lang="en">data element</name>
+            <desc>TODO</desc>
+            <construct>attribute</construct>
+        </stereo>
+        <stereo id="stereotype-name-interface">
+            <name lang="en">interface</name>
+            <name lang="nl">interface</name>
+            <desc>TODO</desc>
+            <construct>class</construct>
+            <construct>datatype</construct>
+        </stereo>
+
+        <!-- SIM association-to-composite vervalt-->
+      
+        <stereo id="stereotype-name-union">
+            <name lang="en">union</name>
+            <name lang="nl">union</name>
+            <name lang="nl">MUG union</name><!-- patch -->
+            <desc>TODO</desc>
+            <construct>datatype</construct>
+        </stereo>
+        <stereo id="stereotype-name-union-element">
+            <name lang="en">element</name>
+            <name lang="nl">element</name>
+            <name lang="nl">MUG union element</name><!-- patch -->
+            <desc>TODO</desc>
+            <construct>attribute</construct>
+        </stereo>
+
+        <stereo id="stereotype-name-enumeration">
+            <name lang="en">enumeration</name>
+            <name lang="nl">enumeration</name>
+            <desc>TODO</desc>
+            <construct>class</construct>
+            <construct>datatype</construct>
+        </stereo>
+        <stereo id="stereotype-name-enum">
+            <name lang="en">enum</name>
+            <name lang="nl">enum</name>
+            <desc>TODO</desc>
+            <construct>attribute</construct>
+        </stereo>
+        <stereo id="stereotype-name-datatype">
+            <name lang="en">datatype</name>
+            <name lang="nl">datatype</name>
+            <desc>TODO</desc>
+            <construct>datatype</construct>
+        </stereo>
+        <stereo id="stereotype-name-complextype">
+            <name lang="en">complex datatype</name>
+            <name lang="nl">complex datatype</name>
+            <name lang="nl">MUG complex datatype</name><!-- patch -->
+            <desc>TODO</desc>
+            <construct>datatype</construct>
+        </stereo>
+        <!-- a imvert:stereotype value -->
+        <stereo id="stereotype-name-objecttype">
+            <name lang="en">entity type</name>
+            <name lang="nl">entiteittype</name>
+            <desc>TODO</desc>
+            <construct>class</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-view-package">
+            <name lang="en">view</name>
+            <name lang="nl">view</name>
+            <desc>TODO</desc>
+            <construct>package</construct>
+        </stereo>
+
+        <stereo id="stereotype-name-referentielijst">
+            <name lang="nl">tabel-entiteit</name>
+            <desc>TODO</desc>
+            <construct>class</construct>
+            <construct>datatype</construct>
+        </stereo>
+        <stereo id="stereotype-name-referentieelement">
+            <name lang="nl">tabel element</name>
+            <desc>TODO</desc>
+            <construct>attribute</construct>
+        </stereo>
+
+        <stereo id="stereotype-name-recyclebin">
+            <name lang="nl">prullenbak</name>
+            <name lang="en">recyclebin</name>
+            <desc>TODO</desc>
+            <construct>package</construct>
+        </stereo>
+
+        <!-- designations of constructs: -->
+        <stereo id="stereotype-name-designation-datatype">
+            <name lang="en">datatype</name>
+            <name lang="nl">datatype</name>
+            <desc>TODO</desc>
+            <construct>class</construct>
+            <construct>datatype</construct>
+        </stereo>
+
+        <!-- BP codelist wordt niet gebruikt -->
+        
+        <stereo id="stereotype-name-composite-id">
+            <name lang="en">isid</name>
+            <name lang="nl">isid</name>
+            <desc>TODO</desc>
+            <construct>association</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-association-to-composite">
+            <name lang="en">group composition</name>
+            <name lang="nl">groep compositie</name>
+            <name lang="nl">gegevensgroep compositie</name><!-- PATCH -->
+            <desc>
+            </desc>
+            <construct>association</construct>
+        </stereo>
+        
+        <!-- tracing -->
+        <stereo id="stereotype-name-trace">
+            <name lang="en">trace</name>
+            <name lang="nl">trace</name>
+            <desc>Trace relatie tussen twee klassen. Trace relatie wordt niet als associatie opgenomen, maar als eigenschap van de client.</desc>
+            <construct>class</construct>
+            <construct>datatype</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-tekentechnisch">
+            <name lang="nl">tekentechnisch</name>
+            <name lang="nl">draw</name>
+            <construct>association</construct>
+            <!-- this assiociation is removed explicitly from the model by VNG/KING canonization -->
+        </stereo>
+    </stereotypes>
+    
+    <!-- POC, oud -->
+    <stereotypes>
+        <stereo id="stereotype-name-merged">
+            <name lang="en">merged</name>
+            <name lang="nl">samengevoegd</name>
+            <construct>class</construct>
+            <construct>attribute</construct>
+            <construct>association</construct>
+        </stereo>
+    </stereotypes>
+</metamodel>

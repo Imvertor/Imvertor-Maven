@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>XML schema compiler</name>
+      <version-control>$Id: parms.xml 7509 2016-04-25 13:30:29Z arjan $</version-control>
+   </id>
+   <cli-parms>
+      <cli-parm>
+         <name>createxmlschema</name>
+         <arg>yes|no</arg>
+         <tip>Yes if XML schemas must be generated</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>createcvafile</name>
+         <arg>yes|no</arg>
+         <tip>Yes if CVA files must be generated</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>externalurl</name>
+         <arg>yes|no</arg>
+         <tip>Yes if external schemas must be referened by URL</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>shortprefix</name>
+         <arg>yes|no</arg>
+         <tip>Yes if namespace prefixes for XSDs should be shortened</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>substitutions</name>
+         <arg>yes|no</arg>
+         <tip>Yes if substitutions should be generated, in stead of choice groups</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>buildcollection</name>
+         <arg>yes|no</arg>
+         <tip>Yes if collections (and referencing) are used, no if referencing is not used</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>collectionwrappers</name>
+         <arg>yes|no</arg>
+         <tip>Yes if components within collection must be wrapped in xsd</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>flattenschemas</name>
+         <arg>yes|no</arg>
+         <tip>Yes if schemas should also be flattened</tip>
+         <required>false</required>
+      </cli-parm>
+      <cli-parm>
+         <!-- required by KING approach -->
+         <name>endproductbaseconfig</name>
+         <arg>path</arg>
+         <tip>Path the the Excel file holding the base product configuration (KING)</tip>
+         <required>false</required>
+      </cli-parm>
+      <cli-parm>
+         <!-- required by KING approach -->
+         <name>endproductconfig</name>
+         <arg>path</arg>
+         <tip>Path the the Excel file holding the end product configuration (KING)</tip>
+         <required>false</required>
+      </cli-parm>
+   </cli-parms>
+  
+   <properties>
+   
+      <LOCALIZE_XSD_XSLPATH>localize-xsd.xsl</LOCALIZE_XSD_XSLPATH>
+      <LOCAL_SCHEMA_MAPPING_FILE>${system/managedinputfolder}/xsd/local-schemas.xml</LOCAL_SCHEMA_MAPPING_FILE>
+    
+      <!-- Kadaster : -->
+     
+      <IMVERTOR_METAMODEL_Kadaster_XSDSOURCE>system</IMVERTOR_METAMODEL_Kadaster_XSDSOURCE>
+      <IMVERTOR_METAMODEL_Kadaster_XSD_XSLPATH>Imvert2XSD-Kadaster.xsl</IMVERTOR_METAMODEL_Kadaster_XSD_XSLPATH>
+      <RESULT_XSD_XML_FILE_PATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_XSD_XML_FILE_PATH>   
+      <!-- flattening -->
+      <IMVERTOR_FLATTEN_XSLPATH>flatten-xsd.xsl</IMVERTOR_FLATTEN_XSLPATH>
+      <WORK_FLATTEN_FILE>${system/work-imvert-folder-path}/imvertor.26.flatten.html</WORK_FLATTEN_FILE>
+      <!-- copy schemas -->
+      <EXTERNAL_XSD_FOLDER>${system/managedinputfolder}/xsd</EXTERNAL_XSD_FOLDER>
+      
+      <!-- KINGUGM: -->
+      
+      <IMVERTOR_METAMODEL_KINGUGM_XSDSOURCE>system</IMVERTOR_METAMODEL_KINGUGM_XSDSOURCE>
+      
+      <IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT_MSG_XSLPATH>Imvert2XSD-KING-endproduct-msg.xsl</IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT_MSG_XSLPATH>
+      <IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT_XML_XSLPATH>Imvert2XSD-KING-endproduct-xml.xsl</IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT_XML_XSLPATH>
+      <IMVERTOR_METAMODEL_KINGUGM_ORDER_ENDPRODUCT_XML_XSLPATH>Imvert2XSD-KING-order-endproduct-xml.xsl</IMVERTOR_METAMODEL_KINGUGM_ORDER_ENDPRODUCT_XML_XSLPATH>
+      <IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT_XSD_XSLPATH>Imvert2XSD-KING-endproduct-xsd.xsl</IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT_XSD_XSLPATH>
+      
+      <!-- werkend op model: (oude situatie voor halffabrikaten) --> 
+      <IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH>Imvert2XSD-KING.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH>
+      
+      <!-- KINGBSM: berichten omzetten naar schema -->
+      <IMVERTOR_METAMODEL_KINGBSM_XSDSOURCE>system</IMVERTOR_METAMODEL_KINGBSM_XSDSOURCE>
+      
+      <IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_MSG_XSLPATH>Imvert2XSD-KING-endproduct-msg.xsl</IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_MSG_XSLPATH>
+      <IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XML_XSLPATH>Imvert2XSD-KING-endproduct-xml.xsl</IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XML_XSLPATH>
+      <IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XSD_XSLPATH>Imvert2XSD-KING-endproduct-xsd.xsl</IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XSD_XSLPATH>
+      
+      <!-- werkend op model: (oude situatie voor halffabrikaten) --> 
+      <IMVERTOR_METAMODEL_KINGBSM_XSD_XSLPATH>Imvert2XSD-KING.xsl</IMVERTOR_METAMODEL_KINGBSM_XSD_XSLPATH>
+  
+        <!-- tijdelijk: omzetten naar EP2 formaat (nieuwe formaat) -->
+      <IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT-patch1_XML_XSLPATH>Imvert2XSD-KING-endproduct-patch1-xml.xsl</IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT-patch1_XML_XSLPATH>
+      <RESULT_ENDPRODUCT-patch1_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.30.endproduct-patch1.xml</RESULT_ENDPRODUCT-patch1_XML_FILE_PATH>   
+      
+      
+      <RESULT_XSD_XML_FILE_PATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_XSD_XML_FILE_PATH>   
+      <!-- workfolder for serialized excel -->
+      <work-serialize-folder>${system/work-folder-path}/serializer/temp-folder</work-serialize-folder>
+      <!-- workfolder for processing the  -->
+      <RESULT_ENDPRODUCT_MSG_FILE_PATH>${system/work-imvert-folder-path}/imvertor.27.endproduct-msg.xml</RESULT_ENDPRODUCT_MSG_FILE_PATH>
+      <RESULT_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.28.endproduct-xml.xml</RESULT_ENDPRODUCT_XML_FILE_PATH>   
+      <RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.29.ordered-endproduct-xml.xml</RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH>
+      <RESULT_ENDPRODUCT_XSD_FILE_PATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_ENDPRODUCT_XSD_FILE_PATH>
+      
+      <!-- locatie van de stuf onderlaag -->
+      <STUF_ONDERLAAG>${system/managedinputfolder}/xsd/other/KING/stuf0301.xsd</STUF_ONDERLAAG>
+      
+      <!-- common: -->
+   
+      <!-- location of the result XSD's when generating XML schemas -->
+      <RESULT_XSD_APPLICATION_FOLDER>${system/work-xsd-folder-path}/${appinfo/application-name}</RESULT_XSD_APPLICATION_FOLDER>
+      
+      <!-- other metamodel specifics -->
+      
+      <IMVERTOR_METAMODEL_ISO19103_XSDSOURCE>system</IMVERTOR_METAMODEL_ISO19103_XSDSOURCE>
+      <IMVERTOR_METAMODEL_ISO19103_XSD_XSLPATH>Imvert2XSD-Kadaster.xsl</IMVERTOR_METAMODEL_ISO19103_XSD_XSLPATH>
+
+      <IMVERTOR_METAMODEL_BOM_XSDSOURCE>system</IMVERTOR_METAMODEL_BOM_XSDSOURCE>
+      <IMVERTOR_METAMODEL_BOM_XSD_XSLPATH>Imvert2XSD-Kadaster.xsl</IMVERTOR_METAMODEL_BOM_XSD_XSLPATH>
+      
+   </properties>
+</config>

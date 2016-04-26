@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<realms>
+    <!-- 
+        tagged values realm includes names and values for tagged values 
+    -->
+    <realm name="tv">
+        <key name="pattern">
+            <map lang="nl">patroon</map>
+            <map lang="en">pattern</map>
+        </key>
+        <key name="pattern">
+            <map lang="nl">position</map><!--TODO must translate -->
+            <map lang="en">position</map>
+        </key>
+    </realm>
+    <!-- 
+        metamodel realm includes stereotypes and datatype names 
+    -->
+    <realm name="mm">
+        <key name="gegevensgroeptype">
+            <map lang="nl">gegevensgroeptype</map>
+            <map lang="en">composite type</map>
+        </key>
+        <key name="base">
+            <map lang="nl">base</map><!--TODO must translate -->
+            <map lang="en">base</map>
+        </key>
+        <key name="application">
+            <map lang="nl">application</map><!--TODO must translate -->
+            <map lang="en">application</map>
+        </key>
+        <key name="domain">
+            <map lang="nl">domain</map><!--TODO must translate -->
+            <map lang="en">domain</map>
+        </key>
+    </realm>
+</realms>

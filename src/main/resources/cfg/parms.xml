@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+ 
+      <!--  ========================================= -->
+      <!--  RECYCLE BIN                               -->
+      <!--  ========================================= -->
+      
+     
+    
+      
+      
+      
+      
+      <WORK_TRANSFORMLOG_FILE>${system/work-imvert-folder-path}/imvertor.19.transformlog.xml</WORK_TRANSFORMLOG_FILE>
+      
+      
+      <!--  configuration folder -->
+      <CFG_FOLDER>${system/managedinstallfolder}/cfg</CFG_FOLDER>
+      <XSLT_CFG_FILE>${properties/CFG_FOLDER}/xslt-configuration.xml</XSLT_CFG_FILE>
+      
+      <!--  location of project specific style sheets  -->
+      <XSL_FOLDER>${system/managedinstallfolder}/xsl</XSL_FOLDER>
+      <XMI_IMVERTOR_XSLPATH>${properties/XSL_FOLDER}/XMI1Imvert.xsl</XMI_IMVERTOR_XSLPATH>
+      <IMVERTOR_REPORT_XSLPATH>${properties/XSL_FOLDER}/Imvert2report.xsl</IMVERTOR_REPORT_XSLPATH>
+      
+      
+      
+      
+      <!--  location of class specific style sheets -->
+      
+      <!--  XmlFile  -->
+      <ETC_FOLDER>${system/managedinstallfolder}/etc</ETC_FOLDER>
+      
+      <IDENTITY_TRANSFORM_XSLPATH>${properties/ETC_FOLDER}/xsl/XmlFile-identity-transform.xsl</IDENTITY_TRANSFORM_XSLPATH>
+      
+      <!--  location of other resources for classes -->
+      
+      
+   
+      
+</config>

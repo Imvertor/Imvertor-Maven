@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>Imvert compiler</name>
+      <version-control>$Id: parms.xml 7465 2016-03-09 09:13:09Z arjan $</version-control>
+   </id>
+   <cli-parms>
+      <cli-parm>
+         <name>validatederivation</name>
+         <arg>yes|no</arg>
+         <tip>Yes if derivation must be validated</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>derivedoc</name>
+         <arg>yes|no</arg>
+         <tip>Yes if derivation of documentation is required</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>modelistraced</name>
+         <arg>yes|no</arg>
+         <tip>Yes if the model derivation is implemented by UML tracing</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>mapping</name>
+         <arg>name</arg>
+         <tip>Name of a mapping to be used for conceptual schemas</tip>
+         <required>false</required>
+      </cli-parm>
+   </cli-parms>
+   
+   <properties>
+      
+      <!--  location of all individual applications -->
+      <APPLICATIONS_FOLDER>${system/managedoutputfolder}/applications</APPLICATIONS_FOLDER>
+
+      <APPLICATION_BASE_FOLDER>${properties/APPLICATIONS_FOLDER}/${cli/project}/${cli/application}</APPLICATION_BASE_FOLDER>
+      
+      <IMVERTOR_DOMAINS_XSLPATH>Imvert2domain.xsl</IMVERTOR_DOMAINS_XSLPATH>
+      <WORK_DOMAINS_FILE>${system/work-imvert-folder-path}/imvertor.03.domains.xml</WORK_DOMAINS_FILE>
+      
+      <WORK_VARIANT_FILE>${system/work-imvert-folder-path}/imvertor.05.variant.xml</WORK_VARIANT_FILE>
+
+      <IMVERTOR_COPYDOWN_XSLPATH>Imvert2copydown.xsl</IMVERTOR_COPYDOWN_XSLPATH>
+      <WORK_COPYDOWN_FILE>${system/work-imvert-folder-path}/imvertor.06.copydown.xml</WORK_COPYDOWN_FILE>
+      
+      <IMVERTOR_REF_XSLPATH>Imvert2ref.xsl</IMVERTOR_REF_XSLPATH>
+      <WORK_REF_FILE>${system/work-imvert-folder-path}/imvertor.07.ref.xml</WORK_REF_FILE>
+      
+      <IMVERTOR_CONCRETESCHEMA_XSLPATH>Imvert2concreteSchema.xsl</IMVERTOR_CONCRETESCHEMA_XSLPATH>
+      <WORK_CONCRETESCHEMA_FILE>${system/work-imvert-folder-path}/imvertor.08.concrete.xml</WORK_CONCRETESCHEMA_FILE>
+      
+      <IMVERTOR_DEPENDENCIES_XSLPATH>Imvert2dependencies.xsl</IMVERTOR_DEPENDENCIES_XSLPATH>
+      <WORK_DEPENDENCIES_FILE>${system/work-imvert-folder-path}/imvertor.04.dependencies.xml</WORK_DEPENDENCIES_FILE>
+      
+      <IMVERTOR_LOCALSCHEMA_XSLPATH>Imvert2localSchema.xsl</IMVERTOR_LOCALSCHEMA_XSLPATH>
+      <CONCEPTUAL_SCHEMA_MAPPING_FILE>${system/managedinputfolder}/xsd/conceptual-schemas.xml</CONCEPTUAL_SCHEMA_MAPPING_FILE>
+      
+      <WORK_LOCALSCHEMA_FILE>${system/work-imvert-folder-path}/imvertor.09.local.xml</WORK_LOCALSCHEMA_FILE> 
+      <LOCAL_SCHEMA_MAPPING_FILE>${system/managedinputfolder}/xsd/local-schemas.xml</LOCAL_SCHEMA_MAPPING_FILE>
+      
+      <IMVERTOR_EXPANDDOC_XSLPATH>Imvert2expanddoc.xsl</IMVERTOR_EXPANDDOC_XSLPATH>
+      <WORK_EXPANDDOC_FILE>${system/work-imvert-folder-path}/imvertor.11.expanddoc.xml</WORK_EXPANDDOC_FILE>
+      
+      <IMVERTOR_DERIVATIONTREE_XSLPATH>Imvert2derivationTree.xsl</IMVERTOR_DERIVATIONTREE_XSLPATH>
+      <WORK_DERIVATIONTREE_FILE>${system/work-imvert-folder-path}/imvertor.15.1.tree.xml</WORK_DERIVATIONTREE_FILE>
+  
+      <IMVERTOR_DERIVATIONEXPAND_XSLPATH>Imvert2derivationExpand.xsl</IMVERTOR_DERIVATIONEXPAND_XSLPATH>
+      <WORK_DERIVATIONEXPAND_FILE>${system/work-imvert-folder-path}/imvertor.15.2.expand.xml</WORK_DERIVATIONEXPAND_FILE>
+      
+      <IMVERTOR_EMBELLISH_XSLPATH>Imvert2embellish.xsl</IMVERTOR_EMBELLISH_XSLPATH>
+      <WORK_EMBELLISH_FILE>${system/work-imvert-folder-path}/imvertor.12.embellish.xml</WORK_EMBELLISH_FILE>
+      
+      <IMVERTOR_SCHEMA_XSLPATH>Imvert2schema.xsl</IMVERTOR_SCHEMA_XSLPATH>
+      <WORK_SCHEMA_FILE>${system/work-imvert-folder-path}/imvertor.24.schema.xml</WORK_SCHEMA_FILE>
+      
+      <!--
+         What is the location of the original full XSD for the imvert model? 
+      -->
+      <IMVERTOR_APPLICATION_LOCATION_SOURCE>${system/managedinstallfolder}/xsd/Imvertor/20160201/xsd</IMVERTOR_APPLICATION_LOCATION_SOURCE>
+      <!--
+         Where to copy this XSD within the distribution? 
+      -->
+      <IMVERTOR_APPLICATION_LOCATION_TARGET>${system/work-etc-folder-path}/xsd</IMVERTOR_APPLICATION_LOCATION_TARGET>
+      <!--
+         A reference to which (relative) URL can be inserted within the imvert.modelxml?
+      -->
+      <IMVERTOR_APPLICATION_LOCATION_URL>./xsd/Imvertor/application/v20160201/Imvertor_Application_v2_0_0.xsd</IMVERTOR_APPLICATION_LOCATION_URL>
+      
+      <WORK_DERIVATION_FILE>${system/work-imvert-folder-path}/imvertor.14.derive.xml</WORK_DERIVATION_FILE>
+      <IMVERTOR_DERIVATION_XSLPATH>Imvert2derivation.xsl</IMVERTOR_DERIVATION_XSLPATH>
+
+
+   <!-- TODO ? -->
+      
+      <IMVERTOR_MERGER_XSLPATH>Imvert2merger.xsl</IMVERTOR_MERGER_XSLPATH>
+      <IMVERTOR_APPLICATION_XSLPATH>Imvert2application.xsl</IMVERTOR_APPLICATION_XSLPATH>
+      
+      
+   </properties>
+</config>

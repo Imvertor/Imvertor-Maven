@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>Concepts collector</name>
+      <version-control>$Id: parms.xml 7431 2016-02-24 12:46:42Z arjan $</version-control>
+   </id>
+   <cli-parms>
+      <cli-parm>
+         <name>refreshconcepts</name>
+         <arg>yes|no</arg>
+         <tip>Yes if the concepts should be re-read from RDF triple store</tip>
+         <required>false</required>
+      </cli-parm> 
+   </cli-parms>
+   <properties>
+
+      <IMVERTOR_EXTRACTCONCEPTS_XSLPATH>ExtractConcepts.xsl</IMVERTOR_EXTRACTCONCEPTS_XSLPATH>
+      
+      <CONCEPT_DOCUMENTATION_PATH>${system/managedoutputfolder}/concepts/concepts-[release].xml</CONCEPT_DOCUMENTATION_PATH>
+      
+      <!--  concept documentation. Enter [year], [month] or [day] to be inserted by the system; these will be replaced by the release date. -->
+      <CONCEPT_DOCUMENTATION_LISTING_URI>http://brk.kadaster.nl/doc/[year]/[month]/[day]/stelsel/begrippen?format=rdf%2Bxml</CONCEPT_DOCUMENTATION_LISTING_URI>
+      <CONCEPT_DOCUMENTATION_URI>http://brk.kadaster.nl/doc/[year]/[month]/[day]/begrip/[key]?format=rdf%2Bxml</CONCEPT_DOCUMENTATION_URI>
+      <!--  specify the base url as found in RDF, and then the URL as used to access available RDF triple store. These may be identical. -->
+      <CONCEPT_DOCUMENTATION_URL_MAPPING>http://brk.kadaster.nl/id/begrippen http://brk.kadaster.nl/id/begrippen</CONCEPT_DOCUMENTATION_URL_MAPPING>
+      
+
+      <!-- TODO Vaststelen wat de status is van concept URL's / kenniskluis -->
+      
+      <CONCEPT_DOCUMENTATION_CLASS>http://brk.kadaster.nl/resource?uri=${properties/http%3A%2F%2Fbrk.kadaster.nl%2Fdef%2Fgegevenselement%2F[class]%23[property]}&amp;format=rdf%2Bxml</CONCEPT_DOCUMENTATION_CLASS>
+      <CONCEPT_DOCUMENTATION_CLASS_PROPERTY>http://brk.kadaster.nl/resource?uri={http%3A%2F%2Fbrk.kadaster.nl%2Fdef%2Fgegevenselement%2F[class]%23[property]}&amp;format=rdf%2Bxml</CONCEPT_DOCUMENTATION_CLASS_PROPERTY>
+      <CONCEPT_DOCUMENTATION_VALUELIST>http://brk.kadaster.nl/resource?uri={http%3A%2F%2Fbrk.kadaster.nl%2Fdef%2Fwaardelijst%2F[name]}&amp;format=rdf%2Bxml</CONCEPT_DOCUMENTATION_VALUELIST>
+      
+   </properties>
+</config>

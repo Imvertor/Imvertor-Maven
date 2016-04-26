@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 VNG/KING
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>Compliancy Excel compiler</name>
+      <version-control>$Id: parms.xml 7475 2016-03-23 10:54:06Z arjan $</version-control>
+   </id>
+   <cli-parms>
+      <cli-parm>
+         <name>createcomplyexcel</name>
+         <arg>yes|no</arg>
+         <tip>Yes if a compliancy Excel should be generated for this application</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>validatecomplyexcel</name>
+         <arg>yes|no</arg>
+         <tip>Yes if the compliancy excels created must be validated</tip>
+         <required>true</required>
+      </cli-parm> 
+   </cli-parms>
+   
+   <properties>
+      <!--
+         Where to store the excel files?
+      -->
+      <IMVERTOR_COMPLY_TARGET>${system/work-cmp-folder-path}/template</IMVERTOR_COMPLY_TARGET>
+      <!-- 
+         template for the compliancy excels  
+       -->
+      <IMVERTOR_COMPLY_TEMPLATE_EXCELPATH>${system/cfg-folder-path}/ComplyCompiler/templates/Testberichten sjabloon leeg.xlsx</IMVERTOR_COMPLY_TEMPLATE_EXCELPATH>
+      <!-- 
+         folder that stores the extracted template (serialized zip) 
+       -->
+      <WORK_COMPLY_TEMPLATE_FOLDERPATH>${system/work-comply-folder-path}/template</WORK_COMPLY_TEMPLATE_FOLDERPATH>
+      
+      <!-- 
+         stylesheet to process the __content.xml, extracted from the serialized template
+      -->
+      <WORK_COMPLY_XSLPATH>ComplyCompiler-filler.xsl</WORK_COMPLY_XSLPATH>
+      <!-- 
+         path to temporary output of transforming __content.xml; this is not compressed back into the result Excel.
+      -->
+      <WORK_COMPLY_FILE>${system/work-imvert-folder-path}/imvertor.50.filler.xml</WORK_COMPLY_FILE>
+      
+   </properties>
+</config>

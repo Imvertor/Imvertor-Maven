@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
+    <!-- kadaster follows BP requirements -->
+    <xi:include href="../BP/BP.xml"/>
+    
+    <svn>$Id: Kadaster.xml 7506 2016-04-19 15:36:57Z arjan $</svn>
+    <name>Kadaster</name>
+
+    <description>Metamodel for Kadaster exchange models</description>
+
+    <naming>
+        <package>
+            <format>UpperCamel</format>
+        </package>
+        <class>
+            <format>UpperCamel</format>
+        </class>
+        <property>
+            <format>LowerCamel</format>
+        </property>
+        <tv>
+            <format>UpperCamel</format>
+        </tv>
+    </naming>
+    
+    <stereotypes>
+
+        <stereo id="stereotype-name-product">
+            <name lang="en">product</name>
+            <name lang="nl">product</name>
+            <construct>class</construct>
+        </stereo>
+        <stereo id="stereotype-name-service">
+            <name lang="en">service</name>
+            <name lang="nl">service</name>
+            <construct>class</construct>
+        </stereo>
+        <stereo id="stereotype-name-process">
+            <name lang="en">process</name>
+            <name lang="nl">process</name>
+            <construct>class</construct>
+        </stereo>
+        <stereo id="stereotype-name-collection">
+            <name lang="en">collection</name>
+            <name lang="nl">collectie</name>
+            <construct>class</construct>
+        </stereo>
+
+        <stereo id="stereotype-name-identificatie">
+            <name lang="nl">identificatie</name>
+            <name lang="en">identification</name>
+            <construct>attribute</construct>
+        </stereo>
+        <stereo id="stereotype-name-koppelklasse">
+            <name lang="nl">koppelklasse</name>
+            <name lang="en">link class</name>
+            <construct>class</construct>
+        </stereo>
+        <stereo id="stereotype-name-voidable">
+            <name lang="en">voidable</name>
+            <name lang="nl">voidable</name>
+            <construct>attribute</construct>
+            <construct>association</construct>
+        </stereo>
+
+        <stereo id="stereotype-name-generalization">
+            <name lang="nl">generalisatie</name>
+            <name lang="en">generalisation</name>
+            <construct>generalization</construct>
+        </stereo>
+        <stereo id="stereotype-name-static-liskov">
+            <name lang="en">static liskov</name>
+            <name lang="nl">static liskov</name>
+            <construct>generalization</construct>
+        </stereo>
+        <stereo id="stereotype-name-static-generalization">
+            <name lang="en">static</name>
+            <name lang="nl">static</name>
+            <construct>generalization</construct>
+        </stereo>
+        <stereo id="stereotype-name-dynamic-generalization">
+            <name lang="en">dynamic</name>
+            <name lang="nl">dynamisch</name>
+            <construct>generalization</construct>
+        </stereo>
+
+        <stereo id="stereotype-name-formele-historie">
+            <name lang="nl">formelehistorie</name>
+            <name lang="en">formalhistory</name>
+            <construct>attribute</construct>
+        </stereo>
+        <stereo id="stereotype-name-formele-levensduur">
+            <name lang="nl">formelelevensduur</name>
+            <name lang="en">formelelevensduur</name>
+            <construct>attribute</construct>
+        </stereo>
+        <stereo id="stereotype-name-materiele-historie">
+            <name lang="nl">materielehistorie</name>
+            <name lang="en">materielehistorie</name>
+            <construct>attribute</construct>
+        </stereo>
+        <stereo id="stereotype-name-materiele-levensduur">
+            <name lang="nl">materielelevensduur</name>
+            <name lang="en">materielelevensduur</name>
+            <construct>attribute</construct>
+        </stereo>
+
+        <stereo id="stereotype-name-anonymous">
+            <name lang="en">anonymous</name>
+            <name lang="nl">anoniem</name>
+            <construct>attribute</construct>
+            <construct>association</construct>
+        </stereo>
+    </stereotypes>
+</metamodel>

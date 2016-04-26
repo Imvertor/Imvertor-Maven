@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<imvert:schemas xmlns:imvert="http://www.imvertor.org/schema/system">
+   <imvert:exporter>Enterprise Architect v 2.5</imvert:exporter>
+   <imvert:schema-exported>2016-02-10T11:15:23Z</imvert:schema-exported>
+   <imvert:schema-filter-version>Id: XMI1Imvert.xsl 7402 2016-02-02 13:55:57Z arjan </imvert:schema-filter-version>
+   <imvert:schema-filter-version>Id: Imvert2canonical-KINGUIM.xsl 7353 2015-12-13 15:43:37Z arjan </imvert:schema-filter-version>
+   <imvert:schema-filter-version>Id: Imvert2canonical-Kadaster.xsl 7409 2016-02-06 07:31:41Z arjan </imvert:schema-filter-version>
+   <imvert:schema-filter-version>Id: Imvert2domain.xsl 7379 2016-01-14 07:39:34Z arjan </imvert:schema-filter-version>
+   <imvert:schema-filter-version>Id: Imvert2application.xsl 7401 2016-01-31 15:51:32Z arjan </imvert:schema-filter-version>
+   <imvert:schema-filter-version>Id: Imvert2copydown.xsl 7396 2016-01-26 13:02:55Z arjan </imvert:schema-filter-version>
+   <imvert:schema-filter-version>Id: Imvert2ref.xsl 7417 2016-02-09 13:01:46Z arjan </imvert:schema-filter-version>
+   <imvert:schema-filter-version>Id: Imvert2concreteSchema.xsl 7402 2016-02-02 13:55:57Z arjan </imvert:schema-filter-version>
+   <imvert:schema-filter-version>Id: Imvert2localSchema.xsl 7401 2016-01-31 15:51:32Z arjan </imvert:schema-filter-version>
+   <imvert:schema-filter-version>Id: Imvert2expanddoc.xsl 7395 2016-01-26 10:35:23Z arjan </imvert:schema-filter-version>
+   <imvert:schema-filter-version>Id: Imvert2embellish.xsl 7226 2015-09-01 11:11:54Z arjan </imvert:schema-filter-version>
+   <imvert:latest-svn-revision>$Id$</imvert:latest-svn-revision>
+   <imvert:schema>
+      <imvert:name original="Application">Application</imvert:name>
+      <imvert:namespace>http://www.imvertor.org/schema/imvertor/application/v20160201</imvert:namespace>
+      <imvert:result-file-subpath>application/v20160201/Imvertor_Application_v2_0_0.xsd</imvert:result-file-subpath>
+      <imvert:xsd-path>file:/D:/projects/validprojects/Kadaster-Imvertor/Imvertor-OS-work/app/xsd/Imvertor/</imvert:xsd-path>
+      <imvert:result-file-fullpath>file:/D:/projects/validprojects/Kadaster-Imvertor/Imvertor-OS-work/app/xsd/Imvertor/application/v20160201/Imvertor_Application_v2_0_0.xsd</imvert:result-file-fullpath>
+   </imvert:schema>
+</imvert:schemas>

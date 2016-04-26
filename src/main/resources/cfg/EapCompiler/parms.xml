@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>EapCompiler parameters</name>
+      <version-control>$Id: parms.xml 7501 2016-04-15 14:37:27Z arjan $</version-control>
+   </id>
+   <cli-parms>
+      <cli-parm>
+         <name>createtemplate</name>
+         <arg>yes|no</arg>
+         <tip>Yes if an EAP template should be created for this application</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>createumlreport</name>
+         <arg>yes|no</arg>
+         <tip>Yes if an UML report based on EAP should be created</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>createderivedeap</name>
+         <arg>yes|no</arg>
+         <tip>Yes if an full EA representation of all derived information should be created</tip>
+         <required>false</required>
+      </cli-parm> 
+   </cli-parms>
+   <properties>
+      
+       <!--  template EAP used as the basis for all working copies -->
+      <TEMPLATE_TEMPLATE_FILE>${system/managedinputfolder}/eap/TEMPLATE.EAP</TEMPLATE_TEMPLATE_FILE>
+      <TEMPLATE_TEMPLATE_FILE_GUID>${system/managedinputfolder}/eap/TEMPLATE.EAP.GUID</TEMPLATE_TEMPLATE_FILE_GUID>
+       
+       <!--  reports, part of distribution	 -->
+       <RESULT_DOC_FOLDER>${properties/APPLICATION_FOLDER}/doc</RESULT_DOC_FOLDER>
+       
+       <!--  EAP HTML report, part of distribution -->
+       <RESULT_UML_FOLDER>${properties/APPLICATION_FOLDER}/uml/report</RESULT_UML_FOLDER>
+
+       <!-- the XSL file that transforms the source XMI to template --> 
+       <IMVERTOR_TEMPLATE_XSLPATH>XMI1Template.xsl</IMVERTOR_TEMPLATE_XSLPATH>
+       
+       <RESULT_TEMPLATE_XMI_FILE>${system/work-etc-folder-path}/${appinfo/release-name}.template.xmi</RESULT_TEMPLATE_XMI_FILE>
+       <RESULT_TEMPLATE_EAP_FILE>${system/work-etc-folder-path}/${appinfo/release-name}.template.eap</RESULT_TEMPLATE_EAP_FILE>
+      
+       <IMVERTOR_REPORTINGCOPY_XSLPATH>XMI1Reportingcopy.xsl</IMVERTOR_REPORTINGCOPY_XSLPATH>
+       <WORK_EAP_FILE>${system/work-imvert-folder-path}/imvertor.31.workingcopy.eap</WORK_EAP_FILE>
+       <WORK_TEMP_XMI_FILE>${system/work-imvert-folder-path}/imvertor.32.workingcopy.temp.xmi</WORK_TEMP_XMI_FILE>
+       <WORK_FULL_XMI_FILE>${system/work-imvert-folder-path}/imvertor.33.workingcopy.full.xmi</WORK_FULL_XMI_FILE>
+       
+      <!--  files generated as part of this application 	 -->
+      <RESULT_DERIVED_EAP_FILE>${system/work-etc-folder-path}/${appinfo/release-name}.derived.eap</RESULT_DERIVED_EAP_FILE>
+      
+    </properties>
+ 
+</config>
