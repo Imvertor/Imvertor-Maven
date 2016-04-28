@@ -8,10 +8,6 @@
 
 	<description>Imvertor under Maven</description>
 	
-	<properties>
-		<eapath>c:/tools/ImvertorOS-M/Imvertor-bin/bin/EA</eapath>
-	</properties>
-
 	<dependencies>
 
 		<dependency>
@@ -78,12 +74,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.eclipse.birt.runtime.3_7_1</groupId>
 			<artifactId>org.apache.xerces</artifactId>
 			<version>2.9.0</version>
@@ -138,7 +128,8 @@
 			<systemPath>${eapath}/eaapi.jar</systemPath>
 		</dependency>
 
-	</dependencies>
+	</dependencies>profiles
+	
 	<pluginRepositories>
 	</pluginRepositories>
 	<build>
@@ -154,4 +145,5 @@
 			</plugin>
 		</plugins>
 	</build>
+  
 </project>
