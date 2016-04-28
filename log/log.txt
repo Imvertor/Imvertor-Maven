@@ -118,3 +118,26 @@
 2016-04-28 10:18:53,016 INFO nl.imvertor.ReleaseCompiler.ReleaseCompiler - [main][Runner.java:252] - ZIP release saved at: C:\tools\ImvertorOS\Imvertor-output\releases\GREEN-SampleApplicationBase-1.0.0-2-20130318-20160428-101807.zip
 2016-04-28 10:18:53,556 INFO nl.imvertor.common.Runner - [main][Runner.java:252] - Task succeeds.
 2016-04-28 10:18:53,556 INFO nl.imvertor.ChainTranslateAndReport - [main][Runner.java:252] - Done, chain process succeeds
+2016-04-28 10:34:34,195 INFO nl.imvertor.ChainTranslateAndReport - [main][Runner.java:252] - Framework version - Imvertor OS 0.88
+2016-04-28 10:34:34,198 INFO nl.imvertor.ChainTranslateAndReport - [main][Runner.java:252] - Chain version - Translate and report 0.9
+2016-04-28 10:34:35,245 INFO nl.imvertor.ChainTranslateAndReport - [main][Runner.java:252] - Processing application green: SampleApplicationBase
+2016-04-28 10:34:35,251 INFO nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:252] - Compiling XMI
+2016-04-28 10:34:35,252 INFO nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:252] - Reading D:\projects\gitprojects\Imvertor-Maven\src\main\resources\example\SampleBase.1.xmi (XMI passed)
+2016-04-28 10:34:36,095 INFO nl.imvertor.XmiTranslator.XmiTranslator - [main][Runner.java:252] - Translating XMI to Imvertor format
+2016-04-28 10:34:39,640 INFO nl.imvertor.Validator.Validator - [main][Runner.java:252] - Validating model
+2016-04-28 10:34:40,072 INFO nl.imvertor.Validator.Validator - [main][Runner.java:252] - Compiled name: GREEN-SampleApplicationBase-1.0.0-2-20130318-20160428-103435
+2016-04-28 10:34:40,130 INFO nl.imvertor.ApcModifier.ApcModifier - [main][Runner.java:252] - Processing application configuration information
+2016-04-28 10:34:40,205 INFO nl.imvertor.ReadmeAnalyzer.ReadmeAnalyzer - [main][Runner.java:252] - Analyzing supplier state
+2016-04-28 10:34:40,346 INFO nl.imvertor.ImvertCompiler.ImvertCompiler - [main][Runner.java:252] - Compiling processable Imvertor format
+2016-04-28 10:34:41,591 INFO nl.imvertor.XsdCompiler.XsdCompiler - [main][Runner.java:252] - Compiling XML schemas
+2016-04-28 10:34:42,083 INFO nl.imvertor.SchemaValidator.SchemaValidator - [main][Runner.java:252] - Validating XML schemas
+2016-04-28 10:34:42,392 INFO nl.imvertor.OfficeCompiler.OfficeCompiler - [main][Runner.java:252] - Creating Office documentation
+2016-04-28 10:34:42,671 INFO nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:252] - Creating template XMI
+2016-04-28 10:34:42,928 WARN nl.imvertor.XmiCompiler.XmiCompiler - [main][Runner.java:241] - An UML document can only be generated for EAP source UML files.
+2016-04-28 10:34:42,986 INFO nl.imvertor.RunAnalyzer.RunAnalyzer - [main][Runner.java:252] - Analyzing this run
+2016-04-28 10:34:43,148 INFO nl.imvertor.Reporter.Reporter - [main][Runner.java:252] - Compiling final report
+2016-04-28 10:34:43,277 INFO nl.imvertor.ReadmeCompiler.ReadmeCompiler - [main][Runner.java:252] - Generating readme file
+2016-04-28 10:34:43,380 INFO nl.imvertor.ReleaseCompiler.ReleaseCompiler - [main][Runner.java:252] - Compiling ZIP release
+2016-04-28 10:34:43,477 INFO nl.imvertor.ReleaseCompiler.ReleaseCompiler - [main][Runner.java:252] - ZIP release saved at: C:\Temp\GREEN-SampleApplicationBase-1.0.0-2-20130318-20160428-103435.zip
+2016-04-28 10:34:43,766 INFO nl.imvertor.common.Runner - [main][Runner.java:252] - Task succeeds with warnings.
+2016-04-28 10:34:43,767 INFO nl.imvertor.ChainTranslateAndReport - [main][Runner.java:252] - Done, chain process succeeds
