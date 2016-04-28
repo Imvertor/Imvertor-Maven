@@ -7,6 +7,10 @@
 	<name>Imvertor</name>
 
 	<description>Imvertor under Maven</description>
+	
+	<properties>
+		<eapath>c:/tools/ImvertorOS-M/Imvertor-bin/bin/EA</eapath>
+	</properties>
 
 	<dependencies>
 
@@ -110,6 +114,19 @@
 			<version>4.12</version>
 		</dependency>
 
+        <dependency>
+			<groupId>net.sourceforge.jexcelapi</groupId>
+			<artifactId>jxl</artifactId>
+			<version>2.6.12</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.googlecode.juniversalchardet</groupId>
+			<artifactId>juniversalchardet</artifactId>
+			<version>1.0.3</version>
+		</dependency>
+
+
 		<!-- non-mavenized depencies below; dependency on enterprise architect 
 			should be removed -->
 		<!-- note that they might have to distributed seperately due to copyright 
@@ -119,23 +136,7 @@
 			<artifactId>java-api</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
-			<systemPath>c:/java/EnterpriseArchitect/Java-API/eaapi.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mozilla</groupId>
-			<artifactId>universalchardet</artifactId>
-			<version>1.0.3</version>
-			<scope>system</scope>
-			<systemPath>c:/java/juniversalchardet/juniversalchardet-1.0.3.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>jxl</groupId>
-			<artifactId>jxl</artifactId>
-			<version>2.6.12</version>
-			<scope>system</scope>
-			<systemPath>c:/java/jexcelapi_2_6_12/jexcelapi/jxl.jar</systemPath>
+			<systemPath>${eapath}/eaapi.jar</systemPath>
 		</dependency>
 
 	</dependencies>

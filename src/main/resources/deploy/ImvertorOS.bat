@@ -1,12 +1,17 @@
 @echo off
 SETLOCAL ENABLEEXTENSIONS
 
-call c:\Tools\ImvertorOS\environment.bat
+set d=%~dp0
+cd %d%
+cd ..
+call environment.bat
+cd %d%
 
 set inpdir=%imvertor_os_input%
 set outdir=%imvertor_os_output%
 set workdir=%imvertor_os_work%
 set bindir=%imvertor_os_bin%
+set eapath=%imvertor_os_eapath%
 
 set jarfile=ChainTranslateAndReport.jar
 
@@ -35,7 +40,7 @@ SHIFT
 GOTO LOOP
 :CONTINUE
 
-set PATH=%PATH%;%bindir%\bin\EA;
+set PATH=%PATH%;%eapath%;
 
 SET jvmparms=-Xms512m -Xmx1024m
 
@@ -51,6 +56,7 @@ call "%javaexe%" %jvmparms% ^
 	-Doutput.dir="%outdir%" ^
     -Dinput.dir="%inpdir%" ^
     -Dwork.dir="%workdir%\default" ^
+	-classpath "%bindir%\bin\ChainTranslateAndReport_lib" ^
     -jar "%bindir%\bin\%jarfile%" ^
 	-arguments "%propfilepath%"  ^
 	-umlfile "%eapfile%" ^

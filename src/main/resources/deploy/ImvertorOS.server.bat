@@ -1,7 +1,11 @@
 @echo on
 SETLOCAL ENABLEEXTENSIONS
 
-call c:\Tools\ImvertorOS\environment.bat
+set d=%~dp0
+cd %d%
+cd ..
+call environment.bat
+cd %d%
 
 set inpdir=%imvertor_os_input%
 set outdir=%imvertor_os_output%
@@ -36,6 +40,7 @@ call "%javaexe%" %jvmparms% ^
 	-Doutput.dir="%outdir%" ^
     -Dinput.dir="%inpdir%" ^
     -Dwork.dir="%workdir%\%jobid%" ^
+    -classpath "%bindir%\bin\ChainTranslateAndReport_lib" ^
     -jar "%bindir%\bin\%jar%.jar" ^
 	-arguments "%propfilepath%"
 

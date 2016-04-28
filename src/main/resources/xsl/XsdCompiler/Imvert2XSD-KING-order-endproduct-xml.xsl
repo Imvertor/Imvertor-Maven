@@ -43,6 +43,26 @@
             <xsl:apply-templates select="*">
                <xsl:sort select="ep:position" order="ascending" data-type="number"/>                
             </xsl:apply-templates>
+            <!-- Volgende if is om te testen of het juiste ep bestand als basis wordt gebruikt voor het genereren van de schema's -->
+            <xsl:if test="parent::*[name(.) = 'ep:message']">
+                <ep:construct sourceEntity="Bericht">
+                    <ep:name>melding2</ep:name>
+                    <ep:tech-name>melding2</ep:tech-name>
+                    <ep:documentation/>
+                    <ep:max-occurs>unbounded</ep:max-occurs>
+                    <ep:min-occurs>0</ep:min-occurs>
+                    <ep:authentiek>TO-DO: waar haal ik hiervoor de waarde vandaan</ep:authentiek>
+                    <ep:id>{7BF68C7F-0BD4-485d-A42D-005EC3880774}</ep:id>
+                    <ep:kerngegevens>TO-DO: waar haal ik hiervoor de waarde vandaan</ep:kerngegevens>
+                    <ep:max-length>250</ep:max-length>
+                    <ep:max-value>TO-DO: waar komt dit vandaan</ep:max-value>
+                    <ep:min-value>TO-DO: waar komt dit vandaan</ep:min-value>
+                    <ep:regels>TO-DO: waar haal ik hiervoor de waarde vandaan</ep:regels>
+                    <ep:type-name>string</ep:type-name>
+                    <ep:voidable>TO-DO: waar haal ik hiervoor de waarde vandaan. Zie ook opmerking in stylesheet Imvert2XSD-KING-create-endproduct-structure.xsl</ep:voidable>
+                    <ep:position>100</ep:position>
+                </ep:construct>
+            </xsl:if>
         </xsl:element>
     </xsl:template>
     
