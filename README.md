@@ -1,7 +1,7 @@
 # Imvertor-Maven
-Imvertor may be compiled as a Java application. It will not run “out of the box”. You need to add configuration files.
+Imvertor may be compiled as a Java application. It will not run "out of the box". You need to add configuration files.
 
-Let’s suppose you installed imvertor at 
+Let's suppose you installed imvertor at 
 <pre> %installdir% = D:\projects\gitprojects\Imvertor-Maven </pre>
 
 So your pom.xml is at:
@@ -12,9 +12,9 @@ You need to create a data folder:
 
 Here you need to create the following folders:
 <pre>
-%datadir%\Imvertor-output – standard output folder
+%datadir%\Imvertor-output - standard output folder
 %datadir%\Imvertor-work  - standard work folder
-%datadir%\Imvertor-input – standard input folder
+%datadir%\Imvertor-input - standard input folder
 </pre>
 
 Within Eclipse, you can compile and run using the following application setting:
@@ -40,12 +40,23 @@ VM arguments are:
 Note: If you want to access Enterprise Architect from within Imvertor, you need to install EA, and install some files as described on http://www.sparxsystems.com/enterprise_architect_user_guide/10/automation_and_scripting/setup.html
 Place the files in an accessible location, e.g.
 <pre>c:/tools/ImvertorOS-M/Imvertor-bin/bin/EA</pre>
-And set this path in your POM.xml, e.g.:
-<pre>
-&lt;properties>
-&lt;eapath>c:/tools/ImvertorOS-M/Imvertor-bin/bin/EA</eapath>
-&lt;/properties>
-</pre>
+And set in setings.xml of the Maven user folder, e.g.:
+```xml
+<settings>
+   <profiles>
+     <profile>
+     <id>eapath</id> 
+     <properties>
+  		<eapath>c:/tools/ImvertorOS-M/Imvertor-bin/bin/EA</eapath> 
+     </properties>
+    </profile>
+   </profiles>
+   <activeProfiles>
+    <activeProfile>eapath</activeProfile> 
+   </activeProfiles>
+</settings>
+```
+
 You should be able to run imvertor from within Eclipse now.
 
 If you want to run Imvertor from the command line follow these steps:
@@ -55,10 +66,10 @@ Create a folder for the program to run, say:
 
 Create the subfolders 
 <pre>
-c:\tools\ImvertorOS-M\Imvertor-bin – standard program folder
-c:\tools\ImvertorOS-M\Imvertor-output – standard output folder
+c:\tools\ImvertorOS-M\Imvertor-bin - standard program folder
+c:\tools\ImvertorOS-M\Imvertor-output - standard output folder
 c:\tools\ImvertorOS-M\Imvertor-work  - standard work folder
-c:\tools\ImvertorOS-M\Imvertor-input – standard input folder
+c:\tools\ImvertorOS-M\Imvertor-input - standard input folder
 </pre>
 Compile to the binary folder/file
 <pre>

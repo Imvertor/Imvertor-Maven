@@ -128,10 +128,8 @@
 			<systemPath>${eapath}/eaapi.jar</systemPath>
 		</dependency>
 
-	</dependencies>profiles
+	</dependencies>
 	
-	<pluginRepositories>
-	</pluginRepositories>
 	<build>
 		<plugins>
 			<plugin>
