@@ -20,11 +20,11 @@ public class TestAnyFile {
 
     @Test
     public void ShouldNotBeAbsolute() {
-	Assert.assertTrue(AnyFile.isAbsolutePath("dsfsdf"));
-	Assert.assertTrue(AnyFile.isAbsolutePath("ds\\fdsf"));
-	Assert.assertTrue(AnyFile.isAbsolutePath("gf/hfghgf"));
-	Assert.assertTrue(AnyFile.isAbsolutePath("gf/hfghgf/"));
-	Assert.assertTrue(AnyFile.isAbsolutePath("gf\\hfghgf\\"));
+	Assert.assertFalse(AnyFile.isAbsolutePath("dsfsdf"));
+	Assert.assertFalse(AnyFile.isAbsolutePath("ds\\fdsf"));
+	Assert.assertFalse(AnyFile.isAbsolutePath("gf/hfghgf"));
+	Assert.assertFalse(AnyFile.isAbsolutePath("gf/hfghgf/"));
+	Assert.assertFalse(AnyFile.isAbsolutePath("gf\\hfghgf\\"));
     }
 
 }

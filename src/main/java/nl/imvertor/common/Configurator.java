@@ -479,7 +479,7 @@ public class Configurator {
 	 */
 	public void setParmsFromOptions(String[] args) throws Exception {
 		CommandLine commandLine = null;
-		File curFile = new File(baseFolder,"command-line"); // dummy.
+		File curFile = baseFolder;
 		try {
 			BasicParser parser = new BasicParser();
 			commandLine = parser.parse(options, args);
@@ -818,7 +818,7 @@ public class Configurator {
 				if (AnyFile.isAbsolutePath(files[i]))
 					incFile = new File(files[i]);
 				else 
-					incFile = new File(curFile.getParentFile(),files[i]);
+					incFile = new File(curFile,files[i]);
 				loadFromPropertyFile(selectIncFile(incFile).getCanonicalPath());
 			}
 		}

@@ -98,7 +98,7 @@ public class AnyFile extends File  {
 	 * @return
 	 */
 	public static boolean isAbsolutePath(String path) {
-		return match(path,"^(\\|/|(.:))") != null;
+		return path.startsWith("\\") || path.startsWith("/") |  (match(path,"^(.:)") != null);
 	}
 	
 	public static boolean isFile(String path) {
@@ -480,7 +480,7 @@ public class AnyFile extends File  {
 	private static String match(String s, String regex) {
 		Matcher m = Pattern.compile(regex).matcher(s);
 		if (m.find()) 
-			return s.substring(m.start(), s.length() - m.end());
+			return s.substring(m.start(), m.end());
 		else 
 			return null;
 	}

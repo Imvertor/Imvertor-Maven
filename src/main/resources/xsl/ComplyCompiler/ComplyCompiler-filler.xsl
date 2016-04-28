@@ -52,6 +52,7 @@
     <xsl:output indent="yes"/>
     
     <xsl:template match="/">
+        <xsl:message select="$imvertor-ep-result-path"></xsl:message>
         <xsl:if test="$debug">
             <xsl:result-document href="file:/c:/temp/sheet-1.xml">
                 <xsl:sequence select="//zip-content-wrapper:file[@path='xl\worksheets\sheet1.xml']"/>
