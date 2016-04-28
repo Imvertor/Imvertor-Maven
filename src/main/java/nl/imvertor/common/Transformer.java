@@ -37,9 +37,6 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.sun.org.apache.xml.internal.resolver.CatalogManager;
-import com.sun.org.apache.xml.internal.resolver.tools.CatalogResolver;
-
 import net.sf.saxon.lib.ExtensionFunctionDefinition;
 import net.sf.saxon.om.Sequence;
 import net.sf.saxon.s9api.Processor;
@@ -93,6 +90,7 @@ public class Transformer {
 		setXIncludeAware(true);
 		processor = new Processor(configurator.getSaxonConfiguration());
 		
+		/*
 		if (System.getProperty("xml.catalog") != null) {
 			// OASIS catalog support
 			String catalog = System.getProperty("xml.catalog");
@@ -102,6 +100,7 @@ public class Transformer {
 			resolver.getCatalog().parseCatalog(catalog);
 			compiler.setURIResolver(resolver);
 		}
+		*/
 		
 		compiler = processor.newXsltCompiler();
 		compiler.setErrorListener(errorListener); // for compile time errors
