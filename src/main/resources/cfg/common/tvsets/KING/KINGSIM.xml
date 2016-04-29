@@ -31,13 +31,8 @@
                 <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
                 <stereo required="yes" lang="nl">Relatiesoort</stereo>
             </stereotypes>
-            <declared-values lang="nl">
-                <value>Ja</value>
-                <value>Nee</value>
-                <value>Zie groep</value>
-            </declared-values>
         </tv>
-        <tv norm="space" validate="boolean" id="IndicatieInOnderzoek">
+        <tv norm="space" id="IndicatieInOnderzoek">
             <name lang="nl">Indicatie in onderzoek</name>
             <derive>yes</derive>
             <desc>

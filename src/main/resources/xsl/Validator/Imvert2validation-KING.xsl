@@ -110,7 +110,7 @@
             empty($tvs = imvert:name), 
             'Tagged value [1] not recognized', imvert:name)"/>
         <xsl:sequence select="imf:report-error(., 
-            $tvs[. = current()/imvert:name]/@validate = 'boolean' and not(imvert:allow-tagged-value(imvert:value,'boolean')), 
+            $tvs[. = current()/imvert:name]/@validate = 'url' and not(imvert:allow-tagged-value(imvert:value,'url')), 
             'Tagged value: [1] is not allowed for: [2]', (imvert:value, imvert:name))"/>
         
         <xsl:next-match/>
@@ -162,8 +162,8 @@
         <xsl:param name="value"/>
         <xsl:param name="rule"/>
         <xsl:choose>
-            <xsl:when test="$rule = 'boolean'">
-                <xsl:sequence select="$value = ('Ja', 'Nee', 'zie groep')"/>
+            <xsl:when test="$rule = 'url'">
+                <xsl:sequence select="true()"/> <!-- TODO implement a URI/URL check -->
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="false()"/> <!-- should not occur -->

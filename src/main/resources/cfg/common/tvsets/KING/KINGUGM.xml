@@ -23,7 +23,7 @@
     
     <tagged-values>
         
-        <tv norm="space" validate="boolean"  rules="NOC" id="IndicatieKerngegeven">
+        <tv norm="space"  rules="NOC" id="IndicatieKerngegeven">
             <name lang="nl">Indicatie kerngegeven</name>
             <derive>yes</derive>
             <stereotypes>
@@ -36,7 +36,7 @@
             </declared-values>
         </tv>
         
-        <tv norm="space" validate="boolean"  rules="NOC" id="IndicatieMateriëleHistorie">
+        <tv norm="space"  rules="NOC" id="IndicatieMateriëleHistorie">
             <name lang="nl">Indicatie materiële historie</name>
             <derive>yes</derive>
             <stereotypes>
@@ -53,7 +53,7 @@
                 <value>N.v.t.</value>
             </declared-values>
         </tv>
-        <tv norm="space" validate="boolean" rules="NOC" id="IndicatieFormeleHistorie">
+        <tv norm="space" rules="NOC" id="IndicatieFormeleHistorie">
             <name lang="nl">Indicatie formele historie</name>
             <derive>yes</derive>
             <stereotypes>
@@ -78,7 +78,7 @@
                 <stereo required="no" lang="nl">Complex datatype</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" validate="boolean" id="MogelijkGeenWaarde">
+        <tv norm="space" id="MogelijkGeenWaarde">
             <name lang="nl">Mogelijk geen waarde</name>
             <derive>yes</derive>
             <stereotypes>
@@ -125,7 +125,7 @@
         
         <?x POC, verouderd 
             
-        <tv norm="space" validate="boolean" id="IsFormeel">
+        <tv norm="space" id="IsFormeel">
             <name lang="nl">isFormeel</name>
             <desc>Dit bericht vereist (al dan niet) formele historie.</desc>
             <derive>yes</derive>
@@ -133,7 +133,7 @@
                 <stereo lang="nl">Objecttype</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" validate="boolean" id="IsMaterieel">
+        <tv norm="space" id="IsMaterieel">
             <name lang="nl">isMaterieel</name>
             <desc>Dit bericht vereist (al dan niet) materiële historie.</desc>
             <derive>yes</derive>
@@ -141,7 +141,7 @@
                 <stereo lang="nl">Objecttype</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" validate="boolean" id="IsInkomend">
+        <tv norm="space" id="IsInkomend">
             <name lang="nl">isInkomend</name>
             <desc>Dit bericht is (al dan niet) een inkomend berichttype.</desc>
             <derive>yes</derive>
@@ -149,7 +149,7 @@
                 <stereo lang="nl">Objecttype</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" validate="boolean" id="IsSynchroon">
+        <tv norm="space" id="IsSynchroon">
             <name lang="nl">isSynchroon</name>
             <desc>Dit bericht is (al dan niet) een synchroon berichttype.</desc>
             <derive>yes</derive>

@@ -74,7 +74,7 @@
     <xsl:template match="imvert:tagged-value">
         <xsl:variable name="name" select="imvert:name"/>
         <xsl:choose>
-            <xsl:when test="$config-tagged-values[name = $name and derive='yes']">
+            <xsl:when test="$config-tagged-values[name = $name]"> <!-- TODO hoe omgaan met @derive (and derive='yes') -->
                 <xsl:sequence select="."/>
             </xsl:when>
             <xsl:otherwise>

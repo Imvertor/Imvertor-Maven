@@ -41,7 +41,7 @@
                 <stereo required="yes" lang="nl">Externe koppeling</stereo>
             </stereotypes>
         </tv> 
-        <tv norm="space" validate="boolean"  rules="NOC" id="IndicatieMateriëleHistorie">
+        <tv norm="space" rules="NOC" id="IndicatieMateriëleHistorie">
             <name lang="nl">Indicatie materiële historie</name>
             <derive>yes</derive>
             <stereotypes>
@@ -55,7 +55,7 @@
                 <value>Zie groep</value>
             </declared-values>
         </tv>
-        <tv norm="space" validate="boolean" rules="NOC" id="IndicatieFormeleHistorie">
+        <tv norm="space" rules="NOC" id="IndicatieFormeleHistorie">
             <name lang="nl">Indicatie formele historie</name>
             <derive>yes</derive>
             <stereotypes>
@@ -99,7 +99,7 @@
                 <stereo required="no" lang="nl">Union element</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" validate="boolean" id="MogelijkGeenWaarde">
+        <tv norm="space" id="MogelijkGeenWaarde">
             <name lang="nl">Mogelijk geen waarde</name>
             <derive>yes</derive>
             <stereotypes>
@@ -108,7 +108,7 @@
                 <stereo required="no" lang="nl">Relatiesoort</stereo>
                 <stereo required="no" lang="nl">Voidable</stereo>
             </stereotypes>
-            <declared-values>
+            <declared-values lang="nl">
                 <value>Ja</value>
                 <value>Nee</value>
             </declared-values>

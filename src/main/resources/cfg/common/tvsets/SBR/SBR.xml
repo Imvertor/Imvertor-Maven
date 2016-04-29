@@ -75,17 +75,6 @@
                 <stereo required="no" lang="nl">Objecttype</stereo>
             </stereotypes>
         </tv>
-        <!-- Authentiek wel onderdeel van SBR, maar niet in metamodel.
-        <tv norm="note" validate="boolean" id="Authentiek">
-            <name>Authentiek</name>
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo required="yes" lang="nl">Attribuutsoort</stereo>
-                <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="yes" lang="nl">Relatiesoort</stereo>
-            </stereotypes>
-        </tv>
-        -->
         <tv norm="note" id="Regels">
             <name lang="nl">Regels</name>
             <derive>yes</derive>

@@ -32,7 +32,7 @@
                 <stereo required="no" lang="nl">Koppelklasse</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" validate="boolean"  rules="NOC" id="IndicatieMateriëleHistorie">
+        <tv norm="space" rules="NOC" id="IndicatieMateriëleHistorie">
             <name lang="nl">Indicatie materiële historie</name>
             <derive>yes</derive>
             <stereotypes>
@@ -43,7 +43,7 @@
             </stereotypes>
             <!-- declared-values inherited -->
         </tv>
-        <tv norm="space" validate="boolean" rules="NOC" id="IndicatieFormeleHistorie">
+        <tv norm="space" rules="NOC" id="IndicatieFormeleHistorie">
             <name lang="nl">Indicatie formele historie</name>
             <derive>yes</derive>
             <stereotypes>
@@ -125,7 +125,7 @@
                 <stereo required="no" lang="nl">Data element</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" validate="boolean" id="MogelijkGeenWaarde">
+        <tv norm="space" id="MogelijkGeenWaarde">
             <name lang="nl">Mogelijk geen waarde</name>
             <derive>yes</derive>
             <stereotypes>
