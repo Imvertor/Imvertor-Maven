@@ -479,7 +479,7 @@ public class Configurator {
 	 */
 	public void setParmsFromOptions(String[] args) throws Exception {
 		CommandLine commandLine = null;
-		File curFile = baseFolder;
+		File curFolder = baseFolder;
 		try {
 			BasicParser parser = new BasicParser();
 			commandLine = parser.parse(options, args);
@@ -499,7 +499,7 @@ public class Configurator {
 			if (v.length > 1)
 				throw new Exception("Duplicate argument -" + optionName + " on command line");
 			if (optionName.equals("arguments")) 
-				loadFromPropertyFiles(curFile,v[0]);
+				loadFromPropertyFiles(curFolder,v[0]);
 			setParm(workConfiguration, "cli",optionName,v[0],true);
 			setOptionIsReady(optionName, true);
 		}
@@ -789,7 +789,7 @@ public class Configurator {
 		// read arguments first
 		String arguments = properties.getProperty("arguments");
 		if (arguments != null)
-			loadFromPropertyFiles(f,arguments);
+			loadFromPropertyFiles(f.getParentFile(),arguments);
 		
 		// then process the arguments
 		Enumeration<Object> e = properties.keys();
@@ -810,7 +810,7 @@ public class Configurator {
 		}
 	}
 	
-	private void loadFromPropertyFiles(File curFile, String filenames) throws Exception {
+	private void loadFromPropertyFiles(File curFolder, String filenames) throws Exception {
 		if (filenames != null) {
 			String[] files = filenames.split("\\s*,\\s*");
 			for (int i = 0; i < files.length; i++) {
@@ -818,7 +818,7 @@ public class Configurator {
 				if (AnyFile.isAbsolutePath(files[i]))
 					incFile = new File(files[i]);
 				else 
-					incFile = new File(curFile,files[i]);
+					incFile = new File(curFolder,files[i]);
 				loadFromPropertyFile(selectIncFile(incFile).getCanonicalPath());
 			}
 		}
