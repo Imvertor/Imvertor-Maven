@@ -972,6 +972,8 @@
         'integer',
         'boolean',
         'decimal',
+        'year',
+        'date',
         'datetime',
         'time'
         )" 

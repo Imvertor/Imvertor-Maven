@@ -115,13 +115,13 @@ public class XsdCompiler extends Step {
 
 		// when system, use the embellish file; when model use the model.
 		if (infoXsdSourceFilePath.equals("system"))
-			valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_XSD_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_XSD_XSLPATH");
+			valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_XSD_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_XSD_XSLPATH","system/cur-imvertor-filepath");
 		else // model
-			valid = valid && transformer.transformStep("properties/WORK_SCHEMA_FILE","properties/RESULT_XSD_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_XSD_XSLPATH");
+			valid = valid && transformer.transformStep("properties/WORK_SCHEMA_FILE","properties/RESULT_XSD_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_XSD_XSLPATH","system/cur-imvertor-filepath");
 		
 		// for each model named to flatten, process
 		if (configurator.isTrue("cli","flattenschemas")) {
-			valid = valid && transformer.transformStep("properties/RESULT_XSD_XML_FILE_PATH","properties/WORK_FLATTEN_FILE","properties/IMVERTOR_FLATTEN_XSLPATH");
+			valid = valid && transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_FLATTEN_FILE","properties/IMVERTOR_FLATTEN_XSLPATH","system/cur-imvertor-filepath");
 		}
 		
 		configurator.setParm("system","schema-created","true");

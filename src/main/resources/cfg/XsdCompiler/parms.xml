@@ -85,6 +85,13 @@
          <tip>Path the the Excel file holding the end product configuration (KING)</tip>
          <required>false</required>
       </cli-parm>
+      <cli-parm>
+         <!-- required by Kadaster approach -->
+         <name>forcenillable</name>
+         <arg>yes|no</arg>
+         <tip>Force all properties in the resulting schema to be nillable.</tip>
+         <required>false</required>
+      </cli-parm>
    </cli-parms>
   
    <properties>

@@ -46,6 +46,8 @@
     
     <xsl:variable name="xsd-folder-path" select="imf:get-config-string('system','xsd-folder-path')"/>
 
+    <xsl:variable name="is-forced-nillable" select="imf:boolean(imf:get-config-string('cli','forcenillable'))"/>
+    
     <!-- 
         Determine which type is defined in which package 
     -->
@@ -355,7 +357,7 @@
                 
                 <!-- simple type attributes for attributes types that restrict a simple type; needed to set nilReason attribute -->
                 <xsl:apply-templates 
-                    select="imvert:class/imvert:attributes/imvert:attribute[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-voidable') and imf:is-restriction(.)]"
+                    select="imvert:class/imvert:attributes/imvert:attribute[(imvert:stereotype=imf:get-config-stereotypes('stereotype-name-voidable') or $is-forced-nillable) and imf:is-restriction(.)]"
                     mode="nil-reason">
                     <xsl:with-param name="package-name" select="$this-package/imvert:name"/>
                 </xsl:apply-templates>
@@ -726,7 +728,9 @@
                     <xsl:when test="$base-type='INTEGER'">xs:integer</xsl:when> <!-- xsd:integer — Signed integers of arbitrary length -->
                     <xsl:when test="$base-type='DECIMAL'">xs:decimal</xsl:when>
                     <xsl:when test="$base-type='DATETIME'">xs:dateTime</xsl:when>
+                    <xsl:when test="$base-type='DATE'">xs:date</xsl:when>
                     <xsl:when test="$base-type='TIME'">xs:time</xsl:when>
+                    <xsl:when test="$base-type='YEAR'">xs:gYear</xsl:when>
                     <xsl:when test="$base-type='BOOLEAN'">xs:boolean</xsl:when>
                     <xsl:when test="$base-type='URI'">xs:anyURI</xsl:when>
                     <xsl:when test="$base-type='#ANY'">#any</xsl:when>
@@ -745,10 +749,17 @@
     
     <xsl:function name="imf:create-element-property" as="item()*">
         <xsl:param name="this" as="node()"/>
+        
+        <!-- nilllable may be forced for specific circumstances. This only applies to attributes of a true class or associations -->
+        <xsl:variable name="is-property" select="exists(($this/self::imvert:attribute,$this/self::imvert:association))"/>
+        <xsl:variable name="force-nillable" select="$is-property and $is-forced-nillable"/>
+        
         <xsl:variable name="is-voidable" select="$this/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-voidable')"/>
+        <xsl:variable name="is-nillable" select="$is-voidable or $force-nillable"/>
+        
         <xsl:variable name="is-restriction" select="imf:is-restriction($this)"/>
         <xsl:variable name="is-estimation" select="imf:is-estimation($this)"/>
-        <xsl:variable name="basetype-name" select="if ($is-voidable) then imf:get-restriction-basetype-name($this) else ''"/>
+        <xsl:variable name="basetype-name" select="if ($is-nillable) then imf:get-restriction-basetype-name($this) else ''"/>
         <xsl:variable name="package-name" select="$this/ancestor::imvert:package[last()]/imvert:name"/>
         
         <xsl:variable name="name" select="$this/imvert:name"/>
@@ -778,6 +789,7 @@
         
         <xsl:variable name="data-location" select="imf:get-appinfo-location($this)"/>
             
+        <xsl:sequence select="imf:debug($this,concat('for= ',$name))"/>
         <xsl:choose>
             <!-- any type, i.e. #any -->
             <xsl:when test="$is-any">
@@ -810,7 +822,7 @@
                 </xs:element>
             </xsl:when>
             <!-- base types such as xs:string and xs:boolean -->
-            <xsl:when test="$type='xs:dateTime' and $is-type-modified-incomplete and $is-voidable"> <!-- incomplete type, and could be, but may may not be empty -->
+            <xsl:when test="$type='xs:dateTime' and $is-type-modified-incomplete and $is-nillable"> <!-- incomplete type, and could be, but may may not be empty -->
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
@@ -838,7 +850,7 @@
                 </xs:element>
             </xsl:when>
             
-            <xsl:when test="starts-with($type,'xs:') and $is-voidable"> 
+            <xsl:when test="starts-with($type,'xs:') and $is-nillable"> 
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
@@ -926,7 +938,7 @@
                     <xsl:sequence select="imf:get-annotation($this)"/>
                 </xs:element>
             </xsl:when>
-            <xsl:when test="$is-enumeration and $is-voidable">
+            <xsl:when test="$is-enumeration and $is-nillable">
                 <!-- an enumeration or a datatype such as postcode -->
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
@@ -944,7 +956,7 @@
                     </xs:complexType>
                 </xs:element>
             </xsl:when>
-            <xsl:when test="$is-datatype and $is-voidable">
+            <xsl:when test="$is-datatype and $is-nillable">
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
@@ -981,7 +993,7 @@
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                 </xs:element>
             </xsl:when>
-            <xsl:when test="$is-choice and $is-voidable"> 
+            <xsl:when test="$is-choice and $is-nillable"> 
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
@@ -1018,7 +1030,7 @@
                     <xsl:sequence select="imf:get-annotation($this)"/>
                 </xs:element>
             </xsl:when>
-            <xsl:when test="$is-complextype and $is-voidable">
+            <xsl:when test="$is-complextype and $is-nillable">
                 <!-- note that we do not support avoiding substitution on complex datatypes --> 
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
@@ -1047,7 +1059,7 @@
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                 </xs:element>
            </xsl:when>
-            <xsl:when test="$is-external and $is-voidable">
+            <xsl:when test="$is-external and $is-nillable">
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
@@ -1187,12 +1199,12 @@
                             </xs:choice>
                         </xsl:otherwise>
                     </xsl:choose>
-                    <xsl:if test="$is-voidable">
+                    <xsl:if test="$is-nillable">
                         <xsl:sequence select="imf:create-nilreason()"/>
                     </xsl:if>
                 </xsl:variable>
                 <xsl:choose>
-                    <xsl:when test="$is-composite and imf:boolean($anonymous-components) and not($is-voidable)">
+                    <xsl:when test="$is-composite and imf:boolean($anonymous-components) and not($is-nillable)">
                         <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                         <xs:sequence>
                             <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
@@ -1207,12 +1219,12 @@
                             <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                             <xsl:attribute name="maxOccurs" select="1"/>
                             <xsl:choose>
-                                <xsl:when test="$is-composite and imf:boolean($anonymous-components) and $is-voidable">
+                                <xsl:when test="$is-composite and imf:boolean($anonymous-components) and $is-nillable">
                                     <xsl:attribute name="nillable">true</xsl:attribute>
                                     <xsl:sequence select="imf:debug($this,'An objecttype, anonymous, but voidable')"/>
                                     <xsl:sequence select="imf:msg('WARN','Anonymous component is voidable and therefore must be named: [1]',$name)"/>
                                 </xsl:when>
-                                <xsl:when test="$is-voidable">
+                                <xsl:when test="$is-nillable">
                                     <xsl:attribute name="nillable">true</xsl:attribute>
                                     <xsl:sequence select="imf:debug($this,'An objecttype, voidable')"/>
                                 </xsl:when>
@@ -1234,7 +1246,7 @@
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="1"/>
-                    <xsl:if test="$is-voidable">
+                    <xsl:if test="$is-nillable">
                         <xsl:attribute name="nillable">true</xsl:attribute>
                     </xsl:if>
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
@@ -1287,7 +1299,7 @@
                                 <xsl:sequence select="$result"/>
                             </xs:sequence>
                         </xsl:if>
-                        <xsl:if test="$is-voidable">
+                        <xsl:if test="$is-nillable">
                             <xsl:sequence select="imf:create-nilreason()"/>
                         </xsl:if>
                     </xs:complexType>

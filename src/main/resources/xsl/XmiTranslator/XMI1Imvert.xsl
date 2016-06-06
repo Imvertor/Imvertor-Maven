@@ -615,18 +615,26 @@
                 <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
                 <xsl:sequence select="imf:create-output-element('imvert:type-name','#mix')"/>
             </xsl:when>
-            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('DATUM', 'DT') and $type-modifier = '?'">
+            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('DATUMTIJD','DT') and $type-modifier = '?'">
                 <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
                 <xsl:sequence select="imf:create-output-element('imvert:type-name','datetime')"/>
                 <xsl:sequence select="imf:create-output-element('imvert:type-modifier',$type-modifier)"/>
+            </xsl:when>
+            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('DATUMTIJD','DT')">
+                <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
+                <xsl:sequence select="imf:create-output-element('imvert:type-name','datetime')"/>
+            </xsl:when>
+            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('DATUM')">
+                <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
+                <xsl:sequence select="imf:create-output-element('imvert:type-name','date')"/>
             </xsl:when>
             <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('TIJD','T')">
                 <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
                 <xsl:sequence select="imf:create-output-element('imvert:type-name','time')"/>
             </xsl:when>
-            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('JAAR', 'JAARMAAND', 'DATUM', 'DT')">
+            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('JAAR')">
                 <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
-                <xsl:sequence select="imf:create-output-element('imvert:type-name','datetime')"/>
+                <xsl:sequence select="imf:create-output-element('imvert:type-name','year')"/>
             </xsl:when>
             <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('URI')">
                 <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
