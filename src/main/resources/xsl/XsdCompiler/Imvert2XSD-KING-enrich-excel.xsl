@@ -81,12 +81,12 @@
     </xsl:template>
 
    <xsl:template match="row">
-		<xsl:if test="@number &gt; 2 and col[@number=9]/data!=''">
-			<xsl:variable name="entity" select="col[@number=9]/data"/>
-			<xsl:variable name="attribute" select="col[@number=12]/data"/>
+		<xsl:if test="@number &gt; 2 and col[@number=0]/data!=''">
+			<?x xsl:variable name="entity" select="col[@number=9]/data"/>
+			<xsl:variable name="attribute" select="col[@number=12]/data"/ x?>
 			<xsl:copy>
 				<xsl:apply-templates select="*|@*"/>
-				<col naam="imvert-id" number="15">
+				<?x col naam="imvert-id" number="15">
 					<data>
 						<!--<xsl:choose>-->
 							<!-- Nog inbouwen dat kolom nummer 10 ook leeg kan zijn. -->
@@ -100,32 +100,68 @@
 							</xsl:when>
 						</xsl:choose>-->
 					</data>
-				</col>					
+				</col x?>					
 			</xsl:copy>
 		</xsl:if>
     </xsl:template>
 
    <xsl:template match="col">
-		<xsl:copy>
-			<xsl:choose>
-				<xsl:when test="@number=0"><xsl:attribute name="naam" select="'entiteittype'"/></xsl:when>
-				<xsl:when test="@number=1"><xsl:attribute name="naam" select="'typeBericht'"/></xsl:when>
-				<xsl:when test="@number=2"><xsl:attribute name="naam" select="'synchroon?'"/></xsl:when>
-				<xsl:when test="@number=3"><xsl:attribute name="naam" select="'berichtcode'"/></xsl:when>
-				<xsl:when test="@number=4"><xsl:attribute name="naam" select="'berichtnaam'"/></xsl:when>
-				<xsl:when test="@number=5"><xsl:attribute name="naam" select="'leeg'"/></xsl:when>
-				<xsl:when test="@number=6"><xsl:attribute name="naam" select="'informatiemodel'"/></xsl:when>
-				<xsl:when test="@number=7"><xsl:attribute name="naam" select="'bericht-construct'"/></xsl:when>
-				<xsl:when test="@number=8"><xsl:attribute name="naam" select="'alles-opnemen?'"/></xsl:when>
-				<xsl:when test="@number=9"><xsl:attribute name="naam" select="'entiteit'"/></xsl:when>
-				<xsl:when test="@number=10"><xsl:attribute name="naam" select="'role-target'"/></xsl:when>
-				<xsl:when test="@number=11"><xsl:attribute name="naam" select="'relatie'"/></xsl:when>
-				<xsl:when test="@number=12"><xsl:attribute name="naam" select="'attribuut'"/></xsl:when>
-				<xsl:when test="@number=13"><xsl:attribute name="naam" select="'heeftRelatieMet'"/></xsl:when>
-				<xsl:when test="@number=14"><xsl:attribute name="naam" select="'kardinaliteit'"/></xsl:when>
-			</xsl:choose>
-			<xsl:apply-templates select="*|@*"/>
-		</xsl:copy>
+       <xsl:copy>
+          <xsl:choose>
+              <xsl:when test="ancestor::sheet[name = 'Berichtgerelateerde gegevens']">
+                  <xsl:choose>
+                      <xsl:when test="@number=0"><xsl:attribute name="name" select="'typeBericht'"/></xsl:when>
+                      <xsl:when test="@number=1"><xsl:attribute name="name" select="'synchroon?'"/></xsl:when>
+                      <xsl:when test="@number=2"/>
+                      <xsl:when test="@number=3"><xsl:attribute name="name" select="'berichtcode'"/></xsl:when>
+                      <xsl:when test="@number=4"><xsl:attribute name="name" select="'zender'"/></xsl:when>
+                      <xsl:when test="@number=5"><xsl:attribute name="name" select="'ontvanger'"/></xsl:when>
+                      <xsl:when test="@number=6"><xsl:attribute name="name" select="'referentienummer'"/></xsl:when>
+                      <xsl:when test="@number=7"><xsl:attribute name="name" select="'tijdstipBericht'"/></xsl:when>
+                      <xsl:when test="@number=8"><xsl:attribute name="name" select="'crossRefnummer'"/></xsl:when>
+                      <xsl:when test="@number=9"><xsl:attribute name="name" select="'entiteittype'"/></xsl:when>
+                      <xsl:when test="@number=10"><xsl:attribute name="name" select="'functie'"/></xsl:when>
+                      <xsl:when test="@number=11"/>
+                      <xsl:when test="@number=12"><xsl:attribute name="name" select="'sortering'"/></xsl:when>
+                      <xsl:when test="@number=13"><xsl:attribute name="name" select="'indicatorVervolgvraag'"/></xsl:when>
+                      <xsl:when test="@number=14"><xsl:attribute name="name" select="'indicatorAfnemerIndicatie'"/></xsl:when>
+                      <xsl:when test="@number=15"><xsl:attribute name="name" select="'maximumAantal'"/></xsl:when>
+                      <xsl:when test="@number=16"><xsl:attribute name="name" select="'peiltijdstipMaterieel'"/></xsl:when>
+                      <xsl:when test="@number=17"><xsl:attribute name="name" select="'peiltijdstipFormeel'"/></xsl:when>
+                      <xsl:when test="@number=18"><xsl:attribute name="name" select="'indicatorHistorie (vrije berichten)'"/></xsl:when>
+                      <xsl:when test="@number=19"><xsl:attribute name="name" select="'indicatorAantal'"/></xsl:when>
+                      <xsl:when test="@number=20"><xsl:attribute name="name" select="'aantalVoorkomens'"/></xsl:when>
+                      <xsl:when test="@number=21"><xsl:attribute name="name" select="'sequenceNumber'"/></xsl:when>
+                      <xsl:when test="@number=22"><xsl:attribute name="name" select="'indicatorLaatsteBericht'"/></xsl:when>
+                      <xsl:when test="@number=23"><xsl:attribute name="name" select="'mutatiesoort'"/></xsl:when>
+                      <xsl:when test="@number=24"><xsl:attribute name="name" select="'indicatorOvername'"/></xsl:when>
+                  </xsl:choose>               
+              </xsl:when>
+              <xsl:when test="ancestor::sheet[name = 'XML attributes']">
+                  <xsl:choose>
+                      <xsl:when test="@number=0"><xsl:attribute name="name" select="'id'"/></xsl:when>
+                      <xsl:when test="@number=1"><xsl:attribute name="name" select="'omschrijving?'"/></xsl:when>
+                      <xsl:when test="@number=2"><xsl:attribute name="name" select="'typecode'"/></xsl:when>
+                      <xsl:when test="@number=3"><xsl:attribute name="name" select="'berichttype'"/></xsl:when>
+                      <xsl:when test="@number=4"><xsl:attribute name="name" select="'context'"/></xsl:when>
+                      <xsl:when test="@number=5"/>
+                      <xsl:when test="@number=6"><xsl:attribute name="name" select="'StUF:noValue'"/></xsl:when>
+                      <xsl:when test="@number=7"><xsl:attribute name="name" select="'StUF:exact'"/></xsl:when>
+                      <xsl:when test="@number=8"><xsl:attribute name="name" select="'StUF:metagegeven'"/></xsl:when>
+                      <xsl:when test="@number=9"><xsl:attribute name="name" select="'StUF:indOnvolledigeDatum'"/></xsl:when>
+                      <xsl:when test="@number=10"><xsl:attribute name="name" select="'StUF:entiteittype'"/></xsl:when>
+                      <xsl:when test="@number=11"><xsl:attribute name="name" select="'StUF:sleutelVerzendend'"/></xsl:when>
+                      <xsl:when test="@number=12"><xsl:attribute name="name" select="'StUF:sleutelOntvangend'"/></xsl:when>
+                      <xsl:when test="@number=13"><xsl:attribute name="name" select="'StUF:sleutelGegevensbeheer'"/></xsl:when>
+                      <xsl:when test="@number=14"><xsl:attribute name="name" select="'StUF:sleutelSynchronisatie'"/></xsl:when>
+                      <xsl:when test="@number=15"><xsl:attribute name="name" select="'StUF:scope'"/></xsl:when>
+                      <xsl:when test="@number=16"><xsl:attribute name="name" select="'StUF:verwerkingssoort'"/></xsl:when>
+                      <xsl:when test="@number=17"><xsl:attribute name="name" select="'StUF:functie'"/></xsl:when>
+                  </xsl:choose>
+              </xsl:when>
+          </xsl:choose> 
+          <xsl:apply-templates select="*|@*"/>
+       </xsl:copy>         
     </xsl:template>
  
     <xsl:template match="data">

@@ -636,13 +636,21 @@
                 <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
                 <xsl:sequence select="imf:create-output-element('imvert:type-name','year')"/>
             </xsl:when>
+            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('JAARMAAND')">
+                <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
+                <xsl:sequence select="imf:create-output-element('imvert:type-name','yearmonth')"/>
+            </xsl:when>
             <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('URI')">
                 <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
                 <xsl:sequence select="imf:create-output-element('imvert:type-name','uri')"/>
             </xsl:when>
-            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('TXT','POSTCODE')"> <!-- TODO postcode opnemen als native type is niet juist -->
+            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('TXT')"> 
                 <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
                 <xsl:sequence select="imf:create-output-element('imvert:type-name','string')"/>
+            </xsl:when>
+            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('POSTCODE')"> 
+                <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
+                <xsl:sequence select="imf:create-output-element('imvert:type-name','postcode')"/>
             </xsl:when>
             <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('INDIC','INDICATIE')">
                 <xsl:sequence select="imf:create-output-element('imvert:baretype','INDIC')"/>

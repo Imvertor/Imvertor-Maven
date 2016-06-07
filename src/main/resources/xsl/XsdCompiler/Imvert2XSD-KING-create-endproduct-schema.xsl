@@ -22,6 +22,8 @@
 	<xsl:variable name="stylesheet">Imvert2XSD-KING-create-endproduct-schema</xsl:variable>
 	<xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-create-endproduct-schema.xsl 1 2015-11-11 12:02:00Z RobertMelskens $</xsl:variable>
 	
+	<xsl:variable name="globalComplexTypes" select="'no'"/>
+	
 	<xsl:variable name="typeBericht" select="/ep:message-set/ep:message/ep:type"/>
 	<xsl:variable name="berichtCode" select="/ep:message-set/ep:message/ep:code"/>
 	<xsl:variable name="prefix" select="ep:message-set/ep:namespace-prefix"/>
@@ -31,19 +33,21 @@
 			<xsl:namespace name="{$prefix}"><xsl:value-of select="ep:namespace"/></xsl:namespace>
 			<xs:import namespace="http://www.egem.nl/StUF/StUF0301" schemaLocation="stuf0301.xsd"/>
 			<xsl:apply-templates select="ep:message"/>
-			<xsl:apply-templates select="//ep:construct[(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name and not(.//ep:construct)]" mode="createSimpleTypes"/>
-			<xsl:apply-templates select="//ep:construct[(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name and .//ep:construct]" mode="createComplexTypes"/>
-			<xsl:apply-templates select="//ep:construct[(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name]//ep:construct" mode="createAttributeSimpleTypes"/>
+			<!--xsl:apply-templates select="//ep:construct[(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name]" mode="createSimpleTypes"/>
+			<xsl:apply-templates select="//ep:construct[.//ep:construct[not(@ismetadata)]]" mode="createComplexTypes"/-->
+			<xsl:apply-templates select="//ep:construct[(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata]]" mode="createSimpleTypes"/>
+
+			<!--xsl:apply-templates select="//ep:construct[(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name]//ep:construct[@ismetadata='yes']" mode="createAttributeSimpleTypes"/-->
 			<?x xsl:apply-templates select="//ep:attribute[not(.//ep:attribute)]" mode="createComplexTypes"/>
 			<xsl:apply-templates select="//ep:attribute[not(.//ep:attribute)]" mode="createSimpleTypes"/ x?>
-			<xs:complexType name="test2">
+<?x			<xs:complexType name="test2">
 				<xs:simpleContent>
 					<xs:extension base="{concat($prefix,':test')}"/>			
 				</xs:simpleContent>
 			</xs:complexType>
 			<xs:simpleType name="test">
 				<xs:restriction base="xs:string"/>
-			</xs:simpleType>
+			</xs:simpleType> x?>
 		</xs:schema>
 	</xsl:template>
 
@@ -57,13 +61,17 @@
 	
 	<xsl:template match="ep:seq">
 		<xs:sequence>
-			<xsl:apply-templates select="ep:construct|ep:seq"/>
+			<xsl:apply-templates select="ep:construct[not(@ismetadata)]|ep:seq"/>
 		</xs:sequence>
 	</xsl:template>
 	
+	<xsl:template match="ep:seq" mode="generateAttributes">
+		<xsl:apply-templates select="ep:construct[@ismetadata]" mode="generateAttributes"/>
+	</xsl:template>
+
 	<xsl:template match="ep:construct">
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
-		<xsl:variable name="name">
+		<!--xsl:variable name="name">
 			<xsl:choose>
 				<xsl:when test="contains(ep:tech-name,'StUF:')">
 					<xsl:value-of select="substring-after(ep:tech-name,'StUF:')"/>
@@ -72,27 +80,250 @@
 					<xsl:value-of select="ep:tech-name"/>
 				</xsl:otherwise>
 			</xsl:choose>				
-		</xsl:variable>
+		</xsl:variable-->
 		<xs:element>
-			<xsl:attribute name="name" select="$name"/>
-			<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
-			<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
 			<xsl:choose>
-				<xsl:when test="(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name and not(.//ep:construct)">
-					<xsl:attribute name="type">
-						<xsl:value-of select="concat($prefix,':simpleType-',$name,'-',$id,'-',generate-id())"/>
-					</xsl:attribute>				
-				</xsl:when>
-				<xsl:when test="(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name and .//ep:construct">
-					<xsl:attribute name="type">
-						<xsl:value-of select="concat($prefix,':complexType-',$name,'-',$id,'-',generate-id())"/>
-					</xsl:attribute>				
+				<xsl:when test="contains(ep:tech-name,':')">
+					<xsl:attribute name="ref" select="ep:tech-name"/>
+					<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
+					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xs:complexType>
-						<xsl:apply-templates select="ep:seq"/>
-					</xs:complexType>					
-				</xsl:otherwise>				
+					<xsl:attribute name="name" select="ep:tech-name"/>
+					<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
+					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
+					<xsl:choose>
+						<xsl:when test="(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name and $globalComplexTypes='yes'">
+							<xsl:attribute name="type">
+								<xsl:value-of select="concat($prefix,':simpleType-',ep:tech-name,'-',$id,'-',generate-id())"/>
+							</xsl:attribute>
+							<xsl:comment select="'situatie 1'"/>
+						</xsl:when>
+						<xsl:when test="(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata] and $globalComplexTypes='no'">
+							<xsl:comment select="'situatie 2'"/>
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension>
+										<!--xsl:attribute name="base" select="concat($prefix,':simpleType-',ep:tech-name,'-',$id,'-',generate-id())"/-->
+										<xsl:attribute name="base" select="concat($prefix,':simpleType-',ep:tech-name,'-',generate-id())"/>
+										<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+										<!--xsl:apply-templates select=".//ep:construct[@ismetadata]" mode="generateAttributes"/-->
+									</xs:extension>						
+								</xs:simpleContent>	
+							</xs:complexType>
+						</xsl:when>
+						<xsl:when test="(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name and $globalComplexTypes='no'">
+							<xsl:comment select="'situatie 3'"/>
+							<xs:simpleType>
+								<xs:restriction>
+									<xsl:attribute name="base">
+										<xsl:choose>
+											<xsl:when test="ep:type-name = 'integer'">
+												<xsl:value-of select="'xs:int'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'decimal'">
+												<xsl:value-of select="'xs:decimal'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'char'">
+												<xsl:value-of select="'xs:string'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'datetime'">
+												<xsl:value-of select="'xs:string'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'boolean'">
+												<xsl:value-of select="'xs:boolean'"/>
+											</xsl:when>
+											<!--xsl:when test="ep:type-name = 'MaximumAantal'">
+										<xsl:value-of select="'xs:int'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'Tijdstip'">
+										<xsl:value-of select="'xs:date'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'Sortering'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'Berichtcode'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'Refnummer'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'Functie'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'Administratie'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'Applicatie'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'Gebruiker'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'Organisatie'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'POSTCODE'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when-->	
+											<xsl:otherwise>
+												<xsl:value-of select="'xs:string'"/>								
+											</xsl:otherwise>
+											<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
+										</xsl:choose>
+									</xsl:attribute>
+									<xsl:if test="ep:length">
+										<xsl:choose>
+											<xsl:when test="ep:type-name = 'char'">
+												<xs:length value="{ep:length}"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'integer' or ep:type-name = 'decimal'">
+												<xs:totalDigits value="{ep:length}"/>
+											</xsl:when>
+										</xsl:choose>
+									</xsl:if>
+									<xsl:if test="ep:min-length">
+										<xsl:choose>
+											<xsl:when test="ep:type-name = 'char'">
+												<xs:minLength value="1"/>
+												<!--xs:minLength value="{ep:min-length}"/-->
+											</xsl:when>
+										</xsl:choose>
+									</xsl:if>
+									<xsl:if test="ep:max-length">
+										<xsl:choose>
+											<xsl:when test="ep:type-name = 'char'">
+												<xs:maxLength value="12"/>
+												<!--xs:maxLength value="{ep:max-length}"/-->
+											</xsl:when>
+										</xsl:choose>
+									</xsl:if>
+									<xsl:if test="ep:min-value">
+										<xsl:choose>
+											<xsl:when test="ep:type-name = 'integer' or ep:type-name = 'decimal'">
+												<xs:minInclusive value="1"/>
+												<!--xs:minInclusive value="{ep:min-value}"/-->
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'datetime'">
+												<!--xs:minInclusive value="{ep:min-value}"/-->
+											</xsl:when>
+										</xsl:choose>
+									</xsl:if>
+									<xsl:if test="ep:max-value and not(ep:type-name='datetime')">
+										<xsl:choose>
+											<xsl:when test="ep:type-name = 'integer' or ep:type-name = 'decimal'">
+												<xs:maxInclusive value="99"/>
+												<!--xs:maxInclusive value="{ep:max-value}"/-->
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'datetime'">
+												<!--xs:maxInclusive value="{ep:max-value}"/-->
+											</xsl:when>
+										</xsl:choose>
+									</xsl:if>
+									<xsl:if test="ep:fraction-digits">
+										<xsl:choose>
+											<xsl:when test="ep:type-name = 'decimal'">
+												<xs:fractionDigits value="{ep:fraction-digits}"/>
+											</xsl:when>
+										</xsl:choose>
+									</xsl:if>
+									<xsl:if test="ep:enum">
+										<xsl:choose>
+											<xsl:when test="ep:type-name = 'char' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal'">
+												<xsl:apply-templates select="ep:enum"/>
+											</xsl:when>
+										</xsl:choose>
+									</xsl:if>
+									<xsl:if test="ep:pattern">
+										<xsl:choose>
+											<xsl:when test="ep:type-name = 'char' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal' or ep:type-name = 'boolean'">
+												<!--xs:pattern value="{ep:pattern}"/-->
+											</xsl:when>
+										</xsl:choose>
+									</xsl:if>				
+								</xs:restriction>						
+							</xs:simpleType>				
+						</xsl:when>
+						<xsl:when test="ep:type-name and $globalComplexTypes='no'">
+							<xsl:comment select="'situatie 4'"/>
+							<xs:simpleType>
+								<xs:extension>
+									<xsl:attribute name="base">
+										<xsl:choose>
+											<xsl:when test="ep:type-name = 'integer'">
+												<xsl:value-of select="'xs:int'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'decimal'">
+												<xsl:value-of select="'xs:decimal'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'char'">
+												<xsl:value-of select="'xs:string'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'datetime'">
+												<xsl:value-of select="'xs:string'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'boolean'">
+												<xsl:value-of select="'xs:boolean'"/>
+											</xsl:when>
+											<!--xsl:when test="ep:type-name = 'MaximumAantal'">
+										<xsl:value-of select="'xs:int'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'Tijdstip'">
+										<xsl:value-of select="'xs:date'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'Sortering'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'Berichtcode'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'Refnummer'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'Functie'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'Administratie'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'Applicatie'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'Gebruiker'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'Organisatie'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'POSTCODE'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when-->	
+											<xsl:otherwise>
+												<xsl:value-of select="'xs:string'"/>								
+											</xsl:otherwise>
+											<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
+										</xsl:choose>
+									</xsl:attribute>
+									<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+								</xs:extension>						
+							</xs:simpleType>				
+						</xsl:when>
+						<xsl:when test=".//ep:construct and $globalComplexTypes='no'">
+							<xsl:comment select="'situatie 5'"/>
+							<xs:complexType>
+								<xsl:apply-templates select="ep:seq[not(@ismetadata)]"/>
+								<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+							</xs:complexType>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:comment select="'situatie 6'"/>
+							<xs:complexType>
+								<xsl:apply-templates select="ep:seq[not(@ismetadata)]"/>
+								<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+							</xs:complexType>					
+						</xsl:otherwise>				
+					</xsl:choose>
+				</xsl:otherwise>
 			</xsl:choose>
 		</xs:element>
 	</xsl:template>
@@ -109,134 +340,174 @@
 				</xsl:otherwise>
 			</xsl:choose>				
 		</xsl:variable>
-		<xsl:if test="not(preceding::ep:construct/ep:id=$id)">
-			<xs:simpleType name="{concat('simpleType-',$name,'-',$id,'-',generate-id())}">
-				<xs:restriction>
-					<xsl:attribute name="base">
-						<xsl:choose>
-							<xsl:when test="ep:type-name = 'integer'">
-								<xsl:value-of select="'xs:int'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'decimal'">
-								<xsl:value-of select="'xs:decimal'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'char'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'datetime'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'boolean'">
-								<xsl:value-of select="'xs:boolean'"/>
-							</xsl:when>
-							<!--xsl:when test="ep:type-name = 'MaximumAantal'">
-								<xsl:value-of select="'xs:int'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'Tijdstip'">
-								<xsl:value-of select="'xs:date'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'Sortering'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'Berichtcode'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'Refnummer'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'Functie'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'Administratie'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'Applicatie'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'Gebruiker'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'Organisatie'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'POSTCODE'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when-->	
-							<xsl:otherwise>
-								<xsl:value-of select="'xs:string'"/>								
-							</xsl:otherwise>
-							<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
-						</xsl:choose>
-					</xsl:attribute>
-					<xsl:if test="ep:length">
-						<xsl:choose>
-							<xsl:when test="ep:type-name = 'char'">
-								<xs:length value="{ep:length}"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'integer' or ep:type-name = 'decimal'">
-								<xs:totalDigits value="{ep:length}"/>
-							</xsl:when>
-						</xsl:choose>
-					</xsl:if>
-					<xsl:if test="ep:min-length">
-						<xsl:choose>
-							<xsl:when test="ep:type-name = 'char'">
-								<xs:minLength value="1"/>
-								<!--xs:minLength value="{ep:min-length}"/-->
-							</xsl:when>
-						</xsl:choose>
-					</xsl:if>
-					<xsl:if test="ep:max-length">
-						<xsl:choose>
-							<xsl:when test="ep:type-name = 'char'">
-								<xs:maxLength value="12"/>
-								<!--xs:maxLength value="{ep:max-length}"/-->
-							</xsl:when>
-						</xsl:choose>
-					</xsl:if>
-					<xsl:if test="ep:min-value">
-						<xsl:choose>
-							<xsl:when test="ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal'">
-								<xs:minInclusive value="1"/>
-								<!--xs:minInclusive value="{ep:min-value}"/-->
-							</xsl:when>
-						</xsl:choose>
-					</xsl:if>
-					<xsl:if test="ep:max-value">
-						<xsl:choose>
-							<xsl:when test="ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal'">
-								<xs:maxInclusive value="99"/>
-								<!--xs:maxInclusive value="{ep:max-value}"/-->
-							</xsl:when>
-						</xsl:choose>
-					</xsl:if>
-					<xsl:if test="ep:fraction-digits">
-						<xsl:choose>
-							<xsl:when test="ep:type-name = 'decimal'">
-								<xs:fractionDigits value="{ep:fraction-digits}"/>
-							</xsl:when>
-						</xsl:choose>
-					</xsl:if>
-					<xsl:if test="ep:enum">
-						<xsl:choose>
-							<xsl:when test="ep:type-name = 'char' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal'">
-								<xsl:apply-templates select="ep:enum"/>
-							</xsl:when>
-						</xsl:choose>
-					</xsl:if>
-					<xsl:if test="ep:pattern">
-						<xsl:choose>
-							<xsl:when test="ep:type-name = 'char' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal' or ep:type-name = 'boolean'">
-								<!--xs:pattern value="{ep:pattern}"/-->
-							</xsl:when>
-						</xsl:choose>
-					</xsl:if>				
-				</xs:restriction>
-			</xs:simpleType>
-		</xsl:if>
+		<xsl:choose>
+			<xsl:when test="contains(ep:tech-name,':')"/>
+			<xsl:otherwise>
+				<xs:simpleType name="{concat('simpleType-',ep:tech-name,'-',generate-id())}">
+					<xs:restriction>
+						<xsl:attribute name="base">
+							<xsl:choose>
+								<xsl:when test="ep:type-name = 'integer'">
+									<xsl:value-of select="'xs:int'"/>
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'decimal'">
+									<xsl:value-of select="'xs:decimal'"/>
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'char'">
+									<xsl:value-of select="'xs:string'"/>
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'datetime'">
+									<xsl:value-of select="'xs:string'"/>
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'boolean'">
+									<xsl:value-of select="'xs:boolean'"/>
+								</xsl:when>
+								<!--xsl:when test="ep:type-name = 'MaximumAantal'">
+							<xsl:value-of select="'xs:int'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'Tijdstip'">
+							<xsl:value-of select="'xs:date'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'Sortering'">
+							<xsl:value-of select="'xs:string'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'Berichtcode'">
+							<xsl:value-of select="'xs:string'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'Refnummer'">
+							<xsl:value-of select="'xs:string'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'Functie'">
+							<xsl:value-of select="'xs:string'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'Administratie'">
+							<xsl:value-of select="'xs:string'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'Applicatie'">
+							<xsl:value-of select="'xs:string'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'Gebruiker'">
+							<xsl:value-of select="'xs:string'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'Organisatie'">
+							<xsl:value-of select="'xs:string'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'POSTCODE'">
+							<xsl:value-of select="'xs:string'"/>
+						</xsl:when-->	
+								<xsl:otherwise>
+									<xsl:value-of select="'xs:string'"/>								
+								</xsl:otherwise>
+								<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
+							</xsl:choose>
+						</xsl:attribute>
+						<xsl:if test="ep:length">
+							<xsl:choose>
+								<xsl:when test="ep:type-name = 'char'">
+									<xs:length value="{ep:length}"/>
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'integer' or ep:type-name = 'decimal'">
+									<xs:totalDigits value="{ep:length}"/>
+								</xsl:when>
+							</xsl:choose>
+						</xsl:if>
+						<xsl:if test="ep:min-length">
+							<xsl:choose>
+								<xsl:when test="ep:type-name = 'char'">
+									<xs:minLength value="1"/>
+									<!--xs:minLength value="{ep:min-length}"/-->
+								</xsl:when>
+							</xsl:choose>
+						</xsl:if>
+						<xsl:if test="ep:max-length">
+							<xsl:choose>
+								<xsl:when test="ep:type-name = 'char'">
+									<xs:maxLength value="12"/>
+									<!--xs:maxLength value="{ep:max-length}"/-->
+								</xsl:when>
+							</xsl:choose>
+						</xsl:if>
+						<xsl:if test="ep:min-value">
+							<xsl:choose>
+								<xsl:when test="ep:type-name = 'integer' or ep:type-name = 'decimal'">
+									<xs:minInclusive value="1"/>
+									<!--xs:minInclusive value="{ep:min-value}"/-->
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'datetime'">
+									<!--xs:minInclusive value="{ep:min-value}"/-->
+								</xsl:when>
+							</xsl:choose>
+						</xsl:if>
+						<xsl:if test="ep:max-value and not(ep:type-name='datetime')">
+							<xsl:choose>
+								<xsl:when test="ep:type-name = 'integer' or ep:type-name = 'decimal'">
+									<xs:maxInclusive value="99"/>
+									<!--xs:maxInclusive value="{ep:max-value}"/-->
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'datetime'">
+									<!--xs:maxInclusive value="{ep:max-value}"/-->
+								</xsl:when>
+							</xsl:choose>
+						</xsl:if>
+						<xsl:if test="ep:fraction-digits">
+							<xsl:choose>
+								<xsl:when test="ep:type-name = 'decimal'">
+									<xs:fractionDigits value="{ep:fraction-digits}"/>
+								</xsl:when>
+							</xsl:choose>
+						</xsl:if>
+						<xsl:if test="ep:enum">
+							<xsl:choose>
+								<xsl:when test="ep:type-name = 'char' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal'">
+									<xsl:apply-templates select="ep:enum"/>
+								</xsl:when>
+							</xsl:choose>
+						</xsl:if>
+						<xsl:if test="ep:pattern">
+							<xsl:choose>
+								<xsl:when test="ep:type-name = 'char' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal' or ep:type-name = 'boolean'">
+									<!--xs:pattern value="{ep:pattern}"/-->
+								</xsl:when>
+							</xsl:choose>
+						</xsl:if>				
+					</xs:restriction>
+				</xs:simpleType>
+			</xsl:otherwise>
+		</xsl:choose>
+		<!--xs:simpleType name="{concat('simpleType-',ep:tech-name,'-',$id,'-',generate-id())}"-->
 	</xsl:template>
 	
-	<xsl:template match="ep:construct" mode="createAttributeSimpleTypes">
+	<!--xsl:template match="ep:construct" mode="createComplexTypes">
+		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
+		<xsl:variable name="name">
+			<xsl:choose>
+				<xsl:when test="contains(ep:tech-name,'StUF:')">
+					<xsl:value-of select="substring-after(ep:tech-name,'StUF:')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="ep:tech-name"/>
+				</xsl:otherwise>
+			</xsl:choose>				
+		</xsl:variable>
+		<xsl:choose>
+			<xsl:when test=".//ep:construct[not(@ismetadata)]">
+				<xs:complexType name="{concat('complexType-',$name,'-',$id,'-',generate-id())}">
+					<xsl:apply-templates select="ep:seq"/>
+				</xs:complexType>
+			</xsl:when>
+			<xsl:when test="(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata]">
+				<xs:complexType name="{concat('complexType-',$name,'-',$id,'-',generate-id())}">
+					<xs:simpleContent>
+						<xs:extension base="{concat($prefix,':simpleType-',$name,'-',$id,'-',generate-id())}">
+							<xsl:apply-templates select="ep:seq/ep:construct[@ismetadata='yes']" mode="generateAttributes"/>
+						</xs:extension>			
+					</xs:simpleContent>
+				</xs:complexType>				
+			</xsl:when>
+		</xsl:choose>								
+	</xsl:template-->
+	
+	<?x xsl:template match="ep:construct[@ismetadata='yes']" mode="createAttributeSimpleTypes">
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
 		<xsl:variable name="name">
 			<xsl:choose>
@@ -373,11 +644,11 @@
 				</xs:restriction>
 			</xs:simpleType>
 		</xsl:if>
-	</xsl:template>
+	</xsl:template x?>
 	
-	<xsl:template match="ep:construct" mode="createComplexTypes">
+	<xsl:template match="ep:construct[@ismetadata='yes']" mode="generateAttributes">
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
-		<xsl:variable name="name">
+		<!--xsl:variable name="name">
 			<xsl:choose>
 				<xsl:when test="contains(ep:tech-name,'StUF:')">
 					<xsl:value-of select="substring-after(ep:tech-name,'StUF:')"/>
@@ -387,160 +658,167 @@
 				</xsl:otherwise>
 			</xsl:choose>				
 		</xsl:variable>
-		<xsl:if test="not(preceding::ep:construct/ep:id=$id)">
-			<xs:simpleType name="{concat('simpleType-',$name,'-',$id,'-',generate-id())}">
-				<xs:restriction>
-					<xsl:attribute name="base">
+		<xsl:comment select="concat(ep:tech-name, '-' ,generate-id())"/-->
+		<xsl:choose>
+			<xsl:when test="contains(ep:tech-name,':') and ep:tech-name!='StUF:entiteittype'">
+				<xs:attribute ref="{ep:tech-name}">
+					<xsl:attribute name="use">
 						<xsl:choose>
-							<xsl:when test="ep:type-name = 'integer'">
-								<xsl:value-of select="'xs:int'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'decimal'">
-								<xsl:value-of select="'xs:decimal'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'char'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'datetime'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'boolean'">
-								<xsl:value-of select="'xs:boolean'"/>
-							</xsl:when>
-							<!--xsl:when test="ep:type-name = 'MaximumAantal'">
-								<xsl:value-of select="'xs:int'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'Tijdstip'">
-								<xsl:value-of select="'xs:date'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'Sortering'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'Berichtcode'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'Refnummer'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'Functie'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'Administratie'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'Applicatie'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'Gebruiker'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'Organisatie'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'POSTCODE'">
-								<xsl:value-of select="'xs:string'"/>
-							</xsl:when-->	
-							<xsl:otherwise>
-								<xsl:value-of select="'xs:string'"/>								
-							</xsl:otherwise>
-							<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
+							<xsl:when test="not(ep:min-occurs) or ep:min-occurs=1">required</xsl:when>
+							<xsl:otherwise>optional</xsl:otherwise>
 						</xsl:choose>
 					</xsl:attribute>
-					<xsl:if test="ep:length">
+				</xs:attribute>
+			</xsl:when>
+			<xsl:when test="$globalComplexTypes='yes'">
+				<!--xs:attribute name="{ep:tech-name}" type="{concat($prefix,':attributeSimpleType-',ep:tech-name,'-',$id,'-',generate-id())}"-->
+				<xs:attribute name="{ep:tech-name}" type="{concat($prefix,':attributeSimpleType-',ep:tech-name,'-',generate-id())}">
+					<xsl:attribute name="use">
 						<xsl:choose>
-							<xsl:when test="ep:type-name = 'char'">
-								<xs:length value="{ep:length}"/>
-							</xsl:when>
-							<xsl:when test="ep:type-name = 'integer' or ep:type-name = 'decimal'">
-								<xs:totalDigits value="{ep:length}"/>
-							</xsl:when>
+							<xsl:when test="not(ep:min-occurs) or ep:min-occurs=1">required</xsl:when>
+							<xsl:otherwise>optional</xsl:otherwise>
 						</xsl:choose>
-					</xsl:if>
-					<xsl:if test="ep:min-length">
+					</xsl:attribute>
+				</xs:attribute>
+			</xsl:when>
+			<xsl:otherwise>
+				<xs:attribute name="{ep:tech-name}">
+					<xsl:attribute name="use">
 						<xsl:choose>
-							<xsl:when test="ep:type-name = 'char'">
-								<xs:minLength value="1"/>
-								<!--xs:minLength value="{ep:min-length}"/-->
-							</xsl:when>
+							<xsl:when test="not(ep:min-occurs) or ep:min-occurs=1">required</xsl:when>
+							<xsl:otherwise>optional</xsl:otherwise>
 						</xsl:choose>
-					</xsl:if>
-					<xsl:if test="ep:max-length">
-						<xsl:choose>
-							<xsl:when test="ep:type-name = 'char'">
-								<xs:maxLength value="12"/>
-								<!--xs:maxLength value="{ep:max-length}"/-->
-							</xsl:when>
-						</xsl:choose>
-					</xsl:if>
-					<xsl:if test="ep:min-value">
-						<xsl:choose>
-							<xsl:when test="ep:type-name = 'integer' or ep:type-name = 'decimal'">
-								<xs:minInclusive value="1"/>
-								<!--xs:minInclusive value="{ep:min-value}"/-->
-							</xsl:when>
-						</xsl:choose>
-					</xsl:if>
-					<xsl:if test="ep:max-value">
-						<xsl:choose>
-							<xsl:when test="ep:type-name = 'integer' or ep:type-name = 'decimal'">
-								<xs:maxInclusive value="99"/>
-								<!--xs:maxInclusive value="{ep:max-value}"/-->
-							</xsl:when>
-						</xsl:choose>
-					</xsl:if>
-					<xsl:if test="ep:fraction-digits">
-						<xsl:choose>
-							<xsl:when test="ep:type-name = 'decimal'">
-								<xs:fractionDigits value="{ep:fraction-digits}"/>
-							</xsl:when>
-						</xsl:choose>
-					</xsl:if>
-					<xsl:if test="ep:enum">
-						<xsl:choose>
-							<xsl:when test="ep:type-name = 'char' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal'">
-								<xsl:apply-templates select="ep:enum"/>
-							</xsl:when>
-						</xsl:choose>
-					</xsl:if>
-					<xsl:if test="ep:pattern">
-						<xsl:choose>
-							<xsl:when test="ep:type-name = 'char' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal' or ep:type-name = 'boolean'">
-								<!--xs:pattern value="{ep:pattern}"/-->
-							</xsl:when>
-						</xsl:choose>
-					</xsl:if>				
-				</xs:restriction>
-			</xs:simpleType>
-			<xs:complexType name="{concat('complexType-',$name,'-',$id,'-',generate-id())}">
-				<xs:simpleContent>
-					<xs:extension base="{concat($prefix,':simpleType-',$name,'-',$id,'-',generate-id())}">
-						<xsl:apply-templates select="ep:seq/ep:construct" mode="generateAttributes"/>
-					</xs:extension>			
-				</xs:simpleContent>
-			</xs:complexType>
-		</xsl:if>
+					</xsl:attribute>
+					<xs:simpleType>
+						<xs:restriction>
+							<xsl:attribute name="base">
+								<xsl:choose>
+									<xsl:when test="ep:type-name = 'integer'">
+										<xsl:value-of select="'xs:int'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'decimal'">
+										<xsl:value-of select="'xs:decimal'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'char'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'datetime'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'boolean'">
+										<xsl:value-of select="'xs:boolean'"/>
+									</xsl:when>
+									<!--xsl:when test="ep:type-name = 'MaximumAantal'">
+							<xsl:value-of select="'xs:int'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'Tijdstip'">
+							<xsl:value-of select="'xs:date'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'Sortering'">
+							<xsl:value-of select="'xs:string'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'Berichtcode'">
+							<xsl:value-of select="'xs:string'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'Refnummer'">
+							<xsl:value-of select="'xs:string'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'Functie'">
+							<xsl:value-of select="'xs:string'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'Administratie'">
+							<xsl:value-of select="'xs:string'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'Applicatie'">
+							<xsl:value-of select="'xs:string'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'Gebruiker'">
+							<xsl:value-of select="'xs:string'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'Organisatie'">
+							<xsl:value-of select="'xs:string'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'POSTCODE'">
+							<xsl:value-of select="'xs:string'"/>
+						</xsl:when-->	
+									<xsl:otherwise>
+										<xsl:value-of select="'xs:string'"/>								
+									</xsl:otherwise>
+									<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
+								</xsl:choose>
+							</xsl:attribute>
+							<xsl:if test="ep:length">
+								<xsl:choose>
+									<xsl:when test="ep:type-name = 'char'">
+										<xs:length value="{ep:length}"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'integer' or ep:type-name = 'decimal'">
+										<xs:totalDigits value="{ep:length}"/>
+									</xsl:when>
+								</xsl:choose>
+							</xsl:if>
+							<xsl:if test="ep:min-length">
+								<xsl:choose>
+									<xsl:when test="ep:type-name = 'char'">
+										<xs:minLength value="1"/>
+										<!--xs:minLength value="{ep:min-length}"/-->
+									</xsl:when>
+								</xsl:choose>
+							</xsl:if>
+							<xsl:if test="ep:max-length">
+								<xsl:choose>
+									<xsl:when test="ep:type-name = 'char'">
+										<xs:maxLength value="12"/>
+										<!--xs:maxLength value="{ep:max-length}"/-->
+									</xsl:when>
+								</xsl:choose>
+							</xsl:if>
+							<xsl:if test="ep:min-value">
+								<xsl:choose>
+									<xsl:when test="ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal'">
+										<xs:minInclusive value="1"/>
+										<!--xs:minInclusive value="{ep:min-value}"/-->
+									</xsl:when>
+								</xsl:choose>
+							</xsl:if>
+							<xsl:if test="ep:max-value">
+								<xsl:choose>
+									<xsl:when test="ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal'">
+										<xs:maxInclusive value="99"/>
+										<!--xs:maxInclusive value="{ep:max-value}"/-->
+									</xsl:when>
+								</xsl:choose>
+							</xsl:if>
+							<xsl:if test="ep:fraction-digits">
+								<xsl:choose>
+									<xsl:when test="ep:type-name = 'decimal'">
+										<xs:fractionDigits value="{ep:fraction-digits}"/>
+									</xsl:when>
+								</xsl:choose>
+							</xsl:if>
+							<xsl:if test="ep:enum">
+								<xsl:choose>
+									<xsl:when test="ep:type-name = 'char' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal'">
+										<xsl:apply-templates select="ep:enum"/>
+									</xsl:when>
+								</xsl:choose>
+							</xsl:if>
+							<xsl:if test="ep:pattern">
+								<xsl:choose>
+									<xsl:when test="ep:type-name = 'char' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal' or ep:type-name = 'boolean'">
+										<!--xs:pattern value="{ep:pattern}"/-->
+									</xsl:when>
+								</xsl:choose>
+							</xsl:if>				
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>				
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
-	<xsl:template match="ep:construct" mode="generateAttributes">
-		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
-		<xsl:variable name="name">
-			<xsl:choose>
-				<xsl:when test="contains(ep:tech-name,'StUF:')">
-					<xsl:value-of select="substring-after(ep:tech-name,'StUF:')"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="ep:tech-name"/>
-				</xsl:otherwise>
-			</xsl:choose>				
-		</xsl:variable>
-		<xs:attribute name="{$name}" type="{concat($prefix,':attributeSimpleType-',$name,'-',$id,'-',generate-id())}">
-			<xsl:attribute name="use">
-				<xsl:choose>
-					<xsl:when test="not(ep:min-occurs) or ep:min-occurs=1">required</xsl:when>
-					<xsl:otherwise>optional</xsl:otherwise>
-				</xsl:choose>
-			</xsl:attribute>
-		</xs:attribute>
+	<xsl:template match="ep:enum">
+		<xs:enumeration value="{.}"/>
 	</xsl:template>
 	
 </xsl:stylesheet>

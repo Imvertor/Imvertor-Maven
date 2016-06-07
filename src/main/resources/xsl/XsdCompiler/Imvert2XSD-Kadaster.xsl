@@ -362,9 +362,25 @@
                     <xsl:with-param name="package-name" select="$this-package/imvert:name"/>
                 </xsl:apply-templates>
                 
-                <xsl:if test="imvert:class/imvert:attributes/imvert:attribute[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-voidable') and imvert:type-modifier='?']">
+                <xsl:if test="imvert:class/imvert:attributes/imvert:attribute[imvert:type-name='date' and imvert:type-modifier='?']">
                     <xs:simpleType name="Fixtype_incompleteDate">
                         <xs:union memberTypes="xs:date xs:gYearMonth xs:gYear"/>
+                    </xs:simpleType>
+                </xsl:if> 
+                <xsl:if test="imvert:class/imvert:attributes/imvert:attribute[imvert:type-name=('datetime') and imvert:type-modifier='?']">
+                    <xsl:variable name="incomplete-datetimepattern" select="'[0-9]{4}(-[0-9]{2}(-[0-9]{2}(T[0-9]{2}(:[0-9]{2}(:[0-9]{2})?)?)?)?)?'"/>
+                    <xs:simpleType name="Fixtype_incompleteDateTime">
+                        <xs:restriction base='xs:string'>
+                            <xs:pattern value='{$incomplete-datetimepattern}'/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xsl:if> 
+                <xsl:if test="imvert:class/imvert:attributes/imvert:attribute[imvert:type-name=('datetime') and imvert:type-modifier='?']">
+                    <xsl:variable name="incomplete-timepattern" select="'[0-9]{2}(:[0-9]{2}(:[0-9]{2})?)?'"/>
+                    <xs:simpleType name="Fixtype_incompleteTime">
+                        <xs:restriction base='xs:string'>
+                            <xs:pattern value='{$incomplete-timepattern}'/>
+                        </xs:restriction>
                     </xs:simpleType>
                 </xsl:if> 
             </xs:schema>
@@ -731,8 +747,10 @@
                     <xsl:when test="$base-type='DATE'">xs:date</xsl:when>
                     <xsl:when test="$base-type='TIME'">xs:time</xsl:when>
                     <xsl:when test="$base-type='YEAR'">xs:gYear</xsl:when>
+                    <xsl:when test="$base-type='YEARMONTH'">xs:gYearMonth</xsl:when>
                     <xsl:when test="$base-type='BOOLEAN'">xs:boolean</xsl:when>
                     <xsl:when test="$base-type='URI'">xs:anyURI</xsl:when>
+                    <xsl:when test="$base-type='POSTCODE'">postcode</xsl:when>
                     <xsl:when test="$base-type='#ANY'">#any</xsl:when>
                     <xsl:when test="$base-type='#MIX'">#mix</xsl:when>
                     <xsl:otherwise>
@@ -821,31 +839,59 @@
                     </xs:complexType>
                 </xs:element>
             </xsl:when>
+            <xsl:when test="$type=('postcode')"> 
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:sequence select="imf:debug($this,'A postcode')"/>
+                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:pattern value="[0-9]{{4}}[A-Z]{{2}}"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+            </xsl:when>
             <!-- base types such as xs:string and xs:boolean -->
-            <xsl:when test="$type='xs:dateTime' and $is-type-modified-incomplete and $is-nillable"> <!-- incomplete type, and could be, but may may not be empty -->
+            <xsl:when test="$type=('xs:dateTime','xs:date','xs:time') and $is-type-modified-incomplete and $is-nillable"> <!-- incomplete type, and could be, but may may not be empty -->
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:attribute name="nillable">true</xsl:attribute>
-                    <xsl:sequence select="imf:debug($this,'A voidable incomplete datetime')"/>
+                    <xsl:sequence select="imf:debug($this,'A voidable incomplete datetime, date or time')"/>
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                     <xs:complexType>
                         <xs:simpleContent>
-                            <xs:extension base="{imf:get-type('Fixtype_incompleteDate',$package-name)}">
+                            <xsl:variable name="fixtype">
+                                <xsl:choose>
+                                    <xsl:when test="$type='xs:dateTime'">Fixtype_incompleteDateTime</xsl:when>
+                                    <xsl:when test="$type='xs:date'">Fixtype_incompleteDate</xsl:when>
+                                    <xsl:when test="$type='xs:time'">Fixtype_incompleteTime</xsl:when>
+                                </xsl:choose>
+                            </xsl:variable>
+                            <xs:extension base="{imf:get-type($fixtype,$package-name)}">
                                 <xsl:sequence select="imf:create-nilreason()"/>
                             </xs:extension>
                         </xs:simpleContent>
                     </xs:complexType>
                 </xs:element>
             </xsl:when>
-            <xsl:when test="$type='xs:dateTime' and $is-type-modified-incomplete"> <!-- incomplete type -->
+            <xsl:when test="$type=('xs:dateTime','xs:date','xs:time') and $is-type-modified-incomplete"> <!-- incomplete type -->
+                <xsl:variable name="fixtype">
+                    <xsl:choose>
+                        <xsl:when test="$type='xs:dateTime'">Fixtype_incompleteDateTime</xsl:when>
+                        <xsl:when test="$type='xs:date'">Fixtype_incompleteDate</xsl:when>
+                        <xsl:when test="$type='xs:time'">Fixtype_incompleteTime</xsl:when>
+                    </xsl:choose>
+                </xsl:variable>
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
-                    <xsl:attribute name="type" select="imf:get-type('Fixtype_incompleteDate',$package-name)"/>
+                    <xsl:attribute name="type" select="imf:get-type($fixtype,$package-name)"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:debug($this,'An incomplete datetime')"/>
+                    <xsl:sequence select="imf:debug($this,'An incomplete datetime, date or time')"/>
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                 </xs:element>
             </xsl:when>

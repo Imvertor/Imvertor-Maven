@@ -958,14 +958,13 @@
         Determine if this type is a known type.
         This is a type that is a primitive, or defined as a class.
         The class definition should also be available.
-        
-        datepu and datepi: KING.
     -->
     <xsl:variable 
         name="known-types" 
         select="(
         '#any',
         '#mix',
+        'postcode',
         'uri',
         'char',
         'string',
@@ -973,6 +972,7 @@
         'boolean',
         'decimal',
         'year',
+        'yearmonth',
         'date',
         'datetime',
         'time'

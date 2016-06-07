@@ -47,12 +47,15 @@
     <xsl:variable name="debug" select="'no'"/>
     <xsl:variable name="use-EAPconfiguration" select="'yes'"/>
     
-    <xsl:variable name="imvert-endproduct" select="imf:document(imf:get-config-string('properties','RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH'))"/>  
+    <!--xsl:variable name="imvert-endproduct" select="imf:document(imf:get-config-string('properties','RESULT_ENDPRODUCT_XML_FILE_PATH'))"/-->  
+    <!--xsl:variable name="imvert-endproduct" select="imf:document(imf:get-config-string('properties','RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH'))"/-->  
+    
     
     <xsl:variable name="xsd-file-folder-path" select="imf:get-config-string('properties','RESULT_XSD_APPLICATION_FOLDER')"/>
     <xsl:variable name="xsd-file-url" select="imf:file-to-url(concat($xsd-file-folder-path,'/koppelvlak.xsd'))"/>
     <xsl:template match="/">
-        <xsl:for-each select="$imvert-endproduct/ep:message-set">
+        <!--xsl:for-each select="$imvert-endproduct/ep:message-set"-->
+        <xsl:for-each select="ep:message-set">
             <result>
                 <xsl:comment select="concat('XSD voor ', imvert:name, ' is geplaatst in ', $xsd-file-url)"/>
             </result>

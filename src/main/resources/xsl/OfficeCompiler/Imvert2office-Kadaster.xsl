@@ -776,6 +776,7 @@
             <xsl:when test="$keyn = 'BOOLEAN'">Boolean</xsl:when>
             <xsl:when test="$keyn = 'DATE'">Datum</xsl:when>
             <xsl:when test="$keyn = 'DATETIME'">DatumTijd</xsl:when>
+            <xsl:when test="$keyn = 'TIME'">Tijd</xsl:when>
             <xsl:when test="$keyn = 'KINGDATEPU'">DatumMogelijkOnbekend</xsl:when>
             <xsl:when test="$keyn = 'KINGDATEPI'">DatumMogelijkOnvolledig</xsl:when>
             <xsl:when test="$keyn = 'INTEGER'">Int</xsl:when>
