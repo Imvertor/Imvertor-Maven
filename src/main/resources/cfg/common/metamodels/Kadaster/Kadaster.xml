@@ -19,7 +19,9 @@
 -->
 <metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
     <!-- kadaster follows BP requirements -->
+
     <xi:include href="../BP/BP.xml"/>
+    <xi:include href="../BP/BP-scalar.xml"/>
     
     <svn>$Id: Kadaster.xml 7506 2016-04-19 15:36:57Z arjan $</svn>
     <name>Kadaster</name>
@@ -47,16 +49,19 @@
             <name lang="en">product</name>
             <name lang="nl">product</name>
             <construct>class</construct>
+            <toplevel>true</toplevel>
         </stereo>
         <stereo id="stereotype-name-service">
             <name lang="en">service</name>
             <name lang="nl">service</name>
             <construct>class</construct>
+            <toplevel>true</toplevel>
         </stereo>
         <stereo id="stereotype-name-process">
             <name lang="en">process</name>
             <name lang="nl">process</name>
             <construct>class</construct>
+            <toplevel>true</toplevel>
         </stereo>
         <stereo id="stereotype-name-collection">
             <name lang="en">collection</name>

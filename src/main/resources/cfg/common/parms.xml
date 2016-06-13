@@ -117,13 +117,19 @@
       <cli-parm>
          <name>suppresswarnings</name>
          <arg>yes|no</arg>
-         <tip>Yes if warnings should be suppressed in documentation.</tip>
+         <tip>Yes if warnings should be suppressed in documentation</tip>
          <required>false</required>
       </cli-parm> 
       <cli-parm>
          <name>messagelevel</name>
          <arg>warning|error</arg>
-         <tip>Set the message level to error (no warnings) or warning (errors and warnings).</tip>
+         <tip>Set the message level to error (no warnings) or warning (errors and warnings)</tip>
+         <required>false</required>
+      </cli-parm>
+      <cli-parm>
+         <name>allowmultiplesuppliers</name>
+         <arg>yes|no</arg>
+         <tip>Allow any construct to have multiple suppliers</tip>
          <required>false</required>
       </cli-parm>
    </cli-parms>

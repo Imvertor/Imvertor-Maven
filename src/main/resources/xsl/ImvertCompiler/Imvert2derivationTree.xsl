@@ -30,10 +30,12 @@
     
     <!-- 
          Create a listing of all dependencies between packages.
+         For each construct that is derived (i.e. is client), add the ID of the supplier.
     -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
+    <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     
     <xsl:variable name="application-project" select="/imvert:packages/imvert:project" as="xs:string"/>
     <xsl:variable name="application-name" select="/imvert:packages/imvert:application" as="xs:string"/>
@@ -54,6 +56,7 @@
                 </xsl:for-each>
             </imvert:layers-set>
         </xsl:variable>
+        
         <!-- now set the layered name for each component in de layers --> 
         <xsl:apply-templates select="$layers" mode="layered-name"/>
         
@@ -173,10 +176,27 @@
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:attribute name="layered-name" select="imf:get-layered-display-names(.)[last()]"/>
+            <!-- add traces when not yet set, but only when model is not traced by user ($model-is-traced). -->
+            
+            <xsl:variable name="traces-found" select="()"/>
+            <xsl:choose>
+                <xsl:when test="exists(imvert:trace) or $model-is-traced">
+                    <!-- no need to determine trace --> 
+                </xsl:when>
+                <xsl:when test="$traces-found">
+                    <!-- trace must be determined -->
+                    <xsl:for-each select="$traces-found">
+                        <imvert:trace>
+                            <xsl:value-of select="."/>
+                        </imvert:trace>
+                    </xsl:for-each>
+                </xsl:when>
+            </xsl:choose>
             <xsl:apply-templates mode="layered-name"/>
+            
         </xsl:copy>
     </xsl:template>
-    
+
     <xsl:function name="imf:get-layered-display-names" as="xs:string+">
         <xsl:param name="construct" as="element()"/>
         

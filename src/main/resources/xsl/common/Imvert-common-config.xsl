@@ -49,6 +49,9 @@
     <xsl:variable name="configuration-schemarules-file" select="imf:prepare-config(imf:document($configuration-schemarules-name))"/>
     <xsl:variable name="configuration-tvset-file" select="imf:prepare-config(imf:document($configuration-tvset-name))"/>
     
+    <xsl:variable name="all-scalars" select="$configuration-metamodel-file//scalars/scalar"/>
+    
+    
     <xsl:function name="imf:get-config-tagged-values" as="element(tv)*">
         <xsl:sequence select="$configuration-tvset-file//tagged-values/tv"/>
     </xsl:function>
@@ -68,6 +71,19 @@
     
     <xsl:function name="imf:get-config-has-owner" as="xs:boolean">
         <xsl:sequence select="exists($configuration-owner-file)"/>
+    </xsl:function>
+
+    <!-- return the ID of all stereotype names passed (in the current language) -->
+    <xsl:function name="imf:get-stereotypes-ids">
+        <xsl:param name="names"/>
+        <xsl:sequence select="$configuration-metamodel-file//stereotypes/stereo[name[@lang=$language]=$names]/@id"/>
+    </xsl:function>
+
+    <!-- true when any stereotype passed identifies a top-level class. -->
+    <xsl:function name="imf:get-config-stereotype-is-toplevel">
+        <xsl:param name="ids" as="xs:string*"/>
+        <xsl:variable name="v" select="$configuration-metamodel-file//stereotypes/stereo[@id = $ids]"/>
+        <xsl:sequence select="imf:boolean($v/toplevel)"/>
     </xsl:function>
     
     <xsl:function name="imf:get-config-stereotypes" as="xs:string*">
@@ -109,7 +125,7 @@
     </xsl:function>
     
     <!-- 
-        Return all possibkle stereotype names allowed on the construct passed. 
+        Return all possible stereotype names allowed on the construct passed. 
         Eg. pass "class", returns ("objecttype", "gegevensgroeptype",...)
     -->
     <xsl:function name="imf:get-config-stereotype-names" as="xs:string*">
@@ -249,7 +265,7 @@
             </xsl:when>
             <xsl:otherwise>
                 <xsl:variable name="metamodel-form">
-                    <xsl:variable name="parts" select="tokenize(normalize-space($name-as-found),'[^A-Za-z0-9_]+')"/>
+                    <xsl:variable name="parts" select="tokenize(normalize-space($name-as-found),'[^A-Za-z0-9_\.]+')"/>
                     <xsl:variable name="frags" as="xs:string*">
                         <xsl:for-each select="$parts">
                             <xsl:choose>

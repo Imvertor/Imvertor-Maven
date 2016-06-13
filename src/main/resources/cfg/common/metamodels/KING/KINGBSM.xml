@@ -44,35 +44,41 @@
       </stereo>
 
       <!-- classes -->
+   <?xxx
       <stereo id="stereotype-name-berichttype">
          <name lang="en">message type</name>
          <name lang="nl">berichttype</name>
          <desc>TODO</desc>
          <construct>class</construct>
       </stereo>
+   ?>
       <stereo id="stereotype-name-vrijberichttype">
          <name lang="en">free message type</name>
          <name lang="nl">vrij berichttype</name>
          <desc>TODO</desc>
          <construct>class</construct>
+         <toplevel>true</toplevel>
       </stereo>
       <stereo id="stereotype-name-vraagberichttype">
          <name lang="en">request message type</name>
          <name lang="nl">vraagberichttype</name>
          <desc>TODO</desc>
          <construct>class</construct>
+         <toplevel>true</toplevel>
       </stereo>
       <stereo id="stereotype-name-antwoordberichttype">
          <name lang="en">response message type</name>
          <name lang="nl">antwoordberichttype</name>
          <desc>TODO</desc>
          <construct>class</construct>
+         <toplevel>true</toplevel>
       </stereo>
       <stereo id="stereotype-name-kennisgevingsberichttype">
          <name lang="en">push message type</name>
          <name lang="nl">kennisgevingsberichttype</name>
          <desc>TODO</desc>
          <construct>class</construct>
+         <toplevel>true</toplevel>
       </stereo>
       
    </stereotypes>

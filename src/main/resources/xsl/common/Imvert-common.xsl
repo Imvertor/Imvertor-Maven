@@ -50,6 +50,7 @@
     <xsl:include href="../external/relpath_util.xsl"/>
     <xsl:include href="../external/functx.xsl"/>
     
+    <!-- TODO how to configure this in metamodel? -->
     <xsl:variable name="baretype-pattern-c">(AN|N)</xsl:variable> <!-- D9.2 changed to N9,2 (or N9.2) -->
     <xsl:variable name="baretype-pattern-i">(\d*)</xsl:variable>
     <xsl:variable name="baretype-pattern-ii">([\.,]?)(\d*)</xsl:variable>

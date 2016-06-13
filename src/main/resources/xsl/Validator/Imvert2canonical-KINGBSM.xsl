@@ -46,10 +46,9 @@
         </imvert:packages>
     </xsl:template>
     
-    <!-- TODO ik kopieer de release van het koppelvlak door naar de berichten. dat moet eigenlijk niet; de release van het koppelvlak is de release van de berichten dus overbodig. Maar validatie is nog generiek. -->
     <xsl:template match="imvert:package[. = $bericht-packages]">
         <xsl:copy>
-            <xsl:sequence select="(ancestor::imvert:package/imvert:release)[1]"/>
+            <!--<xsl:sequence select="(ancestor::imvert:package/imvert:release)[1]"/>-->
             <xsl:apply-templates select="*[empty(self::imvert:package)]"/>
             <xsl:apply-templates select="imvert:package" mode="remove-stereotypes"/>
         </xsl:copy>

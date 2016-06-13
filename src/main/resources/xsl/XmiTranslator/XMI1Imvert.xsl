@@ -81,7 +81,7 @@
     <xsl:variable name="additional-tagged-values" select="imf:get-config-tagged-values()" as="element(tv)*"/>
     
     <xsl:output encoding="UTF-8" method="xml" indent="no"/>
-       
+   
     <xsl:template match="/">
         <imvert:packages>
             <xsl:if test="imf:boolean($debug)">
@@ -569,7 +569,10 @@
         <xsl:variable name="type-fullname" select="$type/@name"/>
         <xsl:variable name="type-modifier" select="if (contains($type-fullname,'?')) then '?' else if (contains($type-fullname,'+P')) then '+P' else ()"/> 
         <xsl:variable name="type-name" select="if (exists($type-modifier)) then substring-before($type-fullname,$type-modifier) else $type-fullname"/>
+        
         <xsl:variable name="type-normname" select="imf:get-normalized-name($type-name,'baretype-name')"/>
+        <xsl:variable name="scalar" select="$all-scalars[name[@lang=$language] = $type-normname][last()]"/>
+        
         <xsl:choose>
             <xsl:when test="not($type-name)">
                 <!-- this is an enumeration (value), skip -->
@@ -589,15 +592,15 @@
                         <!--<xsl:message select="string-join(($type-name, $type, $positions, $decimals,$pattern),', ')"></xsl:message>-->
                         <xsl:choose>
                             <xsl:when test="$type='AN'">
-                                <xsl:sequence select="imf:create-output-element('imvert:type-name','string')"/><!-- used to be 'char' -->
+                                <xsl:sequence select="imf:create-output-element('imvert:type-name','scalar-string')"/><!-- used to be 'char' -->
                                 <xsl:sequence select="imf:create-output-element('imvert:max-length',$positions)"/>
                             </xsl:when>
                             <xsl:when test="$type='N' and not($decimals)">
-                                <xsl:sequence select="imf:create-output-element('imvert:type-name','integer')"/>
+                                <xsl:sequence select="imf:create-output-element('imvert:type-name','scalar-integer')"/>
                                 <xsl:sequence select="imf:create-output-element('imvert:total-digits',$positions)"/>
                             </xsl:when>
                             <xsl:when test="$type='N'">
-                                <xsl:sequence select="imf:create-output-element('imvert:type-name','decimal')"/>
+                                <xsl:sequence select="imf:create-output-element('imvert:type-name','scalar-decimal')"/>
                                 <xsl:sequence select="imf:create-output-element('imvert:fraction-digits',$decimals)"/>
                                 <xsl:sequence select="imf:create-output-element('imvert:total-digits',xs:string(xs:integer($positions) + xs:integer($decimals)))"/>
                             </xsl:when>
@@ -606,55 +609,19 @@
                     </xsl:matching-substring>
                 </xsl:analyze-string>
             </xsl:when>
-            <!-- process the scalars: -->
-            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname='ANY'"><!-- TODO welk metamodel? -->
+            
+            <!-- process the other scalars: -->
+            <xsl:when test="substring($type-id,1,5) = ('eaxmi')">
                 <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
-                <xsl:sequence select="imf:create-output-element('imvert:type-name','#any')"/>
-            </xsl:when>
-            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname='MIX'"><!-- TODO welk metamodel? -->
-                <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
-                <xsl:sequence select="imf:create-output-element('imvert:type-name','#mix')"/>
-            </xsl:when>
-            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('DATUMTIJD','DT') and $type-modifier = '?'">
-                <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
-                <xsl:sequence select="imf:create-output-element('imvert:type-name','datetime')"/>
-                <xsl:sequence select="imf:create-output-element('imvert:type-modifier',$type-modifier)"/>
-            </xsl:when>
-            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('DATUMTIJD','DT')">
-                <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
-                <xsl:sequence select="imf:create-output-element('imvert:type-name','datetime')"/>
-            </xsl:when>
-            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('DATUM')">
-                <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
-                <xsl:sequence select="imf:create-output-element('imvert:type-name','date')"/>
-            </xsl:when>
-            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('TIJD','T')">
-                <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
-                <xsl:sequence select="imf:create-output-element('imvert:type-name','time')"/>
-            </xsl:when>
-            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('JAAR')">
-                <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
-                <xsl:sequence select="imf:create-output-element('imvert:type-name','year')"/>
-            </xsl:when>
-            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('JAARMAAND')">
-                <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
-                <xsl:sequence select="imf:create-output-element('imvert:type-name','yearmonth')"/>
-            </xsl:when>
-            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('URI')">
-                <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
-                <xsl:sequence select="imf:create-output-element('imvert:type-name','uri')"/>
-            </xsl:when>
-            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('TXT')"> 
-                <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
-                <xsl:sequence select="imf:create-output-element('imvert:type-name','string')"/>
-            </xsl:when>
-            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('POSTCODE')"> 
-                <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
-                <xsl:sequence select="imf:create-output-element('imvert:type-name','postcode')"/>
-            </xsl:when>
-            <xsl:when test="substring($type-id,1,5) = ('eaxmi') and $type-normname = ('INDIC','INDICATIE')">
-                <xsl:sequence select="imf:create-output-element('imvert:baretype','INDIC')"/>
-                <xsl:sequence select="imf:create-output-element('imvert:type-name','boolean')"/>
+                <xsl:sequence select="imf:create-output-element('imvert:type-name',$scalar/@id)"/>
+                <xsl:choose>
+                    <xsl:when test="$type-modifier and $scalar/type-modifier">
+                        <xsl:sequence select="imf:create-output-element('imvert:type-modifier',$type-modifier)"/>
+                    </xsl:when>
+                    <xsl:when test="$type-modifier">
+                        <xsl:sequence select="imf:msg('ERROR','A modifier [1] is not allowed on type [2]', ($type-modifier,$type-normname))"/>
+                    </xsl:when>
+                </xsl:choose>
             </xsl:when>
             
             <!-- process the typed attributes, referencing type object types -->

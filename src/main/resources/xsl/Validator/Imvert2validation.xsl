@@ -471,7 +471,7 @@
         <xsl:variable name="superclasses" select="imf:get-superclasses($this)"/>
         <xsl:variable name="is-id" select="(.,$superclasses)/imvert:attributes/imvert:attribute/imvert:is-id = 'true'"/>
         <xsl:variable name="is-abstract" select="imvert:abstract = 'true'"/>
-        
+        <xsl:variable name="is-toplevel" select="imf:is-toplevel($this)"/>
         <!--validation-->
         <xsl:sequence select="imf:report-warning(., 
             not(imf:test-name-convention($this)), 
@@ -527,8 +527,11 @@
         
         <xsl:variable name="is-used-type" select="$document-classes/imvert:attributes/imvert:attribute/imvert:type-id=$this-id"/>
         <xsl:variable name="is-used-ref" select="$document-classes/imvert:associations/imvert:association/imvert:type-id=$this-id"/>
+        
+        <!-- TODO het niet gebruikt zijn van een klasse is een zaak van configuratie: wat zijn de potentiele topconstructs? -->
         <xsl:sequence select="imf:report-warning(., 
-            not(imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-objecttype','stereotype-name-relatieklasse','stereotype-name-koppelklasse','stereotype-name-product','stereotype-name-process'))) and not($is-used-type or $is-used-ref or $is-supertype), 
+            $is-application and 
+            not($is-toplevel) and not($is-used-type or $is-used-ref or $is-supertype), 
             'This [1] is not used.', if (exists(imvert:stereotype)) then imvert:stereotype else 'construct')"/>
         
         <xsl:next-match/>
@@ -959,31 +962,13 @@
         This is a type that is a primitive, or defined as a class.
         The class definition should also be available.
     -->
-    <xsl:variable 
-        name="known-types" 
-        select="(
-        '#any',
-        '#mix',
-        'postcode',
-        'uri',
-        'char',
-        'string',
-        'integer',
-        'boolean',
-        'decimal',
-        'year',
-        'yearmonth',
-        'date',
-        'datetime',
-        'time'
-        )" 
-        as="xs:string+"/>
     
     <xsl:function name="imf:check-known-type" as="xs:boolean">
         <xsl:param name="type-name" as="element(imvert:type-name)"/>
         <xsl:variable name="type-id" select="$type-name/../imvert:type-id"/>
         <xsl:variable name="defining-class" select="$document-classes[imvert:id=$type-id]"/>
-        <xsl:value-of select="exists($defining-class) or (string($type-name) = $known-types)"/>
+        <xsl:variable name="scalar" select="$all-scalars[@id = $type-name][last()]"/>
+        <xsl:value-of select="exists($defining-class) or exists($scalar)"/>
     </xsl:function>
     
     <xsl:function name="imf:check-multiplicity" as="xs:boolean">
@@ -1246,4 +1231,11 @@
         <xsl:value-of select="if ($length gt $max-length) then concat(substring($value,1,$min-length),' ... ... ',substring($value,$length - $min-length)) else $value"/>
     </xsl:function>
     
+    <xsl:function name="imf:is-toplevel">
+        <xsl:param name="class"/>
+        <xsl:variable name="stereos" select="$class/imvert:stereotype"/>
+        <xsl:variable name="stereos-ids" select="imf:get-stereotypes-ids($stereos)"/>
+        <xsl:sequence select="imf:get-config-stereotype-is-toplevel($stereos-ids)"/>
+    </xsl:function>
+     
 </xsl:stylesheet>

@@ -50,11 +50,14 @@
     
     <xsl:template match="/">
        <xsl:choose>
-           <xsl:when test="empty($project-package)">
-               <xsl:sequence select="imf:msg('FATAL','No project found for application: [1]', $application-package-name)"/>
+           <xsl:when test="empty($project-packages)">
+               <xsl:sequence select="imf:msg('ERROR','No projects found')"/>
+           </xsl:when>
+           <xsl:when test="empty($app-package)">
+               <xsl:sequence select="imf:msg('ERROR','No application found: [1]', $application-package-name)"/>
            </xsl:when>
            <xsl:when test="empty($project-package)">
-               <xsl:sequence select="imf:msg('FATAL','No application found: [1]', $application-package-name)"/>
+               <xsl:sequence select="imf:msg('ERROR','No project found for: [1]', $application-package-name)"/>
            </xsl:when>
            <xsl:otherwise>
                <xsl:apply-templates/>

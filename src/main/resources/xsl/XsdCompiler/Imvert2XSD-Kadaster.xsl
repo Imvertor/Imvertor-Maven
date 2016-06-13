@@ -362,25 +362,19 @@
                     <xsl:with-param name="package-name" select="$this-package/imvert:name"/>
                 </xsl:apply-templates>
                 
-                <xsl:if test="imvert:class/imvert:attributes/imvert:attribute[imvert:type-name='date' and imvert:type-modifier='?']">
+                <xsl:if test="imvert:class/imvert:attributes/imvert:attribute[imvert:type-name='scalar-date' and imvert:type-modifier='?']">
                     <xs:simpleType name="Fixtype_incompleteDate">
-                        <xs:union memberTypes="xs:date xs:gYearMonth xs:gYear"/>
+                        <xsl:sequence select="imf:create-fixtype-property('scalar-date')"/>
                     </xs:simpleType>
                 </xsl:if> 
-                <xsl:if test="imvert:class/imvert:attributes/imvert:attribute[imvert:type-name=('datetime') and imvert:type-modifier='?']">
-                    <xsl:variable name="incomplete-datetimepattern" select="'[0-9]{4}(-[0-9]{2}(-[0-9]{2}(T[0-9]{2}(:[0-9]{2}(:[0-9]{2})?)?)?)?)?'"/>
+                <xsl:if test="imvert:class/imvert:attributes/imvert:attribute[imvert:type-name=('scalar-datetime') and imvert:type-modifier='?']">
                     <xs:simpleType name="Fixtype_incompleteDateTime">
-                        <xs:restriction base='xs:string'>
-                            <xs:pattern value='{$incomplete-datetimepattern}'/>
-                        </xs:restriction>
+                        <xsl:sequence select="imf:create-fixtype-property('scalar-datetime')"/>
                     </xs:simpleType>
                 </xsl:if> 
-                <xsl:if test="imvert:class/imvert:attributes/imvert:attribute[imvert:type-name=('datetime') and imvert:type-modifier='?']">
-                    <xsl:variable name="incomplete-timepattern" select="'[0-9]{2}(:[0-9]{2}(:[0-9]{2})?)?'"/>
+                <xsl:if test="imvert:class/imvert:attributes/imvert:attribute[imvert:type-name=('scalar-time') and imvert:type-modifier='?']">
                     <xs:simpleType name="Fixtype_incompleteTime">
-                        <xs:restriction base='xs:string'>
-                            <xs:pattern value='{$incomplete-timepattern}'/>
-                        </xs:restriction>
+                        <xsl:sequence select="imf:create-fixtype-property('scalar-time')"/>
                     </xs:simpleType>
                 </xsl:if> 
             </xs:schema>
@@ -713,7 +707,16 @@
         <xsl:sequence select="imf:create-doc-element('xs:documentation','http://www.imvertor.org/schema-info/conversion',imf:get-config-parameter('pretext-encoding'))"/>
     </xsl:function>
     
-    <!-- get a type name based on the type specified, that is suited for XSD -->
+    <!-- 
+        get a type name based on the type specified, that is suited for XSD 
+        
+        The type may be somting like:
+        
+        Class1
+        scalar-string
+    
+        The package name is always specified but is irrelevant for sclars.
+    -->
     <xsl:function name="imf:get-type" as="xs:string">
         <xsl:param name="uml-type" as="xs:string"/>
         <xsl:param name="package-name" as="xs:string?"/>
@@ -726,7 +729,7 @@
         
         <xsl:variable name="uml-type-name" select="if (contains($uml-type,':')) then substring-after($uml-type,':') else $uml-type"/>
         <xsl:variable name="primitive-type" select="substring-after($uml-type-name,'http://schema.omg.org/spec/UML/2.1/uml.xml#')"/>
-        <xsl:variable name="base-type" select="upper-case(
+        <xsl:variable name="base-type" select="
             if ($primitive)
             then $primitive
             else
@@ -735,24 +738,18 @@
                 else 
                     if (not($package-name) or imf:is-system-package($package-name)) 
                     then $uml-type-name 
-                    else '')"/>
+                    else ''"/>
+        <xsl:variable name="scalar" select="$all-scalars[@id=$base-type][last()]"/>
         <xsl:choose>
             <xsl:when test="$base-type"> 
+                <xsl:variable name="xs-type" select="$scalar/type-map[@lang='xs']"/>
                 <xsl:choose>
-                    <xsl:when test="$base-type='CHAR'">xs:string</xsl:when> <!-- backward compat -->
-                    <xsl:when test="$base-type='STRING'">xs:string</xsl:when> 
-                    <xsl:when test="$base-type='INTEGER'">xs:integer</xsl:when> <!-- xsd:integer — Signed integers of arbitrary length -->
-                    <xsl:when test="$base-type='DECIMAL'">xs:decimal</xsl:when>
-                    <xsl:when test="$base-type='DATETIME'">xs:dateTime</xsl:when>
-                    <xsl:when test="$base-type='DATE'">xs:date</xsl:when>
-                    <xsl:when test="$base-type='TIME'">xs:time</xsl:when>
-                    <xsl:when test="$base-type='YEAR'">xs:gYear</xsl:when>
-                    <xsl:when test="$base-type='YEARMONTH'">xs:gYearMonth</xsl:when>
-                    <xsl:when test="$base-type='BOOLEAN'">xs:boolean</xsl:when>
-                    <xsl:when test="$base-type='URI'">xs:anyURI</xsl:when>
-                    <xsl:when test="$base-type='POSTCODE'">postcode</xsl:when>
-                    <xsl:when test="$base-type='#ANY'">#any</xsl:when>
-                    <xsl:when test="$base-type='#MIX'">#mix</xsl:when>
+                    <xsl:when test="exists($scalar) and starts-with($xs-type,'#')">
+                        <xsl:value-of select="$xs-type"/>
+                    </xsl:when> 
+                    <xsl:when test="exists($scalar)">
+                        <xsl:value-of select="concat('xs:', $xs-type)"/>
+                    </xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="'xs:string'"/>
                         <xsl:sequence select="imf:msg('ERROR', 'Unknown native type: [1]', $base-type)"/>
@@ -807,7 +804,6 @@
         
         <xsl:variable name="data-location" select="imf:get-appinfo-location($this)"/>
             
-        <xsl:sequence select="imf:debug($this,concat('for= ',$name))"/>
         <xsl:choose>
             <!-- any type, i.e. #any -->
             <xsl:when test="$is-any">
@@ -839,6 +835,7 @@
                     </xs:complexType>
                 </xs:element>
             </xsl:when>
+            
             <xsl:when test="$type=('postcode')"> 
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
@@ -1716,4 +1713,55 @@
         <xsl:sequence select="imf:boolean($class/imvert:abstract)"/>        
     </xsl:function>
 
+    <xsl:function name="imf:create-scalar-property">
+        <xsl:param name="this"/>
+        
+        <xsl:variable name="scalar-type" select="$this/imvert:type-name"/>
+        
+        <xsl:variable name="scalar" select="$all-scalars[@id = $scalar-type][last()]"/>
+        <xsl:variable name="scalar-construct-pattern" select="$scalar/type-modifier/pattern[@lang=$language]"/>
+        <xsl:variable name="scalar-construct-union" select="$scalar/type-modifier/type-map"/>
+        
+        <xsl:variable name="type-construct">
+            <xsl:choose>
+                <xsl:when test="exists($scalar-construct-pattern)">
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="{$scalar-construct-pattern}"/>
+                    </xs:restriction>
+                </xsl:when>
+                <xsl:when test="exists($scalar-construct-union)">
+                    <xs:union memberTypes="{for $t in $scalar-construct-union return concat('xs:', $t)}"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:sequence select="imf:msg('ERROR','Cannot create scalar type property')"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        
+        <xsl:sequence select="$type-construct"/>
+        
+    </xsl:function>
+    
+    <xsl:function name="imf:create-fixtype-property">
+        <xsl:param name="scalar-type" as="xs:string"/>
+        
+        <xsl:variable name="scalar" select="$all-scalars[@id = $scalar-type][last()]"/>
+        <xsl:variable name="scalar-construct-pattern" select="$scalar/type-modifier/pattern[@lang=$language]"/>
+        <xsl:variable name="scalar-construct-union" select="$scalar/type-modifier/type-map"/>
+        
+        <xsl:choose>
+            <xsl:when test="exists($scalar-construct-pattern)">
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="{$scalar-construct-pattern}"/>
+                </xs:restriction>
+            </xsl:when>
+            <xsl:when test="exists($scalar-construct-union)">
+                <xs:union memberTypes="{for $t in $scalar-construct-union return concat('xs:', $t)}"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:msg('ERROR','Cannot create fixtype property')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+        
+    </xsl:function>
 </xsl:stylesheet>

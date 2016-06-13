@@ -20,6 +20,7 @@
 <metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
   
    <xi:include href="../BP/BP.xml"/>
+   <xi:include href="../BP/BP-scalar.xml"/>
    
    <svn>$Id: KINGSIM.xml 7506 2016-04-19 15:36:57Z arjan $</svn>
    <name>KINGSIM</name>

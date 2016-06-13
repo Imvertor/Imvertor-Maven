@@ -31,6 +31,8 @@
 
 	<xsl:variable name="model-is-traced" select="imf:boolean(imf:get-config-string('cli','modelistraced'))"/>
 	
+	<xsl:variable name="allow-multiple-suppliers" select="imf:boolean(imf:get-config-string('cli','allowmultiplesuppliers','no'))"/>
+	
 	<!-- 
 		Return the construct in the derivation tree with the specified ID 
 		In case of copy-down there may be several.
@@ -66,7 +68,7 @@
 						</xsl:when>
 						<xsl:when test="self::supply-chain-error[@type='MULTIPLE-SUPPLIER']">
 							<xsl:variable name="supplier-names" select="string-join(for $c in (tokenize(@id,'\s+')) return imf:get-construct-by-id($c,$derivation-tree)/imvert:name,', ')"/>
-							<xsl:sequence select="imf:msg('ERROR','Trace: more than one supplier found for client [1], suppliers are: [2]', ($client-name, $supplier-names ))"/>
+							<xsl:sequence select="imf:msg('WARN','Trace: more than one supplier found for client [1], suppliers are: [2]', ($client-name, $supplier-names ))"/>
 						</xsl:when>
 						<xsl:when test="self::supply-chain-error[@type='TRACE-RECURSION']">
 							<xsl:sequence select="imf:msg('ERROR','Trace error: recursive trace for client [1]', ($client-name))"/>
@@ -215,7 +217,7 @@
 			<xsl:when test="empty($supplier-id)">
 				<!-- skip -->
 			</xsl:when>
-			<xsl:when test="$suppliers[2]">
+			<xsl:when test="$suppliers[2] and not($allow-multiple-suppliers)">
 				<supply-chain-error id="{$suppliers/imvert:id}" type="MULTIPLE-SUPPLIER"/>
 			</xsl:when>
 			<xsl:when test="empty($suppliers)">
