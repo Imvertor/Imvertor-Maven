@@ -134,7 +134,7 @@
     <xsl:template match="imvert:package | imvert:class | imvert:attribute | imvert:association" mode="documentation">
         <row xmlns="">
             <xsl:sequence select="imf:create-output-element('cell',imf:get-compiled-name-struct(.),$empty, false())"/>
-            <xsl:sequence select="imf:create-output-element('cell',imf:get-compiled-documentation-struct(.,$model-is-traced),$empty, false())"/>
+            <xsl:sequence select="imf:create-output-element('cell',imf:get-compiled-documentation-struct(.),$empty, false())"/>
         </row>
         <xsl:for-each select="imvert:class | imvert:attributes/imvert:attribute | imvert:associations/imvert:association">
             <xsl:sort select="imvert:name" order="ascending"/>
@@ -164,8 +164,7 @@
     <!-- create a element struct from all imvert documentation elements -->
     <xsl:function name="imf:get-compiled-documentation-struct" as="item()*">
         <xsl:param name="construct" as="element()"/> <!-- any construct that may have documentation, in EA format -->
-        <xsl:param name="is-traced" as="xs:boolean"></xsl:param>
-        <xsl:sequence select="imf:get-compiled-documentation($construct,$is-traced)"/>
+        <xsl:sequence select="imf:get-compiled-documentation($construct)"/>
     </xsl:function>
 
     <xsl:function name="imf:compile-concept-references">

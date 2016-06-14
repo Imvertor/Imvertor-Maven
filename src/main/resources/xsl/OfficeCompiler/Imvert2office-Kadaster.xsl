@@ -897,7 +897,7 @@
     
     <xsl:function name="imf:get-formatted-compiled-documentation" as="item()*">
         <xsl:param name="struct"/>
-        <xsl:sequence select="imf:get-compiled-documentation($struct,$model-is-traced)"/>
+        <xsl:sequence select="imf:get-compiled-documentation($struct)"/>
     </xsl:function>
     
 </xsl:stylesheet>

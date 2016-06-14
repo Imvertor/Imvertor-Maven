@@ -98,8 +98,8 @@
                     <xsl:variable name="collaboration-package" select="$collaboration/../UML:Package[@name=$classifier-role/@name]"/>
                     <xsl:variable name="cp-id" select="if (exists($classifier-role) and $collaboration-package/@xmi.id) then $collaboration-package/@xmi.id else ../../@xmi.id"/>
                     <xsl:variable name="general-construct" select="if (exists($cp-id)) then imf:get-construct-in-derivation-by-id($cp-id) else ()"/>
-                    <xsl:variable name="compiled-documentation" select="imf:get-compiled-documentation($general-construct[1],$model-is-traced)"/>
-                    <xsl:variable name="compiled-tagged-values" select="imf:get-compiled-tagged-values($general-construct[1],$model-is-traced,false())"/>
+                    <xsl:variable name="compiled-documentation" select="imf:get-compiled-documentation($general-construct[1])"/>
+                    <xsl:variable name="compiled-tagged-values" select="imf:get-compiled-tagged-values($general-construct[1],false())"/>
                     <xsl:variable name="documentation-tv" as="element()*">
                         <xsl:if test="exists($compiled-tagged-values)">
                             <html:p>METADATA</html:p>

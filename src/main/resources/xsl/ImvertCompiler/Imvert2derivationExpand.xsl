@@ -54,7 +54,7 @@
         Documentation is compiled in a full form: all documentation of the client and all suppliers. 
     -->  
     <xsl:template match="imvert:application | imvert:package | imvert:class | imvert:attribute | imvert:association">
-        <xsl:variable name="derived-documentation" select="imf:get-compiled-documentation(.,$model-is-traced)"/>
+        <xsl:variable name="derived-documentation" select="imf:get-compiled-documentation(.)"/>
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:apply-templates select="*[empty(self::imvert:documentation)]"/>
@@ -73,7 +73,7 @@
     <xsl:template match="imvert:tagged-values">
         <xsl:variable name="governing-construct" select="ancestor::imvert:*[imvert:id][1]"/>
         <xsl:copy>
-            <xsl:variable name="ds" select="imf:get-compiled-tagged-values($governing-construct,$model-is-traced,false())"/>
+            <xsl:variable name="ds" select="imf:get-compiled-tagged-values($governing-construct,false())"/>
             <xsl:for-each select="$ds">
                 <imvert:tagged-value>
                     <xsl:attribute name="derivation-project" select="@project"/>

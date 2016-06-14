@@ -614,7 +614,7 @@
             (not($is-enumeration) and empty(imvert:baretype) and empty(imvert:type-name)), 
             'Attribute type not specified')"/>
         <xsl:sequence select="imf:report-error(., 
-            (not($is-enumeration) and not(imvert:baretype) and not(imvert:type-package)), 
+            (not($is-enumeration) and empty(imvert:baretype) and empty(imvert:type-package)), 
             'Unknown attribute type. Is the package that defines this class in scope?')"/>
         <xsl:sequence select="imf:report-error(., 
             ($class/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-union') and not(imvert:type-package)), 

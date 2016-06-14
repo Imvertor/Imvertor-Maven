@@ -38,7 +38,7 @@
     <xsl:variable name="derivationtree" select="imf:document($derivationtree-file-url)"/>
     <xsl:variable name="pairs" select="$derivationtree/imvert:layers-set/imvert:layer"/>
 
-    <xsl:variable name="model-is-traced" select="imf:boolean(imf:get-config-string('cli','modelistraced'))"/>
+    <xsl:variable name="model-is-traced-by-user" select="imf:boolean(imf:get-config-string('cli','modelistraced'))"/>
     
     <xsl:template match="imvert:packages" mode="trace">
         <!-- return a trace documentation page only when deriving -->
@@ -93,15 +93,17 @@
     </xsl:template>
     
     <xsl:template match="imvert:attribute" mode="trace">
+        <xsl:variable name="type" select="if (../../imvert:designation = 'enumeration') then 'Enum' else 'Attribute'"/>
         <tr>
-            <td>&#160;&#8212;Attribute</td>
+            <td>&#160;&#8212;<xsl:value-of select="$type"/></td>
             <xsl:sequence select="imf:get-trace-documentation-columns(.)"/>
         </tr>
         <xsl:apply-templates mode="trace"/>
     </xsl:template>
     <xsl:template match="imvert:association" mode="trace">
         <tr>
-            <td>&#160;&#8212;Association</td>
+            <xsl:variable name="type" select="if (imvert:aggregation = 'composite') then 'Composition' else 'Association'"/>
+            <td>&#160;&#8212;<xsl:value-of select="$type"/></td>
             <xsl:sequence select="imf:get-trace-documentation-columns(.)"/>
         </tr>
         <xsl:apply-templates mode="trace"/>
@@ -115,24 +117,27 @@
     <xsl:function name="imf:get-trace-documentation-columns">
         <xsl:param name="client-construct"/>
         
-        <xsl:variable name="layers" select="imf:get-construct-in-all-layers($client-construct,true(),$model-is-traced)"/>
-        <xsl:for-each select="$layers/*">
+        <xsl:variable name="layers" select="imf:get-construct-in-all-layers($client-construct)"/>
+        <xsl:for-each-group select="$layers/*" group-by="../@level">
+            <xsl:sort select="xs:integer(../@level)" order="ascending"/>
             <td>
-                <xsl:choose>
-                    <xsl:when test="self::error">
-                        <span class="error">
-                            <xsl:value-of select="@type"/>
-                        </span>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="@display-name"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-                <span class="tid">
-                    <xsl:value-of select="imvert:id"/>
-                </span>
+                <xsl:for-each select="current-group()">
+                    <xsl:choose>
+                        <xsl:when test="self::error">
+                            <span class="error">
+                                <xsl:value-of select="@type"/>
+                            </span>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="@display-name"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <span class="tid">
+                        <xsl:value-of select="imvert:id"/>
+                    </span>
+                </xsl:for-each>
             </td>
-        </xsl:for-each>
+        </xsl:for-each-group>
     </xsl:function>
      
 </xsl:stylesheet>

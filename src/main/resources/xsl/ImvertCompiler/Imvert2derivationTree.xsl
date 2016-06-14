@@ -48,7 +48,7 @@
             <imvert:layers-set>
                 <xsl:for-each select="imvert:packages/imvert:package[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))]">
                     <imvert:layer>
-                        <imvert:supplier project="{$application-project}" application="{$application-name}" release="{$application-release}">
+                        <imvert:supplier project="{$application-project}" application="{$application-name}" release="{$application-release}" level="0">
                             <xsl:apply-templates select="."/>
                         </imvert:supplier>
                         <xsl:sequence select="imf:get-full-derivation-sub(.,1)"/>
@@ -142,7 +142,7 @@
                         </xsl:if>
                     </xsl:when>
                     <xsl:otherwise>
-                        <imvert:supplier application="{$supplier-info/@application}" project="{$supplier-info/@project}" release="{$supplier-info/@release}">
+                        <imvert:supplier application="{$supplier-info/@application}" project="{$supplier-info/@project}" release="{$supplier-info/@release}" level="{$level}">
                             <xsl:sequence select="$supplier-package"/>
                         </imvert:supplier>
                         <xsl:sequence select="imf:get-full-derivation-sub($supplier-package, $level + 1)"/>
@@ -176,26 +176,67 @@
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:attribute name="layered-name" select="imf:get-layered-display-names(.)[last()]"/>
-            <!-- add traces when not yet set, but only when model is not traced by user ($model-is-traced). -->
+            <!-- add traces when not yet set, but only when model is not traced by user ($model-is-traced-by-user). -->
             
-            <xsl:variable name="traces-found" select="()"/>
+            <xsl:variable name="traces-found" select="imf:get-supplier-ids(.)"/>
             <xsl:choose>
-                <xsl:when test="exists(imvert:trace) or $model-is-traced">
-                    <!-- no need to determine trace --> 
+                <xsl:when test="exists(imvert:trace) or $model-is-traced-by-user">
+                    <!-- no need to determine trace -->
                 </xsl:when>
-                <xsl:when test="$traces-found">
+                <xsl:when test="exists($traces-found)">
                     <!-- trace must be determined -->
                     <xsl:for-each select="$traces-found">
-                        <imvert:trace>
+                        <imvert:trace origin="system">
                             <xsl:value-of select="."/>
                         </imvert:trace>
                     </xsl:for-each>
                 </xsl:when>
             </xsl:choose>
             <xsl:apply-templates mode="layered-name"/>
-            
         </xsl:copy>
     </xsl:template>
+    
+    <!-- Determine the ID of the equivalent construct in the supplier. This is based on naming conventions. --> 
+    <xsl:function name="imf:get-supplier-ids" as="xs:string*">
+        <xsl:param name="construct"/>
+        <xsl:variable name="client-attribute" select="$construct/self::imvert:attribute"/>
+        <xsl:variable name="client-association" select="$construct/self::imvert:association"/>
+        <xsl:variable name="client-class" select="$construct/ancestor-or-self::imvert:class[1]"/>
+        <xsl:variable name="client-package" select="$client-class/ancestor::imvert:package[1]"/>
+        <xsl:variable name="supplier-packages" select="$client-package/../following-sibling::imvert:supplier[1]/imvert:package"/>
+        <xsl:variable name="supplier-classes" select="$supplier-packages/imvert:class[imvert:name=$client-class/imvert:name]"/>
+        <xsl:variable name="supplier-attributes" select="$supplier-classes/*/imvert:attribute[imvert:name=$client-attribute/imvert:name]"/>
+        <xsl:variable name="supplier-associations" select="$supplier-classes/*/imvert:association[imvert:name=$client-association/imvert:name]"/>
+        <xsl:choose>
+            <xsl:when test="$construct/self::imvert:class and $supplier-classes[2]">
+                <xsl:sequence select="imf:report-error($client-class,
+                    true(),
+                    'Multiple classes with same name in supplier',
+                    ())"/>
+            </xsl:when>
+            <xsl:when test="$construct/self::imvert:class">
+                <xsl:sequence select="$supplier-classes/imvert:id"/>
+            </xsl:when>
+            <xsl:when test="$construct/self::imvert:attribute and $supplier-attributes[2]">
+                <xsl:sequence select="imf:report-error($client-attribute,
+                    true(),
+                    'Multiple attributes with same name in supplier',
+                    ())"/>
+            </xsl:when>
+            <xsl:when test="$construct/self::imvert:attribute">
+                <xsl:sequence select="$supplier-attributes/imvert:id"/>
+            </xsl:when>
+            <xsl:when test="$construct/self::imvert:attribute and $supplier-associations[2]">
+                <xsl:sequence select="imf:report-error($client-association,
+                    true(),
+                    'Multiple associations with same name in supplier',
+                    ())"/>
+            </xsl:when>
+            <xsl:when test="$construct/self::imvert:association">
+                <xsl:sequence select="$supplier-associations/imvert:id"/>
+            </xsl:when>
+        </xsl:choose>
+    </xsl:function>
 
     <xsl:function name="imf:get-layered-display-names" as="xs:string+">
         <xsl:param name="construct" as="element()"/>

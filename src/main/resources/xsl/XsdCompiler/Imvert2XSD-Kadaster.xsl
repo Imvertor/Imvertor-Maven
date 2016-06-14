@@ -1438,7 +1438,7 @@
     <xsl:function name="imf:get-documentation" as="node()*">
         <xsl:param name="construct" as="node()"/>
         <xsl:sequence select="imf:create-doc-element('xs:documentation','http://www.imvertor.org/schema-info/technical-documentation',
-            imf:xhtml-to-flatdoc(imf:get-compiled-documentation($construct,$model-is-traced)))"/>
+            imf:xhtml-to-flatdoc(imf:get-compiled-documentation($construct)))"/>
         <xsl:sequence select="imf:create-doc-element('xs:documentation','http://www.imvertor.org/schema-info/content-documentation',())"/>
         <xsl:sequence select="imf:create-doc-element('xs:documentation','http://www.imvertor.org/schema-info/version-documentation',())"/>
         <xsl:sequence select="imf:create-doc-element('xs:documentation','http://www.imvertor.org/schema-info/external-documentation',())"/>

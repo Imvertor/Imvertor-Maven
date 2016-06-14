@@ -61,11 +61,8 @@
     --> 
     <xsl:template match="/">
         <imvert:report>
-            <xsl:sequence select="$pairs"/>
-            <!-- TODO baseren op traces: zie redmine #487770 -->
-            <xsl:if test="not($model-is-traced)">
-                <xsl:apply-templates select="$pairs"/>
-            </xsl:if>
+            <xsl:comment>No data, report through messaging framework</xsl:comment>
+            <xsl:apply-templates select="$pairs"/>
         </imvert:report>
     </xsl:template>
 
@@ -275,7 +272,7 @@
                 <xsl:variable name="client-defining-superclass" select="imf:get-superclasses($client-defining-class)"/>
                 
                 <xsl:sequence select="imf:report-error($client,
-                    not($model-is-traced) and 
+                    not($model-is-traced-by-user) and 
                     not(($client-defining-class,$client-defining-superclass)/imvert:name = ($supplier-defining-class,$supplier-defining-subclass)/imvert:name),
                     'Client type [1] or any of its supertypes must be (sub)type of supplier type [2]',
                     ($client-defining-class,$supplier-defining-class))"/>

@@ -80,13 +80,13 @@
       <LOCAL_SCHEMA_MAPPING_FILE>${system/managedinputfolder}/xsd/local-schemas.xml</LOCAL_SCHEMA_MAPPING_FILE>
       
       <IMVERTOR_EXPANDDOC_XSLPATH>Imvert2expanddoc.xsl</IMVERTOR_EXPANDDOC_XSLPATH>
-      <WORK_EXPANDDOC_FILE>${system/work-imvert-folder-path}/imvertor.11.expanddoc.xml</WORK_EXPANDDOC_FILE>
+      <WORK_EXPANDDOC_FILE>${system/work-imvert-folder-path}/imvertor.10.expanddoc.xml</WORK_EXPANDDOC_FILE>
       
       <IMVERTOR_DERIVATIONTREE_XSLPATH>Imvert2derivationTree.xsl</IMVERTOR_DERIVATIONTREE_XSLPATH>
-      <WORK_DERIVATIONTREE_FILE>${system/work-imvert-folder-path}/imvertor.15.1.tree.xml</WORK_DERIVATIONTREE_FILE>
+      <WORK_DERIVATIONTREE_FILE>${system/work-imvert-folder-path}/imvertor.11.1.tree.xml</WORK_DERIVATIONTREE_FILE>
   
       <IMVERTOR_DERIVATIONEXPAND_XSLPATH>Imvert2derivationExpand.xsl</IMVERTOR_DERIVATIONEXPAND_XSLPATH>
-      <WORK_DERIVATIONEXPAND_FILE>${system/work-imvert-folder-path}/imvertor.15.2.expand.xml</WORK_DERIVATIONEXPAND_FILE>
+      <WORK_DERIVATIONEXPAND_FILE>${system/work-imvert-folder-path}/imvertor.11.2.expand.xml</WORK_DERIVATIONEXPAND_FILE>
       
       <IMVERTOR_EMBELLISH_XSLPATH>Imvert2embellish.xsl</IMVERTOR_EMBELLISH_XSLPATH>
       <WORK_EMBELLISH_FILE>${system/work-imvert-folder-path}/imvertor.12.embellish.xml</WORK_EMBELLISH_FILE>
@@ -107,7 +107,7 @@
       -->
       <IMVERTOR_APPLICATION_LOCATION_URL>./xsd/Imvertor/application/v20160201/Imvertor_Application_v2_0_0.xsd</IMVERTOR_APPLICATION_LOCATION_URL>
       
-      <WORK_DERIVATION_FILE>${system/work-imvert-folder-path}/imvertor.14.derive.xml</WORK_DERIVATION_FILE>
+      <WORK_DERIVATION_FILE>${system/work-imvert-folder-path}/imvertor.15.derive.xml</WORK_DERIVATION_FILE>
       <IMVERTOR_DERIVATION_XSLPATH>Imvert2derivation.xsl</IMVERTOR_DERIVATION_XSLPATH>
 
 
