@@ -22,13 +22,26 @@
    <!-- TODO ga uit van UGM maar alleen de pacakge struktuur wijkt enigzins af. Dit anders oplossen?-->
    <xi:include href="KINGUGM.xml"/>
    
-   <svn>$Id: KINGSIM.xml 7434 2016-02-26 12:37:57Z arjan $</svn>
    <name>KINGBSM</name>
 
    <description>Metamodel for KING/VNG information models: bericht specificatie model</description>
 
    <stereotypes xml:id="stereotypes">
 
+      <stereo id="stereotype-name-entiteitrelatie">
+         <name lang="en">entityrelation</name>
+         <name lang="nl">entiteitrelatie</name>
+         <desc>TODO</desc>
+         <construct>association</construct>
+      </stereo>
+      
+      <stereo id="stereotype-name-berichtrelatie">
+         <name lang="en">messagerelation</name>
+         <name lang="nl">berichtrelatie</name>
+         <desc>TODO</desc>
+         <construct>association</construct>
+      </stereo>
+      
       <!-- packages -->
       <stereo id="stereotype-name-application-package">
          <name lang="en">messageset</name>

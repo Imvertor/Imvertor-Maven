@@ -18,7 +18,7 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <metamodel>
-    <svn>$Id: BP.xml 7439 2016-02-29 14:43:37Z arjan $</svn>
+ 
     <name>BP-scalar</name>
 
     <description>Metamodel for Dutch Best Practices based registrations, scalars</description>

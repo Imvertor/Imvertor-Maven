@@ -22,7 +22,6 @@
    <xi:include href="../BP/BP.xml"/>
    <xi:include href="../BP/BP-scalar.xml"/>
    
-   <svn>$Id: KINGSIM.xml 7506 2016-04-19 15:36:57Z arjan $</svn>
    <name>KINGSIM</name>
 
    <description>Metamodel for KING/VNG information models: semantisch informatiemodel</description>

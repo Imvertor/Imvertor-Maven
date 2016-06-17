@@ -35,8 +35,8 @@
     <xsl:param name="config-file-path">config.xml</xsl:param>
     <xsl:param name="info-file-path">Imvert</xsl:param>
     
-    <xsl:output indent="no"/>
-
+    <xsl:output encoding="UTF-8" method="xml" indent="yes"/>
+    
     <xsl:variable name="document" select="/"/>
     
     <xsl:variable name="command" select="('add-tagged-value','del-tagged-value')"/>

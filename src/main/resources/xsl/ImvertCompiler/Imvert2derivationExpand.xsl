@@ -71,9 +71,10 @@
         For each tagged value, the derivation origin is specified.
     -->
     <xsl:template match="imvert:tagged-values">
-        <xsl:variable name="governing-construct" select="ancestor::imvert:*[imvert:id][1]"/>
+        <xsl:variable name="governing-construct" select=".."/>
         <xsl:copy>
             <xsl:variable name="ds" select="imf:get-compiled-tagged-values($governing-construct,false())"/>
+           
             <xsl:for-each select="$ds">
                 <imvert:tagged-value>
                     <xsl:attribute name="derivation-project" select="@project"/>

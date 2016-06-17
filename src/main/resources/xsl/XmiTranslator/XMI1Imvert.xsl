@@ -80,7 +80,7 @@
     
     <xsl:variable name="additional-tagged-values" select="imf:get-config-tagged-values()" as="element(tv)*"/>
     
-    <xsl:output encoding="UTF-8" method="xml" indent="no"/>
+    <xsl:output encoding="UTF-8" method="xml" indent="yes"/>
    
     <xsl:template match="/">
         <imvert:packages>
@@ -853,7 +853,7 @@
     <xsl:function name="imf:get-tagged-values">
         <xsl:param name="this" as="node()"/>
         <xsl:param name="tagged-value-name" as="xs:string*"/>
-        <xsl:param name="normalized" as="xs:string"/>
+        <xsl:param name="normalized" as="xs:string?"/>
         <xsl:sequence select="for $tv in imf:get-tagged-values($this,$tagged-value-name) return imf:get-tagged-value-norm($tv,$normalized)"/>
     </xsl:function>
     

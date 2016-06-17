@@ -18,7 +18,7 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <tagset xmlns:xi="http://www.w3.org/2001/XInclude">
-    <svn>$Id: Kadaster.xml 7439 2016-02-29 14:43:37Z arjan $</svn>
+  
     <name>Kadaster</name>
     <tagged-values>
         

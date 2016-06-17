@@ -21,7 +21,6 @@
     
     <xi:include href="../BP/BP-scalar.xml"/>
     
-    <svn>$Id: KINGUGM.xml 7509 2016-04-25 13:30:29Z arjan $</svn>
     <name>KINGUGM</name>
     
     <description>Metamodel for KING/VNG exchange models: uitwisseling gegevensmodel</description>

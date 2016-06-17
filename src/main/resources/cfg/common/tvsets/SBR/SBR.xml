@@ -18,7 +18,6 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <tagset>
-    <svn>$Id: SBR.xml 7434 2016-02-26 12:37:57Z arjan $</svn>
     <name>SBR</name>
     <descr>Stelsel basisregistraties</descr>
     <web>http://stelselcatalogus.logius.nl/over-de-stelselcatalogus/metadata/</web>

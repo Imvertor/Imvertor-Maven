@@ -49,7 +49,7 @@
     
     <xsl:variable name="debug" select="true()"/>
     
-    <xsl:output indent="yes"/>
+    <xsl:output encoding="UTF-8" method="xml" indent="yes"/>
     
     <xsl:template match="/">
         <xsl:if test="$debug">

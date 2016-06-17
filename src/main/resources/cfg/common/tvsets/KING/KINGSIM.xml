@@ -18,7 +18,6 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <tagset xmlns:xi="http://www.w3.org/2001/XInclude">
-    <svn>$Id: KINGSIM.xml 7508 2016-04-21 13:23:52Z arjan $</svn>
     <name>KING</name>
     <tagged-values>
         <!-- KING follows BP requirements -->
@@ -49,7 +48,6 @@
                 <value>Nee</value>
                 <value>Zie groep</value>
             </declared-values>
-            
         </tv>
         <tv norm="space" id="HerkomstDefinitie">
             <name lang="nl">Herkomst definitie</name>

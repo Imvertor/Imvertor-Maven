@@ -37,7 +37,7 @@
 
     <xsl:import href="../common/Imvert-common.xsl"/>
     
-    <xsl:output indent="no"/>
+    <xsl:output encoding="UTF-8" method="xml" indent="yes"/>
     
     <xsl:variable name="imvert-appconfig-path" select="imf:get-config-string('properties','WORK_APPCONFIG_FILE')"/>
     <xsl:variable name="imvert-appconfig-url" select="imf:filespec($imvert-appconfig-path)[2]"/>

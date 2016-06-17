@@ -21,7 +21,6 @@
     <!-- Imvertor follows Kadaster requirements -->
     <xi:include href="../Kadaster/Kadaster.xml"/>
     
-    <svn>$Id: Kadaster.xml 7322 2015-11-25 10:08:59Z arjan $</svn>
     <name>Imvertor</name>
 
     <description>Metamodel for Imvertor</description>

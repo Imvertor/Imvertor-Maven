@@ -18,7 +18,7 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <tagset>
-    <svn>$Id: Imvertor.xml 7431 2016-02-24 12:46:42Z arjan $</svn>
+
     <name>Imvertor</name>
     <tagged-values>
     </tagged-values>

@@ -121,19 +121,33 @@
 	</xsl:function>
 	
 	<!-- 
-		Get the latest (client) value specified of any tagged value 
+		Get the latest (client) value specified or derived of any tagged value 
 	-->
 	<xsl:function name="imf:get-compiled-tagged-values" as="element()*">
 		<xsl:param name="construct" as="element()"/> <!-- any construct that may have tagged values -->
 		<xsl:param name="include-empty" as="xs:boolean"/>
 			
 		<xsl:variable name="layers" select="imf:get-construct-in-all-layers($construct)"/>
+		
 		<xsl:variable name="tvs" as="element()*">
-			<xsl:for-each-group select="imf:get-config-tagged-values()" group-by="name"> <!-- returns tv elements -->
+			<!-- 
+				haal alle tagged values op die bekend zijn voor dit model, dus in de configuratie voorkomen 
+			-->
+			<xsl:for-each-group select="imf:get-config-tagged-values()" group-by="name"> 
+				<!-- 
+					verzamel deze declararies bij naam, neem de laatste (meest specifieke) 
+				-->
 				<xsl:for-each select="current-group()[last()]">
-					<!-- The tagged value is declared -->
 					<xsl:variable name="tv-name" select="name"/>
-					<xsl:variable name="tv" select="($layers/*/imvert:tagged-values/imvert:tagged-value[imvert:name=$tv-name])[last()]"/>
+					<!-- 
+						if derivable (config: derive=yes) get the last tv that actually has a value from the derivation stack 
+						otherwise get the current layer value, if any.
+					--> 
+					<xsl:variable name="is-derivable" select="imf:boolean(derive)"/>
+					<xsl:variable name="tv" select="
+						if ($is-derivable) 
+						then ($layers/imvert:*/imvert:tagged-values/imvert:tagged-value[imvert:name=$tv-name and normalize-space(imvert:value)])[1]
+						else $layers[1]/imvert:*/imvert:tagged-values/imvert:tagged-value[imvert:name=$tv-name]"/>
 					<xsl:if test="exists($tv)">
 						<!-- The tagged value is provided, there's a most specific value -->
 						<xsl:variable name="supplier" select="imf:get-supplier-from-layers($tv)"/>

@@ -18,12 +18,10 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <tagset xmlns:xi="http://www.w3.org/2001/XInclude">
-    <svn>$Id: KINGUGM.xml 7445 2016-03-03 13:53:34Z arjan $</svn>
-    <name>KINGUGM</name>
+    
+    <name>KINGBGM</name>
 
-    <xi:include href="KINGUGM.xml"/>
-
-    <tagged-values>
+   <tagged-values>
 
         <tv norm="space" validate="" rules="" id="Release">
             <name lang="nl">Release</name>
@@ -31,6 +29,15 @@
             <stereotypes>
                 <stereo required="yes" lang="nl">Koppelvlak</stereo>
             </stereotypes>
+        </tv>
+        
+        <tv norm="space"  rules="NOC" id="IndicatieKerngegeven">
+            <name lang="nl">Indicate kerngegeven</name><!-- tikfout moet Indicatie zijn -->
+            <derive>yes</derive>
+                <!-- 
+                    De waarde wordt overgenomen uit het UGM. 
+                    Er is voor BSM geen afwijking van de definitie en toepasbaarheid zoals in UGM. 
+                --> 
         </tv>
         
         <tv norm="space" validate="" rules="" id="Berichtcode">
