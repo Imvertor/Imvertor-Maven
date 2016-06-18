@@ -45,12 +45,8 @@
     <xsl:output indent="yes" method="xml" encoding="UTF-8"/>
     
     <!-- for all exel handling -->
-    
-    <xsl:variable name="endproduct-base-config-excel" select="imf:get-config-string('cli','endproductbaseconfig')"/>
-    <xsl:variable name="endproduct-config-excel" select="imf:get-config-string('cli','endproductconfig')"/>
-    
     <xsl:variable name="workfolder-path" select="imf:get-config-string('properties','work-serialize-folder')"/>
-  
+    
     <!-- for Excel OOXML -->
     
     <xsl:variable name="serialized-folder" select="imf:serializeFromZip($endproduct-base-config-excel,$workfolder-path)"/>
@@ -59,7 +55,12 @@
     <xsl:variable name="shared-strings" select="$content-doc/files/file/ss:sst/ss:si"/>
     
     <!-- for excel 97 -->
+
     <xsl:variable name="excel-97-dtd-path" select="imf:get-config-string('properties','FORMATWORKBOOK_DTD')"/>
+    <xsl:variable name="endproduct-base-config-excel" select="imf:get-config-string('cli','endproductbaseconfig')"/>
+    <xsl:variable name="endproduct-config-excel" select="imf:get-config-string('cli','endproductconfig')"/>
+    <xsl:variable name="endproduct-base-config-excel-url" select="imf:serializeExcel($endproduct-base-config-excel,concat($workfolder-path,'/excel.xml'),$excel-97-dtd-path)"/>
+    <xsl:variable name="endproduct-base-config-excel-doc" select="imf:document($endproduct-base-config-excel-url)"/>  
     
    <!-- Templates for processing and enriching the product configuration file. -->    
    <xsl:template match="workbook">
@@ -104,39 +105,53 @@
 			</xsl:copy>
 		</xsl:if>
     </xsl:template>
+    
+    <xsl:function name="imf:getColumnName" as="xs:string">
+        <xsl:param name="sheetName"/>
+        <xsl:param name="colNumber"/>
+        <xsl:param name="name-type"/>
+        <xsl:variable name="name-element" select="$endproduct-base-config-excel-doc//sheet[name=$sheetName]/row[@number=1]/col[@number=$colNumber]/data"/>
+        <xsl:value-of select="imf:get-normalized-name($name-element,$name-type)"/>
+    </xsl:function>
 
    <xsl:template match="col">
+       <xsl:variable name="name-type" select="'tv-name'"/>
+       <xsl:variable name="sheetName" select="ancestor::sheet/name"/>
+       <xsl:variable name="colNumber">
+           <xsl:value-of select="@number"/>
+       </xsl:variable>
        <xsl:copy>
           <xsl:choose>
-              <xsl:when test="ancestor::sheet[name = 'Berichtgerelateerde gegevens']">
+              <xsl:when test="$sheetName = 'Berichtgerelateerde gegevens'">
                   <xsl:choose>
                       <xsl:when test="@number=0"><xsl:attribute name="name" select="'typeBericht'"/></xsl:when>
                       <xsl:when test="@number=1"><xsl:attribute name="name" select="'synchroon?'"/></xsl:when>
                       <xsl:when test="@number=2"/>
-                      <xsl:when test="@number=3"><xsl:attribute name="name" select="'berichtcode'"/></xsl:when>
-                      <xsl:when test="@number=4"><xsl:attribute name="name" select="'zender'"/></xsl:when>
-                      <xsl:when test="@number=5"><xsl:attribute name="name" select="'ontvanger'"/></xsl:when>
-                      <xsl:when test="@number=6"><xsl:attribute name="name" select="'referentienummer'"/></xsl:when>
-                      <xsl:when test="@number=7"><xsl:attribute name="name" select="'tijdstipBericht'"/></xsl:when>
-                      <xsl:when test="@number=8"><xsl:attribute name="name" select="'crossRefnummer'"/></xsl:when>
-                      <xsl:when test="@number=9"><xsl:attribute name="name" select="'entiteittype'"/></xsl:when>
-                      <xsl:when test="@number=10"><xsl:attribute name="name" select="'functie'"/></xsl:when>
+                      <xsl:when test="@number=3"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Stuurgegevens'"/></xsl:when>
+                      <xsl:when test="@number=4"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Stuurgegevens'"/></xsl:when>
+                      <xsl:when test="@number=5"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Stuurgegevens'"/></xsl:when>
+                      <xsl:when test="@number=6"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Stuurgegevens'"/></xsl:when>
+                      <xsl:when test="@number=7"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Stuurgegevens'"/></xsl:when>
+                      <xsl:when test="@number=8"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Stuurgegevens'"/></xsl:when>
+                      <xsl:when test="@number=9"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Stuurgegevens'"/></xsl:when>
+                      <xsl:when test="@number=10"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Stuurgegevens'"/></xsl:when>
                       <xsl:when test="@number=11"/>
-                      <xsl:when test="@number=12"><xsl:attribute name="name" select="'sortering'"/></xsl:when>
-                      <xsl:when test="@number=13"><xsl:attribute name="name" select="'indicatorVervolgvraag'"/></xsl:when>
-                      <xsl:when test="@number=14"><xsl:attribute name="name" select="'indicatorAfnemerIndicatie'"/></xsl:when>
-                      <xsl:when test="@number=15"><xsl:attribute name="name" select="'maximumAantal'"/></xsl:when>
-                      <xsl:when test="@number=16"><xsl:attribute name="name" select="'peiltijdstipMaterieel'"/></xsl:when>
-                      <xsl:when test="@number=17"><xsl:attribute name="name" select="'peiltijdstipFormeel'"/></xsl:when>
-                      <xsl:when test="@number=18"><xsl:attribute name="name" select="'indicatorHistorie (vrije berichten)'"/></xsl:when>
-                      <xsl:when test="@number=19"><xsl:attribute name="name" select="'indicatorAantal'"/></xsl:when>
-                      <xsl:when test="@number=20"><xsl:attribute name="name" select="'aantalVoorkomens'"/></xsl:when>
-                      <xsl:when test="@number=21"><xsl:attribute name="name" select="'sequenceNumber'"/></xsl:when>
-                      <xsl:when test="@number=22"><xsl:attribute name="name" select="'indicatorLaatsteBericht'"/></xsl:when>
-                      <xsl:when test="@number=23"><xsl:attribute name="name" select="'mutatiesoort'"/></xsl:when>
-                      <xsl:when test="@number=24"><xsl:attribute name="name" select="'indicatorOvername'"/></xsl:when>
+                      <xsl:when test="@number=12"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Parameters'"/></xsl:when>
+                      <xsl:when test="@number=13"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Parameters'"/></xsl:when>
+                      <xsl:when test="@number=14"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Parameters'"/></xsl:when>
+                      <xsl:when test="@number=15"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Parameters'"/></xsl:when>
+                      <xsl:when test="@number=16"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Parameters'"/></xsl:when>
+                      <xsl:when test="@number=17"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Parameters'"/></xsl:when>
+                      <xsl:when test="@number=18"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Parameters'"/></xsl:when>
+                      <xsl:when test="@number=19"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Parameters'"/></xsl:when>
+                      <xsl:when test="@number=20"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Parameters'"/></xsl:when>
+                      <xsl:when test="@number=21"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Parameters'"/></xsl:when>
+                      <xsl:when test="@number=22"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Parameters'"/></xsl:when>
+                      <xsl:when test="@number=23"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Parameters'"/></xsl:when>
+                      <xsl:when test="@number=24"><xsl:attribute name="name" select="imf:getColumnName($sheetName,$colNumber,$name-type)"/><xsl:attribute name="type" select="'Parameters'"/></xsl:when>
                   </xsl:choose>               
               </xsl:when>
+<!-- ROME: In de volgende when's moet de kolomnaam eigenlijk ook via de functie ímf:getColumnName gegenereerd worden. Alleen dan in een variant die de naam niet normaliseert. -->
               <xsl:when test="ancestor::sheet[name = 'XML attributes']">
                   <xsl:choose>
                       <xsl:when test="@number=0"><xsl:attribute name="name" select="'id'"/></xsl:when>
@@ -157,6 +172,9 @@
                       <xsl:when test="@number=15"><xsl:attribute name="name" select="'StUF:scope'"/></xsl:when>
                       <xsl:when test="@number=16"><xsl:attribute name="name" select="'StUF:verwerkingssoort'"/></xsl:when>
                       <xsl:when test="@number=17"><xsl:attribute name="name" select="'StUF:functie'"/></xsl:when>
+                      <xsl:when test="@number=18"><xsl:attribute name="name" select="'naam'"/></xsl:when>
+                      <xsl:when test="@number=19"><xsl:attribute name="name" select="'groepsnaam'"/></xsl:when>
+                      <xsl:when test="@number=20"><xsl:attribute name="name" select="'elementnaam'"/></xsl:when>
                   </xsl:choose>
               </xsl:when>
           </xsl:choose> 

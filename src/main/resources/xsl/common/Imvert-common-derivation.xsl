@@ -52,7 +52,7 @@
 		  </imvert:class>
 		</imvert:layer>
 	-->
-	<xsl:function name="imf:get-construct-in-all-layers" as="element()*">
+	<xsl:function name="imf:get-construct-in-all-layers" as="element(imvert:layer)*">
 		<xsl:param name="client-construct" as="element()"/> <!-- the construct in the layer -->
 		
 		<!-- note that all construct are traced as the traces are set by user, or inferred by the system -->

@@ -161,12 +161,19 @@ public class XsdCompiler extends Step {
 			valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT_XML_XSLPATH");
 			valid = valid && transformer.transformStep("properties/RESULT_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGUGM_ORDER_ENDPRODUCT_XML_XSLPATH");
 			valid = valid && transformer.transformStep("properties/RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_ENDPRODUCT_XSD_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT_XSD_XSLPATH");
-			// temporary: transform to the new EP format.
-			valid = valid && transformer.transformStep("properties/RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_ENDPRODUCT-patch1_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT-patch1_XML_XSLPATH");
 		
 			// and copy the onderlaag
 			XmlFile onderlaag = new XmlFile(configurator.getParm("properties", "STUF_ONDERLAAG"));
 			onderlaag.copyFile(configurator.getParm("properties", "RESULT_XSD_APPLICATION_FOLDER") + File.separator + onderlaag.getName());
+			
+			// and create a table representation; 
+			valid = valid && transformer.transformStep("properties/RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH","properties/ENDPRODUCT_DOC_TABLES_FILE_PATH", "properties/IMVERTOR_ENDPRODUCT_DOC_TABLES_XSLPATH");
+			// simply copy the table html file
+			String fn = "office.tables.html";
+			AnyFile infoOfficeTableFile = new AnyFile(configurator.getParm("properties","ENDPRODUCT_DOC_TABLES_FILE_PATH"));
+			AnyFile officeTableFile = new AnyFile(configurator.getParm("system","work-etc-folder-path") + "/" + fn);
+			infoOfficeTableFile.copyFile(officeTableFile);
+			configurator.setParm("appinfo", "office-table-documentation-filename", fn);
 			
 		} else // model
 			valid = valid && transformer.transformStep("properties/WORK_SCHEMA_FILE","properties/RESULT_XSD_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH");

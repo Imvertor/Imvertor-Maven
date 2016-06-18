@@ -40,6 +40,9 @@
          With this configuration the attributes to be used on each location within the XML schemas are determined. -->
     <xsl:variable name="enriched-endproduct-base-config-excel">
         <result>
+            <xsl:if test="$endproduct-base-config-excel = ''">
+                <xsl:message select="concat('ERROR  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : The variable $endproduct-base-config-excel is empty so the Excel with the base configuration can not be found.')"/>								
+            </xsl:if>
              <xsl:choose> 
                 <xsl:when test="ends-with(lower-case($endproduct-base-config-excel),'.xlsx')">
                     <!-- excel based on OO-XML -->
@@ -53,7 +56,6 @@
                 </xsl:when>
                 <xsl:when test="ends-with(lower-case($endproduct-base-config-excel),'.xls')">
                     <!-- excel 97-2003 --> 
-                    <xsl:message  select="$endproduct-base-config-excel"></xsl:message>
                     <xsl:variable name="xml-path" select="imf:serializeExcel($endproduct-base-config-excel,concat($workfolder-path,'/excel.xml'),$excel-97-dtd-path)"/>
                     <xsl:variable name="xml-doc" select="imf:document(imf:file-to-url($xml-path))"/>
                     <!-- excel 97-2003 is'nt an XML format. Using the above variables the format is translated to XML.

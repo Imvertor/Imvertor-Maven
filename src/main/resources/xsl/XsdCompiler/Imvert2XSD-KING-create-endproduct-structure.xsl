@@ -17,8 +17,11 @@
 
 	<xsl:variable name="stylesheet">Imvert2XSD-KING-create-endproduct-structure</xsl:variable>
 	<xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-create-endproduct-structure.xsl 1
-		2015-11-11 11:50:00Z RobertMelskens $</xsl:variable>
+		2015-11-11 11:50:00Z RobertMelskens $</xsl:variable>	
 
+	<xsl:variable name="config-schemarules" select="imf:get-config-schemarules()"/>
+	<xsl:variable name="config-tagged-values" select="imf:get-config-tagged-values()"/>
+	
 	<!-- This template is used to start generating the ep structure for an individual message. -->
 	<xsl:template match="/imvert:packages/imvert:package" mode="create-message-structure"> <!-- this is an embedded message schema within the koppelvlak-->
 		<xsl:if test="imf:boolean($debug)">
@@ -37,8 +40,12 @@
 			
 		</xsl:variable>
 		<!-- create the bericht message -->
-		<xsl:variable name="berichtCode" select="imf:determineBerichtCode(imvert:name)"/>
+		<xsl:variable name="berichtCode" select="imvert:class[imvert:stereotype = 'VRAAGBERICHTTYPE' or imvert:stereotype = 'ANTWOORDBERICHTTYPE' or imvert:stereotype = 'KENNISGEVINGBERICHTTYPE' or imvert:stereotype = 'VRIJBERICHTTYPE']/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Berichtcode']/imvert:value"/>
+		<?x xsl:variable name="berichtCode" select="imf:determineBerichtCode(imvert:name)"/ x?>
 		<ep:message>
+			<?x xsl:message select="'-------'"></xsl:message>
+			<xsl:message select="$config-tagged-values"/>
+			<xsl:message select="'-------'"></xsl:message x?>
 			<xsl:sequence
 				select="imf:create-output-element('ep:documentation', 'TO-DO: bepalen of er geen documentatie op message niveau kan zijn. Zo ja dan dit toevoegen aan UML model van EP')"/>
 			<xsl:sequence select="imf:create-output-element('ep:code', $berichtCode)"/>
@@ -48,7 +55,7 @@
 			<xsl:sequence select="imf:create-output-element('ep:type', $berichtType)"/>
 			<!-- Start of the message is always a class with an imvert:stereotype with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE', 'VRIJBERICHTTYPE' or 
 				'KENNISGEVINGBERICHTTYPE'.
-				 Since the toplever structure of a message complies to different rules then the entiteiten structure this template is initialized within the 
+				 Since the toplevel structure of a message complies to different rules in comparison with the entiteiten structure this template is initialized within the 
 				 'create-initial-message-structure' mode. -->
 			<xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
 																			'stereotype-name-vraagberichttype',
@@ -77,6 +84,62 @@
 			<xsl:comment select="'imvert:class[mode=create-initial-message-structure]'"/>
 		</xsl:if>
 			<ep:seq>
+				<?x xsl:variable name="Stuurgegevens">
+					<xsl:call-template name="areParametersAndStuurgegevensAllowedOrRequired">
+						<xsl:with-param name="berichtCode" select="$berichtCode"/>
+						<xsl:with-param name="elements2bTested">
+							<imvert:taggedValues>
+								<xsl:for-each select=".//imvert:tagged-value">
+									<imvert:tagged-value>
+										<xsl:sequence select="imf:create-output-element('imvert:name', imvert:name)"/>
+										<xsl:sequence select="imf:create-output-element('imvert:value', imvert:value)"/>									
+									</imvert:tagged-value>
+								</xsl:for-each>
+							</imvert:taggedValues>					
+						</xsl:with-param>
+						<xsl:with-param name="parent" select="'Stuurgegevens'"/>				
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:if test="$Stuurgegevens != ''">
+					<ep:construct>
+						<ep:name>stuurgegevens</ep:name>
+						<ep:tech-name>stuurgegevens</ep:tech-name>
+						<ep:max-occurs>1</ep:max-occurs>
+						<ep:min-occurs>1</ep:min-occurs>
+						<ep:position>0</ep:position>
+						<ep:seq>
+							
+						</ep:seq>
+					</ep:construct>
+				</xsl:if>
+				<xsl:variable name="Parameters">
+					<xsl:call-template name="areParametersAndStuurgegevensAllowedOrRequired">
+						<xsl:with-param name="berichtCode" select="$berichtCode"/>
+						<xsl:with-param name="elements2bTested">
+							<imvert:taggedValues>
+								<xsl:for-each select=".//imvert:tagged-value">
+									<imvert:tagged-value>
+										<xsl:sequence select="imf:create-output-element('imvert:name', imvert:name)"/>
+										<xsl:sequence select="imf:create-output-element('imvert:value', imvert:value)"/>									
+									</imvert:tagged-value>
+								</xsl:for-each>
+							</imvert:taggedValues>					
+						</xsl:with-param>
+						<xsl:with-param name="parent" select="'Parameters'"/>				
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:if test="$Parameters != ''">
+					<ep:construct>
+						<ep:name>parameters</ep:name>
+						<ep:tech-name>parameters</ep:tech-name>
+						<ep:max-occurs>1</ep:max-occurs>
+						<ep:min-occurs>1</ep:min-occurs>
+						<ep:position>50</ep:position>
+						<ep:seq>
+							
+						</ep:seq>
+					</ep:construct>
+				</xsl:if x?>
 				<!-- The folowing 2 apply-templates initiate the processing of the 'imvert:attribute' elements within the supertype of imvert:class elements with an 
 					 imvert:stereotype with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE', 'VRIJBERICHTTYPE' or 'KENNISGEVINGBERICHTTYPE' and those within the 
 					 current class. -->
@@ -87,7 +150,7 @@
 				<xsl:apply-templates select=".//imvert:attribute" mode="create-message-content">
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 				</xsl:apply-templates>
-				<!-- The folowing 2 apply-templates initiate the processing of the 'imvert:association' elements with the stereotype 'GROEP COMPOSITIE' within the 
+				<!-- The folowing 2 apply-templates initiate the processing of the 'imvert:association' elements with the stereotype 'GEGEVENSGROEP COMPOSITIE' within the 
 					 supertype of imvert:class elements with an imvert:stereotype with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE', 'VRIJBERICHTTYPE' or 
 					 'KENNISGEVINGBERICHTTYPE' and those within the current class. The first one generates the 'stuurgegevens' element, the second one the 'parameters' 
 					 element. -->
@@ -98,10 +161,10 @@
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 					</xsl:apply-templates>
 				</xsl:if>
-<!-- ROME: Er bestaat nog steeds de mogelijkheid dat de stereotype 'GEGEVENSGROEP COMPOSITIE' wordt gebruikt ipv 'GROEP COMPOSITIE'.
+<!-- ROME: Er bestaat nog steeds de mogelijkheid dat de stereotype 'GEGEVENSGEGEVENSGROEP COMPOSITIE' wordt gebruikt ipv 'GEGEVENSGROEP COMPOSITIE'.
 		   De uitbecommentarieerde apply-templates kan met de eerste vorm omgaan maar moet tzt (zodra imvertor daarop checkt) worden verwijdert. -->
-				<!--xsl:apply-templates select=".//imvert:association[contains(imvert:stereotype,'GROEP COMPOSITIE')]" mode="create-message-content"-->
-				<xsl:apply-templates select=".//imvert:association[imvert:stereotype='GROEP COMPOSITIE']" mode="create-message-content">
+				<!--xsl:apply-templates select=".//imvert:association[contains(imvert:stereotype,'GEGEVENSGROEP COMPOSITIE')]" mode="create-message-content"-->
+				<xsl:apply-templates select=".//imvert:association[imvert:stereotype='GEGEVENSGROEP COMPOSITIE']" mode="create-message-content">
 					<!-- The 'id-trail' parameter has been introduced to be able to prevent recursive processing of classes.
 						 If the parser runs into an id already present within the trail (so the related object has already been processed) processing stops. -->
 					
@@ -303,7 +366,9 @@
 		   Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook nog herleid en doorgegeven worden.-->
 					<xsl:variable name="datumType">
 						<xsl:choose>
+<!-- ROME: Zodra scalar-xxx is doorgevoerd kan de eerste when verwijderd worden. -->
 							<xsl:when test="imvert:type-name='datetime'">yes</xsl:when>
+							<xsl:when test="imvert:type-name='scalar-datetime'">yes</xsl:when>
 							<xsl:otherwise>no</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
@@ -356,7 +421,6 @@
 			<xsl:when test="contains($berichtCode,'Lv')">
 				<xsl:choose>
 					<xsl:when test="$context = 'selectie'">
-						<xsl:message select="'INFO: Dit is een selectie entiteit.'"/>
 						<xsl:call-template name="createEntityConstruct">
 							<xsl:with-param name="id-trail" select="$id-trail"/>
 							<xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -1002,8 +1066,28 @@
 				<!-- If the class is about the 'stuurgegevens' or 'parameters' one of the following when's is activated to check if all children of the stuurgegevens 
 					 are allowed within the current berichttype. If not a warning is generated. -->
 <!-- ROME: Er wordt nu alleen gecheckt of de elementen die gedefinieerd worden wel voor mogen komen. De vraag is of ook gecheckt moet worden of de elementen die niet zijn
-		   gedefinieerd wel weggelaten mogen worden. -->		
-				<xsl:choose>
+		   gedefinieerd wel weggelaten mogen worden. -->
+				<!--xsl:if test="upper-case(imvert:name)='STUURGEGEVENS' or upper-case(imvert:name)='PARAMETERS'">
+					<xsl:call-template name="areParametersAndStuurgegevensAllowedOrRequired">
+						<xsl:with-param name="berichtCode" select="$berichtCode"/>
+						<xsl:with-param name="elements2bTested">
+							<imvert:attributesAndAssociations>
+								<xsl:for-each select=".//imvert:attribute">
+									<imvert:attribute>
+										<xsl:sequence select="imf:create-output-element('imvert:name', imvert:name)"/> 
+									</imvert:attribute>
+								</xsl:for-each>
+								<xsl:for-each select=".//imvert:association">
+									<imvert:association>
+										<xsl:sequence select="imf:create-output-element('imvert:name', imvert:name)"/> 
+									</imvert:association>
+								</xsl:for-each>
+							</imvert:attributesAndAssociations>					
+						</xsl:with-param>
+						<xsl:with-param name="parent" select="imvert:name"/>				
+					</xsl:call-template>
+				</xsl:if-->
+				<!--xsl:choose>
 					<xsl:when test="imvert:name='Stuurgegevens'">
 						<xsl:for-each select=".//imvert:attribute">
 							<xsl:variable name="isElementAllowed" select="imf:isElementAllowed($berichtCode, imvert:name)"/>
@@ -1017,6 +1101,26 @@
 								<xsl:message select="concat('WARN  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' element ', imvert:name, ' is not allowed within stuurgegevens.')"/>
 							</xsl:if>										
 						</xsl:for-each>
+						<xsl:variable name="availableStuurgegevens">
+							<imvert:attributesAndAssociations>
+								<xsl:for-each select=".//imvert:attribute">
+									<imvert:attribute>
+										<xsl:sequence select="imf:create-output-element('imvert:name', imvert:name)"/> 
+									</imvert:attribute>
+								</xsl:for-each>
+								<xsl:for-each select=".//imvert:association">
+									<imvert:association>
+										<xsl:sequence select="imf:create-output-element('imvert:name', imvert:name)"/> 
+									</imvert:association>
+								</xsl:for-each>
+							</imvert:attributesAndAssociations>
+						</xsl:variable>
+						<xsl:for-each select="$enriched-endproduct-base-config-excel//sheet
+							[name = 'Berichtgerelateerde gegevens']/row[col[@name = 'berichtcode']/data = $berichtCode]/col[@number > 2 and @number &lt; 11  and data != '-']">
+							<xsl:if test="count($availableStuurgegevens//imvert:name = @name) = 0">
+								<xsl:message select="concat('WARN  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' element ', @name, ' must be available within stuurgegevens.')"/>								
+							</xsl:if>		
+							</xsl:for-each>
 					</xsl:when>
 					<xsl:when test="imvert:name='Parameters'">
 						<xsl:for-each select=".//imvert:attribute">
@@ -1031,8 +1135,28 @@
 								<xsl:message select="concat('WARN  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' element ', imvert:name, ' is not allowed within parameters.')"/>
 							</xsl:if>										
 						</xsl:for-each>
+						<xsl:variable name="availableParameters">
+							<imvert:attributesAndAssociations>
+								<xsl:for-each select=".//imvert:attribute">
+									<imvert:attribute>
+										<xsl:sequence select="imf:create-output-element('imvert:name', imvert:name)"/> 
+									</imvert:attribute>
+								</xsl:for-each>
+								<xsl:for-each select=".//imvert:association">
+									<imvert:association>
+										<xsl:sequence select="imf:create-output-element('imvert:name', imvert:name)"/> 
+									</imvert:association>
+								</xsl:for-each>
+							</imvert:attributesAndAssociations>
+						</xsl:variable>
+						<xsl:for-each select="$enriched-endproduct-base-config-excel//sheet
+							[name = 'Berichtgerelateerde gegevens']/row[col[@name = 'berichtcode']/data = $berichtCode]/col[@number > 11 and data != '-']">
+							<xsl:if test="count($availableParameters//imvert:name = @name) = 0">
+								<xsl:message select="concat('WARN  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' element ', @name, ' must be available within parameters.')"/>
+							</xsl:if>		
+						</xsl:for-each>
 					</xsl:when>
-				</xsl:choose>
+				</xsl:choose-->
 				<xsl:apply-templates select="imvert:supertype" mode="create-message-content">
 					<xsl:with-param name="proces-type" select="$proces-type"/>
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -1041,10 +1165,10 @@
 				<!-- If the class hasn't been processed before it can be processed, else. to prevent recursion, processing is canceled. -->
 				<xsl:choose>
 					<xsl:when test="not(contains($id-trail, concat('#2#', imvert:id, '#')))">
-<!-- ROME: Er bestaat nog steeds de mogelijkheid dat de stereotype 'GEGEVENSGROEP COMPOSITIE' wordt gebruikt ipv 'GROEP COMPOSITIE'.
+<!-- ROME: Er bestaat nog steeds de mogelijkheid dat de stereotype 'GEGEVENSGEGEVENSGROEP COMPOSITIE' wordt gebruikt ipv 'GEGEVENSGROEP COMPOSITIE'.
 	   De uitbecommentarieerde apply-templates kan met de eerste vorm omgaan maar moet tzt (zodra imvertor daarop checkt) worden verwijdert. -->
-						<xsl:apply-templates select=".//imvert:association[imvert:stereotype='GROEP COMPOSITIE']" mode="create-message-content">
-						<!--xsl:apply-templates select=".//imvert:association[contains(imvert:stereotype,'GROEP COMPOSITIE')]" mode="create-message-content"-->
+						<xsl:apply-templates select=".//imvert:association[imvert:stereotype='GEGEVENSGROEP COMPOSITIE']" mode="create-message-content">
+						<!--xsl:apply-templates select=".//imvert:association[contains(imvert:stereotype,'GEGEVENSGROEP COMPOSITIE')]" mode="create-message-content"-->
 <!-- ROME: Het is de vraag of deze parameter en het checken op id nog wel noodzakelijk is. -->
 							<xsl:with-param name="id-trail">
 								<xsl:choose>
@@ -1151,10 +1275,10 @@
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="context" select="$context"/>
 					</xsl:apply-templates>
-<!-- ROME: Er bestaat nog steeds de mogelijkheid dat de stereotype 'GEGEVENSGROEP COMPOSITIE' wordt gebruikt ipv 'GROEP COMPOSITIE'.
+<!-- ROME: Er bestaat nog steeds de mogelijkheid dat de stereotype 'GEGEVENSGEGEVENSGROEP COMPOSITIE' wordt gebruikt ipv 'GEGEVENSGROEP COMPOSITIE'.
 		   De uitbecommentarieerde apply-templates kan met de eerste vorm omgaan maar moet tzt (zodra imvertor daarop checkt) worden verwijdert. -->
-					<xsl:apply-templates select=".//imvert:association[imvert:stereotype='GROEP COMPOSITIE']" mode="create-message-content">
-					<!--xsl:apply-templates select=".//imvert:association[contains(imvert:stereotype,'GROEP COMPOSITIE')]" mode="create-message-content"-->							
+					<xsl:apply-templates select=".//imvert:association[imvert:stereotype='GEGEVENSGROEP COMPOSITIE']" mode="create-message-content">
+					<!--xsl:apply-templates select=".//imvert:association[contains(imvert:stereotype,'GEGEVENSGROEP COMPOSITIE')]" mode="create-message-content"-->							
 						<?x xsl:with-param name="id-trail"
 							select="concat('#1#', imvert:id, '#', $id-trail)"/ x?>
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -1262,15 +1386,76 @@
 	<xsl:function name="imf:isElementAllowed">
 		<xsl:param name="berichtCode" as="xs:string"/>
 		<xsl:param name="element" as="xs:string"/>
+		<xsl:param name="parent" as="xs:string"/>
 		<!-- The following variable wil contain information from a spreadsheetrow which is determined using the first 3 parameters. 
 			 The variable $enriched-endproduct-base-config-excel used within the following variable is generated using the XSLT stylesheet 
 			 'Imvert2XSD-KING-enrich-excel.xsl'. -->
 		<xsl:variable name="attributeTypeRow" select="$enriched-endproduct-base-config-excel//sheet
 			[name = 'Berichtgerelateerde gegevens']/row[col[@name = 'berichtcode']/data = $berichtCode]"/>
-		<xsl:if test="$attributeTypeRow//col[@name = $element and data = '-']">no</xsl:if>		
+		<xsl:choose>
+			<xsl:when test="$attributeTypeRow//col[upper-case(@type) = upper-case($parent) and @name = $element and data = '-']">notAllowed</xsl:when>		
+			<xsl:when test="$attributeTypeRow//col[upper-case(@type) != upper-case($parent) and @name = $element]">notInScope</xsl:when>						
+			<xsl:when test="count($attributeTypeRow//col[upper-case(@type) = upper-case($parent) and @name = $element]) = 0">noSuchElement</xsl:when>		
+		</xsl:choose>		
 	</xsl:function>
 	
-	<!-- The function imf:createAttributes is used to determine the XML attributes neccessary for a certain context.
+<!-- ROME: In het BSM profiel van EA is er al rekening mee gehouden welke parameters en stuurgegevens er toegestaan zijn op de verschillende berichttypen.
+		   Een berichtontwerper heeft echter nog steeds de mogelijkheid om zelf parameters toe te voegen. Daarmee zou hij dus af kunnen wijken van wat is toegestaan.
+		   Er zijn echter verschillende manieren om dit te ondervangen:
+		   * Als de tagged values van het BSM profiel straks idd een prefix van 'BSM::' krijgen dan zou ik andere tagged values kunnen negeren.
+		   * Ik kan nog steeds een check uitvoeren op de naam van de tagged value a.d.h.v. de base configuration. Dit moet ik sowieso nog doen aangezien voor
+			 sommige subtypes van de berichttypes enkele stuurgegevens en parameters niet toegestaan zijn.
+		   Overigens wijken de namen van de tagged values nog af van de namen van de te gebruiken stuurgegevens en parameters. Daar moet dus nog een oplossing voor
+		   verzonnen worden. -->
+
+	<xsl:template name="areParametersAndStuurgegevensAllowedOrRequired">
+		<xsl:param name="berichtCode" as="xs:string"/>
+		<xsl:param name="elements2bTested" as="document-node()"/>
+		<xsl:param name="parent" as="xs:string"/>
+			<!-- The following variable wil contain information from a spreadsheetrow which is determined using the first 3 parameters. 
+		 The variable $enriched-endproduct-base-config-excel used within the following variable is generated using the XSLT stylesheet 
+		 'Imvert2XSD-KING-enrich-excel.xsl'. -->
+		<!--xsl:variable name="attributeTypeRow" select="$enriched-endproduct-base-config-excel//sheet
+			[name = 'Berichtgerelateerde gegevens']/row[col[@name = 'berichtcode']/data = $berichtCode]"/>
+		<xsl:if test="$attributeTypeRow//col[@name = $element and data = '-']">no</xsl:if-->
+		<xsl:message>
+			<xsl:copy-of select="$elements2bTested"/>
+		</xsl:message>		
+		<xsl:for-each select="$elements2bTested//imvert:name">
+			<xsl:variable name="isElementAllowed" select="imf:isElementAllowed($berichtCode, ., $parent)"/>
+			<xsl:choose>
+				<xsl:when test="$isElementAllowed = 'notAllowed'">
+					<xsl:message select="concat('WARN  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' element ', ., ' is not allowed within ', $parent, '.')"/>					
+				</xsl:when>
+				<xsl:when test="$isElementAllowed = 'noSuchElement'">
+					<xsl:message select="concat('WARN  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' the ', $parent, ' element ', ., ' is not known.')"/>					
+				</xsl:when>
+				<xsl:when test="$isElementAllowed = 'notInScope'"/>
+			</xsl:choose>
+		</xsl:for-each>
+		<!--xsl:choose>
+			<xsl:when test="$parent='Stuurgegevens'"-->
+				<xsl:for-each select="$enriched-endproduct-base-config-excel//sheet
+					[name = 'Berichtgerelateerde gegevens']/row[col[@name = 'berichtcode']/data = $berichtCode]/col[upper-case(@type) = upper-case($parent) and data != '-']">
+					<xsl:variable name="colName" select="@name"/>
+					<xsl:message select="concat('Type: ', @type, ' = Parent: ',$parent, '? (',@name,') , (', $elements2bTested//imvert:attribute[imvert:name = $colName]/imvert:name, ')')"/>
+					<xsl:if test="count($elements2bTested//imvert:name = $colName) = 0">
+						<xsl:message select="concat('WARN  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' element ', @name, ' must be available within ', $parent, '.')"/>
+					</xsl:if>		
+				</xsl:for-each>
+			<!--/xsl:when>
+			<xsl:when test="$parent='Parameters'">
+				<xsl:for-each select="$enriched-endproduct-base-config-excel//sheet
+					[name = 'Berichtgerelateerde gegevens']/row[col[@name = 'berichtcode']/data = $berichtCode]/col[@type = 'parameters' and data != '-']">
+					<xsl:if test="count($elements2bTested//imvert:name = @name) = 0">
+						<xsl:message select="concat('WARN  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' element ', @name, ' must be available within parameters.')"/>
+					</xsl:if>		
+				</xsl:for-each>
+			</xsl:when>
+		</xsl:choose-->
+	</xsl:template>
+		
+		<!-- The function imf:createAttributes is used to determine the XML attributes neccessary for a certain context.
 		 It has the following parameters:
 		 - typecode
 		 - berichttype
@@ -1483,7 +1668,7 @@
 		</xsl:if>
 	</xsl:function>
 
-	<xsl:function name="imf:determineBerichtCode">
+	<?x xsl:function name="imf:determineBerichtCode">
 		<xsl:param name="name" as="xs:string"/>
 		<xsl:choose>
 			<xsl:when test="contains($name,'Di01')">Di01</xsl:when>
@@ -1534,6 +1719,6 @@
 			<xsl:when test="contains($name,'Sh04')">Sh04</xsl:when>
 		</xsl:choose>
 		
-	</xsl:function>
+	</xsl:function x?>
 	
 </xsl:stylesheet>

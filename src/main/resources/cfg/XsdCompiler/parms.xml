@@ -162,5 +162,9 @@
       <IMVERTOR_METAMODEL_BOM_XSDSOURCE>system</IMVERTOR_METAMODEL_BOM_XSDSOURCE>
       <IMVERTOR_METAMODEL_BOM_XSD_XSLPATH>Imvert2XSD-Kadaster.xsl</IMVERTOR_METAMODEL_BOM_XSD_XSLPATH>
       
+      <!-- add tables documentation -->
+      <IMVERTOR_ENDPRODUCT_DOC_TABLES_XSLPATH>Imvert2XSD-KING-endproduct-tables.xsl</IMVERTOR_ENDPRODUCT_DOC_TABLES_XSLPATH>
+      <ENDPRODUCT_DOC_TABLES_FILE_PATH>${system/work-imvert-folder-path}/imvertor.29.tables.html</ENDPRODUCT_DOC_TABLES_FILE_PATH>
+      
    </properties>
 </config>

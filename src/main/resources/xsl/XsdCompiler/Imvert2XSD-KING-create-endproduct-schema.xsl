@@ -118,19 +118,35 @@
 								<xs:restriction>
 									<xsl:attribute name="base">
 										<xsl:choose>
+<!-- ROME: Zodra scalar-xxx is doorgevoerd kunnen de eerste 5 when's verwijderd worden. Welke scalars kan ik trouwens allemaal verwachten? -->
 											<xsl:when test="ep:type-name = 'integer'">
 												<xsl:value-of select="'xs:int'"/>
 											</xsl:when>
 											<xsl:when test="ep:type-name = 'decimal'">
 												<xsl:value-of select="'xs:decimal'"/>
 											</xsl:when>
-											<xsl:when test="ep:type-name = 'char'">
+											<xsl:when test="ep:type-name = 'string'">
 												<xsl:value-of select="'xs:string'"/>
 											</xsl:when>
 											<xsl:when test="ep:type-name = 'datetime'">
 												<xsl:value-of select="'xs:string'"/>
 											</xsl:when>
 											<xsl:when test="ep:type-name = 'boolean'">
+												<xsl:value-of select="'xs:boolean'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-integer'">
+												<xsl:value-of select="'xs:int'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-scalar-decimal'">
+												<xsl:value-of select="'xs:decimal'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-string'">
+												<xsl:value-of select="'xs:string'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-datetime'">
+												<xsl:value-of select="'xs:string'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-boolean'">
 												<xsl:value-of select="'xs:boolean'"/>
 											</xsl:when>
 											<!--xsl:when test="ep:type-name = 'MaximumAantal'">
@@ -172,19 +188,30 @@
 											<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
 										</xsl:choose>
 									</xsl:attribute>
+<!-- ROME: Zodra scalar-xxx is doorgevoerd kunnen in de onderstaande xsl:if statements xsl:when's verwijderd worden of vervangen worden door xsl:if. -->
 									<xsl:if test="ep:length">
 										<xsl:choose>
-											<xsl:when test="ep:type-name = 'char'">
+											<xsl:when test="ep:type-name = 'string'">
 												<xs:length value="{ep:length}"/>
 											</xsl:when>
 											<xsl:when test="ep:type-name = 'integer' or ep:type-name = 'decimal'">
+												<xs:totalDigits value="{ep:length}"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-string'">
+												<xs:length value="{ep:length}"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
 												<xs:totalDigits value="{ep:length}"/>
 											</xsl:when>
 										</xsl:choose>
 									</xsl:if>
 									<xsl:if test="ep:min-length">
 										<xsl:choose>
-											<xsl:when test="ep:type-name = 'char'">
+											<xsl:when test="ep:type-name = 'string'">
+												<xs:minLength value="1"/>
+												<!--xs:minLength value="{ep:min-length}"/-->
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-string'">
 												<xs:minLength value="1"/>
 												<!--xs:minLength value="{ep:min-length}"/-->
 											</xsl:when>
@@ -192,7 +219,11 @@
 									</xsl:if>
 									<xsl:if test="ep:max-length">
 										<xsl:choose>
-											<xsl:when test="ep:type-name = 'char'">
+											<xsl:when test="ep:type-name = 'string'">
+												<xs:maxLength value="12"/>
+												<!--xs:maxLength value="{ep:max-length}"/-->
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-string'">
 												<xs:maxLength value="12"/>
 												<!--xs:maxLength value="{ep:max-length}"/-->
 											</xsl:when>
@@ -207,6 +238,13 @@
 											<xsl:when test="ep:type-name = 'datetime'">
 												<!--xs:minInclusive value="{ep:min-value}"/-->
 											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
+												<xs:minInclusive value="1"/>
+												<!--xs:minInclusive value="{ep:min-value}"/-->
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-datetime'">
+												<!--xs:minInclusive value="{ep:min-value}"/-->
+											</xsl:when>
 										</xsl:choose>
 									</xsl:if>
 									<xsl:if test="ep:max-value and not(ep:type-name='datetime')">
@@ -218,6 +256,13 @@
 											<xsl:when test="ep:type-name = 'datetime'">
 												<!--xs:maxInclusive value="{ep:max-value}"/-->
 											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
+												<xs:maxInclusive value="99"/>
+												<!--xs:maxInclusive value="{ep:max-value}"/-->
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-datetime'">
+												<!--xs:maxInclusive value="{ep:max-value}"/-->
+											</xsl:when>
 										</xsl:choose>
 									</xsl:if>
 									<xsl:if test="ep:fraction-digits">
@@ -225,18 +270,27 @@
 											<xsl:when test="ep:type-name = 'decimal'">
 												<xs:fractionDigits value="{ep:fraction-digits}"/>
 											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-decimal'">
+												<xs:fractionDigits value="{ep:fraction-digits}"/>
+											</xsl:when>
 										</xsl:choose>
 									</xsl:if>
 									<xsl:if test="ep:enum">
 										<xsl:choose>
-											<xsl:when test="ep:type-name = 'char' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal'">
+											<xsl:when test="ep:type-name = 'string' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal'">
+												<xsl:apply-templates select="ep:enum"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-string' or ep:type-name = 'scalar-datetime' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
 												<xsl:apply-templates select="ep:enum"/>
 											</xsl:when>
 										</xsl:choose>
 									</xsl:if>
 									<xsl:if test="ep:pattern">
 										<xsl:choose>
-											<xsl:when test="ep:type-name = 'char' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal' or ep:type-name = 'boolean'">
+											<xsl:when test="ep:type-name = 'string' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal' or ep:type-name = 'boolean'">
+												<!--xs:pattern value="{ep:pattern}"/-->
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-string' or ep:type-name = 'scalar-datetime' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-boolean'">
 												<!--xs:pattern value="{ep:pattern}"/-->
 											</xsl:when>
 										</xsl:choose>
@@ -250,19 +304,35 @@
 								<xs:extension>
 									<xsl:attribute name="base">
 										<xsl:choose>
+<!-- ROME: Zodra scalar-xxx is doorgevoerd kunnen de eerste 5 when's verwijderd worden. Welke scalars kan ik trouwens allemaal verwachten? -->
 											<xsl:when test="ep:type-name = 'integer'">
 												<xsl:value-of select="'xs:int'"/>
 											</xsl:when>
 											<xsl:when test="ep:type-name = 'decimal'">
 												<xsl:value-of select="'xs:decimal'"/>
 											</xsl:when>
-											<xsl:when test="ep:type-name = 'char'">
+											<xsl:when test="ep:type-name = 'string'">
 												<xsl:value-of select="'xs:string'"/>
 											</xsl:when>
 											<xsl:when test="ep:type-name = 'datetime'">
 												<xsl:value-of select="'xs:string'"/>
 											</xsl:when>
 											<xsl:when test="ep:type-name = 'boolean'">
+												<xsl:value-of select="'xs:boolean'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-integer'">
+												<xsl:value-of select="'xs:int'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-decimal'">
+												<xsl:value-of select="'xs:decimal'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-string'">
+												<xsl:value-of select="'xs:string'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-datetime'">
+												<xsl:value-of select="'xs:string'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-boolean'">
 												<xsl:value-of select="'xs:boolean'"/>
 											</xsl:when>
 											<!--xsl:when test="ep:type-name = 'MaximumAantal'">
@@ -328,6 +398,7 @@
 		</xs:element>
 	</xsl:template>
 					
+<!-- ROME: Onderstaande template kan mogelijk komen te vervallen (integreren met de andere ep:construct templates). -->
 	<xsl:template match="ep:construct" mode="createSimpleTypes">
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
 		<xsl:variable name="name">
@@ -347,19 +418,35 @@
 					<xs:restriction>
 						<xsl:attribute name="base">
 							<xsl:choose>
+<!-- ROME: Zodra scalar-xxx is doorgevoerd kunnen de eerste 5 when's verwijderd worden. Welke scalars kan ik trouwens allemaal verwachten? -->
 								<xsl:when test="ep:type-name = 'integer'">
 									<xsl:value-of select="'xs:int'"/>
 								</xsl:when>
 								<xsl:when test="ep:type-name = 'decimal'">
 									<xsl:value-of select="'xs:decimal'"/>
 								</xsl:when>
-								<xsl:when test="ep:type-name = 'char'">
+								<xsl:when test="ep:type-name = 'string'">
 									<xsl:value-of select="'xs:string'"/>
 								</xsl:when>
 								<xsl:when test="ep:type-name = 'datetime'">
 									<xsl:value-of select="'xs:string'"/>
 								</xsl:when>
 								<xsl:when test="ep:type-name = 'boolean'">
+									<xsl:value-of select="'xs:boolean'"/>
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'scalar-integer'">
+									<xsl:value-of select="'xs:int'"/>
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'scalar-decimal'">
+									<xsl:value-of select="'xs:decimal'"/>
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'scalar-string'">
+									<xsl:value-of select="'xs:string'"/>
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'scalar-datetime'">
+									<xsl:value-of select="'xs:string'"/>
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'scalar-boolean'">
 									<xsl:value-of select="'xs:boolean'"/>
 								</xsl:when>
 								<!--xsl:when test="ep:type-name = 'MaximumAantal'">
@@ -401,19 +488,30 @@
 								<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
 							</xsl:choose>
 						</xsl:attribute>
+<!-- ROME: Zodra scalar-xxx is doorgevoerd kunnen in de onderstaande xsl:if statements xsl:when's verwijderd worden of vervangen worden door xsl:if. -->
 						<xsl:if test="ep:length">
 							<xsl:choose>
-								<xsl:when test="ep:type-name = 'char'">
+								<xsl:when test="ep:type-name = 'string'">
 									<xs:length value="{ep:length}"/>
 								</xsl:when>
 								<xsl:when test="ep:type-name = 'integer' or ep:type-name = 'decimal'">
+									<xs:totalDigits value="{ep:length}"/>
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'scalar-string'">
+									<xs:length value="{ep:length}"/>
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
 									<xs:totalDigits value="{ep:length}"/>
 								</xsl:when>
 							</xsl:choose>
 						</xsl:if>
 						<xsl:if test="ep:min-length">
 							<xsl:choose>
-								<xsl:when test="ep:type-name = 'char'">
+								<xsl:when test="ep:type-name = 'string'">
+									<xs:minLength value="1"/>
+									<!--xs:minLength value="{ep:min-length}"/-->
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'scalar-string'">
 									<xs:minLength value="1"/>
 									<!--xs:minLength value="{ep:min-length}"/-->
 								</xsl:when>
@@ -421,7 +519,11 @@
 						</xsl:if>
 						<xsl:if test="ep:max-length">
 							<xsl:choose>
-								<xsl:when test="ep:type-name = 'char'">
+								<xsl:when test="ep:type-name = 'string'">
+									<xs:maxLength value="12"/>
+									<!--xs:maxLength value="{ep:max-length}"/-->
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'scalar-string'">
 									<xs:maxLength value="12"/>
 									<!--xs:maxLength value="{ep:max-length}"/-->
 								</xsl:when>
@@ -436,6 +538,13 @@
 								<xsl:when test="ep:type-name = 'datetime'">
 									<!--xs:minInclusive value="{ep:min-value}"/-->
 								</xsl:when>
+								<xsl:when test="ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
+									<xs:minInclusive value="1"/>
+									<!--xs:minInclusive value="{ep:min-value}"/-->
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'scalar-datetime'">
+									<!--xs:minInclusive value="{ep:min-value}"/-->
+								</xsl:when>
 							</xsl:choose>
 						</xsl:if>
 						<xsl:if test="ep:max-value and not(ep:type-name='datetime')">
@@ -447,6 +556,13 @@
 								<xsl:when test="ep:type-name = 'datetime'">
 									<!--xs:maxInclusive value="{ep:max-value}"/-->
 								</xsl:when>
+								<xsl:when test="ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
+									<xs:maxInclusive value="99"/>
+									<!--xs:maxInclusive value="{ep:max-value}"/-->
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'scalar-datetime'">
+									<!--xs:maxInclusive value="{ep:max-value}"/-->
+								</xsl:when>
 							</xsl:choose>
 						</xsl:if>
 						<xsl:if test="ep:fraction-digits">
@@ -454,18 +570,27 @@
 								<xsl:when test="ep:type-name = 'decimal'">
 									<xs:fractionDigits value="{ep:fraction-digits}"/>
 								</xsl:when>
+								<xsl:when test="ep:type-name = 'scalar-decimal'">
+									<xs:fractionDigits value="{ep:fraction-digits}"/>
+								</xsl:when>
 							</xsl:choose>
 						</xsl:if>
 						<xsl:if test="ep:enum">
 							<xsl:choose>
-								<xsl:when test="ep:type-name = 'char' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal'">
+								<xsl:when test="ep:type-name = 'string' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal'">
+									<xsl:apply-templates select="ep:enum"/>
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'scalar-string' or ep:type-name = 'scalar-datetime' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
 									<xsl:apply-templates select="ep:enum"/>
 								</xsl:when>
 							</xsl:choose>
 						</xsl:if>
 						<xsl:if test="ep:pattern">
 							<xsl:choose>
-								<xsl:when test="ep:type-name = 'char' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal' or ep:type-name = 'boolean'">
+								<xsl:when test="ep:type-name = 'string' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal' or ep:type-name = 'boolean'">
+									<!--xs:pattern value="{ep:pattern}"/-->
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'scalar-string' or ep:type-name = 'scalar-datetime' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-boolean'">
 									<!--xs:pattern value="{ep:pattern}"/-->
 								</xsl:when>
 							</xsl:choose>
@@ -646,6 +771,7 @@
 		</xsl:if>
 	</xsl:template x?>
 	
+	<!-- ROME: Onderstaande template kan mogelijk komen te vervallen (integreren met de andere ep:construct templates). -->
 	<xsl:template match="ep:construct[@ismetadata='yes']" mode="generateAttributes">
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
 		<!--xsl:variable name="name">
@@ -693,19 +819,35 @@
 						<xs:restriction>
 							<xsl:attribute name="base">
 								<xsl:choose>
+<!-- ROME: Zodra scalar-xxx is doorgevoerd kunnen de eerste 5 when's verwijderd worden. Welke scalars kan ik trouwens allemaal verwachten? -->
 									<xsl:when test="ep:type-name = 'integer'">
 										<xsl:value-of select="'xs:int'"/>
 									</xsl:when>
 									<xsl:when test="ep:type-name = 'decimal'">
 										<xsl:value-of select="'xs:decimal'"/>
 									</xsl:when>
-									<xsl:when test="ep:type-name = 'char'">
+									<xsl:when test="ep:type-name = 'string'">
 										<xsl:value-of select="'xs:string'"/>
 									</xsl:when>
 									<xsl:when test="ep:type-name = 'datetime'">
 										<xsl:value-of select="'xs:string'"/>
 									</xsl:when>
 									<xsl:when test="ep:type-name = 'boolean'">
+										<xsl:value-of select="'xs:boolean'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'scalar-integer'">
+										<xsl:value-of select="'xs:int'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'scalar-decimal'">
+										<xsl:value-of select="'xs:decimal'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'scalar-string'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'scalar-datetime'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'scalar-boolean'">
 										<xsl:value-of select="'xs:boolean'"/>
 									</xsl:when>
 									<!--xsl:when test="ep:type-name = 'MaximumAantal'">
@@ -747,19 +889,30 @@
 									<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
 								</xsl:choose>
 							</xsl:attribute>
+<!-- ROME: Zodra scalar-xxx is doorgevoerd kunnen in de onderstaande xsl:if statements xsl:when's verwijderd worden of vervangen worden door xsl:if. -->
 							<xsl:if test="ep:length">
 								<xsl:choose>
-									<xsl:when test="ep:type-name = 'char'">
+									<xsl:when test="ep:type-name = 'string'">
 										<xs:length value="{ep:length}"/>
 									</xsl:when>
 									<xsl:when test="ep:type-name = 'integer' or ep:type-name = 'decimal'">
+										<xs:totalDigits value="{ep:length}"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'scalar-string'">
+										<xs:length value="{ep:length}"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
 										<xs:totalDigits value="{ep:length}"/>
 									</xsl:when>
 								</xsl:choose>
 							</xsl:if>
 							<xsl:if test="ep:min-length">
 								<xsl:choose>
-									<xsl:when test="ep:type-name = 'char'">
+									<xsl:when test="ep:type-name = 'string'">
+										<xs:minLength value="1"/>
+										<!--xs:minLength value="{ep:min-length}"/-->
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'scalar-string'">
 										<xs:minLength value="1"/>
 										<!--xs:minLength value="{ep:min-length}"/-->
 									</xsl:when>
@@ -767,7 +920,11 @@
 							</xsl:if>
 							<xsl:if test="ep:max-length">
 								<xsl:choose>
-									<xsl:when test="ep:type-name = 'char'">
+									<xsl:when test="ep:type-name = 'string'">
+										<xs:maxLength value="12"/>
+										<!--xs:maxLength value="{ep:max-length}"/-->
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'scalar-string'">
 										<xs:maxLength value="12"/>
 										<!--xs:maxLength value="{ep:max-length}"/-->
 									</xsl:when>
@@ -779,11 +936,19 @@
 										<xs:minInclusive value="1"/>
 										<!--xs:minInclusive value="{ep:min-value}"/-->
 									</xsl:when>
+									<xsl:when test="ep:type-name = 'scalar-datetime' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
+										<xs:minInclusive value="1"/>
+										<!--xs:minInclusive value="{ep:min-value}"/-->
+									</xsl:when>
 								</xsl:choose>
 							</xsl:if>
 							<xsl:if test="ep:max-value">
 								<xsl:choose>
 									<xsl:when test="ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal'">
+										<xs:maxInclusive value="99"/>
+										<!--xs:maxInclusive value="{ep:max-value}"/-->
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'scalar-datetime' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
 										<xs:maxInclusive value="99"/>
 										<!--xs:maxInclusive value="{ep:max-value}"/-->
 									</xsl:when>
@@ -794,18 +959,27 @@
 									<xsl:when test="ep:type-name = 'decimal'">
 										<xs:fractionDigits value="{ep:fraction-digits}"/>
 									</xsl:when>
+									<xsl:when test="ep:type-name = 'scalar-decimal'">
+										<xs:fractionDigits value="{ep:fraction-digits}"/>
+									</xsl:when>
 								</xsl:choose>
 							</xsl:if>
 							<xsl:if test="ep:enum">
 								<xsl:choose>
-									<xsl:when test="ep:type-name = 'char' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal'">
+									<xsl:when test="ep:type-name = 'string' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal'">
+										<xsl:apply-templates select="ep:enum"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'scalar-string' or ep:type-name = 'scalar-datetime' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
 										<xsl:apply-templates select="ep:enum"/>
 									</xsl:when>
 								</xsl:choose>
 							</xsl:if>
 							<xsl:if test="ep:pattern">
 								<xsl:choose>
-									<xsl:when test="ep:type-name = 'char' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal' or ep:type-name = 'boolean'">
+									<xsl:when test="ep:type-name = 'string' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal' or ep:type-name = 'boolean'">
+										<!--xs:pattern value="{ep:pattern}"/-->
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'scalar-string' or ep:type-name = 'scalar-datetime' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-boolean'">
 										<!--xs:pattern value="{ep:pattern}"/-->
 									</xsl:when>
 								</xsl:choose>

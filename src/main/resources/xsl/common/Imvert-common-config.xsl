@@ -52,6 +52,10 @@
     <xsl:variable name="all-scalars" select="$configuration-metamodel-file//scalars/scalar"/>
     
     
+    <xsl:function name="imf:get-config-schemarules" as="element(tv)*">
+        <xsl:sequence select="$configuration-schemarules-file//name-value-mapping/tagged-values/tv"/>
+    </xsl:function>
+
     <xsl:function name="imf:get-config-tagged-values" as="element(tv)*">
         <xsl:sequence select="$configuration-tvset-file//tagged-values/tv"/>
     </xsl:function>

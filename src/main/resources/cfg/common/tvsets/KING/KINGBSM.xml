@@ -18,10 +18,10 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <tagset xmlns:xi="http://www.w3.org/2001/XInclude">
-    
-    <name>KINGBGM</name>
+    <svn>$Id: KINGUGM.xml 7445 2016-03-03 13:53:34Z arjan $</svn>
+    <name>KINGBSM</name>
 
-   <tagged-values>
+    <tagged-values>
 
         <tv norm="space" validate="" rules="" id="Release">
             <name lang="nl">Release</name>
@@ -44,6 +44,7 @@
             <name lang="nl">Berichtcode</name>
             <derive>no</derive>
             <stereotypes>
+                <?x stereo required="yes" lang="nl">Berichttype</stereo x?>
                 <stereo required="yes" lang="nl">Vraagberichttype</stereo>
                 <stereo required="yes" lang="nl">Antwoordberichttype</stereo>
                 <stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
@@ -161,11 +162,106 @@
             </declared-values>
         </tv>
 
-        <tv norm="space" validate="" rules="" id="IndicatorHistorie">
-            <name lang="nl">Indicator historie</name>
+        <tv norm="space" validate="" rules="" id="Zender">
+            <name lang="nl">Zender</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="yes" lang="nl">Vrij berichttype</stereo>
+                <stereo required="yes" lang="nl">Vraagberichttype</stereo>
+                <stereo required="yes" lang="nl">Antwoordberichttype</stereo>
+                <stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+                <?x stereo required="yes" lang="nl">Vrij berichttype</stereo x?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="Ontvanger">
+            <name lang="nl">Ontvanger</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Vraagberichttype</stereo>
+                <stereo required="yes" lang="nl">Antwoordberichttype</stereo>
+                <stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+                <?x stereo required="yes" lang="nl">Vrij berichttype</stereo x?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="Referentienummer">
+            <name lang="nl">Referentienummer</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Vraagberichttype</stereo>
+                <stereo required="yes" lang="nl">Antwoordberichttype</stereo>
+                <stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+                <?x stereo required="yes" lang="nl">Vrij berichttype</stereo x?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="TijdstipBericht">
+            <name lang="nl">TijdstipBericht</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Vraagberichttype</stereo>
+                <stereo required="yes" lang="nl">Antwoordberichttype</stereo>
+                <stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+                <?x stereo required="yes" lang="nl">Vrij berichttype</stereo x?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="CrossRefnummer">
+            <name lang="nl">CrossRefnummer</name>
+            <derive>no</derive>
+            <stereotypes>
+                <?x <stereo required="yes" lang="nl">Vraagberichttype</stereo x?>
+                <stereo required="yes" lang="nl">Antwoordberichttype</stereo>
+                <?x stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+                <stereo required="yes" lang="nl">Vrij berichttype</stereo x?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="Entiteittype">
+            <name lang="nl">Entiteittype</name>
+            <derive>no</derive>
+            <stereotypes>
+                <?x stereo required="yes" lang="nl">Berichttype</stereo>
+                <stereo required="yes" lang="nl">Vraagberichttype</stereo>
+                <stereo required="yes" lang="nl">Antwoordberichttype</stereo x?>
+                <stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+                <?x stereo required="yes" lang="nl">Vrij berichttype</stereo x?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="Functie">
+            <name lang="nl">Functie</name>
+            <derive>no</derive>
+            <stereotypes>
+                <?x stereo required="yes" lang="nl">Berichttype</stereo>
+                <stereo required="yes" lang="nl">Vraagberichttype</stereo>
+                <stereo required="yes" lang="nl">Antwoordberichttype</stereo x?>
+                <stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+                <?x stereo required="yes" lang="nl">Vrij berichttype</stereo x?>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -173,19 +269,43 @@
             </declared-values>
         </tv>
 
-        <tv norm="space" validate="" rules="" id="Sortering">
+         <tv norm="space" validate="" rules="" id="Sortering">
             <name lang="nl">Sortering</name>
             <derive>no</derive>
             <stereotypes>
+                <?x stereo required="yes" lang="nl">Berichttype</stereo x?>
                 <stereo required="yes" lang="nl">Vraagberichttype</stereo>
+                <?x stereo required="yes" lang="nl">Antwoordberichttype</stereo>
+                <stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+                <stereo required="yes" lang="nl">Vrij berichttype</stereo x?>
             </stereotypes>
         </tv>
-    
-        <tv norm="space" validate="" rules="" id="IndicatorMaximumAantal">
-            <name lang="nl">Indicator maximum aantal</name>
+        
+        <tv norm="space" validate="" rules="" id="IndicatorVervolgvraag">
+            <name lang="nl">IndicatorVervolgvraag</name>
             <derive>no</derive>
             <stereotypes>
+                <?x stereo required="yes" lang="nl">Berichttype</stereo x?>
                 <stereo required="yes" lang="nl">Vraagberichttype</stereo>
+                <stereo required="yes" lang="nl">Antwoordberichttype</stereo>
+                <?x stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+                <stereo required="yes" lang="nl">Vrij berichttype</stereo x?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+  
+          <tv norm="space" validate="" rules="" id="IndicatorMaximumAantal">
+            <name lang="nl">IndicatorMaximumAantal</name>
+            <derive>no</derive>
+            <stereotypes>
+                <?x stereo required="yes" lang="nl">Berichttype</stereo x?>
+                <stereo required="yes" lang="nl">Vraagberichttype</stereo>
+                <?x stereo required="yes" lang="nl">Antwoordberichttype</stereo>
+                <stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+                <stereo required="yes" lang="nl">Vrij berichttype</stereo x?>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -194,11 +314,110 @@
         </tv>
         
         <tv norm="space" validate="" rules="" id="IndicatorAfnemerindicatie">
-            <name lang="nl">Indicator afnemerindicatie</name>
+            <name lang="nl">IndicatorAfnemerindicatie</name>
             <derive>no</derive>
             <stereotypes>
+                <?x stereo required="yes" lang="nl">Berichttype</stereo x?>
                 <stereo required="yes" lang="nl">Vraagberichttype</stereo>
-                <stereo required="yes" lang="nl">Antwoordtberichttype</stereo>
+                <stereo required="yes" lang="nl">Antwoordberichttype</stereo>
+                <?x stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+                <stereo required="yes" lang="nl">Vrij berichttype</stereo x?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="PeiltijdstipMaterieel">
+            <name lang="nl">PeiltijdstipMaterieel</name>
+            <derive>no</derive>
+            <stereotypes>
+                <?x stereo required="yes" lang="nl">Berichttype</stereo x?>
+                <stereo required="yes" lang="nl">Vraagberichttype</stereo>
+                <stereo required="yes" lang="nl">Antwoordberichttype</stereo>
+                <?x stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+                <stereo required="yes" lang="nl">Vrij berichttype</stereo x?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="PeiltijdstipFormeel">
+            <name lang="nl">PeiltijdstipFormeel</name>
+            <derive>no</derive>
+            <stereotypes>
+                <?x stereo required="yes" lang="nl">Berichttype</stereo x?>
+                <stereo required="yes" lang="nl">Vraagberichttype</stereo>
+                <stereo required="yes" lang="nl">Antwoordberichttype</stereo>
+                <?x stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+                <stereo required="yes" lang="nl">Vrij berichttype</stereo x?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="IndicatorHistorie">
+            <name lang="nl">IndicatorHistorie</name>
+            <derive>no</derive>
+            <stereotypes>
+                <?x stereo required="yes" lang="nl">Berichttype</stereo>
+                <stereo required="yes" lang="nl">Vraagberichttype</stereo>
+                <stereo required="yes" lang="nl">Antwoordberichttype</stereo>
+                <stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo x?>
+                <stereo required="yes" lang="nl">Vrij berichttype</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="AantalVoorkomens">
+            <name lang="nl">AantalVoorkomens</name>
+            <derive>no</derive>
+            <stereotypes>
+                <?x stereo required="yes" lang="nl">Berichttype</stereo>
+                <stereo required="yes" lang="nl">Vraagberichttype</stereo x?>
+                <stereo required="yes" lang="nl">Antwoordberichttype</stereo>
+                <?x stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+                <stereo required="yes" lang="nl">Vrij berichttype</stereo x?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="SequenceNumber">
+            <name lang="nl">SequenceNumber</name>
+            <derive>no</derive>
+            <stereotypes>
+                <?x stereo required="yes" lang="nl">Berichttype</stereo>
+                <stereo required="yes" lang="nl">Vraagberichttype</stereo x?>
+                <stereo required="yes" lang="nl">Antwoordberichttype</stereo>
+                <?x stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+                <stereo required="yes" lang="nl">Vrij berichttype</stereo x?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="IndicatorLaatsteBericht">
+            <name lang="nl">IndicatorLaatsteBericht</name>
+            <derive>no</derive>
+            <stereotypes>
+                <?x stereo required="yes" lang="nl">Berichttype</stereo>
+                <stereo required="yes" lang="nl">Vraagberichttype</stereo x?>
+                <stereo required="yes" lang="nl">Antwoordberichttype</stereo>
+                <?x stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+                <stereo required="yes" lang="nl">Vrij berichttype</stereo x?>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -207,10 +426,14 @@
         </tv>
         
         <tv norm="space" validate="" rules="" id="IndicatorAantal">
-            <name lang="nl">Indicator aantal</name>
+            <name lang="nl">IndicatorAantal</name>
             <derive>no</derive>
             <stereotypes>
+                <?x stereo required="yes" lang="nl">Berichttype</stereo x?>
                 <stereo required="yes" lang="nl">Vraagberichttype</stereo>
+                <?x stereo required="yes" lang="nl">Antwoordberichttype</stereo>
+                <stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+                <stereo required="yes" lang="nl">Vrij berichttype</stereo x?>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -218,11 +441,31 @@
             </declared-values>
         </tv>
         
-        <tv norm="space" validate="" rules="" id="IndicatorAantalVoorkomens">
-            <name lang="nl">Indicator aantal voorkomens</name>
+        <tv norm="space" validate="" rules="" id="Mutatiesoort">
+            <name lang="nl">Mutatiesoort</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="yes" lang="nl">Antwoordberichttype</stereo>
+                <?x stereo required="yes" lang="nl">Berichttype</stereo>
+                <stereo required="yes" lang="nl">Vraagberichttype</stereo>
+                <stereo required="yes" lang="nl">Antwoordberichttype</stereo x?>
+                <stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+                <?x stereo required="yes" lang="nl">Vrij berichttype</stereo x?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="IndicatorOvername">
+            <name lang="nl">IndicatorOvername</name>
+            <derive>no</derive>
+            <stereotypes>
+                <?x stereo required="yes" lang="nl">Berichttype</stereo>
+                <stereo required="yes" lang="nl">Vraagberichttype</stereo>
+                <stereo required="yes" lang="nl">Antwoordberichttype</stereo x?>
+                <stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+                <?x stereo required="yes" lang="nl">Vrij berichttype</stereo x?>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -264,3 +507,4 @@
         
     </tagged-values>
 </tagset>
+
