@@ -152,7 +152,8 @@ public class ChainTranslateAndReport {
 			    succeeds = succeeds && (new OfficeCompiler()).run();
 		
 				// compile templates and reports on UML EAP 
-			    succeeds = succeeds && (new EapCompiler()).run();
+			    if (configurator.isTrue("cli","createtemplate")) // TODO remove from KING profile
+			    	succeeds = succeeds && (new EapCompiler()).run();
 		
 				// compile compliancy Excel
 			    succeeds = succeeds && (new ComplyCompiler()).run();
