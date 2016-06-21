@@ -8,6 +8,7 @@ echo --------------------------------------------
 call ..\..\imvertor-bin\imvertorOS ^
  %curdir%\SampleBase.1.xmi ^
  %curdir%\none ^
- %curdir%\SampleBase.1.properties
+ %curdir%\SampleBase.1.properties ^
+ Kadaster
  
 pause
