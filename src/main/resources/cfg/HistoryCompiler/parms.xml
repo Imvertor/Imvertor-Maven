@@ -40,6 +40,7 @@
          <arg>filepath</arg>
          <tip>Path to the input xls history file</tip>
          <required>false</required>
+         <type>file</type>
       </cli-parm> 
    </cli-parms>
    <properties>

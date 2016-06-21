@@ -175,6 +175,9 @@
     <xsl:template match="imvert:package | imvert:class | imvert:attribute | imvert:association" mode="layered-name">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
+            
+            <?xx waarom deze names? deze code is erg traag, en de layered name wordt niet gebruikt!
+            
             <xsl:attribute name="layered-name" select="imf:get-layered-display-names(.)[last()]"/>
             <!-- add traces when not yet set, but only when model is not traced by user ($model-is-traced-by-user). -->
             
@@ -192,6 +195,8 @@
                     </xsl:for-each>
                 </xsl:when>
             </xsl:choose>
+            ?>
+            
             <xsl:apply-templates mode="layered-name"/>
         </xsl:copy>
     </xsl:template>

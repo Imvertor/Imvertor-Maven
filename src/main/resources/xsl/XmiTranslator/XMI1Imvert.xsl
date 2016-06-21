@@ -136,7 +136,7 @@
                          )"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:for-each select="$content/UML:Model/UML:Namespace.ownedElement/UML:Package">
+                    <xsl:for-each select="$content/UML:Model/UML:Namespace.ownedElement/UML:Package[not(imf:is-diagram-package(.))]">
                         <xsl:sort select="@name"/>
                         <xsl:sort select="imf:get-alias(.,'P')"/>
                         <xsl:apply-templates select="."/>
@@ -173,19 +173,21 @@
                 <xsl:sort select="replace(@name,'_','')"/>
                 <xsl:apply-templates select="." mode="class-normal"/>
             </xsl:for-each>
-            <xsl:for-each select="UML:Namespace.ownedElement/UML:Package">
+            <xsl:for-each select="UML:Namespace.ownedElement/UML:Package[not(imf:is-diagram-package(.))]">
                 <xsl:sort select="@name"/>
                 <xsl:sort select="imf:get-alias(.,'P')"/>
                 <xsl:apply-templates select=".">
                     <xsl:with-param name="parent-is-derived" select="$is-derived"/>
                 </xsl:apply-templates>
             </xsl:for-each>
+            
             <!-- add info on import dependecy relations (always to external packages) -->
             <xsl:for-each select="UML:Namespace.ownedElement/UML:Dependency[imf:get-stereotype-local-names(UML:ModelElement.stereotype/UML:Stereotype/@name)='import' and @client=$package-id]">
                 <xsl:sequence select="imf:create-output-element('imvert:imported-package-id',@supplier)"/>
             </xsl:for-each>
+            
             <xsl:sequence select="imf:fetch-additional-tagged-values(.)"/>
-
+            
             <!-- check if xlinks must be included -->
             <xsl:if test="imf:get-stereotypes(.)=imf:get-config-stereotypes('stereotype-name-project-package') and not(exists($document-packages[imf:get-normalized-name(@name,'package-name') = imf:get-normalized-name('xlinks','package-name')]))" >
                 <imvert:package>
@@ -277,6 +279,7 @@
                 
                 <xsl:sequence select="imf:create-output-element('imvert:min-occurs',$class-cardinality[1])"/>
                 <xsl:sequence select="imf:create-output-element('imvert:max-occurs',$class-cardinality[2])"/>
+                
                 <xsl:choose>
                     <xsl:when test="$is-datatype or $is-complextype">
                         <xsl:sequence select="imf:get-datatype-info(.)"/>
@@ -346,6 +349,7 @@
                 </xsl:choose>
                 <xsl:sequence select="imf:get-constraint-info(.)"/>
                 <xsl:sequence select="imf:fetch-additional-tagged-values(.)"/>
+                
             </imvert:class>     
         </xsl:if>
     </xsl:template>
@@ -1352,4 +1356,9 @@
         </xsl:choose>
     </xsl:function>
     
+    <xsl:function name="imf:is-diagram-package" as="xs:boolean">
+        <xsl:param name="pack" as="element()"/>
+        <!-- TODO determine a way to determine of a package contains diagrams only -->
+        <xsl:sequence select="$pack/@name = 'Diagram'"/>    
+    </xsl:function>
 </xsl:stylesheet>

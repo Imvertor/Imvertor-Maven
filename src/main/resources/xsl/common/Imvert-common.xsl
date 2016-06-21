@@ -46,6 +46,7 @@
     <xsl:include href="Imvert-common-config.xsl"/>
     <xsl:include href="Imvert-common-data.xsl"/>
     <xsl:include href="Imvert-common-uri.xsl"/>
+    <xsl:include href="Imvert-common-keys.xsl"/>
     
     <xsl:include href="../external/relpath_util.xsl"/>
     <xsl:include href="../external/functx.xsl"/>
@@ -326,7 +327,7 @@
     <xsl:function name="imf:get-construct-by-id" as="element()*">
         <xsl:param name="id" as="xs:string"/>
         <xsl:param name="root" as="node()*"/>
-        <xsl:sequence select="$root//*[imvert:id=$id]"/>
+        <xsl:sequence select="if ($root instance of document-node()) then imf:key-imvert-construct-by-id($id,$root) else $root//*[imvert:id=$id]"/>
     </xsl:function>
     
     <xsl:function name="imf:distinct-nodes" as="element()*">

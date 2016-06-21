@@ -1,10 +1,15 @@
 @echo off
 SETLOCAL ENABLEEXTENSIONS
 
+set eapfile=%~1
+set hisfile=%~2
+set propfile=%~3
+set owner=%~4
+
 set d=%~dp0
 cd %d%
 cd ..
-call environment.bat
+call environment.bat "%owner%" 
 cd %d%
 
 set inpdir=%imvertor_os_input%
@@ -14,10 +19,6 @@ set bindir=%imvertor_os_bin%
 set eapath=%imvertor_os_eapath%
 
 set jarfile=ChainTranslateAndReport.jar
-
-set eapfile=%~1
-set hisfile=%~2
-set propfile=%~3
 
 if exist %propfile% set propfilepath=%propfile%
 if exist %propfile% (goto PROPOKAY)
@@ -29,7 +30,8 @@ REM fallback; error will be given by imvertor
 set propfilepath=%propfile%
 :PROPOKAY
 
-rem eerste 3 parameters overslaan, de rest van de parameters worden toegevoegd
+rem eerste 4 parameters overslaan, de rest van de parameters worden toegevoegd
+SHIFT
 SHIFT
 SHIFT
 SHIFT

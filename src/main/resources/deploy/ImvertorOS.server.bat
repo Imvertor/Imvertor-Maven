@@ -15,6 +15,7 @@ set bindir=%imvertor_os_bin%
 set jar=%~1
 set jobid=%~2
 set propfile=%~3
+set owner=%~4
 
 if exist %propfile% set propfilepath=%propfile%
 if exist %propfile% (goto PROPOKAY)
@@ -42,7 +43,8 @@ call "%javaexe%" %jvmparms% ^
     -Dwork.dir="%workdir%\%jobid%" ^
     -classpath "%bindir%\bin\ChainTranslateAndReport_lib" ^
     -jar "%bindir%\bin\%jar%.jar" ^
-	-arguments "%propfilepath%"
+	-arguments "%propfilepath%" ^
+	-owner "%owner%"
 
 goto END
 

@@ -21,6 +21,7 @@
 package nl.imvertor.common;
 
 import java.io.File;
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -154,7 +155,7 @@ public class Transformer {
 	public boolean transform(File infile, File outfile, File xslfile) throws Exception {
 
 		logger.debug("Transforming " + infile.getCanonicalPath() + " using " + xslfile.getName());
-
+		
 		// record for later inspection
 		this.infile = infile;
 		this.outfile = outfile;
@@ -197,9 +198,12 @@ public class Transformer {
 		transformer.setDestination(processor.newSerializer(outfile));
 		
 		configurator.save(); // may throw exception when config file not avail
+		long starttime = System.currentTimeMillis();
 		transformer.transform();
 		if (!outfile.isFile())
 			throw new Exception("Transformation did not produce the expected file result " + outfile.getCanonicalPath());
+		
+		logger.debug("Transformation took " + (System.currentTimeMillis() - starttime) + " msec");
 		
 		return (configurator.forceCompile() || configurator.getRunner().getFirstErrorText(stylesheetIdentifier) == null);
 

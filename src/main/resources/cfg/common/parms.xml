@@ -35,6 +35,7 @@
          <arg>filepath</arg>
          <tip>Path to the file holding (additional) arguments (in the form key = value)</tip>
          <required>false</required>
+         <type>file</type>
       </cli-parm> 
       <cli-parm>
          <name>language</name>
@@ -89,12 +90,14 @@
          <arg>filepath</arg>
          <tip>Path to the input UML file, must be EAP or XMI</tip>
          <required>true</required>
+         <type>file</type>
       </cli-parm> 
       <cli-parm>
          <name>proxyurl</name>
          <arg>URL</arg>
          <tip>Reliable URL for testing internet connection</tip>
          <required>true</required>
+         <type>url</type>
       </cli-parm> 
       <cli-parm>
          <name>metamodel</name>
