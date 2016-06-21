@@ -93,6 +93,7 @@ public class ReleaseCompiler  extends Step {
 		String f = targetUserZipFolder.getCanonicalPath() + "/" + zip.getName();
 		ZipFile userZipFile = new ZipFile(f);
 		zip.copyFile(userZipFile);
+		zip.delete(); // remove the zip; it is not relevant to retain this in the work folder.
 		configurator.setParm("system","zip-release-filepath", userZipFile.getCanonicalPath());
 		runner.info(logger, "ZIP release saved at: " + userZipFile.getCanonicalPath());
 	}
