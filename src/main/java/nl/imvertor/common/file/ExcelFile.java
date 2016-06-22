@@ -68,5 +68,18 @@ public class ExcelFile extends AnyFile {
 		//TODO implement setSuppressWarnings
 	}
 	
-	
+	/**
+	 * Check if this is a valid Excel file
+	 * 
+	 * @return
+	 */
+	public boolean isValid() {
+		try {
+			FileInputStream is = new FileInputStream(this);
+			return (Workbook.getWorkbook(is) != null);
+		} catch (Exception e) {
+			// nothing
+		}
+		return false;
+	}
 }

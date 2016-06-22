@@ -80,32 +80,36 @@ public class HistoryCompiler extends Step {
 		// transform the Excel holding history info for this application to XML specification
 		ExcelFile ef = new ExcelFile(configurator.getParm("properties","USER_HISTORY_FILE"));
 		if (ef.exists()) {
-			
-			File hisXmlFile = File.createTempFile("mergeVersionsInfo.", ".xml");
-			configurator.setParm("step","HIS_XML_FILE_PATH",hisXmlFile.getCanonicalPath());
-			hisXmlFile.deleteOnExit();
-			ef.toXmlFile(hisXmlFile.getCanonicalPath(),configurator.getParm("properties","FORMATWORKBOOK_DTD"));
-			
-		   // transform 
-			boolean succeeds = true;
-			
-			// a compile list of steps to create all base files for final processing.
-			succeeds = succeeds ? transformer.transformStep("step/HIS_XML_FILE_PATH","properties/WORK_HISTORY_FILE","properties/IMVERTOR_VERSIONS_XSLPATH") : false;
-			// call the merger script, which merges all history info files
-			// TODO WORK_DEPENDENCIES_FILE is gemaakt in algemene step; moet hier?
-			succeeds = succeeds ? transformer.transformStep("properties/WORK_DEPENDENCIES_FILE","properties/WORK_VERSIONS_FILE", "properties/IMVERTOR_VERSIONS_MERGER_XSLPATH") : false;
 	
-			// copy the file to the etc folder for future reference and comparisons
-			AnyFolder etcFolder = new AnyFolder(configurator.getParm("system","work-etc-folder-path"));
-			XmlFile infoVersionsFile = new XmlFile(configurator.getParm("properties", "WORK_HISTORY_FILE"));	
-			XmlFile hisModelFile = new XmlFile(etcFolder,"history.imvert.xml");	
-			infoVersionsFile.copyFile(hisModelFile);
-			
-			return succeeds;
-		} else { 
+			if (ef.isValid()) {
+				File hisXmlFile = File.createTempFile("mergeVersionsInfo.", ".xml");
+				configurator.setParm("step","HIS_XML_FILE_PATH",hisXmlFile.getCanonicalPath());
+				hisXmlFile.deleteOnExit();
+				ef.toXmlFile(hisXmlFile.getCanonicalPath(),configurator.getParm("properties","FORMATWORKBOOK_DTD"));
+				
+			   // transform 
+				boolean succeeds = true;
+				
+				// a compile list of steps to create all base files for final processing.
+				succeeds = succeeds ? transformer.transformStep("step/HIS_XML_FILE_PATH","properties/WORK_HISTORY_FILE","properties/IMVERTOR_VERSIONS_XSLPATH") : false;
+				// call the merger script, which merges all history info files
+				// TODO WORK_DEPENDENCIES_FILE is gemaakt in algemene step; moet hier?
+				succeeds = succeeds ? transformer.transformStep("properties/WORK_DEPENDENCIES_FILE","properties/WORK_VERSIONS_FILE", "properties/IMVERTOR_VERSIONS_MERGER_XSLPATH") : false;
+		
+				// copy the file to the etc folder for future reference and comparisons
+				AnyFolder etcFolder = new AnyFolder(configurator.getParm("system","work-etc-folder-path"));
+				XmlFile infoVersionsFile = new XmlFile(configurator.getParm("properties", "WORK_HISTORY_FILE"));	
+				XmlFile hisModelFile = new XmlFile(etcFolder,"history.imvert.xml");	
+				infoVersionsFile.copyFile(hisModelFile);
+				
+				return succeeds;
+	
+			} else 
+				runner.error(logger, "History file is not valid: " + ef.getPath());
+		} else
 			runner.error(logger, "History file does not exist: " + ef.getPath());
-			return false;
-		}
+
+		return false;
 	}
 	
 
