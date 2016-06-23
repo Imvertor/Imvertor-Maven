@@ -1,21 +1,21 @@
-@echo on
+@echo off
 SETLOCAL ENABLEEXTENSIONS
+
+set jar=%~1
+set jobid=%~2
+set propfile=%~3
+set owner=%~4
 
 set d=%~dp0
 cd %d%
 cd ..
-call environment.bat
+call environment.server.bat %owner% 
 cd %d%
 
 set inpdir=%imvertor_os_input%
 set outdir=%imvertor_os_output%
 set workdir=%imvertor_os_work%
 set bindir=%imvertor_os_bin%
-
-set jar=%~1
-set jobid=%~2
-set propfile=%~3
-set owner=%~4
 
 if exist %propfile% set propfilepath=%propfile%
 if exist %propfile% (goto PROPOKAY)
