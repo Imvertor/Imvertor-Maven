@@ -45,42 +45,37 @@ public class ReleaseComparer extends Step {
 	/**
 	 *  run the main translation
 	 */
-	public boolean run() {
+	public boolean run() throws Exception{
 		
 		//TODO allow comparisons between models: client and supplier; two releases of client.
 		
-		try {
-			// set up the configuration for this step
-			configurator.setActiveStepName(STEP_NAME);
-			prepare();
+		// set up the configuration for this step
+		configurator.setActiveStepName(STEP_NAME);
+		prepare();
 
-			Boolean succeeds = true;
-			succeeds = succeeds && docReleaseCompare();
-			succeeds = succeeds && releaseCompare();
-			succeeds = succeeds && supplierCompare();
-			
-			configurator.setStepDone(STEP_NAME);
-			
-			// save any changes to the work configuration for report and future steps
-		    configurator.save();
-		    
-		    XmlFile ctrlNameFile = new XmlFile(configurator.getParm("properties","WORK_COMPARE_CONTROL_NAME_FILE"));
-			XmlFile testNameFile = new XmlFile(configurator.getParm("properties","WORK_COMPARE_TEST_NAME_FILE"));
-			XmlFile infoConfig   = new XmlFile(configurator.getParm("properties","IMVERTOR_COMPARE_CONFIG"));
-			
-			Transformer stepTransformer = new Transformer();
-			stepTransformer.setXslParm("ctrl-name-mapping-filepath", ctrlNameFile.toURI().toString());
-			stepTransformer.setXslParm("test-name-mapping-filepath", testNameFile.toURI().toString());
-			stepTransformer.setXslParm("info-config", infoConfig.toURI().toString());  
+		Boolean succeeds = true;
+		succeeds = succeeds && docReleaseCompare();
+		succeeds = succeeds && releaseCompare();
+		succeeds = succeeds && supplierCompare();
+		
+		configurator.setStepDone(STEP_NAME);
+		
+		// save any changes to the work configuration for report and future steps
+	    configurator.save();
+	    
+	    XmlFile ctrlNameFile = new XmlFile(configurator.getParm("properties","WORK_COMPARE_CONTROL_NAME_FILE"));
+		XmlFile testNameFile = new XmlFile(configurator.getParm("properties","WORK_COMPARE_TEST_NAME_FILE"));
+		XmlFile infoConfig   = new XmlFile(configurator.getParm("properties","IMVERTOR_COMPARE_CONFIG"));
+		
+		Transformer stepTransformer = new Transformer();
+		stepTransformer.setXslParm("ctrl-name-mapping-filepath", ctrlNameFile.toURI().toString());
+		stepTransformer.setXslParm("test-name-mapping-filepath", testNameFile.toURI().toString());
+		stepTransformer.setXslParm("info-config", infoConfig.toURI().toString());  
 
-		    report(stepTransformer);
-		    
-		    return runner.succeeds() && runner.getMayRelease();
+	    report(stepTransformer);
+	    
+	    return runner.succeeds() && runner.getMayRelease();
 			
-		} catch (Exception e) {
-			runner.fatal(logger, "Step fails by system error.", e);
-			return false;
-		} 
 	}
 	
 	private boolean releaseCompare() throws Exception {

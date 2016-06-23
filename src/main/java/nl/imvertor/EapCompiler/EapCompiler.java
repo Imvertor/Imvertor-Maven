@@ -51,59 +51,54 @@ public class EapCompiler extends Step {
 	/**
 	 *  run the main translation
 	 */
-	public boolean run() {
+	public boolean run() throws Exception{
 		
-		try {
-			// set up the configuration for this step
-			configurator.setActiveStepName(STEP_NAME);
-			prepare();
+		// set up the configuration for this step
+		configurator.setActiveStepName(STEP_NAME);
+		prepare();
+
+		// get the template file information, notably the GUID for the model in this template. 
+		templateFile = new EapFile(configurator.getParm("properties","TEMPLATE_TEMPLATE_FILE"));
+		templateFileModelGUID = (new AnyFile(configurator.getParm("properties","TEMPLATE_TEMPLATE_FILE_GUID"))).getContent();
+		configurator.setParm("system","template-file-model-guid", templateFileModelGUID);
+		
+		// compile EAP from template based on current Imvertor file.
+		boolean may = runner.getAppPhase() != Runner.APPLICATION_PHASE_CONCEPT;
+		boolean must = runner.getAppPhase() == Runner.APPLICATION_PHASE_FINAL;
+		boolean wantTemplate = configurator.isTrue("cli","createtemplate");
+		boolean wantDocument = configurator.isTrue("cli","createumlreport"); // || configurator.isTrue("cli", "createderivedeap");
+		boolean iseap = (new AnyFile(configurator.getParm("cli","umlfile"))).getExtension().equals("eap");
+		
+		// generate UML template
+		if (may) 
+			if (wantTemplate || must) 
+				if (iseap)
+					createEapTemplate();
+				else 
+					createXmiTemplate();
+		else 
+			if (wantTemplate) 
+				runner.warn(logger,"Model is in phase 0 (concept), no template generated.");
+		
+		// generate UML report
+		if (may) {
+			if (wantDocument)
+				if (iseap) 
+					generateUmlReport();
+				else
+					runner.warn(logger,"An UML document can only be generated for EAP source UML files.");
+		} else
+			if (wantDocument) runner.warn(logger,"Model is in phase 0 (concept), no document generated.");
+					
+		configurator.setStepDone(STEP_NAME);
+		
+		// save any changes to the work configuration for report and future steps
+	    configurator.save();
+	    
+	    report();
+
+		return runner.succeeds();
 	
-			// get the template file information, notably the GUID for the model in this template. 
-			templateFile = new EapFile(configurator.getParm("properties","TEMPLATE_TEMPLATE_FILE"));
-			templateFileModelGUID = (new AnyFile(configurator.getParm("properties","TEMPLATE_TEMPLATE_FILE_GUID"))).getContent();
-			configurator.setParm("system","template-file-model-guid", templateFileModelGUID);
-			
-			// compile EAP from template based on current Imvertor file.
-			boolean may = runner.getAppPhase() != Runner.APPLICATION_PHASE_CONCEPT;
-			boolean must = runner.getAppPhase() == Runner.APPLICATION_PHASE_FINAL;
-			boolean wantTemplate = configurator.isTrue("cli","createtemplate");
-			boolean wantDocument = configurator.isTrue("cli","createumlreport"); // || configurator.isTrue("cli", "createderivedeap");
-			boolean iseap = (new AnyFile(configurator.getParm("cli","umlfile"))).getExtension().equals("eap");
-			
-			// generate UML template
-			if (may) 
-				if (wantTemplate || must) 
-					if (iseap)
-						createEapTemplate();
-					else 
-						createXmiTemplate();
-			else 
-				if (wantTemplate) 
-					runner.warn(logger,"Model is in phase 0 (concept), no template generated.");
-			
-			// generate UML report
-			if (may) {
-				if (wantDocument)
-					if (iseap) 
-						generateUmlReport();
-					else
-						runner.warn(logger,"An UML document can only be generated for EAP source UML files.");
-			} else
-				if (wantDocument) runner.warn(logger,"Model is in phase 0 (concept), no document generated.");
-						
-			configurator.setStepDone(STEP_NAME);
-			
-			// save any changes to the work configuration for report and future steps
-		    configurator.save();
-		    
-		    report();
-
-			return runner.succeeds();
-
-		} catch (Exception e) {
-			runner.fatal(logger, "Step fails by system error.", e);
-			return false;
-		} 
 	}
 	
 	/**

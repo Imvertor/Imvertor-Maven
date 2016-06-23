@@ -39,42 +39,37 @@ public class ReleaseCompiler  extends Step {
 	/**
 	 *  run the main translation
 	 */
-	public boolean run() {
+	public boolean run() throws Exception{
 		
-		try {
-			if (configurator.isTrue("cli","createziprelease")) {
-				
-				// set up the configuration for this step
-				configurator.setActiveStepName(STEP_NAME);
-				prepare();
-				runner.info(logger,"Compiling ZIP release");
+		if (configurator.isTrue("cli","createziprelease")) {
 			
-				if (configurator.getParm("properties","USER_ZIP_FILE",false) == null) 
-					throw new Exception("No valid ZIP file path specified.");
-				
-				// local temporary spot to store the zip to.
-				targetZipFolder = new AnyFolder(configurator.getParm("properties","RELEASES_FOLDER"));
-				targetZipFolder.mkdirs();
-				// The place where to copy the zip result for distribution.
-				targetUserZipFolder = new AnyFolder(configurator.getParm("properties","USER_ZIP_FILE"));
-				targetUserZipFolder.mkdirs();
-				
-				createZipRelease();
-				
-				configurator.setStepDone(STEP_NAME);
-				
-				// save any changes to the work configuration for report and future steps
-			    configurator.save();
-			    
-			    //report();
-			    
-			}
-			return runner.succeeds();
+			// set up the configuration for this step
+			configurator.setActiveStepName(STEP_NAME);
+			prepare();
+			runner.info(logger,"Compiling ZIP release");
+		
+			if (configurator.getParm("properties","USER_ZIP_FILE",false) == null) 
+				throw new Exception("No valid ZIP file path specified.");
 			
-		} catch (Exception e) {
-			runner.fatal(logger, "Step fails by system error.", e);
-			return false;
-		} 
+			// local temporary spot to store the zip to.
+			targetZipFolder = new AnyFolder(configurator.getParm("properties","RELEASES_FOLDER"));
+			targetZipFolder.mkdirs();
+			// The place where to copy the zip result for distribution.
+			targetUserZipFolder = new AnyFolder(configurator.getParm("properties","USER_ZIP_FILE"));
+			targetUserZipFolder.mkdirs();
+			
+			createZipRelease();
+			
+			configurator.setStepDone(STEP_NAME);
+			
+			// save any changes to the work configuration for report and future steps
+		    configurator.save();
+		    
+		    //report();
+		    
+		}
+		return runner.succeeds();
+			
 	}
 	
 	/**

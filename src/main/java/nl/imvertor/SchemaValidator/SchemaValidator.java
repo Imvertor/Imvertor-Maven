@@ -43,36 +43,31 @@ public class SchemaValidator extends Step {
 	/**
 	 *  run the main translation
 	 */
-	public boolean run() {
+	public boolean run() throws Exception{
 		
-		try {
-			// set up the configuration for this step
-			configurator.setActiveStepName(STEP_NAME);
-			prepare();
-			runner.info(logger,"Validating XML schemas");
-			
-			boolean valid = true;
-			configurator.setParm("appinfo","schema-validation-status",
-				configurator.isTrue("cli","validateschema") ? "requested" : runner.isFinal() ? "required" : 
-					configurator.isTrue("cli","createxmlschema") ? "skipped" : "schemas not generated");
+		// set up the configuration for this step
+		configurator.setActiveStepName(STEP_NAME);
+		prepare();
+		runner.info(logger,"Validating XML schemas");
 		
-			if (configurator.isTrue("cli","createxmlschema"))
-				if (configurator.isTrue("cli","validateschema") || runner.isFinal()) {
-					valid = validateSchemas();
-					configurator.setStepDone(STEP_NAME);
-				}
+		boolean valid = true;
+		configurator.setParm("appinfo","schema-validation-status",
+			configurator.isTrue("cli","validateschema") ? "requested" : runner.isFinal() ? "required" : 
+				configurator.isTrue("cli","createxmlschema") ? "skipped" : "schemas not generated");
+	
+		if (configurator.isTrue("cli","createxmlschema"))
+			if (configurator.isTrue("cli","validateschema") || runner.isFinal()) {
+				valid = validateSchemas();
+				configurator.setStepDone(STEP_NAME);
+			}
+		
+		// save any changes to the work configuration for report and future steps
+	    configurator.save();
+	    
+	    report();
+	    
+	    return runner.succeeds() && valid;
 			
-			// save any changes to the work configuration for report and future steps
-		    configurator.save();
-		    
-		    report();
-		    
-		    return runner.succeeds() && valid;
-			
-		} catch (Exception e) {
-			runner.fatal(logger, "Step fails by system error.", e);
-			return false;
-		} 
 	}
 	
 	/**

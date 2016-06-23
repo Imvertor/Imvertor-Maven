@@ -48,41 +48,36 @@ public class ReadmeCompiler extends Step {
 	/**
 	 *  run the main translation
 	 */
-	public boolean run() {
+	public boolean run() throws Exception{
 		
-		try {
-			// set up the configuration for this step
-			configurator.setActiveStepName(STEP_NAME);
-			prepare();
-			runner.info(logger, "Generating readme file");
-			
-			Transformer transformer = new Transformer();
-			
-			// work-app-folder-path
-			AnyFile readmeFile = new AnyFile(configurator.getParm("system","work-app-folder-path") + "/readme.html");
-			configurator.setParm("system","readme-file-path",readmeFile.getCanonicalPath());
-			
-			configurator.setParm("appinfo","error-count",Integer.toString(runner.getErrorCount()));
+		// set up the configuration for this step
+		configurator.setActiveStepName(STEP_NAME);
+		prepare();
+		runner.info(logger, "Generating readme file");
 		
-			String path = configurator.getParm("appinfo","application-name");
-			transformer.setXslParm("xsd-files-generated",listFiles(configurator.getParm("system", "work-xsd-folder-path") + "/" + path, "xsd/" + path + "/"));
-			transformer.setXslParm("etc-files-generated",listFiles(configurator.getParm("system", "work-etc-folder-path"),"etc/"));
-			transformer.transformStep("properties/WORK_BASE_FILE", "system/readme-file-path", "properties/IMVERTOR_README_XSLPATH");
+		Transformer transformer = new Transformer();
+		
+		// work-app-folder-path
+		AnyFile readmeFile = new AnyFile(configurator.getParm("system","work-app-folder-path") + "/readme.html");
+		configurator.setParm("system","readme-file-path",readmeFile.getCanonicalPath());
+		
+		configurator.setParm("appinfo","error-count",Integer.toString(runner.getErrorCount()));
+	
+		String path = configurator.getParm("appinfo","application-name");
+		transformer.setXslParm("xsd-files-generated",listFiles(configurator.getParm("system", "work-xsd-folder-path") + "/" + path, "xsd/" + path + "/"));
+		transformer.setXslParm("etc-files-generated",listFiles(configurator.getParm("system", "work-etc-folder-path"),"etc/"));
+		transformer.transformStep("properties/WORK_BASE_FILE", "system/readme-file-path", "properties/IMVERTOR_README_XSLPATH");
+		
+		configurator.setStepDone(STEP_NAME);
+		
+	    // save any changes to the work configuration for report and future steps
+	    configurator.save();
+		
+		// generate report
+		report();
+		
+		return runner.succeeds();
 			
-			configurator.setStepDone(STEP_NAME);
-			
-		    // save any changes to the work configuration for report and future steps
-		    configurator.save();
-			
-			// generate report
-			report();
-			
-			return runner.succeeds();
-			
-		} catch (Exception e) {
-			runner.fatal(logger, "Step fails by system error.", e);
-			return false;
-		} 
 	}
 	
 	/**

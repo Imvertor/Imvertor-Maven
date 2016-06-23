@@ -42,31 +42,26 @@ public class ReadmeAnalyzer  extends Step {
 	/**
 	 *  run the main translation
 	 */
-	public boolean run() {
+	public boolean run() throws Exception{
 		
-		try {
-			// set up the configuration for this step
-			configurator.setActiveStepName(STEP_NAME);
-			prepare();
-			runner.info(logger,"Analyzing supplier state");
+		// set up the configuration for this step
+		configurator.setActiveStepName(STEP_NAME);
+		prepare();
+		runner.info(logger,"Analyzing supplier state");
 
-			// determine the readmefile for the current application, and analyze that
-			AnyFile readme = new AnyFile(configurator.getApplicationFolder(),"readme.html");
-			if (readme.exists()) analyze(readme);
-			configurator.setStepDone(STEP_NAME);
+		// determine the readmefile for the current application, and analyze that
+		AnyFile readme = new AnyFile(configurator.getApplicationFolder(),"readme.html");
+		if (readme.exists()) analyze(readme);
+		configurator.setStepDone(STEP_NAME);
+		
+	    // save any changes to the work configuration for report and future steps
+	    configurator.save();
+		
+		// generate report
+		report();
+		
+		return runner.succeeds();
 			
-		    // save any changes to the work configuration for report and future steps
-		    configurator.save();
-			
-			// generate report
-			report();
-			
-			return runner.succeeds();
-			
-		} catch (Exception e) {
-			runner.fatal(logger, "Step fails by system error.", e);
-			return false;
-		} 
 	}
 	
 	/**

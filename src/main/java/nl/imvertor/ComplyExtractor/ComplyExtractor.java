@@ -38,47 +38,41 @@ public class ComplyExtractor  extends Step {
 	/**
 	 *  run the step
 	 */
-	public boolean run() {
+	public boolean run() throws Exception{
+			
+		// set up the configuration for this step
+		configurator.setActiveStepName(STEP_NAME);
+		prepare();
+		runner.info(logger,"Extracting Compliancy XML");
 		
-		try {
-			
-			// set up the configuration for this step
-			configurator.setActiveStepName(STEP_NAME);
-			prepare();
-			runner.info(logger,"Extracting Compliancy XML");
-			
-			// STUB
-			configurator.setParm("appinfo","release","00000001");
-			
-			// fetch the fill-in form file, and serialize it to a folder
-			String templateFilepath = configurator.getParm("cli", "cmpfile", true);
-			String unzipFolderpath = configurator.getParm("properties", "WORK_COMPLY_TEMPLATE_FOLDERPATH", true);
+		// STUB
+		configurator.setParm("appinfo","release","00000001");
+		
+		// fetch the fill-in form file, and serialize it to a folder
+		String templateFilepath = configurator.getParm("cli", "cmpfile", true);
+		String unzipFolderpath = configurator.getParm("properties", "WORK_COMPLY_TEMPLATE_FOLDERPATH", true);
 
-			ZipFile template = new ZipFile(templateFilepath);
-			AnyFolder serializeFolder = new AnyFolder(unzipFolderpath);
-			template.serializeToXml(serializeFolder);
-			
-			// in the exported file we find _content.xml, which is the base for all transformations and holds all XML content found.
-			// transform the exported folder any way required, on the basis of _content,xml.
-			// No secial processing (repackaging) is required for this step.
-			Transformer transformer = new Transformer();
-	
-			XmlFile contentFile = new XmlFile(serializeFolder,"__content.xml");
-			configurator.setParm("system", "comply-content-file", contentFile.getCanonicalPath());
-			transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_EXTRACT_FILE", "properties/WORK_COMPLY_EXTRACT_XSLPATH","system/cur-imvertor-filepath");
-			
-			configurator.setStepDone(STEP_NAME);
-			 
-			// save any changes to the work configuration for report and future steps
-		    configurator.save();
+		ZipFile template = new ZipFile(templateFilepath);
+		AnyFolder serializeFolder = new AnyFolder(unzipFolderpath);
+		template.serializeToXml(serializeFolder);
+		
+		// in the exported file we find _content.xml, which is the base for all transformations and holds all XML content found.
+		// transform the exported folder any way required, on the basis of _content,xml.
+		// No secial processing (repackaging) is required for this step.
+		Transformer transformer = new Transformer();
+
+		XmlFile contentFile = new XmlFile(serializeFolder,"__content.xml");
+		configurator.setParm("system", "comply-content-file", contentFile.getCanonicalPath());
+		transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_EXTRACT_FILE", "properties/WORK_COMPLY_EXTRACT_XSLPATH","system/cur-imvertor-filepath");
+		
+		configurator.setStepDone(STEP_NAME);
+		 
+		// save any changes to the work configuration for report and future steps
+	    configurator.save();
+	    
+	    report();
 		    
-		    report();
-			    
-			return runner.succeeds();
-			
-		} catch (Exception e) {
-			runner.fatal(logger, "Step fails by system error.", e);
-			return false;
-		} 
+		return runner.succeeds();
+		
 	}
 }

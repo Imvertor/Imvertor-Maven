@@ -41,32 +41,27 @@ public class HistoryCompiler extends Step {
 	// TODO transformer per step?? as property like this?
 	Transformer transformer;
 
-	public boolean run() {
+	public boolean run() throws Exception{
 		
-		try {
-			// set up the configuration for this step
-			configurator.setActiveStepName(STEP_NAME);
-			prepare();
-			if (configurator.isTrue("cli","createhistory")) {
-				runner.info(logger,"Merging version info");
+		// set up the configuration for this step
+		configurator.setActiveStepName(STEP_NAME);
+		prepare();
+		if (configurator.isTrue("cli","createhistory")) {
+			runner.info(logger,"Merging version info");
 
-				transformer = new Transformer();
-				mergeVersionsInfo();
-			
-				configurator.setStepDone(STEP_NAME);
-			}
-			
-			// save any changes to the work configuration for report and future steps
-		    configurator.save();
+			transformer = new Transformer();
+			mergeVersionsInfo();
+		
+			configurator.setStepDone(STEP_NAME);
+		}
+		
+		// save any changes to the work configuration for report and future steps
+	    configurator.save();
 
-		    report();
+	    report();
 
-			return runner.succeeds();
+		return runner.succeeds();
 
-		} catch (Exception e) {
-			runner.fatal(logger, "Step fails by system error.", e);
-			return false;
-		} 
 	}
 
 	/**

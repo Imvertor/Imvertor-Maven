@@ -45,36 +45,31 @@ public class Tester extends Step {
 	/**
 	 *  run the main translation
 	 */
-	public boolean run() {
+	public boolean run() throws Exception{
 		
-		try {
-			// set up the configuration for this step
-			configurator.setActiveStepName(STEP_NAME);
-			prepare();
+		// set up the configuration for this step
+		configurator.setActiveStepName(STEP_NAME);
+		prepare();
 
-			// create a transformer
-			Transformer transformer = new Transformer();
-			transformer.setExtensionFunction(new ImvertorZipSerializer());
-			transformer.setExtensionFunction(new ImvertorZipDeserializer());
-				
-		    // transform 
-			boolean succeeds = true;
-			succeeds = succeeds ? transformer.transformStep("cli/infile", "cli/outfile",  "properties/TESTER_XSLPATH") : false ;
+		// create a transformer
+		Transformer transformer = new Transformer();
+		transformer.setExtensionFunction(new ImvertorZipSerializer());
+		transformer.setExtensionFunction(new ImvertorZipDeserializer());
+			
+	    // transform 
+		boolean succeeds = true;
+		succeeds = succeeds ? transformer.transformStep("cli/infile", "cli/outfile",  "properties/TESTER_XSLPATH") : false ;
+	
+		configurator.setStepDone(STEP_NAME);
 		
-			configurator.setStepDone(STEP_NAME);
+	    // save any changes to the work configuration for report and future steps
+	    configurator.save();
+		
+		// generate report
+		report();
+		
+		return runner.succeeds();
 			
-		    // save any changes to the work configuration for report and future steps
-		    configurator.save();
-			
-			// generate report
-			report();
-			
-			return runner.succeeds();
-			
-		} catch (Exception e) {
-			runner.fatal(logger, "Step fails by system error.", e);
-			return false;
-		} 
 	}
 	
 }

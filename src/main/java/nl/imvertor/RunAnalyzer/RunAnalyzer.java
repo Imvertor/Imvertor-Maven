@@ -41,32 +41,27 @@ public class RunAnalyzer extends Step {
 	/**
 	 *  run the main translation
 	 */
-	public boolean run() {
+	public boolean run() throws Exception{
 		
-		try {
-			// set up the configuration for this step
-			configurator.setActiveStepName(STEP_NAME);
-			prepare();
-			runner.info(logger, "Analyzing this run");
+		// set up the configuration for this step
+		configurator.setActiveStepName(STEP_NAME);
+		prepare();
+		runner.info(logger, "Analyzing this run");
+		
+		Transformer transformer = new Transformer();
+		transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_ANALYZER_FILE", "properties/RUN_ANALYZER_XSL"); 
+		//TODO general: also provide default empty input, and default empty output files.
+		
+		configurator.setStepDone(STEP_NAME);
+		
+	    // save any changes to the work configuration for report and future steps
+	    configurator.save();
+		
+		// generate report
+		report();
+		
+		return runner.succeeds();
 			
-			Transformer transformer = new Transformer();
-			transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_ANALYZER_FILE", "properties/RUN_ANALYZER_XSL"); 
-			//TODO general: also provide default empty input, and default empty output files.
-			
-			configurator.setStepDone(STEP_NAME);
-			
-		    // save any changes to the work configuration for report and future steps
-		    configurator.save();
-			
-			// generate report
-			report();
-			
-			return runner.succeeds();
-			
-		} catch (Exception e) {
-			runner.fatal(logger, "Step fails by system error.", e);
-			return false;
-		} 
 	}
 	
 }

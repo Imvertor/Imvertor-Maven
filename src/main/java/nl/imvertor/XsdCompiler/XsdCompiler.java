@@ -50,41 +50,35 @@ public class XsdCompiler extends Step {
 	/**
 	 *  run the main translation
 	 */
-	public boolean run() {
+	public boolean run() throws Exception{
 		
-		try {
-			// set up the configuration for this step
-			configurator.setActiveStepName(STEP_NAME);
-			prepare();
-			runner.info(logger,"Compiling XML schemas");
+		// set up the configuration for this step
+		configurator.setActiveStepName(STEP_NAME);
+		prepare();
+		runner.info(logger,"Compiling XML schemas");
+		
+		if (configurator.isTrue("cli","createxmlschema")) {
+			String schemarules = configurator.getSchemarules();
+			if (schemarules.equals("Kadaster")) {
+				generateXsdKadaster();
+				supplyExternalSchemas();
+			} else if (schemarules.equals("KINGUGM")) {
+				generateXsdKING();
+			} else if (schemarules.equals("KINGBSM")) {
+				generateXsdKING();
+			} else
+				runner.error(logger,"Schemarules not implemented: " + schemarules);
 			
-			if (configurator.isTrue("cli","createxmlschema")) {
-				String schemarules = configurator.getSchemarules();
-				if (schemarules.equals("Kadaster")) {
-					generateXsdKadaster();
-					supplyExternalSchemas();
-				} else if (schemarules.equals("KINGUGM")) {
-					generateXsdKING();
-				} else if (schemarules.equals("KINGBSM")) {
-					generateXsdKING();
-				} else
-					runner.error(logger,"Schemarules not implemented: " + schemarules);
-				
-				// note: schema validation is a separate step
-				configurator.setStepDone(STEP_NAME);
-			} 
-			
-			// save any changes to the work configuration for report and future steps
-		    configurator.save();
-		    
-		    report();
-		    
-		    return runner.succeeds();
-			
-		} catch (Exception e) {
-			runner.fatal(logger, "Step fails by system error.", e);
-			return false;
+			// note: schema validation is a separate step
+			configurator.setStepDone(STEP_NAME);
 		} 
+		
+		// save any changes to the work configuration for report and future steps
+	    configurator.save();
+	    
+	    report();
+	    
+	    return runner.succeeds();
 	}
 
 	/**

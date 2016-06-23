@@ -92,73 +92,78 @@ public class ChainTranslateAndReport {
 		    boolean succeeds = true;
 		    boolean forced = false;
 		    		    
-			// Create the XMI file from EAP or other sources
-		    succeeds = (new XmiCompiler()).run();
+		    try {
+				// Create the XMI file from EAP or other sources
+			    succeeds = (new XmiCompiler()).run();
+				
+			    // Translate XMI to Imvertor format
+			    succeeds = succeeds && (new XmiTranslator()).run();
+				
+			    // Validate the Imvertor format against metamodel
+			    succeeds = succeeds && (new Validator()).run();
+	
+			    // normally, stop when errors are reported. 
+			    // However, in some circumstances (debugging or prototyping) we may want to continue anyway. 
+			    forced = configurator.forceCompile() && !succeeds;
+			    
+			    // read the current application phase
+			    configurator.getRunner().getAppPhase(); 
+			    
+			    if (succeeds || forced) {
+			    
+			    	if (forced) { 
+				    	configurator.getRunner().warn(logger,"Ignoring metamodel errors found (forced compilation)");
+				    	succeeds = true;
+			    	}
+			    	
+			    	// Add information to the Imvertor file that is specific for a particular run
+			    	succeeds = succeeds && (new ApcModifier()).run();
+					
+					// analyze the readme file. this records the state of the previous release.
+				    succeeds = succeeds && (new ReadmeAnalyzer()).run();
+					
+					// check if we can start the release, i.e. overwrite the contents of the application folder
+					// this is not allowed when previous release was a release, no errors, and in phase 3.
+					// note: this could be postponed when first creating the application, and then deciding to copy the (temporary) folder to the output folder. 
+					// However, this implies a full run and we want to signal this at early stage.
+				    succeeds = configurator.prepareRelease() && succeeds;
+					
+					// get all concept info to be used in validation: URI references must be valid.
+				    succeeds = succeeds && (new ConceptCollector()).run();
+					
+					// compile a final usable representation of the input file for XML schema generation.
+					// TODO determine if this steps must be split into several steps
+				    succeeds = succeeds && (new ImvertCompiler()).run();
+					
+					// compare releases. 
+				    // Eg. check if this only concerns a "documentation release". If so, must not be different from existing release.
+				    // also includes other types of release comparisons
+				    succeeds = succeeds && (new ReleaseComparer()).run();
+				    			
+					// generate the XSD 
+				    succeeds = succeeds && (new XsdCompiler()).run();
+								
+					// validate the generated XSDs 
+				    succeeds = succeeds && (new SchemaValidator()).run();
+								
+					// compile the history info 
+				    succeeds = succeeds && (new HistoryCompiler()).run();
+								
+					// compile Office documentation 
+				    succeeds = succeeds && (new OfficeCompiler()).run();
 			
-		    // Translate XMI to Imvertor format
-		    succeeds = succeeds && (new XmiTranslator()).run();
+					// compile templates and reports on UML EAP 
+				    if (configurator.isTrue("cli","createtemplate")) // TODO remove from KING profile
+				    	succeeds = succeeds && (new EapCompiler()).run();
 			
-		    // Validate the Imvertor format against metamodel
-		    succeeds = succeeds && (new Validator()).run();
-
-		    // normally, stop when errors are reported. 
-		    // However, in some circumstances (debugging or prototyping) we may want to continue anyway. 
-		    forced = configurator.forceCompile() && !succeeds;
+					// compile compliancy Excel
+				    succeeds = succeeds && (new ComplyCompiler()).run();
+			
+			    }
+			} catch (Exception e) {
+				configurator.getRunner().error(logger,"Step-level system error - Please notify your system administrator: " + e.getMessage(),e);
+			}   
 		    
-		    // read the current application phase
-		    configurator.getRunner().getAppPhase(); 
-		    
-		    if (succeeds || forced) {
-		    
-		    	if (forced) { 
-			    	configurator.getRunner().warn(logger,"Ignoring metamodel errors found (forced compilation)");
-			    	succeeds = true;
-		    	}
-		    	
-		    	// Add information to the Imvertor file that is specific for a particular run
-		    	succeeds = succeeds && (new ApcModifier()).run();
-				
-				// analyze the readme file. this records the state of the previous release.
-			    succeeds = succeeds && (new ReadmeAnalyzer()).run();
-				
-				// check if we can start the release, i.e. overwrite the contents of the application folder
-				// this is not allowed when previous release was a release, no errors, and in phase 3.
-				// note: this could be postponed when first creating the application, and then deciding to copy the (temporary) folder to the output folder. 
-				// However, this implies a full run and we want to signal this at early stage.
-			    succeeds = configurator.prepareRelease() && succeeds;
-				
-				// get all concept info to be used in validation: URI references must be valid.
-			    succeeds = succeeds && (new ConceptCollector()).run();
-				
-				// compile a final usable representation of the input file for XML schema generation.
-				// TODO determine if this steps must be split into several steps
-			    succeeds = succeeds && (new ImvertCompiler()).run();
-				
-				// compare releases. 
-			    // Eg. check if this only concerns a "documentation release". If so, must not be different from existing release.
-			    // also includes other types of release comparisons
-			    succeeds = succeeds && (new ReleaseComparer()).run();
-			    			
-				// generate the XSD 
-			    succeeds = succeeds && (new XsdCompiler()).run();
-							
-				// validate the generated XSDs 
-			    succeeds = succeeds && (new SchemaValidator()).run();
-							
-				// compile the history info 
-			    succeeds = succeeds && (new HistoryCompiler()).run();
-							
-				// compile Office documentation 
-			    succeeds = succeeds && (new OfficeCompiler()).run();
-		
-				// compile templates and reports on UML EAP 
-			    if (configurator.isTrue("cli","createtemplate")) // TODO remove from KING profile
-			    	succeeds = succeeds && (new EapCompiler()).run();
-		
-				// compile compliancy Excel
-			    succeeds = succeeds && (new ComplyCompiler()).run();
-		
-		    }
 			// analyze this run. 
 		    (new RunAnalyzer()).run();
 
@@ -179,7 +184,7 @@ public class ChainTranslateAndReport {
 		    	configurator.getRunner().info(logger, "** Warnings have been suppressed");
 
 		} catch (Exception e) {
-			configurator.getRunner().fatal(logger,"Please notify your administrator.",e);
+			configurator.getRunner().fatal(logger,"Chain-level system error - Please notify your administrator: " + e.getMessage(),e);
 		}
 	}
 }

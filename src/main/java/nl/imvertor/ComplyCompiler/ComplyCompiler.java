@@ -43,83 +43,78 @@ public class ComplyCompiler  extends Step {
 	/**
 	 *  run the step
 	 */
-	public boolean run() {
+	public boolean run() throws Exception{
 		
-		try {
-			if (configurator.isTrue("cli","createcomplyexcel")) {
-				
-				// set up the configuration for this step
-				configurator.setActiveStepName(STEP_NAME);
-				prepare();
-				runner.info(logger,"Compiling Compliancy Excel");
-				
-				// fetch the template file, and serialize it to a folder
-				String templateFilepath = configurator.getParm("properties", "IMVERTOR_COMPLY_TEMPLATE_EXCELPATH", true);
-				String unzipFolderpath = configurator.getParm("properties", "WORK_COMPLY_TEMPLATE_FOLDERPATH", true);
-	
-				ZipFile template = new ZipFile(templateFilepath);
-				AnyFolder serializeFolder = new AnyFolder(unzipFolderpath);
-				template.serializeToXml(serializeFolder);
-				
-				// in the exported file we find _content.xml, which is the base for all transformations and holds all XML content found.
-				// transform the exported folder any way required, on the basis of _content,xml.
-				// When done, the results will be compressed back, except for the _content,xml.
-				Transformer transformer = new Transformer();
-				
-				transformer.setExtensionFunction(new GetNamedCount());
-				transformer.setExtensionFunction(new SetNamedCount());
-				transformer.setExtensionFunction(new AddNamedCount());
-				
-				XmlFile contentFile = new XmlFile(serializeFolder,"__content.xml");
-				configurator.setParm("system", "comply-content-file", contentFile.getCanonicalPath());
-				transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_FILE", "properties/WORK_COMPLY_XSLPATH");
-				
-				// replace the __content.xml file by the newly created workfile. 
-				// And pack the result.
-				// Store in the folder for result compliancy fill-in forms
-				
-				AnyFolder formFolder = new AnyFolder(configurator.getParm("properties","IMVERTOR_COMPLY_TARGET"));
-				formFolder.mkdirs();
-				
-				String zipname = configurator.getParm("appinfo", "application-name") + ".xlsx";
-				ZipFile formFile = new ZipFile(formFolder,zipname);
-				
-				XmlFile newContentFile = new XmlFile(configurator.getParm("properties","WORK_COMPLY_FILE",true));
-				newContentFile.copyFile(contentFile);
-				formFile.deserializeFromXml(serializeFolder,true);
-				
-				// XML validate the generated worksheets
-				if (configurator.isTrue("cli","validatecomplyexcel")) {
-					Iterator<String> files = serializeFolder.listFilesToVector(true).iterator();
-					while (files.hasNext()) {
-						XmlFile file = new XmlFile(files.next());
-						if (file.getName().matches("^sheet\\d+\\.xml$"))
-							if (!file.isValid()) {
-								Iterator<String> messages = file.getMessages().iterator();
-								while (messages.hasNext()) {
-									runner.warn(logger, messages.next());
-								}
-								runner.error(logger, file.getMessages().size() + " problems found in generating: " + file.getCanonicalPath());
-							}
-					}
-				}
-				
-				configurator.setParm("appinfo","compliancy-result-form-path",formFile.getCanonicalPath());
-					
-				configurator.setStepDone(STEP_NAME);
-				 
-				// save any changes to the work configuration for report and future steps
-			    configurator.save();
-			    
-			    report();
-			    
-			}
-			return runner.succeeds();
+		if (configurator.isTrue("cli","createcomplyexcel")) {
 			
-		} catch (Exception e) {
-			runner.fatal(logger, "Step fails by system error.", e);
-			return false;
-		} 
+			// set up the configuration for this step
+			configurator.setActiveStepName(STEP_NAME);
+			prepare();
+			runner.info(logger,"Compiling Compliancy Excel");
+			
+			// fetch the template file, and serialize it to a folder
+			String templateFilepath = configurator.getParm("properties", "IMVERTOR_COMPLY_TEMPLATE_EXCELPATH", true);
+			String unzipFolderpath = configurator.getParm("properties", "WORK_COMPLY_TEMPLATE_FOLDERPATH", true);
+
+			ZipFile template = new ZipFile(templateFilepath);
+			AnyFolder serializeFolder = new AnyFolder(unzipFolderpath);
+			template.serializeToXml(serializeFolder);
+			
+			// in the exported file we find _content.xml, which is the base for all transformations and holds all XML content found.
+			// transform the exported folder any way required, on the basis of _content,xml.
+			// When done, the results will be compressed back, except for the _content,xml.
+			Transformer transformer = new Transformer();
+			
+			transformer.setExtensionFunction(new GetNamedCount());
+			transformer.setExtensionFunction(new SetNamedCount());
+			transformer.setExtensionFunction(new AddNamedCount());
+			
+			XmlFile contentFile = new XmlFile(serializeFolder,"__content.xml");
+			configurator.setParm("system", "comply-content-file", contentFile.getCanonicalPath());
+			transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_FILE", "properties/WORK_COMPLY_XSLPATH");
+			
+			// replace the __content.xml file by the newly created workfile. 
+			// And pack the result.
+			// Store in the folder for result compliancy fill-in forms
+			
+			AnyFolder formFolder = new AnyFolder(configurator.getParm("properties","IMVERTOR_COMPLY_TARGET"));
+			formFolder.mkdirs();
+			
+			String zipname = configurator.getParm("appinfo", "application-name") + ".xlsx";
+			ZipFile formFile = new ZipFile(formFolder,zipname);
+			
+			XmlFile newContentFile = new XmlFile(configurator.getParm("properties","WORK_COMPLY_FILE",true));
+			newContentFile.copyFile(contentFile);
+			formFile.deserializeFromXml(serializeFolder,true);
+			
+			// XML validate the generated worksheets
+			if (configurator.isTrue("cli","validatecomplyexcel")) {
+				Iterator<String> files = serializeFolder.listFilesToVector(true).iterator();
+				while (files.hasNext()) {
+					XmlFile file = new XmlFile(files.next());
+					if (file.getName().matches("^sheet\\d+\\.xml$"))
+						if (!file.isValid()) {
+							Iterator<String> messages = file.getMessages().iterator();
+							while (messages.hasNext()) {
+								runner.warn(logger, messages.next());
+							}
+							runner.error(logger, file.getMessages().size() + " problems found in generating: " + file.getCanonicalPath());
+						}
+				}
+			}
+			
+			configurator.setParm("appinfo","compliancy-result-form-path",formFile.getCanonicalPath());
+				
+			configurator.setStepDone(STEP_NAME);
+			 
+			// save any changes to the work configuration for report and future steps
+		    configurator.save();
+		    
+		    report();
+		    
+		}
+		return runner.succeeds();
+
 	}
 	
 }
