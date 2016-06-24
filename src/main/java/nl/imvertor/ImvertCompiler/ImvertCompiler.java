@@ -68,24 +68,26 @@ public class ImvertCompiler extends Step {
 		if (!succeeds && configurator.forceCompile())
 			runner.warn(logger,"Ignoring data processing errors found (forced compilation)");
 		
-		// If derivation must be checked, create the derivation file.
-		if (configurator.isTrue("cli","validatederivation")) 
-			succeeds = succeeds ? transformer.transformStep("properties/WORK_EMBELLISH_FILE", "properties/WORK_DERIVATION_FILE", "properties/IMVERTOR_DERIVATION_XSLPATH") : false ;
-		
-		AnyFolder etcFolder = new AnyFolder(configurator.getParm("system","work-etc-folder-path"));
-		
-		XmlFile infoEmbellishFile = new XmlFile(configurator.getParm("properties", "WORK_EMBELLISH_FILE"));
-		XmlFile oldEmbellishFile = new XmlFile(etcFolder,"system.imvert.xml");
-		infoEmbellishFile.copyFile(oldEmbellishFile); // IM-172 compare must work on simpler imvertor format
-    	
-		XmlFile infoSchemaFile = new XmlFile(configurator.getParm("properties", "WORK_SCHEMA_FILE"));
-		XmlFile oldModelFile = new XmlFile(etcFolder,"model.imvert.xml");
-		infoSchemaFile.copyFile(oldModelFile); // IM-169 schema based imvertor output
-		
-		//TODO copy the xsd to the etc. folder
-		AnyFolder sourceXsdFolder = new AnyFolder(configurator.getParm("properties", "IMVERTOR_APPLICATION_LOCATION_SOURCE")); 
-		AnyFolder targetXsdFolder = new AnyFolder(configurator.getParm("properties", "IMVERTOR_APPLICATION_LOCATION_TARGET")); 
-		sourceXsdFolder.copy(targetXsdFolder);
+		if (succeeds) {
+			// If derivation must be checked, create the derivation file.
+			if (configurator.isTrue("cli","validatederivation")) 
+				succeeds = succeeds ? transformer.transformStep("properties/WORK_EMBELLISH_FILE", "properties/WORK_DERIVATION_FILE", "properties/IMVERTOR_DERIVATION_XSLPATH") : false ;
+			
+			AnyFolder etcFolder = new AnyFolder(configurator.getParm("system","work-etc-folder-path"));
+			
+			XmlFile infoEmbellishFile = new XmlFile(configurator.getParm("properties", "WORK_EMBELLISH_FILE"));
+			XmlFile oldEmbellishFile = new XmlFile(etcFolder,"system.imvert.xml");
+			infoEmbellishFile.copyFile(oldEmbellishFile); // IM-172 compare must work on simpler imvertor format
+	    	
+			XmlFile infoSchemaFile = new XmlFile(configurator.getParm("properties", "WORK_SCHEMA_FILE"));
+			XmlFile oldModelFile = new XmlFile(etcFolder,"model.imvert.xml");
+			infoSchemaFile.copyFile(oldModelFile); // IM-169 schema based imvertor output
+			
+			//TODO copy the xsd to the etc. folder
+			AnyFolder sourceXsdFolder = new AnyFolder(configurator.getParm("properties", "IMVERTOR_APPLICATION_LOCATION_SOURCE")); 
+			AnyFolder targetXsdFolder = new AnyFolder(configurator.getParm("properties", "IMVERTOR_APPLICATION_LOCATION_TARGET")); 
+			sourceXsdFolder.copy(targetXsdFolder);
+		}
 		
 		configurator.setStepDone(STEP_NAME);
 		

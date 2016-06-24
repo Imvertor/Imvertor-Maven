@@ -98,7 +98,6 @@
                 Supplier release set explicitly for the package itself, or taken from parent.
         -->
         <xsl:variable name="supplier-info" select="imf:get-supplier-info($package)"/>
-        
         <xsl:choose>
             <xsl:when test="not(imf:boolean($package/imvert:derived))">
                 <!-- okay, skip. Explicitly specified that the package is not to be considered "derived" -->
@@ -108,15 +107,19 @@
                 <!-- okay, skip. This occurs only for base packages, that have no supplier (CDMKAD, SIM, ...) -->
             </xsl:when>
             
-            <xsl:when test="exists($supplier-info/@application) and empty($supplier-info/@project)">
+            <xsl:when test="$supplier-info/@application != '' and $supplier-info/@project = ''">
                 <xsl:sequence select="imf:report-error($package,true(),'No supplier project specified for supplier [1]', $supplier-info/@application)"/>
             </xsl:when>
             
-            <xsl:when test="exists($supplier-info/@application) and empty($supplier-info/@release)">
+            <xsl:when test="$supplier-info/@application != '' and $supplier-info/@release = ''">
                 <xsl:sequence select="imf:report-error($package,true(),'No supplier release specified for supplier [1]', $supplier-info/@application)"/>
             </xsl:when>
-                
-            <xsl:when test="exists($supplier-info/@application)">
+            
+            <xsl:when test="$supplier-info/@application != '' and $supplier-info/@system-path = ''">
+                <xsl:sequence select="imf:report-error($package,true(),'Could not determine the location of the supplier application [1] in project [2] at release [3]', ($supplier-info/@application, $supplier-info/@project, $supplier-info/@release))"/>
+            </xsl:when>
+            
+            <xsl:when test="$supplier-info/@application">
                 <!-- 
                     Check where supplier info is found. 
                      
@@ -153,7 +156,7 @@
                 <xsl:sequence select="imf:report-warning($package,true(),'No supplier name specified, assuming this package is not derived.')"/>
             </xsl:otherwise>
         </xsl:choose>
-      
+        
     </xsl:function>
     
     <xsl:function name="imf:get-imvert-etc-filepath" as="xs:string">
