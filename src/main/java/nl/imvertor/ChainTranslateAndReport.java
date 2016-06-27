@@ -35,6 +35,7 @@ import nl.imvertor.ReleaseComparer.ReleaseComparer;
 import nl.imvertor.ReleaseCompiler.ReleaseCompiler;
 import nl.imvertor.Reporter.Reporter;
 import nl.imvertor.RunAnalyzer.RunAnalyzer;
+import nl.imvertor.RunInitializer.RunInitializer;
 import nl.imvertor.SchemaValidator.SchemaValidator;
 import nl.imvertor.Validator.Validator;
 import nl.imvertor.XmiCompiler.XmiCompiler;
@@ -91,7 +92,10 @@ public class ChainTranslateAndReport {
 		    
 		    boolean succeeds = true;
 		    boolean forced = false;
-		    		    
+		    
+		    // initialize this run. 
+		    (new RunInitializer()).run();
+		    
 		    try {
 				// Create the XMI file from EAP or other sources
 			    succeeds = (new XmiCompiler()).run();

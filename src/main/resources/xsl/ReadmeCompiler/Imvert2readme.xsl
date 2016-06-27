@@ -33,7 +33,7 @@
     <xsl:param name="xsd-files-generated"/>
     <xsl:param name="etc-files-generated"/>
    
-    <xsl:variable name="RELEASENAME" select="$application-package-release-name"/>
+    <xsl:variable name="RELEASENAME" select="($application-package-release-name,'(undetermined)')"/>
     <xsl:variable name="EAVERSION" select="/imvert:packages/imvert:exporter"/>
     <xsl:variable name="APPLICATIONNAME" select="$application-package-name"/>
     <xsl:variable name="CONTACTEMAIL" select="imf:get-config-string('cli','contactemail','(unspecified)')"/>
@@ -51,7 +51,7 @@
                     Readme - <xsl:value-of select="$application-package-name"/>
                 </h2>
                 <p> Dit is informatie bij de release met de naam <br/>
-                    <b><xsl:value-of select="$RELEASENAME"/></b>. </p>
+                    <b><xsl:value-of select="$RELEASENAME[1]"/></b>. </p>
                 <p> Dit bestand is opgebouwd uit de volgende folders: </p>
                 <ul>
                     <li> Folder <a href="doc/index.html">/doc</a> bevat de systeemdocumentatie. Systeem documentatie betreft een rapportage van het aangeboden UML model vanuit het perspectief van de omzetting naar een XML schema. </li>

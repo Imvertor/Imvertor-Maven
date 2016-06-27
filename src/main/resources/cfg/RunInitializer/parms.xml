@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>Run initializer</name>
+      <version-control>$Id: parms.xml 7431 2016-02-24 12:46:42Z arjan $</version-control>
+   </id>
+   <cli-parms>
+      <!-- none -->
+   </cli-parms>
+   
+   <properties>
+
+       <WORK_INITIALIZER_FILE>${system/work-imvert-folder-path}/imvertor.0.init.xml</WORK_INITIALIZER_FILE>
+      
+   </properties>
+</config>
