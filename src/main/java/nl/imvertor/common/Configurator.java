@@ -30,6 +30,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
@@ -114,6 +115,8 @@ public class Configurator {
 	private HashMap<String,Boolean> requiredOption = new HashMap<String,Boolean> ();
 	
 	private PrintWriter pw = new PrintWriter(System.out);
+	
+	private long starttime = 0;
 	
 	private Configurator()  {
 		
@@ -301,6 +304,8 @@ public class Configurator {
 	 */
 	public void prepare() throws Exception {
 		
+		starttime = System.currentTimeMillis(); 
+		
 		workConfigurationFile = new XmlFile(workFolder,Configurator.PARMS_FILE_NAME);
 		workConfigurationFile.setContent(
 				"<config><run>"
@@ -417,6 +422,9 @@ public class Configurator {
 	 */
 	public void windup() throws Exception {
 		
+		setParm("run","time",runtime());
+		save();
+		
 		OutputFolder appWorkFolder = new OutputFolder(getParm("system","work-app-folder-path"));
 		OutputFolder appFinalFolder;
 	
@@ -437,6 +445,11 @@ public class Configurator {
 			targetXsdFolder.mkdirs();
 			sourceXsdFolder.copy(targetXsdFolder);
 		}
+	}
+	
+	public float runtime() throws Exception {
+		long time = System.currentTimeMillis() - starttime; 
+		return ((float) time) / 1000;
 	}
 	
 	/**

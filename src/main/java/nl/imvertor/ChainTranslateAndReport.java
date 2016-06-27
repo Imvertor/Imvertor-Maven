@@ -183,7 +183,7 @@ public class ChainTranslateAndReport {
 			configurator.windup();
 			
 			configurator.getRunner().windup();
-			configurator.getRunner().info(logger, "Done, chain process " + (succeeds ? "succeeds" : "fails"));
+			configurator.getRunner().info(logger, "Done, chain process " + (succeeds ? "succeeds" : "fails") + " in " + configurator.runtime() + " seconds");
 		    if (configurator.getSuppressWarnings() && configurator.getRunner().hasWarnings())
 		    	configurator.getRunner().info(logger, "** Warnings have been suppressed");
 

@@ -54,12 +54,13 @@
             )"/>      
     </xsl:function>
     
+    <!-- setting a config string overwrites by default -->
     <xsl:function name="imf:set-config-string" as="item()*">
         <xsl:param name="group"/>
         <xsl:param name="name"/>
         <xsl:param name="value"/>
         <xsl:sequence select="(
-            ext:imvertorParameterFile('SET',string($group),string($name),string($value),'false')
+            ext:imvertorParameterFile('SET',string($group),string($name),string($value),'true')
             )"/>      
     </xsl:function>
     
