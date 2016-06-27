@@ -16,6 +16,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+ 
+ This stylesheet enriches the to XML transformed version of the base-configuration.xls file.
 -->
 <xsl:stylesheet 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -35,16 +37,13 @@
     
     version="2.0">
     
-    <!--<xsl:import href="../common/Imvert-common.xsl"/>-->
     <xsl:import href="extension/Imvert-common-zipserializer.xsl"/>
     <xsl:import href="extension/Imvert-common-excelserializer.xsl"/>
-
-	<!--<xsl:import href="Imvert2XSD-KING-common.xsl"/>-->
-
    
     <xsl:output indent="yes" method="xml" encoding="UTF-8"/>
     
-    <!-- for all exel handling -->
+    <!-- for all Excel handling -->
+
     <xsl:variable name="workfolder-path" select="imf:get-config-string('properties','work-serialize-folder')"/>
     
     <!-- for Excel OOXML -->
@@ -55,14 +54,15 @@
     <xsl:variable name="shared-strings" select="$content-doc/files/file/ss:sst/ss:si"/>
     
     <!-- for excel 97 -->
-
+    <!-- The last variable in this block contains the raw XML version of the base-configuration.xls file. --> 
     <xsl:variable name="excel-97-dtd-path" select="imf:get-config-string('properties','FORMATWORKBOOK_DTD')"/>
     <xsl:variable name="endproduct-base-config-excel" select="imf:get-config-string('cli','endproductbaseconfig')"/>
     <xsl:variable name="endproduct-config-excel" select="imf:get-config-string('cli','endproductconfig')"/>
     <xsl:variable name="endproduct-base-config-excel-url" select="imf:serializeExcel($endproduct-base-config-excel,concat($workfolder-path,'/excel.xml'),$excel-97-dtd-path)"/>
     <xsl:variable name="endproduct-base-config-excel-doc" select="imf:document($endproduct-base-config-excel-url)"/>  
     
-   <!-- Templates for processing and enriching the product configuration file. -->    
+   <!-- Templates for processing and enriching the product configuration file. 
+        Most of them just recreate the related element. -->    
    <xsl:template match="workbook">
 		<xsl:copy>
 			<xsl:apply-templates/>
@@ -81,40 +81,17 @@
 		</xsl:copy>
     </xsl:template>
 
+   <!-- The following template only recreates rows 4 and larger (first row has @number = 0) in which  the first column isn't empty. -->
    <xsl:template match="row">
 		<xsl:if test="@number &gt; 2 and col[@number=0]/data!=''">
-			<?x xsl:variable name="entity" select="col[@number=9]/data"/>
-			<xsl:variable name="attribute" select="col[@number=12]/data"/ x?>
 			<xsl:copy>
 				<xsl:apply-templates select="*|@*"/>
-				<?x col naam="imvert-id" number="15">
-					<data>
-						<!--<xsl:choose>-->
-							<!-- Nog inbouwen dat kolom nummer 10 ook leeg kan zijn. -->
-							<!--<xsl:when test="col[@number=10]/data='-'">-->
-								<xsl:variable name="r" select="imf:get-property-by-name('Model',$entity,$attribute, true())"/>
-								<xsl:value-of select="$r/imvert:id"/>
-							<!--</xsl:when>
-							<xsl:when test="col[@number=10]/data!='-'">
-								<xsl:variable name="r" select="imf:get-property-by-name('Model',$entity,$attribute, true())"/>
-								<xsl:value-of select="$r/imvert:id"/>
-							</xsl:when>
-						</xsl:choose>-->
-					</data>
-				</col x?>					
 			</xsl:copy>
 		</xsl:if>
     </xsl:template>
     
-    <xsl:function name="imf:getColumnName" as="xs:string">
-        <xsl:param name="sheetName"/>
-        <xsl:param name="colNumber"/>
-        <xsl:param name="name-type"/>
-        <xsl:variable name="name-element" select="$endproduct-base-config-excel-doc//sheet[name=$sheetName]/row[@number=1]/col[@number=$colNumber]/data"/>
-        <xsl:value-of select="imf:get-normalized-name($name-element,$name-type)"/>
-    </xsl:function>
-
-   <xsl:template match="col">
+    <!-- This template processes each column of the base-configuration.xls file and provides it with the xml-attributes 'name' and 'type'. -->
+    <xsl:template match="col">
        <xsl:variable name="name-type" select="'tv-name'"/>
        <xsl:variable name="sheetName" select="ancestor::sheet/name"/>
        <xsl:variable name="colNumber">
@@ -122,6 +99,7 @@
        </xsl:variable>
        <xsl:copy>
           <xsl:choose>
+              <!-- Within the context of the worksheet 'Berichtgerelateerde gegevens' the 'type' xml-attribute has the value 'Stuurgegevens' or 'Parameters' depending on the type of component. -->
               <xsl:when test="$sheetName = 'Berichtgerelateerde gegevens'">
                   <xsl:choose>
                       <xsl:when test="@number=0"><xsl:attribute name="name" select="'typeBericht'"/></xsl:when>
@@ -211,11 +189,18 @@
         </xsl:copy>
     </xsl:template>
     
-  <!--
-        Return the property element (imvert:attribute or imvert:association) for the package, class and property name passed.
-        If the names are the original (UML) names, set is-original to true.
-    -->
+    <!-- This function retrieves the normalized name of the column being processed. To be able to do this the related sheetname and columnnumber are neccessary to get the columnname as defined within the 
+         Excel sheet. Subsequently the normalized name of the column is generated using the imf:get-normalized-name() function in the tv-name mode. -->
+    <xsl:function name="imf:getColumnName" as="xs:string">
+        <xsl:param name="sheetName"/>
+        <xsl:param name="colNumber"/>
+        <xsl:param name="name-type"/>
+        <xsl:variable name="name-element" select="$endproduct-base-config-excel-doc//sheet[name=$sheetName]/row[@number=1]/col[@number=$colNumber]/data"/>
+        <xsl:value-of select="imf:get-normalized-name($name-element,$name-type)"/>
+    </xsl:function>
     
+    <!-- Return the property element (imvert:attribute or imvert:association) for the package, class and property name passed.
+         If the names are the original (UML) names, set is-original to true. -->  
     <xsl:function name="imf:get-property-by-name" as="element()?">
         <xsl:param name="package-name" as="xs:string"/>
         <xsl:param name="class-name" as="xs:string"/>

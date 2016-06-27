@@ -33,6 +33,18 @@
     <xsl:variable name="stylesheet">Imvert2XSD-KING-endproduct-xml</xsl:variable>
     <xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-endproduct-xml.xsl 7509 2016-04-25 13:30:29Z arjan $</xsl:variable>  
     
+<!-- ROME: Heel vreemd maar de volgende twee (uitbecommentarieerde) variabelen zijn toch anders dan de daarop volgende 2 variabelen (waarbij de functie
+           'buildParametersAndStuurgegevens' wel werkt. -->
+    <?x xsl:variable name="config-schemarules" select="imf:get-config-schemarules()"/>
+    <xsl:variable name="config-tagged-values" select="imf:get-config-tagged-values()"/ x?>
+    
+    <xsl:variable name="config-schemarules">
+        <xsl:sequence select="imf:get-config-schemarules()"/>
+    </xsl:variable> 
+    <xsl:variable name="config-tagged-values">
+        <xsl:sequence select="imf:get-config-tagged-values()"/>
+    </xsl:variable> 
+    
     <!-- set the processing parameters of the stylesheets. -->
     <!--xsl:variable name="my-debug" select="'no'"/-->
     
@@ -89,6 +101,12 @@
     
     <xsl:template match="/">
         <!-- This template is used to place the content of the variable '$imvert-endproduct' within the ep file. -->
+        <?x xsl:result-document href="file:/c:/temp/imvert-schema-rules.xml">
+            <xsl:sequence select="$config-schemarules"/>
+        </xsl:result-document x?> 
+        <?x xsl:result-document href="file:/c:/temp/imvert-tagged-values.xml">
+            <xsl:sequence select="$config-tagged-values"/>
+        </xsl:result-document x?> 
         <?x xsl:result-document href="file:/c:/temp/imvert-endproduct.xml">
             <xsl:sequence select="$enriched-endproduct-base-config-excel"/>
             

@@ -20,7 +20,7 @@
 <schema-rules xmlns:xi="http://www.w3.org/2001/XInclude">
     <svn>$Id: KINGBSM.xml 67 2016-03-09 10:29:14 arjan $</svn>
     <name>KINGBSM</name>
-
+    
     <xi:include href="KINGUGM.xml"/>
     <!-- 
         KING specific rules for BSM schemas
@@ -30,126 +30,147 @@
             <tv id="Berichtcode">
                 <name lang="nl">Berichtcode</name>
                 <schema-name lang="nl">berichtcode</schema-name>
+                <schema-type>StUF:Berichtcode</schema-type>
             </tv>
-
+            
             <tv id="Zender">
                 <!--name lang="nl">S Zender</name-->
                 <name lang="nl">Zender</name>
                 <schema-name lang="nl">zender</schema-name>
+                <schema-type>StUF:Systeem</schema-type>
             </tv>
-
-            <tv id="SOntvanger">
+            
+            <tv id="Ontvanger">
                 <!--name lang="nl">S Ontvanger</name-->
                 <name lang="nl">Ontvanger</name>
                 <schema-name lang="nl">ontvanger</schema-name>
+                <schema-type>StUF:Systeem</schema-type>
             </tv>
-
-            <tv id="SReferentienummer">
+            
+            <tv id="Referentienummer">
                 <!--name lang="nl">S Referentienummer</name-->
                 <name lang="nl">Referentienummer</name>
                 <schema-name lang="nl">referentienummer</schema-name>
+                <schema-type>StUF:Refnummer</schema-type>
             </tv>
-
-            <tv id="STijdstipBericht">
+            
+            <tv id="TijdstipBericht">
                 <!--name lang="nl">S Tijdstip bericht</name-->
                 <name lang="nl">Tijdstip bericht</name>
                 <schema-name lang="nl">tijdstipBericht</schema-name>
+                <schema-type>StUF:Tijdstip</schema-type>
             </tv>
-
-            <tv id="SCrossRefnummer">
+            
+            <tv id="CrossRefnummer">
                 <!--name lang="nl">S CrossRefnummer</name-->
                 <name lang="nl">CrossRefnummer</name>
                 <schema-name lang="nl">crossRefnummer</schema-name>
+                <schema-type>StUF:Refnummer</schema-type>
             </tv>
-
-            <tv id="SEntiteittype">
+            
+            <tv id="Entiteittype">
                 <!--name lang="nl">S Entiteittype</name-->
                 <name lang="nl">Entiteittype</name>
                 <schema-name lang="nl">entiteittype</schema-name>
+                <schema-type>StUF:Entiteittype</schema-type>
             </tv>
-
-            <tv id="SFunctie">
+            
+            <tv id="Functie">
                 <!--name lang="nl">S Functie</name-->
                 <name lang="nl">Functie</name>
                 <schema-name lang="nl">functie</schema-name>
+                <schema-type>StUF:Functie</schema-type>
             </tv>
-
-            <tv id="PIndicatorVervolgvraag">
+            
+            <tv id="IndicatorVervolgvraag">
                 <!--name lang="nl">P Indicator vervolgvraag</name-->
                 <name lang="nl">Indicator vervolgvraag</name>
                 <schema-name lang="nl">indicatorVervolgvraag</schema-name>
+                <schema-type>scalar-boolean</schema-type>
             </tv>
-
-            <tv id="PIndicatorAfnemerIndicatie">
+            
+            <tv id="IndicatorAfnemerIndicatie">
                 <!--name lang="nl">P Indicator afnemerindicatie</name-->
                 <name lang="nl">Indicator afnemerindicatie</name>
                 <schema-name lang="nl">indicatorAfnemerIndicatie</schema-name>
+                <schema-type>scalar-boolean</schema-type>
             </tv>
-
-            <tv id="PPeiltijdstipMaterieel">
+            
+            <tv id="PeiltijdstipMaterieel">
                 <!--name lang="nl">P Peiltijdstip materieel</name-->
                 <name lang="nl">Peiltijdstip materieel</name>
                 <schema-name lang="nl">peiltijdstipMaterieel</schema-name>
+                <schema-type>StUF:Tijdstip</schema-type>
             </tv>
-
-            <tv id="PPeiltijdstipFormeel">
+            
+            <tv id="PeiltijdstipFormeel">
                 <!--name lang="nl">P Peiltijdstip formeel</name-->
                 <name lang="nl">Peiltijdstip formeel</name>
                 <schema-name lang="nl">peiltijdstipFormeel</schema-name>
+                <schema-type>StUF:Tijdstip</schema-type>
             </tv>
-
-            <tv id="PAantalVoorkomens">
+            
+            <tv id="AantalVoorkomens">
                 <!--name lang="nl">P Aantal voorkomens</name-->
                 <name lang="nl">Aantal voorkomens</name>
                 <schema-name lang="nl">aantalVoorkomens</schema-name>
+                <schema-type>StUF:AantalVoorkomens</schema-type>
             </tv>
-
-            <tv id="PVolgnummer">
+            
+            <tv id="Volgnummer">
                 <!--name lang="nl">P Volgnummer</name-->
                 <name lang="nl">Volgnummer</name>
                 <schema-name lang="nl">sequenceNumber</schema-name>
+                <schema-type>StUF:SequenceNumber</schema-type>
             </tv>
-
-            <tv id="PIndicatorLaatsteBericht">
+            
+            <tv id="IndicatorLaatsteBericht">
                 <!--name lang="nl">P Indicator laatste bericht</name-->
                 <name lang="nl">Indicator laatste bericht</name>
                 <schema-name lang="nl">indicatorLaatsteBericht</schema-name>
+                <schema-type>scalar-boolean</schema-type>
             </tv>
-
-            <tv id="PMutatiesoort">
+            
+            <tv id="Mutatiesoort">
                 <!--name lang="nl">P Mutatiesoort</name-->
                 <name lang="nl">Mutatiesoort</name>
                 <schema-name lang="nl">mutatiesoort</schema-name>
+                <schema-type>StUF:Mutatiesoort</schema-type>
             </tv>
-
-            <tv id="PIndicatorOvername">
+            
+            <tv id="IndicatorOvername">
                 <!--name lang="nl">P Indicator overname</name-->
                 <name lang="nl">Indicator overname</name>
                 <schema-name lang="nl">indicatorOvername</schema-name>
+                <schema-type>StUF:IndicatorOvername</schema-type>
             </tv>
-
-            <tv id="PIndicatorMaximumAantal">
+            
+            <tv id="IndicatorMaximumAantal">
                 <!--name lang="nl">P Indicator maximum aantal</name-->
                 <name lang="nl">Indicator maximum aantal</name>
                 <schema-name lang="nl">maximumAantal</schema-name>
+                <schema-type>StUF:MaximumAantal</schema-type>
             </tv>
-
-            <tv id="PIndicatorAantal">
+            
+            <tv id="IndicatorAantal">
                 <!--name lang="nl">P Indicator aantal</name-->
                 <name lang="nl">Indicator aantal</name>
                 <schema-name lang="nl">indicatorAantal</schema-name>
+                <schema-type>StUF:IndicatorAantal</schema-type>
             </tv>
-
-            <tv id="PSortering">
+            
+            <tv id="Sortering">
                 <!--name lang="nl">P Sortering</name-->
                 <name lang="nl">Sortering</name>
                 <schema-name lang="nl">sortering</schema-name>
+                <schema-type>StUF:Sortering</schema-type>
             </tv>
-
-            <tv id="PIndicatorHistorie">
+            
+            <tv id="IndicatorHistorie">
                 <!--name lang="nl">P Indicator historie</name-->
                 <name lang="nl">Indicator historie</name>
                 <schema-name lang="nl">indicatorHistorie</schema-name>
+                <schema-type>StUF:IndicatorHistorie</schema-type>
             </tv>
         </tagged-values>
     </name-value-mapping>
