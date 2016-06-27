@@ -599,6 +599,8 @@
         <xsl:variable name="name" select="imvert:name"/>
         <xsl:variable name="defining-class" select="if (imvert:type-id) then imf:get-construct-by-id(imvert:type-id) else ()"/>
         <xsl:variable name="is-enumeration" select="$class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-enumeration','stereotype-name-codelist'))"/>
+        <xsl:variable name="is-designated-datatype" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-datatype','stereotype-name-complextype'))"/>
+        <xsl:variable name="baretype" select="imvert:baretype"/>
         <xsl:variable name="superclasses" select="imf:get-superclasses($class)"/>
         <xsl:variable name="is-abstract" select="imvert:abstract = 'true'"/>
         <xsl:variable name="stereos" select="('stereotype-name-objecttype','stereotype-name-referentielijst')"/>
@@ -642,7 +644,12 @@
         <xsl:sequence select="imf:report-error(., 
             (imvert:is-id = 'true' and empty($superclasses/imvert:stereotype = imf:get-config-stereotypes($stereos))), 
             'Only classes stereotyped as [1] may have or inherit an attribute that is an ID',string-join($stereos,' or '))"/>
-            <!--Task #487338, see also IM-371 teruggedraaid. -->
+        <!--Task #487338, see also IM-371 teruggedraaid. -->
+       
+        <!-- Jira IM-420 -->
+        <xsl:sequence select="imf:report-error(., 
+            not($is-designated-datatype or $is-enumeration or empty($defining-class)), 
+            'Attribute type must be a datatype, but is not.', ())"/>
         
         <xsl:sequence select="imf:check-stereotype-assignment(.)"/>
         <xsl:sequence select="imf:check-tagged-value-occurs(.)"/>

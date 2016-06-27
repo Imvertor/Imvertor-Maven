@@ -64,6 +64,16 @@
         <!-- remove -->
     </xsl:template>
     
+    <!-- 
+        IM-445
+        remove references to a type ID when no type name could be determined 
+        This happens when references occur to parts of the EA that are not in scope
+    -->
+    <xsl:template match="imvert:type-id[empty(../imvert:type-name)]">
+        <imvert:type-id>OUT-OF-SCOPE</imvert:type-id>
+        <imvert:type-name>OUT-OF-SCOPE</imvert:type-name>
+    </xsl:template>
+    
     <xsl:template match="node()|@*">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
