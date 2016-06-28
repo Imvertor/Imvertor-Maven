@@ -125,7 +125,7 @@
 			<artifactId>java-api</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
-			<systemPath>${eapath}/eaapi.jar</systemPath>
+			<systemPath>${env.EAPATH}\eaapi.jar</systemPath>
 		</dependency>
 
 	</dependencies>
