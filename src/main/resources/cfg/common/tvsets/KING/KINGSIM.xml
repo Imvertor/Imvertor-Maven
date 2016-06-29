@@ -30,6 +30,11 @@
                 <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
                 <stereo required="yes" lang="nl">Relatiesoort</stereo>
             </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+                <value>Zie groep</value>
+            </declared-values>
         </tv>
         <tv norm="space" id="IndicatieInOnderzoek">
             <name lang="nl">Indicatie in onderzoek</name>
@@ -68,6 +73,11 @@
         </tv>
         <tv norm="compact" rules="NOC" id="IndicatieMateriëleHistorie">
             <name lang="nl">Indicatie materiële historie</name>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Attribuutsoort</stereo>
+                <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
+                <stereo required="yes" lang="nl">Relatiesoort</stereo>
+            </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
                 <value>Nee</value>
@@ -79,6 +89,11 @@
         </tv>
         <tv norm="compact" rules="NOC" id="IndicatieFormeleHistorie">
             <name lang="nl">Indicatie formele historie</name>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Attribuutsoort</stereo>
+                <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
+                <stereo required="yes" lang="nl">Relatiesoort</stereo>
+            </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
                 <value>Nee</value>
@@ -89,12 +104,29 @@
         <tv norm="space" id="IndicatieAuthentiek">
             <name lang="nl">Indicatie authentiek</name>
             <derive>yes</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Attribuutsoort</stereo>
+                <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
+                <stereo required="yes" lang="nl">Relatiesoort</stereo>
+            </stereotypes>
             <declared-values lang="nl">
                 <value>Authentiek</value>
                 <value>Basisgegeven</value>
                 <value>Landelijk kerngegeven</value>
                 <value>Gemeentelijk kerngegeven</value>
                 <value>Overig</value>
+            </declared-values>
+        </tv>
+        <tv norm="compact" rules="NOC" id="MogelijkGeenWaarde">
+            <name lang="nl">Mogelijk geen waarde</name>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Attribuutsoort</stereo>
+                <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
+                <stereo required="yes" lang="nl">Relatiesoort</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
             </declared-values>
         </tv>
         

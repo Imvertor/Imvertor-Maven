@@ -44,6 +44,12 @@
                 <stereo required="yes" lang="nl">Groep</stereo><!--SIM Gegevensgroeptype-->
                 <stereo required="yes" lang="nl">Relatie</stereo><!--SIM Relatiesoort-->
             </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+                <value>Zie groep</value>
+                <value>N.v.t.</value>
+            </declared-values>
         </tv>
         <tv norm="space" rules="NOC" id="IndicatieFormeleHistorie">
             <name lang="nl">Indicatie formele historie</name>
@@ -53,6 +59,12 @@
                 <stereo required="yes" lang="nl">Groep</stereo><!--SIM Gegevensgroeptype-->
                 <stereo required="yes" lang="nl">Relatie</stereo><!--SIM Relatiesoort-->
             </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+                <value>Zie groep</value>
+                <value>N.v.t.</value>
+            </declared-values>
         </tv>
         <tv norm="space" id="Patroon"><!-- MIG -->
             <name lang="nl">Patroon</name>
@@ -73,6 +85,10 @@
                 <stereo required="no" lang="nl">Relatie</stereo><!-- SIM: Relatiesoort  -->
                 <stereo required="no" lang="nl">Voidable</stereo>
             </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
         </tv>
         
         <tv norm="space" id="DataLocatie"><!-- MIG -->
