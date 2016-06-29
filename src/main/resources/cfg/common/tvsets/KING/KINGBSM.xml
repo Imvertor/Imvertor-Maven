@@ -40,7 +40,46 @@
                 --> 
         </tv>
         
-        <tv norm="space" validate="" rules="" id="Berichtcode">
+         <tv norm="space"  rules="NOC" id="IndicatieMateriëleHistorie">
+            <name lang="nl">Indicatie materiële historie</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Element</stereo><!--SIM Attribuutsoort-->
+                <stereo required="yes" lang="nl">Groep</stereo><!--SIM Gegevensgroeptype-->
+                <stereo required="yes" lang="nl">Relatie</stereo><!--SIM Relatiesoort-->
+            </stereotypes>
+        </tv>
+        <tv norm="space" rules="NOC" id="IndicatieFormeleHistorie">
+            <name lang="nl">Indicatie formele historie</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Element</stereo><!--SIM Attribuutsoort-->
+                <stereo required="yes" lang="nl">Groep</stereo><!--SIM Gegevensgroeptype-->
+                <stereo required="yes" lang="nl">Relatie</stereo><!--SIM Relatiesoort-->
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="Patroon"><!-- MIG -->
+            <name lang="nl">Patroon</name>
+            <name lang="en">Pattern</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Element</stereo><!--SIM Attribuutsoort, Referentie element, Union element, Data element-->
+                <stereo required="no" lang="nl">Datatype</stereo>
+                <stereo required="no" lang="nl">Complex datatype</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="MogelijkGeenWaarde">
+            <name lang="nl">Mogelijk geen waarde</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Element</stereo><!--SIM Attribuutsoort -->
+                <stereo required="no" lang="nl">Groep</stereo><!-- SIM: Gegevensgroeptype -->
+                <stereo required="no" lang="nl">Relatie</stereo><!-- SIM: Relatiesoort  -->
+                <stereo required="no" lang="nl">Voidable</stereo>
+            </stereotypes>
+        </tv>
+
+       <tv norm="space" validate="" rules="" id="Berichtcode">
             <name lang="nl">Berichtcode</name>
             <derive>no</derive>
             <stereotypes>
