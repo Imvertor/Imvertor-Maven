@@ -29,19 +29,138 @@
 		<xsl:variable name="tagged-values">
 			<xsl:sequence select="imvert:tagged-values"/>
 		</xsl:variable>
+		<xsl:if test="count(imvert:class[imvert:stereotype = 'VRAAGBERICHTTYPE' or imvert:stereotype = 'ANTWOORDBERICHTTYPE' or imvert:stereotype = 'KENNISGEVINGSBERICHTTYPE' or imvert:stereotype = 'VRIJBERICHTTYPE']) != 1">
+			<xsl:message select="concat('ERROR  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : The amount of classes suitable for being processed as a message is less or larger than 1. Only 1 such class is allowed.')"/>													
+		</xsl:if>
 		<xsl:variable name="berichtType">
 			<xsl:choose>
 				<xsl:when test="imvert:class[imvert:stereotype = 'VRAAGBERICHTTYPE']">Vraagbericht</xsl:when>
 				<xsl:when test="imvert:class[imvert:stereotype = 'ANTWOORDBERICHTTYPE']">Antwoordbericht</xsl:when>
-				<xsl:when test="imvert:class[imvert:stereotype = 'KENNISGEVINGBERICHTTYPE']">Kennisgevingbericht</xsl:when>
+				<xsl:when test="imvert:class[imvert:stereotype = 'KENNISGEVINGSBERICHTTYPE']">Kennisgevingsbericht</xsl:when>
 				<xsl:when test="imvert:class[imvert:stereotype = 'VRIJBERICHTTYPE']">Vrij bericht</xsl:when>
 			</xsl:choose>
-			
 		</xsl:variable>
 		<!-- create the bericht message -->
-<!-- ROME: Onderstaande variabele moet binnenkort afgeleid worden van een aantal tagged values. Het is dan zelf geen tagged value meer. -->
-		<xsl:variable name="berichtCode" select="imvert:class[imvert:stereotype = 'VRAAGBERICHTTYPE' or imvert:stereotype = 'ANTWOORDBERICHTTYPE' or imvert:stereotype = 'KENNISGEVINGBERICHTTYPE' or imvert:stereotype = 'VRIJBERICHTTYPE']/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Berichtcode']/imvert:value"/>
-		<?x xsl:variable name="berichtCode" select="imf:determineBerichtCode(imvert:name)"/ x?>
+<!-- ROME: Onderstaande variabele wordt zo nmogelijk, indien de tv 'Berichtcode' niet voorkomt, afgeleid van een aantal tagged values. 
+		   Indien deze tagged value nog wel voorkomt dan wordt de waarde daar direct uit onttrokken. Het is de bedoeling dat deze tv uiteindelijk verdwijnt zodat de
+		   xsl:choose in deze variabele ook kan worden verwijderd. In dat geval kan ook de variabele berichtCodeDeterming worden verwijderd en de processing er omheen. -->
+		<xsl:variable name="berichtCode">
+			<xsl:choose>
+				<xsl:when test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
+					'stereotype-name-vraagberichttype',
+					'stereotype-name-antwoordberichttype',
+					'stereotype-name-vrijberichttype',
+					'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Berichtcode' and imvert:value != '']">
+					<xsl:value-of select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
+						'stereotype-name-vraagberichttype',
+						'stereotype-name-antwoordberichttype',
+						'stereotype-name-vrijberichttype',
+						'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Berichtcode']/imvert:value"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:variable name="Stereotype" select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
+						'stereotype-name-vraagberichttype',
+						'stereotype-name-antwoordberichttype',
+						'stereotype-name-vrijberichttype',
+						'stereotype-name-kennisgevingsberichttype'))]/imvert:stereotype"/>
+					<xsl:variable name="Inkomend">
+						<xsl:choose>
+							<xsl:when test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
+								'stereotype-name-vraagberichttype',
+								'stereotype-name-antwoordberichttype',
+								'stereotype-name-vrijberichttype',
+								'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Inkomend' and imvert:value != '']">
+								<xsl:value-of select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
+									'stereotype-name-vraagberichttype',
+									'stereotype-name-antwoordberichttype',
+									'stereotype-name-vrijberichttype',
+									'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Inkomend']/imvert:value"/>
+							</xsl:when>
+							<xsl:otherwise>-</xsl:otherwise>
+						</xsl:choose>					
+					</xsl:variable> 
+					<xsl:variable name="AanduidingActualiteit">
+						<xsl:choose>
+							<xsl:when test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
+								'stereotype-name-vraagberichttype',
+								'stereotype-name-antwoordberichttype',
+								'stereotype-name-vrijberichttype',
+								'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'AanduidingActualiteit' and imvert:value != '']">
+								<xsl:value-of select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
+									'stereotype-name-vraagberichttype',
+									'stereotype-name-antwoordberichttype',
+									'stereotype-name-vrijberichttype',
+									'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'AanduidingActualiteit']/imvert:value"/>
+							</xsl:when>
+							<xsl:otherwise>-</xsl:otherwise>
+						</xsl:choose>					
+					</xsl:variable> 
+					<xsl:variable name="Synchroon">
+						<xsl:choose>
+							<xsl:when test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
+								'stereotype-name-vraagberichttype',
+								'stereotype-name-antwoordberichttype',
+								'stereotype-name-vrijberichttype',
+								'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Synchroon' and imvert:value != '']">
+								<xsl:value-of select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
+									'stereotype-name-vraagberichttype',
+									'stereotype-name-antwoordberichttype',
+									'stereotype-name-vrijberichttype',
+									'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Synchroon']/imvert:value"/>
+							</xsl:when>
+							<xsl:otherwise>-</xsl:otherwise>
+						</xsl:choose>					
+					</xsl:variable>
+					<xsl:variable name="AanduidingToekomstmutaties">
+						<xsl:choose>
+							<xsl:when test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
+								'stereotype-name-vraagberichttype',
+								'stereotype-name-antwoordberichttype',
+								'stereotype-name-vrijberichttype',
+								'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'AanduidingToekomstmutaties' and imvert:value != '']">
+								<xsl:value-of select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
+									'stereotype-name-vraagberichttype',
+									'stereotype-name-antwoordberichttype',
+									'stereotype-name-vrijberichttype',
+									'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'AanduidingToekomstmutaties']/imvert:value"/>
+							</xsl:when>
+							<xsl:otherwise>-</xsl:otherwise>
+						</xsl:choose>					
+					</xsl:variable>
+					<xsl:variable name="Samengesteld">
+						<xsl:choose>
+							<xsl:when test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
+								'stereotype-name-vraagberichttype',
+								'stereotype-name-antwoordberichttype',
+								'stereotype-name-vrijberichttype',
+								'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Samengesteld' and imvert:value != '']">
+								<xsl:value-of select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
+									'stereotype-name-vraagberichttype',
+									'stereotype-name-antwoordberichttype',
+									'stereotype-name-vrijberichttype',
+									'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Samengesteld']/imvert:value"/>
+							</xsl:when>
+							<xsl:otherwise>-</xsl:otherwise>
+						</xsl:choose>					
+					</xsl:variable>
+					<xsl:value-of select="imf:determineBerichtCode($Stereotype,$Inkomend,$AanduidingActualiteit,$Synchroon,$AanduidingToekomstmutaties,$Samengesteld)"/>					
+				</xsl:otherwise>
+			</xsl:choose>			
+		</xsl:variable>
+		<xsl:variable name="berichtCodeDeterming">
+			<xsl:choose>
+				<xsl:when test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
+					'stereotype-name-vraagberichttype',
+					'stereotype-name-antwoordberichttype',
+					'stereotype-name-vrijberichttype',
+					'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Berichtcode']">Using-Berichtcode-tv</xsl:when>
+				<xsl:otherwise>Using-Other-tvs</xsl:otherwise>
+			</xsl:choose>			
+		</xsl:variable>
+		<xsl:if test="$berichtCode = 'Niet te bepalen'">
+			<xsl:message select="concat('ERROR  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : The berichtcode can not be determined. To be able to generate correct messages this is neccessary. Check your model for missing tagged values.')"/>													
+		</xsl:if>
+		<?x xsl:variable name="berichtCode" select="imvert:class[imvert:stereotype = 'VRAAGBERICHTTYPE' or imvert:stereotype = 'ANTWOORDBERICHTTYPE' or imvert:stereotype = 'KENNISGEVINGSBERICHTTYPE' or imvert:stereotype = 'VRIJBERICHTTYPE']/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Berichtcode']/imvert:value"/ x?>
 		<ep:message>
 			<xsl:sequence
 				select="imf:create-output-element('ep:documentation', 'TO-DO: bepalen of er geen documentatie op message niveau kan zijn. Zo ja dan dit toevoegen aan UML model van EP')"/>
@@ -51,29 +170,31 @@
 			<xsl:sequence select="imf:create-output-element('ep:release', /imvert:packages/imvert:release)"/>
 			<xsl:sequence select="imf:create-output-element('ep:type', $berichtType)"/>
 			<!-- Start of the message is always a class with an imvert:stereotype with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE', 'VRIJBERICHTTYPE' or 
-				'KENNISGEVINGBERICHTTYPE'.
+				'KENNISGEVINGSBERICHTTYPE'.
 				 Since the toplevel structure of a message complies to different rules in comparison with the entiteiten structure this template is initialized within the 
 				 'create-initial-message-structure' mode. -->
 			<xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
 																			'stereotype-name-vraagberichttype',
 																			'stereotype-name-antwoordberichttype',
 																			'stereotype-name-vrijberichttype',
-																			'stereotype-name-kennisgevingberichttype'))]" mode="create-toplevel-message-structure">
+																			'stereotype-name-kennisgevingsberichttype'))]" mode="create-toplevel-message-structure">
 				<xsl:with-param name="berichtCode" select="$berichtCode"/>
 				<xsl:with-param name="useStuurgegevens" select="'yes'"/>
+				<xsl:with-param name="berichtCodeDeterming" select="$berichtCodeDeterming"/>
 			</xsl:apply-templates>
 		</ep:message>
 	</xsl:template>
 
 	<!-- This template only processes imvert:class elements with an imvert:stereotype with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE', 'VRIJBERICHTTYPE' or 
-		 'KENNISGEVINGBERICHTTYPE'. Those classes contain a relation to the 'Parameters' group (if not removed), a relation to a class with an imvert:stereotype with 
+		 'KENNISGEVINGSBERICHTTYPE'. Those classes contain a relation to the 'Parameters' group (if not removed), a relation to a class with an imvert:stereotype with 
 		 the value 'ENTITEITTYPE' or, in case of a ''VRIJBERICHTTYPE', a relation with one or more classes with an imvert:stereotype with the value 'VRAAGBERICHTTYPE', 
-		 'ANTWOORDBERICHTTYPE', 'VRIJBERICHTTYPE' or 'KENNISGEVINGBERICHTTYPE'.
+		 'ANTWOORDBERICHTTYPE', 'VRIJBERICHTTYPE' or 'KENNISGEVINGSBERICHTTYPE'.
 		 These classes also have a supertype with an imvert:stereotype with the value 'BERICHTTYPE' which contain a 'melding' attribuut and have a relation to the 
 		 'Stuurgegevens' group. This supertype is also processed here. -->
 	<xsl:template match="imvert:class" mode="create-toplevel-message-structure">
 		<xsl:param name="messagePrefix" select="''"/>
 		<xsl:param name="berichtCode"/>
+		<xsl:param name="berichtCodeDeterming"/>
 		
 		<!-- The purpose of this parameter is to determine if the element 'stuurgegevens' must be generated or not. 
 		     The 'kennisgevingsbericht' , 'vraagbericht' or 'antwoordbericht' objects within the context of a 'vrijbericht' object aren't allowed to contain 
@@ -89,6 +210,12 @@
 							<xsl:with-param name="berichtCode" select="$berichtCode"/>
 							<xsl:with-param name="elements2bTested">
 								<imvert:taggedValues>
+									<xsl:if test="$berichtCodeDeterming = 'Using-Other-tvs'">
+										<imvert:tv>
+											<xsl:sequence select="imf:create-output-element('imvert:name', 'Berichtcode')"/>
+											<xsl:sequence select="imf:create-output-element('imvert:value', $berichtCode)"/>									
+										</imvert:tv>
+									</xsl:if>
 									<xsl:for-each select=".//imvert:tagged-value">
 										<imvert:tv>
 											<xsl:sequence select="imf:create-output-element('imvert:name', imvert:name)"/>
@@ -142,7 +269,7 @@
 					</ep:construct>
 				</xsl:if>
 				<!-- The folowing 2 apply-templates initiate the processing of the 'imvert:attribute' elements within the supertype of imvert:class elements with an 
-					 imvert:stereotype with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE', 'VRIJBERICHTTYPE' or 'KENNISGEVINGBERICHTTYPE' and those within the 
+					 imvert:stereotype with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE', 'VRIJBERICHTTYPE' or 'KENNISGEVINGSBERICHTTYPE' and those within the 
 					 current class. -->
 				<xsl:apply-templates select="imvert:supertype" mode="create-message-content">
 					<xsl:with-param name="proces-type" select="'attributes'"/>
@@ -153,7 +280,7 @@
 				</xsl:apply-templates>
 				<!-- The folowing 2 apply-templates initiate the processing of the 'imvert:association' elements with the stereotype 'GEGEVENSGROEP COMPOSITIE' within the 
 					 supertype of imvert:class elements with an imvert:stereotype with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE', 'VRIJBERICHTTYPE' or 
-					 'KENNISGEVINGBERICHTTYPE' and those within the current class. The first one generates the 'stuurgegevens' element, the second one the 'parameters' 
+					 'KENNISGEVINGSBERICHTTYPE' and those within the current class. The first one generates the 'stuurgegevens' element, the second one the 'parameters' 
 					 element. -->
 				<xsl:apply-templates select="imvert:supertype" mode="create-message-content">
 					<xsl:with-param name="proces-type" select="'associationsGroepCompositie'"/>
@@ -193,7 +320,7 @@
 					<xsl:with-param name="orderingDesired" select="'no'"/>
 				</xsl:apply-templates>
 				<!-- Associations linking from a class with a imvert:stereotype with the value 'VRIJBERICHTTYPE' need special treatment.
-					 Those linking to a class with a imvert:stereotype with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE' or 'KENNISGEVINGBERICHTTYPE' and
+					 Those linking to a class with a imvert:stereotype with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE' or 'KENNISGEVINGSBERICHTTYPE' and
 					 those linking to a class with a imvert:stereotype with the value 'ENTITEITRELATIE' must also be processed as from toplevel-message type. -->				
 				<xsl:apply-templates select=".//imvert:association[contains($berichtCode, 'Di') and contains($berichtCode, 'Du')]" mode="create-toplevel-message-structure">
 					<!-- The 'id-trail' parameter has been introduced to be able to prevent recursive processing of classes.
@@ -232,7 +359,7 @@
 						<xsl:apply-templates select="imvert:class[imvert:id = $type-id and imvert:stereotype = imf:get-config-stereotypes((
 																						'stereotype-name-vraagberichttype',
 																						'stereotype-name-antwoordberichttype',
-																						'stereotype-name-kennisgevingberichttype'))]" mode="create-toplevel-message-structure">
+																						'stereotype-name-kennisgevingsberichttype'))]" mode="create-toplevel-message-structure">
 							<xsl:with-param name="berichtCode" select="$berichtCode"/>
 							<xsl:with-param name="stuurgegevens" select="'no'"/>
 						</xsl:apply-templates>
@@ -277,6 +404,12 @@
 			<xsl:comment select="'imvert:attribute[mode=create-message-content]'"/>
 		</xsl:if>
 		<xsl:variable name="type-id" select="imvert:type-id"/>
+		<xsl:variable name="MogelijkGeenWaarde">
+			<xsl:choose>
+				<xsl:when test="imvert:tagged-values/imvert:tagged-value/imvert:name = 'MogelijkGeenWaarde'">yes</xsl:when>
+				<xsl:otherwise>no</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<ep:construct>
 <!-- ROME: Samen met Arjan bepalen hoe we enkele elementen hieronder kunnen vullen. -->
 			<xsl:sequence select="imf:create-output-element('ep:name', imvert:name/@original)"/>
@@ -371,7 +504,7 @@
 						</xsl:choose>
 					</xsl:variable>
 					<xsl:comment select="concat('Attributes voor bottemlevel, berichtcode: -, context: - met datumtype?: ', $datumType)"/>
-					<xsl:variable name="attributes" select="imf:createAttributes('bottomlevel', '-', '-', $datumType, '')"/>
+					<xsl:variable name="attributes" select="imf:createAttributes('bottomlevel', '-', '-', $datumType, '',$MogelijkGeenWaarde)"/>
 					<xsl:sequence select="$attributes"/>
 				</ep:seq>
 			</xsl:if>
@@ -429,8 +562,8 @@
 					</xsl:when>
 					<xsl:when test="$context = 'start'">
 						<ep:construct>
-							<ep:name>start</ep:name>
-							<ep:tech-name>start</ep:tech-name>
+							<ep:name><xsl:value-of select="$context"/></ep:name>
+							<ep:tech-name><xsl:value-of select="$context"/></ep:tech-name>
 							<ep:max-occurs>1</ep:max-occurs>
 							<ep:min-occurs>0</ep:min-occurs>
 							<ep:position>200</ep:position>
@@ -440,15 +573,15 @@
 									<xsl:with-param name="berichtCode" select="$berichtCode"/>
 									<xsl:with-param name="context" select="$context"/>
 									<xsl:with-param name="type-id" select="$type-id"/>							
-									<xsl:with-param name="constructName" select="'start'"/>							
+									<xsl:with-param name="constructName" select="imvert:name"/>							
 								</xsl:call-template>
 							</ep:seq>
 						</ep:construct>
 					</xsl:when>
 					<xsl:when test="$context = 'scope'">
 						<ep:construct>
-							<ep:name>scope</ep:name>
-							<ep:tech-name>scope</ep:tech-name>
+							<ep:name><xsl:value-of select="$context"/></ep:name>
+							<ep:tech-name><xsl:value-of select="$context"/></ep:tech-name>
 							<ep:max-occurs>1</ep:max-occurs>
 							<ep:min-occurs>0</ep:min-occurs>
 							<ep:position>200</ep:position>
@@ -458,7 +591,7 @@
 									<xsl:with-param name="berichtCode" select="$berichtCode"/>
 									<xsl:with-param name="context" select="$context"/>
 									<xsl:with-param name="type-id" select="$type-id"/>							
-									<xsl:with-param name="constructName" select="'scope'"/>							
+									<xsl:with-param name="constructName" select="imvert:name"/>							
 								</xsl:call-template>
 							</ep:seq>
 						</ep:construct>
@@ -467,7 +600,13 @@
 				
 			</xsl:when>
 			<xsl:when test="contains($berichtCode,'Lk')">
-				
+				<xsl:call-template name="createEntityConstruct">
+					<xsl:with-param name="id-trail" select="$id-trail"/>
+					<xsl:with-param name="berichtCode" select="$berichtCode"/>
+					<xsl:with-param name="context" select="$context"/>
+					<xsl:with-param name="type-id" select="$type-id"/>							
+					<xsl:with-param name="constructName" select="'-'"/>							
+				</xsl:call-template>
 			</xsl:when>
 			<xsl:when test="contains($berichtCode,'Sh')">
 				
@@ -483,6 +622,15 @@
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
+
+	<?x xsl:call-template name="createEntityConstruct">
+		<xsl:with-param name="id-trail" select="$id-trail"/>
+		<xsl:with-param name="berichtCode" select="$berichtCode"/>
+		<xsl:with-param name="context" select="'kennisgeving'"/>
+		<xsl:with-param name="type-id" select="$type-id"/>							
+		<xsl:with-param name="constructName" select="'-'"/>							
+	</xsl:call-template x?>
+	
 
 	<xsl:template name="createEntityConstruct">
 		<xsl:param name="id-trail"/>
@@ -518,10 +666,22 @@
 			<!-- Onderstaande sequence zou gebruikt kunnen worden voor het ophalen van de documentatie behorende bij de class waarnaar verwezen wordt. -->
 			<!--xsl:sequence
 								select="imf:create-output-element('ep:documentation', //imvert:class[imvert:id = $type-id]/imvert:documentation)"/-->
-			<xsl:sequence
-				select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)"/>
-			<xsl:sequence
-				select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)"/>
+<!-- ROME: t.b.v. kennisgevingen is onderstaande choose geplaatst. Zodra zeker is dat we de waarden van de min- en maxoccurs ook uit de gerelateerde imvert elementen
+		   kunnen halen kan deze choose weer worden verwijderd en vervangen worden door de code binnen de otherwise tak. -->
+			<xsl:choose>
+				<xsl:when test="contains($berichtCode,'Lk')">
+					<xsl:sequence
+						select="imf:create-output-element('ep:max-occurs', 2)"/>
+					<xsl:sequence
+						select="imf:create-output-element('ep:min-occurs', 1)"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:sequence
+						select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)"/>
+					<xsl:sequence
+						select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)"/>
+				</xsl:otherwise>			
+			</xsl:choose>
 			<xsl:sequence
 				select="imf:create-output-element('ep:authentiek', 'TO-DO: waar haal ik hiervoor de waarde vandaan')"/>
 			<xsl:sequence
@@ -639,7 +799,7 @@
 					
 		   Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook nog herleid en doorgegeven worden.-->
 				<xsl:comment select="concat('Attributes voor toplevel, berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $mnemonic)"/>
-				<xsl:variable name="attributes" select="imf:createAttributes('toplevel', substring($berichtCode,1,2), $context, 'no', $mnemonic)"/>
+				<xsl:variable name="attributes" select="imf:createAttributes('toplevel', substring($berichtCode,1,2), $context, 'no', $mnemonic, 'no')"/>
 				<xsl:sequence select="$attributes"/>
 			</ep:seq>					
 		</ep:construct>
@@ -653,6 +813,12 @@
 		<xsl:param name="context"/>
 		<xsl:param name="orderingDesired" select="'yes'"/>
 		<xsl:variable name="type-id" select="imvert:type-id"/>
+		<xsl:variable name="MogelijkGeenWaarde">
+			<xsl:choose>
+				<xsl:when test="imvert:tagged-values/imvert:tagged-value/imvert:name = 'MogelijkGeenWaarde'">yes</xsl:when>
+				<xsl:otherwise>no</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:if test="imf:boolean($debug)">
 			<xsl:comment select="'imvert:association[mode=create-message-content]'"/>
 		</xsl:if>
@@ -798,7 +964,7 @@
 					
 		   Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook nog herleid en doorgegeven worden.-->
 								<xsl:comment select="concat('Attributes voor gerelateerde, berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $mnemonic)"/>
-								<xsl:variable name="attributes" select="imf:createAttributes('gerelateerde', substring($berichtCode,1,2), $context, 'no', $mnemonic)"/>
+								<xsl:variable name="attributes" select="imf:createAttributes('gerelateerde', substring($berichtCode,1,2), $context, 'no', $mnemonic, 'no')"/>
 								<xsl:sequence select="$attributes"/>
 							</ep:seq>
 						</ep:construct>						
@@ -926,7 +1092,7 @@
 					
 		   Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook nog herleid en doorgegeven worden.-->
 						<xsl:comment select="concat('Attributes voor toplevel, berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $mnemonic)"/>
-						<xsl:variable name="attributes" select="imf:createAttributes('toplevel', substring($berichtCode,1,2), $context, 'no', $mnemonic)"/>
+						<xsl:variable name="attributes" select="imf:createAttributes('toplevel', substring($berichtCode,1,2), $context, 'no', $mnemonic, 'no')"/>
 						<xsl:sequence select="$attributes"/>
 					</xsl:when>
 					<!-- The association is a 'berichtRelatie' and it contains a 'bericht'. This situation can occur whithin the context of a 'vrij bericht'. -->
@@ -991,7 +1157,7 @@
 						</xsl:choose>				
 					</xsl:variable>
 					<xsl:comment select="concat('Attributes voor relatie, berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $mnemonic)"/>
-					<xsl:variable name="attributes" select="imf:createAttributes('relatie', substring($berichtCode,1,2), $context, 'no', $mnemonic)"/>
+					<xsl:variable name="attributes" select="imf:createAttributes('relatie', substring($berichtCode,1,2), $context, 'no', $mnemonic, $MogelijkGeenWaarde)"/>
 					<xsl:sequence select="$attributes"/>
 				</xsl:if>
 			</ep:seq>					
@@ -1522,6 +1688,7 @@
 		<xsl:param name="context" as="xs:string"/>
 		<xsl:param name="datumType" as="xs:string"/>
 		<xsl:param name="mnemonic" as="xs:string"/>
+		<xsl:param name="MogelijkGeenWaarde" as="xs:string"/>
 		<!-- The following variable wil contain information from a spreadsheetrow which is determined using the first 3 parameters. 
 			 The variable $enriched-endproduct-base-config-excel used within the following variable is generated using the XSLT stylesheet 
 			 'Imvert2XSD-KING-enrich-excel.xsl'. -->
@@ -1538,14 +1705,14 @@
 			 (they all have the prefix 'StUF') we only have to generate the name and occurence. For attributes generated in other namespaces which must be used within
 		 	 the koppelvlak namespace counts the same. XML-attributes to be defined within the koppelvlak namespace will need a type-name, enum or other format defining
 			 element. -->
-		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:noValue' and data = 'O']">
+		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:noValue' and data = 'O' and $MogelijkGeenWaarde = 'yes']">
 			<ep:construct ismetadata="yes">
 				<ep:name>StUF:noValue</ep:name>
 				<ep:tech-name>StUF:noValue</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
 			</ep:construct>
 		</xsl:if>
-		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:noValue' and data = 'V']">
+		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:noValue' and data = 'V' and $MogelijkGeenWaarde = 'yes']">
 			<ep:construct ismetadata="yes">
 				<ep:name>StUF:noValue</ep:name>
 				<ep:tech-name>StUF:noValue</ep:tech-name>
@@ -1577,7 +1744,7 @@
 				<ep:tech-name>StUF:metagegeven</ep:tech-name>
 			</ep:construct>
 		</xsl:if>
-		<!-- ROME: De vraag is of ik het gebruik van het XML attribute 'StUF:indOnvolledigeDatum' wel in het spreadsheet moet configureren.
+<!-- ROME: De vraag is of ik het gebruik van het XML attribute 'StUF:indOnvolledigeDatum' wel in het spreadsheet moet configureren.
 		   Moeten niet gewoon alle elementen van het datumType dit XML attribute krijgen? -->
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:indOnvolledigeDatum' and data = 'O'] and $datumType = 'yes'">
 			<ep:construct ismetadata="yes">
@@ -1613,7 +1780,7 @@
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:entiteittype' and data = 'V']">
 			<ep:construct ismetadata="yes">
-				<!-- ROME: Voor nu definieer ik het attribute entiteittype in de namespace van het koppelvlak. 
+<!-- ROME: Voor nu definieer ik het attribute entiteittype in de namespace van het koppelvlak. 
 	 	   Later zal ik echter een restriction moeten definieren in de namespace van de StUF onderlaag. -->
 				<ep:name>StUF:entiteittype</ep:name>
 				<!--ep:tech-name>StUF:entiteittype</ep:tech-name-->
@@ -1720,57 +1887,75 @@
 		</xsl:if>
 	</xsl:function>
 
-	<?x xsl:function name="imf:determineBerichtCode">
-		<xsl:param name="name" as="xs:string"/>
+	<xsl:function name="imf:determineBerichtCode">
+		<xsl:param name="Stereotype" as="xs:string"/>
+		<xsl:param name="Inkomend" as="xs:string"/>
+		<xsl:param name="AanduidingActualiteit" as="xs:string"/>
+		<xsl:param name="Synchroon" as="xs:string"/>
+		<xsl:param name="AanduidingToekomstmutaties" as="xs:string"/>
+		<xsl:param name="Samengesteld" as="xs:string"/>	
 		<xsl:choose>
-			<xsl:when test="contains($name,'Di01')">Di01</xsl:when>
-			<xsl:when test="contains($name,'Di02')">Di02</xsl:when>
-			<xsl:when test="contains($name,'Du01')">Du01</xsl:when>
-			<xsl:when test="contains($name,'Du02')">Du02</xsl:when>
-			<xsl:when test="contains($name,'La01')">La01</xsl:when>
-			<xsl:when test="contains($name,'La02')">La02</xsl:when>
-			<xsl:when test="contains($name,'La03')">La03</xsl:when>
-			<xsl:when test="contains($name,'La04')">La04</xsl:when>
-			<xsl:when test="contains($name,'La05')">La05</xsl:when>
-			<xsl:when test="contains($name,'La06')">La06</xsl:when>
-			<xsl:when test="contains($name,'La07')">La07</xsl:when>
-			<xsl:when test="contains($name,'La08')">La08</xsl:when>
-			<xsl:when test="contains($name,'La09')">La09</xsl:when>
-			<xsl:when test="contains($name,'La10')">La10</xsl:when>
-			<xsl:when test="contains($name,'La11')">La11</xsl:when>
-			<xsl:when test="contains($name,'La12')">La12</xsl:when>
-			<xsl:when test="contains($name,'La13')">La13</xsl:when>
-			<xsl:when test="contains($name,'La14')">La14</xsl:when>
-			<xsl:when test="contains($name,'Lk01')">Lk01</xsl:when>
-			<xsl:when test="contains($name,'Lk02')">Lk02</xsl:when>
-			<xsl:when test="contains($name,'Lk03')">Lk03</xsl:when>
-			<xsl:when test="contains($name,'Lk04')">Lk04</xsl:when>
-			<xsl:when test="contains($name,'Lk05')">Lk05</xsl:when>
-			<xsl:when test="contains($name,'Lk06')">Lk06</xsl:when>
-			<xsl:when test="contains($name,'Lv01')">Lv01</xsl:when>
-			<xsl:when test="contains($name,'Lv02')">Lv02</xsl:when>
-			<xsl:when test="contains($name,'Lv03')">Lv03</xsl:when>
-			<xsl:when test="contains($name,'Lv04')">Lv04</xsl:when>
-			<xsl:when test="contains($name,'Lv05')">Lv05</xsl:when>
-			<xsl:when test="contains($name,'Lv06')">Lv06</xsl:when>
-			<xsl:when test="contains($name,'Lv07')">Lv07</xsl:when>
-			<xsl:when test="contains($name,'Lv08')">Lv08</xsl:when>
-			<xsl:when test="contains($name,'Lv09')">Lv09</xsl:when>
-			<xsl:when test="contains($name,'Lv10')">Lv10</xsl:when>
-			<xsl:when test="contains($name,'Lv11')">Lv11</xsl:when>
-			<xsl:when test="contains($name,'Lv12')">Lv12</xsl:when>
-			<xsl:when test="contains($name,'Lv13')">Lv13</xsl:when>
-			<xsl:when test="contains($name,'Lv14')">Lv14</xsl:when>
-			<xsl:when test="contains($name,'Sa01')">Sa01</xsl:when>
+			<xsl:when test="$Stereotype='VRIJBERICHTTYPE'">
+				<xsl:choose>
+					<xsl:when test="$Inkomend = 'Ja' and $Synchroon = 'Ja'">Di01</xsl:when>
+					<xsl:when test="$Inkomend = 'Ja' and $Synchroon = 'Nee'">Di02</xsl:when>
+					<xsl:when test="$Inkomend = 'Nee' and $Synchroon = 'Ja'">Di03</xsl:when>
+					<xsl:when test="$Inkomend = 'Nee' and $Synchroon = 'Nee'">Di04</xsl:when>
+					<xsl:otherwise>Niet te bepalen</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="$Stereotype='VRAAGBERICHTTYPE'">
+				<xsl:choose>
+					<xsl:when test="$AanduidingActualiteit = 'Actueel' and $Synchroon = 'Ja'">Lv01</xsl:when>
+					<xsl:when test="$AanduidingActualiteit = 'Actueel' and $Synchroon = 'Nee'">Lv02</xsl:when>
+					<xsl:when test="$AanduidingActualiteit = 'Op peiltijdstip materieel' and $Synchroon = 'Ja'">Lv03</xsl:when>
+					<xsl:when test="$AanduidingActualiteit = 'Op peiltijdstip materieel' and $Synchroon = 'Nee'">Lv04</xsl:when>
+					<xsl:when test="$AanduidingActualiteit = 'Op peiltijdstip formeel' and $Synchroon = 'Ja'">Lv05</xsl:when>
+					<xsl:when test="$AanduidingActualiteit = 'Op peiltijdstip formeel' and $Synchroon = 'Nee'">Lv06</xsl:when>
+					<xsl:when test="$AanduidingActualiteit = 'Materiële historie' and $Synchroon = 'Ja'">Lv07</xsl:when>
+					<xsl:when test="$AanduidingActualiteit = 'Materiële historie' and $Synchroon = 'Nee'">Lv08</xsl:when>
+					<xsl:when test="$AanduidingActualiteit = 'Materiële en formeleHistorie' and $Synchroon = 'Ja'">Lv09</xsl:when>
+					<xsl:when test="$AanduidingActualiteit = 'Materiële en formeleHistorie' and $Synchroon = 'Nee'">Lv10</xsl:when>
+					<xsl:otherwise>Niet te bepalen</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="$Stereotype='ANTWOORDBERICHTTYPE'">
+				<xsl:choose>
+					<xsl:when test="$AanduidingActualiteit = 'Actueel' and $Synchroon = 'Ja'">La01</xsl:when>
+					<xsl:when test="$AanduidingActualiteit = 'Actueel' and $Synchroon = 'Nee'">La02</xsl:when>
+					<xsl:when test="$AanduidingActualiteit = 'Op peiltijdstip materieel' and $Synchroon = 'Ja'">La03</xsl:when>
+					<xsl:when test="$AanduidingActualiteit = 'Op peiltijdstip materieel' and $Synchroon = 'Nee'">La04</xsl:when>
+					<xsl:when test="$AanduidingActualiteit = 'Op peiltijdstip formeel' and $Synchroon = 'Ja'">La05</xsl:when>
+					<xsl:when test="$AanduidingActualiteit = 'Op peiltijdstip formeel' and $Synchroon = 'Nee'">La06</xsl:when>
+					<xsl:when test="$AanduidingActualiteit = 'Materiële historie' and $Synchroon = 'Ja'">La07</xsl:when>
+					<xsl:when test="$AanduidingActualiteit = 'Materiële historie' and $Synchroon = 'Nee'">La08</xsl:when>
+					<xsl:when test="$AanduidingActualiteit = 'Materiële en formeleHistorie' and $Synchroon = 'Ja'">La09</xsl:when>
+					<xsl:when test="$AanduidingActualiteit = 'Materiële en formeleHistorie' and $Synchroon = 'Nee'">La10</xsl:when>
+					<xsl:otherwise>Niet te bepalen</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="$Stereotype='KENNISGEVINGSBERICHTTYPE'">
+				<xsl:choose>
+					<xsl:when test="$Synchroon = 'Ja' and $AanduidingToekomstmutaties = 'Zonder toekomstmutaties' and $Samengesteld = 'Nee'">Lk01</xsl:when>
+					<xsl:when test="$Synchroon = 'Nee' and $AanduidingToekomstmutaties = 'Zonder toekomstmutaties' and $Samengesteld = 'Nee'">Lk02</xsl:when>
+					<xsl:when test="$Synchroon = 'Ja' and $Samengesteld = 'Ja'">Lk03</xsl:when>
+					<xsl:when test="$Synchroon = 'Nee' and $Samengesteld = 'Ja'">Lk04</xsl:when>
+					<xsl:when test="$Synchroon = 'Ja' and $AanduidingToekomstmutaties = 'Met toekomstmutaties' and $Samengesteld = 'Nee'">Lk05</xsl:when>
+					<xsl:when test="$Synchroon = 'Nee' and $AanduidingToekomstmutaties = 'Met toekomstmutaties' and $Samengesteld = 'Nee'">Lk06</xsl:when>
+					<xsl:otherwise>Niet te bepalen</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+<!-- ROME: Voor de onderstaande situaties moet deze functie nog aangevuld worden. -->
+			<?x xsl:when test="contains($name,'Sa01')">Sa01</xsl:when>
 			<xsl:when test="contains($name,'Sa02')">Sa02</xsl:when>
 			<xsl:when test="contains($name,'Sa03')">Sa03</xsl:when>
 			<xsl:when test="contains($name,'Sa04')">Sa04</xsl:when>
 			<xsl:when test="contains($name,'Sh01')">Sh01</xsl:when>
 			<xsl:when test="contains($name,'Sh02')">Sh02</xsl:when>
 			<xsl:when test="contains($name,'Sh03')">Sh03</xsl:when>
-			<xsl:when test="contains($name,'Sh04')">Sh04</xsl:when>
+			<xsl:when test="contains($name,'Sh04')">Sh04</xsl:when x?>
 		</xsl:choose>
 		
-	</xsl:function x?>
+	</xsl:function>
 	
 </xsl:stylesheet>
