@@ -201,6 +201,73 @@
             </declared-values>
         </tv>
 
+        <tv norm="space" validate="" rules="" id="Inkomend">
+            <name lang="nl">Inkomend?</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Vrij berichttype</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="AanduidingActualiteit">
+            <name lang="nl">Aanduiding actualiteit</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Vraagberichttype</stereo>
+                <stereo required="yes" lang="nl">Antwoordberichttype</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Actueel</value>
+                <value>Op peiltijdstip materieel</value>
+                <value>Op peiltijdstip formeel</value>
+                <value>Materiële historie</value>
+                <value>Materiële en formeleHistorie</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="Synchroon">
+            <name lang="nl">Synchroon?</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Vraagberichttype</stereo>
+                <stereo required="yes" lang="nl">Antwoordberichttype</stereo>
+                <stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+                <stereo required="yes" lang="nl">Vrij berichttype</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="AanduidingToekomstmutaties">
+            <name lang="nl">Aanduiding toekomstmutaties</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Zonder toekomstmutaties</value>
+                <value>Met toekomstmutaties</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="Samengesteld">
+            <name lang="nl">Samengesteld?</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Kennisgevingsberichttype</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
         <tv norm="space" validate="" rules="" id="Zender">
             <name lang="nl">Zender</name>
             <derive>no</derive>
