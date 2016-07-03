@@ -24,7 +24,7 @@
         <xi:include href="../BP/BP.xml"/>
         <tv norm="space" id="AanduidingStrijdigheidNietigheid">
             <name lang="nl">Aanduiding strijdigheid/nietigheid</name>
-            <derive>yes</derive>
+            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <stereotypes>
                 <stereo required="yes" lang="nl">Attribuutsoort</stereo>
                 <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
@@ -33,7 +33,7 @@
         </tv>
         <tv norm="space" id="IndicatieInOnderzoek">
             <name lang="nl">Indicatie in onderzoek</name>
-            <derive>yes</derive>
+            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <desc>
                 De indicatie of te bevragen is dat er twijfel is of is geweest aan de juistheid van de attribuutwaarde en dat een onderzoek wordt 
                 of is uitgevoerd naar de juistheid van de attribuutwaarde. 
@@ -51,7 +51,7 @@
         </tv>
         <tv norm="space" id="HerkomstDefinitie">
             <name lang="nl">Herkomst definitie</name>
-            <derive>yes</derive>
+            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <desc>
                 De basisregistratie of het informatiemodel waaruit de definitie is overgenomen dan wel een aanduiding die 
                 aangeeft uit welke bronnen de defintie is samengesteld.
@@ -68,6 +68,7 @@
         </tv>
         <tv norm="compact" rules="NOC" id="IndicatieMateriëleHistorie">
             <name lang="nl">Indicatie materiële historie</name>
+            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <declared-values lang="nl">
                 <value>Ja</value>
                 <value>Nee</value>
@@ -79,6 +80,7 @@
         </tv>
         <tv norm="compact" rules="NOC" id="IndicatieFormeleHistorie">
             <name lang="nl">Indicatie formele historie</name>
+            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <declared-values lang="nl">
                 <value>Ja</value>
                 <value>Nee</value>
@@ -88,7 +90,7 @@
         </tv>
         <tv norm="space" id="IndicatieAuthentiek">
             <name lang="nl">Indicatie authentiek</name>
-            <derive>yes</derive>
+            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <declared-values lang="nl">
                 <value>Authentiek</value>
                 <value>Basisgegeven</value>
@@ -100,7 +102,7 @@
         
         <tv norm="space" id="Groepnaam">
             <name lang="nl">Groepnaam</name>
-            <derive>no</derive>
+            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <stereotypes>
                 <stereo required="no" lang="nl">Tekentechnisch</stereo>
             </stereotypes>
@@ -108,7 +110,7 @@
         
         <tv norm="space" id="Herkomst">
             <name lang="nl">Herkomst</name>
-            <derive>yes</derive>
+            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <desc>
                 De basisregistratie in wiens catalogus het objecttype is gespecificeerd (oftewel de basisregistratie waar het 
                 objecttype deel van uitmaakt). Deze specificatie is toegevoegd omdat het wel duidelijk moet zijn in 
