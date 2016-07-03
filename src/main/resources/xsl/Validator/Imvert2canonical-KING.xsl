@@ -281,6 +281,13 @@
         </imvert:name>
     </xsl:template>
     
+    <!-- REDMINE #487818 -->
+    <xsl:template match="imvert:supplier-package-name">
+        <imvert:supplier-package-name original="{.}">
+            <xsl:value-of select="imf:get-normalized-name(.,'package-name')"/>
+        </imvert:supplier-package-name>
+    </xsl:template>
+    
     <!-- generate the correct name for types specified, but only when the type is declared as a class (i.e. no system types) -->
     <xsl:template match="imvert:*[imvert:type-id]/imvert:type-name">
         <imvert:type-name original="{.}">

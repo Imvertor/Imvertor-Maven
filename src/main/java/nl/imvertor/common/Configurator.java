@@ -104,9 +104,9 @@ public class Configurator {
 	public XmlFile workConfigurationFile;
 	
 	private String currentStepName;
-	private Boolean forceCompile; // allow compilation errors to be ignored?
-	private Boolean docRelease;
-	private Boolean suppressWarnings;
+	private Boolean forceCompile = false; // allow compilation errors to be ignored?
+	private Boolean docRelease = false;
+	private Boolean suppressWarnings = false;
 	
 	private String metamodel;
 	private String schemarules;
@@ -523,32 +523,40 @@ public class Configurator {
 			dieOnCli("program");
 		}
 
-		// record the metamodel used
-		metamodel = getParm(workConfiguration,"cli","metamodel",false);
-		metamodel = (metamodel == null) ? DEFAULT_METAMODEL : metamodel;
-		
-		// schema rules used
-		schemarules = getParm(workConfiguration,"cli","schemarules",false);
-		schemarules = (schemarules == null) ? DEFAULT_SCHEMARULES : schemarules;
-		
-		// set the task
-		setParm(workConfiguration,"appinfo","task",getParm(workConfiguration,"cli","task",true),true);
-		
-	    // If forced compilation, try all steps irrespective of any errors
-	    forceCompile = isTrue(getParm(workConfiguration,"cli","forcecompile",true)); 
-	    
-	    // If documentation release, set the suffix for the application id
-	    String docReleaseString = getParm(workConfiguration,"cli","docrelease",false);
+		String task = getParm(workConfiguration,"cli","task",false);
+		if (task != null && (task.equals("compile") || task.equals("release"))) {
+			// This is a regular run, processing an Imvert file. 
+			
+			// record the metamodel used
+			metamodel = getParm(workConfiguration,"cli","metamodel",false);
+			metamodel = (metamodel == null) ? DEFAULT_METAMODEL : metamodel;
+			
+			// schema rules used
+			schemarules = getParm(workConfiguration,"cli","schemarules",false);
+			schemarules = (schemarules == null) ? DEFAULT_SCHEMARULES : schemarules;
+			
+			// set the task
+			setParm(workConfiguration,"appinfo","task",getParm(workConfiguration,"cli","task",true),true);
+			
+		    // If forced compilation, try all steps irrespective of any errors
+		    forceCompile = isTrue(getParm(workConfiguration,"cli","forcecompile",true)); 
+		    
+		    // If documentation release, set the suffix for the application id
+		    String docReleaseString = getParm(workConfiguration,"cli","docrelease",false);
+
+		    docRelease = docReleaseString != null && !docReleaseString.equals("00000000");
+		    if (docRelease) 
+		    	setParm("system","documentation-release","-" + docReleaseString);
+		    else 
+		    	setParm("system","documentation-release","");
+	
+	    } else {
+			// this is a free chain run
+		}
 	    
 	    // if warnings should be signaled
 	    suppressWarnings = isTrue("cli","suppresswarnings",false);
 	    
-	    docRelease = docReleaseString != null && !docReleaseString.equals("00000000");
-	    if (docRelease) {
-	    	setParm("system","documentation-release","-" + docReleaseString);
-		} else {
-	    	setParm("system","documentation-release","");
-		}
 	    
 	}
 	

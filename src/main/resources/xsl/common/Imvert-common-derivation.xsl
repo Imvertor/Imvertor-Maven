@@ -179,7 +179,7 @@
 	<xsl:function name="imf:get-adapted-display-name" as="xs:string?">
 		<xsl:param name="client-construct" as="element()"/>
 		<!-- 
-			A package may have the tagged value "supplier-name". 
+			A package may have the tagged value "supplier-package-name". 
 			This is set to the name of the supplier package (normally, client and supplier package names are the same).
 			Note that you cannot (yet) re-map names of classes and properties.
 		-->
