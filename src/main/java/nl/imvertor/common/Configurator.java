@@ -462,7 +462,7 @@ public class Configurator {
 		try {
 			return workConfigurationFile.getCanonicalPath();
 		} catch (IOException e) {
-			runner.fatal(logger, "Cannot access the configuration file at " + workConfigurationFile, e);
+			runner.fatal(logger, "Cannot access the configuration file at " + workConfigurationFile, e, null);
 		}
 		return "";
 	}

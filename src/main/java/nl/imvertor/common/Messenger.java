@@ -76,7 +76,7 @@ public class Messenger extends SequenceWriter {
 		NodeInfo sibling = (NodeInfo) elements.next();
 		
 		// determine the source, text and type of the message, assuming it is a structured message.
-		String src = null, name = null, text = null, type = null;
+		String src = null, name = null, text = null, type = null, id = null;
 		while (child != null) {
 			if (child.getNodeKind() == net.sf.saxon.type.Type.ELEMENT) {
 				String elementName = child.getDisplayName();
@@ -85,6 +85,7 @@ public class Messenger extends SequenceWriter {
 				if (elementName.equals("imvert-message:name")) name = elementValue;
 				if (elementName.equals("imvert-message:text")) text = elementValue;
 				if (elementName.equals("imvert-message:src")) src = elementValue;
+				if (elementName.equals("imvert-message:id")) id = elementValue;
 			}
 			child = sibling;
 			sibling = (NodeInfo) elements.next();
@@ -96,13 +97,13 @@ public class Messenger extends SequenceWriter {
 			
 			switch (type) {
 				case "FATAL":
-					runner.fatal(logger,ctext,null); // The FATAL level designates very severe error events that will presumably lead the application to abort.
+					runner.fatal(logger,ctext,null,id); // The FATAL level designates very severe error events that will presumably lead the application to abort.
 					break;  
 				case "ERROR":
-					runner.error(logger,ctext); // The ERROR level designates error events that might still allow the application to continue running.
+					runner.error(logger,ctext,id); // The ERROR level designates error events that might still allow the application to continue running.
 					break;  
 				case "WARN":
-					if (!suppresswarnings) runner.warn(logger,ctext); // The WARN level designates potentially harmful situations.
+					if (!suppresswarnings) runner.warn(logger,ctext,id); // The WARN level designates potentially harmful situations.
 					break;  
 				case "INFO": 
 					runner.info(logger,ctext); // The INFO level designates informational messages that highlight the progress of the application at coarse-grained level.
@@ -115,7 +116,7 @@ public class Messenger extends SequenceWriter {
 					break;  
 			}
 			if (type.equals(fatalValue))
-				runner.fatal(logger,src + " - " + text,null);
+				runner.fatal(logger,src + " - " + text,null,id);
 		} else { 
 			// otherwise return the string representation immediately, this is the regular XSLT message.
 			child = originalChild;
@@ -135,7 +136,7 @@ public class Messenger extends SequenceWriter {
 	 * @param text
 	 * @param src
 	 */
-	public void writeMsg(String src, String type, String name, String text) {
+	public void writeMsg(String src, String type, String name, String text, String id) {
 		if (exists(src) && exists(type) && exists(text)) {
 			XMLConfiguration cfg = Configurator.getInstance().getXmlConfiguration();
 			int messageIndex = cfg.getMaxIndex("messages/message") + 2;   // -1 when no messages.
@@ -144,7 +145,11 @@ public class Messenger extends SequenceWriter {
 			cfg.addProperty("messages/message[" + messageIndex + "]/type", type);
 			cfg.addProperty("messages/message[" + messageIndex + "]/name", name);
 			cfg.addProperty("messages/message[" + messageIndex + "]/text", text);
+			if (id != null) cfg.addProperty("messages/message[" + messageIndex + "]/id", id);
 		}
+	}
+	public void writeMsg(String src, String type, String name, String text) {
+		writeMsg(src, type, name, text, null);
 	}
 	
 	private boolean exists(String v) {

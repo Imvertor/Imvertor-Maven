@@ -51,6 +51,7 @@
         <xsl:param name="info" as="item()*"/>
         
         <xsl:variable name="name" select="if ($this=$document) then '' else imf:get-construct-name($this)"/>
+        <xsl:variable name="id" select="$this/imvert:id"/>
         <xsl:variable name="ctext" select="if (exists($info)) then imf:msg-insert-parms($text,$info) else $text"/>
         <xsl:message>
             <!-- note that messages are specially processed by Imvertor -->
@@ -58,6 +59,7 @@
             <xsl:sequence select="imf:create-output-element('imvert-message:type',$type)"/>
             <xsl:sequence select="imf:create-output-element('imvert-message:name',$name)"/>
             <xsl:sequence select="imf:create-output-element('imvert-message:text',$ctext)"/>
+            <xsl:sequence select="imf:create-output-element('imvert-message:id',$id)"/>
         </xsl:message>
     </xsl:function>
     
