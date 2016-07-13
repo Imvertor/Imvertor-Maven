@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
- * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * Copyright (C) 2016 VNG/KING
  * 
  * This file is part of Imvertor.
  *
@@ -28,18 +28,21 @@
     version="2.0">
     
     <!-- 
-        Introduce wrappers to the extension functions
+         Reporting stylesheet for the reporting step itself.
     -->
     <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="../common/Imvert-common-report.xsl"/>
     
-    <?x <xsl:output encoding="UTF-8" method="xml" indent="yes"/> x?>
-    
-    <xsl:template match="/*">
-    
-        <result>
-            <xsl:sequence select="*"/>
-        </result>
-        
+    <xsl:template match="/config">
+        <report>
+            <step-display-name>Regression extractor</step-display-name>
+            <summary>
+                <!-- general -->
+                <info label="Regression extractor">
+                    <xsl:sequence select="imf:report-label('TODO','VALUE')"/>
+                </info>
+             </summary>
+        </report>
     </xsl:template>
     
 </xsl:stylesheet>

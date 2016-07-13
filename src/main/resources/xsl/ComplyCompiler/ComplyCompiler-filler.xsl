@@ -26,6 +26,11 @@
     xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
     xpath-default-namespace="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
     
+    xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" 
+    xmlns:xdr="http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing" 
+    xmlns:x14="http://schemas.microsoft.com/office/spreadsheetml/2009/9/main" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
@@ -33,6 +38,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     
     xmlns:ep="http://www.imvertor.org/schema/endproduct"
+    xmlns:cp="http://www.imvertor.org/schema/comply-excel"
     
     exclude-result-prefixes="#all"
     version="2.0">
@@ -40,24 +46,35 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-entity.xsl"/>
    
+    <xsl:include href="ComplyCompiler-flat.xsl"/>
+    
+    <xsl:variable name="debug" select="true()"/>
+    
     <xsl:variable name="ooxml-namespace" select="'http://schemas.openxmlformats.org/spreadsheetml/2006/main'"/>
     <xsl:variable name="ooxml-schemalocation-file" select="'D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS\ImvertorCommon\trunk\xsd\ooxml\sml.xsd'"/>
     <xsl:variable name="ooxml-schemalocation-url" select="imf:file-to-url($ooxml-schemalocation-file)"/>
     
+    <!-- 
+        preprare all info from EP message set, transform to a worksheet block-buildup that can be processed "in sequence"
+    -->
     <xsl:variable name="imvertor-ep-result-path" select="imf:get-config-string('system','imvertor-ep-result')"/>
-    <xsl:variable name="message-set" select="imf:document($imvertor-ep-result-path)/ep:message-set"/>
+    <xsl:variable name="message-set-raw" select="imf:document($imvertor-ep-result-path)"/>
+    <xsl:variable name="message-set-flat" as="element(cp:sheets)">
+        <xsl:apply-templates select="$message-set-raw/ep:message-set" mode="prepare-flat"/>
+    </xsl:variable>
     
-    <xsl:variable name="debug" select="true()"/>
-    
-    <xsl:output encoding="UTF-8" method="xml" indent="yes"/>
+    <!-- 
+        get the sheets from template 
+    -->
+    <xsl:variable name="__content" select="/"/>
+    <xsl:variable name="sheet1" select="$__content/zip-content-wrapper:files/zip-content-wrapper:file[@path = 'xl\worksheets\sheet1.xml']/worksheet"/>
+    <xsl:variable name="sheet2" select="$__content/zip-content-wrapper:files/zip-content-wrapper:file[@path = 'xl\worksheets\sheet2.xml']/worksheet"/>
+    <xsl:variable name="sheet3" select="$__content/zip-content-wrapper:files/zip-content-wrapper:file[@path = 'xl\worksheets\sheet3.xml']/worksheet"/>
     
     <xsl:template match="/">
         <xsl:if test="$debug">
-            <xsl:result-document href="file:/c:/temp/sheet-1.xml">
-                <xsl:sequence select="//zip-content-wrapper:file[@path='xl\worksheets\sheet1.xml']"/>
-            </xsl:result-document>
-            <xsl:result-document href="file:/c:/temp/sheet-2.xml">
-                <xsl:sequence select="//zip-content-wrapper:file[@path='xl\worksheets\sheet2.xml']"/>
+            <xsl:result-document href="file:/c:/temp/flat.xml">
+                <xsl:sequence select="$message-set-flat"/>
             </xsl:result-document>
         </xsl:if>
        
@@ -66,32 +83,49 @@
     </xsl:template>
     
     <xsl:template match="worksheet">
+        <xsl:variable name="worksheet" select="imf:select-context-element(.,(
+            'sheetPr',
+            'dimension',
+            'sheetViews',
+            'sheetFormatPr',
+            'cols',
+            'sheetData',
+            'conditionalFormatting',
+            'dataValidations',
+            'hyperlinks',
+            'pageMargins',
+            'pageSetup',
+            'legacyDrawing'))"/>
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
             <xsl:attribute name="xsi:schemaLocation" select="concat($ooxml-namespace,' ', $ooxml-schemalocation-url)"/> 
-            <xsl:apply-templates select=".[../@path = 'xl\worksheets\sheet1.xml']" mode="process-berichten"/>
-            <xsl:apply-templates select=".[../@path = 'xl\worksheets\sheet2.xml']" mode="process-complextypes"/>
-            <xsl:apply-templates select=".[../@path = 'xl\worksheets\sheet3.xml']" mode="process-variabelen"/>
+            <xsl:choose>
+                <xsl:when test=". = $sheet1">
+                    <xsl:apply-templates select="$worksheet" mode="process-berichten"/>
+                </xsl:when>
+                <xsl:when test=". = $sheet2">
+                    <xsl:apply-templates select="$worksheet" mode="process-complextypes"/>
+                </xsl:when>
+                <xsl:when test=". = $sheet3">
+                    <xsl:apply-templates select="$worksheet" mode="process-variabelen"/>
+                </xsl:when>
+            </xsl:choose>
         </xsl:copy>
     </xsl:template>
     
     <!-- ============ berichten =========== -->
     
-    <xsl:template match="worksheet" mode="process-berichten">
-        <xsl:apply-templates mode="#current"/>
-    </xsl:template>
-    
     <xsl:template match="sheetData" mode="process-berichten">
-        <xsl:variable name="root-elements" select="$message-set/ep:message"/>
-                <xsl:copy>
+        <xsl:variable name="sheet1-blocks" select="$message-set-flat/cp:sheet[1]/cp:block" as="element(cp:block)*"/>
+        <xsl:copy>
             
             <!-- skip first row -->
             <xsl:apply-templates select="row[1]"/>
             
             <!-- process all messages and top constructs -->
-            <xsl:for-each select="$root-elements">
+            <xsl:for-each select="$sheet1-blocks">
                 <xsl:variable name="message-row" select="imf:get-row-for-message(.)"/>
-                <xsl:variable name="message-name" select="ep:name"/>
+                <xsl:variable name="message-name" select="cp:prop[@type='header']"/>
                 <xsl:variable name="col-letters" select="tokenize('B C D E F G H I J K','\s')"/>
                 
                 <!-- create header -->
@@ -110,12 +144,12 @@
                         </c>
                     </xsl:for-each>
                 </row>
-                <xsl:for-each select="*/ep:construct">
-                    <xsl:variable name="construct-row" select="$message-row + count(preceding-sibling::ep:construct) + 1"/>
+                <xsl:for-each select="cp:prop[@type='spec']">
+                    <xsl:variable name="construct-row" select="$message-row + count(preceding-sibling::cp:prop)"/>
                     <!-- Maak een row voor iedere construct. -->
-                    <xsl:variable name="tech-name" select="ep:name"/>
-                    <xsl:variable name="cardinality" select="imf:format-cardinality(ep:min-occurs,ep:max-occurs)"/>
-                    <xsl:variable name="is-attribute" select="ep:is-attribute = 'true'"/>
+                    <xsl:variable name="tech-name" select="cp:element"/>
+                    <xsl:variable name="cardinality" select="cp:cardinal"/>
+                    <xsl:variable name="is-attribute" select="cp:attribute = 'true'"/>
                     <row r="{$construct-row}" spans="1:11">
                         <xsl:choose>
                             <xsl:when test="$is-attribute">
@@ -156,11 +190,30 @@
             </xsl:for-each>
         </xsl:copy>
     </xsl:template>
-    
+
     <xsl:template match="conditionalFormatting" mode="process-berichten">
+        <xsl:apply-templates select="." mode="process-all">
+            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[1]/cp:block"/>
+        </xsl:apply-templates>
+    </xsl:template>
+    
+    <xsl:template match="conditionalFormatting" mode="process-complextypes">
+        <xsl:apply-templates select="." mode="process-all">
+            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[2]/cp:block"/>
+        </xsl:apply-templates>
+    </xsl:template>
+    
+    <xsl:template match="conditionalFormatting" mode="process-variabelen">
+        <xsl:apply-templates select="." mode="process-all">
+            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[3]/cp:block"/>
+        </xsl:apply-templates>
+    </xsl:template>
+    
+    <xsl:template match="conditionalFormatting" mode="process-all">
+       <xsl:param name="blocks"/>
        <xsl:variable name="ranges" as="element(range)*">
-            <xsl:for-each select="$message-set/ep:message">
-                <xsl:variable name="element-count" select="imf:get-row-count-for-message(.)"/>
+            <xsl:for-each select="$blocks">
+                <xsl:variable name="element-count" select="count(cp:prop) - 2"/>
                 <xsl:variable name="start-col-letter">D</xsl:variable>
                 <xsl:variable name="end-col-letter">K</xsl:variable>
                 <xsl:variable name="first-element-rij" select="imf:get-row-for-message(.)"/>
@@ -192,50 +245,228 @@
     </xsl:template>
     
     <xsl:template match="dimension" mode="process-berichten">
-        <xsl:variable name="last-message" select="$message-set/ep:message[last()]"/>
-        <xsl:variable name="pos" select="imf:get-row-for-message($last-message) + imf:get-row-count-for-message($last-message) - 2"/>
+        <xsl:apply-templates select="." mode="process-all">
+            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[1]/cp:block"/>
+        </xsl:apply-templates>
+    </xsl:template>
+    
+    <xsl:template match="dimension" mode="process-complextypes">
+        <xsl:apply-templates select="." mode="process-all">
+            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[2]/cp:block"/>
+        </xsl:apply-templates>
+    </xsl:template>
+    
+    <xsl:template match="dimension" mode="process-variables">
+        <xsl:apply-templates select="." mode="process-all">
+            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[3]/cp:block"/>
+        </xsl:apply-templates>
+    </xsl:template>
+    
+    <xsl:template match="dimension" mode="process-all">
+        <xsl:param name="blocks"/>
+        <xsl:variable name="pos" select="count($blocks/cp:prop)"/>
         <dimension ref="A1:K{$pos}"/>
     </xsl:template>
     
+    <xsl:template match="dataValidations" mode="process-berichten">
+        <xsl:apply-templates select="." mode="process-all">
+            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[1]/cp:block"/>
+        </xsl:apply-templates>
+    </xsl:template>
+    <xsl:template match="dataValidations" mode="process-complextypes">
+        <xsl:apply-templates select="." mode="process-all">
+            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[2]/cp:block"/>
+        </xsl:apply-templates>
+    </xsl:template>
+    <xsl:template match="dataValidations" mode="process-variabelen">
+        <xsl:apply-templates select="." mode="process-all">
+            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[3]/cp:block"/>
+        </xsl:apply-templates>
+    </xsl:template>
     
     <!-- 
-        Bereken hoeveel rijen deze constructie zal innemen in de excel. 
-        Voor een bericht is dat alléén het aantal child constructs, plus naamregel plus witregel.
+        de data validaties zijn gebaseerd op het overzicht:
+        "d:\projects\validprojects\KING\planio-repository\StUF Schemagenerator\Documentatie\PoC Compliancy berichten\inventarisatie simpleType restricties.xlsx"
     -->
-    <xsl:function name="imf:get-row-count-for-message" as="xs:integer">
-        <xsl:param name="message" as="element()"/>
-        <xsl:value-of select="count($message/ep:seq/ep:construct) + 2"/>
+    <xsl:template match="dataValidations" mode="process-all">
+        <xsl:param name="blocks"/>
+        <xsl:variable name="apos">'</xsl:variable>
+        <xsl:variable name="quot">"</xsl:variable>
+        <xsl:variable name="result" as="element()*">
+            <xsl:for-each select="$blocks/cp:prop[@type='spec']">
+                <xsl:variable name="row" select="count(preceding::cp:prop) + 2"/>
+                <xsl:variable name="sqref" select="concat('$D$',$row,':K$',$row)"/>
+                <xsl:variable name="form" select="string-join(for $i in (1 to xs:integer(cp:totaldigits)) return '9','')"/>  <!-- e.g. 9999 for totaldigits = 4 -->
+                <xsl:choose>
+                    <!-- 2 base type = complex type -->
+                    <xsl:when test="@ref">
+                        <xsl:sequence select="imf:create-data-validation(.,'list',(),concat($apos, 'Gegevensgroepen',$apos,'!$D$', $row, ':$K$', $row),(),$sqref)"/>
+                    </xsl:when>
+                    <!-- 3 4 base type =  * | restrictie = fixed of enumeratie -->
+                    <xsl:when test="cp:enum">
+                        <xsl:sequence select="imf:create-data-validation(.,'list',(),concat($quot,cp:enum,$quot),(),$sqref)"/>
+                    </xsl:when>
+                    <!-- 5 base type =  * | restrictie = patroon -->
+                    <xsl:when test="cp:pattern">
+                        <!--TODO commentaar -->
+                    </xsl:when>
+                    <!-- 6 base type is nonNegativeInteger -->
+                    <xsl:when test="cp:type = 'scalar-integer'">
+                        <!-- TODO kennen we die? -->
+                        <xsl:sequence select="imf:create-data-validation(.,'whole','greaterThanOrEqual',0,(),$sqref)"/>
+                    </xsl:when>
+                    <!-- 7 base type is positiveInteger -->
+                    <xsl:when test="cp:type = 'scalar-integer' and cp:totaldigits">
+                        <!-- TODO kennen we die? -->
+                        <xsl:sequence select="imf:create-data-validation(.,'whole',(),1,'greaterThanOrEqual',$sqref)"/>
+                    </xsl:when>
+                    <!-- 8 9 base type is int | restrictie = totaldigits-->
+                    <xsl:when test="cp:type = 'scalar-integer' and cp:totaldigits">
+                        <xsl:sequence select="imf:create-data-validation(.,'whole',(),concat('-',$form),$form,$sqref)"/>
+                    </xsl:when>
+                    <!-- 10 base type is nonNegativeInteger | restriction = totaldigits -->
+                    <xsl:when test="cp:type = 'scalar-integer' and cp:totaldigits">
+                        <!-- TODO kennen we die? -->
+                        <xsl:sequence select="imf:create-data-validation(.,'whole',(),0,$form,$sqref)"/>
+                    </xsl:when>
+                    <!-- 11 base type is positiveInteger | restriction = totaldigits -->
+                    <xsl:when test="cp:type = 'scalar-integer' and cp:totaldigits">
+                        <!-- TODO kennen we die? -->
+                        <xsl:sequence select="imf:create-data-validation(.,'whole',(),1,$form,$sqref)"/>
+                    </xsl:when>
+                    <!-- 12 base type is decimal | restriction = totaldigits -->
+                    <xsl:when test="cp:type = 'scalar-integer' and UNKNOWN">
+                        <!-- TODO kennen we die? -->
+                        <xsl:sequence select="imf:create-data-validation(.,'whole',(),xs:integer(cp:totaldigits) + 2,(),$sqref)"/>
+                    </xsl:when>
+                    <!-- 13 base type is integer | restriction = maxinclusive -->
+                    <xsl:when test="cp:type = 'scalar-integer' and cp:maxinclusive">
+                        <!-- TODO kennen we die? -->
+                        <xsl:sequence select="imf:create-data-validation(.,'whole','lessThanOrEqual',cp:maxinclusive,(),$sqref)"/>
+                    </xsl:when>
+                    <!-- 14 base type is integer | restriction = min+maxinclusive -->
+                    <xsl:when test="cp:type = 'scalar-integer' and cp:mininclusive and cp:maxinclusive">
+                        <!-- TODO kennen we die? -->
+                        <xsl:sequence select="imf:create-data-validation(.,'whole',(),cp:mininclusive,cp:maxinclusive,$sqref)"/>
+                    </xsl:when>
+                    <!-- 15 base type is string | restriction = length -->
+                    <xsl:when test="cp:type = 'scalar-string' and cp:length">
+                        <xsl:sequence select="imf:create-data-validation(.,'textLength','equal',cp:length,(),$sqref)"/>
+                    </xsl:when>
+                    <!-- 16 base type is string | restriction = maxlength -->
+                    <xsl:when test="cp:type = 'scalar-string' and cp:maxlength">
+                        <xsl:sequence select="imf:create-data-validation(.,'textLength','lessThanOrEqual',cp:maxlength,(),$sqref)"/>
+                    </xsl:when>
+                    <!-- 17 base type is string | restriction = min/maxlength -->
+                    <xsl:when test="cp:type = 'scalar-string' and cp:minlength and cp:maxlength">
+                        <xsl:sequence select="imf:create-data-validation(.,'textLength',(),cp:minlength,cp:maxlength,$sqref)"/>
+                    </xsl:when>
+                    
+                    
+                </xsl:choose>
+                
+                
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:if test="exists($result)">
+            <dataValidations>
+                <xsl:sequence select="$result"/>
+            </dataValidations>
+        </xsl:if>
+    </xsl:template>
+   
+    <xsl:function name="imf:create-data-validation" as="element()">
+        <xsl:param name="prop"/>
+        <xsl:param name="type"/>
+        <xsl:param name="operator"/>
+        <xsl:param name="formula1"/>
+        <xsl:param name="formula2"/>
+        <xsl:param name="sqref"/>
+        <dataValidation allowBlank="1" showInputMessage="1" showErrorMessage="1">
+            <xsl:attribute name="type" select="$type"/>
+            <xsl:attribute name="sqref" select="$sqref"/>
+            <xsl:if test="$operator">
+                <xsl:attribute name="operator" select="$operator"/>
+            </xsl:if>
+            <formula1>
+                <xsl:value-of select="$formula1"/>
+            </formula1>
+            <xsl:if test="$formula2">
+                <formula2>
+                    <xsl:value-of select="$formula2"/>
+                </formula2>
+            </xsl:if>
+        </dataValidation>
     </xsl:function>
+    <!-- 
+        Iedere construct//construct wordt op sheet 2 geplaatst. Er moet dus een hyperlink naar toe kunnen vanaf shet 1 en 2.
+        Het krijgt daarom een unieke naam.
+    -->
+    <xsl:template match="hyperlinks" mode="process-berichten">
+        <xsl:apply-templates select="." mode="process-all">
+            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[1]/cp:block"/>
+        </xsl:apply-templates>
+    </xsl:template>
+    
+    <xsl:template match="hyperlinks" mode="process-complextypes">
+        <xsl:apply-templates select="." mode="process-all">
+            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[2]/cp:block"/>
+        </xsl:apply-templates>
+    </xsl:template>
+    
+    <xsl:template match="hyperlinks" mode="process-variabelen">
+        <xsl:apply-templates select="." mode="process-all">
+            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[3]/cp:block"/>
+        </xsl:apply-templates>
+    </xsl:template>
+    
+    <xsl:template match="hyperlinks" mode="process-all">
+        <xsl:param name="blocks"/>
+        <xsl:variable name="result" as="element()*">
+            <xsl:for-each select="$blocks/cp:prop[exists(@ref)]">
+                <xsl:variable name="element-rij" select="count(preceding::cp:prop) + 2"/>
+                <xsl:variable name="sequence-id" select="@ref"/>
+                <xsl:variable name="element-name" select="cp:element"/>
+                <hyperlink ref="B{$element-rij}" location="{$sequence-id}" display="{$element-name}"/>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:if test="exists($result)">
+            <hyperlinks>
+                <xsl:sequence select="$result"/>
+            </hyperlinks>
+        </xsl:if>
+    </xsl:template>
     
     <!-- 
         Op welke regel start dit bericht?
     -->
     <xsl:function name="imf:get-row-for-message" as="xs:integer">
         <xsl:param name="message" as="element()"/>
+        <xsl:value-of select="count($message/preceding::cp:prop) + 2"/> <!-- add header line, and row numbers start at 1. -->
+    </xsl:function>
+    
+    <?x
+    <!-- 
+        Op welke regel start dit complextype?
+    -->
+    <xsl:function name="imf:get-row-for-complextype" as="xs:integer">
+        <xsl:param name="complextype" as="element()"/>
         <xsl:variable name="counts" as="xs:integer*">
-            <xsl:for-each select="$message/preceding-sibling::ep:message">
-                <xsl:value-of select="imf:get-row-count-for-message(.)"/>
+            <xsl:for-each select="$complextype/preceding::ep:construct">
+                <xsl:value-of select="imf:get-row-count-for-complextype(.)"/>
             </xsl:for-each>
         </xsl:variable>
         <xsl:value-of select="2 + sum($counts)"/>
     </xsl:function>
+    ?>
     
-   
     <!-- ============ complextypes =========== -->
     
     <xsl:template match="worksheet" mode="process-complextypes">
         <xsl:apply-templates select="*"/>
     </xsl:template>
     
-    <xsl:function name="imf:get-row-count-for-preceding-complextypes" as="xs:integer">
-        <xsl:param name="complextype" as="element()"/>
-        <xsl:variable name="counts" as="xs:integer*">
-            <xsl:for-each select="$complextype/preceding-sibling::ep:message">
-                <xsl:value-of select="imf:get-row-count-for-message(.) + 2"/>
-            </xsl:for-each>
-        </xsl:variable>
-        <xsl:value-of select="sum($counts)"/>
-    </xsl:function>
+    
     <!-- ============ variabelen =========== -->
     
     <xsl:template match="worksheet" mode="process-variabelen">
@@ -244,15 +475,26 @@
     
     <!-- ============ algemeen =========== -->
     
-    <xsl:function name="imf:create-range">
-        <xsl:param name="range"/>
-        <xsl:value-of select="concat($range/@sl,$range/@sn,':',$range/@el,$range/@en)"/>
-    </xsl:function>
     
-    <xsl:function name="imf:format-cardinality">
-        <xsl:param name="min-occurs"/>
-        <xsl:param name="max-occurs"/>
-        <xsl:value-of select="concat($min-occurs,'..',if ($max-occurs = 'unbounded') then 'n' else $max-occurs)"/>
+    <!-- 
+        Context elements may or may not be part of the template. 
+        When part, return that element, when not, create one for templates to fire. 
+    -->    
+    <xsl:function name="imf:select-context-element" as="item()*">
+        <xsl:param name="parent" as="element()"/>
+        <xsl:param name="element-names" as="xs:string+"/>
+        <xsl:for-each select="$element-names">
+            <xsl:variable name="element-name" select="."/>
+            <xsl:variable name="child" select="$parent/*[name() = $element-name]"/>
+            <xsl:choose>
+                <xsl:when test="exists($child)">
+                    <xsl:sequence select="$child"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:element name="{$element-name}"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:for-each>
     </xsl:function>
     
     <xsl:template match="zip-content-wrapper:dummy"/>

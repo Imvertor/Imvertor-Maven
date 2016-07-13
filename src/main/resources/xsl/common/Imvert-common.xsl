@@ -51,6 +51,8 @@
     <xsl:include href="../external/relpath_util.xsl"/>
     <xsl:include href="../external/functx.xsl"/>
     
+    <xsl:output encoding="UTF-8" method="xml" indent="yes" exclude-result-prefixes="#all"/>
+    
     <!-- TODO how to configure this in metamodel? -->
     <xsl:variable name="baretype-pattern-c">(AN|N)</xsl:variable> <!-- D9.2 changed to N9,2 (or N9.2) -->
     <xsl:variable name="baretype-pattern-i">(\d*)</xsl:variable>
@@ -690,13 +692,17 @@
         <xsl:sequence select="(for $p in $classes/imvert:tagged-values/imvert:tagged-value[imvert:name/@original = $original-tagged-value-name] return string($p/imvert:value))[1]"/>
     </xsl:function>
     
-    <!-- true when this construct is (embedded in) a conceptual package -->
+    <!-- 
+        true when this construct is (embedded in) a conceptual package 
+        Feature #487839 
+        If the namespace (alias) starts with one of the declared prefixes, it is considerd to be conceptual
+    -->
     <xsl:function name="imf:is-conceptual" as="xs:boolean">
         <xsl:param name="construct" as="element()"/>
         <xsl:variable name="pack" select="$construct/ancestor-or-self::imvert:package" as="element()*"/>
-        <xsl:variable name="prefix" select="imf:get-config-parameter('url-prefix-conceptual-schema')"/>
+        <xsl:variable name="prefix" select="tokenize(normalize-space(imf:get-config-parameter('url-prefix-conceptual-schema')),'\s+')"/>
         <xsl:variable name="is-external" select="$pack/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-external-package')"/>
-        <xsl:variable name="is-conceptual" select="exists($pack/imvert:namespace[starts-with(.,$prefix)])"/>
+        <xsl:variable name="is-conceptual" select="exists($pack/imvert:namespace[(for $p in ($prefix) return starts-with(.,$p)) = true()])"/>
         <xsl:choose>
             <xsl:when test="$is-external and $is-conceptual">
                 <xsl:sequence select="true()"/>

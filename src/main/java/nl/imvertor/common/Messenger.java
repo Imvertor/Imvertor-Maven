@@ -20,6 +20,9 @@
 
 package nl.imvertor.common;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.log4j.Logger;
 
 import net.sf.saxon.event.PipelineConfiguration;
@@ -44,6 +47,7 @@ public class Messenger extends SequenceWriter {
 	public static final String VC_IDENTIFIER = "$Id: Messenger.java 7431 2016-02-24 12:46:42Z arjan $";
 
 	private String fatalValue = "FATAL";
+	private Pattern messagePattern = Pattern.compile("^(.+?): \\[(.+?)\\] (.+?)$");
 	
 	public Messenger(PipelineConfiguration pcfg) {
 		super(pcfg);
@@ -145,6 +149,13 @@ public class Messenger extends SequenceWriter {
 			cfg.addProperty("messages/message[" + messageIndex + "]/type", type);
 			cfg.addProperty("messages/message[" + messageIndex + "]/name", name);
 			cfg.addProperty("messages/message[" + messageIndex + "]/text", text);
+			// split up the message 
+			Matcher m = messagePattern.matcher(text);
+			if (m.matches()) {
+				cfg.addProperty("messages/message[" + messageIndex + "]/stepname", m.group(1));
+				cfg.addProperty("messages/message[" + messageIndex + "]/stepconstruct", m.group(2));
+				cfg.addProperty("messages/message[" + messageIndex + "]/steptext", m.group(3));
+			}
 			if (id != null) cfg.addProperty("messages/message[" + messageIndex + "]/id", id);
 		}
 	}

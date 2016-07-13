@@ -32,7 +32,9 @@
 
     <xsl:param name="xsd-files-generated"/>
     <xsl:param name="etc-files-generated"/>
-   
+    
+    <xsl:output encoding="UTF-8" method="html" indent="no"/>
+    
     <xsl:variable name="RELEASENAME" select="($application-package-release-name,'(undetermined)')"/>
     <xsl:variable name="EAVERSION" select="/imvert:packages/imvert:exporter"/>
     <xsl:variable name="APPLICATIONNAME" select="$application-package-name"/>

@@ -33,6 +33,8 @@
     -->
     <xsl:import href="../common/Imvert-common.xsl"/>
     
+    <xsl:output method="html" indent="no"/>
+    
     <!--
         Compile the full documentation on the run by accessing the reports of each of the previous step.
         Context document is configuration file

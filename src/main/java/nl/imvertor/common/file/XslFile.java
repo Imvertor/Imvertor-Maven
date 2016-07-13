@@ -63,6 +63,9 @@ public class XslFile extends XmlFile {
 	private HashMap<String, String> parms;
 	private HashMap<String, String> features;
 	
+	private XsltExecutable exec;
+	private XsltTransformer transformer;
+	
 	public XslFile(String pathname) throws TransformerConfigurationException, IOException {
 		super(pathname);
 		init();
@@ -162,8 +165,10 @@ public class XslFile extends XmlFile {
     	StreamSource source = new StreamSource(infile);
 		StreamSource xslt = new StreamSource(this);
 		
-		XsltExecutable exec = compiler.compile(xslt);
-		XsltTransformer transformer = exec.load();
+		if (exec == null) {
+			exec = compiler.compile(xslt);
+			transformer = exec.load();
+		}
 		
 		if (parms != null) {
 			Set<Entry<String,String>> entries = parms.entrySet();

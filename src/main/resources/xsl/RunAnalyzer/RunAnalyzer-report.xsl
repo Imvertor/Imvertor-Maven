@@ -96,8 +96,16 @@
                                         <xsl:for-each select="current-group()">
                                             <tr class="{type}">
                                                 <td><xsl:value-of select="type"/></td>
-                                                <td><xsl:value-of select="name"/></td>
-                                                <td><xsl:value-of select="text"/></td>
+                                                <td>
+                                                    <xsl:value-of select="stepconstruct"/>
+                                                    <span class="tid">
+                                                        <xsl:value-of select="id"/>
+                                                    </span></td>
+                                                <td>
+                                                    <xsl:value-of select="if (exists(steptext)) then steptext else text"/>
+                                                    <span class="tid">
+                                                        <xsl:value-of select="stepname"/>
+                                                    </span></td>
                                             </tr>
                                         </xsl:for-each>
                                     </tbody>

@@ -172,6 +172,9 @@ public class XsdCompiler extends Step {
 		} else // model
 			valid = valid && transformer.transformStep("properties/WORK_SCHEMA_FILE","properties/RESULT_XSD_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH");
 		
+		// record the location of the resulting EP file for subsequent steps
+		configurator.setParm("system","imvertor-ep-result",configurator.getParm("properties","RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH"));
+		// and tell that a schema has been created
 		configurator.setParm("system","schema-created","true");
 		
 		return valid;

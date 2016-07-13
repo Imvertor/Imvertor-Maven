@@ -214,7 +214,7 @@ public class Runner {
 		logger.error(text,e);
 	}
 	public void error(Logger logger, String text, Exception e) {
-		error(logger, text, e);
+		error(logger, text, e, null);
 	}
 	/**
 	 * The ERROR level designates error events that might still allow the application to continue running.

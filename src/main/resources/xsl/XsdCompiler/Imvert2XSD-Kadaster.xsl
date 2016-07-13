@@ -42,7 +42,7 @@
     
     <xsl:param name="config-file-path">unknown-file</xsl:param>
    
-    <xsl:output indent="yes" method="xml" encoding="UTF-8" exclude-result-prefixes="#all"/>
+    <?x <xsl:output encoding="UTF-8" method="xml" indent="yes"/> x?>
     
     <xsl:variable name="xsd-folder-path" select="imf:get-config-string('system','xsd-folder-path')"/>
 

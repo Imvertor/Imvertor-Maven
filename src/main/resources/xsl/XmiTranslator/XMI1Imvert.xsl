@@ -80,8 +80,6 @@
     
     <xsl:variable name="additional-tagged-values" select="imf:get-config-tagged-values()" as="element(tv)*"/>
     
-    <xsl:output encoding="UTF-8" method="xml" indent="yes"/>
-   
     <xsl:template match="/">
         <imvert:packages>
             <xsl:if test="imf:boolean($debug)">

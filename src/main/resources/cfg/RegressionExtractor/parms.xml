@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 VNG/KING
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>Regression extractor</name>
+      <version-control>$Id: parms.xml 7475 2016-03-23 10:54:06Z arjan $</version-control>
+   </id>
+   <cli-parms>
+      <!-- specifiek voor deze chain -->
+      <cli-parm>
+         <name>reffolder</name>
+         <arg>path</arg>
+         <tip>Full path to the folder that holds the reference Imvertor files</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>tstfolder</name>
+         <arg>path</arg>
+         <tip>Full path to the folder that holds the Imvertor files to be tested</tip>
+         <required>true</required>
+      </cli-parm> 
+      
+   </cli-parms>
+   
+   <properties>
+      <!-- 
+         stylesheet to filter ANY xml file found in teh folder.
+         This XSL is generic, and therfore calls upon any imported XSL (or such) to process specific types of file.
+         The root element of the file found is passed in a wrapper element:
+         <zip-content-wrapper:file type="xml" path="work\rep\XmiCompiler-report.xml" name="" ext="" date="" size="" attrib="">
+      -->
+      <REGRESSION_EXTRACT_XSLPATH>RegressionExtractor-extract.xsl</REGRESSION_EXTRACT_XSLPATH>
+      
+      
+      
+      
+      
+      
+      
+      
+      <!--
+         Where to store the xml files?
+      -->
+      <IMVERTOR_REGRESSION_EXTRACT_TARGET>${system/work-cmp-folder-path}/xml</IMVERTOR_REGRESSION_EXTRACT_TARGET>
+      <!-- 
+         stylesheet to process the __content.xml, extracted from the deserialized template
+      -->
+      <WORK_REGRESSION_EXTRACT_XSLPATH>REGRESSIONExtractor-extract.xsl</WORK_REGRESSION_EXTRACT_XSLPATH>
+      <!-- 
+         path to temporary output of transforming __content.xml; this is not compressed back into the result Excel.
+      -->
+      <WORK_REGRESSION_EXTRACT_FILE>${system/work-imvert-folder-path}/imvertor.60.extractor.xml</WORK_REGRESSION_EXTRACT_FILE>
+      <!-- 
+         folder that stores the extracted template (serialized zip) 
+       -->
+      <WORK_REGRESSION_TEMPLATE_FOLDERPATH>${system/work-REGRESSION-folder-path}/template</WORK_REGRESSION_TEMPLATE_FOLDERPATH>
+   </properties>
+</config>

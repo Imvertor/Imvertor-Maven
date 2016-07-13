@@ -23,6 +23,8 @@
     
     <tagged-values>
         
+        <xi:include href="KINGSIM.xml"/>
+        
         <tv norm="space"  rules="NOC" id="IndicatieKerngegeven">
             <name lang="nl">Indicate kerngegeven</name><!-- tikfout moet Indicatie zijn -->
             <derive>no</derive> <!-- Kan niet worden overgenomen uit SIM, want is daar niet opgenomen-->
