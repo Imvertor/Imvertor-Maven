@@ -599,12 +599,23 @@
         <xsl:variable name="name" select="imvert:name"/>
         <xsl:variable name="defining-class" select="if (imvert:type-id) then imf:get-construct-by-id(imvert:type-id) else ()"/>
         <xsl:variable name="is-enumeration" select="$class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-enumeration','stereotype-name-codelist'))"/>
-        <xsl:variable name="is-designated-datatype" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-datatype','stereotype-name-complextype'))"/>
         <xsl:variable name="baretype" select="imvert:baretype"/>
         <xsl:variable name="superclasses" select="imf:get-superclasses($class)"/>
         <xsl:variable name="is-abstract" select="imvert:abstract = 'true'"/>
         <xsl:variable name="stereos" select="('stereotype-name-objecttype','stereotype-name-referentielijst')"/>
         
+        <xsl:variable name="is-designated-datatype" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-datatype','stereotype-name-complextype'))"/>
+        <xsl:variable name="is-designated-enumeration" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-enumeration','stereotype-name-codelist'))"/>
+        <xsl:variable name="is-designated-referentielijst" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-referentielijst'))"/>
+        <xsl:variable name="is-designated-interface" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-interface'))"/>
+        <xsl:variable name="is-designated-union" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-union'))"/>
+        <xsl:variable name="is-datatyped" select="
+            $is-designated-datatype or 
+            $is-designated-enumeration or 
+            $is-designated-referentielijst or 
+            $is-designated-interface or 
+            $is-designated-union"/>
+       
         <!--validation-->
         <xsl:sequence select="imf:report-warning(., 
             not(imf:test-name-convention($this)), 
@@ -648,8 +659,8 @@
        
         <!-- Jira IM-420 -->
         <xsl:sequence select="imf:report-error(., 
-            not($is-designated-datatype or $is-enumeration or empty($defining-class)), 
-            'Attribute type must be a datatype, but is not.', ())"/>
+            not($is-datatyped or empty($defining-class)), 
+            'Attribute type of [1] must be a datatype, but is not.', ($this/imvert:stereotype))"/>
         
         <xsl:sequence select="imf:check-stereotype-assignment(.)"/>
         <xsl:sequence select="imf:check-tagged-value-occurs(.)"/>

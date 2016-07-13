@@ -84,7 +84,14 @@
                 Voorbeeld: het external package NEN3610 met datatype NEN3610ID. Het datatype van attribuutsoort Identificatie wegdeel in RSGB verwijst naar het datatype NEN3610ID zoals opgenomen in de external package.</desc>
             <construct>package</construct>
         </stereo>
-
+        
+        <stereo id="stereotype-name-provided-package">
+            <name lang="en">provided</name>
+            <name lang="nl">provided</name>
+            <desc>test, under development</desc>
+            <construct>package</construct>
+        </stereo>
+        
         <stereo id="stereotype-name-composite">
             <name lang="en">datagrouptype</name>
             <name lang="nl">gegevensgroeptype</name>

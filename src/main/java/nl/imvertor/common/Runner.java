@@ -208,10 +208,13 @@ public class Runner {
 	 * @param text
 	 * @param e
 	 */
-	public void error(Logger logger, String text, Exception e) {
+	public void error(Logger logger, String text, Exception e, String id) {
 		imvertorErrors += 1;
-		messenger.writeMsg(logger.getName(), "ERROR", "", text);
+		messenger.writeMsg(logger.getName(), "ERROR", "", text, id);
 		logger.error(text,e);
+	}
+	public void error(Logger logger, String text, Exception e) {
+		error(logger, text, e, null);
 	}
 	/**
 	 * The ERROR level designates error events that might still allow the application to continue running.
@@ -222,11 +225,18 @@ public class Runner {
 	 * @param text
 	 * @param e
 	 */
-	public void error(Logger logger, String text) {
+	public void error(Logger logger, String text, String id) {
 		imvertorErrors += 1;
-		messenger.writeMsg(logger.getName(), "ERROR", "", text);
+		messenger.writeMsg(logger.getName(), "ERROR", "", text, id);
 		logger.error(text);
 	}
+	public void error(Logger logger, String text) {
+		imvertorErrors += 1;
+		messenger.writeMsg(logger.getName(), "ERROR", "", text, null);
+		logger.error(text);
+	}
+	
+	
 	/**
 	 * The WARN level designates potentially harmful situations.
 	 * 
@@ -235,10 +245,13 @@ public class Runner {
 	 * @param logger
 	 * @param text
 	 */
-	public void warn(Logger logger, String text) {
+	public void warn(Logger logger, String text, String id) {
 		imvertorWarnings += 1;
-		messenger.writeMsg(logger.getName(), "WARN", "", text);
+		messenger.writeMsg(logger.getName(), "WARN", "", text, id);
 		logger.warn(text);
+	}
+	public void warn(Logger logger, String text) {
+		warn(logger, text, null);
 	}
 	/**
 	 * The INFO level designates informational messages that highlight the progress of the application at coarse-grained level.
@@ -283,9 +296,9 @@ public class Runner {
 	 * @param logger
 	 * @param text
 	 */
-	public void fatal(Logger logger, String text, Exception e) {
+	public void fatal(Logger logger, String text, Exception e, String id) {
 		imvertorErrors += 1;
-		messenger.writeMsg(logger.getName(), "FATAL", "", text);
+		messenger.writeMsg(logger.getName(), "FATAL", "", text, id);
 		logger.fatal(text);
 		info(logger, "");
 		info(logger, "Must stop.");
@@ -294,7 +307,10 @@ public class Runner {
 		logger.fatal("Details on the error", e);
 		System.exit(-1);
 	}
-
+	public void fatal(Logger logger, String text, Exception e) {
+		fatal(logger, text, e, null);
+	}
+	
 	/*
 	 * return a count of all errors found
 	 * 

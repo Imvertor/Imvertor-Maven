@@ -43,14 +43,13 @@
       -->
       <IMVERTOR_COMPLY_TARGET>${system/work-cmp-folder-path}/template</IMVERTOR_COMPLY_TARGET>
       <!-- 
-         template for the compliancy excels  
+         Where to find the empty template for the compliancy excels  
        -->
       <IMVERTOR_COMPLY_TEMPLATE_EXCELPATH>${system/cfg-folder-path}/ComplyCompiler/templates/Testberichten sjabloon leeg.xlsx</IMVERTOR_COMPLY_TEMPLATE_EXCELPATH>
       <!-- 
-         folder that stores the extracted template (serialized zip) 
+         What folder mist store the extracted template (serialized zip) 
        -->
       <WORK_COMPLY_TEMPLATE_FOLDERPATH>${system/work-comply-folder-path}/template</WORK_COMPLY_TEMPLATE_FOLDERPATH>
-      
       <!-- 
          stylesheet to process the __content.xml, extracted from the serialized template
       -->

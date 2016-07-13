@@ -32,7 +32,7 @@
     -->
     <xsl:import href="../common/Imvert-common.xsl"/>
     
-    <xsl:output indent="yes"/>
+    <?x <xsl:output encoding="UTF-8" method="xml" indent="yes"/> x?>
     
     <xsl:template match="/*">
     

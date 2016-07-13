@@ -23,9 +23,11 @@
     
     <tagged-values>
         
+        <xi:include href="KINGSIM.xml"/>
+        
         <tv norm="space"  rules="NOC" id="IndicatieKerngegeven">
             <name lang="nl">Indicate kerngegeven</name><!-- tikfout moet Indicatie zijn -->
-            <derive>no</derive> <!-- kerngegeven kan niet worden overgenomen uit SIM -->
+            <derive>no</derive> <!-- Kan niet worden overgenomen uit SIM, want is daar niet opgenomen-->
             <stereotypes>
                 <stereo required="yes" lang="nl">Element</stereo><!--SIM Attribuutsoort-->
                 <stereo required="yes" lang="nl">Relatie</stereo><!--SIM Relatiesoort-->
@@ -38,7 +40,7 @@
         
         <tv norm="space"  rules="NOC" id="IndicatieMateriëleHistorie">
             <name lang="nl">Indicatie materiële historie</name>
-            <derive>yes</derive>
+            <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
                 <stereo required="yes" lang="nl">Element</stereo><!--SIM Attribuutsoort-->
                 <stereo required="yes" lang="nl">Groep</stereo><!--SIM Gegevensgroeptype-->
@@ -53,7 +55,7 @@
         </tv>
         <tv norm="space" rules="NOC" id="IndicatieFormeleHistorie">
             <name lang="nl">Indicatie formele historie</name>
-            <derive>yes</derive>
+            <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
                 <stereo required="yes" lang="nl">Element</stereo><!--SIM Attribuutsoort-->
                 <stereo required="yes" lang="nl">Groep</stereo><!--SIM Gegevensgroeptype-->
@@ -69,7 +71,7 @@
         <tv norm="space" id="Patroon"><!-- MIG -->
             <name lang="nl">Patroon</name>
             <name lang="en">Pattern</name>
-            <derive>yes</derive>
+            <derive>no</derive><!-- Niet Overnemen uit SIM, formele spec hier invoeren. -->
             <stereotypes>
                 <stereo required="no" lang="nl">Element</stereo><!--SIM Attribuutsoort, Referentie element, Union element, Data element-->
                 <stereo required="no" lang="nl">Datatype</stereo>
@@ -78,7 +80,7 @@
         </tv>
         <tv norm="space" id="MogelijkGeenWaarde">
             <name lang="nl">Mogelijk geen waarde</name>
-            <derive>yes</derive>
+            <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
                 <stereo required="no" lang="nl">Element</stereo><!--SIM Attribuutsoort -->
                 <stereo required="no" lang="nl">Groep</stereo><!-- SIM: Gegevensgroeptype -->
@@ -93,7 +95,7 @@
         
         <tv norm="space" id="DataLocatie"><!-- MIG -->
             <name lang="nl">Data locatie</name>
-            <derive>yes</derive>
+            <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
                 <stereo required="no" lang="nl">Tabel-entiteit</stereo><!-- SIM Referentielijst -->
                 <stereo required="no" lang="nl">Element</stereo><!-- SIM Referentie element -->
@@ -102,7 +104,7 @@
         
         <tv norm="space" id="Locatie">
             <name lang="nl">Locatie</name><!-- MIG -->
-            <derive>yes</derive>
+            <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
                 <stereo required="no" lang="nl">Extern</stereo><!--TODO externals that are conceptuals do not require this tagged value -->
             </stereotypes>
@@ -111,7 +113,7 @@
         <tv norm="space" origin="system" id="Positie">
             <name lang="nl">Positie</name>
             <name lang="en">Position</name>
-            <derive>yes</derive>
+            <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
                 <stereo required="no" lang="nl">Element</stereo><!--SIM Attribuutsoort, Union element, Data element, Referentie element-->
                 <stereo required="no" lang="nl">Relatie</stereo><!-- SIM: Relatiesoort  -->

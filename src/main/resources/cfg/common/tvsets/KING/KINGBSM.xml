@@ -23,6 +23,8 @@
 
     <tagged-values>
 
+        <xi:include href="KINGUGM.xml"/>
+        
         <tv norm="space" validate="" rules="" id="Release">
             <name lang="nl">Release</name>
             <derive>no</derive>

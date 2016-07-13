@@ -35,7 +35,7 @@
     <xsl:param name="config-file-path">config.xml</xsl:param>
     <xsl:param name="info-file-path">Imvert</xsl:param>
     
-    <xsl:output encoding="UTF-8" method="xml" indent="yes"/>
+    <?x <xsl:output encoding="UTF-8" method="xml" indent="yes"/> x?>
     
     <xsl:variable name="document" select="/"/>
     

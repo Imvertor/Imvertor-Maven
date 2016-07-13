@@ -29,8 +29,11 @@
         some constructs in UML have a fixed value
     -->
     <parameter name="fixed-identification-attribute-name">identificatie</parameter>
-    <parameter name="url-prefix-conceptual-schema">http://www.kadaster.nl/conceptual-schemas/</parameter><!--TODO http://www.kadaster.nl/conceptual-schemas/ niet meer aan kadaster namespaces gebonden wordebn -->
-    <parameter name="url-prefix-schema-waardelijsten">http://www.kadaster.nl/schemas/waardelijsten/</parameter>
+    <parameter name="url-prefix-conceptual-schema">
+        http://www.kinggemeenten.nl/conceptual-schemas/ 
+        http://www.kadaster.nl/conceptual-schemas/
+    </parameter>
+    <parameter name="url-prefix-schema-waardelijsten">http://www.kinggemeenten.nl/schemas/waardelijsten/</parameter>
     <parameter name="class-name-waardelijst">Waardelijst</parameter>
 
     <!--

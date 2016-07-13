@@ -32,7 +32,7 @@
     -->
     <xsl:import href="../common/Imvert-common.xsl"/>
     
-    <xsl:output indent="no"/>
+    <?x <xsl:output encoding="UTF-8" method="xml" indent="yes"/> x?>
     
     <!-- 
         context document is the parms.xml file. 

@@ -322,8 +322,8 @@
     
     <xsl:function name="imf:get-tagged-value-norm-by-scheme" as="xs:string?">
         <xsl:param name="value"/>
-        <xsl:param name="normalization-rule"/>
-        <xsl:param name="normalization-scheme"/>
+        <xsl:param name="normalization-rule"/> <!-- e.g. "space" -->
+        <xsl:param name="normalization-scheme"/> <!-- e.g. "tv" -->
         <xsl:choose>
             <xsl:when test="not(normalize-space($normalization-rule))">
                 <xsl:value-of select="$value"/>
