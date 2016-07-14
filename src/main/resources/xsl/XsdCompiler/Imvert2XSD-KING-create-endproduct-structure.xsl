@@ -13,14 +13,8 @@
 
 	<xsl:output indent="yes" method="xml" encoding="UTF-8" />
 
-	<xsl:variable name="stylesheet">
-		Imvert2XSD-KING-create-endproduct-structure
-	</xsl:variable>
-	<xsl:variable name="stylesheet-version">
-		$Id: Imvert2XSD-KING-create-endproduct-structure.xsl 1
-		2015-11-11
-		11:50:00Z RobertMelskens $
-	</xsl:variable>
+	<xsl:variable name="stylesheet">Imvert2XSD-KING-create-endproduct-structure</xsl:variable>
+	<xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-create-endproduct-structure.xsl 1 2015-11-11 11:50:00Z RobertMelskens $</xsl:variable>
 
 	<!-- This template is used to start generating the ep structure for an individual 
 		message. -->
@@ -441,8 +435,7 @@
 					<!-- ROME: Volgende apply-templates moet natuurlijk het template aanschoppen 
 						met als match 'imvert:association[imvert:stereotype='ENTITEITRELATIE']'en 
 						als mode 'create-message-content'. -->
-					<xsl:apply-templates select="."
-						mode="create-message-content">
+					<xsl:apply-templates select="."	mode="create-message-content">
 						<!-- The 'id-trail' parameter has been introduced to be able to prevent 
 							recursive processing of classes. If the parser runs into an id already present 
 							within the trail (so the related object has already been processed) processing 
@@ -450,8 +443,7 @@
 
 						<!-- ROME: Het is de vraag of deze parameter en het checken op id nog 
 							wel noodzakelijk is. -->
-						<xsl:with-param name="id-trail"
-							select="concat('#1#', imvert:id, '#')" />
+						<xsl:with-param name="id-trail" select="concat('#1#', imvert:id, '#')" />
 						<xsl:with-param name="berichtCode" select="$berichtCode" />
 						<xsl:with-param name="context" select="'-'" />
 					</xsl:apply-templates>
@@ -520,12 +512,8 @@
 		<xsl:variable name="MogelijkGeenWaarde">
 			<xsl:choose>
 				<xsl:when
-					test="imvert:tagged-values/imvert:tagged-value/imvert:name = 'MogelijkGeenWaarde'">
-					yes
-				</xsl:when>
-				<xsl:otherwise>
-					no
-				</xsl:otherwise>
+					test="imvert:tagged-values/imvert:tagged-value/imvert:name = 'MogelijkGeenWaarde'">yes</xsl:when>
+				<xsl:otherwise>no</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<ep:construct>
@@ -628,15 +616,9 @@
 						<xsl:choose>
 							<!-- ROME: Zodra scalar-xxx is doorgevoerd kan de eerste when verwijderd 
 								worden. -->
-							<xsl:when test="imvert:type-name='datetime'">
-								yes
-							</xsl:when>
-							<xsl:when test="imvert:type-name='scalar-datetime'">
-								yes
-							</xsl:when>
-							<xsl:otherwise>
-								no
-							</xsl:otherwise>
+							<xsl:when test="imvert:type-name='datetime'">yes</xsl:when>
+							<xsl:when test="imvert:type-name='scalar-datetime'">yes</xsl:when>
+							<xsl:otherwise>no</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
 					<xsl:comment
@@ -660,15 +642,9 @@
 		<xsl:variable name="context">
 			<xsl:choose>
 				<xsl:when
-					test="imvert:name = 'gelijk' or imvert:name = 'vanaf' or imvert:name = 'totEnMet'">
-					selectie
-				</xsl:when>
-				<xsl:when test="imvert:name = 'start'">
-					start
-				</xsl:when>
-				<xsl:when test="imvert:name = 'scope'">
-					scope
-				</xsl:when>
+					test="imvert:name = 'gelijk' or imvert:name = 'vanaf' or imvert:name = 'totEnMet'">selectie</xsl:when>
+				<xsl:when test="imvert:name = 'start'">start</xsl:when>
+				<xsl:when test="imvert:name = 'scope'">scope</xsl:when>
 				<xsl:otherwise>
 					-
 				</xsl:otherwise>
@@ -711,15 +687,9 @@
 							<xsl:with-param name="constructName" select="'-'" />
 							<xsl:with-param name="historyApplies">
 								<xsl:choose>
-									<xsl:when test="$berichtCode = 'La07' or $berichtCode = 'La08'">
-										yes-Materieel
-									</xsl:when>
-									<xsl:when test="$berichtCode = 'La09' or $berichtCode = 'La10'">
-										yes
-									</xsl:when>
-									<xsl:otherwise>
-										no
-									</xsl:otherwise>
+									<xsl:when test="$berichtCode = 'La07' or $berichtCode = 'La08'">yes-Materieel</xsl:when>
+									<xsl:when test="$berichtCode = 'La09' or $berichtCode = 'La10'">yes</xsl:when>
+									<xsl:otherwise>no</xsl:otherwise>
 								</xsl:choose>
 							</xsl:with-param>
 						</xsl:call-template>
@@ -1130,12 +1100,8 @@
 		<xsl:variable name="MogelijkGeenWaarde">
 			<xsl:choose>
 				<xsl:when
-					test="imvert:tagged-values/imvert:tagged-value/imvert:name = 'MogelijkGeenWaarde'">
-					yes
-				</xsl:when>
-				<xsl:otherwise>
-					no
-				</xsl:otherwise>
+					test="imvert:tagged-values/imvert:tagged-value/imvert:name = 'MogelijkGeenWaarde'">yes</xsl:when>
+				<xsl:otherwise>no</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:if test="imf:boolean($debug)">
@@ -1951,19 +1917,11 @@
 		<!-- Within the following choose the output of this function is detremined. -->
 		<xsl:choose>
 			<xsl:when
-				test="$attributeTypeRow//col[@type = $parent and @name = $element and data != '-']">
-				allowed
-			</xsl:when>
+				test="$attributeTypeRow//col[@type = $parent and @name = $element and data != '-']">allowed</xsl:when>
 			<xsl:when
-				test="$attributeTypeRow//col[@type = $parent and @name = $element and data = '-']">
-				notAllowed
-			</xsl:when>
-			<xsl:when test="$attributeTypeRow//col[@name = $element]">
-				notApplicable
-			</xsl:when>
-			<xsl:otherwise>
-				notInScope
-			</xsl:otherwise>
+				test="$attributeTypeRow//col[@type = $parent and @name = $element and data = '-']">notAllowed</xsl:when>
+			<xsl:when test="$attributeTypeRow//col[@name = $element]">notApplicable</xsl:when>
+			<xsl:otherwise>notInScope</xsl:otherwise>
 		</xsl:choose>
 	</xsl:function>
 
@@ -2013,6 +1971,7 @@
 				is allowed within the current messagetype and if not in what way. -->
 			<xsl:variable name="isElementAllowed"
 				select="imf:isElementAllowed($berichtCode, $normalizedElementName, $parent)" />
+			<xsl:message select="concat('buildParametersAndStuurgegevens',$berichtCode,', ',$parent,', ',$elements2bTested,', ',$normalizedElementName,', ',$elementValue,', ',$isElementAllowed)"/>		
 			<!-- Within this choose the correct action is determined and performed 
 				depending on the value of the 'elementValue' and 'isElementAllowed' variable: 
 				* 1st when If the parameter or stuurgegevens isn't desired (value = 'N.v.t.) 
@@ -2029,7 +1988,10 @@
 			<xsl:choose>
 				<xsl:when
 					test="$elementValue = 'N.v.t.' and $enriched-endproduct-base-config-excel//sheet
-					[name = 'Berichtgerelateerde gegevens']/row[col[@name = 'Berichtcode']/data = $berichtCode]/col[@name = $normalizedElementName and @type = $parent and data != 'V']" />
+					[name = 'Berichtgerelateerde gegevens']/row[col[@name = 'Berichtcode']/data = $berichtCode]/col[@name = $normalizedElementName and @type = $parent and data != 'V']">
+					<xsl:message select="concat('buildParametersAndStuurgegevens-1st-when',$berichtCode,', ',$parent,', ',$elements2bTested,', ',$normalizedElementName,', ',$elementValue,', ',$isElementAllowed)"/>		
+					
+				</xsl:when>
 				<xsl:when
 					test="$elementValue = 'N.v.t.' and $enriched-endproduct-base-config-excel//sheet
 					[name = 'Berichtgerelateerde gegevens']/row[col[@name = 'Berichtcode']/data = $berichtCode]/col[@name = $normalizedElementName and @type = $parent and data = 'V']">
@@ -2058,15 +2020,9 @@
 									the base-configuration ('data' element) and value of the \ tagged-value being 
 									processed. The 'Berichtcode' element is allways required. -->
 								<xsl:choose>
-									<xsl:when test="@name = 'Berichtcode'">
-										1
-									</xsl:when>
-									<xsl:when test="data = 'V' or $elementValue = 'Verplicht'">
-										1
-									</xsl:when>
-									<xsl:when test="data = 'O'">
-										0
-									</xsl:when>
+									<xsl:when test="@name = 'Berichtcode'">1</xsl:when>
+									<xsl:when test="data = 'V' or $elementValue = 'Verplicht'">1</xsl:when>
+									<xsl:when test="data = 'O'">0</xsl:when>
 								</xsl:choose>
 							</ep:min-occurs>
 							<xsl:choose>
@@ -2098,6 +2054,7 @@
 							</xsl:choose>
 						</ep:construct>
 					</xsl:for-each>
+					<xsl:message select="concat('buildParametersAndStuurgegevens-3th-when',$berichtCode,', ',$parent,', ',$elements2bTested,', ',$normalizedElementName,', ',$elementValue,', ',$isElementAllowed)"/>		
 				</xsl:when>
 				<xsl:when test="$isElementAllowed = 'notAllowed'">
 					<xsl:choose>
@@ -2108,9 +2065,13 @@
 								select="concat('ERROR  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' element ', $normalizedElementName, ' is not allowed within the ', $parent, '.')" />
 						</xsl:otherwise>
 					</xsl:choose>
+					<xsl:message select="concat('buildParametersAndStuurgegevens-4th-when',$berichtCode,', ',$parent,', ',$elements2bTested,', ',$normalizedElementName,', ',$elementValue,', ',$isElementAllowed)"/>		
 				</xsl:when>
 				<xsl:when
-					test="$isElementAllowed = 'notApplicable' or $isElementAllowed = 'notInScope'" />
+					test="$isElementAllowed = 'notApplicable' or $isElementAllowed = 'notInScope'">
+					<xsl:message select="concat('buildParametersAndStuurgegevens-5th-when',$berichtCode,', ',$parent,', ',$elements2bTested,', ',$normalizedElementName,', ',$elementValue,', ',$isElementAllowed)"/>		
+					
+				</xsl:when>
 			</xsl:choose>
 		</xsl:for-each>
 	</xsl:template>
@@ -2138,19 +2099,7 @@
 																			  	          col[@name = 'berichttype']/data = $berichtType and 
 																				          col[@name = 'context']/data = $context]" />
 		<xsl:if test="imf:boolean($debug)">
-			<xsl:message>
-				attributeTypeRow:
-				<xsl:value-of select="$attributeTypeRow/@number" />
-				(
-				<xsl:value-of select="$typeCode" />
-				,
-				<xsl:value-of select="$berichtType" />
-				,
-				<xsl:value-of select="$context" />
-				,
-				<xsl:value-of select="$datumType" />
-				)
-			</xsl:message>
+			<xsl:message>attributeTypeRow: <xsl:value-of select="$attributeTypeRow/@number" />(<xsl:value-of select="$typeCode" />,<xsl:value-of select="$berichtType" />,<xsl:value-of select="$context" />,<xsl:value-of select="$datumType" />)</xsl:message>
 		</xsl:if>
 		<!-- The following if statements checks if a specific column in the spreadsheetrow 
 			in the 'attributeTypeRow' variable contains an 'O' or an 'V'. If this is 
@@ -2377,144 +2326,76 @@
 		<xsl:choose>
 			<xsl:when test="$Stereotype='VRIJBERICHTTYPE'">
 				<xsl:choose>
-					<xsl:when test="$Inkomend = 'Ja' and $Synchroon = 'Ja'">
-						Di01
-					</xsl:when>
-					<xsl:when test="$Inkomend = 'Ja' and $Synchroon = 'Nee'">
-						Di02
-					</xsl:when>
-					<xsl:when test="$Inkomend = 'Nee' and $Synchroon = 'Ja'">
-						Di03
-					</xsl:when>
-					<xsl:when test="$Inkomend = 'Nee' and $Synchroon = 'Nee'">
-						Di04
-					</xsl:when>
-					<xsl:otherwise>
-						Niet te bepalen
-					</xsl:otherwise>
+					<xsl:when test="$Inkomend = 'Ja' and $Synchroon = 'Ja'">Di01</xsl:when>
+					<xsl:when test="$Inkomend = 'Ja' and $Synchroon = 'Nee'">Di02</xsl:when>
+					<xsl:when test="$Inkomend = 'Nee' and $Synchroon = 'Ja'">Di03</xsl:when>
+					<xsl:when test="$Inkomend = 'Nee' and $Synchroon = 'Nee'">Di04</xsl:when>
+					<xsl:otherwise>Niet te bepalen</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
 			<xsl:when test="$Stereotype='VRAAGBERICHTTYPE'">
 				<xsl:choose>
 					<xsl:when
-						test="$AanduidingActualiteit = 'Actueel' and $Synchroon = 'Ja'">
-						Lv01
-					</xsl:when>
+						test="$AanduidingActualiteit = 'Actueel' and $Synchroon = 'Ja'">Lv01</xsl:when>
 					<xsl:when
-						test="$AanduidingActualiteit = 'Actueel' and $Synchroon = 'Nee'">
-						Lv02
-					</xsl:when>
+						test="$AanduidingActualiteit = 'Actueel' and $Synchroon = 'Nee'">Lv02</xsl:when>
 					<xsl:when
-						test="$AanduidingActualiteit = 'Op peiltijdstip materieel' and $Synchroon = 'Ja'">
-						Lv03
-					</xsl:when>
+						test="$AanduidingActualiteit = 'Op peiltijdstip materieel' and $Synchroon = 'Ja'">Lv03</xsl:when>
 					<xsl:when
-						test="$AanduidingActualiteit = 'Op peiltijdstip materieel' and $Synchroon = 'Nee'">
-						Lv04
-					</xsl:when>
+						test="$AanduidingActualiteit = 'Op peiltijdstip materieel' and $Synchroon = 'Nee'">Lv04</xsl:when>
 					<xsl:when
-						test="$AanduidingActualiteit = 'Op peiltijdstip formeel' and $Synchroon = 'Ja'">
-						Lv05
-					</xsl:when>
+						test="$AanduidingActualiteit = 'Op peiltijdstip formeel' and $Synchroon = 'Ja'">Lv05</xsl:when>
 					<xsl:when
-						test="$AanduidingActualiteit = 'Op peiltijdstip formeel' and $Synchroon = 'Nee'">
-						Lv06
-					</xsl:when>
+						test="$AanduidingActualiteit = 'Op peiltijdstip formeel' and $Synchroon = 'Nee'">Lv06</xsl:when>
 					<xsl:when
-						test="$AanduidingActualiteit = 'Materiële historie' and $Synchroon = 'Ja'">
-						Lv07
-					</xsl:when>
+						test="$AanduidingActualiteit = 'Materiële historie' and $Synchroon = 'Ja'">Lv07</xsl:when>
 					<xsl:when
-						test="$AanduidingActualiteit = 'Materiële historie' and $Synchroon = 'Nee'">
-						Lv08
-					</xsl:when>
+						test="$AanduidingActualiteit = 'Materiële historie' and $Synchroon = 'Nee'">Lv08</xsl:when>
 					<xsl:when
-						test="$AanduidingActualiteit = 'Materiële en formeleHistorie' and $Synchroon = 'Ja'">
-						Lv09
-					</xsl:when>
+						test="$AanduidingActualiteit = 'Materiële en formeleHistorie' and $Synchroon = 'Ja'">Lv09</xsl:when>
 					<xsl:when
-						test="$AanduidingActualiteit = 'Materiële en formeleHistorie' and $Synchroon = 'Nee'">
-						Lv10
-					</xsl:when>
-					<xsl:otherwise>
-						Niet te bepalen
-					</xsl:otherwise>
+						test="$AanduidingActualiteit = 'Materiële en formeleHistorie' and $Synchroon = 'Nee'">Lv10</xsl:when>
+					<xsl:otherwise>Niet te bepalen</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
 			<xsl:when test="$Stereotype='ANTWOORDBERICHTTYPE'">
 				<xsl:choose>
 					<xsl:when
-						test="$AanduidingActualiteit = 'Actueel' and $Synchroon = 'Ja'">
-						La01
-					</xsl:when>
+						test="$AanduidingActualiteit = 'Actueel' and $Synchroon = 'Ja'">La01</xsl:when>
 					<xsl:when
-						test="$AanduidingActualiteit = 'Actueel' and $Synchroon = 'Nee'">
-						La02
-					</xsl:when>
+						test="$AanduidingActualiteit = 'Actueel' and $Synchroon = 'Nee'">La02</xsl:when>
 					<xsl:when
-						test="$AanduidingActualiteit = 'Op peiltijdstip materieel' and $Synchroon = 'Ja'">
-						La03
-					</xsl:when>
+						test="$AanduidingActualiteit = 'Op peiltijdstip materieel' and $Synchroon = 'Ja'">La03</xsl:when>
 					<xsl:when
-						test="$AanduidingActualiteit = 'Op peiltijdstip materieel' and $Synchroon = 'Nee'">
-						La04
-					</xsl:when>
+						test="$AanduidingActualiteit = 'Op peiltijdstip materieel' and $Synchroon = 'Nee'">La04</xsl:when>
 					<xsl:when
-						test="$AanduidingActualiteit = 'Op peiltijdstip formeel' and $Synchroon = 'Ja'">
-						La05
-					</xsl:when>
+						test="$AanduidingActualiteit = 'Op peiltijdstip formeel' and $Synchroon = 'Ja'">La05</xsl:when>
 					<xsl:when
-						test="$AanduidingActualiteit = 'Op peiltijdstip formeel' and $Synchroon = 'Nee'">
-						La06
-					</xsl:when>
+						test="$AanduidingActualiteit = 'Op peiltijdstip formeel' and $Synchroon = 'Nee'">La06</xsl:when>
 					<xsl:when
-						test="$AanduidingActualiteit = 'Materiële historie' and $Synchroon = 'Ja'">
-						La07
-					</xsl:when>
+						test="$AanduidingActualiteit = 'Materiële historie' and $Synchroon = 'Ja'">La07</xsl:when>
 					<xsl:when
-						test="$AanduidingActualiteit = 'Materiële historie' and $Synchroon = 'Nee'">
-						La08
-					</xsl:when>
+						test="$AanduidingActualiteit = 'Materiële historie' and $Synchroon = 'Nee'">La08</xsl:when>
 					<xsl:when
-						test="$AanduidingActualiteit = 'Materiële en formeleHistorie' and $Synchroon = 'Ja'">
-						La09
-					</xsl:when>
+						test="$AanduidingActualiteit = 'Materiële en formeleHistorie' and $Synchroon = 'Ja'">La09</xsl:when>
 					<xsl:when
-						test="$AanduidingActualiteit = 'Materiële en formeleHistorie' and $Synchroon = 'Nee'">
-						La10
-					</xsl:when>
-					<xsl:otherwise>
-						Niet te bepalen
-					</xsl:otherwise>
+						test="$AanduidingActualiteit = 'Materiële en formeleHistorie' and $Synchroon = 'Nee'">La10</xsl:when>
+					<xsl:otherwise>Niet te bepalen</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
 			<xsl:when test="$Stereotype='KENNISGEVINGSBERICHTTYPE'">
 				<xsl:choose>
 					<xsl:when
-						test="$Synchroon = 'Ja' and $AanduidingToekomstmutaties = 'Zonder toekomstmutaties' and $Samengesteld = 'Nee'">
-						Lk01
-					</xsl:when>
+						test="$Synchroon = 'Ja' and $AanduidingToekomstmutaties = 'Zonder toekomstmutaties' and $Samengesteld = 'Nee'">Lk01</xsl:when>
 					<xsl:when
-						test="$Synchroon = 'Nee' and $AanduidingToekomstmutaties = 'Zonder toekomstmutaties' and $Samengesteld = 'Nee'">
-						Lk02
-					</xsl:when>
-					<xsl:when test="$Synchroon = 'Ja' and $Samengesteld = 'Ja'">
-						Lk03
-					</xsl:when>
-					<xsl:when test="$Synchroon = 'Nee' and $Samengesteld = 'Ja'">
-						Lk04
-					</xsl:when>
+						test="$Synchroon = 'Nee' and $AanduidingToekomstmutaties = 'Zonder toekomstmutaties' and $Samengesteld = 'Nee'">Lk02</xsl:when>
+					<xsl:when test="$Synchroon = 'Ja' and $Samengesteld = 'Ja'">Lk03</xsl:when>
+					<xsl:when test="$Synchroon = 'Nee' and $Samengesteld = 'Ja'">Lk04</xsl:when>
 					<xsl:when
-						test="$Synchroon = 'Ja' and $AanduidingToekomstmutaties = 'Met toekomstmutaties' and $Samengesteld = 'Nee'">
-						Lk05
-					</xsl:when>
+						test="$Synchroon = 'Ja' and $AanduidingToekomstmutaties = 'Met toekomstmutaties' and $Samengesteld = 'Nee'">Lk05</xsl:when>
 					<xsl:when
-						test="$Synchroon = 'Nee' and $AanduidingToekomstmutaties = 'Met toekomstmutaties' and $Samengesteld = 'Nee'">
-						Lk06
-					</xsl:when>
-					<xsl:otherwise>
-						Niet te bepalen
-					</xsl:otherwise>
+						test="$Synchroon = 'Nee' and $AanduidingToekomstmutaties = 'Met toekomstmutaties' and $Samengesteld = 'Nee'">Lk06</xsl:when>
+					<xsl:otherwise>Niet te bepalen</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
 			<!-- ROME: Voor de onderstaande situaties moet deze functie nog aangevuld 
