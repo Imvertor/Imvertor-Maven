@@ -227,31 +227,25 @@ public class ZipFile extends AnyFile {
     	// now go through all files in the workfolder. Based in the XML or binary type of the file, add to XML stream or save to a bin folder.
     	Vector<String> files = workFolder.listFilesToVector(true);
     	for (int i = 0; i < files.size(); i++) {
-    		AnyFile f = new AnyFile(files.get(i));
+    		XmlFile f = new XmlFile(files.get(i));
     		String relpath = f.getRelativePath(serializeFolder).substring(5);  // i.e. skip the "work1/" part
-    		boolean done = false;
-    		if (f.isDirectory())
-    			done = true;
-    		else if (f.isXml()) {
-    			XmlFile fx = new XmlFile(f);
-    			if (fx.isWellFormed()) {
-     				contentWriter.append("<zip-content-wrapper:file type=\"xml\" path=\"" + relpath + "\">");
-    		    	int linesRead = 0;
-    				while (true) {
-    					String line = fx.getNextLine();
-    					if (line == null) 
-    						break;
-    					else if (linesRead > 0) 
-							contentWriter.append(line + linesep);
-    					else 
-    						contentWriter.append(StringUtils.removePattern(line, xmlRegex) + linesep);
-    					linesRead += 1;
-					}
-    				contentWriter.append("</zip-content-wrapper:file>");
-    				done = true;
-    			}
-    		}
-			if (!done) {	
+    		if (f.isDirectory()) {
+    			// skip 
+    		} else if (f.isXml() && f.isWellFormed()) {
+ 				contentWriter.append("<zip-content-wrapper:file type=\"xml\" path=\"" + relpath + "\">");
+		    	int linesRead = 0;
+				while (true) {
+					String line = f.getNextLine();
+					if (line == null) 
+						break;
+					else if (linesRead > 0) 
+						contentWriter.append(line + linesep);
+					else 
+						contentWriter.append(StringUtils.removePattern(line, xmlRegex) + linesep);
+					linesRead += 1;
+				}
+				contentWriter.append("</zip-content-wrapper:file>");
+			} else {	
 				AnyFile fb = new AnyFile(serializeFolder,relpath);
 				AnyFolder fbf = new AnyFolder(fb.getParentFile());
 				fbf.mkdirs();

@@ -426,14 +426,14 @@ public class AnyFile extends File  {
 
 	/**
 	 * Guess if this file is an XML file.
-	 * Test if the file starts with <?xml. 
+	 * Test if the file starts with <?xml or <xml. 
 	 * Only suited for UTF-8.
 	 *  
 	 * @return
 	 * @throws Exception 
 	 */
 	public boolean isXml() throws Exception {
-        return getHead(5).equals("<?xml");
+	    return getExtension().equals("xml") || getHead(5).equals("<?xml") || getHead(4).equals("<xml");
 	}
 	
 	public String getHead(int numberBytes) throws Exception {

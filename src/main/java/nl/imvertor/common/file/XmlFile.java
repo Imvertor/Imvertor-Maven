@@ -22,6 +22,7 @@ package nl.imvertor.common.file;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -262,8 +263,10 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 			
 			DocumentBuilder builder = factory.newDocumentBuilder();
 	
-			builder.setErrorHandler(this);    
-			builder.parse(new InputSource(this.getCanonicalPath()));
+			builder.setErrorHandler(this);   
+			// must create URL because of strange file name character such as [ and ]
+			String url = this.toURI().toURL().toString();
+			builder.parse(new InputSource(url));
 			
 		} catch (Exception e) {
 			wfcode = WFCODE_FATAL;
@@ -286,7 +289,9 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 	
 			builder.setErrorHandler(this);    
-			builder.parse(new InputSource(this.getCanonicalPath()));
+			// must create URL because of strange file name character such as [ and ]
+			String url = this.toURI().toURL().toString();
+			builder.parse(new InputSource(url));
 		} catch (Exception e) {
 			wfcode = WFCODE_FATAL;
 		}
