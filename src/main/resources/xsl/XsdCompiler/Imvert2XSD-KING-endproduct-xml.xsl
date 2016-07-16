@@ -83,6 +83,7 @@
     
    <xsl:variable name="berichtNaam" select="/imvert:packages/imvert:application"/>
 	
+    
     <!-- Within these variables all messages defined within the BSM of the koppelvlak are placed transformed to the imvertor endproduct format.-->
     <xsl:variable name="imvert-endproduct">
        <ep:message-set>
@@ -93,10 +94,114 @@
             <xsl:sequence select="imf:create-output-element('ep:patch-number', 'TO-DO')"/>
             <xsl:sequence select="imf:create-output-element('ep:release', /imvert:packages/imvert:release)"/>
             
-            <xsl:variable name="messages" select="/imvert:packages/imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]"/>
+           <xsl:variable name="packages" select="/imvert:packages"/>
+           <xsl:variable name="messages" select="/imvert:packages/imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]"/>
             <xsl:comment select="imf:get-config-stereotypes('stereotype-name-domain-package')"/>
-            <xsl:apply-templates select="$messages" mode="create-message-structure"/>
-        </ep:message-set>
+           <xsl:variable name="idsUsedComponents">
+               <idsUsedComponents>
+                   <xsl:apply-templates select="$messages" mode="getIdsUsedComponents-message-structure"/>
+               </idsUsedComponents>
+           </xsl:variable>		  
+           <xsl:sequence select="imf:create-output-element('ep:idsUsedComponents', $idsUsedComponents)"/>
+           <xsl:apply-templates select="$messages" mode="create-message-structure"/>
+           <xsl:for-each select="$idsUsedComponents//id">
+               <xsl:variable name="id" select="."/>
+               <xsl:message select="concat('globalComplexType: ',$id)"/>
+               <xsl:variable name="berichtCode" select="@berichtCode"/>
+               <xsl:variable name="context" select="@context"/>
+               <ep:construct>
+                   <xsl:sequence
+                       select="imf:create-output-element('ep:name', $packages//imvert:class[imvert:id = $id]/imvert:name/@original)" />							
+                   <xsl:sequence
+                       select="imf:create-output-element('ep:tech-name', $packages//imvert:class[imvert:id = $id]/imvert:name)" />							
+                   <xsl:sequence
+                       select="imf:create-output-element('ep:mnemonic', $packages//imvert:class[imvert:id = $id]/imvert:alias)" />
+                   <ep:seq>
+                       <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
+                           mode="create-message-content">
+                           <xsl:with-param name="package-id" select="/imvert:packages/imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
+                           <xsl:with-param name="proces-type" select="'attributes'" />
+                           <!-- ROME: Het is de vraag of deze parameter en het checken op id 
+    										nog wel noodzakelijk is. -->
+                           <xsl:with-param name="id-trail" select="''" />
+                           <xsl:with-param name="berichtCode" select="$berichtCode" />
+                           <xsl:with-param name="context" select="$context" />
+                       </xsl:apply-templates>
+                       <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
+                           mode="create-message-content">
+                           <xsl:with-param name="package-id" select="/imvert:packages/imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
+                           <xsl:with-param name="proces-type"
+                               select="'associationsGroepCompositie'" />
+                           <!-- ROME: Het is de vraag of deze parameter en het checken op id 
+    										nog wel noodzakelijk is. -->
+                           <xsl:with-param name="id-trail" select="''" />
+                           <xsl:with-param name="berichtCode" select="$berichtCode" />
+                           <xsl:with-param name="context" select="$context" />
+                       </xsl:apply-templates>
+                       <!-- ROME: Waarschijnlijk moet er hier afhankelijk van de context 
+    									meer of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' 
+    									maar ook aan 'tijdvakRelatie', 'historieMaterieel' en 'historieFormeel'. -->
+                       <ep:construct>
+                           <ep:name>StUF:tijdvakGeldigheid</ep:name>
+                           <ep:tech-name>StUF:tijdvakGeldigheid</ep:tech-name>
+                           <ep:max-occurs>1</ep:max-occurs>
+                           <ep:min-occurs>0</ep:min-occurs>
+                           <ep:position>150</ep:position>
+                       </ep:construct>
+                       <ep:construct>
+                           <ep:name>StUF:tijdstipRegistratie</ep:name>
+                           <ep:tech-name>StUF:tijdstipRegistratie</ep:tech-name>
+                           <ep:max-occurs>1</ep:max-occurs>
+                           <ep:min-occurs>0</ep:min-occurs>
+                           <ep:position>151</ep:position>
+                       </ep:construct>
+                       <ep:construct>
+                           <ep:name>StUF:extraElementen</ep:name>
+                           <ep:tech-name>StUF:extraElementen</ep:tech-name>
+                           <ep:max-occurs>1</ep:max-occurs>
+                           <ep:min-occurs>0</ep:min-occurs>
+                           <ep:position>152</ep:position>
+                       </ep:construct>
+                       <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
+                           mode="create-message-content">
+                           <xsl:with-param name="package-id" select="/imvert:packages/imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
+                           <xsl:with-param name="proces-type" select="'associationsRelatie'" />
+                           <!-- ROME: Het is de vraag of deze parameter en het checken op id 
+    										nog wel noodzakelijk is. -->
+                           <xsl:with-param name="id-trail" select="''" />
+                           <xsl:with-param name="berichtCode" select="$berichtCode" />
+                           <xsl:with-param name="context" select="$context" />
+                       </xsl:apply-templates>
+                       <xsl:variable name="mnemonic">
+                           <xsl:value-of
+                               select="$packages//imvert:class[imvert:id = $id]/imvert:alias" />
+                       </xsl:variable>
+                       <!-- The function imf:createAttributes is used to determine the XML 
+    									attributes neccessary for this context. It has the following parameters: 
+    									- typecode - berichttype - context - datumType The first 3 parameters relate 
+    									to columns with the same name within an Excel spreadsheet used to configure 
+    									a.o. XML attributes usage. The last parameter is used to determine the need 
+    									for the XML-attribute 'StUF:indOnvolledigeDatum'. -->
+                       
+                       <!-- ROME: De berichtcode is niet als globale variabele aanwezig 
+    									en kan dus niet zomaar opgeroepen worden. Hij kan helaas ook niet eenvoudig 
+    									verkregen worden aangezien het element op basis waarvan de berichtcode kan 
+    									worden gegenereerd geen ancestor is van het huidige element. Er zijn 2 opties: 
+    									* De berichtcode als parameter aan alle templates toevoegen en steeds doorgeven. 
+    									* De attributes pas aan de EP structuur toevoegen in een aparte slag nadat 
+    									de EP structuur al gegenereerd is. Het message element dat de berichtcode 
+    									bevat is dan wel altijd de ancestor van het element dat het nodig heeft. 
+    									Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook 
+    									nog herleid en doorgegeven worden. -->
+                       <xsl:comment
+    									select="concat('Attributes voor gerelateerde, berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $mnemonic)" />
+                       <xsl:variable name="attributes"
+                           select="imf:createAttributes('gerelateerde', substring($berichtCode,1,2), $context, 'no', $mnemonic, 'no','no')" />
+                       <xsl:sequence select="$attributes" />
+                   </ep:seq>
+               </ep:construct>
+           </xsl:for-each>
+       </ep:message-set>
      </xsl:variable>
     
     <xsl:template match="/">
