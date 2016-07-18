@@ -999,6 +999,35 @@
                     </xs:complexType>
                 </xs:element>
             </xsl:when>
+            <xsl:when test="$is-complextype and $is-nillable">
+                <!-- note that we do not support avoiding substitution on complex datatypes --> 
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:attribute name="nillable">true</xsl:attribute>
+                    <xsl:sequence select="imf:debug($this,'A voidable complex type')"/>
+                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xs:complexType>
+                        <xs:complexContent>
+                            <xs:extension base="{if ($name-conceptual-type) then $name-conceptual-type else $type}">
+                                <xsl:sequence select="imf:create-nilreason()"/>
+                            </xs:extension>
+                        </xs:complexContent>
+                    </xs:complexType>
+                </xs:element>
+            </xsl:when>
+            <xsl:when test="$is-complextype">
+                <!-- note that we do not support avoiding substitution on complex datatypes --> 
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="type" select="if ($name-conceptual-type) then $name-conceptual-type else $type"/>
+                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:sequence select="imf:debug($this,'A complex type')"/>
+                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                </xs:element>
+            </xsl:when>
             <xsl:when test="$is-datatype and $is-nillable">
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
@@ -1073,35 +1102,6 @@
                     <xsl:sequence select="imf:get-annotation($this)"/>
                 </xs:element>
             </xsl:when>
-            <xsl:when test="$is-complextype and $is-nillable">
-                <!-- note that we do not support avoiding substitution on complex datatypes --> 
-                <xs:element>
-                    <xsl:attribute name="name" select="$name"/>
-                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
-                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:attribute name="nillable">true</xsl:attribute>
-                    <xsl:sequence select="imf:debug($this,'A voidable complex type')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
-                    <xs:complexType>
-                        <xs:complexContent>
-                            <xs:extension base="{if ($name-conceptual-type) then $name-conceptual-type else $type}">
-                                <xsl:sequence select="imf:create-nilreason()"/>
-                            </xs:extension>
-                        </xs:complexContent>
-                    </xs:complexType>
-                </xs:element>
-            </xsl:when>
-            <xsl:when test="$is-complextype">
-                <!-- note that we do not support avoiding substitution on complex datatypes --> 
-                <xs:element>
-                    <xsl:attribute name="name" select="$name"/>
-                    <xsl:attribute name="type" select="if ($name-conceptual-type) then $name-conceptual-type else $type"/>
-                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
-                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:debug($this,'A complex type')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
-                </xs:element>
-           </xsl:when>
             <xsl:when test="$is-external and $is-nillable">
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
