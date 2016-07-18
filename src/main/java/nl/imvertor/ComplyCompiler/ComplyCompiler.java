@@ -28,6 +28,7 @@ import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.XmlFile;
+import nl.imvertor.common.file.XslFile;
 import nl.imvertor.common.file.ZipFile;
 import nl.imvertor.common.xsl.extensions.counting.AddNamedCount;
 import nl.imvertor.common.xsl.extensions.counting.GetNamedCount;
@@ -44,6 +45,8 @@ public class ComplyCompiler  extends Step {
 	 *  run the step
 	 */
 	public boolean run() throws Exception{
+		
+		Boolean develop = true; // TODO remove temporary
 		
 		if (configurator.isTrue("cli","createcomplyexcel")) {
 			
@@ -70,6 +73,19 @@ public class ComplyCompiler  extends Step {
 			transformer.setExtensionFunction(new AddNamedCount());
 			
 			XmlFile contentFile = new XmlFile(serializeFolder,"__content.xml");
+			
+			// TODO REMOVE debug; remove next lines
+			XslFile prettyPrinter = new XslFile(configurator.getBaseFolder(),"xsl/common/tools/PrettyPrinter.xsl");
+			if (develop) {
+				prettyPrinter.transform(contentFile.getCanonicalPath(), "c:/Temp/comply/__content.template.xml");
+			 
+				ZipFile templateOkay = new ZipFile("c:/Temp/comply/Testberichten gevuld.xlsx");
+				AnyFolder serializeFolderOkay = new AnyFolder(unzipFolderpath);
+				templateOkay.serializeToXml(serializeFolder);
+				prettyPrinter.transform(contentFile.getCanonicalPath(), "c:/temp/comply/before.xml");
+				serializeFolderOkay.delete();
+			}
+			
 			configurator.setParm("system", "comply-content-file", contentFile.getCanonicalPath());
 			transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_FILE", "properties/WORK_COMPLY_XSLPATH");
 			
@@ -87,12 +103,17 @@ public class ComplyCompiler  extends Step {
 			newContentFile.copyFile(contentFile);
 			formFile.deserializeFromXml(serializeFolder,true);
 			
+			// TODO REMOVE debug, remove next 1 line
+			if (develop) {
+				prettyPrinter.transform(newContentFile.getCanonicalPath(),"c:/temp/comply/after.xml");
+			}
+			
 			// XML validate the generated worksheets
 			if (configurator.isTrue("cli","validatecomplyexcel")) {
 				Iterator<String> files = serializeFolder.listFilesToVector(true).iterator();
 				while (files.hasNext()) {
 					XmlFile file = new XmlFile(files.next());
-					if (file.getName().matches("^sheet\\d+\\.xml$"))
+					if (file.getName().matches("^sheet\\d+\\.xml$") || file.getName().matches("^comment\\d+\\.xml$"))
 						if (!file.isValid()) {
 							Iterator<String> messages = file.getMessages().iterator();
 							while (messages.hasNext()) {

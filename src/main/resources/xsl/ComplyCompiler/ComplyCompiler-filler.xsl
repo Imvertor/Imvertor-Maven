@@ -31,6 +31,13 @@
     xmlns:x14="http://schemas.microsoft.com/office/spreadsheetml/2009/9/main" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     
+    xmlns:v="urn:schemas-microsoft-com:vml"
+    xmlns:o="urn:schemas-microsoft-com:office:office"
+    xmlns:x="urn:schemas-microsoft-com:office:excel"
+    xmlns:mv="http://macVmlSchemaUri"           
+    
+    xmlns:content-types="http://schemas.openxmlformats.org/package/2006/content-types"
+    
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
@@ -54,7 +61,10 @@
     <xsl:variable name="ooxml-schemalocation-file" select="'D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS\ImvertorCommon\trunk\xsd\ooxml\sml.xsd'"/>
     <xsl:variable name="ooxml-schemalocation-url" select="imf:file-to-url($ooxml-schemalocation-file)"/>
     
-    <xsl:variable name="sheet-gegevensgroepen-tab-name">'Gegevensgroepen'</xsl:variable>
+    <xsl:variable name="sheet-gegevensgroepen-tab-name">'Complex types'</xsl:variable>
+    <xsl:variable name="xsi-schema-reference" as="attribute()?">
+        <xsl:attribute name="xsi:schemaLocation" select="concat($ooxml-namespace,' ', $ooxml-schemalocation-url)"/>
+    </xsl:variable>
     
     <!-- 
         preprare all info from EP message set, transform to a worksheet block-buildup that can be processed "in sequence"
@@ -72,6 +82,12 @@
     <xsl:variable name="sheet1" select="$__content/zip-content-wrapper:files/zip-content-wrapper:file[@path = 'xl\worksheets\sheet1.xml']/worksheet"/>
     <xsl:variable name="sheet2" select="$__content/zip-content-wrapper:files/zip-content-wrapper:file[@path = 'xl\worksheets\sheet2.xml']/worksheet"/>
     <xsl:variable name="sheet3" select="$__content/zip-content-wrapper:files/zip-content-wrapper:file[@path = 'xl\worksheets\sheet3.xml']/worksheet"/>
+   
+    <xsl:variable name="comments1" select="$__content/zip-content-wrapper:files/zip-content-wrapper:file[@path = 'xl\comments1.xml']/comments"/>
+    <xsl:variable name="comments2" select="$__content/zip-content-wrapper:files/zip-content-wrapper:file[@path = 'xl\comments2.xml']/comments"/>
+
+    <xsl:variable name="drawings1" select="$__content/zip-content-wrapper:files/zip-content-wrapper:file[@path = 'xl\drawings\vmlDrawing1.vml']/*:xml"/>
+    <xsl:variable name="drawings2" select="$__content/zip-content-wrapper:files/zip-content-wrapper:file[@path = 'xl\drawings\vmlDrawing2.vml']/*:xml"/>
     
     <xsl:template match="/">
         <xsl:if test="$debug">
@@ -100,15 +116,15 @@
             'legacyDrawing'))"/>
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
-            <xsl:attribute name="xsi:schemaLocation" select="concat($ooxml-namespace,' ', $ooxml-schemalocation-url)"/> 
+            <xsl:sequence select="$xsi-schema-reference"/>
             <xsl:choose>
-                <xsl:when test=". = $sheet1">
+                <xsl:when test=". is $sheet1">
                     <xsl:apply-templates select="$worksheet" mode="process-berichten"/>
                 </xsl:when>
-                <xsl:when test=". = $sheet2">
+                <xsl:when test=". is $sheet2">
                     <xsl:apply-templates select="$worksheet" mode="process-complextypes"/>
                 </xsl:when>
-                <xsl:when test=". = $sheet3">
+                <xsl:when test=". is $sheet3">
                     <xsl:apply-templates select="$worksheet" mode="process-variabelen"/>
                 </xsl:when>
             </xsl:choose>
@@ -126,11 +142,68 @@
             'fileRecoveryPr'))"/>
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
-            <xsl:attribute name="xsi:schemaLocation" select="concat($ooxml-namespace,' ', $ooxml-schemalocation-url)"/> 
+            <xsl:sequence select="$xsi-schema-reference"/>
             <xsl:apply-templates select="$workbook" mode="process-workbook"/>
+        </xsl:copy>
+    </xsl:template>
+
+    <xsl:template match="zip-content-wrapper:file/comments">
+        <xsl:variable name="comments" select="imf:select-context-element(.,(
+            'authors',
+            'commentList'))"/>
+        <xsl:copy>
+            <xsl:apply-templates select="@*"/>
+            <xsl:sequence select="$xsi-schema-reference"/>
+            <xsl:choose>
+                <xsl:when test=". is $comments1">
+                    <xsl:apply-templates select="$comments" mode="process-berichten"/>
+                </xsl:when>
+                <xsl:when test=". is $comments2">
+                    <xsl:apply-templates select="$comments" mode="process-complextypes"/>
+                </xsl:when>
+            </xsl:choose>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="zip-content-wrapper:file/*:xml">
+        <xsl:variable name="drawings" select="imf:select-context-element(.,(
+            'o:shapelayout',
+            'v:shapetype',
+            'v:shape'))"/>
+        <xsl:copy>
+            <xsl:apply-templates select="@*"/>
+            <xsl:choose>
+                <xsl:when test=". is $drawings1">
+                    <xsl:apply-templates select="$drawings" mode="process-berichten"/>
+                </xsl:when>
+                <xsl:when test=". is $drawings2">
+                    <xsl:apply-templates select="$drawings" mode="process-complextypes"/>
+                </xsl:when>
+            </xsl:choose>
+        </xsl:copy>
+    </xsl:template>
+    
+    <!-- TODO hoe? -->
+    <xsl:template match="zip-content-wrapper:XXXfile/content-types:Types" xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+        
+        <xsl:variable name="types" select="imf:select-context-element(.,(
+            'Default',
+            'Override'))"/>
+        
+        <xsl:copy>
+            <xsl:apply-templates select="$types" mode="process-content-types"/>
+           
+            <!-- en voeg toe??? -->
+            <Default Extension="vml" ContentType="application/vnd.openxmlformats-officedocument.vmlDrawing"/>
+            <Override PartName="/xl/comments1.xml"
+                ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.comments+xml"/>
+            <Override PartName="/xl/comments2.xml"
+                ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.comments+xml"/>
+            
         </xsl:copy>
         
     </xsl:template>
+   
     
     <!-- ============ workbook ============== -->
     
@@ -164,84 +237,8 @@
         <xsl:apply-templates select="." mode="process-all">
             <xsl:with-param name="blocks" select="$sheet-blocks"/>
         </xsl:apply-templates>
-    </xsl:template>
-  
-  <?x
-        <xsl:copy>
-            
-            <!-- skip first row -->
-            <xsl:apply-templates select="row[1]"/>
-            
-            <!-- process all messages and top constructs -->
-            <xsl:for-each select="$sheet-blocks">
-                <xsl:variable name="message-row" select="imf:get-row-for-block(.)"/>
-                <xsl:variable name="message-name" select="cp:prop[@type='header']"/>
-                <xsl:variable name="col-letters" select="tokenize('B C D E F G H I J K','\s')"/>
-                
-                <!-- create header -->
-                <row r="{$message-row}" spans="1:11">
-                    <c r="A{$message-row}" s="2" t="inlineStr">
-                        <is>
-                            <t>
-                                <xsl:value-of select="$message-name"/>
-                            </t>
-                        </is>
-                    </c>
-                    <xsl:for-each select="$col-letters">
-                        <xsl:variable name="col-letter" select="."/>
-                        <c r="{$col-letter}{$message-row}" s="2">
-                            <!-- empty -->
-                        </c>
-                    </xsl:for-each>
-                </row>
-                <xsl:for-each select="cp:prop[@type='spec']">
-                    <xsl:variable name="construct-row" select="$message-row + count(preceding-sibling::cp:prop)"/>
-                    <!-- Maak een row voor iedere construct. -->
-                    <xsl:variable name="tech-name" select="cp:element"/>
-                    <xsl:variable name="cardinality" select="cp:cardinal"/>
-                    <xsl:variable name="is-attribute" select="cp:attribute = 'true'"/>
-                    <row r="{$construct-row}" spans="1:11">
-                        <xsl:choose>
-                            <xsl:when test="$is-attribute">
-                                <xsl:attribute name="outlineLevel">1</xsl:attribute>
-                                <c r="B{$construct-row}" s="3" t="inlineStr">
-                                    <is>
-                                        <t>
-                                            @<xsl:value-of select="$tech-name"/>
-                                        </t>
-                                    </is>
-                                </c>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <c r="B{$construct-row}" t="inlineStr">
-                                    <is>
-                                        <t>
-                                            <xsl:value-of select="$tech-name"/>
-                                        </t>
-                                    </is>
-                                </c>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                        <c r="C{$construct-row}" t="inlineStr">
-                            <is>
-                                <t>
-                                    <xsl:value-of select="$cardinality"/>
-                                </t>
-                            </is>
-                        </c>
-                        <xsl:for-each select="subsequence($col-letters,3)">
-                            <xsl:variable name="col-letter" select="."/>
-                            <c r="{$col-letter}{$construct-row}" s="2">
-                                <!-- empty -->
-                            </c>
-                        </xsl:for-each>
-                    </row>
-                </xsl:for-each>
-            </xsl:for-each>
-        </xsl:copy>
-    </xsl:template>
-?>
-    
+    </xsl:template>  
+
     <xsl:template match="conditionalFormatting" mode="process-berichten">
         <xsl:apply-templates select="." mode="process-all">
             <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[1]/cp:block"/>
@@ -260,9 +257,14 @@
         </xsl:apply-templates>
     </xsl:template>
     
+    <xsl:template match="conditionalFormatting[exists(preceding-sibling::conditionalFormatting)]" mode="process-all">
+        <!-- skip these; only process the first in range; no wrapper in ooxml -->
+    </xsl:template>
+    
     <xsl:template match="conditionalFormatting" mode="process-all">
-       <xsl:param name="blocks"/>
-       <xsl:variable name="ranges" as="element(range)*">
+        <xsl:param name="blocks"/>
+        <!-- this is the frst, triggers the insertion -->
+        <xsl:variable name="ranges" as="element(range)*">
             <xsl:for-each select="$blocks">
                 <xsl:variable name="element-count" select="count(cp:prop) - 2"/>
                 <xsl:variable name="start-col-letter">D</xsl:variable>
@@ -335,10 +337,15 @@
             <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[3]/cp:block"/>
         </xsl:apply-templates>
     </xsl:template>
-    
+ 
     <!-- 
         de data validaties zijn gebaseerd op het overzicht:
         "d:\projects\validprojects\KING\planio-repository\StUF Schemagenerator\Documentatie\PoC Compliancy berichten\inventarisatie simpleType restricties.xlsx"
+        deze template levert twee soorten elementen op:
+        
+        dataValidation voor formele validatie
+        r elementen voor binnen een text element in comments
+        
     -->
     <xsl:template match="dataValidations" mode="process-all">
         <xsl:param name="blocks"/>
@@ -349,73 +356,67 @@
                 <xsl:variable name="row" select="count(preceding::cp:prop[../@sheet=$sheet]) + 2"/>
                 <xsl:variable name="sqref" select="concat('$D$',$row,':K$',$row)"/>
                 <xsl:variable name="form" select="string-join(for $i in (1 to xs:integer(cp:totaldigits)) return '9','')"/>  <!-- e.g. 9999 for totaldigits = 4 -->
+                <xsl:variable name="ref" select="@ref"/>
+                
                 <xsl:choose>
-                    <!-- 2 base type = complex type -->
-                    <xsl:when test="@ref">
-                        <xsl:sequence select="imf:create-data-validation(.,'list',(),concat($sheet-gegevensgroepen-tab-name,'!$D$', $row - 1, ':$K$', $row - 1),(),$sqref)"/>
+                    <!-- base type = complex type -->
+                    <xsl:when test="exists($ref)">
+                        <xsl:variable name="group-header" select="$message-set-flat/cp:sheet[2]/cp:block[cp:id = $ref]"/>
+                        <xsl:variable name="group-row" select="count($group-header/preceding::cp:prop[../@sheet='2']) + 2"/>
+                        <xsl:sequence select="imf:create-data-validation(.,'list',(),concat($sheet-gegevensgroepen-tab-name,'!$D$', $group-row, ':$K$', $group-row),(),$sqref)"/>
                     </xsl:when>
-                    <!-- 3 4 base type =  * | restrictie = fixed of enumeratie -->
+                 
+                    <!-- getalminmaxwaarde - geheel getal met minimum en maximum waarde -->
+                    <xsl:when test="cp:type = 'scalar-integer' and cp:mininclusive and cp:maxinclusive">
+                        <xsl:sequence select="imf:create-data-validation(.,'whole',(),cp:mininclusive,cp:maxinclusive,$sqref)"/>
+                        <xsl:sequence select="imf:create-data-comment('min-value',cp:mininclusive)"/>
+                        <xsl:sequence select="imf:create-data-comment('max-value',cp:maxinclusive)"/>
+                    </xsl:when>  
+                    <!-- getalminmaxwaarde - geheel getal met minimum waarde -->
+                    <xsl:when test="cp:type = 'scalar-integer' and cp:mininclusive">
+                        <xsl:sequence select="imf:create-data-validation(.,'whole','greaterThanOrEqual',cp:mininclusive,(),$sqref)"/>
+                    </xsl:when>                    
+                    <!-- getalminmaxwaarde - geheel getal met maximum waarde -->
+                    <xsl:when test="cp:type = 'scalar-integer' and cp:maxinclusive">
+                        <xsl:sequence select="imf:create-data-validation(.,'whole','lowerThanOrEqual',(),cp:maxinclusive,$sqref)"/>
+                    </xsl:when>                    
+                    
+                    
+                    <!-- ?? gebroken getal -->
+                    <xsl:when test="cp:type = 'scalar-decimal' and cp:totaldigits">
+                        <xsl:sequence select="imf:create-data-validation(.,'whole',(),concat('-',$form),$form,$sqref)"/>
+                    </xsl:when>
+                    
+                    <xsl:when test="cp:type = 'scalar-indic'">
+                        <xsl:sequence select="imf:create-data-validation(.,'list',(),concat($quot,'0,1,true,false',$quot),(),$sqref)"/>
+                    </xsl:when>
+                    
+                    <!-- tekenreeks of getal met vaste lengte -->
+                    <xsl:when test="cp:type = ('scalar-string','scalar-integer') and cp:minlength and cp:length and (cp:minlength eq cp:length)">
+                        <xsl:sequence select="imf:create-data-validation(.,'textLength','equal',cp:length,(),$sqref)"/>
+                    </xsl:when>
+                    <xsl:when test="cp:type = ('scalar-string','scalar-integer') and cp:minlength and cp:length">
+                        <xsl:sequence select="imf:create-data-validation(.,'textLength',(),cp:minlength,cp:length,$sqref)"/>
+                    </xsl:when>
+                    
+                    <?TODO
+                    <!-- tekenreeks of getal met minimale lengte -->
+                    <xsl:when test="cp:type = ('scalar-string','scalar-integer') and cp:minlength">
+                        <xsl:sequence select="imf:create-data-validation(.,'textLength','greaterThanOrEqual',cp:minlength,(),$sqref)"/>
+                    </xsl:when>
+                    ?>
+                    
+                    <!-- tekenreeks of getal met maximale lengte -->
+                    <xsl:when test="cp:type = ('scalar-string','scalar-integer') and cp:length">
+                        <xsl:sequence select="imf:create-data-validation(.,'textLength','lessThanOrEqual',cp:length,(),$sqref)"/>
+                    </xsl:when>
+                    
+                    <!-- enumeratie - enumeratie -->
                     <xsl:when test="cp:enum">
                         <xsl:sequence select="imf:create-data-validation(.,'list',(),concat($quot,cp:enum,$quot),(),$sqref)"/>
                     </xsl:when>
-                    <!-- 5 base type =  * | restrictie = patroon -->
-                    <xsl:when test="cp:pattern">
-                        <!--TODO commentaar -->
-                    </xsl:when>
-                    <!-- 6 base type is nonNegativeInteger -->
-                    <xsl:when test="cp:type = 'scalar-integer'">
-                        <!-- TODO kennen we die? -->
-                        <xsl:sequence select="imf:create-data-validation(.,'whole','greaterThanOrEqual',0,(),$sqref)"/>
-                    </xsl:when>
-                    <!-- 7 base type is positiveInteger -->
-                    <xsl:when test="cp:type = 'scalar-integer' and cp:totaldigits">
-                        <!-- TODO kennen we die? -->
-                        <xsl:sequence select="imf:create-data-validation(.,'whole',(),1,'greaterThanOrEqual',$sqref)"/>
-                    </xsl:when>
-                    <!-- 8 9 base type is int | restrictie = totaldigits-->
-                    <xsl:when test="cp:type = 'scalar-integer' and cp:totaldigits">
-                        <xsl:sequence select="imf:create-data-validation(.,'whole',(),concat('-',$form),$form,$sqref)"/>
-                    </xsl:when>
-                    <!-- 10 base type is nonNegativeInteger | restriction = totaldigits -->
-                    <xsl:when test="cp:type = 'scalar-integer' and cp:totaldigits">
-                        <!-- TODO kennen we die? -->
-                        <xsl:sequence select="imf:create-data-validation(.,'whole',(),0,$form,$sqref)"/>
-                    </xsl:when>
-                    <!-- 11 base type is positiveInteger | restriction = totaldigits -->
-                    <xsl:when test="cp:type = 'scalar-integer' and cp:totaldigits">
-                        <!-- TODO kennen we die? -->
-                        <xsl:sequence select="imf:create-data-validation(.,'whole',(),1,$form,$sqref)"/>
-                    </xsl:when>
-                    <!-- 12 base type is decimal | restriction = totaldigits -->
-                    <xsl:when test="cp:type = 'scalar-integer' and UNKNOWN">
-                        <!-- TODO kennen we die? -->
-                        <xsl:sequence select="imf:create-data-validation(.,'whole',(),xs:integer(cp:totaldigits) + 2,(),$sqref)"/>
-                    </xsl:when>
-                    <!-- 13 base type is integer | restriction = maxinclusive -->
-                    <xsl:when test="cp:type = 'scalar-integer' and cp:maxinclusive">
-                        <!-- TODO kennen we die? -->
-                        <xsl:sequence select="imf:create-data-validation(.,'whole','lessThanOrEqual',cp:maxinclusive,(),$sqref)"/>
-                    </xsl:when>
-                    <!-- 14 base type is integer | restriction = min+maxinclusive -->
-                    <xsl:when test="cp:type = 'scalar-integer' and cp:mininclusive and cp:maxinclusive">
-                        <!-- TODO kennen we die? -->
-                        <xsl:sequence select="imf:create-data-validation(.,'whole',(),cp:mininclusive,cp:maxinclusive,$sqref)"/>
-                    </xsl:when>
-                    <!-- 15 base type is string | restriction = length -->
-                    <xsl:when test="cp:type = 'scalar-string' and cp:length">
-                        <xsl:sequence select="imf:create-data-validation(.,'textLength','equal',cp:length,(),$sqref)"/>
-                    </xsl:when>
-                    <!-- 16 base type is string | restriction = maxlength -->
-                    <xsl:when test="cp:type = 'scalar-string' and cp:maxlength">
-                        <xsl:sequence select="imf:create-data-validation(.,'textLength','lessThanOrEqual',cp:maxlength,(),$sqref)"/>
-                    </xsl:when>
-                    <!-- 17 base type is string | restriction = min/maxlength -->
-                    <xsl:when test="cp:type = 'scalar-string' and cp:minlength and cp:maxlength">
-                        <xsl:sequence select="imf:create-data-validation(.,'textLength',(),cp:minlength,cp:maxlength,$sqref)"/>
-                    </xsl:when>
                     
                 </xsl:choose>
-                
                 
             </xsl:for-each>
         </xsl:variable>
@@ -449,6 +450,45 @@
             </xsl:if>
         </dataValidation>
     </xsl:function>
+   
+    <!--
+        •	name
+        •	is-id
+        •	type-name
+        •	min-length
+        •	max-length
+        •	pattern
+        •	voidable
+        •	kerngegeven
+        •	authentiek
+        •	regels
+        •	min-value
+        •	max-value
+        •	documentation
+    -->
+    <xsl:function name="imf:create-data-comment">
+        <xsl:param name="name"/>
+        <xsl:param name="value"/>
+        <xsl:if test="normalize-space($value)">
+            <r>
+                <rPr>
+                    <sz val="9"/>
+                    <color indexed="81"/>
+                    <rFont val="Calibri"/>
+                    <family val="2"/>
+                </rPr>
+                <t><xsl:value-of select="concat($name,': ',$value)"/></t>
+            </r>
+        </xsl:if>
+    </xsl:function>
+    
+   <!-- sheet 3 heeft geen legacy drawing dus maak er eentje -->
+    <xsl:template match="legacyDrawing" mode="process-variabelen">
+        <xsl:copy>
+            <xsl:attribute name="r:id">rId1</xsl:attribute>
+        </xsl:copy>
+    </xsl:template>
+    
     <!-- 
         Iedere construct//construct wordt op sheet 2 geplaatst. Er moet dus een hyperlink naar toe kunnen vanaf shet 1 en 2.
         Het krijgt daarom een unieke naam.
@@ -487,6 +527,119 @@
                 <xsl:sequence select="$result"/>
             </hyperlinks>
         </xsl:if>
+    </xsl:template>
+    
+    <!-- == comments == -->
+    
+    <xsl:template match="authors" mode="process-berichten">
+        <xsl:apply-templates select="." mode="process-all">
+            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[1]/cp:block"/>
+        </xsl:apply-templates>
+    </xsl:template>
+    
+    <xsl:template match="authors" mode="process-all">
+        <authors>
+            <author>Frank Samwel</author>
+            <!--<xsl:value-of select="concat($imvertor-version, ' at ', current-dateTime())"/>-->
+        </authors>
+    </xsl:template>
+    
+    <xsl:template match="commentList" mode="process-berichten">
+        <xsl:apply-templates select="." mode="process-all">
+            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[1]/cp:block"/>
+        </xsl:apply-templates>
+    </xsl:template>
+    <xsl:template match="commentList" mode="process-complextypes">
+        <xsl:apply-templates select="." mode="process-all">
+            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[2]/cp:block"/>
+        </xsl:apply-templates>
+    </xsl:template>
+    
+    <xsl:template match="commentList" mode="process-all">
+        <xsl:param name="blocks"/>
+        <xsl:variable name="sheet-number" select="$blocks[1]/@sheet"/>
+        <xsl:copy>
+            <xsl:for-each select="$blocks">
+                <xsl:variable name="message-row" select="imf:get-row-for-block(.)"/>
+                <xsl:for-each select="cp:prop[@type='spec']">     
+                    <xsl:variable name="construct-row" select="$message-row + count(preceding-sibling::cp:prop)"/>
+                    <xsl:variable name="comment-lines" as="element(r)*">
+                        <xsl:sequence select="imf:create-data-comment('Naam',cp:name)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Is ID',cp:xxx)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Type',cp:type)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Min lengte',cp:minlength)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Max lengte',cp:maxlangth)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Patroon',cp:pattern)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Voidable',cp:voidable)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Kerngegeven',cp:kerngegeven)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Authentiek',cp:authentiek)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Regels',cp:regels)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Min waarde',cp:mininclusive)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Max waarde',cp:maxinclusive)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Documentatie',cp:comment)"/>    
+                    </xsl:variable>
+                    <xsl:if test="exists($comment-lines)">
+                        <comment ref="B{$construct-row}" authorId="0" > <!-- TODO ? shapeId="comment_{$sheet-number}_{$message-row}" -->
+                            <text>
+                                <xsl:sequence select="$comment-lines"/>
+                            </text>
+                        </comment>
+                    </xsl:if>
+                </xsl:for-each>
+            </xsl:for-each>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="v:shape" mode="process-berichten">
+        <xsl:apply-templates select="." mode="process-all">
+            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[1]/cp:block"/>
+        </xsl:apply-templates>
+    </xsl:template>
+    <xsl:template match="v:shape" mode="process-complextypes">
+        <xsl:apply-templates select="." mode="process-all">
+            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[2]/cp:block"/>
+        </xsl:apply-templates>
+    </xsl:template>
+    
+    <xsl:template match="v:shape[exists(preceding-sibling::v:shape)]" mode="process-all">
+        <!-- skip; only process first in range -->
+    </xsl:template>
+    
+    <xsl:template match="v:shape" mode="process-all">
+        <xsl:param name="blocks"/>
+        <xsl:variable name="sheet-number" select="$blocks[1]/@sheet"/>
+        <xsl:for-each select="$blocks">
+            <xsl:variable name="message-row" select="imf:get-row-for-block(.)"/>
+            <xsl:for-each select="cp:prop[@type='spec']">     
+                <xsl:variable name="construct-row" select="$message-row + count(preceding-sibling::cp:prop)"/>
+                <xsl:variable name="margin-top" select="($construct-row * 16) - 25"/>
+                <xsl:variable name="width" select="282"/>
+                <xsl:variable name="height" select="29"/>
+                <v:shape 
+                    id="comment_{$sheet-number}_{$construct-row}"
+                    type="#_x0000_t202"
+                    style="position:absolute;margin-left:50pt;margin-top:{$margin-top}pt;width:{$width}pt;height:{$height}pt;z-index:1;visibility:hidden;mso-wrap-style:tight"
+                    fillcolor="#fbf6d6"
+                    strokecolor="#edeaa1">
+                    <v:fill color2="#fbfe82" angle="-180" type="gradient">
+                        <o:fill v:ext="view" type="gradientUnscaled"/>
+                    </v:fill>
+                    <v:shadow on="t" obscured="t"/>
+                    <v:path o:connecttype="none"/>
+                    <v:textbox>
+                        <div style="text-align:left"/>
+                    </v:textbox>
+                    <x:ClientData ObjectType="Note">
+                        <x:MoveWithCells/>
+                        <x:SizeWithCells/>
+                        <x:Anchor>1, 15, <xsl:value-of select="$construct-row - 2"/>, 6, 6, 20, <xsl:value-of select="$construct-row + 13"/>, 2</x:Anchor>
+                        <x:AutoFill>False</x:AutoFill>
+                        <x:Row><xsl:value-of select="$construct-row - 1"/></x:Row>
+                        <x:Column>1</x:Column>
+                    </x:ClientData>
+                </v:shape>
+            </xsl:for-each>
+        </xsl:for-each>
     </xsl:template>
     
     <!-- ============ complextypes =========== -->
@@ -565,13 +718,13 @@
                         </c>
                         <xsl:for-each select="subsequence($col-letters,3)">
                             <xsl:variable name="col-letter" select="."/>
-                            <c r="{$col-letter}{$construct-row}">
-                                <xsl:choose>
-                                    <xsl:when test="$fixed-value">
+                            <xsl:choose>
+                                <xsl:when test="$fixed-value">
+                                    <c r="{$col-letter}{$construct-row}">
                                         <v><xsl:value-of select="$fixed-value"/></v>
-                                    </xsl:when>
-                                </xsl:choose>
-                            </c>
+                                    </c>
+                                </xsl:when>
+                            </xsl:choose>
                         </xsl:for-each>
                     </row>
                 </xsl:for-each>

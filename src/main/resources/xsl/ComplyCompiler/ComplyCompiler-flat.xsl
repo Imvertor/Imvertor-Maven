@@ -93,6 +93,10 @@
         <xsl:param name="as-attribute" select="false()"/>
         
         <xsl:variable name="id" select="imf:get-id(.)"/>
+        <xsl:variable name="digit-before" select="ep:length - 1 - ep:fraction-digits"/>
+        <xsl:variable name="digit-after" select="ep:fraction-digits"/>
+        <xsl:variable name="digit-pattern" select="concat('[+\-]?\d{', $digit-before, '},\d{', $digit-after, '}')"/> 
+        
         <cp:prop type="spec">
             <xsl:if test="imf:is-complextype(.)">
                 <xsl:attribute name="ref">
@@ -106,11 +110,11 @@
             <xsl:sequence select="imf:create-element('cp:fixed',if (ep:enum[2]) then () else ep:enum[1])"/>
             <xsl:sequence select="imf:create-element('cp:enum',string-join(ep:enum,', '))"/>
             <xsl:sequence select="imf:create-element('cp:type',ep:type-name)"/>  <!-- TODO types die Frank noemt zijn: int integer nonNegativeInteger positiveInteger decimal -->
-            <xsl:sequence select="imf:create-element('cp:totaldigits',())"/>
-            <xsl:sequence select="imf:create-element('cp:mininclusive',())"/>
-            <xsl:sequence select="imf:create-element('cp:maxinclusive',())"/>
-            <xsl:sequence select="imf:create-element('cp:minlength',())"/>
-            <xsl:sequence select="imf:create-element('cp:maxlength',())"/>
+            <xsl:sequence select="imf:create-element('cp:pattern',if (ep:pattern) then ep:pattern else if (ep:fraction-digits) then $digit-pattern else ())"/>
+            <xsl:sequence select="imf:create-element('cp:mininclusive',ep:min-value)"/>
+            <xsl:sequence select="imf:create-element('cp:maxinclusive',ep:max-value)"/>
+            <xsl:sequence select="imf:create-element('cp:minlength',ep:min-length)"/>
+            <xsl:sequence select="imf:create-element('cp:maxlength',ep:length)"/>
         </cp:prop>
         <xsl:apply-templates select="ep:seq/ep:construct[@ismetadata = 'yes']" mode="prepare-flat">
             <xsl:with-param name="as-attribute" select="true()"/>
@@ -156,7 +160,7 @@
     <xsl:function name="imf:create-element">
         <xsl:param name="name"/>
         <xsl:param name="content"/>
-        <xsl:if test="normalize-space($content)">
+        <xsl:if test="normalize-space($content) and not(starts-with($content,'TO-DO'))">
             <xsl:element name="{$name}">
                 <xsl:value-of select="$content"/>
             </xsl:element>

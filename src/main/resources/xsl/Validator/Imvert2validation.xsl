@@ -626,6 +626,12 @@
         <xsl:sequence select="imf:report-error(., 
             (not($is-enumeration) and empty(imvert:baretype) and empty(imvert:type-name)), 
             'Attribute type not specified')"/>
+        
+        <!--IM-449-->
+        <xsl:sequence select="imf:report-error(., 
+            (not($is-enumeration) and not(imf:is-known-baretype(imvert:baretype)) and empty(imvert:type-name)), 
+            'Attribute type [1] is not a known type and not a scalar',imvert:baretype)"/>
+        
         <xsl:sequence select="imf:report-error(., 
             (not($is-enumeration) and empty(imvert:baretype) and empty(imvert:type-package)), 
             'Unknown attribute type. Is the package that defines this class in scope?')"/>
@@ -658,7 +664,7 @@
         <!--Task #487338, see also IM-371 teruggedraaid. -->
        
         <!-- Jira IM-420 -->
-        <xsl:sequence select="imf:report-error(., 
+        <xsl:sequence select="imf:report-warning(., 
             not($is-datatyped or empty($defining-class)), 
             'Attribute type of [1] must be a datatype, but is not.', ($this/imvert:stereotype))"/>
         
@@ -1256,4 +1262,8 @@
         <xsl:sequence select="imf:get-config-stereotype-is-toplevel($stereos-ids)"/>
     </xsl:function>
      
+    <xsl:function name="imf:is-known-baretype">
+        <xsl:param name="name"/>
+        <xsl:sequence select="$name = imf:get-config-scalar-names()"/>
+    </xsl:function>
 </xsl:stylesheet>

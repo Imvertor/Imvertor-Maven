@@ -145,6 +145,15 @@
         <xsl:sequence select="imf:boolean($configuration-metamodel-file//stereotypes/stereo/name[. = $norm-name]/@deprecated)"/>
     </xsl:function>
     
+    <!-- 
+        Return all possible scalar names (such as AN or DT)
+     
+        Language specific
+    -->
+    <xsl:function name="imf:get-config-scalar-names" as="xs:string*">
+        <xsl:sequence select="$configuration-metamodel-file//scalars/scalar/name[@lang=$language]"/>
+    </xsl:function>
+    
     <!-- name normalization on all configuration files -->
     
     <xsl:function name="imf:prepare-config">
