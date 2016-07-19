@@ -36,7 +36,6 @@
                 <stereo required="yes" lang="nl">Referentielijst</stereo>
                 <stereo required="yes" lang="nl">Referentie element</stereo>
                 <stereo required="yes" lang="nl">Union</stereo>
-                <stereo required="yes" lang="nl">Union element</stereo>
                 <stereo required="yes" lang="nl">Complex datatype</stereo>
                 <stereo required="yes" lang="nl">Externe koppeling</stereo>
             </stereotypes>
