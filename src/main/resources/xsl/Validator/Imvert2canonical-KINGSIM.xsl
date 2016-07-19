@@ -39,6 +39,9 @@
     
     <!-- TODO what special canonizations for SIM ? -->
     
+    <xsl:template match="imvert:tagged-value/imvert:value[.='zie groep']">
+        <imvert:value>Zie groep</imvert:value>
+    </xsl:template>
     
     
 </xsl:stylesheet>
