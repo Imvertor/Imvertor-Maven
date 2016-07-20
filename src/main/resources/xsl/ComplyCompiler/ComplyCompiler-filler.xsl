@@ -472,12 +472,26 @@
         <xsl:if test="normalize-space($value)">
             <r>
                 <rPr>
+                    <b/>
+                    <!--
                     <sz val="9"/>
                     <color indexed="81"/>
                     <rFont val="Calibri"/>
                     <family val="2"/>
+                    -->
                 </rPr>
-                <t><xsl:value-of select="concat($name,': ',$value)"/></t>
+                <t xml:space="preserve"><xsl:value-of select="concat($name,': ')"/></t>
+            </r>
+            <r>
+                <rPr>
+                    <!--
+                    <sz val="9"/>
+                    <color indexed="81"/>
+                    <rFont val="Calibri"/>
+                    <family val="2"/>
+                    -->
+                </rPr>
+                <t xml:space="preserve"><xsl:value-of select="concat(normalize-space($value),'&#10;')"/></t>
             </r>
         </xsl:if>
     </xsl:function>
