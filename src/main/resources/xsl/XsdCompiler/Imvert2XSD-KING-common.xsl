@@ -103,7 +103,7 @@
                                 <xsl:when test="$berichttype = 'antwoord'">Du</xsl:when>
                                 <xsl:when test="$berichttype = 'entiteit'">Du</xsl:when> <!-- TODO dit kan inkomend en uitgaande zijn. waar vastleggen? -->
                                 <xsl:otherwise>
-                                    <xsl:sequence select="imf:msg('FATAL','Onbekend berichttype: [1]',$berichttype)"/>
+                                    <xsl:sequence select="imf:msg('ERROR','Onbekend berichttype: [1]',$berichttype)"/>
                                 </xsl:otherwise>
                             </xsl:choose>
                         </xsl:variable>

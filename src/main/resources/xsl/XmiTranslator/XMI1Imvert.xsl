@@ -121,7 +121,7 @@
             
             <xsl:choose>
                 <xsl:when test="empty($root-package)">
-                    <xsl:sequence select="imf:msg('FATAL',concat(
+                    <xsl:sequence select="imf:msg('ERROR',concat(
                         'Specified project &quot;', 
                         string-join($project-name-shown,'&quot; or &quot;'),
                         '&quot; should exist and be stereotyped as: ', 
