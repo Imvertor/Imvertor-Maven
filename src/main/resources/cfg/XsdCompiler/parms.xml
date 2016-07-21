@@ -110,33 +110,23 @@
       <!-- copy schemas -->
       <EXTERNAL_XSD_FOLDER>${system/managedinputfolder}/xsd</EXTERNAL_XSD_FOLDER>
       
-      <!-- KINGUGM: -->
+      <!-- 
+         KING Koppelvlakken schema's (BSM)
+      -->
       
-      <IMVERTOR_METAMODEL_KINGUGM_XSDSOURCE>system</IMVERTOR_METAMODEL_KINGUGM_XSDSOURCE>
-      
-      <IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT_MSG_XSLPATH>Imvert2XSD-KING-endproduct-msg.xsl</IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT_MSG_XSLPATH>
-      <IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT_XML_XSLPATH>Imvert2XSD-KING-endproduct-xml.xsl</IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT_XML_XSLPATH>
-      <IMVERTOR_METAMODEL_KINGUGM_ORDER_ENDPRODUCT_XML_XSLPATH>Imvert2XSD-KING-order-endproduct-xml.xsl</IMVERTOR_METAMODEL_KINGUGM_ORDER_ENDPRODUCT_XML_XSLPATH>
-      <IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT_XSD_XSLPATH>Imvert2XSD-KING-endproduct-xsd.xsl</IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT_XSD_XSLPATH>
-      
-      <!-- werkend op model: (oude situatie voor halffabrikaten) --> 
-      <IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH>Imvert2XSD-KING.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH>
-      
-      <!-- KINGBSM: berichten omzetten naar schema -->
       <IMVERTOR_METAMODEL_KINGBSM_XSDSOURCE>system</IMVERTOR_METAMODEL_KINGBSM_XSDSOURCE>
       
-      <IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_MSG_XSLPATH>Imvert2XSD-KING-endproduct-msg.xsl</IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_MSG_XSLPATH>
       <IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XML_XSLPATH>Imvert2XSD-KING-endproduct-xml.xsl</IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XML_XSLPATH>
+      <IMVERTOR_METAMODEL_KINGBSM_ORDER_ENDPRODUCT_XML_XSLPATH>Imvert2XSD-KING-order-endproduct-xml.xsl</IMVERTOR_METAMODEL_KINGBSM_ORDER_ENDPRODUCT_XML_XSLPATH>
       <IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XSD_XSLPATH>Imvert2XSD-KING-endproduct-xsd.xsl</IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XSD_XSLPATH>
       
-      <!-- werkend op model: (oude situatie voor halffabrikaten) --> 
-      <IMVERTOR_METAMODEL_KINGBSM_XSD_XSLPATH>Imvert2XSD-KING.xsl</IMVERTOR_METAMODEL_KINGBSM_XSD_XSLPATH>
-  
-        <!-- tijdelijk: omzetten naar EP2 formaat (nieuwe formaat) -->
-      <IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT-patch1_XML_XSLPATH>Imvert2XSD-KING-endproduct-patch1-xml.xsl</IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT-patch1_XML_XSLPATH>
-      <RESULT_ENDPRODUCT-patch1_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.30.endproduct-patch1.xml</RESULT_ENDPRODUCT-patch1_XML_FILE_PATH>   
+      <!-- 
+         UGM transformation to Basisentiteiten schema 
+      --> 
+      <IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH>
       
-      
+     
+     
       <RESULT_XSD_XML_FILE_PATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_XSD_XML_FILE_PATH>   
       <!-- workfolder for serialized excel -->
       <work-serialize-folder>${system/work-folder-path}/serializer/temp-folder</work-serialize-folder>

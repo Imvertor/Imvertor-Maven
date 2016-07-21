@@ -147,14 +147,13 @@ public class XsdCompiler extends Step {
 	
 		runner.debug(logger,"Generating XML schemas to " + xsdApplicationFolder);
 		
-		String infoXsdSourceFilePath = configurator.getParm("properties", "IMVERTOR_METAMODEL_KINGUGM_XSDSOURCE"); // system or model
+		String infoXsdSourceFilePath = configurator.getParm("properties", "IMVERTOR_METAMODEL_KINGBSM_XSDSOURCE"); // system or model
 
 		// when system, use the embellish file; when model use the model.
 		if (infoXsdSourceFilePath.equals("system")) {
-			//valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_ENDPRODUCT_MSG_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT_MSG_XSLPATH");
-			valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT_XML_XSLPATH");
-			valid = valid && transformer.transformStep("properties/RESULT_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGUGM_ORDER_ENDPRODUCT_XML_XSLPATH");
-			valid = valid && transformer.transformStep("properties/RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_ENDPRODUCT_XSD_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGUGM_ENDPRODUCT_XSD_XSLPATH");
+			valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XML_XSLPATH");
+			valid = valid && transformer.transformStep("properties/RESULT_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ORDER_ENDPRODUCT_XML_XSLPATH");
+			valid = valid && transformer.transformStep("properties/RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_ENDPRODUCT_XSD_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XSD_XSLPATH");
 		
 			// and copy the onderlaag
 			XmlFile onderlaag = new XmlFile(configurator.getParm("properties", "STUF_ONDERLAAG"));
@@ -170,7 +169,7 @@ public class XsdCompiler extends Step {
 			configurator.setParm("appinfo", "office-table-documentation-filename", fn);
 			
 		} else // model
-			valid = valid && transformer.transformStep("properties/WORK_SCHEMA_FILE","properties/RESULT_XSD_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH");
+			valid = valid && transformer.transformStep("properties/WORK_SCHEMA_FILE","properties/RESULT_XSD_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_XSD_XSLPATH");
 		
 		// record the location of the resulting EP file for subsequent steps
 		configurator.setParm("system","imvertor-ep-result",configurator.getParm("properties","RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH"));
