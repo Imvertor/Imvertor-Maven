@@ -43,17 +43,7 @@
     
     <xsl:variable name="doc-folder-path" select="imf:get-config-string('system','work-doc-folder-path')"/>
     <xsl:variable name="doc-folder-url" select="imf:filespec($doc-folder-path)[2]"/>
-    
-    <?x
-    <xsl:variable name="cfg-owner-file-path" select="concat(imf:get-config-string('system','etc-folder-path'),'/common/owners.xml')"/>
-    <xsl:variable name="cfg-owner-file-url" select="imf:filespec($cfg-owner-file-path)[2]"/>
-    <xsl:variable name="cfg-owner-file-doc" select="imf:document($cfg-owner-file-url)"/>
-    
-    <xsl:variable name="owner" select="imf:get-config-string('cli','owner')"/>
-    
-    <xsl:variable name="owner-info" select="$cfg-owner-file-doc//project-owner[name=$owner]"/>
-    ?>
-    
+
     <xsl:template match="/config">
         
         <!-- compile complete set of reports from all steps -->

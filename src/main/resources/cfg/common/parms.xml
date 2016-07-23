@@ -162,14 +162,6 @@
       <DISTRIBUTION_APPLICATION_FOLDER>${properties/DISTRIBUTION_FOLDER}/${cli/project}/${cli/application}</DISTRIBUTION_APPLICATION_FOLDER>
    </properties>
    
-   <?x
-   <system>
-      <configuration-owner-file>${system/cfg-folder-path}/common/owners/${cli/owner}/${cli/owner}.xml</configuration-owner-file>
-      <configuration-tvset-file>${system/cfg-folder-path}/common/tvsets/${cli/owner}/${cli/tvset}.xml</configuration-tvset-file>
-      <configuration-schemarules-file>${system/cfg-folder-path}/common/schemarules/${cli/owner}/${cli/schemarules}.xml</configuration-schemarules-file>
-      <configuration-metamodel-file>${system/cfg-folder-path}/common/metamodels/${cli/owner}/${cli/metamodel}.xml</configuration-metamodel-file>
-   </system>
-   ?>
    <system>
       <configuration-owner-web-folder>${system/managedinputfolder}/cfg/owners/web</configuration-owner-web-folder>
       <configuration-owner-file>${system/managedinputfolder}/cfg/owners/${cli/owner}.xml</configuration-owner-file>
