@@ -622,7 +622,9 @@
             <xsl:variable name="name" select="$this/imvert-result:identification/imvert-result:Identifiable/imvert-result:name"/>
             <xsl:variable name="original" select="$this/imvert-result:identification/imvert-result:Identifiable/imvert-result:originalName"/>
             <xsl:variable name="original-incoming" select="imf:get-taggedvalue($this,'Naam terugrelatie')"/>
-            <xsl:variable name="alias" select="$this/imvert-result:identification/imvert-result:Identifiable/imvert-result:alias"/>
+            <!--<xsl:variable name="alias" select="$this/imvert-result:identification/imvert-result:Identifiable/imvert-result:alias"/>-->
+            <!-- force alias to be same as name -->
+            <xsl:variable name="alias" select="$name"/>
             <xsl:variable name="embellish-name" select="imf:get-construct-name($this)"/>
             <xsl:variable name="compiled-name">
                 <xsl:choose>
@@ -941,4 +943,5 @@
         </xsl:if>
     </xsl:template>
     
+    <xsl:template match="imvert:dummy"/>
 </xsl:stylesheet>

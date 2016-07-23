@@ -53,7 +53,7 @@ public class Reporter extends Step {
 
 		// copy the HTML stuff to the result documentation workfolder
 		String owner = configurator.getParm("cli", "owner");
-		String sourceHtml = configurator.getParm("system", "cfg-folder-path") + "/common/owners/" + owner + "/web";
+		String sourceHtml = configurator.getParm("system", "configuration-owner-web-folder");
 		AnyFolder sourceHtmlFolder = new AnyFolder(sourceHtml);
 		if (!sourceHtmlFolder.isDirectory())
 			throw new Exception("Not a folder: " + sourceHtmlFolder.getCanonicalPath());

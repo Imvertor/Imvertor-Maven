@@ -124,10 +124,11 @@
          UGM transformation to Basisentiteiten schema 
       --> 
       <IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH>
-      
+      <RESULT_METAMODEL_KINGUGM_XSD_FILEPATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_METAMODEL_KINGUGM_XSD_FILEPATH>
      
-     
+      <!-- internediate XML file -->
       <RESULT_XSD_XML_FILE_PATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_XSD_XML_FILE_PATH>   
+      
       <!-- workfolder for serialized excel -->
       <work-serialize-folder>${system/work-folder-path}/serializer/temp-folder</work-serialize-folder>
       <!-- workfolder for processing the  -->

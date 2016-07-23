@@ -63,9 +63,9 @@ public class XsdCompiler extends Step {
 				generateXsdKadaster();
 				supplyExternalSchemas();
 			} else if (schemarules.equals("KINGUGM")) {
-				generateXsdKING();
+				generateUgmXsdKING();
 			} else if (schemarules.equals("KINGBSM")) {
-				generateXsdKING();
+				generateBsmXsdKING();
 			} else
 				runner.error(logger,"Schemarules not implemented: " + schemarules);
 			
@@ -123,11 +123,11 @@ public class XsdCompiler extends Step {
 		return valid;
 	}
 	/**
-	 * Generate KING XSD from the compiled Imvert files.
+	 * Generate KING BSM XSD from the compiled Imvert files.
 	 * 
 	 * @throws Exception
 	 */
-	public boolean generateXsdKING() throws Exception {
+	public boolean generateBsmXsdKING() throws Exception {
 		
 		// create a transformer
 		Transformer transformer = new Transformer();
@@ -145,7 +145,7 @@ public class XsdCompiler extends Step {
 		xsdApplicationFolder.mkdirs();
 		configurator.setParm("system","xsd-folder-path", xsdApplicationFolder.toURI().toString());
 	
-		runner.debug(logger,"Generating XML schemas to " + xsdApplicationFolder);
+		runner.debug(logger,"Generating BSM XML schemas to " + xsdApplicationFolder);
 		
 		String infoXsdSourceFilePath = configurator.getParm("properties", "IMVERTOR_METAMODEL_KINGBSM_XSDSOURCE"); // system or model
 
@@ -174,6 +174,37 @@ public class XsdCompiler extends Step {
 		// record the location of the resulting EP file for subsequent steps
 		configurator.setParm("system","imvertor-ep-result",configurator.getParm("properties","RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH"));
 		// and tell that a schema has been created
+		configurator.setParm("system","schema-created","true");
+		
+		return valid;
+	}
+	
+	/**
+	 * Generate KING UGM XSD (basis entiteiten) from the compiled Imvert files.
+	 * 
+	 * @throws Exception
+	 */
+	public boolean generateUgmXsdKING() throws Exception {
+		
+		// create a transformer
+		Transformer transformer = new Transformer();
+						
+		boolean valid = true;
+		
+		// Create the folder; it is not expected to exist yet.
+		AnyFolder xsdFolder = new AnyFolder(configurator.getParm("system","work-xsd-folder-path"));
+		xsdFolder.mkdirs();
+				
+		AnyFolder xsdApplicationFolder = new AnyFolder(configurator.getParm("properties","RESULT_XSD_APPLICATION_FOLDER"));
+		xsdApplicationFolder.mkdirs();
+		configurator.setParm("system","xsd-folder-path", xsdApplicationFolder.toURI().toString());
+	
+		runner.debug(logger,"Generating UGM XML schemas to " + xsdApplicationFolder);
+		
+		//TODO let the stylesheet operate on system, not on model file. Try to determine if model file is required alltogether.
+		valid = valid && transformer.transformStep("properties/WORK_SCHEMA_FILE","properties/RESULT_METAMODEL_KINGUGM_XSD_FILEPATH", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH");
+		
+		// tell that a schema has been created
 		configurator.setParm("system","schema-created","true");
 		
 		return valid;

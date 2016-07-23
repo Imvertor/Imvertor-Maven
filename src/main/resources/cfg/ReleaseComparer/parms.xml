@@ -63,8 +63,7 @@
         <!-- 
           The XSLT which holds the rules for comparion. This is assumd to be different for each type of metamodel / tagged value set.
         -->
-        <IMVERTOR_COMPARE_CONFIG>${system/cfg-folder-path}/common/comparerules/${cli/owner}/${cli/comparerules}.xml</IMVERTOR_COMPARE_CONFIG>
-
+        <IMVERTOR_COMPARE_CONFIG>${system/managedinputfolder}/cfg/comparerules/${cli/comparerules}.xml</IMVERTOR_COMPARE_CONFIG>
         <!-- 
           the model file is a copy of the model file of the control and test applications 
         -->
