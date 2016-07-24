@@ -48,14 +48,13 @@ public class ReleaseCompiler  extends Step {
 			prepare();
 			runner.info(logger,"Compiling ZIP release");
 		
-			if (configurator.getParm("properties","USER_ZIP_FILE",false) == null) 
-				throw new Exception("No valid ZIP file path specified.");
-			
 			// local temporary spot to store the zip to.
-			targetZipFolder = new AnyFolder(configurator.getParm("properties","RELEASES_FOLDER"));
+			targetZipFolder = new AnyFolder(configurator.getParm("properties","WORK_RELEASES_FOLDER"));
+			if (targetZipFolder.isDirectory()) targetZipFolder.deleteDirectory(); // clear from any previous zips
 			targetZipFolder.mkdirs();
+		
 			// The place where to copy the zip result for distribution.
-			targetUserZipFolder = new AnyFolder(configurator.getParm("properties","USER_ZIP_FILE"));
+			targetUserZipFolder = new AnyFolder(configurator.getParm("properties","FINAL_RELEASES_FOLDER"));
 			targetUserZipFolder.mkdirs();
 			
 			createZipRelease();
@@ -82,13 +81,12 @@ public class ReleaseCompiler  extends Step {
 	 */
 	public void createZipRelease() throws Exception {
 		AnyFolder workFolder = new AnyFolder(configurator.getWorkFolder("app"));
-		ZipFile zip = new ZipFile(configurator.getParm("properties","ZIP_APPLICATION_FILE"));
+		ZipFile zip = new ZipFile(configurator.getParm("properties","WORK_RELEASE_FILE"));
 		zip.compress(workFolder);
 		// copy this file to the indicated result path
 		String f = targetUserZipFolder.getCanonicalPath() + "/" + zip.getName();
 		ZipFile userZipFile = new ZipFile(f);
 		zip.copyFile(userZipFile);
-		zip.delete(); // remove the zip; it is not relevant to retain this in the work folder.
 		configurator.setParm("system","zip-release-filepath", userZipFile.getCanonicalPath());
 		runner.info(logger, "ZIP release saved at: " + userZipFile.getCanonicalPath());
 	}

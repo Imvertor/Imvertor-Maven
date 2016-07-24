@@ -30,12 +30,6 @@
          <required>true</required>
       </cli-parm> 
       <cli-parm>
-         <name>zipfile</name>
-         <arg>folderpath</arg>
-         <tip>Path to the output zip folder holding the complete release</tip>
-         <required>true</required>
-      </cli-parm> 
-      <cli-parm>
          <name>releasename</name>
          <arg>template</arg>
          <tip>Name of the release. May hold placeholders. Will be used as the file name of the ZIP result.</tip>
@@ -60,9 +54,11 @@
    <properties>
 
       <!--  location of all zipped applications, convenient for release -->
-      <RELEASES_FOLDER>${system/work-folder-path}/releases</RELEASES_FOLDER>
-      <USER_ZIP_FILE>${cli/zipfile}</USER_ZIP_FILE>
-      <ZIP_APPLICATION_FILE>${properties/RELEASES_FOLDER}/${appinfo/release-name}.zip</ZIP_APPLICATION_FILE>
+      <WORK_RELEASES_FOLDER>${system/work-folder-path}/releases</WORK_RELEASES_FOLDER>
+      <WORK_RELEASE_FILE>${properties/WORK_RELEASES_FOLDER}/${appinfo/release-name}.zip</WORK_RELEASE_FILE>
+  
+      <!-- finally store zip result here -->
+      <FINAL_RELEASES_FOLDER>${system/managedoutputfolder}/releases</FINAL_RELEASES_FOLDER>
       
    </properties>
 </config>
