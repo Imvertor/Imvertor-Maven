@@ -38,6 +38,7 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.TimeZone;
+import java.util.Vector;
 
 import javax.xml.xpath.XPathConstants;
 
@@ -59,6 +60,11 @@ import org.apache.commons.configuration2.tree.xpath.XPathExpressionEngine;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.apache.xml.resolver.Catalog;
+import org.apache.xml.resolver.CatalogEntry;
+import org.apache.xml.resolver.CatalogException;
+import org.apache.xml.resolver.CatalogManager;
+import org.apache.xml.resolver.tools.CatalogResolver;
 import org.w3c.dom.NodeList;
 
 import net.sf.saxon.Configuration;
@@ -112,6 +118,8 @@ public class Configurator {
 	
 	private Options options;
 	private HashMap<String,Boolean> requiredOption = new HashMap<String,Boolean> ();
+	
+	private HashMap<String,String> catalogMap = new HashMap<String,String> ();
 	
 	private PrintWriter pw = new PrintWriter(System.out);
 	
@@ -1045,5 +1053,46 @@ public class Configurator {
 
 	public boolean getSuppressWarnings() {
 		return suppressWarnings;
+	}
+	
+	/**
+	 * OASIS catalog support: get URI resolver based on OASIS catalog file.
+	 * 
+	 * Mapping are set using configurator.addCatalogMap().
+	 * 
+	 * @return CatalogResolver
+	 * @throws IOException
+	 * @throws ConfiguratorException 
+	 * @throws CatalogException 
+	 */
+	public CatalogResolver getUriResolver() throws IOException, ConfiguratorException, CatalogException {
+		
+		CatalogManager cm = CatalogManager.getStaticManager();
+		cm.setIgnoreMissingProperties(true);
+		
+		Catalog c = cm.getCatalog();
+		
+		Iterator<String> keys = catalogMap.keySet().iterator();
+		while (keys.hasNext()) {
+			String key = keys.next();
+			Vector<String> v = new Vector<String>();
+			v.add(key);
+			v.add(catalogMap.get(key));
+			CatalogEntry e = new CatalogEntry("URI", v);
+			c.addEntry(e);
+			// and remove from the entry list; it is now known and retained in the catalog vector, which is global to this run.
+			catalogMap.remove(key);
+		}
+		return new CatalogResolver(cm);
+	}
+	
+	/**
+	 * Add a mapping from a name to an URI in the catalog.
+	 * 
+	 * @param name
+	 * @param uri
+	 */
+	public void addCatalogMap(String name, String uri) {
+		catalogMap.put(name,uri);
 	}
 }

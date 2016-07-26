@@ -160,6 +160,10 @@
       <DISTRIBUTION_FOLDER>${system/managedoutputfolder}/distributions</DISTRIBUTION_FOLDER>
       <!--  location of result release material (per application) -->
       <DISTRIBUTION_APPLICATION_FOLDER>${properties/DISTRIBUTION_FOLDER}/${cli/project}/${cli/application}</DISTRIBUTION_APPLICATION_FOLDER>
+      
+      <!-- location of the XML catalog file; this is a generated file, only for compare step -->
+      <GENERATED_CATALOG_FILEPATH>${system/work-folder-path}/catalog.xml</GENERATED_CATALOG_FILEPATH>
+      
    </properties>
    
    <system>

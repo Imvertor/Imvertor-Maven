@@ -57,7 +57,7 @@ public class RunInitializer extends Step {
 		configurator.setParm("appinfo", "application-name", "UNKNOWN-APPLICATION-NAME");
 		configurator.setParm("appinfo", "release-name", "UNKNOWN-RELEASE-NAME");
 		configurator.setParm("appinfo", "release", "UNKNOWN-RELEASE");
-			configurator.setParm("properties", "WORK_BASE_FILE", initFile.getCanonicalPath());
+		configurator.setParm("properties", "WORK_BASE_FILE", initFile.getCanonicalPath());
 		configurator.setStepDone(STEP_NAME);
 		
 	    // save any changes to the work configuration for report and future steps

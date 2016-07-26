@@ -37,6 +37,8 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.xml.resolver.CatalogManager;
+import org.apache.xml.resolver.tools.CatalogResolver;
 
 import net.sf.saxon.lib.ExtensionFunctionDefinition;
 import net.sf.saxon.om.Sequence;
@@ -91,22 +93,12 @@ public class Transformer {
 		setXIncludeAware(true);
 		processor = new Processor(configurator.getSaxonConfiguration());
 		
-		/*
-		if (System.getProperty("xml.catalog") != null) {
-			// OASIS catalog support
-			String catalog = System.getProperty("xml.catalog");
-			CatalogManager manager = CatalogManager.getStaticManager();
-			
-			CatalogResolver resolver = new CatalogResolver(manager); // note that CatalogManager.properties must be on the classpath!
-			resolver.getCatalog().parseCatalog(catalog);
-			compiler.setURIResolver(resolver);
-		}
-		*/
-		
 		compiler = processor.newXsltCompiler();
 		compiler.setErrorListener(errorListener); // for compile time errors
 		messageEmitter = configurator.getMessenger();
 		outputProperties = new Properties();
+
+		compiler.setURIResolver(configurator.getUriResolver());  // may be based on a filled catalog
 		
 		// standard extension functions:
 		setExtensionFunction(new ImvertorFileSpec());

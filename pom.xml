@@ -115,6 +115,12 @@
 			<version>1.0.3</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/xml-resolver/xml-resolver -->
+		<dependency>
+		    <groupId>xml-resolver</groupId>
+		    <artifactId>xml-resolver</artifactId>
+		    <version>1.2</version>
+		</dependency>
 
 		<!-- non-mavenized depencies below; dependency on enterprise architect 
 			should be removed -->

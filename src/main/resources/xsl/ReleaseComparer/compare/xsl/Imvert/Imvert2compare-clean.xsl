@@ -66,9 +66,9 @@
         <xsl:variable name="use-name" select="if (self::imvert-result:TaggedValue) then concat('tv_',imvert-result:name) else local-name()"/>
         <xsl:variable name="info" select="key('imvert-compare-config',$use-name,$imvert-compare-config-doc)[last()]"/>
         
-        <!--<xsl:message select="concat($use-name, '/', $info,'/',$info/@use,'/',$imvert-compare-mode)"/>-->
-        
         <xsl:variable name="must-copy" select="contains($info/@use,$imvert-compare-mode)"/>
+        
+        <!--<xsl:message select="concat($identify-construct-by-function,': ', local-name(.), ' - ', $use-name, '/', $info,'/',$info/@use,'/',$imvert-compare-mode, ': ', $must-copy)"/>-->
         
         <xsl:choose>
             <xsl:when test="$include-reference-packages = 'false' and exists(imvert-result:reference)">

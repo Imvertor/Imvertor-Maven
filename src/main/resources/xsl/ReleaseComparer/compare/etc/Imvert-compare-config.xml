@@ -18,6 +18,7 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <config>
+    <?must not be accessed, obsolete!
     <!-- 
         This specification specifies what information in the simplified Imvertor XML file: what should be included in the compare, wand what should be ignored?
         
@@ -119,6 +120,7 @@
         <elm use="DIV"  form="typePackageId">ID of the package of the type</elm>
         <elm use="DIV"  form="baretype">Type as entered</elm>
         <elm use="DIV"  form="stereotype">Stereotype</elm>
+        <elm use="DIV"  form="trace">Trace</elm>
         
         <elm use="DIV"  form="Attribute">Attribute</elm>
         <elm use="DIV"  form="maxLength">Maximum string length</elm>
@@ -163,5 +165,6 @@
         <elm use="DIVR"  form="tv_Release">Tagged value: Release</elm>
         
     </elms>
+    ?>
     
 </config>

@@ -20,6 +20,7 @@
 
 package nl.imvertor.ReleaseComparer;
 
+import java.io.File;
 import java.net.URL;
 
 import org.apache.log4j.Logger;
@@ -53,6 +54,14 @@ public class ReleaseComparer extends Step {
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
 
+		// add the generated XSL to the catalog
+		// note that the catalog is global to all steps.
+		
+		String url = (new File(configurator.getParm("properties", "COMPARE_GENERATED_XSLPATH"))).toURI().toURL().toString();
+		configurator.addCatalogMap(
+				"http://www.imvertor.org/imvertor/1.0/xslt/compare/compare-generated.xsl", 
+				url);
+		
 		Boolean succeeds = true;
 		succeeds = succeeds && docReleaseCompare();
 		succeeds = succeeds && releaseCompare();
