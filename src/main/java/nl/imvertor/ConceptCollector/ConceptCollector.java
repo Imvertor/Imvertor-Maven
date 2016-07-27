@@ -20,12 +20,12 @@
 
 package nl.imvertor.ConceptCollector;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.XmlFile;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 public class ConceptCollector extends Step {
 	

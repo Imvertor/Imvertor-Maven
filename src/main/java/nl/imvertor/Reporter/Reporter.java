@@ -20,11 +20,11 @@
 
 package nl.imvertor.Reporter;
 
+import org.apache.log4j.Logger;
+
 import nl.imvertor.common.Step;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.OutputFolder;
-
-import org.apache.log4j.Logger;
 
 /**
  * This class reports on the state of a run, 

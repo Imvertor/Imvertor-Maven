@@ -20,11 +20,11 @@
 
 package nl.imvertor.ApcModifier;
 
+import org.apache.log4j.Logger;
+
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.ExcelFile;
-
-import org.apache.log4j.Logger;
 
 
 /**

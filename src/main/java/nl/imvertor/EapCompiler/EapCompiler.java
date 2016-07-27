@@ -22,6 +22,8 @@ package nl.imvertor.EapCompiler;
 
 import java.io.File;
 
+import org.apache.log4j.Logger;
+
 import nl.imvertor.XmiCompiler.XmiCompiler;
 import nl.imvertor.common.Runner;
 import nl.imvertor.common.Step;
@@ -29,8 +31,6 @@ import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.EapFile;
 import nl.imvertor.common.file.XmlFile;
-
-import org.apache.log4j.Logger;
 
 /**
  * An EapCompiler creates new EAP files based on a template and data provided. 

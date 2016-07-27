@@ -22,14 +22,14 @@ package nl.imvertor.HistoryCompiler;
 
 import java.io.File;
 
+import org.apache.log4j.Logger;
+
 import nl.imvertor.XmiCompiler.XmiCompiler;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.ExcelFile;
 import nl.imvertor.common.file.XmlFile;
-
-import org.apache.log4j.Logger;
 
 public class HistoryCompiler extends Step {
 

@@ -22,13 +22,13 @@ package nl.imvertor.common.wrapper;
 
 import javax.xml.transform.Transformer;
 
-import nl.imvertor.common.Configurator;
-
 import org.apache.commons.configuration2.CombinedConfiguration;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.configuration2.io.FileLocator;
 import org.apache.commons.configuration2.io.FileLocator.FileLocatorBuilder;
 import org.apache.commons.configuration2.io.FileLocatorUtils;
+
+import nl.imvertor.common.Configurator;
 
 /**
  * Wrapper for apache XMLConfiguration, required for creating a transformer with a locator (bug fix).

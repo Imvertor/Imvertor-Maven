@@ -61,7 +61,7 @@ public class ComplyExtractor  extends Step {
 		// No secial processing (repackaging) is required for this step.
 		Transformer transformer = new Transformer();
 
-		XmlFile contentFile = new XmlFile(serializeFolder,"__content.xml");
+		XmlFile contentFile = new XmlFile(serializeFolder,AnyFolder.SERIALIZED_CONTENT_XML_FILENAME);
 		configurator.setParm("system", "comply-content-file", contentFile.getCanonicalPath());
 		transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_EXTRACT_FILE", "properties/WORK_COMPLY_EXTRACT_XSLPATH","system/cur-imvertor-filepath");
 		

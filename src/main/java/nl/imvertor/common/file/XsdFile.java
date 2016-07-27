@@ -24,12 +24,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
+import org.apache.xerces.xni.XNIException;
+
 import nl.imvertor.SchemaValidator.xerces.ErrorHandler;
 import nl.imvertor.SchemaValidator.xerces.ErrorHandlerMessage;
 import nl.imvertor.SchemaValidator.xerces.XMLGrammarBuilder;
-
-import org.apache.log4j.Logger;
-import org.apache.xerces.xni.XNIException;
 
 public class XsdFile extends XmlFile {
 

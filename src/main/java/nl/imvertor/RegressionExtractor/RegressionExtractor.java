@@ -20,11 +20,18 @@
 
 package nl.imvertor.RegressionExtractor;
 
+import java.io.File;
+
 import org.apache.log4j.Logger;
 
+import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Step;
+import nl.imvertor.common.Transformer;
+import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
+import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.file.XslFile;
+import nl.imvertor.common.xsl.extensions.ImvertorCompareXML;
 
 public class RegressionExtractor  extends Step {
 
@@ -43,31 +50,64 @@ public class RegressionExtractor  extends Step {
 		prepare();
 		runner.info(logger,"Compiling Regression file");
 		
+		String url = (new File(configurator.getParm("properties", "COMPARE_GENERATED_XSLPATH"))).toURI().toURL().toString();
+		configurator.addCatalogMap(
+				"http://www.imvertor.org/imvertor/1.0/xslt/compare/compare-generated.xsl", 
+				url);
+		
+		
 		// STUB
 		//- configurator.setParm("appinfo","release","00000001");
 		
 		// serialize the ref and tst to a folder
 		AnyFolder reffolder = new AnyFolder(configurator.getParm("cli","reffolder"));
 		AnyFolder tstfolder = new AnyFolder(configurator.getParm("cli","tstfolder"));
+		AnyFolder outfolder = new AnyFolder(configurator.getParm("cli","outfolder"));
+		String identifier = configurator.getParm("cli","identifier");
+		
 		XslFile xslFilterFile = new XslFile(configurator.getXslPath(configurator.getParm("properties","REGRESSION_EXTRACT_XSLPATH")));
 		
-		tstfolder.serializeToXml(xslFilterFile);
+		runner.debug(logger,"Serializing " + tstfolder);
+		tstfolder.serializeToXml(xslFilterFile,"test");
 		
-		/*
-		ZipFile template = new ZipFile(templateFilepath);
-		AnyFolder serializeFolder = new AnyFolder(unzipFolderpath);
-		template.serializeToXml(serializeFolder);
+		// determine the __content.xml locations in tst and ref
+		XmlFile tstContentXML = new XmlFile(tstfolder,AnyFolder.SERIALIZED_CONTENT_XML_FILENAME);
+		XmlFile refContentXML = new XmlFile(reffolder,AnyFolder.SERIALIZED_CONTENT_XML_FILENAME);
+		XmlFile compareXML    = new XmlFile(configurator.getParm("properties","WORK_COMPARE_DIFF_FILE"));
 		
-		// in the exported file we find _content.xml, which is the base for all transformations and holds all XML content found.
-		// transform the exported folder any way required, on the basis of _content,xml.
-		// No secial processing (repackaging) is required for this step.
+		// normally the reference folder already holds the __content.xml file, but if not, recreate it here
+		// when developing, always replace.
+		if (!refContentXML.isFile() || configurator.getRunMode() == Configurator.RUN_MODE_DEVELOPMENT) {
+			runner.debug(logger,"Serializing " + reffolder);
+			reffolder.serializeToXml(xslFilterFile,"ctrl");
+		}
+		
+		// now compare the two __content.xml files.
+		
+		XslFile tempXsl = new XslFile(configurator.getParm("properties","COMPARE_GENERATED_XSLPATH")); // ...Imvertor-OS-work\default\compare\generated.xsl
+		XslFile compareXsl = new XslFile(configurator.getParm("properties","COMPARE_GENERATOR_XSLPATH")); // ...RegressionExtractor\compare\xsl\compare.generator.xsl
+		XmlFile listingXml = new XmlFile(configurator.getParm("properties","WORK_COMPARE_LISTING_FILE")); // ...Imvertor-OS-work\default\imvert\compare.2.listing.xml
+		
+		Boolean valid = true;
+		
 		Transformer transformer = new Transformer();
-
-		XmlFile contentFile = new XmlFile(serializeFolder,"__content.xml");
-		configurator.setParm("system", "comply-content-file", contentFile.getCanonicalPath());
-		transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_EXTRACT_FILE", "properties/WORK_COMPLY_EXTRACT_XSLPATH","system/cur-imvertor-filepath");
+		transformer.setExtensionFunction(new ImvertorCompareXML());
 		
-		*/
+		transformer.setXslParm("ctrl-filepath", refContentXML.getCanonicalPath());
+		transformer.setXslParm("test-filepath", tstContentXML.getCanonicalPath());
+		transformer.setXslParm("diff-filepath", compareXML.getCanonicalPath());
+		
+		valid = valid && transformer.transform(refContentXML, tempXsl, compareXsl);
+		
+		// create listing
+		XslFile listingXsl = new XslFile(configurator.getParm("properties","IMVERTOR_COMPARE_LISTING_XSLPATH"));
+		valid = valid && transformer.transform(refContentXML,listingXml,listingXsl);
+		
+		// copy the listing to the outfolder. 
+		// This is picked up by the xslweb regression framework
+		
+		AnyFile outfile = new AnyFile(outfolder,identifier + ".report.xml");
+		listingXml.copyFile(outfile);
 		
 		configurator.setStepDone(STEP_NAME);
 		 

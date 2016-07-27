@@ -33,6 +33,16 @@ import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.ccil.cowan.tagsoup.HTMLSchema;
+import org.ccil.cowan.tagsoup.Schema;
+import org.ccil.cowan.tagsoup.jaxp.SAXParserImpl;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+
 import net.sf.saxon.Configuration;
 import net.sf.saxon.TransformerFactoryImpl;
 import net.sf.saxon.dom.DocumentWrapper;
@@ -47,16 +57,6 @@ import net.sf.saxon.value.BooleanValue;
 import net.sf.saxon.value.SequenceType;
 import net.sf.saxon.value.StringValue;
 import nl.imvertor.common.Configurator;
-
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.ccil.cowan.tagsoup.HTMLSchema;
-import org.ccil.cowan.tagsoup.Schema;
-import org.ccil.cowan.tagsoup.jaxp.SAXParserImpl;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 
 /**

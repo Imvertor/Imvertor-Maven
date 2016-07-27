@@ -20,10 +20,10 @@
 
 package nl.imvertor.RunAnalyzer;
 
+import org.apache.log4j.Logger;
+
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
-
-import org.apache.log4j.Logger;
 
 /**
  * Analyse the full run results and pass info to the parms file for final processing (reporting).
@@ -48,10 +48,12 @@ public class RunAnalyzer extends Step {
 		prepare();
 		runner.info(logger, "Analyzing this run");
 		
-		Transformer transformer = new Transformer();
-		transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_ANALYZER_FILE", "properties/RUN_ANALYZER_XSL"); 
-		//TODO general: also provide default empty input, and default empty output files.
-		
+		if (configurator.getParm("system", "cur-imvertor-filepath",false) != null) {
+			Transformer transformer = new Transformer();
+			transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_ANALYZER_FILE", "properties/RUN_ANALYZER_XSL"); 
+			//TODO general: also provide default empty input, and default empty output files.
+		}
+			
 		configurator.setStepDone(STEP_NAME);
 		
 	    // save any changes to the work configuration for report and future steps

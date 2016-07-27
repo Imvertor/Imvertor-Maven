@@ -20,11 +20,11 @@
 
 package nl.imvertor.OfficeCompiler;
 
+import org.apache.log4j.Logger;
+
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
-
-import org.apache.log4j.Logger;
 
 public class OfficeCompiler extends Step {
 

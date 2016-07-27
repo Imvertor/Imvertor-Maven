@@ -27,37 +27,58 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:cw="http://www.armatiek.nl/namespace/folder-content-wrapper"
+    
     exclude-result-prefixes="#all"
     version="2.0">
     
     <!-- 
-         stylesheet to filter ANY xml file found in teh folder.
-         This XSL is generic, and therfore calls upon any imported XSL (or such) to process specific types of file.
+         Stylesheet to filter ANY xml file found in the tst or ref folder.
+         This XSL is generic, and therefore calls upon any imported XSL (or such) to process specific types of file.
          The root element of the file found is passed in a wrapper element:
-         <zip-content-wrapper:file type="xml" path="work\rep\XmiCompiler-report.xml" name="" ext="" date="" size="" attrib="">
          
-         Note that date/time attribute and size attribute typically should be removed for regresison comparisons.
+         <cw:file 
+            type="{bin or xml}" 
+            path="{relative path to the root of the main folder, including name of the file}" 
+            date="{integer representation of date}" 
+            name="{name of the file}" 
+            ishidden="{boolean}" 
+            isreadonly="{boolean}" 
+            ext="{extension}" 
+            fullpath="{full canonical path}"/>
+         
+         Note that date/time attribute and size attribute typically should be removed for regression comparisons.
          The other *:file data should be passed for reporting purposes.
       -->
     
     <xsl:output method="xml" encoding="UTF-8" omit-xml-declaration="yes"/>
     
-    <xsl:template match="/*:file"> <!-- zip-content-wrapper -->
+    <xsl:template match="/cw:file">
         <xsl:choose>
+            <!-- 
+                skip all XMI files 
+            -->
             <xsl:when test="lower-case(@ext) = ('xmi')">
                 <!-- ignore -->
             </xsl:when>
+            <!-- 
+                skip all binary files. 
+                Assume that all differences in output can be explained by looking at the XML intermediate results. 
+            -->
+            <xsl:when test="@type = 'bin'">
+                <!-- ignore -->
+            </xsl:when>
+            <!--
+                Pass on for more fine-grained filtering
+            -->    
             <xsl:otherwise>
-                <!-- pass on directly without any processing-->
                 <xsl:copy>
-                    <xsl:copy-of select="@*[not(local-name(.) = ('date','size'))]"/>
-                    <xsl:sequence select="node()"/>
+                    <xsl:copy-of select="@*[not(local-name(.) = ('date','size','fullpath'))]"/>
+                    <xsl:apply-templates/>
                 </xsl:copy>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
-
     
     <xsl:template match="node()|@*">
         <xsl:copy>

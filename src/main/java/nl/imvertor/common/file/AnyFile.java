@@ -165,6 +165,7 @@ public class AnyFile extends File  {
 	}
 	
 	public void setContent(String s, boolean append) throws IOException {
+		createFile();
 		FileWriterWithEncoding out = new FileWriterWithEncoding(this, "UTF-8", append);
         out.write(s);
         out.flush();
@@ -505,7 +506,17 @@ public class AnyFile extends File  {
 		return line;
 	}
 	
-	
+	/**
+	 * Create this file if it doesn't exists yet. 
+	 * @throws IOException 
+	 * 
+	 */
+	public void createFile() throws IOException {
+		if (!exists()) {
+			getParentFile().mkdirs();
+			createNewFile();
+		}
+	}
 }
 
 

@@ -20,6 +20,10 @@
 
 package nl.imvertor.XmiCompiler;
 
+import java.io.File;
+
+import org.apache.log4j.Logger;
+
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.exceptions.EnvironmentException;
@@ -27,10 +31,6 @@ import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.EapFile;
 import nl.imvertor.common.file.XmiFile;
 import nl.imvertor.common.file.XmlFile;
-
-import java.io.File;
-
-import org.apache.log4j.Logger;
 
 /**
  * This step-class compiles an XMI file or passes a provides file provided,
@@ -115,7 +115,7 @@ public class XmiCompiler extends Step {
 			}
 			
 			configurator.setParm("system","xmi-export-file-path",activeFile.getCanonicalPath());
-			configurator.setParm("system","xmi-file-path",activeFile.getCanonicalPath() + ".compact.xml");
+			configurator.setParm("system","xmi-file-path",activeFile.getCanonicalPath() + ".compact.xmi");
 			
 			// now compact the XMI file:remove all irrelevant sections
 			runner.debug(logger, "Compacting XMI: " + activeFile.getCanonicalPath());

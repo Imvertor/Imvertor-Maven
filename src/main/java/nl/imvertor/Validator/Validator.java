@@ -20,11 +20,11 @@
 
 package nl.imvertor.Validator;
 
-import nl.imvertor.common.Step;
-import nl.imvertor.common.Transformer;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+
+import nl.imvertor.common.Step;
+import nl.imvertor.common.Transformer;
 
 
 /**

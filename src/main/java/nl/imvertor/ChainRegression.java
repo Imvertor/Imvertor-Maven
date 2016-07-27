@@ -20,17 +20,19 @@
 
 package nl.imvertor;
 
+import java.io.File;
+
 import org.apache.log4j.Logger;
 
-import nl.imvertor.ComplyExtractor.ComplyExtractor;
+import nl.imvertor.RegressionExtractor.RegressionExtractor;
 import nl.imvertor.Reporter.Reporter;
 import nl.imvertor.RunAnalyzer.RunAnalyzer;
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Release;
 
-public class ChainCompliancy {
+public class ChainRegression {
 
-	protected static final Logger logger = Logger.getLogger(ChainCompliancy.class);
+	protected static final Logger logger = Logger.getLogger(ChainRegression.class);
 	
 	public static void main(String[] args) {
 		
@@ -41,33 +43,34 @@ public class ChainCompliancy {
 			System.out.println("Imvertor - " + Release.getNotice());
 			
 			configurator.getRunner().info(logger, "Framework version - " + Release.getVersionString());
-			configurator.getRunner().info(logger, "Chain version - " + "Compliancy extraction 0.1");
+			configurator.getRunner().info(logger, "Chain version - " + "Regression tester 0.1");
 					
 			configurator.prepare(); // note that the process config is relative to the step folder path
 			configurator.getRunner().prepare();
 			
-			// parameter processing
-			configurator.getCli(ComplyExtractor.STEP_NAME);
+			// TODO temporary
+			configurator.setParm("appinfo", "release", "99999999");
 			
+			// parameter processing
+			configurator.getCli(RegressionExtractor.STEP_NAME); // builds a single XML file for integral comparison of ref and tst.
+			//configurator.getCli(RegressionComparer.STEP_NAME); // compares two XML representations.
+					
 			configurator.setParmsFromOptions(args);
 			configurator.setParmsFromEnv();
 		
 		    configurator.save();
 		   
-		    configurator.getRunner().info(logger,"Processing application " + configurator.getParm("cli","project") +": "+ configurator.getParm("cli","application"));
+		    configurator.getRunner().info(logger,"Processing " + configurator.getParm("cli","tstfolder"));
 		    
 		    boolean succeeds = true;
 		    		    
-			// compile compliancy xml
-			succeeds = succeeds && (new ComplyExtractor()).run();
-		
+			// compile regression test xml
+		    succeeds = succeeds && (new RegressionExtractor()).run();
+		   
 			// analyze this run. 
 		    (new RunAnalyzer()).run();
 
-		    // Run the reporter in all cases; grabs all fragments and status info in parms.xml and compiles the documentation.
-			(new Reporter()).run();
-			
-			configurator.windup();
+		    configurator.windup();
 			
 			configurator.getRunner().windup();
 			configurator.getRunner().info(logger, "Done, chain process " + (succeeds ? "succeeds" : "fails"));

@@ -20,11 +20,11 @@
 
 package nl.imvertor.ReleaseCompiler;
 
+import org.apache.log4j.Logger;
+
 import nl.imvertor.common.Step;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.ZipFile;
-
-import org.apache.log4j.Logger;
 
 public class ReleaseCompiler  extends Step {
 

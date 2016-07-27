@@ -72,7 +72,7 @@ public class ComplyCompiler  extends Step {
 			transformer.setExtensionFunction(new SetNamedCount());
 			transformer.setExtensionFunction(new AddNamedCount());
 			
-			XmlFile contentFile = new XmlFile(serializeFolder,"__content.xml");
+			XmlFile contentFile = new XmlFile(serializeFolder,AnyFolder.SERIALIZED_CONTENT_XML_FILENAME);
 			
 			// TODO REMOVE debug; remove next lines
 			XslFile prettyPrinter = new XslFile(configurator.getBaseFolder(),"xsl/common/tools/PrettyPrinter.xsl");

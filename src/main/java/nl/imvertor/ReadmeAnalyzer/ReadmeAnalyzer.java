@@ -20,11 +20,11 @@
 
 package nl.imvertor.ReadmeAnalyzer;
 
-import nl.imvertor.common.Step;
-import nl.imvertor.common.file.AnyFile;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+
+import nl.imvertor.common.Step;
+import nl.imvertor.common.file.AnyFile;
 
 /**
  * Analyse an existing readme file (from any previous run for same release) and store info in the configuration file.

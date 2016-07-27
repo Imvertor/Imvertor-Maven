@@ -93,6 +93,9 @@ public class Configurator {
 	public static final String DEFAULT_METAMODEL = "BP";
 	public static final String DEFAULT_SCHEMARULES = "BP";
 	
+	public static final Integer RUN_MODE_RUN = 1;
+	public static final Integer RUN_MODE_DEVELOPMENT = 2;
+	
 	private Configuration saxonConfig;
 	private Runner runner;
 	private Messenger messenger; // TODO should messenger always be accessed through runner?
@@ -125,12 +128,18 @@ public class Configurator {
 	
 	private long starttime = 0;
 	
+	private Integer runmode = RUN_MODE_RUN;
+	
 	private Configurator()  {
 		
 		runner = new Runner();
 		options = new Options(); 
 		
 		try {
+			if (System.getProperty("run.mode") != null)
+				if (System.getProperty("run.mode").equals("development"))
+					runmode = RUN_MODE_DEVELOPMENT;
+
 			if (System.getProperty("install.dir") == null)
 				throw new ConfiguratorException("Missing system parameter install.dir, please pass as -Dinstall.dir=[filepath]");
 			
@@ -1095,4 +1104,12 @@ public class Configurator {
 	public void addCatalogMap(String name, String uri) {
 		catalogMap.put(name,uri);
 	}
+	
+	/**
+	 * Get the run mode (run or development)
+	 */
+	public Integer getRunMode() {
+		return runmode; 
+	}
+	
 }

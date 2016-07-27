@@ -223,7 +223,7 @@ public class ZipFile extends AnyFile {
     	FileWriterWithEncoding contentWriter = content.getWriterWithEncoding("UTF-8", false);
     	// create a pattern that matches <?xml ... ?>
     	String xmlRegex = "<\\?(x|X)(m|M)(l|L).*?\\?>";
-    	contentWriter.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?><zip-content-wrapper:files xmlns:zip-content-wrapper=\"" + ZIP_CONTENT_WRAPPER_NAMESPACE + "\">");
+    	contentWriter.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?><cw:files xmlns:cw=\"" + ZIP_CONTENT_WRAPPER_NAMESPACE + "\">");
     	// now go through all files in the workfolder. Based in the XML or binary type of the file, add to XML stream or save to a bin folder.
     	Vector<String> files = workFolder.listFilesToVector(true);
     	for (int i = 0; i < files.size(); i++) {
@@ -232,7 +232,7 @@ public class ZipFile extends AnyFile {
     		if (f.isDirectory()) {
     			// skip 
     		} else if (f.isXml() && f.isWellFormed()) {
- 				contentWriter.append("<zip-content-wrapper:file type=\"xml\" path=\"" + relpath + "\">");
+ 				contentWriter.append("<cw:file type=\"xml\" path=\"" + relpath + "\">");
 		    	int linesRead = 0;
 				while (true) {
 					String line = f.getNextLine();
@@ -244,17 +244,17 @@ public class ZipFile extends AnyFile {
 						contentWriter.append(StringUtils.removePattern(line, xmlRegex) + linesep);
 					linesRead += 1;
 				}
-				contentWriter.append("</zip-content-wrapper:file>");
+				contentWriter.append("</cw:file>");
 			} else {	
 				AnyFile fb = new AnyFile(serializeFolder,relpath);
 				AnyFolder fbf = new AnyFolder(fb.getParentFile());
 				fbf.mkdirs();
 				f.copyFile(fb);
 				// and record in XML for informational purpose
-				contentWriter.append("<zip-content-wrapper:file type=\"bin\" path=\"" + relpath + "\"/>");
+				contentWriter.append("<cw:file type=\"bin\" path=\"" + relpath + "\"/>");
 			}
     	}
-    	contentWriter.append("</zip-content-wrapper:files>");
+    	contentWriter.append("</cw:files>");
     	contentWriter.close();
     	// and remove the work folder
     	workFolder.deleteDirectory();
@@ -280,10 +280,10 @@ public class ZipFile extends AnyFile {
     	// process the XML and recreate the ZIP structure.
     	Document dom = contentFile.toDocument();
     	
-    	List<Node> nodes = getElements(getElements(getNodes(dom.getChildNodes()),"zip-content-wrapper:files").get(0).getChildNodes(),"zip-content-wrapper:file"); // get all <file> nodes. 
+    	List<Node> nodes = getElements(getElements(getNodes(dom.getChildNodes()),"cw:files").get(0).getChildNodes(),"cw:file"); // get all <file> nodes. 
     	for (int i = 0; i < nodes.size(); i++) {
     		Node filenode = nodes.get(i);
-    		if (filenode.getNodeType() == Node.ELEMENT_NODE && filenode.getNodeName().equals("zip-content-wrapper:file")) {
+    		if (filenode.getNodeType() == Node.ELEMENT_NODE && filenode.getNodeName().equals("cw:file")) {
     			String fileType = getAttribute(filenode, "type");
     			String filePath = getAttribute(filenode, "path");
     			

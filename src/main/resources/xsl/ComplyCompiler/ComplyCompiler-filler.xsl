@@ -21,7 +21,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
   
-    xmlns:zip-content-wrapper="http://www.armatiek.nl/namespace/zip-content-wrapper"
+    xmlns:cw="http://www.armatiek.nl/namespace/zip-content-wrapper"
     
     xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
     xpath-default-namespace="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
@@ -79,15 +79,15 @@
         get the sheets from template 
     -->
     <xsl:variable name="__content" select="/"/>
-    <xsl:variable name="sheet1" select="$__content/zip-content-wrapper:files/zip-content-wrapper:file[@path = 'xl\worksheets\sheet1.xml']/worksheet"/>
-    <xsl:variable name="sheet2" select="$__content/zip-content-wrapper:files/zip-content-wrapper:file[@path = 'xl\worksheets\sheet2.xml']/worksheet"/>
-    <xsl:variable name="sheet3" select="$__content/zip-content-wrapper:files/zip-content-wrapper:file[@path = 'xl\worksheets\sheet3.xml']/worksheet"/>
+    <xsl:variable name="sheet1" select="$__content/cw:files/cw:file[@path = 'xl\worksheets\sheet1.xml']/worksheet"/>
+    <xsl:variable name="sheet2" select="$__content/cw:files/cw:file[@path = 'xl\worksheets\sheet2.xml']/worksheet"/>
+    <xsl:variable name="sheet3" select="$__content/cw:files/cw:file[@path = 'xl\worksheets\sheet3.xml']/worksheet"/>
    
-    <xsl:variable name="comments1" select="$__content/zip-content-wrapper:files/zip-content-wrapper:file[@path = 'xl\comments1.xml']/comments"/>
-    <xsl:variable name="comments2" select="$__content/zip-content-wrapper:files/zip-content-wrapper:file[@path = 'xl\comments2.xml']/comments"/>
+    <xsl:variable name="comments1" select="$__content/cw:files/cw:file[@path = 'xl\comments1.xml']/comments"/>
+    <xsl:variable name="comments2" select="$__content/cw:files/cw:file[@path = 'xl\comments2.xml']/comments"/>
 
-    <xsl:variable name="drawings1" select="$__content/zip-content-wrapper:files/zip-content-wrapper:file[@path = 'xl\drawings\vmlDrawing1.vml']/*:xml"/>
-    <xsl:variable name="drawings2" select="$__content/zip-content-wrapper:files/zip-content-wrapper:file[@path = 'xl\drawings\vmlDrawing2.vml']/*:xml"/>
+    <xsl:variable name="drawings1" select="$__content/cw:files/cw:file[@path = 'xl\drawings\vmlDrawing1.vml']/*:xml"/>
+    <xsl:variable name="drawings2" select="$__content/cw:files/cw:file[@path = 'xl\drawings\vmlDrawing2.vml']/*:xml"/>
     
     <xsl:template match="/">
         <xsl:if test="$debug">
@@ -100,7 +100,7 @@
         <xsl:apply-templates/>
     </xsl:template>
     
-    <xsl:template match="zip-content-wrapper:file/worksheet">
+    <xsl:template match="cw:file/worksheet">
         <xsl:variable name="worksheet" select="imf:select-context-element(.,(
             'sheetPr',
             'dimension',
@@ -131,7 +131,7 @@
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="zip-content-wrapper:file/workbook">
+    <xsl:template match="cw:file/workbook">
         <xsl:variable name="workbook" select="imf:select-context-element(.,(
             'fileVersion',
             'workbookPr', 
@@ -147,7 +147,7 @@
         </xsl:copy>
     </xsl:template>
 
-    <xsl:template match="zip-content-wrapper:file/comments">
+    <xsl:template match="cw:file/comments">
         <xsl:variable name="comments" select="imf:select-context-element(.,(
             'authors',
             'commentList'))"/>
@@ -165,7 +165,7 @@
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="zip-content-wrapper:file/*:xml">
+    <xsl:template match="cw:file/*:xml">
         <xsl:variable name="drawings" select="imf:select-context-element(.,(
             'o:shapelayout',
             'v:shapetype',
@@ -184,7 +184,7 @@
     </xsl:template>
     
     <!-- TODO hoe? -->
-    <xsl:template match="zip-content-wrapper:XXXfile/content-types:Types" xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+    <xsl:template match="cw:XXXfile/content-types:Types" xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
         
         <xsl:variable name="types" select="imf:select-context-element(.,(
             'Default',
@@ -784,7 +784,7 @@
         </xsl:for-each>
     </xsl:function>
     
-    <xsl:template match="zip-content-wrapper:dummy"/>
+    <xsl:template match="cw:dummy"/>
     
     <xsl:template match="node()|@*" mode="#all">
         <xsl:copy>

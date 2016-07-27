@@ -575,10 +575,11 @@
     
     <xsl:template match="imvert:class[imvert:designation=imf:get-config-stereotypes('stereotype-name-designation-datatype')]" priority="1">
         <!--setup-->
+        <xsl:variable name="datatype-stereos" select="('stereotype-name-datatype','stereotype-name-complextype','stereotype-name-union')"/>
         <!--validation-->
         <xsl:sequence select="imf:report-warning(., 
-            not(imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-datatype','stereotype-name-complextype','stereotype-name-union'))), 
-            'UML datatypes should be stereotyped as: [1]',string-join(imf:get-config-stereotypes(('stereotype-name-datatype','stereotype-name-complextype','stereotype-name-union')),' or '))"/>
+            not(imvert:stereotype=imf:get-config-stereotypes($datatype-stereos)), 
+            'UML datatypes should be stereotyped as: [1]',string-join(imf:get-config-stereotypes($datatype-stereos),' or '))"/>
         <xsl:sequence select="imf:report-warning(., 
             not(imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-complextype','stereotype-name-union'))) and imvert:attributes/imvert:attribute, 
             'Simple datatypes should not have attributes')"/>
@@ -667,6 +668,13 @@
         <xsl:sequence select="imf:report-warning(., 
             not($is-datatyped or empty($defining-class)), 
             'Attribute type of [1] must be a datatype, but is not.', ($this/imvert:stereotype))"/>
+        
+        <!-- Jira IM-419 -->
+        <xsl:sequence select="imf:report-warning(., 
+            $is-designated-referentielijst 
+            and normalize-space(imf:get-tagged-value(.,'Data locatie'))
+            and normalize-space(imf:get-tagged-value($defining-class,'Data locatie')), 
+            '[1] has been specified on attribute as well as on [2]', ('Data location',$defining-class))"/>
         
         <xsl:sequence select="imf:check-stereotype-assignment(.)"/>
         <xsl:sequence select="imf:check-tagged-value-occurs(.)"/>

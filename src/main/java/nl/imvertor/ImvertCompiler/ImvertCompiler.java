@@ -20,13 +20,13 @@
 
 package nl.imvertor.ImvertCompiler;
 
+import org.apache.log4j.Logger;
+
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.xsl.extensions.ImvertorParseHTML;
-
-import org.apache.log4j.Logger;
 
 public class ImvertCompiler extends Step {
 

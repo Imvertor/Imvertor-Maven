@@ -22,7 +22,6 @@ package nl.imvertor.common.file;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -342,7 +341,7 @@ public class XmlFile extends AnyFile implements ErrorHandler {
             analysis += "</diff>";
         }
         analysis += "</diffs>";
-    	resultFile.setContent(analysis);
+        resultFile.setContent(analysis);
     	return (allDifferences.size() == 0) ? true: false;
     }
 	

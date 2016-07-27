@@ -24,6 +24,9 @@ import java.io.File;
 
 import javax.xml.xpath.XPathConstants;
 
+import org.apache.log4j.Logger;
+import org.w3c.dom.NodeList;
+
 import nl.imvertor.XsdCompiler.xsl.extensions.ImvertorGetVariable;
 import nl.imvertor.XsdCompiler.xsl.extensions.ImvertorSetVariable;
 import nl.imvertor.common.Step;
@@ -36,9 +39,6 @@ import nl.imvertor.common.file.XslFile;
 import nl.imvertor.common.xsl.extensions.ImvertorExcelSerializer;
 import nl.imvertor.common.xsl.extensions.ImvertorZipDeserializer;
 import nl.imvertor.common.xsl.extensions.ImvertorZipSerializer;
-
-import org.apache.log4j.Logger;
-import org.w3c.dom.NodeList;
 
 public class XsdCompiler extends Step {
 

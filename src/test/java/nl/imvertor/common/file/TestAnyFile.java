@@ -3,8 +3,6 @@ package nl.imvertor.common.file;
 import org.junit.Assert;
 import org.junit.Test;
 
-import nl.imvertor.common.file.AnyFile;
-
 public class TestAnyFile {
 
     @Test

@@ -20,10 +20,10 @@
 
 package nl.imvertor.XmiTranslator;
 
+import org.apache.log4j.Logger;
+
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
-
-import org.apache.log4j.Logger;
 
 
 /**

@@ -21,7 +21,6 @@
 package nl.imvertor.common;
 
 import java.io.File;
-import java.sql.Date;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -37,8 +36,6 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.xml.resolver.CatalogManager;
-import org.apache.xml.resolver.tools.CatalogResolver;
 
 import net.sf.saxon.lib.ExtensionFunctionDefinition;
 import net.sf.saxon.om.Sequence;
