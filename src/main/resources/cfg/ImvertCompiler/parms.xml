@@ -64,6 +64,9 @@
       <IMVERTOR_COPYDOWN_XSLPATH>Imvert2copydown.xsl</IMVERTOR_COPYDOWN_XSLPATH>
       <WORK_COPYDOWN_FILE>${system/work-imvert-folder-path}/imvertor.06.copydown.xml</WORK_COPYDOWN_FILE>
       
+      <IMVERTOR_INTERN_XSLPATH>Imvert2intern.xsl</IMVERTOR_INTERN_XSLPATH>
+      <WORK_INTERN_FILE>${system/work-imvert-folder-path}/imvertor.061.intern.xml</WORK_INTERN_FILE>
+      
       <IMVERTOR_REF_XSLPATH>Imvert2ref.xsl</IMVERTOR_REF_XSLPATH>
       <WORK_REF_FILE>${system/work-imvert-folder-path}/imvertor.07.ref.xml</WORK_REF_FILE>
       

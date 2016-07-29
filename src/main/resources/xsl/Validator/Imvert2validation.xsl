@@ -78,6 +78,7 @@
     <xsl:variable name="schema-oriented-stereotypes" as="xs:string*">
         <xsl:sequence select="imf:get-config-stereotypes('stereotype-name-system-package')"/>
         <xsl:sequence select="imf:get-config-stereotypes('stereotype-name-external-package')"/>
+        <xsl:sequence select="imf:get-config-stereotypes('stereotype-name-internal-package')"/>
         <xsl:sequence select="imf:get-config-stereotypes('stereotype-name-domain-package')"/>
         <xsl:sequence select="imf:get-config-stereotypes('stereotype-name-view-package')"/>
     </xsl:variable>
@@ -101,10 +102,17 @@
         The external package must also define any class that is referenced by the application.
     -->
     <xsl:variable name="external-package" select="//imvert:package[ancestor-or-self::imvert:package/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-external-package') and (imvert:class/imvert:id = $application-package//(imvert:type-id | imvert:supertype/imvert:type-id)) or imvert:stereotype=imf:get-config-stereotypes('stereotype-name-system-package')]"/>
+    
+    <!-- 
+        The set of internal packages includes all packages that are <<external>> of any subpackage thereof.
+        The external package must also define any class that is referenced by the application.
+    -->
+    <xsl:variable name="internal-package" select="//imvert:package[ancestor-or-self::imvert:package/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-internal-package') and (imvert:class/imvert:id = $application-package//(imvert:type-id | imvert:supertype/imvert:type-id))]"/>
+   
     <xsl:variable name="domain-package" select="$application-package//imvert:package[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))]"/>
     <xsl:variable name="subdomain-package" select="$domain-package//imvert:package"/>
     
-    <xsl:variable name="document-packages" select="($application-package,$domain-package,$subdomain-package,$external-package)"/>
+    <xsl:variable name="document-packages" select="($application-package,$domain-package,$subdomain-package,$external-package,$internal-package)"/>
     <xsl:variable name="document-classes" select="$document-packages/imvert:class"/>
 
     <xsl:variable name="is-application" select="$application-package/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-application-package')"/>
@@ -239,7 +247,7 @@
         <xsl:for-each select=".//imvert:type-id">
             <xsl:variable name="refed-class" select="imf:get-construct-by-id(.)"/>
             <xsl:variable name="refed-name" select="../imvert:type-name"/> <!-- IM-91 -->
-            <xsl:variable name="fails" select="not(imf:get-top-package($refed-class) = $this-package or imf:get-external-package($refed-class))"/>
+            <xsl:variable name="fails" select="not(imf:get-top-package($refed-class) = $this-package or imf:get-internal-package($refed-class) or imf:get-external-package($refed-class))"/>
             <xsl:choose>
                   <xsl:when test="exists(parent::imvert:supertype)">
                       <xsl:sequence select="imf:report-error(ancestor::*[imvert:name][1], 
@@ -381,6 +389,20 @@
     </xsl:template>
     
     <!--
+        Rules for the internal packages
+        REDMINE #487612
+    -->
+    <xsl:template match="imvert:package[. = $internal-package]">
+        <!--setup-->
+        <!--validation -->
+    
+        <!-- none yet -->
+        
+        <!-- check as regular package -->
+        <xsl:next-match/>
+    </xsl:template>
+    
+    <!--
         Rules for any package, be it domain, subdomain, or external package.
     -->
     <xsl:template match="imvert:package" priority="0">
@@ -466,7 +488,7 @@
         <xsl:variable name="this" select="."/>
         <xsl:variable name="this-id" select="imvert:id"/>
         <xsl:variable name="is-supertype" select="$document-classes/imvert:supertype/imvert:type-id=$this-id"/>
-        <xsl:variable name="is-internal" select="not(ancestor::imvert:package/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-external-package','stereotype-name-system-package')))"/>
+        <xsl:variable name="is-internal" select="not(ancestor::imvert:package/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-external-package','stereotype-name-internal-package','stereotype-name-system-package')))"/>
         <xsl:variable name="supertypes" select="imvert:supertype[not(imvert:stereotype=imf:get-config-stereotypes('stereotype-name-static-generalization'))]"/>
         <xsl:variable name="superclasses" select="imf:get-superclasses($this)"/>
         <xsl:variable name="is-id" select="(.,$superclasses)/imvert:attributes/imvert:attribute/imvert:is-id = 'true'"/>
@@ -1253,6 +1275,13 @@
     <xsl:function name="imf:get-external-package" as="element()?">
         <xsl:param name="construct" as="element()?"/>
         <xsl:sequence select="$construct/ancestor-or-self::imvert:package[.=$external-package][1]"/>
+    </xsl:function>
+    
+    <!-- return the internal package that this construct is part of. --> 
+    <!-- REDMINE #487612 -->
+    <xsl:function name="imf:get-internal-package" as="element()?">
+        <xsl:param name="construct" as="element()?"/>
+        <xsl:sequence select="$construct/ancestor-or-self::imvert:package[.=$internal-package][1]"/>
     </xsl:function>
     
     <xsl:function name="imf:value-trim">

@@ -56,6 +56,7 @@ public class ImvertCompiler extends Step {
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_DEPENDENCIES_FILE", "properties/IMVERTOR_DEPENDENCIES_XSLPATH") : false ;
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_VARIANT_FILE", "properties/IMVERTOR_APPLICATION_XSLPATH","system/cur-imvertor-filepath") : false ;
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_COPYDOWN_FILE", "properties/IMVERTOR_COPYDOWN_XSLPATH","system/cur-imvertor-filepath") : false ;
+		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_INTERN_FILE", "properties/IMVERTOR_INTERN_XSLPATH","system/cur-imvertor-filepath") : false ;
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_REF_FILE", "properties/IMVERTOR_REF_XSLPATH","system/cur-imvertor-filepath") : false ;
 		if (configurator.isTrue("cli", "createxmlschema")) {
 			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_CONCRETESCHEMA_FILE", "properties/IMVERTOR_CONCRETESCHEMA_XSLPATH","system/cur-imvertor-filepath") : false ;

@@ -53,7 +53,8 @@
         imf:get-config-stereotypes('stereotype-name-application-package'), 
         imf:get-config-stereotypes('stereotype-name-system-package'), 
         imf:get-config-stereotypes('stereotype-name-components-package'), 
-        imf:get-config-stereotypes('stereotype-name-external-package'))"/>
+        imf:get-config-stereotypes('stereotype-name-external-package'),
+        imf:get-config-stereotypes('stereotype-name-internal-package'))"/>
     
     <xsl:variable name="domain-mapping" as="node()*">
         <xsl:for-each select="$base-package/descendant-or-self::imvert:package">
