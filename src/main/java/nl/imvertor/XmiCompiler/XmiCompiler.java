@@ -21,7 +21,10 @@
 package nl.imvertor.XmiCompiler;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.apache.commons.io.output.FileWriterWithEncoding;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
@@ -113,7 +116,11 @@ public class XmiCompiler extends Step {
 				runner.info(logger,"Reading" + filespec);
 				activeFile = (XmlFile) passedFile;
 			}
-			
+		
+			// XMI file may contain invalid character references, this is a bug see http://www.sparxsystems.com/products/ea/13/
+			// we resolve this brute force here.
+			cleanXMI(activeFile);
+		
 			configurator.setParm("system","xmi-export-file-path",activeFile.getCanonicalPath());
 			configurator.setParm("system","xmi-file-path",activeFile.getCanonicalPath() + ".compact.xmi");
 			
@@ -143,6 +150,26 @@ public class XmiCompiler extends Step {
 		XmlFile r = eapFile.exportToXmiFile(xmifile.getCanonicalPath(), rootPackageGUID);
 		eapFile.close();
 		return r;
+	}
+	
+	/**
+	 * Fix on EA bug. XMI must not contain invalid character references. Hope this solves it.
+	 * 
+	 * @param xmiFile
+	 * @throws IOException
+	 */
+	private void cleanXMI(XmlFile xmiFile) throws IOException {
+		AnyFile outFile = new AnyFile(File.createTempFile("cleanXMI.", ".xmi"));
+		outFile.deleteOnExit();
+		FileWriterWithEncoding writer = outFile.getWriterWithEncoding("UTF-8", false);
+		String line = xmiFile.getNextLine();
+		while (line != null) {
+			writer.write(StringUtils.replacePattern(line, "&#5[0-9]{4};", "X") + "\n");
+			line = xmiFile.getNextLine();
+		}
+		writer.flush();
+		writer.close();
+		outFile.copyFile(xmiFile);
 	}
 
 }
