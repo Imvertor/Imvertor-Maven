@@ -639,6 +639,8 @@
             $is-designated-interface or 
             $is-designated-union"/>
        
+        <xsl:variable name="assert-attribute-not-specified" select="(not($is-enumeration) and empty(imvert:baretype) and empty(imvert:type-name))"/>
+        
         <!--validation-->
         <xsl:sequence select="imf:report-warning(., 
             not(imf:test-name-convention($this)), 
@@ -647,15 +649,17 @@
             (imvert:supertype[not(imvert:type-package)]), 
             'Supertype is not a known class. Is the package that defines this class in scope?')"/>
         <xsl:sequence select="imf:report-error(., 
-            (not($is-enumeration) and empty(imvert:baretype) and empty(imvert:type-name)), 
+            $assert-attribute-not-specified, 
             'Attribute type not specified')"/>
         
         <!--IM-449-->
         <xsl:sequence select="imf:report-error(., 
-            (not($is-enumeration) and not(imf:is-known-baretype(imvert:baretype)) and empty(imvert:type-name)), 
+            not($assert-attribute-not-specified) and 
+            (not($is-enumeration) and exists(imvert:baretype) and not(imf:is-known-baretype(imvert:baretype)) and empty(imvert:type-name)), 
             'Attribute type [1] is not a known type and not a scalar',imvert:baretype)"/>
         
         <xsl:sequence select="imf:report-error(., 
+            not($assert-attribute-not-specified) and 
             (not($is-enumeration) and empty(imvert:baretype) and empty(imvert:type-package)), 
             'Unknown attribute type. Is the package that defines this class in scope?')"/>
         <xsl:sequence select="imf:report-error(., 

@@ -340,7 +340,7 @@
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="imvert:association[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-tekentechnisch')]">
+    <xsl:template match="imvert:association[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-tekentechnisch')]" priority="-1">
         <!-- remove -->
     </xsl:template>
 
