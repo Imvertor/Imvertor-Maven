@@ -453,6 +453,9 @@ public class Configurator {
 		appFinalFolder.clearIfExists(false);
 		appWorkFolder.copy(appFinalFolder);	
 		
+		// set this as a system property; to be picked up by any outside application such as xslweb executor
+		setParm("system", "result-output-folder", appFinalFolder);
+		
 		if (runner.isFinal() && isTrue("system","schema-created",false)) { 
 			runner.info(logger, "Copying the result XML schemas to distribution folder");
 			AnyFolder sourceXsdFolder = new AnyFolder(getParm("system","work-xsd-folder-path"));
