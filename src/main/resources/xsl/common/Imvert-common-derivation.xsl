@@ -170,6 +170,8 @@
 		<xsl:sequence select="if ($include-empty) then $tvs else $tvs[normalize-space(@value)]"/>
 	</xsl:function>
 	
+	
+	
 	<xsl:function name="imf:get-supplier-from-layers">
 		<xsl:param name="construct" as="element()"/>
 		<xsl:variable name="construct-id" select="($construct/ancestor::*[imvert:id])[1]/imvert:id"/>
@@ -262,6 +264,79 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:sequence select="imf:get-construct-by-id($supplier-id-corrected,$document-root)"/>
+	</xsl:function>
+	
+	<!-- redmine #487844
+		
+		Get all derived information on the specified construct.
+		Specify the name of the informational item. Convention is the name of the imvert element, i.e.
+		min-occurs return imvert:min-occurs
+		baretype return imvert:baretype 
+		etc.
+		
+		This effectively returns the imvert:N list of this client and all suppliers, in that order.
+		Each element has the attributes, taken from the trace info:
+		
+		@project="GREEN" 
+		@application="SampleApplication" 
+		@release="20140701" 
+		@level="0"
+		
+		If tagged value is intended:
+		Get all the tagged-value elements. 
+		This effectively returns the imvert:tagged-value list of this and all suppliers, in that order.
+	-->
+	<xsl:variable name="traceable-item-names" select="tokenize('
+		name
+		short-name
+		alias
+		created
+		modified
+		version
+		phase
+		author
+		stereotype
+		baretype
+		type-name
+		min-occurs
+		max-occurs
+		position
+		data-location
+		documentation
+	','\s+')"/>
+	
+	<xsl:function name="imf:get-construct-derived-items" as="element()*">
+		<xsl:param name="construct" as="element()"/> <!-- any construct that may have such information items -->
+		<xsl:param name="item-name"/>
+		<xsl:param name="is-tagged-value"/>
+		<xsl:variable name="layers" select="imf:get-construct-in-all-layers($construct)"/>
+		<xsl:choose>
+			<xsl:when test="$is-tagged-value">
+				<xsl:for-each select="$layers/imvert:*/imvert:tagged-values/imvert:tagged-value[imvert:name = $item-name]">
+					<xsl:copy>
+						<xsl:copy-of select="../../../@*"/>
+						<xsl:sequence select="node()"/>
+					</xsl:copy>
+				</xsl:for-each>
+			</xsl:when>
+			<xsl:when test="$item-name = ($traceable-item-names)">
+				<xsl:for-each select="$layers/imvert:*/imvert:*[local-name(.) = $item-name]">
+					<xsl:copy>
+						<xsl:copy-of select="../../@*"/>
+						<xsl:sequence select="node()"/>
+					</xsl:copy>
+				</xsl:for-each>
+			</xsl:when>
+			<xsl:otherwise>
+				<!-- no alternative -->
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:function>
+	
+	<xsl:function name="imf:get-construct-derived-items" as="element()*">
+		<xsl:param name="construct" as="element()"/> <!-- any construct that may have such information items -->
+		<xsl:param name="item-name"/>
+		<xsl:sequence select="imf:get-construct-derived-items($construct,$item-name,false())"/>
 	</xsl:function>
 	
 </xsl:stylesheet>

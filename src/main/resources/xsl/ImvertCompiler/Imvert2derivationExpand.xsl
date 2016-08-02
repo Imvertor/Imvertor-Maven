@@ -61,6 +61,9 @@
             <imvert:documentation>
                 <xsl:sequence select="$derived-documentation"/>
             </imvert:documentation>
+            <imvert:derivation>
+                <xsl:sequence select="imf:get-construct-derived-items(.,'documentation')"/>
+            </imvert:derivation>
         </xsl:copy>
     </xsl:template>
     
