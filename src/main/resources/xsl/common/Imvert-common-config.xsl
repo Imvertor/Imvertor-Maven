@@ -38,19 +38,20 @@
   
     <!-- The current runtime parms.xml file -->
     <xsl:variable name="configuration" select="imf:document($xml-configuration-url)"/>
-    
+  
     <xsl:variable name="configuration-owner-name" select="imf:get-config-string('system','configuration-owner-file')"/>
     <xsl:variable name="configuration-metamodel-name" select="imf:get-config-string('system','configuration-metamodel-file')"/>
     <xsl:variable name="configuration-schemarules-name" select="imf:get-config-string('system','configuration-schemarules-file')"/>
     <xsl:variable name="configuration-tvset-name" select="imf:get-config-string('system','configuration-tvset-file')"/>
+  
+    <xsl:variable name="configuration-file" select="imf:document(imf:get-config-string('properties','WORK_CONFIG_FILE'))"/>
     
-    <xsl:variable name="configuration-owner-file" select="imf:prepare-config(imf:document($configuration-owner-name))"/>
-    <xsl:variable name="configuration-metamodel-file" select="imf:prepare-config(imf:document($configuration-metamodel-name))"/>
-    <xsl:variable name="configuration-schemarules-file" select="imf:prepare-config(imf:document($configuration-schemarules-name))"/>
-    <xsl:variable name="configuration-tvset-file" select="imf:prepare-config(imf:document($configuration-tvset-name))"/>
-    
+    <xsl:variable name="configuration-owner-file" select="$configuration-file/config/project-owner"/>
+    <xsl:variable name="configuration-metamodel-file" select="$configuration-file/config/metamodel"/>
+    <xsl:variable name="configuration-schemarules-file" select="$configuration-file/config/schema-rules"/>
+    <xsl:variable name="configuration-tvset-file" select="$configuration-file/config/tagset"/>
+
     <xsl:variable name="all-scalars" select="$configuration-metamodel-file//scalars/scalar"/>
-    
     
     <xsl:function name="imf:get-config-schemarules" as="element(tv)*">
         <xsl:sequence select="$configuration-schemarules-file//name-value-mapping/tagged-values/tv"/>
@@ -152,54 +153,6 @@
     -->
     <xsl:function name="imf:get-config-scalar-names" as="xs:string*">
         <xsl:sequence select="$configuration-metamodel-file//scalars/scalar/name[@lang=$language]"/>
-    </xsl:function>
-    
-    <!-- name normalization on all configuration files -->
-    
-    <xsl:function name="imf:prepare-config">
-        <xsl:param name="document" as="document-node()?"/>
-        <xsl:apply-templates select="$document" mode="prepare-config"/>
-    </xsl:function>
-    
-    <xsl:template match="tv/name" mode="prepare-config">
-        <xsl:sequence select="imf:prepare-config-name-element(.,'tv-name')"/>
-    </xsl:template>
-    
-    <xsl:template match="tv/declared-values/value" mode="prepare-config">
-        <xsl:variable name="norm" select="(../../@norm,'space')[1]"/>
-        <xsl:sequence select="imf:prepare-config-tagged-value-element(.,$norm)"/>
-    </xsl:template>
-    
-    <xsl:template match="tv/stereotypes/stereo" mode="prepare-config">
-        <xsl:sequence select="imf:prepare-config-name-element(.,'stereotype-name')"/>
-    </xsl:template>
-    
-    <xsl:template match="stereotypes/stereo/name" mode="prepare-config">
-        <xsl:sequence select="imf:prepare-config-name-element(.,'stereotype-name')"/>
-    </xsl:template>
-    
-    <xsl:function name="imf:prepare-config-name-element" as="element()?">
-        <xsl:param name="name-element" as="element()"/>
-        <xsl:param name="name-type" as="xs:string"/>
-        <xsl:if test="$name-element/@lang = ($language,'#all')">
-            <xsl:element name="{name($name-element)}">
-                <xsl:apply-templates select="$name-element/@*" mode="prepare-config"/>
-                <xsl:attribute name="original" select="$name-element/text()"/>
-                <xsl:value-of select="imf:get-normalized-name($name-element,$name-type)"/>
-            </xsl:element>
-        </xsl:if>
-    </xsl:function>
-    
-    <xsl:function name="imf:prepare-config-tagged-value-element" as="element()?">
-        <xsl:param name="value-element" as="element()"/>
-        <xsl:param name="norm-rule" as="xs:string"/>
-        <xsl:if test="($value-element/ancestor-or-self::*/@lang)[1] = ($language,'#all')">
-            <xsl:element name="{name($value-element)}">
-                <xsl:apply-templates select="$value-element/@*" mode="prepare-config"/>
-                <xsl:attribute name="original" select="$value-element/text()"/>
-                <xsl:value-of select="imf:get-tagged-value-norm-prepare($value-element,$norm-rule)"/>
-            </xsl:element>
-        </xsl:if>
     </xsl:function>
     
     <!-- default -->

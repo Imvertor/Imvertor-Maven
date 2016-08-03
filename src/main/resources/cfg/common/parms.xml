@@ -55,6 +55,7 @@
          <tip>Set task to compile or release</tip>
          <required>true</required>
       </cli-parm> 
+      <!--
       <cli-parm>
          <name>owner</name>
          <arg>name</arg>
@@ -73,6 +74,7 @@
          <tip>Name of the configuration folder for tagged value set definitions</tip>
          <required>true</required>
       </cli-parm> 
+      -->
       <cli-parm>
          <name>project</name>
          <arg>name</arg>
@@ -99,12 +101,14 @@
          <required>true</required>
          <type>url</type>
       </cli-parm> 
+      <!--
       <cli-parm>
          <name>metamodel</name>
          <arg>name</arg>
          <tip>Name of metamodel used in UML model</tip>
          <required>true</required>
-      </cli-parm> 
+      </cli-parm>
+      -->
       <cli-parm>
          <name>forcecompile</name>
          <arg>yes|no</arg>

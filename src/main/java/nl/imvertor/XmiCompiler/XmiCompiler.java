@@ -109,17 +109,16 @@ public class XmiCompiler extends Step {
 					exportEapToXmi((EapFile) passedFile, activeFile);
 					// and place file info in ID file
 					idFile.setContent(passedFile.getFileInfo());
+					cleanXMI(activeFile);
 				} else {
 					runner.info(logger,"Reusing" + filespec);
 				}
 			} else {
+				// XMI is provided
 				runner.info(logger,"Reading" + filespec);
 				activeFile = (XmlFile) passedFile;
+				cleanXMI(activeFile);
 			}
-		
-			// XMI file may contain invalid character references, this is a bug see http://www.sparxsystems.com/products/ea/13/
-			// we resolve this brute force here.
-			cleanXMI(activeFile);
 		
 			configurator.setParm("system","xmi-export-file-path",activeFile.getCanonicalPath());
 			configurator.setParm("system","xmi-file-path",activeFile.getCanonicalPath() + ".compact.xmi");

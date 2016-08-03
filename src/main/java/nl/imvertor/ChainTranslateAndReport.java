@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import nl.imvertor.ApcModifier.ApcModifier;
 import nl.imvertor.ComplyCompiler.ComplyCompiler;
 import nl.imvertor.ConceptCollector.ConceptCollector;
+import nl.imvertor.ConfigCompiler.ConfigCompiler;
 import nl.imvertor.EapCompiler.EapCompiler;
 import nl.imvertor.HistoryCompiler.HistoryCompiler;
 import nl.imvertor.ImvertCompiler.ImvertCompiler;
@@ -64,6 +65,7 @@ public class ChainTranslateAndReport {
 			
 			// parameter processing
 			configurator.getCli("common");
+			configurator.getCli(ConfigCompiler.STEP_NAME);
 			configurator.getCli(ApcModifier.STEP_NAME);
 			configurator.getCli(XmiCompiler.STEP_NAME);
 			configurator.getCli(XmiTranslator.STEP_NAME);
@@ -97,7 +99,11 @@ public class ChainTranslateAndReport {
 		    (new RunInitializer()).run();
 		    
 		    try {
-				// Create the XMI file from EAP or other sources
+		    	
+		    	// Build the configuration file
+			    succeeds = (new ConfigCompiler()).run();
+			 
+			    // Create the XMI file from EAP or other sources
 			    succeeds = (new XmiCompiler()).run();
 				
 			    // Translate XMI to Imvertor format

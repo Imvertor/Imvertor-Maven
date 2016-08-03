@@ -84,18 +84,6 @@
         <imvert:packages>
             <xsl:if test="imf:boolean($debug)">
                 <debug-info>
-                    <configuration-owner-file>
-                        <xsl:sequence select="$configuration-owner-file"/>
-                    </configuration-owner-file>
-                    <configuration-metamodel-file>
-                        <xsl:sequence select="$configuration-metamodel-file"/>
-                    </configuration-metamodel-file>
-                    <configuration-schemarules-file>
-                        <xsl:sequence select="$configuration-schemarules-file"/>
-                    </configuration-schemarules-file>
-                    <configuration-tvset-file>
-                        <xsl:sequence select="$configuration-tvset-file"/>
-                    </configuration-tvset-file>
                     <xref-props>
                         <xsl:sequence select="$parsed-xref-properties"/> 
                     </xref-props>

@@ -27,8 +27,6 @@
    </cli-parms>
    
    <properties>
-
-       <WORK_INITIALIZER_FILE>${system/work-imvert-folder-path}/imvertor.0.init.xml</WORK_INITIALIZER_FILE>
-      
+       <WORK_INITIALIZER_FILE>${system/work-imvert-folder-path}/imvertor.01.init.xml</WORK_INITIALIZER_FILE>
    </properties>
 </config>

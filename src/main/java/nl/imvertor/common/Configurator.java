@@ -439,7 +439,6 @@ public class Configurator {
 	public void windup() throws Exception {
 		
 		setParm("run","time",runtime());
-		save();
 		
 		OutputFolder appWorkFolder = new OutputFolder(getParm("system","work-app-folder-path"));
 		OutputFolder appFinalFolder;
@@ -454,7 +453,9 @@ public class Configurator {
 		appWorkFolder.copy(appFinalFolder);	
 		
 		// set this as a system property; to be picked up by any outside application such as xslweb executor
-		setParm("system", "result-output-folder", appFinalFolder);
+		setParm("system", "result-output-folder", appFinalFolder.getCanonicalPath());
+		
+		save();
 		
 		if (runner.isFinal() && isTrue("system","schema-created",false)) { 
 			runner.info(logger, "Copying the result XML schemas to distribution folder");
@@ -464,6 +465,7 @@ public class Configurator {
 			targetXsdFolder.mkdirs();
 			sourceXsdFolder.copy(targetXsdFolder);
 		}
+		
 	}
 	
 	public float runtime() throws Exception {
