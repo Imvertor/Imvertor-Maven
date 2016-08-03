@@ -61,7 +61,7 @@ public class ReadmeCompiler extends Step {
 		AnyFile readmeFile = new AnyFile(configurator.getParm("system","work-app-folder-path") + "/readme.html");
 		configurator.setParm("system","readme-file-path",readmeFile.getCanonicalPath());
 		
-		configurator.setParm("appinfo","error-count",Integer.toString(runner.getErrorCount()));
+		//configurator.setParm("appinfo","error-count",Integer.toString(runner.getErrorCount()));
 	
 		String path = configurator.getParm("appinfo","application-name");
 		transformer.setXslParm("xsd-files-generated",listFiles(configurator.getParm("system", "work-xsd-folder-path") + "/" + path, "xsd/" + path + "/"));

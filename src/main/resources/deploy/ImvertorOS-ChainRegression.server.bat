@@ -2,12 +2,8 @@
 SETLOCAL ENABLEEXTENSIONS
 
 set jar=%~1
-set jobid=%~2
-set propfile=%~3
-set reffolder=%~4
-set tstfolder=%~5
-set outfolder=%~6
-set identifier=%~7
+set propfilepath=%~2
+set owner=%~3
 
 set d=%~dp0
 cd %d%
@@ -20,16 +16,6 @@ set inpdir=%imvertor_os_input%
 set outdir=%imvertor_os_output%
 set workdir=%imvertor_os_work%
 
-if exist %propfile% set propfilepath=%propfile%
-if exist %propfile% (goto PROPOKAY)
-
-set propfilepath=%inpdir%\propfile\%propfile%.properties
-if exist %propfilepath% (goto PROPOKAY)
-
-REM fallback; error will be given by imvertor
-set propfilepath=%propfile%
-:PROPOKAY
-
 SET jvmparms=-Xms512m -Xmx1024m
 
 SET JAVA_HOME=%bindir%\bin\java\jre7
@@ -41,13 +27,10 @@ call "%javaexe%" %jvmparms% ^
 	-Dinstall.dir="%bindir%" ^
 	-Doutput.dir="%outdir%" ^
     -Dinput.dir="%inpdir%" ^
-    -Dwork.dir="%workdir%\%jobid%" ^
+    -Dwork.dir="%workdir%" ^
     -classpath "%bindir%\bin\%jar%_lib" ^
     -jar "%bindir%\bin\%jar%.jar" ^
-	-reffolder "%reffolder%" ^
-	-tstfolder "%tstfolder%" ^
-	-outfolder "%outfolder%" ^
-    -identifier "%identifier%"
+	-arguments "%propfilepath%"
 	
 goto END
 

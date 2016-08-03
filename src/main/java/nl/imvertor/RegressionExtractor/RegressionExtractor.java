@@ -55,10 +55,6 @@ public class RegressionExtractor  extends Step {
 				"http://www.imvertor.org/imvertor/1.0/xslt/compare/compare-generated.xsl", 
 				url);
 		
-		
-		// STUB
-		//- configurator.setParm("appinfo","release","00000001");
-		
 		// serialize the ref and tst to a folder
 		AnyFolder reffolder = new AnyFolder(configurator.getParm("cli","reffolder"));
 		AnyFolder tstfolder = new AnyFolder(configurator.getParm("cli","tstfolder"));
