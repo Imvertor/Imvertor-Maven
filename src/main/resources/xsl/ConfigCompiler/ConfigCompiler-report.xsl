@@ -100,13 +100,17 @@
 
     <xsl:template match="/config" mode="metamodel-scalars">
         <table>
-            <xsl:sequence select="imf:create-table-header('scalar:100')"/>
+            <xsl:sequence select="imf:create-table-header('scalar:50,metamodel:50')"/>
             <xsl:for-each-group select="$configuration-metamodel-file//scalars/scalar" group-by="@id">
-                <xsl:sort select="current-group()[1]/name[1]"/>
+                <xsl:sort select="current-group()[last()]/name[1]"/>
+                <xsl:variable name="metamodels" select="current-group()[last()]/ancestor::metamodel"/>
                 <xsl:for-each select="current-group()[last()]">
                     <tr>
                         <td>
                             <xsl:value-of select="string-join(name,', ')"/>
+                        </td>
+                        <td>
+                            <xsl:value-of select="string-join($metamodels/name,',  ')"/>
                         </td>
                     </tr>
                 </xsl:for-each>
@@ -118,15 +122,15 @@
         <table>
             <xsl:sequence select="imf:create-table-header('stereo:50,metamodel:50')"/>
             <xsl:for-each-group select="$configuration-metamodel-file//stereotypes/stereo" group-by="@id">
-                <xsl:sort select="current-group()[1]/name[1]"/>
-                <xsl:variable name="metamodel" select="../.."/>
+                <xsl:sort select="current-group()[last()]/name[1]"/>
+                <xsl:variable name="metamodels" select="current-group()[last()]/ancestor::metamodel"/>
                 <xsl:for-each select="current-group()[last()]">
                     <tr>
                         <td>
                             <xsl:value-of select="string-join(name,', ')"/>
                         </td>
                         <td>
-                            <xsl:value-of select="$metamodel/name"/>
+                            <xsl:value-of select="string-join($metamodels/name,', ')"/>
                         </td>
                     </tr>
                 </xsl:for-each>
@@ -136,17 +140,17 @@
     
     <xsl:template match="/config" mode="metamodel-tvs">
         <table>
-            <xsl:sequence select="imf:create-table-header('tagged value:50,tagset:50')"/>
+            <xsl:sequence select="imf:create-table-header('tagged value:50,tagsets:50')"/>
             <xsl:for-each-group select="$configuration-tvset-file//tagged-values/tv" group-by="@id">
-                <xsl:sort select="current-group()[1]/name[1]"/>
-                <xsl:variable name="tagset" select="../.."/>
+                <xsl:sort select="current-group()[last()]/name[1]"/>
+                <xsl:variable name="tagsets" select="current-group()[last()]/ancestor::tagset"/>
                 <xsl:for-each select="current-group()[last()]">
                     <tr>
                         <td>
                             <xsl:value-of select="string-join(name,', ')"/>
                         </td>
                         <td>
-                            <xsl:value-of select="$tagset/name"/>
+                            <xsl:value-of select="string-join($tagsets/name,', ')"/>
                         </td>
                     </tr>
                 </xsl:for-each>
