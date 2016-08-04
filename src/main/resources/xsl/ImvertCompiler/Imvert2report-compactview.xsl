@@ -39,7 +39,7 @@
                 <div>
                     <div class="intro">
                         <p>
-                            This is a technical overview ofd all constructs, suitable for import into Excel.
+                            This is a technical overview of all constructs, suitable for import into Excel.
                         </p>
                     </div>
                     <table>

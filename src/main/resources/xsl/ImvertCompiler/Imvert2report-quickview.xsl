@@ -29,7 +29,13 @@
     version="2.0">
 
     <xsl:template match="imvert:packages" mode="quickview">
-        <xsl:variable name="domain-packages" select="root()//imvert:package[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))]"/>
+        <xsl:variable name="domain-packages" select="root()//imvert:package[imvert:stereotype=imf:get-config-stereotypes(
+            ('stereotype-name-domain-package',
+            'stereotype-name-view-package',
+            'stereotype-name-internal-package',
+            'stereotype-name-external-package',
+            'stereotype-name-components-package'
+            ))]"/>
         <xsl:variable name="title">Quick view</xsl:variable>
         <page>
             <title>Quick view</title>

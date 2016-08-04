@@ -81,6 +81,7 @@
         <xsl:sequence select="imf:get-config-stereotypes('stereotype-name-internal-package')"/>
         <xsl:sequence select="imf:get-config-stereotypes('stereotype-name-domain-package')"/>
         <xsl:sequence select="imf:get-config-stereotypes('stereotype-name-view-package')"/>
+        <xsl:sequence select="imf:get-config-stereotypes('stereotype-name-components-package')"/>
     </xsl:variable>
     <!-- Stereotypes that may occur in unions -->
     <xsl:variable name="union-element-stereotypes" as="xs:string*">
@@ -108,11 +109,15 @@
         The external package must also define any class that is referenced by the application.
     -->
     <xsl:variable name="internal-package" select="//imvert:package[ancestor-or-self::imvert:package/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-internal-package') and (imvert:class/imvert:id = $application-package//(imvert:type-id | imvert:supertype/imvert:type-id))]"/>
-   
+    <!-- 
+        The set of compoennts packages includes all packages that are <<components>> of any subpackage thereof.
+    -->
+    <xsl:variable name="components-package" select="//imvert:package[ancestor-or-self::imvert:package/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-components-package')]"/>
+    
     <xsl:variable name="domain-package" select="$application-package//imvert:package[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))]"/>
     <xsl:variable name="subdomain-package" select="$domain-package//imvert:package"/>
     
-    <xsl:variable name="document-packages" select="($application-package,$domain-package,$subdomain-package,$external-package,$internal-package)"/>
+    <xsl:variable name="document-packages" select="($application-package,$domain-package,$subdomain-package,$external-package,$internal-package,$components-package)"/>
     <xsl:variable name="document-classes" select="$document-packages/imvert:class"/>
 
     <xsl:variable name="is-application" select="$application-package/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-application-package')"/>
