@@ -31,7 +31,7 @@ public class Release {
 	// TODO determine a valid version identifier based on all resources, i.e. java and XSLT 
 	
 	// change version number manually here, on each adaptation made in the imvertor sources! 
-	private static String imvertorVersion = "Imvertor OS 0.96"; 
+	private static String imvertorVersion = "Imvertor OS 0.97"; 
 	// 0.95a delivered to Kadaster
 	// 0.95b
 	
