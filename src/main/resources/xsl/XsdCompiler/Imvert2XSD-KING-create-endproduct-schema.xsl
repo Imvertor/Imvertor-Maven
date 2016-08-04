@@ -33,6 +33,7 @@
 			<xsl:namespace name="{$prefix}"><xsl:value-of select="ep:namespace"/></xsl:namespace>
 			<xs:import namespace="http://www.egem.nl/StUF/StUF0301" schemaLocation="stuf0301.xsd"/>
 			<xsl:apply-templates select="ep:message"/>
+			<xsl:apply-templates select="ep:construct" mode="complexType"/>
 			<!--xsl:apply-templates select="//ep:construct[(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name]" mode="createSimpleTypes"/>
 			<xsl:apply-templates select="//ep:construct[.//ep:construct[not(@ismetadata)]]" mode="createComplexTypes"/-->
 			<xsl:apply-templates select="//ep:construct[(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name and not(.//ep:construct)]" mode="createSimpleTypes"/>
@@ -62,7 +63,7 @@
 	
 	<xsl:template match="ep:seq">
 		<xs:sequence>
-			<xsl:apply-templates select="ep:construct[not(@ismetadata)]|ep:seq"/>
+			<xsl:apply-templates select="ep:constructRef|ep:construct[not(@ismetadata)]|ep:seq"/>
 		</xs:sequence>
 	</xsl:template>
 	
@@ -95,6 +96,8 @@
 					<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
 					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>					
 				</xsl:when>
+<!-- ROME: Hieronder wordt een id gegenereerd. Dat is echter eigenlijk niet gewenst omdat daarbij de naam van de simpleType na elke generatie slag anders kan zijn.
+		   Dat zou betekenen dat leveranciers steeds hun gegenereerde code moeten aanpassen. We moeten dus een manier zien te vinden die toekomstvaster is. -->
 				<xsl:when test="contains(ep:type-name,':') and ep:enum">
 					<xsl:attribute name="name" select="ep:tech-name"/>
 					<xsl:attribute name="type">
@@ -114,6 +117,8 @@
 							</xsl:attribute>
 							<xsl:comment select="'situatie 1'"/>
 						</xsl:when>
+						<!-- When a construct contains facets (which means it has to become an element without child elements) and it contains metadata constructs a 
+							 extension complexType needs to be generated which contains the xml-attributes based on a simpleType which contains the facets. -->
 						<xsl:when test="(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata] and $globalComplexTypes='no'">
 							<xsl:comment select="'situatie 2'"/>
 							<xs:complexType>
@@ -127,6 +132,8 @@
 								</xs:simpleContent>	
 							</xs:complexType>
 						</xsl:when>
+						<!-- When a construct contains facets (which means it has to become an element without child elements) and it doesn't contain metadata constructs 
+							 a restriction simpleType can be generated which contains the facets. -->
 						<xsl:when test="(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name and $globalComplexTypes='no'">
 							<xsl:comment select="'situatie 3'"/>
 							<xs:simpleType>
@@ -135,7 +142,7 @@
 										<xsl:choose>
 <!-- ROME: Zodra scalar-xxx is doorgevoerd kunnen de eerste 5 when's verwijderd worden. Welke scalars kan ik trouwens allemaal verwachten? -->
 											<xsl:when test="ep:type-name = 'integer'">
-												<xsl:value-of select="'xs:int'"/>
+												<xsl:value-of select="'xs:integer'"/>
 											</xsl:when>
 											<xsl:when test="ep:type-name = 'decimal'">
 												<xsl:value-of select="'xs:decimal'"/>
@@ -150,7 +157,7 @@
 												<xsl:value-of select="'xs:boolean'"/>
 											</xsl:when>
 											<xsl:when test="ep:type-name = 'scalar-integer'">
-												<xsl:value-of select="'xs:int'"/>
+												<xsl:value-of select="'xs:integer'"/>
 											</xsl:when>
 											<xsl:when test="ep:type-name = 'scalar-scalar-decimal'">
 												<xsl:value-of select="'xs:decimal'"/>
@@ -164,39 +171,6 @@
 											<xsl:when test="ep:type-name = 'scalar-boolean'">
 												<xsl:value-of select="'xs:boolean'"/>
 											</xsl:when>
-											<!--xsl:when test="ep:type-name = 'MaximumAantal'">
-										<xsl:value-of select="'xs:int'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name = 'Tijdstip'">
-										<xsl:value-of select="'xs:date'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name = 'Sortering'">
-										<xsl:value-of select="'xs:string'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name = 'Berichtcode'">
-										<xsl:value-of select="'xs:string'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name = 'Refnummer'">
-										<xsl:value-of select="'xs:string'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name = 'Functie'">
-										<xsl:value-of select="'xs:string'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name = 'Administratie'">
-										<xsl:value-of select="'xs:string'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name = 'Applicatie'">
-										<xsl:value-of select="'xs:string'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name = 'Gebruiker'">
-										<xsl:value-of select="'xs:string'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name = 'Organisatie'">
-										<xsl:value-of select="'xs:string'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name = 'POSTCODE'">
-										<xsl:value-of select="'xs:string'"/>
-									</xsl:when-->	
 											<xsl:otherwise>
 												<xsl:value-of select="'xs:string'"/>								
 											</xsl:otherwise>
@@ -313,15 +287,68 @@
 								</xs:restriction>						
 							</xs:simpleType>				
 						</xsl:when>
-						<xsl:when test="ep:type-name and $globalComplexTypes='no'">
+						<!-- When a construct doensn't contain facets and metadata constructs a restriction simpleType can be generated without facets. -->
+						<xsl:when test="ep:type-name and .//ep:construct[@ismetadata] and $globalComplexTypes='no'">
 							<xsl:comment select="'situatie 4'"/>
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension>
+										<!--xsl:attribute name="base" select="concat($prefix,':simpleType-',ep:tech-name,'-',$id,'-',generate-id())"/-->
+										<xsl:attribute name="base">
+											<xsl:choose>
+												<!-- ROME: Zodra scalar-xxx is doorgevoerd kunnen de eerste 5 when's verwijderd worden. Welke scalars kan ik trouwens allemaal verwachten? -->
+												<xsl:when test="ep:type-name = 'integer'">
+													<xsl:value-of select="'xs:integer'"/>
+												</xsl:when>
+												<xsl:when test="ep:type-name = 'decimal'">
+													<xsl:value-of select="'xs:decimal'"/>
+												</xsl:when>
+												<xsl:when test="ep:type-name = 'string'">
+													<xsl:value-of select="'xs:string'"/>
+												</xsl:when>
+												<xsl:when test="ep:type-name = 'datetime'">
+													<xsl:value-of select="'xs:string'"/>
+												</xsl:when>
+												<xsl:when test="ep:type-name = 'boolean'">
+													<xsl:value-of select="'xs:boolean'"/>
+												</xsl:when>
+												<xsl:when test="ep:type-name = 'scalar-integer'">
+													<xsl:value-of select="'xs:integer'"/>
+												</xsl:when>
+												<xsl:when test="ep:type-name = 'scalar-scalar-decimal'">
+													<xsl:value-of select="'xs:decimal'"/>
+												</xsl:when>
+												<xsl:when test="ep:type-name = 'scalar-string'">
+													<xsl:value-of select="'xs:string'"/>
+												</xsl:when>
+												<xsl:when test="ep:type-name = 'scalar-datetime'">
+													<xsl:value-of select="'xs:string'"/>
+												</xsl:when>
+												<xsl:when test="ep:type-name = 'scalar-boolean'">
+													<xsl:value-of select="'xs:boolean'"/>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:value-of select="'xs:string'"/>								
+												</xsl:otherwise>
+												<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
+											</xsl:choose>											
+										</xsl:attribute>
+										<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+										<!--xsl:apply-templates select=".//ep:construct[@ismetadata]" mode="generateAttributes"/-->
+									</xs:extension>						
+								</xs:simpleContent>	
+							</xs:complexType>
+						</xsl:when>
+						<!-- When a construct doensn't contain facets and metadata constructs a restriction simpleType can be generated without facets. -->
+						<xsl:when test="ep:type-name and $globalComplexTypes='no'">
+							<xsl:comment select="'situatie 5'"/>
 							<xs:simpleType>
 								<xs:restriction>
 									<xsl:attribute name="base">
 										<xsl:choose>
 <!-- ROME: Zodra scalar-xxx is doorgevoerd kunnen de eerste 5 when's verwijderd worden. Welke scalars kan ik trouwens allemaal verwachten? -->
 											<xsl:when test="ep:type-name = 'integer'">
-												<xsl:value-of select="'xs:int'"/>
+												<xsl:value-of select="'xs:integer'"/>
 											</xsl:when>
 											<xsl:when test="ep:type-name = 'decimal'">
 												<xsl:value-of select="'xs:decimal'"/>
@@ -336,7 +363,7 @@
 												<xsl:value-of select="'xs:boolean'"/>
 											</xsl:when>
 											<xsl:when test="ep:type-name = 'scalar-integer'">
-												<xsl:value-of select="'xs:int'"/>
+												<xsl:value-of select="'xs:integer'"/>
 											</xsl:when>
 											<xsl:when test="ep:type-name = 'scalar-decimal'">
 												<xsl:value-of select="'xs:decimal'"/>
@@ -350,39 +377,6 @@
 											<xsl:when test="ep:type-name = 'scalar-boolean'">
 												<xsl:value-of select="'xs:boolean'"/>
 											</xsl:when>
-											<!--xsl:when test="ep:type-name = 'MaximumAantal'">
-										<xsl:value-of select="'xs:int'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name = 'Tijdstip'">
-										<xsl:value-of select="'xs:date'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name = 'Sortering'">
-										<xsl:value-of select="'xs:string'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name = 'Berichtcode'">
-										<xsl:value-of select="'xs:string'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name = 'Refnummer'">
-										<xsl:value-of select="'xs:string'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name = 'Functie'">
-										<xsl:value-of select="'xs:string'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name = 'Administratie'">
-										<xsl:value-of select="'xs:string'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name = 'Applicatie'">
-										<xsl:value-of select="'xs:string'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name = 'Gebruiker'">
-										<xsl:value-of select="'xs:string'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name = 'Organisatie'">
-										<xsl:value-of select="'xs:string'"/>
-									</xsl:when>
-									<xsl:when test="ep:type-name = 'POSTCODE'">
-										<xsl:value-of select="'xs:string'"/>
-									</xsl:when-->	
 											<xsl:otherwise>
 												<xsl:value-of select="'xs:string'"/>								
 											</xsl:otherwise>
@@ -394,14 +388,14 @@
 							</xs:simpleType>				
 						</xsl:when>
 						<xsl:when test=".//ep:construct and $globalComplexTypes='no'">
-							<xsl:comment select="'situatie 5'"/>
+							<xsl:comment select="'situatie 6'"/>
 							<xs:complexType>
 								<xsl:apply-templates select="ep:seq[not(@ismetadata)]"/>
 								<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
 							</xs:complexType>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:comment select="'situatie 6'"/>
+							<xsl:comment select="'situatie 7'"/>
 							<xs:complexType>
 								<xsl:apply-templates select="ep:seq[not(@ismetadata)]"/>
 								<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
@@ -413,7 +407,46 @@
 		</xs:element>
 	</xsl:template>
 					
-<!-- ROME: Onderstaande template kan mogelijk komen te vervallen (integreren met de andere ep:construct templates). -->
+	<xsl:template match="ep:construct" mode="complexType">
+		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
+		<!--xsl:variable name="name">
+			<xsl:choose>
+				<xsl:when test="contains(ep:tech-name,'StUF:')">
+					<xsl:value-of select="substring-after(ep:tech-name,'StUF:')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="ep:tech-name"/>
+				</xsl:otherwise>
+			</xsl:choose>				
+		</xsl:variable-->
+		<xs:complexType>
+			<xsl:attribute name="name" select="ep:tech-name"/>
+			<xsl:apply-templates select="ep:seq[not(@ismetadata)]"/>
+			<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+		</xs:complexType>
+	</xsl:template>
+	
+	<xsl:template match="ep:constructRef">
+		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
+		<!--xsl:variable name="name">
+			<xsl:choose>
+				<xsl:when test="contains(ep:tech-name,'StUF:')">
+					<xsl:value-of select="substring-after(ep:tech-name,'StUF:')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="ep:tech-name"/>
+				</xsl:otherwise>
+			</xsl:choose>				
+		</xsl:variable-->
+		<xs:element>
+					<xsl:attribute name="name" select="ep:tech-name"/>
+					<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
+					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
+					<xsl:attribute name="type" select="concat($prefix,':',ep:href)"/>
+		</xs:element>
+	</xsl:template>
+	
+	<!-- ROME: Onderstaande template kan mogelijk komen te vervallen (integreren met de andere ep:construct templates). -->
 	<xsl:template match="ep:construct" mode="createSimpleTypes">
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
 		<xsl:variable name="name">
@@ -543,7 +576,7 @@
 							<xsl:choose>
 <!-- ROME: Zodra scalar-xxx is doorgevoerd kunnen de eerste 5 when's verwijderd worden. Welke scalars kan ik trouwens allemaal verwachten? -->
 								<xsl:when test="ep:type-name = 'integer'">
-									<xsl:value-of select="'xs:int'"/>
+									<xsl:value-of select="'xs:integer'"/>
 								</xsl:when>
 								<xsl:when test="ep:type-name = 'decimal'">
 									<xsl:value-of select="'xs:decimal'"/>
@@ -558,7 +591,7 @@
 									<xsl:value-of select="'xs:boolean'"/>
 								</xsl:when>
 								<xsl:when test="ep:type-name = 'scalar-integer'">
-									<xsl:value-of select="'xs:int'"/>
+									<xsl:value-of select="'xs:integer'"/>
 								</xsl:when>
 								<xsl:when test="ep:type-name = 'scalar-decimal'">
 									<xsl:value-of select="'xs:decimal'"/>
@@ -572,39 +605,6 @@
 								<xsl:when test="ep:type-name = 'scalar-boolean'">
 									<xsl:value-of select="'xs:boolean'"/>
 								</xsl:when>
-								<!--xsl:when test="ep:type-name = 'MaximumAantal'">
-							<xsl:value-of select="'xs:int'"/>
-						</xsl:when>
-						<xsl:when test="ep:type-name = 'Tijdstip'">
-							<xsl:value-of select="'xs:date'"/>
-						</xsl:when>
-						<xsl:when test="ep:type-name = 'Sortering'">
-							<xsl:value-of select="'xs:string'"/>
-						</xsl:when>
-						<xsl:when test="ep:type-name = 'Berichtcode'">
-							<xsl:value-of select="'xs:string'"/>
-						</xsl:when>
-						<xsl:when test="ep:type-name = 'Refnummer'">
-							<xsl:value-of select="'xs:string'"/>
-						</xsl:when>
-						<xsl:when test="ep:type-name = 'Functie'">
-							<xsl:value-of select="'xs:string'"/>
-						</xsl:when>
-						<xsl:when test="ep:type-name = 'Administratie'">
-							<xsl:value-of select="'xs:string'"/>
-						</xsl:when>
-						<xsl:when test="ep:type-name = 'Applicatie'">
-							<xsl:value-of select="'xs:string'"/>
-						</xsl:when>
-						<xsl:when test="ep:type-name = 'Gebruiker'">
-							<xsl:value-of select="'xs:string'"/>
-						</xsl:when>
-						<xsl:when test="ep:type-name = 'Organisatie'">
-							<xsl:value-of select="'xs:string'"/>
-						</xsl:when>
-						<xsl:when test="ep:type-name = 'POSTCODE'">
-							<xsl:value-of select="'xs:string'"/>
-						</xsl:when-->	
 								<xsl:otherwise>
 									<xsl:value-of select="'xs:string'"/>								
 								</xsl:otherwise>
@@ -773,7 +773,7 @@
 					<xsl:attribute name="base">
 						<xsl:choose>
 							<xsl:when test="ep:type-name = 'integer'">
-								<xsl:value-of select="'xs:int'"/>
+								<xsl:value-of select="'xs:integer'"/>
 							</xsl:when>
 							<xsl:when test="ep:type-name = 'decimal'">
 								<xsl:value-of select="'xs:decimal'"/>
@@ -788,7 +788,7 @@
 								<xsl:value-of select="'xs:boolean'"/>
 							</xsl:when>
 							<!--xsl:when test="ep:type-name = 'MaximumAantal'">
-								<xsl:value-of select="'xs:int'"/>
+								<xsl:value-of select="'xs:integer'"/>
 							</xsl:when>
 							<xsl:when test="ep:type-name = 'Tijdstip'">
 								<xsl:value-of select="'xs:date'"/>
@@ -944,7 +944,7 @@
 								<xsl:choose>
 <!-- ROME: Zodra scalar-xxx is doorgevoerd kunnen de eerste 5 when's verwijderd worden. Welke scalars kan ik trouwens allemaal verwachten? -->
 									<xsl:when test="ep:type-name = 'integer'">
-										<xsl:value-of select="'xs:int'"/>
+										<xsl:value-of select="'xs:integer'"/>
 									</xsl:when>
 									<xsl:when test="ep:type-name = 'decimal'">
 										<xsl:value-of select="'xs:decimal'"/>
@@ -959,7 +959,7 @@
 										<xsl:value-of select="'xs:boolean'"/>
 									</xsl:when>
 									<xsl:when test="ep:type-name = 'scalar-integer'">
-										<xsl:value-of select="'xs:int'"/>
+										<xsl:value-of select="'xs:integer'"/>
 									</xsl:when>
 									<xsl:when test="ep:type-name = 'scalar-decimal'">
 										<xsl:value-of select="'xs:decimal'"/>
@@ -973,39 +973,6 @@
 									<xsl:when test="ep:type-name = 'scalar-boolean'">
 										<xsl:value-of select="'xs:boolean'"/>
 									</xsl:when>
-									<!--xsl:when test="ep:type-name = 'MaximumAantal'">
-							<xsl:value-of select="'xs:int'"/>
-						</xsl:when>
-						<xsl:when test="ep:type-name = 'Tijdstip'">
-							<xsl:value-of select="'xs:date'"/>
-						</xsl:when>
-						<xsl:when test="ep:type-name = 'Sortering'">
-							<xsl:value-of select="'xs:string'"/>
-						</xsl:when>
-						<xsl:when test="ep:type-name = 'Berichtcode'">
-							<xsl:value-of select="'xs:string'"/>
-						</xsl:when>
-						<xsl:when test="ep:type-name = 'Refnummer'">
-							<xsl:value-of select="'xs:string'"/>
-						</xsl:when>
-						<xsl:when test="ep:type-name = 'Functie'">
-							<xsl:value-of select="'xs:string'"/>
-						</xsl:when>
-						<xsl:when test="ep:type-name = 'Administratie'">
-							<xsl:value-of select="'xs:string'"/>
-						</xsl:when>
-						<xsl:when test="ep:type-name = 'Applicatie'">
-							<xsl:value-of select="'xs:string'"/>
-						</xsl:when>
-						<xsl:when test="ep:type-name = 'Gebruiker'">
-							<xsl:value-of select="'xs:string'"/>
-						</xsl:when>
-						<xsl:when test="ep:type-name = 'Organisatie'">
-							<xsl:value-of select="'xs:string'"/>
-						</xsl:when>
-						<xsl:when test="ep:type-name = 'POSTCODE'">
-							<xsl:value-of select="'xs:string'"/>
-						</xsl:when-->	
 									<xsl:otherwise>
 										<xsl:value-of select="'xs:string'"/>								
 									</xsl:otherwise>
