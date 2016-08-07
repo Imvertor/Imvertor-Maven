@@ -37,12 +37,15 @@
     
     <xsl:variable name="derivationtree" select="imf:document($derivationtree-file-url)"/>
     <xsl:variable name="pairs" select="$derivationtree/imvert:layers-set/imvert:layer"/>
-
+    <xsl:variable name="supplier-ids" select="distinct-values($pairs/imvert:supplier/@id)"/>
+    
     <xsl:variable name="model-is-traced-by-user" select="imf:boolean(imf:get-config-string('cli','modelistraced'))"/>
     
     <xsl:template match="imvert:packages" mode="trace">
         <!-- return a trace documentation page only when deriving -->
         <xsl:if test="exists($pairs/imvert:supplier[2])">
+            <!-- determine the IDs of the suppliers -->
+            
             <page>
                 <title>Derivation Traces</title>
                 <content>
@@ -61,11 +64,11 @@
                         <table>
                             <!-- <xsl:sequence select="imf:create-table-header('type:10,client:10,package:10,class:10,property:10,supplier:10,package:10,class:10,property:10')"/> -->
                             <xsl:variable name="h" as="xs:string*">
-                                <xsl:for-each select="$pairs[1]/imvert:supplier">
-                                    <xsl:value-of select="@application"/>
+                                <xsl:for-each select="$supplier-ids">
+                                    <xsl:value-of select="."/>
                                 </xsl:for-each>
                             </xsl:variable>
-                            <xsl:variable name="cols" select="count($pairs[1]/imvert:supplier)"/>
+                            <xsl:variable name="cols" select="count($supplier-ids)"/>
                             <xsl:variable name="colwidth" select="90 div (if ($cols = 0) then 1 else $cols)"/>
                             <xsl:variable name="h2" select="string-join(($h,''),concat(':',$colwidth,','))"/>
                             <xsl:variable name="h3" select="concat('type:10,',$h2)"/>
@@ -118,8 +121,12 @@
         <xsl:param name="client-construct"/>
         
         <xsl:variable name="layers" select="imf:get-construct-in-all-layers($client-construct)"/>
-        <xsl:for-each-group select="$layers/*" group-by="../@level">
-            <xsl:sort select="xs:integer(../@level)" order="ascending"/>
+        <xsl:for-each-group select="$layers/*" group-by="../@id">
+            <xsl:variable name="id" select="current-grouping-key()"/>
+            <xsl:variable name="pos" select="index-of($supplier-ids,$id)"/>
+            <xsl:for-each select="1 to ($pos - position())">
+                <td><!--empty--></td>
+            </xsl:for-each>
             <td>
                 <xsl:for-each select="current-group()">
                     <xsl:choose>

@@ -42,7 +42,11 @@
     </xsl:template>
     
     <xsl:template match="imvert:package" mode="package-dependencies">
-        <imvert:package id="{imvert:id}" name="{imvert:name}" release="{imvert:release}" supplier-project="{imvert:supplier-project}" supplier-name="{imvert:supplier-name}" supplier-release="{imvert:supplier-release}"/>
+        <imvert:package id="{imvert:id}" name="{imvert:name}" release="{imvert:release}">
+            <xsl:for-each select="imvert:supplier">
+                <imvert:supplier  supplier-project="{imvert:supplier-project}" supplier-name="{imvert:supplier-name}" supplier-release="{imvert:supplier-release}"/>
+            </xsl:for-each>
+        </imvert:package>
         <xsl:variable name="supplier-id" select="imvert:used-package-id"/>
         <xsl:if test="$supplier-id">
             <xsl:apply-templates select="$document-packages[imvert:id=$supplier-id]" mode="package-dependencies"/>

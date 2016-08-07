@@ -406,10 +406,13 @@
             <xsl:variable name="group" as="element()*">
                 <xsl:apply-templates select="imvert:derived"/>
                 <xsl:apply-templates select="imvert:metamodel"/>
-                <xsl:apply-templates select="imvert:supplier-project"/>
-                <xsl:apply-templates select="imvert:supplier-name"/>
-                <xsl:apply-templates select="imvert:supplier-release"/>
-                <xsl:apply-templates select="imvert:supplier-package-name"/>
+                <xsl:apply-templates select="imvert:supplier"/>
+                <!--
+                imvert:supplier-name
+                imvert:supplier-project
+                imvert:supplier-release
+                imvert:supplier-package-release
+                -->
             </xsl:variable>
             <xsl:sequence select="imf:create-group('Derivable',$group)"/>
         </xsl:variable>

@@ -30,6 +30,8 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:functx="http://www.functx.com"
+    
     exclude-result-prefixes="#all"
     version="2.0">
     
@@ -513,11 +515,23 @@
         <xsl:param name="this" as="node()"/>
         <xsl:param name="parent-is-derived" as="xs:boolean"/>
         
+        <xsl:variable name="supplier-names" select="for $t in (tokenize(imf:get-tagged-value($this,'supplier-name') ,';')) return normalize-space($t)"/>
+        <xsl:variable name="supplier-projects" select="for $t in (tokenize(imf:get-tagged-value($this,'supplier-project'),';')) return normalize-space($t)"/>
+        <xsl:variable name="supplier-releases" select="for $t in (tokenize(imf:get-tagged-value($this,'supplier-release'),';')) return normalize-space($t)"/>
+        <xsl:variable name="supplier-packs" select="for $t in (tokenize(imf:get-tagged-value($this,'supplier-package-name'),';')) return normalize-space($t)"/>
+        
+        <xsl:variable name="counts" select="(count($supplier-names),count($supplier-projects), count($supplier-releases), count($supplier-packs))"/>
+        <xsl:variable name="scount" select="functx:sort($counts)[last()]"/>
         <xsl:variable name="supplier-info" as="element()*">
-            <xsl:sequence select="imf:create-output-element('imvert:supplier-name',imf:get-tagged-value($this,'supplier-name'))"/>
-            <xsl:sequence select="imf:create-output-element('imvert:supplier-project',imf:get-tagged-value($this,'supplier-project'))"/>
-            <xsl:sequence select="imf:create-output-element('imvert:supplier-release',imf:get-tagged-value($this,'supplier-release'))"/>
-            <xsl:sequence select="imf:create-output-element('imvert:supplier-package-name',imf:get-tagged-value($this,'supplier-package-name'))"/>
+            <xsl:for-each select="1 to $scount">
+                <xsl:variable name="index" select="position()"/>
+                <imvert:supplier>
+                    <xsl:sequence select="imf:create-output-element('imvert:supplier-name',imf:fallback($supplier-names, $index))"/>
+                    <xsl:sequence select="imf:create-output-element('imvert:supplier-project',imf:fallback($supplier-projects, $index))"/>
+                    <xsl:sequence select="imf:create-output-element('imvert:supplier-release',imf:fallback($supplier-releases, $index))"/>
+                    <xsl:sequence select="imf:create-output-element('imvert:supplier-package-name',imf:fallback($supplier-packs,$index))"/>
+                </imvert:supplier>
+            </xsl:for-each>
         </xsl:variable>
         <xsl:variable name="derived" select="imf:get-tagged-value($this,'derived')"/>
         
@@ -1347,4 +1361,22 @@
         <!-- TODO determine a way to determine of a package contains diagrams only -->
         <xsl:sequence select="$pack/@name = 'Diagram'"/>    
     </xsl:function>
+    
+    <!-- get the etry at position $index, or the last (previous) item in sequence. -->
+    <xsl:function name="imf:fallback" as="item()?">
+        <xsl:param name="sequence" as="item()*"/>
+        <xsl:param name="index" as="xs:integer"/>
+        <xsl:sequence select="if (exists($sequence[$index])) then $sequence[$index] else $sequence[last()]"/>
+    </xsl:function>
+    
+    <!-- http://www.xsltfunctions.com/xsl/functx_sort.html -->
+    <xsl:function name="functx:sort" as="item()*">
+        <xsl:param name="seq" as="item()*"/>
+        <xsl:for-each select="$seq">
+            <xsl:sort select="."/>
+            <xsl:copy-of select="."/>
+        </xsl:for-each>
+    </xsl:function>
+    
+    
 </xsl:stylesheet>

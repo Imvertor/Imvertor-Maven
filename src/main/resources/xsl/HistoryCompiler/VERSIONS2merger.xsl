@@ -65,21 +65,23 @@
     <xsl:template match="imvert:package">
         <!-- fetch history of the client package (variant, application) -->
         <xsl:sequence select="imf:fetch($imvert-history-path)"/>
-        <!-- fetch history of supplier if any -->
-        <xsl:if test="normalize-space(@supplier-name) and @supplier-name!='#NONE'">
-            <xsl:variable name="supplier">
-                <!-- fetch history of the supplier package (base, variant) if any -->
-                <xsl:sequence select="imf:fetch-supplier(@supplier-project, @supplier-name, @supplier-release)"/>
-            </xsl:variable>
-            <xsl:choose>
-                <xsl:when test="not($supplier)">
-                    <xsl:sequence select="imf:msg('ERROR','The application [1] is not available',imf:get-application-identifier(@supplier-project,@supplier-name,@supplier-release))"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:sequence select="$supplier"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:if>
+        <xsl:for-each select="imvert:supplier">
+            <!-- fetch history of suppliers if any -->
+            <xsl:if test="normalize-space(@supplier-name) and @supplier-name!='#NONE'">
+                <xsl:variable name="supplier">
+                    <!-- fetch history of the supplier package (base, variant) if any -->
+                    <xsl:sequence select="imf:fetch-supplier(@supplier-project, @supplier-name, @supplier-release)"/>
+                </xsl:variable>
+                <xsl:choose>
+                    <xsl:when test="not($supplier)">
+                        <xsl:sequence select="imf:msg('ERROR','The application [1] is not available',imf:get-application-identifier(@supplier-project,@supplier-name,@supplier-release))"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:sequence select="$supplier"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:if>
+        </xsl:for-each>
     </xsl:template>
     
     <xsl:function name="imf:fetch" as="element()*">

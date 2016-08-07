@@ -449,11 +449,11 @@
         <!--setup-->
         <xsl:variable name="this" select="."/>
         
-        <xsl:variable name="supplier-name" select="($application-package/imvert:supplier-name, imvert:supplier-name)"/>
-        <xsl:variable name="supplier-project" select="($application-package/imvert:supplier-project, imvert:supplier-project)"/>
-        <xsl:variable name="supplier-release" select="($application-package/imvert:supplier-release, imvert:supplier-release)"/>
+        <xsl:variable name="supplier-name" select="($application-package/imvert:supplier/imvert:supplier-name, imvert:supplier/imvert:supplier-name)"/>
+        <xsl:variable name="supplier-project" select="($application-package/imvert:supplier/imvert:supplier-project, imvert:supplier/imvert:supplier-project)"/>
+        <xsl:variable name="supplier-release" select="($application-package/imvert:supplier/imvert:supplier-release, imvert:supplier/imvert:supplier-release)"/>
         
-        <xsl:variable name="is-derived" select="imf:boolean((imvert:supplier-name,$application-package/imvert:supplier-name)[1])"/>
+        <xsl:variable name="is-derived" select="imf:boolean((imvert:supplier/imvert:supplier-name,$application-package/imvert:supplier/imvert:supplier-name)[1])"/>
         
         <!-- validation on version and release -->
         <xsl:sequence select="imf:report-error(., 

@@ -62,9 +62,7 @@
             
             <xsl:sequence select="imf:compile-imvert-filter()"/>
             
-            <xsl:sequence select="$application-package/imvert:supplier-project"/>
-            <xsl:sequence select="$application-package/imvert:supplier-name"/>
-            <xsl:sequence select="$application-package/imvert:supplier-release"/>
+            <xsl:sequence select="$application-package/imvert:supplier"/>
             <xsl:sequence select="$application-package/imvert:stereotype"/>
             
             <xsl:variable name="result-packages" as="node()*">
