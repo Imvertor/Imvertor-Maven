@@ -127,6 +127,13 @@
                 <xsl:when test="$desc-raw = 'text value'">
                     <xsl:value-of select="'text value'"/>
                 </xsl:when>
+                <xsl:when test="$desc-raw = 'number of element attributes'">
+                    <xsl:value-of select="'?? number of attributes'"/>
+                </xsl:when>
+                <xsl:when test="$desc-raw = 'attribute name'">
+                    <xsl:value-of select="'?? attribute name'"/>
+                </xsl:when>
+                
                 <xsl:otherwise>
                     <xsl:message select="concat('Unknown or unexpected compare state: ', $desc-raw)"/>
                     <xsl:value-of select="$desc-raw"/>

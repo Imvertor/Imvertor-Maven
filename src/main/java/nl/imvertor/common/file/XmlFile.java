@@ -313,7 +313,7 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean xmlUnitCompareXML(XmlFile testXmlFile, XmlFile resultFile) throws Exception {
+	public boolean xmlUnitCompareXML(XmlFile testXmlFile, XmlFile resultFile, Integer maxReported) throws Exception {
 		XmlFile controlXmlFile = this;
 		
 		XMLUnit.setCompareUnmatched(false);
@@ -325,7 +325,8 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		List<Difference> allDifferences = myDiff.getAllDifferences();
         Iterator<Difference> it = allDifferences.iterator();
         String analysis = "<diffs>";
-        while (it.hasNext()) {
+        int cnt = 0;
+        while (it.hasNext() && cnt < maxReported) {
         	Difference d = it.next();
            	analysis += "<diff"
         			+ " desc=\"" + safe(d.getDescription()) + "\""
@@ -339,6 +340,7 @@ public class XmlFile extends AnyFile implements ErrorHandler {
         			+ " value=\"" + safe(d.getTestNodeDetail().getValue()) + "\""
         			+ "/>";
             analysis += "</diff>";
+            cnt += 1;
         }
         analysis += "</diffs>";
         resultFile.setContent(analysis);

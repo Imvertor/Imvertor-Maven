@@ -56,6 +56,12 @@
          <tip>A unique identifier for this application. The report is stored in the outfolder by this name. Typical use: the RUN ID.</tip>
          <required>true</required>
       </cli-parm> 
+      <cli-parm>
+         <name>maxreport</name>
+         <arg>Integer</arg>
+         <tip>Max number of differences reported.</tip>
+         <required>true</required>
+      </cli-parm> 
       
       <cli-parm>
          <name>debug</name>

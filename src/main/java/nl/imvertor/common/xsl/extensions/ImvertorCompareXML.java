@@ -28,6 +28,7 @@ package nl.imvertor.common.xsl.extensions;
  * 	1/ new file
  *  2/ old file
  *  3/ edits file (compare results)
+ *  4/ max number of digfference to report; when 0, only report if differences occur (by boolean result).
  * 
  * returns true when compare succeeds, false when some error occurred.
  * 
@@ -39,6 +40,7 @@ import net.sf.saxon.om.Sequence;
 import net.sf.saxon.om.StructuredQName;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.value.BooleanValue;
+import net.sf.saxon.value.Int64Value;
 import net.sf.saxon.value.SequenceType;
 import net.sf.saxon.value.StringValue;
 import nl.imvertor.common.Configurator;
@@ -53,18 +55,19 @@ public class ImvertorCompareXML extends ExtensionFunctionDefinition {
 	}
 
 	public int getMinimumNumberOfArguments() {
-		return 3;
+		return 4;
 	}
 
 	public int getMaximumNumberOfArguments() {
-		return 3;
+		return 4;
 	}
 
 	 public SequenceType[] getArgumentTypes() {
 		    return new SequenceType[] { 
 		    		SequenceType.SINGLE_STRING, 
 		    		SequenceType.SINGLE_STRING, 
-		      		SequenceType.SINGLE_STRING
+		      		SequenceType.SINGLE_STRING,
+		      		SequenceType.SINGLE_INTEGER
 		    };
 	}
 
@@ -83,9 +86,10 @@ public class ImvertorCompareXML extends ExtensionFunctionDefinition {
 			XmlFile ctrlFile = new XmlFile(((StringValue) arguments[0].head()).getStringValue());		
 			XmlFile testFile = new XmlFile(((StringValue) arguments[1].head()).getStringValue());		
 			XmlFile diffFile = new XmlFile(((StringValue) arguments[2].head()).getStringValue());		
+			Integer maxReported = (int) ((Int64Value) arguments[3].head()).longValue();
 			try {
 				Boolean succes = true; 
-				succes = ctrlFile.xmlUnitCompareXML(testFile,diffFile);
+				succes = ctrlFile.xmlUnitCompareXML(testFile,diffFile, maxReported);
 				return BooleanValue.get(succes);
 			} catch (Exception e) {
 				throw new XPathException(e);

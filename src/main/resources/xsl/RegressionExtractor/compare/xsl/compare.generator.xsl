@@ -29,9 +29,10 @@
     
     version="2.0">
 
-    <xsl:param name="ctrl-filepath"/>
-    <xsl:param name="test-filepath"/>
-    <xsl:param name="diff-filepath"/>
+    <xsl:param name="ctrl-filepath" as="xs:string"/>
+    <xsl:param name="test-filepath" as="xs:string"/>
+    <xsl:param name="diff-filepath" as="xs:string"/>
+    <xsl:param name="max-difference-reported" as="xs:string"/>
     
     <!-- 
         This file processes a diff file and generates a XSLT file which may be included into another client XSLT. 
@@ -48,12 +49,13 @@
 
     <xsl:variable name="quot">'</xsl:variable>
     <xsl:variable name="rootstring">/files[1]/</xsl:variable>
+    
     <!-- 
         This file processes a control file, comparing it to a test file. 
         It creates a diffs file.
     -->
     <xsl:template match="/">
-        <xsl:variable name="result" select="ext:imvertorCompareXml($ctrl-filepath,$test-filepath,$diff-filepath)" as="xs:boolean"/>
+        <xsl:variable name="result" select="ext:imvertorCompareXml($ctrl-filepath,$test-filepath,$diff-filepath,xs:integer($max-difference-reported))" as="xs:boolean"/>
         <xslr:stylesheet version="2.0">
             <xsl:choose>
                 <xsl:when test="$result">

@@ -61,7 +61,7 @@
 		<!-- based on trace id, get all constructs in all layers, ordered from client to supplier. -->
 		<xsl:variable name="client-name" select="$client-construct/imvert:name"/>
 		<xsl:variable name="client-construct-id" select="$client-construct/imvert:id"/>
-		<xsl:variable name="client-construct-in-tree" select="if (exists($client-construct-id)) then imf:get-construct-by-id($client-construct-id,$derivation-tree) else ()"/>
+		<xsl:variable name="client-construct-in-tree" select="if (exists($client-construct-id)) then imf:get-construct-by-id($client-construct-id,$derivation-tree)[1] else ()"/>
 		<xsl:variable name="traced" select="imf:get-trace-supply-chain($client-construct,())"/>
 		<xsl:variable name="constructs" select="($client-construct-in-tree, $traced)"/>
 		<xsl:for-each select="$constructs">
@@ -91,7 +91,7 @@
 		<xsl:param name="release" as="xs:string"/>
 		<xsl:param name="level" as="xs:string"/>
 		<xsl:param name="content" as="item()*"/>
-		<imvert:layer project="{$project}" application="{$application}" release="{$release}" level="{$level}">
+		<imvert:layer id="{imf:get-supplier-id($project,$application,$release)}" project="{$project}" application="{$application}" release="{$release}" level="{$level}">
 			<xsl:sequence select="$content"/>
 		</imvert:layer>
 	</xsl:function>
@@ -207,17 +207,26 @@
 	
 	<!-- for tracing: -->
 	
-	<!-- get all construct in the trace tree that are in supply chain for the supplied client construct -->
+	<!-- 
+		Get all constructs in the trace tree that are in supply chain for the supplied client construct 
+	-->
 	<xsl:function name="imf:get-trace-supply-chain" as="element()*">
 		<xsl:param name="client" as="element()*"/>
 		<xsl:param name="trace-history" as="element()*"/>
 		
 		<xsl:for-each select="$client">
 			<xsl:variable name="client-id" select="imvert:id"/>
-			<xsl:variable name="client-in-tree" select="imf:get-construct-by-id($client-id,$derivation-tree)"/>
-			<xsl:variable name="supplier-id" select="$client-in-tree/imvert:trace"/> <!-- may be 0...* traces! -->
-			<xsl:variable name="suppliers" select="for $id in ($supplier-id) return imf:get-trace-construct-by-id(.,$id,$derivation-tree)"/>
 			
+			<xsl:variable name="client-in-tree" select="imf:get-construct-by-id($client-id,$derivation-tree)"/> 
+			<xsl:variable name="supplier-id" select="$client-in-tree/imvert:trace"/> <!-- may be 0...* traces! -->
+			<xsl:variable name="suppliers" select="for $id in ($supplier-id) return imf:get-trace-construct-by-id(.,$id,$derivation-tree)[1]"/>
+		
+			<!--<xsl:if test="$client-id = 'EAID_490D1086_4161_4c00_A8A9_3C58CFF2CC37'">
+				<xsl:message  select="count($client-in-tree)"></xsl:message>
+				<xsl:message  select="$supplier-id"></xsl:message>
+				<xsl:message  select="count($suppliers)"></xsl:message>
+				<xsl:message  select="'-'"></xsl:message>
+			</xsl:if>-->
 			<xsl:choose>
 				<xsl:when test="empty($client-id)">
 					<!-- skip: recursion ends here -->
@@ -238,7 +247,7 @@
 					<supply-chain-error id="{$supplier-id}" type="TRACE-RECURSION"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:sequence select="for $id in ($supplier-id) return imf:get-trace-construct-by-id(.,$id,$derivation-tree)"/>
+					<xsl:sequence select="for $id in ($supplier-id) return imf:get-trace-construct-by-id(.,$id,$derivation-tree)[1]"/>
 					<xsl:sequence select="imf:get-trace-supply-chain($suppliers,($trace-history,$suppliers))"/>
 				</xsl:otherwise>
 			</xsl:choose>
@@ -337,6 +346,13 @@
 		<xsl:param name="construct" as="element()"/> <!-- any construct that may have such information items -->
 		<xsl:param name="item-name"/>
 		<xsl:sequence select="imf:get-construct-derived-items($construct,$item-name,false())"/>
+	</xsl:function>
+	
+	<xsl:function name="imf:get-supplier-id">
+		<xsl:param name="application-project"/>
+		<xsl:param name="application-name"/>
+		<xsl:param name="application-release"/>
+		<xsl:sequence select="concat($application-project,'/',$application-name,'/',$application-release)"/>
 	</xsl:function>
 	
 </xsl:stylesheet>
