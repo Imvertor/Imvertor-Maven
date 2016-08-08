@@ -101,6 +101,7 @@
                 Supplier release set explicitly for the package itself, or taken from parent.
         -->
         <xsl:variable name="supplier-info" select="imf:get-supplier-info($package)"/>
+        
         <xsl:for-each select="$supplier-info">
             <!-- each next <info> element -->
             <xsl:choose>
@@ -183,9 +184,8 @@
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             
-            <?xx waarom deze names? deze code is erg traag, en de layered name wordt niet gebruikt!
+            <!--<xsl:attribute name="layered-name" select="imf:get-layered-display-names(.)[last()]"/>-->
             
-            <xsl:attribute name="layered-name" select="imf:get-layered-display-names(.)[last()]"/>
             <!-- add traces when not yet set, but only when model is not traced by user ($model-is-traced-by-user). -->
             
             <xsl:variable name="traces-found" select="imf:get-supplier-ids(.)"/>
@@ -202,7 +202,6 @@
                     </xsl:for-each>
                 </xsl:when>
             </xsl:choose>
-            ?>
             
             <xsl:apply-templates mode="layered-name"/>
         </xsl:copy>
@@ -276,27 +275,41 @@
     
     <!-- 
         note: assume all tagged values required are set by canonization. 
-        Each parent package's tagged values for client/supplier are copied to subpackag when missing 
+        Each parent package's tagged values for client/supplier are copied to subpackage when missing 
     -->
     <xsl:function name="imf:get-supplier-info" as="element(info)*">
         <xsl:param name="package" as="element()"/>
         <xsl:variable name="parent-supplier" select="$package/../imvert:supplier[1]"/>
-        <xsl:for-each select="$package/imvert:supplier">
-            <xsl:variable name="supplier-application"  select="(imvert:supplier-name,$parent-supplier/imvert:supplier-name)[1]"/>
-            <xsl:variable name="supplier-project"      select="(imvert:supplier-project,$parent-supplier/imvert:supplier-project)[1]"/>
-            <xsl:variable name="supplier-release"      select="(imvert:supplier-release,$parent-supplier/imvert:supplier-release)[1]"/>
-            <xsl:variable name="supplier-package-name" select="imvert:supplier-package-name"/>
-            <xsl:variable name="supplier-system-path"  select="if ($supplier-project) then imf:get-imvert-etc-filepath($supplier-project, $supplier-application, $supplier-release,'system') else ''"/> 
-            <xsl:variable name="supplier-model-path"   select="if ($supplier-project) then imf:get-imvert-etc-filepath($supplier-project, $supplier-application, $supplier-release,'model') else ''"/> 
-            <info>
-                <xsl:attribute name="package-name" select="$supplier-package-name"/>
-                <xsl:attribute name="application" select="$supplier-application"/>
-                <xsl:attribute name="project" select="$supplier-project"/>
-                <xsl:attribute name="release" select="$supplier-release"/>
-                <xsl:attribute name="system-path" select="$supplier-system-path"/>
-                <xsl:attribute name="model-path" select="$supplier-model-path"/>
-            </info>
-       </xsl:for-each>
+        <xsl:variable name="local-suppliers" select="$package/imvert:supplier"/>
+        <xsl:variable name="local-name" select="$package/imvert:name"/>
+        <xsl:choose>
+            <xsl:when test="empty($local-suppliers)">
+                <xsl:sequence select="imf:get-supplier-info-sub((),$parent-supplier,$local-name)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="for $f in ($local-suppliers) return imf:get-supplier-info-sub($f,$parent-supplier,$local-name)"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
    
+    <xsl:function name="imf:get-supplier-info-sub" as="element(info)"> 
+        <xsl:param name="local-supplier" as="element()?"/>
+        <xsl:param name="parent-supplier" as="element()?"/>
+        <xsl:param name="package-name" as="xs:string?"/> <!-- The name of the package, used when no supplier-package-name is provided --> 
+        
+        <xsl:variable name="supplier-application"  select="($local-supplier/imvert:supplier-name,$parent-supplier/imvert:supplier-name)[1]"/>
+        <xsl:variable name="supplier-project"      select="($local-supplier/imvert:supplier-project,$parent-supplier/imvert:supplier-project)[1]"/>
+        <xsl:variable name="supplier-release"      select="($local-supplier/imvert:supplier-release,$parent-supplier/imvert:supplier-release)[1]"/>
+        <xsl:variable name="supplier-package-name" select="($local-supplier/imvert:supplier-package-name,$package-name)[1]"/>
+        <xsl:variable name="supplier-system-path"  select="if ($supplier-project) then imf:get-imvert-etc-filepath($supplier-project, $supplier-application, $supplier-release,'system') else ''"/> 
+        <xsl:variable name="supplier-model-path"   select="if ($supplier-project) then imf:get-imvert-etc-filepath($supplier-project, $supplier-application, $supplier-release,'model') else ''"/> 
+        <info>
+            <xsl:attribute name="package-name" select="$supplier-package-name"/>
+            <xsl:attribute name="application" select="$supplier-application"/>
+            <xsl:attribute name="project" select="$supplier-project"/>
+            <xsl:attribute name="release" select="$supplier-release"/>
+            <xsl:attribute name="system-path" select="$supplier-system-path"/>
+            <xsl:attribute name="model-path" select="$supplier-model-path"/>
+        </info>
+    </xsl:function>
  </xsl:stylesheet>
