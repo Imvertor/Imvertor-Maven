@@ -45,7 +45,8 @@
     <xsl:variable name="diff-url" select="concat('file:/', replace($diff-filepath,'\\','/'))"/>
     <xsl:variable name="ctrl-url" select="concat('file:/', replace($ctrl-filepath,'\\','/'))"/>
     <xsl:variable name="test-url" select="concat('file:/', replace($test-filepath,'\\','/'))"/>
-
+    <xsl:variable name="max-difference-reported" select="1000"/> <!-- TODO parameterise? -->
+    
     <xsl:variable name="quot">'</xsl:variable>
     <xsl:variable name="rootstring">/root-of-compare[1]/</xsl:variable>
     <!-- 
@@ -53,7 +54,7 @@
         It creates a diffs file.
     -->
     <xsl:template match="/">
-        <xsl:variable name="result" select="ext:imvertorCompareXml($ctrl-filepath,$test-filepath,$diff-filepath)" as="xs:boolean"/>
+        <xsl:variable name="result" select="ext:imvertorCompareXml($ctrl-filepath,$test-filepath,$diff-filepath,$max-difference-reported)" as="xs:boolean"/>
         <xslr:stylesheet version="2.0">
             <xsl:choose>
                 <xsl:when test="$result">
