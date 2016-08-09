@@ -45,12 +45,14 @@
     <xsl:template match="imvert:package">
         <xsl:copy>
             <xsl:attribute name="display-name" select="imf:get-display-name(.)"/>
+            <xsl:attribute name="formal-name" select="imf:get-construct-formal-name(.)"/>
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
     <xsl:template match="imvert:class">
         <xsl:copy>
             <xsl:attribute name="display-name" select="imf:get-display-name(.)"/>
+            <xsl:attribute name="formal-name" select="imf:get-construct-formal-name(.)"/>
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
@@ -58,6 +60,7 @@
         <xsl:copy>
             <xsl:variable name="superclass" select="imf:get-class(imvert:type-name,imvert:type-package)"/>
             <xsl:attribute name="display-name" select="imf:get-display-name($superclass)"/>
+            <xsl:attribute name="formal-name" select="imf:get-construct-formal-name($superclass)"/>
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
@@ -65,6 +68,7 @@
         <xsl:copy>
             <xsl:variable name="supplierclass" select="imf:get-class(imvert:supplier,imvert:supplier-package)"/>
             <xsl:attribute name="display-name" select="imf:get-display-name($supplierclass)"/>
+            <xsl:attribute name="formal-name" select="imf:get-construct-formal-name($supplierclass)"/>
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
@@ -72,6 +76,8 @@
         <xsl:variable name="class" select="imf:get-class(imvert:type-name,imvert:type-package)"/>
         <xsl:copy>
             <xsl:attribute name="display-name" select="imf:get-display-name(.)"/>
+            <xsl:attribute name="formal-name" select="imf:get-construct-formal-name(.)"/>
+            
             <xsl:choose>
                 <xsl:when test="$class">
                     <xsl:attribute name="type-display-name" select="imf:get-display-name($class)"/>
@@ -91,7 +97,9 @@
         <xsl:variable name="class" select="imf:get-class(imvert:type-name,imvert:type-package)"/>
         <xsl:copy>
             <xsl:attribute name="display-name" select="imf:get-display-name(.)"/>
+            <xsl:attribute name="formal-name" select="imf:get-construct-formal-name(.)"/>
             <xsl:attribute name="type-display-name" select="imf:get-display-name($class)"/>
+            <xsl:attribute name="type-formal-name" select="imf:get-construct-formal-name($class)"/>
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>

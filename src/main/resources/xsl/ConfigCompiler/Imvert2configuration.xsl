@@ -46,6 +46,11 @@
             <xsl:sequence select="$configuration-schemarules-file"/>
             <xsl:sequence select="$configuration-tvset-file"/>
         </config>
+        
+        <!-- set some global configuration info -->
+        <xsl:variable name="proxy" select="imf:get-config-stereotypes('stereotype-name-proxy', false())"/>
+        <xsl:sequence select="imf:set-config-string('system','supports-proxy',if ($proxy = '#unknown') then 'no' else 'yes')"/>
+        
     </xsl:template>
     
     <!-- name normalization on all configuration files -->

@@ -19,9 +19,11 @@
 -->
 <xsl:stylesheet 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:imvert="http://www.imvertor.org/schema/system"
     
     exclude-result-prefixes="#all"
     version="2.0">
@@ -53,5 +55,30 @@
         <xsl:param name="key" as="xs:string*"/>
         <xsl:sequence select="imf:translate($key,'tv')"/>
     </xsl:function>
+    
+    <!-- 
+        Since tracing and proxies are supported, we need formal names. Add support here. 
+    -->
+    
+    <xsl:variable name="traceable-package-stereotypes" select="imf:get-config-stereotypes(
+        ('stereotype-name-domain-package',
+        'stereotype-name-view-package',
+        'stereotype-name-intern-package',
+        'stereotype-name-extern-package'))"/>
+    
+    <xsl:function name="imf:get-construct-formal-name" as="xs:string">
+        <xsl:param name="this" as="element()"/>
+        <xsl:variable name="package-name" select="$this/ancestor-or-self::imvert:package[imvert:stereotype = $traceable-package-stereotypes][1]/imvert:name"/>
+        <xsl:variable name="class-name" select="$this/ancestor-or-self::imvert:class[1]/imvert:name"/>
+        <xsl:variable name="prop-name" select="$this[self::imvert:attribute | self::association]/imvert:name"/> 
+        <xsl:sequence select="imf:compile-construct-formal-name($package-name,$class-name,$prop-name)"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:compile-construct-formal-name" as="xs:string">
+        <xsl:param name="package-name" as="xs:string?"/>
+        <xsl:param name="class-name" as="xs:string?"/>
+        <xsl:param name="property-name" as="xs:string?"/>
+        <xsl:value-of select="string-join(($package-name,$class-name,$property-name),'_')"/>
+    </xsl:function>  
     
 </xsl:stylesheet>

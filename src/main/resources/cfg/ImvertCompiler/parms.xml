@@ -82,6 +82,9 @@
       <WORK_LOCALSCHEMA_FILE>${system/work-imvert-folder-path}/imvertor.09.local.xml</WORK_LOCALSCHEMA_FILE> 
       <LOCAL_SCHEMA_MAPPING_FILE>${system/managedinputfolder}/xsd/local-schemas.xml</LOCAL_SCHEMA_MAPPING_FILE>
       
+      <IMVERTOR_PRETRACE_XSLPATH>Imvert2pretrace.xsl</IMVERTOR_PRETRACE_XSLPATH>
+      <WORK_PRETRACE_FILE>${system/work-imvert-folder-path}/imvertor.091.pretrace.xml</WORK_PRETRACE_FILE>
+      
       <IMVERTOR_EXPANDDOC_XSLPATH>Imvert2expanddoc.xsl</IMVERTOR_EXPANDDOC_XSLPATH>
       <WORK_EXPANDDOC_FILE>${system/work-imvert-folder-path}/imvertor.10.expanddoc.xml</WORK_EXPANDDOC_FILE>
       
