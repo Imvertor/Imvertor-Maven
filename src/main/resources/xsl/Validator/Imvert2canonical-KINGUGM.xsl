@@ -42,8 +42,13 @@
         </imvert:packages>
     </xsl:template>
     
-    <!-- TODO what special canonizations for SIM ? -->
-    
+    <xsl:template match="imvert:stereotype[starts-with(.,'MUG ')]">
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
+            <xsl:value-of select="substring-after(.,'MUG ')"/>
+        </xsl:copy>
+    </xsl:template>  
+  
     <!-- onderstaande is oude aanpak -->
     
     <?xxxxx

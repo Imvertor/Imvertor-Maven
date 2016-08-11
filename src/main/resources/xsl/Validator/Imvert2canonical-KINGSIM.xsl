@@ -37,11 +37,15 @@
         </imvert:packages>
     </xsl:template>
     
-    <!-- TODO what special canonizations for SIM ? -->
-    
     <xsl:template match="imvert:tagged-value/imvert:value[.='zie groep']">
         <imvert:value>Zie groep</imvert:value>
     </xsl:template>
     
+    <xsl:template match="imvert:stereotype[starts-with(.,'MIG ')]">
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
+            <xsl:value-of select="substring-after(.,'MIG ')"/>
+        </xsl:copy>
+    </xsl:template>  
     
 </xsl:stylesheet>
