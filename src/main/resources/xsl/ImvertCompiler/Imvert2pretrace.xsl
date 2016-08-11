@@ -55,7 +55,6 @@
         <xsl:variable name="supplier-subpath" select="imf:get-construct-supplier-system-subpath(.)"/>
         <xsl:variable name="supplier-doc" select="imf:document(concat($output-folder,'/applications/',$supplier-subpath,'/etc/system.imvert.xml'))"/>
         <xsl:variable name="supplier-construct" select="imf:get-supplier($supplier-doc,$formal-trace-name)"/>
-            
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:choose>
@@ -77,6 +76,12 @@
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
+    
+    <xsl:function name="imf:get-supplier" as="element()?">
+        <xsl:param name="supplier-doc" as="document-node()?"/>
+        <xsl:param name="formal-name" as="xs:string?"/>
+        <xsl:sequence select="($supplier-doc//imvert:*[@formal-name = $formal-name])[1]"/>
+    </xsl:function>
     
     <xsl:template match="*">
         <xsl:copy>

@@ -52,6 +52,10 @@ public class ImvertCompiler extends Step {
 	    // transform 
 		boolean succeeds = true;
 		// a compile list of steps to create all base files for final processing.
+		if (!configurator.isTrue("cli", "modelistraced")) {
+			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_PRETRACE_FILE", "properties/IMVERTOR_PRETRACE_XSLPATH","system/cur-imvertor-filepath") : false ;
+			configurator.setParm("system", "traces-available", "yes");
+		}
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_DOMAINS_FILE", "properties/IMVERTOR_DOMAINS_XSLPATH","system/cur-imvertor-filepath") : false ;
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_DEPENDENCIES_FILE", "properties/IMVERTOR_DEPENDENCIES_XSLPATH") : false ;
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_VARIANT_FILE", "properties/IMVERTOR_APPLICATION_XSLPATH","system/cur-imvertor-filepath") : false ;
@@ -61,9 +65,6 @@ public class ImvertCompiler extends Step {
 		if (configurator.isTrue("cli", "createxmlschema")) {
 			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_CONCRETESCHEMA_FILE", "properties/IMVERTOR_CONCRETESCHEMA_XSLPATH","system/cur-imvertor-filepath") : false ;
 			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_LOCALSCHEMA_FILE", "properties/IMVERTOR_LOCALSCHEMA_XSLPATH","system/cur-imvertor-filepath") : false ;
-		}
-		if (!configurator.isTrue("cli", "modelistraced")) {
-			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_PRETRACE_FILE", "properties/IMVERTOR_PRETRACE_XSLPATH","system/cur-imvertor-filepath") : false ;
 		}
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_EXPANDDOC_FILE", "properties/IMVERTOR_EXPANDDOC_XSLPATH","system/cur-imvertor-filepath") : false ;
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_DERIVATIONTREE_FILE", "properties/IMVERTOR_DERIVATIONTREE_XSLPATH") : false ;

@@ -30,6 +30,7 @@
 	<xsl:variable name="derivation-tree" select="imf:document($derivationtree-file-url)"/>
 
 	<xsl:variable name="model-is-traced-by-user" select="imf:boolean(imf:get-config-string('cli','modelistraced'))"/>
+	<xsl:variable name="model-is-traced" select="imf:boolean(imf:get-config-string('system','traces-available'))"/>
 	
 	<xsl:variable name="allow-multiple-suppliers" select="imf:boolean(imf:get-config-string('cli','allowmultiplesuppliers','no'))"/>
 	

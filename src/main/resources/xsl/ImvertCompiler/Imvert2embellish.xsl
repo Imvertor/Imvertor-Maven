@@ -72,14 +72,14 @@
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
-    <xsl:template match="imvert:attribute[imvert:type-name]">
+    <xsl:template match="imvert:attribute">
         <xsl:variable name="class" select="imf:get-class(imvert:type-name,imvert:type-package)"/>
         <xsl:copy>
             <xsl:attribute name="display-name" select="imf:get-display-name(.)"/>
             <xsl:attribute name="formal-name" select="imf:get-construct-formal-name(.)"/>
             
             <xsl:choose>
-                <xsl:when test="$class">
+                <xsl:when test="imvert:type-name and $class">
                     <xsl:attribute name="type-display-name" select="imf:get-display-name($class)"/>
                 </xsl:when>
                 <xsl:otherwise>

@@ -39,11 +39,9 @@
     <xsl:variable name="pairs" select="$derivationtree/imvert:layers-set/imvert:layer"/>
     <xsl:variable name="supplier-ids" select="distinct-values($pairs/imvert:supplier/@id)"/>
     
-    <xsl:variable name="model-is-traced-by-user" select="imf:boolean(imf:get-config-string('cli','modelistraced'))"/>
-    
     <xsl:template match="imvert:packages" mode="trace">
         <!-- return a trace documentation page only when deriving -->
-        <xsl:if test="exists($pairs/imvert:supplier[2])">
+        <xsl:if test="exists($pairs/imvert:supplier[2]//imvert:trace)"><!--TODO how to represent proxy? -->
             <!-- determine the IDs of the suppliers -->
             
             <page>

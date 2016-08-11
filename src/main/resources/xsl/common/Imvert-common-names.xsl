@@ -68,17 +68,19 @@
     
     <xsl:function name="imf:get-construct-formal-name" as="xs:string">
         <xsl:param name="this" as="element()"/>
+        <xsl:variable name="type-name" select="local-name($this)"/>
         <xsl:variable name="package-name" select="$this/ancestor-or-self::imvert:package[imvert:stereotype = $traceable-package-stereotypes][1]/imvert:name"/>
         <xsl:variable name="class-name" select="$this/ancestor-or-self::imvert:class[1]/imvert:name"/>
         <xsl:variable name="prop-name" select="$this[self::imvert:attribute | self::association]/imvert:name"/> 
-        <xsl:sequence select="imf:compile-construct-formal-name($package-name,$class-name,$prop-name)"/>
+        <xsl:sequence select="imf:compile-construct-formal-name($type-name,$package-name,$class-name,$prop-name)"/>
     </xsl:function>
     
     <xsl:function name="imf:compile-construct-formal-name" as="xs:string">
+        <xsl:param name="type-name" as="xs:string"/>
         <xsl:param name="package-name" as="xs:string?"/>
         <xsl:param name="class-name" as="xs:string?"/>
         <xsl:param name="property-name" as="xs:string?"/>
-        <xsl:value-of select="string-join(($package-name,$class-name,$property-name),'_')"/>
+        <xsl:value-of select="string-join(($type-name,$package-name,$class-name,$property-name),'_')"/>
     </xsl:function>  
     
 </xsl:stylesheet>

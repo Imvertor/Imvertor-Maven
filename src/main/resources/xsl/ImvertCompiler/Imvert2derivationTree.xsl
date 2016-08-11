@@ -180,10 +180,12 @@
         </xsl:copy>
     </xsl:template>
 
+    <?remove because all models are now traced. Either by system or by user. 
+        
     <xsl:template match="imvert:package | imvert:class | imvert:attribute | imvert:association" mode="layered-name">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
-            
+         
             <!--<xsl:attribute name="layered-name" select="imf:get-layered-display-names(.)[last()]"/>-->
             
             <!-- add traces when not yet set, but only when model is not traced by user ($model-is-traced-by-user). -->
@@ -207,6 +209,8 @@
         </xsl:copy>
     </xsl:template>
     
+    ?>
+        
     <!-- Determine the ID of the equivalent construct in the supplier. This is based on naming conventions. --> 
     <xsl:function name="imf:get-supplier-ids" as="xs:string*">
         <xsl:param name="construct"/>

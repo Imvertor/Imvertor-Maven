@@ -58,7 +58,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class|imvert:attribute" mode="proxy">
-        <?xx this is for not-traced constructs:
+        <?xx this is for not-manually traced constructs:
             <xsl:variable name="formal-name" select="imf:get-construct-formal-name(.)"/>
             <xsl:variable name="formal-trace-name" select="imf:get-construct-formal-trace-name(.)"/>
             <xsl:variable name="supplier-subpath" select="imf:get-construct-supplier-system-subpath(.)"/>
@@ -74,11 +74,11 @@
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:choose>
-                <xsl:when test="not(count($trace-id) = 1)">
+                <xsl:when test="count($trace-id) != 1">
                     <xsl:sequence select="imf:msg(.,'ERROR', 'Proxy requires a single outgoing trace')"/>
                 </xsl:when>
                 <xsl:when test="empty($supplier-doc)">
-                    <xsl:sequence select="imf:msg(.,'ERROR',concat('No such proxy supplier document location: ',$supplier-subpath))"/>
+                    <xsl:sequence select="imf:msg(.,'ERROR','No such proxy supplier document location: [1]',$supplier-subpath)"/>
                 </xsl:when>
                 <xsl:when test="empty($supplier-construct)">
                     <xsl:sequence select="imf:msg(.,'ERROR','Proxy could not be resolved at location [1]',($supplier-subpath))"/>
