@@ -719,4 +719,34 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
+    
+    <!-- input format: 2014-09-29T09:54:42.833+02:00 -->
+    
+    <xsl:function name="imf:format-dateTime" as="xs:string">
+        <xsl:param name="datetime"/> <!-- date, time, datetime or string -->
+        <xsl:variable name="dt">
+            <xsl:choose>
+                <xsl:when test="$datetime instance of xs:dateTime">
+                    <xsl:sequence select="$datetime"/>
+                </xsl:when>    
+                <xsl:when test="$datetime instance of xs:date">
+                    <xsl:sequence select="dateTime($datetime,xs:time('00:00:00.000'))"/>
+                </xsl:when>    
+                <xsl:when test="$datetime instance of xs:time">
+                    <xsl:sequence select="dateTime(xs:date('0001-01-01'),$datetime)"/>
+                </xsl:when> 
+                <xsl:otherwise>
+                    <xsl:sequence select="dateTime(xs:date(substring(string($datetime),1,10)),xs:time(substring(string($datetime),12,12)))"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:choose>
+            <xsl:when test="year-from-dateTime($dt) = 0001">
+                <xsl:value-of select="format-dateTime($dt,'[MNn] [D], [Y0001]')"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="format-dateTime($dt,'[MNn] [D], [Y0001] at [H2]:[m2]')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
 </xsl:stylesheet>

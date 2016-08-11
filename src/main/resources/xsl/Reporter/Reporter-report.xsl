@@ -90,7 +90,7 @@
                 </xsl:call-template>
                 <body>
                     <img src="{imf:get-config-parameter('web-logo')}"/>
-                    <h1>Processing report</h1>
+                    <xsl:sequence select="imf:create-report-page-header('Processing report')"/>
                     <p>
                         <xsl:value-of select="imf:get-config-string('run','version')"/>
                     </p>
@@ -116,7 +116,9 @@
                     <xsl:with-param name="title" select="'Imvert - Overview'"/>
                 </xsl:call-template>
                 <body>
-                    <h1>Overview</h1>
+                    <h1>
+                        Overview
+                    </h1>
                     <table>
                         <thead>
                             <tr class="tableHeader">
@@ -256,4 +258,28 @@
         </xsl:copy>
     </xsl:template>
         
+    <xsl:function name="imf:create-report-page-header">
+        <xsl:param name="title"></xsl:param>
+        <h1><xsl:value-of select="$title"/></h1>
+        <div  class="overview">
+            <p>
+                <xsl:value-of select="imf:get-config-string('appinfo','original-project-name')"/>
+            </p>
+            <p class="app">
+                <xsl:value-of select="imf:get-config-string('appinfo','original-application-name')"/>
+            </p>
+            <p>
+                Release <xsl:value-of select="imf:get-config-string('appinfo','release')"/>,
+                version <xsl:value-of select="imf:get-config-string('appinfo','version')"/> at phase
+                <xsl:value-of select="imf:get-config-string('appinfo','phase')"/>
+                <br></br>
+                <xsl:value-of select="imf:get-config-string('appinfo','error-count')"/> errors,
+                <xsl:value-of select="imf:get-config-string('appinfo','warning-count')"/> warnings.
+            </p>  
+            <p>
+                Generated at
+                <xsl:value-of select="imf:format-dateTime(current-dateTime())"/>
+            </p>  
+        </div>
+    </xsl:function>
 </xsl:stylesheet>
