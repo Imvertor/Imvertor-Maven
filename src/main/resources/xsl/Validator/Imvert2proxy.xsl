@@ -83,9 +83,11 @@
                 <xsl:when test="empty($supplier-construct)">
                     <xsl:sequence select="imf:msg(.,'ERROR','Proxy could not be resolved at location [1]',($supplier-subpath))"/>
                 </xsl:when>
+                <?x TODO proxies op proxies wél toesaan, Moet daar een waarschuwing op komen? Of is het gewoon?
                 <xsl:when test="exists($supplier-construct/imvert:proxy)">
                     <xsl:sequence select="imf:msg(.,'ERROR','Proxy resolves to a proxy at location [1]',($supplier-subpath))"/>
                 </xsl:when>
+                ?>
                 <xsl:otherwise>
                     <imvert:proxy origin="system" original-location="{$supplier-subpath}">
                         <xsl:value-of select="$supplier-construct/imvert:id"/>
