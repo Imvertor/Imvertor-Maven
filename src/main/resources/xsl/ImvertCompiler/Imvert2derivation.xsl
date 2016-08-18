@@ -126,7 +126,9 @@
     <xsl:template match="imvert:attribute">
         <xsl:param name="supplier-class"/>
         <xsl:variable name="client-attribute" select="."/>
-        <xsl:variable name="supplier-attribute" select="$supplier-class/imvert:attributes/imvert:attribute[imvert:name=$client-attribute/imvert:name]"/>
+        <!--<xsl:variable name="supplier-attribute" select="$supplier-class/imvert:attributes/imvert:attribute[imvert:name=$client-attribute/imvert:name]"/>-->
+        <!-- see Task #487911 -->
+        <xsl:variable name="supplier-attribute" select="imf:get-supplier-from-layers($client-attribute)"/>
         <xsl:variable name="is-enumeration" select="imvert:stereotype = $normalized-stereotype-enum"/> 
         
         <xsl:choose>

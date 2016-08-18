@@ -41,7 +41,7 @@
         <xsl:variable name="folderpath" select="imf:get-config-string('properties','IMVERTOR_COMPLY_EXTRACT_TARGET')"/>
         <xsl:variable name="filepath" select="imf:file-to-url(concat($folderpath,'/','test1.xml'))"/>
         <xsl:result-document href="{$filepath}">
-            <xsl:comment select="current-dateTime()"/>
+            <xsl:comment select="imf:format-dateTime(current-dateTime())"/>
             <test-file>
                 Hello, world: 1=<xsl:value-of select="(.//ws:c)[1]"/>
             </test-file>

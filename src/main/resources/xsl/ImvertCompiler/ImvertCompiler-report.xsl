@@ -55,6 +55,15 @@
                     <xsl:sequence select="imf:report-label('Packages', count($packages))"/>
                     <xsl:sequence select="imf:report-label('classes', count($packages/imvert:class))"/>
                 </info>
+                <xsl:if test="imf:get-config-string('appinfo','supplier-etc-system-imvert-path','?') != '?'">
+                    <info label="Derivation">
+                        <xsl:sequence select="imf:report-label('Derived from', imf:get-config-string('appinfo','supplier-etc-system-imvert-path'))"/>
+                        <xsl:sequence select="imf:report-label('Project', imf:get-config-string('appinfo','supplier-project'))"/>
+                        <xsl:sequence select="imf:report-label('Application', imf:get-config-string('appinfo','supplier-name','?'))"/>
+                        <xsl:sequence select="imf:report-label('Release', imf:get-config-string('appinfo','supplier-release','?'))"/>
+                        <xsl:sequence select="imf:report-label('Checked?', imf:get-config-string('cli','validatederivation','no'))"/>
+                    </info>
+                </xsl:if>
             </summary>
             <xsl:apply-templates select="$doc/imvert:packages" mode="quickview"/>
             <xsl:apply-templates select="$doc/imvert:packages" mode="compactview"/>

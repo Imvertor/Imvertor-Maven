@@ -745,7 +745,7 @@
                 <xsl:value-of select="format-dateTime($dt,'[MNn] [D], [Y0001]')"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="format-dateTime($dt,'[MNn] [D], [Y0001] at [H2]:[m2]')"/>
+                <xsl:value-of select="format-dateTime($dt,'[MNn] [D], [Y0001] at [H01]:[m01]:[s01]')"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>

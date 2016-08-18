@@ -30,7 +30,7 @@
     
     <xsl:function name="imf:source-file-version" as="xs:string*">
         <xsl:param name="source-file"/>
-        <xsl:sequence select="concat($source-file, ' dd ', current-date())"/>
+        <xsl:sequence select="concat($source-file, ' dd ', imf:format-dateTime(current-date()))"/>
     </xsl:function>
     
 </xsl:stylesheet>
