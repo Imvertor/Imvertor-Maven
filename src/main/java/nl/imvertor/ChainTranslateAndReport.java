@@ -167,7 +167,8 @@ public class ChainTranslateAndReport {
 				    	succeeds = succeeds && (new EapCompiler()).run();
 			
 					// compile compliancy Excel
-				    succeeds = succeeds && (new ComplyCompiler()).run();
+				    if (configurator.isTrue("cli","createcomplyexcel"))
+				    	succeeds = succeeds && (new ComplyCompiler()).run();
 			
 			    }
 			} catch (Exception e) {
