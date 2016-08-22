@@ -61,5 +61,11 @@
         </xsl:copy>
     </xsl:template>
     
+    <xsl:template match="imvert:stereotype[starts-with(.,'MBG ')]">
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
+            <xsl:value-of select="substring-after(.,'MBG ')"/>
+        </xsl:copy>
+    </xsl:template>  
     
 </xsl:stylesheet>
