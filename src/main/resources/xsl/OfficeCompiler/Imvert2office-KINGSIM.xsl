@@ -80,7 +80,10 @@
                 <p>
                     <xsl:value-of select="concat($application-package-release-name, ' | ', $imvertor-version, ' | ', $generation-date)"/>
                 </p>
-                <xsl:apply-templates select="imvert:package[imvert:name='Model']"/>
+                <xsl:for-each select="imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]">
+                    <xsl:message select="imvert:name"></xsl:message>
+                    <xsl:apply-templates select="."/>
+                </xsl:for-each>
             </body>
         </html>
     </xsl:template>
