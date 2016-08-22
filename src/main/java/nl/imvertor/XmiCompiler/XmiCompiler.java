@@ -31,9 +31,11 @@ import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.exceptions.EnvironmentException;
 import nl.imvertor.common.file.AnyFile;
+import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.EapFile;
 import nl.imvertor.common.file.XmiFile;
 import nl.imvertor.common.file.XmlFile;
+import nl.imvertor.common.file.ZipFile;
 
 /**
  * This step-class compiles an XMI file or passes a provides file provided,
@@ -71,7 +73,15 @@ public class XmiCompiler extends Step {
 
 		EapFile eapFile = umlFile.getExtension().toLowerCase().equals("eap") ? new EapFile(umlFile) : null;
 		XmiFile xmiFile = umlFile.getExtension().toLowerCase().equals("xmi") ? new XmiFile(umlFile) : null;
+		ZipFile zipFile = umlFile.getExtension().toLowerCase().equals("zip") ? new ZipFile(umlFile) : null; // always holds single XMI
 		
+		if (activeFileOrigin == null && zipFile != null) {
+			runner.debug(logger, "Try compressed XMI file at: " + zipFile);
+			if (zipFile.isFile()) {
+				passedFile = zipFile;
+				activeFileOrigin = "Compressed XMI passed";
+			}
+		}
 		if (activeFileOrigin == null && xmiFile != null) {
 			runner.debug(logger, "Try XMI file at: " + xmiFile);
 			if (xmiFile.isFile()) {
@@ -91,14 +101,15 @@ public class XmiCompiler extends Step {
 		}	
 		
 		if (activeFileOrigin == null) {
-			runner.error(logger,"No such XMI or EAP file");
+			runner.error(logger,"No such ZIP, XMI or EAP file");
 		} else {
 			String filespec = " " + passedFile + " (" + activeFileOrigin + ")";
-			// process the EAP file when passed. 
+			activeFile = new XmlFile(configurator.getParm("properties","WORK_XMI_FOLDER") + File.separator + passedFile.getName() + ".xmi");
+			
 			if (passedFile instanceof EapFile) {
+				// EAP is provided
 				// IM-108 speed up: do not read same EAP twice
 				String f1 = "";
-				activeFile = new XmlFile(configurator.getParm("properties","WORK_XMI_FOLDER") + File.separator + passedFile.getName() + ".xmi");
 				idFile = new AnyFile(activeFile.getCanonicalPath() + ".id");
 				activeFile.getParentFile().mkdirs();
 				if (activeFile.exists()) 
@@ -113,10 +124,24 @@ public class XmiCompiler extends Step {
 				} else {
 					runner.info(logger,"Reusing" + filespec);
 				}
+			} else if (passedFile instanceof ZipFile) {
+				// XMI is provided in compressed form
+				AnyFolder tempFolder = new AnyFolder(configurator.getParm("properties","WORK_ZIP_FOLDER"));
+				((ZipFile) passedFile).decompress(tempFolder);
+				File[] files = tempFolder.listFiles();
+				if (files.length == 0) 
+					runner.fatal(logger, "No files found in ZIP",null);
+				else if (files.length > 1) 
+					runner.fatal(logger, "Multiple files found in ZIP",null);
+				else {
+					(new AnyFile(files[0])).copyFile(activeFile);
+					cleanXMI(activeFile);
+				}
+				tempFolder.deleteDirectory();
 			} else {
-				// XMI is provided
+				// XMI is provided directly
 				runner.info(logger,"Reading" + filespec);
-				activeFile = (XmlFile) passedFile;
+				passedFile.copyFile(activeFile);
 				cleanXMI(activeFile);
 			}
 		

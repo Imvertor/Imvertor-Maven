@@ -38,8 +38,9 @@
       <WORK_IMVERTOR_BASE_FOLDER>${system/work-folder-path}/imvert</WORK_IMVERTOR_BASE_FOLDER>
       <WORK_PROPERTIESDUMP_FILE>${system/work-folder-path}/properties.xml</WORK_PROPERTIESDUMP_FILE>
 
+      <WORK_ZIP_FOLDER>${system/work-folder-path}/zip</WORK_ZIP_FOLDER>
       <WORK_XMI_FOLDER>${system/work-folder-path}/xmi</WORK_XMI_FOLDER>
-
+      
       <!--  template EAP used as the basis for all working copies -->
       <TEMPLATE_TEMPLATE_FILE>${system/managedinputfolder}/eap/TEMPLATE.EAP</TEMPLATE_TEMPLATE_FILE>
       <TEMPLATE_TEMPLATE_FILE_GUID>${system/managedinputfolder}/eap/TEMPLATE.EAP.GUID</TEMPLATE_TEMPLATE_FILE_GUID>

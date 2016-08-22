@@ -61,6 +61,9 @@ public class ZipFile extends AnyFile {
 		super(zipFilePath);
 		fileList = new ArrayList<String>();
 	}
+	public ZipFile(File file) throws IOException {
+		super(file);
+	}
 	public ZipFile(File folder, String file) throws IOException {
 		super(folder, file);
 		fileList = new ArrayList<String>();
