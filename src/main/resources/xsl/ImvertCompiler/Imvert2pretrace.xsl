@@ -62,7 +62,7 @@
                     <xsl:comment select="concat('No traces applicable for ', $formal-trace-name)"/>
                 </xsl:when>
                 <xsl:when test="empty($supplier-doc)">
-                    <xsl:sequence select="imf:msg('ERROR',concat('No such supplier document: ',$supplier-subpath))"/>
+                    <xsl:sequence select="imf:msg('WARNING',concat('No such supplier document: ',$supplier-subpath))"/>
                 </xsl:when>
                 <xsl:when test="empty($supplier-construct)">
                     <xsl:comment select="concat('No trace found for ', $formal-trace-name)"/>

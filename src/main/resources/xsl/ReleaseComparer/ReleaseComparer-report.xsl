@@ -49,7 +49,7 @@
             <xsl:sequence select="imf:set-config-string('system','compare-label','documentation',true())"/>
             <xsl:variable name="documentation-release" select="imf:get-config-string('system', 'documentation-release', false())"/>
             <!-- determine the location of the report generated -->
-            <xsl:variable name="report-doc" select="document(imf:file-to-url(imf:get-config-string('properties', 'WORK_COMPARE_LISTING_FILE')))"/>
+            <xsl:variable name="report-doc" select="imf:document(imf:get-config-string('properties', 'WORK_COMPARE_LISTING_FILE'))"/>
             <!-- get the number of differences found in check against previous release -->
             <xsl:variable name="diff-count-doc" select="imf:get-config-string('appinfo', 'compare-differences-documentation')"/>
             
@@ -90,7 +90,7 @@
             
             <!-- determine the location of the report generated -->
             <xsl:sequence select="imf:set-config-string('system','compare-label','derivation',true())"/>
-            <xsl:variable name="report-derv" select="document(imf:file-to-url(imf:get-config-string('properties', 'WORK_COMPARE_LISTING_FILE')))"/>
+            <xsl:variable name="report-derv" select="imf:document(imf:get-config-string('properties', 'WORK_COMPARE_LISTING_FILE'))"/>
             <!-- get the number of differences found in check against suppler -->
             <xsl:variable name="diff-count-derv" select="imf:get-config-string('appinfo', 'compare-differences-derivation')"/>
             
@@ -127,7 +127,7 @@
           
           <!-- determine the location of the report generated -->
           <xsl:sequence select="imf:set-config-string('system','compare-label','release',true())"/>
-          <xsl:variable name="report-release" select="document(imf:file-to-url(imf:get-config-string('properties', 'WORK_COMPARE_LISTING_FILE')))"/>
+          <xsl:variable name="report-release" select="imf:document(imf:get-config-string('properties', 'WORK_COMPARE_LISTING_FILE'))"/>
           <!-- get the number of differences found in check against suppler -->
           <xsl:variable name="diff-count-release" select="imf:get-config-string('appinfo', 'compare-differences-release')"/>
           

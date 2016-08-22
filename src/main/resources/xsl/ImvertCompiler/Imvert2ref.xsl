@@ -29,7 +29,7 @@
     version="2.0">
     
     <!-- 
-        Generate packages holding the XREf constructs. 
+        Generate packages holding the Xref constructs. 
         These are needed to reference Objecttypes in the domain packages.
         
         IM-110 They are not generated when buildcollection no

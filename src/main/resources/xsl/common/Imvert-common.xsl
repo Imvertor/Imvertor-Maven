@@ -588,6 +588,9 @@
         <xsl:param name="uri-or-path" as="xs:string"/>
         <xsl:variable name="uri" select="if (matches($uri-or-path,'^(file)|(https?):.*$')) then $uri-or-path else imf:file-to-url($uri-or-path)"/>
         <xsl:choose>
+            <xsl:when test="imf:filespec($uri-or-path)[6] = 'f'"> <!-- a folder -->
+                <xsl:sequence select="()"/>
+            </xsl:when>
             <xsl:when test="unparsed-text-available($uri)">
                 <xsl:sequence select="document($uri)"/>
             </xsl:when>

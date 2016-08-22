@@ -121,7 +121,7 @@
                     <xsl:sequence select="imf:report-error($package,true(),'No supplier release specified for supplier [1]', @application)"/>
                 </xsl:when>
                 
-                <xsl:when test="@application != '' and @system-path = ''">
+                <xsl:when test="@application != '' and @system-path = 'unknown-system-file'">
                     <xsl:sequence select="imf:report-error($package,true(),'Could not determine the location of the supplier application [1] in project [2] at release [3]', (@application, @project, @release))"/>
                 </xsl:when>
                 
@@ -180,37 +180,6 @@
         </xsl:copy>
     </xsl:template>
 
-    <?remove because all models are now traced. Either by system or by user. 
-        
-    <xsl:template match="imvert:package | imvert:class | imvert:attribute | imvert:association" mode="layered-name">
-        <xsl:copy>
-            <xsl:copy-of select="@*"/>
-         
-            <!--<xsl:attribute name="layered-name" select="imf:get-layered-display-names(.)[last()]"/>-->
-            
-            <!-- add traces when not yet set, but only when model is not traced by user ($model-is-traced-by-user). -->
-            
-            <xsl:variable name="traces-found" select="imf:get-supplier-ids(.)"/>
-            <xsl:choose>
-                <xsl:when test="exists(imvert:trace) or $model-is-traced-by-user">
-                    <!-- no need to determine trace -->
-                </xsl:when>
-                <xsl:when test="exists($traces-found)">
-                    <!-- trace must be determined -->
-                    <xsl:for-each select="$traces-found">
-                        <imvert:trace origin="system">
-                            <xsl:value-of select="."/>
-                        </imvert:trace>
-                    </xsl:for-each>
-                </xsl:when>
-            </xsl:choose>
-            
-            <xsl:apply-templates mode="layered-name"/>
-        </xsl:copy>
-    </xsl:template>
-    
-    ?>
-        
     <!-- Determine the ID of the equivalent construct in the supplier. This is based on naming conventions. --> 
     <xsl:function name="imf:get-supplier-ids" as="xs:string*">
         <xsl:param name="construct"/>
@@ -305,8 +274,8 @@
         <xsl:variable name="supplier-project"      select="($local-supplier/imvert:supplier-project,$parent-supplier/imvert:supplier-project)[1]"/>
         <xsl:variable name="supplier-release"      select="($local-supplier/imvert:supplier-release,$parent-supplier/imvert:supplier-release)[1]"/>
         <xsl:variable name="supplier-package-name" select="($local-supplier/imvert:supplier-package-name,$package-name)[1]"/>
-        <xsl:variable name="supplier-system-path"  select="if ($supplier-project) then imf:get-imvert-etc-filepath($supplier-project, $supplier-application, $supplier-release,'system') else ''"/> 
-        <xsl:variable name="supplier-model-path"   select="if ($supplier-project) then imf:get-imvert-etc-filepath($supplier-project, $supplier-application, $supplier-release,'model') else ''"/> 
+        <xsl:variable name="supplier-system-path"  select="if ($supplier-project) then imf:get-imvert-etc-filepath($supplier-project, $supplier-application, $supplier-release,'system') else 'unknown-system-file'"/> 
+        <xsl:variable name="supplier-model-path"   select="if ($supplier-project) then imf:get-imvert-etc-filepath($supplier-project, $supplier-application, $supplier-release,'model') else 'unknown-model-file'"/> 
         <info>
             <xsl:attribute name="package-name" select="$supplier-package-name"/>
             <xsl:attribute name="application" select="$supplier-application"/>

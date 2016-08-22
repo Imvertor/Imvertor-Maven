@@ -179,6 +179,7 @@
                 <xsl:variable name="scanned-package-types" select="$type-in-package[@prefix=$scanned-package-prefix]" as="item()*"/>
                 
                 <xsl:variable name="referenced" as="xs:string?">
+                    <!--<xsl:message select="concat($this-package/imvert:name, '/', $scanned-package-name,' : ',$this-package-is-referencing,' : ', string-join($scanned-package/imvert:class/imvert:ref-master,'|'), ' / ',  string-join($this-package-referenced-linkable-subclasses/imvert:name,'|'))"/>-->
                     <xsl:choose>
                         <!-- 
                             Does the scanned package define any of the current package's subtypes and if so, is that relation static? 
@@ -199,21 +200,18 @@
                         <xsl:when test="$scanned-package-types/@id = $this-package/imvert:class[not(imvert:stereotype=imf:get-config-stereotypes('stereotype-name-objecttype'))]/imvert:supertype/imvert:type-id">
                             <xsl:value-of select="'(1) defines any of the current schema supertypes (but not an object type), and the relation is dynamic'"/>
                         </xsl:when>
-                        
                         <!-- 
                             does the scanned package define any of the current package's attribute types (excluding unions)? 
                         --> 
                         <xsl:when test="$scanned-package-types/@id = $this-package/imvert:class[not(imvert:stereotype=imf:get-config-stereotypes('stereotype-name-union'))]/imvert:attributes/imvert:attribute/imvert:type-id">
                             <xsl:value-of select="'(2) defines the type of some attribute in this schema'"/>
                         </xsl:when>
-                        
                         <!-- 
                             does the scanned package define any of the current package's association types? 
                         --> 
                         <xsl:when test="$scanned-package-types/@id = $this-package-associated-type-ids">
                             <xsl:value-of select="'(3) defines the type of some association in this schema'"/>
                         </xsl:when>
-                        
                         <!-- 
                             does the scanned package define a subtype of any of the current package's association types, and do we avoid substitutions? 
                         --> 
@@ -223,7 +221,6 @@
                             $scanned-package/imvert:class/imvert:id = $this-package-referenced-substitutable-subclasses/imvert:id">
                             <xsl:value-of select="'(3) defines a subtype of some association in this schema and we avoid substitutions'"/>
                         </xsl:when>
-                        
                         <!-- 
                             static substitution inheritance: import the scanned package when it defines a reference class which implements a reference to any of the current package's concrete subclasses 
                         --> 
@@ -234,7 +231,6 @@
                             ">
                             <xsl:value-of select="'(6) defines a reference type (Xref) which implements a reference to any of the current schema concrete subtypes'"/>
                         </xsl:when> 
-                        
                         <!-- 
                             import the scanned package when it defines a reference class which implements a reference to any of the current package's classes 
                         --> 
