@@ -47,7 +47,12 @@
                     <xsl:sequence select="imf:report-key-label('Saved as','appinfo','office-documentation-filename')"/>
                 </info>
             </summary>
-      </report>
+            <page>
+                <title>Office documentation</title>
+                <content-ref href="../../etc/office.html"/>
+            </page>
+        </report>
+        
     </xsl:template>
 
 </xsl:stylesheet>

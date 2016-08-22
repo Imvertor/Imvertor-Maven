@@ -173,9 +173,18 @@
     
     <xsl:template match="page" mode="toc">
         <li>
-            <a href="../{../step-name}-{count(preceding-sibling::page)}/index.html" target="contents">
-                <xsl:value-of select="title"/>
-            </a>
+            <xsl:choose>
+                <xsl:when test="content">
+                    <a href="../{../step-name}-{count(preceding-sibling::page)}/index.html" target="contents">
+                        <xsl:value-of select="title"/>
+                    </a>
+                </xsl:when>
+                <xsl:when test="content-ref">
+                    <a href="{content-ref/@href}" target="contents">
+                        <xsl:value-of select="title"/>
+                    </a>
+                </xsl:when>
+            </xsl:choose>
             <xsl:if test="exists(info)">
                 <xsl:value-of select="concat(' ', info)"/>
             </xsl:if>
@@ -201,20 +210,27 @@
     </xsl:template>
     
     <xsl:template match="page" mode="content">
-        <xsl:result-document href="{$doc-folder-url}/{../step-name}-{count(preceding-sibling::page)}/index.html">
-            <html>
-                <xsl:call-template name="create-html-head">
-                    <xsl:with-param name="title" select="concat('Imvert - ', ../step-display-name)"/>
-                </xsl:call-template>
-                <body>
-                    <h1>
-                        <xsl:value-of select="title"/>
-                    </h1>
-                    <xsl:apply-templates select="content" mode="content-toc"/>
-                    <xsl:apply-templates select="content" mode="content-body"/>
-                </body>
-            </html>
-        </xsl:result-document>
+        <xsl:choose>
+            <xsl:when test="content">
+                <xsl:result-document href="{$doc-folder-url}/{../step-name}-{count(preceding-sibling::page)}/index.html">
+                    <html>
+                        <xsl:call-template name="create-html-head">
+                            <xsl:with-param name="title" select="concat('Imvert - ', ../step-display-name)"/>
+                        </xsl:call-template>
+                        <body>
+                            <h1>
+                                <xsl:value-of select="title"/>
+                            </h1>
+                            <xsl:apply-templates select="content" mode="content-toc"/>
+                            <xsl:apply-templates select="content" mode="content-body"/>
+                        </body>
+                    </html>
+                </xsl:result-document>
+            </xsl:when>
+            <xsl:when test="content-ref">
+                <!-- nothing, points to different location -->
+            </xsl:when>
+        </xsl:choose>
     </xsl:template>
     
     <!-- create a document-local TOC when more than one div -->
