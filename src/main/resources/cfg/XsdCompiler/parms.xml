@@ -74,15 +74,8 @@
       <cli-parm>
          <!-- required by KING approach -->
          <name>endproductbaseconfig</name>
-         <arg>path</arg>
-         <tip>Path the the Excel file holding the base product configuration (KING)</tip>
-         <required>false</required>
-      </cli-parm>
-      <cli-parm>
-         <!-- required by KING approach -->
-         <name>endproductconfig</name>
-         <arg>path</arg>
-         <tip>Path the the Excel file holding the end product configuration (KING)</tip>
+         <arg>File name</arg><!-- REDMINE #487934 PATH BECOMES FILE NAME -->
+         <tip>Name of the Excel file holding the base product configuration (KING)</tip>
          <required>false</required>
       </cli-parm>
       <cli-parm>
@@ -158,4 +151,9 @@
       <ENDPRODUCT_DOC_TABLES_FILE_PATH>${system/work-imvert-folder-path}/imvertor.29.tables.html</ENDPRODUCT_DOC_TABLES_FILE_PATH>
       
    </properties>
+   <system>
+      <endproduct-base-config-file>${system/managedinputfolder}/cfg/schemarules/${cli/endproductbaseconfig}</endproduct-base-config-file>
+      
+   </system>
+   
 </config>
