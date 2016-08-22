@@ -46,6 +46,7 @@
             else 'Warnings found. Some issues should be resolved before distribution.'"/>
     
     <xsl:template match="/">
+        <no-output/>
         <xsl:sequence select="imf:set-config-string('appinfo','error-count',string(count($errors)))"/>
         <xsl:sequence select="imf:set-config-string('appinfo','warning-count',string(count($warnings)))"/>
         <xsl:sequence select="imf:set-config-string('appinfo','status-message',$status-message)"/>
