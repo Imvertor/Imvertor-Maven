@@ -344,4 +344,15 @@
         <!-- remove -->
     </xsl:template>
 
+    <!-- TODO match phases to defined phases -->
+    <xsl:template match="imvert:phase">
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
+            <xsl:attribute name="original" select="."/>
+            <xsl:choose>
+                <xsl:when test=".='Goedgekeurd'">2</xsl:when> <!--TODO moet 3 zijn --> 
+                <xsl:otherwise>1</xsl:otherwise>
+            </xsl:choose>
+        </xsl:copy>
+    </xsl:template>
 </xsl:stylesheet>
