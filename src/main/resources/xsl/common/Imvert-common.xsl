@@ -636,6 +636,8 @@
     <xsl:function name="imf:get-phase-description" as="item()*">
         <xsl:param name="phase-passed"/>
         <xsl:variable name="phase" select="if ($phase-passed) then $phase-passed else '0'"/>
+        <xsl:value-of select="$phase"/>
+        <?x
         <xsl:analyze-string select="$phase" regex="([0123])|(concept)|(draft)|(final\s*draft)|(final)" flags="i">
             <xsl:matching-substring>
                  <xsl:sequence select="
@@ -649,6 +651,7 @@
                                  else ()"/>
             </xsl:matching-substring>
         </xsl:analyze-string>
+        x?>
     </xsl:function>
 
     <xsl:function name="imf:file-to-url">
