@@ -100,6 +100,25 @@
             <xsl:apply-templates select="*[not(self::imvert:stereotype or self::imvert:found-name)]"/>
         </imvert:association>
     </xsl:template>
+    
+    <xsl:template match="imvert:phase">
+        <xsl:variable name="original" select="normalize-space(lower-case(.))"/>
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
+            <xsl:attribute name="original" select="$original"/>
+            <xsl:choose>
+                <xsl:when test="$original='concept'">0</xsl:when> 
+                <xsl:when test="$original='draft'">1</xsl:when> 
+                <xsl:when test="$original='finaldraft'">2</xsl:when> 
+                <xsl:when test="$original='final draft'">2</xsl:when> 
+                <xsl:when test="$original='final'">3</xsl:when> 
+                <xsl:otherwise>
+                    <xsl:value-of select="$original"/>
+                </xsl:otherwise> 
+            </xsl:choose>
+        </xsl:copy>
+    </xsl:template>
+    
     <!-- 
        identity transform
     -->
