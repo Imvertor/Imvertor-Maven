@@ -575,6 +575,7 @@
                             -->
                             <xsl:for-each select="imvert:attributes/imvert:attribute[not(imvert:type-name=$xml-attribute-type)] | imvert:associations/imvert:association">
                                 <xsl:sort select="xs:integer(imvert:position)" order="ascending"/>
+                                
                                 <xsl:sequence select="imf:create-element-property(.)"/>
                             </xsl:for-each>
                             <?x associates komen niet meer voor?

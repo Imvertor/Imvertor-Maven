@@ -107,6 +107,7 @@
             <xsl:copy-of select="@*"/>
             <xsl:attribute name="original" select="$original"/>
             <xsl:choose>
+                <xsl:when test="$original='1.0'">1</xsl:when> 
                 <xsl:when test="$original='concept'">0</xsl:when> 
                 <xsl:when test="$original='draft'">1</xsl:when> 
                 <xsl:when test="$original='finaldraft'">2</xsl:when> 

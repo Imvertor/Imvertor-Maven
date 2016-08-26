@@ -185,6 +185,9 @@
             <xsl:when test="$scheme = 'tv-name'">
                 <xsl:value-of select="imf:get-normalized-name-sub($name,'T',true())"/>
             </xsl:when>
+            <xsl:when test="$scheme = 'tv-name-ea'">
+                <xsl:value-of select="normalize-space(lower-case($name))"/>
+            </xsl:when>
             <xsl:when test="$scheme = 'system-name'">
                 <xsl:value-of select="upper-case(normalize-space($name))"/>
             </xsl:when>
@@ -228,6 +231,9 @@
             </xsl:when>
             <xsl:when test="$naming-convention = '#unknown'">
                 <xsl:sequence select="imf:msg('FATAL','Invalid configuration for naming convention: construct is [1] at convention [2]', ($name-type,$naming-convention))"/>
+            </xsl:when>
+            <xsl:when test="$naming-convention = 'AsIs'">
+                <xsl:value-of select="$name-as-found"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:variable name="metamodel-form">
@@ -291,6 +297,9 @@
                 <xsl:value-of select="$value"/>
             </xsl:when>
             <xsl:when test="$normalization-scheme ='tv' and $normalization-rule = 'space'">
+                <xsl:value-of select="normalize-space($value)"/>
+            </xsl:when>
+            <xsl:when test="$normalization-scheme ='tv' and $normalization-rule = 'case'">
                 <xsl:value-of select="normalize-space($value)"/>
             </xsl:when>
             <xsl:when test="$normalization-scheme ='tv' and $normalization-rule = 'note'">

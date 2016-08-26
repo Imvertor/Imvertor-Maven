@@ -795,14 +795,14 @@
             if ($root-model-value) then $root-model-value else 
             ()
         -->
-        <xsl:variable name="tagged-values" select="$this/UML:ModelElement.taggedValue/UML:TaggedValue[imf:name-match(@tag,$tagged-value-name,'tv-name')]"/>
+        <xsl:variable name="tagged-values" select="$this/UML:ModelElement.taggedValue/UML:TaggedValue[imf:name-match(@tag,$tagged-value-name,'tv-name-ea')]"/>
         <xsl:variable name="local-value" select="$tagged-values[1]"/>
         <xsl:choose>
             <xsl:when test="exists($local-value)">
                  <xsl:sequence select="$local-value"/>   
             </xsl:when>
             <xsl:otherwise>
-                <xsl:variable name="tagged-values" select="$content/UML:TaggedValue[@modelElement=$this/@xmi.id and imf:name-match(@tag,$tagged-value-name,'tv-name')]"/>
+                <xsl:variable name="tagged-values" select="$content/UML:TaggedValue[@modelElement=$this/@xmi.id and imf:name-match(@tag,$tagged-value-name,'tv-name-ea')]"/>
                 <xsl:if test="$tagged-values[2]"> 
                    <xsl:sequence select="imf:msg('WARN','Duplicate assignment of tagged value (2) [1] at [2]', ($tagged-value-name, $this/@name))"/>
                 </xsl:if>
@@ -813,7 +813,7 @@
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:variable name="crole" select="imf:get-classifier-role($this)"/>
-                        <xsl:variable name="tagged-values" select="$crole/UML:ModelElement.taggedValue/UML:TaggedValue[imf:name-match(@tag,$tagged-value-name,'tv-name')]"/>
+                        <xsl:variable name="tagged-values" select="$crole/UML:ModelElement.taggedValue/UML:TaggedValue[imf:name-match(@tag,$tagged-value-name,'tv-name-ea')]"/>
                         <xsl:if test="$tagged-values[2]"> 
                             <xsl:sequence select="imf:msg('WARN','Duplicate assignment of tagged value [1] within classifier role [2]', ($tagged-value-name,$crole/@name))"/>
                         </xsl:if>
@@ -823,7 +823,7 @@
                                 <xsl:sequence select="$local-cr-value"/>   
                             </xsl:when>
                             <xsl:otherwise>
-                                <xsl:variable name="tagged-values" select="$content/UML:TaggedValue[@modelElement=$crole/@xmi.id and imf:name-match(@tag,$tagged-value-name,'tv-name')]"/>
+                                <xsl:variable name="tagged-values" select="$content/UML:TaggedValue[@modelElement=$crole/@xmi.id and imf:name-match(@tag,$tagged-value-name,'tv-name-ea')]"/>
                                 <xsl:if test="$tagged-values[2]"> 
                                     <xsl:sequence select="imf:msg('WARN','Duplicate assignment of tagged value [1] at classifier role [2]', ($tagged-value-name,$crole/@name))"/>
                                 </xsl:if>
@@ -834,7 +834,7 @@
                                     </xsl:when>
                                     <xsl:otherwise>
                                         <xsl:variable name="root-model" select="$content/UML:Model"/>
-                                        <xsl:variable name="tagged-values" select="$content/UML:TaggedValue[@modelElement=$root-model/@xmi.id and imf:name-match(@tag,$tagged-value-name,'tv-name')]"/>
+                                        <xsl:variable name="tagged-values" select="$content/UML:TaggedValue[@modelElement=$root-model/@xmi.id and imf:name-match(@tag,$tagged-value-name,'tv-name-ea')]"/>
                                         <xsl:if test="$tagged-values[2]"> 
                                             <xsl:sequence select="imf:msg('WARN','Duplicate assignment of tagged value [1] at root model [2]', ($tagged-value-name,$root-model/@name))"/>
                                         </xsl:if>

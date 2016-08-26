@@ -29,7 +29,9 @@
     version="2.0">
     
     <!-- 
-        Plaats niet-essentiele informatie in Imvert ten behoeve van een eenvoudiger verwerking door reporting en XSD conversie tools.
+        Insert non-essential information for a simpler processing by reporting and XSD conversion tool. 
+        
+        Set the imvert:position value to the position specified by tagged value, in accordance with the applicable metamodel. 
     -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
@@ -58,28 +60,20 @@
     </xsl:template>
     <xsl:template match="imvert:supertype">
         <xsl:copy>
-            <xsl:variable name="superclass" select="imf:get-class(imvert:type-name,imvert:type-package)"/>
+            <xsl:variable name="superclass" select="imf:get-construct-by-id(imvert:type-id)"/>
             <xsl:attribute name="display-name" select="imf:get-display-name($superclass)"/>
             <xsl:attribute name="formal-name" select="imf:get-construct-formal-name($superclass)"/>
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
-    <xsl:template match="imvert:substitution">
-        <xsl:copy>
-            <xsl:variable name="supplierclass" select="imf:get-class(imvert:supplier,imvert:supplier-package)"/>
-            <xsl:attribute name="display-name" select="imf:get-display-name($supplierclass)"/>
-            <xsl:attribute name="formal-name" select="imf:get-construct-formal-name($supplierclass)"/>
-            <xsl:apply-templates/>
-        </xsl:copy>
-    </xsl:template>
     <xsl:template match="imvert:attribute">
-        <xsl:variable name="class" select="imf:get-class(imvert:type-name,imvert:type-package)"/>
+        <xsl:variable name="class" select="imf:get-construct-by-id(imvert:type-id)"/>
         <xsl:copy>
             <xsl:attribute name="display-name" select="imf:get-display-name(.)"/>
             <xsl:attribute name="formal-name" select="imf:get-construct-formal-name(.)"/>
             
             <xsl:choose>
-                <xsl:when test="imvert:type-name and $class">
+                <xsl:when test="imvert:type-id and $class">
                     <xsl:attribute name="type-display-name" select="imf:get-display-name($class)"/>
                 </xsl:when>
                 <xsl:otherwise>
@@ -88,19 +82,29 @@
             </xsl:choose>
             <xsl:if test="imvert:copy-down-type-id">
                 <xsl:variable name="copy-down-class" select="imf:get-construct-by-id(imvert:copy-down-type-id)"/>
-                <xsl:attribute name="copy-down-display-name" select="imf:get-construct-name($copy-down-class)"></xsl:attribute>
+                <xsl:attribute name="copy-down-display-name" select="imf:get-construct-name($copy-down-class)"/>
             </xsl:if>
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
     <xsl:template match="imvert:association">
-        <xsl:variable name="class" select="imf:get-class(imvert:type-name,imvert:type-package)"/>
+        <xsl:variable name="class" select="imf:get-construct-by-id(imvert:type-id)"/>
         <xsl:copy>
             <xsl:attribute name="display-name" select="imf:get-display-name(.)"/>
             <xsl:attribute name="formal-name" select="imf:get-construct-formal-name(.)"/>
             <xsl:attribute name="type-display-name" select="imf:get-display-name($class)"/>
             <xsl:attribute name="type-formal-name" select="imf:get-construct-formal-name($class)"/>
             <xsl:apply-templates/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="imvert:position">
+        <!-- get the tagged value that sets the position ans use that value; if no such tagged value, use the current value -->
+        <xsl:variable name="position-specified" select="imf:get-tagged-value(..,imf:get-normalized-names('position','tv-name'))"/>
+        <xsl:variable name="position-calculated" select="($position-specified,.)[1]"/>
+        <xsl:copy>
+            <xsl:attribute name="original" select="."/>
+            <xsl:value-of select="$position-calculated"/>
         </xsl:copy>
     </xsl:template>
     
@@ -111,4 +115,10 @@
         </xsl:copy>
     </xsl:template>
    
+    <xsl:function name="imf:get-tagged-value" as="xs:string?">
+        <xsl:param name="this" as="element()"/>
+        <xsl:param name="tv-norm-name" as="xs:string"/>
+        <xsl:sequence select="$this/imvert:tagged-values/imvert:tagged-value[imvert:name=$tv-norm-name]/imvert:value"/>
+    </xsl:function>
+
 </xsl:stylesheet>

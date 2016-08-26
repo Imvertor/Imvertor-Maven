@@ -21,9 +21,9 @@
 package nl.imvertor.XmiCompiler;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
-import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -185,10 +185,13 @@ public class XmiCompiler extends Step {
 	private void cleanXMI(XmlFile xmiFile) throws IOException {
 		AnyFile outFile = new AnyFile(File.createTempFile("cleanXMI.", ".xmi"));
 		outFile.deleteOnExit();
-		FileWriterWithEncoding writer = outFile.getWriterWithEncoding("UTF-8", false);
+		//FileWriterWithEncoding writer = outFile.getWriterWithEncoding("UTF-8", false);
+		FileWriter writer = outFile.getWriter(false);
 		String line = xmiFile.getNextLine();
 		while (line != null) {
-			writer.write(StringUtils.replacePattern(line, "&#5[0-9]{4};", "X") + "\n");
+			line = StringUtils.replacePattern(line, "&#5[0-9]{4};", "X");
+			//line = StringUtils.replacePattern(line, "encoding=\"windows-1252\"", "encoding=\"UTF-8\"");
+			writer.write(line + "\n");
 			line = xmiFile.getNextLine();
 		}
 		writer.flush();
