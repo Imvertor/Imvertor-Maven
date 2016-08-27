@@ -49,7 +49,7 @@
     <xsl:variable name="project-package" select="$app-package/ancestor::UML:Package[. = $project-packages]"/>
     
     <xsl:template match="/">
-       <xsl:choose>
+        <xsl:choose>
            <xsl:when test="empty($project-packages)">
                <xsl:sequence select="imf:msg('ERROR','No projects found')"/>
            </xsl:when>
@@ -72,27 +72,28 @@
     <!-- copy all packages except those what are not witin application, or not external) -->
     <xsl:template match="UML:Package">
         <!-- package contains the app? -->
-        <xsl:variable name="holds-app" select=". = $containing-packages"/>
+        <xsl:variable name="holds-app" select=". intersect $containing-packages"/>
         <!-- package is (part of) the app? -->
-        <xsl:variable name="is-in-app" select="ancestor-or-self::UML:Package = $app-package"/>
+        <xsl:variable name="is-in-app" select="ancestor-or-self::UML:Package intersect $app-package"/>
         <!-- package is external? -->
-        <xsl:variable name="is-in-ext" select="ancestor-or-self::UML:Package = $external-packages"/>
+        <xsl:variable name="is-in-ext" select="ancestor-or-self::UML:Package intersect $external-packages"/>
+       
         <xsl:choose>
             <xsl:when test="$holds-app">
                 <xsl:if test="imf:boolean($debug)">
-                    <xsl:comment select="concat(@name, ' added becauee: holds-app')"/>
+                    <xsl:comment select="concat(@name, ' added because: holds-app')"/>
                 </xsl:if>
                 <xsl:next-match/>            
             </xsl:when>
             <xsl:when test="$is-in-ext">
                 <xsl:if test="imf:boolean($debug)">
-                    <xsl:comment select="concat(@name, ' added becauee: is-in-ext')"/>
+                    <xsl:comment select="concat(@name, ' added because: is-in-ext')"/>
                 </xsl:if>
                 <xsl:next-match/>            
             </xsl:when>
             <xsl:when test="$is-in-app">
                 <xsl:if test="imf:boolean($debug)">
-                    <xsl:comment select="concat(@name, ' added becauee: is-in-app')"/>
+                    <xsl:comment select="concat(@name, ' added because: is-in-app')"/>
                 </xsl:if>
                 <xsl:next-match/>            
             </xsl:when>
