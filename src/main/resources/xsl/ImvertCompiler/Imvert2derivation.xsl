@@ -128,7 +128,7 @@
         <xsl:variable name="client-attribute" select="."/>
         <!--<xsl:variable name="supplier-attribute" select="$supplier-class/imvert:attributes/imvert:attribute[imvert:name=$client-attribute/imvert:name]"/>-->
         <!-- see Task #487911 -->
-        <xsl:variable name="supplier-attribute" select="imf:get-supplier-from-layers($client-attribute)"/>
+        <xsl:variable name="supplier-attribute" select="imf:get-construct-by-id($client-attribute/imvert:trace,$derivation-tree)"/>
         <xsl:variable name="is-enumeration" select="imvert:stereotype = $normalized-stereotype-enum"/> 
         
         <xsl:choose>
@@ -139,7 +139,10 @@
                     'Client enumeration value is not known by supplier',
                     ())"/>
             </xsl:when>
-            <xsl:when test="$supplier-attribute">
+            <xsl:when test="empty($client-attribute/imvert:trace)">
+                <!-- no trace so no compare neccessary -->
+            </xsl:when>
+            <xsl:when test="exists($supplier-attribute)">
                 <!-- client same as supplier -->
                 <!-- same attribute names must have related types -->
                 <xsl:sequence select="imf:check-type-related($client-attribute,$supplier-attribute)"/>
@@ -154,9 +157,12 @@
     <xsl:template match="imvert:association">
         <xsl:param name="supplier-class"/>
         <xsl:variable name="client-association" select="."/>
-        <xsl:variable name="supplier-association" select="$supplier-class/imvert:associations/imvert:association[imvert:name=$client-association/imvert:name]"/>
-
+        <xsl:variable name="supplier-association" select="imf:get-construct-by-id($client-association/imvert:trace,$derivation-tree)"/>
+        
         <xsl:choose>
+            <xsl:when test="empty($client-association/imvert:trace)">
+                <!-- no trace so no compare neccessary -->
+            </xsl:when>
             <xsl:when test="$supplier-association">
                 <!-- client same as supplier -->
                 <!-- same attribute names must have related types -->
@@ -181,10 +187,10 @@
             <xsl:when test="not($supplier)">
                 <!-- okay; assume the property is new. -->
             </xsl:when>
-            <xsl:when test="empty($client/imvert:type-id) and empty($supplier/imvert:type-id)">
+            <xsl:when test="empty($client/imvert:baretype) and empty($supplier/imvert:baretype)">
                 <!-- this is an enum; skip; this is dealt with elsewhere -->
             </xsl:when>
-            <xsl:when test="not($supplier/imvert:type-id) and not($client/imvert:type-id)">
+            <xsl:when test="empty($supplier/imvert:type-id) and empty($client/imvert:type-id)">
                 <!-- compare base types -->
                 <xsl:sequence select="imf:check-baretype-related($client,$supplier)"/>
             </xsl:when>
@@ -203,12 +209,12 @@
     <xsl:function name="imf:check-baretype-related" as="element()*">
         <xsl:param name="client"/>
         <xsl:param name="supplier"/>
-        <xsl:variable name="supplier-is-string" select="$supplier/imvert:type-name = 'string'"/>
-        <xsl:variable name="supplier-is-int" select="$supplier/imvert:type-name = 'integer'"/>
-        <xsl:variable name="supplier-is-dec" select="$supplier/imvert:type-name = 'decimal'"/>
-       
+        <xsl:variable name="supplier-is-string" select="$supplier/imvert:type-name = 'scalar-string'"/>
+        <xsl:variable name="supplier-is-int" select="$supplier/imvert:type-name = 'scalar-integer'"/>
+        <xsl:variable name="supplier-is-dec" select="$supplier/imvert:type-name = 'scalar-decimal'"/>
+        
         <xsl:choose>
-            <xsl:when test="$client/imvert:type-name = 'string'">
+            <xsl:when test="$client/imvert:type-name = 'scalar-string'">
                 <!-- okay in all cases, may become more specific -->
                 <xsl:sequence select="imf:report-warning($client,not($supplier-is-string),
                     'Client type not tested, as supplier type [1] is not character type',
@@ -226,7 +232,7 @@
                     'Client must specialize or conform to supplier pattern [1]',
                     ($supplier/imvert:pattern))"/>
             </xsl:when>
-            <xsl:when test="$client/imvert:type-name = 'integer'">
+            <xsl:when test="$client/imvert:type-name = 'scalar-integer'">
                 <xsl:sequence select="imf:report-error($client,not($supplier-is-int),
                     'Supplier type [1] is not an integer.', 
                     ($supplier/imvert:type-name))"/>
@@ -236,7 +242,7 @@
                     'Client type size must be equal or smaller than [1]',
                     ($supplier/imvert:total-digits))"/>
             </xsl:when>
-            <xsl:when test="$client/imvert:type-name = 'decimal'">
+            <xsl:when test="$client/imvert:type-name = 'scalar-decimal'">
                 <xsl:sequence select="imf:report-error($client,not($supplier-is-dec),
                     'Supplier type [1] is not a decimal.', ($supplier/imvert:type-name))"/>
                 <xsl:sequence select="imf:report-error($client,xs:integer($client/imvert:total-digits) gt xs:integer($supplier/imvert:total-digits),
@@ -244,7 +250,7 @@
                 <xsl:sequence select="imf:report-error($client,xs:integer($client/imvert:faction-digits) gt xs:integer($supplier/imvert:total-digits),
                     'Client type size must be equal or smaller than [1]',($supplier/imvert:fraction-digits))"/>
             </xsl:when>
-            <xsl:when test="$client/imvert:type-name = ('date', 'datetime', 'time', 'boolean', 'year')">
+            <xsl:when test="$client/imvert:type-name = ('scalar-date', 'scalar-datetime', 'scalar-time', 'scalar-boolean', 'scalar-year')">
                 <xsl:sequence select="imf:report-error($client,not($client/imvert:type-name = $supplier/imvert:type-name),
                     'Supplier type [1] is not equal to client type [2].', 
                     ($supplier/imvert:type-name, $client/imvert:type-name))"/>

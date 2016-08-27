@@ -41,7 +41,7 @@
     
     <xsl:template match="imvert:packages" mode="trace">
         <!-- return a trace documentation page only when deriving -->
-        <xsl:if test="exists($pairs/imvert:supplier[2]//imvert:trace)"><!--TODO how to represent proxy? -->
+        <xsl:if test="exists($pairs/imvert:supplier[1]//imvert:trace)"><!--TODO how to represent proxy? -->
             <!-- determine the IDs of the suppliers -->
             
             <page>

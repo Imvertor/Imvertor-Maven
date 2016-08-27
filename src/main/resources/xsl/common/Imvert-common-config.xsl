@@ -235,6 +235,9 @@
             <xsl:when test="$naming-convention = 'AsIs'">
                 <xsl:value-of select="$name-as-found"/>
             </xsl:when>
+            <xsl:when test="$naming-convention = 'lowercase'">
+                <xsl:value-of select="lower-case($name-as-found)"/>
+            </xsl:when>
             <xsl:otherwise>
                 <xsl:variable name="metamodel-form">
                     <xsl:variable name="parts" select="tokenize(normalize-space($name-as-found),'[^A-Za-z0-9_\.]+')"/>
