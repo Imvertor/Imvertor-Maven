@@ -43,10 +43,8 @@
     
     <xsl:variable 
         name="application-package" 
-        select="//imvert:package[
-          imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-base-package','stereotype-name-application-package'))
-          and 
-          imvert:name/@original=$application-package-name][1]"/>
+        select="//imvert:package[imvert:is-root-package='true']"
+        as="node()*"/>
     
     <!-- override document packages by the packages in the application tree -->
     <xsl:variable 

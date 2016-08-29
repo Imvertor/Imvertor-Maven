@@ -53,6 +53,7 @@ import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.file.XslFile;
 import nl.imvertor.common.xsl.extensions.ImvertorFileSpec;
 import nl.imvertor.common.xsl.extensions.ImvertorParameterFile;
+import nl.imvertor.common.xsl.extensions.ImvertorTrack;
 
 /**
  * This class represents a Saxon based transformer. 
@@ -100,6 +101,7 @@ public class Transformer {
 		// standard extension functions:
 		setExtensionFunction(new ImvertorFileSpec());
 		setExtensionFunction(new ImvertorParameterFile());
+		setExtensionFunction(new ImvertorTrack());
 	}
 	
 	/**

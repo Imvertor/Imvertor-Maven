@@ -88,6 +88,7 @@ public class Configurator {
 	public static final Logger logger = Logger.getLogger(Configurator.class);
 	public static final String VC_IDENTIFIER = "$Id: Configurator.java 7498 2016-04-15 07:51:23Z arjan $";
 	public static final String PARMS_FILE_NAME = "parms.xml";
+	public static final String TRACK_FILE_NAME = "track.txt";
 	
 	public static final String NAMESPACE_EXTENSION_FUNCTIONS = "http://www.imvertor.org/xsl/extensions";
 	public static final String DEFAULT_METAMODEL = "BP";
@@ -110,6 +111,7 @@ public class Configurator {
 	private XMLConfiguration stepConfiguration;
 
 	public XmlFile workConfigurationFile;
+	public AnyFile trackerFile;
 	
 	private String currentStepName;
 	private Boolean forceCompile = false; // allow compilation errors to be ignored?
@@ -268,6 +270,10 @@ public class Configurator {
 		return outputFolder;
 	}
 
+	public AnyFile getTrackerFile() {
+		return trackerFile;
+	}
+	
 	/**
 	 * Return the full path of the XSL file that is passed by name.
 	 * The XSL file must be part of the step declared, and must exist.
@@ -321,6 +327,9 @@ public class Configurator {
 	public void prepare() throws Exception {
 		
 		starttime = System.currentTimeMillis(); 
+		
+		trackerFile = new AnyFile(workFolder,Configurator.TRACK_FILE_NAME);
+		trackerFile.setContent("Preparing"); // clear current contents
 		
 		workConfigurationFile = new XmlFile(workFolder,Configurator.PARMS_FILE_NAME);
 		workConfigurationFile.setContent(

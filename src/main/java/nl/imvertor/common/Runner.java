@@ -28,9 +28,11 @@ import java.util.List;
 
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.exceptions.ConfiguratorException;
+import nl.imvertor.common.file.AnyFile;
 
 /**
  * The Runner is an object that represents all state information of a single run.
@@ -64,6 +66,8 @@ public class Runner {
 	
 	private Messenger messenger;
 	
+	private FileWriterWithEncoding trackerFileWriter;
+	
 	public Runner() {
 		super();
 	}
@@ -81,7 +85,8 @@ public class Runner {
 			FileUtils.deleteQuietly(new File(wf, "imvert"));
 			FileUtils.deleteQuietly(new File(wf, "doc"));
 			FileUtils.deleteQuietly(new File(wf, "report"));
-			FileUtils.deleteQuietly(new File(wf, "parms.xml"));
+			FileUtils.deleteQuietly(new File(wf, Configurator.PARMS_FILE_NAME));
+			FileUtils.deleteQuietly(new File(wf, Configurator.TRACK_FILE_NAME));
 		} else {
 			wf.mkdirs();
 		}
@@ -263,7 +268,9 @@ public class Runner {
 	 */
 	public void info(Logger logger, String text) {
 		logger.info(text);
+		track(text);
 	}
+	
 	/**
 	 * The DEBUG Level designates fine-grained informational events that are most useful to debug an application.
 	 * 
@@ -310,6 +317,29 @@ public class Runner {
 	public void fatal(Logger logger, String text, Exception e) {
 		fatal(logger, text, e, null);
 	}
+	/**
+	 * Tracker intended for external applications, keeping track of states the process is in. 
+	 * Typically read in parallel, focussing on the last line.
+	 *  
+	 * @param logger
+	 * @param text
+	 * @throws IOException 
+	 */
+	public void track(String text) {
+		try {
+			AnyFile tf = Configurator.getInstance().getTrackerFile();
+			if (tf != null) {
+				if (trackerFileWriter == null) {
+					trackerFileWriter = tf.getWriterWithEncoding("UTF-8", true);
+				}
+				trackerFileWriter.append(text + System.lineSeparator());
+				trackerFileWriter.flush();
+			}
+		} catch (Exception e) {
+			fatal(logger, "Cannot track", e);
+		}
+	}
+	
 	
 	/*
 	 * return a count of all errors found

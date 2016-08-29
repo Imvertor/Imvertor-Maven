@@ -75,7 +75,7 @@
             <xsl:analyze-string select="$string" regex="\[(\d)\]">
                 <xsl:matching-substring>
                     <xsl:variable name="g" select="$parms[xs:integer(regex-group(1))]"/>
-                    <xsl:value-of select="if ($g) then imf:msg-insert-parms-val($g) else '-null-'"/>
+                    <xsl:value-of select="if (exists($g)) then imf:msg-insert-parms-val($g) else '-null-'"/>
                 </xsl:matching-substring>
                 <xsl:non-matching-substring>
                     <xsl:value-of select="."/>
@@ -100,4 +100,9 @@
         <xsl:value-of select="concat('&quot;',if ($this instance of element() and $this/*) then imf:get-construct-name($this) else string($this),'&quot;')"/>
     </xsl:function>
         
+    <xsl:function name="imf:track" as="item()*">
+        <xsl:param name="text" as="xs:string"/>
+        <xsl:param name="info" as="item()*"/>
+        <xsl:sequence select="imf:track(imf:msg-insert-parms($text,$info))"/>
+    </xsl:function>
 </xsl:stylesheet>

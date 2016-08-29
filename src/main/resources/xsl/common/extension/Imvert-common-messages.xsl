@@ -17,17 +17,20 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<xsl:stylesheet 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:imvert="http://www.imvertor.org/schema/system"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
     
-    exclude-result-prefixes="#all"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    
+    xmlns:ext="http://www.imvertor.org/xsl/extensions"
+    
+    xmlns:imf="http://www.imvertor.org/xsl/functions"
+    xmlns:imvert="http://www.imvertor.org/xsl/functions"
+    
     version="2.0">
     
-    <xsl:import href="extension/Imvert-common-filespec.xsl"/>
-    <xsl:import href="extension/Imvert-common-config.xsl"/>
-    <xsl:import href="extension/Imvert-common-version.xsl"/>
-    <xsl:import href="extension/Imvert-common-messages.xsl"/>
+    <xsl:function name="imf:track" as="xs:boolean?">
+        <xsl:param name="text"/>
+        <xsl:sequence select="ext:imvertorTrack(string($text))"/>
+    </xsl:function>
     
 </xsl:stylesheet>

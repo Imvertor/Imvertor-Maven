@@ -172,6 +172,7 @@
     
   
     <xsl:template match="imvert:package[.=$application-package]" priority="101">
+        <xsl:sequence select="imf:track('Validating package [1]',imvert:name)"/>
         <xsl:sequence select="imf:report-error(., 
             not(matches(imvert:version,imf:get-config-parameter('application-version-regex'))), 
             'Version identifier has invalid format')"/>
@@ -182,6 +183,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:package[.=$domain-package]" priority="101">
+        <xsl:sequence select="imf:track('Validating package [1]',imvert:name)"/>
         <xsl:sequence select="imf:report-error(., 
             not(matches(imvert:version,imf:get-config-parameter('domain-version-regex'))), 
             'Version identifier has invalid format')"/>

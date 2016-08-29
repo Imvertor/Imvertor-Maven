@@ -47,6 +47,7 @@
         <xsl:variable name="layers" as="element()">
             <imvert:layers-set>
                 <xsl:for-each select="imvert:packages/imvert:package[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))]">
+                    <xsl:sequence select="imf:track('Deriving package [1]',imvert:name)"/>
                     <imvert:layer>
                         <imvert:supplier id="{imf:get-supplier-id($application-project,$application-name,$application-release)}" project="{$application-project}" application="{$application-name}" release="{$application-release}" level="0">
                             <xsl:apply-templates select="."/>
@@ -100,6 +101,8 @@
                 Supplier project set explicitly for the package itself, or taken from parent.
                 Supplier release set explicitly for the package itself, or taken from parent.
         -->
+        <xsl:sequence select="imf:track('Deriving package [1]',$package/imvert:name)"/>
+        
         <xsl:variable name="supplier-info" select="imf:get-supplier-info($package)"/>
         
         <xsl:for-each select="$supplier-info">

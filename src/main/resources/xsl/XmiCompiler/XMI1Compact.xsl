@@ -71,13 +71,17 @@
   
     <!-- copy all packages except those what are not witin application, or not external) -->
     <xsl:template match="UML:Package">
+        
+        <xsl:sequence select="imf:track('Compacting package [1]',@name)"/>
+        
         <!-- package contains the app? -->
-        <xsl:variable name="holds-app" select=". intersect $containing-packages"/>
+        <xsl:variable name="holds-app" select="exists(. intersect $containing-packages)"/>
         <!-- package is (part of) the app? -->
-        <xsl:variable name="is-in-app" select="ancestor-or-self::UML:Package intersect $app-package"/>
+        <xsl:variable name="is-in-app" select="exists(ancestor-or-self::UML:Package intersect $app-package)"/>
         <!-- package is external? -->
-        <xsl:variable name="is-in-ext" select="ancestor-or-self::UML:Package intersect $external-packages"/>
+        <xsl:variable name="is-in-ext" select="exists(ancestor-or-self::UML:Package intersect $external-packages)"/>
        
+        <!--<xsl:sequence select="imf:msg(.,'DEBUG','Compact: package [1] holds app [2], is in app [3], is in external [4]', (@name,$holds-app,$is-in-app,$is-in-ext))"/>-->
         <xsl:choose>
             <xsl:when test="$holds-app">
                 <xsl:if test="imf:boolean($debug)">
@@ -102,9 +106,10 @@
                     <xsl:comment select="concat(@name, ' purged')"/>
                 </xsl:if>
                 <!-- if any trace info available, copy those traces to a separate XMI section -->
-                <extracted-traces>
+                <xsl:variable name="traces">
                     <xsl:apply-templates select=".//UML:Association[UML:ModelElement.stereotype/UML:Stereotype/@name = 'trace']"/>
-                </extracted-traces>
+                </xsl:variable>
+                <xsl:sequence select="imf:create-output-element('extracted-traces',$traces)"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>

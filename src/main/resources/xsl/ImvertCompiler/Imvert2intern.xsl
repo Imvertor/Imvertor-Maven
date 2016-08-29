@@ -52,13 +52,28 @@
             <xsl:sequence select="imf:compile-imvert-header(.)"/>
             <xsl:choose>
                 <xsl:when test="exists($intern-packs)">
-                    <!-- process all but reset the type IDs for interfaces to an internal package -->
-                    <xsl:apply-templates select="imvert:package" mode="intern-redirect"/>
-                    <!-- now add the internal packages -->
-                    <xsl:apply-templates select="$intern-referenced-packages" mode="intern-origin"/>         
+                    <xsl:variable name="result" as="item()*">
+                        <!-- process all but reset the type IDs for interfaces to an internal package -->
+                        <xsl:apply-templates select="imvert:package" mode="intern-redirect"/>
+                        <!-- now add the internal packages -->
+                        <xsl:apply-templates select="$intern-referenced-packages" mode="intern-origin"/>         
+                    </xsl:variable>
+                    <!-- now check if no ambiguities have been introduced -->
+                    <xsl:variable name="package-duplicate" select="imf:get-duplicate-packages($result[self::imvert:package])"/>
+                    <xsl:choose>
+                        <!-- no two domains of views may have the same name -->
+                        <xsl:when test="exists($package-duplicate)">
+                            <xsl:for-each select="$package-duplicate">
+                                <xsl:sequence select="imf:msg(.,'ERROR','Internal package has the same name as application package')"/>
+                            </xsl:for-each>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence select="$result"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:when>
                 <xsl:otherwise>
-                    <!-- not part of the metamodel of no intern packjages defined. -->
+                    <!-- not part of the metamodel of no internal packages defined. -->
                     <xsl:sequence select="imvert:package"/>
                 </xsl:otherwise>
             </xsl:choose>
@@ -100,7 +115,11 @@
             <xsl:otherwise>
                 <xsl:copy>
                     <xsl:attribute name="origin">system</xsl:attribute>
-                    <xsl:apply-templates mode="#current"/>
+                    <imvert:name>
+                        <xsl:copy-of select="@*"/>
+                        <xsl:value-of select="concat(.,' [',../imvert:name,']')"/>
+                    </imvert:name>
+                    <xsl:apply-templates select="*[not(self::imvert:name)]" mode="#current"/>
                 </xsl:copy>
             </xsl:otherwise>
         </xsl:choose>
@@ -146,4 +165,12 @@
         <xsl:sequence select="($config-tree//*[@id=$id])[last()]"/>
     </xsl:function>
     
+    <xsl:function name="imf:get-duplicate-packages" as="element(imvert:package)*">
+        <xsl:param name="packages" as="element(imvert:package)*"/>
+        <xsl:for-each-group select="$packages" group-by="imvert:name">
+            <xsl:if test="exists(current-group()[2])">
+                <xsl:sequence select="current-group()[1]"/>
+            </xsl:if> 
+        </xsl:for-each-group>
+    </xsl:function>
 </xsl:stylesheet>

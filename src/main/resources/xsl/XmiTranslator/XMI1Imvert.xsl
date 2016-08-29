@@ -138,6 +138,8 @@
     <xsl:template match="UML:Package">
         <xsl:param name="parent-is-derived" select="false()"/>
         
+        <xsl:sequence select="imf:track('Transforming package [1]',@name)"/>
+        
         <xsl:variable name="package-name" select="@name" as="xs:string"/>
         <xsl:variable name="package-id" select="@xmi.id" as="xs:string"/>
         <xsl:variable name="namespace" select="imf:get-alias(.,'P')"/>
@@ -145,8 +147,12 @@
         
         <xsl:variable name="supplier-info" select="imf:get-supplier-info(.,$parent-is-derived)" as="element()*"/>
         <xsl:variable name="is-derived" select="imf:boolean($supplier-info[self::imvert:derived])"/>
+        
+        <!-- is this the application package? -->
+        <xsl:variable name="is-root-package" select="@name = $application-package-name"/>
+        
         <imvert:package>
-            <!--<xsl:sequence select="imf:msg(.,'STATUS','Processing package',@name)"/>-->
+            <xsl:sequence select="imf:create-output-element('imvert:is-root-package',if ($is-root-package) then 'true' else ())"/>
             <xsl:sequence select="imf:get-id-info(.,'P')"/>
             <xsl:sequence select="$supplier-info"/>
             <xsl:sequence select="imf:create-output-element('imvert:namespace',$namespace)"/>
