@@ -170,7 +170,6 @@
         </imvert:report>
     </xsl:template>
     
-  
     <xsl:template match="imvert:package[.=$application-package]" priority="101">
         <xsl:sequence select="imf:track('Validating package [1]',imvert:name)"/>
         <xsl:sequence select="imf:report-error(., 
@@ -179,6 +178,19 @@
         <xsl:sequence select="imf:report-error(., 
             not(normalize-space(imvert:namespace)), 
             'No root namespace defined for application')"/>
+        <xsl:next-match/>
+    </xsl:template>
+    
+    <xsl:template match="imvert:package[.. = $application-package]" priority="102">
+        <!-- redmine #487837 Packages in <<application>> moeten bekend stereotype hebben -->
+        <xsl:sequence select="imf:report-error(., 
+            empty(imvert:stereotype = imf:get-normalized-names(
+            ('imvert-stereotype-domain','imvert-stereotype-intern','imvert-stereotype-recyclebin'),'stereotype-name')), 
+            'Package with unexpected stereotype(s): [1]', imvert:stereotype/@original)"/>
+        <!-- en moeten een stereo hebben! -->
+        <xsl:sequence select="imf:report-error(., 
+            empty(imvert:stereotype), 
+            'Package within application model must be stereotyped')"/>        
         <xsl:next-match/>
     </xsl:template>
     
