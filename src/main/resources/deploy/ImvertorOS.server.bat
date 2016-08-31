@@ -16,6 +16,7 @@ set inpdir=%imvertor_os_input%
 set outdir=%imvertor_os_output%
 set workdir=%imvertor_os_work%
 set bindir=%imvertor_os_bin%
+set eaenabled=%imvertor_os_eaenabled%
 
 if exist %propfile% set propfilepath=%propfile%
 if exist %propfile% (goto PROPOKAY)
@@ -41,6 +42,7 @@ call "%javaexe%" %jvmparms% ^
 	-Doutput.dir="%outdir%" ^
     -Dinput.dir="%inpdir%" ^
     -Dwork.dir="%workdir%\%jobid%" ^
+    -Dea.enabled=%imvertor_os_eaenabled% ^
     -classpath "%bindir%\bin\ChainTranslateAndReport_lib" ^
     -jar "%bindir%\bin\%jar%.jar" ^
 	-arguments "%propfilepath%" ^

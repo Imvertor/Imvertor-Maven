@@ -17,6 +17,7 @@ set outdir=%imvertor_os_output%
 set workdir=%imvertor_os_work%
 set bindir=%imvertor_os_bin%
 set eapath=%imvertor_os_eapath%
+set eaenabled=%imvertor_os_eaenabled%
 
 set jarfile=ChainTranslateAndReport.jar
 
@@ -58,6 +59,7 @@ call "%javaexe%" %jvmparms% ^
 	-Doutput.dir="%outdir%" ^
     -Dinput.dir="%inpdir%" ^
     -Dwork.dir="%workdir%\default" ^
+    -Dea.enabled=%imvertor_os_eaenabled% ^
 	-classpath "%bindir%\bin\ChainTranslateAndReport_lib" ^
     -jar "%bindir%\bin\%jarfile%" ^
 	-arguments "%propfilepath%"  ^
