@@ -95,20 +95,19 @@
             <xsl:sequence select="imf:create-output-element('ep:release', /imvert:packages/imvert:release)"/>
             
            <xsl:variable name="packages" select="/imvert:packages"/>
-           <xsl:variable name="messages" select="/imvert:packages/imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]"/>
-            <xsl:comment select="imf:get-config-stereotypes('stereotype-name-domain-package')"/>
-           <xsl:variable name="idsUsedComponents">
-               <idsUsedComponents>
-                   <xsl:apply-templates select="$messages" mode="getIdsUsedComponents-message-structure"/>
-               </idsUsedComponents>
-           </xsl:variable>		  
-           <xsl:sequence select="imf:create-output-element('ep:idsUsedComponents', $idsUsedComponents)"/>
-           <xsl:apply-templates select="$messages" mode="create-message-structure"/>
-           <xsl:for-each select="$idsUsedComponents//id">
+           <?x xsl:if test="imf:boolean($debug)" x?>
+               <xsl:comment select="imf:get-config-stereotypes('stereotype-name-domain-package')"/>
+           <?x /xsl:if x?>
+           <xsl:variable name="messages">
+               <xsl:apply-templates select="/imvert:packages/imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]" mode="create-message-structure"/>
+           </xsl:variable>
+           <xsl:sequence select="$messages"/>
+           <!-- The following apply-templates takes care of creating global construct for each ep:constructRef present within the 'messages' variable. -->
+           <xsl:for-each select="$messages//ep:constructRef/ep:id">
+               <xsl:variable name="berichtCode" select="ancestor::ep:message/ep:code"/>
+               <xsl:variable name="context" select="../@context"/>
                <xsl:variable name="id" select="."/>
                <xsl:message select="concat('globalComplexType: ',$id)"/>
-               <xsl:variable name="berichtCode" select="@berichtCode"/>
-               <xsl:variable name="context" select="@context"/>
                <ep:construct>
                    <xsl:sequence
                        select="imf:create-output-element('ep:name', $packages//imvert:class[imvert:id = $id]/imvert:name/@original)" />							
