@@ -797,7 +797,7 @@ public class Configurator {
 	 * @param v
 	 * @return
 	 */
-	private boolean isTrue(String v) {
+	public boolean isTrue(String v) {
 		return (v == null) ? false : (v.equals("yes") || v.equals("true"));
 	}
 	

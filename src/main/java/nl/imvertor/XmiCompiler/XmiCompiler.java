@@ -56,6 +56,8 @@ public class XmiCompiler extends Step {
 	private AnyFile idFile;
 	private String activeFileOrigin;
 	
+	private String eaEnabled = "true";
+	
 	/**
 	 *  run the main translation
 	 */
@@ -75,6 +77,8 @@ public class XmiCompiler extends Step {
 		XmiFile xmiFile = umlFile.getExtension().toLowerCase().equals("xmi") ? new XmiFile(umlFile) : null;
 		ZipFile zipFile = umlFile.getExtension().toLowerCase().equals("zip") ? new ZipFile(umlFile) : null; // always holds single XMI
 		
+		eaEnabled = System.getProperty("ea.enabled"); // true or false; false typically on server environment; see redmine #487932
+		
 		if (activeFileOrigin == null && zipFile != null) {
 			runner.debug(logger, "Try compressed XMI file at: " + zipFile);
 			if (zipFile.isFile()) {
@@ -91,7 +95,9 @@ public class XmiCompiler extends Step {
 		}
 		if (activeFileOrigin == null && eapFile != null) {
 		    runner.debug(logger,"Try EAP file at: " + eapFile);
-		    if (!eapFile.isFile()) {
+		    if (!configurator.isTrue(eaEnabled)) {
+		    	runner.error(logger,"EAP file is not supported in this environment: " + eapFile);
+		    } else if (!eapFile.isFile()) {
 		    	runner.error(logger,"EAP file doesn't exist: " + eapFile);
 		    } else if (eapFile.isAccessible()) {
 				passedFile = eapFile;
