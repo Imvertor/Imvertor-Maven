@@ -86,13 +86,12 @@
     
     <xsl:function name="imf:fetch" as="element()*">
         <xsl:param name="url" as="xs:string"/>
-        <xsl:variable name="history-imvert-file-exists" select="unparsed-text-available($url)"/>
+        <xsl:variable name="history-imvert-file-document" select="imf:document($url)"/>
         <xsl:choose>
-            <xsl:when test="not($history-imvert-file-exists)">
+            <xsl:when test="empty($history-imvert-file-document)">
                 <xsl:sequence select="imf:msg('WARN','Cannot find history file for [1]',$url)"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:variable name="history-imvert-file-document" select="imf:document($url)"/>
                 <xsl:apply-templates select="$history-imvert-file-document/imvert-history:versions/imvert-history:filter" mode="content-copy"/>
                 <xsl:for-each select="$history-imvert-file-document/imvert-history:versions/imvert-history:variants/imvert-history:variant">
                     <imvert-history:variant>

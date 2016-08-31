@@ -132,8 +132,6 @@
                     <!-- 
                         Check where supplier info is found. 
                     -->
-                    <xsl:variable name="path-found" select="unparsed-text-available(@system-path)"/>
-                    
                     <xsl:sequence select="imf:report-error($package,not(@project),'No supplier project specified')"/>
                     <xsl:sequence select="imf:report-error($package,not(@release),'No supplier release specified')"/>
                     
@@ -142,12 +140,12 @@
                     <xsl:variable name="supplier-package" select="$supplier-document/imvert:packages/imvert:package[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package')) and imvert:name=$supplier-mapped-name]"/>
                     
                     <xsl:choose>
-                        <xsl:when test="not($path-found)">
+                        <xsl:when test="empty($supplier-document)">
                             <xsl:if test="$level eq 1">
                                 <xsl:sequence select="imf:report-warning($package,true(),'No supplier Imvert information found; not validating this derivation')"/>
                             </xsl:if>
                         </xsl:when>
-                        <xsl:when test="not($supplier-package)">
+                        <xsl:when test="empty($supplier-package)">
                             <xsl:if test="$level eq 1">
                                 <xsl:sequence select="imf:report-warning($package,true(),'No supplier package found; not validating this derivation')"/>
                             </xsl:if>
