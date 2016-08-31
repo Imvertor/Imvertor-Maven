@@ -109,7 +109,7 @@
                 <xsl:variable name="traces">
                     <xsl:apply-templates select=".//UML:Association[UML:ModelElement.stereotype/UML:Stereotype/@name = 'trace']"/>
                 </xsl:variable>
-                <xsl:sequence select="imf:create-output-element('extracted-traces',$traces)"/>
+                <xsl:sequence select="imf:create-output-element('extracted-traces',$traces,(),false(),true())"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
