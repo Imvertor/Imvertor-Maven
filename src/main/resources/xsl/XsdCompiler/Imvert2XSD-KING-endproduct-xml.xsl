@@ -234,7 +234,7 @@
                                    <xsl:with-param name="berichtCode" select="$berichtCode" />
                                    <xsl:with-param name="context" select="$context" />
                                </xsl:apply-templates>
-                               <xsl:variable name="mnemonic">
+                               <?x xsl:variable name="mnemonic">
                                    <xsl:value-of
                                        select="$packages//imvert:class[imvert:id = $id]/imvert:alias" />
                                </xsl:variable>
@@ -259,7 +259,7 @@
     									select="concat('Attributes voor gerelateerde, berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $mnemonic)" />
                                <xsl:variable name="attributes"
                                    select="imf:createAttributes('gerelateerde', substring($berichtCode,1,2), $context, 'no', $mnemonic, 'no','no')" />
-                               <xsl:sequence select="$attributes" />
+                               <xsl:sequence select="$attributes" / x?>
                            </ep:seq>
                        </xsl:otherwise>
                    </xsl:choose>
