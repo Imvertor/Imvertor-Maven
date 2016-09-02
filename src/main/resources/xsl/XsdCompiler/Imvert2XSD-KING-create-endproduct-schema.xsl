@@ -83,328 +83,328 @@
 				</xsl:otherwise>
 			</xsl:choose>				
 		</xsl:variable-->
-		<xs:element>
-			<xsl:choose>
-				<xsl:when test="contains(ep:tech-name,':')">
-					<xsl:attribute name="ref" select="ep:tech-name"/>
-					<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
-					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
-				</xsl:when>
-				<xsl:when test="contains(ep:type-name,':') and not(ep:enum)">
-					<xsl:attribute name="name" select="ep:tech-name"/>
-					<xsl:attribute name="type" select="ep:type-name"/>
-					<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
-					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>					
-				</xsl:when>
-<!-- ROME: Hieronder wordt een id gegenereerd. Dat is echter eigenlijk niet gewenst omdat daarbij de naam van de simpleType na elke generatie slag anders kan zijn.
-		   Dat zou betekenen dat leveranciers steeds hun gegenereerde code moeten aanpassen. We moeten dus een manier zien te vinden die toekomstvaster is. -->
-				<xsl:when test="contains(ep:type-name,':') and ep:enum">
-					<xsl:attribute name="name" select="ep:tech-name"/>
-					<xsl:attribute name="type">
-						<xsl:value-of select="concat($prefix,':simpleType-',ep:tech-name,'-',generate-id())"/>
-					</xsl:attribute>
-					<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
-					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>					
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:attribute name="name" select="ep:tech-name"/>
-					<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
-					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
+				<xs:element>
 					<xsl:choose>
-						<xsl:when test="(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name and $globalComplexTypes='yes'">
+						<xsl:when test="contains(ep:tech-name,':')">
+							<xsl:attribute name="ref" select="ep:tech-name"/>
+							<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
+							<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
+						</xsl:when>
+						<xsl:when test="contains(ep:type-name,':') and not(ep:enum)">
+							<xsl:attribute name="name" select="ep:tech-name"/>
+							<xsl:attribute name="type" select="ep:type-name"/>
+							<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
+							<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>					
+						</xsl:when>
+		<!-- ROME: Hieronder wordt een id gegenereerd. Dat is echter eigenlijk niet gewenst omdat daarbij de naam van de simpleType na elke generatie slag anders kan zijn.
+				   Dat zou betekenen dat leveranciers steeds hun gegenereerde code moeten aanpassen. We moeten dus een manier zien te vinden die toekomstvaster is. -->
+						<xsl:when test="contains(ep:type-name,':') and ep:enum">
+							<xsl:attribute name="name" select="ep:tech-name"/>
 							<xsl:attribute name="type">
-								<xsl:value-of select="concat($prefix,':simpleType-',ep:tech-name,'-',$id,'-',generate-id())"/>
+								<xsl:value-of select="concat($prefix,':simpleType-',ep:tech-name,'-',generate-id())"/>
 							</xsl:attribute>
-							<xsl:comment select="'situatie 1'"/>
-						</xsl:when>
-						<!-- When a construct contains facets (which means it has to become an element without child elements) and it contains metadata constructs a 
-							 extension complexType needs to be generated which contains the xml-attributes based on a simpleType which contains the facets. -->
-						<xsl:when test="(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata] and $globalComplexTypes='no'">
-							<xsl:comment select="'situatie 2'"/>
-							<xs:complexType>
-								<xs:simpleContent>
-									<xs:extension>
-										<!--xsl:attribute name="base" select="concat($prefix,':simpleType-',ep:tech-name,'-',$id,'-',generate-id())"/-->
-										<xsl:attribute name="base" select="concat($prefix,':simpleType-',ep:tech-name,'-',generate-id())"/>
-										<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
-										<!--xsl:apply-templates select=".//ep:construct[@ismetadata]" mode="generateAttributes"/-->
-									</xs:extension>						
-								</xs:simpleContent>	
-							</xs:complexType>
-						</xsl:when>
-						<!-- When a construct contains facets (which means it has to become an element without child elements) and it doesn't contain metadata constructs 
-							 a restriction simpleType can be generated which contains the facets. -->
-						<xsl:when test="(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name and $globalComplexTypes='no'">
-							<xsl:comment select="'situatie 3'"/>
-							<xs:simpleType>
-								<xs:restriction>
-									<xsl:attribute name="base">
-										<xsl:choose>
-<!-- ROME: Zodra scalar-xxx is doorgevoerd kunnen de eerste 5 when's verwijderd worden. Welke scalars kan ik trouwens allemaal verwachten? -->
-											<xsl:when test="ep:type-name = 'integer'">
-												<xsl:value-of select="'xs:integer'"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'decimal'">
-												<xsl:value-of select="'xs:decimal'"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'string'">
-												<xsl:value-of select="'xs:string'"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'datetime'">
-												<xsl:value-of select="'xs:string'"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'boolean'">
-												<xsl:value-of select="'xs:boolean'"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-integer'">
-												<xsl:value-of select="'xs:integer'"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-scalar-decimal'">
-												<xsl:value-of select="'xs:decimal'"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-string'">
-												<xsl:value-of select="'xs:string'"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-datetime'">
-												<xsl:value-of select="'xs:string'"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-boolean'">
-												<xsl:value-of select="'xs:boolean'"/>
-											</xsl:when>
-											<xsl:otherwise>
-												<xsl:value-of select="'xs:string'"/>								
-											</xsl:otherwise>
-											<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
-										</xsl:choose>
-									</xsl:attribute>
-<!-- ROME: Zodra scalar-xxx is doorgevoerd kunnen in de onderstaande xsl:if statements xsl:when's verwijderd worden of vervangen worden door xsl:if. -->
-									<xsl:if test="ep:length">
-										<xsl:choose>
-											<xsl:when test="ep:type-name = 'string'">
-												<xs:length value="{ep:length}"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'integer' or ep:type-name = 'decimal'">
-												<xs:totalDigits value="{ep:length}"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-string'">
-												<xs:length value="{ep:length}"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
-												<xs:totalDigits value="{ep:length}"/>
-											</xsl:when>
-										</xsl:choose>
-									</xsl:if>
-									<xsl:if test="ep:min-length">
-										<xsl:choose>
-											<xsl:when test="ep:type-name = 'string'">
-												<xs:minLength value="1"/>
-												<!--xs:minLength value="{ep:min-length}"/-->
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-string'">
-												<xs:minLength value="1"/>
-												<!--xs:minLength value="{ep:min-length}"/-->
-											</xsl:when>
-										</xsl:choose>
-									</xsl:if>
-									<xsl:if test="ep:max-length">
-										<xsl:choose>
-											<xsl:when test="ep:type-name = 'string'">
-												<xs:maxLength value="12"/>
-												<!--xs:maxLength value="{ep:max-length}"/-->
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-string'">
-												<xs:maxLength value="12"/>
-												<!--xs:maxLength value="{ep:max-length}"/-->
-											</xsl:when>
-										</xsl:choose>
-									</xsl:if>
-									<xsl:if test="ep:min-value">
-										<xsl:choose>
-											<xsl:when test="ep:type-name = 'integer' or ep:type-name = 'decimal'">
-												<xs:minInclusive value="1"/>
-												<!--xs:minInclusive value="{ep:min-value}"/-->
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'datetime'">
-												<!--xs:minInclusive value="{ep:min-value}"/-->
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
-												<xs:minInclusive value="1"/>
-												<!--xs:minInclusive value="{ep:min-value}"/-->
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-datetime'">
-												<!--xs:minInclusive value="{ep:min-value}"/-->
-											</xsl:when>
-										</xsl:choose>
-									</xsl:if>
-									<xsl:if test="ep:max-value and not(ep:type-name='datetime')">
-										<xsl:choose>
-											<xsl:when test="ep:type-name = 'integer' or ep:type-name = 'decimal'">
-												<xs:maxInclusive value="99"/>
-												<!--xs:maxInclusive value="{ep:max-value}"/-->
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'datetime'">
-												<!--xs:maxInclusive value="{ep:max-value}"/-->
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
-												<xs:maxInclusive value="99"/>
-												<!--xs:maxInclusive value="{ep:max-value}"/-->
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-datetime'">
-												<!--xs:maxInclusive value="{ep:max-value}"/-->
-											</xsl:when>
-										</xsl:choose>
-									</xsl:if>
-									<xsl:if test="ep:fraction-digits">
-										<xsl:choose>
-											<xsl:when test="ep:type-name = 'decimal'">
-												<xs:fractionDigits value="{ep:fraction-digits}"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-decimal'">
-												<xs:fractionDigits value="{ep:fraction-digits}"/>
-											</xsl:when>
-										</xsl:choose>
-									</xsl:if>
-									<xsl:if test="ep:enum">
-										<xsl:choose>
-											<xsl:when test="ep:type-name = 'string' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal'">
-												<xsl:apply-templates select="ep:enum"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-string' or ep:type-name = 'scalar-datetime' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
-												<xsl:apply-templates select="ep:enum"/>
-											</xsl:when>
-										</xsl:choose>
-									</xsl:if>
-									<xsl:if test="ep:pattern">
-										<xsl:choose>
-											<xsl:when test="ep:type-name = 'string' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal' or ep:type-name = 'boolean'">
-												<!--xs:pattern value="{ep:pattern}"/-->
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-string' or ep:type-name = 'scalar-datetime' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-boolean'">
-												<!--xs:pattern value="{ep:pattern}"/-->
-											</xsl:when>
-										</xsl:choose>
-									</xsl:if>				
-								</xs:restriction>						
-							</xs:simpleType>				
-						</xsl:when>
-						<!-- When a construct doensn't contain facets and metadata constructs a restriction simpleType can be generated without facets. -->
-						<xsl:when test="ep:type-name and .//ep:construct[@ismetadata] and $globalComplexTypes='no'">
-							<xsl:comment select="'situatie 4'"/>
-							<xs:complexType>
-								<xs:simpleContent>
-									<xs:extension>
-										<!--xsl:attribute name="base" select="concat($prefix,':simpleType-',ep:tech-name,'-',$id,'-',generate-id())"/-->
-										<xsl:attribute name="base">
-											<xsl:choose>
-												<!-- ROME: Zodra scalar-xxx is doorgevoerd kunnen de eerste 5 when's verwijderd worden. Welke scalars kan ik trouwens allemaal verwachten? -->
-												<xsl:when test="ep:type-name = 'integer'">
-													<xsl:value-of select="'xs:integer'"/>
-												</xsl:when>
-												<xsl:when test="ep:type-name = 'decimal'">
-													<xsl:value-of select="'xs:decimal'"/>
-												</xsl:when>
-												<xsl:when test="ep:type-name = 'string'">
-													<xsl:value-of select="'xs:string'"/>
-												</xsl:when>
-												<xsl:when test="ep:type-name = 'datetime'">
-													<xsl:value-of select="'xs:string'"/>
-												</xsl:when>
-												<xsl:when test="ep:type-name = 'boolean'">
-													<xsl:value-of select="'xs:boolean'"/>
-												</xsl:when>
-												<xsl:when test="ep:type-name = 'scalar-integer'">
-													<xsl:value-of select="'xs:integer'"/>
-												</xsl:when>
-												<xsl:when test="ep:type-name = 'scalar-scalar-decimal'">
-													<xsl:value-of select="'xs:decimal'"/>
-												</xsl:when>
-												<xsl:when test="ep:type-name = 'scalar-string'">
-													<xsl:value-of select="'xs:string'"/>
-												</xsl:when>
-												<xsl:when test="ep:type-name = 'scalar-datetime'">
-													<xsl:value-of select="'xs:string'"/>
-												</xsl:when>
-												<xsl:when test="ep:type-name = 'scalar-boolean'">
-													<xsl:value-of select="'xs:boolean'"/>
-												</xsl:when>
-												<xsl:otherwise>
-													<xsl:value-of select="'xs:string'"/>								
-												</xsl:otherwise>
-												<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
-											</xsl:choose>											
-										</xsl:attribute>
-										<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
-										<!--xsl:apply-templates select=".//ep:construct[@ismetadata]" mode="generateAttributes"/-->
-									</xs:extension>						
-								</xs:simpleContent>	
-							</xs:complexType>
-						</xsl:when>
-						<!-- When a construct doensn't contain facets and metadata constructs a restriction simpleType can be generated without facets. -->
-						<xsl:when test="ep:type-name and $globalComplexTypes='no'">
-							<xsl:comment select="'situatie 5'"/>
-							<xs:simpleType>
-								<xs:restriction>
-									<xsl:attribute name="base">
-										<xsl:choose>
-<!-- ROME: Zodra scalar-xxx is doorgevoerd kunnen de eerste 5 when's verwijderd worden. Welke scalars kan ik trouwens allemaal verwachten? -->
-											<xsl:when test="ep:type-name = 'integer'">
-												<xsl:value-of select="'xs:integer'"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'decimal'">
-												<xsl:value-of select="'xs:decimal'"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'string'">
-												<xsl:value-of select="'xs:string'"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'datetime'">
-												<xsl:value-of select="'xs:string'"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'boolean'">
-												<xsl:value-of select="'xs:boolean'"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-integer'">
-												<xsl:value-of select="'xs:integer'"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-decimal'">
-												<xsl:value-of select="'xs:decimal'"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-string'">
-												<xsl:value-of select="'xs:string'"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-datetime'">
-												<xsl:value-of select="'xs:string'"/>
-											</xsl:when>
-											<xsl:when test="ep:type-name = 'scalar-boolean'">
-												<xsl:value-of select="'xs:boolean'"/>
-											</xsl:when>
-											<xsl:otherwise>
-												<xsl:value-of select="'xs:string'"/>								
-											</xsl:otherwise>
-											<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
-										</xsl:choose>
-									</xsl:attribute>
-									<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
-								</xs:restriction>						
-							</xs:simpleType>				
-						</xsl:when>
-						<xsl:when test=".//ep:construct and $globalComplexTypes='no'">
-							<xsl:comment select="'situatie 6'"/>
-							<xs:complexType>
-								<xsl:apply-templates select="ep:seq[not(@ismetadata)]"/>
-								<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
-							</xs:complexType>
+							<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
+							<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>					
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:comment select="'situatie 7'"/>
-							<xs:complexType>
-								<xsl:apply-templates select="ep:seq[not(@ismetadata)]"/>
-								<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
-							</xs:complexType>					
-						</xsl:otherwise>				
+							<xsl:attribute name="name" select="ep:tech-name"/>
+							<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
+							<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
+							<xsl:choose>
+								<xsl:when test="(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name and $globalComplexTypes='yes'">
+									<xsl:attribute name="type">
+										<xsl:value-of select="concat($prefix,':simpleType-',ep:tech-name,'-',$id,'-',generate-id())"/>
+									</xsl:attribute>
+									<xsl:comment select="'situatie 1'"/>
+								</xsl:when>
+								<!-- When a construct contains facets (which means it has to become an element without child elements) and it contains metadata constructs a 
+									 extension complexType needs to be generated which contains the xml-attributes based on a simpleType which contains the facets. -->
+								<xsl:when test="(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata] and $globalComplexTypes='no'">
+									<xsl:comment select="'situatie 2'"/>
+									<xs:complexType>
+										<xs:simpleContent>
+											<xs:extension>
+												<!--xsl:attribute name="base" select="concat($prefix,':simpleType-',ep:tech-name,'-',$id,'-',generate-id())"/-->
+												<xsl:attribute name="base" select="concat($prefix,':simpleType-',ep:tech-name,'-',generate-id())"/>
+												<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+												<!--xsl:apply-templates select=".//ep:construct[@ismetadata]" mode="generateAttributes"/-->
+											</xs:extension>						
+										</xs:simpleContent>	
+									</xs:complexType>
+								</xsl:when>
+								<!-- When a construct contains facets (which means it has to become an element without child elements) and it doesn't contain metadata constructs 
+									 a restriction simpleType can be generated which contains the facets. -->
+								<xsl:when test="(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name and $globalComplexTypes='no'">
+									<xsl:comment select="'situatie 3'"/>
+									<xs:simpleType>
+										<xs:restriction>
+											<xsl:attribute name="base">
+												<xsl:choose>
+		<!-- ROME: Zodra scalar-xxx is doorgevoerd kunnen de eerste 5 when's verwijderd worden. Welke scalars kan ik trouwens allemaal verwachten? -->
+													<xsl:when test="ep:type-name = 'integer'">
+														<xsl:value-of select="'xs:integer'"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'decimal'">
+														<xsl:value-of select="'xs:decimal'"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'string'">
+														<xsl:value-of select="'xs:string'"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'datetime'">
+														<xsl:value-of select="'xs:string'"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'boolean'">
+														<xsl:value-of select="'xs:boolean'"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-integer'">
+														<xsl:value-of select="'xs:integer'"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-scalar-decimal'">
+														<xsl:value-of select="'xs:decimal'"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-string'">
+														<xsl:value-of select="'xs:string'"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-datetime'">
+														<xsl:value-of select="'xs:string'"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-boolean'">
+														<xsl:value-of select="'xs:boolean'"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:value-of select="'xs:string'"/>								
+													</xsl:otherwise>
+													<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
+												</xsl:choose>
+											</xsl:attribute>
+		<!-- ROME: Zodra scalar-xxx is doorgevoerd kunnen in de onderstaande xsl:if statements xsl:when's verwijderd worden of vervangen worden door xsl:if. -->
+											<xsl:if test="ep:length">
+												<xsl:choose>
+													<xsl:when test="ep:type-name = 'string'">
+														<xs:length value="{ep:length}"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'integer' or ep:type-name = 'decimal'">
+														<xs:totalDigits value="{ep:length}"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-string'">
+														<xs:length value="{ep:length}"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
+														<xs:totalDigits value="{ep:length}"/>
+													</xsl:when>
+												</xsl:choose>
+											</xsl:if>
+											<xsl:if test="ep:min-length">
+												<xsl:choose>
+													<xsl:when test="ep:type-name = 'string'">
+														<xs:minLength value="1"/>
+														<!--xs:minLength value="{ep:min-length}"/-->
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-string'">
+														<xs:minLength value="1"/>
+														<!--xs:minLength value="{ep:min-length}"/-->
+													</xsl:when>
+												</xsl:choose>
+											</xsl:if>
+											<xsl:if test="ep:max-length">
+												<xsl:choose>
+													<xsl:when test="ep:type-name = 'string'">
+														<xs:maxLength value="12"/>
+														<!--xs:maxLength value="{ep:max-length}"/-->
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-string'">
+														<xs:maxLength value="12"/>
+														<!--xs:maxLength value="{ep:max-length}"/-->
+													</xsl:when>
+												</xsl:choose>
+											</xsl:if>
+											<xsl:if test="ep:min-value">
+												<xsl:choose>
+													<xsl:when test="ep:type-name = 'integer' or ep:type-name = 'decimal'">
+														<xs:minInclusive value="1"/>
+														<!--xs:minInclusive value="{ep:min-value}"/-->
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'datetime'">
+														<!--xs:minInclusive value="{ep:min-value}"/-->
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
+														<xs:minInclusive value="1"/>
+														<!--xs:minInclusive value="{ep:min-value}"/-->
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-datetime'">
+														<!--xs:minInclusive value="{ep:min-value}"/-->
+													</xsl:when>
+												</xsl:choose>
+											</xsl:if>
+											<xsl:if test="ep:max-value and not(ep:type-name='datetime')">
+												<xsl:choose>
+													<xsl:when test="ep:type-name = 'integer' or ep:type-name = 'decimal'">
+														<xs:maxInclusive value="99"/>
+														<!--xs:maxInclusive value="{ep:max-value}"/-->
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'datetime'">
+														<!--xs:maxInclusive value="{ep:max-value}"/-->
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
+														<xs:maxInclusive value="99"/>
+														<!--xs:maxInclusive value="{ep:max-value}"/-->
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-datetime'">
+														<!--xs:maxInclusive value="{ep:max-value}"/-->
+													</xsl:when>
+												</xsl:choose>
+											</xsl:if>
+											<xsl:if test="ep:fraction-digits">
+												<xsl:choose>
+													<xsl:when test="ep:type-name = 'decimal'">
+														<xs:fractionDigits value="{ep:fraction-digits}"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-decimal'">
+														<xs:fractionDigits value="{ep:fraction-digits}"/>
+													</xsl:when>
+												</xsl:choose>
+											</xsl:if>
+											<xsl:if test="ep:enum">
+												<xsl:choose>
+													<xsl:when test="ep:type-name = 'string' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal'">
+														<xsl:apply-templates select="ep:enum"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-string' or ep:type-name = 'scalar-datetime' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
+														<xsl:apply-templates select="ep:enum"/>
+													</xsl:when>
+												</xsl:choose>
+											</xsl:if>
+											<xsl:if test="ep:pattern">
+												<xsl:choose>
+													<xsl:when test="ep:type-name = 'string' or ep:type-name = 'datetime' or ep:type-name = 'integer' or ep:type-name = 'decimal' or ep:type-name = 'boolean'">
+														<!--xs:pattern value="{ep:pattern}"/-->
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-string' or ep:type-name = 'scalar-datetime' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-boolean'">
+														<!--xs:pattern value="{ep:pattern}"/-->
+													</xsl:when>
+												</xsl:choose>
+											</xsl:if>				
+										</xs:restriction>						
+									</xs:simpleType>				
+								</xsl:when>
+								<!-- When a construct doensn't contain facets and metadata constructs a restriction simpleType can be generated without facets. -->
+								<xsl:when test="ep:type-name and .//ep:construct[@ismetadata] and $globalComplexTypes='no'">
+									<xsl:comment select="'situatie 4'"/>
+									<xs:complexType>
+										<xs:simpleContent>
+											<xs:extension>
+												<!--xsl:attribute name="base" select="concat($prefix,':simpleType-',ep:tech-name,'-',$id,'-',generate-id())"/-->
+												<xsl:attribute name="base">
+													<xsl:choose>
+														<!-- ROME: Zodra scalar-xxx is doorgevoerd kunnen de eerste 5 when's verwijderd worden. Welke scalars kan ik trouwens allemaal verwachten? -->
+														<xsl:when test="ep:type-name = 'integer'">
+															<xsl:value-of select="'xs:integer'"/>
+														</xsl:when>
+														<xsl:when test="ep:type-name = 'decimal'">
+															<xsl:value-of select="'xs:decimal'"/>
+														</xsl:when>
+														<xsl:when test="ep:type-name = 'string'">
+															<xsl:value-of select="'xs:string'"/>
+														</xsl:when>
+														<xsl:when test="ep:type-name = 'datetime'">
+															<xsl:value-of select="'xs:string'"/>
+														</xsl:when>
+														<xsl:when test="ep:type-name = 'boolean'">
+															<xsl:value-of select="'xs:boolean'"/>
+														</xsl:when>
+														<xsl:when test="ep:type-name = 'scalar-integer'">
+															<xsl:value-of select="'xs:integer'"/>
+														</xsl:when>
+														<xsl:when test="ep:type-name = 'scalar-scalar-decimal'">
+															<xsl:value-of select="'xs:decimal'"/>
+														</xsl:when>
+														<xsl:when test="ep:type-name = 'scalar-string'">
+															<xsl:value-of select="'xs:string'"/>
+														</xsl:when>
+														<xsl:when test="ep:type-name = 'scalar-datetime'">
+															<xsl:value-of select="'xs:string'"/>
+														</xsl:when>
+														<xsl:when test="ep:type-name = 'scalar-boolean'">
+															<xsl:value-of select="'xs:boolean'"/>
+														</xsl:when>
+														<xsl:otherwise>
+															<xsl:value-of select="'xs:string'"/>								
+														</xsl:otherwise>
+														<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
+													</xsl:choose>											
+												</xsl:attribute>
+												<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+												<!--xsl:apply-templates select=".//ep:construct[@ismetadata]" mode="generateAttributes"/-->
+											</xs:extension>						
+										</xs:simpleContent>	
+									</xs:complexType>
+								</xsl:when>
+								<!-- When a construct doensn't contain facets and metadata constructs a restriction simpleType can be generated without facets. -->
+								<xsl:when test="ep:type-name and $globalComplexTypes='no'">
+									<xsl:comment select="'situatie 5'"/>
+									<xs:simpleType>
+										<xs:restriction>
+											<xsl:attribute name="base">
+												<xsl:choose>
+		<!-- ROME: Zodra scalar-xxx is doorgevoerd kunnen de eerste 5 when's verwijderd worden. Welke scalars kan ik trouwens allemaal verwachten? -->
+													<xsl:when test="ep:type-name = 'integer'">
+														<xsl:value-of select="'xs:integer'"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'decimal'">
+														<xsl:value-of select="'xs:decimal'"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'string'">
+														<xsl:value-of select="'xs:string'"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'datetime'">
+														<xsl:value-of select="'xs:string'"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'boolean'">
+														<xsl:value-of select="'xs:boolean'"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-integer'">
+														<xsl:value-of select="'xs:integer'"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-decimal'">
+														<xsl:value-of select="'xs:decimal'"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-string'">
+														<xsl:value-of select="'xs:string'"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-datetime'">
+														<xsl:value-of select="'xs:string'"/>
+													</xsl:when>
+													<xsl:when test="ep:type-name = 'scalar-boolean'">
+														<xsl:value-of select="'xs:boolean'"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:value-of select="'xs:string'"/>								
+													</xsl:otherwise>
+													<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
+												</xsl:choose>
+											</xsl:attribute>
+											<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+										</xs:restriction>						
+									</xs:simpleType>				
+								</xsl:when>
+								<xsl:when test=".//ep:construct and $globalComplexTypes='no'">
+									<xsl:comment select="'situatie 6'"/>
+									<xs:complexType>
+										<xsl:apply-templates select="ep:seq[not(@ismetadata)]"/>
+										<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+									</xs:complexType>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:comment select="'situatie 7'"/>
+									<xs:complexType>
+										<xsl:apply-templates select="ep:seq[not(@ismetadata)]"/>
+										<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+									</xs:complexType>					
+								</xsl:otherwise>				
+							</xsl:choose>
+						</xsl:otherwise>
 					</xsl:choose>
-				</xsl:otherwise>
-			</xsl:choose>
-		</xs:element>
+				</xs:element>
 	</xsl:template>
 					
 	<xsl:template match="ep:construct" mode="complexType">
@@ -419,11 +419,22 @@
 				</xsl:otherwise>
 			</xsl:choose>				
 		</xsl:variable-->
-		<xs:complexType>
-			<xsl:attribute name="name" select="ep:tech-name"/>
-			<xsl:apply-templates select="ep:seq[not(@ismetadata)]"/>
-			<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
-		</xs:complexType>
+		<xsl:choose>
+			<xsl:when test="@componentType='groupType'">
+				<xs:group>
+					<xsl:attribute name="name" select="ep:tech-name"/>
+					<xsl:apply-templates select="ep:seq[not(@ismetadata)]"/>
+					<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+				</xs:group>
+			</xsl:when>
+			<xsl:otherwise>
+				<xs:complexType>
+					<xsl:attribute name="name" select="ep:tech-name"/>
+					<xsl:apply-templates select="ep:seq[not(@ismetadata)]"/>
+					<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+				</xs:complexType>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<xsl:template match="ep:constructRef">
@@ -438,12 +449,21 @@
 				</xsl:otherwise>
 			</xsl:choose>				
 		</xsl:variable-->
-		<xs:element>
+		<xsl:choose>
+			<xsl:when test="ep:tech-name">
+				<xs:element>
 					<xsl:attribute name="name" select="ep:tech-name"/>
 					<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
 					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
 					<xsl:attribute name="type" select="concat($prefix,':',ep:href)"/>
-		</xs:element>
+				</xs:element>				
+			</xsl:when>
+			<xsl:otherwise>
+				<xs:group>
+					<xsl:attribute name="ref" select="concat($prefix,':',ep:href)"/>
+				</xs:group>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<!-- ROME: Onderstaande template kan mogelijk komen te vervallen (integreren met de andere ep:construct templates). -->
