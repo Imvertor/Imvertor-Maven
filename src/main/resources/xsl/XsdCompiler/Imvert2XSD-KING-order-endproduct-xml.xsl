@@ -79,7 +79,7 @@
     <xsl:template match="ep:constructRef">
         <xsl:element name="{name(.)}">
             <xsl:apply-templates select="*[name() != 'ep:id']"/>
-        </gxsl:element>       
+        </xsl:element>       
     </xsl:template>
     
 </xsl:stylesheet>
