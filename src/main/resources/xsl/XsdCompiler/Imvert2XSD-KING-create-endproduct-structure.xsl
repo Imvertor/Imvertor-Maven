@@ -16,10 +16,11 @@
 	<xsl:variable name="stylesheet">Imvert2XSD-KING-create-endproduct-structure</xsl:variable>
 	<xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-create-endproduct-structure.xsl 1 2015-11-11 11:50:00Z RobertMelskens $</xsl:variable>
 
-	<!-- This template is used to start generating the ep structure for an individual 
-		message. -->
-	<xsl:template match="/imvert:packages/imvert:package"
-		mode="create-message-structure"> <!-- this is an embedded message schema within the koppelvlak -->
+	<!-- ======= Block of templates used to create the message structure. ======= -->	
+	
+	<!-- This template is used to start generating the ep structure for an individual message. -->
+	
+	<xsl:template match="/imvert:packages/imvert:package" mode="create-message-structure"> <!-- this is an embedded message schema within the koppelvlak -->
 		<xsl:if test="imf:boolean($debug)">
 			<xsl:comment select="'imvert:package[mode=create-message-structure]'" />
 		</xsl:if>
@@ -40,150 +41,14 @@
 				<xsl:when test="imvert:class[imvert:stereotype = 'VRIJBERICHTTYPE']">Vrij bericht</xsl:when>
 			</xsl:choose>
 		</xsl:variable>
-		<!-- create the bericht message -->
-		<!-- ROME: Onderstaande variabele wordt zo mogelijk, indien de tv 'Berichtcode' 
-			niet voorkomt, afgeleid van een aantal tagged values. Indien deze tagged 
-			value nog wel voorkomt dan wordt de waarde daar direct uit onttrokken. Het 
-			is de bedoeling dat deze tv uiteindelijk verdwijnt zodat de xsl:choose in 
-			deze variabele ook kan worden verwijderd. In dat geval kan ook de variabele 
-			berichtCodeDeterming worden verwijderd en de processing er omheen. -->
+		<!-- create the message -->
 		<xsl:variable name="berichtCode">
-			<xsl:choose>
-				<xsl:when
-					test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-					'stereotype-name-vraagberichttype',
-					'stereotype-name-antwoordberichttype',
-					'stereotype-name-vrijberichttype',
-					'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Berichtcode' and imvert:value != '']">
-					<xsl:value-of
-						select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-						'stereotype-name-vraagberichttype',
-						'stereotype-name-antwoordberichttype',
-						'stereotype-name-vrijberichttype',
-						'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Berichtcode']/imvert:value" />
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:variable name="Stereotype"
-						select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-						'stereotype-name-vraagberichttype',
-						'stereotype-name-antwoordberichttype',
-						'stereotype-name-vrijberichttype',
-						'stereotype-name-kennisgevingsberichttype'))]/imvert:stereotype" />
-					<xsl:variable name="Inkomend">
-						<xsl:choose>
-							<xsl:when
-								test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-								'stereotype-name-vraagberichttype',
-								'stereotype-name-antwoordberichttype',
-								'stereotype-name-vrijberichttype',
-								'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Inkomend' and imvert:value != '']">
-								<xsl:value-of
-									select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-									'stereotype-name-vraagberichttype',
-									'stereotype-name-antwoordberichttype',
-									'stereotype-name-vrijberichttype',
-									'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Inkomend']/imvert:value" />
-							</xsl:when>
-							<xsl:otherwise>
-								-
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:variable>
-					<xsl:variable name="AanduidingActualiteit">
-						<xsl:choose>
-							<xsl:when
-								test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-								'stereotype-name-vraagberichttype',
-								'stereotype-name-antwoordberichttype',
-								'stereotype-name-vrijberichttype',
-								'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'AanduidingActualiteit' and imvert:value != '']">
-								<xsl:value-of
-									select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-									'stereotype-name-vraagberichttype',
-									'stereotype-name-antwoordberichttype',
-									'stereotype-name-vrijberichttype',
-									'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'AanduidingActualiteit']/imvert:value" />
-							</xsl:when>
-							<xsl:otherwise>
-								-
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:variable>
-					<xsl:variable name="Synchroon">
-						<xsl:choose>
-							<xsl:when
-								test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-								'stereotype-name-vraagberichttype',
-								'stereotype-name-antwoordberichttype',
-								'stereotype-name-vrijberichttype',
-								'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Synchroon' and imvert:value != '']">
-								<xsl:value-of
-									select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-									'stereotype-name-vraagberichttype',
-									'stereotype-name-antwoordberichttype',
-									'stereotype-name-vrijberichttype',
-									'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Synchroon']/imvert:value" />
-							</xsl:when>
-							<xsl:otherwise>
-								-
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:variable>
-					<xsl:variable name="AanduidingToekomstmutaties">
-						<xsl:choose>
-							<xsl:when
-								test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-								'stereotype-name-vraagberichttype',
-								'stereotype-name-antwoordberichttype',
-								'stereotype-name-vrijberichttype',
-								'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'AanduidingToekomstmutaties' and imvert:value != '']">
-								<xsl:value-of
-									select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-									'stereotype-name-vraagberichttype',
-									'stereotype-name-antwoordberichttype',
-									'stereotype-name-vrijberichttype',
-									'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'AanduidingToekomstmutaties']/imvert:value" />
-							</xsl:when>
-							<xsl:otherwise>
-								-
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:variable>
-					<xsl:variable name="Samengesteld">
-						<xsl:choose>
-							<xsl:when
-								test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-								'stereotype-name-vraagberichttype',
-								'stereotype-name-antwoordberichttype',
-								'stereotype-name-vrijberichttype',
-								'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Samengesteld' and imvert:value != '']">
-								<xsl:value-of
-									select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-									'stereotype-name-vraagberichttype',
-									'stereotype-name-antwoordberichttype',
-									'stereotype-name-vrijberichttype',
-									'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Samengesteld']/imvert:value" />
-							</xsl:when>
-							<xsl:otherwise>
-								-
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:variable>
-					<xsl:value-of
-						select="imf:determineBerichtCode($Stereotype,$Inkomend,$AanduidingActualiteit,$Synchroon,$AanduidingToekomstmutaties,$Samengesteld)" />
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-		<xsl:variable name="berichtCodeDeterming">
-			<xsl:choose>
-				<xsl:when
-					test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-					'stereotype-name-vraagberichttype',
-					'stereotype-name-antwoordberichttype',
-					'stereotype-name-vrijberichttype',
-					'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Berichtcode']">Using-Berichtcode-tv</xsl:when>
-				<xsl:otherwise>Using-Other-tvs</xsl:otherwise>
-			</xsl:choose>
+			<xsl:value-of
+				select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
+				'stereotype-name-vraagberichttype',
+				'stereotype-name-antwoordberichttype',
+				'stereotype-name-vrijberichttype',
+				'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Berichtcode']/imvert:value" />
 		</xsl:variable>
 		<xsl:if test="$berichtCode = 'Niet te bepalen'">
 			<xsl:message
@@ -207,938 +72,18 @@
 				template is initialized within the 'create-initial-message-structure' mode. -->
 			<xsl:apply-templates
 				select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-																			'stereotype-name-vraagberichttype',
-																			'stereotype-name-antwoordberichttype',
-																			'stereotype-name-vrijberichttype',
-																			'stereotype-name-kennisgevingsberichttype'))]"
+				'stereotype-name-vraagberichttype',
+				'stereotype-name-antwoordberichttype',
+				'stereotype-name-vrijberichttype',
+				'stereotype-name-kennisgevingsberichttype'))]"
 				mode="create-toplevel-message-structure">
 				<xsl:with-param name="package-id" select="imvert:id"/>
 				<xsl:with-param name="berichtCode" select="$berichtCode" />
 				<xsl:with-param name="useStuurgegevens" select="'yes'" />
-				<xsl:with-param name="berichtCodeDeterming" select="$berichtCodeDeterming" />
 			</xsl:apply-templates>
 		</ep:message>
 	</xsl:template>
-
-	<xsl:template match="/imvert:packages/imvert:package"
-		mode="getIdsUsedComponents-message-structure"> <!-- this is an embedded message schema within the koppelvlak -->
-		<xsl:variable name="tagged-values">
-			<xsl:sequence select="imvert:tagged-values" />
-		</xsl:variable>
-		<xsl:variable name="berichtType">
-			<xsl:choose>
-				<xsl:when test="imvert:class[imvert:stereotype = 'VRAAGBERICHTTYPE']">Vraagbericht</xsl:when>
-				<xsl:when test="imvert:class[imvert:stereotype = 'ANTWOORDBERICHTTYPE']">Antwoordbericht</xsl:when>
-				<xsl:when
-					test="imvert:class[imvert:stereotype = 'KENNISGEVINGSBERICHTTYPE']">Kennisgevingsbericht</xsl:when>
-				<xsl:when test="imvert:class[imvert:stereotype = 'VRIJBERICHTTYPE']">Vrij bericht</xsl:when>
-			</xsl:choose>
-		</xsl:variable>
-		<!-- create the bericht message -->
-		<!-- ROME: Onderstaande variabele wordt zo mogelijk, indien de tv 'Berichtcode' 
-			niet voorkomt, afgeleid van een aantal tagged values. Indien deze tagged 
-			value nog wel voorkomt dan wordt de waarde daar direct uit onttrokken. Het 
-			is de bedoeling dat deze tv uiteindelijk verdwijnt zodat de xsl:choose in 
-			deze variabele ook kan worden verwijderd. In dat geval kan ook de variabele 
-			berichtCodeDeterming worden verwijderd en de processing er omheen. -->
-		<xsl:variable name="berichtCode">
-			<xsl:choose>
-				<xsl:when
-					test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-					'stereotype-name-vraagberichttype',
-					'stereotype-name-antwoordberichttype',
-					'stereotype-name-vrijberichttype',
-					'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Berichtcode' and imvert:value != '']">
-					<xsl:value-of
-						select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-						'stereotype-name-vraagberichttype',
-						'stereotype-name-antwoordberichttype',
-						'stereotype-name-vrijberichttype',
-						'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Berichtcode']/imvert:value" />
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:variable name="Stereotype"
-						select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-						'stereotype-name-vraagberichttype',
-						'stereotype-name-antwoordberichttype',
-						'stereotype-name-vrijberichttype',
-						'stereotype-name-kennisgevingsberichttype'))]/imvert:stereotype" />
-					<xsl:variable name="Inkomend">
-						<xsl:choose>
-							<xsl:when
-								test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-								'stereotype-name-vraagberichttype',
-								'stereotype-name-antwoordberichttype',
-								'stereotype-name-vrijberichttype',
-								'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Inkomend' and imvert:value != '']">
-								<xsl:value-of
-									select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-									'stereotype-name-vraagberichttype',
-									'stereotype-name-antwoordberichttype',
-									'stereotype-name-vrijberichttype',
-									'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Inkomend']/imvert:value" />
-							</xsl:when>
-							<xsl:otherwise>
-								-
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:variable>
-					<xsl:variable name="AanduidingActualiteit">
-						<xsl:choose>
-							<xsl:when
-								test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-								'stereotype-name-vraagberichttype',
-								'stereotype-name-antwoordberichttype',
-								'stereotype-name-vrijberichttype',
-								'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'AanduidingActualiteit' and imvert:value != '']">
-								<xsl:value-of
-									select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-									'stereotype-name-vraagberichttype',
-									'stereotype-name-antwoordberichttype',
-									'stereotype-name-vrijberichttype',
-									'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'AanduidingActualiteit']/imvert:value" />
-							</xsl:when>
-							<xsl:otherwise>
-								-
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:variable>
-					<xsl:variable name="Synchroon">
-						<xsl:choose>
-							<xsl:when
-								test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-								'stereotype-name-vraagberichttype',
-								'stereotype-name-antwoordberichttype',
-								'stereotype-name-vrijberichttype',
-								'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Synchroon' and imvert:value != '']">
-								<xsl:value-of
-									select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-									'stereotype-name-vraagberichttype',
-									'stereotype-name-antwoordberichttype',
-									'stereotype-name-vrijberichttype',
-									'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Synchroon']/imvert:value" />
-							</xsl:when>
-							<xsl:otherwise>
-								-
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:variable>
-					<xsl:variable name="AanduidingToekomstmutaties">
-						<xsl:choose>
-							<xsl:when
-								test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-								'stereotype-name-vraagberichttype',
-								'stereotype-name-antwoordberichttype',
-								'stereotype-name-vrijberichttype',
-								'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'AanduidingToekomstmutaties' and imvert:value != '']">
-								<xsl:value-of
-									select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-									'stereotype-name-vraagberichttype',
-									'stereotype-name-antwoordberichttype',
-									'stereotype-name-vrijberichttype',
-									'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'AanduidingToekomstmutaties']/imvert:value" />
-							</xsl:when>
-							<xsl:otherwise>
-								-
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:variable>
-					<xsl:variable name="Samengesteld">
-						<xsl:choose>
-							<xsl:when
-								test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-								'stereotype-name-vraagberichttype',
-								'stereotype-name-antwoordberichttype',
-								'stereotype-name-vrijberichttype',
-								'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Samengesteld' and imvert:value != '']">
-								<xsl:value-of
-									select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-									'stereotype-name-vraagberichttype',
-									'stereotype-name-antwoordberichttype',
-									'stereotype-name-vrijberichttype',
-									'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Samengesteld']/imvert:value" />
-							</xsl:when>
-							<xsl:otherwise>
-								-
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:variable>
-					<xsl:value-of
-						select="imf:determineBerichtCode($Stereotype,$Inkomend,$AanduidingActualiteit,$Synchroon,$AanduidingToekomstmutaties,$Samengesteld)" />
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-		<xsl:variable name="berichtCodeDeterming">
-			<xsl:choose>
-				<xsl:when
-					test="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-					'stereotype-name-vraagberichttype',
-					'stereotype-name-antwoordberichttype',
-					'stereotype-name-vrijberichttype',
-					'stereotype-name-kennisgevingsberichttype'))]/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Berichtcode']">Using-Berichtcode-tv</xsl:when>
-				<xsl:otherwise>Using-Other-tvs</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-			<xsl:apply-templates
-				select="imvert:class[imvert:stereotype = imf:get-config-stereotypes((
-															'stereotype-name-vraagberichttype',
-															'stereotype-name-antwoordberichttype',
-															'stereotype-name-vrijberichttype',
-															'stereotype-name-kennisgevingsberichttype'))]"
-				mode="getIdsUsedComponents-toplevel-message-structure">
-				<xsl:with-param name="package-id" select="imvert:id"/>
-				<xsl:with-param name="berichtCode" select="$berichtCode" />
-				<xsl:with-param name="useStuurgegevens" select="'yes'" />
-				<xsl:with-param name="berichtCodeDeterming" select="$berichtCodeDeterming" />
-			</xsl:apply-templates>
-	</xsl:template>
 	
-	<xsl:template match="imvert:class" mode="getIdsUsedComponents-toplevel-message-structure">
-		<xsl:param name="package-id"/>
-		<xsl:param name="messagePrefix" select="''" />
-		<xsl:param name="berichtCode" />
-		<xsl:param name="berichtCodeDeterming" />
-
-		<!-- The purpose of this parameter is to determine if the element 'stuurgegevens' 
-			must be generated or not. The 'kennisgevingsbericht' , 'vraagbericht' or 
-			'antwoordbericht' objects within the context of a 'vrijbericht' object aren't 
-			allowed to contain 'stuurgegevens' after all. -->
-		<xsl:param name="useStuurgegevens" select="'yes'" />
-		<xsl:if test="imf:boolean($debug)">
-			<xsl:comment>START   xsl:template match=imvert:class mode=getIdsUsedComponents-toplevel-message-structure</xsl:comment>
-		</xsl:if>
-		<xsl:if test="not(ancestor::imvert:package[imvert:id = $package-id])">
-			<id name="{imvert:name}" berichtCode="{$berichtCode}" context=""><xsl:value-of select="imvert:id"/></id>
-		</xsl:if>
-		<?x xsl:apply-templates select="imvert:supertype"
-				mode="getIdsUsedComponents-message-content">
-				<xsl:with-param name="proces-type" select="'attributes'" />
-				<xsl:with-param name="berichtCode" select="$berichtCode" />
-			</xsl:apply-templates>
-			<xsl:apply-templates select=".//imvert:attribute"
-				mode="getIdsUsedComponents-message-content">
-				<xsl:with-param name="berichtCode" select="$berichtCode" />
-			</xsl:apply-templates x?>
-			<!-- The folowing 2 apply-templates initiate the processing of the 'imvert:association' 
-				elements with the stereotype 'GEGEVENSGROEP COMPOSITIE' within the supertype 
-				of imvert:class elements with an imvert:stereotype with the value 'VRAAGBERICHTTYPE', 
-				'ANTWOORDBERICHTTYPE', 'VRIJBERICHTTYPE' or 'KENNISGEVINGSBERICHTTYPE' and 
-				those within the current class. The first one generates the 'stuurgegevens' 
-				element, the second one the 'parameters' element. -->
-			<?x xsl:apply-templates select="imvert:supertype"
-				mode="getIdsUsedComponents-message-content">
-				<xsl:with-param name="package-id" select="$package-id"/>
-				<xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
-				<xsl:with-param name="berichtCode" select="$berichtCode" />
-			</xsl:apply-templates x?>
-			<!-- ROME: Er bestaat nog steeds de mogelijkheid dat de stereotype 'GEGEVENSGEGEVENSGROEP 
-				COMPOSITIE' wordt gebruikt ipv 'GEGEVENSGROEP COMPOSITIE'. De uitbecommentarieerde 
-				apply-templates kan met de eerste vorm omgaan maar moet tzt (zodra imvertor 
-				daarop checkt) worden verwijdert. -->
-			<!--xsl:apply-templates select=".//imvert:association[contains(imvert:stereotype,'GEGEVENSGROEP 
-				COMPOSITIE')]" mode="create-message-content" -->
-			<xsl:apply-templates
-				select=".//imvert:association[imvert:stereotype='GEGEVENSGROEP COMPOSITIE']"
-				mode="getIdsUsedComponents-message-content">
-				<!-- The 'id-trail' parameter has been introduced to be able to prevent 
-					recursive processing of classes. If the parser runs into an id already present 
-					within the trail (so the related object has already been processed) processing 
-					stops. -->
-
-				<!-- ROME: Het is de vraag of deze parameter en het checken op id nog 
-					wel noodzakelijk is. -->
-				<xsl:with-param name="package-id" select="$package-id"/>
-				<xsl:with-param name="id-trail" select="concat('#1#', imvert:id, '#')" />
-				<xsl:with-param name="berichtCode" select="$berichtCode" />
-			</xsl:apply-templates>
-
-			<!-- ROME: De volgende apply template is volgens mij niet nodig. In een 
-				supertype op dit niveau wordt immers alleen een relatie gelegd met de Stuurgegevens 
-				en die heeft geen stereotype die gelijk is aan 'RELATIE' en mag die ook niet 
-				hebben. Deze apply-template kan dus waarschijnlijk worden verwijderd en is 
-				voor nu uitbecommentarieerd. -->
-			<!--xsl:apply-templates select="imvert:supertype" mode="create-message-content"> 
-				<xsl:with-param name="proces-type" select="'associationsRelatie'"/> <xsl:with-param 
-				name="berichtCode" select="$berichtCode"/> </xsl:apply-templates -->
-
-			<!-- At this level an association with a class having the stereotype 'ENTITEITTYPE' 
-				always has the stereotype 'ENTITEITRELATIE'. The following apply-templates 
-				initiates the processing of such an association. -->
-			<xsl:apply-templates
-				select=".//imvert:association[imvert:stereotype='ENTITEITRELATIE' and not(contains($berichtCode, 'Di')) and not(contains($berichtCode, 'Du'))]"
-				mode="getIdsUsedComponents-message-content">
-				<!-- The 'id-trail' parameter has been introduced to be able to prevent 
-					recursive processing of classes. If the parser runs into an id already present 
-					within the trail (so the related object has already been processed) processing 
-					stops. -->
-
-				<!-- ROME: Het is de vraag of deze parameter en het checken op id nog 
-					wel noodzakelijk is. -->
-				<xsl:with-param name="package-id" select="$package-id"/>
-				<xsl:with-param name="id-trail" select="concat('#1#', imvert:id, '#')" />
-				<xsl:with-param name="berichtCode" select="$berichtCode" />
-				<!-- ROME: De waardetoekenning van de volgende parameter gaat er vanuit 
-					dat in een vraagbericht of in een vrijbericht van het type selectie de associations 
-					van het stereotype 'ENTITEITRELATIE' altijd de waardes 'gelijk', 'vanaf', 
-					'totEnMet', 'start' of 'scope' hebben. -->
-				<xsl:with-param name="orderingDesired" select="'no'" />
-			</xsl:apply-templates>
-			<!-- Associations linking from a class with a imvert:stereotype with the 
-				value 'VRIJBERICHTTYPE' need special treatment. Those linking to a class 
-				with a imvert:stereotype with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE' 
-				or 'KENNISGEVINGSBERICHTTYPE' and those linking to a class with a imvert:stereotype 
-				with the value 'ENTITEITRELATIE' must also be processed as from toplevel-message 
-				type. -->
-			<xsl:apply-templates
-				select=".//imvert:association[contains($berichtCode, 'Di') and contains($berichtCode, 'Du')]"
-				mode="getIdsUsedComponents-toplevel-message-structure">
-				<!-- The 'id-trail' parameter has been introduced to be able to prevent 
-					recursive processing of classes. If the parser runs into an id already present 
-					within the trail (so teh related object has already been processed) processing 
-					stops. -->
-				<xsl:with-param name="package-id" select="$package-id"/>
-				<xsl:with-param name="berichtCode" select="$berichtCode" />
-			</xsl:apply-templates>
-			<xsl:if test="imf:boolean($debug)">
-				<xsl:comment>END   xsl:template match=imvert:class mode=getIdsUsedComponents-toplevel-message-structure</xsl:comment>
-			</xsl:if>
-	</xsl:template>
-
-	<xsl:template match="imvert:association" mode="getIdsUsedComponents-toplevel-message-structure">
-		<xsl:param name="package-id"/>
-		<xsl:param name="berichtCode" />
-		<xsl:if test="imf:boolean($debug)">
-			<xsl:comment>START  xsl:template match=imvert:association mode=getIdsUsedComponents-toplevel-message-structure</xsl:comment>
-		</xsl:if>
-		<?x xsl:if test="not(ancestor::imvert:package[imvert:id = $package-id])">
-			<id name="{imvert:name}"><xsl:value-of select="imvert:id"/></id>
-		</xsl:if x?>
-			<xsl:choose>
-				<xsl:when test="imvert:stereotype='ENTITEITRELATIE'">
-					<!-- ROME: Volgende apply-templates moet natuurlijk het template aanschoppen 
-						met als match 'imvert:association[imvert:stereotype='ENTITEITRELATIE']'en 
-						als mode 'create-message-content'. -->
-					<xsl:apply-templates select="."	mode="getIdsUsedComponents-message-content">
-						<!-- The 'id-trail' parameter has been introduced to be able to prevent 
-							recursive processing of classes. If the parser runs into an id already present 
-							within the trail (so the related object has already been processed) processing 
-							stops. -->
-						
-						<!-- ROME: Het is de vraag of deze parameter en het checken op id nog 
-							wel noodzakelijk is. -->
-						<xsl:with-param name="package-id" select="$package-id"/>
-						<xsl:with-param name="id-trail" select="concat('#1#', imvert:id, '#')" />
-						<xsl:with-param name="berichtCode" select="$berichtCode" />
-						<xsl:with-param name="context" select="'-'" />
-					</xsl:apply-templates>
-				</xsl:when>
-				<xsl:when test="imvert:stereotype='BERICHTRELATIE'">
-					<xsl:variable name="type-id" select="imvert:type-id" />
-					<xsl:apply-templates
-						select="imvert:class[imvert:id = $type-id and imvert:stereotype = imf:get-config-stereotypes((
-						'stereotype-name-vraagberichttype',
-						'stereotype-name-antwoordberichttype',
-						'stereotype-name-kennisgevingsberichttype'))]"
-						mode="getIdsUsedComponents-toplevel-message-structure">
-						<xsl:with-param name="package-id" select="$package-id"/>
-						<xsl:with-param name="berichtCode" select="$berichtCode" />
-						<xsl:with-param name="stuurgegevens" select="'no'" />
-					</xsl:apply-templates>
-				</xsl:when>
-			</xsl:choose>
-			<xsl:if test="imf:boolean($debug)">
-				<xsl:comment>END  xsl:template match=imvert:association mode=getIdsUsedComponents-toplevel-message-structure</xsl:comment>
-			</xsl:if>
-	</xsl:template>
-		
-	<xsl:template match="imvert:supertype" mode="getIdsUsedComponents-message-content">
-		<xsl:param name="package-id"/>
-		<xsl:param name="proces-type" />
-		<xsl:param name="berichtCode" />
-		<xsl:param name="context" />
-		<xsl:param name="historyApplies" select="'no'" />
-		<xsl:variable name="type-id" select="imvert:type-id" />
-		<xsl:if test="imf:boolean($debug)">
-			<xsl:comment>START   xsl:template match=imvert:supertype mode=getIdsUsedComponents-message-content</xsl:comment>
-		</xsl:if>
-		<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-			mode="getIdsUsedComponents-message-content">
-			<xsl:with-param name="package-id" select="$package-id"/>
-			<xsl:with-param name="proces-type" select="$proces-type" />
-			<xsl:with-param name="berichtCode" select="$berichtCode" />
-			<xsl:with-param name="context" select="$context" />
-		</xsl:apply-templates>
-			<xsl:if test="imf:boolean($debug)">
-				<xsl:comment>END   xsl:template match=imvert:supertype mode=getIdsUsedComponents-message-content</xsl:comment>
-			</xsl:if>
-	</xsl:template>
-	
-	<xsl:template match="imvert:association[imvert:stereotype='ENTITEITRELATIE']"
-		mode="getIdsUsedComponents-message-content">
-		<xsl:param name="package-id"/>
-		<xsl:param name="id-trail" />
-		<xsl:param name="berichtCode" />
-		<xsl:param name="orderingDesired" select="'yes'" />
-		<xsl:param name="historyApplies" select="'no'" />
-		<xsl:variable name="context">
-			<xsl:choose>
-				<xsl:when
-					test="imvert:name = 'gelijk' or imvert:name = 'vanaf' or imvert:name = 'totEnMet'">selectie</xsl:when>
-				<xsl:when test="imvert:name = 'start'">start</xsl:when>
-				<xsl:when test="imvert:name = 'scope'">scope</xsl:when>
-				<xsl:otherwise>-</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-		<xsl:variable name="type-id" select="imvert:type-id" />
-		<xsl:if test="imf:boolean($debug)">
-			<xsl:comment>START   xsl:template match=imvert:association[imvert:stereotype=ENTITEITRELATIE] mode=getIdsUsedComponents-message-content</xsl:comment>
-		</xsl:if>
-		<xsl:choose>
-			<xsl:when test="contains($berichtCode,'La')">
-				<!-- ROME: bij een antwoordbericht wordt er een niveau tussen gegenereerd. 
-					Waarom we dat daar wel doen en bij een vraag- en kennisgevingbericht niet 
-					vraag ik me af. -->
-				
-				<!-- La05: een synchroon antwoordbericht met de gegevens op peiltijdstip 
-					zoals bekend in de registratie op peiltijdstip formele historie La06: een 
-					asynchroon antwoordbericht met de gegevens op peiltijdstip zoals bekend in 
-					de registratie op peiltijdstip formele historie La07: een synchroon antwoordbericht 
-					met materiële historie voor de gevraagde objecten op entiteitniveau La08: 
-					een asynchroon antwoordbericht met materiële historie voor de gevraagde objecten 
-					op entiteitniveau La09: een synchroon antwoordbericht met materiële en formele 
-					historie voor de gevraagde objecten op entiteitniveau La10: een asynchroon 
-					antwoordbericht met materiële en formele historie voor de gevraagde objecten 
-					op entiteitniveau -->
-					<xsl:call-template name="getIdsOfEntityConstruct">
-						<xsl:with-param name="package-id" select="$package-id"/>
-						<xsl:with-param name="id-trail" select="$id-trail" />
-						<xsl:with-param name="berichtCode" select="$berichtCode" />
-						<xsl:with-param name="context" select="$context" />
-						<xsl:with-param name="type-id" select="$type-id" />
-						<xsl:with-param name="constructName" select="'-'" />
-						<xsl:with-param name="historyApplies">
-							<xsl:choose>
-								<xsl:when test="$berichtCode = 'La07' or $berichtCode = 'La08'">yes-Materieel</xsl:when>
-								<xsl:when test="$berichtCode = 'La09' or $berichtCode = 'La10'">yes</xsl:when>
-								<xsl:otherwise>no</xsl:otherwise>
-							</xsl:choose>
-						</xsl:with-param>
-					</xsl:call-template>
-			</xsl:when>
-			<xsl:when test="contains($berichtCode,'Lv')">
-				<xsl:choose>
-					<xsl:when test="$context = 'selectie'">
-						<xsl:call-template name="getIdsOfEntityConstruct">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-							<xsl:with-param name="type-id" select="$type-id" />
-							<xsl:with-param name="constructName" select="'-'" />
-							<xsl:with-param name="historyApplies" select="'no'" />
-						</xsl:call-template>
-					</xsl:when>
-					<xsl:when test="$context = 'start'">
-						<xsl:call-template name="getIdsOfEntityConstruct">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-							<xsl:with-param name="type-id" select="$type-id" />
-							<xsl:with-param name="constructName" select="imvert:name" />
-							<xsl:with-param name="historyApplies" select="'no'" />
-						</xsl:call-template>
-					</xsl:when>
-					<xsl:when test="$context = 'scope'">
-						<xsl:call-template name="getIdsOfEntityConstruct">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-							<xsl:with-param name="type-id" select="$type-id" />
-							<xsl:with-param name="constructName" select="imvert:name" />
-							<xsl:with-param name="historyApplies" select="'no'" />
-						</xsl:call-template>
-					</xsl:when>
-				</xsl:choose>
-				
-			</xsl:when>
-			<xsl:when test="contains($berichtCode,'Lk')">
-				<xsl:call-template name="getIdsOfEntityConstruct">
-					<xsl:with-param name="package-id" select="$package-id"/>
-					<xsl:with-param name="id-trail" select="$id-trail" />
-					<xsl:with-param name="berichtCode" select="$berichtCode" />
-					<xsl:with-param name="context" select="$context" />
-					<xsl:with-param name="type-id" select="$type-id" />
-					<xsl:with-param name="constructName" select="'-'" />
-					<xsl:with-param name="historyApplies" select="'no'" />
-				</xsl:call-template>
-			</xsl:when>
-			<xsl:when test="contains($berichtCode,'Sh')">
-				
-			</xsl:when>
-			<xsl:when test="contains($berichtCode,'Sa')">
-				
-			</xsl:when>
-			<xsl:when test="contains($berichtCode,'Di')">
-				
-			</xsl:when>
-			<xsl:when test="contains($berichtCode,'Du')">
-				
-			</xsl:when>
-		</xsl:choose>
-			<xsl:if test="imf:boolean($debug)">
-				<xsl:comment>END   xsl:template match=imvert:association[imvert:stereotype=ENTITEITRELATIE] mode=getIdsUsedComponents-message-content</xsl:comment>
-			</xsl:if>
-	</xsl:template>
-
-	<xsl:template name="getIdsOfEntityConstruct">
-		<xsl:param name="package-id"/>
-		<xsl:param name="id-trail" />
-		<xsl:param name="berichtCode" />
-		<xsl:param name="context" />
-		<xsl:param name="orderingDesired" select="'yes'" />
-		<xsl:param name="type-id" />
-		<xsl:param name="constructName" />
-		<xsl:param name="historyApplies" />
-		<xsl:if test="imf:boolean($debug)">
-			<xsl:comment>START   getIdsOfEntityConstruct</xsl:comment>
-		</xsl:if>
-		<?x xsl:if test="not(ancestor::imvert:package[imvert:id = $package-id])">
-			<id name="{imvert:name}"><xsl:value-of select="imvert:id"/></id>
-		</xsl:if x?>
-			<!-- An 'ep:construct' based on an 'imvert:association' element can contain 
-				several other 'ep:construct' elements (e.g. 'ep:constructs' for the attributes 
-				of the association itself of for the associations of the association) therefore 
-				an 'ep:seq' element is generated here. -->
-
-<!-- ROME: Het kan zijn dat ik de volgende apply-templatess moet verwijderen. -->		
-				<!-- The association is a 'entiteitRelatie' (the toplevel 'entiteit') 
-					and it contains a 'entiteit'. The attributes of the 'entiteit' class can 
-					be placed directly within the current 'ep:seq'. -->
-				<?x xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-					mode="getIdsUsedComponents-message-content">
-					<xsl:with-param name="package-id" select="$package-id"/>
-					<xsl:with-param name="proces-type" select="'attributes'" />
-					<xsl:with-param name="id-trail" select="$id-trail" />
-					<xsl:with-param name="berichtCode" select="$berichtCode" />
-					<xsl:with-param name="context" select="$context" />
-				</xsl:apply-templates>
-				<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-					mode="getIdsUsedComponents-message-content">
-					<xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
-					<!-- ROME: Het is de vraag of deze parameter en het checken op id nog 
-						wel noodzakelijk is. -->
-					<xsl:with-param name="package-id" select="$package-id"/>
-					<xsl:with-param name="id-trail" select="$id-trail" />
-					<xsl:with-param name="berichtCode" select="$berichtCode" />
-					<xsl:with-param name="context" select="$context" />
-				</xsl:apply-templates x?>
-				<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-					mode="getIdsUsedComponents-message-content">
-					<xsl:with-param name="package-id" select="$package-id"/>
-					<xsl:with-param name="proces-type" select="'associationsRelatie'" />
-					<xsl:with-param name="id-trail" select="$id-trail" />
-					<xsl:with-param name="berichtCode" select="$berichtCode" />
-					<xsl:with-param name="context" select="$context" />
-				</xsl:apply-templates>
-				<xsl:if
-					test="($historyApplies='yes-Materieel' or $historyApplies='yes') and //imvert:class[imvert:id = $type-id and 
-					.//imvert:tagged-value[imvert:name='IndicatieMateriLeHistorie' and contains(imvert:value,'Ja')]]">
-					<?x xsl:if test="not(ancestor::imvert:package[imvert:id = $package-id])">
-						<id name="{imvert:name}" context="historieMaterieel"><xsl:value-of select="imvert:id"/></id>
-					</xsl:if x?>
-					<!-- Voor het bepalen van de id's waarop historieMaterieel moet worden opgebouwd moeten 
-										 de onderstaande apply-templates nog worden geactiveerd. -->
-					<?x xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-										mode="getIdsUsedComponents-message-content">
-										<xsl:with-param name="package-id" select="$package-id"/>
-										<xsl:with-param name="proces-type" select="'attributes'" />
-										<xsl:with-param name="id-trail" select="$id-trail" />
-										<xsl:with-param name="berichtCode" select="$berichtCode" />
-										<xsl:with-param name="context" select="$context" />
-										<xsl:with-param name="historyApplies" select="$historyApplies" />
-									</xsl:apply-templates>
-									<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-										mode="getIdsUsedComponents-message-content">
-										<xsl:with-param name="package-id" select="$package-id"/>
-										<xsl:with-param name="proces-type"
-											select="'associationsGroepCompositie'" />
-										<xsl:with-param name="id-trail" select="$id-trail" />
-										<xsl:with-param name="berichtCode" select="$berichtCode" />
-										<xsl:with-param name="context" select="$context" />
-										<xsl:with-param name="historyApplies" select="$historyApplies" />
-									</xsl:apply-templates x?>
-									<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-										mode="getIdsUsedComponents-message-content">
-										<xsl:with-param name="package-id" select="$package-id"/>
-										<xsl:with-param name="proces-type" select="'associationsRelatie'" />
-										<xsl:with-param name="id-trail" select="$id-trail" />
-										<xsl:with-param name="berichtCode" select="$berichtCode" />
-										<xsl:with-param name="context" select="$context" />
-										<xsl:with-param name="historyApplies" select="$historyApplies" />
-									</xsl:apply-templates>
-				</xsl:if>
-				<xsl:if
-					test="$historyApplies='yes' and //imvert:class[imvert:id = $type-id and 
-					.//imvert:tagged-value[imvert:name='IndicatieFormeleHistorie' and contains(imvert:value,'Ja')]]">
-					<?x xsl:if test="not(ancestor::imvert:package[imvert:id = $package-id])">
-						<id name="{imvert:name}" context="historieFormeel"><xsl:value-of select="imvert:id"/></id>
-					</xsl:if x?>
-					<!-- Voor het bepalen van de id's waarop historieMaterieel moet worden opgebouwd moeten 
-										 de onderstaande apply-templates nog worden geactiveerd. -->
-					<?x xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-										mode="getIdsUsedComponents-message-content">
-										<xsl:with-param name="package-id" select="$package-id"/>
-										<xsl:with-param name="proces-type" select="'attributes'" />
-										<xsl:with-param name="id-trail" select="$id-trail" />
-										<xsl:with-param name="berichtCode" select="$berichtCode" />
-										<xsl:with-param name="context" select="$context" />
-										<xsl:with-param name="historyApplies" select="$historyApplies" />
-									</xsl:apply-templates>
-									<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-										mode="getIdsUsedComponents-message-content">
-										<xsl:with-param name="package-id" select="$package-id"/>
-										<xsl:with-param name="proces-type"
-											select="'associationsGroepCompositie'" />
-										<xsl:with-param name="id-trail" select="$id-trail" />
-										<xsl:with-param name="berichtCode" select="$berichtCode" />
-										<xsl:with-param name="context" select="$context" />
-										<xsl:with-param name="historyApplies" select="$historyApplies" />
-									</xsl:apply-templates x?>
-									<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-										mode="getIdsUsedComponents-message-content">
-										<xsl:with-param name="package-id" select="$package-id"/>
-										<xsl:with-param name="proces-type" select="'associationsRelatie'" />
-										<xsl:with-param name="id-trail" select="$id-trail" />
-										<xsl:with-param name="berichtCode" select="$berichtCode" />
-										<xsl:with-param name="context" select="$context" />
-										<xsl:with-param name="historyApplies" select="$historyApplies" />
-									</xsl:apply-templates>
-				</xsl:if>
-			<xsl:if test="imf:boolean($debug)">
-				<xsl:comment>END   getIdsOfEntityConstruct</xsl:comment>
-			</xsl:if>
-	</xsl:template>
-
-	<xsl:template match="imvert:association" mode="getIdsUsedComponents-message-content">
-		<xsl:param name="package-id"/>
-		<xsl:param name="id-trail" />
-		<xsl:param name="berichtCode" />
-		<xsl:param name="context" />
-		<xsl:param name="orderingDesired" select="'yes'" />
-		<xsl:param name="historyApplies" select="'no'" />
-		<xsl:variable name="type-id" select="imvert:type-id" />
-		<xsl:variable name="MogelijkGeenWaarde">
-			<xsl:choose>
-				<xsl:when
-					test="imvert:tagged-values/imvert:tagged-value/imvert:name = 'MogelijkGeenWaarde'">yes</xsl:when>
-				<xsl:otherwise>no</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-		<xsl:if test="imf:boolean($debug)">
-			<xsl:comment>START   xsl:template match=imvert:association mode=getIdsUsedComponents-message-content</xsl:comment>
-		</xsl:if>
-		<?x xsl:if test="not(ancestor::imvert:package[imvert:id = $package-id])">
-			<id name="{imvert:name}"><xsl:value-of select="imvert:id"/></id>
-		</xsl:if x?>
-				<!-- The following choose processes the 3 situations an association can 
-					represent. -->
-				<xsl:choose>
-					<!-- The association is a 'relatie' and it has to contain a 'gerelateerde' 
-						construct. -->
-					<xsl:when
-						test="//imvert:class[imvert:id = $type-id] and imvert:stereotype='RELATIE'">
-								<?x xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-									mode="getIdsUsedComponents-message-content">
-									<xsl:with-param name="package-id" select="$package-id"/>
-									<xsl:with-param name="proces-type" select="'attributes'" />
-									<xsl:with-param name="id-trail" select="$id-trail" />
-									<xsl:with-param name="berichtCode" select="$berichtCode" />
-									<xsl:with-param name="context" select="$context" />
-								</xsl:apply-templates>
-								<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-									mode="getIdsUsedComponents-message-content">
-									<xsl:with-param name="package-id" select="$package-id"/>
-									<xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
-									<xsl:with-param name="id-trail" select="$id-trail" />
-									<xsl:with-param name="berichtCode" select="$berichtCode" />
-									<xsl:with-param name="context" select="$context" />
-								</xsl:apply-templates x?>
-								<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-									mode="getIdsUsedComponents-message-content">
-									<xsl:with-param name="package-id" select="$package-id"/>
-									<xsl:with-param name="proces-type" select="'associationsRelatie'" />
-									<xsl:with-param name="id-trail" select="$id-trail" />
-									<xsl:with-param name="berichtCode" select="$berichtCode" />
-									<xsl:with-param name="context" select="$context" />
-								</xsl:apply-templates>
-								<xsl:variable name="mnemonic">
-									<xsl:value-of
-										select="//imvert:class[imvert:id = $type-id]/imvert:alias" />
-								</xsl:variable>
-						<!-- The following 'apply-templates' initiates the processing of the 
-							class which contains the attributes of the 'relatie' type element. -->
-						<?x xsl:apply-templates select="imvert:association-class" mode="getIdsUsedComponents-message-content">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="proces-type" select="'attributes'" />
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates x?>
-						<!-- The following 'apply-templates' initiates the processing of the 
-							class which contains the attributegroups of the 'relatie' type element. -->
-						<?x xsl:apply-templates select="imvert:association-class" mode="getIdsUsedComponents-message-content">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates x?>
-						<xsl:apply-templates select="imvert:association-class" mode="getIdsUsedComponents-message-content">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="proces-type" select="'associations'" />
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates>
-					</xsl:when>
-					<!-- The association is a 'entiteitRelatie' (the toplevel 'entiteit') 
-						and it contains a 'entiteit'. The attributes of the 'entiteit' class can 
-						be placed directly within the current 'ep:seq'. -->
-					<xsl:when
-						test="//imvert:class[imvert:id = $type-id and imvert:stereotype='ENTITEITTYPE']">
-						<?x xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-							mode="getIdsUsedComponents-message-content">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="proces-type" select="'attributes'" />
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates>
-						<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-							mode="getIdsUsedComponents-message-content">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="proces-type"
-								select="'associationsGroepCompositie'" />
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates x?>
-						<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-							mode="getIdsUsedComponents-message-content">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="proces-type" select="'associationsRelatie'" />
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates>
-					</xsl:when>
-					<!-- The association is a 'berichtRelatie' and it contains a 'bericht'. 
-						This situation can occur whithin the context of a 'vrij bericht'. -->
-					<!-- ROME: Checken of de volgende when idd de berichtRelatie afhandelt 
-						en of alle benodigde (standaard) elementen wel gegenereerd worden. Er wordt 
-						geen supertype in afgehandeld, ik weet even niet meer waarom. -->
-					<xsl:when test="//imvert:class[imvert:id = $type-id]">
-						<?x xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-							mode="getIdsUsedComponents-message-content">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="proces-type" select="'attributes'" />
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates>
-						<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-							mode="getIdsUsedComponents-message-content">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="proces-type"
-								select="'associationsGroepCompositie'" />
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates x?>
-						<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-							mode="getIdsUsedComponents-message-content">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="proces-type" select="'associationsRelatie'" />
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates>
-					</xsl:when>
-				</xsl:choose>
-			<xsl:if test="imf:boolean($debug)">
-				<xsl:comment>END   xsl:template match=imvert:association mode=getIdsUsedComponents-message-content</xsl:comment>
-			</xsl:if>
-	</xsl:template>
-
-	<xsl:template match="imvert:association-class" mode="getIdsUsedComponents-message-content">
-		<xsl:param name="package-id"/>
-		<xsl:param name="proces-type" select="'associations'" />
-		<xsl:param name="id-trail" />
-		<xsl:param name="berichtCode" />
-		<xsl:param name="context" />
-		<xsl:variable name="type-id" select="imvert:type-id" />
-		<xsl:if test="imf:boolean($debug)">
-			<xsl:comment>START   xsl:template match=imvert:association-class mode=getIdsUsedComponents-message-content</xsl:comment>
-		</xsl:if>
-		<xsl:choose>
-			<!-- Following when processes the attributes of the association-class. -->
-			<xsl:when test="$proces-type='attributes'">
-				<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-					mode="getIdsUsedComponents-message-content">
-					<xsl:with-param name="package-id" select="$package-id"/>
-					<xsl:with-param name="proces-type" select="$proces-type" />
-					<xsl:with-param name="id-trail" select="$id-trail" />
-					<xsl:with-param name="berichtCode" select="$berichtCode" />
-					<xsl:with-param name="context" select="$context" />
-				</xsl:apply-templates>
-			</xsl:when>
-			<!-- Following otherwise processes the relatie type associations and group 
-				compositie associations of the association-class. -->
-			<xsl:otherwise>
-				<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-					mode="getIdsUsedComponents-message-content">
-					<xsl:with-param name="package-id" select="$package-id"/>
-					<xsl:with-param name="proces-type" select="$proces-type" />
-					<xsl:with-param name="id-trail" select="$id-trail" />
-					<xsl:with-param name="berichtCode" select="$berichtCode" />
-					<xsl:with-param name="context" select="$context" />
-				</xsl:apply-templates>
-			</xsl:otherwise>
-		</xsl:choose>
-			<xsl:if test="imf:boolean($debug)">
-				<xsl:comment>END   xsl:template match=imvert:association-class mode=getIdsUsedComponents-message-content</xsl:comment>
-			</xsl:if>
-	</xsl:template>
-	
-	<xsl:template match="imvert:class" mode="getIdsUsedComponents-message-content">
-		<xsl:param name="package-id"/>
-		<xsl:param name="proces-type" select="''" />
-		<xsl:param name="id-trail" />
-		<xsl:param name="berichtCode" />
-		<xsl:param name="context" />
-		<xsl:param name="historyApplies" select="'no'" />
-		<xsl:if test="imf:boolean($debug)">
-			<xsl:comment>START   xsl:template match=imvert:class mode=getIdsUsedComponents-message-content</xsl:comment>
-		</xsl:if>
-		<xsl:if test="not(ancestor::imvert:package[imvert:id = $package-id])">
-			<id name="{imvert:name}" berichtCode="{$berichtCode}" context="{$context}"><xsl:value-of select="imvert:id"/></id>
-		</xsl:if>
-		<xsl:choose>
-			<!-- The following when initiate the processing of the attributes belonging 
-				to the current class. First the ones found within the superclass of the current 
-				class followed by the ones within the current class. -->
-			<xsl:when test="$proces-type = 'attributes'">
-				<?x xsl:apply-templates select="imvert:supertype"
-					mode="getIdsUsedComponents-message-content">
-					<xsl:with-param name="package-id" select="$package-id"/>
-					<xsl:with-param name="proces-type" select="$proces-type" />
-					<xsl:with-param name="berichtCode" select="$berichtCode" />
-					<xsl:with-param name="context" select="$context" />
-				</xsl:apply-templates x?>
-				<?x xsl:apply-templates select=".//imvert:attribute"
-					mode="getIdsUsedComponents-message-content">
-					<xsl:with-param name="package-id" select="$package-id"/>
-					<xsl:with-param name="berichtCode" select="$berichtCode" />
-					<xsl:with-param name="context" select="$context" />
-				</xsl:apply-templates x?>
-			</xsl:when>
-			<!-- The following when initiate the processing of the attributegroups 
-				belonging to the current class. First the ones found within the superclass 
-				of the current class followed by the ones within the current class. -->
-			<xsl:when test="$proces-type = 'associationsGroepCompositie'">
-				<?x xsl:apply-templates select="imvert:supertype"
-					mode="getIdsUsedComponents-message-content">
-					<xsl:with-param name="package-id" select="$package-id"/>
-					<xsl:with-param name="proces-type" select="$proces-type" />
-					<xsl:with-param name="berichtCode" select="$berichtCode" />
-					<xsl:with-param name="context" select="$context" />
-				</xsl:apply-templates x?>
-				<!-- If the class hasn't been processed before it can be processed, else. 
-					to prevent recursion, processing is canceled. -->
-				<xsl:choose>
-					<xsl:when test="not(contains($id-trail, concat('#2#', imvert:id, '#')))">
-						<!-- ROME: Er bestaat nog steeds de mogelijkheid dat de stereotype 
-							'GEGEVENSGEGEVENSGROEP COMPOSITIE' wordt gebruikt ipv 'GEGEVENSGROEP COMPOSITIE'. 
-							De uitbecommentarieerde apply-templates kan met de eerste vorm omgaan maar 
-							moet tzt (zodra imvertor daarop checkt) worden verwijdert. -->
-						<xsl:apply-templates
-							select=".//imvert:association[imvert:stereotype='GEGEVENSGROEP COMPOSITIE']"
-							mode="getIdsUsedComponents-message-content">
-							<!--xsl:apply-templates select=".//imvert:association[contains(imvert:stereotype,'GEGEVENSGROEP 
-								COMPOSITIE')]" mode="create-message-content" -->
-							<!-- ROME: Het is de vraag of deze parameter en het checken op id 
-								nog wel noodzakelijk is. -->
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="id-trail">
-								<xsl:choose>
-									<xsl:when test="contains($id-trail, concat('#1#', imvert:id, '#'))">
-										<xsl:value-of select="concat('#2#', imvert:id, '#', $id-trail)" />
-									</xsl:when>
-									<xsl:otherwise>
-										<xsl:value-of select="concat('#1#', imvert:id, '#', $id-trail)" />
-									</xsl:otherwise>
-								</xsl:choose>
-							</xsl:with-param>
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates>
-					</xsl:when>
-					<xsl:otherwise>
-						<!-- Indien we besluiten recursie voor mag gaan komen dan moet dit 
-							nog worden gecodeerd. -->
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:when>
-			<!-- The following when initiate the processing of the associations belonging 
-				to the current class. First the ones found within the superclass of the current 
-				class followed by the ones within the current class. -->
-			<xsl:when test="$proces-type = 'associationsRelatie'">
-				<?x xsl:apply-templates select="imvert:supertype"
-					mode="getIdsUsedComponents-message-content">
-					<xsl:with-param name="package-id" select="$package-id"/>
-					<xsl:with-param name="proces-type" select="$proces-type" />
-					<xsl:with-param name="berichtCode" select="$berichtCode" />
-					<xsl:with-param name="context" select="$context" />
-				</xsl:apply-templates x?>
-				<!-- If the class hasn't been processed before it can be processed, else. 
-					to prevent recursion, processing is canceled. -->
-				<xsl:choose>
-					<xsl:when test="not(contains($id-trail, concat('#2#', imvert:id, '#')))">
-						<xsl:apply-templates
-							select=".//imvert:association[imvert:stereotype='RELATIE']" mode="getIdsUsedComponents-message-content">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="id-trail">
-								<xsl:choose>
-									<xsl:when test="contains($id-trail, concat('#1#', imvert:id, '#'))">
-										<xsl:value-of select="concat('#2#', imvert:id, '#', $id-trail)" />
-									</xsl:when>
-									<xsl:otherwise>
-										<xsl:value-of select="concat('#1#', imvert:id, '#', $id-trail)" />
-									</xsl:otherwise>
-								</xsl:choose>
-							</xsl:with-param>
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates>
-					</xsl:when>
-					<xsl:otherwise>
-						<!-- Indien we besluiten recursie voor mag gaan komen dan moet dit 
-							nog worden gecodeerd. -->
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:when>
-		</xsl:choose>
-			<xsl:if test="imf:boolean($debug)">
-				<xsl:comment>END   xsl:template match=imvert:class mode=getIdsUsedComponents-message-content</xsl:comment>
-			</xsl:if>
-	</xsl:template>
-	
-	
-
-
-
 	<!-- This template only processes imvert:class elements with an imvert:stereotype 
 		with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE', 'VRIJBERICHTTYPE' 
 		or 'KENNISGEVINGSBERICHTTYPE'. Those classes contain a relation to the 'Parameters' 
@@ -1153,7 +98,6 @@
 		<xsl:param name="package-id"/>
 		<xsl:param name="messagePrefix" select="''" />
 		<xsl:param name="berichtCode" />
-		<xsl:param name="berichtCodeDeterming" />
 		
 		<!-- The purpose of this parameter is to determine if the element 'stuurgegevens' 
 			must be generated or not. The 'kennisgevingsbericht' , 'vraagbericht' or 
@@ -1164,76 +108,6 @@
 			<xsl:comment select="'imvert:class[mode=create-initial-message-structure]'" />
 		</xsl:if>
 		<ep:seq>
-			<xsl:if test="$useStuurgegevens = 'yes'">
-				<xsl:variable name="Stuurgegevens">
-					<xsl:call-template name="buildParametersAndStuurgegevens">
-						<xsl:with-param name="berichtCode" select="$berichtCode" />
-						<xsl:with-param name="elements2bTested">
-							<imvert:taggedValues>
-								<xsl:if test="$berichtCodeDeterming = 'Using-Other-tvs'">
-									<imvert:tv>
-										<xsl:sequence
-											select="imf:create-output-element('imvert:name', 'Berichtcode')" />
-										<xsl:sequence
-											select="imf:create-output-element('imvert:value', $berichtCode)" />
-									</imvert:tv>
-								</xsl:if>
-								<xsl:for-each select=".//imvert:tagged-value">
-									<imvert:tv>
-										<xsl:sequence
-											select="imf:create-output-element('imvert:name', imvert:name)" />
-										<xsl:sequence
-											select="imf:create-output-element('imvert:value', imvert:value)" />
-									</imvert:tv>
-								</xsl:for-each>
-							</imvert:taggedValues>
-						</xsl:with-param>
-						<xsl:with-param name="parent" select="'Stuurgegevens'" />
-					</xsl:call-template>
-				</xsl:variable>
-				<xsl:if test="$Stuurgegevens != ''">
-					<ep:construct>
-						<ep:name>stuurgegevens</ep:name>
-						<ep:tech-name>stuurgegevens</ep:tech-name>
-						<ep:max-occurs>1</ep:max-occurs>
-						<ep:min-occurs>1</ep:min-occurs>
-						<ep:position>0</ep:position>
-						<ep:seq>
-							<xsl:sequence select="$Stuurgegevens" />
-						</ep:seq>
-					</ep:construct>
-				</xsl:if>
-			</xsl:if>
-			<xsl:variable name="Parameters">
-				<xsl:call-template name="buildParametersAndStuurgegevens">
-					<xsl:with-param name="berichtCode" select="$berichtCode" />
-					<xsl:with-param name="elements2bTested">
-						<imvert:taggedValues>
-							<xsl:for-each select=".//imvert:tagged-value">
-								<imvert:tv>
-									<xsl:sequence
-										select="imf:create-output-element('imvert:name', imvert:name)" />
-									<xsl:sequence
-										select="imf:create-output-element('imvert:value', imvert:value)" />
-								</imvert:tv>
-							</xsl:for-each>
-						</imvert:taggedValues>
-					</xsl:with-param>
-					<xsl:with-param name="parent" select="'Parameters'" />
-				</xsl:call-template>
-			</xsl:variable>
-			<xsl:if test="$Parameters != ''">
-				<ep:construct>
-					<ep:name>parameters</ep:name>
-					<ep:tech-name>parameters</ep:tech-name>
-					<ep:max-occurs>1</ep:max-occurs>
-					<ep:min-occurs>1</ep:min-occurs>
-					<ep:position>50</ep:position>
-					<ep:seq>
-						<xsl:sequence select="$Parameters" />
-					</ep:seq>
-				</ep:construct>
-			</xsl:if>
 			<!-- The folowing 2 apply-templates initiate the processing of the 'imvert:attribute' 
 				elements within the supertype of imvert:class elements with an imvert:stereotype 
 				with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE', 'VRIJBERICHTTYPE' 
@@ -1249,7 +123,7 @@
 				<xsl:with-param name="berichtCode" select="$berichtCode" />
 			</xsl:apply-templates>
 			<!-- The folowing 2 apply-templates initiate the processing of the 'imvert:association' 
-				elements with the stereotype 'GEGEVENSGROEP COMPOSITIE' within the supertype 
+				elements with the stereotype 'GROEP COMPOSITIE' within the supertype 
 				of imvert:class elements with an imvert:stereotype with the value 'VRAAGBERICHTTYPE', 
 				'ANTWOORDBERICHTTYPE', 'VRIJBERICHTTYPE' or 'KENNISGEVINGSBERICHTTYPE' and 
 				those within the current class. The first one generates the 'stuurgegevens' 
@@ -1260,14 +134,14 @@
 				<xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
 				<xsl:with-param name="berichtCode" select="$berichtCode" />
 			</xsl:apply-templates>
-			<!-- ROME: Er bestaat nog steeds de mogelijkheid dat de stereotype 'GEGEVENSGEGEVENSGROEP 
-				COMPOSITIE' wordt gebruikt ipv 'GEGEVENSGROEP COMPOSITIE'. De uitbecommentarieerde 
+			<!-- ROME: Er bestaat nog steeds de mogelijkheid dat de stereotype 'GEGEVENSGROEP 
+				COMPOSITIE' wordt gebruikt ipv 'GROEP COMPOSITIE'. De uitbecommentarieerde 
 				apply-templates kan met de eerste vorm omgaan maar moet tzt (zodra imvertor 
 				daarop checkt) worden verwijdert. -->
 			<!--xsl:apply-templates select=".//imvert:association[contains(imvert:stereotype,'GEGEVENSGROEP 
 				COMPOSITIE')]" mode="create-message-content" -->
 			<xsl:apply-templates
-				select=".//imvert:association[imvert:stereotype='GEGEVENSGROEP COMPOSITIE']"
+				select=".//imvert:association[imvert:stereotype='GROEP COMPOSITIE']"
 				mode="create-message-content">
 				<!-- The 'id-trail' parameter has been introduced to be able to prevent 
 					recursive processing of classes. If the parser runs into an id already present 
@@ -1312,6 +186,8 @@
 					'totEnMet', 'start' of 'scope' hebben. -->
 				<xsl:with-param name="orderingDesired" select="'no'" />
 			</xsl:apply-templates>
+<!-- ROME: Ik twijfel er aan of associations die linken aan een class met als imvert:stereotype 
+		   'ENTITEITRELATIE' niet ook gewoon door de hierboven staande apply-templates verwerkt moeten worden. -->
 			<!-- Associations linking from a class with a imvert:stereotype with the 
 				value 'VRIJBERICHTTYPE' need special treatment. Those linking to a class 
 				with a imvert:stereotype with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE' 
@@ -1399,7 +275,6 @@
 		<xsl:param name="proces-type" />
 		<xsl:param name="berichtCode" />
 		<xsl:param name="context" />
-		<xsl:param name="historyApplies" select="'no'" />
 		<xsl:if test="imf:boolean($debug)">
 			<xsl:comment select="'imvert:supertype[mode=create-message-content]'" />
 		</xsl:if>
@@ -1551,8 +426,6 @@
 							<xsl:otherwise>no</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
-					<xsl:comment
-						select="concat('Attributes voor bottemlevel, berichtcode: -, context: - met datumtype?: ', $datumType)" />
 					<xsl:variable name="attributes"
 						select="imf:createAttributes('bottomlevel', '-', '-', $datumType, '',$MogelijkGeenWaarde,$onvolledigeDatum)" />
 					<xsl:sequence select="$attributes" />
@@ -1561,10 +434,9 @@
 		</ep:construct>
 	</xsl:template>
 
-	<!-- This template transforms an 'imvert:association' element to an 'ep:construct' 
+	<!-- This template transforms an 'imvert:association' element of stereotype 'ENTITEITRELATIE' to an 'ep:construct' 
 		element.. -->
-	<xsl:template match="imvert:association[imvert:stereotype='ENTITEITRELATIE']"
-		mode="create-message-content">
+	<xsl:template match="imvert:association[imvert:stereotype='ENTITEITRELATIE']" mode="create-message-content">
 		<xsl:param name="package-id"/>
 		<xsl:param name="id-trail" />
 		<xsl:param name="berichtCode" />
@@ -1576,17 +448,13 @@
 					test="imvert:name = 'gelijk' or imvert:name = 'vanaf' or imvert:name = 'totEnMet'">selectie</xsl:when>
 				<xsl:when test="imvert:name = 'start'">start</xsl:when>
 				<xsl:when test="imvert:name = 'scope'">scope</xsl:when>
-				<xsl:otherwise>
-					-
-				</xsl:otherwise>
+				<xsl:otherwise>-</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="type-id" select="imvert:type-id" />
 		<xsl:if test="imf:boolean($debug)">
 			<xsl:comment select="'imvert:association[mode=create-message-content]'" />
 		</xsl:if>
-		<xsl:comment
-			select="concat('berichtCode: ', $berichtCode, ', context: ', $context)" />
 		<xsl:choose>
 			<xsl:when test="contains($berichtCode,'La')">
 				<!-- ROME: bij een antwoordbericht wordt er een niveau tussen gegenereerd. 
@@ -1881,7 +749,9 @@
 					<ep:min-occurs>0</ep:min-occurs>
 					<ep:position>152</ep:position>
 				</ep:construct>
-				<xsl:message select="concat('$historyApplies ',$historyApplies)" />
+				<xsl:if test="imf:boolean($debug)">	
+					<xsl:message select="concat('$historyApplies ',$historyApplies)" />
+				</xsl:if>
 				<xsl:if
 					test="($historyApplies='yes-Materieel' or $historyApplies='yes') and //imvert:class[imvert:id = $type-id and 
 							  .//imvert:tagged-value[imvert:name='IndicatieMateriLeHistorie' and contains(imvert:value,'Ja')]]">
@@ -2025,8 +895,10 @@
 					altijd de ancestor van het element dat het nodig heeft. Voor nu heb ik gekozen 
 					voor de eerste optie. Overigens moet de context ook nog herleid en doorgegeven 
 					worden. -->
-				<xsl:comment
+				<xsl:if test="imf:boolean($debug)">	
+					<xsl:comment
 					select="concat('Attributes voor toplevel, berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $mnemonic)" />
+				</xsl:if>
 				<xsl:variable name="attributes"
 					select="imf:createAttributes('toplevel', substring($berichtCode,1,2), $context, 'no', $mnemonic, 'no','no')" />
 				<xsl:sequence select="$attributes" />
@@ -2036,7 +908,7 @@
 	</xsl:template>
 
 	<!-- This template transforms an 'imvert:association' element to an 'ep:construct' 
-		element.. -->
+		 element. -->
 	<xsl:template match="imvert:association" mode="create-message-content">
 		<xsl:param name="package-id"/>
 		<xsl:param name="id-trail" />
@@ -2057,9 +929,17 @@
 		</xsl:if>
 		<ep:construct>
 			<xsl:sequence
-				select="imf:create-output-element('ep:name', imvert:name/@original)" />
-			<xsl:sequence
-				select="imf:create-output-element('ep:tech-name', imvert:name)" />
+				select="imf:create-output-element('ep:name', imvert:name)" />
+			<xsl:choose>
+				<xsl:when test="imvert:stereotype='RELATIE'">
+					<xsl:sequence
+						select="imf:create-output-element('ep:tech-name', concat(imvert:name,imvert:type-name))" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:sequence
+						select="imf:create-output-element('ep:tech-name', imvert:name)" />
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:choose>
 				<xsl:when test="imvert:stereotype='ENTITEITRELATIE'">
 					<xsl:sequence
@@ -2073,9 +953,9 @@
 			<xsl:sequence
 				select="imf:create-output-element('ep:documentation', imvert:documentation)" />
 			<!-- Onderstaande sequence zou gebruikt kunnen worden voor het ophalen 
-				van de documentatie behorende bij de class waarnaar verwezen wordt. -->
+		van de documentatie behorende bij de class waarnaar verwezen wordt. -->
 			<!--xsl:sequence select="imf:create-output-element('ep:documentation', 
-				//imvert:class[imvert:id = $type-id]/imvert:documentation)"/ -->
+		//imvert:class[imvert:id = $type-id]/imvert:documentation)"/ -->
 			<xsl:sequence
 				select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)" />
 			<xsl:sequence
@@ -2090,14 +970,14 @@
 			<xsl:sequence
 				select="imf:create-output-element('ep:regels', imvert:tagged-values/imvert:tagged-value[imvert:name='Regels']/imvert:value)" />				
 			<!-- Ik vermoed dat onderstaande element op basis van het voidable tagged 
-				value gegenereerd moet worden. Je zou zeggen dat op basis van die tagged 
-				value echter ook de construct 'noValue' gegenereerd moet worden. Dat is echter 
-				de vraag omdat dat een XML requirement is en mogelijk geen JSON requirement. 
-				De vraag is dus of we dat wel moeten doen. -->
+		value gegenereerd moet worden. Je zou zeggen dat op basis van die tagged 
+		value echter ook de construct 'noValue' gegenereerd moet worden. Dat is echter 
+		de vraag omdat dat een XML requirement is en mogelijk geen JSON requirement. 
+		De vraag is dus of we dat wel moeten doen. -->
 			<xsl:sequence
 				select="imf:create-output-element('ep:voidable', imvert:tagged-values/imvert:tagged-value[imvert:name='MogelijkGeenWaarde']/imvert:value)" />
 			<!-- When a tagged-value 'Positie' exists this is used to assign a value 
-				to 'ep:position' if not the value of the element 'imvert:position' is used. -->
+		to 'ep:position' if not the value of the element 'imvert:position' is used. -->
 			<xsl:choose>
 				<xsl:when
 					test="imvert:tagged-values/imvert:tagged-value/imvert:name='Positie'">
@@ -2112,249 +992,93 @@
 				<xsl:otherwise />
 			</xsl:choose>
 			<!-- An 'ep:construct' based on an 'imvert:association' element can contain 
-				several other 'ep:construct' elements (e.g. 'ep:constructs' for the attributes 
-				of the association itself of for the associations of the association) therefore 
-				an 'ep:seq' element is generated here. -->
+		several other 'ep:construct' elements (e.g. 'ep:constructs' for the attributes 
+		of the association itself of for the associations of the association) therefore 
+		an 'ep:seq' element is generated here. -->
 			<ep:seq>
 				<!-- ROME: De test op de variabele $oderingDesired is hier wellicht niet 
-					meer nodig omdat er nu een separaat template is voor het afhandelen het 'imvert:association' 
-					element met het stereotype 'ENTITEITRELATIE'. -->
+			meer nodig omdat er nu een separaat template is voor het afhandelen het 'imvert:association' 
+			element met het stereotype 'ENTITEITRELATIE'. -->
 				<xsl:if test="$orderingDesired='no'">
 					<xsl:attribute name="orderingDesired" select="'no'" />
 				</xsl:if>
 				<!-- The following choose processes the 3 situations an association can 
-					represent. -->
-				<xsl:choose>
-					<!-- The association is a 'relatie' and it has to contain a 'gerelateerde' 
-						construct. -->
-					<xsl:when
-						test="//imvert:class[imvert:id = $type-id and ancestor::imvert:package[imvert:id = $package-id]] and imvert:stereotype='RELATIE'">
-						<ep:construct>
-							<ep:name>gerelateerde</ep:name>
-							<ep:tech-name>gerelateerde</ep:tech-name>
-							<xsl:sequence
-								select="imf:create-output-element('ep:mnemonic', //imvert:class[imvert:id = $type-id]/imvert:alias)" />
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>0</ep:min-occurs>
-							<ep:position>1</ep:position>
-							<ep:seq>
-								<!-- ROME: Waarschijnlijk moeten afhankelijk van de context (mag 
-									de gerelateerde alleen de kerngegevens bevatten of wel meer) de volgende 
-									apply-templates van extra parameters worden voorzien zodat de te genereren 
-									structuur aangescherpt kan worden. -->
-								<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-									mode="create-message-content">
-									<xsl:with-param name="package-id" select="$package-id"/>
-									<xsl:with-param name="proces-type" select="'attributes'" />
-									<!-- ROME: Het is de vraag of deze parameter en het checken op id 
-										nog wel noodzakelijk is. -->
-									<xsl:with-param name="id-trail" select="$id-trail" />
-									<xsl:with-param name="berichtCode" select="$berichtCode" />
-									<xsl:with-param name="context" select="$context" />
-								</xsl:apply-templates>
-								<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-									mode="create-message-content">
-									<xsl:with-param name="package-id" select="$package-id"/>
-									<xsl:with-param name="proces-type"
-										select="'associationsGroepCompositie'" />
-									<!-- ROME: Het is de vraag of deze parameter en het checken op id 
-										nog wel noodzakelijk is. -->
-									<xsl:with-param name="id-trail" select="$id-trail" />
-									<xsl:with-param name="berichtCode" select="$berichtCode" />
-									<xsl:with-param name="context" select="$context" />
-								</xsl:apply-templates>
-								<!-- ROME: Waarschijnlijk moet er hier afhankelijk van de context 
-									meer of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' 
-									maar ook aan 'tijdvakRelatie', 'historieMaterieel' en 'historieFormeel'. -->
-								<ep:construct>
-									<ep:name>StUF:tijdvakGeldigheid</ep:name>
-									<ep:tech-name>StUF:tijdvakGeldigheid</ep:tech-name>
-									<ep:max-occurs>1</ep:max-occurs>
-									<ep:min-occurs>0</ep:min-occurs>
-									<ep:position>150</ep:position>
-								</ep:construct>
-								<ep:construct>
-									<ep:name>StUF:tijdstipRegistratie</ep:name>
-									<ep:tech-name>StUF:tijdstipRegistratie</ep:tech-name>
-									<ep:max-occurs>1</ep:max-occurs>
-									<ep:min-occurs>0</ep:min-occurs>
-									<ep:position>151</ep:position>
-								</ep:construct>
-								<ep:construct>
-									<ep:name>StUF:extraElementen</ep:name>
-									<ep:tech-name>StUF:extraElementen</ep:tech-name>
-									<ep:max-occurs>1</ep:max-occurs>
-									<ep:min-occurs>0</ep:min-occurs>
-									<ep:position>152</ep:position>
-								</ep:construct>
-								<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-									mode="create-message-content">
-									<xsl:with-param name="package-id" select="$package-id"/>
-									<xsl:with-param name="proces-type" select="'associationsRelatie'" />
-									<!-- ROME: Het is de vraag of deze parameter en het checken op id 
-										nog wel noodzakelijk is. -->
-									<xsl:with-param name="id-trail" select="$id-trail" />
-									<xsl:with-param name="berichtCode" select="$berichtCode" />
-									<xsl:with-param name="context" select="$context" />
-								</xsl:apply-templates>
-								<xsl:variable name="mnemonic">
-									<xsl:value-of
-										select="//imvert:class[imvert:id = $type-id]/imvert:alias" />
-								</xsl:variable>
-								<!-- The function imf:createAttributes is used to determine the XML 
-									attributes neccessary for this context. It has the following parameters: 
-									- typecode - berichttype - context - datumType The first 3 parameters relate 
-									to columns with the same name within an Excel spreadsheet used to configure 
-									a.o. XML attributes usage. The last parameter is used to determine the need 
-									for the XML-attribute 'StUF:indOnvolledigeDatum'. -->
-
-								<!-- ROME: De berichtcode is niet als globale variabele aanwezig 
-									en kan dus niet zomaar opgeroepen worden. Hij kan helaas ook niet eenvoudig 
-									verkregen worden aangezien het element op basis waarvan de berichtcode kan 
-									worden gegenereerd geen ancestor is van het huidige element. Er zijn 2 opties: 
-									* De berichtcode als parameter aan alle templates toevoegen en steeds doorgeven. 
-									* De attributes pas aan de EP structuur toevoegen in een aparte slag nadat 
-									de EP structuur al gegenereerd is. Het message element dat de berichtcode 
-									bevat is dan wel altijd de ancestor van het element dat het nodig heeft. 
-									Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook 
-									nog herleid en doorgegeven worden. -->
-								<xsl:comment
-									select="concat('Attributes voor gerelateerde, berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $mnemonic)" />
-								<xsl:variable name="attributes"
-									select="imf:createAttributes('gerelateerde', substring($berichtCode,1,2), $context, 'no', $mnemonic, 'no','no')" />
-								<xsl:sequence select="$attributes" />
-							</ep:seq>
-						</ep:construct>
-						<!-- The following 'apply-templates' initiates the processing of the 
-							class which contains the attributes of the 'relatie' type element. -->
-						<xsl:apply-templates select="imvert:association-class">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="proces-type" select="'attributes'" />
-							<!-- ROME: Het is de vraag of deze parameter en het checken op id 
-								nog wel noodzakelijk is. -->
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates>
-						<!-- The following 'apply-templates' initiates the processing of the 
-							class which contains the attributegroups of the 'relatie' type element. -->
-						<xsl:apply-templates select="imvert:association-class">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="proces-type"
-								select="'associationsGroepCompositie'" />
-							<!-- ROME: Het is de vraag of deze parameter en het checken op id 
-								nog wel noodzakelijk is. -->
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates>
-						<ep:construct>
-							<ep:name>StUF:tijdvakGeldigheid</ep:name>
-							<ep:tech-name>StUF:tijdvakGeldigheid</ep:tech-name>
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>0</ep:min-occurs>
-							<ep:position>150</ep:position>
-						</ep:construct>
-						<ep:construct>
-							<ep:name>StUF:tijdstipRegistratie</ep:name>
-							<ep:tech-name>StUF:tijdstipRegistratie</ep:tech-name>
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>0</ep:min-occurs>
-							<ep:position>151</ep:position>
-						</ep:construct>
-						<ep:construct>
-							<ep:name>StUF:extraElementen</ep:name>
-							<ep:tech-name>StUF:extraElementen</ep:tech-name>
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>0</ep:min-occurs>
-							<ep:position>152</ep:position>
-						</ep:construct>
-						<!-- The following 'apply-templates' initiates the processing of the 
-							class which contains the associations of the 'relatie' type element. -->
-						<xsl:apply-templates select="imvert:association-class">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="proces-type" select="'associations'" />
-							<!-- ROME: Het is de vraag of deze parameter en het checken op id 
-								nog wel noodzakelijk is. -->
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates>
-					</xsl:when>
-					<!-- The association is a 'relatie' and it has to contain a 'gerelateerde' 
-						constructRef (the associated class is located in a reusable package). -->
-					<xsl:when
-						test="//imvert:class[imvert:id = $type-id and not(ancestor::imvert:package[imvert:id = $package-id])] and imvert:stereotype='RELATIE'">
-						<ep:constructRef>
-							<ep:name>gerelateerde</ep:name>
-							<ep:tech-name>gerelateerde</ep:tech-name>
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>0</ep:min-occurs>
-							<ep:position>1</ep:position>
-							<xsl:sequence
-								select="imf:create-output-element('ep:href', //imvert:class[imvert:id = $type-id]/imvert:name)" />							
-						</ep:constructRef>
-						<!-- The following 'apply-templates' initiates the processing of the 
-							class which contains the attributes of the 'relatie' type element. -->
-						<xsl:apply-templates select="imvert:association-class">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="proces-type" select="'attributes'" />
-							<!-- ROME: Het is de vraag of deze parameter en het checken op id 
-								nog wel noodzakelijk is. -->
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates>
-						<!-- The following 'apply-templates' initiates the processing of the 
-							class which contains the attributegroups of the 'relatie' type element. -->
-						<xsl:apply-templates select="imvert:association-class">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="proces-type"
-								select="'associationsGroepCompositie'" />
-							<!-- ROME: Het is de vraag of deze parameter en het checken op id 
-								nog wel noodzakelijk is. -->
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates>
-						<ep:construct>
-							<ep:name>StUF:tijdvakGeldigheid</ep:name>
-							<ep:tech-name>StUF:tijdvakGeldigheid</ep:tech-name>
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>0</ep:min-occurs>
-							<ep:position>150</ep:position>
-						</ep:construct>
-						<ep:construct>
-							<ep:name>StUF:tijdstipRegistratie</ep:name>
-							<ep:tech-name>StUF:tijdstipRegistratie</ep:tech-name>
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>0</ep:min-occurs>
-							<ep:position>151</ep:position>
-						</ep:construct>
-						<ep:construct>
-							<ep:name>StUF:extraElementen</ep:name>
-							<ep:tech-name>StUF:extraElementen</ep:tech-name>
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>0</ep:min-occurs>
-							<ep:position>152</ep:position>
-						</ep:construct>
-						<!-- The following 'apply-templates' initiates the processing of the 
-							class which contains the associations of the 'relatie' type element. -->
-						<xsl:apply-templates select="imvert:association-class">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="proces-type" select="'associations'" />
-							<!-- ROME: Het is de vraag of deze parameter en het checken op id 
-								nog wel noodzakelijk is. -->
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates>
-					</xsl:when>
-					<!-- The association is a 'entiteitRelatie' (the toplevel 'entiteit') 
-						and it contains a 'entiteit'. The attributes of the 'entiteit' class can 
-						be placed directly within the current 'ep:seq'. -->
-					<xsl:when
-						test="//imvert:class[imvert:id = $type-id and imvert:stereotype='ENTITEITTYPE']">
+			represent. -->
+				<xsl:call-template name="constructRelatiePartOfAssociation">
+					<xsl:with-param name="type-id" select="$type-id"/>
+					<xsl:with-param name="package-id" select="$package-id"/>
+					<xsl:with-param name="id-trail" select="$id-trail" />
+					<xsl:with-param name="berichtCode" select="$berichtCode" />
+					<xsl:with-param name="context" select="$context" />
+				</xsl:call-template>
+				<!-- Only in case of an association representing a 'relatie' and containing 
+			a 'gerelateerde' construct (within the above choose the first 'when' XML 
+			Attributes for the 'relatie' type element have to be generated. Because these 
+			has to be placed outside the 'gerelateerde' element it has to be done here. -->
+				<xsl:if test="imvert:stereotype='RELATIE'">
+					<!-- The function imf:createAttributes is used to determine the XML 
+				attributes neccessary for this context. It has the following parameters: 
+				- typecode - berichttype - context - datumType The first 3 parameters relate 
+				to columns with the same name within an Excel spreadsheet used to configure 
+				a.o. XML attributes usage. The last parameter is used to determine the need 
+				for the XML-attribute 'StUF:indOnvolledigeDatum'. -->
+					
+					<!-- ROME: De berichtcode is niet als globale variabele aanwezig en 
+				kan dus niet zomaar opgeroepen worden. Hij kan helaas ook niet eenvoudig 
+				verkregen worden aangezien het element op basis waarvan de berichtcode kan 
+				worden gegenereerd geen ancestor is van het huidige element. Er zijn 2 opties: 
+				* De berichtcode als parameter aan alle templates toevoegen en steeds doorgeven. 
+				* De attributes pas aan de EP structuur toevoegen in een aparte slag nadat 
+				de EP structuur al gegenereerd is. Het message element dat de berichtcode 
+				bevat is dan wel altijd de ancestor van het element dat het nodig heeft. 
+				Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook 
+				nog herleid en doorgegeven worden. -->
+					<xsl:variable name="mnemonic">
+						<?x xsl:choose>
+							<xsl:when test="imvert:stereotype='ENTITEITRELATIE'">
+								<xsl:value-of
+									select="//imvert:class[imvert:id = $type-id]/imvert:alias" />
+							</xsl:when>
+							<xsl:otherwise x?>
+								<xsl:value-of select="imvert:alias" />
+							<?x /xsl:otherwise>
+						</xsl:choose x?>
+					</xsl:variable>
+					<xsl:if test="imf:boolean($debug)">	
+						<xsl:comment select="concat('Attributes voor relatie, berichtcode: ', substring($berichtCode,1,2) ,', context: ', $context, ' en mnemonic: ', $mnemonic)" />
+					</xsl:if>
+					<xsl:variable name="attributes"
+						select="imf:createAttributes('relatie', substring($berichtCode,1,2), $context, 'no', $mnemonic, $MogelijkGeenWaarde,'no')" />
+					<xsl:sequence select="$attributes" />
+				</xsl:if>
+			</ep:seq>
+		</ep:construct>
+	</xsl:template>
+	
+	<xsl:template name="constructRelatiePartOfAssociation">
+		<xsl:param name="type-id"/>
+		<xsl:param name="package-id"/>
+		<xsl:param name="id-trail"/>
+		<xsl:param name="berichtCode"/>
+		<xsl:param name="context"/>
+		<xsl:choose>
+			<!-- The association is a 'relatie' and it has to contain a 'gerelateerde' 
+				 construct. -->
+			<xsl:when
+				test="//imvert:class[imvert:id = $type-id and ancestor::imvert:package[imvert:id = $package-id]] and imvert:stereotype='RELATIE'">
+				<ep:construct>
+					<ep:name>gerelateerde</ep:name>
+					<ep:tech-name>gerelateerde</ep:tech-name>
+					<xsl:sequence
+						select="imf:create-output-element('ep:mnemonic', //imvert:class[imvert:id = $type-id]/imvert:alias)" />
+					<ep:max-occurs>1</ep:max-occurs>
+					<ep:min-occurs>0</ep:min-occurs>
+					<ep:position>1</ep:position>
+					<ep:seq>
+						<!-- ROME: Waarschijnlijk moeten afhankelijk van de context (mag 
+							de gerelateerde alleen de kerngegevens bevatten of wel meer) de volgende 
+							apply-templates van extra parameters worden voorzien zodat de te genereren 
+							structuur aangescherpt kan worden. -->
 						<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
 							mode="create-message-content">
 							<xsl:with-param name="package-id" select="$package-id"/>
@@ -2376,9 +1100,9 @@
 							<xsl:with-param name="berichtCode" select="$berichtCode" />
 							<xsl:with-param name="context" select="$context" />
 						</xsl:apply-templates>
-						<!-- ROME: Waarschijnlijk moet er hier afhankelijk van de context meer 
-							of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' maar 
-							ook aan 'tijdvakRelatie', 'historieMaterieel' en 'historieFormeel'. -->
+						<!-- ROME: Waarschijnlijk moet er hier afhankelijk van de context 
+							meer of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' 
+							maar ook aan 'tijdvakRelatie', 'historieMaterieel' en 'historieFormeel'. -->
 						<ep:construct>
 							<ep:name>StUF:tijdvakGeldigheid</ep:name>
 							<ep:tech-name>StUF:tijdvakGeldigheid</ep:tech-name>
@@ -2411,15 +1135,8 @@
 							<xsl:with-param name="context" select="$context" />
 						</xsl:apply-templates>
 						<xsl:variable name="mnemonic">
-							<xsl:choose>
-								<xsl:when test="imvert:stereotype='ENTITEITRELATIE'">
-									<xsl:value-of
-										select="//imvert:class[imvert:id = $type-id]/imvert:alias" />
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="imvert:alias" />
-								</xsl:otherwise>
-							</xsl:choose>
+							<xsl:value-of
+								select="//imvert:class[imvert:id = $type-id]/imvert:alias" />
 						</xsl:variable>
 						<!-- The function imf:createAttributes is used to determine the XML 
 							attributes neccessary for this context. It has the following parameters: 
@@ -2428,8 +1145,8 @@
 							a.o. XML attributes usage. The last parameter is used to determine the need 
 							for the XML-attribute 'StUF:indOnvolledigeDatum'. -->
 
-						<!-- ROME: De berichtcode is niet als globale variabele aanwezig en 
-							kan dus niet zomaar opgeroepen worden. Hij kan helaas ook niet eenvoudig 
+						<!-- ROME: De berichtcode is niet als globale variabele aanwezig 
+							en kan dus niet zomaar opgeroepen worden. Hij kan helaas ook niet eenvoudig 
 							verkregen worden aangezien het element op basis waarvan de berichtcode kan 
 							worden gegenereerd geen ancestor is van het huidige element. Er zijn 2 opties: 
 							* De berichtcode als parameter aan alle templates toevoegen en steeds doorgeven. 
@@ -2438,92 +1155,362 @@
 							bevat is dan wel altijd de ancestor van het element dat het nodig heeft. 
 							Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook 
 							nog herleid en doorgegeven worden. -->
-						<xsl:comment
-							select="concat('Attributes voor toplevel, berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $mnemonic)" />
+						<xsl:if test="imf:boolean($debug)">	
+							<xsl:comment select="concat('Attributes voor gerelateerde, berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $mnemonic)" />
+						</xsl:if>
 						<xsl:variable name="attributes"
-							select="imf:createAttributes('toplevel', substring($berichtCode,1,2), $context, 'no', $mnemonic, 'no','no')" />
+							select="imf:createAttributes('gerelateerde', substring($berichtCode,1,2), $context, 'no', $mnemonic, 'no','no')" />
 						<xsl:sequence select="$attributes" />
-					</xsl:when>
-					<!-- The association is a 'berichtRelatie' and it contains a 'bericht'. 
-						This situation can occur whithin the context of a 'vrij bericht'. -->
-					<!-- ROME: Checken of de volgende when idd de berichtRelatie afhandelt 
-						en of alle benodigde (standaard) elementen wel gegenereerd worden. Er wordt 
-						geen supertype in afgehandeld, ik weet even niet meer waarom. -->
-					<xsl:when test="//imvert:class[imvert:id = $type-id]">
-						<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-							mode="create-message-content">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="proces-type" select="'attributes'" />
-							<!-- ROME: Het is de vraag of deze parameter en het checken op id 
-								nog wel noodzakelijk is. -->
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates>
-						<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-							mode="create-message-content">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="proces-type"
-								select="'associationsGroepCompositie'" />
-							<!-- ROME: Het is de vraag of deze parameter en het checken op id 
-								nog wel noodzakelijk is. -->
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates>
-						<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-							mode="create-message-content">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="proces-type" select="'associationsRelatie'" />
-							<!-- ROME: Het is de vraag of deze parameter en het checken op id 
-								nog wel noodzakelijk is. -->
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates>
-					</xsl:when>
-				</xsl:choose>
-				<!-- Only in case of an association representing a 'relatie' and containing 
-					a 'gerelateerde' construct (within the above choose the first 'when' XML 
-					Attributes for the 'relatie' type element have to be generated. Because these 
-					has to be placed outside the 'gerelateerde' element it has to be done here. -->
-				<xsl:if test="imvert:stereotype='RELATIE'">
-					<!-- The function imf:createAttributes is used to determine the XML 
-						attributes neccessary for this context. It has the following parameters: 
-						- typecode - berichttype - context - datumType The first 3 parameters relate 
-						to columns with the same name within an Excel spreadsheet used to configure 
-						a.o. XML attributes usage. The last parameter is used to determine the need 
-						for the XML-attribute 'StUF:indOnvolledigeDatum'. -->
+					</ep:seq>
+				</ep:construct>
+				<!-- The following 'apply-templates' initiates the processing of the 
+					class which contains the attributes of the 'relatie' type element. -->
+				<xsl:apply-templates select="imvert:association-class">
+					<xsl:with-param name="package-id" select="$package-id"/>
+					<xsl:with-param name="proces-type" select="'attributes'" />
+					<!-- ROME: Het is de vraag of deze parameter en het checken op id 
+						nog wel noodzakelijk is. -->
+					<xsl:with-param name="id-trail" select="$id-trail" />
+					<xsl:with-param name="berichtCode" select="$berichtCode" />
+					<xsl:with-param name="context" select="$context" />
+				</xsl:apply-templates>
+				<!-- The following 'apply-templates' initiates the processing of the 
+					class which contains the attributegroups of the 'relatie' type element. -->
+				<xsl:apply-templates select="imvert:association-class">
+					<xsl:with-param name="package-id" select="$package-id"/>
+					<xsl:with-param name="proces-type"
+						select="'associationsGroepCompositie'" />
+					<!-- ROME: Het is de vraag of deze parameter en het checken op id 
+						nog wel noodzakelijk is. -->
+					<xsl:with-param name="id-trail" select="$id-trail" />
+					<xsl:with-param name="berichtCode" select="$berichtCode" />
+					<xsl:with-param name="context" select="$context" />
+				</xsl:apply-templates>
+				<ep:construct>
+					<ep:name>StUF:tijdvakGeldigheid</ep:name>
+					<ep:tech-name>StUF:tijdvakGeldigheid</ep:tech-name>
+					<ep:max-occurs>1</ep:max-occurs>
+					<ep:min-occurs>0</ep:min-occurs>
+					<ep:position>150</ep:position>
+				</ep:construct>
+				<ep:construct>
+					<ep:name>StUF:tijdstipRegistratie</ep:name>
+					<ep:tech-name>StUF:tijdstipRegistratie</ep:tech-name>
+					<ep:max-occurs>1</ep:max-occurs>
+					<ep:min-occurs>0</ep:min-occurs>
+					<ep:position>151</ep:position>
+				</ep:construct>
+				<ep:construct>
+					<ep:name>StUF:extraElementen</ep:name>
+					<ep:tech-name>StUF:extraElementen</ep:tech-name>
+					<ep:max-occurs>1</ep:max-occurs>
+					<ep:min-occurs>0</ep:min-occurs>
+					<ep:position>152</ep:position>
+				</ep:construct>
+				<!-- The following 'apply-templates' initiates the processing of the 
+					class which contains the associations of the 'relatie' type element. -->
+				<xsl:apply-templates select="imvert:association-class">
+					<xsl:with-param name="package-id" select="$package-id"/>
+					<xsl:with-param name="proces-type" select="'associations'" />
+					<!-- ROME: Het is de vraag of deze parameter en het checken op id 
+						nog wel noodzakelijk is. -->
+					<xsl:with-param name="id-trail" select="$id-trail" />
+					<xsl:with-param name="berichtCode" select="$berichtCode" />
+					<xsl:with-param name="context" select="$context" />
+				</xsl:apply-templates>
+			</xsl:when>
+			<!-- The association is a 'relatie' and it has to contain a 'gerelateerde' 
+				 constructRef (the associated class is located in a reusable package). -->
+			<xsl:when
+				test="//imvert:class[imvert:id = $type-id and not(ancestor::imvert:package[imvert:id = $package-id])] and imvert:stereotype='RELATIE'">
+				<!-- The ep:constructRef is temporarily provided with a 'context' attribute and a 'ep:id' element to be able to create global constructs later.
+					 These are removed later since they aren't part of the 'ep' structure. -->
+				<ep:constructRef context="{$context}">
+					<ep:name>gerelateerde</ep:name>
+					<ep:tech-name>gerelateerde</ep:tech-name>
+					<ep:max-occurs>1</ep:max-occurs>
+					<ep:min-occurs>0</ep:min-occurs>
+					<ep:position>1</ep:position>
+					<ep:id><xsl:value-of select="$type-id"/></ep:id>
+					<xsl:sequence
+						select="imf:create-output-element('ep:href', //imvert:class[imvert:id = $type-id]/imvert:name)" />							
+				</ep:constructRef>
+				<!-- The following 'apply-templates' initiates the processing of the 
+					class which contains the attributes of the 'relatie' type element. -->
+				<xsl:apply-templates select="imvert:association-class">
+					<xsl:with-param name="package-id" select="$package-id"/>
+					<xsl:with-param name="proces-type" select="'attributes'" />
+					<!-- ROME: Het is de vraag of deze parameter en het checken op id 
+						nog wel noodzakelijk is. -->
+					<xsl:with-param name="id-trail" select="$id-trail" />
+					<xsl:with-param name="berichtCode" select="$berichtCode" />
+					<xsl:with-param name="context" select="$context" />
+				</xsl:apply-templates>
+				<!-- The following 'apply-templates' initiates the processing of the 
+					class which contains the attributegroups of the 'relatie' type element. -->
+				<xsl:apply-templates select="imvert:association-class">
+					<xsl:with-param name="package-id" select="$package-id"/>
+					<xsl:with-param name="proces-type"
+						select="'associationsGroepCompositie'" />
+					<!-- ROME: Het is de vraag of deze parameter en het checken op id 
+						nog wel noodzakelijk is. -->
+					<xsl:with-param name="id-trail" select="$id-trail" />
+					<xsl:with-param name="berichtCode" select="$berichtCode" />
+					<xsl:with-param name="context" select="$context" />
+				</xsl:apply-templates>
+				<ep:construct>
+					<ep:name>StUF:tijdvakGeldigheid</ep:name>
+					<ep:tech-name>StUF:tijdvakGeldigheid</ep:tech-name>
+					<ep:max-occurs>1</ep:max-occurs>
+					<ep:min-occurs>0</ep:min-occurs>
+					<ep:position>150</ep:position>
+				</ep:construct>
+				<ep:construct>
+					<ep:name>StUF:tijdstipRegistratie</ep:name>
+					<ep:tech-name>StUF:tijdstipRegistratie</ep:tech-name>
+					<ep:max-occurs>1</ep:max-occurs>
+					<ep:min-occurs>0</ep:min-occurs>
+					<ep:position>151</ep:position>
+				</ep:construct>
+				<ep:construct>
+					<ep:name>StUF:extraElementen</ep:name>
+					<ep:tech-name>StUF:extraElementen</ep:tech-name>
+					<ep:max-occurs>1</ep:max-occurs>
+					<ep:min-occurs>0</ep:min-occurs>
+					<ep:position>152</ep:position>
+				</ep:construct>
+				<!-- The following 'apply-templates' initiates the processing of the 
+					class which contains the associations of the 'relatie' type element. -->
+				<xsl:apply-templates select="imvert:association-class">
+					<xsl:with-param name="package-id" select="$package-id"/>
+					<xsl:with-param name="proces-type" select="'associations'" />
+					<!-- ROME: Het is de vraag of deze parameter en het checken op id 
+						nog wel noodzakelijk is. -->
+					<xsl:with-param name="id-trail" select="$id-trail" />
+					<xsl:with-param name="berichtCode" select="$berichtCode" />
+					<xsl:with-param name="context" select="$context" />
+				</xsl:apply-templates>
+			</xsl:when>
+			<!-- The association is a 'groepselement' and it has to contain a
+				 constructRef (the associated class is located in a reusable package). -->
+			<xsl:when
+				test="//imvert:class[imvert:id = $type-id and not(ancestor::imvert:package[imvert:id = $package-id])] and imvert:stereotype='GROEP COMPOSITIE'">
+				<!-- The ep:constructRef is temporarily provided with a 'context' attribute and a 'ep:id' element to be able to create global constructs later.
+					 These are removed later since they aren't part of the 'ep' structure. -->
+				<ep:constructRef context="{$context}">
+					<?x xsl:sequence select="imf:create-output-element('ep:name', /imvert:name/@original)"/>
+					<xsl:sequence select="imf:create-output-element('ep:tech-name', /imvert:name)"/>
+					<xsl:sequence select="imf:create-output-element('ep:max-occurs', /imvert:max-occurs)"/>
+					<xsl:sequence select="imf:create-output-element('ep:min-occurs', /imvert:min-occurs)"/>
+					<!-- When a tagged-value 'Positie' exists this is used to assign a value 
+						 to 'ep:position' if not the value of the element 'imvert:position' is used. -->
+					<xsl:choose>
+						<xsl:when
+							test="imvert:tagged-values/imvert:tagged-value/imvert:name='Positie'">
+							<xsl:sequence
+								select="imf:create-output-element('ep:position', imvert:tagged-values/imvert:tagged-value[imvert:name='Positie']/imvert:value)" />
+							<xsl:sequence select="imf:create-output-element('ep:tv-position', 'yes')" />
+						</xsl:when>
+						<xsl:when test="imvert:position">
+							<xsl:sequence
+								select="imf:create-output-element('ep:position', imvert:position)" />
+						</xsl:when>
+						<xsl:otherwise />
+					</xsl:choose x?>
+					<ep:id><xsl:value-of select="$type-id"/></ep:id>
+					<xsl:sequence
+						select="imf:create-output-element('ep:href', //imvert:class[imvert:id = $type-id]/imvert:name)" />							
+				</ep:constructRef>
+				<?x !-- The following 'apply-templates' initiates the processing of the 
+					class which contains the attributes of the 'relatie' type element. -->
+				<xsl:apply-templates select="imvert:association-class">
+					<xsl:with-param name="package-id" select="$package-id"/>
+					<xsl:with-param name="proces-type" select="'attributes'" />
+					<!-- ROME: Het is de vraag of deze parameter en het checken op id 
+						nog wel noodzakelijk is. -->
+					<xsl:with-param name="id-trail" select="$id-trail" />
+					<xsl:with-param name="berichtCode" select="$berichtCode" />
+					<xsl:with-param name="context" select="$context" />
+				</xsl:apply-templates>
+				<!-- The following 'apply-templates' initiates the processing of the 
+					class which contains the attributegroups of the 'relatie' type element. -->
+				<xsl:apply-templates select="imvert:association-class">
+					<xsl:with-param name="package-id" select="$package-id"/>
+					<xsl:with-param name="proces-type"
+						select="'associationsGroepCompositie'" />
+					<!-- ROME: Het is de vraag of deze parameter en het checken op id 
+						nog wel noodzakelijk is. -->
+					<xsl:with-param name="id-trail" select="$id-trail" />
+					<xsl:with-param name="berichtCode" select="$berichtCode" />
+					<xsl:with-param name="context" select="$context" />
+				</xsl:apply-templates>
+				<ep:construct>
+					<ep:name>StUF:tijdvakGeldigheid</ep:name>
+					<ep:tech-name>StUF:tijdvakGeldigheid</ep:tech-name>
+					<ep:max-occurs>1</ep:max-occurs>
+					<ep:min-occurs>0</ep:min-occurs>
+					<ep:position>150</ep:position>
+				</ep:construct>
+				<ep:construct>
+					<ep:name>StUF:tijdstipRegistratie</ep:name>
+					<ep:tech-name>StUF:tijdstipRegistratie</ep:tech-name>
+					<ep:max-occurs>1</ep:max-occurs>
+					<ep:min-occurs>0</ep:min-occurs>
+					<ep:position>151</ep:position>
+				</ep:construct>
+				<ep:construct>
+					<ep:name>StUF:extraElementen</ep:name>
+					<ep:tech-name>StUF:extraElementen</ep:tech-name>
+					<ep:max-occurs>1</ep:max-occurs>
+					<ep:min-occurs>0</ep:min-occurs>
+					<ep:position>152</ep:position>
+				</ep:construct>
+				<!-- The following 'apply-templates' initiates the processing of the 
+					class which contains the associations of the 'relatie' type element. -->
+				<xsl:apply-templates select="imvert:association-class">
+					<xsl:with-param name="package-id" select="$package-id"/>
+					<xsl:with-param name="proces-type" select="'associations'" />
+					<!-- ROME: Het is de vraag of deze parameter en het checken op id 
+						nog wel noodzakelijk is. -->
+					<xsl:with-param name="id-trail" select="$id-trail" />
+					<xsl:with-param name="berichtCode" select="$berichtCode" />
+					<xsl:with-param name="context" select="$context" />
+				</xsl:apply-templates x?>
+			</xsl:when>
+			<!-- The association is a 'entiteitRelatie' (the toplevel 'entiteit') 
+				 and it contains a 'entiteit'. The attributes of the 'entiteit' class can 
+				 be placed directly within the current 'ep:seq'. -->
+			<xsl:when
+				test="//imvert:class[imvert:id = $type-id and imvert:stereotype='ENTITEITTYPE']">
+				<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+					mode="create-message-content">
+					<xsl:with-param name="package-id" select="$package-id"/>
+					<xsl:with-param name="proces-type" select="'attributes'" />
+					<!-- ROME: Het is de vraag of deze parameter en het checken op id 
+						nog wel noodzakelijk is. -->
+					<xsl:with-param name="id-trail" select="$id-trail" />
+					<xsl:with-param name="berichtCode" select="$berichtCode" />
+					<xsl:with-param name="context" select="$context" />
+				</xsl:apply-templates>
+				<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+					mode="create-message-content">
+					<xsl:with-param name="package-id" select="$package-id"/>
+					<xsl:with-param name="proces-type"
+						select="'associationsGroepCompositie'" />
+					<!-- ROME: Het is de vraag of deze parameter en het checken op id 
+						nog wel noodzakelijk is. -->
+					<xsl:with-param name="id-trail" select="$id-trail" />
+					<xsl:with-param name="berichtCode" select="$berichtCode" />
+					<xsl:with-param name="context" select="$context" />
+				</xsl:apply-templates>
+				<!-- ROME: Waarschijnlijk moet er hier afhankelijk van de context meer 
+					of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' maar 
+					ook aan 'tijdvakRelatie', 'historieMaterieel' en 'historieFormeel'. -->
+				<ep:construct>
+					<ep:name>StUF:tijdvakGeldigheid</ep:name>
+					<ep:tech-name>StUF:tijdvakGeldigheid</ep:tech-name>
+					<ep:max-occurs>1</ep:max-occurs>
+					<ep:min-occurs>0</ep:min-occurs>
+					<ep:position>150</ep:position>
+				</ep:construct>
+				<ep:construct>
+					<ep:name>StUF:tijdstipRegistratie</ep:name>
+					<ep:tech-name>StUF:tijdstipRegistratie</ep:tech-name>
+					<ep:max-occurs>1</ep:max-occurs>
+					<ep:min-occurs>0</ep:min-occurs>
+					<ep:position>151</ep:position>
+				</ep:construct>
+				<ep:construct>
+					<ep:name>StUF:extraElementen</ep:name>
+					<ep:tech-name>StUF:extraElementen</ep:tech-name>
+					<ep:max-occurs>1</ep:max-occurs>
+					<ep:min-occurs>0</ep:min-occurs>
+					<ep:position>152</ep:position>
+				</ep:construct>
+				<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+					mode="create-message-content">
+					<xsl:with-param name="package-id" select="$package-id"/>
+					<xsl:with-param name="proces-type" select="'associationsRelatie'" />
+					<!-- ROME: Het is de vraag of deze parameter en het checken op id 
+						nog wel noodzakelijk is. -->
+					<xsl:with-param name="id-trail" select="$id-trail" />
+					<xsl:with-param name="berichtCode" select="$berichtCode" />
+					<xsl:with-param name="context" select="$context" />
+				</xsl:apply-templates>
+				<xsl:variable name="mnemonic">
+					<xsl:choose>
+						<xsl:when test="imvert:stereotype='ENTITEITRELATIE'">
+							<xsl:value-of
+								select="//imvert:class[imvert:id = $type-id]/imvert:alias" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="imvert:alias" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<!-- The function imf:createAttributes is used to determine the XML 
+					attributes neccessary for this context. It has the following parameters: 
+					- typecode - berichttype - context - datumType The first 3 parameters relate 
+					to columns with the same name within an Excel spreadsheet used to configure 
+					a.o. XML attributes usage. The last parameter is used to determine the need 
+					for the XML-attribute 'StUF:indOnvolledigeDatum'. -->
 
-					<!-- ROME: De berichtcode is niet als globale variabele aanwezig en 
-						kan dus niet zomaar opgeroepen worden. Hij kan helaas ook niet eenvoudig 
-						verkregen worden aangezien het element op basis waarvan de berichtcode kan 
-						worden gegenereerd geen ancestor is van het huidige element. Er zijn 2 opties: 
-						* De berichtcode als parameter aan alle templates toevoegen en steeds doorgeven. 
-						* De attributes pas aan de EP structuur toevoegen in een aparte slag nadat 
-						de EP structuur al gegenereerd is. Het message element dat de berichtcode 
-						bevat is dan wel altijd de ancestor van het element dat het nodig heeft. 
-						Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook 
-						nog herleid en doorgegeven worden. -->
-					<xsl:variable name="mnemonic">
-						<xsl:choose>
-							<xsl:when test="imvert:stereotype='ENTITEITRELATIE'">
-								<xsl:value-of
-									select="//imvert:class[imvert:id = $type-id]/imvert:alias" />
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="imvert:alias" />
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:variable>
-					<xsl:comment
-						select="concat('Attributes voor relatie, berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $mnemonic)" />
-					<xsl:variable name="attributes"
-						select="imf:createAttributes('relatie', substring($berichtCode,1,2), $context, 'no', $mnemonic, $MogelijkGeenWaarde,'no')" />
-					<xsl:sequence select="$attributes" />
+				<!-- ROME: De berichtcode is niet als globale variabele aanwezig en 
+					kan dus niet zomaar opgeroepen worden. Hij kan helaas ook niet eenvoudig 
+					verkregen worden aangezien het element op basis waarvan de berichtcode kan 
+					worden gegenereerd geen ancestor is van het huidige element. Er zijn 2 opties: 
+					* De berichtcode als parameter aan alle templates toevoegen en steeds doorgeven. 
+					* De attributes pas aan de EP structuur toevoegen in een aparte slag nadat 
+					de EP structuur al gegenereerd is. Het message element dat de berichtcode 
+					bevat is dan wel altijd de ancestor van het element dat het nodig heeft. 
+					Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook 
+					nog herleid en doorgegeven worden. -->
+				<xsl:if test="imf:boolean($debug)">	
+					<xsl:comment select="concat('Attributes voor toplevel, berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $mnemonic)" />
 				</xsl:if>
-			</ep:seq>
-		</ep:construct>
+				<xsl:variable name="attributes"
+					select="imf:createAttributes('toplevel', substring($berichtCode,1,2), $context, 'no', $mnemonic, 'no','no')" />
+				<xsl:sequence select="$attributes" />
+			</xsl:when>
+			<!-- The association is a 'berichtRelatie' and it contains a 'bericht'. 
+				 This situation can occur whithin the context of a 'vrij bericht'. -->
+			<!-- ROME: Checken of de volgende when idd de berichtRelatie afhandelt 
+				en of alle benodigde (standaard) elementen wel gegenereerd worden. Er wordt 
+				geen supertype in afgehandeld, ik weet even niet meer waarom. -->
+			<xsl:when test="//imvert:class[imvert:id = $type-id]">
+				<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+					mode="create-message-content">
+					<xsl:with-param name="package-id" select="$package-id"/>
+					<xsl:with-param name="proces-type" select="'attributes'" />
+					<!-- ROME: Het is de vraag of deze parameter en het checken op id 
+						nog wel noodzakelijk is. -->
+					<xsl:with-param name="id-trail" select="$id-trail" />
+					<xsl:with-param name="berichtCode" select="$berichtCode" />
+					<xsl:with-param name="context" select="$context" />
+				</xsl:apply-templates>
+				<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+					mode="create-message-content">
+					<xsl:with-param name="package-id" select="$package-id"/>
+					<xsl:with-param name="proces-type"
+						select="'associationsGroepCompositie'" />
+					<!-- ROME: Het is de vraag of deze parameter en het checken op id 
+						nog wel noodzakelijk is. -->
+					<xsl:with-param name="id-trail" select="$id-trail" />
+					<xsl:with-param name="berichtCode" select="$berichtCode" />
+					<xsl:with-param name="context" select="$context" />
+				</xsl:apply-templates>
+				<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+					mode="create-message-content">
+					<xsl:with-param name="package-id" select="$package-id"/>
+					<xsl:with-param name="proces-type" select="'associationsRelatie'" />
+					<!-- ROME: Het is de vraag of deze parameter en het checken op id 
+						nog wel noodzakelijk is. -->
+					<xsl:with-param name="id-trail" select="$id-trail" />
+					<xsl:with-param name="berichtCode" select="$berichtCode" />
+					<xsl:with-param name="context" select="$context" />
+				</xsl:apply-templates>
+			</xsl:when>
+		</xsl:choose>
 	</xsl:template>
 
 	<!-- This template generates the structure of the 'relatie' type element 
@@ -2539,8 +1526,7 @@
 		<xsl:param name="berichtCode" />
 		<xsl:param name="context" />
 		<xsl:if test="imf:boolean($debug)">
-			<xsl:comment
-				select="'imvert:association-class[mode=create-message-relations-content]'" />
+			<xsl:comment select="'imvert:association-class[mode=create-message-relations-content]'" />
 		</xsl:if>
 		<xsl:variable name="type-id" select="imvert:type-id" />
 		<xsl:choose>
@@ -2615,63 +1601,94 @@
 				<!-- ROME: Er wordt nu alleen gecheckt of de elementen die gedefinieerd 
 					worden wel voor mogen komen. De vraag is of ook gecheckt moet worden of de 
 					elementen die niet zijn gedefinieerd wel weggelaten mogen worden. -->
-				<!--xsl:if test="upper-case(imvert:name)='STUURGEGEVENS' or upper-case(imvert:name)='PARAMETERS'"> 
+				<xsl:if test="upper-case(imvert:name)='STUURGEGEVENS' or upper-case(imvert:name)='PARAMETERS'"> 
 					<xsl:call-template name="areParametersAndStuurgegevensAllowedOrRequired"> 
-					<xsl:with-param name="berichtCode" select="$berichtCode"/> <xsl:with-param 
-					name="elements2bTested"> <imvert:attributesAndAssociations> <xsl:for-each 
-					select=".//imvert:attribute"> <imvert:attribute> <xsl:sequence select="imf:create-output-element('imvert:name', 
-					imvert:name)"/> </imvert:attribute> </xsl:for-each> <xsl:for-each select=".//imvert:association"> 
-					<imvert:association> <xsl:sequence select="imf:create-output-element('imvert:name', 
-					imvert:name)"/> </imvert:association> </xsl:for-each> </imvert:attributesAndAssociations> 
-					</xsl:with-param> <xsl:with-param name="parent" select="imvert:name"/> </xsl:call-template> 
-					</xsl:if -->
-				<!--xsl:choose> <xsl:when test="imvert:name='Stuurgegevens'"> <xsl:for-each 
-					select=".//imvert:attribute"> <xsl:variable name="isElementAllowed" select="imf:isElementAllowed($berichtCode, 
-					imvert:name)"/> <xsl:if test="$isElementAllowed = 'no'"> <xsl:message select="concat('WARN 
-					', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), 
-					'+'), ' : Within messagetype ', $berichtCode, ' element ', imvert:name, ' 
-					is not allowed within stuurgegevens.')"/> </xsl:if> </xsl:for-each> <xsl:for-each 
-					select=".//imvert:association"> <xsl:variable name="isElementAllowed" select="imf:isElementAllowed($berichtCode, 
-					imvert:name)"/> <xsl:if test="$isElementAllowed = 'no'"> <xsl:message select="concat('WARN 
-					', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), 
-					'+'), ' : Within messagetype ', $berichtCode, ' element ', imvert:name, ' 
-					is not allowed within stuurgegevens.')"/> </xsl:if> </xsl:for-each> <xsl:variable 
-					name="availableStuurgegevens"> <imvert:attributesAndAssociations> <xsl:for-each 
-					select=".//imvert:attribute"> <imvert:attribute> <xsl:sequence select="imf:create-output-element('imvert:name', 
-					imvert:name)"/> </imvert:attribute> </xsl:for-each> <xsl:for-each select=".//imvert:association"> 
-					<imvert:association> <xsl:sequence select="imf:create-output-element('imvert:name', 
-					imvert:name)"/> </imvert:association> </xsl:for-each> </imvert:attributesAndAssociations> 
-					</xsl:variable> <xsl:for-each select="$enriched-endproduct-base-config-excel//sheet 
-					[name = 'Berichtgerelateerde gegevens']/row[col[@name = 'berichtcode']/data 
-					= $berichtCode]/col[@number > 2 and @number &lt; 11 and data != '-']"> <xsl:if 
-					test="count($availableStuurgegevens//imvert:name = @name) = 0"> <xsl:message 
-					select="concat('WARN ', substring-before(string(current-date()), '+'), ' 
-					', substring-before(string(current-time()), '+'), ' : Within messagetype 
-					', $berichtCode, ' element ', @name, ' must be available within stuurgegevens.')"/> 
-					</xsl:if> </xsl:for-each> </xsl:when> <xsl:when test="imvert:name='Parameters'"> 
-					<xsl:for-each select=".//imvert:attribute"> <xsl:variable name="isElementAllowed" 
-					select="imf:isElementAllowed($berichtCode, imvert:name)"/> <xsl:if test="$isElementAllowed 
-					= 'no'"> <xsl:message select="concat('WARN ', substring-before(string(current-date()), 
-					'+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype 
-					', $berichtCode, ' element ', imvert:name, ' is not allowed within parameters.')"/> 
-					</xsl:if> </xsl:for-each> <xsl:for-each select=".//imvert:association"> <xsl:variable 
-					name="isElementAllowed" select="imf:isElementAllowed($berichtCode, imvert:name)"/> 
-					<xsl:if test="$isElementAllowed = 'no'"> <xsl:message select="concat('WARN 
-					', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), 
-					'+'), ' : Within messagetype ', $berichtCode, ' element ', imvert:name, ' 
-					is not allowed within parameters.')"/> </xsl:if> </xsl:for-each> <xsl:variable 
-					name="availableParameters"> <imvert:attributesAndAssociations> <xsl:for-each 
-					select=".//imvert:attribute"> <imvert:attribute> <xsl:sequence select="imf:create-output-element('imvert:name', 
-					imvert:name)"/> </imvert:attribute> </xsl:for-each> <xsl:for-each select=".//imvert:association"> 
-					<imvert:association> <xsl:sequence select="imf:create-output-element('imvert:name', 
-					imvert:name)"/> </imvert:association> </xsl:for-each> </imvert:attributesAndAssociations> 
-					</xsl:variable> <xsl:for-each select="$enriched-endproduct-base-config-excel//sheet 
-					[name = 'Berichtgerelateerde gegevens']/row[col[@name = 'berichtcode']/data 
-					= $berichtCode]/col[@number > 11 and data != '-']"> <xsl:if test="count($availableParameters//imvert:name 
-					= @name) = 0"> <xsl:message select="concat('WARN ', substring-before(string(current-date()), 
-					'+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype 
-					', $berichtCode, ' element ', @name, ' must be available within parameters.')"/> 
-					</xsl:if> </xsl:for-each> </xsl:when> </xsl:choose -->
+						<xsl:with-param name="berichtCode" select="$berichtCode"/> 
+						<xsl:with-param name="elements2bTested"> 
+							<imvert:attributesAndAssociations> 
+								<xsl:for-each select=".//imvert:attribute"> 
+									<imvert:attribute> 
+										<xsl:sequence select="imf:create-output-element('imvert:name', imvert:name)"/> 
+									</imvert:attribute> 
+								</xsl:for-each> 
+								<xsl:for-each select=".//imvert:association"> 
+									<imvert:association> 
+										<xsl:sequence select="imf:create-output-element('imvert:name', imvert:name)"/> 
+									</imvert:association> 
+								</xsl:for-each> 
+							</imvert:attributesAndAssociations> 
+						</xsl:with-param> 
+						<xsl:with-param name="parent" select="imvert:name"/> 
+					</xsl:call-template> 
+				</xsl:if>
+				<xsl:choose> 
+					<xsl:when test="imvert:name='Stuurgegevens'"> 
+						<xsl:for-each select=".//imvert:attribute"> 
+							<xsl:variable name="isElementAllowed" select="imf:isElementAllowed($berichtCode, imvert:name,'Stuurgegevens')"/> 
+							<xsl:if test="$isElementAllowed = 'no'"> 
+								<xsl:message select="concat('WARN ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' element ', imvert:name, ' is not allowed within stuurgegevens.')"/> 
+							</xsl:if> 
+						</xsl:for-each> 
+						<xsl:for-each select=".//imvert:association"> 
+							<xsl:variable name="isElementAllowed" select="imf:isElementAllowed($berichtCode, imvert:name,'Stuurgegevens')"/> 
+							<xsl:if test="$isElementAllowed = 'no'"> 
+								<xsl:message select="concat('WARN ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' element ', imvert:name, ' is not allowed within stuurgegevens.')"/> 
+							</xsl:if> 
+						</xsl:for-each> 
+						<xsl:variable name="availableStuurgegevens"> 
+							<imvert:attributesAndAssociations> 
+								<xsl:for-each select=".//imvert:attribute"> 
+									<imvert:attribute> 
+										<xsl:sequence select="imf:create-output-element('imvert:name', imvert:name)"/> 
+									</imvert:attribute> 
+								</xsl:for-each> 
+								<xsl:for-each select=".//imvert:association"> 
+									<imvert:association> 
+										<xsl:sequence select="imf:create-output-element('imvert:name', imvert:name)"/> 
+									</imvert:association> 
+								</xsl:for-each> 
+							</imvert:attributesAndAssociations> 
+						</xsl:variable> 
+						<xsl:for-each select="$enriched-endproduct-base-config-excel//sheet[name = 'Berichtgerelateerde gegevens']/row[col[@name = 'berichtcode']/data = $berichtCode]/col[@number > 2 and @number &lt; 11 and data != '-']"> 
+							<xsl:if test="count($availableStuurgegevens//imvert:name = @name) = 0"> 
+								<xsl:message select="concat('WARN ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' element ', @name, ' must be available within stuurgegevens.')"/> 
+							</xsl:if> 
+						</xsl:for-each> 
+					</xsl:when> 
+					<xsl:when test="imvert:name='Parameters'"> 
+						<xsl:for-each select=".//imvert:attribute"> 
+							<xsl:variable name="isElementAllowed" select="imf:isElementAllowed($berichtCode, imvert:name,'Parameters')"/> 
+							<xsl:if test="$isElementAllowed = 'no'"> 
+								<xsl:message select="concat('WARN ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' element ', imvert:name, ' is not allowed within parameters.')"/> 
+							</xsl:if> 
+						</xsl:for-each> 
+						<xsl:for-each select=".//imvert:association"> 
+							<xsl:variable name="isElementAllowed" select="imf:isElementAllowed($berichtCode, imvert:name,'Parameters')"/> 
+							<xsl:if test="$isElementAllowed = 'no'"> 
+								<xsl:message select="concat('WARN ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' element ', imvert:name, ' is not allowed within parameters.')"/> 
+							</xsl:if> 
+						</xsl:for-each> 
+						<xsl:variable name="availableParameters"> 
+							<imvert:attributesAndAssociations> 
+								<xsl:for-each select=".//imvert:attribute"> 
+									<imvert:attribute> 
+										<xsl:sequence select="imf:create-output-element('imvert:name', imvert:name)"/> 
+									</imvert:attribute> 
+								</xsl:for-each> 
+								<xsl:for-each select=".//imvert:association"> 
+									<imvert:association> 
+										<xsl:sequence select="imf:create-output-element('imvert:name', imvert:name)"/> 
+									</imvert:association> 
+								</xsl:for-each> 
+							</imvert:attributesAndAssociations>
+						</xsl:variable> 
+						<xsl:for-each select="$enriched-endproduct-base-config-excel//sheet[name = 'Berichtgerelateerde gegevens']/row[col[@name = 'berichtcode']/data = $berichtCode]/col[@number > 11 and data != '-']"> 
+							<xsl:if test="count($availableParameters//imvert:name = @name) = 0"> 
+								<xsl:message select="concat('WARN ', substring-before(string(current-date()),'+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' element ', @name, ' must be available within parameters.')"/> 
+							</xsl:if> 
+						</xsl:for-each> 
+					</xsl:when> 
+				</xsl:choose>
 				<xsl:apply-templates select="imvert:supertype"
 					mode="create-message-content">
 					<xsl:with-param name="package-id" select="$package-id"/>
@@ -2684,11 +1701,11 @@
 				<xsl:choose>
 					<xsl:when test="not(contains($id-trail, concat('#2#', imvert:id, '#')))">
 						<!-- ROME: Er bestaat nog steeds de mogelijkheid dat de stereotype 
-							'GEGEVENSGEGEVENSGROEP COMPOSITIE' wordt gebruikt ipv 'GEGEVENSGROEP COMPOSITIE'. 
+							'GEGEVENSGROEP COMPOSITIE' wordt gebruikt ipv 'GROEP COMPOSITIE'. 
 							De uitbecommentarieerde apply-templates kan met de eerste vorm omgaan maar 
 							moet tzt (zodra imvertor daarop checkt) worden verwijdert. -->
 						<xsl:apply-templates
-							select=".//imvert:association[imvert:stereotype='GEGEVENSGROEP COMPOSITIE']"
+							select=".//imvert:association[imvert:stereotype='GROEP COMPOSITIE']"
 							mode="create-message-content">
 							<!--xsl:apply-templates select=".//imvert:association[contains(imvert:stereotype,'GEGEVENSGROEP 
 								COMPOSITIE')]" mode="create-message-content" -->
@@ -2757,7 +1774,9 @@
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
-
+	
+	<!-- ======= End block of templates used to create the message structure. ======= -->	
+	
 	<!-- This template simply replicates elements. May be replaced later. -->
 	<xsl:template match="*" mode="replicate-imvert-elements">
 		<xsl:param name="berichtCode" />
@@ -2812,12 +1831,12 @@
 						<xsl:with-param name="berichtCode" select="$berichtCode" />
 						<xsl:with-param name="context" select="$context" />
 					</xsl:apply-templates>
-					<!-- ROME: Er bestaat nog steeds de mogelijkheid dat de stereotype 'GEGEVENSGEGEVENSGROEP 
-						COMPOSITIE' wordt gebruikt ipv 'GEGEVENSGROEP COMPOSITIE'. De uitbecommentarieerde 
+					<!-- ROME: Er bestaat nog steeds de mogelijkheid dat de stereotype 'GEGEVENSGROEP 
+						COMPOSITIE' wordt gebruikt ipv 'GROEP COMPOSITIE'. De uitbecommentarieerde 
 						apply-templates kan met de eerste vorm omgaan maar moet tzt (zodra imvertor 
 						daarop checkt) worden verwijdert. -->
 					<xsl:apply-templates
-						select=".//imvert:association[imvert:stereotype='GEGEVENSGROEP COMPOSITIE']"
+						select=".//imvert:association[imvert:stereotype='GROEP COMPOSITIE']"
 						mode="create-message-content">
 						<!--xsl:apply-templates select=".//imvert:association[contains(imvert:stereotype,'GEGEVENSGROEP 
 							COMPOSITIE')]" mode="create-message-content" -->							
@@ -2895,7 +1914,6 @@
 			</xsl:when>
 			<!-- ROME: De vraag is of deze otherwise tak ooit wordt gebruikt. -->
 			<xsl:otherwise>
-				<xsl:comment select="'De otherwise tak wordt gebruikt.'" />
 				<ep:seq>
 					<xsl:apply-templates select="imvert:attributes/imvert:attribute"
 						mode="create-datatype-content">
@@ -2965,157 +1983,57 @@
 		</xsl:choose>
 	</xsl:function>
 
-	<!-- The BSM profiel of EA already takes care of which parameters en stuurgegevens 
-		are allowed on the different berichttypen. Those are configured on them as 
-		tagged-values. Because these tagged-values are configured also within the 
-		tv-set a message-designer can't just add tagged-values thay easy. Well, actualy 
-		he or she can but they won't be processed. Within the bounds of the berichttypes 
-		even more restriction apply within the berichtcodes for the parameters and 
-		stuurgegevens. Unfortunately it's not possible to enforce them using the 
-		tv-set. However it can be checked using the base-configuration file. This 
-		function, in which this is done, generates the content of the 'parameters' 
-		or 'stuurgegevens' element depending on the value of the 'parent' variable. -->
-	<!-- ROME: The stuurgegeven 'Entiteittype' komt nu nog niet voor in het 
-		BSM profiel aangezien het idee was dat deze toch overal verplicht was. Dit 
-		moet n.m.m. echter toch toegevoegd worden. Er zullen ook tagged-values worden 
-		toegevoegd waarmee we de standaard waarde van een parameter of stuurgegeven 
-		vanuit EA kunnen sturen. Dit zal nog in de onderstaande code moeten worden 
-		geimplementeerd. -->
-	<xsl:template name="buildParametersAndStuurgegevens">
-		<xsl:param name="berichtCode" as="xs:string" />
-		<xsl:param name="elements2bTested" as="document-node()" />
-		<xsl:param name="parent" as="xs:string" />
-		<!-- This for-each checks if for all required parameters of stuurgegevens 
-			a tagged-value has been provided within the EA file. If not it generates 
-			an error message. -->
-		<xsl:for-each
-			select="$enriched-endproduct-base-config-excel//sheet[name = 'Berichtgerelateerde gegevens']/
-																		row[col[@name = 'Berichtcode']/data = $berichtCode]/
-																		col[@type = $parent and data = 'V']">
-			<xsl:variable name="normalizedElementName" select="@name" />
+	<xsl:template name="areParametersAndStuurgegevensAllowedOrRequired">
+		<xsl:param name="berichtCode" as="xs:string"/>
+		<xsl:param name="elements2bTested" as="document-node()"/>
+		<xsl:param name="parent" as="xs:string"/>
+		<!-- The following variable wil contain information from a spreadsheetrow which is determined using the first 3 parameters. 
+		 The variable $enriched-endproduct-base-config-excel used within the following variable is generated using the XSLT stylesheet 
+		 'Imvert2XSD-KING-enrich-excel.xsl'. -->
+		<!--xsl:variable name="attributeTypeRow" select="$enriched-endproduct-base-config-excel//sheet
+			[name = 'Berichtgerelateerde gegevens']/row[col[@name = 'berichtcode']/data = $berichtCode]"/>
+		<xsl:if test="$attributeTypeRow//col[@name = $element and data = '-']">no</xsl:if-->
+		<xsl:if test="imf:boolean($debug)">			
+			<xsl:message>
+				<xsl:copy-of select="$elements2bTested"/>
+			</xsl:message>		
+		</xsl:if>
+		<xsl:for-each select="$elements2bTested//imvert:name">
+			<xsl:variable name="isElementAllowed" select="imf:isElementAllowed($berichtCode, ., $parent)"/>
 			<xsl:choose>
-				<xsl:when
-					test="$elements2bTested//imvert:tv[imvert:name = $normalizedElementName]" />
-				<xsl:otherwise>
-					<xsl:message
-						select="concat('ERROR  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Element ', $normalizedElementName, ' is not available within the ', $parent, ' of the compiled message of messagetype ', $berichtCode, ' but is required.')" />
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:for-each>
-		<!-- This for-each checks each tagged value provided within the berichttype 
-			object within the EA file. -->
-		<xsl:for-each select="$elements2bTested//imvert:tv">
-			<xsl:variable name="normalizedElementName" select="imvert:name" />
-			<xsl:variable name="elementValue" select="imvert:value" />
-			<!-- Following variable contains a value which determines if a tagged-value 
-				is allowed within the current messagetype and if not in what way. -->
-			<xsl:variable name="isElementAllowed"
-				select="imf:isElementAllowed($berichtCode, $normalizedElementName, $parent)" />
-			<xsl:message select="concat('buildParametersAndStuurgegevens',$berichtCode,', ',$parent,', ',$elements2bTested,', ',$normalizedElementName,', ',$elementValue,', ',$isElementAllowed)"/>		
-			<!-- Within this choose the correct action is determined and performed 
-				depending on the value of the 'elementValue' and 'isElementAllowed' variable: 
-				* 1st when If the parameter or stuurgegevens isn't desired (value = 'N.v.t.) 
-				and this is allowed according to the base-configuration no action is taken; 
-				* 2nd when If the parameter or stuurgegevens isn't desired (value = 'N.v.t.) 
-				but this isn't allowed according to the base-configuration an Error message 
-				is sent; * 3th when If the element is allowed and provided an ep:construct 
-				element with all its content will be generated; * 4th when If the element 
-				isn't allowed and it hasn't been disabled (value = 'N.v.t/) or not set to 
-				comply to the standard configuration an Error message is sent. If it isn't 
-				allowed but has been disabled or set set to comply to the standard configuration 
-				no action is taken; * 5th when if the element is not applicable or not in 
-				scope no action is taken. -->
-			<xsl:choose>
-				<xsl:when
-					test="$elementValue = 'N.v.t.' and $enriched-endproduct-base-config-excel//sheet
-					[name = 'Berichtgerelateerde gegevens']/row[col[@name = 'Berichtcode']/data = $berichtCode]/col[@name = $normalizedElementName and @type = $parent and data != 'V']">
-					<xsl:message select="concat('buildParametersAndStuurgegevens-1st-when',$berichtCode,', ',$parent,', ',$elements2bTested,', ',$normalizedElementName,', ',$elementValue,', ',$isElementAllowed)"/>		
-					
-				</xsl:when>
-				<xsl:when
-					test="$elementValue = 'N.v.t.' and $enriched-endproduct-base-config-excel//sheet
-					[name = 'Berichtgerelateerde gegevens']/row[col[@name = 'Berichtcode']/data = $berichtCode]/col[@name = $normalizedElementName and @type = $parent and data = 'V']">
-					<xsl:message
-						select="concat('ERROR  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Element ', $normalizedElementName, ' has been disabled but must be available within the ', $parent, ' of messagetype ', $berichtCode, '.')" />
-				</xsl:when>
-				<xsl:when test="$isElementAllowed = 'allowed'">
-					<xsl:for-each
-						select="$enriched-endproduct-base-config-excel//sheet
-						[name = 'Berichtgerelateerde gegevens']/row[col[@name = 'Berichtcode']/data = $berichtCode]/col[@name = $normalizedElementName and @type = $parent and data != '-']">
-						<xsl:variable name="colName" select="@name" />
-						<ep:construct>
-							<ep:name>
-								<xsl:value-of select="$normalizedElementName" />
-							</ep:name>
-							<ep:tech-name>
-								<!-- The normalized name most of the time isn't desired. The name 
-									to be placed within the 'ep:tech-name' element is derived from the schemarules 
-									file. -->
-								<xsl:value-of
-									select="$config-schemarules//tv[name = $normalizedElementName]/schema-name" />
-							</ep:tech-name>
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>
-								<!-- If a parameter or stuurgegeven is required is determined using 
-									the base-configuration ('data' element) and value of the \ tagged-value being 
-									processed. The 'Berichtcode' element is allways required. -->
-								<xsl:choose>
-									<xsl:when test="@name = 'Berichtcode'">1</xsl:when>
-									<xsl:when test="data = 'V' or $elementValue = 'Verplicht'">1</xsl:when>
-									<xsl:when test="data = 'O'">0</xsl:when>
-								</xsl:choose>
-							</ep:min-occurs>
-							<xsl:choose>
-								<xsl:when
-									test="$config-schemarules//tv[name = $normalizedElementName]/schema-type">
-									<ep:type-name>
-										<xsl:value-of
-											select="$config-schemarules//tv[name = $normalizedElementName]/schema-type" />
-									</ep:type-name>
-								</xsl:when>
-								<xsl:when
-									test="$config-schemarules//tv[name = $normalizedElementName]/external-schema-type">
-									<ep:external-type-name>
-										<xsl:value-of
-											select="$config-schemarules//tv[name = $normalizedElementName]/external-schema-type" />
-									</ep:external-type-name>
-								</xsl:when>
-							</xsl:choose>
-							<xsl:choose>
-								<xsl:when test="$normalizedElementName = 'Berichtcode'">
-									<ep:enum>
-										<xsl:value-of select="$berichtCode" />
-									</ep:enum>
-								</xsl:when>
-								<!-- ROME: otherwise te vullen zodra meer tagged-values een fixed 
-									waarde kunnen hebben. Het stuurgegeven 'entiteittype' moet overigens altijd 
-									alleen de waarde van de fundamentele entiteit krijgen. -->
-								<xsl:otherwise />
-							</xsl:choose>
-						</ep:construct>
-					</xsl:for-each>
-					<xsl:message select="concat('buildParametersAndStuurgegevens-3th-when',$berichtCode,', ',$parent,', ',$elements2bTested,', ',$normalizedElementName,', ',$elementValue,', ',$isElementAllowed)"/>		
-				</xsl:when>
 				<xsl:when test="$isElementAllowed = 'notAllowed'">
-					<xsl:choose>
-						<xsl:when
-							test="$elementValue = 'N.v.t.' or $elementValue = 'Conform standaard'" />
-						<xsl:otherwise>
-							<xsl:message
-								select="concat('ERROR  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' element ', $normalizedElementName, ' is not allowed within the ', $parent, '.')" />
-						</xsl:otherwise>
-					</xsl:choose>
-					<xsl:message select="concat('buildParametersAndStuurgegevens-4th-when',$berichtCode,', ',$parent,', ',$elements2bTested,', ',$normalizedElementName,', ',$elementValue,', ',$isElementAllowed)"/>		
+					<xsl:message select="concat('WARN  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' element ', ., ' is not allowed within ', $parent, '.')"/>					
 				</xsl:when>
-				<xsl:when
-					test="$isElementAllowed = 'notApplicable' or $isElementAllowed = 'notInScope'">
-					<xsl:message select="concat('buildParametersAndStuurgegevens-5th-when',$berichtCode,', ',$parent,', ',$elements2bTested,', ',$normalizedElementName,', ',$elementValue,', ',$isElementAllowed)"/>		
-					
+				<xsl:when test="$isElementAllowed = 'noSuchElement'">
+					<xsl:message select="concat('WARN  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' the ', $parent, ' element ', ., ' is not known.')"/>					
 				</xsl:when>
+				<xsl:when test="$isElementAllowed = 'notInScope'"/>
 			</xsl:choose>
 		</xsl:for-each>
+		<!--xsl:choose>
+			<xsl:when test="$parent='Stuurgegevens'"-->
+		<xsl:for-each select="$enriched-endproduct-base-config-excel//sheet
+			[name = 'Berichtgerelateerde gegevens']/row[col[@name = 'berichtcode']/data = $berichtCode]/col[upper-case(@type) = upper-case($parent) and data != '-']">
+			<xsl:variable name="colName" select="@name"/>
+			<xsl:if test="imf:boolean($debug)">				
+				<xsl:message select="concat('Type: ', @type, ' = Parent: ',$parent, '? (',@name,') , (', $elements2bTested//imvert:attribute[imvert:name = $colName]/imvert:name, ')')"/>
+			</xsl:if>
+			<xsl:if test="count($elements2bTested//imvert:name = $colName) = 0">
+				<xsl:message select="concat('WARN  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' element ', @name, ' must be available within ', $parent, '.')"/>
+			</xsl:if>		
+		</xsl:for-each>
+		<!--/xsl:when>
+			<xsl:when test="$parent='Parameters'">
+				<xsl:for-each select="$enriched-endproduct-base-config-excel//sheet
+					[name = 'Berichtgerelateerde gegevens']/row[col[@name = 'berichtcode']/data = $berichtCode]/col[@type = 'parameters' and data != '-']">
+					<xsl:if test="count($elements2bTested//imvert:name = @name) = 0">
+						<xsl:message select="concat('WARN  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' element ', @name, ' must be available within parameters.')"/>
+					</xsl:if>		
+				</xsl:for-each>
+			</xsl:when>
+		</xsl:choose-->
 	</xsl:template>
-
+	
 	<!-- The function imf:createAttributes is used to determine the XML attributes 
 		neccessary for a certain context. It has the following parameters: - typecode 
 		- berichttype - context - datumType The first 3 parameters relate to columns 
