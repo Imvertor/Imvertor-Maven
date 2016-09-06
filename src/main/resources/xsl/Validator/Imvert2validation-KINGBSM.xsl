@@ -34,7 +34,40 @@
     
     <xsl:import href="Imvert2validation-KING.xsl"/>
     
-    <!-- TODO added validation for KING exchange models BSM -->
-
-
+    <xsl:variable name="sn-entiteitrelatie" select="imf:get-normalized-name('stereotype-name-entiteitrelatie','stereotype-name')"/>
+    
+    <!-- 
+        association validation 
+    -->
+    <xsl:template match="imvert:association">
+        <!--setup-->
+        <xsl:variable name="this" select="."/>
+        <xsl:variable name="class" select="../.."/>
+        <xsl:variable name="superclasses" select="imf:get-superclasses($class)"/>
+        <xsl:variable name="package" select="$class/.."/>
+        <xsl:variable name="is-collection" select="$class/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-collection')"/>
+        <xsl:variable name="association-class-id" select="imvert:association-class/imvert:type-id"/>
+        <xsl:variable name="property-names" select="$class/(imvert:atributes | imvert:associations)/*/imvert:name"/>
+        <xsl:variable name="name" select="imvert:name"/>
+        <xsl:variable name="defining-class" select="imf:get-construct-by-id(imvert:type-id)"/>
+        <xsl:variable name="defining-classes" select="($defining-class, imf:get-superclasses($defining-class))"/>
+        <xsl:variable name="is-combined-identification" select="imf:get-tagged-value($this,'Gecombineerde identificatie')"/>
+        <xsl:variable name="target-navigable" select="imvert:target-navigable"/>
+        <xsl:variable name="stereotypes" select="imvert:stereotype"/>
+        
+        <!-- TODO Task #487793 - Check in imvertor op waarde van relatienaam (bij stereotype EntiteitRelatie) -->
+        <xsl:variable name="accepted-relation-names" select="imf:get-config-stereotype-entitity-relation-constraint($stereotypes)"/>
+        
+        <!--validation-->
+        
+        <!-- #487793 Check in imvertor op waarde van relatienaam (bij stereotype EntiteitRelatie) -->
+        <xsl:sequence select="imf:report-warning(., 
+            (
+            exists($accepted-relation-names)
+            and
+            imvert:name = $accepted-relation-names
+            ), 
+            'Relation with stereotype [1] has inappropiate name',($stereotypes))"/>
+    </xsl:template>
+    
 </xsl:stylesheet>

@@ -40,7 +40,6 @@
 	-->
 	<xsl:function name="imf:get-construct-in-derivation-by-id" as="element()*">
 		<xsl:param name="id" as="xs:string"/> <!-- the ID of the construct -->
-		<!--<xsl:sequence select="$derivation-tree//*[imvert:id=$id]"/>-->
 		<xsl:sequence select="imf:key-imvert-construct-by-id($id,$derivation-tree)"/>
 	</xsl:function>
 	

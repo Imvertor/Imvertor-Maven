@@ -61,7 +61,8 @@
         <!-- now set the layered name for each component in de layers --> 
         <xsl:apply-templates select="$layers" mode="layered-name"/>
         
-       <!-- and record the supplier(s) of the application itself -->
+        <?x <xsl:message>--------------</xsl:message> ?>
+        <!-- and record the supplier(s) of the application itself -->
         <xsl:variable name="supplier-application-info" select="imf:get-supplier-info(imvert:packages)"/>
         <!-- TODO if multiple supplier, and supplier comparison requested, warn that this is not implemented -->
         <xsl:for-each select="$supplier-application-info">
@@ -106,6 +107,7 @@
         <xsl:variable name="supplier-info" select="imf:get-supplier-info($package)"/>
         
         <xsl:for-each select="$supplier-info">
+            <?x <xsl:message select="concat('INFO elements: ', count($supplier-info))"></xsl:message> ?>
             <!-- each next <info> element -->
             <xsl:choose>
                 <xsl:when test="not(imf:boolean($package/imvert:derived))">
@@ -256,6 +258,14 @@
         <xsl:variable name="parent-supplier" select="$package/../imvert:supplier[1]"/>
         <xsl:variable name="local-suppliers" select="$package/imvert:supplier"/>
         <xsl:variable name="local-name" select="$package/imvert:name"/>
+        
+        <?x 
+        <xsl:message select="imf:get-display-name($package)"/>
+        <xsl:message select="concat('local name ', $local-name)"/>
+        <xsl:message select="concat('parent suppliers ', count($parent-supplier))"/>
+        <xsl:message select="concat('local suppliers ', count($local-suppliers))"/>
+        ?>
+        
         <xsl:choose>
             <xsl:when test="empty($local-suppliers)">
                 <xsl:sequence select="imf:get-supplier-info-sub((),$parent-supplier,$local-name)"/>

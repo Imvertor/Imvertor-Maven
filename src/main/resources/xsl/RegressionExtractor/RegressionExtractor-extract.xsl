@@ -53,6 +53,13 @@
     
     <xsl:output method="xml" encoding="UTF-8" omit-xml-declaration="yes"/>
     
+    <xsl:template match="/">
+        <xsl:for-each select="cw:file">
+            <xsl:sort select="@path" order="ascending"/>
+            <xsl:apply-templates select="."/>
+        </xsl:for-each>
+    </xsl:template>
+    
     <xsl:template match="/cw:file">
         <xsl:choose>
             <!-- 

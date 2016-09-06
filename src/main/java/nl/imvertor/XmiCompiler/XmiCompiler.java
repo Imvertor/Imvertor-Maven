@@ -56,7 +56,7 @@ public class XmiCompiler extends Step {
 	private AnyFile idFile;
 	private String activeFileOrigin;
 	
-	private String eaEnabled = "true";
+	private String eaEnabled;
 	
 	/**
 	 *  run the main translation
@@ -77,7 +77,7 @@ public class XmiCompiler extends Step {
 		XmiFile xmiFile = umlFile.getExtension().toLowerCase().equals("xmi") ? new XmiFile(umlFile) : null;
 		ZipFile zipFile = umlFile.getExtension().toLowerCase().equals("zip") ? new ZipFile(umlFile) : null; // always holds single XMI
 		
-		eaEnabled = System.getProperty("ea.enabled"); // true or false; false typically on server environment; see redmine #487932
+		eaEnabled = (System.getProperty("ea.enabled") != null) ? System.getProperty("ea.enabled") : "true"; // true or false; false typically on server environment; see redmine #487932
 		
 		if (activeFileOrigin == null && zipFile != null) {
 			runner.debug(logger, "Try compressed XMI file at: " + zipFile);

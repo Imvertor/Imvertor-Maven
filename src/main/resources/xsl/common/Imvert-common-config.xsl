@@ -140,10 +140,31 @@
     
     <!-- 
         Return true when the stereotype name is deprecated.
+        
+        Pass the normalized stereotype name.
     -->
     <xsl:function name="imf:get-config-stereotype-name-deprecated" as="xs:boolean">
         <xsl:param name="norm-name" as="xs:string"/>
         <xsl:sequence select="imf:boolean($configuration-metamodel-file//stereotypes/stereo/name[. = $norm-name]/@deprecated)"/>
+    </xsl:function>
+    
+    <!-- 
+        Return the entitity-relation-constraint on the stereotype.
+        
+        Pass the normalized stereotype name.
+    -->
+    <xsl:function name="imf:get-config-stereotype-entitity-relation-constraint" as="xs:string*">
+        <xsl:param name="names" as="xs:string*"/>
+        <xsl:variable name="stereo" select="$configuration-metamodel-file//stereotypes/stereo[name = $names]"/>
+        <xsl:variable name="r" select="$stereo/entitity-relation-constraint/relation[@lang=$language]"/>
+        <xsl:choose>
+            <xsl:when test="$r">
+                <xsl:sequence select="$r"/>
+            </xsl:when>
+            <xsl:when test="empty($stereo)">
+                <xsl:sequence select="imf:msg('FATAL','No such stereotype(s) [1] ', string-join($names,', '))"/>
+            </xsl:when>
+        </xsl:choose>
     </xsl:function>
     
     <!-- 
