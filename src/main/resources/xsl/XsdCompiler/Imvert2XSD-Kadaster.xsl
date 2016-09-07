@@ -783,6 +783,7 @@
         <xsl:variable name="is-enumeration" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-enumeration')"/>
         <xsl:variable name="is-datatype" select="$defining-class/imvert:designation='datatype'"/>
         <xsl:variable name="is-complextype" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-complextype','stereotype-name-referentielijst'))"/>
+        <xsl:variable name="is-complextype" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-complextype','stereotype-name-referentielijst'))"/>
         
         <xsl:variable name="is-conceptual-complextype" select="$this/imvert:attribute-type-designation='complextype'"/>
         <xsl:variable name="name-conceptual-type" select="if ($this/imvert:attribute-type-name) then imf:get-type($this/imvert:attribute-type-name,$this/imvert:type-package) else ''"/>
@@ -1009,11 +1010,24 @@
                     <xsl:sequence select="imf:debug($this,'A voidable complex type')"/>
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                     <xs:complexType>
-                        <xs:complexContent>
+                        <xsl:variable name="ext">
                             <xs:extension base="{$type}">
                                 <xsl:sequence select="imf:create-nilreason()"/>
                             </xs:extension>
-                        </xs:complexContent>
+                        </xsl:variable>
+                        <xsl:choose>
+                            <xsl:when test="exists($defining-class/imvert:pattern)">
+                                <xsl:sequence select="imf:debug($this,'The referenced type is simplified by pattern')"/>
+                                <xs:simpleContent>
+                                    <xsl:sequence select="$ext"/>
+                                </xs:simpleContent>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xs:complexContent>
+                                    <xsl:sequence select="$ext"/>
+                                </xs:complexContent>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </xs:complexType>
                 </xs:element>
             </xsl:when>
