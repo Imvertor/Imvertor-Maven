@@ -20,19 +20,10 @@
 
 package nl.imvertor.ConfigCompiler;
 
-import java.util.Iterator;
-
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
-import nl.imvertor.common.file.AnyFolder;
-import nl.imvertor.common.file.XmlFile;
-import nl.imvertor.common.file.XslFile;
-import nl.imvertor.common.file.ZipFile;
-import nl.imvertor.common.xsl.extensions.counting.AddNamedCount;
-import nl.imvertor.common.xsl.extensions.counting.GetNamedCount;
-import nl.imvertor.common.xsl.extensions.counting.SetNamedCount;
 
 /**
  * create a configuration for the current owner, tagset, metamodel and schemas
