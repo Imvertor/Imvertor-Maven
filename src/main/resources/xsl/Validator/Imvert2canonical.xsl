@@ -74,6 +74,17 @@
         <imvert:type-name>OUT-OF-SCOPE</imvert:type-name>
     </xsl:template>
     
+    <!-- 
+        IM-457
+        Replace the position by the taggd value "position" when supplied; otherwise leave unchanged.
+    -->
+    <xsl:template match="imvert:position">
+        <imvert:position>
+            <xsl:variable name="tv-pos" select="../imvert:tagged-values/imvert:tagged-value[imvert:name = imf:get-config-tagged-values('Position')]/imvert:value"/>
+            <xsl:value-of select="if (exists($tv-pos)) then string($tv-pos) else ."/>
+        </imvert:position>
+    </xsl:template>
+    
     <xsl:template match="node()|@*">
         <xsl:copy>
             <xsl:copy-of select="@*"/>

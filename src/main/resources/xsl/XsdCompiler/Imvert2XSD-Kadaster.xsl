@@ -575,7 +575,6 @@
                             -->
                             <xsl:for-each select="imvert:attributes/imvert:attribute[not(imvert:type-name=$xml-attribute-type)] | imvert:associations/imvert:association">
                                 <xsl:sort select="xs:integer(imvert:position)" order="ascending"/>
-                                
                                 <xsl:sequence select="imf:create-element-property(.)"/>
                             </xsl:for-each>
                             <?x associates komen niet meer voor?
@@ -712,7 +711,7 @@
         Class1
         scalar-string
     
-        The package name is always specified but is irrelevant for sclars.
+        The package name is always specified but is irrelevant for scalars.
     -->
     <xsl:function name="imf:get-type" as="xs:string">
         <xsl:param name="uml-type" as="xs:string"/>
@@ -775,16 +774,21 @@
         <xsl:variable name="package-name" select="$this/ancestor::imvert:package[last()]/imvert:name"/>
         
         <xsl:variable name="name" select="$this/imvert:name"/>
-        <xsl:variable name="type" select="imf:get-type($this/imvert:type-name,$this/imvert:type-package)"/>
+        <xsl:variable name="found-type" select="imf:get-type($this/imvert:type-name,$this/imvert:type-package)"/>
       
-        <xsl:variable name="is-any" select="$type = '#any'"/>
-        <xsl:variable name="is-mix" select="$type = '#mix'"/>
+        <xsl:variable name="is-any" select="$found-type = '#any'"/>
+        <xsl:variable name="is-mix" select="$found-type = '#mix'"/>
         
         <xsl:variable name="defining-class" select="imf:get-defining-class($this)"/>                            
         <xsl:variable name="is-enumeration" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-enumeration')"/>
         <xsl:variable name="is-datatype" select="$defining-class/imvert:designation='datatype'"/>
         <xsl:variable name="is-complextype" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-complextype','stereotype-name-referentielijst'))"/>
+        <xsl:variable name="is-complextype" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-complextype','stereotype-name-referentielijst'))"/>
+        
+        <xsl:variable name="is-conceptual-complextype" select="$this/imvert:attribute-type-designation='complextype'"/>
         <xsl:variable name="name-conceptual-type" select="if ($this/imvert:attribute-type-name) then imf:get-type($this/imvert:attribute-type-name,$this/imvert:type-package) else ''"/>
+        
+        <xsl:variable name="type" select="if ($name-conceptual-type) then $name-conceptual-type else $found-type"/>
         
         <xsl:variable name="is-external" select="not($defining-class) and $this/imvert:type-package=$external-schema-names"/>
         <xsl:variable name="is-choice" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-union')"/>
@@ -833,7 +837,7 @@
                 </xs:element>
             </xsl:when>
             
-            <xsl:when test="$type=('postcode')"> 
+            <xsl:when test="$type=('postcode')"> <!--TODO remove -->
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
@@ -996,7 +1000,7 @@
                     </xs:complexType>
                 </xs:element>
             </xsl:when>
-            <xsl:when test="$is-complextype and $is-nillable">
+            <xsl:when test="($is-complextype or $is-conceptual-complextype) and $is-nillable">
                 <!-- note that we do not support avoiding substitution on complex datatypes --> 
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
@@ -1006,19 +1010,32 @@
                     <xsl:sequence select="imf:debug($this,'A voidable complex type')"/>
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                     <xs:complexType>
-                        <xs:complexContent>
-                            <xs:extension base="{if ($name-conceptual-type) then $name-conceptual-type else $type}">
+                        <xsl:variable name="ext">
+                            <xs:extension base="{$type}">
                                 <xsl:sequence select="imf:create-nilreason()"/>
                             </xs:extension>
-                        </xs:complexContent>
+                        </xsl:variable>
+                        <xsl:choose>
+                            <xsl:when test="exists($defining-class/imvert:pattern)">
+                                <xsl:sequence select="imf:debug($this,'The referenced type is simplified by pattern')"/>
+                                <xs:simpleContent>
+                                    <xsl:sequence select="$ext"/>
+                                </xs:simpleContent>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xs:complexContent>
+                                    <xsl:sequence select="$ext"/>
+                                </xs:complexContent>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </xs:complexType>
                 </xs:element>
             </xsl:when>
-            <xsl:when test="$is-complextype">
+            <xsl:when test="($is-complextype or $is-conceptual-complextype)">
                 <!-- note that we do not support avoiding substitution on complex datatypes --> 
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
-                    <xsl:attribute name="type" select="if ($name-conceptual-type) then $name-conceptual-type else $type"/>
+                    <xsl:attribute name="type" select="$type"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:sequence select="imf:debug($this,'A complex type')"/>

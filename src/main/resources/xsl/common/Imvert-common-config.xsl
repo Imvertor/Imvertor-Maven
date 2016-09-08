@@ -168,6 +168,34 @@
     </xsl:function>
     
     <!-- 
+        Return the names of the tagged values as found in the source, as expected by the configuration.
+        
+        Example:
+         get the tagged value with id "Position". 
+         If language is nl,
+         then the function returns "positie" (the normalized dutch name).
+    -->
+    <xsl:function name="imf:get-config-tagged-values" as="xs:string*">
+        <xsl:param name="names" as="xs:string*"/>
+        <xsl:param name="must-exist" as="xs:boolean"/>
+        <xsl:variable name="v" select="$configuration-tvset-file//tagged-values/tv[@id = $names]/name[@lang=$language]"/>
+        <xsl:choose>
+            <xsl:when test="exists($v)">
+                <xsl:sequence select="for $c in $v return string($c)"/>
+            </xsl:when>
+            <xsl:when test="$must-exist">
+                <xsl:sequence select="imf:msg('FATAL','Tagged value is/are not defined: [1]', string-join($names,', '))"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="'#unknown'"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    <xsl:function name="imf:get-config-tagged-values" as="xs:string*">
+        <xsl:param name="names" as="xs:string*"/>
+        <xsl:sequence select="imf:get-config-tagged-values($names,false())"/>
+    </xsl:function>
+    <!-- 
         Return all possible scalar names (such as AN or DT)
      
         Language specific
