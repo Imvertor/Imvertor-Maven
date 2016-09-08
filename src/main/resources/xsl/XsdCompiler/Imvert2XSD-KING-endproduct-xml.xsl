@@ -89,7 +89,8 @@
        <ep:message-set>
             <xsl:sequence select="imf:create-output-element('ep:date', substring-before(/imvert:packages/imvert:generated,'T'))"/>
             <xsl:sequence select="imf:create-output-element('ep:name', /imvert:packages/imvert:project)"/>
-            <xsl:sequence select="imf:create-output-element('ep:namespace', 'TO-DO')"/>
+           <xsl:sequence select="imf:create-output-element('ep:namespace', /imvert:packages/imvert:base-namespace)"/>
+           <!-- Hiervoor moet de tagged-value short-alias toegevoegd worden aan de tvset. -->
             <xsl:sequence select="imf:create-output-element('ep:namespace-prefix', 'TO-DO')"/>
             <xsl:sequence select="imf:create-output-element('ep:patch-number', 'TO-DO')"/>
             <xsl:sequence select="imf:create-output-element('ep:release', /imvert:packages/imvert:release)"/>
