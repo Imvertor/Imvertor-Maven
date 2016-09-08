@@ -222,6 +222,13 @@
                 <!-- the name of a file, not the path! Names may not contain * or ? or the like -->
                 <xsl:value-of select="imf:extract(normalize-space($name),'[A-Za-z0-9_\.$\-]+')"/>
             </xsl:when>
+            <xsl:when test="$scheme = 'element-name'">
+                <!-- the name of an element may not contain * or ? or the like -->
+                <xsl:value-of select="imf:extract(normalize-space(translate($name, '/', '-')),'[A-Za-z0-9_:][A-Za-z0-9_\.\-:]+')"/>
+            </xsl:when>
+            <xsl:when test="$scheme = 'addition-relation-name'">
+                <xsl:value-of select="concat(upper-case(substring($name,1,1)),substring($name,2,string-length($name)-1))"/>
+            </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:msg('FATAL','Unsupported naming scheme: [1]',$scheme)"/>
             </xsl:otherwise>
