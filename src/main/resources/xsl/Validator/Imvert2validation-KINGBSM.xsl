@@ -55,19 +55,19 @@
         <xsl:variable name="target-navigable" select="imvert:target-navigable"/>
         <xsl:variable name="stereotypes" select="imvert:stereotype"/>
         
-        <!-- TODO Task #487793 - Check in imvertor op waarde van relatienaam (bij stereotype EntiteitRelatie) -->
+        <!-- Task #487793 - Check in imvertor op waarde van relatienaam (bij stereotype EntiteitRelatie) -->
         <xsl:variable name="accepted-relation-names" select="imf:get-config-stereotype-entitity-relation-constraint($stereotypes)"/>
         
         <!--validation-->
         
-        <!-- #487793 Check in imvertor op waarde van relatienaam (bij stereotype EntiteitRelatie) -->
+        <!-- Task #487793 Check in imvertor op waarde van relatienaam (bij stereotype EntiteitRelatie) -->
         <xsl:sequence select="imf:report-warning(., 
             (
             exists($accepted-relation-names)
             and
-            imvert:name = $accepted-relation-names
+            empty(imvert:name = $accepted-relation-names)
             ), 
-            'Relation with stereotype [1] has inappropiate name',($stereotypes))"/>
+            'Relation with stereotype [1] has inappropriate name',($stereotypes))"/>
     </xsl:template>
     
 </xsl:stylesheet>
