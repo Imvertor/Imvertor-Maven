@@ -46,7 +46,7 @@
                         <ul>
                             <xsl:for-each select="$configuration-metamodel-file/descendant-or-self::metamodel">
                                 <li>
-                                    <xsl:value-of select="concat(name,': ',description)"/>
+                                    <xsl:value-of select="concat(name,': ',desc)"/>
                                 </li>
                             </xsl:for-each>
                         </ul>
