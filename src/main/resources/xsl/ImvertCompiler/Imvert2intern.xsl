@@ -117,7 +117,7 @@
                     <xsl:attribute name="origin">system</xsl:attribute>
                     <imvert:name>
                         <xsl:copy-of select="@*"/>
-                        <xsl:value-of select="concat(.,' [',../imvert:name,']')"/>
+                        <xsl:value-of select="concat(imvert:name,' [',../imvert:name,']')"/>
                     </imvert:name>
                     <xsl:apply-templates select="*[not(self::imvert:name)]" mode="#current"/>
                 </xsl:copy>
