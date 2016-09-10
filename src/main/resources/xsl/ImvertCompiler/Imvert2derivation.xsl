@@ -250,14 +250,14 @@
                 <xsl:sequence select="imf:report-error($client,xs:integer($client/imvert:faction-digits) gt xs:integer($supplier/imvert:total-digits),
                     'Client type size must be equal or smaller than [1]',($supplier/imvert:fraction-digits))"/>
             </xsl:when>
-            <xsl:when test="$client/imvert:type-name = ('scalar-date', 'scalar-datetime', 'scalar-time', 'scalar-boolean', 'scalar-year')">
+            <xsl:when test="$client/imvert:type-name = ('scalar-date', 'scalar-datetime', 'scalar-time', 'scalar-boolean', 'scalar-year', 'scalar-indic')">
                 <xsl:sequence select="imf:report-error($client,not($client/imvert:type-name = $supplier/imvert:type-name),
                     'Supplier type [1] is not equal to client type [2].', 
                     ($supplier/imvert:type-name, $client/imvert:type-name))"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:report-warning($client,true(),
-                    'Cannot compare client [1] to supplier [2].',
+                    'Cannot compare client [1] to supplier [2] because the type is unknown',
                     ($client/imvert:type-name, $supplier/imvert:type-name))"/>
             </xsl:otherwise>
         </xsl:choose>
