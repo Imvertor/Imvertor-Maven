@@ -49,6 +49,7 @@
     <xsl:variable name="project-package" select="$app-package/ancestor::UML:Package[. = $project-packages]"/>
     
     <xsl:template match="/">
+        <xsl:sequence select="imf:track('Compacting')"/>
         <xsl:choose>
            <xsl:when test="empty($project-packages)">
                <xsl:sequence select="imf:msg('ERROR','No projects found')"/>
@@ -71,8 +72,6 @@
   
     <!-- copy all packages except those what are not witin application, or not external) -->
     <xsl:template match="UML:Package">
-        
-        <xsl:sequence select="imf:track('Compacting package [1]',@name)"/>
         
         <!-- package contains the app? -->
         <xsl:variable name="holds-app" select="exists(. intersect $containing-packages)"/>

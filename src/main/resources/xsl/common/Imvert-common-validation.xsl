@@ -99,7 +99,7 @@
 	</xsl:function>
 	
 	<!-- 
-		return the tagged value of empty sequence when that tagged value is not found. If a value is passed, check if the value is the same.
+		return the tagged value or empty sequence when that tagged value is not found. If a value is passed, check if the value is the same.
 	-->
 	<xsl:function name="imf:get-tagged-value" as="xs:string?">
 		<xsl:param name="this" as="node()"/>

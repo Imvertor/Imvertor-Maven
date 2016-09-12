@@ -64,7 +64,7 @@
                         <!-- no two domains of views may have the same name -->
                         <xsl:when test="exists($package-duplicate)">
                             <xsl:for-each select="$package-duplicate">
-                                <xsl:sequence select="imf:msg(.,'ERROR','Internal package has the same name as application package')"/>
+                                <xsl:sequence select="imf:msg(.,'ERROR','Internal package has the same name as application package',())"/>
                             </xsl:for-each>
                         </xsl:when>
                         <xsl:otherwise>

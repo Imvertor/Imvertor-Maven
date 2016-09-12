@@ -102,6 +102,7 @@
                 Supplier project set explicitly for the package itself, or taken from parent.
                 Supplier release set explicitly for the package itself, or taken from parent.
         -->
+
         <xsl:sequence select="imf:track('Deriving package [1]',$package/imvert:name)"/>
         
         <xsl:variable name="supplier-info" select="imf:get-supplier-info($package)"/>

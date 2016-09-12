@@ -75,7 +75,7 @@
             <xsl:copy-of select="@*"/>
             <xsl:choose>
                 <xsl:when test="count($trace-id) != 1">
-                    <xsl:sequence select="imf:msg(.,'ERROR', 'Proxy requires a single outgoing trace')"/>
+                    <xsl:sequence select="imf:msg(.,'ERROR', 'Proxy requires a single outgoing trace',())"/>
                 </xsl:when>
                 <xsl:when test="empty($supplier-doc)">
                     <xsl:sequence select="imf:msg(.,'ERROR','No such proxy supplier document location: [1]',$supplier-subpath)"/>

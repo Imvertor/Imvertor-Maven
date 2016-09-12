@@ -533,10 +533,10 @@
             not(imf:check-base-stereotypes(.)), 
             'Stereotype of base type not assigned to its subtype')"/>
         <xsl:sequence select="imf:report-error(., 
-            (imvert:stereotype=imf:get-config-stereotypes('stereotype-name-union') and not(imvert:attributes/imvert:attribute)), 
+            (imvert:stereotype=imf:get-config-stereotypes('stereotype-name-union') and empty(imvert:attributes/imvert:attribute)), 
             'Empty union class is not allowed.')"/>
         <xsl:sequence select="imf:report-error(., 
-            (imvert:stereotype=imf:get-config-stereotypes('stereotype-name-union') and imvert:associations/imvert:association), 
+            (imvert:stereotype=imf:get-config-stereotypes('stereotype-name-union') and exists(imvert:associations/imvert:association)), 
             'Association on union class is not allowed.')"/>
         <xsl:sequence select="imf:report-error(., 
             not(ancestor::imvert:package/imvert:stereotype=($schema-oriented-stereotypes)), 
@@ -1236,15 +1236,15 @@
         <xsl:param name="this" as="element()"/> <!-- any element that may have tagged values-->
         <xsl:if test="$validate-tv-missing">
             <xsl:variable name="stereotype" select="$this/imvert:stereotype"/>
-            <xsl:variable name="tvs-for-stereotype" select="$config-tagged-values[stereotypes/stereo = $stereotype]"/>
-            <xsl:for-each-group select="$tvs-for-stereotype" group-by="name">
-                <xsl:variable name="tv-name" select="current-grouping-key()"/>
-                <xsl:variable name="effective-tv" select="current-group()[last()]"/>
-                <xsl:variable name="effective-tv-is-required" select="exists($effective-tv[stereotypes/stereo[. = $stereotype and @required = 'yes']])"/>
+            <xsl:for-each select="$config-tagged-values[stereotypes/stereo = $stereotype]">
+                <xsl:variable name="tv-name" select="name"/>
+                <xsl:variable name="tv-is-derivable" select="derive = 'yes'"/>
+                <xsl:variable name="tv-is-required" select="exists(stereotypes/stereo[. = $stereotype and @required = 'yes'])"/>
+                <!-- TODO if a tv is derivable and required but is not actually derived, provide warning at some stage -->
                 <xsl:sequence select="imf:report-warning($this, 
-                    $effective-tv-is-required and empty($this/imvert:tagged-values/imvert:tagged-value[imvert:name = $tv-name]),
+                    $tv-is-required and not($tv-is-derivable) and empty($this/imvert:tagged-values/imvert:tagged-value[imvert:name = $tv-name]),
                     'Tagged value [1] not specified but required for [2]',($tv-name,$stereotype))"/>
-            </xsl:for-each-group>
+            </xsl:for-each>
         </xsl:if> 
     </xsl:function>
     
