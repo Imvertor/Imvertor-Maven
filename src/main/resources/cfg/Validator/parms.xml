@@ -54,6 +54,7 @@
       <WORK_BASE_METAMODEL_FILE>${system/work-imvert-folder-path}/imvertor.02.1.base.xml</WORK_BASE_METAMODEL_FILE>
       <WORK_BASE_METAMODEL_FILE_2>${system/work-imvert-folder-path}/imvertor.02.2.base.xml</WORK_BASE_METAMODEL_FILE_2>
       <WORK_BASE_METAMODEL_FILE_3>${system/work-imvert-folder-path}/imvertor.02.3.base.xml</WORK_BASE_METAMODEL_FILE_3>
+      <WORK_BASE_METAMODEL_FILE_4>${system/work-imvert-folder-path}/imvertor.02.4.base.xml</WORK_BASE_METAMODEL_FILE_4>
       
       <!-- location of the generated validation file; this is a dummy file as all reported messages are made part of the process parms file. -->
       <WORK_VALIDATE_FILE>${system/work-imvert-folder-path}/imvertor.13.validate.xml</WORK_VALIDATE_FILE>
@@ -73,6 +74,7 @@
       
       <IMVERTOR_METAMODEL_Kadaster_CANONICAL_XSLPATH>Imvert2canonical.xsl</IMVERTOR_METAMODEL_Kadaster_CANONICAL_XSLPATH>
       <IMVERTOR_METAMODEL_Kadaster_CANONICAL_XSLPATH_2>Imvert2canonical-Kadaster.xsl</IMVERTOR_METAMODEL_Kadaster_CANONICAL_XSLPATH_2>
+      <IMVERTOR_METAMODEL_Kadaster_CANONICAL_XSLPATH_3>Imvert2canonical-Kadaster-migration.xsl</IMVERTOR_METAMODEL_Kadaster_CANONICAL_XSLPATH_3>
       <IMVERTOR_METAMODEL_Kadaster_VALIDATE_XSLPATH>Imvert2validation-Kadaster.xsl</IMVERTOR_METAMODEL_Kadaster_VALIDATE_XSLPATH>
       
       <IMVERTOR_METAMODEL_BOM_CANONICAL_XSLPATH>Imvert2canonical-bom.xsl</IMVERTOR_METAMODEL_BOM_CANONICAL_XSLPATH>

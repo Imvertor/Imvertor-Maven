@@ -35,6 +35,7 @@ import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.EapFile;
 import nl.imvertor.common.file.XmiFile;
 import nl.imvertor.common.file.XmlFile;
+import nl.imvertor.common.file.XslFile;
 import nl.imvertor.common.file.ZipFile;
 
 /**
@@ -152,10 +153,13 @@ public class XmiCompiler extends Step {
 				cleanXMI(activeFile);
 			}
 		
+			if (configurator.isTrue(configurator.getParm("cli","migrate",false))) 
+				migrateXMI(activeFile);
+			
 			configurator.setParm("system","xmi-export-file-path",activeFile.getCanonicalPath());
 			configurator.setParm("system","xmi-file-path",activeFile.getCanonicalPath() + ".compact.xmi");
 			
-			// now compact the XMI file:remove all irrelevant sections
+			// now compact the XMI file: remove all irrelevant sections
 			runner.debug(logger, "Compacting XMI: " + activeFile.getCanonicalPath());
 			Transformer transformer = new Transformer();
 		    // transform 
@@ -205,5 +209,16 @@ public class XmiCompiler extends Step {
 		writer.close();
 		outFile.copyFile(xmiFile);
 	}
-
+	
+	private void migrateXMI(XmlFile xmiFile) throws Exception {
+		AnyFile outFile = new AnyFile(File.createTempFile("migrateXMI.", ".xmi"));
+		outFile.deleteOnExit();
+		String xslFilePath = configurator.getXslPath(configurator.getParm("properties", "XMI_MIGRATE_XSLPATH"));
+		XslFile xslFile = new XslFile(xslFilePath);
+		runner.debug(logger, "Migrating XMI: " + activeFile.getCanonicalPath());
+		Transformer transformer = new Transformer();
+		transformer.transform(xmiFile, outFile, xslFile);
+		outFile.copyFile(xmiFile);
+	}
+	
 }

@@ -29,6 +29,12 @@
          <tip>Yes if the XMI file generated from EA must be recreated each time.</tip>
          <required>false</required>
       </cli-parm> 
+      <cli-parm>
+         <name>migrate</name>
+         <arg>yes|no</arg>
+         <tip>Yes if the XMI file generated from EA must be migrated to the new metamodel.</tip>
+         <required>false</required>
+      </cli-parm> 
    </cli-parms>
 
    <properties>
@@ -47,7 +53,10 @@
 
       <!-- path to compacter -->
       <XMI_COMPACT_XSLPATH>XMI1Compact.xsl</XMI_COMPACT_XSLPATH>
- 
+      
+      <!-- path to migrator -->
+      <XMI_MIGRATE_XSLPATH>XMI1Migrate.xsl</XMI_MIGRATE_XSLPATH>
+      
    </properties>
 
 </config>

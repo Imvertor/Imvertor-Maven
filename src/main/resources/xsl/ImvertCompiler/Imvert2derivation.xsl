@@ -130,8 +130,11 @@
         <!-- see Task #487911 -->
         <xsl:variable name="supplier-attribute" select="imf:get-construct-by-id($client-attribute/imvert:trace,$derivation-tree)"/>
         <xsl:variable name="is-enumeration" select="imvert:stereotype = $normalized-stereotype-enum"/> 
-        
+      
         <xsl:choose>
+            <xsl:when test="empty($client-attribute/imvert:trace)">
+                <!-- no trace so no compare neccessary -->
+            </xsl:when>
             <xsl:when test="$is-enumeration">
                 <!-- enumeration values may not be added -->
                 <xsl:sequence select="imf:report-error($client-attribute,
@@ -139,13 +142,10 @@
                     'Client enumeration value is not known by supplier',
                     ())"/>
             </xsl:when>
-            <xsl:when test="empty($client-attribute/imvert:trace)">
-                <!-- no trace so no compare neccessary -->
-            </xsl:when>
             <xsl:when test="exists($supplier-attribute)">
                 <!-- client same as supplier -->
                 <!-- same attribute names must have related types -->
-                <xsl:sequence select="imf:check-type-related($client-attribute,$supplier-attribute)"/>
+                <xsl:sequence select="imf:check-type-related($client-attribute,$supplier-attribute[1])"/>
             </xsl:when>
             <xsl:otherwise>
                 <!-- client new -->
