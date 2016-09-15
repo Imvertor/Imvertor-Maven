@@ -40,23 +40,27 @@
     
     <xsl:variable name="managed-output-folder" select="imf:get-config-string('system','managedoutputfolder')"/>
     
-    <xsl:variable name="intern-packs" select="//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-internal-package')]" as="element(imvert:package)*"/>
-    <xsl:variable name="intern-referenced-packages" select="for $d in $intern-packs return imf:get-intern-doc($d)/imvert:packages/imvert:package" as="element(imvert:package)*"/>
-    <xsl:variable name="locally-defined-packages" select="/imvert:packages/imvert:package" as="element(imvert:package)*"/>
+    <xsl:variable name="intern-packages" select="//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-internal-package')]" as="element(imvert:package)*"/>
+    <xsl:variable name="intern-classes" select="$intern-packages/imvert:class" as="element(imvert:class)*"/>
+   
+    <xsl:variable name="intern-referenced-docs" select="for $d in $intern-packages return imf:get-intern-doc($d)" as="document-node()*"/>
     
-    <!-- get the classes that are external, i.e. may be referenced by the internal package. Must be located in a domain package. -->
-    <xsl:variable name="intern-classes" select="$intern-referenced-packages[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:class" as="element(imvert:class)*"/>
+    <xsl:variable name="external-packages" select="$intern-referenced-docs/imvert:packages/imvert:package" as="element(imvert:package)*"/>
+    <xsl:variable name="local-packages" select="/imvert:packages/imvert:package" as="element(imvert:package)*"/>
+    
+    <!-- get the classes that are shared, i.e. may be referenced by the internal package. Must be located in a domain package. -->
+    <xsl:variable name="external-classes" select="$external-packages[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:class" as="element(imvert:class)*"/>
     
     <xsl:template match="/imvert:packages">
         <xsl:copy>
             <xsl:sequence select="imf:compile-imvert-header(.)"/>
             <xsl:choose>
-                <xsl:when test="exists($intern-packs)">
+                <xsl:when test="exists($intern-packages)">
                     <xsl:variable name="result" as="item()*">
                         <!-- process all but reset the type IDs for interfaces to an internal package -->
                         <xsl:apply-templates select="imvert:package" mode="intern-redirect"/>
                         <!-- now add the internal packages -->
-                        <xsl:apply-templates select="$intern-referenced-packages" mode="intern-origin"/>         
+                        <xsl:apply-templates select="$external-packages" mode="intern-origin"/>      
                     </xsl:variable>
                     <!-- now check if no ambiguities have been introduced -->
                     <xsl:variable name="package-duplicate" select="imf:get-duplicate-packages($result[self::imvert:package])"/>
@@ -80,18 +84,26 @@
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="imvert:package[imvert:id = $intern-packs/imvert:id]" mode="intern-redirect">
+    <xsl:template match="imvert:package[imvert:id = $intern-packages/imvert:id]" mode="intern-redirect">
         <xsl:comment>Internal removed: <xsl:value-of select="imvert:name"/></xsl:comment>
     </xsl:template>
     
+    <!--
+        the type ID must be replaced by the actual Type ID in the referenced package.
+        So check if this type-id references an internal class.
+        If so, find the name of the internal class in the external packages.
+        Set the type id to the ID of that external class.
+     -->   
     <xsl:template match="imvert:type-id" mode="intern-redirect">
         <xsl:variable name="id" select="."/>
-        <xsl:variable name="interface" select="imf:get-construct-by-id($id,$intern-classes)"/>
+        
+        <xsl:variable name="interface" select="$intern-classes[imvert:id = $id]"/> <!-- the interface class -->
         <xsl:variable name="interface-name" select="$interface/imvert:name"/>
-        <xsl:variable name="interface-package-name" select="$interface/../imvert:name"/>
-        <xsl:variable name="referenced-construct" select="$intern-classes[imvert:name=$interface-name]"/>
+        <xsl:variable name="referenced-construct" select="$external-classes[imvert:name = $interface-name]"/> <!-- selects all external classes by the name of the interface -->
+        
         <xsl:choose>
             <xsl:when test="empty($interface)">
+                <!-- no redirect needed, use the current ID -->
                 <xsl:copy-of select="."/>
             </xsl:when>
             <xsl:when test="empty($referenced-construct)">
@@ -106,10 +118,13 @@
         </xsl:choose>   
     </xsl:template>
     
-    <!-- add this package, but only when not already inserted by the calling model -->
+    <!-- 
+        this ackage matched is external to the application.
+        add this package, but only when not already inserted by the calling model 
+    -->
     <xsl:template match="imvert:package" mode="intern-origin">
         <xsl:choose>
-            <xsl:when test="imvert:id = $locally-defined-packages/imvert:id">
+            <xsl:when test="imvert:id = $local-packages/imvert:id">
                 <!-- skip; already included -->
             </xsl:when>
             <xsl:otherwise>
@@ -119,19 +134,26 @@
                         <xsl:copy-of select="@*"/>
                         <xsl:value-of select="concat(imvert:name,' [',../imvert:application,']')"/>
                     </imvert:name>
-                    <xsl:apply-templates select="*[not(self::imvert:name)]" mode="#current"/>
+                    <xsl:apply-templates select="*[not(self::imvert:name)]" mode="intern-origin"/>
                 </xsl:copy>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
    
-    <xsl:template match="node()" mode="intern-origin intern-redirect">
+    <xsl:template match="node()" mode="intern-origin">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
-            <xsl:apply-templates mode="#current"/>
+            <xsl:apply-templates mode="intern-origin"/>
         </xsl:copy>
     </xsl:template>
-
+    
+    <xsl:template match="node()" mode="intern-redirect">
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
+            <xsl:apply-templates mode="intern-redirect"/>
+        </xsl:copy>
+    </xsl:template>
+    
     <xsl:function name="imf:get-intern-doc" as="document-node()?">
         <xsl:param name="intern-pack"/>
         <xsl:variable name="project" select="imf:get-tagged-value($intern-pack,'InternalProject')"/>
