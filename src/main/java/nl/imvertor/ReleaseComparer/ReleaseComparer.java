@@ -154,7 +154,7 @@ public class ReleaseComparer extends Step {
 		String cmp = configurator.getParm("cli","compare",false);
 		Boolean supplierCheck = (cmp != null) && cmp.equals("supplier");
 		
-		if (!path.equals("unknown-model-file") && path.length() > 0) {
+		if (path != null && !path.equals("unknown-model-file") && path.length() > 0) {
 			// determine the identifier of the supplier
 			String suppId = (new URL(path)).getPath();
 			

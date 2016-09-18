@@ -41,36 +41,36 @@
     
     <!-- Transform XMI 1.1 to Imvert format. According to metamodel BP. -->
  
-    <xsl:variable name="document" select="/"/>
+    <xsl:variable name="xmi-document" select="/"/>
 
     <xsl:variable 
         name="extension-elements"          
-        select="$document//xmi:Extension/elements/element[@scope='public']"/>
+        select="$xmi-document//xmi:Extension/elements/element[@scope='public']"/>
     <xsl:variable 
         name="extension-attributes"      
         select="$extension-elements/attributes/attribute[@scope='Public']"/>
     <xsl:variable 
         name="extension-connectors" 
-        select="$document//xmi:Extension/connectors/connector"/>
+        select="$xmi-document//xmi:Extension/connectors/connector"/>
     <xsl:variable 
         name="document-thecustomprofile" 
-        select="$document//thecustomprofile:*"/>
+        select="$xmi-document//thecustomprofile:*"/>
     <xsl:variable 
         name="document-EAUML" 
-        select="$document//EAUML:*"/>
+        select="$xmi-document//EAUML:*"/>
     
     <xsl:variable 
         name="document-packages" 
-        select="$document//UML:Package"/>
+        select="$xmi-document//UML:Package"/>
     <xsl:variable 
         name="document-elements" 
-        select="$document//element"/>
+        select="$xmi-document//element"/>
     <xsl:variable 
         name="document-connectors" 
-        select="$document//connector"/>
+        select="$xmi-document//connector"/>
     <xsl:variable 
         name="document-attributes" 
-        select="$document//attribute"/>
+        select="$xmi-document//attribute"/>
 
     <xsl:key name="key-construct-by-id" match="//*[@xmi.id]" use="@xmi.id"/>
     <xsl:key name="key-construct-by-idref" match="//*[@xmi:idref]" use="@xmi:idref"/>
@@ -78,7 +78,7 @@
     
     <xsl:variable 
         name="document-realisations" 
-        select="$document//UML:Dependency[UML:ModelElement.taggedValue/UML:TaggedValue[@tag='ea_type' and @value='Realisation']]"/>
+        select="$xmi-document//UML:Dependency[UML:ModelElement.taggedValue/UML:TaggedValue[@tag='ea_type' and @value='Realisation']]"/>
     
     <xsl:variable name="additional-tagged-values" select="imf:get-config-tagged-values()" as="element(tv)*"/>
     
@@ -217,7 +217,7 @@
         <xsl:variable name="supertype-ids" select="$document-generalizations-type[@subtype=$id]/@supertype"/>
         <xsl:variable name="attributes" select="UML:Classifier.feature/UML:Attribute"/>
         <xsl:variable name="stereotypes" select="imf:get-stereotypes(.)" as="xs:string*"/>
-        <xsl:variable name="associations" select="imf:get-key('key-document-associations-type',$id)"/>
+        <xsl:variable name="associations" select="imf:get-key($xmi-document,'key-document-associations-type',$id)"/>
         <xsl:variable name="is-abstract" select="if (imf:boolean(@isAbstract)) then 'true' else 'false'"/>
         <xsl:variable name="is-datatype" select="$stereotypes=imf:get-config-stereotypes('stereotype-name-datatype') or imf:get-tagged-value(.,'ea_stype')='DataType'"/>
         <xsl:variable name="is-complextype" select="$stereotypes=imf:get-config-stereotypes('stereotype-name-complextype')"/>
@@ -246,7 +246,7 @@
                     <xsl:variable name="supertype-id" select="."/>
                     <xsl:variable name="supertype" select="imf:element-by-id($supertype-id)"/>
                     
-                    <xsl:variable name="generalization" select="imf:get-key('key-document-generalizations', concat($id,'#',$supertype-id))"/>
+                    <xsl:variable name="generalization" select="imf:get-key($xmi-document,'key-document-generalizations', concat($id,'#',$supertype-id))"/>
                     <xsl:variable name="stereotypes" select="imf:get-stereotypes($generalization)"/>
                     
                     <xsl:choose>
@@ -371,7 +371,7 @@
     <xsl:function name="imf:element-by-id" as="node()*">
         <xsl:param name="id" as="xs:string?"/>
         <xsl:if test="$id">
-            <xsl:sequence select="imf:get-key('key-construct-by-id',$id)"/>
+            <xsl:sequence select="imf:get-key($xmi-document,'key-construct-by-id',$id)"/>
         </xsl:if>
     </xsl:function>
   
@@ -732,7 +732,7 @@
     
     <xsl:function name="imf:get-package-by-namespace" as="node()*">
         <xsl:param name="package-namespace" as="xs:string"/>
-        <xsl:variable name="element" select="imf:get-key('key-packages-by-alias',$package-namespace)"/>
+        <xsl:variable name="element" select="imf:get-key($xmi-document,'key-packages-by-alias',$package-namespace)"/>
         <xsl:choose>
             <xsl:when test="$element">
                 <xsl:variable name="id" select="$element/@xmi:idref" as="xs:string"/>
@@ -753,15 +753,15 @@
     </xsl:function>
     <xsl:function name="imf:get-uml-element-info" as="node()*">
         <xsl:param name="id" as="xs:string"/>
-        <xsl:sequence select="imf:get-key('key-construct-by-idref',$id)[self::element]"/>
+        <xsl:sequence select="imf:get-key($xmi-document,'key-construct-by-idref',$id)[self::element]"/>
     </xsl:function>
     <xsl:function name="imf:get-uml-connector-info" as="node()*">
         <xsl:param name="id" as="xs:string"/>
-        <xsl:sequence select="imf:get-key('key-construct-by-idref',$id)[self::connector]"/>
+        <xsl:sequence select="imf:get-key($xmi-document,'key-construct-by-idref',$id)[self::connector]"/>
     </xsl:function>
     <xsl:function name="imf:get-uml-attribute-info" as="node()*">
         <xsl:param name="id" as="xs:string"/>    
-        <xsl:sequence select="imf:get-key('key-construct-by-idref',$id)[self::attribute]"/>
+        <xsl:sequence select="imf:get-key($xmi-document,'key-construct-by-idref',$id)[self::attribute]"/>
     </xsl:function>
     
     <!-- 
@@ -968,7 +968,7 @@
 
     <xsl:function name="imf:get-package-name" as="xs:string">
         <xsl:param name="type-id" as="xs:string?"/>
-        <xsl:variable name="class" select="imf:get-key('key-construct-by-id',$type-id)"/>
+        <xsl:variable name="class" select="imf:get-key($xmi-document,'key-construct-by-id',$type-id)"/>
         <xsl:value-of select="imf:get-canonical-name(($class/ancestor-or-self::UML:Package)[last()]/@name)"/>
     </xsl:function>
     

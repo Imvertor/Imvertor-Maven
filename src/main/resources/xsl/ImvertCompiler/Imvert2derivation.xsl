@@ -48,11 +48,6 @@
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     
-    <xsl:variable name="pairs" select="imf:document($derivationtree-file-url)/imvert:layers-set/imvert:layer"/>
-    
-    <!-- all classes defined by supplier -->
-    <xsl:variable name="supplier-classes" select="$pairs/imvert:supplier[2]/*/imvert:class"/>
-    
     <xsl:variable name="normalized-stereotype-enum" select="imf:get-config-stereotypes('stereotype-name-enum')"/>
     <!-- 
         Templates access application pairs, an process the client constructs. 
@@ -62,73 +57,42 @@
     <xsl:template match="/">
         <imvert:report>
             <xsl:comment>No data, report through messaging framework</xsl:comment>
-            <xsl:apply-templates select="$pairs"/>
+            <xsl:apply-templates select="*"/>
         </imvert:report>
-    </xsl:template>
-
-    <xsl:template match="imvert:layer">
-        <xsl:apply-templates select="imvert:supplier[1]" mode="client"/>
-        <xsl:apply-templates select="imvert:supplier[1]/following-sibling::*[1]" mode="supplier"/>
-    </xsl:template>
-    
-    <xsl:template match="imvert:supplier" mode="client">
-        <xsl:variable name="supplier" select="../imvert:supplier[2]/imvert:package"/>
-        <xsl:apply-templates select="imvert:package">
-            <xsl:with-param name="supplier-package" select="$supplier"/>
-        </xsl:apply-templates>
-    </xsl:template>
-    
-    <xsl:template match="imvert:supplier" mode="supplier">
-        <!-- skip; is passed as parameter to the client check. -->
-    </xsl:template>
-    
-    <xsl:template match="imvert:message">
-        <xsl:sequence select="."/>
-    </xsl:template>
-    
-    <!-- template accessed for client packages only. -->
-    <xsl:template match="imvert:package">
-        <xsl:param name="supplier-package"/>
-        <xsl:choose>
-            <xsl:when test="$supplier-package">
-                <!-- client same as supplier -->
-                <!-- test the classes -->
-                <xsl:apply-templates select="imvert:class">
-                    <xsl:with-param name="supplier-package" select="$supplier-package"/>
-                </xsl:apply-templates>
-            </xsl:when>
-            <xsl:otherwise>
-                <!--<xsl:sequence select="imf:report-info(.,true(),'Package added.')"/>-->
-            </xsl:otherwise>
-        </xsl:choose>
-        
     </xsl:template>
     
     <xsl:template match="imvert:class">
-        <xsl:param name="supplier-package"/>
         <xsl:variable name="client-class" select="."/>
-        <xsl:variable name="supplier-class" select="$supplier-package/imvert:class[imvert:name=$client-class/imvert:name]"/>
+        <xsl:variable name="supplier-classes" select="imf:get-trace-suppliers-for-construct($client-class,1)"/>
         <xsl:choose>
-            <xsl:when test="$supplier-class">
-                <!-- client same as supplier -->
-                <xsl:apply-templates select="$client-class/imvert:attributes/imvert:attribute | $client-class/imvert:associations/imvert:association">
-                    <xsl:with-param name="supplier-class" select="$supplier-class"/>
-                </xsl:apply-templates>
+            <xsl:when test="empty($client-class/imvert:trace)">
+                <!-- no trace so no compare neccessary -->
             </xsl:when>
             <xsl:otherwise>
-                <!-- client new -->
-                <!--<xsl:sequence select="imf:report-info(.,true(),'Class added.')"/>-->
+                <xsl:for-each select="$supplier-classes">
+                    
+                    <xsl:variable name="supplier-class" select="imf:get-trace-construct-by-supplier(.,$imvert-document)"/>
+                    
+                    <xsl:sequence select="imf:report-error($client-class,
+                        not($allow-multiple-suppliers) and position() gt 2,
+                        'Multiple suppliers found',
+                        ())"/>
+                    
+                </xsl:for-each>
             </xsl:otherwise>
         </xsl:choose>
+        
+        <xsl:apply-templates/>
         
     </xsl:template>
     
     <xsl:template match="imvert:attribute">
         <xsl:param name="supplier-class"/>
+        
         <xsl:variable name="client-attribute" select="."/>
-        <!--<xsl:variable name="supplier-attribute" select="$supplier-class/imvert:attributes/imvert:attribute[imvert:name=$client-attribute/imvert:name]"/>-->
         <!-- see Task #487911 -->
-        <xsl:variable name="supplier-attribute" select="imf:get-construct-by-id($client-attribute/imvert:trace,$derivation-tree)"/>
+        <xsl:variable name="supplier-attributes" select="imf:get-trace-suppliers-for-construct($client-attribute,1)"/>
+        
         <xsl:variable name="is-enumeration" select="imvert:stereotype = $normalized-stereotype-enum"/> 
       
         <xsl:choose>
@@ -138,18 +102,23 @@
             <xsl:when test="$is-enumeration">
                 <!-- enumeration values may not be added -->
                 <xsl:sequence select="imf:report-error($client-attribute,
-                    empty($supplier-attribute),
+                    empty($supplier-attributes),
                     'Client enumeration value is not known by supplier',
                     ())"/>
             </xsl:when>
-            <xsl:when test="exists($supplier-attribute)">
-                <!-- client same as supplier -->
-                <!-- same attribute names must have related types -->
-                <xsl:sequence select="imf:check-type-related($client-attribute,$supplier-attribute[1])"/>
-            </xsl:when>
             <xsl:otherwise>
-                <!-- client new -->
-                <!--<xsl:sequence select="imf:report-info(.,true(),'Attribute added.')"/>-->
+               <xsl:for-each select="$supplier-attributes">
+                   
+                   <xsl:variable name="supplier-attribute" select="imf:get-trace-construct-by-supplier(.,$imvert-document)"/>
+                   
+                   <xsl:sequence select="imf:report-error($client-attribute,
+                       not($allow-multiple-suppliers) and position() gt 2,
+                       'Multiple suppliers found',
+                       ())"/>
+                   
+                   <xsl:sequence select="imf:check-type-related($client-attribute,$supplier-attribute)"/>
+               
+               </xsl:for-each>
             </xsl:otherwise>
         </xsl:choose>    
     </xsl:template>
@@ -157,20 +126,22 @@
     <xsl:template match="imvert:association">
         <xsl:param name="supplier-class"/>
         <xsl:variable name="client-association" select="."/>
-        <xsl:variable name="supplier-association" select="imf:get-construct-by-id($client-association/imvert:trace,$derivation-tree)"/>
+        <xsl:variable name="supplier-associations" select="imf:get-trace-suppliers-for-construct($client-association,1)"/>
         
         <xsl:choose>
             <xsl:when test="empty($client-association/imvert:trace)">
                 <!-- no trace so no compare neccessary -->
             </xsl:when>
-            <xsl:when test="$supplier-association">
-                <!-- client same as supplier -->
-                <!-- same attribute names must have related types -->
-                <xsl:sequence select="imf:check-type-related($client-association,$supplier-association)"/>
-            </xsl:when>
             <xsl:otherwise>
-                <!-- client new -->
-                <!--<xsl:sequence select="imf:report-info(.,true(),'Association added.')"/>-->
+                <xsl:for-each select="$supplier-associations">
+                    <xsl:variable name="supplier-association" select="imf:get-trace-construct-by-supplier(.,$imvert-document)"/>
+                    
+                    <xsl:sequence select="imf:report-error($client-association,
+                        not($allow-multiple-suppliers) and position() gt 2,
+                        'Multiple suppliers found',
+                        ())"/>
+                    <xsl:sequence select="imf:check-type-related($client-association,$supplier-association)"/>
+                </xsl:for-each>
             </xsl:otherwise>
         </xsl:choose>    
         
@@ -181,8 +152,9 @@
     </xsl:template>
     
     <xsl:function name="imf:check-type-related" as="element()*">
-        <xsl:param name="client"/>
+        <xsl:param name="client"/> 
         <xsl:param name="supplier"/>
+        <!-- both parms are imvert:attribute or imvert:association -->
         <xsl:choose>
             <xsl:when test="not($supplier)">
                 <!-- okay; assume the property is new. -->
@@ -209,6 +181,7 @@
     <xsl:function name="imf:check-baretype-related" as="element()*">
         <xsl:param name="client"/>
         <xsl:param name="supplier"/>
+        <!-- both parms are imvert:attribute or imvert:association -->
         <xsl:variable name="supplier-is-string" select="$supplier/imvert:type-name = 'scalar-string'"/>
         <xsl:variable name="supplier-is-int" select="$supplier/imvert:type-name = 'scalar-integer'"/>
         <xsl:variable name="supplier-is-dec" select="$supplier/imvert:type-name = 'scalar-decimal'"/>
@@ -267,34 +240,36 @@
         <xsl:param name="client"/> <!-- a property -->
         <xsl:param name="supplier"/> <!-- a property -->
         
+        <!-- bepaal waar de applicatie waarin de supplier voorkomt als imvert file beschikbaar is -->
+        <xsl:variable name="supplier-application" select="root($supplier)/imvert:packages"/>
+        <xsl:variable name="supplier-doc-subpath" select="imf:get-trace-supplier-subpath($supplier-application/imvert:project,$supplier-application/imvert:application,$supplier-application/imvert:release)"/>
+        <xsl:variable name="supplier-doc" select="imf:get-trace-supplier-document($supplier-doc-subpath)"/>
+        
         <xsl:variable name="client-defining-class" select="imf:get-construct-by-id($client/imvert:type-id)"/>
-        <xsl:variable name="supplier-package" select="$pairs[imvert:supplier[1]//imvert:id=$client/imvert:type-id]/imvert:supplier[2]/*"/>
-        <xsl:variable name="supplier-defining-class" select="imf:get-construct-by-id($supplier/imvert:type-id,$supplier-package)"/>
+        <xsl:variable name="supplier-defining-class" select="imf:get-construct-by-id($supplier/imvert:type-id,$supplier-doc)"/>
         
         <xsl:choose>
-            <xsl:when test="not($supplier-package)">
+            <xsl:when test="empty($supplier-doc)">
                 <!-- The supplier package is not defined. This is already signalled.-->
             </xsl:when>
-            <xsl:when test="$supplier-defining-class">
+            <xsl:when test="exists($supplier-defining-class)">
+                <?x
+                <!-- all classes defined by supplier -->
+                <xsl:variable name="supplier-classes" select="$supplier-doc//imvert:class"/>
+                
                 <xsl:variable name="supplier-defining-subclass" select="imf:get-subclasses($supplier-defining-class,$supplier-classes)"/>
                 <xsl:variable name="client-defining-superclass" select="imf:get-superclasses($client-defining-class)"/>
-                
-                <xsl:sequence select="imf:report-error($client,
-                    not($model-is-traced-by-user) and 
-                    not(($client-defining-class,$client-defining-superclass)/imvert:name = ($supplier-defining-class,$supplier-defining-subclass)/imvert:name),
-                    'Client type [1] or any of its supertypes must be (sub)type of supplier type [2]',
-                    ($client-defining-class,$supplier-defining-class))"/>
                 
                 <!-- 
                     for each class that occurs in client as well as supplier, 
                     check if all supertypes also occur in client and supplier 
                 --> 
                 <!-- TODO Enhance / supertype check in derivation -->
-                
+                ?>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:report-error($client,true(),
-                    'The supplier could not be found.')"/>
+                    'The supplier could not be found at [1].', $supplier-doc-subpath)"/>
             </xsl:otherwise>
         </xsl:choose>
 

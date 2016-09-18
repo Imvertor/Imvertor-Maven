@@ -45,9 +45,12 @@
     <xsl:import href="Imvert2report-taggedvalues.xsl"/>
     <xsl:import href="Imvert2report-trace.xsl"/>
     
+    <!-- TODO context document must be imvert file, not the config file! -->
+    
+    <xsl:variable name="imvert-document" select="imf:document(imf:get-config-string('properties','WORK_EMBELLISH_FILE'))"/>
+    
     <xsl:template match="/config">
-        <xsl:variable name="doc" select="imf:document(imf:get-config-string('properties','WORK_EMBELLISH_FILE'))"/>
-        <xsl:variable name="packages" select="$doc/imvert:packages/imvert:package[not(imvert:ref-master)]"/>
+        <xsl:variable name="packages" select="$imvert-document/imvert:packages/imvert:package[not(imvert:ref-master)]"/>
         <report>
             <step-display-name>Imvert compiler</step-display-name>
             <summary>
@@ -65,16 +68,16 @@
                     </info>
                 </xsl:if>
             </summary>
-            <xsl:apply-templates select="$doc/imvert:packages" mode="quickview"/>
-            <xsl:apply-templates select="$doc/imvert:packages" mode="compactview"/>
-            <xsl:apply-templates select="$doc/imvert:packages" mode="typelisting"/>
-            <xsl:apply-templates select="$doc/imvert:packages" mode="valuelists"/>
-            <xsl:apply-templates select="$doc/imvert:packages" mode="state"/>
-            <xsl:apply-templates select="$doc/imvert:packages" mode="documentation"/>
-            <xsl:apply-templates select="$doc/imvert:packages" mode="tv"/>
-            <xsl:apply-templates select="$doc/imvert:packages" mode="identification"/>
-            <xsl:apply-templates select="$doc/imvert:packages" mode="conceptualschemas"/>
-            <xsl:apply-templates select="$doc/imvert:packages" mode="trace"/>
+            <xsl:apply-templates select="$imvert-document/imvert:packages" mode="quickview"/>
+            <xsl:apply-templates select="$imvert-document/imvert:packages" mode="compactview"/>
+            <xsl:apply-templates select="$imvert-document/imvert:packages" mode="typelisting"/>
+            <xsl:apply-templates select="$imvert-document/imvert:packages" mode="valuelists"/>
+            <xsl:apply-templates select="$imvert-document/imvert:packages" mode="state"/>
+            <xsl:apply-templates select="$imvert-document/imvert:packages" mode="documentation"/>
+            <xsl:apply-templates select="$imvert-document/imvert:packages" mode="tv"/>
+            <xsl:apply-templates select="$imvert-document/imvert:packages" mode="identification"/>
+            <xsl:apply-templates select="$imvert-document/imvert:packages" mode="conceptualschemas"/>
+            <xsl:apply-templates select="$imvert-document/imvert:packages" mode="trace"/>
             
         </report>
     </xsl:template>

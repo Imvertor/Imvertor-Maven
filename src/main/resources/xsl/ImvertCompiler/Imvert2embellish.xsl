@@ -35,6 +35,7 @@
     -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     
     <xsl:template match="/imvert:packages">
         <imvert:packages>
@@ -48,6 +49,9 @@
         <xsl:copy>
             <xsl:attribute name="display-name" select="imf:get-display-name(.)"/>
             <xsl:attribute name="formal-name" select="imf:get-construct-formal-name(.)"/>
+            
+            <xsl:sequence select="imf:get-embellish-suppliers(.)"/>
+            
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
@@ -55,6 +59,9 @@
         <xsl:copy>
             <xsl:attribute name="display-name" select="imf:get-display-name(.)"/>
             <xsl:attribute name="formal-name" select="imf:get-construct-formal-name(.)"/>
+            
+            <xsl:sequence select="imf:get-embellish-suppliers(.)"/>
+    
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
@@ -84,6 +91,9 @@
                 <xsl:variable name="copy-down-class" select="imf:get-construct-by-id(imvert:copy-down-type-id)"/>
                 <xsl:attribute name="copy-down-display-name" select="imf:get-construct-name($copy-down-class)"/>
             </xsl:if>
+  
+            <xsl:sequence select="imf:get-embellish-suppliers(.)"/>
+
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
@@ -94,6 +104,9 @@
             <xsl:attribute name="formal-name" select="imf:get-construct-formal-name(.)"/>
             <xsl:attribute name="type-display-name" select="imf:get-display-name($class)"/>
             <xsl:attribute name="type-formal-name" select="imf:get-construct-formal-name($class)"/>
+            
+            <xsl:sequence select="imf:get-embellish-suppliers(.)"/>
+            
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
@@ -121,4 +134,37 @@
         <xsl:sequence select="$this/imvert:tagged-values/imvert:tagged-value[imvert:name=$tv-norm-name]/imvert:value"/>
     </xsl:function>
 
+    <xsl:function name="imf:get-embellish-suppliers" as="element()*">
+        <xsl:param name="construct"/>
+        <xsl:if test="imf:boolean($debug)">
+            <imvert:resolved-suppliers>
+                <xsl:sequence select="imf:get-trace-suppliers-for-construct($construct,1)"/>
+            </imvert:resolved-suppliers>
+            <imvert:resolved-documentation>
+                <xsl:sequence select="imf:get-compiled-documentation($construct)"/>
+            </imvert:resolved-documentation>
+            <imvert:resolved-tagged-values>
+                <xsl:variable name="tvs" select="imf:get-compiled-tagged-values($construct,false())"/>
+                <xsl:for-each-group select="$tvs" group-by="@name">
+                    <imvert:resolved-tagged-value-group name="{current-group()/@name}">
+                        <xsl:for-each select="current-group()">
+                            <imvert:tagged-value>
+                                <xsl:attribute name="derivation-project" select="@project"/>
+                                <xsl:attribute name="derivation-application" select="@application"/>
+                                <xsl:attribute name="derivation-release" select="@release"/>
+                                <xsl:attribute name="derivation-level" select="@level"/>
+                                <imvert:name original="{@original-name}">
+                                    <xsl:value-of select="@name"/>
+                                </imvert:name>
+                                <imvert:value original="{@original-value}">
+                                    <xsl:value-of select="@value"/>
+                                </imvert:value>
+                            </imvert:tagged-value>
+                        </xsl:for-each>
+                    </imvert:resolved-tagged-value-group>
+                </xsl:for-each-group>
+            </imvert:resolved-tagged-values>
+        </xsl:if>
+    </xsl:function>
+     
 </xsl:stylesheet>

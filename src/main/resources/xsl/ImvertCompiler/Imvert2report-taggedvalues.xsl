@@ -100,7 +100,7 @@
                                         <xsl:sequence select="imf:format-documentation-to-html($value)"/>
                                     </td>
                                     <td>
-                                        <xsl:sequence select="if (imf:boolean(@derivation-local)) then '(here)' else string-join((@derivation-project,@derivation-application,@derivation-release),', ')"/>
+                                        <xsl:sequence select="if (xs:integer(@derivation-level) = 1) then '(here)' else string-join((@derivation-project,@derivation-application,@derivation-release),', ')"/>
                                     </td>
                                 </tr>
                             </xsl:for-each>

@@ -32,18 +32,17 @@
         Compile Tracing info. This is:
         type | client-name+link | client-package | client-class | client-property | supplier-name+link |supplier-package | supplier-class | supplier-property 
         
-        context document: imvert:layers-set
     -->
     
-    <xsl:variable name="derivationtree" select="imf:document($derivationtree-file-url)"/>
-    <xsl:variable name="pairs" select="$derivationtree/imvert:layers-set/imvert:layer"/>
-    <xsl:variable name="supplier-ids" select="distinct-values($pairs/imvert:supplier/@id)"/>
-    
     <xsl:template match="imvert:packages" mode="trace">
-        <!-- return a trace documentation page only when deriving -->
-        <xsl:if test="exists($pairs/imvert:supplier[1]//imvert:trace)"><!--TODO how to represent proxy? -->
-            <!-- determine the IDs of the suppliers -->
-            
+        
+        <xsl:variable name="supplier-subpaths" select="imf:get-trace-all-supplier-subpaths(.)" as="xs:string*"/>
+      
+        <!-- 
+            return a trace documentation page only when deriving; this is the case when any trace has been set. 
+        -->
+        <xsl:if test=".//imvert:trace[1]">
+            <!--TODO how to represent proxy? -->
             <page>
                 <title>Derivation Traces</title>
                 <content>
@@ -60,18 +59,47 @@
                             </p>
                         </div>
                         <table>
-                            <!-- <xsl:sequence select="imf:create-table-header('type:10,client:10,package:10,class:10,property:10,supplier:10,package:10,class:10,property:10')"/> -->
-                            <xsl:variable name="h" as="xs:string*">
-                                <xsl:for-each select="$supplier-ids">
-                                    <xsl:value-of select="."/>
-                                </xsl:for-each>
-                            </xsl:variable>
-                            <xsl:variable name="cols" select="count($supplier-ids)"/>
+                            <!-- 
+                                When no suppliers, a single supplier is returned. 
+                                This must be shown as it clearly indicates that a construct is *not* traced. 
+                            -->
+                            <xsl:variable name="cols" select="count($supplier-subpaths)"/>
                             <xsl:variable name="colwidth" select="90 div (if ($cols = 0) then 1 else $cols)"/>
-                            <xsl:variable name="h2" select="string-join(($h,''),concat(':',$colwidth,','))"/>
+                            <xsl:variable name="h2" select="string-join(($supplier-subpaths,''),concat(':',$colwidth,','))"/>
                             <xsl:variable name="h3" select="concat('type:10,',$h2)"/>
-                            <xsl:sequence select="imf:create-table-header($h3)"/>    
-                            <xsl:apply-templates select="$pairs/imvert:supplier[1]" mode="trace"/>
+                            <xsl:sequence select="imf:create-table-header($h3)"/>  
+                            
+                            <xsl:for-each select=".//*[local-name() = $all-traced-construct-names]">
+                                
+                                <!-- fetch the suppliers -->
+                                <xsl:variable name="suppliers" select="imf:get-trace-suppliers-for-construct(.,1)"/>
+                               
+                                <xsl:for-each select="$suppliers[1]"><!-- singleton, start at client and process columns by all suppliers -->
+                                    <xsl:choose>
+                                        <xsl:when test="@type = 'class'">
+                                            <tr>
+                                                <td>
+                                                    <xsl:value-of select="@type"/>
+                                                </td>
+                                                <xsl:sequence select="imf:get-trace-documentation-columns($suppliers,$supplier-subpaths)"/>
+                                            </tr>
+                                        </xsl:when>
+                                        <xsl:when test="@type = ('attribute','enumeration')">
+                                            <tr>
+                                                <td>&#160;&#8212;<xsl:value-of select="@type"/></td>
+                                                <xsl:sequence select="imf:get-trace-documentation-columns($suppliers,$supplier-subpaths)"/>
+                                            </tr>
+                                        </xsl:when>
+                                        <xsl:when test="@type = ('association','composition')">
+                                            <tr>
+                                                <td>&#160;&#8212;<xsl:value-of select="@type"/></td>
+                                                <xsl:sequence select="imf:get-trace-documentation-columns($suppliers,$supplier-subpaths)"/>
+                                            </tr>
+                                        </xsl:when>
+                                    </xsl:choose>
+                                </xsl:for-each>
+                               
+                            </xsl:for-each>
                         </table>
                     </div>
                 </content>
@@ -79,70 +107,41 @@
         </xsl:if>
     </xsl:template>
  
-    <xsl:template match="imvert:supplier" mode="trace">
-      <xsl:apply-templates select="*" mode="trace"/>
-    </xsl:template>
-    
-    <xsl:template match="imvert:class" mode="trace">
-        <tr>
-            <td>
-                <xsl:value-of select="local-name(.)"/>
-            </td>
-            <xsl:sequence select="imf:get-trace-documentation-columns(.)"/>
-        </tr>
-        <xsl:apply-templates mode="trace"/>
-    </xsl:template>
-    
-    <xsl:template match="imvert:attribute" mode="trace">
-        <xsl:variable name="type" select="if (../../imvert:designation = 'enumeration') then 'Enum' else 'Attribute'"/>
-        <tr>
-            <td>&#160;&#8212;<xsl:value-of select="$type"/></td>
-            <xsl:sequence select="imf:get-trace-documentation-columns(.)"/>
-        </tr>
-        <xsl:apply-templates mode="trace"/>
-    </xsl:template>
-    <xsl:template match="imvert:association" mode="trace">
-        <tr>
-            <xsl:variable name="type" select="if (imvert:aggregation = 'composite') then 'Composition' else 'Association'"/>
-            <td>&#160;&#8212;<xsl:value-of select="$type"/></td>
-            <xsl:sequence select="imf:get-trace-documentation-columns(.)"/>
-        </tr>
-        <xsl:apply-templates mode="trace"/>
-    </xsl:template>
-    
-    
-    <xsl:template match="*|text()" mode="trace">
-        <xsl:apply-templates mode="trace"/>
-    </xsl:template>  
-    
     <xsl:function name="imf:get-trace-documentation-columns">
-        <xsl:param name="client-construct"/>
+        <xsl:param name="suppliers" as="element(supplier)*"/>
+        <xsl:param name="supplier-subpaths" as="xs:string*"/>
         
-        <xsl:variable name="layers" select="imf:get-construct-in-all-layers($client-construct)"/>
-        <xsl:for-each-group select="$layers/*" group-by="../@id">
-            <xsl:variable name="id" select="current-grouping-key()"/>
-            <xsl:variable name="pos" select="index-of($supplier-ids,$id)"/>
-            <xsl:for-each select="1 to ($pos - position())">
-                <td><!--empty--></td>
-            </xsl:for-each>
-            <td>
-                <xsl:for-each select="current-group()">
-                    <xsl:choose>
-                        <xsl:when test="self::error">
-                            <span class="error">
-                                <xsl:value-of select="@type"/>
-                            </span>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="@display-name"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                    <span class="tid">
-                        <xsl:value-of select="imvert:id"/>
-                    </span>
-                </xsl:for-each>
-            </td>
-        </xsl:for-each-group>
-    </xsl:function>
+        <!-- use the number of subpaths as the number of columns to fill -->
+        <xsl:for-each select="$supplier-subpaths">
+            <xsl:variable name="current-subpath" select="."/>
+            <!-- go through all suppliers, any group may have 1..n suppliers (multiple supplier issue) -->
+            <xsl:choose>
+                <xsl:when test="exists($suppliers[@subpath = $current-subpath])">
+                    <xsl:for-each-group select="$suppliers[@subpath = $current-subpath]" group-by="@subpath">
+                        <td>
+                            <xsl:for-each select="current-group()">
+                                <xsl:choose>
+                                    <xsl:when test="self::error">
+                                        <span class="error">
+                                            <xsl:value-of select="@type"/>
+                                        </span>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:value-of select="@display-name"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <span class="tid">
+                                    <xsl:value-of select="@id"/>
+                                </span>
+                            </xsl:for-each>
+                        </td>
+                    </xsl:for-each-group>
+                </xsl:when>
+                <xsl:otherwise>
+                    <td></td>
+                </xsl:otherwise>
+              </xsl:choose>
+           </xsl:for-each>
+      </xsl:function>
      
 </xsl:stylesheet>
