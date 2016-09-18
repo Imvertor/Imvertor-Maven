@@ -66,9 +66,6 @@ public class ImvertCompiler extends Step {
 			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_CONCRETESCHEMA_FILE", "properties/IMVERTOR_CONCRETESCHEMA_XSLPATH","system/cur-imvertor-filepath") : false ;
 			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_LOCALSCHEMA_FILE", "properties/IMVERTOR_LOCALSCHEMA_XSLPATH","system/cur-imvertor-filepath") : false ;
 		}
-		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_EXPANDDOC_FILE", "properties/IMVERTOR_EXPANDDOC_XSLPATH","system/cur-imvertor-filepath") : false ;
-		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_DERIVATIONTREE_FILE", "properties/IMVERTOR_DERIVATIONTREE_XSLPATH") : false ;
-		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_DERIVATIONEXPAND_FILE", "properties/IMVERTOR_DERIVATIONEXPAND_XSLPATH","system/cur-imvertor-filepath") : false ;
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_EMBELLISH_FILE", "properties/IMVERTOR_EMBELLISH_XSLPATH","system/cur-imvertor-filepath") : false ;
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_SCHEMA_FILE", "properties/IMVERTOR_SCHEMA_XSLPATH","system/cur-imvertor-filepath") : false ;
 		

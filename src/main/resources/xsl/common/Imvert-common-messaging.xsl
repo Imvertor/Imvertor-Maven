@@ -28,6 +28,15 @@
     exclude-result-prefixes="#all"
     version="2.0">
    
+    <!-- 
+        message types are 
+        FATAL
+        ERROR
+        WARN
+        INFO
+        DEBUG
+    -->
+   
     <!-- simple message, type and text -->
     <xsl:function name="imf:msg" as="item()*">
         <xsl:param name="type" as="xs:string"/>

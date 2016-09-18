@@ -1190,9 +1190,11 @@
             
                 <xsl:variable name="declared" select="$config-tagged-values[name = $name]"/>
                 
-                <xsl:variable name="required-as-found" select="($declared/stereotypes/stereo[. = $stereotype]/@required)[last()]"/>
-                <xsl:variable name="value-required" select="imf:boolean(if ($required-as-found) then $required-as-found else 'false')"/>
-                <xsl:variable name="value-listing" select="($declared/declared-values)[last()]/value"/>
+                <xsl:variable name="value-derived" select="imf:boolean($declared/derive)"/>
+               
+                <xsl:variable name="required-as-found" select="imf:boolean($declared/stereotypes/stereo[. = $stereotype]/@required)"/>
+                <xsl:variable name="value-required" select="not($value-derived) and $required-as-found"/> <!--TODO test if derived value is actually available --> 
+                <xsl:variable name="value-listing" select="$declared/declared-values/value"/>
               
                 <xsl:variable name="valid-for-stereotype" select="$declared/stereotypes/stereo = $stereotype"/>
                 <xsl:variable name="valid-omitted" select="empty($stereotype) and $declared/stereotypes/stereo = $normalized-stereotype-none"/>

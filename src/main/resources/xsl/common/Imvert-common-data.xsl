@@ -27,14 +27,16 @@
     
     <xsl:variable name="document" select="/"/>
     
+    <xsl:variable name="imvert-document" select="if (exists(/imvert:packages)) then $document else ()"/>
+    
     <xsl:variable 
         name="document-packages" 
-        select="$document//imvert:package"
+        select="$imvert-document//imvert:package"
         as="node()*"/>
     
     <xsl:variable 
         name="document-classes" 
-        select="$document//imvert:class"
+        select="$imvert-document//imvert:class"
         as="node()*"/>
     
 </xsl:stylesheet>

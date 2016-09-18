@@ -47,6 +47,7 @@
     <xsl:include href="Imvert-common-data.xsl"/>
     <xsl:include href="Imvert-common-uri.xsl"/>
     <xsl:include href="Imvert-common-keys.xsl"/>
+    <xsl:include href="Imvert-common-trace.xsl"/>
     
     <xsl:include href="../external/relpath_util.xsl"/>
     <xsl:include href="../external/functx.xsl"/>
@@ -323,13 +324,13 @@
     -->
     <xsl:function name="imf:get-construct-by-id" as="element()*">
         <xsl:param name="id" as="xs:string"/>
-        <xsl:sequence select="imf:get-construct-by-id($id,$document)"/>
+        <xsl:sequence select="imf:get-construct-by-id($id,$imvert-document)"/>
     </xsl:function>
     
     <xsl:function name="imf:get-construct-by-id" as="element()*">
         <xsl:param name="id" as="xs:string"/>
         <xsl:param name="root" as="node()*"/>
-        <xsl:sequence select="if ($root instance of document-node()) then imf:key-imvert-construct-by-id($id,$root) else $root//*[imvert:id=$id]"/>
+        <xsl:sequence select="if ($root instance of document-node()) then imf:key-imvert-construct-by-id($id,$root) else $root/descendant-or-self::*[imvert:id=$id]"/>
     </xsl:function>
     
     <xsl:function name="imf:distinct-nodes" as="element()*">
@@ -465,7 +466,7 @@
     <xsl:function name="imf:get-schema-foldername" as="xs:string">
         <xsl:param name="namespace" as="xs:string"/>
         <xsl:param name="version" as="xs:string"/>
-        <xsl:param name="release" as="xs:string"/>
+        <xsl:param name="release" as="xs:string?"/><!-- not known for external and system packages -->
         <xsl:variable name="parts" select="imf:get-uri-parts($namespace)"/>
         <xsl:value-of select="concat($parts/server,'/',replace($parts/path,'/','-'),'(',$version, '-', $release,')')"/>
     </xsl:function>
@@ -584,7 +585,7 @@
     </xsl:function>
 
     <!-- return a document when it exists, oitherwise return empty sequence -->
-    <xsl:function name="imf:document" as="item()*">
+    <xsl:function name="imf:document" as="document-node()*">
         <xsl:param name="uri-or-path" as="xs:string"/>
         <xsl:variable name="uri" select="if (matches($uri-or-path,'^(file)|(https?):.*$')) then $uri-or-path else imf:file-to-url($uri-or-path)"/>
         <xsl:choose>
@@ -604,7 +605,7 @@
     <xsl:function name="imf:get-key" as="element()*">
         <xsl:param name="name" as="xs:string"/>
         <xsl:param name="value" as="xs:string"/>
-        <xsl:sequence select="imf:get-key($document,$name,$value)"/>
+        <xsl:sequence select="imf:get-key($imvert-document,$name,$value)"/>
     </xsl:function>
     <xsl:function name="imf:get-key" as="element()*">
         <xsl:param name="document" as="document-node()"/>
@@ -709,7 +710,8 @@
         <xsl:variable name="prefix" select="tokenize(normalize-space(imf:get-config-parameter('url-prefix-conceptual-schema')),'\s+')"/>
         <xsl:variable name="is-external" select="$pack/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-external-package')"/>
         <xsl:variable name="is-conceptual" select="exists($pack/imvert:namespace[(for $p in ($prefix) return starts-with(.,$p)) = true()])"/>
-        <xsl:choose>
+        
+       <xsl:choose>
             <xsl:when test="$is-external and $is-conceptual">
                 <xsl:sequence select="true()"/>
             </xsl:when>

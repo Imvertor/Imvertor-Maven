@@ -38,7 +38,6 @@
     <!--<xsl:import href="http://www.imvertor.org/imvertor/1.0/xslt/common/Imvert-common.xsl"/>-->
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
-    <xsl:import href="../common/Imvert-common-report.xsl"/>
     
     <xsl:output method="html" indent="yes" omit-xml-declaration="yes"/>
     
@@ -96,7 +95,7 @@
                 <p>
                     <xsl:value-of select="concat($application-package-release-name, ' | ', $imvertor-version, ' | ', $generation-date)"/>
                 </p>
-                <xsl:apply-templates select="$pre-headed-result" mode="toc"/>
+                <p><b>TOC not available yet</b></p> <xsl:apply-templates select="$pre-headed-result" mode="toc"/>
                 <xsl:apply-templates select="$pre-headed-result" mode="headers"/>
             </body>
         </html>
@@ -282,7 +281,7 @@
             <xsl:apply-templates select="imvert:attribute" mode="#current"/>
             <!-- als de class ook gegevensgroepen heeft, die attributen hier invoegen -->
             <xsl:for-each select="../imvert:associations/imvert:association">
-                <xsl:variable name="defining-class" select="if (exists(imvert:type-id)) then imf:get-construct-in-derivation-by-id(imvert:type-id) else ()"/>
+                <xsl:variable name="defining-class" select="if (exists(imvert:type-id)) then imf:get-construct-by-id(imvert:type-id) else ()"/>
                 <xsl:if test="$defining-class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')]">
                     <xsl:apply-templates select="$defining-class/imvert:attributes/imvert:attribute" mode="gegevensgroeptype"/>
                 </xsl:if>
@@ -385,7 +384,7 @@
         <xsl:variable name="associations" select="imvert:associations/imvert:association"/>
         <xsl:variable name="compositions" select="$associations[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-association-to-composite')]"/>
         <xsl:for-each select="$compositions">
-            <xsl:variable name="defining-class" select="if (exists(imvert:type-id)) then imf:get-construct-in-derivation-by-id(imvert:type-id) else ()"/>
+            <xsl:variable name="defining-class" select="if (exists(imvert:type-id)) then imf:get-construct-by-id(imvert:type-id) else ()"/>
             <xsl:apply-templates select="$defining-class" mode="detail"/>
             <!--<xsl:apply-templates select="$defining-class/imvert:attributes/imvert:attribute" mode="detail"/>-->
         </xsl:for-each>
@@ -459,7 +458,7 @@
     
    <xsl:template match="imvert:attribute" mode="detail">
         <xsl:variable name="construct" select="../.."/>
-        <xsl:variable name="defining-class" select="if (exists(imvert:type-id)) then imf:get-construct-in-derivation-by-id(imvert:type-id) else ()"/>
+       <xsl:variable name="defining-class" select="if (exists(imvert:type-id)) then imf:get-construct-by-id(imvert:type-id) else ()"/>
         <xsl:variable name="naam" select="$construct/imvert:name/@original"/>
         <xsl:choose>
             <xsl:when test="$defining-class/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')">
@@ -625,7 +624,7 @@
   
     <xsl:template match="imvert:association" mode="detail">
         <xsl:variable name="construct" select="../.."/>
-        <xsl:variable name="defining-class" select="if (exists(imvert:type-id)) then imf:get-construct-in-derivation-by-id(imvert:type-id) else ()"/>
+        <xsl:variable name="defining-class" select="if (exists(imvert:type-id)) then imf:get-construct-by-id(imvert:type-id) else ()"/>
         <xsl:variable name="is-identifying" select="imvert:target-stereotype = imf:get-config-stereotypes('stereotype-name-composite-id')"/>
         <h4>
             <xsl:value-of select="concat('Relatiesoort ', imvert:name/@original)"/>
@@ -671,7 +670,7 @@
     
     <xsl:function name="imf:get-tagged-value-waardenverzameling">
         <xsl:param name="this"/>
-        <xsl:variable name="defining-class" select="if ($this/imvert:type-id) then imf:get-construct-in-derivation-by-id($this/imvert:type-id) else ()"/>
+        <xsl:variable name="defining-class" select="if (exists($this/imvert:type-id)) then imf:get-construct-by-id($this/imvert:type-id) else ()"/>
         <xsl:variable name="defining-stereotype" select="$defining-class/imvert:stereotype"/>
         <xsl:choose>
             <xsl:when test="$defining-stereotype = imf:get-normalized-name('referentielijst','stereotype-name')">
@@ -832,7 +831,7 @@
  
  
     <!-- TOC processing -->
-    <xsl:template match="*|@*" mode="toc">
+    <xsl:template match="node()|@*" mode="toc">
         <!-- TODO -->
     </xsl:template>
     
@@ -897,7 +896,7 @@
     
     <xsl:function name="imf:get-formatted-compiled-documentation" as="item()*">
         <xsl:param name="struct"/>
-        <xsl:sequence select="imf:get-compiled-documentation($struct)"/>
+        <xsl:sequence select="imf:get-compiled-documentation-as-html($struct)"/>
     </xsl:function>
     
 </xsl:stylesheet>

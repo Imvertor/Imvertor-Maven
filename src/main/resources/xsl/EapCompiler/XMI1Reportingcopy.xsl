@@ -43,7 +43,9 @@
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     <xsl:import href="../common/Imvert-common-doc.xsl"/>
     
-       <xsl:variable name="augmented" as="element()">
+    <xsl:variable name="imvert-document" select="imf:document(imf:get-config-string('properties','WORK_EMBELLISH_FILE'))"/>
+    
+    <xsl:variable name="augmented" as="element()">
         <xsl:apply-templates select="/*" mode="augment"/>
     </xsl:variable>
     
@@ -81,7 +83,7 @@
         </xsl:copy>
     </xsl:template>
     
-    <!-- tagged values are of contstructs and collaborations; fill all -->
+    <!-- tagged values are of constructs and collaborations; fill all -->
     <xsl:template match="UML:TaggedValue" mode="documentation">
         <xsl:variable name="id" select="@modelElement"/>
         <xsl:choose>
@@ -97,31 +99,30 @@
                     <xsl:variable name="collaboration" select="$classifier-role/../.."/>
                     <xsl:variable name="collaboration-package" select="$collaboration/../UML:Package[@name=$classifier-role/@name]"/>
                     <xsl:variable name="cp-id" select="if (exists($classifier-role) and $collaboration-package/@xmi.id) then $collaboration-package/@xmi.id else ../../@xmi.id"/>
-                    <xsl:variable name="general-construct" select="if (exists($cp-id)) then imf:get-construct-in-derivation-by-id($cp-id) else ()"/>
-                    <xsl:variable name="compiled-documentation" select="imf:get-compiled-documentation($general-construct[1])"/>
-                    <xsl:variable name="compiled-tagged-values" select="imf:get-compiled-tagged-values($general-construct[1],false())"/>
-                    <xsl:variable name="documentation-tv" as="element()*">
-                        <xsl:if test="exists($compiled-tagged-values)">
-                            <html:p>METADATA</html:p>
-                            <html:ul>
-                                <xsl:for-each select="$compiled-tagged-values">
-                                    <html:li>
-                                        <xsl:value-of select="concat(@original-name,': ',@original-value)"/>
-                                    </html:li>
-                                </xsl:for-each>
-                            </html:ul>
-                        </xsl:if> 
-                    </xsl:variable>
-                    <xsl:variable name="body" as="element()">
-                        <body>
-                            <xsl:sequence select="$compiled-documentation"/>
-                            <xsl:sequence select="$documentation-tv"/>
-                        </body>
-                    </xsl:variable>
-                    
+                    <xsl:variable name="general-construct" select="if (exists($cp-id)) then imf:get-construct-by-id($cp-id,$imvert-document) else ()"/>
                     <!-- note: when copy-down, several associations may be returned. All are identical. -->
                     <xsl:choose>
-                        <xsl:when test="exists($general-construct[1])">
+                        <xsl:when test="exists($general-construct)">
+                            <xsl:variable name="compiled-documentation" select="imf:get-compiled-documentation-as-html($general-construct[1])"/>
+                            <xsl:variable name="compiled-tagged-values" select="imf:get-compiled-tagged-values($general-construct[1],false())"/>
+                            <xsl:variable name="documentation-tv" as="element()*">
+                                <xsl:if test="exists($compiled-tagged-values)">
+                                    <html:p>METADATA</html:p>
+                                    <html:ul>
+                                        <xsl:for-each select="$compiled-tagged-values">
+                                            <html:li>
+                                                <xsl:value-of select="concat(@original-name,': ',@original-value)"/>
+                                            </html:li>
+                                        </xsl:for-each>
+                                    </html:ul>
+                                </xsl:if> 
+                            </xsl:variable>
+                            <xsl:variable name="body" as="element()">
+                                <body>
+                                    <xsl:sequence select="$compiled-documentation"/>
+                                    <xsl:sequence select="$documentation-tv"/>
+                                </body>
+                            </xsl:variable>
                             <xsl:variable name="eadoc" select="imf:xhtml-to-eadoc($body)"/>
                             <xsl:attribute name="value" select="$eadoc" />
                         </xsl:when>
@@ -131,31 +132,6 @@
                     </xsl:choose>
                 </xsl:copy>
             </xsl:when>
-            <?x
-            <xsl:when test="@tag='description'">
-                <xsl:copy>
-                    <xsl:copy-of select="@*[not(name()='value')]"/>
-                    <xsl:variable name="attribute-construct" select="ancestor::UML:Attribute[1]"/>
-                    <xsl:variable name="class-id" select="ancestor::UML:Class/@xmi.id"/>
-                    <!-- note that in the derivation tree file several copies of the same package may be inserted. These are all the same, so select the first occurrence. --> 
-                    <xsl:variable name="class" select="if (exists($class-id)) then imf:get-construct-in-derivation-by-id($class-id)[1] else ()"/>
-                    <xsl:variable name="class-attribute" select="$class/imvert:attributes/imvert:attribute[imvert:name=$attribute-construct/@name]"/>
-                    <xsl:variable name="compiled-documentation" select="imf:get-compiled-documentation($class-attribute)"/>
-                    <xsl:choose>
-                        <xsl:when test="not(exists($attribute-construct))">
-                            <xsl:copy-of select="@value"/>
-                        </xsl:when>
-                        <xsl:when test="exists($class-attribute) ">
-                            <xsl:attribute name="value" select="imf:export-ea-html($compiled-documentation)"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <!-- mag niet -->
-                            <xsl:copy-of select="@value"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:copy>
-            </xsl:when>
-            ?>
             <xsl:when test="@tag=('ref-version','ref-release','supplier-release','supplier-package-name','base-mapping')">
                 <!-- removed, not to show in documentation -->
             </xsl:when>

@@ -42,8 +42,6 @@
     
     <xsl:param name="config-file-path">unknown-file</xsl:param>
    
-    <?x <xsl:output encoding="UTF-8" method="xml" indent="yes"/> x?>
-    
     <xsl:variable name="xsd-folder-path" select="imf:get-config-string('system','xsd-folder-path')"/>
 
     <xsl:variable name="is-forced-nillable" select="imf:boolean(imf:get-config-string('cli','forcenillable'))"/>
@@ -52,7 +50,7 @@
         Determine which type is defined in which package 
     -->
     <xsl:variable name="type-in-package" as="element()*">
-        <xsl:apply-templates select="$document//imvert:class" mode="type-in-package"/>
+        <xsl:apply-templates select="$imvert-document//imvert:class" mode="type-in-package"/>
     </xsl:variable>
     
     <!-- 
@@ -65,12 +63,12 @@
 
     <xsl:variable 
         name="external-schema-names" 
-        select="$document//imvert:package[imvert:stereotype=(imf:get-config-stereotypes(('stereotype-name-external-package','stereotype-name-system-package')))]/imvert:name" 
+        select="$imvert-document//imvert:package[imvert:stereotype=(imf:get-config-stereotypes(('stereotype-name-external-package','stereotype-name-system-package')))]/imvert:name" 
         as="xs:string*"/>
     
     <xsl:variable 
         name="reference-classes" 
-        select="$document//imvert:class[imvert:ref-master]" 
+        select="$imvert-document//imvert:class[imvert:ref-master]" 
         as="node()*"/>
     
     <xsl:variable name="base-namespace" select="/imvert:packages/imvert:base-namespace"/>
@@ -85,15 +83,14 @@
     </xsl:template>
     
     <xsl:template match="/">
-        <xsl:variable name="application-release" select="imf:get-release(/imvert:package)"/>
         <imvert:schemas>
-            <xsl:sequence select="imf:create-info-element('imvert:exporter',$document/imvert:packages/imvert:exporter)"/>
-            <xsl:sequence select="imf:create-info-element('imvert:schema-exported',$document/imvert:packages/imvert:exported)"/>
-            <xsl:sequence select="imf:create-info-element('imvert:schema-filter-version',imf:get-svn-id-info($document/imvert:packages/imvert:filter/imvert:version))"/>
+            <xsl:sequence select="imf:create-info-element('imvert:exporter',$imvert-document/imvert:packages/imvert:exporter)"/>
+            <xsl:sequence select="imf:create-info-element('imvert:schema-exported',$imvert-document/imvert:packages/imvert:exported)"/>
+            <xsl:sequence select="imf:create-info-element('imvert:schema-filter-version',imf:get-svn-id-info($imvert-document/imvert:packages/imvert:filter/imvert:version))"/>
             <xsl:sequence select="imf:create-info-element('imvert:latest-svn-revision',concat($char-dollar,'Id',$char-dollar))"/>
             
             <!-- Schemas for external packages are not generated, but added to the release manually. -->
-            <xsl:apply-templates select="$document/imvert:packages/imvert:package[not(imvert:name = $external-schema-names)]"/>
+            <xsl:apply-templates select="$imvert-document/imvert:packages/imvert:package[not(imvert:name = $external-schema-names)]"/>
         </imvert:schemas>
     </xsl:template>
     
@@ -1246,7 +1243,7 @@
                                 </xs:choice>
                                 <!-- TODO improvement / association class probably not covered well -->
                                 <xsl:sequence select="imf:debug($this,'An association class')"/>
-                                <xsl:variable name="association-class" select="$document//imvert:class[imvert:id=$association-class-id]"/>
+                                <xsl:variable name="association-class" select="$imvert-document//imvert:class[imvert:id=$association-class-id]"/>
                                 <xs:element ref="{imf:get-qname($association-class)}"/>
                             </xs:sequence>
                         </xsl:when>
@@ -1313,7 +1310,7 @@
                                 <!-- TODO improvement / association classes are not covered well by current implementation; check out more contexts where the assoc. class may occur -->
                                 <xsl:when test="$association-class-id">
                                     <xsl:sequence select="imf:debug($this,'Default property definition: an association class')"/>
-                                    <xsl:variable name="association-class" select="$document//imvert:class[imvert:id=$association-class-id]"/>
+                                    <xsl:variable name="association-class" select="$imvert-document//imvert:class[imvert:id=$association-class-id]"/>
                                     <xs:element ref="{imf:get-qname($association-class)}" minOccurs="{$min-occurs-target}" maxOccurs="{$this/imvert:max-occurs}"/>
                                 </xsl:when>
                                 <xsl:otherwise>
@@ -1596,22 +1593,18 @@
     <!-- 
         return the release number of the Model and therefore the XSD to be generated 
     -->
-    <xsl:function name="imf:get-release" as="item()">
+    <xsl:function name="imf:get-release" as="xs:string?">
         <xsl:param name="this" as="node()"/>
         <!-- 
             Assume release of supplier, unless release specified.
         -->
         <xsl:variable name="release" select="$this/imvert:release"/>
         <xsl:choose>
-            <xsl:when test="normalize-space($release)">
+            <xsl:when test="exists($release)">
                 <xsl:value-of select="$release"/>
             </xsl:when>
-            <xsl:when test="$this/imvert:base">
-                <!-- <xsl:sequence select="imf:msg($this,'WARN',concat('Release date not set. Copying from supplier package. Package is: ', $this/imvert:name, ' (', $this/imvert:namespace, ')'))"/> -->
-                <xsl:value-of select="imf:get-release($this/imvert:base)"/>
-            </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="imf:msg('ERROR', 'No (supplier) release found for package: [1] ([2])',($this/imvert:name,$this/imvert:namespace))"/>
+                <xsl:sequence select="imf:msg('ERROR', 'No release found for package: [1] ([2])',($this/imvert:name,$this/imvert:namespace))"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>

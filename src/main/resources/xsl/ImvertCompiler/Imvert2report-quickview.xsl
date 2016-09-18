@@ -220,11 +220,11 @@
                 <!-- a reference element cannot be the root -->
                 <xsl:value-of select="false()"/> 
             </xsl:when>
-            <xsl:when test="$document//imvert:association[imvert:type-name=$type-name and imvert:type-package=$type-package]">
+            <xsl:when test="$imvert-document//imvert:association[imvert:type-name=$type-name and imvert:type-package=$type-package]">
                 <!-- some classes associate with this class -->
                 <xsl:value-of select="false()"/>
             </xsl:when>
-            <xsl:when test="$document//imvert:attribute[imvert:type-name=$type-name and imvert:type-package=$type-package]">
+            <xsl:when test="$imvert-document//imvert:attribute[imvert:type-name=$type-name and imvert:type-package=$type-package]">
                 <!-- some classes have an attribute of this type -->
                 <xsl:value-of select="false()"/>
             </xsl:when>

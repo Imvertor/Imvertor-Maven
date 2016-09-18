@@ -33,7 +33,6 @@
     -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
-    <xsl:import href="../common/Imvert-common-trace.xsl"/>
     
     <xsl:variable name="output-folder" select="imf:get-config-string('system','managedoutputfolder')"/>
     <xsl:variable name="owner" select="imf:get-config-string('cli','owner')"/>
