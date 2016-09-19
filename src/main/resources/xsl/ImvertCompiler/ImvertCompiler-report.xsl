@@ -45,6 +45,8 @@
     <xsl:import href="Imvert2report-taggedvalues.xsl"/>
     <xsl:import href="Imvert2report-trace.xsl"/>
     
+    <xsl:variable name="imvert-document" select="imf:document(imf:get-config-string('properties','WORK_EMBELLISH_FILE'))"/>
+    
     <xsl:template match="/config">
         <xsl:variable name="packages" select="$imvert-document/imvert:packages/imvert:package[not(imvert:ref-master)]"/>
         <report>
