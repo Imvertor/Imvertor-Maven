@@ -163,8 +163,11 @@
                             </xsl:when>
                         </xsl:choose>
                     </xsl:when>
+                    <xsl:when test="empty($map)">
+                        <xsl:sequence select="imf:msg(..,'ERROR','Cannot determine the map for namespace [1]',($pack/imvert:namespace))"/>
+                    </xsl:when>
                     <xsl:otherwise>
-                        <xsl:sequence select="imf:msg('ERROR','Cannot determine an element name for interface name [1] in namespace [2] when using mapping [3]',(.,$pack/imvert:namespace,$conceptual-schema-mapping-name))"/>
+                        <xsl:sequence select="imf:msg(..,'ERROR','Cannot resolve interface name [1] in namespace [2] when using mapping [3]',(.,$pack/imvert:namespace,$conceptual-schema-mapping-name))"/>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
