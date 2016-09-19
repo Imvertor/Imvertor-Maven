@@ -56,7 +56,7 @@
         <xsl:param name="client-construct" as="element()"/>
         <xsl:param name="level" as="xs:integer"/>
         <xsl:variable name="suppliers" select="imf:get-trace-suppliers-for-construct-depth-first($client-construct,$level)"/>
-        <xsl:for-each-group select="$suppliers" group-by="@subpath">
+        <xsl:for-each-group select="$suppliers" group-by="@id">
             <xsl:sequence select="current-group()[1]"/>
         </xsl:for-each-group>
     </xsl:function>

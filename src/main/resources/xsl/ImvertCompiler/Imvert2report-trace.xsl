@@ -73,7 +73,6 @@
                                 
                                 <!-- fetch the suppliers -->
                                 <xsl:variable name="suppliers" select="imf:get-trace-suppliers-for-construct(.,1)"/>
-                               
                                 <xsl:for-each select="$suppliers[1]"><!-- singleton, start at client and process columns by all suppliers -->
                                     <xsl:choose>
                                         <xsl:when test="@type = 'class'">
@@ -114,10 +113,11 @@
         <!-- use the number of subpaths as the number of columns to fill -->
         <xsl:for-each select="$supplier-subpaths">
             <xsl:variable name="current-subpath" select="."/>
+            <xsl:variable name="suppliers-for-this-subpath" select="$suppliers[@subpath = $current-subpath]"/>
             <!-- go through all suppliers, any group may have 1..n suppliers (multiple supplier issue) -->
             <xsl:choose>
-                <xsl:when test="exists($suppliers[@subpath = $current-subpath])">
-                    <xsl:for-each-group select="$suppliers[@subpath = $current-subpath]" group-by="@subpath">
+                <xsl:when test="exists($suppliers-for-this-subpath)">
+                    <xsl:for-each-group select="$suppliers-for-this-subpath" group-by="@subpath">
                         <td>
                             <xsl:for-each select="current-group()">
                                 <xsl:choose>
