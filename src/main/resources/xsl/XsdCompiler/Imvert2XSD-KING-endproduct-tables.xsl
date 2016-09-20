@@ -18,14 +18,7 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<xsl:stylesheet 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-    xmlns:imvert="http://www.imvertor.org/schema/system" 
-    xmlns:ext="http://www.imvertor.org/xsl/extensions" 
-    xmlns:imf="http://www.imvertor.org/xsl/functions" 
-    xmlns:ep="http://www.imvertor.org/schema/endproduct" 
-    exclude-result-prefixes="#all" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:imvert="http://www.imvertor.org/schema/system" xmlns:ext="http://www.imvertor.org/xsl/extensions" xmlns:imf="http://www.imvertor.org/xsl/functions" xmlns:ep="http://www.imvertor.org/schema/endproduct" exclude-result-prefixes="#all" version="2.0">
 
     <!-- 
        Produce a table for each messagetype.
@@ -261,7 +254,6 @@
                     $type-name
                 else
                     'UNKNOWN')"/>
-        <?x xsl:variable name="type-construct-name" select="imf:table-get-associated-type-name($construct/ep:id)"/ x?>
         <xsl:variable name="type-construct-name" select="imf:table-get-associated-type-name($construct)"/>
         <xsl:sequence select="
                 if ($index[1]) then
@@ -274,21 +266,6 @@
     </xsl:function>
 
     <xsl:function name="imf:table-get-associated-type-name">
-        <?x xsl:param name="property-id"/ x?>
-        <!-- een asociation of een attribute -->
-        <?x xsl:variable name="property" select="
-                if ($property-id) then
-                    imf:get-construct-by-id($property-id, $derivation-tree)
-                else
-                    ()"/>
-        <xsl:variable name="property-type" select="
-                if ($property) then
-                    imf:get-construct-by-id($property/imvert:type-id, $derivation-tree)
-                else
-                    ()"/ x?>
-        <?x xsl:variable name="property-type-layers" select="imf:get-construct-in-all-layers($property-type)"/>
-        <xsl:value-of select="$property-type-layers[last()]/*/imvert:name/@original"/ x?>
- 
         <xsl:param name="construct"/>
         <!-- een asociation of een attribute -->
         <xsl:variable name="suppliers" select="imf:get-trace-suppliers-for-construct($construct,1)"/>
