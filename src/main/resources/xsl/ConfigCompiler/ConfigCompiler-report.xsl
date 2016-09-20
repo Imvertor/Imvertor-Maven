@@ -108,6 +108,9 @@
                     <tr>
                         <td>
                             <xsl:value-of select="string-join(name,', ')"/>
+                            <span class="tid">
+                                <xsl:value-of select="@id"/>
+                            </span>
                         </td>
                         <td>
                             <xsl:value-of select="string-join($metamodels/name,',  ')"/>
@@ -128,6 +131,9 @@
                     <tr>
                         <td>
                             <xsl:value-of select="string-join(name,', ')"/>
+                            <span class="tid">
+                                <xsl:value-of select="@id"/>
+                            </span>
                         </td>
                         <td>
                             <xsl:value-of select="string-join($metamodels/name,', ')"/>
@@ -148,6 +154,9 @@
                     <tr>
                         <td>
                             <xsl:value-of select="string-join(name,', ')"/>
+                            <span class="tid">
+                                <xsl:value-of select="@id"/>
+                            </span>
                         </td>
                         <td>
                             <xsl:value-of select="string-join($tagsets/name,', ')"/>

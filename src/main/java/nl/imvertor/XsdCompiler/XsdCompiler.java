@@ -156,7 +156,7 @@ public class XsdCompiler extends Step {
 			valid = valid && transformer.transformStep("properties/RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_ENDPRODUCT_XSD_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XSD_XSLPATH");
 		
 			// and copy the onderlaag
-			XmlFile onderlaag = new XmlFile(configurator.getParm("properties", "STUF_ONDERLAAG"));
+			XmlFile onderlaag = new XmlFile(configurator.getParm("properties", "STUF_ONDERLAAG_BSM"));
 			onderlaag.copyFile(configurator.getParm("properties", "RESULT_XSD_APPLICATION_FOLDER") + File.separator + onderlaag.getName());
 			
 			// and create a table representation; 
@@ -202,11 +202,15 @@ public class XsdCompiler extends Step {
 		runner.debug(logger,"Generating UGM XML schemas to " + xsdApplicationFolder);
 		
 		//TODO let the stylesheet operate on system, not on model file. Try to determine if model file is required alltogether.
-		valid = valid && transformer.transformStep("properties/WORK_SCHEMA_FILE","properties/RESULT_METAMODEL_KINGUGM_XSD_FILEPATH", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH");
+		valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_METAMODEL_KINGUGM_XSD_FILEPATH", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH");
+		
+		// and copy the onderlaag
+		XmlFile onderlaag = new XmlFile(configurator.getParm("properties", "STUF_ONDERLAAG_UGM"));
+		onderlaag.copyFile(configurator.getParm("properties", "RESULT_XSD_APPLICATION_FOLDER") + File.separator + onderlaag.getName());
 		
 		// tell that a schema has been created
 		configurator.setParm("system","schema-created","true");
-		
+				
 		return valid;
 	}
 	

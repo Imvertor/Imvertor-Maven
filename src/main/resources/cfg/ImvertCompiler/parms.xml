@@ -114,7 +114,7 @@
       <IMVERTOR_APPLICATION_LOCATION_URL>./xsd/Imvertor/application/v20160201/Imvertor_Application_v2_0_0.xsd</IMVERTOR_APPLICATION_LOCATION_URL>
       
       <WORK_DERIVATION_FILE>${system/work-imvert-folder-path}/imvertor.15.derive.xml</WORK_DERIVATION_FILE>
-      <IMVERTOR_DERIVATION_XSLPATH>Imvert2derivation.xsl</IMVERTOR_DERIVATION_XSLPATH>
+      <IMVERTOR_DERIVATION_XSLPATH>Imvert2validate-derivation.xsl</IMVERTOR_DERIVATION_XSLPATH>
 
 
    <!-- TODO ? -->

@@ -57,8 +57,13 @@
     <xsl:template match="/">
         <imvert:report>
             <xsl:comment>No data, report through messaging framework</xsl:comment>
-            <xsl:apply-templates select="*"/>
+            <xsl:apply-templates/>
         </imvert:report>
+    </xsl:template>
+    
+    <xsl:template match="imvert:package">
+        <xsl:sequence select="imf:track('Validating derivation for package [1]',imvert:name)"/>
+        <xsl:apply-templates/>
     </xsl:template>
     
     <xsl:template match="imvert:class">
@@ -172,8 +177,8 @@
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:report-warning($client,true(),
-                    'Cannot compare supplier type [1] to client type [2]; types may be incompatible.',
-                    ($supplier/imvert:type-name,$client/imvert:type-name))"/>
+                    'Cannot compare client type [1] to  supplier type [2]; types may be incompatible.',
+                    ($client/imvert:type-name, $supplier/imvert:type-name))"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -207,8 +212,8 @@
             </xsl:when>
             <xsl:when test="$client/imvert:type-name = 'scalar-integer'">
                 <xsl:sequence select="imf:report-error($client,not($supplier-is-int),
-                    'Supplier type [1] is not an integer.', 
-                    ($supplier/imvert:type-name))"/>
+                    'Client type [1] is not a(n) [2]', 
+                    ('scalar-integer', $supplier/imvert:type-name))"/>
                 <xsl:sequence select="imf:report-error($client,$supplier/imvert:total-digits and not($client/imvert:total-digits),
                     'Client type size must be specified')"/>
                 <xsl:sequence select="imf:report-error($client,xs:integer($client/imvert:total-digits) gt xs:integer($supplier/imvert:total-digits),
@@ -217,7 +222,7 @@
             </xsl:when>
             <xsl:when test="$client/imvert:type-name = 'scalar-decimal'">
                 <xsl:sequence select="imf:report-error($client,not($supplier-is-dec),
-                    'Supplier type [1] is not a decimal.', ($supplier/imvert:type-name))"/>
+                    'Client type [1] is not a [2].', ('scalar-decimal',$supplier/imvert:type-name))"/>
                 <xsl:sequence select="imf:report-error($client,xs:integer($client/imvert:total-digits) gt xs:integer($supplier/imvert:total-digits),
                     'Client type size must be equal or smaller than [1]',($supplier/imvert:total-digits))"/>
                 <xsl:sequence select="imf:report-error($client,xs:integer($client/imvert:faction-digits) gt xs:integer($supplier/imvert:total-digits),
@@ -225,12 +230,18 @@
             </xsl:when>
             <xsl:when test="$client/imvert:type-name = ('scalar-date', 'scalar-datetime', 'scalar-time', 'scalar-boolean', 'scalar-year', 'scalar-indic')">
                 <xsl:sequence select="imf:report-error($client,not($client/imvert:type-name = $supplier/imvert:type-name),
-                    'Supplier type [1] is not equal to client type [2].', 
-                    ($supplier/imvert:type-name, $client/imvert:type-name))"/>
+                    'Client type [1] is not equal to supplier type [2].', 
+                    ($client/imvert:type-name, $supplier/imvert:type-name))"/>
+            </xsl:when>
+            <xsl:when test="$client/imvert:type-name = ('scalar-postcode')">
+                <!-- no rules defined yet -->
+            </xsl:when>
+            <xsl:when test="$client/imvert:type-name = ('scalar-uri')">
+                <!-- no rules defined yet -->
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:report-warning($client,true(),
-                    'Cannot compare client [1] to supplier [2] because the type is unknown',
+                    'Cannot compare client [1] to supplier [2] because no rules are defined for the client type',
                     ($client/imvert:type-name, $supplier/imvert:type-name))"/>
             </xsl:otherwise>
         </xsl:choose>

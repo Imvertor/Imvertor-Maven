@@ -132,8 +132,14 @@
         imvert:supertype[imvert:type-id]/imvert:type-name |
         imvert:supertype[imvert:type-id]/imvert:xsd-substitutiongroup">
         <!-- check if the type is taken from a conceptual schema package -->
+        <xsl:variable name="is-intern" select="exists(ancestor::imvert:package[@origin = 'intern'])"/>
         <xsl:variable name="class" select="imf:get-construct-by-id(../imvert:type-id)"/>
+        <xsl:variable name="pack" select="$class/ancestor::imvert:package[imvert:namespace][1]"/>
         <xsl:choose>
+            <xsl:when test="$is-intern">
+                <!-- when taken from intern, all external references are already resolved. -->
+                <xsl:next-match/>
+            </xsl:when>
             <xsl:when test="empty($class)">
                 <xsl:next-match/>
             </xsl:when>
@@ -142,7 +148,6 @@
             </xsl:when>
             <xsl:when test="imf:is-conceptual($class)">
                 <!-- class in a conceptual schema package -->
-                <xsl:variable name="pack" select="$class/ancestor::imvert:package[imvert:namespace][1]"/>
                 <xsl:variable name="map" select="imf:get-conceptual-schema-map($pack/imvert:namespace,$conceptual-schema-mapping-name)"/>
                 <xsl:variable name="mapped-name" select="$map/type[@name=current()/@original]"/>
                 <xsl:choose>

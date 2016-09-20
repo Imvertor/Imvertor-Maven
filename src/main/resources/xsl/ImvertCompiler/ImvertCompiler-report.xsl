@@ -45,6 +45,8 @@
     <xsl:import href="Imvert2report-taggedvalues.xsl"/>
     <xsl:import href="Imvert2report-trace.xsl"/>
     
+    <!-- TODO context document must be imvert file, not the config file! -->
+    
     <xsl:variable name="imvert-document" select="imf:document(imf:get-config-string('properties','WORK_EMBELLISH_FILE'))"/>
     
     <xsl:template match="/config">

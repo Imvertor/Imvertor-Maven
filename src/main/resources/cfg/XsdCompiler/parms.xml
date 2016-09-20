@@ -118,8 +118,10 @@
       --> 
       <IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH>
       <RESULT_METAMODEL_KINGUGM_XSD_FILEPATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_METAMODEL_KINGUGM_XSD_FILEPATH>
-     
-      <!-- internediate XML file -->
+      <!-- locatie van de stuf onderlaag -->
+      <STUF_ONDERLAAG_UGM>${system/managedinputfolder}/xsd/other/KING-UGM/stuf0301.xsd</STUF_ONDERLAAG_UGM>
+      
+      <!-- intermediate XML file -->
       <RESULT_XSD_XML_FILE_PATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_XSD_XML_FILE_PATH>   
       
       <!-- workfolder for serialized excel -->
@@ -131,7 +133,7 @@
       <RESULT_ENDPRODUCT_XSD_FILE_PATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_ENDPRODUCT_XSD_FILE_PATH>
       
       <!-- locatie van de stuf onderlaag -->
-      <STUF_ONDERLAAG>${system/managedinputfolder}/xsd/other/KING/stuf0301.xsd</STUF_ONDERLAAG>
+      <STUF_ONDERLAAG_BSM>${system/managedinputfolder}/xsd/other/KING-BSM/stuf0301.xsd</STUF_ONDERLAAG_BSM>
       
       <!-- common: -->
    

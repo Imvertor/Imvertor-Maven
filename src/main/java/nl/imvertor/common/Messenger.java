@@ -143,20 +143,22 @@ public class Messenger extends SequenceWriter {
 	public void writeMsg(String src, String type, String name, String text, String id) {
 		if (exists(src) && exists(type) && exists(text)) {
 			XMLConfiguration cfg = Configurator.getInstance().getXmlConfiguration();
-			int messageIndex = cfg.getMaxIndex("messages/message") + 2;   // -1 when no messages.
-			cfg.addProperty("messages/message", "");
-			cfg.addProperty("messages/message[" + messageIndex + "]/src", src);
-			cfg.addProperty("messages/message[" + messageIndex + "]/type", type);
-			cfg.addProperty("messages/message[" + messageIndex + "]/name", name);
-			cfg.addProperty("messages/message[" + messageIndex + "]/text", text);
-			// split up the message 
-			Matcher m = messagePattern.matcher(text);
-			if (m.matches()) {
-				cfg.addProperty("messages/message[" + messageIndex + "]/stepname", m.group(1));
-				cfg.addProperty("messages/message[" + messageIndex + "]/stepconstruct", m.group(2));
-				cfg.addProperty("messages/message[" + messageIndex + "]/steptext", m.group(3));
+			if (cfg != null) {
+				int messageIndex = cfg.getMaxIndex("messages/message") + 2;   // -1 when no messages.
+				cfg.addProperty("messages/message", "");
+				cfg.addProperty("messages/message[" + messageIndex + "]/src", src);
+				cfg.addProperty("messages/message[" + messageIndex + "]/type", type);
+				cfg.addProperty("messages/message[" + messageIndex + "]/name", name);
+				cfg.addProperty("messages/message[" + messageIndex + "]/text", text);
+				// split up the message 
+				Matcher m = messagePattern.matcher(text);
+				if (m.matches()) {
+					cfg.addProperty("messages/message[" + messageIndex + "]/stepname", m.group(1));
+					cfg.addProperty("messages/message[" + messageIndex + "]/stepconstruct", m.group(2));
+					cfg.addProperty("messages/message[" + messageIndex + "]/steptext", m.group(3));
+				}
+				if (id != null) cfg.addProperty("messages/message[" + messageIndex + "]/id", id);
 			}
-			if (id != null) cfg.addProperty("messages/message[" + messageIndex + "]/id", id);
 		}
 	}
 	public void writeMsg(String src, String type, String name, String text) {

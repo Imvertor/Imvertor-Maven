@@ -129,7 +129,7 @@
             </xsl:when>
             <xsl:otherwise>
                 <xsl:copy>
-                    <xsl:attribute name="origin">system</xsl:attribute>
+                    <xsl:attribute name="origin">intern</xsl:attribute>
                     <imvert:name>
                         <xsl:copy-of select="@*"/>
                         <xsl:value-of select="concat(imvert:name,' [',../imvert:application,']')"/>
