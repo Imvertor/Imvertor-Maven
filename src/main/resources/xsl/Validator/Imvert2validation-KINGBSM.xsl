@@ -54,9 +54,10 @@
         <xsl:variable name="is-combined-identification" select="imf:get-tagged-value($this,'Gecombineerde identificatie')"/>
         <xsl:variable name="target-navigable" select="imvert:target-navigable"/>
         <xsl:variable name="stereotypes" select="imvert:stereotype"/>
+        <xsl:variable name="class-stereotypes" select="$class/imvert:stereotype"/>
         
         <!-- Task #487793 - Check in imvertor op waarde van relatienaam (bij stereotype EntiteitRelatie) -->
-        <xsl:variable name="accepted-relation-names" select="imf:get-config-stereotype-entitity-relation-constraint($stereotypes)"/>
+        <xsl:variable name="accepted-relation-names" select="imf:get-config-stereotype-entity-relation-constraint($class-stereotypes)"/>
         
         <!--validation-->
         
@@ -65,9 +66,9 @@
             (
             exists($accepted-relation-names)
             and
-            empty(imvert:name = $accepted-relation-names)
+            not(imvert:name = $accepted-relation-names)
             ), 
-            'Relation with stereotype [1] has inappropriate name',($stereotypes))"/>
+            'Relation with stereotype [1] for class with stereotype [2] has inappropriate name',($stereotypes,$class-stereotypes))"/>
     </xsl:template>
     
 </xsl:stylesheet>

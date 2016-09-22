@@ -162,6 +162,7 @@
                                 <xsl:apply-templates select="$construct-group[last()]" mode="#current"/>
                             </xsl:for-each-group>
                             <xsl:apply-templates select="($stereo-group/toplevel)[last()]" mode="#current"/>
+                            <xsl:apply-templates select="($stereo-group/entity-relation-constraint)[last()]" mode="#current"/>
                         </stereo>
                     </xsl:for-each-group> 
                 </stereotypes>

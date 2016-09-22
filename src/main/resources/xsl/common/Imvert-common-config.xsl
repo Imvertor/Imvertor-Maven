@@ -149,14 +149,14 @@
     </xsl:function>
     
     <!-- 
-        Return the entitity-relation-constraint on the stereotype.
+        Return the entity-relation-constraint on the stereotype.
         
         Pass the normalized stereotype name.
     -->
-    <xsl:function name="imf:get-config-stereotype-entitity-relation-constraint" as="xs:string*">
+    <xsl:function name="imf:get-config-stereotype-entity-relation-constraint" as="xs:string*">
         <xsl:param name="names" as="xs:string*"/>
         <xsl:variable name="stereo" select="$configuration-metamodel-file//stereotypes/stereo[name = $names]"/>
-        <xsl:variable name="r" select="$stereo/entitity-relation-constraint/relation[@lang=$language]"/>
+        <xsl:variable name="r" select="$stereo/entity-relation-constraint/relation[@lang=$language]"/>
         <xsl:choose>
             <xsl:when test="$r">
                 <xsl:sequence select="$r"/>

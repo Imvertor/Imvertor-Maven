@@ -94,8 +94,8 @@
            <!-- Hiervoor moet de tagged-value short-alias toegevoegd worden aan de tvset. -->
            <xsl:variable name="prefix">
                <xsl:choose>
-                   <xsl:when test="/imvert:packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='verkorte alias']">
-                       <xsl:value-of select="/imvert:packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='verkorte alias']/imvert:value"/>
+                   <xsl:when test="/imvert:packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='Verkorte alias']">
+                       <xsl:value-of select="/imvert:packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='Verkorte alias']/imvert:value"/>
                    </xsl:when>
                    <xsl:otherwise>TODO</xsl:otherwise>
                </xsl:choose>

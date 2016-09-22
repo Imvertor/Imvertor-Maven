@@ -439,8 +439,8 @@
     <xsl:function name="imf:boolean" as="xs:boolean">
         <xsl:param name="this" as="item()?"/>
         <xsl:value-of select="
-            if (string($this)=('yes','true','1')) then true() 
-            else if (string($this)=('no','false','0')) then false() 
+            if (lower-case($this)=('yes','true','ja','1')) then true() 
+            else if (lower-case($this)=('no','false','nee','0')) then false() 
                 else if ($this) then true() 
                     else false()"/>
     </xsl:function>

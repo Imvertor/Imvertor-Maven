@@ -81,10 +81,13 @@ public class ComplyCompiler  extends Step {
 				prettyPrinter.transform(contentFile.getCanonicalPath(), "c:/Temp/comply/__content.template.xml");
 			 
 				ZipFile templateOkay = new ZipFile("c:/Temp/comply/Testberichten gevuld.xlsx");
-				AnyFolder serializeFolderOkay = new AnyFolder(unzipFolderpath);
-				templateOkay.serializeToXml(serializeFolder);
-				prettyPrinter.transform(contentFile.getCanonicalPath(), "c:/temp/comply/before.xml");
-				serializeFolderOkay.delete();
+				if (templateOkay.isFile()) {
+					AnyFolder serializeFolderOkay = new AnyFolder(unzipFolderpath);
+					templateOkay.serializeToXml(serializeFolder);
+					prettyPrinter.transform(contentFile.getCanonicalPath(), "c:/temp/comply/before.xml");
+					serializeFolderOkay.delete();
+				} else 
+					develop = false;
 			}
 			
 			configurator.setParm("system", "comply-content-file", contentFile.getCanonicalPath());

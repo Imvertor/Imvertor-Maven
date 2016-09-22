@@ -280,7 +280,7 @@ public class Runner {
 	 * @param text
 	 */
 	public void debug(Logger logger, String text) {
-		if (getDebug()) messenger.writeMsg(logger.getName(), "DEBUG", "", text);
+		if (getDebug()) messenger.writeMsg(logger.getName(), "DEBUG", "", text, null);
 		logger.debug(text);
 	}
 	/**

@@ -134,7 +134,7 @@ public class Messenger extends SequenceWriter {
 	
 	/**
 	 * Write a message directly to the configuration file.
-	 * This is confined to warnings and errors.
+	 * This is confined to warnings, errors, and debug in debug mode.
 	 * 
 	 * @param type
 	 * @param text

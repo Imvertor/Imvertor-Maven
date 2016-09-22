@@ -35,5 +35,49 @@
     <xsl:import href="Imvert2validation-KING.xsl"/>
     
     <!-- TODO added validation for KING exchange models UGM -->
-
+    
+    <xsl:template match="imvert:association[not(imvert:aggregation = 'composite')]">
+        <!-- setup -->
+        <xsl:variable name="alias" select="imvert:alias"/>
+        
+        <!-- validate -->
+        <xsl:sequence select="imf:report-error(., 
+            empty($alias), 
+            'Association without alias')"/>
+        
+        <xsl:next-match/>
+    </xsl:template>
+   
+    <xsl:template match="imvert:association[imvert:aggregation = 'composite']">
+        <!-- setup -->
+       
+        <!-- validate -->
+       
+        
+        <xsl:next-match/>
+    </xsl:template>
+    
+    <xsl:template match="imvert:is-id">
+        <!-- setup -->
+        <xsl:variable name="tv-k" select="imf:get-tagged-value-element(..,'Indicatie kerngegeven')"/>
+        <!-- validate -->
+        <xsl:sequence select="imf:report-warning(.., 
+            imf:boolean(.) and not(imf:boolean($tv-k)), 
+            'Identifiable construct must assign yes to the tagged value [1]', $tv-k/imvert:name/@original)"/>
+        
+        <xsl:next-match/>
+    </xsl:template>
+    
+    <xsl:template match="imvert:name">
+        <!-- setup -->
+        <xsl:variable name="name" select="imvert:name"/>
+        
+        <!-- validate -->
+        <xsl:sequence select="imf:report-warning(.., 
+            matches($name,'^[A-Za-z0-9\-\.]+$'), 
+            'Name has unsupported characters', ())"/>
+        
+        <xsl:next-match/>
+    </xsl:template>
+    
 </xsl:stylesheet>
