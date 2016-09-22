@@ -252,7 +252,13 @@
             </xsl:when>
             <xsl:when test="$scheme = 'element-name'">
                 <!-- the name of an element may not contain * or ? or the like -->
-                <xsl:value-of select="imf:extract(normalize-space(translate($name, '/', '-')),'[A-Za-z0-9_:][A-Za-z0-9_\.\-:]+')"/>
+                <xsl:variable name="translated-name" select="imf:extract(normalize-space(translate($name, '/', '-')),'[A-Za-z0-9_:][A-Za-z0-9_\.\-:]+')"/>
+                <xsl:value-of select="concat(lower-case(substring($translated-name,1,1)),substring($translated-name,2,string-length($translated-name)-1))"/>
+            </xsl:when>
+            <xsl:when test="$scheme = 'type-name'">
+                <!-- the name of an element may not contain * or ? or the like -->
+                <xsl:variable name="translated-name" select="imf:extract(normalize-space(translate($name, '/', '-')),'[A-Za-z0-9_:][A-Za-z0-9_\.\-:]+')"/>
+                <xsl:value-of select="concat(upper-case(substring($translated-name,1,1)),substring($translated-name,2,string-length($translated-name)-1))"/>
             </xsl:when>
             <xsl:when test="$scheme = 'addition-relation-name'">
                 <xsl:value-of select="concat(upper-case(substring($name,1,1)),substring($name,2,string-length($name)-1))"/>

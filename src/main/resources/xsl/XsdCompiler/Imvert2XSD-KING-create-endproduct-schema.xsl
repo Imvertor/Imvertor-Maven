@@ -54,7 +54,7 @@
 	</xsl:template>
 
 	<xsl:template match="ep:message">
-		<xs:element name="{ep:name}">
+		<xs:element name="{ep:tech-name}">
 			<xs:complexType>
 				<xsl:apply-templates select="ep:seq"/>
 			</xs:complexType>
@@ -101,7 +101,7 @@
 						<xsl:when test="contains(ep:type-name,':') and ep:enum">
 							<xsl:attribute name="name" select="ep:tech-name"/>
 							<xsl:attribute name="type">
-								<xsl:value-of select="concat($prefix,':simpleType-',ep:tech-name,'-',generate-id())"/>
+								<xsl:value-of select="concat($prefix,':',imf:get-normalized-name(concat('simpleType-',ep:tech-name,'-',generate-id()),'type-name'))"/>
 							</xsl:attribute>
 							<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
 							<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>					
@@ -113,7 +113,7 @@
 							<xsl:choose>
 								<xsl:when test="(ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:regels or ep:enum) and ep:type-name and $globalComplexTypes='yes'">
 									<xsl:attribute name="type">
-										<xsl:value-of select="concat($prefix,':simpleType-',ep:tech-name,'-',$id,'-',generate-id())"/>
+										<xsl:value-of select="concat($prefix,':',imf:get-normalized-name(concat('simpleType-',ep:tech-name,'-',generate-id()),'type-name'))"/>
 									</xsl:attribute>
 									<xsl:comment select="'situatie 1'"/>
 								</xsl:when>
@@ -124,8 +124,8 @@
 									<xs:complexType>
 										<xs:simpleContent>
 											<xs:extension>
-												<!--xsl:attribute name="base" select="concat($prefix,':simpleType-',ep:tech-name,'-',$id,'-',generate-id())"/-->
-												<xsl:attribute name="base" select="concat($prefix,':simpleType-',ep:tech-name,'-',generate-id())"/>
+												<!--xsl:attribute name="base" select="concat($prefix,':SimpleType-',ep:tech-name,'-',$id,'-',generate-id())"/-->
+												<xsl:attribute name="base" select="concat($prefix,':',imf:get-normalized-name(concat('simpleType-',ep:tech-name,'-',generate-id()),'type-name'))"/>
 												<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
 												<!--xsl:apply-templates select=".//ep:construct[@ismetadata]" mode="generateAttributes"/-->
 											</xs:extension>						
@@ -420,7 +420,7 @@
 			</xsl:choose>				
 		</xsl:variable-->
 		<xsl:choose>
-			<xsl:when test="@componentType='groupType'">
+			<xsl:when test="@type='groupType'">
 				<xs:group>
 					<xsl:attribute name="name" select="ep:tech-name"/>
 					<xsl:apply-templates select="ep:seq[not(@ismetadata)]"/>
@@ -482,7 +482,7 @@
 		<xsl:choose>
 			<xsl:when test="contains(ep:tech-name,':')"/>		
 			<xsl:when test="contains(ep:type-name,':')">
-				<xs:simpleType name="{concat('simpleType-',ep:tech-name,'-',generate-id())}">
+				<xs:simpleType name="{imf:get-normalized-name(concat('simpleType-',ep:tech-name,'-',generate-id()),'type-name')}">
 					<xs:restriction>
 						<xsl:attribute name="base">
 							<xsl:value-of select="ep:type-name"/>
@@ -590,7 +590,7 @@
 				</xs:simpleType>
 			</xsl:when>
 			<xsl:otherwise>
-				<xs:simpleType name="{concat('simpleType-',ep:tech-name,'-',generate-id())}">
+				<xs:simpleType name="{imf:get-normalized-name(concat('simpleType-',ep:tech-name,'-',generate-id()),'type-name')}">
 					<xs:restriction>
 						<xsl:attribute name="base">
 							<xsl:choose>
