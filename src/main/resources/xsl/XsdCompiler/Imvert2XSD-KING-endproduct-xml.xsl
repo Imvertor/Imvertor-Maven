@@ -163,8 +163,6 @@
                    <xsl:when test="@type='groupType' and $packages//imvert:class[imvert:id = $type-id]">
                        <xsl:variable name="type-id" select="$packages//imvert:class[imvert:id = $type-id]/imvert:id"/>
                        <ep:construct type="groupType">
-                           <?x xsl:sequence
-                               select="imf:create-output-element('ep:name', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name,'package-name'),'-',$berichtCode))" / x?>
                            <xsl:sequence
                                select="imf:create-output-element('ep:tech-name', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
                            <ep:seq>
@@ -204,8 +202,16 @@
                    </xsl:when>
                    <xsl:when test="$packages//imvert:class[imvert:id = $type-id]">
                        <ep:construct>
-                            <xsl:sequence
-                               select="imf:create-output-element('ep:tech-name', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+                           <xsl:choose>
+                               <xsl:when test="$packages//imvert:class[imvert:id = $type-id]/imvert:alias">
+                                   <xsl:sequence
+                                       select="imf:create-output-element('ep:tech-name', concat($packages//imvert:class[imvert:id = $type-id]/imvert:alias,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+                               </xsl:when>
+                               <xsl:otherwise>
+                                   <xsl:sequence
+                                       select="imf:create-output-element('ep:tech-name', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />                                       
+                               </xsl:otherwise>
+                           </xsl:choose>
                            <ep:seq>
                                <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                    mode="create-message-content">
