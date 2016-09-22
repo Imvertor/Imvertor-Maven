@@ -730,9 +730,9 @@
 							<ep:min-occurs>0</ep:min-occurs>
 							<ep:position>
 								<xsl:choose>
-									<xsl:when test="imvert:name='gelijk">100</xsl:when>
-									<xsl:when test="imvert:name='vanaf">125</xsl:when>
-									<xsl:when test="imvert:name='totEnMet">150</xsl:when>
+									<xsl:when test="imvert:name='gelijk'">100</xsl:when>
+									<xsl:when test="imvert:name='vanaf'">125</xsl:when>
+									<xsl:when test="imvert:name='totEnMet'">150</xsl:when>
 								</xsl:choose>								
 							</ep:position>
 							<ep:id><xsl:value-of select="$type-id"/></ep:id>

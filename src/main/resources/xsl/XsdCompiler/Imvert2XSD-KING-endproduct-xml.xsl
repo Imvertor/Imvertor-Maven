@@ -92,9 +92,16 @@
             <xsl:sequence select="imf:create-output-element('ep:name', /imvert:packages/imvert:project)"/>
            <xsl:sequence select="imf:create-output-element('ep:namespace', /imvert:packages/imvert:base-namespace)"/>
            <!-- Hiervoor moet de tagged-value short-alias toegevoegd worden aan de tvset. -->
-            <?x xsl:variable name="prefix"/ x?>
-            <xsl:sequence select="imf:create-output-element('ep:namespace-prefix', 'TO-DO')"/>
-            <xsl:sequence select="imf:create-output-element('ep:patch-number', 'TO-DO')"/>
+           <xsl:variable name="prefix">
+               <xsl:choose>
+                   <xsl:when test="/imvert:packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='verkorte alias']">
+                       <xsl:value-of select="/imvert:packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='verkorte alias']/imvert:value"/>
+                   </xsl:when>
+                   <xsl:otherwise>TODO</xsl:otherwise>
+               </xsl:choose>
+           </xsl:variable>
+           <xsl:sequence select="imf:create-output-element('ep:namespace-prefix', $prefix)"/>
+           <xsl:sequence select="imf:create-output-element('ep:patch-number', 'TO-DO')"/>
             <xsl:sequence select="imf:create-output-element('ep:release', /imvert:packages/imvert:release)"/>
             
            <xsl:variable name="packages" select="/imvert:packages"/>
