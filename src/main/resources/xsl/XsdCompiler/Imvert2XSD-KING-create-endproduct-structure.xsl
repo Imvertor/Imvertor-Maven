@@ -708,10 +708,16 @@
 							<ep:min-occurs>1</ep:min-occurs>
 							<ep:position>1</ep:position>
 							<ep:id><xsl:value-of select="$type-id"/></ep:id>
-							<?x xsl:sequence
-								select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'package-name'),'-',$berichtCode))" / x?>
-							<xsl:sequence
-								select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+							<xsl:choose>
+								<xsl:when test="//imvert:class[imvert:id = $type-id]/imvert:alias">
+									<xsl:sequence
+										select="imf:create-output-element('ep:href', concat(//imvert:class[imvert:id = $type-id]/imvert:alias,'-',imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:sequence
+										select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+								</xsl:otherwise>
+							</xsl:choose>
 						</ep:constructRef>
 					</ep:seq>
 				</ep:construct>
@@ -736,10 +742,16 @@
 								</xsl:choose>								
 							</ep:position>
 							<ep:id><xsl:value-of select="$type-id"/></ep:id>
-							<?x xsl:sequence
-								select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'package-name'),'-',$berichtCode))" / x?>
-							<xsl:sequence
-								select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+							<xsl:choose>
+								<xsl:when test="//imvert:class[imvert:id = $type-id]/imvert:alias">
+									<xsl:sequence
+										select="imf:create-output-element('ep:href', concat(//imvert:class[imvert:id = $type-id]/imvert:alias,'-',imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:sequence
+										select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+								</xsl:otherwise>
+							</xsl:choose>
 						</ep:constructRef>
 					</xsl:when>
 					<xsl:when test="$context = 'scope'">
@@ -765,10 +777,16 @@
 									<ep:min-occurs>1</ep:min-occurs>
 									<ep:position>1</ep:position>
 									<ep:id><xsl:value-of select="$type-id"/></ep:id>
-									<?x xsl:sequence
-										select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'package-name'),'-',$berichtCode))" / x?>
-									<xsl:sequence
-										select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+									<xsl:choose>
+										<xsl:when test="//imvert:class[imvert:id = $type-id]/imvert:alias">
+											<xsl:sequence
+												select="imf:create-output-element('ep:href', concat(//imvert:class[imvert:id = $type-id]/imvert:alias,'-',imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:sequence
+												select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+										</xsl:otherwise>
+									</xsl:choose>
 								</ep:constructRef>
 							</ep:seq>
 						</ep:construct>
@@ -796,10 +814,16 @@
 									<ep:min-occurs>1</ep:min-occurs>
 									<ep:position>1</ep:position>
 									<ep:id><xsl:value-of select="$type-id"/></ep:id>
-									<?x xsl:sequence
-										select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'package-name'),'-',$berichtCode))" / x?>
-									<xsl:sequence
-										select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+									<xsl:choose>
+										<xsl:when test="//imvert:class[imvert:id = $type-id]/imvert:alias">
+											<xsl:sequence
+												select="imf:create-output-element('ep:href', concat(//imvert:class[imvert:id = $type-id]/imvert:alias,'-',imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:sequence
+												select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+										</xsl:otherwise>
+									</xsl:choose>
 								</ep:constructRef>
 							</ep:seq>
 						</ep:construct>
@@ -818,10 +842,16 @@
 					<ep:min-occurs>1</ep:min-occurs>
 					<ep:position>200</ep:position>
 					<ep:id><xsl:value-of select="$type-id"/></ep:id>
-					<?x xsl:sequence
-						select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'package-name'),'-',$berichtCode))" / x?>
-					<xsl:sequence
-						select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+					<xsl:choose>
+						<xsl:when test="//imvert:class[imvert:id = $type-id]/imvert:alias">
+							<xsl:sequence
+								select="imf:create-output-element('ep:href', concat(//imvert:class[imvert:id = $type-id]/imvert:alias,'-',imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence
+								select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+						</xsl:otherwise>
+					</xsl:choose>
 				</ep:constructRef>
 			</xsl:when>
 			<xsl:when test="contains($berichtCode,'Sh')">
@@ -1391,8 +1421,16 @@
 					<ep:min-occurs>0</ep:min-occurs>
 					<ep:position>1</ep:position>
 					<ep:id><xsl:value-of select="$type-id"/></ep:id>
-					<xsl:sequence
-						select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+					<xsl:choose>
+						<xsl:when test="//imvert:class[imvert:id = $type-id]/imvert:alias">
+							<xsl:sequence
+								select="imf:create-output-element('ep:href', concat(//imvert:class[imvert:id = $type-id]/imvert:alias,'-',imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence
+								select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+						</xsl:otherwise>
+					</xsl:choose>
 				</ep:constructRef>
 				<!-- The following 'apply-templates' initiates the processing of the 
 					class which contains the attributes of the 'relatie' type element. -->
@@ -1461,8 +1499,16 @@
 					<ep:min-occurs>0</ep:min-occurs>
 					<ep:position>1</ep:position>
 					<ep:id><xsl:value-of select="$type-id"/></ep:id>
-					<xsl:sequence
-						select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+					<xsl:choose>
+						<xsl:when test="//imvert:class[imvert:id = $type-id]/imvert:alias">
+							<xsl:sequence
+								select="imf:create-output-element('ep:href', concat(//imvert:class[imvert:id = $type-id]/imvert:alias,'-',imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence
+								select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-',$berichtCode))" />
+						</xsl:otherwise>
+					</xsl:choose>
 				</ep:constructRef>
 				<!-- The following 'apply-templates' initiates the processing of the 
 					class which contains the attributes of the 'relatie' type element. -->
