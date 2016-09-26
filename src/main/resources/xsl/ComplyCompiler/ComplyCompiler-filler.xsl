@@ -90,7 +90,7 @@
     <xsl:variable name="drawings2" select="$__content/cw:files/cw:file[@path = 'xl\drawings\vmlDrawing2.vml']/*:xml"/>
     
     <xsl:template match="/">
-        <xsl:if test="$debug">
+        <xsl:if test="$debugging">
             <xsl:result-document href="file:/c:/temp/flat.xml">
                 <xsl:sequence select="$message-set-flat"/>
             </xsl:result-document>

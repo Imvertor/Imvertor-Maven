@@ -49,9 +49,13 @@
         variables available to all stylesheets
         ==========================================
     -->
-    <xsl:variable name="imvertor-version" select="imf:get-config-string('run','imvertor-version','(UNKNOWN)')"/>
+    <xsl:variable name="imvertor-start" select="imf:get-config-string('run','start','(UNKNOWN TIME)')"/>
+    <xsl:variable name="imvertor-version" select="imf:get-config-string('run','version','(UNKNOWN VERSION)')"/>
+    <xsl:variable name="imvertor-release" select="imf:get-config-string('run','release','(UNKNOWN RELEASE)')"/>
+    
     <xsl:variable name="debug" select="imf:get-config-string('cli','debug','false')"/>
-
+    <xsl:variable name="debugging" select="imf:boolean($debug)"/>
+    
     <xsl:variable name="generation-date" select="imf:get-config-string('run','start','1900-01-01T00:00:00.0000')"/>
 
     <xsl:variable name="owner-name" select="imf:get-normalized-name(imf:get-config-string('cli','owner'),'system-name')"/>

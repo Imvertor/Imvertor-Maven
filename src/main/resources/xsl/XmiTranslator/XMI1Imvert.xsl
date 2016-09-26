@@ -84,7 +84,7 @@
     
     <xsl:template match="/">
         <imvert:packages>
-            <xsl:if test="imf:boolean($debug)">
+            <xsl:if test="$debugging">
                 <debug-info>
                     <xref-props>
                         <xsl:sequence select="$parsed-xref-properties"/> 
@@ -94,7 +94,7 @@
                     </additional-tagged-values>
                 </debug-info>
             </xsl:if>
-            <xsl:sequence select="imf:create-output-element('imvert:debug',$debug)"/>
+            <xsl:sequence select="imf:create-output-element('imvert:debug',$debugging)"/>
             <xsl:sequence select="imf:create-output-element('imvert:project',$project-name)"/>
             <xsl:sequence select="imf:create-output-element('imvert:application',$application-package-name)"/>
             <xsl:sequence select="imf:create-output-element('imvert:generated',$generation-date)"/>

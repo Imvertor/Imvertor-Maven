@@ -48,7 +48,7 @@
         </xsl:for-each>
     </xsl:variable>
     
-    <xsl:variable name="must-show-keywords" select="/imvert:packages/imvert:phase = ('0','1') or imf:boolean($debug)"/>
+    <xsl:variable name="must-show-keywords" select="/imvert:packages/imvert:phase = ('0','1') or $debugging"/>
     
     <!-- functions that generate the complete set of phrases -->    
     <!-- sample: "kadastraal_object" for http://www.kadaster.nl/id/begrippen/kadastraal_object -->

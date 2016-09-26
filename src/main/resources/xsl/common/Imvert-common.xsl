@@ -80,7 +80,7 @@
         <xsl:param name="default" as="item()*"/>
         <xsl:param name="as-string" as="xs:boolean"/>
         <xsl:param name="allow-empty" as="xs:boolean"/>
-        <xsl:variable name="computed-content" select="if ($content[1]) then $content else if (normalize-space($content)) then string($content) else $default" as="item()*"/>
+        <xsl:variable name="computed-content" select="if ($content[1]) then $content else if (normalize-space(string($content))) then string($content) else $default" as="item()*"/>
         <xsl:if test="$computed-content[1] or $allow-empty">
             <xsl:element name="{$name}">
                 <xsl:choose>

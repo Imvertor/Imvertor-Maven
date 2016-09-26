@@ -83,25 +83,25 @@
         <!--<xsl:sequence select="imf:msg(.,'DEBUG','Compact: package [1] holds app [2], is in app [3], is in external [4]', (@name,$holds-app,$is-in-app,$is-in-ext))"/>-->
         <xsl:choose>
             <xsl:when test="$holds-app">
-                <xsl:if test="imf:boolean($debug)">
+                <xsl:if test="$debugging">
                     <xsl:comment select="concat(@name, ' added because: holds-app')"/>
                 </xsl:if>
                 <xsl:next-match/>            
             </xsl:when>
             <xsl:when test="$is-in-ext">
-                <xsl:if test="imf:boolean($debug)">
+                <xsl:if test="$debugging">
                     <xsl:comment select="concat(@name, ' added because: is-in-ext')"/>
                 </xsl:if>
                 <xsl:next-match/>            
             </xsl:when>
             <xsl:when test="$is-in-app">
-                <xsl:if test="imf:boolean($debug)">
+                <xsl:if test="$debugging">
                     <xsl:comment select="concat(@name, ' added because: is-in-app')"/>
                 </xsl:if>
                 <xsl:next-match/>            
             </xsl:when>
             <xsl:otherwise>
-                <xsl:if test="imf:boolean($debug)">
+                <xsl:if test="$debugging">
                     <xsl:comment select="concat(@name, ' purged')"/>
                 </xsl:if>
                 <!-- if any trace info available, copy those traces to a separate XMI section -->

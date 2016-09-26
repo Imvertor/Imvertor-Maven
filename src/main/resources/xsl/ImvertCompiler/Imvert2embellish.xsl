@@ -136,7 +136,7 @@
 
     <xsl:function name="imf:get-embellish-suppliers" as="element()*">
         <xsl:param name="construct"/>
-        <xsl:if test="imf:boolean($debug)">
+        <xsl:if test="$debugging">
             <imvert:resolved-suppliers>
                 <xsl:sequence select="imf:get-trace-suppliers-for-construct($construct,1)"/>
             </imvert:resolved-suppliers>
