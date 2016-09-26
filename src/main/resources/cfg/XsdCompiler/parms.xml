@@ -119,7 +119,7 @@
       <IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH>
       <RESULT_METAMODEL_KINGUGM_XSD_FILEPATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_METAMODEL_KINGUGM_XSD_FILEPATH>
       <!-- locatie van de stuf onderlaag -->
-      <STUF_ONDERLAAG_UGM>${system/managedinputfolder}/xsd/other/KING-UGM/stuf0301.xsd</STUF_ONDERLAAG_UGM>
+      <STUF_ONDERLAAG_UGM>${system/managedinputfolder}/xsd/other/KING-UGM/support</STUF_ONDERLAAG_UGM>
       
       <!-- intermediate XML file -->
       <RESULT_XSD_XML_FILE_PATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_XSD_XML_FILE_PATH>   

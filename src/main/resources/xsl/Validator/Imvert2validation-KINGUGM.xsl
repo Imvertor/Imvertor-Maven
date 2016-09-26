@@ -37,13 +37,14 @@
     <!-- TODO added validation for KING exchange models UGM -->
     
     <xsl:template match="imvert:association[not(imvert:aggregation = 'composite')]">
+
         <!-- setup -->
         <xsl:variable name="alias" select="imvert:alias"/>
         
         <!-- validate -->
         <xsl:sequence select="imf:report-error(., 
             empty($alias), 
-            'Association without alias')"/>
+            'No alias found for association')"/>
         
         <xsl:next-match/>
     </xsl:template>
@@ -53,6 +54,33 @@
        
         <!-- validate -->
        
+        
+        <xsl:next-match/>
+    </xsl:template>
+    
+    <xsl:template match="imvert:tagged-value[imvert:name = (
+        imf:get-normalized-name('Minimum waarde (inclusief)','tv-name'),
+        imf:get-normalized-name('Maximum waarde (inclusief)','tv-name')
+        )]">
+        <!-- setup -->
+        <xsl:variable name="construct" select="../.."/>
+        <!-- validate -->
+        <xsl:sequence select="imf:report-error(., 
+            $construct/imvert:type-name = ('scalar-string','scalar-uri'), 
+            'Tagged value [1] cannot be specified on [2]', (imvert:name/@original, $construct/imvert:type-name))"/>
+        
+        <xsl:next-match/>
+    </xsl:template>
+    
+    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotype-names('stereotype-name-referentielijst')]">
+        <xsl:message>TESTING</xsl:message>
+        <!-- setup -->
+        <xsl:variable name="alias" select="imvert:alias"/>
+        
+        <!-- validate -->
+        <xsl:sequence select="imf:report-error(., 
+            empty($alias), 
+            'No alias found for [1]', imvert:stereotype)"/>
         
         <xsl:next-match/>
     </xsl:template>

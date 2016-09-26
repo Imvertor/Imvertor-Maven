@@ -93,12 +93,12 @@
     
     -->
     
-    <xsl:template match="imvert:association[imvert:aggregation = 'composite']/imvert:tagged-value/imvert:name">
+    <xsl:template match="imvert:association[imvert:aggregation = 'composite']/*/imvert:tagged-value/imvert:name">
         <!-- setup -->
         <!-- gegevengroep compositie: rule is that some tagged values should not occur on composities (NOC) -->
         <xsl:sequence select="imf:report-error(., 
             empty($tvs[@rules = 'NOC'] = .), 
-            'Tagged value [1] not allowed on composition relation', name)"/>
+            'Tagged value [1] not allowed on composition relation', @original)"/>
         <xsl:next-match/>
     </xsl:template>
     
@@ -108,10 +108,10 @@
         <!-- validate -->
         <xsl:sequence select="imf:report-warning(., 
             empty($tvs = imvert:name), 
-            'Tagged value [1] not recognized', imvert:name)"/>
+            'Tagged value [1] not recognized', imvert:name/@original)"/>
         <xsl:sequence select="imf:report-error(., 
             $tvs[. = current()/imvert:name]/@validate = 'url' and not(imvert:allow-tagged-value(imvert:value,'url')), 
-            'Tagged value: [1] is not allowed for: [2]', (imvert:value, imvert:name))"/>
+            'Tagged value: [1] is not allowed for: [2]', (imvert:value/@original, imvert:name/@original))"/>
         
         <xsl:next-match/>
     </xsl:template>
