@@ -1381,7 +1381,7 @@
         <xsl:apply-templates select="$this/imvert:max-length"/>
         <xsl:apply-templates select="$this/imvert:total-digits"/> 
         <xsl:apply-templates select="$this/imvert:fraction-digits"/>
-        <xsl:if test="not($this/(imvert:pattern|imvert:total-digits)) and not($this/imvert:baretype='TXT')">
+        <xsl:if test="empty($this/(imvert:pattern|imvert:total-digits)) and not($this/imvert:baretype='TXT')">
             <xsl:sequence select="imf:create-nonempty-constraint($this/imvert:type-name)"/>
         </xsl:if>
     </xsl:function>
@@ -1511,7 +1511,7 @@
 
     <xsl:function name="imf:create-nonempty-constraint" as="item()*">
         <xsl:param name="type" as="xs:string?"/>
-        <xsl:if test="$type=('char', 'string', 'uri') or not($type)">
+        <xsl:if test="$type=('scalar-char', 'scalar-string', 'scalar-uri') or not($type)">
             <xs:pattern value="\S.*"/> <!-- Note: do not use xs:minLength as this allows for a single space -->
         </xsl:if>
     </xsl:function>
@@ -1703,7 +1703,7 @@
     <xsl:function name="imf:debug" as="node()*">
         <xsl:param name="info-node" as="node()"/>
         <xsl:param name="text" as="xs:string"/>
-        <xsl:if test="imf:boolean($debug)">
+        <xsl:if test="imf:boolean($debugging)">
             <xsl:comment select="concat(imf:get-construct-name($info-node), ' - ', $text)"/>
         </xsl:if>
     </xsl:function>
