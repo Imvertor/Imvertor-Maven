@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:BagAdres="http://www.kadaster.nl/schemas/IMBAG/bag-adres/v20130522"
+           xmlns:BagAdresRef="http://www.kadaster.nl/schemas/IMBAG/bag-adres-ref/v20130522"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.kadaster.nl/schemas/IMBAG/bag-adres/v20130522"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="1.0.0-1">
+   <xs:annotation>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/uri">http://www.kadaster.nl/schemas/IMBAG/bag-adres</xs:appinfo>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/version">1.0.0</xs:appinfo>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/phase">1</xs:appinfo>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/release">20130522</xs:appinfo>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/generated">2013-05-24 13:35:49</xs:appinfo>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/svn">$Id$</xs:appinfo>
+      <xs:documentation source="http://www.kadaster.nl/schema-info/file-location">bag-adres/v20130522/IMBAG_BagAdres_v1_0_0.xsd</xs:documentation>
+      <xs:documentation source="http://www.kadaster.nl/schema-info/conversion">
+        This schema is encoded according to the rules layed down in "ISO 19118: Text of 19118 Geographic information - Encoding, as sent to the ISO Central Secretariat for publication"
+    </xs:documentation>
+      <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Dit package bevat alle klassen die behoren bij de representatie van BAG adressen.</xs:documentation>
+   </xs:annotation>
+   <xs:import namespace="http://www.kadaster.nl/schemas/IMBAG/bag-adres-ref/v20130522"
+              schemaLocation="../../bag-adres-ref/v20130522/IMBAG_BagAdresRef_v1_0_0.xsd"/>
+   <xs:element name="_AdresseerbaarObject" type="BagAdres:_AdresseerbaarObject"
+               abstract="true"/>
+   <xs:complexType name="_AdresseerbaarObject" abstract="true">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een ligplaats, verblijfsobject of standplaats.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="BAGIdentificatie" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Identificatie is vastgelegd als GGGGTTNNNNNNNNNN waarbij GGGG = gemeentecode, TT = objecttypecode, NNNNNNNNNN = binnen een gemeente uniek tiencijferig nummer.
+Zie ook Aansluiten op de basisregistraties adressen en
+gebouwen;
+Handreiking voor afnemers van de BAG,
+Versie 2009</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="16"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="hoofdadres" minOccurs="1" maxOccurs="1">
+            <xs:complexType>
+               <xs:choice minOccurs="1" maxOccurs="1">
+                  <xs:element ref="BagAdresRef:NummerAanduidingRef"/>
+               </xs:choice>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="nevenadres" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:choice minOccurs="1" maxOccurs="unbounded">
+                  <xs:element ref="BagAdresRef:NummerAanduidingRef"/>
+               </xs:choice>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:ID" use="optional"/>
+   </xs:complexType>
+   <xs:element name="Bron" type="BagAdres:Bron" abstract="false"/>
+   <xs:complexType name="Bron" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Nieuwe nummeraanduidingen, woonplaatsen of openbare ruimten worden in de Basis Registratie Adressen opgenomen op basis van daartoe aangewezen brondocumenten waarin het ontstaan van de nummeraanduiding als zodanig is vastgelegd.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="documentdatum" type="xs:date" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De datum waarop het brondocument is vastgesteld, op
+basis waarvan een opname, mutatie of een verwijdering
+van gegevens ten aanzien van een nummeraanduiding, openbare ruimte of woonplaats heeft plaatsgevonden.
+</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="documentnummer" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De unieke aanduiding van het brondocument op basis
+waarvan een opname, mutatie of een verwijdering van
+gegevens ten aanzien van een nummeraanduiding, openbare ruimte of woonplaats heeft plaatsgevonden, binnen een gemeente.
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="20"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Ligplaats" type="BagAdres:Ligplaats" abstract="false"/>
+   <xs:complexType name="Ligplaats" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een LIGPLAATS is een formeel door de gemeenteraad als zodanig aangewezen plaats in het water, al dan niet aangevuld met een op de oever aanwezig terrein of een gedeelte daarvan, dat bestemd is voor het permanent afmeren van een voor woon-, bedrijfsmatige- of recreatieve doeleinden geschikt vaartuig.</xs:documentation>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="BagAdres:_AdresseerbaarObject">
+            <xs:sequence/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="NummerAanduiding" type="BagAdres:NummerAanduiding" abstract="false"/>
+   <xs:complexType name="NummerAanduiding" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een NUMMERAANDUIDING is een door de gemeenteraad als
+zodanig toegekende aanduiding van een adresseerbaar object.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="BAGIdentificatie" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">BAG identificatie van een nummeraanduiding.
+Indien dit veld gevuld is betekent dit dat de bijbehorende gegevens uit BAG zijn. Indien dit veld niet gevuld is, zijn de bijbehorende gegevens niet-authentieke Kadaster-gegevens.
+Alleen als de BAG identificatie gevuld is, kan hierop teruggemeld worden.
+Identificatie is vastgelegd als GGGGTTNNNNNNNNNN waarbij GGGG = gemeentecode, TT = objecttypecode, NNNNNNNNNN = binnen een gemeente uniek tiencijferig nummer.
+Zie ook Aansluiten op de basisregistraties adressen en
+gebouwen;
+Handreiking voor afnemers van de BAG,
+Versie 2009</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="16"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="huisnummer" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een door of namens het gemeentebestuur ten aanzien
+van een adresseerbaar object toegekende nummering.
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:integer">
+                  <xs:totalDigits value="5"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="officieel" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een aanduiding waarmee kan worden aangegeven dat
+een object in de registratie is opgenomen als gevolg van
+een feitelijke constatering, zonder dat er op het moment
+van opname sprake is van een formele grondslag voor
+deze opname.
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="huisletter" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een door of namens het gemeentebestuur ten aanzien
+van een adresseerbaar object toegekende toevoeging
+aan een huisnummer in de vorm van een alfanumeriek
+teken.
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="huisnummertoevoeging" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een door of namens het gemeentebestuur ten aanzien
+van een adresseerbaar object toegekende nadere
+toevoeging aan een huisnummer of een combinatie van
+huisnummer en huisletter.
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="4"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="postcode" type="BagAdres:TypePostcode" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De door TPG vastgestelde code behorende bij een
+bepaalde combinatie van een straatnaam en een
+huisnummer.
+</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="tijdvakgeldigheid" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een periode waarin de gegevens die worden
+      bijgehouden over een huisnummeraanduiding geldig zijn.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:choice minOccurs="1" maxOccurs="1">
+                     <xs:element ref="BagAdres:Tijdvakgeldigheid"/>
+                  </xs:choice>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="inOnderzoek" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een aanduiding waarmee wordt aangegeven dat een
+onderzoek wordt uitgevoerd naar de juistheid van een of
+meerdere gegevens van het betreffende object.
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="typeAdresseerbaarObject" type="BagAdres:Waardelijst" minOccurs="0"
+                     maxOccurs="1">
+            <xs:annotation>
+               <xs:appinfo source="http://www.kadaster.nl/data-info/uri">http://www.kadaster.nl/schemas/waardelijsten/BAGAdresseerbaarObject</xs:appinfo>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De aard van een als zodanig benoemde
+NUMMERAANDUIDING.
+</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="bron" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:choice minOccurs="1" maxOccurs="1">
+                     <xs:element ref="BagAdres:Bron"/>
+                  </xs:choice>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="nummerAanduidingStatus" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De fase van de levenscyclus van een
+NUMMERAANDUIDING, waarin de betreffende
+NUMMERAANDUIDING zich bevindt.
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="80"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="gerelateerdeWoonplaats" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:choice minOccurs="1" maxOccurs="1">
+                  <xs:element ref="BagAdresRef:WoonplaatsRef"/>
+               </xs:choice>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="gerelateerdeOpenbareRuimte" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:choice minOccurs="1" maxOccurs="1">
+                  <xs:element ref="BagAdresRef:OpenbareRuimteRef"/>
+               </xs:choice>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:ID" use="optional"/>
+   </xs:complexType>
+   <xs:element name="OpenbareRuimte" type="BagAdres:OpenbareRuimte" abstract="false"/>
+   <xs:complexType name="OpenbareRuimte" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een OPENBARE RUIMTE is een door de gemeenteraad als
+zodanig aangewezen benaming van een binnen 1 woonplaats
+gelegen buitenruimte.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="BAGIdentificatie" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De unieke aanduiding van een OPENBARE RUIMTE.
+Indien dit veld gevuld is betekent dit dat de bijbehorende gegevens uit BAG zijn. Indien dit veld niet gevuld is, zijn de bijbehorende gegevens niet-authentieke Kadaster-gegevens.
+Alleen als de BAG identificatie gevuld is, kan hierop teruggemeld worden.
+Identificatie is vastgelegd als GGGGTTNNNNNNNNNN waarbij GGGG = gemeentecode, TT = objecttypecode, NNNNNNNNNN = binnen een gemeente uniek tiencijferig nummer.
+Zie ook Aansluiten op de basisregistraties adressen en
+gebouwen;
+Handreiking voor afnemers van de BAG,
+Versie 2009</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="16"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="openbareRuimteNaam" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een naam die aan een OPENBARE RUIMTE is toegekend in een daartoe strekkend formeel gemeentelijk besluit.
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="80"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="officieel" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een aanduiding waarmee kan worden aangegeven dat
+een object in de registratie is opgenomen als gevolg van
+een feitelijke constatering, zonder dat er op het moment
+van opname sprake is van een formele grondslag voor
+deze opname.
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="tijdvakgeldigheid" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een periode waarin de gegevens die worden
+      bijgehouden over een openbare ruimte geldig zijn.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:choice minOccurs="1" maxOccurs="1">
+                     <xs:element ref="BagAdres:Tijdvakgeldigheid"/>
+                  </xs:choice>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="inOnderzoek" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een aanduiding waarmee wordt aangegeven dat een
+onderzoek wordt uitgevoerd naar de juistheid van een of
+meerdere gegevens van het betreffende object.
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="openbareRuimteType" type="BagAdres:Waardelijst" minOccurs="0"
+                     maxOccurs="1">
+            <xs:annotation>
+               <xs:appinfo source="http://www.kadaster.nl/data-info/uri">http://www.kadaster.nl/schemas/waardelijsten/BAGOpenbareRuimte</xs:appinfo>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De aard van de als zodanig benoemde openbare ruimte.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="bron" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:choice minOccurs="1" maxOccurs="1">
+                     <xs:element ref="BagAdres:Bron"/>
+                  </xs:choice>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="openbareRuimteStatus" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De fase van de levenscyclus van een OPENBARE
+RUIMTE, waarin de betreffende OPENBARE RUIMTE
+zich bevindt.
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="80"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="gerelateerdeWoonplaats" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:choice minOccurs="1" maxOccurs="1">
+                  <xs:element ref="BagAdresRef:WoonplaatsRef"/>
+               </xs:choice>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:ID" use="optional"/>
+   </xs:complexType>
+   <xs:element name="Standplaats" type="BagAdres:Standplaats" abstract="false"/>
+   <xs:complexType name="Standplaats" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een STANDPLAATS is een formeel door de gemeenteraad als zodanig aangewezen terrein of een gedeelte daarvan, dat bestemd is voor het permanent plaatsen van een niet direct en duurzaam met de aarde verbonden en voor woon -, bedrijfsmatige - of recreatieve doeleinden geschikte ruimte.</xs:documentation>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="BagAdres:_AdresseerbaarObject">
+            <xs:sequence/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="Tijdvakgeldigheid" type="BagAdres:Tijdvakgeldigheid" abstract="false"/>
+   <xs:complexType name="Tijdvakgeldigheid" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een periode waarin een of meer gegevens die worden bijgehouden over een nummeraanduiding, openbare ruimte of woonplaats een wijziging hebben ondergaan.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="begindatumTijdvakGeldigheid" type="xs:date" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De begindatum van een periode waarin er geen wijzigingen hebben plaatsgevonden in de gegevens die worden bijgehouden over een OPENBARE RUIMTE.
+</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="einddatumTijdvakGeldigheid" type="xs:date" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De einddatum van een periode waarin er geen wijzigingen hebben plaatsgevonden in de gegevens die worden bijgehouden over een OPENBARE RUIMTE.
+</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Verblijfsobject" type="BagAdres:Verblijfsobject" abstract="false"/>
+   <xs:complexType name="Verblijfsobject" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een VERBLIJFSOBJECT is de kleinste binnen één of meerdere panden gelegen en voor woon -, bedrijfsmatige - of recreatieve doeleinden geschikte eenheid van gebruik, die ontsloten wordt via een eigen toegang vanaf de openbare weg, een erf of een gedeelde verkeersruimte en die onderwerp kan zijn van rechtshandelingen.</xs:documentation>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="BagAdres:_AdresseerbaarObject">
+            <xs:sequence/>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:element name="Waardelijst" type="BagAdres:Waardelijst" abstract="false"/>
+   <xs:complexType name="Waardelijst" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De toegestane waarden staan in een externe waardelijst. Voor iedere waardelijst is vastgesteld wat de bron is van deze waarden. Elementen met dit type mogen niet leeg gelaten worden.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="code" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De code van deze waarde. De code is uniek binnen de waardenlijst en taalonafhankelijk.
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="waarde" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De waarde zoals aangetroffen in de waardenlijst. het moment waarop de waarde geassocieerd is met de meegeleverde code is onbepaald.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="Woonplaats" type="BagAdres:Woonplaats" abstract="false"/>
+   <xs:complexType name="Woonplaats" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een WOONPLAATS is een door de gemeenteraad als zodanig aangewezen gedeelte van het gemeentelijk grondgebied.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="BAGIdentificatie" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De landelijk unieke aanduiding van een WOONPLAATS. 
+Indien dit veld gevuld is betekent dit dat de bijbehorende gegevens uit BAG zijn. Indien dit veld niet gevuld is, zijn de bijbehorende gegevens niet-authentieke Kadaster-gegevens.
+Alleen als de BAG identificatie gevuld is, kan hierop teruggemeld worden.
+IWoonplaatsen hebben een unieke woonplaatscode van vier cijfers
+Zie ook Aansluiten op de basisregistraties adressen en
+gebouwen;
+Handreiking voor afnemers van de BAG,
+Versie 2009</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:integer">
+                  <xs:totalDigits value="4"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="woonplaatsNaam" type="BagAdres:Waardelijst" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:appinfo source="http://www.kadaster.nl/data-info/uri">http://www.kadaster.nl/schemas/waardelijsten/BAGWoonplaatsnaam</xs:appinfo>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De woonplaatsen worden vastgesteld door de gemeenten.
+De vastgestelde woonplaatsen worden door een
+beheerder van een landelijke woonplaatsentabel voorzien
+van een unieke aanduiding, te vergelijken met de
+gemeentecode volgens GBA tabel 33.
+</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="officieel" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een aanduiding waarmee kan worden aangegeven dat
+een object in de registratie is opgenomen als gevolg van
+een feitelijke constatering, zonder dat er op het moment
+van opname sprake is van een formele grondslag voor
+deze opname.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="tijdvakGeldigheid" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een periode waarin de gegevens die worden
+      bijgehouden over een WOONPLAATS geldig zijn.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:choice minOccurs="1" maxOccurs="1">
+                     <xs:element ref="BagAdres:Tijdvakgeldigheid"/>
+                  </xs:choice>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="inOnderzoek" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een aanduiding waarmee wordt aangegeven dat een
+onderzoek wordt uitgevoerd naar de juistheid van een of
+meerdere gegevens van het betreffende object.
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="1"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="bron" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:choice minOccurs="1" maxOccurs="1">
+                     <xs:element ref="BagAdres:Bron"/>
+                  </xs:choice>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="woonplaatsStatus" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De fase van de levenscyclus van een WOONPLAATS,
+waarin de betreffende WOONPLAATS zich bevindt.
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="80"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:ID" use="optional"/>
+   </xs:complexType>
+   <xs:simpleType name="TypePostcode">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De officiële Nederlandse TPG codering, bestaande uit een numerieke woonplaatscode en een alfabetische lettercode.</xs:documentation>
+      </xs:annotation>
+      <xs:restriction base="xs:string">
+         <xs:pattern value="[1-9]{1}[0-9]{3}[A-Z]{2}"/>
+      </xs:restriction>
+   </xs:simpleType>
+</xs:schema>

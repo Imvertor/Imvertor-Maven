@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<tagset xmlns:xi="http://www.w3.org/2001/XInclude">
+    <svn>$Id: KINGUGM.xml 7445 2016-03-03 13:53:34Z arjan $</svn>
+    <name>KINGBSM</name>
+    
+    <tagged-values>
+        
+        <xi:include href="KINGUGM.xml"/>
+        
+        <tv norm="space"  rules="NOC" id="IndicatieKerngegeven">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Element</stereo>
+                <stereo required="no" lang="nl">Relatie</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space"  rules="NOC" id="IndicatieMateriëleHistorie">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Element</stereo>
+                <stereo required="no" lang="nl">Groep</stereo>
+                <stereo required="no" lang="nl">Relatie</stereo>
+            </stereotypes>
+         </tv>
+        <tv norm="space" rules="NOC" id="IndicatieFormeleHistorie">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Element</stereo>
+                <stereo required="no" lang="nl">Groep</stereo>
+                <stereo required="no" lang="nl">Relatie</stereo>
+            </stereotypes>
+       </tv>
+        
+        <tv norm="space" validate="" rules="" id="VerkorteAlias">
+            <name lang="nl">Verkorte alias</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Koppelvlak</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="FormeelPatroon">
+            <derive>yes</derive> <!-- mag worden overgenomen vanuit UGM -->
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="Berichtcode">
+            <name lang="nl">Berichtcode</name>
+            <derive>no</derive>
+            <stereotypes>
+                <?x stereo required="yes" lang="nl">Berichttype</stereo x?>
+                <stereo required="yes" lang="nl">Vraagberichttype</stereo>
+                <stereo required="yes" lang="nl">Antwoordberichttype</stereo>
+                <stereo required="yes" lang="nl">Kennisgevingberichttype</stereo>
+                <stereo required="yes" lang="nl">Synchronisatieberichttype</stereo>
+                <stereo required="yes" lang="nl">Vrij berichttype</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Bv01</value>
+                <!--  een bevestigingsbericht als functionele asynchrone respons -->
+                <value>Bv02</value>
+                <!--  een bevestigingsbericht als functionele synchrone respons op een synchroon bericht -->
+                <value>Bv03</value>
+                <!--  een bevestigingsbericht als technische synchrone respons op een asynchroon bericht waarbij het bericht op basis van berichtstuurgegevens verwerkbaar wordt geacht -->
+                <value>Bv04</value>
+                <!--  een bevestigingsbericht als technische synchrone respons op een asynchroon bericht, dat een check op verwerkbaarheid op basis van de berichtstuurgegevens ontkent -->
+                <value>Di01</value>
+                <!--  een asynchroon inkomend vrij bericht -->
+                <value>Di02</value>
+                <!--  een synchroon inkomend vrij bericht -->
+                <value>Du01</value>
+                <!--  een asynchroon uitgaand vrij bericht (respons op een Di01) -->
+                <value>Du02</value>
+                <!--  een synchroon uitgaand vrij bericht (respons op een Di02) -->
+                <value>Fo01</value>
+                <!--  een foutbericht als functionele asynchrone respons -->
+                <value>Fo02</value>
+                <!--  een foutbericht als functionele synchrone respons -->
+                <value>Fo03</value>
+                <!--  een foutbericht als technische synchrone respons op een asynchroon bericht -->
+                <value>La01</value>
+                <!--  een synchroon antwoordbericht met alleen actuele gegevens -->
+                <value>La02</value>
+                <!--  een asynchroon antwoordbericht met alleen actuele gegevens -->
+                <value>La03</value>
+                <!--  een synchroon antwoordbericht met de gegevens op peiltijdstip zoals nu bekend in de registratie -->
+                <value>La04</value>
+                <!--  een asynchroon antwoordbericht met de gegevens op peiltijdstip zoals nu bekend in de registratie -->
+                <value>La05</value>
+                <!--  een synchroon antwoordbericht met de gegevens op peiltijdstip zoals bekend in de registratie op peiltijdstip formele historie -->
+                <value>La06</value>
+                <!--  een asynchroon antwoordbericht met de gegevens op peiltijdstip zoals bekend in de registratie op peiltijdstip formele historie -->
+                <value>La07</value>
+                <!--  een synchroon antwoordbericht met materiële historie voor de gevraagde objecten op entiteitniveau -->
+                <value>La08</value>
+                <!--  een asynchroon antwoordbericht met materiële historie voor de gevraagde objecten op entiteitniveau -->
+                <value>La09</value>
+                <!--  een synchroon antwoordbericht met materiële en formele historie voor de gevraagde objecten op entiteitniveau -->
+                <value>La10</value>
+                <!--  een asynchroon antwoordbericht met materiële en formele historie voor de gevraagde objecten op entiteitniveau -->
+                <value>La11</value>
+                <!--  een synchroon antwoordbericht met materiële historie voor de gevraagde objecten op groepniveau -->
+                <value>La12</value>
+                <!--  een asynchroon antwoordbericht met materiële historie voor de gevraagde objecten op groepniveau -->
+                <value>La13</value>
+                <!--  een synchroon antwoordbericht met materiële en formele historie voor de gevraagde objecten op groepniveau -->
+                <value>La14</value>
+                <!--  een asynchroon antwoordbericht met materiële en formele historie voor de gevraagde objecten op groepniveau -->
+                <value>Lk01</value>
+                <!--  een asynchroon kennisgevingbericht zonder toekomstmutaties -->
+                <value>Lk02</value>
+                <!--  een synchroon kennisgevingbericht zonder toekomstmutaties -->
+                <value>Lk03</value>
+                <!--  een asynchroon samengesteld kennisgevingbericht -->
+                <value>Lk04</value>
+                <!--  een synchroon samengesteld kennisgevingbericht -->
+                <value>Lk05</value>
+                <!--  een asynchroon kennisgevingbericht met een toekomstmutatie -->
+                <value>Lk06</value>
+                <!--  een synchroon kennisgevingbericht met een toekomstmutatie -->
+                <value>Lv01</value>
+                <!--  een synchroon vraagbericht naar de actuele gegevens -->
+                <value>Lv02</value>
+                <!--  een asynchroon vraagbericht naar de actuele gegevens -->
+                <value>Lv03</value>
+                <!--  een synchroon vraagbericht naar de gegevens op peiltijdstip zoals nu bekend in de registratie -->
+                <value>Lv04</value>
+                <!--  een asynchroon vraagbericht naar de gegevens op peiltijdstip zoals nu bekend in de registratie -->
+                <value>Lv05</value>
+                <!--  een synchroon vraagbericht naar de gegevens op peiltijdstip zoals bekend in de registratie op peiltijdstip formele historie -->
+                <value>Lv06</value>
+                <!--  een asynchroon vraagbericht naar de gegevens op peiltijdstip zoals bekend in de registratie op peiltijdstip formele historie -->
+                <value>Lv07</value>
+                <!--  een synchroon vraagbericht naar materiële historie voor de gevraagde objecten op entiteitniveau -->
+                <value>Lv08</value>
+                <!--  een asynchroon vraagbericht naar materiële historie voor de gevraagde objecten op entiteitniveau -->
+                <value>Lv09</value>
+                <!--  een synchroon vraagbericht naar materiële en formele historie voor de gevraagde objecten op entiteitniveau -->
+                <value>Lv10</value>
+                <!--  een asynchroon vraagbericht naar materiële en formele historie voor de gevraagde objecten op entiteitniveau -->
+                <value>Lv11</value>
+                <!--  een synchroon vraagbericht naar materiële historie voor de gevraagde objecten op groepniveau -->
+                <value>Lv12</value>
+                <!--  een asynchroon vraagbericht naar materiële historie voor de gevraagde objecten op groepniveau -->
+                <value>Lv13</value>
+                <!--  een synchroon vraagbericht naar materiële en formele historie voor de gevraagde objecten op groepniveau -->
+                <value>Lv14</value>
+                <!--  een asynchroon vraagbericht naar materiële en formele historie voor de gevraagde objecten op groepniveau -->
+                <value>Sa01</value>
+                <!--  een asynchroon synchronisatiebericht voor de actuele gegevens -->
+                <value>Sa02</value>
+                <!--  een synchroon synchronisatiebericht voor de actuele gegevens -->
+                <value>Sa03</value>
+                <!--  een asynchroon bericht dat vraagt om een asynchroon synchronisatiebericht voor de actuele gegevens -->
+                <value>Sa04</value>
+                <!--  een synchroon bericht dat vraagt om een synchroon synchronisatiebericht voor de actuele gegevens -->
+                <value>Sh01</value>
+                <!--  een asynchroon synchronisatiebericht voor de actuele en de historische gegevens -->
+                <value>Sh02</value>
+                <!--  een synchroon synchronisatiebericht voor de actuele en de historische gegevens -->
+                <value>Sh03</value>
+                <!--  een asynchroon bericht dat vraagt om een asynchroon synchronisatiebericht voor de actuele en historische gegevens -->
+                <value>Sh04</value>
+                <!--  een synchroon bericht dat vraagt om een synchroon synchronisatiebericht voor de actuele en historische gegevens -->
+                <value>Tr01</value>
+                <!--  een triggerbericht -->
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="Sortering">
+            <name lang="nl">Sortering</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Vraagberichttype</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="Voorwaarde">
+            <name lang="nl">Voorwaarde</name>
+            <desc>Opnemen ter documentatie van een bericht.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Bericht</stereo> <!-- i.e. a package -->
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="Trigger">
+            <name lang="nl">Trigger</name>
+            <desc>Opnemen ter documentatie van een bericht.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Vraagberichttype</stereo> 
+                <stereo required="no" lang="nl">Antwoordberichttype</stereo> 
+                <stereo required="no" lang="nl">Kennisgevingberichttype</stereo> 
+                <stereo required="no" lang="nl">Vrij berichttype</stereo> 
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="DirectGevolg">
+            <name lang="nl">Direct gevolg</name>
+            <desc>Opnemen ter documentatie van een bericht.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Vraagberichttype</stereo> 
+                <stereo required="no" lang="nl">Antwoordberichttype</stereo> 
+                <stereo required="no" lang="nl">Kennisgevingberichttype</stereo> 
+                <stereo required="no" lang="nl">Vrij berichttype</stereo> 
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="Bijzonderheden">
+            <name lang="nl">Bijzonderheden</name>
+            <desc>Opnemen ter documentatie van een bericht.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Vraagberichttype</stereo> 
+                <stereo required="no" lang="nl">Antwoordberichttype</stereo> 
+                <stereo required="no" lang="nl">Kennisgevingberichttype</stereo> 
+                <stereo required="no" lang="nl">Vrij berichttype</stereo> 
+            </stereotypes>
+        </tv>
+        
+    </tagged-values>
+</tagset>
+

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<tagset xmlns:xi="http://www.w3.org/2001/XInclude">
+   
+    <name>KINGUGM</name>
+    
+    <tagged-values>
+        
+        <tv norm="space"  rules="NOC" id="IndicatieKerngegeven">
+            <name lang="nl">Indicatie kerngegeven</name>
+            <derive>no</derive> <!-- Kan niet worden overgenomen uit SIM, want is daar niet opgenomen-->
+            <stereotypes>
+                <stereo required="yes" lang="nl">Element</stereo><!--SIM Attribuutsoort-->
+                <stereo required="yes" lang="nl">Relatie</stereo><!--SIM Relatiesoort-->
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space"  rules="NOC" id="IndicatieMateriëleHistorie">
+            <name lang="nl">Indicatie materiële historie</name>
+            <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
+            <stereotypes>
+                <stereo required="yes" lang="nl">Element</stereo><!--SIM Attribuutsoort-->
+                <stereo required="yes" lang="nl">Groep</stereo><!--SIM Gegevensgroeptype-->
+                <stereo required="yes" lang="nl">Relatie</stereo><!--SIM Relatiesoort-->
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+                <value>Zie groep</value>
+                <value>N.v.t.</value>
+                <value>Ja, zie regels</value>
+            <?x
+                <value deprecated="true">zie groep</value>
+                <value deprecated="true">n.v.t.</value>
+                <value deprecated="true">Zie regels</value>
+            ?>
+            </declared-values>
+        </tv>
+        <tv norm="space" rules="NOC" id="IndicatieFormeleHistorie">
+            <name lang="nl">Indicatie formele historie</name>
+            <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
+            <stereotypes>
+                <stereo required="yes" lang="nl">Element</stereo><!--SIM Attribuutsoort-->
+                <stereo required="yes" lang="nl">Groep</stereo><!--SIM Gegevensgroeptype-->
+                <stereo required="yes" lang="nl">Relatie</stereo><!--SIM Relatiesoort-->
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+                <value>Zie groep</value>
+                <value>N.v.t.</value>
+            <?x
+                <value deprecated="true">zie groep</value>
+                <value deprecated="true">n.v.t.</value>
+                <value deprecated="true">Zie regels</value>
+            ?>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" id="IndicatieTerugrelatie">
+            <name lang="nl">Indicatie terugrelatie</name>
+            <name lang="en">Indication reverse relation</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Relatie</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="MnemonicIndicatieTerugrelatie">
+            <name lang="nl">Mnemonic relatiesoort terugrelatie</name>
+            <name lang="en">Mnemonic indication reverse relation</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Relatie</stereo><!-- alleen verplicht als IndicatieTerugrelatie is Ja -->
+            </stereotypes>
+        </tv>
+        
+        
+        <tv norm="space" id="Patroon">
+            <name lang="nl">Patroon</name>
+            <name lang="en">Pattern</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Element</stereo><!--SIM Attribuutsoort, Referentie element, Union element, Data element-->
+                <stereo required="no" lang="nl">Complex datatype</stereo>
+                <stereo required="no" lang="nl">Data element</stereo>
+                <stereo required="no" lang="nl">Union element</stereo>
+                <stereo required="no" lang="nl">Datatype</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="FormeelPatroon">
+            <name lang="nl">Formeel patroon</name>
+            <name lang="en">Formal pattern</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Element</stereo><!--SIM Attribuutsoort, Referentie element, Union element, Data element-->
+                <stereo required="no" lang="nl">Complex datatype</stereo>
+                <stereo required="no" lang="nl">Data element</stereo>
+                <stereo required="no" lang="nl">Union element</stereo>
+                <stereo required="no" lang="nl">Datatype</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="MogelijkGeenWaarde">
+            <name lang="nl">Mogelijk geen waarde</name>
+            <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
+            <stereotypes>
+                <stereo required="no" lang="nl">Element</stereo><!--SIM Attribuutsoort -->
+                <stereo required="no" lang="nl">Groep</stereo><!-- SIM: Gegevensgroeptype -->
+                <stereo required="no" lang="nl">Relatie</stereo><!-- SIM: Relatiesoort  -->
+                <stereo required="no" lang="nl">Voidable</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" id="MinimumLengte">
+            <name lang="nl">Minimum lengte</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Element</stereo>
+                <stereo required="no" lang="nl">Data element</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="MinimumWaardeInclusief">
+            <name lang="nl">Minimum waarde (inclusief)</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Element</stereo>
+                <stereo required="no" lang="nl">Data element</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="MaximumWaardeInclusief">
+            <name lang="nl">Maximum waarde (inclusief)</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Element</stereo>
+                <stereo required="no" lang="nl">Data element</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="DataLocatie"><!-- MIG -->
+            <name lang="nl">Data locatie</name>
+            <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
+            <stereotypes>
+                <stereo required="no" lang="nl">Tabel-entiteit</stereo><!-- SIM Referentielijst -->
+                <stereo required="no" lang="nl">Element</stereo><!-- SIM Referentie element -->
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="Locatie">
+            <name lang="nl">Locatie</name><!-- MIG -->
+            <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
+            <stereotypes>
+                <stereo required="no" lang="nl">Extern</stereo><!--TODO externals that are conceptuals do not require this tagged value -->
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" origin="system" id="Positie">
+            <name lang="nl">Positie</name>
+            <name lang="en">Position</name>
+            <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
+            <stereotypes>
+                <stereo required="no" lang="nl">Element</stereo><!--SIM Attribuutsoort, Union element, Data element, Referentie element-->
+                <stereo required="no" lang="nl">Relatie</stereo><!-- SIM: Relatiesoort  -->
+                <stereo required="no" lang="nl">Entietitrelatie</stereo><!-- SIM: Objectrelatiesoort  -->
+                <stereo required="no" lang="nl">Enum</stereo>
+                <stereo required="no" lang="nl">Groep compositie</stereo><!-- SIM Gegevensgroep compositie-->
+                <stereo required="no" lang="#all">#none</stereo> <!-- also allowed on enumeration values that have no enum stereo -->
+            </stereotypes>
+        </tv>
+        
+        <!-- REDMINE #487612 -->
+        <tv norm="space" id="InternalProject">
+            <name lang="nl">Intern project</name>
+            <name lang="en">Internal project</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Intern</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="InternalName">
+            <name lang="nl">Interne naam</name>
+            <name lang="en">Internal name</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Intern</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="InternalRelease">
+            <name lang="nl">Interne release</name>
+            <name lang="en">Internal release</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Intern</stereo>
+            </stereotypes>
+        </tv>
+        
+    </tagged-values>
+</tagset>

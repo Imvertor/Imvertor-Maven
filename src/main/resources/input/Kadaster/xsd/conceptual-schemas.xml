@@ -1,0 +1,216 @@
+<!-- 
+    Mappings for conceptual schemas 
+-->
+<conceptual-schemas>
+    <svn-id>$Id: conceptual-schemas.xml 7209 2015-08-25 12:28:42Z arjan $</svn-id>
+    <mapping name="NEN3610_GML321">
+        <use>GML321</use>
+    </mapping>
+    <conceptual-schema>
+        <description>ISO19107 Geographic information – Spatial schema</description>
+        <url>http://www.kadaster.nl/conceptual-schemas/ISO19107</url>
+        <!--
+        <web>http://www.iso.org/iso/catalogue_detail.htm?csnumber=26012</web>
+        <web>http://de.wikipedia.org/wiki/ISO_19107</web>
+        <web>http://www.spatial.maine.edu/ISAmodel/documents/ISO19107-SpatialSchema.pdf</web>
+        -->
+        <!-- 
+            This conceptual schema is mapped onto all kinds of XML constructs.  
+        -->
+        <map 
+            name="GML311" 
+            namespace="http://www.opengis.net/gml" 
+            version="3.1.1" 
+            phase="3" 
+            release="20050811" 
+            location="http://www.opengis.net/gml/3.1.1/base/gml.xsd">
+            <!-- 
+                This maps onto the local copy maintained in /xsd/www.opengis.net/gml(3.1.1-20050811)
+                The following conceptual schema types map onto the specified types, eg. GM_ArcString maps onto gml:ArcString 
+                Only listing the ones used in IMKAD. 
+            -->
+            <type name="GM_AbstractFeatureType">AbstractFeatureType</type>  
+            
+            <type name="GM_MultiSurface"  
+                asAttributeDesignation="complextype"
+                asAttribute="MultiSurfacePropertyType">MultiSurface</type>  
+            <type name="GM_Curve"  
+                asAttributeDesignation="complextype"
+                asAttribute="CurvePropertyType">Curve</type>  
+            <type name="GM_ArcString"  
+                asAttributeDesignation="complextype"
+                asAttribute="ArcStringPropertyType">ArcString</type>  
+            <type name="GM_LineString"  
+                asAttributeDesignation="complextype"
+                asAttribute="LineStringPropertyType">LineString</type>  
+            <type name="GM_Point"  
+                asAttributeDesignation="complextype"
+                asAttribute="PointPropertyType">Point</type>  
+            
+            <type name="Binary">xs:binary</type>  
+            <type name="Boolean">xs:boolean</type>  
+        </map>
+        <map 
+            name="GML321" 
+            namespace="http://www.opengis.net/gml/3.2" 
+            version="3.2.1" 
+            phase="3" 
+            release="20070906"
+            location="http://schemas.opengis.net/gml/3.2.1/gml.xsd">
+            <!-- 
+                NEN3610:2011/Geonovum requires Simple Feature Profile, see http://www.ogcnetwork.net/gml-sf 
+            -->
+            <type name="GM_AbstractFeature">AbstractFeature</type>  
+            <type name="GM_AbstractFeatureType">AbstractFeatureType</type>  
+         
+            <type name="GM_AbstractFeatureCollection">AbstractFeatureCollection</type>  
+            <type name="GM_AbstractFeatureCollectionType">AbstractFeatureCollectionType</type>  
+            
+            <type name="GM_AbstractFeatureMember">AbstractFeatureMember</type>  
+            <type name="GM_AbstractFeatureMemberType">AbstractFeatureMemberType</type>  
+            
+            <type name="GM_AbstractGML">AbstractGML</type>  
+            <type name="GM_AbstractGMLType">AbstractGMLType</type>  
+            
+            <!-- see mapping listed at 
+                Table D.2 — Implementation of types from the ISO 19100 series of International Standards -->
+            
+            <!-- TODO aanvullen -->
+            
+            <!-- Instructions on what GML types to use: 
+			Preferably use: 
+			http://www.geonovum.nl/wegwijzer/standaarden/opengis%C2%AE-gml-simple-features-profile 
+			10-100r3_Geography_Markup_Language_GML_simple_features_profile_with_Corrigendum.pdf 
+
+			From this source: 
+            This approved OGC Implementation Standard defines a Simple Features profile of the Geography Markup Language version 3.2. This Simple Features Profile has been aligned with the OGC Simple Features standard for SQL version 1.2. 
+			Simple Features include: Point, Curve (LineString), Surface (Polygon), Geometry, MultiPoint, MultiCurve, MultiSurface, and MultiGeometry.
+			
+			Restricting to only SF types is not essential for an IM* model from a basisregistratie. However, if possible, it is desired. 
+			However, if additional, non-SF, GML types are needed, then that is ok too. Do restrict these to the Standaard GML types: Table 6 — Supported GML Geometric Property Types
+		
+			If several of these types are applicable for the same attribute, still try to use the above types. Design a choice of these types in your UML / XSD. Do not use a supertype. 
+			If a specific subtype is needed, still use the above type. If several subtypes are needed, but other subtypes are not, still use the above type. 
+
+			For each GM type there are three representations: 1. Element, 2. Type (without xlink) and 3. PropertyType (with xlink support). 
+			Always use PropertyType. That is the convention. (1. Elements are not supported by Imvertor. 2. Even when xlink support for a type is not needed, still use PropertyType. 
+			Even tough xlink is generally only needed for Objects, not for attributes or (GML) types, then still define the type with a PropertyType because tools and software is always implemented (correctly, consistently) for this type, 
+			which is not always (less) the case for other types, like AbstractSurfaceType of AbstractCurveType. Add extra documentation that the implementation will, of will not, use xlink and/or will or will not use certain subtypes.
+			
+			 -->
+            <type name="GM_Point"  
+                asAttributeDesignation="complextype"
+                asAttribute="PointPropertyType">Point</type>  
+                
+            <type name="GM_Curve"  
+                asAttributeDesignation="complextype"
+                asAttribute="CurvePropertyType">Curve</type>  
+                
+            <type name="GM_Surface"  
+                asAttributeDesignation="complextype"
+                asAttribute="SurfacePropertyType">Surface</type> 
+               
+            <type name="GM_MultiPoint"  
+                asAttributeDesignation="complextype"
+                asAttribute="MultiPointPropertyType">MultiPoint</type> 
+                
+            <type name="GM_MultiSurface"  
+                asAttributeDesignation="complextype"
+                asAttribute="MultiSurfacePropertyType">MultiSurface</type> 
+                
+            <type name="GM_MultiCurve"  
+                asAttributeDesignation="complextype"
+                asAttribute="MultiCurvePropertyType">MultiCurve</type> 
+                
+            <type name="GM_Geometry"  
+                asAttributeDesignation="complextype"
+                asAttribute="GeometryPropertyType">Geometry</type>              
+               
+            <type name="GM_MultiGeometry"  
+                asAttributeDesignation="complextype"
+                asAttribute="MultiGeometryPropertyType">MultiGeometry</type>
+                
+            <!-- preferable not to be used in  schema's - also, types below are not yet edited to always be PropertyType: --> 
+             
+            <type name="GM_ArcString"  
+                asAttributeDesignation="complextype"
+                asAttribute="ArcStringPropertyType">ArcString</type>          
+            
+            <type name="GM_LineString"  
+                asAttributeDesignation="complextype"
+                asAttribute="LineStringPropertyType">LineStringSegment</type>  
+                
+            <type name="GM_Polygon"  
+                asAttributeDesignation="complextype"
+                asAttribute="PolygonPatchType">PolygonPatch</type>  
+            
+            <type name="GM_Object"  
+                asAttributeDesignation="complextype"
+                asAttribute="GeometryPropertyType">Object</type>  
+
+            <type name="GM_Primitive"  
+                asAttributeDesignation="complextype"
+                asAttribute="GeometricPrimtivePropertyType">Primitve</type>  
+
+            <type name="GM_Position"  
+                asAttributeDesignation="complextype"
+                asAttribute="geometricPositionGroup">Position</type>  
+
+            <type name="GM_PointArray"  
+                asAttributeDesignation="complextype"
+                asAttribute="geometricPositionListGroup">PointArray</type>  
+
+			<type name="GM_Solid"  
+                asAttributeDesignation="complextype"
+                asAttribute="SolidPropertyType">Solid</type> 
+                
+            <type name="GM_OrientableCurve"  
+                asAttributeDesignation="complextype"
+                asAttribute="CurvePropertyType">OrientableCurve</type> 
+                
+            <type name="GM_OrientableSurface"  
+                asAttributeDesignation="complextype"
+                asAttribute="SurfacePropertyType">OrientableSurface</type> 
+                
+            <type name="GM_CompositePoint"  
+                asAttributeDesignation="complextype"
+                asAttribute="PointPropertyType">CompositePoint</type> 
+           
+            <type name="GM_Complex"  
+                asAttributeDesignation="complextype"
+                asAttribute="GeometricComplexPropertyType">Complex</type> 
+                
+            <type name="GM_Aggregate"  
+                asAttributeDesignation="complextype"
+                asAttribute="MultiGeometryPropertyType">Aggregate</type> 
+			
+            <type name="GM_MultiSolid"  
+                asAttributeDesignation="complextype"
+                asAttribute="MultiMultiSolidPropertyType">MultiSolid</type> 
+                
+            <type name="GM_MultiPrimitive"  
+                asAttributeDesignation="complextype"
+                asAttribute="MultiGeometryPropertyType">MultiPrimitive</type> 
+
+            <type name="GM_Aggregate"  
+                asAttributeDesignation="complextype"
+                asAttribute="MultiGeometryPropertyType">MultiGeometry</type>
+                
+            <type name="GM_MultiPrimtive"  
+                asAttributeDesignation="complextype"                
+                asAttribute="MultiGeometryPropertyType">MultiGeometry</type>
+			  
+            <type name="Measure">MeasureType</type>  
+            <type name="Binary" primitive="true">xs:binary</type>  
+            <type name="Boolean" primitive="true">xs:boolean</type>  
+            <type name="CharacterString" primitive="true">xs:string</type>  
+            <type name="Date" primitive="true">xs:date</type>  
+            <type name="DateTime" primitive="true">xs:dateTime</type>  
+            <type name="Integer" primitive="true">xs:integer</type>  
+            <type name="Real" primitive="true">xs:real</type>  
+            <type name="Time" primitive="true">xs:time</type>  
+            <type name="URI" primitive="true">xs:AnyURI</type>  
+        </map>
+    </conceptual-schema>
+    
+</conceptual-schemas>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cva:ContextValueAssociation xmlns:cva="http://docs.oasis-open.org/codelist/ns/ContextValueAssociation/1.0/"
+                             xmlns:BagAdres="http://www.kadaster.nl/schemas/IMBAG/bag-adres/v20130522"
+                             queryBinding="xslt"
+                             name="rules-IMBAG_BagAdres_v1_0_0">
+   <Title>This is a context/value association file for the XML schema at http://www.kadaster.nl/schemas/bag-adres/v20130522/IMBAG_BagAdres_v1_0_0.xsd.</Title>
+   <ValueLists>
+      <ValueList xml:id="BAGAdresseerbaarObject"
+                 uri="http://www.kadaster.nl/schemas/waardelijsten/BAGAdresseerbaarObject"
+                 key="Code"/>
+      <ValueList xml:id="BAGOpenbareRuimte"
+                 uri="http://www.kadaster.nl/schemas/waardelijsten/BAGOpenbareRuimte"
+                 key="Code"/>
+      <ValueList xml:id="BAGWoonplaatsnaam"
+                 uri="http://www.kadaster.nl/schemas/waardelijsten/BAGWoonplaatsnaam"
+                 key="Code"/>
+   </ValueLists>
+   <Contexts>
+      <Context item="BagAdres:typeAdresseerbaarObject" scope="BagAdres:NummerAanduiding"
+               values="BAGAdresseerbaarObject"/>
+      <Context item="BagAdres:openbareRuimteType" scope="BagAdres:OpenbareRuimte"
+               values="BAGOpenbareRuimte"/>
+      <Context item="BagAdres:woonplaatsNaam" scope="BagAdres:Woonplaats"
+               values="BAGWoonplaatsnaam"/>
+   </Contexts>
+</cva:ContextValueAssociation>

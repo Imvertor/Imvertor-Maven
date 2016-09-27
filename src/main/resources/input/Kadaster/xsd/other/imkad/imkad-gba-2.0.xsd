@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--AL added: gba namespace -->
+<xs:schema 
+   targetNamespace="http://www.kadaster.nl/schemas/imkad"
+   xmlns:kad="http://www.kadaster.nl/schemas/imkad"
+   
+   xmlns:gba="http://www.bprbzk.nl/GBA/LRD"
+   
+   xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+   
+   elementFormDefault="qualified"
+   version="1.0">
+   
+   <!--AL import gba namespace -->
+   <xs:import namespace="http://www.bprbzk.nl/GBA/LRD" schemaLocation="../gba/gba-LO3-placeholder.xsd"/>
+   
+   <!-- define Ingezetene as a MctPersoon -->
+      <xs:element name="Ingezetene" type="gba:MctPersoon">
+      <xs:annotation>
+         <xs:documentation>De authentieke gegevens over natuurlijke personen (ingezetenen) worden opgenomen in de basisregistratie GBA. 
+         </xs:documentation>
+      </xs:annotation>
+   </xs:element> 
+   
+</xs:schema>

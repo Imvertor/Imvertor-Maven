@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+   <!-- TODO ga uit van UGM maar alleen de pacakge struktuur wijkt enigzins af. Dit anders oplossen?-->
+   <xi:include href="KINGUGM.xml"/>
+   
+   <name>KINGBSM</name>
+
+   <desc>Metamodel for KING/VNG information models: bericht specificatie model</desc>
+
+   <stereotypes xml:id="stereotypes">
+
+      <stereo id="stereotype-name-entiteitrelatie">
+         <name lang="en">entityrelation</name>
+         <name lang="nl">entiteitrelatie</name>
+         <desc>TODO</desc>
+         <construct>association</construct>
+      </stereo>
+      
+      <stereo id="stereotype-name-berichtrelatie">
+         <name lang="en">messagerelation</name>
+         <name lang="nl">berichtrelatie</name>
+         <desc>TODO</desc>
+         <construct>association</construct>
+      </stereo>
+      
+      <!-- packages -->
+      <stereo id="stereotype-name-application-package">
+         <name lang="en">messageset</name>
+         <name lang="nl">koppelvlak</name>
+         <desc>TODO</desc>
+         <construct>package</construct>
+      </stereo>
+      <stereo id="stereotype-name-domain-package">
+         <name lang="en">message</name>
+         <name lang="nl">bericht</name>
+         <desc>TODO</desc>
+         <construct>package</construct>
+      </stereo>
+
+      <!-- classes -->
+  
+      <stereo id="stereotype-name-vrijberichttype">
+         <name lang="en">free message type</name>
+         <name lang="nl">vrij berichttype</name>
+         <desc>TODO</desc>
+         <construct>class</construct>
+         <toplevel>true</toplevel>
+         <!-- relaties vanuit vrij bericht mogen een willekeurige naam hebben -->
+         <?x
+           <entity-relation-constraint>
+            <relation>gelijk</relation>
+            <relation>vanaf</relation>
+            <relation>tot en met</relation>
+            <relation>start</relation>
+            <relation>scope</relation>
+            <relation>entiteit</relation>
+            <relation>antwoord</relation>
+            <relation>update</relation>
+            <relation>selectie</relation>
+            <relation>actueel</relation>
+            <relation>oudste</relation>
+            <relation>wijziging</relation>
+            <relation>historie</relation>
+         </entity-relation-constraint>
+         ?>
+      </stereo>
+      <stereo id="stereotype-name-vraagberichttype">
+         <name lang="en">request message type</name>
+         <name lang="nl">vraagberichttype</name>
+         <desc>TODO</desc>
+         <construct>class</construct>
+         <toplevel>true</toplevel>
+         <entity-relation-constraint>
+            <relation lang="nl">gelijk</relation>
+            <relation lang="nl">vanaf</relation>
+            <relation lang="nl">tot en met</relation>
+            <relation lang="nl">start</relation>
+            <relation lang="nl">scope</relation>
+         </entity-relation-constraint>
+      </stereo>
+      <stereo id="stereotype-name-antwoordberichttype">
+         <name lang="en">response message type</name>
+         <name lang="nl">antwoordberichttype</name>
+         <desc>TODO</desc>
+         <construct>class</construct>
+         <toplevel>true</toplevel>
+         <entity-relation-constraint>
+            <relation lang="nl">object</relation>
+         </entity-relation-constraint>         
+      </stereo>
+      <stereo id="stereotype-name-kennisgevingberichttype">
+         <name lang="en">push message type</name>
+         <name lang="nl">kennisgevingberichttype</name>
+         <desc>TODO</desc>
+         <construct>class</construct>
+         <toplevel>true</toplevel>
+         <entity-relation-constraint>
+            <relation lang="nl">object</relation>
+         </entity-relation-constraint>
+      </stereo>
+      <stereo id="stereotype-name-synchronisatieberichttype">
+         <name lang="en">synchronisation message type</name>
+         <name lang="nl">synchronisatieberichttype</name>
+         <desc>TODO</desc>
+         <construct>class</construct>
+         <toplevel>true</toplevel>
+         <entity-relation-constraint>
+            <relation lang="nl">object</relation>
+         </entity-relation-constraint>
+      </stereo>
+      
+      <stereo id="stereotype-name-components-package">
+         <name lang="en">components</name>
+         <name lang="nl">componenten</name>
+         <desc>
+            Dit package bevat klassen, enumeraties of datatypen die gemeenschappelijk zijn tussen berichtmodellen, 
+            en die dus bij het genereren van berichten kunnen worden omgezet naar globale complextypes.
+            <!-- Task #487814 Verwezenlijking herbruikbare (globale) complexTypes -->
+         </desc>
+         <construct>package</construct>
+      </stereo>
+   </stereotypes>
+</metamodel>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:Adres="http://www.kadaster.nl/schemas/KARIM/KIMBRP-adres/v20130801"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.kadaster.nl/schemas/KARIM/KIMBRP-adres/v20130801"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="1.0.0-2">
+   <xs:annotation>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/uri">http://www.kadaster.nl/schemas/KARIM/KIMBRP-adres</xs:appinfo>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/version">1.0.0</xs:appinfo>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/phase">2</xs:appinfo>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/release">20130801</xs:appinfo>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/generated">2013-07-15 12:59:42</xs:appinfo>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/svn">$Id$</xs:appinfo>
+      <xs:documentation source="http://www.kadaster.nl/schema-info/file-location">KIMBRP-adres/v20130801/AdresBuitenland_Adres_v1_0_0.xsd</xs:documentation>
+      <xs:documentation source="http://www.kadaster.nl/schema-info/conversion">
+        This schema is encoded according to the rules layed down in "ISO 19118: Text of 19118 Geographic information - Encoding, as sent to the ISO Central Secretariat for publication"
+    </xs:documentation>
+      <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Dit package bevat alle klassen die behoren bij de representatie van BRP buitenlandse adressen.</xs:documentation>
+   </xs:annotation>
+   <xs:element name="AdresBuitenland" type="Adres:AdresBuitenland" abstract="false"/>
+   <xs:complexType name="AdresBuitenland" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een adres van een niet ingezetene.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="identificatie" minOccurs="1" maxOccurs="1" nillable="true">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Uniek en onveranderlijk nummer voor dit adres.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:simpleContent>
+                  <xs:extension base="Adres:Adresnummer">
+                     <xs:attribute name="nilReason" type="xs:string" use="optional"/>
+                  </xs:extension>
+               </xs:simpleContent>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="adres" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Bevat straatnaam en huisnummer.
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="50"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="woonplaats" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Bevat postcode en woonplaats.
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="80"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="regio" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Het district: de staat of provincie of regio.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="39"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="land" type="Adres:Waardelijst" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:appinfo source="http://www.kadaster.nl/data-info/uri">http://www.kadaster.nl/schemas/waardelijsten/BRPLand</xs:appinfo>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De mogelijke waarden zijn vastgelegd in een waardenlijst.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:ID" use="optional"/>
+   </xs:complexType>
+   <xs:element name="Waardelijst" type="Adres:Waardelijst" abstract="false"/>
+   <xs:complexType name="Waardelijst" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De toegestane waarden staan in een externe waardelijst. Voor iedere waardelijst is vastgesteld wat de bron is van deze waarden. Elementen met dit type mogen niet leeg gelaten worden.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="code" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De code van deze waarde. De code is uniek binnen de waardenlijst en taalonafhankelijk.
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="waarde" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De waarde zoals aangetroffen in de waardenlijst. het moment waarop de waarde geassocieerd is met de meegeleverde code is onbepaald.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:simpleType name="Adresnummer">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Uniek adresaanduiding, bestaande uit 16 cijfers.</xs:documentation>
+      </xs:annotation>
+      <xs:restriction base="xs:string">
+         <xs:pattern value="[0-9]{16}"/>
+      </xs:restriction>
+   </xs:simpleType>
+</xs:schema>

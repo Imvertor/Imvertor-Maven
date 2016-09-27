@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:a="http://www.kadaster.nl/schemas/KIMBAG/KIMBAG-binnenlandsadres/adres/v20140301"
+           xmlns:a-ref="http://www.kadaster.nl/schemas/KIMBAG/KIMBAG-binnenlandsadres/adres-ref/v20130601"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.kadaster.nl/schemas/KIMBAG/KIMBAG-binnenlandsadres/adres/v20140301"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="1.0.1-2">
+   <xs:annotation>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/uri">http://www.kadaster.nl/schemas/KIMBAG/KIMBAG-binnenlandsadres/adres</xs:appinfo>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/version">1.0.1</xs:appinfo>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/phase">2</xs:appinfo>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/release">20140301</xs:appinfo>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/generated">2014-04-09 11:28:12</xs:appinfo>
+      <xs:appinfo source="http://www.kadaster.nl/schema-info/svn">$Id$</xs:appinfo>
+      <xs:documentation source="http://www.kadaster.nl/schema-info/file-location">adres/v20140301/BinnenlandsAdres_Adres_v1_0_1.xsd</xs:documentation>
+      <xs:documentation source="http://www.kadaster.nl/schema-info/conversion">
+        This schema is encoded according to the rules layed down in "ISO 19118: Text of 19118 Geographic information - Encoding, as sent to the ISO Central Secretariat for publication"
+    </xs:documentation>
+      <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Dit package bevat alle klassen die behoren bij de representatie van een binnenlands adres. Dit adres is gebaseerd op het KIMBAG model.</xs:documentation>
+   </xs:annotation>
+   <xs:import namespace="http://www.kadaster.nl/schemas/KIMBAG/KIMBAG-binnenlandsadres/adres-ref/v20130601"
+              schemaLocation="../../adres-ref/v20130601/BinnenlandsAdres_AdresRef_v1_0_0.xsd"/>
+   <xs:element name="Nummeraanduiding" type="a:Nummeraanduiding" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een NUMMERAANDUIDING is een door de gemeenteraad als
+zodanig toegekende aanduiding van een adresseerbaar object.</xs:documentation>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="Nummeraanduiding" abstract="false">
+      <xs:sequence>
+         <xs:element name="identificatie"
+                     minOccurs="1"
+                     maxOccurs="1"
+                     nillable="true">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De unieke aanduiding van een NUMMERAANDUIDING.
+Wanneer de nummeraanduiding niet is opgenomen in de BAG reegistratie, dan is geen identificatie toegekend,
+</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:simpleContent>
+                  <xs:extension base="a:Objectnummer">
+                     <xs:attribute name="nilReason" type="xs:string" use="optional"/>
+                  </xs:extension>
+               </xs:simpleContent>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="huisnummer" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een door of namens het gemeentebestuur ten aanzien
+van een adresseerbaar object toegekende nummering.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:integer">
+                  <xs:totalDigits value="5"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="huisletter" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een door of namens het gemeentebestuur ten aanzien
+van een adresseerbaar object toegekende toevoeging
+aan een huisnummer in de vorm van een alfanumeriek
+teken.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="[a-zA-Z]"/>
+                  <xs:maxLength value="1"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="huisnummertoevoeging" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een door of namens het gemeentebestuur ten aanzien
+van een adresseerbaar object toegekende nadere
+toevoeging aan een huisnummer of een combinatie van
+huisnummer en huisletter.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="([a-z,A-Z,0-9])+"/>
+                  <xs:maxLength value="4"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="postcode" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De door TNT Post vastgestelde code behorende bij een
+bepaalde combinatie van een straatnaam en een
+huisnummer.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="[1-9][0-9][0-9][0-9][A-Z][A-Z]"/>
+                  <xs:maxLength value="6"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="inOnderzoek" minOccurs="1" maxOccurs="1" nillable="true">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">InOnderzoek kan niet beschikbaar (voidable) zijn, wanneer het adres niet een binnen BAG geregistreerd adres is.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:simpleContent>
+                  <xs:extension base="a:Indicatie">
+                     <xs:attribute name="nilReason" type="xs:string" use="optional"/>
+                  </xs:extension>
+               </xs:simpleContent>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="gerelateerdeWoonplaats" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:annotation>
+                  <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Unieke aanduiding van de woonplaats waarbinnen het
+object waaraan de NUMMERAANDUIDING is toegekend
+is gelegen. Dit gegeven wordt opgenomen indien het object is gelegen in een andere woonplaats dan de openbare ruimte waaraan de nummeraanduiding is gerelateerd.</xs:documentation>
+               </xs:annotation>
+               <xs:choice minOccurs="1" maxOccurs="1">
+                  <xs:element ref="a-ref:WoonplaatsRef"/>
+               </xs:choice>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="gerelateerdeOpenbareRuimte" minOccurs="1" maxOccurs="1">
+            <xs:complexType>
+               <xs:annotation>
+                  <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De unieke aanduiding van een OPENBARE RUIMTE
+waaraan een adresseerbaar object is gelegen.</xs:documentation>
+               </xs:annotation>
+               <xs:choice minOccurs="1" maxOccurs="1">
+                  <xs:element ref="a-ref:OpenbareRuimteRef"/>
+               </xs:choice>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:ID" use="optional"/>
+   </xs:complexType>
+   <xs:element name="OpenbareRuimte" type="a:OpenbareRuimte" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een OPENBARE RUIMTE is een door de gemeenteraad als
+zodanig aangewezen benaming van een binnen 1 woonplaats
+gelegen buitenruimte.</xs:documentation>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="OpenbareRuimte" abstract="false">
+      <xs:sequence>
+         <xs:element name="openbareRuimteNaam" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een naam die aan een OPENBARE RUIMTE is toegekend in een daartoe strekkend formeel gemeentelijk besluit.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="80"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="inOnderzoek" minOccurs="1" maxOccurs="1" nillable="true">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">InOnderzoek kan niet beschikbaar (voidable) zijn, wanneer het adres niet een binnen BAG geregistreerd adres is.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:simpleContent>
+                  <xs:extension base="a:Indicatie">
+                     <xs:attribute name="nilReason" type="xs:string" use="optional"/>
+                  </xs:extension>
+               </xs:simpleContent>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="gerelateerdeWoonplaats" minOccurs="1" maxOccurs="1">
+            <xs:complexType>
+               <xs:annotation>
+                  <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Unieke aanduiding van de woonplaats waarbinnen een
+OPENBARE RUIMTE is gelegen.</xs:documentation>
+               </xs:annotation>
+               <xs:choice minOccurs="1" maxOccurs="1">
+                  <xs:element ref="a-ref:WoonplaatsRef"/>
+               </xs:choice>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:ID" use="optional"/>
+   </xs:complexType>
+   <xs:element name="Woonplaats" type="a:Woonplaats" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Een WOONPLAATS is een door de gemeenteraad als
+zodanig aangewezen gedeelte van het gemeentelijk
+grondgebied.</xs:documentation>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="Woonplaats" abstract="false">
+      <xs:sequence>
+         <xs:element name="woonplaatsNaam" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De benaming van een door het gemeentebestuur
+aangewezen WOONPLAATS.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="80"/>
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="inOnderzoek" minOccurs="1" maxOccurs="1" nillable="true">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">InOnderzoek kan niet beschikbaar (voidable) zijn, wanneer het adres niet een binnen BAG geregistreerd adres is.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:simpleContent>
+                  <xs:extension base="a:Indicatie">
+                     <xs:attribute name="nilReason" type="xs:string" use="optional"/>
+                  </xs:extension>
+               </xs:simpleContent>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:ID" use="optional"/>
+   </xs:complexType>
+   <xs:element name="Waardelijst" type="a:Waardelijst" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De toegestane waarden staan in een externe waardelijst. Voor iedere waardelijst is vastgesteld wat de bron is van deze waarden. Elementen met dit type mogen niet leeg gelaten worden.</xs:documentation>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="Waardelijst" abstract="false">
+      <xs:sequence>
+         <xs:element name="code" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De code van deze waarde. De code is uniek binnen de waardenlijst en taalonafhankelijk.
+</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="waarde" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">De waarde zoals aangetroffen in de waardenlijst. het moment waarop de waarde geassocieerd is met de meegeleverde code is onbepaald.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:simpleType name="Indicatie">
+      <xs:restriction base="xs:string">
+         <xs:pattern value="J|N"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="Objectnummer">
+      <xs:annotation>
+         <xs:documentation source="http://www.kadaster.nl/schema-info/technical-documentation">Uniek objectaanduiding binnen een gemeente, bestaande uit 16 cijfers.</xs:documentation>
+      </xs:annotation>
+      <xs:restriction base="xs:string">
+         <xs:pattern value="[0-9]{16}"/>
+      </xs:restriction>
+   </xs:simpleType>
+</xs:schema>

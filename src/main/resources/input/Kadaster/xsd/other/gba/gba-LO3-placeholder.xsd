@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+    Dit is een STUB
+    
+    Dit schema is onttrokken aan LRDServiceSOAP0_5.wsdl bereikbaar via 
+    http://www.bprbzk.nl/content.jsp?objectid=3954 (Home  › GBA  › Informatiebank  › Techniek):
+    De technische specificaties van de GBA-V Online LRD Service.
+    
+--> 
+<xs:schema 
+    targetNamespace="http://www.bprbzk.nl/GBA/LRD" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:s0="http://www.bprbzk.nl/GBA/LRD"
+    
+    elementFormDefault="qualified"
+    version="0.5"
+    >
+    <xs:complexType name="AdHocAdresVragen">
+        <xs:sequence>
+            <xs:element name="AdHocAdresVragen">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Masker" type="s0:RubrieksMasker"/>
+                        <xs:element name="ZoekOpdracht" type="s0:Beperktegegevensset"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="RubrieksMasker">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Persoon" type="s0:MctPersoon"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Nationaliteit" type="s0:MctNationaliteit"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Inschrijving" type="s0:MctInschrijving"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Verblijfsplaats"
+                type="s0:MctVerblijfsplaats"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Verblijfstitel"
+                type="s0:MctVerblijfstitel"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MctPersoon">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Identificatienummers"
+                type="s0:MgrIdentificatienummers"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Naam" type="s0:MgrNaam"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Geboorte" type="s0:MgrGeboorte"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Geslacht" type="s0:MgrGeslacht"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MgrIdentificatienummers">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="ANummer" type="xs:boolean"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="SoFiNummer" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MgrNaam">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Voornamen" type="xs:boolean"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="VoorvoegselsGeslachtsnaam"
+                type="xs:boolean"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Geslachtsnaam" type="xs:boolean"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="AdellijkeTitelPredikaat" type="xs:boolean"
+            />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MgrGeboorte">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Geboortedatum" type="xs:boolean"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Geboorteplaats" type="xs:boolean"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Geboorteland" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MgrGeslacht">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Geslachtsaanduiding" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MctNationaliteit">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Nationaliteit" type="s0:MgrNationaliteit"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="BijzonderNederlanderschap"
+                type="s0:MgrBijzonderNederlanderschap"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Document" type="s0:MgrDocument"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MgrNationaliteit">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Nationaliteit" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MgrBijzonderNederlanderschap">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="AanduidingBijzonderNederlanderschap"
+                type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MgrDocument">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="BeschrijvingDocument" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MctInschrijving">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Geheim" type="s0:MgrGeheim"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MgrGeheim">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="IndicatieGeheim" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MctVerblijfsplaats">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Gemeente" type="s0:MgrGemeente"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="AdresHuishouding"
+                type="s0:MgrAdreshouding"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Adres" type="s0:MgrAdres"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Locatie" type="s0:MgrLocatie"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MgrGemeente">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GemeenteVanInschrijving" type="xs:boolean"
+            />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MgrAdreshouding">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="FunctieAdres" type="xs:boolean"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="GemeenteDeel" type="xs:boolean"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DatumAanvangAdreshouding" type="xs:boolean"
+            />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MgrAdres">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Straatnaam" type="xs:boolean"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Huisnummer" type="xs:boolean"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Huisletter" type="xs:boolean"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Huisnummertoevoeging" type="xs:boolean"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="AanduidingBijHuisnummer" type="xs:boolean"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Postcode" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MgrLocatie">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Locatiebeschrijving" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MctVerblijfstitel">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Verblijfstitel"
+                type="s0:MgrVerblijfstitel"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MgrVerblijfstitel">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="AanduidingVerblijfstitel" type="xs:boolean"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DatumEindeVerblijfstitel" type="xs:boolean"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="IngangsdatumVerblijfstitel"
+                type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Beperktegegevensset">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Persoon" type="s0:ctPersoon"/>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="Nationaliteit"
+                type="s0:ctNationaliteit"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Inschrijving" type="s0:ctInschrijving"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Verblijfsplaats"
+                type="s0:ctVerblijfsplaats"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Verblijfstitel" type="s0:ctVerblijfstitel"
+            />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctPersoon">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Identificatienummers"
+                type="s0:grIdentificatienummers"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Naam" type="s0:grNaam"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Geboorte" type="s0:grGeboorte"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Geslacht" type="s0:grGeslacht"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Procedure" type="s0:grProcedure"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="grIdentificatienummers">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="ANummer" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="SoFiNummer" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="grNaam">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Voornamen" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="VoorvoegselsGeslachtsnaam" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Geslachtsnaam" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="AdellijkeTitelPredikaat" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="grGeboorte">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Geboortedatum" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Geboorteplaats" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Geboorteland" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="grGeslacht">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Geslachtsaanduiding" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="grProcedure">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="AanduidingGegevensInOnderzoek"
+                type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DatumIngangOnderzoek" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DatumEindeOnderzoek" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctNationaliteit">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Nationaliteit" type="s0:grNationaliteit"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="BijzonderNederlanderschap"
+                type="s0:grBijzonderNederlanderschap"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Document" type="s0:grDocument"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Procedure" type="s0:grProcedure"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="grNationaliteit">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Nationaliteit" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="grBijzonderNederlanderschap">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="AanduidingBijzonderNederlanderschap"
+                type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="grDocument">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="BeschrijvingDocument" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctInschrijving">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Opschorting" type="s0:grOpschorting"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Geheim" type="s0:grGeheim"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="grOpschorting">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="DatumOpschortingBijhouding"
+                type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="OmschrijvingRedenOpschortingBijhouding"
+                type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="grGeheim">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="IndicatieGeheim" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctVerblijfsplaats">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Gemeente" type="s0:grGemeente"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="AdresHuishouding" type="s0:grAdreshouding"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Adres" type="s0:grAdres"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Locatie" type="s0:grLocatie"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Procedure" type="s0:grProcedure"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="grGemeente">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GemeenteVanInschrijving" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="grAdreshouding">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="FunctieAdres" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="GemeenteDeel" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DatumAanvangAdreshouding" type="xs:string"
+            />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="grAdres">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Straatnaam" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Huisnummer" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Huisletter" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Huisnummertoevoeging" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="AanduidingBijHuisnummer" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Postcode" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="grLocatie">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Locatiebeschrijving" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ctVerblijfstitel">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="Verblijfstitel" type="s0:grVerblijfstitel"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="Procedure" type="s0:grProcedure"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="grVerblijfstitel">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="AanduidingVerblijfstitel" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="DatumEindeVerblijfstitel" type="xs:string"/>
+            <xs:element minOccurs="0" maxOccurs="1" name="IngangsdatumVerblijfstitel"
+                type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AdHocAdresVragenResponse">
+        <xs:sequence>
+            <xs:element name="AdHocAdresVragenResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="1" maxOccurs="1" name="AdHocAdresVragenResult"
+                            type="xs:string"/>
+                        <xs:element minOccurs="0" maxOccurs="unbounded" name="GevondenGegevensSet"
+                            type="s0:Beperktegegevensset"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AdHocVragen">
+        <xs:sequence>
+            <xs:element name="AdHocVragen">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="1" maxOccurs="1" name="Masker"
+                            type="s0:RubrieksMasker"/>
+                        <xs:element minOccurs="1" maxOccurs="1" name="ZoekOpdracht"
+                            type="s0:Beperktegegevensset"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AdHocVragenResponse">
+        <xs:sequence>
+            <xs:element name="AdHocVragenResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="1" maxOccurs="1" name="AdHocVragenResult"
+                            type="xs:string"/>
+                        <xs:element minOccurs="0" maxOccurs="unbounded" name="GevondenGegevensSet"
+                            type="s0:Beperktegegevensset"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
