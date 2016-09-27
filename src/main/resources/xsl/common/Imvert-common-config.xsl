@@ -256,8 +256,14 @@
                 <xsl:value-of select="concat(lower-case(substring($translated-name,1,1)),substring($translated-name,2,string-length($translated-name)-1))"/>
             </xsl:when>
             <xsl:when test="$scheme = 'type-name'">
+                <xsl:variable name="nameWithoutClass">
+                    <xsl:choose>
+                        <xsl:when test="contains($name,'class_')"><xsl:value-of select="substring-after($name,'class_')"/></xsl:when>
+                        <xsl:otherwise><xsl:value-of select="$name"/></xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
                 <!-- the name of an element may not contain * or ? or the like -->
-                <xsl:variable name="translated-name" select="imf:extract(normalize-space(translate($name, '/', '-')),'[A-Za-z0-9_:][A-Za-z0-9_\.\-:]+')"/>
+                <xsl:variable name="translated-name" select="imf:extract(normalize-space(translate($nameWithoutClass, '/', '-')),'[A-Za-z0-9_:][A-Za-z0-9_\.\-:]+')"/>
                 <xsl:value-of select="concat(upper-case(substring($translated-name,1,1)),substring($translated-name,2,string-length($translated-name)-1))"/>
             </xsl:when>
             <xsl:when test="$scheme = 'addition-relation-name'">
