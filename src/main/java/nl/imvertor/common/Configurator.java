@@ -161,10 +161,10 @@ public class Configurator {
 			if (!appFolder.isDirectory())
 				appFolder.mkdirs();
 			
-			if (System.getProperty("input.dir") == null)
-				throw new ConfiguratorException("Missing system parameter input.dir, please pass as -Dinput.dir=[filepath]");
+			if (System.getProperty("owner.name") == null)
+				throw new ConfiguratorException("Missing system parameter owner.name, please pass as -Downer.name=[name]");
 			
-			inputFolder = new AnyFolder(System.getProperty("input.dir"));
+			inputFolder = new AnyFolder(baseFolder, "input" + File.separator + System.getProperty("owner.name"));
 			
 			if (System.getProperty("output.dir") == null)
 				throw new ConfiguratorException("Missing system parameter output.dir, please pass as -Doutput.dir=[filepath]");
@@ -363,7 +363,6 @@ public class Configurator {
 		(new OutputFolder(getParm(workConfiguration,"system","work-imvert-folder-path",true))).clearIfExists(false);
 		(new OutputFolder(getParm(workConfiguration,"system","work-comply-folder-path",true))).clearIfExists(false);
 				
-		setParm(workConfiguration,"system","managedinputfolder", inputFolder.getCanonicalPath(), true);
 		setParm(workConfiguration,"system","managedoutputfolder", outputFolder.getCanonicalPath(), true);
 		setParm(workConfiguration,"system","managedinstallfolder", baseFolder.getCanonicalPath(), true);
 
@@ -602,6 +601,8 @@ public class Configurator {
 		setFileParm(workConfiguration, "system","etc-folder-path","etc",baseFolder);
 		setFileParm(workConfiguration, "system","cfg-folder-path","cfg",baseFolder);
 		setFileParm(workConfiguration, "system","xsl-folder-path","xsl",baseFolder);
+		
+		setParm(workConfiguration, "system","inp-folder-path",inputFolder.getCanonicalPath(),true);
 		
 		// also set some general relevant info
 		setParm(workConfiguration, "system",  "generation-id", getCurrentDate("yyyyMMdd-HHmmss"),true);

@@ -204,9 +204,9 @@ public class XsdCompiler extends Step {
 		//TODO let the stylesheet operate on system, not on model file. Try to determine if model file is required alltogether.
 		valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_METAMODEL_KINGUGM_XSD_FILEPATH", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH");
 		
-		// and copy the onderlaag
-		XmlFile onderlaag = new XmlFile(configurator.getParm("properties", "STUF_ONDERLAAG_UGM"));
-		onderlaag.copyFile(configurator.getParm("properties", "RESULT_XSD_APPLICATION_FOLDER") + File.separator + onderlaag.getName());
+		// and copy the onderlaag; this is a copy of all stuff in that folder
+		AnyFolder onderlaag = new AnyFolder(configurator.getParm("properties", "STUF_ONDERLAAG_UGM"));
+		onderlaag.copy(configurator.getParm("system", "work-xsd-folder-path"));
 		
 		// tell that a schema has been created
 		configurator.setParm("system","schema-created","true");

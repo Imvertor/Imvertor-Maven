@@ -90,7 +90,7 @@
    <properties>
    
       <LOCALIZE_XSD_XSLPATH>localize-xsd.xsl</LOCALIZE_XSD_XSLPATH>
-      <LOCAL_SCHEMA_MAPPING_FILE>${system/managedinputfolder}/xsd/local-schemas.xml</LOCAL_SCHEMA_MAPPING_FILE>
+      <LOCAL_SCHEMA_MAPPING_FILE>${system/inp-folder-path}/xsd/local-schemas.xml</LOCAL_SCHEMA_MAPPING_FILE>
     
       <!-- Kadaster : -->
      
@@ -101,7 +101,7 @@
       <IMVERTOR_FLATTEN_XSLPATH>flatten-xsd.xsl</IMVERTOR_FLATTEN_XSLPATH>
       <WORK_FLATTEN_FILE>${system/work-imvert-folder-path}/imvertor.26.flatten.html</WORK_FLATTEN_FILE>
       <!-- copy schemas -->
-      <EXTERNAL_XSD_FOLDER>${system/managedinputfolder}/xsd</EXTERNAL_XSD_FOLDER>
+      <EXTERNAL_XSD_FOLDER>${system/inp-folder-path}/xsd</EXTERNAL_XSD_FOLDER>
       
       <!-- 
          KING Koppelvlakken schema's (BSM)
@@ -119,7 +119,7 @@
       <IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH>
       <RESULT_METAMODEL_KINGUGM_XSD_FILEPATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_METAMODEL_KINGUGM_XSD_FILEPATH>
       <!-- locatie van de stuf onderlaag -->
-      <STUF_ONDERLAAG_UGM>${system/managedinputfolder}/xsd/other/KING-UGM/support</STUF_ONDERLAAG_UGM>
+      <STUF_ONDERLAAG_UGM>${system/inp-folder-path}/xsd/other/KING-UGM/support</STUF_ONDERLAAG_UGM>
       
       <!-- intermediate XML file -->
       <RESULT_XSD_XML_FILE_PATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_XSD_XML_FILE_PATH>   
@@ -133,7 +133,7 @@
       <RESULT_ENDPRODUCT_XSD_FILE_PATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_ENDPRODUCT_XSD_FILE_PATH>
       
       <!-- locatie van de stuf onderlaag -->
-      <STUF_ONDERLAAG_BSM>${system/managedinputfolder}/xsd/other/KING-BSM/stuf0301.xsd</STUF_ONDERLAAG_BSM>
+      <STUF_ONDERLAAG_BSM>${system/inp-folder-path}/xsd/other/KING-BSM/stuf0301.xsd</STUF_ONDERLAAG_BSM>
       
       <!-- common: -->
    
@@ -154,7 +154,7 @@
       
    </properties>
    <system>
-      <endproduct-base-config-file>${system/managedinputfolder}/cfg/schemarules/${cli/endproductbaseconfig}</endproduct-base-config-file>
+      <endproduct-base-config-file>${system/inp-folder-path}/cfg/schemarules/${cli/endproductbaseconfig}</endproduct-base-config-file>
       
    </system>
    

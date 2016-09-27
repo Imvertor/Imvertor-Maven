@@ -45,8 +45,8 @@
    <properties>
       
        <!--  template EAP used as the basis for all working copies -->
-      <TEMPLATE_TEMPLATE_FILE>${system/managedinputfolder}/eap/TEMPLATE.EAP</TEMPLATE_TEMPLATE_FILE>
-      <TEMPLATE_TEMPLATE_FILE_GUID>${system/managedinputfolder}/eap/TEMPLATE.EAP.GUID</TEMPLATE_TEMPLATE_FILE_GUID>
+      <TEMPLATE_TEMPLATE_FILE>${system/inp-folder-path}/eap/TEMPLATE.EAP</TEMPLATE_TEMPLATE_FILE>
+      <TEMPLATE_TEMPLATE_FILE_GUID>${system/inp-folder-path}/eap/TEMPLATE.EAP.GUID</TEMPLATE_TEMPLATE_FILE_GUID>
        
        <!--  reports, part of distribution	 -->
        <RESULT_DOC_FOLDER>${properties/APPLICATION_FOLDER}/doc</RESULT_DOC_FOLDER>

@@ -79,7 +79,7 @@ public class GenericTransformer extends Step {
 			// transform the file to same named file in the target folder 
 			File target = new File(outfile, infile.getName());
 			transform(transformer, infile.getAbsolutePath(), target.getAbsolutePath(), xslfile.getAbsolutePath());
-		} else if (infile.isFile() && outfile.isFile()) {
+		} else if (infile.isFile()) {
 			// transform to the result file given
 			transform(transformer, infile.getAbsolutePath(), outfile.getAbsolutePath(), xslfile.getAbsolutePath());
 		} else

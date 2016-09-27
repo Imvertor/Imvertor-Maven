@@ -56,11 +56,11 @@
    </properties>
    
    <system>
-      <configuration-owner-web-folder>${system/managedinputfolder}/cfg/owners/web</configuration-owner-web-folder>
-      <configuration-owner-file>${system/managedinputfolder}/cfg/owners/${cli/owner}.xml</configuration-owner-file>
-      <configuration-tvset-file>${system/managedinputfolder}/cfg/tvsets/${cli/tvset}.xml</configuration-tvset-file>
-      <configuration-schemarules-file>${system/managedinputfolder}/cfg/schemarules/${cli/schemarules}.xml</configuration-schemarules-file>
-      <configuration-metamodel-file>${system/managedinputfolder}/cfg/metamodels/${cli/metamodel}.xml</configuration-metamodel-file>
+      <configuration-owner-web-folder>${system/inp-folder-path}/cfg/owners/web</configuration-owner-web-folder>
+      <configuration-owner-file>${system/inp-folder-path}/cfg/owners/${cli/owner}.xml</configuration-owner-file>
+      <configuration-tvset-file>${system/inp-folder-path}/cfg/tvsets/${cli/tvset}.xml</configuration-tvset-file>
+      <configuration-schemarules-file>${system/inp-folder-path}/cfg/schemarules/${cli/schemarules}.xml</configuration-schemarules-file>
+      <configuration-metamodel-file>${system/inp-folder-path}/cfg/metamodels/${cli/metamodel}.xml</configuration-metamodel-file>
    </system>
    
 </config>
