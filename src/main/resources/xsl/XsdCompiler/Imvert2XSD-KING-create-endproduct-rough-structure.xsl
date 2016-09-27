@@ -305,7 +305,7 @@
 		<xsl:if test="imf:boolean($debug)">
 			<xsl:comment select="'Template 5: imvert:association[mode=create-rough-message-content]'" />
 		</xsl:if>
-		<ep:construct context="{$context}" typeCode1="relatie">
+		<ep:construct context="{$context}" typeCode="relatie">
 			<xsl:attribute name="type">
 				<xsl:choose>
 					<xsl:when test="imvert:stereotype='GROEP COMPOSITIE'">groupType</xsl:when>
@@ -574,7 +574,7 @@
 		<xsl:if test="imf:boolean($debug)">
 			<xsl:comment select="'Template9: createRoughEntityConstruct'" />
 		</xsl:if>
-		<ep:construct context="{$context}"  type="'entity'" typeCode2="toplevel">
+		<ep:construct context="{$context}"  type="'entity'" typeCode="toplevel">
 			<xsl:choose>
 				<xsl:when test="$constructName='-'">
 					<xsl:sequence
@@ -708,7 +708,7 @@
 				 construct. -->
 			<xsl:when
 				test="//imvert:class[imvert:id = $type-id and ancestor::imvert:package[imvert:id = $package-id]] and imvert:stereotype='RELATIE'">
-				<ep:construct context="{$context}" typeCode3="toplevel">
+				<ep:construct context="{$context}" typeCode="toplevel">
 					<ep:name>gerelateerde</ep:name>
 					<ep:tech-name>gerelateerde</ep:tech-name>
 					<?x xsl:sequence
