@@ -348,7 +348,7 @@
             'Namespace of the domain package is the same as the application namespace [1].',(../imvert:namespace))"/>
         <xsl:sequence select="imf:report-error(., 
             not(starts-with(imvert:namespace,concat($application/imvert:namespace,'/'))),
-            'Namespace of the domain package does not start with the application namespace [1].',(../imvert:namespace))"/>
+            'Namespace [1] of the domain package does not start with the application namespace [2].',(string(imvert:namespace), string(../imvert:namespace)))"/>
         <xsl:sequence select="imf:report-error(., 
             (matches(substring-after(imvert:namespace,$application/imvert:namespace),'.*?//')),
             'Namespace of the domain package holds empty path //')"/>
