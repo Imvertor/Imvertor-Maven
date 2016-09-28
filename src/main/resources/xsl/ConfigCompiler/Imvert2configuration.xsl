@@ -202,6 +202,7 @@
                             
                             <xsl:apply-templates select="$tv-group/desc" mode="#current"/>
                             <xsl:apply-templates select="($tv-group/derive)[last()]" mode="#current"/>
+                            <xsl:apply-templates select="($tv-group/inherit)[last()]" mode="#current"/>
                             <stereotypes>
                                 <xsl:for-each-group select="$tv-group/stereotypes/stereo" group-by=".">
                                     <xsl:variable name="stereo-group" select="current-group()"/>

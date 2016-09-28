@@ -65,6 +65,7 @@
         <tv norm="space" validate="" rules="" id="Berichtcode">
             <name lang="nl">Berichtcode</name>
             <derive>no</derive>
+            <inherit>yes</inherit>
             <stereotypes>
                 <?x stereo required="yes" lang="nl">Berichttype</stereo x?>
                 <stereo required="yes" lang="nl">Vraagberichttype</stereo>
@@ -185,20 +186,17 @@
             </declared-values>
         </tv>
         
-        <tv norm="space" validate="" rules="" id="Sortering">
-            <name lang="nl">Sortering</name>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo required="yes" lang="nl">Vraagberichttype</stereo>
-            </stereotypes>
-        </tv>
-        
         <tv norm="space" validate="" rules="" id="Voorwaarde">
             <name lang="nl">Voorwaarde</name>
             <desc>Opnemen ter documentatie van een bericht.</desc>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="yes" lang="nl">Bericht</stereo> <!-- i.e. a package -->
+                <stereo required="no" lang="nl">Bericht</stereo> <!-- i.e. a package -->
+                <stereo required="no" lang="nl">Vraagberichttype</stereo> 
+                <stereo required="no" lang="nl">Antwoordberichttype</stereo> 
+                <stereo required="no" lang="nl">Kennisgevingberichttype</stereo> 
+                <stereo required="no" lang="nl">Synchronisatieberichttype</stereo> 
+                <stereo required="no" lang="nl">Vrij berichttype</stereo> 
             </stereotypes>
         </tv>
         
@@ -210,6 +208,7 @@
                 <stereo required="no" lang="nl">Vraagberichttype</stereo> 
                 <stereo required="no" lang="nl">Antwoordberichttype</stereo> 
                 <stereo required="no" lang="nl">Kennisgevingberichttype</stereo> 
+                <stereo required="no" lang="nl">Synchronisatieberichttype</stereo> 
                 <stereo required="no" lang="nl">Vrij berichttype</stereo> 
             </stereotypes>
         </tv>
@@ -222,6 +221,7 @@
                 <stereo required="no" lang="nl">Vraagberichttype</stereo> 
                 <stereo required="no" lang="nl">Antwoordberichttype</stereo> 
                 <stereo required="no" lang="nl">Kennisgevingberichttype</stereo> 
+                <stereo required="no" lang="nl">Synchronisatieberichttype</stereo> 
                 <stereo required="no" lang="nl">Vrij berichttype</stereo> 
             </stereotypes>
         </tv>
@@ -234,6 +234,7 @@
                 <stereo required="no" lang="nl">Vraagberichttype</stereo> 
                 <stereo required="no" lang="nl">Antwoordberichttype</stereo> 
                 <stereo required="no" lang="nl">Kennisgevingberichttype</stereo> 
+                <stereo required="no" lang="nl">Synchronisatieberichttype</stereo> 
                 <stereo required="no" lang="nl">Vrij berichttype</stereo> 
             </stereotypes>
         </tv>

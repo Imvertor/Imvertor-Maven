@@ -186,7 +186,7 @@
             <stereotypes>
                 <stereo required="no" lang="nl">Element</stereo><!--SIM Attribuutsoort, Union element, Data element, Referentie element-->
                 <stereo required="no" lang="nl">Relatie</stereo><!-- SIM: Relatiesoort  -->
-                <stereo required="no" lang="nl">Entietitrelatie</stereo><!-- SIM: Objectrelatiesoort  -->
+                <stereo required="no" lang="nl">Entiteitrelatie</stereo><!-- SIM: Objectrelatiesoort  -->
                 <stereo required="no" lang="nl">Enum</stereo>
                 <stereo required="no" lang="nl">Groep compositie</stereo><!-- SIM Gegevensgroep compositie-->
                 <stereo required="no" lang="#all">#none</stereo> <!-- also allowed on enumeration values that have no enum stereo -->
