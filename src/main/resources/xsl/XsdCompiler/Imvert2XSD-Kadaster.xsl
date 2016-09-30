@@ -38,7 +38,7 @@
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     <xsl:import href="../common/Imvert-common-doc.xsl"/>
     
-    <xsl:variable name="avoid-substitutions" select="if ($use-substitutions='no') then true() else false()"/>
+    <xsl:variable name="avoid-substitutions" select="not(imf:boolean($use-substitutions))"/>
     
     <xsl:param name="config-file-path">unknown-file</xsl:param>
    
@@ -111,10 +111,17 @@
                 <xsl:sequence select="imf:get-linkable-subclasses-or-self(.)"/>
             </xsl:for-each>
         </xsl:variable>
+        <xsl:variable name="this-package-referenced-substitutable-subclasses-or-self" as="node()*">
+            <xsl:if test="$avoid-substitutions">
+                <xsl:for-each select="$this-package-associated-classes">
+                    <xsl:sequence select="imf:get-substitutable-subclasses(.,true())"/>
+                </xsl:for-each>
+            </xsl:if>
+        </xsl:variable>
         <xsl:variable name="this-package-referenced-substitutable-subclasses" as="node()*">
             <xsl:if test="$avoid-substitutions">
                 <xsl:for-each select="$this-package-associated-classes">
-                    <xsl:sequence select="imf:get-substitutable-subclasses-or-self(.)"/>
+                    <xsl:sequence select="imf:get-substitutable-subclasses(.,false())"/>
                 </xsl:for-each>
             </xsl:if>
         </xsl:variable>
@@ -204,18 +211,29 @@
                             <xsl:value-of select="'(2) defines the type of some attribute in this schema'"/>
                         </xsl:when>
                         <!-- 
-                            does the scanned package define any of the current package's association types? 
+                            does the scanned package define any of the current package's association types 
+                            and 
+                            does at least one of the associations targeted to this package have a tagged value relation!=reference?
+                            see IM-308
                         --> 
-                        <xsl:when test="$scanned-package-types/@id = $this-package-associated-type-ids">
+                        <xsl:when test="exists(
+                            $this-package-associations[
+                                imvert:type-id = $scanned-package-types/@id 
+                                and 
+                                imf:is-object-relation(.)
+                            ])">
                             <xsl:value-of select="'(3) defines the type of some association in this schema'"/>
                         </xsl:when>
                         <!-- 
                             does the scanned package define a subtype of any of the current package's association types, and do we avoid substitutions? 
+                            
+                            Note that the first in the sequence of subclases is the class itself; this is dealt with in previous rule.
+                            Therefore subsequence().
                         --> 
                         <xsl:when test="
                             not($this-package-is-referencing) 
                             and
-                            $scanned-package/imvert:class/imvert:id = $this-package-referenced-substitutable-subclasses/imvert:id">
+                            exists($scanned-package/imvert:class[imvert:id = $this-package-referenced-substitutable-subclasses/imvert:id])">
                             <xsl:value-of select="'(3) defines a subtype of some association in this schema and we avoid substitutions'"/>
                         </xsl:when>
                         <!-- 
@@ -247,13 +265,13 @@
                             <!-- determine which types, references by this package, are defined in the scanned package --> 
                             <xsl:variable name="associated-types" select="
                                 if ($avoid-substitutions) 
-                                then $scanned-package-types[@id = $this-package-referenced-substitutable-subclasses/imvert:id]
+                                then $scanned-package-types[@id = $this-package-referenced-substitutable-subclasses-or-self/imvert:id]
                                 else $scanned-package-types[@id = $this-package-associated-type-ids]
                                 "/>
                             <!-- determine which classes in the current package reference that type -->
                             <xsl:variable name="classes" select="
                                 if ($avoid-substitutions) 
-                                then $this-package/imvert:class[.//imvert:association/imvert:type-id = $this-package-referenced-substitutable-subclasses/imvert:id]
+                                then $this-package/imvert:class[.//imvert:association/imvert:type-id = $this-package-referenced-substitutable-subclasses-or-self/imvert:id]
                                 else $this-package/imvert:class[.//imvert:association/imvert:type-id = $associated-types/@id]"/>
                             <xsl:choose>
                                 <!-- check if the class is a collection -->
@@ -1657,17 +1675,18 @@
     -->
     <xsl:function name="imf:get-linkable-subclasses-or-self" as="node()*">
         <xsl:param name="rootclass" as="node()"/>
-        <xsl:sequence select="imf:get-substitutable-subclasses-or-self($rootclass)[imf:is-linkable(.)]"/>
+        <xsl:sequence select="imf:get-substitutable-subclasses($rootclass,true())[imf:is-linkable(.)]"/>
     </xsl:function>
     
     <!-- 
         Return all classes that can be substituted for the class passed, and self. 
         Do not return abstract classes. 
     -->
-    <xsl:function name="imf:get-substitutable-subclasses-or-self" as="element()*">
+    <xsl:function name="imf:get-substitutable-subclasses" as="element()*">
         <xsl:param name="rootclass" as="element()"/>
+        <xsl:param name="include-self" as="xs:boolean"/>
         <xsl:variable name="substitution-classes" select="imf:get-substitution-classes($rootclass)"/>
-        <xsl:sequence select="$rootclass"/>
+        <xsl:sequence select="if ($include-self) then $rootclass else ()"/>
         <xsl:sequence select="$substitution-classes"/>
     </xsl:function>
     
@@ -1771,4 +1790,5 @@
         </xsl:choose>
         
     </xsl:function>
+    
 </xsl:stylesheet>

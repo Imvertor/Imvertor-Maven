@@ -261,5 +261,14 @@
             </stereotypes>
         </tv>
         
+        <tv norm="space" id="Relation">
+            <name lang="nl">Relatie</name>
+            <name lang="en">Relation</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+        
     </tagged-values>
 </tagset>
