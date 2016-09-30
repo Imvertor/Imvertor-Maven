@@ -25,14 +25,6 @@
         
         <xi:include href="KINGUGM.xml"/>
         
-        <tv norm="space"  rules="NOC" id="IndicatieKerngegeven">
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo required="no" lang="nl">Element</stereo>
-                <stereo required="no" lang="nl">Relatie</stereo>
-            </stereotypes>
-        </tv>
-        
         <tv norm="space"  rules="NOC" id="IndicatieMateriëleHistorie">
             <derive>yes</derive>
             <stereotypes>

@@ -23,19 +23,6 @@
     
     <tagged-values>
         
-        <tv norm="space"  rules="NOC" id="IndicatieKerngegeven">
-            <name lang="nl">Indicatie kerngegeven</name>
-            <derive>no</derive> <!-- Kan niet worden overgenomen uit SIM, want is daar niet opgenomen-->
-            <stereotypes>
-                <stereo required="yes" lang="nl">Element</stereo><!--SIM Attribuutsoort-->
-                <stereo required="yes" lang="nl">Relatie</stereo><!--SIM Relatiesoort-->
-            </stereotypes>
-            <declared-values lang="nl">
-                <value>Ja</value>
-                <value>Nee</value>
-            </declared-values>
-        </tv>
-        
         <tv norm="space"  rules="NOC" id="IndicatieMateriëleHistorie">
             <name lang="nl">Indicatie materiële historie</name>
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
