@@ -65,7 +65,7 @@
         <!-- setup -->
         <xsl:variable name="construct" select="../.."/>
         <!-- validate -->
-        <xsl:sequence select="imf:report-error(., 
+        <xsl:sequence select="imf:report-error($construct, 
             $construct/imvert:type-name = ('scalar-string','scalar-uri'), 
             'Tagged value [1] cannot be specified on [2]', (imvert:name/@original, $construct/imvert:type-name))"/>
         
