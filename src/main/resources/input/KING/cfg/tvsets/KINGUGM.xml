@@ -81,12 +81,11 @@
                 <stereo required="no" lang="nl">Relatie</stereo><!-- alleen verplicht als IndicatieTerugrelatie is Ja -->
             </stereotypes>
         </tv>
-        
-        
+       
         <tv norm="space" id="Patroon">
             <name lang="nl">Patroon</name>
             <name lang="en">Pattern</name>
-            <derive>yes</derive>
+            <derive>no</derive>
             <stereotypes>
                 <stereo required="no" lang="nl">Element</stereo><!--SIM Attribuutsoort, Referentie element, Union element, Data element-->
                 <stereo required="no" lang="nl">Complex datatype</stereo>
