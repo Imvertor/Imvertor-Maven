@@ -506,9 +506,6 @@
                                        mode="create-message-content">
                                        <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
                                        <xsl:with-param name="proces-type" select="'attributes'" />
-                                       <!-- ROME: Het is de vraag of deze parameter en het checken op id 
-        									nog wel noodzakelijk is. -->
-                                       <xsl:with-param name="id-trail" select="''" />
                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                        <xsl:with-param name="context" select="$context" />
                                        <xsl:with-param name="historyApplies" select="'yes-Materieel'"/>
@@ -518,9 +515,6 @@
                                        <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
                                        <xsl:with-param name="proces-type"
                                            select="'associationsGroepCompositie'" />
-                                       <!-- ROME: Het is de vraag of deze parameter en het checken op id 
-        									nog wel noodzakelijk is. -->
-                                       <xsl:with-param name="id-trail" select="''" />
                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                        <xsl:with-param name="context" select="$context" />
                                        <xsl:with-param name="historyApplies" select="'yes-Materieel'"/>
@@ -653,24 +647,18 @@
                                        mode="create-message-content">
                                        <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
                                        <xsl:with-param name="proces-type" select="'attributes'" />
-                                       <!-- ROME: Het is de vraag of deze parameter en het checken op id 
-        									nog wel noodzakelijk is. -->
-                                       <xsl:with-param name="id-trail" select="''" />
                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                        <xsl:with-param name="context" select="$context" />
-                                       <xsl:with-param name="historyApplies" select="'yes-Materieel'"/>
+                                       <xsl:with-param name="historyApplies" select="'yes'"/>
                                    </xsl:apply-templates>
                                    <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                        mode="create-message-content">
                                        <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
                                        <xsl:with-param name="proces-type"
                                            select="'associationsGroepCompositie'" />
-                                       <!-- ROME: Het is de vraag of deze parameter en het checken op id 
-        									nog wel noodzakelijk is. -->
-                                       <xsl:with-param name="id-trail" select="''" />
                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                        <xsl:with-param name="context" select="$context" />
-                                       <xsl:with-param name="historyApplies" select="'yes-Materieel'"/>
+                                       <xsl:with-param name="historyApplies" select="'yes'"/>
                                    </xsl:apply-templates>
                                    <!-- ROME: Waarschijnlijk moet er hier afhankelijk van de context meer 
                             					of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' maar 
