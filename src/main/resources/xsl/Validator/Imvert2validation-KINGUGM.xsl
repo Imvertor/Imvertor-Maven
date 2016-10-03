@@ -90,8 +90,8 @@
         <xsl:variable name="tv-k" select="imf:get-tagged-value-element(..,'Indicatie kerngegeven')"/>
         <!-- validate -->
         <xsl:sequence select="imf:report-warning(.., 
-            imf:boolean(.) and not(imf:boolean($tv-k)), 
-            'Identifiable construct must assign yes to the tagged value [1]', $tv-k/imvert:name/@original)"/>
+            exists($tv-k) and imf:boolean(.) and not(imf:boolean($tv-k/imvert:value)), 
+            'Identifiable construct must assign yes to the tagged value [1]', $tv-k/imvert:name)"/>
         
         <xsl:next-match/>
     </xsl:template>
