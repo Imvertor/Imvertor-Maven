@@ -1375,15 +1375,23 @@
 					<ep:min-occurs>0</ep:min-occurs>
 					<ep:position>152</ep:position>
 				</ep:construct>
+				<ep:construct>
+					<ep:name>StUF:aanvullendeElementen</ep:name>
+					<ep:tech-name>StUF:aanvullendeElementen</ep:tech-name>
+					<ep:max-occurs>1</ep:max-occurs>
+					<ep:min-occurs>0</ep:min-occurs>
+					<ep:position>153</ep:position>
+				</ep:construct>
 				<xsl:if test="imf:boolean($debug)">	
 					<xsl:message select="concat('$historyApplies ',$historyApplies)" />
 				</xsl:if>
-				<xsl:if
+				<?x xsl:if
 					test="($historyApplies='yes-Materieel' or $historyApplies='yes') and //imvert:class[imvert:id = $type-id and 
-							  .//imvert:tagged-value[imvert:name='IndicatieMateriLeHistorie' and contains(imvert:value,'Ja')]]">
-					
+							  .//imvert:tagged-value[imvert:name='IndicatieMateriLeHistorie' and contains(imvert:value,'Ja')]]" x?>
+				<xsl:comment select="concat('mat-historie :', $mat-historie,', form-historie :',$form-historie,', classAvailable :',//imvert:class[imvert:id = $type-id])"/>
+				<xsl:if	test="$mat-historie = 'Ja'">
 					<!-- ROME: Volgende construct moet een constructRef worden naar een global construct. -->
-					<ep:construct>
+					<ep:constructRef>
 						<xsl:if test="$orderingDesired='no'">
 							<xsl:attribute name="orderingDesired" select="'no'" />
 						</xsl:if>
@@ -1391,8 +1399,18 @@
 						<ep:tech-name>historieMaterieel</ep:tech-name>
 						<ep:max-occurs>unbounded</ep:max-occurs>
 						<ep:min-occurs>0</ep:min-occurs>
-						<ep:position>153</ep:position>
-						<ep:seq>
+						<ep:position>154</ep:position>
+						<xsl:choose>
+							<xsl:when test="$packages//imvert:class[imvert:id = $type-id]/imvert:alias">
+								<xsl:sequence
+									select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $type-id]/imvert:alias,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-historieMaterieel'))" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:sequence
+									select="imf:create-output-element('ep:href', imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-historieMaterieel')" />                                       
+							</xsl:otherwise>
+						</xsl:choose>
+						<?x ep:seq>
 							<!-- The association is a 'entiteitRelatie' (the toplevel 'entiteit') 
 								and it contains a 'entiteit'. The attributes of the 'entiteit' class can 
 								be placed directly within the current 'ep:seq'. -->
@@ -1421,15 +1439,16 @@
 								<xsl:with-param name="context" select="$context" />
 								<xsl:with-param name="historyApplies" select="$historyApplies" />
 							</xsl:apply-templates>
-						</ep:seq>
-					</ep:construct>
+						</ep:seq x?>
+					</ep:constructRef>
 				</xsl:if>
-				<xsl:if
+				<?x xsl:if
 					test="$historyApplies='yes' and //imvert:class[imvert:id = $type-id and 
-							  .//imvert:tagged-value[imvert:name='IndicatieFormeleHistorie' and contains(imvert:value,'Ja')]]">
-					
+							  .//imvert:tagged-value[imvert:name='IndicatieFormeleHistorie' and contains(imvert:value,'Ja')]]" x?>
+				<xsl:if	test="$form-historie = 'Ja'">
+						
 					<!-- ROME: Volgende construct moet een constructRef worden naar een global construct. -->
-					<ep:construct>
+					<ep:constructRef>
 						<xsl:if test="$orderingDesired='no'">
 							<xsl:attribute name="orderingDesired" select="'no'" />
 						</xsl:if>
@@ -1437,8 +1456,18 @@
 						<ep:tech-name>historieFormeel</ep:tech-name>
 						<ep:max-occurs>unbounded</ep:max-occurs>
 						<ep:min-occurs>0</ep:min-occurs>
-						<ep:position>154</ep:position>
-						<ep:seq>
+						<ep:position>155</ep:position>
+						<xsl:choose>
+							<xsl:when test="$packages//imvert:class[imvert:id = $type-id]/imvert:alias">
+								<xsl:sequence
+									select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $type-id]/imvert:alias,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-historieFormeel'))" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:sequence
+									select="imf:create-output-element('ep:href', imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-historieFormeel')" />                                       
+							</xsl:otherwise>
+						</xsl:choose>
+						<?x ep:seq>
 							<!-- The association is a 'entiteitRelatie' (the toplevel 'entiteit') 
 								and it contains a 'entiteit'. The attributes of the 'entiteit' class can 
 								be placed directly within the current 'ep:seq'. -->
@@ -1467,8 +1496,8 @@
 								<xsl:with-param name="context" select="$context" />
 								<xsl:with-param name="historyApplies" select="$historyApplies" />
 							</xsl:apply-templates>
-						</ep:seq>
-					</ep:construct>
+						</ep:seq x?>
+					</ep:constructRef>
 				</xsl:if>
 				<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
 					mode="create-message-content">
