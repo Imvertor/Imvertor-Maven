@@ -64,6 +64,7 @@
             <xsl:sequence select="$application-package/imvert:stereotype"/>
             <xsl:sequence select="$application-package/imvert:documentation"/>
             <xsl:sequence select="$application-package/imvert:tagged-values"/>
+            <xsl:sequence select="$application-package/imvert:constraints"/>
             
             <xsl:variable name="result-packages" as="node()*">
                 <!-- verwerk alle subpackages van de gekozen parent package bijv. VariantX of ApplicationY -->

@@ -181,7 +181,10 @@
             </xsl:for-each>
             
             <xsl:sequence select="imf:fetch-additional-tagged-values(.)"/>
-            
+
+            <!-- get package wide constraints -->
+            <xsl:sequence select="imf:get-constraint-info(.)"/>
+
             <!-- check if xlinks must be included -->
             <xsl:if test="imf:get-stereotypes(.)=imf:get-config-stereotypes('stereotype-name-project-package') and not(exists($document-packages[imf:get-normalized-name(@name,'package-name') = imf:get-normalized-name('xlinks','package-name')]))" >
                 <imvert:package>
@@ -1242,17 +1245,32 @@
     <!--  IM-77 - OCL / constraints opnemen in imvert en documentatie -->
     <xsl:function name="imf:get-constraint-info" as="element()*">
         <xsl:param name="this" as="element()"/>
-        <xsl:variable name="constraints" select="$this/UML:ModelElement.constraint/UML:Constraint"/>
+        <xsl:variable name="constraints" select="$this/*/UML:Constraint"/>
         <xsl:if test="exists($constraints)">
             <imvert:constraints>
                 <xsl:for-each select="$constraints">
                     <imvert:constraint>
+                        <xsl:sequence select="imf:create-output-element('imvert:stereotype',UML:ModelElement.stereotype/UML:Stereotype/@name)"/>
+                        <xsl:sequence select="imf:create-output-element('imvert:type',imf:get-tagged-value(.,'documentation'))"/>
+                        
                         <xsl:sequence select="imf:create-output-element('imvert:name',@name)"/>
                         <xsl:sequence select="imf:create-output-element('imvert:type',imf:get-tagged-value(.,'type'))"/>
                         <xsl:sequence select="imf:create-output-element('imvert:weight',imf:get-tagged-value(.,'weight'))"/>
                         <xsl:sequence select="imf:create-output-element('imvert:status',imf:get-tagged-value(.,'status'))"/>
                         <xsl:variable name="relevant-doc-string" select="if (contains(.,imf:get-config-parameter('documentation-separator'))) then substring-before(.,imf:get-config-parameter('documentation-separator')) else ."/>
                         <xsl:sequence select="imf:create-output-element('imvert:documentation',imf:get-tagged-value($relevant-doc-string,'description'))"/>
+                       
+                        <!-- when constraint on associatiosn: -->
+                        <xsl:variable name="links" select="imf:get-tagged-value(.,'relatedlinks')"/>
+                        <xsl:if test="exists($links)">
+                            <imvert:connectors>
+                                <xsl:analyze-string select="$links" regex="(.+?)=(.+?);">
+                                    <xsl:matching-substring>
+                                        <xsl:sequence select="imf:create-output-element('imvert:connector',regex-group(2))"/>
+                                    </xsl:matching-substring>
+                                </xsl:analyze-string>
+                            </imvert:connectors>
+                        </xsl:if>
                     </imvert:constraint>
                 </xsl:for-each>
             </imvert:constraints>
