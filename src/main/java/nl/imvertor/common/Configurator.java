@@ -266,7 +266,7 @@ public class Configurator {
 		return new AnyFolder(getOutputFolder() + sep + "applications" + sep + getParm("appinfo","project-name") + sep + getParm("appinfo","application-name") + sep + releaseNumber);
 	}
 
-	private File getOutputFolder() {
+	public File getOutputFolder() {
 		return outputFolder;
 	}
 

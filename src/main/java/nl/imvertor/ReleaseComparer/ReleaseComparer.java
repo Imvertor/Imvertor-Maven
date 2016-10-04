@@ -149,32 +149,35 @@ public class ReleaseComparer extends Step {
 		// Set the compare label; this label is used in temporary file names. eg. docRelease
 		configurator.setParm("system", "compare-label", "derivation",true); 
 					
-		String path = configurator.getParm("appinfo","supplier-etc-model-imvert-path",false);
-	
+		String subpath = configurator.getParm("appinfo","supplier-etc-model-imvert-subpath",false); // sample format: "green/SampleBase/20130318"
+		String path = configurator.getOutputFolder() + "/applications/" + subpath + "/etc/model.imvert.xml"; // sample format: "c:\applications\green/SampleBase/20130318/etc/system.imvert.xml"
+		
 		String cmp = configurator.getParm("cli","compare",false);
 		Boolean supplierCheck = (cmp != null) && cmp.equals("supplier");
 		
-		if (path != null && !path.equals("unknown-model-file") && path.length() > 0) {
-			// determine the identifier of the supplier
-			String suppId = (new URL(path)).getPath();
-			
-			XmlFile supplierModelFile = new XmlFile(suppId);
-			XmlFile clientModelFile = new XmlFile(configurator.getParm("properties", "WORK_SCHEMA_FILE"));
-			
-			if (supplierCheck) // a request is made to check differences with the supplier
-				if (supplierModelFile.exists()) { 
-					runner.info(logger,"Comparing client and supplier releases");
-					runner.debug(logger,"Client is: " + clientModelFile);
-					runner.debug(logger,"Supplier is: " + supplierModelFile);
-					boolean equal = supplierModelFile.compare( clientModelFile, configurator); 
-					if (!equal) 
-						runner.info(logger,"Differences found between client and supplier.");
-				} else {
-					runner.warn(logger, "Cannot compare client and supplier when no supplier release could be found");
-					return false;
-				}
-		} else if (supplierCheck)
-			runner.warn(logger, "Cannot compare client and supplier because the model is not derived");
+		if (supplierCheck) {
+			if (subpath == null) 
+				runner.warn(logger, "Cannot compare client and supplier, unable to determine subpath for supplier");
+			else if (subpath.length() > 0) {
+				
+				XmlFile supplierModelFile = new XmlFile(path);
+				XmlFile clientModelFile = new XmlFile(configurator.getParm("properties", "WORK_SCHEMA_FILE"));
+				
+				if (supplierCheck) // a request is made to check differences with the supplier
+					if (supplierModelFile.exists()) { 
+						runner.info(logger,"Comparing client and supplier releases");
+						runner.debug(logger,"Client is: " + clientModelFile);
+						runner.debug(logger,"Supplier is: " + supplierModelFile);
+						boolean equal = supplierModelFile.compare( clientModelFile, configurator); 
+						if (!equal) 
+							runner.info(logger,"Differences found between client and supplier.");
+					} else {
+						runner.warn(logger, "Cannot compare client and supplier when no supplier release could be found");
+						return false;
+					}
+			} else
+				runner.warn(logger, "Cannot compare client and supplier because the model is not derived");
+		}
 		return true;
 	}
 }
