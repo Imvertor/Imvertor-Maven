@@ -104,11 +104,13 @@
                                             eventueel uitgebreid met de <b>berichtnaam</b>. 
                                             Voorbeeld: npsLa01, npsLa01-alternatief.</li>
                                     </ul>
-                                </div>     
-                                <table>
+                                </div>
+                                <table class="tablesorter"> 
                                     <xsl:variable name="header" select="string-join(for $c in $selected-cols[normalize-space(.)] return concat($c,':10'),',')"/>
-                                    <xsl:sequence select="imf:create-table-header($header)"/>
-                                    <xsl:apply-templates select="$berichten-table//row" mode="workbook-berichtschema"/>
+                                    <xsl:variable name="rows" as="element(tr)*">
+                                        <xsl:apply-templates select="$berichten-table//row" mode="workbook-berichtschema"/>
+                                    </xsl:variable>
+                                    <xsl:sequence select="imf:create-result-table-by-tr($rows,$header,'table-schema')"/>
                                 </table>
                             </div>
                         </content>

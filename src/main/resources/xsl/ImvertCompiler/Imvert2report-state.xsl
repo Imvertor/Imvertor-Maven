@@ -47,9 +47,11 @@
                             <li>Versions: The subversion reference (revision number and date), if available, as well as the combination of version and phase.</li>
                         </ul>
                     </div>
-                    <table>
-                        <xsl:sequence select="imf:create-table-header('name:20,package:60,versions:20')"/>
-                        <xsl:apply-templates select="imvert:package" mode="state"/>
+                    <table class="tablesorter"> 
+                        <xsl:variable name="rows" as="element(tr)*">
+                            <xsl:apply-templates select="imvert:package" mode="state"/>
+                        </xsl:variable>
+                        <xsl:sequence select="imf:create-result-table-by-tr($rows,'name:20,package:60,versions:20','table-state')"/>
                     </table>
                 </div>
             </content>

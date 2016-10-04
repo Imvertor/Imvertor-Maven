@@ -41,7 +41,11 @@
             <xsl:variable name="supplier-name-norm" select="imf:get-normalized-name($supplier-name,'package-name')"/>
             <xsl:variable name="supplier-release-norm" select="imf:get-normalized-name($supplier-release,'system-name')"/>
             -->
-            <xsl:value-of select="string-join(($supplier-project,$supplier-name,$supplier-release),'/')"/>
+            <xsl:variable name="subpath" select="string-join(($supplier-project,$supplier-name,$supplier-release),'/')"/>
+            <xsl:if test="empty(imf:get-config-string('appinfo','supplier-etc-model-imvert-path',()))">
+                <xsl:sequence select="imf:set-config-string('appinfo','supplier-etc-model-imvert-subpath',$subpath)"/>
+            </xsl:if>
+            <xsl:value-of select="$subpath"/>
         </xsl:if>
     </xsl:function>
     

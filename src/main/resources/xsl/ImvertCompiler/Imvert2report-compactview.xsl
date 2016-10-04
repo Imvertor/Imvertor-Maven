@@ -42,9 +42,11 @@
                             This is a technical overview of all constructs, suitable for import into Excel.
                         </p>
                     </div>
-                    <table>
-                        <xsl:sequence select="imf:create-table-header('pos:10,property:40,type:40,min:5,max:5,stereotype:10')"/>
-                        <xsl:apply-templates select=".//imvert:class[not(imvert:ref-master)]" mode="compactview"/>
+                    <table class="tablesorter"> 
+                        <xsl:variable name="rows" as="element(tr)*">
+                            <xsl:apply-templates select=".//imvert:class[not(imvert:ref-master)]" mode="compactview"/>
+                        </xsl:variable>
+                        <xsl:sequence select="imf:create-result-table-by-tr($rows,'pos:10,property:40,type:40,min:5,max:5,stereotype:10','table-compactview')"/>
                     </table>
                 </div>
             </content>

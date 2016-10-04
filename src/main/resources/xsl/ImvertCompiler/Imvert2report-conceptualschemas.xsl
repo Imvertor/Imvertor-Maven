@@ -61,7 +61,7 @@
                                 </row>
                             </xsl:variable>
                             <xsl:sequence select="imf:create-result-table($row,'package:10,namespace:35,version:5,phase:5,release:10,author:10,SVN:25')"/>
-                            <xsl:variable name="rows" as="element()*">
+                            <xsl:variable name="rows" as="element(row)*">
                                 <xsl:for-each select=".//imvert:class">
                                     <xsl:sort select="imvert:name" order="ascending"/>
                                     <row xmlns="">

@@ -32,6 +32,7 @@
          Create the full HTML report, and compile a summary ("overview") from the individual steps.
     -->
     <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="../common/Imvert-common-report.xsl"/>
     
     <xsl:output method="html" indent="no"/>
     
@@ -114,22 +115,17 @@
             <html>
                 <xsl:call-template name="create-html-head">
                     <xsl:with-param name="title" select="'Imvert - Overview'"/>
+                    <xsl:with-param name="table-ids" select="'table-overview'"/>
                 </xsl:call-template>
                 <body>
                     <h1>
                         Overview
                     </h1>
-                    <table>
-                        <thead>
-                            <tr class="tableHeader">
-                                <td>Step</td>
-                                <td>Aspect</td>
-                                <td>Value</td>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <table class="tablesorter"> 
+                        <xsl:variable name="rows" as="element(tr)*">
                             <xsl:apply-templates select="$reports/summary" mode="summary"/>
-                        </tbody>
+                        </xsl:variable>
+                        <xsl:sequence select="imf:create-result-table-by-tr($rows,'step:20,aspect:20,value:60','table-overview')"/>
                     </table>
                 </body>
             </html>
@@ -163,11 +159,27 @@
     
     <xsl:template name="create-html-head">
         <xsl:param name="title"/>
+        <xsl:param name="table-ids" as="xs:string*"/> <!-- pass IDs for each table that must be sorted -->
         <head>
             <title>
                 <xsl:value-of select="$title"/>
             </title>
-            <link href="{imf:get-config-parameter('web-css')}" rel="stylesheet"/>
+            <xsl:for-each select="tokenize(imf:get-config-parameter('web-css'),';')[normalize-space()]">
+                <link href="{normalize-space(.)}" rel="stylesheet"/>
+            </xsl:for-each>
+            <xsl:for-each select="tokenize(imf:get-config-parameter('web-scripts'),';')[normalize-space()]">
+                <script src="{normalize-space(.)}" type="text/javascript"/>
+            </xsl:for-each>
+            <!-- http://tablesorter.com/; get all tables that are have id run init script to make them sortable -->
+            <xsl:if test="exists($table-ids)">
+                <script>
+                    $(function() { 
+                    <xsl:for-each select="$table-ids">
+                        $("#<xsl:value-of select="."/>").tablesorter(); 
+                    </xsl:for-each>
+                    });  
+                </script>
+            </xsl:if>
         </head>
     </xsl:template>   
     
@@ -216,6 +228,7 @@
                     <html>
                         <xsl:call-template name="create-html-head">
                             <xsl:with-param name="title" select="concat('Imvert - ', ../step-display-name)"/>
+                            <xsl:with-param name="table-ids" select=".//table/@id"/>
                         </xsl:call-template>
                         <body>
                             <h1>

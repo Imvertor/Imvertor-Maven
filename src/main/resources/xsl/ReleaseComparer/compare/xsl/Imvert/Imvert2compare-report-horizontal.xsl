@@ -48,21 +48,25 @@
                 </div>   
                 <xsl:choose>
                     <xsl:when test="exists(/imvert:report/imvert:diffs)">
-                        <table class="compare">
-                            <tr class="tableHeader"        >
-                                <td>Package</td>
-                                <td>Class</td>
-                                <td>Attrib/Assoc</td>
-                                <td>Property</td>
-                                <td>Explain</td>
-                                <td>LVL</td>
-                                <td>Change</td>
-                                <td>Control</td>
-                                <td>Test</td>
-                            </tr>
-                            <xsl:apply-templates select="/imvert:report" mode="diffs">
-                                <xsl:with-param name="level" select="'user'"/>
-                            </xsl:apply-templates>
+                        <table id="table-compare" class="tablesorter">
+                            <thead>
+                                <tr>
+                                    <th>Package</th>
+                                    <th>Class</th>
+                                    <th>Attrib/Assoc</th>
+                                    <th>Property</th>
+                                    <th>Explain</th>
+                                    <th>LVL</th>
+                                    <th>Change</th>
+                                    <th>Control</th>
+                                    <th>Test</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <xsl:apply-templates select="/imvert:report" mode="diffs">
+                                    <xsl:with-param name="level" select="'user'"/>
+                                </xsl:apply-templates>
+                            </tbody>
                         </table>
                     </xsl:when>
                     <xsl:otherwise>

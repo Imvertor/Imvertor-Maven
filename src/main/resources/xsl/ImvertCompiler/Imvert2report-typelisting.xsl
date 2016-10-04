@@ -49,29 +49,32 @@
                             <li>Any property of this type, in the form of P::C.p in which P = package C = class, p = property</li>
                         </ul>
                     </div>
-                    <table>
-                        <xsl:sequence select="imf:create-table-header('type:50,properties of this type:50')"/>
-                        <xsl:variable name="types" as="node()*">
-                            <xsl:apply-templates select="//imvert:type-name[not(ancestor::imvert:package/imvert:config-external)]" mode="typelisting-fetch"/>
+                    <table class="tablesorter"> 
+                        <xsl:variable name="rows" as="element(tr)*">
+                            <xsl:variable name="types" as="node()*">
+                                <xsl:apply-templates select="//imvert:type-name[not(ancestor::imvert:package/imvert:config-external)]" mode="typelisting-fetch"/>
+                            </xsl:variable>
+                            <xsl:for-each-group select="$types" group-by="concat(@tp,@tn,@btn)">
+                                <xsl:sort select="concat(@tp,@tn,@btn)"/>
+                                <xsl:for-each select="current-group()">
+                                    <xsl:sort select="@cp"/>
+                                    <xsl:sort select="@cn"/>
+                                    <tr>
+                                        <td>
+                                            <xsl:if test="position()=1">
+                                                <xsl:sequence select="imf:compile-construct-name(@tp,@tn,'',@btn)"/>
+                                            </xsl:if>
+                                        </td>
+                                        <td>
+                                            <xsl:sequence select="imf:compile-construct-name(@cp,@cn,@rn,@rt)"/>
+                                        </td>
+                                    </tr>
+                                </xsl:for-each>               
+                            </xsl:for-each-group>
                         </xsl:variable>
-                        <xsl:for-each-group select="$types" group-by="concat(@tp,@tn,@btn)">
-                            <xsl:sort select="concat(@tp,@tn,@btn)"/>
-                            <xsl:for-each select="current-group()">
-                                <xsl:sort select="@cp"/>
-                                <xsl:sort select="@cn"/>
-                                <tr>
-                                    <td>
-                                        <xsl:if test="position()=1">
-                                            <xsl:sequence select="imf:compile-construct-name(@tp,@tn,'',@btn)"/>
-                                        </xsl:if>
-                                    </td>
-                                    <td>
-                                        <xsl:sequence select="imf:compile-construct-name(@cp,@cn,@rn,@rt)"/>
-                                    </td>
-                                </tr>
-                            </xsl:for-each>               
-                        </xsl:for-each-group>
+                        <xsl:sequence select="imf:create-result-table-by-tr($rows,'type:50,properties of this type:50','table-types')"/>
                     </table>
+
                 </div>
             </content>
         </page>

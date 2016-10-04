@@ -68,12 +68,12 @@
         <xsl:if test="(for $x in $tokenset return substring-before($x,':')) != ''">
             <tr class="tableHeader">
                 <xsl:for-each select="$tokenset">
-                    <td>
+                    <th>
                         <xsl:for-each select="tokenize(substring-before(.,':'),';')">
                             <xsl:value-of select="."/>
                             <xsl:if test="position() != last()"><br/></xsl:if>
                         </xsl:for-each>
-                    </td>
+                    </th>
                 </xsl:for-each>
             </tr>
         </xsl:if> 
@@ -90,13 +90,18 @@
             </col>
         </xsl:for-each>
     </xsl:function>
-    
-    <xsl:function name="imf:create-result-table" as="element()*">
+  
+    <xsl:function name="imf:create-result-table" as="element(table)*">
         <xsl:param name="rows" as="node()*"/>
         <xsl:param name="header" as="xs:string"/>
-        <table>
-            <xsl:sequence select="imf:create-table-rows($header)"/>
-            <xsl:sequence select="imf:create-table-header($header)"/>
+        <xsl:sequence select="imf:create-result-table($rows,$header,())"/>
+    </xsl:function>        
+    
+    <xsl:function name="imf:create-result-table" as="element(table)*">
+        <xsl:param name="rows" as="node()*"/>
+        <xsl:param name="header" as="xs:string"/>
+        <xsl:param name="table-id" as="xs:string?"/>
+        <xsl:variable name="trs" as="element(tr)*">
             <xsl:for-each select="$rows">
                 <tr>
                     <xsl:sequence select="if (@class) then @class else ()"/>
@@ -107,6 +112,26 @@
                     </xsl:for-each>
                 </tr>
             </xsl:for-each> 
+        </xsl:variable>
+        <xsl:sequence select="imf:create-result-table-by-tr($trs,$header,$table-id)"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:create-result-table-by-tr" as="element(table)*">
+        <xsl:param name="rows" as="element(tr)*"/>
+        <xsl:param name="header" as="xs:string"/>
+        <xsl:param name="id" as="xs:string?"/>
+        <table>
+            <xsl:if test="$id">
+                <xsl:attribute name="id" select="$id"/>
+                <xsl:attribute name="class" select="'tablesorter'"/>
+            </xsl:if>
+            <xsl:sequence select="imf:create-table-rows($header)"/>
+            <thead>
+                <xsl:sequence select="imf:create-table-header($header)"/>
+            </thead>
+            <tbody>
+               <xsl:sequence select="$rows"/>
+            </tbody>
         </table>
     </xsl:function>
     

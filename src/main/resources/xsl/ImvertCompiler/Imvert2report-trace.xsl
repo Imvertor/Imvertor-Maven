@@ -58,19 +58,8 @@
                                 Possible errors reported are 1/ recursion when an object traces an object already traced, 2/ missing suppliers, where a trace is set but the traced construct is not available.
                             </p>
                         </div>
-                        <table>
-                            <!-- 
-                                When no suppliers, a single supplier is returned. 
-                                This must be shown as it clearly indicates that a construct is *not* traced. 
-                            -->
-                            <xsl:variable name="cols" select="count($supplier-subpaths)"/>
-                            <xsl:variable name="colwidth" select="90 div (if ($cols = 0) then 1 else $cols)"/>
-                            <xsl:variable name="h2" select="string-join(($supplier-subpaths,''),concat(':',$colwidth,','))"/>
-                            <xsl:variable name="h3" select="concat('type:10,',$h2)"/>
-                            <xsl:sequence select="imf:create-table-header($h3)"/>  
-                            
+                        <xsl:variable name="rows" as="element(tr)*">
                             <xsl:for-each select=".//*[local-name() = $all-traced-construct-names]">
-                                
                                 <!-- fetch the suppliers -->
                                 <xsl:variable name="suppliers" select="imf:get-trace-suppliers-for-construct(.,1)"/>
                                 <xsl:for-each select="$suppliers[1]"><!-- singleton, start at client and process columns by all suppliers -->
@@ -97,9 +86,18 @@
                                         </xsl:when>
                                     </xsl:choose>
                                 </xsl:for-each>
-                               
                             </xsl:for-each>
-                        </table>
+                        </xsl:variable>
+                        <!-- 
+                            When no suppliers, a single supplier is returned. 
+                            This must be shown as it clearly indicates that a construct is *not* traced. 
+                        -->
+                        <xsl:variable name="cols" select="count($supplier-subpaths)"/>
+                        <xsl:variable name="colwidth" select="90 div (if ($cols = 0) then 1 else $cols)"/>
+                        <xsl:variable name="h2" select="string-join(($supplier-subpaths,''),concat(':',$colwidth,','))"/>
+                        <xsl:variable name="h3" select="concat('type:10,',$h2)"/>
+                            
+                        <xsl:sequence select="imf:create-result-table-by-tr($rows,$h3,'table-trace')"/>
                     </div>
                 </content>
             </page>

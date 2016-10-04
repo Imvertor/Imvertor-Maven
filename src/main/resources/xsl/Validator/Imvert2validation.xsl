@@ -1192,7 +1192,7 @@
                 
                 <xsl:variable name="value-derived" select="imf:boolean($declared/derive)"/>
                
-                <xsl:variable name="required-as-found" select="imf:boolean($declared/stereotypes/stereo[. = $stereotype]/@required)"/>
+                <xsl:variable name="required-as-found" select="imf:boolean($declared/stereotypes/stereo[. = $stereotype][1]/@required)"/>
                 <xsl:variable name="value-required" select="not($value-derived) and $required-as-found"/> <!--TODO test if derived value is actually available --> 
                 <xsl:variable name="value-listing" select="$declared/declared-values/value"/>
               

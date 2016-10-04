@@ -48,33 +48,35 @@
                         <xsl:sequence select="$configuration/config"></xsl:sequence>
                     </xmp>
                     -->
-                    <table>
-                        <xsl:sequence select="imf:create-table-header('Name:10,Value:20,Args:10,Explain:40,Required?:10,Step:10')"/>
-                        <xsl:for-each select="$configuration/config/cli/*">
-                            <xsl:sort select="name()"/>
-                            <xsl:variable name="name" select="name()"/>
-                            <xsl:variable name="cli-info" select="$configuration/config/clispecs/clispec[longKey = $name]"/>
-                            <tr>
-                                <td>
-                                    <xsl:value-of select="$name"/> 
-                                </td>
-                                <td>
-                                    <xsl:value-of select="."/> 
-                                </td>
-                                <td>
-                                    <xsl:value-of select="$cli-info/argKey"/>
-                                </td>
-                                <td>
-                                    <xsl:value-of select="$cli-info/description"/>
-                                </td>
-                                <td>
-                                    <xsl:value-of select="$cli-info/isRequired"/>
-                                </td>
-                                <td>
-                                    <xsl:value-of select="$cli-info/stepName"/>
-                                </td>
-                            </tr>
-                        </xsl:for-each>
+                    <table class="tablesorter"> 
+                        <xsl:variable name="rows" as="element(tr)*">
+                            <xsl:for-each select="$configuration/config/cli/*">
+                                <xsl:sort select="name()"/>
+                                <xsl:variable name="name" select="name()"/>
+                                <xsl:variable name="cli-info" select="$configuration/config/clispecs/clispec[longKey = $name]"/>
+                                <tr>
+                                    <td>
+                                        <xsl:value-of select="$name"/> 
+                                    </td>
+                                    <td>
+                                        <xsl:value-of select="."/> 
+                                    </td>
+                                    <td>
+                                        <xsl:value-of select="$cli-info/argKey"/>
+                                    </td>
+                                    <td>
+                                        <xsl:value-of select="$cli-info/description"/>
+                                    </td>
+                                    <td>
+                                        <xsl:value-of select="$cli-info/isRequired"/>
+                                    </td>
+                                    <td>
+                                        <xsl:value-of select="$cli-info/stepName"/>
+                                    </td>
+                                </tr>
+                            </xsl:for-each>
+                        </xsl:variable>
+                        <xsl:sequence select="imf:create-result-table-by-tr($rows,'Name:10,Value:20,Args:10,Explain:40,Required?:10,Step:10','table-cli')"/>
                     </table>
                 </div>
             </content>

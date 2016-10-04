@@ -82,8 +82,7 @@
     </xsl:template>
 
     <xsl:template match="/config" mode="owner">
-        <table>
-            <xsl:sequence select="imf:create-table-header('parameter:30,value:70')"/>
+        <xsl:variable name="rows" as="element(tr)*">
             <xsl:for-each select="$configuration-owner-file/parameter">
                 <xsl:sort select="@name"/>
                 <tr>
@@ -95,12 +94,12 @@
                     </td>
                 </tr>
             </xsl:for-each>
-        </table>
+        </xsl:variable>
+        <xsl:sequence select="imf:create-result-table-by-tr($rows,'parameter:30,value:70','table-owner')"/>
     </xsl:template>
 
     <xsl:template match="/config" mode="metamodel-scalars">
-        <table>
-            <xsl:sequence select="imf:create-table-header('scalar:50,metamodel:50')"/>
+        <xsl:variable name="rows" as="element(tr)*">
             <xsl:for-each-group select="$configuration-metamodel-file//scalars/scalar" group-by="@id">
                 <xsl:sort select="current-group()[last()]/name[1]"/>
                 <xsl:variable name="metamodels" select="current-group()[last()]/ancestor::metamodel"/>
@@ -118,12 +117,12 @@
                     </tr>
                 </xsl:for-each>
             </xsl:for-each-group>
-        </table>
+        </xsl:variable>
+        <xsl:sequence select="imf:create-result-table-by-tr($rows,'scalar:50,metamodel:50','table-scalars')"/>
     </xsl:template>
     
     <xsl:template match="/config" mode="metamodel-stereos">
-        <table>
-            <xsl:sequence select="imf:create-table-header('stereo:50,metamodel:50')"/>
+        <xsl:variable name="rows" as="element(tr)*">
             <xsl:for-each-group select="$configuration-metamodel-file//stereotypes/stereo" group-by="@id">
                 <xsl:sort select="current-group()[last()]/name[1]"/>
                 <xsl:variable name="metamodels" select="current-group()[last()]/ancestor::metamodel"/>
@@ -141,12 +140,12 @@
                     </tr>
                 </xsl:for-each>
             </xsl:for-each-group>
-        </table>
+        </xsl:variable>
+        <xsl:sequence select="imf:create-result-table-by-tr($rows,'stereo:50,metamodel:50','table-stereos')"/>
     </xsl:template>
     
     <xsl:template match="/config" mode="metamodel-tvs">
-        <table>
-            <xsl:sequence select="imf:create-table-header('tagged value:50,tagsets:50')"/>
+        <xsl:variable name="rows" as="element(tr)*">
             <xsl:for-each-group select="$configuration-tvset-file//tagged-values/tv" group-by="@id">
                 <xsl:sort select="current-group()[last()]/name[1]"/>
                 <xsl:variable name="tagsets" select="current-group()[last()]/ancestor::tagset"/>
@@ -164,6 +163,7 @@
                     </tr>
                 </xsl:for-each>
             </xsl:for-each-group>
-        </table>
+        </xsl:variable>
+        <xsl:sequence select="imf:create-result-table-by-tr($rows,'tagged value:50,tagsets:50','table-tvs')"/>
     </xsl:template>
 </xsl:stylesheet>

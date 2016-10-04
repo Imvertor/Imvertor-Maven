@@ -148,8 +148,13 @@
                 </xs:annotation>
                 <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-enumeration')]" mode="mode-global-enumeration"/>
                 
+                <xs:annotation>
+                    <xs:documentation>(Declaratie van Unions)</xs:documentation>
+                </xs:annotation>
+                <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-union')]" mode="mode-global-union"/>
             </xs:schema>
         </xsl:variable>
+        
         <xsl:result-document href="{$schemafile}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
             <xsl:apply-templates select="$schema" mode="xsd-cleanup"/>
         </xsl:result-document>
@@ -276,6 +281,7 @@
         
         <xsl:variable name="superclasses" select="imf:get-superclasses(.)"/>
         <xsl:variable name="is-subtype" select="exists($superclasses)"/>
+        <xsl:variable name="is-abstract" select="imf:boolean(imvert:abstract)"/>
         
         <xsl:variable name="body-kern">
             <xs:sequence>
@@ -304,6 +310,10 @@
         </xsl:variable>
         
         <xsl:choose>
+            <xsl:when test="$is-abstract">
+                <!-- geen kerngegevens -->
+                <xsl:sequence select="imf:create-comment(concat('mode-global-kerngegevens Kerngegevens abstract niet gegenereerd # ',@display-name))"/>
+            </xsl:when>
             <xsl:when test="$is-subtype">
                 <xsl:sequence select="imf:create-comment(concat('mode-global-kerngegevens Kerngegevens subtype # ',@display-name))"/>
                 
@@ -421,6 +431,21 @@
         </xs:simpleType>
         
     </xsl:template>
+
+    <xsl:template match="imvert:class" mode="mode-global-union">
+        <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
+        
+        <xsl:sequence select="imf:create-comment(concat('mode-global-union Union # ',imvert:name/@original))"/>
+        
+        <xs:complexType name="{imf:capitalize($compiled-name)}">
+            <xsl:sequence select="imf:create-annotation(.)"/>
+            <xs:choice>
+                <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-union-element"/>
+            </xs:choice>
+        </xs:complexType>
+        
+    </xsl:template>
+    
     
     <!-- LOCAL SUBSTRUCTURES -->
     
@@ -495,7 +520,7 @@
                 <xsl:sequence select="imf:create-comment('Een extern type')"/>
                 <xs:element
                     name="{$compiled-name}" 
-                    type="{imf:get-external-type-name(.)}" 
+                    type="{imf:get-external-type-name(.,true())}" 
                     minOccurs="0" 
                     maxOccurs="{$cardinality[4]}"
                     metadata:formeleHistorie="{$history[1]}"
@@ -522,21 +547,29 @@
     
     <xsl:function name="imf:get-external-type-name">
         <xsl:param name="attribute"/>
-        <!-- detremine the name; hard koderen -->
+        <xsl:param name="as-type" as="xs:boolean"/>
+        <!-- determine the name; hard koderen -->
         <xsl:for-each select="$attribute"> <!-- singleton -->
             <xsl:choose>
                 <xsl:when test="imvert:type-package='GML3'">
-                    <xsl:choose>
-                        <xsl:when test="imvert:conceptual-schema-type = 'GM_Surface'">gml:SurfaceType</xsl:when>
-                        <xsl:when test="imvert:conceptual-schema-type = 'GM_Point'">gml:PointType</xsl:when>
-                        <xsl:when test="imvert:conceptual-schema-type = 'GM_Line'">gml:LineType</xsl:when>
-                        <xsl:when test="imvert:conceptual-schema-type = 'GM_Object'">gml:ObjectType</xsl:when>
-                        <xsl:when test="imvert:conceptual-schema-type = 'GM_Curve'">gml:CurveType</xsl:when>
-                        <xsl:when test="imvert:conceptual-schema-type = 'GM_MultiSurface'">gml:MultiSurfaceType</xsl:when>
-                        <xsl:otherwise>
-                            <xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the GML type [1]', imvert:conceptual-schema-type)"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
+                    <xsl:variable name="type-suffix" select="if ($as-type) then 'Type' else ''"/>
+                    <xsl:variable name="type-prefix">
+                        <xsl:choose>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Surface'">gml:Surface</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Point'">gml:Point</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Line'">gml:Line</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Object'">gml:Object</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Curve'">gml:Curve</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_MultiSurface'">gml:MultiSurface</xsl:when>
+                            <xsl:otherwise>
+                                <xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the GML type [1]', imvert:conceptual-schema-type)"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:variable>
+                    <xsl:value-of select="concat($type-prefix,$type-suffix)"/>
+               </xsl:when>
+                <xsl:when test="empty(imvert:type-package)">
+                    <!-- TODO -->
                 </xsl:when>
                 <xsl:otherwise>
                     <!-- geen andere externe packages bekend -->
@@ -619,6 +652,34 @@
         
     </xsl:template>
 
+    <!-- de weergave van een enkele keuze -->
+    <xsl:template match="imvert:attribute" mode="mode-local-union-element">
+        
+        <xsl:variable name="cardinality" select="imf:get-cardinality(.)"/>
+        <xsl:variable name="type" select="imf:get-class(.)"/>
+        <xsl:variable name="type-is-external" select="exists(imvert:conceptual-schema-type)"/>
+        
+        <xsl:sequence select="imf:create-comment(concat('mode-local-union-element Local union element # ',@display-name))"/>
+        
+        <xsl:variable name="type-ref">
+            <xsl:choose>
+                <xsl:when test="$type-is-external">
+                    <xsl:value-of select="imf:get-external-type-name(.,false())"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="imf:get-compiled-name($type)"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        
+        <xs:element
+            ref="{$type-ref}" 
+            minOccurs="0" 
+            maxOccurs="{$cardinality[4]}"
+        />
+        
+    </xsl:template>
+    
     <xsl:template match="imvert:attribute" mode="mode-local-referentielijst-element">
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
         <xsl:variable name="cardinality" select="imf:get-cardinality(.)"/>
@@ -1054,6 +1115,14 @@
             <xsl:when test="$type = 'class' and $stereotype = imf:get-config-stereotypes('stereotype-name-enumeration')">
                 <xsl:value-of select="$name"/>
             </xsl:when>
+            <xsl:when test="$type = 'class' and $stereotype = imf:get-config-stereotypes('stereotype-name-union')">
+                <xsl:value-of select="$name"/>
+            </xsl:when>
+            <xsl:when test="$type = 'class' and $stereotype = imf:get-config-stereotypes('stereotype-name-interface')">
+                <!-- this must be an external -->
+                <xsl:variable name="external-name" select="imf:get-external-type-name($this,true())"/>
+                <xsl:value-of select="$external-name"/>
+            </xsl:when>
             <xsl:when test="$type = 'attribute' and $stereotype = imf:get-config-stereotypes('stereotype-name-attribute')">
                 <xsl:value-of select="$name"/>
             </xsl:when>
@@ -1298,6 +1367,11 @@
         </xsl:if>
     </xsl:function>
     
+    <xsl:function name="imf:get-external-element-name">
+        <xsl:param name="conceptual-schema-namespace"/>
+        <xsl:param name="conceptual-schema-class-name"/>
+        
+    </xsl:function>
     <!-- =================== cleanup =================== -->
    
     <xsl:template match="xs:schema" mode="xsd-cleanup">

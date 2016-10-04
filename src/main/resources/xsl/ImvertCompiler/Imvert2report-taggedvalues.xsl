@@ -48,28 +48,30 @@
                             The list shows the name, the number of times it occurs, and the constructs that holds that tagged value. 
                         </p>
                     </div>               
-                    <table>
-                        <xsl:sequence select="imf:create-table-header('tagged value name:60,occurs:10,occurs on:30')"/>
-                        <xsl:for-each-group select=".//imvert:tagged-value" group-by="imvert:name">
-                            <xsl:sort select="current-grouping-key()"/>
-                            <tr>
-                                <td>
-                                    <xsl:value-of select="current-grouping-key()"/>
-                                </td>
-                                <td>
-                                    <xsl:value-of select="count(current-group())"/>
-                                </td>
-                                <td>
-                                    <xsl:variable name="levels" as="xs:string*">
-                                        <xsl:for-each-group select="current-group()" group-by="local-name(../..)">
-                                            <xsl:sort select="current-grouping-key()"/>
-                                            <xsl:value-of select="current-grouping-key()"/>
-                                        </xsl:for-each-group>
-                                    </xsl:variable>
-                                    <xsl:value-of select="string-join($levels,',  ')"/>
-                                </td>
-                            </tr>
-                        </xsl:for-each-group>
+                    <table class="tablesorter"> 
+                        <xsl:variable name="rows" as="element(tr)*">
+                            <xsl:for-each-group select=".//imvert:tagged-value" group-by="imvert:name">
+                                <xsl:sort select="current-grouping-key()"/>
+                                <tr>
+                                    <td>
+                                        <xsl:value-of select="current-grouping-key()"/>
+                                    </td>
+                                    <td>
+                                        <xsl:value-of select="count(current-group())"/>
+                                    </td>
+                                    <td>
+                                        <xsl:variable name="levels" as="xs:string*">
+                                            <xsl:for-each-group select="current-group()" group-by="local-name(../..)">
+                                                <xsl:sort select="current-grouping-key()"/>
+                                                <xsl:value-of select="current-grouping-key()"/>
+                                            </xsl:for-each-group>
+                                        </xsl:variable>
+                                        <xsl:value-of select="string-join($levels,',  ')"/>
+                                    </td>
+                                </tr>
+                            </xsl:for-each-group>
+                        </xsl:variable>
+                        <xsl:sequence select="imf:create-result-table-by-tr($rows,'tagged value name:60,occurs:10,occurs on:30','table-tv1')"/>
                     </table>
                 </div>
                 <div>
@@ -81,30 +83,32 @@
                             Note that some tagged values of the supplier are not derived, an therefore not shown here.
                         </p>
                         <p>The following system defined tagged values are not shown: <xsl:value-of select="string-join($system-defined-tagged-value-names,', ')"/></p>
-                    </div>               
-                    <table>
-                        <xsl:sequence select="imf:create-table-header('construct:30,tagged value name:20,value:20,origin:30')"/>
-                        <xsl:for-each select=".//*[imvert:tagged-values/* and exists(@display-name)]">
-                            <xsl:sort select="@display-name"/>
-                            <xsl:variable name="display-name" select="@display-name"/>
-                            <xsl:for-each select="imvert:tagged-values/imvert:tagged-value[node() and not(imvert:name = $system-defined-tagged-value-names)]">
-                                <tr>
-                                    <td>
-                                        <xsl:value-of select="$display-name"/>
-                                    </td>
-                                    <td>
-                                        <xsl:value-of select="imvert:name/@original"/>
-                                    </td>
-                                    <td>
-                                        <xsl:variable name="value" select="if (exists(imvert:value/@original)) then imvert:value/@original else imvert:value"/>
-                                        <xsl:sequence select="imf:format-documentation-to-html($value)"/>
-                                    </td>
-                                    <td>
-                                        <xsl:sequence select="if (xs:integer(@derivation-level) = 1) then '(here)' else string-join((@derivation-project,@derivation-application,@derivation-release),', ')"/>
-                                    </td>
-                                </tr>
+                    </div>           
+                    <table class="tablesorter"> 
+                        <xsl:variable name="rows" as="element(tr)*">
+                            <xsl:for-each select=".//*[imvert:tagged-values/* and exists(@display-name)]">
+                                <xsl:sort select="@display-name"/>
+                                <xsl:variable name="display-name" select="@display-name"/>
+                                <xsl:for-each select="imvert:tagged-values/imvert:tagged-value[node() and not(imvert:name = $system-defined-tagged-value-names)]">
+                                    <tr>
+                                        <td>
+                                            <xsl:value-of select="$display-name"/>
+                                        </td>
+                                        <td>
+                                            <xsl:value-of select="imvert:name/@original"/>
+                                        </td>
+                                        <td>
+                                            <xsl:variable name="value" select="if (exists(imvert:value/@original)) then imvert:value/@original else imvert:value"/>
+                                            <xsl:sequence select="imf:format-documentation-to-html($value)"/>
+                                        </td>
+                                        <td>
+                                            <xsl:sequence select="if (xs:integer(@derivation-level) = 1) then '(here)' else string-join((@derivation-project,@derivation-application,@derivation-release),', ')"/>
+                                        </td>
+                                    </tr>
+                                </xsl:for-each>
                             </xsl:for-each>
-                        </xsl:for-each>
+                        </xsl:variable>
+                        <xsl:sequence select="imf:create-result-table-by-tr($rows,'construct:30,tagged value name:20,value:20,origin:30','table-tv2')"/>
                     </table>
                 </div>
             </content>

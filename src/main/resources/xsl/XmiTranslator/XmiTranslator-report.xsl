@@ -56,15 +56,8 @@
                     <content>
                         <div>
                             <h1>XMI processing info</h1>
-                            <table>
-                                <thead>
-                                    <tr class="tableHeader">
-                                        <td>Type</td>
-                                        <td>Element</td>
-                                        <td>Message</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                            <table class="tablesorter"> 
+                                <xsl:variable name="rows" as="element(tr)*">
                                     <xsl:for-each select="$messages">
                                         <tr class="{type}">
                                             <td><xsl:value-of select="type"/></td>
@@ -72,7 +65,8 @@
                                             <td><xsl:value-of select="text"/></td>
                                         </tr>
                                     </xsl:for-each>
-                                </tbody>
+                                </xsl:variable>
+                                <xsl:sequence select="imf:create-result-table-by-tr($rows,'Type:20,Element:60,Message:20','table-info')"/>
                             </table>
                         </div>
                     </content>

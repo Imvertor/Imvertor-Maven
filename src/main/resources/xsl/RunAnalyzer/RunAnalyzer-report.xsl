@@ -84,15 +84,8 @@
                                 <h1>
                                     <xsl:value-of select="current-grouping-key()"/>
                                 </h1>
-                                <table>
-                                    <thead>
-                                        <tr class="tableHeader">
-                                            <td>Type</td>
-                                            <td>Element</td>
-                                            <td>Message</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                <table class="tablesorter"> 
+                                    <xsl:variable name="rows" as="element(tr)*">
                                         <xsl:for-each select="current-group()">
                                             <tr class="{type}">
                                                 <td><xsl:value-of select="type"/></td>
@@ -108,7 +101,8 @@
                                                     </span></td>
                                             </tr>
                                         </xsl:for-each>
-                                    </tbody>
+                                    </xsl:variable>
+                                    <xsl:sequence select="imf:create-result-table-by-tr($rows,'Type:10,Element:30,Message:60','table-run')"/>
                                 </table>
                             </div>
                         </xsl:for-each-group>

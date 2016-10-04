@@ -49,9 +49,11 @@
                                 <li>The URL formal name of the list. This is its data-location, and gives access to the published information on this value list.</li>
                             </ul>
                         </div>
-                        <table>
-                            <xsl:sequence select="imf:create-table-header('attribute:30,data location:70')"/>
-                            <xsl:apply-templates select="$lists" mode="valuelists"/> 
+                        <table class="tablesorter"> 
+                            <xsl:variable name="rows" as="element(tr)*">
+                                <xsl:apply-templates select="$lists" mode="valuelists"/> 
+                            </xsl:variable>
+                            <xsl:sequence select="imf:create-result-table-by-tr($rows,'attribute:30,data location:70','table-values')"/>
                         </table>
                     </div>
                 </content>

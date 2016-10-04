@@ -119,13 +119,13 @@
                             </p>
                         </xsl:if>
                     </div>                        
-                    <xsl:variable name="rows" as="node()*">
+                    <xsl:variable name="rows" as="element(row)*">
                         <xsl:for-each select=".//imvert:package">
                             <xsl:sort select="imvert:name" order="ascending"/>
                             <xsl:apply-templates select="." mode="documentation"/>
                         </xsl:for-each> 
                     </xsl:variable>
-                    <xsl:sequence select="imf:create-result-table($rows,'construct:30,documentation:70')"/>
+                    <xsl:sequence select="imf:create-result-table($rows,'construct:30,documentation:70','table-doc')"/>
                 </div>
             </content>
         </page>
