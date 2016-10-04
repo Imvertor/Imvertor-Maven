@@ -27,7 +27,7 @@ p.supplierMark {
     font-size: 70%;
     color: gray;  
 }
-tr.tableHeader td {
+tr.tableHeader th {
     background-color: #EEEEEE;
     font-weight: bold;
     font-style: italic;

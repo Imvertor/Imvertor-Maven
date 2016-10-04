@@ -19,7 +19,20 @@
 -->
 <project-owner>
     <name>KING</name>
-    <parameter name="web-css">../web/css/report.css</parameter> 
+    
+    <!-- 
+        enter a list of CSS, JS, anything to be copied to the outut file, separate with ";" 
+    -->
+    <parameter name="web-css">
+        ../web/css/report.css;
+        ../web/themes/blue/style.css;
+    </parameter> 
+    
+    <parameter name="web-scripts">
+        ../web/script/jquery/jquery-latest.js;
+        ../web/script/tablesorter/jquery.tablesorter.min.js;
+    </parameter> 
+    
     <parameter name="web-logo">../web/img/logo_primary_desktop.png</parameter> 
     <parameter name="pretext-encoding">
         This schema is based on an UML specification, which is transformed by the Imvertor software. Imvertor modules are in the public domain, see http://www.imvertor.org.
