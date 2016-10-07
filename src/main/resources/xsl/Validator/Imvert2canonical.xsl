@@ -34,6 +34,8 @@
     
     <xsl:import href="../common/Imvert-common.xsl"/>
    
+    <xsl:variable name="chop" select="imf:boolean(imf:get-config-string('cli','chop','no'))"/>
+    
     <xsl:template match="/imvert:packages">
         <imvert:packages>
             <xsl:sequence select="imf:compile-imvert-header(.)"/>
@@ -50,6 +52,17 @@
         </xsl:copy>
     </xsl:template>
     
+    <xsl:template match="imvert:class/imvert:supertype">
+        <xsl:choose>
+            <xsl:when test="exists(imvert:type-id) and empty(imf:get-construct-by-id(imvert:type-id)) and $chop">
+                <xsl:comment select="concat('Chopped supertype: ', imvert:type-name)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
     <xsl:template match="imvert:class[imvert:designation = 'enumeration']/imvert:attributes/imvert:attribute">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
@@ -59,9 +72,29 @@
         </xsl:copy>
     </xsl:template>
     
-    <!-- remove explicit trace relations; traces are recorded as imvert:trace (client to supplier) -->
-    <xsl:template match="imvert:association[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-trace')]">
-        <!-- remove -->
+    <xsl:template match="imvert:association">
+        <xsl:choose>
+            <xsl:when test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-trace')">
+                <!-- remove explicit trace relations; traces are recorded as imvert:trace (client to supplier) -->
+            </xsl:when>
+            <xsl:when test="exists(imvert:type-id) and empty(imf:get-construct-by-id(imvert:type-id)) and $chop">
+                <xsl:comment select="concat('Chopped association: ', imvert:name)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template match="imvert:attribute">
+        <xsl:choose>
+            <xsl:when test="exists(imvert:type-id) and empty(imf:get-construct-by-id(imvert:type-id)) and $chop">
+                <xsl:comment select="concat('Chopped attribute: ', imvert:name)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <!-- 

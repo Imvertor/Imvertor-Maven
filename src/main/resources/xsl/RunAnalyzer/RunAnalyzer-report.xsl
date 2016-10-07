@@ -102,7 +102,7 @@
                                             </tr>
                                         </xsl:for-each>
                                     </xsl:variable>
-                                    <xsl:sequence select="imf:create-result-table-by-tr($rows,'Type:10,Element:30,Message:60','table-run')"/>
+                                    <xsl:sequence select="imf:create-result-table-by-tr($rows,'Type:10,Element:30,Message:60',concat('table-run-',current-grouping-key()))"/>
                                 </table>
                             </div>
                         </xsl:for-each-group>

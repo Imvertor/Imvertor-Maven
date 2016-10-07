@@ -18,7 +18,7 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <tagset xmlns:xi="http://www.w3.org/2001/XInclude">
-  
+    
     <name>Kadaster</name>
     <tagged-values>
         
@@ -181,7 +181,7 @@
                 <stereo required="no" lang="nl">View</stereo>
             </stereotypes>
         </tv>
-
+        
         <tv norm="space" id="SupplierProject">
             <name lang="nl">Supplier-project</name>
             <derive>no</derive>
@@ -258,6 +258,15 @@
             <stereotypes>
                 <stereo required="no" lang="nl">Objecttype</stereo>
                 <stereo required="no" lang="nl">Koppelklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="Relation">
+            <name lang="nl">Relatie</name>
+            <name lang="en">Relation</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Relatiesoort</stereo>
             </stereotypes>
         </tv>
         

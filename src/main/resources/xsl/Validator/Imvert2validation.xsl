@@ -271,12 +271,12 @@
                   <xsl:when test="exists(parent::imvert:supertype)">
                       <xsl:sequence select="imf:report-error(ancestor::*[imvert:name][1], 
                           $fails, 
-                          'Supertype reference to a class that is not part of this or any external application')"/>
+                          'Supertype reference to a class [1] that is not part of this or any external application',$refed-name)"/>
                   </xsl:when>
                   <xsl:otherwise>
                       <xsl:sequence select="imf:report-error(ancestor::*[imvert:name][1], 
                           $fails, 
-                          'Propertype type reference to a class that is not part of this or any external application: [1]',$refed-name)"/>
+                          'Property type reference to a class [1] that is not part of this or any external application',$refed-name)"/>
                   </xsl:otherwise>
               </xsl:choose>
         </xsl:for-each>
