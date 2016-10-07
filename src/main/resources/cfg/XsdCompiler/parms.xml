@@ -96,7 +96,11 @@
      
       <IMVERTOR_METAMODEL_Kadaster_XSDSOURCE>system</IMVERTOR_METAMODEL_Kadaster_XSDSOURCE>
       <IMVERTOR_METAMODEL_Kadaster_XSD_XSLPATH>Imvert2XSD-Kadaster.xsl</IMVERTOR_METAMODEL_Kadaster_XSD_XSLPATH>
-      <RESULT_XSD_XML_FILE_PATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_XSD_XML_FILE_PATH>   
+      <IMVERTOR_METAMODEL_Kadaster_XSD_IMPORT_XSLPATH>Imvert2XSD-Kadaster-imports.xsl</IMVERTOR_METAMODEL_Kadaster_XSD_IMPORT_XSLPATH>
+      
+      <RESULT_XSD_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.28.xsd.xml</RESULT_XSD_XML_FILE_PATH>   
+      <RESULT_XSD_IMPORT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.29.xsd-imported.xml</RESULT_XSD_IMPORT_XML_FILE_PATH>   
+      
       <!-- flattening -->
       <IMVERTOR_FLATTEN_XSLPATH>flatten-xsd.xsl</IMVERTOR_FLATTEN_XSLPATH>
       <WORK_FLATTEN_FILE>${system/work-imvert-folder-path}/imvertor.26.flatten.html</WORK_FLATTEN_FILE>
@@ -120,9 +124,6 @@
       <RESULT_METAMODEL_KINGUGM_XSD_FILEPATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_METAMODEL_KINGUGM_XSD_FILEPATH>
       <!-- locatie van de stuf onderlaag -->
       <STUF_ONDERLAAG_UGM>${system/inp-folder-path}/xsd/other/KING-UGM/support</STUF_ONDERLAAG_UGM>
-      
-      <!-- intermediate XML file -->
-      <RESULT_XSD_XML_FILE_PATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_XSD_XML_FILE_PATH>   
       
       <!-- workfolder for serialized excel -->
       <work-serialize-folder>${system/work-folder-path}/serializer/temp-folder</work-serialize-folder>

@@ -113,6 +113,8 @@ public class XsdCompiler extends Step {
 		else // model
 			valid = valid && transformer.transformStep("properties/WORK_SCHEMA_FILE","properties/RESULT_XSD_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_XSD_XSLPATH","system/cur-imvertor-filepath");
 		
+		valid = valid && transformer.transformStep("system/cur-imvertor-filepath","properties/RESULT_XSD_IMPORT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_XSD_IMPORT_XSLPATH","system/cur-imvertor-filepath");
+		
 		// for each model named to flatten, process
 		if (configurator.isTrue("cli","flattenschemas")) {
 			valid = valid && transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_FLATTEN_FILE","properties/IMVERTOR_FLATTEN_XSLPATH","system/cur-imvertor-filepath");
