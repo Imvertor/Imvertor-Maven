@@ -534,12 +534,11 @@
     
     <xsl:function name="imf:get-all-collection-related" as="element()*">
         <xsl:param name="class"/>
-        <xsl:for-each select="$class/imvert:associations/imvert:association[imvert:type-id and imf:is-object-relation(.)]">
+        <xsl:for-each select="$class/imvert:associations/imvert:association[imvert:type-id]">
             <xsl:sequence select="imf:get-construct-by-id(imvert:type-id)"/>
         </xsl:for-each>
     </xsl:function>
-   
-   <?xx
+     
     <!-- 
         return all Objecttype classes that are referenced from within this class 
     --> 
@@ -554,7 +553,6 @@
             </xsl:choose>
         </xsl:for-each>
     </xsl:function>
-   x?>
    
     <xsl:function name="imf:get-display-name" as="xs:string">
         <xsl:param name="this" as="node()?"/>
@@ -728,16 +726,6 @@
                 <xsl:sequence select="false()"/>
             </xsl:otherwise>
         </xsl:choose>
-    </xsl:function>
-    
-    <!-- 
-        return true when the type is referenced as an object, not only as an Xref. 
-        see IM-308 
-    -->
-    <xsl:function name="imf:is-object-relation" as="xs:boolean">
-        <xsl:param name="association" as="element()"/>
-        <xsl:variable name="associates-from-collection" select="$association/../../imvert:stereotype = imf:get-config-stereotypes('stereotype-name-collection')"/>
-        <xsl:sequence select="not($associates-from-collection) and empty($association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'relatie' and imvert:value='Referentie'])"/>
     </xsl:function>
     
     <!-- input format: 2014-09-29T09:54:42.833+02:00 -->

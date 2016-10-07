@@ -12,8 +12,7 @@ cd ..
 call environment.server.bat %owner% 
 cd %d%
 
-set inpdir=%d%\input\%owner%
-
+set inpdir=%imvertor_os_input%
 set outdir=%imvertor_os_output%
 set workdir=%imvertor_os_work%
 set bindir=%imvertor_os_bin%
@@ -41,7 +40,7 @@ call "%javaexe%" %jvmparms% ^
     -Dlog4j.configuration=file:%bindir%\cfg\log4j.properties ^
 	-Dinstall.dir="%bindir%" ^
 	-Doutput.dir="%outdir%" ^
-    -Downer.name="%owner%" ^
+    -Dinput.dir="%inpdir%" ^
     -Dwork.dir="%workdir%\%jobid%" ^
     -Dea.enabled=%imvertor_os_eaenabled% ^
     -classpath "%bindir%\bin\ChainTranslateAndReport_lib" ^
