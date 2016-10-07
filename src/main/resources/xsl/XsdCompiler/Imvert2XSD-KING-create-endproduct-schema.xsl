@@ -29,6 +29,8 @@
 	<xsl:variable name="prefix" select="ep:message-set/ep:namespace-prefix"/>
 
 	<xsl:template match="ep:message-set">
+		<xsl:variable name="msg" select="'Creating the StUF XML-Schema'"/>
+		<xsl:sequence select="imf:msg('INFO',$msg)"/>
 		<xs:schema targetNamespace="{ep:namespace}" elementFormDefault="qualified" attributeFormDefault="unqualified" version="{concat(ep:patch-number,'-',ep:release)}">
 			<xsl:namespace name="{$prefix}"><xsl:value-of select="ep:namespace"/></xsl:namespace>
 			<xs:import namespace="http://www.egem.nl/StUF/StUF0301" schemaLocation="stuf0301.xsd"/>
@@ -264,41 +266,21 @@
 					
 	<xsl:template match="ep:construct" mode="complexType">
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
-		<xsl:choose>
-			<xsl:when test="@type='groupType'">
-				<xs:group>
-					<xsl:attribute name="name" select="ep:tech-name"/>
-					<xsl:apply-templates select="ep:seq[not(@ismetadata)]"/>
-					<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
-				</xs:group>
-			</xsl:when>
-			<xsl:otherwise>
-				<xs:complexType>
-					<xsl:attribute name="name" select="ep:tech-name"/>
-					<xsl:apply-templates select="ep:seq[not(@ismetadata)]"/>
-					<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
-				</xs:complexType>
-			</xsl:otherwise>
-		</xsl:choose>
+		<xs:complexType>
+			<xsl:attribute name="name" select="ep:tech-name"/>
+			<xsl:apply-templates select="ep:seq[not(@ismetadata)]"/>
+			<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+		</xs:complexType>
 	</xsl:template>
 	
 	<xsl:template match="ep:constructRef">
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
-		<xsl:choose>
-			<xsl:when test="ep:tech-name">
-				<xs:element>
-					<xsl:attribute name="name" select="ep:tech-name"/>
-					<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
-					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
-					<xsl:attribute name="type" select="concat($prefix,':',ep:href)"/>
-				</xs:element>				
-			</xsl:when>
-			<xsl:otherwise>
-				<xs:group>
-					<xsl:attribute name="ref" select="concat($prefix,':',ep:href)"/>
-				</xs:group>
-			</xsl:otherwise>
-		</xsl:choose>
+		<xs:element>
+			<xsl:attribute name="name" select="ep:tech-name"/>
+			<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
+			<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
+			<xsl:attribute name="type" select="concat($prefix,':',ep:href)"/>
+		</xs:element>				
 	</xsl:template>
 	
 	<!-- ROME: Onderstaande template kan mogelijk komen te vervallen (integreren met de andere ep:construct templates). -->
