@@ -37,7 +37,7 @@
     <xsl:variable name="output-folder" select="imf:get-config-string('system','managedoutputfolder')"/>
     <xsl:variable name="owner" select="imf:get-config-string('cli','owner')"/>
     
-    <xsl:variable name="stereotype-proxy" select="imf:get-config-stereotypes('stereotype-name-proxy')"/>
+    <xsl:variable name="stereotype-proxy" select="imf:get-config-stereotypes(('stereotype-name-att-proxy','stereotype-name-obj-proxy','stereotype-name-grp-proxy'))"/>
     
     <xsl:variable name="local-constructs" select="('attributes', 'associations', 'name', 'id')"/>
     
