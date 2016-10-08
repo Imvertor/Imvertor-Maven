@@ -513,6 +513,8 @@
         <xsl:variable name="is-id" select="(.,$superclasses)/imvert:attributes/imvert:attribute/imvert:is-id = 'true'"/>
         <xsl:variable name="is-abstract" select="imvert:abstract = 'true'"/>
         <xsl:variable name="is-toplevel" select="imf:is-toplevel($this)"/>
+        <xsl:variable name="is-association-class" select="$document-classes/imvert:associations/imvert:association/imvert:association-class/imvert:type-id = $this-id"/>
+        
         <!--validation-->
         <xsl:sequence select="imf:report-warning(., 
             not(imf:test-name-convention($this)), 
@@ -568,11 +570,11 @@
         
         <xsl:variable name="is-used-type" select="$document-classes/imvert:attributes/imvert:attribute/imvert:type-id=$this-id"/>
         <xsl:variable name="is-used-ref" select="$document-classes/imvert:associations/imvert:association/imvert:type-id=$this-id"/>
-        
+         
         <!-- TODO het niet gebruikt zijn van een klasse is een zaak van configuratie: wat zijn de potentiele topconstructs? -->
         <xsl:sequence select="imf:report-warning(., 
             $is-application and 
-            not($is-toplevel) and not($is-used-type or $is-used-ref or $is-supertype), 
+            not($is-toplevel) and not($is-used-type or $is-used-ref or $is-supertype or $is-association-class), 
             'This [1] is not used.', if (exists(imvert:stereotype)) then imvert:stereotype else 'construct')"/>
         
         <xsl:next-match/>
