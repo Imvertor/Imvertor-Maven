@@ -134,15 +134,17 @@
             'Source class [1] must have or inherit an attribute that is an ID', 
             imf:get-construct-name($class))"/>
         
-        <xsl:sequence select="imf:report-error(., 
-            not($target-has-id), 
-            'Target class [1] must have or inherit an attribute that is an ID', 
-            imf:get-construct-name($defining-class))"/>
-        
-        <xsl:sequence select="imf:report-error(., 
-            not($defining-class/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')), 
-            'Target class [1] must have stereotype [2] because the target in relation [3] is stereotyped as [4]', 
-            (imf:get-construct-name($defining-class),imf:get-config-stereotypes('stereotype-name-objecttype'), imvert:name, imf:get-config-stereotypes('stereotype-name-composite-id') ))"/>
+        <xsl:if test="exists(imvert:type-id) and exists($defining-class)">
+            <xsl:sequence select="imf:report-error(., 
+                not($target-has-id), 
+                'Target class [1] must have or inherit an attribute that is an ID', 
+                imf:get-construct-name($defining-class))"/>
+            
+            <xsl:sequence select="imf:report-error(., 
+                not($defining-class/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')), 
+                'Target class [1] must have stereotype [2] because the target in relation [3] is stereotyped as [4]', 
+                (imf:get-construct-name($defining-class),imf:get-config-stereotypes('stereotype-name-objecttype'), imvert:name, imf:get-config-stereotypes('stereotype-name-composite-id') ))"/>
+        </xsl:if>
         
         <xsl:next-match/>
     </xsl:template>
