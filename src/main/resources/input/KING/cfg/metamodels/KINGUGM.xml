@@ -293,12 +293,21 @@
             It is also assumed that the metamodels are compatible.</desc>
         <construct>package</construct>
     </stereo>
+    
     <!-- REDMINE #487891 -->
-    <stereo id="stereotype-name-proxy">
-        <name lang="nl">proxy</name>
-        <name lang="en">proxy</name>
+    <stereo id="stereotype-name-att-proxy">
+        <name lang="nl">attribuutsoort_proxy</name>
+        <desc>A proxy is TODO</desc>
+        <construct>attribute</construct>
+    </stereo>
+    <stereo id="stereotype-name-obj-proxy">
+        <name lang="nl">objecttype_proxy</name>
         <desc>A proxy is TODO</desc>
         <construct>class</construct>
-        <construct>attribute</construct>
+    </stereo>
+    <stereo id="stereotype-name-grp-proxy">
+        <name lang="nl">gegevensgroeptype_proxy</name>
+        <desc>A proxy is TODO</desc>
+        <construct>class</construct>
     </stereo>
 </metamodel>
