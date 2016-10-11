@@ -864,7 +864,7 @@ public class Configurator {
 	
 	private void loadFromPropertyFiles(File curFolder, String filenames) throws Exception {
 		if (filenames != null) {
-			String[] files = filenames.split("\\s*,\\s*");
+			String[] files = filenames.trim().split("\\s*,\\s*");
 			for (int i = 0; i < files.length; i++) {
 				File incFile;
 				if (AnyFile.isAbsolutePath(files[i]))

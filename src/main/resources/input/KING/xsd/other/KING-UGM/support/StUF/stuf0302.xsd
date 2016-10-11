@@ -2596,4 +2596,7 @@
 	<simpleType name="MogelijkOnvolledigeDatumTijd-e">
 		<restriction base="string"/>
 	</simpleType>
+	<simpleType name="Jaar-e">
+		<restriction base="string"/>
+	</simpleType>
 </schema>
