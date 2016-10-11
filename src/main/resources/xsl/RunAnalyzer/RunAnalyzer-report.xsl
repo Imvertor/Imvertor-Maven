@@ -110,13 +110,17 @@
                 </page>
             </xsl:if>
             
-            <!-- generated overview of configuration -->
-            <xsl:if test="exists(imf:get-config-string('cli','tvset',()))">
-                <xsl:apply-templates select="." mode="doc-config"/>
+            <xsl:if test="imf:get-config-string('cli','chain','ChainTranslateAndReport') = 'ChainTranslateAndReport'"> 
+                <!-- TODO dit moet echt anders, afschermen van Imvertor functies van bijv. Regression functies -->
+                
+                <!-- generated overview of configuration -->
+                <xsl:if test="exists(imf:get-config-string('cli','tvset',()))">
+                    <xsl:apply-templates select="." mode="doc-config"/>
+                </xsl:if>
+                
+                <!-- generated overview of parameters -->
+                <xsl:apply-templates select="." mode="doc-parameters"/>
             </xsl:if>
-            
-            <!-- generated overview of parameters -->
-            <xsl:apply-templates select="." mode="doc-parameters"/>
             
         </report>
     </xsl:template>
