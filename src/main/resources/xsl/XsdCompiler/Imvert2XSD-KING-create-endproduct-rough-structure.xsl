@@ -196,16 +196,14 @@
 		<xsl:param name="berichtCode" />
 		<xsl:param name="context" />
 		<xsl:param name="historyApplies" select="'no'" />
+		<xsl:variable name="id" select="imvert:id"/>
 		<xsl:if test="imf:boolean($debug)">
 			<xsl:comment select="'Template 4: imvert:class[mode=create-rough-message-content]'" />
 		</xsl:if>
 		<xsl:choose>
-			<!-- The following when initiates the processing of the attributegroups 
-				belonging to the current class. First the ones found within the superclass 
-				of the current class followed by the ones within the current class. -->
-			<xsl:when test="$proces-type = 'attributes'">
-
-			</xsl:when>
+			<!-- The following takes care of ignoring the processing of the attributes 
+				belonging to the current class. Attributes aren't important for the rough structure. -->
+			<xsl:when test="$proces-type = 'attributes'"/>
 			<!-- The following when initiates the processing of the attributegroups 
 				belonging to the current class. First the ones found within the superclass 
 				of the current class followed by the ones within the current class. -->
@@ -252,14 +250,35 @@
 					</xsl:when>
 				</xsl:choose>
 			</xsl:when>
+			<!-- The following when initiates the processing of the associations refering to the current class as a superclass.
+				 In this situation a choice has to be generated. -->
+			<xsl:when test="$proces-type = 'associationsOrSupertypeRelatie' and //imvert:class[imvert:supertype/imvert:type-id = $id]">
+				<ep:choice>
+					<xsl:for-each select="//imvert:class[imvert:supertype/imvert:type-id = $id]">
+						<ep:construct context="{$context}" typeCode="relatie">
+							<xsl:sequence select="imf:create-output-element('ep:name', imvert:name/@original)" />
+							<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)" />
+							<xsl:sequence select="imf:create-output-element('ep:type-id', imvert:id)" />
+							<xsl:apply-templates select="."
+								mode="create-rough-message-content">
+								<xsl:with-param name="package-id" select="$package-id"/>
+								<xsl:with-param name="proces-type" select="'associationsRelatie'" />
+								<xsl:with-param name="id-trail" select="$id-trail" />
+								<xsl:with-param name="berichtCode" select="$berichtCode" />
+								<xsl:with-param name="context" select="$context" />
+							</xsl:apply-templates>
+						</ep:construct>
+					</xsl:for-each>
+				</ep:choice>
+			</xsl:when>
 			<!-- The following when initiates the processing of the associations belonging 
 				to the current class. First the ones found within the superclass of the current 
 				class followed by the ones within the current class. -->
-			<xsl:when test="$proces-type = 'associationsRelatie'">
+			<xsl:when test="$proces-type = 'associationsRelatie' or $proces-type = 'associationsOrSupertypeRelatie'">
 				<xsl:apply-templates select="imvert:supertype"
 					mode="create-rough-message-content">
 					<xsl:with-param name="package-id" select="$package-id"/>
-					<xsl:with-param name="proces-type" select="$proces-type" />
+					<xsl:with-param name="proces-type" select="'associationsRelatie'" />
 					<xsl:with-param name="berichtCode" select="$berichtCode" />
 					<xsl:with-param name="context" select="$context" />
 				</xsl:apply-templates>
@@ -390,8 +409,6 @@
 					<xsl:sequence select="imf:create-output-element('ep:type-id', imvert:type-id)" />
 				</xsl:when>
 			</xsl:choose>
-			<!-- The following choose processes the 3 situations an association can 
-			represent. -->
 				<xsl:call-template name="createSimpleRelatiePartOfAssociation">
 					<xsl:with-param name="type-id" select="$type-id"/>
 					<xsl:with-param name="id" select="imvert:id"/>
@@ -783,6 +800,8 @@
 		<xsl:if test="imf:boolean($debug)">
 			<xsl:comment select="'Template9: createSimpleRelatiePartOfAssociation'" />
 		</xsl:if>
+		<!-- The following choose processes the 3 situations an association can 
+			represent. -->
 		<xsl:choose>
 			<!-- The association is a 'relatie' and it has to contain a 'gerelateerde' 
 				 construct. -->
@@ -807,27 +826,37 @@
 						select="imf:create-output-element('ep:type-id', imvert:type-id)" / x?>
 					<xsl:sequence
 						select="imf:create-output-element('ep:class-name', //imvert:class[imvert:id = $type-id]/imvert:name)" />					
+					<?x xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+						mode="create-rough-message-content">
+						<xsl:with-param name="package-id" select="$package-id"/>
+						<xsl:with-param name="proces-type"
+							select="'associationsGroepCompositie'" />
+						<!-- ROME: Het is de vraag of deze parameter en het checken op id 
+							nog wel noodzakelijk is. -->
+						<xsl:with-param name="id-trail" select="$id-trail" />
+						<xsl:with-param name="berichtCode" select="$berichtCode" />
+						<xsl:with-param name="context" select="$context" />
+					</xsl:apply-templates x?>
 					<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-							mode="create-rough-message-content">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="proces-type"
-								select="'associationsGroepCompositie'" />
-							<!-- ROME: Het is de vraag of deze parameter en het checken op id 
-								nog wel noodzakelijk is. -->
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates>
-						<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
-							mode="create-rough-message-content">
-							<xsl:with-param name="package-id" select="$package-id"/>
-							<xsl:with-param name="proces-type" select="'associationsRelatie'" />
-							<!-- ROME: Het is de vraag of deze parameter en het checken op id 
-								nog wel noodzakelijk is. -->
-							<xsl:with-param name="id-trail" select="$id-trail" />
-							<xsl:with-param name="berichtCode" select="$berichtCode" />
-							<xsl:with-param name="context" select="$context" />
-						</xsl:apply-templates>
+						mode="create-rough-message-content">
+						<xsl:with-param name="package-id" select="$package-id"/>
+						<xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'" />
+						<!-- ROME: Het is de vraag of deze parameter en het checken op id 
+							nog wel noodzakelijk is. -->
+						<xsl:with-param name="id-trail" select="$id-trail" />
+						<xsl:with-param name="berichtCode" select="$berichtCode" />
+						<xsl:with-param name="context" select="$context" />
+					</xsl:apply-templates>
+					<?x xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+						mode="create-rough-message-content">
+						<xsl:with-param name="package-id" select="$package-id"/>
+						<xsl:with-param name="proces-type" select="'associationsRelatie'" />
+						<!-- ROME: Het is de vraag of deze parameter en het checken op id 
+							nog wel noodzakelijk is. -->
+						<xsl:with-param name="id-trail" select="$id-trail" />
+						<xsl:with-param name="berichtCode" select="$berichtCode" />
+						<xsl:with-param name="context" select="$context" />
+					</xsl:apply-templates x?>
 				</ep:construct>
 				<!-- The following 'apply-templates' initiates the processing of the 
 					class which contains the attributegroups of the 'relatie' type element. -->

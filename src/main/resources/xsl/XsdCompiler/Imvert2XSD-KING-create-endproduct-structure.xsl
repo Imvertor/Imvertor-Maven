@@ -26,8 +26,7 @@
 
 	<!-- This template is used to start generating the ep structure for all individual messages. -->
 
-	<xsl:template
-		match="/imvert:packages/imvert:package[not(contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]"
+	<xsl:template match="/imvert:packages/imvert:package[not(contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]"
 		mode="create-message-structure">
 		<xsl:if test="imf:boolean($debug)">
 			<xsl:comment select="'imvert:package[mode=create-message-structure]'"/>
@@ -245,7 +244,10 @@
 		<xsl:param name="historyApplies" select="'no'"/>
 		<xsl:param name="indicatieMaterieleHistorie" select="'Nee'"/>
 		<xsl:param name="indicatieFormeleHistorie" select="'Nee'"/>
+
+		<xsl:variable name="id" select="imvert:id"/>
 		
+		<xsl:comment select="'imvert:class mode=create-message-content'"/>
 		<xsl:choose>
 			<!-- The following when initiate the processing of the attributes belonging 
 				to the current class. First the ones found within the superclass of the current 
@@ -447,10 +449,49 @@
 				<!--/xsl:otherwise>
 				</xsl:choose-->
 			</xsl:when>
+			<!-- The following when initiates the processing of the associations refering to the current class as a superclass.
+				 In this situation a choice has to be generated. -->
+			<xsl:when test="$proces-type = 'associationsOrSupertypeRelatie' and //imvert:class[imvert:supertype/imvert:type-id = $id]">
+				<ep:choice>
+					<xsl:sequence select="imf:create-output-element('ep:mnemonic', imvert:alias)"/>
+					<xsl:for-each select="//imvert:class[imvert:supertype/imvert:type-id = $id]">
+						<xsl:variable name="mnemonic">
+							<xsl:value-of select="imvert:alias"/>
+						</xsl:variable>
+						<xsl:variable name="href">
+							<xsl:variable name="mnemonicPartOfName">
+								<xsl:choose>
+									<xsl:when test="$mnemonic != ''">
+										<xsl:value-of select="concat($mnemonic, '-')"/>
+									</xsl:when>
+								</xsl:choose>
+							</xsl:variable>
+							<xsl:value-of select="concat($mnemonicPartOfName, imf:get-normalized-name(@formal-name, 'type-name'))"/>
+						</xsl:variable>
+						
+						<ep:constructRef>
+							<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)" />
+							<xsl:sequence select="imf:create-output-element('ep:max-occurs', 1)"/>
+							<xsl:sequence select="imf:create-output-element('ep:min-occurs', 1)"/>
+							<xsl:sequence select="imf:create-output-element('ep:href', $href)"/>
+						</ep:constructRef>
+						<!--ep:constructRef context="{$context}" typeCode="relatie">
+							<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)" />
+							<xsl:apply-templates select="."
+								mode="create-rough-message-content">
+								<xsl:with-param name="package-id" select="$package-id"/>
+								<xsl:with-param name="proces-type" select="'associationsRelatie'" />
+								<xsl:with-param name="berichtCode" select="$berichtCode" />
+								<xsl:with-param name="context" select="$context" />
+							</xsl:apply-templates>
+						</ep:constructRef-->
+					</xsl:for-each>
+				</ep:choice>
+			</xsl:when>
 			<!-- The following when initiate the processing of the associations belonging 
 				to the current class. First the ones found within the superclass of the current 
 				class followed by the ones within the current class. -->
-			<xsl:when test="$proces-type = 'associationsRelatie'">
+			<xsl:when test="$proces-type = 'associationsRelatie' or $proces-type = 'associationsOrSupertypeRelatie'">
 				<xsl:apply-templates select="imvert:supertype" mode="create-message-content">
 					<xsl:with-param name="package-id" select="$package-id"/>
 					<xsl:with-param name="proces-type" select="$proces-type"/>
@@ -681,9 +722,6 @@
 						bevat is dan wel altijd de ancestor van het element dat het nodig heeft. 
 						Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook 
 						nog herleid en doorgegeven worden. -->
-							<?x xsl:variable name="mnemonic">
-								<xsl:value-of select="imvert:alias" />
-							</xsl:variable x?>
 							<xsl:if test="imf:boolean($debug)">
 								<xsl:comment select="concat('Attributes voor relatie, berichtcode: ', substring($berichtCode, 1, 2), ', context: ', $context, ' en mnemonic: ', $mnemonic)"/>
 							</xsl:if>
@@ -2618,7 +2656,7 @@
 
 	<!-- This function gets the most relevant value of a specific tagged-value. The one which is in the current layer or 
 		 in the layer most near to the current layer. -->
-	<xsl:function name="imf:get-most-relevant-compiled-taggedvalue" as="xs:string?">
+	<?x xsl:function name="imf:get-most-relevant-compiled-taggedvalue" as="xs:string?">
 		<xsl:param name="this"/>
 		<xsl:param name="name"/>
 		<xsl:variable name="most-relevant-level">
@@ -2630,7 +2668,7 @@
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:value-of select="$this//tv[@name = $name and @level = $most-relevant-level]/@value"/>
-	</xsl:function>
+	</xsl:function x?>
 
 	<!-- This function merges all documentation form the highest layer up to the current layer. -->
 	<xsl:function name="imf:merge-documentation">

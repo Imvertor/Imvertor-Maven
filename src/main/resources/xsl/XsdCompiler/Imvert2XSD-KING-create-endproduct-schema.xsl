@@ -30,7 +30,7 @@
 
 	<xsl:template match="ep:message-set">
 		<xsl:variable name="msg" select="'Creating the StUF XML-Schema'"/>
-		<xsl:sequence select="imf:msg('INFO',$msg)"/>
+		<xsl:sequence select="imf:msg('DEBUG',$msg)"/>
 		<xs:schema targetNamespace="{ep:namespace}" elementFormDefault="qualified" attributeFormDefault="unqualified" version="{concat(ep:patch-number,'-',ep:release)}">
 			<xsl:namespace name="{$prefix}"><xsl:value-of select="ep:namespace"/></xsl:namespace>
 			<xs:import namespace="http://www.egem.nl/StUF/StUF0301" schemaLocation="stuf0301.xsd"/>
@@ -44,6 +44,11 @@
 
 	<xsl:template match="ep:message">
 		<xs:element name="{ep:tech-name}">
+			<xsl:if test="ep:documentation">
+				<xs:annotation>
+					<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+				</xs:annotation>
+			</xsl:if>
 			<xs:complexType>
 				<xsl:apply-templates select="ep:seq"/>
 			</xs:complexType>
@@ -60,6 +65,23 @@
 		<xsl:apply-templates select="ep:construct[@ismetadata]" mode="generateAttributes"/>
 	</xsl:template>
 
+	<xsl:template match="ep:choice">
+		<xs:choice>
+			<xsl:apply-templates select="ep:constructRef|ep:construct[not(@ismetadata)]|ep:seq"/>
+		</xs:choice>
+		<!-- If a choice is created as a result of a relation associated with supertype the choice also gets a mnemonic.
+			 This mnemnonic is used to create an entiteittype attribute. -->
+		<xsl:if test="ep:mnemonic">
+			<xs:attribute name="entiteittype" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="{ep:mnemonic}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xsl:if>
+	</xsl:template>
+	
 	<xsl:template match="ep:construct">
 		<!-- ROME: Waar moet ep:regels naar vertaald worden? -->
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
@@ -69,12 +91,22 @@
 							<xsl:attribute name="ref" select="ep:tech-name"/>
 							<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
 							<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
+							<xsl:if test="ep:documentation">
+								<xs:annotation>
+									<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+								</xs:annotation>
+							</xsl:if>
 						</xsl:when>
 						<xsl:when test="contains(ep:type-name,':') and not(ep:enum)">
 							<xsl:attribute name="name" select="ep:tech-name"/>
 							<xsl:attribute name="type" select="ep:type-name"/>
 							<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
 							<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>					
+							<xsl:if test="ep:documentation">
+								<xs:annotation>
+									<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+								</xs:annotation>
+							</xsl:if>
 						</xsl:when>
 		<!-- ROME: Hieronder wordt een id gegenereerd. Dat is echter eigenlijk niet gewenst omdat daarbij de naam van de simpleType na elke generatie slag anders kan zijn.
 				   Dat zou betekenen dat leveranciers steeds hun gegenereerde code moeten aanpassen. We moeten dus een manier zien te vinden die toekomstvaster is. -->
@@ -85,6 +117,11 @@
 							</xsl:attribute>
 							<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
 							<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>					
+							<xsl:if test="ep:documentation">
+								<xs:annotation>
+									<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+								</xs:annotation>
+							</xsl:if>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:attribute name="name" select="ep:tech-name"/>
@@ -95,11 +132,21 @@
 									<xsl:attribute name="type">
 										<xsl:value-of select="concat($prefix,':',imf:get-normalized-name(concat('simpleType-',ep:tech-name,'-',generate-id()),'type-name'))"/>
 									</xsl:attribute>
+									<xsl:if test="ep:documentation">
+										<xs:annotation>
+											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+										</xs:annotation>
+									</xsl:if>
 									<xsl:comment select="'situatie 1'"/>
 								</xsl:when>
 								<!-- When a construct contains facets (which means it has to become an element without child elements) and it contains metadata constructs a 
 									 extension complexType needs to be generated which contains the xml-attributes based on a simpleType which contains the facets. -->
 								<xsl:when test="(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:patroon or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata] and $globalComplexTypes='no'">
+									<xsl:if test="ep:documentation">
+										<xs:annotation>
+											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+										</xs:annotation>
+									</xsl:if>
 									<xsl:comment select="'situatie 2'"/>
 									<xs:complexType>
 										<xs:simpleContent>
@@ -113,6 +160,11 @@
 								<!-- When a construct contains facets (which means it has to become an element without child elements) and it doesn't contain metadata constructs 
 									 a restriction simpleType can be generated which contains the facets. -->
 								<xsl:when test="(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:patroon or ep:regels or ep:enum) and ep:type-name and $globalComplexTypes='no'">
+									<xsl:if test="ep:documentation">
+										<xs:annotation>
+											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+										</xs:annotation>
+									</xsl:if>
 									<xsl:comment select="'situatie 3'"/>
 									<xs:simpleType>
 										<xs:restriction>
@@ -176,6 +228,11 @@
 								</xsl:when>
 								<!-- When a construct doensn't contain facets and metadata constructs a restriction simpleType can be generated without facets. -->
 								<xsl:when test="ep:type-name and .//ep:construct[@ismetadata] and $globalComplexTypes='no'">
+									<xsl:if test="ep:documentation">
+										<xs:annotation>
+											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+										</xs:annotation>
+									</xsl:if>
 									<xsl:comment select="'situatie 4'"/>
 									<xs:complexType>
 										<xs:simpleContent>
@@ -213,6 +270,11 @@
 								</xsl:when>
 								<!-- When a construct doensn't contain facets and metadata constructs a restriction simpleType can be generated without facets. -->
 								<xsl:when test="ep:type-name and $globalComplexTypes='no'">
+									<xsl:if test="ep:documentation">
+										<xs:annotation>
+											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+										</xs:annotation>
+									</xsl:if>
 									<xsl:comment select="'situatie 5'"/>
 									<xs:simpleType>
 										<xs:restriction>
@@ -245,16 +307,26 @@
 									</xs:simpleType>				
 								</xsl:when>
 								<xsl:when test=".//ep:construct and $globalComplexTypes='no'">
+									<xsl:if test="ep:documentation">
+										<xs:annotation>
+											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+										</xs:annotation>
+									</xsl:if>
 									<xsl:comment select="'situatie 6'"/>
 									<xs:complexType>
-										<xsl:apply-templates select="ep:seq[not(@ismetadata)]"/>
+										<xsl:apply-templates select="ep:seq[not(@ismetadata)] | ep:choice"/>
 										<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
 									</xs:complexType>
 								</xsl:when>
 								<xsl:otherwise>
+									<xsl:if test="ep:documentation">
+										<xs:annotation>
+											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+										</xs:annotation>
+									</xsl:if>
 									<xsl:comment select="'situatie 7'"/>
 									<xs:complexType>
-										<xsl:apply-templates select="ep:seq[not(@ismetadata)]"/>
+										<xsl:apply-templates select="ep:seq[not(@ismetadata)] | ep:choice"/>
 										<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
 									</xs:complexType>					
 								</xsl:otherwise>				
@@ -268,7 +340,12 @@
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
 		<xs:complexType>
 			<xsl:attribute name="name" select="ep:tech-name"/>
-			<xsl:apply-templates select="ep:seq[not(@ismetadata)]"/>
+			<xsl:if test="ep:documentation">
+				<xs:annotation>
+					<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+				</xs:annotation>
+			</xsl:if>
+			<xsl:apply-templates select="ep:seq[not(@ismetadata)] | ep:choice"/>
 			<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
 		</xs:complexType>
 	</xsl:template>
@@ -280,6 +357,11 @@
 			<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
 			<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
 			<xsl:attribute name="type" select="concat($prefix,':',ep:href)"/>
+			<xsl:if test="ep:documentation">
+				<xs:annotation>
+					<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+				</xs:annotation>
+			</xsl:if>
 		</xs:element>				
 	</xsl:template>
 	
