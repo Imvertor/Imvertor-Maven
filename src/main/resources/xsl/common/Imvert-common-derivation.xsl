@@ -129,6 +129,22 @@
 		<xsl:sequence select="if ($include-empty) then $tvs else $tvs[normalize-space(@value)]"/>
 	</xsl:function>
 	
+	<!-- This function gets the most relevant value of a specific tagged-value. The one which is in the current layer or 
+		 in the layer most near to the current layer. -->
+	<xsl:function name="imf:get-most-relevant-compiled-taggedvalue" as="xs:string?">
+		<xsl:param name="this"/>
+		<xsl:param name="name"/>
+		<xsl:variable name="most-relevant-level">
+			<xsl:for-each select="$this//tv[@name = $name]">
+				<xsl:sort select="@level" data-type="number"/>
+				<xsl:if test="position() = 1">
+					<xsl:value-of select="@level"/>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:value-of select="$this//tv[@name = $name and @level = $most-relevant-level]/@value"/>
+	</xsl:function>
+	
 	<xsl:function name="imf:get-adapted-display-name" as="xs:string?">
 		<xsl:param name="client-construct" as="element()"/>
 		<!-- 
