@@ -38,7 +38,12 @@
     exclude-result-prefixes="xsl UML imvert imvert ekf"
     version="2.0">
     
-    <!-- TODO als in onderzoek (tv), dan het element <xs:element name="inOnderzoek" type="xs:boolean"/> oid -->
+    <!-- TODO als in onderzoek (tv), dan het element <xs:element name="inOnderzoek" type="xs:boolean"/> 
+        
+        Ja, uitlezen uit het SIM.
+        henri levert de specs.
+        
+        oid -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
 
@@ -181,14 +186,18 @@
                 <xsl:sequence select="imf:create-comment('mode-global-objecttype (Compositie relaties)')"/>
                 <xsl:apply-templates select="imvert:associations/imvert:association[imvert:aggregation = 'composite']" mode="mode-local-composition"/>
                 
-                <xsl:sequence select="imf:create-comment('(History)')"/>
-                <xs:element ref="StUF:tijdvakObject" minOccurs="0"/>
-                <xsl:if test="x"><!--TODO alleen genereren als er materiele historie is (dus één van de elementen heeft materiele historie = ja. -->
-                    <xs:element ref="StUF:tijdvakGeldigheid" minOccurs="0"/>
+                <xsl:if test="not($is-subtype)">
+                    <xsl:sequence select="imf:create-comment('(History)')"/>
+                    <xs:element ref="StUF:tijdvakObject" minOccurs="0"/>
+                    <!--alleen genereren als er materiele historie is (dus één van de elementen heeft materiele historie = ja). -->
+                    <xsl:if test="exists($hismate-on-attributes)">
+                        <xs:element ref="StUF:tijdvakGeldigheid" minOccurs="0"/>
+                    </xsl:if>
+                    <xs:element ref="StUF:tijdstipRegistratie" minOccurs="0"/>
+                    <xs:element ref="StUF:extraElementen" minOccurs="0"/>
+                    <xs:element ref="StUF:aanvullendeElementen" minOccurs="0"/>
                 </xsl:if>
-                <xs:element ref="StUF:tijdstipRegistratie" minOccurs="0"/>
-                <xs:element ref="StUF:extraElementen" minOccurs="0"/>
-                <xs:element ref="StUF:aanvullendeElementen" minOccurs="0"/>
+
                 <xsl:if test="$hismate-on-attributes">
                     <xs:element name ="historieMaterieel" 
                         type="{concat($prefix, ':', imvert:alias,'-basis')}" 
@@ -218,12 +227,13 @@
             </xs:sequence>
         </xsl:variable>
         
-        <xsl:if test="$is-supertype or (not($is-supertype) and not($is-subtype))">
-            <xsl:sequence select="imf:create-comment(concat('mode-global-objecttype Objecttype is supertype or free floating # ',imvert:name/@original))"/>
+        <xsl:if test="not($is-subtype)">
+            <xsl:sequence select="imf:create-comment(concat('mode-global-objecttype Objecttype is not a subtype # ',imvert:name/@original))"/>
             <xs:complexType name="{imvert:alias}-basis">
                 <xsl:sequence select="imf:create-annotation(.)"/>
                 <xsl:sequence select="$basis-body"/>
                 <xs:attribute name="entiteittype" type="{concat($prefix,':Entiteittype',imvert:alias)}"/>
+                <xs:attributeGroup ref="StUF:entiteit"/>
             </xs:complexType>
             
             <xs:simpleType name="{concat('Entiteittype',imvert:alias)}">
@@ -233,45 +243,43 @@
             </xs:simpleType>
         </xsl:if>
         
-        <xsl:choose>
-           
-            <xsl:when test="$is-subtype and exists($superclasses[2])">
-                <xsl:sequence select="imf:msg(.,'ERROR','Unable to define subtype for multiple supertypes: [1]',string-join($superclasses/imvert:name/@original,', '))"/>
-            </xsl:when>
-            
-            <xsl:when test="$is-supertype">
-                <xsl:sequence select="imf:create-comment(concat('mode-global-objecttype Objecttype is supertype # ',imvert:name/@original))"/>
-                <xs:complexType name="{imvert:alias}-abstract">
-                    <xsl:sequence select="imf:create-annotation(.)"/>
-                    <xs:complexContent>
-                        <xs:restriction base="{concat($prefix,':',imvert:alias,'-basis')}">
-                            <xsl:sequence select="$basis-body"/>
-                            <xs:attribute name="entiteittype" type="{concat($prefix,':Entiteittype',imvert:alias)}" use="prohibited"/>
+        <xsl:if test="$is-supertype">
+            <xsl:sequence select="imf:create-comment(concat('mode-global-objecttype Objecttype is supertype # ',imvert:name/@original))"/>
+            <xs:complexType name="{imvert:alias}-abstract">
+                <xsl:sequence select="imf:create-annotation(.)"/>
+                <xs:complexContent>
+                    <xs:restriction base="{concat($prefix,':',imvert:alias,'-basis')}">
+                        <xsl:sequence select="$basis-body"/>
+                        <xs:attribute name="entiteittype" type="{concat($prefix,':Entiteittype',imvert:alias)}" use="prohibited"/>
+                        <xsl:if test="not($is-subtype)">
                             <xs:attributeGroup ref="StUF:entiteit"/>
-                        </xs:restriction>
-                    </xs:complexContent>    
-                </xs:complexType>
-            </xsl:when>
-
-            <xsl:when test="$is-subtype">
-                <xsl:sequence select="imf:create-comment(concat('mode-global-objecttype Objecttype is subtype # ',imvert:name/@original))"/>
-                <xs:complexType name="{imvert:alias}-basis">
-                    <xsl:sequence select="imf:create-annotation(.)"/>
-                    <xs:complexContent>
-                        <xs:extension base="{concat($prefix,':',$superclasses[1]/imvert:alias,'-abstract')}">
-                            <xsl:sequence select="$basis-body"/>
-                            <xs:attribute name="entiteittype" type="{concat($prefix,':Entiteittype',imvert:alias)}"/>
-                            <xs:attributeGroup ref="StUF:entiteit"/>
-                        </xs:extension>
-                    </xs:complexContent>
-                </xs:complexType>
-                <xs:simpleType name="{concat('Entiteittype',imvert:alias)}">
-                    <xs:restriction base="string">
-                        <xs:enumeration value="{imvert:alias}"/>
+                        </xsl:if>
                     </xs:restriction>
-                </xs:simpleType>
-            </xsl:when>
-        </xsl:choose>
+                </xs:complexContent>    
+            </xs:complexType>
+        </xsl:if>
+
+        <xsl:if test="$is-subtype and exists($superclasses[2])">
+            <xsl:sequence select="imf:msg(.,'ERROR','Unable to define subtype for multiple supertypes: [1]',string-join($superclasses[1]/imvert:name/@original,', '))"/>
+        </xsl:if>
+        
+        <xsl:if test="$is-subtype">
+            <xsl:sequence select="imf:create-comment(concat('mode-global-objecttype Objecttype is subtype # ',imvert:name/@original))"/>
+            <xs:complexType name="{imvert:alias}-basis">
+                <xsl:sequence select="imf:create-annotation(.)"/>
+                <xs:complexContent>
+                    <xs:extension base="{concat($prefix,':',$superclasses[1]/imvert:alias,'-abstract')}">
+                        <xsl:sequence select="$basis-body"/>
+                        <xs:attribute name="entiteittype" type="{concat($prefix,':Entiteittype',imvert:alias)}"/>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:simpleType name="{concat('Entiteittype',imvert:alias)}">
+                <xs:restriction base="string">
+                    <xs:enumeration value="{imvert:alias}"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xsl:if>
         
     </xsl:template>
     
@@ -437,7 +445,7 @@
         
         <xsl:sequence select="imf:create-comment(concat('mode-global-union Union # ',imvert:name/@original))"/>
         
-        <xs:complexType name="{imf:capitalize($compiled-name)}">
+        <xs:complexType name="{imf:capitalize($compiled-name)}-e">
             <xsl:sequence select="imf:create-annotation(.)"/>
             <xs:choice>
                 <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-union-element"/>
@@ -457,7 +465,11 @@
         
         <xsl:variable name="type" select="imf:get-class(.)"/>
         <xsl:variable name="compiled-name-type" select="imf:get-compiled-name($type)"/>
+        
         <xsl:variable name="type-is-datatype" select="$type/imvert:designation = 'datatype'"/>
+        <xsl:variable name="type-is-complextype" select="$type-is-datatype and $type/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-complextype')"/>
+        <xsl:variable name="type-is-simpletype" select="$type-is-datatype"/>
+    
         <xsl:variable name="type-is-referentietabel" select="imf:get-stereotype($type) = imf:get-config-stereotypes('stereotype-name-referentielijst')"/>
         <xsl:variable name="type-is-enumeration" select="imf:get-stereotype($type) = imf:get-config-stereotypes('stereotype-name-enumeration')"/>
         
@@ -469,6 +481,11 @@
         
         <xsl:choose>
             <xsl:when test="exists($scalar-att-type)">
+                <!-- 
+                    Als het metagegeven Element.formaat gelijk is aan één van de waarden in onderstaande 
+                    tabel  dan wordt er alleen een element gecreëerd omdat er gebruik kan worden gemaakt van een 
+                    bestaande complex type uit de StUF-onderlaag (zie ‘stuf0302.xsd’) 
+                -->
                 <xsl:sequence select="imf:create-comment('Scalar in de onderlaag')"/>
                 <xs:element
                     name="{$compiled-name}" 
@@ -504,11 +521,23 @@
                 />
             </xsl:when>
             
-            <xsl:when test="$type-is-datatype">
-                <xsl:sequence select="imf:create-comment('Een complex of simpel type')"/>
+            <xsl:when test="$type-is-complextype">
+                <xsl:sequence select="imf:create-comment('Een complex datatype')"/>
                 <xs:element
                     name="{$compiled-name}" 
                     type="{concat($prefix, ':', imf:capitalize($compiled-name-type), '-e')}" 
+                    minOccurs="0" 
+                    maxOccurs="{$cardinality[4]}"
+                    metadata:formeleHistorie="{$history[1]}"
+                    metadata:materieleHistorie="{$history[2]}"     
+                />
+            </xsl:when>
+            
+            <xsl:when test="$type-is-simpletype">
+                <xsl:sequence select="imf:create-comment('Een simpel datatype')"/> <!-- of moet dit óók -e hebben? -->
+                <xs:element
+                    name="{$compiled-name}" 
+                    type="{concat($prefix, ':', imf:capitalize($compiled-name-type),'-e')}" 
                     minOccurs="0" 
                     maxOccurs="{$cardinality[4]}"
                     metadata:formeleHistorie="{$history[1]}"
@@ -532,13 +561,12 @@
                 <xsl:sequence select="imf:create-comment('Scalar maar niet in de onderlaag')"/>
                 <xs:element
                     name="{$compiled-name}" 
-                    type="{concat($prefix, ':', imf:capitalize($compiled-name))}" 
+                    type="{concat($prefix, ':', imf:capitalize($compiled-name),'-e')}" 
                     minOccurs="0" 
                     maxOccurs="{$cardinality[4]}"
                     metadata:formeleHistorie="{$history[1]}"
                     metadata:materieleHistorie="{$history[2]}"     
                 />
-                
                 
             </xsl:otherwise>
         </xsl:choose>
@@ -555,12 +583,26 @@
                     <xsl:variable name="type-suffix" select="if ($as-type) then 'Type' else ''"/>
                     <xsl:variable name="type-prefix">
                         <xsl:choose>
-                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Surface'">gml:Surface</xsl:when>
                             <xsl:when test="imvert:conceptual-schema-type = 'GM_Point'">gml:Point</xsl:when>
-                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Line'">gml:Line</xsl:when>
-                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Object'">gml:Object</xsl:when>
                             <xsl:when test="imvert:conceptual-schema-type = 'GM_Curve'">gml:Curve</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Surface'">gml:Surface</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_MultiPoint'">gml:MultiPoint</xsl:when>
                             <xsl:when test="imvert:conceptual-schema-type = 'GM_MultiSurface'">gml:MultiSurface</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_MultiCurve'">gml:MultiCurve</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Geometry'">gml:Geometry</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_MultiGeometry'">gml:MultiGeometry</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_ArcString'">gml:ArcString</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_LineString'">gml:LineString</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Polygon'">gml:Polygon</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Object'">gml:Object</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Primitive'">gml:Primitive</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Position'">gml:Position</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_PointArray'">gml:PointArray</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Solid'">gml:Solid</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_OrientableCurve'">gml:OrientableCurve</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_OrientableSurface'">gml:OrientableSurface</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_CompositePoint'">gml:CompositePoint</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_MultiSolid'">gml:MultiSolid</xsl:when>
                             <xsl:otherwise>
                                 <xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the GML type [1]', imvert:conceptual-schema-type)"/>
                             </xsl:otherwise>
@@ -607,7 +649,7 @@
                 <xsl:sequence select="imf:create-comment('Simple type, niet in de onderlaag')"/>
                 <xs:element
                     name="{$compiled-name}" 
-                    type="{concat($prefix, ':', imf:capitalize($compiled-name))}" 
+                    type="{concat($prefix, ':', imf:capitalize($compiled-name))}-e" 
                     minOccurs="0" 
                     maxOccurs="{$cardinality[4]}"
                     metadata:formeleHistorie="{$history[1]}"
@@ -782,28 +824,26 @@
         
         <xsl:sequence select="imf:create-comment(concat('mode-global-attribute-type Attribute declaration # ',@display-name))"/>
         
-        <xsl:if test="empty($scalar-att-type)">
-            <xsl:sequence select="imf:create-comment(concat('mode-global-attribute-type Attribuut type (complex) # ',@display-name))"/>
-            <xs:complexType name="{imf:capitalize($compiled-name)}-e">
-                <xs:choice>
-                    <xs:element name="w" type="{$prefix}:{imf:capitalize($compiled-name)}"/>
-                    <xs:element name="l" type="StUF:NoValue"/>
-                </xs:choice>
-            </xs:complexType>
-            <xs:complexType name="{imf:capitalize($compiled-name)}-s">
-                <xs:choice>
-                    <xs:element name="w" type="{$prefix}:{imf:capitalize($compiled-name)}-w"/>
-                </xs:choice>
-            </xs:complexType>
-            <xs:complexType name="{imf:capitalize($compiled-name)}-w">
-                <xs:simpleContent>
-                    <xs:extension base="{$prefix}:{imf:capitalize($compiled-name)}">
-                        <xs:attribute ref="StUF:wildcard"/>    
-                    </xs:extension>
-                </xs:simpleContent>
-            </xs:complexType>
+        <xsl:sequence select="imf:create-comment(concat('mode-global-attribute-type Attribuut type (complex) # ',@display-name))"/>
+        <xs:complexType name="{imf:capitalize($compiled-name)}-e">
+            <xs:choice>
+                <xs:element name="w" type="{$prefix}:{imf:capitalize($compiled-name)}"/>
+                <xs:element name="l" type="StUF:NoValue"/>
+            </xs:choice>
+        </xs:complexType>
+        <xs:complexType name="{imf:capitalize($compiled-name)}-s">
+            <xs:choice>
+                <xs:element name="w" type="{$prefix}:{imf:capitalize($compiled-name)}-w"/>
+            </xs:choice>
+        </xs:complexType>
+        <xs:complexType name="{imf:capitalize($compiled-name)}-w">
+            <xs:simpleContent>
+                <xs:extension base="{$prefix}:{imf:capitalize($compiled-name)}">
+                    <xs:attribute ref="StUF:wildcard"/>    
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
             
-        </xsl:if>
     </xsl:template>
     
     <xsl:template match="imvert:association" mode="mode-global-association-type">
@@ -819,6 +859,9 @@
         <xsl:variable name="association-class" select="imf:get-by-id(imvert:association-class/imvert:type-id)"/>
         <xsl:variable name="association-class-attributes" select="$association-class//imvert:attribute"/>
         <xsl:variable name="association-class-associations" select="$association-class//imvert:association"/>
+       
+        <xsl:variable name="hisform-on-association-class" select="imf:get-history($association-class)[1]"/>
+        <xsl:variable name="hismate-on-association-class" select="imf:get-history($association-class)[2]"/>
         
         <xsl:variable name="suffix" select="imf:get-relation-suffix(.)"/>
         
@@ -841,14 +884,18 @@
                     
                     <!-- add the attributes & associations of the association class, if any -->
                     <xsl:apply-templates select="$association-class-attributes" mode="mode-local-attribute"/>
-                    <xsl:apply-templates select="$association-class-associations" mode="mode-local-associations"/>
                     
-                    <xsl:if test="x"> <!-- TODO genereren als er een associatieklasse is -->
-                        <xs:element ref="StUF:tijdvakRelatie" minOccurs="0"/>
+                    <!-- als er een associatieklasse is en als er histore op zit op een of meer van de elementen daarvan -->
+                    <xsl:if test="exists($hisform-on-association-class) or exists($hismate-on-association-class)">
+                        <xs:element ref="StUF:tijdvakGeldigheid" minOccurs="0"/>     
                     </xsl:if>
-                    <xs:element ref="StUF:tijdvakGeldigheid" minOccurs="0"/><!--TODO wanneer opnemen? -->
+                    <!-- als er is materiele historie is op de relatie -->
+                    <xsl:if test="exists($hismate-on-association)">
+                        <xs:element ref="StUF:tijdvakRelatie" minOccurs="0"/>                        
+                    </xsl:if>     
                     <xs:element ref="StUF:tijdstipRegistratie" minOccurs="0"/>
                     <xs:element ref="StUF:extraElementen" minOccurs="0"/>
+                    <xs:element ref="StUF:aanvullendeElementen" minOccurs="0"/>
                     <xsl:if test="exists($association-class) and $hismate-on-association">
                         <xs:element name ="historieMaterieel" 
                             type="{concat($prefix, ':', $associatie-naam,'-basis')}" 
@@ -865,7 +912,9 @@
                             type="{concat($prefix, ':', $associatie-naam,'-basis')}"  
                             minOccurs="0"/>  
                     </xsl:if>
-                    <!--TODO en van hieruit nog relaties? zie p. 9) ja, alleen als associationn class. -->
+                   
+                    <xsl:apply-templates select="$association-class-associations" mode="mode-local-associations"/>
+         
                 </xs:sequence>
             </xs:choice>
             <xs:attribute name="entiteittype" type="{concat($prefix, ':Entiteittype', imvert:alias)}"/>
@@ -878,25 +927,27 @@
             </xs:restriction>
         </xs:simpleType>
         
-        <xsl:sequence select="imf:create-comment(concat('mode-global-association-type Outgoing Association kerngegevens # ',@display-name))"/>
-        
-        <xs:complexType name="{$associatie-naam}-kerngegevens">
-            <xs:annotation>
-                <xs:documentation>Kerngegevens van de relatie</xs:documentation>
-            </xs:annotation>
-            <xs:complexContent>
-                <xs:restriction base="{$prefix}:{$associatie-naam}-basis">
-                    <xs:sequence>
-                        <xs:element 
-                            name="gerelateerde" 
-                            type="{$prefix}:{$target/imvert:alias}-kerngegevens"
-                            minOccurs="0"/>
-                    </xs:sequence>
-                    <xs:attribute name="entiteittype" use="required" type="{concat($prefix, ':Entiteittype', imvert:alias)}"/>
-                    <xs:attributeGroup ref="StUF:entiteit"/>
-                </xs:restriction>
-            </xs:complexContent>
-        </xs:complexType>
+        <xsl:if test="exists(imvert:is-id)">
+            <xsl:sequence select="imf:create-comment(concat('mode-global-association-type Outgoing Association kerngegevens # ',@display-name))"/>
+            
+            <xs:complexType name="{$associatie-naam}-kerngegevens">
+                <xs:annotation>
+                    <xs:documentation>Kerngegevens van de relatie</xs:documentation>
+                </xs:annotation>
+                <xs:complexContent>
+                    <xs:restriction base="{$prefix}:{$associatie-naam}-basis">
+                        <xs:sequence>
+                            <xs:element 
+                                name="gerelateerde" 
+                                type="{$prefix}:{$target/imvert:alias}-kerngegevens"
+                                minOccurs="0"/>
+                        </xs:sequence>
+                        <xs:attribute name="entiteittype" use="required" type="{concat($prefix, ':Entiteittype', imvert:alias)}"/>
+                        <xs:attributeGroup ref="StUF:entiteit"/>
+                    </xs:restriction>
+                </xs:complexContent>
+            </xs:complexType>
+        </xsl:if>
         
         <?mogelijk-vervallen
         <xsl:sequence select="imf:insert-comment(concat('mode-global-association-type Incoming Association declaration ',@display-name))"/>
@@ -923,6 +974,8 @@
                 <xs:element 
                     ref="StUF:extraElementen" 
                     minOccurs="0"/>
+                     <xs:element ref="StUF:aanvullendeElementen" minOccurs="0"/>
+                
                 <xsl:if test="exists($association-class) and $hismate-on-association">
                     <xs:element name ="historieMaterieel" 
                         type="{concat($prefix, ':', $associatie-naam,'-basis')}" 
@@ -1000,7 +1053,7 @@
                 
                 <xsl:sequence select="imf:create-comment(concat('mode-global-attribute-simpletype Attribuut type (simple) # ',@display-name))"/>
                 
-                <xs:simpleType name="{imf:capitalize($compiled-name)}">
+                <xs:simpleType name="{imf:capitalize($compiled-name)}-e">
                     <xsl:choose>
                         <xsl:when test="imvert:type-name = 'scalar-integer'">
                             <xs:restriction base="xs:integer">
@@ -1052,10 +1105,6 @@
                 </xs:simpleType>
             </xsl:when>
         </xsl:choose>
-    </xsl:template>
-    
-    <xsl:template match="imvert:attribute" mode="mode-global-attribute-enumeratie">
-        <xsl:sequence select="imf:create-comment(concat('mode-global-attribute-enumeratie TODO: ENUMERATIE: ', imvert:name/@original))"/>
     </xsl:template>
     
     <xsl:template match="imvert:attribute" mode="mode-global-attribute-referentieelement">
@@ -1390,7 +1439,7 @@
         <xsl:variable name="name" select="@name"/>
         <xsl:choose>
             <xsl:when test="($name = $names-dup) and (preceding-sibling::xs:*/@name = $name)">
-                <!--<xsl:sequence select="imf:insert-comment('DUPLICATE REMOVED')"/>-->
+                <xsl:sequence select="imf:create-comment(concat('xsd-cleanup Duplicate removed', ()))"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:next-match/>
