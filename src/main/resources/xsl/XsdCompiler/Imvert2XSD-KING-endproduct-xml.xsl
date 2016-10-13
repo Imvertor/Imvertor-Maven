@@ -98,8 +98,6 @@
     
     <!-- Within this variable all messages defined within the BSM of the koppelvlak are placed, transformed to the imvertor endproduct format.-->
     <xsl:variable name="imvert-endproduct">
-        <xsl:variable name="msg" select="'Creating the Endproduct structure'"/>
-        <xsl:sequence select="imf:msg('DEBUG',$msg)"/>
         <xsl:variable name="prefix">
             <xsl:choose>
                 <xsl:when test="/imvert:packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='Verkorte alias']">
@@ -114,6 +112,8 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
+        <xsl:variable name="msg" select="'Creating the Endproduct structure'"/>
+        <xsl:sequence select="imf:msg('DEBUG',$msg)"/>
 
         <ep:message-set>
            <xsl:sequence select="imf:create-output-element('ep:date', substring-before(/imvert:packages/imvert:generated,'T'))"/>
@@ -148,7 +148,6 @@
                <xsl:variable name="id" select="ep:id"/>
                <xsl:variable name="type-id" select="ep:type-id"/>
                <xsl:variable name="typeCode" select="@typeCode"/>
-               <xsl:variable name="package-id" select="$packages/imvert:package[.//imvert:*[$id=imvert:id]]/imvert:id"/>
                <xsl:variable name="historyApplies">
                    <xsl:choose>
                        <xsl:when test="$berichtCode = 'La07' or $berichtCode = 'La08'">yes-Materieel</xsl:when>
@@ -181,10 +180,16 @@
                                select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'))" />
                            <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
                            <ep:seq>
+                               
+                               <!-- Within the following apply-templates parameters are used which are also used in other apply-templates in this and other stylesheets.
+                                    These have the following function:
+                                    
+                                    proces-type: 
+                                    -->
+                               
                                <!-- The uml attributes of the uml group are placed here. -->
                                <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                    mode="create-message-content">
-                                   <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
                                    <xsl:with-param name="proces-type" select="'attributes'" />
                                    <xsl:with-param name="berichtCode" select="$berichtCode" />
                                    <xsl:with-param name="context" select="$context" />
@@ -192,16 +197,13 @@
                                <!-- The uml groups of the uml group are placed here. -->
                                <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                    mode="create-message-content">
-                                   <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
-                                   <xsl:with-param name="proces-type"
-                                       select="'associationsGroepCompositie'" />
+                                   <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
                                    <xsl:with-param name="berichtCode" select="$berichtCode" />
                                    <xsl:with-param name="context" select="$context" />
                                </xsl:apply-templates>
                                <!-- The uml associations of the uml group are placed here. -->
                                <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                    mode="create-message-content">
-                                   <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
                                    <xsl:with-param name="proces-type" select="'associationsRelatie'" />
                                    <xsl:with-param name="berichtCode" select="$berichtCode" />
                                    <xsl:with-param name="context" select="$context" />
@@ -217,7 +219,7 @@
                            </imvert:complete-documentation>
                        </xsl:variable>
                        <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
-                       
+
                        <ep:construct>
                            <!-- The value of the tech-name is dependant on the availability of an alias. -->
                            <xsl:choose>
@@ -236,7 +238,6 @@
                                <xsl:when test="$packages//imvert:class[imvert:supertype/imvert:type-id = $type-id]">
                                    <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                        mode="create-message-content">
-                                       <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
                                        <xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'" />
                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                        <xsl:with-param name="context" select="$context" />
@@ -248,7 +249,6 @@
                                        <!-- The uml attributes of the uml class are placed here. -->
                                        <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                            mode="create-message-content">
-                                           <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
                                            <xsl:with-param name="proces-type" select="'attributes'" />
                                            <xsl:with-param name="berichtCode" select="$berichtCode" />
                                            <xsl:with-param name="context" select="$context" />
@@ -256,9 +256,7 @@
                                        <!-- The uml groups of the uml class are placed here. -->
                                        <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                            mode="create-message-content">
-                                           <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
-                                           <xsl:with-param name="proces-type"
-                                               select="'associationsGroepCompositie'" />
+                                           <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
                                            <xsl:with-param name="berichtCode" select="$berichtCode" />
                                            <xsl:with-param name="context" select="$context" />
                                        </xsl:apply-templates>
@@ -352,7 +350,6 @@
                                        <!-- The uml associations of the uml class are placed here. -->
                                        <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                            mode="create-message-content-constructRef">
-                                           <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
                                            <xsl:with-param name="proces-type" select="'associationsRelatie'" />
                                            <xsl:with-param name="berichtCode" select="$berichtCode" />
                                            <xsl:with-param name="context" select="$context" />
@@ -378,13 +375,15 @@
                             With the following apply-templates the global ep:construct elements are created presenting the relations. -->
                        <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                            mode="create-message-content">
-                           <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
                            <xsl:with-param name="proces-type" select="'associationsRelatie'" />
                            <xsl:with-param name="berichtCode" select="$berichtCode" />
                            <xsl:with-param name="context" select="$context" />
                        </xsl:apply-templates>
                    </xsl:when>
                </xsl:choose>
+               <!-- There are 2 types of history parameters. The first one configures if history is applicable for the current context. History isn't applicable for example for each message type.
+                    The second one is used to determine if history, if applicable for the context, is applicable for the class being processed. Not every class has attributes or associations history applies to. -->
+               
                <!-- If 'Materiele historie' or 'Formele historie' is applicable for the current class a historieMaterieel global construct based on the current class is generated. -->
                <xsl:if test="@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes'">
                    <xsl:choose>
@@ -405,7 +404,6 @@
                                    <!-- The uml attributes, of the uml group, for which historiematerieel is applicable are placed here. -->
                                    <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                        mode="create-message-content">
-                                       <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
                                        <xsl:with-param name="proces-type" select="'attributes'" />
                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                        <xsl:with-param name="context" select="$context" />
@@ -415,7 +413,6 @@
                                    <!-- The uml groups, of the uml group, for which historiematerieel is applicable are placed here. -->
                                    <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                        mode="create-message-content">
-                                       <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
                                        <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                        <xsl:with-param name="context" select="$context" />
@@ -451,13 +448,13 @@
                                <xsl:choose>
                                    <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
                                    
-                                   <!-- ROME: Het template waar het volgende apply templates naar verwijst moet nog ingericht worden op historieMaterieel. -->
+                                   <!-- ROME: Het templates waar de volgende apply templates naar verwijzen moeten nog ingericht worden op historieMaterieel.
+                                              Dit is ook de reden dat er in de aanroep van deze apply templates de parameter 'indicatieMaterieleHistorie' nog niet voorkomt. -->
                                    
                                    
                                    <xsl:when test="$packages//imvert:class[imvert:supertype/imvert:type-id = $type-id]">
                                        <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                            mode="create-message-content">
-                                           <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
                                            <xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'" />
                                            <xsl:with-param name="berichtCode" select="$berichtCode" />
                                            <xsl:with-param name="context" select="$context" />
@@ -470,7 +467,6 @@
                                            <!-- The uml attributes of the uml class are placed here. -->
                                            <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                                mode="create-message-content">
-                                               <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
                                                <xsl:with-param name="proces-type" select="'attributes'" />
                                                <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                <xsl:with-param name="context" select="$context" />
@@ -479,7 +475,6 @@
                                            <!-- The uml groups, of the uml group, for which historiematerieel is applicable are placed here. -->
                                            <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                                mode="create-message-content">
-                                               <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
                                                <xsl:with-param name="proces-type"
                                                    select="'associationsGroepCompositie'" />
                                                <xsl:with-param name="berichtCode" select="$berichtCode" />
@@ -566,7 +561,6 @@
                                    <!-- The uml attributes, of the uml group, for which historieFormeel is applicable are placed here. -->
                                    <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                        mode="create-message-content">
-                                       <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
                                        <xsl:with-param name="proces-type" select="'attributes'" />
                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                        <xsl:with-param name="context" select="$context" />
@@ -576,7 +570,6 @@
                                    <!-- The uml groups, of the uml group, for which historieFormeel is applicable are placed here. -->
                                    <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                        mode="create-message-content">
-                                       <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
                                        <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                        <xsl:with-param name="context" select="$context" />
@@ -612,13 +605,13 @@
                                <xsl:choose>
                                    <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
                                    
-                                   <!-- ROME: Het template waar het volgende apply templates naar verwijst moet nog ingericht worden op historieFormeel. -->
+                                   <!-- ROME: Het template waar het volgende apply templates naar verwijst moet nog ingericht worden op historieFormeel.
+                                              Dit is ook de reden dat er in de aanroep van deze apply templates de parameter 'indicatieFormeleHistorie' nog niet voorkomt. -->
                                    
                                    
                                    <xsl:when test="$packages//imvert:class[imvert:supertype/imvert:type-id = $type-id]">
                                        <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                            mode="create-message-content">
-                                           <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
                                            <xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'" />
                                            <xsl:with-param name="berichtCode" select="$berichtCode" />
                                            <xsl:with-param name="context" select="$context" />
@@ -631,7 +624,6 @@
                                            <!-- The uml attributes of the uml class are placed here. -->
                                            <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                                mode="create-message-content">
-                                               <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
                                                <xsl:with-param name="proces-type" select="'attributes'" />
                                                <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                <xsl:with-param name="context" select="$context" />
@@ -640,7 +632,6 @@
                                            <!-- The uml groups, of the uml group, for which historiematerieel is applicable are placed here. -->
                                            <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                                mode="create-message-content">
-                                               <xsl:with-param name="package-id" select="$packages//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:id"/>
                                                <xsl:with-param name="proces-type"
                                                    select="'associationsGroepCompositie'" />
                                                <xsl:with-param name="berichtCode" select="$berichtCode" />

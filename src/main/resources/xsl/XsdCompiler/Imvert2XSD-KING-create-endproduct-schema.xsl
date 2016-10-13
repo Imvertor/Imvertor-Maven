@@ -56,9 +56,11 @@
 	</xsl:template>
 	
 	<xsl:template match="ep:seq">
-		<xs:sequence>
-			<xsl:apply-templates select="ep:constructRef|ep:construct[not(@ismetadata)]|ep:seq"/>
-		</xs:sequence>
+		<xsl:if test="ep:constructRef|ep:construct[not(@ismetadata)]|ep:seq|ep:choice">
+			<xs:sequence>
+				<xsl:apply-templates select="ep:constructRef|ep:construct[not(@ismetadata)]|ep:seq|ep:choice"/>
+			</xs:sequence>
+		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="ep:seq" mode="generateAttributes">
@@ -71,7 +73,7 @@
 		</xs:choice>
 		<!-- If a choice is created as a result of a relation associated with supertype the choice also gets a mnemonic.
 			 This mnemnonic is used to create an entiteittype attribute. -->
-		<xsl:if test="ep:mnemonic">
+		<!--xsl:if test="ep:mnemonic">
 			<xs:attribute name="entiteittype" use="required">
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
@@ -79,7 +81,7 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
-		</xsl:if>
+		</xsl:if-->
 	</xsl:template>
 	
 	<xsl:template match="ep:construct">
@@ -345,7 +347,7 @@
 					<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
 				</xs:annotation>
 			</xsl:if>
-			<xsl:apply-templates select="ep:seq[not(@ismetadata)] | ep:choice"/>
+			<xsl:apply-templates select="ep:seq | ep:choice"/>
 			<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
 		</xs:complexType>
 	</xsl:template>
