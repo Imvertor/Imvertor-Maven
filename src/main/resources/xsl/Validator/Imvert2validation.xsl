@@ -549,12 +549,13 @@
         <xsl:sequence select="imf:check-tagged-value-occurs(.)"/>
         <xsl:sequence select="imf:check-tagged-value-multi(.)"/>
         <xsl:sequence select="imf:check-tagged-value-assignment(.)"/>
-
+        
         <!--TODO CHECK VALIDATION OF MULTIPLE INHERITANCE
             <xsl:sequence select="imf:report-error(., count(imf:distinct($superclasses)) != count($superclasses), 'Multiple inheritance from same supertype')"/>
         -->
         <xsl:sequence select="imf:report-warning(., 
-            not(imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-union','stereotype-name-composite'))) and (imvert:min-occurs or imvert:max-occurs), 
+            not(imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-union','stereotype-name-composite'))) 
+              and ((imvert:min-occurs and imvert:min-occurs != '1') or (imvert:max-occurs and imvert:max-occurs != '1')), 
             'Cardinality on class is ignored.')"/>
         
         <!-- IM-137 must check names of classes. Conventions for xRef and xAltRef -->
@@ -568,13 +569,12 @@
             not(imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-reference','stereotype-name-system-reference-class'))) and ends-with(imvert:name,'Ref'), 
             'Class may not end with string Ref when not a (system) reference class.')"/>
         
-        <xsl:variable name="is-used-type" select="$document-classes/imvert:attributes/imvert:attribute/imvert:type-id=$this-id"/>
-        <xsl:variable name="is-used-ref" select="$document-classes/imvert:associations/imvert:association/imvert:type-id=$this-id"/>
-         
+        <xsl:variable name="is-target-in-relation" select="imf:is-target-in-relation(.)"/>
+        
         <!-- TODO het niet gebruikt zijn van een klasse is een zaak van configuratie: wat zijn de potentiele topconstructs? -->
         <xsl:sequence select="imf:report-warning(., 
             $is-application and 
-            not($is-toplevel) and not($is-used-type or $is-used-ref or $is-supertype or $is-association-class), 
+            not($is-toplevel) and not($is-abstract or $is-target-in-relation or $is-association-class), 
             'This [1] is not used.', if (exists(imvert:stereotype)) then imvert:stereotype else 'construct')"/>
         
         <xsl:next-match/>
@@ -853,10 +853,12 @@
         <xsl:sequence select="imf:report-warning(., 
             (count($property-names[.=$name]) gt 1), 
             'Duplicate property name.')"/>
+        
         <xsl:sequence select="imf:check-stereotype-assignment(.)"/>
         <xsl:sequence select="imf:check-tagged-value-occurs(.)"/>
         <xsl:sequence select="imf:check-tagged-value-multi(.)"/>
         <xsl:sequence select="imf:check-tagged-value-assignment(.)"/>
+        
         <xsl:sequence select="imf:report-error(., 
             $superclasses/*/imvert:attribute/imvert:name=$name, 
             'Association already defined as attribute on supertype')"/>
@@ -1330,4 +1332,17 @@
         <xsl:param name="name"/>
         <xsl:sequence select="$name = imf:get-config-scalar-names()"/>
     </xsl:function>
+    
+    <xsl:function name="imf:is-target-in-relation" as="xs:boolean">
+        <xsl:param name="class"/>
+
+        <xsl:variable name="this-id" select="$class/imvert:id"/>
+        <xsl:variable name="is-used-type" select="$document-classes/imvert:attributes/imvert:attribute/imvert:type-id=$this-id"/>
+        <xsl:variable name="is-used-ref" select="$document-classes/imvert:associations/imvert:association/imvert:type-id=$this-id"/>
+        
+        <xsl:variable name="superclass-is-target" select="(for $super-id in ($class/imvert:supertype/imvert:type-id) return imf:is-target-in-relation(imf:get-construct-by-id($super-id))) = true()"/>
+        
+        <xsl:sequence select="$is-used-type or $is-used-ref or $superclass-is-target"/>
+    </xsl:function>
+
 </xsl:stylesheet>
