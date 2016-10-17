@@ -42,11 +42,12 @@
         
         Ja, uitlezen uit het SIM.
         henri levert de specs.
-        
-        oid -->
+        zie #487922
+        -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
-
+    <xsl:import href="../common/Imvert-common-derivation.xsl"/>
+    
     <xsl:param name="prefix" select="'bg'"/>
     <xsl:param name="target-namespace" select="'http://www.egem.nl/StUF/sector/bg/0310'"/>
     
@@ -216,7 +217,7 @@
                     <xsl:with-param name="richting">uitgaand</xsl:with-param>
                 </xsl:apply-templates>
                 
-                <!--TODO besluit nemen over terugrelaties -->
+                <!--TODO #487922 besluit nemen over terugrelaties -->
                 <?mogelijk-vervallen
                 <xsl:sequence select="imf:insert-comment('mode-global-objecttype (Associations: inkomend)')"/>
                 <xsl:variable name="inkomende-associaties" select="$document//imvert:association[not(imvert:aggregation = 'composite') and imf:get-type-id(.) = $id]"/>
@@ -465,6 +466,8 @@
         
         <xsl:variable name="type" select="imf:get-class(.)"/>
         <xsl:variable name="compiled-name-type" select="imf:get-compiled-name($type)"/>
+        
+        <xsl:variable name="is-in-onderzoek" select="imf:is-in-onderzoek(.)"/>
         
         <xsl:variable name="type-is-datatype" select="$type/imvert:designation = 'datatype'"/>
         <xsl:variable name="type-is-complextype" select="$type-is-datatype and $type/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-complextype')"/>
@@ -1421,6 +1424,13 @@
         <xsl:param name="conceptual-schema-class-name"/>
         
     </xsl:function>
+    
+    <xsl:function name="imf:is-in-onderzoek" as="xs:boolean">
+        <xsl:param name="construct"/>
+        <xsl:variable name="tv" select="imf:get-most-relevant-compiled-taggedvalue($construct,'IndicatieInOnderzoek')"/>
+        <xsl:sequence select="imf:boolean($tv)"/>
+    </xsl:function>
+    
     <!-- =================== cleanup =================== -->
    
     <xsl:template match="xs:schema" mode="xsd-cleanup">

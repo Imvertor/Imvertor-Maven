@@ -20,7 +20,7 @@
 <xsl:stylesheet 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-
+    
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
@@ -37,7 +37,17 @@
     <xsl:template match="/imvert:packages">
         <xsl:variable name="root-package" select="imf:get-config-stereotypes(('stereotype-name-base-package','stereotype-name-variant-package','stereotype-name-application-package'))"/>
         <imvert:package-dependencies>
+         
             <xsl:apply-templates select="$document-packages[imvert:name/@original=$application-package-name and imvert:stereotype=$root-package]" mode="package-dependencies"/>
+       
+            <xsl:variable name="suppliers" select="imf:analyze-supplier-docs(.)"/>
+            <!-- avoid duplicates, several models mat reference the same supplier -->
+            <xsl:for-each-group select="$suppliers" group-by="@subpath">
+                <imvert:supplier-contents subpath="{current-grouping-key()}">
+                    <xsl:sequence select="imf:get-imvert-system-doc(current-grouping-key())"/>
+                </imvert:supplier-contents>
+            </xsl:for-each-group>
+            
         </imvert:package-dependencies>
     </xsl:template>
     
@@ -52,4 +62,30 @@
             <xsl:apply-templates select="$document-packages[imvert:id=$supplier-id]" mode="package-dependencies"/>
         </xsl:if>
     </xsl:template>
+    
+    <!-- 
+        return a list of imvert:supplier-contents elements, for each supplier-of-a-supplier. 
+    -->
+    <xsl:function name="imf:analyze-supplier-docs" as="element(imvert:supplier-contents)*">
+        <xsl:param name="root" as="element(imvert:packages)"/>
+        <xsl:for-each select="$root//imvert:supplier[imvert:supplier-project]">
+            <xsl:variable name="subpath" select="imf:get-trace-supplier-subpath(imvert:supplier-project,imvert:supplier-name,imvert:supplier-release)"/>
+            <xsl:variable name="supplier-doc" select="imf:get-imvert-system-doc($subpath)"/>
+            <xsl:choose>
+                <xsl:when test="exists($supplier-doc)">
+                    <imvert:supplier-contents subpath="{$subpath}"/>
+                    <xsl:sequence select="imf:analyze-supplier-docs($supplier-doc/imvert:packages)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:sequence select="imf:msg(.,'ERROR','Cannot find supplier for subpath [1]',($subpath))"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:for-each>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-imvert-system-doc">
+        <xsl:param name="subpath"/>
+        <xsl:sequence select="imf:document(concat($output-folder,'/applications/',$subpath,'/etc/system.imvert.xml'))"/>
+    </xsl:function>
+    
 </xsl:stylesheet>

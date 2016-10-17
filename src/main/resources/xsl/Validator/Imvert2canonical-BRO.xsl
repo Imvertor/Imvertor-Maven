@@ -119,8 +119,35 @@
             </xsl:choose>
         </xsl:copy>
     </xsl:template>
+
+    <!-- temporary map from KKG to KK -->
     
-    <!-- mapping ISO19109 -->
+    <xsl:template match="imvert:baretype">
+        
+        <xsl:choose>
+            <xsl:when test=". = 'REAL'"> 
+                <imvert:baretype>N20,10</imvert:baretype>
+                <imvert:type-name>scalar-decimal</imvert:type-name>
+                <imvert:total-digits>20</imvert:total-digits>
+                <imvert:fraction-digits>10</imvert:fraction-digits>
+            </xsl:when>
+            <xsl:when test=". = 'CHARACTERSTRING'">
+                <imvert:baretype>AN</imvert:baretype>
+                <imvert:type-name>scalar-string</imvert:type-name>
+            </xsl:when>
+            <xsl:when test=". = 'AN'">
+                <imvert:baretype>TXT</imvert:baretype>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="."/>
+            </xsl:otherwise>
+        </xsl:choose>
+        
+    </xsl:template>
+    
+    
+    <?x
+    <!-- mapping KKG -->
     
     <xsl:template match="imvert:class[empty(imvert:stereotype)]">
         <imvert:class>
@@ -179,7 +206,8 @@
             </xsl:choose>
         </imvert:stereotype>
     </xsl:template>
-    
+
+x?>
     <!-- 
        identity transform
     -->

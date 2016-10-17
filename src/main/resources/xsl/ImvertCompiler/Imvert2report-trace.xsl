@@ -52,10 +52,8 @@
                                 This is a technical overview of all traces explicitly created between classes, attributes and associations. 
                             </p>
                             <p>
-                                The full name of the construct is show (Package::Class.property), along with the ID. Each column represents a next derivation model.
-                            </p>
-                            <p>
-                                Possible errors reported are 1/ recursion when an object traces an object already traced, 2/ missing suppliers, where a trace is set but the traced construct is not available.
+                                The full name of the construct is shown (Package::Class.property), along with the ID. 
+                                Each construct in a column on the right represents a supplier for some construct in a column on the left.
                             </p>
                         </div>
                         <xsl:variable name="rows" as="element(tr)*">

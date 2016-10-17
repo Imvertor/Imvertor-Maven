@@ -6,9 +6,9 @@
     <name>BRO</name>
 
     <!-- 
-        See Default for explanation. 
+        BRO follows KKG
     --> 
-    <xi:include href="../../../BP/cfg/comparerules/default.xml"/>
+    <xi:include href="../../../KKG/cfg/comparerules/KKG.xml"/>
     
     <!-- for tagged values: -->
    

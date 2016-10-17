@@ -62,6 +62,9 @@ public class XsdCompiler extends Step {
 			if (schemarules.equals("Kadaster")) {
 				generateXsdKadaster();
 				supplyExternalSchemas();
+			} else if (schemarules.equals("BRO")) {
+				generateXsdBRO();
+				supplyExternalSchemas();
 			} else if (schemarules.equals("KINGUGM")) {
 				generateUgmXsdKING();
 			} else if (schemarules.equals("KINGBSM")) {
@@ -119,6 +122,44 @@ public class XsdCompiler extends Step {
 		if (configurator.isTrue("cli","flattenschemas")) {
 			valid = valid && transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_FLATTEN_FILE","properties/IMVERTOR_FLATTEN_XSLPATH","system/cur-imvertor-filepath");
 		}
+		
+		configurator.setParm("system","schema-created","true");
+		
+		return valid;
+	}
+	/**
+	 * Generate Kadaster XSD from the compiled Imvert files.
+	 * 
+	 * @throws Exception
+	 */
+	public boolean generateXsdBRO() throws Exception {
+		
+		// create a transformer
+		Transformer transformer = new Transformer();
+		transformer.setExtensionFunction(new ImvertorGetVariable());
+		transformer.setExtensionFunction(new ImvertorSetVariable());
+						
+		boolean valid = true;
+		
+		// Create the folder; it is not expected to exist yet.
+		AnyFolder xsdFolder = new AnyFolder(configurator.getParm("system","work-xsd-folder-path"));
+		xsdFolder.mkdirs();
+				
+		AnyFolder xsdApplicationFolder = new AnyFolder(configurator.getParm("properties","RESULT_XSD_APPLICATION_FOLDER"));
+		xsdApplicationFolder.mkdirs();
+		configurator.setParm("system","xsd-folder-path", xsdApplicationFolder.toURI().toString());
+	
+		runner.debug(logger,"Generating XML schemas to " + xsdApplicationFolder);
+		
+		String infoXsdSourceFilePath = configurator.getParm("properties", "IMVERTOR_METAMODEL_Kadaster_XSDSOURCE"); // system or model
+
+		// when system, use the embellish file; when model use the model.
+		if (infoXsdSourceFilePath.equals("system"))
+			valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_XSD_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KKG_XSD_XSLPATH","system/cur-imvertor-filepath");
+		else // model
+			valid = valid && transformer.transformStep("properties/WORK_SCHEMA_FILE","properties/RESULT_XSD_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KKG_XSD_XSLPATH","system/cur-imvertor-filepath");
+		
+		valid = valid && transformer.transformStep("system/cur-imvertor-filepath","properties/RESULT_XSD_IMPORT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KKG_XSD_IMPORT_XSLPATH","system/cur-imvertor-filepath");
 		
 		configurator.setParm("system","schema-created","true");
 		

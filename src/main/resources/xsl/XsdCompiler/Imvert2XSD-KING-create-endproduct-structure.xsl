@@ -541,7 +541,7 @@
 					</imvert:complete-documentation>
 				</xsl:variable>
 				<xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
-				<xsl:variable name="tvs">
+				<xsl:variable name="tvs" as="element(ep:tagged-values)">
 					<ep:tagged-values>
 						<xsl:copy-of select="imf:get-compiled-tagged-values(., true())"/>
 					</ep:tagged-values>
@@ -1012,7 +1012,7 @@
 			</imvert:complete-documentation>
 		</xsl:variable>
 		<xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
-		<xsl:variable name="tvs">
+		<xsl:variable name="tvs" as="element(ep:tagged-values)">
 			<ep:tagged-values>
 				<xsl:copy-of select="imf:get-compiled-tagged-values(., true())"/>
 			</ep:tagged-values>
@@ -1258,7 +1258,7 @@
 			</imvert:complete-documentation>
 		</xsl:variable>
 		<xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
-		<xsl:variable name="tvs">
+		<xsl:variable name="tvs" as="element(ep:tagged-values)">
 			<ep:tagged-values>
 				<xsl:copy-of select="imf:get-compiled-tagged-values(., true())"/>
 			</ep:tagged-values>

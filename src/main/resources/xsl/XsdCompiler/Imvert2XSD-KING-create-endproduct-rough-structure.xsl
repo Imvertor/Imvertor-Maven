@@ -333,7 +333,7 @@
 				</xsl:when>
 				<xsl:otherwise>
 					
-					<xsl:variable name="tvs-class">
+					<xsl:variable name="tvs-class" as="element(ep:tagged-values)">
 						<ep:tagged-values>
 							<xsl:copy-of select="imf:get-compiled-tagged-values($packages//imvert:class[imvert:id = $type-id], true())"/>
 						</ep:tagged-values>

@@ -31,6 +31,7 @@
 	<xsl:variable name="validate-tv-assignment" select="imf:boolean(imf:get-config-string('cli','validatetvassignment'))"/> 
 	<xsl:variable name="validate-tv-missing" select="imf:boolean(imf:get-config-string('cli','validatetvmissing'))"/> 
 	<xsl:variable name="validate-doc-missing" select="imf:boolean(imf:get-config-string('cli','validatedocmissing'))"/> 
+	<xsl:variable name="validate-trace-full" select="imf:get-config-string('cli','validatetrace','') = 'full'"/> 
 	
 	<xsl:function name="imf:report-validation" as="node()*">
 		<xsl:param name="this" as="node()"/>

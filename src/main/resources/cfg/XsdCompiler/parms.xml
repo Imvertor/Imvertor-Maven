@@ -136,6 +136,12 @@
       <!-- locatie van de stuf onderlaag -->
       <STUF_ONDERLAAG_BSM>${system/inp-folder-path}/xsd/other/KING-BSM/stuf0301.xsd</STUF_ONDERLAAG_BSM>
       
+      <!-- BRO : -->
+      
+      <IMVERTOR_METAMODEL_KKG_XSDSOURCE>system</IMVERTOR_METAMODEL_KKG_XSDSOURCE>
+      <IMVERTOR_METAMODEL_KKG_XSD_XSLPATH>Imvert2XSD-Kadaster.xsl</IMVERTOR_METAMODEL_KKG_XSD_XSLPATH>
+      <IMVERTOR_METAMODEL_KKG_XSD_IMPORT_XSLPATH>Imvert2XSD-Kadaster-imports.xsl</IMVERTOR_METAMODEL_KKG_XSD_IMPORT_XSLPATH>
+ 
       <!-- common: -->
    
       <!-- location of the result XSD's when generating XML schemas -->

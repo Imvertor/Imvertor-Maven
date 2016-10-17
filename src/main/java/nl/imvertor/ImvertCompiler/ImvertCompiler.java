@@ -66,6 +66,7 @@ public class ImvertCompiler extends Step {
 			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_CONCRETESCHEMA_FILE", "properties/IMVERTOR_CONCRETESCHEMA_XSLPATH","system/cur-imvertor-filepath") : false ;
 			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_LOCALSCHEMA_FILE", "properties/IMVERTOR_LOCALSCHEMA_XSLPATH","system/cur-imvertor-filepath") : false ;
 		}
+		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_CHECKTRACE_FILE", "properties/IMVERTOR_CHECKTRACE_XSLPATH") : false ;
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_EMBELLISH_FILE", "properties/IMVERTOR_EMBELLISH_XSLPATH","system/cur-imvertor-filepath") : false ;
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_SCHEMA_FILE", "properties/IMVERTOR_SCHEMA_XSLPATH","system/cur-imvertor-filepath") : false ;
 		

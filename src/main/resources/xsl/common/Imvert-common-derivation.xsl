@@ -129,9 +129,32 @@
 		<xsl:sequence select="if ($include-empty) then $tvs else $tvs[normalize-space(@value)]"/>
 	</xsl:function>
 	
+	<xsl:function name="imf:get-applicable-tagged-values" as="element(tv)?">
+		<xsl:param name="this" as="element()"/>
+		<xsl:variable name="all-tv" select="imf:get-compiled-tagged-values($this,false())"/>
+		<xsl:for-each-group select="$all-tv" group-by="@name">
+			<xsl:variable name="most-relevant-level">
+				<xsl:for-each select="current-group()">
+					<xsl:sort select="@level" data-type="number"/>
+					<xsl:if test="position() = 1">
+						<xsl:value-of select="@level"/>
+					</xsl:if>
+				</xsl:for-each>
+			</xsl:variable>
+			<xsl:sequence select="$this//tv[@level = $most-relevant-level]"/>		
+		</xsl:for-each-group>
+	</xsl:function>
+	
+	<xsl:function name="imf:get-most-relevant-compiled-taggedvalue" as="xs:string?">
+		<xsl:param name="this" as="element()"/>
+		<xsl:param name="tv-name" as="xs:string"/>
+		<xsl:variable name="tvs" select="imf:get-applicable-tagged-values($this)"/>
+		<xsl:value-of select="$tvs[@name=$tv-name]/@value"/>
+	</xsl:function>
+	
 	<!-- This function gets the most relevant value of a specific tagged-value. The one which is in the current layer or 
 		 in the layer most near to the current layer. -->
-	<xsl:function name="imf:get-most-relevant-compiled-taggedvalue" as="xs:string?">
+	<xsl:function name="imf:get-most-relevant-compiled-taggedvaluex" as="xs:string?">
 		<xsl:param name="this"/>
 		<xsl:param name="name"/>
 		<xsl:variable name="most-relevant-level">

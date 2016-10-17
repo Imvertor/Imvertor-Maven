@@ -3,120 +3,20 @@
  * Copyright (C) 2016 
 -->
 <metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
-    <!-- BRO follows BP requirements -->
-
-    <xi:include href="../../../BP/cfg/metamodels/BP.xml"/>
-    <xi:include href="../../../BP/cfg/metamodels/BP-scalar.xml"/>
+    <!-- 
+        BRO follows KKG
+    --> 
+    <xi:include href="../../../KKG/cfg/metamodels/KKG.xml"/>
     
     <name>BRO</name>
-
-    <desc>Metamodel for BRO exchange models</desc>
-
-    <naming>
-        <package>
-            <format>UpperCamel</format>
-        </package>
-        <class>
-            <format>UpperCamel</format>
-        </class>
-        <property>
-            <format>LowerCamel</format>
-        </property>
-        <tv>
-            <format>lowercase</format>
-        </tv>
-    </naming>
     
     <stereotypes>
-
-        <stereo id="stereotype-name-product">
-            <name lang="en">product</name>
-            <name lang="nl">product</name>
-            <construct>class</construct>
-            <toplevel>true</toplevel>
-        </stereo>
-        <stereo id="stereotype-name-service">
-            <name lang="en">service</name>
-            <name lang="nl">service</name>
-            <construct>class</construct>
-            <toplevel>true</toplevel>
-        </stereo>
-        <stereo id="stereotype-name-process">
-            <name lang="en">process</name>
-            <name lang="nl">process</name>
-            <construct>class</construct>
-            <toplevel>true</toplevel>
-        </stereo>
-        <stereo id="stereotype-name-collection">
-            <name lang="en">collection</name>
-            <name lang="nl">collectie</name>
-            <construct>class</construct>
-        </stereo>
-
-        <stereo id="stereotype-name-identificatie">
-            <name lang="nl">identificatie</name>
-            <name lang="en">identification</name>
+        <stereo id="stereotype-name-IMBRO/A">
+            <name lang="en">IMBRO/A</name>
+            <name lang="nl">IMBRO/A</name>
             <construct>attribute</construct>
-        </stereo>
-        <stereo id="stereotype-name-koppelklasse">
-            <name lang="nl">koppelklasse</name>
-            <name lang="en">link class</name>
-            <construct>class</construct>
-        </stereo>
-        <stereo id="stereotype-name-voidable">
-            <name lang="en">voidable</name>
-            <name lang="nl">voidable</name>
-            <construct>attribute</construct>
-            <construct>association</construct>
-        </stereo>
-
-        <stereo id="stereotype-name-generalization">
-            <name lang="nl">generalisatie</name>
-            <name lang="en">generalisation</name>
-            <construct>generalization</construct>
-        </stereo>
-        <stereo id="stereotype-name-static-liskov">
-            <name lang="en">static liskov</name>
-            <name lang="nl">static liskov</name>
-            <construct>generalization</construct>
-        </stereo>
-        <stereo id="stereotype-name-static-generalization">
-            <name lang="en">static</name>
-            <name lang="nl">static</name>
-            <construct>generalization</construct>
-        </stereo>
-        <stereo id="stereotype-name-dynamic-generalization">
-            <name lang="en">dynamic</name>
-            <name lang="nl">dynamisch</name>
-            <construct>generalization</construct>
-        </stereo>
-
-        <stereo id="stereotype-name-formele-historie">
-            <name lang="nl">formelehistorie</name>
-            <name lang="en">formalhistory</name>
-            <construct>attribute</construct>
-        </stereo>
-        <stereo id="stereotype-name-formele-levensduur">
-            <name lang="nl">formelelevensduur</name>
-            <name lang="en">formelelevensduur</name>
-            <construct>attribute</construct>
-        </stereo>
-        <stereo id="stereotype-name-materiele-historie">
-            <name lang="nl">materielehistorie</name>
-            <name lang="en">materielehistorie</name>
-            <construct>attribute</construct>
-        </stereo>
-        <stereo id="stereotype-name-materiele-levensduur">
-            <name lang="nl">materielelevensduur</name>
-            <name lang="en">materielelevensduur</name>
-            <construct>attribute</construct>
-        </stereo>
-
-        <stereo id="stereotype-name-anonymous">
-            <name lang="en">anonymous</name>
-            <name lang="nl">anoniem</name>
-            <construct>attribute</construct>
-            <construct>association</construct>
+            <toplevel>false</toplevel>
         </stereo>
     </stereotypes>
+    
 </metamodel>

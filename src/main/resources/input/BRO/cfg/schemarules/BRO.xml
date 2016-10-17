@@ -2,9 +2,11 @@
 <!-- 
  * Copyright (C) 
 -->
-<schema-rules>
+<schema-rules xmlns:xi="http://www.w3.org/2001/XInclude">
     <name>BRO</name>
     <!-- 
-        BRO specific rules 
-    -->
+        BRO follows KKG
+    --> 
+    <xi:include href="../../../KKG/cfg/schemarules/KKG.xml"/>
+    
 </schema-rules>

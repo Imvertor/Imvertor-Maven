@@ -64,7 +64,13 @@
                 <xsl:when test="$schemarules = 'Kadaster'">
                     <status/>
                     <summary>
-                        <xsl:sequence select="imf:report-label('Schemas', '(TODO)')"/>
+                        <xsl:sequence select="imf:report-label('Schemas', '(TODO Kadaster)')"/>
+                    </summary>
+                </xsl:when>
+                <xsl:when test="$schemarules = 'BRO'">
+                    <status/>
+                    <summary>
+                        <xsl:sequence select="imf:report-label('Schemas', '(TODO KKG)')"/>
                     </summary>
                 </xsl:when>
                 <xsl:when test="$schemarules = ('KINGUGM','KINGBSM')">

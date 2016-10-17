@@ -40,6 +40,12 @@
          <arg>yes|no</arg>
          <tip>Yes if the model derivation is implemented by UML tracing</tip>
          <required>true</required>
+      </cli-parm>
+      <cli-parm>
+         <name>validatetrace</name>
+         <arg>full|none</arg>
+         <tip>When full, test if each derivable construct is actually derived from at least one supplier construct.</tip>
+         <required>true</required>
       </cli-parm> 
       <cli-parm>
          <name>mapping</name>
@@ -99,6 +105,9 @@
   
       <IMVERTOR_DERIVATIONEXPAND_XSLPATH>Imvert2derivationExpand.xsl</IMVERTOR_DERIVATIONEXPAND_XSLPATH>
       <WORK_DERIVATIONEXPAND_FILE>${system/work-imvert-folder-path}/imvertor.11.2.expand.xml</WORK_DERIVATIONEXPAND_FILE>
+      
+      <IMVERTOR_CHECKTRACE_XSLPATH>Imvert2trace-check.xsl</IMVERTOR_CHECKTRACE_XSLPATH>
+      <WORK_CHECKTRACE_FILE>${system/work-imvert-folder-path}/imvertor.11.3.trace-check.xml</WORK_CHECKTRACE_FILE>
       
       <IMVERTOR_EMBELLISH_XSLPATH>Imvert2embellish.xsl</IMVERTOR_EMBELLISH_XSLPATH>
       <WORK_EMBELLISH_FILE>${system/work-imvert-folder-path}/imvertor.12.embellish.xml</WORK_EMBELLISH_FILE>

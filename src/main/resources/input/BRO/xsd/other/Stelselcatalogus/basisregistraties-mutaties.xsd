@@ -1,0 +1,867 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+	targetNamespace="http://www.stelselcatalogus.nl/br_import" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:br="http://www.stelselcatalogus.nl/br_import" 
+	elementFormDefault="qualified">
+	
+	<!-- 
+		*** Verwerkingseisen ***
+		
+		1.	Een nieuw én een gewijzigd concept worden aangeleverd met hun complete definitie. Dat wil zeggen: Alle teksten voor o.a. definitie en toelichting, alle eigenschappen en alle uitgaande relaties. Ook al zijn onderdelen niet gewijzigd, de complete definitie wordt altijd aangeleverd.
+		2.	Elk concept heeft een herkennings id. Deze dient uniek te zijn voor de gehele Stelselcatalogus. Een concept met een herkennings id die nog niet voorkomt in de Stelselcatalogus, wordt gezien als een nieuw concept. Deze moet bij aanlevering zijn voorzien van een ingangsdatum. Een concept met herkennings id die al wel voorkomt in de Stelselcatalogus, wordt gezien als een mutatie. In dat geval moet ook een ingangsdatum en een einddatum van de voorgaande versie worden ingevuld. Beide datums mogen elkaar in de tijd gezien niet overlappen (dus ook niet aan elkaar gelijk zijn!). Dit wordt gecontroleerd in de projectvalidatie van Be Informed Studio. 
+		3.	Een verwijderd concept wordt aangeleverd met alleen een einddatum. Een concept wordt dus nooit fysiek verwijderd, alleen logisch door een einddatum te zetten. Het concept heeft immers voor een bepaalde tijdsperiode bestaan.
+		
+		*** Verwerkingseiegenschappen ***
+		
+		De verwerking van mutaties heeft de volgende eigenschappen:
+		1.	Het gehele project moet uitgecheckt zijn door de Stelselcatalogus beheerder.
+		2.	Mutaties worden verwerkt door een nieuwe tijdversie van het kennismodel aan te maken waarbij de ingangsdatum wordt geregistreerd. Tijdversies worden opeenvolgend genummerd; d.w.z.: Tijdversie 1, Tijdversie 2, Tijdversie 3, etc. Relaties naar concepten buiten het project blijven te allen tijde bestaan. Desgewenst kan de Stelselcatalogus beheerder deze handmatig veranderen.
+		3.	Bij de voorgaande tijdversie van het kennismodel wordt de einddatum geregistreerd.
+		4.	Indien meerdere mutaties / concepten betrekking hebben op hetzelfde kennismodel, wordt slechts 1 nieuwe tijdversie aangemaakt. Door de opzet van het model (1 kennismodel per concept) zal dit eigenlijk niet voorkomen. Hier wordt dus ook niet op gecontroleerd.
+		5.	Voor een nieuw concept wordt een nieuw kennismodel aangemaakt.
+		6.	Voor een concept dat niet meer van toepassing is, wordt in de laatst bekende tijdversie de einddatum gezet.
+		7.	Bij bronteksten (definitie, toelichting, gegevensregel) wordt de nieuw aangeleverde string vergeleken met de oude bestaande string. Indien niet gewijzigd, gebeurt niets. Indien wel gewijzigd dan wordt een nieuwe sectiereferentie aangemaakt met de toevoeging ‘_Deejjmmdd’. en vervolgens de sectiereferentie gelegd. Er geldt een nieuwe tijdversie voor het concept als de bron wijzigt. Dus oude tijdversie concept verwijst naar oude bronsectie en nieuwe tijdversie concept verwijst naar nieuwe bronsectie. De toevoeging eejjmmdd is gelijk aan de ingangsdatum van de tijdversie van het concept waarbij de bron nieuw wordt gecreëerd.
+		8.	In de stylesheets van de web_inf worden de toevoegingen ‘_Deejjmmdd’ onderdrukt. Het gaat hier om de publicatie in de kennisbank. 
+
+		LET OP!!! Het datumformaat is: jjjj-mm-dd
+	-->
+	
+	<xs:element name="mutaties">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="mutatie" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="project" type="xs:string">
+								<xs:annotation>
+									<xs:documentation>
+										Naam van de projectmap.
+									</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="catalogi" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="catalogus">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="br:naam" />
+													<xs:element name="time-version">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="br:code" />
+																<xs:element ref="br:naam_catalogus" />
+																<xs:element ref="br:versienummer" />
+																<xs:element name="begin_geldig" type="br:property"/>
+																<xs:element name="eind_geldig" type="br:property"/>
+																<xs:element name="datum_opname" type="br:property"/>
+																<xs:element name="status" type="br:property"/>
+																<xs:element name="indicatie_vrijgave" type="br:property"/>
+																<xs:element ref="br:auteur" />
+																<xs:element name="br_afkorting" type="br:property"/>
+																<xs:element ref="br:toelichting" minOccurs="0"/>
+																<xs:element ref="br:definitie" minOccurs="0"/>
+																<xs:element name="relations" type="br:catalogus_relations" minOccurs="0" />
+																<!-- ********
+																	Bij het gebruik van tijdversies, is de begin-datum de datum vanaf 
+																	en de eind-datum de datum tot en met. Bij opeenvolgende tijdversies, 
+																	zullen de datums op elkaar aansluiten en elkaar niet overlappen.
+																************* -->	
+																<xs:element ref="br:previous-version-valid-until" minOccurs="0"/>
+																<xs:element ref="br:valid-from" minOccurs="0"/>
+																<xs:element ref="br:valid-until" minOccurs="0"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="objecten" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="object" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="br:naam" />
+												    <xs:element name="time-version">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="br:code" />
+																<xs:element ref="br:afkorting" />
+																<xs:element name="populatie" type="br:property"/>
+																<xs:element name="kwaliteitsbegrip" type="br:property"/>
+																<xs:element name="indicatie_formele_historie_o" type="br:j_n_type"/>
+																<xs:element ref="br:datum_registratie_vanaf"/>
+																<xs:element name="indicatie_materiele_historie_o" type="br:j_n_type"/>
+																<xs:element ref="br:datum_ingang_geldigheid_vanaf" />
+																<xs:element ref="br:datum_authentiek_vanaf"/>
+																<xs:element ref="br:herkomst_definitie"/>																
+																<xs:element ref="br:toelichting" minOccurs="0"/>
+																<xs:element ref="br:definitie" minOccurs="0"/>
+																<xs:element ref="br:gegevensregel" minOccurs="0"/>
+																<xs:element name="relations" type="br:object_relations"  minOccurs="0" />
+																<!-- ********
+																	Bij het gebruik van tijdversies, is de begin-datum de datum vanaf 
+																	en de eind-datum de datum tot en met. Bij opeenvolgende tijdversies, 
+																	zullen de datums op elkaar aansluiten en elkaar niet overlappen.
+																************* -->
+																<xs:element ref="br:previous-version-valid-until" minOccurs="0"/>
+																<xs:element ref="br:valid-from" minOccurs="0"/>
+																<xs:element ref="br:valid-until" minOccurs="0"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="attributen" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="attribuut" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="br:naam" />
+													<xs:element name="time-version">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="XML_tag" type="br:property"/>
+																<xs:element ref="br:herkomst_definitie"/>
+																<xs:element ref="br:datum_registratie_vanaf"/>
+																<xs:element name="indicatie_formele_historie" type="br:j_n_type"/>
+																<xs:element ref="br:datum_ingang_geldigheid_vanaf" />
+																<xs:element name="indicatie_materiele_historie" type="br:j_n_type"/>
+																<xs:element ref="br:datum_authentiek_vanaf"/>
+																<xs:element ref="br:code" />
+																<xs:element ref="br:toelichting" minOccurs="0"/>
+																<xs:element ref="br:definitie" minOccurs="0"/>
+																<xs:element ref="br:gegevensregel" minOccurs="0"/>
+																<xs:element name="relations" type="br:attribuut_relations" minOccurs="0" />
+																<!-- ********
+																	Bij het gebruik van tijdversies, is de begin-datum de datum vanaf 
+																	en de eind-datum de datum tot en met. Bij opeenvolgende tijdversies, 
+																	zullen de datums op elkaar aansluiten en elkaar niet overlappen.
+																************* -->
+																<xs:element ref="br:previous-version-valid-until" minOccurs="0"/>
+																<xs:element ref="br:valid-from" minOccurs="0"/>
+																<xs:element ref="br:valid-until" minOccurs="0"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="gegevensgroepen" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="gegevensgroep" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="br:naam" />
+													<xs:element name="time-version">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="br:code" />
+																<xs:element ref="br:herkomst_definitie" />
+																<xs:element ref="br:afkorting"/>
+																<xs:element ref="br:toelichting" minOccurs="0"/>
+																<xs:element ref="br:definitie" minOccurs="0"/>
+																<xs:element name="relations" type="br:gegevensgroep_relations" minOccurs="0" />
+																<!-- ********
+																	Bij het gebruik van tijdversies, is de begin-datum de datum vanaf 
+																	en de eind-datum de datum tot en met. Bij opeenvolgende tijdversies, 
+																	zullen de datums op elkaar aansluiten en elkaar niet overlappen.
+																************* -->
+																<xs:element ref="br:previous-version-valid-until" minOccurs="0"/>
+																<xs:element ref="br:valid-from" minOccurs="0"/>
+																<xs:element ref="br:valid-until" minOccurs="0"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="domeinen" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="domein" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="br:naam" />
+													<xs:element name="time-version">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="br:code"/>
+																<xs:element name="waardeverzameling" type="br:property"/>
+																<xs:element name="formaat" type="br:formaat_type"/>
+																<xs:element name="lengte" type="br:property"/>
+																<xs:element name="uitwisselingsmasker" type="br:property"/>
+																<xs:element name="standaard" type="br:property"/>
+																<xs:element ref="br:herkomst_definitie"/>
+																<xs:element ref="br:toelichting" minOccurs="0"/>
+																<xs:element ref="br:definitie" minOccurs="0"/>
+																<xs:element ref="br:gegevensregel" minOccurs="0"/>
+																<xs:element name="relations" type="br:domein_relations" minOccurs="0" />
+																<!-- ********
+																	Bij het gebruik van tijdversies, is de begin-datum de datum vanaf 
+																	en de eind-datum de datum tot en met. Bij opeenvolgende tijdversies, 
+																	zullen de datums op elkaar aansluiten en elkaar niet overlappen.
+																************* -->
+																<xs:element ref="br:previous-version-valid-until" minOccurs="0"/>
+																<xs:element ref="br:valid-from" minOccurs="0"/>
+																<xs:element ref="br:valid-until" minOccurs="0"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="domeinwaarden" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="domeinwaarde" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="br:naam" />
+													<xs:element name="time-version">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="volledigheid" type="br:volledigheid_type"/>
+																<xs:element name="punt" type="br:ja_nee_type"/>
+																<xs:element name="lijn" type="br:ja_nee_type"/>
+																<xs:element name="vlak" type="br:ja_nee_type"/>
+																<xs:element name="waarde" type="br:property"/>
+																<xs:element name="reeks_waarde_vanaf" type="br:property"/>
+																<xs:element name="reeks_waarde_tm" type="br:property"/>
+																<xs:element name="expressie" type="br:property"/>
+																<xs:element ref="br:definitie" minOccurs="0"/>
+																<xs:element ref="br:inwinningscriteria" minOccurs="0"/>
+																<!-- ********
+																	Bij het gebruik van tijdversies, is de begin-datum de datum vanaf 
+																	en de eind-datum de datum tot en met. Bij opeenvolgende tijdversies, 
+																	zullen de datums op elkaar aansluiten en elkaar niet overlappen.
+																************* -->
+																<xs:element ref="br:previous-version-valid-until" minOccurs="0"/>
+																<xs:element ref="br:valid-from" minOccurs="0"/>
+																<xs:element ref="br:valid-until" minOccurs="0"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="gebeurtenissen" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="gebeurtenis" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="br:naam" />
+													<xs:element name="time-version">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="br:code"/>
+																<xs:element ref="br:afkorting"/>
+																<xs:element ref="br:toelichting" minOccurs="0"/>
+																<xs:element ref="br:definitie" minOccurs="0"/>
+																<xs:element name="relations" type="br:gebeurtenis_relations" minOccurs="0" />
+																<!-- ********
+																	Bij het gebruik van tijdversies, is de begin-datum de datum vanaf 
+																	en de eind-datum de datum tot en met. Bij opeenvolgende tijdversies, 
+																	zullen de datums op elkaar aansluiten en elkaar niet overlappen.
+																************* -->
+																<xs:element ref="br:previous-version-valid-until" minOccurs="0"/>
+																<xs:element ref="br:valid-from" minOccurs="0"/>
+																<xs:element ref="br:valid-until" minOccurs="0"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="gegevensservices" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="gegevensservice" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="br:naam" />
+													<xs:element name="time-version">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="br:code"/>
+																<xs:element ref="br:datum_ingang"/>
+																<xs:element ref="br:datum_einde"/>
+																<xs:element name="soort_service" type="br:servicesoort_type"/>
+																<xs:element name="gegevensstandaard" type="br:property"/>
+																<xs:element name="abonnementsvorm_iteratief" type="br:property"/>
+																<xs:element name="preconditie" type="br:property"/>
+																<xs:element ref="br:versienummer"/>
+																<xs:element ref="br:toelichting" minOccurs="0"/>
+																<xs:element ref="br:definitie" minOccurs="0"/>
+																<xs:element name="relations" type="br:gegevensservice_relations" minOccurs="0" />
+																<!-- ********
+																	Bij het gebruik van tijdversies, is de begin-datum de datum vanaf 
+																	en de eind-datum de datum tot en met. Bij opeenvolgende tijdversies, 
+																	zullen de datums op elkaar aansluiten en elkaar niet overlappen.
+																************* -->
+																<xs:element ref="br:previous-version-valid-until" minOccurs="0"/>
+																<xs:element ref="br:valid-from" minOccurs="0"/>
+																<xs:element ref="br:valid-until" minOccurs="0"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="berichttypes" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="berichttype" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="br:naam" />
+													<xs:element name="time-version">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="br:code"/>
+																<xs:element name="berichtstandaard" type="br:property"/>
+																<xs:element name="beveiligingsniveau" type="br:property"/>
+																<xs:element ref="br:datum_ingang"/>
+																<xs:element ref="br:datum_einde"/>
+																<xs:element name="berichtsoort" type="br:property"/>
+																<xs:element ref="br:versienummer" />
+																<xs:element ref="br:definitie" minOccurs="0"/>
+																<xs:element name="relations" type="br:berichttype_relations" minOccurs="0" />
+																<!-- ********
+																	Bij het gebruik van tijdversies, is de begin-datum de datum vanaf 
+																	en de eind-datum de datum tot en met. Bij opeenvolgende tijdversies, 
+																	zullen de datums op elkaar aansluiten en elkaar niet overlappen.
+																************* -->
+																<xs:element ref="br:previous-version-valid-until" minOccurs="0"/>
+																<xs:element ref="br:valid-from" minOccurs="0"/>
+																<xs:element ref="br:valid-until" minOccurs="0"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="berichtcomponenten" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="berichtcomponent" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="br:naam" />
+													<xs:element name="time-version">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="br:versienummer"/>
+																<xs:element name="xml_tag" type="br:property"/>
+																<xs:element ref="br:datum_ingang"/>
+																<xs:element ref="br:datum_einde"/>
+																<xs:element name="relations" type="br:berichtcomponent_relations" minOccurs="0" />
+																<!-- ********
+																	Bij het gebruik van tijdversies, is de begin-datum de datum vanaf 
+																	en de eind-datum de datum tot en met. Bij opeenvolgende tijdversies, 
+																	zullen de datums op elkaar aansluiten en elkaar niet overlappen.
+																************* -->
+																<xs:element ref="br:previous-version-valid-until" minOccurs="0"/>
+																<xs:element ref="br:valid-from" minOccurs="0"/>
+																<xs:element ref="br:valid-until" minOccurs="0"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="objecttype_relaties" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="objecttype_relatie" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="br:naam" />
+													<xs:element name="time-version">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="br:definitie" minOccurs="0"/>
+																<xs:element name="relations" type="br:objectrelatie_relations" minOccurs="0" />
+																<!-- ********
+																	Bij het gebruik van tijdversies, is de begin-datum de datum vanaf 
+																	en de eind-datum de datum tot en met. Bij opeenvolgende tijdversies, 
+																	zullen de datums op elkaar aansluiten en elkaar niet overlappen.
+																************* -->
+																<xs:element ref="br:previous-version-valid-until" minOccurs="0"/>
+																<xs:element ref="br:valid-from" minOccurs="0"/>
+																<xs:element ref="br:valid-until" minOccurs="0"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:simpleType name="object-name">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="60" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="object-name" type="br:object-name" />
+
+	<xs:simpleType name="property">
+		<xs:restriction base="xs:string" />
+	</xs:simpleType>
+
+	<xs:element name="naam" type="xs:string" />
+
+	<xs:element name="naam_catalogus" type="xs:string" />
+	
+	<xs:element name="valid-until" type="br:emptyDate_type" />
+
+	<xs:element name="valid-from" type="br:emptyDate_type" />
+
+	<xs:element name="previous-version-valid-until" type="br:emptyDate_type" />
+
+	<xs:element name="code" type="xs:string"/>
+	
+	<xs:element name="value" type="xs:string" />
+	
+	<xs:element name="afkorting" type="br:property"/>
+	
+	<xs:element name="auteur" type="br:property"/>
+	
+	<xs:element name="versienummer" type="br:property"/>
+
+	<xs:element name="status" type="br:property"/>
+
+	<xs:element name="toelichting" type="xs:string"/>
+	
+	<xs:element name="definitie" type="xs:string"/>
+	
+	<xs:element name="herkomst_definitie" type="br:property"/>
+																
+	<xs:element name="gegevensregel" type="xs:string"/>
+	
+	<xs:element name="inwinningscriteria" type="xs:string"/>
+	
+	<xs:element name="datum_ingang_geldigheid_vanaf" type="br:emptyDate_type"/>
+	
+	<xs:element name="datum_ingang" type="br:emptyDate_type"/>
+																
+	<xs:element name="datum_einde" type="br:emptyDate_type"/>
+	
+	<xs:element name="datum_registratie_vanaf" type="br:emptyDate_type"/>
+	
+	<xs:element name="datum_authentiek_vanaf" type="br:emptyDate_type"/>
+																
+	<xs:element name="relation-type-id" >
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="van_stelselcatalogus"/>
+				<xs:enumeration value="heeft"/>
+				<xs:enumeration value="verklaart_door"/>
+				<xs:enumeration value="object_van"/>
+				<xs:enumeration value="attribuut_van"/>
+				<xs:enumeration value="GegevensgroepVan"/>
+				<xs:enumeration value="gebeurtenis"/>
+				<xs:enumeration value="betreft_object"/>
+				<xs:enumeration value="betreft_attribuut"/>
+				<xs:enumeration value="onderdeel_van_domein"/>
+				<xs:enumeration value="onderdeel_van_berichtcomponent"/>
+				<xs:enumeration value="definitierelatie_met_object"/>
+				<xs:enumeration value="definitierelatie_met_attribuut"/>
+				<xs:enumeration value="definitierelatie_met_domein"/>
+				<xs:enumeration value="heeft_domeinwaarde"/>
+				<xs:enumeration value="veroorzaakt_door"/>
+				<xs:enumeration value="service_van"/>
+				<xs:enumeration value="berichttype_bij"/>
+				<xs:enumeration value="component_van"/>
+				<xs:enumeration value="opgenomen_in_berichttype"/>
+				<xs:enumeration value="opgenomen_in_berichtcomponent"/>
+				<xs:enumeration value="service_bij"/>
+				<xs:enumeration value="gebruikt_in_catalogus"/>
+				<xs:enumeration value="onderdeel_van_gegevensgroep"/>
+				<xs:enumeration value="gegevensgroepattribuut_van"/>
+				<xs:enumeration value="identificerend_voor"/>
+				<xs:enumeration value="voert_beheer_over"/>
+				<xs:enumeration value="van_object_naar_relatie" />
+				<xs:enumeration value="naar_gekoppeld_object" />
+				<xs:enumeration value="van_attribuut_naar_relatie"/>
+				<xs:enumeration value="naar_gekoppeld_attribuut" />
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+
+	<xs:element name="relation">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="br:relation-type-id" />
+				<xs:element ref="br:object-name" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="relations">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="br:relation" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="definitierelatie_met">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="specialisatie van"/>
+				<xs:enumeration value="aggregatie van"/>
+				<xs:enumeration value="classificatie van"/>
+				<xs:enumeration value="equivalent van"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:element name="indentificatie">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="Primair identificerend"/>
+				<xs:enumeration value="Alternatieve identificatie 1"/>
+				<xs:enumeration value="Alternatieve identificatie 2"/>
+				<xs:enumeration value="Alternatieve identificatie 3"/>
+				<xs:enumeration value="Alternatieve identificatie 4"/>
+				<xs:enumeration value="Alternatieve identificatie 5"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	
+	<xs:complexType name="catalogus_relations">
+		<xs:sequence>
+			<xs:element name="relation" minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="relation-type-id">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="voert_beheer_over"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element ref="br:object-name" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="object_relations">
+		<xs:sequence>
+			<xs:element name="relation" minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="relation-type-id">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="object_van"/>
+									<xs:enumeration value="verklaart_door"/>
+									<xs:enumeration value="definitierelatie_met_object" />
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element ref="br:object-name" />
+						<xs:element ref="br:definitierelatie_met" minOccurs="0"/>
+						<xs:element ref="br:toelichting" minOccurs="0" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="attribuut_relations">
+		<xs:sequence>
+			<xs:element name="relation" minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						 <xs:element name="relation-type-id">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="attribuut_van"/>
+									<xs:enumeration value="verklaart_door"/>
+									<xs:enumeration value="opgenomen_in_berichtcomponent"/>
+									<xs:enumeration value="heeft_domein"/>
+									<xs:enumeration value="heeft_domeinwaarde"/>
+									<xs:enumeration value="definitierelatie_met_attribuut"/>
+									<xs:enumeration value="identificerend_voor"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element ref="br:object-name" />
+						<xs:element name="indicatie_verplicht" type="br:ja_nee_type" minOccurs="0"/>
+						<xs:element name="indicatie_herhalend" type="br:ja_nee_type" minOccurs="0"/>
+						<xs:element ref="br:definitierelatie_met" minOccurs="0"/>
+						<xs:element ref="br:toelichting" minOccurs="0" />
+						<xs:element ref="br:indentificatie" minOccurs="0" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="gegevensgroep_relations">
+		<xs:sequence>
+			<xs:element name="relation" minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="relation-type-id">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="GegevensgroepVan"/>
+									<xs:enumeration value="onderdeel_van_gegevensgroep"/>
+									<xs:enumeration value="gegevensgroepattribuut_van"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element ref="br:object-name" />
+						<xs:element name="indicatie_verplicht_onderdeel" type="br:ja_nee_type" minOccurs="0"/>
+						<xs:element name="indicatie_herhalend_onderdeel" type="br:ja_nee_type" minOccurs="0"/>
+						<xs:element name="indicatie_verplicht_gegevensgroep" type="br:ja_nee_type" minOccurs="0"/>
+						<xs:element name="indicatie_herhalend_gegevensgroep" type="br:ja_nee_type" minOccurs="0"/>
+						<xs:element name="indicatie_verplicht_gegevensgroeptype" type="br:ja_nee_type" minOccurs="0"/>
+						<xs:element name="indicatie_herhalend_gegevensgroeptype" type="br:ja_nee_type" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="domein_relations">
+		<xs:sequence>
+			<xs:element name="relation" minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="relation-type-id">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="onderdeel_van_domein"/>
+									<xs:enumeration value="definitierelatie_met_domein"/>
+									<xs:enumeration value="heeft_domeinwaarde"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element ref="br:object-name" />
+						<xs:element ref="br:definitierelatie_met" minOccurs="0"/>
+						<xs:element ref="br:toelichting" minOccurs="0" />
+						<xs:element name="indicatie_verplicht_onderdeel" type="br:ja_nee_type" minOccurs="0"/>
+						<xs:element name="indicatie_herhalend_onderdeel" type="br:ja_nee_type" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="gebeurtenis_relations">
+		<xs:sequence>
+			<xs:element name="relation" minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="relation-type-id">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="gebeurtenis"/>
+									<xs:enumeration value="betreft_attribuut"/>
+									<xs:enumeration value="betreft_object"/>
+									<xs:enumeration value="veroorzaakt_door"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element ref="br:object-name" />
+						<xs:element name="aard_van_de_wijziging" type="br:property" minOccurs="0"/>
+						<xs:element name="indicatie_verplicht_gebeurtenis" type="br:ja_nee_type" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="gegevensservice_relations">
+		<xs:sequence>
+			<xs:element name="relation" minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="relation-type-id">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="service_van"/>
+									<xs:enumeration value="service_bij"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element ref="br:object-name" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="berichttype_relations">
+		<xs:sequence>
+			<xs:element name="relation" minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="relation-type-id">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="berichttype_bij"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element ref="br:object-name" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="berichtcomponent_relations">
+		<xs:sequence>
+			<xs:element name="relation" minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="relation-type-id">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="component_van" />
+									<xs:enumeration value="onderdeel_van_berichtcomponent" />
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element ref="br:object-name" />
+						<xs:element name="indicatie_verplicht_onderdeel" type="br:ja_nee_type" minOccurs="0"/>
+						<xs:element name="indicatie_herhalend_onderdeel" type="br:ja_nee_type" minOccurs="0"/>
+						<xs:element name="indicatie_verplicht_component" type="br:ja_nee_type" minOccurs="0"/>
+						<xs:element name="indicatie_herhalend_component" type="br:ja_nee_type" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="objectrelatie_relations">
+		<xs:sequence>
+			<xs:element name="relation" minOccurs="1" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="relation-type-id">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="naar_gekoppeld_object" />
+									<xs:enumeration value="naar_gekoppeld_attribuut" />
+									<xs:enumeration value="van_object_naar_relatie" />
+									<xs:enumeration value="van_attribuut_naar_relatie"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element ref="br:object-name" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="servicesoort_type">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="bestandsafslag"/>
+			<xs:enumeration value="verschil (was/wordt bestand)"/>
+			<xs:enumeration value="volgtijdelijke mutaties"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="ja_nee_type">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="Ja"/>
+			<xs:enumeration value="Nee"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="j_n_type">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="J"/>
+			<xs:enumeration value="N"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="emptyDate_type">
+		<xs:annotation>
+			<xs:documentation>Union of xs:date and empty xs:string to allow empty date elements</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="xs:date">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value=""/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+
+	<xs:simpleType name="volledigheid_type">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="-"/>
+			<xs:enumeration value="volledig"/>
+			<xs:enumeration value="beperkt"/>
+			<xs:enumeration value="niet"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="formaat_type">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="tekst"/>
+			<xs:enumeration value="getal"/>
+			<xs:enumeration value="datum-tijd"/>
+			<xs:enumeration value="punt"/>
+			<xs:enumeration value="lijn"/>
+			<xs:enumeration value="vlak"/>
+			<xs:enumeration value="volvlak"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+</xs:schema>

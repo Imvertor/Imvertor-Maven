@@ -40,6 +40,19 @@
     <xsl:template match="/imvert:packages">
         <imvert:packages>
             <imvert:id><xsl:value-of select="$application-package-release-name"/></imvert:id>
+            <!-- add run info, number of errors and warnings so far -->
+            <imvert:process>
+                
+                <xsl:variable name="errors" select="$configuration/config/messages/message[type=('ERROR','FATAL')]"/>
+                <xsl:variable name="warnings" select="$configuration/config/messages/message[type='WARN']"/>
+                
+                <imvert:errors>
+                    <xsl:value-of select="count($errors)"/>
+                </imvert:errors>
+                <imvert:warnings>
+                    <xsl:value-of select="count($warnings)"/>
+                </imvert:warnings>
+            </imvert:process>
             <xsl:sequence select="imf:compile-imvert-header(.)"/>
             <xsl:apply-templates select="imvert:package"/>
         </imvert:packages>
@@ -146,7 +159,7 @@
             <imvert:resolved-tagged-values>
                 <xsl:variable name="tvs" select="imf:get-compiled-tagged-values($construct,false())"/>
                 <xsl:for-each-group select="$tvs" group-by="@name">
-                    <imvert:resolved-tagged-value-group name="{current-group()/@name}">
+                    <imvert:resolved-tagged-value-group name="{current-group()[1]/@name}">
                         <xsl:for-each select="current-group()">
                             <imvert:tagged-value>
                                 <xsl:attribute name="derivation-project" select="@project"/>

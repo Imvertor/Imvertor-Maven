@@ -17,6 +17,9 @@
 
     <xsl:variable name="application-package-subpath" select="imf:get-trace-supplier-subpath($project-name,$application-package-name,$application-package-release)"/>
     
+    <xsl:variable name="all-derived-models-path" select="imf:get-config-string('properties','WORK_DEPENDENCIES_FILE',())"/>
+    <xsl:variable name="all-derived-models" select="imf:document($all-derived-models-path)/imvert:package-dependencies/imvert:supplier-contents"/>
+    
     <xsl:function name="imf:get-construct-formal-trace-name" as="xs:string">
         <xsl:param name="this" as="element()"/>
         <xsl:variable name="type-name" select="local-name($this)"/>
@@ -190,12 +193,17 @@
         Return the supplier document for the supplier subpath passed.
         Returns () when some info is missing.
     -->
-    <xsl:function name="imf:get-trace-supplier-document" as="document-node()?">
+    <xsl:function name="imf:get-trace-supplier-document" as="element(imvert:packages)?">
         <xsl:param name="supplier-subpath" as="xs:string?"/>
-        <xsl:sequence select="imf:document(concat($output-folder,'/applications/',$supplier-subpath,'/etc/system.imvert.xml'))"/>
+        <xsl:sequence select="$all-derived-models[@subpath=$supplier-subpath]/imvert:packages"/>
     </xsl:function>
     
-    <xsl:function name="imf:get-trace-supplier-subpath">
+    <xsl:function name="imf:get-trace-supplier-subpath" as="xs:string">
+        <xsl:param name="supplier" as="element(imvert:supplier)"/>
+        <xsl:sequence select="imf:get-trace-supplier-subpath($supplier/imvert:supplier-project,$supplier/imvert:supplier-name,$supplier/imvert:supplier-release)"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-trace-supplier-subpath" as="xs:string">
         <xsl:param name="supplier-project" as="xs:string?"/>
         <xsl:param name="supplier-name" as="xs:string?"/>
         <xsl:param name="supplier-release" as="xs:string?"/>
@@ -209,13 +217,19 @@
     <xsl:function name="imf:get-trace-all-supplier-subpaths" as="xs:string*">
         <xsl:param name="application" as="element(imvert:packages)"/>
         <xsl:variable name="subpaths" as="xs:string*">
+            <!-- first myself -->
+            <xsl:sequence select="imf:get-trace-supplier-subpath($application/imvert:project,$application/imvert:application,$application/imvert:release)"/>
+            <!-- then my suppliers -->
             <xsl:for-each select="$application/imvert:supplier">
-                <xsl:value-of select="imf:get-trace-supplier-subpath(imvert:supplier-project,imvert:supplier-name,imvert:supplier-release)"/>
+                <!-- more than one when for this application there are multiple supplier packages --> 
+                <!-- get the supplier, and see it that has supplier  itself -->
+                <xsl:variable name="subpath" select="imf:get-trace-supplier-subpath(imvert:supplier-project,imvert:supplier-name,imvert:supplier-release)"/>
+                <xsl:variable name="doc" select="imf:get-trace-supplier-document($subpath)"/>
+                <xsl:sequence select="imf:get-trace-all-supplier-subpaths($doc)"/>               
             </xsl:for-each>
-            <xsl:value-of select="imf:get-trace-supplier-subpath($application/imvert:project,$application/imvert:application,$application/imvert:release)"/>
         </xsl:variable>
-        <!-- return the reverse (depth first) and avoid duplicates -->
-        <xsl:sequence select="distinct-values(reverse($subpaths))"/>
+        <!-- avoid duplicates -->
+        <xsl:sequence select="distinct-values($subpaths)"/>
     </xsl:function>
    
 </xsl:stylesheet>

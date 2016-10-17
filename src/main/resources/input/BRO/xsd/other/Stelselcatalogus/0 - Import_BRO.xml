@@ -1,0 +1,509 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<br:mutaties xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.stelselcatalogus.nl/br_import basisregistraties-mutaties.xsd"
+ xmlns:br="http://www.stelselcatalogus.nl/br_import">
+	<br:mutatie>
+		<br:project>BR_Onderzoek</br:project>
+		<br:catalogi>
+			<br:catalogus>
+				<br:id>00bro01</br:id>
+				<br:naam>Basisregistratie Onderzoek</br:naam>
+				<br:time-version>
+					<br:code>BRO</br:code>
+					<br:versienummer>1.0</br:versienummer>
+					<br:versiedatum>maart 2009</br:versiedatum>
+					<br:datum_publicatie>augustus 2009</br:datum_publicatie>
+					<br:datum_opname/>
+					<br:code_gebruiksstatus>geen gebruiksstatus</br:code_gebruiksstatus>
+					<br:indicatie_vrijgave>Vrij</br:indicatie_vrijgave>
+					<br:toelichting>Voor u ligt de catalogus van de Basisregistratie Onderzoek. U
+						leest hier de toelichting. Deze catalogus is specifiek in het leven geroepen
+						om een initiële import te verwezelijken met behulp van de Be Informed Import
+						tool. Dit is nieuwe functionaliteit en deze import geeft een inzicht in de
+						import naar behoren werkt en gegevens en attributen van de Basisregistratie
+						Onderzoek correct worden verwerkt. De opmaak van deze tekst is
+						"plat".</br:toelichting>
+					<br:definitie>De definitie van de BR-O is momenteel nog in onderzoek. </br:definitie>
+					<br:previous-version-valid-until>2009-07-31</br:previous-version-valid-until>
+					<br:valid-from>2009-08-01</br:valid-from>
+					<br:valid-until/>
+				</br:time-version>
+			</br:catalogus>
+		</br:catalogi>
+		<br:objecten>
+			<br:object>
+				<br:id>01bro01</br:id>
+				<br:naam>A-Object van BRO</br:naam>
+				<br:time-version>
+					<br:code>01.01</br:code>
+					<br:afkorting>BROA</br:afkorting>
+					<br:unieke_aanduiding>indetificatiecode BROA</br:unieke_aanduiding>
+					<br:identificatie>n/a</br:identificatie>
+					<br:populatie>In deze tekst kan een nadere uitwerking staaan van dit
+						object.</br:populatie>
+					<br:kwaliteitsbegrip>Het object BRO-A bestaat als het meegeleverd is in dit
+						import xml-bestand.</br:kwaliteitsbegrip>
+					<br:toelichting>Object toelichting - sectie referentie. Hier volgt onopgemaakte
+						tekst als toelichting bij A-Object van BRO.</br:toelichting>
+					<br:definitie>Object Definitie - sectie referentie. Hier volgt onopgemaakte
+						tekst als definitie bij A-Object van BRO.</br:definitie>
+					<br:gegevensregel>Object Gegevensregel - sectie referentie. Hier volgt
+						onopgemaakte tekst als gegevensregel bij A-Object van
+						BRO.</br:gegevensregel>
+					<br:relations>
+						<br:relation>
+							<br:relation-type-id>object_van</br:relation-type-id>
+							<br:object-id>Basisregistratie Onderzoek</br:object-id>
+						</br:relation>
+					</br:relations>
+					<br:previous-version-valid-until>2010-07-31</br:previous-version-valid-until>
+					<br:valid-from>2012-08-01</br:valid-from>
+					<br:valid-until/>
+				</br:time-version>
+			</br:object>
+			<br:object>
+				<br:id>01bro02</br:id>
+				<br:naam>B-Object van BRO</br:naam>
+				<br:time-version>
+					<br:code>01.02</br:code>
+					<br:afkorting>BROB</br:afkorting>
+					<br:unieke_aanduiding>indetificatiecode BROB</br:unieke_aanduiding>
+					<br:identificatie>n/a</br:identificatie>
+					<br:populatie>In deze tekst kan een nadere uitwerking staaan van dit B-
+						object.</br:populatie>
+					<br:kwaliteitsbegrip>Het object BRO-B bestaat als het meegeleverd is in dit
+						import xml-bestand.</br:kwaliteitsbegrip>
+					<br:toelichting>Object toelichting - sectie referentie. Hier volgt onopgemaakte
+						tekst als toelichting bij B-Object van BRO.</br:toelichting>
+					<br:definitie>Object Definitie - sectie referentie. Hier volgt onopgemaakte
+						tekst als definitie bij B-Object van BRO.</br:definitie>
+					<br:gegevensregel>Object Gegevensregel - sectie referentie. Hier volgt
+						onopgemaakte tekst als gegevensregel bij B-Object van
+						BRO.</br:gegevensregel>
+					<br:relations>
+						<br:relation>
+							<br:relation-type-id>object_van</br:relation-type-id>
+							<br:object-id>Basisregistratie Onderzoek</br:object-id>
+						</br:relation>
+						<br:relation>
+							<br:relation-type-id>definitierelatie_met_object</br:relation-type-id>
+							<br:object-id>A-Object van BRO</br:object-id>
+							<br:definitierelatie>specialisatie van</br:definitierelatie>
+							<br:toelichting>hier staat aanvullende tekst om een nadere toelichting
+								op te nemen</br:toelichting>
+						</br:relation>
+					</br:relations>
+					<br:previous-version-valid-until>2009-07-31</br:previous-version-valid-until>
+					<br:valid-from>2009-08-01</br:valid-from>
+					<br:valid-until/>
+				</br:time-version>
+			</br:object>
+			<br:object>
+				<br:id>01bro03</br:id>
+				<br:naam>C-Object van BRO</br:naam>
+				<br:time-version>
+					<br:code>01.03</br:code>
+					<br:afkorting>BROC</br:afkorting>
+					<br:unieke_aanduiding>indetificatiecode BROC</br:unieke_aanduiding>
+					<br:identificatie>n/a</br:identificatie>
+					<br:populatie>In deze tekst kan een nadere uitwerking staaan van dit C -
+						object.</br:populatie>
+					<br:kwaliteitsbegrip>Het object BRO-C bestaat als het meegeleverd is in dit
+						import xml-bestand.</br:kwaliteitsbegrip>
+					<br:toelichting>Object toelichting - sectie referentie. Hier volgt onopgemaakte
+						tekst als toelichting bij C-Object van BRO.</br:toelichting>
+					<br:definitie>Object Definitie - sectie referentie. Hier volgt onopgemaakte
+						tekst als definitie bij C-Object van BRO.</br:definitie>
+					<br:gegevensregel>Object Gegevensregel - sectie referentie. Hier volgt
+						onopgemaakte tekst als gegevensregel bij C-Object van
+						BRO.</br:gegevensregel>
+					<br:relations>
+						<br:relation>
+							<br:relation-type-id>object_van</br:relation-type-id>
+							<br:object-id>Basisregistratie Onderzoek</br:object-id>
+						</br:relation>
+					</br:relations>
+					<br:previous-version-valid-until>2009-08-31</br:previous-version-valid-until>
+					<br:valid-from>2009-09-01</br:valid-from>
+					<br:valid-until/>
+				</br:time-version>
+			</br:object>
+		</br:objecten>
+		<br:attributen>
+			<br:attribuut>
+				<br:id>02bro01</br:id>
+				<br:naam>A-Attribuut van BRO</br:naam>
+				<br:time-version>
+					<br:code>02.01</br:code>
+					<br:categorie>Overig</br:categorie>
+					<br:xml_tag>attribuut-tag</br:xml_tag>
+					<br:indicatie_formele_historie>J</br:indicatie_formele_historie>
+					<br:indicatie_materiele_historie>actuele waarde</br:indicatie_materiele_historie>
+					<br:cardinaliteit>0-1: wordt soms niet geleverd</br:cardinaliteit>
+					<br:indicatie_authentiek>Authentiek gegeven</br:indicatie_authentiek>
+					<br:toelichting>Attribuut toelichting - sectie referentie. Hier volgt
+						onopgemaakte tekst als toelichting bij A-Attribuut van BRO.</br:toelichting>
+					<br:definitie>Attribuut Definitie - sectie referentie. Hier volgt onopgemaakte
+						tekst als definitie bij A-Attribuut van BRO.</br:definitie>
+					<br:gegevensregel>Attribuut Gegevensregel - sectie referentie. Hier volgt
+						onopgemaakte tekst als gegevensregel bij A-Attribuut van
+						BRO.</br:gegevensregel>
+					<br:relations>
+						<br:relation>
+							<br:relation-type-id>attribuut_van</br:relation-type-id>
+							<br:object-id>A-Object van BRO</br:object-id>
+						</br:relation>
+						<br:relation>
+							<br:relation-type-id>heeft_domein</br:relation-type-id>
+							<br:object-id>A-Domein van BRO</br:object-id>
+						</br:relation>
+						<br:relation>
+							<br:relation-type-id>heeft_domeinwaarde</br:relation-type-id>
+							<br:object-id>Domeinwaarden bij A-Domein</br:object-id>
+						</br:relation>
+						<br:relation>
+							<br:relation-type-id>opgenomen_in_berichttype</br:relation-type-id>
+							<br:object-id>Berichttype bij BRO</br:object-id>
+						</br:relation>
+						<br:relation>
+							<br:relation-type-id>opgenomen_in_berichtcomponent</br:relation-type-id>
+							<br:object-id>Berichtcomponent A bij BRO</br:object-id>
+						</br:relation>
+					</br:relations>
+					<br:previous-version-valid-until>2009-08-31</br:previous-version-valid-until>
+					<br:valid-from>2009-09-01</br:valid-from>
+					<br:valid-until/>
+				</br:time-version>
+			</br:attribuut>
+			<br:attribuut>
+				<br:id>02bro02</br:id>
+				<br:naam>B-Attribuut van BRO</br:naam>
+				<br:time-version>
+					<br:code>02.02</br:code>
+					<br:categorie>Overig</br:categorie>
+					<br:xml_tag>attribuut-tag</br:xml_tag>
+					<br:indicatie_formele_historie>J</br:indicatie_formele_historie>
+					<br:indicatie_materiele_historie>actuele waarde</br:indicatie_materiele_historie>
+					<br:cardinaliteit>0-1: wordt soms niet geleverd</br:cardinaliteit>
+					<br:indicatie_authentiek>Authentiek gegeven</br:indicatie_authentiek>
+					<br:toelichting>Attribuut toelichting - sectie referentie. Hier volgt
+						onopgemaakte tekst als toelichting bij B-Attribuut van BRO.</br:toelichting>
+					<br:definitie>Attribuut Definitie - sectie referentie. Hier volgt onopgemaakte
+						tekst als definitie bij B-Attribuut van BRO.</br:definitie>
+					<br:gegevensregel>Attribuut Gegevensregel - sectie referentie. Hier volgt
+						onopgemaakte tekst als gegevensregel bij B-Attribuut van
+						BRO.</br:gegevensregel>
+					<br:relations>
+						<br:relation>
+							<br:relation-type-id>attribuut_van</br:relation-type-id>
+							<br:object-id>B-Object van BRO</br:object-id>
+						</br:relation>
+						<br:relation>
+							<br:relation-type-id>definitierelatie_met_attribuut</br:relation-type-id>
+							<br:object-id>A-Attribuut van BRO</br:object-id>
+							<br:definitierelatie>specialisatie van</br:definitierelatie>
+							<br:toelichting>hier staat aanvullende tekst om een nadere toelichting
+								op te nemen</br:toelichting>
+						</br:relation>
+						<br:relation>
+							<br:relation-type-id>heeft_domein</br:relation-type-id>
+							<br:object-id>B-Domein van BRO</br:object-id>
+						</br:relation>
+						<br:relation>
+							<br:relation-type-id>heeft_domein</br:relation-type-id>
+							<br:object-id>C-Domein van BRO</br:object-id>
+						</br:relation>
+						<br:relation>
+							<br:relation-type-id>opgenomen_in_berichttype</br:relation-type-id>
+							<br:object-id>Berichttype bij BRO</br:object-id>
+						</br:relation>
+						<br:relation>
+							<br:relation-type-id>opgenomen_in_berichtcomponent</br:relation-type-id>
+							<br:object-id>Berichtcomponent B bij BRO</br:object-id>
+						</br:relation>
+					</br:relations>
+					<br:previous-version-valid-until>2009-08-31</br:previous-version-valid-until>
+					<br:valid-from>2009-09-01</br:valid-from>
+					<br:valid-until/>
+				</br:time-version>
+			</br:attribuut>
+			<br:attribuut>
+				<br:id>02bro03</br:id>
+				<br:naam>C-Attribuut van BRO</br:naam>
+				<br:time-version>
+					<br:code>02.03</br:code>
+					<br:categorie>Overig</br:categorie>
+					<br:xml_tag>attribuut-tag</br:xml_tag>
+					<br:indicatie_formele_historie>J</br:indicatie_formele_historie>
+					<br:indicatie_materiele_historie>actuele waarde</br:indicatie_materiele_historie>
+					<br:cardinaliteit>0-1: wordt soms niet geleverd</br:cardinaliteit>
+					<br:indicatie_authentiek>Authentiek gegeven</br:indicatie_authentiek>
+					<br:toelichting>Attribuut toelichting - sectie referentie. Hier volgt
+						onopgemaakte tekst als toelichting bij C-Attribuut van BRO.</br:toelichting>
+					<br:definitie>Attribuut Definitie - sectie referentie. Hier volgt onopgemaakte
+						tekst als definitie bij C-Attribuut van BRO.</br:definitie>
+					<br:gegevensregel>Attribuut Gegevensregel - sectie referentie. Hier volgt
+						onopgemaakte tekst als gegevensregel bij C-Attribuut van
+						BRO.</br:gegevensregel>
+					<br:relations>
+						<br:relation>
+							<br:relation-type-id>attribuut_van</br:relation-type-id>
+							<br:object-id>A-Object van BRO</br:object-id>
+						</br:relation>
+						<br:relation>
+							<br:relation-type-id>onderdeel_van_attribuut</br:relation-type-id>
+							<br:object-id>A-Attribuut van BRO</br:object-id>
+						</br:relation>
+						<br:relation>
+							<br:relation-type-id>heeft_domein</br:relation-type-id>
+							<br:object-id>C-Domein van BRO</br:object-id>
+						</br:relation>
+					</br:relations>
+					<br:previous-version-valid-until>2009-08-31</br:previous-version-valid-until>
+					<br:valid-from>2009-09-01</br:valid-from>
+					<br:valid-until/>
+				</br:time-version>
+			</br:attribuut>
+		</br:attributen>
+		<br:domeinen>
+			<br:domein>
+				<br:id>03bro01</br:id>
+				<br:naam>A-Domein van BRO</br:naam>
+				<br:time-version>
+					<br:waardeverzameling>0 - 9</br:waardeverzameling>
+					<br:formaat>a formaat</br:formaat>
+					<br:uitwisselingsmasker>N</br:uitwisselingsmasker>
+					<br:lengte>1</br:lengte>
+					<br:toelichting>Domein toelichting - sectie referentie. Hier volgt onopgemaakte
+						tekst als toelichting bij A-Domein van BRO.</br:toelichting>
+					<br:definitie>Domein Definitie - sectie referentie. Hier volgt onopgemaakte
+						tekst als definitie bij A-Domein van BRO.</br:definitie>
+					<br:gegevensregel>Domein Gegevensregel - sectie referentie. Hier volgt
+						onopgemaakte tekst als gegevensregel bij A-Domein van
+						BRO.</br:gegevensregel>
+					<br:relations>
+						<br:relation>
+							<br:relation-type-id>heeft_domeinwaarde</br:relation-type-id>
+							<br:object-id>Domeinwaarden bij A-Domein</br:object-id>
+						</br:relation>
+					</br:relations>
+					<br:previous-version-valid-until>2009-08-31</br:previous-version-valid-until>
+					<br:valid-from>2009-09-01</br:valid-from>
+					<br:valid-until/>
+				</br:time-version>
+			</br:domein>
+			<br:domein>
+				<br:id>03bro02</br:id>
+				<br:naam>B-Domein van BRO</br:naam>
+				<br:time-version>
+					<br:waardeverzameling>10 - 99</br:waardeverzameling>
+					<br:formaat>b formaat</br:formaat>
+					<br:uitwisselingsmasker>NN</br:uitwisselingsmasker>
+					<br:lengte>2</br:lengte>
+					<br:toelichting>Domein toelichting - sectie referentie. Hier volgt onopgemaakte
+						tekst als toelichting bij B-Domein van BRO.</br:toelichting>
+					<br:definitie>Domein Definitie - sectie referentie. Hier volgt onopgemaakte
+						tekst als definitie bij B-Domein van BRO.</br:definitie>
+					<br:gegevensregel>Domein Gegevensregel - sectie referentie. Hier volgt
+						onopgemaakte tekst als gegevensregel bij B-Domein van
+						BRO.</br:gegevensregel>
+					<br:relations>
+						<br:relation>
+							<br:relation-type-id>definitierelatie_met_domein</br:relation-type-id>
+							<br:object-id>A-Domein van BRO</br:object-id>
+							<br:definitierelatie>specialisatie van</br:definitierelatie>
+							<br:toelichting>hier staat aanvullende tekst om een nadere toelichting
+								op te nemen</br:toelichting>
+						</br:relation>
+					</br:relations>
+					<br:previous-version-valid-until>2009-08-31</br:previous-version-valid-until>
+					<br:valid-from>2009-09-01</br:valid-from>
+					<br:valid-until/>
+				</br:time-version>
+			</br:domein>
+			<br:domein>
+				<br:id>03bro03</br:id>
+				<br:naam>C-Domein van BRO</br:naam>
+				<br:time-version>
+					<br:waardeverzameling>100 - 999</br:waardeverzameling>
+					<br:formaat>c formaat</br:formaat>
+					<br:uitwisselingsmasker>NNN</br:uitwisselingsmasker>
+					<br:lengte>3</br:lengte>
+					<br:toelichting>Domein toelichting - sectie referentie. Hier volgt onopgemaakte
+						tekst als toelichting bij C-Domein van BRO.</br:toelichting>
+					<br:definitie>Domein Definitie - sectie referentie. Hier volgt onopgemaakte
+						tekst als definitie bij C-Domein van BRO.</br:definitie>
+					<br:gegevensregel>Domein Gegevensregel - sectie referentie. Hier volgt
+						onopgemaakte tekst als gegevensregel bij C-Domein van
+						BRO.</br:gegevensregel>
+					<br:relations>
+						<br:relation>
+							<br:relation-type-id>onderdeel_van_domein</br:relation-type-id>
+							<br:object-id>A-Domein van BRO</br:object-id>
+						</br:relation>
+					</br:relations>
+					<br:previous-version-valid-until>2009-08-31</br:previous-version-valid-until>
+					<br:valid-from>2009-09-01</br:valid-from>
+					<br:valid-until/>
+				</br:time-version>
+			</br:domein>
+		</br:domeinen>
+		<br:domeinwaarden>
+			<br:domeinwaarde>
+				<br:id>04bro01</br:id>
+				<br:naam>Domeinwaarden bij A-Domein</br:naam>
+				<br:time-version>
+					<br:volledigheid>niet</br:volledigheid>
+					<br:punt>Ja</br:punt>
+					<br:lijn>Nee</br:lijn>
+					<br:vlak>Nee</br:vlak>
+					<br:definitie>Domeinwaarde Definitie - sectie referentie. Hier volgt
+						onopgemaakte tekst als definitie een Domeinwaarde van BRO.</br:definitie>
+					<br:inwinningscriteria>Domeinwaarde bij A, toelichting - sectie referentie. Hier
+						volgt onopgemaakte tekst als toelichting bij A-Domein van BRO.
+						0,1,2,3,4,5,6,7,8,9</br:inwinningscriteria>
+					<br:previous-version-valid-until>2009-08-31</br:previous-version-valid-until>
+					<br:valid-from>2009-09-01</br:valid-from>
+					<br:valid-until/>
+				</br:time-version>
+			</br:domeinwaarde>
+		</br:domeinwaarden>
+		<br:gebeurtenissen>
+			<br:gebeurtenis>
+				<br:id>05bro01</br:id>
+				<br:naam>Gebeurtenis bij BRO</br:naam>
+				<br:time-version>
+					<br:afkorting>GE-BRO</br:afkorting>
+					<br:definitie>Gebeurtenis Definitie - sectie referentie. Hier volgt onopgemaakte
+						tekst als definitie bij een gebeurtenis van BRO.</br:definitie>
+					<br:toelichting>Gebeurtenis toelichting - sectie referentie. Hier volgt
+						onopgemaakte tekst als toelichting bij een gebeurtenis van
+						BRO.</br:toelichting>
+					<br:relations>
+						<br:relation>
+							<br:relation-type-id>gebeurtenis</br:relation-type-id>
+							<br:object-id>Basisregistratie Onderzoek</br:object-id>
+						</br:relation>
+						<br:relation>
+							<br:relation-type-id>betreft_object</br:relation-type-id>
+							<br:object-id>A-Object van BRO</br:object-id>
+						</br:relation>
+						<br:relation>
+							<br:relation-type-id>betreft_object</br:relation-type-id>
+							<br:object-id>B-Object van BRO</br:object-id>
+						</br:relation>
+						<br:relation>
+							<br:relation-type-id>betreft_attribuut</br:relation-type-id>
+							<br:object-id>A-Attribuut van BRO</br:object-id>
+						</br:relation>
+						<br:relation>
+							<br:relation-type-id>betreft_attribuut</br:relation-type-id>
+							<br:object-id>B-Attribuut van BRO</br:object-id>
+						</br:relation>
+					</br:relations>
+					<br:previous-version-valid-until>2009-08-31</br:previous-version-valid-until>
+					<br:valid-from>2009-09-01</br:valid-from>
+					<br:valid-until/>
+				</br:time-version>
+			</br:gebeurtenis>
+		</br:gebeurtenissen>
+		<br:gegevensservices>
+			<br:gegevensservice>
+				<br:id>06bro01</br:id>
+				<br:naam>Gegevenssservice BRO</br:naam>
+				<br:time-version>
+					<br:definitie>Gegevensservice Definitie - sectie referentie. Hier volgt
+						onopgemaakte tekst als definitie bij een gegevensservice van
+						BRO.</br:definitie>
+					<br:versienummer>G 1</br:versienummer>
+					<br:status>In bewerking</br:status>
+					<br:datum_ingang_operationaliteit>2009-08-01</br:datum_ingang_operationaliteit>
+					<br:datum_einde_operationaliteit>2011-08-01</br:datum_einde_operationaliteit>
+					<br:relations>
+						<br:relation>
+							<br:relation-type-id>service_van</br:relation-type-id>
+							<br:object-id>Basisregistratie Onderzoek</br:object-id>
+						</br:relation>
+						<br:relation>
+							<br:relation-type-id>service_bij</br:relation-type-id>
+							<br:object-id>Gebeurtenis bij BRO</br:object-id>
+						</br:relation>
+					</br:relations>
+					<br:previous-version-valid-until>2009-07-31</br:previous-version-valid-until>
+					<br:valid-from>2009-08-01</br:valid-from>
+					<br:valid-until/>
+				</br:time-version>
+			</br:gegevensservice>
+		</br:gegevensservices>
+		<br:berichttypes>
+			<br:berichttype>
+				<br:id>07bro01</br:id>
+				<br:naam>Berichttype bij BRO</br:naam>
+				<br:time-version>
+					<br:definitie>Berichttype Definitie - sectie referentie. Hier volgt onopgemaakte
+						tekst als definitie bij een berichttype van BRO.</br:definitie>
+					<br:versienummer>BT - 1</br:versienummer>
+					<br:datum_ingang_operationaliteit>2009-08-01</br:datum_ingang_operationaliteit>
+					<br:datum_einde_operationaliteit>2011-08-01</br:datum_einde_operationaliteit>
+					<br:relations>
+						<br:relation>
+							<br:relation-type-id>berichttype_bij</br:relation-type-id>
+							<br:object-id>Gegevenssservice BRO</br:object-id>
+						</br:relation>
+					</br:relations>
+					<br:previous-version-valid-until>2009-07-31</br:previous-version-valid-until>
+					<br:valid-from>2009-08-01</br:valid-from>
+					<br:valid-until/>
+				</br:time-version>
+			</br:berichttype>
+		</br:berichttypes>
+		<br:berichtcomponenten>
+			<br:berichtcomponent>
+				<br:id>08bro01</br:id>
+				<br:naam>Berichtcomponent A bij BRO</br:naam>
+				<br:time-version>
+					<br:definitie>Berichtcomponent A Definitie - sectie referentie. Hier volgt
+						onopgemaakte tekst als definitie bij berichtcomponent A van
+						BRO.</br:definitie>
+					<br:versienummer>BC-01</br:versienummer>
+					<br:datum_ingang_operationaliteit>2009-08-01</br:datum_ingang_operationaliteit>
+					<br:datum_einde_operationaliteit>2011-08-01</br:datum_einde_operationaliteit>
+					<br:relations>
+						<br:relation>
+							<br:relation-type-id>component_van</br:relation-type-id>
+							<br:object-id>Berichttype bij BRO</br:object-id>
+						</br:relation>
+					</br:relations>
+					<br:previous-version-valid-until>2009-07-31</br:previous-version-valid-until>
+					<br:valid-from>2009-08-01</br:valid-from>
+					<br:valid-until/>
+				</br:time-version>
+			</br:berichtcomponent>
+			<br:berichtcomponent>
+				<br:id>08bro02</br:id>
+				<br:naam>Berichtcomponent B bij BRO</br:naam>
+				<br:time-version>
+					<br:definitie>Berichtcomponent B Definitie - sectie referentie. Hier volgt
+						onopgemaakte tekst als definitie bij berichtcomponent B van
+						BRO.</br:definitie>
+					<br:versienummer>BC-01</br:versienummer>
+					<br:datum_ingang_operationaliteit>2009-08-01</br:datum_ingang_operationaliteit>
+					<br:datum_einde_operationaliteit>2011-08-01</br:datum_einde_operationaliteit>
+					<br:relations>
+						<br:relation>
+							<br:relation-type-id>component_van</br:relation-type-id>
+							<br:object-id>Berichttype bij BRO</br:object-id>
+						</br:relation>
+						<br:relation>
+							<br:relation-type-id>onderdeel_van_berichtcomponent</br:relation-type-id>
+							<br:object-id>Berichtcomponent A bij BRO</br:object-id>
+						</br:relation>
+					</br:relations>
+					<br:previous-version-valid-until>2009-07-31</br:previous-version-valid-until>
+					<br:valid-from>2009-08-01</br:valid-from>
+					<br:valid-until/>
+				</br:time-version>
+			</br:berichtcomponent>
+		</br:berichtcomponenten>
+	</br:mutatie>
+</br:mutaties>

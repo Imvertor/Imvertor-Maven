@@ -1,0 +1,78 @@
+<!-- 
+    Mappings for local schemas 
+-->
+<local-schemas>
+    <svn-id>$Id: local-schemas.xml 7209 2015-08-25 12:28:42Z arjan $</svn-id>
+    
+    <local-schema schemafolder="www.opengis.net/gml-3.2(3.2.1-20070906)">
+        <!-- 
+            This schema depends on the local schema folders specified below.
+        -->
+        <depends-on schemafolder="www.isotc211.org/geomatics(2005-20050101)"/>
+        <depends-on schemafolder="www.w3.org/1999-xlink(1.0.0-20010627)"/>
+        <depends-on schemafolder="www.w3.org/2001-SMIL20(2.0-20010731)"/>
+        <!-- 
+            Define which local paths will be valid for internet imports and includes 
+            This specifies the source URI prefix, as found in the local copy,
+            and the target URI prefix, that will be valid for the local copy.
+        -->
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/iso/19139/20070417"
+            target-uri-prefix="../.."/>
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/gml/3.1.1/smil/smil20.xsd"
+            target-uri-prefix="../../smil20/smil20.xsd"/>
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd"
+            target-uri-prefix="../../xlink/1.0.0/xlinks.xsd"/>
+        
+    </local-schema>
+    
+    <local-schema schemafolder="www.isotc211.org/geomatics(2005-20050101)">
+        <depends-on schemafolder="www.opengis.net/gml-3.2(3.2.1-20070906)"/>
+        <depends-on schemafolder="www.w3.org/1999-xlink(1.0.0-20010627)"/>
+        <local-map 
+            source-uri-prefix="../gml/gml.xsd"
+            target-uri-prefix="../gml/3.2.1/gml.xsd"/>
+        <local-map 
+            source-uri-prefix="../xlink/xlinks.xsd"
+            target-uri-prefix="../xlink/1.0.0/xlinks.xsd"/>
+    </local-schema>
+    
+    <local-schema schemafolder="www.geonovum.nl/NEN3610-schemas-v20110301(1.0.0-20110301)">
+        <depends-on schemafolder="www.opengis.net/gml-3.2(3.2.1-20070906)"/>
+        <local-map 
+            source-uri-prefix="http://schemas.opengis.net/gml/3.2.1/gml.xsd"
+            target-uri-prefix="../../gml/3.2.1/gml.xsd"/>
+    </local-schema>
+    
+    <local-schema schemafolder="www.kadaster.nl/schemas-KARIM-KIMBAG-adres-v20130601(1.0.0-20130601)">
+        <local-map 
+            source-uri-prefix="../../../xlink/1.0.0/xlinks.xsd"
+            target-uri-prefix="../../../../xlink/1.0.0/xlinks.xsd"/>
+        <local-map 
+            source-uri-prefix="../../../gml/3.2.1/gml.xsd"
+            target-uri-prefix="../../../../gml/3.2.1/gml.xsd"/>
+    </local-schema>
+    
+    <local-schema schemafolder="www.kadaster.nl/schemas-KARIM-KIMBRP-adres-v20130801(1.0.0-20130801)">
+        <local-map 
+            source-uri-prefix="../../../xlink/1.0.0/xlinks.xsd"
+            target-uri-prefix="../../../../xlink/1.0.0/xlinks.xsd"/>
+    </local-schema>
+
+    <local-schema schemafolder="www.kadaster.nl/schemas-KIMBAG-KIMBAG-BinnenlandsAdres-Adres-v20140301(1.0.1-20140301)">
+        <local-map 
+            source-uri-prefix="../../../xlink/1.0.0/xlinks.xsd"
+            target-uri-prefix="../../../../xlink/1.0.0/xlinks.xsd"/>
+    </local-schema>
+         
+    <local-schema schemafolder="www.kadaster.nl/schemas-CDMKAD-CDMKAD-typen-v20120508(1.0.1-20140301)">
+        <local-map 
+            source-uri-prefix="../../../xlink/1.0.0/xlinks.xsd"
+            target-uri-prefix="../../../../xlink/1.0.0/xlinks.xsd"/>
+    </local-schema>
+    
+    <local-schema schemafolder="www.kadaster.nl/schemas-Procesresultaat-v20110922(0.6.0-20110922)"/>
+    
+</local-schemas>
