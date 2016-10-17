@@ -46,6 +46,10 @@
             empty($alias), 
             'No alias found for association')"/>
         
+        <xsl:sequence select="imf:report-error(., 
+            not(matches($alias,'^([A-Z]{6})|([A-Z]{9})$')), 
+            'Alias [1] must be 6 or 9 uppercase characters',$alias)"/>
+        
         <xsl:next-match/>
     </xsl:template>
    
@@ -64,6 +68,7 @@
         )]">
         <!-- setup -->
         <xsl:variable name="construct" select="../.."/>
+        
         <!-- validate -->
         <xsl:sequence select="imf:report-error($construct, 
             $construct/imvert:type-name = ('scalar-string','scalar-uri'), 
@@ -72,8 +77,7 @@
         <xsl:next-match/>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotype-names('stereotype-name-referentielijst')]">
-        <xsl:message>TESTING</xsl:message>
+    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotype-names('stereotype-name-objecttype')]">
         <!-- setup -->
         <xsl:variable name="alias" select="imvert:alias"/>
         
@@ -82,12 +86,17 @@
             empty($alias), 
             'No alias found for [1]', imvert:stereotype)"/>
         
+        <xsl:sequence select="imf:report-error(., 
+            not(matches($alias,'^([A-Z]{6})$')), 
+            'Alias [1] for [2] must be 6 uppercase characters',($alias,imvert:stereotype))"/>
+        
         <xsl:next-match/>
     </xsl:template>
     
     <xsl:template match="imvert:is-id">
         <!-- setup -->
         <xsl:variable name="tv-k" select="imf:get-tagged-value-element(..,'Indicatie kerngegeven')"/>
+        
         <!-- validate -->
         <xsl:sequence select="imf:report-warning(.., 
             exists($tv-k) and imf:boolean(.) and not(imf:boolean($tv-k/imvert:value)), 
