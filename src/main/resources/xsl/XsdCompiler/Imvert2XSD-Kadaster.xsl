@@ -102,7 +102,7 @@
                     <xsl:variable name="external-package" select="imf:get-construct-by-id(../imvert:type-package-id)"/>
                     <imvert:schema>
                         <xsl:sequence select="imf:create-info-element('imvert:name',$external-package/imvert:name)"/>
-                        <xsl:sequence select="imf:create-info-element('imvert:prefix',.)"/>
+                        <xsl:sequence select="imf:create-info-element('imvert:prefix',imf:get-short-name(.))"/>
                         <xsl:sequence select="imf:create-info-element('imvert:namespace',$external-package/imvert:namespace)"/>
                         <xsl:choose>
                             <xsl:when test="imf:boolean($external-schemas-reference-by-url)">
