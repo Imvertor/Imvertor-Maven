@@ -24,6 +24,9 @@
     xmlns:ws="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
     
     xmlns:imvert="http://www.imvertor.org/schema/system"
+    xmlns:imvert-history="http://www.imvertor.org/schema/history"
+    xmlns:imvert-result="http://www.imvertor.org/schema/imvertor/application/v20160201"
+    
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
@@ -51,6 +54,14 @@
          The other *:file data should be passed for reporting purposes.
       -->
     
+    <xsl:include href="RegressionExtractor-imvert.xsl"/>
+    <xsl:include href="RegressionExtractor-imvert-schema.xsl"/>
+    <xsl:include href="RegressionExtractor-config.xsl"/>
+    <xsl:include href="RegressionExtractor-history.xsl"/>
+    <xsl:include href="RegressionExtractor-office-html.xsl"/>
+    <xsl:include href="RegressionExtractor-xsd.xsl"/>
+    <xsl:include href="RegressionExtractor-schemas.xsl"/>
+    
     <xsl:output method="xml" encoding="UTF-8" omit-xml-declaration="yes"/>
     
     <xsl:template match="/">
@@ -60,8 +71,14 @@
         </xsl:for-each>
     </xsl:template>
     
-    <xsl:template match="/cw:file">
+    <xsl:template match="cw:file">
         <xsl:choose>
+            <!--
+              no job info is compared. 
+            -->
+            <xsl:when test="starts-with(@path, 'job\')">
+                <!-- ignore -->
+            </xsl:when>
             <!-- 
                 skip all XMI files 
             -->
@@ -75,23 +92,115 @@
             <xsl:when test="@type = 'bin'">
                 <!-- ignore -->
             </xsl:when>
-            <!--
-                Pass on for more fine-grained filtering
-            -->    
-            <xsl:otherwise>
+            <!-- 
+               Process XML intermediate results. 
+            -->
+            <xsl:when test="starts-with(@path,'work\imvert\')">
                 <xsl:copy>
                     <xsl:copy-of select="@*[not(local-name(.) = ('date','size','fullpath'))]"/>
-                    <xsl:apply-templates/>
+                    <xsl:choose>
+                        <!--
+                            intermediate imvert files 
+                        -->
+                        <xsl:when test="@type='xml' and exists((imvert:packages,imvert:package-dependencies))">
+                            <xsl:apply-templates mode="mode-intermediate-imvert"/>
+                        </xsl:when>
+                        <!--
+                            intermediate config file 
+                        -->
+                        <xsl:when test="@type='xml' and exists(config)">
+                            <xsl:apply-templates mode="mode-intermediate-config"/>
+                        </xsl:when>
+                        <!--
+                            intermediate validation result file; ignore the contents 
+                            (imvertor.13.validate.xml imvertor.15.derive.xml )
+                        -->
+                        <xsl:when test="@type='xml' and exists(imvert:report)">
+                            <!-- ignore -->
+                        </xsl:when>
+                        <!--
+                           office file
+                        -->
+                        <xsl:when test="@ext='html'">
+                            <xsl:apply-templates mode="mode-intermediate-office-html"/>
+                        </xsl:when>
+                        <!--
+                            Check the history file
+                        -->
+                        <xsl:when test="@type='xml' and exists(imvert-history:versions)">
+                            <xsl:apply-templates mode="mode-intermediate-history"/>
+                        </xsl:when>
+                        <!--
+                            Check the model schema file
+                        -->
+                        <xsl:when test="@type='xml' and exists(imvert-result:Application)">
+                            <xsl:apply-templates mode="mode-intermediate-imvert-schema"/>
+                        </xsl:when>
+                        <!--
+                            Check the model schema file
+                        -->
+                        <xsl:when test="@type='xml' and exists(imvert:schemas)">
+                            <xsl:apply-templates mode="mode-intermediate-schemas"/>
+                        </xsl:when>
+                        <!--
+                            do not Check the run file
+                        -->
+                        <xsl:when test="@type='xml' and exists(no-output)"/>
+                        
+                        <xsl:otherwise>
+                            <xsl:value-of select="concat('unexpected intermediate file: ', @path, ' - cannot compare')"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:copy>
+            </xsl:when>
+            
+            <!-- 
+                reports
+            -->
+            <xsl:when test="starts-with(@path,'work\rep')">
+                <!-- do not check -->
+            </xsl:when>
+            <!--
+               skip etc folder; only holds stuf that is already checked in intermediate steps.
+            -->
+            <xsl:when test="starts-with(@path, 'work\app\etc')">
+                <!-- ignore -->
+            </xsl:when>
+          
+            <!--
+              documentation is not compared 
+            -->
+            <xsl:when test="starts-with(@path, 'work\app\doc')">
+                <!-- ignore -->
+            </xsl:when>
+            <!--
+              work xsd (supporting stuff) is not compared 
+            -->
+            <xsl:when test="starts-with(@path, 'work\app\etc\xsd')">
+                <!-- ignore -->
+            </xsl:when>
+            <!--
+              generated XSD is compared 
+            -->
+            <xsl:when test="starts-with(@path, 'work\app\xsd')">
+                <xsl:apply-templates mode="mode-intermediate-xsd"/>
+            </xsl:when>
+            
+            <xsl:otherwise>
+                <error>
+                    <xsl:value-of select="concat('unexpected output file: ', @path, ' - cannot compare')"/>
+                </error>   
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
     
-    <xsl:template match="node()|@*">
+    <xsl:template match="*|text()|@*" mode="#all">
         <xsl:copy>
-            <xsl:copy-of select="@*"/>
-            <xsl:apply-templates/>
+            <xsl:apply-templates select="node()|@*" mode="#current"/>
         </xsl:copy>
     </xsl:template>
+    
+    <!-- ignore all comments and pi's -->
+    <xsl:template match="comment() | processing-instruction()" mode="#all"/>
     
 </xsl:stylesheet>

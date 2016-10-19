@@ -115,8 +115,8 @@
    
    <properties>
       <!-- 
-         stylesheet to filter ANY xml file found in teh folder.
-         This XSL is generic, and therfore calls upon any imported XSL (or such) to process specific types of file.
+         Path to the stylesheet to filter ANY xml file found in the folder.
+         This XSL is generic, and therefore calls upon any imported XSL (or such) to process specific types of file.
          The root element of the file found is passed in a wrapper element:
          <cw:file type="xml" path="work\rep\XmiCompiler-report.xml" name="" ext="" date="" size="" attrib="">
       -->
