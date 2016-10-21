@@ -33,9 +33,10 @@ VM arguments are:
 -Dlog4j.configuration=file:%installdir%\src\main\resources\cfg\log4j.properties
 -Dinstall.dir=%installdir%\src\main\resources
 -Doutput.dir=%datadir%\Imvertor-OS-output
--Dinput.dir=%datadir%\Imvertor-OS-input
 -Dwork.dir=%datadir%\Imvertor-OS-work\default
 -Djava.library.path=c:\java\EnterpriseArchitect\Java-API
+-Dea.enabled=true
+-Downer.name=Kadaster
 </pre>
 Note: If you want to access Enterprise Architect from within Imvertor, you need to install EA, and install some files as described on http://www.sparxsystems.com/enterprise_architect_user_guide/10/automation_and_scripting/setup.html
 Place the files in an accessible location, e.g.
