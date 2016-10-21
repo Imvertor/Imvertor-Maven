@@ -35,7 +35,7 @@
 			<xsl:namespace name="{$prefix}"><xsl:value-of select="ep:namespace"/></xsl:namespace>
 			<xs:import namespace="http://www.egem.nl/StUF/StUF0301" schemaLocation="stuf0301.xsd"/>
 			<xsl:apply-templates select="ep:message"/>
-			<xsl:apply-templates select="ep:construct[@type='groupType']" mode="complexType"/>
+			<xsl:apply-templates select="ep:construct[@type='group']" mode="complexType"/>
 			<xsl:apply-templates select="ep:construct[not(@type)]" mode="complexType"/>
 			<xsl:comment select="'simpleTypes to be extended with XML attributes'"/>
 			<xsl:apply-templates select="//ep:construct[(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:patroon or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata]]" mode="createSimpleTypes"/>
