@@ -47,7 +47,7 @@
     </xsl:variable> 
     
     <!-- set the processing parameters of the stylesheets. -->
-    <xsl:variable name="debug" select="'no'"/>
+    <xsl:variable name="debug" select="'yes'"/>
     
     <!-- Within the next variable the configurations defined within the Base-configuration spreadsheet are placed in a processed XML format.
          With this configuration the attributes to be used on each location within the XML schemas are determined. -->
@@ -134,7 +134,17 @@
            <!-- The following for-each takes care of creating global construct elements for each ep:construct element present within the 'rough-messages' variable 
                 having a type-id value none of the preceding ep:construct elements have. -->
            <xsl:for-each select="$rough-messages//ep:construct[ep:type-id and generate-id(.) = generate-id(key('construct-id',ep:type-id,$rough-messages)[1])]">
-               <xsl:variable name="berichtCode" select="ancestor::ep:rough-message/ep:code"/>
+               <!--xsl:variable name="berichtCode" select="ancestor::ep:rough-message/ep:code"-->
+               <xsl:variable name="berichtCode">
+                   <xsl:choose>
+                       <xsl:when test="ancestor-or-self::ep:construct[@berichtCode]">
+                           <xsl:value-of select="ancestor-or-self::ep:construct[@berichtCode][last()]/@berichtCode"/>
+                       </xsl:when>
+                       <xsl:otherwise>
+                           <xsl:value-of select="ancestor::ep:rough-message/ep:code"/>
+                       </xsl:otherwise>
+                   </xsl:choose>
+               </xsl:variable>
                <xsl:variable name="context">
                    <xsl:choose>
                        <xsl:when test="@context=''">
@@ -155,10 +165,6 @@
                        <xsl:otherwise>no</xsl:otherwise>
                    </xsl:choose>
                </xsl:variable>
-               <xsl:if test="imf:boolean($debug)">
-                   <xsl:message select="concat('globalComplexType: ',$id)"/>
-               </xsl:if>
-               
                
                <!-- LET OP! We moeten bij het bepalen van de globale complexTypes niet alleen kijken of ze hergebruikt worden over de berichten 
                     maar ook of ze over die berichten heen wel hetzelfde moeten blijven. Het ene bericht heeft een hele ander type complexType nodig dan het andere.
@@ -167,7 +173,7 @@
                
                <xsl:choose>
                    <!-- The following when generates global constructs based on uml groups. -->
-                   <xsl:when test="@type='groupType' and $packages//imvert:class[imvert:id = $type-id]">
+                   <xsl:when test="@type='group' and $packages//imvert:class[imvert:id = $type-id]">
                        <xsl:variable name="docs">
                            <imvert:complete-documentation>
                                <xsl:copy-of select="imf:get-compiled-documentation($packages//imvert:class[imvert:id = $type-id])"/>
@@ -175,7 +181,11 @@
                        </xsl:variable>
                        <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
                        
-                       <ep:construct type="groupType">
+                       <xsl:if test="imf:boolean($debug)">
+                           <xsl:comment select="'For-each-when: @type=group and $packages//imvert:class[imvert:id = $type-id]'"/>
+                       </xsl:if>
+                       
+                       <ep:construct type="group">
                            <xsl:sequence
                                select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'))" />
                            <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
@@ -210,6 +220,10 @@
                                </xsl:apply-templates>
                            </ep:seq> 
                        </ep:construct>                       
+                       
+                       <xsl:if test="imf:boolean($debug)">
+                           <xsl:comment select="' For-each-when: @type=group and $packages//imvert:class[imvert:id = $type-id] End-For-each-when'"/>
+                       </xsl:if>
                    </xsl:when>
                    <!-- The following when generates global constructs based on uml classes. -->
                    <xsl:when test="$packages//imvert:class[imvert:id = $type-id]">
@@ -219,7 +233,11 @@
                            </imvert:complete-documentation>
                        </xsl:variable>
                        <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
-
+                       
+                       <xsl:if test="imf:boolean($debug)">
+                           <xsl:comment select="'For-each-when: $packages//imvert:class[imvert:id = $type-id]'"/>
+                       </xsl:if>
+                       
                        <ep:construct>
                            <!-- The value of the tech-name is dependant on the availability of an alias. -->
                            <xsl:choose>
@@ -259,6 +277,17 @@
                                            <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
                                            <xsl:with-param name="berichtCode" select="$berichtCode" />
                                            <xsl:with-param name="context" select="$context" />
+                                           <!-- If the class is refered to form an association which is part of an VRIJ BERICHT no stuurgegevens must be generated. -->
+                                           <xsl:with-param name="useStuurgegevens">
+                                               <xsl:choose>
+                                                   <xsl:when test="$packages//imvert:association[imvert:type-id = $type-id]/imvert:stereotype = 'BERICHTRELATIE'">
+                                                      <xsl:value-of select="'no'"/>
+                                                   </xsl:when>
+                                                   <xsl:otherwise>
+                                                       <xsl:value-of select="'yes'"/>
+                                                   </xsl:otherwise>
+                                               </xsl:choose>
+                                           </xsl:with-param>                                      
                                        </xsl:apply-templates>
                                        <!-- ROME:   Waarschijnlijk moet er hier afhankelijk van de context meer 
                                     				of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' maar 
@@ -271,43 +300,45 @@
                                     				ook al gegenereerd moeten worden als er ergens dieper onder het huidige niveau 
                                     				een element voorkomt waarbij op het gerelateerde attribuut historie is gedefinieerd. 
                                     				Dit geldt voor alle locaties waar onderstaande elementen worden gedefinieerd. -->
-                                       <?x ep:construct>
-                                           <!--ep:name>StUF:tijdvakObject</ep:name-->
-                                           <ep:tech-name>StUF:tijdvakObject</ep:tech-name>
-                                           <ep:max-occurs>1</ep:max-occurs>
-                                           <ep:min-occurs>0</ep:min-occurs>
-                                           <ep:position>150</ep:position>
-                                       </ep:construct x?>
-                                       <ep:construct>
-                                           <!--ep:name>StUF:tijdvakGeldigheid</ep:name-->
-                                           <ep:tech-name>StUF:tijdvakGeldigheid</ep:tech-name>
-                                           <ep:max-occurs>1</ep:max-occurs>
-                                           <ep:min-occurs>0</ep:min-occurs>
-                                           <ep:position>155</ep:position>
-                                       </ep:construct>
-                                       <ep:construct>
-                                           <!--ep:name>StUF:tijdstipRegistratie</ep:name-->
-                                           <ep:tech-name>StUF:tijdstipRegistratie</ep:tech-name>
-                                           <ep:max-occurs>1</ep:max-occurs>
-                                           <ep:min-occurs>0</ep:min-occurs>
-                                           <ep:position>160</ep:position>
-                                       </ep:construct>
-                                       <ep:construct>
-                                           <!--ep:name>StUF:extraElementen</ep:name-->
-                                           <ep:tech-name>StUF:extraElementen</ep:tech-name>
-                                           <ep:max-occurs>1</ep:max-occurs>
-                                           <ep:min-occurs>0</ep:min-occurs>
-                                           <ep:position>165</ep:position>
-                                       </ep:construct>
-                                       <ep:construct>
-                                           <!--ep:name>StUF:aanvullendeElementen</ep:name-->
-                                           <ep:tech-name>StUF:aanvullendeElementen</ep:tech-name>
-                                           <ep:max-occurs>1</ep:max-occurs>
-                                           <ep:min-occurs>0</ep:min-occurs>
-                                           <ep:position>170</ep:position>
-                                       </ep:construct>
-                                       <xsl:if test="imf:boolean($debug)">	
-                                           <xsl:message select="concat('$historyApplies ',$historyApplies)" />
+                                       <xsl:if test="$packages//imvert:class[imvert:id = $type-id]/imvert:stereotype != 'KENNISGEVINGBERICHTTYPE' and
+                                           $packages//imvert:class[imvert:id = $type-id]/imvert:stereotype != 'VRAAGBERICHTTYPE' and
+                                           $packages//imvert:class[imvert:id = $type-id]/imvert:stereotype != 'ANTWOORDBERICHTTYPE' and
+                                           $packages//imvert:class[imvert:id = $type-id]/imvert:stereotype != 'SYNCHRONISATIEBERICHTTYPE'">
+                                           <?x ep:construct>
+                                               <!--ep:name>StUF:tijdvakObject</ep:name-->
+                                               <ep:tech-name>StUF:tijdvakObject</ep:tech-name>
+                                               <ep:max-occurs>1</ep:max-occurs>
+                                               <ep:min-occurs>0</ep:min-occurs>
+                                               <ep:position>150</ep:position>
+                                           </ep:construct x?>
+                                           <ep:construct>
+                                               <!--ep:name>StUF:tijdvakGeldigheid</ep:name-->
+                                               <ep:tech-name>StUF:tijdvakGeldigheid</ep:tech-name>
+                                               <ep:max-occurs>1</ep:max-occurs>
+                                               <ep:min-occurs>0</ep:min-occurs>
+                                               <ep:position>155</ep:position>
+                                           </ep:construct>
+                                           <ep:construct>
+                                               <!--ep:name>StUF:tijdstipRegistratie</ep:name-->
+                                               <ep:tech-name>StUF:tijdstipRegistratie</ep:tech-name>
+                                               <ep:max-occurs>1</ep:max-occurs>
+                                               <ep:min-occurs>0</ep:min-occurs>
+                                               <ep:position>160</ep:position>
+                                           </ep:construct>
+                                           <ep:construct>
+                                               <!--ep:name>StUF:extraElementen</ep:name-->
+                                               <ep:tech-name>StUF:extraElementen</ep:tech-name>
+                                               <ep:max-occurs>1</ep:max-occurs>
+                                               <ep:min-occurs>0</ep:min-occurs>
+                                               <ep:position>165</ep:position>
+                                           </ep:construct>
+                                           <ep:construct>
+                                               <!--ep:name>StUF:aanvullendeElementen</ep:name-->
+                                               <ep:tech-name>StUF:aanvullendeElementen</ep:tech-name>
+                                               <ep:max-occurs>1</ep:max-occurs>
+                                               <ep:min-occurs>0</ep:min-occurs>
+                                               <ep:position>170</ep:position>
+                                           </ep:construct>
                                        </xsl:if>
                                        <!-- If 'Materiele historie' or 'Formele historie' is applicable for the current class a constructRef to a historieMaterieel global construct based on the current class is generated. -->
                                        <xsl:if test="@indicatieMaterieleHistorie='Ja' or @indicatieFormeleHistorie='Ja'">
@@ -354,7 +385,15 @@
                                            <xsl:with-param name="berichtCode" select="$berichtCode" />
                                            <xsl:with-param name="context" select="$context" />
                                        </xsl:apply-templates>
-                                       <xsl:variable name="mnemonic" select="$packages//imvert:class[imvert:id = $type-id]/imvert:alias" />
+                                       <!-- ROME: Volgende wijze van waarde bepaling voor de mnemonic moet ook op diverse plaatsen in Imvert2XSD-KING-endproduct-structure geimplementeerd worden. -->
+                                       <xsl:variable name="mnemonic">
+                                           <xsl:choose>
+                                               <xsl:when test="$packages//imvert:class[imvert:id = $type-id]/imvert:alias = '' or not($packages//imvert:class[imvert:id = $type-id]/imvert:alias)"/>
+                                               <xsl:otherwise>
+                                                   <xsl:value-of select="$packages//imvert:class[imvert:id = $type-id]/imvert:alias"/>
+                                               </xsl:otherwise>
+                                           </xsl:choose>
+                                       </xsl:variable>
                                        <!-- The function imf:createAttributes is used to determine the XML attributes 
                             				neccessary for this context. It has the following parameters: - typecode 
                             				- berichttype - context - datumType The first 3 parameters relate to columns 
@@ -379,6 +418,10 @@
                            <xsl:with-param name="berichtCode" select="$berichtCode" />
                            <xsl:with-param name="context" select="$context" />
                        </xsl:apply-templates>
+                       
+                       <xsl:if test="imf:boolean($debug)">
+                           <xsl:comment select="' For-each-when: $packages//imvert:class[imvert:id = $type-id] End-For-each-when'"/>
+                       </xsl:if>
                    </xsl:when>
                </xsl:choose>
                <!-- There are 2 types of history parameters. The first one configures if history is applicable for the current context. History isn't applicable for example for each message type.
@@ -388,7 +431,7 @@
                <xsl:if test="@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes'">
                    <xsl:choose>
                        <!-- The following when generates historieMaterieel global constructs based on uml groups. -->
-                       <xsl:when test="@type='groupType' and $packages//imvert:class[imvert:id = $type-id]">
+                       <xsl:when test="@type='group' and $packages//imvert:class[imvert:id = $type-id]">
                            <xsl:variable name="docs">
                                <imvert:complete-documentation>
                                    <xsl:copy-of select="imf:get-compiled-documentation($packages//imvert:class[imvert:id = $type-id])"/>
@@ -396,7 +439,11 @@
                            </xsl:variable>
                            <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
                            
-                           <ep:construct type="groupType">
+                           <xsl:if test="imf:boolean($debug)">
+                               <xsl:comment select="'For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $type-id]'"/>
+                           </xsl:if>
+                           
+                           <ep:construct type="group">
                                <xsl:sequence
                                    select="imf:create-output-element('ep:tech-name', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-historieMaterieel'))" />
                                <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
@@ -422,16 +469,23 @@
                                    <!-- Associations are never placed within historieMaterieel constructs. -->
                                </ep:seq> 
                            </ep:construct>                       
+                           
+                           <xsl:if test="imf:boolean($debug)">
+                               <xsl:comment select="' For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $type-id] End-For-each-when'"/>
+                           </xsl:if>
                        </xsl:when>
                        <!-- The following when generates historieMaterieel global constructs based on uml classes. -->
                        <xsl:when test="$packages//imvert:class[imvert:id = $type-id]">
                            <xsl:variable name="docs">
                                <imvert:complete-documentation>
                                    <xsl:copy-of select="imf:get-compiled-documentation($packages//imvert:class[imvert:id = $type-id])"/>
-                               </imvert:complete-documentation>
-                           </xsl:variable>
+                               </imvert:complete-documentation>                           </xsl:variable>
                            <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
-
+                           
+                           <xsl:if test="imf:boolean($debug)">
+                               <xsl:comment select="'For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $type-id]'"/>
+                           </xsl:if>
+                           
                            <ep:construct>
                                <!-- The value of the tech-name is dependant on the availability of an alias. -->
                                <xsl:choose>
@@ -538,6 +592,10 @@
                                    </xsl:otherwise>
                                </xsl:choose>
                            </ep:construct>
+                           
+                           <xsl:if test="imf:boolean($debug)">
+                               <xsl:comment select="' For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $type-id] End-For-each-when'"/>
+                           </xsl:if>
                        </xsl:when>
                    </xsl:choose>
                </xsl:if>
@@ -545,7 +603,7 @@
                <xsl:if test="@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes'">
                    <xsl:choose>
                        <!-- The following when generates historieFormeel global constructs based on uml groups. -->
-                       <xsl:when test="@type='groupType' and $packages//imvert:class[imvert:id = $type-id]">
+                       <xsl:when test="@type='group' and $packages//imvert:class[imvert:id = $type-id]">
                            <xsl:variable name="docs">
                                <imvert:complete-documentation>
                                    <xsl:copy-of select="imf:get-compiled-documentation($packages//imvert:class[imvert:id = $type-id])"/>
@@ -553,7 +611,11 @@
                            </xsl:variable>
                            <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
                            
-                           <ep:construct type="groupType">
+                           <xsl:if test="imf:boolean($debug)">
+                               <xsl:comment select="'For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $type-id]'"/>
+                           </xsl:if>
+                           
+                           <ep:construct type="group">
                                <xsl:sequence
                                    select="imf:create-output-element('ep:tech-name', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-historieFormeel'))" />
                                <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
@@ -579,6 +641,10 @@
                                    <!-- Associations are never placed within historieFormeel constructs. -->
                                </ep:seq> 
                            </ep:construct>                       
+                           
+                           <xsl:if test="imf:boolean($debug)">
+                               <xsl:comment select="' For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $type-id] End-For-each-when'"/>
+                           </xsl:if>
                        </xsl:when>
                        <!-- The following when generates historieFormeel global constructs based on uml classes. -->
                        <xsl:when test="$packages//imvert:class[imvert:id = $type-id]">
@@ -588,7 +654,11 @@
                                </imvert:complete-documentation>
                            </xsl:variable>
                            <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
- 
+                           
+                           <xsl:if test="imf:boolean($debug)">
+                               <xsl:comment select="'For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $type-id]'"/>
+                           </xsl:if>
+                           
                            <ep:construct>
                                <!-- The value of the tech-name is dependant on the availability of an alias. -->
                                <xsl:choose>
@@ -691,6 +761,10 @@
                                    </xsl:otherwise>
                                </xsl:choose>
                            </ep:construct>
+                           
+                           <xsl:if test="imf:boolean($debug)">
+                               <xsl:comment select="' For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $type-id] End-For-each-when'"/>
+                           </xsl:if>
                        </xsl:when>
                    </xsl:choose>
                </xsl:if>
