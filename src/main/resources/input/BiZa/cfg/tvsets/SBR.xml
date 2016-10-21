@@ -78,7 +78,7 @@
             <name lang="nl">Regels</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Attribuutsoort</stereo>
+                <stereo required="no" lang="nl">Attribuutsoort</stereo> <!-- TODO niet op KKG -->
                 <stereo required="no" lang="nl">Gegevensgroeptype</stereo>
                 <stereo required="no" lang="nl">Relatiesoort</stereo>
             </stereotypes>

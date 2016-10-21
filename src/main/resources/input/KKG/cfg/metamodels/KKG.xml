@@ -28,6 +28,22 @@
     </naming>
     
     <stereotypes>
+        
+        <!-- KKG added -->
+        <stereo id="stereotype-name-codelist">
+            <name lang="en">Codelist</name>
+            <name lang="nl">Codelijst</name>
+            <construct>objecttype</construct>
+        </stereo>
+        <stereo id="stereotype-name-relation-role">
+            <name lang="nl">Relatierol</name>
+            <name lang="en">Relation role</name>
+            <construct>association</construct>
+        </stereo>
+        
+        
+        
+        <!-- generic -->
 
         <stereo id="stereotype-name-product">
             <name lang="en">product</name>
