@@ -42,6 +42,28 @@
             </stereotypes>
        </tv>
         
+        <tv norm="space"  rules="NOC" id="FunctieBerichtrelatie">
+            <name lang="nl">Functie berichtrelatie</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Berichtrelatie</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>update</value>
+                <value>selectie</value>
+                <value>antwoord</value>
+            </declared-values>
+        </tv>
+        <tv norm="space"  rules="NOC" id="FunctieEntiteitrelatie">
+            <name lang="nl">Functie entiteitrelatie</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Entiteitrelatie</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>entiteit</value>
+            </declared-values>
+        </tv>
         <tv norm="space" validate="" rules="" id="VerkorteAlias">
             <name lang="nl">Verkorte alias</name>
             <derive>no</derive>
