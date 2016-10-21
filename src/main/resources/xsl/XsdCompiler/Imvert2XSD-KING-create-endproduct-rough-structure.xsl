@@ -673,7 +673,12 @@
 					<xsl:if test="$changedBerichtCode != ''">
 						<xsl:attribute name="berichtCode" select="$changedBerichtCode"/>
 					</xsl:if>
-					<ep:name>antwoord</ep:name>
+					<ep:name>
+						<xsl:value-of select="imvert:name/@original"/>
+					</ep:name>
+					<ep:tech-name>
+						<xsl:value-of select="imvert:name"/>
+					</ep:tech-name>
 					<?x xsl:sequence
 						select="imf:create-output-element('ep:id', imvert:id)" />
 					<xsl:sequence
@@ -683,7 +688,7 @@
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="context" select="$context"/>
 						<xsl:with-param name="type-id" select="$type-id"/>
-						<xsl:with-param name="constructName" select="'-'"/>
+						<xsl:with-param name="constructName" select="'object'"/>
 						<xsl:with-param name="historyApplies">
 							<xsl:choose>
 								<xsl:when test="$berichtCode = 'La07' or $berichtCode = 'La08'"
@@ -717,17 +722,17 @@
 								<xsl:attribute name="berichtCode" select="$changedBerichtCode"/>
 							</xsl:if>
 							<ep:name>
-								<xsl:value-of select="$context"/>
+								<xsl:value-of select="imvert:name/@original"/>
 							</ep:name>
 							<ep:tech-name>
-								<xsl:value-of select="$context"/>
+								<xsl:value-of select="imvert:name"/>
 							</ep:tech-name>
 							<xsl:call-template name="createRoughEntityConstruct">
 								<xsl:with-param name="id-trail" select="$id-trail"/>
 								<xsl:with-param name="berichtCode" select="$berichtCode"/>
 								<xsl:with-param name="context" select="$context"/>
 								<xsl:with-param name="type-id" select="$type-id"/>
-								<xsl:with-param name="constructName" select="imvert:name"/>
+								<xsl:with-param name="constructName" select="'object'"/>
 								<xsl:with-param name="historyApplies" select="'no'"/>
 							</xsl:call-template>
 
@@ -739,17 +744,17 @@
 								<xsl:attribute name="berichtCode" select="$changedBerichtCode"/>
 							</xsl:if>
 							<ep:name>
-								<xsl:value-of select="$context"/>
+								<xsl:value-of select="imvert:name/@original"/>
 							</ep:name>
 							<ep:tech-name>
-								<xsl:value-of select="$context"/>
+								<xsl:value-of select="imvert:name"/>
 							</ep:tech-name>
 							<xsl:call-template name="createRoughEntityConstruct">
 								<xsl:with-param name="id-trail" select="$id-trail"/>
 								<xsl:with-param name="berichtCode" select="$berichtCode"/>
 								<xsl:with-param name="context" select="$context"/>
 								<xsl:with-param name="type-id" select="$type-id"/>
-								<xsl:with-param name="constructName" select="imvert:name"/>
+								<xsl:with-param name="constructName" select="'object'"/>
 								<xsl:with-param name="historyApplies" select="'no'"/>
 							</xsl:call-template>
 						</ep:construct>

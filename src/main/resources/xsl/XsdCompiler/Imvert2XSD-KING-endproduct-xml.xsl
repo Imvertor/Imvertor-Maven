@@ -424,6 +424,8 @@
                        </xsl:if>
                    </xsl:when>
                </xsl:choose>
+
+
                <!-- There are 2 types of history parameters. The first one configures if history is applicable for the current context. History isn't applicable for example for each message type.
                     The second one is used to determine if history, if applicable for the context, is applicable for the class being processed. Not every class has attributes or associations history applies to. -->
                
@@ -769,7 +771,136 @@
                    </xsl:choose>
                </xsl:if>
            </xsl:for-each>
-       </ep:message-set>
+            <xsl:for-each select="$rough-messages//ep:rough-message[contains(ep:name, 'La')]//ep:construct[ep:name = 'antwoord']">
+                <xsl:variable name="berichtName" select="ancestor::ep:rough-message/ep:name"/>
+                <xsl:variable name="relatedObjectId" select="ep:construct/ep:id"/>
+                <xsl:variable name="relatedObjectTypeId" select="ep:construct/ep:type-id"/> 
+                 <ep:construct>
+                     <?x ep:tech-name><xsl:value-of select="concat($messageName,ep:name)"/></ep:tech-name x?>
+                     <xsl:choose>
+                         <xsl:when test="$packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias">
+                             <xsl:sequence
+                                 select="imf:create-output-element('ep:tech-name', concat($berichtName,'-',$packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',ep:name))"
+                             />
+                         </xsl:when>
+                         <xsl:otherwise>
+                             <xsl:sequence
+                                 select="imf:create-output-element('ep:tech-name', concat($berichtName,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',ep:name))"
+                             />
+                         </xsl:otherwise>
+                     </xsl:choose>
+                    <ep:seq orderingDesired="no">
+                        <ep:constructRef context="{@context}">
+                            <xsl:sequence
+                                select="imf:create-output-element('ep:tech-name', 'object')"/>
+                            <ep:max-occurs><xsl:value-of select="$packages//imvert:association[imvert:id = $relatedObjectId]/imvert:max-occurs"/></ep:max-occurs>
+                            <ep:min-occurs><xsl:value-of select="$packages//imvert:association[imvert:id = $relatedObjectId]/imvert:min-occurs"/></ep:min-occurs>
+                            <ep:position>1</ep:position>
+                            <xsl:choose>
+                                <xsl:when test="$packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias">
+                                    <xsl:sequence
+                                        select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name')))"
+                                    />
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:sequence
+                                        select="imf:create-output-element('ep:href', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'))"
+                                    />
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </ep:constructRef>
+                    </ep:seq>
+                </ep:construct>                  
+           </xsl:for-each>
+            <xsl:for-each select="$rough-messages//ep:rough-message[contains(ep:name, 'Lv')]//ep:construct[ep:name = 'start']">
+                <xsl:variable name="berichtName" select="ancestor::ep:rough-message/ep:name"/>
+                <xsl:variable name="relatedObjectId" select="ep:construct/ep:id"/>
+                <xsl:variable name="relatedObjectTypeId" select="ep:construct/ep:type-id"/> 
+                <ep:construct>
+                    <!--ep:name>
+							<xsl:value-of select="$context"/>
+						</ep:name-->
+                    <?x ep:tech-name><xsl:value-of select="concat($messageName,ep:name)"/></ep:tech-name x?>
+                    <xsl:choose>
+                        <xsl:when test="$packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias">
+                            <xsl:sequence
+                                select="imf:create-output-element('ep:tech-name', concat($berichtName,'-',$packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',ep:name))"
+                            />
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence
+                                select="imf:create-output-element('ep:tech-name', concat($berichtName,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',ep:name))"
+                            />
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <ep:seq orderingDesired="no">
+                        <ep:constructRef context="{@context}">
+                            <xsl:sequence
+                                select="imf:create-output-element('ep:tech-name', ep:construct/ep:name)"/>
+                            <ep:max-occurs><xsl:value-of select="$packages//imvert:association[imvert:id = $relatedObjectId]/imvert:max-occurs"/></ep:max-occurs>
+                            <ep:min-occurs><xsl:value-of select="$packages//imvert:association[imvert:id = $relatedObjectId]/imvert:min-occurs"/></ep:min-occurs>
+                            <ep:position>1</ep:position>
+                            <xsl:choose>
+                                <xsl:when test="$packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias">
+                                    <xsl:sequence
+                                        select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name')))"
+                                    />
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:sequence
+                                        select="imf:create-output-element('ep:href', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'))"
+                                    />
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </ep:constructRef>
+                    </ep:seq>
+                </ep:construct>
+            </xsl:for-each>
+            <xsl:for-each select="$rough-messages//ep:rough-message[contains(ep:name, 'Lv')]//ep:construct[ep:name = 'scope']">
+                <xsl:variable name="berichtName" select="ancestor::ep:rough-message/ep:name"/>
+                <xsl:variable name="relatedObjectId" select="ep:construct/ep:id"/>
+                <xsl:variable name="relatedObjectTypeId" select="ep:construct/ep:type-id"/> 
+                <ep:construct>
+                    <!--ep:name>
+							<xsl:value-of select="$context"/>
+						</ep:name-->
+                    <?x ep:tech-name><xsl:value-of select="concat($messageName,ep:name)"/></ep:tech-name x?>
+                    <xsl:choose>
+                        <xsl:when test="$packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias">
+                            <xsl:sequence
+                                select="imf:create-output-element('ep:tech-name', concat($berichtName,'-',$packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',ep:name))"
+                            />
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence
+                                select="imf:create-output-element('ep:tech-name', concat($berichtName,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',ep:name))"
+                            />
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <ep:seq orderingDesired="no">
+                        <ep:constructRef context="{@context}">
+                            <xsl:sequence
+                                select="imf:create-output-element('ep:tech-name', ep:construct/ep:name)"/>
+                            <ep:max-occurs><xsl:value-of select="$packages//imvert:association[imvert:id = $relatedObjectId]/imvert:max-occurs"/></ep:max-occurs>
+                            <ep:min-occurs><xsl:value-of select="$packages//imvert:association[imvert:id = $relatedObjectId]/imvert:min-occurs"/></ep:min-occurs>
+                            <ep:position>1</ep:position>
+                            <xsl:choose>
+                                <xsl:when test="$packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias">
+                                    <xsl:sequence
+                                        select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name')))"
+                                    />
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:sequence
+                                        select="imf:create-output-element('ep:href', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'))"
+                                    />
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </ep:constructRef>
+                    </ep:seq>
+                </ep:construct>
+            </xsl:for-each>
+        </ep:message-set>
      </xsl:variable>
     
     <xsl:template match="/">
