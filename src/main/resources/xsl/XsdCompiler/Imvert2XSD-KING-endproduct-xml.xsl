@@ -47,7 +47,7 @@
     </xsl:variable> 
     
     <!-- set the processing parameters of the stylesheets. -->
-    <xsl:variable name="debug" select="'yes'"/>
+    <xsl:variable name="debug" select="'no'"/>
     
     <!-- Within the next variable the configurations defined within the Base-configuration spreadsheet are placed in a processed XML format.
          With this configuration the attributes to be used on each location within the XML schemas are determined. -->
@@ -123,7 +123,9 @@
            <xsl:sequence select="imf:create-output-element('ep:patch-number', 'TO-DO')"/>
            <xsl:sequence select="imf:create-output-element('ep:release', /imvert:packages/imvert:release)"/>
             
-           <xsl:sequence select="$rough-messages"/>
+            <xsl:if test="imf:boolean($debug)">
+                <xsl:sequence select="$rough-messages"/>
+            </xsl:if>
            
            <xsl:variable name="messages">
                <xsl:apply-templates select="$packages/imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package') and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]" mode="create-message-structure"/>
