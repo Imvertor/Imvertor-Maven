@@ -121,6 +121,18 @@
         <xsl:sequence select="imf:create-result-table-by-tr($rows,'scalar:50,metamodel:50','table-scalars')"/>
     </xsl:template>
     
+    <!--
+         <stereo id="stereotype-name-referentielijst">
+            <name lang="nl" original="referentielijst">REFERENTIELIJST</name>
+            <desc>
+                Een lijst met een opsomming van de mogelijke domeinwaarden van een attribuutsoort die in de loop van de tijd kan veranderen.
+                Voorbeeld: referentielijst LAND, referentielijst NATIONALITEIT
+               (Een "rij" in de "tabel".)
+            </desc>
+            <construct>class</construct>
+            <construct>datatype</construct>
+         </stereo>
+    -->
     <xsl:template match="/config" mode="metamodel-stereos">
         <xsl:variable name="rows" as="element(tr)*">
             <xsl:for-each-group select="$configuration-metamodel-file//stereotypes/stereo" group-by="@id">
@@ -135,15 +147,39 @@
                             </span>
                         </td>
                         <td>
+                            <xsl:value-of select="string-join(construct,', ')"/>
+                        </td>
+                        <td>
                             <xsl:value-of select="string-join($metamodels/name,', ')"/>
                         </td>
                     </tr>
                 </xsl:for-each>
             </xsl:for-each-group>
         </xsl:variable>
-        <xsl:sequence select="imf:create-result-table-by-tr($rows,'stereo:50,metamodel:50','table-stereos')"/>
+        <xsl:sequence select="imf:create-result-table-by-tr($rows,'stereo:40,on constructs:40,metamodel:20','table-stereos')"/>
     </xsl:template>
     
+    <!--
+     <tv id="Herkomst" norm="space">
+            <name lang="nl" original="Herkomst">herkomst</name>
+            <derive>yes</derive>
+            <stereotypes>
+               <stereo required="yes" lang="nl" original="Objecttype">OBJECTTYPE</stereo>
+               <stereo required="yes" lang="nl" original="Complex datatype">COMPLEX DATATYPE</stereo>
+               <stereo required="yes" lang="nl" original="Data element">DATA ELEMENT</stereo>
+               <stereo required="yes" lang="nl" original="Attribuutsoort">ATTRIBUUTSOORT</stereo>
+               <stereo required="yes" lang="nl" original="Relatiesoort">RELATIESOORT</stereo>
+               <stereo required="yes" lang="nl" original="Gegevensgroeptype">GEGEVENSGROEPTYPE</stereo>
+               <stereo required="yes" lang="nl" original="Referentielijst">REFERENTIELIJST</stereo>
+               <stereo required="yes" lang="nl" original="Referentie element">REFERENTIE ELEMENT</stereo>
+               <stereo required="yes" lang="nl" original="Union">UNION</stereo>
+               <stereo required="yes" lang="nl" original="Union element">UNION ELEMENT</stereo>
+               <stereo required="no" lang="nl" original="Codelijst">CODELIJST</stereo>
+               <stereo required="no" lang="nl" original="Relatierol">RELATIEROL</stereo>
+            </stereotypes>
+            <declared-values/>
+     </tv> 
+    -->
     <xsl:template match="/config" mode="metamodel-tvs">
         <xsl:variable name="rows" as="element(tr)*">
             <xsl:for-each-group select="$configuration-tvset-file//tagged-values/tv" group-by="@id">
@@ -158,12 +194,27 @@
                             </span>
                         </td>
                         <td>
+                           <xsl:value-of select="derive"/>
+                        </td>
+                        <td>
                             <xsl:value-of select="string-join($tagsets/name,', ')"/>
+                        </td>
+                        <td>
+                            <xsl:variable name="subrows" as="element(tr)*">
+                                <xsl:for-each select="stereotypes/stereo">
+                                    <tr>
+                                        <td><xsl:value-of select="."/></td>
+                                        <td><xsl:value-of select="@original"/></td>
+                                        <td><xsl:value-of select="@required"/></td>
+                                    </tr>
+                                </xsl:for-each>            
+                            </xsl:variable>
+                            <xsl:sequence select="imf:create-result-table-by-tr($subrows,'name:40,original name:40,required:20',concat('table-tvs-',generate-id(.)))"/>
                         </td>
                     </tr>
                 </xsl:for-each>
             </xsl:for-each-group>
         </xsl:variable>
-        <xsl:sequence select="imf:create-result-table-by-tr($rows,'tagged value:50,tagsets:50','table-tvs')"/>
+        <xsl:sequence select="imf:create-result-table-by-tr($rows,'tagged value:20,derive?:10,tagsets:10,stereos:55','table-tvs')"/>
     </xsl:template>
 </xsl:stylesheet>
