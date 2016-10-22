@@ -91,7 +91,9 @@ public class ComplyCompiler  extends Step {
 			}
 			
 			configurator.setParm("system", "comply-content-file", contentFile.getCanonicalPath());
-			transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_FILE", "properties/WORK_COMPLY_XSLPATH");
+			transformer.transformStep("system/imvertor-ep-result","properties/WORK_COMPLY_STUB_FILE", "properties/WORK_COMPLY_STUB_XSLPATH","system/imvertor-ep-result");
+			transformer.transformStep("system/imvertor-ep-result","properties/WORK_COMPLY_FLAT_FILE", "properties/WORK_COMPLY_FLAT_XSLPATH","system/imvertor-ep-result");
+			transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_FILL_FILE", "properties/WORK_COMPLY_FILL_XSLPATH");
 			
 			// replace the __content.xml file by the newly created workfile. 
 			// And pack the result.
@@ -103,7 +105,7 @@ public class ComplyCompiler  extends Step {
 			String zipname = configurator.getParm("appinfo", "application-name") + ".xlsx";
 			ZipFile formFile = new ZipFile(formFolder,zipname);
 			
-			XmlFile newContentFile = new XmlFile(configurator.getParm("properties","WORK_COMPLY_FILE",true));
+			XmlFile newContentFile = new XmlFile(configurator.getParm("properties","WORK_COMPLY_FILL_FILE",true));
 			newContentFile.copyFile(contentFile);
 			formFile.deserializeFromXml(serializeFolder,true);
 			
