@@ -67,7 +67,6 @@
 	<xsl:function name="imf:get-compiled-documentation" as="element(imvert:documentation)*">
 		<xsl:param name="construct" as="element()"/> <!-- any construct that may have documentation -->
 		<xsl:variable name="suppliers" select="imf:get-trace-suppliers-for-construct($construct,1)"/>
-		
 		<xsl:for-each select="$suppliers">
 			<xsl:variable name="supplier" select="."/>
 			
@@ -129,19 +128,16 @@
 		<xsl:sequence select="if ($include-empty) then $tvs else $tvs[normalize-space(@value)]"/>
 	</xsl:function>
 	
-	<xsl:function name="imf:get-applicable-tagged-values" as="element(tv)?">
+	<xsl:function name="imf:get-applicable-tagged-values" as="element(tv)*">
 		<xsl:param name="this" as="element()"/>
 		<xsl:variable name="all-tv" select="imf:get-compiled-tagged-values($this,false())"/>
 		<xsl:for-each-group select="$all-tv" group-by="@name">
-			<xsl:variable name="most-relevant-level">
-				<xsl:for-each select="current-group()">
-					<xsl:sort select="@level" data-type="number"/>
-					<xsl:if test="position() = 1">
-						<xsl:value-of select="@level"/>
-					</xsl:if>
-				</xsl:for-each>
-			</xsl:variable>
-			<xsl:sequence select="$this//tv[@level = $most-relevant-level]"/>		
+			<xsl:for-each select="current-group()">
+				<xsl:sort select="@level" data-type="number"/>
+				<xsl:if test="position() = 1">
+					<xsl:sequence select="."/>
+				</xsl:if>
+			</xsl:for-each>
 		</xsl:for-each-group>
 	</xsl:function>
 	
