@@ -15,7 +15,7 @@
        Voorbeeld van sheet2:
        <sheet>
             <block>
-                <head>stuurgegevens</head>>
+                <head>stuurgegevens</head>
                 <prop>
                     <element>berichtcode</element>
                     <cardinal>1:1</cardinal>
@@ -53,15 +53,20 @@
             </Systeem>
         </sheet>
     -->
-   
+
+    <xsl:template match="/">
+        <xsl:apply-templates select="ep:message-set" mode="prepare-flat"/>
+    </xsl:template>
+    
     <xsl:template match="ep:message-set" mode="prepare-flat">
         <cp:sheets>
             <cp:sheet>
                 <xsl:apply-templates select="ep:message" mode="prepare-flat-block"/> 
             </cp:sheet>
             <cp:sheet>
-                <xsl:for-each select="ep:message/ep:seq//ep:construct[imf:is-complextype(.)]">
-                    <xsl:apply-templates select="." mode="prepare-flat-block"/> <!--TODO may be seq or choice embedded -->
+                <!-- alle constructs waarnaar gerefereerd wordt -->
+                <xsl:for-each select="ep:construct[ep:tech-name = //*/ep:href]">
+                    <xsl:apply-templates select="." mode="prepare-flat-block"/> 
                 </xsl:for-each>
             </cp:sheet>
         </cp:sheets>
@@ -72,7 +77,7 @@
             <cp:prop type="header">
                 <xsl:value-of select="ep:name"/>
             </cp:prop>
-            <xsl:apply-templates select="ep:seq/ep:construct" mode="prepare-flat"/>
+            <xsl:apply-templates select="ep:seq/(ep:construct|ep:constructRef)" mode="prepare-flat"/>
             <cp:prop type="empty"/>
         </cp:block>
     </xsl:template>
@@ -84,28 +89,28 @@
             <cp:prop type="header">
                 <xsl:value-of select="$tech-name"/>
             </cp:prop>
-            <xsl:apply-templates select="ep:seq/ep:construct" mode="prepare-flat"/>
+            <xsl:apply-templates select="ep:seq/(ep:construct|ep:constructRef)" mode="prepare-flat"/>
             <cp:prop type="empty"/>
         </cp:block>
     </xsl:template>
     
-    <xsl:template match="ep:construct" mode="prepare-flat">
+    <xsl:template match="ep:construct | ep:constructRef" mode="prepare-flat">
         <xsl:param name="as-attribute" select="false()"/>
         
-        <xsl:variable name="id" select="imf:get-id(.)"/>
         <xsl:variable name="digit-before" select="ep:length - 1 - ep:fraction-digits"/>
         <xsl:variable name="digit-after" select="ep:fraction-digits"/>
         <xsl:variable name="digit-pattern" select="concat('[+\-]?\d{', $digit-before, '},\d{', $digit-after, '}')"/> 
         
         <cp:prop type="spec">
-            <xsl:if test="imf:is-complextype(.)">
+            <xsl:if test="self::ep:constructRef">
+                <xsl:variable name="id" select="imf:get-id(//ep:construct[ep:tech-name = current()/ep:href])"/>
                 <xsl:attribute name="ref">
                     <xsl:value-of select="$id"/>
                 </xsl:attribute>
             </xsl:if>
-            <xsl:sequence select="imf:create-element('cp:element',ep:tech-name)"/>
+            <xsl:sequence select="imf:create-element('cp:name',ep:tech-name)"/>
             <xsl:sequence select="imf:create-element('cp:cardinal',imf:format-cardinality(ep:min-occurs,ep:max-occurs))"/>
-            <xsl:sequence select="imf:create-element('cp:comment',ep:documentation)"/>
+            <xsl:sequence select="imf:create-element('cp:documentation',ep:documentation)"/>
             <xsl:sequence select="imf:create-element('cp:attribute',string($as-attribute))"/>
             <xsl:sequence select="imf:create-element('cp:fixed',if (ep:enum[2]) then () else ep:enum[1])"/>
             <xsl:sequence select="imf:create-element('cp:enum',string-join(ep:enum,', '))"/>
@@ -114,7 +119,14 @@
             <xsl:sequence select="imf:create-element('cp:mininclusive',ep:min-value)"/>
             <xsl:sequence select="imf:create-element('cp:maxinclusive',ep:max-value)"/>
             <xsl:sequence select="imf:create-element('cp:minlength',ep:min-length)"/>
-            <xsl:sequence select="imf:create-element('cp:maxlength',ep:length)"/>
+            <xsl:sequence select="imf:create-element('cp:maxlength',(ep:length,ep:max-length)[1])"/>
+           
+            <xsl:sequence select="imf:create-element('cp:regels',ep:regels)"/>
+   
+            <xsl:sequence select="imf:create-element('cp:kerngegeven',if (.//ep:kerngegeven = 'true') then 'Ja' else ())"/>
+            <xsl:sequence select="imf:create-element('cp:voidable',.//ep:mogelijkGeenWaarde)"/>
+            <xsl:sequence select="imf:create-element('cp:authentiek',.//ep:authentiek)"/>
+            
         </cp:prop>
         <xsl:apply-templates select="ep:seq/ep:construct[@ismetadata = 'yes']" mode="prepare-flat">
             <xsl:with-param name="as-attribute" select="true()"/>
@@ -136,15 +148,12 @@
         <!-- remove -->
     </xsl:template>
    
-    <xsl:function name="imf:create-range">
-        <xsl:param name="range"/>
-        <xsl:value-of select="concat($range/@sl,$range/@sn,':',$range/@el,$range/@en)"/>
-    </xsl:function>
-    
     <xsl:function name="imf:format-cardinality">
         <xsl:param name="min-occurs"/>
         <xsl:param name="max-occurs"/>
-        <xsl:value-of select="concat($min-occurs,'..',if ($max-occurs = 'unbounded') then 'n' else $max-occurs)"/>
+        <xsl:variable name="min-occurs-use" select="if (normalize-space($min-occurs)) then $min-occurs else '1'"/>
+        <xsl:variable name="max-occurs-use" select="if (normalize-space($max-occurs)) then $max-occurs else '1'"/>
+        <xsl:value-of select="concat($min-occurs-use,'..',if ($max-occurs-use = 'unbounded') then 'n' else $max-occurs-use)"/>
     </xsl:function>
     
     <!-- 

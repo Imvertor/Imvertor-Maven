@@ -47,17 +47,24 @@
        -->
       <IMVERTOR_COMPLY_TEMPLATE_EXCELPATH>${system/cfg-folder-path}/ComplyCompiler/templates/Testberichten sjabloon leeg.xlsx</IMVERTOR_COMPLY_TEMPLATE_EXCELPATH>
       <!-- 
-         What folder mist store the extracted template (serialized zip) 
+         What folder must store the extracted template (serialized zip) 
        -->
       <WORK_COMPLY_TEMPLATE_FOLDERPATH>${system/work-comply-folder-path}/template</WORK_COMPLY_TEMPLATE_FOLDERPATH>
       <!-- 
          stylesheet to process the __content.xml, extracted from the serialized template
       -->
-      <WORK_COMPLY_XSLPATH>ComplyCompiler-filler.xsl</WORK_COMPLY_XSLPATH>
+      <WORK_COMPLY_STUB_XSLPATH>ComplyCompiler-stub.xsl</WORK_COMPLY_STUB_XSLPATH>
+      <WORK_COMPLY_FLAT_XSLPATH>ComplyCompiler-flat.xsl</WORK_COMPLY_FLAT_XSLPATH>
+      <WORK_COMPLY_FILL_XSLPATH>ComplyCompiler-filler.xsl</WORK_COMPLY_FILL_XSLPATH>
       <!-- 
+         path to flattened data format, i.e. internmediate sheets and blocks representation
+         &
          path to temporary output of transforming __content.xml; this is not compressed back into the result Excel.
       -->
-      <WORK_COMPLY_FILE>${system/work-imvert-folder-path}/imvertor.50.filler.xml</WORK_COMPLY_FILE>
+      -->
+      <WORK_COMPLY_STUB_FILE>${system/work-imvert-folder-path}/imvertor.48.stub.xml</WORK_COMPLY_STUB_FILE>
+      <WORK_COMPLY_FLAT_FILE>${system/work-imvert-folder-path}/imvertor.49.flat.xml</WORK_COMPLY_FLAT_FILE>
+      <WORK_COMPLY_FILL_FILE>${system/work-imvert-folder-path}/imvertor.50.filler.xml</WORK_COMPLY_FILL_FILE>
       
    </properties>
 </config>

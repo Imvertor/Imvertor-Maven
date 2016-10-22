@@ -53,13 +53,14 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-entity.xsl"/>
    
-    <xsl:include href="ComplyCompiler-flat.xsl"/>
-    
     <xsl:variable name="debug" select="true()"/>
     
     <xsl:variable name="ooxml-namespace" select="'http://schemas.openxmlformats.org/spreadsheetml/2006/main'"/>
     <xsl:variable name="ooxml-schemalocation-file" select="'D:\projects\validprojects\Kadaster-Imvertor\Imvertor-OS\ImvertorCommon\trunk\xsd\ooxml\sml.xsd'"/>
     <xsl:variable name="ooxml-schemalocation-url" select="imf:file-to-url($ooxml-schemalocation-file)"/>
+    
+    <xsl:variable name="quot">"</xsl:variable>
+    <xsl:variable name="apos">'</xsl:variable>
     
     <xsl:variable name="sheet-gegevensgroepen-tab-name">'Complex types'</xsl:variable>
     <xsl:variable name="xsi-schema-reference" as="attribute()?">
@@ -67,13 +68,10 @@
     </xsl:variable>
     
     <!-- 
-        preprare all info from EP message set, transform to a worksheet block-buildup that can be processed "in sequence"
+        prepare all info from EP message set, transform to a worksheet block-buildup that can be processed "in sequence"
     -->
     <xsl:variable name="imvertor-ep-result-path" select="imf:get-config-string('system','imvertor-ep-result')"/>
-    <xsl:variable name="message-set-raw" select="imf:document($imvertor-ep-result-path)"/>
-    <xsl:variable name="message-set-flat" as="element(cp:sheets)">
-        <xsl:apply-templates select="$message-set-raw/ep:message-set" mode="prepare-flat"/>
-    </xsl:variable>
+    <xsl:variable name="message-set-flat" select="imf:document($imvertor-ep-result-path)/cp:sheets"/>
     
     <!-- 
         get the sheets from template 
@@ -90,12 +88,6 @@
     <xsl:variable name="drawings2" select="$__content/cw:files/cw:file[@path = 'xl\drawings\vmlDrawing2.vml']/*:xml"/>
     
     <xsl:template match="/">
-        <xsl:if test="$debugging">
-            <xsl:result-document href="file:/c:/temp/flat.xml">
-                <xsl:sequence select="$message-set-flat"/>
-            </xsl:result-document>
-        </xsl:if>
-       
         <!--process the template -->
         <xsl:apply-templates/>
     </xsl:template>
@@ -369,8 +361,6 @@
                     <!-- getalminmaxwaarde - geheel getal met minimum en maximum waarde -->
                     <xsl:when test="cp:type = 'scalar-integer' and cp:mininclusive and cp:maxinclusive">
                         <xsl:sequence select="imf:create-data-validation(.,'whole',(),cp:mininclusive,cp:maxinclusive,$sqref)"/>
-                        <xsl:sequence select="imf:create-data-comment('min-value',cp:mininclusive)"/>
-                        <xsl:sequence select="imf:create-data-comment('max-value',cp:maxinclusive)"/>
                     </xsl:when>  
                     <!-- getalminmaxwaarde - geheel getal met minimum waarde -->
                     <xsl:when test="cp:type = 'scalar-integer' and cp:mininclusive">
@@ -387,16 +377,16 @@
                         <xsl:sequence select="imf:create-data-validation(.,'whole',(),concat('-',$form),$form,$sqref)"/>
                     </xsl:when>
                     
-                    <xsl:when test="cp:type = 'scalar-indic'">
+                    <xsl:when test="cp:type = 'scalar-boolean'">
                         <xsl:sequence select="imf:create-data-validation(.,'list',(),concat($quot,'0,1,true,false',$quot),(),$sqref)"/>
                     </xsl:when>
                     
                     <!-- tekenreeks of getal met vaste lengte -->
-                    <xsl:when test="cp:type = ('scalar-string','scalar-integer') and cp:minlength and cp:length and (cp:minlength eq cp:length)">
-                        <xsl:sequence select="imf:create-data-validation(.,'textLength','equal',cp:length,(),$sqref)"/>
+                    <xsl:when test="cp:type = ('scalar-string','scalar-integer') and cp:minlength and cp:maxlength and (cp:minlength eq cp:maxlength)">
+                        <xsl:sequence select="imf:create-data-validation(.,'textLength','equal',cp:maxlength,(),$sqref)"/>
                     </xsl:when>
-                    <xsl:when test="cp:type = ('scalar-string','scalar-integer') and cp:minlength and cp:length">
-                        <xsl:sequence select="imf:create-data-validation(.,'textLength',(),cp:minlength,cp:length,$sqref)"/>
+                    <xsl:when test="cp:type = ('scalar-string','scalar-integer') and cp:minlength and cp:maxlength">
+                        <xsl:sequence select="imf:create-data-validation(.,'textLength',(),cp:minlength,cp:maxlength,$sqref)"/>
                     </xsl:when>
                     
                     <?TODO
@@ -407,8 +397,8 @@
                     ?>
                     
                     <!-- tekenreeks of getal met maximale lengte -->
-                    <xsl:when test="cp:type = ('scalar-string','scalar-integer') and cp:length">
-                        <xsl:sequence select="imf:create-data-validation(.,'textLength','lessThanOrEqual',cp:length,(),$sqref)"/>
+                    <xsl:when test="cp:type = ('scalar-string','scalar-integer') and cp:maxlength">
+                        <xsl:sequence select="imf:create-data-validation(.,'textLength','lessThanOrEqual',cp:maxlength,(),$sqref)"/>
                     </xsl:when>
                     
                     <!-- enumeratie - enumeratie -->
@@ -491,7 +481,7 @@
                     <family val="2"/>
                     -->
                 </rPr>
-                <t xml:space="preserve"><xsl:value-of select="concat(normalize-space($value),'&#10;')"/></t>
+                <t xml:space="preserve"><xsl:value-of select="concat(imf:safe-text(normalize-space($value)),'&#10;')"/></t>
             </r>
         </xsl:if>
     </xsl:function>
@@ -504,7 +494,7 @@
     </xsl:template>
     
     <!-- 
-        Iedere construct//construct wordt op sheet 2 geplaatst. Er moet dus een hyperlink naar toe kunnen vanaf shet 1 en 2.
+        Iedere construct//construct wordt op sheet 2 geplaatst. Er moet dus een hyperlink naar toe kunnen vanaf sheet 1 en 2.
         Het krijgt daarom een unieke naam.
     -->
     <xsl:template match="hyperlinks" mode="process-berichten">
@@ -532,7 +522,7 @@
             <xsl:for-each select="$blocks/cp:prop[exists(@ref)]">
                 <xsl:variable name="element-rij" select="count(preceding::cp:prop[../@sheet=$sheet]) + 2"/>
                 <xsl:variable name="sequence-id" select="@ref"/>
-                <xsl:variable name="element-name" select="cp:element"/>
+                <xsl:variable name="element-name" select="cp:name"/>
                 <hyperlink ref="B{$element-rij}" location="{$sequence-id}" display="{$element-name}"/>
             </xsl:for-each>
         </xsl:variable>
@@ -582,7 +572,7 @@
                         <xsl:sequence select="imf:create-data-comment('Is ID',cp:xxx)"/>    
                         <xsl:sequence select="imf:create-data-comment('Type',cp:type)"/>    
                         <xsl:sequence select="imf:create-data-comment('Min lengte',cp:minlength)"/>    
-                        <xsl:sequence select="imf:create-data-comment('Max lengte',cp:maxlangth)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Max lengte',cp:maxlength)"/>    
                         <xsl:sequence select="imf:create-data-comment('Patroon',cp:pattern)"/>    
                         <xsl:sequence select="imf:create-data-comment('Voidable',cp:voidable)"/>    
                         <xsl:sequence select="imf:create-data-comment('Kerngegeven',cp:kerngegeven)"/>    
@@ -590,7 +580,7 @@
                         <xsl:sequence select="imf:create-data-comment('Regels',cp:regels)"/>    
                         <xsl:sequence select="imf:create-data-comment('Min waarde',cp:mininclusive)"/>    
                         <xsl:sequence select="imf:create-data-comment('Max waarde',cp:maxinclusive)"/>    
-                        <xsl:sequence select="imf:create-data-comment('Documentatie',cp:comment)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Documentatie',cp:documentation)"/>    
                     </xsl:variable>
                     <xsl:if test="exists($comment-lines)">
                         <comment ref="B{$construct-row}" authorId="0" > <!-- TODO ? shapeId="comment_{$sheet-number}_{$message-row}" -->
@@ -692,7 +682,7 @@
                 <xsl:for-each select="cp:prop[@type='spec']">
                     <xsl:variable name="construct-row" select="$message-row + count(preceding-sibling::cp:prop)"/>
                     <!-- Maak een row voor iedere construct. -->
-                    <xsl:variable name="tech-name" select="cp:element"/>
+                    <xsl:variable name="tech-name" select="cp:name"/>
                     <xsl:variable name="cardinality" select="cp:cardinal"/>
                     <xsl:variable name="is-attribute" select="cp:attribute = 'true'"/>
                     <xsl:variable name="fixed-value" select="cp:fixed"/>
@@ -793,4 +783,15 @@
         </xsl:copy>
     </xsl:template>
     
+    <xsl:function name="imf:create-range">
+        <xsl:param name="range"/>
+        <xsl:value-of select="concat($range/@sl,$range/@sn,':',$range/@el,$range/@en)"/>
+    </xsl:function>
+  
+    <xsl:function name="imf:safe-text">
+        <xsl:param name="text"/>
+        <xsl:variable name="textr" select="replace($text,concat('[^A-Za-z0-9:@%&amp;\*;,\.=+\-\s\(\)\{\}\[\]\?!\\',$quot,$apos,']'),'?')"/>
+        <xsl:value-of select="if ($textr = $text) then $text else concat($textr,'&#10;[Description character issues resolved, see original text for full explanation]')">
+        </xsl:value-of>
+    </xsl:function>
 </xsl:stylesheet>
