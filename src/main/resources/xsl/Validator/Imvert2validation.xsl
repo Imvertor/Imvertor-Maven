@@ -510,6 +510,7 @@
         <xsl:variable name="is-internal" select="not(ancestor::imvert:package/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-external-package','stereotype-name-internal-package','stereotype-name-system-package')))"/>
         <xsl:variable name="supertypes" select="imvert:supertype[not(imvert:stereotype=imf:get-config-stereotypes('stereotype-name-static-generalization'))]"/>
         <xsl:variable name="superclasses" select="imf:get-superclasses($this)"/>
+        <xsl:variable name="subclasses" select="imf:get-subclasses($this)"/>
         <xsl:variable name="is-id" select="(.,$superclasses)/imvert:attributes/imvert:attribute/imvert:is-id = 'true'"/>
         <xsl:variable name="is-abstract" select="imvert:abstract = 'true'"/>
         <xsl:variable name="is-toplevel" select="imf:is-toplevel($this)"/>
@@ -576,6 +577,11 @@
             $is-application and 
             not($is-toplevel) and not($is-abstract or $is-target-in-relation or $is-association-class), 
             'This [1] is not used.', if (exists(imvert:stereotype)) then imvert:stereotype else 'construct')"/>
+        
+        <xsl:sequence select="imf:report-error(., 
+            $is-abstract and 
+            empty($subclasses), 
+            'Abstract class must have at least one subclass')"/>
         
         <xsl:next-match/>
     </xsl:template>
