@@ -1015,9 +1015,9 @@
     <!-- tagged values $ea_xref_property zijn complexe strings; deze worden voor gemakkelijke herkenning omgezet naar een interne XML struktuur -->
     <xsl:variable name="parsed-xref-properties" as="node()*">
         <xsl:for-each select="$content//UML:Package | $content//UML:Class | $content//UML:Attribute | $content//UML:Association | $content//UML:ClassifierRole | $content//UML:Generalization">
-            <xsl:variable name="my-property" select="UML:ModelElement.taggedValue/UML:TaggedValue[@tag='$ea_xref_property']"/>
-            <xsl:variable name="dst-property" select="UML:ModelElement.taggedValue/UML:TaggedValue[@tag='$ea_dst_xref_property']"/>
-            <xsl:variable name="src-property" select="UML:ModelElement.taggedValue/UML:TaggedValue[@tag='$ea_src_xref_property']"/>
+            <xsl:variable name="my-property" select="UML:ModelElement.taggedValue/UML:TaggedValue[@tag='$ea_xref_property'][1]"/> <!-- use the first; bug in EA, may be multiple, see "Problem when exporting XML 1.2" dd 20161025 -->
+            <xsl:variable name="dst-property" select="UML:ModelElement.taggedValue/UML:TaggedValue[@tag='$ea_dst_xref_property'][1]"/>
+            <xsl:variable name="src-property" select="UML:ModelElement.taggedValue/UML:TaggedValue[@tag='$ea_src_xref_property'][1]"/>
             <xsl:sequence select="imf:parse-xref-property-props(., if ($my-property) then $my-property/@value else ())"/>
             <xsl:sequence select="imf:parse-xref-property-props(., if ($dst-property) then $dst-property/@value else (),'dst')"/>
             <xsl:sequence select="imf:parse-xref-property-props(., if ($src-property) then $src-property/@value else (),'src')"/>
