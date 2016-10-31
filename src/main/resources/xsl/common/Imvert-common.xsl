@@ -260,31 +260,32 @@
         <xsl:variable name="project" select="$this/ancestor-or-self::imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-project-package')]"/>
         <xsl:variable name="package-names" select="$this/ancestor-or-self::imvert:package[exists(ancestor-or-self::imvert:package = $project)]/imvert:name/@original"/>
         <xsl:variable name="class-name" select="$this/ancestor-or-self::imvert:class[1]/imvert:name/@original"/>
+        <xsl:variable name="alias" select="$this/imvert:alias"/>
         <xsl:choose>
             <xsl:when test="$this/self::imvert:package">
-                <xsl:sequence select="imf:compile-construct-name($name,(),(),())"/>
+                <xsl:sequence select="imf:compile-construct-name($name,(),(),(),$alias)"/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:base">
-                <xsl:sequence select="imf:compile-construct-name($name,(),(),())"/>
+                <xsl:sequence select="imf:compile-construct-name($name,(),(),(),$alias)"/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:class">
-                <xsl:sequence select="imf:compile-construct-name($package-names,$name,(),())"/>
+                <xsl:sequence select="imf:compile-construct-name($package-names,$name,(),(),$alias)"/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:supertype">
-                <xsl:sequence select="imf:compile-construct-name($this/imvert:type-package,$this/imvert:type-name,(),())"/>
+                <xsl:sequence select="imf:compile-construct-name($this/imvert:type-package,$this/imvert:type-name,(),(),$alias)"/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:attribute">
-                <xsl:sequence select="imf:compile-construct-name($package-names,$class-name,$name,'attrib')"/>
+                <xsl:sequence select="imf:compile-construct-name($package-names,$class-name,$name,'attrib',$alias)"/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:association[not(imvert:name)]">
                 <xsl:variable name="type" select="concat('[',$this/imvert:type-name,']')"/>
-                <xsl:sequence select="imf:compile-construct-name($package-names,$class-name,$type,imf:get-aggregation($this))"/>
+                <xsl:sequence select="imf:compile-construct-name($package-names,$class-name,$type,imf:get-aggregation($this),$alias)"/>
             </xsl:when>
             <xsl:when test="$this/self::imvert:association">
-                <xsl:sequence select="imf:compile-construct-name($package-names,$class-name,$name,imf:get-aggregation($this))"/>
+                <xsl:sequence select="imf:compile-construct-name($package-names,$class-name,$name,imf:get-aggregation($this),$alias)"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="imf:compile-construct-name($package-names,$name,local-name($this),())"/>
+                <xsl:sequence select="imf:compile-construct-name($package-names,$name,local-name($this),(),$alias)"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -294,10 +295,12 @@
         <xsl:param name="class-name" as="xs:string?"/>
         <xsl:param name="property-name" as="xs:string?"/>
         <xsl:param name="property-kind" as="xs:string?"/> <!-- 'attrib' or 'assoc' or null -->
+        <xsl:param name="alias" as="xs:string?"/>
         <xsl:variable name="pan" select="if (exists($package-names)) then concat(string-join($package-names,'::'),'::') else ''"/>
         <xsl:variable name="cln" select="if (exists($class-name)) then $class-name else ''"/>
         <xsl:variable name="prn" select="if (exists($property-name)) then concat('.',$property-name) else ''"/>
         <xsl:variable name="prk" select="if (exists($property-kind)) then concat(' (',$property-kind,')') else ''"/>
+        <xsl:variable name="ali" select="if (exists($alias)) then concat(' = ',$alias) else ''"/>
         <span>
             <xsl:value-of select="$pan"/>
             <b>
@@ -307,7 +310,16 @@
                 </i>
             </b>
             <xsl:value-of select="$prk"/>
+            <xsl:value-of select="$ali"/>
         </span>
+    </xsl:function>  
+    
+    <xsl:function name="imf:compile-construct-name" as="element()">
+        <xsl:param name="package-names" as="xs:string*"/>
+        <xsl:param name="class-name" as="xs:string?"/>
+        <xsl:param name="property-name" as="xs:string?"/>
+        <xsl:param name="property-kind" as="xs:string?"/> <!-- 'attrib' or 'assoc' or null -->
+        <xsl:sequence select="imf:compile-construct-name($package-names,$class-name,$property-name,$property-kind,())"/>
     </xsl:function>  
     
     <xsl:function name="imf:get-canonical-name" as="xs:string?">
