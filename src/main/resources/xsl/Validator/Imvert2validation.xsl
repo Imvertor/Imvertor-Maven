@@ -335,42 +335,15 @@
         <xsl:variable name="application" select="ancestor::imvert:package[imvert:stereotype=$top-package-stereotypes][1]"/>
           <!--validation -->
         <xsl:sequence select="imf:report-error(., 
-            $is-schema-package and not(imvert:namespace), 
-            'Package has no alias (i.e. namespace).')"/>
-        <xsl:sequence select="imf:report-error(., 
             not($is-schema-package), 
             'Domain package must have the domain stereotype.')"/>
         <xsl:sequence select="imf:report-error(., 
             not(empty($classnames)), 
             'Duplicate class name within (sub)package(s): [1]',$classnames)"/>
         <xsl:sequence select="imf:report-error(., 
-            imvert:namespace = $application/imvert:namespace,
-            'Namespace of the domain package is the same as the application namespace [1].',(../imvert:namespace))"/>
-        <xsl:sequence select="imf:report-error(., 
-            not(starts-with(imvert:namespace,concat($application/imvert:namespace,'/'))),
-            'Namespace [1] of the domain package does not start with the application namespace [2].',(string(imvert:namespace), string(../imvert:namespace)))"/>
-        <xsl:sequence select="imf:report-error(., 
-            (matches(substring-after(imvert:namespace,$application/imvert:namespace),'.*?//')),
-            'Namespace of the domain package holds empty path //')"/>
-        <xsl:sequence select="imf:report-error(., 
             ancestor::imvert:package[.=$domain-package],
             'Domain packages cannot be nested')"/>
       
-        <?x dropped: this follows the version of the package itself 
-            <xsl:sequence select="imf:report-error(., 
-            $xref-objects and not(imvert:ref-version), 
-            'No ref package version specified but the package uses referenceable classes.')"/>
-        <xsl:sequence select="imf:report-error(., 
-            $xref-objects and not(imvert:ref-release), 
-            'No ref package release specified but the package uses referenceable classes.')"/>
-        ?>
-        
-        <?remove ?
-            <!-- validation on SVN link -->
-            <xsl:sequence select="imf:report-error(., not($is-schema-package) and not(imvert:svn-string), 'No SVN ID found.')"/>
-            <xsl:sequence select="imf:report-warning(., not($is-schema-package) and not(imvert:svn-revision), 'Cannot determine SVN revision number. Please update tagged value svnid.')"/>
-        ?>
-        
         <!-- validate the version chain -->
         <xsl:if test="exists(ancestor-or-self::imvert:package[not(imf:boolean(imvert:derived))])">
             <xsl:apply-templates select="." mode="version-chain"/>

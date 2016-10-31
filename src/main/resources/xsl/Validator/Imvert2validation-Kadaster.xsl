@@ -36,6 +36,14 @@
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
     
     <xsl:variable name="application-package" select="(//imvert:package[imvert:name/@original=$application-package-name])[1]"/>
+    <xsl:variable name="domain-package" select="$application-package//imvert:package[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))]"/>
+    
+    <!-- All possible application-level top-packages -->
+    <xsl:variable name="top-package-stereotypes" as="xs:string*">
+        <xsl:sequence select="imf:get-config-stereotypes('stereotype-name-base-package')"/>
+        <xsl:sequence select="imf:get-config-stereotypes('stereotype-name-variant-package')"/>
+        <xsl:sequence select="imf:get-config-stereotypes('stereotype-name-application-package')"/>
+    </xsl:variable>
     
     <!-- 
         Document validation; this validates the root (application-)package.
@@ -133,6 +141,36 @@
     <xsl:template match="imvert:class/imvert:supertype[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-static-generalization')]" priority="1">
         <!--setup-->
         <!--validation-->
+        <xsl:next-match/>
+    </xsl:template>
+    
+    <!--
+        Rules for the domain packages
+    -->
+    <xsl:template match="imvert:package[.=$domain-package]" priority="50">
+        <!--setup-->
+        <xsl:variable name="is-schema-package" select="if (imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))) then true() else false()"/>
+        <xsl:variable name="classnames" select="distinct-values(imf:get-duplicates(.//imvert:class/imvert:name))" as="xs:string*"/>
+        <xsl:variable name="application" select="ancestor::imvert:package[imvert:stereotype=$top-package-stereotypes][1]"/>
+        <!--validation -->
+        <xsl:sequence select="imf:report-error(., 
+            $is-schema-package and not(imvert:namespace), 
+            'Package has no alias (i.e. namespace).')"/>
+        <xsl:sequence select="imf:report-error(., 
+            imvert:namespace = $application/imvert:namespace,
+            'Namespace of the domain package is the same as the application namespace [1].',(../imvert:namespace))"/>
+        <xsl:sequence select="imf:report-error(., 
+            not(starts-with(imvert:namespace,concat($application/imvert:namespace,'/'))),
+            'Namespace [1] of the domain package does not start with the application namespace [2].',(string(imvert:namespace), string(../imvert:namespace)))"/>
+        <xsl:sequence select="imf:report-error(., 
+            (matches(substring-after(imvert:namespace,$application/imvert:namespace),'.*?//')),
+            'Namespace of the domain package holds empty path //')"/>
+        
+        <!-- validate the version chain -->
+        <xsl:if test="exists(ancestor-or-self::imvert:package[not(imf:boolean(imvert:derived))])">
+            <xsl:apply-templates select="." mode="version-chain"/>
+        </xsl:if>
+        <!-- check as regular package -->
         <xsl:next-match/>
     </xsl:template>
     
