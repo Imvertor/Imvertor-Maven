@@ -47,7 +47,7 @@
             <!-- compute schema dependencies of all packages in this release; remove possible doubles -->
             <imvert:local-schemas>
                 <xsl:variable name="schema-dependencies" as="xs:string*">
-                    <xsl:apply-templates select="imvert:package" mode="schema-dependencies"/>
+                    <xsl:apply-templates select="imvert:package[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-external-package','stereotype-name-system-package'))]" mode="schema-dependencies"/>
                 </xsl:variable>
                 <xsl:for-each-group select="$schema-dependencies" group-by="string(.)">
                     <imvert:local-schema>
@@ -74,9 +74,7 @@
             <xsl:otherwise>
                 <xsl:variable name="schemafolder" select="imf:get-schema-foldername(imvert:namespace,imvert:version,imvert:release)"/>
                 <!-- if this is an imported external package, include in the list --> 
-                <xsl:if test="imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-external-package','stereotype-name-system-package'))">
-                    <xsl:value-of select="$schemafolder"/>
-                </xsl:if>
+                <xsl:value-of select="$schemafolder"/>
                 <!-- if this requires other external schemas, include them here --> 
                 <xsl:for-each select="$local-schema-mapping/local-schema[@schemafolder=$schemafolder]">
                     <xsl:for-each select="depends-on">
@@ -85,7 +83,6 @@
                 </xsl:for-each>        
             </xsl:otherwise>
         </xsl:choose>
-        
     </xsl:template>
     
     <xsl:template match="*" mode="#default schema-dependencies">
