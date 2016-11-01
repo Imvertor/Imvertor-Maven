@@ -300,6 +300,7 @@
                             <xsl:for-each select="$attributes">
                                 <imvert:attribute>
                                     <xsl:sequence select="imf:get-id-info(.,'A')"/>
+                                    <xsl:sequence select="imf:get-scope-info(.)"/>
                                     <xsl:sequence select="imf:get-attribute-info(.)"/>
                                     <xsl:sequence select="imf:get-attribute-documentation-info(.)"/>
                                     <!-- <xsl:sequence select="imf:get-history-info(.)"/> not available for attribute -->
@@ -314,6 +315,7 @@
                             <xsl:for-each select="$associations">
                                 <imvert:association>
                                     <xsl:sequence select="imf:get-id-info(.,'R')"/>
+                                    <xsl:sequence select="imf:get-scope-info(.)"/>
                                     <xsl:sequence select="imf:get-association-info(.)"/>
                                     <xsl:sequence select="imf:get-association-documentation-info(.)"/>
                                     <!-- <xsl:sequence select="imf:get-history-info(.)"/>-->
@@ -519,7 +521,14 @@
         <xsl:sequence select="imf:create-output-element('imvert:dependency',imf:get-dependency-id($this,$type))"/> 
         
     </xsl:function>
-
+    
+    <xsl:function name="imf:get-scope-info" as="node()*">
+        <xsl:param name="this" as="node()"/>
+        <xsl:sequence select="imf:create-output-element('imvert:visibility',$this/@visibility)"/> 
+        <xsl:sequence select="imf:create-output-element('imvert:scope',imf:get-tagged-value($this,'scope'))"/> 
+        <xsl:sequence select="imf:create-output-element('imvert:static',imf:get-tagged-value($this,'static') = '1')"/> 
+    </xsl:function>    
+ 
     <xsl:function name="imf:get-supplier-info" as="node()*">
         <xsl:param name="this" as="node()"/>
         <xsl:param name="parent-is-derived" as="xs:boolean"/>
@@ -1257,6 +1266,7 @@
                         <xsl:sequence select="imf:create-output-element('imvert:type',imf:get-tagged-value(.,'type'))"/>
                         <xsl:sequence select="imf:create-output-element('imvert:weight',imf:get-tagged-value(.,'weight'))"/>
                         <xsl:sequence select="imf:create-output-element('imvert:status',imf:get-tagged-value(.,'status'))"/>
+                        
                         <xsl:variable name="relevant-doc-string" select="if (contains(.,imf:get-config-parameter('documentation-separator'))) then substring-before(.,imf:get-config-parameter('documentation-separator')) else ."/>
                         <xsl:sequence select="imf:create-output-element('imvert:documentation',imf:get-tagged-value($relevant-doc-string,'description'))"/>
                        
