@@ -55,6 +55,12 @@
          <tip>Set task to compile or release</tip>
          <required>true</required>
       </cli-parm> 
+      <cli-parm>
+         <name>jobid</name>
+         <arg>ID</arg>
+         <tip>An ID for this particular run of Imvertor</tip>
+         <required>false</required>
+      </cli-parm> 
       <!--
       <cli-parm>
          <name>owner</name>

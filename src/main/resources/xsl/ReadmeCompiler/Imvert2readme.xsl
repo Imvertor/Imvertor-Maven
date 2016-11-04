@@ -40,6 +40,7 @@
     <xsl:variable name="APPLICATIONNAME" select="$application-package-name"/>
     <xsl:variable name="CONTACTEMAIL" select="imf:get-config-string('cli','contactemail','(unspecified)')"/>
     <xsl:variable name="CONTACTURL" select="imf:get-config-string('cli','contacturl','(unspecified)')"/>
+    <xsl:variable name="JOBID" select="imf:get-config-string('cli','jobid','(unspecified)')"/>
     
     <xsl:template match="/">
         <html>
@@ -53,7 +54,11 @@
                     Readme - <xsl:value-of select="$application-package-name"/>
                 </h2>
                 <p> Dit is informatie bij de release met de naam <br/>
-                    <b><xsl:value-of select="$RELEASENAME[1]"/></b>. </p>
+                    <b><xsl:value-of select="$RELEASENAME[1]"/></b><br/>
+                    Job ID: <br/>
+                    <b><xsl:value-of select="$JOBID[1]"/></b> 
+                </p>
+                
                 <p> Dit bestand is opgebouwd uit de volgende folders: </p>
                 <ul>
                     <li> Folder <a href="doc/index.html">/doc</a> bevat de systeemdocumentatie. Systeem documentatie betreft een rapportage van het aangeboden UML model vanuit het perspectief van de omzetting naar een XML schema. </li>

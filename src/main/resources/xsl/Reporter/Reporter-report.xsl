@@ -93,8 +93,16 @@
                     <img src="{imf:get-config-parameter('web-logo')}"/>
                     <xsl:sequence select="imf:create-report-page-header('Processing report')"/>
                     <p>
+                        Created by: 
                         <xsl:value-of select="imf:get-config-string('run','version')"/>
                     </p>
+                    <xsl:variable name="jobid" select="imf:get-config-string('cli','jobid')"/>
+                    <xsl:if test="$jobid">
+                        <p>
+                            Job:
+                            <xsl:value-of select="$jobid"/>
+                        </p>  
+                    </xsl:if>
                     <b>
                         <xsl:value-of select="imf:get-config-string('appinfo','status-message')"/>
                     </b>
@@ -309,6 +317,7 @@
                 Generated at
                 <xsl:value-of select="imf:format-dateTime(current-dateTime())"/>
             </p>  
+           
         </div>
     </xsl:function>
 </xsl:stylesheet>

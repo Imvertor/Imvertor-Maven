@@ -352,6 +352,7 @@ public class Configurator {
 		setParm(workConfiguration,"system","work-doc-folder-path",    wf + s + "app" + s + "doc", true);
 		setParm(workConfiguration,"system","work-uml-folder-path",    wf + s + "app" + s + "uml", true);
 		setParm(workConfiguration,"system","work-cmp-folder-path",    wf + s + "app" + s + "cmp", true);
+		setParm(workConfiguration,"system","work-job-folder-path",    wf + s + "app" + s + "job", true);
 			
 		setParm(workConfiguration,"system","work-rep-folder-path",    wf + s + "rep", true);
 		setParm(workConfiguration,"system","work-imvert-folder-path", wf + s + "imvert", true);
