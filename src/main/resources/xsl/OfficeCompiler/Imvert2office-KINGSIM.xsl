@@ -167,7 +167,6 @@
         <table>
             <tbody>
                 <xsl:sequence select="imf:label-waarde('Naam',imvert:name/@original)"/>
-                <xsl:sequence select="imf:label-waarde('Mnemonic',imvert:alias)"/>
                 <xsl:sequence select="imf:label-waarde('Herkomst',imf:get-tagged-value(.,'Herkomst'))"/>
                 <xsl:sequence select="imf:label-waarde('Definitie',imf:get-clean-documentation-string(imvert:documentation))"/>
                 <xsl:sequence select="imf:label-waarde('Herkomst definitie',imf:get-tagged-value(.,'Herkomst definitie'))"/>
@@ -255,6 +254,7 @@
                 <xsl:sequence select="imf:label-waarde('Definitie',imf:get-clean-documentation-string(imvert:documentation))"/>
                 <xsl:sequence select="imf:label-waarde('Herkomst definitie',imf:get-tagged-value(.,'Herkomst definitie'))"/>
                 <xsl:sequence select="imf:label-waarde('Datum opname',imf:get-tagged-value(.,'Datum opname'))"/>
+                <xsl:sequence select="imf:label-waarde('Patroon',imf:get-tagged-value(.,'Patroon'))"/>
             </tbody>
         </table>
         <!-- hier alle attributen; als ingebedde tabel -->
@@ -299,7 +299,12 @@
             <xsl:for-each select="../imvert:associations/imvert:association">
                 <xsl:variable name="defining-class" select="if (exists(imvert:type-id)) then imf:get-construct-by-id(imvert:type-id) else ()"/>
                 <xsl:if test="$defining-class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')]">
+                    <!-- eerst gegevensgroeptype info -->
+                    <!--(4)-->
+                    <xsl:apply-templates select="." mode="composition"/>
+                    <!-- en dat de attributen daarin -->
                     <xsl:apply-templates select="$defining-class/imvert:attributes/imvert:attribute" mode="gegevensgroeptype"/>
+                    <xsl:apply-templates select="$defining-class/imvert:associations/imvert:association" mode="gegevensgroeptype-as-attribute"/>
                 </xsl:if>
             </xsl:for-each>
         </xsl:variable>
@@ -336,6 +341,16 @@
             <td>- <xsl:value-of select="imvert:name/@original"/></td>
             <td><xsl:value-of select="imf:get-clean-documentation-string(imvert:documentation)"/></td>
             <td><xsl:value-of select="imf:translate(imvert:baretype,false())"/></td>
+            <td><xsl:value-of select="imf:get-cardinality(imvert:min-occurs,imvert:max-occurs)"/></td>
+        </tr>
+    </xsl:template>
+    <xsl:template match="imvert:association" mode="gegevensgroeptype-as-attribute">
+        <!--(5)-->
+        <tr>
+            <td>&#160;</td>
+            <td>- <xsl:value-of select="imvert:name/@original"/></td>
+            <td><xsl:value-of select="imf:get-clean-documentation-string(imvert:documentation)"/></td>
+            <td><xsl:value-of select="imf:translate(imvert:type-name/@original,false())"/></td>
             <td><xsl:value-of select="imf:get-cardinality(imvert:min-occurs,imvert:max-occurs)"/></td>
         </tr>
     </xsl:template>
@@ -632,7 +647,6 @@
                 <xsl:sequence select="imf:label-waarde('Formaat',imf:translate(imvert:baretype,false()))"/>
                 <xsl:sequence select="imf:label-waarde('Patroon',imf:get-tagged-value(.,'Patroon'))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie kardinaliteit',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
-                <xsl:sequence select="imf:label-waarde('Indicatie afleidbaar',$is-afleidbaar-text)"/>
             </tbody>
         </table>
         <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>                
@@ -675,7 +689,7 @@
         <xsl:param name="this"/>
         <xsl:param name="tv-name"/>
         <xsl:variable name="normalized-tv-name" select="imf:get-normalized-name($tv-name,'tv-name')"/>
-        <xsl:value-of select="imf:get-clean-documentation-string($this/*/imvert:tagged-value[imvert:name = $normalized-tv-name][1]/imvert:value)"/>
+        <xsl:value-of select="imf:get-clean-documentation-string($this/*/imvert:tagged-value[imvert:name = $normalized-tv-name][1]/imvert:value/@original)"/>
     </xsl:function>
     
     <xsl:function name="imf:get-tagged-value-unieke-aanduiding">
