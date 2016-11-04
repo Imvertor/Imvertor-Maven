@@ -213,13 +213,13 @@ public class Runner {
 	 * @param text
 	 * @param e
 	 */
-	public void error(Logger logger, String text, Exception e, String id) {
+	public void error(Logger logger, String text, Exception e, String id, String wiki) {
 		imvertorErrors += 1;
-		messenger.writeMsg(logger.getName(), "ERROR", "", text, id);
+		messenger.writeMsg(logger.getName(), "ERROR", "", text, id, wiki);
 		logger.error(text,e);
 	}
 	public void error(Logger logger, String text, Exception e) {
-		error(logger, text, e, null);
+		error(logger, text, e, null, null);
 	}
 	/**
 	 * The ERROR level designates error events that might still allow the application to continue running.
@@ -230,14 +230,14 @@ public class Runner {
 	 * @param text
 	 * @param e
 	 */
-	public void error(Logger logger, String text, String id) {
+	public void error(Logger logger, String text, String id, String wiki) {
 		imvertorErrors += 1;
-		messenger.writeMsg(logger.getName(), "ERROR", "", text, id);
+		messenger.writeMsg(logger.getName(), "ERROR", "", text, id, wiki);
 		logger.error(text);
 	}
 	public void error(Logger logger, String text) {
 		imvertorErrors += 1;
-		messenger.writeMsg(logger.getName(), "ERROR", "", text, null);
+		messenger.writeMsg(logger.getName(), "ERROR", "", text, null,null);
 		logger.error(text);
 	}
 	
@@ -250,13 +250,13 @@ public class Runner {
 	 * @param logger
 	 * @param text
 	 */
-	public void warn(Logger logger, String text, String id) {
+	public void warn(Logger logger, String text, String id, String wiki) {
 		imvertorWarnings += 1;
-		messenger.writeMsg(logger.getName(), "WARN", "", text, id);
+		messenger.writeMsg(logger.getName(), "WARN", "", text, id, wiki);
 		logger.warn(text);
 	}
 	public void warn(Logger logger, String text) {
-		warn(logger, text, null);
+		warn(logger, text, null,null);
 	}
 	/**
 	 * The INFO level designates informational messages that highlight the progress of the application at coarse-grained level.
@@ -280,7 +280,7 @@ public class Runner {
 	 * @param text
 	 */
 	public void debug(Logger logger, String text) {
-		if (getDebug()) messenger.writeMsg(logger.getName(), "DEBUG", "", text, null);
+		if (getDebug()) messenger.writeMsg(logger.getName(), "DEBUG", "", text, null,null);
 		logger.debug(text);
 	}
 	/**
@@ -304,9 +304,9 @@ public class Runner {
 	 * @param logger
 	 * @param text
 	 */
-	public void fatal(Logger logger, String text, Exception e, String id) {
+	public void fatal(Logger logger, String text, Exception e, String id, String wiki) {
 		imvertorErrors += 1;
-		messenger.writeMsg(logger.getName(), "FATAL", "", text, id);
+		messenger.writeMsg(logger.getName(), "FATAL", "", text, id, wiki);
 		logger.fatal(text);
 		info(logger, "");
 		info(logger, "Must stop.");
@@ -315,8 +315,8 @@ public class Runner {
 		logger.fatal("Details on the error", e);
 		System.exit(-1);
 	}
-	public void fatal(Logger logger, String text, Exception e) {
-		fatal(logger, text, e, null);
+	public void fatal(Logger logger, String text, Exception e, String wiki) {
+		fatal(logger, text, e, null, wiki);
 	}
 	/**
 	 * Tracker intended for external applications, keeping track of states the process is in. 
@@ -337,7 +337,7 @@ public class Runner {
 				trackerFileWriter.flush();
 			}
 		} catch (Exception e) {
-			fatal(logger, "Cannot track", e);
+			fatal(logger, "Cannot track", e, "WIKISTUB");
 		}
 	}
 	

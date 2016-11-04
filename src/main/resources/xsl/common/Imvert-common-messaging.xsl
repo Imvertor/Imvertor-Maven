@@ -62,6 +62,7 @@
         <xsl:variable name="name" select="if ($this=$document) then '' else imf:get-construct-name($this)"/>
         <xsl:variable name="id" select="$this/imvert:id"/>
         <xsl:variable name="ctext" select="if (exists($info)) then imf:msg-insert-parms($text,$info) else $text"/>
+        <xsl:variable name="wiki" select="if ($type = ('ERROR', 'WARN', 'FATAL')) then imf:get-wiki-key($text) else ''"/>
         <xsl:message>
             <!-- note that messages are specially processed by Imvertor -->
             <xsl:sequence select="imf:create-output-element('imvert-message:src',$xml-stylesheet-name)"/>
@@ -69,6 +70,7 @@
             <xsl:sequence select="imf:create-output-element('imvert-message:name',$name)"/>
             <xsl:sequence select="imf:create-output-element('imvert-message:text',$ctext)"/>
             <xsl:sequence select="imf:create-output-element('imvert-message:id',$id)"/>
+            <xsl:sequence select="imf:create-output-element('imvert-message:wiki',$wiki)"/>
         </xsl:message>
     </xsl:function>
     
@@ -115,4 +117,39 @@
         <xsl:sequence select="imf:track(imf:msg-insert-parms($text,$info))"/>
     </xsl:function>
     
+    <!--
+        A wiki key is a sequence of the first letter or digit of any word in the text, in upper case.
+        If the string starts with {ABC} then assume that is the correct wiki key.
+        
+        Assume text will always produce a valid wiki key.
+    -->
+    <xsl:function name="imf:get-wiki-key" as="xs:string">
+        <xsl:param name="text" as="xs:string"/>
+        <xsl:variable name="parse" select="imf:parse-wiki-text($text)"/>
+        <xsl:choose>
+            <xsl:when test="count($parse) = 2">
+                <xsl:value-of select="$parse[1]"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:variable name="tokens" select="tokenize(imf:extract(upper-case($text),'[A-Z0-9\s]'),'\s+')"/>
+                <xsl:value-of select="string-join(for $w in $tokens return substring($w,1,1),'')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
+    <xsl:function name="imf:parse-wiki-text" as="xs:string*">
+        <xsl:param name="text" as="xs:string"/>
+        <xsl:choose>
+            <xsl:when test="starts-with($text,'{')">
+                <xsl:analyze-string select="$text" regex="^\{{(.+?)\}}(.*)$">
+                    <xsl:matching-substring>
+                        <xsl:value-of select="regex-group(1)"/>
+                        <xsl:value-of select="regex-group(2)"/>
+                    </xsl:matching-substring>
+                </xsl:analyze-string>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$text"/>
+            </xsl:otherwise>
+        </xsl:choose>    </xsl:function>
 </xsl:stylesheet>

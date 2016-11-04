@@ -591,7 +591,7 @@
                         <xsl:sequence select="imf:create-data-comment('Min lengte',cp:minlength)"/>    
                         <xsl:sequence select="imf:create-data-comment('Max lengte',cp:maxlength)"/>    
                         <xsl:sequence select="imf:create-data-comment('Patroon',cp:pattern)"/>    
-                        <xsl:sequence select="imf:create-data-comment('Patroon beschrijving',cp:patroon-beschrijving)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Patroon beschrijving',cp:patterndesc)"/>    
                         <xsl:sequence select="imf:create-data-comment('Voidable',cp:voidable)"/>    
                         <xsl:sequence select="imf:create-data-comment('Kerngegeven',cp:kerngegeven)"/>    
                         <xsl:sequence select="imf:create-data-comment('Authentiek',cp:authentiek)"/>    

@@ -138,9 +138,9 @@ public class XmiCompiler extends Step {
 				((ZipFile) passedFile).decompress(tempFolder);
 				File[] files = tempFolder.listFiles();
 				if (files.length == 0) 
-					runner.fatal(logger, "No files found in ZIP",null);
+					runner.fatal(logger, "No files found in ZIP",null,"NFFIZ");
 				else if (files.length > 1) 
-					runner.fatal(logger, "Multiple files found in ZIP",null);
+					runner.fatal(logger, "Multiple files found in ZIP",null,"MFFIZ");
 				else {
 					(new AnyFile(files[0])).copyFile(activeFile);
 					cleanXMI(activeFile);

@@ -436,23 +436,32 @@
         <!--setup-->
         <xsl:variable name="this" select="."/>
         
-        <xsl:variable name="supplier-name" select="($application-package/imvert:supplier/imvert:supplier-name, imvert:supplier/imvert:supplier-name)"/>
         <xsl:variable name="supplier-project" select="($application-package/imvert:supplier/imvert:supplier-project, imvert:supplier/imvert:supplier-project)"/>
+        <xsl:variable name="supplier-name" select="($application-package/imvert:supplier/imvert:supplier-name, imvert:supplier/imvert:supplier-name)"/>
         <xsl:variable name="supplier-release" select="($application-package/imvert:supplier/imvert:supplier-release, imvert:supplier/imvert:supplier-release)"/>
         
-        <xsl:variable name="is-derived" select="imf:boolean((imvert:supplier/imvert:supplier-name,$application-package/imvert:supplier/imvert:supplier-name)[1])"/>
+        <xsl:variable name="is-stated-derived" select="imf:boolean(imvert:derived)"/>
+        
+        <xsl:variable name="is-found-derived" select="exists(($supplier-project,$supplier-name,$supplier-release))"/>
+        <xsl:variable name="is-derived" select="$is-found-derived or $is-stated-derived"/>
         
         <!-- validation on version and release -->
+        <xsl:sequence select="imf:report-warning(., 
+            $is-found-derived and not($is-stated-derived), 
+            'Package is found to be derived but this is not stated')"/>
         <xsl:sequence select="imf:report-error(., 
-            $is-application and $is-derived and empty($supplier-name), 
-            'Supplier name not specified')"/>
+            $is-stated-derived and not($is-found-derived), 
+            'Package is stated to be derived but derivation info is not found or complete')"/>
         <xsl:sequence select="imf:report-error(., 
-            $is-application and $is-derived and exists($supplier-name) and empty($supplier-release), 
-            'Supplier release for supplier-name [1] not specified',$supplier-name)"/>
+            $is-derived and empty($supplier-project), 
+            'Package is derived but no supplier project specified')"/>
         <xsl:sequence select="imf:report-error(., 
-            $is-application and $is-derived and exists($supplier-name) and empty($supplier-project), 
-            'Supplier project for supplier-name [1] not specified',$supplier-name)"/>
-            <!-- supplier-project not specified. This is expected when a supplier-name is given: ‘CDMKAD’. Ask your supplier about the corresponding supplier-name and supplier-project.  -->
+            $is-derived and empty($supplier-name), 
+            'Package is derived but no supplier name specified')"/>
+        <xsl:sequence select="imf:report-error(., 
+            $is-derived and empty($supplier-release), 
+            'Package is derived but no supplier release specified')"/>
+        
         <xsl:sequence select="imf:report-error(., 
             not(matches(imvert:phase,$phase-pattern)), 
             'Phase must be specified and must be 0, concept, 1, draft, 2, finaldraft, 3, or final')"/>

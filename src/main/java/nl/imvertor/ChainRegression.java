@@ -75,7 +75,7 @@ public class ChainRegression {
 		    	configurator.getRunner().info(logger, "** Warnings have been suppressed");
 
 		} catch (Exception e) {
-			configurator.getRunner().fatal(logger,"Please notify your administrator.",e);
+			configurator.getRunner().fatal(logger,"Please notify your administrator.",e,"PNYSA");
 		}
 	}
 }

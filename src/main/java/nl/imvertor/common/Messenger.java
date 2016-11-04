@@ -80,7 +80,7 @@ public class Messenger extends SequenceWriter {
 		NodeInfo sibling = (NodeInfo) elements.next();
 		
 		// determine the source, text and type of the message, assuming it is a structured message.
-		String src = null, name = null, text = null, type = null, id = null;
+		String src = null, name = null, text = null, type = null, id = null, wiki = null;
 		while (child != null) {
 			if (child.getNodeKind() == net.sf.saxon.type.Type.ELEMENT) {
 				String elementName = child.getDisplayName();
@@ -90,6 +90,7 @@ public class Messenger extends SequenceWriter {
 				if (elementName.equals("imvert-message:text")) text = elementValue;
 				if (elementName.equals("imvert-message:src")) src = elementValue;
 				if (elementName.equals("imvert-message:id")) id = elementValue;
+				if (elementName.equals("imvert-message:wiki")) wiki = elementValue;
 			}
 			child = sibling;
 			sibling = (NodeInfo) elements.next();
@@ -101,13 +102,13 @@ public class Messenger extends SequenceWriter {
 			
 			switch (type) {
 				case "FATAL":
-					runner.fatal(logger,ctext,null,id); // The FATAL level designates very severe error events that will presumably lead the application to abort.
+					runner.fatal(logger,ctext,null,id,wiki); // The FATAL level designates very severe error events that will presumably lead the application to abort.
 					break;  
 				case "ERROR":
-					runner.error(logger,ctext,id); // The ERROR level designates error events that might still allow the application to continue running.
+					runner.error(logger,ctext,id, wiki); // The ERROR level designates error events that might still allow the application to continue running.
 					break;  
 				case "WARN":
-					if (!suppresswarnings) runner.warn(logger,ctext,id); // The WARN level designates potentially harmful situations.
+					if (!suppresswarnings) runner.warn(logger,ctext,id, wiki); // The WARN level designates potentially harmful situations.
 					break;  
 				case "INFO": 
 					runner.info(logger,ctext); // The INFO level designates informational messages that highlight the progress of the application at coarse-grained level.
@@ -140,7 +141,7 @@ public class Messenger extends SequenceWriter {
 	 * @param text
 	 * @param src
 	 */
-	public void writeMsg(String src, String type, String name, String text, String id) {
+	public void writeMsg(String src, String type, String name, String text, String id, String wiki) {
 		if (exists(src) && exists(type) && exists(text)) {
 			XMLConfiguration cfg = Configurator.getInstance().getXmlConfiguration();
 			if (cfg != null) {
@@ -158,11 +159,12 @@ public class Messenger extends SequenceWriter {
 					cfg.addProperty("messages/message[" + messageIndex + "]/steptext", m.group(3));
 				}
 				if (id != null) cfg.addProperty("messages/message[" + messageIndex + "]/id", id);
+				if (wiki != null) cfg.addProperty("messages/message[" + messageIndex + "]/wiki", wiki);
 			}
 		}
 	}
 	public void writeMsg(String src, String type, String name, String text) {
-		writeMsg(src, type, name, text, null);
+		writeMsg(src, type, name, text, null, null);
 	}
 	
 	private boolean exists(String v) {
