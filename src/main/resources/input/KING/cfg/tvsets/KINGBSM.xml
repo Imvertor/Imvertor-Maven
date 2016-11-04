@@ -83,8 +83,11 @@
         <tv norm="space" validate="" rules="" id="VerkorteAlias">
             <name lang="nl">Verkorte alias</name>
             <derive>no</derive>
+            <desc>Verkorte alias is een korte naam, die uiteindelijk gekoppeld is aan een namespace in XML schema. 
+                In feite is het dus een technisch configuratie-element.</desc>
             <stereotypes>
                 <stereo required="yes" lang="nl">Koppelvlak</stereo>
+                <stereo required="no" lang="nl">Basismodel</stereo>
             </stereotypes>
         </tv>
         

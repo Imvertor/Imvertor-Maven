@@ -19,9 +19,9 @@
 -->
 <metamodel>
  
-    <name>BP-scalar</name>
+    <name>KKG-scalar</name>
 
-    <desc>Metamodel for Dutch Best Practices based registrations, scalars</desc>
+    <desc>Metamodel voor informatiemodellen door KING en Kadaster en Geonovum: Scalars </desc>
     
     <scalars xml:id="scalars">
         
@@ -32,18 +32,19 @@
             <max-length>true</max-length>
         </scalar>
         <scalar id="scalar-decimal">
-            <name lang="nl">N</name>
+            <name lang="nl">Decimal</name>
             <type>string</type>
             <type-map lang="xs">decimal</type-map>
             <fraction-digits>true</fraction-digits>
             <max-length>true</max-length>
         </scalar>
-        <scalar id="scalar-integer" scope="system">
+        <scalar id="scalar-integer">
             <name lang="nl">Integer</name>
             <type-map lang="xs">integer</type-map>
+            <max-length>true</max-length>
         </scalar>
         <scalar id="scalar-date">
-            <name lang="nl">DATUM</name>
+            <name lang="nl">Date</name>
             <type-map lang="xs">date</type-map>
             <type-modifier>
                 <!-- a choice of the following types: -->
@@ -53,57 +54,39 @@
             </type-modifier>
         </scalar>
         <scalar id="scalar-datetime">
-            <name lang="nl">DATUMTIJD</name>
-            <name lang="nl">DT</name>
+            <name lang="nl">DateTime</name>
             <type-map lang="xs">dateTime</type-map>
             <type-modifier>
                 <!-- must conform to the following pattern: -->
                 <pattern lang="nl">[0-9]{4}(-[0-9]{2}(-[0-9]{2}(T[0-9]{2}(:[0-9]{2}(:[0-9]{2})?)?)?)?)?</pattern>
             </type-modifier>
         </scalar>
-        <scalar id="scalar-time">
-            <name lang="nl">TIJD</name>
-            <type-map lang="xs">time</type-map>
-            <type-modifier>
-                <!-- must conform to the following pattern: -->
-                <pattern lang="nl">[0-9]{2}(:[0-9]{2}(:[0-9]{2})?)?</pattern>
-            </type-modifier>
-        </scalar>
         <scalar id="scalar-year">
-            <name lang="nl">JAAR</name>
+            <name lang="nl">Year</name>
             <type-map lang="xs">gYear</type-map>
         </scalar>
-        <scalar id="scalar-yearmonth">
-            <name lang="nl">JAARMAAND</name>
-            <type-map lang="xs">gYearMonth</type-map>
+        <scalar id="scalar-day">
+            <name lang="nl">Day</name>
+            <type-map lang="xs">gDay</type-map>
+        </scalar>
+        <scalar id="scalar-month">
+            <name lang="nl">Month</name>
+            <type-map lang="xs">gMonth</type-map>
         </scalar>
         <scalar id="scalar-uri">
             <name lang="nl">URI</name>
             <type-map lang="xs">anyURI</type-map>
         </scalar>
         <scalar id="scalar-txt">
-            <name lang="nl">TXT</name>
+            <name lang="nl">CharacterString</name>
+            <desc>A CharacterString is an arbitrary-length sequence of characters including accents and special characters from
+                repertoire of one of the adopted character sets (ISO 19103, Draft Technical Specification 19103, Geographic information - Conceptual
+                schema language)</desc>
             <type-map lang="xs">string</type-map>
-        </scalar>
-        <scalar id="scalar-postcode">
-            <name lang="nl">POSTCODE</name>
-            <type-map lang="xs">string</type-map>
-            <pattern lang="nl">[0-9]{4}[A-Z]{2}</pattern>
         </scalar>
         <scalar id="scalar-boolean">
-            <name lang="nl">INDIC</name>
-            <name lang="nl">INDICATIE</name>
+            <name lang="nl">Boolean</name>
             <type-map lang="xs">boolean</type-map>
-            <!--<pattern lang="nl">(Ja)|(Nee)</pattern>-->
-        </scalar>
-        
-        <scalar id="scalar-any">
-            <name lang="nl">ANY</name>
-            <type-map lang="xs">#any</type-map>
-        </scalar>
-        <scalar id="scalar-mix">
-            <name lang="nl">MIX</name>
-            <type-map lang="xs">#mix</type-map>
         </scalar>
         
     </scalars>
