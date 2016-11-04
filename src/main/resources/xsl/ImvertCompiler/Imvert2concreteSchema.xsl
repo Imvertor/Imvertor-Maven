@@ -149,22 +149,24 @@
             <xsl:when test="imf:is-conceptual($class)">
                 <!-- class in a conceptual schema package -->
                 <xsl:variable name="map" select="imf:get-conceptual-schema-map($pack/imvert:namespace,$conceptual-schema-mapping-name)"/>
-                <xsl:variable name="mapped-name" select="$map/type[@name=current()/@original]"/>
+                <xsl:variable name="mapped-type" select="$map/type[@name=current()/@original]"/>
                 <xsl:choose>
-                    <xsl:when test="$mapped-name">
+                    <xsl:when test="$mapped-type">
                         <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-type',.)"/>
-                        <xsl:if test="imf:boolean($mapped-name/@primitive)">
-                            <xsl:sequence select="imf:create-output-element('imvert:primitive',$mapped-name/@name)"/>
+                        <xsl:if test="imf:boolean($mapped-type/@primitive)">
+                            <xsl:sequence select="imf:create-output-element('imvert:primitive',$mapped-type/@name)"/>
                         </xsl:if>
-                        <xsl:sequence select="imf:create-output-element(name(.),$mapped-name)"/>
-                        <xsl:variable name="att-name" select="$mapped-name/@asAttribute"/>
-                        <xsl:variable name="att-desig" select="$mapped-name/@asAttributeDesignation"/>
+                        <xsl:sequence select="imf:create-output-element(name(.),$mapped-type)"/>
+                        <xsl:variable name="att-name" select="$mapped-type/@asAttribute"/>
+                        <xsl:variable name="att-desig" select="$mapped-type/@asAttributeDesignation"/>
+                        <xsl:variable name="att-hasNilreason" select="$mapped-type/@hasNilreason"/>
                         <xsl:variable name="is-union-element" select="parent::imvert:attribute/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union-element')"/>
                         <xsl:choose>
                             <!-- when in context of attribute, and not a union element, check if an asAttribute is specified -->
                             <xsl:when test="parent::imvert:attribute and $att-name and not($is-union-element)">
                                <xsl:sequence select="imf:create-output-element('imvert:attribute-type-name',$att-name)"/>
-                               <xsl:sequence select="imf:create-output-element('imvert:attribute-type-designation',$att-desig)"/>
+                                <xsl:sequence select="imf:create-output-element('imvert:attribute-type-designation',$att-desig)"/>
+                                <xsl:sequence select="imf:create-output-element('imvert:attribute-type-hasnilreason',$att-hasNilreason)"/>
                             </xsl:when>
                         </xsl:choose>
                     </xsl:when>
