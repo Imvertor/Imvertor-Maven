@@ -33,6 +33,7 @@
     -->
     
     <xsl:import href="Imvert2validation-KING.xsl"/>
+    <xsl:import href="Imvert2validation-KING-mod-alias.xsl"/>
     
     <xsl:variable name="sn-entiteitrelatie" select="imf:get-normalized-name('stereotype-name-entiteitrelatie','stereotype-name')"/>
     

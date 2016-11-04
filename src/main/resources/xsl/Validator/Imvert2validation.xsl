@@ -551,7 +551,7 @@
             not($is-toplevel) and not($is-abstract or $is-target-in-relation or $is-association-class), 
             'This [1] is not used.', if (exists(imvert:stereotype)) then imvert:stereotype else 'construct')"/>
         
-        <xsl:sequence select="imf:report-error(., 
+        <xsl:sequence select="imf:report-warning(., 
             $is-abstract and 
             empty($subclasses), 
             'Abstract class must have at least one subclass')"/>

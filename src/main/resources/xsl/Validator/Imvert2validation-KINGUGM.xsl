@@ -33,25 +33,9 @@
     -->
     
     <xsl:import href="Imvert2validation-KING.xsl"/>
+    <xsl:import href="Imvert2validation-KING-mod-alias.xsl"/>
     
     <!-- TODO added validation for KING exchange models UGM -->
-    
-    <xsl:template match="imvert:association[not(imvert:aggregation = 'composite')]">
-
-        <!-- setup -->
-        <xsl:variable name="alias" select="imvert:alias"/>
-        
-        <!-- validate -->
-        <xsl:sequence select="imf:report-error(., 
-            empty($alias), 
-            'No alias found for association')"/>
-        
-        <xsl:sequence select="imf:report-error(., 
-            not(matches($alias,'^([A-Z]{6})|([A-Z]{9})$')), 
-            'Alias [1] must be 6 or 9 uppercase characters',$alias)"/>
-        
-        <xsl:next-match/>
-    </xsl:template>
    
     <xsl:template match="imvert:association[imvert:aggregation = 'composite']">
         <!-- setup -->
@@ -73,22 +57,6 @@
         <xsl:sequence select="imf:report-error($construct, 
             $construct/imvert:type-name = ('scalar-string','scalar-uri'), 
             'Tagged value [1] cannot be specified on [2]', (imvert:name/@original, $construct/imvert:type-name))"/>
-        
-        <xsl:next-match/>
-    </xsl:template>
-    
-    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotype-names('stereotype-name-objecttype')]">
-        <!-- setup -->
-        <xsl:variable name="alias" select="imvert:alias"/>
-        
-        <!-- validate -->
-        <xsl:sequence select="imf:report-error(., 
-            empty($alias), 
-            'No alias found for [1]', imvert:stereotype)"/>
-        
-        <xsl:sequence select="imf:report-error(., 
-            not(matches($alias,'^([A-Z]{6})$')), 
-            'Alias [1] for [2] must be 6 uppercase characters',($alias,imvert:stereotype))"/>
         
         <xsl:next-match/>
     </xsl:template>
