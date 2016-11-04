@@ -100,105 +100,130 @@
 			 -->
             <type name="GM_Point"  
                 asAttributeDesignation="complextype"
-                asAttribute="PointPropertyType">Point</type>  
+                asAttribute="PointPropertyType"
+                hasNilreason="true">Point</type>  
                 
             <type name="GM_Curve"  
                 asAttributeDesignation="complextype"
-                asAttribute="CurvePropertyType">Curve</type>  
+                asAttribute="CurvePropertyType"
+                hasNilreason="true">Curve</type>  
                 
             <type name="GM_Surface"  
                 asAttributeDesignation="complextype"
-                asAttribute="SurfacePropertyType">Surface</type> 
+                asAttribute="SurfacePropertyType"
+                hasNilreason="true">Surface</type> 
                
             <type name="GM_MultiPoint"  
                 asAttributeDesignation="complextype"
-                asAttribute="MultiPointPropertyType">MultiPoint</type> 
+                asAttribute="MultiPointPropertyType"
+                hasNilreason="true">MultiPoint</type> 
                 
             <type name="GM_MultiSurface"  
                 asAttributeDesignation="complextype"
-                asAttribute="MultiSurfacePropertyType">MultiSurface</type> 
+                asAttribute="MultiSurfacePropertyType"
+                hasNilreason="true">MultiSurface</type> 
                 
             <type name="GM_MultiCurve"  
                 asAttributeDesignation="complextype"
-                asAttribute="MultiCurvePropertyType">MultiCurve</type> 
+                asAttribute="MultiCurvePropertyType"
+                hasNilreason="true">MultiCurve</type> 
                 
             <type name="GM_Geometry"  
                 asAttributeDesignation="complextype"
-                asAttribute="GeometryPropertyType">Geometry</type>              
+                asAttribute="GeometryPropertyType"
+                hasNilreason="true">Geometry</type>              
                
             <type name="GM_MultiGeometry"  
                 asAttributeDesignation="complextype"
-                asAttribute="MultiGeometryPropertyType">MultiGeometry</type>
+                asAttribute="MultiGeometryPropertyType"
+                hasNilreason="true">MultiGeometry</type>
                 
             <!-- preferable not to be used in  schema's - also, types below are not yet edited to always be PropertyType: --> 
              
             <type name="GM_ArcString"  
                 asAttributeDesignation="complextype"
-                asAttribute="ArcStringPropertyType">ArcString</type>          
+                asAttribute="ArcStringPropertyType"
+                hasNilreason="true">ArcString</type>          
             
             <type name="GM_LineString"  
                 asAttributeDesignation="complextype"
-                asAttribute="LineStringPropertyType">LineStringSegment</type>  
+                asAttribute="LineStringPropertyType"
+                hasNilreason="true">LineStringSegment</type>  
                 
             <type name="GM_Polygon"  
                 asAttributeDesignation="complextype"
-                asAttribute="PolygonPatchType">PolygonPatch</type>  
+                asAttribute="PolygonPatchType"
+                hasNilreason="true">PolygonPatch</type>  
             
             <type name="GM_Object"  
                 asAttributeDesignation="complextype"
-                asAttribute="GeometryPropertyType">Object</type>  
+                asAttribute="GeometryPropertyType"
+                hasNilreason="true">Object</type>  
 
             <type name="GM_Primitive"  
                 asAttributeDesignation="complextype"
-                asAttribute="GeometricPrimtivePropertyType">Primitve</type>  
+                asAttribute="GeometricPrimtivePropertyType"
+                hasNilreason="true">Primitve</type>  
 
             <type name="GM_Position"  
                 asAttributeDesignation="complextype"
-                asAttribute="geometricPositionGroup">Position</type>  
+                asAttribute="geometricPositionGroup"
+                hasNilreason="true">Position</type>  
 
             <type name="GM_PointArray"  
                 asAttributeDesignation="complextype"
-                asAttribute="geometricPositionListGroup">PointArray</type>  
+                asAttribute="geometricPositionListGroup"
+                hasNilreason="true">PointArray</type>  
 
 			<type name="GM_Solid"  
                 asAttributeDesignation="complextype"
-                asAttribute="SolidPropertyType">Solid</type> 
+                asAttribute="SolidPropertyType"
+                hasNilreason="true">Solid</type> 
                 
             <type name="GM_OrientableCurve"  
                 asAttributeDesignation="complextype"
-                asAttribute="CurvePropertyType">OrientableCurve</type> 
+                asAttribute="CurvePropertyType"
+                hasNilreason="true">OrientableCurve</type> 
                 
             <type name="GM_OrientableSurface"  
                 asAttributeDesignation="complextype"
-                asAttribute="SurfacePropertyType">OrientableSurface</type> 
+                asAttribute="SurfacePropertyType"
+                hasNilreason="true">OrientableSurface</type> 
                 
             <type name="GM_CompositePoint"  
                 asAttributeDesignation="complextype"
-                asAttribute="PointPropertyType">CompositePoint</type> 
+                asAttribute="PointPropertyType"
+                hasNilreason="true">CompositePoint</type> 
            
             <type name="GM_Complex"  
                 asAttributeDesignation="complextype"
-                asAttribute="GeometricComplexPropertyType">Complex</type> 
+                asAttribute="GeometricComplexPropertyType"
+                hasNilreason="true">Complex</type> 
                 
             <type name="GM_Aggregate"  
                 asAttributeDesignation="complextype"
-                asAttribute="MultiGeometryPropertyType">Aggregate</type> 
+                asAttribute="MultiGeometryPropertyType"
+                hasNilreason="true">Aggregate</type> 
 			
             <type name="GM_MultiSolid"  
                 asAttributeDesignation="complextype"
-                asAttribute="MultiMultiSolidPropertyType">MultiSolid</type> 
+                asAttribute="MultiMultiSolidPropertyType"
+                hasNilreason="true">MultiSolid</type> 
                 
             <type name="GM_MultiPrimitive"  
                 asAttributeDesignation="complextype"
-                asAttribute="MultiGeometryPropertyType">MultiPrimitive</type> 
+                asAttribute="MultiGeometryPropertyType"
+                hasNilreason="true">MultiPrimitive</type> 
 
             <type name="GM_Aggregate"  
                 asAttributeDesignation="complextype"
-                asAttribute="MultiGeometryPropertyType">MultiGeometry</type>
+                asAttribute="MultiGeometryPropertyType"
+                hasNilreason="true">MultiGeometry</type>
                 
             <type name="GM_MultiPrimtive"  
                 asAttributeDesignation="complextype"                
-                asAttribute="MultiGeometryPropertyType">MultiGeometry</type>
+                asAttribute="MultiGeometryPropertyType"
+                hasNilreason="true">MultiGeometry</type>
 			  
             <type name="Measure">MeasureType</type>  
             <type name="Binary" primitive="true">xs:binary</type>  
