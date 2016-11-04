@@ -22,8 +22,6 @@
 	<xsl:variable name="stylesheet">Imvert2XSD-KING-create-endproduct-schema</xsl:variable>
 	<xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-create-endproduct-schema.xsl 1 2015-11-11 12:02:00Z RobertMelskens $</xsl:variable>
 	
-	<xsl:variable name="globalComplexTypes" select="'no'"/>
-	
 	<xsl:variable name="typeBericht" select="/ep:message-set/ep:message/ep:type"/>
 	<xsl:variable name="berichtCode" select="/ep:message-set/ep:message/ep:code"/>
 	<xsl:variable name="prefix" select="ep:message-set/ep:namespace-prefix"/>
@@ -38,7 +36,7 @@
 			<xsl:apply-templates select="ep:construct[@type='group']" mode="complexType"/>
 			<xsl:apply-templates select="ep:construct[not(@type)]" mode="complexType"/>
 			<xsl:comment select="'simpleTypes to be extended with XML attributes'"/>
-			<xsl:apply-templates select="//ep:construct[(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:patroon or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata]]" mode="createSimpleTypes"/>
+			<xsl:apply-templates select="//ep:construct[(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata]]" mode="createSimpleTypes"/>
 		</xs:schema>
 	</xsl:template>
 
@@ -130,20 +128,9 @@
 							<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
 							<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
 							<xsl:choose>
-								<xsl:when test="(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:patroon or ep:regels or ep:enum) and ep:type-name and $globalComplexTypes='yes'">
-									<xsl:attribute name="type">
-										<xsl:value-of select="concat($prefix,':',imf:get-normalized-name(concat('simpleType-',ep:tech-name,'-',generate-id()),'type-name'))"/>
-									</xsl:attribute>
-									<xsl:if test="ep:documentation">
-										<xs:annotation>
-											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
-										</xs:annotation>
-									</xsl:if>
-									<xsl:comment select="'situatie 1'"/>
-								</xsl:when>
 								<!-- When a construct contains facets (which means it has to become an element without child elements) and it contains metadata constructs a 
 									 extension complexType needs to be generated which contains the xml-attributes based on a simpleType which contains the facets. -->
-								<xsl:when test="(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:patroon or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata] and $globalComplexTypes='no'">
+								<xsl:when test="(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata]">
 									<xsl:if test="ep:documentation">
 										<xs:annotation>
 											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
@@ -161,7 +148,7 @@
 								</xsl:when>
 								<!-- When a construct contains facets (which means it has to become an element without child elements) and it doesn't contain metadata constructs 
 									 a restriction simpleType can be generated which contains the facets. -->
-								<xsl:when test="(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:patroon or ep:regels or ep:enum) and ep:type-name and $globalComplexTypes='no'">
+								<xsl:when test="(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:regels or ep:enum) and ep:type-name">
 									<xsl:if test="ep:documentation">
 										<xs:annotation>
 											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
@@ -219,17 +206,17 @@
 											<xsl:if test="ep:fraction-digits">
 												<xs:fractionDigits value="{ep:fraction-digits}" />
 											</xsl:if>
-											<xsl:if test="ep:enum and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal')">
+											<xsl:if test="ep:enum and (ep:type-name != 'scalar-boolean')">
 												<xsl:apply-templates select="ep:enum"/>
 											</xsl:if>
-											<xsl:if test="ep:patroon and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-boolean')">
-												<xs:pattern value="{ep:patroon}" />
+											<xsl:if test="ep:formeel-patroon and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-boolean')">
+												<xs:pattern value="{ep:formeel-patroon}" />
 											</xsl:if>				
 										</xs:restriction>						
 									</xs:simpleType>				
 								</xsl:when>
 								<!-- When a construct doensn't contain facets and metadata constructs a restriction simpleType can be generated without facets. -->
-								<xsl:when test="ep:type-name and .//ep:construct[@ismetadata] and $globalComplexTypes='no'">
+								<xsl:when test="ep:type-name and .//ep:construct[@ismetadata]">
 									<xsl:if test="ep:documentation">
 										<xs:annotation>
 											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
@@ -271,7 +258,7 @@
 									</xs:complexType>
 								</xsl:when>
 								<!-- When a construct doensn't contain facets and metadata constructs a restriction simpleType can be generated without facets. -->
-								<xsl:when test="ep:type-name and $globalComplexTypes='no'">
+								<xsl:when test="ep:type-name">
 									<xsl:if test="ep:documentation">
 										<xs:annotation>
 											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
@@ -308,7 +295,7 @@
 										</xs:restriction>						
 									</xs:simpleType>				
 								</xsl:when>
-								<xsl:when test=".//ep:construct and $globalComplexTypes='no'">
+								<xsl:when test=".//ep:construct">
 									<xsl:if test="ep:documentation">
 										<xs:annotation>
 											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
@@ -449,8 +436,8 @@
 						<xsl:if test="ep:enum and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal')">
 							<xsl:apply-templates select="ep:enum"/>
 						</xsl:if>
-						<xsl:if test="ep:patroon and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-boolean')">
-							<xs:pattern value="{ep:patroon}" />
+						<xsl:if test="ep:formeel-patroon and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-boolean')">
+							<xs:pattern value="{ep:formeel-patroon}" />
 						</xsl:if>				
 					</xs:restriction>
 				</xs:simpleType>
@@ -476,17 +463,6 @@
 		<xsl:choose>
 			<xsl:when test="contains(ep:tech-name,':') and ep:tech-name!='StUF:entiteittype'">
 				<xs:attribute ref="{ep:tech-name}">
-					<xsl:attribute name="use">
-						<xsl:choose>
-							<xsl:when test="not(ep:min-occurs) or ep:min-occurs=1">required</xsl:when>
-							<xsl:otherwise>optional</xsl:otherwise>
-						</xsl:choose>
-					</xsl:attribute>
-				</xs:attribute>
-			</xsl:when>
-			<xsl:when test="$globalComplexTypes='yes'">
-				<!--xs:attribute name="{ep:tech-name}" type="{concat($prefix,':attributeSimpleType-',ep:tech-name,'-',$id,'-',generate-id())}"-->
-				<xs:attribute name="{ep:tech-name}" type="{concat($prefix,':attributeSimpleType-',ep:tech-name,'-',generate-id())}">
 					<xsl:attribute name="use">
 						<xsl:choose>
 							<xsl:when test="not(ep:min-occurs) or ep:min-occurs=1">required</xsl:when>
@@ -557,8 +533,8 @@
 							<xsl:if test="ep:enum and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal')">
 								<xsl:apply-templates select="ep:enum"/>
 							</xsl:if>
-							<xsl:if test="ep:patroon and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-boolean')">
-								<xs:pattern value="{ep:patroon}" />
+							<xsl:if test="ep:formeel-patroon and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-boolean')">
+								<xs:pattern value="{ep:formeel-patroon}" />
 							</xsl:if>				
 						</xs:restriction>
 					</xs:simpleType>

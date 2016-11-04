@@ -23,6 +23,29 @@
     
     <tagged-values>
         
+        <tv norm="space" rules="NOC" id="IndicatieKerngegeven">
+            <name lang="nl">Indicatie kerngegeven</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Element</stereo>
+                <stereo required="no" lang="nl">Groep</stereo>
+                <stereo required="no" lang="nl">Relatie</stereo>
+                <stereo required="no" lang="nl">Relatie-entiteit</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        <tv norm="space" rules="NOC" id="IndicatieAuthentiek">
+            <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
+            <stereotypes>
+                <stereo required="no" lang="nl">Element</stereo>
+                <stereo required="no" lang="nl">Groep</stereo>
+                <stereo required="no" lang="nl">Relatie</stereo>
+            </stereotypes>
+         </tv>
+        
         <tv norm="space"  rules="NOC" id="IndicatieMateriëleHistorie">
             <name lang="nl">Indicatie materiële historie</name>
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->

@@ -116,12 +116,12 @@
         <xsl:sequence select="imf:msg('DEBUG',$msg)"/>
 
         <ep:message-set>
-           <xsl:sequence select="imf:create-output-element('ep:date', substring-before(/imvert:packages/imvert:generated,'T'))"/>
            <xsl:sequence select="imf:create-output-element('ep:name', /imvert:packages/imvert:project)"/>
            <xsl:sequence select="imf:create-output-element('ep:namespace', /imvert:packages/imvert:base-namespace)"/>
            <xsl:sequence select="imf:create-output-element('ep:namespace-prefix', $prefix)"/>
-           <xsl:sequence select="imf:create-output-element('ep:patch-number', 'TO-DO')"/>
-           <xsl:sequence select="imf:create-output-element('ep:release', /imvert:packages/imvert:release)"/>
+            <xsl:sequence select="imf:create-output-element('ep:release', /imvert:packages/imvert:release)"/>
+            <xsl:sequence select="imf:create-output-element('ep:date', substring-before(/imvert:packages/imvert:generated,'T'))"/>
+            <xsl:sequence select="imf:create-output-element('ep:patch-number', 'TO-DO')"/>
             
             <xsl:if test="imf:boolean($debug)">
                 <xsl:sequence select="$rough-messages"/>
@@ -137,6 +137,7 @@
                 having a type-id value none of the preceding ep:construct elements have. -->
            <xsl:for-each select="$rough-messages//ep:construct[ep:type-id and generate-id(.) = generate-id(key('construct-id',ep:type-id,$rough-messages)[1])]">
                <!--xsl:variable name="berichtCode" select="ancestor::ep:rough-message/ep:code"-->
+               <xsl:variable name="berichtName" select="ancestor::ep:rough-message/ep:name"/>
                <xsl:variable name="berichtCode">
                    <xsl:choose>
                        <xsl:when test="ancestor-or-self::ep:construct[@berichtCode]">
@@ -147,6 +148,7 @@
                        </xsl:otherwise>
                    </xsl:choose>
                </xsl:variable>
+               <xsl:variable name="fundamentalMnemonic" select="ancestor::ep:rough-message/ep:fundamentalMnemonic"/>
                <xsl:variable name="context">
                    <xsl:choose>
                        <xsl:when test="@context=''">
@@ -200,11 +202,15 @@
                                     -->
                                
                                <!-- The uml attributes of the uml group are placed here. -->
+                               <xsl:if test="imf:boolean($debug)">
+                                   <xsl:comment select="concat('fundamentalMnemonic: ',$fundamentalMnemonic)"/>
+                               </xsl:if>
                                <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                    mode="create-message-content">
                                    <xsl:with-param name="proces-type" select="'attributes'" />
                                    <xsl:with-param name="berichtCode" select="$berichtCode" />
                                    <xsl:with-param name="context" select="$context" />
+                                   <xsl:with-param name="fundamentalMnemonic" select="$fundamentalMnemonic"/>
                                </xsl:apply-templates>
                                <!-- The uml groups of the uml group are placed here. -->
                                <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
@@ -344,7 +350,7 @@
                                        </xsl:if>
                                        <!-- If 'Materiele historie' or 'Formele historie' is applicable for the current class a constructRef to a historieMaterieel global construct based on the current class is generated. -->
                                        <xsl:if test="@indicatieMaterieleHistorie='Ja' or @indicatieFormeleHistorie='Ja'">
-                                           <ep:constructRef>
+                                           <ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                                                <ep:tech-name>historieMaterieel</ep:tech-name>
                                                <ep:max-occurs>unbounded</ep:max-occurs>
                                                <ep:min-occurs>0</ep:min-occurs>
@@ -363,7 +369,7 @@
                                        </xsl:if>
                                        <!-- If 'Formele historie' is applicable for the current class a constructRef to a historieFormeel global construct based on the current class is generated. -->
                                        <xsl:if test="@indicatieFormeleHistorie='Ja'">
-                                           <ep:constructRef>
+                                           <ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                                                <ep:tech-name>historieFormeel</ep:tech-name>
                                                <ep:max-occurs>unbounded</ep:max-occurs>
                                                <ep:min-occurs>0</ep:min-occurs>
@@ -573,7 +579,7 @@
                                                    <ep:min-occurs>1</ep:min-occurs>
                                                    <ep:position>160</ep:position>
                                                </ep:construct>
-                                               <ep:constructRef>
+                                               <ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                                                    <ep:tech-name>historieFormeel</ep:tech-name>
                                                    <ep:max-occurs>unbounded</ep:max-occurs>
                                                    <ep:min-occurs>0</ep:min-occurs>
@@ -744,7 +750,7 @@
                                                <ep:min-occurs>1</ep:min-occurs>
                                                <ep:position>160</ep:position>
                                            </ep:construct>
-                                           <ep:constructRef>
+                                           <ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                                                <ep:tech-name>historieFormeel</ep:tech-name>
                                                <ep:max-occurs>unbounded</ep:max-occurs>
                                                <ep:min-occurs>0</ep:min-occurs>
@@ -775,6 +781,16 @@
            </xsl:for-each>
             <xsl:for-each select="$rough-messages//ep:rough-message[contains(ep:name, 'La')]//ep:construct[ep:name = 'antwoord']">
                 <xsl:variable name="berichtName" select="ancestor::ep:rough-message/ep:name"/>
+                <xsl:variable name="berichtCode">
+                    <xsl:choose>
+                        <xsl:when test="ancestor-or-self::ep:construct[@berichtCode]">
+                            <xsl:value-of select="ancestor-or-self::ep:construct[@berichtCode][last()]/@berichtCode"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="ancestor::ep:rough-message/ep:code"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
                 <xsl:variable name="relatedObjectId" select="ep:construct/ep:id"/>
                 <xsl:variable name="relatedObjectTypeId" select="ep:construct/ep:type-id"/> 
                  <ep:construct>
@@ -792,7 +808,7 @@
                          </xsl:otherwise>
                      </xsl:choose>
                     <ep:seq orderingDesired="no">
-                        <ep:constructRef context="{@context}">
+                        <ep:constructRef context="{@context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                             <xsl:sequence
                                 select="imf:create-output-element('ep:tech-name', 'object')"/>
                             <ep:max-occurs><xsl:value-of select="$packages//imvert:association[imvert:id = $relatedObjectId]/imvert:max-occurs"/></ep:max-occurs>
@@ -816,6 +832,16 @@
            </xsl:for-each>
             <xsl:for-each select="$rough-messages//ep:rough-message[contains(ep:name, 'Lv')]//ep:construct[ep:name = 'start']">
                 <xsl:variable name="berichtName" select="ancestor::ep:rough-message/ep:name"/>
+                <xsl:variable name="berichtCode">
+                    <xsl:choose>
+                        <xsl:when test="ancestor-or-self::ep:construct[@berichtCode]">
+                            <xsl:value-of select="ancestor-or-self::ep:construct[@berichtCode][last()]/@berichtCode"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="ancestor::ep:rough-message/ep:code"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
                 <xsl:variable name="relatedObjectId" select="ep:construct/ep:id"/>
                 <xsl:variable name="relatedObjectTypeId" select="ep:construct/ep:type-id"/> 
                 <ep:construct>
@@ -836,7 +862,7 @@
                         </xsl:otherwise>
                     </xsl:choose>
                     <ep:seq orderingDesired="no">
-                        <ep:constructRef context="{@context}">
+                        <ep:constructRef context="{@context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                             <xsl:sequence
                                 select="imf:create-output-element('ep:tech-name', ep:construct/ep:name)"/>
                             <ep:max-occurs><xsl:value-of select="$packages//imvert:association[imvert:id = $relatedObjectId]/imvert:max-occurs"/></ep:max-occurs>
@@ -860,6 +886,16 @@
             </xsl:for-each>
             <xsl:for-each select="$rough-messages//ep:rough-message[contains(ep:name, 'Lv')]//ep:construct[ep:name = 'scope']">
                 <xsl:variable name="berichtName" select="ancestor::ep:rough-message/ep:name"/>
+                <xsl:variable name="berichtCode">
+                    <xsl:choose>
+                        <xsl:when test="ancestor-or-self::ep:construct[@berichtCode]">
+                            <xsl:value-of select="ancestor-or-self::ep:construct[@berichtCode][last()]/@berichtCode"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="ancestor::ep:rough-message/ep:code"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
                 <xsl:variable name="relatedObjectId" select="ep:construct/ep:id"/>
                 <xsl:variable name="relatedObjectTypeId" select="ep:construct/ep:type-id"/> 
                 <ep:construct>
@@ -880,7 +916,7 @@
                         </xsl:otherwise>
                     </xsl:choose>
                     <ep:seq orderingDesired="no">
-                        <ep:constructRef context="{@context}">
+                        <ep:constructRef context="{@context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                             <xsl:sequence
                                 select="imf:create-output-element('ep:tech-name', ep:construct/ep:name)"/>
                             <ep:max-occurs><xsl:value-of select="$packages//imvert:association[imvert:id = $relatedObjectId]/imvert:max-occurs"/></ep:max-occurs>

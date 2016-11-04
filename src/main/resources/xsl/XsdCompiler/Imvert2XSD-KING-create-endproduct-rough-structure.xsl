@@ -36,6 +36,24 @@
 		<xsl:for-each
 			select="imvert:class[(imvert:stereotype = 'VRAAGBERICHTTYPE' or imvert:stereotype = 'ANTWOORDBERICHTTYPE' or imvert:stereotype = 'KENNISGEVINGBERICHTTYPE' or imvert:stereotype = 'VRIJ BERICHTTYPE') and not(imvert:id = //imvert:association/imvert:type-id)]">
 			<xsl:comment select="concat('imvert:id: ',imvert:id)"/>
+			
+			<xsl:variable name="associationClassId" select=".//imvert:association/imvert:type-id"/>
+			<xsl:variable name="fundamentalMnemonic">
+				<xsl:choose>
+					<xsl:when test="imvert:stereotype = imf:get-config-stereotypes((
+						'stereotype-name-vraagberichttype',
+						'stereotype-name-antwoordberichttype',
+						'stereotype-name-kennisgevingberichttype',
+						'stereotype-name-synchronisatieberichttype'))">
+						<xsl:value-of select="//imvert:class[imvert:id = $associationClassId]/imvert:alias"/>
+					</xsl:when>
+					<xsl:when test="imvert:stereotype = imf:get-config-stereotypes((
+						'stereotype-name-vrijberichttype'))">
+						<xsl:value-of select="''"/>
+					</xsl:when>
+				</xsl:choose>
+			</xsl:variable>
+			
 			<xsl:variable name="berichtType">
 				<xsl:choose>
 					<xsl:when test="imvert:stereotype = 'VRAAGBERICHTTYPE'">Vraagbericht</xsl:when>
@@ -63,6 +81,7 @@
 			<ep:rough-message>
 				<xsl:sequence select="imf:create-output-element('ep:name', imvert:name/@original)"/>
 				<xsl:sequence select="imf:create-output-element('ep:code', $berichtCode)"/>
+				<xsl:sequence select="imf:create-output-element('ep:fundamentalMnemonic', $fundamentalMnemonic)"/>
 				<!-- Start of the message is always a class with an imvert:stereotype 
 					with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE', 'VRIJ BERICHTTYPE' 
 					or 'KENNISGEVINGBERICHTTYPE'. Since the toplevel structure of a message 
