@@ -590,6 +590,9 @@
                     <xsl:variable name="type-suffix" select="if ($as-type) then 'Type' else ''"/>
                     <xsl:variable name="type-prefix">
                         <xsl:choose>
+                            <xsl:when test="empty(imvert:conceptual-schema-type)">
+                                <xsl:sequence select="imf:msg(.,'ERROR','No conceptual schema type specified',())"/>
+                            </xsl:when>
                             <xsl:when test="imvert:conceptual-schema-type = 'GM_Point'">gml:Point</xsl:when>
                             <xsl:when test="imvert:conceptual-schema-type = 'GM_Curve'">gml:Curve</xsl:when>
                             <xsl:when test="imvert:conceptual-schema-type = 'GM_Surface'">gml:Surface</xsl:when>
@@ -1238,7 +1241,7 @@
         <xsl:variable name="stereotype" select="imf:get-stereotype($this)"/>
         <xsl:variable name="alias" select="$this/imvert:alias"/>
         <xsl:variable name="name-raw" select="$this/imvert:name"/>
-        <xsl:variable name="name" select="replace($name-raw,'[^A-Za-z0-9.\-]+','_')"/>
+        <xsl:variable name="name" select="replace($name-raw,'[^\p{L}0-9.\-]+','_')"/>
         <xsl:choose>
             <xsl:when test="$type = 'class' and $stereotype = imf:get-config-stereotypes('stereotype-name-composite')">
                 <xsl:value-of select="concat(imf:capitalize($name),'Grp')"/>
