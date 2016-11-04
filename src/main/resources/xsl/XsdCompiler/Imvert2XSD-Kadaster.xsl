@@ -636,6 +636,7 @@
         <xsl:variable name="is-complextype" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-complextype','stereotype-name-referentielijst'))"/>
         
         <xsl:variable name="is-conceptual-complextype" select="$this/imvert:attribute-type-designation='complextype'"/>
+        <xsl:variable name="is-conceptual-hasnilreason" select="imf:boolean($this/imvert:attribute-type-hasnilreason)"/> <!-- IM-477 the conceptual type in external schema is nillable and therefore has nilReason attribute -->
         <xsl:variable name="name-conceptual-type" select="if ($this/imvert:attribute-type-name) then imf:get-type($this/imvert:attribute-type-name,$this/imvert:type-package) else ''"/>
         
         <xsl:variable name="type" select="if ($name-conceptual-type) then $name-conceptual-type else $found-type"/>
@@ -654,7 +655,7 @@
         <xsl:variable name="min-occurs-target" select="if ($this/imvert:min-occurs='0') then '1' else $this/imvert:min-occurs"/>
         
         <xsl:variable name="data-location" select="imf:get-appinfo-location($this)"/>
-            
+        
         <xsl:choose>
             <!-- any type, i.e. #any -->
             <xsl:when test="$is-any">
@@ -720,7 +721,7 @@
                                 </xsl:choose>
                             </xsl:variable>
                             <xs:extension base="{imf:get-type($fixtype,$package-name)}">
-                                <xsl:sequence select="imf:create-nilreason()"/>
+                                <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
                             </xs:extension>
                         </xs:simpleContent>
                     </xs:complexType>
@@ -760,7 +761,7 @@
                             -->
                             <xsl:variable name="effective-type" select="if ($is-restriction) then imf:get-type($basetype-name,$package-name) else $type"/>
                             <xs:extension base="{$effective-type}">
-                                <xsl:sequence select="imf:create-nilreason()"/>
+                                <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
                                 <xsl:sequence select="imf:create-estimation($is-estimation)"/>
                             </xs:extension>
                         </xs:simpleContent>
@@ -844,7 +845,7 @@
                     <xs:complexType>
                         <xs:simpleContent>
                             <xs:extension base="{$type}">
-                                <xsl:sequence select="imf:create-nilreason()"/>
+                                <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
                             </xs:extension>
                         </xs:simpleContent>
                     </xs:complexType>
@@ -862,7 +863,7 @@
                     <xs:complexType>
                         <xsl:variable name="ext">
                             <xs:extension base="{$type}">
-                                <xsl:sequence select="imf:create-nilreason()"/>
+                                <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
                             </xs:extension>
                         </xsl:variable>
                         <xsl:choose>
@@ -903,7 +904,7 @@
                     <xs:complexType>
                         <xs:simpleContent>
                             <xs:extension base="{$type}">
-                                <xsl:sequence select="imf:create-nilreason()"/>
+                                <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
                             </xs:extension>
                         </xs:simpleContent>
                     </xs:complexType>
@@ -940,7 +941,7 @@
                     <xs:complexType>
                         <xs:complexContent>
                             <xs:extension base="{$type}">
-                                <xsl:sequence select="imf:create-nilreason()"/>
+                                <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
                             </xs:extension>
                         </xs:complexContent>
                     </xs:complexType>
@@ -978,7 +979,7 @@
                         <xs:sequence>
                             <xs:element ref="{$type}" minOccurs="{$min-occurs-target}" maxOccurs="{$this/imvert:max-occurs}"/>
                         </xs:sequence>
-                        <xsl:sequence select="imf:create-nilreason()"/>
+                        <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
                     </xs:complexType>
                 </xs:element>
             </xsl:when>
@@ -1107,7 +1108,7 @@
                         </xsl:otherwise>
                     </xsl:choose>
                     <xsl:if test="$is-nillable">
-                        <xsl:sequence select="imf:create-nilreason()"/>
+                        <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
                     </xsl:if>
                 </xsl:variable>
                 <xsl:choose>
@@ -1207,7 +1208,7 @@
                             </xs:sequence>
                         </xsl:if>
                         <xsl:if test="$is-nillable">
-                            <xsl:sequence select="imf:create-nilreason()"/>
+                            <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
                         </xsl:if>
                     </xs:complexType>
                 </xs:element>
@@ -1289,7 +1290,10 @@
     </xsl:function>
     
     <xsl:function name="imf:create-nilreason">
-        <xs:attribute name="nilReason" type="xs:string" use="optional"/>
+        <xsl:param name="is-conceptual-hasnilreason"/><!-- IM-477 -->
+        <xsl:if test="not($is-conceptual-hasnilreason)">
+            <xs:attribute name="nilReason" type="xs:string" use="optional"/>
+        </xsl:if>
     </xsl:function>
     
     <xsl:function name="imf:create-estimation">
@@ -1364,7 +1368,7 @@
 
     <xsl:function name="imf:create-nonempty-constraint" as="item()*">
         <xsl:param name="type" as="xs:string?"/>
-        <xsl:if test="$type=('scalar-char', 'scalar-string', 'scalar-uri') or not($type)">
+        <xsl:if test="$type=('scalar-string', 'scalar-uri') or not($type)">
             <xs:pattern value="\S.*"/> <!-- Note: do not use xs:minLength as this allows for a single space -->
         </xsl:if>
     </xsl:function>
