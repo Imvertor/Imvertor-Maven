@@ -177,6 +177,7 @@
             
             <xsl:apply-templates select="imvert:attribute-type-name"/>
             <xsl:apply-templates select="imvert:attribute-type-designation"/>
+            <xsl:apply-templates select="imvert:attribute-type-hasnilreason"/>
             <xsl:apply-templates select="imvert:copy-down-type-id"/>
             <xsl:apply-templates select="imvert:conceptual-schema-type"/>
             
@@ -375,6 +376,9 @@
                 <xsl:apply-templates select="imvert:stereotype"/>
                 <xsl:apply-templates select="imvert:trace"/>
                 <xsl:apply-templates select="imvert:dependency"/>
+                <xsl:apply-templates select="imvert:static"/>
+                <xsl:apply-templates select="imvert:scope"/>
+                <xsl:apply-templates select="imvert:visibility"/>
             </xsl:variable>
             <xsl:sequence select="imf:create-group('Identifiable',$group)"/>
         </xsl:variable>
