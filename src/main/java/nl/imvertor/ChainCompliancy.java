@@ -65,7 +65,7 @@ public class ChainCompliancy {
 		    (new RunAnalyzer()).run();
 
 		    // Run the reporter in all cases; grabs all fragments and status info in parms.xml and compiles the documentation.
-			(new Reporter()).run();
+			//TODO (new Reporter()).run();
 			
 			configurator.windup();
 			

@@ -27,6 +27,8 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:cw="http://www.armatiek.nl/namespace/zip-content-wrapper"
+    
     exclude-result-prefixes="#all"
     version="2.0">
     
@@ -37,15 +39,52 @@
         <xsl:apply-templates/>
     </xsl:template>
     
-    <xsl:template match="/files/file[@path = 'xl\worksheets\sheet1.xml']">
+    <xsl:variable name="all-shared-strings" as="element()*">
+        <xsl:sequence select="/cw:files/cw:file[@path='xl\sharedStrings.xml']/*:sst/*:si"/>
+    </xsl:variable>
+    
+    <!-- 
+        global variables are referenced in cells using #{referentienummer) and the like 
+        
+        provided as local <var> elements.
+    -->    
+    <xsl:variable name="all-global-variables" as="element(var)*">
+        <xsl:for-each select="/cw:files/cw:file[@path = 'xl\worksheets\sheet3.xml']/*:worksheet/*:sheetData/*:row">
+            <xsl:variable name="name" select="imf:get-string(*:c[1])"/>
+            <xsl:variable name="value" select="imf:get-string(*:c[2])"/>
+            <var name="{$name}" value="{$value}"/>
+        </xsl:for-each>
+    </xsl:variable>
+    
+    <xsl:template match="/cw:files/cw:file[@path = 'xl\worksheets\sheet1.xml']">
         <xsl:variable name="folderpath" select="imf:get-config-string('properties','IMVERTOR_COMPLY_EXTRACT_TARGET')"/>
         <xsl:variable name="filepath" select="imf:file-to-url(concat($folderpath,'/','test1.xml'))"/>
+        <xsl:sequence select="imf:msg(.,'INFO','Path is [1]',$filepath)"/>
+      
+        <!--
+            iterate over all messages, and for each message all columns
+        -->
+        <xsl:variable name="messages">
+            <xsl:for-each select="/cw:files/cw:file[@path = 'xl\worksheets\sheet1.xml']/*:worksheet/*:sheetData/*:row">
+                <xsl:variable name="cell" select="imf:get-cell-info(.,1)"/>
+                <xsl:choose>
+                    <xsl:when test="not($cell/@val = '')">
+                        <!-- message is a block that starts with a non-empty cell in column 1. -->
+                        
+                    </xsl:when>
+                </xsl:choose>
+            </xsl:for-each>  
+        </xsl:variable>
+      
         <xsl:result-document href="{$filepath}">
             <xsl:comment select="imf:format-dateTime(current-dateTime())"/>
             <test-file>
-                Hello, world: 1=<xsl:value-of select="(.//ws:c)[1]"/>
+                <xsl:for-each select="$all-global-variables">
+                    <xsl:value-of select="concat(@name, ' = ', @value)"/>
+                </xsl:for-each>
             </test-file>
         </xsl:result-document>
+        
     </xsl:template>
     
     <xsl:template match="node()|@*">
@@ -54,5 +93,30 @@
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
+    
+    <!-- 
+        get the string from the shared strings section 
+    -->
+    <xsl:function name="imf:get-string" as="xs:string">
+        <xsl:param name="c"/>
+        <xsl:value-of select="if ($c/@t='s') then $all-shared-strings[xs:integer($c/*:v) + 1] else string-join($c/*:v,'')"/>
+    </xsl:function>
+    
+    <!-- 
+        get the cell info for the row cell at index supplied.
+        A cell may not exist or be empty; in both cases the value is empty string. 
+        First cell on sheet is <cell row="1" col="1" val="value of this cell"/> 
+    -->
+    <xsl:function name="imf:get-cell-info" as="element(cell)">
+        <xsl:param name="row" as="element()"/>
+        <xsl:param name="index" as="xs:integer"/>
+        <xsl:variable name="letter" select="substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',$index,1)"/>
+        <xsl:variable name="c" select="$row/*:c[starts-with(@r,$letter)]"/>
+        <cell>
+            <xsl:attribute name="row" select="$row/@r"/>
+            <xsl:attribute name="col" select="$index"/>
+            <xsl:attribute name="val" select="if (exists($c)) then imf:get-string($c) else ''"/>
+        </cell>
+    </xsl:function>
     
 </xsl:stylesheet>
