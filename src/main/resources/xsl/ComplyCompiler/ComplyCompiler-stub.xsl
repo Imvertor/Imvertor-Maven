@@ -9,20 +9,32 @@
     xmlns:cp="http://www.imvertor.org/schema/comply-excel"
     >
    
-    <!-- TODO stub nodig voor opvangen van onvoorziene veranderingen in EP formaat, later verwijderen. -->
+    <!-- 
+        This stylesheet aadpts the EP format in accordance with last minute requirements.
+        It also tests for unforeseen constructs (technical validation)
+    -->
 
-<?xx
-    <xsl:template match="/ep:message-set/ep:message/ep:seq/ep:construct[ep:seq/ep:constructRef]">
-        <xsl:apply-templates select="ep:seq/ep:constructRef"/>
+    <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="../common/Imvert-common-validation.xsl"/>
+    <xsl:import href="../common/Imvert-common-derivation.xsl"/>
+    
+    <xsl:template match="ep:seq | ep:choice">
+        <xsl:sequence select="imf:report-error(.., 
+            exists(ancestor::ep:choice), 
+            'Sequence or choice may not occur within choice')"/>   
+      
+        <xsl:next-match/>
     </xsl:template>
-xx?>
     
     <xsl:template match="ep:patroon">
-        <ep:pattern>
-            <xsl:apply-templates/>
-        </ep:pattern>
+        <!-- copy: -->
+        <xsl:next-match/>
+        <!-- add info: -->
+        <ep:patroon-beschrijving>
+            BESCHRIJVING VOLGT NOG
+        </ep:patroon-beschrijving>
     </xsl:template>
-
+    
     <xsl:template match="node()|@*">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>

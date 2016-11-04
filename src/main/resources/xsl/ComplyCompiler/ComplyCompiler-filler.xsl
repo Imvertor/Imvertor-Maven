@@ -288,6 +288,23 @@
                 </cfRule>
             </conditionalFormatting>
         </xsl:for-each>
+        <!-- then for each prop within block, when choice -->
+        <xsl:for-each select="$blocks/cp:prop[@group = 'choice']">
+            <xsl:variable name="range" as="element(range)">
+                <xsl:variable name="start-col-letter">D</xsl:variable>
+                <xsl:variable name="end-col-letter">K</xsl:variable>
+                <xsl:variable name="gegevensgroep-header-rij" select="imf:get-row-for-block(..)"/>
+                <xsl:variable name="element-rij" select="imf:get-row-for-prop(.)"/>
+                <range sl="{$start-col-letter}" el="{$end-col-letter}" sn="{$element-rij}" en="{$element-rij}" hn="{$gegevensgroep-header-rij}"/> 
+            </xsl:variable>
+            <conditionalFormatting sqref="{imf:create-range($range)}">
+                <xsl:variable name="volgnummer" select="position()"/>
+                <cfRule type="containsBlanks" dxfId="3" priority="{1000+$volgnummer}" stopIfTrue="1">
+                    <formula>LEN(TRIM(D<xsl:value-of select="$range/@sn"/>))=0</formula>
+                </cfRule>
+            </conditionalFormatting>
+        </xsl:for-each>       
+                
     </xsl:template>
     
     <xsl:template match="dimension" mode="process-berichten">
@@ -574,6 +591,7 @@
                         <xsl:sequence select="imf:create-data-comment('Min lengte',cp:minlength)"/>    
                         <xsl:sequence select="imf:create-data-comment('Max lengte',cp:maxlength)"/>    
                         <xsl:sequence select="imf:create-data-comment('Patroon',cp:pattern)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Patroon beschrijving',cp:patroon-beschrijving)"/>    
                         <xsl:sequence select="imf:create-data-comment('Voidable',cp:voidable)"/>    
                         <xsl:sequence select="imf:create-data-comment('Kerngegeven',cp:kerngegeven)"/>    
                         <xsl:sequence select="imf:create-data-comment('Authentiek',cp:authentiek)"/>    
@@ -679,58 +697,85 @@
                         </c>
                     </xsl:for-each>
                 </row>
-                <xsl:for-each select="cp:prop[@type='spec']">
+                <xsl:for-each select="cp:prop">
                     <xsl:variable name="construct-row" select="$message-row + count(preceding-sibling::cp:prop)"/>
                     <!-- Maak een row voor iedere construct. -->
                     <xsl:variable name="tech-name" select="cp:name"/>
                     <xsl:variable name="cardinality" select="cp:cardinal"/>
                     <xsl:variable name="is-attribute" select="cp:attribute = 'true'"/>
+                    <xsl:variable name="is-choice" select="@group = 'choice'"/>
                     <xsl:variable name="fixed-value" select="cp:fixed"/>
-                    <row r="{$construct-row}" spans="1:11">
-                        <xsl:choose>
-                            <xsl:when test="$is-attribute">
-                                <xsl:attribute name="outlineLevel">1</xsl:attribute>
-                                <c r="B{$construct-row}" s="3" t="inlineStr">
+                    <xsl:choose>
+                        <xsl:when test="@type='spec'">
+                            <row r="{$construct-row}" spans="1:11">
+                                <xsl:choose>
+                                    <xsl:when test="$is-attribute">
+                                        <xsl:attribute name="outlineLevel">1</xsl:attribute>
+                                        <c r="B{$construct-row}" s="3" t="inlineStr">
+                                            <is>
+                                                <t>
+                                                    <xsl:value-of select="concat('@',$tech-name)"/>
+                                                </t>
+                                            </is>
+                                        </c>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <c r="B{$construct-row}" t="inlineStr">
+                                            <xsl:choose>
+                                                <xsl:when test="$is-choice">
+                                                    <xsl:attribute name="s" select="6"/> 
+                                                </xsl:when>
+                                                <xsl:when test="exists(@ref)">
+                                                    <xsl:attribute name="s" select="4"/> 
+                                                </xsl:when>
+                                            </xsl:choose>
+                                            <is>
+                                                <t>
+                                                    <xsl:value-of select="$tech-name"/>
+                                                </t>
+                                            </is>
+                                        </c>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <c r="C{$construct-row}" t="inlineStr">
                                     <is>
                                         <t>
-                                            <xsl:value-of select="concat('@',$tech-name)"/>
+                                            <xsl:value-of select="$cardinality"/>
                                         </t>
                                     </is>
                                 </c>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <c r="B{$construct-row}" t="inlineStr">
+                                <xsl:for-each select="subsequence($col-letters,3)">
+                                    <xsl:variable name="col-letter" select="."/>
                                     <xsl:choose>
-                                        <xsl:when test="exists(@ref)">
-                                           <xsl:attribute name="s" select="4"/> 
+                                        <xsl:when test="$fixed-value">
+                                            <c r="{$col-letter}{$construct-row}">
+                                                <v><xsl:value-of select="$fixed-value"/></v>
+                                            </c>
                                         </xsl:when>
                                     </xsl:choose>
+                                </xsl:for-each>
+                            </row>
+                        </xsl:when>
+                        <xsl:when test="@type='choice'">
+                            <!-- the choice header -->
+                            <row r="{$construct-row}" spans="1:11">
+                                <c r="B{$construct-row}" t="inlineStr" s="5">
                                     <is>
                                         <t>
-                                            <xsl:value-of select="$tech-name"/>
+                                            CHOICE
                                         </t>
                                     </is>
                                 </c>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                        <c r="C{$construct-row}" t="inlineStr">
-                            <is>
-                                <t>
-                                    <xsl:value-of select="$cardinality"/>
-                                </t>
-                            </is>
-                        </c>
-                        <xsl:for-each select="subsequence($col-letters,3)">
-                            <xsl:variable name="col-letter" select="."/>
-                            <xsl:choose>
-                                <xsl:when test="$fixed-value">
-                                    <c r="{$col-letter}{$construct-row}">
-                                        <v><xsl:value-of select="$fixed-value"/></v>
-                                    </c>
-                                </xsl:when>
-                            </xsl:choose>
-                        </xsl:for-each>
-                    </row>
+                                <c r="C{$construct-row}" t="inlineStr">
+                                    <is>
+                                        <t>
+                                            <xsl:value-of select="$cardinality"/>
+                                        </t>
+                                    </is>
+                                </c>
+                            </row>
+                        </xsl:when>
+                    </xsl:choose>
                 </xsl:for-each>
             </xsl:for-each>
         </xsl:copy>
@@ -751,6 +796,13 @@
         <xsl:param name="block" as="element()"/>
         <xsl:variable name="sheet" select="$block/@sheet"/> <!-- must be on the same sheet --> 
         <xsl:value-of select="count($block/preceding::cp:prop[../@sheet = $sheet]) + 2"/> <!-- add sheet header line, and row numbers start at 1. -->
+    </xsl:function>
+    <!-- 
+        op welke regel staat deze prop? 
+    -->
+    <xsl:function name="imf:get-row-for-prop" as="xs:integer">
+        <xsl:param name="prop" as="element()"/>
+        <xsl:value-of select="imf:get-row-for-block($prop/..) + count($prop/preceding-sibling::cp:prop)"/>
     </xsl:function>
     
     <!-- 
