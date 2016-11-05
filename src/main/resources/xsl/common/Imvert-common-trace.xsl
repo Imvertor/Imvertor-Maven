@@ -44,7 +44,7 @@
             <xsl:variable name="supplier-name-norm" select="imf:get-normalized-name($supplier-name,'package-name')"/>
             <xsl:variable name="supplier-release-norm" select="imf:get-normalized-name($supplier-release,'system-name')"/>
             -->
-            <xsl:variable name="subpath" select="string-join(($supplier-project,$supplier-name,$supplier-release),'/')"/>
+            <xsl:variable name="subpath" select="imf:get-subpath($supplier-project,$supplier-name,$supplier-release)"/>
             <xsl:if test="empty(imf:get-config-string('appinfo','supplier-etc-model-imvert-path',()))">
                 <xsl:sequence select="imf:set-config-string('appinfo','supplier-etc-model-imvert-subpath',$subpath)"/>
             </xsl:if>
@@ -80,7 +80,7 @@
             <xsl:variable name="client-name" select="root($client-construct)/imvert:packages/imvert:application"/>
             <xsl:variable name="client-release" select="root($client-construct)/imvert:packages/imvert:release"/>
             
-            <xsl:variable name="client-subpath" select="string-join(($client-project,$client-name,$client-release),'/')"/>
+            <xsl:variable name="client-subpath" select="imf:get-subpath($client-project,$client-name,$client-release)"/>
             
             <xsl:variable name="type" select="
                 if ($client-construct/../../imvert:designation = 'enumeration') then 'enumeration'
@@ -207,7 +207,7 @@
         <xsl:param name="supplier-project" as="xs:string?"/>
         <xsl:param name="supplier-name" as="xs:string?"/>
         <xsl:param name="supplier-release" as="xs:string?"/>
-        <xsl:sequence select="string-join(($supplier-project,$supplier-name,$supplier-release),'/')"/>
+        <xsl:sequence select="imf:get-subpath($supplier-project,$supplier-name,$supplier-release)"/>
     </xsl:function>
     
     <!-- 

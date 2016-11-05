@@ -161,6 +161,7 @@
             <xsl:sequence select="imf:set-config-string('appinfo','version',$version)"/>
             <xsl:sequence select="imf:set-config-string('appinfo','phase',$phase)"/>
             <xsl:sequence select="imf:set-config-string('appinfo','release',$release)"/>
+            <xsl:sequence select="imf:set-config-string('appinfo','subpath',imf:get-subpath($project-name,$application-package-name,$release))"/>
             
             <!-- determine if all constructs are unique -->
             <xsl:apply-templates select="*" mode="unique-id"/>

@@ -781,4 +781,11 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
+    
+    <xsl:function name="imf:get-subpath" as="xs:string">
+        <xsl:param name="project" as="xs:string?"/>
+        <xsl:param name="name" as="xs:string?"/>
+        <xsl:param name="release" as="xs:string?"/>
+        <xsl:sequence select="string-join(($project,$name,$release),'/')"/>
+    </xsl:function>
 </xsl:stylesheet>
