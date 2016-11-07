@@ -104,7 +104,7 @@
          <construct>class</construct>
          <toplevel>true</toplevel>
          <entity-relation-constraint>
-            <relation lang="nl">object</relation>
+            <relation lang="nl">antwoord</relation>
          </entity-relation-constraint>         
       </stereo>
       <stereo id="stereotype-name-kennisgevingberichttype">
