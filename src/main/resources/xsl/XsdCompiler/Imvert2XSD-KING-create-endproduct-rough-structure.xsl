@@ -440,40 +440,25 @@
 						</xsl:if>
 					</xsl:when>
 					<xsl:otherwise>
-	
-						<xsl:variable name="tvs-class" as="element(ep:tagged-values)">
-							<ep:tagged-values>
-								<xsl:copy-of
-									select="imf:get-compiled-tagged-values($packages//imvert:class[imvert:id = $type-id], true())"
-								/>
-							</ep:tagged-values>
-						</xsl:variable>
-						<xsl:variable name="tvs-attributes">
-							<xsl:for-each
-								select="$packages//imvert:class[imvert:id = $type-id]//imvert:attribute">
-								<ep:tagged-values>
-									<xsl:copy-of select="imf:get-compiled-tagged-values(., true())"/>
-								</ep:tagged-values>
-							</xsl:for-each>
-						</xsl:variable>
 						<xsl:choose>
 							<xsl:when
-								test="contains(imf:get-most-relevant-compiled-taggedvaluex($tvs-class, 'Indicatie materiële historie'), 'Ja')">
+								test="contains(imf:get-most-relevant-compiled-taggedvalue($packages//imvert:class[imvert:id = $type-id], 'Indicatie materiële historie'), 'Ja')">
 								<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja'"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:variable name="tv-materieleHistorie-attributes">
-									<xsl:for-each select="$tvs-attributes/ep:tagged-values">
+									<!--xsl:for-each select="$tvs-attributes/ep:tagged-values"-->
+									<xsl:for-each select="$packages//imvert:class[imvert:id = $type-id]//imvert:attribute">
 										<ep:tagged-value>
 											<xsl:value-of
-												select="imf:get-most-relevant-compiled-taggedvaluex(., 'Indicatie materiële historie')"
+												select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie')"
 											/>
 										</ep:tagged-value>
 									</xsl:for-each>
 								</xsl:variable>
 								<xsl:choose>
 									<xsl:when
-										test="$tv-materieleHistorie-attributes//ep:tagged-value = 'Ja'">
+										test="$tv-materieleHistorie-attributes//ep:tagged-value = 'Ja' or $tv-materieleHistorie-attributes//ep:tagged-value = 'Ja, zie regels'">
 										<xsl:attribute name="indicatieMaterieleHistorie"
 											select="'Ja op attributes'"/>
 									</xsl:when>
@@ -482,15 +467,16 @@
 						</xsl:choose>
 						<xsl:choose>
 							<xsl:when
-								test="contains(imf:get-most-relevant-compiled-taggedvaluex($tvs-class, 'Indicatie formele historie'), 'Ja')">
+								test="contains(imf:get-most-relevant-compiled-taggedvalue($packages//imvert:class[imvert:id = $type-id], 'Indicatie formele historie'), 'Ja')">
 								<xsl:attribute name="indicatieFormeleHistorie" select="'Ja'"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:variable name="tv-formeleHistorie-attributes">
-									<xsl:for-each select="$tvs-attributes/ep:tagged-values">
+									<!--xsl:for-each select="$tvs-attributes/ep:tagged-values"-->
+									<xsl:for-each select="$packages//imvert:class[imvert:id = $type-id]//imvert:attribute">
 										<ep:tagged-value>
 											<xsl:value-of
-												select="imf:get-most-relevant-compiled-taggedvaluex(., 'Indicatie formele historie')"
+												select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie')"
 											/>
 										</ep:tagged-value>
 									</xsl:for-each>

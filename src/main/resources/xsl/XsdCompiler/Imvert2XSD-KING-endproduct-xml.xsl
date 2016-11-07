@@ -47,7 +47,7 @@
     </xsl:variable> 
     
     <!-- set the processing parameters of the stylesheets. -->
-    <xsl:variable name="debug" select="'no'"/>
+    <xsl:variable name="debug" select="'yes'"/>
     
     <!-- Within the next variable the configurations defined within the Base-configuration spreadsheet are placed in a processed XML format.
          With this configuration the attributes to be used on each location within the XML schemas are determined. -->
@@ -162,7 +162,11 @@
                <xsl:variable name="id" select="ep:id"/>
                <xsl:variable name="type-id" select="ep:type-id"/>
                <xsl:variable name="typeCode" select="@typeCode"/>
-               <xsl:variable name="historyApplies">
+               <!-- ROME: De volgende variabele wordt nog nergens gebruikt. wel worden er parameters met deze naam gebruikt maar die krijgen lokaal hun waarde.
+                          Nu wordt met de parameters alleen nog maar aan gegeven welke vorm van toepassing zou KUNNEN zijn op de attributen, groepen en associations. 
+                          er wordt echter nog niet gekeken of de betreffende attributen, groepen en associations wel voorkomen in een  berichttype waarvoor historie 
+                          van toepassing is. Dit moet nog anders. -->
+               <xsl:variable name="historyAppliesToMessage">
                    <xsl:choose>
                        <xsl:when test="$berichtCode = 'La07' or $berichtCode = 'La08'">yes-Materieel</xsl:when>
                        <xsl:when test="$berichtCode = 'La09' or $berichtCode = 'La10'">yes</xsl:when>
@@ -453,18 +457,27 @@
                                <xsl:comment select="'For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $type-id]'"/>
                            </xsl:if>
                            
+                           <xsl:if test="imf:boolean($debug)">
+                               <xsl:comment select="concat('indicatieMaterieleHistorie: ',@indicatieMaterieleHistorie,' indicatieFormeleHistorie: ',@indicatieFormeleHistorie)"/>
+                           </xsl:if>
+                                                     
                            <ep:construct type="group">
                                <xsl:sequence
                                    select="imf:create-output-element('ep:tech-name', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name,'type-name'),'-historieMaterieel'))" />
                                <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
                                <ep:seq>
+                                   
+                                   <!-- ROME: voor attributen kan inderdaad d.m.v. de XML attribute 'indicatieMaterieleHistorie'op het huidige rough-message construct 
+                                              bepaald worden of historie va -->
+                                   
+                                   
                                    <!-- The uml attributes, of the uml group, for which historiematerieel is applicable are placed here. -->
                                    <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
                                        mode="create-message-content">
                                        <xsl:with-param name="proces-type" select="'attributes'" />
                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                        <xsl:with-param name="context" select="$context" />
-                                       <xsl:with-param name="historyApplies" select="'yes-Materieel'"/>
+                                       <xsl:with-param name="historyAppliesToMessage" select="'yes-Materieel'"/>
                                        <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
                                    </xsl:apply-templates>
                                    <!-- The uml groups, of the uml group, for which historiematerieel is applicable are placed here. -->
@@ -473,7 +486,7 @@
                                        <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                        <xsl:with-param name="context" select="$context" />
-                                       <xsl:with-param name="historyApplies" select="'yes-Materieel'"/>
+                                       <xsl:with-param name="historyAppliesToMessage" select="'yes-Materieel'"/>
                                        <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
                                    </xsl:apply-templates>
                                    <!-- Associations are never placed within historieMaterieel constructs. -->
@@ -494,6 +507,10 @@
                            
                            <xsl:if test="imf:boolean($debug)">
                                <xsl:comment select="'For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $type-id]'"/>
+                           </xsl:if>
+                           
+                           <xsl:if test="imf:boolean($debug)">
+                               <xsl:comment select="concat('indicatieMaterieleHistorie: ',@indicatieMaterieleHistorie,' indicatieFormeleHistorie: ',@indicatieFormeleHistorie)"/>
                            </xsl:if>
                            
                            <ep:construct>
@@ -522,7 +539,8 @@
                                            <xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'" />
                                            <xsl:with-param name="berichtCode" select="$berichtCode" />
                                            <xsl:with-param name="context" select="$context" />
-                                           <xsl:with-param name="historyApplies" select="'yes-Materieel'"/>
+                                           <xsl:with-param name="historyAppliesToMessage" select="'yes-Materieel'"/>
+                                           <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
                                        </xsl:apply-templates>
                                    </xsl:when>
                                    <!-- Else the content of the current uml class is processed. -->
@@ -534,7 +552,8 @@
                                                <xsl:with-param name="proces-type" select="'attributes'" />
                                                <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                <xsl:with-param name="context" select="$context" />
-                                               <xsl:with-param name="historyApplies" select="'yes-Materieel'"/>
+                                               <xsl:with-param name="historyAppliesToMessage" select="'yes-Materieel'"/>
+                                               <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
                                            </xsl:apply-templates>
                                            <!-- The uml groups, of the uml group, for which historiematerieel is applicable are placed here. -->
                                            <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
@@ -543,7 +562,8 @@
                                                    select="'associationsGroepCompositie'" />
                                                <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                <xsl:with-param name="context" select="$context" />
-                                               <xsl:with-param name="historyApplies" select="'yes-Materieel'"/>
+                                               <xsl:with-param name="historyAppliesToMessage" select="'yes-Materieel'"/>
+                                               <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
                                            </xsl:apply-templates>
                                            <!-- ROME: Waarschijnlijk moet er hier afhankelijk van de context meer 
                                     					of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' maar 
@@ -636,7 +656,7 @@
                                        <xsl:with-param name="proces-type" select="'attributes'" />
                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                        <xsl:with-param name="context" select="$context" />
-                                       <xsl:with-param name="historyApplies" select="'yes'"/>
+                                       <xsl:with-param name="historyAppliesToMessage" select="'yes'"/>
                                        <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
                                    </xsl:apply-templates>
                                    <!-- The uml groups, of the uml group, for which historieFormeel is applicable are placed here. -->
@@ -645,7 +665,7 @@
                                        <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                        <xsl:with-param name="context" select="$context" />
-                                       <xsl:with-param name="historyApplies" select="'yes'"/>
+                                       <xsl:with-param name="historyAppliesToMessage" select="'yes'"/>
                                        <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
                                    </xsl:apply-templates>
                                    <!-- Associations are never placed within historieFormeel constructs. -->
@@ -695,7 +715,8 @@
                                            <xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'" />
                                            <xsl:with-param name="berichtCode" select="$berichtCode" />
                                            <xsl:with-param name="context" select="$context" />
-                                           <xsl:with-param name="historyApplies" select="'yes'"/>
+                                           <xsl:with-param name="historyAppliesToMessage" select="'yes'"/>
+                                           <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
                                        </xsl:apply-templates>
                                    </xsl:when>
                                    <!-- Else the content of the current uml class is processed. -->
@@ -707,7 +728,8 @@
                                                <xsl:with-param name="proces-type" select="'attributes'" />
                                                <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                <xsl:with-param name="context" select="$context" />
-                                               <xsl:with-param name="historyApplies" select="'yes'"/>
+                                               <xsl:with-param name="historyAppliesToMessage" select="'yes'"/>
+                                               <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
                                            </xsl:apply-templates>
                                            <!-- The uml groups, of the uml group, for which historiematerieel is applicable are placed here. -->
                                            <xsl:apply-templates select="$packages//imvert:class[imvert:id = $type-id]"
@@ -716,7 +738,8 @@
                                                    select="'associationsGroepCompositie'" />
                                                <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                <xsl:with-param name="context" select="$context" />
-                                               <xsl:with-param name="historyApplies" select="'yes'"/>
+                                               <xsl:with-param name="historyAppliesToMessage" select="'yes'"/>
+                                               <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
                                            </xsl:apply-templates>
                                            <!-- ROME: Waarschijnlijk moet er hier afhankelijk van de context meer 
                                     					of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' maar 
