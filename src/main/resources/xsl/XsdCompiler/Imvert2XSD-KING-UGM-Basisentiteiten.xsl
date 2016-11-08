@@ -53,6 +53,9 @@
     
     <xsl:output indent="yes" method="xml" encoding="UTF-8"/>
     
+    <xsl:variable name="stylesheet-code">BES</xsl:variable>
+    <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
+
     <xsl:variable name="xsd-folder-path" select="imf:get-config-string('system','xsd-folder-path')"/>
     <xsl:variable name="allow-comments-in-schema" select="true() or $debug = 'true'"/>
     
@@ -61,6 +64,9 @@
         select="$imvert-document//imvert:package[imvert:stereotype=(imf:get-config-stereotypes(('stereotype-name-external-package','stereotype-name-system-package')))]/imvert:name" 
         as="xs:string*"/>
     
+    <xsl:variable name="elementFormDefault" select="if (imf:boolean(imf:get-config-string('cli','elementisqualified','yes'))) then 'qualified' else 'unqualified'"/>
+    <xsl:variable name="attributeFormDefault" select="if (imf:boolean(imf:get-config-string('cli','attributeisqualified','no'))) then 'qualified' else 'unqualified'"/>
+   
     <xsl:template match="/">
         <root/><!-- dummy output -->
         <xsl:apply-templates select="imvert:packages"/>
@@ -70,8 +76,8 @@
         <xsl:variable name="schemafile" select="concat($xsd-folder-path,'RESULT.XSD')"/>
         <xsl:variable name="schema" as="element()">
             <xs:schema 
-                attributeFormDefault="unqualified" 
-                elementFormDefault="qualified" 
+                attributeFormDefault="{$attributeFormDefault}" 
+                elementFormDefault="{$elementFormDefault}" 
                 targetNamespace="{$target-namespace}" 
                 version="010000" 
                 xmlns="http://www.w3.org/2001/XMLSchema">
@@ -160,10 +166,12 @@
                 </xsl:for-each-group>
                 ?>
                 
+                <?x DEZE WORDEN NIET GEDECLAREERD MAAR METEEN INGEVOEGD IN DE ATTRIBUUT DEFINITIE
                 <xs:annotation>
                     <xs:documentation>(Declaratie van Enumeraties)</xs:documentation>
                 </xs:annotation>
                 <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-enumeration')]" mode="mode-global-enumeration"/>
+                ?>
                 
                 <xs:annotation>
                     <xs:documentation>(Declaratie van Unions)</xs:documentation>
@@ -431,6 +439,7 @@
         
     </xsl:template>
     
+    <?x
     <xsl:template match="imvert:class" mode="mode-global-enumeration">
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
         
@@ -444,7 +453,8 @@
         </xs:simpleType>
         
     </xsl:template>
-
+    ?>
+    
     <xsl:template match="imvert:class" mode="mode-global-union">
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
         
@@ -499,33 +509,36 @@
                     type="{$scalar-att-type}" 
                     minOccurs="0" 
                     maxOccurs="{$cardinality[4]}"
-                    metadata:formeleHistorie="{$history[1]}"
-                    metadata:materieleHistorie="{$history[2]}"     
-                />
+                    >
+                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                </xs:element>
             </xsl:when>
             
             <xsl:when test="$type-is-referentietabel">
                 <xsl:sequence select="imf:create-comment('Een referentie tabel')"/>
+                <!-- we moeten hier het type van de is-ID van de target opnemen -->
+                <xsl:variable name="tabel-id-attribute" select="$type//imvert:attribute[imvert:is-id = 'true']"/>
+                
                 <xs:element
                     name="{$compiled-name}" 
-                    type="{concat($prefix, ':', imf:capitalize($compiled-name-type),'-basis')}" 
+                    type="{concat($prefix, ':', imf:capitalize(imf:get-compiled-name($tabel-id-attribute)))}"
                     minOccurs="0" 
                     maxOccurs="{$cardinality[4]}"
-                    metadata:formeleHistorie="{$history[1]}"
-                    metadata:materieleHistorie="{$history[2]}"     
-                />
+                    >
+                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                </xs:element>
             </xsl:when>
             
             <xsl:when test="$type-is-enumeration">
                 <xsl:sequence select="imf:create-comment('Een enumeratie')"/>
                 <xs:element
                     name="{$compiled-name}" 
-                    type="{concat($prefix, ':', imf:capitalize($compiled-name), '-e')}" 
+                    type="{concat($prefix, ':', imf:capitalize($compiled-name))}" 
                     minOccurs="0" 
                     maxOccurs="{$cardinality[4]}"
-                    metadata:formeleHistorie="{$history[1]}"
-                    metadata:materieleHistorie="{$history[2]}"     
-                />
+                    >
+                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                </xs:element>
             </xsl:when>
             
             <xsl:when test="$type-is-complextype">
@@ -535,9 +548,9 @@
                     type="{concat($prefix, ':', imf:capitalize($compiled-name), '-e')}" 
                     minOccurs="0" 
                     maxOccurs="{$cardinality[4]}"
-                    metadata:formeleHistorie="{$history[1]}"
-                    metadata:materieleHistorie="{$history[2]}"     
-                />
+                    >
+                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                </xs:element>
             </xsl:when>
             
             <xsl:when test="$type-is-simpletype">
@@ -547,9 +560,9 @@
                     type="{concat($prefix, ':', imf:capitalize($compiled-name),'-e')}" 
                     minOccurs="0" 
                     maxOccurs="{$cardinality[4]}"
-                    metadata:formeleHistorie="{$history[1]}"
-                    metadata:materieleHistorie="{$history[2]}"     
-                />
+                    >
+                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                </xs:element>
             </xsl:when>
             
             <xsl:when test="$type-is-external">
@@ -559,9 +572,9 @@
                     type="{imf:get-external-type-name(.,true())}" 
                     minOccurs="0" 
                     maxOccurs="{$cardinality[4]}"
-                    metadata:formeleHistorie="{$history[1]}"
-                    metadata:materieleHistorie="{$history[2]}"     
-                />
+                    >
+                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                </xs:element>
             </xsl:when>
             
             <xsl:otherwise>
@@ -571,10 +584,9 @@
                     type="{concat($prefix, ':', imf:capitalize($compiled-name),'-e')}" 
                     minOccurs="0" 
                     maxOccurs="{$cardinality[4]}"
-                    metadata:formeleHistorie="{$history[1]}"
-                    metadata:materieleHistorie="{$history[2]}"     
-                />
-                
+                    >
+                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                </xs:element>
             </xsl:otherwise>
         </xsl:choose>
      
@@ -604,7 +616,7 @@
                             <xsl:when test="imvert:conceptual-schema-type = 'GM_ArcString'">gml:ArcString</xsl:when>
                             <xsl:when test="imvert:conceptual-schema-type = 'GM_LineString'">gml:LineString</xsl:when>
                             <xsl:when test="imvert:conceptual-schema-type = 'GM_Polygon'">gml:Polygon</xsl:when>
-                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Object'">gml:Object</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Object'">gml:Geometry</xsl:when><!-- see http://www.geonovum.nl/onderwerpen/geography-markup-language-gml/documenten/handreiking-geometrie-model-en-gml-10 -->
                             <xsl:when test="imvert:conceptual-schema-type = 'GM_Primitive'">gml:Primitive</xsl:when>
                             <xsl:when test="imvert:conceptual-schema-type = 'GM_Position'">gml:Position</xsl:when>
                             <xsl:when test="imvert:conceptual-schema-type = 'GM_PointArray'">gml:PointArray</xsl:when>
@@ -663,9 +675,9 @@
                     type="{concat($prefix, ':', imf:capitalize($compiled-name))}-e" 
                     minOccurs="0" 
                     maxOccurs="{$cardinality[4]}"
-                    metadata:formeleHistorie="{$history[1]}"
-                    metadata:materieleHistorie="{$history[2]}"     
-                />
+                    >
+                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                </xs:element>
                 
             </xsl:when>
             <xsl:when test="$type[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-enumeration')]">
@@ -675,9 +687,9 @@
                     type="{concat($prefix, ':', imf:capitalize($compiled-name-type))}" 
                     minOccurs="0" 
                     maxOccurs="{$cardinality[4]}"
-                    metadata:formeleHistorie="{$history[1]}"
-                    metadata:materieleHistorie="{$history[2]}"     
-                />
+                     >
+                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                </xs:element>
                 
             </xsl:when>
             <xsl:otherwise>
@@ -687,9 +699,9 @@
                     type="{concat($prefix, ':', imf:capitalize($compiled-name-type),'-e')}" 
                     minOccurs="0" 
                     maxOccurs="{$cardinality[4]}"
-                    metadata:formeleHistorie="{$history[1]}"
-                    metadata:materieleHistorie="{$history[2]}"     
-                />
+                    >
+                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                </xs:element>
             </xsl:otherwise>
         </xsl:choose>
         ?>
@@ -778,9 +790,9 @@
                     type="{$heen-typeref}" 
                     minOccurs="0" 
                     maxOccurs="{$target-cardinality}"
-                    metadata:formeleHistorie="{$history[1]}"
-                    metadata:materieleHistorie="{$history[2]}"     
-                />
+                    >
+                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                </xs:element>
             </xsl:when>
             <?mogelijk-vervallen
             <xsl:when test="imf:boolean(imf:get-taggedvalue(.,'Relatiesoort terugrelatie'))">
@@ -795,9 +807,9 @@
                     type="{$terug-typeref}" 
                     minOccurs="0" 
                     maxOccurs="{$target-cardinality}"
-                    metadata:formeleHistorie="{$history[1]}"
-                    metadata:materieleHistorie="{$history[2]}"     
-                />
+                    >
+                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                </xs:element>
             </xsl:when>
             ?>
             <xsl:otherwise>
@@ -826,9 +838,9 @@
             type="{concat($prefix, ':', $compiled-name-type)}" 
             minOccurs="0" 
             maxOccurs="{$cardinality[4]}"
-            metadata:formeleHistorie="{$history[1]}"
-            metadata:materieleHistorie="{$history[2]}"     
-        />
+            >
+            <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+        </xs:element>
         
     </xsl:template>
     
@@ -840,6 +852,15 @@
         <xsl:variable name="is-enumeration" select="imf:get-stereotype($type) = imf:get-config-stereotypes('stereotype-name-enumeration')"/>
         
         <xsl:choose>
+            <xsl:when test="$is-enumeration">
+                <xsl:sequence select="imf:create-comment(concat('mode-global-attribute-type Enumeration # ',imvert:name/@original))"/>
+                <xs:simpleType name="{imf:capitalize($compiled-name)}">
+                    <xsl:sequence select="imf:create-annotation(.)"/>
+                    <xs:restriction base="xs:string">
+                        <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-enum"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xsl:when>
             <xsl:when test="empty($stuf-scalar-att-type)">
                 <xsl:sequence select="imf:create-comment(concat('mode-global-attribute-type Attribute declaration # ',@display-name))"/>
                 <xs:complexType name="{imf:capitalize($compiled-name)}-e">
@@ -855,7 +876,7 @@
                 </xs:complexType>
                 <xs:complexType name="{imf:capitalize($compiled-name)}-w">
                     <xsl:choose>
-                        <xsl:when test="empty($type) or $is-enumeration">
+                        <xsl:when test="empty($type)">
                             <xs:simpleContent>
                                 <xs:extension base="{$prefix}:{imf:capitalize($compiled-name)}">
                                     <xs:attribute ref="StUF:wildcard"/>    
@@ -1174,12 +1195,7 @@
                 </xs:complexType>
             </xsl:when>
             <xsl:when test="$type-is-enumeration">
-                <xsl:sequence select="imf:create-comment('Type is enumeration')"/>
-                <xs:complexType name="{imf:capitalize($compiled-name)}">
-                    <xs:simpleContent>
-                        <xs:extension base="{concat($prefix,':',imf:capitalize($compiled-type-name))}"/>
-                    </xs:simpleContent>
-                </xs:complexType>
+                <xsl:sequence select="imf:create-comment('Type is enumeration - skipped.')"/>
             </xsl:when>
             <xsl:when test="$type-is-union">
                 <xsl:sequence select="imf:create-comment('Type is union')"/>
@@ -1527,6 +1543,17 @@
         <xsl:param name="construct"/>
         <xsl:variable name="tv" select="imf:get-most-relevant-compiled-taggedvalue($construct,'IndicatieInOnderzoek')"/>
         <xsl:sequence select="imf:boolean($tv)"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:create-historie-attributes" as="attribute()*">
+        <xsl:param name="formeel"/>
+        <xsl:param name="materieel"/>
+        <xsl:if test="imf:boolean($formeel)">
+            <xsl:attribute name="metadata:formeleHistorie" select="$formeel"/>
+        </xsl:if>
+        <xsl:if test="imf:boolean($materieel)">
+            <xsl:attribute name="metadata:materieleHistorie" select="$materieel"/>
+        </xsl:if>
     </xsl:function>
     
     <!-- =================== cleanup =================== -->

@@ -85,6 +85,19 @@
          <tip>Force all properties in the resulting schema to be nillable.</tip>
          <required>false</required>
       </cli-parm>
+      <cli-parm>
+         <name>elementisqualified</name>
+         <arg>yes|no</arg>
+         <tip>The XML schema elements are qualified. Defaults to Yes.</tip>
+         <required>false</required>
+      </cli-parm>
+      <cli-parm>
+         <name>attributeisqualified</name>
+         <arg>yes|no</arg>
+         <tip>The XML schema attributes are qualified. Defaults to No.</tip>
+         <required>false</required>
+      </cli-parm>
+      
    </cli-parms>
   
    <properties>
