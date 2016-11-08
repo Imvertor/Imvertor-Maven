@@ -88,7 +88,7 @@
                 if ($client-construct/imvert:aggregation = 'composite') then 'composition'
                 else local-name($client-construct)
                 "/>
-            <xsl:variable name="display-name" select="$client-construct/@display-name"/>
+            <xsl:variable name="display-name" select="$client-construct/(@display-name,imvert:name)[1]"/>
             
             <supplier>
                 <xsl:attribute name="id" select="$client-construct/imvert:id"/>
