@@ -47,7 +47,7 @@
     </xsl:variable> 
     
     <!-- set the processing parameters of the stylesheets. -->
-    <xsl:variable name="debug" select="'yes'"/>
+    <xsl:variable name="debug" select="'no'"/>
     
     <!-- Within the next variable the configurations defined within the Base-configuration spreadsheet are placed in a processed XML format.
          With this configuration the attributes to be used on each location within the XML schemas are determined. -->
