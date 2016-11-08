@@ -48,6 +48,9 @@
         </xsl:for-each>
     </xsl:variable>
     
+    <xsl:variable name="stylesheet-code">DOR</xsl:variable>
+    <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
+
     <xsl:variable name="must-show-keywords" select="/imvert:packages/imvert:phase = ('0','1') or $debugging"/>
     
     <!-- functions that generate the complete set of phrases -->    

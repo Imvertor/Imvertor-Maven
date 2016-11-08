@@ -38,6 +38,9 @@
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     <xsl:import href="../common/Imvert-common-doc.xsl"/>
     
+    <xsl:variable name="stylesheet-code">KAS</xsl:variable>
+    <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
+    
     <xsl:variable name="avoid-substitutions" select="not(imf:boolean($use-substitutions))"/>
     
     <xsl:param name="config-file-path">unknown-file</xsl:param>

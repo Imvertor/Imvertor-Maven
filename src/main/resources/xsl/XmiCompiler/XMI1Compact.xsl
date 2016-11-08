@@ -36,6 +36,9 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-entity.xsl"/>
     
+    <xsl:variable name="stylesheet-code">COM</xsl:variable>
+    <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
+    
     <!-- Compact the XMI to only the relevant sections -->
  
     <xsl:variable name="document" select="/"/>

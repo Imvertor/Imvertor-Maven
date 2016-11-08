@@ -54,7 +54,6 @@
     <xsl:variable name="imvertor-release" select="imf:get-config-string('run','release','(UNKNOWN RELEASE)')"/>
     
     <xsl:variable name="debug" select="imf:get-config-string('cli','debug','false')"/>
-    <xsl:variable name="debugging" select="imf:boolean($debug)"/>
     
     <xsl:variable name="generation-date" select="imf:get-config-string('run','start','1900-01-01T00:00:00.0000')"/>
 

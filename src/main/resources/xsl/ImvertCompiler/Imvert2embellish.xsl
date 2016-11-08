@@ -37,6 +37,9 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     
+    <xsl:variable name="stylesheet-code">EMB</xsl:variable>
+    <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
+    
     <xsl:template match="/imvert:packages">
         <imvert:packages>
             <imvert:id><xsl:value-of select="$application-package-release-name"/></imvert:id>

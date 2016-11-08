@@ -425,6 +425,13 @@
         <xsl:value-of select="if ($this/parent::*) then concat(imf:debug-path($this/parent::*),'/',name($this)) else name($this)"/>
     </xsl:function>
     
+    <xsl:function name="imf:debug-mode" as="xs:boolean">
+        <xsl:param name="code" as="xs:string*"/>
+        <xsl:variable name="debug" select="imf:get-config-string('cli','debug','no')"/>
+        <xsl:variable name="modes" select="tokenize(imf:get-config-string('cli','debugmode',''),':')"/>
+        <xsl:sequence select="imf:boolean($debug) and ($code = $modes)"/>
+    </xsl:function>
+    
     <!-- compile a header for imvert file; only packages are processed after this part -->
     <xsl:function name="imf:compile-imvert-header" as="element()*">
         <xsl:param name="packages" as="element()"/>

@@ -50,6 +50,12 @@
          <required>false</required>
       </cli-parm> 
       <cli-parm>
+         <name>debugmode</name>
+         <arg>CODE</arg>
+         <tip>If debug=yes, then the debug mode must be any of the codes specified between ":"</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
          <name>task</name>
          <arg>compile|release</arg>
          <tip>Set task to compile or release</tip>

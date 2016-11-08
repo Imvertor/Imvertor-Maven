@@ -39,6 +39,9 @@
     <xsl:import href="../common/Imvert-common-doc.xsl"/>
     <xsl:import href="../common/Imvert-common-entity.xsl"/>
     
+    <xsl:variable name="stylesheet-code">IMV</xsl:variable>
+    <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
+    
     <!-- Transform XMI 1.1 to Imvert format. According to metamodel BP. -->
  
     <xsl:variable name="xmi-document" select="/"/>

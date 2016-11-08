@@ -48,6 +48,7 @@
                 <info label="Task">
                     <xsl:sequence select="imf:report-key-label('Task', 'cli','task')"/>
                     <xsl:sequence select="imf:report-key-label('Debug', 'cli','debug')"/>
+                    <xsl:sequence select="imf:report-key-label('Debug mode', 'cli','debugmode')"/>
                     <xsl:sequence select="imf:report-key-label('Forced compilation', 'cli','forcecompile')"/>
                 </info>
                 <info label="Application">
