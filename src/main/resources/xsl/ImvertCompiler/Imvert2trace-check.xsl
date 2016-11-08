@@ -34,6 +34,7 @@
     
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
+    <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     
     <!-- get all imvert:packages elements that represent a supplier for this package -->
     <xsl:variable name="suppliers" select="/imvert:packages/imvert:supplier"/>
@@ -79,7 +80,7 @@
         <xsl:variable name="this" select="."/>
         <xsl:for-each select="$this/imvert:trace">
             <xsl:variable name="trace-id" select="."/>        
-            <xsl:variable name="trace-construct" select="imf:get-construct-by-id($trace-id,$supplier-packages)"/>        
+            <xsl:variable name="trace-construct" select="imf:get-trace-construct-by-id(..,$trace-id,$supplier-packages)"/>        
             
             <xsl:sequence select="imf:report-warning($this, 
                 $validate-trace-full and empty($trace-id),

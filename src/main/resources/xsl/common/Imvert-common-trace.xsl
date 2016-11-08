@@ -122,7 +122,7 @@
             <xsl:for-each select="$client-construct/imvert:trace">
                 
                 <xsl:variable name="trace-id" select="."/>   
-                <xsl:variable name="supplier-constructs" select="imf:get-construct-by-id($trace-id,$supplier-doc)"/>
+                <xsl:variable name="supplier-constructs" select="imf:get-trace-construct-by-id(..,$trace-id,$supplier-doc)"/>
                 <!-- several constructs with same ID are copy-down constructs: assume for trace purposes all are the same -->
                 <xsl:variable name="supplier-construct" select="$supplier-constructs[1]"/>
                 

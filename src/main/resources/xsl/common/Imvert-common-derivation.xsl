@@ -191,25 +191,4 @@
 		<xsl:value-of select="lower-case(string-join(tokenize($name,'_'),''))"/>
 	</xsl:function>
 	
-	<!-- get the construct by ID where the id supplied is passed as the value of a trace (imvert:trace) -->
-	<xsl:function name="imf:get-trace-construct-by-id">
-		<xsl:param name="client"/>
-		<xsl:param name="supplier-id"/>
-		<xsl:param name="document-root"/>
-		<xsl:variable name="supplier-id-corrected">
-			<xsl:choose>
-				<xsl:when test="$client/self::imvert:class">
-					<xsl:value-of select="$supplier-id"/> <!-- EAID_xxx becomes EAID_xxx -->
-				</xsl:when>
-				<xsl:when test="$client/self::imvert:attribute">
-					<xsl:value-of select="$supplier-id"/>  <!-- {xxx} becomes {xxx} -->
-				</xsl:when>
-				<xsl:when test="$client/self::imvert:association">
-					<xsl:value-of select="concat('EAID_',replace(substring($supplier-id,2,string-length($supplier-id) - 2),'-','_'))"/> <!-- {xxx} becomes EAID_xxx -->
-				</xsl:when>
-			</xsl:choose>
-		</xsl:variable>
-		<xsl:sequence select="imf:get-construct-by-id($supplier-id-corrected,$document-root)"/>
-	</xsl:function>
-	
 </xsl:stylesheet>
