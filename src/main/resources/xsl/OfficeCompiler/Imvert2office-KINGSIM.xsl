@@ -357,10 +357,11 @@
     
     <xsl:template match="imvert:association" mode="composition">
         <!-- toon alsof het een attribuut is -->
+        <xsl:variable name="gegevensgroep" select="imf:get-construct-by-id(imvert:type-id)"/>
         <tr>
             <td>&#160;</td>
             <td><xsl:value-of select="imvert:name/@original"/>:</td>
-            <td><xsl:value-of select="imf:get-clean-documentation-string(imvert:documentation)"/></td>
+            <td><xsl:value-of select="imf:get-clean-documentation-string($gegevensgroep/imvert:documentation)"/></td>
             <td><xsl:value-of select="imf:translate(imvert:baretype,false())"/></td>
             <td><xsl:value-of select="imf:get-cardinality(imvert:min-occurs,imvert:max-occurs)"/></td>
         </tr>
@@ -368,6 +369,7 @@
     
     <xsl:template match="imvert:associations" mode="short gegevensgroeptype">
         <xsl:variable name="r" as="element()*">
+            <xsl:apply-templates select="../imvert:supertype" mode="#current"/>
             <xsl:apply-templates select="imvert:association[not(imvert:stereotype = imf:get-config-stereotypes('stereotype-name-association-to-composite'))]" mode="#current"/>
         </xsl:variable>
         <xsl:if test="exists($r)">
@@ -400,6 +402,22 @@
                     ' ',
                     imvert:type-name/@original,
                     ' [', imf:get-cardinality(imvert:min-occurs,imvert:max-occurs), ']')"/>
+            </td>
+            <td width="55%"><xsl:value-of select="imf:get-clean-documentation-string(imvert:documentation)"/></td>
+        </tr>
+    </xsl:template>
+    
+    <xsl:template match="imvert:supertype" mode="short gegevensgroeptype">
+        <tr>
+            <td width="5%">&#160;</td>
+            <td width="40%">
+                <!--
+                Voorbeeld: BENOEMD TERREIN is specialisatie van BENOEMD OBJECT
+                -->
+                <xsl:value-of select="concat(
+                    ../imvert:name/@original,
+                    ' is specialisatie van ',
+                    imvert:type-name/@original)"/>
             </td>
             <td width="55%"><xsl:value-of select="imf:get-clean-documentation-string(imvert:documentation)"/></td>
         </tr>
@@ -484,6 +502,7 @@
         <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>
 
         <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="detail"/>
+        <xsl:apply-templates select="imvert:associations/imvert:association" mode="detail"/>
         
     </xsl:template>
     
@@ -530,7 +549,6 @@
                 <xsl:sequence select="imf:label-waarde('Mogelijk geen waarde',imf:get-tagged-value(.,'Mogelijk geen waarde'))"/>
                 <xsl:sequence select="imf:label-waarde('Formaat',imf:translate(imvert:baretype,false()))"/>
                 <xsl:sequence select="imf:label-waarde('Patroon',imf:get-tagged-value(.,'Patroon'))"/>
-                <xsl:sequence select="imf:label-waarde('Waardenverzameling',imf:get-tagged-value-waardenverzameling(.))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie materiële historie',imf:get-tagged-value(.,'Indicatie materiële historie'))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie formele historie',imf:get-tagged-value(.,'Indicatie formele historie'))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie in onderzoek',imf:get-tagged-value(.,'Indicatie in onderzoek'))"/>
@@ -576,7 +594,6 @@
                 <xsl:sequence select="imf:label-waarde('Mogelijk geen waarde',imf:get-tagged-value(.,'Mogelijk geen waarde'))"/>
                 <xsl:sequence select="imf:label-waarde('Formaat',imf:translate(imvert:baretype,false()))"/>
                 <xsl:sequence select="imf:label-waarde('Patroon',imf:get-tagged-value(.,'Patroon'))"/>
-                <xsl:sequence select="imf:label-waarde('Waardenverzameling',imf:get-tagged-value-waardenverzameling(.))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie materiële historie',imf:get-tagged-value(.,'Indicatie materiële historie'))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie formele historie',imf:get-tagged-value(.,'Indicatie formele historie'))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie in onderzoek',imf:get-tagged-value(.,'Indicatie in onderzoek'))"/>
@@ -655,6 +672,18 @@
   
     <xsl:template match="imvert:association" mode="detail">
         <xsl:variable name="construct" select="../.."/>
+        <xsl:choose>
+            <xsl:when test="$construct/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')">
+                <xsl:apply-templates select="." mode="detail-gegevensgroeptype"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates select="." mode="detail-normal"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template match="imvert:association" mode="detail-normal">
+        <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="defining-class" select="if (exists(imvert:type-id)) then imf:get-construct-by-id(imvert:type-id) else ()"/>
         <h4>
             <xsl:value-of select="concat('Relatiesoort ', imvert:name/@original)"/>
@@ -679,7 +708,36 @@
             </tbody>
         </table>
         <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>
-       
+        
+    </xsl:template>
+    
+    <xsl:template match="imvert:association" mode="detail-gegevensgroeptype">
+        <xsl:variable name="construct" select="../.."/>
+        <xsl:variable name="defining-class" select="if (exists(imvert:type-id)) then imf:get-construct-by-id(imvert:type-id) else ()"/>
+        <h4>
+            <xsl:value-of select="concat('Relatiesoort ', imvert:name/@original, ' van gegevensgroeptype ',$quot,  $construct/imvert:name/@original, $quot)"/>
+        </h4>
+        <table>
+            <tbody>
+                <xsl:sequence select="imf:label-waarde('Naam',imvert:name/@original)"/>
+                <xsl:sequence select="imf:label-waarde('Gerelateerd objecttype',imvert:type-name/@original)"/>
+                <xsl:sequence select="imf:label-waarde('Indicatie kardinaliteit',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
+                <xsl:sequence select="imf:label-waarde('Herkomst',imf:get-tagged-value(.,'Herkomst'))"/>
+                <xsl:sequence select="imf:label-waarde('Code',imf:get-tagged-value(.,'Code'))"/>
+                <xsl:sequence select="imf:label-waarde('Definitie',imf:get-clean-documentation-string(imvert:documentation))"/>
+                <xsl:sequence select="imf:label-waarde('Herkomst definitie',imf:get-tagged-value(.,'Herkomst definitie'))"/>
+                <xsl:sequence select="imf:label-waarde('Datum opname',imf:get-tagged-value(.,'Datum opname'))"/>
+                <xsl:sequence select="imf:label-waarde('Mogelijk geen waarde',imf:get-tagged-value(.,'Mogelijk geen waarde'))"/>
+                <xsl:sequence select="imf:label-waarde('Indicatie materiële historie',imf:get-tagged-value(.,'Indicatie materiële historie'))"/>
+                <xsl:sequence select="imf:label-waarde('Indicatie formele historie',imf:get-tagged-value(.,'Indicatie formele historie'))"/>
+                <xsl:sequence select="imf:label-waarde('Indicatie in onderzoek',imf:get-tagged-value(.,'Indicatie in onderzoek'))"/>
+                <xsl:sequence select="imf:label-waarde('Aanduiding strijdigheid/nietigheid ',imf:get-tagged-value(.,'Aanduiding strijdigheid/nietigheid'))"/>
+                <xsl:sequence select="imf:label-waarde('Indicatie authentiek',concat(imf:get-tagged-value(.,'Indicatie authentiek'), imf:authentiek-is-derived(.)))"/>                
+                <xsl:sequence select="imf:label-waarde('Regels',imf:get-tagged-value(.,'Regels'))"/>
+            </tbody>
+        </table>
+        <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>
+        
     </xsl:template>
     
     <!--
@@ -696,23 +754,6 @@
         <xsl:param name="this"/>
         <xsl:variable name="id-attribute" select="$this/imvert:attributes/imvert:attribute[imf:boolean(imvert:is-id)]"/>
         <xsl:sequence select="if (exists($id-attribute)) then $id-attribute/imvert:name/@original else ''"/>
-    </xsl:function>
-    
-    <xsl:function name="imf:get-tagged-value-waardenverzameling">
-        <xsl:param name="this"/>
-        <xsl:variable name="defining-class" select="if ($this/imvert:type-id) then imf:get-construct-by-id($this/imvert:type-id) else ()"/>
-        <xsl:variable name="defining-stereotype" select="$defining-class/imvert:stereotype"/>
-        <xsl:choose>
-            <xsl:when test="$defining-stereotype = imf:get-normalized-name('referentielijst','stereotype-name')">
-                <xsl:value-of select="$defining-class/imvert:name/@original"/>
-            </xsl:when>
-            <xsl:when test="$defining-stereotype = imf:get-normalized-name('enumeration','stereotype-name')">
-                <xsl:value-of select="$defining-class/imvert:name/@original"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <!-- empty -->
-            </xsl:otherwise>
-        </xsl:choose>
     </xsl:function>
     
     <xsl:function name="imf:label-waarde" as="element()"> 
