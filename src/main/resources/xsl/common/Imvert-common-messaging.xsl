@@ -61,7 +61,7 @@
         
         <xsl:variable name="name" select="if ($this=$document) then '' else imf:get-construct-name($this)"/>
         <xsl:variable name="id" select="$this/imvert:id"/>
-        <xsl:variable name="ctext" select="if (exists($info)) then imf:msg-insert-parms($text,$info) else $text"/>
+        <xsl:variable name="ctext" select="imf:msg-insert-parms($text,$info)"/>
         <xsl:variable name="wiki" select="if ($type = ('ERROR', 'WARN', 'FATAL')) then imf:get-wiki-key($text) else ''"/>
         <xsl:message>
             <!-- note that messages are specially processed by Imvertor -->

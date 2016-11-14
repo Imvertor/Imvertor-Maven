@@ -5,6 +5,8 @@
 <metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
     <!-- 
         BRO follows KKG
+        
+        Including scalars.
     --> 
     <xi:include href="../../../KKG/cfg/metamodels/KKG.xml"/>
     

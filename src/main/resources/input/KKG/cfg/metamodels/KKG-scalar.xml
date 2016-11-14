@@ -32,19 +32,19 @@
             <max-length>true</max-length>
         </scalar>
         <scalar id="scalar-decimal">
-            <name lang="nl">Decimal</name>
+            <name lang="nl">DECIMAL</name>
             <type>string</type>
             <type-map lang="xs">decimal</type-map>
             <fraction-digits>true</fraction-digits>
             <max-length>true</max-length>
         </scalar>
         <scalar id="scalar-integer">
-            <name lang="nl">Integer</name>
+            <name lang="nl">INTEGER</name>
             <type-map lang="xs">integer</type-map>
             <max-length>true</max-length>
         </scalar>
         <scalar id="scalar-date">
-            <name lang="nl">Date</name>
+            <name lang="nl">DATE</name>
             <type-map lang="xs">date</type-map>
             <type-modifier>
                 <!-- a choice of the following types: -->
@@ -52,9 +52,9 @@
                 <type-map lang="xs">gYearMonth</type-map>
                 <type-map lang="xs">gYear</type-map>
             </type-modifier>
-        </scalar>
+        </scalar>    
         <scalar id="scalar-datetime">
-            <name lang="nl">DateTime</name>
+            <name lang="nl">DATETIME</name>
             <type-map lang="xs">dateTime</type-map>
             <type-modifier>
                 <!-- must conform to the following pattern: -->
@@ -62,15 +62,15 @@
             </type-modifier>
         </scalar>
         <scalar id="scalar-year">
-            <name lang="nl">Year</name>
+            <name lang="nl">YEAR</name>
             <type-map lang="xs">gYear</type-map>
         </scalar>
         <scalar id="scalar-day">
-            <name lang="nl">Day</name>
+            <name lang="nl">DAY</name>
             <type-map lang="xs">gDay</type-map>
         </scalar>
         <scalar id="scalar-month">
-            <name lang="nl">Month</name>
+            <name lang="nl">MONTH</name>
             <type-map lang="xs">gMonth</type-map>
         </scalar>
         <scalar id="scalar-uri">
@@ -78,14 +78,14 @@
             <type-map lang="xs">anyURI</type-map>
         </scalar>
         <scalar id="scalar-txt">
-            <name lang="nl">CharacterString</name>
+            <name lang="nl">CHARACTERSTRING</name>
             <desc>A CharacterString is an arbitrary-length sequence of characters including accents and special characters from
                 repertoire of one of the adopted character sets (ISO 19103, Draft Technical Specification 19103, Geographic information - Conceptual
                 schema language)</desc>
             <type-map lang="xs">string</type-map>
         </scalar>
         <scalar id="scalar-boolean">
-            <name lang="nl">Boolean</name>
+            <name lang="nl">BOOLEAN</name>
             <type-map lang="xs">boolean</type-map>
         </scalar>
         

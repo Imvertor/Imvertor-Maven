@@ -6,7 +6,7 @@
     <!-- KKG follows BP requirements -->
 
    
-    <xi:include href="../../../BP/cfg/metamodels/BP-scalar.xml"/>
+    <xi:include href="KKG-scalar.xml"/>
     
     <name>KKG</name>
 

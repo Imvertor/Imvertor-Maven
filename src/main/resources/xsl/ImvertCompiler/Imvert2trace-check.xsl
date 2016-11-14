@@ -42,7 +42,7 @@
     <xsl:variable name="supplier-subpaths" select="string-join(for $s in ($supplier-packages) return imf:get-trace-supplier-subpath($s/imvert:project, $s/imvert:application, $s/imvert:release),', ')"/>
     
     <xsl:template match="/">
-        <xsl:variable name="application" select="imvert:packages/imvert:package[1]"/>
+        <xsl:variable name="application" select="/imvert:packages/(imvert:package,.)[1]"/>
         <root>
             <xsl:choose>
                 <xsl:when test="exists($suppliers) and $validate-trace-full">

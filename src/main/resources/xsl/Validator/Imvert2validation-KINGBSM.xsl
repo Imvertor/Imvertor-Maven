@@ -70,6 +70,8 @@
             not(imvert:name = $accepted-relation-names)
             ), 
             'Relation with stereotype [1] for class with stereotype [2] has inappropriate name',($stereotypes,$class-stereotypes))"/>
+        
+        <xsl:next-match/>
     </xsl:template>
     
 </xsl:stylesheet>

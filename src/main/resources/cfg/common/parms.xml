@@ -52,7 +52,7 @@
       <cli-parm>
          <name>debugmode</name>
          <arg>CODE</arg>
-         <tip>If debug=yes, then the debug mode must be any of the codes specified between ":"</tip>
+         <tip>If debug=yes, then the debug mode must be any of the codes specified between ":". The main chain is "CHAIN".</tip>
          <required>false</required>
       </cli-parm> 
       <cli-parm>

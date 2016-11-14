@@ -215,7 +215,7 @@
         Return the subpaths e.g.  ('SIM/RM-487811 (2) tweede supplier/20140401','SIM/RM-487811 (1) eerste supplier/20140401')
     -->
     <xsl:function name="imf:get-trace-all-supplier-subpaths" as="xs:string*">
-        <xsl:param name="application" as="element(imvert:packages)"/>
+        <xsl:param name="application" as="element(imvert:packages)?"/>
         <xsl:variable name="subpaths" as="xs:string*">
             <!-- first myself -->
             <xsl:sequence select="imf:get-trace-supplier-subpath($application/imvert:project,$application/imvert:application,$application/imvert:release)"/>
