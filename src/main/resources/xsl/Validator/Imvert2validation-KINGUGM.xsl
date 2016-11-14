@@ -73,6 +73,33 @@
         <xsl:next-match/>
     </xsl:template>
     
+    <xsl:template match="imvert:static">
+        <!-- setup -->
+        <xsl:variable name="tv-k" select="imf:get-tagged-value-element(..,'Indicatie kerngegeven')"/>
+        
+        <!-- validate -->
+        <xsl:sequence select="imf:report-warning(.., 
+            empty($tv-k) and imf:boolean(.), 
+            'Static construct must assign yes to the tagged value [1]', $tv-k/imvert:name)"/>
+        
+        <xsl:next-match/>
+    </xsl:template>
+    
+    <xsl:variable name="kerngegeven-name" select="imf:get-normalized-name('Indicatie kerngegeven','tv-name')"/>
+    
+    <xsl:template match="imvert:tagged-value[imvert:name = $kerngegeven-name]">
+        <!-- setup -->
+        <xsl:variable name="construct" select="../.."/>
+        <xsl:variable name="tv-value" select="imvert:value"/>
+        
+        <!-- validate -->
+        <xsl:sequence select="imf:report-warning(.., 
+            not(imf:boolean($tv-value)) and imf:boolean($construct/imvert:static), 
+            'Construct that assigns yes to the tagged value [1] must be static', $kerngegeven-name)"/>
+        
+        <xsl:next-match/>
+    </xsl:template>
+    
     <xsl:template match="imvert:name">
         <!-- setup -->
         <xsl:variable name="name" select="imvert:name"/>

@@ -204,7 +204,9 @@
                 <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-attribute"/>
                 
                 <xsl:sequence select="imf:create-comment('mode-global-objecttype (Compositie relaties)')"/>
-                <xsl:apply-templates select="imvert:associations/imvert:association[imvert:aggregation = 'composite']" mode="mode-local-composition"/>
+                <xsl:apply-templates select="imvert:associations/imvert:association[imvert:aggregation = 'composite']" mode="mode-local-composition">
+                    <xsl:sort select="imvert:name"/>
+                </xsl:apply-templates>
                 
                 <xsl:if test="not($is-subtype)">
                     <xsl:sequence select="imf:create-comment('(History)')"/>
@@ -234,6 +236,7 @@
                 <xsl:sequence select="imf:create-comment('mode-global-objecttype (Associations: uitgaand)')"/>
                 <xsl:apply-templates select="imvert:associations/imvert:association[not(imvert:aggregation = 'composite')]" mode="mode-local-association">
                     <xsl:with-param name="richting">uitgaand</xsl:with-param>
+                    <xsl:sort select="imvert:name"/>
                 </xsl:apply-templates>
                 
                 <!--TODO #487922 besluit nemen over terugrelaties -->
@@ -616,7 +619,7 @@
                             <xsl:when test="imvert:conceptual-schema-type = 'GM_ArcString'">gml:ArcString</xsl:when>
                             <xsl:when test="imvert:conceptual-schema-type = 'GM_LineString'">gml:LineString</xsl:when>
                             <xsl:when test="imvert:conceptual-schema-type = 'GM_Polygon'">gml:Polygon</xsl:when>
-                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Object'">gml:Geometry</xsl:when><!-- see http://www.geonovum.nl/onderwerpen/geography-markup-language-gml/documenten/handreiking-geometrie-model-en-gml-10 -->
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Object'">gml:GeometryProperty</xsl:when><!-- see http://www.geonovum.nl/onderwerpen/geography-markup-language-gml/documenten/handreiking-geometrie-model-en-gml-10 -->
                             <xsl:when test="imvert:conceptual-schema-type = 'GM_Primitive'">gml:Primitive</xsl:when>
                             <xsl:when test="imvert:conceptual-schema-type = 'GM_Position'">gml:Position</xsl:when>
                             <xsl:when test="imvert:conceptual-schema-type = 'GM_PointArray'">gml:PointArray</xsl:when>
@@ -857,7 +860,7 @@
                 <xs:simpleType name="{imf:capitalize($compiled-name)}">
                     <xsl:sequence select="imf:create-annotation(.)"/>
                     <xs:restriction base="xs:string">
-                        <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-enum"/>
+                        <xsl:apply-templates select="$type/imvert:attributes/imvert:attribute" mode="mode-local-enum"/>
                     </xs:restriction>
                 </xs:simpleType>
             </xsl:when>
@@ -967,7 +970,7 @@
                             minOccurs="0"/>  
                     </xsl:if>
                    
-                    <xsl:apply-templates select="$association-class-associations" mode="mode-local-associations"/>
+                    <xsl:apply-templates select="$association-class-associations" mode="mode-local-association"/>
          
                 </xs:sequence>
             </xs:choice>
@@ -981,7 +984,7 @@
             </xs:restriction>
         </xs:simpleType>
         
-        <xsl:if test="exists(imvert:is-id)">
+        <xsl:if test="true()"><!--TODO was: exists(imvert:is-id) , wordt ewellicht : heeft indicatie kerngegeven yes. -->
             <xsl:sequence select="imf:create-comment(concat('mode-global-association-type Outgoing Association kerngegevens # ',@display-name))"/>
             
             <xs:complexType name="{$associatie-naam}-kerngegevens">
@@ -1257,7 +1260,18 @@
         <xsl:variable name="stereotype" select="imf:get-stereotype($this)"/>
         <xsl:variable name="alias" select="$this/imvert:alias"/>
         <xsl:variable name="name-raw" select="$this/imvert:name"/>
-        <xsl:variable name="name" select="replace($name-raw,'[^\p{L}0-9.\-]+','_')"/>
+        <xsl:variable name="name-form" select="replace($name-raw,'[^\p{L}0-9.\-]+','_')"/>
+        <xsl:variable name="name">
+            <xsl:choose>
+                <xsl:when test="$type = 'attribute' and $name-form = ('soort','code','sbiCode','voorvoegsel','scheidingsteken')"><!--TODO this is a patch -->
+                    <xsl:variable name="class" select="$this/ancestor::imvert:class"/>
+                    <xsl:value-of select="concat(imf:get-compiled-name($class),'_',$name-form)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="$name-form"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         <xsl:choose>
             <xsl:when test="$type = 'class' and $stereotype = imf:get-config-stereotypes('stereotype-name-composite')">
                 <xsl:value-of select="concat(imf:capitalize($name),'Grp')"/>
@@ -1488,11 +1502,14 @@
     
     <xsl:function name="imf:create-annotation">
         <xsl:param name="this"/>
-        <xs:annotation>
-            <xs:documentation>
-                <xsl:value-of select="concat($this/imvert:name/@original, ': ', imf:get-documentation($this))"/>
-            </xs:documentation>
-        </xs:annotation>
+        <xsl:variable name="doc" select="imf:get-documentation($this)"/>
+        <xsl:if test="normalize-space($doc)">
+            <xs:annotation>
+                <xs:documentation>
+                    <xsl:value-of select="concat($this/imvert:name/@original, ': ', $doc)"/>
+                </xs:documentation>
+            </xs:annotation>
+        </xsl:if>
     </xsl:function>
     
     <!-- deze scalars kunnen meteen uit de StUF onderlaag worden gehaald -->
