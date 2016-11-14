@@ -28,7 +28,7 @@
     exclude-result-prefixes="#all" 
     version="2.0">
 
-    <xsl:template match="imvert:association[not(imvert:aggregation = 'composite')]">
+    <xsl:template match="imvert:association[imvert:stereotype = imf:get-config-stereotype-names('stereotype-name-relatiesoort')]">
         
         <!-- setup -->
         <xsl:variable name="alias" select="imvert:alias"/>
