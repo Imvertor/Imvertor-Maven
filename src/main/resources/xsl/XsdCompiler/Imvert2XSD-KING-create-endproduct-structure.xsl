@@ -28,7 +28,7 @@
 
 	<xsl:template match="/imvert:packages/imvert:package[not(contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]"
 		mode="create-message-structure">
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="'Template: /imvert:packages/imvert:package[mode=create-message-structure]'"/>
 		</xsl:if>
 
@@ -99,7 +99,7 @@
 			</ep:message>
 		</xsl:for-each>
 
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="' Template: /imvert:packages/imvert:package[mode=create-message-structure] End'"/>
 		</xsl:if>
 	</xsl:template>
@@ -122,7 +122,7 @@
 			 object aren't allowed to contain 'stuurgegevens'. -->
 		<xsl:param name="useStuurgegevens" select="'yes'"/>
 
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="'Template: imvert:class[mode=create-toplevel-message-structure]'"/>
 		</xsl:if>
 
@@ -212,7 +212,7 @@
 			</xsl:choose>
 		</ep:seq>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="' Template: imvert:class[mode=create-toplevel-message-structure] End'"/>
 		</xsl:if>
 	</xsl:template>
@@ -225,14 +225,14 @@
 		<xsl:param name="berichtName"/>
 		<xsl:param name="context"/>
 		<xsl:param name="historyAppliesToMessage" select="'no'"/>
-		<xsl:param name="indicatieMaterieleHistorie" select="'Nee'"/>
-		<xsl:param name="indicatieFormeleHistorie" select="'Nee'"/>
+		<xsl:param name="generateMaterieleHistorie" select="'Nee'"/>
+		<xsl:param name="generateFormeleHistorie" select="'Nee'"/>
 		<xsl:param name="useStuurgegevens" select="'yes'"/>
 		<xsl:param name="fundamentalMnemonic" select="''"/>
 		
 		<xsl:variable name="type-id" select="imvert:type-id"/>
 
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="'Template: imvert:supertype[mode=create-message-content]'"/>
 		</xsl:if>
 
@@ -243,13 +243,13 @@
 			<xsl:with-param name="berichtName" select="$berichtName"/>
 			<xsl:with-param name="context" select="$context"/>
 			<xsl:with-param name="historyAppliesToMessage" select="$historyAppliesToMessage"/>
-			<xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
-			<xsl:with-param name="indicatieFormeleHistorie" select="$indicatieFormeleHistorie"/>
+			<xsl:with-param name="generateMaterieleHistorie" select="$generateMaterieleHistorie"/>
+			<xsl:with-param name="generateFormeleHistorie" select="$generateFormeleHistorie"/>
 			<xsl:with-param name="useStuurgegevens" select="$useStuurgegevens"/>
 			<xsl:with-param name="fundamentalMnemonic" select="$fundamentalMnemonic"/>
 		</xsl:apply-templates>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="' Template: imvert:supertype[mode=create-message-content] End'"/>
 		</xsl:if>
 	</xsl:template>
@@ -264,7 +264,7 @@
 		
 		<xsl:variable name="type-id" select="imvert:type-id"/>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="'Template: imvert:supertype[mode=create-message-content-constructRef]'"/>
 		</xsl:if>
 		
@@ -278,7 +278,7 @@
 			<xsl:with-param name="useStuurgegevens" select="$useStuurgegevens"/>
 		</xsl:apply-templates>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="' Template: imvert:supertype[mode=create-message-content-constructRef] End'"/>
 		</xsl:if>
 	</xsl:template>
@@ -291,15 +291,17 @@
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
 		<xsl:param name="context"/>
-		<xsl:param name="historyAppliesToMessage" select="'no'"/>
+		<!--xsl:param name="historyAppliesToMessage" select="'no'"/-->
+		<xsl:param name="generateHistorieConstruct" select="'Nee'"/>
 		<xsl:param name="indicatieMaterieleHistorie" select="'Nee'"/>
 		<xsl:param name="indicatieFormeleHistorie" select="'Nee'"/>
+		<xsl:param name="indicatieFormeleHistorieRelatie" select="'Nee'"/>
 		<xsl:param name="useStuurgegevens" select="'yes'"/>
 		<xsl:param name="fundamentalMnemonic" select="''"/>
 		
 		<xsl:variable name="id" select="imvert:id"/>
 
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="'Template: imvert:class[mode=create-message-content]'"/>
 		</xsl:if>
 
@@ -308,26 +310,33 @@
 					to the current class. First the ones found within the superclass of the current 
 					class followed by the ones within the current class. -->
 				<xsl:when test="$proces-type = 'attributes'">
-					<xsl:if test="imf:boolean($debug)">
+					<xsl:if test="imf:boolean($debugging)">
 						<xsl:comment select="'Template: imvert:class[mode=create-message-content] 1e when'"/>
 					</xsl:if>
+					
+					<xsl:if test="imf:boolean($debugging)">
+						<xsl:comment select="concat('generateHistorieConstruct: ',$generateHistorieConstruct,', indicatieMaterieleHistorie: ',$indicatieMaterieleHistorie,' indicatieFormeleHistorie: ',$indicatieFormeleHistorie,' indicatieFormeleHistorieRelatie: ',$indicatieFormeleHistorieRelatie)"/>
+					</xsl:if>
+					
 					<xsl:apply-templates select="imvert:supertype" mode="create-message-content">
 						<xsl:with-param name="proces-type" select="$proces-type"/>
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
-						<xsl:with-param name="historyAppliesToMessage" select="$historyAppliesToMessage"/>
+						<xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
 						<xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
 						<xsl:with-param name="indicatieFormeleHistorie" select="$indicatieFormeleHistorie"/>
+						<xsl:with-param name="indicatieFormeleHistorieRelatie" select="$indicatieFormeleHistorieRelatie"/>
 						<xsl:with-param name="fundamentalMnemonic" select="$fundamentalMnemonic"/>
 					</xsl:apply-templates>
 					<xsl:apply-templates select=".//imvert:attribute" mode="create-message-content">
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
-						<xsl:with-param name="historyAppliesToMessage" select="$historyAppliesToMessage"/>
+						<xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
 						<xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
 						<xsl:with-param name="indicatieFormeleHistorie" select="$indicatieFormeleHistorie"/>
+						<xsl:with-param name="indicatieFormeleHistorieRelatie" select="$indicatieFormeleHistorieRelatie"/>
 						<xsl:with-param name="fundamentalMnemonic" select="$fundamentalMnemonic"/>
 					</xsl:apply-templates>
 				</xsl:when>
@@ -341,12 +350,12 @@
 					<!-- ROME: Er wordt nu alleen gecheckt of de elementen die gedefinieerd 
 						worden wel voor mogen komen. De vraag is of ook gecheckt moet worden of de 
 						elementen die niet zijn gedefinieerd wel weggelaten mogen worden. -->
-					<xsl:if test="imf:boolean($debug)">
+					<xsl:if test="imf:boolean($debugging)">
 						<xsl:comment select="'Template: imvert:class[mode=create-message-content] 2e when'"/>
 					</xsl:if>
 					
-					<xsl:if test="imf:boolean($debug)">
-						<xsl:comment select="concat('indicatieMaterieleHistorie: ',$indicatieMaterieleHistorie,' indicatieFormeleHistorie: ',$indicatieFormeleHistorie)"/>
+					<xsl:if test="imf:boolean($debugging)">
+						<xsl:comment select="concat('indicatieMaterieleHistorie: ',$indicatieMaterieleHistorie,' indicatieFormeleHistorie: ',$indicatieFormeleHistorie,' indicatieFormeleHistorieRelatie: ',$indicatieFormeleHistorieRelatie)"/>
 					</xsl:if>
 
 					<xsl:if
@@ -474,9 +483,10 @@
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
-						<xsl:with-param name="historyAppliesToMessage" select="$historyAppliesToMessage"/>
+						<xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
 						<xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
 						<xsl:with-param name="indicatieFormeleHistorie" select="$indicatieFormeleHistorie"/>
+						<xsl:with-param name="indicatieFormeleHistorieRelatie" select="$indicatieFormeleHistorieRelatie"/>
 						<xsl:with-param name="useStuurgegevens" select="$useStuurgegevens"/>                                       
 					</xsl:apply-templates>
 					<xsl:apply-templates
@@ -485,16 +495,17 @@
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
-						<xsl:with-param name="historyAppliesToMessage" select="$historyAppliesToMessage"/>
+						<xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
 						<xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
 						<xsl:with-param name="indicatieFormeleHistorie" select="$indicatieFormeleHistorie"/>
+						<xsl:with-param name="indicatieFormeleHistorieRelatie" select="$indicatieFormeleHistorieRelatie"/>
 						<xsl:with-param name="useStuurgegevens" select="$useStuurgegevens"/>                                       
 					</xsl:apply-templates>
 				</xsl:when>
 				<!-- The following when initiates the processing of the classes refering to the current class as a superclass.
 					 In this situation a choice has to be generated. -->
 				<xsl:when test="$proces-type = 'associationsOrSupertypeRelatie' and //imvert:class[imvert:supertype/imvert:type-id = $id]">
-					<xsl:if test="imf:boolean($debug)">
+					<xsl:if test="imf:boolean($debugging)">
 						<xsl:comment select="'Template: imvert:class[mode=create-message-content] 3e when'"/>
 					</xsl:if>
 					<ep:choice>
@@ -540,7 +551,7 @@
 						<xsl:variable name="mnemonic">
 							<xsl:value-of select="imvert:alias"/>
 						</xsl:variable>
-						<xsl:if test="imf:boolean($debug)">
+						<xsl:if test="imf:boolean($debugging)">
 							<xsl:comment select="concat('Attributes voor gerelateerde met een choice, berichtcode: ', substring($berichtCode, 1, 2), ', context: choice en mnemonic: ', $mnemonic)"/>
 						</xsl:if>
 						<xsl:variable name="attributes"
@@ -552,7 +563,7 @@
 					to the current class. First the ones found within the superclass of the current 
 					class followed by the ones within the current class. -->
 				<xsl:when test="$proces-type = 'associationsRelatie' or $proces-type = 'associationsOrSupertypeRelatie'">
-					<xsl:if test="imf:boolean($debug)">
+					<xsl:if test="imf:boolean($debugging)">
 						<xsl:comment select="'Template: imvert:class[mode=create-message-content] 4e when'"/>
 					</xsl:if>
 					<xsl:apply-templates select="imvert:supertype" mode="create-message-content">
@@ -572,7 +583,7 @@
 					
 					<!-- ROME: Volgende when is waarschijnlijk helemaal niet nodig. -->
 					<!-- If this class is refered to from an association with a stereotype 'BERICHTRELATIE' the following apply-templates applies. -->
-					<!--xsl:if test="imf:boolean($debug)">
+					<!--xsl:if test="imf:boolean($debugging)">
 						<xsl:comment select="'Template: imvert:class[mode=create-message-content] 4e when 3'"/>
 					</xsl:if>
 					<xsl:apply-templates select=".//imvert:association[imvert:stereotype = 'ENTITEITRELATIE']"
@@ -584,7 +595,7 @@
 				</xsl:when>
 			</xsl:choose>
 
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="' Template: imvert:class[mode=create-message-content] End'"/>
 		</xsl:if>
 	</xsl:template>
@@ -598,7 +609,7 @@
 		<xsl:param name="context"/>
 		<xsl:param name="historyAppliesToMessage" select="'no'"/>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="'Template: imvert:class[mode=create-message-content-constructRef]'"/>
 		</xsl:if>
 
@@ -621,7 +632,7 @@
 			<xsl:with-param name="context" select="$context"/>
 		</xsl:apply-templates>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="' Template: imvert:class[mode=create-message-content-constructRef] End'"/>
 		</xsl:if>
 	</xsl:template>
@@ -633,14 +644,25 @@
 		<xsl:param name="berichtName"/>
 		<xsl:param name="context"/>
 		<xsl:param name="orderingDesired" select="'yes'"/>
-		<xsl:param name="historyAppliesToMessage" select="'no'"/>
+		<!--xsl:param name="historyAppliesToMessage" select="'no'"/-->
+		<xsl:param name="generateHistorieConstruct" select="'Nee'"/>
 		<xsl:param name="indicatieMaterieleHistorie" select="'Nee'"/>
 		<xsl:param name="indicatieFormeleHistorie" select="'Nee'"/>
+		<xsl:param name="indicatieFormeleHistorieRelatie" select="'Nee'"/>
 		<xsl:param name="useStuurgegevens" select="'yes'"/>                                       
 		
 		<xsl:variable name="type-id" select="imvert:type-id"/>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:variable name="historyName">
+				<xsl:choose>
+					<xsl:when test="$generateHistorieConstruct = 'MaterieleHistorie' and contains($indicatieMaterieleHistorie,'Ja')">-historieMaterieel</xsl:when>
+					<xsl:when test="$generateHistorieConstruct = 'FormeleHistorie' and contains($indicatieFormeleHistorie,'Ja')">-historieFormeel</xsl:when>
+					<xsl:when test="$generateHistorieConstruct = 'FormeleHistorieRelatie' and contains($indicatieFormeleHistorieRelatie,'Ja')">-historieFormeelRelatie</xsl:when>
+					<xsl:otherwise/>
+				</xsl:choose>
+		</xsl:variable>
+		
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="'Template: imvert:association[mode=create-message-content]'"/>
 		</xsl:if>
 		
@@ -651,7 +673,7 @@
 			<xsl:when test="imvert:stereotype = 'GROEP COMPOSITIE' and ($useStuurgegevens = 'no' and imvert:name = 'stuurgegevens')"/>
 			<xsl:when test="imvert:stereotype = 'GROEP COMPOSITIE'">
 				
-				<xsl:if test="imf:boolean($debug)">
+				<xsl:if test="imf:boolean($debugging)">
 					<xsl:comment select="concat('indicatieMaterieleHistorie: ',$indicatieMaterieleHistorie,' indicatieFormeleHistorie: ',$indicatieFormeleHistorie)"/>
 				</xsl:if>
 
@@ -660,12 +682,18 @@
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 					<xsl:with-param name="berichtName" select="$berichtName"/>
 					<xsl:with-param name="context" select="$context"/>
+					<xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
 					<xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
 					<xsl:with-param name="indicatieFormeleHistorie" select="$indicatieFormeleHistorie"/>
-					<xsl:with-param name="historyAppliesToMessage" select="$historyAppliesToMessage"/>
+					<xsl:with-param name="indicatieFormeleHistorieRelatie" select="$indicatieFormeleHistorieRelatie"/>
 				</xsl:call-template>			
 			</xsl:when>
 			<xsl:otherwise>
+
+				<xsl:if test="imf:boolean($debugging)">
+					<xsl:comment select="'otherwise tak'"/>
+				</xsl:if>
+
 				<xsl:variable name="mnemonic">
 					<xsl:choose>
 						<xsl:when test="imvert:stereotype = 'ENTITEITRELATIE'">
@@ -682,16 +710,16 @@
 						<xsl:when
 							test="imvert:stereotype = 'RELATIE' and //imvert:class[imvert:id = $type-id]/imvert:alias">
 							<xsl:value-of
-								select="concat($mnemonic, '-', imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name, 'type-name'))"
+								select="concat($mnemonic, '-', imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name, 'type-name'),$historyName)"
 							/>
 						</xsl:when>
 						<xsl:when test="imvert:stereotype = 'RELATIE'">
 							<xsl:value-of
-								select="imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name, 'type-name')"
+								select="concat(imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name, 'type-name'),$historyName)"
 							/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="imf:get-normalized-name(imvert:name, 'element-name')"/>
+							<xsl:value-of select="concat(imf:get-normalized-name(imvert:name, 'element-name'),$historyName)"/>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
@@ -719,10 +747,10 @@
 				<xsl:variable name="formeleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie')"/>
 				<?x xsl:variable name="materieleHistorie">
 					<xsl:choose>
-						<xsl:when test="$indicatieMaterieleHistorie = 'Ja' and (imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie') = 'Nee' or imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie') = 'N.v.t.')">
+						<xsl:when test="$generateMaterieleHistorie = 'Ja' and (imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie') = 'Nee' or imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie') = 'N.v.t.')">
 							<xsl:value-of select="'Nee'"/>
 						</xsl:when>
-						<xsl:when test="$indicatieMaterieleHistorie = 'Ja'">
+						<xsl:when test="$generateMaterieleHistorie = 'Ja'">
 							<xsl:value-of select="'Ja'"/>
 						</xsl:when>
 						<xsl:otherwise>
@@ -732,10 +760,10 @@
 				</xsl:variable>
 				<xsl:variable name="formeleHistorie">
 					<xsl:choose>
-						<xsl:when test="$indicatieFormeleHistorie = 'Ja' and (imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie') = 'Nee' or imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie') = 'N.v.t.')">
+						<xsl:when test="$generateFormeleHistorie = 'Ja' and (imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie') = 'Nee' or imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie') = 'N.v.t.')">
 							<xsl:value-of select="'Nee'"/>
 						</xsl:when>
-						<xsl:when test="$indicatieFormeleHistorie = 'Ja'">
+						<xsl:when test="$generateFormeleHistorie = 'Ja'">
 							<xsl:value-of select="'Ja'"/>
 						</xsl:when>
 						<xsl:otherwise>
@@ -749,7 +777,7 @@
 				<xsl:variable name="regels" select="imf:get-most-relevant-compiled-taggedvalue(., 'Regels')"/>
 				
 				<ep:construct>
-					<xsl:if test="imf:boolean($debug)">
+					<xsl:if test="imf:boolean($debugging)">
 						<ep:tagged-values>
 							<xsl:copy-of select="$tvs"/>
 							<ep:found-tagged-values>
@@ -803,8 +831,10 @@
 							<xsl:with-param name="berichtCode" select="$berichtCode"/>
 							<xsl:with-param name="berichtName" select="$berichtName"/>
 							<xsl:with-param name="context" select="$context"/>
+							<xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
 							<xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
 							<xsl:with-param name="indicatieFormeleHistorie" select="$indicatieFormeleHistorie"/>
+							<xsl:with-param name="indicatieFormeleHistorieRelatie" select="$indicatieFormeleHistorieRelatie"/>
 						</xsl:call-template>
 						<!-- Only in case of an association representing a 'relatie' and containing 
 					a 'gerelateerde' construct (within the above choose the first 'when' XML 
@@ -828,7 +858,7 @@
 						bevat is dan wel altijd de ancestor van het element dat het nodig heeft. 
 						Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook 
 						nog herleid en doorgegeven worden. -->
-							<xsl:if test="imf:boolean($debug)">
+							<xsl:if test="imf:boolean($debugging)">
 								<xsl:comment select="concat('Attributes voor relatie, berichtcode: ', substring($berichtCode, 1, 2), ', context: ', $context, ' en mnemonic: ', $mnemonic)"/>
 							</xsl:if>
 							<xsl:variable name="attributes"
@@ -840,7 +870,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="' Template: imvert:association[mode=create-message-content] End'"/>
 		</xsl:if>
 	</xsl:template>
@@ -850,7 +880,7 @@
 		<xsl:param name="berichtName"/>
 		<xsl:param name="context"/>
 		<xsl:param name="orderingDesired" select="'yes'"/>
-		<xsl:param name="historyAppliesToMessage" select="'no'"/>
+		<!--xsl:param name="generateHistorieConstruct" select="'Nee'"/-->
 
 		<xsl:variable name="name" select="imvert:name"/>
 		<xsl:variable name="tech-name">
@@ -891,7 +921,7 @@
 			/>
 		</xsl:variable>
 
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="'Template: imvert:association[mode=create-message-content-constructRef]'"/>
 		</xsl:if>
 
@@ -916,7 +946,7 @@
 			<xsl:sequence select="imf:create-output-element('ep:href', $href)"/>
 		</ep:constructRef>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="' Template: imvert:association[mode=create-message-content-constructRef] End'"/>
 		</xsl:if>
 	</xsl:template>
@@ -930,7 +960,7 @@
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="'Template: imvert:association[mode=create-toplevel-message-structure]'"/>
 		</xsl:if>
 		
@@ -985,7 +1015,7 @@
 			</ep:seq>
 		</ep:construct>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="' Template: imvert:association[mode=create-toplevel-message-structure] End'"/>
 		</xsl:if>
 	</xsl:template>
@@ -1031,7 +1061,7 @@
 			/>
 		</xsl:variable>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="'Template: imvert:association[mode=create-toplevel-message-structure-constructRef]'"/>
 		</xsl:if>
 		
@@ -1058,7 +1088,7 @@
 			<xsl:sequence select="imf:create-output-element('ep:href', $href)"/>
 		</ep:constructRef>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="' Template: imvert:association[mode=create-toplevel-message-structure-constructRef] End'"/>
 		</xsl:if>
 	</xsl:template>
@@ -1076,7 +1106,7 @@
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
 		<xsl:param name="orderingDesired" select="'yes'"/>
-		<xsl:param name="historyAppliesToMessage" select="'no'"/>
+		<xsl:param name="generateHistorieConstruct" select="'Nee'"/>
 
 		<xsl:variable name="context">
 			<xsl:choose>
@@ -1092,7 +1122,7 @@
 		<xsl:variable name="max-occurs" select="imvert:max-occurs"/>
 		<xsl:variable name="min-occurs" select="imvert:min-occurs"/>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="'Template: imvert:association[imvert:stereotype = ENTITEITRELATIE and mode=create-message-content]'"/>
 		</xsl:if>
 
@@ -1278,7 +1308,7 @@
 			</xsl:when>
 		</xsl:choose>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="' Template: imvert:association[imvert:stereotype = ENTITEITRELATIE and mode=create-message-content] End'"/>
 		</xsl:if>
 	</xsl:template>
@@ -1296,9 +1326,10 @@
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
 		<xsl:param name="context"/>
-		<xsl:param name="historyAppliesToMessage" select="'no'"/>
+		<xsl:param name="generateHistorieConstruct" select="'Nee'"/>
 		<xsl:param name="indicatieMaterieleHistorie" select="'Nee'"/>
 		<xsl:param name="indicatieFormeleHistorie" select="'Nee'"/>
+		<xsl:param name="indicatieFormeleHistorieRelatie" select="'Nee'"/>
 		<xsl:param name="fundamentalMnemonic" select="''"/>
 		
 		<xsl:variable name="name" select="imvert:name/@original"/>
@@ -1345,7 +1376,7 @@
 				<xsl:when test="$indicatieMaterieleHistorie = 'Ja op attributes' and not(contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie'),'Ja'))">
 					<xsl:value-of select="'Nee'"/>
 				</xsl:when>
-				<!--xsl:when test="$indicatieMaterieleHistorie = 'Ja' and (imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie') = 'Nee' or imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie') = 'N.v.t.')">
+				<!--xsl:when test="$generateMaterieleHistorie = 'Ja' and (imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie') = 'Nee' or imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie') = 'N.v.t.')">
 					<xsl:value-of select="'Nee'"/>
 				</xsl:when-->
 				<xsl:when test="$indicatieMaterieleHistorie = 'Ja'">
@@ -1364,7 +1395,7 @@
 				<xsl:when test="$indicatieFormeleHistorie = 'Ja op attributes' and not(contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie'),'Ja'))">
 					<xsl:value-of select="'Nee'"/>
 				</xsl:when>
-				<!--xsl:when test="$indicatieFormeleHistorie = 'Ja' and (imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie') = 'Nee' or imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie') = 'N.v.t.')">
+				<!--xsl:when test="$generateFormeleHistorie = 'Ja' and (imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie') = 'Nee' or imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie') = 'N.v.t.')">
 					<xsl:value-of select="'Nee'"/>
 				</xsl:when-->
 				<xsl:when test="$indicatieFormeleHistorie = 'Ja'">
@@ -1384,14 +1415,19 @@
 		<xsl:variable name="formeelPatroon" select="imf:get-most-relevant-compiled-taggedvalue(., 'Formeel patroon')"/>
 		<xsl:variable name="regels" select="imf:get-most-relevant-compiled-taggedvalue(., 'Regels')"/>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="'Template: imvert:attribute[mode=create-message-content]'"/>
 		</xsl:if>
 		
+		<xsl:if test="imf:boolean($debugging)">
+			<xsl:comment select="concat('generateHistorieConstruct: ',$generateHistorieConstruct,'indicatieMaterieleHistorie: ',$indicatieMaterieleHistorie,' indicatieFormeleHistorie: ',$indicatieFormeleHistorie,' indicatieFormeleHistorieRelatie: ',$indicatieFormeleHistorieRelatie)"/>
+		</xsl:if>
+				
+		
 		<xsl:if
-			test="($historyAppliesToMessage = 'yes-Materieel' and contains($materieleHistorie, 'Ja')) or ($historyAppliesToMessage = 'yes' and contains($formeleHistorie, 'Ja')) or $historyAppliesToMessage = 'no'">
+			test="($generateHistorieConstruct = 'MaterieleHistorie' and contains($materieleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorie' and contains($formeleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorieRelatie' and contains($formeleHistorie, 'Ja')) or $generateHistorieConstruct = 'Nee'">
 			<ep:construct>
-				<xsl:if test="imf:boolean($debug)">
+				<xsl:if test="imf:boolean($debugging)">
 					<ep:tagged-values>
 						<xsl:copy-of select="$tvs"/>
 						<ep:found-tagged-values>
@@ -1498,7 +1534,7 @@
 			</ep:construct>
 		</xsl:if>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="' Template: imvert:attribute[mode=create-message-content] End'"/>
 		</xsl:if>
 	</xsl:template>
@@ -1513,10 +1549,14 @@
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
 		<xsl:param name="context"/>
-
+		<xsl:param name="generateHistorieConstruct" select="'Nee'"/>
+		<xsl:param name="indicatieMaterieleHistorie" select="'Nee'"/>
+		<xsl:param name="indicatieFormeleHistorie" select="'Nee'"/>
+		<xsl:param name="indicatieFormeleHistorieRelatie" select="'Nee'"/>
+		
 		<xsl:variable name="type-id" select="imvert:type-id"/>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="'Template: imvert:association-class'"/>
 		</xsl:if>
 
@@ -1529,6 +1569,10 @@
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 					<xsl:with-param name="berichtName" select="$berichtName"/>
 					<xsl:with-param name="context" select="$context"/>
+					<xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
+					<xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
+					<xsl:with-param name="indicatieFormeleHistorie" select="$indicatieFormeleHistorie"/>
+					<xsl:with-param name="indicatieFormeleHistorieRelatie" select="$indicatieFormeleHistorieRelatie"/>
 				</xsl:apply-templates>
 			</xsl:when>
 			<!-- Following otherwise processes the relatie type associations and group 
@@ -1540,6 +1584,10 @@
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 					<xsl:with-param name="berichtName" select="$berichtName"/>
 					<xsl:with-param name="context" select="$context"/>
+					<xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
+					<xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
+					<xsl:with-param name="indicatieFormeleHistorie" select="$indicatieFormeleHistorie"/>
+					<xsl:with-param name="indicatieFormeleHistorieRelatie" select="$indicatieFormeleHistorieRelatie"/>
 				</xsl:apply-templates>
 			</xsl:otherwise>
 		</xsl:choose>
@@ -1547,7 +1595,7 @@
 			van een relatie en dat relatie element al ergens anders zijn XML-attributes 
 			toegekend krijgt hoeven er hier geen attributes meer toegekend te worden. -->
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="' Template: imvert:association-class End'"/>
 		</xsl:if>
 	</xsl:template>
@@ -1558,7 +1606,7 @@
 		<xsl:param name="context"/>
 		<xsl:param name="orderingDesired" select="'yes'"/>
 		<xsl:param name="type-id"/>
-		<xsl:param name="historyAppliesToMessage"/>
+		<xsl:param name="generateHistorieConstruct"/>
 
 
 		<xsl:variable name="name" select="imvert:name/@original"/>
@@ -1614,16 +1662,16 @@
 		<!-- ROME: De vraag is nog of de volgende twee variabelen ('materieleHistorie' en 'formeleHistorie') wel nodig zijn op dit niveau.
 				   Zo ja dan is het de vraag op welke wijze de variabelen gevuld moeten worden. Op de huidige geactiveerde wijze of
 				   of op de daaronder uitbecommentarieerde wijze. 
-				   Waarschijnlijk geen van beide, de variabelen $indicatieMaterielehistorie en $indicatieFormelehistorie moeten van bovenaf worden doorgegeven.
+				   Waarschijnlijk geen van beide, de variabelen $generateMaterieleHistorie en $generateFormeleHistorie moeten van bovenaf worden doorgegeven.
 				   Op entity niveau wordt immers al in de rough-message structuur vastgesteld of historie van toepassing is. -->
 		<xsl:variable name="materieleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie')"/>
 		<xsl:variable name="formeleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie')"/>
 		<?x xsl:variable name="materieleHistorie">
 			<xsl:choose>
-				<xsl:when test="$indicatieMaterieleHistorie = 'Ja' and (imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie') = 'Nee' or imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie') = 'N.v.t.')">
+				<xsl:when test="$generateMaterieleHistorie = 'Ja' and (imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie') = 'Nee' or imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie') = 'N.v.t.')">
 					<xsl:value-of select="'Nee'"/>
 				</xsl:when>
-				<xsl:when test="$indicatieMaterieleHistorie = 'Ja'">
+				<xsl:when test="$generateMaterieleHistorie = 'Ja'">
 					<xsl:value-of select="'Ja'"/>
 				</xsl:when>
 				<xsl:otherwise>
@@ -1633,10 +1681,10 @@
 		</xsl:variable>
 		<xsl:variable name="formeleHistorie">
 			<xsl:choose>
-				<xsl:when test="$indicatieFormeleHistorie = 'Ja' and (imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie') = 'Nee' or imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie') = 'N.v.t.')">
+				<xsl:when test="$generateFormeleHistorie = 'Ja' and (imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie') = 'Nee' or imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie') = 'N.v.t.')">
 					<xsl:value-of select="'Nee'"/>
 				</xsl:when>
-				<xsl:when test="$indicatieFormeleHistorie = 'Ja'">
+				<xsl:when test="$generateFormeleHistorie = 'Ja'">
 					<xsl:value-of select="'Ja'"/>
 				</xsl:when>
 				<xsl:otherwise>
@@ -1661,12 +1709,12 @@
 			</xsl:choose>
 		</xsl:variable>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="'Template: createEntityConstruct'"/>
 		</xsl:if>
 		
 		<ep:construct entityconstruct="yes">
-			<xsl:if test="imf:boolean($debug)">
+			<xsl:if test="imf:boolean($debugging)">
 				<ep:tagged-values>
 					<xsl:copy-of select="$tvs"/>
 					<ep:found-tagged-values>
@@ -1836,7 +1884,7 @@
 					altijd de ancestor van het element dat het nodig heeft. Voor nu heb ik gekozen 
 					voor de eerste optie. Overigens moet de context ook nog herleid en doorgegeven 
 					worden. -->
-				<xsl:if test="imf:boolean($debug)">
+				<xsl:if test="imf:boolean($debugging)">
 					<xsl:comment select="concat('Attributes voor toplevel, berichtcode: ', substring($berichtCode, 1, 2), ' context: ', $context, ' en mnemonic: ', $mnemonic)"/>
 				</xsl:if>
 				<xsl:variable name="attributes"
@@ -1845,7 +1893,7 @@
 			</ep:seq>
 		</ep:construct>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="' Template: createEntityConstruct End'"/>
 		</xsl:if>
 		
@@ -1860,10 +1908,12 @@
 		<!-- With this parameter the code can determine if 'historie' applies to the message being compiled. 
 			 However this is only relevant if the current construct being generated also is an 'historie' construct. -->
 		<xsl:param name="historyAppliesToMessage" select="'no'"/>
-		<!-- The following parameters determine if the current construct being generated is a 'historieMaterieel' a 'historieFormeel' construct.
-			 If both variables have the value 'Nee' a normal construct is generated. -->
+		<!-- The following parameters determine if the current construct being generated is a 'historieMaterieel', a 'historieFormeel' or 'historieFormeelRelatie' construct.
+			 If the variables 'generateHistorieConstruct' has the value 'Nee' a normal construct is generated. -->
+		<xsl:param name="generateHistorieConstruct" select="'Nee'"/>
 		<xsl:param name="indicatieMaterieleHistorie" select="'Nee'"/>
 		<xsl:param name="indicatieFormeleHistorie" select="'Nee'"/>
+		<xsl:param name="indicatieFormeleHistorieRelatie" select="'Nee'"/>
 		
 		<xsl:variable name="docs">
 			<imvert:complete-documentation>
@@ -1885,27 +1935,36 @@
 			/>
 		</xsl:variable>
 
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="'Template: createRelatiePartOfAssociation'"/>
+			<xsl:comment select="concat('generateHistorieConstruct: ',$generateHistorieConstruct, ', indicatieMaterieleHistorie: ',$indicatieMaterieleHistorie,', indicatieFormeleHistorie: ',$indicatieFormeleHistorie,', indicatieFormeleHistorieRelatie: ',$indicatieFormeleHistorieRelatie)"/>
 		</xsl:if>
 				
-		<xsl:if
-			test="($historyAppliesToMessage = 'yes-Materieel' and contains($indicatieMaterieleHistorie, 'Ja')) or ($historyAppliesToMessage = 'yes' and contains($indicatieFormeleHistorie, 'Ja')) or $historyAppliesToMessage = 'no'">
+		<!--xsl:if
+			test="($historyAppliesToMessage = 'yes-Materieel' and contains($generateMaterieleHistorie, 'Ja')) or ($historyAppliesToMessage = 'yes' and (contains($generateFormeleHistorie, 'Ja') or contains($generateFormeleHistorieRelatie, 'Ja'))) or $historyAppliesToMessage = 'no'"-->
 			<xsl:choose>
-				<!-- The association is a 'relatie' and it has to contain a 'gerelateerde' constructRef. -->
 				<xsl:when
 				test="//imvert:class[imvert:id = $type-id] and imvert:stereotype = 'RELATIE'">
-					<ep:constructRef context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
-						<ep:tech-name>gerelateerde</ep:tech-name>
-						<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
-						<ep:max-occurs>1</ep:max-occurs>
-						<ep:min-occurs>0</ep:min-occurs>
-						<ep:position>1</ep:position>
-						<xsl:sequence select="imf:create-output-element('ep:href', $href)"/>
-					</ep:constructRef>
+					<xsl:choose>
+						<xsl:when test="($generateHistorieConstruct = 'MaterieleHistorie' and contains($indicatieMaterieleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorie' and contains($indicatieFormeleHistorie, 'Ja'))"/>
+						<xsl:otherwise>
+							<xsl:if test="imf:boolean($debugging)">
+								<xsl:comment select="'Gerelateerde wordt gegenereerd!'"/>
+							</xsl:if>
+							<!-- The association is a 'relatie' and because no historieMaterieel or historieFormeel is generated it has to contain a 'gerelateerde' constructRef. -->
+							<ep:constructRef context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+								<ep:tech-name>gerelateerde</ep:tech-name>
+								<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+								<ep:max-occurs>1</ep:max-occurs>
+								<ep:min-occurs>0</ep:min-occurs>
+								<ep:position>1</ep:position>
+								<xsl:sequence select="imf:create-output-element('ep:href', $href)"/>
+							</ep:constructRef>
+						</xsl:otherwise>
+					</xsl:choose>
 					<!-- The following 'apply-templates' initiates the processing of the 
 						class which contains the attributes of the 'relatie' type element. -->
-					<xsl:if test="imf:boolean($debug) and imvert:association-class">
+					<xsl:if test="imf:boolean($debugging) and imvert:association-class">
 						<xsl:comment select="'Vanaf hier worden de association-classes afgehandeld'"/>
 					</xsl:if>
 					<xsl:apply-templates select="imvert:association-class"
@@ -1914,6 +1973,10 @@
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
+						<xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
+						<xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
+						<xsl:with-param name="indicatieFormeleHistorie" select="$indicatieFormeleHistorie"/>
+						<xsl:with-param name="indicatieFormeleHistorieRelatie" select="$indicatieFormeleHistorieRelatie"/>
 					</xsl:apply-templates>
 					<!-- The following 'apply-templates' initiates the processing of the 
 						class which contains the attributegroups of the 'relatie' type element. -->
@@ -1923,21 +1986,47 @@
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
+						<xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
+						<xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
+						<xsl:with-param name="indicatieFormeleHistorie" select="$indicatieFormeleHistorie"/>
+						<xsl:with-param name="indicatieFormeleHistorieRelatie" select="$indicatieFormeleHistorieRelatie"/>
 					</xsl:apply-templates>
+					<xsl:if test="($generateHistorieConstruct = 'FormeleHistorieRelatie' and contains($indicatieFormeleHistorieRelatie, 'Ja'))">
+						<ep:construct>
+							<!--ep:name>StUF:tijdvakRelatie</ep:name-->
+							<ep:tech-name>StUF:tijdvakRelatie</ep:tech-name>
+							<ep:max-occurs>1</ep:max-occurs>
+							<ep:min-occurs>1</ep:min-occurs>
+							<ep:position>149</ep:position>
+						</ep:construct>
+					</xsl:if>
 					<ep:construct>
 						<!--ep:name>StUF:tijdvakGeldigheid</ep:name-->
 						<ep:tech-name>StUF:tijdvakGeldigheid</ep:tech-name>
 						<ep:max-occurs>1</ep:max-occurs>
-						<ep:min-occurs>0</ep:min-occurs>
+						<ep:min-occurs>
+							<xsl:choose>
+								<xsl:when test="($generateHistorieConstruct = 'MaterieleHistorie' and contains($indicatieMaterieleHistorie, 'Ja')) or 
+												($generateHistorieConstruct = 'FormeleHistorie' and contains($indicatieFormeleHistorie, 'Ja'))">1</xsl:when>
+								<xsl:otherwise>0</xsl:otherwise>
+							</xsl:choose>							
+						</ep:min-occurs>
 						<ep:position>150</ep:position>
 					</ep:construct>
-					<ep:construct>
-						<!--ep:name>StUF:tijdstipRegistratie</ep:name-->
-						<ep:tech-name>StUF:tijdstipRegistratie</ep:tech-name>
-						<ep:max-occurs>1</ep:max-occurs>
-						<ep:min-occurs>0</ep:min-occurs>
-						<ep:position>151</ep:position>
-					</ep:construct>
+					<xsl:if test="contains($indicatieFormeleHistorie, 'Ja')">
+						<ep:construct>
+							<!--ep:name>StUF:tijdstipRegistratie</ep:name-->
+							<ep:tech-name>StUF:tijdstipRegistratie</ep:tech-name>
+							<ep:max-occurs>1</ep:max-occurs>
+							<ep:min-occurs>
+								<xsl:choose>
+									<xsl:when test="$generateHistorieConstruct = 'FormeleHistorie'">1</xsl:when>
+									<xsl:otherwise>0</xsl:otherwise>
+								</xsl:choose>
+							</ep:min-occurs>
+							<ep:position>151</ep:position>
+						</ep:construct>
+					</xsl:if>
 					<ep:construct>
 						<!--ep:name>StUF:extraElementen</ep:name-->
 						<ep:tech-name>StUF:extraElementen</ep:tech-name>
@@ -1952,6 +2041,123 @@
 						<ep:min-occurs>0</ep:min-occurs>
 						<ep:position>153</ep:position>
 					</ep:construct>
+
+					<xsl:variable name="materieleHistorie">
+						<xsl:variable name="tv-materieleHistorie-attributes">
+							<xsl:for-each select="imvert:association-class">
+								<xsl:variable name="association-class-type-id" select="imvert:type-id"/>
+								<xsl:for-each select="//imvert:class[imvert:id = $association-class-type-id]//imvert:attribute">
+									<ep:tagged-value>
+										<xsl:value-of
+											select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie')"
+										/>
+									</ep:tagged-value>
+								</xsl:for-each>
+							</xsl:for-each>
+						</xsl:variable>
+						<xsl:if test="contains($tv-materieleHistorie-attributes//ep:tagged-value,'Ja')">
+							<xsl:value-of select="'Ja'"/>
+						</xsl:if>
+					</xsl:variable>
+					<xsl:variable name="formeleHistorie">
+						<xsl:variable name="tv-formeleHistorie-attributes">
+							<xsl:for-each select="imvert:association-class">
+								<xsl:variable name="association-class-type-id" select="imvert:type-id"/>
+								<xsl:for-each select="//imvert:class[imvert:id = $association-class-type-id]//imvert:attribute">
+									<ep:tagged-value>
+										<xsl:value-of
+											select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie')"
+										/>
+									</ep:tagged-value>
+								</xsl:for-each>
+							</xsl:for-each>									
+						</xsl:variable>
+						<xsl:if test="$tv-formeleHistorie-attributes//ep:tagged-value = 'Ja'">
+							<xsl:value-of select="'Ja'"/>
+						</xsl:if>
+					</xsl:variable>
+					<!-- ROME: Volgende variabele moet nog correct vormgegeven worden. -->
+					<xsl:variable name="formeleHistorieRelatie">
+						<xsl:if
+							test="contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie'), 'Ja')">
+							<xsl:value-of select="'Ja'"/>
+						</xsl:if>
+					</xsl:variable>
+			
+					<!--xsl:if test="($materieleHistorie = 'Ja' and $generateMaterieleHistorie = 'Nee') or
+						($materieleHistorie = 'Ja' and contains($generateMaterieleHistorie,'Ja'))"-->
+					<xsl:if test="contains($indicatieMaterieleHistorie,'Ja') and $generateHistorieConstruct!='FormeleHistorie' and $generateHistorieConstruct!='FormeleHistorieRelatie'">
+						<xsl:variable name="mnemonic" select="imvert:alias"/>
+						<xsl:variable name="href">
+							<xsl:variable name="mnemonicPartOfName">
+								<xsl:choose>
+									<xsl:when test="$mnemonic != ''">
+										<xsl:value-of select="concat($mnemonic, '-')"/>
+									</xsl:when>
+								</xsl:choose>
+							</xsl:variable>
+							<xsl:value-of
+								select="concat($mnemonicPartOfName, imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name, 'type-name'),'-historieMaterieel')"
+							/>
+						</xsl:variable>
+						
+						<ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+							<ep:tech-name>historieMaterieel</ep:tech-name>
+							<ep:max-occurs>unbounded</ep:max-occurs>
+							<ep:min-occurs>0</ep:min-occurs>
+							<ep:position>154</ep:position>
+							<xsl:sequence select="imf:create-output-element('ep:href', $href)"/>
+						</ep:constructRef>
+					</xsl:if>
+					<!--xsl:if test="($formeleHistorie = 'Ja' and $generateMaterieleHistorie = 'Nee') or
+						($formeleHistorie = 'Ja' and (contains($generateFormeleHistorie,'Ja') or contains($generateMaterieleHistorie,'Ja')))"-->
+					<xsl:if test="contains($indicatieFormeleHistorie,'Ja')">
+						<xsl:variable name="mnemonic" select="imvert:alias"/>
+						<xsl:variable name="href">
+							<xsl:variable name="mnemonicPartOfName">
+								<xsl:choose>
+									<xsl:when test="$mnemonic != ''">
+										<xsl:value-of select="concat($mnemonic, '-')"/>
+									</xsl:when>
+								</xsl:choose>
+							</xsl:variable>
+							<xsl:value-of
+								select="concat($mnemonicPartOfName, imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name, 'type-name'),'-historieFormeel')"
+							/>
+						</xsl:variable>
+						
+						<ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+							<ep:tech-name>historieFormeel</ep:tech-name>
+							<ep:max-occurs>unbounded</ep:max-occurs>
+							<ep:min-occurs>0</ep:min-occurs>
+							<ep:position>155</ep:position>
+							<xsl:sequence select="imf:create-output-element('ep:href', $href)"/>
+						</ep:constructRef>
+					</xsl:if>
+					<!-- ROME: Er moet nog gecheckt worden of FormeleHistorieRelatie op gaat. -->
+					<xsl:if test="contains($indicatieFormeleHistorieRelatie,'Ja')">
+						<xsl:variable name="mnemonic" select="imvert:alias"/>
+						<xsl:variable name="href">
+							<xsl:variable name="mnemonicPartOfName">
+								<xsl:choose>
+									<xsl:when test="$mnemonic != ''">
+										<xsl:value-of select="concat($mnemonic, '-')"/>
+									</xsl:when>
+								</xsl:choose>
+							</xsl:variable>
+							<xsl:value-of
+								select="concat($mnemonicPartOfName, imf:get-normalized-name(//imvert:class[imvert:id = $type-id]/@formal-name, 'type-name'),'-historieFormeelRelatie')"
+							/>
+						</xsl:variable>
+						
+						<ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+							<ep:tech-name>historieFormeelRelatie</ep:tech-name>
+							<ep:max-occurs>unbounded</ep:max-occurs>
+							<ep:min-occurs>0</ep:min-occurs>
+							<ep:position>155</ep:position>
+							<xsl:sequence select="imf:create-output-element('ep:href', $href)"/>
+						</ep:constructRef>
+					</xsl:if>
 					<!-- The following 'apply-templates' initiates the processing of the 
 						class which contains the associations of the 'relatie' type element. -->
 					<xsl:apply-templates select="imvert:association-class" 
@@ -1960,16 +2166,20 @@
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
+						<xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
+						<xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
+						<xsl:with-param name="indicatieFormeleHistorie" select="$indicatieFormeleHistorie"/>
+						<xsl:with-param name="indicatieFormeleHistorieRelatie" select="$indicatieFormeleHistorieRelatie"/>
 					</xsl:apply-templates>
 				</xsl:when>
 				<!-- The association is a 'groep compositie' and it has to contain a constructRef to a historieMaterieel or historieFormeel construct. -->
 				<xsl:when
-					test="//imvert:class[imvert:id = $type-id] and imvert:stereotype = 'GROEP COMPOSITIE' and contains($historyAppliesToMessage,'yes') and 
-						  ( contains($indicatieMaterieleHistorie, 'Ja') or contains($indicatieFormeleHistorie, 'Ja') )">
-
+					test="//imvert:class[imvert:id = $type-id] and imvert:stereotype = 'GROEP COMPOSITIE' and 
+						  (($generateHistorieConstruct = 'MaterieleHistorie' and contains($indicatieMaterieleHistorie,'Ja')) or
+						  ($generateHistorieConstruct = 'FormeleHistorie' and contains($indicatieFormeleHistorie,'Ja')))">
 					<!-- If a 'historie' construct is generated it must be determined if the current 'groep' must be part of that construct.
 						 This is only the case if historie is configured for the complete 'groep' of for attributes of the 'groep'. -->
-					<xsl:variable name="indicatieMaterieleHistorieOnAssociation">
+					<xsl:variable name="generateMaterieleHistorieOnAssociation">
 						<xsl:choose>
 							<xsl:when
 								test="contains(imf:get-most-relevant-compiled-taggedvalue(//imvert:class[imvert:id = $type-id], 'Indicatie materiële historie'), 'Ja')">
@@ -1995,7 +2205,7 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
-					<xsl:variable name="indicatieFormeleHistorieOnAssociation">
+					<xsl:variable name="generateFormeleHistorieOnAssociation">
 						<xsl:choose>
 							<xsl:when
 								test="contains(imf:get-most-relevant-compiled-taggedvalue($packages//imvert:class[imvert:id = $type-id], 'Indicatie formele historie'), 'Ja')">
@@ -2022,7 +2232,9 @@
 						</xsl:choose>
 					</xsl:variable>
 					
-					<xsl:if test="$historyAppliesToMessage = 'yes-Materieel' and contains($indicatieMaterieleHistorieOnAssociation,'Ja')">
+					<!--xsl:if test="$historyAppliesToMessage = 'yes-Materieel' and contains($generateMaterieleHistorieOnAssociation,'Ja')"-->
+					<xsl:if test="($generateHistorieConstruct = 'MaterieleHistorie' and contains($indicatieMaterieleHistorie,'Ja'))
+								  and contains($generateMaterieleHistorieOnAssociation,'Ja')">
 						<!-- The ep:constructRef is temporarily provided with a 'context' attribute to be able to create global constructs later.
 							 These are removed later since they aren't part of the 'ep' structure. -->
 						<ep:constructRef context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
@@ -2044,7 +2256,9 @@
 							<xsl:sequence select="imf:create-output-element('ep:href', concat($href,'-historieMaterieel'))"/>						
 						</ep:constructRef>
 					</xsl:if>
-					<xsl:if test="$historyAppliesToMessage = 'yes' and contains($indicatieFormeleHistorieOnAssociation,'Ja')">
+					<!--xsl:if test="$historyAppliesToMessage = 'yes' and contains($generateFormeleHistorieOnAssociation,'Ja')"-->
+					<xsl:if test="($generateHistorieConstruct = 'FormeleHistorie' and contains($indicatieFormeleHistorie,'Ja'))
+								  and contains($generateFormeleHistorieOnAssociation,'Ja')">
 						<!-- The ep:constructRef is temporarily provided with a 'context' attribute to be able to create global constructs later.
 							 These are removed later since they aren't part of the 'ep' structure. -->
 						<ep:constructRef context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
@@ -2169,7 +2383,7 @@
 						bevat is dan wel altijd de ancestor van het element dat het nodig heeft. 
 						Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook 
 						nog herleid en doorgegeven worden. -->
-					<xsl:if test="imf:boolean($debug)">
+					<xsl:if test="imf:boolean($debugging)">
 						<xsl:comment select="concat('Attributes voor toplevel, berichtcode: ', substring($berichtCode, 1, 2), ' context: ', $context, ' en mnemonic: ', $mnemonic)"/>
 					</xsl:if>
 					<xsl:variable name="attributes"
@@ -2207,9 +2421,9 @@
 					</xsl:apply-templates>
 				</xsl:when>
 			</xsl:choose>
-		</xsl:if>
+		<!--/xsl:if-->
 
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="' Template: createRelatiePartOfAssociation End'"/>
 		</xsl:if>
 	</xsl:template>
@@ -2222,7 +2436,7 @@
 		<xsl:param name="berichtName"/>
 		<xsl:param name="context"/>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="'Template: *[mode=replicate-imvert-elements]'"/>
 		</xsl:if>
 		
@@ -2241,7 +2455,7 @@
 			</xsl:choose>
 		</xsl:element>
 
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="' Template: *[mode=replicate-imvert-elements] End'"/>
 		</xsl:if>
 	</xsl:template>
@@ -2253,7 +2467,7 @@
 		<xsl:param name="berichtName"/>
 		<xsl:param name="context"/>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="'Template: imvert:class[mode=create-datatype-content]'"/>
 		</xsl:if>
 				
@@ -2378,7 +2592,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="' Template: imvert:class[mode=create-datatype-content] End'"/>
 		</xsl:if>
 	</xsl:template>
@@ -2394,7 +2608,7 @@
 		<xsl:variable name="min-occurs" select="imvert:min-occurs"/>
 		<xsl:variable name="max-occurs" select="imvert:max-occurs"/>
 
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="'Template: imvert:attribute[mode=create-datatype-content]'"/>
 		</xsl:if>
 
@@ -2416,7 +2630,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="' Template: imvert:attribute[mode=create-datatype-content] End'"/>
 		</xsl:if>
 	</xsl:template>
@@ -2433,7 +2647,7 @@
 			[name = 'Berichtgerelateerde gegevens']/row[col[@name = 'berichtcode']/data = $berichtCode]"/>
 		<xsl:if test="$attributeTypeRow//col[@name = $element and data = '-']">no</xsl:if-->
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="'Template: areParametersAndStuurgegevensAllowedOrRequired'"/>
 		</xsl:if>
 		
@@ -2481,7 +2695,7 @@
 			</xsl:when>
 		</xsl:choose-->
 		
-		<xsl:if test="imf:boolean($debug)">
+		<xsl:if test="imf:boolean($debugging)">
 			<xsl:comment select="' Template: areParametersAndStuurgegevensAllowedOrRequired End'"/>
 		</xsl:if>
 	</xsl:template>
