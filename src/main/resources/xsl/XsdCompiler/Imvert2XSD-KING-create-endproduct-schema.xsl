@@ -174,7 +174,6 @@
 													<xsl:when test="ep:type-name = 'scalar-boolean'">
 														<xsl:value-of select="'xs:boolean'"/>
 													</xsl:when>
-													<!-- ROME: Wat moet ik doen met scalar-indic? -->
 													<xsl:otherwise>
 														<xsl:value-of select="'xs:string'"/>								
 													</xsl:otherwise>
