@@ -39,6 +39,7 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.TimeZone;
 import java.util.Vector;
+import java.util.concurrent.TimeUnit;
 
 import javax.xml.xpath.XPathConstants;
 
@@ -470,7 +471,7 @@ public class Configurator {
 			runner.info(logger, "Copying the result XML schemas to distribution folder");
 			AnyFolder sourceXsdFolder = new AnyFolder(getParm("system","work-xsd-folder-path"));
 			AnyFolder targetXsdFolder = new AnyFolder(getParm("properties","DISTRIBUTION_APPLICATION_FOLDER"));
-			runner.debug(logger,"Distributing " + sourceXsdFolder + " to " + targetXsdFolder);
+			runner.debug(logger,"CHAIN","Distributing " + sourceXsdFolder + " to " + targetXsdFolder);
 			targetXsdFolder.mkdirs();
 			sourceXsdFolder.copy(targetXsdFolder);
 		}
@@ -478,8 +479,17 @@ public class Configurator {
 	}
 	
 	public float runtime() throws Exception {
-		long time = System.currentTimeMillis() - starttime; 
-		return ((float) time) / 1000;
+		long millis = System.currentTimeMillis() - starttime; 
+		return ((float) millis) / 1000;
+	}
+	
+	public String runtimeForDisplay() {
+		long millis = System.currentTimeMillis() - starttime;
+		return String.format("%d min %d sec", 
+			    TimeUnit.MILLISECONDS.toMinutes(millis),
+			    TimeUnit.MILLISECONDS.toSeconds(millis) - 
+			    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
+			);
 	}
 	
 	/**
@@ -699,7 +709,7 @@ public class Configurator {
 		// if this is a debug parameter, set debug level
 	    if (gn.equals("cli/debug") && isTrue(svalue)) {
 	    	Logger.getRootLogger().setLevel(Level.DEBUG);
-	    	getRunner().debug(logger,"Debugging started.");
+	    	getRunner().debug(logger,"CHAIN","Debugging started.");
 	    }
 	}
 	
@@ -832,7 +842,7 @@ public class Configurator {
 	 */
 	private void loadFromPropertyFile(String filePath) throws Exception {
 		File f = getFile(filePath);
-		runner.debug(logger,"Reading property file " + f.getCanonicalPath());
+		runner.debug(logger,"CHAIN","Reading property file " + f.getCanonicalPath());
 		Properties properties = new Properties();
 		FileInputStream s = new FileInputStream(f);
 		BufferedReader in = new BufferedReader(new InputStreamReader(s, "UTF-8"));

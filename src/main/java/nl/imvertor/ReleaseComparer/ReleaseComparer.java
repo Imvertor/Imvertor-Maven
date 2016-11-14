@@ -166,8 +166,8 @@ public class ReleaseComparer extends Step {
 				if (supplierCheck) // a request is made to check differences with the supplier
 					if (supplierModelFile.exists()) { 
 						runner.info(logger,"Comparing client and supplier releases");
-						runner.debug(logger,"Client is: " + clientModelFile);
-						runner.debug(logger,"Supplier is: " + supplierModelFile);
+						runner.debug(logger,"CHAIN","Client is: " + clientModelFile);
+						runner.debug(logger,"CHAIN","Supplier is: " + supplierModelFile);
 						boolean equal = supplierModelFile.compare( clientModelFile, configurator); 
 						if (!equal) 
 							runner.info(logger,"Differences found between client and supplier.");

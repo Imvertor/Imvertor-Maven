@@ -63,7 +63,7 @@ public class RegressionExtractor  extends Step {
 		
 		XslFile xslFilterFile = new XslFile(configurator.getXslPath(configurator.getParm("properties","REGRESSION_EXTRACT_XSLPATH")));
 		
-		runner.debug(logger,"Serializing test folder: " + tstfolder);
+		runner.debug(logger,"CHAIN","Serializing test folder: " + tstfolder);
 		tstfolder.serializeToXml(xslFilterFile,"test");
 		
 		// determine the __content.xml locations in tst and ref
@@ -74,7 +74,7 @@ public class RegressionExtractor  extends Step {
 		// normally the reference folder already holds the __content.xml file, but if not, recreate it here
 		// when developing, always replace.
 		if (!refContentXML.isFile() || configurator.getRunMode() == Configurator.RUN_MODE_DEVELOPMENT) {
-			runner.debug(logger,"Serializing reference folder; " + reffolder);
+			runner.debug(logger,"CHAIN","Serializing reference folder; " + reffolder);
 			reffolder.serializeToXml(xslFilterFile,"ctrl");
 		}
 		

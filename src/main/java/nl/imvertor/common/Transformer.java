@@ -145,7 +145,7 @@ public class Transformer {
 	 */
 	public boolean transform(File infile, File outfile, File xslfile) throws Exception {
 
-		logger.debug("Transforming " + infile.getCanonicalPath() + " using " + xslfile.getName());
+		Configurator.getInstance().getRunner().debug(logger,"CHAIN","Transforming " + infile.getCanonicalPath() + " using " + xslfile.getName());
 		
 		// record for later inspection
 		this.infile = infile;
@@ -194,7 +194,7 @@ public class Transformer {
 		if (!outfile.isFile())
 			throw new Exception("Transformation did not produce the expected file result " + outfile.getCanonicalPath());
 		
-		logger.debug("Transformation took " + (System.currentTimeMillis() - starttime) + " msec");
+		Configurator.getInstance().getRunner().debug(logger,"CHAIN","Transformation took " + (System.currentTimeMillis() - starttime) + " msec");
 		
 		return (configurator.forceCompile() || configurator.getRunner().getFirstErrorText(stylesheetIdentifier) == null);
 

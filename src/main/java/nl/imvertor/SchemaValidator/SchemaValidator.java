@@ -94,7 +94,7 @@ public class SchemaValidator extends Step {
 					runner.warn(logger, "XML schema: " + m.file + " at line " + m.line + " (" + m.code + ") " + m.message);
 					break;
 				default: 
-					runner.debug(logger, "XML-schema: " + m.file + " at line " + m.line + " (" + m.code + ") " + m.message);
+					runner.debug(logger,"CHAIN", "XML-schema: " + m.file + " at line " + m.line + " (" + m.code + ") " + m.message);
 					break;
 			}
 		}

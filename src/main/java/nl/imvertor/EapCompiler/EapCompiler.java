@@ -130,7 +130,7 @@ public class EapCompiler extends Step {
 		runner.info(logger,"Creating template EAP file");
 		EapFile localCopyFile = new EapFile(configurator.getParm("properties","RESULT_TEMPLATE_EAP_FILE")); // result eap file
 		// Create template file by copying the template file, and importing the XMI
-		runner.debug(logger,"Importing XMI into EAP: " + localCopyFile.getName());
+		runner.debug(logger,"CHAIN","Importing XMI into EAP: " + localCopyFile.getName());
 		templateFile.copyFile(localCopyFile);
 		localCopyFile.open();
 		localCopyFile.importFromXmiFile(configurator.getParm("properties","RESULT_TEMPLATE_XMI_FILE"));
@@ -162,7 +162,7 @@ public class EapCompiler extends Step {
 		 * 	add info to the XMI
 		 * 	import this into the copy.
 		 */
-		runner.debug(logger,"Enhancing EAP information");
+		runner.debug(logger,"CHAIN","Enhancing EAP information");
 		
 		EapFile tempEapFile = new EapFile(configurator.getParm("properties", "WORK_EAP_FILE"));
 		XmlFile tempXmiFile = new XmlFile(configurator.getParm("properties", "WORK_TEMP_XMI_FILE"));
@@ -181,7 +181,7 @@ public class EapCompiler extends Step {
 		if (!succeeds)
 			throw new Exception("Errors found while compiling XMI information");
 		
-		runner.debug(logger,"Importing enhanced information into EAP");
+		runner.debug(logger,"CHAIN","Importing enhanced information into EAP");
 		templateFile.copyFile(tempEapFile);
 		tempEapFile.open();
 		try {
@@ -189,7 +189,7 @@ public class EapCompiler extends Step {
 			if (configurator.isTrue("cli","createumlreport")) {
 				File workDirectoryToReport = new File(configurator.getParm("system","work-uml-folder-path"),"report");
 				File directoryToReport = new File(configurator.getParm("properties","RESULT_UML_FOLDER"));
-				runner.debug(logger,"Generating UML report to " + directoryToReport);
+				runner.debug(logger,"CHAIN","Generating UML report to " + directoryToReport);
 				tempEapFile.exportToHtmlReport(workDirectoryToReport.getAbsolutePath(), configurator.getParm("cli","application"), "");
 				configurator.setParm("system", "uml-report-available", "true");
 			}

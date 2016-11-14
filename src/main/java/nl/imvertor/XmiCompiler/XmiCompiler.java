@@ -82,21 +82,21 @@ public class XmiCompiler extends Step {
 		if (eaEnabled == null || !(eaEnabled.equals("false") || eaEnabled.equals("true"))) eaEnabled = "true";
 		
 		if (activeFileOrigin == null && zipFile != null) {
-			runner.debug(logger, "Try compressed XMI file at: " + zipFile);
+			runner.debug(logger,"CHAIN", "Try compressed XMI file at: " + zipFile);
 			if (zipFile.isFile()) {
 				passedFile = zipFile;
 				activeFileOrigin = "Compressed XMI passed";
 			}
 		}
 		if (activeFileOrigin == null && xmiFile != null) {
-			runner.debug(logger, "Try XMI file at: " + xmiFile);
+			runner.debug(logger,"CHAIN", "Try XMI file at: " + xmiFile);
 			if (xmiFile.isFile()) {
 				passedFile = xmiFile;
 				activeFileOrigin = "XMI passed";
 			}
 		}
 		if (activeFileOrigin == null && eapFile != null) {
-		    runner.debug(logger,"Try EAP file at: " + eapFile);
+		    runner.debug(logger,"CHAIN","Try EAP file at: " + eapFile);
 		    if (!configurator.isTrue(eaEnabled)) {
 		    	runner.error(logger,"EAP file is not supported in this environment: " + eapFile);
 		    } else if (!eapFile.isFile()) {
@@ -160,7 +160,7 @@ public class XmiCompiler extends Step {
 			configurator.setParm("system","xmi-file-path",activeFile.getCanonicalPath() + ".compact.xmi");
 			
 			// now compact the XMI file: remove all irrelevant sections
-			runner.debug(logger, "Compacting XMI: " + activeFile.getCanonicalPath());
+			runner.debug(logger,"CHAIN", "Compacting XMI: " + activeFile.getCanonicalPath());
 			Transformer transformer = new Transformer();
 		    // transform 
 			boolean succeeds = true;
@@ -215,7 +215,7 @@ public class XmiCompiler extends Step {
 		outFile.deleteOnExit();
 		String xslFilePath = configurator.getXslPath(configurator.getParm("properties", "XMI_MIGRATE_XSLPATH"));
 		XslFile xslFile = new XslFile(xslFilePath);
-		runner.debug(logger, "Migrating XMI: " + activeFile.getCanonicalPath());
+		runner.debug(logger,"CHAIN", "Migrating XMI: " + activeFile.getCanonicalPath());
 		Transformer transformer = new Transformer();
 		transformer.transform(xmiFile, outFile, xslFile);
 		outFile.copyFile(xmiFile);

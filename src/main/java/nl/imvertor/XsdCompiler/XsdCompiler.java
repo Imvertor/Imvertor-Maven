@@ -106,7 +106,7 @@ public class XsdCompiler extends Step {
 		xsdApplicationFolder.mkdirs();
 		configurator.setParm("system","xsd-folder-path", xsdApplicationFolder.toURI().toString());
 	
-		runner.debug(logger,"Generating XML schemas to " + xsdApplicationFolder);
+		runner.debug(logger,"CHAIN","Generating XML schemas to " + xsdApplicationFolder);
 		
 		String infoXsdSourceFilePath = configurator.getParm("properties", "IMVERTOR_METAMODEL_Kadaster_XSDSOURCE"); // system or model
 
@@ -149,7 +149,7 @@ public class XsdCompiler extends Step {
 		xsdApplicationFolder.mkdirs();
 		configurator.setParm("system","xsd-folder-path", xsdApplicationFolder.toURI().toString());
 	
-		runner.debug(logger,"Generating XML schemas to " + xsdApplicationFolder);
+		runner.debug(logger,"CHAIN","Generating XML schemas to " + xsdApplicationFolder);
 		
 		String infoXsdSourceFilePath = configurator.getParm("properties", "IMVERTOR_METAMODEL_Kadaster_XSDSOURCE"); // system or model
 
@@ -188,7 +188,7 @@ public class XsdCompiler extends Step {
 		xsdApplicationFolder.mkdirs();
 		configurator.setParm("system","xsd-folder-path", xsdApplicationFolder.toURI().toString());
 	
-		runner.debug(logger,"Generating BSM XML schemas to " + xsdApplicationFolder);
+		runner.debug(logger,"CHAIN","Generating BSM XML schemas to " + xsdApplicationFolder);
 		
 		String infoXsdSourceFilePath = configurator.getParm("properties", "IMVERTOR_METAMODEL_KINGBSM_XSDSOURCE"); // system or model
 
@@ -242,7 +242,7 @@ public class XsdCompiler extends Step {
 		xsdApplicationFolder.mkdirs();
 		configurator.setParm("system","xsd-folder-path", xsdApplicationFolder.toURI().toString());
 	
-		runner.debug(logger,"Generating UGM XML schemas to " + xsdApplicationFolder);
+		runner.debug(logger,"CHAIN","Generating UGM XML schemas to " + xsdApplicationFolder);
 		
 		//TODO let the stylesheet operate on system, not on model file. Try to determine if model file is required alltogether.
 		valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_METAMODEL_KINGUGM_XSD_FILEPATH", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH");
@@ -271,7 +271,7 @@ public class XsdCompiler extends Step {
 			AnyFolder xsdFolder = new AnyFolder(configurator.getParm("properties","EXTERNAL_XSD_FOLDER") + "/" + filepath);
 			AnyFolder targetXsdFolder = new AnyFolder(configurator.getParm("system","work-xsd-folder-path"));
 			if (xsdFolder.isDirectory()) {
-				runner.debug(logger,"Appending external schema from: " + xsdFolder);
+				runner.debug(logger,"CHAIN","Appending external schema from: " + xsdFolder);
 				transformSchemas(xsdFolder, targetXsdFolder);
 			} else 
 				throw new EnvironmentException("Cannot find external XSD folder for schema to append: " + xsdFolder);

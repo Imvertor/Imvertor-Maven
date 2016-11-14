@@ -29,6 +29,7 @@ import java.util.List;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.FileWriterWithEncoding;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.exceptions.ConfiguratorException;
@@ -58,6 +59,8 @@ public class Runner {
 	private int imvertorWarnings = 0;
 
 	private Boolean debugging = false;
+	private String[] debugmodes = new String[0]; // debugmodes are codes; initially empty.
+	
 	private Integer appPhase = APPLICATION_PHASE_UNKNOWN;
 	private Boolean releasing = false;
 	private Boolean mayRelease = true;
@@ -168,8 +171,8 @@ public class Runner {
 	 * 
 	 * @return
 	 */
-	public boolean getDebug() {
-		return debugging;
+	public boolean getDebug(String viableMode) {
+		return debugging && checkDebugmode(viableMode);
 	}	
 	
 	/**
@@ -180,7 +183,27 @@ public class Runner {
 	 */
 	public void setDebug() throws IOException, ConfiguratorException, ConfigurationException {
 		debugging = Configurator.getInstance().isTrue("cli","debug");
+		// debug is stored in debugmode
+		if (debugging) {
+			String debugmode = Configurator.getInstance().getParm("cli","debugmode"); // a string separated list of codes
+			debugmodes = StringUtils.split(debugmode.replace(" ", ""),':');
+		}
 	}	
+	/**
+	 * Check if the debug mode allows the system (java chain) to produce a debug message. 
+	 * When no debug modes specified, succeed.  
+	 *  
+	 * @return
+	 */
+	private boolean checkDebugmode(String viableMode) {
+		if (debugmodes.length == 0) return true;
+		for (int i = 0; i < debugmodes.length; i++) {
+			if (debugmodes[i].equals(viableMode)) return true; 
+		}
+		return false;
+	}	
+	
+	
 	
 	/**
 	 * Return true when this app should be released.
@@ -276,12 +299,16 @@ public class Runner {
 	 * 
 	 * Such process information is logged and/or show in screen when configured as such.
 	 *  
+	 * The viableMode is a mode used to select relevant debug messages. For the regular chain this is CHAIN.
+	 *   
 	 * @param logger
 	 * @param text
 	 */
-	public void debug(Logger logger, String text) {
-		if (getDebug()) messenger.writeMsg(logger.getName(), "DEBUG", "", text, null,null);
-		logger.debug(text);
+	public void debug(Logger logger, String viableMode, String text) {
+		if (getDebug(viableMode)) {
+			messenger.writeMsg(logger.getName(), "DEBUG", "", text, null,null);
+			logger.debug(text);
+		}
 	}
 	/**
 	 * The TRACE Level designates finer-grained informational events than the DEBUG
@@ -328,12 +355,13 @@ public class Runner {
 	 */
 	public void track(String text) {
 		try {
+			String fulltext = Configurator.getInstance().runtimeForDisplay() + " - " + text;
 			AnyFile tf = Configurator.getInstance().getTrackerFile();
 			if (tf != null) {
 				if (trackerFileWriter == null) {
 					trackerFileWriter = tf.getWriterWithEncoding("UTF-8", true);
 				}
-				trackerFileWriter.append(text + System.lineSeparator());
+				trackerFileWriter.append(fulltext + System.lineSeparator());
 				trackerFileWriter.flush();
 			}
 		} catch (Exception e) {
@@ -393,7 +421,7 @@ public class Runner {
 	 */
 	public boolean activateInternet() throws IOException, ConfiguratorException {
 		if (!internetAvailable) {
-			debug(logger, "Try internet connection");
+			debug(logger,"CHAIN", "Try internet connection");
 			
 			String proxyTestUrl = Configurator.getInstance().getParm("cli", "proxyurl");
 			
@@ -403,7 +431,7 @@ public class Runner {
 				con.getContentType();
 			} catch (Exception e) {
 				internetAvailable = false;
-				debug(logger, "No accessible internet connection detected");
+				debug(logger,"CHAIN", "No accessible internet connection detected");
 			}
 			internetAvailable = true;
 		}

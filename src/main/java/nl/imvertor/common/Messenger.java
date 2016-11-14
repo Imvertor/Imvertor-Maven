@@ -81,6 +81,7 @@ public class Messenger extends SequenceWriter {
 		
 		// determine the source, text and type of the message, assuming it is a structured message.
 		String src = null, name = null, text = null, type = null, id = null, wiki = null;
+		String mode = "CHAIN"; // default, may be overridden.
 		while (child != null) {
 			if (child.getNodeKind() == net.sf.saxon.type.Type.ELEMENT) {
 				String elementName = child.getDisplayName();
@@ -91,7 +92,8 @@ public class Messenger extends SequenceWriter {
 				if (elementName.equals("imvert-message:src")) src = elementValue;
 				if (elementName.equals("imvert-message:id")) id = elementValue;
 				if (elementName.equals("imvert-message:wiki")) wiki = elementValue;
-			}
+				if (elementName.equals("imvert-message:mode")) mode = elementValue;
+					}
 			child = sibling;
 			sibling = (NodeInfo) elements.next();
 		}
@@ -114,7 +116,7 @@ public class Messenger extends SequenceWriter {
 					runner.info(logger,ctext); // The INFO level designates informational messages that highlight the progress of the application at coarse-grained level.
 					break;  
 				case "DEBUG": // The DEBUG Level designates fine-grained informational events that are most useful to debug an application.
-					runner.debug(logger,ctext);
+					runner.debug(logger,mode,ctext);
 					break;  
 				case "TRACE": // The TRACE Level designates finer-grained informational events than the DEBUG 
 					runner.trace(logger,ctext);
