@@ -42,6 +42,7 @@
     <xsl:variable name="supplier-subpaths" select="string-join(for $s in ($supplier-packages) return imf:get-trace-supplier-subpath($s/imvert:project, $s/imvert:application, $s/imvert:release),', ')"/>
     
     <xsl:template match="/">
+        <xsl:variable name="application" select="imvert:packages/imvert:package[1]"/>
         <root>
             <xsl:choose>
                 <xsl:when test="exists($suppliers) and $validate-trace-full">
@@ -61,13 +62,13 @@
                 <xsl:variable name="warnings" select="xs:integer((imvert:process/imvert:warnings,0)[1])"/>
                 <xsl:variable name="phase" select="xs:integer((imvert:phase,0)[1])"/>
                 
-                <xsl:sequence select="imf:report-error(., 
+                <xsl:sequence select="imf:report-error($application, 
                     $errors != 0,
                     'The supplier [1] has [2] errors. You may not derive from that model.',($subpath,$errors))"/>
-                <xsl:sequence select="imf:report-warning(., 
+                <xsl:sequence select="imf:report-warning($application, 
                     $warnings != 0,
                     'The supplier [1] has [2] warnings. Are you sure you want to derive from that model?',($subpath,$warnings))"/>
-                <xsl:sequence select="imf:report-warning(., 
+                <xsl:sequence select="imf:report-warning($application, 
                     $phase != (2,3),
                     'The supplier [1] is in phase [2]. Are you sure you want to derive from that model?',($subpath,imvert:phase/(@original|text())[1]))"/>
     
@@ -75,10 +76,25 @@
         </root>
     </xsl:template>
         
+    <xsl:template match="imvert:package">
+        <xsl:variable name="this" select="."/>
+        <xsl:variable name="is-derived" select="imf:boolean(imvert:derived)"/>
+        <xsl:variable name="trace" select="(.//imvert:trace)[1]"/>
+        
+        <!-- check if the package is derived; if not, no traces were expected (but this is not an error) --> 
+        <xsl:sequence select="imf:report-warning($this, 
+            not($is-derived) and exists(.//imvert:trace),
+            'This package is not derived but traces were found, starting at [1]',$trace/..)"/>
+
+        <xsl:next-match/>
+    </xsl:template>
+    
     <!-- check if the construct is in a derived package and if so, if it has a trace --> 
     <xsl:template match="imvert:class | imvert:attribute | imvert:association">
         <xsl:variable name="this" select="."/>
-        <xsl:for-each select="$this/imvert:trace">
+        <!-- when not derived, skip any traces -->
+        <xsl:variable name="is-derived" select="imf:boolean(ancestor::imvert:package[1]/imvert:derived)"/>
+        <xsl:for-each select="$this/imvert:trace[$is-derived]">
             <xsl:variable name="trace-id" select="."/>        
             <xsl:variable name="trace-construct" select="imf:get-trace-construct-by-id(..,$trace-id,$supplier-packages)"/>        
             
