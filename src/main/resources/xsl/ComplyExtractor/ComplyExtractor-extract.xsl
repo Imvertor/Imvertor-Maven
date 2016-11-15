@@ -48,43 +48,85 @@
         
         provided as local <var> elements.
     -->    
-    <xsl:variable name="all-global-variables" as="element(var)*">
-        <xsl:for-each select="/cw:files/cw:file[@path = 'xl\worksheets\sheet3.xml']/*:worksheet/*:sheetData/*:row">
+    <xsl:template match="/cw:files">
+        <testset>
+            <xsl:attribute name="generated" select="current-dateTime()"/>
+            <xsl:attribute name="excel-creator" select="cw:file[@path='docProps\core.xml']/*:coreProperties/*:creator"/>
+            <xsl:attribute name="excel-lastModifiedBy" select="cw:file[@path='docProps\core.xml']/*:coreProperties/*:lastModifiedBy"/>
+            <xsl:attribute name="excel-created" select="cw:file[@path='docProps\core.xml']/*:coreProperties/*:created"/>
+            <xsl:attribute name="excel-modified" select="cw:file[@path='docProps\core.xml']/*:coreProperties/*:modified"/>
+            <xsl:attribute name="excel-app-version" select="cw:file[@path='docProps\app.xml']/*:Properties/*:AppVersion"/>
+            <groups part="1">
+                <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet1.xml']" mode="create-group"/>
+            </groups>
+            <groups part="2">
+                <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet2.xml']" mode="create-group"/>
+            </groups>
+            <variables>
+                <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet3.xml']" mode="create-vars"/>
+            </variables>
+        </testset>
+    </xsl:template>
+    
+    <xsl:template match="cw:file" mode="create-group">
+        <xsl:variable name="worksheet" select="*:worksheet"/>
+        <xsl:variable name="worksheet-rows" select="$worksheet/*:sheetData/*:row"/>
+        <!-- last row number plus 1, sentinel for the last group -->
+        <xsl:variable name="last-r" select="xs:integer($worksheet-rows[last()]/@r) + 1"/>
+        <!-- list of all start row numbers; skip the header at position 1  -->
+        <xsl:variable name="start-row-nrs" select="for $r in ($worksheet-rows[position() gt 1 and not(imf:get-cell-info(.,1)/@val = '')]) return xs:integer($r/@r)" as="xs:integer*"/>
+        
+        <?x
+        <xsl:message select="concat('2>', count($worksheet-rows))"/>
+        <xsl:message select="concat('2>', $last-r)"/>
+        <xsl:message select="concat('2>', count($start-row-nrs))"/>
+        x?>
+        
+        <xsl:for-each select="$start-row-nrs">
+            <xsl:variable name="index" select="position()"/>
+            <xsl:variable name="cur-r" select="."/>
+            
+            <xsl:variable name="next-r-found" select="$start-row-nrs[$index + 1]"/>
+            <!--<xsl:variable name="next-row" select="$worksheet-rows[$cur-r eq $next-r]"/>-->
+            
+            <xsl:variable name="next-r" select="if (exists($next-r-found)) then $next-r-found else $last-r"/>
+          
+            <xsl:variable name="cur-row" select="$worksheet-rows[xs:integer(@r) eq $cur-r]"/>
+            <xsl:variable name="following-rows" select="$worksheet-rows[xs:integer(@r) gt $cur-r and xs:integer(@r) lt $next-r]"/>
+            
+            <?x 
+            <xsl:message select="concat('1>', count($worksheet-rows))"/>
+            <xsl:message select="concat('1>', string-join(for $s in $start-row-nrs return string($s),' '))"/>
+            <xsl:message select="concat('1>', count($following-rows))"/>
+            x?>
+
+            <!-- the last column is the last for the first row. All columns are filled and named. -->
+            <xsl:variable name="last-col" select="count($worksheet-rows[@r eq '1']/*:c)"/>
+            <!-- the first cell holds the type of group -->
+            <xsl:variable name="type" select="imf:get-cell-info($cur-row,1)/@val"/>
+            <!-- columns run over nrs 4 upto last -->
+            <xsl:for-each select="4 to $last-col">
+                <xsl:variable name="label" select="imf:get-cell-info($cur-row,.)/@val"/>
+                <xsl:if test="normalize-space($label)">
+                    <group label="{$label}" type="{$type}">
+                        <xsl:variable name="column-index" select="."/>
+                        <xsl:for-each select="$following-rows">
+                            <cell name="{imf:get-cell-info(.,2)/@val}" value="{imf:get-cell-info(.,$column-index)/@val}" link="{imf:is-hyperlink($worksheet,@r)}"/>                 
+                        </xsl:for-each>
+                    </group>
+                </xsl:if>
+            </xsl:for-each>
+        
+        </xsl:for-each>
+    </xsl:template>
+
+    <xsl:template match="cw:file" mode="create-vars">
+        <xsl:variable name="worksheet-rows" select="*:worksheet/*:sheetData/*:row"/>
+        <xsl:for-each select="$worksheet-rows">
             <xsl:variable name="name" select="imf:get-string(*:c[1])"/>
             <xsl:variable name="value" select="imf:get-string(*:c[2])"/>
-            <var name="{$name}" value="{$value}"/>
+            <variable name="{$name}" value="{$value}"/>
         </xsl:for-each>
-    </xsl:variable>
-    
-    <xsl:template match="/cw:files/cw:file[@path = 'xl\worksheets\sheet1.xml']">
-        <xsl:variable name="folderpath" select="imf:get-config-string('properties','IMVERTOR_COMPLY_EXTRACT_TARGET')"/>
-        <xsl:variable name="filepath" select="imf:file-to-url(concat($folderpath,'/','test1.xml'))"/>
-        <xsl:sequence select="imf:msg(.,'INFO','Path is [1]',$filepath)"/>
-      
-        <!--
-            iterate over all messages, and for each message all columns
-        -->
-        <xsl:variable name="messages">
-            <xsl:for-each select="/cw:files/cw:file[@path = 'xl\worksheets\sheet1.xml']/*:worksheet/*:sheetData/*:row">
-                <xsl:variable name="cell" select="imf:get-cell-info(.,1)"/>
-                <xsl:choose>
-                    <xsl:when test="not($cell/@val = '')">
-                        <!-- message is a block that starts with a non-empty cell in column 1. -->
-                        
-                    </xsl:when>
-                </xsl:choose>
-            </xsl:for-each>  
-        </xsl:variable>
-      
-        <xsl:result-document href="{$filepath}">
-            <xsl:comment select="imf:format-dateTime(current-dateTime())"/>
-            <test-file>
-                <xsl:for-each select="$all-global-variables">
-                    <xsl:value-of select="concat(@name, ' = ', @value)"/>
-                </xsl:for-each>
-            </test-file>
-        </xsl:result-document>
-        
     </xsl:template>
     
     <xsl:template match="node()|@*">
@@ -117,6 +159,14 @@
             <xsl:attribute name="col" select="$index"/>
             <xsl:attribute name="val" select="if (exists($c)) then imf:get-string($c) else ''"/>
         </cell>
+    </xsl:function>
+    
+    <!-- check if the label in col 2 is a hyperlink -->
+    <xsl:function name="imf:is-hyperlink" as="xs:boolean">
+        <xsl:param name="worksheet"/>
+        <xsl:param name="r"/> <!-- e.g. 3 -->
+        <xsl:variable name="link" select="$worksheet/*:hyperlinks/*:hyperlink[@ref = concat('B',$r)]"/>
+        <xsl:sequence select="exists($link)"/>
     </xsl:function>
     
 </xsl:stylesheet>

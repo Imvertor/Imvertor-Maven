@@ -58,13 +58,14 @@ public class ComplyExtractor  extends Step {
 		
 		// in the exported file we find _content.xml, which is the base for all transformations and holds all XML content found.
 		// transform the exported folder any way required, on the basis of _content,xml.
-		// No secial processing (repackaging) is required for this step.
+		// No special processing (repackaging) is required for this step.
 		Transformer transformer = new Transformer();
 
 		XmlFile contentFile = new XmlFile(serializeFolder,AnyFolder.SERIALIZED_CONTENT_XML_FILENAME);
 		configurator.setParm("system", "comply-content-file", contentFile.getCanonicalPath());
-		transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_EXTRACT_FILE", "properties/WORK_COMPLY_EXTRACT_XSLPATH","system/cur-imvertor-filepath");
-		
+		transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_EXTRACT_FILE", "properties/WORK_COMPLY_EXTRACT_XSLPATH","system/comply-content-file");
+		transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_BUILD_FILE", "properties/WORK_COMPLY_BUILD_XSLPATH","system/comply-content-file");
+			
 		configurator.setStepDone(STEP_NAME);
 		 
 		// save any changes to the work configuration for report and future steps

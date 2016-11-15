@@ -81,17 +81,29 @@
    
    <properties>
       <!--
-         Where to store the xml files?
+         Where to store the intermediate "groups file"?
       -->
-      <IMVERTOR_COMPLY_EXTRACT_TARGET>${system/work-cmp-folder-path}/xml</IMVERTOR_COMPLY_EXTRACT_TARGET>
+      <IMVERTOR_COMPLY_EXTRACT_GROUPS_FILE>${system/work-imvert-folder-path}/imvertor.61.cmp.groups.xml</IMVERTOR_COMPLY_EXTRACT_GROUPS_FILE>
+      <!--
+         Where to store the xml test files?
+      -->
+      <IMVERTOR_COMPLY_EXTRACT_TARGET_FOLDER>${system/work-cmp-folder-path}/xml</IMVERTOR_COMPLY_EXTRACT_TARGET_FOLDER>
       <!-- 
-         stylesheet to process the __content.xml, extracted from the deserialized template
+         stylesheet to process the __content.xml, extracted from the deserialized template, generates a <test-set> file with groups
       -->
       <WORK_COMPLY_EXTRACT_XSLPATH>ComplyExtractor-extract.xsl</WORK_COMPLY_EXTRACT_XSLPATH>
       <!-- 
          path to temporary output of transforming __content.xml; this is not compressed back into the result Excel.
       -->
-      <WORK_COMPLY_EXTRACT_FILE>${system/work-imvert-folder-path}/imvertor.60.extractor.xml</WORK_COMPLY_EXTRACT_FILE>
+      <WORK_COMPLY_EXTRACT_FILE>${system/work-imvert-folder-path}/imvertor.60.extract.xml</WORK_COMPLY_EXTRACT_FILE>
+      <!-- 
+         stylesheet to process the <test-set> file with groups to XML files used for testing
+      -->
+      <WORK_COMPLY_BUILD_XSLPATH>ComplyExtractor-build.xsl</WORK_COMPLY_BUILD_XSLPATH>
+      <!-- 
+         path to temporary output of builder.
+      -->
+      <WORK_COMPLY_BUILD_FILE>${system/work-imvert-folder-path}/imvertor.61.build.xml</WORK_COMPLY_BUILD_FILE>
       <!-- 
          folder that stores the extracted template (serialized zip) 
        -->

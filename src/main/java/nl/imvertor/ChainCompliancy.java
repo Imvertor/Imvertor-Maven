@@ -75,7 +75,7 @@ public class ChainCompliancy {
 		    	configurator.getRunner().info(logger, "** Warnings have been suppressed");
 
 		} catch (Exception e) {
-			configurator.getRunner().fatal(logger,"Please notify your administrator.",e,"PNYSA");
+			configurator.getRunner().fatal(logger,"Please notify your system administrator.",e,"PNYSA");
 		}
 	}
 }
