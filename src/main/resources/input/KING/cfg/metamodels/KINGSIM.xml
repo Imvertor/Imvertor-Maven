@@ -57,16 +57,6 @@
          <!-- this assiociation is removed explicitly from the model by VNG/KING canonization -->
       </stereo>
 
-      <!-- REDMINE #487612 -->
-      <stereo id="stereotype-name-internal-package">
-         <name lang="nl">intern</name>
-         <name lang="en">internal</name>
-         <desc>A package that references another package that is developed by the owner, and part of the owner's projects.
-            It is therefore assumned to be available in the owners managed output folder.
-            It is also assumed that the metamodels are compatible.</desc>
-         <construct>package</construct>
-      </stereo>
-      
       <!-- REDMINE #487891 -->
       <stereo id="stereotype-name-att-proxy">
          <name lang="nl">attribuutsoort_proxy</name>

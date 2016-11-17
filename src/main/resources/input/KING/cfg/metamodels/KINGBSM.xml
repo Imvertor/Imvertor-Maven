@@ -28,6 +28,20 @@
 
    <stereotypes xml:id="stereotypes">
 
+      <!-- packages override standard grouping -->
+      <stereo id="stereotype-name-application-package">
+         <name lang="en">messageset</name>
+         <name lang="nl">koppelvlak</name>
+         <desc>TODO</desc>
+         <construct>package</construct>
+      </stereo>
+      <stereo id="stereotype-name-domain-package">
+         <name lang="en">message</name>
+         <name lang="nl">bericht</name>
+         <desc>TODO</desc>
+         <construct>package</construct>
+      </stereo>
+     
       <stereo id="stereotype-name-entiteitrelatie">
          <name lang="en">entityrelation</name>
          <name lang="nl">entiteitrelatie</name>
@@ -42,20 +56,7 @@
          <construct>association</construct>
       </stereo>
       
-      <!-- packages -->
-      <stereo id="stereotype-name-application-package">
-         <name lang="en">messageset</name>
-         <name lang="nl">koppelvlak</name>
-         <desc>TODO</desc>
-         <construct>package</construct>
-      </stereo>
-      <stereo id="stereotype-name-domain-package">
-         <name lang="en">message</name>
-         <name lang="nl">bericht</name>
-         <desc>TODO</desc>
-         <construct>package</construct>
-      </stereo>
-
+     
       <!-- classes -->
   
       <stereo id="stereotype-name-vrijberichttype">
@@ -127,16 +128,6 @@
             <relation lang="nl">object</relation>
          </entity-relation-constraint>
       </stereo>
-      
-      <stereo id="stereotype-name-components-package">
-         <name lang="en">components</name>
-         <name lang="nl">componenten</name>
-         <desc>
-            Dit package bevat klassen, enumeraties of datatypen die gemeenschappelijk zijn tussen berichtmodellen, 
-            en die dus bij het genereren van berichten kunnen worden omgezet naar globale complextypes.
-            <!-- Task #487814 Verwezenlijking herbruikbare (globale) complexTypes -->
-         </desc>
-         <construct>package</construct>
-      </stereo>
+     
    </stereotypes>
 </metamodel>

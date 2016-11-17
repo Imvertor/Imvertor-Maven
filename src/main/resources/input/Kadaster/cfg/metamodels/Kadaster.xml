@@ -44,24 +44,6 @@
     
     <stereotypes>
 
-        <stereo id="stereotype-name-product">
-            <name lang="en">product</name>
-            <name lang="nl">product</name>
-            <construct>class</construct>
-            <toplevel>true</toplevel>
-        </stereo>
-        <stereo id="stereotype-name-service">
-            <name lang="en">service</name>
-            <name lang="nl">service</name>
-            <construct>class</construct>
-            <toplevel>true</toplevel>
-        </stereo>
-        <stereo id="stereotype-name-process">
-            <name lang="en">process</name>
-            <name lang="nl">process</name>
-            <construct>class</construct>
-            <toplevel>true</toplevel>
-        </stereo>
         <stereo id="stereotype-name-collection">
             <name lang="en">collection</name>
             <name lang="nl">collectie</name>

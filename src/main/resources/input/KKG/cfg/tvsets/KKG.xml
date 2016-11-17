@@ -48,19 +48,19 @@
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no" lang="nl">Attribuutsoort</stereo>
-                <stereo required="yes" lang="nl">Codelijst</stereo>
+                <stereo required="yes" lang="nl">Codelist</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="Toelichting">
             <stereotypes>
                 <stereo required="yes" lang="nl">Enumeratie</stereo>
-                <stereo required="yes" lang="nl">Codelijst</stereo>
+                <stereo required="yes" lang="nl">Codelist</stereo>
                 <stereo required="yes" lang="nl">Relatierol</stereo>
             </stereotypes>
         </tv> 
         <tv norm="space" id="DatumOpname">
             <stereotypes>
-                <stereo required="yes" lang="nl">Codelijst</stereo>
+                <stereo required="yes" lang="nl">Codelist</stereo>
                 <stereo required="yes" lang="nl">Relatierol</stereo>
             </stereotypes>
         </tv>
@@ -72,7 +72,7 @@
                 <stereo required="no" lang="nl">Gegevensgroeptype</stereo>
                 <stereo required="no" lang="nl">Relatiesoort</stereo>
                 <!-- and add: -->
-                <stereo required="no" lang="nl">Codelijst</stereo>
+                <stereo required="no" lang="nl">Codelist</stereo>
                 <stereo required="no" lang="nl">Relatierol</stereo>
             </stereotypes>
             <!-- declared-values inherited -->
@@ -84,7 +84,7 @@
                 <stereo required="no" lang="nl">Gegevensgroeptype</stereo>
                 <stereo required="no" lang="nl">Relatiesoort</stereo>
                 <!-- and add: -->
-                <stereo required="no" lang="nl">Codelijst</stereo>
+                <stereo required="no" lang="nl">Codelist</stereo>
                 <stereo required="no" lang="nl">Relatierol</stereo>
             </stereotypes>
             <!-- declared-values inherited -->
@@ -109,13 +109,13 @@
             <name lang="nl">Herkomst</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Codelijst</stereo>
+                <stereo required="no" lang="nl">Codelist</stereo>
                 <stereo required="no" lang="nl">Relatierol</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="HerkomstDefinitie">
             <stereotypes>
-                <stereo required="no" lang="nl">Codelijst</stereo>
+                <stereo required="no" lang="nl">Codelist</stereo>
                 <stereo required="no" lang="nl">Relatierol</stereo>
             </stereotypes>
         </tv>
@@ -135,7 +135,7 @@
                 <stereo required="no" lang="nl">Relatiesoort</stereo>
                 <!-- and add this stereo -->
                 <stereo required="no" lang="nl">Data element</stereo>
-                <stereo required="no" lang="nl">Codelijst</stereo>
+                <stereo required="no" lang="nl">Codelist</stereo>
                 <stereo required="no" lang="nl">Relatierol</stereo>
             </stereotypes>
         </tv>
