@@ -39,6 +39,10 @@
     <xsl:variable name="configuration-schemarules-file" select="imf:prepare-config(imf:document($configuration-schemarules-name))"/>
     <xsl:variable name="configuration-tvset-file" select="imf:prepare-config(imf:document($configuration-tvset-name))"/>
     
+    <xsl:variable name="metamodel-name" select="imf:get-normalized-name(imf:get-config-string('cli','metamodel'),'system-name')"/>
+    <xsl:variable name="schemarules-name" select="imf:get-normalized-name(imf:get-config-string('cli','schemarules'),'system-name')"/>
+    <xsl:variable name="tvset-name" select="imf:get-normalized-name(imf:get-config-string('cli','tvset'),'system-name')"/>
+    
     <xsl:template match="/">
         <xsl:choose>
             <xsl:when test="empty($configuration-owner-file)">
@@ -46,15 +50,15 @@
                 <xsl:sequence select="imf:msg('DEBUG','Owner config at [1]', $configuration-owner-name)"/>
             </xsl:when>
             <xsl:when test="empty($configuration-metamodel-file)">
-                <xsl:sequence select="imf:msg('FATAL','Invalid/incomplete configuration for metamodel [1]', $owner-name)"/>
+                <xsl:sequence select="imf:msg('FATAL','Invalid/incomplete configuration for metamodel [1]', $metamodel-name)"/>
                 <xsl:sequence select="imf:msg('DEBUG','Metamodel config at [1]', $configuration-metamodel-name)"/>
             </xsl:when>
             <xsl:when test="empty($configuration-schemarules-file)">
-                <xsl:sequence select="imf:msg('FATAL','Invalid/incomplete configuration for schema rules [1]', $owner-name)"/>
+                <xsl:sequence select="imf:msg('FATAL','Invalid/incomplete configuration for schema rules [1]', $schemarules-name)"/>
                 <xsl:sequence select="imf:msg('DEBUG','Schemarules config at [1]', $configuration-schemarules-name)"/>
             </xsl:when>
             <xsl:when test="empty($configuration-tvset-file)">
-                <xsl:sequence select="imf:msg('FATAL','Invalid/incomplete configuration for tvset [1]', $owner-name)"/>
+                <xsl:sequence select="imf:msg('FATAL','Invalid/incomplete configuration for tvset [1]', $tvset-name)"/>
                 <xsl:sequence select="imf:msg('DEBUG','Tvset config at [1]', $configuration-tvset-name)"/>
             </xsl:when>
             <xsl:otherwise>
