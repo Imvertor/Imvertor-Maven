@@ -49,8 +49,8 @@
         </stereo>
        
         <stereo id="stereotype-name-composite">
-            <name lang="en">datagrouptype</name>
             <name lang="nl">gegevensgroeptype</name>
+            <name lang="en">datagrouptype</name>
             <desc>
                 De verzameling van gegevens van een object van een type die gelijktijdig muteren en onderhouden worden.
                 De gegevensgroeptype is als source van een composite relatie opgenomen bij een Objecttype.
@@ -59,14 +59,14 @@
             <construct>class</construct>
         </stereo>
         <stereo id="stereotype-name-attribute">
-            <name lang="en">attributekind</name>
             <name lang="nl">attribuutsoort</name>
+            <name lang="en">attributekind</name>
             <desc>De soort waartoe een attribuut kan behoren.</desc>
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-relatiesoort">
-            <name lang="en">relationkind</name>
             <name lang="nl">relatiesoort</name>
+            <name lang="en">relationkind</name>
             <desc>De soort waartoe een relatie kan behoren.</desc>
             <construct>association</construct>
         </stereo>

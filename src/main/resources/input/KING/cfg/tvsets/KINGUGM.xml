@@ -180,14 +180,6 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="Locatie">
-            <name lang="nl">Locatie</name><!-- MIG -->
-            <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
-            <stereotypes>
-                <stereo required="no" lang="nl">Extern</stereo><!--TODO externals that are conceptuals do not require this tagged value -->
-            </stereotypes>
-        </tv>
-        
         <tv norm="space" origin="system" id="Positie">
             <name lang="nl">Positie</name>
             <name lang="en">Position</name>

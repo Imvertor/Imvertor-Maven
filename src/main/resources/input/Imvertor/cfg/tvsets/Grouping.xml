@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <name>Grouping</name>
+    
+    <tagged-values>
+        
+        <tv norm="space" id="Beheerder">
+            <name lang="nl">Beheerder</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Extern</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="Locatie">
+            <name lang="nl">Locatie</name><!-- MIG -->
+            <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
+            <stereotypes>
+                <stereo required="no" lang="nl">Extern</stereo><!--TODO externals that are conceptuals do not require this tagged value -->
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="Release">
+            <name lang="nl">Release</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Basismodel</stereo>
+                <stereo required="yes" lang="nl">Toepassing</stereo>
+                <stereo required="yes" lang="nl">Domein</stereo>
+                <stereo required="yes" lang="nl">View</stereo>
+                <stereo required="yes" lang="nl"></stereo>
+                <stereo required="no" lang="nl">Extern</stereo>
+                <stereo required="yes" lang="nl">Intern</stereo>
+                <!-- release van kadaster externe schema's wordt ingegenereerd binnen Imvert2concreteSchema.xsl -->
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="RefRelease">
+            <name lang="nl">Ref-release</name>
+            <name lang="nl">Ref release</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Domein</stereo>
+                <stereo required="no" lang="nl">View</stereo>
+                <stereo required="no" lang="nl">Extern</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="RefVersion">
+            <name lang="nl">Ref-version</name>
+            <name lang="nl">Ref version</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Domein</stereo>
+                <stereo required="no" lang="nl">View</stereo>
+                <stereo required="no" lang="nl">Extern</stereo>
+            </stereotypes>
+        </tv>
+
+        <tv norm="space" id="SupplierProject">
+            <name lang="nl">Supplier-project</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Basismodel</stereo>
+                <stereo required="yes" lang="nl">Toepassing</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="SupplierName">
+            <name lang="nl">Supplier-name</name>
+            <name lang="nl">Supplier name</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Basismodel</stereo>
+                <stereo required="yes" lang="nl">Toepassing</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="SupplierPackageName">
+            <name lang="nl">Supplier-package-name</name>
+            <name lang="nl">Supplier package name</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Domein</stereo>
+                <stereo required="no" lang="nl">View</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="SupplierRelease">
+            <name lang="nl">Supplier-release</name>
+            <name lang="nl">Supplier release</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Basismodel</stereo>
+                <stereo required="yes" lang="nl">Toepassing</stereo>
+                <stereo required="no" lang="nl">Domein</stereo>
+                <stereo required="no" lang="nl">View</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="Svnid">
+            <name lang="nl">Svnid</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Basismodel</stereo>
+                <stereo required="no" lang="nl">Toepassing</stereo>
+                <stereo required="no" lang="nl">Domein</stereo>
+                <stereo required="no" lang="nl">Extern</stereo>
+                <stereo required="no" lang="nl">View</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" validate="url" id="WebLocatie">
+            <name lang="nl">Web locatie</name>
+            <name lang="n">web-location</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">Basismodel</stereo>
+                <stereo required="no" lang="nl">Toepassing</stereo>
+                <stereo required="no" lang="nl">Extern</stereo>
+                <stereo required="no" lang="nl">View</stereo>
+                <stereo required="no" lang="nl">Domein</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" validate="url" id="XsdLocatie">
+            <name lang="nl">XSD locatie</name>
+            <name lang="en">xsd-location</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Extern</stereo>
+            </stereotypes>
+        </tv>
+        
+    </tagged-values>
+</tagset>

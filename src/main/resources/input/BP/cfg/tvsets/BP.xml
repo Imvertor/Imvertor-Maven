@@ -19,6 +19,11 @@
 -->
 <tagset xmlns:xi="http://www.w3.org/2001/XInclude">
   
+    <!-- 
+        this metamodel is subject to standard Grouping conventions 
+    -->
+    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping.xml"/>
+    
     <name>BP</name>
     <descr>Best Practices</descr>
     <tagged-values>
@@ -77,13 +82,7 @@
                 <stereo required="yes" lang="nl">Relatiesoort</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="Beheerder">
-            <name lang="nl">Beheerder</name>
-            <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
-            <stereotypes>
-                <stereo required="no" lang="nl">Extern</stereo>
-            </stereotypes>
-        </tv>
+       
         <tv norm="space" id="Patroon"><!-- MIG -->
             <name lang="nl">Patroon</name>
             <name lang="en">Pattern</name>
@@ -122,14 +121,6 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="Locatie">
-            <name lang="nl">Locatie</name><!-- MIG -->
-            <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
-            <stereotypes>
-                <stereo required="no" lang="nl">Extern</stereo><!--TODO externals that are conceptuals do not require this tagged value -->
-            </stereotypes>
-        </tv>
-        
         <tv norm="space" origin="system" id="Position">
             <name lang="nl">Positie</name>
             <name lang="en">Position</name>
@@ -146,18 +137,5 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="Release">
-            <name lang="nl">Release</name>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo required="yes" lang="nl">Basismodel</stereo>
-                <stereo required="yes" lang="nl">Toepassing</stereo>
-                <stereo required="yes" lang="nl">Domein</stereo>
-                <stereo required="yes" lang="nl">View</stereo>
-                <stereo required="yes" lang="nl"></stereo>
-                <stereo required="no" lang="nl">Extern</stereo>
-                <!-- release van kadaster externe schema's wordt ingegenereerd binnen Imvert2concreteSchema.xsl -->
-            </stereotypes>
-        </tv>
     </tagged-values>
 </tagset>

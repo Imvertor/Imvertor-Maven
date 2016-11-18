@@ -180,13 +180,6 @@
                 <stereo required="yes" lang="nl">Intern</stereo>
             </stereotypes>
         </tv>
-        
-        <tv norm="space" id="Release">
-            <name lang="nl">Release</name>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo required="yes" lang="nl">Intern</stereo>
-            </stereotypes>
-        </tv>
+       
     </tagged-values>
 </tagset>

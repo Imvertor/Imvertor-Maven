@@ -19,6 +19,12 @@
 -->
 <metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
     
+    <!-- 
+        this metamodel is subject to standard Grouping conventions 
+    -->
+    
+    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping.xml"/>
+    
     <xi:include href="../../../BP/cfg/metamodels/BP-scalar.xml"/>
     
     <name>KINGUGM</name>
