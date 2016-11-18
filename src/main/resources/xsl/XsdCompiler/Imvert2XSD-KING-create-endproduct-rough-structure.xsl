@@ -19,7 +19,9 @@
 	<xsl:variable name="stylesheet">Imvert2XSD-KING-create-endproduct-structure</xsl:variable>
 	<xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-create-endproduct-structure.xsl 1
 		2015-11-11 11:50:00Z RobertMelskens $</xsl:variable>
-
+	
+	<xsl:key name="associations" match="imvert:association" use="imvert:type-id"/>
+	
 	<!-- ======= Block of templates used to create the message structure. ======= -->
 
 	<!-- This template is used to start generating the ep structure for an individual message. -->
@@ -29,15 +31,18 @@
 		mode="create-rough-message-structure">
 		<!-- this is an embedded message schema within the koppelvlak -->
 
-		<xsl:if test="imf:boolean($debugging)">
-			<xsl:comment select="'Template 1: imvert:package[mode=create-rough-message-structure]'"/>
-		</xsl:if>
+		<xsl:sequence select="imf:create-debug-comment('Template 1: imvert:package[mode=create-rough-message-structure]',$debugging)"/>
+		
+		<xsl:sequence select="imf:create-debug-track(concat('Constructing the rough-messages for package: ',imvert:name),$debugging)"/>
 
 		<xsl:for-each
-			select="imvert:class[(imvert:stereotype = 'VRAAGBERICHTTYPE' or imvert:stereotype = 'ANTWOORDBERICHTTYPE' or imvert:stereotype = 'KENNISGEVINGBERICHTTYPE' or imvert:stereotype = 'VRIJ BERICHTTYPE') and not(imvert:id = //imvert:association/imvert:type-id)]">
-			<xsl:comment select="concat('imvert:id: ',imvert:id)"/>
+			select="imvert:class[(imvert:stereotype = 'VRAAGBERICHTTYPE' or imvert:stereotype = 'ANTWOORDBERICHTTYPE' or imvert:stereotype = 'KENNISGEVINGBERICHTTYPE' or imvert:stereotype = 'VRIJ BERICHTTYPE') and not(key('associations',imvert:id))]"> 
+		<!--xsl:for-each
+			select="imvert:class[(imvert:stereotype = 'VRAAGBERICHTTYPE' or imvert:stereotype = 'ANTWOORDBERICHTTYPE' or imvert:stereotype = 'KENNISGEVINGBERICHTTYPE' or imvert:stereotype = 'VRIJ BERICHTTYPE') and not(imvert:id = //imvert:association/imvert:type-id)]"-->
 			
-			<xsl:variable name="associationClassId" select=".//imvert:association/imvert:type-id"/>
+			<xsl:sequence select="imf:create-debug-comment(concat('imvert:id: ',imvert:id),$debugging)"/>
+				
+			<xsl:variable name="associationClassId" select="./imvert:associations/imvert:association/imvert:type-id"/>
 			<xsl:variable name="fundamentalMnemonic">
 				<xsl:choose>
 					<xsl:when test="imvert:stereotype = imf:get-config-stereotypes((
@@ -45,7 +50,7 @@
 						'stereotype-name-antwoordberichttype',
 						'stereotype-name-kennisgevingberichttype',
 						'stereotype-name-synchronisatieberichttype'))">
-						<xsl:value-of select="//imvert:class[imvert:id = $associationClassId]/imvert:alias"/>
+						<xsl:value-of select="key('class',$associationClassId)/imvert:alias"/>
 					</xsl:when>
 					<xsl:when test="imvert:stereotype = imf:get-config-stereotypes((
 						'stereotype-name-vrijberichttype'))">
@@ -64,14 +69,8 @@
 					<xsl:when test="imvert:stereotype = 'VRIJ BERICHTTYPE'">Vrij bericht</xsl:when>
 				</xsl:choose>
 			</xsl:variable>
-			<xsl:variable name="berichtstereotype">
-				<xsl:value-of select="imvert:stereotype"/>
-			</xsl:variable>
-			<xsl:variable name="berichtCode">
-				<xsl:value-of
-					select="imvert:tagged-values/imvert:tagged-value[imvert:name = 'Berichtcode']/imvert:value"
-				/>
-			</xsl:variable>
+			<xsl:variable name="berichtstereotype" select="imvert:stereotype"/>
+			<xsl:variable name="berichtCode" select="imvert:tagged-values/imvert:tagged-value[imvert:name = 'Berichtcode']/imvert:value"/>
 			<xsl:if test="$berichtCode = ''">
 				<xsl:message
 					select="concat('ERROR ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : The berichtcode can not be determined. To be able to generate correct messages this is neccessary. Check your model for missing tagged values. (', $berichtstereotype)"
@@ -79,6 +78,8 @@
 			</xsl:if>
 			<!-- create the message -->
 			<ep:rough-message>
+				<xsl:sequence select="imf:create-debug-track(concat('Constructing the rough-message: ',imvert:name/@original),$debugging)"/>
+
 				<xsl:sequence select="imf:create-output-element('ep:name', imvert:name/@original)"/>
 				<xsl:sequence select="imf:create-output-element('ep:code', $berichtCode)"/>
 				<xsl:sequence select="imf:create-output-element('ep:fundamentalMnemonic', $fundamentalMnemonic)"/>
@@ -101,9 +102,7 @@
 			</ep:rough-message>
 		</xsl:for-each>
 		
-		<xsl:if test="imf:boolean($debugging)">
-			<xsl:comment select="' Template 1: imvert:package[mode=create-rough-message-structure] End'"/>
-		</xsl:if>
+		<xsl:sequence select="imf:create-debug-comment('Template 1: imvert:package[mode=create-rough-message-structure] End',$debugging)"/>
 	</xsl:template>
 
 	<!-- This template (1) only processes imvert:class elements with an imvert:stereotype 
@@ -127,10 +126,8 @@
 			object aren't allowed to contain 'stuurgegevens'. -->
 		<xsl:param name="useStuurgegevens" select="'yes'"/>
 
-		<xsl:if test="imf:boolean($debugging)">
-			<xsl:comment select="'Template 2: imvert:class[mode=create-toplevel-rough-message-structure]'"/>
-		</xsl:if>
-
+		<xsl:sequence select="imf:create-debug-comment('Template 2: imvert:class[mode=create-toplevel-rough-message-structure]',$debugging)"/>
+		
 		<!-- The folowing 2 apply-templates initiate the processing of the 'imvert:association' 
 				elements with the stereotype 'GROEP COMPOSITIE' within the supertype 
 				of imvert:class elements with an imvert:stereotype with the value 'VRAAGBERICHTTYPE', 
@@ -144,7 +141,7 @@
 			<xsl:with-param name="berichtCode" select="$berichtCode"/>
 			<xsl:with-param name="context" select="''"/>
 		</xsl:apply-templates>
-		<xsl:apply-templates select=".//imvert:association[imvert:stereotype = 'GROEP COMPOSITIE']"
+		<xsl:apply-templates select="./imvert:associations/imvert:association[imvert:stereotype = 'GROEP COMPOSITIE']"
 			mode="create-rough-message-content">
 			<!-- The 'id-trail' parameter has been introduced to be able to prevent 
 					recursive processing of classes. If the parser runs into an id already present 
@@ -167,7 +164,7 @@
 		<xsl:choose> 
 			<xsl:when test="not(contains($berichtCode, 'Di')) and not(contains($berichtCode, 'Du'))">
 				<xsl:apply-templates
-					select=".//imvert:association[imvert:stereotype = 'ENTITEITRELATIE']"
+					select="./imvert:associations/imvert:association[imvert:stereotype = 'ENTITEITRELATIE']"
 					mode="create-rough-message-content">
 					<!-- The 'id-trail' parameter has been introduced to be able to prevent 
 					recursive processing of classes. If the parser runs into an id already present 
@@ -183,7 +180,7 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:apply-templates
-					select=".//imvert:association[imvert:stereotype = 'ENTITEITRELATIE']"
+					select="./imvert:associations/imvert:association[imvert:stereotype = 'ENTITEITRELATIE']"
 					mode="create-rough-message-content">
 					<!-- The 'id-trail' parameter has been introduced to be able to prevent 
 					recursive processing of classes. If the parser runs into an id already present 
@@ -205,16 +202,14 @@
 					with the value 'ENTITEITRELATIE' must also be processed as from toplevel-message 
 					type. -->
 				<xsl:apply-templates
-					select=".//imvert:association[imvert:stereotype != 'ENTITEITRELATIE']"
+					select="./imvert:associations/imvert:association[imvert:stereotype != 'ENTITEITRELATIE']"
 					mode="create-toplevel-rough-message-structure">
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 				</xsl:apply-templates>
 			</xsl:otherwise>
 		</xsl:choose>
 		
-		<xsl:if test="imf:boolean($debugging)">
-			<xsl:comment select="' Template 2: imvert:class[mode=create-toplevel-rough-message-structure] End'"/>
-		</xsl:if>
+		<xsl:sequence select="imf:create-debug-comment('Template 2: imvert:class[mode=create-toplevel-rough-message-structure] End',$debugging)"/>
 	</xsl:template>
 
 	<!-- This template (2) takes care of processing superclasses of the class being 
@@ -224,21 +219,17 @@
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="context"/>
 
-		<xsl:if test="imf:boolean($debugging)">
-			<xsl:comment select="'Template 3: imvert:supertype[mode=create-rough-message-content]'"/>
-		</xsl:if>
-
+		<xsl:sequence select="imf:create-debug-comment('Template 3: imvert:supertype[mode=create-rough-message-content]',$debugging)"/>
+		
 		<xsl:variable name="type-id" select="imvert:type-id"/>
-		<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+		<xsl:apply-templates select="key('class',$type-id)"
 			mode="create-rough-message-content">
 			<xsl:with-param name="proces-type" select="$proces-type"/>
 			<xsl:with-param name="berichtCode" select="$berichtCode"/>
 			<xsl:with-param name="context" select="$context"/>
 		</xsl:apply-templates>
 		
-		<xsl:if test="imf:boolean($debugging)">
-			<xsl:comment select="' Template 3: imvert:supertype[mode=create-rough-message-content] End'"/>
-		</xsl:if>
+		<xsl:sequence select="imf:create-debug-comment('Template 3: imvert:supertype[mode=create-rough-message-content] End',$debugging)"/>
 	</xsl:template>
 
 	<!-- Declaration of the content of a superclass, an 'imvert:association' and 'imvert:association-class' 
@@ -252,10 +243,8 @@
 		<xsl:param name="historyApplies" select="'no'"/>
 		<xsl:variable name="id" select="imvert:id"/>
 
-		<xsl:if test="imf:boolean($debugging)">
-			<xsl:comment select="'Template 4: imvert:class[mode=create-rough-message-content]'"/>
-		</xsl:if>
-
+		<xsl:sequence select="imf:create-debug-comment('Template 4: imvert:class[mode=create-rough-message-content]',$debugging)"/>
+		
 		<xsl:choose>
 			<!-- The following takes care of ignoring the processing of the attributes 
 				belonging to the current class. Attributes aren't important for the rough structure. -->
@@ -279,9 +268,8 @@
 						'GEGEVENSGROEP COMPOSITIE' wordt gebruikt ipv 'GROEP COMPOSITIE'. 
 						De uitbecommentarieerde apply-templates kan met de eerste vorm omgaan maar 
 						moet tzt (zodra imvertor daarop checkt) worden verwijdert. -->
-					<xsl:comment select="imvert:id"/>
 					<xsl:apply-templates
-						select=".//imvert:association[imvert:stereotype = 'GROEP COMPOSITIE']"
+						select="./imvert:associations/imvert:association[imvert:stereotype = 'GROEP COMPOSITIE']"
 						mode="create-rough-message-content">
 						<!--xsl:apply-templates select=".//imvert:association[contains(imvert:stereotype,'GEGEVENSGROEP 
 							COMPOSITIE')]" mode="create-message-content" -->
@@ -356,7 +344,7 @@
 				<xsl:choose>
 					<xsl:when test="not(contains($id-trail, concat('#2#', imvert:id, '#')))">
 						<xsl:apply-templates
-							select=".//imvert:association[imvert:stereotype = 'RELATIE']"
+							select="./imvert:associations/imvert:association[imvert:stereotype = 'RELATIE']"
 							mode="create-rough-message-content">
 							<!-- ROME: Het is de vraag of deze parameter en het checken op id 
 								nog wel noodzakelijk is. -->
@@ -381,9 +369,7 @@
 			</xsl:when>
 		</xsl:choose>
 		
-		<xsl:if test="imf:boolean($debugging)">
-			<xsl:comment select="' Template 4: imvert:class[mode=create-rough-message-content] End'"/>
-		</xsl:if>
+		<xsl:sequence select="imf:create-debug-comment('Template 4: imvert:class[mode=create-rough-message-content] End',$debugging)"/>
 	</xsl:template>
 
 	<!-- This template (5) transforms an 'imvert:association' element to an 'ep:construct' 
@@ -406,9 +392,7 @@
 			</xsl:choose>
 		</xsl:variable>
 
-		<xsl:if test="imf:boolean($debugging)">
-			<xsl:comment select="'Template 5: imvert:association[mode=create-rough-message-content]'"/>
-		</xsl:if>
+		<xsl:sequence select="imf:create-debug-comment('Template 5: imvert:association[mode=create-rough-message-content]',$debugging)"/>
 		
 		<xsl:if test="not($useStuurgegevens = 'no' and imvert:name = 'stuurgegevens')">		
 			<ep:construct>
@@ -431,16 +415,16 @@
 				<xsl:choose>
 					<xsl:when test="imvert:stereotype != 'GROEP COMPOSITIE'">
 						<?x xsl:if
-							test="count(//imvert:class[imvert:id = $type-id]//imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'Ja' or imvert:value = 'Ja, zie regels')]) >= 1">
+							test="count(key('class',$type-id)//imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'Ja' or imvert:value = 'Ja, zie regels')]) >= 1">
 							<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja op association'"/>
 						</xsl:if>
 						<xsl:if
-							test="count(//imvert:class[imvert:id = $type-id]//imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1">
+							test="count(key('class',$type-id)//imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1">
 							<xsl:attribute name="indicatieFormeleHistorie" select="'Ja op association'"/>
 						</xsl:if x?>
 						<!--xsl:choose>
 							<xsl:when
-								test="count(//imvert:class[imvert:id = $type-id]//imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'Ja' or imvert:value = 'Ja, zie regels')]) >= 1" >
+								test="count(key('class',$type-id)//imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'Ja' or imvert:value = 'Ja, zie regels')]) >= 1" >
 							<xsl:if
 								test="contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie'), 'Ja')">
 									<xsl:attribute name="indicatieMaterieleHistorieRelatie" select="'Ja'"/>
@@ -469,7 +453,7 @@
 						</xsl:choose>
 						<xsl:choose>
 							<xsl:when
-								test="count(//imvert:class[imvert:id = $type-id]//imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1"-->
+								test="count(key('class',$type-id)//imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1"-->
 							<xsl:if
 								test="contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie'), 'Ja')">
 								<xsl:attribute name="indicatieFormeleHistorieRelatie" select="'Ja'"/>
@@ -479,7 +463,7 @@
 									<!--xsl:for-each select="$tvs-attributes/ep:tagged-values"-->
 									<xsl:for-each select="imvert:association-class">
 										<xsl:variable name="association-class-type-id" select="imvert:type-id"/>
-										<xsl:for-each select="//imvert:class[imvert:id = $association-class-type-id]//imvert:attribute">
+										<xsl:for-each select="//imvert:class[imvert:id = $association-class-type-id]/imvert:attributes/imvert:attribute">
 											<ep:tagged-value>
 												<xsl:value-of
 													select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie')"
@@ -501,13 +485,13 @@
 					<xsl:otherwise>
 						<xsl:choose>
 							<xsl:when
-								test="contains(imf:get-most-relevant-compiled-taggedvalue(//imvert:class[imvert:id = $type-id], 'Indicatie materiële historie'), 'Ja')">
+								test="contains(imf:get-most-relevant-compiled-taggedvalue(key('class',$type-id), 'Indicatie materiële historie'), 'Ja')">
 								<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja'"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:variable name="tv-materieleHistorie-attributes">
 									<!--xsl:for-each select="$tvs-attributes/ep:tagged-values"-->
-									<xsl:for-each select="//imvert:class[imvert:id = $type-id]//imvert:attribute">
+									<xsl:for-each select="key('class',$type-id)/imvert:attributes/imvert:attribute">
 										<ep:tagged-value>
 											<xsl:value-of
 												select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie')"
@@ -526,13 +510,13 @@
 						</xsl:choose>
 						<xsl:choose>
 							<xsl:when
-								test="contains(imf:get-most-relevant-compiled-taggedvalue(//imvert:class[imvert:id = $type-id], 'Indicatie formele historie'), 'Ja')">
+								test="contains(imf:get-most-relevant-compiled-taggedvalue(key('class',$type-id), 'Indicatie formele historie'), 'Ja')">
 								<xsl:attribute name="indicatieFormeleHistorie" select="'Ja'"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:variable name="tv-formeleHistorie-attributes">
 									<!--xsl:for-each select="$tvs-attributes/ep:tagged-values"-->
-									<xsl:for-each select="//imvert:class[imvert:id = $type-id]//imvert:attribute">
+									<xsl:for-each select="key('class',$type-id)/imvert:attributes/imvert:attribute">
 										<ep:tagged-value>
 											<xsl:value-of
 												select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie')"
@@ -579,9 +563,7 @@
 				has to be placed outside the 'gerelateerde' element it has to be done here. -->
 			</ep:construct>
 		</xsl:if> 		
-		<xsl:if test="imf:boolean($debugging)">
-			<xsl:comment select="' Template 5: imvert:association[mode=create-rough-message-content] End'"/>
-		</xsl:if>
+		<xsl:sequence select="imf:create-debug-comment('Template 5: imvert:association[mode=create-rough-message-content] End',$debugging)"/>
 	</xsl:template>
 
 	<!-- This template (5) takes care of associations from a 'vrijbericht' type 
@@ -593,9 +575,7 @@
 		<xsl:param name="berichtCode"/>
 		<xsl:variable name="type-id" select="imvert:type-id"/>
 
-		<xsl:if test="imf:boolean($debugging)">
-			<xsl:comment select="'Template 6: imvert:association[mode=create-toplevel-rough-message-structure]'"/>
-		</xsl:if>
+		<xsl:sequence select="imf:create-debug-comment('Template 6: imvert:association[mode=create-toplevel-rough-message-structure]',$debugging)"/>
 		
 		<xsl:variable name="embeddedBerichtCode">
 			<xsl:choose>
@@ -603,7 +583,7 @@
 					'stereotype-name-vraagberichttype',
 					'stereotype-name-antwoordberichttype',
 					'stereotype-name-kennisgevingberichttype'))] and contains($berichtCode, 'Di')">
-					<xsl:value-of select="//imvert:class[imvert:id = $type-id]//imvert:tagged-value[imvert:name = 'Berichtcode']/imvert:value"/>
+					<xsl:value-of select="key('class',$type-id)//imvert:tagged-value[imvert:name = 'Berichtcode']/imvert:value"/>
 				</xsl:when>
 				<xsl:otherwise/>
 			</xsl:choose>
@@ -681,9 +661,7 @@
 			</xsl:choose>
 		</ep:construct>
 		
-		<xsl:if test="imf:boolean($debugging)">
-			<xsl:comment select="' Template 6: imvert:association[mode=create-toplevel-rough-message-structure] End'"/>
-		</xsl:if>
+		<xsl:sequence select="imf:create-debug-comment('Template 6: imvert:association[mode=create-toplevel-rough-message-structure] End',$debugging)"/>
 	</xsl:template>
 
 	<!-- This template (6) transforms an 'imvert:association' element of stereotype 'ENTITEITRELATIE' to an 'ep:construct' 
@@ -708,10 +686,8 @@
 		</xsl:variable>
 		<xsl:variable name="type-id" select="imvert:type-id"/>
 
-		<xsl:if test="imf:boolean($debugging)">
-			<xsl:comment select="'Template 7: imvert:association[imvert:stereotype=ENTITEITRELATIE and mode=create-rough-message-content]'"/>
-		</xsl:if>
-
+		<xsl:sequence select="imf:create-debug-comment('Template 7: imvert:association[imvert:stereotype=ENTITEITRELATIE and mode=create-rough-message-content]',$debugging)"/>
+		
 		<xsl:choose>
 			<xsl:when test="contains($berichtCode, 'La') or contains($changedBerichtCode, 'La')">
 				<!-- ROME: bij een antwoordbericht wordt er een niveau tussen gegenereerd. 
@@ -858,9 +834,7 @@
 			</xsl:when>
 		</xsl:choose>
 		
-		<xsl:if test="imf:boolean($debugging)">
-			<xsl:comment select="' Template 7: imvert:association[imvert:stereotype=ENTITEITRELATIE and mode=create-rough-message-content] End'"/>
-		</xsl:if>
+		<xsl:sequence select="imf:create-debug-comment('Template 7: imvert:association[imvert:stereotype=ENTITEITRELATIE and mode=create-rough-message-content] End',$debugging)"/>
 	</xsl:template>
 
 	<!-- This template (8) generates the structure of a relatie on a relatie. -->
@@ -876,11 +850,9 @@
 
 		<xsl:variable name="type-id" select="imvert:type-id"/>
 		
-		<xsl:if test="imf:boolean($debugging)">
-			<xsl:comment select="'Template8: imvert:association-class[mode=create-rough-message-content]'"/>
-		</xsl:if>
-
-		<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+		<xsl:sequence select="imf:create-debug-comment('Template8: imvert:association-class[mode=create-rough-message-content]',$debugging)"/>
+		
+		<xsl:apply-templates select="key('class',$type-id)"
 			mode="create-rough-message-content">
 			<xsl:with-param name="proces-type" select="$proces-type"/>
 			<!-- ROME: Het is de vraag of deze parameter en het checken op id nog 
@@ -893,9 +865,7 @@
 			van een relatie en dat relatie element al ergens anders zijn XML-attributes 
 			toegekend krijgt hoeven er hier geen attributes meer toegekend te worden. -->
 		
-		<xsl:if test="imf:boolean($debugging)">
-			<xsl:comment select="' Template8: imvert:association-class[mode=create-rough-message-content] End'"/>
-		</xsl:if>
+		<xsl:sequence select="imf:create-debug-comment('Template8: imvert:association-class[mode=create-rough-message-content] End',$debugging)"/>
 	</xsl:template>
 
 	<xsl:template name="createRoughEntityConstruct">
@@ -909,10 +879,8 @@
 		<xsl:param name="typeCode" select="''"/>					
 		<xsl:param name="changedBerichtCode"/>
 		
-		<xsl:if test="imf:boolean($debugging)">
-			<xsl:comment select="'Template9: createRoughEntityConstruct'"/>
-		</xsl:if>
-
+		<xsl:sequence select="imf:create-debug-comment('Template9: createRoughEntityConstruct',$debugging)"/>
+		
 		<ep:construct>
 			<xsl:if test="$changedBerichtCode != ''">
 				<xsl:attribute name="berichtCode" select="$changedBerichtCode"/>
@@ -931,14 +899,14 @@
 			<xsl:attribute name="type" select="'entity'"/>
 			<xsl:if
 				test="
-					(count(//imvert:class[imvert:id = $type-id]//imvert:attribute//imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'Ja' or imvert:value = 'Ja, zie regels')]) >= 1) or
-					(count(//imvert:class[imvert:id = $type-id]//imvert:association//imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'Ja' or imvert:value = 'Ja, zie regels')]) >= 1)">
+				(count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'Ja' or imvert:value = 'Ja, zie regels')]) >= 1) or
+				(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'Ja' or imvert:value = 'Ja, zie regels')]) >= 1)">
 				<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja'"/>
 			</xsl:if>
 			<xsl:if
 				test="
-					(count(//imvert:class[imvert:id = $type-id]//imvert:attribute//imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1) or
-					(count(//imvert:class[imvert:id = $type-id]//imvert:association//imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1)">
+				(count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1) or
+				(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1)">
 				<xsl:attribute name="indicatieFormeleHistorie" select="'Ja'"/>
 			</xsl:if>
 			<xsl:choose>
@@ -961,7 +929,7 @@
 			<xsl:variable name="class-id" select="imvert:type-id"/>
 			<xsl:sequence
 				select="imf:create-output-element('ep:class-name', //imvert:class[imvert:id = $class-id]/ep:name)"/>
-			<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+			<xsl:apply-templates select="key('class',$type-id)"
 				mode="create-rough-message-content">
 				<xsl:with-param name="proces-type" select="'associationsGroepCompositie'"/>
 				<!-- ROME: Het is de vraag of deze parameter en het checken op id nog 
@@ -979,7 +947,7 @@
 					<ep:tech-name>historieMaterieel</ep:tech-name>
 					<xsl:sequence select="imf:create-output-element('ep:origin-id', imvert:id)"/>
 					<xsl:sequence select="imf:create-output-element('ep:id', imvert:type-id)"/>
-					<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+					<xsl:apply-templates select="key('class',$type-id)"
 						mode="create-rough-message-content">
 						<xsl:with-param name="proces-type" select="'associationsGroepCompositie'"/>
 						<!-- ROME: Het is de vraag of deze parameter en het checken op id 
@@ -989,7 +957,7 @@
 						<xsl:with-param name="context" select="$context"/>
 						<xsl:with-param name="historyApplies" select="$historyApplies"/>
 					</xsl:apply-templates>
-					<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+					<xsl:apply-templates select="key('class',$type-id)"
 						mode="create-rough-message-content">
 						<xsl:with-param name="proces-type" select="'associationsRelatie'"/>
 						<!-- ROME: Het is de vraag of deze parameter en het checken op id 
@@ -1010,7 +978,7 @@
 					<ep:tech-name>historieFormeel</ep:tech-name>
 					<xsl:sequence select="imf:create-output-element('ep:origin-id', imvert:id)"/>
 					<xsl:sequence select="imf:create-output-element('ep:id', imvert:type-id)"/>
-					<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+					<xsl:apply-templates select="key('class',$type-id)"
 						mode="create-rough-message-content">
 						<xsl:with-param name="proces-type" select="'associationsGroepCompositie'"/>
 						<!-- ROME: Het is de vraag of deze parameter en het checken op id 
@@ -1020,7 +988,7 @@
 						<xsl:with-param name="context" select="$context"/>
 						<xsl:with-param name="historyApplies" select="$historyApplies"/>
 					</xsl:apply-templates>
-					<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+					<xsl:apply-templates select="key('class',$type-id)"
 						mode="create-rough-message-content">
 						<xsl:with-param name="proces-type" select="'associationsRelatie'"/>
 						<!-- ROME: Het is de vraag of deze parameter en het checken op id 
@@ -1032,7 +1000,7 @@
 					</xsl:apply-templates>
 				</ep:construct>
 			</xsl:if>
-			<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+			<xsl:apply-templates select="key('class',$type-id)"
 				mode="create-rough-message-content">
 				<xsl:with-param name="proces-type" select="'associationsRelatie'"/>
 				<!-- ROME: Het is de vraag of deze parameter en het checken op id nog 
@@ -1043,9 +1011,7 @@
 			</xsl:apply-templates>
 		</ep:construct>
 		
-		<xsl:if test="imf:boolean($debugging)">
-			<xsl:comment select="' Template9: createRoughEntityConstruct End'"/>
-		</xsl:if>
+		<xsl:sequence select="imf:create-debug-comment('Template9: createRoughEntityConstruct End',$debugging)"/>
 	</xsl:template>
 
 	<!-- This template generates the structure of the 'gerelateerde' type element. -->
@@ -1056,16 +1022,14 @@
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="context"/>
 
-		<xsl:if test="imf:boolean($debugging)">
-			<xsl:comment select="'Template10: createRoughRelatiePartOfAssociation'"/>
-		</xsl:if>
-
+		<xsl:sequence select="imf:create-debug-comment('Template10: createRoughRelatiePartOfAssociation',$debugging)"/>
+		
 		<!-- The following choose processes the 3 situations an association can 
 			represent. -->
 		<xsl:choose>
 			<!-- The association is a 'relatie' and it has to contain a 'gerelateerde' 
 				 construct. -->
-			<xsl:when test="//imvert:class[imvert:id = $type-id] and imvert:stereotype = 'RELATIE'">
+			<xsl:when test="key('class',$type-id) and imvert:stereotype = 'RELATIE'">
 				<ep:construct typeCode="gerelateerde">
 					<xsl:choose>
 						<xsl:when test="count(//imvert:class[imvert:supertype/imvert:type-id = $type-id]) >= 1">
@@ -1088,14 +1052,14 @@
 					</xsl:if>
 					<xsl:if
 						test="
-							(count(//imvert:class[imvert:id = $type-id]//imvert:attribute//imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'Ja' or imvert:value = 'Ja, zie regels')]) >= 1) or
-							(count(//imvert:class[imvert:id = $type-id]//imvert:association//imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'Ja' or imvert:value = 'Ja, zie regels')]) >= 1)">
+						(count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'Ja' or imvert:value = 'Ja, zie regels')]) >= 1) or
+						(count(key('class',$type-id)/imvert:attributes/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'Ja' or imvert:value = 'Ja, zie regels')]) >= 1)">
 						<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja'"/>
 					</xsl:if>
 					<xsl:if
 						test="
-							(count(//imvert:class[imvert:id = $type-id]//imvert:attribute//imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1) or
-							(count(//imvert:class[imvert:id = $type-id]//imvert:association//imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1)">
+						(count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1) or
+						(count(key('class',$type-id)/imvert:attributes/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1)">
 						<xsl:attribute name="indicatieFormeleHistorie" select="'Ja'"/>
 					</xsl:if>
 					<ep:name>gerelateerde</ep:name>
@@ -1107,8 +1071,8 @@
 					<xsl:sequence
 						select="imf:create-output-element('ep:type-id', imvert:type-id)" / x?>
 					<xsl:sequence
-						select="imf:create-output-element('ep:class-name', //imvert:class[imvert:id = $type-id]/imvert:name)"/>
-					<?x xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+						select="imf:create-output-element('ep:class-name', key('class',$type-id)/imvert:name)"/>
+					<?x xsl:apply-templates select="key('class',$type-id)"
 						mode="create-rough-message-content">
 						<xsl:with-param name="proces-type"
 							select="'associationsGroepCompositie'" />
@@ -1118,7 +1082,7 @@
 						<xsl:with-param name="berichtCode" select="$berichtCode" />
 						<xsl:with-param name="context" select="$context" />
 					</xsl:apply-templates x?>
-					<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+					<xsl:apply-templates select="key('class',$type-id)"
 						mode="create-rough-message-content">
 						<xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'"/>
 						<!-- ROME: Het is de vraag of deze parameter en het checken op id 
@@ -1127,7 +1091,7 @@
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="context" select="$context"/>
 					</xsl:apply-templates>
-					<?x xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+					<?x xsl:apply-templates select="key('class',$type-id)"
 						mode="create-rough-message-content">
 						<xsl:with-param name="proces-type" select="'associationsRelatie'" />
 						<!-- ROME: Het is de vraag of deze parameter en het checken op id 
@@ -1165,7 +1129,7 @@
 				 be placed directly within the current 'ep:seq'. -->
 			<xsl:when
 				test="//imvert:class[imvert:id = $type-id and imvert:stereotype = 'ENTITEITTYPE']">
-				<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+				<xsl:apply-templates select="key('class',$type-id)"
 					mode="create-rough-message-content">
 					<xsl:with-param name="proces-type" select="'associationsGroepCompositie'"/>
 					<!-- ROME: Het is de vraag of deze parameter en het checken op id 
@@ -1174,7 +1138,7 @@
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 					<xsl:with-param name="context" select="$context"/>
 				</xsl:apply-templates>
-				<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+				<xsl:apply-templates select="key('class',$type-id)"
 					mode="create-rough-message-content">
 					<xsl:with-param name="proces-type" select="'associationsRelatie'"/>
 					<!-- ROME: Het is de vraag of deze parameter en het checken op id 
@@ -1191,8 +1155,8 @@
 				geen supertype in afgehandeld, ik weet even niet meer waarom. 
 				Volgens mij wordt hierin ook een class met stereotype GROEP afgehandeld 
 				waarvoor geen constructRef gemaakt hoeft te worden.-->
-			<xsl:when test="//imvert:class[imvert:id = $type-id]">
-				<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+			<xsl:when test="key('class',$type-id)">
+				<xsl:apply-templates select="key('class',$type-id)"
 					mode="create-rough-message-content">
 					<xsl:with-param name="proces-type" select="'associationsGroepCompositie'"/>
 					<!-- ROME: Het is de vraag of deze parameter en het checken op id 
@@ -1201,7 +1165,7 @@
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 					<xsl:with-param name="context" select="$context"/>
 				</xsl:apply-templates>
-				<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]"
+				<xsl:apply-templates select="key('class',$type-id)"
 					mode="create-rough-message-content">
 					<xsl:with-param name="proces-type" select="'associationsRelatie'"/>
 					<!-- ROME: Het is de vraag of deze parameter en het checken op id 
@@ -1213,9 +1177,7 @@
 			</xsl:when>
 		</xsl:choose>
 		
-		<xsl:if test="imf:boolean($debugging)">
-			<xsl:comment select="' Template10: createRoughRelatiePartOfAssociation End'"/>
-		</xsl:if>
+		<xsl:sequence select="imf:create-debug-comment('Template10: createRoughRelatiePartOfAssociation End',$debugging)"/>
 	</xsl:template>
 
 	<!-- ======= End block of templates used to create the message structure. ======= -->
