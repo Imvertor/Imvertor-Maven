@@ -19,6 +19,9 @@
 	
 	<xsl:output indent="yes" method="xml" encoding="UTF-8"/>
 	
+	<xsl:variable name="stylesheet-code">SKS</xsl:variable>
+	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
+
 	<xsl:variable name="stylesheet">Imvert2XSD-KING-create-endproduct-schema</xsl:variable>
 	<xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-create-endproduct-schema.xsl 1 2015-11-11 12:02:00Z RobertMelskens $</xsl:variable>
 	
@@ -35,7 +38,9 @@
 			<xsl:apply-templates select="ep:message"/>
 			<xsl:apply-templates select="ep:construct[@type='group']" mode="complexType"/>
 			<xsl:apply-templates select="ep:construct[not(@type)]" mode="complexType"/>
-			<xsl:comment select="'simpleTypes to be extended with XML attributes'"/>
+
+			<xsl:sequence select="imf:create-debug-comment('simpleTypes to be extended with XML attributes',$debugging)"/>
+
 			<xsl:apply-templates select="//ep:construct[(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata]]" mode="createSimpleTypes"/>
 		</xs:schema>
 	</xsl:template>
@@ -136,7 +141,9 @@
 											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
 										</xs:annotation>
 									</xsl:if>
-									<xsl:comment select="'situatie 2'"/>
+									
+									<xsl:sequence select="imf:create-debug-comment('situatie 2',$debugging)"/>
+									
 									<xs:complexType>
 										<xs:simpleContent>
 											<xs:extension>
@@ -154,7 +161,9 @@
 											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
 										</xs:annotation>
 									</xsl:if>
-									<xsl:comment select="'situatie 3'"/>
+
+									<xsl:sequence select="imf:create-debug-comment('situatie 3',$debugging)"/>
+									
 									<xs:simpleType>
 										<xs:restriction>
 											<xsl:attribute name="base">
@@ -221,7 +230,9 @@
 											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
 										</xs:annotation>
 									</xsl:if>
-									<xsl:comment select="'situatie 4'"/>
+
+									<xsl:sequence select="imf:create-debug-comment('situatie 4',$debugging)"/>
+									
 									<xs:complexType>
 										<xs:simpleContent>
 											<xs:extension>
@@ -263,7 +274,9 @@
 											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
 										</xs:annotation>
 									</xsl:if>
-									<xsl:comment select="'situatie 5'"/>
+
+									<xsl:sequence select="imf:create-debug-comment('situatie 5',$debugging)"/>
+									
 									<xs:simpleType>
 										<xs:restriction>
 											<xsl:attribute name="base">
@@ -300,7 +313,9 @@
 											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
 										</xs:annotation>
 									</xsl:if>
-									<xsl:comment select="'situatie 6'"/>
+
+									<xsl:sequence select="imf:create-debug-comment('situatie 6',$debugging)"/>
+									
 									<xs:complexType>
 										<xsl:apply-templates select="ep:seq[not(@ismetadata)] | ep:choice"/>
 										<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
@@ -312,7 +327,9 @@
 											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
 										</xs:annotation>
 									</xsl:if>
-									<xsl:comment select="'situatie 7'"/>
+
+									<xsl:sequence select="imf:create-debug-comment('situatie 7',$debugging)"/>
+									
 									<xs:complexType>
 										<xsl:apply-templates select="ep:seq[not(@ismetadata)] | ep:choice"/>
 										<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
@@ -458,7 +475,8 @@
 				</xsl:otherwise>
 			</xsl:choose>				
 		</xsl:variable>
-		<xsl:comment select="concat(ep:tech-name, '-' ,generate-id())"/-->
+		<xsl:sequence select="imf:create-debug-comment(concat(ep:tech-name, '-' ,generate-id()),$debugging)"/-->
+		
 		<xsl:choose>
 			<xsl:when test="contains(ep:tech-name,':') and ep:tech-name!='StUF:entiteittype'">
 				<xs:attribute ref="{ep:tech-name}">
