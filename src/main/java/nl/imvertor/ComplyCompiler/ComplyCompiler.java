@@ -49,7 +49,7 @@ public class ComplyCompiler  extends Step {
 		Boolean develop = true; // TODO remove temporary
 		
 		if (configurator.getParm("system","imvertor-ep-result",false) == null)
-			runner.error(logger, "Cannot create Excel when no EP available");
+			runner.warn(logger, "Creation of Excel requires an EP file");
 		else {
 			// set up the configuration for this step
 			configurator.setActiveStepName(STEP_NAME);
