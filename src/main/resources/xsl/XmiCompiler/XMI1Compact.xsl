@@ -126,10 +126,12 @@
     <xsl:function name="imf:is-applicable-project-package" as="xs:boolean">
         <xsl:param name="package"/>
         <xsl:variable name="package-name" select="normalize-space($package/@name)"/>
-        <xsl:variable name="project-name-shown" select="($project-name, concat($owner-name,': ',$project-name))" as="xs:string+"/>
-        <xsl:sequence select="$package-name = $project-name-shown"/>
-    </xsl:function>
         
+        <xsl:variable name="package-owner-name" select="imf:get-normalized-name(substring-before($package-name,':'),'system-name')"/>
+        <xsl:variable name="package-project-name" select="imf:get-normalized-name(substring-after($package-name,':'),'system-name')"/>
+        
+        <xsl:sequence select="$package-owner-name = $owner-name and $package-project-name = $project-name"/>
+    </xsl:function>
     
     <xsl:template match="node()|@*">
         <xsl:copy>
