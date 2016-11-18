@@ -453,7 +453,23 @@
         <xsl:sequence select="imf:boolean($debug) and ($code = $modes)"/>
     </xsl:function>
     
-    <!-- compile a header for imvert file; only packages are processed after this part -->
+    <xsl:function name="imf:create-debug-comment">
+        <xsl:param name="text" as="xs:string"/>
+        <xsl:param name="debugging" as="xs:boolean"/>
+        <xsl:if test="$debugging">
+            <xsl:comment select="$text"/>
+        </xsl:if>      
+    </xsl:function>
+    
+    <xsl:function name="imf:create-debug-track">
+        <xsl:param name="text" as="xs:string"/>
+        <xsl:param name="debugging" as="xs:boolean"/>
+        <xsl:if test="$debugging">
+            <xsl:sequence select="imf:track($text)"/>
+        </xsl:if>
+    </xsl:function>
+    
+        <!-- compile a header for imvert file; only packages are processed after this part -->
     <xsl:function name="imf:compile-imvert-header" as="element()*">
         <xsl:param name="packages" as="element()"/>
         <xsl:sequence select="$packages/*[not(self::imvert:package or self::imvert:filter)]"/>
