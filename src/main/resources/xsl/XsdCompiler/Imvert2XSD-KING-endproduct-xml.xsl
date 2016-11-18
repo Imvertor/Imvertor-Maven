@@ -31,6 +31,9 @@
     
     <xsl:output indent="yes" method="xml" encoding="UTF-8"/>
     
+    <xsl:key name="class" match="imvert:class" use="imvert:id" />
+    <!-- key('class',$id) -->
+    
     <xsl:variable name="stylesheet-code">SKS</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
     
@@ -88,10 +91,13 @@
     
     <!-- Within this variable a rough message structure is created to be able to determine e.g. the correct global construct structures. -->
     <xsl:variable name="rough-messages">
-        <xsl:sequence select="imf:track('Constructing the rough message-structure')"/>
+         <xsl:sequence select="imf:create-debug-track('Constructing the rough message-structure',$debugging)"/>
         
+  
+        <!-- ROME: Het opvragen van het stereotype middels imf:get-config-stereotypes('stereotype-name-domain-package') levert 2 waarden op, 1 uit het metamodel van het UGM en 1 uit dat van het BSM.
+                   Ik wil echter alleen de stereotype met de waarde BERICHT verwerken. Hoe kan ik dat bereiken met de onderstaande methode? -->
         <ep:rough-messages>
-            <xsl:apply-templates select="$packages/imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package') and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]" mode="create-rough-message-structure"/>
+            <xsl:apply-templates select="$packages/imvert:package[imvert:stereotype = 'BERICHT' and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]" mode="create-rough-message-structure"/>
         </ep:rough-messages>
     </xsl:variable>
     
@@ -117,7 +123,7 @@
         <xsl:variable name="msg" select="'Creating the Endproduct structure'"/>
         <xsl:sequence select="imf:msg('DEBUG',$msg)"/>
 
-        <xsl:sequence select="imf:track('Constructing the message-set')"/>
+        <xsl:sequence select="imf:create-debug-track('Constructing the message-set',$debugging)"/>
         
         <ep:message-set>
            <xsl:sequence select="imf:create-output-element('ep:name', /imvert:packages/imvert:project)"/>
@@ -127,18 +133,18 @@
             <xsl:sequence select="imf:create-output-element('ep:date', substring-before(/imvert:packages/imvert:generated,'T'))"/>
             <xsl:sequence select="imf:create-output-element('ep:patch-number', 'TO-DO')"/>
             
-            <xsl:if test="imf:boolean($debugging)">
+            <xsl:if test="$debugging">
                 <xsl:sequence select="$rough-messages"/>
             </xsl:if>
            
-            <xsl:sequence select="imf:track('Constructing the message-elements')"/>
+            <xsl:sequence select="imf:create-debug-track('Constructing the message-elements',$debugging)"/>
             <xsl:variable name="messages">
                <xsl:apply-templates select="$packages/imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package') and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]" mode="create-message-structure"/>
            </xsl:variable>
            <xsl:sequence select="$messages"/>
-           
-           
-           <xsl:sequence select="imf:track('Constructing the global constructs')"/>
+          
+            <xsl:sequence select="imf:create-debug-track('Constructing the global constructs',$debugging)"/>
+
             <!-- The following for-each takes care of creating global construct elements for each ep:construct element present within the 'rough-messages' variable 
                 having a type-id value none of the preceding ep:construct elements have. -->
             <xsl:for-each select="$rough-messages//ep:construct[ep:id and generate-id(.) = generate-id(key('construct-id',ep:id,$rough-messages)[1])]">
@@ -199,9 +205,14 @@
                     <!-- The following if takes care of creating global construct elements for each ep:construct element not representing a 'relatie'. -->
                     <xsl:when test="@typeCode!='relatie'">
                        
-                       <xsl:choose>
+                        <xsl:sequence select="imf:create-debug-track('Constructing the global constructs not representing a relation',$debugging)"/>
+                        
+                        <xsl:choose>
                            <!-- The following when generates global constructs based on uml groups. -->
                            <xsl:when test="@type='group' and $packages//imvert:class[imvert:id = $id]">
+ 
+                               <xsl:sequence select="imf:create-debug-track(concat('Constructing global groupconstruct: ',$packages//imvert:class[imvert:id = $id]/imvert:name),$debugging)"/>
+
                                <xsl:variable name="docs">
                                    <imvert:complete-documentation>
                                        <xsl:copy-of select="imf:get-compiled-documentation($packages//imvert:class[imvert:id = $id])"/>
@@ -209,9 +220,7 @@
                                </xsl:variable>
                                <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
                                
-                               <xsl:if test="imf:boolean($debugging)">
-                                   <xsl:comment select="'For-each-when: @type=group and $packages//imvert:class[imvert:id = $id]'"/>
-                               </xsl:if>
+                               <xsl:sequence select="imf:create-debug-comment('For-each-when: @type=group and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
                                
                                <ep:construct type="group">
                                    <xsl:sequence
@@ -226,9 +235,8 @@
                                             -->
                                        
                                        <!-- The uml attributes of the uml group are placed here. -->
-                                       <xsl:if test="imf:boolean($debugging)">
-                                           <xsl:comment select="concat('fundamentalMnemonic: ',$fundamentalMnemonic)"/>
-                                       </xsl:if>
+                                       <xsl:sequence select="imf:create-debug-comment(concat('fundamentalMnemonic: ',$fundamentalMnemonic),$debugging)"/>
+ 
                                        <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
                                            mode="create-message-content">
                                            <xsl:with-param name="proces-type" select="'attributes'" />
@@ -253,12 +261,14 @@
                                    </ep:seq> 
                                </ep:construct>                       
                                
-                               <xsl:if test="imf:boolean($debugging)">
-                                   <xsl:comment select="' For-each-when: @type=group and $packages//imvert:class[imvert:id = $id] End-For-each-when'"/>
-                               </xsl:if>
+                               <xsl:sequence select="imf:create-debug-comment('For-each-when: @type=group and $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
+                               
                            </xsl:when>
                            <!-- The following when generates global constructs based on uml classes. -->
                            <xsl:when test="$packages//imvert:class[imvert:id = $id]">
+ 
+                               <xsl:sequence select="imf:create-debug-track(concat('Constructing global construct: ',$packages//imvert:class[imvert:id = $id]/imvert:name),$debugging)"/>
+ 
                                <xsl:variable name="docs">
                                    <imvert:complete-documentation>
                                        <xsl:copy-of select="imf:get-compiled-documentation($packages//imvert:class[imvert:id = $id])"/>
@@ -266,10 +276,8 @@
                                </xsl:variable>
                                <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
                                
-                               <xsl:if test="imf:boolean($debugging)">
-                                   <xsl:comment select="'For-each-when: $packages//imvert:class[imvert:id = $id]'"/>
-                               </xsl:if>
-                               
+                               <xsl:sequence select="imf:create-debug-comment('For-each-when: $packages//imvert:class[imvert:id = $id]',$debugging)"/>
+                                
                                <ep:construct>
                                    <!-- The value of the tech-name is dependant on the availability of an alias. -->
                                    <xsl:choose>
@@ -337,35 +345,35 @@
                                                    $packages//imvert:class[imvert:id = $id]/imvert:stereotype != 'VRAAGBERICHTTYPE' and
                                                    $packages//imvert:class[imvert:id = $id]/imvert:stereotype != 'ANTWOORDBERICHTTYPE' and
                                                    $packages//imvert:class[imvert:id = $id]/imvert:stereotype != 'SYNCHRONISATIEBERICHTTYPE'">
-                                                   <!-- ep:construct>
+                                                   <!-- ep:construct externalNamespace="yes">
                                                        <ep:name>StUF:tijdvakObject</ep:name>
                                                        <ep:tech-name>StUF:tijdvakObject</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
                                                        <ep:min-occurs>0</ep:min-occurs>
                                                        <ep:position>150</ep:position>
                                                    </ep:construct -->
-                                                   <ep:construct>
+                                                   <ep:construct externalNamespace="yes">
                                                        <!--ep:name>StUF:tijdvakGeldigheid</ep:name-->
                                                        <ep:tech-name>StUF:tijdvakGeldigheid</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
                                                        <ep:min-occurs>0</ep:min-occurs>
                                                        <ep:position>155</ep:position>
                                                    </ep:construct>
-                                                   <ep:construct>
+                                                   <ep:construct externalNamespace="yes">
                                                        <!--ep:name>StUF:tijdstipRegistratie</ep:name-->
                                                        <ep:tech-name>StUF:tijdstipRegistratie</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
                                                        <ep:min-occurs>0</ep:min-occurs>
                                                        <ep:position>160</ep:position>
                                                    </ep:construct>
-                                                   <ep:construct>
+                                                   <ep:construct externalNamespace="yes">
                                                        <!--ep:name>StUF:extraElementen</ep:name-->
                                                        <ep:tech-name>StUF:extraElementen</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
                                                        <ep:min-occurs>0</ep:min-occurs>
                                                        <ep:position>165</ep:position>
                                                    </ep:construct>
-                                                   <ep:construct>
+                                                   <ep:construct externalNamespace="yes">
                                                        <!--ep:name>StUF:aanvullendeElementen</ep:name-->
                                                        <ep:tech-name>StUF:aanvullendeElementen</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
@@ -438,9 +446,7 @@
                                     				with the same name within an Excel spreadsheet used to configure a.o. XML 
                                     				attributes usage. The last parameter is used to determine the need for the 
                                     				XML-attribute 'StUF:indOnvolledigeDatum'. -->
-                                               <xsl:if test="imf:boolean($debugging)">	
-                                                   <xsl:comment select="concat('Attributes voor ',$typeCode,', berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $mnemonic)" />
-                                               </xsl:if>
+                                               <xsl:sequence select="imf:create-debug-comment(concat('Attributes voor ',$typeCode,', berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $mnemonic),$debugging)"/>
                                                <xsl:variable name="attributes"
                                                    select="imf:createAttributes($typeCode, substring($berichtCode,1,2), $context, 'no', $mnemonic, 'no','no')" />
                                                <xsl:sequence select="$attributes" />
@@ -449,9 +455,7 @@
                                    </xsl:choose>
                                </ep:construct>
                                
-                               <xsl:if test="imf:boolean($debugging)">
-                                   <xsl:comment select="' For-each-when: $packages//imvert:class[imvert:id = $id] End-For-each-when'"/>
-                               </xsl:if>
+                               <xsl:sequence select="imf:create-debug-comment('For-each-when: $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
                            </xsl:when>
                        </xsl:choose>
         
@@ -465,6 +469,9 @@
                            <xsl:choose>
                                <!-- The following when generates historieMaterieel global constructs based on uml groups. -->
                                <xsl:when test="@type='group' and $packages//imvert:class[imvert:id = $id]">
+                                   
+                                   <xsl:sequence select="imf:create-debug-track(concat('Constructing global materieleHistorie groupconstruct: ',$packages//imvert:class[imvert:id = $id]/imvert:name),$debugging)"/>
+                                   
                                    <xsl:variable name="docs">
                                        <imvert:complete-documentation>
                                            <xsl:copy-of select="imf:get-compiled-documentation($packages//imvert:class[imvert:id = $id])"/>
@@ -472,10 +479,7 @@
                                    </xsl:variable>
                                    <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
                                    
-                                   <xsl:if test="imf:boolean($debugging)">
-                                       <xsl:comment select="'For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $id]'"/>
-                                       <xsl:comment select="concat('indicatieMaterieleHistorie: ',@indicatieMaterieleHistorie,' indicatieFormeleHistorie: ',@indicatieFormeleHistorie)"/>
-                                   </xsl:if>
+                                   <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
                                    
                                    <ep:construct type="group">
                                        <xsl:sequence
@@ -513,25 +517,20 @@
                                        </ep:seq> 
                                    </ep:construct>                       
                                    
-                                   <xsl:if test="imf:boolean($debugging)">
-                                       <xsl:comment select="' For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $id] End-For-each-when'"/>
-                                   </xsl:if>
+                                   <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
                                </xsl:when>
                                <!-- The following when generates historieMaterieel global constructs based on uml classes. -->
                                <xsl:when test="$packages//imvert:class[imvert:id = $id]">
+                                   
+                                   <xsl:sequence select="imf:create-debug-track(concat('Constructing global materieleHistorie construct: ',$packages//imvert:class[imvert:id = $id]/imvert:name),$debugging)"/>
+                                   
                                    <xsl:variable name="docs">
                                        <imvert:complete-documentation>
                                            <xsl:copy-of select="imf:get-compiled-documentation($packages//imvert:class[imvert:id = $id])"/>
                                        </imvert:complete-documentation>                           </xsl:variable>
                                    <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
                                    
-                                   <xsl:if test="imf:boolean($debugging)">
-                                       <xsl:comment select="'For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $id]'"/>
-                                   </xsl:if>
-                                   
-                                   <xsl:if test="imf:boolean($debugging)">
-                                       <xsl:comment select="concat('indicatieMaterieleHistorie: ',@indicatieMaterieleHistorie,' indicatieFormeleHistorie: ',@indicatieFormeleHistorie)"/>
-                                   </xsl:if>
+                                   <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
                                    
                                    <ep:construct>
                                        <!-- The value of the tech-name is dependant on the availability of an alias. -->
@@ -602,14 +601,14 @@
                                             					ook al gegenereerd moeten worden als er ergens dieper onder het huidige niveau 
                                             					een element voorkomt waarbij op het gerelateerde attribuut historie is gedefinieerd. 
                                             					Dit geldt voor alle locaties waar onderstaande elementen worden gedefinieerd. -->
-                                                   <!-- ep:construct>
+                                                   <!-- ep:construct externalNamespace="yes">
                                                        <ep:name>StUF:tijdvakObject</ep:name>
                                                        <ep:tech-name>StUF:tijdvakObject</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
                                                        <ep:min-occurs>0</ep:min-occurs>
                                                        <ep:position>150</ep:position>
                                                    </ep:construct -->
-                                                   <ep:construct>
+                                                   <ep:construct externalNamespace="yes">
                                                        <!--ep:name>StUF:tijdvakGeldigheid</ep:name-->
                                                        <ep:tech-name>StUF:tijdvakGeldigheid</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
@@ -618,7 +617,7 @@
                                                    </ep:construct>
                                                    <!-- If 'Formele historie' is applicable for the current class a the following construct and constructRef are generated. -->
                                                    <xsl:if test="@indicatieFormeleHistorie='Ja'">
-                                                       <ep:construct>
+                                                       <ep:construct externalNamespace="yes">
                                                            <!--ep:name>StUF:tijdstipRegistratie</ep:name-->
                                                            <ep:tech-name>StUF:tijdstipRegistratie</ep:tech-name>
                                                            <ep:max-occurs>1</ep:max-occurs>
@@ -649,9 +648,7 @@
                                        </xsl:choose>
                                    </ep:construct>
                                    
-                                   <xsl:if test="imf:boolean($debugging)">
-                                       <xsl:comment select="' For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $id] End-For-each-when'"/>
-                                   </xsl:if>
+                                   <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
                                </xsl:when>
                            </xsl:choose>
                        </xsl:if>
@@ -660,6 +657,9 @@
                            <xsl:choose>
                                <!-- The following when generates historieFormeel global constructs based on uml groups. -->
                                <xsl:when test="@type='group' and $packages//imvert:class[imvert:id = $id]">
+                                   
+                                   <xsl:sequence select="imf:create-debug-track(concat('Constructing global formeleHistorie groupconstruct: ',$packages//imvert:class[imvert:id = $id]/imvert:name),$debugging)"/>
+                                   
                                    <xsl:variable name="docs">
                                        <imvert:complete-documentation>
                                            <xsl:copy-of select="imf:get-compiled-documentation($packages//imvert:class[imvert:id = $id])"/>
@@ -667,9 +667,7 @@
                                    </xsl:variable>
                                    <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
                                    
-                                   <xsl:if test="imf:boolean($debugging)">
-                                       <xsl:comment select="'For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $id]'"/>
-                                   </xsl:if>
+                                   <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
                                    
                                    <ep:construct type="group">
                                        <xsl:sequence
@@ -700,12 +698,13 @@
                                        </ep:seq> 
                                    </ep:construct>                       
                                    
-                                   <xsl:if test="imf:boolean($debugging)">
-                                       <xsl:comment select="'For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $id] End-For-each-when'"/>
-                                   </xsl:if>
+                                   <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
                                </xsl:when>
                                <!-- The following when generates historieFormeel global constructs based on uml classes. -->
                                <xsl:when test="$packages//imvert:class[imvert:id = $id]">
+                                   
+                                   <xsl:sequence select="imf:create-debug-track(concat('Constructing global formeleHistorie construct: ',$packages//imvert:class[imvert:id = $id]/imvert:name),$debugging)"/>
+                                   
                                    <xsl:variable name="docs">
                                        <imvert:complete-documentation>
                                            <xsl:copy-of select="imf:get-compiled-documentation($packages//imvert:class[imvert:id = $id])"/>
@@ -713,9 +712,7 @@
                                    </xsl:variable>
                                    <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
                                    
-                                   <xsl:if test="imf:boolean($debugging)">
-                                       <xsl:comment select="'For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $id]'"/>
-                                   </xsl:if>
+                                   <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
                                    
                                    <ep:construct>
                                        <!-- The value of the tech-name is dependant on the availability of an alias. -->
@@ -783,21 +780,21 @@
                                             					ook al gegenereerd moeten worden als er ergens dieper onder het huidige niveau 
                                             					een element voorkomt waarbij op het gerelateerde attribuut historie is gedefinieerd. 
                                             					Dit geldt voor alle locaties waar onderstaande elementen worden gedefinieerd. -->
-                                                   <!-- ep:construct>
+                                                   <!-- ep:construct externalNamespace="yes">
                                                        <ep:name>StUF:tijdvakObject</ep:name>
                                                        <ep:tech-name>StUF:tijdvakObject</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
                                                        <ep:min-occurs>0</ep:min-occurs>
                                                        <ep:position>150</ep:position>
                                                    </ep:construct -->
-                                                   <ep:construct>
+                                                   <ep:construct externalNamespace="yes">
                                                        <!--ep:name>StUF:tijdvakGeldigheid</ep:name-->
                                                        <ep:tech-name>StUF:tijdvakGeldigheid</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
                                                        <ep:min-occurs>1</ep:min-occurs>
                                                        <ep:position>155</ep:position>
                                                    </ep:construct>
-                                                   <ep:construct>
+                                                   <ep:construct externalNamespace="yes">
                                                        <!--ep:name>StUF:tijdstipRegistratie</ep:name-->
                                                        <ep:tech-name>StUF:tijdstipRegistratie</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
@@ -826,9 +823,7 @@
                                        </xsl:choose>
                                    </ep:construct>
                                    
-                                   <xsl:if test="imf:boolean($debugging)">
-                                       <xsl:comment select="' For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $id] End-For-each-when'"/>
-                                   </xsl:if>
+                                   <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
                                </xsl:when>
                            </xsl:choose>
                        </xsl:if>
@@ -836,10 +831,10 @@
      
                     <!-- The following if takes care of creating global construct elements for each ep:construct element representing a 'relatie'. -->
                     <xsl:when test="@typeCode='relatie'">
+                        
+                        <xsl:sequence select="imf:create-debug-track('Constructing the global constructs representing a relation',$debugging)"/>
 
-                        <xsl:if test="imf:boolean($debugging)">
-                            <xsl:comment select="'For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @typeCode=relatie'"/>
-                        </xsl:if>
+                        <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @typeCode=relatie',$debugging)"/>
                         <!-- LET OP! We moeten bij het bepalen van de globale complexTypes niet alleen kijken of ze hergebruikt worden over de berichten 
                         maar ook of ze over die berichten heen wel hetzelfde moeten blijven. Het ene bericht heeft een hele ander type complexType nodig dan het andere.
                         Ik moet dus hier indien nodig meerdere ep:constructs aanmaken voor elke situatie. Zie ook RM-488140-->
@@ -864,6 +859,9 @@
                         <!-- If 'Materiele historie' is applicable for the current class and messagetype a historieMaterieel global construct based on the current class is generated. -->
                         <!--xsl:if test="$historyAppliesToMessage = 'yes-Materieel' and (@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes')"-->
                         <xsl:if test="(@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes') and $rough-messages//ep:rough-message[ep:code = 'La07' or ep:code = 'La08' or ep:code = 'La09' or ep:code = 'La10']//ep:construct[ep:id = $id]">
+                            
+                            <xsl:sequence select="imf:create-debug-track(concat('Constructing the materieleHistorie constructs: ',$packages//imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
+
                             <xsl:apply-templates select="$packages//imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']"
                                 mode="create-message-content">
                                 <xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -880,6 +878,9 @@
                         <!-- If 'Formele historie' is applicable for the current class and messagetype a historieFormeel global construct based on the current class is generated. -->
                         <!--xsl:if test="contains($historyAppliesToMessage,'yes') and (@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes')"-->
                         <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes') and $rough-messages//ep:rough-message[ep:code = 'La09' or ep:code = 'La10']//ep:construct[ep:id = $id]">
+                            
+                            <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorie constructs: ',$packages//imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
+                            
                             <xsl:apply-templates select="$packages//imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']"
                                 mode="create-message-content">
                                 <xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -895,6 +896,9 @@
                         <!-- If 'Formele historie' is applicable for the current class and messagetype a historieFormeel global construct based on the current class is generated. -->
                         <!--xsl:if test="contains($historyAppliesToMessage,'yes') and (@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes')"-->
                         <xsl:if test="@indicatieFormeleHistorieRelatie='Ja'">
+                            
+                            <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorieRelatie constructs: ',$packages//imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
+                            
                             <xsl:apply-templates select="$packages//imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']"
                                 mode="create-message-content">
                                 <xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -908,15 +912,13 @@
                             </xsl:apply-templates>
                         </xsl:if>
  
-                        <xsl:if test="imf:boolean($debugging)">
-                            <xsl:comment select="'For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @typeCode=relatie End-For-each-when'"/>
-                        </xsl:if>
+                        <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @typeCode=relatie End-For-each-when',$debugging)"/>
                         
                     </xsl:when>
                </xsl:choose>
             </xsl:for-each>
 
-            <xsl:sequence select="imf:track('Constructing the global constructs for antwoord constructs')"/>
+            <xsl:sequence select="imf:create-debug-track('Constructing the global constructs for antwoord constructs',$debugging)"/>
             
             <xsl:for-each select="$rough-messages//ep:rough-message[contains(ep:name, 'La')]//ep:construct[ep:name = 'antwoord']">
                 <xsl:variable name="berichtName" select="ancestor::ep:rough-message/ep:name"/>
@@ -970,7 +972,7 @@
                 </ep:construct>                  
            </xsl:for-each>
             
-            <xsl:sequence select="imf:track('Constructing the global constructs for start constructs')"/>
+            <xsl:sequence select="imf:create-debug-track('Constructing the global constructs for start constructs',$debugging)"/>
             
             <xsl:for-each select="$rough-messages//ep:rough-message[contains(ep:name, 'Lv')]//ep:construct[ep:name = 'start']">
                 <xsl:variable name="berichtName" select="ancestor::ep:rough-message/ep:name"/>
@@ -1027,7 +1029,7 @@
                 </ep:construct>
             </xsl:for-each>
             
-            <xsl:sequence select="imf:track('Constructing the global constructs for antwoord scope')"/>
+            <xsl:sequence select="imf:create-debug-track('Constructing the global constructs for antwoord scope',$debugging)"/>
             
             <xsl:for-each select="$rough-messages//ep:rough-message[contains(ep:name, 'Lv')]//ep:construct[ep:name = 'scope']">
                 <xsl:variable name="berichtName" select="ancestor::ep:rough-message/ep:name"/>
