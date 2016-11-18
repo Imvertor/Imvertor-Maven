@@ -46,10 +46,12 @@
     <xsl:variable name="all-packages" select="//UML:Package"/>
     
     <xsl:variable name="project-packages" select="$all-packages[imf:get-xmi-stereotype(.) = imf:get-config-stereotypes('stereotype-name-project-package')]"/>
+    <xsl:variable name="project-package" select="$project-packages[imf:is-applicable-project-package(.)][1]"/>
+  
     <xsl:variable name="external-packages" select="$all-packages[imf:get-xmi-stereotype(.) = imf:get-config-stereotypes('stereotype-name-external-package')]"/>
-    <xsl:variable name="app-package" select="$all-packages[imf:get-normalized-name(@name,'package-name') = imf:get-normalized-name($application-package-name,'package-name')]"/>
+    
+    <xsl:variable name="app-package" select="$project-package/*/UML:Package[imf:get-normalized-name(@name,'package-name') = imf:get-normalized-name($application-package-name,'package-name')]"/>
     <xsl:variable name="containing-packages" select="$app-package/ancestor::UML:Package"/>
-    <xsl:variable name="project-package" select="$app-package/ancestor::UML:Package[. = $project-packages]"/>
     
     <xsl:template match="/">
         <xsl:sequence select="imf:track('Compacting')"/>
@@ -120,6 +122,14 @@
         <xsl:param name="construct"/>
         <xsl:sequence select="for $c in ($construct/UML:ModelElement.taggedValue/UML:TaggedValue[@tag='stereotype']/@value) return imf:get-normalized-name($c,'stereotype-name')"/>
     </xsl:function>
+    
+    <xsl:function name="imf:is-applicable-project-package" as="xs:boolean">
+        <xsl:param name="package"/>
+        <xsl:variable name="package-name" select="normalize-space($package/@name)"/>
+        <xsl:variable name="project-name-shown" select="($project-name, concat($owner-name,': ',$project-name))" as="xs:string+"/>
+        <xsl:sequence select="$package-name = $project-name-shown"/>
+    </xsl:function>
+        
     
     <xsl:template match="node()|@*">
         <xsl:copy>
