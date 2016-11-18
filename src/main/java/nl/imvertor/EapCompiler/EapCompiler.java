@@ -67,14 +67,14 @@ public class EapCompiler extends Step {
 		boolean must = runner.getAppPhase() == Runner.APPLICATION_PHASE_FINAL;
 		boolean wantTemplate = configurator.isTrue("cli","createtemplate");
 		boolean wantDocument = configurator.isTrue("cli","createumlreport"); // || configurator.isTrue("cli", "createderivedeap");
-		boolean iseap = (new AnyFile(configurator.getParm("cli","umlfile"))).getExtension().equals("eap");
+		//boolean iseap = (new AnyFile(configurator.getParm("cli","umlfile"))).getExtension().equals("eap");
 		
 		// generate UML template
 		if (may) 
 			if (wantTemplate || must) 
-				if (iseap)
-					createEapTemplate();
-				else 
+				//if (iseap)
+				//	createEapTemplate();
+				//else 
 					createXmiTemplate();
 		else 
 			if (wantTemplate) 
@@ -83,10 +83,10 @@ public class EapCompiler extends Step {
 		// generate UML report
 		if (may) {
 			if (wantDocument)
-				if (iseap) 
-					generateUmlReport();
-				else
-					runner.warn(logger,"An UML document can only be generated for EAP source UML files.");
+				//if (iseap) 
+				//	generateUmlReport();
+				//else
+					generateDerivedXmi();
 		} else
 			if (wantDocument) runner.warn(logger,"Model is in phase 0 (concept), no document generated.");
 					
@@ -118,6 +118,24 @@ public class EapCompiler extends Step {
 	}
 	
 	/**
+	 * Generate an XMI file with full info, most notably tthe info derived from supplier models.
+	 * Copy the result file to the etc folder as full.xmi
+	 * 
+	 * @throws Exception
+	 */
+	public void generateDerivedXmi() throws Exception {
+		
+		runner.info(logger,"Creating derived XMI");
+
+		Transformer transformer = new Transformer();
+		transformer.transformStep("system/xmi-file-path","properties/WORK_FULL_XMI_FILE", "properties/IMVERTOR_REPORTINGCOPY_XSLPATH");
+		
+		// copy this to the etc folder
+		XmlFile tempXmiFile = new XmlFile(configurator.getParm("properties", "WORK_FULL_XMI_FILE"));
+		XmlFile targetXmiFile = new XmlFile(new File(configurator.getParm("system", "work-etc-folder-path")),"full.xmi");
+		tempXmiFile.copyFile(targetXmiFile);
+	}
+	/**
 	 * Create a template by importing the XMI into the EAP template file.
 	 *  
 	 * @param eapFile
@@ -142,8 +160,7 @@ public class EapCompiler extends Step {
 	
 	
 	/**
-	 * Generate a template for future derived applications.
-	 * Copy the source file to the etc folder
+	 * Generate an UML report. 
 	 * 
 	 * @throws Exception
 	 */
@@ -201,5 +218,7 @@ public class EapCompiler extends Step {
 			tempEapFile.copyFile(targetFile);
 		}
 	}
+	
+	
 	
 }
