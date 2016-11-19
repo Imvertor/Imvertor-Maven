@@ -67,29 +67,36 @@ public class EapCompiler extends Step {
 		boolean must = runner.getAppPhase() == Runner.APPLICATION_PHASE_FINAL;
 		boolean wantTemplate = configurator.isTrue("cli","createtemplate");
 		boolean wantDocument = configurator.isTrue("cli","createumlreport"); // || configurator.isTrue("cli", "createderivedeap");
-		//boolean iseap = (new AnyFile(configurator.getParm("cli","umlfile"))).getExtension().equals("eap");
+		AnyFile umlfile = new AnyFile(configurator.getParm("cli","umlfile"));
+		boolean iseap = umlfile.getExtension().equals("eap");
+		boolean isxmi = umlfile.getExtension().equals("xmi");
 		
-		// generate UML template
-		if (may) 
-			if (wantTemplate || must) 
-				//if (iseap)
-				//	createEapTemplate();
-				//else 
-					createXmiTemplate();
-		else 
-			if (wantTemplate) 
-				runner.warn(logger,"Model is in phase 0 (concept), no template generated.");
-		
-		// generate UML report
-		if (may) {
-			if (wantDocument)
-				//if (iseap) 
-				//	generateUmlReport();
-				//else
-					generateDerivedXmi();
+		if (iseap || isxmi) {
+			// generate UML template
+			if (may) 
+				if (wantTemplate || must) 
+					if (iseap)
+					    createEapTemplate();
+					else if (isxmi)
+						createXmiTemplate();
+			else 
+				if (wantTemplate) 
+					runner.warn(logger,"Model is in phase 0 (concept), no template generated.");
+			
+			// generate UML report
+			if (may) {
+				if (wantDocument)
+					if (iseap) 
+						generateUmlReport();
+					else if (isxmi)
+						generateDerivedXmi();
+					else
+						runner.warn(logger,"Model is in phase 0 (concept), no template generated.");
+			} else
+				if (wantDocument) runner.warn(logger,"Model is in phase 0 (concept), no document generated.");
 		} else
-			if (wantDocument) runner.warn(logger,"Model is in phase 0 (concept), no document generated.");
-					
+			runner.fatal(logger,"Unexpected extension for UML file: " + umlfile.getExtension(),null,"UEFUF");
+		
 		configurator.setStepDone(STEP_NAME);
 		
 		// save any changes to the work configuration for report and future steps

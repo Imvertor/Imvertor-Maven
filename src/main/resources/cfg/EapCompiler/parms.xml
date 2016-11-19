@@ -26,19 +26,19 @@
       <cli-parm>
          <name>createtemplate</name>
          <arg>yes|no</arg>
-         <tip>Yes if an EAP template should be created for this application</tip>
+         <tip>Yes if an EAP template should be created for this application. If EAP provided, return template EAP. If XMI provided, return template XMI.</tip>
          <required>false</required>
       </cli-parm> 
       <cli-parm>
          <name>createumlreport</name>
          <arg>yes|no</arg>
-         <tip>Yes if an UML report based on EAP should be created</tip>
+         <tip>Yes if an UML report should be created. If EAP provided, return full UML report. If XMI provided, return adapted XMI.</tip>
          <required>false</required>
       </cli-parm> 
       <cli-parm>
          <name>createderivedeap</name>
          <arg>yes|no</arg>
-         <tip>Yes if an full EA representation of all derived information should be created</tip>
+         <tip>Yes if an full EA representation of all derived information should be created. </tip>
          <required>false</required>
       </cli-parm> 
    </cli-parms>
