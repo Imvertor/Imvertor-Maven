@@ -118,6 +118,7 @@ public class Configurator {
 	private Boolean forceCompile = false; // allow compilation errors to be ignored?
 	private Boolean docRelease = false;
 	private Boolean suppressWarnings = false;
+	private Boolean eaEnabled;
 	
 	private String metamodel;
 	private String schemarules;
@@ -176,6 +177,9 @@ public class Configurator {
 		
 			messenger = new Messenger(saxonConfig.makePipelineConfiguration());
 			runner.setMessenger(messenger);
+			
+			String ee = System.getProperty("ea.enabled"); // true or false; false typically on server environment; see redmine #487932
+			eaEnabled = (ee == null || !ee.equals("false"));
 			
 		} catch (Exception e) {
 			System.err.println("Invalid configuration: " + e.getMessage());
@@ -1136,6 +1140,10 @@ public class Configurator {
 	 */
 	public Integer getRunMode() {
 		return runmode; 
+	}
+
+	public boolean isEaEnabled() {
+		return eaEnabled;
 	}
 	
 }

@@ -165,8 +165,7 @@ public class ChainTranslateAndReport {
 				    succeeds = succeeds && (new OfficeCompiler()).run();
 			
 					// compile templates and reports on UML EAP 
-				 
-				    	succeeds = succeeds && (new EapCompiler()).run();
+				    succeeds = succeeds && (new EapCompiler()).run();
 			
 					// compile compliancy Excel
 				    if (configurator.isTrue("cli","createcomplyexcel"))

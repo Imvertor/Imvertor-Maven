@@ -30,15 +30,15 @@
          <required>false</required>
       </cli-parm> 
       <cli-parm>
-         <name>createumlreport</name>
+         <name>createderivedeap</name>
          <arg>yes|no</arg>
-         <tip>Yes if an UML report should be created. If EAP provided, return full UML report. If XMI provided, return adapted XMI.</tip>
+         <tip>Yes if an full representation of all derived information should be created. If EAP provided, return full EA project. If XMI provided, return adapted XMI.  </tip>
          <required>false</required>
       </cli-parm> 
       <cli-parm>
-         <name>createderivedeap</name>
+         <name>createumlreport</name>
          <arg>yes|no</arg>
-         <tip>Yes if an full EA representation of all derived information should be created. </tip>
+         <tip>(Deprecated) Yes if an UML report should be created. Only applicable for EA enabled environments.</tip>
          <required>false</required>
       </cli-parm> 
    </cli-parms>
