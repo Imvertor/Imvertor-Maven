@@ -38,6 +38,7 @@
             </declared-values>
         </tv>
         <tv norm="space" rules="NOC" id="IndicatieAuthentiek">
+            <name lang="nl">Indicatie authentiek</name>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <stereotypes>
                 <stereo required="no" lang="nl">Element</stereo>
