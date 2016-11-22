@@ -37,6 +37,8 @@
         <xsl:apply-templates/>
     </xsl:template>
     
+    <xsl:template match="ep:tv-position"/>
+    
     <xsl:template match="*">
         <xsl:element name="{name(.)}">
             <xsl:apply-templates select="@*"/>
@@ -60,7 +62,7 @@
         </xsl:if>
     </xsl:template>
     
-    <xsl:template match="*[not(*)]">
+    <xsl:template match="*[not(*) and not(name() = 'ep:tv-position')]">
         <xsl:sequence
             select="imf:create-output-element(name(.), .)"/>	
     </xsl:template>
