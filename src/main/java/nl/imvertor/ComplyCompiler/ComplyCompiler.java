@@ -46,7 +46,9 @@ public class ComplyCompiler  extends Step {
 	 */
 	public boolean run() throws Exception{
 		
-		Boolean develop = true; // TODO remove temporary
+		/*
+		 Boolean develop = false; // TODO remove temporary
+		*/
 		
 		if (configurator.getParm("system","imvertor-ep-result",false) == null)
 			runner.warn(logger, "Creation of Excel requires an EP file");
@@ -75,6 +77,7 @@ public class ComplyCompiler  extends Step {
 			
 			XmlFile contentFile = new XmlFile(serializeFolder,AnyFolder.SERIALIZED_CONTENT_XML_FILENAME);
 			
+			/*
 			// TODO REMOVE debug; remove next lines
 			XslFile prettyPrinter = new XslFile(configurator.getBaseFolder(),"xsl/common/tools/PrettyPrinter.xsl");
 			if (develop) {
@@ -89,6 +92,7 @@ public class ComplyCompiler  extends Step {
 				} else 
 					develop = false;
 			}
+			*/
 			
 			configurator.setParm("system", "comply-content-file", contentFile.getCanonicalPath());
 			transformer.transformStep("system/imvertor-ep-result","properties/WORK_COMPLY_STUB_FILE", "properties/WORK_COMPLY_STUB_XSLPATH","system/imvertor-ep-result");
@@ -109,10 +113,12 @@ public class ComplyCompiler  extends Step {
 			newContentFile.copyFile(contentFile);
 			formFile.deserializeFromXml(serializeFolder,true);
 			
+			/*
 			// TODO REMOVE debug, remove next 1 line
 			if (develop) {
 				prettyPrinter.transform(newContentFile.getCanonicalPath(),"c:/temp/comply/after.xml");
 			}
+			*/
 			
 			// XML validate the generated worksheets
 			if (configurator.isTrue("cli","validatecomplyexcel")) {

@@ -62,7 +62,7 @@
     <xsl:variable name="quot">"</xsl:variable>
     <xsl:variable name="apos">'</xsl:variable>
     
-    <xsl:variable name="sheet-gegevensgroepen-tab-name">'Complex types'</xsl:variable>
+    <xsl:variable name="sheet-gegevensgroepen-tab-name">Gegevensgroepen</xsl:variable>
     <xsl:variable name="xsi-schema-reference" as="attribute()?">
         <xsl:attribute name="xsi:schemaLocation" select="concat($ooxml-namespace,' ', $ooxml-schemalocation-url)"/>
     </xsl:variable>

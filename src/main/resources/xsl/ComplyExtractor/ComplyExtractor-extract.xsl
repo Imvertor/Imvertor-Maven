@@ -34,9 +34,17 @@
     
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-entity.xsl"/>
+    <xsl:import href="../common/Imvert-common-compact.xsl"/>
+    
+    <xsl:variable name="sheet-gegevensgroepen-tab-name">Gegevensgroepen</xsl:variable>
+    
+    <xsl:variable name="__content" select="/"/>
     
     <xsl:template match="/">
-        <xsl:apply-templates/>
+        <xsl:variable name="extraction" as="item()*">
+            <xsl:apply-templates/>
+        </xsl:variable>
+        <xsl:apply-templates select="$extraction" mode="common-compact"/>
     </xsl:template>
     
     <xsl:variable name="all-shared-strings" as="element()*">
@@ -57,10 +65,14 @@
             <xsl:attribute name="excel-modified" select="cw:file[@path='docProps\core.xml']/*:coreProperties/*:modified"/>
             <xsl:attribute name="excel-app-version" select="cw:file[@path='docProps\app.xml']/*:Properties/*:AppVersion"/>
             <groups part="1">
-                <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet1.xml']" mode="create-group"/>
+                <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet1.xml']" mode="create-group">
+                    <xsl:with-param name="sheet-nr" select="1"/>
+                </xsl:apply-templates>
             </groups>
             <groups part="2">
-                <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet2.xml']" mode="create-group"/>
+                <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet2.xml']" mode="create-group">
+                    <xsl:with-param name="sheet-nr" select="2"/>
+                </xsl:apply-templates>
             </groups>
             <variables>
                 <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet3.xml']" mode="create-vars"/>
@@ -69,12 +81,14 @@
     </xsl:template>
     
     <xsl:template match="cw:file" mode="create-group">
+        <xsl:param name="sheet-nr" as="xs:integer"/> <!-- needed to determine where links are available --> 
+        
         <xsl:variable name="worksheet" select="*:worksheet"/>
         <xsl:variable name="worksheet-rows" select="$worksheet/*:sheetData/*:row"/>
         <!-- last row number plus 1, sentinel for the last group -->
         <xsl:variable name="last-r" select="xs:integer($worksheet-rows[last()]/@r) + 1"/>
         <!-- list of all start row numbers; skip the header at position 1  -->
-        <xsl:variable name="start-row-nrs" select="for $r in ($worksheet-rows[position() gt 1 and not(imf:get-cell-info(.,1)/@val = '')]) return xs:integer($r/@r)" as="xs:integer*"/>
+        <xsl:variable name="start-row-nrs" select="for $r in ($worksheet-rows[position() gt 1 and not(imf:get-cell-info(.,1,$sheet-nr)/@val = '')]) return xs:integer($r/@r)" as="xs:integer*"/>
         
         <?x
         <xsl:message select="concat('2>', count($worksheet-rows))"/>
@@ -103,15 +117,27 @@
             <!-- the last column is the last for the first row. All columns are filled and named. -->
             <xsl:variable name="last-col" select="count($worksheet-rows[@r eq '1']/*:c)"/>
             <!-- the first cell holds the type of group -->
-            <xsl:variable name="type" select="imf:get-cell-info($cur-row,1)/@val"/>
+            <xsl:variable name="info" select="imf:get-cell-info($cur-row,1,$sheet-nr)"/>
+            <xsl:variable name="type" select="$info/@val"/>
+            <xsl:variable name="id" select="$info/@id"/>
+            
             <!-- columns run over nrs 4 upto last -->
             <xsl:for-each select="4 to $last-col">
-                <xsl:variable name="label" select="imf:get-cell-info($cur-row,.)/@val"/>
+                <xsl:variable name="info" select="imf:get-cell-info($cur-row,.,$sheet-nr)"/>
+                <xsl:variable name="label" select="$info/@val"/>
                 <xsl:if test="normalize-space($label)">
                     <group label="{$label}" type="{$type}">
+                        <xsl:if test="exists($id)">
+                            <xsl:attribute name="id" select="$id"/>
+                        </xsl:if>
                         <xsl:variable name="column-index" select="."/>
                         <xsl:for-each select="$following-rows">
-                            <cell name="{imf:get-cell-info(.,2)/@val}" value="{imf:get-cell-info(.,$column-index)/@val}" link="{imf:is-hyperlink($worksheet,@r)}"/>                 
+                            <cell name="{imf:get-cell-info(.,2,$sheet-nr)/@val}" value="{imf:get-cell-info(.,$column-index,$sheet-nr)/@val}">
+                                <xsl:variable name="link" select="imf:get-hyperlink($worksheet,@r)"/>
+                                <xsl:if test="exists($link)">
+                                    <xsl:attribute name="link" select="$link"/>
+                                </xsl:if>
+                            </cell>                 
                         </xsl:for-each>
                     </group>
                 </xsl:if>
@@ -125,7 +151,9 @@
         <xsl:for-each select="$worksheet-rows">
             <xsl:variable name="name" select="imf:get-string(*:c[1])"/>
             <xsl:variable name="value" select="imf:get-string(*:c[2])"/>
-            <variable name="{$name}" value="{$value}"/>
+            <variable name="{$name}">
+                <xsl:value-of select="$value"/>
+            </variable>
         </xsl:for-each>
     </xsl:template>
     
@@ -152,21 +180,42 @@
     <xsl:function name="imf:get-cell-info" as="element(cell)">
         <xsl:param name="row" as="element()"/>
         <xsl:param name="index" as="xs:integer"/>
+        <xsl:param name="sheet-nr" as="xs:integer"/>
+        
         <xsl:variable name="letter" select="substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',$index,1)"/>
         <xsl:variable name="c" select="$row/*:c[starts-with(@r,$letter)]"/>
+        <xsl:variable name="v" select="imf:get-string($c)"/>
+      
+        <!-- determine the link form for this cell, e.g. Gegevensgroepen!$A$2 -->
+        <xsl:variable name="cell-index" select="concat($sheet-gegevensgroepen-tab-name,'!$',$letter,'$',$row/@r)"/>
+        <!-- determine the internal ID, e.g. EA002k3j4h5k2j34h5l-->
+        <xsl:variable name="cell-id" select="$__content//*:definedNames/*:definedName[. = $cell-index]/@name"/>
+    
         <cell>
             <xsl:attribute name="row" select="$row/@r"/>
             <xsl:attribute name="col" select="$index"/>
-            <xsl:attribute name="val" select="if (exists($c)) then imf:get-string($c) else ''"/>
+            <xsl:variable name="val" as="xs:string?">
+                <xsl:choose>
+                    <xsl:when test="$v = 'xsi:nil'">@xsi:nil</xsl:when>
+                    <xsl:when test="empty($c)"><!--empty string--></xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="$v"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:variable>
+            <xsl:attribute name="val" select="$val"/>
+            <xsl:if test="$sheet-nr = 2 and exists($cell-id)">
+                <xsl:attribute name="id" select="$cell-id"/>
+            </xsl:if>
         </cell>
     </xsl:function>
     
     <!-- check if the label in col 2 is a hyperlink -->
-    <xsl:function name="imf:is-hyperlink" as="xs:boolean">
+    <xsl:function name="imf:get-hyperlink" as="xs:string?">
         <xsl:param name="worksheet"/>
         <xsl:param name="r"/> <!-- e.g. 3 -->
-        <xsl:variable name="link" select="$worksheet/*:hyperlinks/*:hyperlink[@ref = concat('B',$r)]"/>
-        <xsl:sequence select="exists($link)"/>
+        <xsl:variable name="link" select="$worksheet/*:hyperlinks/*:hyperlink[@ref = concat('B',$r)][1]"/>
+        <xsl:sequence select="$link/@location"/>
     </xsl:function>
     
 </xsl:stylesheet>
