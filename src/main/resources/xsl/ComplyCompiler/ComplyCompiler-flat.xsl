@@ -135,7 +135,7 @@
             <xsl:sequence select="imf:create-element('cp:fixed',if (ep:enum[2]) then () else ep:enum[1])"/>
             <xsl:sequence select="imf:create-element('cp:enum',string-join(ep:enum,', '))"/>
             <xsl:sequence select="imf:create-element('cp:type',ep:type-name)"/>  <!-- TODO types die Frank noemt zijn: int integer nonNegativeInteger positiveInteger decimal -->
-            <xsl:sequence select="imf:create-element('cp:pattern',if (exists(ep:formeelPatroon)) then ep:formeelPatroon else if (ep:fraction-digits) then $digit-pattern else ())"/>
+            <xsl:sequence select="imf:create-element('cp:pattern',if (exists(ep:formeel-patroon)) then ep:formeel-patroon else if (ep:fraction-digits) then $digit-pattern else ())"/>
             <xsl:sequence select="imf:create-element('cp:patterndesc',ep:patroon)"/>
             <xsl:sequence select="imf:create-element('cp:mininclusive',ep:min-value)"/>
             <xsl:sequence select="imf:create-element('cp:maxinclusive',ep:max-value)"/>
@@ -145,7 +145,7 @@
             <xsl:sequence select="imf:create-element('cp:regels',ep:regels)"/>
    
             <xsl:sequence select="imf:create-element('cp:kerngegeven',if (.//ep:kerngegeven = 'Ja') then 'Ja' else ())"/>
-            <xsl:sequence select="imf:create-element('cp:voidable',.//ep:mogelijkGeenWaarde)"/>
+            <xsl:sequence select="imf:create-element('cp:voidable',.//ep:mogelijk-geen-waarde)"/>
             <xsl:sequence select="imf:create-element('cp:authentiek',.//ep:authentiek)"/>
             
         </cp:prop>
