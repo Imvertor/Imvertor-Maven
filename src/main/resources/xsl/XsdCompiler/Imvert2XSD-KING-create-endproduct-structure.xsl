@@ -1166,7 +1166,6 @@
 					<ep:tech-name>functie</ep:tech-name>
 					<ep:type-name>scalar-string</ep:type-name>
 					<xsl:sequence select="imf:create-output-element('ep:enum', imvert:name)"/>
-					<xsl:sequence select="imf:create-output-element('ep:defaultWaarde', imvert:name)"/>
 				</ep:construct-->
 			</xsl:when>
 			<xsl:when test="contains($berichtCode, 'Du')">
@@ -1193,7 +1192,6 @@
 					<ep:tech-name>functie</ep:tech-name>
 					<ep:type-name>scalar-string</ep:type-name>
 					<xsl:sequence select="imf:create-output-element('ep:enum', imvert:name)"/>
-					<xsl:sequence select="imf:create-output-element('ep:defaultWaarde', imvert:name)"/>
 				</ep:construct-->
 			</xsl:when>
 		</xsl:choose>
@@ -1319,7 +1317,7 @@
 							<xsl:sequence select="imf:create-output-element('ep:max-value', $max-waarde)"/>
 							<xsl:sequence select="imf:create-output-element('ep:min-value', $min-waarde)"/>
 							<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)"/>
-							<xsl:sequence select="imf:create-output-element('ep:formeelPatroon', $formeelPatroon)"/>
+							<xsl:sequence select="imf:create-output-element('ep:formeel-patroon', $formeelPatroon)"/>
 							<xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/>
 						</ep:found-tagged-values>
 					</ep:tagged-values>
@@ -1339,7 +1337,7 @@
 				<xsl:sequence select="imf:create-output-element('ep:max-value', $max-waarde)"/>
 				<xsl:sequence select="imf:create-output-element('ep:min-value', $min-waarde)"/>
 				<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)"/>
-				<xsl:sequence select="imf:create-output-element('ep:formeelPatroon', $formeelPatroon)"/>
+				<xsl:sequence select="imf:create-output-element('ep:formeel-patroon', $formeelPatroon)"/>
 				<xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/>
 				<xsl:choose>
 					<xsl:when test="$tech-name = 'entiteitType' and $fundamentalMnemonic != '' ">
@@ -2702,8 +2700,6 @@
 							select="imf:create-output-element('ep:type-name', 'scalar-string')"/>
 						<xsl:sequence select="imf:create-output-element('ep:enum', $mnemonic)"/>
 						<ep:min-occurs>0</ep:min-occurs>
-						<xsl:sequence
-							select="imf:create-output-element('ep:defaultWaarde', $mnemonic)"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:variable name="msg"
@@ -2729,8 +2725,6 @@
 						<xsl:sequence
 							select="imf:create-output-element('ep:type-name', 'scalar-string')"/>
 						<xsl:sequence select="imf:create-output-element('ep:enum', $mnemonic)"/>
-						<xsl:sequence
-							select="imf:create-output-element('ep:defaultWaarde', $mnemonic)"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:variable name="msg"
