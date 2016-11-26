@@ -32,7 +32,6 @@
                 <stereo required="yes" lang="nl">Toepassing</stereo>
                 <stereo required="yes" lang="nl">Domein</stereo>
                 <stereo required="yes" lang="nl">View</stereo>
-                <stereo required="yes" lang="nl"></stereo>
                 <stereo required="no" lang="nl">Extern</stereo>
                 <stereo required="yes" lang="nl">Intern</stereo>
                 <!-- release van kadaster externe schema's wordt ingegenereerd binnen Imvert2concreteSchema.xsl -->
@@ -130,5 +129,29 @@
             </stereotypes>
         </tv>
         
+        <tv norm="space" id="InternalProject">
+            <name lang="nl">Intern project</name>
+            <name lang="en">Internal project</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Intern</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="InternalName">
+            <name lang="nl">Interne naam</name>
+            <name lang="en">Internal name</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Intern</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="InternalRelease">
+            <name lang="nl">Interne release</name>
+            <name lang="en">Internal release</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Intern</stereo>
+            </stereotypes>
+        </tv>
     </tagged-values>
 </tagset>

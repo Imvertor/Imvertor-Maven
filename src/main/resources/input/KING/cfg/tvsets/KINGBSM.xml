@@ -272,6 +272,40 @@
             </stereotypes>
         </tv>
         
+        <tv norm="space" id="Release">
+            <name lang="nl">Release</name>
+            <stereotypes>
+                <stereo required="yes" lang="nl">Koppelvlak</stereo>
+            </stereotypes>
+        </tv>
+        
+        <!-- TODO deze naam is synoniem aan Toepassing, maar omdat we op basis van talige namen werken moeten we dit hier opnemen. Omzetten! --> 
+        <tv norm="space" id="Release">
+            <stereotypes>
+                <stereo required="yes" lang="nl">Koppelvlak</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="SupplierProject">
+            <stereotypes>
+                <stereo required="yes" lang="nl">Koppelvlak</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="SupplierName">
+            <stereotypes>
+                <stereo required="yes" lang="nl">Koppelvlak</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="SupplierPackageName">
+            <stereotypes>
+                <stereo required="no" lang="nl">Koppelvlak</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="SupplierRelease">
+            <stereotypes>
+                <stereo required="yes" lang="nl">Koppelvlak</stereo>
+            </stereotypes>
+        </tv>
+        
     </tagged-values>
 </tagset>
 

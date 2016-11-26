@@ -173,5 +173,6 @@
             <desc>A proxy is TODO</desc>
             <construct>class</construct>
         </stereo>
+        
     </stereotypes>
 </metamodel>

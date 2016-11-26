@@ -19,6 +19,11 @@
 -->
 <tagset xmlns:xi="http://www.w3.org/2001/XInclude">
    
+    <!-- 
+        this metamodel is subject to standard Grouping conventions 
+    -->
+    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping.xml"/>
+    
     <name>KINGUGM</name>
     
     <tagged-values>
@@ -192,32 +197,6 @@
                 <stereo required="no" lang="nl">Enum</stereo>
                 <stereo required="no" lang="nl">Groep compositie</stereo><!-- SIM Gegevensgroep compositie-->
                 <stereo required="no" lang="#all">#none</stereo> <!-- also allowed on enumeration values that have no enum stereo -->
-            </stereotypes>
-        </tv>
-        
-        <!-- REDMINE #487612 -->
-        <tv norm="space" id="InternalProject">
-            <name lang="nl">Intern project</name>
-            <name lang="en">Internal project</name>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo required="yes" lang="nl">Intern</stereo>
-            </stereotypes>
-        </tv>
-        <tv norm="space" id="InternalName">
-            <name lang="nl">Interne naam</name>
-            <name lang="en">Internal name</name>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo required="yes" lang="nl">Intern</stereo>
-            </stereotypes>
-        </tv>
-        <tv norm="space" id="InternalRelease">
-            <name lang="nl">Interne release</name>
-            <name lang="en">Internal release</name>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo required="yes" lang="nl">Intern</stereo>
             </stereotypes>
         </tv>
         
