@@ -1379,18 +1379,12 @@
     <!-- return the class that defines the type of the attribute or association passed. --> 
     <xsl:function name="imf:get-defining-class" as="node()?">
         <xsl:param name="this" as="node()"/>
+       
+        <!-- overrule name based searches, must be ID based.
+            <xsl:sequence select="$document-packages[imvert:name=$this/imvert:type-package]/imvert:class[imvert:name=$this/imvert:type-name]"/> 
+        --> 
+        <xsl:sequence select="$document-classes[imvert:id=$this/imvert:type-id]"/> 
         
-        <?x
-        <xsl:variable name="n" select="imf:get-construct-name($this)"></xsl:variable>
-        <xsl:variable name="c" select="$document-packages[imvert:name=$this/imvert:type-package]/imvert:class[imvert:name=$this/imvert:type-name]"/>
-        
-        <xsl:if test="count($c) gt 1">
-            <xsl:for-each select="$c">
-                <xsl:message select="concat($n, ' - ', imf:get-construct-name(.))"/>
-            </xsl:for-each>
-        </xsl:if>
-        ?>    
-        <xsl:sequence select="$document-packages[imvert:name=$this/imvert:type-package]/imvert:class[imvert:name=$this/imvert:type-name]"/>                            
     </xsl:function>
 
     <!-- 
