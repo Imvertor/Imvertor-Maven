@@ -57,12 +57,12 @@
 
 
 			<xsl:if test="$berichtCode = ''">
-				<xsl:message
+				<xsl:message 
 					select="concat('ERROR ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : The berichtcode can not be determined. To be able to generate correct messages this is neccessary. Check your model for missing tagged values. (', $berichtstereotype,')')"
 				/>
 			</xsl:if>
 			<!-- create a message -->
-			<ep:message>
+			<ep:message prefix="{$prefix}">
 				<xsl:sequence select="imf:create-output-element('ep:code', $berichtCode)"/>
 				<xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
 				<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
