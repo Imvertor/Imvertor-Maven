@@ -104,22 +104,24 @@
     <!-- This key is used within the for-each instruction further in this code. -->
     <xsl:key name="construct-id" match="ep:construct" use="ep:id" />
     
+    <!-- ROME: De volgende variabele moet per package worden vastgesteld. -->
+    <xsl:variable name="prefix">
+        <xsl:choose>
+            <xsl:when test="/imvert:packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='Verkorte alias']">
+                <xsl:value-of select="/imvert:packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='Verkorte alias']/imvert:value"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="TODO"/>
+                <xsl:variable name="msg" select="'You have not provided a short alias. Define the tagged value &quot;Verkorte alias&quot; on the package with the stereotyp &quot;Koppelvlak&quot;.'"/>
+                <xsl:sequence select="imf:msg('WARN',$msg)"/>
+                <!--xsl:message
+                           select="concat('WARNING ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : You have not provided a short alias. Define the tagged value &quot;Verkorte alias&quot; on the package with the stereotyp &quot;Koppelvlak&quot;.')" /-->
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+
     <!-- Within this variable all messages defined within the BSM of the koppelvlak are placed, transformed to the imvertor endproduct format.-->
     <xsl:variable name="imvert-endproduct">
-        <xsl:variable name="prefix">
-            <xsl:choose>
-                <xsl:when test="/imvert:packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='Verkorte alias']">
-                    <xsl:value-of select="/imvert:packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='Verkorte alias']/imvert:value"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="TODO"/>
-                    <xsl:variable name="msg" select="'You have not provided a short alias. Define the tagged value &quot;Verkorte alias&quot; on the package with the stereotyp &quot;Koppelvlak&quot;.'"/>
-                    <xsl:sequence select="imf:msg('WARN',$msg)"/>
-                    <!--xsl:message
-                           select="concat('WARNING ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : You have not provided a short alias. Define the tagged value &quot;Verkorte alias&quot; on the package with the stereotyp &quot;Koppelvlak&quot;.')" /-->
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
         <xsl:variable name="msg" select="'Creating the Endproduct structure'"/>
         <xsl:sequence select="imf:msg('DEBUG',$msg)"/>
 
@@ -127,11 +129,17 @@
         
         <ep:message-set>
            <xsl:sequence select="imf:create-output-element('ep:name', /imvert:packages/imvert:project)"/>
-           <xsl:sequence select="imf:create-output-element('ep:namespace', /imvert:packages/imvert:base-namespace)"/>
-           <xsl:sequence select="imf:create-output-element('ep:namespace-prefix', $prefix)"/>
             <xsl:sequence select="imf:create-output-element('ep:release', /imvert:packages/imvert:release)"/>
             <xsl:sequence select="imf:create-output-element('ep:date', substring-before(/imvert:packages/imvert:generated,'T'))"/>
             <xsl:sequence select="imf:create-output-element('ep:patch-number', 'TO-DO')"/>
+            <xsl:sequence select="imf:create-output-element('ep:namespace', /imvert:packages/imvert:base-namespace)"/>
+            <xsl:sequence select="imf:create-output-element('ep:namespace-prefix', $prefix)"/>
+            
+            <!-- ROME: Volgende structuur moet, zodra we meerdere namespaces volledig ondersteunen, afgeleid worden van alle in gebruik zijnde namespaces. -->
+            <ep:namespaces>
+                <xsl:namespace prefix="StUF">http://www.egem.nl/StUF/StUF0301</xsl:namespace>
+                <xsl:namespace prefix="{$prefix}"><xsl:value-of select="/imvert:packages/imvert:base-namespace"/></xsl:namespace>
+            </ep:namespaces>
             
             <xsl:if test="$debugging">
                 <xsl:sequence select="$rough-messages"/>
@@ -148,7 +156,6 @@
             <!-- The following for-each takes care of creating global construct elements for each ep:construct element present within the 'rough-messages' variable 
                 having a type-id value none of the preceding ep:construct elements have. -->
             <xsl:for-each select="$rough-messages//ep:construct[ep:id and generate-id(.) = generate-id(key('construct-id',ep:id,$rough-messages)[1])]">
-            <!--xsl:for-each select="$rough-messages//ep:construct[ep:id and @typeCode !='relatie' and generate-id(.) = generate-id(key('construct-id',ep:id,$rough-messages)[1])]"-->
                    
                <!--xsl:variable name="berichtCode" select="ancestor::ep:rough-message/ep:code"-->
                <xsl:variable name="berichtName" select="ancestor::ep:rough-message/ep:name"/>
@@ -222,7 +229,7 @@
                                
                                <xsl:sequence select="imf:create-debug-comment('For-each-when: @type=group and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
                                
-                               <ep:construct type="group">
+                               <ep:construct prefix="{$prefix}" type="group">
                                    <xsl:sequence
                                        select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'))" />
                                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
@@ -278,7 +285,7 @@
                                
                                <xsl:sequence select="imf:create-debug-comment('For-each-when: $packages//imvert:class[imvert:id = $id]',$debugging)"/>
                                 
-                               <ep:construct>
+                               <ep:construct prefix="{$prefix}">
                                    <!-- The value of the tech-name is dependant on the availability of an alias. -->
                                    <xsl:choose>
                                        <xsl:when test="$packages//imvert:class[imvert:id = $id]/imvert:alias">
@@ -345,41 +352,41 @@
                                                    $packages//imvert:class[imvert:id = $id]/imvert:stereotype != 'VRAAGBERICHTTYPE' and
                                                    $packages//imvert:class[imvert:id = $id]/imvert:stereotype != 'ANTWOORDBERICHTTYPE' and
                                                    $packages//imvert:class[imvert:id = $id]/imvert:stereotype != 'SYNCHRONISATIEBERICHTTYPE'">
-                                                   <!-- ep:construct externalNamespace="yes">
-                                                       <ep:name>StUF:tijdvakObject</ep:name>
-                                                       <ep:tech-name>StUF:tijdvakObject</ep:tech-name>
+                                                   <!-- ep:constructRef prefix="StUF" externalNamespace="yes">
+                                                       <ep:name>tijdvakObject</ep:name>
+                                                       <ep:tech-name>tijdvakObject</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
                                                        <ep:min-occurs>0</ep:min-occurs>
                                                        <ep:position>150</ep:position>
-                                                   </ep:construct -->
-                                                   <ep:construct externalNamespace="yes">
-                                                       <!--ep:name>StUF:tijdvakGeldigheid</ep:name-->
-                                                       <ep:tech-name>StUF:tijdvakGeldigheid</ep:tech-name>
+                                                   </ep:constructRef -->
+                                                   <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                                       <!--ep:name>tijdvakGeldigheid</ep:name-->
+                                                       <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
                                                        <ep:min-occurs>0</ep:min-occurs>
                                                        <ep:position>155</ep:position>
-                                                   </ep:construct>
-                                                   <ep:construct externalNamespace="yes">
-                                                       <!--ep:name>StUF:tijdstipRegistratie</ep:name-->
-                                                       <ep:tech-name>StUF:tijdstipRegistratie</ep:tech-name>
+                                                   </ep:constructRef>
+                                                   <ep:constructref prefix="StUF" externalNamespace="yes">
+                                                       <!--ep:name>tijdstipRegistratie</ep:name-->
+                                                       <ep:tech-name>tijdstipRegistratie</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
                                                        <ep:min-occurs>0</ep:min-occurs>
                                                        <ep:position>160</ep:position>
-                                                   </ep:construct>
-                                                   <ep:construct externalNamespace="yes">
-                                                       <!--ep:name>StUF:extraElementen</ep:name-->
-                                                       <ep:tech-name>StUF:extraElementen</ep:tech-name>
+                                                   </ep:constructref>
+                                                   <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                                       <!--ep:name>extraElementen</ep:name-->
+                                                       <ep:tech-name>extraElementen</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
                                                        <ep:min-occurs>0</ep:min-occurs>
                                                        <ep:position>165</ep:position>
-                                                   </ep:construct>
-                                                   <ep:construct externalNamespace="yes">
-                                                       <!--ep:name>StUF:aanvullendeElementen</ep:name-->
-                                                       <ep:tech-name>StUF:aanvullendeElementen</ep:tech-name>
+                                                   </ep:constructRef>
+                                                   <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                                       <!--ep:name>aanvullendeElementen</ep:name-->
+                                                       <ep:tech-name>aanvullendeElementen</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
                                                        <ep:min-occurs>0</ep:min-occurs>
                                                        <ep:position>170</ep:position>
-                                                   </ep:construct>
+                                                   </ep:constructRef>
                                                </xsl:if>
                                                <!-- ROME: Hieronder worden de construcRefs voor historieMaterieel en historieFormeel aangemaakt.
                                                     Dit moet echter gebeuren a.d.h.v. de berichtcode. Die verfijning moet nog worden aangebracht in de if statements. -->
@@ -387,7 +394,7 @@
                                                <!-- If 'Materiele historie' is applicable for the current class a constructRef to a historieMaterieel global construct based on the current class is generated. -->
                                                <!--xsl:if test="$historyAppliesToMessage = 'yes-Materieel' and (@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes')"-->
                                                <xsl:if test="(@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes')">
-                                                   <ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+                                                   <ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                                                        <ep:tech-name>historieMaterieel</ep:tech-name>
                                                        <ep:max-occurs>unbounded</ep:max-occurs>
                                                        <ep:min-occurs>0</ep:min-occurs>
@@ -407,7 +414,7 @@
                                                <!-- If 'Formele historie' is applicable for the current class a constructRef to a historieFormeel global construct based on the current class is generated. -->
                                                <!--xsl:if test="contains($historyAppliesToMessage,'yes') and (@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes')"-->
                                                <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes')">
-                                                   <ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+                                                   <ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                                                        <ep:tech-name>historieFormeel</ep:tech-name>
                                                        <ep:max-occurs>unbounded</ep:max-occurs>
                                                        <ep:min-occurs>0</ep:min-occurs>
@@ -481,7 +488,7 @@
                                    
                                    <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
                                    
-                                   <ep:construct type="group">
+                                   <ep:construct prefix="{$prefix}" type="group">
                                        <xsl:sequence
                                            select="imf:create-output-element('ep:tech-name', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieMaterieel'))" />
                                        <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
@@ -532,7 +539,7 @@
                                    
                                    <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
                                    
-                                   <ep:construct>
+                                   <ep:construct prefix="{$prefix}">
                                        <!-- The value of the tech-name is dependant on the availability of an alias. -->
                                        <xsl:choose>
                                            <xsl:when test="$packages//imvert:class[imvert:id = $id]/imvert:alias">
@@ -601,30 +608,30 @@
                                             					ook al gegenereerd moeten worden als er ergens dieper onder het huidige niveau 
                                             					een element voorkomt waarbij op het gerelateerde attribuut historie is gedefinieerd. 
                                             					Dit geldt voor alle locaties waar onderstaande elementen worden gedefinieerd. -->
-                                                   <!-- ep:construct externalNamespace="yes">
-                                                       <ep:name>StUF:tijdvakObject</ep:name>
+                                                   <!-- ep:constructRef prefix="StUF" externalNamespace="yes">
+                                                       <ep:name>tijdvakObject</ep:name>
                                                        <ep:tech-name>StUF:tijdvakObject</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
                                                        <ep:min-occurs>0</ep:min-occurs>
                                                        <ep:position>150</ep:position>
-                                                   </ep:construct -->
-                                                   <ep:construct externalNamespace="yes">
-                                                       <!--ep:name>StUF:tijdvakGeldigheid</ep:name-->
-                                                       <ep:tech-name>StUF:tijdvakGeldigheid</ep:tech-name>
+                                                   </ep:constructRef -->
+                                                   <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                                       <!--ep:name>tijdvakGeldigheid</ep:name-->
+                                                       <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
                                                        <ep:min-occurs>1</ep:min-occurs>
                                                        <ep:position>155</ep:position>
-                                                   </ep:construct>
+                                                   </ep:constructRef>
                                                    <!-- If 'Formele historie' is applicable for the current class a the following construct and constructRef are generated. -->
                                                    <xsl:if test="@indicatieFormeleHistorie='Ja'">
-                                                       <ep:construct externalNamespace="yes">
-                                                           <!--ep:name>StUF:tijdstipRegistratie</ep:name-->
-                                                           <ep:tech-name>StUF:tijdstipRegistratie</ep:tech-name>
+                                                       <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                                           <!--ep:name>tijdstipRegistratie</ep:name-->
+                                                           <ep:tech-name>tijdstipRegistratie</ep:tech-name>
                                                            <ep:max-occurs>1</ep:max-occurs>
                                                            <ep:min-occurs>0</ep:min-occurs>
                                                            <ep:position>160</ep:position>
-                                                       </ep:construct>
-                                                       <ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+                                                       </ep:constructRef>
+                                                       <ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                                                            <ep:tech-name>historieFormeel</ep:tech-name>
                                                            <ep:max-occurs>unbounded</ep:max-occurs>
                                                            <ep:min-occurs>0</ep:min-occurs>
@@ -653,7 +660,7 @@
                            </xsl:choose>
                        </xsl:if>
                         <!-- If 'Formele historie' is applicable for the current class a historieFormeel global construct based on the current class is generated. -->
-                        <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes') and $rough-messages//ep:rough-message[ep:code = 'La09' or ep:code = 'La10']//ep:construct[ep:id = $id]">
+                       <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes') and $rough-messages//ep:rough-message[ep:code = 'La09' or ep:code = 'La10']//ep:construct[ep:id = $id]">
                            <xsl:choose>
                                <!-- The following when generates historieFormeel global constructs based on uml groups. -->
                                <xsl:when test="@type='group' and $packages//imvert:class[imvert:id = $id]">
@@ -669,7 +676,7 @@
                                    
                                    <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
                                    
-                                   <ep:construct type="group">
+                                   <ep:construct prefix="{$prefix}" type="group">
                                        <xsl:sequence
                                            select="imf:create-output-element('ep:tech-name', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieFormeel'))" />
                                        <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
@@ -714,7 +721,7 @@
                                    
                                    <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
                                    
-                                   <ep:construct>
+                                   <ep:construct prefix="{$prefix}">
                                        <!-- The value of the tech-name is dependant on the availability of an alias. -->
                                        <xsl:choose>
                                            <xsl:when test="$packages//imvert:class[imvert:id = $id]/imvert:alias">
@@ -780,28 +787,28 @@
                                             					ook al gegenereerd moeten worden als er ergens dieper onder het huidige niveau 
                                             					een element voorkomt waarbij op het gerelateerde attribuut historie is gedefinieerd. 
                                             					Dit geldt voor alle locaties waar onderstaande elementen worden gedefinieerd. -->
-                                                   <!-- ep:construct externalNamespace="yes">
-                                                       <ep:name>StUF:tijdvakObject</ep:name>
-                                                       <ep:tech-name>StUF:tijdvakObject</ep:tech-name>
+                                                   <!-- ep:constructRef externalNamespace="yes">
+                                                       <ep:name>tijdvakObject</ep:name>
+                                                       <ep:tech-name>tijdvakObject</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
                                                        <ep:min-occurs>0</ep:min-occurs>
                                                        <ep:position>150</ep:position>
-                                                   </ep:construct -->
-                                                   <ep:construct externalNamespace="yes">
-                                                       <!--ep:name>StUF:tijdvakGeldigheid</ep:name-->
-                                                       <ep:tech-name>StUF:tijdvakGeldigheid</ep:tech-name>
+                                                   </ep:constructRef -->
+                                                   <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                                       <!--ep:name>tijdvakGeldigheid</ep:name-->
+                                                       <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
                                                        <ep:min-occurs>1</ep:min-occurs>
                                                        <ep:position>155</ep:position>
-                                                   </ep:construct>
-                                                   <ep:construct externalNamespace="yes">
-                                                       <!--ep:name>StUF:tijdstipRegistratie</ep:name-->
-                                                       <ep:tech-name>StUF:tijdstipRegistratie</ep:tech-name>
+                                                   </ep:constructRef>
+                                                   <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                                       <!--ep:name>tijdstipRegistratie</ep:name-->
+                                                       <ep:tech-name>tijdstipRegistratie</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
                                                        <ep:min-occurs>1</ep:min-occurs>
                                                        <ep:position>160</ep:position>
-                                                   </ep:construct>
-                                                   <ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+                                                   </ep:constructRef>
+                                                   <ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                                                        <ep:tech-name>historieFormeel</ep:tech-name>
                                                        <ep:max-occurs>unbounded</ep:max-occurs>
                                                        <ep:min-occurs>0</ep:min-occurs>
@@ -827,6 +834,7 @@
                                </xsl:when>
                            </xsl:choose>
                        </xsl:if>
+                       
                     </xsl:when>
      
                     <!-- The following if takes care of creating global construct elements for each ep:construct element representing a 'relatie'. -->
@@ -934,7 +942,7 @@
                 </xsl:variable>
                 <xsl:variable name="relatedObjectId" select="ep:construct/ep:origin-id"/>
                 <xsl:variable name="relatedObjectTypeId" select="ep:construct/ep:id"/> 
-                 <ep:construct>
+                <ep:construct prefix="{$prefix}">
                      <!-- ep:tech-name><xsl:value-of select="concat($messageName,ep:name)"/></ep:tech-name -->
                      <xsl:choose>
                          <xsl:when test="$packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias">
@@ -949,7 +957,7 @@
                          </xsl:otherwise>
                      </xsl:choose>
                     <ep:seq orderingDesired="no">
-                        <ep:constructRef context="{@context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+                        <ep:constructRef prefix="{$prefix}" context="{@context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                             <xsl:sequence
                                 select="imf:create-output-element('ep:tech-name', 'object')"/>
                             <ep:max-occurs><xsl:value-of select="$packages//imvert:association[imvert:id = $relatedObjectId]/imvert:max-occurs"/></ep:max-occurs>
@@ -988,7 +996,7 @@
                 </xsl:variable>
                 <xsl:variable name="relatedObjectId" select="ep:construct/ep:origin-id"/>
                 <xsl:variable name="relatedObjectTypeId" select="ep:construct/ep:id"/> 
-                <ep:construct>
+                <ep:construct prefix="{$prefix}">
                     <!--ep:name>
 							<xsl:value-of select="$context"/>
 						</ep:name-->
@@ -1006,7 +1014,7 @@
                         </xsl:otherwise>
                     </xsl:choose>
                     <ep:seq orderingDesired="no">
-                        <ep:constructRef context="{@context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+                        <ep:constructRef prefix="{$prefix}" context="{@context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                             <xsl:sequence
                                 select="imf:create-output-element('ep:tech-name', ep:construct/ep:name)"/>
                             <ep:max-occurs><xsl:value-of select="$packages//imvert:association[imvert:id = $relatedObjectId]/imvert:max-occurs"/></ep:max-occurs>
@@ -1045,7 +1053,7 @@
                 </xsl:variable>
                 <xsl:variable name="relatedObjectId" select="ep:construct/ep:origin-id"/>
                 <xsl:variable name="relatedObjectTypeId" select="ep:construct/ep:id"/> 
-                <ep:construct>
+                <ep:construct prefix="{$prefix}">
                     <!--ep:name>
 							<xsl:value-of select="$context"/>
 						</ep:name-->
@@ -1063,7 +1071,7 @@
                         </xsl:otherwise>
                     </xsl:choose>
                     <ep:seq orderingDesired="no">
-                        <ep:constructRef context="{@context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+                        <ep:constructRef prefix="{$prefix}" context="{@context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                             <xsl:sequence
                                 select="imf:create-output-element('ep:tech-name', ep:construct/ep:name)"/>
                             <ep:max-occurs><xsl:value-of select="$packages//imvert:association[imvert:id = $relatedObjectId]/imvert:max-occurs"/></ep:max-occurs>
