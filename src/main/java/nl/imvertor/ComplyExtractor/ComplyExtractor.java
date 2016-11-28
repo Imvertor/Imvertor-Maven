@@ -20,12 +20,22 @@
 
 package nl.imvertor.ComplyExtractor;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+
 import org.apache.log4j.Logger;
 
+import nl.imvertor.SchemaValidator.xerces.ErrorHandlerMessage;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
+import nl.imvertor.common.exceptions.ConfiguratorException;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.XmlFile;
+import nl.imvertor.common.file.XsdFile;
 import nl.imvertor.common.file.ZipFile;
 
 public class ComplyExtractor  extends Step {
@@ -48,6 +58,8 @@ public class ComplyExtractor  extends Step {
 		// STUB
 		configurator.setParm("appinfo","release","00000001");
 		
+		boolean succeeds = true;
+		
 		// fetch the fill-in form file, and serialize it to a folder
 		String templateFilepath = configurator.getParm("cli", "cmpfile", true);
 		String unzipFolderpath = configurator.getParm("properties", "WORK_COMPLY_TEMPLATE_FOLDERPATH", true);
@@ -63,8 +75,20 @@ public class ComplyExtractor  extends Step {
 
 		XmlFile contentFile = new XmlFile(serializeFolder,AnyFolder.SERIALIZED_CONTENT_XML_FILENAME);
 		configurator.setParm("system", "comply-content-file", contentFile.getCanonicalPath());
-		transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_EXTRACT_FILE", "properties/WORK_COMPLY_EXTRACT_XSLPATH","system/comply-content-file");
-		transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_BUILD_FILE", "properties/WORK_COMPLY_BUILD_XSLPATH","system/comply-content-file");
+		succeeds = succeeds ? transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_EXTRACT_FILE", "properties/WORK_COMPLY_EXTRACT_XSLPATH","system/comply-content-file") : false;
+		succeeds = succeeds ? transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_BUILD_FILE", "properties/WORK_COMPLY_BUILD_XSLPATH","system/comply-content-file") : false;
+		
+		// now first generate the test files
+		transformer.setXslParm("generation-mode", "final");
+		succeeds = succeeds ? transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_MAKE_FILE_FINAL", "properties/WORK_COMPLY_MAKE_XSLPATH") : false;
+		
+		// then do the same, but insert variables in order to test the validity of the tests
+		transformer.setXslParm("generation-mode", "valid");
+		succeeds = succeeds ? transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_MAKE_FILE_VALID", "properties/WORK_COMPLY_MAKE_XSLPATH") : false;
+		
+		//validate the generate XML instances against the schema.
+		AnyFolder folder = new AnyFolder(configurator.getParm("properties","WORK_COMPLY_MAKE_FOLDER_VALID"));
+		succeeds = succeeds ? validateAndReport(folder) : false;
 			
 		configurator.setStepDone(STEP_NAME);
 		 
@@ -75,5 +99,51 @@ public class ComplyExtractor  extends Step {
 		    
 		return runner.succeeds();
 		
+	}
+	
+	/** 
+	 * Process the validation results into reportable messages.
+	 * 
+	 * @param folder
+	 * @return
+	 * @throws IOException
+	 * @throws ConfiguratorException
+	 */
+	public boolean validateAndReport(AnyFolder folder) throws IOException, ConfiguratorException {
+		Vector<String> vl = validateXmlFolder(folder);
+		if (vl.size() != 0) 
+			runner.error(logger, vl.size() + " errors/warnings found in generated XSD. This release should not be distributed. Please notify your administrator.");
+		Iterator<String> it = vl.iterator();
+		while (it.hasNext()) {
+			String m = it.next();
+			runner.error(logger, "XML test instance error: " + m);
+		}
+		configurator.setParm("appinfo","test-instance-error-count", vl.size());
+		return (vl.size() == 0) ? true : false;
+	}
+	
+	/**
+	 * Validate each file in the folder.
+	 * Assume the file holds a reference to the schema (xsi:schemLocation)
+	 * 
+	 * @param folder
+	 * @return
+	 */
+	public Vector<String> validateXmlFolder(AnyFolder folder) {
+		//TODO improve format of message, check out xsd validation step.
+		File[] filesAndDirs = folder.listFiles();
+		List<File> filesDirs = Arrays.asList(filesAndDirs);
+		Vector<String> vl = new Vector<String>();
+		for (File file : filesDirs) {
+			if (file.isDirectory()) {
+				vl.addAll(validateXmlFolder(new AnyFolder(file)));
+			} else if (file.getName().endsWith(".xml")) {
+				XmlFile xmlFile = new XmlFile(file);
+				xmlFile.isValid();
+				Vector<String> v = xmlFile.getMessages();
+				vl.addAll(v);			
+			}
+		}
+		return vl;
 	}
 }

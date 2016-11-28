@@ -101,11 +101,28 @@
       -->
       <WORK_COMPLY_BUILD_XSLPATH>ComplyExtractor-build.xsl</WORK_COMPLY_BUILD_XSLPATH>
       <!-- 
-         path to temporary output of builder.
+         path to temporary output file of builder.
       -->
       <WORK_COMPLY_BUILD_FILE>${system/work-imvert-folder-path}/imvertor.61.build.xml</WORK_COMPLY_BUILD_FILE>
       <!-- 
-         folder that stores the extracted template (serialized zip) 
+         stylesheet to make the test XML files. 
+         This is called in 2 modes (xslt param): final and valid.
+      -->
+      <WORK_COMPLY_MAKE_XSLPATH>ComplyExtractor-make.xsl</WORK_COMPLY_MAKE_XSLPATH>
+      <!-- 
+         path to folder that will hold the generated test XML files, to be used for testing framework,
+         and the temporary file that holds the tallied results.
+      -->
+      <WORK_COMPLY_MAKE_FOLDER_FINAL>${system/work-app-folder-path}/tests</WORK_COMPLY_MAKE_FOLDER_FINAL>
+      <WORK_COMPLY_MAKE_FILE_FINAL>${system/work-imvert-folder-path}/imvertor.62.make-final.xml</WORK_COMPLY_MAKE_FILE_FINAL>
+      <!-- 
+         path to folder that will hold the temporary test XML files, to be used for validation against the koppelvlak schemas,
+         and the temporary file that holds the tallied results.
+      -->
+      <WORK_COMPLY_MAKE_FOLDER_VALID>${system/work-comply-folder-path}/tests</WORK_COMPLY_MAKE_FOLDER_VALID>
+      <WORK_COMPLY_MAKE_FILE_VALID>${system/work-imvert-folder-path}/imvertor.63.make-valid.xml</WORK_COMPLY_MAKE_FILE_VALID>
+      <!-- 
+         folder that stores the extracted template (temporary, serialized zip) 
        -->
       <WORK_COMPLY_TEMPLATE_FOLDERPATH>${system/work-comply-folder-path}/template</WORK_COMPLY_TEMPLATE_FOLDERPATH>
    </properties>
