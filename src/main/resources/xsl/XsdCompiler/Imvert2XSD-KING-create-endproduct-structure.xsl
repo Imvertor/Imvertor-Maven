@@ -2685,7 +2685,9 @@
 		<!-- ROME: De waarde van het attribute 'StUF:entiteittype' moet m.b.v. 
 			een enum constuctie worden gedefinieerd. Die waarde zal aan de functie meegegeven 
 			moeten worden. Deze waarde zou uit het 'imvert:alias' element moeten komen. 
-			Dat is echter niet altijd aanwezig. -->
+			Dat is echter niet altijd aanwezig. 
+			Op dit moment wordt aan dit attribute nog geen prefix meegegeven maar dat moet uiteindelijk wel.
+			Als dat geimplementeerd is moet het stylesheet dat het schema gegereerd daarop aangepast worden. -->
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:entiteittype' and data = 'O']">
 			<ep:construct ismetadata="yes">
 				<!-- ROME: Voor nu definieer ik het attribute entiteittype in de namespace 

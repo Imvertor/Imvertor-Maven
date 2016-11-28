@@ -62,26 +62,23 @@
         </xsl:if>
     </xsl:template>
     
-    <xsl:template match="*[not(*) and not(name() = 'ep:tv-position')]">
+    <xsl:template match="*[not(*) and not(name() = 'ep:tv-position') and not(name() = 'ep:namespace')]">
         <xsl:sequence
             select="imf:create-output-element(name(.), .)"/>	
     </xsl:template>
-    
-    <!--xsl:template match="*[not(*) and not(name(.)='ep:name' and parent::ep:message)]">
-        <xsl:sequence
-            select="imf:create-output-element(name(.), .)"/>	
-    </xsl:template>
-
-    <xsl:template match="ep:name[parent::ep:message]">
-        <xsl:sequence
-            select="imf:create-output-element('ep:name', .)"/>	
-    </xsl:template-->
     
     <!-- The following template takes care of removing the 'context' attribute and the 'ep:id' element. -->
     <xsl:template match="ep:constructRef">
         <xsl:element name="{name(.)}">
             <xsl:apply-templates select="@*"/>
             <xsl:apply-templates select="*[name() != 'ep:id']"/>
+        </xsl:element>       
+    </xsl:template>
+    
+    <xsl:template match="ep:namespace">
+        <xsl:element name="{name(.)}">
+            <xsl:apply-templates select="@*"/>
+            <xsl:value-of select="."/>
         </xsl:element>       
     </xsl:template>
     
