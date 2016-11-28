@@ -92,7 +92,7 @@
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
 				<xs:element>
 					<xsl:choose>
-						<xsl:when test="contains(ep:tech-name,':')">
+						<!--xsl:when test="contains(ep:tech-name,':')">
 							<xsl:attribute name="ref" select="ep:tech-name"/>
 							<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
 							<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
@@ -101,7 +101,7 @@
 									<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
 								</xs:annotation>
 							</xsl:if>
-						</xsl:when>
+						</xsl:when-->
 						<xsl:when test="contains(ep:type-name,':') and not(ep:enum)">
 							<xsl:attribute name="name" select="ep:tech-name"/>
 							<xsl:attribute name="type" select="ep:type-name"/>
@@ -358,10 +358,17 @@
 	<xsl:template match="ep:constructRef">
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
 		<xs:element>
-			<xsl:attribute name="name" select="ep:tech-name"/>
+			<xsl:choose>
+				<xsl:when test="ep:href">
+					<xsl:attribute name="name" select="ep:tech-name"/>
+					<xsl:attribute name="type" select="concat($prefix,':',ep:href)"/>					
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:attribute name="ref" select="concat(@prefix,':',ep:tech-name)"/>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
 			<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
-			<xsl:attribute name="type" select="concat($prefix,':',ep:href)"/>
 			<xsl:if test="ep:documentation">
 				<xs:annotation>
 					<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
@@ -384,7 +391,7 @@
 			</xsl:choose>				
 		</xsl:variable>
 		<xsl:choose>
-			<xsl:when test="contains(ep:tech-name,':')"/>		
+			<!--xsl:when test="contains(ep:tech-name,':')"/-->		
 			<xsl:when test="contains(ep:type-name,':')">
 				<xs:simpleType name="{imf:get-normalized-name(concat('simpleType-',ep:tech-name,'-',generate-id()),'type-name')}">
 					<xs:restriction>
@@ -478,8 +485,9 @@
 		<xsl:sequence select="imf:create-debug-comment(concat(ep:tech-name, '-' ,generate-id()),$debugging)"/-->
 		
 		<xsl:choose>
-			<xsl:when test="contains(ep:tech-name,':') and ep:tech-name!='StUF:entiteittype'">
-				<xs:attribute ref="{ep:tech-name}">
+			<!--xsl:when test="contains(ep:tech-name,':') and ep:tech-name!='StUF:entiteittype'"-->
+			<xsl:when test="not(ep:href) and @prefix">
+				<xs:attribute ref="{concat(@prefix,':',ep:tech-name)}">
 					<xsl:attribute name="use">
 						<xsl:choose>
 							<xsl:when test="not(ep:min-occurs) or ep:min-occurs=1">required</xsl:when>

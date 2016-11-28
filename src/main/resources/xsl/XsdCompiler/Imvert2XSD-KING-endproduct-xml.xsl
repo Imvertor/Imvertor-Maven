@@ -137,8 +137,8 @@
             
             <!-- ROME: Volgende structuur moet, zodra we meerdere namespaces volledig ondersteunen, afgeleid worden van alle in gebruik zijnde namespaces. -->
             <ep:namespaces>
-                <xsl:namespace prefix="StUF">http://www.egem.nl/StUF/StUF0301</xsl:namespace>
-                <xsl:namespace prefix="{$prefix}"><xsl:value-of select="/imvert:packages/imvert:base-namespace"/></xsl:namespace>
+                <ep:namespace prefix="StUF">http://www.egem.nl/StUF/StUF0301</ep:namespace>
+                <ep:namespace prefix="{$prefix}"><xsl:value-of select="/imvert:packages/imvert:base-namespace"/></ep:namespace>
             </ep:namespaces>
             
             <xsl:if test="$debugging">

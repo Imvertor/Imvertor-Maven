@@ -901,13 +901,13 @@
 				</xsl:when>
 			</xsl:choose>
 			<ep:seq>
-				<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+				<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 					<xsl:sequence select="imf:create-output-element('ep:name', 'functie')"/>
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', 'functie')"/>
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', 1)"/>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', 1)"/>
 					<xsl:sequence select="imf:create-output-element('ep:enum', imvert:name/@original)"/>
-				</ep:constructRef>
+				</ep:construct>
 				<!-- ROME: Voor de volgende construct moet nog bepaald worden hoe het 
 					zijn waarde krijgt. -->
 				<!--ep:construct ismetadata="yes">
@@ -2561,7 +2561,7 @@
 			element. -->
 		<xsl:if
 			test="$attributeTypeRow//col[@name = 'StUF:noValue' and data = 'O' and $MogelijkGeenWaarde = 'Ja']">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>noValue</ep:name-->
 				<ep:tech-name>noValue</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
@@ -2574,7 +2574,7 @@
 				<ep:enum>geenWaarde</ep:enum>
 				<ep:enum>waardeOnbekend</ep:enum>
 				<ep:enum>vastgesteldOnbekend</ep:enum>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if
 			test="$attributeTypeRow//col[@name = 'StUF:noValue' and data = 'V'] and $MogelijkGeenWaarde = 'Ja'">
@@ -2600,7 +2600,7 @@
 			<!--xsl:message select="concat('WARN   ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : The StUF:noValue attribute is required in the context ',$context,'. Provide for it within EA.')" /-->
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:exact' and data = 'O']">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>exact</ep:name-->
 				<ep:tech-name>exact</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
@@ -2608,20 +2608,20 @@
 						   In het schema wordt immer verwezen naar een complexType in het schema voor de StUF onderlaag.
 						   Op een later moment wordt dit geconfigureerd. -->
 				<ep:type-name>scalar-boolean</ep:type-name>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:exact' and data = 'V']">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>exact</ep:name-->
 				<ep:tech-name>exact</ep:tech-name>
 				<!-- ROME: Deze name-type is alleen nodig voor de test templates. 
 						   In het schema wordt immer verwezen naar een complexType in het schema voor de StUF onderlaag.
 						   Op een later moment wordt dit geconfigureerd. -->
 				<ep:type-name>scalar-boolean</ep:type-name>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:metagegeven' and data = 'O']">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>metagegeven</ep:name-->
 				<ep:tech-name>metagegeven</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
@@ -2629,24 +2629,24 @@
 						   In het schema wordt immer verwezen naar een complexType in het schema voor de StUF onderlaag.
 						   Op een later moment wordt dit geconfigureerd. -->
 				<ep:type-name>scalar-boolean</ep:type-name>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:metagegeven' and data = 'V']">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>metagegeven</ep:name-->
 				<ep:tech-name>metagegeven</ep:tech-name>
 				<!-- ROME: Deze name-type is alleen nodig voor de test templates. 
 						   In het schema wordt immer verwezen naar een complexType in het schema voor de StUF onderlaag.
 						   Op een later moment wordt dit geconfigureerd. -->
 				<ep:type-name>scalar-boolean</ep:type-name>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<!-- ROME: De vraag is of ik het gebruik van het XML attribute 'StUF:indOnvolledigeDatum' 
 			wel in het spreadsheet moet configureren. Moeten niet gewoon alle elementen 
 			van het datumType dit XML attribute krijgen? -->
 		<xsl:if
 			test="$attributeTypeRow//col[@name = 'StUF:indOnvolledigeDatum' and data = 'O'] and $datumType = 'yes' and $onvolledigeDatum = 'yes'">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>indOnvolledigeDatum</ep:name-->
 				<ep:tech-name>indOnvolledigeDatum</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
@@ -2658,11 +2658,11 @@
 				<ep:enum>M</ep:enum>
 				<ep:enum>D</ep:enum>
 				<ep:enum>V</ep:enum>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if
 			test="$attributeTypeRow//col[@name = 'StUF:indOnvolledigeDatum' and data = 'V'] and $datumType = 'yes' and $onvolledigeDatum = 'yes'">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>indOnvolledigeDatum</ep:name-->
 				<ep:tech-name>indOnvolledigeDatum</ep:tech-name>
 				<!-- ROME: Deze enumeration en name-type is alleen nodig voor de test templates. 
@@ -2673,7 +2673,7 @@
 				<ep:enum>M</ep:enum>
 				<ep:enum>D</ep:enum>
 				<ep:enum>V</ep:enum>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if
 			test="$attributeTypeRow//col[@name = 'StUF:indOnvolledigeDatum' and data = 'V'] and $datumType = 'yes' and $onvolledigeDatum = 'no'">
@@ -2687,7 +2687,7 @@
 			moeten worden. Deze waarde zou uit het 'imvert:alias' element moeten komen. 
 			Dat is echter niet altijd aanwezig. -->
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:entiteittype' and data = 'O']">
-			<ep:constructRef prefix="{$prefix}" ismetadata="yes">
+			<ep:construct ismetadata="yes">
 				<!-- ROME: Voor nu definieer ik het attribute entiteittype in de namespace 
 					van het koppelvlak. Later zal ik echter een restriction moeten definieren 
 					in de namespace van het model waaruit de entiteit oorspronkelijk komt. -->
@@ -2709,10 +2709,10 @@
 						<!--xsl:message select="concat('WARN   ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : No mnemonic has been supplied. Suplly one with this entity using the alias field.')" /-->
 					</xsl:otherwise>
 				</xsl:choose>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:entiteittype' and data = 'V']">
-			<ep:constructRef prefix="{$prefix}" ismetadata="yes">
+			<ep:construct ismetadata="yes">
 				<!-- ROME: Voor nu definieer ik het attribute entiteittype in de namespace 
 					van het koppelvlak. Later zal ik echter een restriction moeten definieren 
 					in de namespace van het model waaruit de entiteit oorspronkelijk komt. -->
@@ -2733,98 +2733,98 @@
 						<!--xsl:message select="concat('WARN   ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : No mnemonic has been supplied. Suplly one with this entity using the alias field.')" /-->
 					</xsl:otherwise>
 				</xsl:choose>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:sleutelVerzendend' and data = 'O']">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>sleutelVerzendend</ep:name-->
 				<ep:tech-name>sleutelVerzendend</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:sleutelVerzendend' and data = 'V']">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>sleutelVerzendend</ep:name-->
 				<ep:tech-name>sleutelVerzendend</ep:tech-name>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:sleutelOntvangend' and data = 'O']">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>sleutelOntvangend</ep:name-->
 				<ep:tech-name>sleutelOntvangend</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:sleutelOntvangend' and data = 'V']">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>sleutelOntvangend</ep:name-->
 				<ep:tech-name>sleutelOntvangend</ep:tech-name>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:sleutelGegevensbeheer' and data = 'O']">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>sleutelGegevensbeheer</ep:name-->
 				<ep:tech-name>sleutelGegevensbeheer</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:sleutelGegevensbeheer' and data = 'V']">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>sleutelGegevensbeheer</ep:name-->
 				<ep:tech-name>sleutelGegevensbeheer</ep:tech-name>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:sleutelSynchronisatie' and data = 'O']">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>sleutelSynchronisatie</ep:name-->
 				<ep:tech-name>sleutelSynchronisatie</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:sleutelSynchronisatie' and data = 'V']">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>sleutelSynchronisatie</ep:name-->
 				<ep:tech-name>sleutelSynchronisatie</ep:tech-name>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:scope' and data = 'O']">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>scope</ep:name-->
 				<ep:tech-name>scope</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:scope' and data = 'V']">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>scope</ep:name-->
 				<ep:tech-name>scope</ep:tech-name>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:verwerkingssoort' and data = 'O']">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>verwerkingssoort</ep:name-->
 				<ep:tech-name>verwerkingssoort</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:verwerkingssoort' and data = 'V']">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>verwerkingssoort</ep:name-->
 				<ep:tech-name>verwerkingssoort</ep:tech-name>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:functie' and data = 'O']">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>functie</ep:name-->
 				<ep:tech-name>functie</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:functie' and data = 'V']">
-			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
+			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<!--ep:name>functie</ep:name-->
 				<ep:tech-name>functie</ep:tech-name>
-			</ep:constructRef>
+			</ep:construct>
 		</xsl:if>
 	</xsl:function>
 

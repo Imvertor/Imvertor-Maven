@@ -80,6 +80,7 @@
     <!-- The following template takes care of removing the 'context' attribute and the 'ep:id' element. -->
     <xsl:template match="ep:constructRef">
         <xsl:element name="{name(.)}">
+            <xsl:apply-templates select="@*"/>
             <xsl:apply-templates select="*[name() != 'ep:id']"/>
         </xsl:element>       
     </xsl:template>
