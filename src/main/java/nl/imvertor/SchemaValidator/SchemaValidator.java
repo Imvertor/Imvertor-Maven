@@ -66,7 +66,7 @@ public class SchemaValidator extends Step {
 	    
 	    report();
 	    
-	    return runner.succeeds() && valid;
+	    return runner.succeeds();
 			
 	}
 	

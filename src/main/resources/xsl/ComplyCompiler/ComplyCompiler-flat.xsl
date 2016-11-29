@@ -71,6 +71,14 @@
                     <xsl:apply-templates select="." mode="prepare-flat-block"/> 
                 </xsl:for-each>
             </cp:sheet>
+            <cp:sheet>
+                <!-- de namespace declaraties -->
+                <xsl:for-each select="ep:namespaces/ep:namespace">
+                    <cp:ns prefix="{@prefix}">
+                        <xsl:value-of select="."/>
+                    </cp:ns>
+                </xsl:for-each>
+            </cp:sheet>
         </cp:sheets>
     </xsl:template>
     

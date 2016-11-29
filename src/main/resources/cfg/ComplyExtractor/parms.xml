@@ -39,6 +39,12 @@
       
       <!-- relevant: -->
       <cli-parm>
+         <name>debug</name>
+         <arg>yes|no</arg>
+         <tip>Yes if run in debug mode</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
          <name>owner</name>
          <arg>name</arg>
          <tip>Explain</tip>

@@ -80,12 +80,15 @@
     <xsl:variable name="sheet1" select="$__content/cw:files/cw:file[@path = 'xl\worksheets\sheet1.xml']/worksheet"/>
     <xsl:variable name="sheet2" select="$__content/cw:files/cw:file[@path = 'xl\worksheets\sheet2.xml']/worksheet"/>
     <xsl:variable name="sheet3" select="$__content/cw:files/cw:file[@path = 'xl\worksheets\sheet3.xml']/worksheet"/>
-   
+    <xsl:variable name="sheet4" select="$__content/cw:files/cw:file[@path = 'xl\worksheets\sheet4.xml']/worksheet"/> <!-- store namespaces there -->
+    
     <xsl:variable name="comments1" select="$__content/cw:files/cw:file[@path = 'xl\comments1.xml']/comments"/>
     <xsl:variable name="comments2" select="$__content/cw:files/cw:file[@path = 'xl\comments2.xml']/comments"/>
 
     <xsl:variable name="drawings1" select="$__content/cw:files/cw:file[@path = 'xl\drawings\vmlDrawing1.vml']/*:xml"/>
     <xsl:variable name="drawings2" select="$__content/cw:files/cw:file[@path = 'xl\drawings\vmlDrawing2.vml']/*:xml"/>
+    
+    <xsl:variable name="namespaces" select="$message-set-flat/cp:sheet[3]/cp:ns"/> <!-- <ns prefix="prefix">namespace</ns> -->
     
     <xsl:template match="/">
         <!--process the template -->
@@ -118,6 +121,9 @@
                 </xsl:when>
                 <xsl:when test=". is $sheet3">
                     <xsl:apply-templates select="$worksheet" mode="process-variabelen"/>
+                </xsl:when>
+                <xsl:when test=". is $sheet4">
+                    <xsl:apply-templates select="$worksheet" mode="process-namespaces"/>
                 </xsl:when>
             </xsl:choose>
         </xsl:copy>
@@ -230,7 +236,7 @@
             <xsl:with-param name="blocks" select="$sheet-blocks"/>
         </xsl:apply-templates>
     </xsl:template>  
-
+    
     <xsl:template match="conditionalFormatting" mode="process-berichten">
         <xsl:apply-templates select="." mode="process-all">
             <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[1]/cp:block"/>
@@ -243,9 +249,9 @@
         </xsl:apply-templates>
     </xsl:template>
     
-    <xsl:template match="conditionalFormatting" mode="process-variabelen">
+    <xsl:template match="conditionalFormatting" mode="process-variabelen process-namespaces">
         <xsl:apply-templates select="." mode="process-all">
-            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[3]/cp:block"/>
+            <xsl:with-param name="blocks" select="()"/>
         </xsl:apply-templates>
     </xsl:template>
     
@@ -268,17 +274,19 @@
             </xsl:for-each>
         </xsl:variable>
         <!-- first general -->
-        <conditionalFormatting sqref="{string-join(for $r in $ranges return imf:create-range($r),' ')}">
-            <cfRule type="expression" dxfId="1" priority="7998" stopIfTrue="1">
-                <formula>OR($C3="",MID($C3,1,1)="0")</formula>
-            </cfRule>
-            <cfRule type="expression" dxfId="1" priority="7999" stopIfTrue="1">
-                <formula>OR($B3="CHOICE",$B3="SEQUENCE")</formula>
-            </cfRule>
-            <cfRule type="containsBlanks" dxfId="2" priority="10000">
-                <formula>LEN(TRIM(D3))=0</formula>
-            </cfRule>
-        </conditionalFormatting>
+        <xsl:if test="exists($blocks)">
+            <conditionalFormatting sqref="{string-join(for $r in $ranges return imf:create-range($r),' ')}">
+                <cfRule type="expression" dxfId="1" priority="7998" stopIfTrue="1">
+                    <formula>OR($C3="",MID($C3,1,1)="0")</formula>
+                </cfRule>
+                <cfRule type="expression" dxfId="1" priority="7999" stopIfTrue="1">
+                    <formula>OR($B3="CHOICE",$B3="SEQUENCE")</formula>
+                </cfRule>
+                <cfRule type="containsBlanks" dxfId="2" priority="10000">
+                    <formula>LEN(TRIM(D3))=0</formula>
+                </cfRule>
+            </conditionalFormatting>
+        </xsl:if>
         <!-- then for each block of input -->
         <xsl:for-each select="$ranges">
             <conditionalFormatting sqref="{imf:create-range(.)}">
@@ -321,7 +329,7 @@
     
     <xsl:template match="dimension" mode="process-variables">
         <xsl:apply-templates select="." mode="process-all">
-            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[3]/cp:block"/>
+            <xsl:with-param name="blocks" select="()"/>
         </xsl:apply-templates>
     </xsl:template>
     
@@ -341,9 +349,9 @@
             <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[2]/cp:block"/>
         </xsl:apply-templates>
     </xsl:template>
-    <xsl:template match="dataValidations" mode="process-variabelen">
+    <xsl:template match="dataValidations" mode="process-variabelen process-namespaces">
         <xsl:apply-templates select="." mode="process-all">
-            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[3]/cp:block"/>
+            <xsl:with-param name="blocks" select="()"/>
         </xsl:apply-templates>
     </xsl:template>
  
@@ -503,8 +511,8 @@
         </xsl:if>
     </xsl:function>
     
-   <!-- sheet 3 heeft geen legacy drawing dus maak er eentje -->
-    <xsl:template match="legacyDrawing" mode="process-variabelen">
+    <!--geen legacy drawing, dus maak er eentje -->
+    <xsl:template match="legacyDrawing" mode="process-berichten process-complextypes process-variabelen process-namespaces">
         <xsl:copy>
             <xsl:attribute name="r:id">rId1</xsl:attribute>
         </xsl:copy>
@@ -526,9 +534,9 @@
         </xsl:apply-templates>
     </xsl:template>
     
-    <xsl:template match="hyperlinks" mode="process-variabelen">
+    <xsl:template match="hyperlinks" mode="process-variabelen process-namespaces">
         <xsl:apply-templates select="." mode="process-all">
-            <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[3]/cp:block"/>
+            <xsl:with-param name="blocks" select="()"/>
         </xsl:apply-templates>
     </xsl:template>
     
@@ -666,6 +674,32 @@
     
     <!-- ============ complextypes =========== -->
     
+    <!-- sheet data miust be added based on namespace declarations -->
+    <xsl:template match="sheetData" mode="process-namespaces">
+        <xsl:copy>
+            <xsl:for-each select="$namespaces">
+                <xsl:variable name="message-row" select="position()"/>
+                <row r="{$message-row}" spans="1:2">
+                    <c r="A{$message-row}" s="1" t="inlineStr">
+                        <is>
+                            <t>
+                                <xsl:value-of select="@prefix"/>
+                            </t>
+                        </is>
+                    </c>
+                    <c r="B{$message-row}" s="1" t="inlineStr">
+                        <is>
+                            <t>
+                                <xsl:value-of select="."/>
+                            </t>
+                        </is>
+                    </c>
+                </row>
+            </xsl:for-each>
+        </xsl:copy>
+    </xsl:template>
+    
+    <!-- standard processing of sheet data -->
     <xsl:template match="sheetData" mode="process-all">
         <xsl:param name="blocks"/>
         <xsl:variable name="sheet-number" select="$blocks[1]/@sheet"/>
@@ -781,12 +815,6 @@
         </xsl:copy>
     </xsl:template>
     
-    <!-- ============ variabelen =========== -->
-    
-    <xsl:template match="worksheet" mode="process-variabelen">
-        <xsl:apply-templates select="*"/>
-    </xsl:template>
-    
     <!-- ============ algemeen =========== -->
     
     <!-- 
@@ -828,11 +856,21 @@
     
     <xsl:template match="cw:dummy"/>
     
-    <xsl:template match="node()|@*" mode="#all">
+    <xsl:template match="node()" mode="#all">
         <xsl:copy>
             <xsl:apply-templates select="@*" mode="#current"/>
             <xsl:apply-templates select="node()" mode="#current"/>
         </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="@*" mode="#all">
+        <xsl:sequence select="."/>
+    </xsl:template>
+    <xsl:template match="@*:Ignorable" mode="#all">
+        <!-- skip -->
+    </xsl:template>
+    <xsl:template match="@*:dyDescent" mode="#all">
+        <!-- skip -->
     </xsl:template>
     
     <xsl:function name="imf:create-range">

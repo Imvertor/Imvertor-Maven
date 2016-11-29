@@ -77,6 +77,9 @@
             <variables>
                 <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet3.xml']" mode="create-vars"/>
             </variables>
+            <namespaces>
+                <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet4.xml']" mode="create-namespaces"/>
+            </namespaces>
         </testset>
     </xsl:template>
     
@@ -154,6 +157,17 @@
             <variable name="{$name}">
                 <xsl:value-of select="$value"/>
             </variable>
+        </xsl:for-each>
+    </xsl:template>
+    
+    <xsl:template match="cw:file" mode="create-namespaces">
+        <xsl:variable name="worksheet-rows" select="*:worksheet/*:sheetData/*:row"/>
+        <xsl:for-each select="$worksheet-rows">
+            <xsl:variable name="name" select="imf:get-string(*:c[1])"/>
+            <xsl:variable name="value" select="imf:get-string(*:c[2])"/>
+            <ns prefix="{$name}">
+                <xsl:value-of select="$value"/>
+            </ns>
         </xsl:for-each>
     </xsl:template>
     
