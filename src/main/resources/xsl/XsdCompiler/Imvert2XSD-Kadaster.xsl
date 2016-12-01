@@ -373,18 +373,24 @@
                         <xsl:for-each select="imvert:attributes/imvert:attribute">
                             <xsl:sort select="xs:integer(imvert:position)" order="ascending"/>
                             <xsl:variable name="defining-class" select="imf:get-defining-class(.)"/>   
-                            <xsl:variable name="is-composite" select="imvert:aggregation='composite'"/>
+                            <xsl:variable name="defining-class-is-datatype" select="$defining-class/imvert:stereotype = imf:get-config-stereotype-names(
+                                ('stereotype-name-datatype','stereotype-name-enumeration','stereotype-name-complextype','stereotype-name-union'))"/>   
                             <xsl:choose>
+                                <xsl:when test="$defining-class-is-datatype">
+                                    <xsl:sequence select="imf:debug(.,'A choice member, which is a datatype')"/>
+                                    <xsl:sequence select="imf:create-element-property(.)"/>
+                                </xsl:when>
                                 <xsl:when test="empty($defining-class)">
-                                    <xsl:sequence select="imf:msg(.,'ERROR', 'Unknown type for attribute',())"/> <!-- IM-291 -->
+                                    <xsl:sequence select="imf:msg(.,'ERROR', 'Unable to create a union of scalar types',())"/> <!-- IM-291 -->
                                 </xsl:when>
                                 <xsl:when test="imf:is-linkable($defining-class) and imf:boolean($buildcollection)"> 
                                     <!-- when the class is linkable, and using collections, use the reference element name -->
+                                    <xsl:sequence select="imf:debug(.,'A choice member, linkable')"/>
                                     <xs:element ref="{imf:get-reference-class-name($defining-class)}"/>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <!-- not linkable -->
-                                    <xsl:sequence select="imf:create-element-property(.)"/>
+                                    <xsl:sequence select="imf:debug(.,'A choice member')"/>
+                                    <xs:element ref="{imf:get-qname($defining-class)}"/>  
                                 </xsl:otherwise>
                             </xsl:choose>
                         </xsl:for-each>
@@ -394,6 +400,7 @@
                             <xs:choice>
                                 <xsl:attribute name="minOccurs" select="if (imvert:min-occurs) then imvert:min-occurs else '1'"/>
                                 <xsl:attribute name="maxOccurs" select="if (imvert:max-occurs) then imvert:max-occurs else '1'"/>
+                                <xsl:sequence select="imf:debug(.,'A number of choices')"/>
                                 <xsl:sequence select="$atts"/>
                             </xs:choice>
                         </complex>
@@ -1181,6 +1188,7 @@
                                                     <xs:choice>
                                                         <xsl:attribute name="minOccurs" select="$min-occurs-target"/>
                                                         <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                                                        <xsl:sequence select="imf:debug($this,'... and the result set counts more that 1')"/>
                                                         <xsl:for-each select="$result-set">
                                                             <xs:element ref="{imf:get-qname(.)}"/>
                                                         </xsl:for-each>
@@ -1193,6 +1201,7 @@
                                                     <xs:element ref="{imf:get-qname($result-set)}">
                                                         <xsl:attribute name="minOccurs" select="$min-occurs-target"/>
                                                         <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                                                        <xsl:sequence select="imf:debug($this,'... and the result set counts 1')"/>
                                                     </xs:element>
                                                 </xsl:otherwise>
                                             </xsl:choose>
