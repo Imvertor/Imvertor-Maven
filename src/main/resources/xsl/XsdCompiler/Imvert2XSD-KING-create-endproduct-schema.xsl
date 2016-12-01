@@ -356,7 +356,6 @@
 	</xsl:template>
 	
 	<xsl:template match="ep:constructRef">
-		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
 		<xs:element>
 			<xsl:choose>
 				<xsl:when test="ep:href">

@@ -444,7 +444,7 @@
 								</xsl:variable>
 								<!--xsl:choose-->
 									<xsl:if
-										test="$tv-materieleHistorie-attributes//ep:tagged-value = 'Ja' or $tv-materieleHistorie-attributes//ep:tagged-value = 'Ja, zie regels'">
+										test="($berichtCode = 'La07' or $berichtCode = 'La08' or $berichtCode = 'La09' or $berichtCode = 'La10') and $tv-materieleHistorie-attributes//ep:tagged-value = 'Ja' or $tv-materieleHistorie-attributes//ep:tagged-value = 'Ja, zie regels'">
 										<xsl:attribute name="indicatieMaterieleHistorie"
 											select="'Ja op attributes'"/>
 									</xsl:if>
@@ -455,7 +455,7 @@
 							<xsl:when
 								test="count(key('class',$type-id)//imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1"-->
 							<xsl:if
-								test="contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie'), 'Ja')">
+								test="($berichtCode = 'La09' or $berichtCode = 'La10') and contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie'), 'Ja')">
 								<xsl:attribute name="indicatieFormeleHistorieRelatie" select="'Ja'"/>
 							</xsl:if>
 							<!--xsl:otherwise-->
@@ -474,7 +474,7 @@
 								</xsl:variable>
 								<!--xsl:choose-->
 									<xsl:if
-										test="$tv-formeleHistorie-attributes//ep:tagged-value = 'Ja'">
+										test="($berichtCode = 'La09' or $berichtCode = 'La10') and $tv-formeleHistorie-attributes//ep:tagged-value = 'Ja'">
 										<xsl:attribute name="indicatieFormeleHistorie"
 											select="'Ja op attributes'"/>
 									</xsl:if>
@@ -485,7 +485,7 @@
 					<xsl:otherwise>
 						<xsl:choose>
 							<xsl:when
-								test="contains(imf:get-most-relevant-compiled-taggedvalue(key('class',$type-id), 'Indicatie materiële historie'), 'Ja')">
+								test="($berichtCode = 'La07' or $berichtCode = 'La08' or $berichtCode = 'La09' or $berichtCode = 'La10') and contains(imf:get-most-relevant-compiled-taggedvalue(key('class',$type-id), 'Indicatie materiële historie'), 'Ja')">
 								<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja'"/>
 							</xsl:when>
 							<xsl:otherwise>
@@ -501,7 +501,7 @@
 								</xsl:variable>
 								<xsl:choose>
 									<xsl:when
-										test="$tv-materieleHistorie-attributes//ep:tagged-value = 'Ja' or $tv-materieleHistorie-attributes//ep:tagged-value = 'Ja, zie regels'">
+										test="($berichtCode = 'La07' or $berichtCode = 'La08' or $berichtCode = 'La09' or $berichtCode = 'La10') and $tv-materieleHistorie-attributes//ep:tagged-value = 'Ja' or $tv-materieleHistorie-attributes//ep:tagged-value = 'Ja, zie regels'">
 										<xsl:attribute name="indicatieMaterieleHistorie"
 											select="'Ja op attributes'"/>
 									</xsl:when>
@@ -510,7 +510,7 @@
 						</xsl:choose>
 						<xsl:choose>
 							<xsl:when
-								test="contains(imf:get-most-relevant-compiled-taggedvalue(key('class',$type-id), 'Indicatie formele historie'), 'Ja')">
+								test="($berichtCode = 'La09' or $berichtCode = 'La10') and contains(imf:get-most-relevant-compiled-taggedvalue(key('class',$type-id), 'Indicatie formele historie'), 'Ja')">
 								<xsl:attribute name="indicatieFormeleHistorie" select="'Ja'"/>
 							</xsl:when>
 							<xsl:otherwise>
@@ -526,7 +526,7 @@
 								</xsl:variable>
 								<xsl:choose>
 									<xsl:when
-										test="$tv-formeleHistorie-attributes//ep:tagged-value = 'Ja'">
+										test="($berichtCode = 'La09' or $berichtCode = 'La10') and $tv-formeleHistorie-attributes//ep:tagged-value = 'Ja'">
 										<xsl:attribute name="indicatieFormeleHistorie"
 											select="'Ja op attributes'"/>
 									</xsl:when>
@@ -880,6 +880,8 @@
 		<xsl:param name="changedBerichtCode"/>
 		
 		<xsl:sequence select="imf:create-debug-comment('Template9: createRoughEntityConstruct',$debugging)"/>
+
+		<xsl:sequence select="imf:create-debug-comment(concat('berichtCode: ',$berichtCode),$debugging)"/>
 		
 		<ep:construct>
 			<xsl:if test="$changedBerichtCode != ''">
@@ -898,15 +900,15 @@
 			<xsl:attribute name="context" select="$context"/>
 			<xsl:attribute name="type" select="'entity'"/>
 			<xsl:if
-				test="
-				(count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'Ja' or imvert:value = 'Ja, zie regels')]) >= 1) or
-				(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'Ja' or imvert:value = 'Ja, zie regels')]) >= 1)">
+				test="($berichtCode = 'La07' or $berichtCode = 'La08' or $berichtCode = 'La09' or $berichtCode = 'La10') and 
+				((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'Ja' or imvert:value = 'Ja, zie regels')]) >= 1) or
+				(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'Ja' or imvert:value = 'Ja, zie regels')]) >= 1))">
 				<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja'"/>
 			</xsl:if>
 			<xsl:if
-				test="
-				(count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1) or
-				(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1)">
+				test="($berichtCode = 'La09' or $berichtCode = 'La10') and
+				((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1) or
+				(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1))">
 				<xsl:attribute name="indicatieFormeleHistorie" select="'Ja'"/>
 			</xsl:if>
 			<xsl:choose>
@@ -938,7 +940,7 @@
 				<xsl:with-param name="berichtCode" select="$berichtCode"/>
 				<xsl:with-param name="context" select="$context"/>
 			</xsl:apply-templates>
-			<xsl:if
+<?x			<xsl:if
 				test="
 					($historyApplies = 'yes-Materieel' or $historyApplies = 'yes') and //imvert:class[imvert:id = $type-id and
 					.//imvert:tagged-value[imvert:name = 'IndicatieMateriLeHistorie' and contains(imvert:value, 'Ja')]]">
@@ -999,7 +1001,7 @@
 						<xsl:with-param name="historyApplies" select="$historyApplies"/>
 					</xsl:apply-templates>
 				</ep:construct>
-			</xsl:if>
+			</xsl:if> x?>
 			<xsl:apply-templates select="key('class',$type-id)"
 				mode="create-rough-message-content">
 				<xsl:with-param name="proces-type" select="'associationsRelatie'"/>
@@ -1051,15 +1053,15 @@
 						<xsl:attribute name="type" select="'supertype'"/>
 					</xsl:if>
 					<xsl:if
-						test="
-						(count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'Ja' or imvert:value = 'Ja, zie regels')]) >= 1) or
-						(count(key('class',$type-id)/imvert:attributes/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'Ja' or imvert:value = 'Ja, zie regels')]) >= 1)">
+						test="($berichtCode = 'La07' or $berichtCode = 'La08' or $berichtCode = 'La09' or $berichtCode = 'La10') and
+						((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'Ja' or imvert:value = 'Ja, zie regels')]) >= 1) or
+						(count(key('class',$type-id)/imvert:attributes/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'Ja' or imvert:value = 'Ja, zie regels')]) >= 1))">
 						<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja'"/>
 					</xsl:if>
 					<xsl:if
-						test="
-						(count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1) or
-						(count(key('class',$type-id)/imvert:attributes/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1)">
+						test="($berichtCode = 'La09' or $berichtCode = 'La10') and
+						((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1) or
+						(count(key('class',$type-id)/imvert:attributes/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'Ja']) >= 1))">
 						<xsl:attribute name="indicatieFormeleHistorie" select="'Ja'"/>
 					</xsl:if>
 					<ep:name>gerelateerde</ep:name>
