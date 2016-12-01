@@ -105,6 +105,7 @@
 		<xsl:param name="messagePrefix" select="''"/>
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
+		<xsl:param name="verwerkingsModus" select="''" />
 		
 		<!-- The purpose of this parameter is to determine if the element 'stuurgegevens' 
 			 must be generated or not. This is important because the 'kennisgevingbericht' , 
@@ -123,6 +124,7 @@
 				generated with the attributen.-->
 			<xsl:apply-templates select="imvert:supertype" mode="create-message-content">
 				<xsl:with-param name="proces-type" select="'attributes'"/>
+				<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 				<xsl:with-param name="berichtCode" select="$berichtCode"/>
 				<xsl:with-param name="berichtName" select="$berichtName"/>
 				<xsl:with-param name="context" select="''"/>
@@ -130,6 +132,7 @@
 			<xsl:apply-templates select="./imvert:attributes/imvert:attribute" mode="create-message-content">
 				<xsl:with-param name="berichtCode" select="$berichtCode"/>
 				<xsl:with-param name="berichtName" select="$berichtName"/>
+				<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 				<xsl:with-param name="context" select="''"/>
 			</xsl:apply-templates>
 
@@ -143,6 +146,7 @@
 				generated with the attributen.-->
 			<xsl:apply-templates select="imvert:supertype" mode="create-message-content">
 				<xsl:with-param name="proces-type" select="'associationsGroepCompositie'"/>
+				<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 				<xsl:with-param name="berichtCode" select="$berichtCode"/>
 				<xsl:with-param name="berichtName" select="$berichtName"/>
 				<xsl:with-param name="context" select="''"/>
@@ -155,6 +159,7 @@
 				mode="create-message-content">
 				<xsl:with-param name="berichtCode" select="$berichtCode"/>
 				<xsl:with-param name="berichtName" select="$berichtName"/>
+				<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 				<xsl:with-param name="context" select="''"/>
 			</xsl:apply-templates>
 
@@ -173,6 +178,7 @@
 						mode="create-message-content">
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="orderingDesired" select="'no'"/>
 					</xsl:apply-templates>
 				</xsl:when>
@@ -182,6 +188,7 @@
 						mode="create-message-content">
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="orderingDesired" select="'no'"/>
 					</xsl:apply-templates>
 					<!-- Associations linking from a class with a imvert:stereotype with the 
@@ -195,6 +202,7 @@
 						mode="create-toplevel-message-structure-constructRef">
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 					</xsl:apply-templates>
 				</xsl:otherwise>
 			</xsl:choose>
@@ -207,6 +215,7 @@
 		 processed. It will start processing the attributes, groups or associations of the superclass. -->
 	<xsl:template match="imvert:supertype" mode="create-message-content">
 		<xsl:param name="proces-type"/>
+		<xsl:param name="verwerkingsModus" select="''" />
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
 		<xsl:param name="context"/>
@@ -223,6 +232,7 @@
 		<xsl:apply-templates select="key('class',$type-id)"
 			mode="create-message-content">
 			<xsl:with-param name="proces-type" select="$proces-type"/>
+			<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 			<xsl:with-param name="berichtCode" select="$berichtCode"/>
 			<xsl:with-param name="berichtName" select="$berichtName"/>
 			<xsl:with-param name="context" select="$context"/>
@@ -238,6 +248,7 @@
 
 	<xsl:template match="imvert:supertype" mode="create-message-content-constructRef">
 		<xsl:param name="proces-type"/>
+		<xsl:param name="verwerkingsModus" select="''" />
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
 		<xsl:param name="context"/>
@@ -251,6 +262,7 @@
 		<xsl:apply-templates select="key('class',$type-id)"
 			mode="create-message-content-constructRef">
 			<xsl:with-param name="proces-type" select="$proces-type"/>
+			<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 			<xsl:with-param name="berichtCode" select="$berichtCode"/>
 			<xsl:with-param name="berichtName" select="$berichtName"/>
 			<xsl:with-param name="context" select="$context"/>
@@ -266,6 +278,7 @@
 		is processed within this template (3). -->
 	<xsl:template match="imvert:class" mode="create-message-content">
 		<xsl:param name="proces-type" select="''"/>
+		<xsl:param name="verwerkingsModus" select="''" />
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
 		<xsl:param name="context"/>
@@ -290,6 +303,7 @@
 					
 					<xsl:apply-templates select="imvert:supertype" mode="create-message-content">
 						<xsl:with-param name="proces-type" select="$proces-type"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
@@ -302,6 +316,7 @@
 					<xsl:apply-templates select="./imvert:attributes/imvert:attribute" mode="create-message-content">
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="context" select="$context"/>
 						<xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
 						<xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
@@ -444,6 +459,7 @@
 					</xsl:choose>
 					<xsl:apply-templates select="imvert:supertype" mode="create-message-content">
 						<xsl:with-param name="proces-type" select="$proces-type"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
@@ -458,6 +474,7 @@
 						mode="create-message-content">
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="context" select="$context"/>
 						<xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
 						<xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
@@ -482,7 +499,7 @@
 									</xsl:when>
 								</xsl:choose>
 							</xsl:variable>
-							<xsl:variable name="href" select="concat($mnemonicPartOfName, imf:get-normalized-name(@formal-name, 'type-name'))"/>
+							<xsl:variable name="href" select="concat($mnemonicPartOfName, imf:get-normalized-name(@formal-name, 'type-name'),'-',$berichtName)"/>
 							
 							<ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 								<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)" />
@@ -523,6 +540,7 @@
 					<xsl:sequence select="imf:create-debug-comment('Template: imvert:class[mode=create-message-content] 4e when',$debugging)"/>
 					<xsl:apply-templates select="imvert:supertype" mode="create-message-content">
 						<xsl:with-param name="proces-type" select="$proces-type"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
@@ -533,6 +551,7 @@
 						mode="create-message-content">
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="context" select="$context"/>
 					</xsl:apply-templates>
 					
@@ -544,6 +563,7 @@
 						mode="create-message-content">
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="context" select="$context"/>
 					</xsl:apply-templates-->
 				</xsl:when>
@@ -556,6 +576,7 @@
 		 that refer to global constructs. -->
 	<xsl:template match="imvert:class" mode="create-message-content-constructRef">
 		<xsl:param name="proces-type" select="''"/>
+		<xsl:param name="verwerkingsModus" select="''" />
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
 		<xsl:param name="context"/>
@@ -565,6 +586,7 @@
 		
 		<xsl:apply-templates select="imvert:supertype" mode="create-message-content-constructRef">
 			<xsl:with-param name="proces-type" select="$proces-type"/>
+			<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 			<xsl:with-param name="berichtCode" select="$berichtCode"/>
 			<xsl:with-param name="berichtName" select="$berichtName"/>
 			<xsl:with-param name="context" select="$context"/>
@@ -573,12 +595,14 @@
 			mode="create-message-content-constructRef">
 			<xsl:with-param name="berichtCode" select="$berichtCode"/>
 			<xsl:with-param name="berichtName" select="$berichtName"/>
+			<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 			<xsl:with-param name="context" select="$context"/>
 		</xsl:apply-templates>
 		<xsl:apply-templates select="./imvert:associations/imvert:association[imvert:stereotype = 'ENTITEITRELATIE']"
 			mode="create-message-content-constructRef">
 			<xsl:with-param name="berichtCode" select="$berichtCode"/>
 			<xsl:with-param name="berichtName" select="$berichtName"/>
+			<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 			<xsl:with-param name="context" select="$context"/>
 		</xsl:apply-templates>
 		
@@ -590,6 +614,7 @@
 	<xsl:template match="imvert:association" mode="create-message-content">
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
+		<xsl:param name="verwerkingsModus" select="''" />
 		<xsl:param name="context"/>
 		<xsl:param name="orderingDesired" select="'yes'"/>
 		<!--xsl:param name="historyAppliesToMessage" select="'no'"/-->
@@ -652,16 +677,16 @@
 						<xsl:when
 							test="imvert:stereotype = 'RELATIE' and key('class',$type-id)/imvert:alias">
 							<xsl:value-of
-								select="concat($mnemonic, '-', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),$historyName)"
+								select="concat($mnemonic, '-', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),$historyName,'-',$berichtName)"
 							/>
 						</xsl:when>
 						<xsl:when test="imvert:stereotype = 'RELATIE'">
 							<xsl:value-of
-								select="concat(imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),$historyName)"
+								select="concat(imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),$historyName,'-',$berichtName)"
 							/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="concat(imf:get-normalized-name(imvert:name, 'element-name'),$historyName)"/>
+							<xsl:value-of select="concat(imf:get-normalized-name(imvert:name, 'element-name'),$historyName,'-',$berichtName)"/>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
@@ -789,6 +814,7 @@
 	<xsl:template match="imvert:association" mode="create-message-content-constructRef">
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
+		<xsl:param name="verwerkingsModus" select="''" />
 		<xsl:param name="context"/>
 		<xsl:param name="orderingDesired" select="'yes'"/>
 		<!--xsl:param name="generateHistorieConstruct" select="'Nee'"/-->
@@ -826,7 +852,7 @@
 				</xsl:when>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:variable name="href" select="concat($mnemonicPartOfName, imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'))"
+		<xsl:variable name="href" select="concat($mnemonicPartOfName, imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',$berichtName)"
 			/>
 
 		<xsl:sequence select="imf:create-debug-comment('Template: imvert:association[mode=create-message-content-constructRef]',$debugging)"/>
@@ -863,6 +889,7 @@
 	<xsl:template match="imvert:association" mode="create-toplevel-message-structure">
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
+		<xsl:param name="verwerkingsModus" select="''" />
 		
 		<xsl:sequence select="imf:create-debug-comment('Template: imvert:association[mode=create-toplevel-message-structure]',$debugging)"/>
 		
@@ -882,6 +909,7 @@
 						<xsl:with-param name="id-trail" select="concat('#1#', imvert:id, '#')"/>
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="context" select="'-'"/>
 					</xsl:apply-templates>
 				</xsl:when>
@@ -896,6 +924,7 @@
 						mode="create-toplevel-message-structure">
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="stuurgegevens" select="'no'"/>
 					</xsl:apply-templates>
 				</xsl:when>
@@ -923,6 +952,7 @@
 	<xsl:template match="imvert:association" mode="create-toplevel-message-structure-constructRef">
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
+		<xsl:param name="verwerkingsModus" select="''" />
 		
 		<xsl:variable name="name" select="imvert:name"/>
 		<xsl:variable name="tech-name">
@@ -955,7 +985,7 @@
 				</xsl:when>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:variable name="href" select="concat($mnemonicPartOfName, imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'))"
+		<xsl:variable name="href" select="concat($mnemonicPartOfName, imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',$berichtName)"
 			/>
 		
 		<xsl:sequence select="imf:create-debug-comment('Template: imvert:association[mode=create-toplevel-message-structure-constructRef]',$debugging)"/>
@@ -998,6 +1028,7 @@
 		mode="create-message-content">
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
+		<xsl:param name="verwerkingsModus" select="''" />
 		<xsl:param name="orderingDesired" select="'yes'"/>
 		<xsl:param name="generateHistorieConstruct" select="'Nee'"/>
 
@@ -1041,12 +1072,12 @@
 					<xsl:choose>
 						<xsl:when test="key('class',$type-id)/imvert:alias">
 							<xsl:sequence
-								select="imf:create-output-element('ep:href', concat($berichtName,'-',key('class',$type-id)/imvert:alias, '-', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',imvert:name))"
+								select="imf:create-output-element('ep:href', concat(key('class',$type-id)/imvert:alias, '-', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',imvert:name,'-',$berichtName))"
 							/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence
-								select="imf:create-output-element('ep:href', concat($berichtName,'-',imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',imvert:name))"
+								select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',imvert:name,'-',$berichtName))"
 							/>
 						</xsl:otherwise>
 					</xsl:choose>
@@ -1069,10 +1100,10 @@
 							<xsl:choose>
 								<xsl:when test="key('class',$type-id)/imvert:alias">
 									<xsl:sequence
-										select="imf:create-output-element('ep:href', concat(key('class',$type-id)/imvert:alias, '-', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name')))"/>
+										select="imf:create-output-element('ep:href', concat(key('class',$type-id)/imvert:alias, '-', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',$berichtName))"/>
 								</xsl:when>
 								<xsl:otherwise>
-									<xsl:sequence select="imf:create-output-element('ep:href', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'))"/>
+									<xsl:sequence select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',$berichtName))"/>
 								</xsl:otherwise>
 							</xsl:choose>
 						</ep:constructRef>
@@ -1086,12 +1117,12 @@
 							<xsl:choose>
 								<xsl:when test="key('class',$type-id)/imvert:alias">
 									<xsl:sequence
-										select="imf:create-output-element('ep:href', concat($berichtName,'-',key('class',$type-id)/imvert:alias, '-', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',imvert:name))"
+										select="imf:create-output-element('ep:href', concat(key('class',$type-id)/imvert:alias, '-', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',imvert:name,'-',$berichtName))"
 									/>
 								</xsl:when>
 								<xsl:otherwise>
 									<xsl:sequence
-										select="imf:create-output-element('ep:href', concat($berichtName,'-',imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',imvert:name))"
+										select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',imvert:name,'-',$berichtName))"
 									/>
 								</xsl:otherwise>
 							</xsl:choose>
@@ -1106,12 +1137,12 @@
 							<xsl:choose>
 								<xsl:when test="key('class',$type-id)/imvert:alias">
 									<xsl:sequence
-										select="imf:create-output-element('ep:href', concat($berichtName,'-',key('class',$type-id)/imvert:alias, '-', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',imvert:name))"
+										select="imf:create-output-element('ep:href', concat(key('class',$type-id)/imvert:alias, '-', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',imvert:name,'-',$berichtName))"
 									/>
 								</xsl:when>
 								<xsl:otherwise>
 									<xsl:sequence
-										select="imf:create-output-element('ep:href', concat($berichtName,'-',imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',imvert:name))"
+										select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',imvert:name,'-',$berichtName))"
 									/>
 								</xsl:otherwise>
 							</xsl:choose>
@@ -1128,12 +1159,12 @@
 					<xsl:choose>
 						<xsl:when test="key('class',$type-id)/imvert:alias">
 							<xsl:sequence
-								select="imf:create-output-element('ep:href', concat(key('class',$type-id)/imvert:alias, '-', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name')))"
+								select="imf:create-output-element('ep:href', concat(key('class',$type-id)/imvert:alias, '-', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',$berichtName))"
 							/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence
-								select="imf:create-output-element('ep:href', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'))"
+								select="imf:create-output-element('ep:href', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',$berichtName)"
 							/>
 						</xsl:otherwise>
 					</xsl:choose>
@@ -1152,12 +1183,12 @@
 					<xsl:choose>
 						<xsl:when test="key('class',$type-id)/imvert:alias">
 							<xsl:sequence
-								select="imf:create-output-element('ep:href', concat(key('class',$type-id)/imvert:alias, '-', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name')))"
+								select="imf:create-output-element('ep:href', concat(key('class',$type-id)/imvert:alias, '-', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',$berichtName))"
 							/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence
-								select="imf:create-output-element('ep:href', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'))"
+								select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',$berichtName))"
 							/>
 						</xsl:otherwise>
 					</xsl:choose>
@@ -1178,12 +1209,12 @@
 					<xsl:choose>
 						<xsl:when test="key('class',$type-id)/imvert:alias">
 							<xsl:sequence
-								select="imf:create-output-element('ep:href', concat(key('class',$type-id)/imvert:alias, '-', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name')))"
+								select="imf:create-output-element('ep:href', concat(key('class',$type-id)/imvert:alias, '-', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',$berichtName))"
 							/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence
-								select="imf:create-output-element('ep:href', imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'))"
+								select="imf:create-output-element('ep:href', concat(imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-',$berichtName))"
 							/>
 						</xsl:otherwise>
 					</xsl:choose>
@@ -1212,6 +1243,7 @@
 	<xsl:template match="imvert:attribute" mode="create-message-content">
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
+		<xsl:param name="verwerkingsModus" select="''" />
 		<xsl:param name="context"/>
 		<xsl:param name="generateHistorieConstruct" select="'Nee'"/>
 		<xsl:param name="indicatieMaterieleHistorie" select="'Nee'"/>
@@ -1426,6 +1458,7 @@
 		<xsl:param name="proces-type" select="'associations'"/>
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
+		<xsl:param name="verwerkingsModus" select="''" />
 		<xsl:param name="context"/>
 		<xsl:param name="generateHistorieConstruct" select="'Nee'"/>
 		<xsl:param name="indicatieMaterieleHistorie" select="'Nee'"/>
@@ -1442,6 +1475,7 @@
 				<xsl:apply-templates select="key('class',$type-id)"
 					mode="create-message-content">
 					<xsl:with-param name="proces-type" select="$proces-type"/>
+					<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 					<xsl:with-param name="berichtName" select="$berichtName"/>
 					<xsl:with-param name="context" select="$context"/>
@@ -1457,6 +1491,7 @@
 				<xsl:apply-templates select="key('class',$type-id)"
 					mode="create-message-content">
 					<xsl:with-param name="proces-type" select="$proces-type"/>
+					<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 					<xsl:with-param name="berichtName" select="$berichtName"/>
 					<xsl:with-param name="context" select="$context"/>
@@ -1477,6 +1512,7 @@
 	<xsl:template name="createEntityConstruct">
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
+		<xsl:param name="verwerkingsModus" select="''" />
 		<xsl:param name="context"/>
 		<xsl:param name="orderingDesired" select="'yes'"/>
 		<xsl:param name="type-id"/>
@@ -1616,6 +1652,7 @@
 				<xsl:apply-templates select="key('class',$type-id)"
 					mode="create-message-content">
 					<xsl:with-param name="proces-type" select="'attributes'"/>
+					<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 					<xsl:with-param name="berichtName" select="$berichtName"/>
 					<xsl:with-param name="context" select="$context"/>
@@ -1623,6 +1660,7 @@
 				<xsl:apply-templates select="key('class',$type-id)"
 					mode="create-message-content">
 					<xsl:with-param name="proces-type" select="'associationsGroepCompositie'"/>
+					<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 					<xsl:with-param name="berichtName" select="$berichtName"/>
 					<xsl:with-param name="context" select="$context"/>
@@ -1676,12 +1714,12 @@
 							<xsl:when
 								test="$packages//imvert:class[imvert:id = $type-id]/imvert:alias">
 								<xsl:sequence
-									select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $type-id]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name, 'type-name'), '-historieMaterieel'))"
+									select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $type-id]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name, 'type-name'), '-historieMaterieel','-',$berichtName))"
 								/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:sequence
-									select="imf:create-output-element('ep:href', imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name, 'type-name'), '-historieMaterieel')"
+									select="imf:create-output-element('ep:href', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name, 'type-name'), '-historieMaterieel','-',$berichtName))"
 								/>
 							</xsl:otherwise>
 						</xsl:choose>
@@ -1697,11 +1735,11 @@
 							<xsl:when
 								test="$packages//imvert:class[imvert:id = $type-id]/imvert:alias">
 								<xsl:sequence
-									select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $type-id]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name, 'type-name'), '-historieFormeel'))"/>
+									select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $type-id]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name, 'type-name'), '-historieFormeel','-',$berichtName))"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:sequence
-									select="imf:create-output-element('ep:href', imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name, 'type-name'), '-historieFormeel')"
+									select="imf:create-output-element('ep:href', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $type-id]/@formal-name, 'type-name'), '-historieFormeel','-',$berichtName))"
 								/>
 							</xsl:otherwise>
 						</xsl:choose>
@@ -1710,6 +1748,7 @@
 				<xsl:apply-templates select="key('class',$type-id)"
 					mode="create-message-content">
 					<xsl:with-param name="proces-type" select="'associationsRelatie'"/>
+					<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 					<xsl:with-param name="berichtName" select="$berichtName"/>
 					<xsl:with-param name="context" select="$context"/>
@@ -1746,6 +1785,7 @@
 		<xsl:param name="type-id"/>
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
+		<xsl:param name="verwerkingsModus" select="''" />
 		<xsl:param name="context"/>
 		<!-- With this parameter the code can determine if 'historie' applies to the message being compiled. 
 			 However this is only relevant if the current construct being generated also is an 'historie' construct. -->
@@ -1791,7 +1831,7 @@
 								<ep:max-occurs>1</ep:max-occurs>
 								<ep:min-occurs>0</ep:min-occurs>
 								<ep:position>1</ep:position>
-								<xsl:sequence select="imf:create-output-element('ep:href', $href)"/>
+								<xsl:sequence select="imf:create-output-element('ep:href', concat($href,'-',$berichtName))"/>
 							</ep:constructRef>
 						</xsl:otherwise>
 					</xsl:choose>
@@ -1800,6 +1840,7 @@
 					<xsl:apply-templates select="imvert:association-class"
 						mode="create-message-content">
 						<xsl:with-param name="proces-type" select="'attributes'"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
@@ -1813,6 +1854,7 @@
 					<xsl:apply-templates select="imvert:association-class"
 						mode="create-message-content">
 						<xsl:with-param name="proces-type" select="'associationsGroepCompositie'"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
@@ -1926,7 +1968,7 @@
 					<!--xsl:if test="($materieleHistorie = 'Ja' and $generateMaterieleHistorie = 'Nee') or
 						($materieleHistorie = 'Ja' and contains($generateMaterieleHistorie,'Ja'))"-->
 					<xsl:if test="contains($indicatieMaterieleHistorie,'Ja') and $generateHistorieConstruct!='FormeleHistorie' and $generateHistorieConstruct!='FormeleHistorieRelatie'">
-						<xsl:variable name="href" select="concat($mnemonicPartOfName, imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-historieMaterieel')"/>						
+						<xsl:variable name="href" select="concat($mnemonicPartOfName, imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-historieMaterieel','-',$berichtName)"/>						
 						<ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 							<ep:tech-name>historieMaterieel</ep:tech-name>
 							<ep:max-occurs>unbounded</ep:max-occurs>
@@ -1938,7 +1980,7 @@
 					<!--xsl:if test="($formeleHistorie = 'Ja' and $generateMaterieleHistorie = 'Nee') or
 						($formeleHistorie = 'Ja' and (contains($generateFormeleHistorie,'Ja') or contains($generateMaterieleHistorie,'Ja')))"-->
 					<xsl:if test="contains($indicatieFormeleHistorie,'Ja')">
-						<xsl:variable name="href" select="concat($mnemonicPartOfName, imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-historieFormeel')"/>
+						<xsl:variable name="href" select="concat($mnemonicPartOfName, imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-historieFormeel','-',$berichtName)"/>
 						<ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 							<ep:tech-name>historieFormeel</ep:tech-name>
 							<ep:max-occurs>unbounded</ep:max-occurs>
@@ -1949,7 +1991,7 @@
 					</xsl:if>
 					<!-- ROME: Er moet nog gecheckt worden of FormeleHistorieRelatie op gaat. -->
 					<xsl:if test="contains($indicatieFormeleHistorieRelatie,'Ja')">
-						<xsl:variable name="href" select="concat($mnemonicPartOfName, imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-historieFormeelRelatie')"/>
+						<xsl:variable name="href" select="concat($mnemonicPartOfName, imf:get-normalized-name(key('class',$type-id)/@formal-name, 'type-name'),'-historieFormeelRelatie','-',$berichtName)"/>
 						<ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 							<ep:tech-name>historieFormeelRelatie</ep:tech-name>
 							<ep:max-occurs>unbounded</ep:max-occurs>
@@ -1963,6 +2005,7 @@
 					<xsl:apply-templates select="imvert:association-class" 
 						mode="create-message-content">
 						<xsl:with-param name="proces-type" select="'associations'"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
@@ -2033,7 +2076,7 @@
 					</xsl:variable>
 					
 					<!--xsl:if test="$historyAppliesToMessage = 'yes-Materieel' and contains($generateMaterieleHistorieOnAssociation,'Ja')"-->
-					<xsl:if test="($generateHistorieConstruct = 'MaterieleHistorie' and contains($indicatieMaterieleHistorie,'Ja'))
+					<xsl:if test="($berichtCode = 'La07' or $berichtCode = 'La08' or $berichtCode = 'La09' or $berichtCode = 'La10') and ($generateHistorieConstruct = 'MaterieleHistorie' and contains($indicatieMaterieleHistorie,'Ja'))
 								  and contains($generateMaterieleHistorieOnAssociation,'Ja')">
 						<!-- The ep:constructRef is temporarily provided with a 'context' attribute to be able to create global constructs later.
 							 These are removed later since they aren't part of the 'ep' structure. -->
@@ -2053,11 +2096,11 @@
 								</xsl:when>
 								<xsl:otherwise/>
 							</xsl:choose>
-							<xsl:sequence select="imf:create-output-element('ep:href', concat($href,'-historieMaterieel'))"/>						
+							<xsl:sequence select="imf:create-output-element('ep:href', concat($href,'-historieMaterieel','-',$berichtName))"/>						
 						</ep:constructRef>
 					</xsl:if>
 					<!--xsl:if test="$historyAppliesToMessage = 'yes' and contains($generateFormeleHistorieOnAssociation,'Ja')"-->
-					<xsl:if test="($generateHistorieConstruct = 'FormeleHistorie' and contains($indicatieFormeleHistorie,'Ja'))
+					<xsl:if test="($berichtCode = 'La09' or $berichtCode = 'La10') and ($generateHistorieConstruct = 'FormeleHistorie' and contains($indicatieFormeleHistorie,'Ja'))
 								  and contains($generateFormeleHistorieOnAssociation,'Ja')">
 						<!-- The ep:constructRef is temporarily provided with a 'context' attribute to be able to create global constructs later.
 							 These are removed later since they aren't part of the 'ep' structure. -->
@@ -2077,7 +2120,7 @@
 								</xsl:when>
 								<xsl:otherwise/>
 							</xsl:choose>
-							<xsl:sequence select="imf:create-output-element('ep:href', concat($href,'-historieFormeel'))"/>							
+							<xsl:sequence select="imf:create-output-element('ep:href', concat($href,'-historieFormeel','-',$berichtName))"/>							
 						</ep:constructRef>
 					</xsl:if>
 				</xsl:when>
@@ -2102,7 +2145,7 @@
 							</xsl:when>
 							<xsl:otherwise/>
 						</xsl:choose>
-						<xsl:sequence select="imf:create-output-element('ep:href', $href)"/>
+						<xsl:sequence select="imf:create-output-element('ep:href', concat($href,'-',$berichtName))"/>
 					</ep:constructRef>
 				</xsl:when>
 				<!-- The association is a 'entiteitRelatie' (the toplevel 'entiteit') 
@@ -2113,6 +2156,7 @@
 					<xsl:apply-templates select="key('class',$type-id)"
 						mode="create-message-content">
 						<xsl:with-param name="proces-type" select="'attributes'"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
@@ -2120,6 +2164,7 @@
 					<xsl:apply-templates select="key('class',$type-id)"
 						mode="create-message-content">
 						<xsl:with-param name="proces-type" select="'associationsGroepCompositie'"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
@@ -2158,6 +2203,7 @@
 					<xsl:apply-templates select="key('class',$type-id)"
 						mode="create-message-content">
 						<xsl:with-param name="proces-type" select="'associationsRelatie'"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
@@ -2205,6 +2251,7 @@
 					<xsl:apply-templates select="key('class',$type-id)"
 						mode="create-message-content">
 						<xsl:with-param name="proces-type" select="'attributes'"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
@@ -2212,6 +2259,7 @@
 					<xsl:apply-templates select="key('class',$type-id)"
 						mode="create-message-content">
 						<xsl:with-param name="proces-type" select="'associationsGroepCompositie'"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
@@ -2219,6 +2267,7 @@
 					<xsl:apply-templates select="key('class',$type-id)"
 						mode="create-message-content">
 						<xsl:with-param name="proces-type" select="'associationsRelatie'"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
@@ -2236,6 +2285,7 @@
 	<xsl:template match="*" mode="replicate-imvert-elements">
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
+		<xsl:param name="verwerkingsModus" select="''" />
 		<xsl:param name="context"/>
 		
 		<xsl:sequence select="imf:create-debug-comment('Template: *[mode=replicate-imvert-elements]',$debugging)"/>
@@ -2246,6 +2296,7 @@
 					<xsl:apply-templates select="*" mode="replicate-imvert-elements">
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="context" select="$context"/>
 					</xsl:apply-templates>
 				</xsl:when>
@@ -2263,6 +2314,7 @@
 	<xsl:template match="imvert:class" mode="create-datatype-content">
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
+		<xsl:param name="verwerkingsModus" select="''" />
 		<xsl:param name="context"/>
 		
 		<xsl:sequence select="imf:create-debug-comment('Template: imvert:class[mode=create-datatype-content]',$debugging)"/>
@@ -2279,6 +2331,7 @@
 				<ep:seq>
 					<xsl:apply-templates select="imvert:supertype" mode="create-message-content">
 						<xsl:with-param name="proces-type" select="'attributes'"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
@@ -2286,10 +2339,12 @@
 					<xsl:apply-templates select="./imvert:attributes/imvert:attribute" mode="create-message-content">
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="context" select="$context"/>
 					</xsl:apply-templates>
 					<xsl:apply-templates select="imvert:supertype" mode="create-message-content">
 						<xsl:with-param name="proces-type" select="'associationsGroepCompositie'"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
@@ -2303,6 +2358,7 @@
 						mode="create-message-content">
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="context" select="$context"/>
 					</xsl:apply-templates>
 					<ep:constructRef prefix="StUF" externalNamespace="yes">
@@ -2335,6 +2391,7 @@
 					</ep:constructRef>
 					<xsl:apply-templates select="imvert:supertype" mode="create-message-content">
 						<xsl:with-param name="proces-type" select="'associationsRelatie'"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
 						<xsl:with-param name="context" select="$context"/>
@@ -2346,6 +2403,7 @@
 							select="concat('#1#', imvert:id, '#', $id-trail)"/ x?>
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="context" select="$context"/>
 					</xsl:apply-templates>
 				</ep:seq>
@@ -2365,6 +2423,8 @@
 							<xsl:apply-templates select="imvert:attributes/imvert:attribute"
 								mode="create-datatype-content">
 								<xsl:with-param name="berichtCode" select="$berichtCode"/>
+								<xsl:with-param name="berichtName" select="$berichtName"/>
+								<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 								<xsl:with-param name="context" select="$context"/>
 							</xsl:apply-templates>
 						</ep:seq>
@@ -2376,6 +2436,7 @@
 								mode="replicate-imvert-elements">
 								<xsl:with-param name="berichtCode" select="$berichtCode"/>
 								<xsl:with-param name="berichtName" select="$berichtName"/>
+								<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 								<xsl:with-param name="context" select="$context"/>
 							</xsl:apply-templates>
 						</ep:datatype>
@@ -2389,6 +2450,7 @@
 						mode="create-datatype-content">
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="berichtName" select="$berichtName"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
 						<xsl:with-param name="context" select="$context"/>
 					</xsl:apply-templates>
 				</ep:seq>
@@ -2404,6 +2466,7 @@
 	<xsl:template match="imvert:attribute" mode="create-datatype-content">
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
+		<xsl:param name="verwerkingsModus" select="''" />
 		
 		<xsl:variable name="name" select="imvert:name"/>
 		<xsl:variable name="min-occurs" select="imvert:min-occurs"/>

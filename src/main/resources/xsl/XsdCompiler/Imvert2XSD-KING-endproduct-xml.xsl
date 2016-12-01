@@ -32,7 +32,9 @@
     <xsl:output indent="yes" method="xml" encoding="UTF-8"/>
     
     <xsl:key name="class" match="imvert:class" use="imvert:id" />
-    <!-- key('class',$id) -->
+    <!-- This key is used within the for-each instruction further in this code. -->
+    <xsl:key name="construct-id" match="ep:construct" use="ep:id" />
+    
     
     <xsl:variable name="stylesheet-code">SKS</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
@@ -85,7 +87,7 @@
         </result>
     </xsl:variable>
     
-    <xsl:variable name="berichtNaam" select="/imvert:packages/imvert:application"/>
+    <?x <xsl:variable name="berichtNaam" select="/imvert:packages/imvert:application"/> x?>
 
     <xsl:variable name="packages" select="/imvert:packages"/>
     
@@ -100,9 +102,6 @@
             <xsl:apply-templates select="$packages/imvert:package[imvert:stereotype = 'BERICHT' and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]" mode="create-rough-message-structure"/>
         </ep:rough-messages>
     </xsl:variable>
-    
-    <!-- This key is used within the for-each instruction further in this code. -->
-    <xsl:key name="construct-id" match="ep:construct" use="ep:id" />
     
     <!-- ROME: De volgende variabele moet per package worden vastgesteld. -->
     <xsl:variable name="prefix">
@@ -150,15 +149,49 @@
                <xsl:apply-templates select="$packages/imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package') and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]" mode="create-message-structure"/>
            </xsl:variable>
            <xsl:sequence select="$messages"/>
-          
-            <xsl:sequence select="imf:create-debug-track('Constructing the global constructs',$debugging)"/>
+
+            <xsl:apply-templates select="$rough-messages//ep:rough-message"/> 
+
+        </ep:message-set>
+     </xsl:variable>
+    
+    <xsl:template match="/">
+        <!-- This template is used to place the content of the variable '$imvert-endproduct' within the ep file. -->
+        <?x xsl:result-document href="file:/c:/temp/imvert-schema-rules.xml">
+            <xsl:sequence select="$config-schemarules"/>
+        </xsl:result-document x?> 
+        <?x xsl:result-document href="file:/c:/temp/imvert-tagged-values.xml">
+            <xsl:sequence select="$config-tagged-values"/>
+        </xsl:result-document x?> 
+        <?x xsl:result-document href="file:/c:/temp/imvert-endproduct.xml">
+            <xsl:sequence select="$enriched-endproduct-base-config-excel"/>
+            
+            <!-- xsl:sequence select="$imvert-endproduct/*"/ -->
+        </xsl:result-document x?> 
+        
+        <xsl:sequence select="$imvert-endproduct/*"/>
+    </xsl:template>
+    
+    <xsl:template match="ep:rough-message">
+        <xsl:variable name="berichtName" select="ep:name"/>
+        <xsl:variable name="fundamentalMnemonic" select="ep:fundamentalMnemonic"/>
+        <xsl:variable name="currentMessage">
+                <xsl:copy>
+                    <xsl:copy-of select="@*"/>
+                    <xsl:copy-of select="*"/>               
+                </xsl:copy>
+        </xsl:variable>
+        <ep:currentMessage>
+            <xsl:sequence select="$currentMessage"/>
+        </ep:currentMessage>
+        
+        <xsl:sequence select="imf:create-debug-track('Constructing the global constructs',$debugging)"/>
 
             <!-- The following for-each takes care of creating global construct elements for each ep:construct element present within the 'rough-messages' variable 
                 having a type-id value none of the preceding ep:construct elements have. -->
-            <xsl:for-each select="$rough-messages//ep:construct[ep:id and generate-id(.) = generate-id(key('construct-id',ep:id,$rough-messages)[1])]">
-                   
+        <xsl:for-each select="$currentMessage//ep:construct[ep:id and generate-id(.) = generate-id(key('construct-id',ep:id,$currentMessage)[1])]">
+                    
                <!--xsl:variable name="berichtCode" select="ancestor::ep:rough-message/ep:code"-->
-               <xsl:variable name="berichtName" select="ancestor::ep:rough-message/ep:name"/>
                <xsl:variable name="berichtCode">
                    <xsl:choose>
                        <xsl:when test="ancestor-or-self::ep:construct[@berichtCode]">
@@ -169,7 +202,6 @@
                        </xsl:otherwise>
                    </xsl:choose>
                </xsl:variable>
-               <xsl:variable name="fundamentalMnemonic" select="ancestor::ep:rough-message/ep:fundamentalMnemonic"/>
                <xsl:variable name="context">
                    <xsl:choose>
                        <xsl:when test="@context=''">
@@ -182,18 +214,22 @@
                </xsl:variable>
                <xsl:variable name="id" select="ep:id"/>
                <xsl:variable name="typeCode" select="@typeCode"/>
-               <!-- ROME: De volgende variabele wordt nog nergens gebruikt. wel worden er parameters met deze naam gebruikt maar die krijgen lokaal hun waarde.
-                          Nu wordt met de parameters alleen nog maar aan gegeven welke vorm van toepassing zou KUNNEN zijn op de attributen, groepen en associations. 
-                          er wordt echter nog niet gekeken of de betreffende attributen, groepen en associations wel voorkomen in een  berichttype waarvoor historie 
-                          van toepassing is. Dit moet nog anders. -->
-               <!--xsl:variable name="historyAppliesToMessage">
-                   <xsl:choose>
-                       <xsl:when test="$berichtCode = 'La07' or $berichtCode = 'La08'">yes-Materieel</xsl:when>
-                       <xsl:when test="$berichtCode = 'La09' or $berichtCode = 'La10'">yes</xsl:when>
-                       <xsl:otherwise>no</xsl:otherwise>
-                   </xsl:choose>
-               </xsl:variable-->
-               
+            
+            <xsl:variable name="verwerkingsModus">
+                <xsl:choose>
+                    <xsl:when test="contains($berichtCode,'Lk') and @type = 'entity' and not(ancestor::ep:construct[@type='entity'])">kennisgeving</xsl:when>
+                    <xsl:when test="contains($berichtCode,'Lk')">kerngegevensKennisgeving</xsl:when>
+                    <xsl:when test="contains($berichtCode,'Lv') and $context = 'selectie'">selectie</xsl:when>
+                    <xsl:when test="contains($berichtCode,'Lv') and $context = 'scope'">scope</xsl:when>
+                    <xsl:when test="contains($berichtCode,'Lv') and $context = 'start' and @type = 'entity' and not(ancestor::ep:construct[@type='entity'])">gerelateerdeAntwoord</xsl:when>
+                    <xsl:when test="contains($berichtCode,'Lv') and $context = 'start'">antwoord</xsl:when>
+                    <xsl:when test="contains($berichtCode,'La') and @type = 'entity' and not(ancestor::ep:construct[@type='entity'])">gerelateerdeAntwoord</xsl:when>
+                    <xsl:when test="contains($berichtCode,'La')">antwoord</xsl:when>
+                </xsl:choose>
+            </xsl:variable>
+            
+            <xsl:sequence select="imf:create-debug-comment(concat('verwerkingsModus: ',$verwerkingsModus),$debugging)"/>        
+
                <xsl:choose>
                     <!-- LET OP! We moeten bij het bepalen van de globale complexTypes niet alleen kijken of ze hergebruikt worden over de berichten 
                         maar ook of ze over die berichten heen wel hetzelfde moeten blijven. Het ene bericht heeft een hele ander type complexType nodig dan het andere.
@@ -231,7 +267,7 @@
                                
                                <ep:construct prefix="{$prefix}" type="group">
                                    <xsl:sequence
-                                       select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'))" />
+                                       select="imf:create-output-element('ep:tech-name', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-',$berichtName))" />
                                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
                                    <ep:seq>
                                        
@@ -246,7 +282,9 @@
  
                                        <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
                                            mode="create-message-content">
+                                           <xsl:with-param name="berichtName" select="$berichtName"/>
                                            <xsl:with-param name="proces-type" select="'attributes'" />
+                                           <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                            <xsl:with-param name="berichtCode" select="$berichtCode" />
                                            <xsl:with-param name="context" select="$context" />
                                            <xsl:with-param name="fundamentalMnemonic" select="$fundamentalMnemonic"/>
@@ -254,14 +292,18 @@
                                        <!-- The uml groups of the uml group are placed here. -->
                                        <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
                                            mode="create-message-content">
+                                           <xsl:with-param name="berichtName" select="$berichtName"/>
                                            <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
+                                           <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                            <xsl:with-param name="berichtCode" select="$berichtCode" />
                                            <xsl:with-param name="context" select="$context" />
                                        </xsl:apply-templates>
                                        <!-- The uml associations of the uml group are placed here. -->
                                        <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
                                            mode="create-message-content">
+                                           <xsl:with-param name="berichtName" select="$berichtName"/>
                                            <xsl:with-param name="proces-type" select="'associationsRelatie'" />
+                                           <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                            <xsl:with-param name="berichtCode" select="$berichtCode" />
                                            <xsl:with-param name="context" select="$context" />
                                        </xsl:apply-templates>
@@ -290,11 +332,11 @@
                                    <xsl:choose>
                                        <xsl:when test="$packages//imvert:class[imvert:id = $id]/imvert:alias">
                                            <xsl:sequence
-                                               select="imf:create-output-element('ep:tech-name', concat($packages//imvert:class[imvert:id = $id]/imvert:alias,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name')))" />
+                                               select="imf:create-output-element('ep:tech-name', concat($packages//imvert:class[imvert:id = $id]/imvert:alias,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-',$berichtName))" />
                                        </xsl:when>
                                        <xsl:otherwise>
                                            <xsl:sequence
-                                               select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'))" />                                       
+                                               select="imf:create-output-element('ep:tech-name', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-',$berichtName))" />                                       
                                        </xsl:otherwise>
                                    </xsl:choose>
                                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
@@ -304,7 +346,9 @@
                                        <xsl:when test="$packages//imvert:class[imvert:supertype/imvert:type-id = $id]">
                                            <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
                                                mode="create-message-content">
+                                               <xsl:with-param name="berichtName" select="$berichtName"/>
                                                <xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'" />
+                                               <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                <xsl:with-param name="context" select="$context" />
                                            </xsl:apply-templates>
@@ -315,14 +359,18 @@
                                                <!-- The uml attributes of the uml class are placed here. -->
                                                <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
                                                    mode="create-message-content">
+                                                   <xsl:with-param name="berichtName" select="$berichtName"/>
                                                    <xsl:with-param name="proces-type" select="'attributes'" />
+                                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                    <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                    <xsl:with-param name="context" select="$context" />
                                                </xsl:apply-templates>
                                                <!-- The uml groups of the uml class are placed here. -->
                                                <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
                                                    mode="create-message-content">
+                                                   <xsl:with-param name="berichtName" select="$berichtName"/>
                                                    <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
+                                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                    <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                    <xsl:with-param name="context" select="$context" />
                                                    <!-- If the class is refered to form an association which is part of an VRIJ BERICHT no stuurgegevens must be generated. -->
@@ -366,13 +414,13 @@
                                                        <ep:min-occurs>0</ep:min-occurs>
                                                        <ep:position>155</ep:position>
                                                    </ep:constructRef>
-                                                   <ep:constructref prefix="StUF" externalNamespace="yes">
-                                                       <!--ep:name>tijdstipRegistratie</ep:name-->
+                                                   <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                                       <ep:name>tijdstipRegistratie</ep:name>
                                                        <ep:tech-name>tijdstipRegistratie</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
                                                        <ep:min-occurs>0</ep:min-occurs>
                                                        <ep:position>160</ep:position>
-                                                   </ep:constructref>
+                                                   </ep:constructRef>
                                                    <ep:constructRef prefix="StUF" externalNamespace="yes">
                                                        <!--ep:name>extraElementen</ep:name-->
                                                        <ep:tech-name>extraElementen</ep:tech-name>
@@ -402,11 +450,11 @@
                                                        <xsl:choose>
                                                            <xsl:when test="$packages//imvert:class[imvert:id = $id]/imvert:alias">
                                                                <xsl:sequence
-                                                                   select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $id]/imvert:alias,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieMaterieel'))" />
+                                                                   select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $id]/imvert:alias,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieMaterieel','-',$berichtName))" />
                                                            </xsl:when>
                                                            <xsl:otherwise>
                                                                <xsl:sequence
-                                                                   select="imf:create-output-element('ep:href', imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieMaterieel')" />                                       
+                                                                   select="imf:create-output-element('ep:href', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieMaterieel','-',$berichtName))" />                                       
                                                            </xsl:otherwise>
                                                        </xsl:choose>
                                                    </ep:constructRef>
@@ -422,11 +470,11 @@
                                                        <xsl:choose>
                                                            <xsl:when test="$packages//imvert:class[imvert:id = $id]/imvert:alias">
                                                                <xsl:sequence
-                                                                   select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $id]/imvert:alias,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieFormeel'))" />
+                                                                   select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $id]/imvert:alias,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieFormeel','-',$berichtName))" />
                                                            </xsl:when>
                                                            <xsl:otherwise>
                                                                <xsl:sequence
-                                                                   select="imf:create-output-element('ep:href', imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieFormeel')" />                                       
+                                                                   select="imf:create-output-element('ep:href', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieFormeel','-',$berichtName))" />                                       
                                                            </xsl:otherwise>
                                                        </xsl:choose>
                                                    </ep:constructRef>
@@ -434,7 +482,9 @@
                                                <!-- The uml associations of the uml class are placed here. -->
                                                <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
                                                    mode="create-message-content-constructRef">
+                                                   <xsl:with-param name="berichtName" select="$berichtName"/>
                                                    <xsl:with-param name="proces-type" select="'associationsRelatie'" />
+                                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                    <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                    <xsl:with-param name="context" select="$context" />
                                                </xsl:apply-templates>
@@ -472,7 +522,7 @@
                        
                        <!-- If 'Materiele historie' is applicable for the current class a historieMaterieel global construct based on the current class is generated. -->
                         <!--xsl:if test="$historyAppliesToMessage = 'yes-Materieel' and (@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes')"-->
-                        <xsl:if test="(@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes') and $rough-messages//ep:rough-message[ep:code = 'La07' or ep:code = 'La08' or ep:code = 'La09' or ep:code = 'La10']//ep:construct[ep:id = $id]">
+                        <xsl:if test="(@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes')">
                            <xsl:choose>
                                <!-- The following when generates historieMaterieel global constructs based on uml groups. -->
                                <xsl:when test="@type='group' and $packages//imvert:class[imvert:id = $id]">
@@ -490,7 +540,7 @@
                                    
                                    <ep:construct prefix="{$prefix}" type="group">
                                        <xsl:sequence
-                                           select="imf:create-output-element('ep:tech-name', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieMaterieel'))" />
+                                           select="imf:create-output-element('ep:tech-name', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieMaterieel','-',$berichtName))" />
                                        <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
                                        <ep:seq>
                                            
@@ -501,7 +551,9 @@
                                            <!-- The uml attributes, of the uml group, for which historiematerieel is applicable are placed here. -->
                                            <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
                                                mode="create-message-content">
+                                               <xsl:with-param name="berichtName" select="$berichtName"/>
                                                <xsl:with-param name="proces-type" select="'attributes'" />
+                                               <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                <xsl:with-param name="context" select="$context" />
                                                <!--xsl:with-param name="historyAppliesToMessage" select="'yes-Materieel'"/-->
@@ -512,7 +564,9 @@
                                            <!-- The uml groups, of the uml group, for which historiematerieel is applicable are placed here. -->
                                            <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
                                                mode="create-message-content">
+                                               <xsl:with-param name="berichtName" select="$berichtName"/>
                                                <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
+                                               <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                <xsl:with-param name="context" select="$context" />
                                                <!--xsl:with-param name="historyAppliesToMessage" select="'yes-Materieel'"/-->
@@ -544,11 +598,11 @@
                                        <xsl:choose>
                                            <xsl:when test="$packages//imvert:class[imvert:id = $id]/imvert:alias">
                                                <xsl:sequence
-                                                   select="imf:create-output-element('ep:tech-name', concat($packages//imvert:class[imvert:id = $id]/imvert:alias,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieMaterieel'))" />
+                                                   select="imf:create-output-element('ep:tech-name', concat($packages//imvert:class[imvert:id = $id]/imvert:alias,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieMaterieel','-',$berichtName))" />
                                            </xsl:when>
                                            <xsl:otherwise>
                                                <xsl:sequence
-                                                   select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieMaterieel')" />                                       
+                                                   select="imf:create-output-element('ep:tech-name', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieMaterieel','-',$berichtName))" />                                       
                                            </xsl:otherwise>
                                        </xsl:choose>
                                        <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
@@ -562,7 +616,9 @@
                                            <xsl:when test="$packages//imvert:class[imvert:supertype/imvert:type-id = $id]">
                                                <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
                                                    mode="create-message-content">
+                                                   <xsl:with-param name="berichtName" select="$berichtName"/>
                                                    <xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'" />
+                                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                    <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                    <xsl:with-param name="context" select="$context" />
                                                    <!--xsl:with-param name="historyAppliesToMessage" select="'yes-Materieel'"/-->
@@ -577,7 +633,9 @@
                                                    <!-- The uml attributes of the uml class are placed here. -->
                                                    <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
                                                        mode="create-message-content">
+                                                       <xsl:with-param name="berichtName" select="$berichtName"/>
                                                        <xsl:with-param name="proces-type" select="'attributes'" />
+                                                       <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                        <xsl:with-param name="context" select="$context" />
                                                        <!--xsl:with-param name="historyAppliesToMessage" select="'yes-Materieel'"/-->
@@ -588,8 +646,10 @@
                                                    <!-- The uml groups, of the uml group, for which historiematerieel is applicable are placed here. -->
                                                    <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
                                                        mode="create-message-content">
+                                                       <xsl:with-param name="berichtName" select="$berichtName"/>
                                                        <xsl:with-param name="proces-type"
                                                            select="'associationsGroepCompositie'" />
+                                                       <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                        <xsl:with-param name="context" select="$context" />
                                                        <!--xsl:with-param name="historyAppliesToMessage" select="'yes-Materieel'"/-->
@@ -640,11 +700,11 @@
                                                            <xsl:choose>
                                                                <xsl:when test="$packages//imvert:class[imvert:id = $id]/imvert:alias">
                                                                    <xsl:sequence
-                                                                       select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $id]/imvert:alias,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieFormeel'))" />
+                                                                       select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $id]/imvert:alias,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieFormeel','-',$berichtName))" />
                                                                </xsl:when>
                                                                <xsl:otherwise>
                                                                    <xsl:sequence
-                                                                       select="imf:create-output-element('ep:href', imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieFormeel')" />                                       
+                                                                       select="imf:create-output-element('ep:href', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieFormeel','-',$berichtName))" />                                       
                                                                </xsl:otherwise>
                                                            </xsl:choose>
                                                        </ep:constructRef>
@@ -660,7 +720,7 @@
                            </xsl:choose>
                        </xsl:if>
                         <!-- If 'Formele historie' is applicable for the current class a historieFormeel global construct based on the current class is generated. -->
-                       <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes') and $rough-messages//ep:rough-message[ep:code = 'La09' or ep:code = 'La10']//ep:construct[ep:id = $id]">
+                        <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes')">
                            <xsl:choose>
                                <!-- The following when generates historieFormeel global constructs based on uml groups. -->
                                <xsl:when test="@type='group' and $packages//imvert:class[imvert:id = $id]">
@@ -678,13 +738,15 @@
                                    
                                    <ep:construct prefix="{$prefix}" type="group">
                                        <xsl:sequence
-                                           select="imf:create-output-element('ep:tech-name', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieFormeel'))" />
+                                           select="imf:create-output-element('ep:tech-name', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieFormeel','-',$berichtName))" />
                                        <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
                                        <ep:seq>
                                            <!-- The uml attributes, of the uml group, for which historieFormeel is applicable are placed here. -->
                                            <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
                                                mode="create-message-content">
+                                               <xsl:with-param name="berichtName" select="$berichtName"/>
                                                <xsl:with-param name="proces-type" select="'attributes'" />
+                                               <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                <xsl:with-param name="context" select="$context" />
                                                <!--xsl:with-param name="historyAppliesToMessage" select="'yes'"/-->
@@ -694,7 +756,9 @@
                                            <!-- The uml groups, of the uml group, for which historieFormeel is applicable are placed here. -->
                                            <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
                                                mode="create-message-content">
+                                               <xsl:with-param name="berichtName" select="$berichtName"/>
                                                <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
+                                               <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                <xsl:with-param name="context" select="$context" />
                                                <!--xsl:with-param name="historyAppliesToMessage" select="'yes'"/-->
@@ -726,11 +790,11 @@
                                        <xsl:choose>
                                            <xsl:when test="$packages//imvert:class[imvert:id = $id]/imvert:alias">
                                                <xsl:sequence
-                                                   select="imf:create-output-element('ep:tech-name', concat($packages//imvert:class[imvert:id = $id]/imvert:alias,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieFormeel'))" />
+                                                   select="imf:create-output-element('ep:tech-name', concat($packages//imvert:class[imvert:id = $id]/imvert:alias,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieFormeel','-',$berichtName))" />
                                            </xsl:when>
                                            <xsl:otherwise>
                                                <xsl:sequence
-                                                   select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieFormeel')" />                                       
+                                                   select="imf:create-output-element('ep:tech-name', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieFormeel','-',$berichtName))" />                                       
                                            </xsl:otherwise>
                                        </xsl:choose>
                                        <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
@@ -744,7 +808,9 @@
                                            <xsl:when test="$packages//imvert:class[imvert:supertype/imvert:type-id = $id]">
                                                <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
                                                    mode="create-message-content">
+                                                   <xsl:with-param name="berichtName" select="$berichtName"/>
                                                    <xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'" />
+                                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                    <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                    <xsl:with-param name="context" select="$context" />
                                                    <!--xsl:with-param name="historyAppliesToMessage" select="'yes'"/-->
@@ -758,7 +824,9 @@
                                                    <!-- The uml attributes of the uml class are placed here. -->
                                                    <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
                                                        mode="create-message-content">
+                                                       <xsl:with-param name="berichtName" select="$berichtName"/>
                                                        <xsl:with-param name="proces-type" select="'attributes'" />
+                                                       <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                        <xsl:with-param name="context" select="$context" />
                                                        <!--xsl:with-param name="historyAppliesToMessage" select="'yes'"/-->
@@ -768,8 +836,10 @@
                                                    <!-- The uml groups, of the uml group, for which historiematerieel is applicable are placed here. -->
                                                    <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
                                                        mode="create-message-content">
+                                                       <xsl:with-param name="berichtName" select="$berichtName"/>
                                                        <xsl:with-param name="proces-type"
                                                            select="'associationsGroepCompositie'" />
+                                                       <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                        <xsl:with-param name="context" select="$context" />
                                                        <!--xsl:with-param name="historyAppliesToMessage" select="'yes'"/-->
@@ -817,11 +887,11 @@
                                                        <xsl:choose>
                                                            <xsl:when test="$packages//imvert:class[imvert:id = $id]/imvert:alias">
                                                                <xsl:sequence
-                                                                   select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $id]/imvert:alias,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieFormeel'))" />
+                                                                   select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $id]/imvert:alias,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieFormeel','-',$berichtName))" />
                                                            </xsl:when>
                                                            <xsl:otherwise>
                                                                <xsl:sequence
-                                                                   select="imf:create-output-element('ep:href', imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieFormeel')" />                                       
+                                                                   select="imf:create-output-element('ep:href', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $id]/@formal-name,'type-name'),'-historieFormeel','-',$berichtName))" />                                       
                                                            </xsl:otherwise>
                                                        </xsl:choose>
                                                    </ep:constructRef>
@@ -854,6 +924,7 @@
                             mode="create-message-content">
                             <xsl:with-param name="berichtCode" select="$berichtCode"/>
                             <xsl:with-param name="berichtName" select="$berichtName"/>
+                            <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                             <xsl:with-param name="context" select="$context"/>
                             <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
                             <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
@@ -866,7 +937,7 @@
                         
                         <!-- If 'Materiele historie' is applicable for the current class and messagetype a historieMaterieel global construct based on the current class is generated. -->
                         <!--xsl:if test="$historyAppliesToMessage = 'yes-Materieel' and (@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes')"-->
-                        <xsl:if test="(@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes') and $rough-messages//ep:rough-message[ep:code = 'La07' or ep:code = 'La08' or ep:code = 'La09' or ep:code = 'La10']//ep:construct[ep:id = $id]">
+                        <xsl:if test="(@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes')">
                             
                             <xsl:sequence select="imf:create-debug-track(concat('Constructing the materieleHistorie constructs: ',$packages//imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
 
@@ -874,6 +945,7 @@
                                 mode="create-message-content">
                                 <xsl:with-param name="berichtCode" select="$berichtCode"/>
                                 <xsl:with-param name="berichtName" select="$berichtName"/>
+                                <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                 <xsl:with-param name="context" select="$context"/>
                                 <!--xsl:with-param name="historyAppliesToMessage" select="'yes-Materieel'"/-->
                                 <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
@@ -885,7 +957,7 @@
                         
                         <!-- If 'Formele historie' is applicable for the current class and messagetype a historieFormeel global construct based on the current class is generated. -->
                         <!--xsl:if test="contains($historyAppliesToMessage,'yes') and (@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes')"-->
-                        <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes') and $rough-messages//ep:rough-message[ep:code = 'La09' or ep:code = 'La10']//ep:construct[ep:id = $id]">
+                        <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes')">
                             
                             <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorie constructs: ',$packages//imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
                             
@@ -893,6 +965,7 @@
                                 mode="create-message-content">
                                 <xsl:with-param name="berichtCode" select="$berichtCode"/>
                                 <xsl:with-param name="berichtName" select="$berichtName"/>
+                                <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                 <xsl:with-param name="context" select="$context"/>
                                 <!--xsl:with-param name="historyAppliesToMessage" select="'yes'"/-->
                                 <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorie'"/>
@@ -911,6 +984,7 @@
                                 mode="create-message-content">
                                 <xsl:with-param name="berichtCode" select="$berichtCode"/>
                                 <xsl:with-param name="berichtName" select="$berichtName"/>
+                                <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                 <xsl:with-param name="context" select="$context"/>
                                 <!--xsl:with-param name="historyAppliesToMessage" select="'yes'"/-->
                                 <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorieRelatie'"/>
@@ -928,7 +1002,7 @@
 
             <xsl:sequence select="imf:create-debug-track('Constructing the global constructs for antwoord constructs',$debugging)"/>
             
-            <xsl:for-each select="$rough-messages//ep:rough-message[contains(ep:name, 'La')]//ep:construct[ep:name = 'antwoord']">
+        <xsl:for-each select="$currentMessage//ep:rough-message[contains(ep:code, 'La')]//ep:construct[ep:name = 'antwoord']">
                 <xsl:variable name="berichtName" select="ancestor::ep:rough-message/ep:name"/>
                 <xsl:variable name="berichtCode">
                     <xsl:choose>
@@ -947,12 +1021,12 @@
                      <xsl:choose>
                          <xsl:when test="$packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias">
                              <xsl:sequence
-                                 select="imf:create-output-element('ep:tech-name', concat($berichtName,'-',$packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',ep:name))"
+                                 select="imf:create-output-element('ep:tech-name', concat($packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',ep:name,'-',$berichtName))"
                              />
                          </xsl:when>
                          <xsl:otherwise>
                              <xsl:sequence
-                                 select="imf:create-output-element('ep:tech-name', concat($berichtName,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',ep:name))"
+                                 select="imf:create-output-element('ep:tech-name', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',ep:name,'-',$berichtName))"
                              />
                          </xsl:otherwise>
                      </xsl:choose>
@@ -966,12 +1040,12 @@
                             <xsl:choose>
                                 <xsl:when test="$packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias">
                                     <xsl:sequence
-                                        select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name')))"
+                                        select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',$berichtName))"
                                     />
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:sequence
-                                        select="imf:create-output-element('ep:href', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'))"
+                                        select="imf:create-output-element('ep:href', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',$berichtName))"
                                     />
                                 </xsl:otherwise>
                             </xsl:choose>
@@ -982,7 +1056,7 @@
             
             <xsl:sequence select="imf:create-debug-track('Constructing the global constructs for start constructs',$debugging)"/>
             
-            <xsl:for-each select="$rough-messages//ep:rough-message[contains(ep:name, 'Lv')]//ep:construct[ep:name = 'start']">
+        <xsl:for-each select="$currentMessage//ep:rough-message[contains(ep:code, 'Lv')]//ep:construct[ep:name = 'start']">
                 <xsl:variable name="berichtName" select="ancestor::ep:rough-message/ep:name"/>
                 <xsl:variable name="berichtCode">
                     <xsl:choose>
@@ -1004,12 +1078,12 @@
                     <xsl:choose>
                         <xsl:when test="$packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias">
                             <xsl:sequence
-                                select="imf:create-output-element('ep:tech-name', concat($berichtName,'-',$packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',ep:name))"
+                                select="imf:create-output-element('ep:tech-name', concat($packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',ep:name,'-',$berichtName))"
                             />
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:sequence
-                                select="imf:create-output-element('ep:tech-name', concat($berichtName,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',ep:name))"
+                                select="imf:create-output-element('ep:tech-name', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',ep:name,'-',$berichtName))"
                             />
                         </xsl:otherwise>
                     </xsl:choose>
@@ -1023,12 +1097,12 @@
                             <xsl:choose>
                                 <xsl:when test="$packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias">
                                     <xsl:sequence
-                                        select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name')))"
+                                        select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',$berichtName))"
                                     />
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:sequence
-                                        select="imf:create-output-element('ep:href', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'))"
+                                        select="imf:create-output-element('ep:href', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',$berichtName))"
                                     />
                                 </xsl:otherwise>
                             </xsl:choose>
@@ -1039,7 +1113,7 @@
             
             <xsl:sequence select="imf:create-debug-track('Constructing the global constructs for antwoord scope',$debugging)"/>
             
-            <xsl:for-each select="$rough-messages//ep:rough-message[contains(ep:name, 'Lv')]//ep:construct[ep:name = 'scope']">
+        <xsl:for-each select="$currentMessage//ep:rough-message[contains(ep:code, 'Lv')]//ep:construct[ep:name = 'scope']">
                 <xsl:variable name="berichtName" select="ancestor::ep:rough-message/ep:name"/>
                 <xsl:variable name="berichtCode">
                     <xsl:choose>
@@ -1061,12 +1135,12 @@
                     <xsl:choose>
                         <xsl:when test="$packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias">
                             <xsl:sequence
-                                select="imf:create-output-element('ep:tech-name', concat($berichtName,'-',$packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',ep:name))"
+                                select="imf:create-output-element('ep:tech-name', concat($packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',ep:name,'-',$berichtName))"
                             />
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:sequence
-                                select="imf:create-output-element('ep:tech-name', concat($berichtName,'-',imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',ep:name))"
+                                select="imf:create-output-element('ep:tech-name', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',ep:name,'-',$berichtName))"
                             />
                         </xsl:otherwise>
                     </xsl:choose>
@@ -1080,40 +1154,20 @@
                             <xsl:choose>
                                 <xsl:when test="$packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias">
                                     <xsl:sequence
-                                        select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name')))"
+                                        select="imf:create-output-element('ep:href', concat($packages//imvert:class[imvert:id = $relatedObjectTypeId]/imvert:alias, '-', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',$berichtName))"
                                     />
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:sequence
-                                        select="imf:create-output-element('ep:href', imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'))"
+                                        select="imf:create-output-element('ep:href', concat(imf:get-normalized-name($packages//imvert:class[imvert:id = $relatedObjectTypeId]/@formal-name, 'type-name'),'-',$berichtName))"
                                     />
                                 </xsl:otherwise>
                             </xsl:choose>
                         </ep:constructRef>
                     </ep:seq>
                 </ep:construct>
-            </xsl:for-each>
-    
-        </ep:message-set>
-     </xsl:variable>
-    
-    <xsl:template match="/">
-        <!-- This template is used to place the content of the variable '$imvert-endproduct' within the ep file. -->
-        <?x xsl:result-document href="file:/c:/temp/imvert-schema-rules.xml">
-            <xsl:sequence select="$config-schemarules"/>
-        </xsl:result-document x?> 
-        <?x xsl:result-document href="file:/c:/temp/imvert-tagged-values.xml">
-            <xsl:sequence select="$config-tagged-values"/>
-        </xsl:result-document x?> 
-        <?x xsl:result-document href="file:/c:/temp/imvert-endproduct.xml">
-            <xsl:sequence select="$enriched-endproduct-base-config-excel"/>
-            
-            <!-- xsl:sequence select="$imvert-endproduct/*"/ -->
-        </xsl:result-document x?> 
-        
-        <xsl:sequence select="$imvert-endproduct/*"/>
+            </xsl:for-each>        
     </xsl:template>
-    
     <!-- supress the suppressXsltNamespaceCheck message -->
     <xsl:template match="/imvert:dummy"/>
     
