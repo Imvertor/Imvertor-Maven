@@ -186,23 +186,24 @@ public class Runner {
 		// debug is stored in debugmode
 		if (debugging) {
 			String debugmode = Configurator.getInstance().getParm("cli","debugmode"); // a string separated list of codes
-			debugmodes = StringUtils.split(debugmode.replace(" ", ""),':');
+			debugmodes = StringUtils.split(debugmode.replace(" ", ""),';');
 		}
 	}	
 	/**
 	 * Check if the debug mode allows the system (java chain) to produce a debug message. 
 	 * When no debug modes specified, succeed.  
-	 *  
+	 * When #ALL is specified, succeed.
+	 * 
 	 * @return
 	 */
 	private boolean checkDebugmode(String viableMode) {
 		if (debugmodes.length == 0) return true;
 		for (int i = 0; i < debugmodes.length; i++) {
+			if (debugmodes[i].equals("#ALL")) return true;
 			if (debugmodes[i].equals(viableMode)) return true; 
 		}
 		return false;
 	}	
-	
 	
 	
 	/**
@@ -263,8 +264,7 @@ public class Runner {
 		messenger.writeMsg(logger.getName(), "ERROR", "", text, null,null);
 		logger.error(text);
 	}
-	
-	
+
 	/**
 	 * The WARN level designates potentially harmful situations.
 	 * 

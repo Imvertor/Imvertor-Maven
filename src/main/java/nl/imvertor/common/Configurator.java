@@ -358,16 +358,18 @@ public class Configurator {
 		setParm(workConfiguration,"system","work-uml-folder-path",    wf + s + "app" + s + "uml", true);
 		setParm(workConfiguration,"system","work-cmp-folder-path",    wf + s + "app" + s + "cmp", true);
 		setParm(workConfiguration,"system","work-job-folder-path",    wf + s + "app" + s + "job", true);
-			
+				
 		setParm(workConfiguration,"system","work-rep-folder-path",    wf + s + "rep", true);
 		setParm(workConfiguration,"system","work-imvert-folder-path", wf + s + "imvert", true);
 		setParm(workConfiguration,"system","work-comply-folder-path", wf + s + "comply", true);
+		setParm(workConfiguration,"system","work-profile-folder-path", wf + s + "profile", true);
 		
 		// clear the workfolder
 		(new OutputFolder(getParm(workConfiguration,"system","work-app-folder-path",true))).clearIfExists(false);
 		(new OutputFolder(getParm(workConfiguration,"system","work-rep-folder-path",true))).clearIfExists(false);
 		(new OutputFolder(getParm(workConfiguration,"system","work-imvert-folder-path",true))).clearIfExists(false);
 		(new OutputFolder(getParm(workConfiguration,"system","work-comply-folder-path",true))).clearIfExists(false);
+		(new OutputFolder(getParm(workConfiguration,"system","work-profile-folder-path",true))).clearIfExists(false);
 				
 		setParm(workConfiguration,"system","managedoutputfolder", outputFolder.getCanonicalPath(), true);
 		setParm(workConfiguration,"system","managedinstallfolder", baseFolder.getCanonicalPath(), true);
@@ -1145,5 +1147,5 @@ public class Configurator {
 	public boolean isEaEnabled() {
 		return eaEnabled;
 	}
-	
+
 }
