@@ -77,7 +77,7 @@
                     </xsl:choose>
                 </xsl:when>
                 <xsl:otherwise>
-                    <!-- not part of the metamodel of no internal packages defined. -->
+                    <!-- not part of the metamodel or no internal packages defined. -->
                     <xsl:sequence select="imvert:package"/>
                 </xsl:otherwise>
             </xsl:choose>
@@ -119,7 +119,7 @@
     </xsl:template>
     
     <!-- 
-        this ackage matched is external to the application.
+        this package matched is external to the application.
         add this package, but only when not already inserted by the calling model 
     -->
     <xsl:template match="imvert:package" mode="intern-origin">
