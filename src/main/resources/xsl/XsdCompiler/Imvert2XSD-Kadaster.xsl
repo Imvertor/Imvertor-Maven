@@ -1414,7 +1414,7 @@
                 <xsl:value-of select="concat('../',imf:get-uri-parts($this/imvert:location)/path)"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="concat(imf:get-xsd-filefolder($this), '/', imf:get-xsd-filename($this))"/>
+                <xsl:value-of select="concat(imf:get-xsd-filefolder($this), '/', encode-for-uri(imf:get-xsd-filename($this)))"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -1442,7 +1442,8 @@
     -->    
     <xsl:function name="imf:get-xsd-filefolder" as="xs:string">
         <xsl:param name="this" as="node()"/> <!-- an imvert:package -->
-        <xsl:value-of select="concat(substring-after($this/imvert:namespace,concat($base-namespace,'/')),'/v',$this/imvert:release)"/>
+        <xsl:variable name="localpath" select="substring-after($this/imvert:namespace,concat($base-namespace,'/'))"/>
+        <xsl:value-of select="concat(if (normalize-space($localpath)) then $localpath else 'unknown','/v',$this/imvert:release)"/>
     </xsl:function>
     
     <!--
