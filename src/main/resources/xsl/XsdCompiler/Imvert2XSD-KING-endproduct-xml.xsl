@@ -27,6 +27,7 @@
     <xsl:import href="Imvert2XSD-KING-common.xsl"/>
     
     <xsl:import href="Imvert2XSD-KING-create-endproduct-rough-structure.xsl"/>
+    <xsl:import href="Imvert2XSD-KING-create-enriched-rough-messages.xsl"/>
     <xsl:import href="Imvert2XSD-KING-create-endproduct-structure.xsl"/>
     
     <xsl:output indent="yes" method="xml" encoding="UTF-8"/>
@@ -103,6 +104,16 @@
         </ep:rough-messages>
     </xsl:variable>
     
+    <xsl:variable name="enriched-rough-messages">
+        <xsl:sequence select="imf:create-debug-track('Constructing the enriched rough message-structure',$debugging)"/>
+        
+        
+        <!-- ROME: Het opvragen van het stereotype middels imf:get-config-stereotypes('stereotype-name-domain-package') levert 2 waarden op, 1 uit het metamodel van het UGM en 1 uit dat van het BSM.
+                   Ik wil echter alleen de stereotype met de waarde BERICHT verwerken. Hoe kan ik dat bereiken met de onderstaande methode? -->
+        <xsl:apply-templates select="$rough-messages/ep:rough-messages" mode="enrich-rough-messages"/>
+
+    </xsl:variable>
+
     <!-- ROME: De volgende variabele moet per package worden vastgesteld. -->
     <xsl:variable name="prefix">
         <xsl:choose>
@@ -141,7 +152,7 @@
             </ep:namespaces>
             
             <xsl:if test="$debugging">
-                <xsl:sequence select="$rough-messages"/>
+                <xsl:sequence select="$enriched-rough-messages"/>
             </xsl:if>
            
             <xsl:sequence select="imf:create-debug-track('Constructing the message-elements',$debugging)"/>
@@ -150,7 +161,7 @@
            </xsl:variable>
            <xsl:sequence select="$messages"/>
 
-            <xsl:apply-templates select="$rough-messages//ep:rough-message"/> 
+          <xsl:apply-templates select="$enriched-rough-messages//ep:rough-message"/>
 
         </ep:message-set>
      </xsl:variable>
@@ -215,21 +226,6 @@
                <xsl:variable name="id" select="ep:id"/>
                <xsl:variable name="typeCode" select="@typeCode"/>
             
-            <xsl:variable name="verwerkingsModus">
-                <xsl:choose>
-                    <xsl:when test="contains($berichtCode,'Lk') and @type = 'entity' and not(ancestor::ep:construct[@type='entity'])">kennisgeving</xsl:when>
-                    <xsl:when test="contains($berichtCode,'Lk')">kerngegevensKennisgeving</xsl:when>
-                    <xsl:when test="contains($berichtCode,'Lv') and $context = 'selectie'">selectie</xsl:when>
-                    <xsl:when test="contains($berichtCode,'Lv') and $context = 'scope'">scope</xsl:when>
-                    <xsl:when test="contains($berichtCode,'Lv') and $context = 'start' and @type = 'entity' and not(ancestor::ep:construct[@type='entity'])">gerelateerdeAntwoord</xsl:when>
-                    <xsl:when test="contains($berichtCode,'Lv') and $context = 'start'">antwoord</xsl:when>
-                    <xsl:when test="contains($berichtCode,'La') and @type = 'entity' and not(ancestor::ep:construct[@type='entity'])">gerelateerdeAntwoord</xsl:when>
-                    <xsl:when test="contains($berichtCode,'La')">antwoord</xsl:when>
-                </xsl:choose>
-            </xsl:variable>
-            
-            <xsl:sequence select="imf:create-debug-comment(concat('verwerkingsModus: ',$verwerkingsModus),$debugging)"/>        
-
                <xsl:choose>
                     <!-- LET OP! We moeten bij het bepalen van de globale complexTypes niet alleen kijken of ze hergebruikt worden over de berichten 
                         maar ook of ze over die berichten heen wel hetzelfde moeten blijven. Het ene bericht heeft een hele ander type complexType nodig dan het andere.
@@ -284,7 +280,6 @@
                                            mode="create-message-content">
                                            <xsl:with-param name="berichtName" select="$berichtName"/>
                                            <xsl:with-param name="proces-type" select="'attributes'" />
-                                           <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                            <xsl:with-param name="berichtCode" select="$berichtCode" />
                                            <xsl:with-param name="context" select="$context" />
                                            <xsl:with-param name="fundamentalMnemonic" select="$fundamentalMnemonic"/>
@@ -294,7 +289,6 @@
                                            mode="create-message-content">
                                            <xsl:with-param name="berichtName" select="$berichtName"/>
                                            <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
-                                           <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                            <xsl:with-param name="berichtCode" select="$berichtCode" />
                                            <xsl:with-param name="context" select="$context" />
                                        </xsl:apply-templates>
@@ -303,7 +297,6 @@
                                            mode="create-message-content">
                                            <xsl:with-param name="berichtName" select="$berichtName"/>
                                            <xsl:with-param name="proces-type" select="'associationsRelatie'" />
-                                           <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                            <xsl:with-param name="berichtCode" select="$berichtCode" />
                                            <xsl:with-param name="context" select="$context" />
                                        </xsl:apply-templates>
@@ -348,7 +341,6 @@
                                                mode="create-message-content">
                                                <xsl:with-param name="berichtName" select="$berichtName"/>
                                                <xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'" />
-                                               <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                <xsl:with-param name="context" select="$context" />
                                            </xsl:apply-templates>
@@ -361,7 +353,6 @@
                                                    mode="create-message-content">
                                                    <xsl:with-param name="berichtName" select="$berichtName"/>
                                                    <xsl:with-param name="proces-type" select="'attributes'" />
-                                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                    <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                    <xsl:with-param name="context" select="$context" />
                                                </xsl:apply-templates>
@@ -370,7 +361,6 @@
                                                    mode="create-message-content">
                                                    <xsl:with-param name="berichtName" select="$berichtName"/>
                                                    <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
-                                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                    <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                    <xsl:with-param name="context" select="$context" />
                                                    <!-- If the class is refered to form an association which is part of an VRIJ BERICHT no stuurgegevens must be generated. -->
@@ -440,7 +430,6 @@
                                                     Dit moet echter gebeuren a.d.h.v. de berichtcode. Die verfijning moet nog worden aangebracht in de if statements. -->
 
                                                <!-- If 'Materiele historie' is applicable for the current class a constructRef to a historieMaterieel global construct based on the current class is generated. -->
-                                               <!--xsl:if test="$historyAppliesToMessage = 'yes-Materieel' and (@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes')"-->
                                                <xsl:if test="(@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes')">
                                                    <ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                                                        <ep:tech-name>historieMaterieel</ep:tech-name>
@@ -460,7 +449,6 @@
                                                    </ep:constructRef>
                                                </xsl:if>
                                                <!-- If 'Formele historie' is applicable for the current class a constructRef to a historieFormeel global construct based on the current class is generated. -->
-                                               <!--xsl:if test="contains($historyAppliesToMessage,'yes') and (@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes')"-->
                                                <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes')">
                                                    <ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                                                        <ep:tech-name>historieFormeel</ep:tech-name>
@@ -484,7 +472,6 @@
                                                    mode="create-message-content-constructRef">
                                                    <xsl:with-param name="berichtName" select="$berichtName"/>
                                                    <xsl:with-param name="proces-type" select="'associationsRelatie'" />
-                                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                    <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                    <xsl:with-param name="context" select="$context" />
                                                </xsl:apply-templates>
@@ -521,7 +508,6 @@
                             The second one is used to determine if history, if applicable for the context, is applicable for the class being processed. Not every class has attributes or associations history applies to. -->
                        
                        <!-- If 'Materiele historie' is applicable for the current class a historieMaterieel global construct based on the current class is generated. -->
-                        <!--xsl:if test="$historyAppliesToMessage = 'yes-Materieel' and (@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes')"-->
                         <xsl:if test="(@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes')">
                            <xsl:choose>
                                <!-- The following when generates historieMaterieel global constructs based on uml groups. -->
@@ -553,10 +539,8 @@
                                                mode="create-message-content">
                                                <xsl:with-param name="berichtName" select="$berichtName"/>
                                                <xsl:with-param name="proces-type" select="'attributes'" />
-                                               <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                <xsl:with-param name="context" select="$context" />
-                                               <!--xsl:with-param name="historyAppliesToMessage" select="'yes-Materieel'"/-->
                                                <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
                                                <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
                                                <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
@@ -566,10 +550,8 @@
                                                mode="create-message-content">
                                                <xsl:with-param name="berichtName" select="$berichtName"/>
                                                <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
-                                               <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                <xsl:with-param name="context" select="$context" />
-                                               <!--xsl:with-param name="historyAppliesToMessage" select="'yes-Materieel'"/-->
                                                <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
                                                <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
                                                <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
@@ -609,19 +591,15 @@
                                        <xsl:choose>
                                            <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
                                            
-                                           <!-- ROME: Het templates waar de volgende apply templates naar verwijzen moeten nog ingericht worden op historieMaterieel.
-                                                      Dit is ook de reden dat er in de aanroep van deze apply templates de parameter 'indicatieMaterieleHistorie' nog niet voorkomt. -->
-                                           
+                                            
                                            
                                            <xsl:when test="$packages//imvert:class[imvert:supertype/imvert:type-id = $id]">
                                                <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
                                                    mode="create-message-content">
                                                    <xsl:with-param name="berichtName" select="$berichtName"/>
                                                    <xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'" />
-                                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                    <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                    <xsl:with-param name="context" select="$context" />
-                                                   <!--xsl:with-param name="historyAppliesToMessage" select="'yes-Materieel'"/-->
                                                    <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
                                                    <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
                                                    <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
@@ -635,10 +613,8 @@
                                                        mode="create-message-content">
                                                        <xsl:with-param name="berichtName" select="$berichtName"/>
                                                        <xsl:with-param name="proces-type" select="'attributes'" />
-                                                       <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                        <xsl:with-param name="context" select="$context" />
-                                                       <!--xsl:with-param name="historyAppliesToMessage" select="'yes-Materieel'"/-->
                                                        <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
                                                        <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
                                                        <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
@@ -649,10 +625,8 @@
                                                        <xsl:with-param name="berichtName" select="$berichtName"/>
                                                        <xsl:with-param name="proces-type"
                                                            select="'associationsGroepCompositie'" />
-                                                       <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                        <xsl:with-param name="context" select="$context" />
-                                                       <!--xsl:with-param name="historyAppliesToMessage" select="'yes-Materieel'"/-->
                                                        <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
                                                        <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
                                                        <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
@@ -746,10 +720,8 @@
                                                mode="create-message-content">
                                                <xsl:with-param name="berichtName" select="$berichtName"/>
                                                <xsl:with-param name="proces-type" select="'attributes'" />
-                                               <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                <xsl:with-param name="context" select="$context" />
-                                               <!--xsl:with-param name="historyAppliesToMessage" select="'yes'"/-->
                                                <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorie'"/>
                                                <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
                                            </xsl:apply-templates>
@@ -758,10 +730,8 @@
                                                mode="create-message-content">
                                                <xsl:with-param name="berichtName" select="$berichtName"/>
                                                <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
-                                               <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                <xsl:with-param name="context" select="$context" />
-                                               <!--xsl:with-param name="historyAppliesToMessage" select="'yes'"/-->
                                                <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorie'"/>
                                                <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
                                            </xsl:apply-templates>
@@ -801,19 +771,14 @@
                                        <xsl:choose>
                                            <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
                                            
-                                           <!-- ROME: Het template waar het volgende apply templates naar verwijst moet nog ingericht worden op historieFormeel.
-                                                      Dit is ook de reden dat er in de aanroep van deze apply templates de parameter 'indicatieFormeleHistorie' nog niet voorkomt. -->
-                                           
                                            
                                            <xsl:when test="$packages//imvert:class[imvert:supertype/imvert:type-id = $id]">
                                                <xsl:apply-templates select="$packages//imvert:class[imvert:id = $id]"
                                                    mode="create-message-content">
                                                    <xsl:with-param name="berichtName" select="$berichtName"/>
                                                    <xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'" />
-                                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                    <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                    <xsl:with-param name="context" select="$context" />
-                                                   <!--xsl:with-param name="historyAppliesToMessage" select="'yes'"/-->
                                                    <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorie'"/>
                                                    <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
                                                </xsl:apply-templates>
@@ -826,10 +791,8 @@
                                                        mode="create-message-content">
                                                        <xsl:with-param name="berichtName" select="$berichtName"/>
                                                        <xsl:with-param name="proces-type" select="'attributes'" />
-                                                       <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                        <xsl:with-param name="context" select="$context" />
-                                                       <!--xsl:with-param name="historyAppliesToMessage" select="'yes'"/-->
                                                        <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorie'"/>
                                                        <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
                                                    </xsl:apply-templates>
@@ -839,10 +802,8 @@
                                                        <xsl:with-param name="berichtName" select="$berichtName"/>
                                                        <xsl:with-param name="proces-type"
                                                            select="'associationsGroepCompositie'" />
-                                                       <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                                        <xsl:with-param name="berichtCode" select="$berichtCode" />
                                                        <xsl:with-param name="context" select="$context" />
-                                                       <!--xsl:with-param name="historyAppliesToMessage" select="'yes'"/-->
                                                        <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorie'"/>
                                                        <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
                                                    </xsl:apply-templates>
@@ -865,14 +826,14 @@
                                                        <ep:position>150</ep:position>
                                                    </ep:constructRef -->
                                                    <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                                       <!--ep:name>tijdvakGeldigheid</ep:name-->
+                                                       <ep:name>tijdvakGeldigheid</ep:name>
                                                        <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
                                                        <ep:min-occurs>1</ep:min-occurs>
                                                        <ep:position>155</ep:position>
                                                    </ep:constructRef>
                                                    <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                                       <!--ep:name>tijdstipRegistratie</ep:name-->
+                                                       <ep:name>tijdstipRegistratie</ep:name>
                                                        <ep:tech-name>tijdstipRegistratie</ep:tech-name>
                                                        <ep:max-occurs>1</ep:max-occurs>
                                                        <ep:min-occurs>1</ep:min-occurs>
@@ -913,10 +874,6 @@
                         <xsl:sequence select="imf:create-debug-track('Constructing the global constructs representing a relation',$debugging)"/>
 
                         <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @typeCode=relatie',$debugging)"/>
-                        <!-- LET OP! We moeten bij het bepalen van de globale complexTypes niet alleen kijken of ze hergebruikt worden over de berichten 
-                        maar ook of ze over die berichten heen wel hetzelfde moeten blijven. Het ene bericht heeft een hele ander type complexType nodig dan het andere.
-                        Ik moet dus hier indien nodig meerdere ep:constructs aanmaken voor elke situatie. Zie ook RM-488140-->
-                        
                         <!-- Within the schema's we want to have global constructs for relations. However for that kind of objects no uml classes are available.
                                 With the following apply-templates the global ep:construct elements are created presenting the relations. -->
                         
@@ -924,7 +881,6 @@
                             mode="create-message-content">
                             <xsl:with-param name="berichtCode" select="$berichtCode"/>
                             <xsl:with-param name="berichtName" select="$berichtName"/>
-                            <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                             <xsl:with-param name="context" select="$context"/>
                             <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
                             <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
@@ -936,7 +892,6 @@
                         The second one is used to determine if history, if applicable for the context, is applicable for the class being processed. Not every class has attributes or associations history applies to. -->
                         
                         <!-- If 'Materiele historie' is applicable for the current class and messagetype a historieMaterieel global construct based on the current class is generated. -->
-                        <!--xsl:if test="$historyAppliesToMessage = 'yes-Materieel' and (@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes')"-->
                         <xsl:if test="(@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes')">
                             
                             <xsl:sequence select="imf:create-debug-track(concat('Constructing the materieleHistorie constructs: ',$packages//imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
@@ -945,9 +900,7 @@
                                 mode="create-message-content">
                                 <xsl:with-param name="berichtCode" select="$berichtCode"/>
                                 <xsl:with-param name="berichtName" select="$berichtName"/>
-                                <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                 <xsl:with-param name="context" select="$context"/>
-                                <!--xsl:with-param name="historyAppliesToMessage" select="'yes-Materieel'"/-->
                                 <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
                                 <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
                                 <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
@@ -956,7 +909,6 @@
                         
                         
                         <!-- If 'Formele historie' is applicable for the current class and messagetype a historieFormeel global construct based on the current class is generated. -->
-                        <!--xsl:if test="contains($historyAppliesToMessage,'yes') and (@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes')"-->
                         <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes')">
                             
                             <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorie constructs: ',$packages//imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
@@ -965,9 +917,7 @@
                                 mode="create-message-content">
                                 <xsl:with-param name="berichtCode" select="$berichtCode"/>
                                 <xsl:with-param name="berichtName" select="$berichtName"/>
-                                <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                 <xsl:with-param name="context" select="$context"/>
-                                <!--xsl:with-param name="historyAppliesToMessage" select="'yes'"/-->
                                 <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorie'"/>
                                 <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
                                 <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
@@ -975,7 +925,6 @@
                         </xsl:if>
                         
                         <!-- If 'Formele historie' is applicable for the current class and messagetype a historieFormeel global construct based on the current class is generated. -->
-                        <!--xsl:if test="contains($historyAppliesToMessage,'yes') and (@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes')"-->
                         <xsl:if test="@indicatieFormeleHistorieRelatie='Ja'">
                             
                             <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorieRelatie constructs: ',$packages//imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
@@ -984,9 +933,7 @@
                                 mode="create-message-content">
                                 <xsl:with-param name="berichtCode" select="$berichtCode"/>
                                 <xsl:with-param name="berichtName" select="$berichtName"/>
-                                <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus" />
                                 <xsl:with-param name="context" select="$context"/>
-                                <!--xsl:with-param name="historyAppliesToMessage" select="'yes'"/-->
                                 <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorieRelatie'"/>
                                 <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
                                 <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
