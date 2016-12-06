@@ -80,7 +80,7 @@
             <xsl:sequence select="imf:create-output-element('imvert:version',$base-package/imvert:version)"/>
             <xsl:sequence select="imf:create-output-element('imvert:phase',$base-package/imvert:phase)"/>
             <xsl:sequence select="imf:create-output-element('imvert:release',$base-package/imvert:release)"/>
-            <xsl:sequence select="imf:create-output-element('imvert:documentation',$base-package/imvert:documentation/node(),'',false(),false())"/>
+            <!--<xsl:sequence select="imf:create-output-element('imvert:documentation',$base-package/imvert:documentation/node(),'',false(),false())"/>-->
             <xsl:sequence select="imvert:filter"/>
             <xsl:sequence select="imf:compile-imvert-filter()"/>
             
