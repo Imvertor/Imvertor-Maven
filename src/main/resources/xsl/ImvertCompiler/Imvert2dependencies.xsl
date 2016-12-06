@@ -44,7 +44,7 @@
             <!-- avoid duplicates, several models mat reference the same supplier -->
             <xsl:for-each-group select="$suppliers" group-by="@subpath">
                 <imvert:supplier-contents subpath="{current-grouping-key()}">
-                    <xsl:sequence select="imf:get-imvert-system-doc(current-grouping-key())"/>
+                    <xsl:sequence select="imf:get-imvert-supplier-doc(current-grouping-key())"/>
                 </imvert:supplier-contents>
             </xsl:for-each-group>
             
@@ -70,7 +70,7 @@
         <xsl:param name="root" as="element(imvert:packages)"/>
         <xsl:for-each select="$root//imvert:supplier[imvert:supplier-project]">
             <xsl:variable name="subpath" select="imf:get-trace-supplier-subpath(imvert:supplier-project,imvert:supplier-name,imvert:supplier-release)"/>
-            <xsl:variable name="supplier-doc" select="imf:get-imvert-system-doc($subpath)"/>
+            <xsl:variable name="supplier-doc" select="imf:get-imvert-supplier-doc($subpath)"/>
             <xsl:choose>
                 <xsl:when test="exists($supplier-doc)">
                     <imvert:supplier-contents subpath="{$subpath}"/>
@@ -86,6 +86,10 @@
     <xsl:function name="imf:get-imvert-system-doc">
         <xsl:param name="subpath"/>
         <xsl:sequence select="imf:document(concat($output-folder,'/applications/',$subpath,'/etc/system.imvert.xml'))"/>
+    </xsl:function>
+    <xsl:function name="imf:get-imvert-supplier-doc">
+        <xsl:param name="subpath"/>
+        <xsl:sequence select="imf:document(concat($output-folder,'/applications/',$subpath,'/etc/supplier.imvert.xml'))"/>
     </xsl:function>
     
 </xsl:stylesheet>

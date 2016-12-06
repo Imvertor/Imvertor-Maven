@@ -52,7 +52,7 @@
         <xsl:variable name="formal-name" select="@formal-name"/>
         <xsl:variable name="formal-trace-name" select="imf:get-construct-formal-trace-name(.)"/>
         <xsl:variable name="supplier-subpath" select="imf:get-construct-supplier-system-subpath(.)"/>
-        <xsl:variable name="supplier-doc" select="imf:document(concat($output-folder,'/applications/',$supplier-subpath,'/etc/system.imvert.xml'))"/>
+        <xsl:variable name="supplier-doc" select="imf:document(concat($output-folder,'/applications/',$supplier-subpath,'/etc/supplier.imvert.xml'))"/>
         <xsl:variable name="supplier-construct" select="imf:get-supplier($supplier-doc,$formal-trace-name)"/>
         <xsl:copy>
             <xsl:copy-of select="@*"/>
