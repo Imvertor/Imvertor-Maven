@@ -449,7 +449,7 @@
     <xsl:function name="imf:debug-mode" as="xs:boolean">
         <xsl:param name="code" as="xs:string*"/>
         <xsl:variable name="debug" select="imf:get-config-string('cli','debug','no')"/>
-        <xsl:variable name="modes" select="tokenize(imf:get-config-string('cli','debugmode',''),':')"/>
+        <xsl:variable name="modes" select="tokenize(imf:get-config-string('cli','debugmode',''),';')"/>
         <xsl:sequence select="imf:boolean($debug) and ($code = $modes)"/>
     </xsl:function>
     
@@ -832,4 +832,20 @@
         <xsl:param name="release" as="xs:string?"/>
         <xsl:sequence select="string-join(($project,$name,$release),'/')"/>
     </xsl:function>
+    
+    <xsl:function name="imf:boolean-xor" as="xs:boolean">
+        <xsl:param name="boolean-sequence" as="xs:boolean*"/>
+        <xsl:sequence select="index-of(true(),$boolean-sequence) eq 1"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:boolean-or" as="xs:boolean">
+        <xsl:param name="boolean-sequence" as="xs:boolean*"/>
+        <xsl:sequence select="true() = $boolean-sequence"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:boolean-and" as="xs:boolean">
+        <xsl:param name="boolean-sequence" as="xs:boolean*"/>
+        <xsl:sequence select="not(false() = $boolean-sequence)"/>
+    </xsl:function>
+    
 </xsl:stylesheet>
