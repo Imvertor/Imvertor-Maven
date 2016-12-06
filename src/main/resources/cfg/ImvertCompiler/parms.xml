@@ -110,7 +110,10 @@
       <WORK_CHECKTRACE_FILE>${system/work-imvert-folder-path}/imvertor.11.3.trace-check.xml</WORK_CHECKTRACE_FILE>
       
       <IMVERTOR_EMBELLISH_XSLPATH>Imvert2embellish.xsl</IMVERTOR_EMBELLISH_XSLPATH>
-      <WORK_EMBELLISH_FILE>${system/work-imvert-folder-path}/imvertor.12.embellish.xml</WORK_EMBELLISH_FILE>
+      <WORK_EMBELLISH_FILE>${system/work-imvert-folder-path}/imvertor.12.1.embellish.xml</WORK_EMBELLISH_FILE>
+      
+      <IMVERTOR_SUPPLIER_XSLPATH>Imvert2supplier.xsl</IMVERTOR_SUPPLIER_XSLPATH>
+      <WORK_SUPPLIER_FILE>${system/work-imvert-folder-path}/imvertor.12.2.supplier.xml</WORK_SUPPLIER_FILE>
       
       <IMVERTOR_SCHEMA_XSLPATH>Imvert2schema.xsl</IMVERTOR_SCHEMA_XSLPATH>
       <WORK_SCHEMA_FILE>${system/work-imvert-folder-path}/imvertor.24.schema.xml</WORK_SCHEMA_FILE>
