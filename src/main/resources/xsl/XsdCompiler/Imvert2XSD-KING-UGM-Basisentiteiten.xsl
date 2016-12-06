@@ -214,7 +214,7 @@
                 
                 <xsl:if test="not($is-abstract)">
                     <xsl:if test="imf:is-authentiek(.)">
-                        <xs:element name="authentiek" type="{$StUF-prefix}:StatusMetagegeven-basis" minOccurs="0" maxOccurs="unbounded"/>
+                        <xs:element name="authentiek-TODO" type="{$StUF-prefix}:StatusMetagegeven-basis" minOccurs="0" maxOccurs="unbounded"/>
                     </xsl:if>
                     <xsl:if test="imf:is-in-onderzoek(.)">
                         <xs:element name="inOnderzoek" type="{$StUF-prefix}:StatusMetagegeven-basis" minOccurs="0" maxOccurs="unbounded"/>
@@ -245,15 +245,7 @@
                     <xsl:with-param name="richting">uitgaand</xsl:with-param>
                     <xsl:sort select="imvert:name"/>
                 </xsl:apply-templates>
-                
-                <!--TODO #487922 besluit nemen over terugrelaties -->
-                <?mogelijk-vervallen
-                <xsl:sequence select="imf:insert-comment('mode-global-objecttype (Associations: inkomend)')"/>
-                <xsl:variable name="inkomende-associaties" select="$document//imvert:association[not(imvert:aggregation = 'composite') and imf:get-type-id(.) = $id]"/>
-                <xsl:apply-templates select="$inkomende-associaties" mode="mode-local-association">
-                    <xsl:with-param name="richting">inkomend</xsl:with-param>
-                </xsl:apply-templates>
-                ?>
+   
             </xs:sequence>
         </xsl:variable>
         
@@ -495,121 +487,120 @@
     <xsl:template match="imvert:attribute" mode="mode-local-attribute">
         
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
+        
         <xsl:variable name="cardinality" select="imf:get-cardinality(.)"/>
         <xsl:variable name="history" select="imf:get-history(.)"/>
         
         <xsl:variable name="type" select="imf:get-class(.)"/>
-        <xsl:variable name="compiled-name-type" select="imf:get-compiled-name($type)"/>
-        
         <xsl:variable name="is-in-onderzoek" select="imf:is-in-onderzoek(.)"/>
         
-        <xsl:variable name="type-is-datatype" select="$type/imvert:designation = 'datatype'"/>
-        <xsl:variable name="type-is-complextype" select="$type-is-datatype and $type/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-complextype')"/>
-        <xsl:variable name="type-is-simpletype" select="$type-is-datatype"/>
-    
         <xsl:variable name="type-is-referentietabel" select="imf:get-stereotype($type) = imf:get-config-stereotypes('stereotype-name-referentielijst')"/>
-        <xsl:variable name="type-is-enumeration" select="imf:get-stereotype($type) = imf:get-config-stereotypes('stereotype-name-enumeration')"/>
         
-        <xsl:variable name="type-is-external" select="exists(imvert:conceptual-schema-type)"/>
-        
-        <xsl:sequence select="imf:create-comment(concat('mode-local-attribute Local attribute # ',@display-name))"/>
-
-        <xsl:variable name="scalar-att-type" select="imf:get-stuf-scalar-attribute-type(.)"/>
-        
-        <xsl:choose>
-            <xsl:when test="exists($scalar-att-type)">
-                <!-- 
+        <!-- when referentietabel, assume the attribute is the is-id attriubute of the referentie tabel -->
+        <xsl:variable name="applicable-attribute" select="if ($type-is-referentietabel) then $type//imvert:attribute[imf:boolean(imvert:is-id)] else ()"/>
+       
+        <xsl:for-each select="($applicable-attribute,.)[1]"> <!-- singleton -->
+            
+             <xsl:variable name="type" select="imf:get-class(.)"/> <!-- possibly overrules the original att type  -->
+      
+            <xsl:variable name="compiled-name-type" select="imf:get-compiled-name($type)"/>
+            
+            <xsl:variable name="type-is-datatype" select="$type/imvert:designation = 'datatype'"/>
+            <xsl:variable name="type-is-complextype" select="$type-is-datatype and $type/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-complextype')"/>
+            <xsl:variable name="type-is-simpletype" select="$type-is-datatype"/>
+            
+            <xsl:variable name="type-is-enumeration" select="imf:get-stereotype($type) = imf:get-config-stereotypes('stereotype-name-enumeration')"/>
+            
+            <xsl:variable name="type-is-external" select="exists(imvert:conceptual-schema-type)"/>
+            
+            <xsl:sequence select="imf:create-comment(concat('mode-local-attribute Local attribute # ',@display-name))"/>
+            <xsl:if test="exists($applicable-attribute)">
+                <xsl:sequence select="imf:create-comment('Attribute redirected to referentie tabel')"/>
+            </xsl:if>
+            
+            <xsl:variable name="scalar-att-type" select="imf:get-stuf-scalar-attribute-type(.)"/>
+            
+            <xsl:choose>
+                <xsl:when test="exists($scalar-att-type)">
+                    <!-- 
                     Als het metagegeven Element.formaat gelijk is aan één van de waarden in onderstaande 
                     tabel  dan wordt er alleen een element gecreëerd omdat er gebruik kan worden gemaakt van een 
                     bestaande complex type uit de StUF-onderlaag (zie ‘stuf0302.xsd’) 
                 -->
-                <xsl:sequence select="imf:create-comment('Scalar in de onderlaag')"/>
-                <xs:element
-                    name="{$compiled-name}" 
-                    type="{$scalar-att-type}" 
-                    minOccurs="0" 
-                    maxOccurs="{$cardinality[4]}"
-                    >
-                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
-                </xs:element>
-            </xsl:when>
-            
-            <xsl:when test="$type-is-referentietabel">
-                <xsl:sequence select="imf:create-comment('Een referentie tabel')"/>
-                <!-- we moeten hier het type van de is-ID van de target opnemen -->
-                <xsl:variable name="tabel-id-attribute" select="$type//imvert:attribute[imvert:is-id = 'true']"/>
+                    <xsl:sequence select="imf:create-comment('Scalar in de onderlaag')"/>
+                    <xs:element
+                        name="{$compiled-name}" 
+                        type="{$scalar-att-type}" 
+                        minOccurs="0" 
+                        maxOccurs="{$cardinality[4]}"
+                        >
+                        <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                    </xs:element>
+                </xsl:when>
                 
-                <xs:element
-                    name="{$compiled-name}" 
-                    type="{concat($prefix, ':', imf:capitalize(imf:get-compiled-name($tabel-id-attribute)))}"
-                    minOccurs="0" 
-                    maxOccurs="{$cardinality[4]}"
-                    >
-                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
-                </xs:element>
-            </xsl:when>
+                <xsl:when test="$type-is-enumeration">
+                    <xsl:sequence select="imf:create-comment('Een enumeratie')"/>
+                    <xs:element
+                        name="{$compiled-name}" 
+                        type="{concat($prefix, ':', imf:capitalize($compiled-name))}" 
+                        minOccurs="0" 
+                        maxOccurs="{$cardinality[4]}"
+                        >
+                        <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                    </xs:element>
+                </xsl:when>
+                
+                <xsl:when test="$type-is-complextype">
+                    <xsl:sequence select="imf:create-comment('Een complex datatype')"/>
+                    <xs:element
+                        name="{$compiled-name}" 
+                        type="{concat($prefix, ':', imf:capitalize($compiled-name), '-e')}" 
+                        minOccurs="0" 
+                        maxOccurs="{$cardinality[4]}"
+                        >
+                        <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                    </xs:element>
+                </xsl:when>
+                
+                <xsl:when test="$type-is-simpletype">
+                    <xsl:sequence select="imf:create-comment('Een simpel datatype')"/> 
+                    <xs:element
+                        name="{$compiled-name}" 
+                        type="{concat($prefix, ':', imf:capitalize($compiled-name),'-e')}" 
+                        minOccurs="0" 
+                        maxOccurs="{$cardinality[4]}"
+                        >
+                        <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                    </xs:element>
+                </xsl:when>
+                
+                <xsl:when test="$type-is-external">
+                    <xsl:sequence select="imf:create-comment('Een extern type')"/>
+                    <xs:element
+                        name="{$compiled-name}" 
+                        type="{imf:get-external-type-name(.,true())}" 
+                        minOccurs="0" 
+                        maxOccurs="{$cardinality[4]}"
+                        >
+                        <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                    </xs:element>
+                </xsl:when>
+                
+                <xsl:otherwise>
+                    <xsl:sequence select="imf:create-comment('Scalar maar niet in de onderlaag')"/>
+                    <xs:element
+                        name="{$compiled-name}" 
+                        type="{concat($prefix, ':', imf:capitalize($compiled-name),'-e')}" 
+                        minOccurs="0" 
+                        maxOccurs="{$cardinality[4]}"
+                        >
+                        <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                    </xs:element>
+                </xsl:otherwise>
+            </xsl:choose>
             
-            <xsl:when test="$type-is-enumeration">
-                <xsl:sequence select="imf:create-comment('Een enumeratie')"/>
-                <xs:element
-                    name="{$compiled-name}" 
-                    type="{concat($prefix, ':', imf:capitalize($compiled-name))}" 
-                    minOccurs="0" 
-                    maxOccurs="{$cardinality[4]}"
-                    >
-                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
-                </xs:element>
-            </xsl:when>
-            
-            <xsl:when test="$type-is-complextype">
-                <xsl:sequence select="imf:create-comment('Een complex datatype')"/>
-                <xs:element
-                    name="{$compiled-name}" 
-                    type="{concat($prefix, ':', imf:capitalize($compiled-name), '-e')}" 
-                    minOccurs="0" 
-                    maxOccurs="{$cardinality[4]}"
-                    >
-                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
-                </xs:element>
-            </xsl:when>
-            
-            <xsl:when test="$type-is-simpletype">
-                <xsl:sequence select="imf:create-comment('Een simpel datatype')"/> 
-                <xs:element
-                    name="{$compiled-name}" 
-                    type="{concat($prefix, ':', imf:capitalize($compiled-name),'-e')}" 
-                    minOccurs="0" 
-                    maxOccurs="{$cardinality[4]}"
-                    >
-                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
-                </xs:element>
-            </xsl:when>
-            
-            <xsl:when test="$type-is-external">
-                <xsl:sequence select="imf:create-comment('Een extern type')"/>
-                <xs:element
-                    name="{$compiled-name}" 
-                    type="{imf:get-external-type-name(.,true())}" 
-                    minOccurs="0" 
-                    maxOccurs="{$cardinality[4]}"
-                    >
-                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
-                </xs:element>
-            </xsl:when>
-            
-            <xsl:otherwise>
-                <xsl:sequence select="imf:create-comment('Scalar maar niet in de onderlaag')"/>
-                <xs:element
-                    name="{$compiled-name}" 
-                    type="{concat($prefix, ':', imf:capitalize($compiled-name),'-e')}" 
-                    minOccurs="0" 
-                    maxOccurs="{$cardinality[4]}"
-                    >
-                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
-                </xs:element>
-            </xsl:otherwise>
-        </xsl:choose>
-     
+        </xsl:for-each>
+       
     </xsl:template>
     
     <xsl:function name="imf:get-external-type-name">
@@ -812,9 +803,9 @@
                 <xs:element
                     name="{$assoc-name}" 
                     type="{$heen-typeref}" 
-                    minOccurs="{$cardinality[3]}" 
+                    minOccurs="0" 
                     maxOccurs="{$target-cardinality}"
-                    >
+                    > <!-- must be 0, fixed -->
                     <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
                 </xs:element>
             </xsl:when>
@@ -897,8 +888,9 @@
         
         <xsl:variable name="association-class" select="imf:get-by-id(imvert:association-class/imvert:type-id)"/>
         <xsl:variable name="association-class-attributes" select="$association-class//imvert:attribute"/>
-        <xsl:variable name="association-class-associations" select="$association-class//imvert:association"/>
-       
+        <xsl:variable name="association-class-associations" select="$association-class//imvert:association[not(imvert:aggregation = 'composite')]"/>
+        <xsl:variable name="association-class-compositions" select="$association-class//imvert:association[imvert:aggregation = 'composite']"/>
+        
         <xsl:variable name="hisform-on-association-class" select="imf:get-history($association-class)[1]"/>
         <xsl:variable name="hismate-on-association-class" select="imf:get-history($association-class)[2]"/>
         
@@ -922,10 +914,18 @@
                         minOccurs="0"/>
                     
                     <!-- add the attributes & associations of the association class, if any -->
+                    
+                    <xsl:sequence select="imf:create-comment('mode-global-association-type (Attributes)')"/>
                     <xsl:apply-templates select="$association-class-attributes" mode="mode-local-attribute"/>
                     
+                    <xsl:sequence select="imf:create-comment('mode-global-association-type (Compositie relaties)')"/>
+                    <xsl:apply-templates select="$association-class-compositions" mode="mode-local-composition">
+                        <xsl:sort select="imvert:name"/>
+                    </xsl:apply-templates>
+                    
                     <xsl:if test="imf:is-authentiek(.)">
-                        <xs:element name="authentiek" type="{$StUF-prefix}:StatusMetagegeven-basis" minOccurs="0" maxOccurs="unbounded"/>
+                        <!-- avoid duplicates -->
+                        <xs:element name="authentiek-TODO" type="{$StUF-prefix}:StatusMetagegeven-basis" minOccurs="0" maxOccurs="unbounded"/>
                     </xsl:if>
                     <xsl:if test="imf:is-in-onderzoek(.)">
                         <xs:element name="inOnderzoek" type="{$StUF-prefix}:StatusMetagegeven-basis" minOccurs="0" maxOccurs="unbounded"/>
