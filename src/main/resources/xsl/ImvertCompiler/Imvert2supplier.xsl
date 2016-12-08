@@ -39,15 +39,14 @@
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
     
     <xsl:template match="/">
-        <xsl:apply-templates select="*"/>
+        <xsl:comment>Compacted version of the system imvert file</xsl:comment>
+        <xsl:apply-templates/>
     </xsl:template>
     
+    <!--
     <xsl:template match="imvert:packages | imvert:package | imvert:class | imvert:attribute | imvert:association">
         <xsl:copy>
           
-            <xsl:copy-of select="@*"/>
-          
-            <!--
             <xsl:copy-of select="@formal-name"/>
             
             <xsl:sequence select="imvert:id"/>
@@ -57,14 +56,17 @@
             <xsl:sequence select="min-occurs"/>
             <xsl:sequence select="max-occurs"/>
             <xsl:sequence select="imvert:tagged-values"/>
-            -->
             
             <xsl:apply-templates select="*"/>
         </xsl:copy>
     </xsl:template>
+    -->
     
-    <xsl:template match="*">
-        <xsl:apply-templates select="*"/>
+    <xsl:template match="node()|@*">
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
+            <xsl:apply-templates/>
+        </xsl:copy>
     </xsl:template>
     
 </xsl:stylesheet>

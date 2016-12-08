@@ -68,7 +68,7 @@ public class ImvertCompiler extends Step {
 		}
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_CHECKTRACE_FILE", "properties/IMVERTOR_CHECKTRACE_XSLPATH") : false ;
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_EMBELLISH_FILE", "properties/IMVERTOR_EMBELLISH_XSLPATH","system/cur-imvertor-filepath") : false ;
-		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_SUPPLIER_FILE", "properties/IMVERTOR_SUPPLIER_XSLPATH") : false ;
+		// NOT YET succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_SUPPLIER_FILE", "properties/IMVERTOR_SUPPLIER_XSLPATH") : false ;
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_SCHEMA_FILE", "properties/IMVERTOR_SCHEMA_XSLPATH","system/cur-imvertor-filepath") : false ;
 		
 		if (!succeeds && configurator.forceCompile())
@@ -87,7 +87,7 @@ public class ImvertCompiler extends Step {
 			
 			XmlFile infoSupplierFile = new XmlFile(configurator.getParm("properties", "WORK_SUPPLIER_FILE"));
 			XmlFile oldSupplierFile = new XmlFile(etcFolder,"supplier.imvert.xml");
-			infoSupplierFile.copyFile(oldSupplierFile); // #488281 optimization of supplier access
+			if (infoSupplierFile.isFile()) infoSupplierFile.copyFile(oldSupplierFile); // #488281 optimization of supplier access
 	    	
 			XmlFile infoSchemaFile = new XmlFile(configurator.getParm("properties", "WORK_SCHEMA_FILE"));
 			XmlFile oldModelFile = new XmlFile(etcFolder,"model.imvert.xml");

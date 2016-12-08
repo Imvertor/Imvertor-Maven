@@ -83,13 +83,4 @@
         </xsl:for-each>
     </xsl:function>
     
-    <xsl:function name="imf:get-imvert-system-doc">
-        <xsl:param name="subpath"/>
-        <xsl:sequence select="imf:document(concat($output-folder,'/applications/',$subpath,'/etc/system.imvert.xml'))"/>
-    </xsl:function>
-    <xsl:function name="imf:get-imvert-supplier-doc">
-        <xsl:param name="subpath"/>
-        <xsl:sequence select="imf:document(concat($output-folder,'/applications/',$subpath,'/etc/supplier.imvert.xml'))"/>
-    </xsl:function>
-    
 </xsl:stylesheet>

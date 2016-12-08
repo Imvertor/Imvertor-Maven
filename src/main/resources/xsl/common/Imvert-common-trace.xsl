@@ -232,4 +232,15 @@
         <xsl:sequence select="distinct-values($subpaths)"/>
     </xsl:function>
    
+    <xsl:function name="imf:get-imvert-system-doc" as="document-node()?">
+        <xsl:param name="subpath"/>
+        <xsl:sequence select="imf:document(concat($output-folder,'/applications/',$subpath,'/etc/system.imvert.xml'))"/>
+    </xsl:function>
+    <xsl:function name="imf:get-imvert-supplier-doc" as="document-node()?">
+        <xsl:param name="subpath"/>
+        <!-- migration issue: when no supplier doc available yet, use the system doc, though this is a too rich representation. -->
+        <xsl:variable name="doc" select="imf:document(concat($output-folder,'/applications/',$subpath,'/etc/supplier.imvert.xml'))"/>
+        <xsl:sequence select="if (exists($doc)) then $doc else imf:get-imvert-system-doc($subpath)"/>
+        
+    </xsl:function>
 </xsl:stylesheet>
