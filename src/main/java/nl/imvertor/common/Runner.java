@@ -340,7 +340,7 @@ public class Runner {
 		info(logger, "Please contact your system administrator.");
 		info(logger, "");
 		logger.fatal("Details on the error", e);
-		System.exit(-1);
+		System.exit(0); // TODO must be -1, see mail "exec:exec-external met exitcode -1"
 	}
 	public void fatal(Logger logger, String text, Exception e, String wiki) {
 		fatal(logger, text, e, null, wiki);
