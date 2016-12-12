@@ -120,8 +120,8 @@ public class Transformer {
 	 * @return
 	 */
 	public boolean getProfiled() {
-		profiled = false; //TODO PROFILING ON STYLESHEET ALIAS
-		return (configurator.getRunner().getDebug("#ALL") && profiled); // TODO must be the alias of the stylesheet, e.g. BES
+		profiled = true; //TODO PROFILING ON STYLESHEET ALIAS
+		return (configurator.getRunner().getDebug("#ALL") && profiled); // TODO must be the alias of the stylesheet, e.g. BES, or all #ALL
 	}
 	
 	/**
