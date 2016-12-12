@@ -55,15 +55,16 @@
     
     <xsl:template match="/">
         <xsl:sequence select="imf:track('Compacting')"/>
+    
         <xsl:choose>
            <xsl:when test="empty($project-packages)">
                <xsl:sequence select="imf:msg('ERROR','No projects found')"/>
            </xsl:when>
-           <xsl:when test="empty($app-package)">
+            <xsl:when test="empty($project-package)">
+                <xsl:sequence select="imf:msg('ERROR','No project found for: [1]', $application-package-name)"/>
+            </xsl:when>
+            <xsl:when test="empty($app-package)">
                <xsl:sequence select="imf:msg('ERROR','No application found: [1]', $application-package-name)"/>
-           </xsl:when>
-           <xsl:when test="empty($project-package)">
-               <xsl:sequence select="imf:msg('ERROR','No project found for: [1]', $application-package-name)"/>
            </xsl:when>
            <xsl:otherwise>
                <xsl:apply-templates/>
