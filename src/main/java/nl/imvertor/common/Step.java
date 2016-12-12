@@ -53,7 +53,7 @@ public class Step {
 		String infile = configurator.getConfigFilepath(); 
 		String outfile = configurator.getParm("system","work-rep-folder-path") + "/" + sn + "-report.xml"; 
 		String xslfile = configurator.getParm("system","xsl-folder-path") + "/" + sn + "/" + sn + "-report.xsl"; 
-		return transformer.transform(infile,outfile,xslfile);
+		return transformer.transform(infile,outfile,xslfile,null);
 	}
 	
 	/**

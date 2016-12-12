@@ -98,6 +98,6 @@ public class GenericTransformer extends Step {
 	}
 	
 	private boolean transform(Transformer transformer, String infile, String outfile, String xslfile) throws Exception {
-		return transformer.transform(infile, outfile, xslfile);
+		return transformer.transform(infile, outfile, xslfile,null);
 	}
 }

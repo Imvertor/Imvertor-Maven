@@ -163,7 +163,7 @@ public class Transformer {
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean transform(File infile, File outfile, File xslfile) throws Exception {
+	public boolean transform(File infile, File outfile, File xslfile, String alias) throws Exception {
 
 		String task = getProfiled() ? "Profiling" : "Transforming";
 		
@@ -211,6 +211,7 @@ public class Transformer {
 		transformer.setParameter(new QName("xml-input-name"),new XdmAtomicValue(infile.getName()));
 		transformer.setParameter(new QName("xml-output-name"),new XdmAtomicValue(outfile.getName()));
 		transformer.setParameter(new QName("xml-stylesheet-name"),new XdmAtomicValue(xslfile.getName()));
+		transformer.setParameter(new QName("xml-stylesheet-alias"),new XdmAtomicValue(alias));
 		transformer.setSource(source);
 		transformer.setDestination(processor.newSerializer(outfile));
 
@@ -254,7 +255,7 @@ public class Transformer {
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean transform(String infilePath, String outfilePath, String xslfilePath) throws Exception {
+	public boolean transform(String infilePath, String outfilePath, String xslfilePath, String alias) throws Exception {
 		File infile, outfile, xslfile;
 		infile = new File(infilePath);
 		xslfile = new File(xslfilePath);
@@ -264,7 +265,7 @@ public class Transformer {
 			outfile.deleteOnExit();
 		} else 
 			outfile = new File(outfilePath);
-		return transform( infile, outfile, xslfile );
+		return transform( infile, outfile, xslfile, alias);
 	}
 
 	/**
@@ -284,9 +285,10 @@ public class Transformer {
 		String outFile = configurator.getParm(p[0],p[1]);
 		p = StringUtils.split(xslfileParm,"/");
 		String xslFile = configurator.getXslPath(configurator.getParm(p[0],p[1]));
+		String alias = configurator.getAlias("properties", p[1]);
 		p = StringUtils.split(resultParm,"/");
 		if (resultParm != null) configurator.setParm(p[0],p[1],outFile, true);
-		return transform(inFile, outFile, xslFile);
+		return transform(inFile, outFile, xslFile, alias);
 	}
 	
 	public boolean transformStep(String infileParm, String outfileParm, String xslfileParm) throws Exception {
@@ -316,7 +318,7 @@ public class Transformer {
     		if (matcher.find() && file.isFile()) {
     			// transform
     			XmlFile xmlFile = new XmlFile(file);
-    			transform(xmlFile,new XmlFile(targetFolder,file.getName()), xslFile);
+    			transform(xmlFile,new XmlFile(targetFolder,file.getName()), xslFile, null);
     		} else if (file.isDirectory()) {
     			// create target directory an process that
     			AnyFolder subFolder = new AnyFolder(targetFolder,file.getName());

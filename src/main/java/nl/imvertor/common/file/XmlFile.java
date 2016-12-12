@@ -449,17 +449,17 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		XslFile cleanerXsl = new XslFile(configurator.getParm("properties","IMVERTOR_COMPARE_CLEAN_XSLPATH"));
 		XslFile simpleXsl = new XslFile(configurator.getParm("properties","IMVERTOR_COMPARE_SIMPLE_XSLPATH"));
 		
-		valid = valid && transformer.transform(this,controlModelFile,cleanerXsl);
-		valid = valid && transformer.transform(testXmlFile,testModelFile,cleanerXsl);
+		valid = valid && transformer.transform(this,controlModelFile,cleanerXsl,null);
+		valid = valid && transformer.transform(testXmlFile,testModelFile,cleanerXsl,null);
 		
 		// simplify
 		transformer.setXslParm("ctrl-name-mapping-filepath", ctrlNameFile.toURI().toString()); // file:/D:/.../Imvertor-OS-work/imvert/imvertor.20.compare-control-name.xml
 		transformer.setXslParm("test-name-mapping-filepath", testNameFile.toURI().toString());
 		
 		transformer.setXslParm("comparison-role", "ctrl");
-		valid = valid && transformer.transform(controlModelFile,controlSimpleFile,simpleXsl);
+		valid = valid && transformer.transform(controlModelFile,controlSimpleFile,simpleXsl,null);
 		transformer.setXslParm("comparison-role", "test");
-		valid = valid && transformer.transform(testModelFile,testSimpleFile,simpleXsl);
+		valid = valid && transformer.transform(testModelFile,testSimpleFile,simpleXsl,null);
 		
 		// compare 
 		XslFile compareXsl = new XslFile(configurator.getParm("properties","COMPARE_GENERATOR_XSLPATH"));
@@ -468,11 +468,11 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		transformer.setXslParm("test-filepath", testSimpleFile.getCanonicalPath());
 		transformer.setXslParm("diff-filepath", diffXml.getCanonicalPath());
 		
-		valid = valid && transformer.transform(controlSimpleFile, tempXsl, compareXsl);
+		valid = valid && transformer.transform(controlSimpleFile, tempXsl, compareXsl,null);
 		
 		// create listing
 		XslFile listingXsl = new XslFile(configurator.getParm("properties","IMVERTOR_COMPARE_LISTING_XSLPATH"));
-		valid = valid && transformer.transform(controlSimpleFile,listingXml,listingXsl);
+		valid = valid && transformer.transform(controlSimpleFile,listingXml,listingXsl,null);
 		
 		// get the number of differences found
 		int differences = ((NodeList) listingXml.xpathToObject("/*/*",null,XPathConstants.NODESET)).getLength();

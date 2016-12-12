@@ -446,11 +446,19 @@
         <xsl:value-of select="if ($this/parent::*) then concat(imf:debug-path($this/parent::*),'/',name($this)) else name($this)"/>
     </xsl:function>
     
+    <!-- the debug mode is true when
+        
+        Debugging is activated by CLI,
+        and 
+        Debugmode is same as step alias, or the debugmode holds the mode #ALL
+    -->
     <xsl:function name="imf:debug-mode" as="xs:boolean">
-        <xsl:param name="code" as="xs:string*"/>
-        <xsl:variable name="debug" select="imf:get-config-string('cli','debug','no')"/>
-        <xsl:variable name="modes" select="tokenize(imf:get-config-string('cli','debugmode',''),';')"/>
-        <xsl:sequence select="imf:boolean($debug) and ($code = $modes)"/>
+        <xsl:param name="alias" as="xs:string*"/>
+        <xsl:sequence select="imf:boolean($debug) and (($alias,'#ALL') = $debug-modes)"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:debug-mode" as="xs:boolean">
+       <xsl:sequence select="$debugging"/>
     </xsl:function>
     
     <xsl:function name="imf:create-debug-comment">

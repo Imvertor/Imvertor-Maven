@@ -134,6 +134,7 @@
         Place rules here that focus on the complete specification rather than particular constructs. 
     -->
     <xsl:template match="/imvert:packages">
+        <xsl:sequence select="imf:msg(.,'DEBUG','Debugging [1]',$xml-stylesheet-alias)"/>
         
         <imvert:report>
             <!-- info used to determine report location are set here -->

@@ -212,7 +212,7 @@ public class XmiCompiler extends Step {
 		XslFile xslFile = new XslFile(xslFilePath);
 		runner.debug(logger,"CHAIN", "Migrating XMI: " + activeFile.getCanonicalPath());
 		Transformer transformer = new Transformer();
-		transformer.transform(xmiFile, outFile, xslFile);
+		transformer.transform(xmiFile, outFile, xslFile,null);
 		outFile.copyFile(xmiFile);
 	}
 	

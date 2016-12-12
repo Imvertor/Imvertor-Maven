@@ -43,6 +43,7 @@
     <xsl:param name="xml-input-nme"/>
     <xsl:param name="xml-output-name"/>
     <xsl:param name="xml-stylesheet-name"/>
+    <xsl:param name="xml-stylesheet-alias"/>
     
     <!-- 
         ==========================================
@@ -54,6 +55,8 @@
     <xsl:variable name="imvertor-release" select="imf:get-config-string('run','release','(UNKNOWN RELEASE)')"/>
     
     <xsl:variable name="debug" select="imf:get-config-string('cli','debug','false')"/>
+    <xsl:variable name="debug-modes" select="tokenize(imf:get-config-string('cli','debugmode',''),';')"/>
+    <xsl:variable name="debugging" select="imf:debug-mode($xml-stylesheet-alias)"/>
     
     <xsl:variable name="generation-date" select="imf:get-config-string('run','start','1900-01-01T00:00:00.0000')"/>
 

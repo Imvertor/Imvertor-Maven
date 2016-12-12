@@ -52,26 +52,34 @@
         <xsl:sequence select="imf:msg($document,$type,$text,$info)"/>
     </xsl:function>
     
-    <!-- complex message, pass context node, type, text, and parameters to insert within text -->
+    <!-- 
+        complex message, pass context node, type, text, and parameters to insert within text 
+        
+        The message is stored when valid debug mode or when other type of message.
+    -->
     <xsl:function name="imf:msg" as="element()*">
         <xsl:param name="this" as="node()"/>
         <xsl:param name="type" as="xs:string"/>
         <xsl:param name="text" as="xs:string"/>
         <xsl:param name="info" as="item()*"/>
         
-        <xsl:variable name="name" select="if ($this=$document) then '' else imf:get-construct-name($this)"/>
-        <xsl:variable name="id" select="$this/imvert:id"/>
-        <xsl:variable name="ctext" select="imf:msg-insert-parms($text,$info)"/>
-        <xsl:variable name="wiki" select="if ($type = ('ERROR', 'WARN', 'FATAL')) then imf:get-wiki-key($text) else ''"/>
-        <xsl:message>
-            <!-- note that messages are specially processed by Imvertor -->
-            <xsl:sequence select="imf:create-output-element('imvert-message:src',$xml-stylesheet-name)"/>
-            <xsl:sequence select="imf:create-output-element('imvert-message:type',$type)"/>
-            <xsl:sequence select="imf:create-output-element('imvert-message:name',$name)"/>
-            <xsl:sequence select="imf:create-output-element('imvert-message:text',$ctext)"/>
-            <xsl:sequence select="imf:create-output-element('imvert-message:id',$id)"/>
-            <xsl:sequence select="imf:create-output-element('imvert-message:wiki',$wiki)"/>
-        </xsl:message>
+        <xsl:if test="not($type = 'DEBUG') or imf:debug-mode()">
+            <xsl:variable name="name" select="if ($this=$document) then '' else imf:get-construct-name($this)"/>
+            <xsl:variable name="id" select="$this/imvert:id"/>
+            <xsl:variable name="ctext" select="imf:msg-insert-parms($text,$info)"/>
+            <xsl:variable name="wiki" select="if ($type = ('ERROR', 'WARN', 'FATAL')) then imf:get-wiki-key($text) else ''"/>
+            <xsl:message>
+                <!-- note that messages are specially processed by Imvertor -->
+                <xsl:sequence select="imf:create-output-element('imvert-message:src',$xml-stylesheet-name)"/>
+                <xsl:sequence select="imf:create-output-element('imvert-message:type',$type)"/>
+                <xsl:sequence select="imf:create-output-element('imvert-message:name',$name)"/>
+                <xsl:sequence select="imf:create-output-element('imvert-message:text',$ctext)"/>
+                <xsl:sequence select="imf:create-output-element('imvert-message:id',$id)"/>
+                <xsl:sequence select="imf:create-output-element('imvert-message:wiki',$wiki)"/>
+                <xsl:sequence select="imf:create-output-element('imvert-message:mode',$xml-stylesheet-alias)"/>
+            </xsl:message>
+        </xsl:if>
+        
     </xsl:function>
     
     <!-- 

@@ -692,7 +692,21 @@ public class Configurator {
 	public String getParm(String group, String name, boolean mustExist) throws IOException, ConfiguratorException {
 		return getParm(workConfiguration, group, name, mustExist);
 	}
-	 
+	
+	/**
+	 * Get the alias of the configuration entry. This takes the form of attribute @alias on the XML entry,
+	 * If not defined, return null.
+	 * 
+	 * @param group
+	 * @param name
+	 * @return
+	 * @throws IOException
+	 * @throws ConfiguratorException
+	 */
+	public String getAlias(String group, String name) throws IOException, ConfiguratorException {
+		return getAlias(workConfiguration, group, name);
+	}
+
 	/**
 	 * Set parameter for a particular XML configuration. 
 	 * 
@@ -757,6 +771,26 @@ public class Configurator {
 			return v;
 		else
 			throw new ConfiguratorException("Cannot resolve configuration parameter: " + group + "/" + name + ", value is (" + v + ")");
+	}
+	
+	/**
+	 * Return the alias of the parameter. 
+	 * The alias is a short name which is referenced when profiling or debugging is requested.
+	 * 
+	 * @param xmlConfig
+	 * @param group
+	 * @param name
+	 * @return
+	 * @throws ConfiguratorException
+	 */
+	private String getAlias(XMLConfiguration xmlConfig, String group, String name) throws ConfiguratorException {
+		String v = xmlConfig.getString(group + "/" + name + "[last()]/@alias");
+		if (v == null)
+			return v;
+		else if (isInterpolated(v))
+			return v;
+		else
+			throw new ConfiguratorException("Cannot resolve configuration alias for: " + group + "/" + name + ", value is (" + v + ")");
 	}
 
 	

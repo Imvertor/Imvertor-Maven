@@ -94,11 +94,11 @@ public class RegressionExtractor  extends Step {
 		transformer.setXslParm("diff-filepath", compareXML.getCanonicalPath());
 		transformer.setXslParm("max-difference-reported", configurator.getParm("cli","maxreport"));
 		
-		valid = valid && transformer.transform(refContentXML, tempXsl, compareXsl);
+		valid = valid && transformer.transform(refContentXML, tempXsl, compareXsl,null);
 		
 		// create listing
 		XslFile listingXsl = new XslFile(configurator.getParm("properties","IMVERTOR_COMPARE_LISTING_XSLPATH"));
-		valid = valid && transformer.transform(refContentXML,listingXml,listingXsl);
+		valid = valid && transformer.transform(refContentXML,listingXml,listingXsl,null);
 		
 		// copy the listing to the outfolder. 
 		// This is picked up by the xslweb regression framework

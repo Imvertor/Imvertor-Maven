@@ -185,6 +185,7 @@
         <xsl:variable name="supplier-subpath" select="imf:get-trace-supplier-subpath($supplier/@project,$supplier/@application,$supplier/@release)"/>
         <xsl:variable name="supplier-doc" select="if ($supplier-subpath eq $application-package-subpath) then $imvert-document else imf:get-trace-supplier-document($supplier-subpath)"/>
         <xsl:variable name="construct" select="$supplier-doc//*[imvert:id = $supplier/@id]"/>
+        <?x <xsl:variable name="construct" select="imf:get-construct-by-id($supplier/@id,$supplier-doc)"/>  x?>
         <!--TODO copy-down introduces two identical ID's, should not occur! -->
         <xsl:sequence select="$construct[1]"/>
     </xsl:function>
