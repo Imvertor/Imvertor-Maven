@@ -45,6 +45,12 @@
          <required>false</required>
       </cli-parm> 
       <cli-parm>
+         <name>debugmode</name>
+         <arg>mode</arg>
+         <tip>Sets the debug mode</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
          <name>owner</name>
          <arg>name</arg>
          <tip>Explain</tip>
@@ -97,7 +103,7 @@
       <!-- 
          stylesheet to process the __content.xml, extracted from the deserialized template, generates a <test-set> file with groups
       -->
-      <WORK_COMPLY_EXTRACT_XSLPATH>ComplyExtractor-extract.xsl</WORK_COMPLY_EXTRACT_XSLPATH>
+      <WORK_COMPLY_EXTRACT_XSLPATH alias="COMEX">ComplyExtractor-extract.xsl</WORK_COMPLY_EXTRACT_XSLPATH>
       <!-- 
          path to temporary output of transforming __content.xml; this is not compressed back into the result Excel.
       -->
@@ -105,7 +111,7 @@
       <!-- 
          stylesheet to process the <test-set> file with groups to XML files used for testing
       -->
-      <WORK_COMPLY_BUILD_XSLPATH>ComplyExtractor-build.xsl</WORK_COMPLY_BUILD_XSLPATH>
+      <WORK_COMPLY_BUILD_XSLPATH alias="COMBU">ComplyExtractor-build.xsl</WORK_COMPLY_BUILD_XSLPATH>
       <!-- 
          path to temporary output file of builder.
       -->
@@ -114,7 +120,7 @@
          stylesheet to make the test XML files. 
          This is called in 2 modes (xslt param): final and valid.
       -->
-      <WORK_COMPLY_MAKE_XSLPATH>ComplyExtractor-make.xsl</WORK_COMPLY_MAKE_XSLPATH>
+      <WORK_COMPLY_MAKE_XSLPATH alias="COMMA">ComplyExtractor-make.xsl</WORK_COMPLY_MAKE_XSLPATH>
       <!-- 
          path to folder that will hold the generated test XML files, to be used for testing framework,
          and the temporary file that holds the tallied results.
