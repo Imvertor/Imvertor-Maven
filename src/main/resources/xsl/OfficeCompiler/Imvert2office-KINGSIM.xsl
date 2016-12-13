@@ -493,7 +493,7 @@
                 <xsl:sequence select="imf:label-waarde('Indicatie materiële historie',imf:get-tagged-value(.,'Indicatie materiële historie'))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie formele historie',imf:get-tagged-value(.,'Indicatie formele historie'))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie in onderzoek',imf:get-tagged-value(.,'Indicatie in onderzoek'))"/>
-                <xsl:sequence select="imf:label-waarde('Aanduiding strijdigheid/nietigheid ',imf:get-tagged-value(.,'Aanduiding strijdigheid/nietigheid'))"/>
+                <xsl:sequence select="imf:label-waarde('Aanduiding strijdigheid/nietigheid',imf:get-tagged-value(.,'Aanduiding strijdigheid/nietigheid'))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie kardinaliteit',imf:get-cardinality($min,$max))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie authentiek',concat(imf:get-tagged-value(.,'Indicatie authentiek'), imf:authentiek-is-derived(.)))"/>
                 <xsl:sequence select="imf:label-waarde('Regels',imf:get-tagged-value(.,'Regels'))"/>
@@ -552,7 +552,7 @@
                 <xsl:sequence select="imf:label-waarde('Indicatie materiële historie',imf:get-tagged-value(.,'Indicatie materiële historie'))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie formele historie',imf:get-tagged-value(.,'Indicatie formele historie'))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie in onderzoek',imf:get-tagged-value(.,'Indicatie in onderzoek'))"/>
-                <xsl:sequence select="imf:label-waarde('Aanduiding strijdigheid/nietigheid ',imf:get-tagged-value(.,'Aanduiding strijdigheid/nietigheid'))"/>
+                <xsl:sequence select="imf:label-waarde('Aanduiding strijdigheid/nietigheid',imf:get-tagged-value(.,'Aanduiding strijdigheid/nietigheid'))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie kardinaliteit',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie authentiek',concat(imf:get-tagged-value(.,'Indicatie authentiek'), imf:authentiek-is-derived(.)))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie afleidbaar',$is-afleidbaar-text)"/>
@@ -597,7 +597,7 @@
                 <xsl:sequence select="imf:label-waarde('Indicatie materiële historie',imf:get-tagged-value(.,'Indicatie materiële historie'))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie formele historie',imf:get-tagged-value(.,'Indicatie formele historie'))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie in onderzoek',imf:get-tagged-value(.,'Indicatie in onderzoek'))"/>
-                <xsl:sequence select="imf:label-waarde('Aanduiding strijdigheid/nietigheid ',imf:get-tagged-value(.,'Aanduiding strijdigheid/nietigheid'))"/>
+                <xsl:sequence select="imf:label-waarde('Aanduiding strijdigheid/nietigheid',imf:get-tagged-value(.,'Aanduiding strijdigheid/nietigheid'))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie kardinaliteit',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie authentiek',concat(imf:get-tagged-value(.,'Indicatie authentiek'), imf:authentiek-is-derived(.)))"/>
                 <xsl:sequence select="imf:label-waarde('Regels',imf:get-tagged-value(.,'Regels'))"/>
@@ -702,7 +702,7 @@
                 <xsl:sequence select="imf:label-waarde('Indicatie materiële historie',imf:get-tagged-value(.,'Indicatie materiële historie'))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie formele historie',imf:get-tagged-value(.,'Indicatie formele historie'))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie in onderzoek',imf:get-tagged-value(.,'Indicatie in onderzoek'))"/>
-                <xsl:sequence select="imf:label-waarde('Aanduiding strijdigheid/nietigheid ',imf:get-tagged-value(.,'Aanduiding strijdigheid/nietigheid'))"/>
+                <xsl:sequence select="imf:label-waarde('Aanduiding strijdigheid/nietigheid',imf:get-tagged-value(.,'Aanduiding strijdigheid/nietigheid'))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie authentiek',concat(imf:get-tagged-value(.,'Indicatie authentiek'), imf:authentiek-is-derived(.)))"/>                
                 <xsl:sequence select="imf:label-waarde('Regels',imf:get-tagged-value(.,'Regels'))"/>
             </tbody>
@@ -731,7 +731,7 @@
                 <xsl:sequence select="imf:label-waarde('Indicatie materiële historie',imf:get-tagged-value(.,'Indicatie materiële historie'))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie formele historie',imf:get-tagged-value(.,'Indicatie formele historie'))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie in onderzoek',imf:get-tagged-value(.,'Indicatie in onderzoek'))"/>
-                <xsl:sequence select="imf:label-waarde('Aanduiding strijdigheid/nietigheid ',imf:get-tagged-value(.,'Aanduiding strijdigheid/nietigheid'))"/>
+                <xsl:sequence select="imf:label-waarde('Aanduiding strijdigheid/nietigheid',imf:get-tagged-value(.,'Aanduiding strijdigheid/nietigheid'))"/>
                 <xsl:sequence select="imf:label-waarde('Indicatie authentiek',concat(imf:get-tagged-value(.,'Indicatie authentiek'), imf:authentiek-is-derived(.)))"/>                
                 <xsl:sequence select="imf:label-waarde('Regels',imf:get-tagged-value(.,'Regels'))"/>
             </tbody>

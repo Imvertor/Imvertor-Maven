@@ -38,7 +38,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:tagged-value/imvert:value[.='zie groep']">
-        <imvert:value>Zie groep</imvert:value>
+        <imvert:value original="zie groep">Zie groep</imvert:value>
     </xsl:template>
     
     <xsl:template match="imvert:stereotype[starts-with(.,'MIG ')]">
