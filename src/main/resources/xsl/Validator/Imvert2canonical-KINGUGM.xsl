@@ -49,13 +49,13 @@
         </xsl:copy>
     </xsl:template>  
     
-    <xsl:template match="imvert:association[empty(imvert:alias)]">
+    <?x <xsl:template match="imvert:association[empty(imvert:alias)]">
         <xsl:copy>
             <xsl:copy-of select="*|@*"/>
             <imvert:alias>
                 <xsl:value-of select="concat('TODO-',generate-id())"/>
             </imvert:alias>
         </xsl:copy>
-    </xsl:template>  
+    </xsl:template> ?>  
     
 </xsl:stylesheet>
