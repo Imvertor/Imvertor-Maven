@@ -55,9 +55,8 @@
             'No alias found for [1]', imvert:stereotype)"/>
         
         <xsl:sequence select="imf:report-error(., 
-            exists($alias) and not(matches($alias,'^([A-Z]{3})$')), 
-            'Alias [1] for [2] must be 3 uppercase characters',($alias,imvert:stereotype))"/>
-        
+            exists($alias) and not(matches($alias,'^([A-Z]{6})$')), 
+            'Alias [1] for [2] must be 6 uppercase characters',($alias,imvert:stereotype))"/>
         <xsl:next-match/>
     </xsl:template>
 
