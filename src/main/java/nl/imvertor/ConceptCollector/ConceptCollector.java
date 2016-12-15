@@ -53,7 +53,8 @@ public class ConceptCollector extends Step {
 		
 	    // determine if concepts must be read.
 	    // This is when forced, of when the concepts file is not available, or when the application phase is 3 (final).
-		boolean forc = configurator.isTrue("cli","refreshconcepts");
+	    boolean block = configurator.getParm("cli","refreshconcepts").equals("never");
+	    boolean forc = configurator.isTrue("cli","refreshconcepts");
 	    boolean must = (!infoConceptsFile.isFile() || !infoConceptsFile.isWellFormed() || infoConceptsFile.xpath("//*:concept").equals(""));
 	    boolean finl = configurator.getParm("appinfo", "phase").equals("3"); 	
 	   
@@ -61,7 +62,7 @@ public class ConceptCollector extends Step {
 	    if (must) configurator.setParm("appinfo", "concepts-extraction-reason", "must be refreshed");
 	    if (finl) configurator.setParm("appinfo", "concepts-extraction-reason", "final release");
 	    
-	    if ( forc || must || finl ) {
+	    if (!block && (forc || must || finl) ) {
 	    	
 	    	runner.info(logger,"Collecting concepts");
 	    	
@@ -88,11 +89,12 @@ public class ConceptCollector extends Step {
 			}
 			succeeds = succeeds ? okay : false ;
 			
+			
 			configurator.setStepDone(STEP_NAME);
 			
 	    } else {
 			configurator.setParm("appinfo", "concepts-extraction", "false");
-			configurator.setParm("appinfo", "concepts-extraction-reason", "precompiled");
+			configurator.setParm("appinfo", "concepts-extraction-reason", (block ? "blocked" : "precompiled"));
 			configurator.setParm("appinfo", "concepts-extraction-succeeds", "true");
 		}
 	
