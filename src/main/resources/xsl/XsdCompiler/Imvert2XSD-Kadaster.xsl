@@ -373,7 +373,7 @@
                         <xsl:for-each select="imvert:attributes/imvert:attribute">
                             <xsl:sort select="xs:integer(imvert:position)" order="ascending"/>
                             <xsl:variable name="defining-class" select="imf:get-defining-class(.)"/>   
-                            <xsl:variable name="defining-class-is-datatype" select="$defining-class/imvert:stereotype = imf:get-config-stereotype-names(
+                            <xsl:variable name="defining-class-is-datatype" select="$defining-class/imvert:stereotype = imf:get-config-stereotypes(
                                 ('stereotype-name-datatype','stereotype-name-enumeration','stereotype-name-complextype','stereotype-name-union'))"/>   
                             <xsl:choose>
                                 <xsl:when test="$defining-class-is-datatype">
