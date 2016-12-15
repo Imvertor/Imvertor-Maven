@@ -28,7 +28,7 @@
     exclude-result-prefixes="#all" 
     version="2.0">
 
-    <xsl:template match="imvert:association[imvert:stereotype = imf:get-config-stereotype-names('stereotype-name-relatiesoort')]">
+    <xsl:template match="imvert:association[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-relatiesoort')]">
         
         <!-- setup -->
         <xsl:variable name="alias" select="imvert:alias"/>
@@ -39,13 +39,13 @@
             'No alias found for association')"/>
         
         <xsl:sequence select="imf:report-error(., 
-            not(matches($alias,'^([A-Z]{6})|([A-Z]{9})$')), 
+            exists($alias) and not(matches($alias,'^([A-Z]{6})|([A-Z]{9})$')), 
             'Alias [1] must be 6 or 9 uppercase characters',$alias)"/>
         
         <xsl:next-match/>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotype-names('stereotype-name-objecttype')]">
+    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')]">
         <!-- setup -->
         <xsl:variable name="alias" select="imvert:alias"/>
         
@@ -55,8 +55,8 @@
             'No alias found for [1]', imvert:stereotype)"/>
         
         <xsl:sequence select="imf:report-error(., 
-            not(matches($alias,'^([A-Z]{6})$')), 
-            'Alias [1] for [2] must be 6 uppercase characters',($alias,imvert:stereotype))"/>
+            exists($alias) and not(matches($alias,'^([A-Z]{3})$')), 
+            'Alias [1] for [2] must be 3 uppercase characters',($alias,imvert:stereotype))"/>
         
         <xsl:next-match/>
     </xsl:template>
