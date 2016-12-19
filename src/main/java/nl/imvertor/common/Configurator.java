@@ -640,7 +640,7 @@ public class Configurator {
 	 * @throws ConfiguratorException 
 	 */
 	public void setParm(String group, String name, Object value) throws IOException, ConfiguratorException {
-		setParm(workConfiguration, group, name, value, false);
+		setParm(workConfiguration, group, name, value, true);
 	}
 
 	/**

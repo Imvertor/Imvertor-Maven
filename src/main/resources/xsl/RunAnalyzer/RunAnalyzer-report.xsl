@@ -36,6 +36,7 @@
     
     <xsl:include href="report-config.xsl"/>
     <xsl:include href="report-parameters.xsl"/>
+    <xsl:include href="report-profiles.xsl"/>
     
     <xsl:variable name="error-count" select="imf:get-config-string('appinfo','error-count')"/>
     <xsl:variable name="warning-count" select="imf:get-config-string('appinfo','warning-count')"/>
@@ -58,6 +59,11 @@
                     <xsl:sequence select="imf:report-label('Warnings', $warning-count)"/>
                     <xsl:sequence select="imf:report-label('Schema errors', $schema-error-count)"/>
                 </info>
+                <info label="Run">
+                    <xsl:sequence select="imf:report-label('Debug mode', imf:get-config-string('cli','debugmode'))"/>
+                    <xsl:sequence select="imf:report-label('Profile mode', imf:get-config-string('cli','profilemode'))"/>
+                </info>
+                
             </summary>
             <xsl:if test="exists($messages)">
                 <!-- generate complete overview of all messages -->
@@ -120,6 +126,13 @@
                 
                 <!-- generated overview of parameters -->
                 <xsl:apply-templates select="." mode="doc-parameters"/>
+
+                <!-- generate profile info -->
+                <xsl:variable name="profiles-doc-path" select="imf:get-config-string('system','profiles-doc')"/>
+                <xsl:if test="normalize-space($profiles-doc-path)">
+                    <xsl:variable name="profiles-doc" select="imf:document($profiles-doc-path)"/>
+                    <xsl:apply-templates select="$profiles-doc/profiles" mode="doc-profiles"/>
+                </xsl:if>                    
             </xsl:if>
             
         </report>

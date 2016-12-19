@@ -167,7 +167,7 @@ public class Runner {
 	}		
 	
 	/**
-	 * Return true when debugging
+	 * Return true when debugging in any of the modes passed.
 	 * 
 	 * @return
 	 */
@@ -175,6 +175,16 @@ public class Runner {
 		return debugging && checkDebugmode(viableMode);
 	}	
 	
+	/**
+	 * Return true when debugging (in any mode).
+	 * 
+	 * @return
+	 */
+	public boolean getDebug() {
+		return debugging;
+	}	
+	
+
 	/**
 	 * 
 	 * @throws IOException

@@ -54,6 +54,7 @@ import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.file.XslFile;
+import nl.imvertor.common.trace.XmlTimingTraceListener;
 import nl.imvertor.common.xsl.extensions.ImvertorFileSpec;
 import nl.imvertor.common.xsl.extensions.ImvertorParameterFile;
 import nl.imvertor.common.xsl.extensions.ImvertorTrack;
@@ -170,8 +171,7 @@ public class Transformer {
 		Configurator.getInstance().getRunner().debug(logger,"CHAIN",task + " " + infile.getCanonicalPath() + " using " + xslfile.getName());
 		
 		// first set the profile nature of the compiler
-		if (getProfiled())
-			compiler.setCompileWithTracing(getProfiled());
+		compiler.setCompileWithTracing(getProfiled());
 		
 		// record for later inspection
 		this.infile = infile;
@@ -218,9 +218,9 @@ public class Transformer {
 		PrintStream stream = null;
 		if (getProfiled()) {
 			File profileFolder = new File(configurator.getParm("system","work-profile-folder-path"));
-			File profileFile = new File(profileFolder, xslfile.getName() + ".profile.html");
+			File profileFile = new File(profileFolder, xslfile.getName() + ".profile.xml");
 			
-			TimingTraceListener tracer = new TimingTraceListener();
+			XmlTimingTraceListener tracer = new XmlTimingTraceListener();
 			StandardLogger logger = new StandardLogger();
 			stream = new PrintStream(profileFile);
 			logger.setPrintStream(stream);

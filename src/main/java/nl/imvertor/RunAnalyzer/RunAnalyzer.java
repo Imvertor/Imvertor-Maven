@@ -20,10 +20,13 @@
 
 package nl.imvertor.RunAnalyzer;
 
+import java.io.File;
+
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
+import nl.imvertor.common.file.AnyFile;
 
 /**
  * Analyse the full run results and pass info to the parms file for final processing (reporting).
@@ -47,6 +50,21 @@ public class RunAnalyzer extends Step {
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
 		runner.info(logger, "Analyzing this run");
+		
+		// when profiling, compile the tally profile file 
+		if (runner.getDebug()) {
+			File profileFolder = new File(configurator.getParm("system","work-profile-folder-path"));
+			String tally = "<profiles total=\"" + configurator.runtime() + "\">";
+			String[] files = profileFolder.list();
+			for (int f = 0; f < files.length; f++) {
+				AnyFile profileFile = new AnyFile(profileFolder, files[f]);
+				tally += "<file path=\"" + profileFile.getCanonicalPath() + "\">" + profileFile.getContent() + "</file>";
+			}
+			tally += "</profiles>";
+			AnyFile profilesDoc = new AnyFile(profileFolder,"profiles.xml");
+			configurator.setParm("system", "profiles-doc", profilesDoc.getCanonicalPath(), true);
+			profilesDoc.setContent(tally);
+		}	
 		
 		if (configurator.getParm("system", "cur-imvertor-filepath",false) != null) {
 			Transformer transformer = new Transformer();
