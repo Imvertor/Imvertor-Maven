@@ -365,11 +365,11 @@ public class Configurator {
 		setParm(workConfiguration,"system","work-profile-folder-path", wf + s + "profile", true);
 		
 		// clear the workfolder
-		(new OutputFolder(getParm(workConfiguration,"system","work-app-folder-path",true))).clearIfExists(false);
-		(new OutputFolder(getParm(workConfiguration,"system","work-rep-folder-path",true))).clearIfExists(false);
-		(new OutputFolder(getParm(workConfiguration,"system","work-imvert-folder-path",true))).clearIfExists(false);
-		(new OutputFolder(getParm(workConfiguration,"system","work-comply-folder-path",true))).clearIfExists(false);
-		(new OutputFolder(getParm(workConfiguration,"system","work-profile-folder-path",true))).clearIfExists(false);
+		(new OutputFolder(getParm(workConfiguration,"system","work-app-folder-path",true))).clear(false);
+		(new OutputFolder(getParm(workConfiguration,"system","work-rep-folder-path",true))).clear(false);
+		(new OutputFolder(getParm(workConfiguration,"system","work-imvert-folder-path",true))).clear(false);
+		(new OutputFolder(getParm(workConfiguration,"system","work-comply-folder-path",true))).clear(false);
+		(new OutputFolder(getParm(workConfiguration,"system","work-profile-folder-path",true))).clear(false);
 				
 		setParm(workConfiguration,"system","managedoutputfolder", outputFolder.getCanonicalPath(), true);
 		setParm(workConfiguration,"system","managedinstallfolder", baseFolder.getCanonicalPath(), true);

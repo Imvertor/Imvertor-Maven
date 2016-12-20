@@ -41,6 +41,7 @@ public class OutputFolder extends AnyFolder {
 	 * Clear the complete folder, removing all subfiles and -folders.
 	 * This is only allowed when the sentinel file _output is found in the root of the folder.
 	 * If this is not the case, throw Exception.
+	 * If the folder doesn't exist, create the folder with the sentinel file.
 	 * 
 	 * @param safe
 	 * @throws IOException
@@ -58,9 +59,14 @@ public class OutputFolder extends AnyFolder {
 					throw new IOException("Folder cannot be cleared: " + this.getCanonicalPath() + ", because: " + e.getMessage());
 				}
 			} else
-				throw new IOException("Folder cannot be cleared, as no marker file \"_output\" was found: " + this.getCanonicalPath());
-		else
-			throw new IOException("Folder cannot be cleared, as it doesn't exist: " + this.getCanonicalPath());
+				throw new IOException("Folder cannot be cleared: " + this.getCanonicalPath() + ", because no marker file \"_output\" was found");
+		else if (isFile())
+			throw new IOException("A file cannot be cleared: " + this.getCanonicalPath());
+		else {
+			// create it
+			this.mkdirs();
+			if (safe) sentinel.createNewFile();
+		}
 	}
 	
 	public void clearIfExists(boolean safe) throws IOException {
