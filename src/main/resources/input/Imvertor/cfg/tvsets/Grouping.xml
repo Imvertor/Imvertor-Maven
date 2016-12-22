@@ -92,8 +92,6 @@
             <stereotypes>
                 <stereo required="no" lang="nl">Basismodel</stereo>
                 <stereo required="yes" lang="nl">Toepassing</stereo>
-                <stereo required="no" lang="nl">Domein</stereo>
-                <stereo required="no" lang="nl">View</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="Svnid">
