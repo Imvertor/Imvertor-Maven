@@ -53,6 +53,9 @@
     <xsl:variable name="convention-attribute-name-pattern">^([A-z][A-z0-9]+)$</xsl:variable>
     <xsl:variable name="convention-association-name-pattern">^([a-z][A-z0-9]+)$</xsl:variable>
     
+    <!-- test if the project, application or release name conforms to basic file nameing requirements, as these are used in subpath (after space normalization) -->
+    <xsl:variable name="file-name-requirements-pattern">^[A-Za-z0-9\-\_\s.]+$</xsl:variable>
+    
     <!-- Stereotypes that must corresponde from superclass to subclass -->
     <xsl:variable name="copy-down-stereotypes-inheritance" as="xs:string*">
         <xsl:sequence select="imf:get-config-stereotypes('stereotype-name-complextype')"/>
@@ -236,6 +239,10 @@
         <xsl:variable name="subpackage-releases" select="imvert:package/imvert:release[not(.=('99999999','00000000'))]" as="xs:string*"/>
         <xsl:variable name="collections" select=".//imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-collection')]"/>
         <!--validation-->
+
+        <xsl:sequence select="imf:report-error(., 
+            not(imf:test-file-name-convention($this-package/imvert:name)), 
+            'Package name holds invalid characters')"/>
         <xsl:sequence select="imf:report-error(., 
             not($document-packages/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-domain-package')), 
             'No domain subpackages found')"/>
@@ -1269,7 +1276,12 @@
         <xsl:value-of select="matches($this/imvert:name,$convention)"/>
         ?>
     </xsl:function>
-   
+    
+    <xsl:function name="imf:test-file-name-convention" as="xs:boolean">
+        <xsl:param name="name" as="xs:string"/>
+        <xsl:value-of select="matches($name,$file-name-requirements-pattern)"/>
+    </xsl:function>
+    
     <!-- 
         True if the release of the class which property is passed is newer than or equal to the release of the type 
         When the type release is not known, assume age compatibility. 
