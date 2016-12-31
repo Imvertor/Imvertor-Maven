@@ -54,7 +54,7 @@
     <xsl:variable name="convention-association-name-pattern">^([a-z][A-z0-9]+)$</xsl:variable>
     
     <!-- test if the project, application or release name conforms to basic file nameing requirements, as these are used in subpath (after space normalization) -->
-    <xsl:variable name="file-name-requirements-pattern">^[A-Za-z0-9\-\_\s.]+$</xsl:variable>
+    <xsl:variable name="file-name-requirements-pattern">^[A-Za-z0-9\-\s._]+$</xsl:variable>
     
     <!-- Stereotypes that must corresponde from superclass to subclass -->
     <xsl:variable name="copy-down-stereotypes-inheritance" as="xs:string*">
