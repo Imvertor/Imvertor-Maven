@@ -45,6 +45,9 @@
             <imvert:id><xsl:value-of select="$application-package-release-name"/></imvert:id>
             <!-- add run info, number of errors and warnings so far -->
             <imvert:process>
+                <imvert:owner>
+                    <xsl:value-of select="$owner-name"/>
+                </imvert:owner>
                 
                 <xsl:variable name="errors" select="$configuration/config/messages/message[type=('ERROR','FATAL')]"/>
                 <xsl:variable name="warnings" select="$configuration/config/messages/message[type='WARN']"/>
@@ -182,5 +185,5 @@
             </imvert:resolved-tagged-values>
         </xsl:if>
     </xsl:function>
-     
+  
 </xsl:stylesheet>
