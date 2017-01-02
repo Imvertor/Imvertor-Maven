@@ -128,8 +128,8 @@
         <xsl:param name="package"/>
         <xsl:variable name="package-name" select="normalize-space($package/@name)"/>
         
-        <xsl:variable name="package-owner-name" select="imf:get-normalized-name(substring-before($package-name,':'),'system-name')"/>
-        <xsl:variable name="package-project-name" select="imf:get-normalized-name(substring-after($package-name,':'),'system-name')"/>
+        <xsl:variable name="package-owner-name" select="normalize-space(substring-before($package-name,':'))"/>
+        <xsl:variable name="package-project-name" select="normalize-space(substring-after($package-name,':'))"/>
         
         <xsl:sequence select="$package-owner-name = $owner-name and $package-project-name = $project-name"/>
     </xsl:function>

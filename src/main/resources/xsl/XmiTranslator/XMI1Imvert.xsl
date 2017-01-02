@@ -107,7 +107,7 @@
             <xsl:sequence select="imf:compile-imvert-filter()"/>
             
             <xsl:variable name="project-name-shown" select="($project-name, concat($owner-name,': ',$project-name))" as="xs:string+"/>
-            <xsl:variable name="root-package" select="$document-packages[imf:get-normalized-name(@name,'system-name') = $project-name-shown][imf:get-stereotypes(.)=imf:get-config-stereotypes('stereotype-name-project-package')]"/>
+            <xsl:variable name="root-package" select="$document-packages[@name = $project-name-shown][imf:get-stereotypes(.)=imf:get-config-stereotypes('stereotype-name-project-package')]"/>
             
             <xsl:sequence select="imf:set-config-string('appinfo','original-project-name',$root-package/@name)"/>
             <xsl:sequence select="imf:set-config-string('appinfo','original-application-name',$application-package-name)"/>

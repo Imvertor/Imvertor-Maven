@@ -60,8 +60,8 @@
     
     <xsl:variable name="generation-date" select="imf:get-config-string('run','start','1900-01-01T00:00:00.0000')"/>
 
-    <xsl:variable name="owner-name" select="imf:get-normalized-name(imf:get-config-string('cli','owner'),'system-name')"/>
-    <xsl:variable name="project-name" select="imf:get-normalized-name(imf:get-config-string('cli','project'),'system-name')"/>
+    <xsl:variable name="owner-name" select="imf:get-config-string('cli','owner')"/>
+    <xsl:variable name="project-name" select="imf:get-config-string('cli','project')"/>
     <xsl:variable name="application-package-name" select="imf:get-config-string('cli','application')"/>
     
     <xsl:variable name="application-package-version" select="imf:get-config-string('appinfo','version')"/>

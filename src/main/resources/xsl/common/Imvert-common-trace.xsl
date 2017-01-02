@@ -39,11 +39,6 @@
             <xsl:variable name="supplier-project" select="($suppliers/imvert:supplier-project)[1]"/>
             <xsl:variable name="supplier-name" select="($suppliers/imvert:supplier-name)[1]"/>
             <xsl:variable name="supplier-release" select="($suppliers/imvert:supplier-release)[1]"/>
-            <!--
-            <xsl:variable name="supplier-project-norm" select="imf:get-normalized-name($supplier-project,'system-name')"/>
-            <xsl:variable name="supplier-name-norm" select="imf:get-normalized-name($supplier-name,'package-name')"/>
-            <xsl:variable name="supplier-release-norm" select="imf:get-normalized-name($supplier-release,'system-name')"/>
-            -->
             <xsl:variable name="subpath" select="imf:get-subpath($supplier-project,$supplier-name,$supplier-release)"/>
             <xsl:if test="empty(imf:get-config-string('appinfo','supplier-etc-model-imvert-path',()))">
                 <xsl:sequence select="imf:set-config-string('appinfo','supplier-etc-model-imvert-subpath',$subpath)"/>

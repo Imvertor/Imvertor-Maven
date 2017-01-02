@@ -158,7 +158,7 @@
             </classes>
            
             <!-- add info to configuration -->
-            <xsl:sequence select="imf:get-normalized-name(imf:get-config-string('cli','project'),'system-name')"/>
+            <xsl:sequence select="imf:get-config-string('cli','project')"/>
             
             <xsl:sequence select="imf:set-config-string('appinfo','project-name',$project-name)"/>
             <xsl:sequence select="imf:set-config-string('appinfo','application-name',$application-package-name)"/>
