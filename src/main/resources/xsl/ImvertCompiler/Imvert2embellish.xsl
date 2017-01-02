@@ -48,15 +48,11 @@
                 <imvert:owner>
                     <xsl:value-of select="$owner-name"/>
                 </imvert:owner>
-                
-                <xsl:variable name="errors" select="$configuration/config/messages/message[type=('ERROR','FATAL')]"/>
-                <xsl:variable name="warnings" select="$configuration/config/messages/message[type='WARN']"/>
-                
                 <imvert:errors>
-                    <xsl:value-of select="count($errors)"/>
+                    <xsl:value-of select="imf:get-config-string('system','error-count','0')"/>
                 </imvert:errors>
                 <imvert:warnings>
-                    <xsl:value-of select="count($warnings)"/>
+                    <xsl:value-of select="imf:get-config-string('system','warning-count','0')"/>
                 </imvert:warnings>
             </imvert:process>
             <xsl:sequence select="imf:compile-imvert-header(.)"/>

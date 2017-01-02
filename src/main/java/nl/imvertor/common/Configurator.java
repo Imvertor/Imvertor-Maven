@@ -502,6 +502,7 @@ public class Configurator {
 	 * Return the full file path of the xml configuration file.
 	 * 
 	 * @return
+	 * @throws ConfiguratorException 
 	 * @throws IOException 
 	 */
 	public String getConfigFilepath() {

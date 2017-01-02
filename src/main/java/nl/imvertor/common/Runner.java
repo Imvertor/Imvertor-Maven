@@ -107,8 +107,10 @@ public class Runner {
 	
 	/**
 	 * Windup this run.
+	 * @throws ConfiguratorException 
+	 * @throws IOException 
 	 */
-	public void windup() {
+	public void windup() throws IOException, ConfiguratorException {
 		if (imvertorErrors < 0)
 			info(logger, "Task fails. Please contact your system administrator.");
 		else {
@@ -246,13 +248,16 @@ public class Runner {
 	 * @param logger
 	 * @param text
 	 * @param e
+	 * @throws ConfiguratorException 
+	 * @throws IOException 
 	 */
-	public void error(Logger logger, String text, Exception e, String id, String wiki) {
+	public void error(Logger logger, String text, Exception e, String id, String wiki) throws IOException, ConfiguratorException {
 		imvertorErrors += 1;
+		Configurator.getInstance().setParm("system", "error-count", String.valueOf(imvertorErrors),true);
 		messenger.writeMsg(logger.getName(), "ERROR", "", text, id, wiki);
 		logger.error(text,e);
 	}
-	public void error(Logger logger, String text, Exception e) {
+	public void error(Logger logger, String text, Exception e) throws IOException, ConfiguratorException {
 		error(logger, text, e, null, null);
 	}
 	/**
@@ -263,14 +268,18 @@ public class Runner {
 	 * @param logger
 	 * @param text
 	 * @param e
+	 * @throws ConfiguratorException 
+	 * @throws IOException 
 	 */
-	public void error(Logger logger, String text, String id, String wiki) {
+	public void error(Logger logger, String text, String id, String wiki) throws IOException, ConfiguratorException {
 		imvertorErrors += 1;
+		Configurator.getInstance().setParm("system", "error-count", String.valueOf(imvertorErrors),true);
 		messenger.writeMsg(logger.getName(), "ERROR", "", text, id, wiki);
 		logger.error(text);
 	}
-	public void error(Logger logger, String text) {
+	public void error(Logger logger, String text) throws IOException, ConfiguratorException {
 		imvertorErrors += 1;
+		Configurator.getInstance().setParm("system", "error-count", String.valueOf(imvertorErrors),true);
 		messenger.writeMsg(logger.getName(), "ERROR", "", text, null,null);
 		logger.error(text);
 	}
@@ -282,13 +291,16 @@ public class Runner {
 	 *  
 	 * @param logger
 	 * @param text
+	 * @throws ConfiguratorException 
+	 * @throws IOException 
 	 */
-	public void warn(Logger logger, String text, String id, String wiki) {
+	public void warn(Logger logger, String text, String id, String wiki) throws IOException, ConfiguratorException {
 		imvertorWarnings += 1;
+		Configurator.getInstance().setParm("system", "warning-count", String.valueOf(imvertorWarnings),true);
 		messenger.writeMsg(logger.getName(), "WARN", "", text, id, wiki);
 		logger.warn(text);
 	}
-	public void warn(Logger logger, String text) {
+	public void warn(Logger logger, String text) throws IOException, ConfiguratorException {
 		warn(logger, text, null,null);
 	}
 	/**
@@ -298,8 +310,10 @@ public class Runner {
 	 *  
 	 * @param logger
 	 * @param text
+	 * @throws ConfiguratorException 
+	 * @throws IOException 
 	 */
-	public void info(Logger logger, String text) {
+	public void info(Logger logger, String text) throws IOException, ConfiguratorException {
 		logger.info(text);
 		track(text);
 	}
@@ -340,19 +354,26 @@ public class Runner {
 	 * 
 	 * @param logger
 	 * @param text
+	 * @throws ConfiguratorException 
+	 * @throws IOException 
 	 */
-	public void fatal(Logger logger, String text, Exception e, String id, String wiki) {
-		imvertorErrors += 1;
-		messenger.writeMsg(logger.getName(), "FATAL", "", text, id, wiki);
-		logger.fatal(text);
-		info(logger, "");
-		info(logger, "Must stop.");
-		info(logger, "Please contact your system administrator.");
-		info(logger, "");
-		logger.fatal("Details on the error", e);
+	public void fatal(Logger logger, String text, Exception e, String id, String wiki)  {
+		try {
+			imvertorErrors += 1;
+			Configurator.getInstance().setParm("system", "error-count", String.valueOf(imvertorErrors),true);
+			messenger.writeMsg(logger.getName(), "FATAL", "", text, id, wiki);
+			logger.fatal(text);
+			info(logger, "");
+			info(logger, "Must stop.");
+			info(logger, "Please contact your system administrator.");
+			info(logger, "");
+			logger.fatal("Details on the error", e);
+		} catch (Exception ex) {
+			// Do not handle exception
+		}
 		System.exit(0); // TODO must be -1, see mail "exec:exec-external met exitcode -1"
 	}
-	public void fatal(Logger logger, String text, Exception e, String wiki) {
+	public void fatal(Logger logger, String text, Exception e, String wiki)  {
 		fatal(logger, text, e, null, wiki);
 	}
 	/**
@@ -361,9 +382,10 @@ public class Runner {
 	 *  
 	 * @param logger
 	 * @param text
+	 * @throws ConfiguratorException 
 	 * @throws IOException 
 	 */
-	public void track(String text) {
+	public void track(String text) throws IOException, ConfiguratorException {
 		try {
 			String fulltext = Configurator.getInstance().runtimeForDisplay() + " - " + text;
 			AnyFile tf = Configurator.getInstance().getTrackerFile();

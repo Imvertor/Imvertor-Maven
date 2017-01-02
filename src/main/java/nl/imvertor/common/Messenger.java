@@ -97,41 +97,45 @@ public class Messenger extends SequenceWriter {
 			child = sibling;
 			sibling = (NodeInfo) elements.next();
 		}
-		// Check if this is actually a structured message
-		if (src != null) {
-			// then signal to screen if needed, and die if fatal
-			String ctext = src + ": [" + name + "] " + text;
-			
-			switch (type) {
-				case "FATAL":
-					runner.fatal(logger,ctext,null,id,wiki); // The FATAL level designates very severe error events that will presumably lead the application to abort.
-					break;  
-				case "ERROR":
-					runner.error(logger,ctext,id, wiki); // The ERROR level designates error events that might still allow the application to continue running.
-					break;  
-				case "WARN":
-					if (!suppresswarnings) runner.warn(logger,ctext,id, wiki); // The WARN level designates potentially harmful situations.
-					break;  
-				case "INFO": 
-					runner.info(logger,ctext); // The INFO level designates informational messages that highlight the progress of the application at coarse-grained level.
-					break;  
-				case "DEBUG": // The DEBUG Level designates fine-grained informational events that are most useful to debug an application.
-					runner.debug(logger,mode,ctext);
-					break;  
-				case "TRACE": // The TRACE Level designates finer-grained informational events than the DEBUG 
-					runner.trace(logger,ctext);
-					break;  
+		try {
+			// Check if this is actually a structured message
+			if (src != null) {
+				// then signal to screen if needed, and die if fatal
+				String ctext = src + ": [" + name + "] " + text;
+				
+				switch (type) {
+					case "FATAL":
+						runner.fatal(logger,ctext,null,id,wiki); // The FATAL level designates very severe error events that will presumably lead the application to abort.
+						break;  
+					case "ERROR":
+						runner.error(logger,ctext,id, wiki); // The ERROR level designates error events that might still allow the application to continue running.
+						break;  
+					case "WARN":
+						if (!suppresswarnings) runner.warn(logger,ctext,id, wiki); // The WARN level designates potentially harmful situations.
+						break;  
+					case "INFO": 
+						runner.info(logger,ctext); // The INFO level designates informational messages that highlight the progress of the application at coarse-grained level.
+						break;  
+					case "DEBUG": // The DEBUG Level designates fine-grained informational events that are most useful to debug an application.
+						runner.debug(logger,mode,ctext);
+						break;  
+					case "TRACE": // The TRACE Level designates finer-grained informational events than the DEBUG 
+						runner.trace(logger,ctext);
+						break;  
+				}
+				if (type.equals(fatalValue))
+					runner.fatal(logger,src + " - " + text,null,id);
+			} else { 
+				// otherwise return the string representation immediately, this is the regular XSLT message.
+				child = originalChild;
+				while (child != null) {
+					System.out.println(child.getStringValue());
+					child = sibling;
+					sibling = (NodeInfo) elements.next();
+				}
 			}
-			if (type.equals(fatalValue))
-				runner.fatal(logger,src + " - " + text,null,id);
-		} else { 
-			// otherwise return the string representation immediately, this is the regular XSLT message.
-			child = originalChild;
-			while (child != null) {
-				System.out.println(child.getStringValue());
-				child = sibling;
-				sibling = (NodeInfo) elements.next();
-			}
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 	}
 	

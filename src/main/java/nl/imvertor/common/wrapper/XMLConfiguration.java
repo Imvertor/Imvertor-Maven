@@ -48,12 +48,17 @@ public class XMLConfiguration extends org.apache.commons.configuration2.XMLConfi
 	}
 	
     public Transformer createTransformer() throws ConfigurationException  {
-    	FileLocatorBuilder builder = FileLocatorUtils.fileLocator();
-    	builder.basePath(Configurator.getInstance().getConfigFilepath());
-    	builder.encoding("UTF-8");
-		FileLocator locator = new FileLocator(builder);
-		initFileLocator(locator);
+    	try {
+	    	FileLocatorBuilder builder = FileLocatorUtils.fileLocator();
+	    	builder.basePath(Configurator.getInstance().getConfigFilepath());
+	    	builder.encoding("UTF-8");
+			FileLocator locator = new FileLocator(builder);
+			initFileLocator(locator);
+	 	} catch (Exception e) {
+			// TODO: handle exception
+		}
         return super.createTransformer();
+        
     }
   
 }
