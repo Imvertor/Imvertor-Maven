@@ -484,7 +484,7 @@
             imvert:base and (imvert:release lt imvert:base/imvert:release),
             'Client release date is before supplier release date.')"/>
         <xsl:sequence select="imf:report-warning(., 
-            imvert:base and (xs:integer(imvert:phase) gt xs:integer(imvert:base/imvert:phase)),
+            imvert:base and (imvert:phase gt imvert:base/imvert:phase),
             'Supplier phase mismatch, supplier is not in same or later phase.')"/>
         <xsl:apply-templates select="imvert:base" mode="version-chain"/>
     </xsl:template>
@@ -1080,8 +1080,8 @@
     <xsl:function name="imf:compare-state-phase-pairs" as="xs:string">
         <xsl:param name="client" as="element()"/>
         <xsl:param name="supplier" as="element()?"/>
-        <xsl:variable name="client-phase" select="xs:integer($client/imvert:phase)"/>
-        <xsl:variable name="supplier-phase" select="xs:integer($supplier/imvert:phase)"/>
+        <xsl:variable name="client-phase" select="$client/imvert:phase"/>
+        <xsl:variable name="supplier-phase" select="$supplier/imvert:phase"/>
         <xsl:choose>
             <xsl:when test="$client-phase lt $supplier-phase">INVALID</xsl:when>
             <xsl:otherwise>OKAY</xsl:otherwise>

@@ -60,7 +60,7 @@
                 <xsl:variable name="subpath" select="imf:get-trace-supplier-subpath(imvert:project, imvert:application, imvert:release)"/>
                 <xsl:variable name="errors" select="xs:integer((imvert:process/imvert:errors,0)[1])"/>
                 <xsl:variable name="warnings" select="xs:integer((imvert:process/imvert:warnings,0)[1])"/>
-                <xsl:variable name="phase" select="xs:integer((imvert:phase,0)[1])"/>
+                <xsl:variable name="phase" select="(imvert:phase,0)[1]"/>
                 
                 <xsl:sequence select="imf:report-warning($application, 
                     $errors != 0,
@@ -69,7 +69,7 @@
                     $warnings != 0,
                     'The supplier [1] has [2] warnings. Are you sure you want to derive from that model?',($subpath,$warnings))"/>
                 <xsl:sequence select="imf:report-warning($application, 
-                    $phase != (2,3),
+                    $phase != ('2','3'),
                     'The supplier [1] is in phase [2]. Are you sure you want to derive from that model?',($subpath,imvert:phase/(@original|text())[1]))"/>
     
             </xsl:for-each>
