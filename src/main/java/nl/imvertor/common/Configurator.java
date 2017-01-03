@@ -521,7 +521,7 @@ public class Configurator {
 	 */
 	public String currentISOdate() {
 		TimeZone tz = TimeZone.getTimeZone("UTC");
-	    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:sss'Z'");
+	    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	    df.setTimeZone(tz);
 	    return df.format(new Date());
 	}
