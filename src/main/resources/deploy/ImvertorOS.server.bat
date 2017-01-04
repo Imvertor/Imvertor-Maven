@@ -5,11 +5,12 @@ set jar=%~1
 set jobid=%~2
 set propfile=%~3
 set owner=%~4
+set reg=%~5
 
 set d=%~dp0
 cd %d%
 cd ..
-call environment.server.bat %owner% 
+call environment.server.bat %owner% %reg%
 cd %d%
 
 set inpdir=%d%\input\%owner%
