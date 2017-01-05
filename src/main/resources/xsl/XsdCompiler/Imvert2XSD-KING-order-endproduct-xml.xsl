@@ -30,9 +30,6 @@
     <xsl:variable name="stylesheet">Imvert2XSD-KING-ordered-endproduct-xml</xsl:variable>
     <xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-ordered-endproduct-xml.xsl 7487 2016-04-02 07:27:03Z arjan $</xsl:variable>  
     
-    <!-- set the processing parameters of the stylesheets. -->
-    <!--xsl:variable name="my-debug" select="'no'"/-->
-    
     <xsl:template match="/">      
         <xsl:apply-templates/>
     </xsl:template>
@@ -56,6 +53,26 @@
         </xsl:element>
     </xsl:template>
     
+    <xsl:template match="ep:construct[parent::ep:message-set]">
+        <!-- Following if takes care of removing al ep:constructs whithout content within their ep:seq or ep:choice element. -->
+        <xsl:if test="ep:seq/* | ep:choice/*">
+            <xsl:element name="{name(.)}">
+                <xsl:apply-templates select="@*"/>
+                <xsl:choose>
+                    <xsl:when test="@orderingDesired = 'no' or ancestor::ep:seq[@orderingDesired = 'no']">
+                        <xsl:apply-templates select="*"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:apply-templates select="*">
+                            <xsl:sort select="ep:position" order="ascending" data-type="number"/>                
+                        </xsl:apply-templates>
+                        
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:element>
+        </xsl:if>
+    </xsl:template>
+    
     <xsl:template match="@*">
         <xsl:if test="not(local-name()='orderingDesired')">
            <xsl:copy-of select="."/>
@@ -67,7 +84,7 @@
             select="imf:create-output-element(name(.), .)"/>	
     </xsl:template>
     
-    <!-- The following template takes care of removing the 'context' attribute and the 'ep:id' element. -->
+    <!-- The following template takes care of replicating the 'ep:constructRef' element removing the 'ep:id' element. -->
     <xsl:template match="ep:constructRef">
         <xsl:element name="{name(.)}">
             <xsl:apply-templates select="@*"/>

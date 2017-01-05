@@ -159,4 +159,20 @@
         </workbook>
     </xsl:function>
     
+    <xsl:function name="imf:create-debug-comment">
+        <xsl:param name="text" as="xs:string"/>
+        <xsl:param name="debugging" as="xs:boolean"/>
+        <xsl:if test="$debugging">
+            <xsl:comment select="$text"/>
+        </xsl:if>      
+    </xsl:function>
+    
+    <xsl:function name="imf:create-debug-track">
+        <xsl:param name="text" as="xs:string"/>
+        <xsl:param name="debugging" as="xs:boolean"/>
+        <xsl:if test="$debugging">
+            <xsl:sequence select="imf:track($text)"/>
+        </xsl:if>
+    </xsl:function>
+    
 </xsl:stylesheet>

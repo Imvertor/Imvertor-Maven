@@ -74,6 +74,7 @@
 		<xs:choice>
 			<xsl:apply-templates select="ep:constructRef|ep:construct[not(@ismetadata)]|ep:seq"/>
 		</xs:choice>
+		<!-- ROME: de vraag is of de volgende if geactiveerd moet worden. -->
 		<!-- If a choice is created as a result of a relation associated with supertype the choice also gets a mnemonic.
 			 This mnemnonic is used to create an entiteittype attribute. -->
 		<!--xsl:if test="ep:mnemonic">
@@ -236,7 +237,6 @@
 									<xs:complexType>
 										<xs:simpleContent>
 											<xs:extension>
-												<!--xsl:attribute name="base" select="concat($prefix,':simpleType-',ep:tech-name,'-',$id,'-',generate-id())"/-->
 												<xsl:attribute name="base">
 													<xsl:choose>
 														<xsl:when test="ep:type-name = 'scalar-integer'">
@@ -262,7 +262,6 @@
 													</xsl:choose>											
 												</xsl:attribute>
 												<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
-												<!--xsl:apply-templates select=".//ep:construct[@ismetadata]" mode="generateAttributes"/-->
 											</xs:extension>						
 										</xs:simpleContent>	
 									</xs:complexType>
@@ -356,24 +355,32 @@
 	</xsl:template>
 	
 	<xsl:template match="ep:constructRef">
-		<xs:element>
-			<xsl:choose>
-				<xsl:when test="ep:href">
-					<xsl:attribute name="name" select="ep:tech-name"/>
-					<xsl:attribute name="type" select="concat($prefix,':',ep:href)"/>					
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:attribute name="ref" select="concat(@prefix,':',ep:tech-name)"/>
-				</xsl:otherwise>
-			</xsl:choose>
-			<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
-			<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
-			<xsl:if test="ep:documentation">
-				<xs:annotation>
-					<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
-				</xs:annotation>
-			</xsl:if>
-		</xs:element>				
+		<xsl:variable name="href" select="ep:href"/>
+		<!-- ROME: Volgende xsl:if kan niet omdat er in het ep bestand sowieso refs staan naar constructs die niet in het ep bestand staan.
+			 Denk aan refs naar zaken die in de StUF onderlaag staan. Misschien kan de xsl:if anders vomgegeven worden zodat het wel werkt. -->
+		<!-- Only if the ep:constructRef refers to an available ep:construct it's transformed to an element. 
+			 In theory (and maybe in practice) this can lead to another empty ep:construct which on its turn should be ignored.
+			 That situation however isn't solved here. -->
+		<xsl:if test=" @prefix = 'StUF' or //ep:construct[ep:tech-name = $href]">
+			<xs:element>
+				<xsl:choose>
+					<xsl:when test="ep:href">
+						<xsl:attribute name="name" select="ep:tech-name"/>
+						<xsl:attribute name="type" select="concat($prefix,':',ep:href)"/>					
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:attribute name="ref" select="concat(@prefix,':',ep:tech-name)"/>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
+				<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
+				<xsl:if test="ep:documentation">
+					<xs:annotation>
+						<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+					</xs:annotation>
+				</xsl:if>
+			</xs:element>
+		</xsl:if>
 	</xsl:template>
 	
 	<!-- ROME: Onderstaande template kan mogelijk komen te vervallen (integreren met de andere ep:construct templates). -->
@@ -465,24 +472,11 @@
 				</xs:simpleType>
 			</xsl:otherwise>
 		</xsl:choose>
-		<!--xs:simpleType name="{concat('simpleType-',ep:tech-name,'-',$id,'-',generate-id())}"-->
 	</xsl:template>
 	
 	<!-- ROME: Onderstaande template kan mogelijk komen te vervallen (integreren met de andere ep:construct templates). -->
 	<xsl:template match="ep:construct[@ismetadata='yes']" mode="generateAttributes">
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
-		<!--xsl:variable name="name">
-			<xsl:choose>
-				<xsl:when test="contains(ep:tech-name,'StUF:')">
-					<xsl:value-of select="substring-after(ep:tech-name,'StUF:')"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="ep:tech-name"/>
-				</xsl:otherwise>
-			</xsl:choose>				
-		</xsl:variable>
-		<xsl:sequence select="imf:create-debug-comment(concat(ep:tech-name, '-' ,generate-id()),$debugging)"/-->
-		
 		<xsl:choose>
 			<!--xsl:when test="contains(ep:tech-name,':') and ep:tech-name!='StUF:entiteittype'"-->
 			<xsl:when test="not(ep:href) and @prefix">
