@@ -84,10 +84,11 @@ public class EapCompiler extends Step {
 			
 			// generate UML report
 			if (wantDocument) {
-				if (iseap && canProcessEA)
-					generateUmlReport(); // deprecated, function will be removed
-				else 
-					runner.warn(logger,"EA is not available on this system",null,"ENAOTS");
+				if (iseap)
+					if (canProcessEA)
+						generateUmlReport(); // deprecated, function will be removed
+					else 
+						runner.warn(logger,"EA is not available on this system",null,"ENAOTS");
 			} 
 			if (wantDerived && !wantDocument)
 				if (isxmi || iszip)
