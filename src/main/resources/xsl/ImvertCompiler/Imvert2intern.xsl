@@ -159,8 +159,9 @@
         <xsl:variable name="project" select="imf:get-tagged-value($intern-pack,'InternalProject')"/>
         <xsl:variable name="application" select="imf:get-tagged-value($intern-pack,'InternalName')"/>
         <xsl:variable name="release" select="imf:get-tagged-value($intern-pack,'InternalRelease')"/>
-        <xsl:variable name="subpath" select="concat('applications\',$project,'\',$application,'\',$release)"/>
-        <xsl:variable name="path" select="concat($managed-output-folder, '\',$subpath,'\etc\system.imvert.xml')"/>
+        <xsl:variable name="subpath" select="concat($project,'/',$application,'/',$release)"/>
+        <xsl:variable name="sys-subpath" select="concat('applications\',$subpath)"/>
+        <xsl:variable name="path" select="concat($managed-output-folder, '\',$sys-subpath,'\etc\system.imvert.xml')"/>
         <xsl:variable name="doc" select="imf:document($path)"/>
         <xsl:sequence select="imf:msg($intern-pack,'DEBUG','Internal path resolves to [1]', $path)"/>
         <xsl:choose>
