@@ -1119,6 +1119,12 @@
 					<xsl:sequence
 						select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,(),$alias,$elementName))"
 					/>
+					<!-- ROME: In het geval van een entiteitrelatie in een vrij bericht moet in alle namen van alle onderliggende complexTtypes en dus ook de verwijzingen daarheen
+							   de naam van die entiteitrelatie opgenomen worden. Dit om alle compelxTypes uniek te kunnen identificeren. 
+							   Bij de aanmaak van de complexType moet die naam dan natuurlijk ook meegenomen worden. -->
+					<!--xsl:sequence
+						select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,concat(ep:tech-name, '-',$berichtName),(),$alias,$elementName))"
+					/-->
 				</ep:constructRef>
 			</xsl:when>
 			<xsl:when test="contains($berichtCode, 'Du')">
@@ -1133,8 +1139,14 @@
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
 					<xsl:sequence select="imf:create-output-element('ep:position', 200)"/>
 					<xsl:sequence
-						select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,(),$alias,$elementName))"
+						select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$alias,$elementName))"
 					/>
+					<!-- ROME: In het geval van een entiteitrelatie in een vrij bericht moet in alle namen van alle onderliggende complexTtypes en dus ook de verwijzingen daarheen
+							   de naam van die entiteitrelatie opgenomen worden. Dit om alle compelxTypes uniek te kunnen identificeren. 
+							   Bij de aanmaak van de complexType moet die naam dan natuurlijk ook meegenomen worden. -->
+					<!--xsl:sequence
+						select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,concat(ep:tech-name, '-',$berichtName),$alias,$elementName))"
+					/-->
 				</ep:constructRef>				
 			</xsl:when>
 		</xsl:choose>
@@ -1475,7 +1487,7 @@
 								<ep:min-occurs>0</ep:min-occurs>
 								<ep:position>1</ep:position>
 								<xsl:choose>
-									<xsl:when test="not(empty($verwerkingsModusOfConstructRef))">
+									<xsl:when test="not(empty($verwerkingsModusOfConstructRef)) and $verwerkingsModusOfConstructRef != ''">
 										<xsl:sequence select="imf:create-output-element('ep:href', imf:create-complexTypeName(ancestor::imvert:package/imvert:name,$berichtName,$verwerkingsModusOfConstructRef,$mnemonic,$elementName))"/>							
 									</xsl:when>
 									<xsl:otherwise>
@@ -1865,7 +1877,7 @@
 							<xsl:otherwise/>
 						</xsl:choose>
 						<xsl:choose>
-							<xsl:when test="imvert:name != 'parameters' and imvert:name != 'stuurgegevens' and imvert:name != 'ontvanger' and imvert:name != 'zender'">
+							<xsl:when test="imvert:name != 'parameters' and imvert:name != 'stuurgegevens' and imvert:name != 'ontvanger' and imvert:name != 'zender' and $verwerkingsModusOfConstructRef != ''">
 								<xsl:sequence select="imf:create-output-element('ep:href', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name,$verwerkingsModusOfConstructRef))"/>
 							</xsl:when>
 							<xsl:otherwise>
@@ -2199,7 +2211,8 @@
 							</xsl:apply-templates>
 						</ep:seq>
 					</xsl:when>
-					<!-- If not an 'ep:datatype' element is generated. -->
+					<!-- If the class stereotype is a Datatype and it doesn't contain 'imvert:attribute' 
+						 elements an 'ep:datatype' element is generated. -->
 					<xsl:otherwise>
 						<ep:datatype id="{imvert:id}">
 							<xsl:apply-templates select="imvert:documentation"

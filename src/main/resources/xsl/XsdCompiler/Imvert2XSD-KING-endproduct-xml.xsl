@@ -1603,9 +1603,9 @@
                 <xsl:otherwise>.</xsl:otherwise>
             </xsl:choose>
             <xsl:if test="not(empty($alias)) and not(empty($elementName))">
-                <xsl:value-of select="concat(upper-case(substring($elementName,1,1)),lower-case(substring($elementName,2)),'-')"/>
+                <xsl:value-of select="concat(upper-case(substring($elementName,1,1)),lower-case(substring($elementName,2)))"/>
             </xsl:if>
-            <xsl:value-of select="concat(upper-case(substring($packageName,1,1)),lower-case(substring($packageName,2)))"/>           
+            <!--xsl:value-of select="concat(upper-case(substring($packageName,1,1)),lower-case(substring($packageName,2)))"/-->           
         </xsl:variable>
         
         <xsl:sequence select="imf:create-debug-track(concat('complexTypeName: ',$complexTypeName),$debugging)"/>
@@ -1642,11 +1642,11 @@
                     <xsl:value-of select="concat(upper-case(substring($elementName,1,1)),lower-case(substring($elementName,2)),'.')"/>
                 </xsl:otherwise>
             </xsl:choose>
-             <xsl:value-of select="concat(upper-case(substring($packageName,1,1)),lower-case(substring($packageName,2)))"/>           
+             <!--xsl:value-of select="concat(upper-case(substring($packageName,1,1)),lower-case(substring($packageName,2)))"/-->           
         </xsl:variable>
         
         <xsl:sequence select="imf:create-debug-track(concat('complexTypeName: ',$complexTypeName),$debugging)"/>
         
-        <xsl:value-of select="imf:get-normalized-name($complexTypeName,'type-name')"/>-<xsl:value-of select="$berichtName"/>
+        <xsl:value-of select="imf:get-normalized-name($complexTypeName,'type-name')"/><xsl:value-of select="$berichtName"/>
     </xsl:function>
 </xsl:stylesheet>

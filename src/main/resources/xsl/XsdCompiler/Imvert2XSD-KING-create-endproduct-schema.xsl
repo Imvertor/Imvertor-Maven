@@ -462,7 +462,8 @@
 						<xsl:if test="ep:fraction-digits">
 							<xs:fractionDigits value="{ep:fraction-digits}" />
 						</xsl:if>
-						<xsl:if test="ep:enum and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal')">
+						<!--xsl:if test="ep:enum and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal')"-->
+						<xsl:if test="ep:enum">
 							<xsl:apply-templates select="ep:enum"/>
 						</xsl:if>
 						<xsl:if test="ep:formeel-patroon and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-boolean')">
