@@ -585,7 +585,7 @@
         <xsl:variable name="package" select="$document-packages[imvert:name=$package-name]"/>
         <!--validation-->
         <xsl:sequence select="imf:report-error($class, 
-            not($package), 
+            empty($package), 
             'Required supertype package is not included')"/>
         <xsl:sequence select="imf:report-error($class, 
             not($package/imvert:class/imvert:name=$super-name), 
