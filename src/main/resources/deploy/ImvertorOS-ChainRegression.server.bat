@@ -28,8 +28,10 @@ call "%javaexe%" %jvmparms% ^
 	-Doutput.dir="%outdir%" ^
     -Dinput.dir="%inpdir%" ^
     -Dwork.dir="%workdir%" ^
+    -Downer.name=%owner% ^
     -classpath "%bindir%\bin\%jar%_lib" ^
     -jar "%bindir%\bin\%jar%.jar" ^
+    -rebuildref yes ^
 	-arguments "%propfilepath%"
 	
 goto END

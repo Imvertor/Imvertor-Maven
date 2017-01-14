@@ -24,8 +24,6 @@
     xmlns:ws="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
     
     xmlns:imvert="http://www.imvertor.org/schema/system"
-    xmlns:imvert-result="http://www.imvertor.org/schema/imvertor/application/v20160201"
-    
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
@@ -35,34 +33,27 @@
     version="2.0">
     
     <!-- 
-         Stylesheet to filter the schema file (in accordance with Imvert XSD).
+         Stylesheet to filter parameter file.
     -->
     
-    <xsl:template match="cw:file/imvert-result:Application" mode="mode-intermediate-imvert-schema">
-        <xsl:next-match/>
+    <xsl:template match="cw:file/config" mode="mode-intermediate-parms">
+        <xsl:copy>
+            <xsl:apply-templates mode="#current"/>
+        </xsl:copy>
     </xsl:template>
     
-    <!-- 
-        ignore the following alltogether 
-    -->
+    <!-- ignore the following: -->
     <xsl:template match="
-        imvert-result:filters |
-        imvert-result:generated |
-        imvert-result:generator |
-        imvert-result:debug |
-        imvert-result:exported |
-        imvert-result:exporter |
-        imvert-result:Identifiable/imvert-result:id |
-        imvert-result:Released/imvert-result:created |
-        imvert-result:Released/imvert-result:modified" 
-        mode="mode-intermediate-imvert-schema">
+        config/run/start |
+        config/run/time |
+        config/system/generation-id |
+        config/system/zip-release-filepath |
+        config/appinfo/release-name |
+        config/appinfo/generation-id |
+        config/test |
+        config/step" 
+        mode="mode-intermediate-parms">
         <xsl:call-template name="ignore"/>
     </xsl:template>
     
-    <xsl:template match="imvert-result:TaggedValue[imvert-result:name = 'svnid']" mode="mode-intermediate-imvert-schema">
-        <xsl:call-template name="ignore"/>
-    </xsl:template>
-
-  
-
 </xsl:stylesheet>

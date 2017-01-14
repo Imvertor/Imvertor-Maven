@@ -45,6 +45,8 @@
     <!-- 
         ignore the following alltogether 
     -->
-    <xsl:template match="*:filter" mode="mode-intermediate-history"/>
+    <xsl:template match="*:filter" mode="mode-intermediate-history">
+        <xsl:call-template name="ignore"/>
+    </xsl:template>
     
 </xsl:stylesheet>

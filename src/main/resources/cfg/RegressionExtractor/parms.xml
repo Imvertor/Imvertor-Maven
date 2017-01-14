@@ -62,6 +62,12 @@
          <tip>Max number of differences reported.</tip>
          <required>true</required>
       </cli-parm> 
+      <cli-parm>
+         <name>rebuildref</name>
+         <arg>yes|no</arg>
+         <tip>Rebuild the reference content representation for every regression test.</tip>
+         <required>false</required>
+      </cli-parm> 
       
       <cli-parm>
          <name>debug</name>

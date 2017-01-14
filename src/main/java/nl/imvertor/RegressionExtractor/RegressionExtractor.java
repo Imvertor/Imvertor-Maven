@@ -55,7 +55,7 @@ public class RegressionExtractor  extends Step {
 				"http://www.imvertor.org/imvertor/1.0/xslt/compare/compare-generated.xsl", 
 				url);
 		
-		// serialize the ref and tst to a folder
+		//1 serialize the tst folder
 		AnyFolder reffolder = new AnyFolder(configurator.getParm("cli","reffolder"));
 		AnyFolder tstfolder = new AnyFolder(configurator.getParm("cli","tstfolder"));
 		AnyFolder outfolder = new AnyFolder(configurator.getParm("cli","outfolder"));
@@ -66,6 +66,7 @@ public class RegressionExtractor  extends Step {
 		runner.debug(logger,"CHAIN","Serializing test folder: " + tstfolder);
 		tstfolder.serializeToXml(xslFilterFile,"test");
 		
+		//2 serialize the ref folder
 		// determine the __content.xml locations in tst and ref
 		XmlFile tstContentXML = new XmlFile(tstfolder,AnyFolder.SERIALIZED_CONTENT_XML_FILENAME);
 		XmlFile refContentXML = new XmlFile(reffolder,AnyFolder.SERIALIZED_CONTENT_XML_FILENAME);
@@ -73,7 +74,7 @@ public class RegressionExtractor  extends Step {
 		
 		// normally the reference folder already holds the __content.xml file, but if not, recreate it here
 		// when developing, always replace.
-		if (!refContentXML.isFile() || configurator.getRunMode() == Configurator.RUN_MODE_DEVELOPMENT) {
+		if (!refContentXML.isFile() || configurator.getRunMode() == Configurator.RUN_MODE_DEVELOPMENT || configurator.isTrue("cli","rebuildref")) {
 			runner.debug(logger,"CHAIN","Serializing reference folder; " + reffolder);
 			reffolder.serializeToXml(xslFilterFile,"ctrl");
 		}
@@ -94,9 +95,10 @@ public class RegressionExtractor  extends Step {
 		transformer.setXslParm("diff-filepath", compareXML.getCanonicalPath());
 		transformer.setXslParm("max-difference-reported", configurator.getParm("cli","maxreport"));
 		
+		//3 create includable stylesheet generated.xsl
 		valid = valid && transformer.transform(refContentXML, tempXsl, compareXsl,null);
 		
-		// create listing
+		//4 create listing, while including the generated.xsl
 		XslFile listingXsl = new XslFile(configurator.getParm("properties","IMVERTOR_COMPARE_LISTING_XSLPATH"));
 		valid = valid && transformer.transform(refContentXML,listingXml,listingXsl,null);
 		

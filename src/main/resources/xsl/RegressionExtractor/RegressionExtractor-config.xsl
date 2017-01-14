@@ -43,6 +43,8 @@
     <!-- 
         ignore the following alltogether 
     -->
-    <xsl:template match="desc" mode="mode-intermediate-config"/>
+    <xsl:template match="desc" mode="mode-intermediate-config">
+        <xsl:call-template name="ignore"/>
+    </xsl:template>
     
 </xsl:stylesheet>

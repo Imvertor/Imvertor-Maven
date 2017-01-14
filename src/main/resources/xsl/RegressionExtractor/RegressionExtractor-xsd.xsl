@@ -52,6 +52,8 @@
     <!-- 
         ignore the following alltogether 
     -->
-    <xsl:template match="xs:appinfo" mode="mode-intermediate-xsd"/>
+    <xsl:template match="xs:appinfo" mode="mode-intermediate-xsd">
+        <xsl:call-template name="ignore"/>
+    </xsl:template>
     
 </xsl:stylesheet>

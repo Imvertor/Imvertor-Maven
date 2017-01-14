@@ -42,6 +42,8 @@
     <!-- 
         ignore the following alltogether 
     -->
-    <xsl:template match="none-yet...." mode="mode-intermediate-office-html"/>
+    <xsl:template match="none-yet...." mode="mode-intermediate-office-html">
+        <xsl:call-template name="ignore"/>
+    </xsl:template>
     
 </xsl:stylesheet>

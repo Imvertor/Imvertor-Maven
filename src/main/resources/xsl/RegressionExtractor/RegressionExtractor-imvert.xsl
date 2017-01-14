@@ -46,14 +46,24 @@
     <!-- 
         ignore the following alltogether 
     -->
-    <xsl:template match="imvert:filter" mode="mode-intermediate-imvert"/>
-    <xsl:template match="imvert:generated" mode="mode-intermediate-imvert"/>
-    <xsl:template match="imvert:generator" mode="mode-intermediate-imvert"/>
-    <xsl:template match="imvert:debug" mode="mode-intermediate-imvert"/>
-    <xsl:template match="imvert:exported" mode="mode-intermediate-imvert"/>
-    <xsl:template match="imvert:exporter" mode="mode-intermediate-imvert"/>
-    <xsl:template match="imvert:resolved-suppliers" mode="mode-intermediate-imvert"/>
-    <xsl:template match="imvert:resolved-documentation" mode="mode-intermediate-imvert"/>
-    <xsl:template match="imvert:resolved-tagged-values" mode="mode-intermediate-imvert"/>
+    <xsl:template match="
+        imvert:filter |
+        imvert:generated |
+        imvert:generator |
+        imvert:debug |
+        imvert:exported |
+        imvert:exporter |
+        imvert:resolved-suppliers |
+        imvert:resolved-documentation |
+        imvert:resolved-tagged-values" 
+        mode="mode-intermediate-imvert">
+        <xsl:call-template name="ignore"/>
+    </xsl:template>
+    
+    <xsl:template match="
+        imvert:packages/imvert:id" 
+        mode="mode-intermediate-imvert">
+        <xsl:call-template name="ignore"/>
+    </xsl:template>
     
 </xsl:stylesheet>

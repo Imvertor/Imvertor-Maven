@@ -43,11 +43,15 @@
     <!-- 
         ignore the following alltogether 
     -->
-    <xsl:template match="imvert:schema/imvert:exporter" mode="mode-intermediate-schemas"/>
-    <xsl:template match="imvert:schema/imvert:schema-exported" mode="mode-intermediate-schemas"/>
-    <xsl:template match="imvert:schema/imvert:latest-svn-revision" mode="mode-intermediate-schemas"/>
-    <xsl:template match="xs:appinfo" mode="mode-intermediate-schemas"/>
-    <xsl:template match="imvert:schema/imvert:latest-svn-revision" mode="mode-intermediate-schemas"/>
-    <xsl:template match="imvert:xsd-path" mode="mode-intermediate-schemas"/>
+    <xsl:template match="
+        imvert:schema/imvert:exporter |
+        imvert:schema/imvert:schema-exported |
+        imvert:schema/imvert:latest-svn-revision |
+        xs:appinfo |
+        imvert:schema/imvert:latest-svn-revision |
+        imvert:xsd-path" 
+        mode="mode-intermediate-schemas">
+        <xsl:call-template name="ignore"/>
+    </xsl:template>
     
 </xsl:stylesheet>

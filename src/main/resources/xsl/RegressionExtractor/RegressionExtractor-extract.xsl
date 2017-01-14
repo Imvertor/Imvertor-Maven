@@ -61,16 +61,14 @@
     <xsl:include href="RegressionExtractor-office-html.xsl"/>
     <xsl:include href="RegressionExtractor-xsd.xsl"/>
     <xsl:include href="RegressionExtractor-schemas.xsl"/>
+    <xsl:include href="RegressionExtractor-parms.xsl"/>
     
     <xsl:output method="xml" encoding="UTF-8" omit-xml-declaration="yes"/>
     
-    <xsl:template match="/">
-        <xsl:for-each select="cw:file">
-            <xsl:sort select="@path" order="ascending"/>
-            <xsl:apply-templates select="."/>
-        </xsl:for-each>
+    <xsl:template match="/"> <!-- let op! deze extractor wordt aangeroepen op cw:file root elementen! -->
+        <xsl:apply-templates select="cw:file"/>
     </xsl:template>
-    
+  
     <xsl:template match="cw:file">
         <xsl:choose>
             <!--
@@ -183,12 +181,24 @@
               generated XSD is compared 
             -->
             <xsl:when test="starts-with(@path, 'work\app\xsd')">
-                <xsl:apply-templates mode="mode-intermediate-xsd"/>
+                <xsl:copy>
+                    <xsl:copy-of select="@*[not(local-name(.) = ('date','size','fullpath'))]"/>
+                    <xsl:apply-templates mode="mode-intermediate-xsd"/>
+                </xsl:copy>
+            </xsl:when>
+            <!--
+              parms.xml is compared 
+            -->
+            <xsl:when test="starts-with(@path, 'work\parms.xml')">
+                <xsl:copy>
+                    <xsl:copy-of select="@*[not(local-name(.) = ('date','size','fullpath'))]"/>
+                    <xsl:apply-templates mode="mode-intermediate-parms"/>
+                </xsl:copy>
             </xsl:when>
             
             <xsl:otherwise>
                 <error>
-                    <xsl:value-of select="concat('unexpected output file: ', @path, ' - cannot compare')"/>
+                    <xsl:value-of select="concat('Unexpected output file: ', @path, ' - cannot compare this resource')"/>
                 </error>   
             </xsl:otherwise>
         </xsl:choose>
@@ -202,5 +212,11 @@
     
     <!-- ignore all comments and pi's -->
     <xsl:template match="comment() | processing-instruction()" mode="#all"/>
+    
+    <xsl:template name="ignore">
+        <xsl:value-of select="'&#10;'"/>
+        <xsl:comment>...</xsl:comment>
+        <xsl:value-of select="'&#10;'"/>
+    </xsl:template>
     
 </xsl:stylesheet>

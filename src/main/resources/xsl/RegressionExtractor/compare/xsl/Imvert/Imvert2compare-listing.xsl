@@ -52,10 +52,6 @@
     <xsl:variable name="ctrl-doc" select="document($ctrl-url)"/>
     <xsl:variable name="test-doc" select="document($test-url)"/>
 
-    <xsl:variable name="diffs">
-        <xsl:apply-templates select="$ctrl-doc/*" mode="compare"/> <!-- returns a sequence of diff elements -->
-    </xsl:variable>
-    
     <xsl:template match="/">
         <imvert:report>
             <imvert:ctrl>
@@ -64,6 +60,9 @@
             <imvert:test>
                 <xsl:value-of select="$test-url"/>
             </imvert:test>           
+            <xsl:variable name="diffs">
+                <xsl:apply-templates select="$ctrl-doc/*" mode="compare"/> <!-- returns a sequence of diff elements -->
+            </xsl:variable>
             <xsl:for-each-group select="$diffs/imvert:diff" group-by="@ctrl-id">
                 <imvert:diffs ctrl-id="{@ctrl-id}">
                     <xsl:for-each select="current-group()">
@@ -95,25 +94,25 @@
       
         <xsl:variable name="desc-raw" select="$diff/diff/@desc"/>
         
-        <xsl:variable name="desc">
+        <xsl:variable name="desc" as="xs:string?">
             <xsl:choose>
                 <xsl:when test="$desc-raw = 'attribute value'">
                     <xsl:value-of select="'attribute value'"/>
                 </xsl:when>
                 <xsl:when test="$desc-raw = 'sequence of child nodes'">
-                    <xsl:value-of select="'(-1)'"/>
+                    <!--<xsl:value-of select="'(-1)'"/>-->
                 </xsl:when>
                 <xsl:when test="$desc-raw = 'number of child nodes'">
-                    <xsl:value-of select="'(0)'"/>
+                    <!--<xsl:value-of select="'(0)'"/>-->
                 </xsl:when>
                 <xsl:when test="$desc-raw = 'presence of child node' and exists($ctrl) and $ctrl = '#text'">
-                    <xsl:value-of select="'(1)'"/>
+                    <xsl:value-of select="'removed (text)'"/>
                 </xsl:when>
-                <xsl:when test="$desc-raw = 'text value' and not(normalize-space($ctrl)) and not(normalize-space($test))">
-                    <xsl:value-of select="'(2)'"/>
+                <xsl:when test="$desc-raw = 'text value' and (normalize-space($ctrl) or normalize-space($test))">
+                    <xsl:value-of select="'changed (text)'"/>
                 </xsl:when>
                 <xsl:when test="$desc-raw = 'presence of child node' and exists($ctrl) and not(normalize-space($ctrl))">
-                    <xsl:value-of select="'(3)'"/>
+                    <xsl:value-of select="'empty node removed'"/>
                 </xsl:when>
                 <xsl:when test="$desc-raw = 'presence of child node' and exists($ctrl)">
                     <xsl:value-of select="'removed'"/>
@@ -142,7 +141,7 @@
         </xsl:variable>
         
         <xsl:choose>
-            <xsl:when test="$desc = ''">
+            <xsl:when test="empty($desc)">
                 <!-- skip -->
             </xsl:when>
             <xsl:when test="$desc = 'added' and not(normalize-space($test))">
