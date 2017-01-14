@@ -23,7 +23,6 @@ package nl.imvertor;
 import org.apache.log4j.Logger;
 
 import nl.imvertor.ComplyExtractor.ComplyExtractor;
-import nl.imvertor.Reporter.Reporter;
 import nl.imvertor.RunAnalyzer.RunAnalyzer;
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Release;
