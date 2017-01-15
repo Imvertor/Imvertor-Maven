@@ -97,15 +97,15 @@
                         <xsl:value-of select="imf:get-config-string('run','version')"/>
                     </p>
                     <xsl:variable name="jobid" select="imf:get-config-string('cli','jobid')"/>
+                    <xsl:variable name="userid" select="imf:get-config-string('cli','userid')"/>
                     <xsl:if test="$jobid">
-                        <p>
-                            Job:
-                            <xsl:value-of select="$jobid"/>
-                        </p>  
+                        <p>Job:<xsl:value-of select="$jobid"/>, user <xsl:value-of select="$userid"/></p>  
                     </xsl:if>
-                    <b>
-                        <xsl:value-of select="imf:get-config-string('appinfo','status-message')"/>
-                    </b>
+                    <p>
+                        <b>
+                            <xsl:value-of select="imf:get-config-string('appinfo','status-message')"/>
+                        </b>
+                    </p>
                     <ol>
                         <li>
                             <a href="../overview/index.html" target="contents">

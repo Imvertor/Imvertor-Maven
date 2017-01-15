@@ -41,6 +41,7 @@
     <xsl:variable name="CONTACTEMAIL" select="imf:get-config-string('cli','contactemail','(unspecified)')"/>
     <xsl:variable name="CONTACTURL" select="imf:get-config-string('cli','contacturl','(unspecified)')"/>
     <xsl:variable name="JOBID" select="imf:get-config-string('cli','jobid','(unspecified)')"/>
+    <xsl:variable name="USERID" select="imf:get-config-string('cli','userid','(unspecified)')"/>
     
     <xsl:template match="/">
         <html>
@@ -57,6 +58,7 @@
                     <b><xsl:value-of select="$RELEASENAME[1]"/></b><br/>
                     Job ID: <br/>
                     <b><xsl:value-of select="$JOBID[1]"/></b> 
+                    By user: <xsl:value-of select="$USERID[1]"/> 
                 </p>
                 
                 <p> Dit bestand is opgebouwd uit de volgende folders: </p>

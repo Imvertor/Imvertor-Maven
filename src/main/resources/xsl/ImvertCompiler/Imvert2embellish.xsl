@@ -45,9 +45,15 @@
             <imvert:id><xsl:value-of select="$application-package-release-name"/></imvert:id>
             <!-- add run info, number of errors and warnings so far -->
             <imvert:process>
+                <imvert:job>
+                    <xsl:value-of select="$job-id"/>
+                </imvert:job>
                 <imvert:owner>
                     <xsl:value-of select="$owner-name"/>
                 </imvert:owner>
+                <imvert:user>
+                    <xsl:value-of select="$user-id"/>
+                </imvert:user>
                 <imvert:errors>
                     <xsl:value-of select="imf:get-config-string('system','error-count','0')"/>
                 </imvert:errors>

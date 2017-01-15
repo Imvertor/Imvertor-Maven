@@ -64,6 +64,9 @@
     <xsl:variable name="project-name" select="imf:get-config-string('cli','project')"/>
     <xsl:variable name="application-package-name" select="imf:get-config-string('cli','application')"/>
     
+    <xsl:variable name="user-id" select="imf:get-config-string('cli','userid')"/>
+    <xsl:variable name="job-id" select="imf:get-config-string('cli','jobid')"/>
+
     <xsl:variable name="application-package-version" select="imf:get-config-string('appinfo','version')"/>
     <xsl:variable name="application-package-release" select="imf:get-config-string('appinfo','release')"/>
     

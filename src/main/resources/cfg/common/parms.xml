@@ -73,6 +73,12 @@
          <tip>An ID for this particular run of Imvertor</tip>
          <required>false</required>
       </cli-parm> 
+      <cli-parm>
+         <name>userid</name>
+         <arg>ID</arg>
+         <tip>ID of the user who started this run</tip>
+         <required>false</required>
+      </cli-parm> 
       <!--
       <cli-parm>
          <name>owner</name>
