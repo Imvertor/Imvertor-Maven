@@ -25,6 +25,7 @@
     <tagged-values xml:id="tagset">
         <tv norm="space" id="Herkomst">
             <name lang="nl">Herkomst</name>
+            <name lang="nl">Origin</name>
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="yes" lang="nl">Objecttype</stereo>
@@ -41,6 +42,7 @@
         </tv>
         <tv norm="space" id="HerkomstDefinitie">
             <name lang="nl">Herkomst definitie</name>
+            <name lang="en">Origin of definition</name>
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="yes" lang="nl">Objecttype</stereo>
@@ -53,6 +55,7 @@
         <!-- TODO Vaststellen per tagged value of deze derived moeten worden of niet. -->
         <tv norm="space" id="Eigenaar">
             <name lang="nl">Eigenaar</name>
+            <name lang="en">Owner</name>
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no" lang="nl">Objecttype</stereo> <!-- TODO anders dan metamodel -->
@@ -62,6 +65,7 @@
         </tv>
         <tv norm="note" id="Populatie">
             <name lang="nl">Populatie</name>
+            <name lang="en">Population</name>
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no" lang="nl">Objecttype</stereo>
@@ -69,6 +73,7 @@
         </tv>
         <tv norm="space" id="Kwaliteit">
             <name lang="nl">Kwaliteit</name>
+            <name lang="en">Quality</name>
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no" lang="nl">Objecttype</stereo>
@@ -76,6 +81,7 @@
         </tv>
         <tv norm="note" id="Regels">
             <name lang="nl">Regels</name>
+            <name lang="en">Rules</name>
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no" lang="nl">Attribuutsoort</stereo> <!-- TODO niet op KKG -->
@@ -85,6 +91,7 @@
         </tv>
         <tv norm="note" id="Toelichting">
             <name lang="nl">Toelichting</name>
+            <name lang="en">Explanation</name>
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no" lang="nl">Objecttype</stereo>

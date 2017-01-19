@@ -50,8 +50,8 @@
             <construct>package</construct>
         </stereo>
         <stereo id="stereotype-name-base-package">
-            <name lang="en">base</name>
-            <name lang="nl">basismodel</name>
+            <name lang="en">Basemodel</name>
+            <name lang="nl">Basismodel</name>
             <desc>Een package dat slechts bedoeld is als basis voor afgeleide toepassingen.</desc>
             <construct>package</construct>
         </stereo>
@@ -160,16 +160,19 @@
         <!-- REDMINE #487891 -->
         <stereo id="stereotype-name-att-proxy">
             <name lang="nl">attribuutsoort_proxy</name>
+            <name lang="en">AttributeTypeProxy</name>
             <desc>A proxy is TODO</desc>
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-obj-proxy">
             <name lang="nl">objecttype_proxy</name>
+            <name lang="en">FeatureTypeProxy</name>
             <desc>A proxy is TODO</desc>
             <construct>class</construct>
         </stereo>
         <stereo id="stereotype-name-grp-proxy">
             <name lang="nl">gegevensgroeptype_proxy</name>
+            <name lang="en">AttributeGroupProxy</name>
             <desc>A proxy is TODO</desc>
             <construct>class</construct>
         </stereo>

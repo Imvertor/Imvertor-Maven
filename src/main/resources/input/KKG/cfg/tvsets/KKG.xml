@@ -18,6 +18,7 @@
         
         <tv norm="space" id="DatumOpname">
             <name lang="nl">Datum opname</name>
+            <name lang="en">Date recorded</name>
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="yes" lang="nl">Objecttype</stereo>
@@ -33,39 +34,65 @@
         </tv> 
         <tv norm="space" rules="NOC" id="IndicatieMateriëleHistorie">
             <name lang="nl">Indicatie materiële historie</name>
+            <name lang="en">Indication material history</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
             <stereotypes>
-                <stereo required="yes" lang="nl">Attribuutsoort</stereo>
-                <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="yes" lang="nl">Relatiesoort</stereo>
+                <!-- optional for the following stereo's -->
+                <stereo required="no" lang="nl">Attribuutsoort</stereo>
+                <stereo required="no" lang="nl">Gegevensgroeptype</stereo>
+                <stereo required="no" lang="nl">Relatiesoort</stereo>
+                <!-- and add: -->
+                <stereo required="no" lang="nl">Codelist</stereo>
+                <stereo required="no" lang="nl">Relatierol</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
                 <value>Nee</value>
                 <value>Zie groep</value>
+            </declared-values>
+            <declared-values lang="en">
+                <value>Yes</value>
+                <value>No</value>
+                <value>See group</value>
             </declared-values>
         </tv>
         <tv norm="space" rules="NOC" id="IndicatieFormeleHistorie">
             <name lang="nl">Indicatie formele historie</name>
+            <name lang="en">Indication formal history</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
             <stereotypes>
-                <stereo required="yes" lang="nl">Attribuutsoort</stereo>
-                <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="yes" lang="nl">Relatiesoort</stereo>
+                <!-- optional for the following stereo's -->
+                <stereo required="no" lang="nl">Attribuutsoort</stereo>
+                <stereo required="no" lang="nl">Gegevensgroeptype</stereo>
+                <stereo required="no" lang="nl">Relatiesoort</stereo>
+                <!-- and add: -->
+                <stereo required="no" lang="nl">Codelist</stereo>
+                <stereo required="no" lang="nl">Relatierol</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
                 <value>Nee</value>
                 <value>Zie groep</value>
             </declared-values>
+            <declared-values lang="en">
+                <value>Yes</value>
+                <value>No</value>
+                <value>See group</value>
+            </declared-values>
         </tv>
         <tv norm="space" id="IndicatieAuthentiek">
             <name lang="nl">Indicatie authentiek</name>
+            <name lang="en">Indication authentic</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
             <stereotypes>
-                <stereo required="yes" lang="nl">Attribuutsoort</stereo>
-                <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="yes" lang="nl">Relatiesoort</stereo>
+                <!-- optional for inherited stereos -->
+                <stereo required="no" lang="nl">Attribuutsoort</stereo>
+                <stereo required="no" lang="nl">Gegevensgroeptype</stereo>
+                <stereo required="no" lang="nl">Relatiesoort</stereo>
+                <!-- and add this stereo -->
+                <stereo required="no" lang="nl">Data element</stereo>
+                <stereo required="no" lang="nl">Codelist</stereo>
+                <stereo required="no" lang="nl">Relatierol</stereo>
             </stereotypes>
         </tv>
        
@@ -85,28 +112,33 @@
         </tv>
         <tv norm="space" id="MogelijkGeenWaarde">
             <name lang="nl">Mogelijk geen waarde</name>
+            <name lang="en">Voidable</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
             <stereotypes>
                 <stereo required="no" lang="nl">Attribuutsoort</stereo>
                 <stereo required="no" lang="nl">Gegevensgroeptype</stereo>
                 <stereo required="no" lang="nl">Relatiesoort</stereo>
+                <stereo required="no" lang="nl">Data element</stereo>
                 <stereo required="no" lang="nl">Voidable</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
                 <value>Nee</value>
             </declared-values>
+            <declared-values lang="en">
+                <value>Yes</value>
+                <value>No</value>
+            </declared-values>
         </tv>
-        
-        <tv norm="space" id="DataLocatie"><!-- MIG -->
+        <tv norm="space" id="DataLocatie">
             <name lang="nl">Data locatie</name>
-            <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
+            <name lang="en">Data location</name>
+            <derive>yes</derive>
             <stereotypes>
                 <stereo required="no" lang="nl">Referentielijst</stereo>
                 <stereo required="no" lang="nl">Referentie element</stereo>
             </stereotypes>
         </tv>
-        
         <tv norm="space" origin="system" id="Position">
             <name lang="nl">Positie</name>
             <name lang="en">Position</name>
@@ -123,31 +155,9 @@
             </stereotypes>
         </tv>
         
-        <!--
-            de volgende TVs zijn opgenomen in afwijking van basismodel BP
-        -->
-        <tv norm="space" id="MaximaleLengte">
-            <name lang="nl">Maximale lengte</name>
-            <desc></desc>
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo required="no" lang="nl">Attribuutsoort</stereo>
-                <stereo required="no" lang="nl">Data element</stereo>
-                <stereo required="no" lang="nl">Union element</stereo>
-            </stereotypes>
-        </tv>
-        <tv norm="space" id="MinimaleLengte">
-            <name lang="nl">Minimale lengte</name>
-            <desc></desc>
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo required="no" lang="nl">Attribuutsoort</stereo>
-                <stereo required="no" lang="nl">Data element</stereo>
-                <stereo required="no" lang="nl">Union element</stereo>
-            </stereotypes>
-        </tv>
-        <tv norm="space" id="LengteExact">
-            <name lang="nl">Lengte (exact)</name>
+        <tv norm="space" id="Lengte">
+            <name lang="nl">Lengte</name>
+            <name lang="en">Length</name>
             <desc></desc>
             <derive>yes</derive>
             <stereotypes>
@@ -158,96 +168,21 @@
         </tv>
         <tv norm="space" id="Locatie"><!-- In addition to Grouping tvset -->
             <name lang="nl">Locatie</name>
+            <name lang="en">Location</name>
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no" lang="nl">Attribuutsoort</stereo>
                 <stereo required="yes" lang="nl">Codelist</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="Toelichting">
-            <stereotypes>
-                <stereo required="yes" lang="nl">Enumeratie</stereo>
-                <stereo required="yes" lang="nl">Codelist</stereo>
-                <stereo required="yes" lang="nl">Relatierol</stereo>
-            </stereotypes>
-        </tv> 
-        <tv norm="space" id="DatumOpname">
-            <stereotypes>
-                <stereo required="yes" lang="nl">Codelist</stereo>
-                <stereo required="yes" lang="nl">Relatierol</stereo>
-            </stereotypes>
-        </tv>
-        
-        <tv norm="space" rules="NOC" id="IndicatieMateriëleHistorie">
-            <stereotypes>
-                <!-- optional for the following stereo's -->
-                <stereo required="no" lang="nl">Attribuutsoort</stereo>
-                <stereo required="no" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="no" lang="nl">Relatiesoort</stereo>
-                <!-- and add: -->
-                <stereo required="no" lang="nl">Codelist</stereo>
-                <stereo required="no" lang="nl">Relatierol</stereo>
-            </stereotypes>
-            <!-- declared-values inherited -->
-        </tv>
-        <tv norm="space" rules="NOC" id="IndicatieFormeleHistorie">
-            <stereotypes>
-                <!-- optional for the following stereo's -->
-                <stereo required="no" lang="nl">Attribuutsoort</stereo>
-                <stereo required="no" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="no" lang="nl">Relatiesoort</stereo>
-                <!-- and add: -->
-                <stereo required="no" lang="nl">Codelist</stereo>
-                <stereo required="no" lang="nl">Relatierol</stereo>
-            </stereotypes>
-            <!-- declared-values inherited -->
-        </tv>
-        <tv norm="space" id="Eigenaar">
-            <stereotypes>
-                <stereo required="no" lang="nl">Data element</stereo>
-            </stereotypes>
-        </tv>
-        <tv norm="space" id="Populatie">
-            <stereotypes>
-                <stereo required="no" lang="nl">Data element</stereo>
-            </stereotypes>
-        </tv>
-        <tv norm="space" id="Kwaliteit">
-            <stereotypes>
-                <stereo required="no" lang="nl">Data element</stereo>
-            </stereotypes>
-        </tv>
-       
-        <tv norm="space" id="Herkomst">
-            <name lang="nl">Herkomst</name>
-            <derive>yes</derive>
+        <tv norm="space" id="Herkomst">   <!-- in addition to SBR -->
             <stereotypes>
                 <stereo required="no" lang="nl">Codelist</stereo>
                 <stereo required="no" lang="nl">Relatierol</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="HerkomstDefinitie">
+        <tv norm="space" id="HerkomstDefinitie"> <!-- in addition to SBR -->
             <stereotypes>
-                <stereo required="no" lang="nl">Codelist</stereo>
-                <stereo required="no" lang="nl">Relatierol</stereo>
-            </stereotypes>
-        </tv>
-      
-        <tv norm="space" id="MogelijkGeenWaarde">
-                <name lang="nl">Mogelijk geen waarde</name>
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo required="no" lang="nl">Data element</stereo>
-            </stereotypes>
-        </tv>
-        <tv norm="space" id="IndicatieAuthentiek">
-            <stereotypes>
-                <!-- optional for inherited stereos -->
-                <stereo required="no" lang="nl">Attribuutsoort</stereo>
-                <stereo required="no" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="no" lang="nl">Relatiesoort</stereo>
-                <!-- and add this stereo -->
-                <stereo required="no" lang="nl">Data element</stereo>
                 <stereo required="no" lang="nl">Codelist</stereo>
                 <stereo required="no" lang="nl">Relatierol</stereo>
             </stereotypes>
@@ -255,6 +190,7 @@
         
         <tv norm="space" id="BaseMapping">
             <name lang="nl">Base-mapping</name>
+            <name lang="en">Base-mapping</name>
             <derive>no</derive>
             <stereotypes>
                 <stereo required="no" lang="nl">Objecttype</stereo>
