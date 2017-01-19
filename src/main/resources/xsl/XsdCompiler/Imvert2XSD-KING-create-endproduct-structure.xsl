@@ -474,12 +474,12 @@
 				</xsl:when>
 				<!-- The following when initiates the processing of the classes refering to the current class as a superclass.
 					 In this situation a choice has to be generated. -->
-				<xsl:when test="$proces-type = 'associationsOrSupertypeRelatie' and //imvert:class[imvert:supertype/imvert:type-id = $id]">
+				<xsl:when test="$proces-type = 'associationsOrSupertypeRelatie' and $packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
 					<xsl:sequence select="imf:create-debug-comment('Template: imvert:class[mode=create-message-content] 3e when',$debugging)"/>
 					
 
 					<ep:choice>
-						<xsl:for-each select="//imvert:class[imvert:supertype/imvert:type-id = $id]">
+						<xsl:for-each select="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
 							<xsl:variable name="class-id" select="imvert:id"/>
 							<xsl:variable name="alias" select="imvert:alias"/>
 							<xsl:variable name="element" select="imvert:name"/>

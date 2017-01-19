@@ -88,7 +88,7 @@
     
     <!-- Within this variable a rough message structure is created to be able to determine e.g. the correct global construct structures. -->
     <xsl:variable name="rough-messages">
-         <xsl:sequence select="imf:create-debug-track('Constructing the rough message-structure',$debugging)"/>
+         <xsl:sequence select="imf:track('Constructing the rough message-structure')"/>
         
         <ep:rough-messages>
             <xsl:apply-templates select="$packages/imvert:package[imvert:stereotype = 'BERICHT' and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]" mode="create-rough-message-structure"/>
@@ -96,7 +96,7 @@
     </xsl:variable>
     
     <xsl:variable name="enriched-rough-messages">
-        <xsl:sequence select="imf:create-debug-track('Constructing the enriched rough message-structure',$debugging)"/>
+        <xsl:sequence select="imf:track('Constructing the enriched rough message-structure')"/>
         
         <xsl:apply-templates select="$rough-messages/ep:rough-messages" mode="enrich-rough-messages"/>
 
@@ -120,7 +120,6 @@
 
     <!-- Within this variable all messages defined within the BSM of the koppelvlak are placed, transformed to the imvertor endproduct (ep) format.-->
     <xsl:variable name="imvert-endproduct">
-        <xsl:sequence select="imf:create-debug-track('Constructing the message-set',$debugging)"/>
         
         <ep:message-set>
            <xsl:sequence select="imf:create-output-element('ep:name', /imvert:packages/imvert:project)"/>
@@ -143,15 +142,10 @@
                 <xsl:sequence select="$enriched-rough-messages"/>
             </xsl:if>
            
-            <xsl:sequence select="imf:create-debug-track('Constructing the messages',$debugging)"/>
+            <xsl:sequence select="imf:track('Constructing the messages')"/>
             
-            <xsl:variable name="messages">
                 <xsl:for-each select="$enriched-rough-messages/ep:rough-messages/ep:rough-message">
-                    <xsl:variable name="currentMessage">
-                        <xsl:copy>
-                            <xsl:copy-of select="@*"/>
-                            <xsl:copy-of select="*"/>               
-                        </xsl:copy>
+                    <xsl:variable name="currentMessage" select=".">
                     </xsl:variable>
                     <xsl:variable name="id" select="ep:id" as="xs:string"/>
                     <xsl:variable name="message-construct" select="imf:get-construct-by-id($id,$packages)"/>
@@ -173,7 +167,7 @@
                     <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
                     <xsl:variable name="name" select="$message-construct/imvert:name/@original" as="xs:string"/>
                     <xsl:variable name="tech-name" select="imf:get-normalized-name($message-construct/imvert:name, 'element-name')" as="xs:string"/>
-                    <xsl:variable name="package-type" select="$packages//imvert:package[.//imvert:class[imvert:id = $id]]/imvert:stereotype" as="xs:string"/>
+                    <xsl:variable name="package-type" select="$packages/imvert:package[imvert:class[imvert:id = $id]]/imvert:stereotype" as="xs:string"/>
                     <xsl:variable name="release" select="$packages/imvert:release" as="xs:string"/>
                     
                     <xsl:if test="not(string($berichtCode))">
@@ -205,8 +199,6 @@
                         </xsl:apply-templates>
                     </ep:message>
                 </xsl:for-each>
-           </xsl:variable>
-           <xsl:sequence select="$messages"/>
 
            <xsl:apply-templates select="$enriched-rough-messages/ep:rough-messages/ep:rough-message"/>
 
@@ -246,7 +238,7 @@
             </ep:currentMessage>
         </xsl:if>
         
-        <xsl:sequence select="imf:create-debug-track('Constructing the global constructs',$debugging)"/>
+        <xsl:sequence select="imf:track('Constructing the global constructs',$debugging)"/>
 
         <!-- The following for-each takes care of creating global construct elements for each ep:construct element present within the current 'rough-messages' variable 
              having a type-id value none of the preceding ep:construct elements within the processed message have. 
@@ -434,7 +426,7 @@
                                    <xsl:choose>
                                         
                                        <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
-                                       <xsl:when test="$packages//imvert:class[imvert:supertype/imvert:type-id = $id]">
+                                       <xsl:when test="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
                                            <xsl:apply-templates select="$construct"
                                                mode="create-message-content">
                                                <xsl:with-param name="berichtName" select="$berichtName"/>
@@ -472,7 +464,7 @@
                                                    <!-- If the class is refered to form an association which is part of an VRIJ BERICHT no stuurgegevens must be generated. -->
                                                    <xsl:with-param name="useStuurgegevens">
                                                        <xsl:choose>
-                                                           <xsl:when test="$packages//imvert:association[imvert:type-id = $id]/imvert:stereotype = 'BERICHTRELATIE'">
+                                                           <xsl:when test="$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:type-id = $id]/imvert:stereotype = 'BERICHTRELATIE'">
                                                               <xsl:value-of select="'no'"/>
                                                            </xsl:when>
                                                            <xsl:otherwise>
@@ -725,7 +717,7 @@
                                            
                                             
                                            
-                                           <xsl:when test="$packages//imvert:class[imvert:supertype/imvert:type-id = $id]">
+                                           <xsl:when test="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
                                                <xsl:apply-templates select="$construct"
                                                    mode="create-message-content">
                                                    <xsl:with-param name="berichtName" select="$berichtName"/>
@@ -931,7 +923,7 @@
                                            <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
                                            
                                            
-                                           <xsl:when test="$packages//imvert:class[imvert:supertype/imvert:type-id = $id]">
+                                           <xsl:when test="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
                                                <xsl:apply-templates select="$construct"
                                                    mode="create-message-content">
                                                    <xsl:with-param name="berichtName" select="$berichtName"/>
@@ -1047,7 +1039,7 @@
                         <!-- Within the schema's we want to have global constructs for relations. However for that kind of objects no uml classes are available.
                                 With the following apply-templates the global ep:construct elements are created presenting the relations. -->
                         
-                        <xsl:variable name="association" select="$packages//imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']"/>
+                        <xsl:variable name="association" select="$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']"/>
                         
                         <xsl:apply-templates select="$association"
                             mode="create-global-construct">
@@ -1088,7 +1080,7 @@
                         <!-- If 'Formele historie' is applicable for the current class and messagetype a historieFormeel global construct based on the current class is generated. -->
                         <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes')">
                             
-                            <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorie constructs: ',$packages//imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
+                            <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorie constructs: ',$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
                             
                             <xsl:apply-templates select="$association"
                                 mode="create-global-construct">
@@ -1107,7 +1099,7 @@
                         <!-- If 'Formele historie' is applicable for the current class and messagetype a historieFormeel global construct based on the current class is generated. -->
                         <xsl:if test="@indicatieFormeleHistorieRelatie='Ja'">
                             
-                            <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorieRelatie constructs: ',$packages//imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
+                            <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorieRelatie constructs: ',$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
                             
                             <xsl:apply-templates select="$association"
                                 mode="create-global-construct">
