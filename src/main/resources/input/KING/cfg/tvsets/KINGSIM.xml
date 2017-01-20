@@ -155,6 +155,28 @@
             </stereotypes>
         </tv>
 
+        <tv norm="note" id="Populatie">   <!-- in aanvulling op SBR -->
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">objecttype_proxy</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="note" id="Toelichting">   <!-- in aanvulling op SBR -->
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">objecttype_proxy</stereo>
+                <stereo required="no" lang="nl">attribuutsoort_proxy</stereo>
+                <stereo required="no" lang="nl">gegevensgroeptype_proxy</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="note" id="Regels">   <!-- in aanvulling op SBR -->
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no" lang="nl">attribuutsoort_proxy</stereo>
+                <stereo required="no" lang="nl">gegevensgroeptype_proxy</stereo>
+            </stereotypes>
+        </tv>
+        
         <!-- REDMINE #487612 -->
         <!-- Internal packages are propagated to Grouping --> 
        
