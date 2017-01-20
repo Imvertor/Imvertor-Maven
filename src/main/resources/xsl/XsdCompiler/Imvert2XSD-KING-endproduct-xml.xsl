@@ -103,7 +103,7 @@
     </xsl:variable>
 
     <!-- ROME: Moet het per package bepalen van de prefix hier gebeuren? Ik vermoed van niet. -->
-    <xsl:variable name="verkorteAlias" select="/imvert:packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='Verkorte alias']"/>
+    <xsl:variable name="verkorteAlias" select="$packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='Verkorte alias']"/>
     
     <xsl:variable name="prefix" as="xs:string">
         <xsl:choose>
@@ -122,11 +122,11 @@
     <xsl:variable name="imvert-endproduct">
         
         <ep:message-set>
-           <xsl:sequence select="imf:create-output-element('ep:name', /imvert:packages/imvert:project)"/>
-            <xsl:sequence select="imf:create-output-element('ep:release', /imvert:packages/imvert:release)"/>
-            <xsl:sequence select="imf:create-output-element('ep:date', substring-before(/imvert:packages/imvert:generated,'T'))"/>
+            <xsl:sequence select="imf:create-output-element('ep:name', $packages/imvert:project)"/>
+            <xsl:sequence select="imf:create-output-element('ep:release', $packages/imvert:release)"/>
+            <xsl:sequence select="imf:create-output-element('ep:date', substring-before($packages/imvert:generated,'T'))"/>
             <xsl:sequence select="imf:create-output-element('ep:patch-number', 'TO-DO')"/>
-            <xsl:sequence select="imf:create-output-element('ep:namespace', /imvert:packages/imvert:base-namespace)"/>
+            <xsl:sequence select="imf:create-output-element('ep:namespace', $packages/imvert:base-namespace)"/>
             <xsl:sequence select="imf:create-output-element('ep:namespace-prefix', $prefix)"/>
             
             <!-- ROME: Volgende structuur moet, zodra we meerdere namespaces volledig ondersteunen, afgeleid worden van alle in gebruik zijnde namespaces.
@@ -134,7 +134,7 @@
                        Ik denk van niet, eerder zal de onderstaande lijst met namespaces uitgebreid moeten worden door per package deze op te halen. -->
             <ep:namespaces>
                 <ep:namespace prefix="StUF">http://www.egem.nl/StUF/StUF0301</ep:namespace>
-                <ep:namespace prefix="{$prefix}"><xsl:value-of select="/imvert:packages/imvert:base-namespace"/></ep:namespace>
+                <ep:namespace prefix="{$prefix}"><xsl:value-of select="$packages/imvert:base-namespace"/></ep:namespace>
             </ep:namespaces>
             
             <xsl:if test="$debugging">
@@ -489,6 +489,11 @@
                                                    $construct/imvert:stereotype != 'VRAAGBERICHTTYPE' and
                                                    $construct/imvert:stereotype != 'ANTWOORDBERICHTTYPE' and
                                                    $construct/imvert:stereotype != 'SYNCHRONISATIEBERICHTTYPE' and not(contains(@verwerkingsModus,'kerngegevens'))">
+                                               <!--xsl:if test="$construct/imvert:stereotype != imf:get-config-stereotypes((
+                                                   'stereotype-name-vraagberichttype',
+                                                   'stereotype-name-antwoordberichttype',
+                                                   'stereotype-name-kennisgevingberichttype',
+                                                   'stereotype-name-synchronisatieberichttype')) and not(contains(@verwerkingsModus,'kerngegevens'))"-->
                                                    <ep:constructRef prefix="StUF" externalNamespace="yes">
                                                        <ep:name>tijdvakGeldigheid</ep:name>
                                                        <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
@@ -582,15 +587,6 @@
                                                    <xsl:with-param name="context" select="$context" />
                                                    <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
                                                </xsl:apply-templates>
-                                               <!-- ROME: Volgende wijze van waarde bepaling voor de mnemonic moet ook op diverse plaatsen in Imvert2XSD-KING-endproduct-structure geimplementeerd worden. -->
-                                               <!--xsl:variable name="mnemonic">
-                                                   <xsl:choose>
-                                                       <xsl:when test="empty($construct/imvert:alias) or not($construct/imvert:alias)"/>
-                                                       <xsl:otherwise>
-                                                           <xsl:value-of select="$construct/imvert:alias"/>
-                                                       </xsl:otherwise>
-                                                   </xsl:choose>
-                                               </xsl:variable-->
                                                <!-- The function imf:createAttributes is used to determine the XML attributes 
                                     				neccessary for this context. It has the following parameters: - typecode 
                                     				- berichttype - context - datumType The first 3 parameters relate to columns 

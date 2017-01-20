@@ -248,7 +248,9 @@
 					to prevent recursion, processing is canceled. -->
 				<xsl:if test="not(contains($id-trail, concat('#2#', imvert:id, '#')))">
 					<xsl:sequence select="imf:create-debug-comment('imvert:class mode=create-rough-message-content and not(contains($id-trail, concat(#2#, imvert:id, #)))',$debugging)"/>
-					
+			
+					<xsl:variable name="associationsOfBerichtrelatieType" select="$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:stereotype = 'BERICHTRELATIE']"/>
+					<xsl:variable name="classRelated2Association" select="$packages/imvert:package/imvert:class[imvert:id = $associationsOfBerichtrelatieType/imvert:type-id]"/>
 					<xsl:apply-templates
 						select="imvert:associations/imvert:association[imvert:stereotype = 'GROEP COMPOSITIE']"
 						mode="create-rough-message-content">
@@ -269,7 +271,7 @@
 						<xsl:with-param name="context" select="$context"/>
 						<xsl:with-param name="useStuurgegevens">
 							<xsl:choose>
-								<xsl:when test="imvert:id = //imvert:supertype[parent::imvert:class/imvert:id = //imvert:association[imvert:stereotype = 'BERICHTRELATIE']/imvert:type-id]/imvert:type-id and contains($berichtCode,'Di')">
+								<xsl:when test="imvert:id = $classRelated2Association/imvert:supertype/imvert:type-id and contains($berichtCode,'Di')">
 									<xsl:value-of select="'no'"/>
 								</xsl:when>
 								<xsl:otherwise>
@@ -283,9 +285,9 @@
 			<!-- The following when initiates the processing of the associations refering to the current class as a superclass.
 				 In this situation a choice has to be generated. -->
 			<xsl:when
-				test="$proces-type = 'associationsOrSupertypeRelatie' and //imvert:class[imvert:supertype/imvert:type-id = $id]">
+				test="$proces-type = 'associationsOrSupertypeRelatie' and $packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
 				<ep:choice>
-					<xsl:for-each select="//imvert:class[imvert:supertype/imvert:type-id = $id]">
+					<xsl:for-each select="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
 						<ep:construct typeCode="gerelateerde" context="{$context}" type="entity" package="{ancestor::imvert:package/imvert:name}">
 							<xsl:sequence
 								select="imf:create-output-element('ep:name', imvert:name/@original)"/>
@@ -863,14 +865,14 @@
 						</xsl:choose>
 					</xsl:attribute>
 					<xsl:choose>
-						<xsl:when test="count(//imvert:class[imvert:supertype/imvert:type-id = $type-id]) >= 1">
+						<xsl:when test="count($packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $type-id]) >= 1">
 							<xsl:attribute name="type" select="'supertype'"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:attribute name="type" select="'entity'"/>
 						</xsl:otherwise>
 					</xsl:choose>
-					<xsl:if test="count(//imvert:class[imvert:supertype/imvert:type-id = $type-id]) >= 1">
+					<xsl:if test="count($packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $type-id]) >= 1">
 						<xsl:attribute name="type" select="'supertype'"/>
 					</xsl:if>
 					<xsl:if
