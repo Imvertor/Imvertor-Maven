@@ -179,7 +179,7 @@
         -->
         <xsl:variable name="supplier-subpath" select="imf:get-trace-supplier-subpath($supplier/@project,$supplier/@application,$supplier/@release)"/>
         <xsl:variable name="supplier-doc" select="if ($supplier-subpath eq $application-package-subpath) then $imvert-document else imf:get-trace-supplier-document($supplier-subpath)"/>
-        <xsl:variable name="construct" select="$supplier-doc//*[imvert:id = $supplier/@id]"/>
+        <xsl:variable name="construct" select="imf:get-construct-by-id($supplier/@id,$supplier-doc)"/>
         <?x <xsl:variable name="construct" select="imf:get-construct-by-id($supplier/@id,$supplier-doc)"/>  x?>
         <!--TODO copy-down introduces two identical ID's, should not occur! -->
         <xsl:sequence select="$construct[1]"/>
@@ -189,9 +189,11 @@
         Return the supplier document for the supplier subpath passed.
         Returns () when some info is missing.
     -->
-    <xsl:function name="imf:get-trace-supplier-document" as="element(imvert:packages)?">
+    <xsl:function name="imf:get-trace-supplier-document" as="document-node()?">
         <xsl:param name="supplier-subpath" as="xs:string?"/>
-        <xsl:sequence select="$all-derived-models[@subpath=$supplier-subpath]/imvert:packages"/>
+        <xsl:if test="exists($all-derived-models[@subpath=$supplier-subpath])">
+            <xsl:sequence select="imf:get-imvert-supplier-doc($supplier-subpath)"/>
+        </xsl:if>
     </xsl:function>
     
     <xsl:function name="imf:get-trace-supplier-subpath" as="xs:string">
@@ -220,7 +222,7 @@
                 <!-- more than one when for this application there are multiple supplier packages --> 
                 <!-- get the supplier, and see it that has supplier  itself -->
                 <xsl:variable name="subpath" select="imf:get-trace-supplier-subpath(imvert:supplier-project,imvert:supplier-name,imvert:supplier-release)"/>
-                <xsl:variable name="doc" select="imf:get-trace-supplier-document($subpath)"/>
+                <xsl:variable name="doc" select="imf:get-trace-supplier-document($subpath)/imvert:packages"/>
                 <xsl:sequence select="imf:get-trace-all-supplier-subpaths($doc)"/>               
             </xsl:for-each>
         </xsl:variable>

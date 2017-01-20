@@ -680,13 +680,13 @@
 		<xsl:variable name="name">
 			<xsl:choose>
 				<xsl:when test="imvert:stereotype = 'ENTITEITRELATIE'">
-					<xsl:value-of select="imf:get-construct-by-id($type-id,$packages)/imvert:name"/>
+					<xsl:value-of select="imf:get-construct-by-id($type-id,$packages-doc)/imvert:name"/>
 				</xsl:when>
 				<xsl:when test="$currentMessage//ep:*[generate-id() = $generated-id and @typeCode ='toplevel']">
 					<xsl:value-of select="imvert:name"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<!--xsl:value-of select="imf:get-construct-by-id($type-id,$packages)/imvert:name"/-->
+					<!--xsl:value-of select="imf:get-construct-by-id($type-id,$packages-doc)/imvert:name"/-->
 					<xsl:value-of select="imvert:name"/>
 				</xsl:otherwise>
 			</xsl:choose>
@@ -836,7 +836,7 @@
 					<xsl:variable name="type-id" select="imvert:type-id"/>
 					<xsl:apply-templates
 						select="
-						imf:get-construct-by-id($type-id,$packages)[imvert:stereotype = imf:get-config-stereotypes((
+						imf:get-construct-by-id($type-id,$packages-doc)[imvert:stereotype = imf:get-config-stereotypes((
 							'stereotype-name-vraagberichttype',
 							'stereotype-name-antwoordberichttype',
 							'stereotype-name-kennisgevingberichttype'))]"
@@ -912,7 +912,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:variable name="construct" select="imf:get-construct-by-id($type-id,$packages)"/>
+		<xsl:variable name="construct" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
 		<xsl:variable name="elementName" select="$construct/imvert:name"/>
 		<xsl:variable name="href" select="imf:create-complexTypeName($packageName,$berichtName,(),(),$elementName)"
 		/>
@@ -970,7 +970,7 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="type-id" select="imvert:type-id"/>
-		<xsl:variable name="construct" select="imf:get-construct-by-id($type-id,$packages)"/>
+		<xsl:variable name="construct" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
 		<xsl:variable name="elementName" select="$construct/imvert:name"/>
 		<xsl:variable name="verwerkingsModusOfConstructRef">
 			<xsl:choose>
@@ -1295,7 +1295,7 @@
 						</xsl:when>
 						<xsl:when test="imvert:type-id">
 							<xsl:apply-templates
-								select="imf:get-construct-by-id($type-id,$packages)[imvert:stereotype = 'ENUMERATION']"
+								select="imf:get-construct-by-id($type-id,$packages-doc)[imvert:stereotype = 'ENUMERATION']"
 								mode="create-datatype-content"/>
 						</xsl:when>
 					</xsl:choose>
@@ -1470,7 +1470,7 @@
 					<xsl:sequence select="imf:create-debug-comment('Template: createRelatiePartOfAssociation, 1e when',$debugging)"/>
 					<xsl:sequence select="imf:create-debug-comment(concat('$verwerkingsModusOfConstructRef for construct with id ',$type-id, ' and parent construct (',$currentMessage//ep:*[generate-id() = $generated-id]/ep:id,') with generated-id ',$generated-id,': ',$verwerkingsModusOfConstructRef),$debugging)"/>
 					
-					<xsl:variable name="elementName" select="imf:get-construct-by-id($type-id,$packages)/imvert:name"/>
+					<xsl:variable name="elementName" select="imf:get-construct-by-id($type-id,$packages-doc)/imvert:name"/>
 
 					<xsl:choose>
 						<xsl:when test="($generateHistorieConstruct = 'MaterieleHistorie' and contains($indicatieMaterieleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorie' and contains($indicatieFormeleHistorie, 'Ja'))"/>
@@ -1590,7 +1590,7 @@
 					<xsl:variable name="materieleHistorie">
 						<xsl:variable name="tv-materieleHistorie-attributes">
 							<xsl:for-each select="imvert:association-class">
-								<xsl:for-each select="imf:get-construct-by-id($association-class-type-id,$packages)/imvert:attributes/imvert:attribute">
+								<xsl:for-each select="imf:get-construct-by-id($association-class-type-id,$packages-doc)/imvert:attributes/imvert:attribute">
 									<ep:tagged-value>
 										<xsl:value-of
 											select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie')"
@@ -1611,7 +1611,7 @@
 					<xsl:variable name="formeleHistorie">
 						<xsl:variable name="tv-formeleHistorie-attributes">
 							<xsl:for-each select="imvert:association-class">
-								<xsl:for-each select="imf:get-construct-by-id($association-class-type-id,$packages)/imvert:attributes/imvert:attribute">
+								<xsl:for-each select="imf:get-construct-by-id($association-class-type-id,$packages-doc)/imvert:attributes/imvert:attribute">
 									<ep:tagged-value>
 										<xsl:value-of
 											select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie')"
@@ -1717,7 +1717,7 @@
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:variable name="tv-materieleHistorie-attributes">
-									<xsl:for-each select="imf:get-construct-by-id($type-id,$packages)/imvert:attributes/imvert:attribute">
+									<xsl:for-each select="imf:get-construct-by-id($type-id,$packages-doc)/imvert:attributes/imvert:attribute">
 										<ep:tagged-value>
 											<xsl:value-of
 												select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie')"
@@ -1737,12 +1737,12 @@
 					<xsl:variable name="generateFormeleHistorieOnAssociation">
 						<xsl:choose>
 							<xsl:when
-								test="contains(imf:get-most-relevant-compiled-taggedvalue(imf:get-construct-by-id($type-id,$packages), 'Indicatie formele historie'), 'Ja')">
+								test="contains(imf:get-most-relevant-compiled-taggedvalue(imf:get-construct-by-id($type-id,$packages-doc), 'Indicatie formele historie'), 'Ja')">
 								<xsl:value-of select="'Ja'"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:variable name="tv-formeleHistorie-attributes">
-									<xsl:for-each select="imf:get-construct-by-id($type-id,$packages)/imvert:attributes/imvert:attribute">
+									<xsl:for-each select="imf:get-construct-by-id($type-id,$packages-doc)/imvert:attributes/imvert:attribute">
 										<ep:tagged-value>
 											<xsl:value-of
 												select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie')"
@@ -1831,7 +1831,7 @@
 					<xsl:variable name="name">
 						<xsl:choose>
 							<xsl:when test="(imvert:name = 'zender' or imvert:name = 'ontvanger') and contains(ancestor::imvert:package/@display-name,'www.kinggemeenten.nl/BSM/Berichtstrukturen')">
-								<xsl:value-of select="imf:get-construct-by-id($type-id,$packages)/imvert:name"/>
+								<xsl:value-of select="imf:get-construct-by-id($type-id,$packages-doc)/imvert:name"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:value-of select="imvert:name"/>
@@ -1893,7 +1893,7 @@
 					 and it contains a 'entiteit'. The attributes of the 'entiteit' class can 
 					 be placed directly within the current 'ep:seq'. -->
 				<xsl:when
-					test="imf:get-construct-by-id($type-id,$packages)[imvert:stereotype = 'ENTITEITTYPE']">
+					test="imf:get-construct-by-id($type-id,$packages-doc)[imvert:stereotype = 'ENTITEITTYPE']">
 					
 					<xsl:sequence select="imf:create-debug-comment('Template: createRelatiePartOfAssociation, 4e when',$debugging)"/>
 					<xsl:sequence select="imf:create-debug-comment(concat('$verwerkingsModusOfConstructRef for construct with id ',$type-id, ' and parent construct (',$currentMessage//ep:*[generate-id() = $generated-id]/ep:id,') with generated-id ',$generated-id,': ',$verwerkingsModusOfConstructRef),$debugging)"/>
@@ -2276,7 +2276,7 @@
 					<xsl:if test="imvert:type-id">
 						<xsl:variable name="type-id" select="imvert:type-id"/>
 						<xsl:apply-templates
-							select="imf:get-construct-by-id($type-id,$packages)"
+							select="imf:get-construct-by-id($type-id,$packages-doc)"
 							mode="create-datatype-content"/>
 					</xsl:if>
 				</ep:construct>

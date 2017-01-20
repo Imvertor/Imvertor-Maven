@@ -34,7 +34,7 @@
     <xsl:variable name="conceptual-schema-mapping-file" select="imf:get-config-string('properties','CONCEPTUAL_SCHEMA_MAPPING_FILE')"/>
     
     <xsl:template match="imvert:packages" mode="conceptualschemas">
-        <xsl:if test="exists(.//imvert:package[imvert:conceptual-schema-namespace])">
+        <xsl:if test="exists(imvert:package[imvert:conceptual-schema-namespace])">
             <xsl:variable name="cf" select="imf:document($conceptual-schema-mapping-file)/conceptual-schemas"/>
             <page>
                 <title>Conceptual schemas</title>
@@ -47,7 +47,7 @@
                                 <li>The overview below shows the conceptual package info, and the classes that are part of these conceptual schema packages.</li>
                             </ul>
                         </div>
-                        <xsl:for-each select=".//imvert:package[imvert:conceptual-schema-namespace]">
+                        <xsl:for-each select="imvert:package[imvert:conceptual-schema-namespace]">
                             <xsl:sort select="imf:get-construct-name(.)" order="ascending"/>
                             <xsl:variable name="row" as="element()">
                                 <row xmlns="">
@@ -62,7 +62,7 @@
                             </xsl:variable>
                             <xsl:sequence select="imf:create-result-table($row,'package:10,namespace:35,version:5,phase:5,release:10,author:10,SVN:25')"/>
                             <xsl:variable name="rows" as="element(row)*">
-                                <xsl:for-each select=".//imvert:class">
+                                <xsl:for-each select="imvert:class">
                                     <xsl:sort select="imvert:name" order="ascending"/>
                                     <row xmlns="">
                                         <xsl:sequence select="imf:create-output-element('cell',imf:get-construct-name(.),$empty)"/>

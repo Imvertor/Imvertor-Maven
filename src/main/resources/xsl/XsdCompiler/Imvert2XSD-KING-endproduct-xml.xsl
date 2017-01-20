@@ -84,7 +84,8 @@
         </result>
     </xsl:variable>
     
-    <xsl:variable name="packages" select="/imvert:packages"/>
+    <xsl:variable name="packages-doc" select="/"/>
+    <xsl:variable name="packages" select="$packages-doc/imvert:packages"/>
     
     <!-- Within this variable a rough message structure is created to be able to determine e.g. the correct global construct structures. -->
     <xsl:variable name="rough-messages">
@@ -154,7 +155,7 @@
                         </xsl:copy>
                     </xsl:variable>
                     <xsl:variable name="id" select="ep:id" as="xs:string"/>
-                    <xsl:variable name="message-construct" select="imf:get-construct-by-id($id,$packages)"/>
+                    <xsl:variable name="message-construct" select="imf:get-construct-by-id($id,$packages-doc)"/>
                     <xsl:variable name="berichtstereotype" select="$message-construct/imvert:stereotype" as="xs:string"/>
                     <xsl:variable name="berichtSoort" as="xs:string">
                         <xsl:choose>
@@ -283,7 +284,7 @@
             <xsl:variable name="typeCode" select="@typeCode" as="xs:string"/>
             <xsl:variable name="verwerkingsModus" select="@verwerkingsModus"/>
             <xsl:variable name="packageName" select="@package"/> 
-            <xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)"/>
+            <xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/>
             <!--xsl:variable name="alias" select="$construct/imvert:alias"/-->
             <xsl:variable name="alias">
                <xsl:choose>
@@ -320,11 +321,11 @@
                         
                         <xsl:choose>
                            <!-- The following when generates global constructs based on uml groups. -->
-                            <xsl:when test="@type='group' and exists(imf:get-construct-by-id($id,$packages))">
+                            <xsl:when test="@type='group' and exists(imf:get-construct-by-id($id,$packages-doc))">
  
                                <xsl:sequence select="imf:create-debug-track(concat('Constructing global groupconstruct: ',$construct/imvert:name),$debugging)"/>
 
-                               <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)"/-->
+                               <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
                                <xsl:variable name="type" select="'Grp'"/>
                                <xsl:variable name="name">
                                    <xsl:choose>
@@ -399,9 +400,9 @@
                                
                            </xsl:when>
                            <!-- The following when generates global constructs based on uml classes. -->
-                            <xsl:when test="exists(imf:get-construct-by-id($id,$packages))">
+                            <xsl:when test="exists(imf:get-construct-by-id($id,$packages-doc))">
 
-                                <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)"/-->                                
+                                <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->                                
 
                                 <xsl:sequence select="imf:create-debug-track(concat('Constructing global construct: ',$construct/imvert:name),$debugging)"/>
                                <xsl:sequence select="imf:create-debug-comment('@typeCode!=relatie and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
@@ -627,11 +628,11 @@
                             <xsl:variable name="historieType" select="'historieMaterieel'"/>
                             <xsl:choose>
                                <!-- The following when generates historieMaterieel global constructs based on uml groups. -->
-                                <xsl:when test="@type='group' and exists(imf:get-construct-by-id($id,$packages))">
+                                <xsl:when test="@type='group' and exists(imf:get-construct-by-id($id,$packages-doc))">
                                    
                                    <xsl:sequence select="imf:create-debug-track(concat('Constructing global materieleHistorie groupconstruct: ',$construct/imvert:name),$debugging)"/>
                                    
-                                   <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)"/-->
+                                   <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
                                    <xsl:variable name="type" select="'Grp'"/>
                                    <xsl:variable name="name" select="ep:name"/>
                                    <xsl:variable name="docs">
@@ -691,11 +692,11 @@
                                    <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
                                </xsl:when>
                                <!-- The following when generates historieMaterieel global constructs based on uml classes. -->
-                                <xsl:when test="exists(imf:get-construct-by-id($id,$packages))">
+                                <xsl:when test="exists(imf:get-construct-by-id($id,$packages-doc))">
                                    
                                    <xsl:sequence select="imf:create-debug-track(concat('Constructing global materieleHistorie construct: ',$construct/imvert:name),$debugging)"/>
                                    
-                                    <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)"/-->
+                                    <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
                                     <xsl:variable name="docs">
                                        <imvert:complete-documentation>
                                            <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
@@ -840,11 +841,11 @@
                             <xsl:variable name="historieType" select="'historieFormeel'"/>
                             <xsl:choose>
                                <!-- The following when generates historieFormeel global constructs based on uml groups. -->
-                                <xsl:when test="@type='group' and exists(imf:get-construct-by-id($id,$packages))">
+                                <xsl:when test="@type='group' and exists(imf:get-construct-by-id($id,$packages-doc))">
                                    
                                    <xsl:sequence select="imf:create-debug-track(concat('Constructing global formeleHistorie groupconstruct: ',$construct/imvert:name),$debugging)"/>
                                    
-                                    <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)"/-->
+                                    <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
                                     <xsl:variable name="type" select="'Grp'"/>
                                    <xsl:variable name="name" select="ep:name"/>
                                    <xsl:variable name="docs">
@@ -897,11 +898,11 @@
                                    <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
                                </xsl:when>
                                <!-- The following when generates historieFormeel global constructs based on uml classes. -->
-                                <xsl:when test="exists(imf:get-construct-by-id($id,$packages))">
+                                <xsl:when test="exists(imf:get-construct-by-id($id,$packages-doc))">
                                    
                                    <xsl:sequence select="imf:create-debug-track(concat('Constructing global formeleHistorie construct: ',$construct/imvert:name),$debugging)"/>
                                    
-                                    <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)"/-->
+                                    <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
                                     <xsl:variable name="docs">
                                        <imvert:complete-documentation>
                                            <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
@@ -1154,7 +1155,7 @@
             <!--xsl:variable name="relatedObjectTypeId" select="ep:construct/ep:id"/--> 
             <xsl:variable name="verwerkingsModus" select="'antwoord'"/>
             <xsl:variable name="packageName" select="@package"/> 
-            <xsl:variable name="construct" select="imf:get-construct-by-id($relatedObjectId,$packages)"/>
+            <xsl:variable name="construct" select="imf:get-construct-by-id($relatedObjectId,$packages-doc)"/>
             <!--xsl:variable name="alias" select="$construct/imvert:alias"/--> 
             <xsl:variable name="alias">
                 <xsl:choose>
@@ -1164,7 +1165,7 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:variable>
-            <xsl:variable name="association" select="imf:get-construct-by-id($id,$packages)"/>
+            <xsl:variable name="association" select="imf:get-construct-by-id($id,$packages-doc)"/>
             <xsl:variable name="elementName" select="$construct/imvert:name"/>
             
             <!-- Location: 'ep:construct7'
@@ -1221,7 +1222,7 @@
             <xsl:variable name="verwerkingsModus" select="'vraag'"/>
             <!--xsl:variable name="verwerkingsModus" select="'antwoord'"/-->
             <xsl:variable name="packageName" select="@package"/> 
-            <xsl:variable name="construct" select="imf:get-construct-by-id($relatedObjectId,$packages)"/>
+            <xsl:variable name="construct" select="imf:get-construct-by-id($relatedObjectId,$packages-doc)"/>
             <!--xsl:variable name="alias" select="$construct/imvert:alias"/--> 
             <xsl:variable name="alias">
                 <xsl:choose>
@@ -1231,7 +1232,7 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:variable>
-            <xsl:variable name="association" select="imf:get-construct-by-id($id,$packages)"/>
+            <xsl:variable name="association" select="imf:get-construct-by-id($id,$packages-doc)"/>
             <xsl:variable name="elementName" select="$construct/imvert:name"/>
             
             <xsl:sequence select="imf:create-debug-track('for-each select=$currentMessage/ep:rough-message[contains(ep:code, Lv)]//ep:construct[ep:name = start]',$debugging)"/>
@@ -1292,7 +1293,7 @@
             <xsl:variable name="verwerkingsModus" select="'vraag'"/>
             <!--xsl:variable name="verwerkingsModus" select="'scope'"/-->
             <xsl:variable name="packageName" select="@package"/> 
-            <xsl:variable name="construct" select="imf:get-construct-by-id($relatedObjectId,$packages)"/>
+            <xsl:variable name="construct" select="imf:get-construct-by-id($relatedObjectId,$packages-doc)"/>
             <!--xsl:variable name="alias" select="$construct/imvert:alias"/--> 
             <xsl:variable name="alias">
                 <xsl:choose>
@@ -1302,7 +1303,7 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:variable>
-            <xsl:variable name="association" select="imf:get-construct-by-id($id,$packages)"/>
+            <xsl:variable name="association" select="imf:get-construct-by-id($id,$packages-doc)"/>
             <xsl:variable name="elementName" select="$construct/imvert:name"/>
             
             <xsl:sequence select="imf:create-debug-track('for-each select=$currentMessage/ep:rough-message[contains(ep:code, Lv)]//ep:construct[ep:name = scope]',$debugging)"/>

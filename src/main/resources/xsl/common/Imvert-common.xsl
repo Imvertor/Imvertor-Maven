@@ -342,14 +342,17 @@
     <xsl:function name="imf:get-construct-by-id" as="element()*">
         <xsl:param name="id" as="xs:string"/>
         <xsl:param name="root" as="node()*"/>
-        <xsl:sequence select="if ($root instance of document-node()) then imf:key-imvert-construct-by-id($id,$root) else $root/descendant-or-self::*[imvert:id=$id]"/>
+        <xsl:for-each select="$root">
+            <xsl:variable name="selected-root" select="."/>
+            <xsl:sequence select="if ($selected-root instance of document-node()) then imf:key-imvert-construct-by-id($id,$selected-root) else $selected-root/descendant-or-self::*[imvert:id=$id]"/>
+        </xsl:for-each>
     </xsl:function>
     
     <!-- get the construct by ID where the id supplied is passed as the value of a trace (imvert:trace) -->
     <xsl:function name="imf:get-trace-construct-by-id">
         <xsl:param name="client"/>
         <xsl:param name="supplier-id"/>
-        <xsl:param name="document-root"/>
+        <xsl:param name="document-roots" as="document-node()*"/>
         <xsl:variable name="supplier-id-corrected">
             <xsl:choose>
                 <xsl:when test="$client/self::imvert:class">
@@ -363,7 +366,7 @@
                 </xsl:when>
             </xsl:choose>
         </xsl:variable>
-        <xsl:sequence select="imf:get-construct-by-id($supplier-id-corrected,$document-root)"/>
+        <xsl:sequence select="imf:get-construct-by-id($supplier-id-corrected,$document-roots)"/>
     </xsl:function>
     
     <xsl:function name="imf:distinct-nodes" as="element()*">

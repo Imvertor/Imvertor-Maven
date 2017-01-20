@@ -56,7 +56,7 @@
                     <xsl:value-of select="'Not traced and not checked'"/>
                 </xsl:otherwise>
             </xsl:choose>
-            <xsl:for-each select="$supplier-packages">
+            <xsl:for-each select="$supplier-packages/imvert:packages">
                 <xsl:variable name="subpath" select="imf:get-trace-supplier-subpath(imvert:project, imvert:application, imvert:release)"/>
                 <xsl:variable name="errors" select="xs:integer((imvert:process/imvert:errors,0)[1])"/>
                 <xsl:variable name="warnings" select="xs:integer((imvert:process/imvert:warnings,0)[1])"/>
@@ -83,7 +83,7 @@
         
         <!-- check if the package is derived; if not, no traces were expected (but this is not an error) --> 
         <xsl:sequence select="imf:report-warning($this, 
-            not($is-derived) and exists(.//imvert:trace),
+            not($is-derived) and exists($trace),
             'This package is not derived but traces were found, starting at [1]',$trace/..)"/>
 
         <xsl:next-match/>

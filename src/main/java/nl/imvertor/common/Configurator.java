@@ -183,7 +183,7 @@ public class Configurator {
 			
 		} catch (Exception e) {
 			System.err.println("Invalid configuration: " + e.getMessage());
-			System.exit(-2);
+			System.exit(0);
 		}
 	}
 	
@@ -1091,7 +1091,7 @@ public class Configurator {
 		} 
 			
 		pw.flush();
-		System.exit(-1);
+		System.exit(0);
 	}
 	
 	/** 

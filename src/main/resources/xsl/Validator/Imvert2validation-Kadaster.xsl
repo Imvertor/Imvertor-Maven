@@ -70,7 +70,7 @@
         <xsl:variable name="this-package" select="."/>
         <xsl:variable name="root-release" select="imvert:release" as="xs:string?"/>
         <xsl:variable name="subpackage-releases" select="imvert:package/imvert:release[not(.=('99999999','00000000'))]" as="xs:string*"/>
-        <xsl:variable name="collections" select=".//imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-collection')]"/>  
+        <xsl:variable name="collections" select="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-collection')]"/>  
         <xsl:sequence select="imf:report-error(., 
             ($document-classes/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-objecttype') and not($document-packages/imvert:name=('xlinks','Xlinks'))), 
             'The model uses shared classes but the xlink package is not included (properly).')"/>
@@ -150,7 +150,7 @@
     <xsl:template match="imvert:package[.=$domain-package]" priority="50">
         <!--setup-->
         <xsl:variable name="is-schema-package" select="if (imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))) then true() else false()"/>
-        <xsl:variable name="classnames" select="distinct-values(imf:get-duplicates(.//imvert:class/imvert:name))" as="xs:string*"/>
+        <xsl:variable name="classnames" select="distinct-values(imf:get-duplicates(imvert:class/imvert:name))" as="xs:string*"/>
         <xsl:variable name="application" select="ancestor::imvert:package[imvert:stereotype=$top-package-stereotypes][1]"/>
         <!--validation -->
         <xsl:sequence select="imf:report-error(., 
