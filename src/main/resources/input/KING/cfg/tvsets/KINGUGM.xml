@@ -32,10 +32,10 @@
             <name lang="nl">Indicatie kerngegeven</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Element</stereo>
-                <stereo required="no" lang="nl">Groep</stereo>
-                <stereo required="no" lang="nl">Relatie</stereo>
-                <stereo required="no" lang="nl">Relatie-entiteit</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo required="no">stereotype-name-relatieklasse</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -46,9 +46,9 @@
             <name lang="nl">Indicatie authentiek</name>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <stereotypes>
-                <stereo required="no" lang="nl">Element</stereo>
-                <stereo required="no" lang="nl">Groep</stereo>
-                <stereo required="no" lang="nl">Relatie</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
          </tv>
         
@@ -56,9 +56,9 @@
             <name lang="nl">Indicatie materiële historie</name>
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
-                <stereo required="yes" lang="nl">Element</stereo><!--SIM Attribuutsoort-->
-                <stereo required="yes" lang="nl">Groep</stereo><!--SIM Gegevensgroeptype-->
-                <stereo required="yes" lang="nl">Relatie</stereo><!--SIM Relatiesoort-->
+                <stereo required="yes">stereotype-name-attribute</stereo><!--SIM Attribuutsoort-->
+                <stereo required="yes">stereotype-name-composite</stereo><!--SIM Gegevensgroeptype-->
+                <stereo required="yes">stereotype-name-relatiesoort</stereo><!--SIM Relatiesoort-->
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -77,9 +77,9 @@
             <name lang="nl">Indicatie formele historie</name>
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
-                <stereo required="yes" lang="nl">Element</stereo><!--SIM Attribuutsoort-->
-                <stereo required="yes" lang="nl">Groep</stereo><!--SIM Gegevensgroeptype-->
-                <stereo required="yes" lang="nl">Relatie</stereo><!--SIM Relatiesoort-->
+                <stereo required="yes">stereotype-name-attribute</stereo><!--SIM Attribuutsoort-->
+                <stereo required="yes">stereotype-name-composite</stereo><!--SIM Gegevensgroeptype-->
+                <stereo required="yes">stereotype-name-relatiesoort</stereo><!--SIM Relatiesoort-->
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -99,7 +99,7 @@
             <name lang="en">Indication reverse relation</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="yes" lang="nl">Relatie</stereo>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="MnemonicIndicatieTerugrelatie">
@@ -107,7 +107,7 @@
             <name lang="en">Mnemonic indication reverse relation</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Relatie</stereo><!-- alleen verplicht als IndicatieTerugrelatie is Ja -->
+                <stereo required="no">stereotype-name-relatiesoort</stereo><!-- alleen verplicht als IndicatieTerugrelatie is Ja -->
             </stereotypes>
         </tv>
        
@@ -116,11 +116,11 @@
             <name lang="en">Pattern</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Element</stereo><!--SIM Attribuutsoort, Referentie element, Union element, Data element-->
-                <stereo required="no" lang="nl">Complex datatype</stereo>
-                <stereo required="no" lang="nl">Data element</stereo>
-                <stereo required="no" lang="nl">Union element</stereo>
-                <stereo required="no" lang="nl">Datatype</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo><!--SIM Attribuutsoort, Referentie element, Union element, Data element-->
+                <stereo required="no">stereotype-name-complextype</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
+                <stereo required="no">stereotype-name-union-element</stereo>
+                <stereo required="no">stereotype-name-datatype</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="FormeelPatroon">
@@ -128,21 +128,20 @@
             <name lang="en">Formal pattern</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Element</stereo><!--SIM Attribuutsoort, Referentie element, Union element, Data element-->
-                <stereo required="no" lang="nl">Complex datatype</stereo>
-                <stereo required="no" lang="nl">Data element</stereo>
-                <stereo required="no" lang="nl">Union element</stereo>
-                <stereo required="no" lang="nl">Datatype</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo><!--SIM Attribuutsoort, Referentie element, Union element, Data element-->
+                <stereo required="no">stereotype-name-complextype</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
+                <stereo required="no">stereotype-name-union-element</stereo>
+                <stereo required="no">stereotype-name-datatype</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="MogelijkGeenWaarde">
             <name lang="nl">Mogelijk geen waarde</name>
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
-                <stereo required="no" lang="nl">Element</stereo><!--SIM Attribuutsoort -->
-                <stereo required="no" lang="nl">Groep</stereo><!-- SIM: Gegevensgroeptype -->
-                <stereo required="no" lang="nl">Relatie</stereo><!-- SIM: Relatiesoort  -->
-                <stereo required="no" lang="nl">Voidable</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo><!--SIM Attribuutsoort -->
+                <stereo required="no">stereotype-name-composite</stereo><!-- SIM: Gegevensgroeptype -->
+                <stereo required="no">stereotype-name-relatiesoort</stereo><!-- SIM: Relatiesoort  -->
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -154,8 +153,8 @@
             <name lang="nl">Minimum lengte</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Element</stereo>
-                <stereo required="no" lang="nl">Data element</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
             </stereotypes>
         </tv>
         
@@ -163,8 +162,8 @@
             <name lang="nl">Minimum waarde (inclusief)</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Element</stereo>
-                <stereo required="no" lang="nl">Data element</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
             </stereotypes>
         </tv>
         
@@ -172,8 +171,8 @@
             <name lang="nl">Maximum waarde (inclusief)</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Element</stereo>
-                <stereo required="no" lang="nl">Data element</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
             </stereotypes>
         </tv>
         
@@ -181,8 +180,8 @@
             <name lang="nl">Data locatie</name>
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
-                <stereo required="no" lang="nl">Tabel-entiteit</stereo><!-- SIM Referentielijst -->
-                <stereo required="no" lang="nl">Element</stereo><!-- SIM Referentie element -->
+                <stereo required="no">stereotype-name-referentielijst</stereo><!-- SIM Referentielijst -->
+                <stereo required="no">stereotype-name-attribute</stereo><!-- SIM Referentie element -->
             </stereotypes>
         </tv>
         
@@ -191,12 +190,10 @@
             <name lang="en">Position</name>
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
-                <stereo required="no" lang="nl">Element</stereo><!--SIM Attribuutsoort, Union element, Data element, Referentie element-->
-                <stereo required="no" lang="nl">Relatie</stereo><!-- SIM: Relatiesoort  -->
-                <stereo required="no" lang="nl">Entiteitrelatie</stereo><!-- SIM: Objectrelatiesoort  -->
-                <stereo required="no" lang="nl">Enum</stereo>
-                <stereo required="no" lang="nl">Groep compositie</stereo><!-- SIM Gegevensgroep compositie-->
-                <stereo required="no" lang="#all">#none</stereo> <!-- also allowed on enumeration values that have no enum stereo -->
+                <stereo required="no">stereotype-name-attribute</stereo><!--SIM Attribuutsoort, Union element, Data element, Referentie element-->
+                <stereo required="no">stereotype-name-relatiesoort</stereo><!-- SIM: Relatiesoort  -->
+                <stereo required="no">stereotype-name-enum</stereo>
+                <stereo required="no">stereotype-name-association-to-composite</stereo><!-- SIM Gegevensgroep compositie-->
             </stereotypes>
         </tv>
         

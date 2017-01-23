@@ -8,122 +8,147 @@
     
     <tagged-values>
         
+        <tv norm="space" id="Imvertor">
+            <name lang="nl">Imvertor</name>
+            <name lang="en">Imvertor</name>
+            <derive>no</derive>
+            <desc lang="en">
+                The Imvertor tagged value specifies that the package is a full model that can be processed by to the Imvertor software. 
+                This tagged value is required by the Imvertor extension (addin) on Enterprise Architect.
+            </desc>
+            <stereotypes>
+                <stereo required="no">stereotype-name-base-package</stereo>
+                <stereo required="no">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="#ALL">
+                <value>model</value>
+            </declared-values>
+        </tv>
+        
         <tv norm="space" id="Beheerder">
             <name lang="nl">Beheerder</name>
+            <name lang="en">Administrator</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Extern</stereo>
+                <stereo required="no">stereotype-name-external-package</stereo>
             </stereotypes>
         </tv>
         
         <tv norm="space" id="Locatie">
-            <name lang="nl">Locatie</name><!-- MIG -->
-            <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
+            <name lang="nl">Locatie</name>
+            <name lang="en">Location</name>
+            <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Extern</stereo><!--TODO externals that are conceptuals do not require this tagged value -->
+                <stereo required="no">stereotype-name-external-package</stereo><!--TODO externals that are conceptuals do not require this tagged value -->
             </stereotypes>
         </tv>
         
         <tv norm="space" id="Release">
             <name lang="nl">Release</name>
+            <name lang="en">Release</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="yes" lang="nl">Basismodel</stereo>
-                <stereo required="yes" lang="nl">Toepassing</stereo>
-                <stereo required="yes" lang="nl">Domein</stereo>
-                <stereo required="yes" lang="nl">View</stereo>
-                <stereo required="no" lang="nl">Extern</stereo>
-                <stereo required="yes" lang="nl">Intern</stereo>
+                <stereo required="yes">stereotype-name-base-package</stereo>
+                <stereo required="yes">stereotype-name-application-package</stereo>
+                <stereo required="yes">stereotype-name-domain-package</stereo>
+                <stereo required="yes">stereotype-name-view-package</stereo>
+                <stereo required="no">stereotype-name-external-package</stereo>
+                <stereo required="yes">stereotype-name-internal-package</stereo>
                 <!-- release van kadaster externe schema's wordt ingegenereerd binnen Imvert2concreteSchema.xsl -->
             </stereotypes>
         </tv>
         
         <tv norm="space" id="RefRelease">
             <name lang="nl">Ref-release</name>
-            <name lang="nl">Ref release</name>
+            <name lang="en">Ref-release</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Domein</stereo>
-                <stereo required="no" lang="nl">View</stereo>
-                <stereo required="no" lang="nl">Extern</stereo>
+                <stereo required="no">stereotype-name-domain-package</stereo>
+                <stereo required="no">stereotype-name-view-package</stereo>
+                <stereo required="no">stereotype-name-external-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="RefVersion">
             <name lang="nl">Ref-version</name>
-            <name lang="nl">Ref version</name>
+            <name lang="en">Ref-version</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Domein</stereo>
-                <stereo required="no" lang="nl">View</stereo>
-                <stereo required="no" lang="nl">Extern</stereo>
+                <stereo required="no">stereotype-name-domain-package</stereo>
+                <stereo required="no">stereotype-name-view-package</stereo>
+                <stereo required="no">stereotype-name-external-package</stereo>
             </stereotypes>
         </tv>
 
         <tv norm="space" id="SupplierProject">
             <name lang="nl">Supplier-project</name>
+            <name lang="en">Supplier-project</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Basismodel</stereo>
-                <stereo required="yes" lang="nl">Toepassing</stereo>
+                <stereo required="no">stereotype-name-base-package</stereo>
+                <stereo required="yes">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="SupplierName">
             <name lang="nl">Supplier-name</name>
+            <name lang="en">Supplier-name</name>
             <!--<name lang="nl">Supplier name</name>-->
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Basismodel</stereo>
-                <stereo required="yes" lang="nl">Toepassing</stereo>
+                <stereo required="no">stereotype-name-base-package</stereo>
+                <stereo required="yes">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="SupplierPackageName">
             <name lang="nl">Supplier-package-name</name>
+            <name lang="en">Supplier-package-name</name>
             <!--<name lang="nl">Supplier package name</name>-->
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Domein</stereo>
-                <stereo required="no" lang="nl">View</stereo>
+                <stereo required="no">stereotype-name-domain-package</stereo>
+                <stereo required="no">stereotype-name-view-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="SupplierRelease">
             <name lang="nl">Supplier-release</name>
+            <name lang="en">Supplier-release</name>
             <!--<name lang="nl">Supplier release</name>-->
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Basismodel</stereo>
-                <stereo required="yes" lang="nl">Toepassing</stereo>
+                <stereo required="no">stereotype-name-base-package</stereo>
+                <stereo required="yes">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="Svnid">
             <name lang="nl">Svnid</name>
+            <name lang="en">Svnid</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Basismodel</stereo>
-                <stereo required="no" lang="nl">Toepassing</stereo>
-                <stereo required="no" lang="nl">Domein</stereo>
-                <stereo required="no" lang="nl">Extern</stereo>
-                <stereo required="no" lang="nl">View</stereo>
+                <stereo required="no">stereotype-name-base-package</stereo>
+                <stereo required="no">stereotype-name-application-package</stereo>
+                <stereo required="no">stereotype-name-domain-package</stereo>
+                <stereo required="no">stereotype-name-external-package</stereo>
+                <stereo required="no">stereotype-name-view-package</stereo>
             </stereotypes>
         </tv>
         
         <tv norm="space" validate="url" id="WebLocatie">
             <name lang="nl">Web locatie</name>
-            <name lang="n">web-location</name>
+            <name lang="en">Web-location</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Basismodel</stereo>
-                <stereo required="no" lang="nl">Toepassing</stereo>
-                <stereo required="no" lang="nl">Extern</stereo>
-                <stereo required="no" lang="nl">View</stereo>
-                <stereo required="no" lang="nl">Domein</stereo>
+                <stereo required="no">stereotype-name-base-package</stereo>
+                <stereo required="no">stereotype-name-application-package</stereo>
+                <stereo required="no">stereotype-name-external-package</stereo>
+                <stereo required="no">stereotype-name-view-package</stereo>
+                <stereo required="no">stereotype-name-domain-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" validate="url" id="XsdLocatie">
             <name lang="nl">XSD locatie</name>
-            <name lang="en">xsd-location</name>
+            <name lang="en">XSD-location</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="yes" lang="nl">Extern</stereo>
+                <stereo required="yes">stereotype-name-external-package</stereo>
             </stereotypes>
         </tv>
         
@@ -132,7 +157,7 @@
             <name lang="en">Internal project</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="yes" lang="nl">Intern</stereo>
+                <stereo required="yes">stereotype-name-internal-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="InternalName">
@@ -140,7 +165,7 @@
             <name lang="en">Internal name</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="yes" lang="nl">Intern</stereo>
+                <stereo required="yes">stereotype-name-internal-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="InternalRelease">
@@ -148,7 +173,7 @@
             <name lang="en">Internal release</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="yes" lang="nl">Intern</stereo>
+                <stereo required="yes">stereotype-name-internal-package</stereo>
             </stereotypes>
         </tv>
     </tagged-values>

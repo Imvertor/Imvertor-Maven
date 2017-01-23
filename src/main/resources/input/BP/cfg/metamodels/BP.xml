@@ -176,7 +176,7 @@
             <construct>class</construct>
             <construct>datatype</construct>
         </stereo>
-        <stereo id="stereotype-name-referentieelement">
+        <stereo id="stereotype-name-referentie-element">
             <name lang="nl">referentie element</name>
             <name lang="en">reference element</name>
             <desc>

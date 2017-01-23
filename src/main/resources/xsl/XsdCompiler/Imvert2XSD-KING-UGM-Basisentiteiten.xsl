@@ -165,7 +165,7 @@
                     select="//imvert:attribute[imf:get-stereotype(../..) = imf:get-config-stereotypes('stereotype-name-referentielijst')]" 
                     group-by="imf:get-compiled-name(.)">
                     <!-- let op: referentie elementen hebben stereotype "element" -->
-                    <xsl:apply-templates select="current-group()[1]" mode="mode-global-attribute-referentieelement"/>
+                    <xsl:apply-templates select="current-group()[1]" mode="mode-global-attribute-referentie-element"/>
                 </xsl:for-each-group>
                 ?>
                 
@@ -1134,14 +1134,14 @@
          
     </xsl:template>
     
-    <xsl:template match="imvert:attribute" mode="mode-global-attribute-referentieelement">
+    <xsl:template match="imvert:attribute" mode="mode-global-attribute-referentie-element">
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
         
         <xsl:variable name="stuf-scalar" select="imf:get-stuf-scalar-attribute-type(.)"/>
         
         <xsl:choose>
             <xsl:when test="exists($stuf-scalar)">
-                <xsl:sequence select="imf:create-comment(concat('mode-global-attribute-referentieelement Referentie element 1 # ',imvert:name/@original))"/>
+                <xsl:sequence select="imf:create-comment(concat('mode-global-attribute-referentie-element Referentie element 1 # ',imvert:name/@original))"/>
        
                 <xs:simpleType name="{concat(imf:capitalize($compiled-name),'-e')}"> <!-- ESW -->
                     <xsl:sequence select="imf:create-annotation(.)"/>
@@ -1150,7 +1150,7 @@
                 
             </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="imf:create-comment(concat('mode-global-attribute-referentieelement Referentie element 2 # ',imvert:name/@original))"/>
+                <xsl:sequence select="imf:create-comment(concat('mode-global-attribute-referentie-element Referentie element 2 # ',imvert:name/@original))"/>
                 
                 <xs:complexType name="{concat(imf:capitalize($compiled-name),'-e')}"><!-- ESW -->
                     <xsl:sequence select="imf:create-annotation(.)"/>
@@ -1217,7 +1217,7 @@
             <xsl:when test="$type = 'attribute' and $stereotype = imf:get-config-stereotypes('stereotype-name-attribute')">
                 <xsl:value-of select="$name"/>
             </xsl:when>
-            <xsl:when test="$type = 'attribute' and $stereotype = imf:get-config-stereotypes('stereotype-name-referentieelement')">
+            <xsl:when test="$type = 'attribute' and $stereotype = imf:get-config-stereotypes('stereotype-name-referentie-element')">
                 <xsl:value-of select="$name"/>
             </xsl:when>
             <xsl:when test="$type = 'attribute' and $stereotype = imf:get-config-stereotypes('stereotype-name-data-element')">

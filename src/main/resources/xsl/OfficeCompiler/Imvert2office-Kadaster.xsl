@@ -467,8 +467,8 @@
             <xsl:when test="$construct/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')">
                 <xsl:apply-templates select="." mode="detail-gegevensgroeptype"/>
             </xsl:when>
-            <xsl:when test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-referentieelement')">
-                <xsl:apply-templates select="." mode="detail-referentieelement"/>
+            <xsl:when test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-referentie-element')">
+                <xsl:apply-templates select="." mode="detail-referentie-element"/>
             </xsl:when>
             <xsl:when test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union-element')">
                 <xsl:apply-templates select="." mode="detail-unionelement"/>
@@ -559,7 +559,7 @@
     
     </xsl:template>
     
-    <xsl:template match="imvert:attribute" mode="detail-referentieelement">
+    <xsl:template match="imvert:attribute" mode="detail-referentie-element">
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="is-identifying" select="imf:boolean(imvert:is-id)"/>
         <h4>

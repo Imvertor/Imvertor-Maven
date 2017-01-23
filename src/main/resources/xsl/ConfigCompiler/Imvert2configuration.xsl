@@ -70,6 +70,11 @@
                         <xsl:sequence select="$configuration-tvset-file"/>
                     </config>
                 </xsl:variable>
+                <?x <xsl:if test="$debugging">
+                    <xsl:result-document href="file:/c:/temp/test.xml">
+                        <xsl:sequence select="$config-raw"/>
+                    </xsl:result-document>
+                </xsl:if> x?>
                 <xsl:variable name="config-compact">
                     <xsl:apply-templates select="$config-raw" mode="finish-config"/>
                 </xsl:variable>
@@ -100,7 +105,7 @@
     </xsl:template>
     
     <xsl:template match="tv/stereotypes/stereo" mode="prepare-config">
-        <xsl:sequence select="imf:prepare-config-name-element(.,'stereotype-name')"/>
+        <xsl:sequence select="imf:prepare-config-name-element-tv(.,'stereotype-name')"/>
     </xsl:template>
     
     <xsl:template match="stereotypes/stereo/name" mode="prepare-config">
@@ -110,7 +115,7 @@
     <xsl:function name="imf:prepare-config-name-element" as="element()?">
         <xsl:param name="name-element" as="element()"/>
         <xsl:param name="name-type" as="xs:string"/>
-        <xsl:if test="$name-element/@lang = ($language,'#all')">
+        <xsl:if test="$name-element/@lang = ($language,'#ALL')">
             <xsl:element name="{name($name-element)}">
                 <xsl:apply-templates select="$name-element/@*" mode="prepare-config"/>
                 <xsl:attribute name="original" select="$name-element/text()"/>
@@ -119,10 +124,32 @@
         </xsl:if>
     </xsl:function>
     
+    <!-- content is ID of the stereotype for which the TV is valid -->
+    <xsl:function name="imf:prepare-config-name-element-tv" as="element()?">
+        <xsl:param name="name-element" as="element()"/>
+        <xsl:param name="name-type" as="xs:string"/>
+        <xsl:variable name="stereo-def" select="$configuration-metamodel-file//stereo[@id = $name-element]"/>
+        <xsl:choose>
+            <xsl:when test="exists($stereo-def)">
+                <xsl:element name="{name($name-element)}">
+                    <xsl:apply-templates select="$name-element/@*" mode="prepare-config"/>
+                    <!-- note that several names may be assigned to the same stereotype ID. assume the last. -->
+                    <xsl:variable name="applicable-name" select="($stereo-def/name)[last()]"/>
+                    <xsl:copy-of select="$applicable-name/@original"/>
+                    <xsl:value-of select="$applicable-name"/>
+                </xsl:element>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:msg('FATAL','No such stereotype @id=[1]', $name-element)"/>
+            </xsl:otherwise>
+        </xsl:choose>
+  
+    </xsl:function>
+    
     <xsl:function name="imf:prepare-config-tagged-value-element" as="element()?">
         <xsl:param name="value-element" as="element()"/>
         <xsl:param name="norm-rule" as="xs:string"/>
-        <xsl:if test="($value-element/ancestor-or-self::*/@lang)[1] = ($language,'#all')">
+        <xsl:if test="($value-element/ancestor-or-self::*/@lang)[1] = ($language,'#ALL')">
             <xsl:element name="{name($value-element)}">
                 <xsl:apply-templates select="$value-element/@*" mode="prepare-config"/>
                 <xsl:attribute name="original" select="$value-element/text()"/>
@@ -157,7 +184,7 @@
                     <xsl:for-each-group select="$metamodel//scalars/scalar" group-by="@id">
                         <scalar id="{current-grouping-key()}">
                             <xsl:variable name="scalar-group" select="current-group()"/>
-                            <xsl:apply-templates select="imf:distinct($scalar-group/name)" mode="#current"/>
+                            <xsl:apply-templates select="imf:distinct($scalar-group/name[@lang=($language,'#ALL')])" mode="#current"/>
                             <xsl:apply-templates select="($scalar-group/type)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($scalar-group/fraction-digits)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($scalar-group/max-length)[last()]" mode="#current"/>
@@ -179,8 +206,8 @@
                     <xsl:for-each-group select="$metamodel//stereotypes/stereo" group-by="@id">
                         <stereo id="{current-grouping-key()}">
                             <xsl:variable name="stereo-group" select="current-group()"/>
-                            <xsl:apply-templates select="imf:distinct($stereo-group/name)" mode="#current"/>
-                            <xsl:apply-templates select="($stereo-group/desc)[last()]" mode="#current"/>
+                            <xsl:apply-templates select="imf:distinct($stereo-group/name[@lang=($language,'#ALL')])" mode="#current"/> 
+                            <xsl:apply-templates select="($stereo-group/desc[@lang=($language,'#ALL')])[last()]" mode="#current"/>
                             <xsl:for-each-group select="$stereo-group/construct" group-by=".">
                                 <xsl:variable name="construct-group" select="current-group()"/>
                                 <xsl:apply-templates select="$construct-group[last()]" mode="#current"/>
@@ -195,13 +222,13 @@
             
             <schema-rules>
                 <xsl:variable name="schema-rules" select="schema-rules"/> 
-                <xsl:apply-templates select="imf:distinct($schema-rules/name)" mode="#current"/>
+                <xsl:apply-templates select="imf:distinct($schema-rules/name[@lang=($language,'#ALL')])" mode="#current"/>
                 
                 <name-value-mapping>
                     <xsl:for-each-group select="$schema-rules//tagged-values/tv" group-by="@id">
                         <tv id="{current-grouping-key()}">
                             <xsl:variable name="tv-group" select="current-group()"/>
-                            <xsl:apply-templates select="imf:distinct($tv-group/name)" mode="#current"/>
+                            <xsl:apply-templates select="imf:distinct($tv-group/name[@lang=($language,'#ALL')])" mode="#current"/>
                             <xsl:apply-templates select="imf:distinct($tv-group/schema-name)" mode="#current"/>
                             <xsl:apply-templates select="($tv-group/external-schema-name)[last()]" mode="#current"/>
                         </tv>
@@ -211,8 +238,8 @@
 
             <tagset>
                 <xsl:variable name="tagset" select="tagset"/> 
-                <xsl:apply-templates select="imf:distinct($tagset/name)" mode="#current"/>
-                <xsl:apply-templates select="imf:distinct($tagset/desc)" mode="#current"/>
+                <xsl:apply-templates select="imf:distinct($tagset/name[@lang=($language,'#ALL')])" mode="#current"/>
+                <xsl:apply-templates select="imf:distinct($tagset/desc[@lang=($language,'#ALL')])" mode="#current"/>
                 
                 <tagged-values>
                     <xsl:for-each-group select="$tagset//tagged-values/tv" group-by="@id">
@@ -224,7 +251,7 @@
                             <!-- hier: de laatste naam binnen dezelfde taal? we moeten af van synoniemen. -->
                             <xsl:apply-templates select="imf:distinct($tv-group/name)" mode="#current"/>
                             
-                            <xsl:apply-templates select="$tv-group/desc" mode="#current"/>
+                            <xsl:apply-templates select="$tv-group/desc[@lang=($language,'#ALL')]" mode="#current"/>
                             <xsl:apply-templates select="($tv-group/derive)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($tv-group/inherit)[last()]" mode="#current"/>
                             <stereotypes>
@@ -234,7 +261,7 @@
                                 </xsl:for-each-group>
                             </stereotypes>                                
                             <declared-values> <!-- TOD must also take @lang in to account -->
-                                <xsl:for-each-group select="$tv-group/declared-values/value" group-by=".">
+                                <xsl:for-each-group select="$tv-group/declared-values[@lang=($language,'#ALL')]/value" group-by=".">
                                     <xsl:variable name="dec-group" select="current-group()"/>
                                     <xsl:apply-templates select="$dec-group[last()]" mode="#current"/>
                                 </xsl:for-each-group>

@@ -9,10 +9,11 @@
     -->
     <xi:include href="../../../Imvertor/cfg/metamodels/Grouping.xml"/>
    
+    <!-- 
+        scalars specified separately 
+    -->
     <xi:include href="KKG-scalar.xml"/>
     
-    <!-- KKG follows BP requirements -->
-   
     <name>KKG</name>
 
     <desc>Metamodel for KKG exchange models</desc>
@@ -85,7 +86,6 @@
             <construct>attribute</construct>
         </stereo>
        
-
         <stereo id="stereotype-name-association-to-composite">
             <name lang="nl">Gegevensgroep compositie</name>
             <name lang="en">AttributeGroupComposition</name>
@@ -109,7 +109,7 @@
         </stereo>
         <stereo id="stereotype-name-union-element">
             <name lang="nl">Union element</name>
-            <name lang="en">EnionElement</name>
+            <name lang="en">UnionElement</name>
             <desc>
                 Een onderdeel van een Union uitgedrukt in een eigenschap van een class (attribute) die als keuze binnen de Union is gerepresenteerd.
                 Voorbeeld: union element Line, union element Polygon beiden onderdeel uitmakend van Union LineOrPolygon
@@ -179,7 +179,7 @@
             <construct>class</construct>
             <construct>datatype</construct>
         </stereo>
-        <stereo id="stereotype-name-referentieelement">
+        <stereo id="stereotype-name-referentie-element">
             <name lang="nl">Referentie element</name>
             <name lang="en">ReferenceElement</name>
             <desc>
