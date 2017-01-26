@@ -37,7 +37,9 @@
     
     <xsl:output method="html" indent="yes" omit-xml-declaration="yes"/>
     
-       <xsl:variable name="quot"><!--'--></xsl:variable>
+    <xsl:variable name="quot"><!--'--></xsl:variable>
+    
+    <xsl:variable name="office-clickable" select="imf:get-config-string('cli','createofficemode') = 'click'"/>
     
     <xsl:template match="/imvert:packages">
         <html>
@@ -141,6 +143,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')]">
+        
         <xsl:variable name="is-abstract-text" select="if (imf:boolean(imvert:abstract)) then 'Ja' else 'Nee'"/>
         
         <xsl:variable name="rel-aanduiding" select="imvert:associations/imvert:association[imvert:target-stereotype = imf:get-config-stereotypes('stereotype-name-composite-id')]"/>
@@ -161,6 +164,7 @@
             </xsl:choose>
         </xsl:variable>
         
+        <xsl:sequence select="imf:create-link-anchor(.,'global')"/>
         <h2>
             <xsl:value-of select="concat('Objecttype ', imvert:name/@original)"/>
         </h2>
@@ -185,6 +189,7 @@
     </xsl:template>
 
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-relatieklasse')]">
+        <xsl:sequence select="imf:create-link-anchor(.,'global')"/>
         <h2>
             <xsl:value-of select="concat('Relatieklasse ', imvert:name/@original)"/>
         </h2>
@@ -205,6 +210,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-referentielijst')]">
+        <xsl:sequence select="imf:create-link-anchor(.,'global')"/>
         <h2>
             <xsl:value-of select="concat('Referentielijst ', imvert:name/@original)"/>
         </h2>
@@ -226,6 +232,7 @@
     </xsl:template>
 
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union')]">
+        <xsl:sequence select="imf:create-link-anchor(.,'global')"/>
         <h2>
             <xsl:value-of select="concat('Union ', imvert:name/@original)"/>
         </h2>
@@ -244,6 +251,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-complextype')]">
+        <xsl:sequence select="imf:create-link-anchor(.,'global')"/>
         <h2>
             <xsl:value-of select="concat('Datatype ', imvert:name/@original)"/>
         </h2>
@@ -328,7 +336,7 @@
     <xsl:template match="imvert:attribute" mode="short">
         <tr>
             <td width="5%">&#160;</td>
-            <td width="25%"><xsl:value-of select="imvert:name/@original"/></td>
+            <td width="25%"><xsl:sequence select="imf:create-link(.,'detail',imvert:name/@original)"/></td>
             <td width="50%"><xsl:value-of select="imf:get-clean-documentation-string(imvert:documentation)"/></td>
             <td width="10%"><xsl:value-of select="imf:translate(imf:splice(imvert:baretype),false())"/></td>
             <td width="10%"><xsl:value-of select="imf:get-cardinality(imvert:min-occurs,imvert:max-occurs)"/></td>
@@ -426,6 +434,7 @@
     <!-- Stel detailinfo samen voor een objecttype, relatieklasse, enumeratie -->
     <xsl:template match="imvert:class" mode="detail">
         <xsl:variable name="type" select="imf:translate(imvert:stereotype[1],true())"/>
+        <xsl:sequence select="imf:create-link-anchor(.,'detail')"/>
         <h3>
             <xsl:value-of select="concat($type, ' ', imvert:name/@original)"/>
         </h3>
@@ -441,6 +450,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-enumeration')]" mode="detail">
+        <xsl:sequence select="imf:create-link-anchor(.,'detail')"/>
         <h3>
             <xsl:value-of select="concat('Enumeratie ', imvert:name/@original)"/>
         </h3>
@@ -477,6 +487,7 @@
         <xsl:variable name="min" select="imvert:min-occurs"/>
         <xsl:variable name="max" select="imvert:max-occurs"/>
         
+        <xsl:sequence select="imf:create-link-anchor(.,'detail')"/>
         <h4>
             <xsl:value-of select="concat('Gegevensgroeptype ', imvert:name/@original)"/>
         </h4>
@@ -535,6 +546,7 @@
     <xsl:template match="imvert:attribute" mode="detail-normal">
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="is-afleidbaar-text" select="if (imf:boolean(imvert:is-value-derived)) then 'Ja' else 'Nee'"/>
+        <xsl:sequence select="imf:create-link-anchor(.,'detail')"/>
         <h4>
             <xsl:value-of select="concat('Attribuutsoort ', imvert:name/@original)"/>
         </h4>
@@ -580,6 +592,7 @@
     <xsl:template match="imvert:attribute" mode="detail-gegevensgroeptype">
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="is-identifying" select="imf:boolean(imvert:is-id)"/>
+        <xsl:sequence select="imf:create-link-anchor(.,'detail')"/>
         <h4>
             <xsl:value-of select="concat('Attribuutsoort ', $quot, imvert:name/@original, $quot, ' van gegevensgroeptype ',$quot,  $construct/imvert:name/@original, $quot)"/>
         </h4>
@@ -610,6 +623,7 @@
     <xsl:template match="imvert:attribute" mode="detail-referentie-element">
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="is-identifying" select="imf:boolean(imvert:is-id)"/>
+        <xsl:sequence select="imf:create-link-anchor(.,'detail')"/>
         <h4>
             <xsl:value-of select="concat('Referentie element ', imvert:name/@original)"/>
         </h4>
@@ -632,6 +646,7 @@
     
     <xsl:template match="imvert:attribute" mode="detail-unionelement">
         <xsl:variable name="construct" select="../.."/>
+        <xsl:sequence select="imf:create-link-anchor(.,'detail')"/>
         <h4>
             <xsl:value-of select="concat('Union element ', imvert:name/@original)"/>
         </h4>
@@ -653,6 +668,7 @@
     <xsl:template match="imvert:attribute" mode="detail-dataelement">
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="is-afleidbaar-text" select="if (imf:boolean(imvert:is-value-derived)) then 'Ja' else 'Nee'"/>
+        <xsl:sequence select="imf:create-link-anchor(.,'detail')"/>
         <h4>
             <xsl:value-of select="concat('Data element ', imvert:name/@original)"/>
         </h4>
@@ -685,6 +701,7 @@
     <xsl:template match="imvert:association" mode="detail-normal">
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="defining-class" select="if (exists(imvert:type-id)) then imf:get-construct-by-id(imvert:type-id) else ()"/>
+        <xsl:sequence select="imf:create-link-anchor(.,'detail')"/>
         <h4>
             <xsl:value-of select="concat('Relatiesoort ', imvert:name/@original)"/>
         </h4>
@@ -714,6 +731,7 @@
     <xsl:template match="imvert:association" mode="detail-gegevensgroeptype">
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="defining-class" select="if (exists(imvert:type-id)) then imf:get-construct-by-id(imvert:type-id) else ()"/>
+        <xsl:sequence select="imf:create-link-anchor(.,'detail')"/>
         <h4>
             <xsl:value-of select="concat('Relatiesoort ', imvert:name/@original, ' van gegevensgroeptype ',$quot,  $construct/imvert:name/@original, $quot)"/>
         </h4>
@@ -881,4 +899,43 @@
         <xsl:variable name="assoc" select="$assoc-class/.."/>
         <xsl:value-of select="concat($fromclass/imvert:name/@original, ' ',$assoc/imvert:name/@original,' ',$assoc/imvert:type-name/@original)"/>
     </xsl:function>
+    
+    <xsl:function name="imf:get-link-name">
+        <xsl:param name="this"/>
+        <xsl:variable name="link" select="$this/@formal-name"/>
+        <xsl:choose>
+            <xsl:when test="exists($link)">
+                <xsl:value-of select="replace($link,'\s','_')"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:msg('ERROR','Cannot create a link name')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
+    <xsl:function name="imf:create-link-anchor">
+        <xsl:param name="this"/>
+        <xsl:param name="type"/>
+        <xsl:if test="$office-clickable">
+            <a name="{$type}_{imf:get-link-name($this)}"/>
+        </xsl:if>
+    </xsl:function>
+    
+    <xsl:function name="imf:create-link">
+        <xsl:param name="this"/>
+        <xsl:param name="type"/>
+        <xsl:param name="label"/>
+        <xsl:choose>
+            <xsl:when test="$office-clickable">
+                <a href="#{$type}_{imf:get-link-name($this)}">
+                    <xsl:value-of select="$label"/>
+                </a>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$label"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
+
 </xsl:stylesheet>

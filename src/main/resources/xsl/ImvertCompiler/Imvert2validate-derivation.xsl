@@ -69,21 +69,26 @@
     <xsl:template match="imvert:class">
         <xsl:variable name="client-class" select="."/>
         <xsl:variable name="supplier-classes" select="imf:get-trace-suppliers-for-construct($client-class,1)"/>
+        <xsl:variable name="immediate-suppliers" select="$supplier-classes[@level = '2']"/>
+        
         <xsl:choose>
-            <xsl:when test="empty($client-class/imvert:trace)">
+            <xsl:when test="exists($client-class/imvert:trace)">
                 <!-- no trace so no compare neccessary -->
             </xsl:when>
             <xsl:otherwise>
-                <xsl:for-each select="$supplier-classes">
-                    
-                    <xsl:variable name="supplier-class" select="imf:get-trace-construct-by-supplier(.,$imvert-document)"/>
-                    
-                    <xsl:sequence select="imf:report-error($client-class,
-                        not($allow-multiple-suppliers) and position() gt 2,
-                        'Multiple suppliers found',
-                        ())"/>
-                    
-                </xsl:for-each>
+                
+                <xsl:sequence select="imf:report-error($client-class,
+                    not($allow-multiple-suppliers) and count($immediate-suppliers) gt 1,
+                    'Multiple suppliers found',
+                    ())"/>
+                
+                <!-- no rules yet 
+                   
+                   <xsl:for-each select="$immediate-suppliers">
+                        <xsl:variable name="supplier-class" select="imf:get-trace-construct-by-supplier(.,$imvert-document)"/>
+                       ...         
+                   </xsl:for-each>
+                -->
             </xsl:otherwise>
         </xsl:choose>
         
@@ -97,6 +102,7 @@
         <xsl:variable name="client-attribute" select="."/>
         <!-- see Task #487911 -->
         <xsl:variable name="supplier-attributes" select="imf:get-trace-suppliers-for-construct($client-attribute,1)"/>
+        <xsl:variable name="immediate-suppliers" select="$supplier-attributes[@level = '2']"/>
         
         <xsl:variable name="is-enumeration" select="imvert:stereotype = $normalized-stereotype-enum"/> 
       
@@ -112,14 +118,15 @@
                     ())"/>
             </xsl:when>
             <xsl:otherwise>
-               <xsl:for-each select="$supplier-attributes">
+                
+                <xsl:sequence select="imf:report-error($client-attribute,
+                    not($allow-multiple-suppliers) and count($immediate-suppliers) gt 1,
+                    'Multiple suppliers found',
+                    ())"/>
+                
+                <xsl:for-each select="$supplier-attributes[@level = '2']">
                    
                    <xsl:variable name="supplier-attribute" select="imf:get-trace-construct-by-supplier(.,$imvert-document)"/>
-                   
-                   <xsl:sequence select="imf:report-error($client-attribute,
-                       not($allow-multiple-suppliers) and position() gt 2,
-                       'Multiple suppliers found',
-                       ())"/>
                    
                    <xsl:sequence select="imf:check-type-related($client-attribute,$supplier-attribute)"/>
                
@@ -132,19 +139,21 @@
         <xsl:param name="supplier-class"/>
         <xsl:variable name="client-association" select="."/>
         <xsl:variable name="supplier-associations" select="imf:get-trace-suppliers-for-construct($client-association,1)"/>
+        <xsl:variable name="immediate-suppliers" select="$supplier-associations[@level = '2']"/>
         
         <xsl:choose>
             <xsl:when test="empty($client-association/imvert:trace)">
                 <!-- no trace so no compare neccessary -->
             </xsl:when>
             <xsl:otherwise>
-                <xsl:for-each select="$supplier-associations">
+                <xsl:sequence select="imf:report-error($client-association,
+                    not($allow-multiple-suppliers) and count($immediate-suppliers) gt 1,
+                    'Multiple suppliers found',
+                    ())"/>
+                
+                <xsl:for-each select="$supplier-associations[@level = '2']">
                     <xsl:variable name="supplier-association" select="imf:get-trace-construct-by-supplier(.,$imvert-document)"/>
                     
-                    <xsl:sequence select="imf:report-error($client-association,
-                        not($allow-multiple-suppliers) and position() gt 2,
-                        'Multiple suppliers found',
-                        ())"/>
                     <xsl:sequence select="imf:check-type-related($client-association,$supplier-association)"/>
                 </xsl:for-each>
             </xsl:otherwise>

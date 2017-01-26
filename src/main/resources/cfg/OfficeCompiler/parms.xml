@@ -29,6 +29,12 @@
          <tip>Create a documentation file in HTML or MsWord format. By default, create none.</tip>
          <required>false</required>
       </cli-parm> 
+      <cli-parm>
+         <name>createofficemode</name>
+         <arg>plain|click</arg>
+         <tip>When creating office, use plain or clickable mode.</tip>
+         <required>false</required>
+      </cli-parm> 
    </cli-parms>
    <properties>
 

@@ -52,7 +52,7 @@
             </stereotypes>
          </tv>
         
-        <tv norm="space"  rules="NOC" id="IndicatieMateriëleHistorie">
+        <tv norm="compact" rules="NOC" id="IndicatieMateriëleHistorie">
             <name lang="nl">Indicatie materiële historie</name>
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
@@ -73,7 +73,7 @@
             ?>
             </declared-values>
         </tv>
-        <tv norm="space" rules="NOC" id="IndicatieFormeleHistorie">
+        <tv norm="compact" rules="NOC" id="IndicatieFormeleHistorie">
             <name lang="nl">Indicatie formele historie</name>
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
@@ -135,7 +135,7 @@
                 <stereo required="no">stereotype-name-datatype</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="MogelijkGeenWaarde">
+        <tv norm="compact" id="MogelijkGeenWaarde">
             <name lang="nl">Mogelijk geen waarde</name>
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>

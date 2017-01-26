@@ -72,6 +72,12 @@
          <required>false</required>
       </cli-parm>
       <cli-parm>
+         <name>nilapproach</name>
+         <arg>choice|att</arg>
+         <tip>Specify how nillable constructs must be represented: as choice, or as attribute</tip>
+         <required>false</required>
+      </cli-parm>
+      <cli-parm>
          <!-- required by KING approach -->
          <name>endproductbaseconfig</name>
          <arg>File name</arg><!-- REDMINE #487934 PATH BECOMES FILE NAME -->
@@ -109,10 +115,12 @@
      
       <IMVERTOR_METAMODEL_Kadaster_XSDSOURCE>system</IMVERTOR_METAMODEL_Kadaster_XSDSOURCE>
       <IMVERTOR_METAMODEL_Kadaster_XSD_XSLPATH>Imvert2XSD-Kadaster.xsl</IMVERTOR_METAMODEL_Kadaster_XSD_XSLPATH>
+      <IMVERTOR_METAMODEL_Kadaster_XSD_REFORM_XSLPATH>Imvert2XSD-Kadaster-reform.xsl</IMVERTOR_METAMODEL_Kadaster_XSD_REFORM_XSLPATH>
       <IMVERTOR_METAMODEL_Kadaster_XSD_IMPORT_XSLPATH>Imvert2XSD-Kadaster-imports.xsl</IMVERTOR_METAMODEL_Kadaster_XSD_IMPORT_XSLPATH>
       
       <RESULT_XSD_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.28.xsd.xml</RESULT_XSD_XML_FILE_PATH>   
-      <RESULT_XSD_IMPORT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.29.xsd-imported.xml</RESULT_XSD_IMPORT_XML_FILE_PATH>   
+      <RESULT_XSD_REFORM_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.29.xsd-reformed.xml</RESULT_XSD_REFORM_XML_FILE_PATH>   
+      <RESULT_XSD_IMPORT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.30.xsd-imported.xml</RESULT_XSD_IMPORT_XML_FILE_PATH>   
       
       <!-- flattening -->
       <IMVERTOR_FLATTEN_XSLPATH>flatten-xsd.xsl</IMVERTOR_FLATTEN_XSLPATH>
