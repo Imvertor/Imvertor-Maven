@@ -524,12 +524,6 @@
 			 This variable is forwarded to be able to proces the content of the embedded message conforming its type later. -->
 		<xsl:variable name="embeddedBerichtCode">
 			<xsl:choose>
-				<!--xsl:when test="$construct[imvert:stereotype = imf:get-config-stereotypes((
-					'stereotype-name-vraagberichttype',
-					'stereotype-name-antwoordberichttype',
-					'stereotype-name-kennisgevingberichttype'))] and contains($berichtCode, 'Di')">
-					<xsl:value-of select="key('class',$type-id)//imvert:tagged-value[imvert:name = 'Berichtcode']/imvert:value"/>
-				</xsl:when-->
 				<xsl:when test="imvert:stereotype = 'BERICHTRELATIE' and contains($berichtCode, 'Di')">
 					<xsl:value-of select="key('class',$type-id)//imvert:tagged-value[imvert:name = 'Berichtcode']/imvert:value"/>
 				</xsl:when>
@@ -543,12 +537,6 @@
 					<xsl:when test="imvert:stereotype = 'BERICHTRELATIE'">
 						<xsl:value-of select="'berichtrelatie'"/>
 					</xsl:when>
-					<!--xsl:when test="$construct[imvert:stereotype = imf:get-config-stereotypes((
-						'stereotype-name-vraagberichttype',
-						'stereotype-name-antwoordberichttype',
-						'stereotype-name-kennisgevingberichttype'))]">
-						<xsl:value-of select="'toplevel2'"/>
-					</xsl:when-->
 					<xsl:otherwise/>
 				</xsl:choose>
 			</xsl:attribute>

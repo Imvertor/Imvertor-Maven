@@ -146,8 +146,7 @@
             <xsl:sequence select="imf:track('Constructing the messages')"/>
             
                 <xsl:for-each select="$enriched-rough-messages/ep:rough-messages/ep:rough-message">
-                    <xsl:variable name="currentMessage" select=".">
-                    </xsl:variable>
+                    <xsl:variable name="currentMessage" select="."/>
                     <xsl:variable name="id" select="ep:id" as="xs:string"/>
                     <xsl:variable name="message-construct" select="imf:get-construct-by-id($id,$packages-doc)"/>
                     <xsl:variable name="berichtstereotype" select="$message-construct/imvert:stereotype" as="xs:string"/>
@@ -226,6 +225,12 @@
     <xsl:template match="ep:rough-message">
         <xsl:variable name="berichtName" select="ep:name" as="xs:string"/>
         <xsl:variable name="fundamentalMnemonic" select="ep:fundamentalMnemonic" as="xs:string"/>
+        <!-- ROME: Er is een verschil tussen de uitbecommentarieerde variabele en de actieve want het levert een ander resultaat op.
+                   Bij de uitbecommentarieerde variabele levert een generate-id() op een node uit deze tree een ander id op dan een 
+                   generate-id() op de node-tree waaruit deze variabele is voortgekomen.
+                   Arjan stelt voor om i.p.v. het gebruik van generate-id() node comparison te gebruiken 
+                   (Zie https://www.w3.org/TR/xpath-functions/#func-is-same-node) --> 
+        <!--xsl:variable name="currentMessage" select="."/-->           
         <xsl:variable name="currentMessage">
                 <xsl:copy>
                     <xsl:copy-of select="@*"/>
@@ -486,15 +491,15 @@
                                             				ook al gegenereerd moeten worden als er ergens dieper onder het huidige niveau 
                                             				een element voorkomt waarbij op het gerelateerde attribuut historie is gedefinieerd. 
                                             				Dit geldt voor alle locaties waar onderstaande elementen worden gedefinieerd. -->
-                                               <xsl:if test="$construct/imvert:stereotype != 'KENNISGEVINGBERICHTTYPE' and
+                                               <!--xsl:if test="$construct/imvert:stereotype != 'KENNISGEVINGBERICHTTYPE' and
                                                    $construct/imvert:stereotype != 'VRAAGBERICHTTYPE' and
                                                    $construct/imvert:stereotype != 'ANTWOORDBERICHTTYPE' and
-                                                   $construct/imvert:stereotype != 'SYNCHRONISATIEBERICHTTYPE' and not(contains(@verwerkingsModus,'kerngegevens'))">
-                                               <!--xsl:if test="$construct/imvert:stereotype != imf:get-config-stereotypes((
+                                                   $construct/imvert:stereotype != 'SYNCHRONISATIEBERICHTTYPE' and not(contains(@verwerkingsModus,'kerngegevens'))"-->
+                                               <xsl:if test="not($construct/imvert:stereotype = imf:get-config-stereotypes((
                                                    'stereotype-name-vraagberichttype',
                                                    'stereotype-name-antwoordberichttype',
                                                    'stereotype-name-kennisgevingberichttype',
-                                                   'stereotype-name-synchronisatieberichttype')) and not(contains(@verwerkingsModus,'kerngegevens'))"-->
+                                                   'stereotype-name-synchronisatieberichttype'))) and not(contains(@verwerkingsModus,'kerngegevens'))">
                                                    <ep:constructRef prefix="StUF" externalNamespace="yes">
                                                        <ep:name>tijdvakGeldigheid</ep:name>
                                                        <ep:tech-name>tijdvakGeldigheid</ep:tech-name>

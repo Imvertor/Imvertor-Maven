@@ -2087,7 +2087,8 @@
 	<xsl:template match="imvert:class" mode="create-datatype-content">
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="berichtName"/>
-		<xsl:param name="generated-id"/><xsl:param name="currentMessage"/>
+		<xsl:param name="generated-id"/>
+		<xsl:param name="currentMessage"/>
 		<xsl:param name="context"/>
 		<xsl:param name="verwerkingsModus"/>
 		
