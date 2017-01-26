@@ -237,7 +237,7 @@
         <xsl:variable name="this-package" select="."/>
         <xsl:variable name="root-release" select="imvert:release" as="xs:string?"/>
         <xsl:variable name="subpackage-releases" select="imvert:package/imvert:release[not(.=('99999999','00000000'))]" as="xs:string*"/>
-        <xsl:variable name="collections" select=".//imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-collection')]"/>
+        <xsl:variable name="collections" select="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-collection')]"/>
         <!--validation-->
 
         <xsl:sequence select="imf:report-error(., 
@@ -298,7 +298,7 @@
             <!-- determine which product(s) reference this collection. -->
             <xsl:variable name="collection" select="."/>
             <xsl:variable name="collection-id" select="imvert:id"/>
-            <xsl:variable name="products" select="$application-package//imvert:class[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-product','stereotype-name-process','stereotype-name-service')) and .//imvert:type-id=$collection-id]"/>
+            <xsl:variable name="products" select="$application-package/imvert:class[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-product','stereotype-name-process','stereotype-name-service')) and .//imvert:type-id=$collection-id]"/>
             
             <xsl:for-each select="$products">
                 <xsl:variable name="product" select="."/>
@@ -339,8 +339,8 @@
     <xsl:template match="imvert:package[.=$domain-package]" priority="50">
         <!--setup-->
         <xsl:variable name="is-schema-package" select="if (imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))) then true() else false()"/>
-        <xsl:variable name="classnames" select="distinct-values(imf:get-duplicates(.//imvert:class/imvert:name))" as="xs:string*"/>
-        <xsl:variable name="xref-objects" select=".//imvert:class[imvert:stereotype=$xref-element-stereotypes]"/>
+        <xsl:variable name="classnames" select="distinct-values(imf:get-duplicates(imvert:class/imvert:name))" as="xs:string*"/>
+        <xsl:variable name="xref-objects" select="imvert:class[imvert:stereotype=$xref-element-stereotypes]"/>
         <xsl:variable name="application" select="ancestor::imvert:package[imvert:stereotype=$top-package-stereotypes][1]"/>
           <!--validation -->
         <xsl:sequence select="imf:report-error(., 
@@ -455,9 +455,9 @@
         <xsl:variable name="is-derived" select="$is-found-derived or $is-stated-derived"/>
         
         <!-- validation on version and release -->
-        <xsl:sequence select="imf:report-warning(., 
+        <!--<xsl:sequence select="imf:report-warning(., 
             $is-found-derived and not($is-stated-derived), 
-            'Package is found to be derived but this is not stated')"/>
+            'Package is found to be derived but this is not stated')"/>-->
         <xsl:sequence select="imf:report-error(., 
             $is-stated-derived and not($is-found-derived), 
             'Package is stated to be derived but derivation info is not found or complete')"/>
@@ -1343,8 +1343,9 @@
         <xsl:variable name="is-used-ref" select="$document-classes/imvert:associations/imvert:association/imvert:type-id=$this-id"/>
         
         <xsl:variable name="superclass-is-target" select="(for $super-id in ($class/imvert:supertype/imvert:type-id) return imf:is-target-in-relation(imf:get-construct-by-id($super-id))) = true()"/>
+        <xsl:variable name="subclass-is-target" select="(for $sub in (imf:get-subclasses($class)) return imf:is-target-in-relation($sub)) = true()"/>
         
-        <xsl:sequence select="$is-used-type or $is-used-ref or $superclass-is-target"/>
+        <xsl:sequence select="$is-used-type or $is-used-ref or $superclass-is-target or $subclass-is-target"/>
     </xsl:function>
 
 </xsl:stylesheet>

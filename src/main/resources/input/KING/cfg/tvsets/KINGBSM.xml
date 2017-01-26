@@ -28,33 +28,33 @@
         <?x tv norm="space"  rules="NOC" id="IndicatieKerngegeven">
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Element</stereo>
-                <stereo required="no" lang="nl">Groep</stereo>
-                <stereo required="no" lang="nl">Relatie</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv x?>
         <tv norm="space" rules="NOC" id="IndicatieAuthentiek">
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Element</stereo>
-                <stereo required="no" lang="nl">Groep</stereo>
-                <stereo required="no" lang="nl">Relatie</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
         <tv norm="space"  rules="NOC" id="IndicatieMateriëleHistorie">
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Element</stereo>
-                <stereo required="no" lang="nl">Groep</stereo>
-                <stereo required="no" lang="nl">Relatie</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
          </tv>
         <tv norm="space" rules="NOC" id="IndicatieFormeleHistorie">
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Element</stereo>
-                <stereo required="no" lang="nl">Groep</stereo>
-                <stereo required="no" lang="nl">Relatie</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
        </tv>
         
@@ -62,7 +62,7 @@
             <name lang="nl">Functie berichtrelatie</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Berichtrelatie</stereo>
+                <stereo required="no">stereotype-name-berichtrelatie</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>update</value>
@@ -74,7 +74,7 @@
             <name lang="nl">Functie entiteitrelatie</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Entiteitrelatie</stereo>
+                <stereo required="no">stereotype-name-entiteitrelatie</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>entiteit</value>
@@ -86,8 +86,8 @@
             <desc>Verkorte alias is een korte naam, die uiteindelijk gekoppeld is aan een namespace in XML schema. 
                 In feite is het dus een technisch configuratie-element.</desc>
             <stereotypes>
-                <stereo required="yes" lang="nl">Koppelvlak</stereo>
-                <stereo required="no" lang="nl">Basismodel</stereo>
+                <stereo required="yes">stereotype-name-application-package</stereo>
+                <stereo required="no">stereotype-name-base-package</stereo>
             </stereotypes>
         </tv>
         
@@ -101,11 +101,11 @@
             <inherit>yes</inherit>
             <stereotypes>
                 <?x stereo required="yes" lang="nl">Berichttype</stereo x?>
-                <stereo required="yes" lang="nl">Vraagberichttype</stereo>
-                <stereo required="yes" lang="nl">Antwoordberichttype</stereo>
-                <stereo required="yes" lang="nl">Kennisgevingberichttype</stereo>
-                <stereo required="yes" lang="nl">Synchronisatieberichttype</stereo>
-                <stereo required="yes" lang="nl">Vrij berichttype</stereo>
+                <stereo required="yes">stereotype-name-vraagberichttype</stereo>
+                <stereo required="yes">stereotype-name-antwoordberichttype</stereo>
+                <stereo required="yes">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo required="yes">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo required="yes">stereotype-name-vrijberichttype</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Bv01</value>
@@ -224,12 +224,12 @@
             <desc>Opnemen ter documentatie van een bericht.</desc>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Bericht</stereo> <!-- i.e. a package -->
-                <stereo required="no" lang="nl">Vraagberichttype</stereo> 
-                <stereo required="no" lang="nl">Antwoordberichttype</stereo> 
-                <stereo required="no" lang="nl">Kennisgevingberichttype</stereo> 
-                <stereo required="no" lang="nl">Synchronisatieberichttype</stereo> 
-                <stereo required="no" lang="nl">Vrij berichttype</stereo> 
+                <stereo required="no">stereotype-name-application-package</stereo>
+                <stereo required="no">stereotype-name-vraagberichttype</stereo>
+                <stereo required="no">stereotype-name-antwoordberichttype</stereo>
+                <stereo required="no">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo required="no">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo required="no">stereotype-name-vrijberichttype</stereo>
             </stereotypes>
         </tv>
         
@@ -238,11 +238,11 @@
             <desc>Opnemen ter documentatie van een bericht.</desc>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Vraagberichttype</stereo> 
-                <stereo required="no" lang="nl">Antwoordberichttype</stereo> 
-                <stereo required="no" lang="nl">Kennisgevingberichttype</stereo> 
-                <stereo required="no" lang="nl">Synchronisatieberichttype</stereo> 
-                <stereo required="no" lang="nl">Vrij berichttype</stereo> 
+                <stereo required="no">stereotype-name-vraagberichttype</stereo>
+                <stereo required="no">stereotype-name-antwoordberichttype</stereo>
+                <stereo required="no">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo required="no">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo required="no">stereotype-name-vrijberichttype</stereo>
             </stereotypes>
         </tv>
         
@@ -251,11 +251,11 @@
             <desc>Opnemen ter documentatie van een bericht.</desc>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Vraagberichttype</stereo> 
-                <stereo required="no" lang="nl">Antwoordberichttype</stereo> 
-                <stereo required="no" lang="nl">Kennisgevingberichttype</stereo> 
-                <stereo required="no" lang="nl">Synchronisatieberichttype</stereo> 
-                <stereo required="no" lang="nl">Vrij berichttype</stereo> 
+                <stereo required="no">stereotype-name-vraagberichttype</stereo>
+                <stereo required="no">stereotype-name-antwoordberichttype</stereo>
+                <stereo required="no">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo required="no">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo required="no">stereotype-name-vrijberichttype</stereo>
             </stereotypes>
         </tv>
         
@@ -264,45 +264,46 @@
             <desc>Opnemen ter documentatie van een bericht.</desc>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Vraagberichttype</stereo> 
-                <stereo required="no" lang="nl">Antwoordberichttype</stereo> 
-                <stereo required="no" lang="nl">Kennisgevingberichttype</stereo> 
-                <stereo required="no" lang="nl">Synchronisatieberichttype</stereo> 
-                <stereo required="no" lang="nl">Vrij berichttype</stereo> 
+                <stereo required="no">stereotype-name-vraagberichttype</stereo>
+                <stereo required="no">stereotype-name-antwoordberichttype</stereo>
+                <stereo required="no">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo required="no">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo required="no">stereotype-name-vrijberichttype</stereo>
             </stereotypes>
         </tv>
         
         <tv norm="space" id="Release">
             <name lang="nl">Release</name>
             <stereotypes>
-                <stereo required="yes" lang="nl">Koppelvlak</stereo>
+                <stereo required="yes">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
         
-        <!-- TODO deze naam is synoniem aan Toepassing, maar omdat we op basis van talige namen werken moeten we dit hier opnemen. Omzetten! --> 
-        <tv norm="space" id="Release">
-            <stereotypes>
-                <stereo required="yes" lang="nl">Koppelvlak</stereo>
-            </stereotypes>
-        </tv>
         <tv norm="space" id="SupplierProject">
             <stereotypes>
-                <stereo required="yes" lang="nl">Koppelvlak</stereo>
+                <stereo required="yes">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="SupplierName">
             <stereotypes>
-                <stereo required="yes" lang="nl">Koppelvlak</stereo>
+                <stereo required="yes">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="SupplierPackageName">
             <stereotypes>
-                <stereo required="no" lang="nl">Koppelvlak</stereo>
+                <stereo required="no">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="SupplierRelease">
             <stereotypes>
-                <stereo required="yes" lang="nl">Koppelvlak</stereo>
+                <stereo required="yes">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" origin="system" id="Positie">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-entiteitrelatie</stereo>
             </stereotypes>
         </tv>
         

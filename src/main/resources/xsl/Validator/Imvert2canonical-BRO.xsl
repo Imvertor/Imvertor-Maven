@@ -126,18 +126,48 @@
         
         <xsl:choose>
             <xsl:when test=". = 'REAL'"> 
-                <imvert:baretype>N20,10</imvert:baretype>
+                <imvert:baretype original="Real">N20,10</imvert:baretype>
                 <imvert:type-name>scalar-decimal</imvert:type-name>
                 <imvert:total-digits>20</imvert:total-digits>
                 <imvert:fraction-digits>10</imvert:fraction-digits>
             </xsl:when>
             <xsl:when test=". = 'CHARACTERSTRING'">
-                <imvert:baretype>AN</imvert:baretype>
+                <imvert:baretype original="CharacterString">AN</imvert:baretype>
                 <imvert:type-name>scalar-string</imvert:type-name>
             </xsl:when>
-            <xsl:when test=". = 'AN'">
-                <imvert:baretype>TXT</imvert:baretype>
+            <xsl:when test=". = 'BOOLEAN'">
+                <imvert:baretype original="Boolean">INDIC</imvert:baretype>
+                <imvert:type-name>scalar-boolean</imvert:type-name>
             </xsl:when>
+            <xsl:when test=". = 'INTEGER'">
+                <imvert:baretype original="Integer">N100</imvert:baretype>
+                <imvert:type-name>scalar-integer</imvert:type-name>
+            </xsl:when>
+            <xsl:when test=". = 'DATE'">
+                <imvert:baretype original="Date">DATUM</imvert:baretype>
+                <imvert:type-name>scalar-date</imvert:type-name>
+            </xsl:when>
+            <xsl:when test=". = 'DATETIME'">
+                <imvert:baretype original="DateTime">DT</imvert:baretype>
+                <imvert:type-name>scalar-datetime</imvert:type-name>
+            </xsl:when>
+            <xsl:when test=". = 'YEAR'">
+                <imvert:baretype original="Year">YEAR</imvert:baretype>
+                <imvert:type-name>scalar-year</imvert:type-name>
+            </xsl:when>
+            <xsl:when test=". = 'MONTH'">
+                <imvert:baretype original="Month">MONTH</imvert:baretype>
+                <imvert:type-name>scalar-month</imvert:type-name>
+            </xsl:when>
+            <xsl:when test=". = 'DAY'">
+                <imvert:baretype original="Day">DAY</imvert:baretype>
+                <imvert:type-name>scalar-day</imvert:type-name>
+            </xsl:when>
+            <xsl:when test=". = 'URI'">
+                <imvert:baretype original="URI">URI</imvert:baretype>
+                <!--<imvert:type-name>scalar-uri</imvert:type-name>-->
+            </xsl:when>
+            
             <xsl:otherwise>
                 <xsl:sequence select="."/>
             </xsl:otherwise>

@@ -32,26 +32,28 @@
       
         <tv norm="space" id="DatumOpname">
             <name lang="nl">Datum opname</name>
+            <name lang="en">Date recorded</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
             <stereotypes>
-                <stereo required="yes" lang="nl">Objecttype</stereo>
-                <stereo required="yes" lang="nl">Attribuutsoort</stereo>
-                <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="yes" lang="nl">Relatiesoort</stereo> 
-                <stereo required="yes" lang="nl">Referentielijst</stereo>
-                <stereo required="yes" lang="nl">Referentie element</stereo>
-                <stereo required="yes" lang="nl">Union</stereo>
-                <stereo required="yes" lang="nl">Complex datatype</stereo>
-                <stereo required="yes" lang="nl">Externe koppeling</stereo>
+                <stereo required="yes">stereotype-name-objecttype</stereo>
+                <stereo required="yes">stereotype-name-attribute</stereo>
+                <stereo required="yes">stereotype-name-composite</stereo>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo> 
+                <stereo required="yes">stereotype-name-referentielijst</stereo>
+                <stereo required="yes">stereotype-name-referentie-element</stereo>
+                <stereo required="yes">stereotype-name-union</stereo>
+                <stereo required="yes">stereotype-name-complextype</stereo>
+                <stereo required="yes">stereotype-name-externekoppeling</stereo>
             </stereotypes>
         </tv> 
         <tv norm="space" rules="NOC" id="IndicatieMateriëleHistorie">
             <name lang="nl">Indicatie materiële historie</name>
+            <name lang="en">Indication material history</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
             <stereotypes>
-                <stereo required="yes" lang="nl">Attribuutsoort</stereo>
-                <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="yes" lang="nl">Relatiesoort</stereo>
+                <stereo required="yes">stereotype-name-attribute</stereo>
+                <stereo required="yes">stereotype-name-composite</stereo>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -61,11 +63,12 @@
         </tv>
         <tv norm="space" rules="NOC" id="IndicatieFormeleHistorie">
             <name lang="nl">Indicatie formele historie</name>
+            <name lang="en">Indication formal history</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
             <stereotypes>
-                <stereo required="yes" lang="nl">Attribuutsoort</stereo>
-                <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="yes" lang="nl">Relatiesoort</stereo>
+                <stereo required="yes">stereotype-name-attribute</stereo>
+                <stereo required="yes">stereotype-name-composite</stereo>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -75,11 +78,12 @@
         </tv>
         <tv norm="space" id="IndicatieAuthentiek">
             <name lang="nl">Indicatie authentiek</name>
+            <name lang="en">Indication authentic</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
             <stereotypes>
-                <stereo required="yes" lang="nl">Attribuutsoort</stereo>
-                <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="yes" lang="nl">Relatiesoort</stereo>
+                <stereo required="yes">stereotype-name-attribute</stereo>
+                <stereo required="yes">stereotype-name-composite</stereo>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
        
@@ -88,23 +92,23 @@
             <name lang="en">Pattern</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
             <stereotypes>
-                <stereo required="no" lang="nl">Attribuutsoort</stereo>
-                <stereo required="no" lang="nl">Referentie element</stereo>
-                <stereo required="no" lang="nl">Union element</stereo>
-                <stereo required="no" lang="nl">Datatype</stereo>
-                <stereo required="no" lang="nl">Complex datatype</stereo>
-                <stereo required="no" lang="nl">Data element</stereo>
-                <stereo required="no" lang="nl">Union element</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-referentie-element</stereo>
+                <stereo required="no">stereotype-name-union-element</stereo>
+                <stereo required="no">stereotype-name-datatype</stereo>
+                <stereo required="no">stereotype-name-complextype</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
+                <stereo required="no">stereotype-name-union-element</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="MogelijkGeenWaarde">
             <name lang="nl">Mogelijk geen waarde</name>
+            <name lang="en">Voidable</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
             <stereotypes>
-                <stereo required="no" lang="nl">Attribuutsoort</stereo>
-                <stereo required="no" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="no" lang="nl">Relatiesoort</stereo>
-                <stereo required="no" lang="nl">Voidable</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -114,10 +118,11 @@
        
         <tv norm="space" id="DataLocatie"><!-- MIG -->
             <name lang="nl">Data locatie</name>
+            <name lang="en">Data location</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
             <stereotypes>
-                <stereo required="no" lang="nl">Referentielijst</stereo>
-                <stereo required="no" lang="nl">Referentie element</stereo>
+                <stereo required="no">stereotype-name-referentielijst</stereo>
+                <stereo required="no">stereotype-name-referentie-element</stereo>
             </stereotypes>
         </tv>
         
@@ -126,14 +131,14 @@
             <name lang="en">Position</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
             <stereotypes>
-                <stereo required="no" lang="nl">Attribuutsoort</stereo>
-                <stereo required="no" lang="nl">Relatiesoort</stereo>
-                <stereo required="no" lang="nl">Union element</stereo>
-                <stereo required="no" lang="nl">Enum</stereo>
-                <stereo required="no" lang="nl">Data element</stereo>
-                <stereo required="no" lang="nl">Referentie element</stereo>
-                <stereo required="no" lang="nl">Gegevensgroep compositie</stereo>
-                <stereo required="no" lang="#all">#none</stereo> <!-- also allowed on enumeration values that have no enum stereo -->
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo required="no">stereotype-name-union-element</stereo>
+                <stereo required="no">stereotype-name-enum</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
+                <stereo required="no">stereotype-name-referentie-element</stereo>
+                <stereo required="no">stereotype-name-association-to-composite</stereo>
+                <stereo required="no">stereotype-name-enum</stereo>
             </stereotypes>
         </tv>
         

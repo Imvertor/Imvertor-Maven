@@ -18,15 +18,16 @@
             For each stereotype, define a formal name, the name(s) in UML, description, the construct(s) to which the stereotype applies, and possible rules.
         -->
         <stereo id="stereotype-name-system-package">
-            <name lang="#all">system</name>
-            <desc>Een package dat is opgebouwd door de software ten behoeve van verwerking.</desc>
+            <name lang="nl">system</name>
+            <name lang="en">system</name>
+            <desc lang="nl">Een package dat is opgebouwd door de software ten behoeve van verwerking.</desc>
             <construct>package</construct>
         </stereo>
 
         <stereo id="stereotype-name-domain-package">
             <name lang="en">domain</name>
             <name lang="nl">domein</name>
-            <desc>Een package waarvan de daarin opgenomen constructies ls één geheel worden beheerd, en waarvan dus een gezamenlijke versie wordt onderhouden</desc>
+            <desc lang="nl">Een package waarvan de daarin opgenomen constructies ls één geheel worden beheerd, en waarvan dus een gezamenlijke versie wordt onderhouden</desc>
             <construct>package</construct>
         </stereo>
         <stereo id="stereotype-name-subdomain-package">
@@ -40,25 +41,25 @@
         <stereo id="stereotype-name-application-package">
             <name lang="en">application</name>
             <name lang="nl">toepassing</name>
-            <desc>Een package dat een volledige applicatie beschrijft, end dus niet slechts bedoeld is als basis voor afgeleide toepassingen.</desc>
+            <desc lang="nl">Een package dat een volledige applicatie beschrijft, end dus niet slechts bedoeld is als basis voor afgeleide toepassingen.</desc>
             <construct>package</construct>
         </stereo>
         <stereo id="stereotype-name-project-package">
             <name lang="en">project</name>
             <name lang="nl">project</name>
-            <desc>Een package dat een project bevat, dwz. een base of application package, eventueel met external packages.</desc>
+            <desc lang="nl">Een package dat een project bevat, dwz. een base of application package, eventueel met external packages.</desc>
             <construct>package</construct>
         </stereo>
         <stereo id="stereotype-name-base-package">
-            <name lang="en">base</name>
-            <name lang="nl">basismodel</name>
-            <desc>Een package dat slechts bedoeld is als basis voor afgeleide toepassingen.</desc>
+            <name lang="en">Basemodel</name>
+            <name lang="nl">Basismodel</name>
+            <desc lang="nl">Een package dat slechts bedoeld is als basis voor afgeleide toepassingen.</desc>
             <construct>package</construct>
         </stereo>
         <stereo id="stereotype-name-external-package">
             <name lang="en">external</name>
             <name lang="nl">extern</name>
-            <desc>
+            <desc lang="nl">
                 Een groepering van constructies die een externe instantie beheert en beschikbaar stelt aan een informatiemodel 
                 Voorbeeld: het external package NEN3610 met datatype NEN3610ID. Het datatype van attribuutsoort Identificatie wegdeel in RSGB verwijst naar het datatype NEN3610ID zoals opgenomen in de external package.</desc>
             <construct>package</construct>
@@ -67,14 +68,14 @@
         <stereo id="stereotype-name-provided-package">
             <name lang="en">provided</name>
             <name lang="nl">provided</name>
-            <desc>test, under development</desc>
+            <desc lang="nl">test, under development</desc>
             <construct>package</construct>
         </stereo>
         
            <stereo id="stereotype-name-interface">
             <name lang="en">interface</name>
             <name lang="nl">interface</name>
-            <desc>Een constructie in een external package, welke een compleet modelelement in dat externe package representeert.</desc>
+            <desc lang="nl">Een constructie in een external package, welke een compleet modelelement in dat externe package representeert.</desc>
             <construct>class</construct>
             <construct>datatype</construct>
         </stereo>
@@ -82,7 +83,7 @@
         <stereo id="stereotype-name-view-package">
             <name lang="en">view</name>
             <name lang="nl">view</name>
-            <desc>Een groepering van objecttypen die gespecificeerd zijn in een extern informatiemodel en vanuit het perspectief van het 
+            <desc lang="nl">Een groepering van objecttypen die gespecificeerd zijn in een extern informatiemodel en vanuit het perspectief van het 
                 eigen informatiemodel inzicht geeft welke gegevens van deze objecttypen relevant zijn binnen het eigen informatiemodel.</desc>
             <construct>package</construct>
         </stereo>
@@ -90,7 +91,7 @@
         <stereo id="stereotype-name-recyclebin">
             <name lang="nl">prullenbak</name>
             <name lang="en">recyclebin</name>
-            <desc>A package that is to be ignored in all processing. may occur at any position in the package tree.</desc>
+            <desc lang="nl">A package that is to be ignored in all processing. may occur at any position in the package tree.</desc>
             <construct>package</construct>
         </stereo>
 
@@ -98,7 +99,7 @@
         <stereo id="stereotype-name-designation-datatype">
             <name lang="en">datatype</name>
             <name lang="nl">datatype</name>
-            <desc>TODO</desc>
+            <desc lang="nl">TODO</desc>
             <construct>class</construct>
             <construct>datatype</construct>
         </stereo>
@@ -106,7 +107,7 @@
         <stereo id="stereotype-name-components-package">
             <name lang="en">components</name>
             <name lang="nl">componenten</name>
-            <desc>
+            <desc lang="nl">
                 Dit package bevat klassen, enumeraties of datatypen die gemeenschappelijk zijn tussen berichtmodellen, 
                 en die dus bij het genereren van berichten kunnen worden omgezet naar globale complextypes.
                 <!-- KING REDMINE Task #487814 Verwezenlijking herbruikbare (globale) complexTypes -->
@@ -118,7 +119,7 @@
         <stereo id="stereotype-name-trace">
             <name lang="en">trace</name>
             <name lang="nl">trace</name>
-            <desc>Trace relatie tussen twee klassen. Trace relatie wordt niet als associatie opgenomen, maar als eigenschap van de client.</desc>
+            <desc lang="nl">Trace relatie tussen twee klassen. Trace relatie wordt niet als associatie opgenomen, maar als eigenschap van de client.</desc>
             <construct>class</construct>
             <construct>datatype</construct>
         </stereo>
@@ -128,21 +129,21 @@
         <stereo id="stereotype-name-product">
             <name lang="en">product</name>
             <name lang="nl">product</name>
-            <desc>TODO</desc>
+            <desc lang="nl">TODO</desc>
             <construct>class</construct>
             <toplevel>true</toplevel>
         </stereo>
         <stereo id="stereotype-name-service">
             <name lang="en">service</name>
             <name lang="nl">service</name>
-            <desc>TODO</desc>
+            <desc lang="nl">TODO</desc>
             <construct>class</construct>
             <toplevel>true</toplevel>
         </stereo>
         <stereo id="stereotype-name-process">
             <name lang="en">process</name>
             <name lang="nl">process</name>
-            <desc>TODO</desc>
+            <desc lang="nl">TODO</desc>
             <construct>class</construct>
             <toplevel>true</toplevel>
         </stereo>
@@ -151,7 +152,7 @@
         <stereo id="stereotype-name-internal-package">
             <name lang="nl">intern</name>
             <name lang="en">internal</name>
-            <desc>A package that references another package that is developed by the owner, and part of the owner's projects.
+            <desc lang="nl">A package that references another package that is developed by the owner, and part of the owner's projects.
                 It is therefore assumned to be available in the owners managed output folder.
                 It is also assumed that the metamodels are compatible.</desc>
             <construct>package</construct>
@@ -160,17 +161,20 @@
         <!-- REDMINE #487891 -->
         <stereo id="stereotype-name-att-proxy">
             <name lang="nl">attribuutsoort_proxy</name>
-            <desc>A proxy is TODO</desc>
+            <name lang="en">AttributeTypeProxy</name>
+            <desc lang="nl">A proxy is TODO</desc>
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-obj-proxy">
             <name lang="nl">objecttype_proxy</name>
-            <desc>A proxy is TODO</desc>
+            <name lang="en">FeatureTypeProxy</name>
+            <desc lang="nl">A proxy is TODO</desc>
             <construct>class</construct>
         </stereo>
         <stereo id="stereotype-name-grp-proxy">
             <name lang="nl">gegevensgroeptype_proxy</name>
-            <desc>A proxy is TODO</desc>
+            <name lang="en">AttributeGroupProxy</name>
+            <desc lang="nl">A proxy is TODO</desc>
             <construct>class</construct>
         </stereo>
         

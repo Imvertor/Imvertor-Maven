@@ -44,7 +44,7 @@
                     </div>
                     <table class="tablesorter"> 
                         <xsl:variable name="rows" as="element(tr)*">
-                            <xsl:apply-templates select=".//imvert:class[not(imvert:ref-master)]" mode="compactview"/>
+                            <xsl:apply-templates select="imvert:package/imvert:class[not(imvert:ref-master)]" mode="compactview"/>
                         </xsl:variable>
                         <xsl:sequence select="imf:create-result-table-by-tr($rows,'pos:10,property:40,type:40,min:5,max:5,stereotype:10','table-compactview')"/>
                     </table>

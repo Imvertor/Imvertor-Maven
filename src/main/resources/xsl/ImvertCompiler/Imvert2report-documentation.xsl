@@ -123,7 +123,7 @@
                         </xsl:if>
                     </div>                        
                     <xsl:variable name="rows" as="element(row)*">
-                        <xsl:for-each select=".//imvert:package">
+                        <xsl:for-each select="imvert:package">
                             <xsl:sort select="imvert:name" order="ascending"/>
                             <xsl:apply-templates select="." mode="documentation"/>
                         </xsl:for-each> 

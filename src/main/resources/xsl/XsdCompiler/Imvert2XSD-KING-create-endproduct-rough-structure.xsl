@@ -378,7 +378,7 @@
 					</xsl:choose>
 				</xsl:attribute>
 				<xsl:if test="(imvert:name = 'zender' or imvert:name = 'ontvanger') and contains(ancestor::imvert:package/@display-name,'www.kinggemeenten.nl/BSM/Berichtstrukturen')">
-					<xsl:attribute name="className" select="imf:get-construct-by-id($type-id,$packages)/imvert:name"/>
+					<xsl:attribute name="className" select="imf:get-construct-by-id($type-id,$packages-doc)/imvert:name"/>
 				</xsl:if>
 				<xsl:attribute name="context">
 					<xsl:choose>
@@ -400,7 +400,7 @@
 						<xsl:variable name="tv-materieleHistorie-attributes">
 							<xsl:for-each select="imvert:association-class">
 								<xsl:variable name="association-class-type-id" select="imvert:type-id"/>
-								<xsl:for-each select="imf:get-construct-by-id($association-class-type-id,$packages)/imvert:attributes/imvert:attribute">
+								<xsl:for-each select="imf:get-construct-by-id($association-class-type-id,$packages-doc)/imvert:attributes/imvert:attribute">
 									<ep:tagged-value>
 										<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie')"/>
 									</ep:tagged-value>
@@ -418,7 +418,7 @@
 						<xsl:variable name="tv-formeleHistorie-attributes">
 							<xsl:for-each select="imvert:association-class">
 								<xsl:variable name="association-class-type-id" select="imvert:type-id"/>
-								<xsl:for-each select="imf:get-construct-by-id($association-class-type-id,$packages)/imvert:attributes/imvert:attribute">
+								<xsl:for-each select="imf:get-construct-by-id($association-class-type-id,$packages-doc)/imvert:attributes/imvert:attribute">
 									<ep:tagged-value>
 										<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie')"/>
 									</ep:tagged-value>
@@ -517,7 +517,7 @@
 
 		<xsl:sequence select="imf:create-debug-comment('Template 6: imvert:association[mode=create-toplevel-rough-message-structure]',$debugging)"/>
 		
-		<xsl:variable name="construct" select="imf:get-construct-by-id($type-id,$packages)"/>
+		<xsl:variable name="construct" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
 		
 		<!-- If the association has a stereotype of 'BERICHTRELATIE' and it's part of a 'vrij bericht' it must refer to an embedded message
 			 of another type. In that case the following variable get's a value equal to the value of the 'berichtCode' of the embedded message.
@@ -817,7 +817,7 @@
 			<xsl:sequence select="imf:create-output-element('ep:id', imvert:type-id)"/>
 			<xsl:variable name="class-id" select="imvert:type-id"/>
 			<xsl:sequence
-				select="imf:create-output-element('ep:class-name', imf:get-construct-by-id($class-id,$packages)/ep:name)"/>
+				select="imf:create-output-element('ep:class-name', imf:get-construct-by-id($class-id,$packages-doc)/ep:name)"/>
 			<xsl:apply-templates select="key('class',$type-id)"
 				mode="create-rough-message-content">
 				<xsl:with-param name="proces-type" select="'associationsGroepCompositie'"/>
@@ -936,7 +936,7 @@
 				 and it contains a 'entiteit'. The attributes of the 'entiteit' class can 
 				 be placed directly within the current 'ep:seq'. -->
 			<xsl:when
-				test="imf:get-construct-by-id($type-id,$packages)[imvert:stereotype = 'ENTITEITTYPE']">
+				test="imf:get-construct-by-id($type-id,$packages-doc)[imvert:stereotype = 'ENTITEITTYPE']">
 				<xsl:sequence select="imf:create-debug-comment('//imvert:class[imvert:id = $type-id and imvert:stereotype = ENTITEITTYPE]',$debugging)"/>
 				<xsl:apply-templates select="key('class',$type-id)"
 					mode="create-rough-message-content">

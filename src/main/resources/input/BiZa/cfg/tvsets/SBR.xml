@@ -25,74 +25,81 @@
     <tagged-values xml:id="tagset">
         <tv norm="space" id="Herkomst">
             <name lang="nl">Herkomst</name>
+            <name lang="en">Origin</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="yes" lang="nl">Objecttype</stereo>
-                <stereo required="yes" lang="nl">Complex datatype</stereo>
-                <stereo required="yes" lang="nl">Data element</stereo>
-                <stereo required="yes" lang="nl">Attribuutsoort</stereo>
-                <stereo required="yes" lang="nl">Relatiesoort</stereo>
-                <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="yes" lang="nl">Referentielijst</stereo>
-                <stereo required="yes" lang="nl">Referentie element</stereo>
-                <stereo required="yes" lang="nl">Union</stereo>
-                <stereo required="yes" lang="nl">Union element</stereo>
+                <stereo required="yes">stereotype-name-objecttype</stereo>
+                <stereo required="yes">stereotype-name-complextype</stereo>
+                <stereo required="yes">stereotype-name-data-element</stereo>
+                <stereo required="yes">stereotype-name-attribute</stereo>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo>
+                <stereo required="yes">stereotype-name-composite</stereo>
+                <stereo required="yes">stereotype-name-referentielijst</stereo>
+                <stereo required="yes">stereotype-name-referentie-element</stereo>
+                <stereo required="yes">stereotype-name-union</stereo>
+                <stereo required="yes">stereotype-name-union-element</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="HerkomstDefinitie">
             <name lang="nl">Herkomst definitie</name>
+            <name lang="en">Origin of definition</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="yes" lang="nl">Objecttype</stereo>
-                <stereo required="yes" lang="nl">Attribuutsoort</stereo>
-                <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="yes" lang="nl">Relatiesoort</stereo>
+                <stereo required="yes">stereotype-name-objecttype</stereo>
+                <stereo required="yes">stereotype-name-attribute</stereo>
+                <stereo required="yes">stereotype-name-composite</stereo>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
         
         <!-- TODO Vaststellen per tagged value of deze derived moeten worden of niet. -->
         <tv norm="space" id="Eigenaar">
             <name lang="nl">Eigenaar</name>
+            <name lang="en">Owned by</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Objecttype</stereo> <!-- TODO anders dan metamodel -->
-                <stereo required="no" lang="nl">Attribuutsoort</stereo> <!-- TODO anders dan metamodel -->
-                <stereo required="no" lang="nl">Gegevensgroeptype</stereo> <!-- TODO anders dan metamodel -->
+                <stereo required="no">stereotype-name-objecttype</stereo> <!-- TODO anders dan metamodel -->
+                <stereo required="no">stereotype-name-attribute</stereo> <!-- TODO anders dan metamodel -->
+                <stereo required="no">stereotype-name-composite</stereo> <!-- TODO anders dan metamodel -->
             </stereotypes>
         </tv>
         <tv norm="note" id="Populatie">
             <name lang="nl">Populatie</name>
+            <name lang="en">Population</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Objecttype</stereo>
+                <stereo required="no">stereotype-name-objecttype</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="Kwaliteit">
             <name lang="nl">Kwaliteit</name>
+            <name lang="en">Quality</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Objecttype</stereo>
+                <stereo required="no">stereotype-name-objecttype</stereo>
             </stereotypes>
         </tv>
         <tv norm="note" id="Regels">
             <name lang="nl">Regels</name>
+            <name lang="en">Rules</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Attribuutsoort</stereo> <!-- TODO niet op KKG -->
-                <stereo required="no" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="no" lang="nl">Relatiesoort</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo> <!-- TODO niet op KKG -->
+                <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
         <tv norm="note" id="Toelichting">
             <name lang="nl">Toelichting</name>
+            <name lang="en">Explanation</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Objecttype</stereo>
-                <stereo required="no" lang="nl">Attribuutsoort</stereo>
-                <stereo required="no" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="no" lang="nl">Relatiesoort</stereo>
-                <stereo required="no" lang="nl">Referentielijst</stereo>
-                <stereo required="no" lang="nl">Referentie element</stereo>
+                <stereo required="no">stereotype-name-objecttype</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo required="no">stereotype-name-referentielijst</stereo>
+                <stereo required="no">stereotype-name-referentie-element</stereo>
             </stereotypes>
         </tv> 
     </tagged-values>

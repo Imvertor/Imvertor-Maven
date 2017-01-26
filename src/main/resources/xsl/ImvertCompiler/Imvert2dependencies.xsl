@@ -44,7 +44,7 @@
             <!-- avoid duplicates, several models mat reference the same supplier -->
             <xsl:for-each-group select="$suppliers" group-by="@subpath">
                 <imvert:supplier-contents subpath="{current-grouping-key()}">
-                    <xsl:sequence select="imf:get-imvert-supplier-doc(current-grouping-key())"/>
+                    <!--<xsl:sequence select="imf:get-imvert-supplier-doc(current-grouping-key())"/>-->
                 </imvert:supplier-contents>
             </xsl:for-each-group>
             

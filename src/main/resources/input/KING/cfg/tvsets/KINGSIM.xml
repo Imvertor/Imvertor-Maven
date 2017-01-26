@@ -27,9 +27,9 @@
             <name lang="nl">Aanduiding strijdigheid/nietigheid</name>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <stereotypes>
-                <stereo required="yes" lang="nl">Attribuutsoort</stereo>
-                <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="yes" lang="nl">Relatiesoort</stereo>
+                <stereo required="yes">stereotype-name-attribute</stereo>
+                <stereo required="yes">stereotype-name-composite</stereo>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <?x <declared-values lang="nl">
                 <value>Ja</value>
@@ -45,9 +45,9 @@
                 of is uitgevoerd naar de juistheid van de attribuutwaarde. 
             </desc>
             <stereotypes>
-                <stereo required="yes" lang="nl">Attribuutsoort</stereo>
-                <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="yes" lang="nl">Relatiesoort</stereo>
+                <stereo required="yes">stereotype-name-attribute</stereo>
+                <stereo required="yes">stereotype-name-composite</stereo>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -64,20 +64,20 @@
             </desc>
             <stereotypes>
                 <!-- in addition to BP -->
-                <stereo required="yes" lang="nl">Referentielijst</stereo> 
-                <stereo required="yes" lang="nl">Referentie element</stereo>
-                <stereo required="yes" lang="nl">Union</stereo>
-                <stereo required="yes" lang="nl">Union element</stereo>
-                <stereo required="yes" lang="nl">Complex datatype</stereo>
-                <stereo required="yes" lang="nl">Data element</stereo>
+                <stereo required="yes">stereotype-name-referentielijst</stereo> 
+                <stereo required="yes">stereotype-name-referentie-element</stereo>
+                <stereo required="yes">stereotype-name-union</stereo>
+                <stereo required="yes">stereotype-name-union-element</stereo>
+                <stereo required="yes">stereotype-name-complextype</stereo>
+                <stereo required="yes">stereotype-name-data-element</stereo>
             </stereotypes>
         </tv>
         <tv norm="compact" rules="NOC" id="IndicatieMateriëleHistorie">
             <name lang="nl">Indicatie materiële historie</name>
             <stereotypes>
-                <stereo required="yes" lang="nl">Attribuutsoort</stereo>
-                <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="yes" lang="nl">Relatiesoort</stereo>
+                <stereo required="yes">stereotype-name-attribute</stereo>
+                <stereo required="yes">stereotype-name-composite</stereo>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <declared-values lang="nl">
@@ -91,9 +91,9 @@
         <tv norm="compact" rules="NOC" id="IndicatieFormeleHistorie">
             <name lang="nl">Indicatie formele historie</name>
             <stereotypes>
-                <stereo required="yes" lang="nl">Attribuutsoort</stereo>
-                <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="yes" lang="nl">Relatiesoort</stereo>
+                <stereo required="yes">stereotype-name-attribute</stereo>
+                <stereo required="yes">stereotype-name-composite</stereo>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <declared-values lang="nl">
@@ -107,9 +107,9 @@
             <name lang="nl">Indicatie authentiek</name>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <stereotypes>
-                <stereo required="yes" lang="nl">Attribuutsoort</stereo>
-                <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="yes" lang="nl">Relatiesoort</stereo>
+                <stereo required="yes">stereotype-name-attribute</stereo>
+                <stereo required="yes">stereotype-name-composite</stereo>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <?x
             <declared-values lang="nl">
@@ -124,9 +124,9 @@
         <tv norm="compact" rules="NOC" id="MogelijkGeenWaarde">
             <name lang="nl">Mogelijk geen waarde</name>
             <stereotypes>
-                <stereo required="yes" lang="nl">Attribuutsoort</stereo>
-                <stereo required="yes" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="yes" lang="nl">Relatiesoort</stereo>
+                <stereo required="yes">stereotype-name-attribute</stereo>
+                <stereo required="yes">stereotype-name-composite</stereo>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -138,7 +138,7 @@
             <name lang="nl">Groepnaam</name>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <stereotypes>
-                <stereo required="no" lang="nl">Tekentechnisch</stereo>
+                <stereo required="no">stereotype-name-tekentechnisch</stereo>
             </stereotypes>
         </tv>
         
@@ -151,10 +151,32 @@
                 welke (basis)registratie of informatiemodel het objecttype voorkomt (indien van toepassing).
             </desc>
             <stereotypes>
-                <stereo required="no" lang="nl">Objecttype</stereo>
+                <stereo required="no">stereotype-name-objecttype</stereo>
             </stereotypes>
         </tv>
 
+        <tv norm="note" id="Populatie">   <!-- in aanvulling op SBR -->
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-obj-proxy</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="note" id="Toelichting">   <!-- in aanvulling op SBR -->
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-obj-proxy</stereo>
+                <stereo required="no">stereotype-name-att-proxy</stereo>
+                <stereo required="no">stereotype-name-grp-proxy</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="note" id="Regels">   <!-- in aanvulling op SBR -->
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-att-proxy</stereo>
+                <stereo required="no">stereotype-name-grp-proxy</stereo>
+            </stereotypes>
+        </tv>
+        
         <!-- REDMINE #487612 -->
         <!-- Internal packages are propagated to Grouping --> 
        

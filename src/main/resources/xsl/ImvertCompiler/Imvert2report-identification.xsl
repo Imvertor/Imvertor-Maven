@@ -49,7 +49,7 @@
                         <p>When inherit, the class may be identified because some superclass may be identified.</p>
                     </div>
                     <xsl:variable name="rows" as="node()*">
-                        <xsl:for-each select=".//imvert:package[not(imvert:ref-master)]">
+                        <xsl:for-each select="imvert:package[not(imvert:ref-master)]">
                             <xsl:sort select="imvert:name" order="ascending"/>
                             <xsl:apply-templates select="imvert:class" mode="identification"/>
                         </xsl:for-each> 

@@ -26,122 +26,116 @@
         <xi:include href="../../../BP/cfg/tvsets/BP.xml"/>
         
         <tv norm="space" id="DatumOpname">
-            <name lang="nl">Datum opname</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Koppelklasse</stereo>
+                <stereo required="no">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" rules="NOC" id="IndicatieMateriëleHistorie">
-            <name lang="nl">Indicatie materiële historie</name>
-            <derive>yes</derive>
+           <derive>yes</derive>
             <stereotypes>
                 <!-- optional for the following stereo's -->
-                <stereo required="no" lang="nl">Attribuutsoort</stereo>
-                <stereo required="no" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="no" lang="nl">Relatiesoort</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <!-- declared-values inherited -->
         </tv>
         <tv norm="space" rules="NOC" id="IndicatieFormeleHistorie">
-            <name lang="nl">Indicatie formele historie</name>
             <derive>yes</derive>
             <stereotypes>
                 <!-- optional for the following stereo's -->
-                <stereo required="no" lang="nl">Attribuutsoort</stereo>
-                <stereo required="no" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="no" lang="nl">Relatiesoort</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <!-- declared-values inherited -->
         </tv>
         <tv norm="space" id="Eigenaar">
-            <name lang="nl">Eigenaar</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Koppelklasse</stereo>
-                <stereo required="no" lang="nl">Data element</stereo>
+                <stereo required="no">stereotype-name-koppelklasse</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="Populatie">
-            <name lang="nl">Populatie</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Data element</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="Kwaliteit">
-            <name lang="nl">Kwaliteit</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Data element</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="Gebruiksvoorwaarden">
             <name lang="nl">Gebruiksvoorwaarden</name>
+            <name lang="en">Conditions of use</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Objecttype</stereo>
-                <stereo required="no" lang="nl">Koppelklasse</stereo>
-                <stereo required="no" lang="nl">Attribuutsoort</stereo>
-                <stereo required="no" lang="nl">Data element</stereo>
+                <stereo required="no">stereotype-name-objecttype</stereo>
+                <stereo required="no">stereotype-name-koppelklasse</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="Herkomst">
-            <name lang="nl">Herkomst</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Koppelklasse</stereo>
+                <stereo required="no">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="HerkomstDefinitie">
-            <name lang="nl">Herkomst definitie</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Objecttype</stereo>
-                <stereo required="no" lang="nl">Attribuutsoort</stereo>
-                <stereo required="no" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="no" lang="nl">Relatiesoort</stereo>
-                <stereo required="no" lang="nl">Koppelklasse</stereo>
+                <stereo required="no">stereotype-name-objecttype</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo required="no">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="Wetgeving">
             <name lang="nl">Wetgeving</name>
+            <name lang="en">Legislation</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Objecttype</stereo>
-                <stereo required="no" lang="nl">Koppelklasse</stereo>
-                <stereo required="no" lang="nl">Attribuutsoort</stereo>
-                <stereo required="no" lang="nl">Complex datatype</stereo>
+                <stereo required="no">stereotype-name-objecttype</stereo>
+                <stereo required="no">stereotype-name-koppelklasse</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-complextype</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="Toegankelijkheid">
             <name lang="nl">Toegankelijkheid</name>
+            <name lang="en">Accessibility</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Objecttype</stereo>
-                <stereo required="no" lang="nl">Koppelklasse</stereo>
-                <stereo required="no" lang="nl">Attribuutsoort</stereo>
-                <stereo required="no" lang="nl">Complex datatype</stereo>
-                <stereo required="no" lang="nl">Data element</stereo>
+                <stereo required="no">stereotype-name-objecttype</stereo>
+                <stereo required="no">stereotype-name-koppelklasse</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-complextype</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="MogelijkGeenWaarde">
-            <name lang="nl">Mogelijk geen waarde</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Data element</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
+                <stereo required="no">stereotype-name-voidable</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="IndicatieAuthentiek">
-            <name lang="nl">Indicatie authentiek</name>
             <derive>yes</derive>
             <stereotypes>
                 <!-- optuonal for inherited stereos -->
-                <stereo required="no" lang="nl">Attribuutsoort</stereo>
-                <stereo required="no" lang="nl">Gegevensgroeptype</stereo>
-                <stereo required="no" lang="nl">Relatiesoort</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
                 <!-- and add this stereo -->
-                <stereo required="no" lang="nl">Data element</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
             </stereotypes>
         </tv>
         
@@ -150,7 +144,7 @@
             <name lang="en">Concept location</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Objecttype</stereo>
+                <stereo required="no">stereotype-name-objecttype</stereo>
             </stereotypes>
         </tv>
         
@@ -159,17 +153,18 @@
             <name lang="en">Data location</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Attribuutsoort</stereo>
-                <stereo required="no" lang="nl">Data element</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
             </stereotypes>
         </tv>
         
         <tv norm="space" id="BaseMapping">
             <name lang="nl">Base-mapping</name>
+            <name lang="en">Base-mapping</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Objecttype</stereo>
-                <stereo required="no" lang="nl">Koppelklasse</stereo>
+                <stereo required="no">stereotype-name-objecttype</stereo>
+                <stereo required="no">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
         
@@ -178,7 +173,7 @@
             <name lang="en">Relation</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no" lang="nl">Relatiesoort</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
         

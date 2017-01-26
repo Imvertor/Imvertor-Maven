@@ -28,8 +28,8 @@
     exclude-result-prefixes="#all" 
     version="2.0">
 
-    <xsl:variable name="referencelist-ids" select=".//imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-referentielijst')]/imvert:id"/>
-    <xsl:variable name="lists" select=".//imvert:attribute[imvert:type-id = $referencelist-ids]"/>
+    <xsl:variable name="referencelist-ids" select="/imvert:packages/imvert:package/imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-referentielijst')]/imvert:id"/>
+    <xsl:variable name="lists" select="/imvert:packages/imvert:package/imvert:class/imvert:attributes/imvert:attribute[imvert:type-id = $referencelist-ids]"/>
     
     <xsl:template match="imvert:packages" mode="valuelists">
         <xsl:if test="exists($lists)">

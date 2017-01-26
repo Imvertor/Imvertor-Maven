@@ -41,7 +41,7 @@
         <!-- 
             return a trace documentation page only when deriving; this is the case when any trace has been set. 
         -->
-        <xsl:if test=".//imvert:trace[1]">
+        <xsl:if test="exists((.//imvert:trace)[1])">
             <!--TODO how to represent proxy? -->
             <page>
                 <title>Derivation Traces</title>

@@ -201,7 +201,7 @@
         Language specific
     -->
     <xsl:function name="imf:get-config-scalar-names" as="xs:string*">
-        <xsl:sequence select="$configuration-metamodel-file//scalars/scalar/name[@lang=$language]"/>
+        <xsl:sequence select="$configuration-metamodel-file//scalars/scalar/name[@lang=($language,'#ALL')]"/>
     </xsl:function>
     
     <!-- default -->
