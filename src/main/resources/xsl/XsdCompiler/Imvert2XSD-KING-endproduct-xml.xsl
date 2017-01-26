@@ -89,7 +89,7 @@
     
     <!-- Within this variable a rough message structure is created to be able to determine e.g. the correct global construct structures. -->
     <xsl:variable name="rough-messages">
-         <xsl:sequence select="imf:create-debug-track('Constructing the rough message-structure',$debugging)"/>
+         <xsl:sequence select="imf:track('Constructing the rough message-structure')"/>
         
         <ep:rough-messages>
             <xsl:apply-templates select="$packages/imvert:package[imvert:stereotype = 'BERICHT' and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]" mode="create-rough-message-structure"/>
@@ -97,14 +97,14 @@
     </xsl:variable>
     
     <xsl:variable name="enriched-rough-messages">
-        <xsl:sequence select="imf:create-debug-track('Constructing the enriched rough message-structure',$debugging)"/>
+        <xsl:sequence select="imf:track('Constructing the enriched rough message-structure')"/>
         
         <xsl:apply-templates select="$rough-messages/ep:rough-messages" mode="enrich-rough-messages"/>
 
     </xsl:variable>
 
     <!-- ROME: Moet het per package bepalen van de prefix hier gebeuren? Ik vermoed van niet. -->
-    <xsl:variable name="verkorteAlias" select="/imvert:packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='Verkorte alias']"/>
+    <xsl:variable name="verkorteAlias" select="$packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='Verkorte alias']"/>
     
     <xsl:variable name="prefix" as="xs:string">
         <xsl:choose>
@@ -121,14 +121,13 @@
 
     <!-- Within this variable all messages defined within the BSM of the koppelvlak are placed, transformed to the imvertor endproduct (ep) format.-->
     <xsl:variable name="imvert-endproduct">
-        <xsl:sequence select="imf:create-debug-track('Constructing the message-set',$debugging)"/>
         
         <ep:message-set>
-           <xsl:sequence select="imf:create-output-element('ep:name', /imvert:packages/imvert:project)"/>
-            <xsl:sequence select="imf:create-output-element('ep:release', /imvert:packages/imvert:release)"/>
-            <xsl:sequence select="imf:create-output-element('ep:date', substring-before(/imvert:packages/imvert:generated,'T'))"/>
+            <xsl:sequence select="imf:create-output-element('ep:name', $packages/imvert:project)"/>
+            <xsl:sequence select="imf:create-output-element('ep:release', $packages/imvert:release)"/>
+            <xsl:sequence select="imf:create-output-element('ep:date', substring-before($packages/imvert:generated,'T'))"/>
             <xsl:sequence select="imf:create-output-element('ep:patch-number', 'TO-DO')"/>
-            <xsl:sequence select="imf:create-output-element('ep:namespace', /imvert:packages/imvert:base-namespace)"/>
+            <xsl:sequence select="imf:create-output-element('ep:namespace', $packages/imvert:base-namespace)"/>
             <xsl:sequence select="imf:create-output-element('ep:namespace-prefix', $prefix)"/>
             
             <!-- ROME: Volgende structuur moet, zodra we meerdere namespaces volledig ondersteunen, afgeleid worden van alle in gebruik zijnde namespaces.
@@ -136,7 +135,7 @@
                        Ik denk van niet, eerder zal de onderstaande lijst met namespaces uitgebreid moeten worden door per package deze op te halen. -->
             <ep:namespaces>
                 <ep:namespace prefix="StUF">http://www.egem.nl/StUF/StUF0301</ep:namespace>
-                <ep:namespace prefix="{$prefix}"><xsl:value-of select="/imvert:packages/imvert:base-namespace"/></ep:namespace>
+                <ep:namespace prefix="{$prefix}"><xsl:value-of select="$packages/imvert:base-namespace"/></ep:namespace>
             </ep:namespaces>
             
             <xsl:if test="$debugging">
@@ -144,16 +143,10 @@
                 <xsl:sequence select="$enriched-rough-messages"/>
             </xsl:if>
            
-            <xsl:sequence select="imf:create-debug-track('Constructing the messages',$debugging)"/>
+            <xsl:sequence select="imf:track('Constructing the messages')"/>
             
-            <xsl:variable name="messages">
                 <xsl:for-each select="$enriched-rough-messages/ep:rough-messages/ep:rough-message">
-                    <xsl:variable name="currentMessage">
-                        <xsl:copy>
-                            <xsl:copy-of select="@*"/>
-                            <xsl:copy-of select="*"/>               
-                        </xsl:copy>
-                    </xsl:variable>
+                    <xsl:variable name="currentMessage" select="."/>
                     <xsl:variable name="id" select="ep:id" as="xs:string"/>
                     <xsl:variable name="message-construct" select="imf:get-construct-by-id($id,$packages-doc)"/>
                     <xsl:variable name="berichtstereotype" select="$message-construct/imvert:stereotype" as="xs:string"/>
@@ -174,7 +167,7 @@
                     <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
                     <xsl:variable name="name" select="$message-construct/imvert:name/@original" as="xs:string"/>
                     <xsl:variable name="tech-name" select="imf:get-normalized-name($message-construct/imvert:name, 'element-name')" as="xs:string"/>
-                    <xsl:variable name="package-type" select="$packages//imvert:package[.//imvert:class[imvert:id = $id]]/imvert:stereotype" as="xs:string"/>
+                    <xsl:variable name="package-type" select="$packages/imvert:package[imvert:class[imvert:id = $id]]/imvert:stereotype" as="xs:string"/>
                     <xsl:variable name="release" select="$packages/imvert:release" as="xs:string"/>
                     
                     <xsl:if test="not(string($berichtCode))">
@@ -206,8 +199,6 @@
                         </xsl:apply-templates>
                     </ep:message>
                 </xsl:for-each>
-           </xsl:variable>
-           <xsl:sequence select="$messages"/>
 
            <xsl:apply-templates select="$enriched-rough-messages/ep:rough-messages/ep:rough-message"/>
 
@@ -234,6 +225,12 @@
     <xsl:template match="ep:rough-message">
         <xsl:variable name="berichtName" select="ep:name" as="xs:string"/>
         <xsl:variable name="fundamentalMnemonic" select="ep:fundamentalMnemonic" as="xs:string"/>
+        <!-- ROME: Er is een verschil tussen de uitbecommentarieerde variabele en de actieve want het levert een ander resultaat op.
+                   Bij de uitbecommentarieerde variabele levert een generate-id() op een node uit deze tree een ander id op dan een 
+                   generate-id() op de node-tree waaruit deze variabele is voortgekomen.
+                   Arjan stelt voor om i.p.v. het gebruik van generate-id() node comparison te gebruiken 
+                   (Zie https://www.w3.org/TR/xpath-functions/#func-is-same-node) --> 
+        <!--xsl:variable name="currentMessage" select="."/-->           
         <xsl:variable name="currentMessage">
                 <xsl:copy>
                     <xsl:copy-of select="@*"/>
@@ -247,7 +244,7 @@
             </ep:currentMessage>
         </xsl:if>
         
-        <xsl:sequence select="imf:create-debug-track('Constructing the global constructs',$debugging)"/>
+        <xsl:sequence select="imf:track('Constructing the global constructs',$debugging)"/>
 
         <!-- The following for-each takes care of creating global construct elements for each ep:construct element present within the current 'rough-messages' variable 
              having a type-id value none of the preceding ep:construct elements within the processed message have. 
@@ -435,7 +432,7 @@
                                    <xsl:choose>
                                         
                                        <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
-                                       <xsl:when test="$packages//imvert:class[imvert:supertype/imvert:type-id = $id]">
+                                       <xsl:when test="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
                                            <xsl:apply-templates select="$construct"
                                                mode="create-message-content">
                                                <xsl:with-param name="berichtName" select="$berichtName"/>
@@ -473,7 +470,7 @@
                                                    <!-- If the class is refered to form an association which is part of an VRIJ BERICHT no stuurgegevens must be generated. -->
                                                    <xsl:with-param name="useStuurgegevens">
                                                        <xsl:choose>
-                                                           <xsl:when test="$packages//imvert:association[imvert:type-id = $id]/imvert:stereotype = 'BERICHTRELATIE'">
+                                                           <xsl:when test="$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:type-id = $id]/imvert:stereotype = 'BERICHTRELATIE'">
                                                               <xsl:value-of select="'no'"/>
                                                            </xsl:when>
                                                            <xsl:otherwise>
@@ -494,10 +491,15 @@
                                             				ook al gegenereerd moeten worden als er ergens dieper onder het huidige niveau 
                                             				een element voorkomt waarbij op het gerelateerde attribuut historie is gedefinieerd. 
                                             				Dit geldt voor alle locaties waar onderstaande elementen worden gedefinieerd. -->
-                                               <xsl:if test="$construct/imvert:stereotype != 'KENNISGEVINGBERICHTTYPE' and
+                                               <!--xsl:if test="$construct/imvert:stereotype != 'KENNISGEVINGBERICHTTYPE' and
                                                    $construct/imvert:stereotype != 'VRAAGBERICHTTYPE' and
                                                    $construct/imvert:stereotype != 'ANTWOORDBERICHTTYPE' and
-                                                   $construct/imvert:stereotype != 'SYNCHRONISATIEBERICHTTYPE' and not(contains(@verwerkingsModus,'kerngegevens'))">
+                                                   $construct/imvert:stereotype != 'SYNCHRONISATIEBERICHTTYPE' and not(contains(@verwerkingsModus,'kerngegevens'))"-->
+                                               <xsl:if test="not($construct/imvert:stereotype = imf:get-config-stereotypes((
+                                                   'stereotype-name-vraagberichttype',
+                                                   'stereotype-name-antwoordberichttype',
+                                                   'stereotype-name-kennisgevingberichttype',
+                                                   'stereotype-name-synchronisatieberichttype'))) and not(contains(@verwerkingsModus,'kerngegevens'))">
                                                    <ep:constructRef prefix="StUF" externalNamespace="yes">
                                                        <ep:name>tijdvakGeldigheid</ep:name>
                                                        <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
@@ -591,15 +593,6 @@
                                                    <xsl:with-param name="context" select="$context" />
                                                    <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
                                                </xsl:apply-templates>
-                                               <!-- ROME: Volgende wijze van waarde bepaling voor de mnemonic moet ook op diverse plaatsen in Imvert2XSD-KING-endproduct-structure geimplementeerd worden. -->
-                                               <!--xsl:variable name="mnemonic">
-                                                   <xsl:choose>
-                                                       <xsl:when test="empty($construct/imvert:alias) or not($construct/imvert:alias)"/>
-                                                       <xsl:otherwise>
-                                                           <xsl:value-of select="$construct/imvert:alias"/>
-                                                       </xsl:otherwise>
-                                                   </xsl:choose>
-                                               </xsl:variable-->
                                                <!-- The function imf:createAttributes is used to determine the XML attributes 
                                     				neccessary for this context. It has the following parameters: - typecode 
                                     				- berichttype - context - datumType The first 3 parameters relate to columns 
@@ -726,7 +719,7 @@
                                            
                                             
                                            
-                                           <xsl:when test="$packages//imvert:class[imvert:supertype/imvert:type-id = $id]">
+                                           <xsl:when test="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
                                                <xsl:apply-templates select="$construct"
                                                    mode="create-message-content">
                                                    <xsl:with-param name="berichtName" select="$berichtName"/>
@@ -932,7 +925,7 @@
                                            <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
                                            
                                            
-                                           <xsl:when test="$packages//imvert:class[imvert:supertype/imvert:type-id = $id]">
+                                           <xsl:when test="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
                                                <xsl:apply-templates select="$construct"
                                                    mode="create-message-content">
                                                    <xsl:with-param name="berichtName" select="$berichtName"/>
@@ -1048,7 +1041,7 @@
                         <!-- Within the schema's we want to have global constructs for relations. However for that kind of objects no uml classes are available.
                                 With the following apply-templates the global ep:construct elements are created presenting the relations. -->
                         
-                        <xsl:variable name="association" select="$packages//imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']"/>
+                        <xsl:variable name="association" select="$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']"/>
                         
                         <xsl:apply-templates select="$association"
                             mode="create-global-construct">
@@ -1089,7 +1082,7 @@
                         <!-- If 'Formele historie' is applicable for the current class and messagetype a historieFormeel global construct based on the current class is generated. -->
                         <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes')">
                             
-                            <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorie constructs: ',$packages//imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
+                            <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorie constructs: ',$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
                             
                             <xsl:apply-templates select="$association"
                                 mode="create-global-construct">
@@ -1108,7 +1101,7 @@
                         <!-- If 'Formele historie' is applicable for the current class and messagetype a historieFormeel global construct based on the current class is generated. -->
                         <xsl:if test="@indicatieFormeleHistorieRelatie='Ja'">
                             
-                            <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorieRelatie constructs: ',$packages//imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
+                            <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorieRelatie constructs: ',$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
                             
                             <xsl:apply-templates select="$association"
                                 mode="create-global-construct">

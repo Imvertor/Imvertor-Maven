@@ -125,114 +125,45 @@
 				</xsl:when>
 				<xsl:when test="contains($berichtCode,'Lv') or (contains($berichtCode,'Di') and @context = 'vraag' or ancestor::ep:construct[@context = 'vraag'])">
 					<xsl:choose>
-						<!--xsl:when test="@type!='entity' and not(ancestor::ep:construct[@type='entity']) and (@context != 'start' and @context != 'scope')"-->
 						<xsl:when test="@type!='entity' and not(ancestor::ep:construct[@type='entity'])">
 								<!-- Het gaat hier om constructs voor parameters en stuurgegevens. -->
 						</xsl:when>
-						
-						<!-- Volgende when vervangt tijdelijk de volgende twee uitbecomentarieerde when's. -->
 						<xsl:when test="@type='entity' and not(ancestor::ep:construct[@type='entity'])">
 							<!-- Dit betreft een construct voor een fundamentele entiteiten in de context van een gelijk, totEnMet, vanaf of scope element. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'vraag')"/>
 						</xsl:when>
-						<?x xsl:when test="@type='entity' and not(ancestor::ep:construct[@type='entity']) and (@context = 'selectie' or @context = 'scope')">
-							<!-- Dit betreft een construct voor een fundamentele entiteiten in de context van een gelijk, totEnMet, vanaf of scope element. -->
-							<xsl:attribute name="verwerkingsModus" select="'vraag'"/>
-						</xsl:when>
-						<xsl:when test="@type='entity' and not(ancestor::ep:construct[@type='entity']) and @context = 'start'">
-							<!-- Dit betreft een construct voor een fundamentele entiteiten in de context van een start element. -->
-							<xsl:attribute name="verwerkingsModus" select="'antwoord'"/>
-						</xsl:when x?>
-						
-						
-						<!-- Volgende when vervangt tijdelijk de volgende twee uitbecomentarieerde when's. -->
 						<xsl:when test="@type='entity' and (count(ancestor::ep:construct[@type='entity']) = 1)">
 							<!-- Dit betreft een construct voor een entiteit op het tweede niveau. Typisch een dat gebruikt wordt in een gerelateerde in de 
 								 context van een gelijk, totEnMet, vanaf of scope element. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'gerelateerdeVraag')"/>
 						</xsl:when>
-						<?x xsl:when test="@type='entity' and (count(ancestor::ep:construct[@type='entity']) = 1) and (@context = 'selectie' or @context = 'scope')">
-							<!-- Dit betreft een construct voor een entiteit op het tweede niveau. Typisch een dat gebruikt wordt in een gerelateerde in de 
-								 context van een gelijk, totEnMet, vanaf of scope element. -->
-							<xsl:attribute name="verwerkingsModus" select="'gerelateerdeVraag'"/>
-						</xsl:when>
-						<xsl:when test="@type='entity' and (count(ancestor::ep:construct[@type='entity']) = 1) and @context = 'start'">
-							<!-- Dit betreft een construct voor een entiteit op het tweede niveau. Typisch een dat gebruikt wordt in een gerelateerde in de 
-								 context van een start element. -->
-							<xsl:attribute name="verwerkingsModus" select="'gerelateerdeAntwoord'"/>
-						</xsl:when x?>
-						
-						
 						<xsl:when test="@type='entity' and (count(ancestor::ep:construct[@type='entity']) > 1)">
 							<!-- Dit betreft een construct voor een entiteit op een nog dieper niveau. Typisch een dat gebruikt wordt in een gerelateerde in de context. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kerngegevens')"/>
 						</xsl:when>
-						
-						
-						<!-- Volgende when vervangt tijdelijk de volgende twee uitbecomentarieerde when's. -->
 						<xsl:when test="@type='group' and ((count(ancestor::ep:construct[@type='entity']) = 1) or (count(ancestor::ep:construct[@type='entity']) = 2))">
 							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of een entiteit op het tweede niveau binnen de 
 								 context van een gelijk, totEnMet, vanaf of scope element of group constructs die daar een nakomeling van zijn. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'vraag')"/>
 						</xsl:when>
-						<?x xsl:when test="@type='group' and ((count(ancestor::ep:construct[@type='entity']) = 1) or (count(ancestor::ep:construct[@type='entity']) = 2)) and (@context = 'selectie' or @context = 'scope')">
-							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of een entiteit op het tweede niveau binnen de 
-								 context van een gelijk, totEnMet, vanaf of scope element of group constructs die daar een nakomeling van zijn. -->
-							<xsl:attribute name="verwerkingsModus" select="'vraag'"/>
-						</xsl:when>
-						<xsl:when test="@type='group' and ((count(ancestor::ep:construct[@type='entity']) = 1) or (count(ancestor::ep:construct[@type='entity']) = 2)) and @context = 'start'">
-							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of een entiteit op het tweede niveau binnen de 
-								 context van een start element of group constructs die daar een nakomeling van zijn. -->
-							<xsl:attribute name="verwerkingsModus" select="'antwoord'"/>
-						</xsl:when x?>
-						
-						
 						<xsl:when test="@type='group' and (count(ancestor::ep:construct[@type='entity']) > 2)">
 							<!-- Dit betreft alle overige group constructs. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kerngegevens')"/>
 						</xsl:when>
-						
-						
-						<!-- Volgende when vervangt tijdelijk de volgende twee uitbecomentarieerde when's. -->
 						<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) = 1)">
 							<!-- Dit betreft association constructs binnen de construct voor de fundamentele entiteit binnen de 
 								 context van een gelijk, totEnMet, vanaf of scope element. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'vraag')"/>
 						</xsl:when>
-						<?x xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) = 1) and (@context = 'selectie' or @context = 'scope')">
-							<!-- Dit betreft association constructs binnen de construct voor de fundamentele entiteit binnen de 
-								 context van een gelijk, totEnMet, vanaf of scope element. -->
-							<xsl:attribute name="verwerkingsModus" select="'vraag'"/>
-						</xsl:when>
-						<xsl:when test="@type='association' and not(ancestor::ep:construct[@type='entity']) and @context = 'start'">
-							<!-- Dit betreft de association constructs voor het start element. -->
-							<xsl:attribute name="verwerkingsModus" select="'antwoord'"/>
-						</xsl:when x?>
-						
-						
 						<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) > 1)">
 							<!-- Dit betreft alle overige association constructs. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kerngegevens')"/>
 						</xsl:when>
-						
-						
-						<!-- Volgende when vervangt tijdelijk de volgende twee uitbecomentarieerde when's. -->
 						<xsl:when test="@type='supertype' and (count(ancestor::ep:construct[@type='entity']) = 1)">
 							<!-- Dit betreft supertype constructs voor de construct van de fundamentele entiteit binnen de 
 								 context van een gelijk, totEnMet, vanaf of scope element. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'vraag')"/>
 						</xsl:when>
-						<?x xsl:when test="@type='supertype' and (count(ancestor::ep:construct[@type='entity']) = 1) and (@context = 'selectie' or @context = 'scope')">
-							<!-- Dit betreft supertype constructs voor de construct van de fundamentele entiteit binnen de 
-								 context van een gelijk, totEnMet, vanaf of scope element. -->
-							<xsl:attribute name="verwerkingsModus" select="'vraag'"/>
-						</xsl:when>
-						<xsl:when test="@type='supertype' and (count(ancestor::ep:construct[@type='entity']) = 1) and @context = 'start'">
-							<!-- Dit betreft supertype constructs voor de construct van de fundamentele entiteit binnen de 
-								 context van een start element. -->
-							<xsl:attribute name="verwerkingsModus" select="'antwoord'"/>
-						</xsl:when x?>
-						
 						<xsl:when test="@type='supertype' and (count(ancestor::ep:construct[@type='entity']) > 1)">
 							<!-- Dit betreft alle overige supertype constructs. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kerngegevens')"/>
@@ -247,119 +178,6 @@
 						<xsl:when test="@typeCode = 'entiteitrelatie' or ancestor::ep:construct[@typeCode = 'entiteitrelatie']">
 							<!-- Dit betreft constructs die vanuit een vrijbericht direct naar  fundamentele entiteit lopen. -->
 						</xsl:when>
-						<!--xsl:when test="@context = 'update' or ancestor::ep:construct[@context = 'update']">
-							<xsl:choose>
-								<xsl:when test="@type!='entity' and not(ancestor::ep:construct[@type='entity'])"/>
-								<xsl:when test="@type='entity' and not(ancestor::ep:construct[@type='entity'])">
-									<xsl:attribute name="verwerkingsModus" select="'kennisgeving'"/>
-								</xsl:when>
-								<xsl:when test="@type='entity' and (count(ancestor::ep:construct[@type='entity']) >= 1)">
-									<xsl:attribute name="verwerkingsModus" select="'kerngegevensKennisgeving'"/>
-								</xsl:when>
-								<xsl:when test="@type='group' and (count(ancestor::ep:construct[@type='entity']) = 1)">
-									<xsl:attribute name="verwerkingsModus" select="'kennisgeving'"/>
-								</xsl:when>
-								<xsl:when test="@type='group' and (count(ancestor::ep:construct[@type='entity']) > 1)">
-									<xsl:attribute name="verwerkingsModus" select="'kerngegevensKennisgeving'"/>
-								</xsl:when>
-								<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) = 1)">
-									<xsl:attribute name="verwerkingsModus" select="'kennisgeving'"/>
-								</xsl:when>
-								<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) > 1)">
-									<xsl:attribute name="verwerkingsModus" select="'kerngegevensKennisgeving'"/>
-								</xsl:when>
-								<xsl:when test="@type='supertype' and (count(ancestor::ep:construct[@type='entity']) >= 1)">
-									<xsl:attribute name="verwerkingsModus" select="'kerngegevensKennisgeving'"/>
-								</xsl:when>
-							</xsl:choose>
-						</xsl:when>
-						<xsl:when test="@context = 'vraag' or ancestor::ep:construct[@context = 'vraag']">
-							<xsl:choose>
-								<xsl:when test="@type!='entity' and not(ancestor::ep:construct[@type='entity']) and (@context != 'start' and @context != 'scope')">
-								</xsl:when>
-								<xsl:when test="@type='entity' and not(ancestor::ep:construct[@type='entity']) and (@context = 'selectie' or @context = 'scope')">
-									<xsl:attribute name="verwerkingsModus" select="'vraag'"/>
-								</xsl:when>
-								<xsl:when test="@type='entity' and not(ancestor::ep:construct[@type='entity']) and @context = 'start'">
-									<xsl:attribute name="verwerkingsModus" select="'antwoord'"/>
-								</xsl:when>
-								<xsl:when test="@type='entity' and (count(ancestor::ep:construct[@type='entity']) = 1) and (@context = 'selectie' or @context = 'scope')">
-									<xsl:attribute name="verwerkingsModus" select="'gerelateerdeVraag'"/>
-								</xsl:when>
-								<xsl:when test="@type='entity' and (count(ancestor::ep:construct[@type='entity']) = 1) and @context = 'start'">
-									<xsl:attribute name="verwerkingsModus" select="'gerelateerdeAntwoord'"/>
-								</xsl:when>
-								<xsl:when test="@type='entity' and (count(ancestor::ep:construct[@type='entity']) > 1)">
-									<xsl:attribute name="verwerkingsModus" select="'kerngegevens'"/>
-								</xsl:when>
-								<xsl:when test="@type='group' and ((count(ancestor::ep:construct[@type='entity']) = 1) or (count(ancestor::ep:construct[@type='entity']) = 2)) and (@context = 'selectie' or @context = 'scope')">
-									<xsl:attribute name="verwerkingsModus" select="'vraag'"/>
-								</xsl:when>
-								<xsl:when test="@type='group' and ((count(ancestor::ep:construct[@type='entity']) = 1) or (count(ancestor::ep:construct[@type='entity']) = 2)) and @context = 'start'">
-									<xsl:attribute name="verwerkingsModus" select="'antwoord'"/>
-								</xsl:when>
-								<xsl:when test="@type='group' and (count(ancestor::ep:construct[@type='entity']) > 2)">
-									<xsl:attribute name="verwerkingsModus" select="'kerngegevens'"/>
-								</xsl:when>
-								<xsl:when test="@type='association' and not(ancestor::ep:construct[@type='entity']) and @context = 'scope'">
-									<xsl:attribute name="verwerkingsModus" select="'vraag'"/>
-								</xsl:when>
-								<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) = 1) and (@context = 'selectie' or @context = 'scope')">
-									<xsl:attribute name="verwerkingsModus" select="'vraag'"/>
-								</xsl:when>
-								<xsl:when test="@type='association' and not(ancestor::ep:construct[@type='entity']) and @context = 'start'">
-									<xsl:attribute name="verwerkingsModus" select="'antwoord'"/>
-								</xsl:when>
-								<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) = 1) and @context = 'start'">
-									<xsl:attribute name="verwerkingsModus" select="'antwoord'"/>
-								</xsl:when>
-								<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) > 1)">
-									<xsl:attribute name="verwerkingsModus" select="'kerngegevens'"/>
-								</xsl:when>
-								<xsl:when test="@type='supertype' and (count(ancestor::ep:construct[@type='entity']) = 1) and (@context = 'selectie' or @context = 'scope')">
-									<xsl:attribute name="verwerkingsModus" select="'vraag'"/>
-								</xsl:when>
-								<xsl:when test="@type='supertype' and (count(ancestor::ep:construct[@type='entity']) = 1) and @context = 'start'">
-									<xsl:attribute name="verwerkingsModus" select="'antwoord'"/>
-								</xsl:when>
-								<xsl:when test="@type='supertype' and (count(ancestor::ep:construct[@type='entity']) > 1)">
-									<xsl:attribute name="verwerkingsModus" select="'kerngegevens'"/>
-								</xsl:when>
-							</xsl:choose>
-						</xsl:when>
-						<xsl:when test="@context = 'antwoord' or ancestor::ep:construct[@context = 'antwoord']">
-							<xsl:choose>
-								<xsl:when test="@type!='entity' and not(ancestor::ep:construct[@type='entity'])">
-								</xsl:when>
-								<xsl:when test="@type='entity' and not(ancestor::ep:construct[@type='entity'])">
-									<xsl:attribute name="verwerkingsModus" select="'antwoord'"/>
-								</xsl:when>
-								<xsl:when test="@type='entity' and (count(ancestor::ep:construct[@type='entity']) = 1)">
-									<xsl:attribute name="verwerkingsModus" select="'gerelateerdeAntwoord'"/>
-								</xsl:when>
-								<xsl:when test="@type='entity' and (count(ancestor::ep:construct[@type='entity']) > 1)">
-									<xsl:attribute name="verwerkingsModus" select="'kerngegevens'"/>
-								</xsl:when>
-								<xsl:when test="@type='group' and ((count(ancestor::ep:construct[@type='entity']) = 1) or (count(ancestor::ep:construct[@type='entity']) = 2))">
-									<xsl:attribute name="verwerkingsModus" select="'antwoord'"/>
-								</xsl:when>
-								<xsl:when test="@type='group' and (count(ancestor::ep:construct[@type='entity']) > 2)">
-									<xsl:attribute name="verwerkingsModus" select="'kerngegevens'"/>
-								</xsl:when>
-								<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) = 1)">
-									<xsl:attribute name="verwerkingsModus" select="'antwoord'"/>
-								</xsl:when>
-								<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) > 1)">
-									<xsl:attribute name="verwerkingsModus" select="'kerngegevens'"/>
-								</xsl:when>
-								<xsl:when test="@type='supertype' and (count(ancestor::ep:construct[@type='entity']) = 1)">
-									<xsl:attribute name="verwerkingsModus" select="'antwoord'"/>
-								</xsl:when>
-								<xsl:when test="@type='supertype' and (count(ancestor::ep:construct[@type='entity']) > 1)">
-									<xsl:attribute name="verwerkingsModus" select="'kerngegevens'"/>
-								</xsl:when>
-							</xsl:choose>
-						</xsl:when-->
 					</xsl:choose>
 				</xsl:when>
 				<xsl:otherwise>
@@ -390,7 +208,6 @@
 		<xsl:param name="contextnode"/>
 		<xsl:param name="verwerkingsModus"/>
 		
-		<!--xsl:value-of select="concat($verwerkingsModus,generate-id($contextnode))"/-->
 		<xsl:value-of select="$verwerkingsModus"/>
 	</xsl:function>
 	
