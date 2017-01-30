@@ -129,6 +129,9 @@
 
     <xsl:variable name="normalized-stereotype-none" select="imf:get-normalized-name('#none','stereotype-name')"/>
     
+    <!-- check the class hierarchy, no type recursion allowed -->
+    <xsl:variable name="is-proper-class-tree" select="imf:boolean-and(for $class in $application-package//imvert:class[imvert:supertype] return imf:check-proper-class-tree($class,string($class/imvert:id)))"/>
+    
     <xsl:key name="key-unique-id" match="//*[imvert:id]" use="imvert:id"/>
     
     <!-- 
@@ -137,8 +140,6 @@
         Place rules here that focus on the complete specification rather than particular constructs. 
     -->
     <xsl:template match="/imvert:packages">
-        <xsl:sequence select="imf:msg(.,'DEBUG','Debugging [1]',$xml-stylesheet-alias)"/>
-        
         <imvert:report>
             <!-- info used to determine report location are set here -->
             <xsl:variable name="application-package-release" select="$application-package/imvert:release"/>
@@ -514,18 +515,20 @@
         <xsl:sequence select="imf:report-error(., 
             (count(../imvert:class/imvert:name[.=$this/imvert:name]) gt 1), 
             'Duplicate class name.')"/>
+
         <xsl:sequence select="imf:report-error(., 
             $supertypes[2], 
             'Multiple supertypes are not supported.')"/>
         <xsl:sequence select="imf:report-error(., 
-            not(imf:check-inherited-stereotypes(.)), 
+            $is-proper-class-tree and not(imf:check-inherited-stereotypes(.)), 
             'Stereotype of supertype not assigned to its subtype.')"/>
         <xsl:sequence select="imf:report-error(., 
-            not(imf:check-inheriting-stereotypes(.)), 
+            $is-proper-class-tree and not(imf:check-inheriting-stereotypes(.)), 
             'Stereotype of subtype not assigned to its supertype.')"/>
         <xsl:sequence select="imf:report-error(., 
-            not(imf:check-base-stereotypes(.)), 
+            $is-proper-class-tree and not(imf:check-base-stereotypes(.)), 
             'Stereotype of base type not assigned to its subtype')"/>
+
         <xsl:sequence select="imf:report-error(., 
             (imvert:stereotype=imf:get-config-stereotypes('stereotype-name-union') and empty(imvert:attributes/imvert:attribute)), 
             'Empty union class is not allowed.')"/>
@@ -565,11 +568,13 @@
         
         <!-- TODO het niet gebruikt zijn van een klasse is een zaak van configuratie: wat zijn de potentiele topconstructs? -->
         <xsl:sequence select="imf:report-warning(., 
+            $is-proper-class-tree and 
             $is-application and 
             not($is-toplevel) and not($is-abstract or $is-target-in-relation or $is-association-class), 
             'This [1] is not used.', if (exists(imvert:stereotype)) then imvert:stereotype else 'construct')"/>
         
         <xsl:sequence select="imf:report-warning(., 
+            $is-proper-class-tree and 
             $is-abstract and 
             empty($subclasses), 
             'Abstract class must have at least one subclass')"/>
@@ -1341,11 +1346,37 @@
         <xsl:variable name="this-id" select="$class/imvert:id"/>
         <xsl:variable name="is-used-type" select="$document-classes/imvert:attributes/imvert:attribute/imvert:type-id=$this-id"/>
         <xsl:variable name="is-used-ref" select="$document-classes/imvert:associations/imvert:association/imvert:type-id=$this-id"/>
+       
+        <xsl:variable name="superclass-is-target" select="(for $super-id in ($class/imvert:supertype/imvert:type-id) return imf:is-target-in-relation(imf:get-construct-by-id($super-id)))"/>
+        <xsl:variable name="subclass-is-target" select="(for $sub in (imf:get-immediate-subclasses($class,$document-classes)) return imf:is-target-in-relation($sub))"/>
         
-        <xsl:variable name="superclass-is-target" select="(for $super-id in ($class/imvert:supertype/imvert:type-id) return imf:is-target-in-relation(imf:get-construct-by-id($super-id))) = true()"/>
-        <xsl:variable name="subclass-is-target" select="(for $sub in (imf:get-subclasses($class)) return imf:is-target-in-relation($sub)) = true()"/>
-        
-        <xsl:sequence select="$is-used-type or $is-used-ref or $superclass-is-target or $subclass-is-target"/>
+        <xsl:sequence select="$is-used-type or $is-used-ref or $superclass-is-target "/><!-- TODO or $subclass-is-target -->
     </xsl:function>
 
+    <xsl:function name="imf:check-proper-class-tree" as="xs:boolean*">
+        <xsl:param name="class" as="element(imvert:class)"/>
+        <xsl:param name="found" as="xs:string+"/> <!-- start off with the ID of the class itself -->
+        <xsl:variable name="super" select="$class/imvert:supertype"/>
+        <xsl:choose>
+            <xsl:when test="exists($super)">
+                <xsl:for-each select="$super">
+                    <xsl:variable name="id" select="string(imvert:type-id)"/>
+                    <xsl:choose>
+                        <xsl:when test="$found = $id">
+                            <xsl:sequence select="imf:report-error($class,
+                                true(),
+                                'Improper type hierarchy detected',())"/>
+                            <xsl:sequence select="false()"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence select="imf:check-proper-class-tree(imf:get-construct-by-id($id),($found, $id))"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:for-each>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="true()"/>
+            </xsl:otherwise>
+        </xsl:choose>
+       </xsl:function>
 </xsl:stylesheet>

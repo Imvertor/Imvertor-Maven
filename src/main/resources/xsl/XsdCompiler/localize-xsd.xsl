@@ -40,7 +40,7 @@
     <xsl:param name="local-schema-folder-name">unknown-folder</xsl:param>
     <xsl:param name="local-schema-mapping-file">unknown-file</xsl:param>
     
-    <xsl:variable name="local-schema-mapping" select="imf:document($local-schema-mapping-file)/local-schemas"/>
+    <xsl:variable name="local-schema-mapping" select="imf:document($local-schema-mapping-file,true())/local-schemas"/>
     
     <xsl:variable name="local-mapping-notification" select="imf:get-config-parameter('local-mapping-notification')"/>
     

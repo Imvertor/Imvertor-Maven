@@ -37,14 +37,14 @@
     version="2.0">
   
     <!-- The current runtime parms.xml file -->
-    <xsl:variable name="configuration" select="imf:document($xml-configuration-url)"/>
+    <xsl:variable name="configuration" select="imf:document($xml-configuration-url,true())"/>
   
     <xsl:variable name="configuration-owner-name" select="imf:get-config-string('system','configuration-owner-file')"/>
     <xsl:variable name="configuration-metamodel-name" select="imf:get-config-string('system','configuration-metamodel-file')"/>
     <xsl:variable name="configuration-schemarules-name" select="imf:get-config-string('system','configuration-schemarules-file')"/>
     <xsl:variable name="configuration-tvset-name" select="imf:get-config-string('system','configuration-tvset-file')"/>
   
-    <xsl:variable name="configuration-file" select="imf:document(imf:get-config-string('properties','WORK_CONFIG_FILE'))"/>
+    <xsl:variable name="configuration-file" select="imf:document(imf:get-config-string('properties','WORK_CONFIG_FILE'),true())"/>
     
     <xsl:variable name="configuration-owner-file" select="$configuration-file/config/project-owner"/>
     <xsl:variable name="configuration-metamodel-file" select="$configuration-file/config/metamodel"/>

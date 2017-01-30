@@ -34,57 +34,33 @@
    
     <xsl:import href="../common/Imvert-common.xsl"/>
     
-    <xsl:variable name="configuration-owner-file" select="imf:prepare-config(imf:document($configuration-owner-name))"/>
-    <xsl:variable name="configuration-metamodel-file" select="imf:prepare-config(imf:document($configuration-metamodel-name))"/>
-    <xsl:variable name="configuration-schemarules-file" select="imf:prepare-config(imf:document($configuration-schemarules-name))"/>
-    <xsl:variable name="configuration-tvset-file" select="imf:prepare-config(imf:document($configuration-tvset-name))"/>
+    <xsl:variable name="configuration-owner-file" select="imf:prepare-config(imf:document($configuration-owner-name,true()))"/>
+    <xsl:variable name="configuration-metamodel-file" select="imf:prepare-config(imf:document($configuration-metamodel-name,true()))"/>
+    <xsl:variable name="configuration-schemarules-file" select="imf:prepare-config(imf:document($configuration-schemarules-name,true()))"/>
+    <xsl:variable name="configuration-tvset-file" select="imf:prepare-config(imf:document($configuration-tvset-name,true()))"/>
     
     <xsl:variable name="metamodel-name" select="imf:get-normalized-name(imf:get-config-string('cli','metamodel'),'system-name')"/>
     <xsl:variable name="schemarules-name" select="imf:get-normalized-name(imf:get-config-string('cli','schemarules'),'system-name')"/>
     <xsl:variable name="tvset-name" select="imf:get-normalized-name(imf:get-config-string('cli','tvset'),'system-name')"/>
     
     <xsl:template match="/">
-        <xsl:choose>
-            <xsl:when test="empty($configuration-owner-file)">
-                <xsl:sequence select="imf:msg('FATAL','Invalid/incomplete configuration for owner [1]', $owner-name)"/>
-                <xsl:sequence select="imf:msg('DEBUG','Owner config at [1]', $configuration-owner-name)"/>
-            </xsl:when>
-            <xsl:when test="empty($configuration-metamodel-file)">
-                <xsl:sequence select="imf:msg('FATAL','Invalid/incomplete configuration for metamodel [1]', $metamodel-name)"/>
-                <xsl:sequence select="imf:msg('DEBUG','Metamodel config at [1]', $configuration-metamodel-name)"/>
-            </xsl:when>
-            <xsl:when test="empty($configuration-schemarules-file)">
-                <xsl:sequence select="imf:msg('FATAL','Invalid/incomplete configuration for schema rules [1]', $schemarules-name)"/>
-                <xsl:sequence select="imf:msg('DEBUG','Schemarules config at [1]', $configuration-schemarules-name)"/>
-            </xsl:when>
-            <xsl:when test="empty($configuration-tvset-file)">
-                <xsl:sequence select="imf:msg('FATAL','Invalid/incomplete configuration for tvset [1]', $tvset-name)"/>
-                <xsl:sequence select="imf:msg('DEBUG','Tvset config at [1]', $configuration-tvset-name)"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:variable name="config-raw">
-                    <config>
-                        <xsl:sequence select="$configuration-owner-file"/>
-                        <xsl:sequence select="$configuration-metamodel-file"/>
-                        <xsl:sequence select="$configuration-schemarules-file"/>
-                        <xsl:sequence select="$configuration-tvset-file"/>
-                    </config>
-                </xsl:variable>
-                <?x <xsl:if test="$debugging">
-                    <xsl:result-document href="file:/c:/temp/test.xml">
-                        <xsl:sequence select="$config-raw"/>
-                    </xsl:result-document>
-                </xsl:if> x?>
-                <xsl:variable name="config-compact">
-                    <xsl:apply-templates select="$config-raw" mode="finish-config"/>
-                </xsl:variable>
-                <xsl:sequence select="$config-compact"/>
-                
-                <!-- set some global configuration info -->
-                <xsl:variable name="proxy" select="imf:get-config-stereotypes(('stereotype-name-att-proxy','stereotype-name-obj-proxy','stereotype-name-grp-proxy'), false())"/>
-                <xsl:sequence select="imf:set-config-string('system','supports-proxy',if ($proxy = '#unknown') then 'no' else 'yes')"/>
-            </xsl:otherwise>
-        </xsl:choose>
+       
+        <xsl:variable name="config-raw">
+            <config>
+                <xsl:sequence select="$configuration-owner-file"/>
+                <xsl:sequence select="$configuration-metamodel-file"/>
+                <xsl:sequence select="$configuration-schemarules-file"/>
+                <xsl:sequence select="$configuration-tvset-file"/>
+            </config>
+        </xsl:variable>
+        <xsl:variable name="config-compact">
+            <xsl:apply-templates select="$config-raw" mode="finish-config"/>
+        </xsl:variable>
+        <xsl:sequence select="$config-compact"/>
+       
+        <!-- set some global configuration info -->
+        <xsl:variable name="proxy" select="imf:get-config-stereotypes(('stereotype-name-att-proxy','stereotype-name-obj-proxy','stereotype-name-grp-proxy'), false())"/>
+        <xsl:sequence select="imf:set-config-string('system','supports-proxy',if ($proxy = '#unknown') then 'no' else 'yes')"/>
         
     </xsl:template>
     

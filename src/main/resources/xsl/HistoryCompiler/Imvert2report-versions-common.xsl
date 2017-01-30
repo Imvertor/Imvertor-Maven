@@ -32,7 +32,7 @@
     <!-- Version info is in a separate file -->
     
     <xsl:variable name="empty">--</xsl:variable>
-    <xsl:variable name="history-doc" select="imf:document(imf:get-config-string('properties','WORK_HISTORY_FILE'))"/>
+    <xsl:variable name="history-doc" select="imf:document(imf:get-config-string('properties','WORK_HISTORY_FILE'),false())"/>
     <xsl:variable name="start-history-at" select="imf:get-config-string('cli','starthistory')"/>
     <xsl:variable name="release-to-public" select="imf:get-config-string('appinfo','task') eq 'release'"/>
     

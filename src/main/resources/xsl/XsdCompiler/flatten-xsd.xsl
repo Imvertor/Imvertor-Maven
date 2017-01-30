@@ -63,7 +63,7 @@
     <xsl:template match="imvert:result-file-fullpath">
         <xsl:variable name="schema-name" select="tokenize(.,'/')[last()]"/>
         <xsl:sequence select="imf:set-variable(concat(imf:get-variable('base-schema'),$schema-name),'1')"/>
-        <xsl:variable name="doc" select="imf:document(.)"/>
+        <xsl:variable name="doc" select="imf:document(.,true())"/>
         <xsl:apply-templates select="$doc/xs:schema" mode="root"/>
     </xsl:template>
     
@@ -95,7 +95,7 @@
             <xsl:when test="$must-copy = '1'">
                 <!-- must resolve --> 
                 <xsl:sequence select="imf:set-variable(concat(imf:get-variable('base-schema'),$schema-name),'1')"/>
-                <xsl:variable name="doc" select="imf:document(@schemaLocation)"/>
+                <xsl:variable name="doc" select="imf:document(@schemaLocation,true())"/>
                 <xsl:comment select="concat('Start of ',@schemaLocation)"/>
                 <xsl:apply-templates select="$doc/xs:schema" mode="sub"/>
                 <xsl:comment select="concat('End of ',@schemaLocation)"/>

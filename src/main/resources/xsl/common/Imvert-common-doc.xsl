@@ -37,15 +37,24 @@
     <!-- ============================= transform an EA string to xhtml. ====================================== -->
     <xsl:function name="imf:eadoc-to-xhtml" as="element()">
         <xsl:param name="eadoc"/>
-        <xsl:variable name="lis" select="replace($eadoc,'&lt;/li&gt;(&#xA;)+','&lt;/li&gt;')"/>
-        <xsl:variable name="startp" select="concat('&#xA;',$lis)"/>
-        <xsl:variable name="nl" select="replace($startp,'&#xA;','&lt;p&gt;')"/>
-        <xsl:variable name="inet" select="imf:replace-inet-references($nl)"/>
-        <xsl:variable name="xhtml" select="imf:parse-html($inet,true())"/>
-        <xsl:variable name="clean">
-            <xsl:apply-templates select="$xhtml" mode="clean-xhtml"/>
-        </xsl:variable>
-        <xsl:sequence select="$clean/*"/>
+        <xsl:choose>
+            <xsl:when test="contains($eadoc,'&gt;') or contains($eadoc,'&amp;')">
+                <xsl:variable name="lis" select="replace($eadoc,'&lt;/li&gt;(&#xA;)+','&lt;/li&gt;')"/>
+                <xsl:variable name="startp" select="concat('&#xA;',$lis)"/>
+                <xsl:variable name="nl" select="replace($startp,'&#xA;','&lt;p&gt;')"/>
+                <xsl:variable name="inet" select="imf:replace-inet-references($nl)"/>
+                <xsl:variable name="xhtml" select="imf:parse-html($inet,true())"/>
+                <xsl:variable name="clean">
+                    <xsl:apply-templates select="$xhtml" mode="clean-xhtml"/>
+                </xsl:variable>
+                <xsl:sequence select="$clean/*"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <p>
+                    <xsl:sequence select="imf:replace-inet-references($eadoc)"/>
+                </p>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     
     <xsl:function name="imf:replace-inet-references" as="xs:string">

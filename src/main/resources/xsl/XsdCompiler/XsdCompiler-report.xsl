@@ -35,7 +35,7 @@
    
     <xsl:import href="Imvert2XSD-KING-common.xsl"/>
     
-    <xsl:variable name="document" select="imf:document(imf:get-config-string('properties','WORK_EMBELLISH_FILE'))"/>
+    <xsl:variable name="document" select="imf:document(imf:get-config-string('properties','WORK_EMBELLISH_FILE'),true())"/>
     
     <xsl:variable name="selected-cols-names">
         entiteittype
@@ -54,7 +54,7 @@
     <xsl:template match="/config">
         <xsl:variable name="schema-requested" select="imf:boolean(imf:get-config-string('cli','createxmlschema'))"/>
         <xsl:variable name="schemarules" select="imf:get-config-string('cli','schemarules')"/>
-        <xsl:variable name="berichten-infoset" select="imf:document(imf:get-config-string('properties','RESULT_ENDPRODUCT_MSG_FILE_PATH'))"/>
+        <xsl:variable name="berichten-infoset" select="imf:document(imf:get-config-string('properties','RESULT_ENDPRODUCT_MSG_FILE_PATH'),false())"/>
         <report>
             <step-display-name>XML Schema compiler</step-display-name>
             <xsl:choose>

@@ -35,7 +35,7 @@
     
     <xsl:template match="imvert:packages" mode="conceptualschemas">
         <xsl:if test="exists(imvert:package[imvert:conceptual-schema-namespace])">
-            <xsl:variable name="cf" select="imf:document($conceptual-schema-mapping-file)/conceptual-schemas"/>
+            <xsl:variable name="cf" select="imf:document($conceptual-schema-mapping-file,true())/conceptual-schemas"/>
             <page>
                 <title>Conceptual schemas</title>
                 <content>

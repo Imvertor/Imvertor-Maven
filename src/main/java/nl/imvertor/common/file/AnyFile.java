@@ -212,56 +212,63 @@ public class AnyFile extends File  {
 	}
 	
 	/**
-	 * Filespec is an array of strings:
+	 * Filespec is an array of strings. This holds info on the file, based on the requested info type, expressed as an Uppercase letter in options.
 	 * 
-	 * 0 Path,
-	 * 1 URL,
-	 * 2 name (no extension),
-	 * 3 extension,
-	 * 4 E when exists, otherwise e.
+	 * 0 P Path,
+	 * 1 U URL,
+	 * 2 N name (no extension),
+	 * 3 X extension,
+	 * 4 E E when exists, otherwise e.
 	 * 
-	 * The following strings are added when the path exists:
+	 * The following strings are added when the path exists: requires E parameter (this info is only extracted when E is tested):
 	 *  
 	 * 5 F when it is a file, otherwise f (it's a directory)
 	 * 6 H when it is hidden, otherwise h
 	 * 7 R when it can be read, otherwise r
 	 * 8 W when it can be written to, otherwise w
-	 * 9 E when it can be executed, otherwise e
-	 * 10 the date & time in ISO format
+	 * 9 C when it can be executed, otherwise c
+	 * 10 D the date & time in ISO format
 	 *
-	 * When an error occured, only 1 string is returned, the error message.
+	 * When an error occurred, only 1 string is returned, the error message.
 	 * 
 	 * @param filepath
 	 * @return
 	 */
-	public String[] getFilespec() {
+	public String[] getFilespec(String options) {
 		String name = getName();
+		Boolean fileExists = options.contains("E") ? exists() : false; 
 		int i = name.lastIndexOf('.');
 		String[] parms = {}, specs = {};
 		try {
-			if (exists()) {
+			if (fileExists) {
 				parms = new String[] {
-						(isDirectory()) ? "f" : "F",
-						(isHidden()) ? "H" : "h",
-						(canRead()) ? "R" : "r",
-						(canWrite()) ? "W" : "w",
-					    (canExecute()) ? "E" : "e",
-						(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:sssZ")).format(lastModified())
+					options.contains("F") ? ((isDirectory()) ? "f" : "F") : "",
+					options.contains("H") ? ((isHidden()) ? "H" : "h") : "",
+					options.contains("R") ? ((canRead()) ? "R" : "r") : "",
+					options.contains("W") ? ((canWrite()) ? "W" : "w") : "",
+					options.contains("C") ? ((canExecute()) ? "C" : "c") : "",
+					options.contains("D") ? ((new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:sssZ")).format(lastModified()))  : ""
 				};
 			} 
 			specs = new String[] {
-					getCanonicalPath(),
-					toURI().toURL().toString(),
-					(i > 0 && i < name.length() - 1) ? name.substring(0,i) : name,
-					(i > 0 && i < name.length() - 1) ? name.substring(i + 1) : "",
-					(exists()) ? "E" : "e"
+					options.contains("P") ? getCanonicalPath() : "",
+					options.contains("U") ? toURI().toURL().toString() : "",
+					options.contains("N") ? ((i > 0 && i < name.length() - 1) ? name.substring(0,i) : name) : "",
+					options.contains("X") ? ((i > 0 && i < name.length() - 1) ? name.substring(i + 1) : "") : "",
+					options.contains("E") ? ((fileExists) ? "E" : "e") : ""
 				};
 			return ArrayUtils.addAll(specs, parms);
 		} catch (Exception e) {
 			return new String[] {e.getMessage()};
 		}
 	}
-
+	/**
+	 * Pass the full filespec as an array of strings. 
+	 * Retrieves all possible info.
+	 */
+	public String[] getFilespec() {
+		return getFilespec("PUNXEFHRWCD");
+	}
 	
 	/**
 	 * Maak een kopie van dit file naar opgegeven pad. 

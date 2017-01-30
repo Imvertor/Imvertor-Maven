@@ -67,7 +67,7 @@
         
         <xsl:variable name="trace-id" select="imvert:trace"/>
         <xsl:variable name="supplier-subpath" select="imf:get-construct-supplier-system-subpath(.)"/>
-        <xsl:variable name="supplier-doc" select="imf:document(concat($output-folder,'/applications/',$supplier-subpath,'/etc/system.imvert.xml'))"/>
+        <xsl:variable name="supplier-doc" select="imf:document(concat($output-folder,'/applications/',$supplier-subpath,'/etc/system.imvert.xml'),false())"/>
         <xsl:variable name="supplier-construct" select="imf:get-construct-by-id($trace-id,$supplier-doc)"/>
         
         <xsl:copy>

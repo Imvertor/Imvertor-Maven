@@ -48,16 +48,17 @@ public class ImvertorFileSpec extends ExtensionFunctionDefinition {
 	}
 
 	public int getMinimumNumberOfArguments() {
-		return 1;
+		return 2;
 	}
 
 	public int getMaximumNumberOfArguments() {
-		return 1;
+		return 2;
 	}
 
 	public SequenceType[] getArgumentTypes() {
 		return new SequenceType[] { 
-			SequenceType.SINGLE_STRING
+				SequenceType.SINGLE_STRING,
+				SequenceType.SINGLE_STRING
 			};
 	}
 
@@ -75,9 +76,10 @@ public class ImvertorFileSpec extends ExtensionFunctionDefinition {
 
 			try {
 				String filepath = Transformer.getStringvalue(arguments[0]);
+				String options = Transformer.getStringvalue(arguments[1]);
 				if (filepath.startsWith("file:/"))
 					filepath = filepath.substring(6);
-				String[] spec = (new AnyFile(filepath)).getFilespec();
+				String[] spec = (new AnyFile(filepath)).getFilespec(options);
 				StringValue[] values = new StringValue[spec.length];
 				for (int i = 0; i < spec.length; i++) 
 					values[i] = new StringValue(spec[i]);

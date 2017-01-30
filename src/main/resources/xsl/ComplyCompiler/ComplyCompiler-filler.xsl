@@ -71,7 +71,7 @@
         prepare all info from EP message set, transform to a worksheet block-buildup that can be processed "in sequence"
     -->
     <xsl:variable name="imvertor-ep-result-path" select="imf:get-config-string('system','imvertor-ep-result')"/>
-    <xsl:variable name="message-set-flat" select="imf:document($imvertor-ep-result-path)/cp:sheets"/>
+    <xsl:variable name="message-set-flat" select="imf:document($imvertor-ep-result-path,true())/cp:sheets"/>
     
     <!-- 
         get the sheets from template 

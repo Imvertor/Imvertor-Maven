@@ -232,7 +232,7 @@
     </xsl:function>
     
     <!-- return the direct superclasses of this class -->
-    <xsl:function name="imf:get-superclass" as="element()*"> <!-- imvert:class -->
+    <xsl:function name="imf:get-superclass" as="element(imvert:class)*">
         <xsl:param name="this" as="element()"/>
         <xsl:sequence select="for $x in $this/imvert:supertype return imf:get-class($x/imvert:type-name,$x/imvert:type-package)"/>
     </xsl:function>
@@ -653,21 +653,64 @@
         <xsl:value-of select="string-join($result,'')"/>
     </xsl:function>
 
-    <!-- return a document when it exists, oitherwise return empty sequence -->
-    <xsl:function name="imf:document" as="document-node()*">
+    <!-- return a document when it exists, otherwise return empty sequence -->
+    <xsl:function name="imf:document" as="document-node()?">
         <xsl:param name="uri-or-path" as="xs:string"/>
-        <xsl:variable name="uri" select="if (matches($uri-or-path,'^(file)|(https?):.*$')) then $uri-or-path else imf:file-to-url($uri-or-path)"/>
+        <xsl:sequence select="imf:document($uri-or-path,false())"/>
+    </xsl:function>
+    
+    <!-- 
+        Return a document. 
+        Specify if it is assumed to exist; if false, test availability (which slows down) 
+    -->
+    <xsl:function name="imf:document" as="document-node()?">
+        <xsl:param name="uri-or-path" as="xs:string"/>
+        <xsl:param name="assume-existing" as="xs:boolean"/>
+        
+        <xsl:variable name="is-local-uri" select="matches($uri-or-path,'^file:.*$')"/>
+        <xsl:variable name="is-local-absolute-path" select="matches($uri-or-path,'^(/|(.:)).*$')"/>
+        <xsl:variable name="is-global-uri" select="matches($uri-or-path,'^https?:.*$')"/>
+        
+        <xsl:variable name="uri" select="
+            if ($is-local-absolute-path) 
+            then imf:file-to-url($uri-or-path) 
+            else 
+                if ($is-local-uri or $is-global-uri)
+                then $uri-or-path
+                else ()"/>
+        
+        <xsl:variable name="path" select="
+            if ($is-local-uri) 
+            then imf:url-to-file($uri-or-path) 
+            else 
+                if ($is-local-absolute-path)
+                then $uri-or-path
+                else ()"/>
+        
         <xsl:choose>
-            <xsl:when test="imf:filespec($uri-or-path)[6] = 'f'"> <!-- a folder -->
-                <xsl:sequence select="()"/>
+            <xsl:when test="$assume-existing">
+                <xsl:sequence select="imf:document-from-cache($uri)"/>
             </xsl:when>
-            <xsl:when test="unparsed-text-available($uri)">
-                <xsl:sequence select="document($uri)"/>
+            <xsl:when test="empty($path)"><!-- an URL was passed, e.g. http://... -->
+                <xsl:sequence select="imf:document-from-cache($uri)"/>
+            </xsl:when>
+            <xsl:when test="imf:document-available($path)">
+                <xsl:sequence select="imf:document-from-cache($uri)"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="()"/>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:function>
+    
+    <xsl:function name="imf:document-from-cache" as="document-node()">
+        <xsl:param name="uri"/>
+        <xsl:sequence select="document($uri)"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:document-available" as="xs:boolean">
+        <xsl:param name="uri"/>
+        <xsl:sequence select="imf:filespec($uri,'EF')[6] = 'F'"/>
     </xsl:function>
     
     <!-- find an element hashed by xsl:key -->
@@ -726,9 +769,30 @@
 
     <xsl:function name="imf:file-to-url">
         <xsl:param name="filepath"/>
-        <xsl:value-of select="imf:filespec($filepath)[2]"/>
+        <xsl:value-of select="imf:path-to-file-uri($filepath)"/>
     </xsl:function>
-
+    
+    <!-- replace file:/ construct by correct local representation -->
+    <xsl:function name="imf:url-to-file">
+        <xsl:param name="uripath"/>
+        <xsl:variable name="path-raw" as="xs:string">
+            <xsl:choose>
+                <xsl:when test="starts-with($uripath,'file:///')">
+                    <xsl:variable name="sub" select="substring($uripath,8)"/>
+                    <xsl:value-of select="translate($sub,'\','/')"/>
+                </xsl:when>
+                <xsl:when test="starts-with($uripath,'file:/')">
+                    <xsl:variable name="sub" select="substring($uripath,6)"/>
+                    <xsl:value-of select="translate($sub,'\','/')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="$uripath"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:value-of select="$path-raw"/>
+    </xsl:function>
+    
     <xsl:function name="imf:replace-inet-references" as="xs:string">
         <xsl:param name="content"/>
         <xsl:variable name="r">
@@ -857,6 +921,22 @@
     <xsl:function name="imf:boolean-and" as="xs:boolean">
         <xsl:param name="boolean-sequence" as="xs:boolean*"/>
         <xsl:sequence select="not(false() = $boolean-sequence)"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:path-to-file-uri" as="xs:string">
+        <xsl:param name="path" as="xs:string"/>
+        <xsl:variable name="protocol-prefix" as="xs:string">
+            <xsl:choose>
+                <xsl:when test="starts-with($path, '\\')">file://</xsl:when> <!-- UNC path -->
+                <xsl:when test="matches($path, '[a-zA-Z]:[\\/]')">file:///</xsl:when> <!-- Windows drive path -->
+                <xsl:when test="starts-with($path, '/')">file://</xsl:when> <!-- Unix path -->
+                <xsl:otherwise>file://</xsl:otherwise>
+            </xsl:choose>  
+        </xsl:variable>
+        <xsl:variable name="norm-path" select="translate($path, '\', '/')" as="xs:string"/>
+        <xsl:variable name="path-parts" select="tokenize($norm-path, '/')" as="xs:string*"/>
+        <xsl:variable name="encoded-path" select="string-join(for $p in $path-parts return encode-for-uri($p), '/')" as="xs:string"/>
+        <xsl:value-of select="concat($protocol-prefix, $encoded-path)"/>        
     </xsl:function>
     
 </xsl:stylesheet>

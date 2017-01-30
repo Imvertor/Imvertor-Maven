@@ -38,7 +38,7 @@
     
     <xsl:variable name="conceptual-schema-mapping-name" select="imf:get-config-string('cli','mapping')"/>
     <xsl:variable name="conceptual-schema-mapping-file" select="imf:get-config-string('properties','CONCEPTUAL_SCHEMA_MAPPING_FILE')"/>
-    <xsl:variable name="conceptual-schema-mapping" select="imf:document($conceptual-schema-mapping-file)/conceptual-schemas"/>
+    <xsl:variable name="conceptual-schema-mapping" select="imf:document($conceptual-schema-mapping-file,true())/conceptual-schemas"/>
    
     <xsl:template match="/imvert:packages">
         <imvert:packages>

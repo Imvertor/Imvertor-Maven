@@ -130,7 +130,7 @@
                 <!-- generate profile info -->
                 <xsl:variable name="profiles-doc-path" select="imf:get-config-string('system','profiles-doc')"/>
                 <xsl:if test="normalize-space($profiles-doc-path)">
-                    <xsl:variable name="profiles-doc" select="imf:document($profiles-doc-path)"/>
+                    <xsl:variable name="profiles-doc" select="imf:document($profiles-doc-path,false())"/>
                     <xsl:apply-templates select="$profiles-doc/profiles" mode="doc-profiles"/>
                 </xsl:if>                    
             </xsl:if>

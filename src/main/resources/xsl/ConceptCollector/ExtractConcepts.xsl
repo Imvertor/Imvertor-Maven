@@ -189,7 +189,8 @@
 	<!-- RDF content negotiation is currently supplied by ?format=rdf%2Bxml parameter in URL passed -->
 	<xsl:function name="imf:get-rdf-document" as="document-node()?">
 		<xsl:param name="uri" as="xs:string"/>
-		<xsl:sequence select="imf:document($uri)"/>
+		<xsl:message select="$uri"></xsl:message>
+		<xsl:sequence select="imf:document($uri,false())"/>
 	</xsl:function>
 	
 	<xsl:function name="imf:select-lang" as="xs:string">

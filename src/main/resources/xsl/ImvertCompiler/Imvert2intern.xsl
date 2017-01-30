@@ -162,7 +162,7 @@
         <xsl:variable name="subpath" select="concat($project,'/',$application,'/',$release)"/>
         <xsl:variable name="sys-subpath" select="concat('applications\',$subpath)"/>
         <xsl:variable name="path" select="concat($managed-output-folder, '\',$sys-subpath,'\etc\system.imvert.xml')"/>
-        <xsl:variable name="doc" select="imf:document($path)"/>
+        <xsl:variable name="doc" select="imf:document($path,false())"/>
         <xsl:sequence select="imf:msg($intern-pack,'DEBUG','Internal path resolves to [1]', $path)"/>
         <xsl:choose>
             <xsl:when test="empty($doc)">

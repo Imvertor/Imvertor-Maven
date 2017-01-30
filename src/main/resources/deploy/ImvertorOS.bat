@@ -61,6 +61,7 @@ call "%javaexe%" %jvmparms% ^
     -Downer.name="%owner%" ^
     -Dwork.dir="%workdir%\default" ^
     -Dea.enabled=%imvertor_os_eaenabled% ^
+    -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=y ^
 	-classpath "%bindir%\bin\ChainTranslateAndReport_lib" ^
     -jar "%bindir%\bin\%jarfile%" ^
 	-arguments "%propfilepath%"  ^

@@ -199,7 +199,7 @@ public class Transformer {
 			    transformer.setParameter(new QName(key), new XdmAtomicValue(value));
 			}
 		}
-		String url = (new AnyFile(configurator.getConfigFilepath())).getFilespec()[1];
+		String url = (new AnyFile(configurator.getConfigFilepath())).getFilespec("U")[1];
 		
 		// pass all parameters if available to the transformer
 		Iterator<Entry<String,String>> it = parms.entrySet().iterator();

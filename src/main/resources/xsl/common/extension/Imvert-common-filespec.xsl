@@ -30,11 +30,11 @@
     
     <!--
         
-     * 1 Path,
-	 * 2 URL,
-	 * 3 name (no extension),
-	 * 4 extension,
-	 * 5 E when exists, otherwise e.
+	 * 1 P Path,
+	 * 2 U URL,
+	 * 3 N name (no extension),
+	 * 4 X extension,
+	 * 5 E E when exists, otherwise e.
 	 * 
 	 * The following strings are added when the path exists:
 	 *  
@@ -42,16 +42,22 @@
 	 * 7 H when it is hidden, otherwise h
 	 * 8 R when it can be read, otherwise r
 	 * 9 W when it can be written to, otherwise w
-	 * 10 E when it can be executed, otherwise e
-	 * 11 the date & time in ISO format
-	 *
-	 * When an error occured, only 1 string is returned, the error message.
+	 * 10 C when it can be executed, otherwise c
+	 * 11 D the date & time in ISO format
+
+     * When an error occured, only 1 string is returned, the error message.
 	 
     -->
     
     <xsl:function name="imf:filespec" as="xs:string*">
         <xsl:param name="file"/>
-        <xsl:sequence select="ext:imvertorFileSpec($file)"/>
+        <xsl:sequence select="ext:imvertorFileSpec($file,'PUNXEFHRWCD')"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:filespec" as="xs:string*">
+        <xsl:param name="file" as="xs:string"/>
+        <xsl:param name="options" as="xs:string"/>
+        <xsl:sequence select="ext:imvertorFileSpec($file,$options)"/>
     </xsl:function>
     
 </xsl:stylesheet>

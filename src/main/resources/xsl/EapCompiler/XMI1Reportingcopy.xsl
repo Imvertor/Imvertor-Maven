@@ -43,7 +43,7 @@
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     <xsl:import href="../common/Imvert-common-doc.xsl"/>
     
-    <xsl:variable name="imvert-document" select="imf:document(imf:get-config-string('properties','WORK_EMBELLISH_FILE'))"/>
+    <xsl:variable name="imvert-document" select="imf:document(imf:get-config-string('properties','WORK_EMBELLISH_FILE'),false())"/>
     
     <xsl:variable name="augmented" as="element()">
         <xsl:apply-templates select="/*" mode="augment"/>

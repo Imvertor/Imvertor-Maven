@@ -31,7 +31,14 @@
     <xsl:function name="imf:parse-html" as="item()*">
         <xsl:param name="html-string" as="xs:string"/>
         <xsl:param name="is-escaped" as="xs:boolean"/>
-        <xsl:sequence select="ext:imvertorParseHTML($html-string,$is-escaped)"/>
+        <xsl:choose>
+            <xsl:when test="contains($html-string,'&gt;') or contains($html-string,'&amp;')">
+                <xsl:sequence select="ext:imvertorParseHTML($html-string,$is-escaped)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$html-string"/>                
+            </xsl:otherwise>
+        </xsl:choose> 
     </xsl:function>
     
 </xsl:stylesheet>

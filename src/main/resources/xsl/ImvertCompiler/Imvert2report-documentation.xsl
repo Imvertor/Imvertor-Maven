@@ -40,7 +40,7 @@
     
     <xsl:variable name="concept-documentation-path" select="imf:get-config-string('appinfo','concepts-file')"/>
     
-    <xsl:variable name="concepts" select="imf:document($concept-documentation-path)/imvert:concepts"/>
+    <xsl:variable name="concepts" select="imf:document($concept-documentation-path,false())/imvert:concepts"/>
     
     <xsl:variable name="concept-strings" as="xs:string*">
         <xsl:for-each select="$concepts/imvert:concept">

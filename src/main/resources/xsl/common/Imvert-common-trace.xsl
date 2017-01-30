@@ -18,7 +18,7 @@
     <xsl:variable name="application-package-subpath" select="imf:get-trace-supplier-subpath($project-name,$application-package-name,$application-package-release)"/>
     
     <xsl:variable name="all-derived-models-path" select="imf:get-config-string('properties','WORK_DEPENDENCIES_FILE',())"/>
-    <xsl:variable name="all-derived-models" select="imf:document($all-derived-models-path)/imvert:package-dependencies/imvert:supplier-contents"/>
+    <xsl:variable name="all-derived-models" select="imf:document($all-derived-models-path,false())/imvert:package-dependencies/imvert:supplier-contents"/>
     
     <xsl:function name="imf:get-construct-formal-trace-name" as="xs:string">
         <xsl:param name="this" as="element()"/>
@@ -232,12 +232,12 @@
    
     <xsl:function name="imf:get-imvert-system-doc" as="document-node()?">
         <xsl:param name="subpath"/>
-        <xsl:sequence select="imf:document(concat($output-folder,'/applications/',$subpath,'/etc/system.imvert.xml'))"/>
+        <xsl:sequence select="imf:document(concat($output-folder,'/applications/',$subpath,'/etc/system.imvert.xml'),false())"/>
     </xsl:function>
     <xsl:function name="imf:get-imvert-supplier-doc" as="document-node()?">
         <xsl:param name="subpath"/>
         <!-- migration issue: when no supplier doc available yet, use the system doc, though this is a too rich representation. -->
-        <xsl:variable name="doc" select="imf:document(concat($output-folder,'/applications/',$subpath,'/etc/supplier.imvert.xml'))"/>
+        <xsl:variable name="doc" select="imf:document(concat($output-folder,'/applications/',$subpath,'/etc/supplier.imvert.xml'),false())"/>
         <xsl:sequence select="if (exists($doc)) then $doc else imf:get-imvert-system-doc($subpath)"/>
         
     </xsl:function>

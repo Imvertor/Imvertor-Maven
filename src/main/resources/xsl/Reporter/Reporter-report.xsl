@@ -56,11 +56,11 @@
                         <xsl:value-of select="."/>
                     </step-name>
                     <xsl:variable name="step-result-file-path" select="concat($path, '/rep/', ., '-report.xml')"/>
-                    <xsl:variable name="step-result-file-spec" select="imf:filespec($step-result-file-path)" />
+                    <xsl:variable name="step-result-file-spec" select="imf:filespec($step-result-file-path,'EU')" />
                     <xsl:variable name="step-result-file-exists" select="$step-result-file-spec[5] = 'E'"/>
                     <xsl:variable name="step-result-file-url" select="$step-result-file-spec[2]"/>
                     <xsl:if test="$step-result-file-exists">
-                        <xsl:sequence select="imf:document($step-result-file-url)/report/*"/>
+                        <xsl:sequence select="imf:document($step-result-file-url,true())/report/*"/>
                     </xsl:if>       
                 </report>
             </xsl:for-each>

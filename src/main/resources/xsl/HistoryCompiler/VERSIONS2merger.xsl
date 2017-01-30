@@ -41,7 +41,7 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     
     <!-- path to history file for this application;  --> 
-    <xsl:variable name="imvert-history-path" select="imf:file-to-url(imf:get-config-string('properties','WORK_HISTORY_FILE'))"/>
+    <xsl:variable name="imvert-history-path" select="imf:get-config-string('properties','WORK_HISTORY_FILE')"/>
 
     <xsl:template match="/imvert:package-dependencies">
         <imvert-history:versions>
@@ -85,11 +85,11 @@
     </xsl:template>
     
     <xsl:function name="imf:fetch" as="element()*">
-        <xsl:param name="url" as="xs:string"/>
-        <xsl:variable name="history-imvert-file-document" select="imf:document($url)"/>
+        <xsl:param name="path" as="xs:string"/>
+        <xsl:variable name="history-imvert-file-document" select="imf:document($path,false())"/>
         <xsl:choose>
             <xsl:when test="empty($history-imvert-file-document)">
-                <xsl:sequence select="imf:msg('WARN','Cannot find history file for [1]',$url)"/>
+                <xsl:sequence select="imf:msg('WARN','Cannot find history file [1]',$path)"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:apply-templates select="$history-imvert-file-document/imvert-history:versions/imvert-history:filter" mode="content-copy"/>
@@ -109,8 +109,8 @@
         <xsl:param name="project-name" as="xs:string"/>
         <xsl:param name="package-name" as="xs:string"/>
         <xsl:param name="package-release" as="xs:string"/>
-        <xsl:variable name="history-imvert-file-url" select="imf:get-history-url($project-name,$package-name,$package-release)"/>
-        <xsl:sequence select="imf:fetch($history-imvert-file-url)"/>
+        <xsl:variable name="history-imvert-file-path" select="imf:get-history-path($project-name,$package-name,$package-release)"/>
+        <xsl:sequence select="imf:fetch($history-imvert-file-path)"/>
     </xsl:function>
     
     <xsl:template match="*" mode="content-copy">
@@ -120,11 +120,11 @@
         </xsl:copy>
     </xsl:template>
         
-    <xsl:function name="imf:get-history-url" as="xs:string">
+    <xsl:function name="imf:get-history-path" as="xs:string">
         <xsl:param name="project-name" as="xs:string"/>
         <xsl:param name="application-name" as="xs:string"/>
         <xsl:param name="application-release" as="xs:string"/>
-        <xsl:value-of select="imf:file-to-url(concat($applications-folder-path,'/',$project-name,'/',$application-name,'/',$application-release,'/etc/history.imvert.xml'))"/>
+        <xsl:value-of select="concat($applications-folder-path,'/',$project-name,'/',$application-name,'/',$application-release,'/etc/history.imvert.xml')"/>
     </xsl:function>
     
     <xsl:function name="imf:get-application-identifier" as="xs:string">

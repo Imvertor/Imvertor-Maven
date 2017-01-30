@@ -38,7 +38,7 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     
     <xsl:variable name="local-schema-mapping-file" select="imf:get-config-string('properties','LOCAL_SCHEMA_MAPPING_FILE')"/>
-    <xsl:variable name="local-schema-mapping" select="imf:document($local-schema-mapping-file)/local-schemas"/>
+    <xsl:variable name="local-schema-mapping" select="imf:document($local-schema-mapping-file,true())/local-schemas"/>
     
     <xsl:template match="/imvert:packages">
         <imvert:packages>

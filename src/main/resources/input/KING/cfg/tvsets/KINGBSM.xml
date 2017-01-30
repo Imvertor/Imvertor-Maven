@@ -41,7 +41,7 @@
                 <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space"  rules="NOC" id="IndicatieMateriëleHistorie">
+        <tv norm="compact"  rules="NOC" id="IndicatieMateriëleHistorie">
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-attribute</stereo>
@@ -49,7 +49,7 @@
                 <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
          </tv>
-        <tv norm="space" rules="NOC" id="IndicatieFormeleHistorie">
+        <tv norm="compact" rules="NOC" id="IndicatieFormeleHistorie">
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-attribute</stereo>

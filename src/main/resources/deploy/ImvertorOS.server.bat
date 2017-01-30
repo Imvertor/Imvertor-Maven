@@ -32,7 +32,7 @@ set propfilepath=%propfile%
 
 SET jvmparms=-Xms512m -Xmx1024m
 
-SET JAVA_HOME=%bindir%\bin\java\jre7
+SET JAVA_HOME=%bindir%\bin\java\jre1.8.0_121
 IF EXIST "%JAVA_HOME%\bin\java.exe" SET javaexe=%JAVA_HOME%\bin\java.exe
 IF NOT EXIST "%JAVA_HOME%\bin\java.exe" SET javaexe=java.exe
 
