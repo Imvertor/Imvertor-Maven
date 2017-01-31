@@ -92,14 +92,14 @@
                 <body>
                     <img src="{imf:get-config-parameter('web-logo')}"/>
                     <xsl:sequence select="imf:create-report-page-header('Processing report')"/>
-                    <p>
-                        Created by: 
+                    <p>Created by:
                         <xsl:value-of select="imf:get-config-string('run','version')"/>
                     </p>
-                    <xsl:variable name="jobid" select="imf:get-config-string('cli','jobid')"/>
-                    <xsl:variable name="userid" select="imf:get-config-string('cli','userid')"/>
-                    <xsl:if test="$jobid">
-                        <p>Job:<xsl:value-of select="$jobid"/>, user <xsl:value-of select="$userid"/></p>  
+                    <xsl:if test="$job-id">
+                        <p>Job: 
+                            <a href="{$dashboard-reference}" target="imvertorDashboard">
+                                <xsl:value-of select="$job-id"/>
+                            </a>, user <xsl:value-of select="$user-id"/></p>  
                     </xsl:if>
                     <p>
                         <b>

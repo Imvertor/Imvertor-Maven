@@ -40,8 +40,8 @@
     <xsl:variable name="APPLICATIONNAME" select="$application-package-name"/>
     <xsl:variable name="CONTACTEMAIL" select="imf:get-config-string('cli','contactemail','(unspecified)')"/>
     <xsl:variable name="CONTACTURL" select="imf:get-config-string('cli','contacturl','(unspecified)')"/>
-    <xsl:variable name="JOBID" select="imf:get-config-string('cli','jobid','(unspecified)')"/>
-    <xsl:variable name="USERID" select="imf:get-config-string('cli','userid','(unspecified)')"/>
+    <xsl:variable name="JOBID" select="$job-id"/>
+    <xsl:variable name="USERID" select="$user-id"/>
     
     <xsl:template match="/">
         <html>

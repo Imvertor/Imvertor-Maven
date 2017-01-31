@@ -63,6 +63,9 @@
                     <xsl:sequence select="imf:report-label('Debug mode', imf:get-config-string('cli','debugmode'))"/>
                     <xsl:sequence select="imf:report-label('Profile mode', imf:get-config-string('cli','profilemode'))"/>
                 </info>
+                <info label="Run">
+                    <xsl:sequence select="imf:report-label('Job server path', $server-dashboard-path)"/>
+                </info>
                 
             </summary>
             <xsl:if test="exists($messages)">
