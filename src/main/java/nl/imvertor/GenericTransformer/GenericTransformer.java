@@ -70,18 +70,14 @@ public class GenericTransformer extends Step {
 		if (infile.isDirectory() && outfile.isDirectory()) {
 			// process the full folder
 			AnyFolder infolder = new AnyFolder(infile);
-			File[] files = infolder.listFiles();
-			for (int i = 0; i < files.length; i++) {
-				File target = new File(outfile, files[i].getName());
-				transform(transformer, files[i].getAbsolutePath(), target.getAbsolutePath(), xslfile.getAbsolutePath());
-			}
+			transformDir(transformer,infolder,outfile,xslfile);
 		} else if (infile.isFile() && outfile.isDirectory()) { 
 			// transform the file to same named file in the target folder 
 			File target = new File(outfile, infile.getName());
-			transform(transformer, infile.getAbsolutePath(), target.getAbsolutePath(), xslfile.getAbsolutePath());
+			transform(transformer, infile, target, xslfile);
 		} else if (infile.isFile()) {
 			// transform to the result file given
-			transform(transformer, infile.getAbsolutePath(), outfile.getAbsolutePath(), xslfile.getAbsolutePath());
+			transform(transformer, infile, outfile, xslfile);
 		} else
 			configurator.getRunner().error(logger,"Cannot transform " + infile.getName() + " to " + outfile.getName());
 		
@@ -97,7 +93,22 @@ public class GenericTransformer extends Step {
 			
 	}
 	
-	private boolean transform(Transformer transformer, String infile, String outfile, String xslfile) throws Exception {
+	private boolean transformDir(Transformer transformer, AnyFile infolder, AnyFile outfolder, AnyFile xslfile) throws Exception {
+		File[] files = infolder.listFiles();
+		Boolean succeeds = true;
+		for (int i = 0; i < files.length; i++) {
+			AnyFile source = new AnyFile(files[i]);
+			AnyFile target = new AnyFile(outfolder, files[i].getName());
+			if (source.isDirectory())
+				succeeds = succeeds && transformDir(transformer, source, target, xslfile);
+			else if (source.getExtension().equals("xml"))
+				succeeds = succeeds && transform(transformer, source, target, xslfile);
+		}
+		return succeeds;
+	}
+	
+	private boolean transform(Transformer transformer, File infile, File outfile, File xslfile) throws Exception {
+		System.out.println(infile.getAbsolutePath());
 		return transformer.transform(infile, outfile, xslfile,null);
 	}
 }
