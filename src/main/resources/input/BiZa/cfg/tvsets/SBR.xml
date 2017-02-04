@@ -25,7 +25,7 @@
     <tagged-values xml:id="tagset">
         <tv norm="space" id="Herkomst">
             <name lang="nl">Herkomst</name>
-            <name lang="en">Origin</name>
+            <name lang="en">Source</name>
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="yes">stereotype-name-objecttype</stereo>
@@ -42,7 +42,7 @@
         </tv>
         <tv norm="space" id="HerkomstDefinitie">
             <name lang="nl">Herkomst definitie</name>
-            <name lang="en">Origin of definition</name>
+            <name lang="en">Source of definition</name>
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="yes">stereotype-name-objecttype</stereo>
