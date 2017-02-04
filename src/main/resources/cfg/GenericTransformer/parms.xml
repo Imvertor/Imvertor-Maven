@@ -44,6 +44,13 @@
          <required>true</required>
          <type>file</type>
       </cli-parm> 
+      <cli-parm>
+         <name>transinfo</name>
+         <arg>string</arg>
+         <tip>Information to pass to the transformation stylesheet</tip>
+         <required>false</required>
+         <type>string</type>
+      </cli-parm> 
       <?x
       <cli-parm>
          <name>inexcelfile</name>
