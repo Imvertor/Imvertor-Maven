@@ -19,6 +19,8 @@
         <tv norm="space" id="DatumOpname">
             <name lang="nl">Datum opname</name>
             <name lang="en">Date recorded</name>
+            <desc lang="nl">De datum waarop de constructie is opgenomen in het informatiemodel.</desc>
+            <desc lang="en">The date on which the construct is added to the information model</desc>
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="yes">stereotype-name-objecttype</stereo>
@@ -35,6 +37,8 @@
         <tv norm="space" rules="NOC" id="IndicatieMateriëleHistorie">
             <name lang="nl">Indicatie materiële historie</name>
             <name lang="en">Indication material history</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
                 <!-- optional for the following stereo's -->
@@ -42,23 +46,25 @@
                 <stereo required="no">stereotype-name-composite</stereo>
                 <stereo required="no">stereotype-name-relatiesoort</stereo>
                 <!-- and add: -->
-                <stereo required="no">stereotype-name-codelist</stereo>
+                <!--<stereo required="no">stereotype-name-codelist</stereo>-->
                 <stereo required="no">stereotype-name-relation-role</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
-                <value>Nee</value>
+                <value default="yes">Nee</value>
                 <value>Zie groep</value>
             </declared-values>
             <declared-values lang="en">
                 <value>Yes</value>
-                <value>No</value>
+                <value default="yes">No</value>
                 <value>See group</value>
             </declared-values>
         </tv>
         <tv norm="space" rules="NOC" id="IndicatieFormeleHistorie">
             <name lang="nl">Indicatie formele historie</name>
             <name lang="en">Indication formal history</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
                 <!-- optional for the following stereo's -->
@@ -66,23 +72,25 @@
                 <stereo required="no">stereotype-name-composite</stereo>
                 <stereo required="no">stereotype-name-relatiesoort</stereo>
                 <!-- and add: -->
-                <stereo required="no">stereotype-name-codelist</stereo>
+                <!--<stereo required="no">stereotype-name-codelist</stereo>-->
                 <stereo required="no">stereotype-name-relation-role</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
-                <value>Nee</value>
+                <value default="yes">Nee</value>
                 <value>Zie groep</value>
             </declared-values>
             <declared-values lang="en">
                 <value>Yes</value>
-                <value>No</value>
+                <value default="yes">No</value>
                 <value>See group</value>
             </declared-values>
         </tv>
         <tv norm="space" id="IndicatieAuthentiek">
             <name lang="nl">Indicatie authentiek</name>
             <name lang="en">Indication authentic</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
                 <!-- optional for inherited stereos -->
@@ -91,7 +99,7 @@
                 <stereo required="no">stereotype-name-relatiesoort</stereo>
                 <!-- and add this stereo -->
                 <stereo required="no">stereotype-name-data-element</stereo>
-                <stereo required="no">stereotype-name-codelist</stereo>
+                <!--<stereo required="no">stereotype-name-codelist</stereo>-->
                 <stereo required="no">stereotype-name-relation-role</stereo>
             </stereotypes>
         </tv>
@@ -99,6 +107,8 @@
         <tv norm="space" id="Patroon"><!-- MIG -->
             <name lang="nl">Patroon</name>
             <name lang="en">Pattern</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-attribute</stereo>
@@ -110,9 +120,25 @@
                 <stereo required="no">stereotype-name-union-element</stereo>
             </stereotypes>
         </tv>
+        <tv norm="space" id="FormeelPatroon">
+            <name lang="nl">Formeel patroon</name>
+            <name lang="en">Formal pattern</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-complextype</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
+                <stereo required="no">stereotype-name-union-element</stereo>
+                <stereo required="no">stereotype-name-datatype</stereo>
+            </stereotypes>
+        </tv>
         <tv norm="space" id="MogelijkGeenWaarde">
             <name lang="nl">Mogelijk geen waarde</name>
             <name lang="en">Voidable</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-attribute</stereo>
@@ -123,16 +149,18 @@
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
-                <value>Nee</value>
+                <value default="yes">Nee</value>
             </declared-values>
             <declared-values lang="en">
                 <value>Yes</value>
-                <value>No</value>
+                <value default="yes">No</value>
             </declared-values>
         </tv>
         <tv norm="space" id="DataLocatie">
             <name lang="nl">Data locatie</name>
             <name lang="en">Data location</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-referentielijst</stereo>
@@ -142,6 +170,8 @@
         <tv norm="space" origin="system" id="Position">
             <name lang="nl">Positie</name>
             <name lang="en">Position</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-attribute</stereo>
@@ -150,7 +180,7 @@
                 <stereo required="no">stereotype-name-enum</stereo>
                 <stereo required="no">stereotype-name-data-element</stereo>
                 <stereo required="no">stereotype-name-referentie-element</stereo>
-                <stereo required="no">stereotype-name-association-to-composite</stereo>
+             <!--   <stereo required="no">stereotype-name-association-to-composite</stereo> -->
                 <stereo required="no">stereotype-name-enum</stereo>
             </stereotypes>
         </tv>
@@ -158,6 +188,8 @@
         <tv norm="space" id="Lengte">
             <name lang="nl">Lengte</name>
             <name lang="en">Length</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
             <desc>Lengte van de waarde in posities.</desc>
             <derive>yes</derive>
             <stereotypes>
@@ -170,21 +202,23 @@
         <tv norm="space" id="Locatie"><!-- In addition to Grouping tvset -->
             <name lang="nl">Locatie</name>
             <name lang="en">Location</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="yes">stereotype-name-codelist</stereo>
+               <!-- <stereo required="yes">stereotype-name-codelist</stereo> -->
             </stereotypes>
         </tv>
         <tv norm="space" id="Herkomst">   <!-- in addition to SBR -->
             <stereotypes>
-                <stereo required="no">stereotype-name-codelist</stereo>
+             <!--   <stereo required="no">stereotype-name-codelist</stereo> -->
                 <stereo required="no">stereotype-name-relation-role</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="HerkomstDefinitie"> <!-- in addition to SBR -->
             <stereotypes>
-                <stereo required="no">stereotype-name-codelist</stereo>
+              <!--  <stereo required="no">stereotype-name-codelist</stereo> -->
                 <stereo required="no">stereotype-name-relation-role</stereo>
             </stereotypes>
         </tv>
@@ -192,6 +226,8 @@
         <tv norm="space" id="BaseMapping">
             <name lang="nl">Base-mapping</name>
             <name lang="en">Base-mapping</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-objecttype</stereo>
@@ -202,6 +238,8 @@
         <tv norm="space" id="Relation">
             <name lang="nl">Relatie</name>
             <name lang="en">Relation</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-relatiesoort</stereo>

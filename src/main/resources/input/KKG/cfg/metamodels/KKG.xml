@@ -41,7 +41,7 @@
       
         <stereo id="stereotype-name-relatieklasse">
             <name lang="nl">Relatieklasse</name>
-            <name lang="en">RelationType</name>
+            <name lang="en">AssociationClass</name>
             <desc>	
                 Een relatiesoort waarover gegevens over de relatie tussen twee soorten objecten (in de 	vorm van een derde soort object) worden vastgelegd.
                 Voorbeeld: relatieklasse OUDER-KIND RELATIE, relatieklasse FUNCTIONARIS
@@ -51,7 +51,7 @@
        
         <stereo id="stereotype-name-composite">
             <name lang="nl">Gegevensgroeptype</name>
-            <name lang="en">AttributeGroup</name>
+            <name lang="en">GroupType</name>
             <desc>
                 De verzameling van gegevens van een object van een type die gelijktijdig muteren en onderhouden worden.
                 De gegevensgroeptype is als source van een composite relatie opgenomen bij een Objecttype.
@@ -86,6 +86,7 @@
             <construct>attribute</construct>
         </stereo>
        
+        <!--
         <stereo id="stereotype-name-association-to-composite">
             <name lang="nl">Gegevensgroep compositie</name>
             <name lang="en">AttributeGroupComposition</name>
@@ -96,7 +97,8 @@
            </desc>
             <construct>association</construct>
         </stereo>
-
+        -->
+        
         <stereo id="stereotype-name-union">
             <name lang="nl">Union</name>
             <name lang="en">Union</name>
@@ -135,7 +137,7 @@
         </stereo>
         <stereo id="stereotype-name-datatype">
             <name lang="nl">Datatype</name>
-            <name lang="en">BasicType</name>
+            <name lang="en">PrimitiveType</name>
             <desc></desc>
             <construct>datatype</construct>
         </stereo>
@@ -170,7 +172,7 @@
 
         <stereo id="stereotype-name-referentielijst">
             <name lang="nl">Referentielijst</name>
-            <name lang="en">ReferenceValue</name>
+            <name lang="en">Codelist</name>
             <desc>
                 Een lijst met een opsomming van de mogelijke domeinwaarden van een attribuutsoort die in de loop van de tijd kan veranderen.
                 Voorbeeld: referentielijst LAND, referentielijst NATIONALITEIT
@@ -181,7 +183,7 @@
         </stereo>
         <stereo id="stereotype-name-referentie-element">
             <name lang="nl">Referentie element</name>
-            <name lang="en">ReferenceElement</name>
+            <name lang="en">CodelistElement</name>
             <desc>
                 Een eigenschap van een referentielijst in de vorm van een gegeven.
                 Voorbeeld: referentie element Landcode ISO bij referentielijst LAND, referentie element 	
@@ -192,20 +194,20 @@
         </stereo>
        
         <stereo id="stereotype-name-system-reference-package">
-            <name lang="nl">system-reference-package</name>
-            <name lang="en">system-reference-package</name>
+            <name lang="nl">System-reference-package</name>
+            <name lang="en">System-reference-package</name>
             <desc>Een package dat door het systeem is aangemaakt om referentie-elementen te bevatten.</desc>
             <construct>package</construct>
         </stereo>
         <stereo id="stereotype-name-system-reference-class">
-            <name lang="nl">system-reference-class</name>
-            <name lang="en">system-reference-class</name>
+            <name lang="nl">System-reference-class</name>
+            <name lang="en">System-reference-class</name>
             <desc>Een class welke door het systeem is aangemaakt als referentie-element.</desc>
             <construct>class</construct>
         </stereo>
         <stereo id="stereotype-name-reference">
-            <name lang="en">reference</name>
-            <name lang="nl">referentie</name>
+            <name lang="en">Reference</name>
+            <name lang="nl">Referentie</name>
             <desc>Een complex datatype met de naam *AltRef die door de gebruiker is geïntroduceerd als referentie klasse. Zie IM-137. 
                 Het betreft een referentie naar een objecttype uit een ander informatiemodel. 
                 De referentie naar dit object zit in scope van het eigen model, maar het gerefereerde object niet. 
@@ -217,16 +219,18 @@
             </desc>
             <construct>class</construct>
         </stereo>
+        <!--
         <stereo id="stereotype-name-codelist">
             <name lang="nl">Codelist</name>
-            <name lang="en">Codelist</name> <!-- note that this should not be translated to Dutch -->
+            <name lang="en">Codelist</name> 
             <construct>class</construct>
             <construct>datatype</construct>
         </stereo>
+        -->
         
         <stereo id="stereotype-name-composite-id">
-            <name lang="en">isid</name>
-            <name lang="nl">isid</name>
+            <name lang="en">Isid</name>
+            <name lang="nl">Isid</name>
             <desc>Aanduiding dat een relatiesoort onderdeel uitmaakt van de unieke aanduiding van een object.</desc>
             <construct>association</construct>
         </stereo>
@@ -234,7 +238,7 @@
         <stereo id="stereotype-name-relation-role">
             <name lang="nl">Relatierol</name>
             <name lang="en">AssociationRole</name>
-            <construct>association</construct>
+            <construct>associationend</construct>
         </stereo>
     
         <!-- generic -->
@@ -293,7 +297,7 @@
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-materiele-levensduur">
-            <name lang="nl">Materielelevensduur</name>
+            <name lang="nl">M`aterielelevensduur</name>
             <name lang="en">MaterialLifecycle</name>
             <construct>attribute</construct>
         </stereo>

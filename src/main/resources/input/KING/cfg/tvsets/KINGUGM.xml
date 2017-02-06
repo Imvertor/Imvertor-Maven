@@ -39,7 +39,7 @@
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
-                <value>Nee</value>
+                <value default="yes">Nee</value>
             </declared-values>
         </tv>
         <tv norm="space" rules="NOC" id="IndicatieAuthentiek">
@@ -62,7 +62,7 @@
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
-                <value>Nee</value>
+                <value default="yes">Nee</value>
                 <value>Zie groep</value>
                 <value>N.v.t.</value>
                 <value>Ja, zie regels</value>
@@ -83,7 +83,7 @@
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
-                <value>Nee</value>
+                <value default="yes">Nee</value>
                 <value>Zie groep</value>
                 <value>N.v.t.</value>
             <?x
@@ -145,7 +145,7 @@
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
-                <value>Nee</value>
+                <value default="yes">Nee</value>
             </declared-values>
         </tv>
         

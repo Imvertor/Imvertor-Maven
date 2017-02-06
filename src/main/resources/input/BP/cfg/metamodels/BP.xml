@@ -36,8 +36,8 @@
         -->
        
         <stereo id="stereotype-name-relatieklasse">
-            <name lang="nl">relatieklasse</name>
-            <name lang="en">relation class</name>
+            <name lang="nl">Relatieklasse</name>
+            <name lang="en">Relation class</name>
             <desc>	
                 Een relatiesoort waarover gegevens over de relatie tussen twee soorten objecten (in de 	vorm van een derde soort object) worden vastgelegd.
                 Voorbeeld: relatieklasse OUDER-KIND RELATIE, relatieklasse FUNCTIONARIS
@@ -46,8 +46,8 @@
         </stereo>
        
         <stereo id="stereotype-name-composite">
-            <name lang="en">datagrouptype</name>
-            <name lang="nl">gegevensgroeptype</name>
+            <name lang="en">GroupType</name>
+            <name lang="nl">Gegevensgroeptype</name>
             <desc>
                 De verzameling van gegevens van een object van een type die gelijktijdig muteren en onderhouden worden.
                 De gegevensgroeptype is als source van een composite relatie opgenomen bij een Objecttype.
@@ -56,36 +56,35 @@
             <construct>class</construct>
         </stereo>
         <stereo id="stereotype-name-attribute">
-            <name lang="en">attributekind</name>
-            <name lang="nl">attribuutsoort</name>
+            <name lang="en">Attributekind</name>
+            <name lang="nl">Attribuutsoort</name>
             <desc>De soort waartoe een attribuut kan behoren.</desc>
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-relatiesoort">
-            <name lang="en">relationkind</name>
-            <name lang="nl">relatiesoort</name>
+            <name lang="en">Relationkind</name>
+            <name lang="nl">Relatiesoort</name>
             <desc>De soort waartoe een relatie kan behoren.</desc>
             <construct>association</construct>
         </stereo>
         <stereo id="stereotype-name-externekoppeling">
-            <name lang="nl">externe koppeling</name>
-            <name lang="en">external link</name>
+            <name lang="nl">Externe koppeling</name>
+            <name lang="en">External link</name>
             <desc>Een associatie waarmee vanuit het perspectief van het eigen informatiemodel een objecttype van een extern informatiemodel 
                 gekoppeld wordt aan een objecttype uit het ‘eigen’ informatiemodel. </desc>
             <construct>association</construct>
         </stereo>
         <!-- IM-215 -->
         <stereo id="stereotype-name-data-element">
-            <name lang="nl">data element</name>
-            <name lang="en">data element</name>
+            <name lang="nl">Data element</name>
+            <name lang="en">Data element</name>
             <desc>Een onderdeel van een Complex datatype uitgedrukt in een eigenschap van een class (attribute).</desc>
             <construct>attribute</construct>
         </stereo>
-       
 
         <stereo id="stereotype-name-association-to-composite">
-            <name lang="nl">gegevensgroep compositie</name>
-            <name lang="en">datagroup compositon</name>
+            <name lang="nl">Gegevensgroep compositie</name>
+            <name lang="en">Datagroup compositon</name>
             <desc>
                 Een verbijzondering van een relatiesoort waarbij een object van het objecttype of een 
                 gegevensgroep van een gegevensgroeptype of een asscociationclass van een relatieklasse 	samengesteld is uit gegevensgroepen 
@@ -95,8 +94,8 @@
         </stereo>
 
         <stereo id="stereotype-name-union">
-            <name lang="nl">union</name>
-            <name lang="en">union</name>
+            <name lang="nl">Union</name>
+            <name lang="en">Union</name>
             <desc>
                 Gestructureerd datatype zonder identiteit waarvan precies één van de
                 (ten minste twee) onderdelen (attributes) aanwezig is in elke instantie. 
@@ -105,8 +104,8 @@
             <construct>datatype</construct>
         </stereo>
         <stereo id="stereotype-name-union-element">
-            <name lang="en">union element</name>
-            <name lang="nl">union element</name>
+            <name lang="en">Union element</name>
+            <name lang="nl">Union element</name>
             <desc>
                 Een onderdeel van een Union uitgedrukt in een eigenschap van een class (attribute) die als keuze binnen de Union is gerepresenteerd.
                 Voorbeeld: union element Line, union element Polygon beiden onderdeel uitmakend van Union LineOrPolygon
@@ -115,8 +114,8 @@
         </stereo>
 
         <stereo id="stereotype-name-enumeration">
-            <name lang="en">enumeration</name>
-            <name lang="nl">enumeration</name>
+            <name lang="en">Enumeration</name>
+            <name lang="nl">Enumeration</name>
             <desc>
                 Een lijst met een opsomming van de mogelijke domeinwaarden oftewel constanten van een Docent789
                 attribuutsoort die onveranderlijk is.
@@ -125,20 +124,20 @@
             <construct>datatype</construct>
         </stereo>
         <stereo id="stereotype-name-enum">
-            <name lang="en">enum</name>
-            <name lang="nl">enum</name>
+            <name lang="en">Enum</name>
+            <name lang="nl">Enum</name>
             <desc>Één element in een enumeratie.</desc>
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-datatype">
-            <name lang="en">datatype</name>
-            <name lang="nl">datatype</name>
+            <name lang="en">Datatype</name>
+            <name lang="nl">Datatype</name>
             <desc></desc>
             <construct>datatype</construct>
         </stereo>
         <stereo id="stereotype-name-complextype">
-            <name lang="en">complex datatype</name>
-            <name lang="nl">complex datatype</name>
+            <name lang="en">Complex datatype</name>
+            <name lang="nl">Complex datatype</name>
             <desc>
                 Gestructureerd datatype zonder identiteit samengesteld uit minimaal twee onderdelen.
                 Voorbeeld: Complex datatype Bedrag bestaat uit de data elementen som en valuta.
@@ -149,8 +148,8 @@
         </stereo>
         <!-- a imvert:stereotype value -->
         <stereo id="stereotype-name-objecttype">
-            <name lang="en">objecttype</name>
-            <name lang="nl">objecttype</name>
+            <name lang="en">Objecttype</name>
+            <name lang="nl">Objecttype</name>
             <desc>
                 De soort waartoe een object kan behoren.
                 Toelichting:
@@ -166,8 +165,8 @@
         </stereo>
         
         <stereo id="stereotype-name-referentielijst">
-            <name lang="nl">referentielijst</name>
-            <name lang="en">reference list</name>
+            <name lang="nl">Referentielijst</name>
+            <name lang="en">Reference list</name>
             <desc>
                 Een lijst met een opsomming van de mogelijke domeinwaarden van een attribuutsoort die in de loop van de tijd kan veranderen.
                 Voorbeeld: referentielijst LAND, referentielijst NATIONALITEIT
@@ -177,8 +176,8 @@
             <construct>datatype</construct>
         </stereo>
         <stereo id="stereotype-name-referentie-element">
-            <name lang="nl">referentie element</name>
-            <name lang="en">reference element</name>
+            <name lang="nl">Referentie element</name>
+            <name lang="en">Reference element</name>
             <desc>
                 Een eigenschap van een referentielijst in de vorm van een gegeven.
                 Voorbeeld: referentie element Landcode ISO bij referentielijst LAND, referentie element 	
@@ -189,20 +188,20 @@
         </stereo>
 
         <stereo id="stereotype-name-system-reference-package">
-            <name lang="en">system-reference-package</name>
-            <name lang="nl">system-reference-package</name>
+            <name lang="en">System-reference-package</name>
+            <name lang="nl">System-reference-package</name>
             <desc>Een package dat door het systeem is aangemaakt om referentie-elementen te bevatten.</desc>
             <construct>package</construct>
         </stereo>
         <stereo id="stereotype-name-system-reference-class">
-            <name lang="en">system-reference-class</name>
-            <name lang="nl">system-reference-class</name>
+            <name lang="en">System-reference-class</name>
+            <name lang="nl">System-reference-class</name>
             <desc>Een class welke door het systeem is aangemaakt als referentie-element.</desc>
             <construct>class</construct>
         </stereo>
         <stereo id="stereotype-name-reference">
-            <name lang="en">reference</name>
-            <name lang="nl">referentie</name>
+            <name lang="en">Reference</name>
+            <name lang="nl">Referentie</name>
             <desc>Een complex datatype met de naam *AltRef die door de gebruiker is geïntroduceerd als referentie klasse. Zie IM-137. 
                 Het betreft een referentie naar een objecttype uit een ander informatiemodel. 
                 De referentie naar dit object zit in scope van het eigen model, maar het gerefereerde object niet. 
@@ -215,15 +214,15 @@
             <construct>class</construct>
         </stereo>
         <stereo id="stereotype-name-codelist">
-            <name lang="en">codelist</name>
-            <name lang="nl">codelist</name>
+            <name lang="en">Codelist</name>
+            <name lang="nl">Codelist</name>
             <construct>class</construct>
             <construct>datatype</construct>
         </stereo>
         
         <stereo id="stereotype-name-composite-id">
-            <name lang="en">isid</name>
-            <name lang="nl">isid</name>
+            <name lang="en">Isid</name>
+            <name lang="nl">Isid</name>
             <desc>Aanduiding dat een relatiesoort onderdeel uitmaakt van de unieke aanduiding van een object.</desc>
             <construct>association</construct>
         </stereo>

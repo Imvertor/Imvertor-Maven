@@ -21,7 +21,7 @@
                 <stereo required="no">stereotype-name-application-package</stereo>
             </stereotypes>
             <declared-values lang="#ALL">
-                <value>model</value>
+                <value default="yes">model</value>
             </declared-values>
         </tv>
         

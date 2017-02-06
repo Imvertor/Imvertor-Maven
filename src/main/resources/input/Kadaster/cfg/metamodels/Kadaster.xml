@@ -45,73 +45,73 @@
     <stereotypes>
 
         <stereo id="stereotype-name-collection">
-            <name lang="en">collection</name>
-            <name lang="nl">collectie</name>
+            <name lang="en">Collection</name>
+            <name lang="nl">Collectie</name>
             <construct>class</construct>
         </stereo>
 
         <stereo id="stereotype-name-identificatie">
-            <name lang="nl">identificatie</name>
-            <name lang="en">identification</name>
+            <name lang="nl">Identificatie</name>
+            <name lang="en">Identification</name>
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-koppelklasse">
-            <name lang="nl">koppelklasse</name>
-            <name lang="en">link class</name>
+            <name lang="nl">Koppelklasse</name>
+            <name lang="en">Link class</name>
             <construct>class</construct>
         </stereo>
         <stereo id="stereotype-name-voidable">
-            <name lang="en">voidable</name>
-            <name lang="nl">voidable</name>
+            <name lang="en">Voidable</name>
+            <name lang="nl">Voidable</name>
             <construct>attribute</construct>
             <construct>association</construct>
         </stereo>
 
         <stereo id="stereotype-name-generalization">
-            <name lang="nl">generalisatie</name>
-            <name lang="en">generalisation</name>
+            <name lang="nl">Generalisatie</name>
+            <name lang="en">Generalisation</name>
             <construct>generalization</construct>
         </stereo>
         <stereo id="stereotype-name-static-liskov">
-            <name lang="en">static liskov</name>
-            <name lang="nl">static liskov</name>
+            <name lang="en">Static liskov</name>
+            <name lang="nl">Static liskov</name>
             <construct>generalization</construct>
         </stereo>
         <stereo id="stereotype-name-static-generalization">
-            <name lang="en">static</name>
-            <name lang="nl">static</name>
+            <name lang="en">Static</name>
+            <name lang="nl">Static</name>
             <construct>generalization</construct>
         </stereo>
         <stereo id="stereotype-name-dynamic-generalization">
-            <name lang="en">dynamic</name>
-            <name lang="nl">dynamisch</name>
+            <name lang="en">Dynamic</name>
+            <name lang="nl">Dynamisch</name>
             <construct>generalization</construct>
         </stereo>
 
         <stereo id="stereotype-name-formele-historie">
-            <name lang="nl">formelehistorie</name>
-            <name lang="en">formalhistory</name>
+            <name lang="nl">Formelehistorie</name>
+            <name lang="en">Formalhistory</name>
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-formele-levensduur">
-            <name lang="nl">formelelevensduur</name>
-            <name lang="en">formelelevensduur</name>
+            <name lang="nl">Formelelevensduur</name>
+            <name lang="en">Formelelevensduur</name>
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-materiele-historie">
-            <name lang="nl">materielehistorie</name>
-            <name lang="en">materielehistorie</name>
+            <name lang="nl">Materielehistorie</name>
+            <name lang="en">Materielehistorie</name>
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-materiele-levensduur">
-            <name lang="nl">materielelevensduur</name>
-            <name lang="en">materielelevensduur</name>
+            <name lang="nl">Materielelevensduur</name>
+            <name lang="en">Materielelevensduur</name>
             <construct>attribute</construct>
         </stereo>
 
         <stereo id="stereotype-name-anonymous">
-            <name lang="en">anonymous</name>
-            <name lang="nl">anoniem</name>
+            <name lang="en">Anonymous</name>
+            <name lang="nl">Anoniem</name>
             <construct>attribute</construct>
             <construct>association</construct>
         </stereo>

@@ -67,7 +67,7 @@
             <declared-values lang="nl">
                 <value>update</value>
                 <value>selectie</value>
-                <value>antwoord</value>
+                <value default="yes">antwoord</value>
             </declared-values>
         </tv>
         <tv norm="space"  rules="NOC" id="FunctieEntiteitrelatie">

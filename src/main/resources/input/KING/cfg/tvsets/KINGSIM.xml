@@ -51,7 +51,7 @@
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
-                <value>Nee</value>
+                <value default="yes">Nee</value>
                 <value>Zie groep</value>
             </declared-values>
         </tv>
@@ -82,7 +82,7 @@
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <declared-values lang="nl">
                 <value>Ja</value>
-                <value>Nee</value>
+                <value default="yes">Nee</value>
                 <value>Zie groep</value>
                 <value>Ja, zie regels</value>
                 <value>N.v.t.</value>
@@ -98,7 +98,7 @@
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <declared-values lang="nl">
                 <value>Ja</value>
-                <value>Nee</value>
+                <value default="yes">Nee</value>
                 <value>Zie groep</value>
                 <value>N.v.t.</value>
             </declared-values>
@@ -130,7 +130,7 @@
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
-                <value>Nee</value>
+                <value default="yes">Nee</value>
             </declared-values>
         </tv>
         
