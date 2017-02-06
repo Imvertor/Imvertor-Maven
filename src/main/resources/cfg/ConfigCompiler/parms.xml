@@ -48,11 +48,21 @@
          <tip>Name of metamodel used in UML model</tip>
          <required>true</required>
       </cli-parm> 
+      <cli-parm>
+         <name>createeaprofile</name>
+         <arg>name</arg>
+         <tip>If an EA profile should be generated, supply this parameter with the same of the profile</tip>
+         <required>false</required>
+      </cli-parm> 
+       
    </cli-parms>
    
    <properties>
       <WORK_CONFIG_FILE>${system/work-imvert-folder-path}/imvertor.00.config.xml</WORK_CONFIG_FILE>
       <IMVERTOR_CONFIG_XSLPATH debug="ICO">Imvert2configuration.xsl</IMVERTOR_CONFIG_XSLPATH>
+
+      <WORK_EAPROFILE_FILE>${system/work-imvert-folder-path}/imvertor.00.eaprofile.xml</WORK_EAPROFILE_FILE>
+      <IMVERTOR_EAPROFILE_XSLPATH debug="ICO">Imvert2ea-profile.xsl</IMVERTOR_EAPROFILE_XSLPATH>
    </properties>
    
    <system>

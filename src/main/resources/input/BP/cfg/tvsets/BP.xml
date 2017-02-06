@@ -57,7 +57,7 @@
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
-                <value>Nee</value>
+                <value default="yes">Nee</value>
                 <value>Zie groep</value>
             </declared-values>
         </tv>
@@ -72,7 +72,7 @@
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
-                <value>Nee</value>
+                <value default="yes">Nee</value>
                 <value>Zie groep</value>
             </declared-values>
         </tv>
@@ -112,7 +112,7 @@
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
-                <value>Nee</value>
+                <value default="yes">Nee</value>
             </declared-values>
         </tv>
        

@@ -30,28 +30,28 @@
 
       <!-- packages override standard grouping -->
       <stereo id="stereotype-name-application-package">
-         <name lang="en">messageset</name>
-         <name lang="nl">koppelvlak</name>
+         <name lang="en">Messageset</name>
+         <name lang="nl">Koppelvlak</name>
          <desc>TODO</desc>
          <construct>package</construct>
       </stereo>
       <stereo id="stereotype-name-domain-package">
-         <name lang="en">message</name>
-         <name lang="nl">bericht</name>
+         <name lang="en">Message</name>
+         <name lang="nl">Bericht</name>
          <desc>TODO</desc>
          <construct>package</construct>
       </stereo>
      
       <stereo id="stereotype-name-entiteitrelatie">
-         <name lang="en">entityrelation</name>
-         <name lang="nl">entiteitrelatie</name>
+         <name lang="en">Entityrelation</name>
+         <name lang="nl">Entiteitrelatie</name>
          <desc>TODO</desc>
          <construct>association</construct>
       </stereo>
       
       <stereo id="stereotype-name-berichtrelatie">
-         <name lang="en">messagerelation</name>
-         <name lang="nl">berichtrelatie</name>
+         <name lang="en">Messagerelation</name>
+         <name lang="nl">Berichtrelatie</name>
          <desc>TODO</desc>
          <construct>association</construct>
       </stereo>
@@ -60,8 +60,8 @@
       <!-- classes -->
   
       <stereo id="stereotype-name-vrijberichttype">
-         <name lang="en">free message type</name>
-         <name lang="nl">vrij berichttype</name>
+         <name lang="en">Free message type</name>
+         <name lang="nl">Vrij berichttype</name>
          <desc>TODO</desc>
          <construct>class</construct>
          <toplevel>true</toplevel>
@@ -85,8 +85,8 @@
          ?>
       </stereo>
       <stereo id="stereotype-name-vraagberichttype">
-         <name lang="en">request message type</name>
-         <name lang="nl">vraagberichttype</name>
+         <name lang="en">Request message type</name>
+         <name lang="nl">Vraagberichttype</name>
          <desc>TODO</desc>
          <construct>class</construct>
          <toplevel>true</toplevel>
@@ -99,8 +99,8 @@
          </entity-relation-constraint>
       </stereo>
       <stereo id="stereotype-name-antwoordberichttype">
-         <name lang="en">response message type</name>
-         <name lang="nl">antwoordberichttype</name>
+         <name lang="en">Response message type</name>
+         <name lang="nl">Antwoordberichttype</name>
          <desc>TODO</desc>
          <construct>class</construct>
          <toplevel>true</toplevel>
@@ -109,8 +109,8 @@
          </entity-relation-constraint>         
       </stereo>
       <stereo id="stereotype-name-kennisgevingberichttype">
-         <name lang="en">push message type</name>
-         <name lang="nl">kennisgevingberichttype</name>
+         <name lang="en">Push message type</name>
+         <name lang="nl">Kennisgevingberichttype</name>
          <desc>TODO</desc>
          <construct>class</construct>
          <toplevel>true</toplevel>
@@ -119,8 +119,8 @@
          </entity-relation-constraint>
       </stereo>
       <stereo id="stereotype-name-synchronisatieberichttype">
-         <name lang="en">synchronisation message type</name>
-         <name lang="nl">synchronisatieberichttype</name>
+         <name lang="en">Synchronisation message type</name>
+         <name lang="nl">Synchronisatieberichttype</name>
          <desc>TODO</desc>
          <construct>class</construct>
          <toplevel>true</toplevel>

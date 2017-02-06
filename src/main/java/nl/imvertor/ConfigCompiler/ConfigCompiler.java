@@ -24,6 +24,8 @@ import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
+import nl.imvertor.common.file.AnyFolder;
+import nl.imvertor.common.file.XmlFile;
 
 /**
  * create a configuration for the current owner, tagset, metamodel and schemas
@@ -54,7 +56,19 @@ public class ConfigCompiler  extends Step {
 		boolean succeeds = true;
 		
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_CONFIG_FILE", "properties/IMVERTOR_CONFIG_XSLPATH") : false ;
-			
+		
+		String p = configurator.getParm("cli","createeaprofile",false);
+		if (p != null) {
+			// process the results of previous step info a EA profile
+			succeeds = succeeds ? transformer.transformStep("properties/WORK_CONFIG_FILE", "properties/WORK_EAPROFILE_FILE", "properties/IMVERTOR_EAPROFILE_XSLPATH") : false ;
+		
+			// and copy this file to the etc folder
+			AnyFolder etcFolder = new AnyFolder(configurator.getParm("system","work-etc-folder-path"));
+			XmlFile tempProfileFile = new XmlFile(configurator.getParm("properties", "WORK_EAPROFILE_FILE"));
+			XmlFile profileFile = new XmlFile(etcFolder,p + ".xml");
+			tempProfileFile.copyFile(profileFile); 
+		}
+		
 		configurator.setStepDone(STEP_NAME);
 		 
 		// save any changes to the work configuration for report and future steps

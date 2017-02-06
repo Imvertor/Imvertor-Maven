@@ -67,40 +67,40 @@
     <stereotypes xml:id="stereotypes">
 
         <stereo id="stereotype-name-relatieklasse">
-            <name lang="nl">relatie-entiteit</name>
-            <name lang="en">relation entity</name>
+            <name lang="nl">Relatie-entiteit</name>
+            <name lang="en">Relation entity</name>
             <desc>TODO</desc>
             <construct>class</construct>
         </stereo>
        
         <stereo id="stereotype-name-composite">
-            <name lang="en">group</name>
-            <name lang="nl">groep</name>
+            <name lang="en">Group</name>
+            <name lang="nl">Groep</name>
             <desc>TODO</desc>
             <construct>class</construct>
         </stereo>
         <stereo id="stereotype-name-attribute">
-            <name lang="en">element</name>
-            <name lang="nl">element</name>
+            <name lang="en">Element</name>
+            <name lang="nl">Element</name>
             <desc>TODO</desc>
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-relatiesoort">
-            <name lang="en">relation</name>
-            <name lang="nl">relatie</name>
+            <name lang="en">Relation</name>
+            <name lang="nl">Relatie</name>
             <desc>TODO</desc>
             <construct>association</construct>
         </stereo>
         <stereo id="stereotype-name-externekoppeling">
-            <name lang="nl">externe koppeling</name>
-            <name lang="en">external link</name>
+            <name lang="nl">Externe koppeling</name>
+            <name lang="en">External link</name>
             <desc>TODO</desc>
             <construct>association</construct>
         </stereo>
         <!-- IM-215 -->
         <stereo id="stereotype-name-data-element">
-            <name lang="nl">data element</name>
-            <name lang="en">data element</name>
+            <name lang="nl">Data element</name>
+            <name lang="en">Data element</name>
             <desc>TODO</desc>
             <construct>attribute</construct>
         </stereo>
@@ -108,61 +108,61 @@
         <!-- SIM association-to-composite vervalt-->
       
         <stereo id="stereotype-name-union">
-            <name lang="en">union</name>
-            <name lang="nl">union</name>
+            <name lang="en">Union</name>
+            <name lang="nl">Union</name>
             <desc>TODO</desc>
             <construct>datatype</construct>
         </stereo>
         <stereo id="stereotype-name-union-element">
-            <name lang="en">union element</name>
-            <name lang="nl">union element</name>
+            <name lang="en">Union element</name>
+            <name lang="nl">Union element</name>
             <desc>TODO</desc>
             <construct>attribute</construct>
         </stereo>
 
         <stereo id="stereotype-name-enumeration">
-            <name lang="en">enumeration</name>
-            <name lang="nl">enumeration</name>
+            <name lang="en">Enumeration</name>
+            <name lang="nl">Enumeration</name>
             <desc>TODO</desc>
             <construct>class</construct>
             <construct>datatype</construct>
         </stereo>
         <stereo id="stereotype-name-enum">
-            <name lang="en">enum</name>
-            <name lang="nl">enum</name>
+            <name lang="en">Enum</name>
+            <name lang="nl">Enum</name>
             <desc>TODO</desc>
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-datatype">
-            <name lang="en">datatype</name>
-            <name lang="nl">datatype</name>
+            <name lang="en">Datatype</name>
+            <name lang="nl">Datatype</name>
             <desc>TODO</desc>
             <construct>datatype</construct>
         </stereo>
         <stereo id="stereotype-name-complextype">
-            <name lang="en">complex datatype</name>
-            <name lang="nl">complex datatype</name>
+            <name lang="en">Complex datatype</name>
+            <name lang="nl">Complex datatype</name>
             <desc>TODO</desc>
             <construct>datatype</construct>
         </stereo>
         <!-- a imvert:stereotype value -->
         <stereo id="stereotype-name-objecttype">
-            <name lang="en">entity type</name>
-            <name lang="nl">entiteittype</name>
+            <name lang="en">Entity type</name>
+            <name lang="nl">Entiteittype</name>
             <desc>TODO</desc>
             <construct>class</construct>
         </stereo>
         
         <stereo id="stereotype-name-referentielijst">
-            <name lang="nl">tabel-entiteit</name>
-            <name lang="en">table-entity</name>
+            <name lang="nl">Tabel-entiteit</name>
+            <name lang="en">Table-entity</name>
             <desc>TODO</desc>
             <construct>class</construct>
             <construct>datatype</construct>
         </stereo>
         <stereo id="stereotype-name-referentie-element">
-            <name lang="nl">element</name>
-            <name lang="en">element</name>
+            <name lang="nl">Element</name>
+            <name lang="en">Element</name>
             <desc>Een eigenschap van een referentielijst.</desc>
             <construct>attribute</construct>
         </stereo>
@@ -170,23 +170,23 @@
         <!-- BP codelist wordt niet gebruikt -->
         
         <stereo id="stereotype-name-composite-id">
-            <name lang="en">isid</name>
-            <name lang="nl">isid</name>
+            <name lang="en">Isid</name>
+            <name lang="nl">Isid</name>
             <desc>TODO</desc>
             <construct>association</construct>
         </stereo>
         
         <stereo id="stereotype-name-association-to-composite">
-            <name lang="en">group composition</name>
-            <name lang="nl">groep compositie</name>
+            <name lang="en">Group composition</name>
+            <name lang="nl">Groep compositie</name>
             <desc>
             </desc>
             <construct>association</construct>
         </stereo>
         
         <stereo id="stereotype-name-tekentechnisch">
-            <name lang="nl">tekentechnisch</name>
-            <name lang="en">draw</name>
+            <name lang="nl">Tekentechnisch</name>
+            <name lang="en">Draw</name>
             <construct>association</construct>
             <!-- this assiociation is removed explicitly from the model by VNG/KING canonization -->
         </stereo>
@@ -195,8 +195,8 @@
     <!-- POC, oud -->
     <stereotypes>
         <stereo id="stereotype-name-merged">
-            <name lang="en">merged</name>
-            <name lang="nl">samengevoegd</name>
+            <name lang="en">Merged</name>
+            <name lang="nl">Samengevoegd</name>
             <construct>class</construct>
             <construct>attribute</construct>
             <construct>association</construct>
