@@ -98,7 +98,7 @@
         <xsl:sequence select="imf:get-config-stereotypes('stereotype-name-objecttype')"/>
         <!-- more when product -->
     </xsl:variable>
-    
+   
     <xsl:variable name="application-package" select="//imvert:package[imvert:name/@original=$application-package-name and imvert:stereotype= imf:get-config-stereotypes(('stereotype-name-application-package','stereotype-name-base-package'))][1]"/>
     
     <!-- 
@@ -650,17 +650,9 @@
         <xsl:variable name="is-abstract" select="imvert:abstract = 'true'"/>
         <xsl:variable name="stereos" select="('stereotype-name-objecttype','stereotype-name-referentielijst')"/>
         
-        <xsl:variable name="is-designated-datatype" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-datatype','stereotype-name-complextype'))"/>
-        <xsl:variable name="is-designated-enumeration" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-enumeration','stereotype-name-codelist'))"/>
         <xsl:variable name="is-designated-referentielijst" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-referentielijst'))"/>
-        <xsl:variable name="is-designated-interface" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-interface'))"/>
-        <xsl:variable name="is-designated-union" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-union'))"/>
         <xsl:variable name="is-datatyped" select="
-            $is-designated-datatype or 
-            $is-designated-enumeration or 
-            $is-designated-referentielijst or 
-            $is-designated-interface or 
-            $is-designated-union"/>
+            $is-designated-referentielijst"/>
        
         <xsl:variable name="assert-attribute-not-specified" select="(not($is-enumeration) and empty(imvert:baretype) and empty(imvert:type-name))"/>
         
@@ -713,11 +705,6 @@
             'Only classes stereotyped as [1] may have or inherit an attribute that is an ID',string-join($stereos,' or '))"/>
         <!--Task #487338, see also IM-371 teruggedraaid. -->
        
-        <!-- Jira IM-420 -->
-        <xsl:sequence select="imf:report-warning(., 
-            not($is-datatyped or empty($defining-class)), 
-            'Attribute type of [1] must be a datatype, but is not.', ($this/imvert:stereotype))"/>
-        
         <!-- Jira IM-419 -->
         <xsl:sequence select="imf:report-warning(., 
             $is-designated-referentielijst 
