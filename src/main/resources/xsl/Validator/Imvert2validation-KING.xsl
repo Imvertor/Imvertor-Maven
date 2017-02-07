@@ -58,7 +58,7 @@
             
             <xsl:sequence select="imf:report-error(., not($application-package), 'No such application package found: [1]', ($application-package-name))"/>
             <!-- process the application package -->
-            <xsl:apply-templates select="imvert:package[.=$application-package]"/>
+            <xsl:apply-templates select="$application-package"/>
         </imvert:report>
     </xsl:template>
     
@@ -154,11 +154,11 @@
     <!-- 
         other validation 
     -->
-    <xsl:template match="*"> 
+    <xsl:template match="*" priority="-100"> 
         <xsl:apply-templates/>
     </xsl:template> 
 
-    <xsl:template match="text()|processing-instruction()"> 
+    <xsl:template match="text()|processing-instruction()" priority="-100"> 
         <!-- nothing -->
     </xsl:template> 
     

@@ -49,4 +49,28 @@
         </xsl:copy>
     </xsl:template>  
       
+    <!-- 
+         sorteer alle associaties op alfabetische volgorde. Hierbij eerst de attribuutgroepen, daarna de relaties, dan de externe koppelingen 
+     -->
+    <xsl:template match="imvert:class">
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
+            <xsl:apply-templates select="imvert:*[not(self::imvert:associations)]"/>
+            <imvert:associations>
+                <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-association-to-composite')]">
+                    <xsl:sort select="imvert:found-name"/>
+                    <xsl:apply-templates select="."/>
+                </xsl:for-each>
+                <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-relatiesoort')]">
+                    <xsl:sort select="imvert:found-name"/>
+                    <xsl:apply-templates select="."/>
+                </xsl:for-each>
+                <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-externekoppeling')]">
+                    <xsl:sort select="imvert:found-name"/>
+                    <xsl:apply-templates select="."/>
+                </xsl:for-each>
+            </imvert:associations>
+        </xsl:copy>
+    </xsl:template>  
+    
 </xsl:stylesheet>

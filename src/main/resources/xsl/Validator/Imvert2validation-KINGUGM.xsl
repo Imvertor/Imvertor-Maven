@@ -100,14 +100,13 @@
         <xsl:next-match/>
     </xsl:template>
     
-    <xsl:template match="imvert:name">
+    <xsl:template match="*[self::imvert:class | self::imvert:attribute | imvert:association]/imvert:name">
         <!-- setup -->
-        <xsl:variable name="name" select="imvert:name"/>
-        
+        <xsl:variable name="name" select="."/>
         <!-- validate -->
-        <xsl:sequence select="imf:report-warning(.., 
-            matches($name,'^[A-Za-z0-9\-\.]+$'), 
-            'Name has unsupported characters', ())"/>
+        <xsl:sequence select="imf:report-warning(., 
+            not(matches($name,'^[A-Za-z0-9\-\.]+$')), 
+            'Name [1] has unsupported characters', (.))"/>
         
         <xsl:next-match/>
     </xsl:template>
