@@ -93,7 +93,14 @@
             ?>
             </declared-values>
         </tv>
-        
+        <tv norm="space" id="IndicatieInOnderzoek">
+            <derive>yes</derive><!-- UGM mag op supplier  terugvallen-->
+            <stereotypes>
+                <stereo required="yes">stereotype-name-attribute</stereo>
+                <stereo required="yes">stereotype-name-composite</stereo>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+        </tv>
         <tv norm="space" id="IndicatieTerugrelatie">
             <name lang="nl">Indicatie terugrelatie</name>
             <name lang="en">Indication reverse relation</name>

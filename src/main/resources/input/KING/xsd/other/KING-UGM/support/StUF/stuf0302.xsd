@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2017 sp2 (x64) (http://www.altova.com) by Maarten van den Broek (messageDesign B.V.) -->
+<!-- edited with XMLSpy v2016 rel. 2 sp1 (http://www.altova.com) by Henri Korver (Kwaliteitsinstituut Nederlandse Gemeenten) -->
 <schema xmlns:StUF="http://www.stufstandaarden.nl/StUF/StUF0302" xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.stufstandaarden.nl/StUF/StUF0302" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<annotation>
 		<documentation xml:lang="nl">
@@ -8,6 +8,7 @@
             Wijzigingen vergeleken met versie 0301:
             - Namespace gewijzigd in "http://www.stufstandaarden.nl/StUF/StUF0302"
              - appinfo aangepast
+             - Het verwijderen van de attributes aantalVoorkomens en aardAantal (ook binnen de attributegroups relatie en relatieZonderSleutels)
             - RFC0121:
                 - attribute indOnvolledigeDatum evenals het gebruik ervan binnen extraElementen verwijderd
 				- Datum-e gedefinieerd als extension van xs:date en attribute StUF:exact verwijderd
@@ -19,8 +20,6 @@
 			    - Waar nodig verwijzingen aangepast
 			- RFC0123
 				- In het simpleType Functie het facet maxLength gewijzigd van 30 naar 80
-			- RFC0145
-				- Het verwijderen van de attributes aantalVoorkomens en aardAantal (ook binnen de attributegroups relatie en relatieZonderSleutels) en het verwijderen van het simpleType AardAantal
 			- RFC0155
 				- In de attributeGroups entiteit en entiteitZonderSleutels het attribute StUF:functie als ref toegevoegd
 			- RFC0324:
@@ -29,28 +28,18 @@
 			    - Element Bv04Bericht verwijderd
 				- SimpleType BerichtcodeF001 hernoemd naar BerichtcodeFo01
 				- Binnen de definities van de Fo01, Fo02, Fo03, Bv01, Bv02 en Bv03-berichten de fixed value voor de berichtcode vervangen door een verwijzing naar het corresponderende simpleType voor de berichtcode.
+			- RFCnnnn (noValue vanuit project Utrecht): De waarde waardeBestaat toegevoegd in de enumeration voor het simpleType NoValue
 			- RFC0345: Het patchnummer in het bericht
 				- Het attribute patch is toegevoegd
 			- RFC0391:
 				- In het simpleType Entiteittype facet maxLength verwijderd en het pattern [a-zA-Z0-9_]{1,30} toegevoegd
 				- ComplexType EntiteittypeStuurgegevens toegevoegd en gezet als type op alle entiteittype elementen binnen stuurgegevens
-				- attribute entiteittype verwijderd
 			- RFC0406:
 				- zaakInfo is verwijderd in de enumeratie voor het simpleType FunctieVrijBerichtElement
-			- RFC0409 (noValue vanuit project Utrecht):
-				 - De waarde waardeBestaat toegevoegd in de enumeration voor het simpleType NoValue
-			- RFC0413:
-				- nillable="true" verwijderd op extraElement binnen extraElementen
-				- Binnen het simpleType NoValue de enumeratiewaarde geenWaarde verwijderd
-				- Binnen simpleType StatusMetagegeven is de lege string toegevoegd aan de enumeratielijst
-				- Binnen de complexTypes beginnend met TijdstipMogelijkOnvolledig en met DatumMogelijkOnvolledig in de choice het element leeg verwijderd en het attribute noValue
-				  toegevoegd.
-				- Het attribute noValue verwijderd binnen de attributeGroup entiteit
 			- RFC0418:
 				- attribute exact verwijderd
 				- SimpleType Wildcard en WildcardEind toegevoegd
 				- De attributeGroup element verwijderd, omdat deze nog maar 1 attribute bevatte en waar deze voorkwam vervangen door een ref naar StUF:noValue
-				- ComplexTypes WildcardElement en WildcardEindElement toegevoegd
 			- RFC0430:
 			    - Alleen berichtcode toegestaan in de stuurgegevens van een Bv03-bericht
 			- RFC0432:
@@ -59,20 +48,11 @@
 				- In de enumeratie binnen het simpleType IndicatorHistorie zijn de waarden MG en FG verwijderd
 				- In de enumeratie voor Berichtcode La11 t/m 14 en Lv11 t/m 14 verwijderd.
 			- RFC0442:
-				- Het element indicatorAfnemerIndicatie in ParametersVraag-basis en ParametersVraag verplaatst naar de derde positie
-				- Het element indicatorAfnemerIndicatie vervangen door indicatorAfnemerindicatie
+				- Het element IndicatorAfnemerIndicatie in ParametersVraag-basis en ParametersVraag verplaatst naar de derde positie
 			- RFC0443:
 				- sequenceNumber overal hernoemd naar volgnummer en SequenceNumber naar Volgnummer
 			- RFC0453:
 				- attributeGroup entiteitZonderSleutels, relatie en relatieZonderSleutels verwijderd
-			- RFC0462:
-				- attribute metagegeven verwijderd (zowel definitie als gebruikt als ref op andere plekken)
-				- in attribute scope de enumeration values allesZonderMetagegevens en allesZonderMetagegevensMaarKerngegevensGerelateerden verwijderd
-				- complexType StatusMetagegevenMetAttributes verwijderd, omdat het nu gelijk is aan StatusMetagegeven-basis
-			- RFC0469:
-				- De attributes sleutelVerzendend, sleutelOntvangend, sleutelGegevensbeheer, sleutelSynchronisatie, noValue, verwerkingssoort, scope en functie verwijderd.
-				- Het SimpleType StUFScope toegevoegd
-				- Overal de ref naar de bovenstaande attributes vervangen door de name (zonder StUF:) en het corresponderende type.
         </documentation>
 		<appinfo>
 			<StUF:onderdeel>http://www.stufstandaarden.nl/StUF/StUF0302</StUF:onderdeel>
@@ -254,7 +234,7 @@
 		</annotation>
 		<sequence>
 			<element name="indicatorVervolgvraag" type="boolean" minOccurs="0"/>
-			<element name="indicatorAfnemerindicatie" type="boolean" default="false" minOccurs="0"/>
+			<element name="indicatorAfnemerIndicatie" type="boolean" default="false" minOccurs="0"/>
 			<element name="peiltijdstipMaterieel" type="dateTime" minOccurs="0"/>
 			<element name="peiltijdstipFormeel" type="dateTime" minOccurs="0"/>
 			<element name="indicatorHistorie" type="StUF:IndicatorHistorie" minOccurs="0"/>
@@ -271,7 +251,7 @@
 			<restriction base="StUF:ParametersAntwoordSynchroonFormeel">
 				<sequence>
 					<element name="indicatorVervolgvraag" type="boolean"/>
-					<element name="indicatorAfnemerindicatie" type="boolean" default="false" minOccurs="0"/>
+					<element name="indicatorAfnemerIndicatie" type="boolean" default="false" minOccurs="0"/>
 					<element name="aantalVoorkomens" type="StUF:AantalVoorkomens" minOccurs="0"/>
 				</sequence>
 			</restriction>
@@ -285,7 +265,7 @@
 			<restriction base="StUF:ParametersAntwoord">
 				<sequence>
 					<element name="indicatorVervolgvraag" type="boolean"/>
-					<element name="indicatorAfnemerindicatie" type="boolean" default="false" minOccurs="0"/>
+					<element name="indicatorAfnemerIndicatie" type="boolean" default="false" minOccurs="0"/>
 					<element name="peiltijdstipMaterieel" type="dateTime" minOccurs="0"/>
 					<element name="peiltijdstipFormeel" type="dateTime" minOccurs="0"/>
 					<element name="indicatorHistorie" type="StUF:IndicatorHistorie" minOccurs="0"/>
@@ -302,7 +282,7 @@
 			<restriction base="StUF:ParametersAntwoordSynchroonFormeel">
 				<sequence>
 					<element name="indicatorVervolgvraag" type="boolean"/>
-					<element name="indicatorAfnemerindicatie" type="boolean" default="false" minOccurs="0"/>
+					<element name="indicatorAfnemerIndicatie" type="boolean" default="false" minOccurs="0"/>
 					<element name="peiltijdstipMaterieel" type="dateTime" minOccurs="0"/>
 					<element name="aantalVoorkomens" type="StUF:AantalVoorkomens" minOccurs="0"/>
 				</sequence>
@@ -317,7 +297,7 @@
 			<restriction base="StUF:ParametersAntwoordAsynchroonFormeel">
 				<sequence>
 					<element name="indicatorVervolgvraag" type="boolean" minOccurs="0"/>
-					<element name="indicatorAfnemerindicatie" type="boolean" default="false" minOccurs="0"/>
+					<element name="indicatorAfnemerIndicatie" type="boolean" default="false" minOccurs="0"/>
 					<element name="aantalVoorkomens" type="StUF:AantalVoorkomens" minOccurs="0"/>
 					<element name="volgnummer" type="StUF:Volgnummer"/>
 					<element name="indicatorLaatsteBericht" type="boolean" minOccurs="0"/>
@@ -333,7 +313,7 @@
 			<restriction base="StUF:ParametersAntwoord">
 				<sequence>
 					<element name="indicatorVervolgvraag" type="boolean" minOccurs="0"/>
-					<element name="indicatorAfnemerindicatie" type="boolean" default="false" minOccurs="0"/>
+					<element name="indicatorAfnemerIndicatie" type="boolean" default="false" minOccurs="0"/>
 					<element name="peiltijdstipMaterieel" type="dateTime" minOccurs="0"/>
 					<element name="peiltijdstipFormeel" type="dateTime" minOccurs="0"/>
 					<element name="aantalVoorkomens" type="StUF:AantalVoorkomens" minOccurs="0"/>
@@ -351,7 +331,7 @@
 			<restriction base="StUF:ParametersAntwoordAsynchroonFormeel">
 				<sequence>
 					<element name="indicatorVervolgvraag" type="boolean" minOccurs="0"/>
-					<element name="indicatorAfnemerindicatie" type="boolean" default="false" minOccurs="0"/>
+					<element name="indicatorAfnemerIndicatie" type="boolean" default="false" minOccurs="0"/>
 					<element name="peiltijdstipMaterieel" type="dateTime" minOccurs="0"/>
 					<element name="aantalVoorkomens" type="StUF:AantalVoorkomens" minOccurs="0"/>
 					<element name="volgnummer" type="StUF:Volgnummer"/>
@@ -430,7 +410,7 @@
 		<sequence>
 			<element name="sortering" type="StUF:Sortering" minOccurs="0"/>
 			<element name="indicatorVervolgvraag" type="boolean" minOccurs="0"/>
-			<element name="indicatorAfnemerindicatie" type="boolean" default="false" minOccurs="0"/>
+			<element name="indicatorAfnemerIndicatie" type="boolean" default="false" minOccurs="0"/>
 			<element name="maximumAantal" type="StUF:MaximumAantal" default="15" minOccurs="0"/>
 			<element name="peiltijdstipMaterieel" type="dateTime" minOccurs="0"/>
 			<element name="peiltijdstipFormeel" type="dateTime" minOccurs="0"/>
@@ -447,7 +427,7 @@
 				<sequence>
 					<element name="sortering" type="StUF:Sortering" minOccurs="0"/>
 					<element name="indicatorVervolgvraag" type="boolean" minOccurs="0"/>
-					<element name="indicatorAfnemerindicatie" type="boolean" default="false" minOccurs="0"/>
+					<element name="indicatorAfnemerIndicatie" type="boolean" default="false" minOccurs="0"/>
 					<element name="maximumAantal" type="StUF:MaximumAantal" default="15" minOccurs="0"/>
 					<element name="peiltijdstipMaterieel" type="dateTime" minOccurs="0"/>
 					<element name="peiltijdstipFormeel" type="dateTime" minOccurs="0"/>
@@ -1037,24 +1017,46 @@
 			</restriction>
 		</complexContent>
 	</complexType>
-	<!--attribute group met de attributes van een entiteit -->
+	<!--attribute groups met de attributen van een entiteit en een element-->
 	<attributeGroup name="entiteit">
-		<attribute name="sleutelVerzendend" type="StUF:Sleutel"/>
-		<attribute name="sleutelOntvangend" type="StUF:Sleutel"/>
-		<attribute name="sleutelGegevensbeheer" type="StUF:Sleutel"/>
-		<attribute name="sleutelSynchronisatie" type="StUF:Sleutel"/>
-		<attribute name="scope" type="StUF:StUFScope"/>
-		<attribute name="verwerkingssoort" type="StUF:Verwerkingssoort"/>
-		<attribute name="functie" type="StUF:FunctieVrijBerichtElement"/>
+		<attribute ref="StUF:sleutelVerzendend"/>
+		<attribute ref="StUF:sleutelOntvangend"/>
+		<attribute ref="StUF:sleutelGegevensbeheer"/>
+		<attribute ref="StUF:sleutelSynchronisatie"/>
+		<attribute ref="StUF:noValue"/>
+		<attribute ref="StUF:scope"/>
+		<attribute ref="StUF:verwerkingssoort"/>
+		<attribute ref="StUF:functie"/>
 	</attributeGroup>
-	<!--definitie van overige attributes-->
+	<!--definitie van de verschillende attributes-->
+	<attribute name="entiteittype" type="StUF:Entiteittype"/>
+	<attribute name="functie" type="StUF:FunctieVrijBerichtElement"/>
+	<attribute name="metagegeven" type="boolean" fixed="true"/>
+	<attribute name="noValue" type="StUF:NoValue"/>
 	<attribute name="patch" type="nonNegativeInteger"/>
 	<attribute name="schemaLocation" type="string"/>
+	<attribute name="scope">
+		<simpleType>
+			<restriction base="string">
+				<enumeration value="alles"/>
+				<enumeration value="allesZonderMetagegevens"/>
+				<enumeration value="allesMaarKerngegevensGerelateerden"/>
+				<enumeration value="allesZonderMetagegevensMaarKerngegevensGerelateerden"/>
+				<enumeration value="kerngegevens"/>
+			</restriction>
+		</simpleType>
+	</attribute>
+	<attribute name="sleutelVerzendend" type="StUF:Sleutel"/>
+	<attribute name="sleutelOntvangend" type="StUF:Sleutel"/>
+	<attribute name="sleutelGegevensbeheer" type="StUF:Sleutel"/>
+	<attribute name="sleutelSynchronisatie" type="StUF:Sleutel"/>
+	<attribute name="verwerkingssoort" type="StUF:Verwerkingssoort"/>
 	<!--definitie complexTypes -->
 	<complexType name="AnytypeKennisgeving">
 		<sequence>
 			<any namespace="##targetNamespace" maxOccurs="unbounded"/>
 		</sequence>
+		<attribute ref="StUF:entiteittype" use="required"/>
 		<attributeGroup ref="StUF:entiteit"/>
 	</complexType>
 	<complexType name="AnytypeOther">
@@ -1071,6 +1073,7 @@
 		<sequence>
 			<any namespace="##targetNamespace" maxOccurs="unbounded"/>
 		</sequence>
+		<attribute ref="StUF:entiteittype" use="required"/>
 	</complexType>
 	<complexType name="Bevestigingsbericht">
 		<sequence>
@@ -1082,14 +1085,20 @@
 			<pattern value="\d{4}-\d\d-\d\dT(0[0-9]|1[0-9]|2[0-3]):\d\d:\d\d"/>
 		</restriction>
 	</simpleType>
+	<complexType name="Postcode-e">
+		<choice>
+			<element name="postcode" type="StUF:postcode"/>
+			<element name="leeg" type="StUF:NoValue"/>
+		</choice>
+	</complexType>
 	<complexType name="TijdstipMogelijkOnvolledig-e">
 		<choice>
 			<element name="tijdstip" type="StUF:dateTime"/>
 			<element name="datum" type="date"/>
 			<element name="jaarMaand" type="gMonth"/>
 			<element name="jaar" type="gYear"/>
+			<element name="leeg" type="StUF:NoValue"/>
 		</choice>
-		<attribute name="noValue" type="StUF:NoValue"/>
 	</complexType>
 	<complexType name="TijdstipMogelijkOnvolledig-r">
 		<complexContent>
@@ -1100,16 +1109,27 @@
 					<element name="jaarMaand" type="gMonth"/>
 					<element name="jaar" type="gYear"/>
 				</choice>
-				<attribute name="noValue" type="StUF:NoValue" use="prohibited"/>
 			</restriction>
 		</complexContent>
 	</complexType>
 	<complexType name="Tijdstip-e">
-		<simpleContent>
-			<extension base="StUF:dateTime">
-				<attribute name="noValue" type="StUF:NoValue"/>
-			</extension>
-		</simpleContent>
+		<complexContent>
+			<restriction base="StUF:TijdstipMogelijkOnvolledig-e">
+				<choice>
+					<element name="tijdstip" type="StUF:dateTime"/>
+					<element name="leeg" type="StUF:NoValue"/>
+				</choice>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<complexType name="Tijdstip-r">
+		<complexContent>
+			<restriction base="StUF:Tijdstip-e">
+				<choice>
+					<element name="tijdstip" type="StUF:dateTime"/>
+				</choice>
+			</restriction>
+		</complexContent>
 	</complexType>
 	<complexType name="DatumMogelijkOnvolledig-e">
 		<complexContent>
@@ -1118,6 +1138,7 @@
 					<element name="datum" type="date"/>
 					<element name="jaarMaand" type="gMonth"/>
 					<element name="jaar" type="gYear"/>
+					<element name="leeg" type="StUF:NoValue"/>
 				</choice>
 			</restriction>
 		</complexContent>
@@ -1130,24 +1151,55 @@
 					<element name="jaarMaand" type="gMonth"/>
 					<element name="jaar" type="gYear"/>
 				</choice>
-				<attribute name="noValue" type="StUF:NoValue" use="prohibited"/>
 			</restriction>
 		</complexContent>
 	</complexType>
 	<complexType name="Datum-e">
-		<simpleContent>
-			<extension base="date">
-				<attribute name="noValue" type="StUF:NoValue"/>
-			</extension>
-		</simpleContent>
+		<complexContent>
+			<restriction base="StUF:DatumMogelijkOnvolledig-e">
+				<choice>
+					<element name="datum" type="date"/>
+					<element name="leeg" type="StUF:NoValue"/>
+				</choice>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<complexType name="Datum-r">
+		<complexContent>
+			<restriction base="StUF:Datum-e">
+				<choice>
+					<element name="datum" type="date"/>
+				</choice>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<complexType name="Jaar-e">
+		<complexContent>
+			<restriction base="StUF:DatumMogelijkOnvolledig-e">
+				<choice>
+					<element name="jaar" type="gYear"/>
+					<element name="leeg" type="StUF:NoValue"/>
+				</choice>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<complexType name="JaarMaand-e">
+		<complexContent>
+			<restriction base="StUF:DatumMogelijkOnvolledig-e">
+				<choice>
+					<element name="jaarMaand" type="gMonth"/>
+					<element name="leeg" type="StUF:NoValue"/>
+				</choice>
+			</restriction>
+		</complexContent>
 	</complexType>
 	<complexType name="ExtraElementen">
 		<sequence>
-			<element name="extraElement" maxOccurs="unbounded">
+			<element name="extraElement" nillable="true" maxOccurs="unbounded">
 				<complexType>
 					<simpleContent>
 						<extension base="string">
-							<attribute name="noValue" type="StUF:NoValue"/>
+							<attribute ref="StUF:noValue"/>
 							<attribute name="naam" type="string" use="required"/>
 						</extension>
 					</simpleContent>
@@ -1172,6 +1224,7 @@
 	<complexType name="GebeurtenisMetAttributes">
 		<simpleContent>
 			<restriction base="StUF:GebeurtenisMetAttributes-basis">
+				<attribute ref="StUF:metagegeven" use="required"/>
 				<attribute name="groepsnaam" type="StUF:Groepsnaam"/>
 				<attribute name="elementnaam" type="StUF:Groepsnaam"/>
 				<attribute name="tijdstip" type="dateTime" use="required"/>
@@ -1181,6 +1234,7 @@
 	<complexType name="GebeurtenisMetAttributes-basis">
 		<simpleContent>
 			<extension base="StUF:Gebeurtenis">
+				<attribute ref="StUF:metagegeven"/>
 				<attribute name="groepsnaam" type="StUF:Groepsnaam"/>
 				<attribute name="elementnaam" type="StUF:Groepsnaam"/>
 				<attribute name="tijdstip" type="dateTime"/>
@@ -1190,6 +1244,7 @@
 	<complexType name="GebeurtenisMetAttributes-vraag">
 		<simpleContent>
 			<restriction base="StUF:GebeurtenisMetAttributes-basis">
+				<attribute ref="StUF:metagegeven" use="prohibited"/>
 				<attribute name="groepsnaam" type="StUF:Groepsnaam" use="prohibited"/>
 				<attribute name="elementnaam" type="StUF:Groepsnaam" use="prohibited"/>
 				<attribute name="tijdstip" type="dateTime" use="prohibited"/>
@@ -1199,14 +1254,15 @@
 	<complexType name="Sleutel-e">
 		<simpleContent>
 			<extension base="StUF:Sleutel">
-				<attribute name="noValue" type="StUF:NoValue"/>
+				<attribute ref="StUF:noValue"/>
 			</extension>
 		</simpleContent>
 	</complexType>
 	<complexType name="StatusMetagegeven-basis">
 		<simpleContent>
 			<extension base="StUF:StatusMetagegeven">
-				<attribute name="noValue" type="StUF:NoValue"/>
+				<attribute ref="StUF:metagegeven"/>
+				<attribute ref="StUF:noValue"/>
 				<attribute name="groepsnaam" type="StUF:Groepsnaam"/>
 				<attribute name="elementnaam" type="StUF:Groepsnaam"/>
 			</extension>
@@ -1215,7 +1271,8 @@
 	<complexType name="StatusMetagegeven-vraag">
 		<simpleContent>
 			<restriction base="StUF:StatusMetagegeven-basis">
-				<attribute name="noValue" type="StUF:NoValue" use="prohibited"/>
+				<attribute ref="StUF:metagegeven" use="prohibited"/>
+				<attribute ref="StUF:noValue" use="prohibited"/>
 				<attribute name="groepsnaam" type="StUF:Groepsnaam" use="prohibited"/>
 				<attribute name="elementnaam" type="StUF:Groepsnaam" use="prohibited"/>
 			</restriction>
@@ -1224,8 +1281,16 @@
 	<complexType name="StatusMetagegevenNoValue">
 		<simpleContent>
 			<restriction base="StUF:StatusMetagegeven-basis">
+				<attribute ref="StUF:metagegeven" use="required"/>
 				<attribute name="groepsnaam" type="StUF:Groepsnaam" use="prohibited"/>
 				<attribute name="elementnaam" type="StUF:Groepsnaam" use="prohibited"/>
+			</restriction>
+		</simpleContent>
+	</complexType>
+	<complexType name="StatusMetagegevenMetAttributes">
+		<simpleContent>
+			<restriction base="StUF:StatusMetagegeven-basis">
+				<attribute ref="StUF:metagegeven" use="required"/>
 			</restriction>
 		</simpleContent>
 	</complexType>
@@ -1261,26 +1326,17 @@
 			<element name="eindRelatie" type="StUF:TijdstipMogelijkOnvolledig-e" nillable="true"/>
 		</sequence>
 	</complexType>
-	<complexType name="WildcardElement">
-		<simpleContent>
-			<extension base="string">
-				<attribute name="wildcard" type="StUF:Wildcard"/>
-				<attribute name="noValue" type="StUF:NoValue"/>
-			</extension>
-		</simpleContent>
-	</complexType>
-	<complexType name="WildcardEindElement">
-		<simpleContent>
-			<extension base="string">
-				<attribute name="wildcard" type="StUF:WildcardEind"/>
-				<attribute name="noValue" type="StUF:NoValue"/>
-			</extension>
-		</simpleContent>
-	</complexType>
 	<!--definitie simpleTypes-->
 	<simpleType name="AantalVoorkomens">
 		<restriction base="nonNegativeInteger">
 			<maxInclusive value="999999999"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="AardAantal">
+		<restriction base="string">
+			<enumeration value="exact"/>
+			<enumeration value="minimum"/>
+			<enumeration value="maximum"/>
 		</restriction>
 	</simpleType>
 	<simpleType name="Administratie">
@@ -2184,6 +2240,7 @@
 		<restriction base="string">
 			<enumeration value="nietOndersteund"/>
 			<enumeration value="nietGeautoriseerd"/>
+			<enumeration value="geenWaarde"/>
 			<enumeration value="waardeBestaat"/>
 			<enumeration value="waardeOnbekend"/>
 			<enumeration value="vastgesteldOnbekend"/>
@@ -2222,14 +2279,6 @@
 	<simpleType name="StatusMetagegeven">
 		<restriction base="string">
 			<enumeration value="J"/>
-			<enumeration value=""/>
-		</restriction>
-	</simpleType>
-	<simpleType name="StUFScope">
-		<restriction base="string">
-			<enumeration value="alles"/>
-			<enumeration value="allesMaarKerngegevensGerelateerden"/>
-			<enumeration value="kerngegevens"/>
 		</restriction>
 	</simpleType>
 	<simpleType name="Versienr">
@@ -2303,4 +2352,8 @@
 			<enumeration value="eind"/>
 		</restriction>
 	</simpleType>
+	<simpleType name="postcode">
+		<restriction base="string"/>
+	</simpleType>
+	<element name="leeg" type="string"/>
 </schema>
