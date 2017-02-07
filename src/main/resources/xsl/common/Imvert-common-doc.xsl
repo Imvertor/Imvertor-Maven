@@ -36,7 +36,7 @@
     
     <!-- ============================= transform an EA string to xhtml. ====================================== -->
     <xsl:function name="imf:eadoc-to-xhtml" as="element()">
-        <xsl:param name="eadoc"/>
+        <xsl:param name="eadoc" as="xs:string?"/>
         <xsl:choose>
             <xsl:when test="contains($eadoc,'&gt;') or contains($eadoc,'&amp;')">
                 <xsl:variable name="lis" select="replace($eadoc,'&lt;/li&gt;(&#xA;)+','&lt;/li&gt;')"/>

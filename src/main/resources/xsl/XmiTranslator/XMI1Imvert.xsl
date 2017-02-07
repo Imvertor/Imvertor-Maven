@@ -460,10 +460,9 @@
         <xsl:param name="name" as="xs:string"/>
         <xsl:variable name="doctext" select="imf:get-tagged-value($this,$name,'')"/>
         <xsl:variable name="relevant-doc-string" select="if (contains($doctext,imf:get-config-parameter('documentation-separator'))) then substring-before($doctext,imf:get-config-parameter('documentation-separator')) else $doctext"/>
-        <xsl:variable name="parsed-doc-struct" select="imf:eadoc-to-xhtml($relevant-doc-string)"/>
         <xsl:if test="exists($doctext) and normalize-space($relevant-doc-string)">
             <imvert:documentation xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml">
-                <xsl:sequence select="$parsed-doc-struct/*"/>
+                <xsl:sequence select="imf:eadoc-to-xhtml($relevant-doc-string)" exclude-result-prefixes="#all"/>
             </imvert:documentation>
         </xsl:if>
     </xsl:function>
