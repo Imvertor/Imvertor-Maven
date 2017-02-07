@@ -36,6 +36,25 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
      
+     <!-- 
+         sorteer alle associaties op alfabetische volgorde. Hierbij eerst de attribuutgroepen, daarna de relaties, dan de externe koppelingen 
+     -->
+    <xsl:template match="imvert:class">
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
+            <xsl:apply-templates select="imvert:*[not(self::imvert:associations)]"/>
+            <xsl:apply-templates select="imvert:associations/imvert:association[imvert:stereotype = imf:get-config-stereotype-names('stereotype-name-association-to-composite')]">
+                <xsl:sort select="imvert:name"/>
+            </xsl:apply-templates>
+            <xsl:apply-templates select="imvert:associations/imvert:association[imvert:stereotype = imf:get-config-stereotype-names('stereotype-name-relatiesoort')]">
+                <xsl:sort select="imvert:name"/>
+            </xsl:apply-templates>
+            <xsl:apply-templates select="imvert:associations/imvert:association[imvert:stereotype = imf:get-config-stereotype-names('stereotype-name-externekoppeling')]">
+                <xsl:sort select="imvert:name"/>
+            </xsl:apply-templates>
+        </xsl:copy>
+    </xsl:template>  
+    
     <!-- 
        identity transform
     -->
