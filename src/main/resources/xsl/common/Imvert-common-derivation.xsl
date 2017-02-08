@@ -41,7 +41,7 @@
 	<xsl:function name="imf:get-compiled-documentation-as-html" as="item()*">
 		<xsl:param name="construct" as="element()"/> <!-- any construct that may have documentation -->
 		
-		<xsl:variable name="docs" select="imf:get-compiled-documentation($construct)"/>
+		<xsl:variable name="docs" select="imf:get-compiled-documentation($construct)" as="element(imvert:documentation)*"/>
 		
 		<xsl:for-each select="$docs">
 			<xsl:choose>
