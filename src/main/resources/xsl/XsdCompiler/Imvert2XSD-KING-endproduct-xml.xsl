@@ -225,7 +225,6 @@
     </xsl:template>
     
     <xsl:template match="ep:rough-message">
-        <xsl:variable name="berichtName" select="ep:name" as="xs:string"/>
         <xsl:variable name="fundamentalMnemonic" select="ep:fundamentalMnemonic" as="xs:string"/>
         <!-- ROME: Er is een verschil tussen de uitbecommentarieerde variabele en de actieve want het levert een ander resultaat op.
                    Bij de uitbecommentarieerde variabele levert een generate-id() op een node uit deze tree een ander id op dan een 
@@ -253,6 +252,19 @@
              ep:construct elements with the name 'gelijk', 'vanaf', 'totEnMet', 'start' en 'scope' aren't processed here since they need special treatment.  -->
         <xsl:for-each select="$currentMessage//ep:construct[ep:id and generate-id(.) = generate-id(key('construct-id',concat(ep:id,@verwerkingsModus),$currentMessage)[1])]">
                     
+            <xsl:variable name="berichtName" as="xs:string">
+                <xsl:choose>
+                    <xsl:when test="(contains(ancestor::ep:rough-message/ep:code,'Di') or contains(ancestor::ep:rough-message/ep:code,'Du')) and ancestor-or-self::ep:construct/@typeCode = 'entiteitrelatie'">
+                        <xsl:value-of select="concat(ancestor::ep:rough-message/ep:name,'-',ancestor-or-self::ep:construct[@typeCode = 'entiteitrelatie']/ep:name)"/>
+                    </xsl:when>
+                    <xsl:when test="(contains(ancestor::ep:rough-message/ep:code,'Di') or contains(ancestor::ep:rough-message/ep:code,'Du')) and ancestor-or-self::ep:construct/@typeCode = 'berichtrelatie'">
+                        <xsl:value-of select="concat(ancestor::ep:rough-message/ep:name,'-',ancestor-or-self::ep:construct[@typeCode = 'berichtrelatie']/ep:name)"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="ancestor::ep:rough-message/ep:name"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:variable>
             <xsl:variable name="berichtCode" as="xs:string">
                <xsl:choose>
                    <!-- Within a 'vrij bericht' the ancestor tree can contain more than one berichtCode, the 'berichtCode' of the 'vrij bericht' 
@@ -1166,6 +1178,8 @@
             <xsl:variable name="association" select="imf:get-construct-by-id($id,$packages-doc)"/>
             <xsl:variable name="elementName" select="$construct/imvert:name"/>
             
+            <xsl:sequence select="imf:create-debug-comment(concat('packageName: ',$packageName,', berichtName: ',$berichtName,', typering: antwoord',', alias: (), elementname: object'),$debugging)"/>
+
             <!-- Location: 'ep:construct7'
 								    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef7'. -->
             
@@ -1407,7 +1421,7 @@
         <xsl:variable name="tech-name">
             <xsl:choose>
                 <xsl:when
-                    test="imvert:stereotype = 'RELATIE' and key('class',$type-id)/imvert:alias and not(empty($typering))">
+                    test="imvert:stereotype = 'RELATIE' and key('class',$type-id)/imvert:alias and not(empty($typering) or $typering = '')">
                     <xsl:value-of
                         select="imf:create-complexTypeName($packageName,$berichtName,$typering,$alias,$elementName)"/>
                 </xsl:when>
@@ -1553,7 +1567,8 @@
         
         <xsl:sequence select="imf:create-debug-comment('Template: imvert:association[mode=create-global-construct] End',$debugging)"/>
     </xsl:template>
-    
+
+    <!-- ROME: de parameter packageName mag uit de volgende 5 functies gehaald worden en dus ook uit de aanroep van deze 5 functies. -->
     <xsl:function name="imf:create-complexTypeName">
         <xsl:param name="packageName"/>
         <xsl:param name="berichtName"/>
@@ -1609,7 +1624,14 @@
         
         <xsl:sequence select="imf:create-debug-track(concat('complexTypeName: ',$complexTypeName),$debugging)"/>
         
-        <xsl:value-of select="imf:get-normalized-name($complexTypeName,'type-name')"/>-<xsl:value-of select="$berichtName"/>
+        <xsl:choose>
+            <xsl:when test="empty($alias) and not(empty($elementName))">
+                <xsl:value-of select="imf:get-normalized-name($complexTypeName,'type-name')"/><xsl:value-of select="$berichtName"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="imf:get-normalized-name($complexTypeName,'type-name')"/>-<xsl:value-of select="$berichtName"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     
     <xsl:function name="imf:create-Grp-complexTypeName">

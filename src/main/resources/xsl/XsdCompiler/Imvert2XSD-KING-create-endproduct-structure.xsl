@@ -156,32 +156,37 @@
 					</xsl:apply-templates>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:apply-templates
-						select="./imvert:associations/imvert:association[imvert:stereotype = 'ENTITEITRELATIE']"
-						mode="create-message-content">
-						<xsl:with-param name="berichtCode" select="$berichtCode"/>
-						<xsl:with-param name="berichtName" select="$berichtName"/>
-						<xsl:with-param name="generated-id" select="$new-generated-id"/>
-						<xsl:with-param name="currentMessage" select="$currentMessage"/>
-						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-						<!--xsl:with-param name="orderingDesired" select="'no'"/-->
-					</xsl:apply-templates>
-					<!-- Associations linking from a class with a imvert:stereotype with the 
+					<!-- ROME: Het moet mogelijk zijn om de associations in een zelf bepaalde volgorde te plaatsen. 
+						 Daarvoor moet hieronder nog iets met position worden gedaan. -->
+					<xsl:for-each select="./imvert:associations/imvert:association">
+						<xsl:apply-templates
+							select=".[imvert:stereotype = 'ENTITEITRELATIE']"
+							mode="create-message-content">
+							<xsl:with-param name="berichtCode" select="$berichtCode"/>
+							<xsl:with-param name="berichtName" select="concat($berichtName,'-',imvert:name)"/>
+							<xsl:with-param name="generated-id" select="$new-generated-id"/>
+							<xsl:with-param name="currentMessage" select="$currentMessage"/>
+							<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+							<!--xsl:with-param name="orderingDesired" select="'no'"/-->
+						</xsl:apply-templates>
+						<!-- Associations linking from a class with a imvert:stereotype with the 
 						value 'VRIJ BERICHTTYPE' need special treatment. E.g. the construct to be created must 
 						contain a meta-data construct called 'functie'. For that reason those linking to a class 
 						with a imvert:stereotype with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE' 
 						or 'KENNISGEVINGBERICHTTYPE' and those linking to a class with a imvert:stereotype 
 						with the value 'ENTITEITRELATIE' must also be processed as from toplevel-message 
 						type. -->
-					<xsl:apply-templates select="./imvert:associations/imvert:association[imvert:stereotype != 'ENTITEITRELATIE']"
-						mode="create-toplevel-message-structure-constructRef">
-						<xsl:with-param name="berichtCode" select="$berichtCode"/>
-						<xsl:with-param name="berichtName" select="$berichtName"/>
-						<xsl:with-param name="generated-id" select="$new-generated-id"/>
-						<xsl:with-param name="currentMessage" select="$currentMessage"/>
-						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-						<xsl:with-param name="context" select="'-'"/>
-					</xsl:apply-templates>
+						<xsl:apply-templates select=".[imvert:stereotype != 'ENTITEITRELATIE']"
+							mode="create-toplevel-message-structure-constructRef">
+							<xsl:with-param name="berichtCode" select="$berichtCode"/>
+							<xsl:with-param name="berichtName" select="concat($berichtName,'-',imvert:name)"/>
+							<xsl:with-param name="generated-id" select="$new-generated-id"/>
+							<xsl:with-param name="currentMessage" select="$currentMessage"/>
+							<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+							<xsl:with-param name="context" select="'-'"/>
+						</xsl:apply-templates>
+						
+					</xsl:for-each>
 				</xsl:otherwise>
 			</xsl:choose>
 		</ep:seq>
@@ -755,7 +760,7 @@
 		<xsl:variable name="packageName" select="ancestor::imvert:package/imvert:name"/>
 		<xsl:variable name="href">
 			<xsl:choose>
-				<xsl:when test="not(empty($verwerkingsModusOfConstructRef))">
+				<xsl:when test="not(empty($verwerkingsModusOfConstructRef) or $verwerkingsModusOfConstructRef = '')">
 					<xsl:value-of select="imf:create-complexTypeName($packageName,$berichtName,$verwerkingsModusOfConstructRef,$alias,$name)"/>					
 				</xsl:when>
 				<xsl:otherwise>
