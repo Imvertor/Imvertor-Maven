@@ -72,7 +72,8 @@
                 <xsl:when test="ends-with(lower-case($endproduct-base-config-excel),'.xls')">
                     <!-- excel 97-2003 --> 
                     <xsl:variable name="xml-path" select="imf:serializeExcel($endproduct-base-config-excel,concat($workfolder-path,'/excel.xml'),$excel-97-dtd-path)"/>
-                    <xsl:variable name="xml-doc" select="imf:document(imf:file-to-url($xml-path))"/>
+                    <xsl:variable name="xml-doc" select="imf:document($xml-path, true())"/>
+                    
                     <!-- excel 97-2003 is'nt an XML format. Using the above variables the format is translated to XML.
                          The XML format then is processed to be able to use it. -->
                     <xsl:apply-templates select="$xml-doc/workbook"/>
@@ -148,6 +149,7 @@
                 <xsl:for-each select="$enriched-rough-messages/ep:rough-messages/ep:rough-message">
                     <xsl:variable name="currentMessage" select="."/>
                     <xsl:variable name="id" select="ep:id" as="xs:string"/>
+                    <!-- Following imf:get-construct-by-id gets a imvert:class element. -->
                     <xsl:variable name="message-construct" select="imf:get-construct-by-id($id,$packages-doc)"/>
                     <xsl:variable name="berichtstereotype" select="$message-construct/imvert:stereotype" as="xs:string"/>
                     <xsl:variable name="berichtSoort" as="xs:string">
@@ -292,6 +294,7 @@
                </xsl:choose>
            </xsl:variable>
             <xsl:variable name="elementName" select="$construct/imvert:name"/>
+            <xsl:variable name="authentiek" select="imf:get-most-relevant-compiled-taggedvalue($construct, 'Indicatie authentiek')"/>
             
             <xsl:sequence select="imf:create-debug-comment(concat('generated-id ',$generated-id),$debugging)"/>
             <xsl:sequence select="imf:create-debug-comment(concat('verwerkingsModus ',$verwerkingsModus),$debugging)"/>
@@ -379,6 +382,7 @@
                                            <xsl:with-param name="context" select="$context" />
                                            <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
                                        </xsl:apply-templates>
+                                       <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
                                        <!-- The uml associations of the uml group are placed here. -->
                                        <xsl:apply-templates select="$construct"
                                            mode="create-message-content">
@@ -480,6 +484,7 @@
                                                    </xsl:with-param>                                      
                                                    <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
                                                </xsl:apply-templates>
+                                               <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
                                                <!-- ROME:   Waarschijnlijk moet er hier afhankelijk van de context meer 
                                             				of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' maar 
                                             				ook aan 'tijdvakRelatie', 'historieMaterieel' en 'historieFormeel'. Onderstaande 

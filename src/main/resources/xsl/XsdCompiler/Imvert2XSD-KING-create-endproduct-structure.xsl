@@ -1207,10 +1207,10 @@
 				   Indien het attribute niet in een groep zit dan is in beide variabelen de otherwise tak van toepassing. -->
 		<xsl:variable name="materieleHistorie">
 			<xsl:choose>
-				<xsl:when test="$indicatieMaterieleHistorie = 'Ja op attributes' and contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie'),'Ja')">
+				<xsl:when test="$indicatieMaterieleHistorie = 'Ja op attributes' and contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie'),'JA')">
 					<xsl:value-of select="'Ja'"/>
 				</xsl:when>
-				<xsl:when test="$indicatieMaterieleHistorie = 'Ja op attributes' and not(contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie'),'Ja'))">
+				<xsl:when test="$indicatieMaterieleHistorie = 'Ja op attributes' and not(contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie'),'JA'))">
 					<xsl:value-of select="'Nee'"/>
 				</xsl:when>
 				<xsl:when test="$indicatieMaterieleHistorie = 'Ja'">
@@ -1223,10 +1223,10 @@
 		</xsl:variable>
 		<xsl:variable name="formeleHistorie">
 			<xsl:choose>
-				<xsl:when test="$indicatieFormeleHistorie = 'Ja op attributes' and contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie'),'Ja')">
+				<xsl:when test="$indicatieFormeleHistorie = 'Ja op attributes' and contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie'),'JA')">
 					<xsl:value-of select="'Ja'"/>
 				</xsl:when>
-				<xsl:when test="$indicatieFormeleHistorie = 'Ja op attributes' and not(contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie'),'Ja'))">
+				<xsl:when test="$indicatieFormeleHistorie = 'Ja op attributes' and not(contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie'),'JA'))">
 					<xsl:value-of select="'Nee'"/>
 				</xsl:when>
 				<xsl:when test="$indicatieFormeleHistorie = 'Ja'">
@@ -1712,7 +1712,7 @@
 					<xsl:variable name="generateMaterieleHistorieOnAssociation">
 						<xsl:choose>
 							<xsl:when
-								test="contains(imf:get-most-relevant-compiled-taggedvalue(key('class',$type-id), 'Indicatie materiële historie'), 'Ja')">
+								test="contains(imf:get-most-relevant-compiled-taggedvalue(key('class',$type-id), 'Indicatie materiële historie'), 'JA')">
 								<xsl:value-of select="'Ja'"/>
 							</xsl:when>
 							<xsl:otherwise>
@@ -1727,7 +1727,7 @@
 								</xsl:variable>
 								<xsl:choose>
 									<xsl:when
-										test="$tv-materieleHistorie-attributes//ep:tagged-value = 'Ja' or $tv-materieleHistorie-attributes//ep:tagged-value = 'Ja, zie regels'">
+										test="$tv-materieleHistorie-attributes//ep:tagged-value = 'JA' or $tv-materieleHistorie-attributes//ep:tagged-value = 'JAZIEREGELS'">
 										<xsl:value-of select="'Ja op attributes'"/>
 									</xsl:when>
 								</xsl:choose>
@@ -1737,7 +1737,7 @@
 					<xsl:variable name="generateFormeleHistorieOnAssociation">
 						<xsl:choose>
 							<xsl:when
-								test="contains(imf:get-most-relevant-compiled-taggedvalue(imf:get-construct-by-id($type-id,$packages-doc), 'Indicatie formele historie'), 'Ja')">
+								test="contains(imf:get-most-relevant-compiled-taggedvalue(imf:get-construct-by-id($type-id,$packages-doc), 'Indicatie formele historie'), 'JA')">
 								<xsl:value-of select="'Ja'"/>
 							</xsl:when>
 							<xsl:otherwise>
@@ -1752,7 +1752,7 @@
 								</xsl:variable>
 								<xsl:choose>
 									<xsl:when
-										test="$tv-formeleHistorie-attributes//ep:tagged-value = 'Ja'">
+										test="$tv-formeleHistorie-attributes//ep:tagged-value = 'JA'">
 										<xsl:value-of select="'Ja op attributes'"/>
 									</xsl:when>
 								</xsl:choose>
@@ -2399,7 +2399,7 @@
 			the koppelvlak namespace will need a type-name, enum or other format defining 
 			element. -->
 		<xsl:if
-			test="$attributeTypeRow//col[@name = 'StUF:noValue' and data = 'O' and $MogelijkGeenWaarde = 'Ja']">
+			test="$attributeTypeRow//col[@name = 'StUF:noValue' and data = 'O' and $MogelijkGeenWaarde = 'JA']">
 			<ep:construct prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<ep:name>noValue</ep:name>
 				<ep:tech-name>noValue</ep:tech-name>
@@ -2416,7 +2416,7 @@
 			</ep:construct>
 		</xsl:if>
 		<xsl:if
-			test="$attributeTypeRow//col[@name = 'StUF:noValue' and data = 'V'] and $MogelijkGeenWaarde = 'Ja'">
+			test="$attributeTypeRow//col[@name = 'StUF:noValue' and data = 'V'] and $MogelijkGeenWaarde = 'JA'">
 			<ep:constructRef prefix="StUF" ismetadata="yes" externalNamespace="yes">
 				<ep:name>noValue</ep:name>
 				<ep:tech-name>noValue</ep:tech-name>
@@ -2432,7 +2432,7 @@
 			</ep:constructRef>
 		</xsl:if>
 		<xsl:if
-			test="$attributeTypeRow//col[@name = 'StUF:noValue' and data = 'V'] and $MogelijkGeenWaarde = 'Nee'">
+			test="$attributeTypeRow//col[@name = 'StUF:noValue' and data = 'V'] and $MogelijkGeenWaarde = 'NEE'">
 			<xsl:variable name="msg"
 				select="concat('The StUF:noValue attribute is required in the context ', $context, '. Provide for it within EA.')"/>
 			<xsl:sequence select="imf:msg('WARN', $msg)"/>
@@ -2670,7 +2670,8 @@
 		<xsl:param name="this"/>
 		<xsl:for-each select="$this//imvert:documentation">
 			<xsl:sort select="@level" data-type="number" order="descending"/>
-			<xsl:copy-of select="xhtml:p"/>
+			<!--xsl:copy-of select="xhtml:p"/-->
+			<xsl:copy-of select="p"/>
 		</xsl:for-each>
 	</xsl:function>
 
