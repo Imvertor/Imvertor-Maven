@@ -41,6 +41,15 @@
                 <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
+        <tv norm="space" rules="NOC" id="IndicatieInOnderzoek">
+            <name lang="nl">Indicatie in onderzoek</name>
+            <derive>yes</derive><!-- BSM mag op supplier  terugvallen-->
+            <stereotypes>
+                <stereo required="yes">stereotype-name-attribute</stereo>
+                <stereo required="yes">stereotype-name-composite</stereo>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+        </tv>
         <tv norm="compact"  rules="NOC" id="IndicatieMateriëleHistorie">
             <derive>yes</derive>
             <stereotypes>
