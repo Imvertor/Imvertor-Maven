@@ -28,7 +28,7 @@
     
     <tagged-values>
         
-        <tv norm="space" rules="NOC" id="IndicatieKerngegeven">
+        <tv norm="compact" rules="NOC" id="IndicatieKerngegeven">
             <name lang="nl">Indicatie kerngegeven</name>
             <derive>yes</derive>
             <stereotypes>
@@ -66,11 +66,6 @@
                 <value>Zie groep</value>
                 <value>N.v.t.</value>
                 <value>Ja, zie regels</value>
-            <?x
-                <value deprecated="true">zie groep</value>
-                <value deprecated="true">n.v.t.</value>
-                <value deprecated="true">Zie regels</value>
-            ?>
             </declared-values>
         </tv>
         <tv norm="compact" rules="NOC" id="IndicatieFormeleHistorie">
@@ -86,21 +81,13 @@
                 <value default="yes">Nee</value>
                 <value>Zie groep</value>
                 <value>N.v.t.</value>
-            <?x
-                <value deprecated="true">zie groep</value>
-                <value deprecated="true">n.v.t.</value>
-                <value deprecated="true">Zie regels</value>
-            ?>
             </declared-values>
         </tv>
         <tv norm="space" id="IndicatieInOnderzoek">
-            <derive>yes</derive><!-- UGM mag op supplier  terugvallen-->
-            <stereotypes>
-                <stereo required="yes">stereotype-name-attribute</stereo>
-                <stereo required="yes">stereotype-name-composite</stereo>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo>
-            </stereotypes>
+            <name lang="nl">Indicatie in onderzoek</name>
+            <derive>yes</derive><!-- UGM mag op supplier terugvallen, maar SIM is niet een supplier voor deze config, dus expliciet de naam opnemen.-->
         </tv>
+        
         <tv norm="space" id="IndicatieTerugrelatie">
             <name lang="nl">Indicatie terugrelatie</name>
             <name lang="en">Indication reverse relation</name>
