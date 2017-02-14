@@ -31,11 +31,6 @@
                 <stereo required="yes">stereotype-name-composite</stereo>
                 <stereo required="yes">stereotype-name-relatiesoort</stereo>
             </stereotypes>
-            <?x <declared-values lang="nl">
-                <value>Ja</value>
-                <value>Nee</value>
-                <value>Zie groep</value>
-            </declared-values> x?>
         </tv>
         <tv norm="space" id="IndicatieInOnderzoek">
             <name lang="nl">Indicatie in onderzoek</name>
@@ -111,15 +106,6 @@
                 <stereo required="yes">stereotype-name-composite</stereo>
                 <stereo required="yes">stereotype-name-relatiesoort</stereo>
             </stereotypes>
-            <?x
-            <declared-values lang="nl">
-                <value>Authentiek</value>
-                <value>Basisgegeven</value>
-                <value>Landelijk kerngegeven</value>
-                <value>Gemeentelijk kerngegeven</value>
-                <value>Overig</value>
-            </declared-values>
-            x?>
         </tv>
         <tv norm="compact" rules="NOC" id="MogelijkGeenWaarde">
             <name lang="nl">Mogelijk geen waarde</name>
