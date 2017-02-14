@@ -37,6 +37,7 @@ import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.file.XslFile;
 import nl.imvertor.common.xsl.extensions.ImvertorExcelSerializer;
+import nl.imvertor.common.xsl.extensions.ImvertorStripAccents;
 import nl.imvertor.common.xsl.extensions.ImvertorZipDeserializer;
 import nl.imvertor.common.xsl.extensions.ImvertorZipSerializer;
 
@@ -178,6 +179,8 @@ public class XsdCompiler extends Step {
 		transformer.setExtensionFunction(new ImvertorZipSerializer());
 		transformer.setExtensionFunction(new ImvertorZipDeserializer());
 		transformer.setExtensionFunction(new ImvertorExcelSerializer());
+		// requires accent stripper
+		transformer.setExtensionFunction(new ImvertorStripAccents());
 						
 		boolean valid = true;
 		
@@ -232,6 +235,8 @@ public class XsdCompiler extends Step {
 		
 		// create a transformer
 		Transformer transformer = new Transformer();
+		// requires accent stripper
+		transformer.setExtensionFunction(new ImvertorStripAccents());
 						
 		boolean valid = true;
 		
