@@ -51,8 +51,10 @@
     <!--xsl:variable name="imvert-endproduct" select="imf:document(imf:get-config-string('properties','RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH'))"/-->  
     
     
+    <!--xsl:variable name="xsd-folder-path" select="imf:get-config-string('system','xsd-folder-path')"/-->
     <xsl:variable name="xsd-file-folder-path" select="imf:get-config-string('properties','RESULT_XSD_APPLICATION_FOLDER')"/>
-    <xsl:variable name="xsd-file-url" select="imf:file-to-url(concat($xsd-file-folder-path,'/koppelvlak.xsd'))"/>
+    <!--xsl:variable name="xsd-file-url" select="imf:file-to-url(concat($xsd-file-folder-path,'/koppelvlak.xsd'))"/-->
+    <xsl:variable name="xsd-file-url" select="imf:file-to-url(concat($xsd-file-folder-path,'/',/ep:message-set/ep:name,'.xsd'))"/>
     <xsl:template match="/">
         <!--xsl:for-each select="$imvert-endproduct/ep:message-set"-->
         <xsl:for-each select="ep:message-set">

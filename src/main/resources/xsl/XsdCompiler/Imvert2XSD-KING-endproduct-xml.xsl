@@ -35,6 +35,7 @@
     <xsl:key name="class" match="imvert:class" use="imvert:id" />
     <!-- This key is used within the for-each instruction further in this code. -->
     <xsl:key name="construct-id" match="ep:construct" use="concat(ep:id,@verwerkingsModus)" />
+    <xsl:key name="construct-id-in-vrijbericht" match="ep:construct" use="concat(ep:id,@verwerkingsModus,@entiteitOrBerichtRelatie)" />
     <!--xsl:key name="construct-id-and-name" match="ep:construct" use="concat(ep:id,ep:name)" /-->
     
     
@@ -50,6 +51,8 @@
     <xsl:variable name="config-tagged-values">
         <xsl:sequence select="imf:get-config-tagged-values()"/>
     </xsl:variable> 
+
+    <xsl:variable name="xsd-folder-path" select="imf:get-config-string('system','xsd-folder-path')"/>
     
     <!-- Within the next variable the configurations defined within the Base-configuration spreadsheet are placed in a processed XML format.
          With this configuration the attributes to be used on each location within the XML schemas are determined. -->
@@ -124,7 +127,8 @@
     <xsl:variable name="imvert-endproduct">
         
         <ep:message-set>
-            <xsl:sequence select="imf:create-output-element('ep:name', $packages/imvert:project)"/>
+            <!--xsl:sequence select="imf:create-output-element('ep:name', $packages/imvert:project)"/-->
+            <xsl:sequence select="imf:create-output-element('ep:name', $packages/imvert:application)"/>
             <xsl:sequence select="imf:create-output-element('ep:release', $packages/imvert:release)"/>
             <xsl:sequence select="imf:create-output-element('ep:date', substring-before($packages/imvert:generated,'T'))"/>
             <xsl:sequence select="imf:create-output-element('ep:patch-number', 'TO-DO')"/>
@@ -140,6 +144,7 @@
             </ep:namespaces>
             
             <xsl:if test="$debugging">
+                <!--xsl:sequence select="$enriched-endproduct-base-config-excel"/-->
                 <xsl:sequence select="$rough-messages"/>
                 <xsl:sequence select="$enriched-rough-messages"/>
             </xsl:if>
@@ -247,899 +252,32 @@
         
         <xsl:sequence select="imf:track('Constructing the global constructs',$debugging)"/>
 
-        <!-- The following for-each takes care of creating global construct elements for each ep:construct element present within the current 'rough-messages' variable 
-             having a type-id value none of the preceding ep:construct elements within the processed message have. 
+        <!-- The first for-each takes care of creating global construct elements for each ep:construct element present within the current 'rough-messages' variable 
+             (which isn't a 'vrij bericht') having a type-id, verwerkingsModus combinationvalue none of the preceding ep:construct elements within the processed message 
+             have. 
+             The second for-each takes does the same for each ep:construct element present within the current 'rough-messages' variable 
+             (which is 'vrij bericht') having a type-id, verwerkingsModus, entiteitOrBerichtRelatie combinationvalue none of the preceding ep:construct elements within the 
+             processed message have.
+             
+             These two variant are neccessary because within a standard message you don't want ep:constructs with the same type-id, verwerkingsModus combinationvalue to be 
+             processed more than once.
+             Within a 'vrij bericht' however such an ep:construct is allowed to be processed more than once as long as ep:constructs with the same type-id, verwerkingsModus, 
+             entiteitOrBerichtRelatie combinationvalue aren't be processed more than once.
+             
              ep:construct elements with the name 'gelijk', 'vanaf', 'totEnMet', 'start' en 'scope' aren't processed here since they need special treatment.  -->
-        <xsl:for-each select="$currentMessage//ep:construct[ep:id and generate-id(.) = generate-id(key('construct-id',concat(ep:id,@verwerkingsModus),$currentMessage)[1])]">
-                    
-            <xsl:variable name="berichtName" as="xs:string">
-                <xsl:choose>
-                    <xsl:when test="(contains(ancestor::ep:rough-message/ep:code,'Di') or contains(ancestor::ep:rough-message/ep:code,'Du')) and ancestor-or-self::ep:construct/@typeCode = 'entiteitrelatie'">
-                        <xsl:value-of select="concat(ancestor::ep:rough-message/ep:name,'-',ancestor-or-self::ep:construct[@typeCode = 'entiteitrelatie']/ep:name)"/>
-                    </xsl:when>
-                    <xsl:when test="(contains(ancestor::ep:rough-message/ep:code,'Di') or contains(ancestor::ep:rough-message/ep:code,'Du')) and ancestor-or-self::ep:construct/@typeCode = 'berichtrelatie'">
-                        <xsl:value-of select="concat(ancestor::ep:rough-message/ep:name,'-',ancestor-or-self::ep:construct[@typeCode = 'berichtrelatie']/ep:name)"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="ancestor::ep:rough-message/ep:name"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:variable>
-            <xsl:variable name="berichtCode" as="xs:string">
-               <xsl:choose>
-                   <!-- Within a 'vrij bericht' the ancestor tree can contain more than one berichtCode, the 'berichtCode' of the 'vrij bericht' 
-                        (e.g. 'Di02' or 'Du01') and the 'berichtCode' of the embedded message. In that case the lowest level 'berichtCode'must be used. -->
-                   <xsl:when test="ancestor-or-self::ep:construct[@berichtCode]">
-                       <xsl:value-of select="ancestor-or-self::ep:construct[@berichtCode][last()]/@berichtCode"/>
-                   </xsl:when>
-                   <xsl:otherwise>
-                       <xsl:value-of select="ancestor::ep:rough-message/ep:code"/>
-                   </xsl:otherwise>
-               </xsl:choose>
-           </xsl:variable>
-            <xsl:variable name="context" as="xs:string">
-               <xsl:choose>
-                   <xsl:when test="empty(@context)">
-                       <xsl:value-of select="'-'"/>
-                   </xsl:when>
-                   <xsl:when test="@context = ''">
-                       <xsl:value-of select="'-'"/>
-                   </xsl:when>
-                   <xsl:otherwise>
-                       <xsl:value-of select="@context"/>
-                   </xsl:otherwise>
-               </xsl:choose>
-            </xsl:variable>
-            <xsl:variable name="id" select="ep:id" as="xs:string"/>
-            <xsl:variable name="generated-id" select="generate-id(.)" as="xs:string"/>
-            <xsl:variable name="typeCode" select="@typeCode" as="xs:string"/>
-            <xsl:variable name="verwerkingsModus" select="@verwerkingsModus"/>
-            <xsl:variable name="packageName" select="@package"/> 
-            <xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/>
-            <!--xsl:variable name="alias" select="$construct/imvert:alias"/-->
-            <xsl:variable name="alias">
-               <xsl:choose>
-                   <xsl:when test="empty($construct/imvert:alias) or not($construct/imvert:alias)"/>
-                   <xsl:otherwise>
-                       <xsl:value-of select="$construct/imvert:alias"/>
-                   </xsl:otherwise>
-               </xsl:choose>
-           </xsl:variable>
-            <xsl:variable name="elementName" select="$construct/imvert:name"/>
-            <xsl:variable name="authentiek" select="imf:get-most-relevant-compiled-taggedvalue($construct, 'Indicatie authentiek')"/>
-            
-            <xsl:sequence select="imf:create-debug-comment(concat('generated-id ',$generated-id),$debugging)"/>
-            <xsl:sequence select="imf:create-debug-comment(concat('verwerkingsModus ',$verwerkingsModus),$debugging)"/>
-            
-                <xsl:choose>
-                    <!-- LET OP! We moeten bij het bepalen van de globale complexTypes niet alleen kijken of ze hergebruikt worden over de berichten 
-                        maar ook of ze over die berichten heen wel hetzelfde moeten blijven. Het ene bericht heeft een hele ander type complexType nodig dan het andere.
-                        Ik moet dus hier indien nodig meerdere ep:constructs aanmaken voor elke situatie. Zie ook RM-488140.
-                        Voor elke relevante context moet er per construct een globale ep:construct en ep:constructRef gegenereerd worden.
-                    
-                        Let o.a. ook op de noodzaak om globale constructs of constructRefs te creeren voor historieMaterieel en historieFormeel.
-                        Uitleg: 
-                           Elk construct (met zijn unieke ep:id) kan meerdere keren voorkomen in de rough-message structuur. Zo kan het dus ook voorkomen in een messagetype waarin
-                           historie van belang is maar ook in een messagetype waarin historie niet van belang is. In principe verwerk ik elk uniek construct (op basis van het ep:id)
-                           maar 1 keer. Als ik nu net het construct verwerk in de context van een messagetype waarin geen historie speelt zou ik dus geen historieMaterieel en
-                           historieFormeel constructs en constructRefs maken terwijl dat in sommige contexten wel van belang is.-->
-                       
-                        
-    
-                    <!-- The following if takes care of creating global construct elements for each ep:construct element not representing a 'relatie'. -->
-                    <xsl:when test="@typeCode!='relatie'">
-                       
-                        <xsl:sequence select="imf:create-debug-track('Constructing the global constructs not representing a relation',$debugging)"/>
-                        
-                        <xsl:choose>
-                           <!-- The following when generates global constructs based on uml groups. -->
-                            <xsl:when test="@type='group' and exists(imf:get-construct-by-id($id,$packages-doc))">
- 
-                               <xsl:sequence select="imf:create-debug-track(concat('Constructing global groupconstruct: ',$construct/imvert:name),$debugging)"/>
-
-                               <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
-                               <xsl:variable name="type" select="'Grp'"/>
-                               <xsl:variable name="name">
-                                   <xsl:choose>
-                                       <xsl:when test="@className"><xsl:value-of select="@className"/></xsl:when>
-                                       <xsl:otherwise><xsl:value-of select="ep:name"/></xsl:otherwise>
-                                   </xsl:choose>
-                               </xsl:variable>
-                               <xsl:variable name="docs">
-                                   <imvert:complete-documentation>
-                                       <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
-                                   </imvert:complete-documentation>
-                               </xsl:variable>
-                               <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
-                               
-                               <xsl:sequence select="imf:create-debug-comment('For-each-when: @type=group and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
-                               
-                               <!-- Location: 'ep:construct3'
-								    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef3'. -->
-                               
-                               <ep:construct prefix="{$prefix}" type="group">
-                                   <xsl:sequence
-                                       select="imf:create-output-element('ep:tech-name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name,$verwerkingsModus))" />
-                                   <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
-                                   <ep:seq>
-                                       
-                                       <!-- Within the following apply-templates parameters are used which are also used in other apply-templates in this and other stylesheets.
-                                            These have the following function:
-                                            
-                                            proces-type: 
-                                            -->
-                                       
-                                       <!-- The uml attributes of the uml group are placed here. -->
-                                       <xsl:sequence select="imf:create-debug-comment(concat('fundamentalMnemonic: ',$fundamentalMnemonic),$debugging)"/>
- 
-                                       <xsl:apply-templates select="$construct"
-                                           mode="create-message-content">
-                                           <xsl:with-param name="berichtName" select="$berichtName"/>
-                                           <xsl:with-param name="proces-type" select="'attributes'" />
-                                           <xsl:with-param name="berichtCode" select="$berichtCode" />
-                                           <xsl:with-param name="generated-id" select="$generated-id"/>
-                                           <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                           <xsl:with-param name="context" select="$context" />
-                                           <xsl:with-param name="fundamentalMnemonic" select="$fundamentalMnemonic"/>
-                                           <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                                       </xsl:apply-templates>
-                                       <!-- The uml groups of the uml group are placed here. -->
-                                       <xsl:apply-templates select="$construct"
-                                           mode="create-message-content">
-                                           <xsl:with-param name="berichtName" select="$berichtName"/>
-                                           <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
-                                           <xsl:with-param name="berichtCode" select="$berichtCode" />
-                                           <xsl:with-param name="generated-id" select="$generated-id"/>
-                                           <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                           <xsl:with-param name="context" select="$context" />
-                                           <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                                       </xsl:apply-templates>
-                                       <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
-                                       <!-- The uml associations of the uml group are placed here. -->
-                                       <xsl:apply-templates select="$construct"
-                                           mode="create-message-content">
-                                           <xsl:with-param name="berichtName" select="$berichtName"/>
-                                           <xsl:with-param name="proces-type" select="'associationsRelatie'" />
-                                           <xsl:with-param name="berichtCode" select="$berichtCode" />
-                                           <xsl:with-param name="generated-id" select="$generated-id"/>
-                                           <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                           <xsl:with-param name="context" select="$context" />
-                                           <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                                       </xsl:apply-templates>
-                                   </ep:seq> 
-                               </ep:construct>                       
-                               
-                               <xsl:sequence select="imf:create-debug-comment('For-each-when: @type=group and $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
-                               
-                           </xsl:when>
-                           <!-- The following when generates global constructs based on uml classes. -->
-                            <xsl:when test="exists(imf:get-construct-by-id($id,$packages-doc))">
-
-                                <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->                                
-
-                                <xsl:sequence select="imf:create-debug-track(concat('Constructing global construct: ',$construct/imvert:name),$debugging)"/>
-                               <xsl:sequence select="imf:create-debug-comment('@typeCode!=relatie and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
-                                
-                                <xsl:variable name="docs">
-                                   <imvert:complete-documentation>
-                                       <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
-                                   </imvert:complete-documentation>
-                               </xsl:variable>
-                               <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
-                               
-                               <!-- Location: 'ep:construct1'
-								    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-structure.xsl' on the location with the id 'ep:constructRef1'. -->
-                               
-                               <ep:construct prefix="{$prefix}">
-                                   <!-- The value of the tech-name is dependant on the availability of an alias. -->
-                                   <xsl:choose>
-                                       <xsl:when test="not(empty($alias)) and $alias != ''">
-                                           <xsl:sequence select="imf:create-debug-comment('xsl:when test=$packages//imvert:class[imvert:id = $id]/imvert:alias',$debugging)"/>
-                                           <xsl:sequence
-                                               select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($packageName,$berichtName,$verwerkingsModus,$alias,$elementName))" />
-                                       </xsl:when>
-                                       <xsl:otherwise>
-                                           <xsl:sequence select="imf:create-debug-comment('xsl:otherwise',$debugging)"/>
-                                           <xsl:sequence
-                                               select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($packageName,$berichtName,$verwerkingsModus,(),$elementName))" />
-                                       </xsl:otherwise>
-                                   </xsl:choose>
-                                   <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
-                                   <xsl:choose>
-                                        
-                                       <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
-                                       <xsl:when test="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
-                                           <xsl:apply-templates select="$construct"
-                                               mode="create-message-content">
-                                               <xsl:with-param name="berichtName" select="$berichtName"/>
-                                               <xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'" />
-                                               <xsl:with-param name="berichtCode" select="$berichtCode" />
-                                               <xsl:with-param name="generated-id" select="$generated-id"/>
-                                               <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                               <xsl:with-param name="context" select="$context" />
-                                               <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                                           </xsl:apply-templates>
-                                       </xsl:when>
-                                       <!-- Else the content of the current uml class is processed. -->
-                                       <xsl:otherwise>
-                                           <ep:seq>
-                                               <!-- The uml attributes of the uml class are placed here. -->
-                                               <xsl:apply-templates select="$construct"
-                                                   mode="create-message-content">
-                                                   <xsl:with-param name="berichtName" select="$berichtName"/>
-                                                   <xsl:with-param name="proces-type" select="'attributes'" />
-                                                   <xsl:with-param name="berichtCode" select="$berichtCode" />
-                                                   <xsl:with-param name="generated-id" select="$generated-id"/>
-                                                   <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                                   <xsl:with-param name="context" select="$context" />
-                                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                                               </xsl:apply-templates>
-                                               <!-- The uml groups of the uml class are placed here. -->
-                                               <xsl:apply-templates select="$construct"
-                                                   mode="create-message-content">
-                                                   <xsl:with-param name="berichtName" select="$berichtName"/>
-                                                   <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
-                                                   <xsl:with-param name="berichtCode" select="$berichtCode" />
-                                                   <xsl:with-param name="generated-id" select="$generated-id"/>
-                                                   <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                                   <xsl:with-param name="context" select="$context" />
-                                                   <!-- If the class is refered to form an association which is part of an VRIJ BERICHT no stuurgegevens must be generated. -->
-                                                   <xsl:with-param name="useStuurgegevens">
-                                                       <xsl:choose>
-                                                           <xsl:when test="$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:type-id = $id]/imvert:stereotype = 'BERICHTRELATIE'">
-                                                              <xsl:value-of select="'no'"/>
-                                                           </xsl:when>
-                                                           <xsl:otherwise>
-                                                               <xsl:value-of select="'yes'"/>
-                                                           </xsl:otherwise>
-                                                       </xsl:choose>
-                                                   </xsl:with-param>                                      
-                                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                                               </xsl:apply-templates>
-                                               <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
-                                               <!-- ROME:   Waarschijnlijk moet er hier afhankelijk van de context meer 
-                                            				of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' maar 
-                                            				ook aan 'tijdvakRelatie', 'historieMaterieel' en 'historieFormeel'. Onderstaande 
-                                            				elementen 'StUF:tijdvakGeldigheid' en 'StUF:tijdstipRegistratie' mogen trouwens 
-                                            				alleen voorkomen als voor een van de attributen van het huidige object historie 
-                                            				is gedefinieerd of als er om gevraagd wordt. De vraag is echter of daarbij 
-                                            				alleen gekeken moet worden naar de attributen waarvan de elementen op hetzelfde 
-                                            				niveau als onderstaande elementen worden gegenereerd of dat deze elementen 
-                                            				ook al gegenereerd moeten worden als er ergens dieper onder het huidige niveau 
-                                            				een element voorkomt waarbij op het gerelateerde attribuut historie is gedefinieerd. 
-                                            				Dit geldt voor alle locaties waar onderstaande elementen worden gedefinieerd. -->
-                                               <!--xsl:if test="$construct/imvert:stereotype != 'KENNISGEVINGBERICHTTYPE' and
-                                                   $construct/imvert:stereotype != 'VRAAGBERICHTTYPE' and
-                                                   $construct/imvert:stereotype != 'ANTWOORDBERICHTTYPE' and
-                                                   $construct/imvert:stereotype != 'SYNCHRONISATIEBERICHTTYPE' and not(contains(@verwerkingsModus,'kerngegevens'))"-->
-                                               <xsl:if test="not($construct/imvert:stereotype = imf:get-config-stereotypes((
-                                                   'stereotype-name-vraagberichttype',
-                                                   'stereotype-name-antwoordberichttype',
-                                                   'stereotype-name-kennisgevingberichttype',
-                                                   'stereotype-name-synchronisatieberichttype'))) and not(contains(@verwerkingsModus,'kerngegevens'))">
-                                                   <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                                       <ep:name>tijdvakGeldigheid</ep:name>
-                                                       <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
-                                                       <ep:max-occurs>1</ep:max-occurs>
-                                                       <ep:min-occurs>0</ep:min-occurs>
-                                                       <ep:position>155</ep:position>
-                                                   </ep:constructRef>
-                                                   <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                                       <ep:name>tijdstipRegistratie</ep:name>
-                                                       <ep:tech-name>tijdstipRegistratie</ep:tech-name>
-                                                       <ep:max-occurs>1</ep:max-occurs>
-                                                       <ep:min-occurs>0</ep:min-occurs>
-                                                       <ep:position>160</ep:position>
-                                                   </ep:constructRef>
-                                                   <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                                       <ep:name>extraElementen</ep:name>
-                                                       <ep:tech-name>extraElementen</ep:tech-name>
-                                                       <ep:max-occurs>1</ep:max-occurs>
-                                                       <ep:min-occurs>0</ep:min-occurs>
-                                                       <ep:position>165</ep:position>
-                                                   </ep:constructRef>
-                                                   <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                                       <ep:name>aanvullendeElementen</ep:name>
-                                                       <ep:tech-name>aanvullendeElementen</ep:tech-name>
-                                                       <ep:max-occurs>1</ep:max-occurs>
-                                                       <ep:min-occurs>0</ep:min-occurs>
-                                                       <ep:position>170</ep:position>
-                                                   </ep:constructRef>
-                                               </xsl:if>
-                                               <!-- ROME: Hieronder worden de construcRefs voor historieMaterieel en historieFormeel aangemaakt.
-                                                    Dit moet echter gebeuren a.d.h.v. de berichtcode. Die verfijning moet nog worden aangebracht in de if statements. -->
-
-                                               <!-- If 'Materiele historie' is applicable for the current class a constructRef to a historieMaterieel global construct based on the current class is generated. -->
-                                               <xsl:if test="(@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes') and @verwerkingsModus = 'antwoord'">
-
-                                                   <!-- Location: 'ep:constructRef2'
-								                        Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct2'. -->
-
-                                                   <xsl:variable name="historieType" select="'historieMaterieel'"/>
-                                                   
-                                                   <ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
-                                                       <ep:tech-name>historieMaterieel</ep:tech-name>
-                                                       <ep:max-occurs>unbounded</ep:max-occurs>
-                                                       <ep:min-occurs>0</ep:min-occurs>
-                                                       <ep:position>175</ep:position>
-                                                       <xsl:choose>
-                                                           <xsl:when test="not(empty($alias)) and $alias != ''">
-                                                               <xsl:sequence
-                                                                   select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,$alias,$elementName))"/>
-                                                           </xsl:when>
-                                                           <xsl:otherwise>
-                                                               <xsl:sequence
-                                                                   select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,(),$elementName))"/>
-                                                           </xsl:otherwise>
-                                                       </xsl:choose>
-                                                   </ep:constructRef>
-                                               </xsl:if>
-                                               <!-- If 'Formele historie' is applicable for the current class a constructRef to a historieFormeel global construct based on the current class is generated. -->
-                                               <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes') and @verwerkingsModus = 'antwoord'">
-
-                                                   <xsl:variable name="historieType" select="'historieFormeel'"/>
-
-                                                   <!-- Location: 'ep:constructRef5'
-								                        Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef5'. -->
-                                                   
-                                                   <ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
-                                                       <ep:tech-name>historieFormeel</ep:tech-name>
-                                                       <ep:max-occurs>unbounded</ep:max-occurs>
-                                                       <ep:min-occurs>0</ep:min-occurs>
-                                                       <ep:position>180</ep:position>
-                                                       <xsl:choose>
-                                                           <xsl:when test="not(empty($alias)) and $alias != ''">
-                                                               <xsl:sequence
-                                                                   select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,$alias,$elementName))"/>
-                                                           </xsl:when>
-                                                           <xsl:otherwise>
-                                                               <xsl:sequence
-                                                                   select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,(),$elementName))"/>
-                                                           </xsl:otherwise>
-                                                       </xsl:choose>
-                                                   </ep:constructRef>
-                                               </xsl:if>
-                                               <!-- The uml associations of the uml class are placed here. -->
-                                               <xsl:apply-templates select="$construct"
-                                                   mode="create-message-content-constructRef">
-                                                   <xsl:with-param name="berichtName" select="$berichtName"/>
-                                                   <xsl:with-param name="proces-type" select="'associationsRelatie'" />
-                                                   <xsl:with-param name="berichtCode" select="$berichtCode" />
-                                                   <xsl:with-param name="generated-id" select="$generated-id"/>
-                                                   <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                                   <xsl:with-param name="context" select="$context" />
-                                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                                               </xsl:apply-templates>
-                                               <!-- The function imf:createAttributes is used to determine the XML attributes 
-                                    				neccessary for this context. It has the following parameters: - typecode 
-                                    				- berichttype - context - datumType The first 3 parameters relate to columns 
-                                    				with the same name within an Excel spreadsheet used to configure a.o. XML 
-                                    				attributes usage. The last parameter is used to determine the need for the 
-                                    				XML-attribute 'StUF:indOnvolledigeDatum'. -->
-                                               <xsl:sequence select="imf:create-debug-comment(concat('Attributes voor ',$typeCode,', berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $alias),$debugging)"/>
-                                               <xsl:variable name="attributes"
-                                                   select="imf:createAttributes($typeCode, substring($berichtCode,1,2), $context, 'no', $alias, 'no','no')" />
-                                               <xsl:sequence select="$attributes" />
-                                           </ep:seq>
-                                       </xsl:otherwise>
-                                   </xsl:choose>
-                               </ep:construct>
-                               
-                               <xsl:sequence select="imf:create-debug-comment('For-each-when: $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
-                           </xsl:when>
-                       </xsl:choose>
+        <xsl:for-each select="$currentMessage/ep:rough-message[not(contains(ep:code,'Di')) and not(contains(ep:code,'Du'))]//ep:construct[ep:id and generate-id(.) = generate-id(key('construct-id',concat(ep:id,@verwerkingsModus),$currentMessage)[1])]">                   
+            <xsl:call-template name="processMainConstructs">
+                <xsl:with-param name="fundamentalMnemonic" select="$fundamentalMnemonic"/>
+                <xsl:with-param name="currentMessage" select="$currentMessage"/>
+            </xsl:call-template> 
+        </xsl:for-each>
         
-        
-                       <!-- There are 2 types of history parameters. The first one configures if history is applicable for the current context. History isn't applicable for example for each message type.
-                            The second one is used to determine if history, if applicable for the context, is applicable for the class being processed. Not every class has attributes or associations history applies to. -->
-                       
-                       <!-- If 'Materiele historie' is applicable for the current class a historieMaterieel global construct based on the current class is generated. -->
-                        <xsl:if test="(@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes') and @verwerkingsModus = 'antwoord'">
-                            <xsl:variable name="historieType" select="'historieMaterieel'"/>
-                            <xsl:choose>
-                               <!-- The following when generates historieMaterieel global constructs based on uml groups. -->
-                                <xsl:when test="@type='group' and exists(imf:get-construct-by-id($id,$packages-doc))">
-                                   
-                                   <xsl:sequence select="imf:create-debug-track(concat('Constructing global materieleHistorie groupconstruct: ',$construct/imvert:name),$debugging)"/>
-                                   
-                                   <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
-                                   <xsl:variable name="type" select="'Grp'"/>
-                                   <xsl:variable name="name" select="ep:name"/>
-                                   <xsl:variable name="docs">
-                                       <imvert:complete-documentation>
-                                           <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
-                                       </imvert:complete-documentation>
-                                   </xsl:variable>
-                                   <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
-                                   
-                                   <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
-
-                                   <!-- Location: 'ep:construct4'
-								    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef4'. -->
-                                   
-                                   <ep:construct prefix="{$prefix}" type="group">
-                                       <xsl:sequence
-                                           select="imf:create-output-element('ep:tech-name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name,$historieType))" />
-                                       <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
-                                       <ep:seq>
-                                           
-                                           <!-- ROME: M.b.v. het XML attribute 'indicatieMaterieleHistorie' en 'indicatieFormeleHistorie' op het huidige rough-message construct 
-                                                      kan bepaald worden of binnen het ep:seq element een historieMaterieel en/of een historieFormeel constructRef moet worden gegenereerd. -->
-                                           
-                                           
-                                           <!-- The uml attributes, of the uml group, for which historiematerieel is applicable are placed here. -->
-                                           <xsl:apply-templates select="$construct"
-                                               mode="create-message-content">
-                                               <xsl:with-param name="berichtName" select="$berichtName"/>
-                                               <xsl:with-param name="proces-type" select="'attributes'" />
-                                               <xsl:with-param name="berichtCode" select="$berichtCode" />
-                                               <xsl:with-param name="generated-id" select="$generated-id"/>
-                                               <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                               <xsl:with-param name="context" select="$context" />
-                                               <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
-                                               <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
-                                               <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
-                                               <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                                           </xsl:apply-templates>
-                                           <!-- The uml groups, of the uml group, for which historiematerieel is applicable are placed here. -->
-                                           <xsl:apply-templates select="$construct"
-                                               mode="create-message-content">
-                                               <xsl:with-param name="berichtName" select="$berichtName"/>
-                                               <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
-                                               <xsl:with-param name="berichtCode" select="$berichtCode" />
-                                               <xsl:with-param name="generated-id" select="$generated-id"/>
-                                               <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                               <xsl:with-param name="context" select="$context" />
-                                               <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
-                                               <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
-                                               <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
-                                               <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                                           </xsl:apply-templates>
-                                           <!-- Associations are never placed within historieMaterieel constructs. -->
-                                       </ep:seq> 
-                                   </ep:construct>                       
-                                   
-                                   <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
-                               </xsl:when>
-                               <!-- The following when generates historieMaterieel global constructs based on uml classes. -->
-                                <xsl:when test="exists(imf:get-construct-by-id($id,$packages-doc))">
-                                   
-                                   <xsl:sequence select="imf:create-debug-track(concat('Constructing global materieleHistorie construct: ',$construct/imvert:name),$debugging)"/>
-                                   
-                                    <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
-                                    <xsl:variable name="docs">
-                                       <imvert:complete-documentation>
-                                           <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
-                                       </imvert:complete-documentation>                           </xsl:variable>
-                                   <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
-                                   
-                                   <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
-                                   
-                                   <!-- Location: 'ep:construct2'
-								    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef2'. -->
-                                   
-                                   <ep:construct prefix="{$prefix}">
-                                       <!-- The value of the tech-name is dependant on the availability of an alias. -->
-                                       <xsl:choose>
-                                           <xsl:when test="not(empty($alias)) and $alias != ''">
-                                               <xsl:sequence
-                                                   select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($packageName,$berichtName,$historieType,$alias,$elementName))" />
-                                           </xsl:when>
-                                           <xsl:otherwise>
-                                               <xsl:sequence
-                                                   select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($packageName,$berichtName,$historieType,(),$elementName))" />
-                                           </xsl:otherwise>
-                                       </xsl:choose>
-                                       <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
-                                       <xsl:choose>
-                                           <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
-                                           
-                                            
-                                           
-                                           <xsl:when test="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
-                                               <xsl:apply-templates select="$construct"
-                                                   mode="create-message-content">
-                                                   <xsl:with-param name="berichtName" select="$berichtName"/>
-                                                   <xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'" />
-                                                   <xsl:with-param name="berichtCode" select="$berichtCode" />
-                                                   <xsl:with-param name="generated-id" select="$generated-id"/>
-                                                   <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                                   <xsl:with-param name="context" select="$context" />
-                                                   <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
-                                                   <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
-                                                   <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
-                                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                                               </xsl:apply-templates>
-                                           </xsl:when>
-                                           <!-- Else the content of the current uml class is processed. -->
-                                           <xsl:otherwise>
-                                               <ep:seq>
-                                                   <!-- The uml attributes of the uml class are placed here. -->
-                                                   <xsl:apply-templates select="$construct"
-                                                       mode="create-message-content">
-                                                       <xsl:with-param name="berichtName" select="$berichtName"/>
-                                                       <xsl:with-param name="proces-type" select="'attributes'" />
-                                                       <xsl:with-param name="berichtCode" select="$berichtCode" />
-                                                       <xsl:with-param name="generated-id" select="$generated-id"/>
-                                                       <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                                       <xsl:with-param name="context" select="$context" />
-                                                       <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
-                                                       <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
-                                                       <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
-                                                       <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                                                   </xsl:apply-templates>
-                                                   <!-- The uml groups, of the uml group, for which historiematerieel is applicable are placed here. -->
-                                                   <xsl:apply-templates select="$construct"
-                                                       mode="create-message-content">
-                                                       <xsl:with-param name="berichtName" select="$berichtName"/>
-                                                       <xsl:with-param name="proces-type"
-                                                           select="'associationsGroepCompositie'" />
-                                                       <xsl:with-param name="berichtCode" select="$berichtCode" />
-                                                       <xsl:with-param name="context" select="$context" />
-                                                       <xsl:with-param name="generated-id" select="$generated-id"/>
-                                                       <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                                       <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
-                                                       <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
-                                                       <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
-                                                       <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                                                   </xsl:apply-templates>
-                                                   <!-- ROME: Waarschijnlijk moet er hier afhankelijk van de context meer 
-                                            					of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' maar 
-                                            					ook aan 'tijdvakRelatie', 'historieMaterieel' en 'historieFormeel'. Onderstaande 
-                                            					elementen 'StUF:tijdvakGeldigheid' en 'StUF:tijdstipRegistratie' mogen trouwens 
-                                            					alleen voorkomen als voor een van de attributen van het huidige object historie 
-                                            					is gedefinieerd of als er om gevraagd wordt. De vraag is echter of daarbij 
-                                            					alleen gekeken moet worden naar de attributen waarvan de elementen op hetzelfde 
-                                            					niveau als onderstaande elementen worden gegenereerd of dat deze elementen 
-                                            					ook al gegenereerd moeten worden als er ergens dieper onder het huidige niveau 
-                                            					een element voorkomt waarbij op het gerelateerde attribuut historie is gedefinieerd. 
-                                            					Dit geldt voor alle locaties waar onderstaande elementen worden gedefinieerd. -->
-                                                   <!-- ep:constructRef prefix="StUF" externalNamespace="yes">
-                                                       <ep:name>tijdvakObject</ep:name>
-                                                       <ep:tech-name>StUF:tijdvakObject</ep:tech-name>
-                                                       <ep:max-occurs>1</ep:max-occurs>
-                                                       <ep:min-occurs>0</ep:min-occurs>
-                                                       <ep:position>150</ep:position>
-                                                   </ep:constructRef -->
-                                                   <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                                       <ep:name>tijdvakGeldigheid</ep:name>
-                                                       <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
-                                                       <ep:max-occurs>1</ep:max-occurs>
-                                                       <ep:min-occurs>1</ep:min-occurs>
-                                                       <ep:position>155</ep:position>
-                                                   </ep:constructRef>
-                                                   <!-- If 'Formele historie' is applicable for the current class a the following construct and constructRef are generated. -->
-                                                   <xsl:if test="@indicatieFormeleHistorie='Ja'">
-                                                       <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                                           <ep:name>tijdstipRegistratie</ep:name>
-                                                           <ep:tech-name>tijdstipRegistratie</ep:tech-name>
-                                                           <ep:max-occurs>1</ep:max-occurs>
-                                                           <ep:min-occurs>0</ep:min-occurs>
-                                                           <ep:position>160</ep:position>
-                                                       </ep:constructRef>
-                                                       <ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
-                                                           <ep:name>historieFormeel</ep:name>
-                                                           <ep:tech-name>historieFormeel</ep:tech-name>
-                                                           <ep:max-occurs>unbounded</ep:max-occurs>
-                                                           <ep:min-occurs>0</ep:min-occurs>
-                                                           <ep:position>175</ep:position>
-                                                           <!-- The value of the href is dependant on the availability of an alias. -->
-                                                          <xsl:choose>
-                                                              <xsl:when test="not(empty($alias)) and $alias != ''">
-                                                                   <xsl:sequence
-                                                                       select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,$alias,$elementName))" />
-                                                               </xsl:when>
-                                                               <xsl:otherwise>
-                                                                   <xsl:sequence
-                                                                       select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,(),$elementName))" />
-                                                               </xsl:otherwise>
-                                                           </xsl:choose>
-                                                       </ep:constructRef>
-                                                   </xsl:if>
-                                                   <!-- Associations are never placed within historieMaterieel constructs. -->                                           
-                                               </ep:seq> 
-                                           </xsl:otherwise>
-                                       </xsl:choose>
-                                   </ep:construct>
-                                   
-                                   <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
-                               </xsl:when>
-                           </xsl:choose>
-                       </xsl:if>
-                        <!-- If 'Formele historie' is applicable for the current class a historieFormeel global construct based on the current class is generated. -->
-                        <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes') and @verwerkingsModus = 'antwoord'">
-                            <xsl:variable name="historieType" select="'historieFormeel'"/>
-                            <xsl:choose>
-                               <!-- The following when generates historieFormeel global constructs based on uml groups. -->
-                                <xsl:when test="@type='group' and exists(imf:get-construct-by-id($id,$packages-doc))">
-                                   
-                                   <xsl:sequence select="imf:create-debug-track(concat('Constructing global formeleHistorie groupconstruct: ',$construct/imvert:name),$debugging)"/>
-                                   
-                                    <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
-                                    <xsl:variable name="type" select="'Grp'"/>
-                                   <xsl:variable name="name" select="ep:name"/>
-                                   <xsl:variable name="docs">
-                                       <imvert:complete-documentation>
-                                           <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
-                                       </imvert:complete-documentation>
-                                   </xsl:variable>
-                                   <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
-                                   
-                                   <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
-                                   
-                                   <!-- Location: 'ep:construct5'
-								    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef5'. -->
-                                   
-                                   <ep:construct prefix="{$prefix}" type="group">
-                                       <xsl:sequence
-                                           select="imf:create-output-element('ep:tech-name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name,$historieType))" />
-                                       <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
-                                       <ep:seq>
-                                           <!-- The uml attributes, of the uml group, for which historieFormeel is applicable are placed here. -->
-                                           <xsl:apply-templates select="$construct"
-                                               mode="create-message-content">
-                                               <xsl:with-param name="berichtName" select="$berichtName"/>
-                                               <xsl:with-param name="proces-type" select="'attributes'" />
-                                               <xsl:with-param name="berichtCode" select="$berichtCode" />
-                                               <xsl:with-param name="generated-id" select="$generated-id"/>
-                                               <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                               <xsl:with-param name="context" select="$context" />
-                                               <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorie'"/>
-                                               <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
-                                               <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                                           </xsl:apply-templates>
-                                           <!-- The uml groups, of the uml group, for which historieFormeel is applicable are placed here. -->
-                                           <xsl:apply-templates select="$construct"
-                                               mode="create-message-content">
-                                               <xsl:with-param name="berichtName" select="$berichtName"/>
-                                               <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
-                                               <xsl:with-param name="berichtCode" select="$berichtCode" />
-                                               <xsl:with-param name="generated-id" select="$generated-id"/>
-                                               <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                               <xsl:with-param name="context" select="$context" />
-                                               <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorie'"/>
-                                               <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
-                                               <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                                           </xsl:apply-templates>
-                                           <!-- Associations are never placed within historieFormeel constructs. -->
-                                       </ep:seq> 
-                                   </ep:construct>                       
-                                   
-                                   <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
-                               </xsl:when>
-                               <!-- The following when generates historieFormeel global constructs based on uml classes. -->
-                                <xsl:when test="exists(imf:get-construct-by-id($id,$packages-doc))">
-                                   
-                                   <xsl:sequence select="imf:create-debug-track(concat('Constructing global formeleHistorie construct: ',$construct/imvert:name),$debugging)"/>
-                                   
-                                    <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
-                                    <xsl:variable name="docs">
-                                       <imvert:complete-documentation>
-                                           <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
-                                       </imvert:complete-documentation>
-                                   </xsl:variable>
-                                   <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
-                                   
-                                   <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
-                                   
-                                   <!-- Location: 'ep:construct6'
-								    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef6'. -->
-                                   
-                                   <ep:construct prefix="{$prefix}">
-                                       <!-- The value of the tech-name is dependant on the availability of an alias. -->
-                                       <xsl:choose>
-                                           <xsl:when test="not(empty($alias)) and $alias != ''">
-                                               <xsl:sequence
-                                                   select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($packageName,$berichtName,$historieType,$alias,$elementName))" />
-                                           </xsl:when>
-                                           <xsl:otherwise>
-                                               <xsl:sequence
-                                                   select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($packageName,$berichtName,$historieType,(),$elementName))" />
-                                           </xsl:otherwise>
-                                       </xsl:choose>
-                                       <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
-                                       <xsl:choose>
-                                           <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
-                                           
-                                           
-                                           <xsl:when test="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
-                                               <xsl:apply-templates select="$construct"
-                                                   mode="create-message-content">
-                                                   <xsl:with-param name="berichtName" select="$berichtName"/>
-                                                   <xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'" />
-                                                   <xsl:with-param name="berichtCode" select="$berichtCode" />
-                                                   <xsl:with-param name="generated-id" select="$generated-id"/>
-                                                   <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                                   <xsl:with-param name="context" select="$context" />
-                                                   <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorie'"/>
-                                                   <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
-                                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                                               </xsl:apply-templates>
-                                           </xsl:when>
-                                           <!-- Else the content of the current uml class is processed. -->
-                                           <xsl:otherwise>                                     
-                                               <ep:seq>
-                                                   <!-- The uml attributes of the uml class are placed here. -->
-                                                   <xsl:apply-templates select="$construct"
-                                                       mode="create-message-content">
-                                                       <xsl:with-param name="berichtName" select="$berichtName"/>
-                                                       <xsl:with-param name="proces-type" select="'attributes'" />
-                                                       <xsl:with-param name="berichtCode" select="$berichtCode" />
-                                                       <xsl:with-param name="generated-id" select="$generated-id"/>
-                                                       <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                                       <xsl:with-param name="context" select="$context" />
-                                                       <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorie'"/>
-                                                       <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
-                                                       <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                                                   </xsl:apply-templates>
-                                                   <!-- The uml groups, of the uml group, for which historiematerieel is applicable are placed here. -->
-                                                   <xsl:apply-templates select="$construct"
-                                                       mode="create-message-content">
-                                                       <xsl:with-param name="berichtName" select="$berichtName"/>
-                                                       <xsl:with-param name="proces-type"
-                                                           select="'associationsGroepCompositie'" />
-                                                       <xsl:with-param name="berichtCode" select="$berichtCode" />
-                                                       <xsl:with-param name="generated-id" select="$generated-id"/>
-                                                       <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                                       <xsl:with-param name="context" select="$context" />
-                                                       <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorie'"/>
-                                                       <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
-                                                       <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                                                   </xsl:apply-templates>
-                                                   <!-- ROME: Waarschijnlijk moet er hier afhankelijk van de context meer 
-                                            					of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' maar 
-                                            					ook aan 'tijdvakRelatie', 'historieMaterieel' en 'historieFormeel'. Onderstaande 
-                                            					elementen 'StUF:tijdvakGeldigheid' en 'StUF:tijdstipRegistratie' mogen trouwens 
-                                            					alleen voorkomen als voor een van de attributen van het huidige object historie 
-                                            					is gedefinieerd of als er om gevraagd wordt. De vraag is echter of daarbij 
-                                            					alleen gekeken moet worden naar de attributen waarvan de elementen op hetzelfde 
-                                            					niveau als onderstaande elementen worden gegenereerd of dat deze elementen 
-                                            					ook al gegenereerd moeten worden als er ergens dieper onder het huidige niveau 
-                                            					een element voorkomt waarbij op het gerelateerde attribuut historie is gedefinieerd. 
-                                            					Dit geldt voor alle locaties waar onderstaande elementen worden gedefinieerd. -->
-                                                   <!-- ep:constructRef externalNamespace="yes">
-                                                       <ep:name>tijdvakObject</ep:name>
-                                                       <ep:tech-name>tijdvakObject</ep:tech-name>
-                                                       <ep:max-occurs>1</ep:max-occurs>
-                                                       <ep:min-occurs>0</ep:min-occurs>
-                                                       <ep:position>150</ep:position>
-                                                   </ep:constructRef -->
-                                                   <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                                       <ep:name>tijdvakGeldigheid</ep:name>
-                                                       <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
-                                                       <ep:max-occurs>1</ep:max-occurs>
-                                                       <ep:min-occurs>1</ep:min-occurs>
-                                                       <ep:position>155</ep:position>
-                                                   </ep:constructRef>
-                                                   <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                                       <ep:name>tijdstipRegistratie</ep:name>
-                                                       <ep:tech-name>tijdstipRegistratie</ep:tech-name>
-                                                       <ep:max-occurs>1</ep:max-occurs>
-                                                       <ep:min-occurs>1</ep:min-occurs>
-                                                       <ep:position>160</ep:position>
-                                                   </ep:constructRef>
-                                                   <ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
-                                                       <ep:name>historieFormeel</ep:name>
-                                                       <ep:tech-name>historieFormeel</ep:tech-name>
-                                                       <ep:max-occurs>unbounded</ep:max-occurs>
-                                                       <ep:min-occurs>0</ep:min-occurs>
-                                                       <ep:position>175</ep:position>
-                                                       <!-- The value of the href is dependant on the availability of an alias. -->
-                                                       <xsl:choose>
-                                                           <xsl:when test="not(empty($alias)) and $alias != ''">
-                                                               <xsl:sequence
-                                                                   select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,$alias,$elementName))" />
-                                                           </xsl:when>
-                                                           <xsl:otherwise>
-                                                               <xsl:sequence
-                                                                   select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,(),$elementName))" />
-                                                           </xsl:otherwise>
-                                                       </xsl:choose>
-                                                   </ep:constructRef>
-                                               </ep:seq> 
-                                           </xsl:otherwise>
-                                       </xsl:choose>
-                                   </ep:construct>
-                                   
-                                   <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
-                               </xsl:when>
-                           </xsl:choose>
-                       </xsl:if>
-                       
-                    </xsl:when>
-     
-                    <!-- The following if takes care of creating global construct elements for each ep:construct element representing a 'relatie'. -->
-                    <xsl:when test="@typeCode='relatie'">
-                        
-                         
-                        <xsl:sequence select="imf:create-debug-track('Constructing the global constructs representing a relation',$debugging)"/>
-
-                        <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @typeCode=relatie',$debugging)"/>
-                        <!-- Within the schema's we want to have global constructs for relations. However for that kind of objects no uml classes are available.
-                                With the following apply-templates the global ep:construct elements are created presenting the relations. -->
-                        
-                        <xsl:variable name="association" select="$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']"/>
-                        
-                        <xsl:apply-templates select="$association"
-                            mode="create-global-construct">
-                            <xsl:with-param name="berichtCode" select="$berichtCode"/>
-                            <xsl:with-param name="berichtName" select="$berichtName"/>
-                            <xsl:with-param name="generated-id" select="$generated-id"/>
-                            <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                            <xsl:with-param name="context" select="$context"/>
-                            <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
-                            <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
-                            <xsl:with-param name="indicatieFormeleHistorieRelatie" select="@indicatieFormeleHistorieRelatie"/>
-                            <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                        </xsl:apply-templates>
-
-                        <!-- There are 2 types of history parameters. The first one configures if history is applicable for the current context. History isn't applicable for example for each message type.
-                        The second one is used to determine if history, if applicable for the context, is applicable for the class being processed. Not every class has attributes or associations history applies to. -->
-                        
-                        <!-- If 'Materiele historie' is applicable for the current class and messagetype a historieMaterieel global construct based on the current class is generated. -->
-                        <xsl:if test="(@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes')">
-                            
-                            <xsl:sequence select="imf:create-debug-track(concat('Constructing the materieleHistorie constructs: ',$association/imvert:name),$debugging)"/>
-
-                            <xsl:apply-templates select="$association"
-                                mode="create-global-construct">
-                                <xsl:with-param name="berichtCode" select="$berichtCode"/>
-                                <xsl:with-param name="berichtName" select="$berichtName"/>
-                                <xsl:with-param name="generated-id" select="$generated-id"/>
-                                <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                <xsl:with-param name="context" select="$context"/>
-                                <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
-                                <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
-                                <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
-                                <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                            </xsl:apply-templates>
-                        </xsl:if>
-                        
-                        
-                        <!-- If 'Formele historie' is applicable for the current class and messagetype a historieFormeel global construct based on the current class is generated. -->
-                        <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes')">
-                            
-                            <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorie constructs: ',$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
-                            
-                            <xsl:apply-templates select="$association"
-                                mode="create-global-construct">
-                                <xsl:with-param name="berichtCode" select="$berichtCode"/>
-                                <xsl:with-param name="berichtName" select="$berichtName"/>
-                                <xsl:with-param name="generated-id" select="$generated-id"/>
-                                <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                <xsl:with-param name="context" select="$context"/>
-                                <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorie'"/>
-                                <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
-                                <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
-                                <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                            </xsl:apply-templates>
-                        </xsl:if>
-                        
-                        <!-- If 'Formele historie' is applicable for the current class and messagetype a historieFormeel global construct based on the current class is generated. -->
-                        <xsl:if test="@indicatieFormeleHistorieRelatie='Ja'">
-                            
-                            <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorieRelatie constructs: ',$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
-                            
-                            <xsl:apply-templates select="$association"
-                                mode="create-global-construct">
-                                <xsl:with-param name="berichtCode" select="$berichtCode"/>
-                                <xsl:with-param name="berichtName" select="$berichtName"/>
-                                <xsl:with-param name="generated-id" select="$generated-id"/>
-                                <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                <xsl:with-param name="context" select="$context"/>
-                                <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorieRelatie'"/>
-                                <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
-                                <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
-                                <xsl:with-param name="indicatieFormeleHistorieRelatie" select="@indicatieFormeleHistorieRelatie"/>
-                                <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                            </xsl:apply-templates>
-                        </xsl:if>
- 
-                        <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @typeCode=relatie End-For-each-when',$debugging)"/>
-                        
-                    </xsl:when>
-               </xsl:choose>
-            </xsl:for-each>
+        <xsl:for-each select="$currentMessage/ep:rough-message[contains(ep:code,'Di') or contains(ep:code,'Du')]//ep:construct[ep:id and generate-id(.) = generate-id(key('construct-id-in-vrijbericht',concat(ep:id,@verwerkingsModus,@entiteitOrBerichtRelatie),$currentMessage)[1])]">
+            <xsl:call-template name="processMainConstructs">
+                <xsl:with-param name="fundamentalMnemonic" select="$fundamentalMnemonic"/>
+                <xsl:with-param name="currentMessage" select="$currentMessage"/>
+            </xsl:call-template> 
+        </xsl:for-each>
         
        <xsl:sequence select="imf:create-debug-track('Constructing the global constructs for antwoord constructs',$debugging)"/>
             
@@ -1352,6 +490,965 @@
             
         </xsl:for-each>        
     </xsl:template>
+    
+    <xsl:template name="processMainConstructs">
+        <xsl:param name="fundamentalMnemonic"/>
+        <xsl:param name="currentMessage"/>
+        
+        <xsl:variable name="berichtName" as="xs:string">
+            <xsl:choose>
+                <xsl:when test="(contains(ancestor::ep:rough-message/ep:code,'Di') or contains(ancestor::ep:rough-message/ep:code,'Du')) and ancestor-or-self::ep:construct/@typeCode = 'entiteitrelatie'">
+                    <xsl:value-of select="concat(ancestor::ep:rough-message/ep:name,'-',ancestor-or-self::ep:construct[@typeCode = 'entiteitrelatie']/ep:name)"/>
+                </xsl:when>
+                <xsl:when test="(contains(ancestor::ep:rough-message/ep:code,'Di') or contains(ancestor::ep:rough-message/ep:code,'Du')) and ancestor-or-self::ep:construct/@typeCode = 'berichtrelatie'">
+                    <xsl:value-of select="concat(ancestor::ep:rough-message/ep:name,'-',ancestor-or-self::ep:construct[@typeCode = 'berichtrelatie']/ep:name)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="ancestor::ep:rough-message/ep:name"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="berichtCode" as="xs:string">
+           <xsl:choose>
+               <!-- Within a 'vrij bericht' the ancestor tree can contain more than one berichtCode, the 'berichtCode' of the 'vrij bericht' 
+                    (e.g. 'Di02' or 'Du01') and the 'berichtCode' of the embedded message. In that case the lowest level 'berichtCode'must be used. -->
+               <xsl:when test="ancestor-or-self::ep:construct[@berichtCode]">
+                   <xsl:value-of select="ancestor-or-self::ep:construct[@berichtCode][last()]/@berichtCode"/>
+               </xsl:when>
+               <xsl:otherwise>
+                   <xsl:value-of select="ancestor::ep:rough-message/ep:code"/>
+               </xsl:otherwise>
+           </xsl:choose>
+       </xsl:variable>
+        <xsl:variable name="context" as="xs:string">
+           <xsl:choose>
+               <xsl:when test="empty(@context)">
+                   <xsl:value-of select="'-'"/>
+               </xsl:when>
+               <xsl:when test="@context = ''">
+                   <xsl:value-of select="'-'"/>
+               </xsl:when>
+               <xsl:otherwise>
+                   <xsl:value-of select="@context"/>
+               </xsl:otherwise>
+           </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="id" select="ep:id" as="xs:string"/>
+        <xsl:variable name="generated-id" select="generate-id(.)" as="xs:string"/>
+        <xsl:variable name="typeCode" select="@typeCode" as="xs:string"/>
+        <xsl:variable name="verwerkingsModus" select="@verwerkingsModus"/>
+        <xsl:variable name="packageName" select="@package"/> 
+        <xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/>
+        <!--xsl:variable name="alias" select="$construct/imvert:alias"/-->
+        <xsl:variable name="alias">
+           <xsl:choose>
+               <xsl:when test="empty($construct/imvert:alias) or not($construct/imvert:alias)"/>
+               <xsl:otherwise>
+                   <xsl:value-of select="$construct/imvert:alias"/>
+               </xsl:otherwise>
+           </xsl:choose>
+       </xsl:variable>
+        <xsl:variable name="elementName" select="$construct/imvert:name"/>
+        <xsl:variable name="authentiek" select="imf:get-most-relevant-compiled-taggedvalue($construct, 'Indicatie authentiek')"/>
+        <xsl:variable name="inOnderzoek" select="imf:get-most-relevant-compiled-taggedvalue($construct, 'Indicatie in onderzoek')"/>
+        
+        <xsl:sequence select="imf:create-debug-comment(concat('generated-id ',$generated-id),$debugging)"/>
+        <xsl:sequence select="imf:create-debug-comment(concat('verwerkingsModus ',$verwerkingsModus),$debugging)"/>
+        
+        <xsl:choose>
+            <!-- LET OP! We moeten bij het bepalen van de globale complexTypes niet alleen kijken of ze hergebruikt worden over de berichten 
+                maar ook of ze over die berichten heen wel hetzelfde moeten blijven. Het ene bericht heeft een hele ander type complexType nodig dan het andere.
+                Ik moet dus hier indien nodig meerdere ep:constructs aanmaken voor elke situatie. Zie ook RM-488140.
+                Voor elke relevante context moet er per construct een globale ep:construct en ep:constructRef gegenereerd worden.
+            
+                Let o.a. ook op de noodzaak om globale constructs of constructRefs te creeren voor historieMaterieel en historieFormeel.
+                Uitleg: 
+                   Elk construct (met zijn unieke ep:id) kan meerdere keren voorkomen in de rough-message structuur. Zo kan het dus ook voorkomen in een messagetype waarin
+                   historie van belang is maar ook in een messagetype waarin historie niet van belang is. In principe verwerk ik elk uniek construct (op basis van het ep:id)
+                   maar 1 keer. Als ik nu net het construct verwerk in de context van een messagetype waarin geen historie speelt zou ik dus geen historieMaterieel en
+                   historieFormeel constructs en constructRefs maken terwijl dat in sommige contexten wel van belang is.-->
+               
+                
+
+            <!-- The following if takes care of creating global construct elements for each ep:construct element not representing a 'relatie'. -->
+            <xsl:when test="@typeCode!='relatie'">
+                <xsl:sequence select="imf:create-debug-track('Constructing the global constructs not representing a relation',$debugging)"/>
+                
+                <xsl:choose>
+                   <!-- The following when generates global constructs based on uml groups. -->
+                    <xsl:when test="@type='group' and exists(imf:get-construct-by-id($id,$packages-doc))">
+
+                       <xsl:sequence select="imf:create-debug-track(concat('Constructing global groupconstruct: ',$construct/imvert:name),$debugging)"/>
+
+                       <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
+                       <xsl:variable name="type" select="'Grp'"/>
+                       <xsl:variable name="name">
+                           <xsl:choose>
+                               <xsl:when test="@className"><xsl:value-of select="@className"/></xsl:when>
+                               <xsl:otherwise><xsl:value-of select="ep:name"/></xsl:otherwise>
+                           </xsl:choose>
+                       </xsl:variable>
+                       <xsl:variable name="docs">
+                           <imvert:complete-documentation>
+                               <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
+                           </imvert:complete-documentation>
+                       </xsl:variable>
+                       <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
+                       
+                       <xsl:sequence select="imf:create-debug-comment('For-each-when: @type=group and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
+                       
+                       <!-- Location: 'ep:construct3'
+						    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef3'. -->
+                       
+                       <ep:construct prefix="{$prefix}" type="group">
+                           <xsl:sequence
+                               select="imf:create-output-element('ep:tech-name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name,$verwerkingsModus))" />
+                           <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+                           <!-- ep:authentiek element is used to determine if a 'authentiek' element needs to be generated in the messages in the next higher level. -->
+                           <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
+                           <!-- ep:inOnderzoek element is used to determine if a 'inOnderzoek' element needs to be generated in the messages in the next higher level. -->
+                           <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
+                           <ep:seq>
+                               
+                               <!-- Within the following apply-templates parameters are used which are also used in other apply-templates in this and other stylesheets.
+                                    These have the following function:
+                                    
+                                    proces-type: 
+                                    -->
+                               
+                               <!-- The uml attributes of the uml group are placed here. -->
+                               <xsl:sequence select="imf:create-debug-comment(concat('fundamentalMnemonic: ',$fundamentalMnemonic),$debugging)"/>
+
+                               <xsl:apply-templates select="$construct"
+                                   mode="create-message-content">
+                                   <xsl:with-param name="berichtName" select="$berichtName"/>
+                                   <xsl:with-param name="proces-type" select="'attributes'" />
+                                   <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                   <xsl:with-param name="generated-id" select="$generated-id"/>
+                                   <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                   <xsl:with-param name="context" select="$context" />
+                                   <xsl:with-param name="fundamentalMnemonic" select="$fundamentalMnemonic"/>
+                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                               </xsl:apply-templates>
+                               <!-- The uml groups of the uml group are placed here. -->
+                               <xsl:apply-templates select="$construct"
+                                   mode="create-message-content">
+                                   <xsl:with-param name="berichtName" select="$berichtName"/>
+                                   <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
+                                   <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                   <xsl:with-param name="generated-id" select="$generated-id"/>
+                                   <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                   <xsl:with-param name="context" select="$context" />
+                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                               </xsl:apply-templates>
+                               <!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
+                               <ep:construct prefix="{$prefix}">
+                                   <ep:name>authentiek</ep:name>
+                                   <ep:tech-name>authentiek</ep:tech-name>
+                                   <ep:max-occurs>unbounded</ep:max-occurs>
+                                   <ep:min-occurs>0</ep:min-occurs>
+                                   <ep:type-name>scalar-string</ep:type-name>
+                                   <ep:enum>J</ep:enum>
+                                   <ep:enum>N</ep:enum>
+                                   <ep:position>145</ep:position>
+                                   <ep:seq>
+                                       <xsl:variable name="attributes"
+                                           select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no')"/>									
+                                       <xsl:sequence select="$attributes"/>
+                                   </ep:seq>
+                               </ep:construct>
+                               <!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
+                               <ep:construct prefix="{$prefix}">
+                                   <ep:name>inOnderzoek</ep:name>
+                                   <ep:tech-name>inOnderzoek</ep:tech-name>
+                                   <ep:max-occurs>unbounded</ep:max-occurs>
+                                   <ep:min-occurs>0</ep:min-occurs>
+                                   <ep:type-name>scalar-string</ep:type-name>
+                                   <ep:enum>J</ep:enum>
+                                   <ep:enum>N</ep:enum>
+                                   <ep:position>150</ep:position>
+                                   <ep:seq>
+                                       <xsl:variable name="attributes"
+                                           select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no')"/>									
+                                       <xsl:sequence select="$attributes"/>
+                                   </ep:seq>
+                               </ep:construct>
+                               <!-- The uml associations of the uml group are placed here. -->
+                               <xsl:apply-templates select="$construct"
+                                   mode="create-message-content">
+                                   <xsl:with-param name="berichtName" select="$berichtName"/>
+                                   <xsl:with-param name="proces-type" select="'associationsRelatie'" />
+                                   <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                   <xsl:with-param name="generated-id" select="$generated-id"/>
+                                   <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                   <xsl:with-param name="context" select="$context" />
+                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                               </xsl:apply-templates>
+                           </ep:seq> 
+                       </ep:construct>                       
+                       
+                       <xsl:sequence select="imf:create-debug-comment('For-each-when: @type=group and $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
+                       
+                   </xsl:when>
+                   <!-- The following when generates global constructs based on uml classes. -->
+                    <xsl:when test="exists(imf:get-construct-by-id($id,$packages-doc))">
+
+                        <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->                                
+
+                       <xsl:sequence select="imf:create-debug-track(concat('Constructing global construct: ',$construct/imvert:name),$debugging)"/>
+                       <xsl:sequence select="imf:create-debug-comment('@typeCode!=relatie and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
+
+                        <xsl:variable name="docs">
+                           <imvert:complete-documentation>
+                               <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
+                           </imvert:complete-documentation>
+                       </xsl:variable>
+                       <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
+                       
+                       <!-- Location: 'ep:construct1'
+						    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-structure.xsl' on the location with the id 'ep:constructRef1'. -->
+                       
+                       <ep:construct prefix="{$prefix}">
+                           <!-- The value of the tech-name is dependant on the availability of an alias. -->
+                           <xsl:choose>
+                               <xsl:when test="not(empty($alias)) and $alias != ''">
+                                   <xsl:sequence select="imf:create-debug-comment('xsl:when test=$packages//imvert:class[imvert:id = $id]/imvert:alias',$debugging)"/>
+                                   <xsl:sequence
+                                       select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($packageName,$berichtName,$verwerkingsModus,$alias,$elementName))" />
+                               </xsl:when>
+                               <xsl:otherwise>
+                                   <xsl:sequence select="imf:create-debug-comment('xsl:otherwise',$debugging)"/>
+                                   <xsl:sequence
+                                       select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($packageName,$berichtName,$verwerkingsModus,(),$elementName))" />
+                               </xsl:otherwise>
+                           </xsl:choose>
+                           <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+                           <xsl:choose>
+                                
+                               <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
+                               <xsl:when test="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
+                                   <xsl:apply-templates select="$construct"
+                                       mode="create-message-content">
+                                       <xsl:with-param name="berichtName" select="$berichtName"/>
+                                       <xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'" />
+                                       <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                       <xsl:with-param name="generated-id" select="$generated-id"/>
+                                       <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                       <xsl:with-param name="context" select="$context" />
+                                       <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                                   </xsl:apply-templates>
+                               </xsl:when>
+                               <!-- Else the content of the current uml class is processed. -->
+                               <xsl:otherwise>
+                                   <ep:seq>
+                                       <!-- The uml attributes of the uml class are placed here. -->
+                                       <xsl:apply-templates select="$construct"
+                                           mode="create-message-content">
+                                           <xsl:with-param name="berichtName" select="$berichtName"/>
+                                           <xsl:with-param name="proces-type" select="'attributes'" />
+                                           <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                           <xsl:with-param name="generated-id" select="$generated-id"/>
+                                           <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                           <xsl:with-param name="context" select="$context" />
+                                           <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                                       </xsl:apply-templates>
+                                       <!-- The uml groups of the uml class are placed here. -->
+                                       <xsl:apply-templates select="$construct"
+                                           mode="create-message-content">
+                                           <xsl:with-param name="berichtName" select="$berichtName"/>
+                                           <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
+                                           <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                           <xsl:with-param name="generated-id" select="$generated-id"/>
+                                           <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                           <xsl:with-param name="context" select="$context" />
+                                           <!-- If the class is refered to form an association which is part of an VRIJ BERICHT no stuurgegevens must be generated. -->
+                                           <xsl:with-param name="useStuurgegevens">
+                                               <xsl:choose>
+                                                   <xsl:when test="$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:type-id = $id]/imvert:stereotype = 'BERICHTRELATIE'">
+                                                      <xsl:value-of select="'no'"/>
+                                                   </xsl:when>
+                                                   <xsl:otherwise>
+                                                       <xsl:value-of select="'yes'"/>
+                                                   </xsl:otherwise>
+                                               </xsl:choose>
+                                           </xsl:with-param>                                      
+                                           <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                                       </xsl:apply-templates>
+                                       <!-- ep:authentiek element is used to determine if a 'authentiek' element needs to be generated in the messages in the next higher level. -->
+                                       <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
+                                       <!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
+                                       <ep:construct prefix="{$prefix}">
+                                           <ep:name>authentiek</ep:name>
+                                           <ep:tech-name>authentiek</ep:tech-name>
+                                           <ep:max-occurs>unbounded</ep:max-occurs>
+                                           <ep:min-occurs>0</ep:min-occurs>
+                                           <ep:type-name>scalar-string</ep:type-name>
+                                           <ep:enum>J</ep:enum>
+                                           <ep:enum>N</ep:enum>
+                                           <ep:position>145</ep:position>
+                                           <ep:seq>
+                                               <xsl:variable name="attributes"
+                                                   select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no')"/>									
+                                               <xsl:sequence select="$attributes"/>
+                                           </ep:seq>
+                                       </ep:construct>
+                                       <!-- ep:inOnderzoek element is used to determine if a 'inOnderzoek' element needs to be generated in the messages in the next higher level. -->
+                                       <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
+                                       <!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
+                                       <ep:construct prefix="{$prefix}">
+                                           <ep:name>inOnderzoek</ep:name>
+                                           <ep:tech-name>inOnderzoek</ep:tech-name>
+                                           <ep:max-occurs>unbounded</ep:max-occurs>
+                                           <ep:min-occurs>0</ep:min-occurs>
+                                           <ep:type-name>scalar-string</ep:type-name>
+                                           <ep:enum>J</ep:enum>
+                                           <ep:enum>N</ep:enum>
+                                           <ep:position>150</ep:position>
+                                           <ep:seq>
+                                               <xsl:variable name="attributes"
+                                                   select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no')"/>									
+                                               <xsl:sequence select="$attributes"/>
+                                           </ep:seq>
+                                       </ep:construct>
+                                       <!-- ROME:   Waarschijnlijk moet er hier afhankelijk van de context meer 
+                                            		of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' maar 
+                                            		ook aan 'tijdvakRelatie', 'historieMaterieel' en 'historieFormeel'. Onderstaande 
+                                            		elementen 'StUF:tijdvakGeldigheid' en 'StUF:tijdstipRegistratie' mogen trouwens 
+                                            		alleen voorkomen als voor een van de attributen van het huidige object historie 
+                                            		is gedefinieerd of als er om gevraagd wordt. De vraag is echter of daarbij 
+                                            		alleen gekeken moet worden naar de attributen waarvan de elementen op hetzelfde 
+                                            		niveau als onderstaande elementen worden gegenereerd of dat deze elementen 
+                                            		ook al gegenereerd moeten worden als er ergens dieper onder het huidige niveau 
+                                            		een element voorkomt waarbij op het gerelateerde attribuut historie is gedefinieerd. 
+                                            		Dit geldt voor alle locaties waar onderstaande elementen worden gedefinieerd. -->
+                                       <xsl:if test="not($construct/imvert:stereotype = imf:get-config-stereotypes((
+                                           'stereotype-name-vraagberichttype',
+                                           'stereotype-name-antwoordberichttype',
+                                           'stereotype-name-kennisgevingberichttype',
+                                           'stereotype-name-synchronisatieberichttype'))) and not(contains(@verwerkingsModus,'kerngegevens'))">
+                                           <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                               <ep:name>tijdvakGeldigheid</ep:name>
+                                               <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
+                                               <ep:max-occurs>1</ep:max-occurs>
+                                               <ep:min-occurs>0</ep:min-occurs>
+                                               <ep:position>155</ep:position>
+                                           </ep:constructRef>
+                                           <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                               <ep:name>tijdstipRegistratie</ep:name>
+                                               <ep:tech-name>tijdstipRegistratie</ep:tech-name>
+                                               <ep:max-occurs>1</ep:max-occurs>
+                                               <ep:min-occurs>0</ep:min-occurs>
+                                               <ep:position>160</ep:position>
+                                           </ep:constructRef>
+                                           <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                               <ep:name>extraElementen</ep:name>
+                                               <ep:tech-name>extraElementen</ep:tech-name>
+                                               <ep:max-occurs>1</ep:max-occurs>
+                                               <ep:min-occurs>0</ep:min-occurs>
+                                               <ep:position>165</ep:position>
+                                           </ep:constructRef>
+                                           <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                               <ep:name>aanvullendeElementen</ep:name>
+                                               <ep:tech-name>aanvullendeElementen</ep:tech-name>
+                                               <ep:max-occurs>1</ep:max-occurs>
+                                               <ep:min-occurs>0</ep:min-occurs>
+                                               <ep:position>170</ep:position>
+                                           </ep:constructRef>
+                                       </xsl:if>
+                                       <!-- ROME: Hieronder worden de construcRefs voor historieMaterieel en historieFormeel aangemaakt.
+                                            Dit moet echter gebeuren a.d.h.v. de berichtcode. Die verfijning moet nog worden aangebracht in de if statements. -->
+
+                                       <!-- If 'Materiele historie' is applicable for the current class a constructRef to a historieMaterieel global construct based on the current class is generated. -->
+                                       <xsl:if test="(@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes') and @verwerkingsModus = 'antwoord'">
+
+                                           <!-- Location: 'ep:constructRef2'
+						                        Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct2'. -->
+
+                                           <xsl:variable name="historieType" select="'historieMaterieel'"/>
+                                           
+                                           <ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+                                               <ep:tech-name>historieMaterieel</ep:tech-name>
+                                               <ep:max-occurs>unbounded</ep:max-occurs>
+                                               <ep:min-occurs>0</ep:min-occurs>
+                                               <ep:position>175</ep:position>
+                                               <xsl:choose>
+                                                   <xsl:when test="not(empty($alias)) and $alias != ''">
+                                                       <xsl:sequence
+                                                           select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,$alias,$elementName))"/>
+                                                   </xsl:when>
+                                                   <xsl:otherwise>
+                                                       <xsl:sequence
+                                                           select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,(),$elementName))"/>
+                                                   </xsl:otherwise>
+                                               </xsl:choose>
+                                           </ep:constructRef>
+                                       </xsl:if>
+                                       <!-- If 'Formele historie' is applicable for the current class a constructRef to a historieFormeel global construct based on the current class is generated. -->
+                                       <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes') and @verwerkingsModus = 'antwoord'">
+
+                                           <xsl:variable name="historieType" select="'historieFormeel'"/>
+
+                                           <!-- Location: 'ep:constructRef5'
+						                        Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef5'. -->
+                                           
+                                           <ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+                                               <ep:tech-name>historieFormeel</ep:tech-name>
+                                               <ep:max-occurs>unbounded</ep:max-occurs>
+                                               <ep:min-occurs>0</ep:min-occurs>
+                                               <ep:position>180</ep:position>
+                                               <xsl:choose>
+                                                   <xsl:when test="not(empty($alias)) and $alias != ''">
+                                                       <xsl:sequence
+                                                           select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,$alias,$elementName))"/>
+                                                   </xsl:when>
+                                                   <xsl:otherwise>
+                                                       <xsl:sequence
+                                                           select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,(),$elementName))"/>
+                                                   </xsl:otherwise>
+                                               </xsl:choose>
+                                           </ep:constructRef>
+                                       </xsl:if>
+                                       <!-- The uml associations of the uml class are placed here. -->
+                                       <xsl:apply-templates select="$construct"
+                                           mode="create-message-content-constructRef">
+                                           <xsl:with-param name="berichtName" select="$berichtName"/>
+                                           <xsl:with-param name="proces-type" select="'associationsRelatie'" />
+                                           <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                           <xsl:with-param name="generated-id" select="$generated-id"/>
+                                           <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                           <xsl:with-param name="context" select="$context" />
+                                           <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                                       </xsl:apply-templates>
+                                       <!-- The function imf:createAttributes is used to determine the XML attributes 
+                                    		neccessary for this context. It has the following parameters: - typecode 
+                                    		- berichttype - context - datumType The first 3 parameters relate to columns 
+                                    		with the same name within an Excel spreadsheet used to configure a.o. XML 
+                                    		attributes usage. The last parameter is used to determine the need for the 
+                                    		XML-attribute 'StUF:indOnvolledigeDatum'. -->
+                                       <xsl:sequence select="imf:create-debug-comment(concat('Attributes voor ',$typeCode,', berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $alias),$debugging)"/>
+                                       <xsl:variable name="attributes"
+                                           select="imf:createAttributes($typeCode, substring($berichtCode,1,2), $context, 'no', $alias, 'no','no')" />
+                                       <xsl:sequence select="$attributes" />
+                                   </ep:seq>
+                               </xsl:otherwise>
+                           </xsl:choose>
+                       </ep:construct>
+                       
+                       <xsl:sequence select="imf:create-debug-comment('For-each-when: $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
+                   </xsl:when>
+               </xsl:choose>
+
+
+               <!-- There are 2 types of history parameters. The first one configures if history is applicable for the current context. History isn't applicable for example for each message type.
+                    The second one is used to determine if history, if applicable for the context, is applicable for the class being processed. Not every class has attributes or associations history applies to. -->
+               
+               <!-- If 'Materiele historie' is applicable for the current class a historieMaterieel global construct based on the current class is generated. -->
+                <xsl:if test="(@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes') and @verwerkingsModus = 'antwoord'">
+                    <xsl:variable name="historieType" select="'historieMaterieel'"/>
+                    <xsl:choose>
+                       <!-- The following when generates historieMaterieel global constructs based on uml groups. -->
+                        <xsl:when test="@type='group' and exists(imf:get-construct-by-id($id,$packages-doc))">
+                           
+                           <xsl:sequence select="imf:create-debug-track(concat('Constructing global materieleHistorie groupconstruct: ',$construct/imvert:name),$debugging)"/>
+                           
+                           <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
+                           <xsl:variable name="type" select="'Grp'"/>
+                           <xsl:variable name="name" select="ep:name"/>
+                           <xsl:variable name="docs">
+                               <imvert:complete-documentation>
+                                   <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
+                               </imvert:complete-documentation>
+                           </xsl:variable>
+                           <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
+                           
+                           <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
+
+                           <!-- Location: 'ep:construct4'
+						    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef4'. -->
+                           
+                           <ep:construct prefix="{$prefix}" type="group">
+                               <xsl:sequence
+                                   select="imf:create-output-element('ep:tech-name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name,$historieType))" />
+                               <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+                               <ep:seq>
+                                   
+                                   <!-- ROME: M.b.v. het XML attribute 'indicatieMaterieleHistorie' en 'indicatieFormeleHistorie' op het huidige rough-message construct 
+                                              kan bepaald worden of binnen het ep:seq element een historieMaterieel en/of een historieFormeel constructRef moet worden gegenereerd. -->
+                                   
+                                   
+                                   <!-- The uml attributes, of the uml group, for which historiematerieel is applicable are placed here. -->
+                                   <xsl:apply-templates select="$construct"
+                                       mode="create-message-content">
+                                       <xsl:with-param name="berichtName" select="$berichtName"/>
+                                       <xsl:with-param name="proces-type" select="'attributes'" />
+                                       <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                       <xsl:with-param name="generated-id" select="$generated-id"/>
+                                       <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                       <xsl:with-param name="context" select="$context" />
+                                       <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
+                                       <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
+                                       <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
+                                       <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                                   </xsl:apply-templates>
+                                   <!-- The uml groups, of the uml group, for which historiematerieel is applicable are placed here. -->
+                                   <xsl:apply-templates select="$construct"
+                                       mode="create-message-content">
+                                       <xsl:with-param name="berichtName" select="$berichtName"/>
+                                       <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
+                                       <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                       <xsl:with-param name="generated-id" select="$generated-id"/>
+                                       <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                       <xsl:with-param name="context" select="$context" />
+                                       <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
+                                       <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
+                                       <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
+                                       <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                                   </xsl:apply-templates>
+                                   <!-- Associations are never placed within historieMaterieel constructs. -->
+                               </ep:seq> 
+                           </ep:construct>                       
+                           
+                           <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
+                       </xsl:when>
+                       <!-- The following when generates historieMaterieel global constructs based on uml classes. -->
+                        <xsl:when test="exists(imf:get-construct-by-id($id,$packages-doc))">
+                           
+                           <xsl:sequence select="imf:create-debug-track(concat('Constructing global materieleHistorie construct: ',$construct/imvert:name),$debugging)"/>
+                           
+                            <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
+                            <xsl:variable name="docs">
+                               <imvert:complete-documentation>
+                                   <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
+                               </imvert:complete-documentation>                           </xsl:variable>
+                           <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
+                           
+                           <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
+                           
+                           <!-- Location: 'ep:construct2'
+						    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef2'. -->
+                           
+                           <ep:construct prefix="{$prefix}">
+                               <!-- The value of the tech-name is dependant on the availability of an alias. -->
+                               <xsl:choose>
+                                   <xsl:when test="not(empty($alias)) and $alias != ''">
+                                       <xsl:sequence
+                                           select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($packageName,$berichtName,$historieType,$alias,$elementName))" />
+                                   </xsl:when>
+                                   <xsl:otherwise>
+                                       <xsl:sequence
+                                           select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($packageName,$berichtName,$historieType,(),$elementName))" />
+                                   </xsl:otherwise>
+                               </xsl:choose>
+                               <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+                               <xsl:choose>
+                                   <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
+                                   
+                                    
+                                   
+                                   <xsl:when test="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
+                                       <xsl:apply-templates select="$construct"
+                                           mode="create-message-content">
+                                           <xsl:with-param name="berichtName" select="$berichtName"/>
+                                           <xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'" />
+                                           <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                           <xsl:with-param name="generated-id" select="$generated-id"/>
+                                           <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                           <xsl:with-param name="context" select="$context" />
+                                           <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
+                                           <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
+                                           <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
+                                           <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                                       </xsl:apply-templates>
+                                   </xsl:when>
+                                   <!-- Else the content of the current uml class is processed. -->
+                                   <xsl:otherwise>
+                                       <ep:seq>
+                                           <!-- The uml attributes of the uml class are placed here. -->
+                                           <xsl:apply-templates select="$construct"
+                                               mode="create-message-content">
+                                               <xsl:with-param name="berichtName" select="$berichtName"/>
+                                               <xsl:with-param name="proces-type" select="'attributes'" />
+                                               <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                               <xsl:with-param name="generated-id" select="$generated-id"/>
+                                               <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                               <xsl:with-param name="context" select="$context" />
+                                               <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
+                                               <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
+                                               <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
+                                               <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                                           </xsl:apply-templates>
+                                           <!-- The uml groups, of the uml group, for which historiematerieel is applicable are placed here. -->
+                                           <xsl:apply-templates select="$construct"
+                                               mode="create-message-content">
+                                               <xsl:with-param name="berichtName" select="$berichtName"/>
+                                               <xsl:with-param name="proces-type"
+                                                   select="'associationsGroepCompositie'" />
+                                               <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                               <xsl:with-param name="context" select="$context" />
+                                               <xsl:with-param name="generated-id" select="$generated-id"/>
+                                               <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                               <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
+                                               <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
+                                               <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
+                                               <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                                           </xsl:apply-templates>
+                                           <!-- ROME: Waarschijnlijk moet er hier afhankelijk van de context meer 
+                                            			of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' maar 
+                                            			ook aan 'tijdvakRelatie', 'historieMaterieel' en 'historieFormeel'. Onderstaande 
+                                            			elementen 'StUF:tijdvakGeldigheid' en 'StUF:tijdstipRegistratie' mogen trouwens 
+                                            			alleen voorkomen als voor een van de attributen van het huidige object historie 
+                                            			is gedefinieerd of als er om gevraagd wordt. De vraag is echter of daarbij 
+                                            			alleen gekeken moet worden naar de attributen waarvan de elementen op hetzelfde 
+                                            			niveau als onderstaande elementen worden gegenereerd of dat deze elementen 
+                                            			ook al gegenereerd moeten worden als er ergens dieper onder het huidige niveau 
+                                            			een element voorkomt waarbij op het gerelateerde attribuut historie is gedefinieerd. 
+                                            			Dit geldt voor alle locaties waar onderstaande elementen worden gedefinieerd. -->
+                                           <!-- ep:constructRef prefix="StUF" externalNamespace="yes">
+                                               <ep:name>tijdvakObject</ep:name>
+                                               <ep:tech-name>StUF:tijdvakObject</ep:tech-name>
+                                               <ep:max-occurs>1</ep:max-occurs>
+                                               <ep:min-occurs>0</ep:min-occurs>
+                                               <ep:position>150</ep:position>
+                                           </ep:constructRef -->
+                                           <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                               <ep:name>tijdvakGeldigheid</ep:name>
+                                               <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
+                                               <ep:max-occurs>1</ep:max-occurs>
+                                               <ep:min-occurs>1</ep:min-occurs>
+                                               <ep:position>155</ep:position>
+                                           </ep:constructRef>
+                                           <!-- If 'Formele historie' is applicable for the current class a the following construct and constructRef are generated. -->
+                                           <xsl:if test="@indicatieFormeleHistorie='Ja'">
+                                               <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                                   <ep:name>tijdstipRegistratie</ep:name>
+                                                   <ep:tech-name>tijdstipRegistratie</ep:tech-name>
+                                                   <ep:max-occurs>1</ep:max-occurs>
+                                                   <ep:min-occurs>0</ep:min-occurs>
+                                                   <ep:position>160</ep:position>
+                                               </ep:constructRef>
+                                               <ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+                                                   <ep:name>historieFormeel</ep:name>
+                                                   <ep:tech-name>historieFormeel</ep:tech-name>
+                                                   <ep:max-occurs>unbounded</ep:max-occurs>
+                                                   <ep:min-occurs>0</ep:min-occurs>
+                                                   <ep:position>175</ep:position>
+                                                   <!-- The value of the href is dependant on the availability of an alias. -->
+                                                  <xsl:choose>
+                                                      <xsl:when test="not(empty($alias)) and $alias != ''">
+                                                           <xsl:sequence
+                                                               select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,$alias,$elementName))" />
+                                                       </xsl:when>
+                                                       <xsl:otherwise>
+                                                           <xsl:sequence
+                                                               select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,(),$elementName))" />
+                                                       </xsl:otherwise>
+                                                   </xsl:choose>
+                                               </ep:constructRef>
+                                           </xsl:if>
+                                           <!-- Associations are never placed within historieMaterieel constructs. -->                                           
+                                       </ep:seq> 
+                                   </xsl:otherwise>
+                               </xsl:choose>
+                           </ep:construct>
+                           
+                           <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieMaterieleHistorie=Ja or @indicatieMaterieleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
+                       </xsl:when>
+                   </xsl:choose>
+               </xsl:if>
+                <!-- If 'Formele historie' is applicable for the current class a historieFormeel global construct based on the current class is generated. -->
+                <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes') and @verwerkingsModus = 'antwoord'">
+                    <xsl:variable name="historieType" select="'historieFormeel'"/>
+                    <xsl:choose>
+                       <!-- The following when generates historieFormeel global constructs based on uml groups. -->
+                        <xsl:when test="@type='group' and exists(imf:get-construct-by-id($id,$packages-doc))">
+                           
+                           <xsl:sequence select="imf:create-debug-track(concat('Constructing global formeleHistorie groupconstruct: ',$construct/imvert:name),$debugging)"/>
+                           
+                            <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
+                            <xsl:variable name="type" select="'Grp'"/>
+                           <xsl:variable name="name" select="ep:name"/>
+                           <xsl:variable name="docs">
+                               <imvert:complete-documentation>
+                                   <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
+                               </imvert:complete-documentation>
+                           </xsl:variable>
+                           <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
+                           
+                           <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
+                           
+                           <!-- Location: 'ep:construct5'
+						    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef5'. -->
+                           
+                           <ep:construct prefix="{$prefix}" type="group">
+                               <xsl:sequence
+                                   select="imf:create-output-element('ep:tech-name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name,$historieType))" />
+                               <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+                               <ep:seq>
+                                   <!-- The uml attributes, of the uml group, for which historieFormeel is applicable are placed here. -->
+                                   <xsl:apply-templates select="$construct"
+                                       mode="create-message-content">
+                                       <xsl:with-param name="berichtName" select="$berichtName"/>
+                                       <xsl:with-param name="proces-type" select="'attributes'" />
+                                       <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                       <xsl:with-param name="generated-id" select="$generated-id"/>
+                                       <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                       <xsl:with-param name="context" select="$context" />
+                                       <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorie'"/>
+                                       <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
+                                       <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                                   </xsl:apply-templates>
+                                   <!-- The uml groups, of the uml group, for which historieFormeel is applicable are placed here. -->
+                                   <xsl:apply-templates select="$construct"
+                                       mode="create-message-content">
+                                       <xsl:with-param name="berichtName" select="$berichtName"/>
+                                       <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
+                                       <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                       <xsl:with-param name="generated-id" select="$generated-id"/>
+                                       <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                       <xsl:with-param name="context" select="$context" />
+                                       <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorie'"/>
+                                       <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
+                                       <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                                   </xsl:apply-templates>
+                                   <!-- Associations are never placed within historieFormeel constructs. -->
+                               </ep:seq> 
+                           </ep:construct>                       
+                           
+                           <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @type=group and $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
+                       </xsl:when>
+                       <!-- The following when generates historieFormeel global constructs based on uml classes. -->
+                        <xsl:when test="exists(imf:get-construct-by-id($id,$packages-doc))">
+                           
+                           <xsl:sequence select="imf:create-debug-track(concat('Constructing global formeleHistorie construct: ',$construct/imvert:name),$debugging)"/>
+                           
+                            <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
+                            <xsl:variable name="docs">
+                               <imvert:complete-documentation>
+                                   <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
+                               </imvert:complete-documentation>
+                           </xsl:variable>
+                           <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
+                           
+                           <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $id]',$debugging)"/>
+                           
+                           <!-- Location: 'ep:construct6'
+						    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef6'. -->
+                           
+                           <ep:construct prefix="{$prefix}">
+                               <!-- The value of the tech-name is dependant on the availability of an alias. -->
+                               <xsl:choose>
+                                   <xsl:when test="not(empty($alias)) and $alias != ''">
+                                       <xsl:sequence
+                                           select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($packageName,$berichtName,$historieType,$alias,$elementName))" />
+                                   </xsl:when>
+                                   <xsl:otherwise>
+                                       <xsl:sequence
+                                           select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($packageName,$berichtName,$historieType,(),$elementName))" />
+                                   </xsl:otherwise>
+                               </xsl:choose>
+                               <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+                               <xsl:choose>
+                                   <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
+                                   
+                                   
+                                   <xsl:when test="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
+                                       <xsl:apply-templates select="$construct"
+                                           mode="create-message-content">
+                                           <xsl:with-param name="berichtName" select="$berichtName"/>
+                                           <xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'" />
+                                           <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                           <xsl:with-param name="generated-id" select="$generated-id"/>
+                                           <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                           <xsl:with-param name="context" select="$context" />
+                                           <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorie'"/>
+                                           <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
+                                           <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                                       </xsl:apply-templates>
+                                   </xsl:when>
+                                   <!-- Else the content of the current uml class is processed. -->
+                                   <xsl:otherwise>                                     
+                                       <ep:seq>
+                                           <!-- The uml attributes of the uml class are placed here. -->
+                                           <xsl:apply-templates select="$construct"
+                                               mode="create-message-content">
+                                               <xsl:with-param name="berichtName" select="$berichtName"/>
+                                               <xsl:with-param name="proces-type" select="'attributes'" />
+                                               <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                               <xsl:with-param name="generated-id" select="$generated-id"/>
+                                               <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                               <xsl:with-param name="context" select="$context" />
+                                               <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorie'"/>
+                                               <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
+                                               <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                                           </xsl:apply-templates>
+                                           <!-- The uml groups, of the uml group, for which historiematerieel is applicable are placed here. -->
+                                           <xsl:apply-templates select="$construct"
+                                               mode="create-message-content">
+                                               <xsl:with-param name="berichtName" select="$berichtName"/>
+                                               <xsl:with-param name="proces-type"
+                                                   select="'associationsGroepCompositie'" />
+                                               <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                               <xsl:with-param name="generated-id" select="$generated-id"/>
+                                               <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                               <xsl:with-param name="context" select="$context" />
+                                               <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorie'"/>
+                                               <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
+                                               <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                                           </xsl:apply-templates>
+                                           <!-- ROME: Waarschijnlijk moet er hier afhankelijk van de context meer 
+                                            			of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' maar 
+                                            			ook aan 'tijdvakRelatie', 'historieMaterieel' en 'historieFormeel'. Onderstaande 
+                                            			elementen 'StUF:tijdvakGeldigheid' en 'StUF:tijdstipRegistratie' mogen trouwens 
+                                            			alleen voorkomen als voor een van de attributen van het huidige object historie 
+                                            			is gedefinieerd of als er om gevraagd wordt. De vraag is echter of daarbij 
+                                            			alleen gekeken moet worden naar de attributen waarvan de elementen op hetzelfde 
+                                            			niveau als onderstaande elementen worden gegenereerd of dat deze elementen 
+                                            			ook al gegenereerd moeten worden als er ergens dieper onder het huidige niveau 
+                                            			een element voorkomt waarbij op het gerelateerde attribuut historie is gedefinieerd. 
+                                            			Dit geldt voor alle locaties waar onderstaande elementen worden gedefinieerd. -->
+                                           <!-- ep:constructRef externalNamespace="yes">
+                                               <ep:name>tijdvakObject</ep:name>
+                                               <ep:tech-name>tijdvakObject</ep:tech-name>
+                                               <ep:max-occurs>1</ep:max-occurs>
+                                               <ep:min-occurs>0</ep:min-occurs>
+                                               <ep:position>150</ep:position>
+                                           </ep:constructRef -->
+                                           <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                               <ep:name>tijdvakGeldigheid</ep:name>
+                                               <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
+                                               <ep:max-occurs>1</ep:max-occurs>
+                                               <ep:min-occurs>1</ep:min-occurs>
+                                               <ep:position>155</ep:position>
+                                           </ep:constructRef>
+                                           <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                               <ep:name>tijdstipRegistratie</ep:name>
+                                               <ep:tech-name>tijdstipRegistratie</ep:tech-name>
+                                               <ep:max-occurs>1</ep:max-occurs>
+                                               <ep:min-occurs>1</ep:min-occurs>
+                                               <ep:position>160</ep:position>
+                                           </ep:constructRef>
+                                           <ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+                                               <ep:name>historieFormeel</ep:name>
+                                               <ep:tech-name>historieFormeel</ep:tech-name>
+                                               <ep:max-occurs>unbounded</ep:max-occurs>
+                                               <ep:min-occurs>0</ep:min-occurs>
+                                               <ep:position>175</ep:position>
+                                               <!-- The value of the href is dependant on the availability of an alias. -->
+                                               <xsl:choose>
+                                                   <xsl:when test="not(empty($alias)) and $alias != ''">
+                                                       <xsl:sequence
+                                                           select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,$alias,$elementName))" />
+                                                   </xsl:when>
+                                                   <xsl:otherwise>
+                                                       <xsl:sequence
+                                                           select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,(),$elementName))" />
+                                                   </xsl:otherwise>
+                                               </xsl:choose>
+                                           </ep:constructRef>
+                                       </ep:seq> 
+                                   </xsl:otherwise>
+                               </xsl:choose>
+                           </ep:construct>
+                           
+                           <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
+                       </xsl:when>
+                   </xsl:choose>
+               </xsl:if>
+               
+            </xsl:when>
+
+            <!-- The following if takes care of creating global construct elements for each ep:construct element representing a 'relatie'. -->
+            <xsl:when test="@typeCode='relatie'">
+                
+                 
+                <xsl:sequence select="imf:create-debug-track('Constructing the global constructs representing a relation',$debugging)"/>
+
+                <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @typeCode=relatie',$debugging)"/>
+                <!-- Within the schema's we want to have global constructs for relations. However for that kind of objects no uml classes are available.
+                        With the following apply-templates the global ep:construct elements are created presenting the relations. -->
+                
+                <xsl:variable name="association" select="$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']"/>
+                
+                <xsl:apply-templates select="$association"
+                    mode="create-global-construct">
+                    <xsl:with-param name="berichtCode" select="$berichtCode"/>
+                    <xsl:with-param name="berichtName" select="$berichtName"/>
+                    <xsl:with-param name="generated-id" select="$generated-id"/>
+                    <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                    <xsl:with-param name="context" select="$context"/>
+                    <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
+                    <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
+                    <xsl:with-param name="indicatieFormeleHistorieRelatie" select="@indicatieFormeleHistorieRelatie"/>
+                    <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                </xsl:apply-templates>
+
+                <!-- There are 2 types of history parameters. The first one configures if history is applicable for the current context. History isn't applicable for example for each message type.
+                The second one is used to determine if history, if applicable for the context, is applicable for the class being processed. Not every class has attributes or associations history applies to. -->
+                
+                <!-- If 'Materiele historie' is applicable for the current class and messagetype a historieMaterieel global construct based on the current class is generated. -->
+                <xsl:if test="(@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes')">
+                    
+                    <xsl:sequence select="imf:create-debug-track(concat('Constructing the materieleHistorie constructs: ',$association/imvert:name),$debugging)"/>
+
+                    <xsl:apply-templates select="$association"
+                        mode="create-global-construct">
+                        <xsl:with-param name="berichtCode" select="$berichtCode"/>
+                        <xsl:with-param name="berichtName" select="$berichtName"/>
+                        <xsl:with-param name="generated-id" select="$generated-id"/>
+                        <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                        <xsl:with-param name="context" select="$context"/>
+                        <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
+                        <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
+                        <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
+                        <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                    </xsl:apply-templates>
+                </xsl:if>
+                
+                
+                <!-- If 'Formele historie' is applicable for the current class and messagetype a historieFormeel global construct based on the current class is generated. -->
+                <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes')">
+                    
+                    <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorie constructs: ',$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
+                    
+                    <xsl:apply-templates select="$association"
+                        mode="create-global-construct">
+                        <xsl:with-param name="berichtCode" select="$berichtCode"/>
+                        <xsl:with-param name="berichtName" select="$berichtName"/>
+                        <xsl:with-param name="generated-id" select="$generated-id"/>
+                        <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                        <xsl:with-param name="context" select="$context"/>
+                        <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorie'"/>
+                        <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
+                        <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
+                        <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                    </xsl:apply-templates>
+                </xsl:if>
+                
+                <!-- If 'Formele historie' is applicable for the current class and messagetype a historieFormeel global construct based on the current class is generated. -->
+                <xsl:if test="@indicatieFormeleHistorieRelatie='Ja'">
+                    
+                    <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorieRelatie constructs: ',$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
+                    
+                    <xsl:apply-templates select="$association"
+                        mode="create-global-construct">
+                        <xsl:with-param name="berichtCode" select="$berichtCode"/>
+                        <xsl:with-param name="berichtName" select="$berichtName"/>
+                        <xsl:with-param name="generated-id" select="$generated-id"/>
+                        <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                        <xsl:with-param name="context" select="$context"/>
+                        <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorieRelatie'"/>
+                        <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
+                        <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
+                        <xsl:with-param name="indicatieFormeleHistorieRelatie" select="@indicatieFormeleHistorieRelatie"/>
+                        <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                    </xsl:apply-templates>
+                </xsl:if>
+
+                <xsl:sequence select="imf:create-debug-comment('For-each-when: @indicatieFormeleHistorie=Ja or @indicatieFormeleHistorie=Ja op attributes and @typeCode=relatie End-For-each-when',$debugging)"/>
+                
+            </xsl:when>
+       </xsl:choose>
+    </xsl:template>
   
     <!-- supress the suppressXsltNamespaceCheck message -->
     <xsl:template match="/imvert:dummy"/>
@@ -1461,10 +1558,11 @@
         </xsl:variable>
         <xsl:variable name="kerngegeven" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie kerngegeven')"/>
         <xsl:variable name="authentiek" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie authentiek')"/>
+        <xsl:variable name="inOnderzoek" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie in onderzoek')"/>
         <xsl:variable name="mogelijkGeenWaarde" select="imf:get-most-relevant-compiled-taggedvalue(., 'Mogelijk geen waarde')"/>
         <xsl:variable name="regels" select="imf:get-most-relevant-compiled-taggedvalue(., 'Regels')"/>
         
-        <xsl:if test="not(contains($verwerkingsModus, 'kerngegeven') and $kerngegeven = 'Ja')">
+        <xsl:if test="not(contains($verwerkingsModus, 'kerngegeven') and $kerngegeven = 'JA')">
             
             <!-- Location: 'ep:construct10'
 				 Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-structure.xsl' on the location with the id 'ep:constructRef10'. -->			
@@ -1480,6 +1578,7 @@
                             <xsl:sequence select="imf:create-output-element('ep:formeleHistorie', $formeleHistorie)"/>
                             <xsl:sequence select="imf:create-output-element('ep:mogelijkGeenWaarde', $mogelijkGeenWaarde)"/>
                             <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
+                            <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
                             <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $kerngegeven)"/>
                             <xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/>
                         </ep:found-tagged-values>
@@ -1492,6 +1591,7 @@
                 
                 <!-- ROME: Het is de vraag of een relatie als authentiek bestempelt kan worden. Zo niet dan moet onderstaande sequence verwijderd worden. -->
                 <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
+                <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
                 <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $kerngegeven)"/>
                 <xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
                 <xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
@@ -1592,6 +1692,14 @@
         <xsl:param name="typering"/>
         <xsl:param name="alias"/>
         <xsl:param name="elementName"/>
+        <xsl:choose>
+            <xsl:when test="empty($typering)">
+                <xsl:sequence select="imf:create-debug-track(concat('LET OP: typering is empty: ',$typering),$debugging)"/>            
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:create-debug-track(concat('LET OP: typering is NIET empty: ',$typering),$debugging)"/>            
+            </xsl:otherwise>
+        </xsl:choose>
         
         <xsl:sequence select="imf:create-debug-track(concat('packageName: ',$packageName,', berichtName: ',$berichtName,', typering: ',$typering,', alias: ',$alias,', element: ',$elementName),$debugging)"/>
         <xsl:variable name="complexTypeName">

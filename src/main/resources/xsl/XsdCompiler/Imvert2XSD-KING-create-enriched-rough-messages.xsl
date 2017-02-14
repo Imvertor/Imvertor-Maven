@@ -184,6 +184,20 @@
 					<xsl:attribute name="verwerkingsModus" select="'ROME'"/>
 				</xsl:otherwise>
 			</xsl:choose>
+			<xsl:choose>
+				<xsl:when test="contains($berichtCode,'Di') or contains($berichtCode,'Du')">
+					<xsl:choose>
+						<xsl:when test="@typeCode = 'entiteitrelatie' or ancestor::ep:construct[@typeCode = 'entiteitrelatie']">
+							<!-- Dit betreft constructs die vanuit een vrijbericht direct naar  fundamentele entiteit lopen. -->
+							<xsl:attribute name="entiteitOrBerichtRelatie" select="ancestor-or-self::ep:construct[@typeCode = 'entiteitrelatie']/ep:name"/>
+						</xsl:when>
+						<xsl:when test="@typeCode = 'berichtrelatie' or ancestor::ep:construct[@typeCode = 'berichtrelatie']">
+							<!-- Dit betreft constructs die vanuit een vrijbericht direct naar  fundamentele entiteit lopen. -->
+							<xsl:attribute name="entiteitOrBerichtRelatie" select="ancestor-or-self::ep:construct[@typeCode = 'berichtrelatie']/ep:name"/>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:when>
+			</xsl:choose>
 			<xsl:if test="count(ancestor::ep:construct[@type='entity']) >= 1">
 				<xsl:comment select="concat('Count: ',count(ancestor::ep:construct[@type='entity']),' berichtCode: ',$berichtCode)"/>
 			</xsl:if>

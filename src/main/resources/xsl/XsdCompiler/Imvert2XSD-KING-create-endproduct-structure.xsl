@@ -501,7 +501,8 @@
 							</xsl:variable>
 							
 							<xsl:sequence select="imf:create-debug-comment(concat('verwerkingsModusOfConstructRef for construct with id ',$class-id, ' and context ',$context,' and parent construct (',$currentMessage//ep:*[generate-id() = $generated-id]/ep:id,') with generated-id ',$generated-id,': ',$verwerkingsModusOfConstructRef),$debugging)"/>
-
+							<xsl:sequence select="imf:create-debug-comment(concat('delen van de hrefnaam: ',$berichtName,',',$verwerkingsModusOfConstructRef,',',$alias,',',$element),$debugging)"/>
+							
 							<!-- Location: 'ep:constructRef1a'
 								 Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct1'. -->
 
@@ -524,7 +525,7 @@
 									<xsl:otherwise/>
 								</xsl:choose>
 								<xsl:choose>
-									<xsl:when test="not(empty($verwerkingsModusOfConstructRef))">
+									<xsl:when test="not(empty($verwerkingsModusOfConstructRef)) and $verwerkingsModusOfConstructRef != ''">
 										<xsl:sequence select="imf:create-output-element('ep:href', imf:create-complexTypeName(ancestor::imvert:package/imvert:name,$berichtName,$verwerkingsModusOfConstructRef,$alias,$element))"/>							
 									</xsl:when>
 									<xsl:otherwise>
@@ -772,7 +773,7 @@
 		<xsl:sequence select="imf:create-debug-comment('Template: imvert:association[mode=create-message-content-constructRef]',$debugging)"/>
 		<xsl:sequence select="imf:create-debug-comment(concat('$verwerkingsModusOfConstructRef for construct with id ',$type-id, ' and parent construct (',$currentMessage//ep:*[generate-id() = $generated-id]/ep:id,') with generated-id ',$generated-id,': ',$verwerkingsModusOfConstructRef),$debugging)"/>
 		
-		<xsl:if test="not($verwerkingsModus = kerngegeven and $kerngegeven = 'Nee')">
+		<xsl:if test="not($verwerkingsModus = kerngegeven and $kerngegeven = 'NEE')">
 
 			<!-- Location: 'ep:constructRef1a'
 								 Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-.xsl' on the location with the id 'ep:construct1'. -->
@@ -1243,6 +1244,7 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="authentiek" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie authentiek')"/>
+		<xsl:variable name="inOnderzoek" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie in onderzoek')"/>
 		<xsl:variable name="mogelijkGeenWaarde" select="imf:get-most-relevant-compiled-taggedvalue(., 'Mogelijk geen waarde')"/>
 		<xsl:variable name="min-waarde" select="imf:get-most-relevant-compiled-taggedvalue(., 'Minimum waarde (inclusief)')"/>
 		<xsl:variable name="max-waarde" select="imf:get-most-relevant-compiled-taggedvalue(., 'Maximum waarde (inclusief)')"/>
@@ -1254,7 +1256,7 @@
 		<xsl:sequence select="imf:create-debug-comment('Template: imvert:attribute[mode=create-message-content]',$debugging)"/>
 		<xsl:sequence select="imf:create-debug-comment(concat('generated-id ',$generated-id),$debugging)"/>
 		
-		<xsl:if test="not(contains($verwerkingsModus, 'kerngegeven') and $kerngegeven = 'Nee')">
+		<xsl:if test="not(contains($verwerkingsModus, 'kerngegeven') and $kerngegeven = 'NEE')">
 			<xsl:if
 				test="($generateHistorieConstruct = 'MaterieleHistorie' and contains($materieleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorie' and contains($formeleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorieRelatie' and contains($formeleHistorie, 'Ja')) or $generateHistorieConstruct = 'Nee'">
 				<ep:construct prefix="{$prefix}">
@@ -1264,6 +1266,7 @@
 							<ep:found-tagged-values>
 								<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
 								<xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
+								<xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
 								<xsl:sequence select="imf:create-output-element('ep:kerngegeven', $kerngegeven)"/>
 								<xsl:sequence select="imf:create-output-element('ep:min-length', $min-length)"/>
 								<xsl:sequence select="imf:create-output-element('ep:max-value', $max-waarde)"/>
@@ -1279,6 +1282,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
 					<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
 					<xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
+					<xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
 					<xsl:sequence select="imf:create-output-element('ep:kerngegeven', $kerngegeven)"/>
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
@@ -1535,6 +1539,46 @@
 						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
 					</xsl:apply-templates>
 					<xsl:if test="not(contains(@verwerkingsModus,'kerngegevens'))">
+						<xsl:if test="($generateHistorieConstruct != 'MaterieleHistorie' and not(contains($indicatieMaterieleHistorie, 'Ja'))) and 
+							($generateHistorieConstruct != 'FormeleHistorie' and not(contains($indicatieFormeleHistorie, 'Ja')))">
+							<!-- ep:authentiek element is used to determine if a 'authentiek' element needs to be generated in the messages in the next higher level. -->
+							<!--xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/-->
+							<!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
+							<ep:construct prefix="{$prefix}">
+								<ep:name>authentiek</ep:name>
+								<ep:tech-name>authentiek</ep:tech-name>
+								<ep:max-occurs>unbounded</ep:max-occurs>
+								<ep:min-occurs>0</ep:min-occurs>
+								<ep:type-name>scalar-string</ep:type-name>
+								<ep:enum>J</ep:enum>
+								<ep:enum>N</ep:enum>
+								<ep:position>145</ep:position>
+								<ep:seq>
+									<xsl:variable name="attributes"
+										select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no')"/>									
+									<xsl:sequence select="$attributes"/>
+								</ep:seq>
+							</ep:construct>
+							<!-- ep:inOnderzoek element is used to determine if a 'inOnderzoek' element needs to be generated in the messages in the next higher level. -->
+							<!--xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/-->
+							<!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
+							<ep:construct prefix="{$prefix}">
+								<ep:name>inOnderzoek</ep:name>
+								<ep:tech-name>inOnderzoek</ep:tech-name>
+								<ep:max-occurs>unbounded</ep:max-occurs>
+								<ep:min-occurs>0</ep:min-occurs>
+								<ep:type-name>scalar-string</ep:type-name>
+								<ep:enum>J</ep:enum>
+								<ep:enum>N</ep:enum>
+								<ep:position>150</ep:position>
+								<ep:seq>
+									<xsl:variable name="attributes"
+										select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no')"/>									
+									<xsl:sequence select="$attributes"/>
+								</ep:seq>
+							</ep:construct>
+						</xsl:if>
+
 						<xsl:if test="($generateHistorieConstruct = 'FormeleHistorieRelatie' and contains($indicatieFormeleHistorieRelatie, 'Ja')) and $verwerkingsModus = 'antwoord'">
 							<ep:constructRef prefix="StUF" externalNamespace="yes">
 								<ep:name>tijdvakRelatie</ep:name>
@@ -1927,6 +1971,42 @@
 						of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' maar 
 						ook aan 'tijdvakRelatie', 'historieMaterieel' en 'historieFormeel'. -->
 					<xsl:if test="not(contains(@verwerkingsModus,'kerngegevens'))">
+						<!-- ep:authentiek element is used to determine if a 'authentiek' element needs to be generated in the messages in the next higher level. -->
+						<!--xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/-->
+						<!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
+						<ep:construct prefix="{$prefix}">
+							<ep:name>authentiek</ep:name>
+							<ep:tech-name>authentiek</ep:tech-name>
+							<ep:max-occurs>unbounded</ep:max-occurs>
+							<ep:min-occurs>0</ep:min-occurs>
+							<ep:type-name>scalar-string</ep:type-name>
+							<ep:enum>J</ep:enum>
+							<ep:enum>N</ep:enum>
+							<ep:position>145</ep:position>
+							<ep:seq>
+								<xsl:variable name="attributes"
+									select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no')"/>									
+								<xsl:sequence select="$attributes"/>
+							</ep:seq>
+						</ep:construct>
+						<!-- ep:inOnderzoek element is used to determine if a 'inOnderzoek' element needs to be generated in the messages in the next higher level. -->
+						<!--xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/-->
+						<!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
+						<ep:construct prefix="{$prefix}">
+							<ep:name>inOnderzoek</ep:name>
+							<ep:tech-name>inOnderzoek</ep:tech-name>
+							<ep:max-occurs>unbounded</ep:max-occurs>
+							<ep:min-occurs>0</ep:min-occurs>
+							<ep:type-name>scalar-string</ep:type-name>
+							<ep:enum>J</ep:enum>
+							<ep:enum>N</ep:enum>
+							<ep:position>150</ep:position>
+							<ep:seq>
+								<xsl:variable name="attributes"
+									select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no')"/>									
+								<xsl:sequence select="$attributes"/>
+							</ep:seq>
+						</ep:construct>
 						<ep:constructRef prefix="StUF" externalNamespace="yes">
 							<ep:name>tijdvakGeldigheid</ep:name>
 							<ep:tech-name>tijdvakGeldigheid</ep:tech-name>
@@ -2144,6 +2224,42 @@
 						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
 					</xsl:apply-templates>
 					<xsl:if test="not(contains(@verwerkingsModus,'kerngegevens'))">
+						<!-- ep:authentiek element is used to determine if a 'authentiek' element needs to be generated in the messages in the next higher level. -->
+						<!--xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/-->
+						<!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
+						<ep:construct prefix="{$prefix}">
+							<ep:name>authentiek</ep:name>
+							<ep:tech-name>authentiek</ep:tech-name>
+							<ep:max-occurs>unbounded</ep:max-occurs>
+							<ep:min-occurs>0</ep:min-occurs>
+							<ep:type-name>scalar-string</ep:type-name>
+							<ep:enum>J</ep:enum>
+							<ep:enum>N</ep:enum>
+							<ep:position>145</ep:position>
+							<ep:seq>
+								<xsl:variable name="attributes"
+									select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no')"/>									
+								<xsl:sequence select="$attributes"/>
+							</ep:seq>
+						</ep:construct>
+						<!-- ep:inOnderzoek element is used to determine if a 'inOnderzoek' element needs to be generated in the messages in the next higher level. -->
+						<!--xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/-->
+						<!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
+						<ep:construct prefix="{$prefix}">
+							<ep:name>inOnderzoek</ep:name>
+							<ep:tech-name>inOnderzoek</ep:tech-name>
+							<ep:max-occurs>unbounded</ep:max-occurs>
+							<ep:min-occurs>0</ep:min-occurs>
+							<ep:type-name>scalar-string</ep:type-name>
+							<ep:enum>J</ep:enum>
+							<ep:enum>N</ep:enum>
+							<ep:position>150</ep:position>
+							<ep:seq>
+								<xsl:variable name="attributes"
+									select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no')"/>									
+								<xsl:sequence select="$attributes"/>
+							</ep:seq>
+						</ep:construct>
 						<ep:constructRef prefix="StUF" externalNamespace="yes">
 							<ep:name>tijdvakGeldigheid</ep:name>
 							<ep:tech-name>tijdvakGeldigheid</ep:tech-name>
@@ -2668,6 +2784,36 @@
 				<ep:tech-name>functie</ep:tech-name>
 			</ep:construct>
 		</xsl:if>
+		<xsl:if test="$attributeTypeRow//col[@name = 'groepsnaam' and data = 'O']">
+			<ep:construct ismetadata="yes">
+				<ep:name>groepsnaam</ep:name>
+				<ep:tech-name>groepsnaam</ep:tech-name>
+				<ep:min-occurs>0</ep:min-occurs>
+				<ep:href>StUF:Groepsnaam</ep:href>
+			</ep:construct>
+		</xsl:if>
+		<xsl:if test="$attributeTypeRow//col[@name = 'groepsnaam' and data = 'V']">
+			<ep:construct ismetadata="yes">
+				<ep:name>groepsnaam</ep:name>
+				<ep:tech-name>groepsnaam</ep:tech-name>
+				<ep:href>StUF:Groepsnaam</ep:href>
+			</ep:construct>
+		</xsl:if>
+		<xsl:if test="$attributeTypeRow//col[@name = 'elementnaam' and data = 'O']">
+			<ep:construct ismetadata="yes">
+				<ep:name>elementnaam</ep:name>
+				<ep:tech-name>elementnaam</ep:tech-name>
+				<ep:min-occurs>0</ep:min-occurs>
+				<ep:href>StUF:Groepsnaam</ep:href>
+			</ep:construct>
+		</xsl:if>
+		<xsl:if test="$attributeTypeRow//col[@name = 'elementnaam' and data = 'V']">
+			<ep:construct ismetadata="yes">
+				<ep:name>elementnaam</ep:name>
+				<ep:tech-name>elementnaam</ep:tech-name>
+				<ep:href>StUF:Groepsnaam</ep:href>
+			</ep:construct>
+		</xsl:if>
 	</xsl:function>
 
 	<!-- This function merges all documentation form the highest layer up to the current layer. -->
@@ -2675,8 +2821,8 @@
 		<xsl:param name="this"/>
 		<xsl:for-each select="$this//imvert:documentation">
 			<xsl:sort select="@level" data-type="number" order="descending"/>
-			<!--xsl:copy-of select="xhtml:p"/-->
-			<xsl:copy-of select="p"/>
+			<xsl:copy-of select="xhtml:p"/>
+			<!--xsl:copy-of select="p"/-->
 		</xsl:for-each>
 	</xsl:function>
 
