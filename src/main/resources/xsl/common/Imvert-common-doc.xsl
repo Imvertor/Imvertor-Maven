@@ -35,7 +35,7 @@
     
     
     <!-- ============================= transform an EA string to xhtml. ====================================== -->
-    <xsl:function name="imf:eadoc-to-xhtml" as="element()">
+    <xsl:function name="imf:eadoc-to-xhtml" as="element()*">
         <xsl:param name="eadoc" as="xs:string?"/>
         <xsl:choose>
             <xsl:when test="contains($eadoc,'&gt;') or contains($eadoc,'&amp;')">
@@ -47,10 +47,10 @@
                 <xsl:variable name="clean">
                     <xsl:apply-templates select="$xhtml" mode="clean-xhtml"/>
                 </xsl:variable>
-                <xsl:sequence select="$clean/*"/>
+                <xsl:sequence select="$clean/*/*"/> <!-- all within body element -->
             </xsl:when>
             <xsl:otherwise>
-                <p>
+                <p xmlns="http://www.w3.org/1999/xhtml">
                     <xsl:sequence select="imf:replace-inet-references($eadoc)"/>
                 </p>
             </xsl:otherwise>
