@@ -106,7 +106,7 @@
 		<xsl:param name="this" as="node()"/>
 		<xsl:param name="tv-name" as="xs:string"/>
 		<xsl:param name="tv-value" as="xs:string?"/>
-		<xsl:variable name="tv" select="imf:get-tagged-value-element($this,$tv-name)"/>
+		<xsl:variable name="tv" select="imf:get-tagged-value-element($this,$tv-name)[1]"/> <!-- TODO validate all values, may be multiple -->
 		<xsl:variable name="value" select="string($tv/imvert:value)"/>
 		<xsl:choose>
 			<xsl:when test="empty($tv)">
@@ -130,7 +130,7 @@
 		<xsl:sequence select="imf:get-tagged-value($this,$tv-name,())"/>
 	</xsl:function>
 	
-	<xsl:function name="imf:get-tagged-value-element" as="element(imvert:tagged-value)?">
+	<xsl:function name="imf:get-tagged-value-element" as="element(imvert:tagged-value)*">
 		<xsl:param name="this" as="node()"/>
 		<xsl:param name="tv-name" as="xs:string"/>
 		<xsl:sequence select="$this/imvert:tagged-values/imvert:tagged-value[imvert:name = imf:get-normalized-name($tv-name,'tv-name')]"/>

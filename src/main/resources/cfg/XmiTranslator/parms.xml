@@ -23,7 +23,13 @@
       <version-control>$Id: parms.xml 7431 2016-02-24 12:46:42Z arjan $</version-control>
    </id>
    <cli-parms>
-      <!-- none -->
+      <cli-parm>
+         <name>allowduplicatetv</name>
+         <arg>yes|no</arg>
+         <tip>Yes if the tagged values may be duplicated, recording several values</tip>
+         <required>true</required>
+      </cli-parm> 
+      
    </cli-parms>
    
    <test>

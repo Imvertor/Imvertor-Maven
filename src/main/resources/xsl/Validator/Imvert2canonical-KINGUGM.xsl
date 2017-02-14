@@ -72,5 +72,28 @@
             </imvert:associations>
         </xsl:copy>
     </xsl:template>  
-    
+
+    <!-- UGM is opgesteld met dubbelingen van tagged values. Breng deze terug tot één. -->
+    <xsl:template match="imvert:tagged-values">
+        <imvert:tagged-values>
+            <xsl:for-each-group select="imvert:tagged-value" group-by="imvert:name">
+                <imvert:tagged-value>
+                    <xsl:copy-of select="current-group()[1]/imvert:name"/>
+                    <xsl:choose>
+                        <xsl:when test="current-grouping-key() = imf:get-normalized-name('Indicatie kerngegeven','tv-name')">
+                            <xsl:variable name="values" select="current-group()/imvert:value"/>
+                            <xsl:variable name="value" select="imf:boolean-or(for $b in $values return imf:boolean($b))"/>
+                            <imvert:value original="{@original}">
+                                <xsl:value-of select="if ($value) then 'JA' else 'NEE'"/>
+                            </imvert:value>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:variable name="value" select="current-group()[1]/imvert:value"/>
+                            <xsl:sequence select="$value"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </imvert:tagged-value>
+            </xsl:for-each-group>
+        </imvert:tagged-values>
+    </xsl:template>
 </xsl:stylesheet>

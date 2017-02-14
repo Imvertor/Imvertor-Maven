@@ -85,6 +85,8 @@
     
     <xsl:variable name="additional-tagged-values" select="imf:get-config-tagged-values()" as="element(tv)*"/>
     
+    <xsl:variable name="allow-duplicate-tv" select="imf:boolean(imf:get-config-string('cli','allowduplicatetv','no'))"/>
+  
     <xsl:template match="/">
         <imvert:packages>
             <xsl:if test="$debugging">
@@ -461,7 +463,7 @@
         <xsl:variable name="doctext" select="imf:get-tagged-value($this,$name,'')"/>
         <xsl:variable name="relevant-doc-string" select="if (contains($doctext,imf:get-config-parameter('documentation-separator'))) then substring-before($doctext,imf:get-config-parameter('documentation-separator')) else $doctext"/>
         <xsl:if test="exists($doctext) and normalize-space($relevant-doc-string)">
-            <imvert:documentation xmlns="http://www.w3.org/1999/xhtml" xmlns:html="http://www.w3.org/1999/xhtml">
+            <imvert:documentation>
                 <xsl:sequence select="imf:eadoc-to-xhtml($relevant-doc-string)" exclude-result-prefixes="#all"/>
             </imvert:documentation>
         </xsl:if>
@@ -816,17 +818,21 @@
             ()
         -->
         <xsl:variable name="tagged-values" select="$this/UML:ModelElement.taggedValue/UML:TaggedValue[imf:name-match(@tag,$tagged-value-name,'tv-name-ea')]"/>
-        <xsl:variable name="local-value" select="$tagged-values[1]"/>
+        
+        <xsl:if test="$tagged-values[2] and not($allow-duplicate-tv)">
+            <xsl:sequence select="imf:msg('ERROR','Duplicate assignment of tagged value [1] at [2]', ($tagged-value-name, $this/@name))"/>
+        </xsl:if>
+        <xsl:variable name="local-value" select="$tagged-values"/>
         <xsl:choose>
             <xsl:when test="exists($local-value)">
                  <xsl:sequence select="$local-value"/>   
             </xsl:when>
             <xsl:otherwise>
                 <xsl:variable name="tagged-values" select="$content/UML:TaggedValue[@modelElement=$this/@xmi.id and imf:name-match(@tag,$tagged-value-name,'tv-name-ea')]"/>
-                <xsl:if test="$tagged-values[2]"> 
-                   <xsl:sequence select="imf:msg('WARN','Duplicate assignment of tagged value (2) [1] at [2]', ($tagged-value-name, $this/@name))"/>
+                <xsl:if test="$tagged-values[2] and not($allow-duplicate-tv)"> 
+                   <xsl:sequence select="imf:msg('WARN','Duplicate assignment of tagged value [1] at [2]', ($tagged-value-name, $this/@name))"/>
                 </xsl:if>
-                <xsl:variable name="global-value" select="$tagged-values[1]"/>
+                <xsl:variable name="global-value" select="$tagged-values"/>
                 <xsl:choose>
                     <xsl:when test="exists($global-value)">
                         <xsl:sequence select="$global-value"/>   
@@ -834,20 +840,20 @@
                     <xsl:otherwise>
                         <xsl:variable name="crole" select="imf:get-classifier-role($this)"/>
                         <xsl:variable name="tagged-values" select="$crole/UML:ModelElement.taggedValue/UML:TaggedValue[imf:name-match(@tag,$tagged-value-name,'tv-name-ea')]"/>
-                        <xsl:if test="$tagged-values[2]"> 
+                        <xsl:if test="$tagged-values[2] and not($allow-duplicate-tv)"> 
                             <xsl:sequence select="imf:msg('WARN','Duplicate assignment of tagged value [1] within classifier role [2]', ($tagged-value-name,$crole/@name))"/>
                         </xsl:if>
-                        <xsl:variable name="local-cr-value" select="$tagged-values[1]"/>
+                        <xsl:variable name="local-cr-value" select="$tagged-values"/>
                         <xsl:choose>
                             <xsl:when test="exists($local-cr-value)">
                                 <xsl:sequence select="$local-cr-value"/>   
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:variable name="tagged-values" select="$content/UML:TaggedValue[@modelElement=$crole/@xmi.id and imf:name-match(@tag,$tagged-value-name,'tv-name-ea')]"/>
-                                <xsl:if test="$tagged-values[2]"> 
+                                <xsl:if test="$tagged-values[2] and not($allow-duplicate-tv)"> 
                                     <xsl:sequence select="imf:msg('WARN','Duplicate assignment of tagged value [1] at classifier role [2]', ($tagged-value-name,$crole/@name))"/>
                                 </xsl:if>
-                                <xsl:variable name="global-cr-value" select="$tagged-values[1]"/>
+                                <xsl:variable name="global-cr-value" select="$tagged-values"/>
                                 <xsl:choose>
                                     <xsl:when test="exists($global-cr-value)">
                                         <xsl:sequence select="$global-cr-value"/>   
@@ -855,10 +861,10 @@
                                     <xsl:otherwise>
                                         <xsl:variable name="root-model" select="$content/UML:Model"/>
                                         <xsl:variable name="tagged-values" select="$content/UML:TaggedValue[@modelElement=$root-model/@xmi.id and imf:name-match(@tag,$tagged-value-name,'tv-name-ea')]"/>
-                                        <xsl:if test="$tagged-values[2]"> 
+                                        <xsl:if test="$tagged-values[2] and not($allow-duplicate-tv)"> 
                                             <xsl:sequence select="imf:msg('WARN','Duplicate assignment of tagged value [1] at root model [2]', ($tagged-value-name,$root-model/@name))"/>
                                         </xsl:if>
-                                        <xsl:variable name="root-model-value" select="$tagged-values[1]"/>
+                                        <xsl:variable name="root-model-value" select="$tagged-values"/>
                                         <xsl:choose>
                                             <xsl:when test="exists($root-model-value)">
                                                 <xsl:sequence select="$root-model-value"/>   
@@ -1227,14 +1233,18 @@
                         <xsl:variable name="value-orig" select="imf:get-tagged-value($this,$nname)"/>
                         <xsl:variable name="value-norm" select="imf:get-tagged-value($this,$nname,$norm)"/>
                         <xsl:if test="exists($value-orig)">
-                            <imvert:tagged-value>
-                                <imvert:name original="{$nname/@original}">
-                                    <xsl:value-of select="$nname"/>         
-                                </imvert:name>
-                                <imvert:value original="{$value-orig}">
-                                    <xsl:sequence select="$value-norm"/>
-                                </imvert:value>
-                            </imvert:tagged-value>
+                            <xsl:for-each select="$value-orig">
+                                <xsl:variable name="index" select="position()"/>
+                                <imvert:tagged-value>
+                                    <imvert:name original="{$nname/@original}">
+                                        <xsl:value-of select="$nname"/>         
+                                    </imvert:name>
+                                    <imvert:value original="{$value-orig[$index]}">
+                                        <xsl:sequence select="$value-norm[$index]"/>
+                                    </imvert:value>
+                                </imvert:tagged-value>
+                                
+                            </xsl:for-each>
                         </xsl:if>
                     </xsl:for-each>
                 </xsl:for-each>

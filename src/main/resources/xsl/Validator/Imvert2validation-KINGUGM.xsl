@@ -67,8 +67,8 @@
         
         <!-- validate -->
         <xsl:sequence select="imf:report-warning(.., 
-            exists($tv-k) and imf:boolean(.) and not(imf:boolean($tv-k/imvert:value)), 
-            'Identifiable construct must assign yes to the tagged value [1]', $tv-k/imvert:name)"/>
+            exists($tv-k) and imf:boolean(.) and not(imf:boolean-or(for $b in $tv-k/imvert:value return imf:boolean($b))), 
+            'Identifiable construct must assign yes to the tagged value [1]', $tv-k[1]/imvert:name)"/>
         
         <xsl:next-match/>
     </xsl:template>
@@ -80,7 +80,7 @@
         <!-- validate -->
         <xsl:sequence select="imf:report-warning(.., 
             empty($tv-k) and imf:boolean(.), 
-            'Static construct must assign yes to the tagged value [1]', $tv-k/imvert:name)"/>
+            'Static construct must assign yes to the tagged value [1]', $tv-k[1]/imvert:name)"/>
         
         <xsl:next-match/>
     </xsl:template>

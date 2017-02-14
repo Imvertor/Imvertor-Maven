@@ -132,6 +132,8 @@
     <!-- check the class hierarchy, no type recursion allowed -->
     <xsl:variable name="is-proper-class-tree" select="imf:boolean-and(for $class in $application-package//imvert:class[imvert:supertype] return imf:check-proper-class-tree($class,string($class/imvert:id)))"/>
     
+    <xsl:variable name="allow-multiple-tv" select="imf:boolean(imf:get-config-string('cli','allowduplicatetv','no'))"/>
+    
     <xsl:key name="key-unique-id" match="//*[imvert:id]" use="imvert:id"/>
     
     <!-- 
@@ -1219,10 +1221,12 @@
 
     <xsl:function name="imf:check-tagged-value-multi" as="element()*">
         <xsl:param name="this" as="element()"/> <!-- any element that may have tagged values-->
-        <xsl:variable name="stereotype" select="$this/imvert:stereotype"/>
-        <xsl:for-each-group select="$this/imvert:tagged-values/imvert:tagged-value" group-by="imvert:name">
-            <xsl:sequence select="imf:report-error($this, count(current-group()) gt 1, 'Duplicate tagged values: [1]',current-grouping-key())"/>
-        </xsl:for-each-group>
+        <xsl:if test="not($allow-multiple-tv)">
+            <xsl:variable name="stereotype" select="$this/imvert:stereotype"/>
+            <xsl:for-each-group select="$this/imvert:tagged-values/imvert:tagged-value" group-by="imvert:name">
+                <xsl:sequence select="imf:report-error($this, count(current-group()) gt 1, 'Duplicate tagged values: [1]',current-grouping-key())"/>
+            </xsl:for-each-group>
+        </xsl:if>
     </xsl:function>
     
     <!-- when validation level is M (Missing metadata), check if all required tagged values have been set -->
