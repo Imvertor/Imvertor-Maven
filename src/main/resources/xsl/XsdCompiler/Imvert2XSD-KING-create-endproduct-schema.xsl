@@ -91,277 +91,277 @@
 	<xsl:template match="ep:construct">
 		<!-- ROME: Waar moet ep:regels naar vertaald worden? -->
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
-				<xs:element>
+		<xs:element>
+			<xsl:choose>
+				<!--xsl:when test="contains(ep:tech-name,':')">
+					<xsl:attribute name="ref" select="ep:tech-name"/>
+					<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
+					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
+					<xsl:if test="ep:documentation">
+						<xs:annotation>
+							<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+						</xs:annotation>
+					</xsl:if>
+				</xsl:when-->
+				<xsl:when test="contains(ep:type-name,':') and not(ep:enum)">
+					<xsl:attribute name="name" select="ep:tech-name"/>
+					<xsl:attribute name="type" select="ep:type-name"/>
+					<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
+					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>					
+					<xsl:if test="ep:documentation">
+						<xs:annotation>
+							<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+						</xs:annotation>
+					</xsl:if>
+				</xsl:when>
+<!-- ROME: Hieronder wordt een id gegenereerd. Dat is echter eigenlijk niet gewenst omdat daarbij de naam van de simpleType na elke generatie slag anders kan zijn.
+		   Dat zou betekenen dat leveranciers steeds hun gegenereerde code moeten aanpassen. We moeten dus een manier zien te vinden die toekomstvaster is. -->
+				<xsl:when test="contains(ep:type-name,':') and ep:enum">
+					<xsl:attribute name="name" select="ep:tech-name"/>
+					<xsl:attribute name="type">
+						<xsl:value-of select="concat($prefix,':',imf:get-normalized-name(concat('simpleType-',ep:tech-name,'-',generate-id()),'type-name'))"/>
+					</xsl:attribute>
+					<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
+					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>					
+					<xsl:if test="ep:documentation">
+						<xs:annotation>
+							<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+						</xs:annotation>
+					</xsl:if>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:attribute name="name" select="ep:tech-name"/>
+					<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
+					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
 					<xsl:choose>
-						<!--xsl:when test="contains(ep:tech-name,':')">
-							<xsl:attribute name="ref" select="ep:tech-name"/>
-							<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
-							<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
+						<!-- When a construct contains facets (which means it has to become an element without child elements) and it contains metadata constructs a 
+							 extension complexType needs to be generated which contains the xml-attributes based on a simpleType which contains the facets. -->
+						<xsl:when test="(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata]">
 							<xsl:if test="ep:documentation">
 								<xs:annotation>
 									<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
 								</xs:annotation>
 							</xsl:if>
-						</xsl:when-->
-						<xsl:when test="contains(ep:type-name,':') and not(ep:enum)">
-							<xsl:attribute name="name" select="ep:tech-name"/>
-							<xsl:attribute name="type" select="ep:type-name"/>
-							<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
-							<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>					
-							<xsl:if test="ep:documentation">
-								<xs:annotation>
-									<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
-								</xs:annotation>
-							</xsl:if>
+							
+							<xsl:sequence select="imf:create-debug-comment('situatie 2',$debugging)"/>
+							
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension>
+										<xsl:attribute name="base" select="concat($prefix,':',imf:get-normalized-name(concat('simpleType-',ep:tech-name,'-',generate-id()),'type-name'))"/>
+										<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+									</xs:extension>						
+								</xs:simpleContent>	
+							</xs:complexType>
 						</xsl:when>
-		<!-- ROME: Hieronder wordt een id gegenereerd. Dat is echter eigenlijk niet gewenst omdat daarbij de naam van de simpleType na elke generatie slag anders kan zijn.
-				   Dat zou betekenen dat leveranciers steeds hun gegenereerde code moeten aanpassen. We moeten dus een manier zien te vinden die toekomstvaster is. -->
-						<xsl:when test="contains(ep:type-name,':') and ep:enum">
-							<xsl:attribute name="name" select="ep:tech-name"/>
-							<xsl:attribute name="type">
-								<xsl:value-of select="concat($prefix,':',imf:get-normalized-name(concat('simpleType-',ep:tech-name,'-',generate-id()),'type-name'))"/>
-							</xsl:attribute>
-							<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
-							<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>					
+						<!-- When a construct contains facets (which means it has to become an element without child elements) and it doesn't contain metadata constructs 
+							 a restriction simpleType can be generated which contains the facets. -->
+						<xsl:when test="(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:regels or ep:enum) and ep:type-name">
 							<xsl:if test="ep:documentation">
 								<xs:annotation>
 									<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
 								</xs:annotation>
 							</xsl:if>
+
+							<xsl:sequence select="imf:create-debug-comment('situatie 3',$debugging)"/>
+							
+							<xs:simpleType>
+								<xs:restriction>
+									<xsl:attribute name="base">
+										<xsl:choose>
+											<xsl:when test="ep:type-name = 'scalar-integer'">
+												<xsl:value-of select="'xs:integer'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-decimal'">
+												<xsl:value-of select="'xs:decimal'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-string'">
+												<xsl:value-of select="'xs:string'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-date'">
+												<xsl:value-of select="'xs:dateTime'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-boolean'">
+												<xsl:value-of select="'xs:boolean'"/>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:value-of select="'xs:string'"/>								
+											</xsl:otherwise>
+											<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
+										</xsl:choose>
+									</xsl:attribute>
+									<xsl:if test="ep:length">
+										<xsl:choose>
+											<xsl:when test="ep:type-name = 'scalar-string'">
+												<xs:length value="{ep:length}" />
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
+												<xs:totalDigits value="{ep:length}" />
+											</xsl:when>
+										</xsl:choose>
+									</xsl:if>
+									<xsl:if test="ep:max-length">
+										<xs:maxLength value="{ep:max-length}" />
+									</xsl:if>
+									<xsl:if test="ep:min-length">
+										<xs:minLength value="{ep:min-length}" />
+									</xsl:if>
+									<xsl:if test="ep:min-value and (ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-date')">
+										<xs:minInclusive value="{ep:min-value}" />
+									</xsl:if>
+									<xsl:if test="ep:max-value and (ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-date')">
+										<xs:maxInclusive value="{ep:max-value}" />
+									</xsl:if>
+									<xsl:if test="ep:fraction-digits">
+										<xs:fractionDigits value="{ep:fraction-digits}" />
+									</xsl:if>
+									<xsl:if test="ep:enum and (ep:type-name != 'scalar-boolean')">
+										<xsl:apply-templates select="ep:enum"/>
+									</xsl:if>
+									<xsl:if test="ep:formeel-patroon and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-boolean')">
+										<xs:pattern value="{ep:formeel-patroon}" />
+									</xsl:if>				
+								</xs:restriction>						
+							</xs:simpleType>				
+						</xsl:when>
+						<!-- When a construct doensn't contain facets and metadata constructs a restriction simpleType can be generated without facets. -->
+						<xsl:when test="ep:type-name and .//ep:construct[@ismetadata]">
+							<xsl:if test="ep:documentation">
+								<xs:annotation>
+									<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+								</xs:annotation>
+							</xsl:if>
+
+							<xsl:sequence select="imf:create-debug-comment('situatie 4',$debugging)"/>
+							
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension>
+										<xsl:attribute name="base">
+											<xsl:choose>
+												<xsl:when test="ep:type-name = 'scalar-integer'">
+													<xsl:value-of select="'xs:integer'"/>
+												</xsl:when>
+												<xsl:when test="ep:type-name = 'scalar-decimal'">
+													<xsl:value-of select="'xs:decimal'"/>
+												</xsl:when>
+												<xsl:when test="ep:type-name = 'scalar-string'">
+													<xsl:value-of select="'xs:string'"/>
+												</xsl:when>
+												<xsl:when test="ep:type-name = 'scalar-date'">
+													<xsl:value-of select="'xs:dateTime'"/>
+												</xsl:when>
+												<xsl:when test="ep:type-name = 'scalar-boolean'">
+													<xsl:value-of select="'xs:boolean'"/>
+												</xsl:when>
+												<!-- Wat moet er met scalar-indic gebeuren? -->
+												<xsl:otherwise>
+													<xsl:value-of select="'xs:string'"/>								
+												</xsl:otherwise>
+												<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
+											</xsl:choose>											
+										</xsl:attribute>
+										<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+									</xs:extension>						
+								</xs:simpleContent>	
+							</xs:complexType>
+						</xsl:when>
+						<!-- When a construct doensn't contain facets and metadata constructs a restriction simpleType can be generated without facets. -->
+						<xsl:when test="ep:type-name">
+							<xsl:if test="ep:documentation">
+								<xs:annotation>
+									<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+								</xs:annotation>
+							</xsl:if>
+
+							<xsl:sequence select="imf:create-debug-comment('situatie 5',$debugging)"/>
+							
+							<xs:simpleType>
+								<xs:restriction>
+									<xsl:attribute name="base">
+										<xsl:choose>
+											<xsl:when test="ep:type-name = 'scalar-integer'">
+												<xsl:value-of select="'xs:integer'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-decimal'">
+												<xsl:value-of select="'xs:decimal'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-string'">
+												<xsl:value-of select="'xs:string'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-date'">
+												<xsl:value-of select="'xs:dateTime'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-boolean'">
+												<xsl:value-of select="'xs:boolean'"/>
+											</xsl:when>
+											<!-- Wat moet er met scalar-indic gebeuren? -->
+											<xsl:otherwise>
+												<xsl:value-of select="'xs:string'"/>								
+											</xsl:otherwise>
+											<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
+										</xsl:choose>
+									</xsl:attribute>
+									<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+								</xs:restriction>						
+							</xs:simpleType>				
+						</xsl:when>
+						<xsl:when test=".//ep:construct">
+							<xsl:if test="ep:documentation">
+								<xs:annotation>
+									<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+								</xs:annotation>
+							</xsl:if>
+
+							<xsl:sequence select="imf:create-debug-comment('situatie 6',$debugging)"/>
+							
+							<xs:complexType>
+								<xsl:apply-templates select="ep:seq[not(@ismetadata)] | ep:choice"/>
+								<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+							</xs:complexType>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:attribute name="name" select="ep:tech-name"/>
-							<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
-							<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
-							<xsl:choose>
-								<!-- When a construct contains facets (which means it has to become an element without child elements) and it contains metadata constructs a 
-									 extension complexType needs to be generated which contains the xml-attributes based on a simpleType which contains the facets. -->
-								<xsl:when test="(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata]">
-									<xsl:if test="ep:documentation">
-										<xs:annotation>
-											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
-										</xs:annotation>
-									</xsl:if>
-									
-									<xsl:sequence select="imf:create-debug-comment('situatie 2',$debugging)"/>
-									
-									<xs:complexType>
-										<xs:simpleContent>
-											<xs:extension>
-												<xsl:attribute name="base" select="concat($prefix,':',imf:get-normalized-name(concat('simpleType-',ep:tech-name,'-',generate-id()),'type-name'))"/>
-												<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
-											</xs:extension>						
-										</xs:simpleContent>	
-									</xs:complexType>
-								</xsl:when>
-								<!-- When a construct contains facets (which means it has to become an element without child elements) and it doesn't contain metadata constructs 
-									 a restriction simpleType can be generated which contains the facets. -->
-								<xsl:when test="(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:regels or ep:enum) and ep:type-name">
-									<xsl:if test="ep:documentation">
-										<xs:annotation>
-											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
-										</xs:annotation>
-									</xsl:if>
+							<xsl:if test="ep:documentation">
+								<xs:annotation>
+									<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+								</xs:annotation>
+							</xsl:if>
 
-									<xsl:sequence select="imf:create-debug-comment('situatie 3',$debugging)"/>
-									
-									<xs:simpleType>
-										<xs:restriction>
-											<xsl:attribute name="base">
-												<xsl:choose>
-													<xsl:when test="ep:type-name = 'scalar-integer'">
-														<xsl:value-of select="'xs:integer'"/>
-													</xsl:when>
-													<xsl:when test="ep:type-name = 'scalar-decimal'">
-														<xsl:value-of select="'xs:decimal'"/>
-													</xsl:when>
-													<xsl:when test="ep:type-name = 'scalar-string'">
-														<xsl:value-of select="'xs:string'"/>
-													</xsl:when>
-													<xsl:when test="ep:type-name = 'scalar-date'">
-														<xsl:value-of select="'xs:dateTime'"/>
-													</xsl:when>
-													<xsl:when test="ep:type-name = 'scalar-boolean'">
-														<xsl:value-of select="'xs:boolean'"/>
-													</xsl:when>
-													<xsl:otherwise>
-														<xsl:value-of select="'xs:string'"/>								
-													</xsl:otherwise>
-													<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
-												</xsl:choose>
-											</xsl:attribute>
-											<xsl:if test="ep:length">
-												<xsl:choose>
-													<xsl:when test="ep:type-name = 'scalar-string'">
-														<xs:length value="{ep:length}" />
-													</xsl:when>
-													<xsl:when test="ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
-														<xs:totalDigits value="{ep:length}" />
-													</xsl:when>
-												</xsl:choose>
-											</xsl:if>
-											<xsl:if test="ep:max-length">
-												<xs:maxLength value="{ep:max-length}" />
-											</xsl:if>
-											<xsl:if test="ep:min-length">
-												<xs:minLength value="{ep:min-length}" />
-											</xsl:if>
-											<xsl:if test="ep:min-value and (ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-date')">
-												<xs:minInclusive value="{ep:min-value}" />
-											</xsl:if>
-											<xsl:if test="ep:max-value and (ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-date')">
-												<xs:maxInclusive value="{ep:max-value}" />
-											</xsl:if>
-											<xsl:if test="ep:fraction-digits">
-												<xs:fractionDigits value="{ep:fraction-digits}" />
-											</xsl:if>
-											<xsl:if test="ep:enum and (ep:type-name != 'scalar-boolean')">
-												<xsl:apply-templates select="ep:enum"/>
-											</xsl:if>
-											<xsl:if test="ep:formeel-patroon and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-boolean')">
-												<xs:pattern value="{ep:formeel-patroon}" />
-											</xsl:if>				
-										</xs:restriction>						
-									</xs:simpleType>				
-								</xsl:when>
-								<!-- When a construct doensn't contain facets and metadata constructs a restriction simpleType can be generated without facets. -->
-								<xsl:when test="ep:type-name and .//ep:construct[@ismetadata]">
-									<xsl:if test="ep:documentation">
-										<xs:annotation>
-											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
-										</xs:annotation>
-									</xsl:if>
-
-									<xsl:sequence select="imf:create-debug-comment('situatie 4',$debugging)"/>
-									
-									<xs:complexType>
-										<xs:simpleContent>
-											<xs:extension>
-												<xsl:attribute name="base">
-													<xsl:choose>
-														<xsl:when test="ep:type-name = 'scalar-integer'">
-															<xsl:value-of select="'xs:integer'"/>
-														</xsl:when>
-														<xsl:when test="ep:type-name = 'scalar-decimal'">
-															<xsl:value-of select="'xs:decimal'"/>
-														</xsl:when>
-														<xsl:when test="ep:type-name = 'scalar-string'">
-															<xsl:value-of select="'xs:string'"/>
-														</xsl:when>
-														<xsl:when test="ep:type-name = 'scalar-date'">
-															<xsl:value-of select="'xs:dateTime'"/>
-														</xsl:when>
-														<xsl:when test="ep:type-name = 'scalar-boolean'">
-															<xsl:value-of select="'xs:boolean'"/>
-														</xsl:when>
-														<!-- Wat moet er met scalar-indic gebeuren? -->
-														<xsl:otherwise>
-															<xsl:value-of select="'xs:string'"/>								
-														</xsl:otherwise>
-														<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
-													</xsl:choose>											
-												</xsl:attribute>
-												<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
-											</xs:extension>						
-										</xs:simpleContent>	
-									</xs:complexType>
-								</xsl:when>
-								<!-- When a construct doensn't contain facets and metadata constructs a restriction simpleType can be generated without facets. -->
-								<xsl:when test="ep:type-name">
-									<xsl:if test="ep:documentation">
-										<xs:annotation>
-											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
-										</xs:annotation>
-									</xsl:if>
-
-									<xsl:sequence select="imf:create-debug-comment('situatie 5',$debugging)"/>
-									
-									<xs:simpleType>
-										<xs:restriction>
-											<xsl:attribute name="base">
-												<xsl:choose>
-													<xsl:when test="ep:type-name = 'scalar-integer'">
-														<xsl:value-of select="'xs:integer'"/>
-													</xsl:when>
-													<xsl:when test="ep:type-name = 'scalar-decimal'">
-														<xsl:value-of select="'xs:decimal'"/>
-													</xsl:when>
-													<xsl:when test="ep:type-name = 'scalar-string'">
-														<xsl:value-of select="'xs:string'"/>
-													</xsl:when>
-													<xsl:when test="ep:type-name = 'scalar-date'">
-														<xsl:value-of select="'xs:dateTime'"/>
-													</xsl:when>
-													<xsl:when test="ep:type-name = 'scalar-boolean'">
-														<xsl:value-of select="'xs:boolean'"/>
-													</xsl:when>
-													<!-- Wat moet er met scalar-indic gebeuren? -->
-													<xsl:otherwise>
-														<xsl:value-of select="'xs:string'"/>								
-													</xsl:otherwise>
-													<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
-												</xsl:choose>
-											</xsl:attribute>
-											<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
-										</xs:restriction>						
-									</xs:simpleType>				
-								</xsl:when>
-								<xsl:when test=".//ep:construct">
-									<xsl:if test="ep:documentation">
-										<xs:annotation>
-											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
-										</xs:annotation>
-									</xsl:if>
-
-									<xsl:sequence select="imf:create-debug-comment('situatie 6',$debugging)"/>
-									
-									<xs:complexType>
-										<xsl:apply-templates select="ep:seq[not(@ismetadata)] | ep:choice"/>
-										<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
-									</xs:complexType>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:if test="ep:documentation">
-										<xs:annotation>
-											<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
-										</xs:annotation>
-									</xsl:if>
-
-									<xsl:sequence select="imf:create-debug-comment('situatie 7',$debugging)"/>
-									
-									<xs:complexType>
-										<xsl:apply-templates select="ep:seq[not(@ismetadata)] | ep:choice"/>
-										<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
-									</xs:complexType>					
-								</xsl:otherwise>				
-							</xsl:choose>
-						</xsl:otherwise>
+							<xsl:sequence select="imf:create-debug-comment('situatie 7',$debugging)"/>
+							
+							<xs:complexType>
+								<xsl:apply-templates select="ep:seq[not(@ismetadata)] | ep:choice"/>
+								<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+							</xs:complexType>					
+						</xsl:otherwise>				
 					</xsl:choose>
-				</xs:element>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xs:element>
 	</xsl:template>
 					
 	<xsl:template match="ep:construct" mode="complexType">
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
-		<xs:complexType>
-			<xsl:attribute name="name" select="ep:tech-name"/>
-			<xsl:if test="ep:documentation">
-				<xs:annotation>
-					<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
-				</xs:annotation>
-			</xsl:if>
-			<xsl:apply-templates select="ep:seq | ep:choice"/>
-			<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
-		</xs:complexType>
+		<xsl:if test="ep:seq/ep:* or ep:choice/ep:*">
+			<xs:complexType>
+				<xsl:attribute name="name" select="ep:tech-name"/>
+				<xsl:if test="ep:documentation">
+					<xs:annotation>
+						<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+					</xs:annotation>
+				</xsl:if>
+				<xsl:apply-templates select="ep:seq | ep:choice"/>
+				<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+			</xs:complexType>
+		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="ep:constructRef">
 		<xsl:variable name="href" select="ep:href"/>
-		<!-- ROME: Volgende xsl:if kan niet omdat er in het ep bestand sowieso refs staan naar constructs die niet in het ep bestand staan.
-			 Denk aan refs naar zaken die in de StUF onderlaag staan. Misschien kan de xsl:if anders vomgegeven worden zodat het wel werkt. -->
 		<!-- Only if the ep:constructRef refers to an available ep:construct it's transformed to an element. 
 			 In theory (and maybe in practice) this can lead to another empty ep:construct which on its turn should be ignored.
 			 That situation however isn't solved here. -->
-		<xsl:if test=" @prefix = 'StUF' or //ep:construct[ep:tech-name = $href]">
+		<xsl:if test=" @prefix = 'StUF' or //ep:construct[ep:tech-name = $href and (ep:seq/ep:* or ep:choice/ep:*)]">
 			<xs:element>
 				<xsl:choose>
 					<xsl:when test="ep:href">
@@ -482,6 +482,16 @@
 			<!--xsl:when test="contains(ep:tech-name,':') and ep:tech-name!='StUF:entiteittype'"-->
 			<xsl:when test="not(ep:href) and @prefix">
 				<xs:attribute ref="{concat(@prefix,':',ep:tech-name)}">
+					<xsl:attribute name="use">
+						<xsl:choose>
+							<xsl:when test="not(ep:min-occurs) or ep:min-occurs=1">required</xsl:when>
+							<xsl:otherwise>optional</xsl:otherwise>
+						</xsl:choose>
+					</xsl:attribute>
+				</xs:attribute>
+			</xsl:when>
+			<xsl:when test="ep:href">
+				<xs:attribute name="{ep:tech-name}" type="{ep:href}">
 					<xsl:attribute name="use">
 						<xsl:choose>
 							<xsl:when test="not(ep:min-occurs) or ep:min-occurs=1">required</xsl:when>
