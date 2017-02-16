@@ -50,7 +50,7 @@
   
     <xsl:variable name="external-packages" select="$all-packages[imf:get-xmi-stereotype(.) = imf:get-config-stereotypes('stereotype-name-external-package')]"/>
     
-    <xsl:variable name="app-package" select="$project-package/*/UML:Package[imf:get-normalized-name(@name,'package-name') = imf:get-normalized-name($application-package-name,'package-name')]"/>
+    <xsl:variable name="app-package" select="$project-package//UML:Package[imf:get-normalized-name(@name,'package-name') = imf:get-normalized-name($application-package-name,'package-name')]"/>
     <xsl:variable name="containing-packages" select="$app-package/ancestor::UML:Package"/>
     
     <xsl:template match="/">
@@ -69,6 +69,9 @@
             <xsl:when test="empty($app-package)">
                <xsl:sequence select="imf:msg('ERROR','No application found: [1]', $application-package-name)"/>
            </xsl:when>
+            <xsl:when test="count($app-package) ne 1">
+                <xsl:sequence select="imf:msg('ERROR','Several packages found with same application name: [1]', $application-package-name)"/>
+            </xsl:when>
            <xsl:otherwise>
                <xsl:apply-templates/>
            </xsl:otherwise>
