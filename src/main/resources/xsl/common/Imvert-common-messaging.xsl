@@ -89,25 +89,7 @@
     <xsl:function name="imf:msg-insert-parms" as="xs:string">
         <xsl:param name="string" as="xs:string"/>
         <xsl:param name="parms" as="item()*"/>
-        <xsl:variable name="locs" select="tokenize($string,'\[\d+\]')"/>
-        <xsl:variable name="r">
-            <xsl:analyze-string select="$string" regex="\[(\d)\]">
-                <xsl:matching-substring>
-                    <xsl:variable name="g" select="$parms[xs:integer(regex-group(1))]"/>
-                    <xsl:value-of select="if (exists($g)) then imf:msg-insert-parms-val($g) else '-null-'"/>
-                </xsl:matching-substring>
-                <xsl:non-matching-substring>
-                    <xsl:value-of select="."/>
-                </xsl:non-matching-substring>
-            </xsl:analyze-string>
-            <!--
-            <xsl:if test="count($parms) ge count($locs)">
-                <xsl:variable name="amt" select="count($parms) - count($locs) + 1"/>
-                <xsl:sequence select="for $i in (1 to $amt) return concat('; ',$parms[$i])"/>
-            </xsl:if>
-            -->
-        </xsl:variable>
-        <xsl:value-of select="$r"/>
+       <xsl:value-of select="imf:insert-fragments-by-index($string,$parms)"/>
     </xsl:function>
     
     <!-- 

@@ -505,9 +505,10 @@
     <!-- true when value is text is 'yes'|'true', false when 'no'|'false', otherwise false  -->  
     <xsl:function name="imf:boolean" as="xs:boolean">
         <xsl:param name="this" as="item()?"/>
+        <xsl:variable name="v" select="lower-case(string($this))"/>
         <xsl:sequence select="
-            if (string($this)=('yes','true','ja','1')) then true() 
-            else if (string($this)=('no','false','nee','0')) then false() 
+            if ($v=('yes','true','ja','1')) then true() 
+            else if ($v=('no','false','nee','0')) then false() 
                 else if ($this) then true() 
                     else false()"/>
     </xsl:function>
@@ -651,6 +652,27 @@
             </xsl:analyze-string>
         </xsl:variable>
         <xsl:value-of select="string-join($result,'')"/>
+    </xsl:function>
+    
+    <!-- 
+		replace all indicated fragments N inserted as ...[N]... by the content of the item at the specified position
+	--> 
+    <xsl:function name="imf:insert-fragments-by-index" as="xs:string">
+        <xsl:param name="string" as="xs:string"/>
+        <xsl:param name="parms" as="item()*"/>
+        <xsl:variable name="locs" select="tokenize($string,'\[\d+\]')"/>
+        <xsl:variable name="r">
+            <xsl:analyze-string select="$string" regex="\[(\d)\]">
+                <xsl:matching-substring>
+                    <xsl:variable name="g" select="$parms[xs:integer(regex-group(1))]"/>
+                    <xsl:value-of select="if (exists($g)) then imf:msg-insert-parms-val($g) else '-null-'"/>
+                </xsl:matching-substring>
+                <xsl:non-matching-substring>
+                    <xsl:value-of select="."/>
+                </xsl:non-matching-substring>
+            </xsl:analyze-string>
+        </xsl:variable>
+        <xsl:value-of select="$r"/>
     </xsl:function>
 
     <!-- return a document when it exists, otherwise return empty sequence -->

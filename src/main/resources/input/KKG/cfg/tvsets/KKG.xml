@@ -32,6 +32,7 @@
                 <stereo required="yes">stereotype-name-union</stereo>
                 <stereo required="yes">stereotype-name-complextype</stereo>
                 <stereo required="yes">stereotype-name-externekoppeling</stereo>
+                <stereo required="yes">stereotype-name-enumeration</stereo>
             </stereotypes>
         </tv> 
         <tv norm="space" rules="NOC" id="IndicatieMateriëleHistorie">
@@ -103,7 +104,13 @@
                 <stereo required="no">stereotype-name-relation-role</stereo>
             </stereotypes>
         </tv>
-       
+        <tv norm="note" id="Toelichting">
+            <!-- in aanvulling op SBR -->
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-enumeration</stereo>
+            </stereotypes>
+        </tv> 
         <tv norm="space" id="Patroon"><!-- MIG -->
             <name lang="nl">Patroon</name>
             <name lang="en">Pattern</name>
@@ -180,8 +187,6 @@
                 <stereo required="no">stereotype-name-enum</stereo>
                 <stereo required="no">stereotype-name-data-element</stereo>
                 <stereo required="no">stereotype-name-referentie-element</stereo>
-             <!--   <stereo required="no">stereotype-name-association-to-composite</stereo> -->
-                <stereo required="no">stereotype-name-enum</stereo>
             </stereotypes>
         </tv>
         
@@ -214,6 +219,7 @@
             <stereotypes>
              <!--   <stereo required="no">stereotype-name-codelist</stereo> -->
                 <stereo required="no">stereotype-name-relation-role</stereo>
+                <stereo required="no">stereotype-name-enumeration</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="HerkomstDefinitie"> <!-- in addition to SBR -->

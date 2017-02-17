@@ -25,6 +25,29 @@
             </declared-values>
         </tv>
         
+        <tv norm="compact" id="Level">
+            <name lang="nl">Niveau</name>
+            <name lang="en">Level</name>
+            <derive>no</derive>
+            <desc lang="en">
+                The level is a value taken froma restricted set: 
+                "general" means that the model is a fundament of any other model and should be included. 
+                It models generic constructs that are part of the real world. This typically includes abstract featureTypes. It may include any other constructs.
+                "specific" means that the model is a particular to a domain and models that domain of a conherent part of it.  
+            </desc>
+            <stereotypes>
+                <stereo required="no">stereotype-name-base-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value default="no">generiek</value>
+                <value default="yes">specifiek</value>
+            </declared-values>
+            <declared-values lang="en">
+                <value default="no">general</value>
+                <value default="yes">specific</value>
+            </declared-values>
+        </tv>
+        
         <tv norm="space" id="Beheerder">
             <name lang="nl">Beheerder</name>
             <name lang="en">Administrator</name>
