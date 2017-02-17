@@ -20,6 +20,7 @@
 
 package nl.imvertor.ConfigCompiler;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
@@ -57,7 +58,7 @@ public class ConfigCompiler  extends Step {
 		
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_CONFIG_FILE", "properties/IMVERTOR_CONFIG_XSLPATH") : false ;
 		
-		String p = configurator.getParm("cli","createeaprofile",false);
+		String p = StringUtils.substringBefore(configurator.getParm("cli","createeaprofile",false),";");
 		if (p != null) {
 			// process the results of previous step info a EA profile
 			succeeds = succeeds ? transformer.transformStep("properties/WORK_CONFIG_FILE", "properties/WORK_EAPROFILE_FILE", "properties/IMVERTOR_EAPROFILE_XSLPATH") : false ;
