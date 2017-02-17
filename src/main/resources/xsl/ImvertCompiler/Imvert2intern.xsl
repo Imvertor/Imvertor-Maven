@@ -114,6 +114,7 @@
                 <imvert:type-id original="{$id}">
                     <xsl:value-of select="$referenced-construct/imvert:id"/>
                 </imvert:type-id>
+                <imvert:type-replacement>internal</imvert:type-replacement>
             </xsl:otherwise>
         </xsl:choose>   
     </xsl:template>

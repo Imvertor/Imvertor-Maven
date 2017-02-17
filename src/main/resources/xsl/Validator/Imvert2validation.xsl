@@ -134,6 +134,8 @@
     
     <xsl:variable name="allow-multiple-tv" select="imf:boolean(imf:get-config-string('cli','allowduplicatetv','no'))"/>
     
+    <xsl:variable name="model-is-general" select="$application-package/imvert:model-level = 'general'"/>
+    
     <xsl:key name="key-unique-id" match="//*[imvert:id]" use="imvert:id"/>
     
     <!-- 
@@ -570,12 +572,14 @@
         
         <!-- TODO het niet gebruikt zijn van een klasse is een zaak van configuratie: wat zijn de potentiele topconstructs? -->
         <xsl:sequence select="imf:report-warning(., 
+            not($model-is-general) and
             $is-proper-class-tree and 
             $is-application and 
             not($is-toplevel) and not($is-abstract or $is-target-in-relation or $is-association-class), 
             'This [1] is not used.', if (exists(imvert:stereotype)) then imvert:stereotype else 'construct')"/>
         
         <xsl:sequence select="imf:report-warning(., 
+            not($model-is-general) and
             $is-proper-class-tree and 
             $is-abstract and 
             empty($subclasses), 

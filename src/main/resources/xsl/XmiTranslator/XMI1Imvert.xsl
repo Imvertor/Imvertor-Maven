@@ -149,6 +149,7 @@
         <xsl:variable name="package-id" select="@xmi.id" as="xs:string"/>
         <xsl:variable name="namespace" select="imf:get-alias(.,'P')"/>
         <xsl:variable name="metamodel" select="imf:get-tagged-value(.,'metamodel')"/>
+        <xsl:variable name="model-level" select="imf:get-tagged-value(.,'level')"/>
         
         <xsl:variable name="supplier-info" select="imf:get-supplier-info(.,$parent-is-derived)" as="element()*"/>
         <xsl:variable name="is-derived" select="imf:boolean($supplier-info[self::imvert:derived])"/>
@@ -162,6 +163,7 @@
             <xsl:sequence select="$supplier-info"/>
             <xsl:sequence select="imf:create-output-element('imvert:namespace',$namespace)"/>
             <xsl:sequence select="imf:create-output-element('imvert:metamodel',$metamodel)"/>
+            <xsl:sequence select="imf:create-output-element('imvert:model-level',$model-level)"/>
             <xsl:sequence select="imf:get-element-documentation-info(.)"/>
             <xsl:sequence select="imf:get-history-info(.)"/>
             <xsl:sequence select="imf:get-svn-info(.)"/>

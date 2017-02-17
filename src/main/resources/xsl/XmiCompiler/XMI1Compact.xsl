@@ -47,15 +47,16 @@
     
     <xsl:variable name="project-packages" select="$all-packages[imf:get-xmi-stereotype(.) = imf:get-config-stereotypes('stereotype-name-project-package')]"/>
     <xsl:variable name="project-package" select="$project-packages[imf:is-applicable-project-package(.)][1]"/>
-  
+    <xsl:variable name="application-packages" select="$project-package//UML:Package[imf:get-xmi-stereotype(.) = imf:get-config-stereotypes('stereotype-name-application-package')]"/>
+    <xsl:variable name="model-packages" select="$project-package//UML:Package[imf:get-xmi-stereotype(.) = imf:get-config-stereotypes('stereotype-name-base-package')]"/>
+    
     <xsl:variable name="external-packages" select="$all-packages[imf:get-xmi-stereotype(.) = imf:get-config-stereotypes('stereotype-name-external-package')]"/>
     
-    <xsl:variable name="app-package" select="$project-package//UML:Package[imf:get-normalized-name(@name,'package-name') = imf:get-normalized-name($application-package-name,'package-name')]"/>
+    <xsl:variable name="app-package" select="($model-packages,$application-packages)[imf:get-normalized-name(@name,'package-name') = imf:get-normalized-name($application-package-name,'package-name')]"/>
     <xsl:variable name="containing-packages" select="$app-package/ancestor::UML:Package"/>
     
     <xsl:template match="/">
         <xsl:sequence select="imf:track('Compacting')"/>
-    
         <xsl:choose>
            <xsl:when test="empty($project-packages)">
                <xsl:sequence select="imf:msg('ERROR','No projects found')"/>
