@@ -89,15 +89,9 @@
                 <value>entiteit</value>
             </declared-values>
         </tv>
-        <tv norm="space" validate="" rules="" id="VerkorteAlias">
-            <name lang="nl">Verkorte alias</name>
-            <derive>no</derive>
-            <desc>Verkorte alias is een korte naam, die uiteindelijk gekoppeld is aan een namespace in XML schema. 
-                In feite is het dus een technisch configuratie-element.</desc>
-            <stereotypes>
-                <stereo required="yes">stereotype-name-application-package</stereo>
-                <stereo required="no">stereotype-name-base-package</stereo>
-            </stereotypes>
+        
+        <tv id="VerkorteAlias">
+            <derive>yes</derive>
         </tv>
         
         <tv norm="space" id="FormeelPatroon">
