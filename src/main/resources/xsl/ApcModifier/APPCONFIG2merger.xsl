@@ -40,9 +40,8 @@
     <xsl:output encoding="UTF-8" method="xml" indent="yes"/>
     
     <xsl:variable name="imvert-appconfig-path" select="imf:get-config-string('properties','WORK_APPCONFIG_FILE')"/>
-    <xsl:variable name="imvert-appconfig-url" select="imf:filespec($imvert-appconfig-path)[2]"/>
     
-    <xsl:variable name="apc-document" select="imf:document($imvert-appconfig-url)/imvert-appconfig:appconfig"/>
+    <xsl:variable name="apc-document" select="imf:document($imvert-appconfig-path)/imvert-appconfig:appconfig"/>
     
     <xsl:variable name="apc-application-name" select="$apc-document/imvert-appconfig:application-name"/>
     <xsl:variable name="apc-application-version" select="$apc-document/imvert-appconfig:application-version"/>
