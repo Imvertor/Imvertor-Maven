@@ -45,7 +45,7 @@
                     <h1>Introduction</h1>
                     <div class="intro">
                         <p>
-                            Below is the complete listing of all profile info on the selected stylesheets.
+                            This is the complete listing of all profile info on the selected stylesheets.
                             The profile selected as a CLI parameter is: <xsl:value-of select="imf:get-config-string('cli','profilemode')"/>.
                         </p>
                         <p>
@@ -112,6 +112,8 @@
     <xsl:function name="imf:create-rows">
         <xsl:param name="fn-sequence"/>
         <xsl:for-each-group select="$fn-sequence" group-by="concat(@construct,': ', @name)">
+            <xsl:sort select="sum(current-group()/@t-sum-net)" order="descending"/>
+            
             <xsl:variable name="group" select="current-group()"/>
             <xsl:variable name="count" select="sum($group/@count)"/>
             <xsl:variable name="t-sum" select="sum($group/@t-sum)"/>

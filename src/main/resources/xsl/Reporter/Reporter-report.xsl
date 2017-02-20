@@ -43,7 +43,7 @@
     -->
     
     <xsl:variable name="doc-folder-path" select="imf:get-config-string('system','work-doc-folder-path')"/>
-    <xsl:variable name="doc-folder-url" select="imf:filespec($doc-folder-path)[2]"/>
+    <xsl:variable name="doc-folder-url" select="imf:filespec($doc-folder-path,'U')[2]"/>
 
     <xsl:template match="/config">
         
