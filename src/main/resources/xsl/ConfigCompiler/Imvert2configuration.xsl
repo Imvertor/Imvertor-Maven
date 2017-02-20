@@ -33,6 +33,7 @@
     -->
    
     <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="Imvert2configuration-speed-analyzer.xsl"/>
     
     <xsl:variable name="configuration-owner-file" select="imf:prepare-config(imf:document($configuration-owner-name,true()))"/>
     <xsl:variable name="configuration-metamodel-file" select="imf:prepare-config(imf:document($configuration-metamodel-name,true()))"/>
@@ -44,6 +45,8 @@
     <xsl:variable name="tvset-name" select="imf:get-normalized-name(imf:get-config-string('cli','tvset'),'system-name')"/>
     
     <xsl:template match="/">
+        
+        <!--<xsl:apply-templates select="/" mode="speed-analyzer"/>-->
        
         <xsl:variable name="config-raw">
             <config>
