@@ -30,22 +30,25 @@
     
     <!--
         
-	 * 1 P Path,
-	 * 2 U URL,
-	 * 3 N name (no extension),
-	 * 4 X extension,
-	 * 5 E E when exists, otherwise e.
+	 * Filespec is an array of strings. This holds info on the file, based on the requested info type, expressed as an Uppercase letter in options.
 	 * 
-	 * The following strings are added when the path exists:
+	 * 0 P Path,
+	 * 1 U URL,
+	 * 2 N name (no extension),
+	 * 3 X extension,
+	 * 4 E E when exists, otherwise e.
+	 * 
+	 * The following strings are added when the path exists: requires E parameter (this info is only extracted when E is tested):
 	 *  
-	 * 6 F when it is a file, otherwise f (it's a directory)
-	 * 7 H when it is hidden, otherwise h
-	 * 8 R when it can be read, otherwise r
-	 * 9 W when it can be written to, otherwise w
-	 * 10 C when it can be executed, otherwise c
-	 * 11 D the date & time in ISO format
-
-     * When an error occured, only 1 string is returned, the error message.
+	 * 5 F when it is a file, otherwise f (it's a directory)
+	 * 6 H when it is hidden, otherwise h
+	 * 7 R when it can be read, otherwise r
+	 * 8 W when it can be written to, otherwise w
+	 * 9 C when it can be executed, otherwise c
+	 * 10 D the date & time in ISO format
+	 *
+	 * When an error occurred, only 1 string is returned, the error message.
+	 * 
 	 
     -->
     
