@@ -236,9 +236,33 @@
     </xsl:function>
     <xsl:function name="imf:get-imvert-supplier-doc" as="document-node()?">
         <xsl:param name="subpath"/>
-        <!-- migration issue: when no supplier doc available yet, use the system doc, though this is a too rich representation. -->
-        <xsl:variable name="doc" select="imf:document(concat($output-folder,'/applications/',$subpath,'/etc/supplier.imvert.xml'),false())"/>
-        <xsl:sequence select="if (exists($doc)) then $doc else imf:get-imvert-system-doc($subpath)"/>
+        <?x
+            <!-- migration issue: when no supplier doc available yet, use the system doc, though this is a too rich representation. -->
+            <xsl:variable name="doc" select="imf:document(concat($output-folder,'/applications/',$subpath,'/etc/supplier.imvert.xml'),false())"/>
+            <xsl:sequence select="if (exists($doc)) then $doc else imf:get-imvert-system-doc($subpath)"/>
+        ?>
+        <xsl:sequence select="imf:get-imvert-system-doc($subpath)"/>
         
     </xsl:function>
+    
+    <!--
+        https://kinggemeenten.plan.io/issues/488594 
+        
+        Deze functie bepaalt per entiteit, relatie of attribuut wat zijn UGM van oorsprong is. 
+        Dat is dus de meest veraf gelegen supplier in de afleidingsketen. 
+
+    -->
+    <xsl:function name="imf:get-trace-supplier-for-construct" as="element(supplier)?">
+        <xsl:param name="client-construct" as="element()"/>
+        <xsl:param name="project-name" as="xs:string"/>
+        <xsl:variable name="suppliers" select="imf:get-trace-suppliers-for-construct-depth-first($client-construct,1)"/>
+        <xsl:variable name="project-suppliers" as="element(supplier)*">
+            <xsl:for-each select="$suppliers[@project = $project-name]">
+                <xsl:sort select="@level" order="descending"/>
+                <xsl:sequence select="."/>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:sequence select="$project-suppliers[1]"/>
+    </xsl:function>
+    
 </xsl:stylesheet>
