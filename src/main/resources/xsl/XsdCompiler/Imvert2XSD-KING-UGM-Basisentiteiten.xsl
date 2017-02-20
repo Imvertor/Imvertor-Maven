@@ -705,6 +705,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:association" mode="mode-global-association-type">
+        
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
         
         <xsl:variable name="source" select="ancestor::imvert:class"/>
