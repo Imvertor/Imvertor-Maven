@@ -94,6 +94,7 @@
      
                 <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-objecttype')]" mode="mode-global-objecttype"/>
                 <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-referentielijst')]" mode="mode-global-objecttype"/>
+                <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-relatieklasse')]" mode="mode-global-objecttype"/>
                 
                 <xsl:sequence select="imf:create-comment(' *** Declaratie van Associatietypen *** ')"/>
                 
@@ -103,10 +104,11 @@
                     <xsl:apply-templates select="current-group()[1]" mode="mode-global-association-type"/>
                 </xsl:for-each-group>
                 
-                <xsl:sequence select="imf:create-comment(' *** Declaratie van Kengegevens *** ')"/>
+                <xsl:sequence select="imf:create-comment(' *** Declaratie van Kerngegevens *** ')"/>
 
                 <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-objecttype')]" mode="mode-global-kerngegevens"/>
                 <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-referentielijst')]" mode="mode-global-kerngegevens"/>
+                <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-relatieklasse')]" mode="mode-global-kerngegevens"/>
                 
                 <xsl:sequence select="imf:create-comment(' *** Declaratie van gegevensgroeptypen *** ')"/>
                 
@@ -340,7 +342,6 @@
         <xsl:sequence select="imf:create-comment(concat('mode-global-gegevensgroeptype Groepsattribuutsoort # ',@display-name))"/>
         
         <xs:complexType name="{imf:capitalize($compiled-name)}-basis">
-            <xsl:sequence select="imf:create-annotation(.)"/>
             <xs:sequence minOccurs="0">
                 <xsl:sequence select="imf:create-comment('mode-global-gegevensgroeptype (Attributes)')"/>
                 <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-attribute"/>
@@ -369,7 +370,6 @@
             </xs:complexContent>
         </xs:complexType>
         <xs:complexType name="{imf:capitalize($compiled-name)}"> 
-            <xsl:sequence select="imf:create-annotation(.)"/>
             <xs:sequence minOccurs="0">
                 <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-attribute"/>
             </xs:sequence>
@@ -410,7 +410,6 @@
             </xs:complexContent>
         </xs:complexType>
         <xs:complexType name="{imf:capitalize($compiled-name)}"> 
-            <xsl:sequence select="imf:create-annotation(.)"/>
             <xs:sequence minOccurs="0">
                 <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-attribute"/>
             </xs:sequence>
@@ -446,7 +445,7 @@
             <xsl:variable name="type-is-datatype" select="$type/imvert:designation = 'datatype'"/>
             <xsl:variable name="type-is-complextype" select="$type-is-datatype and $type/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-complextype')"/>
             
-            <xsl:variable name="type-is-scalar-base" select="imvert:type-name = ('scalar-integer','scalar-decimal','scalar-boolean','scalar-uri')"/>
+            <xsl:variable name="type-is-scalar-non-emptyable" select="imvert:type-name = ('scalar-integer','scalar-decimal','scalar-boolean')"/>
             <xsl:variable name="type-is-scalar-empty" select="imvert:type-name = ('scalar-date','scalar-year','scalar-yearmonth','scalar-datetime','scalar-postcode')"/>
             <xsl:variable name="type-is-enumeration" select="imf:get-stereotype($type) = imf:get-config-stereotypes('stereotype-name-enumeration')"/>
             <xsl:variable name="type-is-union" select="imf:get-stereotype($type) = imf:get-config-stereotypes('stereotype-name-union')"/>
@@ -457,6 +456,8 @@
             <xsl:variable name="facet-pattern" select="imf:get-most-relevant-compiled-taggedvalue(.,'Formeel patroon')"/>
             <xsl:variable name="facet-minval" select="imf:get-most-relevant-compiled-taggedvalue(.,'Minimum waarde (inclusief)')"/>
             <xsl:variable name="facet-maxval" select="imf:get-most-relevant-compiled-taggedvalue(.,'Maximum waarde (inclusief)')"/>
+            
+            <xsl:variable name="facet-show" select="(exists($facet-length),exists($facet-pattern),exists($facet-minval),exists($facet-maxval))"/>
             
             <xsl:variable name="type-has-facets" select="exists(($facet-pattern, $facet-length, $facet-minval,$facet-maxval))"/>
             
@@ -512,7 +513,7 @@
                         maxOccurs="{$cardinality[4]}"
                         >
                         <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
-                        <xsl:if test="$type-is-scalar-base or $type-has-facets">
+                        <xsl:if test="$type-is-scalar-non-emptyable or $type-has-facets">
                             <xsl:attribute name="nillable">true</xsl:attribute>
                         </xsl:if>
                     </xs:element>
@@ -552,9 +553,13 @@
                         maxOccurs="{$cardinality[4]}"
                         >
                         <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
-                        <xsl:if test="$type-is-scalar-base or $type-has-facets">
+                        <xsl:if test="$type-is-scalar-non-emptyable or $type-has-facets">
                             <xsl:attribute name="nillable">true</xsl:attribute>
                         </xsl:if>
+                        <xsl:sequence select="imf:create-comment($facet-show[1])"/> 
+                        <xsl:sequence select="imf:create-comment($facet-show[2])"/> 
+                        <xsl:sequence select="imf:create-comment($facet-show[3])"/> 
+                        <xsl:sequence select="imf:create-comment($facet-show[4])"/> 
                     </xs:element>
                 </xsl:otherwise>
                 
@@ -766,11 +771,16 @@
                         <xs:element ref="{$StUF-prefix}:tijdvakRelatie" minOccurs="0"/>                        
                     </xsl:if>
                     
-                    <xs:element ref="{$StUF-prefix}:tijdvakGeldigheid" minOccurs="0"/>     
+                    <xsl:if test="exists($association-class)">
+                        <xs:element ref="{$StUF-prefix}:tijdvakGeldigheid" minOccurs="0"/>
+                    </xsl:if>
+                    
                     <xs:element ref="{$StUF-prefix}:tijdstipRegistratie" minOccurs="0"/>
 
-                    <xs:element ref="{$StUF-prefix}:extraElementen" minOccurs="0"/>
-                    <xs:element ref="{$StUF-prefix}:aanvullendeElementen" minOccurs="0"/>
+                    <xsl:if test="exists($association-class)">
+                        <xs:element ref="{$StUF-prefix}:extraElementen" minOccurs="0"/>
+                        <xs:element ref="{$StUF-prefix}:aanvullendeElementen" minOccurs="0"/>
+                    </xsl:if>
                     
                     <xsl:if test="exists($association-class) and exists($hismate-on-association-attributes)">
                         <xs:element name ="historieMaterieel" 
