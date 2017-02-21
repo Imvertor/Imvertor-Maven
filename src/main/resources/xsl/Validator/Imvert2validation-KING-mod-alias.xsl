@@ -45,7 +45,7 @@
         <xsl:next-match/>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')]">
+    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-objecttype','stereotype-name-referentielijst'))]">
         <!-- setup -->
         <xsl:variable name="alias" select="imvert:alias"/>
         
