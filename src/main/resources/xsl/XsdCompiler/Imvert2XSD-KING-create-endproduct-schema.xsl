@@ -5,6 +5,7 @@
 <xsl:stylesheet 
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:UML="omg.org/UML1.3" 
 	xmlns:imvert="http://www.imvertor.org/schema/system" 
 	xmlns:imf="http://www.imvertor.org/xsl/functions" 
@@ -33,7 +34,10 @@
 		<xsl:variable name="msg" select="'Creating the StUF XML-Schema'"/>
 		<xsl:sequence select="imf:msg('DEBUG',$msg)"/>
 		<xs:schema targetNamespace="{ep:namespace}" elementFormDefault="qualified" attributeFormDefault="unqualified" version="{concat(ep:patch-number,'-',ep:release)}">
-			<xsl:namespace name="{$prefix}"><xsl:value-of select="ep:namespace"/></xsl:namespace>
+			<xsl:for-each select="ep:namespaces/ep:namespace">
+				<xsl:namespace name="{@prefix}"><xsl:value-of select="."/></xsl:namespace>
+			</xsl:for-each>
+			<!--xsl:namespace name="{$prefix}"><xsl:value-of select="ep:namespace"/></xsl:namespace-->
 			<xs:import namespace="http://www.egem.nl/StUF/StUF0301" schemaLocation="stuf0301.xsd"/>
 			<xsl:apply-templates select="ep:message"/>
 			<xsl:apply-templates select="ep:construct[@type='group']" mode="complexType"/>
@@ -42,6 +46,7 @@
 			<xsl:sequence select="imf:create-debug-comment('simpleTypes to be extended with XML attributes',$debugging)"/>
 
 			<xsl:apply-templates select="//ep:construct[(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata]]" mode="createSimpleTypes"/>
+			<xsl:apply-templates select="ep:constructRef[@ismetadata]|ep:construct[@ismetadata]" mode="generateAttributes"/>
 		</xs:schema>
 	</xsl:template>
 
@@ -54,20 +59,21 @@
 			</xsl:if>
 			<xs:complexType>
 				<xsl:apply-templates select="ep:seq"/>
+				<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
 			</xs:complexType>
 		</xs:element>
 	</xsl:template>
 	
 	<xsl:template match="ep:seq">
-		<xsl:if test="ep:constructRef|ep:construct[not(@ismetadata)]|ep:seq|ep:choice">
+		<xsl:if test="ep:constructRef[not(@ismetadata)]|ep:construct[not(@ismetadata)]|ep:seq|ep:choice">
 			<xs:sequence>
-				<xsl:apply-templates select="ep:constructRef|ep:construct[not(@ismetadata)]|ep:seq|ep:choice"/>
+				<xsl:apply-templates select="ep:constructRef[not(@ismetadata)]|ep:construct[not(@ismetadata)]|ep:seq|ep:choice"/>
 			</xs:sequence>
 		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="ep:seq" mode="generateAttributes">
-		<xsl:apply-templates select="ep:construct[@ismetadata]" mode="generateAttributes"/>
+		<xsl:apply-templates select="ep:constructRef[@ismetadata]|ep:construct[@ismetadata]" mode="generateAttributes"/>
 	</xsl:template>
 
 	<xsl:template match="ep:choice">
@@ -92,6 +98,9 @@
 		<!-- ROME: Waar moet ep:regels naar vertaald worden? -->
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
 		<xs:element>
+			<xsl:if test="ep:voidable = 'Ja'">
+				<xsl:attribute name="nillable" select="'true'"/>
+			</xsl:if>
 			<xsl:choose>
 				<!--xsl:when test="contains(ep:tech-name,':')">
 					<xsl:attribute name="ref" select="ep:tech-name"/>
@@ -477,9 +486,111 @@
 	
 	<!-- ROME: Onderstaande template kan mogelijk komen te vervallen (integreren met de andere ep:construct templates). -->
 	<xsl:template match="ep:construct[@ismetadata='yes']" mode="generateAttributes">
-		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
 		<xsl:choose>
-			<!--xsl:when test="contains(ep:tech-name,':') and ep:tech-name!='StUF:entiteittype'"-->
+			<xsl:when test="parent::ep:message-set">
+				<xs:attribute name="{ep:tech-name}">
+					<xsl:choose>
+						<xsl:when test="ep:length or ep:max-length or ep:min-length or ep:min-value or ep:max-value or ep:fraction-digits or ep:enum or ep:formeel-patroon">
+							<xs:simpleType>
+								<xs:restriction>
+									<xsl:attribute name="base">
+										<xsl:choose>
+											<xsl:when test="ep:type-name = 'scalar-integer'">
+												<xsl:value-of select="'xs:integer'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-decimal'">
+												<xsl:value-of select="'xs:decimal'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-string'">
+												<xsl:value-of select="'xs:string'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-date'">
+												<xsl:value-of select="'xs:dateTime'"/>
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-boolean'">
+												<xsl:value-of select="'xs:boolean'"/>
+											</xsl:when>
+											<!-- Wat moet er met scalar-indic gebeuren? -->
+											<xsl:otherwise>
+												<xsl:value-of select="'xs:string'"/>								
+											</xsl:otherwise>
+											<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
+										</xsl:choose>
+									</xsl:attribute>
+									<xsl:if test="ep:length">
+										<xsl:choose>
+											<xsl:when test="ep:type-name = 'scalar-string'">
+												<xs:length value="{ep:length}" />
+											</xsl:when>
+											<xsl:when test="ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
+												<xs:totalDigits value="{ep:length}" />
+											</xsl:when>
+										</xsl:choose>
+									</xsl:if>
+									<xsl:if test="ep:max-length">
+										<xs:maxLength value="{ep:max-length}" />
+									</xsl:if>
+									<xsl:if test="ep:min-length">
+										<xs:minLength value="{ep:min-length}" />
+									</xsl:if>
+									<xsl:if test="ep:min-value and (ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-date')">
+										<xs:minInclusive value="{ep:min-value}" />
+									</xsl:if>
+									<xsl:if test="ep:max-value and (ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-date')">
+										<xs:maxInclusive value="{ep:max-value}" />
+									</xsl:if>
+									<xsl:if test="ep:fraction-digits">
+										<xs:fractionDigits value="{ep:fraction-digits}" />
+									</xsl:if>
+									<xsl:if test="ep:enum and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal')">
+										<xsl:apply-templates select="ep:enum"/>
+									</xsl:if>
+									<xsl:if test="ep:formeel-patroon and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-boolean')">
+										<xs:pattern value="{ep:formeel-patroon}" />
+									</xsl:if>				
+								</xs:restriction>
+							</xs:simpleType>						
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:attribute name="type">
+								<xsl:choose>
+									<xsl:when test="ep:type-name = 'scalar-integer'">
+										<xsl:value-of select="'xs:integer'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'scalar-decimal'">
+										<xsl:value-of select="'xs:decimal'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'scalar-string'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'scalar-date'">
+										<xsl:value-of select="'xs:dateTime'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name = 'scalar-boolean'">
+										<xsl:value-of select="'xs:boolean'"/>
+									</xsl:when>
+									<!-- Wat moet er met scalar-indic gebeuren? -->
+									<xsl:otherwise>
+										<xsl:value-of select="'xs:string'"/>								
+									</xsl:otherwise>
+									<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
+								</xsl:choose>							
+							</xsl:attribute>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xs:attribute>
+			</xsl:when>
+			<!--xsl:when test="ep:tech-name = 'entiteittype'">
+				<xs:attribute ref="{concat($prefix,':',ep:tech-name)}">
+					<xsl:attribute name="use">
+						<xsl:choose>
+							<xsl:when test="not(ep:min-occurs) or ep:min-occurs=1">required</xsl:when>
+							<xsl:otherwise>optional</xsl:otherwise>
+						</xsl:choose>
+					</xsl:attribute>
+					<xsl:attribute name="fixed" select="ep:enum"/>
+				</xs:attribute>
+			</xsl:when-->
 			<xsl:when test="not(ep:href) and @prefix">
 				<xs:attribute ref="{concat(@prefix,':',ep:tech-name)}">
 					<xsl:attribute name="use">
@@ -570,6 +681,20 @@
 				</xs:attribute>				
 			</xsl:otherwise>
 		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template match="ep:constructRef[@ismetadata='yes']" mode="generateAttributes">
+		<xs:attribute ref="{concat(@prefix,':',ep:href)}">
+			<xsl:attribute name="use">
+				<xsl:choose>
+					<xsl:when test="not(ep:min-occurs) or ep:min-occurs=1">required</xsl:when>
+					<xsl:otherwise>optional</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
+			<xsl:if test="ep:enum">
+				<xsl:attribute name="fixed" select="ep:enum"/>
+			</xsl:if>
+		</xs:attribute>
 	</xsl:template>
 	
 	<xsl:template match="ep:enum">
