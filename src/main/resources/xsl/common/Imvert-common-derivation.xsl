@@ -145,7 +145,8 @@
 		<xsl:param name="this" as="element()"/>
 		<xsl:param name="tv-name" as="xs:string"/>
 		<xsl:variable name="tvs" select="imf:get-applicable-tagged-values($this)"/>
-		<xsl:value-of select="$tvs[@name=$tv-name]/@value"/>
+		<xsl:variable name="val" select="$tvs[@name=$tv-name]/@value"/>
+		<xsl:sequence select="if (exists($val)) then string($val) else ()"/>
 	</xsl:function>
 	
 	<!-- This function gets the most relevant value of a specific tagged-value. The one which is in the current layer or 
