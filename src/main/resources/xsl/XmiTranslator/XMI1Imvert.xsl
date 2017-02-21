@@ -927,12 +927,12 @@
             <xsl:param name="this" as="node()"/>
             <xsl:param name="default" as="xs:string"/>
         <xsl:variable name="positions" select="imf:get-tagged-values($this,'position')"/>
-        <xsl:value-of select="
-            if ($this/self::UML:Generalization and $positions[1]) then $positions[1] else
-            if ($this/self::UML:Association and $positions[1]) then $positions[1] else
-            if ($positions[2]) then $positions[2] 
-            else $default
-        "/>
+        <xsl:value-of select="normalize-space(
+                if ($this/self::UML:Generalization and $positions[1]) then $positions[1] else
+                if ($this/self::UML:Association and $positions[1]) then $positions[1] else
+                if ($positions[2]) then $positions[2] 
+                else $default
+        )"/>
     </xsl:function> 
     
     <xsl:function name="imf:get-custom-value" as="xs:string?">
