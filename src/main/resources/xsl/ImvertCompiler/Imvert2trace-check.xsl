@@ -60,7 +60,7 @@
                 <xsl:variable name="subpath" select="imf:get-trace-supplier-subpath(imvert:project, imvert:application, imvert:release)"/>
                 <xsl:variable name="errors" select="xs:integer((imvert:process/imvert:errors,0)[1])"/>
                 <xsl:variable name="warnings" select="xs:integer((imvert:process/imvert:warnings,0)[1])"/>
-                <xsl:variable name="phase" select="(imvert:phase,0)[1]"/>
+                <xsl:variable name="phase" select="(imvert:phase,'0')[1]"/>
                 
                 <xsl:sequence select="imf:report-warning($application, 
                     $errors != 0,
