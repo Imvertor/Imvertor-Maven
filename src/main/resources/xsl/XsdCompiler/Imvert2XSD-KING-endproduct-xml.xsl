@@ -140,11 +140,15 @@
                        Ik denk van niet, eerder zal de onderstaande lijst met namespaces uitgebreid moeten worden door per package deze op te halen. -->
             <ep:namespaces>
                 <ep:namespace prefix="StUF">http://www.egem.nl/StUF/StUF0301</ep:namespace>
+                <ep:namespace prefix="xsi">http://www.w3.org/2001/XMLSchema-instance</ep:namespace>
                 <ep:namespace prefix="{$prefix}"><xsl:value-of select="$packages/imvert:base-namespace"/></ep:namespace>
             </ep:namespaces>
             
             <xsl:if test="$debugging">
-                <!--xsl:sequence select="$enriched-endproduct-base-config-excel"/-->
+                <!--xsl:variable name="xml-path" select="imf:serializeExcel($endproduct-base-config-excel,concat($workfolder-path,'/excel.xml'),$excel-97-dtd-path)"/>
+                <xsl:variable name="xml-doc" select="imf:document($xml-path, true())"/>
+                <xsl:sequence select="$xml-doc"/-->
+                <xsl:sequence select="$enriched-endproduct-base-config-excel"/>
                 <xsl:sequence select="$rough-messages"/>
                 <xsl:sequence select="$enriched-rough-messages"/>
             </xsl:if>
@@ -208,6 +212,19 @@
                 </xsl:for-each>
 
            <xsl:apply-templates select="$enriched-rough-messages/ep:rough-messages/ep:rough-message"/>
+            
+            <ep:construct prefix="{$prefix}" ismetadata="yes">
+                <ep:name>Entiteittype</ep:name>
+                <ep:tech-name>Entiteittype</ep:tech-name>
+                <ep:type-name>scalar-string</ep:type-name>
+            </ep:construct>
+            
+            <ep:construct prefix="{$prefix}" ismetadata="yes">
+                <ep:name>Patch</ep:name>
+                <ep:tech-name>Patch</ep:tech-name>
+                <ep:type-name>scalar-integer</ep:type-name>
+                <ep:min-value>0</ep:min-value>
+            </ep:construct>
 
         </ep:message-set>
      </xsl:variable>
@@ -653,7 +670,7 @@
                                    <ep:position>145</ep:position>
                                    <ep:seq>
                                        <xsl:variable name="attributes"
-                                           select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no')"/>									
+                                           select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, $id, '')"/>									
                                        <xsl:sequence select="$attributes"/>
                                    </ep:seq>
                                </ep:construct>
@@ -669,7 +686,7 @@
                                    <ep:position>150</ep:position>
                                    <ep:seq>
                                        <xsl:variable name="attributes"
-                                           select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no')"/>									
+                                           select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, $id, '')"/>									
                                        <xsl:sequence select="$attributes"/>
                                    </ep:seq>
                                </ep:construct>
@@ -788,7 +805,7 @@
                                            <ep:position>145</ep:position>
                                            <ep:seq>
                                                <xsl:variable name="attributes"
-                                                   select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no')"/>									
+                                                   select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, $id, '')"/>									
                                                <xsl:sequence select="$attributes"/>
                                            </ep:seq>
                                        </ep:construct>
@@ -806,7 +823,7 @@
                                            <ep:position>150</ep:position>
                                            <ep:seq>
                                                <xsl:variable name="attributes"
-                                                   select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no')"/>									
+                                                   select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, $id, '')"/>									
                                                <xsl:sequence select="$attributes"/>
                                            </ep:seq>
                                        </ep:construct>
@@ -927,7 +944,7 @@
                                     		XML-attribute 'StUF:indOnvolledigeDatum'. -->
                                        <xsl:sequence select="imf:create-debug-comment(concat('Attributes voor ',$typeCode,', berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $alias),$debugging)"/>
                                        <xsl:variable name="attributes"
-                                           select="imf:createAttributes($typeCode, substring($berichtCode,1,2), $context, 'no', $alias, 'no','no')" />
+                                           select="imf:createAttributes($typeCode, substring($berichtCode,1,2), $context, 'no', $alias, 'no','no', $prefix, $id, '')" />
                                        <xsl:sequence select="$attributes" />
                                    </ep:seq>
                                </xsl:otherwise>
@@ -1658,7 +1675,7 @@
 					Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook 
 					nog herleid en doorgegeven worden. -->
                         <xsl:variable name="attributes"
-                            select="imf:createAttributes('relatie', substring($berichtCode, 1, 2), $context, 'no', $alias, $mogelijkGeenWaarde, 'no')"/>
+                            select="imf:createAttributes('relatie', substring($berichtCode, 1, 2), $context, 'no', $alias, $mogelijkGeenWaarde, 'no', $prefix, $id, '')"/>
                         <xsl:sequence select="$attributes"/>
                     </xsl:if>
                 </ep:seq>
