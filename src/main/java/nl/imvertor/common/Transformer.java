@@ -47,7 +47,6 @@ import net.sf.saxon.s9api.XdmAtomicValue;
 import net.sf.saxon.s9api.XsltCompiler;
 import net.sf.saxon.s9api.XsltExecutable;
 import net.sf.saxon.s9api.XsltTransformer;
-import net.sf.saxon.trace.TimingTraceListener;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.value.StringValue;
 import nl.imvertor.common.file.AnyFile;
@@ -58,6 +57,7 @@ import nl.imvertor.common.trace.XmlTimingTraceListener;
 import nl.imvertor.common.xsl.extensions.ImvertorFileSpec;
 import nl.imvertor.common.xsl.extensions.ImvertorParameterFile;
 import nl.imvertor.common.xsl.extensions.ImvertorTrack;
+import nl.imvertor.common.xsl.extensions.expath.ImvertorExpathWrite;
 
 /**
  * This class represents a Saxon based transformer. 
@@ -109,6 +109,7 @@ public class Transformer {
 		setExtensionFunction(new ImvertorFileSpec());
 		setExtensionFunction(new ImvertorParameterFile());
 		setExtensionFunction(new ImvertorTrack());
+		setExtensionFunction(new ImvertorExpathWrite());
 	}
 	
 	public void setProfiled(Boolean profiled) {
