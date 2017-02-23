@@ -41,11 +41,9 @@
             <xsl:apply-templates select="$document-packages[imvert:name/@original=$application-package-name and imvert:stereotype=$root-package]" mode="package-dependencies"/>
        
             <xsl:variable name="suppliers" select="imf:analyze-supplier-docs(.)"/>
-            <!-- avoid duplicates, several models mat reference the same supplier -->
+            <!-- avoid duplicates, several models may reference the same supplier -->
             <xsl:for-each-group select="$suppliers" group-by="@subpath">
-                <imvert:supplier-contents subpath="{current-grouping-key()}">
-                    <!--<xsl:sequence select="imf:get-imvert-supplier-doc(current-grouping-key())"/>-->
-                </imvert:supplier-contents>
+                <xsl:sequence select="current-group()[1]"/>
             </xsl:for-each-group>
             
         </imvert:package-dependencies>
@@ -73,7 +71,9 @@
             <xsl:variable name="supplier-doc" select="imf:get-imvert-supplier-doc($subpath)"/>
             <xsl:choose>
                 <xsl:when test="exists($supplier-doc)">
-                    <imvert:supplier-contents subpath="{$subpath}"/>
+                    <imvert:supplier-contents subpath="{$subpath}">
+                        <xsl:sequence select="$supplier-doc"/>
+                    </imvert:supplier-contents>
                     <xsl:sequence select="imf:analyze-supplier-docs($supplier-doc/imvert:packages)"/>
                 </xsl:when>
                 <xsl:otherwise>

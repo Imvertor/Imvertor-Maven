@@ -74,6 +74,8 @@
         <frag key="day" value="{substring($application-package-release,7,2)}"/>
     </xsl:variable>
     
+    <xsl:variable name="debug-work-folder-path" select="imf:get-config-string('system','work-debug-folder-path')"/>
+    
     <xsl:function name="imf:create-output-element" as="element()?">
         <xsl:param name="name" as="xs:string"/>
         <xsl:param name="content" as="item()*"/>
@@ -356,7 +358,7 @@
         <xsl:param name="root" as="node()*"/>
         <xsl:for-each select="$root">
             <xsl:variable name="selected-root" select="."/>
-            <xsl:sequence select="if ($selected-root instance of document-node()) then imf:key-imvert-construct-by-id($id,$selected-root) else $selected-root/descendant-or-self::*[imvert:id=$id]"/>
+            <xsl:sequence select="if ($selected-root instance of document-node()) then imf:key-imvert-construct-by-id($id,$selected-root) else imf:search-imvert-construct-by-id($id,$selected-root)"/>
         </xsl:for-each>
     </xsl:function>
     
@@ -490,6 +492,35 @@
         <xsl:if test="$debugging">
             <xsl:sequence select="imf:track($text)"/>
         </xsl:if>
+    </xsl:function>
+    
+    <!-- 
+        Debug level is some string designating the type of debug level for this file. Typically the name of a stylesheet from which this function is called.
+        
+        File-name is a name (not a path) for the file.
+        
+        Any-content may be any content; all results are written in a <debug-result> wrapper.
+    -->    
+    <xsl:function name="imf:create-debug-file">
+        <xsl:param name="debug-level" as="xs:string"/>
+        <xsl:param name="file-name" as="xs:string"/>
+        <xsl:param name="any-contents" as="item()*"/>
+        <xsl:if test="$debugging">
+            <xsl:variable name="file-path" select="concat($debug-work-folder-path,'\',$debug-level,'_',$file-name)"/>
+            <xsl:sequence select="imf:create-file($file-path,$any-contents)"/>
+        </xsl:if>
+    </xsl:function>
+    
+    <xsl:function name="imf:create-file">
+        <xsl:param name="file-path" as="xs:string"/>
+        <xsl:param name="any-contents" as="item()*"/>
+        <xsl:variable name="xml-content">
+            <debug-result date="{current-dateTime()}">
+                <xsl:sequence select="$any-contents"/>
+            </debug-result>
+        </xsl:variable>
+        <xsl:sequence select="imf:expath-write($file-path,$xml-content)"/>
+
     </xsl:function>
     
         <!-- compile a header for imvert file; only packages are processed after this part -->
@@ -700,7 +731,7 @@
     <xsl:function name="imf:document" as="document-node()?">
         <xsl:param name="uri-or-path" as="xs:string"/>
         <xsl:param name="assume-existing" as="xs:boolean"/>
-        
+
         <xsl:variable name="is-local-uri" select="matches($uri-or-path,'^file:.*$')"/>
         <xsl:variable name="is-local-absolute-path" select="matches($uri-or-path,'^(/|(.:)).*$')"/>
         <xsl:variable name="is-global-uri" select="matches($uri-or-path,'^https?:.*$')"/>

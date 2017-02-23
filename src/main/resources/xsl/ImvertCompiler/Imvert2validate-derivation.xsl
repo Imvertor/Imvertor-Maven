@@ -263,7 +263,7 @@
         <!-- bepaal waar de applicatie waarin de supplier voorkomt als imvert file beschikbaar is -->
         <xsl:variable name="supplier-application" select="root($supplier)/imvert:packages"/>
         <xsl:variable name="supplier-doc-subpath" select="imf:get-trace-supplier-subpath($supplier-application/imvert:project,$supplier-application/imvert:application,$supplier-application/imvert:release)"/>
-        <xsl:variable name="supplier-doc" select="imf:get-trace-supplier-document($supplier-doc-subpath)"/>
+        <xsl:variable name="supplier-doc" select="imf:get-trace-supplier-application($supplier-doc-subpath)"/>
         
         <xsl:variable name="client-defining-class" select="imf:get-construct-by-id($client/imvert:type-id)"/>
         <xsl:variable name="supplier-defining-class" select="imf:get-construct-by-id($supplier/imvert:type-id,$supplier-doc)"/>

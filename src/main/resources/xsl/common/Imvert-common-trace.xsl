@@ -18,7 +18,8 @@
     <xsl:variable name="application-package-subpath" select="imf:get-trace-supplier-subpath($project-name,$application-package-name,$application-package-release)"/>
     
     <xsl:variable name="all-derived-models-path" select="imf:get-config-string('properties','WORK_DEPENDENCIES_FILE',())"/>
-    <xsl:variable name="all-derived-models" select="imf:document($all-derived-models-path,false())/imvert:package-dependencies/imvert:supplier-contents"/>
+    <xsl:variable name="all-derived-models-doc" select="imf:document($all-derived-models-path,false())"/>
+    <xsl:variable name="all-derived-models" select="$all-derived-models-doc/imvert:package-dependencies/imvert:supplier-contents"/>
     
     <xsl:function name="imf:get-construct-formal-trace-name" as="xs:string">
         <xsl:param name="this" as="element()"/>
@@ -57,10 +58,14 @@
     <xsl:function name="imf:get-trace-suppliers-for-construct" as="element(supplier)*">
         <xsl:param name="client-construct" as="element()"/>
         <xsl:param name="level" as="xs:integer"/>
-        <xsl:variable name="suppliers" select="imf:get-trace-suppliers-for-construct-depth-first($client-construct,$level)"/>
-        <xsl:for-each-group select="$suppliers" group-by="@id">
-            <xsl:sequence select="current-group()[1]"/>
-        </xsl:for-each-group>
+        
+        <xsl:variable name="suppliers" as="element(supplier)*">
+            <xsl:for-each-group select="imf:get-trace-suppliers-for-construct-depth-first($client-construct,1,())" group-by="@id">
+                <xsl:sequence select="current-group()[1]"/>
+            </xsl:for-each-group>
+        </xsl:variable>
+        <!--<xsl:sequence select="imf:create-file(concat('c:\temp\data\',local-name($client-construct),'-',$client-construct/imvert:id,'-',generate-id($client-construct),'.xml'),($level, $suppliers,$client-construct))"/>-->
+        <xsl:sequence select="$suppliers"/>
     </xsl:function>
     <!--
         This returns all suppliers found in depth first fashion, therefore not undoubled.
@@ -68,35 +73,11 @@
     <xsl:function name="imf:get-trace-suppliers-for-construct-depth-first" as="element(supplier)*">
         <xsl:param name="client-construct" as="element()"/>
         <xsl:param name="level" as="xs:integer"/>
-
-        <xsl:if test="$level = 1">
-            <!-- return at least the info on this construct -->
-            <xsl:variable name="client-project" select="root($client-construct)/imvert:packages/imvert:project"/>
-            <xsl:variable name="client-name" select="root($client-construct)/imvert:packages/imvert:application"/>
-            <xsl:variable name="client-release" select="root($client-construct)/imvert:packages/imvert:release"/>
-            
-            <xsl:variable name="client-subpath" select="imf:get-subpath($client-project,$client-name,$client-release)"/>
-            
-            <xsl:variable name="type" select="
-                if ($client-construct/../../imvert:designation = 'enumeration') then 'enumeration'
-                else 
-                if ($client-construct/imvert:aggregation = 'composite') then 'composition'
-                else local-name($client-construct)
-                "/>
-            <xsl:variable name="display-name" select="$client-construct/(@display-name,imvert:name)[1]"/>
-            
-            <supplier>
-                <xsl:attribute name="id" select="$client-construct/imvert:id"/>
-                <xsl:attribute name="project" select="$client-project"/>
-                <xsl:attribute name="application" select="$client-name"/>
-                <xsl:attribute name="release" select="$client-release"/>
-                <xsl:attribute name="level" select="$level"/>
-                <!-- pass on info on this construct for optimization; see trace report for use. -->
-                <xsl:attribute name="subpath" select="$client-subpath"/>
-                <xsl:attribute name="type" select="$type"/>
-                <xsl:attribute name="display-name" select="$display-name"/>
-            </supplier>
-        </xsl:if>
+        <xsl:param name="passed-hits" as="xs:string*"/>
+        
+        <xsl:variable name="hits" select="($passed-hits,$client-construct/imvert:id)"/>
+      
+        <xsl:sequence select="imf:get-client-info($client-construct,$level)"/>
         
         <!-- 
             there may be multiple suppliers; if so, trace all though the supplier hierarchy to find the traced construct by ID 
@@ -109,61 +90,83 @@
             <xsl:variable name="supplier-name" select="imvert:supplier-name"/>
             <xsl:variable name="supplier-release" select="imvert:supplier-release"/>
             
-            <xsl:variable name="level" select="$level + 1"/>
-            
             <xsl:variable name="subpath" select="imf:get-trace-supplier-subpath($supplier-project,$supplier-name,$supplier-release)"/>
-            <xsl:variable name="supplier-doc" select="imf:get-trace-supplier-document($subpath)"/>
+            <xsl:variable name="supplier-application" select="imf:get-trace-supplier-application($subpath)"/>
           
-            <xsl:for-each select="$client-construct/imvert:trace">
-                
-                <xsl:variable name="trace-id" select="."/>   
-                <xsl:variable name="supplier-constructs" select="imf:get-trace-construct-by-id(..,$trace-id,$supplier-doc)"/>
-                <!-- several constructs with same ID are copy-down constructs: assume for trace purposes all are the same -->
-                <xsl:variable name="supplier-construct" select="$supplier-constructs[1]"/>
-                
-                <xsl:variable name="type" select="
-                    if ($supplier-construct/../../imvert:designation = 'enumeration') then 'enumeration'
-                    else 
-                        if ($supplier-construct/imvert:aggregation = 'composite') then 'composition'
-                        else local-name($supplier-construct)
-                    "/>
-                <xsl:variable name="display-name" select="$supplier-construct/@display-name"/>
-                
-                <xsl:choose>
-                    <xsl:when test="empty($supplier-project)">
-                        <xsl:sequence select="imf:msg(..,'ERROR','No supplier project specified')"/>
-                    </xsl:when>
-                    <xsl:when test="empty($supplier-name)">
-                        <xsl:sequence select="imf:msg(..,'ERROR','No supplier name specified')"/>
-                    </xsl:when>
-                    <xsl:when test="empty($supplier-release)">
-                        <xsl:sequence select="imf:msg(..,'ERROR','No supplier release specified')"/>
-                    </xsl:when>
-                    <xsl:when test="empty($supplier-doc)">
-                        <xsl:sequence select="imf:msg(..,'ERROR','No supplier document found for project [1], application [2] at release [3]',($supplier-project,$supplier-name,$supplier-release))"/>
-                    </xsl:when>
-                    <xsl:when test="empty($supplier-construct)">
-                        <!-- doesnt exists there -->
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <supplier>
-                            <xsl:attribute name="id" select="$trace-id"/>
-                            <xsl:attribute name="project" select="$supplier-project"/>
-                            <xsl:attribute name="application" select="$supplier-name"/>
-                            <xsl:attribute name="release" select="$supplier-release"/>
-                            <xsl:attribute name="level" select="$level"/>
-                            <!-- pass on info on this construct for optimization; see trace report for use. -->
-                            <xsl:attribute name="subpath" select="$subpath"/>
-                            <xsl:attribute name="type" select="$type"/>
-                            <xsl:attribute name="display-name" select="$display-name"/>
-                        </supplier>
-                        <xsl:sequence select="imf:get-trace-suppliers-for-construct($supplier-construct,$level + 1)"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-
-            </xsl:for-each>
-        </xsl:for-each>
+            <xsl:choose>
+                <xsl:when test="empty($supplier-project)">
+                    <xsl:sequence select="imf:msg(..,'ERROR','No supplier project specified')"/>
+                </xsl:when>
+                <xsl:when test="empty($supplier-name)">
+                    <xsl:sequence select="imf:msg(..,'ERROR','No supplier name specified')"/>
+                </xsl:when>
+                <xsl:when test="empty($supplier-release)">
+                    <xsl:sequence select="imf:msg(..,'ERROR','No supplier release specified')"/>
+                </xsl:when>
+                <xsl:when test="empty($supplier-application)">
+                    <xsl:sequence select="imf:msg(..,'ERROR','No supplier document found for project [1], application [2] at release [3]',($supplier-project,$supplier-name,$supplier-release))"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:for-each select="$client-construct/imvert:trace">
+                        
+                        <xsl:variable name="trace-id" select="string(.)"/>   
+                        <xsl:if test="not($trace-id = $hits)">
+                            <xsl:variable name="supplier-constructs" select="imf:get-trace-construct-by-id(..,$trace-id,$all-derived-models-doc)"/>
+                            <!-- several constructs with same ID are copy-down constructs: assume for trace purposes all are the same -->
+                            <xsl:variable name="supplier-construct" select="$supplier-constructs[1]"/>
+                            
+                            <xsl:choose>
+                                <xsl:when test="exists($supplier-construct)">
+                                    <xsl:sequence select="imf:get-trace-suppliers-for-construct-depth-first($supplier-construct,$level + 1,$hits)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <!-- doesnt exists there -->
+                                    <xsl:sequence select="imf:msg(..,'ERROR','Trace cannot be resolved: [1]', $trace-id)"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:if>
+                        
+                    </xsl:for-each>
+                </xsl:otherwise>
+            </xsl:choose>
             
+         </xsl:for-each>
+            
+    </xsl:function>
+    
+    <!-- return a wrapper <supplier> for the construct passed -->
+    
+    <xsl:function name="imf:get-client-info" as="element(supplier)">
+        <xsl:param name="client-construct" as="element()"/>
+        <xsl:param name="level" as="xs:integer"/>
+        
+        <!-- return at least the info on this construct -->
+        <xsl:variable name="client-application" select="$client-construct/ancestor::imvert:packages[1]"/>
+        <xsl:variable name="client-project" select="$client-application/imvert:project"/>
+        <xsl:variable name="client-name" select="$client-application/imvert:application"/>
+        <xsl:variable name="client-release" select="$client-application/imvert:release"/>
+        
+        <xsl:variable name="client-subpath" select="imf:get-subpath($client-project,$client-name,$client-release)"/>
+        
+        <xsl:variable name="type" select="
+            if ($client-construct/../../imvert:designation = 'enumeration') then 'enumeration'
+            else 
+            if ($client-construct/imvert:aggregation = 'composite') then 'composition'
+            else local-name($client-construct)
+            "/>
+        <xsl:variable name="display-name" select="$client-construct/(@display-name,imvert:name)[1]"/>
+        
+        <supplier>
+            <xsl:attribute name="id" select="$client-construct/imvert:id"/>
+            <xsl:attribute name="project" select="$client-project"/>
+            <xsl:attribute name="application" select="$client-name"/>
+            <xsl:attribute name="release" select="$client-release"/>
+            <xsl:attribute name="level" select="$level"/>
+            <xsl:attribute name="subpath" select="$client-subpath"/>
+            <xsl:attribute name="type" select="$type"/>
+            <xsl:attribute name="display-name" select="$display-name"/>
+        </supplier>
+        
     </xsl:function>
     
     <!-- 
@@ -178,8 +181,8 @@
             Else get the application document in the managed output folder
         -->
         <xsl:variable name="supplier-subpath" select="imf:get-trace-supplier-subpath($supplier/@project,$supplier/@application,$supplier/@release)"/>
-        <xsl:variable name="supplier-doc" select="if ($supplier-subpath eq $application-package-subpath) then $imvert-document else imf:get-trace-supplier-document($supplier-subpath)"/>
-        <xsl:variable name="construct" select="imf:get-construct-by-id($supplier/@id,$supplier-doc)"/>
+        <xsl:variable name="supplier-packages" select="if ($supplier-subpath eq $application-package-subpath) then $imvert-document/* else imf:get-trace-supplier-application($supplier-subpath)"/>
+        <xsl:variable name="construct" select="imf:get-construct-by-id($supplier/@id,root($supplier-packages))"/>
         <?x <xsl:variable name="construct" select="imf:get-construct-by-id($supplier/@id,$supplier-doc)"/>  x?>
         <!--TODO copy-down introduces two identical ID's, should not occur! -->
         <xsl:sequence select="$construct[1]"/>
@@ -189,11 +192,9 @@
         Return the supplier document for the supplier subpath passed.
         Returns () when some info is missing.
     -->
-    <xsl:function name="imf:get-trace-supplier-document" as="document-node()?">
+    <xsl:function name="imf:get-trace-supplier-application" as="element(imvert:packages)?">
         <xsl:param name="supplier-subpath" as="xs:string?"/>
-        <xsl:if test="exists($all-derived-models[@subpath=$supplier-subpath])">
-            <xsl:sequence select="imf:get-imvert-supplier-doc($supplier-subpath)"/>
-        </xsl:if>
+        <xsl:sequence select="$all-derived-models[@subpath=$supplier-subpath]/imvert:packages"/>
     </xsl:function>
     
     <xsl:function name="imf:get-trace-supplier-subpath" as="xs:string">
@@ -222,8 +223,8 @@
                 <!-- more than one when for this application there are multiple supplier packages --> 
                 <!-- get the supplier, and see it that has supplier  itself -->
                 <xsl:variable name="subpath" select="imf:get-trace-supplier-subpath(imvert:supplier-project,imvert:supplier-name,imvert:supplier-release)"/>
-                <xsl:variable name="doc" select="imf:get-trace-supplier-document($subpath)/imvert:packages"/>
-                <xsl:sequence select="imf:get-trace-all-supplier-subpaths($doc)"/>               
+                <xsl:variable name="supplier-application" select="imf:get-trace-supplier-application($subpath)"/>
+                <xsl:sequence select="imf:get-trace-all-supplier-subpaths($supplier-application)"/>               
             </xsl:for-each>
         </xsl:variable>
         <!-- avoid duplicates -->
@@ -255,7 +256,7 @@
     <xsl:function name="imf:get-trace-supplier-for-construct" as="element(supplier)?">
         <xsl:param name="client-construct" as="element()"/>
         <xsl:param name="project-name" as="xs:string"/>
-        <xsl:variable name="suppliers" select="imf:get-trace-suppliers-for-construct-depth-first($client-construct,1)"/>
+        <xsl:variable name="suppliers" select="imf:get-trace-suppliers-for-construct-depth-first($client-construct,1,())"/>
         <xsl:variable name="project-suppliers" as="element(supplier)*">
             <xsl:for-each select="$suppliers[@project = $project-name]">
                 <xsl:sort select="@level" order="descending"/>

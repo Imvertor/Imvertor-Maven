@@ -47,6 +47,13 @@
         <xsl:sequence select="imf:key-imvert('key-imvert-construct-by-id',$id, if (exists($root-document)) then $root-document else $key-current-root)"/>
     </xsl:function>
     
+    <!-- define access using search, funtionally equivalent to key but slower -->
+    <xsl:function name="imf:search-imvert-construct-by-id">
+        <xsl:param name="id"/>
+        <xsl:param name="root-element" as="node()?"/>
+        <xsl:sequence select="$root-element/descendant-or-self::*[imvert:id=$id]"/>
+    </xsl:function>
+    
     <xsl:function name="imf:key-imvert" as="node()*">
         <xsl:param name="key-name" as="xs:string"/>
         <xsl:param name="id" as="xs:string"/>

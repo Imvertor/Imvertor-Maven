@@ -38,7 +38,7 @@
     
     <!-- get all imvert:packages elements that represent a supplier for this package -->
     <xsl:variable name="suppliers" select="/imvert:packages/imvert:supplier"/>
-    <xsl:variable name="supplier-packages" select="for $supplier in $suppliers return imf:get-trace-supplier-document(imf:get-trace-supplier-subpath($supplier))"/>
+    <xsl:variable name="supplier-packages" select="for $supplier in $suppliers return imf:get-trace-supplier-application(imf:get-trace-supplier-subpath($supplier))"/>
     <xsl:variable name="supplier-subpaths" select="string-join(for $s in ($supplier-packages) return imf:get-trace-supplier-subpath($s/imvert:project, $s/imvert:application, $s/imvert:release),', ')"/>
     
     <xsl:template match="/">
@@ -56,7 +56,7 @@
                     <xsl:value-of select="'Not traced and not checked'"/>
                 </xsl:otherwise>
             </xsl:choose>
-            <xsl:for-each select="$supplier-packages/imvert:packages">
+            <xsl:for-each select="$supplier-packages">
                 <xsl:variable name="subpath" select="imf:get-trace-supplier-subpath(imvert:project, imvert:application, imvert:release)"/>
                 <xsl:variable name="errors" select="xs:integer((imvert:process/imvert:errors,0)[1])"/>
                 <xsl:variable name="warnings" select="xs:integer((imvert:process/imvert:warnings,0)[1])"/>
@@ -96,7 +96,7 @@
         <xsl:variable name="is-derived" select="imf:boolean(ancestor::imvert:package[1]/imvert:derived)"/>
         <xsl:for-each select="$this/imvert:trace[$is-derived]">
             <xsl:variable name="trace-id" select="."/>        
-            <xsl:variable name="trace-construct" select="imf:get-trace-construct-by-id(..,$trace-id,$supplier-packages)"/>        
+            <xsl:variable name="trace-construct" select="imf:get-trace-construct-by-id(..,$trace-id,$all-derived-models-doc)"/>        
             
             <xsl:sequence select="imf:report-warning($this, 
                 $validate-trace-full and empty($trace-id),
