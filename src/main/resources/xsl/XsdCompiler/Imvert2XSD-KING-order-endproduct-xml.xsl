@@ -28,12 +28,51 @@
     <xsl:output indent="yes" method="xml" encoding="UTF-8"/>
     
     <xsl:variable name="stylesheet">Imvert2XSD-KING-ordered-endproduct-xml</xsl:variable>
-    <xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-ordered-endproduct-xml.xsl 7487 2016-04-02 07:27:03Z arjan $</xsl:variable>  
+    <xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-ordered-endproduct-xml.xsl 7487 2016-04-02 07:27:03Z arjan $</xsl:variable> 
+    
+    <xsl:variable name="kv-prefix" select="/ep:message-set/ep:namespace-prefix"/>
     
     <xsl:template match="/">      
-        <xsl:apply-templates/>
+        <ep:message-sets>
+            <xsl:apply-templates select="ep:message-set"/>
+        </ep:message-sets>
     </xsl:template>
     
+    <xsl:template match="ep:message-set">
+        <xsl:for-each-group select="ep:*[name() = 'ep:message' or name() = 'ep:construct']" group-by="@prefix">
+            <xsl:variable name="groupPrefix" select="current-grouping-key()"/>
+            <xsl:variable name="groupNamespaceId" select="../ep:construct[@prefix = $groupPrefix and @namespaceId][1]/@namespaceId"/>
+            <ep:message-set prefix="{$groupPrefix}">
+                <xsl:choose>
+                    <xsl:when test="$groupPrefix = $kv-prefix">
+                        <xsl:comment select="'Dit is het KV namespace'"/>
+                        <xsl:apply-templates select="../ep:*[name() != 'ep:message' and name() != 'ep:construct']"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:sequence select="imf:create-output-element('ep:name', upper-case($groupPrefix))"/>
+                        <xsl:sequence select="imf:create-output-element('ep:namespace-prefix', $groupPrefix)"/>                       
+                        <xsl:sequence select="imf:create-output-element('ep:namespace', $groupNamespaceId)"/>
+                        <ep:namespaces>
+                            <xsl:apply-templates select="../ep:namespaces/ep:namespace[@prefix != $kv-prefix]"/>  
+                        </ep:namespaces>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:apply-templates select="current-group()"/>  
+                <ep:construct prefix="{$groupPrefix}" ismetadata="yes">
+                    <ep:name>Entiteittype</ep:name>
+                    <ep:tech-name>Entiteittype</ep:tech-name>
+                    <ep:type-name>scalar-string</ep:type-name>
+                </ep:construct>
+                <ep:construct prefix="{$groupPrefix}" ismetadata="yes">
+                    <ep:name>Patch</ep:name>
+                    <ep:tech-name>Patch</ep:tech-name>
+                    <ep:type-name>scalar-integer</ep:type-name>
+                    <ep:min-value>0</ep:min-value>
+                </ep:construct>
+            </ep:message-set>
+        </xsl:for-each-group>
+    </xsl:template>
+
     <xsl:template match="ep:tv-position"/>
     
     <xsl:template match="*">

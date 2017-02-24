@@ -19,6 +19,23 @@
 	<xsl:variable name="stylesheet">Imvert2XSD-KING-create-endproduct-rough-structure</xsl:variable>
 	<xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-create-endproduct-rough-structure.xsl 1
 		2016-12-01 13:32:00Z RobertMelskens $</xsl:variable>
+
+	<xsl:variable name="verkorteAlias" select="/imvert:packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='Verkorte alias']"/>
+	<xsl:variable name="namespaceIdentifier" select="/imvert:packages/imvert:base-namespace"/>
+	
+	<xsl:variable name="prefix" as="xs:string">
+		<xsl:choose>
+			<xsl:when test="not(empty($verkorteAlias))">
+				<xsl:value-of select="$verkorteAlias/imvert:value"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$prefix"/>
+				<!--xsl:value-of select="TODO"/>
+				<xsl:variable name="msg" select="'You have not provided a short alias. Define the tagged value &quot;Verkorte alias&quot; on the package with the stereotyp &quot;Koppelvlak&quot;.'" as="xs:string"/>
+				<xsl:sequence select="imf:msg('WARN',$msg)"/-->
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 	
 	<xsl:key name="associations" match="imvert:association" use="imvert:type-id"/>
 	
@@ -81,6 +98,8 @@
 				<xsl:sequence select="imf:create-output-element('ep:code', $berichtCode)"/>
 				<xsl:sequence select="imf:create-output-element('ep:id', imvert:id)"/>
 				<xsl:sequence select="imf:create-output-element('ep:fundamentalMnemonic', $fundamentalMnemonic)"/>
+
+				<xsl:sequence select="imf:create-output-element('ep:verkorteAlias', $prefix)"/>
 				<!-- Start of the message is always a class with an imvert:stereotype 
 					with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE', 'KENNISGEVINGBERICHTTYPE', 'SYNCHRONISATIEBERICHTTYPE'
 					or 'VRIJ BERICHTTYPE'. Since the toplevel structure of a message complies to different rules in comparison with 
@@ -167,6 +186,10 @@
 					<xsl:with-param name="id-trail" select="concat('#1#', imvert:id, '#')"/>
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 				</xsl:apply-templates>
+				
+				<xsl:sequence select="imf:create-debug-comment('Attribute1',$debugging)"/>
+				<xsl:apply-templates select="imvert:attributes/imvert:attribute"/>
+				
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:apply-templates
@@ -192,6 +215,10 @@
 					mode="create-toplevel-rough-message-structure">
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 				</xsl:apply-templates>
+				
+				<xsl:sequence select="imf:create-debug-comment('Attribute2',$debugging)"/>
+				<xsl:apply-templates select="imvert:attributes/imvert:attribute"/>
+				
 			</xsl:otherwise>
 		</xsl:choose>
 		
@@ -280,6 +307,7 @@
 							</xsl:choose>
 						</xsl:with-param>                                      						
 					</xsl:apply-templates>
+					
 				</xsl:if>
 			</xsl:when>
 			<!-- The following when initiates the processing of the associations refering to the current class as a superclass.
@@ -295,12 +323,27 @@
 								select="imf:create-output-element('ep:tech-name', imvert:name)"/>
 							<xsl:sequence
 								select="imf:create-output-element('ep:id', imvert:id)"/>
-							<xsl:apply-templates select="." mode="create-rough-message-content">
+
+							<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
+							<xsl:variable name="subpath" select="$supplier/@subpath"/>
+							<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
+
+							<xsl:sequence
+								select="imf:create-output-element('ep:verkorteAlias', imf:getVerkorteAlias($UGM))"/>
+							<xsl:sequence
+								select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
+							
+
+							<xsl:apply-templates select=".[name() != 'imvert:attributes']" mode="create-rough-message-content">
 								<xsl:with-param name="proces-type" select="'associationsRelatie'"/>
 								<xsl:with-param name="id-trail" select="$id-trail"/>
 								<xsl:with-param name="berichtCode" select="$berichtCode"/>
 								<xsl:with-param name="context" select="$context"/>
 							</xsl:apply-templates>
+							
+							<xsl:sequence select="imf:create-debug-comment('Attribute4',$debugging)"/>
+							<xsl:apply-templates select="imvert:attributes/imvert:attribute"/>
+							
 						</ep:construct>
 					</xsl:for-each>
 				</ep:choice>
@@ -338,6 +381,10 @@
 							<xsl:with-param name="berichtCode" select="$berichtCode"/>
 							<xsl:with-param name="context" select="$context"/>
 						</xsl:apply-templates>
+						
+						<xsl:sequence select="imf:create-debug-comment('Attribute5',$debugging)"/>
+						<xsl:apply-templates select="imvert:attributes/imvert:attribute"/>
+						
 					</xsl:when>
 				</xsl:choose>
 			</xsl:when>
@@ -490,6 +537,27 @@
 						<xsl:sequence select="imf:create-output-element('ep:id', imvert:id)"/>
 					</xsl:otherwise>
 				</xsl:choose>
+				
+				<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
+				<xsl:variable name="subpath" select="$supplier/@subpath"/>
+				<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
+
+				<xsl:sequence
+					select="imf:create-output-element('ep:verkorteAlias', imf:getVerkorteAlias($UGM))"/>
+				<xsl:sequence
+					select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
+				
+				<xsl:variable name="gerelateerde" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
+				<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct($gerelateerde,'UGM')"/>
+				<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
+				<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
+
+				<xsl:sequence
+					select="imf:create-output-element('ep:verkorteAliasGerelateerdeEntiteit', imf:getVerkorteAlias($UGMgerelateerde))"/>
+				<xsl:sequence
+					select="imf:create-output-element('ep:namespaceIdentifierGerelateerdeEntiteit', imf:getNamespaceIdentifier($UGMgerelateerde))"/>
+				
+				
 				<xsl:call-template name="createRoughRelatiePartOfAssociation">
 					<xsl:with-param name="type-id" select="$type-id"/>
 					<xsl:with-param name="id" select="imvert:id"/>
@@ -560,8 +628,30 @@
 			<xsl:sequence select="imf:create-output-element('ep:name', imvert:name/@original)"/>
 			<xsl:sequence select="imf:create-output-element('ep:origin-id', imvert:id)"/>
 			<xsl:sequence select="imf:create-output-element('ep:id', imvert:type-id)"/>
+			
+			<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
+			<xsl:variable name="subpath" select="$supplier/@subpath"/>
+			<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
+
+			<xsl:sequence
+				select="imf:create-output-element('ep:verkorteAlias', imf:getVerkorteAlias($UGM))"/>
+			<xsl:sequence
+				select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
+			
 			<xsl:choose>
 				<xsl:when test="imvert:stereotype = 'ENTITEITRELATIE'">
+					
+					<xsl:variable name="gerelateerde" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
+					<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
+					<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
+					<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
+
+					<xsl:sequence
+						select="imf:create-output-element('ep:verkorteAliasGerelateerdeEntiteit', imf:getVerkorteAlias($UGMgerelateerde))"/>
+					<xsl:sequence
+						select="imf:create-output-element('ep:namespaceIdentifierGerelateerdeEntiteit', imf:getNamespaceIdentifier($UGMgerelateerde))"/>
+					
+
 					<xsl:apply-templates select="." mode="create-rough-message-content">
 						<!-- The 'id-trail' parameter has been introduced to be able to prevent 
 							recursive processing of classes. If the parser runs into an id already present 
@@ -573,6 +663,17 @@
 					</xsl:apply-templates>
 				</xsl:when>
 				<xsl:when test="imvert:stereotype = 'BERICHTRELATIE'">
+					
+					<xsl:variable name="gerelateerde" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
+					<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
+					<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
+					<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
+
+					<xsl:sequence
+						select="imf:create-output-element('ep:verkorteAliasGerelateerdeEntiteit', imf:getVerkorteAlias($UGMgerelateerde))"/>
+					<xsl:sequence
+						select="imf:create-output-element('ep:namespaceIdentifierGerelateerdeEntiteit', imf:getNamespaceIdentifier($UGMgerelateerde))"/>
+					
 					<xsl:apply-templates
 						select="$construct[imvert:stereotype = imf:get-config-stereotypes((
 							'stereotype-name-vraagberichttype',
@@ -736,6 +837,23 @@
 		<xsl:sequence select="imf:create-debug-comment('Template8: imvert:association-class[mode=create-rough-message-content] End',$debugging)"/>
 	</xsl:template>
 
+	<xsl:template match="imvert:attribute">
+		<ep:attribute>
+			<xsl:sequence
+				select="imf:create-output-element('ep:name', imvert:name/@original)"/>
+			
+			<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
+			<xsl:variable name="subpath" select="$supplier/@subpath"/>
+			<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
+
+			<xsl:sequence
+				select="imf:create-output-element('ep:verkorteAlias', imf:getVerkorteAlias($UGM))"/>
+			<xsl:sequence
+				select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
+			
+		</ep:attribute>
+	</xsl:template>
+
 	<xsl:template name="createRoughEntityConstruct">
 		<xsl:param name="id-trail"/>
 		<xsl:param name="berichtCode"/>
@@ -803,6 +921,29 @@
 			</xsl:choose>
 			<xsl:sequence select="imf:create-output-element('ep:origin-id', imvert:id)"/>
 			<xsl:sequence select="imf:create-output-element('ep:id', imvert:type-id)"/>
+			
+			<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
+			<xsl:variable name="subpath" select="$supplier/@subpath"/>
+			<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
+
+			<xsl:sequence
+				select="imf:create-output-element('ep:verkorteAlias', imf:getVerkorteAlias($UGM))"/>
+			<xsl:sequence
+				select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
+			
+			<xsl:if test="$typeCode = 'entiteitrelatie' or $typeCode = 'berichtrelatie' or $typeCode = 'toplevel' or $typeCode = ''">
+				<xsl:variable name="gerelateerde" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
+				<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
+				<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
+				<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
+
+				<xsl:sequence
+					select="imf:create-output-element('ep:verkorteAliasGerelateerdeEntiteit', imf:getVerkorteAlias($UGMgerelateerde))"/>
+				<xsl:sequence
+					select="imf:create-output-element('ep:namespaceIdentifierGerelateerdeEntiteit', imf:getNamespaceIdentifier($UGMgerelateerde))"/>
+
+			</xsl:if>
+			
 			<xsl:variable name="class-id" select="imvert:type-id"/>
 			<xsl:sequence
 				select="imf:create-output-element('ep:class-name', imf:get-construct-by-id($class-id,$packages-doc)/ep:name)"/>
@@ -879,10 +1020,26 @@
 					<ep:tech-name>gerelateerde</ep:tech-name>
 					<xsl:sequence select="imf:create-output-element('ep:origin-id', $id)"/>
 					<xsl:sequence select="imf:create-output-element('ep:id', $type-id)"/>
-				
-				
-					<xsl:sequence select="imf:create-debug-comment('ROBERT',$debugging)"/>
 					
+					<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
+					<xsl:variable name="subpath" select="$supplier/@subpath"/>
+					<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
+
+					<xsl:sequence
+						select="imf:create-output-element('ep:verkorteAlias', imf:getVerkorteAlias($UGM))"/>
+					<xsl:sequence
+						select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
+					
+
+					<xsl:variable name="gerelateerde" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
+					<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct($gerelateerde,'UGM')"/>
+					<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
+					<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
+
+					<xsl:sequence
+						select="imf:create-output-element('ep:verkorteAliasGerelateerdeEntiteit', imf:getVerkorteAlias($UGMgerelateerde))"/>
+					<xsl:sequence
+						select="imf:create-output-element('ep:namespaceIdentifierGerelateerdeEntiteit', imf:getNamespaceIdentifier($UGMgerelateerde))"/>
 					
 					<xsl:sequence
 						select="imf:create-output-element('ep:class-name', key('class',$type-id)/imvert:name)"/>
@@ -972,4 +1129,40 @@
 
 	<!-- ======= End block of templates used to create the message structure. ======= -->
 
+	<xsl:function name="imf:getVerkorteAlias" as="xs:string">
+		<xsl:param name="UGM"/>
+
+		<xsl:variable name="verkorteAlias" select="$UGM/imvert:packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='Verkorte alias']"/>
+		<xsl:choose>
+			<xsl:when test="not(empty($verkorteAlias))">
+				<xsl:value-of select="$verkorteAlias/imvert:value"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$prefix"/>
+				<!--xsl:value-of select="TODO"/>
+									<xsl:variable name="msg" select="concat('You have not provided a short alias for the UGM application: ',$supplier/@application,'. Define the tagged value &quot;Verkorte alias&quot; on the package with the stereotyp &quot;Koppelvlak&quot;.')" as="xs:string"/>
+									<xsl:sequence select="imf:msg('WARN',$msg)"/-->
+			</xsl:otherwise>
+		</xsl:choose>
+
+	</xsl:function>
+
+	<xsl:function name="imf:getNamespaceIdentifier" as="xs:string">
+		<xsl:param name="UGM"/>
+		
+		<xsl:variable name="namespaceId" select="$UGM/imvert:packages/imvert:base-namespace"/>
+		<xsl:choose>
+			<xsl:when test="not(empty($namespaceId))">
+				<xsl:value-of select="$namespaceId"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$namespaceIdentifier"/>
+				<!--xsl:value-of select="TODO"/>
+									<xsl:variable name="msg" select="concat('You have not provided a short alias for the UGM application: ',$supplier/@application,'. Define the tagged value &quot;Verkorte alias&quot; on the package with the stereotyp &quot;Koppelvlak&quot;.')" as="xs:string"/>
+									<xsl:sequence select="imf:msg('WARN',$msg)"/-->
+			</xsl:otherwise>
+		</xsl:choose>
+
+		
+	</xsl:function>
 </xsl:stylesheet>

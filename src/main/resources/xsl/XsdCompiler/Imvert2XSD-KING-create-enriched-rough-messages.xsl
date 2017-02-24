@@ -20,6 +20,8 @@
 	<xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-create-enriched-rough-messages.xsl 1
 		2016-12-01 13:33:00Z RobertMelskens $</xsl:variable>
 	
+	<xsl:variable name="kv-prefix" select="ep:rough-messages/ep:namespace-prefix"/>
+	
 	<xsl:template match="ep:rough-messages" mode="enrich-rough-messages">
 		<xsl:copy>
 			<xsl:apply-templates select="ep:rough-message" mode="enrich-rough-messages"/>
@@ -199,9 +201,9 @@
 				</xsl:when>
 			</xsl:choose>
 			<xsl:if test="count(ancestor::ep:construct[@type='entity']) >= 1">
-				<xsl:comment select="concat('Count: ',count(ancestor::ep:construct[@type='entity']),' berichtCode: ',$berichtCode)"/>
+				<xsl:sequence select="imf:create-debug-comment(concat('Count: ',count(ancestor::ep:construct[@type='entity']),' berichtCode: ',$berichtCode),$debugging)"/>
 			</xsl:if>
-			<xsl:apply-templates select="*[name()!= 'ep:construct' and name()!= 'ep:choice']"  mode="enrich-rough-messages"/>
+			<xsl:apply-templates select="*[name()!= 'ep:construct' and name()!= 'ep:choice' and name()!='ep:attribute']"  mode="enrich-rough-messages"/>
 			<xsl:apply-templates select="ep:construct | ep:choice" mode="enrich-rough-messages">
 				<xsl:with-param name="berichtCode" select="$berichtCode"/>
 			</xsl:apply-templates>
@@ -210,12 +212,37 @@
 
 	<xsl:template match="ep:choice" mode="enrich-rough-messages">
 		<xsl:param name="berichtCode"/>
-		<xsl:comment select="' ROME'"/>
 		<xsl:copy>
 			<xsl:apply-templates select="ep:construct" mode="enrich-rough-messages">
 				<xsl:with-param name="berichtCode" select="$berichtCode"/>
 			</xsl:apply-templates>
 		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="ep:verkorteAliasGerelateerdeEntiteit" mode="enrich-rough-messages">
+		<ep:verkorteAliasGerelateerdeEntiteit>
+			<xsl:choose>
+				<xsl:when test="..//ep:verkorteAlias = $prefix">
+					<xsl:value-of select="$prefix"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="."/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</ep:verkorteAliasGerelateerdeEntiteit>
+	</xsl:template>
+	
+	<xsl:template match="ep:namespaceIdentifierGerelateerdeEntiteit" mode="enrich-rough-messages">
+		<ep:namespaceIdentifierGerelateerdeEntiteit>
+			<xsl:choose>
+				<xsl:when test="..//ep:verkorteAlias = $prefix">
+					<xsl:value-of select="$packages-doc/imvert:packages/imvert:base-namespace"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="."/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</ep:namespaceIdentifierGerelateerdeEntiteit>
 	</xsl:template>
 	
 	<xsl:function name="imf:create-verwerkingsModus">
