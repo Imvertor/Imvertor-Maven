@@ -50,12 +50,12 @@
                         </p>
                         <p>
                             Total time for all transformations registered by profiler is: 
-                            <xsl:value-of select="imf:format($total-xsl)"/>  milliseconds
+                            <xsl:value-of select="imf:format($total-xsl)"/>  seconds
                             of an overall runtime of 
-                            <xsl:value-of select="imf:format($total-run)"/> milliseconds (excluding windup).
+                            <xsl:value-of select="imf:format($total-run)"/> seconds (excluding windup).
                         </p>
                         <p>
-                            All times are in msec.
+                            <b>All times in the listing below are in milliseconds.</b>
                         </p>
                         <p>
                             In order to understand the most time consuming parts of the transformation process, look at the number of calls to a routine, in combination with the net time for that routine.
@@ -101,7 +101,7 @@
     <!-- pass nanoseconds, return milliseconds with 3 decimals -->
     <xsl:function name="imf:format">
         <xsl:param name="n"/>
-        <xsl:value-of select="format-number($n div 1000000,'######.###','us')"/>
+        <xsl:value-of select="format-number($n div 1000000,'#####0.###','us')"/>
     </xsl:function>
     
     <xsl:function name="imf:get-display-file-name">
