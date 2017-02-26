@@ -375,6 +375,9 @@
                 <xsl:when test="$client/self::imvert:attribute">
                     <xsl:value-of select="$supplier-id"/>  <!-- {xxx} becomes {xxx} -->
                 </xsl:when>
+                <xsl:when test="$client/self::imvert:association and starts-with($supplier-id,'EAID_')">
+                    <xsl:value-of select="$supplier-id"/>  <!-- EAID_xxx becomes EAID_xxx ; already transformed in earlier stage -->
+                </xsl:when>
                 <xsl:when test="$client/self::imvert:association">
                     <xsl:value-of select="concat('EAID_',replace(substring($supplier-id,2,string-length($supplier-id) - 2),'-','_'))"/> <!-- {xx-x} becomes EAID_xx_x -->
                 </xsl:when>

@@ -79,7 +79,7 @@
     <xsl:function name="imf:get-supplier" as="element()?">
         <xsl:param name="supplier-doc" as="document-node()?"/>
         <xsl:param name="formal-name" as="xs:string?"/>
-        <xsl:sequence select="($supplier-doc//imvert:*[@formal-name = $formal-name])[1]"/>
+        <xsl:sequence select="($supplier-doc//imvert:*[exists(imvert:id) and @formal-name = $formal-name])[1]"/>
     </xsl:function>
     
     <xsl:template match="*">
