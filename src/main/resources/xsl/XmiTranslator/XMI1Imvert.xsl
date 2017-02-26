@@ -55,25 +55,39 @@
     <xsl:variable 
         name="extension-connectors" 
         select="$xmi-document//xmi:Extension/connectors/connector"/>
+    
     <xsl:variable 
         name="document-thecustomprofile" 
         select="$xmi-document//thecustomprofile:*"/>
     <xsl:variable 
         name="document-EAUML" 
-        select="$xmi-document//EAUML:*"/>
+        select="$xmi-document//EAUML:*"
+        as="element()*"/>
     
     <xsl:variable 
         name="document-packages" 
-        select="$xmi-document//UML:Package"/>
+        select="$xmi-document//UML:Package"
+        as="element(UML:Package)*"/>
     <xsl:variable 
-        name="document-elements" 
-        select="$xmi-document//element"/>
-    <xsl:variable 
-        name="document-connectors" 
-        select="$xmi-document//connector"/>
+        name="document-classes" 
+        select="$xmi-document//UML:Class"
+        as="element(UML:Class)*"/>
     <xsl:variable 
         name="document-attributes" 
-        select="$xmi-document//attribute"/>
+        select="$xmi-document//UML:Attribute"
+        as="element(UML:Attribute)*"/>
+    <xsl:variable 
+        name="document-associations" 
+        select="$xmi-document//UML:Association"
+        as="element(UML:Association)*"/>
+    <xsl:variable 
+        name="document-classifier-roles" 
+        select="$xmi-document//UML:ClassifierRole"
+        as="element(UML:ClassifierRole)*"/>
+    <xsl:variable 
+        name="document-generalizations" 
+        select="$xmi-document//UML:Generalization"
+        as="element(UML:Generalization)*"/>
 
     <xsl:key name="key-construct-by-id" match="//*[@xmi.id]" use="@xmi.id"/>
     <xsl:key name="key-construct-by-idref" match="//*[@xmi:idref]" use="@xmi:idref"/>
@@ -1020,7 +1034,6 @@
     <xsl:variable name="document-generalizations-merge" select="//UML:Generalization[imf:get-stereotypes(.)=imf:get-config-stereotypes('stereotype-name-variant-merge')]"/>
     <xsl:variable name="document-generalizations-copy-down" select="//UML:Generalization[imf:get-stereotypes(.)=imf:get-config-stereotypes('stereotype-name-static-generalization')]"/>
     <xsl:variable name="document-generalizations-type" select="//UML:Generalization except $document-generalizations-merge"/>
-    <xsl:variable name="document-associations" select="//UML:Association"/>
     <xsl:key name="key-document-associations-type" 
         match="//UML:Association" 
         use="UML:Association.connection/UML:AssociationEnd[UML:ModelElement.taggedValue/UML:TaggedValue[@tag='ea_end' and @value='source']]/@type"/>
@@ -1033,7 +1046,7 @@
     
     <!-- tagged values $ea_xref_property zijn complexe strings; deze worden voor gemakkelijke herkenning omgezet naar een interne XML struktuur -->
     <xsl:variable name="parsed-xref-properties" as="node()*">
-        <xsl:for-each select="$content//UML:Package | $content//UML:Class | $content//UML:Attribute | $content//UML:Association | $content//UML:ClassifierRole | $content//UML:Generalization">
+        <xsl:for-each select="$document-packages | $document-classes | $document-attributes | $document-associations | $document-classifier-roles | $document-generalizations">
             <xsl:variable name="my-property" select="UML:ModelElement.taggedValue/UML:TaggedValue[@tag='$ea_xref_property'][1]"/> <!-- use the first; bug in EA, may be multiple, see "Problem when exporting XML 1.2" dd 20161025 -->
             <xsl:variable name="dst-property" select="UML:ModelElement.taggedValue/UML:TaggedValue[@tag='$ea_dst_xref_property'][1]"/>
             <xsl:variable name="src-property" select="UML:ModelElement.taggedValue/UML:TaggedValue[@tag='$ea_src_xref_property'][1]"/>
@@ -1182,7 +1195,7 @@
         <xsl:variable name="role" select="imf:element-by-id(concat('EAID_',substring($this/@xmi.id,6)))"/>
         <xsl:variable name="id" select="concat('EAID_', substring($this/@xmi.id,6))"/>
         <!-- classifier role may also be identified through package2 tagged value. Take any classifier role with package2 is same as the ID -->
-        <xsl:variable name="croles" select="$content//UML:ClassifierRole[UML:ModelElement.taggedValue/UML:TaggedValue[@tag='package2' and @value=$id]]"/>
+        <xsl:variable name="croles" select="$document-classifier-roles[UML:ModelElement.taggedValue/UML:TaggedValue[@tag='package2' and @value=$id]]"/>
         <xsl:sequence select="if (exists($role)) then $role else $croles"/>
     </xsl:function>
     
