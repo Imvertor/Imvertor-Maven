@@ -10,7 +10,6 @@
 	xmlns:imvert="http://www.imvertor.org/schema/system" 
 	xmlns:imf="http://www.imvertor.org/xsl/functions" 
 	xmlns:imvert-result="http://www.imvertor.org/schema/imvertor/application/v20160201" 
-	xmlns:BG="http://www.egem.nl/StUF/sector/bg/0310" 
 	xmlns:metadata="http://www.kinggemeenten.nl/metadataVoorVerwerking" 
 	xmlns:ztc="http://www.kinggemeenten.nl/ztc0310" 
 	xmlns:StUF="http://www.egem.nl/StUF/StUF0301" 
@@ -31,21 +30,39 @@
 	<xsl:variable name="prefix" select="ep:message-set/ep:namespace-prefix"/>
 
 	<xsl:template match="ep:message-set">
+		<xsl:variable name="message-set-prefix" select="ep:namespace-prefix"/>
+		<xsl:variable name="message-set-namespaceIdentifier" select="ep:namespace"/>
 		<xsl:variable name="msg" select="'Creating the StUF XML-Schema'"/>
 		<xsl:sequence select="imf:msg('DEBUG',$msg)"/>
-		<xs:schema targetNamespace="{ep:namespace}" elementFormDefault="qualified" attributeFormDefault="unqualified" version="{concat(ep:patch-number,'-',ep:release)}">
+		<xs:schema targetNamespace="{$message-set-namespaceIdentifier}" elementFormDefault="qualified" attributeFormDefault="unqualified" version="{concat(ep:patch-number,'-',ep:release)}">
 			<xsl:for-each select="ep:namespaces/ep:namespace">
 				<xsl:namespace name="{@prefix}"><xsl:value-of select="."/></xsl:namespace>
 			</xsl:for-each>
-			<!--xsl:namespace name="{$prefix}"><xsl:value-of select="ep:namespace"/></xsl:namespace-->
+			<xsl:variable name="namespaces2bImported">
+				<ep:namespaces>
+				<xsl:for-each select=".//ep:constructRef[not(@prefix)]">
+					<xsl:variable name="href" select="ep:href"/>
+					<ep:namespace identifier="{//ep:construct[ep:tech-name = $href]/@namespaceId}" prefix="{//ep:construct[ep:tech-name = $href]/@prefix}"/>
+				</xsl:for-each>
+				</ep:namespaces>
+			</xsl:variable>
+
+			<xsl:for-each select="$namespaces2bImported/ep:namespaces/ep:namespace">
+				<xsl:namespace name="{@prefix}"><xsl:value-of select="@identifier"/></xsl:namespace>
+			</xsl:for-each>
+
 			<xs:import namespace="http://www.egem.nl/StUF/StUF0301" schemaLocation="stuf0301.xsd"/>
+			<xsl:for-each select="$namespaces2bImported/ep:namespaces/ep:namespace[@prefix != $message-set-prefix and not(@prefix = preceding-sibling::ep:namespace/@prefix)]">
+				<xs:import namespace="{@identifier}" schemaLocation="{concat(upper-case(@prefix),'.xsd')}"/>
+			</xsl:for-each>
+
 			<xsl:apply-templates select="ep:message"/>
 			<xsl:apply-templates select="ep:construct[@type='group']" mode="complexType"/>
 			<xsl:apply-templates select="ep:construct[not(@type)]" mode="complexType"/>
 
 			<xsl:sequence select="imf:create-debug-comment('simpleTypes to be extended with XML attributes',$debugging)"/>
 
-			<xsl:apply-templates select="//ep:construct[(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata]]" mode="createSimpleTypes"/>
+			<xsl:apply-templates select=".//ep:construct[(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata]]" mode="createSimpleTypes"/>
 			<xsl:apply-templates select="ep:constructRef[@ismetadata]|ep:construct[@ismetadata]" mode="generateAttributes"/>
 		</xs:schema>
 	</xsl:template>
@@ -80,18 +97,6 @@
 		<xs:choice>
 			<xsl:apply-templates select="ep:constructRef|ep:construct[not(@ismetadata)]|ep:seq"/>
 		</xs:choice>
-		<!-- ROME: de vraag is of de volgende if geactiveerd moet worden. -->
-		<!-- If a choice is created as a result of a relation associated with supertype the choice also gets a mnemonic.
-			 This mnemnonic is used to create an entiteittype attribute. -->
-		<!--xsl:if test="ep:mnemonic">
-			<xs:attribute name="entiteittype" use="required">
-				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="{ep:mnemonic}"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
-		</xsl:if-->
 	</xsl:template>
 	
 	<xsl:template match="ep:construct">
@@ -102,16 +107,6 @@
 				<xsl:attribute name="nillable" select="'true'"/>
 			</xsl:if>
 			<xsl:choose>
-				<!--xsl:when test="contains(ep:tech-name,':')">
-					<xsl:attribute name="ref" select="ep:tech-name"/>
-					<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
-					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
-					<xsl:if test="ep:documentation">
-						<xs:annotation>
-							<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
-						</xs:annotation>
-					</xsl:if>
-				</xsl:when-->
 				<xsl:when test="contains(ep:type-name,':') and not(ep:enum)">
 					<xsl:attribute name="name" select="ep:tech-name"/>
 					<xsl:attribute name="type" select="ep:type-name"/>
@@ -128,7 +123,7 @@
 				<xsl:when test="contains(ep:type-name,':') and ep:enum">
 					<xsl:attribute name="name" select="ep:tech-name"/>
 					<xsl:attribute name="type">
-						<xsl:value-of select="concat($prefix,':',imf:get-normalized-name(concat('simpleType-',ep:tech-name,'-',generate-id()),'type-name'))"/>
+						<xsl:value-of select="concat(ancestor::ep:message-set/@prefix,':',imf:get-normalized-name(concat('simpleType-',ep:tech-name,'-',generate-id()),'type-name'))"/>
 					</xsl:attribute>
 					<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
 					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>					
@@ -157,7 +152,7 @@
 							<xs:complexType>
 								<xs:simpleContent>
 									<xs:extension>
-										<xsl:attribute name="base" select="concat($prefix,':',imf:get-normalized-name(concat('simpleType-',ep:tech-name,'-',generate-id()),'type-name'))"/>
+										<xsl:attribute name="base" select="concat(ancestor::ep:message-set/@prefix,':',imf:get-normalized-name(concat('simpleType-',ep:tech-name,'-',generate-id()),'type-name'))"/>
 										<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
 									</xs:extension>						
 								</xs:simpleContent>	
@@ -375,7 +370,15 @@
 				<xsl:choose>
 					<xsl:when test="ep:href">
 						<xsl:attribute name="name" select="ep:tech-name"/>
-						<xsl:attribute name="type" select="concat($prefix,':',ep:href)"/>					
+						<xsl:variable name="actualPrefix">
+							<xsl:choose>
+								<xsl:when test="@prefix"><xsl:value-of select="@prefix"/></xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="//ep:construct[ep:tech-name = $href]/@prefix"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						<xsl:attribute name="type" select="concat($actualPrefix,':',ep:href)"/>					
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:attribute name="ref" select="concat(@prefix,':',ep:tech-name)"/>
@@ -580,19 +583,14 @@
 					</xsl:choose>
 				</xs:attribute>
 			</xsl:when>
-			<!--xsl:when test="ep:tech-name = 'entiteittype'">
-				<xs:attribute ref="{concat($prefix,':',ep:tech-name)}">
-					<xsl:attribute name="use">
-						<xsl:choose>
-							<xsl:when test="not(ep:min-occurs) or ep:min-occurs=1">required</xsl:when>
-							<xsl:otherwise>optional</xsl:otherwise>
-						</xsl:choose>
-					</xsl:attribute>
-					<xsl:attribute name="fixed" select="ep:enum"/>
-				</xs:attribute>
-			</xsl:when-->
 			<xsl:when test="not(ep:href) and @prefix">
-				<xs:attribute ref="{concat(@prefix,':',ep:tech-name)}">
+				<xsl:variable name="actualPrefix">
+					<xsl:choose>
+						<xsl:when test="@prefix = '$actualPrefix'"><xsl:value-of select="ancestor::ep:message-set/@prefix"/></xsl:when>
+						<xsl:otherwise><xsl:value-of select="@prefix"/></xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xs:attribute ref="{concat($actualPrefix,':',ep:tech-name)}">
 					<xsl:attribute name="use">
 						<xsl:choose>
 							<xsl:when test="not(ep:min-occurs) or ep:min-occurs=1">required</xsl:when>
@@ -684,7 +682,13 @@
 	</xsl:template>
 	
 	<xsl:template match="ep:constructRef[@ismetadata='yes']" mode="generateAttributes">
-		<xs:attribute ref="{concat(@prefix,':',ep:href)}">
+		<xsl:variable name="actualPrefix">
+			<xsl:choose>
+				<xsl:when test="@prefix = '$actualPrefix'"><xsl:value-of select="ancestor::ep:message-set/@prefix"/></xsl:when>
+				<xsl:otherwise><xsl:value-of select="@prefix"/></xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xs:attribute ref="{concat($actualPrefix,':',ep:href)}">
 			<xsl:attribute name="use">
 				<xsl:choose>
 					<xsl:when test="not(ep:min-occurs) or ep:min-occurs=1">required</xsl:when>

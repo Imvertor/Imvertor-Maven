@@ -512,7 +512,8 @@
 							<!-- Location: 'ep:constructRef1a'
 								 Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct1'. -->
 
-							<ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+							<!--ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}"-->
+							<ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 								<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)" />
 								<xsl:sequence select="imf:create-output-element('ep:max-occurs', 1)"/>
 								<xsl:sequence select="imf:create-output-element('ep:min-occurs', 1)"/>
@@ -784,7 +785,8 @@
 			<!-- Location: 'ep:constructRef1a'
 								 Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-.xsl' on the location with the id 'ep:construct1'. -->
 			
-			<ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+			<!--ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}"-->
+			<ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 				<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
 				<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
 				<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
@@ -935,7 +937,8 @@
 		<!-- Location: 'ep:constructRefxxx'
 								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructxxx'. -->
 				
-		<ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+		<!--ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}"-->
+		<ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 			<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
 			<xsl:sequence select="imf:create-output-element('ep:max-occurs',$max-occurs)"/>
 			<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
@@ -1010,7 +1013,8 @@
 				<!-- Location: 'ep:constructRef7'
 								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct7'. -->
 				
-				<ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+				<!--ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}"-->
+				<ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)"/>
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', 1)"/>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', 0)"/>
@@ -1026,7 +1030,8 @@
 						<!-- Location: 'ep:constructRefxxx'
 								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructxxx'. -->
 						
-						<ep:constructRef prefix="{$prefix}" context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+						<!--ep:constructRef prefix="{$prefix}" context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}"-->
+						<ep:constructRef context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 							<xsl:variable name="alias" select="key('class',$type-id)/imvert:alias"/>
 							
 
@@ -1059,7 +1064,8 @@
 						<!-- Location: 'ep:constructRef9'
 							 Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct9'. -->
 						
-						<ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+						<!--ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}"-->
+						<ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 							<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)"/>
 							<xsl:sequence select="imf:create-output-element('ep:max-occurs', 1)"/>
 							<xsl:sequence select="imf:create-output-element('ep:min-occurs', 0)"/>
@@ -1074,7 +1080,8 @@
 						<!-- Location: 'ep:constructRef8'
 				 			 Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct8'. -->
 						
-						<ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+						!--ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}"-->
+						<ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 							<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)"/>
 							<xsl:sequence select="imf:create-output-element('ep:max-occurs', 1)"/>
 							<xsl:sequence select="imf:create-output-element('ep:min-occurs', 0)"/>
@@ -1091,7 +1098,8 @@
 				<!-- Location: 'ep:constructRef1'
 								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct1'. -->
 				
-				<ep:constructRef prefix="{$prefix}" context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+				<!--ep:constructRef prefix="{$prefix}" context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}"-->
+				<ep:constructRef context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 					<xsl:variable name="alias" select="key('class',$type-id)/imvert:alias"/>
 					
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)"/>
@@ -1122,7 +1130,8 @@
 				<!-- Location: 'ep:constructRefxxx'
 								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructxxx'. -->
 				
-				<ep:constructRef prefix="{$prefix}" context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+				<!--ep:constructRef prefix="{$prefix}" context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}"-->
+				<ep:constructRef context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 					<xsl:variable name="alias" select="key('class',$type-id)/imvert:alias"/>
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)"/>
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
@@ -1144,7 +1153,8 @@
 				<!-- Location: 'ep:constructRefxxx'
 								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructxxx'. -->
 				
-				<ep:constructRef prefix="{$prefix}" context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+				<!--ep:constructRef prefix="{$prefix}" context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}"-->
+				<ep:constructRef context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 					<xsl:variable name="alias" select="key('class',$type-id)/imvert:alias"/>
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)"/>
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
@@ -1498,7 +1508,8 @@
 							<!-- Location: 'ep:constructRef1b'
 								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct1'. -->
 							
-							<ep:constructRef prefix="{$prefix}" context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+							<!--ep:constructRef prefix="{$prefix}" context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}"-->
+							<ep:constructRef context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 								<ep:tech-name>gerelateerde</ep:tech-name>
 								<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
 								<ep:max-occurs>1</ep:max-occurs>
@@ -1700,7 +1711,8 @@
 						<!-- Location: 'ep:constructRef10a'
 				 			 Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct10'. -->			
 						
-						<ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+						<!--ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}"-->
+						<ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 							<ep:tech-name>historieMaterieel</ep:tech-name>
 							<ep:max-occurs>unbounded</ep:max-occurs>
 							<ep:min-occurs>0</ep:min-occurs>
@@ -1714,7 +1726,8 @@
 						<!-- Location: 'ep:constructRef10b'
 				 			 Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct10'. -->			
 						
-						<ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+						<!--ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}"-->
+						<ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 							<ep:tech-name>historieFormeel</ep:tech-name>
 							<ep:max-occurs>unbounded</ep:max-occurs>
 							<ep:min-occurs>0</ep:min-occurs>
@@ -1728,7 +1741,8 @@
 						<!-- Location: 'ep:constructRef10c'
 				 			 Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct10'. -->			
 						
-						<ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+						<!--ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}"-->
+						<ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 							<ep:tech-name>historieFormeelRelatie</ep:tech-name>
 							<ep:max-occurs>unbounded</ep:max-occurs>
 							<ep:min-occurs>0</ep:min-occurs>
@@ -1826,7 +1840,8 @@
 						<!-- Location: 'ep:constructRef4a'
 								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct4'. -->
 						
-						<ep:constructRef prefix="{$prefix}" context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+						<!--ep:constructRef prefix="{$prefix}" context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}"-->
+						<ep:constructRef context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 							<xsl:variable name="type" select="'Grp'"/>
 							<xsl:variable name="name" select="imvert:name"/>
 							<xsl:variable name="historieType" select="'historieMaterieel'"/>
@@ -1856,7 +1871,8 @@
 						<!-- Location: 'ep:constructRef4b'
 								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct4'. -->
 						
-						<ep:constructRef prefix="{$prefix}" context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+						<!--ep:constructRef prefix="{$prefix}" context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}"-->
+						<ep:constructRef context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 							<xsl:variable name="type" select="'Grp'"/>
 							<xsl:variable name="name" select="imvert:name"/>
 							<xsl:variable name="historieType" select="'historieFormeel'"/>
@@ -1918,7 +1934,8 @@
 					<!-- Location: 'ep:constructRef3'
 								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct3'. -->
 					
-					<ep:constructRef prefix="{$prefix}" context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+					<!--ep:constructRef prefix="{$prefix}" context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}"-->
+					<ep:constructRef context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 						<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)"/>
 						<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)"/>
 						<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)"/>
@@ -2638,7 +2655,7 @@
 			Op dit moment wordt aan dit attribute nog geen prefix meegegeven maar dat moet uiteindelijk wel.
 			Als dat geimplementeerd is moet het stylesheet dat het schema gegereerd daarop aangepast worden. -->
 		<xsl:if test="$attributeTypeRow//col[@name = 'entiteittype' and data = 'O']">
-			<ep:constructRef ismetadata="yes" prefix="{$prefix}">
+			<ep:constructRef ismetadata="yes" prefix="$actualPrefix">
 				<!-- ROME: Voor nu definieer ik het attribute entiteittype in de namespace 
 					van het koppelvlak. Later zal ik echter een restriction moeten definieren 
 					in de namespace van het model waaruit de entiteit oorspronkelijk komt. -->
@@ -2663,7 +2680,7 @@
 			</ep:constructRef>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'entiteittype' and data = 'V']">
-			<ep:constructRef ismetadata="yes" prefix="{$prefix}">
+			<ep:constructRef ismetadata="yes" prefix="$actualPrefix">
 				<!-- ROME: Voor nu definieer ik het attribute entiteittype in de namespace 
 					van het koppelvlak. Later zal ik echter een restriction moeten definieren 
 					in de namespace van het model waaruit de entiteit oorspronkelijk komt. -->

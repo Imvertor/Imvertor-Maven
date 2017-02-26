@@ -54,10 +54,15 @@
     <!--xsl:variable name="xsd-folder-path" select="imf:get-config-string('system','xsd-folder-path')"/-->
     <xsl:variable name="xsd-file-folder-path" select="imf:get-config-string('properties','RESULT_XSD_APPLICATION_FOLDER')"/>
     <!--xsl:variable name="xsd-file-url" select="imf:file-to-url(concat($xsd-file-folder-path,'/koppelvlak.xsd'))"/-->
-    <xsl:variable name="xsd-file-url" select="imf:file-to-url(concat($xsd-file-folder-path,'/',/ep:message-set/ep:name,'.xsd'))"/>
+    
     <xsl:template match="/">
+        <xsl:apply-templates/>
+    </xsl:template>
+    
+    <xsl:template match="ep:message-sets">
         <!--xsl:for-each select="$imvert-endproduct/ep:message-set"-->
         <xsl:for-each select="ep:message-set">
+            <xsl:variable name="xsd-file-url" select="imf:file-to-url(concat($xsd-file-folder-path,'/',ep:name,'.xsd'))"/>
             <result>
                 <xsl:comment select="concat('XSD voor ', imvert:name, ' is geplaatst in ', $xsd-file-url)"/>
             </result>
