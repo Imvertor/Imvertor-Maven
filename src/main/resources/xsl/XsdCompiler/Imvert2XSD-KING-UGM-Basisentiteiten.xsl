@@ -393,6 +393,7 @@
         <xs:simpleType name="{imf:capitalize($compiled-name)}">
             <xs:restriction base="xs:string">
                 <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-enum"/>
+                <xs:enumeration value=""/><!--Bug #488638-->
             </xs:restriction>
         </xs:simpleType>
         
