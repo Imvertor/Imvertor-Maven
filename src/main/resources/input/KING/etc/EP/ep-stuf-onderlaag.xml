@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ep:message-set xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:StUF="http://www.egem.nl/StUF/StUF0301" xmlns:ep="http://www.imvertor.org/schema/endproduct" xmlns:imf="http://www.imvertor.org/xsl/functions">
+	<ep:name>StUF-onderlaag</ep:name>
+	<ep:release>20170112</ep:release>
+	<ep:date>2017-01-19+01:00</ep:date>
+	<ep:patch-number>TO-DO</ep:patch-number>
+	<ep:namespace>http://www.egem.nl/StUF/StUF0301</ep:namespace>
+	<ep:namespace-prefix>StUF</ep:namespace-prefix>
+	<ep:namespaces>
+		<ep:namespace prefix="StUF">http://www.egem.nl/StUF/StUF0301</ep:namespace>
+	</ep:namespaces>
+	<ep:construct prefix="StUF">
+		<ep:name>extraElementen</ep:name>
+		<ep:tech-name>extraElementen</ep:tech-name>
+		<ep:type-name>StUF:ExtraElementen</ep:type-name>
+	</ep:construct>
+	<ep:construct prefix="StUF">
+		<ep:name>tijdstipRegistratie</ep:name>
+		<ep:tech-name>tijdstipRegistratie</ep:tech-name>
+		<ep:type-name>StUF:Tijdstip-e</ep:type-name>
+	</ep:construct>
+	<ep:construct prefix="StUF">
+		<ep:name>tijdvakGeldigheid</ep:name>
+		<ep:tech-name>tijdvakGeldigheid</ep:tech-name>
+		<ep:type-name>StUF:TijdvakGeldigheid</ep:type-name>
+	</ep:construct>
+	<ep:construct prefix="StUF">
+		<ep:name>tijdvakObject</ep:name>
+		<ep:tech-name>tijdvakObject</ep:tech-name>
+		<ep:type-name>StUF:TijdvakObject</ep:type-name>
+	</ep:construct>
+	<ep:construct prefix="StUF">
+		<ep:name>tijdvakRelatie</ep:name>
+		<ep:tech-name>tijdvakRelatie</ep:tech-name>
+		<ep:type-name>StUF:TijdvakRelatie</ep:type-name>
+	</ep:construct>
+	<ep:construct prefix="StUF">
+		<ep:name>ExtraElementen</ep:name>
+		<ep:tech-name>ExtraElementen</ep:tech-name>
+		<ep:seq>
+			<ep:construct prefix="StUF">
+				<ep:name>extraElement</ep:name>
+				<ep:tech-name>extraElement</ep:tech-name>
+				<ep:min-occurs>1</ep:min-occurs>
+				<ep:max-occurs>unbounded</ep:max-occurs>
+				<ep:construct prefix="StUF" ismetadata="yes">
+					<ep:name>noValue</ep:name>
+					<ep:tech-name>noValue</ep:tech-name>
+					<ep:type-name>StUF:NoValue</ep:type-name>
+				</ep:construct>
+				<ep:construct prefix="StUF" ismetadata="yes">
+					<ep:name>exact</ep:name>
+					<ep:tech-name>exact</ep:tech-name>
+					<ep:type-name>scalar-boolean</ep:type-name>
+				</ep:construct>
+				<ep:construct prefix="StUF" ismetadata="yes">
+					<ep:name>naam</ep:name>
+					<ep:tech-name>naam</ep:tech-name>
+					<ep:type-name>scalar-string</ep:type-name>
+				</ep:construct>
+				<ep:construct prefix="StUF" ismetadata="yes">
+					<ep:name>indOnvolledigeDatum</ep:name>
+					<ep:tech-name>indOnvolledigeDatum</ep:tech-name>
+					<ep:type-name>StUF:IndOnvolledigeDatum</ep:type-name>
+				</ep:construct>
+			</ep:construct>
+		</ep:seq>
+	</ep:construct>
+	<ep:construct prefix="StUF">
+		<ep:name>Tijdstip-e</ep:name>
+		<ep:tech-name>Tijdstip-e</ep:tech-name>
+		<ep:type-name>scalar-string</ep:type-name>
+		<ep:formeel-patroon>[0-9]{8,17}</ep:formeel-patroon>
+		<ep:construct prefix="StUF" ismetadata="yes">
+			<ep:name>noValue</ep:name>
+			<ep:tech-name>noValue</ep:tech-name>
+			<ep:type-name>StUF:NoValue</ep:type-name>
+		</ep:construct>
+		<ep:construct prefix="StUF" ismetadata="yes">
+			<ep:name>exact</ep:name>
+			<ep:tech-name>exact</ep:tech-name>
+			<ep:type-name>scalar-boolean</ep:type-name>
+		</ep:construct>
+	</ep:construct>
+	<ep:construct prefix="StUF">
+		<ep:name>TijdvakGeldigheid</ep:name>
+		<ep:tech-name>TijdvakGeldigheid</ep:tech-name>
+		<ep:seq>
+			<ep:construct prefix="StUF">
+				<ep:name>beginGeldigheid</ep:name>
+				<ep:tech-name>beginGeldigheid</ep:tech-name>
+				<ep:min-occurs>1</ep:min-occurs>
+				<ep:max-occurs>1</ep:max-occurs>
+			</ep:construct>
+			<ep:construct prefix="StUF">
+				<ep:name>eindGeldigheid</ep:name>
+				<ep:tech-name>eindGeldigheid</ep:tech-name>
+				<ep:min-occurs>1</ep:min-occurs>
+				<ep:max-occurs>1</ep:max-occurs>
+			</ep:construct>
+		</ep:seq>
+	</ep:construct>
+	<ep:construct prefix="StUF">
+		<ep:name>TijdvakObject</ep:name>
+		<ep:tech-name>TijdvakObject</ep:tech-name>
+		<ep:seq>
+			<ep:construct prefix="StUF">
+				<ep:name>beginObject</ep:name>
+				<ep:tech-name>beginObject</ep:tech-name>
+				<ep:min-occurs>1</ep:min-occurs>
+				<ep:max-occurs>1</ep:max-occurs>
+			</ep:construct>
+			<ep:construct prefix="StUF">
+				<ep:name>eindObject</ep:name>
+				<ep:tech-name>eindObject</ep:tech-name>
+				<ep:min-occurs>0</ep:min-occurs>
+				<ep:max-occurs>1</ep:max-occurs>
+			</ep:construct>
+		</ep:seq>
+	</ep:construct>
+	<ep:construct prefix="StUF">
+		<ep:name>TijdvakRelatie</ep:name>
+		<ep:tech-name>TijdvakRelatie</ep:tech-name>
+		<ep:seq>
+			<ep:construct prefix="StUF">
+				<ep:name>beginRelatie</ep:name>
+				<ep:tech-name>beginRelatie</ep:tech-name>
+				<ep:min-occurs>1</ep:min-occurs>
+				<ep:max-occurs>1</ep:max-occurs>
+			</ep:construct>
+			<ep:construct prefix="StUF">
+				<ep:name>eindRelatie</ep:name>
+				<ep:tech-name>eindRelatie</ep:tech-name>
+				<ep:min-occurs>0</ep:min-occurs>
+				<ep:max-occurs>1</ep:max-occurs>
+			</ep:construct>
+		</ep:seq>
+	</ep:construct>
+	<ep:construct prefix="StUF" ismetadata="yes">
+		<ep:name>exact</ep:name>
+		<ep:tech-name>exact</ep:tech-name>
+		<ep:type-name>scalar-boolean</ep:type-name>
+	</ep:construct>
+	<ep:construct prefix="StUF" ismetadata="yes">
+		<ep:name>indOnvolledigeDatum</ep:name>
+		<ep:tech-name>indOnvolledigeDatum</ep:tech-name>
+		<ep:type-name>StUF:IndOnvolledigeDatum</ep:type-name>
+	</ep:construct>
+	<ep:construct>
+		<ep:name>IndOnvolledigeDatum</ep:name>
+		<ep:tech-name>IndOnvolledigeDatum</ep:tech-name>
+		<ep:type-name>scalar-string</ep:type-name>
+		<ep:enum>J</ep:enum>
+		<ep:enum>M</ep:enum>
+		<ep:enum>D</ep:enum>
+		<ep:enum>V</ep:enum>
+	</ep:construct>
+	<ep:construct prefix="StUF" ismetadata="yes">
+		<ep:name>metagegeven</ep:name>
+		<ep:tech-name>metagegeven</ep:tech-name>
+		<ep:type-name>scalar-boolean</ep:type-name>
+	</ep:construct>
+	<ep:construct prefix="StUF" ismetadata="yes">
+		<ep:name>noValue</ep:name>
+		<ep:tech-name>noValue</ep:tech-name>
+		<ep:type-name>StUF:NoValue</ep:type-name>
+	</ep:construct>
+	<ep:construct>
+		<ep:name>NoValue</ep:name>
+		<ep:tech-name>NoValue</ep:tech-name>
+		<ep:type-name>scalar-string</ep:type-name>
+		<ep:enum>nietOndersteund</ep:enum>
+		<ep:enum>nietGeautoriseerd</ep:enum>
+		<ep:enum>geenWaarde</ep:enum>
+		<ep:enum>waardeOnbekend</ep:enum>
+		<ep:enum>vastgesteldOnbekend</ep:enum>
+	</ep:construct>
+	<ep:construct prefix="StUF" ismetadata="yes">
+		<ep:name>scope</ep:name>
+		<ep:tech-name>scope</ep:tech-name>
+		<ep:type-name>scalar-string</ep:type-name>
+		<ep:enum>alles</ep:enum>
+		<ep:enum>allesZonderMetagegevens</ep:enum>
+		<ep:enum>allesMaarKerngegevensGerelateerden</ep:enum>
+		<ep:enum>allesZonderMetagegevensMaarKerngegevensGerelateerden</ep:enum>
+		<ep:enum>kerngegevens</ep:enum>
+	</ep:construct>
+	<ep:construct prefix="StUF" ismetadata="yes">
+		<ep:name>sleutelVerzendend</ep:name>
+		<ep:tech-name>sleutelVerzendend</ep:tech-name>
+		<ep:type-name>StUF:Sleutel</ep:type-name>
+	</ep:construct>
+	<ep:construct>
+		<ep:name>Sleutel</ep:name>
+		<ep:tech-name>Sleutel</ep:tech-name>
+		<ep:type-name>scalar-string</ep:type-name>
+		<ep:max-length>40</ep:max-length>
+	</ep:construct>
+	<ep:construct prefix="StUF" ismetadata="yes">
+		<ep:name>sleutelOntvangend</ep:name>
+		<ep:tech-name>sleutelOntvangend</ep:tech-name>
+		<ep:type-name>StUF:Sleutel</ep:type-name>
+	</ep:construct>
+	<!--ep:construct>
+		<ep:name>Sleutel</ep:name>
+		<ep:tech-name>Sleutel</ep:tech-name>
+		<ep:type-name>scalar-string</ep:type-name>
+		<ep:max-length>40</ep:max-length>
+	</ep:construct-->
+	<ep:construct prefix="StUF" ismetadata="yes">
+		<ep:name>sleutelGegevensbeheer</ep:name>
+		<ep:tech-name>sleutelGegevensbeheer</ep:tech-name>
+		<ep:type-name>StUF:Sleutel</ep:type-name>
+	</ep:construct>
+	<!--ep:construct>
+		<ep:name>Sleutel</ep:name>
+		<ep:tech-name>Sleutel</ep:tech-name>
+		<ep:type-name>scalar-string</ep:type-name>
+		<ep:max-length>40</ep:max-length>
+	</ep:construct-->
+	<ep:construct prefix="StUF" ismetadata="yes">
+		<ep:name>sleutelSynchronisatie</ep:name>
+		<ep:tech-name>sleutelSynchronisatie</ep:tech-name>
+		<ep:type-name>StUF:Sleutel</ep:type-name>
+	</ep:construct>
+	<!--ep:construct>
+		<ep:name>Sleutel</ep:name>
+		<ep:tech-name>Sleutel</ep:tech-name>
+		<ep:type-name>scalar-string</ep:type-name>
+		<ep:max-length>40</ep:max-length>
+	</ep:construct-->
+	<ep:construct prefix="StUF" ismetadata="yes">
+		<ep:name>verwerkingssoort</ep:name>
+		<ep:tech-name>verwerkingssoort</ep:tech-name>
+		<ep:type-name>StUF:Verwerkingssoort</ep:type-name>
+	</ep:construct>
+	<ep:construct>
+		<ep:name>Verwerkingssoort</ep:name>
+		<ep:tech-name>Verwerkingssoort</ep:tech-name>
+		<ep:type-name>scalar-string</ep:type-name>
+		<ep:max-length>1</ep:max-length>
+		<ep:enum>T</ep:enum>
+		<ep:enum>W</ep:enum>
+		<ep:enum>V</ep:enum>
+		<ep:enum>E</ep:enum>
+		<ep:enum>I</ep:enum>
+		<ep:enum>R</ep:enum>
+		<ep:enum>S</ep:enum>
+		<ep:enum>O</ep:enum>
+	</ep:construct>
+	<ep:construct>
+		<ep:name>Groepsnaam</ep:name>
+		<ep:tech-name>Groepsnaam</ep:tech-name>
+		<ep:type-name>scalar-string</ep:type-name>
+		<ep:max-length>80</ep:max-length>
+	</ep:construct>
+</ep:message-set>
