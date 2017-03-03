@@ -1,55 +1,45 @@
 <!-- 
-    Mappings for conceptual schemas 
+    Mappings for conceptual schemas fro BRO
 -->
 <conceptual-schemas>
-    <svn-id>$Id: conceptual-schemas.xml 7209 2015-08-25 12:28:42Z arjan $</svn-id>
-    <mapping name="NEN3610_GML321">
-        <use>GML321</use>
+  
+    <mapping name="BRO_GITHUB">
+        <use>SampleExternalModelA</use>
     </mapping>
+    
+    <conceptual-schema>
+        <description>Sample conceptual schema, see «Application» Github-14-metamodel links</description>
+        <!-- 
+            This URL is the formal name fo the schema witin the EA project. 
+            Insert it as the alias of the <<external>> package. 
+        -->
+        <url>http://www.bro.nl/conceptual-schemas/SampleExternalModelA</url>
+        <map 
+            name="SampleExternalModelA" 
+            namespace="http://www.bro.nl/SampleExternalModelA" 
+            version="1.0.0" 
+            phase="1" 
+            release="20170302"
+            location="http://www.bro.nl/schemas/1.0.0/SampleExternalModelA.xsd">
+            
+            <type name="EM_AC1"  
+                asAttributeDesignation="complextype"
+                asAttribute="AC1type">AC1</type>  
+                
+            <type name="EM_AC2"  
+                asAttributeDesignation="complextype"
+                asAttribute="AC2type">AC2</type>  
+                
+         </map>
+    </conceptual-schema>
+    
     <conceptual-schema>
         <description>ISO19107 Geographic information – Spatial schema</description>
-        <url>http://www.kadaster.nl/conceptual-schemas/ISO19107</url>
-        <!--
-        <web>http://www.iso.org/iso/catalogue_detail.htm?csnumber=26012</web>
-        <web>http://de.wikipedia.org/wiki/ISO_19107</web>
-        <web>http://www.spatial.maine.edu/ISAmodel/documents/ISO19107-SpatialSchema.pdf</web>
-        -->
         <!-- 
-            This conceptual schema is mapped onto all kinds of XML constructs.  
+            This URL is the formal name fo the schema witin the EA project. 
+            Insert it as the alias of the <<external>> package. 
         -->
-        <map 
-            name="GML311" 
-            namespace="http://www.opengis.net/gml" 
-            version="3.1.1" 
-            phase="3" 
-            release="20050811" 
-            location="http://www.opengis.net/gml/3.1.1/base/gml.xsd">
-            <!-- 
-                This maps onto the local copy maintained in /xsd/www.opengis.net/gml(3.1.1-20050811)
-                The following conceptual schema types map onto the specified types, eg. GM_ArcString maps onto gml:ArcString 
-                Only listing the ones used in IMKAD. 
-            -->
-            <type name="GM_AbstractFeatureType">AbstractFeatureType</type>  
-            
-            <type name="GM_MultiSurface"  
-                asAttributeDesignation="complextype"
-                asAttribute="MultiSurfacePropertyType">MultiSurface</type>  
-            <type name="GM_Curve"  
-                asAttributeDesignation="complextype"
-                asAttribute="CurvePropertyType">Curve</type>  
-            <type name="GM_ArcString"  
-                asAttributeDesignation="complextype"
-                asAttribute="ArcStringPropertyType">ArcString</type>  
-            <type name="GM_LineString"  
-                asAttributeDesignation="complextype"
-                asAttribute="LineStringPropertyType">LineString</type>  
-            <type name="GM_Point"  
-                asAttributeDesignation="complextype"
-                asAttribute="PointPropertyType">Point</type>  
-            
-            <type name="Binary">xs:binary</type>  
-            <type name="Boolean">xs:boolean</type>  
-        </map>
+        <url>http://www.bro.nl/conceptual-schemas/ISO19107</url>
         <map 
             name="GML321" 
             namespace="http://www.opengis.net/gml/3.2" 
@@ -62,7 +52,7 @@
             -->
             <type name="GM_AbstractFeature">AbstractFeature</type>  
             <type name="GM_AbstractFeatureType">AbstractFeatureType</type>  
-         
+            
             <type name="GM_AbstractFeatureCollection">AbstractFeatureCollection</type>  
             <type name="GM_AbstractFeatureCollectionType">AbstractFeatureCollectionType</type>  
             
@@ -101,37 +91,37 @@
             <type name="GM_Point"  
                 asAttributeDesignation="complextype"
                 asAttribute="PointPropertyType">Point</type>  
-                
+            
             <type name="GM_Curve"  
                 asAttributeDesignation="complextype"
                 asAttribute="CurvePropertyType">Curve</type>  
-                
+            
             <type name="GM_Surface"  
                 asAttributeDesignation="complextype"
                 asAttribute="SurfacePropertyType">Surface</type> 
-               
+            
             <type name="GM_MultiPoint"  
                 asAttributeDesignation="complextype"
                 asAttribute="MultiPointPropertyType">MultiPoint</type> 
-                
+            
             <type name="GM_MultiSurface"  
                 asAttributeDesignation="complextype"
                 asAttribute="MultiSurfacePropertyType">MultiSurface</type> 
-                
+            
             <type name="GM_MultiCurve"  
                 asAttributeDesignation="complextype"
                 asAttribute="MultiCurvePropertyType">MultiCurve</type> 
-                
+            
             <type name="GM_Geometry"  
                 asAttributeDesignation="complextype"
                 asAttribute="GeometryPropertyType">Geometry</type>              
-               
+            
             <type name="GM_MultiGeometry"  
                 asAttributeDesignation="complextype"
                 asAttribute="MultiGeometryPropertyType">MultiGeometry</type>
-                
+            
             <!-- preferable not to be used in  schema's - also, types below are not yet edited to always be PropertyType: --> 
-             
+            
             <type name="GM_ArcString"  
                 asAttributeDesignation="complextype"
                 asAttribute="ArcStringPropertyType">ArcString</type>          
@@ -139,7 +129,7 @@
             <type name="GM_LineString"  
                 asAttributeDesignation="complextype"
                 asAttribute="LineStringPropertyType">LineStringSegment</type>  
-                
+            
             <type name="GM_Polygon"  
                 asAttributeDesignation="complextype"
                 asAttribute="PolygonPatchType">PolygonPatch</type>  
@@ -147,59 +137,59 @@
             <type name="GM_Object"  
                 asAttributeDesignation="complextype"
                 asAttribute="GeometryPropertyType">Object</type>  
-
+            
             <type name="GM_Primitive"  
                 asAttributeDesignation="complextype"
                 asAttribute="GeometricPrimtivePropertyType">Primitve</type>  
-
+            
             <type name="GM_Position"  
                 asAttributeDesignation="complextype"
                 asAttribute="geometricPositionGroup">Position</type>  
-
+            
             <type name="GM_PointArray"  
                 asAttributeDesignation="complextype"
                 asAttribute="geometricPositionListGroup">PointArray</type>  
-
-			<type name="GM_Solid"  
+            
+            <type name="GM_Solid"  
                 asAttributeDesignation="complextype"
                 asAttribute="SolidPropertyType">Solid</type> 
-                
+            
             <type name="GM_OrientableCurve"  
                 asAttributeDesignation="complextype"
                 asAttribute="CurvePropertyType">OrientableCurve</type> 
-                
+            
             <type name="GM_OrientableSurface"  
                 asAttributeDesignation="complextype"
                 asAttribute="SurfacePropertyType">OrientableSurface</type> 
-                
+            
             <type name="GM_CompositePoint"  
                 asAttributeDesignation="complextype"
                 asAttribute="PointPropertyType">CompositePoint</type> 
-           
+            
             <type name="GM_Complex"  
                 asAttributeDesignation="complextype"
                 asAttribute="GeometricComplexPropertyType">Complex</type> 
-                
+            
             <type name="GM_Aggregate"  
                 asAttributeDesignation="complextype"
                 asAttribute="MultiGeometryPropertyType">Aggregate</type> 
-			
+            
             <type name="GM_MultiSolid"  
                 asAttributeDesignation="complextype"
                 asAttribute="MultiMultiSolidPropertyType">MultiSolid</type> 
-                
+            
             <type name="GM_MultiPrimitive"  
                 asAttributeDesignation="complextype"
                 asAttribute="MultiGeometryPropertyType">MultiPrimitive</type> 
-
+            
             <type name="GM_Aggregate"  
                 asAttributeDesignation="complextype"
                 asAttribute="MultiGeometryPropertyType">MultiGeometry</type>
-                
+            
             <type name="GM_MultiPrimtive"  
                 asAttributeDesignation="complextype"                
                 asAttribute="MultiGeometryPropertyType">MultiGeometry</type>
-			  
+            
             <type name="Measure">MeasureType</type>  
             <type name="Binary" primitive="true">xs:binary</type>  
             <type name="Boolean" primitive="true">xs:boolean</type>  
