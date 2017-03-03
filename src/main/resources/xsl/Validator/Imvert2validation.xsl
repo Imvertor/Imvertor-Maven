@@ -891,9 +891,9 @@
         
         <xsl:sequence select="imf:report-warning(., 
             $defining-class/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-composite') 
-            and imvert:stereotype 
+            and imvert:stereotype
             and not(imvert:stereotype = imf:get-config-stereotypes('stereotype-name-voidable')) 
-            and not(imvert:stereotype = imf:get-config-stereotypes('stereotype-name-association-to-composite')), 
+            and not(imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-association-to-composite','stereotype-name-relatiesoort'))), 
             'Unexpected stereotype for composite relation: [1]', (imvert:stereotype))"/>
         
         <xsl:sequence select="imf:report-warning(., 
@@ -1119,6 +1119,7 @@
             <xsl:for-each select="$this/imvert:stereotype">
                 <xsl:variable name="stereotype" select="imf:get-normalized-name(.,'stereotype-name')"/>
                 <xsl:choose>
+                    <xsl:when test="@origin='system'"/>
                     <xsl:when test="$this/self::imvert:package">
                         <xsl:choose>
                             <xsl:when test="$stereotype=imf:get-config-stereotype-names('package')"/>
@@ -1164,7 +1165,7 @@
             </xsl:for-each>
         </xsl:variable>
         <!-- IM-67 -->
-        <xsl:sequence select="imf:report-warning($this, normalize-space($result[1]), 'Stereotype not expected or unknown: [1]',(string-join($result,', ')))"/>
+        <xsl:sequence select="imf:report-warning($this, normalize-space($result[1]), 'Stereotype unexpected or unknown: [1]',(string-join($result,', ')))"/>
     </xsl:function>
     
     <!-- check if tagged values assigned are expected on this construct -->
