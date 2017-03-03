@@ -177,5 +177,41 @@
             </stereotypes>
         </tv>
         
+        <tv norm="space" id="IncludeBDMH">
+            <name lang="#all">Include-bdmh</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-service</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value default="yes">Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" id="IncludeLog">
+            <name lang="#all">Include-log</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-service</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value default="yes">Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+  
+        <tv norm="space" id="IncludeProces">
+            <name lang="#all">Include-proces</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-service</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value default="yes">Ja</value>
+                <value>Nee</value>
+            </declared-values>
+        </tv>
+        
     </tagged-values>
 </tagset>
