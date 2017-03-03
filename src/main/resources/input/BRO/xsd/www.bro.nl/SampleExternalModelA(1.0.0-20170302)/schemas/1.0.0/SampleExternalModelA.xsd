@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:ExternalModelA="http://www.bro.nl/SampleExternalModelA"
+    targetNamespace="http://www.bro.nl/SampleExternalModelA"
+    >
+     
+    <xs:element name="AC1" type="ExternalModelA:AC1type"/>
+    
+    <xs:complexType name="AC1type">
+        <xs:sequence>
+            <xs:element name="A" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:simpleType name="AC2type">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+    
+</xs:schema>
