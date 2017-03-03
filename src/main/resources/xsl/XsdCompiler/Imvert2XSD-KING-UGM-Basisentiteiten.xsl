@@ -94,7 +94,7 @@
      
                 <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-objecttype')]" mode="mode-global-objecttype"/>
                 <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-referentielijst')]" mode="mode-global-objecttype"/>
-                <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-relatieklasse')]" mode="mode-global-objecttype"/>
+                <!--<xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-relatieklasse')]" mode="mode-global-objecttype"/>-->
                 
                 <xsl:sequence select="imf:create-comment(' *** Declaratie van Associatietypen *** ')"/>
                 
@@ -108,7 +108,7 @@
 
                 <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-objecttype')]" mode="mode-global-kerngegevens"/>
                 <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-referentielijst')]" mode="mode-global-kerngegevens"/>
-                <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-relatieklasse')]" mode="mode-global-kerngegevens"/>
+                <!--<xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-relatieklasse')]" mode="mode-global-kerngegevens"/>-->
                 
                 <xsl:sequence select="imf:create-comment(' *** Declaratie van gegevensgroeptypen *** ')"/>
                 
