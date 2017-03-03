@@ -35,6 +35,12 @@
       <tip>Compare the new model to the same model released at the specified date.</tip>
       <required>false</required>
     </cli-parm>
+    <cli-parm>
+      <name>comparekey</name>
+      <arg>id|name</arg>
+      <tip>Assume the same construct has the same name, or the same ID.</tip>
+      <required>false</required>
+    </cli-parm>
   </cli-parms>
 
   <properties>

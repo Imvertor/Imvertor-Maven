@@ -43,7 +43,7 @@
     <xsl:param name="ctrl-name-mapping-filepath"/>
     <xsl:param name="test-name-mapping-filepath"/>
     
-    <xsl:param name="identify-construct-by-function"/> <!-- implemented: name, id -->
+    <xsl:param name="compare-key"/> <!-- implemented: name, id -->
     <xsl:param name="comparison-role"/> <!-- ctrl or test -->
     <xsl:param name="include-reference-packages"/> <!-- true or false -->
    

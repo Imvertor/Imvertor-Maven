@@ -410,6 +410,8 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	public boolean compare(XmlFile testXmlFile, Configurator configurator) throws Exception {
 		
 		String compareLabel = configurator.getParm("system", "compare-label");
+		String compareKey = configurator.getParm("cli", "comparekey",false);
+		if (compareKey == null) compareKey = "name";
 		
 		// create a transformer
 		Transformer transformer = new Transformer();
@@ -425,8 +427,8 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		// This transformer will pass regular XML parameters to the stylesheet. 
 		// This is because the compare core code is not part of the Imvertor framework, but developed separately.
 		// We therefore do not use the XMLConfiguration approach here.
-		transformer.setXslParm("identify-construct-by-function", "name"); // the name of the construct is the only identifier
-		//TODO name of id??
+		transformer.setXslParm("compare-key", compareKey); // the name or id specifies how teo determine "the same" construct
+	
 		
 		transformer.setXslParm("info-config", infoConfig.toURI().toString());  
 		transformer.setXslParm("info-ctrlpath", this.getCanonicalPath());  

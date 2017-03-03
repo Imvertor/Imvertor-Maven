@@ -88,18 +88,21 @@ public class ReleaseComparer extends Step {
 	}
 	
 	private boolean releaseCompare() throws Exception {
-		configurator.setParm("system", "compare-label", "release",true); 
+		configurator.setParm("system", "compare-label", "release",true);
 		
-		String releaseString = configurator.getParm("cli","comparewith",false);
-		Boolean release = releaseString != null && !releaseString.equals("00000000");
+		String cmp = configurator.getParm("cli","compare",false);
+		Boolean releaseCheck = (cmp != null) && cmp.equals("release");
 		
-		String curReleaseString = configurator.getParm("appinfo","release");
+		if (releaseCheck) { // a request is made to produce a release comparison
+			String releaseString = configurator.getParm("cli","comparewith",false);
+			Boolean release = releaseString != null && !releaseString.equals("00000000");
+			
+			String curReleaseString = configurator.getParm("appinfo","release");
+			
+			// This step succeeds when a release may be made, depending on possible differences in the most recent and current model file 
+			XmlFile oldModelFile = new XmlFile(configurator.getApplicationFolder(releaseString), "etc/model.imvert.xml");
+			XmlFile newModelFile = new XmlFile(configurator.getParm("properties", "WORK_SCHEMA_FILE"));
 		
-		// This step succeeds when a release may be made, depending on possible differences in the most recent and current model file 
-		XmlFile oldModelFile = new XmlFile(configurator.getApplicationFolder(releaseString), "etc/model.imvert.xml");
-		XmlFile newModelFile = new XmlFile(configurator.getParm("properties", "WORK_SCHEMA_FILE"));
-		
-		if (release) { // a request is made to produce a docrelease
 			if (oldModelFile.exists()) {
 				if (releaseString.equals(curReleaseString))
 					runner.warn(logger, "Comparing release " + releaseString + " to most recent compilation");

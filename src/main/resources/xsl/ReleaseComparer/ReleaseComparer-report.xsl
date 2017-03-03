@@ -70,7 +70,7 @@
                             </xsl:with-param>
                             <xsl:with-param name="intro">
                                 <p>
-                                    This table show all unexpected differences between the previous version and the compiled version of the UML:
+                                    This table show all unexpected differences between the previous version and the current version of the model:
                                     <ul>
                                         <li>
                                             Control: the previous release.
@@ -105,10 +105,10 @@
                     <xsl:call-template name="fetch-comparison-report">
                         <xsl:with-param name="title">Derivation comparison</xsl:with-param>
                         <xsl:with-param name="info">
-                            <xsl:value-of select="concat('(', count($report-derv//imvert:diffs/imvert:diff),' differences)')"/>
+                            <xsl:value-of select="concat('(', count($report-derv//*:diffs/*:diff),' differences)')"/>
                         </xsl:with-param>
                         <xsl:with-param name="intro">
-                            <p>  This table show all differences between the compiled version of the UML:
+                            <p>  This table show all differences between the supplier and the client model releases:
                                 <ul>
                                     <li>
                                         Control: the supplier release.
@@ -142,13 +142,13 @@
                     <xsl:call-template name="fetch-comparison-report">
                         <xsl:with-param name="title">Release comparison</xsl:with-param>
                         <xsl:with-param name="info">
-                            <xsl:value-of select="concat('(', count($report-derv//imvert:diffs/imvert:diff),' differences)')"/>
+                            <xsl:value-of select="concat('(', count($report-release//imvert:diffs/imvert:diff),' differences)')"/>
                         </xsl:with-param>
                         <xsl:with-param name="intro">
-                            <p>  This table show all differences between the current and revuously released version of the UML:
+                            <p>  This table show all differences between the current and some other released version of the model:
                                 <ul>
                                     <li>
-                                        Control: the previous release: <xsl:value-of select="imf:get-config-string('cli','comparewith')"/>.
+                                        Control: the release passed as a parameter: <xsl:value-of select="imf:get-config-string('cli','comparewith')"/>.
                                     </li>
                                     <li>
                                         Test: the current release: <xsl:value-of select="imf:get-config-string('appinfo','release')"/>.  

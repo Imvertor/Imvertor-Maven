@@ -219,10 +219,10 @@
     <xsl:function name="imf:get-safe-name">
         <xsl:param name="this"/>
         <xsl:choose>
-            <xsl:when test="$identify-construct-by-function = 'name'">
+            <xsl:when test="$compare-key = 'name'">
                 <xsl:value-of select="imf:get-compos-name($this)"/>
             </xsl:when>
-            <xsl:when test="$identify-construct-by-function = 'id'">
+            <xsl:when test="$compare-key = 'id'">
                 <xsl:variable name="id" select="$this/*:identification/*:Identifiable/*:id"/>
                 <xsl:value-of select="concat('I',$sep,imf:get-safe-string($id))"/>
             </xsl:when>

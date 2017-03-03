@@ -68,16 +68,16 @@
         
         <xsl:variable name="must-copy" select="contains($info/@use,$imvert-compare-mode)"/>
         
-        <!--<xsl:message select="concat($identify-construct-by-function,': ', local-name(.), ' - ', $use-name, '/', $info,'/',$info/@use,'/',$imvert-compare-mode, ': ', $must-copy)"/>-->
+       <!--<xsl:message select="concat($compare-key,': ', local-name(.), ' - ', $use-name, '/', $info,'/',$info/@use,'/',$imvert-compare-mode, ': ', $must-copy)"/>-->
         
         <xsl:choose>
             <xsl:when test="$include-reference-packages = 'false' and exists(imvert-result:reference)">
                 <!-- ignore -->
             </xsl:when>
-            <xsl:when test="$identify-construct-by-function = 'id' and local-name() = 'id'">
+            <xsl:when test="$compare-key = 'id' and local-name() = 'id'">
                 <xsl:copy-of select="."/>
             </xsl:when>
-            <xsl:when test="$identify-construct-by-function = 'name' and local-name() = 'name'">
+            <xsl:when test="$compare-key = 'name' and local-name() = 'name'">
                 <xsl:copy-of select="."/>
             </xsl:when>
             <xsl:when test="$must-copy and starts-with($use-name,'tv_')">
