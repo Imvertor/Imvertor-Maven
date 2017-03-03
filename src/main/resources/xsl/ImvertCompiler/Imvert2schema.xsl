@@ -135,7 +135,7 @@
             <xsl:sequence select="imf:create-group('supertypes',$group)"/>
             
             <xsl:variable name="group" as="element()*">
-                <xsl:apply-templates select="imvert:attributes/imvert:attribute[not(imvert:stereotype = 'enumeration')]">
+                <xsl:apply-templates select="imvert:attributes/imvert:attribute[not(imvert:stereotype = 'ENUMERATION')]">
                     <xsl:sort select="imvert:name"/>
                 </xsl:apply-templates><!-- .. -->
             </xsl:variable>
@@ -149,7 +149,7 @@
             <xsl:sequence select="imf:create-group('associations',$group)"/>
             
             <xsl:variable name="group" as="element()*">
-                <xsl:apply-templates select="imvert:attributes/imvert:attribute[imvert:stereotype = 'enumeration']">
+                <xsl:apply-templates select="imvert:attributes/imvert:attribute[imvert:stereotype = 'ENUMERATION']">
                     <xsl:sort select="."/>
                 </xsl:apply-templates><!-- .. -->
             </xsl:variable>
@@ -165,7 +165,7 @@
         </imvert-result:Class>
     </xsl:template>
     
-    <xsl:template match="imvert:attribute[imvert:type-name][not(imvert:stereotype = 'enumeration')]">
+    <xsl:template match="imvert:attribute[imvert:type-name][not(imvert:stereotype = 'ENUMERATION')]">
         <imvert-result:Attribute>
            
             <xsl:apply-templates select="imvert:max-length"/>
@@ -194,7 +194,7 @@
         </imvert-result:Attribute>
     </xsl:template>
     
-    <xsl:template match="imvert:attribute[imvert:type-name][imvert:stereotype = 'enumeration']">
+    <xsl:template match="imvert:attribute[imvert:type-name][imvert:stereotype = 'ENUMERATION']">
         <imvert-result:Attribute>
             
             <xsl:apply-templates select="imvert:data-location"/>
