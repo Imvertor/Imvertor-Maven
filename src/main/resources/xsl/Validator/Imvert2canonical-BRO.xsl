@@ -74,7 +74,9 @@
     </xsl:template>
     
     <!-- when composition, and no name, generate name of the target class on that composition relation -->
-    <!-- when composition, and no stereotype, put the composition stereotype there -->
+    <!-- 
+        KKG ISO doesnt require composition relation stereotype.
+        when composition, and no stereotype, put the composition stereotype there -->
     <xsl:template match="imvert:association[imvert:aggregation='composite']">
         <imvert:association>
             <xsl:choose>
@@ -89,7 +91,7 @@
             </xsl:choose>
             <xsl:choose>
                 <xsl:when test="empty(imvert:stereotype)">
-                    <imvert:stereotype>
+                    <imvert:stereotype origin="system">
                         <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-association-to-composite')"/>
                     </imvert:stereotype>
                 </xsl:when>
