@@ -70,6 +70,12 @@
                 <xsl:apply-templates select="."/>
             </xsl:result-document>
         </xsl:for-each>
+        
+        <xsl:for-each select="ep:message-set[1]">
+            <!-- singleton -->
+            <xsl:sequence select="imf:set-config-string('system','xsd-result-subpath-BSM',concat(ep:project,'/',ep:name,'/',ep:release))"/>
+        </xsl:for-each>
+        
     </xsl:template>
     
     <xsl:template match="/imvert:dummy"/>
