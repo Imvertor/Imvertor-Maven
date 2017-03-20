@@ -105,6 +105,7 @@
         <xsl:variable name="name" select="."/>
         <!-- validate -->
         <xsl:sequence select="imf:report-warning(., 
+            not(../imvert:stereotype = 'ENUM') and
             not(matches($name,'^[A-Za-z0-9\-\.]+$')), 
             'Name [1] has unsupported characters', (.))"/>
         
