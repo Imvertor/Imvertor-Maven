@@ -46,26 +46,32 @@
                 <xsl:choose>
                     <xsl:when test="$groupPrefix = $kv-prefix">
                         <xsl:comment select="'Dit is het KV namespace'"/>
-                        <xsl:apply-templates select="../ep:*[name() != 'ep:message' and name() != 'ep:construct']"/>
+                        <xsl:apply-templates select="../ep:*[name() != 'ep:message' and name() != 'ep:construct']">
+                            <xsl:with-param name="actualPrefix" select="$groupPrefix"/>
+                        </xsl:apply-templates>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:sequence select="imf:create-output-element('ep:name', upper-case($groupPrefix))"/>
                         <xsl:sequence select="imf:create-output-element('ep:namespace-prefix', $groupPrefix)"/>                       
                         <xsl:sequence select="imf:create-output-element('ep:namespace', $groupNamespaceId)"/>
                         <ep:namespaces>
-                            <xsl:apply-templates select="../ep:namespaces/ep:namespace[@prefix != $kv-prefix]"/>  
+                            <xsl:apply-templates select="../ep:namespaces/ep:namespace[@prefix != $kv-prefix]">
+                                <xsl:with-param name="actualPrefix" select="$groupPrefix"/>
+                            </xsl:apply-templates>  
                         </ep:namespaces>
                     </xsl:otherwise>
                 </xsl:choose>
-                <xsl:apply-templates select="current-group()"/>  
+                <xsl:apply-templates select="current-group()">
+                    <xsl:with-param name="actualPrefix" select="$groupPrefix"/>
+                </xsl:apply-templates>
                 <ep:construct prefix="{$groupPrefix}" ismetadata="yes">
-                    <ep:name>Entiteittype</ep:name>
-                    <ep:tech-name>Entiteittype</ep:tech-name>
+                    <ep:name>entiteittype</ep:name>
+                    <ep:tech-name>entiteittype</ep:tech-name>
                     <ep:type-name>scalar-string</ep:type-name>
                 </ep:construct>
                 <ep:construct prefix="{$groupPrefix}" ismetadata="yes">
-                    <ep:name>Patch</ep:name>
-                    <ep:tech-name>Patch</ep:tech-name>
+                    <ep:name>patch</ep:name>
+                    <ep:tech-name>patch</ep:tech-name>
                     <ep:type-name>scalar-integer</ep:type-name>
                     <ep:min-value>0</ep:min-value>
                 </ep:construct>
@@ -76,37 +82,47 @@
     <xsl:template match="ep:tv-position"/>
     
     <xsl:template match="*">
+        <xsl:param name="actualPrefix"/>
         <xsl:element name="{name(.)}">
-            <xsl:apply-templates select="@*"/>
+            <xsl:apply-templates select="@*">
+                <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
+            </xsl:apply-templates>
             <xsl:choose>
                 <xsl:when test="@orderingDesired = 'no' or ancestor::ep:seq[@orderingDesired = 'no']">
-                    <xsl:apply-templates select="*"/>
+                    <xsl:apply-templates select="*">
+                        <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
+                    </xsl:apply-templates>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:apply-templates select="*">
-                        <xsl:sort select="ep:position" order="ascending" data-type="number"/>                
-                    </xsl:apply-templates>
-                    
+                        <xsl:sort select="ep:position" order="ascending" data-type="number"/>
+                        <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
+                    </xsl:apply-templates>              
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:element>
     </xsl:template>
     
     <xsl:template match="ep:construct[parent::ep:message-set]">
+        <xsl:param name="actualPrefix"/>
         <!-- Following if takes care of removing al ep:constructs whithout content within their ep:seq or ep:choice element. -->
         <xsl:choose>
             <xsl:when test="ep:seq/* | ep:choice/*">
                 <xsl:element name="{name(.)}">
-                    <xsl:apply-templates select="@*"/>
+                    <xsl:apply-templates select="@*">
+                        <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
+                    </xsl:apply-templates>
                     <xsl:choose>
                         <xsl:when test="@orderingDesired = 'no' or ancestor::ep:seq[@orderingDesired = 'no']">
-                            <xsl:apply-templates select="*"/>
+                            <xsl:apply-templates select="*">
+                                <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
+                            </xsl:apply-templates>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:apply-templates select="*">
-                                <xsl:sort select="ep:position" order="ascending" data-type="number"/>                
+                                <xsl:sort select="ep:position" order="ascending" data-type="number"/>
+                                <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
                             </xsl:apply-templates>
-                            
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:element>
@@ -118,6 +134,7 @@
     </xsl:template>
     
     <xsl:template match="ep:construct[ep:tech-name = 'authentiek']">
+        <xsl:param name="actualPrefix"/>
         <!-- Following if takes care of removing al ep:constructs whithout content within their ep:seq or ep:choice element. -->
         <xsl:variable name="authentiek">
             <xsl:copy-of select="."/>
@@ -143,6 +160,7 @@
     </xsl:template>
     
     <xsl:template match="ep:construct[ep:tech-name = 'inOnderzoek']">
+        <xsl:param name="actualPrefix"/>
         <!-- Following if takes care of removing al ep:constructs whithout content within their ep:seq or ep:choice element. -->
         <xsl:variable name="inOnderzoek">
             <xsl:copy-of select="."/>
@@ -168,27 +186,47 @@
     </xsl:template>
     
     <xsl:template match="@*">
+        <xsl:param name="actualPrefix"/>
         <xsl:if test="not(local-name()='orderingDesired')">
            <xsl:copy-of select="."/>
         </xsl:if>
     </xsl:template>
     
+    <xsl:template match="@prefix">
+        <xsl:param name="actualPrefix"/>
+        <xsl:choose>
+               <xsl:when test=". != '$actualPrefix'">
+                   <xsl:copy-of select="."/>
+              </xsl:when>
+               <xsl:otherwise>
+                   <xsl:attribute name="prefix" select="$actualPrefix"/>
+               </xsl:otherwise>
+           </xsl:choose>
+    </xsl:template>
+    
     <xsl:template match="*[not(*) and not(name() = 'ep:tv-position') and not(name() = 'ep:namespace')]">
+        <xsl:param name="actualPrefix"/>
         <xsl:sequence
             select="imf:create-output-element(name(.), .)"/>	
     </xsl:template>
     
     <!-- The following template takes care of replicating the 'ep:constructRef' element removing the 'ep:id' element. -->
     <xsl:template match="ep:constructRef">
+        <xsl:param name="actualPrefix"/>
         <xsl:element name="{name(.)}">
-            <xsl:apply-templates select="@*"/>
+            <xsl:apply-templates select="@*">
+                <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
+            </xsl:apply-templates>
             <xsl:apply-templates select="*[name() != 'ep:id']"/>
         </xsl:element>       
     </xsl:template>
     
     <xsl:template match="ep:namespace">
+        <xsl:param name="actualPrefix"/>
         <xsl:element name="{name(.)}">
-            <xsl:apply-templates select="@*"/>
+            <xsl:apply-templates select="@*">
+                <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
+            </xsl:apply-templates>
             <xsl:value-of select="."/>
         </xsl:element>       
     </xsl:template>
