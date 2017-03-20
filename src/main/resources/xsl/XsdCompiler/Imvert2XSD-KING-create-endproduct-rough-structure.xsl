@@ -326,6 +326,9 @@
 
 							<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 							<xsl:variable name="subpath" select="$supplier/@subpath"/>
+
+							<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpath),$debugging)"/>
+
 							<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
 
 							<xsl:sequence
@@ -540,6 +543,9 @@
 				
 				<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 				<xsl:variable name="subpath" select="$supplier/@subpath"/>
+
+				<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpath),$debugging)"/>
+
 				<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
 
 				<xsl:sequence
@@ -550,6 +556,9 @@
 				<xsl:variable name="gerelateerde" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
 				<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct($gerelateerde,'UGM')"/>
 				<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
+
+				<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpathGerelateerde),$debugging)"/>
+
 				<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
 
 				<xsl:sequence
@@ -631,6 +640,9 @@
 			
 			<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 			<xsl:variable name="subpath" select="$supplier/@subpath"/>
+
+			<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpath),$debugging)"/>
+
 			<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
 
 			<xsl:sequence
@@ -644,6 +656,9 @@
 					<xsl:variable name="gerelateerde" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
 					<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 					<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
+
+					<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpathGerelateerde),$debugging)"/>
+
 					<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
 
 					<xsl:sequence
@@ -667,6 +682,9 @@
 					<xsl:variable name="gerelateerde" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
 					<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 					<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
+
+					<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpathGerelateerde),$debugging)"/>
+
 					<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
 
 					<xsl:sequence
@@ -702,7 +720,11 @@
 		<xsl:variable name="context">
 			<xsl:choose>
 				<xsl:when
-					test="imvert:name = 'gelijk' or imvert:name = 'vanaf' or imvert:name = 'totEnMet' or imvert:name = 'start' or imvert:name = 'scope'">
+					test="imvert:name = 'gelijk' or imvert:name = 'vanaf' or imvert:name = 'totEnMet'">
+					<xsl:value-of select="'selectie'"/>
+				</xsl:when>
+				<xsl:when
+					test="imvert:name = 'start' or imvert:name = 'scope'">
 					<xsl:value-of select="imvert:name"/>
 				</xsl:when>
 				<xsl:otherwise>-</xsl:otherwise>
@@ -733,7 +755,8 @@
 			</xsl:when>
 			<xsl:when test="contains($berichtCode, 'Lv') or contains($embeddedBerichtCode, 'Lv')">
 				<xsl:choose>
-					<xsl:when test="$context = 'gelijk' or $context = 'vanaf' or $context = 'totEnMet'">
+					<!--xsl:when test="$context = 'gelijk' or $context = 'vanaf' or $context = 'totEnMet'"-->
+					<xsl:when test="$context = 'selectie'">
 						<xsl:call-template name="createRoughEntityConstruct">
 							<xsl:with-param name="id-trail" select="$id-trail"/>
 							<xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -844,6 +867,9 @@
 			
 			<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 			<xsl:variable name="subpath" select="$supplier/@subpath"/>
+
+			<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpath),$debugging)"/>
+
 			<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
 
 			<xsl:sequence
@@ -924,6 +950,9 @@
 			
 			<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 			<xsl:variable name="subpath" select="$supplier/@subpath"/>
+
+			<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpath),$debugging)"/>
+
 			<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
 
 			<xsl:sequence
@@ -935,6 +964,9 @@
 				<xsl:variable name="gerelateerde" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
 				<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 				<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
+
+				<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpathGerelateerde),$debugging)"/>
+				
 				<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
 
 				<xsl:sequence
@@ -1023,6 +1055,9 @@
 					
 					<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 					<xsl:variable name="subpath" select="$supplier/@subpath"/>
+
+					<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpath),$debugging)"/>
+
 					<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
 
 					<xsl:sequence
@@ -1034,6 +1069,9 @@
 					<xsl:variable name="gerelateerde" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
 					<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct($gerelateerde,'UGM')"/>
 					<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
+
+					<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpathGerelateerde),$debugging)"/>
+
 					<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
 
 					<xsl:sequence

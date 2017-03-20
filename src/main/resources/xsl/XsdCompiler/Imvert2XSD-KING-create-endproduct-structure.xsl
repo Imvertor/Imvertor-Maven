@@ -193,7 +193,7 @@
 				<ep:name>patch</ep:name>
 				<ep:tech-name>patch</ep:tech-name>
 				<ep:min-occurs>1</ep:min-occurs>
-				<ep:href>Patch</ep:href>
+				<ep:href>patch</ep:href>
 			</ep:constructRef>
 		</ep:seq>
 		
@@ -1302,6 +1302,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:kerngegeven', $kerngegeven)"/>
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
+					<!--xsl:if test="($mogelijkGeenWaarde = 'JA' and imvert:type-name != 'scalar-string' and not(ep:enum = '')) or $context = 'scope'"-->
 					<xsl:if test="$mogelijkGeenWaarde = 'JA' and imvert:type-name != 'scalar-string' and not(ep:enum = '')">
 						<ep:voidable>Ja</ep:voidable>
 					</xsl:if>
@@ -2549,8 +2550,8 @@
 			koppelvlak namespace counts the same. XML-attributes to be defined within 
 			the koppelvlak namespace will need a type-name, enum or other format defining 
 			element. -->
-		<xsl:if
-			test="$attributeTypeRow//col[@name = 'noValue' and data = 'O' and $MogelijkGeenWaarde = 'JA']">
+
+		<xsl:if test="$attributeTypeRow//col[@name = 'noValue' and data = 'O' and $MogelijkGeenWaarde = 'JA']">
 			<ep:construct ismetadata="yes">
 				<ep:name>noValue</ep:name>
 				<ep:tech-name>noValue</ep:tech-name>
@@ -2564,8 +2565,7 @@
 				<ep:enum>vastgesteldOnbekend</ep:enum>
 			</ep:construct>
 		</xsl:if>
-		<xsl:if
-			test="$attributeTypeRow//col[@name = 'noValue' and data = 'V'] and $MogelijkGeenWaarde = 'JA'">
+		<xsl:if test="$attributeTypeRow//col[@name = 'noValue' and data = 'V'] and $MogelijkGeenWaarde = 'JA'">
 			<ep:constructRef ismetadata="yes">
 				<ep:name>noValue</ep:name>
 				<ep:tech-name>noValue</ep:tech-name>
@@ -2578,8 +2578,7 @@
 				<ep:enum>vastgesteldOnbekend</ep:enum>
 			</ep:constructRef>
 		</xsl:if>
-		<xsl:if
-			test="$attributeTypeRow//col[@name = 'noValue' and data = 'V'] and $MogelijkGeenWaarde = 'NEE'">
+		<xsl:if test="$attributeTypeRow//col[@name = 'noValue' and data = 'V'] and $MogelijkGeenWaarde = 'NEE'">
 			<xsl:variable name="msg"
 				select="concat('The StUF:noValue attribute is required in the context ', $context, '. Provide for it within EA.')"/>
 			<xsl:sequence select="imf:msg('WARN', $msg)"/>
@@ -2676,7 +2675,7 @@
 						<xsl:sequence select="imf:msg('WARN', $msg)"/>
 					</xsl:otherwise>
 				</xsl:choose>
-				<ep:href>Entiteittype</ep:href>
+				<ep:href>entiteittype</ep:href>
 			</ep:constructRef>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'entiteittype' and data = 'V']">
@@ -2700,7 +2699,7 @@
 						<xsl:sequence select="imf:msg('WARN', $msg)"/>
 					</xsl:otherwise>
 				</xsl:choose>
-				<ep:href>Entiteittype</ep:href>
+				<ep:href>entiteittype</ep:href>
 			</ep:constructRef>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelVerzendend' and data = 'O']">
