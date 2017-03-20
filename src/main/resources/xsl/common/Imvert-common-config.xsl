@@ -162,7 +162,7 @@
                 <xsl:sequence select="$r"/>
             </xsl:when>
             <xsl:when test="empty($stereo)">
-                <xsl:sequence select="imf:msg('FATAL','No such stereotype(s) [1] ', string-join($names,', '))"/>
+                <xsl:sequence select="imf:msg('ERROR','No such stereotype(s) [1] ', string-join($names,', '))"/>
             </xsl:when>
         </xsl:choose>
     </xsl:function>
@@ -184,7 +184,7 @@
                 <xsl:sequence select="for $c in $v return string($c)"/>
             </xsl:when>
             <xsl:when test="$must-exist">
-                <xsl:sequence select="imf:msg('FATAL','Tagged value is/are not defined: [1]', string-join($names,', '))"/>
+                <xsl:sequence select="imf:msg('ERROR','Tagged value is/are not defined: [1]', string-join($names,', '))"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="'#unknown'"/>
