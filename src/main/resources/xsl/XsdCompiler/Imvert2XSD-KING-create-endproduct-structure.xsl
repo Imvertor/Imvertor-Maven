@@ -9,7 +9,7 @@
 	xmlns:imvert-result="http://www.imvertor.org/schema/imvertor/application/v20160201"
 	xmlns:bg="http://www.egem.nl/StUF/sector/bg/0310"
 	xmlns:metadata="http://www.kinggemeenten.nl/metadataVoorVerwerking"
-	xmlns:ztc="http://www.kinggemeenten.nl/ztc0310" xmlns:stuf="http://www.egem.nl/StUF/StUF0301"
+	xmlns:ztc="http://www.kinggemeenten.nl/ztc0310" xmlns:stuf="http://www.stufstandaarden.nl/onderlaag/stuf0302"
 	xmlns:ep="http://www.imvertor.org/schema/endproduct"
 	xmlns:ss="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
 	xmlns:xhtml="http://www.w3.org/1999/xhtml" version="2.0">
@@ -189,12 +189,24 @@
 					</xsl:for-each>
 				</xsl:otherwise>
 			</xsl:choose>
-			<ep:constructRef prefix="{$prefix}" ismetadata="yes">
+			<ep:constructRef prefix="StUF" ismetadata="yes">
 				<ep:name>patch</ep:name>
 				<ep:tech-name>patch</ep:tech-name>
 				<ep:min-occurs>1</ep:min-occurs>
 				<ep:href>patch</ep:href>
 			</ep:constructRef>
+			<!--ep:constructRef prefix="bg" ismetadata="yes">
+				<ep:name>patch</ep:name>
+				<ep:tech-name>patch</ep:tech-name>
+				<ep:min-occurs>1</ep:min-occurs>
+				<ep:href>patch</ep:href>
+			</ep:constructRef>
+			<ep:constructRef prefix="{$prefix}" ismetadata="yes">
+				<ep:name>patch</ep:name>
+				<ep:tech-name>patch</ep:tech-name>
+				<ep:min-occurs>1</ep:min-occurs>
+				<ep:href>patch</ep:href>
+			</ep:constructRef-->
 		</ep:seq>
 		
 		<xsl:sequence select="imf:create-debug-comment('Template: imvert:class[mode=create-toplevel-message-structure] End',$debugging)"/>

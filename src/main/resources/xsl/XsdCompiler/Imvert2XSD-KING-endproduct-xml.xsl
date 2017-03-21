@@ -15,7 +15,7 @@
     xmlns:bg="http://www.egem.nl/StUF/sector/bg/0310" 
     xmlns:metadata="http://www.kinggemeenten.nl/metadataVoorVerwerking" 
     xmlns:ztc="http://www.kinggemeenten.nl/ztc0310" 
-    xmlns:stuf="http://www.egem.nl/StUF/StUF0301" 
+    xmlns:stuf="http://www.stufstandaarden.nl/onderlaag/stuf0302" 
     
     xmlns:ss="http://schemas.openxmlformats.org/spreadsheetml/2006/main" 
     
@@ -141,7 +141,7 @@
                        Ik vraag me dus af of ook de $prefix variabele meerdere prefixes moet kunnen omvatten. 
                        Ik denk van niet, eerder zal de onderstaande lijst met namespaces uitgebreid moeten worden door per package deze op te halen. -->
             <ep:namespaces>
-                <ep:namespace prefix="StUF">http://www.egem.nl/StUF/StUF0301</ep:namespace>
+                <ep:namespace prefix="StUF">http://www.stufstandaarden.nl/onderlaag/stuf0302</ep:namespace>
                 <ep:namespace prefix="xsi">http://www.w3.org/2001/XMLSchema-instance</ep:namespace>
                 <ep:namespace prefix="{$prefix}"><xsl:value-of select="$packages/imvert:base-namespace"/></ep:namespace>
             </ep:namespaces>

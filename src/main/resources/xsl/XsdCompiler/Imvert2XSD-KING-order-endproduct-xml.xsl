@@ -15,7 +15,7 @@
     xmlns:bg="http://www.egem.nl/StUF/sector/bg/0310" 
     xmlns:metadata="http://www.kinggemeenten.nl/metadataVoorVerwerking" 
     xmlns:ztc="http://www.kinggemeenten.nl/ztc0310" 
-    xmlns:stuf="http://www.egem.nl/StUF/StUF0301" 
+    xmlns:stuf="http://www.stufstandaarden.nl/onderlaag/stuf0302" 
     
     xmlns:ss="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
     
@@ -32,10 +32,33 @@
     
     <xsl:variable name="kv-prefix" select="/ep:message-set/ep:namespace-prefix"/>
     
+    <xsl:variable name="patch">
+        <xsl:apply-templates select="ep:message-set" mode="patch"/>        
+    </xsl:variable>
+
     <xsl:template match="/">      
         <ep:message-sets>
             <xsl:apply-templates select="ep:message-set"/>
         </ep:message-sets>
+    </xsl:template>
+    
+    <xsl:template match="ep:message-set" mode="patch">
+        <ep:constructRef prefix="StUF" ismetadata="yes">
+            <ep:name>patch</ep:name>
+            <ep:tech-name>patch</ep:tech-name>
+            <ep:min-occurs>1</ep:min-occurs>
+            <ep:href>patch</ep:href>
+        </ep:constructRef>
+        <xsl:for-each-group select="/ep:message-set/ep:*[name() = 'ep:message' or name() = 'ep:construct']" group-by="@prefix">
+            <xsl:variable name="groupPrefix" select="current-grouping-key()"/>
+            <xsl:comment select="'$groupPrefix'"/>
+            <ep:constructRef prefix="{$groupPrefix}" ismetadata="yes">
+                <ep:name>patch</ep:name>
+                <ep:tech-name>patch</ep:tech-name>
+                <ep:min-occurs>1</ep:min-occurs>
+                <ep:href>patch</ep:href>
+            </ep:constructRef>
+        </xsl:for-each-group>            
     </xsl:template>
     
     <xsl:template match="ep:message-set">
@@ -231,4 +254,7 @@
         </xsl:element>       
     </xsl:template>
     
+    <xsl:template match="ep:constructRef[@prefix = 'StUF' and ep:name = 'patch']">
+        <xsl:copy-of select="$patch"/>    
+    </xsl:template>
 </xsl:stylesheet>
