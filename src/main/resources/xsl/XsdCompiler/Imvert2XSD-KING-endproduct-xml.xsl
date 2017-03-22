@@ -1318,6 +1318,7 @@
                                                    <ep:min-occurs>0</ep:min-occurs>
                                                    <ep:position>160</ep:position>
                                                </ep:constructRef>
+                                               <xsl:comment select="'Deze historieFormeel?'"/>
                                                <ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                                                    <ep:name>historieFormeel</ep:name>
                                                    <ep:tech-name>historieFormeel</ep:tech-name>
@@ -1328,11 +1329,11 @@
                                                   <xsl:choose>
                                                       <xsl:when test="not(empty($alias)) and $alias != ''">
                                                            <xsl:sequence
-                                                               select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,$alias,$elementName))" />
+                                                               select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,'historieFormeel',$alias,$elementName))" />
                                                        </xsl:when>
                                                        <xsl:otherwise>
                                                            <xsl:sequence
-                                                               select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,(),$elementName))" />
+                                                               select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,'historieFormeel',(),$elementName))" />
                                                        </xsl:otherwise>
                                                    </xsl:choose>
                                                </ep:constructRef>
@@ -1539,6 +1540,7 @@
                                                <ep:min-occurs>1</ep:min-occurs>
                                                <ep:position>160</ep:position>
                                            </ep:constructRef>
+                                           <xsl:comment select="'Of deze historieFormeel?'"/>
                                            <ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                                                <ep:name>historieFormeel</ep:name>
                                                <ep:tech-name>historieFormeel</ep:tech-name>
