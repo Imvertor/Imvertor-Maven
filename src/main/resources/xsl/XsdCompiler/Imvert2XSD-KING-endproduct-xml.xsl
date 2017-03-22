@@ -1825,6 +1825,12 @@
                             <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $kerngegeven)"/>
                             <xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/>
                         </ep:found-tagged-values>
+                        
+                        <!-- ROME: volgende 3 regels later weghalen. -->
+                        <indicatieMaterieleHistorie><xsl:value-of select="$indicatieMaterieleHistorie"/></indicatieMaterieleHistorie>
+                        <indicatieFormeleHistorie><xsl:value-of select="$indicatieFormeleHistorie"/></indicatieFormeleHistorie>
+                        <indicatieFormeleHistorieRelatie><xsl:value-of select="$indicatieFormeleHistorieRelatie"/></indicatieFormeleHistorieRelatie>
+                        
                     </ep:tagged-values>
                 </xsl:if>
                 <xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
