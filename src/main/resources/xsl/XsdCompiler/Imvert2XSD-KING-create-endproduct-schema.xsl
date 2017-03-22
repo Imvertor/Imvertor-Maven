@@ -47,12 +47,12 @@
 				</ep:namespaces>
 			</xsl:variable>
 
-			<xsl:for-each select="$namespaces2bImported/ep:namespaces/ep:namespace">
+			<xsl:for-each select="$namespaces2bImported/ep:namespaces/ep:namespace[@prefix != '' and @identifier != '']">
 				<xsl:namespace name="{@prefix}"><xsl:value-of select="@identifier"/></xsl:namespace>
 			</xsl:for-each>
 
 			<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="stuf0302.xsd"/>
-			<xsl:for-each select="$namespaces2bImported/ep:namespaces/ep:namespace[@prefix != $message-set-prefix and not(@prefix = preceding-sibling::ep:namespace/@prefix)]">
+			<xsl:for-each select="$namespaces2bImported/ep:namespaces/ep:namespace[@prefix != $message-set-prefix and @prefix != '' and not(@prefix = preceding-sibling::ep:namespace/@prefix)]">
 				<xs:import namespace="{@identifier}" schemaLocation="{concat(upper-case(@prefix),'.xsd')}"/>
 			</xsl:for-each>
 
