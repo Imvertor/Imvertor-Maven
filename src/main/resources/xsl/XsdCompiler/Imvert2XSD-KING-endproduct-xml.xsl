@@ -15,7 +15,7 @@
     xmlns:bg="http://www.egem.nl/StUF/sector/bg/0310" 
     xmlns:metadata="http://www.kinggemeenten.nl/metadataVoorVerwerking" 
     xmlns:ztc="http://www.kinggemeenten.nl/ztc0310" 
-    xmlns:stuf="http://www.egem.nl/StUF/StUF0301" 
+    xmlns:stuf="http://www.stufstandaarden.nl/onderlaag/stuf0302" 
     
     xmlns:ss="http://schemas.openxmlformats.org/spreadsheetml/2006/main" 
     
@@ -141,7 +141,7 @@
                        Ik vraag me dus af of ook de $prefix variabele meerdere prefixes moet kunnen omvatten. 
                        Ik denk van niet, eerder zal de onderstaande lijst met namespaces uitgebreid moeten worden door per package deze op te halen. -->
             <ep:namespaces>
-                <ep:namespace prefix="StUF">http://www.egem.nl/StUF/StUF0301</ep:namespace>
+                <ep:namespace prefix="StUF">http://www.stufstandaarden.nl/onderlaag/stuf0302</ep:namespace>
                 <ep:namespace prefix="xsi">http://www.w3.org/2001/XMLSchema-instance</ep:namespace>
                 <ep:namespace prefix="{$prefix}"><xsl:value-of select="$packages/imvert:base-namespace"/></ep:namespace>
             </ep:namespaces>
@@ -1318,6 +1318,7 @@
                                                    <ep:min-occurs>0</ep:min-occurs>
                                                    <ep:position>160</ep:position>
                                                </ep:constructRef>
+                                               <xsl:comment select="'Deze historieFormeel?'"/>
                                                <ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                                                    <ep:name>historieFormeel</ep:name>
                                                    <ep:tech-name>historieFormeel</ep:tech-name>
@@ -1328,11 +1329,11 @@
                                                   <xsl:choose>
                                                       <xsl:when test="not(empty($alias)) and $alias != ''">
                                                            <xsl:sequence
-                                                               select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,$alias,$elementName))" />
+                                                               select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,'historieFormeel',$alias,$elementName))" />
                                                        </xsl:when>
                                                        <xsl:otherwise>
                                                            <xsl:sequence
-                                                               select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,(),$elementName))" />
+                                                               select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,'historieFormeel',(),$elementName))" />
                                                        </xsl:otherwise>
                                                    </xsl:choose>
                                                </ep:constructRef>
@@ -1539,6 +1540,7 @@
                                                <ep:min-occurs>1</ep:min-occurs>
                                                <ep:position>160</ep:position>
                                            </ep:constructRef>
+                                           <xsl:comment select="'Of deze historieFormeel?'"/>
                                            <ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                                                <ep:name>historieFormeel</ep:name>
                                                <ep:tech-name>historieFormeel</ep:tech-name>
@@ -1823,6 +1825,12 @@
                             <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $kerngegeven)"/>
                             <xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/>
                         </ep:found-tagged-values>
+                        
+                        <!-- ROME: volgende 3 regels later weghalen. -->
+                        <indicatieMaterieleHistorie><xsl:value-of select="$indicatieMaterieleHistorie"/></indicatieMaterieleHistorie>
+                        <indicatieFormeleHistorie><xsl:value-of select="$indicatieFormeleHistorie"/></indicatieFormeleHistorie>
+                        <indicatieFormeleHistorieRelatie><xsl:value-of select="$indicatieFormeleHistorieRelatie"/></indicatieFormeleHistorieRelatie>
+                        
                     </ep:tagged-values>
                 </xsl:if>
                 <xsl:sequence select="imf:create-output-element('ep:name', $name)"/>

@@ -9,7 +9,7 @@
 	xmlns:imvert-result="http://www.imvertor.org/schema/imvertor/application/v20160201"
 	xmlns:bg="http://www.egem.nl/StUF/sector/bg/0310"
 	xmlns:metadata="http://www.kinggemeenten.nl/metadataVoorVerwerking"
-	xmlns:ztc="http://www.kinggemeenten.nl/ztc0310" xmlns:stuf="http://www.egem.nl/StUF/StUF0301"
+	xmlns:ztc="http://www.kinggemeenten.nl/ztc0310" xmlns:stuf="http://www.stufstandaarden.nl/onderlaag/stuf0302"
 	xmlns:ep="http://www.imvertor.org/schema/endproduct"
 	xmlns:ss="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
 	xmlns:xhtml="http://www.w3.org/1999/xhtml" version="2.0">
@@ -189,12 +189,24 @@
 					</xsl:for-each>
 				</xsl:otherwise>
 			</xsl:choose>
-			<ep:constructRef prefix="{$prefix}" ismetadata="yes">
+			<ep:constructRef prefix="StUF" ismetadata="yes">
 				<ep:name>patch</ep:name>
 				<ep:tech-name>patch</ep:tech-name>
 				<ep:min-occurs>1</ep:min-occurs>
 				<ep:href>patch</ep:href>
 			</ep:constructRef>
+			<!--ep:constructRef prefix="bg" ismetadata="yes">
+				<ep:name>patch</ep:name>
+				<ep:tech-name>patch</ep:tech-name>
+				<ep:min-occurs>1</ep:min-occurs>
+				<ep:href>patch</ep:href>
+			</ep:constructRef>
+			<ep:constructRef prefix="{$prefix}" ismetadata="yes">
+				<ep:name>patch</ep:name>
+				<ep:tech-name>patch</ep:tech-name>
+				<ep:min-occurs>1</ep:min-occurs>
+				<ep:href>patch</ep:href>
+			</ep:constructRef-->
 		</ep:seq>
 		
 		<xsl:sequence select="imf:create-debug-comment('Template: imvert:class[mode=create-toplevel-message-structure] End',$debugging)"/>
@@ -1462,8 +1474,8 @@
 		<xsl:param name="generated-id"/>
 		<xsl:param name="currentMessage"/>
 		<xsl:param name="context"/>
-		<!-- The following parameters determine if the current construct being generated is a 'historieMaterieel', a 'historieFormeel' or 'historieFormeelRelatie' construct.
-			 If the variables 'generateHistorieConstruct' has the value 'Nee' a normal construct is generated. -->
+		<!-- The following parameter determines if the current construct being generated is a 'historieMaterieel', a 'historieFormeel' or 'historieFormeelRelatie' construct.
+			 If the variable 'generateHistorieConstruct' has the value 'Nee' a normal construct is generated. -->
 		<xsl:param name="generateHistorieConstruct" select="'Nee'"/>
 		<xsl:param name="indicatieMaterieleHistorie" select="'Nee'"/>
 		<xsl:param name="indicatieFormeleHistorie" select="'Nee'"/>
@@ -1636,20 +1648,24 @@
 								<ep:position>151</ep:position>
 							</ep:constructRef>
 						</xsl:if>
-						<ep:constructRef prefix="StUF" externalNamespace="yes">
-							<ep:name>extraElementen</ep:name>
-							<ep:tech-name>extraElementen</ep:tech-name>
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>0</ep:min-occurs>
-							<ep:position>152</ep:position>
-						</ep:constructRef>
-						<ep:constructRef prefix="StUF" externalNamespace="yes">
-							<ep:name>aanvullendeElementen</ep:name>
-							<ep:tech-name>aanvullendeElementen</ep:tech-name>
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>0</ep:min-occurs>
-							<ep:position>153</ep:position>
-						</ep:constructRef>
+						<xsl:if test="($generateHistorieConstruct != 'MaterieleHistorie' and not(contains($indicatieMaterieleHistorie, 'Ja'))) and 
+							($generateHistorieConstruct != 'FormeleHistorie' and not(contains($indicatieFormeleHistorie, 'Ja'))) and 
+							($generateHistorieConstruct != 'FormeleHistorieRelatie' and not(contains($indicatieFormeleHistorieRelatie, 'Ja')))">
+							<ep:constructRef prefix="StUF" externalNamespace="yes">
+								<ep:name>extraElementen</ep:name>
+								<ep:tech-name>extraElementen</ep:tech-name>
+								<ep:max-occurs>1</ep:max-occurs>
+								<ep:min-occurs>0</ep:min-occurs>
+								<ep:position>152</ep:position>
+							</ep:constructRef>
+							<ep:constructRef prefix="StUF" externalNamespace="yes">
+								<ep:name>aanvullendeElementen</ep:name>
+								<ep:tech-name>aanvullendeElementen</ep:tech-name>
+								<ep:max-occurs>1</ep:max-occurs>
+								<ep:min-occurs>0</ep:min-occurs>
+								<ep:position>153</ep:position>
+							</ep:constructRef>
+						</xsl:if>
 					</xsl:if>
 
 					<xsl:variable name="association-class-type-id" select="imvert:type-id"/>
@@ -1706,8 +1722,11 @@
 			
 					<xsl:variable name="packageName" select="ancestor::imvert:package/imvert:name"/>
 					<xsl:variable name="mnemonic" select="imvert:alias"/>
-					<xsl:if test="contains($indicatieMaterieleHistorie,'Ja') and $generateHistorieConstruct!='MaterieleHistorie' and $generateHistorieConstruct!='FormeleHistorie' and $generateHistorieConstruct!='FormeleHistorieRelatie' and @verwerkingsModus = 'antwoord'">
-						<xsl:variable name="href" select="imf:create-complexTypeName($packageName,$berichtName,'-historieMaterieel',$mnemonic,$elementName)"/>						
+					
+					<xsl:sequence select="imf:create-debug-comment(concat('indicatieMaterieleHistorie: ',$indicatieMaterieleHistorie,', generateHistorieConstruct: ',$generateHistorieConstruct,', verwerkingsModus: ',$verwerkingsModus),$debugging)"/>
+					
+					<xsl:if test="contains($indicatieMaterieleHistorie,'Ja') and $generateHistorieConstruct!='MaterieleHistorie' and $generateHistorieConstruct!='FormeleHistorie' and $generateHistorieConstruct!='FormeleHistorieRelatie' and $verwerkingsModus = 'antwoord'">
+						<xsl:variable name="href" select="imf:create-complexTypeName($packageName,$berichtName,'HistorieMaterieel',$mnemonic,imvert:name)"/>						
 						
 						<!-- Location: 'ep:constructRef10a'
 				 			 Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct10'. -->			
@@ -1721,8 +1740,8 @@
 							<xsl:sequence select="imf:create-output-element('ep:href', $href)"/>
 						</ep:constructRef>
 					</xsl:if>
-					<xsl:if test="contains($indicatieFormeleHistorie,'Ja') and @verwerkingsModus = 'antwoord'">
-						<xsl:variable name="href" select="imf:create-complexTypeName($packageName,$berichtName,'-historieFormeel',$mnemonic)"/>						
+					<xsl:if test="contains($indicatieFormeleHistorie,'Ja') and $verwerkingsModus = 'antwoord'">
+						<xsl:variable name="href" select="imf:create-complexTypeName($packageName,$berichtName,'HistorieFormeel',$mnemonic,imvert:name)"/>						
 						
 						<!-- Location: 'ep:constructRef10b'
 				 			 Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct10'. -->			
@@ -1736,8 +1755,8 @@
 							<xsl:sequence select="imf:create-output-element('ep:href', $href)"/>
 						</ep:constructRef>
 					</xsl:if>
-					<xsl:if test="contains($indicatieFormeleHistorieRelatie,'Ja') and $generateHistorieConstruct!='MaterieleHistorie' and $generateHistorieConstruct!='FormeleHistorie' and @verwerkingsModus = 'antwoord'">
-						<xsl:variable name="href" select="imf:create-complexTypeName($packageName,$berichtName,'-historieFormeelRelatie',$mnemonic,$elementName)"/>						
+					<xsl:if test="contains($indicatieFormeleHistorieRelatie,'Ja') and $generateHistorieConstruct!='MaterieleHistorie' and $generateHistorieConstruct!='FormeleHistorie' and $verwerkingsModus = 'antwoord'">
+						<xsl:variable name="href" select="imf:create-complexTypeName($packageName,$berichtName,'HistorieFormeelRelatie',$mnemonic,imvert:name)"/>						
 						
 						<!-- Location: 'ep:constructRef10c'
 				 			 Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct10'. -->			

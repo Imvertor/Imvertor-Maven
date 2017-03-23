@@ -12,7 +12,7 @@
 	xmlns:imvert-result="http://www.imvertor.org/schema/imvertor/application/v20160201" 
 	xmlns:metadata="http://www.kinggemeenten.nl/metadataVoorVerwerking" 
 	xmlns:ztc="http://www.kinggemeenten.nl/ztc0310" 
-	xmlns:StUF="http://www.egem.nl/StUF/StUF0301" 
+	xmlns:StUF="http://www.stufstandaarden.nl/onderlaag/stuf0302" 
 	xmlns:ep="http://www.imvertor.org/schema/endproduct" 
 	xmlns:ss="http://schemas.openxmlformats.org/spreadsheetml/2006/main" 
 	version="2.0">
@@ -47,12 +47,12 @@
 				</ep:namespaces>
 			</xsl:variable>
 
-			<xsl:for-each select="$namespaces2bImported/ep:namespaces/ep:namespace">
+			<xsl:for-each select="$namespaces2bImported/ep:namespaces/ep:namespace[@prefix != '' and @identifier != '']">
 				<xsl:namespace name="{@prefix}"><xsl:value-of select="@identifier"/></xsl:namespace>
 			</xsl:for-each>
 
-			<xs:import namespace="http://www.egem.nl/StUF/StUF0301" schemaLocation="stuf0301.xsd"/>
-			<xsl:for-each select="$namespaces2bImported/ep:namespaces/ep:namespace[@prefix != $message-set-prefix and not(@prefix = preceding-sibling::ep:namespace/@prefix)]">
+			<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="stuf0302.xsd"/>
+			<xsl:for-each select="$namespaces2bImported/ep:namespaces/ep:namespace[@prefix != $message-set-prefix and @prefix != '' and not(@prefix = preceding-sibling::ep:namespace/@prefix)]">
 				<xs:import namespace="{@identifier}" schemaLocation="{concat(upper-case(@prefix),'.xsd')}"/>
 			</xsl:for-each>
 
