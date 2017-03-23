@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
+import nl.imvertor.common.file.FtpFolder;
 
 public class OfficeCompiler extends Step {
 
@@ -73,6 +74,34 @@ public class OfficeCompiler extends Step {
 			AnyFile officeFile = new AnyFile(configurator.getParm("system","work-etc-folder-path") + "/" + fn);
 			infoOfficeFile.copyFile(officeFile);
 			configurator.setParm("appinfo", "office-documentation-filename", fn);
+			
+			// see if this result should be sent on to FTP
+			String target = configurator.getParm("cli", "passoffice",false);
+			if (target != null && target.equals("ftp")) {
+				String passftp  = configurator.getParm("cli", "passftp");
+				String passpath = configurator.getParm("cli", "passpath");
+				String passuser = configurator.getParm("cli", "passuser");
+				String passpass = configurator.getParm("cli", "passpass");
+				
+				String targetpath = "ftp://" + passftp + passpath;
+				
+				runner.info(logger, "Uploading office HTML");
+				
+				FtpFolder ftpFolder = new FtpFolder();
+				
+				ftpFolder.server = passftp;
+				ftpFolder.protocol = "false";
+				ftpFolder.username = passuser;
+				ftpFolder.password = passpass;
+
+				try {
+					ftpFolder.login();
+					ftpFolder.upload(officeFile.getCanonicalPath(),passpath);
+					ftpFolder.logout();
+				} catch (Exception e) {
+					runner.warn(logger, "Cannot upload office HTML to " + targetpath);
+				}
+			}
 		} else {
 			runner.error(logger,"Transformation to Office format not implemented yet!");
 		}
