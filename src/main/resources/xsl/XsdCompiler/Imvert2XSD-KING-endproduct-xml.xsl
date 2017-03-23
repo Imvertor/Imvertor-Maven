@@ -231,6 +231,9 @@
             
             <!-- xsl:sequence select="$imvert-endproduct/*"/ -->
         </xsl:result-document x?> 
+        <xsl:result-document href="file:/c:/temp/enriched-rough-messages.xml">
+            <xsl:sequence select="$enriched-rough-messages"/>
+        </xsl:result-document> 
         
         <xsl:sequence select="$imvert-endproduct/*"/>
     </xsl:template>
@@ -246,7 +249,7 @@
         <xsl:variable name="currentMessage">
                 <xsl:copy>
                     <xsl:copy-of select="@*"/>
-                    <xsl:copy-of select="*"/>               
+                    <xsl:copy-of select="*"/>
                 </xsl:copy>
         </xsl:variable>
         
@@ -271,6 +274,7 @@
              entiteitOrBerichtRelatie combinationvalue aren't be processed more than once.
              
              ep:construct elements with the name 'gelijk', 'vanaf', 'totEnMet', 'start' en 'scope' aren't processed here since they need special treatment.  -->
+       
         <xsl:for-each select="$currentMessage/ep:rough-message[not(contains(ep:code,'Di')) and not(contains(ep:code,'Du'))]//ep:construct[ep:id and generate-id(.) = generate-id(key('construct-id',concat(ep:id,@verwerkingsModus),$currentMessage)[1])]">                   
             <xsl:call-template name="processMainConstructs">
                 <xsl:with-param name="fundamentalMnemonic" select="$fundamentalMnemonic"/>
@@ -762,59 +766,7 @@
                                    <xsl:with-param name="context" select="$context" />
                                    <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
                                </xsl:apply-templates>
-                               <!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
-                               <ep:construct>
-                                   <xsl:choose>
-                                       <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
-                                           <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
-                                           <xsl:attribute name="namespaceId" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
-                                       </xsl:when>
-                                       <xsl:otherwise>
-                                           <xsl:attribute name="prefix" select="ep:verkorteAlias"/>
-                                           <xsl:attribute name="namespaceId" select="ep:namespaceIdentifier"/>
-                                       </xsl:otherwise>
-                                   </xsl:choose>
-                                   <ep:name>authentiek</ep:name>
-                                   <ep:tech-name>authentiek</ep:tech-name>
-                                   <ep:max-occurs>unbounded</ep:max-occurs>
-                                   <ep:min-occurs>0</ep:min-occurs>
-                                   <ep:type-name>scalar-string</ep:type-name>
-                                   <ep:enum>J</ep:enum>
-                                   <ep:enum>N</ep:enum>
-                                   <ep:position>145</ep:position>
-                                   <ep:seq>
-                                       <xsl:variable name="attributes"
-                                           select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, $id, '')"/>									
-                                       <xsl:sequence select="$attributes"/>
-                                   </ep:seq>
-                               </ep:construct>
-                               <!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
-                               <ep:construct>
-                                   <xsl:choose>
-                                       <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
-                                           <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
-                                           <xsl:attribute name="namespaceId" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
-                                       </xsl:when>
-                                       <xsl:otherwise>
-                                           <xsl:attribute name="prefix" select="ep:verkorteAlias"/>
-                                           <xsl:attribute name="namespaceId" select="ep:namespaceIdentifier"/>
-                                       </xsl:otherwise>
-                                   </xsl:choose>
-                                   <ep:name>inOnderzoek</ep:name>
-                                   <ep:tech-name>inOnderzoek</ep:tech-name>
-                                   <ep:max-occurs>unbounded</ep:max-occurs>
-                                   <ep:min-occurs>0</ep:min-occurs>
-                                   <ep:type-name>scalar-string</ep:type-name>
-                                   <ep:enum>J</ep:enum>
-                                   <ep:enum>N</ep:enum>
-                                   <ep:position>150</ep:position>
-                                   <ep:seq>
-                                       <xsl:variable name="attributes"
-                                           select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, $id, '')"/>									
-                                       <xsl:sequence select="$attributes"/>
-                                   </ep:seq>
-                               </ep:construct>
-                               <!-- The uml associations of the uml group are placed here. -->
+                                <!-- The uml associations of the uml group are placed here. -->
                                <xsl:apply-templates select="$construct"
                                    mode="create-message-content">
                                    <xsl:with-param name="berichtName" select="$berichtName"/>
@@ -831,7 +783,7 @@
                        <xsl:sequence select="imf:create-debug-comment('For-each-when: @type=group and $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
                        
                    </xsl:when>
-                   <!-- The following when generates global constructs based on uml classes. -->
+                    <!-- The following when generates global constructs based on uml classes. -->
                     <xsl:when test="exists(imf:get-construct-by-id($id,$packages-doc))">
 
                         <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->                                

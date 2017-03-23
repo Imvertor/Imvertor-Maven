@@ -58,6 +58,7 @@
 
 			<xsl:apply-templates select="ep:message"/>
 			<xsl:apply-templates select="ep:construct[@type='group']" mode="complexType"/>
+			<xsl:apply-templates select="ep:construct[@type='complexData']" mode="complexType"/>
 			<xsl:apply-templates select="ep:construct[not(@type)]" mode="complexType"/>
 
 			<xsl:sequence select="imf:create-debug-comment('simpleTypes to be extended with XML attributes',$debugging)"/>
