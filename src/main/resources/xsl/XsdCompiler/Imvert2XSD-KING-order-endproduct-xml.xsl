@@ -116,6 +116,11 @@
                         <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
                     </xsl:apply-templates>
                 </xsl:when>
+                <xsl:when test="not(@orderingDesired)">
+                    <xsl:apply-templates select="*">
+                        <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
+                    </xsl:apply-templates>
+                </xsl:when>
                 <xsl:otherwise>
                     <xsl:apply-templates select="*">
                         <xsl:sort select="ep:position" order="ascending" data-type="number"/>

@@ -231,6 +231,9 @@
             
             <!-- xsl:sequence select="$imvert-endproduct/*"/ -->
         </xsl:result-document x?> 
+        <xsl:result-document href="file:/c:/temp/enriched-rough-messages.xml">
+            <xsl:sequence select="$enriched-rough-messages"/>
+        </xsl:result-document> 
         
         <xsl:sequence select="$imvert-endproduct/*"/>
     </xsl:template>
@@ -246,7 +249,7 @@
         <xsl:variable name="currentMessage">
                 <xsl:copy>
                     <xsl:copy-of select="@*"/>
-                    <xsl:copy-of select="*"/>               
+                    <xsl:copy-of select="*"/>
                 </xsl:copy>
         </xsl:variable>
         
@@ -271,6 +274,7 @@
              entiteitOrBerichtRelatie combinationvalue aren't be processed more than once.
              
              ep:construct elements with the name 'gelijk', 'vanaf', 'totEnMet', 'start' en 'scope' aren't processed here since they need special treatment.  -->
+       
         <xsl:for-each select="$currentMessage/ep:rough-message[not(contains(ep:code,'Di')) and not(contains(ep:code,'Du'))]//ep:construct[ep:id and generate-id(.) = generate-id(key('construct-id',concat(ep:id,@verwerkingsModus),$currentMessage)[1])]">                   
             <xsl:call-template name="processMainConstructs">
                 <xsl:with-param name="fundamentalMnemonic" select="$fundamentalMnemonic"/>
@@ -831,7 +835,7 @@
                        <xsl:sequence select="imf:create-debug-comment('For-each-when: @type=group and $packages//imvert:class[imvert:id = $id] End-For-each-when',$debugging)"/>
                        
                    </xsl:when>
-                   <!-- The following when generates global constructs based on uml classes. -->
+                    <!-- The following when generates global constructs based on uml classes. -->
                     <xsl:when test="exists(imf:get-construct-by-id($id,$packages-doc))">
 
                         <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->                                
