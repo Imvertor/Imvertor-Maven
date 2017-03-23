@@ -766,59 +766,7 @@
                                    <xsl:with-param name="context" select="$context" />
                                    <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
                                </xsl:apply-templates>
-                               <!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
-                               <ep:construct>
-                                   <xsl:choose>
-                                       <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
-                                           <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
-                                           <xsl:attribute name="namespaceId" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
-                                       </xsl:when>
-                                       <xsl:otherwise>
-                                           <xsl:attribute name="prefix" select="ep:verkorteAlias"/>
-                                           <xsl:attribute name="namespaceId" select="ep:namespaceIdentifier"/>
-                                       </xsl:otherwise>
-                                   </xsl:choose>
-                                   <ep:name>authentiek</ep:name>
-                                   <ep:tech-name>authentiek</ep:tech-name>
-                                   <ep:max-occurs>unbounded</ep:max-occurs>
-                                   <ep:min-occurs>0</ep:min-occurs>
-                                   <ep:type-name>scalar-string</ep:type-name>
-                                   <ep:enum>J</ep:enum>
-                                   <ep:enum>N</ep:enum>
-                                   <ep:position>145</ep:position>
-                                   <ep:seq>
-                                       <xsl:variable name="attributes"
-                                           select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, $id, '')"/>									
-                                       <xsl:sequence select="$attributes"/>
-                                   </ep:seq>
-                               </ep:construct>
-                               <!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
-                               <ep:construct>
-                                   <xsl:choose>
-                                       <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
-                                           <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
-                                           <xsl:attribute name="namespaceId" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
-                                       </xsl:when>
-                                       <xsl:otherwise>
-                                           <xsl:attribute name="prefix" select="ep:verkorteAlias"/>
-                                           <xsl:attribute name="namespaceId" select="ep:namespaceIdentifier"/>
-                                       </xsl:otherwise>
-                                   </xsl:choose>
-                                   <ep:name>inOnderzoek</ep:name>
-                                   <ep:tech-name>inOnderzoek</ep:tech-name>
-                                   <ep:max-occurs>unbounded</ep:max-occurs>
-                                   <ep:min-occurs>0</ep:min-occurs>
-                                   <ep:type-name>scalar-string</ep:type-name>
-                                   <ep:enum>J</ep:enum>
-                                   <ep:enum>N</ep:enum>
-                                   <ep:position>150</ep:position>
-                                   <ep:seq>
-                                       <xsl:variable name="attributes"
-                                           select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, $id, '')"/>									
-                                       <xsl:sequence select="$attributes"/>
-                                   </ep:seq>
-                               </ep:construct>
-                               <!-- The uml associations of the uml group are placed here. -->
+                                <!-- The uml associations of the uml group are placed here. -->
                                <xsl:apply-templates select="$construct"
                                    mode="create-message-content">
                                    <xsl:with-param name="berichtName" select="$berichtName"/>
