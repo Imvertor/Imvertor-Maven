@@ -45,6 +45,13 @@
          <type>file</type>
       </cli-parm> 
       <cli-parm>
+         <name>extension</name>
+         <arg>string</arg>
+         <tip>Extension, to append to result file name (e.g. ".html")</tip>
+         <required>false</required>
+         <type>string</type>
+      </cli-parm> 
+      <cli-parm>
          <name>transinfo</name>
          <arg>string</arg>
          <tip>Information to pass to the transformation stylesheet</tip>

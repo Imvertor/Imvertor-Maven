@@ -66,11 +66,12 @@ public class GenericTransformer extends Step {
 		AnyFile infile = new AnyFile(configurator.getParm("cli","infile"));
 		AnyFile outfile = new AnyFile(configurator.getParm("cli","outfile"));
 		AnyFile xslfile = new AnyFile(configurator.getParm("cli","xslfile"));
-	
+		String extension = configurator.getParm("cli","extension");
+		
 		if (infile.isDirectory() && outfile.isDirectory()) {
 			// process the full folder
 			AnyFolder infolder = new AnyFolder(infile);
-			transformDir(transformer,infolder,outfile,xslfile);
+			transformDir(transformer,infolder,outfile,xslfile, extension);
 		} else if (infile.isFile() && outfile.isDirectory()) { 
 			// transform the file to same named file in the target folder 
 			File target = new File(outfile, infile.getName());
@@ -93,14 +94,14 @@ public class GenericTransformer extends Step {
 			
 	}
 	
-	private boolean transformDir(Transformer transformer, AnyFile infolder, AnyFile outfolder, AnyFile xslfile) throws Exception {
+	private boolean transformDir(Transformer transformer, AnyFile infolder, AnyFile outfolder, AnyFile xslfile, String extension) throws Exception {
 		File[] files = infolder.listFiles();
 		Boolean succeeds = true;
 		for (int i = 0; i < files.length; i++) {
 			AnyFile source = new AnyFile(files[i]);
-			AnyFile target = new AnyFile(outfolder, files[i].getName());
+			AnyFile target = new AnyFile(outfolder, files[i].getName() + extension);
 			if (source.isDirectory())
-				succeeds = succeeds && transformDir(transformer, source, target, xslfile);
+				succeeds = succeeds && transformDir(transformer, source, target, xslfile, extension);
 			else if (source.getExtension().equals("xml"))
 				succeeds = succeeds && transform(transformer, source, target, xslfile);
 		}
