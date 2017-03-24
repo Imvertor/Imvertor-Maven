@@ -98,6 +98,11 @@
 							<!-- Dit betreft een construct voor een entiteit op een nog dieper niveau. Typisch een dat gebruikt wordt in een gerelateerde. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kerngegevens')"/>
 						</xsl:when>
+						<xsl:when test="@type='group' and ancestor::ep:construct[ep:tech-name = 'gerelateerde']">
+							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of een entiteit op het tweede niveau of 
+								 group constructs die daar een nakomeling van zijn. -->
+							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'gerelateerdeAntwoord')"/>
+						</xsl:when>
 						<xsl:when test="@type='group' and ((count(ancestor::ep:construct[@type='entity']) = 1) or (count(ancestor::ep:construct[@type='entity']) = 2))">
 							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of een entiteit op het tweede niveau of 
 								 group constructs die daar een nakomeling van zijn. -->
@@ -142,6 +147,11 @@
 						<xsl:when test="@type='entity' and (count(ancestor::ep:construct[@type='entity']) > 1)">
 							<!-- Dit betreft een construct voor een entiteit op een nog dieper niveau. Typisch een dat gebruikt wordt in een gerelateerde in de context. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kerngegevens')"/>
+						</xsl:when>
+						<xsl:when test="@type='group' and ancestor::ep:construct[ep:tech-name = 'gerelateerde']">
+							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of een entiteit op het tweede niveau binnen de 
+								 context van een gelijk, totEnMet, vanaf of scope element of group constructs die daar een nakomeling van zijn. -->
+							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'gerelateerdeVraag')"/>
 						</xsl:when>
 						<xsl:when test="@type='group' and ((count(ancestor::ep:construct[@type='entity']) = 1) or (count(ancestor::ep:construct[@type='entity']) = 2))">
 							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of een entiteit op het tweede niveau binnen de 

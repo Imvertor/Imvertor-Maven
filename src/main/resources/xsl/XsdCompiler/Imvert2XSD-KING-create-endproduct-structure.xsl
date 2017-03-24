@@ -1202,6 +1202,7 @@
 		<xsl:param name="indicatieFormeleHistorieRelatie" select="'Nee'"/>
 		<xsl:param name="fundamentalMnemonic" select="''"/>
 		<xsl:param name="verwerkingsModus"/>
+		<xsl:param name="processType" select="''"/>
 		
 		<xsl:variable name="name" select="imvert:name/@original"/>
 		<xsl:variable name="tech-name" select="imf:get-normalized-name(imvert:name, 'element-name')"/>
@@ -1297,13 +1298,27 @@
 				test="($generateHistorieConstruct = 'MaterieleHistorie' and contains($materieleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorie' and contains($formeleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorieRelatie' and contains($formeleHistorie, 'Ja')) or $generateHistorieConstruct = 'Nee'"-->
 			<xsl:variable name="type-id" select="imvert:type-id"/>
 			<xsl:choose>
+				<xsl:when test="$processType = 'keyTabelEntiteit'">
+					<xsl:if test="$mogelijkGeenWaarde = 'JA' and imvert:type-name != 'scalar-string' and not(ep:enum = '')">
+						<ep:voidable>Ja</ep:voidable>
+					</xsl:if>
+					<xsl:sequence select="imf:create-output-element('ep:length', $total-digits)"/>
+					<xsl:sequence select="imf:create-output-element('ep:fraction-digits', $fraction-digits)"/>
+					<xsl:sequence select="imf:create-output-element('ep:max-length', $max-length)"/>
+					<xsl:sequence select="imf:create-output-element('ep:min-length', $min-length)"/>
+					<xsl:sequence select="imf:create-output-element('ep:max-value', $max-waarde)"/>
+					<xsl:sequence select="imf:create-output-element('ep:min-value', $min-waarde)"/>
+					<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)"/>
+					<xsl:sequence select="imf:create-output-element('ep:formeel-patroon', $formeelPatroon)"/>
+					<xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/>
+				</xsl:when>
 				<xsl:when test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype = 'COMPLEX DATATYPE'">
 
 					<xsl:variable name="type" select="'Grp'"/>
 					<xsl:variable name="name" select="//imvert:class[imvert:id = $type-id]/imvert:name"/>
 					
 					<!--ep:constructRef prefix="{$prefix}"-->
-					<ep:constructRef prefix="bg">
+					<ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 						<xsl:if test="$debugging">
 							<ep:tagged-values>
 								<xsl:copy-of select="$tvs"/>
@@ -1334,11 +1349,9 @@
 						<xsl:if test="$mogelijkGeenWaarde = 'JA'">
 							<ep:voidable>Ja</ep:voidable>
 						</xsl:if>
-						<xsl:sequence
-							select="imf:create-output-element('ep:href', imf:create-Grp-complexTypeName('',$berichtName,$type,$name,$verwerkingsModus))" />
 						<!-- When a tagged-value 'Positie' exists this is used to assign a value 
 								to 'ep:position' if not the value of the element 'imvert:position' is used. -->
-						<!--xsl:choose>
+						<xsl:choose>
 							<xsl:when
 								test="imvert:tagged-values/imvert:tagged-value/imvert:name = 'Positie'">
 								<xsl:sequence
@@ -1350,7 +1363,9 @@
 									select="imf:create-output-element('ep:position', imvert:position)"/>
 							</xsl:when>
 							<xsl:otherwise/>
-						</xsl:choose-->
+						</xsl:choose>
+						<xsl:sequence
+							select="imf:create-output-element('ep:href', imf:create-Grp-complexTypeName('',$berichtName,$type,$name,$verwerkingsModus))" />
 						<!-- Attributes with the name 'melding' or which are descendants of a 
 								class with the name 'Stuurgegevens', 'Systeem' or 'Parameters' mustn't get 
 								XML attributes. -->
@@ -1389,6 +1404,109 @@
 							</ep:seq>
 						</xsl:if x?>
 					</ep:constructRef>
+				</xsl:when>
+				<xsl:when test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype = 'TABEL-ENTITEIT'">
+					
+					<xsl:variable name="type" select="'Grp'"/>
+					<xsl:variable name="name" select="//imvert:class[imvert:id = $type-id]/imvert:name"/>
+					
+					<ep:construct prefix="{$prefix}">
+						<xsl:if test="$debugging">
+							<ep:tagged-values>
+								<xsl:copy-of select="$tvs"/>
+								<ep:found-tagged-values>
+									<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+									<xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
+									<xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
+									<xsl:sequence select="imf:create-output-element('ep:kerngegeven', $kerngegeven)"/>
+									<xsl:sequence select="imf:create-output-element('ep:min-length', $min-length)"/>
+									<xsl:sequence select="imf:create-output-element('ep:max-value', $max-waarde)"/>
+									<xsl:sequence select="imf:create-output-element('ep:min-value', $min-waarde)"/>
+									<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)"/>
+									<xsl:sequence select="imf:create-output-element('ep:formeel-patroon', $formeelPatroon)"/>
+									<xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/>
+								</ep:found-tagged-values>
+							</ep:tagged-values>
+						</xsl:if>
+						<xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
+						<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
+						<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
+						<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+						<xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
+						<xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
+						<xsl:sequence select="imf:create-output-element('ep:kerngegeven', $kerngegeven)"/>
+						<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
+						<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
+						<!--xsl:if test="($mogelijkGeenWaarde = 'JA' and imvert:type-name != 'scalar-string' and not(ep:enum = '')) or $context = 'scope'"-->
+
+						<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]/imvert:attributes/imvert:attribute[imvert:is-id = 'true']"  mode="create-message-content">
+							<xsl:with-param name="berichtCode" select="$berichtCode"/>
+							<xsl:with-param name="berichtName" select="$berichtName"/>
+							<xsl:with-param name="generated-id" select="$generated-id"/>
+							<xsl:with-param name="currentMessage" select="$currentMessage"/>
+							<xsl:with-param name="context" select="$context"/>
+							<xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
+							<xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
+							<xsl:with-param name="indicatieFormeleHistorie" select="$indicatieFormeleHistorie"/>
+							<xsl:with-param name="indicatieFormeleHistorieRelatie" select="$indicatieFormeleHistorieRelatie"/>
+							<xsl:with-param name="fundamentalMnemonic" select="$fundamentalMnemonic"/>
+							<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+							<xsl:with-param name="processType" select="'keyTabelEntiteit'"/>
+						</xsl:apply-templates>
+
+						<!-- When a tagged-value 'Positie' exists this is used to assign a value 
+								to 'ep:position' if not the value of the element 'imvert:position' is used. -->
+						<xsl:choose>
+							<xsl:when
+								test="imvert:tagged-values/imvert:tagged-value/imvert:name = 'Positie'">
+								<xsl:sequence
+									select="imf:create-output-element('ep:position', imvert:tagged-values/imvert:tagged-value[imvert:name = 'Positie']/imvert:value)"/>
+								<xsl:sequence select="imf:create-output-element('ep:tv-position', 'yes')"/>
+							</xsl:when>
+							<xsl:when test="imvert:position">
+								<xsl:sequence
+									select="imf:create-output-element('ep:position', imvert:position)"/>
+							</xsl:when>
+							<xsl:otherwise/>
+						</xsl:choose>
+						<!-- Attributes with the name 'melding' or which are descendants of a 
+								class with the name 'Stuurgegevens', 'Systeem' or 'Parameters' mustn't get 
+								XML attributes. -->
+						<xsl:if
+							test="imvert:name != 'melding' and ancestor::imvert:class[imvert:name != 'Stuurgegevens'] and ancestor::imvert:class[imvert:name != 'Systeem'] and ancestor::imvert:class[imvert:name != 'Parameters']">
+							<ep:seq>
+								<!-- The function imf:createAttributes is used to determine the XML 
+										attributes neccessary for this context. It has the following parameters: 
+										- typecode - berichttype - context - datumType The first 3 parameters relate 
+										to columns with the same name within an Excel spreadsheet used to configure 
+										a.o. XML attributes usage. The last parameter is used to determine the need 
+										for the XML-attribute 'StUF:indOnvolledigeDatum'. -->
+								
+								<!-- ROME: De berichtcode is niet als globale variabele aanwezig en 
+										kan dus niet zomaar opgeroepen worden. Hij kan helaas ook niet eenvoudig 
+										verkregen worden aangezien het element op basis waarvan de berichtcode kan 
+										worden gegenereerd geen ancestor is van het huidige element. Er zijn 2 opties: 
+										* De berichtcode als parameter aan alle templates toevoegen en steeds doorgeven. 
+										* De attributes pas aan de EP structuur toevoegen in een aparte slag nadat 
+										de EP structuur al gegenereerd is. Het message element dat de berichtcode 
+										bevat is dan nl. wel altijd de ancestor van het element dat het nodig heeft. 
+										Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook 
+										nog herleid en doorgegeven worden. -->
+								<xsl:variable name="datumType">
+									<xsl:choose>
+										<!-- ROME: Zodra scalar-xxx is doorgevoerd kan de eerste when verwijderd 
+												worden. -->
+										<xsl:when test="imvert:type-name = 'datetime'">yes</xsl:when>
+										<xsl:when test="imvert:type-name = 'scalar-date'">yes</xsl:when>
+										<xsl:otherwise>no</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
+								<xsl:variable name="attributes"
+									select="imf:createAttributes('bottomlevel', '-', '-', $datumType, '', $mogelijkGeenWaarde, $onvolledigeDatum, $prefix, $id, imvert:type-name)"/>
+								<xsl:sequence select="$attributes"/>
+							</ep:seq>
+						</xsl:if>
+					</ep:construct>
 				</xsl:when>
 				<xsl:otherwise>				
 					<ep:construct prefix="{$prefix}">
@@ -1754,9 +1872,9 @@
 								<ep:position>151</ep:position>
 							</ep:constructRef>
 						</xsl:if>
-						<xsl:if test="($generateHistorieConstruct != 'MaterieleHistorie' and not(contains($indicatieMaterieleHistorie, 'Ja'))) and 
-							($generateHistorieConstruct != 'FormeleHistorie' and not(contains($indicatieFormeleHistorie, 'Ja'))) and 
-							($generateHistorieConstruct != 'FormeleHistorieRelatie' and not(contains($indicatieFormeleHistorieRelatie, 'Ja')))">
+						<xsl:if test="$generateHistorieConstruct != 'MaterieleHistorie' and 
+							$generateHistorieConstruct != 'FormeleHistorie' and 
+							$generateHistorieConstruct != 'FormeleHistorieRelatie'">
 							<ep:constructRef prefix="StUF" externalNamespace="yes">
 								<ep:name>extraElementen</ep:name>
 								<ep:tech-name>extraElementen</ep:tech-name>
