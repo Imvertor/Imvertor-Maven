@@ -1847,19 +1847,21 @@
 								<ep:position>149</ep:position>
 							</ep:constructRef>
 						</xsl:if>
-						<ep:constructRef prefix="StUF" externalNamespace="yes">
-							<ep:name>tijdvakGeldigheid</ep:name>
-							<ep:tech-name>tijdvakGeldigheid</ep:tech-name>
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>
-								<xsl:choose>
-									<xsl:when test="($generateHistorieConstruct = 'MaterieleHistorie' and contains($indicatieMaterieleHistorie, 'Ja')) or 
-													($generateHistorieConstruct = 'FormeleHistorie' and contains($indicatieFormeleHistorie, 'Ja'))">1</xsl:when>
-									<xsl:otherwise>0</xsl:otherwise>
-								</xsl:choose>							
-							</ep:min-occurs>
-							<ep:position>150</ep:position>
-						</ep:constructRef>
+						<xsl:if test="imvert:association-class">
+							<ep:constructRef prefix="StUF" externalNamespace="yes">
+								<ep:name>tijdvakGeldigheid</ep:name>
+								<ep:tech-name>tijdvakGeldigheid</ep:tech-name>
+								<ep:max-occurs>1</ep:max-occurs>
+								<ep:min-occurs>
+									<xsl:choose>
+										<xsl:when test="($generateHistorieConstruct = 'MaterieleHistorie' and contains($indicatieMaterieleHistorie, 'Ja')) or 
+														($generateHistorieConstruct = 'FormeleHistorie' and contains($indicatieFormeleHistorie, 'Ja'))">1</xsl:when>
+										<xsl:otherwise>0</xsl:otherwise>
+									</xsl:choose>							
+								</ep:min-occurs>
+								<ep:position>150</ep:position>
+							</ep:constructRef>
+						</xsl:if>
 						<xsl:if test="contains($indicatieFormeleHistorie, 'Ja')">
 							<ep:constructRef prefix="StUF" externalNamespace="yes">
 								<ep:name>tijdstipRegistratie</ep:name>
