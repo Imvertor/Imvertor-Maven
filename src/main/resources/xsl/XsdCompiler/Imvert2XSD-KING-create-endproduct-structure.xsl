@@ -1299,9 +1299,12 @@
 			<xsl:variable name="type-id" select="imvert:type-id"/>
 			<xsl:choose>
 				<xsl:when test="$processType = 'keyTabelEntiteit'">
+					
+					<xsl:sequence select="imf:create-debug-comment('Volgende kenmerken komen van het attribute uit de tabel entiteit.',$debugging)"/>
 					<xsl:if test="$mogelijkGeenWaarde = 'JA' and imvert:type-name != 'scalar-string' and not(ep:enum = '')">
 						<ep:voidable>Ja</ep:voidable>
 					</xsl:if>
+					<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
 					<xsl:sequence select="imf:create-output-element('ep:length', $total-digits)"/>
 					<xsl:sequence select="imf:create-output-element('ep:fraction-digits', $fraction-digits)"/>
 					<xsl:sequence select="imf:create-output-element('ep:max-length', $max-length)"/>
@@ -1311,6 +1314,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)"/>
 					<xsl:sequence select="imf:create-output-element('ep:formeel-patroon', $formeelPatroon)"/>
 					<xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/>
+					<xsl:sequence select="imf:create-debug-comment('Voorgaande kenmerken komen van het attribute uit de tabel entiteit.',$debugging)"/>
 				</xsl:when>
 				<xsl:when test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype = 'COMPLEX DATATYPE'">
 
@@ -1430,14 +1434,12 @@
 						</xsl:if>
 						<xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
 						<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
-						<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
 						<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
 						<xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
 						<xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
 						<xsl:sequence select="imf:create-output-element('ep:kerngegeven', $kerngegeven)"/>
 						<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
 						<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
-						<!--xsl:if test="($mogelijkGeenWaarde = 'JA' and imvert:type-name != 'scalar-string' and not(ep:enum = '')) or $context = 'scope'"-->
 
 						<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]/imvert:attributes/imvert:attribute[imvert:is-id = 'true']"  mode="create-message-content">
 							<xsl:with-param name="berichtCode" select="$berichtCode"/>

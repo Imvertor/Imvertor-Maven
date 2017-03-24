@@ -972,7 +972,7 @@
 			</xsl:when>
 			<xsl:when test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype = 'TABEL-ENTITEIT'">
 				<xsl:sequence select="imf:create-debug-comment(concat('Class: ',$type-id),$debugging)"/>
-				<ep:construct typeCode="toplevel">
+				<ep:construct typeCode="tabelEntiteit">
 					<xsl:attribute name="context">
 						<xsl:choose>
 							<xsl:when test="empty($context)">-</xsl:when>
