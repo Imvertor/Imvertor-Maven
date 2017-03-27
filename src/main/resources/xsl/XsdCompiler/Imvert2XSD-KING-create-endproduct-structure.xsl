@@ -1207,6 +1207,7 @@
 		<xsl:variable name="name" select="imvert:name/@original"/>
 		<xsl:variable name="tech-name" select="imf:get-normalized-name(imvert:name, 'element-name')"/>
 		<xsl:variable name="type-name" select="imvert:type-name"/>
+		<xsl:variable name="type-modifier" select="imvert:type-modifier"/>
 		<xsl:variable name="max-occurs" select="imvert:max-occurs"/>
 		<xsl:variable name="min-occurs" select="imvert:min-occurs"/>
 		<xsl:variable name="max-length" select="imvert:max-length"/>
@@ -1397,7 +1398,6 @@
 									<xsl:choose>
 										<!-- ROME: Zodra scalar-xxx is doorgevoerd kan de eerste when verwijderd 
 												worden. -->
-										<xsl:when test="imvert:type-name = 'datetime'">yes</xsl:when>
 										<xsl:when test="imvert:type-name = 'scalar-date'">yes</xsl:when>
 										<xsl:otherwise>no</xsl:otherwise>
 									</xsl:choose>
@@ -1498,7 +1498,6 @@
 									<xsl:choose>
 										<!-- ROME: Zodra scalar-xxx is doorgevoerd kan de eerste when verwijderd 
 												worden. -->
-										<xsl:when test="imvert:type-name = 'datetime'">yes</xsl:when>
 										<xsl:when test="imvert:type-name = 'scalar-date'">yes</xsl:when>
 										<xsl:otherwise>no</xsl:otherwise>
 									</xsl:choose>
@@ -1532,6 +1531,7 @@
 							<xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
 							<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
 							<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
+							<xsl:sequence select="imf:create-output-element('ep:type-modifier', $type-modifier)"/>
 							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
 							<xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
 							<xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
@@ -1606,14 +1606,17 @@
 										<xsl:choose>
 											<!-- ROME: Zodra scalar-xxx is doorgevoerd kan de eerste when verwijderd 
 												worden. -->
-											<xsl:when test="imvert:type-name = 'datetime'">yes</xsl:when>
-											<xsl:when test="imvert:type-name = 'scalar-date'">yes</xsl:when>
+											<xsl:when test="$type-name = 'scalar-date'">yes</xsl:when>
 											<xsl:otherwise>no</xsl:otherwise>
 										</xsl:choose>
 									</xsl:variable>
-									<xsl:variable name="attributes"
-										select="imf:createAttributes('bottomlevel', '-', '-', $datumType, '', $mogelijkGeenWaarde, $onvolledigeDatum, $prefix, $id, imvert:type-name)"/>
-									<xsl:sequence select="$attributes"/>
+
+
+									<xsl:if test="$type-name != 'scalar-date' or $type-name != 'scalar-datetime' or $type-name != 'scalar-year' or $type-name != 'scalar-yearmonth' or $type-name != 'scalar-postcode'">
+										<xsl:variable name="attributes"
+											select="imf:createAttributes('bottomlevel', '-', '-', $datumType, '', $mogelijkGeenWaarde, $onvolledigeDatum, $prefix, $id, imvert:type-name)"/>
+										<xsl:sequence select="$attributes"/>
+									</xsl:if>
 								</ep:seq>
 							</xsl:if>
 						</ep:construct>
