@@ -214,7 +214,11 @@
                 </xsl:for-each>
 
            <xsl:apply-templates select="$enriched-rough-messages/ep:rough-messages/ep:rough-message"/>
- 
+            
+           <xsl:for-each select="$enriched-rough-messages//ep:construct[@typeCode='tabelEntiteit' and generate-id(.) = generate-id(key('construct-id',ep:id,$enriched-rough-messages)[1])]">                   
+               <xsl:call-template name="processMainConstructs"/>
+           </xsl:for-each>
+            
         </ep:message-set>
      </xsl:variable>
     
@@ -275,14 +279,14 @@
              
              ep:construct elements with the name 'gelijk', 'vanaf', 'totEnMet', 'start' en 'scope' aren't processed here since they need special treatment.  -->
        
-        <xsl:for-each select="$currentMessage/ep:rough-message[not(contains(ep:code,'Di')) and not(contains(ep:code,'Du'))]//ep:construct[ep:id and generate-id(.) = generate-id(key('construct-id',concat(ep:id,@verwerkingsModus),$currentMessage)[1])]">                   
+        <xsl:for-each select="$currentMessage/ep:rough-message[not(contains(ep:code,'Di')) and not(contains(ep:code,'Du'))]//ep:construct[@typeCode!='tabelEntiteit' and ep:id and generate-id(.) = generate-id(key('construct-id',concat(ep:id,@verwerkingsModus),$currentMessage)[1])]">                   
             <xsl:call-template name="processMainConstructs">
                 <xsl:with-param name="fundamentalMnemonic" select="$fundamentalMnemonic"/>
                 <xsl:with-param name="currentMessage" select="$currentMessage"/>
             </xsl:call-template> 
         </xsl:for-each>
         
-        <xsl:for-each select="$currentMessage/ep:rough-message[contains(ep:code,'Di') or contains(ep:code,'Du')]//ep:construct[ep:id and generate-id(.) = generate-id(key('construct-id-in-vrijbericht',concat(ep:id,@verwerkingsModus,@entiteitOrBerichtRelatie),$currentMessage)[1])]">
+        <xsl:for-each select="$currentMessage/ep:rough-message[contains(ep:code,'Di') or contains(ep:code,'Du')]//ep:construct[@typeCode!='tabelEntiteit' and ep:id and generate-id(.) = generate-id(key('construct-id-in-vrijbericht',concat(ep:id,@verwerkingsModus,@entiteitOrBerichtRelatie),$currentMessage)[1])]">
             <xsl:call-template name="processMainConstructs">
                 <xsl:with-param name="fundamentalMnemonic" select="$fundamentalMnemonic"/>
                 <xsl:with-param name="currentMessage" select="$currentMessage"/>
@@ -586,8 +590,8 @@
     </xsl:template>
     
     <xsl:template name="processMainConstructs">
-        <xsl:param name="fundamentalMnemonic"/>
-        <xsl:param name="currentMessage"/>
+        <xsl:param name="fundamentalMnemonic" select="''"/>
+        <xsl:param name="currentMessage" select="''"/>
         
         <xsl:variable name="berichtName" as="xs:string">
             <xsl:choose>
@@ -684,7 +688,267 @@
                    historieFormeel constructs en constructRefs maken terwijl dat in sommige contexten wel van belang is.-->
                
                 
-
+            <xsl:when test="$currentMessage = ''">
+                
+                <xsl:variable name="docs">
+                    <imvert:complete-documentation>
+                        <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
+                    </imvert:complete-documentation>
+                </xsl:variable>
+                <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
+                
+                <!-- Location: 'ep:construct1'
+						    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-structure.xsl' on the location with the id 'ep:constructRef1'. -->
+                
+                <ep:construct>
+                    <xsl:choose>
+                        <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
+                            <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
+                            <xsl:attribute name="namespaceId" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="prefix" select="ep:verkorteAlias"/>
+                            <xsl:attribute name="namespaceId" select="ep:namespaceIdentifier"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <!-- The value of the tech-name is dependant on the availability of an alias. -->
+                    <xsl:choose>
+                        <xsl:when test="not(empty($alias)) and $alias != ''">
+                            <xsl:sequence select="imf:create-debug-comment('xsl:when test=$packages//imvert:class[imvert:id = $id]/imvert:alias',$debugging)"/>
+                            <xsl:sequence
+                                select="imf:create-output-element('ep:tech-name', concat($alias,'-basis'))" />
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence select="imf:create-debug-comment('xsl:otherwise',$debugging)"/>
+                            <xsl:sequence
+                                select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($packageName,$berichtName,(),(),()))" />
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+                    <xsl:choose>
+                        
+                        <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
+                        <xsl:when test="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
+                            <xsl:apply-templates select="$construct"
+                                mode="create-message-content">
+                                <xsl:with-param name="berichtName" select="$berichtName"/>
+                                <xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'" />
+                                <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                <xsl:with-param name="generated-id" select="$generated-id"/>
+                                <xsl:with-param name="currentMessage" select="''"/>
+                                <xsl:with-param name="context" select="''" />
+                                <xsl:with-param name="verwerkingsModus" select="''"/>
+                            </xsl:apply-templates>
+                        </xsl:when>
+                        <!-- Else the content of the current uml class is processed. -->
+                        <xsl:otherwise>
+                            <ep:seq>
+                                <!-- The uml attributes of the uml class are placed here. -->
+                                <xsl:apply-templates select="$construct"
+                                    mode="create-message-content">
+                                    <xsl:with-param name="berichtName" select="$berichtName"/>
+                                    <xsl:with-param name="proces-type" select="'attributes'" />
+                                    <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                    <xsl:with-param name="generated-id" select="$generated-id"/>
+                                    <xsl:with-param name="currentMessage" select="''"/>
+                                    <xsl:with-param name="context" select="''" />
+                                    <xsl:with-param name="verwerkingsModus" select="''"/>
+                                </xsl:apply-templates>
+                                <!-- The uml groups of the uml class are placed here. -->
+                                <xsl:apply-templates select="$construct"
+                                    mode="create-message-content">
+                                    <xsl:with-param name="berichtName" select="$berichtName"/>
+                                    <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
+                                    <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                    <xsl:with-param name="generated-id" select="$generated-id"/>
+                                    <xsl:with-param name="currentMessage" select="''"/>
+                                    <xsl:with-param name="context" select="''" />
+                                    <!-- If the class is refered to form an association which is part of an VRIJ BERICHT no stuurgegevens must be generated. -->
+                                    <xsl:with-param name="useStuurgegevens" select="'yes'"/>
+                                    <xsl:with-param name="verwerkingsModus" select="''"/>
+                                </xsl:apply-templates>
+                                <!-- ep:authentiek element is used to determine if a 'authentiek' element needs to be generated in the messages in the next higher level. -->
+                                <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
+                                <!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
+                                <ep:construct>
+                                    <xsl:choose>
+                                        <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
+                                            <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
+                                            <xsl:attribute name="namespaceId" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="prefix" select="ep:verkorteAlias"/>
+                                            <xsl:attribute name="namespaceId" select="ep:namespaceIdentifier"/>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                    <ep:name>authentiek</ep:name>
+                                    <ep:tech-name>authentiek</ep:tech-name>
+                                    <ep:max-occurs>unbounded</ep:max-occurs>
+                                    <ep:min-occurs>0</ep:min-occurs>
+                                    <ep:type-name>scalar-string</ep:type-name>
+                                    <ep:enum>J</ep:enum>
+                                    <ep:enum>N</ep:enum>
+                                    <ep:position>145</ep:position>
+                                    <ep:seq>
+                                        <xsl:variable name="attributes"
+                                            select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, $id, '')"/>									
+                                        <xsl:sequence select="$attributes"/>
+                                    </ep:seq>
+                                </ep:construct>
+                                <!-- ep:inOnderzoek element is used to determine if a 'inOnderzoek' element needs to be generated in the messages in the next higher level. -->
+                                <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
+                                <!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
+                                <ep:construct>
+                                    <xsl:choose>
+                                        <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
+                                            <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
+                                            <xsl:attribute name="namespaceId" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="prefix" select="ep:verkorteAlias"/>
+                                            <xsl:attribute name="namespaceId" select="ep:namespaceIdentifier"/>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                    <ep:name>inOnderzoek</ep:name>
+                                    <ep:tech-name>inOnderzoek</ep:tech-name>
+                                    <ep:max-occurs>unbounded</ep:max-occurs>
+                                    <ep:min-occurs>0</ep:min-occurs>
+                                    <ep:type-name>scalar-string</ep:type-name>
+                                    <ep:enum>J</ep:enum>
+                                    <ep:enum>N</ep:enum>
+                                    <ep:position>150</ep:position>
+                                    <ep:seq>
+                                        <xsl:variable name="attributes"
+                                            select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, $id, '')"/>									
+                                        <xsl:sequence select="$attributes"/>
+                                    </ep:seq>
+                                </ep:construct>
+                                <!-- ROME:   Waarschijnlijk moet er hier afhankelijk van de context meer 
+                                            		of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' maar 
+                                            		ook aan 'tijdvakRelatie', 'historieMaterieel' en 'historieFormeel'. Onderstaande 
+                                            		elementen 'StUF:tijdvakGeldigheid' en 'StUF:tijdstipRegistratie' mogen trouwens 
+                                            		alleen voorkomen als voor een van de attributen van het huidige object historie 
+                                            		is gedefinieerd of als er om gevraagd wordt. De vraag is echter of daarbij 
+                                            		alleen gekeken moet worden naar de attributen waarvan de elementen op hetzelfde 
+                                            		niveau als onderstaande elementen worden gegenereerd of dat deze elementen 
+                                            		ook al gegenereerd moeten worden als er ergens dieper onder het huidige niveau 
+                                            		een element voorkomt waarbij op het gerelateerde attribuut historie is gedefinieerd. 
+                                            		Dit geldt voor alle locaties waar onderstaande elementen worden gedefinieerd. -->
+                                <xsl:if test="not($construct/imvert:stereotype = imf:get-config-stereotypes((
+                                    'stereotype-name-vraagberichttype',
+                                    'stereotype-name-antwoordberichttype',
+                                    'stereotype-name-kennisgevingberichttype',
+                                    'stereotype-name-synchronisatieberichttype'))) and not(contains(@verwerkingsModus,'kerngegevens'))">
+                                    <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                        <ep:name>tijdvakGeldigheid</ep:name>
+                                        <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
+                                        <ep:max-occurs>1</ep:max-occurs>
+                                        <ep:min-occurs>0</ep:min-occurs>
+                                        <ep:position>155</ep:position>
+                                    </ep:constructRef>
+                                    <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                        <ep:name>tijdstipRegistratie</ep:name>
+                                        <ep:tech-name>tijdstipRegistratie</ep:tech-name>
+                                        <ep:max-occurs>1</ep:max-occurs>
+                                        <ep:min-occurs>0</ep:min-occurs>
+                                        <ep:position>160</ep:position>
+                                    </ep:constructRef>
+                                    <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                        <ep:name>extraElementen</ep:name>
+                                        <ep:tech-name>extraElementen</ep:tech-name>
+                                        <ep:max-occurs>1</ep:max-occurs>
+                                        <ep:min-occurs>0</ep:min-occurs>
+                                        <ep:position>165</ep:position>
+                                    </ep:constructRef>
+                                    <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                        <ep:name>aanvullendeElementen</ep:name>
+                                        <ep:tech-name>aanvullendeElementen</ep:tech-name>
+                                        <ep:max-occurs>1</ep:max-occurs>
+                                        <ep:min-occurs>0</ep:min-occurs>
+                                        <ep:position>170</ep:position>
+                                    </ep:constructRef>
+                                </xsl:if>
+                                <!-- ROME: Hieronder worden de construcRefs voor historieMaterieel en historieFormeel aangemaakt.
+                                            Dit moet echter gebeuren a.d.h.v. de berichtcode. Die verfijning moet nog worden aangebracht in de if statements. -->
+                                
+                                <!-- If 'Materiele historie' is applicable for the current class a constructRef to a historieMaterieel global construct based on the current class is generated. -->
+                                <xsl:if test="(@indicatieMaterieleHistorie='Ja' or @indicatieMaterieleHistorie='Ja op attributes') and @verwerkingsModus = 'antwoord'">
+                                    
+                                    <!-- Location: 'ep:constructRef2'
+						                        Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct2'. -->
+                                    
+                                    <xsl:variable name="historieType" select="'historieMaterieel'"/>
+                                    
+                                    <ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+                                        <ep:tech-name>historieMaterieel</ep:tech-name>
+                                        <ep:max-occurs>unbounded</ep:max-occurs>
+                                        <ep:min-occurs>0</ep:min-occurs>
+                                        <ep:position>175</ep:position>
+                                        <xsl:choose>
+                                            <xsl:when test="not(empty($alias)) and $alias != ''">
+                                                <xsl:sequence
+                                                    select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,$alias,$elementName))"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:sequence
+                                                    select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,(),$elementName))"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </ep:constructRef>
+                                </xsl:if>
+                                <!-- If 'Formele historie' is applicable for the current class a constructRef to a historieFormeel global construct based on the current class is generated. -->
+                                <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes') and @verwerkingsModus = 'antwoord'">
+                                    
+                                    <xsl:variable name="historieType" select="'historieFormeel'"/>
+                                    
+                                    <!-- Location: 'ep:constructRef5'
+						                        Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef5'. -->
+                                    
+                                    <ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+                                        <ep:tech-name>historieFormeel</ep:tech-name>
+                                        <ep:max-occurs>unbounded</ep:max-occurs>
+                                        <ep:min-occurs>0</ep:min-occurs>
+                                        <ep:position>180</ep:position>
+                                        <xsl:choose>
+                                            <xsl:when test="not(empty($alias)) and $alias != ''">
+                                                <xsl:sequence
+                                                    select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,$alias,$elementName))"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:sequence
+                                                    select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$historieType,(),$elementName))"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </ep:constructRef>
+                                </xsl:if>
+                                <!-- The uml associations of the uml class are placed here. -->
+                                <xsl:apply-templates select="$construct"
+                                    mode="create-message-content-constructRef">
+                                    <xsl:with-param name="berichtName" select="$berichtName"/>
+                                    <xsl:with-param name="proces-type" select="'associationsRelatie'" />
+                                    <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                    <xsl:with-param name="generated-id" select="$generated-id"/>
+                                    <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                    <xsl:with-param name="context" select="$context" />
+                                    <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                                </xsl:apply-templates>
+                                <!-- The function imf:createAttributes is used to determine the XML attributes 
+                                    		neccessary for this context. It has the following parameters: - typecode 
+                                    		- berichttype - context - datumType The first 3 parameters relate to columns 
+                                    		with the same name within an Excel spreadsheet used to configure a.o. XML 
+                                    		attributes usage. The last parameter is used to determine the need for the 
+                                    		XML-attribute 'StUF:indOnvolledigeDatum'. -->
+                                <xsl:sequence select="imf:create-debug-comment(concat('Attributes voor ',$typeCode,', berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $alias),$debugging)"/>
+                                <xsl:variable name="attributes"
+                                    select="imf:createAttributes($typeCode, substring($berichtCode,1,2), $context, 'no', $alias, 'no','no', $prefix, $id, '')" />
+                                <xsl:sequence select="$attributes" />
+                            </ep:seq>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </ep:construct>
+                
+                
+            </xsl:when>
             <!-- The following if takes care of creating global construct elements for each ep:construct element not representing a 'relatie'. -->
             <xsl:when test="@typeCode!='relatie'">
                 <xsl:sequence select="imf:create-debug-track('Constructing the global constructs not representing a relation',$debugging)"/>
@@ -1858,9 +2122,11 @@
 					bevat is dan wel altijd de ancestor van het element dat het nodig heeft. 
 					Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook 
 					nog herleid en doorgegeven worden. -->
-                        <xsl:variable name="attributes"
-                            select="imf:createAttributes('relatie', substring($berichtCode, 1, 2), $context, 'no', $alias, $mogelijkGeenWaarde, 'no', $prefix, $id, '')"/>
-                        <xsl:sequence select="$attributes"/>
+                        <xsl:if test="$generateHistorieConstruct = 'Nee'">
+                            <xsl:variable name="attributes"
+                                select="imf:createAttributes('relatie', substring($berichtCode, 1, 2), $context, 'no', $alias, $mogelijkGeenWaarde, 'no', $prefix, $id, '')"/>
+                            <xsl:sequence select="$attributes"/>
+                        </xsl:if> 
                     </xsl:if>
                 </ep:seq>
             </ep:construct>
