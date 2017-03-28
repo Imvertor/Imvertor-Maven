@@ -42,6 +42,8 @@
     <xsl:import href="../common/extension/Imvert-common-text.xsl"/>
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
     
+    <xsl:include href="Imvert2XSD-KING-common-checksum.xsl"/>
+   
     <xsl:output indent="yes" method="xml" encoding="UTF-8"/>
     
     <xsl:variable name="stylesheet-code">BES</xsl:variable>
@@ -214,7 +216,7 @@
         <xsl:result-document href="{$schemafile-dat}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
             <xsl:apply-templates select="$schema-clean" mode="xsd-dat"/>
         </xsl:result-document>
-        
+      
     </xsl:template>
     
     <xsl:template match="imvert:class" mode="mode-global-objecttype">
@@ -606,11 +608,16 @@
                 
                 <xsl:otherwise>
                     <xsl:sequence select="imf:create-comment('Een simpel datatype; Else:  Custom type')"/> 
+
+                    <xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info(.)"/>
+                    <xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
+
                     <xs:element
                         name="{$compiled-name}" 
                         type="{$prefix}:{imf:capitalize(imf:useable-attribute-name($applicable-compiled-name,.))}-e" 
                         minOccurs="0" 
                         maxOccurs="{$cardinality[4]}"
+                        imvert:checksum="{$checksum-string}"
                         >
                         <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
                         <xsl:if test="$type-is-scalar-non-emptyable or $type-has-facets">
@@ -890,6 +897,8 @@
     <!-- called only with attributes that have no type-id -->
     <xsl:template match="imvert:attribute" mode="mode-global-attribute-simpletype">
         <xsl:variable name="compiled-name" select="imf:useable-attribute-name(imf:get-compiled-name(.),.)"/>
+        <xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info(.)"/>
+        <xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
         
         <xsl:variable name="stuf-scalar" select="imf:get-stuf-scalar-attribute-type(.)"/>
         
@@ -912,20 +921,21 @@
             <xsl:sequence select="imf:create-facet('xs:fractionDigits',$fraction-digits)"/>
         </xsl:variable>
         
+        <xsl:variable name="name" select="imf:capitalize($compiled-name)"/>
         <xsl:choose>
             <xsl:when test="exists($stuf-scalar)">
                 <!-- gedefinieerd in onderlaag -->
             </xsl:when>
             <xsl:when test="exists(imvert:type-name)">
                 <xsl:sequence select="imf:create-comment(concat('mode-global-attribute-simpletype Attribuut type (simple) # ',@display-name))"/>
-                <xs:complexType name="{imf:capitalize($compiled-name)}-e">
+                <xs:complexType name="{$name}-e">
                     <xs:simpleContent>
-                        <xs:extension base="{$prefix}:{imf:capitalize($compiled-name)}">
+                        <xs:extension base="{$prefix}:{$name}" imvert:checksum="{$checksum-string}">
                             <xs:attribute name="noValue" type="{$StUF-prefix}:NoValue"/>
                         </xs:extension>
                     </xs:simpleContent>
                 </xs:complexType>
-                <xs:simpleType name="{imf:capitalize($compiled-name)}">
+                <xs:simpleType name="{$name}" imvert:checksum="{$checksum-string}">
                     <xsl:choose>
                         <xsl:when test="imvert:type-name = 'scalar-integer'">
                             <xs:restriction base="xs:integer">
@@ -1119,19 +1129,7 @@
         <xsl:variable name="alias" select="$this/imvert:alias"/>
         <xsl:variable name="name-raw" select="$this/imvert:name"/>
         <xsl:variable name="name-form" select="replace(imf:strip-accents($name-raw),'[^\p{L}0-9.\-]+','_')"/>
-        <!--XX
-        <xsl:variable name="name">
-            <xsl:choose>
-                <xsl:when test="$type = 'attribute' and $name-form = ('soort','code','sbiCode','voorvoegsel','scheidingsteken')"><!- -TODO this is a patch - ->
-                    <xsl:variable name="class" select="$this/ancestor::imvert:class"/>
-                    <xsl:value-of select="concat(imf:get-compiled-name($class),'_',$name-form)"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="$name-form"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        XX-->
+       
         <xsl:variable name="name" select="$name-form"/>
         
         <xsl:choose>
@@ -1548,49 +1546,72 @@
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xs:include schemaLocation="{$schemafile-dat-name}"/>
-            <xsl:sequence select=".//*:ent-part/node()"/>
+            <xsl:apply-templates select=".//*:ent-part/node()" mode="resolve-checksums"/>
         </xsl:copy>
     </xsl:template>
     
     <xsl:template match="xs:schema" mode="xsd-dat">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
-            <xsl:sequence select=".//*:dat-part/node()"/>
+            <xsl:apply-templates select=".//*:dat-part/node()" mode="resolve-checksums"/>
         </xsl:copy>
+    </xsl:template>
+    
+    <!-- ============== resolve checksums ============== -->
+    
+    <xsl:template match="*[exists(@imvert:checksum)]" mode="resolve-checksums">
+        <xsl:variable name="checksum" select="@imvert:checksum"/>
+        <xsl:variable name="tokens" select="tokenize($checksum,'\[SEP\]')"/>
+        <xsl:choose>
+            <xsl:when test="self::xs:element">
+                <xsl:sequence select="imf:create-comment(concat('Resolve checksum on element - ', $checksum))"/>
+                <xsl:variable name="prefix" select="tokenize(@type,':')[1]"/>
+                <xs:element name="{@name}" type="{$prefix}:{$tokens[1]}" minOccurs="{@minOccurs}" maxOccurs="{@maxOccurs}">
+                    <xsl:apply-templates mode="#current"/>
+                </xs:element>
+            </xsl:when>
+            <xsl:when test="self::xs:extension">
+                <xsl:variable name="prefix" select="tokenize(@base,':')[1]"/>
+                <xsl:sequence select="imf:create-comment(concat('Resolve checksum on extension - ', $checksum))"/>
+                <xs:extension base="{$prefix}:{$tokens[1]}">
+                    <xsl:apply-templates mode="#current"/>
+                </xs:extension>
+            </xsl:when>
+            <xsl:when test="self::xs:complexType">
+                <xsl:sequence select="imf:create-comment(concat('Resolve checksum on complextype - ', $checksum))"/>
+                <xs:complexType name="{$tokens[1]}">
+                    <xsl:apply-templates mode="#current"/>
+                </xs:complexType>
+            </xsl:when>
+            <xsl:when test="self::xs:simpleType and count(preceding::xs:simpleType[@imvert:checksum = $checksum]) = 0">
+                <xsl:sequence select="imf:create-comment(concat('Resolve checksum on simpletype - ', $checksum))"/>
+                <xs:simpleType name="{$tokens[1]}">
+                    <xsl:apply-templates mode="#current"/>
+                </xs:simpleType>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:create-comment(concat('Resolve checksum, removed duplicate - ', $checksum))"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template match="node()" mode="resolve-checksums">
+        <xsl:copy>
+            <xsl:apply-templates select="@*" mode="#current"/>
+            <xsl:apply-templates select="node()" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="@*" mode="resolve-checksums">
+        <xsl:copy/>
     </xsl:template>
     
     <!-- =================== cleanup =================== -->
    
-    <!--XX
-    <xsl:template match="xs:schema" mode="xsd-cleanup">
-        <xsl:copy>
-            <xsl:copy-of select="@*"/>
-            <xsl:variable name="names" select="for $n in (xs:*/@name) return string($n)" as="xs:string*"/>
-            <xsl:variable name="names-dup" select="distinct-values($names[count(index-of($names,.)) gt 1])"/>
-            <xsl:apply-templates mode="xsd-cleanup">
-                <xsl:with-param name="names-dup" select="$names-dup"/>
-            </xsl:apply-templates>
-        </xsl:copy>
-    </xsl:template>
-    
-    <xsl:template match="xs:complexType | xs:simpleType" mode="xsd-cleanup">
-        <xsl:param name="names-dup"/>
-        <xsl:variable name="name" select="@name"/>
-        <xsl:choose>
-            <xsl:when test="($name = $names-dup) and (preceding-sibling::xs:*/@name = $name)">
-                <xsl:sequence select="imf:create-comment(concat('xsd-cleanup Duplicate removed', ()))"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:next-match/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-    XX-->
-    
     <xsl:template match="*" mode="xsd-cleanup">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
-            <xsl:apply-templates mode="xsd-cleanup"/>
+            <xsl:apply-templates mode="#current"/>
         </xsl:copy>
     </xsl:template>
     
