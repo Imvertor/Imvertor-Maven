@@ -1379,11 +1379,11 @@
             </xsl:when>   
             <xsl:when test="$type = 'A'">
                 <xsl:variable name="connection" select="imf:get-tagged-value($construct,'sourceAttribute')"/>
-                <xsl:value-of select="$connection"/>
+                <xsl:sequence select="for $c in $connection return string($c)"/>
             </xsl:when>   
             <xsl:when test="$type = 'R'">
                 <xsl:variable name="connection" select="imf:get-tagged-value($construct,'sourceAssociation')"/>
-                <xsl:value-of select="$connection"/>
+                <xsl:sequence select="for $c in $connection return string($c)"/>
             </xsl:when>   
             <xsl:otherwise>
                 <xsl:sequence select="imf:msg('FATAL','Invalid trace request: type [1] called at [2]', ($type, name($construct)))"/>
