@@ -146,6 +146,10 @@
       <!-- locatie van de stuf onderlaag -->
       <STUF_ONDERLAAG_UGM>${system/inp-folder-path}/xsd/other/KING-UGM/support</STUF_ONDERLAAG_UGM>
       
+      <!-- checksum info for simpletypes -->
+      <IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XSLPATH>Imvert2XSD-KING-compile-checksum.xsl</IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XSLPATH>
+      <IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH>${system/managedoutputfolder}/blackboard/checksum-simpletypes.xml</IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH>
+      
       <!-- workfolder for serialized excel -->
       <work-serialize-folder>${system/work-folder-path}/serializer/temp-folder</work-serialize-folder>
       <!-- workfolder for processing the  -->

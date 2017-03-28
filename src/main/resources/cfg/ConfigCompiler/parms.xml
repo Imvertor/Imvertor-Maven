@@ -51,7 +51,7 @@
       <cli-parm>
          <name>createeaprofile</name>
          <arg>name</arg>
-         <tip>If an EA profile should be generated, supply this parameter with the same of the profile</tip>
+         <tip>If an EA profile should be generated, pass this parameter with the name of the profile</tip>
          <required>false</required>
       </cli-parm> 
        

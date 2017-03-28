@@ -350,6 +350,8 @@ public class Configurator {
 		String s = File.separator;
 		String wf = workFolder.getCanonicalPath();
 		setParm(workConfiguration,"system","work-folder-path", wf, true);
+		String wff = workConfigurationFile.getCanonicalPath();
+		setParm(workConfiguration,"system","work-config-path", wff, true);
 		
 		setParm(workConfiguration,"system","work-app-folder-path",    wf + s + "app", true);
 		setParm(workConfiguration,"system","work-etc-folder-path", 	  wf + s + "app" + s + "etc", true);
