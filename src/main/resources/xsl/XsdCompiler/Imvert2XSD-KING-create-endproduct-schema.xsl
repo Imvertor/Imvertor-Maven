@@ -658,6 +658,16 @@
 					</xsl:attribute>
 				</xs:attribute>
 			</xsl:when>
+			<xsl:when test="not(ep:href) and not(@prefix) and contains(ep:type-name,concat($StUF-prefix,':'))">
+				<xs:attribute name="{ep:tech-name}" type="{ep:type-name}">
+					<xsl:attribute name="use">
+						<xsl:choose>
+							<xsl:when test="not(ep:min-occurs) or ep:min-occurs=1">required</xsl:when>
+							<xsl:otherwise>optional</xsl:otherwise>
+						</xsl:choose>
+					</xsl:attribute>
+				</xs:attribute>				
+			</xsl:when>
 			<xsl:otherwise>
 				<xs:attribute name="{ep:tech-name}">
 					<xsl:attribute name="use">

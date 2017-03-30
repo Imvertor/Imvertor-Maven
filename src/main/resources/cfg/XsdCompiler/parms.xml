@@ -156,7 +156,7 @@
       <!-- workfolder for processing the  -->
       <RESULT_ENDPRODUCT_MSG_FILE_PATH>${system/work-imvert-folder-path}/imvertor.27.endproduct-msg.xml</RESULT_ENDPRODUCT_MSG_FILE_PATH>
       <RESULT_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.28.endproduct-xml.xml</RESULT_ENDPRODUCT_XML_FILE_PATH>   
-      <RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.29.ordered-endproduct-xml.xml</RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH>
+      <RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.29.reprocessed-endproduct-xml.xml</RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH>
       <RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.30.sorted-endproduct-xml.xml</RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH>
       <RESULT_ENDPRODUCT_XSD_FILE_PATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_ENDPRODUCT_XSD_FILE_PATH>
       

@@ -3024,14 +3024,14 @@
 				<ep:name>sleutelVerzendend</ep:name>
 				<ep:tech-name>sleutelVerzendend</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
-				<ep:type-name>scalar-string</ep:type-name>
+				<ep:type-name>StUF:Sleutel</ep:type-name>
 			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'StUF:sleutelVerzendend' and data = 'V']">
 			<ep:construct ismetadata="yes">
 				<ep:name>sleutelVerzendend</ep:name>
 				<ep:tech-name>sleutelVerzendend</ep:tech-name>
-				<ep:type-name>scalar-string</ep:type-name>
+				<ep:type-name>StUF:Sleutel</ep:type-name>
 			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelOntvangend' and data = 'O']">
@@ -3039,14 +3039,14 @@
 				<ep:name>sleutelOntvangend</ep:name>
 				<ep:tech-name>sleutelOntvangend</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
-				<ep:type-name>scalar-string</ep:type-name>
+				<ep:type-name>StUF:Sleutel</ep:type-name>
 			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelOntvangend' and data = 'V']">
 			<ep:construct ismetadata="yes">
 				<ep:name>sleutelOntvangend</ep:name>
 				<ep:tech-name>sleutelOntvangend</ep:tech-name>
-				<ep:type-name>scalar-string</ep:type-name>
+				<ep:type-name>StUF:Sleutel</ep:type-name>
 			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelGegevensbeheer' and data = 'O']">
@@ -3054,14 +3054,14 @@
 				<ep:name>sleutelGegevensbeheer</ep:name>
 				<ep:tech-name>sleutelGegevensbeheer</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
-				<ep:type-name>scalar-string</ep:type-name>
+				<ep:type-name>StUF:Sleutel</ep:type-name>
 			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelGegevensbeheer' and data = 'V']">
 			<ep:construct ismetadata="yes">
 				<ep:name>sleutelGegevensbeheer</ep:name>
 				<ep:tech-name>sleutelGegevensbeheer</ep:tech-name>
-				<ep:type-name>scalar-string</ep:type-name>
+				<ep:type-name>StUF:Sleutel</ep:type-name>
 			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelSynchronisatie' and data = 'O']">
@@ -3069,14 +3069,14 @@
 				<ep:name>sleutelSynchronisatie</ep:name>
 				<ep:tech-name>sleutelSynchronisatie</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
-				<ep:type-name>scalar-string</ep:type-name>
+				<ep:type-name>StUF:Sleutel</ep:type-name>
 			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelSynchronisatie' and data = 'V']">
 			<ep:construct ismetadata="yes">
 				<ep:name>sleutelSynchronisatie</ep:name>
 				<ep:tech-name>sleutelSynchronisatie</ep:tech-name>
-				<ep:type-name>scalar-string</ep:type-name>
+				<ep:type-name>StUF:Sleutel</ep:type-name>
 			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'scope' and data = 'O']">
@@ -3084,24 +3084,14 @@
 				<ep:name>scope</ep:name>
 				<ep:tech-name>scope</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
-				<ep:type-name>scalar-string</ep:type-name>
-				<ep:enum>alles</ep:enum>
-				<ep:enum>allesZonderMetagegevens</ep:enum>
-				<ep:enum>allesMaarKerngegevensGerelateerden</ep:enum>
-				<ep:enum>allesZonderMetagegevensMaarKerngegevensGerelateerden</ep:enum>
-				<ep:enum>kerngegevens</ep:enum>
+				<ep:type-name>StUF:StUFScope</ep:type-name>
 			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'scope' and data = 'V']">
 			<ep:construct ismetadata="yes">
 				<ep:name>scope</ep:name>
 				<ep:tech-name>scope</ep:tech-name>
-				<ep:type-name>scalar-string</ep:type-name>
-				<ep:enum>alles</ep:enum>
-				<ep:enum>allesZonderMetagegevens</ep:enum>
-				<ep:enum>allesMaarKerngegevensGerelateerden</ep:enum>
-				<ep:enum>allesZonderMetagegevensMaarKerngegevensGerelateerden</ep:enum>
-				<ep:enum>kerngegevens</ep:enum>
+				<ep:type-name>StUF:StUFScope</ep:type-name>
 			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'verwerkingssoort' and data = 'O']">
@@ -3109,30 +3099,14 @@
 				<ep:name>verwerkingssoort</ep:name>
 				<ep:tech-name>verwerkingssoort</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
-				<ep:type-name>scalar-string</ep:type-name>
-				<ep:enum>T</ep:enum>
-				<ep:enum>W</ep:enum>
-				<ep:enum>V</ep:enum>
-				<ep:enum>E</ep:enum>
-				<ep:enum>I</ep:enum>
-				<ep:enum>R</ep:enum>
-				<ep:enum>S</ep:enum>
-				<ep:enum>O</ep:enum>
+				<ep:type-name>StUF:Verwerkingssoort</ep:type-name>
 			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'verwerkingssoort' and data = 'V']">
 			<ep:construct ismetadata="yes">
 				<ep:name>verwerkingssoort</ep:name>
 				<ep:tech-name>verwerkingssoort</ep:tech-name>
-				<ep:type-name>scalar-string</ep:type-name>
-				<ep:enum>T</ep:enum>
-				<ep:enum>W</ep:enum>
-				<ep:enum>V</ep:enum>
-				<ep:enum>E</ep:enum>
-				<ep:enum>I</ep:enum>
-				<ep:enum>R</ep:enum>
-				<ep:enum>S</ep:enum>
-				<ep:enum>O</ep:enum>
+				<ep:type-name>StUF:Verwerkingssoort</ep:type-name>
 			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'functie' and data = 'O']">
@@ -3175,14 +3149,14 @@
 				<ep:name>groepsnaam</ep:name>
 				<ep:tech-name>groepsnaam</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
-				<ep:type-name>scalar-string</ep:type-name>
+				<ep:type-name>StUF:Groepsnaam</ep:type-name>
 			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'groepsnaam' and data = 'V']">
 			<ep:construct ismetadata="yes">
 				<ep:name>groepsnaam</ep:name>
 				<ep:tech-name>groepsnaam</ep:tech-name>
-				<ep:type-name>scalar-string</ep:type-name>
+				<ep:type-name>StUF:Groepsnaam</ep:type-name>
 			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'elementnaam' and data = 'O']">
@@ -3190,14 +3164,14 @@
 				<ep:name>elementnaam</ep:name>
 				<ep:tech-name>elementnaam</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
-				<ep:type-name>scalar-string</ep:type-name>
+				<ep:type-name>StUF:Groepsnaam</ep:type-name>
 			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'elementnaam' and data = 'V']">
 			<ep:construct ismetadata="yes">
 				<ep:name>elementnaam</ep:name>
 				<ep:tech-name>elementnaam</ep:tech-name>
-				<ep:type-name>scalar-string</ep:type-name>
+				<ep:type-name>StUF:Groepsnaam</ep:type-name>
 			</ep:construct>
 		</xsl:if>
 	</xsl:function>
