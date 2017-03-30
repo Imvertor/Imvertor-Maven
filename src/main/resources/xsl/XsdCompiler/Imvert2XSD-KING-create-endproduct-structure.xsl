@@ -788,6 +788,11 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+		<xsl:variable name="suppliers" as="element(ep:suppliers)">
+			<ep:suppliers>
+				<xsl:copy-of select="imf:get-UGM-suppliers(.)"/>
+			</ep:suppliers>
+		</xsl:variable>
 		
 		<xsl:sequence select="imf:create-debug-comment('Template: imvert:association[mode=create-message-content-constructRef]',$debugging)"/>
 		<xsl:sequence select="imf:create-debug-comment(concat('$verwerkingsModusOfConstructRef for construct with id ',$type-id, ' and parent construct (',$currentMessage//ep:*[generate-id() = $generated-id]/ep:id,') with generated-id ',$generated-id,': ',$verwerkingsModusOfConstructRef),$debugging)"/>
@@ -799,6 +804,11 @@
 			
 			<!--ep:constructRef prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}"-->
 			<ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+				<xsl:if test="$suppliers//supplier[1]/@verkorteAlias != ''">
+					<xsl:attribute name="prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
+					<xsl:attribute name="namespaceId" select="$suppliers//supplier[1]/@base-namespace"/>
+					<xsl:attribute name="UGMlevel" select="$suppliers//supplier[1]/@level"/>
+				</xsl:if>
 				<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
 				<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
 				<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
@@ -1227,6 +1237,11 @@
 			</imvert:complete-documentation>
 		</xsl:variable>
 		<xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
+		<xsl:variable name="suppliers" as="element(ep:suppliers)">
+			<ep:suppliers>
+				<xsl:copy-of select="imf:get-UGM-suppliers(.)"/>
+			</ep:suppliers>
+		</xsl:variable>
 		<xsl:variable name="tvs" as="element(ep:tagged-values)">
 			<ep:tagged-values>
 				<xsl:copy-of select="imf:get-compiled-tagged-values(., true())"/>
@@ -1324,6 +1339,11 @@
 					
 					<!--ep:constructRef prefix="{$prefix}"-->
 					<ep:constructRef berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+						<xsl:if test="$suppliers//supplier[1]/@verkorteAlias != ''">
+							<xsl:attribute name="prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
+							<xsl:attribute name="namespaceId" select="$suppliers//supplier[1]/@base-namespace"/>
+							<xsl:attribute name="UGMlevel" select="$suppliers//supplier[1]/@level"/>
+						</xsl:if>
 						<xsl:if test="$debugging">
 							<ep:tagged-values>
 								<xsl:copy-of select="$tvs"/>
@@ -1414,7 +1434,12 @@
 					<xsl:variable name="type" select="'Grp'"/>
 					<xsl:variable name="name" select="//imvert:class[imvert:id = $type-id]/imvert:name"/>
 					
-					<ep:construct prefix="{$prefix}">
+					<ep:construct>
+						<xsl:if test="$suppliers//supplier[1]/@verkorteAlias != ''">
+							<xsl:attribute name="prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
+							<xsl:attribute name="namespaceId" select="$suppliers//supplier[1]/@base-namespace"/>
+							<xsl:attribute name="UGMlevel" select="$suppliers//supplier[1]/@level"/>
+						</xsl:if>
 						<xsl:if test="$debugging">
 							<ep:tagged-values>
 								<xsl:copy-of select="$tvs"/>
@@ -1510,8 +1535,16 @@
 					</ep:construct>
 				</xsl:when>
 				<xsl:otherwise>				
-					<ep:construct prefix="{$prefix}">
-							<xsl:if test="$debugging">
+					<ep:construct>
+						<xsl:if test="$suppliers//supplier[1]/@verkorteAlias != ''">
+							<xsl:attribute name="prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
+							<xsl:attribute name="namespaceId" select="$suppliers//supplier[1]/@base-namespace"/>
+							<xsl:attribute name="UGMlevel" select="$suppliers//supplier[1]/@level"/>
+						</xsl:if>
+						<xsl:if test="$debugging">
+								<ep:suppliers>
+									<xsl:copy-of select="$suppliers"/>
+								</ep:suppliers>
 								<ep:tagged-values>
 									<xsl:copy-of select="$tvs"/>
 									<ep:found-tagged-values>
@@ -1724,6 +1757,11 @@
 				</xsl:otherwise>				
 			</xsl:choose>
 		</xsl:variable>
+		<xsl:variable name="suppliers" as="element(ep:suppliers)">
+			<ep:suppliers>
+				<xsl:copy-of select="imf:get-UGM-suppliers(.)"/>
+			</ep:suppliers>
+		</xsl:variable>
 		<xsl:variable name="docs">
 			<imvert:complete-documentation>
 				<xsl:copy-of select="imf:get-compiled-documentation(key('class',$type-id))"/>
@@ -1744,6 +1782,22 @@
 
 					<xsl:choose>
 						<xsl:when test="($generateHistorieConstruct = 'MaterieleHistorie' and contains($indicatieMaterieleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorie' and contains($indicatieFormeleHistorie, 'Ja'))"/>
+						<xsl:when test="$generateHistorieConstruct = 'FormeleHistorieRelatie' and contains($indicatieFormeleHistorieRelatie, 'Ja')">
+							<!-- The association is a 'relatie' and because no historieMaterieel or historieFormeel is generated it has to contain a 'gerelateerde' constructRef. -->
+							
+							<!-- Location: 'ep:constructRef1b'
+								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct1'. -->
+							
+							<!--ep:constructRef prefix="{$prefix}" context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}"-->
+							<ep:constructRef context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+								<ep:tech-name>gerelateerde</ep:tech-name>
+								<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+								<ep:max-occurs>1</ep:max-occurs>
+								<ep:min-occurs>1</ep:min-occurs>
+								<ep:position>1</ep:position>
+								<xsl:sequence select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,'kerngegevens',$mnemonic,$elementName))"/>							
+							</ep:constructRef>
+						</xsl:when>
 						<xsl:otherwise>
 							<!-- The association is a 'relatie' and because no historieMaterieel or historieFormeel is generated it has to contain a 'gerelateerde' constructRef. -->
 							
@@ -1806,7 +1860,7 @@
 							<!-- ep:authentiek element is used to determine if a 'authentiek' element needs to be generated in the messages in the next higher level. -->
 							<!--xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/-->
 							<!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
-							<ep:construct prefix="{$prefix}">
+							<ep:construct>
 								<ep:name>authentiek</ep:name>
 								<ep:tech-name>authentiek</ep:tech-name>
 								<ep:max-occurs>unbounded</ep:max-occurs>
@@ -1824,7 +1878,7 @@
 							<!-- ep:inOnderzoek element is used to determine if a 'inOnderzoek' element needs to be generated in the messages in the next higher level. -->
 							<!--xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/-->
 							<!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
-							<ep:construct prefix="{$prefix}">
+							<ep:construct>
 								<ep:name>inOnderzoek</ep:name>
 								<ep:tech-name>inOnderzoek</ep:tech-name>
 								<ep:max-occurs>unbounded</ep:max-occurs>
@@ -2187,6 +2241,11 @@
 					
 					<!--ep:constructRef prefix="{$prefix}" context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}"-->
 					<ep:constructRef context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+						<xsl:if test="$suppliers//supplier[1]/@verkorteAlias != ''">
+							<xsl:attribute name="prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
+							<xsl:attribute name="namespaceId" select="$suppliers//supplier[1]/@base-namespace"/>
+							<xsl:attribute name="UGMlevel" select="$suppliers//supplier[1]/@level"/>
+						</xsl:if>
 						<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)"/>
 						<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)"/>
 						<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)"/>

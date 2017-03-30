@@ -128,6 +128,24 @@
 		<xsl:sequence select="if ($include-empty) then $tvs else $tvs[normalize-space(@value)]"/>
 	</xsl:function>
 	
+	<xsl:function name="imf:get-UGM-suppliers" as="element(supplier)*">
+		<xsl:param name="construct" as="element()"/> <!-- any construct -->
+		
+		<xsl:variable name="allSuppliers" select="imf:get-trace-suppliers-for-construct($construct,1)"/>
+
+		<xsl:for-each select="$allSuppliers[@project = 'UGM']">
+			<xsl:sort select="./@level" order="descending"/>
+			<xsl:variable name="supplier" select="."/>
+			<supplier 
+				project="{$supplier/@project}"
+				application="{$supplier/@application}"
+				level="{$supplier/@level}"
+				base-namespace="{$supplier/@base-namespace}"
+				verkorteAlias="{$supplier/@verkorteAlias}"
+			/>
+		</xsl:for-each>
+	</xsl:function>
+	
 	<xsl:function name="imf:get-applicable-tagged-values" as="element(tv)*">
 		<xsl:param name="this" as="element()"/>
 		<xsl:variable name="all-tv" select="imf:get-compiled-tagged-values($this,false())"/>
