@@ -22,6 +22,8 @@
 	<xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-create-endproduct-structure.xsl 1
 		2015-11-11 11:50:00Z RobertMelskens $</xsl:variable>
 
+	<xsl:variable name="StUF-prefix" select="'StUF'"/>
+	
 	<!-- ======= Block of templates used to create the message structure. ======= -->
 
 	<!-- ROME De volgende check moeten we n.m.m. nog ergens inbouwen. -->
@@ -1865,15 +1867,16 @@
 								<ep:tech-name>authentiek</ep:tech-name>
 								<ep:max-occurs>unbounded</ep:max-occurs>
 								<ep:min-occurs>0</ep:min-occurs>
-								<ep:type-name>scalar-string</ep:type-name>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':StatusMetagegeven-basis'))"/>						
+								<!--ep:type-name>scalar-string</ep:type-name>
 								<ep:enum>J</ep:enum>
-								<ep:enum>N</ep:enum>
+								<ep:enum>N</ep:enum-->
 								<ep:position>145</ep:position>
-								<ep:seq>
+								<!--ep:seq>
 									<xsl:variable name="attributes"
 										select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, '', '')"/>									
 									<xsl:sequence select="$attributes"/>
-								</ep:seq>
+								</ep:seq-->
 							</ep:construct>
 							<!-- ep:inOnderzoek element is used to determine if a 'inOnderzoek' element needs to be generated in the messages in the next higher level. -->
 							<!--xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/-->
@@ -1883,15 +1886,16 @@
 								<ep:tech-name>inOnderzoek</ep:tech-name>
 								<ep:max-occurs>unbounded</ep:max-occurs>
 								<ep:min-occurs>0</ep:min-occurs>
-								<ep:type-name>scalar-string</ep:type-name>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':StatusMetagegeven-basis'))"/>						
+								<!--ep:type-name>scalar-string</ep:type-name>
 								<ep:enum>J</ep:enum>
-								<ep:enum>N</ep:enum>
+								<ep:enum>N</ep:enum-->
 								<ep:position>150</ep:position>
-								<ep:seq>
+								<!--ep:seq>
 									<xsl:variable name="attributes"
 										select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, '', '')"/>									
 									<xsl:sequence select="$attributes"/>
-								</ep:seq>
+								</ep:seq-->
 							</ep:construct>
 						</xsl:if>
 
@@ -2315,15 +2319,16 @@
 							<ep:tech-name>authentiek</ep:tech-name>
 							<ep:max-occurs>unbounded</ep:max-occurs>
 							<ep:min-occurs>0</ep:min-occurs>
-							<ep:type-name>scalar-string</ep:type-name>
+							<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':StatusMetagegeven-basis'))"/>						
+							<!--ep:type-name>scalar-string</ep:type-name>
 							<ep:enum>J</ep:enum>
-							<ep:enum>N</ep:enum>
+							<ep:enum>N</ep:enum-->
 							<ep:position>145</ep:position>
-							<ep:seq>
+							<!--ep:seq>
 								<xsl:variable name="attributes"
 									select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, '', '')"/>									
 								<xsl:sequence select="$attributes"/>
-							</ep:seq>
+							</ep:seq-->
 						</ep:construct>
 						<!-- ep:inOnderzoek element is used to determine if a 'inOnderzoek' element needs to be generated in the messages in the next higher level. -->
 						<!--xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/-->
@@ -2333,15 +2338,16 @@
 							<ep:tech-name>inOnderzoek</ep:tech-name>
 							<ep:max-occurs>unbounded</ep:max-occurs>
 							<ep:min-occurs>0</ep:min-occurs>
-							<ep:type-name>scalar-string</ep:type-name>
+							<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':StatusMetagegeven-basis'))"/>						
+							<!--ep:type-name>scalar-string</ep:type-name>
 							<ep:enum>J</ep:enum>
-							<ep:enum>N</ep:enum>
+							<ep:enum>N</ep:enum-->
 							<ep:position>150</ep:position>
-							<ep:seq>
+							<!--ep:seq>
 								<xsl:variable name="attributes"
 									select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, '', '')"/>									
 								<xsl:sequence select="$attributes"/>
-							</ep:seq>
+							</ep:seq-->
 						</ep:construct>
 						<ep:constructRef prefix="StUF" externalNamespace="yes">
 							<ep:name>tijdvakGeldigheid</ep:name>
@@ -2568,15 +2574,16 @@
 							<ep:tech-name>authentiek</ep:tech-name>
 							<ep:max-occurs>unbounded</ep:max-occurs>
 							<ep:min-occurs>0</ep:min-occurs>
-							<ep:type-name>scalar-string</ep:type-name>
+							<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':StatusMetagegeven-basis'))"/>						
+							<!--ep:type-name>scalar-string</ep:type-name>
 							<ep:enum>J</ep:enum>
-							<ep:enum>N</ep:enum>
+							<ep:enum>N</ep:enum-->
 							<ep:position>145</ep:position>
-							<ep:seq>
+							<!--ep:seq>
 								<xsl:variable name="attributes"
 									select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, '', '')"/>									
 								<xsl:sequence select="$attributes"/>
-							</ep:seq>
+							</ep:seq-->
 						</ep:construct>
 						<!-- ep:inOnderzoek element is used to determine if a 'inOnderzoek' element needs to be generated in the messages in the next higher level. -->
 						<!--xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/-->
@@ -2586,15 +2593,16 @@
 							<ep:tech-name>inOnderzoek</ep:tech-name>
 							<ep:max-occurs>unbounded</ep:max-occurs>
 							<ep:min-occurs>0</ep:min-occurs>
-							<ep:type-name>scalar-string</ep:type-name>
+							<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':StatusMetagegeven-basis'))"/>						
+							<!--ep:type-name>scalar-string</ep:type-name>
 							<ep:enum>J</ep:enum>
-							<ep:enum>N</ep:enum>
+							<ep:enum>N</ep:enum-->
 							<ep:position>150</ep:position>
-							<ep:seq>
+							<!--ep:seq>
 								<xsl:variable name="attributes"
 									select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, '', '')"/>									
 								<xsl:sequence select="$attributes"/>
-							</ep:seq>
+							</ep:seq-->
 						</ep:construct>
 						<ep:constructRef prefix="StUF" externalNamespace="yes">
 							<ep:name>tijdvakGeldigheid</ep:name>
