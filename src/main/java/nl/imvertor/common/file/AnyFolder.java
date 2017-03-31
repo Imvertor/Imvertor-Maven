@@ -39,6 +39,7 @@ public class AnyFolder extends AnyFile {
 	static public String SERIALIZED_CONTENT_XML_FILENAME = "__content.xml";
 	
 	private String linesep = System.getProperty("line.separator");
+	private String serializedFilePath = SERIALIZED_CONTENT_XML_FILENAME;
 	
  	// create a pattern that matches <?xml ... ?>
 	private String xmlRegex = "<\\?(x|X)(m|M)(l|L).*?\\?>";
@@ -113,8 +114,8 @@ public class AnyFolder extends AnyFile {
 	 */
 	
 	public void serializeToXml(XslFile filterXslFile, String roleInfo) throws Exception {
-		// create a content file.
-    	XmlFile content = new XmlFile(this,SERIALIZED_CONTENT_XML_FILENAME);
+		// create a content file. If local name, the relative, else assume absolute.
+		XmlFile content = (serializedFilePath == SERIALIZED_CONTENT_XML_FILENAME) ? new XmlFile(this,serializedFilePath) : new XmlFile(serializedFilePath);
     	// If from a previous run, remove
     	if (content.isFile()) content.delete();
     	// Build a writer
@@ -128,7 +129,7 @@ public class AnyFolder extends AnyFile {
     		AnyFile f = new AnyFile(files.get(i));
     		String relpath = f.getRelativePath(this);  // i.e. skip the "work1/" part
     		
-    		if (f.isFile() && !f.getName().equals(SERIALIZED_CONTENT_XML_FILENAME)) {
+    		if (f.isFile() && !f.getName().equals(serializedFilePath)) {
     			
     			XmlFile wrapperInputFile = new XmlFile(File.createTempFile("serializeToXml_", "_input.xml"));
 				wrapperInputFile.deleteOnExit();
@@ -179,6 +180,14 @@ public class AnyFolder extends AnyFile {
 	
 	public void serializeToXml(XslFile filterXslFile) throws Exception {
 		serializeToXml(filterXslFile,"");
+	}
+	
+	public void serializeToXml() throws Exception {
+		serializeToXml(null,"");
+	}
+	
+	public void setSerializedFilePath(String path) {
+		serializedFilePath = path;
 	}
 	
 	private String getSpecs(AnyFile file) throws IOException {

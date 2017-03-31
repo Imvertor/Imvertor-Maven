@@ -41,6 +41,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mozilla.universalchardet.UniversalDetector;
 
 /**
@@ -174,7 +175,7 @@ public class AnyFile extends File  {
 
 	public void replaceAll(String oldString, String newString) throws IOException {
 		String c = getContent();
-		setContent(c.replace(oldString,newString));
+		setContent(StringUtils.replace(c,oldString,newString));
 	}
 	
 	public boolean matchesWildcard(String wildcard) {

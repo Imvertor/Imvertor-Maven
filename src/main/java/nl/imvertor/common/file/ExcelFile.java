@@ -55,6 +55,9 @@ public class ExcelFile extends AnyFile {
 		FileOutputStream os = new FileOutputStream(outFile);
 		Workbook workbook = Workbook.getWorkbook(is);
 		new XML(workbook, os, null, true);
+		is.close();
+		os.flush();
+		os.close();
 		XmlFile resultFile = new XmlFile(outFile);
 		resultFile.replaceAll("<!DOCTYPE workbook SYSTEM \"formatworkbook.dtd\">","<!DOCTYPE workbook SYSTEM \"" + dtdUrl + "\">");
 		return resultFile;
