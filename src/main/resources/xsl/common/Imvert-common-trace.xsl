@@ -33,6 +33,19 @@
         <xsl:sequence select="imf:compile-construct-formal-name($type-name,$effective-package-name,$effective-class-name,$effective-prop-name)"/>
     </xsl:function>
     
+    <xsl:function name="imf:get-construct-supplier-system-subpaths" as="xs:string*">
+        <xsl:param name="this" as="element()"/>
+        <xsl:variable name="suppliers" select="($this/ancestor-or-self::imvert:*)/imvert:supplier"/>
+        <xsl:for-each select="$suppliers">
+            <xsl:variable name="supplier-project" select="imvert:supplier-project"/>
+            <xsl:variable name="supplier-name" select="imvert:supplier-name"/>
+            <xsl:variable name="supplier-release" select="imvert:supplier-release"/>
+            <xsl:variable name="subpath" select="imf:get-subpath($supplier-project,$supplier-name,$supplier-release)"/>
+            <xsl:value-of select="$subpath"/>
+        </xsl:for-each>
+    </xsl:function>
+    
+    <!-- TODO uitfaseren!! -->
     <xsl:function name="imf:get-construct-supplier-system-subpath" as="xs:string?">
         <xsl:param name="this" as="element()"/>
         <xsl:variable name="suppliers" select="($this/ancestor-or-self::imvert:*)/imvert:supplier"/>

@@ -39,7 +39,9 @@
     
     <xsl:variable name="stereotype-proxy" select="imf:get-config-stereotypes(('stereotype-name-att-proxy','stereotype-name-obj-proxy','stereotype-name-grp-proxy'))"/>
     
-    <xsl:variable name="local-constructs" select="('attributes', 'associations', 'name', 'id')"/>
+    <xsl:variable name="local-constructs" select="('name', 'id')"/> <!-- 'attributes', 'associations', ? -->
+    
+    <xsl:variable name="document-proxies" select="//*[imvert:stereotype = $stereotype-proxy]"/>
     
     <xsl:template match="/imvert:packages">
         <xsl:copy>
@@ -56,55 +58,103 @@
         <xsl:apply-templates select="." mode="proxy"/>
     </xsl:template>
     
+    <!--TODO deze code loopt grotendeels parallel met imvert2pretrace.xsl. gelijktrekken. -->
+    <!--TODO inlezen van losse documenten tegengaan; volg het gecompileerde suppliers document -->
     <xsl:template match="imvert:class|imvert:attribute" mode="proxy">
-        <?xx this is for not-manually traced constructs:
-            <xsl:variable name="formal-name" select="imf:get-construct-formal-name(.)"/>
-            <xsl:variable name="formal-trace-name" select="imf:get-construct-formal-trace-name(.)"/>
-            <xsl:variable name="supplier-subpath" select="imf:get-construct-supplier-system-subpath(.)"/>
-            <xsl:variable name="supplier-doc" select="imf:document(concat($output-folder,'/applications/',$supplier-subpath,'/etc/system.imvert.xml'))"/>
-            <xsl:variable name="supplier-construct" select="imf:get-supplier($supplier-doc,$formal-trace-name)"/>
-        ?>
-        
-        <xsl:variable name="trace-id" select="imvert:trace"/>
-        <xsl:variable name="supplier-subpath" select="imf:get-construct-supplier-system-subpath(.)"/>
-        <xsl:variable name="supplier-doc" select="imf:document(concat($output-folder,'/applications/',$supplier-subpath,'/etc/system.imvert.xml'),false())"/>
-        <xsl:variable name="supplier-construct" select="imf:get-construct-by-id($trace-id,$supplier-doc)"/>
-        
+       
+        <xsl:variable name="this" select="."/>
+        <xsl:variable name="trace-id" select="$this/imvert:trace"/>
+        <xsl:variable name="supplier-subpaths" select="imf:get-construct-supplier-system-subpaths($this)"/>
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:choose>
                 <xsl:when test="count($trace-id) != 1">
-                    <xsl:sequence select="imf:msg(.,'ERROR', 'Proxy requires a single outgoing trace',())"/>
+                    <xsl:sequence select="imf:msg(.,'ERROR', 'Proxy requires a single outgoing trace, [1] traces found',count($trace-id))"/>
                 </xsl:when>
-                <xsl:when test="empty($supplier-doc)">
-                    <xsl:sequence select="imf:msg(.,'ERROR','No such proxy supplier document location: [1]',$supplier-subpath)"/>
+                <xsl:when test="empty($supplier-subpaths)">
+                    <xsl:sequence select="imf:msg('ERROR','Proxy without trace')"/>
                 </xsl:when>
-                <xsl:when test="empty($supplier-construct)">
-                    <xsl:sequence select="imf:msg(.,'ERROR','Proxy could not be resolved at location [1]',($supplier-subpath))"/>
-                </xsl:when>
-                <?x TODO proxies op proxies wél toesaan, Moet daar een waarschuwing op komen? Of is het gewoon?
-                <xsl:when test="exists($supplier-construct/imvert:proxy)">
-                    <xsl:sequence select="imf:msg(.,'ERROR','Proxy resolves to a proxy at location [1]',($supplier-subpath))"/>
-                </xsl:when>
-                ?>
                 <xsl:otherwise>
-                    <imvert:proxy origin="system" original-location="{$supplier-subpath}">
-                        <xsl:value-of select="$supplier-construct/imvert:id"/>
-                    </imvert:proxy>
-                    <!-- 
-                        copy for this proxy the local constructs 
-                    -->
-                    <xsl:sequence select="*[local-name(.) = $local-constructs]"/>
-                    <!-- 
-                        copy all supplier info to this construct, except for local constructs 
-                    -->
-                    <xsl:sequence select="$supplier-construct/*[not(local-name(.) = $local-constructs)]"/>
+                    <xsl:variable name="result" as="element()*">
+                        <xsl:for-each select="$supplier-subpaths">
+                            <xsl:variable name="supplier-doc" select="imf:get-imvert-supplier-doc(.)"/>
+                            <xsl:variable name="supplier-construct" select="imf:get-construct-by-id($trace-id,$supplier-doc)"/>
+                            <xsl:choose>
+                                <xsl:when test="empty($supplier-doc)">
+                                    <xsl:sequence select="imf:msg($this,'WARNING','No such supplier document: [1]',.)"/>
+                                </xsl:when>
+                                <xsl:when test="exists($supplier-construct)">
+                                    <!-- this is reached only once. -->
+                                    <imvert:proxy origin="system" original-location="{.}">
+                                        <xsl:value-of select="$supplier-construct/imvert:id"/>
+                                    </imvert:proxy>
+                                    <!-- 
+                                        copy for this proxy the local constructs 
+                                    -->
+                                    <xsl:sequence select="$this/*[local-name(.) = ('name','id')]"/>
+                                    <!-- 
+                                        copy all supplier info to this construct, except for local constructs 
+                                    -->
+                                    <xsl:sequence select="$supplier-construct/*[not(local-name(.) = ('name','id','attributes','associations'))]"/>
+                                    <xsl:if test="local-name($this) = 'class'">
+                                        <!--
+                                            copy first the supplier attributes, and then the local attributes, and associations
+                                        -->
+                                        <imvert:attributes>
+                                            <xsl:apply-templates select="$supplier-construct/imvert:attributes/imvert:attribute" mode="proxy-sub"/>
+                                            <xsl:sequence select="$this/imvert:attributes/imvert:attribute"/>
+                                        </imvert:attributes>
+                                        <imvert:associations>
+                                            <xsl:apply-templates select="$supplier-construct/imvert:associations/imvert:association" mode="proxy-sub"/>
+                                            <xsl:sequence select="$this/imvert:associations/imvert:association"/>
+                                        </imvert:associations>
+                                    </xsl:if>
+                                </xsl:when>
+                            </xsl:choose>
+                        </xsl:for-each>
+                    </xsl:variable>
+                    <xsl:choose>
+                        <xsl:when test="empty($result)">
+                            <xsl:sequence select="imf:msg(.,'ERROR', 'Unable to resolve the proxy trace, tried [1]',(string-join($supplier-subpaths,'; ')))"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence select="$result"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:copy>
     </xsl:template>
  
-    <xsl:template match="*" mode="#default proxy">
+    <xsl:template match="imvert:association" mode="proxy-sub">
+        <imvert:association>
+            <xsl:apply-templates mode="#current"/>
+        </imvert:association>
+    </xsl:template>
+    <xsl:template match="imvert:attribute" mode="proxy-sub">
+        <imvert:attribute>
+            <xsl:apply-templates mode="#current"/>
+        </imvert:attribute>
+    </xsl:template>
+    <!-- 
+        the target of an association of a supplier, must be replaced by the proxy :
+    -->
+    <xsl:template match="imvert:type-id" mode="proxy-sub">
+        <xsl:variable name="id" select="."/>
+        <xsl:variable name="proxy" select="$document-proxies[imvert:trace = $id]"/>
+        <xsl:choose>
+            <xsl:when test="count($proxy) != 1">
+                <xsl:sequence select="imf:msg(..,'ERROR', 'Proxy association deadlock, [1] traces found',count($proxy))"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <imvert:type-id origin="proxy" original="{$id}">
+                    <xsl:value-of select="$proxy/imvert:id"/>
+                </imvert:type-id>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+   
+    <xsl:template match="*" mode="#default proxy proxy-sub">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:apply-templates mode="#current"/>

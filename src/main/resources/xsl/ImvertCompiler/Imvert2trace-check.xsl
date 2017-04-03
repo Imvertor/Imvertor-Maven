@@ -96,17 +96,17 @@
         <xsl:variable name="is-derived" select="imf:boolean((ancestor::imvert:package/imvert:derived)[1])"/>
        
         <xsl:sequence select="imf:report-warning($this, 
-            $validate-trace-full and empty($this/imvert:trace),
+            $validate-trace-full and $is-derived and (empty($this/imvert:trace) and empty($this/imvert:proxy)),
             'This construct should be derived (but is not)',())"/>
         
         <xsl:if test="$is-derived">
-            <xsl:for-each select="$this/imvert:trace">
+            <xsl:for-each select="($this/imvert:trace,$this/imvert:proxy)">
                 <xsl:variable name="trace-id" select="."/>        
                 <xsl:variable name="trace-construct" select="imf:get-trace-construct-by-id(..,$trace-id,$all-derived-models-doc)"/>        
-                
+                <xsl:variable name="type" select="local-name()"/>
                 <xsl:sequence select="imf:report-warning($this, 
                     $validate-trace-full and empty($trace-construct),
-                    'This construct is not derived from a known construct in (any of) the supplier(s) [1]',($supplier-subpaths))"/>
+                    'This construct is not [1]-derived from a known construct in (any of) the supplier(s) [2]',($type, $supplier-subpaths))"/>
             </xsl:for-each>
         </xsl:if>
         

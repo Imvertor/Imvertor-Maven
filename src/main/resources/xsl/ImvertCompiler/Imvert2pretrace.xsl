@@ -48,28 +48,42 @@
         </xsl:copy>
     </xsl:template>
     
+    <!--TODO inlezen van losse documenten tegengaan; volg het gecompileerde suppliers document -->
     <xsl:template match="imvert:class | imvert:attribute | imvert:association">
         <xsl:variable name="formal-name" select="@formal-name"/>
         <xsl:variable name="formal-trace-name" select="imf:get-construct-formal-trace-name(.)"/>
-        <xsl:variable name="supplier-subpath" select="imf:get-construct-supplier-system-subpath(.)"/>
-        <xsl:variable name="supplier-doc" select="imf:get-imvert-supplier-doc($supplier-subpath)"/>
-        <xsl:variable name="supplier-construct" select="imf:get-supplier($supplier-doc,$formal-trace-name)"/>
+        <xsl:variable name="supplier-subpaths" select="imf:get-construct-supplier-system-subpaths(.)"/>
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:choose>
-                <xsl:when test="empty($supplier-subpath)">
+                <xsl:when test="empty($supplier-subpaths)">
                     <xsl:comment select="concat('No traces applicable for ', $formal-trace-name)"/>
                 </xsl:when>
-                <xsl:when test="empty($supplier-doc)">
-                    <xsl:sequence select="imf:msg('WARNING',concat('No such supplier document: ',$supplier-subpath))"/>
-                </xsl:when>
-                <xsl:when test="empty($supplier-construct)">
-                    <xsl:comment select="concat('No trace found for ', $formal-trace-name)"/>
-                </xsl:when>
                 <xsl:otherwise>
-                    <imvert:trace origin="system" original-location="{$supplier-subpath}">
-                        <xsl:value-of select="$supplier-construct/imvert:id"/>
-                    </imvert:trace>
+                    <xsl:variable name="result" as="element(imvert:trace)*">
+                        <xsl:for-each select="$supplier-subpaths">
+                            <xsl:variable name="supplier-doc" select="imf:get-imvert-supplier-doc(.)"/>
+                            <xsl:variable name="supplier-construct" select="imf:get-supplier($supplier-doc,$formal-trace-name)"/>
+                            <xsl:choose>
+                                <xsl:when test="empty($supplier-doc)">
+                                    <xsl:sequence select="imf:msg('WARNING',concat('No such supplier document: ',.))"/>
+                                </xsl:when>
+                                <xsl:when test="exists($supplier-construct)">
+                                    <imvert:trace origin="system" original-location="{.}">
+                                        <xsl:value-of select="$supplier-construct/imvert:id"/>
+                                    </imvert:trace>
+                                </xsl:when>
+                            </xsl:choose>
+                        </xsl:for-each>
+                    </xsl:variable>
+                    <xsl:choose>
+                        <xsl:when test="empty($result)">
+                            <xsl:comment select="concat('No trace found for ', $formal-trace-name)"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence select="$result"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:apply-templates/>
