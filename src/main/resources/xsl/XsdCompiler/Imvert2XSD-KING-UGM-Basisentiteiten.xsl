@@ -468,9 +468,9 @@
             </xs:complexContent>
         </xs:complexType>
         <xs:complexType name="{imf:capitalize($compiled-name)}"> 
-            <xs:sequence minOccurs="0">
+            <xs:choice minOccurs="0">
                 <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-attribute"/>
-            </xs:sequence>
+            </xs:choice>
         </xs:complexType>
         
     </xsl:template>
@@ -912,8 +912,10 @@
         <xsl:variable name="min-length" select="imf:get-taggedvalue(.,'Minimum lengte')"/>
         <xsl:variable name="patroon" select="imf:get-taggedvalue(.,'Formeel patroon')"/>
         
+        <xsl:variable name="nillable-patroon" select="if (normalize-space($patroon)) then concat('(', $patroon,')?') else ()"/>
+        
         <xsl:variable name="facetten">
-            <xsl:sequence select="imf:create-facet('xs:pattern',concat('(', $patroon, ')?'))"/>
+            <xsl:sequence select="imf:create-facet('xs:pattern',$nillable-patroon)"/>
             <xsl:sequence select="imf:create-facet('xs:minInclusive',$min-waarde)"/>
             <xsl:sequence select="imf:create-facet('xs:maxInclusive',$max-waarde)"/>
             <xsl:sequence select="imf:create-facet('xs:minLength',$min-length)"/>
