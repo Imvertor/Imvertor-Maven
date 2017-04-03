@@ -98,12 +98,12 @@
                 <xsl:namespace name="{$prefix}" select="$target-namespace"/>
                 
                 <ent-part>
-                    <xs:import schemaLocation="../StUF/stuf0302.xsd" namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" />
+                    <xs:import schemaLocation="../0302/stuf0302.xsd" namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" />
                     <xs:import schemaLocation="../gml/3.2.1/gml.xsd" namespace="http://www.opengis.net/gml/3.2" />
                 </ent-part>
                 
                 <dat-part>
-                    <xs:import schemaLocation="../StUF/stuf0302.xsd" namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" />
+                    <xs:import schemaLocation="../0302/stuf0302.xsd" namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" />
                     <xs:import schemaLocation="../gml/3.2.1/gml.xsd" namespace="http://www.opengis.net/gml/3.2" />
                 </dat-part>
                 

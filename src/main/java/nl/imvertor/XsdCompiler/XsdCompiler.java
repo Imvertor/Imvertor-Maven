@@ -254,8 +254,8 @@ public class XsdCompiler extends Step {
 		//TODO let the stylesheet operate on system, not on model file. Try to determine if model file is required alltogether.
 		valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_METAMODEL_KINGUGM_XSD_FILEPATH", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH");
 		
-		// fetch all checksum info from parms file and store to the blackboard.
-		valid = valid && transformer.transformStep("system/work-config-path","properties/IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH", "properties/IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XSLPATH");
+		// fetch all checksum info from parms file and store to the local blackboard.
+		valid = valid && transformer.transformStep("system/work-config-path","properties/IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH_LOCAL", "properties/IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XSLPATH");
 		
 		// and copy the onderlaag; this is a copy of all stuff in that folder
 		AnyFolder onderlaag = new AnyFolder(configurator.getParm("properties", "STUF_ONDERLAAG_UGM"));

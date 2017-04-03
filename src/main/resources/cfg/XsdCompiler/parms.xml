@@ -149,7 +149,8 @@
       
       <!-- checksum info for simpletypes -->
       <IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XSLPATH>Imvert2XSD-KING-compile-checksum.xsl</IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XSLPATH>
-      <IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH>${system/managedoutputfolder}/blackboard/checksum-simpletypes.xml</IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH>
+      <IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH>${system/inp-folder-path}/cfg/schemarules/checksum-simpletypes.xml</IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH>
+      <IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH_LOCAL>${system/work-etc-folder-path}/checksum-simpletypes.xml</IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH_LOCAL>
       
       <!-- workfolder for serialized excel -->
       <work-serialize-folder>${system/work-folder-path}/serializer/temp-folder</work-serialize-folder>
