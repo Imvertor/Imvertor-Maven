@@ -1564,8 +1564,9 @@
                 <xsl:sequence select="imf:create-comment(concat('Resolve checksum on element - ', $checksum))"/>
                 <xsl:sequence select="imf:create-comment(concat('Element type is ', @type))"/>
                 <xsl:variable name="prefix" select="tokenize(@type,':')[1]"/>
-                <xs:element name="{@name}" type="{$prefix}:{$tokens[1]}-e" minOccurs="{@minOccurs}" maxOccurs="{@maxOccurs}">
-                    <xsl:apply-templates mode="#current"/>
+                <xs:element type="{$prefix}:{$tokens[1]}-e">
+                    <xsl:apply-templates select="@name | @minOccurs | @maxOccurs | @metadata:*" mode="#current"/>
+                    <xsl:apply-templates select="node()" mode="#current"/>
                 </xs:element>
             </xsl:when>
             <xsl:when test="self::xs:extension">
