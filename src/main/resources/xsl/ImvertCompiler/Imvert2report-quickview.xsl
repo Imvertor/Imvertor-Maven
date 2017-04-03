@@ -101,6 +101,7 @@
             <td colspan="100" class="class">
                 <a name="{@display-name}"/>
                 <xsl:sequence select="imf:report-label('Name',imf:get-construct-name(.))"/>
+                <xsl:sequence select="imf:report-label('ID',imvert:id)"/>
                 <xsl:sequence select="imf:report-label('Abstract?',if (imf:boolean(imvert:abstract)) then 'true' else '')"/>
                 <xsl:sequence select="imf:report-label('Root?',if (imf:is-natural-root-class(.)) then 'true' else '')"/>
                 <xsl:variable name="subpackages" select="imvert:subpackage"/>
@@ -164,6 +165,8 @@
         </td>
         <td>
             <xsl:sequence select="imf:get-construct-name(.)"/>
+            <br/>
+            <span class="tid"><xsl:sequence select="imvert:id"/></span>
         </td>
         <!--
         <td>

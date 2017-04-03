@@ -1356,7 +1356,9 @@
         <xsl:choose>
             <xsl:when test="exists($super)">
                 <xsl:for-each select="$super">
+                    <xsl:variable name="name" select="string(imvert:type-name)"/>
                     <xsl:variable name="id" select="string(imvert:type-id)"/>
+                    <xsl:variable name="construct" select="imf:get-construct-by-id($id)"/>
                     <xsl:choose>
                         <xsl:when test="$found = $id">
                             <xsl:sequence select="imf:report-error($class,
@@ -1364,8 +1366,14 @@
                                 'Improper type hierarchy detected',())"/>
                             <xsl:sequence select="false()"/>
                         </xsl:when>
+                        <xsl:when test="empty($construct)">
+                            <xsl:sequence select="imf:report-error($class,
+                                true(),
+                                'Could not find supertype, name is [1]',($name))"/>
+                            <xsl:sequence select="false()"/>
+                        </xsl:when>
                         <xsl:otherwise>
-                            <xsl:sequence select="imf:check-proper-class-tree(imf:get-construct-by-id($id),($found, $id))"/>
+                            <xsl:sequence select="imf:check-proper-class-tree($construct,($found, $id))"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:for-each>

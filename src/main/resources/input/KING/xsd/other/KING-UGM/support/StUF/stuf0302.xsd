@@ -10,10 +10,13 @@
              - appinfo aangepast
             - RFC0121:
                 - attribute indOnvolledigeDatum evenals het gebruik ervan binnen extraElementen verwijderd
-				- Datum-e gedefinieerd als extension van xs:date en attribute StUF:exact verwijderd
-				- Tijdstip-e gedefinieerd als extension van xs:dateTime en attribute StUF:exact verwijderd
+                - SimpleType StUF:dateTime toegevoegd. Dit type is een restriction op xs:dateTime die het gebruik van het tijdstip 24:00:00 onmogelijk maakt en die de nauwkeurigheid beperkt tot millisecondes.
+                  Overal wordt voor een tijdstip zonder noValue en zonder onvolledige datum het type StUF:dateTime gebruikt:
+                  - tijdstipBericht binnen het complexType Stuurgegevens en zijn restrictions.
+                  - peiltijdstipMaterieel en peiltijdstipFormeel in de complexTypes ParametersVraag en ParametersAntwoord en hun restrictions
+				- ComplexTypes DatumMetIndicator en TijdstipMetIndicator verwijderd en de complexTypes DatumMogelijkOnvolledig-e en TijdstipMogelijkOnvolledig-e toegevoegd als extensions op StUF:dateTime. De verwijzingen naar de verwijderde complextTypes waar nodig aangepast.
+				- Datum-e en Tijdstip-e gedefinieerd als restriction van TijdstipMogelijkOnvolledig-e met de choice met minOccurs="0", zodat er geen nillable="true" nodig is.
 				- SimpleTypes Datum en Tijdstip verwijderd
-				- ComplexTypes DatumMetIndicator en TijdstipMetIndicator verwijderd en de complexTypes DatumMogelijkOnvolledig en TijdstipMogelijkOnvolledig toegevoegd. De verwijzingen naar de verwijderde complextTypes waar nodig aangepast.
 				- TijdvakObjectZonderIndicator niet langer gedefinieerd als een restriction
 				- eindObject resp. eindRelatie verplicht gemaakt in TijdvakObject en TijdvakRelatie, omdat weglaten van deze elementen impliceert dat de waarde onbekend is.
 			    - Waar nodig verwijzingen aangepast
@@ -46,6 +49,7 @@
 				- Binnen de complexTypes beginnend met TijdstipMogelijkOnvolledig en met DatumMogelijkOnvolledig in de choice het element leeg verwijderd en het attribute noValue
 				  toegevoegd.
 				- Het attribute noValue verwijderd binnen de attributeGroup entiteit
+				- De SimpleTypes INDIC en INDIC-e voor Ja/Nee waarden ipv boolean toegevoegd
 			- RFC0418:
 				- attribute exact verwijderd
 				- SimpleType Wildcard en WildcardEind toegevoegd
@@ -73,6 +77,8 @@
 				- De attributes sleutelVerzendend, sleutelOntvangend, sleutelGegevensbeheer, sleutelSynchronisatie, noValue, verwerkingssoort, scope en functie verwijderd.
 				- Het SimpleType StUFScope toegevoegd
 				- Overal de ref naar de bovenstaande attributes vervangen door de name (zonder StUF:) en het corresponderende type.
+			- RFC0473:
+				- In de enumeration voor het simpleType StUFScope allesMaarKerngegevensGerelateerden vervangen door allesMaarMatchgegevensGerelateerden en kerngegevens door matchgegevens
         </documentation>
 		<appinfo>
 			<StUF:onderdeel>http://www.stufstandaarden.nl/StUF/StUF0302</StUF:onderdeel>
@@ -93,7 +99,7 @@
 									<element name="zender" type="StUF:Systeem"/>
 									<element name="ontvanger" type="StUF:Systeem"/>
 									<element name="referentienummer" type="StUF:Refnummer"/>
-									<element name="tijdstipBericht" type="dateTime"/>
+									<element name="tijdstipBericht" type="StUF:dateTime"/>
 									<element name="crossRefnummer" type="StUF:Refnummer"/>
 								</sequence>
 							</restriction>
@@ -134,7 +140,7 @@
 									<element name="zender" type="StUF:Systeem"/>
 									<element name="ontvanger" type="StUF:Systeem"/>
 									<element name="referentienummer" type="StUF:Refnummer"/>
-									<element name="tijdstipBericht" type="dateTime"/>
+									<element name="tijdstipBericht" type="StUF:dateTime"/>
 									<element name="crossRefnummer" type="StUF:Refnummer"/>
 								</sequence>
 							</restriction>
@@ -157,7 +163,7 @@
 									<element name="zender" type="StUF:Systeem"/>
 									<element name="ontvanger" type="StUF:Systeem"/>
 									<element name="referentienummer" type="StUF:Refnummer"/>
-									<element name="tijdstipBericht" type="dateTime"/>
+									<element name="tijdstipBericht" type="StUF:dateTime"/>
 									<element name="crossRefnummer" type="StUF:Refnummer"/>
 								</sequence>
 							</restriction>
@@ -216,7 +222,7 @@
 									<element name="zender" type="StUF:Systeem"/>
 									<element name="ontvanger" type="StUF:Systeem"/>
 									<element name="referentienummer" type="StUF:Refnummer"/>
-									<element name="tijdstipBericht" type="dateTime"/>
+									<element name="tijdstipBericht" type="StUF:dateTime"/>
 								</sequence>
 							</restriction>
 						</complexContent>
@@ -255,8 +261,8 @@
 		<sequence>
 			<element name="indicatorVervolgvraag" type="boolean" minOccurs="0"/>
 			<element name="indicatorAfnemerindicatie" type="boolean" default="false" minOccurs="0"/>
-			<element name="peiltijdstipMaterieel" type="dateTime" minOccurs="0"/>
-			<element name="peiltijdstipFormeel" type="dateTime" minOccurs="0"/>
+			<element name="peiltijdstipMaterieel" type="StUF:dateTime" minOccurs="0"/>
+			<element name="peiltijdstipFormeel" type="StUF:dateTime" minOccurs="0"/>
 			<element name="indicatorHistorie" type="StUF:IndicatorHistorie" minOccurs="0"/>
 			<element name="aantalVoorkomens" type="StUF:AantalVoorkomens" minOccurs="0"/>
 			<element name="volgnummer" type="StUF:Volgnummer" minOccurs="0"/>
@@ -286,8 +292,8 @@
 				<sequence>
 					<element name="indicatorVervolgvraag" type="boolean"/>
 					<element name="indicatorAfnemerindicatie" type="boolean" default="false" minOccurs="0"/>
-					<element name="peiltijdstipMaterieel" type="dateTime" minOccurs="0"/>
-					<element name="peiltijdstipFormeel" type="dateTime" minOccurs="0"/>
+					<element name="peiltijdstipMaterieel" type="StUF:dateTime" minOccurs="0"/>
+					<element name="peiltijdstipFormeel" type="StUF:dateTime" minOccurs="0"/>
 					<element name="indicatorHistorie" type="StUF:IndicatorHistorie" minOccurs="0"/>
 					<element name="aantalVoorkomens" type="StUF:AantalVoorkomens" minOccurs="0"/>
 				</sequence>
@@ -303,7 +309,7 @@
 				<sequence>
 					<element name="indicatorVervolgvraag" type="boolean"/>
 					<element name="indicatorAfnemerindicatie" type="boolean" default="false" minOccurs="0"/>
-					<element name="peiltijdstipMaterieel" type="dateTime" minOccurs="0"/>
+					<element name="peiltijdstipMaterieel" type="StUF:dateTime" minOccurs="0"/>
 					<element name="aantalVoorkomens" type="StUF:AantalVoorkomens" minOccurs="0"/>
 				</sequence>
 			</restriction>
@@ -334,8 +340,8 @@
 				<sequence>
 					<element name="indicatorVervolgvraag" type="boolean" minOccurs="0"/>
 					<element name="indicatorAfnemerindicatie" type="boolean" default="false" minOccurs="0"/>
-					<element name="peiltijdstipMaterieel" type="dateTime" minOccurs="0"/>
-					<element name="peiltijdstipFormeel" type="dateTime" minOccurs="0"/>
+					<element name="peiltijdstipMaterieel" type="StUF:dateTime" minOccurs="0"/>
+					<element name="peiltijdstipFormeel" type="StUF:dateTime" minOccurs="0"/>
 					<element name="aantalVoorkomens" type="StUF:AantalVoorkomens" minOccurs="0"/>
 					<element name="volgnummer" type="StUF:Volgnummer"/>
 					<element name="indicatorLaatsteBericht" type="boolean" minOccurs="0"/>
@@ -352,7 +358,7 @@
 				<sequence>
 					<element name="indicatorVervolgvraag" type="boolean" minOccurs="0"/>
 					<element name="indicatorAfnemerindicatie" type="boolean" default="false" minOccurs="0"/>
-					<element name="peiltijdstipMaterieel" type="dateTime" minOccurs="0"/>
+					<element name="peiltijdstipMaterieel" type="StUF:dateTime" minOccurs="0"/>
 					<element name="aantalVoorkomens" type="StUF:AantalVoorkomens" minOccurs="0"/>
 					<element name="volgnummer" type="StUF:Volgnummer"/>
 					<element name="indicatorLaatsteBericht" type="boolean" minOccurs="0"/>
@@ -432,8 +438,8 @@
 			<element name="indicatorVervolgvraag" type="boolean" minOccurs="0"/>
 			<element name="indicatorAfnemerindicatie" type="boolean" default="false" minOccurs="0"/>
 			<element name="maximumAantal" type="StUF:MaximumAantal" default="15" minOccurs="0"/>
-			<element name="peiltijdstipMaterieel" type="dateTime" minOccurs="0"/>
-			<element name="peiltijdstipFormeel" type="dateTime" minOccurs="0"/>
+			<element name="peiltijdstipMaterieel" type="StUF:dateTime" minOccurs="0"/>
+			<element name="peiltijdstipFormeel" type="StUF:dateTime" minOccurs="0"/>
 			<element name="indicatorHistorie" type="StUF:IndicatorHistorie" minOccurs="0"/>
 			<element name="indicatorAantal" type="boolean" default="false" minOccurs="0"/>
 		</sequence>
@@ -449,8 +455,8 @@
 					<element name="indicatorVervolgvraag" type="boolean" minOccurs="0"/>
 					<element name="indicatorAfnemerindicatie" type="boolean" default="false" minOccurs="0"/>
 					<element name="maximumAantal" type="StUF:MaximumAantal" default="15" minOccurs="0"/>
-					<element name="peiltijdstipMaterieel" type="dateTime" minOccurs="0"/>
-					<element name="peiltijdstipFormeel" type="dateTime" minOccurs="0"/>
+					<element name="peiltijdstipMaterieel" type="StUF:dateTime" minOccurs="0"/>
+					<element name="peiltijdstipFormeel" type="StUF:dateTime" minOccurs="0"/>
 					<element name="indicatorAantal" type="boolean" default="false" minOccurs="0"/>
 				</sequence>
 			</restriction>
@@ -469,7 +475,7 @@
 			<element name="zender" type="StUF:Systeem" minOccurs="0"/>
 			<element name="ontvanger" type="StUF:Systeem" minOccurs="0"/>
 			<element name="referentienummer" type="StUF:Refnummer" minOccurs="0"/>
-			<element name="tijdstipBericht" type="dateTime" minOccurs="0"/>
+			<element name="tijdstipBericht" type="StUF:dateTime" minOccurs="0"/>
 			<element name="crossRefnummer" type="StUF:Refnummer" minOccurs="0"/>
 			<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens" minOccurs="0"/>
 			<element name="functie" type="StUF:Functie" minOccurs="0"/>
@@ -483,7 +489,7 @@
 					<element name="zender" type="StUF:Systeem"/>
 					<element name="ontvanger" type="StUF:Systeem"/>
 					<element name="referentienummer" type="StUF:Refnummer"/>
-					<element name="tijdstipBericht" type="dateTime"/>
+					<element name="tijdstipBericht" type="StUF:dateTime"/>
 					<element name="functie" type="StUF:Functie"/>
 				</sequence>
 			</restriction>
@@ -497,7 +503,7 @@
 					<element name="zender" type="StUF:Systeem" minOccurs="0"/>
 					<element name="ontvanger" type="StUF:Systeem" minOccurs="0"/>
 					<element name="referentienummer" type="StUF:Refnummer" minOccurs="0"/>
-					<element name="tijdstipBericht" type="dateTime" minOccurs="0"/>
+					<element name="tijdstipBericht" type="StUF:dateTime" minOccurs="0"/>
 					<element name="functie" type="StUF:Functie" minOccurs="0"/>
 				</sequence>
 			</restriction>
@@ -511,7 +517,7 @@
 					<element name="zender" type="StUF:Systeem"/>
 					<element name="ontvanger" type="StUF:Systeem"/>
 					<element name="referentienummer" type="StUF:Refnummer"/>
-					<element name="tijdstipBericht" type="dateTime"/>
+					<element name="tijdstipBericht" type="StUF:dateTime"/>
 					<element name="crossRefnummer" type="StUF:Refnummer"/>
 					<element name="functie" type="StUF:Functie"/>
 				</sequence>
@@ -526,7 +532,7 @@
 					<element name="zender" type="StUF:Systeem" minOccurs="0"/>
 					<element name="ontvanger" type="StUF:Systeem" minOccurs="0"/>
 					<element name="referentienummer" type="StUF:Refnummer" minOccurs="0"/>
-					<element name="tijdstipBericht" type="dateTime" minOccurs="0"/>
+					<element name="tijdstipBericht" type="StUF:dateTime" minOccurs="0"/>
 					<element name="crossRefnummer" type="StUF:Refnummer" minOccurs="0"/>
 					<element name="functie" type="StUF:Functie" minOccurs="0"/>
 				</sequence>
@@ -541,7 +547,7 @@
 					<element name="zender" type="StUF:Systeem" minOccurs="0"/>
 					<element name="ontvanger" type="StUF:Systeem" minOccurs="0"/>
 					<element name="referentienummer" type="StUF:Refnummer" minOccurs="0"/>
-					<element name="tijdstipBericht" type="dateTime" minOccurs="0"/>
+					<element name="tijdstipBericht" type="StUF:dateTime" minOccurs="0"/>
 					<element name="crossRefnummer" type="StUF:Refnummer" minOccurs="0"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
@@ -556,7 +562,7 @@
 					<element name="zender" type="StUF:Systeem"/>
 					<element name="ontvanger" type="StUF:Systeem"/>
 					<element name="referentienummer" type="StUF:Refnummer"/>
-					<element name="tijdstipBericht" type="dateTime"/>
+					<element name="tijdstipBericht" type="StUF:dateTime"/>
 					<element name="crossRefnummer" type="StUF:Refnummer"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
@@ -571,7 +577,7 @@
 					<element name="zender" type="StUF:Systeem" minOccurs="0"/>
 					<element name="ontvanger" type="StUF:Systeem" minOccurs="0"/>
 					<element name="referentienummer" type="StUF:Refnummer" minOccurs="0"/>
-					<element name="tijdstipBericht" type="dateTime" minOccurs="0"/>
+					<element name="tijdstipBericht" type="StUF:dateTime" minOccurs="0"/>
 					<element name="crossRefnummer" type="StUF:Refnummer" minOccurs="0"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
@@ -586,7 +592,7 @@
 					<element name="zender" type="StUF:Systeem"/>
 					<element name="ontvanger" type="StUF:Systeem"/>
 					<element name="referentienummer" type="StUF:Refnummer"/>
-					<element name="tijdstipBericht" type="dateTime"/>
+					<element name="tijdstipBericht" type="StUF:dateTime"/>
 					<element name="crossRefnummer" type="StUF:Refnummer"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
@@ -601,7 +607,7 @@
 					<element name="zender" type="StUF:Systeem" minOccurs="0"/>
 					<element name="ontvanger" type="StUF:Systeem" minOccurs="0"/>
 					<element name="referentienummer" type="StUF:Refnummer" minOccurs="0"/>
-					<element name="tijdstipBericht" type="dateTime" minOccurs="0"/>
+					<element name="tijdstipBericht" type="StUF:dateTime" minOccurs="0"/>
 					<element name="crossRefnummer" type="StUF:Refnummer" minOccurs="0"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
@@ -616,7 +622,7 @@
 					<element name="zender" type="StUF:Systeem"/>
 					<element name="ontvanger" type="StUF:Systeem"/>
 					<element name="referentienummer" type="StUF:Refnummer"/>
-					<element name="tijdstipBericht" type="dateTime"/>
+					<element name="tijdstipBericht" type="StUF:dateTime"/>
 					<element name="crossRefnummer" type="StUF:Refnummer"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
@@ -631,7 +637,7 @@
 					<element name="zender" type="StUF:Systeem" minOccurs="0"/>
 					<element name="ontvanger" type="StUF:Systeem" minOccurs="0"/>
 					<element name="referentienummer" type="StUF:Refnummer" minOccurs="0"/>
-					<element name="tijdstipBericht" type="dateTime" minOccurs="0"/>
+					<element name="tijdstipBericht" type="StUF:dateTime" minOccurs="0"/>
 					<element name="crossRefnummer" type="StUF:Refnummer" minOccurs="0"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
@@ -646,7 +652,7 @@
 					<element name="zender" type="StUF:Systeem"/>
 					<element name="ontvanger" type="StUF:Systeem"/>
 					<element name="referentienummer" type="StUF:Refnummer"/>
-					<element name="tijdstipBericht" type="dateTime"/>
+					<element name="tijdstipBericht" type="StUF:dateTime"/>
 					<element name="crossRefnummer" type="StUF:Refnummer"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
@@ -661,7 +667,7 @@
 					<element name="zender" type="StUF:Systeem" minOccurs="0"/>
 					<element name="ontvanger" type="StUF:Systeem" minOccurs="0"/>
 					<element name="referentienummer" type="StUF:Refnummer" minOccurs="0"/>
-					<element name="tijdstipBericht" type="dateTime" minOccurs="0"/>
+					<element name="tijdstipBericht" type="StUF:dateTime" minOccurs="0"/>
 					<element name="crossRefnummer" type="StUF:Refnummer" minOccurs="0"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
@@ -676,7 +682,7 @@
 					<element name="zender" type="StUF:Systeem"/>
 					<element name="ontvanger" type="StUF:Systeem"/>
 					<element name="referentienummer" type="StUF:Refnummer"/>
-					<element name="tijdstipBericht" type="dateTime"/>
+					<element name="tijdstipBericht" type="StUF:dateTime"/>
 					<element name="crossRefnummer" type="StUF:Refnummer"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
@@ -691,7 +697,7 @@
 					<element name="zender" type="StUF:Systeem"/>
 					<element name="ontvanger" type="StUF:Systeem"/>
 					<element name="referentienummer" type="StUF:Refnummer"/>
-					<element name="tijdstipBericht" type="dateTime"/>
+					<element name="tijdstipBericht" type="StUF:dateTime"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
 			</restriction>
@@ -705,7 +711,7 @@
 					<element name="zender" type="StUF:Systeem"/>
 					<element name="ontvanger" type="StUF:Systeem"/>
 					<element name="referentienummer" type="StUF:Refnummer"/>
-					<element name="tijdstipBericht" type="dateTime"/>
+					<element name="tijdstipBericht" type="StUF:dateTime"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
 			</restriction>
@@ -719,7 +725,7 @@
 					<element name="zender" type="StUF:Systeem" minOccurs="0"/>
 					<element name="ontvanger" type="StUF:Systeem" minOccurs="0"/>
 					<element name="referentienummer" type="StUF:Refnummer" minOccurs="0"/>
-					<element name="tijdstipBericht" type="dateTime" minOccurs="0"/>
+					<element name="tijdstipBericht" type="StUF:dateTime" minOccurs="0"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
 			</restriction>
@@ -733,7 +739,7 @@
 					<element name="zender" type="StUF:Systeem" minOccurs="0"/>
 					<element name="ontvanger" type="StUF:Systeem" minOccurs="0"/>
 					<element name="referentienummer" type="StUF:Refnummer" minOccurs="0"/>
-					<element name="tijdstipBericht" type="dateTime" minOccurs="0"/>
+					<element name="tijdstipBericht" type="StUF:dateTime" minOccurs="0"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
 			</restriction>
@@ -747,7 +753,7 @@
 					<element name="zender" type="StUF:Systeem"/>
 					<element name="ontvanger" type="StUF:Systeem"/>
 					<element name="referentienummer" type="StUF:Refnummer"/>
-					<element name="tijdstipBericht" type="dateTime"/>
+					<element name="tijdstipBericht" type="StUF:dateTime"/>
 					<element name="functie" type="StUF:Functie"/>
 				</sequence>
 			</restriction>
@@ -761,7 +767,7 @@
 					<element name="zender" type="StUF:Systeem"/>
 					<element name="ontvanger" type="StUF:Systeem"/>
 					<element name="referentienummer" type="StUF:Refnummer"/>
-					<element name="tijdstipBericht" type="dateTime"/>
+					<element name="tijdstipBericht" type="StUF:dateTime"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
 			</restriction>
@@ -775,7 +781,7 @@
 					<element name="zender" type="StUF:Systeem" minOccurs="0"/>
 					<element name="ontvanger" type="StUF:Systeem" minOccurs="0"/>
 					<element name="referentienummer" type="StUF:Refnummer" minOccurs="0"/>
-					<element name="tijdstipBericht" type="dateTime" minOccurs="0"/>
+					<element name="tijdstipBericht" type="StUF:dateTime" minOccurs="0"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
 			</restriction>
@@ -789,7 +795,7 @@
 					<element name="zender" type="StUF:Systeem" minOccurs="0"/>
 					<element name="ontvanger" type="StUF:Systeem" minOccurs="0"/>
 					<element name="referentienummer" type="StUF:Refnummer" minOccurs="0"/>
-					<element name="tijdstipBericht" type="dateTime" minOccurs="0"/>
+					<element name="tijdstipBericht" type="StUF:dateTime" minOccurs="0"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
 			</restriction>
@@ -803,7 +809,7 @@
 					<element name="zender" type="StUF:Systeem"/>
 					<element name="ontvanger" type="StUF:Systeem"/>
 					<element name="referentienummer" type="StUF:Refnummer"/>
-					<element name="tijdstipBericht" type="dateTime"/>
+					<element name="tijdstipBericht" type="StUF:dateTime"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
 			</restriction>
@@ -817,7 +823,7 @@
 					<element name="zender" type="StUF:Systeem" minOccurs="0"/>
 					<element name="ontvanger" type="StUF:Systeem" minOccurs="0"/>
 					<element name="referentienummer" type="StUF:Refnummer" minOccurs="0"/>
-					<element name="tijdstipBericht" type="dateTime" minOccurs="0"/>
+					<element name="tijdstipBericht" type="StUF:dateTime" minOccurs="0"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
 			</restriction>
@@ -831,7 +837,7 @@
 					<element name="zender" type="StUF:Systeem"/>
 					<element name="ontvanger" type="StUF:Systeem"/>
 					<element name="referentienummer" type="StUF:Refnummer"/>
-					<element name="tijdstipBericht" type="dateTime"/>
+					<element name="tijdstipBericht" type="StUF:dateTime"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
 			</restriction>
@@ -845,7 +851,7 @@
 					<element name="zender" type="StUF:Systeem" minOccurs="0"/>
 					<element name="ontvanger" type="StUF:Systeem" minOccurs="0"/>
 					<element name="referentienummer" type="StUF:Refnummer" minOccurs="0"/>
-					<element name="tijdstipBericht" type="dateTime" minOccurs="0"/>
+					<element name="tijdstipBericht" type="StUF:dateTime" minOccurs="0"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
 			</restriction>
@@ -859,7 +865,7 @@
 					<element name="zender" type="StUF:Systeem"/>
 					<element name="ontvanger" type="StUF:Systeem"/>
 					<element name="referentienummer" type="StUF:Refnummer"/>
-					<element name="tijdstipBericht" type="dateTime"/>
+					<element name="tijdstipBericht" type="StUF:dateTime"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
 			</restriction>
@@ -873,7 +879,7 @@
 					<element name="zender" type="StUF:Systeem" minOccurs="0"/>
 					<element name="ontvanger" type="StUF:Systeem" minOccurs="0"/>
 					<element name="referentienummer" type="StUF:Refnummer" minOccurs="0"/>
-					<element name="tijdstipBericht" type="dateTime" minOccurs="0"/>
+					<element name="tijdstipBericht" type="StUF:dateTime" minOccurs="0"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
 			</restriction>
@@ -887,7 +893,7 @@
 					<element name="zender" type="StUF:Systeem"/>
 					<element name="ontvanger" type="StUF:Systeem"/>
 					<element name="referentienummer" type="StUF:Refnummer"/>
-					<element name="tijdstipBericht" type="dateTime"/>
+					<element name="tijdstipBericht" type="StUF:dateTime"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
 			</restriction>
@@ -901,7 +907,7 @@
 					<element name="zender" type="StUF:Systeem" minOccurs="0"/>
 					<element name="ontvanger" type="StUF:Systeem" minOccurs="0"/>
 					<element name="referentienummer" type="StUF:Refnummer" minOccurs="0"/>
-					<element name="tijdstipBericht" type="dateTime" minOccurs="0"/>
+					<element name="tijdstipBericht" type="StUF:dateTime" minOccurs="0"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
 			</restriction>
@@ -915,7 +921,7 @@
 					<element name="zender" type="StUF:Systeem"/>
 					<element name="ontvanger" type="StUF:Systeem"/>
 					<element name="referentienummer" type="StUF:Refnummer"/>
-					<element name="tijdstipBericht" type="dateTime"/>
+					<element name="tijdstipBericht" type="StUF:dateTime"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
 			</restriction>
@@ -929,7 +935,7 @@
 					<element name="zender" type="StUF:Systeem"/>
 					<element name="ontvanger" type="StUF:Systeem"/>
 					<element name="referentienummer" type="StUF:Refnummer"/>
-					<element name="tijdstipBericht" type="dateTime"/>
+					<element name="tijdstipBericht" type="StUF:dateTime"/>
 					<element name="crossRefnummer" type="StUF:Refnummer" minOccurs="0"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
@@ -944,7 +950,7 @@
 					<element name="zender" type="StUF:Systeem" minOccurs="0"/>
 					<element name="ontvanger" type="StUF:Systeem" minOccurs="0"/>
 					<element name="referentienummer" type="StUF:Refnummer" minOccurs="0"/>
-					<element name="tijdstipBericht" type="dateTime" minOccurs="0"/>
+					<element name="tijdstipBericht" type="StUF:dateTime" minOccurs="0"/>
 					<element name="crossRefnummer" type="StUF:Refnummer" minOccurs="0"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
@@ -959,7 +965,7 @@
 					<element name="zender" type="StUF:Systeem"/>
 					<element name="ontvanger" type="StUF:Systeem"/>
 					<element name="referentienummer" type="StUF:Refnummer"/>
-					<element name="tijdstipBericht" type="dateTime"/>
+					<element name="tijdstipBericht" type="StUF:dateTime"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
 			</restriction>
@@ -973,7 +979,7 @@
 					<element name="zender" type="StUF:Systeem" minOccurs="0"/>
 					<element name="ontvanger" type="StUF:Systeem" minOccurs="0"/>
 					<element name="referentienummer" type="StUF:Refnummer" minOccurs="0"/>
-					<element name="tijdstipBericht" type="dateTime" minOccurs="0"/>
+					<element name="tijdstipBericht" type="StUF:dateTime" minOccurs="0"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
 			</restriction>
@@ -987,7 +993,7 @@
 					<element name="zender" type="StUF:Systeem"/>
 					<element name="ontvanger" type="StUF:Systeem"/>
 					<element name="referentienummer" type="StUF:Refnummer"/>
-					<element name="tijdstipBericht" type="dateTime"/>
+					<element name="tijdstipBericht" type="StUF:dateTime"/>
 					<element name="crossRefnummer" type="StUF:Refnummer" minOccurs="0"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
@@ -1002,7 +1008,7 @@
 					<element name="zender" type="StUF:Systeem" minOccurs="0"/>
 					<element name="ontvanger" type="StUF:Systeem" minOccurs="0"/>
 					<element name="referentienummer" type="StUF:Refnummer" minOccurs="0"/>
-					<element name="tijdstipBericht" type="dateTime" minOccurs="0"/>
+					<element name="tijdstipBericht" type="StUF:dateTime" minOccurs="0"/>
 					<element name="crossRefnummer" type="StUF:Refnummer" minOccurs="0"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
@@ -1017,7 +1023,7 @@
 					<element name="zender" type="StUF:Systeem"/>
 					<element name="ontvanger" type="StUF:Systeem"/>
 					<element name="referentienummer" type="StUF:Refnummer"/>
-					<element name="tijdstipBericht" type="dateTime"/>
+					<element name="tijdstipBericht" type="StUF:dateTime"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
 			</restriction>
@@ -1031,7 +1037,7 @@
 					<element name="zender" type="StUF:Systeem" minOccurs="0"/>
 					<element name="ontvanger" type="StUF:Systeem" minOccurs="0"/>
 					<element name="referentienummer" type="StUF:Refnummer" minOccurs="0"/>
-					<element name="tijdstipBericht" type="dateTime" minOccurs="0"/>
+					<element name="tijdstipBericht" type="StUF:dateTime" minOccurs="0"/>
 					<element name="entiteittype" type="StUF:EntiteittypeStuurgegevens"/>
 				</sequence>
 			</restriction>
@@ -1049,7 +1055,6 @@
 	</attributeGroup>
 	<!--definitie van overige attributes-->
 	<attribute name="patch" type="nonNegativeInteger"/>
-	<attribute name="schemaLocation" type="string"/>
 	<!--definitie complexTypes -->
 	<complexType name="AnytypeKennisgeving">
 		<sequence>
@@ -1076,70 +1081,6 @@
 		<sequence>
 			<element name="melding" type="StUF:Melding" minOccurs="0" maxOccurs="unbounded"/>
 		</sequence>
-	</complexType>
-	<simpleType name="dateTime">
-		<restriction base="dateTime">
-			<pattern value="\d{4}-\d\d-\d\dT(0[0-9]|1[0-9]|2[0-3]):\d\d:\d\d"/>
-		</restriction>
-	</simpleType>
-	<complexType name="TijdstipMogelijkOnvolledig-e">
-		<choice>
-			<element name="tijdstip" type="StUF:dateTime"/>
-			<element name="datum" type="date"/>
-			<element name="jaarMaand" type="gMonth"/>
-			<element name="jaar" type="gYear"/>
-		</choice>
-		<attribute name="noValue" type="StUF:NoValue"/>
-	</complexType>
-	<complexType name="TijdstipMogelijkOnvolledig-r">
-		<complexContent>
-			<restriction base="StUF:TijdstipMogelijkOnvolledig-e">
-				<choice>
-					<element name="tijdstip" type="StUF:dateTime"/>
-					<element name="datum" type="date"/>
-					<element name="jaarMaand" type="gMonth"/>
-					<element name="jaar" type="gYear"/>
-				</choice>
-				<attribute name="noValue" type="StUF:NoValue" use="prohibited"/>
-			</restriction>
-		</complexContent>
-	</complexType>
-	<complexType name="Tijdstip-e">
-		<simpleContent>
-			<extension base="StUF:dateTime">
-				<attribute name="noValue" type="StUF:NoValue"/>
-			</extension>
-		</simpleContent>
-	</complexType>
-	<complexType name="DatumMogelijkOnvolledig-e">
-		<complexContent>
-			<restriction base="StUF:TijdstipMogelijkOnvolledig-e">
-				<choice>
-					<element name="datum" type="date"/>
-					<element name="jaarMaand" type="gMonth"/>
-					<element name="jaar" type="gYear"/>
-				</choice>
-			</restriction>
-		</complexContent>
-	</complexType>
-	<complexType name="DatumMogelijkOnvolledig-r">
-		<complexContent>
-			<restriction base="StUF:DatumMogelijkOnvolledig-e">
-				<choice>
-					<element name="datum" type="date"/>
-					<element name="jaarMaand" type="gMonth"/>
-					<element name="jaar" type="gYear"/>
-				</choice>
-				<attribute name="noValue" type="StUF:NoValue" use="prohibited"/>
-			</restriction>
-		</complexContent>
-	</complexType>
-	<complexType name="Datum-e">
-		<simpleContent>
-			<extension base="date">
-				<attribute name="noValue" type="StUF:NoValue"/>
-			</extension>
-		</simpleContent>
 	</complexType>
 	<complexType name="ExtraElementen">
 		<sequence>
@@ -1174,7 +1115,7 @@
 			<restriction base="StUF:GebeurtenisMetAttributes-basis">
 				<attribute name="groepsnaam" type="StUF:Groepsnaam"/>
 				<attribute name="elementnaam" type="StUF:Groepsnaam"/>
-				<attribute name="tijdstip" type="dateTime" use="required"/>
+				<attribute name="tijdstip" type="StUF:dateTime" use="required"/>
 			</restriction>
 		</simpleContent>
 	</complexType>
@@ -1183,7 +1124,7 @@
 			<extension base="StUF:Gebeurtenis">
 				<attribute name="groepsnaam" type="StUF:Groepsnaam"/>
 				<attribute name="elementnaam" type="StUF:Groepsnaam"/>
-				<attribute name="tijdstip" type="dateTime"/>
+				<attribute name="tijdstip" type="StUF:dateTime"/>
 			</extension>
 		</simpleContent>
 	</complexType>
@@ -1192,15 +1133,8 @@
 			<restriction base="StUF:GebeurtenisMetAttributes-basis">
 				<attribute name="groepsnaam" type="StUF:Groepsnaam" use="prohibited"/>
 				<attribute name="elementnaam" type="StUF:Groepsnaam" use="prohibited"/>
-				<attribute name="tijdstip" type="dateTime" use="prohibited"/>
+				<attribute name="tijdstip" type="StUF:dateTime" use="prohibited"/>
 			</restriction>
-		</simpleContent>
-	</complexType>
-	<complexType name="Sleutel-e">
-		<simpleContent>
-			<extension base="StUF:Sleutel">
-				<attribute name="noValue" type="StUF:NoValue"/>
-			</extension>
 		</simpleContent>
 	</complexType>
 	<complexType name="StatusMetagegeven-basis">
@@ -1252,7 +1186,7 @@
 	<complexType name="TijdvakObjectZonderIndicator">
 		<sequence>
 			<element name="beginObject" type="StUF:Datum-e" nillable="true"/>
-			<element name="eindObject" type="StUF:Datum-e" nillable="true" minOccurs="0"/>
+			<element name="eindObject" type="StUF:Datum-e" nillable="true"/>
 		</sequence>
 	</complexType>
 	<complexType name="TijdvakRelatie">
@@ -1273,6 +1207,134 @@
 		<simpleContent>
 			<extension base="string">
 				<attribute name="wildcard" type="StUF:WildcardEind"/>
+				<attribute name="noValue" type="StUF:NoValue"/>
+			</extension>
+		</simpleContent>
+	</complexType>
+	<!--SimpleTypes en ComplexTypes voor gebruik binnen StUF-entiteiten-->
+	<simpleType name="dateTime">
+		<restriction base="dateTime">
+			<pattern value="\d{4}-\d\d-\d\dT([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\.[0-9]{1,3})?(Z|(\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?"/>
+		</restriction>
+	</simpleType>
+	<complexType name="TijdstipMogelijkOnvolledig-e">
+		<choice minOccurs="0">
+			<element name="tijdstip" type="StUF:dateTime"/>
+			<element name="datum" type="date"/>
+			<element name="jaarMaand" type="gMonth"/>
+			<element name="jaar" type="gYear"/>
+		</choice>
+		<attribute name="noValue" type="StUF:NoValue"/>
+	</complexType>
+	<complexType name="TijdstipMogelijkOnvolledig-r">
+		<complexContent>
+			<restriction base="StUF:TijdstipMogelijkOnvolledig-e">
+				<choice>
+					<element name="tijdstip" type="StUF:dateTime"/>
+					<element name="datum" type="date"/>
+					<element name="jaarMaand" type="gMonth"/>
+					<element name="jaar" type="gYear"/>
+				</choice>
+				<attribute name="noValue" type="StUF:NoValue" use="prohibited"/>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<complexType name="Tijdstip-e">
+		<complexContent>
+			<restriction base="StUF:TijdstipMogelijkOnvolledig-e">
+				<choice minOccurs="0">
+					<element name="tijdstip" type="StUF:dateTime"/>
+				</choice>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<complexType name="DatumMogelijkOnvolledig-e">
+		<complexContent>
+			<restriction base="StUF:TijdstipMogelijkOnvolledig-e">
+				<choice minOccurs="0">
+					<element name="datum" type="date"/>
+					<element name="jaarMaand" type="gMonth"/>
+					<element name="jaar" type="gYear"/>
+				</choice>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<complexType name="DatumMogelijkOnvolledig-r">
+		<complexContent>
+			<restriction base="StUF:DatumMogelijkOnvolledig-e">
+				<choice>
+					<element name="datum" type="date"/>
+					<element name="jaarMaand" type="gMonth"/>
+					<element name="jaar" type="gYear"/>
+				</choice>
+				<attribute name="noValue" type="StUF:NoValue" use="prohibited"/>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<complexType name="Datum-e">
+		<complexContent>
+			<restriction base="StUF:TijdstipMogelijkOnvolledig-e">
+				<choice minOccurs="0">
+					<element name="datum" type="date"/>
+				</choice>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<complexType name="Jaar-e">
+		<complexContent>
+			<restriction base="StUF:DatumMogelijkOnvolledig-e">
+				<choice minOccurs="0">
+					<element name="jaar" type="gYear"/>
+				</choice>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<complexType name="JaarMaand-e">
+		<complexContent>
+			<restriction base="StUF:DatumMogelijkOnvolledig-e">
+				<choice minOccurs="0">
+					<element name="jaarMaand" type="gMonth"/>
+				</choice>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<simpleType name="INDIC">
+		<restriction base="string">
+			<enumeration value="Ja"/>
+			<enumeration value="Nee"/>
+			<enumeration value=""/>
+		</restriction>
+	</simpleType>
+	<complexType name="INDIC-e">
+		<simpleContent>
+			<extension base="StUF:INDIC">
+				<attribute name="noValue" type="StUF:NoValue"/>
+			</extension>
+		</simpleContent>
+	</complexType>
+	<simpleType name="Postcode">
+		<annotation>
+			<documentation>Alfanumerieke string bestaande uit vier cijfers en twee letters.volgens de GAB-definitie</documentation>
+		</annotation>
+		<restriction base="string">
+			<pattern value="[1-9]{1}[0-9]{3}[A-Z]{2}"/>
+		</restriction>
+	</simpleType>
+	<complexType name="Postcode-e">
+		<simpleContent>
+			<extension base="StUF:Postcode">
+				<attribute name="noValue" type="StUF:NoValue"/>
+			</extension>
+		</simpleContent>
+	</complexType>
+	<simpleType name="Sleutel">
+		<restriction base="string">
+			<maxLength value="40"/>
+		</restriction>
+	</simpleType>
+	<complexType name="Sleutel-e">
+		<simpleContent>
+			<extension base="StUF:Sleutel">
 				<attribute name="noValue" type="StUF:NoValue"/>
 			</extension>
 		</simpleContent>
@@ -2209,11 +2271,6 @@
 			<maxLength value="40"/>
 		</restriction>
 	</simpleType>
-	<simpleType name="Sleutel">
-		<restriction base="string">
-			<maxLength value="40"/>
-		</restriction>
-	</simpleType>
 	<simpleType name="Sortering">
 		<restriction base="nonNegativeInteger">
 			<totalDigits value="2"/>
@@ -2228,8 +2285,8 @@
 	<simpleType name="StUFScope">
 		<restriction base="string">
 			<enumeration value="alles"/>
-			<enumeration value="allesMaarKerngegevensGerelateerden"/>
-			<enumeration value="kerngegevens"/>
+			<enumeration value="allesMaarMatchgegevensGerelateerden"/>
+			<enumeration value="matchgegevens"/>
 		</restriction>
 	</simpleType>
 	<simpleType name="Versienr">
@@ -2301,40 +2358,6 @@
 		<restriction base="StUF:Wildcard">
 			<enumeration value="geen"/>
 			<enumeration value="eind"/>
-		</restriction>
-	</simpleType>
-	<element name="leeg" type="StUF:NoValue"/>
-	<complexType name="Jaar-e">
-		<complexContent>
-			<restriction base="StUF:DatumMogelijkOnvolledig-e">
-				<choice>
-					<element name="jaar" type="gYear"/>
-				</choice>
-			</restriction>
-		</complexContent>
-	</complexType>
-	<complexType name="JaarMaand-e">
-		<complexContent>
-			<restriction base="StUF:DatumMogelijkOnvolledig-e">
-				<choice>
-					<element name="jaarMaand" type="gMonth"/>
-				</choice>
-			</restriction>
-		</complexContent>
-	</complexType>
-	<complexType name="Postcode-e">
-		<simpleContent>
-			<extension base="StUF:Postcode">
-				<attribute name="noValue" type="StUF:NoValue"/>
-			</extension>
-		</simpleContent>
-	</complexType>
-	<simpleType name="Postcode">
-		<annotation>
-			<documentation>Alfanumerieke string bestaande uit vier cijfers en twee letters.volgens de GAB-definitie</documentation>
-		</annotation>
-		<restriction base="string">
-			<pattern value="[1-9]{1}[0-9]{3}[A-Z]{2}"/>
 		</restriction>
 	</simpleType>
 </schema>

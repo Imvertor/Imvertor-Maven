@@ -243,9 +243,6 @@
                 </xsl:apply-templates>
                 
                 <xsl:if test="not($is-supertype)">
-                    <xsl:if test="imf:is-gebeurtenis(.)">
-                        <xs:element name="gebeurtenis" type="{$StUF-prefix}:GebeurtenisMetAttributes-basis" minOccurs="0" maxOccurs="unbounded"/>
-                    </xsl:if>
                     <xsl:if test="imf:is-authentiek(.)">
                         <xs:element name="authentiek" type="{$StUF-prefix}:StatusMetagegeven-basis" minOccurs="0" maxOccurs="unbounded"/> <!--DONE bg:authentiek-TODO -->
                     </xsl:if>
@@ -569,13 +566,17 @@
                 
                 <!-- TODO type is tabel entiteit -->
                 <xsl:when test="exists($applicable-attribute)">
-                    
                     <xsl:sequence select="imf:create-comment('Attribute redirected to referentie tabel; Case: Type verwijst naar tabelentiteit')"/>
+                    
+                    <xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info(.)"/>
+                    <xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
+                    
                     <xs:element
                         name="{$compiled-name}" 
                         type="{$prefix}:{imf:capitalize(imf:useable-attribute-name($applicable-compiled-name,.))}-e" 
                         minOccurs="{$min-occurs}" 
                         maxOccurs="{$cardinality[4]}"
+                        imvert:checksum="{$checksum-string}"
                         >
                         <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
                         <xsl:if test="$type-is-scalar-non-emptyable or $type-has-facets">
@@ -626,10 +627,7 @@
                         <xsl:if test="$type-is-scalar-non-emptyable or $type-has-facets">
                             <xsl:attribute name="nillable">true</xsl:attribute>
                         </xsl:if>
-                        <xsl:sequence select="imf:create-comment($facet-show[1])"/> 
-                        <xsl:sequence select="imf:create-comment($facet-show[2])"/> 
-                        <xsl:sequence select="imf:create-comment($facet-show[3])"/> 
-                        <xsl:sequence select="imf:create-comment($facet-show[4])"/> 
+                        <xsl:sequence select="imf:create-comment(concat('Facets: length ', $facet-show[1],' pattern ', $facet-show[2],' minval ', $facet-show[3],' maxval ', $facet-show[4]))"/> 
                     </xs:element>
                 </xsl:otherwise>
                 
@@ -725,7 +723,7 @@
         
         <xsl:variable name="target" select="imf:get-class(.)"/>
         
-        <xsl:variable name="assoc-name" select="concat(imvert:name,imf:capitalize($target/imvert:name))"/>
+        <xsl:variable name="assoc-name" select="imvert:name"/> <!-- was: concat(imvert:name,imf:capitalize($target/imvert:name)), nu met de hand -->
         <xsl:choose>
             <xsl:when test="$richting = 'uitgaand'">
                 <xsl:sequence select="imf:create-comment(concat('mode-local-association Uitgaande relatie # ',@display-name))"/>
@@ -915,7 +913,7 @@
         <xsl:variable name="patroon" select="imf:get-taggedvalue(.,'Formeel patroon')"/>
         
         <xsl:variable name="facetten">
-            <xsl:sequence select="imf:create-facet('xs:pattern',$patroon)"/>
+            <xsl:sequence select="imf:create-facet('xs:pattern',concat('(', $patroon, ')?'))"/>
             <xsl:sequence select="imf:create-facet('xs:minInclusive',$min-waarde)"/>
             <xsl:sequence select="imf:create-facet('xs:maxInclusive',$max-waarde)"/>
             <xsl:sequence select="imf:create-facet('xs:minLength',$min-length)"/>
@@ -931,7 +929,7 @@
             </xsl:when>
             <xsl:when test="exists(imvert:type-name)">
                 <xsl:sequence select="imf:create-comment(concat('mode-global-attribute-simpletype Attribuut type (simple) # ',@display-name))"/>
-                <xs:complexType name="{$name}-e">
+                <xs:complexType name="{$name}-e" imvert:checksum="{$checksum-string}">
                     <xs:simpleContent>
                         <xs:extension base="{$prefix}:{$name}" imvert:checksum="{$checksum-string}">
                             <xs:attribute name="noValue" type="{$StUF-prefix}:NoValue"/>
@@ -974,9 +972,6 @@
                             <xs:restriction base="xs:anyURI">
                                 <xsl:sequence select="$facetten"/>
                             </xs:restriction>
-                        </xsl:when>
-                        <xsl:when test="imvert:type-name = 'scalar-indic'">
-                            <xs:restriction base="xs:boolean"/>
                         </xsl:when>
                         <xsl:when test="imvert:type-name = 'scalar-postcode'">
                             <xs:restriction base="{$StUF-prefix}:postcode">
@@ -1247,12 +1242,6 @@
         <!-- see if any or the relevant tagged values for this attribute is authentic -->
         <xsl:variable name="tv" select="imf:get-most-relevant-compiled-taggedvalue($this,'Indicatie authentiek')"/>
         <xsl:sequence select="$tv = ('Authentiek', 'Basisgegeven', 'Landelijk kerngegeven','Gemeentelijk kerngegeven','Overig')"/>
-    </xsl:function>     
-    
-    <xsl:function name="imf:is-gebeurtenis" as="xs:boolean">
-        <xsl:param name="this"/>
-        <!-- vooralsnog: altijd toevoegen -->
-        <xsl:sequence select="true()"/>   
     </xsl:function>     
     
     <xsl:function name="imf:get-stereotype" as="xs:string*">
@@ -1575,7 +1564,7 @@
                 <xsl:sequence select="imf:create-comment(concat('Resolve checksum on element - ', $checksum))"/>
                 <xsl:sequence select="imf:create-comment(concat('Element type is ', @type))"/>
                 <xsl:variable name="prefix" select="tokenize(@type,':')[1]"/>
-                <xs:element name="{@name}" type="{$prefix}:{$tokens[1]}" minOccurs="{@minOccurs}" maxOccurs="{@maxOccurs}">
+                <xs:element name="{@name}" type="{$prefix}:{$tokens[1]}-e" minOccurs="{@minOccurs}" maxOccurs="{@maxOccurs}">
                     <xsl:apply-templates mode="#current"/>
                 </xs:element>
             </xsl:when>
@@ -1587,10 +1576,10 @@
                     <xsl:apply-templates mode="#current"/>
                 </xs:extension>
             </xsl:when>
-            <xsl:when test="self::xs:complexType">
+            <xsl:when test="self::xs:complexType and count(preceding::xs:complexType[@imvert:checksum = $checksum]) = 0">
                 <xsl:sequence select="imf:create-comment(concat('Resolve checksum on complextype - ', $checksum))"/>
                 <xsl:sequence select="imf:create-comment(concat('Type name is ', @name))"/>
-                <xs:complexType name="{$tokens[1]}">
+                <xs:complexType name="{$tokens[1]}-e">
                     <xsl:apply-templates mode="#current"/>
                 </xs:complexType>
             </xsl:when>
