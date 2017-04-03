@@ -100,7 +100,7 @@
                 </xsl:when>
                 <xsl:when test="$baretype = 'BOOLEAN'">
                     <imvert:baretype>INDIC</imvert:baretype>
-                    <imvert:type-name>scalar-indic</imvert:type-name>
+                    <imvert:type-name>scalar-boolean</imvert:type-name>
                 </xsl:when>
                 <xsl:when test="$baretype = 'TIME'">
                     <imvert:baretype>TIJD</imvert:baretype>
