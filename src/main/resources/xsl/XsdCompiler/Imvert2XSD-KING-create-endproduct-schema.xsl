@@ -28,8 +28,7 @@
 	<xsl:variable name="StUF-prefix" select="'StUF'"/>
 	<xsl:variable name="typeBericht" select="/ep:message-set/ep:message/ep:type"/>
 	<xsl:variable name="berichtCode" select="/ep:message-set/ep:message/ep:code"/>
-	<xsl:variable name="prefix" select="ep:message-set/ep:namespace-prefix"/>
-
+	
 	<xsl:template match="ep:message-set">
 		<xsl:variable name="message-set-prefix" select="ep:namespace-prefix"/>
 		<xsl:variable name="message-set-namespaceIdentifier" select="ep:namespace"/>
@@ -41,10 +40,16 @@
 			</xsl:for-each>
 			<xsl:variable name="namespaces2bImported">
 				<ep:namespaces>
-				<xsl:for-each select=".//ep:constructRef[not(@prefix)]">
-					<xsl:variable name="href" select="ep:href"/>
-					<ep:namespace identifier="{//ep:construct[ep:tech-name = $href]/@namespaceId}" prefix="{//ep:construct[ep:tech-name = $href]/@prefix}"/>
-				</xsl:for-each>
+					<!--xsl:for-each select=".//ep:constructRef[@namespaceId and @prefix and not(@prefix = $message-set-prefix) and not(@prefix = $StUF-prefix)] | .//ep:construct[@namespaceId and @prefix and not(@prefix = $message-set-prefix) and not(@prefix = $StUF-prefix)]">
+						<xsl:variable name="href" select="ep:href"/>
+						<ep:namespace identifier="{@namespaceId}" prefix="{@prefix}"/>
+					</xsl:for-each-->
+					<xsl:if test="@KV-namespace = 'yes'">
+						<xsl:for-each select="..//ep:constructRef[@namespaceId and @prefix and not(@prefix = $message-set-prefix) and not(@prefix = $StUF-prefix)] | ..//ep:construct[@namespaceId and @prefix and not(@prefix = $message-set-prefix) and not(@prefix = $StUF-prefix)]">
+							<xsl:variable name="href" select="ep:href"/>
+							<ep:namespace identifier="{@namespaceId}" prefix="{@prefix}"/>
+						</xsl:for-each>
+					</xsl:if>
 				</ep:namespaces>
 			</xsl:variable>
 
@@ -56,7 +61,7 @@
 			<xsl:for-each select="$namespaces2bImported/ep:namespaces/ep:namespace[@prefix != $message-set-prefix and @prefix != '' and not(@prefix = preceding-sibling::ep:namespace/@prefix)]">
 				<xs:import namespace="{@identifier}" schemaLocation="{concat(upper-case(@prefix),'.xsd')}"/>
 			</xsl:for-each>
-
+			
 			<xsl:apply-templates select="ep:message"/>
 			<xsl:apply-templates select="ep:construct[@type='group']" mode="complexType"/>
 			<xsl:apply-templates select="ep:construct[@type='complexData']" mode="complexType"/>
@@ -386,8 +391,20 @@
 						<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
 					</xs:annotation>
 				</xsl:if>
-				<xsl:apply-templates select="ep:seq | ep:choice"/>
-				<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+				<xsl:choose>
+					<xsl:when test="ep:superconstructRef">
+						<xs:complexContent>
+							<xs:extension base="{concat(ep:superconstructRef/@prefix,':',ep:superconstructRef/ep:tech-name)}">
+								<xsl:apply-templates select="ep:seq | ep:choice"/>
+								<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>						
+							</xs:extension>
+						</xs:complexContent>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:apply-templates select="ep:seq | ep:choice"/>
+						<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>						
+					</xsl:otherwise>
+				</xsl:choose>
 			</xs:complexType>
 		</xsl:if>
 	</xsl:template>
@@ -397,7 +414,7 @@
 		<!-- Only if the ep:constructRef refers to an available ep:construct it's transformed to an element. 
 			 In theory (and maybe in practice) this can lead to another empty ep:construct which on its turn should be ignored.
 			 That situation however isn't solved here. -->
-		<xsl:if test=" @prefix = $StUF-prefix or //ep:construct[ep:tech-name = $href and (ep:seq/ep:* or ep:choice/ep:*)]">
+		<xsl:if test=" @prefix = $StUF-prefix or ancestor::ep:message-set//ep:construct[ep:tech-name = $href and (ep:seq/ep:* or ep:choice/ep:*)]">
 			<xs:element>
 				<xsl:choose>
 					<xsl:when test="ep:href">
@@ -406,7 +423,7 @@
 							<xsl:choose>
 								<xsl:when test="@prefix"><xsl:value-of select="@prefix"/></xsl:when>
 								<xsl:otherwise>
-									<xsl:value-of select="//ep:construct[ep:tech-name = $href]/@prefix"/>
+									<xsl:value-of select="ancestor::ep:message-set//ep:construct[ep:tech-name = $href]/@prefix"/>
 								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:variable>
@@ -640,6 +657,16 @@
 						</xsl:choose>
 					</xsl:attribute>
 				</xs:attribute>
+			</xsl:when>
+			<xsl:when test="not(ep:href) and not(@prefix) and contains(ep:type-name,concat($StUF-prefix,':'))">
+				<xs:attribute name="{ep:tech-name}" type="{ep:type-name}">
+					<xsl:attribute name="use">
+						<xsl:choose>
+							<xsl:when test="not(ep:min-occurs) or ep:min-occurs=1">required</xsl:when>
+							<xsl:otherwise>optional</xsl:otherwise>
+						</xsl:choose>
+					</xsl:attribute>
+				</xs:attribute>				
 			</xsl:when>
 			<xsl:otherwise>
 				<xs:attribute name="{ep:tech-name}">

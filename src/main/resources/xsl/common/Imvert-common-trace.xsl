@@ -178,6 +178,8 @@
             <xsl:attribute name="subpath" select="$client-subpath"/>
             <xsl:attribute name="type" select="$type"/>
             <xsl:attribute name="display-name" select="$display-name"/>
+            <xsl:attribute name="base-namespace" select="$client-construct/ancestor::imvert:packages/imvert:base-namespace"/>
+            <xsl:attribute name="verkorteAlias" select="$client-construct/ancestor::imvert:packages/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Verkorte alias']/imvert:value"/>
         </supplier>
         
     </xsl:function>

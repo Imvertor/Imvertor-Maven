@@ -199,15 +199,16 @@ public class XsdCompiler extends Step {
 		// when system, use the embellish file; when model use the model.
 		if (infoXsdSourceFilePath.equals("system")) {
 			valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XML_XSLPATH");
-			valid = valid && transformer.transformStep("properties/RESULT_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ORDER_ENDPRODUCT_XML_XSLPATH");
-			valid = valid && transformer.transformStep("properties/RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_ENDPRODUCT_XSD_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XSD_XSLPATH");
+			valid = valid && transformer.transformStep("properties/RESULT_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_REPROCESS_ENDPRODUCT_XML_XSLPATH");
+			valid = valid && transformer.transformStep("properties/RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_SORT_ENDPRODUCT_XML_XSLPATH");
+			valid = valid && transformer.transformStep("properties/RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_ENDPRODUCT_XSD_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XSD_XSLPATH");
 		
 			// and copy the onderlaag
 			XmlFile onderlaag = new XmlFile(configurator.getParm("properties", "STUF_ONDERLAAG_BSM"));
 			onderlaag.copyFile(configurator.getParm("properties", "RESULT_XSD_APPLICATION_FOLDER") + File.separator + onderlaag.getName());
 			
 			// and create a table representation; 
-			valid = valid && transformer.transformStep("properties/RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH","properties/ENDPRODUCT_DOC_TABLES_FILE_PATH", "properties/IMVERTOR_ENDPRODUCT_DOC_TABLES_XSLPATH");
+			valid = valid && transformer.transformStep("properties/RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH","properties/ENDPRODUCT_DOC_TABLES_FILE_PATH", "properties/IMVERTOR_ENDPRODUCT_DOC_TABLES_XSLPATH");
 			// simply copy the table html file
 			String fn = "office.tables.html";
 			AnyFile infoOfficeTableFile = new AnyFile(configurator.getParm("properties","ENDPRODUCT_DOC_TABLES_FILE_PATH"));
@@ -219,7 +220,7 @@ public class XsdCompiler extends Step {
 			valid = valid && transformer.transformStep("properties/WORK_SCHEMA_FILE","properties/RESULT_XSD_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_XSD_XSLPATH");
 		
 		// record the location of the resulting EP file for subsequent steps
-		configurator.setParm("system","imvertor-ep-result",configurator.getParm("properties","RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH"));
+		configurator.setParm("system","imvertor-ep-result",configurator.getParm("properties","RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH"));
 		// and tell that a schema has been created
 		configurator.setParm("system","schema-created","true");
 		
