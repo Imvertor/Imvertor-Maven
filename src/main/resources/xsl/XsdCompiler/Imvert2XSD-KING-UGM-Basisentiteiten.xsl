@@ -31,7 +31,6 @@
     xmlns:StUF="http://www.stufstandaarden.nl/onderlaag/stuf0302"
     xmlns:metadata="http://www.stufstandaarden.nl/metadataVoorVerwerking" 
    
-    xmlns:ztc="http://www.stufstandaarden.nl/basisschema/ztc0320" 
     xmlns:gml="http://www.opengis.net/gml/3.2"
     
     exclude-result-prefixes="xsl UML imvert imvert ekf"
@@ -94,17 +93,17 @@
                 elementFormDefault="{$elementFormDefault}" 
                 targetNamespace="{$target-namespace}" 
                 version="010000" 
-                xmlns="http://www.w3.org/2001/XMLSchema">
+                xmlns="http://www.w3.org/2001/XMLSchema"><!-- TODO version zetten -->
 
                 <xsl:namespace name="{$prefix}" select="$target-namespace"/>
                 
                 <ent-part>
-                    <xs:import schemaLocation="../StUF/StUF0302.xsd" namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" />
+                    <xs:import schemaLocation="../StUF/stuf0302.xsd" namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" />
                     <xs:import schemaLocation="../gml/3.2.1/gml.xsd" namespace="http://www.opengis.net/gml/3.2" />
                 </ent-part>
                 
                 <dat-part>
-                    <xs:import schemaLocation="../StUF/StUF0302.xsd" namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" />
+                    <xs:import schemaLocation="../StUF/stuf0302.xsd" namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" />
                     <xs:import schemaLocation="../gml/3.2.1/gml.xsd" namespace="http://www.opengis.net/gml/3.2" />
                 </dat-part>
                 
@@ -168,7 +167,7 @@
                     </xsl:for-each-group>
                 </ent-part>
                 
-                <ent-part>
+                <dat-part>
                     <xsl:sequence select="imf:create-comment(' *** Declaratie van Externe typen *** ')"/>
                 
                     <xsl:for-each-group 
@@ -176,7 +175,7 @@
                         group-by="imvert:baretype">
                         <xsl:apply-templates select="current-group()[1]" mode="mode-global-attribute-niet-simpletype"/>
                     </xsl:for-each-group>
-                </ent-part>
+                </dat-part>
                 
                 <dat-part>
                     <xsl:sequence select="imf:create-comment(' *** Declaratie van Complex datatypes *** ')"/>
@@ -489,6 +488,8 @@
         <xsl:variable name="cardinality" select="imf:get-cardinality(.)"/>
         <xsl:variable name="history" select="imf:get-history(.)"/>
         
+        <xsl:variable name="this-is-complextype" select="imf:get-stereotype(../..) = imf:get-config-stereotypes('stereotype-name-complextype')"/>
+   
         <xsl:variable name="type" select="imf:get-class(.)"/>
         
         <xsl:variable name="type-is-referentietabel" select="imf:get-stereotype($type) = imf:get-config-stereotypes('stereotype-name-referentielijst')"/>
@@ -507,8 +508,8 @@
             <xsl:variable name="type-is-datatype" select="$type/imvert:designation = 'datatype'"/>
             <xsl:variable name="type-is-complextype" select="$type-is-datatype and $type/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-complextype')"/>
             
-            <xsl:variable name="type-is-scalar-non-emptyable" select="imvert:type-name = ('scalar-integer','scalar-decimal','scalar-boolean')"/>
-            <xsl:variable name="type-is-scalar-empty" select="imvert:type-name = ('scalar-date','scalar-year','scalar-yearmonth','scalar-datetime','scalar-postcode')"/>
+            <xsl:variable name="type-is-scalar-non-emptyable" select="imvert:type-name = ('scalar-integer','scalar-decimal')"/>
+            <xsl:variable name="type-is-scalar-empty" select="imvert:type-name = ('scalar-date','scalar-year','scalar-yearmonth','scalar-datetime','scalar-postcode','scalar-boolean')"/>
             <xsl:variable name="type-is-enumeration" select="imf:get-stereotype($type) = imf:get-config-stereotypes('stereotype-name-enumeration')"/>
             <xsl:variable name="type-is-union" select="imf:get-stereotype($type) = imf:get-config-stereotypes('stereotype-name-union')"/>
             
@@ -523,9 +524,11 @@
             
             <xsl:variable name="type-has-facets" select="exists(($facet-pattern, $facet-length, $facet-minval,$facet-maxval))"/>
             
-            <xsl:sequence select="imf:create-comment(concat('mode-local-attribute Local attribute # ',@display-name))"/>
-            
             <xsl:variable name="scalar-att-type" select="imf:get-stuf-scalar-attribute-type(.)"/>
+            
+            <xsl:variable name="min-occurs" select="if ($this-is-complextype) then 1 else 0"/>
+            
+            <xsl:sequence select="imf:create-comment(concat('mode-local-attribute Local attribute # ',@display-name))"/>
             
             <xsl:choose>
                 <xsl:when test="$type-is-scalar-empty">
@@ -533,7 +536,7 @@
                     <xs:element
                         name="{$compiled-name}" 
                         type="{$scalar-att-type}" 
-                        minOccurs="0" 
+                        minOccurs="{$min-occurs}" 
                         maxOccurs="{$cardinality[4]}"
                         >
                         <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
@@ -545,7 +548,7 @@
                     <xs:element
                         name="{$compiled-name}" 
                         type="{$prefix}:{imf:capitalize($compiled-name-type)}-e" 
-                        minOccurs="0" 
+                        minOccurs="{$min-occurs}"  
                         maxOccurs="{$cardinality[4]}"
                         >
                         <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
@@ -557,7 +560,7 @@
                     <xs:element
                         name="{$compiled-name}" 
                         type="{$prefix}:{imf:capitalize($compiled-name-type)}-e" 
-                        minOccurs="0" 
+                        minOccurs="{$min-occurs}" 
                         maxOccurs="{$cardinality[4]}"
                         >
                         <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
@@ -571,7 +574,7 @@
                     <xs:element
                         name="{$compiled-name}" 
                         type="{$prefix}:{imf:capitalize(imf:useable-attribute-name($applicable-compiled-name,.))}-e" 
-                        minOccurs="0" 
+                        minOccurs="{$min-occurs}" 
                         maxOccurs="{$cardinality[4]}"
                         >
                         <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
@@ -586,7 +589,7 @@
                     <xs:element
                         name="{$compiled-name}" 
                         type="{$prefix}:{imf:capitalize($compiled-name-type)}-e" 
-                        minOccurs="0" 
+                        minOccurs="{$min-occurs}" 
                         maxOccurs="{$cardinality[4]}"
                         >
                         <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
@@ -599,7 +602,7 @@
                     <xs:element
                         name="{$compiled-name}" 
                         type="{$prefix}:{imf:capitalize($external-type-name)}-e" 
-                        minOccurs="0" 
+                        minOccurs="{$min-occurs}" 
                         maxOccurs="{$cardinality[4]}"
                         >
                         <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
@@ -615,7 +618,7 @@
                     <xs:element
                         name="{$compiled-name}" 
                         type="{$prefix}:{imf:capitalize(imf:useable-attribute-name($applicable-compiled-name,.))}-e" 
-                        minOccurs="0" 
+                        minOccurs="{$min-occurs}" 
                         maxOccurs="{$cardinality[4]}"
                         imvert:checksum="{$checksum-string}"
                         >
@@ -1422,6 +1425,9 @@
             <xsl:when test="$attribute/imvert:type-name = 'scalar-postcode'">
                 <xsl:value-of select="concat($StUF-prefix,':Postcode-e')"/>
             </xsl:when>
+            <xsl:when test="$attribute/imvert:type-name = 'scalar-boolean'">
+                <xsl:value-of select="concat($StUF-prefix,':INDIC-e')"/>
+            </xsl:when>
         </xsl:choose>
     
     </xsl:function>
@@ -1483,9 +1489,11 @@
         <xsl:param name="this" as="element(imvert:class)*"/>
         <xsl:sequence select="$this/imvert:attributes/imvert:attribute"/>
        
+        <?x
         <xsl:variable name="group-type-ids" select="$this/imvert:associations/imvert:association[imvert:aggregation = 'composite']/imvert:type-id"/>
         <xsl:variable name="groups" select="for $id in $group-type-ids return imf:get-construct-by-id($id)"/>
         <xsl:sequence select="for $group in $groups return imf:get-all-attributes($group)"/>
+        x?>
     </xsl:function>
     
     <xsl:function name="imf:stub-ignored-properties">
@@ -1565,6 +1573,7 @@
         <xsl:choose>
             <xsl:when test="self::xs:element">
                 <xsl:sequence select="imf:create-comment(concat('Resolve checksum on element - ', $checksum))"/>
+                <xsl:sequence select="imf:create-comment(concat('Element type is ', @type))"/>
                 <xsl:variable name="prefix" select="tokenize(@type,':')[1]"/>
                 <xs:element name="{@name}" type="{$prefix}:{$tokens[1]}" minOccurs="{@minOccurs}" maxOccurs="{@maxOccurs}">
                     <xsl:apply-templates mode="#current"/>
@@ -1573,18 +1582,21 @@
             <xsl:when test="self::xs:extension">
                 <xsl:variable name="prefix" select="tokenize(@base,':')[1]"/>
                 <xsl:sequence select="imf:create-comment(concat('Resolve checksum on extension - ', $checksum))"/>
+                <xsl:sequence select="imf:create-comment(concat('Extension base is ', @base))"/>
                 <xs:extension base="{$prefix}:{$tokens[1]}">
                     <xsl:apply-templates mode="#current"/>
                 </xs:extension>
             </xsl:when>
             <xsl:when test="self::xs:complexType">
                 <xsl:sequence select="imf:create-comment(concat('Resolve checksum on complextype - ', $checksum))"/>
+                <xsl:sequence select="imf:create-comment(concat('Type name is ', @name))"/>
                 <xs:complexType name="{$tokens[1]}">
                     <xsl:apply-templates mode="#current"/>
                 </xs:complexType>
             </xsl:when>
             <xsl:when test="self::xs:simpleType and count(preceding::xs:simpleType[@imvert:checksum = $checksum]) = 0">
                 <xsl:sequence select="imf:create-comment(concat('Resolve checksum on simpletype - ', $checksum))"/>
+                <xsl:sequence select="imf:create-comment(concat('Type name is ', @name))"/>
                 <xs:simpleType name="{$tokens[1]}">
                     <xsl:apply-templates mode="#current"/>
                 </xs:simpleType>
