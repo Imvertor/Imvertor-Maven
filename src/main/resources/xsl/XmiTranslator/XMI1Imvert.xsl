@@ -162,8 +162,8 @@
         <xsl:variable name="package-name" select="@name" as="xs:string"/>
         <xsl:variable name="package-id" select="@xmi.id" as="xs:string"/>
         <xsl:variable name="namespace" select="imf:get-alias(.,'P')"/>
-        <xsl:variable name="metamodel" select="imf:get-tagged-value(.,'metamodel')"/>
-        <xsl:variable name="model-level" select="imf:get-tagged-value(.,'level')"/>
+        <xsl:variable name="metamodel" select="imf:get-profile-tagged-value(.,'metamodel',())"/>
+        <xsl:variable name="model-level" select="imf:get-profile-tagged-value(.,'level','compact')"/>
         
         <xsl:variable name="supplier-info" select="imf:get-supplier-info(.,$parent-is-derived)" as="element()*"/>
         <xsl:variable name="is-derived" select="imf:boolean($supplier-info[self::imvert:derived])"/>
@@ -243,16 +243,16 @@
         <xsl:variable name="stereotypes" select="imf:get-stereotypes(.)" as="xs:string*"/>
         <xsl:variable name="associations" select="imf:get-key($xmi-document,'key-document-associations-type',$id)"/>
         <xsl:variable name="is-abstract" select="if (imf:boolean(@isAbstract)) then 'true' else 'false'"/>
-        <xsl:variable name="is-datatype" select="$stereotypes=imf:get-config-stereotypes('stereotype-name-datatype') or imf:get-tagged-value(.,'ea_stype')='DataType'"/>
+        <xsl:variable name="is-datatype" select="$stereotypes=imf:get-config-stereotypes('stereotype-name-datatype') or imf:get-system-tagged-value(.,'ea_stype')='DataType'"/>
         <xsl:variable name="is-complextype" select="$stereotypes=imf:get-config-stereotypes('stereotype-name-complextype')"/>
         <!-- TODO overal de referenties naar expliciete stereotype names vervangen door imf:get-config-stereotypes('stereotype-name-*') -->
         <xsl:variable name="class-cardinality" select="imf:get-class-cardinality-bounds(.)"/>
         <xsl:variable name="designation">
             <xsl:choose>
-                <xsl:when test="imf:get-tagged-value(.,'ea_stype')='DataType'">datatype</xsl:when>
+                <xsl:when test="imf:get-system-tagged-value(.,'ea_stype')='DataType'">datatype</xsl:when>
                 <xsl:when test="$stereotypes[imf:get-normalized-name(.,'class-name') = imf:get-normalized-name('datatype','class-name')]">datatype</xsl:when>
                 <xsl:when test="$stereotypes[imf:get-normalized-name(.,'stereotype-name') = imf:get-normalized-name('enumeration','stereotype-name')]">enumeration</xsl:when>
-                <xsl:when test="imf:get-tagged-value(.,'ea_stype')='Class'">class</xsl:when>
+                <xsl:when test="imf:get-system-tagged-value(.,'ea_stype')='Class'">class</xsl:when>
                 <xsl:when test="$document-associations/UML:ModelElement.taggedValue/UML:TaggedValue[@tag='associationclass']/@value=$id">associationclass</xsl:when>
                 <xsl:otherwise>other</xsl:otherwise>
             </xsl:choose>
@@ -351,11 +351,11 @@
                         </imvert:associations>
                         <xsl:if test="$designation='associationclass'">
                             <!--TODO enhance: check correct implementation of association class -->
-                            <xsl:variable name="association" select="$document-associations[imf:get-tagged-value(.,'associationclass')=$id]"/>
+                            <xsl:variable name="association" select="$document-associations[imf:get-system-tagged-value(.,'associationclass')=$id]"/>
                             <imvert:associates>
-                                <xsl:variable name="source-localid" select="$association/*/UML:AssociationEnd[imf:get-tagged-value(.,'ea_end')='source']/@type"/>
+                                <xsl:variable name="source-localid" select="$association/*/UML:AssociationEnd[imf:get-system-tagged-value(.,'ea_end')='source']/@type"/>
                                 <xsl:variable name="source" select="imf:element-by-id($source-localid)"/>
-                                <xsl:variable name="target-localid" select="$association/*/UML:AssociationEnd[imf:get-tagged-value(.,'ea_end')='target']/@type"/>
+                                <xsl:variable name="target-localid" select="$association/*/UML:AssociationEnd[imf:get-system-tagged-value(.,'ea_end')='target']/@type"/>
                                 <xsl:variable name="target" select="imf:element-by-id($target-localid)"/>
                                 <imvert:source>
                                     <xsl:sequence select="imf:get-id-info($source,'C')"/>
@@ -418,7 +418,7 @@
 
     <xsl:function name="imf:get-stereotypes" as="xs:string*">
         <xsl:param name="this" as="element()"/>
-        <xsl:variable name="local-stereotype" select="imf:get-tagged-value($this,('stereotype','destStereotype'))"/> <!-- destStereotype only for association destinations -->
+        <xsl:variable name="local-stereotype" select="imf:get-system-tagged-value($this,('stereotype','destStereotype'))"/> <!-- destStereotype only for association destinations -->
         <xsl:variable name="xref-stereotype" select="imf:get-stereotypes($this,'my')"/>
         <!-- if stereotypes have been stored in xref stereotype string, then this also holds the local stereotypes -->
         <xsl:variable name="stereotypes" select="for $s in ($xref-stereotype,$local-stereotype) return imf:get-normalized-name($s,'stereotype-name')"/>
@@ -430,7 +430,7 @@
         <xsl:param name="origin" as="xs:string"/>
         <xsl:variable name="stereotypes" as="xs:string*">
             <!-- stereotypes are sometimes set on the relation as a tagged value, as well as within a xref string -->
-            <xsl:sequence select="if ($origin = 'my') then imf:get-tagged-value($this,'stereotype') else ()"/> 
+            <xsl:sequence select="if ($origin = 'my') then imf:get-system-tagged-value($this,'stereotype') else ()"/> 
             <!-- if stereotypes have been stored in xref stereotype string, then this also holds the local stereotypes -->
             <xsl:sequence select="$parsed-xref-properties[@id=generate-id($this) and @origin=$origin]/imvert:props/imvert:stereos/imvert:name"/>
         </xsl:variable>
@@ -476,7 +476,7 @@
     <xsl:function name="imf:get-documentation-info" as="item()*">
         <xsl:param name="this" as="node()"/>
         <xsl:param name="name" as="xs:string"/>
-        <xsl:variable name="doctext" select="imf:get-tagged-value($this,$name,'')"/>
+        <xsl:variable name="doctext" select="imf:get-system-tagged-value($this,$name,'')"/>
         <xsl:variable name="relevant-doc-string" select="if (contains($doctext,imf:get-config-parameter('documentation-separator'))) then substring-before($doctext,imf:get-config-parameter('documentation-separator')) else $doctext"/>
         <xsl:if test="exists($doctext) and normalize-space($relevant-doc-string)">
             <imvert:documentation>
@@ -487,11 +487,11 @@
     
     <xsl:function name="imf:get-history-info" as="node()*">
         <xsl:param name="this" as="node()"/>
-        <xsl:sequence select="imf:create-output-element('imvert:created',imf:date-to-isodate(imf:get-tagged-value($this,'date_created')))"/>
-        <xsl:sequence select="imf:create-output-element('imvert:modified',imf:date-to-isodate(imf:get-tagged-value($this,'date_modified')))"/>
-        <xsl:sequence select="imf:create-output-element('imvert:version',imf:get-tagged-value($this,'version'))"/>
-        <xsl:sequence select="imf:create-output-element('imvert:phase', imf:get-phase-description(imf:get-tagged-value($this,'phase'))[1])"/>
-        <xsl:sequence select="imf:create-output-element('imvert:author',imf:get-tagged-value($this,'author'))"/>
+        <xsl:sequence select="imf:create-output-element('imvert:created',imf:date-to-isodate(imf:get-system-tagged-value($this,('created','date_created'))[1]))"/>
+        <xsl:sequence select="imf:create-output-element('imvert:modified',imf:date-to-isodate(imf:get-system-tagged-value($this,('modified','date_modified'))[1]))"/>
+        <xsl:sequence select="imf:create-output-element('imvert:version',imf:get-system-tagged-value($this,'version'))"/>
+        <xsl:sequence select="imf:create-output-element('imvert:phase', imf:get-phase-description(imf:get-system-tagged-value($this,'phase'))[1])"/>
+        <xsl:sequence select="imf:create-output-element('imvert:author',imf:get-system-tagged-value($this,'author'))"/>
     </xsl:function>
  
     <xsl:function name="imf:get-external-resources-info" as="node()*">
@@ -502,26 +502,26 @@
         -->
         <xsl:variable name="type-id" select="$this/UML:StructuralFeature.type/UML:Classifier/@xmi.idref"/>
         <xsl:variable name="vl" select="imf:element-by-id($type-id)"/>
-        <xsl:variable name="dataloc" select="if (exists($vl)) then (imf:get-tagged-value($vl,'data-location'),imf:get-tagged-value($vl,'Data locatie')) else ()"/>
-        <xsl:variable name="webloc" select="if (exists($vl)) then (imf:get-tagged-value($vl,'web-location'),imf:get-tagged-value($vl,'Web locatie')) else ()"/>
-        <xsl:sequence select="imf:create-output-element('imvert:data-location',(imf:get-tagged-value($this,'data-location'),imf:get-tagged-value($this,'Data locatie'),$dataloc)[1])"/>
-        <xsl:sequence select="imf:create-output-element('imvert:web-location',(imf:get-tagged-value($this,'web-location'),imf:get-tagged-value($this,'Web locatie'),$webloc)[1])"/>
+        <xsl:variable name="dataloc" select="if (exists($vl)) then (imf:get-profile-tagged-value($vl,'data-location'),imf:get-profile-tagged-value($vl,'Data locatie')) else ()"/>
+        <xsl:variable name="webloc" select="if (exists($vl)) then (imf:get-profile-tagged-value($vl,'web-location'),imf:get-profile-tagged-value($vl,'Web locatie')) else ()"/>
+        <xsl:sequence select="imf:create-output-element('imvert:data-location',(imf:get-profile-tagged-value($this,'data-location'),imf:get-profile-tagged-value($this,'Data locatie'),$dataloc)[1])"/>
+        <xsl:sequence select="imf:create-output-element('imvert:web-location',(imf:get-profile-tagged-value($this,'web-location'),imf:get-profile-tagged-value($this,'Web locatie'),$webloc)[1])"/>
     </xsl:function>
    
     <xsl:function name="imf:get-xsd-filepath" as="xs:string">
         <xsl:param name="this" as="node()"/>
-        <xsl:value-of select="(imf:get-tagged-value($this,'location'),imf:get-tagged-value($this,'xsd-location'))[1]"/>
+        <xsl:value-of select="(imf:get-profile-tagged-value($this,'location'),imf:get-profile-tagged-value($this,'xsd-location'))[1]"/>
     </xsl:function>
     
     <xsl:function name="imf:get-client-release" as="xs:string">
         <xsl:param name="this" as="node()"/>
-        <xsl:value-of select="imf:get-tagged-value($this,'release')[1]"/>
+        <xsl:value-of select="imf:get-profile-tagged-value($this,'release')[1]"/>
     </xsl:function>
     
     <xsl:function name="imf:get-id-info" as="node()*">
         <xsl:param name="this" as="node()"/>
         <xsl:param name="type" as="xs:string"/><!-- Class, Attribute, Relation, Package --> 
-        <xsl:variable name="name" select="distinct-values(($this/@name, $this/*/UML:AssociationEnd[imf:get-tagged-value(.,'ea_end')='target']/@name))"/> <!-- 2nd option only for associations, deprecated when following RSB profile -->
+        <xsl:variable name="name" select="distinct-values(($this/@name, $this/*/UML:AssociationEnd[imf:get-system-tagged-value(.,'ea_end')='target']/@name))"/> <!-- 2nd option only for associations, deprecated when following RSB profile -->
         <xsl:variable name="xref-isid" select="$parsed-xref-properties[@id=generate-id($this)]/imvert:props/imvert:des[imvert:name = 'isID']/imvert:valu = '1'"/>
         <xsl:if test="$name[1]">
             <xsl:sequence select="imf:create-output-element('imvert:found-name',normalize-space($name[1]))"/>
@@ -530,10 +530,10 @@
             </xsl:if>
         </xsl:if>
         <xsl:sequence select="imf:create-output-element('imvert:alias',imf:get-alias($this,$type))"/>
-        <xsl:variable name="id" select="distinct-values(($this/@xmi.id, imf:get-tagged-value($this,'ea_guid')))"/> 
+        <xsl:variable name="id" select="distinct-values(($this/@xmi.id, imf:get-system-tagged-value($this,'ea_guid')))"/> 
         <xsl:sequence select="imf:create-output-element('imvert:id',$id[1])"/>
-        <xsl:sequence select="imf:create-output-element('imvert:keywords',imf:get-tagged-value($this,'keywords'))"/> 
-        <xsl:sequence select="imf:create-output-element('imvert:is-value-derived',if (imf:get-tagged-value($this,'derived') = '1') then 'true' else ())"/> 
+        <xsl:sequence select="imf:create-output-element('imvert:keywords',imf:get-system-tagged-value($this,'keywords'))"/> 
+        <xsl:sequence select="imf:create-output-element('imvert:is-value-derived',if (imf:get-system-tagged-value($this,'derived') = '1') then 'true' else ())"/> 
         <xsl:sequence select="imf:create-output-element('imvert:is-id',if ($xref-isid) then 'true' else ())"/> 
         <xsl:for-each select="imf:get-trace-id($this,$type)">
             <xsl:sequence select="imf:create-output-element('imvert:trace',.)"/> 
@@ -545,18 +545,18 @@
     <xsl:function name="imf:get-scope-info" as="node()*">
         <xsl:param name="this" as="node()"/>
         <xsl:sequence select="imf:create-output-element('imvert:visibility',$this/@visibility)"/> 
-        <xsl:sequence select="imf:create-output-element('imvert:scope',imf:get-tagged-value($this,'scope'))"/> 
-        <xsl:sequence select="imf:create-output-element('imvert:static',imf:get-tagged-value($this,'static') = '1')"/> 
+        <xsl:sequence select="imf:create-output-element('imvert:scope',imf:get-system-tagged-value($this,'scope'))"/> 
+        <xsl:sequence select="imf:create-output-element('imvert:static',imf:get-system-tagged-value($this,'static') = '1')"/> 
     </xsl:function>    
  
     <xsl:function name="imf:get-supplier-info" as="node()*">
         <xsl:param name="this" as="node()"/>
         <xsl:param name="parent-is-derived" as="xs:boolean"/>
         
-        <xsl:variable name="supplier-names" select="for $t in (tokenize(imf:get-tagged-value($this,'supplier-name') ,';')) return normalize-space($t)"/>
-        <xsl:variable name="supplier-projects" select="for $t in (tokenize(imf:get-tagged-value($this,'supplier-project'),';')) return normalize-space($t)"/>
-        <xsl:variable name="supplier-releases" select="for $t in (tokenize(imf:get-tagged-value($this,'supplier-release'),';')) return normalize-space($t)"/>
-        <xsl:variable name="supplier-packs" select="for $t in (tokenize(imf:get-tagged-value($this,'supplier-package-name'),';')) return normalize-space($t)"/>
+        <xsl:variable name="supplier-names" select="for $t in (tokenize(imf:get-profile-tagged-value($this,'supplier-name') ,';')) return normalize-space($t)"/>
+        <xsl:variable name="supplier-projects" select="for $t in (tokenize(imf:get-profile-tagged-value($this,'supplier-project'),';')) return normalize-space($t)"/>
+        <xsl:variable name="supplier-releases" select="for $t in (tokenize(imf:get-profile-tagged-value($this,'supplier-release'),';')) return normalize-space($t)"/>
+        <xsl:variable name="supplier-packs" select="for $t in (tokenize(imf:get-profile-tagged-value($this,'supplier-package-name'),';')) return normalize-space($t)"/>
         
         <xsl:variable name="counts" select="(count($supplier-names),count($supplier-projects), count($supplier-releases), count($supplier-packs))"/>
         <xsl:variable name="scount" select="functx:sort($counts)[last()]"/>
@@ -571,7 +571,7 @@
                 </imvert:supplier>
             </xsl:for-each>
         </xsl:variable>
-        <xsl:variable name="derived" select="imf:get-tagged-value($this,'derived')"/>
+        <xsl:variable name="derived" select="imf:get-profile-tagged-value($this,'derived')"/>
         
         <xsl:sequence select="$supplier-info"/>
         <xsl:variable name="derived-because-stated" select="(exists($derived) and imf:boolean($derived))"/>
@@ -590,18 +590,18 @@
         <xsl:param name="this" as="node()"/> 
         <xsl:sequence select="imf:create-output-element('imvert:location',imf:get-xsd-filepath($this))"/>
         <xsl:sequence select="imf:create-output-element('imvert:release',imf:get-client-release($this))"/>
-        <xsl:sequence select="imf:create-output-element('imvert:ref-version',imf:get-tagged-value($this,'ref-version'))"/> <!-- optional -->
-        <xsl:sequence select="imf:create-output-element('imvert:ref-release',imf:get-tagged-value($this,'ref-release'))"/> <!-- optional -->
+        <xsl:sequence select="imf:create-output-element('imvert:ref-version',imf:get-profile-tagged-value($this,'ref-version'))"/> <!-- optional -->
+        <xsl:sequence select="imf:create-output-element('imvert:ref-release',imf:get-profile-tagged-value($this,'ref-release'))"/> <!-- optional -->
     </xsl:function>
     
     <xsl:function name="imf:get-datatype-info" as="node()*">
         <xsl:param name="this" as="node()"/> <!-- packagedElement -->
         <!-- IM-69 introduceer de mogelijkheid datatypen naar systeem typen te mappen -->
-        <xsl:sequence select="imf:create-output-element('imvert:primitive',imf:get-tagged-value($this,'primitive'))"/>
-        <xsl:sequence select="imf:create-output-element('imvert:pattern',imf:get-tagged-value($this,('pattern','patroon')))"/>
-        <xsl:sequence select="imf:create-output-element('imvert:min-length',imf:get-tagged-value($this,'minLength'))"/>
-        <xsl:sequence select="imf:create-output-element('imvert:max-length',imf:get-tagged-value($this,'maxLength'))"/>
-        <xsl:sequence select="imf:create-output-element('imvert:union',imf:get-tagged-value($this,'union'))"/>
+        <xsl:sequence select="imf:create-output-element('imvert:primitive',imf:get-profile-tagged-value($this,'primitive'))"/>
+        <xsl:sequence select="imf:create-output-element('imvert:pattern',imf:get-profile-tagged-value($this,('pattern','patroon')))"/>
+        <xsl:sequence select="imf:create-output-element('imvert:min-length',imf:get-profile-tagged-value($this,'minLength'))"/>
+        <xsl:sequence select="imf:create-output-element('imvert:max-length',imf:get-profile-tagged-value($this,'maxLength'))"/>
+        <xsl:sequence select="imf:create-output-element('imvert:union',imf:get-profile-tagged-value($this,'union'))"/>
     </xsl:function>
     
     <xsl:function name="imf:get-attribute-info" as="node()*">
@@ -680,15 +680,15 @@
                 <xsl:sequence select="imf:create-output-element('imvert:type-name',$this/type/@href)"/>
             </xsl:otherwise>
         </xsl:choose>
-        <xsl:variable name="lbound" select="imf:get-tagged-value($this,'lowerBound')"/>
-        <xsl:variable name="ubound" select="imf:get-tagged-value($this,'upperBound')"/>
+        <xsl:variable name="lbound" select="imf:get-system-tagged-value($this,'lowerBound')"/>
+        <xsl:variable name="ubound" select="imf:get-system-tagged-value($this,'upperBound')"/>
         <xsl:sequence select="imf:create-output-element('imvert:min-occurs',$lbound)"/>
         <xsl:sequence select="imf:create-output-element('imvert:max-occurs',if ($ubound='*') then 'unbounded' else $ubound)"/>
         <xsl:sequence select="imf:create-output-element('imvert:position',imf:get-position-value($this,'100'))"/>
-        <xsl:sequence select="imf:create-output-element('imvert:pattern',imf:get-tagged-value($this,('pattern','patroon')))"/>
-        <xsl:sequence select="imf:create-output-element('imvert:min-length',imf:get-tagged-value($this,'minLength'))"/>
-        <xsl:sequence select="imf:create-output-element('imvert:max-length',imf:get-tagged-value($this,'maxLength'))"/>
-        <xsl:sequence select="imf:create-output-element('imvert:any-from-package',imf:get-tagged-value($this,'package'))"/>
+        <xsl:sequence select="imf:create-output-element('imvert:pattern',imf:get-profile-tagged-value($this,('pattern','patroon')))"/>
+        <xsl:sequence select="imf:create-output-element('imvert:min-length',imf:get-profile-tagged-value($this,'minLength'))"/>
+        <xsl:sequence select="imf:create-output-element('imvert:max-length',imf:get-profile-tagged-value($this,'maxLength'))"/>
+        <xsl:sequence select="imf:create-output-element('imvert:any-from-package',imf:get-profile-tagged-value($this,'package'))"/>
     </xsl:function>
     
     <xsl:function name="imf:get-association-info" as="node()*">
@@ -751,7 +751,7 @@
     
     <xsl:function name="imf:get-association-class-info" as="node()*">
         <xsl:param name="this" as="node()"/> <!-- UML:Association -->
-        <xsl:variable name="association-id" select="imf:get-tagged-value($this,'associationclass')"/>
+        <xsl:variable name="association-id" select="imf:get-system-tagged-value($this,'associationclass')"/>
         <xsl:variable name="association-class" select="imf:element-by-id($association-id)"/>
         <xsl:if test="$association-class">
             <imvert:association-class>
@@ -808,22 +808,44 @@
         <UML:Package        name="Package5" xmi.id="EAPK_877368D3_AF62_4cf7_8FF7_230ED08FEA87" ..>
     -->
  
-    <xsl:function name="imf:get-tagged-value" as="item()*">
+    <xsl:function name="imf:get-profile-tagged-value" as="item()*">
         <xsl:param name="this" as="node()"/>
         <xsl:param name="tagged-value-name" as="xs:string*"/>
-        <xsl:sequence select="imf:get-tagged-value($this,$tagged-value-name,'space')"/>
+        <xsl:sequence select="imf:get-profile-tagged-value($this,$tagged-value-name,'space')"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-profile-tagged-value" as="item()*">
+        <xsl:param name="this" as="node()"/>
+        <xsl:param name="tagged-value-name" as="xs:string*"/>
+        <xsl:param name="normalized" as="xs:string?"/>
+        <xsl:sequence select="imf:get-tagged-value($this,$tagged-value-name,$normalized,true())"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-system-tagged-value" as="item()*">
+        <xsl:param name="this" as="node()"/>
+        <xsl:param name="tagged-value-name" as="xs:string*"/>
+        <xsl:sequence select="imf:get-system-tagged-value($this,$tagged-value-name,'space')"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-system-tagged-value" as="item()*">
+        <xsl:param name="this" as="node()"/>
+        <xsl:param name="tagged-value-name" as="xs:string*"/>
+        <xsl:param name="normalized" as="xs:string?"/>
+        <xsl:sequence select="imf:get-tagged-value($this,$tagged-value-name,$normalized,false())"/>
     </xsl:function>
     
     <xsl:function name="imf:get-tagged-value" as="item()*">
         <xsl:param name="this" as="node()"/>
         <xsl:param name="tagged-value-name" as="xs:string*"/>
         <xsl:param name="normalized" as="xs:string?"/>
-        <xsl:sequence select="imf:get-tagged-values($this,$tagged-value-name,$normalized)"/>
+        <xsl:param name="profiled" as="xs:boolean"/>
+        <xsl:sequence select="imf:get-tagged-values($this,$tagged-value-name,$normalized,$profiled)"/>
     </xsl:function>
     
     <xsl:function name="imf:get-tagged-values" as="item()*">
         <xsl:param name="this" as="node()"/>
         <xsl:param name="tagged-value-name" as="xs:string*"/>
+        <xsl:param name="profiled" as="xs:boolean"/>
         <!-- 
             this implements the equivalent of:
             if ($local-value) then $local-value else 
@@ -833,7 +855,7 @@
             if ($root-model-value) then $root-model-value else 
             ()
         -->
-        <xsl:variable name="tagged-values" select="$this/UML:ModelElement.taggedValue/UML:TaggedValue[imf:name-match(@tag,$tagged-value-name,'tv-name-ea')]"/>
+        <xsl:variable name="tagged-values" select="$this/UML:ModelElement.taggedValue/UML:TaggedValue[imf:tagged-value-select-profiled(.,$profiled) and imf:name-match(@tag,$tagged-value-name,'tv-name-ea')]"/>
         
         <xsl:if test="$tagged-values[2] and not($allow-duplicate-tv)">
             <xsl:sequence select="imf:msg('ERROR','Duplicate assignment of tagged value [1] at [2]', ($tagged-value-name, $this/@name))"/>
@@ -842,6 +864,9 @@
         <xsl:choose>
             <xsl:when test="exists($local-value)">
                  <xsl:sequence select="$local-value"/>   
+            </xsl:when>
+            <xsl:when test="not($profiled)"><!-- assume that all tagged values in different locations in the XMI are profiled -->
+                <xsl:sequence select="()"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:variable name="tagged-values" select="$content/UML:TaggedValue[@modelElement=$this/@xmi.id and imf:name-match(@tag,$tagged-value-name,'tv-name-ea')]"/>
@@ -900,7 +925,8 @@
         <xsl:param name="this" as="node()"/>
         <xsl:param name="tagged-value-name" as="xs:string*"/>
         <xsl:param name="normalized" as="xs:string?"/>
-        <xsl:sequence select="for $tv in imf:get-tagged-values($this,$tagged-value-name) return imf:get-tagged-value-norm($tv,$normalized)"/>
+        <xsl:param name="profiled" as="xs:boolean"/>
+        <xsl:sequence select="for $tv in imf:get-tagged-values($this,$tagged-value-name,$profiled) return imf:get-tagged-value-norm($tv,$normalized)"/>
     </xsl:function>
     
     <!-- return normalized string value, or HTML content when applicable -->
@@ -937,10 +963,17 @@
         </xsl:if>
    </xsl:function>
     
+    <xsl:function name="imf:tagged-value-select-profiled" as="xs:boolean">
+        <xsl:param name="tv"/>
+        <xsl:param name="profiled" as="xs:boolean"/>
+        <xsl:variable name="tv-is-profiled" select="exists($tv/@xmi.id)"/> <!-- signals that the tagged value is taken from some profile definition -->
+        <xsl:sequence select="($profiled and $tv-is-profiled) or (not($profiled) and not($tv-is-profiled))"/>
+    </xsl:function>
+    
     <xsl:function name="imf:get-position-value" as="xs:string?">
             <xsl:param name="this" as="node()"/>
             <xsl:param name="default" as="xs:string"/>
-        <xsl:variable name="positions" select="imf:get-tagged-values($this,'position')"/>
+        <xsl:variable name="positions" select="imf:get-tagged-values($this,'position',true())"/>
         <xsl:value-of select="normalize-space(
                 if ($this/self::UML:Generalization and $positions[1]) then $positions[1] else
                 if ($this/self::UML:Association and $positions[1]) then $positions[1] else
@@ -1108,7 +1141,7 @@
         <xsl:if test="$xrefprop">
             <!-- als de property wordt gezet op een ClassifierRole en de base is een package, dan betreft het de base van deze role. -->
             <xsl:variable name="base" as="element()?">
-                <xsl:variable name="package-id" select="imf:get-tagged-value($this,'package2')"/>
+                <xsl:variable name="package-id" select="imf:get-system-tagged-value($this,'package2')"/>
                 <xsl:variable name="package-id-corrected" select="replace($package-id,'^EAID_','EAPK_')"/> <!-- EA specific! -->
                 <xsl:choose>
                     <xsl:when test="$this/self::UML:ClassifierRole and $package-id-corrected">
@@ -1206,7 +1239,7 @@
     -->
     <xsl:function name="imf:get-class-cardinality-bounds" as="xs:string+">
         <xsl:param name="this" as="node()"/> <!-- a class -->
-        <xsl:variable name="cardinality" select="tokenize(imf:get-tagged-value($this,'cardinality'),'\.\.')"/>
+        <xsl:variable name="cardinality" select="tokenize(imf:get-system-tagged-value($this,'cardinality'),'\.\.')"/>
         <xsl:variable name="lbound" select="$cardinality[1]"/>
         <xsl:variable name="ubound" select="$cardinality[2]"/>
         <xsl:value-of select="if ($lbound) then $lbound else ''"/>
@@ -1216,7 +1249,7 @@
     <xsl:function name="imf:get-svn-info" as="node()*">
         <xsl:param name="this" as="node()"/> <!-- a package -->
         <!-- [dollar]Id: tester-base-pack_package1.xml 4186 2012-01-05 16:02:47Z arjan [dollar] -->
-        <xsl:variable name="id" select="imf:get-tagged-value($this,'svnid')"/>
+        <xsl:variable name="id" select="imf:get-profile-tagged-value($this,'svnid')"/>
         <xsl:if test="$id">
             <xsl:sequence select="imf:create-output-element('imvert:svn-string',substring($id,2,string-length($id) - 2))"/>
             <xsl:analyze-string select="$id" regex="\$Id: (.+) (\d+) ([0-9\-]+) ([0-9:Z]+) (.+)\$">
@@ -1245,8 +1278,8 @@
                         <xsl:variable name="nname" select="."/>
                         <xsl:variable name="norm" select="../@norm"/>
                         <!-- TODO solve a duplicate (redundant) call here --> 
-                        <xsl:variable name="value-orig" select="imf:get-tagged-value($this,$nname)"/>
-                        <xsl:variable name="value-norm" select="imf:get-tagged-value($this,$nname,$norm)"/>
+                        <xsl:variable name="value-orig" select="imf:get-profile-tagged-value($this,$nname)"/>
+                        <xsl:variable name="value-norm" select="imf:get-profile-tagged-value($this,$nname,$norm)"/>
                         <xsl:if test="exists($value-orig)">
                             <xsl:for-each select="$value-orig">
                                 <xsl:variable name="index" select="position()"/>
@@ -1287,18 +1320,18 @@
                 <xsl:for-each select="$constraints">
                     <imvert:constraint>
                         <xsl:sequence select="imf:create-output-element('imvert:stereotype',UML:ModelElement.stereotype/UML:Stereotype/@name)"/>
-                        <xsl:sequence select="imf:create-output-element('imvert:type',imf:get-tagged-value(.,'documentation'))"/>
+                        <xsl:sequence select="imf:create-output-element('imvert:type',imf:get-system-tagged-value(.,'documentation'))"/>
                         
                         <xsl:sequence select="imf:create-output-element('imvert:name',@name)"/>
-                        <xsl:sequence select="imf:create-output-element('imvert:type',imf:get-tagged-value(.,'type'))"/>
-                        <xsl:sequence select="imf:create-output-element('imvert:weight',imf:get-tagged-value(.,'weight'))"/>
-                        <xsl:sequence select="imf:create-output-element('imvert:status',imf:get-tagged-value(.,'status'))"/>
+                        <xsl:sequence select="imf:create-output-element('imvert:type',imf:get-system-tagged-value(.,'type'))"/>
+                        <xsl:sequence select="imf:create-output-element('imvert:weight',imf:get-system-tagged-value(.,'weight'))"/>
+                        <xsl:sequence select="imf:create-output-element('imvert:status',imf:get-system-tagged-value(.,'status'))"/>
                         
                         <xsl:variable name="relevant-doc-string" select="if (contains(.,imf:get-config-parameter('documentation-separator'))) then substring-before(.,imf:get-config-parameter('documentation-separator')) else ."/>
-                        <xsl:sequence select="imf:create-output-element('imvert:documentation',imf:get-tagged-value($relevant-doc-string,'description'))"/>
+                        <xsl:sequence select="imf:create-output-element('imvert:documentation',imf:get-system-tagged-value($relevant-doc-string,'description'))"/>
                        
                         <!-- when constraint on associatiosn: -->
-                        <xsl:variable name="links" select="imf:get-tagged-value(.,'relatedlinks')"/>
+                        <xsl:variable name="links" select="imf:get-system-tagged-value(.,'relatedlinks')"/>
                         <xsl:if test="exists($links)">
                             <imvert:connectors>
                                 <xsl:analyze-string select="$links" regex="(.+?)=(.+?);">
@@ -1319,19 +1352,19 @@
         <xsl:param name="type"/><!-- Class, Attribute, Relation, Package -->
         <xsl:choose>
             <xsl:when test="$type='P'">
-                <xsl:variable name="tv" select="imf:get-tagged-value($this,'alias')"/>
+                <xsl:variable name="tv" select="imf:get-system-tagged-value($this,'alias')"/>
                 <xsl:value-of select="$tv"/>
             </xsl:when>
             <xsl:when test="$type='C'">
-                <xsl:variable name="tv" select="imf:get-tagged-value($this,'alias')"/>
+                <xsl:variable name="tv" select="imf:get-system-tagged-value($this,'alias')"/>
                 <xsl:value-of select="$tv"/>
             </xsl:when>
             <xsl:when test="$type='A'">
-                <xsl:variable name="tv" select="imf:get-tagged-value($this,'style')"/>
+                <xsl:variable name="tv" select="imf:get-system-tagged-value($this,'style')"/>
                 <xsl:value-of select="$tv"/>
             </xsl:when>
             <xsl:when test="$type='R'">
-                <xsl:variable name="tv" select="imf:get-tagged-value($this,'styleex')"/>
+                <xsl:variable name="tv" select="imf:get-system-tagged-value($this,'styleex')"/>
                 <xsl:value-of select="if ($tv) then imf:parse-xref-property-des-att($tv,'alias') else ''"/>
             </xsl:when>
         </xsl:choose>
@@ -1378,11 +1411,11 @@
                 <!-- no implementation -->
             </xsl:when>   
             <xsl:when test="$type = 'A'">
-                <xsl:variable name="connection" select="imf:get-tagged-value($construct,'sourceAttribute')"/>
+                <xsl:variable name="connection" select="imf:get-profile-tagged-value($construct,'sourceAttribute')"/>
                 <xsl:sequence select="for $c in $connection return string($c)"/>
             </xsl:when>   
             <xsl:when test="$type = 'R'">
-                <xsl:variable name="connection" select="imf:get-tagged-value($construct,'sourceAssociation')"/>
+                <xsl:variable name="connection" select="imf:get-profile-tagged-value($construct,'sourceAssociation')"/>
                 <xsl:sequence select="for $c in $connection return string($c)"/>
             </xsl:when>   
             <xsl:otherwise>
