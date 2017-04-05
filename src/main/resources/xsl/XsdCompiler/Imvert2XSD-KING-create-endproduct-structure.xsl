@@ -504,6 +504,7 @@
 					
 
 					<ep:choice>
+						<ep:min-occurs>0</ep:min-occurs>
 						<xsl:for-each select="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
 							<xsl:variable name="class-id" select="imvert:id"/>
 							<xsl:variable name="alias" select="imvert:alias"/>
@@ -562,7 +563,7 @@
 						<xsl:sequence select="imf:create-debug-comment(concat('Attributes voor gerelateerde met een choice, berichtcode: ', substring($berichtCode, 1, 2), ', context: choice en mnemonic: ', $alias),$debugging)"/>
 
 						<xsl:variable name="attributes"
-							select="imf:createAttributes('gerelateerde', substring($berichtCode, 1, 2), 'choice', 'no', $alias, 'no', 'no', $prefix, $id, '')"/>
+							select="imf:createAttributes('gerelateerde', substring($berichtCode, 1, 2), 'choice', 'no', $alias, 'no', $prefix, $id, '')"/>
 						<xsl:sequence select="$attributes"/>
 					</ep:seq>
 				</xsl:when>
@@ -1294,13 +1295,6 @@
 		<xsl:variable name="inOnderzoek" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie in onderzoek')"/>
 		<!-- ROME: Het komt blijkjbaar voor dat de tagged value 'Mogelijk geen waarde' niet aanwezig is. Dit moet wellicht gecorrigeerd worden
 			       maar voorlopig interpreteer ik de waarde dan als 'NEE'. -->
-		<!--xsl:variable name="mogelijkGeenWaarde" select="imf:get-most-relevant-compiled-taggedvalue(., 'Mogelijk geen waarde')"/-->
-		<xsl:variable name="mogelijkGeenWaarde">
-			<xsl:choose>
-				<xsl:when test="empty(imf:get-most-relevant-compiled-taggedvalue(., 'Mogelijk geen waarde'))">NEE</xsl:when>
-				<xsl:otherwise><xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(., 'Mogelijk geen waarde')"/></xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
 		<xsl:variable name="min-waarde" select="imf:get-most-relevant-compiled-taggedvalue(., 'Minimum waarde (inclusief)')"/>
 		<xsl:variable name="max-waarde" select="imf:get-most-relevant-compiled-taggedvalue(., 'Maximum waarde (inclusief)')"/>
 		<xsl:variable name="min-length" select="imf:get-most-relevant-compiled-taggedvalue(., 'Minimum lengte')"/>
@@ -1319,9 +1313,6 @@
 				<xsl:when test="$processType = 'keyTabelEntiteit'">
 					
 					<xsl:sequence select="imf:create-debug-comment('Volgende kenmerken komen van het attribute uit de tabel entiteit.',$debugging)"/>
-					<xsl:if test="$mogelijkGeenWaarde = 'JA' and imvert:type-name != 'scalar-string' and not(ep:enum = '')">
-						<ep:voidable>Ja</ep:voidable>
-					</xsl:if>
 					<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
 					<xsl:sequence select="imf:create-output-element('ep:length', $total-digits)"/>
 					<xsl:sequence select="imf:create-output-element('ep:fraction-digits', $fraction-digits)"/>
@@ -1372,10 +1363,6 @@
 						<xsl:sequence select="imf:create-output-element('ep:kerngegeven', $kerngegeven)"/-->
 						<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
 						<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
-						<!--xsl:if test="($mogelijkGeenWaarde = 'JA' and imvert:type-name != 'scalar-string' and not(ep:enum = '')) or $context = 'scope'"-->
-						<xsl:if test="$mogelijkGeenWaarde = 'JA'">
-							<ep:voidable>Ja</ep:voidable>
-						</xsl:if>
 						<!-- When a tagged-value 'Positie' exists this is used to assign a value 
 								to 'ep:position' if not the value of the element 'imvert:position' is used. -->
 						<xsl:choose>
@@ -1425,7 +1412,7 @@
 									</xsl:choose>
 								</xsl:variable>
 								<xsl:variable name="attributes"
-									select="imf:createAttributes('bottomlevel', '-', '-', $datumType, '', $mogelijkGeenWaarde, $onvolledigeDatum, $prefix, $id, imvert:type-name)"/>
+									select="imf:createAttributes('bottomlevel', '-', '-', $datumType, '', $onvolledigeDatum, $prefix, $id, imvert:type-name)"/>
 								<xsl:sequence select="$attributes"/>
 							</ep:seq>
 						</xsl:if x?>
@@ -1467,7 +1454,10 @@
 						<xsl:sequence select="imf:create-output-element('ep:kerngegeven', $kerngegeven)"/>
 						<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
 						<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
-
+						<xsl:if test="(imvert:type-name = 'scalar-integer' or imvert:type-name = 'scalar-decimal') and not(ancestor::imvert:package[contains(@formal-name,'Berichtstructuren')])">
+							<xsl:sequence select="imf:create-output-element('ep:voidable', 'Ja')"/>
+						</xsl:if>
+						
 						<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]/imvert:attributes/imvert:attribute[imvert:is-id = 'true']"  mode="create-message-content">
 							<xsl:with-param name="berichtCode" select="$berichtCode"/>
 							<xsl:with-param name="berichtName" select="$berichtName"/>
@@ -1530,7 +1520,7 @@
 									</xsl:choose>
 								</xsl:variable>
 								<xsl:variable name="attributes"
-									select="imf:createAttributes('bottomlevel', '-', '-', $datumType, '', $mogelijkGeenWaarde, $onvolledigeDatum, $prefix, $id, imvert:type-name)"/>
+									select="imf:createAttributes('bottomlevel', '-', '-', $datumType, '', $onvolledigeDatum, $prefix, $id, imvert:type-name)"/>
 								<xsl:sequence select="$attributes"/>
 							</ep:seq>
 						</xsl:if>
@@ -1573,10 +1563,6 @@
 							<xsl:sequence select="imf:create-output-element('ep:kerngegeven', $kerngegeven)"/>
 							<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
 							<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
-							<!--xsl:if test="($mogelijkGeenWaarde = 'JA' and imvert:type-name != 'scalar-string' and not(ep:enum = '')) or $context = 'scope'"-->
-							<xsl:if test="$mogelijkGeenWaarde = 'JA' and imvert:type-name != 'scalar-string' and not(ep:enum = '')">
-								<ep:voidable>Ja</ep:voidable>
-							</xsl:if>
 							<xsl:sequence select="imf:create-output-element('ep:length', $total-digits)"/>
 							<xsl:sequence select="imf:create-output-element('ep:fraction-digits', $fraction-digits)"/>
 							<xsl:sequence select="imf:create-output-element('ep:max-length', $max-length)"/>
@@ -1599,6 +1585,9 @@
 										mode="create-datatype-content"/>
 								</xsl:when>
 							</xsl:choose>
+						<xsl:if test="(imvert:type-name = 'scalar-integer' or imvert:type-name = 'scalar-decimal') and not(ancestor::imvert:package[contains(@formal-name,'Berichtstructuren')])">
+							<xsl:sequence select="imf:create-output-element('ep:voidable', 'Ja')"/>
+							</xsl:if>
 							<!-- When a tagged-value 'Positie' exists this is used to assign a value 
 								to 'ep:position' if not the value of the element 'imvert:position' is used. -->
 							<xsl:choose>
@@ -1649,7 +1638,7 @@
 
 									<xsl:if test="$type-name != 'scalar-date' or $type-name != 'scalar-datetime' or $type-name != 'scalar-year' or $type-name != 'scalar-yearmonth' or $type-name != 'scalar-postcode'">
 										<xsl:variable name="attributes"
-											select="imf:createAttributes('bottomlevel', '-', '-', $datumType, '', $mogelijkGeenWaarde, $onvolledigeDatum, $prefix, $id, imvert:type-name)"/>
+											select="imf:createAttributes('bottomlevel', '-', '-', $datumType, '', $onvolledigeDatum, $prefix, $id, imvert:type-name)"/>
 										<xsl:sequence select="$attributes"/>
 									</xsl:if>
 								</ep:seq>
@@ -1795,7 +1784,7 @@
 								<ep:tech-name>gerelateerde</ep:tech-name>
 								<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
 								<ep:max-occurs>1</ep:max-occurs>
-								<ep:min-occurs>1</ep:min-occurs>
+								<ep:min-occurs>0</ep:min-occurs>
 								<ep:position>1</ep:position>
 								<xsl:sequence select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,'kerngegevens',$mnemonic,$elementName))"/>							
 							</ep:constructRef>
@@ -1874,7 +1863,7 @@
 								<ep:position>145</ep:position>
 								<!--ep:seq>
 									<xsl:variable name="attributes"
-										select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, '', '')"/>									
+										select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','','no', $prefix, '', '')"/>									
 									<xsl:sequence select="$attributes"/>
 								</ep:seq-->
 							</ep:construct>
@@ -1893,7 +1882,7 @@
 								<ep:position>150</ep:position>
 								<!--ep:seq>
 									<xsl:variable name="attributes"
-										select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, '', '')"/>									
+										select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','','no', $prefix, '', '')"/>									
 									<xsl:sequence select="$attributes"/>
 								</ep:seq-->
 							</ep:construct>
@@ -2326,7 +2315,7 @@
 							<ep:position>145</ep:position>
 							<!--ep:seq>
 								<xsl:variable name="attributes"
-									select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, '', '')"/>									
+									select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','','no', $prefix, '', '')"/>									
 								<xsl:sequence select="$attributes"/>
 							</ep:seq-->
 						</ep:construct>
@@ -2345,7 +2334,7 @@
 							<ep:position>150</ep:position>
 							<!--ep:seq>
 								<xsl:variable name="attributes"
-									select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, '', '')"/>									
+									select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','','no', $prefix, '', '')"/>									
 								<xsl:sequence select="$attributes"/>
 							</ep:seq-->
 						</ep:construct>
@@ -2417,7 +2406,7 @@
 						Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook 
 						nog herleid en doorgegeven worden. -->
 					<xsl:variable name="attributes"
-						select="imf:createAttributes('toplevel', substring($berichtCode, 1, 2), $context, 'no', $mnemonic, 'no', 'no', $prefix, '', '')"/>
+						select="imf:createAttributes('toplevel', substring($berichtCode, 1, 2), $context, 'no', $mnemonic, 'no', $prefix, '', '')"/>
 					<xsl:sequence select="$attributes"/>
 					
 					<xsl:sequence select="imf:create-debug-comment('Template: createRelatiePartOfAssociation, End 4e when',$debugging)"/>
@@ -2581,7 +2570,7 @@
 							<ep:position>145</ep:position>
 							<!--ep:seq>
 								<xsl:variable name="attributes"
-									select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, '', '')"/>									
+									select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','','no', $prefix, '', '')"/>									
 								<xsl:sequence select="$attributes"/>
 							</ep:seq-->
 						</ep:construct>
@@ -2600,7 +2589,7 @@
 							<ep:position>150</ep:position>
 							<!--ep:seq>
 								<xsl:variable name="attributes"
-									select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, '', '')"/>									
+									select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','','no', $prefix, '', '')"/>									
 								<xsl:sequence select="$attributes"/>
 							</ep:seq-->
 						</ep:construct>
@@ -2830,18 +2819,33 @@
 	</xsl:function>
 	
 	<!-- The function imf:createAttributes is used to determine the XML attributes 
-		neccessary for a certain context. It has the following parameters: - typecode 
-		- berichttype - context - datumType The first 3 parameters relate to columns 
+		neccessary for a certain context. It has the following parameters: 
+		- typecode 
+		- berichttype 
+		- context 
+		- datumType
+		- mnemonic
+		- onvolledigeDatum
+		- prefix
+		- constructId"
+		- dataType
+		
+		The first 3 parameters relate to columns 
 		with the same name within an Excel spreadsheet used to configure a.o. XML 
-		attributes usage. The last parameter is used to determine the need for the 
-		XML-attribute 'StUF:indOnvolledigeDatum'. -->
+		attributes usage. 
+		The 4th parameter is used to determine the need for the XML-attribute 'StUF:indOnvolledigeDatum'.
+		The 5th
+	    The 6th
+	    The 7th
+	    The 8th
+	    The 9th -->
+	
 	<xsl:function name="imf:createAttributes">
 		<xsl:param name="typeCode" as="xs:string"/>
 		<xsl:param name="berichtType" as="xs:string"/>
 		<xsl:param name="context" as="xs:string"/>
 		<xsl:param name="datumType" as="xs:string"/>
 		<xsl:param name="mnemonic" as="xs:string"/>
-		<xsl:param name="MogelijkGeenWaarde" as="xs:string"/>
 		<xsl:param name="onvolledigeDatum" as="xs:string"/>
 		<xsl:param name="prefix" as="xs:string"/>
 		<xsl:param name="constructId" as="xs:string"/>
@@ -2868,38 +2872,18 @@
 			the koppelvlak namespace will need a type-name, enum or other format defining 
 			element. -->
 
-		<xsl:if test="$attributeTypeRow//col[@name = 'noValue' and data = 'O' and $MogelijkGeenWaarde = 'JA']">
-			<ep:construct ismetadata="yes">
-				<ep:name>noValue</ep:name>
-				<ep:tech-name>noValue</ep:tech-name>
-				<ep:min-occurs>0</ep:min-occurs>
-				<ep:type-name>scalar-string</ep:type-name>
-				<ep:enum>nietOndersteund</ep:enum>
-				<ep:enum>nietGeautoriseerd</ep:enum>
-				<ep:enum>geenWaarde</ep:enum>
-				<ep:enum>waardeBestaat</ep:enum>
-				<ep:enum>waardeOnbekend</ep:enum>
-				<ep:enum>vastgesteldOnbekend</ep:enum>
-			</ep:construct>
-		</xsl:if>
-		<xsl:if test="$attributeTypeRow//col[@name = 'noValue' and data = 'V'] and $MogelijkGeenWaarde = 'JA'">
-			<ep:constructRef ismetadata="yes">
-				<ep:name>noValue</ep:name>
-				<ep:tech-name>noValue</ep:tech-name>
-				<ep:type-name>scalar-string</ep:type-name>
-				<ep:enum>nietOndersteund</ep:enum>
-				<ep:enum>nietGeautoriseerd</ep:enum>
-				<ep:enum>geenWaarde</ep:enum>
-				<ep:enum>waardeBestaat</ep:enum>
-				<ep:enum>waardeOnbekend</ep:enum>
-				<ep:enum>vastgesteldOnbekend</ep:enum>
-			</ep:constructRef>
-		</xsl:if>
-		<xsl:if test="$attributeTypeRow//col[@name = 'noValue' and data = 'V'] and $MogelijkGeenWaarde = 'NEE'">
-			<xsl:variable name="msg"
-				select="concat('The StUF:noValue attribute is required in the context ', $context, '. Provide for it within EA.')"/>
-			<xsl:sequence select="imf:msg('WARN', $msg)"/>
-		</xsl:if>
+		<ep:construct ismetadata="yes">
+			<ep:name>noValue</ep:name>
+			<ep:tech-name>noValue</ep:tech-name>
+			<ep:min-occurs>0</ep:min-occurs>
+			<ep:type-name>scalar-string</ep:type-name>
+			<ep:enum>nietOndersteund</ep:enum>
+			<ep:enum>nietGeautoriseerd</ep:enum>
+			<ep:enum>geenWaarde</ep:enum>
+			<ep:enum>waardeBestaat</ep:enum>
+			<ep:enum>waardeOnbekend</ep:enum>
+			<ep:enum>vastgesteldOnbekend</ep:enum>
+		</ep:construct>
 		<xsl:if test="$attributeTypeRow//col[@name = 'exact' and data = 'O']">
 			<ep:construct ismetadata="yes">
 				<ep:name>exact</ep:name>
@@ -2915,21 +2899,6 @@
 				<ep:type-name>scalar-boolean</ep:type-name>
 			</ep:construct>
 		</xsl:if>
-		<!--xsl:if test="$attributeTypeRow//col[@name = 'metagegeven' and data = 'O']">
-			<ep:construct ismetadata="yes">
-				<ep:name>metagegeven</ep:name>
-				<ep:tech-name>metagegeven</ep:tech-name>
-				<ep:min-occurs>0</ep:min-occurs>
-				<ep:type-name>scalar-boolean</ep:type-name>
-			</ep:construct>
-		</xsl:if>
-		<xsl:if test="$attributeTypeRow//col[@name = 'metagegeven' and data = 'V']">
-			<ep:construct ismetadata="yes">
-				<ep:name>metagegeven</ep:name>
-				<ep:tech-name>metagegeven</ep:tech-name>
-				<ep:type-name>scalar-boolean</ep:type-name>
-			</ep:construct>
-		</xsl:if-->
 		<!-- ROME: De vraag is of ik het gebruik van het XML attribute 'StUF:indOnvolledigeDatum' 
 			wel in het spreadsheet moet configureren. Moeten niet gewoon alle elementen 
 			van het datumType dit XML attribute krijgen? -->

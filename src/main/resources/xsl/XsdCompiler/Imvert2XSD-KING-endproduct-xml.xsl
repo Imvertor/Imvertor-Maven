@@ -358,7 +358,6 @@
                         <xsl:sequence
                             select="imf:create-output-element('ep:min-occurs', $association/imvert:min-occurs)" />
                         <ep:position>1</ep:position>
-                        <xsl:sequence select="imf:create-debug-comment('xsl:when test=$packages//imvert:class[imvert:id = $id]/imvert:alias',$debugging)"/>
                         <xsl:sequence
                             select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$verwerkingsModus,$alias,$elementName))" />
                         
@@ -455,7 +454,6 @@
                             <xsl:sequence
                                 select="imf:create-output-element('ep:min-occurs', $association/imvert:min-occurs)" />
                             <ep:position>1</ep:position>
-                            <xsl:sequence select="imf:create-debug-comment('xsl:when test=$packages//imvert:class[imvert:id = $id]/imvert:alias',$debugging)"/>
                             <xsl:sequence
                                 select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$verwerkingsModus,$alias,$elementName))" />
                             
@@ -553,8 +551,6 @@
                             <xsl:sequence
                                 select="imf:create-output-element('ep:min-occurs', $association/imvert:min-occurs)" />
                             <ep:position>1</ep:position>
-                            <xsl:sequence select="imf:create-debug-comment('xsl:when test=$packages//imvert:class[imvert:id = $id]/imvert:alias',$debugging)"/>
-
                             <xsl:sequence
                                 select="imf:create-output-element('ep:href', imf:create-complexTypeName($packageName,$berichtName,$verwerkingsModus,$alias,$elementName))" />
                             
@@ -743,6 +739,8 @@
                         <!-- Else the content of the current uml class is processed. -->
                         <xsl:otherwise>
                             <ep:seq>
+                                <xsl:sequence
+                                    select="imf:create-output-element('ep:min-occurs', 0)" />
                                 <!-- The uml attributes of the uml class are placed here. -->
                                 <xsl:apply-templates select="$construct"
                                     mode="create-message-content">
@@ -771,57 +769,23 @@
                                 <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
                                 <!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
                                 <ep:construct>
-                                    <xsl:choose>
-                                        <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
-                                            <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
-                                            <xsl:attribute name="namespaceId" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
-                                        </xsl:when>
-                                        <xsl:otherwise>
-                                            <xsl:attribute name="prefix" select="ep:verkorteAlias"/>
-                                            <xsl:attribute name="namespaceId" select="ep:namespaceIdentifier"/>
-                                        </xsl:otherwise>
-                                    </xsl:choose>
                                     <ep:name>authentiek</ep:name>
                                     <ep:tech-name>authentiek</ep:tech-name>
                                     <ep:max-occurs>unbounded</ep:max-occurs>
                                     <ep:min-occurs>0</ep:min-occurs>
-                                    <ep:type-name>scalar-string</ep:type-name>
-                                    <ep:enum>J</ep:enum>
-                                    <ep:enum>N</ep:enum>
+                                    <xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':StatusMetagegeven-basis'))"/>						
                                     <ep:position>145</ep:position>
-                                    <ep:seq>
-                                        <xsl:variable name="attributes"
-                                            select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, $id, '')"/>									
-                                        <xsl:sequence select="$attributes"/>
-                                    </ep:seq>
                                 </ep:construct>
                                 <!-- ep:inOnderzoek element is used to determine if a 'inOnderzoek' element needs to be generated in the messages in the next higher level. -->
                                 <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
                                 <!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
                                 <ep:construct>
-                                    <xsl:choose>
-                                        <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
-                                            <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
-                                            <xsl:attribute name="namespaceId" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
-                                        </xsl:when>
-                                        <xsl:otherwise>
-                                            <xsl:attribute name="prefix" select="ep:verkorteAlias"/>
-                                            <xsl:attribute name="namespaceId" select="ep:namespaceIdentifier"/>
-                                        </xsl:otherwise>
-                                    </xsl:choose>
                                     <ep:name>inOnderzoek</ep:name>
                                     <ep:tech-name>inOnderzoek</ep:tech-name>
                                     <ep:max-occurs>unbounded</ep:max-occurs>
                                     <ep:min-occurs>0</ep:min-occurs>
-                                    <ep:type-name>scalar-string</ep:type-name>
-                                    <ep:enum>J</ep:enum>
-                                    <ep:enum>N</ep:enum>
+                                    <xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':StatusMetagegeven-basis'))"/>						
                                     <ep:position>150</ep:position>
-                                    <ep:seq>
-                                        <xsl:variable name="attributes"
-                                            select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, $id, '')"/>									
-                                        <xsl:sequence select="$attributes"/>
-                                    </ep:seq>
                                 </ep:construct>
                                 <!-- ROME:   Waarschijnlijk moet er hier afhankelijk van de context meer 
                                             		of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' maar 
@@ -940,7 +904,7 @@
                                     		XML-attribute 'StUF:indOnvolledigeDatum'. -->
                                 <xsl:sequence select="imf:create-debug-comment(concat('Attributes voor ',$typeCode,', berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $alias),$debugging)"/>
                                 <xsl:variable name="attributes"
-                                    select="imf:createAttributes($typeCode, substring($berichtCode,1,2), $context, 'no', $alias, 'no','no', $prefix, $id, '')" />
+                                    select="imf:createAttributes($typeCode, substring($berichtCode,1,2), $context, 'no', $alias,'no', $prefix, $id, '')" />
                                 <xsl:sequence select="$attributes" />
                             </ep:seq>
                         </xsl:otherwise>
@@ -1108,6 +1072,8 @@
                                <!-- Else the content of the current uml class is processed. -->
                                <xsl:otherwise>
                                    <ep:seq>
+                                       <xsl:sequence
+                                           select="imf:create-output-element('ep:min-occurs', 0)" />
                                        <!-- The uml attributes of the uml class are placed here. -->
                                        <xsl:apply-templates select="$construct"
                                            mode="create-message-content">
@@ -1144,7 +1110,7 @@
                                        <!-- ep:authentiek element is used to determine if a 'authentiek' element needs to be generated in the messages in the next higher level. -->
                                        <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
                                        <!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
-                                       <ep:construct>
+                                       <!--ep:construct>
                                            <xsl:choose>
                                                <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
                                                    <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
@@ -1165,14 +1131,22 @@
                                            <ep:position>145</ep:position>
                                            <ep:seq>
                                                <xsl:variable name="attributes"
-                                                   select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, $id, '')"/>									
+                                                   select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','','no', $prefix, $id, '')"/>									
                                                <xsl:sequence select="$attributes"/>
                                            </ep:seq>
+                                       </ep:construct-->
+                                       <ep:construct>
+                                           <ep:name>authentiek</ep:name>
+                                           <ep:tech-name>authentiek</ep:tech-name>
+                                           <ep:max-occurs>unbounded</ep:max-occurs>
+                                           <ep:min-occurs>0</ep:min-occurs>
+                                           <xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':StatusMetagegeven-basis'))"/>						
+                                           <ep:position>145</ep:position>
                                        </ep:construct>
                                        <!-- ep:inOnderzoek element is used to determine if a 'inOnderzoek' element needs to be generated in the messages in the next higher level. -->
                                        <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
                                        <!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
-                                       <ep:construct>
+                                       <!--ep:construct>
                                            <xsl:choose>
                                                <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
                                                    <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
@@ -1193,9 +1167,17 @@
                                            <ep:position>150</ep:position>
                                            <ep:seq>
                                                <xsl:variable name="attributes"
-                                                   select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','', 'yes','no', $prefix, $id, '')"/>									
+                                                   select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','','no', $prefix, $id, '')"/>									
                                                <xsl:sequence select="$attributes"/>
                                            </ep:seq>
+                                       </ep:construct-->
+                                       <ep:construct>
+                                           <ep:name>inOnderzoek</ep:name>
+                                           <ep:tech-name>inOnderzoek</ep:tech-name>
+                                           <ep:max-occurs>unbounded</ep:max-occurs>
+                                           <ep:min-occurs>0</ep:min-occurs>
+                                           <xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':StatusMetagegeven-basis'))"/>						
+                                           <ep:position>150</ep:position>
                                        </ep:construct>
                                        <!-- ROME:   Waarschijnlijk moet er hier afhankelijk van de context meer 
                                             		of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' maar 
@@ -1314,7 +1296,7 @@
                                     		XML-attribute 'StUF:indOnvolledigeDatum'. -->
                                        <xsl:sequence select="imf:create-debug-comment(concat('Attributes voor ',$typeCode,', berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $alias),$debugging)"/>
                                        <xsl:variable name="attributes"
-                                           select="imf:createAttributes($typeCode, substring($berichtCode,1,2), $context, 'no', $alias, 'no','no', $prefix, $id, '')" />
+                                           select="imf:createAttributes($typeCode, substring($berichtCode,1,2), $context, 'no', $alias,'no', $prefix, $id, '')" />
                                        <xsl:sequence select="$attributes" />
                                    </ep:seq>
                                </xsl:otherwise>
@@ -1999,7 +1981,6 @@
         <xsl:variable name="kerngegeven" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie kerngegeven')"/>
         <xsl:variable name="authentiek" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie authentiek')"/>
         <xsl:variable name="inOnderzoek" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie in onderzoek')"/>
-        <xsl:variable name="mogelijkGeenWaarde" select="imf:get-most-relevant-compiled-taggedvalue(., 'Mogelijk geen waarde')"/>
         <xsl:variable name="regels" select="imf:get-most-relevant-compiled-taggedvalue(., 'Regels')"/>
 
         <!--xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct($construct,'UGM')"/-->
@@ -2035,7 +2016,6 @@
                         <ep:found-tagged-values>
                             <xsl:sequence select="imf:create-output-element('ep:materieleHistorie', $materieleHistorie)"/>
                             <xsl:sequence select="imf:create-output-element('ep:formeleHistorie', $formeleHistorie)"/>
-                            <xsl:sequence select="imf:create-output-element('ep:mogelijkGeenWaarde', $mogelijkGeenWaarde)"/>
                             <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
                             <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
                             <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $kerngegeven)"/>
@@ -2061,7 +2041,6 @@
                 <xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
                 <xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
                 <xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/>
-                <xsl:sequence select="imf:create-output-element('ep:mogelijk-geen-waarde', $mogelijkGeenWaarde)"/>
                 
                 <!-- When a tagged-value 'Positie' exists this is used to assign a value to 'ep:position' if not the value of the element 'imvert:position' is used. -->
                 <xsl:choose>
@@ -2087,6 +2066,7 @@
                     <xsl:if test="$orderingDesired = 'no'">
                         <xsl:attribute name="orderingDesired" select="'no'"/>
                     </xsl:if>
+                    <xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
                     <xsl:call-template name="createRelatiePartOfAssociation">
                         <xsl:with-param name="type-id" select="$type-id"/>
                         <xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -2124,7 +2104,7 @@
 					nog herleid en doorgegeven worden. -->
                         <xsl:if test="$generateHistorieConstruct = 'Nee'">
                             <xsl:variable name="attributes"
-                                select="imf:createAttributes('relatie', substring($berichtCode, 1, 2), $context, 'no', $alias, $mogelijkGeenWaarde, 'no', $prefix, $id, '')"/>
+                                select="imf:createAttributes('relatie', substring($berichtCode, 1, 2), $context, 'no', $alias, 'no', $prefix, $id, '')"/>
                             <xsl:sequence select="$attributes"/>
                         </xsl:if> 
                     </xsl:if>

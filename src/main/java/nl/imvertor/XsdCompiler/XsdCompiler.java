@@ -205,7 +205,7 @@ public class XsdCompiler extends Step {
 		
 			// and copy the onderlaag
 			XmlFile onderlaag = new XmlFile(configurator.getParm("properties", "STUF_ONDERLAAG_BSM"));
-			onderlaag.copyFile(configurator.getParm("properties", "RESULT_XSD_APPLICATION_FOLDER") + File.separator + onderlaag.getName());
+			onderlaag.copyFile(configurator.getParm("properties", "RESULT_XSD_APPLICATION_ONDERLAAG_FOLDER") + File.separator + onderlaag.getName());
 			
 			// and create a table representation; 
 			valid = valid && transformer.transformStep("properties/RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH","properties/ENDPRODUCT_DOC_TABLES_FILE_PATH", "properties/IMVERTOR_ENDPRODUCT_DOC_TABLES_XSLPATH");

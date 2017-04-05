@@ -57,7 +57,7 @@
 				<xsl:namespace name="{@prefix}"><xsl:value-of select="@identifier"/></xsl:namespace>
 			</xsl:for-each>
 
-			<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="stuf0302.xsd"/>
+			<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="../0302/stuf0302.xsd"/>
 			<xsl:for-each select="$namespaces2bImported/ep:namespaces/ep:namespace[@prefix != $message-set-prefix and @prefix != '' and not(@prefix = preceding-sibling::ep:namespace/@prefix)]">
 				<xs:import namespace="{@identifier}" schemaLocation="{concat(upper-case(@prefix),'.xsd')}"/>
 			</xsl:for-each>
@@ -91,6 +91,9 @@
 	<xsl:template match="ep:seq">
 		<xsl:if test="ep:constructRef[not(@ismetadata)]|ep:construct[not(@ismetadata)]|ep:seq|ep:choice">
 			<xs:sequence>
+				<xsl:if test="ep:min-occurs = 0">
+					<xsl:attribute name="minOccurs" select="0"/>
+				</xsl:if>
 				<xsl:apply-templates select="ep:constructRef[not(@ismetadata)]|ep:construct[not(@ismetadata)]|ep:seq|ep:choice"/>
 			</xs:sequence>
 		</xsl:if>
@@ -102,6 +105,9 @@
 
 	<xsl:template match="ep:choice">
 		<xs:choice>
+			<xsl:if test="ep:min-occurs = 0">
+				<xsl:attribute name="minOccurs" select="0"/>
+			</xsl:if>
 			<xsl:apply-templates select="ep:constructRef|ep:construct[not(@ismetadata)]|ep:seq"/>
 		</xs:choice>
 	</xsl:template>
