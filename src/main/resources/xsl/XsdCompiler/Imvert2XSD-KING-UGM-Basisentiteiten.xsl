@@ -189,11 +189,11 @@
                     <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-enumeration')]" mode="mode-global-enumeration"/>
                 </dat-part>
          
-                <ent-part>
+                <dat-part>
                     <xsl:sequence select="imf:create-comment(' *** Declaratie van Unions *** ')"/>
                     
                     <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-union')]" mode="mode-global-union"/>
-                </ent-part>
+                </dat-part>
                 
             </xs:schema>
         </xsl:variable>

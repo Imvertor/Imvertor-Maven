@@ -1411,11 +1411,11 @@
                 <!-- no implementation -->
             </xsl:when>   
             <xsl:when test="$type = 'A'">
-                <xsl:variable name="connection" select="imf:get-system-tagged-value($construct,'sourceAttribute')"/>
+                <xsl:variable name="connection" select="imf:get-profile-tagged-value($construct,'sourceAttribute')"/>
                 <xsl:sequence select="for $c in $connection return string($c)"/>
             </xsl:when>   
             <xsl:when test="$type = 'R'">
-                <xsl:variable name="connection" select="imf:get-system-tagged-value($construct,'sourceAssociation')"/>
+                <xsl:variable name="connection" select="imf:get-profile-tagged-value($construct,'sourceAssociation')"/>
                 <xsl:sequence select="for $c in $connection return string($c)"/>
             </xsl:when>   
             <xsl:otherwise>

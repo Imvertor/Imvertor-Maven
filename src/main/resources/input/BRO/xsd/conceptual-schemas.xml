@@ -7,6 +7,10 @@
         <use>SampleExternalModelA</use>
     </mapping>
     
+    <mapping name="BRO_GML321">
+        <use>GML321</use>
+    </mapping>
+    
     <conceptual-schema>
         <description>Sample conceptual schema, see «Application» Github-14-metamodel links</description>
         <!-- 
