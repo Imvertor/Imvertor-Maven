@@ -57,23 +57,23 @@
     <xsl:output method="xml" indent="yes"/>
     
     <xsl:template match="/">
-        <xsl:apply-templates select="ep:message-set" mode="prepare-flat"/>
+        <xsl:apply-templates select="ep:message-sets" mode="prepare-flat"/>
     </xsl:template>
     
-    <xsl:template match="ep:message-set" mode="prepare-flat">
+    <xsl:template match="ep:message-sets" mode="prepare-flat">
         <cp:sheets>
             <cp:sheet>
-                <xsl:apply-templates select="ep:message" mode="prepare-flat-block"/> 
+                <xsl:apply-templates select="ep:message-set/ep:message" mode="prepare-flat-block"/> 
             </cp:sheet>
             <cp:sheet>
-                <!-- alle constructs waarnaar gerefereerd wordt -->
-                <xsl:for-each select="ep:construct[ep:tech-name = //*/ep:href]">
+                <!-- alle constructs waarnaar gerefereerd wordt vereist predicate [ep:tech-name = //*/ep:href] -->
+                <xsl:for-each select="ep:message-set/ep:construct">
                     <xsl:apply-templates select="." mode="prepare-flat-block"/> 
                 </xsl:for-each>
             </cp:sheet>
             <cp:sheet>
                 <!-- de namespace declaraties -->
-                <xsl:for-each select="ep:namespaces/ep:namespace">
+                <xsl:for-each select="ep:message-set/ep:namespaces/ep:namespace">
                     <cp:ns prefix="{@prefix}">
                         <xsl:value-of select="."/>
                     </cp:ns>
@@ -85,21 +85,18 @@
     <xsl:template match="ep:message" mode="prepare-flat-block"> <!-- for sheet 1 -->
         <cp:block sheet="1">
             <cp:prop type="header">
-                <xsl:value-of select="ep:name"/>
+                <xsl:value-of select="imf:get-qualified-name(.)"/>
             </cp:prop>
-            <xsl:apply-templates select="ep:seq/(ep:construct|ep:constructRef)" mode="prepare-flat">
-                <xsl:with-param name="group-type">seq</xsl:with-param>
-            </xsl:apply-templates>
+            <xsl:apply-templates select="(ep:seq|ep:choice)" mode="prepare-flat"/>
             <cp:prop type="empty"/>
         </cp:block>
     </xsl:template>
     
     <xsl:template match="ep:construct" mode="prepare-flat-block"> <!-- for sheet 2 -->
-        <xsl:variable name="tech-name" select="ep:tech-name"/>
         <cp:block sheet="2">
             <xsl:sequence select="imf:create-element('cp:id',imf:get-id(.))"/>
             <cp:prop type="header">
-                <xsl:value-of select="$tech-name"/>
+                <xsl:value-of select="imf:get-qualified-name(.)"/>
             </cp:prop>
             <xsl:apply-templates select="(ep:seq|ep:choice)" mode="prepare-flat"/>
             <cp:prop type="empty"/>
@@ -122,7 +119,7 @@
     </xsl:template>
     
     <xsl:template match="ep:construct | ep:constructRef" mode="prepare-flat">
-        <xsl:param name="as-attribute" select="false()"/>
+        <xsl:param name="as-attribute" select="@ismetadata = 'yes'"/>
         <xsl:param name="group-type"/> <!-- choice or seq -->
         
         <xsl:variable name="digit-before" select="ep:length - 1 - ep:fraction-digits"/>
@@ -136,7 +133,8 @@
                     <xsl:value-of select="$id"/>
                 </xsl:attribute>
             </xsl:if>
-            <xsl:sequence select="imf:create-element('cp:name',ep:tech-name)"/>
+            
+            <xsl:sequence select="imf:create-element('cp:name',imf:get-qualified-name(.))"/>
             <xsl:sequence select="imf:create-element('cp:cardinal',imf:format-cardinality(ep:min-occurs,ep:max-occurs))"/>
             <xsl:sequence select="imf:create-element('cp:documentation',ep:documentation)"/>
             <xsl:sequence select="imf:create-element('cp:attribute',string($as-attribute))"/>
@@ -157,9 +155,9 @@
             <xsl:sequence select="imf:create-element('cp:authentiek',.//ep:authentiek)"/>
             
         </cp:prop>
-        <xsl:apply-templates select="ep:seq/ep:construct[@ismetadata = 'yes']" mode="prepare-flat">
-            <xsl:with-param name="as-attribute" select="true()"/>
-        </xsl:apply-templates>
+      
+        <!-- subconstructs may occur, always in sequence and attributes -->
+        <xsl:apply-templates select="ep:seq" mode="prepare-flat"/>
         
     </xsl:template>
     
@@ -209,6 +207,14 @@
         <xsl:param name="this"/>
         <xsl:variable name="id" select="if ($this/ep:id) then $this/ep:id else generate-id($this)"/>
         <xsl:value-of select="replace($id,'[\{\}]','_')"/>
+    </xsl:function>
+  
+    <xsl:function name="imf:get-qualified-name">
+        <xsl:param name="this"/>
+        <xsl:variable name="my-prefix" select="$this/@prefix"/>
+        <xsl:variable name="is-attribute" select="$this/@ismetadata = 'yes'"/>
+        <xsl:variable name="prefix" select="if (exists($my-prefix)) then $my-prefix else if ($is-attribute) then '' else ($this/ancestor-or-self::*/@prefix)[1]"/>
+        <xsl:value-of select="concat(if ($prefix != '') then concat($prefix,':') else '',$this/ep:tech-name)"/>
     </xsl:function>
     
 </xsl:stylesheet>

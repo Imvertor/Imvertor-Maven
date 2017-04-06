@@ -18,6 +18,17 @@
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     
+    <xsl:variable name="ep-onderlaag-path" select="imf:get-config-string('properties','IMVERTOR_COMPLY_EPFORMAAT_XMLPATH')"/>
+    <xsl:variable name="ep-onderlaag" select="imf:document($ep-onderlaag-path,true())/ep:message-set"/>
+    
+    <xsl:template match="/ep:message-sets">
+        <xsl:copy>
+            <xsl:apply-templates select="node()|@*"/>
+            <!-- and append the onderlaag -->
+            <xsl:sequence select="$ep-onderlaag"/>
+        </xsl:copy>
+    </xsl:template>
+    
     <xsl:template match="ep:seq | ep:choice">
         <xsl:sequence select="imf:report-error(.., 
             exists(ancestor::ep:choice), 
@@ -26,14 +37,14 @@
         <xsl:next-match/>
     </xsl:template>
     
+    <!--xx
     <xsl:template match="ep:patroon">
-        <!-- copy: -->
         <xsl:next-match/>
-        <!-- add info: -->
         <ep:patroon-beschrijving>
             BESCHRIJVING VOLGT NOG
         </ep:patroon-beschrijving>
     </xsl:template>
+    xx-->
     
     <xsl:template match="node()|@*">
         <xsl:copy>

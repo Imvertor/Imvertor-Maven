@@ -81,6 +81,7 @@
     <xsl:variable name="sheet2" select="$__content/cw:files/cw:file[@path = 'xl\worksheets\sheet2.xml']/worksheet"/>
     <xsl:variable name="sheet3" select="$__content/cw:files/cw:file[@path = 'xl\worksheets\sheet3.xml']/worksheet"/>
     <xsl:variable name="sheet4" select="$__content/cw:files/cw:file[@path = 'xl\worksheets\sheet4.xml']/worksheet"/> <!-- store namespaces there -->
+    <xsl:variable name="sheet5" select="$__content/cw:files/cw:file[@path = 'xl\worksheets\sheet5.xml']/worksheet"/> <!-- store metadata there -->
     
     <xsl:variable name="comments1" select="$__content/cw:files/cw:file[@path = 'xl\comments1.xml']/comments"/>
     <xsl:variable name="comments2" select="$__content/cw:files/cw:file[@path = 'xl\comments2.xml']/comments"/>
@@ -124,6 +125,9 @@
                 </xsl:when>
                 <xsl:when test=". is $sheet4">
                     <xsl:apply-templates select="$worksheet" mode="process-namespaces"/>
+                </xsl:when>
+                <xsl:when test=". is $sheet5">
+                    <xsl:apply-templates select="$worksheet" mode="process-metadata"/>
                 </xsl:when>
             </xsl:choose>
         </xsl:copy>
@@ -249,7 +253,7 @@
         </xsl:apply-templates>
     </xsl:template>
     
-    <xsl:template match="conditionalFormatting" mode="process-variabelen process-namespaces">
+    <xsl:template match="conditionalFormatting" mode="process-variabelen process-namespaces process-metadata">
         <xsl:apply-templates select="." mode="process-all">
             <xsl:with-param name="blocks" select="()"/>
         </xsl:apply-templates>
@@ -349,7 +353,7 @@
             <xsl:with-param name="blocks" select="$message-set-flat/cp:sheet[2]/cp:block"/>
         </xsl:apply-templates>
     </xsl:template>
-    <xsl:template match="dataValidations" mode="process-variabelen process-namespaces">
+    <xsl:template match="dataValidations" mode="process-variabelen process-namespaces process-metadata">
         <xsl:apply-templates select="." mode="process-all">
             <xsl:with-param name="blocks" select="()"/>
         </xsl:apply-templates>
@@ -512,7 +516,7 @@
     </xsl:function>
     
     <!--geen legacy drawing, dus maak er eentje -->
-    <xsl:template match="legacyDrawing" mode="process-berichten process-complextypes process-variabelen process-namespaces">
+    <xsl:template match="legacyDrawing" mode="process-berichten process-complextypes process-variabelen process-namespaces process-metadata">
         <xsl:copy>
             <xsl:attribute name="r:id">rId1</xsl:attribute>
         </xsl:copy>
@@ -534,7 +538,7 @@
         </xsl:apply-templates>
     </xsl:template>
     
-    <xsl:template match="hyperlinks" mode="process-variabelen process-namespaces">
+    <xsl:template match="hyperlinks" mode="process-variabelen process-namespaces process-metadata">
         <xsl:apply-templates select="." mode="process-all">
             <xsl:with-param name="blocks" select="()"/>
         </xsl:apply-templates>
@@ -674,11 +678,14 @@
     
     <!-- ============ complextypes =========== -->
     
-    <!-- sheet data miust be added based on namespace declarations -->
+    <!-- sheet data must be added based on namespace declarations -->
     <xsl:template match="sheetData" mode="process-namespaces">
         <xsl:copy>
+            <!-- skip first row -->
+            <xsl:apply-templates select="row[1]"/>
+            
             <xsl:for-each select="$namespaces">
-                <xsl:variable name="message-row" select="position()"/>
+                <xsl:variable name="message-row" select="position() + 1"/>
                 <row r="{$message-row}" spans="1:2">
                     <c r="A{$message-row}" s="1" t="inlineStr">
                         <is>
@@ -696,6 +703,45 @@
                     </c>
                 </row>
             </xsl:for-each>
+        </xsl:copy>
+    </xsl:template>
+    
+    <!-- sheet data must be added based on namespace declarations -->
+    <xsl:template match="sheetData" mode="process-metadata">
+        <xsl:copy>
+            <!-- skip first row -->
+            <xsl:apply-templates select="row[1]"/>
+            
+            <xsl:for-each select="$namespaces">
+                <xsl:variable name="message-row" select="position() + 1"/>
+                <row r="{$message-row}" spans="1:2">
+                    <c r="A{$message-row}" s="0" t="inlineStr">
+                        <is>
+                            <t>
+                                <xsl:value-of select="@prefix"/>
+                            </t>
+                        </is>
+                    </c>
+                    <c r="B{$message-row}" s="0" t="inlineStr">
+                        <is>
+                            <t>
+                                <xsl:value-of select="."/>
+                            </t>
+                        </is>
+                    </c>
+                </row>
+            </xsl:for-each>
+            <!--xx toon kleurtjes:
+            <xsl:for-each select="0 to 10">
+                <row r="{. + 6}" spans="1:1">
+                    <c r="A{. + 6}" s="{.}" t="inlineStr">
+                        <is>
+                            <t>TESTJE</t>
+                        </is>
+                    </c>
+                </row>
+            </xsl:for-each>
+            xx-->
         </xsl:copy>
     </xsl:template>
     
