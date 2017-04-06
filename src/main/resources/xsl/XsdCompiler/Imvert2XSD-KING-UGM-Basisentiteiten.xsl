@@ -43,7 +43,7 @@
     
     <xsl:include href="Imvert2XSD-KING-common-checksum.xsl"/>
    
-    <xsl:output indent="yes" method="xml" encoding="UTF-8"/>
+    <xsl:output indent="yes" method="xml" encoding="UTF-8" exclude-result-prefixes="#all"/>
     
     <xsl:variable name="stylesheet-code">BES</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
@@ -570,7 +570,6 @@
                     
                     <xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info(.)"/>
                     <xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
-                    
                     <xs:element
                         name="{$compiled-name}" 
                         type="{$prefix}:{imf:capitalize(imf:useable-attribute-name($applicable-compiled-name,.))}-e" 
@@ -1567,7 +1566,7 @@
                 <xsl:sequence select="imf:create-comment(concat('Element type is ', @type))"/>
                 <xsl:variable name="prefix" select="tokenize(@type,':')[1]"/>
                 <xs:element type="{$prefix}:{$tokens[1]}-e">
-                    <xsl:apply-templates select="@name | @minOccurs | @maxOccurs | @metadata:*" mode="#current"/>
+                    <xsl:apply-templates select="@name | @minOccurs | @maxOccurs | @metadata:* | @nillable" mode="#current"/>
                     <xsl:apply-templates select="node()" mode="#current"/>
                 </xs:element>
             </xsl:when>
