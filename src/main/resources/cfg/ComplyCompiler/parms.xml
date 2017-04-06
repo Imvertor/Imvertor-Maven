@@ -47,6 +47,10 @@
        -->
       <IMVERTOR_COMPLY_TEMPLATE_EXCELPATH>${system/cfg-folder-path}/ComplyCompiler/templates/Testberichten sjabloon leeg.xlsx</IMVERTOR_COMPLY_TEMPLATE_EXCELPATH>
       <!-- 
+         Where to find the standaard "EP formaat voor onderlaag"
+       -->
+      <IMVERTOR_COMPLY_EPFORMAAT_XMLPATH>${system/inp-folder-path}/etc/EP/ep-stuf-onderlaag.xml</IMVERTOR_COMPLY_EPFORMAAT_XMLPATH>
+      <!-- 
          What folder must store the extracted template (serialized zip) 
        -->
       <WORK_COMPLY_TEMPLATE_FOLDERPATH>${system/work-comply-folder-path}/template</WORK_COMPLY_TEMPLATE_FOLDERPATH>
