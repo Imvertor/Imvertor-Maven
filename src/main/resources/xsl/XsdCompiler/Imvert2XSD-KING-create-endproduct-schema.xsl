@@ -147,7 +147,28 @@
 						</xs:annotation>
 					</xsl:if>
 				</xsl:when>
-				<xsl:when test="$type-name = 'scalar-date' or $type-name = 'scalar-datetime' or $type-name = 'scalar-year' or $type-name = 'scalar-yearmonth' or $type-name = 'scalar-postcode'">						
+				<xsl:when test="$type-name = 'scalar-date' or 
+					            $type-name = 'scalar-datetime' or 
+					            $type-name = 'scalar-year' or 
+					            $type-name = 'scalar-yearmonth' or 
+					            $type-name = 'scalar-postcode' or 
+					            $type-name = 'Refnummer' or 
+					            $type-name = 'Tijdstip' or 
+					            contains($type-name,'Berichtcode') or 
+					            $type-name = 'Organisatie' or
+					            $type-name = 'Applicatie' or
+					            $type-name = 'Administratie' or
+					            $type-name = 'Gebruiker' or
+					            $type-name = 'Entiteittype' or
+					            $type-name = 'Versienr' or
+					            $type-name = 'Functie' or
+					            $type-name = 'IndicatorHistorie' or
+					            $type-name = 'IndicatorOvername' or
+					            $type-name = 'MaximumAantal' or
+					            $type-name = 'Mutatiesoort' or
+					            $type-name = 'Volgnummer' or
+					            $type-name = 'Sortering' or
+					            $type-name = 'AantalVoorkomens'">						
 					<xsl:attribute name="name" select="ep:tech-name"/>
 					<xsl:attribute name="type">
 						<xsl:choose>
@@ -172,6 +193,29 @@
 							<xsl:when test="$type-name = 'scalar-postcode'">
 								<xsl:value-of select="concat($StUF-prefix,':Postcode-e')"/>
 							</xsl:when>
+							<xsl:when test="$type-name = 'Tijdstip'">
+								<xsl:value-of select="'xs:dateTime'"/>
+							</xsl:when>
+							<xsl:when test="$type-name = 'Refnummer' or 
+											contains($type-name,'Berichtcode') or 
+											$type-name = 'Organisatie' or
+											$type-name = 'Applicatie' or
+											$type-name = 'Administratie' or
+											$type-name = 'Gebruiker' or
+											$type-name = 'Entiteittype' or
+											$type-name = 'Versienr' or
+											$type-name = 'Functie' or
+											$type-name = 'IndicatorHistorie' or
+											$type-name = 'IndicatorOvername' or
+											$type-name = 'MaximumAantal' or
+											$type-name = 'Mutatiesoort' or
+											$type-name = 'Volgnummer' or
+											$type-name = 'Sortering' or
+											$type-name = 'AantalVoorkomens'">
+								<xsl:value-of select="concat($StUF-prefix,':',$type-name)"/>
+							</xsl:when>		
+							
+							
 						</xsl:choose>
 					</xsl:attribute>
 					<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
@@ -304,7 +348,6 @@
 												<xsl:when test="$type-name = 'scalar-boolean'">
 													<xsl:value-of select="'xs:boolean'"/>
 												</xsl:when>
-												<!-- Wat moet er met scalar-indic gebeuren? -->
 												<xsl:otherwise>
 													<xsl:value-of select="'xs:string'"/>								
 												</xsl:otherwise>
@@ -342,7 +385,6 @@
 											<xsl:when test="$type-name = 'scalar-boolean'">
 												<xsl:value-of select="'xs:boolean'"/>
 											</xsl:when>
-											<!-- Wat moet er met scalar-indic gebeuren? -->
 											<xsl:otherwise>
 												<xsl:value-of select="'xs:string'"/>								
 											</xsl:otherwise>
@@ -497,7 +539,6 @@
 								<xsl:when test="ep:type-name = 'scalar-boolean'">
 									<xsl:value-of select="'xs:boolean'"/>
 								</xsl:when>
-								<!-- Wat moet er met scalar-indic gebeuren? -->
 								<xsl:otherwise>
 									<xsl:value-of select="'xs:string'"/>								
 								</xsl:otherwise>
@@ -568,7 +609,6 @@
 											<xsl:when test="ep:type-name = 'scalar-boolean'">
 												<xsl:value-of select="'xs:boolean'"/>
 											</xsl:when>
-											<!-- Wat moet er met scalar-indic gebeuren? -->
 											<xsl:otherwise>
 												<xsl:value-of select="'xs:string'"/>								
 											</xsl:otherwise>
@@ -627,7 +667,6 @@
 									<xsl:when test="ep:type-name = 'scalar-boolean'">
 										<xsl:value-of select="'xs:boolean'"/>
 									</xsl:when>
-									<!-- Wat moet er met scalar-indic gebeuren? -->
 									<xsl:otherwise>
 										<xsl:value-of select="'xs:string'"/>								
 									</xsl:otherwise>
@@ -701,7 +740,6 @@
 									<xsl:when test="ep:type-name = 'scalar-boolean'">
 										<xsl:value-of select="'xs:boolean'"/>
 									</xsl:when>
-									<!-- Wat moet er met scalar-indic gebeuren? -->
 									<xsl:otherwise>
 										<xsl:value-of select="'xs:string'"/>								
 									</xsl:otherwise>
