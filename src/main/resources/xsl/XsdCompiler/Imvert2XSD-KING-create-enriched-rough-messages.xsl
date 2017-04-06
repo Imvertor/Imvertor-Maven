@@ -57,7 +57,7 @@
 						</xsl:when>
 						<xsl:when test="@type='entity' and (count(ancestor::ep:construct[@type='entity']) >= 1)">
 							<!-- Dit betreft een construct voor een entiteit op een dieper niveau. Typisch een dat gebruikt wordt in een gerelateerde. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kerngegevensKennisgeving')"/>
+							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevensKennisgeving')"/>
 						</xsl:when>
 						<xsl:when test="@type='group' and (count(ancestor::ep:construct[@type='entity']) = 1)">
 							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of group constructs die daar een nakomeling van zijn. -->
@@ -65,7 +65,7 @@
 						</xsl:when>
 						<xsl:when test="@type='group' and (count(ancestor::ep:construct[@type='entity']) > 1)">
 							<!-- Dit betreft alle overige group constructs. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kerngegevensKennisgeving')"/>
+							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevensKennisgeving')"/>
 						</xsl:when>
 						<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) = 1)">
 							<!-- Dit betreft association constructs binnen de construct voor de fundamentele entiteit. -->
@@ -73,11 +73,11 @@
 						</xsl:when>
 						<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) > 1)">
 							<!-- Dit betreft alle overige association constructs. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kerngegevensKennisgeving')"/>
+							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevensKennisgeving')"/>
 						</xsl:when>
 						<xsl:when test="@type='supertype' and (count(ancestor::ep:construct[@type='entity']) >= 1)">
 							<!-- Dit betreft alle supertype constructs. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kerngegevensKennisgeving')"/>
+							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevensKennisgeving')"/>
 						</xsl:when>
 					</xsl:choose>
 				</xsl:when>
@@ -96,7 +96,7 @@
 						</xsl:when>
 						<xsl:when test="@type='entity' and (count(ancestor::ep:construct[@type='entity']) > 1)">
 							<!-- Dit betreft een construct voor een entiteit op een nog dieper niveau. Typisch een dat gebruikt wordt in een gerelateerde. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kerngegevens')"/>
+							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
 						</xsl:when>
 						<xsl:when test="@type='group' and ancestor::ep:construct[ep:tech-name = 'gerelateerde']">
 							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of een entiteit op het tweede niveau of 
@@ -110,7 +110,7 @@
 						</xsl:when>
 						<xsl:when test="@type='group' and (count(ancestor::ep:construct[@type='entity']) > 2)">
 							<!-- Dit betreft alle overige group constructs. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kerngegevens')"/>
+							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
 						</xsl:when>
 						<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) = 1)">
 							<!-- Dit betreft association constructs binnen de construct voor de fundamentele entiteit. -->
@@ -118,7 +118,7 @@
 						</xsl:when>
 						<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) > 1)">
 							<!-- Dit betreft alle overige association constructs. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kerngegevens')"/>
+							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
 						</xsl:when>
 						<xsl:when test="@type='supertype' and (count(ancestor::ep:construct[@type='entity']) = 1)">
 							<!-- Dit betreft supertype constructs voor de construct van de fundamentele entiteit. -->
@@ -126,7 +126,7 @@
 						</xsl:when>
 						<xsl:when test="@type='supertype' and (count(ancestor::ep:construct[@type='entity']) > 1)">
 							<!-- Dit betreft alle overige supertype constructs. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kerngegevens')"/>
+							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
 						</xsl:when>
 					</xsl:choose>
 				</xsl:when>
@@ -146,7 +146,7 @@
 						</xsl:when>
 						<xsl:when test="@type='entity' and (count(ancestor::ep:construct[@type='entity']) > 1)">
 							<!-- Dit betreft een construct voor een entiteit op een nog dieper niveau. Typisch een dat gebruikt wordt in een gerelateerde in de context. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kerngegevens')"/>
+							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
 						</xsl:when>
 						<xsl:when test="@type='group' and ancestor::ep:construct[ep:tech-name = 'gerelateerde']">
 							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of een entiteit op het tweede niveau binnen de 
@@ -160,7 +160,7 @@
 						</xsl:when>
 						<xsl:when test="@type='group' and (count(ancestor::ep:construct[@type='entity']) > 2)">
 							<!-- Dit betreft alle overige group constructs. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kerngegevens')"/>
+							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
 						</xsl:when>
 						<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) = 1)">
 							<!-- Dit betreft association constructs binnen de construct voor de fundamentele entiteit binnen de 
@@ -169,7 +169,7 @@
 						</xsl:when>
 						<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) > 1)">
 							<!-- Dit betreft alle overige association constructs. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kerngegevens')"/>
+							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
 						</xsl:when>
 						<xsl:when test="@type='supertype' and (count(ancestor::ep:construct[@type='entity']) = 1)">
 							<!-- Dit betreft supertype constructs voor de construct van de fundamentele entiteit binnen de 
@@ -178,7 +178,7 @@
 						</xsl:when>
 						<xsl:when test="@type='supertype' and (count(ancestor::ep:construct[@type='entity']) > 1)">
 							<!-- Dit betreft alle overige supertype constructs. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kerngegevens')"/>
+							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
 						</xsl:when>
 					</xsl:choose>
 				</xsl:when>

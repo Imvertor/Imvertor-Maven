@@ -802,7 +802,7 @@
                                     'stereotype-name-vraagberichttype',
                                     'stereotype-name-antwoordberichttype',
                                     'stereotype-name-kennisgevingberichttype',
-                                    'stereotype-name-synchronisatieberichttype'))) and not(contains(@verwerkingsModus,'kerngegevens'))">
+                                    'stereotype-name-synchronisatieberichttype'))) and not(contains(@verwerkingsModus,'matchgegevens'))">
                                     <ep:constructRef prefix="StUF" externalNamespace="yes">
                                         <ep:name>tijdvakGeldigheid</ep:name>
                                         <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
@@ -1194,7 +1194,7 @@
                                            'stereotype-name-vraagberichttype',
                                            'stereotype-name-antwoordberichttype',
                                            'stereotype-name-kennisgevingberichttype',
-                                           'stereotype-name-synchronisatieberichttype'))) and not(contains(@verwerkingsModus,'kerngegevens'))">
+                                           'stereotype-name-synchronisatieberichttype'))) and not(contains(@verwerkingsModus,'matchgegevens'))">
                                            <ep:constructRef prefix="StUF" externalNamespace="yes">
                                                <ep:name>tijdvakGeldigheid</ep:name>
                                                <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
@@ -1978,7 +1978,7 @@
                 <xsl:copy-of select="imf:get-compiled-tagged-values(., true())"/>
             </ep:tagged-values>
         </xsl:variable>
-        <xsl:variable name="kerngegeven" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie kerngegeven')"/>
+        <xsl:variable name="matchgegeven" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie kerngegeven')"/>
         <xsl:variable name="authentiek" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie authentiek')"/>
         <xsl:variable name="inOnderzoek" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie in onderzoek')"/>
         <xsl:variable name="regels" select="imf:get-most-relevant-compiled-taggedvalue(., 'Regels')"/>
@@ -2002,7 +2002,7 @@
                             </xsl:choose>
                         </xsl:variable-->
        
-        <xsl:if test="not(contains($verwerkingsModus, 'kerngegeven') and $kerngegeven = 'JA')">
+        <xsl:if test="not(contains($verwerkingsModus, 'matchgegeven') and $matchgegeven = 'JA')">
             
             <!-- Location: 'ep:construct10'
 				 Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-structure.xsl' on the location with the id 'ep:constructRef10'. -->			
@@ -2018,7 +2018,7 @@
                             <xsl:sequence select="imf:create-output-element('ep:formeleHistorie', $formeleHistorie)"/>
                             <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
                             <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
-                            <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $kerngegeven)"/>
+                            <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
                             <xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/>
                         </ep:found-tagged-values>
                         
@@ -2037,7 +2037,7 @@
                 <!-- ROME: Het is de vraag of een relatie als authentiek bestempelt kan worden. Zo niet dan moet onderstaande sequence verwijderd worden. -->
                 <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
                 <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
-                <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $kerngegeven)"/>
+                <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
                 <xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
                 <xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
                 <xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/>
