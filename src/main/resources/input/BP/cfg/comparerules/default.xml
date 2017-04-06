@@ -153,6 +153,7 @@
         <elm use="DIV"  form="supplierPackageName">Name of the supplier package</elm>
         
         <elm use="DIV"  form="LocalSchema">Local schema</elm>
+        <elm use="DIV"  form="package-replacement">Package replacement type</elm>
         
         <elm use="DIR"  form="trace">Trace</elm>
         

@@ -130,11 +130,12 @@
             </xsl:when>
             <xsl:otherwise>
                 <xsl:copy>
-                    <xsl:attribute name="origin">intern</xsl:attribute>
+                    <!--<xsl:attribute name="origin">intern</xsl:attribute>-->
                     <imvert:name>
                         <xsl:copy-of select="@*"/>
                         <xsl:value-of select="concat(imvert:name,' [',../imvert:application,']')"/>
                     </imvert:name>
+                    <imvert:package-replacement>internal</imvert:package-replacement>
                     <xsl:apply-templates select="*[not(self::imvert:name)]" mode="intern-origin"/>
                 </xsl:copy>
             </xsl:otherwise>

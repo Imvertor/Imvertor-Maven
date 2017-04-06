@@ -132,7 +132,7 @@
         imvert:supertype[imvert:type-id]/imvert:type-name |
         imvert:supertype[imvert:type-id]/imvert:xsd-substitutiongroup">
         <!-- check if the type is taken from a conceptual schema package -->
-        <xsl:variable name="is-intern" select="exists(ancestor::imvert:package[@origin = 'intern'])"/>
+        <xsl:variable name="is-intern" select="exists(ancestor::imvert:package[imvert:package-replacement = 'internal'])"/>
         <xsl:variable name="class" select="imf:get-construct-by-id(../imvert:type-id)"/>
         <xsl:variable name="pack" select="$class/ancestor::imvert:package[imvert:namespace][1]"/>
         <xsl:choose>
