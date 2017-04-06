@@ -610,6 +610,17 @@
         <!-- skip -->
     </xsl:template>
     
+    <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-union')]">
+        <!--setup-->
+        <xsl:variable name="types" select="imvert:attributes/imvert:attribute/imvert:type-name"/>
+        <!--validation-->
+        <!-- union elements must all be of a different datatype -->
+        <xsl:sequence select="imf:report-error(.,
+            count($types) ne count(distinct-values($types)), 
+            'Union elements must all be of a different datatype.')"/>
+        <xsl:next-match/>
+    </xsl:template>
+    
     <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-objecttype')]">
         <!--setup-->
         <xsl:variable name="id" select="imvert:id"/>
@@ -684,7 +695,7 @@
             (not($is-enumeration) and empty(imvert:baretype) and empty(imvert:type-package)), 
             'Unknown attribute type. Is the package that defines this class in scope?')"/>
         <xsl:sequence select="imf:report-error(., 
-            ($class/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-union') and not(imvert:type-package)), 
+            (exists(imvert:type-id) and ($class/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-union') and empty(imvert:type-package))), 
             'Attribute of union class is not a known class.')"/>
         <!-- When a class is a union, the union attributes must be classes, not value types (baretypes). -->
         <xsl:sequence select="imf:report-error(., 
@@ -742,9 +753,9 @@
         <xsl:variable name="class" select="../.."/>
         <xsl:variable name="defining-class" select="if (imvert:type-id) then imf:get-construct-by-id(imvert:type-id) else ()"/>
         <!--validation-->
-        <xsl:sequence select="imf:report-error(., 
+        <!--<xsl:sequence select="imf:report-error(., 
             not($defining-class), 
-            'Union element has unknown type: [1]',imvert:type-name)"/>
+            'Union element has unknown type: [1]',imvert:type-name)"/>-->
         <xsl:sequence select="imf:report-error(., 
             not(imvert:stereotype=imf:get-config-stereotypes('stereotype-name-union-element')), 
             'Union element must be stereotyped as [1]',(imf:get-config-stereotypes('stereotype-name-union-element')))"/>
