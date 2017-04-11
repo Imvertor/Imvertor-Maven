@@ -1496,26 +1496,26 @@
 							<xsl:attribute name="namespaceId" select="$suppliers//supplier[1]/@base-namespace"/>
 							<xsl:attribute name="UGMlevel" select="$suppliers//supplier[1]/@level"/>
 						</xsl:if>
+						<ep:suppliers>
+							<xsl:copy-of select="$suppliers"/>
+						</ep:suppliers>
 						<xsl:if test="$debugging">
-								<ep:suppliers>
-									<xsl:copy-of select="$suppliers"/>
-								</ep:suppliers>
-								<ep:tagged-values>
-									<xsl:copy-of select="$tvs"/>
-									<ep:found-tagged-values>
-										<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
-										<xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
-										<xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
-										<xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
-										<xsl:sequence select="imf:create-output-element('ep:min-length', $min-length)"/>
-										<xsl:sequence select="imf:create-output-element('ep:max-value', $max-waarde)"/>
-										<xsl:sequence select="imf:create-output-element('ep:min-value', $min-waarde)"/>
-										<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)"/>
-										<xsl:sequence select="imf:create-output-element('ep:formeel-patroon', $formeelPatroon)"/>
-										<xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/>
-									</ep:found-tagged-values>
-								</ep:tagged-values>
-							</xsl:if>
+							<ep:tagged-values>
+								<xsl:copy-of select="$tvs"/>
+								<ep:found-tagged-values>
+									<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+									<xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
+									<xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
+									<xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
+									<xsl:sequence select="imf:create-output-element('ep:min-length', $min-length)"/>
+									<xsl:sequence select="imf:create-output-element('ep:max-value', $max-waarde)"/>
+									<xsl:sequence select="imf:create-output-element('ep:min-value', $min-waarde)"/>
+									<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)"/>
+									<xsl:sequence select="imf:create-output-element('ep:formeel-patroon', $formeelPatroon)"/>
+									<xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/>
+								</ep:found-tagged-values>
+							</ep:tagged-values>
+						</xsl:if>
 							<xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
 							<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
 							<xsl:choose>
