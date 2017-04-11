@@ -48,6 +48,8 @@
     <!-- 
         other configurable info
     -->
+    <parameter name="documentation-formatting">html</parameter>
+    
     <parameter name="documentation-separator">---</parameter>
     <parameter name="documentation-newline">&#10;</parameter>
     <parameter name="concept-documentation-state-obsolete-uri">http://brk.kadaster.nl/id/lifecycle/afgekeurd</parameter>

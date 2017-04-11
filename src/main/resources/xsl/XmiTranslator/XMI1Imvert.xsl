@@ -38,6 +38,7 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-doc.xsl"/>
     <xsl:import href="../common/Imvert-common-entity.xsl"/>
+    <xsl:import href="../common/inspire-notes.xsl"/>
     
     <xsl:variable name="stylesheet-code">IMV</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
@@ -478,11 +479,27 @@
         <xsl:param name="name" as="xs:string"/>
         <xsl:variable name="doctext" select="imf:get-system-tagged-value($this,$name,'')"/>
         <xsl:variable name="relevant-doc-string" select="if (contains($doctext,imf:get-config-parameter('documentation-separator'))) then substring-before($doctext,imf:get-config-parameter('documentation-separator')) else $doctext"/>
-        <xsl:if test="exists($doctext) and normalize-space($relevant-doc-string)">
-            <imvert:documentation>
-                <xsl:sequence select="imf:eadoc-to-xhtml($relevant-doc-string)" exclude-result-prefixes="#all"/>
-            </imvert:documentation>
-        </xsl:if>
+        
+        <xsl:variable name="f" select="imf:get-config-parameter('documentation-formatting')"/>
+        <xsl:choose>
+            <xsl:when test="empty($doctext)"/>
+            <xsl:when test="$f = 'inspire'">
+                <imvert:documentation>
+                    <xsl:sequence select="imf:inspire-notes($doctext)"/>
+                </imvert:documentation>                        
+            </xsl:when>
+            <xsl:when test="normalize-space($relevant-doc-string) and $f = 'html'">
+                <imvert:documentation>
+                    <xsl:sequence select="imf:eadoc-to-xhtml($relevant-doc-string)" exclude-result-prefixes="#all"/>
+                </imvert:documentation>
+            </xsl:when>
+            <xsl:when test="normalize-space($relevant-doc-string) and $f = 'plain'">
+                <imvert:documentation>
+                    <xsl:value-of select="$relevant-doc-string"/>
+                </imvert:documentation>
+            </xsl:when>
+        </xsl:choose>
+       
     </xsl:function>
     
     <xsl:function name="imf:get-history-info" as="node()*">
