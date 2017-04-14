@@ -22,6 +22,9 @@
     version="2.0">
     
     <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="../common/Imvert-common-validation.xsl"/>
+    <xsl:import href="../common/extension/Imvert-common-text.xsl"/>
+    
     <xsl:import href="Imvert2XSD-KING-enrich-excel.xsl"/>
     
     <xsl:import href="Imvert2XSD-KING-common.xsl"/>
@@ -29,6 +32,8 @@
     <xsl:import href="Imvert2XSD-KING-create-endproduct-rough-structure.xsl"/>
     <xsl:import href="Imvert2XSD-KING-create-enriched-rough-messages.xsl"/>
     <xsl:import href="Imvert2XSD-KING-create-endproduct-structure.xsl"/>
+
+    <xsl:include href="Imvert2XSD-KING-common-checksum.xsl"/>
     
     <xsl:output indent="yes" method="xml" encoding="UTF-8"/>
     
@@ -90,6 +95,9 @@
     
     <xsl:variable name="packages-doc" select="/"/>
     <xsl:variable name="packages" select="$packages-doc/imvert:packages"/>
+    
+    <!-- needed for disambiguation of duplicate attribute names -->
+    <xsl:variable name="all-simpletype-attributes" select="//imvert:attribute[empty(imvert:type)]"/> 
     
     <!-- Within this variable a rough message structure is created to be able to determine e.g. the correct global construct structures. -->
     <xsl:variable name="rough-messages">
@@ -218,6 +226,14 @@
            <xsl:for-each select="$enriched-rough-messages//ep:construct[@typeCode='tabelEntiteit' and generate-id(.) = generate-id(key('construct-id',ep:id,$enriched-rough-messages)[1])]">                   
                <xsl:call-template name="processMainConstructs"/>
            </xsl:for-each>
+
+            <xsl:for-each-group 
+                select="//imvert:attribute[empty(imvert:type-id)]" 
+                group-by="imf:useable-attribute-name(imf:get-compiled-name(.),.)">
+                <xsl:apply-templates select="current-group()[1]" mode="mode-global-attribute-simpletype"/>
+            </xsl:for-each-group>
+            
+            <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-enumeration')]" mode="mode-global-enumeration"/>
             
         </ep:message-set>
      </xsl:variable>
@@ -335,7 +351,7 @@
             <!-- Location: 'ep:construct7'
 								    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef7'. -->
             
-            <ep:construct>
+            <ep:construct type="complexData">
                 <xsl:attribute name="prefix" select="$prefix"/>
                 <xsl:attribute name="namespaceId" select="$namespaceIdentifier"/>
                 <xsl:sequence
@@ -431,7 +447,7 @@
             <!-- Location: 'ep:construct8'
 				 Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef8'. -->
             
-            <ep:construct>
+            <ep:construct type="complexData">
                 <xsl:attribute name="prefix" select="$prefix"/>
                 <xsl:attribute name="namespaceId" select="$namespaceIdentifier"/>
                 <xsl:sequence
@@ -529,7 +545,7 @@
             <!-- Location: 'ep:construct9'
 								    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef9'. -->
             
-            <ep:construct>
+            <ep:construct type="complexData">
                 <xsl:attribute name="prefix" select="$prefix"/>
                 <xsl:attribute name="namespaceId" select="$namespaceIdentifier"/>
                 <xsl:sequence select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($packageName,$berichtName,'scope',(),'object'))" />
@@ -696,7 +712,7 @@
                 <!-- Location: 'ep:construct1'
 						    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-structure.xsl' on the location with the id 'ep:constructRef1'. -->
                 
-                <ep:construct>
+                <ep:construct type="complexData">
                     <xsl:choose>
                         <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
                             <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
@@ -1029,7 +1045,7 @@
                        <!-- Location: 'ep:construct1'
 						    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-structure.xsl' on the location with the id 'ep:constructRef1'. -->
                        
-                        <ep:construct>
+                        <ep:construct type="complexData">
                             <xsl:choose>
                                 <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
                                     <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
@@ -1406,7 +1422,7 @@
                            <!-- Location: 'ep:construct2'
 						    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef2'. -->
                            
-                            <ep:construct>
+                            <ep:construct type="complexData">
                                 <xsl:choose>
                                     <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
                                         <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
@@ -1635,7 +1651,7 @@
                            <!-- Location: 'ep:construct6'
 						    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef6'. -->
                            
-                            <ep:construct>
+                            <ep:construct type="complexData">
                                 <xsl:choose>
                                     <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
                                         <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
@@ -1873,6 +1889,44 @@
     <!-- supress the suppressXsltNamespaceCheck message -->
     <xsl:template match="/imvert:dummy"/>
     
+    <xsl:template match="imvert:class" mode="mode-global-enumeration">
+        <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
+        
+         <ep:construct type="simpleContentcomplexData" prefix="{$prefix}">
+            <xsl:sequence select="imf:create-output-element('ep:name', concat(imf:capitalize($compiled-name),'-e'))"/>
+            <xsl:sequence select="imf:create-output-element('ep:tech-name', concat(imf:capitalize($compiled-name),'-e'))"/>
+            <ep:type-name>
+                <xsl:value-of select="concat($prefix,':',imf:capitalize($compiled-name))"/>
+            </ep:type-name>
+            <ep:seq>
+                <ep:construct ismetadata="yes">
+                    <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                    <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                    <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                </ep:construct>                     
+            </ep:seq>
+        </ep:construct>
+        <ep:construct type="simpleData" prefix="{$prefix}">
+            <xsl:sequence select="imf:create-output-element('ep:name', imf:capitalize($compiled-name))"/>
+            <xsl:sequence select="imf:create-output-element('ep:tech-name', imf:capitalize($compiled-name))"/>
+            <xsl:sequence select="imf:create-output-element('ep:data-type', 'xs:string')"/>
+            <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-enum"/>
+            <ep:enum></ep:enum>
+        </ep:construct>
+    </xsl:template>
+
+    <xsl:template match="imvert:attribute" mode="mode-local-enum">
+        
+        <!-- STUB De naam van een enumeratie is die overgenomen uit SIM. Niet camelcase. Vooralsnog ook daar ophalen. -->
+        
+        <xsl:variable name="supplier" select="imf:get-trace-suppliers-for-construct(.,1)[@project='SIM'][1]"/>
+        <xsl:variable name="construct" select="if ($supplier) then imf:get-trace-construct-by-supplier($supplier,$imvert-document) else ()"/>
+        <xsl:variable name="SIM-name" select="($construct/imvert:name, imvert:name)[1]"/>
+        
+        <ep:enum><xsl:value-of select="$SIM-name"/></ep:enum>
+        
+    </xsl:template>
+    
     <!-- This template (4) transforms an 'imvert:association' element to a global 'ep:construct' 
 		 element. -->
     <xsl:template match="imvert:association" mode="create-global-construct">
@@ -2007,7 +2061,7 @@
             <!-- Location: 'ep:construct10'
 				 Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-structure.xsl' on the location with the id 'ep:constructRef10'. -->			
             
-            <ep:construct prefix="{$verkorteAliasGerelateerdeEntiteit}" namespaceId="{$namespaceIdentifierGerelateerdeEntiteit}">
+            <ep:construct type="complexData" prefix="{$verkorteAliasGerelateerdeEntiteit}" namespaceId="{$namespaceIdentifierGerelateerdeEntiteit}">
                 <xsl:if test="$debugging">
                     <xsl:variable name="materieleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie')"/>
                     <xsl:variable name="formeleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie')"/>
@@ -2115,6 +2169,101 @@
         <xsl:sequence select="imf:create-debug-comment('Template: imvert:association[mode=create-global-construct] End',$debugging)"/>
     </xsl:template>
 
+    <!-- called only with attributes that have no type-id -->
+    <xsl:template match="imvert:attribute" mode="mode-global-attribute-simpletype">
+        <xsl:variable name="compiled-name" select="imf:useable-attribute-name(imf:get-compiled-name(.),.)"/>
+        <xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info(.)"/>
+        <xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
+        
+        <xsl:variable name="stuf-scalar" select="imf:get-stuf-scalar-attribute-type(.)"/>
+        
+        <xsl:variable name="max-length" select="imvert:max-length"/>
+        <xsl:variable name="total-digits" select="imvert:total-digits"/>
+        <xsl:variable name="fraction-digits" select="imvert:fraction-digits"/>
+        
+        <xsl:variable name="min-waarde" select="imf:get-taggedvalue(.,'Minimum waarde (inclusief)')"/>
+        <xsl:variable name="max-waarde" select="imf:get-taggedvalue(.,'Maximum waarde (inclusief)')"/>
+        <xsl:variable name="min-length" select="imf:get-taggedvalue(.,'Minimum lengte')"/>
+        <xsl:variable name="patroon" select="imf:get-taggedvalue(.,'Formeel patroon')"/>
+        
+        <xsl:variable name="nillable-patroon" select="if (normalize-space($patroon)) then concat('(', $patroon,')?') else ()"/>
+        
+        <xsl:variable name="facetten">
+            <xsl:sequence select="imf:create-facet('ep:formeel-patroon',$nillable-patroon)"/>
+            <xsl:sequence select="imf:create-facet('ep:min-value',$min-waarde)"/>
+            <xsl:sequence select="imf:create-facet('ep:max-value',$max-waarde)"/>
+            <xsl:sequence select="imf:create-facet('ep:min-length',$min-length)"/>
+            <xsl:sequence select="imf:create-facet('ep:max-length',$max-length)"/>
+            <xsl:sequence select="imf:create-facet('ep:length',$total-digits)"/>
+            <xsl:sequence select="imf:create-facet('ep:fraction-digits',$fraction-digits)"/>
+        </xsl:variable>
+        
+        <xsl:variable name="name" select="imf:capitalize($compiled-name)"/>
+        <xsl:choose>
+            <xsl:when test="exists($stuf-scalar)">
+                <!-- gedefinieerd in onderlaag -->
+            </xsl:when>
+            <xsl:when test="exists(imvert:type-name)">
+                <!--xsl:sequence select="imf:create-comment(concat('mode-global-attribute-simpletype Attribuut type (simple) # ',@display-name))"/-->
+                <ep:construct type="simpleContentcomplexData" prefix="{$prefix}">
+                    <xsl:sequence select="imf:create-output-element('ep:name', concat($name,'-e'))"/>
+                    <xsl:sequence select="imf:create-output-element('ep:tech-name', concat($name,'-e'))"/>
+                    <ep:type-name imvert:checksum="{$checksum-string}">
+                        <xsl:value-of select="concat($prefix,':',$name)"/>
+                    </ep:type-name>
+                    <ep:seq>
+                        <ep:construct ismetadata="yes">
+                            <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                            <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                            <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                        </ep:construct>                     
+                    </ep:seq>
+                </ep:construct>
+                <ep:construct type="simpleData" prefix="{$prefix}">
+                    <xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:tech-name', $name)"/>
+                    <xsl:choose>
+                        <xsl:when test="imvert:type-name = 'scalar-integer'">
+                            <ep:data-type>scalar-integer</ep:data-type>
+                            <xsl:sequence select="$facetten"/>
+                        </xsl:when>
+                        <xsl:when test="imvert:type-name = 'scalar-string'">
+                            <ep:data-type>scalar-string</ep:data-type>
+                            <xsl:sequence select="$facetten"/>
+                        </xsl:when>
+                        <xsl:when test="imvert:type-name = 'scalar-decimal'">
+                            <ep:data-type>scalar-decimal</ep:data-type>
+                            <xsl:sequence select="$facetten"/>
+                        </xsl:when>
+                        <xsl:when test="imvert:type-name = 'scalar-boolean'">
+                            <ep:data-type>scalar-boolean</ep:data-type>
+                            <xsl:sequence select="$facetten"/>
+                        </xsl:when>
+                        <xsl:when test="imvert:type-name = 'scalar-date'">
+                            <ep:data-type>scalar-date</ep:data-type>
+                            <xsl:sequence select="$facetten"/>
+                        </xsl:when>
+                        <xsl:when test="imvert:type-name = 'scalar-txt'">
+                            <ep:data-type>scalar-string</ep:data-type>
+                            <xsl:sequence select="$facetten"/>
+                        </xsl:when>    
+                        <xsl:when test="imvert:type-name = 'scalar-uri'">
+                            <ep:data-type>xs:anyURI</ep:data-type>
+                            <xsl:sequence select="$facetten"/>
+                        </xsl:when>
+                        <xsl:when test="imvert:type-name = 'scalar-postcode'">
+                            <ep:data-type>scalar-postcode</ep:data-type>
+                            <xsl:sequence select="$facetten"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the simple attribute type: [1]', imvert:type-name)"/>
+                        </xsl:otherwise>                
+                    </xsl:choose>
+                </ep:construct>
+            </xsl:when>
+        </xsl:choose>
+    </xsl:template>
+    
     <!-- ROME: de parameter packageName mag uit de volgende 5 functies gehaald worden en dus ook uit de aanroep van deze 5 functies. -->
     <xsl:function name="imf:create-complexTypeName">
         <xsl:param name="packageName"/>
@@ -2224,5 +2373,207 @@
         <xsl:sequence select="imf:create-debug-track(concat('complexTypeName: ',$complexTypeName),$debugging)"/>
         
         <xsl:value-of select="imf:get-normalized-name($complexTypeName,'type-name')"/><xsl:value-of select="$berichtName"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:useable-attribute-name">
+        <xsl:param name="name" as="xs:string"/>
+        <xsl:param name="attribute" as="element(imvert:attribute)"/>
+        <xsl:choose>
+            <xsl:when test="empty($attribute/imvert:type-id) and exists($attribute/imvert:baretype) and count($all-simpletype-attributes[imvert:name = $attribute/imvert:name]) gt 1">
+                <!--xx <xsl:message select="concat($attribute/imvert:name, ';', $attribute/@display-name)"/> xx-->
+                <xsl:value-of select="concat($name,$attribute/../../imvert:alias)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$name"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
+    <xsl:function name="imf:create-facet" as="element()?">
+        <xsl:param name="elementname"/>
+        <xsl:param name="content"/>
+        <xsl:if test="normalize-space($content)">
+            <xsl:element name="{$elementname}">
+                <xsl:value-of select="$content"/>
+            </xsl:element>
+        </xsl:if>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-compiled-name">
+        <xsl:param name="this" as="element()"/>
+        <xsl:variable name="type" select="local-name($this)"/>
+        <xsl:variable name="stereotype" select="imf:get-stereotype($this)"/>
+        <xsl:variable name="alias" select="$this/imvert:alias"/>
+        <xsl:variable name="name-raw" select="$this/imvert:name"/>
+        <xsl:variable name="name-form" select="replace(imf:strip-accents($name-raw),'[^\p{L}0-9.\-]+','_')"/>
+        
+        <xsl:variable name="name" select="$name-form"/>
+        
+        <xsl:choose>
+            <xsl:when test="$type = 'class' and $stereotype = imf:get-config-stereotypes('stereotype-name-composite')">
+                <xsl:value-of select="concat(imf:capitalize($name),'Grp')"/>
+            </xsl:when>
+            <xsl:when test="$type = 'class' and $stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')">
+                <xsl:value-of select="$alias"/>
+            </xsl:when>
+            <xsl:when test="$type = 'class' and $stereotype = imf:get-config-stereotypes('stereotype-name-relatieklasse')">
+                <xsl:value-of select="$alias"/>
+            </xsl:when>
+            <xsl:when test="$type = 'class' and $stereotype = imf:get-config-stereotypes('stereotype-name-referentielijst')">
+                <xsl:value-of select="$alias"/>
+            </xsl:when>
+            <xsl:when test="$type = 'class' and $stereotype = imf:get-config-stereotypes('stereotype-name-complextype')">
+                <xsl:value-of select="$name"/>
+            </xsl:when>
+            <xsl:when test="$type = 'class' and $stereotype = imf:get-config-stereotypes('stereotype-name-enumeration')">
+                <xsl:value-of select="$name"/>
+            </xsl:when>
+            <xsl:when test="$type = 'class' and $stereotype = imf:get-config-stereotypes('stereotype-name-union')">
+                <xsl:value-of select="$name"/>
+            </xsl:when>
+            <xsl:when test="$type = 'class' and $stereotype = imf:get-config-stereotypes('stereotype-name-interface')">
+                <!-- this must be an external -->
+                <xsl:variable name="external-name" select="imf:get-external-type-name($this,true())"/>
+                <xsl:value-of select="$external-name"/>
+            </xsl:when>
+            <xsl:when test="$type = 'attribute' and $stereotype = imf:get-config-stereotypes('stereotype-name-attribute')">
+                <xsl:value-of select="$name"/>
+            </xsl:when>
+            <xsl:when test="$type = 'attribute' and $stereotype = imf:get-config-stereotypes('stereotype-name-referentie-element')">
+                <xsl:value-of select="$name"/>
+            </xsl:when>
+            <xsl:when test="$type = 'attribute' and $stereotype = imf:get-config-stereotypes('stereotype-name-data-element')">
+                <xsl:value-of select="$name"/>
+            </xsl:when>
+            <xsl:when test="$type = 'attribute' and $stereotype = imf:get-config-stereotypes('stereotype-name-enum')">
+                <xsl:value-of select="$name"/>
+            </xsl:when>
+            <xsl:when test="$type = 'attribute' and $stereotype = imf:get-config-stereotypes('stereotype-name-union-element')">
+                <xsl:value-of select="imf:useable-attribute-name($name,$this)"/>
+            </xsl:when>
+            <xsl:when test="$type = 'association' and $stereotype = 'relatiesoort' and normalize-space($alias)">
+                <!-- if this relation occurs multiple times, add the alias of the target object -->
+                <xsl:value-of select="$alias"/>
+            </xsl:when>
+            <xsl:when test="$type = 'association' and $this/imvert:aggregation = 'composite'">
+                <xsl:value-of select="$name"/>
+            </xsl:when>
+            <xsl:when test="$type = 'association' and $stereotype = 'relatiesoort'">
+                <xsl:sequence select="imf:msg($this,'ERROR','No alias',())"/>
+                <xsl:value-of select="lower-case($name)"/>
+            </xsl:when>
+            <xsl:when test="$type = 'association' and normalize-space($alias)"> <!-- composite -->
+                <xsl:value-of select="$alias"/>
+            </xsl:when>
+            <xsl:when test="$type = 'association'">
+                <xsl:sequence select="imf:msg($this,'ERROR','No alias',())"/>
+                <xsl:value-of select="lower-case($name)"/>
+            </xsl:when>
+            <!-- TODO meer soorten namen uitwerken? -->
+            <xsl:otherwise>
+                <xsl:sequence select="imf:msg($this,'ERROR','Unknown type [1] with stereo [2]', ($type, string-join($stereotype,', ')))"/>
+            </xsl:otherwise>
+        </xsl:choose>
+        
+    </xsl:function>
+    
+    <xsl:function name="imf:get-stuf-scalar-attribute-type" as="xs:string?">
+        <xsl:param name="attribute"/>
+        
+        <xsl:choose>
+            <xsl:when test="$attribute/imvert:type-name = 'scalar-date' and $attribute/imvert:type-modifier = '?'">
+                <xsl:value-of select="concat($StUF-prefix,':DatumMogelijkOnvolledig-e')"/>
+            </xsl:when>
+            <xsl:when test="$attribute/imvert:type-name = 'scalar-date'">
+                <xsl:value-of select="concat($StUF-prefix,':Datum-e')"/>
+            </xsl:when>
+            <xsl:when test="$attribute/imvert:type-name = 'scalar-datetime' and $attribute/imvert:type-modifier = '?'">
+                <xsl:value-of select="concat($StUF-prefix,':TijdstipMogelijkOnvolledig-e')"/>
+            </xsl:when>
+            <xsl:when test="$attribute/imvert:type-name = 'scalar-datetime'">
+                <xsl:value-of select="concat($StUF-prefix,':Tijdstip-e')"/>
+            </xsl:when>
+            <xsl:when test="$attribute/imvert:type-name = 'scalar-year'">
+                <xsl:value-of select="concat($StUF-prefix,':Jaar-e')"/>
+            </xsl:when>
+            <xsl:when test="$attribute/imvert:type-name = 'scalar-yearmonth'">
+                <xsl:value-of select="concat($StUF-prefix,':JaarMaand-e')"/>
+            </xsl:when>
+            <xsl:when test="$attribute/imvert:type-name = 'scalar-postcode'">
+                <xsl:value-of select="concat($StUF-prefix,':Postcode-e')"/>
+            </xsl:when>
+            <xsl:when test="$attribute/imvert:type-name = 'scalar-boolean'">
+                <xsl:value-of select="concat($StUF-prefix,':INDIC-e')"/>
+            </xsl:when>
+        </xsl:choose>
+        
+    </xsl:function>
+
+    <xsl:function name="imf:get-taggedvalue" as="xs:string?">
+        <xsl:param name="this"/>
+        <xsl:param name="name"/>
+        <xsl:value-of select="$this/imvert:tagged-values/imvert:tagged-value[imvert:name = $name]/imvert:value"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:capitalize">
+        <xsl:param name="name"/>
+        <xsl:value-of select="concat(upper-case(substring($name,1,1)),substring($name,2))"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-stereotype" as="xs:string*">
+        <xsl:param name="this"/>
+        <xsl:sequence select="$this/imvert:stereotype"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-external-type-name">
+        <xsl:param name="attribute"/>
+        <xsl:param name="as-type" as="xs:boolean"/>
+        <!-- determine the name; hard koderen -->
+        <xsl:for-each select="$attribute"> <!-- singleton -->
+            <xsl:choose>
+                <xsl:when test="imvert:type-package='GML3'">
+                    <xsl:variable name="type-suffix" select="if ($as-type) then 'Type' else ''"/>
+                    <xsl:variable name="type-prefix">
+                        <xsl:choose>
+                            <xsl:when test="empty(imvert:conceptual-schema-type)">
+                                <xsl:sequence select="imf:msg(.,'ERROR','No conceptual schema type specified',())"/>
+                            </xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Point'">gml:Point</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Curve'">gml:Curve</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Surface'">gml:Surface</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_MultiPoint'">gml:MultiPoint</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_MultiSurface'">gml:MultiSurface</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_MultiCurve'">gml:MultiCurve</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Geometry'">gml:Geometry</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_MultiGeometry'">gml:MultiGeometry</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_ArcString'">gml:ArcString</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_LineString'">gml:LineString</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Polygon'">gml:Polygon</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Object'">gml:GeometryProperty</xsl:when><!-- see http://www.geonovum.nl/onderwerpen/geography-markup-language-gml/documenten/handreiking-geometrie-model-en-gml-10 -->
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Primitive'">gml:Primitive</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Position'">gml:Position</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_PointArray'">gml:PointArray</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_Solid'">gml:Solid</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_OrientableCurve'">gml:OrientableCurve</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_OrientableSurface'">gml:OrientableSurface</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_CompositePoint'">gml:CompositePoint</xsl:when>
+                            <xsl:when test="imvert:conceptual-schema-type = 'GM_MultiSolid'">gml:MultiSolid</xsl:when>
+                            <xsl:otherwise>
+                                <xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the GML type [1]', imvert:conceptual-schema-type)"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:variable>
+                    <xsl:value-of select="concat($type-prefix,$type-suffix)"/>
+                </xsl:when>
+                <xsl:when test="empty(imvert:type-package)">
+                    <!-- TODO -->
+                </xsl:when>
+                <xsl:otherwise>
+                    <!-- geen andere externe packages bekend -->
+                    <xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the external package [1]', imvert:type-package)"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:for-each>
+        
     </xsl:function>
 </xsl:stylesheet>

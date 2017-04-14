@@ -853,7 +853,7 @@
 		
 		<!-- ROME: Kijken of hier nog meer ep elementen gegenereerd moeten worden. -->
 		
-		<ep:construct prefix="{$prefix}">
+		<ep:construct type="complexData" prefix="{$prefix}">
 			<xsl:sequence select="imf:create-output-element('ep:name', imvert:name/@original)"/>
 			<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)"/>
 			<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)"/>
@@ -1385,7 +1385,7 @@
 					<xsl:variable name="type" select="'Grp'"/>
 					<xsl:variable name="name" select="//imvert:class[imvert:id = $type-id]/imvert:name"/>
 					
-					<ep:construct>
+					<ep:construct type="complexData">
 						<xsl:if test="$suppliers//supplier[1]/@verkorteAlias != ''">
 							<xsl:attribute name="prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
 							<xsl:attribute name="namespaceId" select="$suppliers//supplier[1]/@base-namespace"/>
@@ -1490,7 +1490,7 @@
 				</xsl:when>
 				<xsl:otherwise>				
 					<xsl:sequence select="imf:create-debug-comment('Otherwise-tak',$debugging)"/>
-					<ep:construct>
+					<ep:construct type="complexData">
 						<xsl:if test="$suppliers//supplier[1]/@verkorteAlias != ''">
 							<xsl:attribute name="prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
 							<xsl:attribute name="namespaceId" select="$suppliers//supplier[1]/@base-namespace"/>
@@ -2694,7 +2694,7 @@
 				<xsl:sequence select="imf:create-output-element('ep:enum', $name)"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<ep:construct prefix="{$prefix}">
+				<ep:construct type="simpleData" prefix="{$prefix}">
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $name)"/>
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
@@ -2846,13 +2846,7 @@
 			<ep:name>noValue</ep:name>
 			<ep:tech-name>noValue</ep:tech-name>
 			<ep:min-occurs>0</ep:min-occurs>
-			<ep:type-name>scalar-string</ep:type-name>
-			<ep:enum>nietOndersteund</ep:enum>
-			<ep:enum>nietGeautoriseerd</ep:enum>
-			<ep:enum>geenWaarde</ep:enum>
-			<ep:enum>waardeBestaat</ep:enum>
-			<ep:enum>waardeOnbekend</ep:enum>
-			<ep:enum>vastgesteldOnbekend</ep:enum>
+			<ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
 		</ep:construct>
 		<xsl:if test="$attributeTypeRow//col[@name = 'exact' and data = 'O']">
 			<ep:construct ismetadata="yes">

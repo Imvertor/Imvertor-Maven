@@ -62,11 +62,24 @@
 				<xs:import namespace="{@identifier}" schemaLocation="{concat(upper-case(@prefix),'.xsd')}"/>
 			</xsl:for-each>
 			
+			<xsl:sequence select="imf:create-debug-comment('ROME: Message elements',$debugging)"/>
 			<xsl:apply-templates select="ep:message"/>
+			
+			<xsl:sequence select="imf:create-debug-comment('ROME: ComplexTypes representing Groups',$debugging)"/>
 			<xsl:apply-templates select="ep:construct[@type='group']" mode="complexType"/>
+			
+			<xsl:sequence select="imf:create-debug-comment('ROME: Regular complexTypes',$debugging)"/>
 			<xsl:apply-templates select="ep:construct[@type='complexData']" mode="complexType"/>
-			<xsl:apply-templates select="ep:construct[not(@type)]" mode="complexType"/>
-
+			
+			<!--xsl:sequence select="imf:create-debug-comment('ROME: Regular complexTypes generated form typeless constructs',$debugging)"/>
+			<xsl:apply-templates select="ep:construct[not(@type)]" mode="complexType"/-->
+			
+			<xsl:sequence select="imf:create-debug-comment('ROME: SimpleContent complexTypes',$debugging)"/>
+			<xsl:apply-templates select="ep:construct[@type='simpleContentcomplexData']" mode="simpleContentComplexType"/>
+			
+			<xsl:sequence select="imf:create-debug-comment('ROME: SimpleTypes',$debugging)"/>
+			<xsl:apply-templates select="ep:construct[@type='simpleData']" mode="simpleType"/>
+			
 			<xsl:sequence select="imf:create-debug-comment('simpleTypes to be extended with XML attributes',$debugging)"/>
 
 			<xsl:apply-templates select=".//ep:construct[(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata]]" mode="createSimpleTypes"/>
@@ -457,6 +470,93 @@
 		</xsl:if>
 	</xsl:template>
 	
+	<xsl:template match="ep:construct" mode="simpleContentComplexType">
+		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
+		<xsl:if test="ep:seq/ep:* or ep:choice/ep:*">
+			<xs:complexType>
+				<xsl:attribute name="name" select="ep:tech-name"/>
+				<xsl:if test="ep:documentation">
+					<xs:annotation>
+						<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
+					</xs:annotation>
+				</xsl:if>
+				<xs:simpleContent>
+					<xs:extension base="{ep:type-name}">
+						<xsl:apply-templates select="ep:seq/ep:construct[@ismetadata]" mode="generateAttributes"/>
+					</xs:extension>
+				</xs:simpleContent>
+			</xs:complexType>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="ep:construct" mode="simpleType">
+		<xs:simpleType name="{ep:tech-name}">
+			<xs:restriction>
+				<xsl:attribute name="base">
+					<xsl:choose>
+						<xsl:when test="ep:type-name = 'scalar-integer'">
+							<xsl:value-of select="'xs:integer'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'scalar-decimal'">
+							<xsl:value-of select="'xs:decimal'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'scalar-string'">
+							<xsl:value-of select="'xs:string'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'scalar-date'">
+							<xsl:value-of select="'xs:dateTime'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'scalar-boolean'">
+							<xsl:value-of select="'xs:boolean'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'scalar-uri'">
+							<xsl:value-of select="'xs:anyURI'"/>
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'scalar-postcode'">
+							<xsl:value-of select="concat($StUF-prefix,':postcode')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="'xs:string'"/>								
+						</xsl:otherwise>
+						<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
+					</xsl:choose>
+				</xsl:attribute>
+				<xsl:if test="ep:length">
+					<xsl:choose>
+						<xsl:when test="ep:type-name = 'scalar-string'">
+							<xs:length value="{ep:length}" />
+						</xsl:when>
+						<xsl:when test="ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
+							<xs:totalDigits value="{ep:length}" />
+						</xsl:when>
+					</xsl:choose>
+				</xsl:if>
+				<xsl:if test="ep:max-length">
+					<xs:maxLength value="{ep:max-length}" />
+				</xsl:if>
+				<xsl:if test="ep:min-length">
+					<xs:minLength value="{ep:min-length}" />
+				</xsl:if>
+				<xsl:if test="ep:min-value and (ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-date')">
+					<xs:minInclusive value="{ep:min-value}" />
+				</xsl:if>
+				<xsl:if test="ep:max-value and (ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-date')">
+					<xs:maxInclusive value="{ep:max-value}" />
+				</xsl:if>
+				<xsl:if test="ep:fraction-digits">
+					<xs:fractionDigits value="{ep:fraction-digits}" />
+				</xsl:if>
+				<!--xsl:if test="ep:enum and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal')"-->
+				<xsl:if test="ep:enum">
+					<xsl:apply-templates select="ep:enum"/>
+				</xsl:if>
+				<xsl:if test="ep:formeel-patroon and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-boolean')">
+					<xs:pattern value="{ep:formeel-patroon}" />
+				</xsl:if>								
+			</xs:restriction>
+		</xs:simpleType>
+	</xsl:template>
+	
 	<xsl:template match="ep:constructRef">
 		<xsl:variable name="href" select="ep:href"/>
 		<!-- Only if the ep:constructRef refers to an available ep:construct it's transformed to an element. 
@@ -538,6 +638,12 @@
 								</xsl:when>
 								<xsl:when test="ep:type-name = 'scalar-boolean'">
 									<xsl:value-of select="'xs:boolean'"/>
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'scalar-uri'">
+									<xsl:value-of select="'xs:anyURI'"/>
+								</xsl:when>
+								<xsl:when test="ep:type-name = 'scalar-postcode'">
+									<xsl:value-of select="concat($StUF-prefix,':postcode')"/>
 								</xsl:when>
 								<xsl:otherwise>
 									<xsl:value-of select="'xs:string'"/>								

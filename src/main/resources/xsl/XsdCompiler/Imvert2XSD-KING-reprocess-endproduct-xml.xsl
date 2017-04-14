@@ -185,14 +185,14 @@
             </ep:prefixes>
         </xsl:variable>
         <xsl:choose>
+            <xsl:when test="@ismetadata">
+                <xsl:copy-of select="."/>
+            </xsl:when>
             <!-- Following when's are used to split a construct if it contains subconstructs originated in more than one namespace.
                  The first one if the prefix of the current construct isn't yet determined and teh second if it has been determined.
                  The construct is created for every namespace for which a subconstruct is present containing only those subconstruct
                  belonging to that namespace.
                  This type of processing is reported to the subsequent templates by the 'procesType' parameter with the value 'splitting'. -->
-            <xsl:when test="@ismetadata">
-                <xsl:copy-of select="."/>
-            </xsl:when>
             <xsl:when test="(@prefix = '$actualPrefix' and .//ep:construct/@prefix != $actualPrefix and .//ep:construct/@prefix != $StUF-prefix) and (ep:seq/* | ep:choice/*)">
                 <xsl:sequence select="imf:create-debug-comment('2e construct template, 2e when buiten for-each',$debugging)"/>                
                 <xsl:element name="{name(.)}">
@@ -350,6 +350,9 @@
                 </xsl:element>
             </xsl:when>              
             <!-- This construct is only used for metadata constructs. -->
+            <xsl:otherwise>
+                <xsl:copy-of select="."/>
+            </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
     

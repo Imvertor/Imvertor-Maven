@@ -70,7 +70,7 @@
                 <xsl:apply-templates select="ep:namespaces/ep:namespace"/>
                 <xsl:for-each select="ep:*[@prefix != $kv-prefix and @namespaceId and @prefix != ''  and @namespaceId != '']">
                     <xsl:variable name="prefix" select="@prefix"/>
-                    <xsl:if test="$prefix != preceding-sibling::*/@prefix">
+                    <xsl:if test="not($prefix = preceding-sibling::*/@prefix)">
                         <ep:namespace prefix="{$prefix}"><xsl:value-of select="@namespaceId"/></ep:namespace>
                     </xsl:if>
                 </xsl:for-each>
@@ -100,7 +100,7 @@
                             <xsl:apply-templates select="../ep:namespaces/ep:namespace[@prefix != $kv-prefix]"/>
                             <xsl:for-each select="../ep:*[@prefix and @namespaceId and @prefix != ''  and @namespaceId != '']">
                                 <xsl:variable name="prefix" select="@prefix"/>
-                                <xsl:if test="$prefix != preceding-sibling::*/@prefix">
+                                <xsl:if test="not($prefix = preceding-sibling::*/@prefix)">
                                     <ep:namespace prefix="{$prefix}"><xsl:value-of select="@namespaceId"/></ep:namespace>
                                 </xsl:if>
                             </xsl:for-each>
