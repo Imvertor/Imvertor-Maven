@@ -130,9 +130,10 @@
             </xsl:when>
             <xsl:otherwise>
                 <xsl:copy>
+                    <xsl:copy-of select="@*"/>
                     <!--<xsl:attribute name="origin">intern</xsl:attribute>-->
                     <imvert:name>
-                        <xsl:copy-of select="@*"/>
+                        <xsl:copy-of select="imvert:name/@*"/>
                         <xsl:value-of select="concat(imvert:name,' [',../imvert:application,']')"/>
                     </imvert:name>
                     <imvert:package-replacement>internal</imvert:package-replacement>
