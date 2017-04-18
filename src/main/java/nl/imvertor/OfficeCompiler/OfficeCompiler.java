@@ -64,42 +64,50 @@ public class OfficeCompiler extends Step {
 		if (op.equals("none")) {
 			// skip this
 		} else if (op.equals("html")) {
-			runner.info(logger,"Creating Office documentation");
+			runner.info(logger,"Creating documentation");
 			Transformer transformer = new Transformer();
-			// creates a HTML file which is the basis for output
-			transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/WORK_OFFICE_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_OFFICE_XSLPATH");
-			// simply copy the html file as this is identical to the requested HTML
-			String fn = "office.html";
-			AnyFile infoOfficeFile = new AnyFile(configurator.getParm("properties","WORK_OFFICE_FILE"));
-			AnyFile officeFile = new AnyFile(configurator.getParm("system","work-etc-folder-path") + "/" + fn);
-			infoOfficeFile.copyFile(officeFile);
-			configurator.setParm("appinfo", "office-documentation-filename", fn);
 			
-			// see if this result should be sent on to FTP
-			String target = configurator.getParm("cli", "passoffice",false);
-			if (target != null && target.equals("ftp")) {
-				String passftp  = configurator.getParm("cli", "passftp");
-				String passpath = configurator.getParm("cli", "passpath");
-				String passuser = configurator.getParm("cli", "passuser");
-				String passpass = configurator.getParm("cli", "passpass");
+			boolean succeeds = true;
+			
+			// creates an XML modeldoc intermediate file which is the basis for output
+			succeeds = succeeds ? transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/WORK_MODELDOC_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_XSLPATH") : false;
+			// creates an html file 
+			succeeds = succeeds ? transformer.transformStep("properties/WORK_MODELDOC_FILE","properties/WORK_OFFICE_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_OFFICE_XSLPATH") : false;
+			
+			if (succeeds) {
+				// simply copy the html file as this is identical to the requested HTML
+				String fn = "office.html";
+				AnyFile infoOfficeFile = new AnyFile(configurator.getParm("properties","WORK_OFFICE_FILE"));
+				AnyFile officeFile = new AnyFile(configurator.getParm("system","work-etc-folder-path") + "/" + fn);
+				infoOfficeFile.copyFile(officeFile);
+				configurator.setParm("appinfo", "office-documentation-filename", fn);
 				
-				String targetpath = "ftp://" + passftp + passpath;
-				
-				runner.info(logger, "Uploading office HTML");
-				
-				FtpFolder ftpFolder = new FtpFolder();
-				
-				ftpFolder.server = passftp;
-				ftpFolder.protocol = "false";
-				ftpFolder.username = passuser;
-				ftpFolder.password = passpass;
+				// see if this result should be sent on to FTP
+				String target = configurator.getParm("cli", "passoffice",false);
+				if (target != null && target.equals("ftp")) {
+					String passftp  = configurator.getParm("cli", "passftp");
+					String passpath = configurator.getParm("cli", "passpath");
+					String passuser = configurator.getParm("cli", "passuser");
+					String passpass = configurator.getParm("cli", "passpass");
+					
+					String targetpath = "ftp://" + passftp + passpath;
+					
+					runner.info(logger, "Uploading office HTML");
+					
+					FtpFolder ftpFolder = new FtpFolder();
+					
+					ftpFolder.server = passftp;
+					ftpFolder.protocol = "false";
+					ftpFolder.username = passuser;
+					ftpFolder.password = passpass;
 
-				try {
-					ftpFolder.login();
-					ftpFolder.upload(officeFile.getCanonicalPath(),passpath);
-					ftpFolder.logout();
-				} catch (Exception e) {
-					runner.warn(logger, "Cannot upload office HTML to " + targetpath);
+					try {
+						ftpFolder.login();
+						ftpFolder.upload(officeFile.getCanonicalPath(),passpath);
+						ftpFolder.logout();
+					} catch (Exception e) {
+						runner.warn(logger, "Cannot upload office HTML to " + targetpath);
+					}
 				}
 			}
 		} else {

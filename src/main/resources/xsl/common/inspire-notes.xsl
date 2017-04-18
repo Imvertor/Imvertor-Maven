@@ -33,7 +33,7 @@
     
     <xsl:function name="imf:inspire-notes-parts" as="element()*">
         <xsl:param name="text"/>
-        <xsl:analyze-string select="$text" regex="((DEFINITION)|(SOURCE)|(EXAMPLE)|(URI)|(NOTE))\s+?(.*?)\n">
+        <xsl:analyze-string select="$text" regex="((DEFINITION)|(SOURCE)|(EXAMPLE)|(URI)|(NOTE))\s+(.*?)\n\s*?(\n|$)" flags="s">
             <xsl:matching-substring>
                 <typ>
                     <xsl:value-of select="regex-group(1)"/>
@@ -81,9 +81,9 @@
     </xsl:template>
     
     <xsl:template match="typ" mode="inspire-notes">
-        <xsl:element name="{lower-case(.)}">
+        <label type="{.}">
             <xsl:apply-templates select="following-sibling::val[1]" mode="inspire-notes"/>
-        </xsl:element>
+        </label>
     </xsl:template>
     
     <xsl:template match="val" mode="inspire-notes">

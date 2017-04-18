@@ -36,6 +36,12 @@
          <required>false</required>
       </cli-parm> 
       <cli-parm>
+         <name>createofficeanchor</name>
+         <arg>name|id</arg>
+         <tip>Hyperlink anchors should be IDs (PDF) or based on actual names (HTML).</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
          <name>passoffice</name>
          <arg>ftp</arg>
          <tip>Enter "ftp" when the documentation file should be passed on directly to FTP</tip>
@@ -66,21 +72,35 @@
          <required>When officepass is set to "ftp"</required>
       </cli-parm> 
       
-      
-      
    </cli-parms>
    <properties>
 
-      <WORK_OFFICE_FILE>${system/work-imvert-folder-path}/imvertor.25.office.html</WORK_OFFICE_FILE>
+      <WORK_MODELDOC_FILE>${system/work-imvert-folder-path}/imvertor.25.1.modeldoc.xml</WORK_MODELDOC_FILE>
+      <WORK_OFFICE_FILE>${system/work-imvert-folder-path}/imvertor.25.2.office.html</WORK_OFFICE_FILE>
+      
+      <IMVERTOR_METAMODEL_KINGSIM_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-KINGSIM.xsl</IMVERTOR_METAMODEL_KINGSIM_MODELDOC_XSLPATH>
+      <IMVERTOR_METAMODEL_KINGSIM_MODELDOC_OFFICE_XSLPATH alias="ITO">Imvert2modeldoc-KINGSIM-html-office.xsl</IMVERTOR_METAMODEL_KINGSIM_MODELDOC_OFFICE_XSLPATH>
+      
+      <IMVERTOR_METAMODEL_KINGUGM_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-KINGUGM.xsl</IMVERTOR_METAMODEL_KINGUGM_MODELDOC_XSLPATH>
+      <IMVERTOR_METAMODEL_KINGUGM_MODELDOC_OFFICE_XSLPATH alias="ITO">Imvert2modeldoc-KINGUGM-html-office.xsl</IMVERTOR_METAMODEL_KINGUGM_MODELDOC_OFFICE_XSLPATH>
+      
+      <IMVERTOR_METAMODEL_KINGBSM_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-KINGUGM.xsl</IMVERTOR_METAMODEL_KINGBSM_MODELDOC_XSLPATH>
+      <IMVERTOR_METAMODEL_KINGBSM_MODELDOC_OFFICE_XSLPATH alias="ITO">Imvert2modeldoc-KINGUGM-html-office.xsl</IMVERTOR_METAMODEL_KINGBSM_MODELDOC_OFFICE_XSLPATH>
+      
+      <IMVERTOR_METAMODEL_BRO_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-BRO.xsl</IMVERTOR_METAMODEL_BRO_MODELDOC_XSLPATH>
+      <IMVERTOR_METAMODEL_BRO_MODELDOC_OFFICE_XSLPATH alias="ITO">Imvert2modeldoc-BRO-html-respec.xsl</IMVERTOR_METAMODEL_BRO_MODELDOC_OFFICE_XSLPATH>
+      
+      <IMVERTOR_METAMODEL_Kadaster_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-Kadaster.xsl</IMVERTOR_METAMODEL_Kadaster_MODELDOC_XSLPATH>
+      <IMVERTOR_METAMODEL_Kadaster_MODELDOC_OFFICE_XSLPATH alias="ITO">Imvert2modeldoc-Kadaster-html-office.xsl</IMVERTOR_METAMODEL_Kadaster_MODELDOC_OFFICE_XSLPATH>
+      
       
       <IMVERTOR_METAMODEL_Imvertor_OFFICE_XSLPATH alias="ITOKAD">Imvert2office-Kadaster.xsl</IMVERTOR_METAMODEL_Imvertor_OFFICE_XSLPATH>
       <IMVERTOR_METAMODEL_BOM_OFFICE_XSLPATH>Imvert2office-Kadaster.xsl</IMVERTOR_METAMODEL_BOM_OFFICE_XSLPATH>
       <IMVERTOR_METAMODEL_ISO19103_OFFICE_XSLPATH>Imvert2office-ISO.xsl</IMVERTOR_METAMODEL_ISO19103_OFFICE_XSLPATH>
-      <IMVERTOR_METAMODEL_KINGSIM_OFFICE_XSLPATH alias="ITOSIM">Imvert2office-KINGSIM.xsl</IMVERTOR_METAMODEL_KINGSIM_OFFICE_XSLPATH>
+      
       <IMVERTOR_METAMODEL_KINGUGM_OFFICE_XSLPATH>Imvert2office-KINGUGM.xsl</IMVERTOR_METAMODEL_KINGUGM_OFFICE_XSLPATH>
       <IMVERTOR_METAMODEL_KINGBSM_OFFICE_XSLPATH>Imvert2office-KINGBSM.xsl</IMVERTOR_METAMODEL_KINGBSM_OFFICE_XSLPATH>
       <IMVERTOR_METAMODEL_Kadaster_OFFICE_XSLPATH>Imvert2office-Kadaster.xsl</IMVERTOR_METAMODEL_Kadaster_OFFICE_XSLPATH>
-      <IMVERTOR_METAMODEL_BRO_OFFICE_XSLPATH>Imvert2office-BRO.xsl</IMVERTOR_METAMODEL_BRO_OFFICE_XSLPATH>
       
    </properties>
 </config>
