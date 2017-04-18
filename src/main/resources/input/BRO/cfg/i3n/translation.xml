@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<picklist>
+
+    <!-- translations for BRO -->
+
+    <!-- tagged values -->
+
+    <item>
+        <key>DATALOCATIE</key>
+        <trans lang="nl">Data locatie</trans>
+        <trans lang="en">Data location</trans>
+    </item>
+    <item>
+        <key>MOGELIJKGEENWAARDE</key>
+        <trans lang="nl">Mogelijk geen waarde</trans>
+        <trans lang="en">Voidable</trans>
+    </item>
+    <item>
+        <key>FORMAAT</key>
+        <trans lang="nl">Formaat</trans>
+        <trans lang="en">Format/Type</trans>
+    </item>
+    <item>
+        <key>PATROON</key>
+        <trans lang="nl">Patroon</trans>
+        <trans lang="en">Pattern</trans>
+    </item>
+    <item>
+        <key>INDICATIEMATERIELEHISTORIE</key>
+        <trans lang="nl">Materiële historie?</trans>
+        <trans lang="en">Material history?</trans>
+    </item>
+    <item>
+        <key>INDICATIEFORMELEHISTORIE</key>
+        <trans lang="nl">Formele historie?</trans>
+        <trans lang="en">Formal history?</trans>
+    </item>
+    <item>
+        <key>INDICATIEKARDINAILTEIT</key>
+        <trans lang="nl">Kardinaliteit</trans>
+        <trans lang="en">Multiplicity</trans>
+    </item>
+    <item>
+        <key>INDICATIEAUTHENTIEK</key>
+        <trans lang="nl">Authentiek?</trans>
+        <trans lang="en">Authentic?</trans>
+    </item>
+    <item>
+        <key>INDICATIEAFLEIDBAAR</key>
+        <trans lang="nl">Afleidbaar?</trans>
+        <trans lang="en">Derived?</trans>
+    </item>
+    <item>
+        <key>REGELS</key>
+        <trans lang="nl">Regels</trans>
+        <trans lang="en">Rules</trans>
+    </item>
+    <item>
+        <key>GERELATEERDOBJECTTYPE</key>
+        <trans lang="nl">Gerelateerd objecttype</trans>
+        <trans lang="en">Related featureType</trans>
+    </item>
+    <item>    
+        <key>NAAM</key>
+        <trans lang="nl">Naam</trans>
+        <trans lang="en">Name</trans>
+    </item>
+    <item>
+        <key>HERKOMST</key>
+        <trans lang="nl">Herkomst</trans>
+        <trans lang="en">Origin</trans>
+    </item>
+    <item>
+        <key>DEFINITIE</key>
+        <trans lang="nl">Definitie</trans>
+        <trans lang="en">Definition</trans>
+    </item>
+    <item>
+        <key>HERKOMSTDEFINITIE</key>
+        <trans lang="nl">Herkomst definitie</trans>
+        <trans lang="en">Origin of definition</trans>
+    </item>
+    <item>
+        <key>TOELICHTING</key>
+        <trans lang="nl">Toelichting</trans>
+        <trans lang="en">Explanation</trans>
+    </item>
+    <item>
+        <key>DATUMOPNAME</key>
+        <trans lang="nl">Datum opname</trans>
+        <trans lang="en">Date recorded</trans>
+    </item>
+    <item>
+        <key>UNIEKEAANDUIDING</key>
+        <trans lang="nl">Identificatie</trans>
+        <trans lang="en">Identifier</trans>
+        
+    </item>
+    <item>
+        <key>INDICATIEABSTRACTOBJECT</key>
+        <trans lang="nl">Abstract?</trans>
+        <trans lang="en">Abstract?</trans>
+    </item>
+    <item>
+        <key>POPULATIE</key>
+        <trans lang="nl">Populatie</trans>
+        <trans lang="en">Population</trans>
+    </item>
+    <item>
+        <key>KWALITEITSBEGRIP</key>
+        <trans lang="nl">Kwaliteit</trans>
+        <trans lang="en">Quality</trans>
+    </item>
+    <?x
+    <item>
+        <key>RELATIESOORT</key>
+        <trans lang="nl">Relatiesoort</trans>
+        <trans lang="en">Relation</trans>
+    </item>
+    x?>
+    
+    <!-- system defined types -->
+
+    <item>
+        <key>BOOLEAN</key>
+        <trans lang="nl">xxBoolean</trans>
+    </item>
+    <item>
+        <key>DATE</key>
+        <trans lang="nl">xxDatum</trans>
+    </item>
+    <item>
+        <key>DATETIME</key>
+        <trans lang="nl">xxDatumTijd</trans>
+    </item>
+    <item>
+        <key>TIME</key>
+        <trans lang="nl">xxTijd</trans>
+    </item>
+    <item>
+        <key>INTEGER</key>
+        <trans lang="nl">xxInt</trans>
+    </item>
+    <item>
+        <key>FLOAT</key>
+        <trans lang="nl">xxReal</trans>
+    </item>
+    <item>
+        <key>YEAR</key>
+        <trans lang="nl">xxJaar</trans>
+    </item>
+    <item>
+        <key>TXT</key>
+        <trans lang="nl">xxTekst</trans>
+    </item>
+
+    <item>
+        <key>POSTCODE</key>
+        <trans lang="nl">Postcode</trans>
+    </item>
+
+    <!-- stereotypes -->
+
+    <item>
+        <key>OBJECTTYPE</key>
+        <key>FEATURETYPE</key>
+        <trans lang="nl">Objecttype</trans>
+        <trans lang="en">FeatureType</trans>
+    </item>
+    <item>
+        <key>RELATIEKLASSE</key>
+        <key>ASSOCIATIONCLASS</key>
+        <trans lang="nl">Relatieklasse</trans>       
+        <trans lang="en">AssociationClass</trans>
+        
+    </item>
+    <item>
+        <key>ENUMERATIE</key>
+        <key>ENUMERATION</key>
+        <trans lang="nl">Enumeratie</trans>
+        <trans lang="en">Enumeration</trans>
+    </item>
+    <item>
+        <key>REFERENTIELIJST</key>
+        <key>REFERENCELIST</key>
+        <trans lang="nl">Referentielijst</trans>
+        <trans lang="en">Codelist</trans>
+    </item>
+    <item>
+        <key>UNION</key>
+        <trans lang="nl">Union</trans>
+        <trans lang="en">Union</trans>
+    </item>
+    <item>
+        <key>UNION ELMENT</key>
+        <trans lang="nl">Union element</trans>
+        <trans lang="en">UnionElement</trans>
+    </item>
+    <item>
+        <key>COMPLEX DATATYPE</key>
+        <trans lang="nl">Complex datatype</trans>
+        <trans lang="en">Datatype</trans>
+    </item>
+    <item>
+        <key>DATATYPE</key>
+        <trans lang="nl">Datatype</trans>
+        <trans lang="en">PrimitiveType</trans>
+    </item>
+    <item>
+        <key>DATA ELMENT</key>
+        <trans lang="nl">Data element</trans>
+        <trans lang="en">DataElement</trans>
+    </item>
+    <item>
+        <key>GEGEVENSGROEPTYPE</key>
+        <key>COMPOSITE</key>
+        <trans lang="nl">Gegevensgroeptype</trans>
+        <trans lang="en">GroupType</trans>
+        
+    </item>
+
+    <!-- heading labels -->
+
+    <item>
+        <key>OVERVIEW-OBJECTTYPE</key>
+        <trans lang="nl">Objecttype overzicht</trans>
+        <trans lang="en">FeatureTypes overview</trans>
+    </item>
+    <item>
+        <key>OVERVIEW-ASSOCIATIONCLASS</key>
+        <trans lang="nl">Relatieklasse overzicht</trans>
+        <trans lang="en">AssociationClasses overview</trans>
+    </item>
+    <item>
+        <key>OVERVIEW-ENUMERATION</key>
+        <trans lang="nl">Enumeratie overzicht</trans>
+        <trans lang="en">Enumerations overview</trans>
+    </item>
+    <item>
+        <key>OVERVIEW-REFERENCELIST</key>
+        <trans lang="nl">Referentielijst overzicht</trans>
+        <trans lang="en">Codelists overview</trans>
+    </item>
+    <item>
+        <key>OVERVIEW-UNION</key>
+        <trans lang="nl">Union overzicht</trans>
+        <trans lang="en">Unions overview</trans>
+    </item>
+    <item>
+        <key>OVERVIEW-DATATYPE</key>
+        <trans lang="nl">Datatype overzicht</trans>
+        <trans lang="en">Datatypes overview</trans>
+    </item>
+    <item>
+        <key>DETAILS</key>
+        <trans lang="nl">Attribuut- en relatiesoorten</trans>
+        <trans lang="en">Property details</trans>
+    </item>
+
+    <item>
+        <key>DETAILS-OBJECTTYPE</key>
+        <trans lang="nl">Objecttypen</trans>
+        <trans lang="en">FeatureTypes</trans>
+    </item>
+    <item>
+        <key>DETAILS-ASSOCIATIONCLASS</key>
+        <trans lang="nl">Relatieklassen</trans>
+        <trans lang="en">AssociationClasses</trans>
+    </item>
+    <item>
+        <key>DETAILS-ENUMERATION</key>
+        <trans lang="nl">Enumeraties</trans>
+        <trans lang="en">Enumerations</trans>
+    </item>
+    <item>
+        <key>DETAILS-REFERENCELIST</key>
+        <trans lang="nl">Referentielijsten</trans>
+        <trans lang="en">Codelists</trans>
+    </item>
+    <item>
+        <key>DETAILS-UNION</key>
+        <trans lang="nl">Unions</trans>
+        <trans lang="en">Unions</trans>
+    </item>
+    <item>
+        <key>DETAILS-DATATYPE</key>
+        <trans lang="nl">Datatypen</trans>
+        <trans lang="en">Datatypes</trans>
+    </item>
+
+    <item>
+        <key>DETAIL-ATTRIBUTE</key>
+        <trans lang="nl">Attribuutsoort</trans>
+        <trans lang="en">AttributeTypes</trans>
+    </item>
+    <item>
+        <key>DETAIL-ASSOCIATION</key>
+        <trans lang="nl">Relatiesoort</trans>
+        <trans lang="en">AssociationTypes</trans>
+    </item>
+    <item>
+        <key>DETAIL-REFERENCEELEMENT</key>
+        <trans lang="nl">Referentie element</trans>
+        <trans lang="en">CodelistElements</trans>
+    </item>
+    <item>
+        <key>DETAIL-UNIONELEMENT</key>
+        <trans lang="nl">Union element</trans>
+        <trans lang="en">UnionElements</trans>
+    </item>
+    <item>
+        <key>DETAIL-DATAELEMENT</key>
+        <trans lang="nl">Data element</trans>
+        <trans lang="en">DataElements</trans>
+    </item>
+    <item>
+        <key>DETAIL-ENUMERATION</key>
+        <trans lang="nl">Enumeratie</trans>
+        <trans lang="en">Enumerations</trans>
+    </item>
+    <item>
+        <key>DETAIL-COMPOSITE</key>
+        <trans lang="nl">Gegevensgroeptype</trans>
+        <trans lang="en">GroupTypes</trans>
+    </item>
+    <item>
+        <key>ATTRIBUTE</key>
+        <trans lang="nl">Attribuutsoort</trans>
+        <trans lang="en">AttributeType</trans>
+    </item>
+    <item>
+        <key>ASSOCIATION</key>
+        <trans lang="nl">Relatiesoort</trans>
+        <trans lang="en">AssociationType</trans>
+    </item>
+    <item>
+        <key>OF-COMPOSITION</key>
+        <trans lang="nl">van gegevensgroeptype</trans>
+        <trans lang="en">of groupType</trans>
+    </item>
+    
+    <item>
+        <key>SHORT-ATTRIBUTES</key>
+        <trans lang="nl">Overzicht attributen</trans>
+        <trans lang="en">AttributeType overview</trans>
+    </item>
+    <item>
+        <key>SHORT-ASSOCIATIONS</key>
+        <trans lang="nl">Overzicht relaties</trans>
+        <trans lang="en">AssociationType overview</trans>
+    </item>
+    
+    <item>
+        <key>EXPLANATION</key>
+        <trans lang="nl">Toelichting</trans>
+        <trans lang="en">Explanation</trans>
+    </item>
+    
+    <!-- itemtypes -->
+    
+    <item>
+        <key>NAME</key>
+        <trans lang="nl">Naam</trans>
+        <trans lang="en">Name</trans>
+    </item>
+    <item>
+        <key>DEFINITION</key>
+        <trans lang="nl">Definitie</trans>
+        <trans lang="en">Definition</trans>
+    </item>
+    
+    <item>
+        <key>ATTRIBUTE-NAME</key>
+        <trans lang="nl">Attribuutnaam</trans>
+        <trans lang="en">Attribute name</trans>
+    </item>
+    <item>
+        <key>ATTRIBUTE-DEFINITION</key>
+        <trans lang="nl">Definitie</trans>
+        <trans lang="en">Definition</trans>
+    </item>
+    <item>
+        <key>ATTRIBUTE-FORMAT</key>
+        <trans lang="nl">Formaat</trans>
+        <trans lang="en">Format/type</trans>
+    </item>
+    <item>
+        <key>ATTRIBUTE-CARD</key>
+        <trans lang="nl">Card</trans>
+        <trans lang="en">Mult</trans>
+    </item>
+    
+    <item>
+        <key>ASSOCIATION-NAME</key>
+        <trans lang="nl">Relatienaam met kardinaliteiten</trans>
+        <trans lang="en">Association name</trans>
+    </item>
+    <item>
+        <key>ASSOCIATION-DEFINITION</key>
+        <trans lang="nl">Definitie</trans>
+        <trans lang="en">Definition</trans>
+    </item>
+    
+    <!-- intermediate text -->
+    
+    <item>
+        <key>ISSPECIALISATIONOF</key>
+        <trans lang="nl">is specialisatie van</trans>
+        <trans lang="en">specializes</trans>
+    </item>
+    
+    
+    
+</picklist>

@@ -117,7 +117,7 @@
         </stereo>
         
         <!-- added for Kadaster services -->
-        <stereo id="stereotype-name-product-proxy">
+        <stereo id="stereotype-name-prd-proxy">
             <name lang="nl">Product_proxy</name>
             <name lang="en">ProductProxy</name>
             <desc lang="nl">A proxy is TODO</desc>

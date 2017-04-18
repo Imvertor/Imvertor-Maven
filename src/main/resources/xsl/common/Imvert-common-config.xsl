@@ -43,7 +43,7 @@
     <xsl:variable name="configuration-metamodel-name" select="imf:get-config-string('system','configuration-metamodel-file')"/>
     <xsl:variable name="configuration-schemarules-name" select="imf:get-config-string('system','configuration-schemarules-file')"/>
     <xsl:variable name="configuration-tvset-name" select="imf:get-config-string('system','configuration-tvset-file')"/>
-  
+    
     <xsl:variable name="configuration-file" select="imf:document(imf:get-config-string('properties','WORK_CONFIG_FILE'),true())"/>
     
     <xsl:variable name="configuration-owner-file" select="$configuration-file/config/project-owner"/>
@@ -51,6 +51,9 @@
     <xsl:variable name="configuration-schemarules-file" select="$configuration-file/config/schema-rules"/>
     <xsl:variable name="configuration-tvset-file" select="$configuration-file/config/tagset"/>
 
+    <xsl:variable name="configuration-i3n-name" select="imf:get-config-string('system','configuration-i3n-file')"/>
+    <xsl:variable name="configuration-i3n-file" select="imf:document($configuration-i3n-name,true())/picklist"/>
+    
     <xsl:variable name="all-scalars" select="$configuration-metamodel-file//scalars/scalar"/>
     
     <xsl:function name="imf:get-config-schemarules" as="element(tv)*">
@@ -390,6 +393,18 @@
     <xsl:function name="imf:import-ea-note" as="item()*">
         <xsl:param name="note-ea" as="xs:string"/>
         <xsl:value-of select="$note-ea"/><!-- pass as-is -->
+    </xsl:function>
+    
+    <!--
+        Translate a term based on configured translation table.
+        This function may be called from within plugin modeldoc stylesheets
+    -->
+    <xsl:function name="imf:translate-i3n" as="xs:string">
+        <xsl:param name="key" as="xs:string"/>
+        <xsl:param name="lang" as="xs:string"/>
+        <xsl:param name="default" as="xs:string?"/>
+        <xsl:variable name="trans" select="$configuration-i3n-file/item[key=$key]/trans[@lang = $lang]"/>
+        <xsl:value-of select="if (exists($trans)) then $trans else if (exists($default)) then $default else concat('[TODO: ', $key, ']')"/>
     </xsl:function>
     
 </xsl:stylesheet>
