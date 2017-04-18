@@ -30,6 +30,8 @@
 
     <!-- 
          Canonization of the input, common to all metamodels.
+         
+         ADAPTION IN ACCORDANCE WITH https://kinggemeenten.plan.io/issues/487891 
     -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
@@ -37,7 +39,7 @@
     <xsl:variable name="output-folder" select="imf:get-config-string('system','managedoutputfolder')"/>
     <xsl:variable name="owner" select="imf:get-config-string('cli','owner')"/>
     
-    <xsl:variable name="stereotype-proxy" select="imf:get-config-stereotypes(('stereotype-name-att-proxy','stereotype-name-obj-proxy','stereotype-name-grp-proxy'))"/>
+    <xsl:variable name="stereotype-proxy" select="imf:get-config-stereotypes(('stereotype-name-att-proxy','stereotype-name-obj-proxy','stereotype-name-grp-proxy','stereotype-name-prd-proxy'))"/>
     
     <xsl:variable name="local-constructs" select="('name', 'id')"/> <!-- 'attributes', 'associations', ? -->
     
@@ -46,25 +48,15 @@
     <xsl:template match="/imvert:packages">
         <xsl:copy>
             <xsl:sequence select="imf:compile-imvert-header(.)"/>
-            <xsl:apply-templates select="imvert:package"/>
+            <xsl:apply-templates select="imvert:package" mode="client"/>
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype = $stereotype-proxy]">
-        <xsl:apply-templates select="." mode="proxy"/>
-    </xsl:template>
-    
-    <xsl:template match="imvert:attribute[imvert:stereotype = $stereotype-proxy]">
-        <xsl:apply-templates select="." mode="proxy"/>
-    </xsl:template>
-    
-    <!--TODO deze code loopt grotendeels parallel met imvert2pretrace.xsl. gelijktrekken. -->
     <!--TODO inlezen van losse documenten tegengaan; volg het gecompileerde suppliers document -->
-    <xsl:template match="imvert:class|imvert:attribute" mode="proxy">
-       
-        <xsl:variable name="this" select="."/>
-        <xsl:variable name="trace-id" select="$this/imvert:trace"/>
-        <xsl:variable name="supplier-subpaths" select="imf:get-construct-supplier-system-subpaths($this)"/>
+    <xsl:template match="imvert:class[imvert:stereotype = $stereotype-proxy] | imvert:attribute[imvert:stereotype = $stereotype-proxy]" mode="client">
+        <xsl:variable name="client" select="."/>
+        <xsl:variable name="trace-id" select="$client/imvert:trace" as="element()*"/>
+        <xsl:variable name="supplier-subpaths" select="imf:get-construct-supplier-system-subpaths($client)" as="xs:string*"/>
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:choose>
@@ -72,44 +64,60 @@
                     <xsl:sequence select="imf:msg(.,'ERROR', 'Proxy requires a single outgoing trace, [1] traces found',count($trace-id))"/>
                 </xsl:when>
                 <xsl:when test="empty($supplier-subpaths)">
-                    <xsl:sequence select="imf:msg('ERROR','Proxy without trace')"/>
+                    <xsl:sequence select="imf:msg(.,'ERROR','Could not determine a supplier subpath')"/>
                 </xsl:when>
                 <xsl:otherwise>
+                    <!-- get the construct traced in any supplier -->
                     <xsl:variable name="result" as="element()*">
                         <xsl:for-each select="$supplier-subpaths">
                             <xsl:variable name="supplier-doc" select="imf:get-imvert-supplier-doc(.)"/>
-                            <xsl:variable name="supplier-construct" select="imf:get-construct-by-id($trace-id,$supplier-doc)"/>
+                            <xsl:variable name="supplier" select="imf:get-construct-by-id($trace-id,$supplier-doc)"/>
                             <xsl:choose>
                                 <xsl:when test="empty($supplier-doc)">
-                                    <xsl:sequence select="imf:msg($this,'WARNING','No such supplier document: [1]',.)"/>
+                                    <xsl:sequence select="imf:msg($client,'WARNING','No such supplier document: [1]',.)"/>
                                 </xsl:when>
-                                <xsl:when test="exists($supplier-construct)">
+                                <xsl:when test="exists($supplier)">
                                     <!-- this is reached only once. -->
+                                   
+                                    <xsl:apply-templates select="$client/imvert:name" mode="client"/>
+                                    <xsl:apply-templates select="$client/imvert:id" mode="client"/>
+                                    
                                     <imvert:proxy origin="system" original-location="{.}">
-                                        <xsl:value-of select="$supplier-construct/imvert:id"/>
+                                        <xsl:value-of select="$supplier/imvert:id"/>
                                     </imvert:proxy>
+                                    
+                                    <xsl:apply-templates select="$client/imvert:min-occurs" mode="client"/>
+                                    <xsl:apply-templates select="$client/imvert:max-occurs" mode="client"/>
+                               
                                     <!-- 
-                                        copy for this proxy the local constructs 
+                                         Copy for this proxy the local constructs 
+                                         This template filters out what should not be copied.
                                     -->
-                                    <xsl:sequence select="$this/*[local-name(.) = ('name','id')]"/>
+                                    <xsl:apply-templates select="$supplier/*" mode="supplier"/>
+                                    
+                                    <!-- process the attributes and associations -->
+                                    <xsl:apply-templates select="$client/imvert:attributes" mode="client"/>
+                                    <xsl:apply-templates select="$client/imvert:associations" mode="client"/>
+                                    
                                     <!-- 
-                                        copy all supplier info to this construct, except for local constructs 
+                                         get the applicable tagged values for the proxy, and add those for the supplier.
                                     -->
-                                    <xsl:sequence select="$supplier-construct/*[not(local-name(.) = ('name','id','attributes','associations'))]"/>
-                                    <xsl:if test="local-name($this) = 'class'">
-                                        <!--
-                                            copy first the supplier attributes, and then the local attributes, and associations
-                                        -->
-                                        <imvert:attributes>
-                                            <xsl:apply-templates select="$supplier-construct/imvert:attributes/imvert:attribute" mode="proxy-sub"/>
-                                            <xsl:sequence select="$this/imvert:attributes/imvert:attribute"/>
-                                        </imvert:attributes>
-                                        <imvert:associations>
-                                            <xsl:apply-templates select="$supplier-construct/imvert:associations/imvert:association" mode="proxy-sub"/>
-                                            <xsl:sequence select="$this/imvert:associations/imvert:association"/>
-                                        </imvert:associations>
-                                    </xsl:if>
+                                    <xsl:variable name="tv-client" as="element()*">
+                                        <xsl:apply-templates select="$client/imvert:tagged-values/*" mode="client"/>
+                                    </xsl:variable>
+                                    <xsl:variable name="tv-supplier" as="element()*">
+                                        <xsl:apply-templates select="$supplier/imvert:tagged-values/*" mode="supplier"/>
+                                    </xsl:variable>
+                                    <imvert:tagged-values>
+                                        <xsl:for-each-group select="($tv-supplier,$tv-client)" group-by="imvert:name">
+                                            <xsl:apply-templates select="current-group()[1]" mode="client"/>
+                                        </xsl:for-each-group>
+                                    </imvert:tagged-values>
+                                    
                                 </xsl:when>
+                                <xsl:otherwise>
+                                    <!-- this supplier doesn't provide the info -->
+                                </xsl:otherwise>
                             </xsl:choose>
                         </xsl:for-each>
                     </xsl:variable>
@@ -125,21 +133,20 @@
             </xsl:choose>
         </xsl:copy>
     </xsl:template>
- 
-    <xsl:template match="imvert:association" mode="proxy-sub">
-        <imvert:association>
-            <xsl:apply-templates mode="#current"/>
-        </imvert:association>
+    
+    <xsl:template match="imvert:id | imvert:class/imvert:name | imvert:attribute/imvert:name | imvert:min-occurs | imvert:max-occurs | imvert:attributes | imvert:associations | imvert:tagged-values" mode="supplier">
+        <!-- skip -->
     </xsl:template>
-    <xsl:template match="imvert:attribute" mode="proxy-sub">
-        <imvert:attribute>
-            <xsl:apply-templates mode="#current"/>
-        </imvert:attribute>
+    
+    <xsl:template match="imvert:tagged-value[imvert:name = ('Regels','Toelichting')]" mode="supplier">
+        <!-- skip; never copy these from the supplier. -->
     </xsl:template>
+    
+    <?x
     <!-- 
         the target of an association of a supplier, must be replaced by the proxy :
     -->
-    <xsl:template match="imvert:type-id" mode="proxy-sub">
+    <xsl:template match="imvert:type-id" mode="supplier">
         <xsl:variable name="id" select="."/>
         <xsl:variable name="proxy" select="$document-proxies[imvert:trace = $id]"/>
         <xsl:choose>
@@ -153,8 +160,9 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-   
-    <xsl:template match="*" mode="#default proxy proxy-sub">
+    x?>
+    
+    <xsl:template match="node()" mode="#all">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:apply-templates mode="#current"/>

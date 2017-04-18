@@ -79,7 +79,7 @@
     <xsl:template match="imvert:package">
         <xsl:variable name="this" select="."/>
         <xsl:variable name="is-derived" select="imf:boolean(imvert:derived)"/>
-        <xsl:variable name="trace" select="(.//imvert:trace)[1]"/>
+        <xsl:variable name="trace" select="(.//imvert:trace[not(@origin='system')])[1]"/>
         
         <!-- check if the package is derived; if not, no traces were expected (but this is not an error) --> 
         <xsl:sequence select="imf:report-warning($this, 

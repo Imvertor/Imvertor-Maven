@@ -40,7 +40,7 @@
     
     <xsl:template match="/imvert:packages">
         <xsl:if test="exists(//imvert:trace[1])">
-            <xsl:sequence select="imf:msg('ERROR','Model has unexpected user-defined traces')"/>
+            <xsl:sequence select="imf:msg('WARNING','Model has unexpected user-defined traces')"/>
         </xsl:if>
         <xsl:copy>
             <xsl:sequence select="imf:compile-imvert-header(.)"/>
