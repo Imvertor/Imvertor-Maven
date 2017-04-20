@@ -62,7 +62,7 @@
         <xsl:sequence select="$config-compact"/>
        
         <!-- set some global configuration info -->
-        <xsl:variable name="proxy" select="imf:get-config-stereotypes(('stereotype-name-att-proxy','stereotype-name-obj-proxy','stereotype-name-grp-proxy'), false())"/>
+        <xsl:variable name="proxy" select="imf:get-config-stereotypes(('stereotype-name-att-proxy','stereotype-name-obj-proxy','stereotype-name-grp-proxy','stereotype-name-prd-proxy'), false())"/>
         <xsl:sequence select="imf:set-config-string('system','supports-proxy',if ($proxy = '#unknown') then 'no' else 'yes')"/>
         
     </xsl:template>
@@ -159,6 +159,7 @@
                 <xsl:variable name="metamodel" select="metamodel"/>
                 <xsl:apply-templates select="$metamodel/name" mode="#current"/>
                 <xsl:apply-templates select="$metamodel/desc" mode="#current"/>
+                <xsl:apply-templates select="$metamodel/profile" mode="#current"/>
                 <scalars>
                     <xsl:for-each-group select="$metamodel//scalars/scalar" group-by="@id">
                         <scalar id="{current-grouping-key()}">

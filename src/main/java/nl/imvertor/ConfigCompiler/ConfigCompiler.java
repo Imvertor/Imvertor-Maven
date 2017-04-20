@@ -58,15 +58,15 @@ public class ConfigCompiler  extends Step {
 		
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_CONFIG_FILE", "properties/IMVERTOR_CONFIG_XSLPATH") : false ;
 		
-		String p = StringUtils.substringBefore(configurator.getParm("cli","createeaprofile",false),";");
-		if (p != null) {
+		Boolean p = configurator.isTrue(configurator.getParm("cli","createeaprofile",true));
+		if (p) {
 			// process the results of previous step info a EA profile
 			succeeds = succeeds ? transformer.transformStep("properties/WORK_CONFIG_FILE", "properties/WORK_EAPROFILE_FILE", "properties/IMVERTOR_EAPROFILE_XSLPATH") : false ;
 		
 			// and copy this file to the etc folder
 			AnyFolder etcFolder = new AnyFolder(configurator.getParm("system","work-etc-folder-path"));
 			XmlFile tempProfileFile = new XmlFile(configurator.getParm("properties", "WORK_EAPROFILE_FILE"));
-			XmlFile profileFile = new XmlFile(etcFolder,p + ".xml");
+			XmlFile profileFile = new XmlFile(etcFolder,"ea-profile.xml");
 			tempProfileFile.copyFile(profileFile); 
 		}
 		
