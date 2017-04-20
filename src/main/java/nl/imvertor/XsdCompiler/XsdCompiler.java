@@ -219,6 +219,9 @@ public class XsdCompiler extends Step {
 		} else // model
 			valid = valid && transformer.transformStep("properties/WORK_SCHEMA_FILE","properties/RESULT_XSD_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_XSD_XSLPATH");
 		
+		// fetch all checksum info from parms file and store to the local blackboard.
+		valid = valid && transformer.transformStep("system/work-config-path","properties/IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH_LOCAL", "properties/IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XSLPATH");
+		
 		// record the location of the resulting EP file for subsequent steps
 		configurator.setParm("system","imvertor-ep-result",configurator.getParm("properties","RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH"));
 		// and tell that a schema has been created
