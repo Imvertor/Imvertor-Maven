@@ -39,7 +39,7 @@
             <max-length>true</max-length>
         </scalar>
         <scalar id="scalar-integer" scope="system">
-            <name lang="nl">Integer</name>
+            <name lang="nl">INTEGER</name>
             <type-map lang="xs">integer</type-map>
         </scalar>
         <scalar id="scalar-date">
