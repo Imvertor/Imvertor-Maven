@@ -26,8 +26,8 @@
     <scalars xml:id="scalars">
         
         <scalar id="scalar-string">
-            <name lang="nl">CharacterString</name>
-            <name lang="en">CharacterString</name>
+            <name lang="nl">CHARACTERSTRING</name>
+            <name lang="en">CHARACTERSTRING</name>
             <desc>A CharacterString is an arbitrary-length sequence of characters including accents and special characters from
                 repertoire of one of the adopted character sets (ISO 19103, Draft Technical Specification 19103, Geographic information - Conceptual
                 schema language)</desc>
@@ -35,27 +35,27 @@
             <max-length>true</max-length>
         </scalar>
         <scalar id="scalar-boolean">
-            <name lang="nl">Boolean</name>
-            <name lang="en">Boolean</name>
+            <name lang="nl">BOOLEAN</name>
+            <name lang="en">BOOLEAN</name>
             <type-map lang="xs">boolean</type-map>
         </scalar>
         <scalar id="scalar-decimal">
-            <name lang="nl">Real</name>
-            <name lang="en">Real</name>
+            <name lang="nl">REAL</name>
+            <name lang="en">REAL</name>
             <type>string</type>
             <type-map lang="xs">decimal</type-map>
             <fraction-digits>true</fraction-digits>
             <max-length>true</max-length>
         </scalar>
         <scalar id="scalar-integer">
-            <name lang="nl">Integer</name>
-            <name lang="en">Integer</name>
+            <name lang="nl">INTEGER</name>
+            <name lang="en">INTEGER</name>
             <type-map lang="xs">integer</type-map>
             <max-length>true</max-length>
         </scalar>
         <scalar id="scalar-date">
-            <name lang="nl">Date</name>
-            <name lang="en">Date</name>
+            <name lang="nl">DATE</name>
+            <name lang="en">DATE</name>
             <type-map lang="xs">date</type-map>
             <?x
             <type-modifier>
@@ -67,8 +67,8 @@
             x?>
         </scalar>    
         <scalar id="scalar-datetime">
-            <name lang="nl">DateTime</name>
-            <name lang="en">DateTime</name>
+            <name lang="nl">DATETIME</name>
+            <name lang="en">DATETIME</name>
             <type-map lang="xs">dateTime</type-map>
             <?x
             <type-modifier>
@@ -78,18 +78,18 @@
             x?>
         </scalar>
         <scalar id="scalar-year">
-            <name lang="nl">Year</name>
-            <name lang="en">Year</name>
+            <name lang="nl">YEAR</name>
+            <name lang="en">YEAR</name>
             <type-map lang="xs">gYear</type-map>
         </scalar>
         <scalar id="scalar-day">
-            <name lang="nl">Day</name>
-            <name lang="en">Day</name>
+            <name lang="nl">DAY</name>
+            <name lang="en">DAY</name>
             <type-map lang="xs">gDay</type-map>
         </scalar>
         <scalar id="scalar-month">
-            <name lang="nl">Month</name>
-            <name lang="en">Month</name>
+            <name lang="nl">MONTH</name>
+            <name lang="en">MONTH</name>
             <type-map lang="xs">gMonth</type-map>
         </scalar>
         <scalar id="scalar-uri">
