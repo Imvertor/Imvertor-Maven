@@ -18,11 +18,12 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
-    <!-- BOM follows Kadaster requirements -->
+    
+    <!-- Kadaster KKG follows KKG ISO requirements -->
     <xi:include href="../../../KKG/cfg/metamodels/KKG.xml"/>
 
     <name>KKG (Kadaster)</name>
-
+    
     <desc>Metamodel for Kadaster KKG extensions</desc>
-   
+    
 </metamodel>

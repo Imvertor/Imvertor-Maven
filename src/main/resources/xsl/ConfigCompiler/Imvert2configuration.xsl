@@ -159,7 +159,13 @@
                 <xsl:variable name="metamodel" select="metamodel"/>
                 <xsl:apply-templates select="$metamodel/name" mode="#current"/>
                 <xsl:apply-templates select="$metamodel/desc" mode="#current"/>
-                <xsl:apply-templates select="$metamodel/profile" mode="#current"/>
+                
+                <profiles>
+                    <xsl:for-each-group select="$metamodel//profiles/profile" group-by="@lang">
+                        <xsl:apply-templates select="current-group()[1]" mode="#current"/>
+                    </xsl:for-each-group>        
+                </profiles>
+                
                 <scalars>
                     <xsl:for-each-group select="$metamodel//scalars/scalar" group-by="@id">
                         <scalar id="{current-grouping-key()}">

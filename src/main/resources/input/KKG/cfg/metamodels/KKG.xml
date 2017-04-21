@@ -15,9 +15,22 @@
     <xi:include href="KKG-scalar.xml"/>
     
     <name>KKG</name>
-
+    
     <desc>Metamodel for KKG exchange models</desc>
 
+    <profiles>
+        <profile lang="nl">
+            <id>KKGISONL</id>
+            <release>0.9</release>
+            <desc>KKG-ISO Grouping (NL)</desc> 
+        </profile>
+        <profile lang="en">
+            <id>KKGISOEN</id>
+            <release>0.9</release>
+            <desc>KKG-ISO Grouping (EN)</desc>
+        </profile>
+    </profiles>
+    
     <naming>
         <package>
             <format>UpperCamel</format>
@@ -54,7 +67,7 @@
             <name lang="en">GroupType</name>
             <desc>
                 De verzameling van gegevens van een object van een type die gelijktijdig muteren en onderhouden worden.
-                De gegevensgroeptype is als source van een composite relatie opgenomen bij een Objecttype.
+                TODO  De gegevensgroeptype is als source van een composite relatie opgenomen bij een Objecttype.
                 Voorbeeld: gegevensgroeptype Geboorte bij INGESCHREVEN NATUURLIJK PERSOON, 	gegevensgroeptype Koopsom bij KADASTRALE ONROERENDE ZAAK
             </desc>
             <construct>class</construct>
@@ -86,18 +99,27 @@
             <construct>attribute</construct>
         </stereo>
        
-        <!--
+        <!--x deprecated
         <stereo id="stereotype-name-association-to-composite">
             <name lang="nl">Gegevensgroep compositie</name>
-            <name lang="en">AttributeGroupComposition</name>
+            <name lang="en">AttributeGroup composition</name>
             <desc>
                 Een verbijzondering van een relatiesoort waarbij een object van het objecttype of een 
-                gegevensgroep van een gegevensgroeptype of een asscociationclass van een relatieklasse 	samengesteld is uit gegevensgroepen 
+                gegevensgroep van een gegevensgroeptype of een asscociationclass van een relatieklasse samengesteld is uit gegevensgroepen 
                 van een gegevensgroeptype en deze 	gegevensgroepen  maken altijd deel uit van één compositie.
-           </desc>
+            </desc>
             <construct>association</construct>
         </stereo>
-        -->
+        x-->
+        
+        <stereo id="stereotype-name-attributegroup">
+            <name lang="nl">Attribuutgroep</name>
+            <name lang="en">AttributeGroup</name>
+            <desc>
+                Een verbijzondering van een UML attribuut waarbij het type een Gegevensgroeptype is.
+            </desc>
+            <construct>attribute</construct>
+        </stereo>
         
         <stereo id="stereotype-name-union">
             <name lang="nl">Union</name>
@@ -126,7 +148,7 @@
                 Een lijst met een opsomming van de mogelijke domeinwaarden oftewel constanten van een Docent789
                 attribuutsoort die onveranderlijk is.
             </desc>
-            <construct>class</construct>
+            <!--x <construct>class</construct> x-->
             <construct>datatype</construct>
         </stereo>
         <stereo id="stereotype-name-enum">
@@ -178,7 +200,7 @@
                 Voorbeeld: referentielijst LAND, referentielijst NATIONALITEIT
                (Een "rij" in de "tabel".)
             </desc>
-            <construct>class</construct>
+            <!--x <construct>class</construct> x-->
             <construct>datatype</construct>
         </stereo>
         <stereo id="stereotype-name-referentie-element">
@@ -297,7 +319,7 @@
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-materiele-levensduur">
-            <name lang="nl">M`aterielelevensduur</name>
+            <name lang="nl">Materielelevensduur</name>
             <name lang="en">MaterialLifecycle</name>
             <construct>attribute</construct>
         </stereo>

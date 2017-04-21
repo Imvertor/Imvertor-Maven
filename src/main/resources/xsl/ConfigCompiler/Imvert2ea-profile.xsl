@@ -33,9 +33,9 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-report.xsl"/>
     
-    <xsl:variable name="profile-id-string" select="$configuration-metamodel-file/profile[@lang=$language]/id"/>
-    <xsl:variable name="profile-name-string" select="$configuration-metamodel-file/profile[@lang=$language]/desc"/>
-    <xsl:variable name="profile-release-string" select="$configuration-metamodel-file/profile[@lang=$language]/release"/>
+    <xsl:variable name="profile-id-string" select="$configuration-metamodel-file/profiles/profile[@lang=$language]/id"/>
+    <xsl:variable name="profile-name-string" select="$configuration-metamodel-file/profiles/profile[@lang=$language]/desc"/>
+    <xsl:variable name="profile-release-string" select="$configuration-metamodel-file/profiles/profile[@lang=$language]/release"/>
     
     <xsl:template match="/config">
         
