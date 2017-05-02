@@ -103,6 +103,12 @@
          <tip>The XML schema attributes are qualified. Defaults to No.</tip>
          <required>false</required>
       </cli-parm>
+      <cli-parm>
+         <name>xsdsubpath</name>
+         <arg>subpath</arg>
+         <tip>A path within the result XSD folder to which the XSDs for the model provided are written.</tip>
+         <required>true</required>
+      </cli-parm>
       
    </cli-parms>
   
@@ -111,16 +117,20 @@
       <LOCALIZE_XSD_XSLPATH>localize-xsd.xsl</LOCALIZE_XSD_XSLPATH>
       <LOCAL_SCHEMA_MAPPING_FILE>${system/inp-folder-path}/xsd/local-schemas.xml</LOCAL_SCHEMA_MAPPING_FILE>
     
+      <!-- intermediate locations -->
+      
+      <RESULT_XSD_PREFORM_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.28.1.xsd-preformed.xml</RESULT_XSD_PREFORM_XML_FILE_PATH>   
+      <RESULT_XSD_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.28.2.xsd.xml</RESULT_XSD_XML_FILE_PATH>   
+      <RESULT_XSD_POSTFORM_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.29.xsd-reformed.xml</RESULT_XSD_POSTFORM_XML_FILE_PATH>   
+      <RESULT_XSD_IMPORT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.30.xsd-imported.xml</RESULT_XSD_IMPORT_XML_FILE_PATH>   
+      
       <!-- Kadaster : -->
      
       <IMVERTOR_METAMODEL_Kadaster_XSDSOURCE>system</IMVERTOR_METAMODEL_Kadaster_XSDSOURCE>
+      <IMVERTOR_METAMODEL_Kadaster_XSD_PREFORM_XSLPATH>Imvert2XSD-Kadaster-preform.xsl</IMVERTOR_METAMODEL_Kadaster_XSD_PREFORM_XSLPATH>
       <IMVERTOR_METAMODEL_Kadaster_XSD_XSLPATH>Imvert2XSD-Kadaster.xsl</IMVERTOR_METAMODEL_Kadaster_XSD_XSLPATH>
-      <IMVERTOR_METAMODEL_Kadaster_XSD_REFORM_XSLPATH>Imvert2XSD-Kadaster-reform.xsl</IMVERTOR_METAMODEL_Kadaster_XSD_REFORM_XSLPATH>
+      <IMVERTOR_METAMODEL_Kadaster_XSD_POSTFORM_XSLPATH>Imvert2XSD-Kadaster-postform.xsl</IMVERTOR_METAMODEL_Kadaster_XSD_POSTFORM_XSLPATH>
       <IMVERTOR_METAMODEL_Kadaster_XSD_IMPORT_XSLPATH>Imvert2XSD-Kadaster-imports.xsl</IMVERTOR_METAMODEL_Kadaster_XSD_IMPORT_XSLPATH>
-      
-      <RESULT_XSD_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.28.xsd.xml</RESULT_XSD_XML_FILE_PATH>   
-      <RESULT_XSD_REFORM_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.29.xsd-reformed.xml</RESULT_XSD_REFORM_XML_FILE_PATH>   
-      <RESULT_XSD_IMPORT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.30.xsd-imported.xml</RESULT_XSD_IMPORT_XML_FILE_PATH>   
       
       <!-- flattening -->
       <IMVERTOR_FLATTEN_XSLPATH>flatten-xsd.xsl</IMVERTOR_FLATTEN_XSLPATH>
@@ -145,7 +155,7 @@
       <IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH>
       <RESULT_METAMODEL_KINGUGM_XSD_FILEPATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_METAMODEL_KINGUGM_XSD_FILEPATH>
       <!-- locatie van de stuf onderlaag -->
-      <STUF_ONDERLAAG_UGM>${system/inp-folder-path}/xsd/other/KING-UGM/support</STUF_ONDERLAAG_UGM>
+      <STUF_ONDERLAAG_UGM>${system/inp-folder-path}/xsd/other/KING-UGM/support-2</STUF_ONDERLAAG_UGM>
       
       <!-- checksum info for simpletypes -->
       <IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XSLPATH>Imvert2XSD-KING-compile-checksum.xsl</IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XSLPATH>
@@ -166,21 +176,29 @@
       
       <!-- BRO : -->
       
-      <IMVERTOR_METAMODEL_KKG_XSDSOURCE>system</IMVERTOR_METAMODEL_KKG_XSDSOURCE>
-      <IMVERTOR_METAMODEL_KKG_XSD_XSLPATH>Imvert2XSD-Kadaster.xsl</IMVERTOR_METAMODEL_KKG_XSD_XSLPATH>
-      <IMVERTOR_METAMODEL_KKG_XSD_IMPORT_XSLPATH>Imvert2XSD-Kadaster-imports.xsl</IMVERTOR_METAMODEL_KKG_XSD_IMPORT_XSLPATH>
+      <IMVERTOR_METAMODEL_KKG_XSD_PREFORM_XSLPATH>Imvert2XSD-ISO1936-preform.xsl</IMVERTOR_METAMODEL_KKG_XSD_PREFORM_XSLPATH>
+      <IMVERTOR_METAMODEL_KKG_XSD_XSLPATH>Imvert2XSD-ISO19136.xsl</IMVERTOR_METAMODEL_KKG_XSD_XSLPATH>
+      <IMVERTOR_METAMODEL_KKG_XSD_POSTFORM_XSLPATH>Imvert2XSD-ISO1936-postform.xsl</IMVERTOR_METAMODEL_KKG_XSD_POSTFORM_XSLPATH>
+      <IMVERTOR_METAMODEL_KKG_XSD_IMPORT_XSLPATH>Imvert2XSD-ISO19136-imports.xsl</IMVERTOR_METAMODEL_KKG_XSD_IMPORT_XSLPATH>
  
       <!-- common: -->
    
       <!-- location of the result XSD's when generating XML schemas -->
-      <RESULT_XSD_APPLICATION_FOLDER>${system/work-xsd-folder-path}/${appinfo/application-name}</RESULT_XSD_APPLICATION_FOLDER>
+      <RESULT_XSD_APPLICATION_FOLDER>${system/work-xsd-folder-path}/${cli/xsdsubpath}</RESULT_XSD_APPLICATION_FOLDER>
       <RESULT_XSD_APPLICATION_ONDERLAAG_FOLDER>${system/work-xsd-folder-path}/${appinfo/application-name}/0302</RESULT_XSD_APPLICATION_ONDERLAAG_FOLDER>
       
       <!-- other metamodel specifics -->
       
+      <IMVERTOR_METAMODEL_ISO19136_XSDSOURCE>system</IMVERTOR_METAMODEL_ISO19136_XSDSOURCE>
+      
+      <IMVERTOR_METAMODEL_ISO19136_XSD_PREFORM_XSLPATH>Imvert2XSD-ISO1936-preform.xsl</IMVERTOR_METAMODEL_ISO19136_XSD_PREFORM_XSLPATH>
+      <IMVERTOR_METAMODEL_ISO19136_XSD_XSLPATH>Imvert2XSD-ISO19136.xsl</IMVERTOR_METAMODEL_ISO19136_XSD_XSLPATH>
+      <IMVERTOR_METAMODEL_ISO19136_XSD_POSTFORM_XSLPATH>Imvert2XSD-ISO1936-postform.xsl</IMVERTOR_METAMODEL_ISO19136_XSD_POSTFORM_XSLPATH>
+      <IMVERTOR_METAMODEL_ISO19136_XSD_IMPORT_XSLPATH>Imvert2XSD-ISO19136-imports.xsl</IMVERTOR_METAMODEL_ISO19136_XSD_IMPORT_XSLPATH>
+      
       <IMVERTOR_METAMODEL_ISO19103_XSDSOURCE>system</IMVERTOR_METAMODEL_ISO19103_XSDSOURCE>
       <IMVERTOR_METAMODEL_ISO19103_XSD_XSLPATH>Imvert2XSD-Kadaster.xsl</IMVERTOR_METAMODEL_ISO19103_XSD_XSLPATH>
-
+      
       <IMVERTOR_METAMODEL_BOM_XSDSOURCE>system</IMVERTOR_METAMODEL_BOM_XSDSOURCE>
       <IMVERTOR_METAMODEL_BOM_XSD_XSLPATH>Imvert2XSD-Kadaster.xsl</IMVERTOR_METAMODEL_BOM_XSD_XSLPATH>
       
