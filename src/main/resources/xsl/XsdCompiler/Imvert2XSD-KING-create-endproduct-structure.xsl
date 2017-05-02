@@ -1285,15 +1285,19 @@
 				<xsl:when test="$processType = 'keyTabelEntiteit'">
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1031',$debugging)"/>
 					
-					<xsl:choose>
+					<xsl:variable name="compiled-name" select="imf:useable-attribute-name(imf:get-compiled-name(.),.)"/>
+					<xsl:variable name="name" select="imf:capitalize($compiled-name)"/>
+					
+					<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$name,'-e'))"/>
+					<!--xsl:choose>
 						<xsl:when test="contains($type-name,'scalar')">
 							<xsl:sequence select="imf:create-output-element('ep:data-type', $type-name)"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
 						</xsl:otherwise>
-					</xsl:choose>
-					<xsl:sequence select="imf:create-output-element('ep:length', $total-digits)"/>
+					</xsl:choose-->
+					<!--xsl:sequence select="imf:create-output-element('ep:length', $total-digits)"/>
 					<xsl:sequence select="imf:create-output-element('ep:fraction-digits', $fraction-digits)"/>
 					<xsl:sequence select="imf:create-output-element('ep:max-length', $max-length)"/>
 					<xsl:sequence select="imf:create-output-element('ep:min-length', $min-length)"/>
@@ -1301,7 +1305,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:min-value', $min-waarde)"/>
 					<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)"/>
 					<xsl:sequence select="imf:create-output-element('ep:formeel-patroon', $formeelPatroon)"/>
-					<xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/>
+					<xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/-->
 				</xsl:when>
 				<xsl:when test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype = 'COMPLEX DATATYPE'">
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1032',$debugging)"/>
@@ -1497,20 +1501,90 @@
 						</xsl:if>
 
 						<xsl:variable name="compiled-name" select="imf:useable-attribute-name(imf:get-compiled-name(.),.)"/>
-						<xsl:variable name="href-name" select="imf:capitalize($compiled-name)"/>
+						<xsl:variable name="type-name" select="imf:capitalize($compiled-name)"/>
+						<xsl:variable name="stuf-scalar" select="imf:get-stuf-scalar-attribute-type(.)"/>
+						
 						<xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
 						<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
 						<xsl:choose>
-							<xsl:when test="contains(imvert:type-name,'scalar')">
+							<?x xsl:when test="exists($stuf-scalar)">
+								<!-- gedefinieerd in onderlaag -->
+								<xsl:sequence select="imf:create-output-element('ep:data-type', imvert:type-name)"/>
+							</xsl:when x?>
+							<xsl:when test="contains(imvert:type-name,'scalar-postcode') or contains(imvert:type-name,'scalar-date')">
 								<xsl:sequence select="imf:create-output-element('ep:data-type', imvert:type-name)"/>
 							</xsl:when>
-							<xsl:when test="$name = 'berichtcode' or $name = 'referentienummer' or $name = 'crossRefnummer' or $name = 'maximumAantal' or $name = 'administratie' 
-											or $name = 'applicatie' or $name = 'gebruiker' or $name = 'organisatie' or $name = 'mutatiesoort' or $name = '' or $name = '' or $name = ''">
-								<xsl:sequence select="imf:create-output-element('ep:data-type', imvert:type-name)"/>
+							
+							<!-- ROME: Alle hieronder staande sets van when's moet nog helemaal anders worden gecodeerd. Waarschijnlijk moet de eerste hierboven staande 
+								 	   uitbecommentarieerde when worden gebruikt. -->
+							<xsl:when test="$name = 'melding'">
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
+							</xsl:when>
+
+							<xsl:when test="$name = 'berichtcode'">
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name),$berichtCode))"/>
+							</xsl:when>
+							<xsl:when test="$name = 'organisatie' or $name = 'applicatie' or $name = 'administratie' or $name = 'gebruiker'">
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
+							</xsl:when>
+							<xsl:when test="$name = 'referentienummer' or $name = 'crossRefnummer'">
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':','Refnummer'))"/>
+							</xsl:when>
+							<!-- ROME: Volgende when zorgt er voor dat het element 'entiteitType' verwijst naar de complexType 'EntiteittypeStuurgegevens'.
+									   Dat complexType moet echter eigenlijk dynamisch opgebouwd worden zodat het element 'type' daarin specifiek op het bericht
+									   gemaakt kan worden. -->
+							<xsl:when test="$name = 'entiteitType'">
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':','EntiteittypeStuurgegevens'))"/>
+							</xsl:when>
+
+							<xsl:when test="$name = 'sortering'">
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
+							</xsl:when>
+							<xsl:when test="$name = 'indicatorVervolgvraag'">
+								<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-boolean')"/>
+							</xsl:when>
+							<xsl:when test="$name = 'maximumAantal'">
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
+							</xsl:when>
+							<xsl:when test="$name = 'indicatorAfnemerIndicatie'">
+								<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-boolean')"/>
+							</xsl:when>
+							<xsl:when test="$name = 'peiltijdstipMaterieel'">
+								<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-dateTime')"/>
+							</xsl:when>
+							<xsl:when test="$name = 'peiltijdstipFormeel'">
+								<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-dateTime')"/>
+							</xsl:when>
+							<xsl:when test="$name = 'indicatorAantal'">
+								<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-boolean')"/>
+							</xsl:when>
+							<!-- ?????? -->		
+							<xsl:when test="$name = 'indicatorHistorie'">
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
+							</xsl:when>
+							<xsl:when test="$name = 'aantalVoorkomens'">
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
+							</xsl:when>
+							<!-- Er wordt nu nog 'sequencenumber' gebruikt. Dat moet nog gecorrigeerd. -->
+							<xsl:when test="$name = 'volgnummer'">
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
+							</xsl:when>
+							<xsl:when test="$name = 'indicatorLaatsteBericht'">
+								<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-boolean')"/>
+							</xsl:when>
+							<!-- ROME: Volgende when voldoet voorlopig maar moet vanuit EA zo gewijzigd kunnen worden dat er slechts 1 mutatiesoort enum is. -->
+							<xsl:when test="$name = 'mutatiesoort'">
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
+							</xsl:when>
+							<xsl:when test="$name = 'indicatorOvername'">
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
+							</xsl:when>
+							<xsl:when test="imvert:type-name and not(contains(imvert:type-name,'scalar'))">
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',concat(imf:capitalize(imvert:type-name),'-e')))"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<!--xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$href-name))"/-->
-								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',concat(imf:capitalize(imvert:type-name),'-e')))"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$type-name,'-e'))"/>
 							</xsl:otherwise>
 						</xsl:choose>
 						<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
