@@ -243,7 +243,7 @@
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-referentielijst')]">
         <h2>
-            <xsl:value-of select="concat('CodeList ', imvert:name/@original)"/>
+            <xsl:value-of select="concat('Reference list ', imvert:name/@original)"/>
         </h2>
         <table>
             <tbody>
@@ -261,7 +261,24 @@
         <xsl:apply-templates select="imvert:attributes" mode="short"/>
         <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>
     </xsl:template>
-
+    
+    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-codelist')]">
+        <h2>
+            <xsl:value-of select="concat('Codelist ', imvert:name/@original)"/>
+        </h2>
+        <table>
+            <tbody>
+                <xsl:sequence select="imf:label-waarde('Naam',imvert:name/@original)"/>
+                <xsl:sequence select="imf:label-waarde('Mnemonic',imvert:alias)"/>
+                <xsl:sequence select="imf:label-waarde('Herkomst',imf:get-tagged-value(.,'Herkomst'))"/>
+                <xsl:sequence select="imf:label-waarde('Definitie',imf:get-formatted-compiled-documentation(.),true())"/>
+                <xsl:sequence select="imf:label-waarde('Datum opname',imf:get-tagged-value(.,'Datum opname'))"/>
+                <xsl:sequence select="imf:label-waarde('Data locatie',imf:get-tagged-value(.,'Data locatie'))"/>
+            </tbody>
+        </table>
+        <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>
+    </xsl:template>
+    
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union')]">
         <h2>
             <xsl:value-of select="concat('Union ', imvert:name/@original)"/>

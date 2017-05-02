@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <name>KKG-base</name>
+    <desc>This is a KKG profile for XXX <!-- ik neem hier even aan dat relaties via relatiesoort worden getagged. --></desc>
+    
+    <tagged-values>
+        
+        <xi:include href="../../../KKG/cfg/tvsets/KKG.xml"/>
+        
+        <tv id="DatumOpname">
+            <stereotypes>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo> 
+            </stereotypes>
+        </tv> 
+        <tv id="IndicatieMateriëleHistorie">
+            <stereotypes>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo> 
+            </stereotypes>
+        </tv>
+        <tv id="IndicatieFormeleHistorie">
+            <stereotypes>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo> 
+            </stereotypes>
+        </tv>
+        <tv id="IndicatieAuthentiek">
+            <stereotypes>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo> 
+            </stereotypes>
+        </tv>
+        <tv id="MogelijkGeenWaarde">
+            <stereotypes>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo> 
+            </stereotypes>
+        </tv>
+        <tv id="Herkomst">
+            <stereotypes>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo> 
+            </stereotypes>
+        </tv>
+        <tv id="HerkomstDefinitie">
+            <stereotypes>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo> 
+            </stereotypes>
+        </tv>
+        <tv id="Toelichting">
+            <stereotypes>
+                <stereo required="no">stereotype-name-relatiesoort</stereo> 
+            </stereotypes>
+        </tv>      
+    </tagged-values>
+</tagset>

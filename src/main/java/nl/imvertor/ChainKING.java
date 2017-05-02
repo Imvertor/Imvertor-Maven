@@ -79,7 +79,7 @@ public class ChainKING {
 		
 		    configurator.save();
 		   
-		    configurator.getRunner().info(logger,"Processing application " + configurator.getParm("cli","project") +": "+ configurator.getParm("cli","application"));
+		    configurator.getRunner().info(logger,"Processing application " + configurator.getParm("cli","project") +"/"+ configurator.getParm("cli","application"));
 		    
 		    boolean succeeds = true;
 		    boolean forced = false;

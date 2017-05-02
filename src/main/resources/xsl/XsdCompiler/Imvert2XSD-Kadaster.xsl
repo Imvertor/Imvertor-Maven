@@ -190,10 +190,10 @@
                 <xsl:sequence select="imf:get-annotation(.,imf:get-schema-info(.),imf:get-appinfo-version(.))"/>
                 
                 <!-- XSD complextypes -->
-                <xsl:apply-templates select="imvert:class[not(imvert:stereotype=(imf:get-config-stereotypes(('stereotype-name-enumeration','stereotype-name-codelist'))) or imvert:designation='datatype')]"/>
+                <xsl:apply-templates select="imvert:class[not(imvert:stereotype=(imf:get-config-stereotypes(('stereotype-name-enumeration','stereotype-name-codelist','stereotype-name-datatype'))))]"/>
             
                 <!-- XSD simpletypes -->
-                <xsl:apply-templates select="imvert:class[imvert:designation='datatype']"/>
+                <xsl:apply-templates select="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-datatype')]"/>
   
                 <!-- XSD enumerations -->
                 <xsl:apply-templates select="imvert:class[imvert:stereotype=(imf:get-config-stereotypes(('stereotype-name-enumeration','stereotype-name-codelist')))]"/>
@@ -295,7 +295,7 @@
         </xs:simpleType>
     </xsl:template>    
     
-    <xsl:template match="imvert:class[imvert:designation='datatype']">
+    <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-datatype')]">
         <xsl:choose>
             <xsl:when test="imvert:attributes/* or imvert:associations/*">
                 <xsl:sequence select="imf:debug(.,'Datatype with data elements or associations')"/>
@@ -641,7 +641,7 @@
         
         <xsl:variable name="defining-class" select="imf:get-defining-class($this)"/>                            
         <xsl:variable name="is-enumeration" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-enumeration')"/>
-        <xsl:variable name="is-datatype" select="$defining-class/imvert:designation='datatype'"/>
+        <xsl:variable name="is-datatype" select="$defining-class/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-datatype')"/>
         <xsl:variable name="is-complextype" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-complextype','stereotype-name-referentielijst'))"/>
         <xsl:variable name="is-complextype" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-complextype','stereotype-name-referentielijst'))"/>
         

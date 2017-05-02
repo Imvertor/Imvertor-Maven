@@ -43,6 +43,7 @@
     <xsl:variable name="configuration-metamodel-name" select="imf:get-config-string('system','configuration-metamodel-file')"/>
     <xsl:variable name="configuration-schemarules-name" select="imf:get-config-string('system','configuration-schemarules-file')"/>
     <xsl:variable name="configuration-tvset-name" select="imf:get-config-string('system','configuration-tvset-file')"/>
+    <xsl:variable name="configuration-notesrules-name" select="imf:get-config-string('system','configuration-notesrules-file')"/>
     
     <xsl:variable name="configuration-file" select="imf:document(imf:get-config-string('properties','WORK_CONFIG_FILE'),true())"/>
     
@@ -50,7 +51,8 @@
     <xsl:variable name="configuration-metamodel-file" select="$configuration-file/config/metamodel"/>
     <xsl:variable name="configuration-schemarules-file" select="$configuration-file/config/schema-rules"/>
     <xsl:variable name="configuration-tvset-file" select="$configuration-file/config/tagset"/>
-
+    <xsl:variable name="configuration-notesrules-file" select="$configuration-file/config/notes-rules"/>
+    
     <xsl:variable name="configuration-i3n-name" select="imf:get-config-string('system','configuration-i3n-file')"/>
     <xsl:variable name="configuration-i3n-file" select="imf:document($configuration-i3n-name,true())/picklist"/>
     

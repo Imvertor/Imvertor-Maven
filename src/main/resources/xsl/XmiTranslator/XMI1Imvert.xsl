@@ -38,7 +38,7 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-doc.xsl"/>
     <xsl:import href="../common/Imvert-common-entity.xsl"/>
-    <xsl:import href="../common/inspire-notes.xsl"/>
+    <xsl:import href="../common/Imvert-common-inspire.xsl"/>
     
     <xsl:variable name="stylesheet-code">IMV</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
@@ -306,6 +306,7 @@
                             <xsl:for-each select="$attributes">
                                 <imvert:attribute>
                                     <xsl:sequence select="imf:get-id-info(.,'A')"/>
+                                    <xsl:sequence select="imf:get-scope-info(.)"/>
                                     <xsl:sequence select="imf:get-attribute-info(.)"/>
                                     <xsl:sequence select="imf:get-attribute-documentation-info(.)"/>
                                     <!-- <xsl:sequence select="imf:get-history-info(.)"/> not available for attribute -->
@@ -484,8 +485,15 @@
         <xsl:choose>
             <xsl:when test="empty($doctext)"/>
             <xsl:when test="$f = 'inspire'">
+                <!-- Parse into sections; raw text is section titled "Raw" --> 
+                <xsl:variable name="sections" select="imf:inspire-notes($doctext)" as="element(section)*"/>
+                <!-- report if sections with same title occur -->
+                <xsl:variable name="duplicates" select="for $s in $sections return if ($s/following-sibling::section[title = $s/title]) then $s/title else ()" as="xs:string*"/>
+                <xsl:if test="exists($duplicates)">
+                    <xsl:sequence select="imf:msg($this,'WARN','Duplicated note sections: [1]', string-join($duplicates,', '))"/>
+                </xsl:if>
                 <imvert:documentation>
-                    <xsl:sequence select="imf:inspire-notes($doctext)"/>
+                    <xsl:sequence select="$sections"/>
                 </imvert:documentation>                        
             </xsl:when>
             <xsl:when test="normalize-space($relevant-doc-string) and $f = 'html'">
@@ -521,8 +529,16 @@
         <xsl:variable name="vl" select="imf:element-by-id($type-id)"/>
         <xsl:variable name="dataloc" select="if (exists($vl)) then (imf:get-profile-tagged-value($vl,'data-location'),imf:get-profile-tagged-value($vl,'Data locatie')) else ()"/>
         <xsl:variable name="webloc" select="if (exists($vl)) then (imf:get-profile-tagged-value($vl,'web-location'),imf:get-profile-tagged-value($vl,'Web locatie')) else ()"/>
-        <xsl:sequence select="imf:create-output-element('imvert:data-location',(imf:get-profile-tagged-value($this,'data-location'),imf:get-profile-tagged-value($this,'Data locatie'),$dataloc)[1])"/>
-        <xsl:sequence select="imf:create-output-element('imvert:web-location',(imf:get-profile-tagged-value($this,'web-location'),imf:get-profile-tagged-value($this,'Web locatie'),$webloc)[1])"/>
+        <xsl:sequence select="imf:create-output-element('imvert:data-location',
+            (imf:get-profile-tagged-value($this,'data-location'),
+            imf:get-profile-tagged-value($this,'Data locatie'),
+            imf:get-profile-tagged-value($this,'Location'),
+            imf:get-profile-tagged-value($this,'Locatie'),
+            $dataloc)[1])"/>
+        <xsl:sequence select="imf:create-output-element('imvert:web-location',
+            (imf:get-profile-tagged-value($this,'web-location'),
+             imf:get-profile-tagged-value($this,'Web locatie'),
+             $webloc)[1])"/>
     </xsl:function>
    
     <xsl:function name="imf:get-xsd-filepath" as="xs:string">
@@ -736,7 +752,7 @@
         <xsl:sequence select="imf:create-output-element('imvert:max-occurs-source',$source-bounds[2])"/>
         <xsl:sequence select="imf:create-output-element('imvert:position',imf:get-position-value($this,'200'))"/>
         <xsl:sequence select="imf:create-output-element('imvert:aggregation',if (not($aggregation='none')) then $aggregation else '')"/>
-     
+        
         <xsl:variable name="source-parse" select="imf:parse-style($source/*/UML:TaggedValue[@tag='sourcestyle']/@value)"/>
         <xsl:variable name="target-parse" select="imf:parse-style($target/*/UML:TaggedValue[@tag='deststyle']/@value)"/>
         
@@ -746,7 +762,9 @@
         <xsl:sequence select="imf:create-output-element('imvert:source-navigable',if ($source-parse[@name='Navigable'] = 'Navigable') then 'true' else 'false')"/>
         <xsl:sequence select="imf:create-output-element('imvert:target-navigable',if ($target-parse[@name='Navigable'] = 'Navigable') then 'true' else 'false')"/>
         
-                
+        <xsl:sequence select="imf:create-output-element('imvert:source-tagged-values',imf:fetch-additional-tagged-values($source)/*,(),false(),false())"/>
+        <xsl:sequence select="imf:create-output-element('imvert:target-tagged-values',imf:fetch-additional-tagged-values($target)/*,(),false(),false())"/>
+        
     </xsl:function>
     
     <xsl:function name="imf:get-association-end-bounds" as="xs:string*">
@@ -962,9 +980,10 @@
                 OPTIONS:
                 1/    value
                 2/    <memo>#NOTES#value
-                3.    value#NOTES#note
+                3/    value#NOTES#note
+                4/    $ea_notes=....
             -->        
-            <xsl:variable name="tokens" select="tokenize($value,'#NOTES#')"/> 
+            <xsl:variable name="tokens" select="tokenize($value,'(#NOTES#)|(\$ea_notes=)')"/> 
             <xsl:variable name="value-select" select="
                 if (exists($tokens[2]))
                 then 

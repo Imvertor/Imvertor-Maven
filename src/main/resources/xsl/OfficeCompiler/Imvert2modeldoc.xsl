@@ -57,6 +57,9 @@
             <section type="OVERVIEW-REFERENCELIST">
                 <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-referentielijst')]"/>
             </section>
+            <section type="OVERVIEW-CODELIST">
+                <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-codelist')]"/>
+            </section>
             <section type="OVERVIEW-UNION">
                 <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union')]"/>
             </section>
@@ -77,6 +80,9 @@
                 </section>
                 <section type="DETAILS-REFERENCELIST">
                     <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-referentielijst')]" mode="detail"/>
+                </section>
+                <section type="DETAILS-CODELIST">
+                    <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-codelist')]" mode="detail"/>
                 </section>
                 <section type="DETAILS-UNION">
                     <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union')]" mode="detail"/>
@@ -169,7 +175,21 @@
             <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>
         </section>
     </xsl:template>
-
+    
+    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-codelist')]">
+        <section name="{imvert:name/@original}" type="CODELIST" id="{imf:plugin-get-link-name(.)}">
+            <content>
+                <xsl:sequence select="imf:create-part-2('NAAM',imvert:name/@original)"/>
+                <xsl:sequence select="imf:create-part-2('MNEMONIC',imvert:alias)"/>
+                <xsl:sequence select="imf:create-part-2('HERKOMST',imf:get-tagged-value(.,'Herkomst'))"/>
+                <xsl:sequence select="imf:create-part-2('DEFINITIE',imf:get-clean-documentation-string(imvert:documentation))"/>
+                <xsl:sequence select="imf:create-part-2('DATUMOPNAME',imf:get-tagged-value(.,'Datum opname'))"/>
+                <xsl:sequence select="imf:create-part-2('DATALOCATIE',imf:get-tagged-value(.,'Data locatie'))"/>
+            </content>
+            <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>
+        </section>
+    </xsl:template>
+    
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union')]">
         <section name="{imvert:name/@original}" type="UNION" id="{imf:plugin-get-link-name(.)}">
             <content>

@@ -64,9 +64,12 @@ public class FtpFolder {
 	public boolean mlsd = false;
 	public boolean lenient = false;
 
-	public long keepAliveTimeout = -1;
-
+	public int connectTimeout = -1;
+	public int dataTimeout = -1;
+	public int keepAliveTimeout = -1;
+	public int controlKeepAliveTimeout = -1;
 	public int controlKeepAliveReplyTimeout = -1;
+
 	public int port = 0;
 	
 	public String server = null; 
@@ -146,6 +149,12 @@ public class FtpFolder {
 			}
 		}
     	
+    	if (connectTimeout >= 0) {
+    		ftp.setConnectTimeout(connectTimeout);
+    	}
+    	if (dataTimeout >= 0) {
+    		ftp.setDataTimeout(dataTimeout);
+    	}
     	if (keepAliveTimeout >= 0) {
     		ftp.setControlKeepAliveTimeout(keepAliveTimeout);
     	}

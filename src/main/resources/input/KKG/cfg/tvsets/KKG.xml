@@ -26,8 +26,8 @@
                 <stereo required="yes">stereotype-name-objecttype</stereo>
                 <stereo required="yes">stereotype-name-attribute</stereo>
                 <stereo required="yes">stereotype-name-composite</stereo>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo> 
                 <stereo required="yes">stereotype-name-referentielijst</stereo>
+                <stereo required="yes">stereotype-name-codelist</stereo>
                 <stereo required="yes">stereotype-name-referentie-element</stereo>
                 <stereo required="yes">stereotype-name-union</stereo>
                 <stereo required="yes">stereotype-name-complextype</stereo>
@@ -45,10 +45,6 @@
                 <!-- optional for the following stereo's -->
                 <stereo required="no">stereotype-name-attribute</stereo>
                 <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
-                <!-- and add: -->
-                <!--<stereo required="no">stereotype-name-codelist</stereo>-->
-                <stereo required="no">stereotype-name-relation-role</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -71,10 +67,6 @@
                 <!-- optional for the following stereo's -->
                 <stereo required="no">stereotype-name-attribute</stereo>
                 <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
-                <!-- and add: -->
-                <!--<stereo required="no">stereotype-name-codelist</stereo>-->
-                <stereo required="no">stereotype-name-relation-role</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -97,11 +89,8 @@
                 <!-- optional for inherited stereos -->
                 <stereo required="no">stereotype-name-attribute</stereo>
                 <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
                 <!-- and add this stereo -->
                 <stereo required="no">stereotype-name-data-element</stereo>
-                <!--<stereo required="no">stereotype-name-codelist</stereo>-->
-                <stereo required="no">stereotype-name-relation-role</stereo>
             </stereotypes>
         </tv>
         <tv norm="note" id="Toelichting">
@@ -109,6 +98,7 @@
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-enumeration</stereo>
+                <stereo required="no">stereotype-name-codelist</stereo>
             </stereotypes>
         </tv> 
         <tv norm="space" id="Patroon"><!-- MIG -->
@@ -150,7 +140,6 @@
             <stereotypes>
                 <stereo required="no">stereotype-name-attribute</stereo>
                 <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
                 <stereo required="no">stereotype-name-data-element</stereo>
                 <stereo required="no">stereotype-name-voidable</stereo>
             </stereotypes>
@@ -163,17 +152,6 @@
                 <value default="yes">No</value>
             </declared-values>
         </tv>
-        <tv norm="space" id="DataLocatie">
-            <name lang="nl">Data locatie</name>
-            <name lang="en">Data location</name>
-            <desc lang="nl">TODO</desc>
-            <desc lang="en">TODO</desc>
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo required="no">stereotype-name-referentielijst</stereo>
-                <stereo required="no">stereotype-name-referentie-element</stereo>
-            </stereotypes>
-        </tv>
         <tv norm="space" origin="system" id="Position">
             <name lang="nl">Positie</name>
             <name lang="en">Position</name>
@@ -182,7 +160,6 @@
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
                 <stereo required="no">stereotype-name-union-element</stereo>
                 <stereo required="no">stereotype-name-enum</stereo>
                 <stereo required="no">stereotype-name-data-element</stereo>
@@ -212,20 +189,18 @@
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-attribute</stereo>
-               <!-- <stereo required="yes">stereotype-name-codelist</stereo> -->
+                <stereo required="yes">stereotype-name-codelist</stereo>
+                <stereo required="yes">stereotype-name-referentielijst</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="Herkomst">   <!-- in addition to SBR -->
+        <tv norm="space" id="Herkomst">
             <stereotypes>
-             <!--   <stereo required="no">stereotype-name-codelist</stereo> -->
-                <stereo required="no">stereotype-name-relation-role</stereo>
-                <stereo required="no">stereotype-name-enumeration</stereo>
+                <stereo required="yes">stereotype-name-enumeration</stereo>
+                <stereo required="yes">stereotype-name-codelist</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="HerkomstDefinitie"> <!-- in addition to SBR -->
+        <tv norm="space" id="HerkomstDefinitie">
             <stereotypes>
-              <!--  <stereo required="no">stereotype-name-codelist</stereo> -->
-                <stereo required="no">stereotype-name-relation-role</stereo>
             </stereotypes>
         </tv>
         
@@ -248,7 +223,6 @@
             <desc lang="en">TODO</desc>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
         

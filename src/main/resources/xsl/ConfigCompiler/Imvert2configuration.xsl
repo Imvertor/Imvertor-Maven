@@ -39,6 +39,7 @@
     <xsl:variable name="configuration-metamodel-file" select="imf:prepare-config(imf:document($configuration-metamodel-name,true()))"/>
     <xsl:variable name="configuration-schemarules-file" select="imf:prepare-config(imf:document($configuration-schemarules-name,true()))"/>
     <xsl:variable name="configuration-tvset-file" select="imf:prepare-config(imf:document($configuration-tvset-name,true()))"/>
+    <xsl:variable name="configuration-notesrules-file" select="imf:prepare-config(imf:document($configuration-notesrules-name,true()))"/>
     
     <xsl:variable name="metamodel-name" select="imf:get-normalized-name(imf:get-config-string('cli','metamodel'),'system-name')"/>
     <xsl:variable name="schemarules-name" select="imf:get-normalized-name(imf:get-config-string('cli','schemarules'),'system-name')"/>
@@ -54,6 +55,7 @@
                 <xsl:sequence select="$configuration-metamodel-file"/>
                 <xsl:sequence select="$configuration-schemarules-file"/>
                 <xsl:sequence select="$configuration-tvset-file"/>
+                <xsl:sequence select="$configuration-notesrules-file"/>
             </config>
         </xsl:variable>
         <xsl:variable name="config-compact">
@@ -256,6 +258,12 @@
                     </xsl:for-each-group>
                 </tagged-values>
             </tagset>
+
+            <notes-rules>
+                <xsl:variable name="notes-rules" select="notes-rules"/> 
+                <xsl:apply-templates select="imf:distinct($notes-rules//notes-rule[@lang=($language,'#ALL')])" mode="#current"/>
+            </notes-rules>
+            
         </config>
     </xsl:template>
     

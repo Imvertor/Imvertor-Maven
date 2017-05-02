@@ -91,7 +91,7 @@ public class ChainTranslateAndReport {
 		
 		    configurator.save();
 		   
-		    configurator.getRunner().info(logger,"Processing application " + configurator.getParm("cli","project") +": "+ configurator.getParm("cli","application"));
+		    configurator.getRunner().info(logger,"Processing application " + configurator.getParm("cli","project") +"/"+ configurator.getParm("cli","application"));
 		    configurator.getRunner().setDebug();
 		    
 		    boolean succeeds = true;

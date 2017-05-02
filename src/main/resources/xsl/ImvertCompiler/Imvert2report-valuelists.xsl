@@ -28,32 +28,34 @@
     exclude-result-prefixes="#all" 
     version="2.0">
 
-    <xsl:variable name="referencelist-ids" select="/imvert:packages/imvert:package/imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-referentielijst')]/imvert:id"/>
-    <xsl:variable name="lists" select="/imvert:packages/imvert:package/imvert:class/imvert:attributes/imvert:attribute[imvert:type-id = $referencelist-ids]"/>
+    <xsl:variable name="referencelist-ids" select="$imvert-document/imvert:packages/imvert:package/imvert:class[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-referentielijst','stereotype-name-codelist'))]/imvert:id"/>
+    <xsl:variable name="lists" select="$imvert-document/imvert:packages/imvert:package/imvert:class/imvert:attributes/imvert:attribute[imvert:type-id = $referencelist-ids]"/>
     
     <xsl:template match="imvert:packages" mode="valuelists">
         <xsl:if test="exists($lists)">
             <page>
-                <title>Value lists</title>
+                <title>Reference and code lists</title>
                 <content>
                     <div>
                         <div class="intro">
                             <p>
-                                This overview shows all value lists in use, and which property has a value taken from this value list.
+                                This overview shows all reference/code lists in use, and which property has a value taken from this list.
                             </p>
                             <p>
-                                For each value list the following is specified:
+                                For each list the following is specified:
                             </p>
                             <ul>
-                                <li>Attribute for which the value is taken from the value list, in the form P::C.p in which P = package C = class, p = property</li>
-                                <li>The URL formal name of the list. This is its data-location, and gives access to the published information on this value list.</li>
+                                <li>Attribute for which the value is taken from the list, in the form P::C.p in which P = package C = class, p = property</li>
+                                <li>Type of list</li>
+                                <li>The URL formal name of the list. This is its Location, and gives access to the published information on this list.</li>
+                                <li>Origin of the data location</li>
                             </ul>
                         </div>
                         <table class="tablesorter"> 
                             <xsl:variable name="rows" as="element(tr)*">
                                 <xsl:apply-templates select="$lists" mode="valuelists"/> 
                             </xsl:variable>
-                            <xsl:sequence select="imf:create-result-table-by-tr($rows,'attribute:30,data location:70','table-values')"/>
+                            <xsl:sequence select="imf:create-result-table-by-tr($rows,'attribute:30,type:10,location:50,origin:10,','table-values')"/>
                         </table>
                     </div>
                 </content>
@@ -62,17 +64,27 @@
     </xsl:template>
     
     <xsl:template match="imvert:attribute" mode="valuelists">
+        <xsl:variable name="list" select="imf:get-construct-by-id(imvert:type-id)"/>
+        <xsl:variable name="my-location" select="imvert:data-location"/>
+        <xsl:variable name="its-location" select="$list/imvert:data-location"/>
+        <xsl:variable name="url" select="if ($my-location) then $my-location else $its-location"/>
+        <xsl:variable name="url-origin" select="if ($my-location) then 'attribute' else 'list'"/>
         <tr>
             <td>
                 <!-- wat is de naam van het type waardenlijst? -->
                 <xsl:sequence select="imf:get-construct-name(.)"/>
             </td>
             <td>
-                <!-- welke data-location heeft dit attribuut? -->
-                <xsl:variable name="url" select="imvert:data-location"/>
-                <a href="{$url}">
+                <!-- type waardenlijst -->
+                <xsl:sequence select="$list/imvert:stereotype"/>
+            </td>
+            <td>
+               <a href="{$url}">
                     <xsl:value-of select="$url"/>
                 </a>
+            </td>
+            <td>
+                <xsl:value-of select="$url-origin"/>
             </td>
         </tr>  
     </xsl:template>

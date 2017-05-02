@@ -7,6 +7,6 @@
     <!-- 
         BRO follows KKG
     --> 
-    <xi:include href="../../../KKG/cfg/tvsets/KKG.xml"/>
+    <xi:include href="../../../KKG/cfg/tvsets/KKG-ISO.xml"/>
     
 </tagset>

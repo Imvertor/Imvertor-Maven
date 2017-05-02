@@ -37,6 +37,12 @@
          <required>true</required>
       </cli-parm> 
       <cli-parm>
+         <name>notesrules</name>
+         <arg>name</arg>
+         <tip>Name of the configuration folder for notes rules</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
          <name>tvset</name>
          <arg>name</arg>
          <tip>Name of the configuration folder for tagged value set definitions</tip>

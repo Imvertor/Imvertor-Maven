@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <name>KKG-ISO</name>
+    
+    <desc> This is the profile of KKG for ISO compliance.</desc>
+    
+    <tagged-values>
+        
+        <xi:include href="../../../KKG/cfg/tvsets/KKG.xml"/>
+        
+        <tv id="DatumOpname">
+            <stereotypes>
+                <stereo required="yes">stereotype-name-relation-role</stereo> 
+            </stereotypes>
+        </tv> 
+        <tv id="IndicatieMateriëleHistorie">
+            <stereotypes>
+                <stereo required="yes">stereotype-name-relation-role</stereo> 
+            </stereotypes>
+        </tv>
+        <tv id="IndicatieFormeleHistorie">
+            <stereotypes>
+                <stereo required="yes">stereotype-name-relation-role</stereo> 
+            </stereotypes>
+        </tv>
+        <tv id="IndicatieAuthentiek">
+            <stereotypes>
+                <stereo required="yes">stereotype-name-relation-role</stereo> 
+            </stereotypes>
+        </tv>
+        <tv id="MogelijkGeenWaarde">
+            <stereotypes>
+                <stereo required="yes">stereotype-name-relation-role</stereo> 
+            </stereotypes>
+        </tv>
+        <tv id="Herkomst">
+            <stereotypes>
+                <stereo required="yes">stereotype-name-relation-role</stereo> 
+            </stereotypes>
+        </tv>
+        <tv id="HerkomstDefinitie">
+            <stereotypes>
+                <stereo required="yes">stereotype-name-relation-role</stereo> 
+            </stereotypes>
+        </tv>
+        <tv id="Toelichting">
+            <extract-from-notes>yes</extract-from-notes><!-- value may be read from notes field usig KKG-ISO scheme -->
+            <stereotypes>
+                <stereo required="no">stereotype-name-relation-role</stereo> 
+            </stereotypes>
+        </tv>      
+    </tagged-values>
+</tagset>

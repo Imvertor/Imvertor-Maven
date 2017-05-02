@@ -635,19 +635,20 @@
         <xsl:next-match/>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:designation=imf:get-config-stereotypes('stereotype-name-designation-datatype')]" priority="1">
+    <xsl:template match="imvert:class[imvert:designation='datatype']" priority="1">
         <!--setup-->
-        <xsl:variable name="datatype-stereos" select="('stereotype-name-datatype','stereotype-name-complextype','stereotype-name-union')"/>
+        <xsl:variable name="datatype-stereos" 
+            select="('stereotype-name-datatype','stereotype-name-complextype','stereotype-name-union','stereotype-name-referentielijst','stereotype-name-codelist','stereotype-name-interface')"/>
         <!--validation-->
         <xsl:sequence select="imf:report-warning(., 
             not(imvert:stereotype=imf:get-config-stereotypes($datatype-stereos)), 
-            'UML datatypes should be stereotyped as: [1]',string-join(imf:get-config-stereotypes($datatype-stereos),' or '))"/>
-        <xsl:sequence select="imf:report-warning(., 
-            not(imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-complextype','stereotype-name-union'))) and imvert:attributes/imvert:attribute, 
-            'Simple datatypes should not have attributes')"/>
-        <xsl:sequence select="imf:report-warning(., 
+            'UML datatypes should be stereotyped as: [1] and not [2]',(string-join(imf:get-config-stereotypes($datatype-stereos),' or '),imf:string-group(imvert:stereotype)))"/>
+        <xsl:sequence select="imf:report-error(., 
+            imvert:stereotype=imf:get-config-stereotypes('stereotype-name-datatype') and imvert:attributes/imvert:attribute, 
+            'Datatypes stereotyped as [1] may not have attributes',imf:string-group(imvert:stereotype))"/>
+        <xsl:sequence select="imf:report-error(., 
             imvert:associations/imvert:association, 
-            'Datatypes should not have associations')"/>
+            'Datatypes may not have associations')"/>
         <xsl:next-match/>
     </xsl:template>
     
@@ -766,10 +767,12 @@
         <!--setup-->
         <xsl:variable name="class" select="../.."/>
         <xsl:variable name="defining-class" select="if (imvert:type-id) then imf:get-construct-by-id(imvert:type-id) else ()"/>
+        <xsl:variable name="allowed-attribute-stereos" select="imf:get-config-stereotypes(('stereotype-name-attribute','stereotype-name-attributegroup'))"/>
         <!--validation-->
+        
         <xsl:sequence select="imf:report-error(., 
-            not(imvert:stereotype = imf:get-config-stereotypes('stereotype-name-attribute')), 
-            'Attribute must be stereotyped as [1]', imf:get-config-stereotypes('stereotype-name-attribute'))"/>
+            not(imvert:stereotype = $allowed-attribute-stereos), 
+            'Attribute must be stereotyped as [1]', string-join($allowed-attribute-stereos,' or '))"/>
         <xsl:next-match/>
     </xsl:template>
     
@@ -1354,8 +1357,8 @@
         <xsl:variable name="is-used-type" select="$document-classes/imvert:attributes/imvert:attribute/imvert:type-id=$this-id"/>
         <xsl:variable name="is-used-ref" select="$document-classes/imvert:associations/imvert:association/imvert:type-id=$this-id"/>
        
-        <xsl:variable name="superclass-is-target" select="(for $super-id in ($class/imvert:supertype/imvert:type-id) return imf:is-target-in-relation(imf:get-construct-by-id($super-id)))"/>
-        <xsl:variable name="subclass-is-target" select="(for $sub in (imf:get-immediate-subclasses($class,$document-classes)) return imf:is-target-in-relation($sub))"/>
+        <xsl:variable name="superclass-is-target" select="imf:boolean-or((for $super-id in ($class/imvert:supertype/imvert:type-id) return imf:is-target-in-relation(imf:get-construct-by-id($super-id))))"/>
+        <xsl:variable name="subclass-is-target" select="imf:boolean-or((for $sub in (imf:get-immediate-subclasses($class,$document-classes)) return imf:is-target-in-relation($sub)))"/>
         
         <xsl:sequence select="$is-used-type or $is-used-ref or $superclass-is-target "/><!-- TODO or $subclass-is-target -->
     </xsl:function>

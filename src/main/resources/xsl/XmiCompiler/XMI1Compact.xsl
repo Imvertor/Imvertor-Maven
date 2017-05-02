@@ -68,7 +68,7 @@
                 <xsl:sequence select="imf:msg('ERROR','{NPFF1}No project found for: [1], searched for [2]', ($application-package-name,$project-name))"/>
             </xsl:when>
             <xsl:when test="empty($app-package)">
-               <xsl:sequence select="imf:msg('ERROR','No application found: [1]', $application-package-name)"/>
+                <xsl:sequence select="imf:msg('ERROR','No application found: [1], available applications are: [2]', ($application-package-name, string-join($application-packages/@name,';')))"/>
            </xsl:when>
             <xsl:when test="count($app-package) ne 1">
                 <xsl:sequence select="imf:msg('ERROR','Several packages found with same application name: [1]', $application-package-name)"/>

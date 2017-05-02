@@ -100,7 +100,11 @@ public class OfficeCompiler extends Step {
 					ftpFolder.protocol = "false";
 					ftpFolder.username = passuser;
 					ftpFolder.password = passpass;
-
+	
+					ftpFolder.connectTimeout = 120000;
+					ftpFolder.controlKeepAliveTimeout = 180;
+					ftpFolder.dataTimeout = 120000;
+	
 					try {
 						ftpFolder.login();
 						ftpFolder.upload(officeFile.getCanonicalPath(),passpath);

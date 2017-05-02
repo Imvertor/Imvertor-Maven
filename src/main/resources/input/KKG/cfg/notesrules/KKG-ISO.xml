@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<notes-rules xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <name>KKG-ISO</name>
+    
+    <desc>These are the schemes to apply to notes fields in order to determine the tagged values.</desc>
+    
+    <notes-rule lang="en" default="Description">
+        <!-- when nothing marked, assume Description -->
+        
+        <section title="Name" tagged-value="TV-NAME"/>
+        <section title="Definition" tagged-value="TV-DEFINITION">
+            <!-- no labels allowd -->
+        </section>
+        <section title="Description" tagged-value="TV-DESCRIPTION">
+            <label title="SOURCE" tagged-value="TV-HERKOMST"/>
+            <label title="NOTE"/>
+            <label title="EXAMPLE"/>
+        </section>
+    </notes-rule>
+
+</notes-rules>

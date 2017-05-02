@@ -43,7 +43,7 @@
         </imvert:packages>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:designation = 'datatype']">
+    <xsl:template match="imvert:class[imvert:designation = 'datatype' and empty(imvert:stereotype)]">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
             <imvert:stereotype origin="system">

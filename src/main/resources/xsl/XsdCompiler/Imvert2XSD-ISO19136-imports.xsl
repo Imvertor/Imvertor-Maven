@@ -38,8 +38,8 @@
     
     <xsl:template match="/imvert:schemas">
         
-      <!-- 
-          for each schema, has entry in the form: 
+       <!-- 
+        each schema has entry in the form: 
         <imvert:schema>
             <imvert:name original="Adres">Adres</imvert:name>
             <imvert:prefix>a</imvert:name>
@@ -48,7 +48,8 @@
             <imvert:xsd-path>file:/D:/projects/validprojects/Kadaster-Imvertor/Imvertor-OS-work/default/app/xsd/PersoonZoekenEnOpvoeren/</imvert:xsd-path>
             <imvert:result-file-fullpath>file:/D:/projects/validprojects/Kadaster-Imvertor/Imvertor-OS-work/default/app/xsd/PersoonZoekenEnOpvoeren/CDMKAD-adres/v20150201/PersoonZoekenEnOpvoeren_Adres_v1_8_0.xsd</imvert:result-file-fullpath>
         </imvert:schema>
-      -->
+       -->
+        
         <imvert:schemas>
             <xsl:apply-templates select="imvert:schema"/>
         </imvert:schemas>  
@@ -82,8 +83,10 @@
             
             <xsl:sequence select="for $qname in .//xs:element/@type return imf:get-prefix($qname)"/>
             <xsl:sequence select="for $qname in .//xs:element/@ref return imf:get-prefix($qname)"/>
+            <xsl:sequence select="for $qname in .//xs:element/@substitutionGroup return imf:get-prefix($qname)"/>
             <xsl:sequence select="for $qname in .//xs:attribute/@type return imf:get-prefix($qname)"/>
             <xsl:sequence select="for $qname in .//xs:attribute/@ref return imf:get-prefix($qname)"/>
+            <xsl:sequence select="for $qname in .//xs:attributeGroup/@ref return imf:get-prefix($qname)"/>
             <xsl:sequence select="for $qname in .//xs:extension/@base return imf:get-prefix($qname)"/>
             <xsl:sequence select="for $qname in .//xs:restriction/@base return imf:get-prefix($qname)"/>
             <xsl:sequence select="for $qname in $uniontokens return imf:get-prefix($qname)"/>
@@ -123,8 +126,22 @@
                         </xsl:choose>
                         <namespace prefix="xlink" uri="http://www.w3.org/1999/xlink"/> 
                     </xsl:when>
+                    <xsl:when test="$prefix = 'gml'">
+                        <!-- this is referenced within referencing packages -->
+                        <xsl:choose>
+                            <xsl:when test="imf:boolean($external-schemas-reference-by-url)">
+                                <xs:import namespace="http://www.opengis.net/gml/3.2"
+                                    schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xs:import namespace="http://www.opengis.net/gml/3.2"
+                                    schemaLocation="../../../gml/3.2.1/gml.xsd"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <namespace prefix="gml" uri="http://www.opengis.net/gml/3.2"/> 
+                    </xsl:when>
                     <xsl:otherwise>
-                        <xsl:sequence select="imf:msg('ERROR', 'The qualifier [1] cannot be mapped onto a application or external schema',($prefix))"/>
+                        <xsl:sequence select="imf:msg('ERROR', 'The qualifier [1] cannot be mapped onto a application or external schema',$prefix)"/>
                     </xsl:otherwise>
                 </xsl:choose>
                 
@@ -140,7 +157,7 @@
                 </xsl:for-each>
                 <xsl:apply-templates select="xs:annotation"/>
                 <xsl:sequence select="$imports[self::xs:import]"/>
-                <xsl:apply-templates select="*[empty(self::xs:annotation)]"/>
+                <xsl:apply-templates select="node()[empty(self::xs:annotation)]"/>
             </xsl:copy>
         </xsl:result-document>
        
@@ -155,7 +172,16 @@
     
     <xsl:function name="imf:get-prefix" as="xs:string">
         <xsl:param name="Qname"/>
-        <xsl:sequence select="substring-before($Qname,':')"/>
+        <xsl:variable name="prefix" select="substring-before($Qname,':')"/>
+        <xsl:choose>
+            <xsl:when test="normalize-space($prefix)">
+                <xsl:value-of select="$prefix"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:msg('ERROR', 'No qualifier found within qualified name [1]',($Qname))"/>     
+                <xsl:value-of select="'UNKNOWN'"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     
 </xsl:stylesheet>

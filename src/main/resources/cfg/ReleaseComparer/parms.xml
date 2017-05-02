@@ -67,8 +67,8 @@
          -->
     <IMVERTOR_COMPARE_LISTING_XSLPATH>${properties/IMVERTOR_COMPARE_FOLDER}/xsl/Imvert/Imvert2compare-listing.xsl</IMVERTOR_COMPARE_LISTING_XSLPATH>
     <!-- 
-          The XSLT which holds the rules for comparion. This is assumd to be different for each type of metamodel / tagged value set.
-        -->
+          The XML which holds the rules for comparion. This is assumd to be different for each type of metamodel / tagged value set.
+      -->
     <IMVERTOR_COMPARE_CONFIG>${system/inp-folder-path}/cfg/comparerules/${cli/comparerules}.xml</IMVERTOR_COMPARE_CONFIG>
     <!-- 
           the model file is a copy of the model file of the control and test applications 

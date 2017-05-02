@@ -122,6 +122,7 @@
         </xsl:copy>
     </xsl:template>
 
+<?x
     <!-- temporary map from KKG to KK -->
     
     <xsl:template match="imvert:baretype">
@@ -176,7 +177,7 @@
         </xsl:choose>
         
     </xsl:template>
-    
+x?>    
     
     <?x
     <!-- mapping KKG -->

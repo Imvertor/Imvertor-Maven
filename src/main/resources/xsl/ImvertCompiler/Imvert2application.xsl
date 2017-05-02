@@ -90,13 +90,14 @@
         </xsl:copy>
     </xsl:template>
     
+    <!--x 
     <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-product','stereotype-name-process','stereotype-name-service'))]">
         <xsl:variable name="collection-name" select="concat(imvert:name,imf:get-config-parameter('imvertor-translate-suffix-components'))"/>
         <xsl:variable name="collection-id" select="concat('collection_', generate-id(.))"/>
         <xsl:variable name="collection-package-name" select="../imvert:name"/>
         <xsl:variable name="collection-class" as="element()?">
-            <!-- when no collection type class referenced, roll your own --> 
-            <!-- IM-110 but only when buildcollection yes -->
+            <!- - when no collection type class referenced, roll your own - -> 
+            <!- - IM-110 but only when buildcollection yes - ->
             <xsl:if test="imf:boolean($buildcollection)">
                 <xsl:if test="not(imvert:associations/imvert:association/imvert:type-id[imf:get-construct-by-id(.)/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-collection')])">
                     <xsl:sequence select="imf:msg('INFO','Catalog class [1] ([2]) does not include any collection. Appending [3].', (string(imf:get-construct-name(.)), string-join(imvert:stereotype,', '),$collection-name))"/>
@@ -129,10 +130,10 @@
             <xsl:sequence select="*[not(self::imvert:associations)]"/>
             <imvert:associations>
                 <xsl:sequence select="imvert:associations/imvert:association"/>
-                <!-- 
+                <!- - 
                     IM-136 
                     alleen deze constructie als geen subtype van een ander product.
-                -->
+                - ->
                 <xsl:if test="$collection-class and empty($super-products)">
                     <imvert:association>
                         <xsl:sequence select="imf:create-output-element('imvert:name',imf:get-config-parameter('imvertor-translate-association-components'))"/>
@@ -149,7 +150,7 @@
             
         <xsl:sequence select="$collection-class"/>
     </xsl:template>
-    
+    x-->
     
     <!-- finalization: add some info to the compiled document fragment -->
     

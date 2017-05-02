@@ -205,6 +205,7 @@
       <configuration-owner-file>${system/inp-folder-path}/cfg/owners/${cli/owner}.xml</configuration-owner-file>
       <configuration-tvset-file>${system/inp-folder-path}/cfg/tvsets/${cli/tvset}.xml</configuration-tvset-file>
       <configuration-schemarules-file>${system/inp-folder-path}/cfg/schemarules/${cli/schemarules}.xml</configuration-schemarules-file>
+      <configuration-notesrules-file>${system/inp-folder-path}/cfg/notesrules/${cli/notesrules}.xml</configuration-notesrules-file>
       <configuration-metamodel-file>${system/inp-folder-path}/cfg/metamodels/${cli/metamodel}.xml</configuration-metamodel-file>
       <configuration-i3n-file>${system/inp-folder-path}/cfg/i3n/translation.xml</configuration-i3n-file>
    </system>
