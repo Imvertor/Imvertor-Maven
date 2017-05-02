@@ -35,6 +35,9 @@
 		<xsl:variable name="msg" select="'Creating the StUF XML-Schema'"/>
 		<xsl:sequence select="imf:msg('DEBUG',$msg)"/>
 		<xs:schema targetNamespace="{$message-set-namespaceIdentifier}" elementFormDefault="qualified" attributeFormDefault="unqualified" version="{concat(ep:patch-number,'-',ep:release)}">
+			<xsl:variable name="namespaces">
+				<xsl:copy-of select="ep:namespaces"/>
+			</xsl:variable>
 			<xsl:for-each select="ep:namespaces/ep:namespace">
 				<xsl:namespace name="{@prefix}"><xsl:value-of select="."/></xsl:namespace>
 			</xsl:for-each>
@@ -45,9 +48,9 @@
 						<ep:namespace identifier="{@namespaceId}" prefix="{@prefix}"/>
 					</xsl:for-each-->
 					<xsl:if test="@KV-namespace = 'yes'">
-						<xsl:for-each select="..//ep:constructRef[@namespaceId and @prefix and not(@prefix = $message-set-prefix) and not(@prefix = $StUF-prefix)] | ..//ep:construct[@namespaceId and @prefix and not(@prefix = $message-set-prefix) and not(@prefix = $StUF-prefix)]">
-							<xsl:variable name="href" select="ep:href"/>
-							<ep:namespace identifier="{@namespaceId}" prefix="{@prefix}"/>
+						<xsl:for-each select=".//ep:constructRef[@prefix and not(@prefix = $message-set-prefix) and not(@prefix = $StUF-prefix) and not(@prefix = '$actualPrefix')] | .//ep:construct[@prefix and not(@prefix = $message-set-prefix) and not(@prefix = $StUF-prefix) and not(@prefix = '$ACTUALPREFIX')]">
+							<xsl:variable name="prefix" select="@prefix"/>
+							<ep:namespace identifier="{$namespaces//ep:namespace[@prefix = $prefix]}" prefix="{$prefix}"/>
 						</xsl:for-each>
 					</xsl:if>
 				</ep:namespaces>
@@ -57,37 +60,47 @@
 				<xsl:namespace name="{@prefix}"><xsl:value-of select="@identifier"/></xsl:namespace>
 			</xsl:for-each>
 
-			<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="../0302/stuf0302.xsd"/>
+			<xsl:choose>
+				<xsl:when test="@prefix = $StUF-prefix">
+					<xs:include schemaLocation="../0302/stuf0302.xsd"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="../0302/stuf0302.xsd"/>
+					<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="StUF-simpleTypes.xsd"/>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:for-each select="$namespaces2bImported/ep:namespaces/ep:namespace[@prefix != $message-set-prefix and @prefix != '' and not(@prefix = preceding-sibling::ep:namespace/@prefix)]">
 				<xs:import namespace="{@identifier}" schemaLocation="{concat(upper-case(@prefix),'.xsd')}"/>
 			</xsl:for-each>
 			
 			<xsl:sequence select="imf:create-debug-comment('ROME: Message elements',$debugging)"/>
+			
 			<xsl:apply-templates select="ep:message"/>
 			
-			<xsl:sequence select="imf:create-debug-comment('ROME: ComplexTypes representing Groups',$debugging)"/>
-			<xsl:apply-templates select="ep:construct[@type='group']" mode="complexType"/>
+			<!--xsl:sequence select="imf:create-debug-comment('ROME: ComplexTypes representing Groups',$debugging)"/>
+			<xsl:apply-templates select="ep:construct[@type='group']" mode="complexType"/-->
 			
 			<xsl:sequence select="imf:create-debug-comment('ROME: Regular complexTypes',$debugging)"/>
-			<xsl:apply-templates select="ep:construct[@type='complexData']" mode="complexType"/>
+			<xsl:apply-templates select="ep:construct[empty(@ismetadata) and empty(ep:data-type) and empty(ep:type-name)]" mode="complexType"/>
 			
 			<!--xsl:sequence select="imf:create-debug-comment('ROME: Regular complexTypes generated form typeless constructs',$debugging)"/>
 			<xsl:apply-templates select="ep:construct[not(@type)]" mode="complexType"/-->
 			
-			<xsl:sequence select="imf:create-debug-comment('ROME: SimpleContent complexTypes',$debugging)"/>
-			<xsl:apply-templates select="ep:construct[@type='simpleContentcomplexData']" mode="simpleContentComplexType"/>
+			<xsl:sequence select="imf:create-debug-comment('ROME: simpleType extending complexTypes',$debugging)"/>
+			<xsl:apply-templates select="ep:construct[substring-after(ep:type-name,':') = //ep:message-set/ep:construct[@isdatatype and @prefix=$StUF-prefix]/ep:tech-name and @prefix=$StUF-prefix]" mode="simpleContentComplexType"/>
 			
-			<xsl:sequence select="imf:create-debug-comment('ROME: SimpleTypes',$debugging)"/>
-			<xsl:apply-templates select="ep:construct[@type='simpleData']" mode="simpleType"/>
+			<xsl:sequence select="imf:create-debug-comment('ROME: simpleTypes',$debugging)"/>
+			<xsl:apply-templates select="ep:construct[@isdatatype]" mode="simpleType"/>
 			
 			<xsl:sequence select="imf:create-debug-comment('simpleTypes to be extended with XML attributes',$debugging)"/>
 
-			<xsl:apply-templates select=".//ep:construct[(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata]]" mode="createSimpleTypes"/>
+			<!--xsl:apply-templates select=".//ep:construct[(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata]]" mode="createSimpleTypes"/-->
 			<xsl:apply-templates select="ep:constructRef[@ismetadata]|ep:construct[@ismetadata]" mode="generateAttributes"/>
 		</xs:schema>
 	</xsl:template>
 
 	<xsl:template match="ep:message">
+		<xsl:sequence select="imf:create-debug-comment('Debuglocation 5000',$debugging)"/>
 		<xs:element name="{ep:tech-name}">
 			<xsl:if test="ep:documentation">
 				<xs:annotation>
@@ -103,6 +116,7 @@
 	
 	<xsl:template match="ep:seq">
 		<xsl:if test="ep:constructRef[not(@ismetadata)]|ep:construct[not(@ismetadata)]|ep:seq|ep:choice">
+			<xsl:sequence select="imf:create-debug-comment('Debuglocation 5001',$debugging)"/>
 			<xs:sequence>
 				<xsl:if test="ep:min-occurs = 0">
 					<xsl:attribute name="minOccurs" select="0"/>
@@ -113,10 +127,12 @@
 	</xsl:template>
 	
 	<xsl:template match="ep:seq" mode="generateAttributes">
+		<xsl:sequence select="imf:create-debug-comment('Debuglocation 5002',$debugging)"/>
 		<xsl:apply-templates select="ep:constructRef[@ismetadata]|ep:construct[@ismetadata]" mode="generateAttributes"/>
 	</xsl:template>
 
 	<xsl:template match="ep:choice">
+		<xsl:sequence select="imf:create-debug-comment('Debuglocation 5003',$debugging)"/>
 		<xs:choice>
 			<xsl:if test="ep:min-occurs = 0">
 				<xsl:attribute name="minOccurs" select="0"/>
@@ -127,18 +143,27 @@
 	
 	<xsl:template match="ep:construct">
 		<!-- ROME: Waar moet ep:regels naar vertaald worden? -->
+		<xsl:sequence select="imf:create-debug-comment('Debuglocation 5004',$debugging)"/>
+
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
-		<xsl:variable name="type-name" select="ep:type-name"/>
+		<xsl:variable name="type-name">
+			<xsl:choose>
+				<xsl:when test="contains(ep:type-name,':')"><xsl:value-of select="ep:type-name"/></xsl:when>
+				<xsl:otherwise><xsl:value-of select="concat(@prefix,':',ep:type-name)"/></xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="data-type" select="ep:data-type"/>
 		<xs:element>
 			<xsl:if test="ep:voidable = 'Ja'">
 				<xsl:attribute name="nillable" select="'true'"/>
 			</xsl:if>
 			<xsl:choose>
-				<xsl:when test="contains($type-name,':') and not(ep:enum)">
+				<xsl:when test="ep:type-name and not(ep:enum)">
 					<xsl:attribute name="name" select="ep:tech-name"/>
 					<xsl:attribute name="type" select="$type-name"/>
 					<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
 					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>					
+					<xsl:sequence select="imf:create-debug-comment('Debuglocation 5005',$debugging)"/>
 					<xsl:if test="ep:documentation">
 						<xs:annotation>
 							<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
@@ -147,92 +172,56 @@
 				</xsl:when>
 <!-- ROME: Hieronder wordt een id gegenereerd. Dat is echter eigenlijk niet gewenst omdat daarbij de naam van de simpleType na elke generatie slag anders kan zijn.
 		   Dat zou betekenen dat leveranciers steeds hun gegenereerde code moeten aanpassen. We moeten dus een manier zien te vinden die toekomstvaster is. -->
-				<xsl:when test="contains($type-name,':') and ep:enum">
+				<xsl:when test="ep:type-name and ep:enum">
 					<xsl:attribute name="name" select="ep:tech-name"/>
-					<xsl:attribute name="type">
+					<xsl:attribute name="type" select="$type-name"/>
+					<!--xsl:attribute name="type">
 						<xsl:value-of select="concat(ancestor::ep:message-set/@prefix,':',imf:get-normalized-name(concat('simpleType-',ep:tech-name,'-',generate-id()),'type-name'))"/>
-					</xsl:attribute>
+					</xsl:attribute-->
 					<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
 					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>					
+					<xsl:sequence select="imf:create-debug-comment('Debuglocation 5006',$debugging)"/>
 					<xsl:if test="ep:documentation">
 						<xs:annotation>
 							<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
 						</xs:annotation>
 					</xsl:if>
 				</xsl:when>
-				<xsl:when test="$type-name = 'scalar-date' or 
-					            $type-name = 'scalar-datetime' or 
-					            $type-name = 'scalar-year' or 
-					            $type-name = 'scalar-yearmonth' or 
-					            $type-name = 'scalar-postcode' or 
-					            $type-name = 'Refnummer' or 
-					            $type-name = 'Tijdstip' or 
-					            contains($type-name,'Berichtcode') or 
-					            $type-name = 'Organisatie' or
-					            $type-name = 'Applicatie' or
-					            $type-name = 'Administratie' or
-					            $type-name = 'Gebruiker' or
-					            $type-name = 'Entiteittype' or
-					            $type-name = 'Versienr' or
-					            $type-name = 'Functie' or
-					            $type-name = 'IndicatorHistorie' or
-					            $type-name = 'IndicatorOvername' or
-					            $type-name = 'MaximumAantal' or
-					            $type-name = 'Mutatiesoort' or
-					            $type-name = 'Volgnummer' or
-					            $type-name = 'Sortering' or
-					            $type-name = 'AantalVoorkomens'">						
+				<xsl:when test="ep:data-type and
+							   ($data-type = 'scalar-date' or 
+							   $data-type = 'scalar-datetime' or 
+							   $data-type = 'scalar-year' or 
+							   $data-type = 'scalar-yearmonth' or 
+							   $data-type = 'scalar-postcode')">						
 					<xsl:attribute name="name" select="ep:tech-name"/>
 					<xsl:attribute name="type">
 						<xsl:choose>
-							<xsl:when test="$type-name = 'scalar-date' and ep:type-modifier = '?'">
+							<xsl:when test="$data-type = 'scalar-date' and ep:type-modifier = '?'">
 								<xsl:value-of select="concat($StUF-prefix,':DatumMogelijkOnvolledig-e')"/>
 							</xsl:when>
-							<xsl:when test="$type-name = 'scalar-date'">
+							<xsl:when test="$data-type = 'scalar-date'">
 								<xsl:value-of select="concat($StUF-prefix,':Datum-e')"/>
 							</xsl:when>
-							<xsl:when test="$type-name = 'scalar-datetime' and ep:type-modifier = '?'">
+							<xsl:when test="$data-type = 'scalar-datetime' and ep:type-modifier = '?'">
 								<xsl:value-of select="concat($StUF-prefix,':TijdstipMogelijkOnvolledig-e')"/>
 							</xsl:when>
-							<xsl:when test="$type-name = 'scalar-datetime'">
+							<xsl:when test="$data-type = 'scalar-datetime'">
 								<xsl:value-of select="concat($StUF-prefix,':Tijdstip-e')"/>
 							</xsl:when>
-							<xsl:when test="$type-name = 'scalar-year'">
+							<xsl:when test="$data-type = 'scalar-year'">
 								<xsl:value-of select="concat($StUF-prefix,':Jaar-e')"/>
 							</xsl:when>
-							<xsl:when test="$type-name = 'scalar-yearmonth'">
+							<xsl:when test="$data-type = 'scalar-yearmonth'">
 								<xsl:value-of select="concat($StUF-prefix,':JaarMaand-e')"/>
 							</xsl:when>
-							<xsl:when test="$type-name = 'scalar-postcode'">
+							<xsl:when test="$data-type = 'scalar-postcode'">
 								<xsl:value-of select="concat($StUF-prefix,':Postcode-e')"/>
 							</xsl:when>
-							<xsl:when test="$type-name = 'Tijdstip'">
-								<xsl:value-of select="'xs:dateTime'"/>
-							</xsl:when>
-							<xsl:when test="$type-name = 'Refnummer' or 
-											contains($type-name,'Berichtcode') or 
-											$type-name = 'Organisatie' or
-											$type-name = 'Applicatie' or
-											$type-name = 'Administratie' or
-											$type-name = 'Gebruiker' or
-											$type-name = 'Entiteittype' or
-											$type-name = 'Versienr' or
-											$type-name = 'Functie' or
-											$type-name = 'IndicatorHistorie' or
-											$type-name = 'IndicatorOvername' or
-											$type-name = 'MaximumAantal' or
-											$type-name = 'Mutatiesoort' or
-											$type-name = 'Volgnummer' or
-											$type-name = 'Sortering' or
-											$type-name = 'AantalVoorkomens'">
-								<xsl:value-of select="concat($StUF-prefix,':',$type-name)"/>
-							</xsl:when>		
-							
-							
 						</xsl:choose>
 					</xsl:attribute>
 					<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
 					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>					
+					<xsl:sequence select="imf:create-debug-comment('Debuglocation 5006',$debugging)"/>
 					<xsl:if test="ep:documentation">
 						<xs:annotation>
 							<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
@@ -247,6 +236,7 @@
 						<!-- When a construct contains facets (which means it has to become an element without child elements) and it contains metadata constructs a 
 							 extension complexType needs to be generated which contains the xml-attributes based on a simpleType which contains the facets. -->
 						<xsl:when test="(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata]">
+							<xsl:sequence select="imf:create-debug-comment('Debuglocation 5007',$debugging)"/>
 							<xsl:if test="ep:documentation">
 								<xs:annotation>
 									<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
@@ -267,6 +257,7 @@
 						<!-- When a construct contains facets (which means it has to become an element without child elements) and it doesn't contain metadata constructs 
 							 a restriction simpleType can be generated which contains the facets. -->
 						<xsl:when test="(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:regels or ep:enum) and ep:type-name">
+							<xsl:sequence select="imf:create-debug-comment('Debuglocation 5008',$debugging)"/>
 							<xsl:if test="ep:documentation">
 								<xs:annotation>
 									<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
@@ -336,6 +327,7 @@
 						</xsl:when>
 						<!-- When a construct doensn't contain facets and metadata constructs a restriction simpleType can be generated without facets. -->
 						<xsl:when test="$type-name and .//ep:construct[@ismetadata]">
+							<xsl:sequence select="imf:create-debug-comment('Debuglocation 5009',$debugging)"/>
 							<xsl:if test="ep:documentation">
 								<xs:annotation>
 									<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
@@ -374,6 +366,7 @@
 						</xsl:when>
 						<!-- When a construct doensn't contain facets and metadata constructs a restriction simpleType can be generated without facets. -->
 						<xsl:when test="ep:type-name">
+							<xsl:sequence select="imf:create-debug-comment('Debuglocation 5010',$debugging)"/>
 							<xsl:if test="ep:documentation">
 								<xs:annotation>
 									<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
@@ -409,6 +402,7 @@
 							</xs:simpleType>				
 						</xsl:when>
 						<xsl:when test=".//ep:construct">
+							<xsl:sequence select="imf:create-debug-comment('Debuglocation 5011',$debugging)"/>
 							<xsl:if test="ep:documentation">
 								<xs:annotation>
 									<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
@@ -423,6 +417,7 @@
 							</xs:complexType>
 						</xsl:when>
 						<xsl:otherwise>
+							<xsl:sequence select="imf:create-debug-comment('Debuglocation 5012',$debugging)"/>
 							<xsl:if test="ep:documentation">
 								<xs:annotation>
 									<xs:documentation><xsl:value-of select="ep:documentation"/></xs:documentation>
@@ -443,6 +438,8 @@
 	</xsl:template>
 					
 	<xsl:template match="ep:construct" mode="complexType">
+		<xsl:sequence select="imf:create-debug-comment('Debuglocation 5012',$debugging)"/>
+
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
 		<xsl:if test="ep:seq/ep:* or ep:choice/ep:*">
 			<xs:complexType>
@@ -454,6 +451,7 @@
 				</xsl:if>
 				<xsl:choose>
 					<xsl:when test="ep:superconstructRef">
+						<xsl:sequence select="imf:create-debug-comment('Debuglocation 5013',$debugging)"/>
 						<xs:complexContent>
 							<xs:extension base="{concat(ep:superconstructRef/@prefix,':',ep:superconstructRef/ep:tech-name)}">
 								<xsl:apply-templates select="ep:seq | ep:choice"/>
@@ -462,6 +460,7 @@
 						</xs:complexContent>
 					</xsl:when>
 					<xsl:otherwise>
+						<xsl:sequence select="imf:create-debug-comment('Debuglocation 5014',$debugging)"/>
 						<xsl:apply-templates select="ep:seq | ep:choice"/>
 						<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>						
 					</xsl:otherwise>
@@ -471,6 +470,7 @@
 	</xsl:template>
 	
 	<xsl:template match="ep:construct" mode="simpleContentComplexType">
+		<xsl:sequence select="imf:create-debug-comment('Debuglocation 5015',$debugging)"/>
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
 		<xsl:if test="ep:seq/ep:* or ep:choice/ep:*">
 			<xs:complexType>
@@ -490,29 +490,30 @@
 	</xsl:template>
 
 	<xsl:template match="ep:construct" mode="simpleType">
+		<xsl:sequence select="imf:create-debug-comment('Debuglocation 5016',$debugging)"/>
 		<xs:simpleType name="{ep:tech-name}">
 			<xs:restriction>
 				<xsl:attribute name="base">
 					<xsl:choose>
-						<xsl:when test="ep:type-name = 'scalar-integer'">
+						<xsl:when test="ep:data-type = 'scalar-integer'">
 							<xsl:value-of select="'xs:integer'"/>
 						</xsl:when>
-						<xsl:when test="ep:type-name = 'scalar-decimal'">
+						<xsl:when test="ep:data-type = 'scalar-decimal'">
 							<xsl:value-of select="'xs:decimal'"/>
 						</xsl:when>
-						<xsl:when test="ep:type-name = 'scalar-string'">
+						<xsl:when test="ep:data-type = 'scalar-string'">
 							<xsl:value-of select="'xs:string'"/>
 						</xsl:when>
-						<xsl:when test="ep:type-name = 'scalar-date'">
+						<xsl:when test="ep:data-type = 'scalar-date'">
 							<xsl:value-of select="'xs:dateTime'"/>
 						</xsl:when>
-						<xsl:when test="ep:type-name = 'scalar-boolean'">
+						<xsl:when test="ep:data-type = 'scalar-boolean'">
 							<xsl:value-of select="'xs:boolean'"/>
 						</xsl:when>
-						<xsl:when test="ep:type-name = 'scalar-uri'">
+						<xsl:when test="ep:data-type = 'scalar-uri'">
 							<xsl:value-of select="'xs:anyURI'"/>
 						</xsl:when>
-						<xsl:when test="ep:type-name = 'scalar-postcode'">
+						<xsl:when test="ep:data-type = 'scalar-postcode'">
 							<xsl:value-of select="concat($StUF-prefix,':postcode')"/>
 						</xsl:when>
 						<xsl:otherwise>
@@ -523,10 +524,10 @@
 				</xsl:attribute>
 				<xsl:if test="ep:length">
 					<xsl:choose>
-						<xsl:when test="ep:type-name = 'scalar-string'">
+						<xsl:when test="ep:data-type = 'scalar-string'">
 							<xs:length value="{ep:length}" />
 						</xsl:when>
-						<xsl:when test="ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
+						<xsl:when test="ep:data-type = 'scalar-integer' or ep:data-type = 'scalar-decimal'">
 							<xs:totalDigits value="{ep:length}" />
 						</xsl:when>
 					</xsl:choose>
@@ -537,10 +538,10 @@
 				<xsl:if test="ep:min-length">
 					<xs:minLength value="{ep:min-length}" />
 				</xsl:if>
-				<xsl:if test="ep:min-value and (ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-date')">
+				<xsl:if test="ep:min-value and (ep:data-type = 'scalar-integer' or ep:data-type = 'scalar-decimal' or ep:data-type = 'scalar-date')">
 					<xs:minInclusive value="{ep:min-value}" />
 				</xsl:if>
-				<xsl:if test="ep:max-value and (ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-date')">
+				<xsl:if test="ep:max-value and (ep:data-type = 'scalar-integer' or ep:data-type = 'scalar-decimal' or ep:data-type = 'scalar-date')">
 					<xs:maxInclusive value="{ep:max-value}" />
 				</xsl:if>
 				<xsl:if test="ep:fraction-digits">
@@ -550,7 +551,7 @@
 				<xsl:if test="ep:enum">
 					<xsl:apply-templates select="ep:enum"/>
 				</xsl:if>
-				<xsl:if test="ep:formeel-patroon and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-boolean')">
+				<xsl:if test="ep:formeel-patroon and (ep:data-type = 'scalar-string' or ep:data-type = 'scalar-date' or ep:data-type = 'scalar-integer' or ep:data-type = 'scalar-decimal' or ep:data-type = 'scalar-boolean')">
 					<xs:pattern value="{ep:formeel-patroon}" />
 				</xsl:if>								
 			</xs:restriction>
@@ -558,6 +559,7 @@
 	</xsl:template>
 	
 	<xsl:template match="ep:constructRef">
+		<xsl:sequence select="imf:create-debug-comment('Debuglocation 5018',$debugging)"/>
 		<xsl:variable name="href" select="ep:href"/>
 		<!-- Only if the ep:constructRef refers to an available ep:construct it's transformed to an element. 
 			 In theory (and maybe in practice) this can lead to another empty ep:construct which on its turn should be ignored.
@@ -565,20 +567,22 @@
 		<xsl:if test=" @prefix = $StUF-prefix or ancestor::ep:message-set//ep:construct[ep:tech-name = $href and (ep:seq/ep:* or ep:choice/ep:*)]">
 			<xs:element>
 				<xsl:choose>
-					<xsl:when test="ep:href">
+					<xsl:when test="ep:href and (ep:data-type or ep:type-name)">
 						<xsl:attribute name="name" select="ep:tech-name"/>
-						<xsl:variable name="actualPrefix">
+						<?x xsl:variable name="actualPrefix">
 							<xsl:choose>
-								<xsl:when test="@prefix"><xsl:value-of select="@prefix"/></xsl:when>
-								<xsl:otherwise>
+								<!--xsl:when test="@prefix"><xsl:value-of select="@prefix"/></xsl:when>
+								<xsl:otherwise-->
 									<xsl:value-of select="ancestor::ep:message-set//ep:construct[ep:tech-name = $href]/@prefix"/>
 								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:variable>
-						<xsl:attribute name="type" select="concat($actualPrefix,':',ep:href)"/>					
+						<xsl:attribute name="type" select="concat($actualPrefix,':',ep:href)"/ x?>					
+						<xsl:attribute name="type" select="ep:href"/>					
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:attribute name="ref" select="concat(@prefix,':',ep:tech-name)"/>
+						<?x xsl:attribute name="ref" select="concat(@prefix,':',ep:tech-name)"/ x?>
+						<xsl:attribute name="ref" select="ep:href"/>					
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
@@ -593,7 +597,7 @@
 	</xsl:template>
 	
 	<!-- ROME: Onderstaande template kan mogelijk komen te vervallen (integreren met de andere ep:construct templates). -->
-	<xsl:template match="ep:construct" mode="createSimpleTypes">
+	<?x xsl:template match="ep:construct" mode="createSimpleTypes">
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id,'{'),'}')"/>
 		<xsl:variable name="name">
 			<xsl:choose>
@@ -687,7 +691,7 @@
 				</xs:simpleType>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>
+	</xsl:template x?>
 	
 	<!-- ROME: Onderstaande template kan mogelijk komen te vervallen (integreren met de andere ep:construct templates). -->
 	<xsl:template match="ep:construct[@ismetadata='yes']" mode="generateAttributes">
@@ -782,6 +786,7 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xs:attribute>
+				<xsl:sequence select="imf:create-debug-comment('Debuglocation 5019',$debugging)"/>
 			</xsl:when>
 			<xsl:when test="not(ep:href) and @prefix">
 				<xsl:variable name="actualPrefix">
@@ -798,6 +803,7 @@
 						</xsl:choose>
 					</xsl:attribute>
 				</xs:attribute>
+				<xsl:sequence select="imf:create-debug-comment('Debuglocation 5020',$debugging)"/>
 			</xsl:when>
 			<xsl:when test="ep:href">
 				<xs:attribute name="{ep:tech-name}" type="{ep:href}">
@@ -808,6 +814,7 @@
 						</xsl:choose>
 					</xsl:attribute>
 				</xs:attribute>
+				<xsl:sequence select="imf:create-debug-comment('Debuglocation 5021',$debugging)"/>
 			</xsl:when>
 			<xsl:when test="not(ep:href) and not(@prefix) and contains(ep:type-name,concat($StUF-prefix,':'))">
 				<xs:attribute name="{ep:tech-name}" type="{ep:type-name}">
@@ -818,6 +825,7 @@
 						</xsl:choose>
 					</xsl:attribute>
 				</xs:attribute>				
+				<xsl:sequence select="imf:create-debug-comment('Debuglocation 5022',$debugging)"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xs:attribute name="{ep:tech-name}">
@@ -886,6 +894,7 @@
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:attribute>				
+				<xsl:sequence select="imf:create-debug-comment('Debuglocation 5023',$debugging)"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -908,9 +917,11 @@
 				<xsl:attribute name="fixed" select="ep:enum"/>
 			</xsl:if>
 		</xs:attribute>
+		<xsl:sequence select="imf:create-debug-comment('Debuglocation 5024',$debugging)"/>
 	</xsl:template>
 	
 	<xsl:template match="ep:enum">
+		<xsl:sequence select="imf:create-debug-comment('Debuglocation 5025',$debugging)"/>
 		<xs:enumeration value="{.}"/>
 	</xsl:template>
 	

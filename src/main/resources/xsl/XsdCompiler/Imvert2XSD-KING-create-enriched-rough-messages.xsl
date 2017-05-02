@@ -196,6 +196,9 @@
 					<xsl:attribute name="verwerkingsModus" select="'ROME'"/>
 				</xsl:otherwise>
 			</xsl:choose>
+			<xsl:if test="(contains($berichtCode,'La') or (contains($berichtCode,'Di') and @context = 'antwoord' or ancestor::ep:construct[@context = 'antwoord'])) and ep:name = 'gerelateerde' and parent::ep:construct[@indicatieFormeleHistorieRelatie='Ja']">
+				<xsl:attribute name="indicatieFormeleHistorieRelatie" select="'Ja'"/>
+			</xsl:if>
 			<xsl:choose>
 				<xsl:when test="contains($berichtCode,'Di') or contains($berichtCode,'Du')">
 					<xsl:choose>

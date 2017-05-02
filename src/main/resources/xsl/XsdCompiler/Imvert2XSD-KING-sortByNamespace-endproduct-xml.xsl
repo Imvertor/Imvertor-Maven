@@ -16,7 +16,7 @@
     xmlns:metadata="http://www.kinggemeenten.nl/metadataVoorVerwerking" 
     xmlns:ztc="http://www.kinggemeenten.nl/ztc0310" 
     xmlns:stuf="http://www.stufstandaarden.nl/onderlaag/stuf0302" 
-    
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"    
     xmlns:ss="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
     
     version="2.0">
@@ -25,7 +25,7 @@
 
     <xsl:import href="Imvert2XSD-KING-common.xsl"/>
       
-    <xsl:output indent="yes" method="xml" encoding="UTF-8"/>
+    <xsl:output indent="yes" method="xml" encoding="UTF-8" exclude-result-prefixes="xhtml"/>
     
     <xsl:variable name="stylesheet-code" as="xs:string">SKS</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
@@ -33,6 +33,7 @@
     <xsl:variable name="stylesheet">Imvert2XSD-KING-ordered-endproduct-xml</xsl:variable>
     <xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-ordered-endproduct-xml.xsl 7487 2016-04-02 07:27:03Z arjan $</xsl:variable> 
     
+    <xsl:variable name="StUF-prefix" select="'StUF'"/>
     <xsl:variable name="kv-prefix" select="/ep:message-set/ep:namespace-prefix"/>
     
     <xsl:variable name="patch">
@@ -46,15 +47,18 @@
     </xsl:template>
     
     <xsl:template match="ep:message-set" mode="patch">
-        <ep:constructRef prefix="StUF" ismetadata="yes">
+        <xsl:sequence select="imf:create-debug-comment('Debuglocation 3000',$debugging)"/>
+
+        <!--ep:constructRef prefix="StUF" ismetadata="yes">
             <ep:name>patch</ep:name>
             <ep:tech-name>patch</ep:tech-name>
             <ep:min-occurs>1</ep:min-occurs>
             <ep:href>patch</ep:href>
-        </ep:constructRef>
-        <xsl:for-each-group select="/ep:message-set/ep:*[name() = 'ep:message' or name() = 'ep:construct']" group-by="@prefix">
+        </ep:constructRef-->
+        <xsl:for-each-group select="/ep:message-set/ep:*[(name() = 'ep:message' or name() = 'ep:construct')]" group-by="@prefix">
             <xsl:variable name="groupPrefix" select="current-grouping-key()"/>
-            <xsl:comment select="'$groupPrefix'"/>
+            <xsl:sequence select="imf:create-debug-comment('Debuglocation 3001',$debugging)"/>
+            
             <ep:constructRef prefix="{$groupPrefix}" ismetadata="yes">
                 <ep:name>patch</ep:name>
                 <ep:tech-name>patch</ep:tech-name>
@@ -65,6 +69,8 @@
     </xsl:template>
     
     <xsl:template match="ep:message-set">
+        <xsl:sequence select="imf:create-debug-comment('Debuglocation 3002',$debugging)"/>
+
         <xsl:variable name="namespaces">
             <ep:namespaces>
                 <xsl:apply-templates select="ep:namespaces/ep:namespace"/>
@@ -77,14 +83,18 @@
             </ep:namespaces>
         </xsl:variable>
         <xsl:for-each-group select="ep:*[name() = 'ep:message' or name() = 'ep:construct']" group-by="@prefix">
+            <xsl:sequence select="imf:create-debug-comment('Debuglocation 3003',$debugging)"/>
+
             <xsl:variable name="groupPrefix" select="current-grouping-key()"/>
-            <xsl:variable name="groupNamespaceId" select="../ep:construct[@prefix = $groupPrefix and @namespaceId][1]/@namespaceId"/>
+            <xsl:variable name="groupNamespaceId" select="../ep:construct[@prefix = $groupPrefix and @namespaceId and @namespaceId!=''][1]/@namespaceId"/>
             <ep:message-set prefix="{$groupPrefix}">
                 <xsl:if test="$kv-prefix = $groupPrefix">
                     <xsl:attribute name="KV-namespace" select="'yes'"/>
                 </xsl:if>
                 <xsl:choose>
                     <xsl:when test="$groupPrefix = $kv-prefix">
+                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 3004',$debugging)"/>
+
                         <xsl:sequence select="imf:create-debug-comment('Dit is de KV namespace.',$debugging)"/>                
                         <xsl:apply-templates select="../ep:*[name() != 'ep:message' and name() != 'ep:construct' and name() != 'ep:namespaces']">
                         <!--xsl:apply-templates select="../ep:*[name() != 'ep:message' and name() != 'ep:construct']"-->
@@ -93,6 +103,8 @@
                         <xsl:sequence select="$namespaces"/>
                     </xsl:when>
                     <xsl:otherwise>
+                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 3005',$debugging)"/>
+
                         <xsl:sequence select="imf:create-output-element('ep:name', upper-case($groupPrefix))"/>
                         <xsl:sequence select="imf:create-output-element('ep:namespace-prefix', $groupPrefix)"/>                       
                         <xsl:sequence select="imf:create-output-element('ep:namespace', $groupNamespaceId)"/>
@@ -107,29 +119,43 @@
                         </ep:namespaces>
                     </xsl:otherwise>
                 </xsl:choose>
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 3006',$debugging)"/>
+                
                 <xsl:apply-templates select="current-group()"/>
-                <ep:construct prefix="{$groupPrefix}" ismetadata="yes">
-                    <ep:name>entiteittype</ep:name>
-                    <ep:tech-name>entiteittype</ep:tech-name>
-                    <ep:type-name>scalar-string</ep:type-name>
-                </ep:construct>
-                <ep:construct prefix="{$groupPrefix}" ismetadata="yes">
-                    <ep:name>patch</ep:name>
-                    <ep:tech-name>patch</ep:tech-name>
-                    <ep:type-name>scalar-integer</ep:type-name>
-                    <ep:min-value>0</ep:min-value>
-                </ep:construct>
+                
+                <xsl:if test="$groupPrefix != $StUF-prefix">
+                    <ep:construct prefix="{$groupPrefix}" ismetadata="yes">
+                        <ep:name>entiteittype</ep:name>
+                        <ep:tech-name>entiteittype</ep:tech-name>
+                        <ep:data-type>scalar-string</ep:data-type>
+                    </ep:construct>
+                    <ep:construct prefix="{$groupPrefix}" ismetadata="yes">
+                        <ep:name>patch</ep:name>
+                        <ep:tech-name>patch</ep:tech-name>
+                        <ep:data-type>scalar-integer</ep:data-type>
+                        <ep:min-value>0</ep:min-value>
+                    </ep:construct>
+                </xsl:if>
             </ep:message-set>
         </xsl:for-each-group>
     </xsl:template>
+    
+    <xsl:template match="ep:suppliers"/>
 
     <xsl:template match="*|@*">
         <xsl:copy>
-            <xsl:apply-templates select="*|@*|text()"></xsl:apply-templates>
+            <xsl:apply-templates select="*|@*[local-name()!='namespaceId' and 
+                                              local-name()!='type' and 
+                                              local-name()!='externalNamespace' and
+                                              local-name()!='context' and
+                                              local-name()!='berichtCode' and
+                                              local-name()!='berichtName']|text()"></xsl:apply-templates>
         </xsl:copy>
     </xsl:template>
 
     <xsl:template match="ep:constructRef[@prefix = 'StUF' and ep:name = 'patch']">
+        <xsl:sequence select="imf:create-debug-comment('Debuglocation 3007',$debugging)"/>
+
         <xsl:copy-of select="$patch"/>    
     </xsl:template>
 </xsl:stylesheet>

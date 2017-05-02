@@ -53,13 +53,16 @@
     <xsl:template match="*">
         <xsl:param name="procesType" select="''"/>
         <xsl:param name="actualPrefix"/>
-        <xsl:sequence select="imf:create-debug-comment('1e * template',$debugging)"/>                
+        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2000',$debugging)"/>
+
         <xsl:element name="{name(.)}">
             <xsl:apply-templates select="@*">
                 <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
             </xsl:apply-templates>
             <xsl:choose>
                 <xsl:when test="@orderingDesired = 'no' or ancestor::ep:seq[@orderingDesired = 'no']">
+                    <xsl:sequence select="imf:create-debug-comment('Debuglocation 2001',$debugging)"/>
+                    
                     <xsl:sequence select="imf:create-debug-comment(concat('procesType: ',$procesType),$debugging)"/>                
                     <xsl:apply-templates select="*">
                         <xsl:with-param name="procesType" select="$procesType"/>
@@ -67,6 +70,8 @@
                     </xsl:apply-templates>
                 </xsl:when>
                 <xsl:otherwise>
+                    <xsl:sequence select="imf:create-debug-comment('Debuglocation 2002',$debugging)"/>
+                    
                     <xsl:sequence select="imf:create-debug-comment(concat('procesType: ',$procesType),$debugging)"/>                
                     <xsl:apply-templates select="*">
                         <xsl:sort select="ep:position" order="ascending" data-type="number"/>
@@ -82,14 +87,17 @@
     <xsl:template match="ep:constructRef">
         <xsl:param name="procesType" select="''"/>
         <xsl:param name="actualPrefix"/>
-        <xsl:sequence select="imf:create-debug-comment('1e constructRef template',$debugging)"/>
+        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2003',$debugging)"/>
+
         <xsl:choose>
             <xsl:when test="@ismetadata='yes' and (($procesType='splitting' and $kv-prefix = $actualPrefix) or $procesType!='splitting')">
-                <xsl:sequence select="imf:create-debug-comment('1e constructRef template, 1e when',$debugging)"/>                
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 2004',$debugging)"/>
+                
                 <xsl:copy-of select="."/>
             </xsl:when>
             <xsl:when test="not(@ismetadata='yes') and $procesType='splitting' and (@prefix = $actualPrefix or @prefix = '$actualPrefix')">
-                <xsl:sequence select="imf:create-debug-comment('1e constructRef template, 2e when',$debugging)"/>                
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 2005',$debugging)"/>
+
                 <xsl:element name="{name(.)}">
                     <xsl:apply-templates select="@*[local-name()!='prefix' and local-name()!='namespaceId']"/>
                     <xsl:if test="@prefix">
@@ -102,7 +110,8 @@
                 </xsl:element>  
             </xsl:when>
             <xsl:when test="not(@ismetadata='yes') and (($procesType='splitting' and ($kv-prefix = $actualPrefix and (@prefix = $StUF-prefix  or not(@prefix)))) or $procesType != 'splitting')">
-                <xsl:sequence select="imf:create-debug-comment('1e constructRef template, 3e when',$debugging)"/>                
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 2006',$debugging)"/>
+
                 <xsl:element name="{name(.)}">
                     <xsl:apply-templates select="@*[local-name()!='prefix' and local-name()!='namespaceId']"/>
                     <xsl:if test="@prefix">
@@ -120,14 +129,17 @@
     <xsl:template match="ep:construct">
         <xsl:param name="procesType" select="''"/>
         <xsl:param name="actualPrefix"/>
-        <xsl:sequence select="imf:create-debug-comment('1e construct template',$debugging)"/>                
+        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2007',$debugging)"/>
+
         <xsl:choose>
             <xsl:when test="@ismetadata='yes' and (($procesType='splitting' and $kv-prefix = $actualPrefix) or $procesType!='splitting')">
-                <xsl:sequence select="imf:create-debug-comment('1e construct template, 1e when',$debugging)"/>                
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 2008',$debugging)"/>
+
                 <xsl:copy-of select="."/>
             </xsl:when>
             <xsl:when test="not(@ismetadata='yes') and (($procesType='splitting' and @prefix = $actualPrefix) or $procesType!='splitting')">
-                <xsl:sequence select="imf:create-debug-comment('1e construct template, 2e when',$debugging)"/>                
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 2009',$debugging)"/>
+
                 <xsl:element name="{name(.)}">
                     <xsl:apply-templates select="@*[local-name()!='prefix' and local-name()!='namespaceId']"/>
                     <xsl:attribute name="prefix" select="$actualPrefix"/>
@@ -152,6 +164,9 @@
     
     <xsl:template match="ep:construct[parent::ep:message-set]">
         <xsl:param name="actualPrefix"/>
+
+        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2010',$debugging)"/>
+
         <!-- Following if takes care of removing al ep:constructs whithout content within their ep:seq or ep:choice element. -->
         <xsl:variable name="construct" select="."/>
         <xsl:variable name="prefix" select="@prefix"/>
@@ -194,7 +209,8 @@
                  belonging to that namespace.
                  This type of processing is reported to the subsequent templates by the 'procesType' parameter with the value 'splitting'. -->
             <xsl:when test="(@prefix = '$actualPrefix' and .//ep:construct/@prefix != $actualPrefix and .//ep:construct/@prefix != $StUF-prefix) and (ep:seq/* | ep:choice/*)">
-                <xsl:sequence select="imf:create-debug-comment('2e construct template, 2e when buiten for-each',$debugging)"/>                
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 2011',$debugging)"/>
+
                 <xsl:element name="{name(.)}">
                     <xsl:apply-templates select="@*[local-name()!='prefix' and local-name()!='namespaceId']"/>
                     <xsl:attribute name="prefix" select="$actualPrefix"/>
@@ -204,6 +220,7 @@
                     </xsl:if>
                     <ep:superconstructRef>
                         <xsl:attribute name="prefix" select="$uniquePrefixes//ep:prefix[xs:integer(@level) = 3]"/>
+                        <xsl:sequence select="imf:create-output-element('ep:name', ep:tech-name)"/>
                         <xsl:sequence select="imf:create-output-element('ep:tech-name', ep:tech-name)"/>
                     </ep:superconstructRef>
                     <xsl:choose>
@@ -226,7 +243,9 @@
                     <xsl:variable name="uniquePrefix" select="."/>
                     <xsl:variable name="uniquePrefixLevel" select="@level"/>
                     <xsl:variable name="uniqueNamespace" select="@namespaceId"/>
-                    <xsl:sequence select="imf:create-debug-comment('1e when binnen for-each',$debugging)"/>                
+
+                    <xsl:sequence select="imf:create-debug-comment('Debuglocation 2011a',$debugging)"/>
+                    
                     <xsl:element name="{name($construct)}">
                         <xsl:apply-templates select="$construct/@*[local-name()!='prefix' and local-name()!='namespaceId']"/>
                         <xsl:attribute name="prefix" select="$uniquePrefix"/>
@@ -250,7 +269,8 @@
                 </xsl:for-each>                
             </xsl:when>
             <xsl:when test=".//ep:construct/@prefix != $prefix and .//ep:construct/@prefix != $StUF-prefix and (ep:seq/* | ep:choice/*)">
-                <xsl:sequence select="imf:create-debug-comment('2e construct template, 3e when buiten for-each',$debugging)"/>                
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 2012',$debugging)"/>
+
                 <xsl:element name="{name(.)}">
                     <xsl:apply-templates select="@*[local-name()!='prefix' and local-name()!='namespaceId']"/>
                     <xsl:attribute name="prefix" select="$prefix"/>
@@ -260,6 +280,7 @@
                     </xsl:if>
                     <ep:superconstructRef>
                         <xsl:attribute name="prefix" select="$uniquePrefixes//ep:prefix[xs:integer(@level) = 3]"/>
+                        <xsl:sequence select="imf:create-output-element('ep:name', ep:tech-name)"/>
                         <xsl:sequence select="imf:create-output-element('ep:tech-name', ep:tech-name)"/>
                     </ep:superconstructRef>
                     <xsl:choose>
@@ -279,7 +300,8 @@
                     </xsl:choose>
                 </xsl:element>
                 <xsl:for-each select="$uniquePrefixes//ep:prefix[. != $prefix]">
-                    <xsl:sequence select="imf:create-debug-comment('2e when binnen for-each',$debugging)"/>                
+                    <xsl:sequence select="imf:create-debug-comment('Debuglocation 2012a',$debugging)"/>
+
                     <xsl:variable name="uniquePrefix" select="."/>
                     <xsl:variable name="uniquePrefixLevel" select="@level"/>
                     <xsl:variable name="uniqueNamespace" select="@namespaceId"/>
@@ -308,7 +330,8 @@
             </xsl:when>
             <!-- Following when is used if the current construct doesn't contains subconstructs originated in more than one namespace. -->           
             <xsl:when test="ep:seq/* | ep:choice/*">
-                <xsl:sequence select="imf:create-debug-comment('2e construct template, 4e when',$debugging)"/>                
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 2013',$debugging)"/>
+
                 <xsl:element name="{name(.)}">
                     <xsl:apply-templates select="@*[local-name()!='prefix' and local-name()!='namespaceId']"/>
                     <xsl:attribute name="prefix" select="$prefix"/>
@@ -329,7 +352,8 @@
                 </xsl:element>
             </xsl:when>                
             <xsl:when test="@prefix = '$actualPrefix' and ep:seq/* | ep:choice/*">
-                <xsl:sequence select="imf:create-debug-comment('2e construct template, 5e when',$debugging)"/>                
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 2014',$debugging)"/>
+
                 <xsl:element name="{name(.)}">
                     <xsl:apply-templates select="@*[local-name()!='prefix' and local-name()!='namespaceId']"/>
                     <xsl:attribute name="prefix" select="@prefix"/>
@@ -351,6 +375,8 @@
             </xsl:when>              
             <!-- This construct is only used for metadata constructs. -->
             <xsl:otherwise>
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 2015',$debugging)"/>
+
                 <xsl:copy-of select="."/>
             </xsl:otherwise>
         </xsl:choose>
@@ -360,18 +386,24 @@
         <xsl:param name="procesType" select="''"/>
         <xsl:param name="actualPrefix"/>
         <!-- Following if takes care of removing al ep:constructs whithout content within their ep:seq or ep:choice element. -->
+        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2016',$debugging)"/>
+
         <xsl:variable name="authentiek">
             <xsl:copy-of select="."/>
         </xsl:variable>
         <xsl:choose>
             <xsl:when test="$procesType='splitting' and $kv-prefix = $actualPrefix">
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 2017',$debugging)"/>
+
                 <xsl:choose>
                     <xsl:when test="ancestor::ep:construct[.//ep:construct[ep:authentiek and ep:authentiek != '']]">
-                        <xsl:sequence select="imf:create-debug-comment('3e construct template, 1e when',$debugging)"/>                
+                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2018',$debugging)"/>
+
                         <xsl:sequence select="$authentiek"/>
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:sequence select="imf:create-debug-comment('3e construct template, 1e otherwise',$debugging)"/>                
+                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2019',$debugging)"/>
+
                         <xsl:variable name="authentiekValid">
                             <xsl:for-each select="ep:constructRef[starts-with(ep:href,'Grp')]">
                                 <xsl:variable name="href" select="ep:href"/>
@@ -387,13 +419,16 @@
                 </xsl:choose>
             </xsl:when>
             <xsl:when test="$procesType!='splitting'">
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 2020',$debugging)"/>
                 <xsl:choose>
                     <xsl:when test="ancestor::ep:construct[.//ep:construct[ep:authentiek and ep:authentiek != '']]">
-                        <xsl:sequence select="imf:create-debug-comment('3e construct template, 2e when',$debugging)"/>                
+                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2021',$debugging)"/>
+
                         <xsl:sequence select="$authentiek"/>
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:sequence select="imf:create-debug-comment('3e construct template, 2e otherwise',$debugging)"/>                
+                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2022',$debugging)"/>
+
                         <xsl:variable name="authentiekValid">
                             <xsl:for-each select="ep:constructRef[starts-with(ep:href,'Grp')]">
                                 <xsl:variable name="href" select="ep:href"/>
@@ -414,19 +449,25 @@
     <xsl:template match="ep:construct[ep:tech-name = 'inOnderzoek']">
         <xsl:param name="procesType" select="''"/>
         <xsl:param name="actualPrefix"/>
+        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2023',$debugging)"/>
+
         <!-- Following if takes care of removing al ep:constructs whithout content within their ep:seq or ep:choice element. -->
         <xsl:variable name="inOnderzoek">
             <xsl:copy-of select="."/>
         </xsl:variable>
         <xsl:choose>
             <xsl:when test="$procesType='splitting' and $kv-prefix = $actualPrefix">
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 2024',$debugging)"/>
+
                 <xsl:choose>
                     <xsl:when test="ancestor::ep:construct[.//ep:construct[ep:inOnderzoek and ep:inOnderzoek != '']]">
-                        <xsl:sequence select="imf:create-debug-comment('4e construct template, 1e when',$debugging)"/>                
+                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2025',$debugging)"/>
+
                         <xsl:sequence select="$inOnderzoek"/>
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:sequence select="imf:create-debug-comment('4e construct template, 1e otherwise',$debugging)"/>                
+                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2026',$debugging)"/>
+
                         <xsl:variable name="inOnderzoekValid">
                             <xsl:for-each select="ep:constructRef[starts-with(ep:href,'Grp')]">
                                 <xsl:variable name="href" select="ep:href"/>
@@ -442,13 +483,17 @@
                 </xsl:choose>
             </xsl:when>
             <xsl:when test="$procesType!='splitting'">
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 2027',$debugging)"/>
+
                 <xsl:choose>
                     <xsl:when test="ancestor::ep:construct[.//ep:construct[ep:inOnderzoek and ep:inOnderzoek != '']]">
-                        <xsl:sequence select="imf:create-debug-comment('4e construct template, 2e when',$debugging)"/>                
+                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2028',$debugging)"/>
+
                         <xsl:sequence select="$inOnderzoek"/>
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:sequence select="imf:create-debug-comment('4e construct template, 2e otherwise',$debugging)"/>                
+                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2029',$debugging)"/>
+
                         <xsl:variable name="inOnderzoekValid">
                             <xsl:for-each select="ep:constructRef[starts-with(ep:href,'Grp')]">
                                 <xsl:variable name="href" select="ep:href"/>
@@ -513,6 +558,8 @@
     
     <xsl:template match="ep:namespace">
         <xsl:param name="actualPrefix"/>
+        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2030',$debugging)"/>
+ 
         <xsl:element name="{name(.)}">
             <xsl:apply-templates select="@*">
                 <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
