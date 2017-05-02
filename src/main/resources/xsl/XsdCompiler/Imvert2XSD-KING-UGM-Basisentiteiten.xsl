@@ -313,7 +313,6 @@
                         <xs:element name="{imvert:name}" type="{concat($prefix, ':', imvert:alias,'-basis')}"/>
                     </xsl:for-each>
                 </xs:choice>
-                <xs:attribute ref="{$prefix}:entiteittype" fixed="{imvert:alias}"/>
             </xs:complexType>
         </xsl:variable>
         
@@ -826,7 +825,7 @@
         <xsl:variable name="source-alias" select="imvert:source-alias"/>
         <xsl:variable name="target-alias" select="imvert:target-alias"/>
        
-        <xsl:variable name="target-is-supertype-label" select="if (exists(imf:get-subclasses($target))) then '-super' else '-basis'"/>
+        <xsl:variable name="target-is-supertype-label" select="'-basis'"/>
         
         <xsl:sequence select="imf:create-comment(concat('mode-global-association-type Outgoing Association declaration # ',@display-name))"/>
     
@@ -898,11 +897,11 @@
             <xs:attributeGroup ref="{$StUF-prefix}:entiteit"/>
         </xs:complexType>
         
-        <xsl:variable name="target-is-supertype-label" select="if (exists(imf:get-subclasses($target))) then '-super' else '-matchgegevens'"/>
+        <xsl:variable name="target-is-supertype-label" select="if (exists(imf:get-subclasses($target))) then '-basis' else '-matchgegevens'"/>
         <xsl:sequence select="imf:create-comment(concat('mode-global-association-type Outgoing Association matchgegevens # ',@display-name))"/>
         <xs:complexType name="{$associatie-naam}-matchgegevens">
             <xs:annotation>
-                <xs:documentation>matchgegevens van de relatie</xs:documentation>
+                <xs:documentation>Matchgegevens van de relatie.</xs:documentation>
             </xs:annotation>
             <xs:complexContent>
                 <xs:restriction base="{$prefix}:{$associatie-naam}-basis">
