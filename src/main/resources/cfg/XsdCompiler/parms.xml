@@ -149,13 +149,14 @@
       <IMVERTOR_METAMODEL_KINGBSM_SORT_ENDPRODUCT_XML_XSLPATH alias="EPSORT">Imvert2XSD-KING-sortByNamespace-endproduct-xml.xsl</IMVERTOR_METAMODEL_KINGBSM_SORT_ENDPRODUCT_XML_XSLPATH>
       <IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XSD_XSLPATH alias="EPXSD">Imvert2XSD-KING-endproduct-xsd.xsl</IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XSD_XSLPATH>
       
+      <!-- locatie van de stuf onderlaag -->
+      <STUF_ONDERLAAG_0302>${system/inp-folder-path}/xsd/other/KING-UGM/onderlaag-0302</STUF_ONDERLAAG_0302>
+      
       <!-- 
          UGM transformation to Basisentiteiten schema 
       --> 
       <IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH>
       <RESULT_METAMODEL_KINGUGM_XSD_FILEPATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_METAMODEL_KINGUGM_XSD_FILEPATH>
-      <!-- locatie van de stuf onderlaag -->
-      <STUF_ONDERLAAG_UGM>${system/inp-folder-path}/xsd/other/KING-UGM/support-2</STUF_ONDERLAAG_UGM>
       
       <!-- checksum info for simpletypes -->
       <IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XSLPATH>Imvert2XSD-KING-compile-checksum.xsl</IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XSLPATH>
@@ -171,9 +172,6 @@
       <RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.30.sorted-endproduct-xml.xml</RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH>
       <RESULT_ENDPRODUCT_XSD_FILE_PATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_ENDPRODUCT_XSD_FILE_PATH>
       
-      <!-- locatie van de stuf onderlaag -->
-      <STUF_ONDERLAAG_BSM>${system/inp-folder-path}/xsd/other/KING-BSM/0302/stuf0302.xsd</STUF_ONDERLAAG_BSM>
-      
       <!-- BRO : -->
       
       <IMVERTOR_METAMODEL_KKG_XSD_PREFORM_XSLPATH>Imvert2XSD-ISO1936-preform.xsl</IMVERTOR_METAMODEL_KKG_XSD_PREFORM_XSLPATH>
@@ -185,7 +183,7 @@
    
       <!-- location of the result XSD's when generating XML schemas -->
       <RESULT_XSD_APPLICATION_FOLDER>${system/work-xsd-folder-path}/${cli/xsdsubpath}</RESULT_XSD_APPLICATION_FOLDER>
-      <RESULT_XSD_APPLICATION_ONDERLAAG_FOLDER>${system/work-xsd-folder-path}/${appinfo/application-name}/0302</RESULT_XSD_APPLICATION_ONDERLAAG_FOLDER>
+      <RESULT_XSD_APPLICATION_ONDERLAAG_FOLDER>${system/work-xsd-folder-path}/0302</RESULT_XSD_APPLICATION_ONDERLAAG_FOLDER>
       
       <!-- other metamodel specifics -->
       

@@ -226,9 +226,9 @@ public class XsdCompiler extends Step {
 			valid = valid && transformer.transformStep("properties/RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_SORT_ENDPRODUCT_XML_XSLPATH");
 			valid = valid && transformer.transformStep("properties/RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_ENDPRODUCT_XSD_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XSD_XSLPATH");
 		
-			// and copy the onderlaag
-			XmlFile onderlaag = new XmlFile(configurator.getParm("properties", "STUF_ONDERLAAG_BSM"));
-			onderlaag.copyFile(configurator.getParm("properties", "RESULT_XSD_APPLICATION_ONDERLAAG_FOLDER") + File.separator + onderlaag.getName());
+			// and copy the onderlaag; this is a copy of all stuff in that folder
+			AnyFolder onderlaag = new AnyFolder(configurator.getParm("properties", "STUF_ONDERLAAG_0302"));
+			onderlaag.copy(configurator.getParm("system", "work-xsd-folder-path"));
 			
 			// and create a table representation; 
 			valid = valid && transformer.transformStep("properties/RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH","properties/ENDPRODUCT_DOC_TABLES_FILE_PATH", "properties/IMVERTOR_ENDPRODUCT_DOC_TABLES_XSLPATH");
@@ -284,7 +284,7 @@ public class XsdCompiler extends Step {
 		valid = valid && transformer.transformStep("system/work-config-path","properties/IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH_LOCAL", "properties/IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XSLPATH");
 		
 		// and copy the onderlaag; this is a copy of all stuff in that folder
-		AnyFolder onderlaag = new AnyFolder(configurator.getParm("properties", "STUF_ONDERLAAG_UGM"));
+		AnyFolder onderlaag = new AnyFolder(configurator.getParm("properties", "STUF_ONDERLAAG_0302"));
 		onderlaag.copy(configurator.getParm("system", "work-xsd-folder-path"));
 		
 		// tell that a schema has been created
