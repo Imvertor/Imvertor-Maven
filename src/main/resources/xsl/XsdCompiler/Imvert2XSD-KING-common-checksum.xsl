@@ -80,8 +80,13 @@
     -->
     <xsl:function name="imf:get-blackboard-simpletype-checksum" as="xs:string*">
         <xsl:param name="attribute" as="element(imvert:attribute)"/>
+        
+        <!-- max-length and digit info are mutually exclusive -->
+        <xsl:variable name="fract" select="if ($attribute/imvert:fraction-digits) then concat('_', $attribute/imvert:fraction-digits) else ''"/>
+        <xsl:variable name="computed-len" select="if ($attribute/imvert:max-length) then $attribute/imvert:max-length else concat($attribute/imvert:total-digits,$fract)"/>
+      
         <xsl:variable name="typ" select="$attribute/imvert:type-name"/>
-        <xsl:variable name="len" select="$attribute/imvert:max-length"/>
+        <xsl:variable name="len" select="$computed-len"/>
         <xsl:variable name="pat" select="imf:get-tagged-value($attribute,'Formeel patroon')"/>
         <xsl:variable name="mle" select="imf:get-tagged-value($attribute,'Minimum lengte')"/>
         <xsl:variable name="min" select="imf:get-tagged-value($attribute,'Minimum waarde (inclusief)')"/>

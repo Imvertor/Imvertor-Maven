@@ -65,10 +65,12 @@
     <xsl:variable name="target-namespace" select="$imvert-document/imvert:packages/imvert:base-namespace"/>
     <xsl:variable name="StUF-prefix" select="'StUF'"/>
     
-    <xsl:variable name="schemafile-ent-name" select="concat($prefix,'_ent_basis.xsd')"/>
+    <xsl:variable name="version" select="'0320'"/><!-- TODO configure -->
+    
+    <xsl:variable name="schemafile-ent-name" select="concat($prefix,$version,'_ent_basis.xsd')"/>
     <xsl:variable name="schemafile-ent" select="concat($xsd-folder-path,'/', $schemafile-ent-name)"/>
     
-    <xsl:variable name="schemafile-dat-name" select="concat($prefix,'_datatypes.xsd')"/>
+    <xsl:variable name="schemafile-dat-name" select="concat($prefix,$version,'_datatypes.xsd')"/>
     <xsl:variable name="schemafile-dat" select="concat($xsd-folder-path,'/', $schemafile-dat-name)"/>
     
     <xsl:template match="/">
@@ -311,6 +313,13 @@
                 <xs:choice minOccurs="0" maxOccurs="{count($concrete-subclasses)}">
                     <xsl:for-each select="$concrete-subclasses">
                         <xs:element name="{imvert:name}" type="{concat($prefix, ':', imvert:alias,'-basis')}"/>
+                    </xsl:for-each>
+                </xs:choice>
+            </xs:complexType>
+            <xs:complexType name="{concat(imvert:alias,'-matchgegevens')}">
+                <xs:choice minOccurs="1" maxOccurs="{count($concrete-subclasses)}">
+                    <xsl:for-each select="$concrete-subclasses">
+                        <xs:element name="{imvert:name}" type="{concat($prefix, ':', imvert:alias,'-matchgegevens')}"/>
                     </xsl:for-each>
                 </xs:choice>
             </xs:complexType>
@@ -593,7 +602,7 @@
                 <xsl:when test="exists($applicable-attribute)">
                     <xsl:sequence select="imf:create-comment('Attribute redirected to referentie tabel; Case: Type verwijst naar tabelentiteit')"/>
                     
-                    <xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info(.)"/>
+                    <xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info($applicable-attribute)"/>
                     <xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
                     <xs:element
                         name="{$compiled-name}" 
