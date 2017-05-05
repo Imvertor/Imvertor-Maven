@@ -317,12 +317,17 @@
                 </xs:choice>
             </xs:complexType>
             <xs:complexType name="{concat(imvert:alias,'-matchgegevens')}">
-                <xs:choice minOccurs="1" maxOccurs="{count($concrete-subclasses)}">
-                    <xsl:for-each select="$concrete-subclasses">
-                        <xs:element name="{imvert:name}" type="{concat($prefix, ':', imvert:alias,'-matchgegevens')}"/>
-                    </xsl:for-each>
-                </xs:choice>
+                <xs:complexContent>
+                    <xs:restriction base="{concat($prefix,':',imvert:alias,'-basis')}">
+                        <xs:choice minOccurs="1" maxOccurs="{count($concrete-subclasses)}">
+                            <xsl:for-each select="$concrete-subclasses">
+                                <xs:element name="{imvert:name}" type="{concat($prefix, ':', imvert:alias,'-matchgegevens')}"/>
+                            </xsl:for-each>
+                        </xs:choice>
+                    </xs:restriction>
+                </xs:complexContent>
             </xs:complexType>
+            
         </xsl:variable>
         
         <xsl:choose> <!-- TODO DONE ComplexType PES-basis moet een extension zijn van SUB-abstract -->
