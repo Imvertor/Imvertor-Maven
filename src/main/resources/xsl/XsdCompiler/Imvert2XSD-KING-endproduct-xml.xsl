@@ -1865,28 +1865,30 @@
         
         <xsl:comment select="concat('ROME: ',parent::imvert:*/imvert:name)"/>
         
-        <ep:construct type="simpleContentcomplexData" prefix="{$StUF-prefix}">
-            <xsl:sequence select="imf:create-output-element('ep:name', concat(imf:capitalize($compiled-name),'-e'))"/>
-            <xsl:sequence select="imf:create-output-element('ep:tech-name', concat(imf:capitalize($compiled-name),'-e'))"/>
-            <ep:type-name>
-                <xsl:value-of select="concat($StUF-prefix,':',imf:capitalize($compiled-name))"/>
-            </ep:type-name>
-            <ep:seq>
-                <ep:construct ismetadata="yes">
-                    <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
-                    <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
-                    <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
-                    <ep:min-occurs>0</ep:min-occurs>
-                </ep:construct>                     
-            </ep:seq>
-        </ep:construct>
-        <ep:construct type="simpleData" prefix="{$StUF-prefix}" isdatatype="yes">
-            <xsl:sequence select="imf:create-output-element('ep:name', imf:capitalize($compiled-name))"/>
-            <xsl:sequence select="imf:create-output-element('ep:tech-name', imf:capitalize($compiled-name))"/>
-            <xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-string')"/>
-            <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-enum"/>
-            <ep:enum></ep:enum>
-        </ep:construct>
+        <xsl:if test="not(imf:capitalize($compiled-name) = 'Berichtcode' or imf:capitalize($compiled-name) = 'IndicatorOvername')">
+            <ep:construct type="simpleContentcomplexData" prefix="{$StUF-prefix}">
+                <xsl:sequence select="imf:create-output-element('ep:name', concat(imf:capitalize($compiled-name),'-e'))"/>
+                <xsl:sequence select="imf:create-output-element('ep:tech-name', concat(imf:capitalize($compiled-name),'-e'))"/>
+                <ep:type-name>
+                    <xsl:value-of select="concat($StUF-prefix,':',imf:capitalize($compiled-name))"/>
+                </ep:type-name>
+                <ep:seq>
+                    <ep:construct ismetadata="yes">
+                        <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                        <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                        <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                        <ep:min-occurs>0</ep:min-occurs>
+                    </ep:construct>                     
+                </ep:seq>
+            </ep:construct>
+            <ep:construct type="simpleData" prefix="{$StUF-prefix}" isdatatype="yes">
+                <xsl:sequence select="imf:create-output-element('ep:name', imf:capitalize($compiled-name))"/>
+                <xsl:sequence select="imf:create-output-element('ep:tech-name', imf:capitalize($compiled-name))"/>
+                <xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-string')"/>
+                <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-enum"/>
+                <ep:enum></ep:enum>
+            </ep:construct>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template match="imvert:attribute" mode="mode-local-enum">
@@ -2161,7 +2163,7 @@
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 33',$debugging)"/>
                 <!-- gedefinieerd in onderlaag -->
             </xsl:when>
-            <xsl:when test="exists(imvert:type-name) and not($name = 'Melding' or $name = 'AantalVoorkomens' or $name = 'Sortering' or $name = 'Functie')">
+            <xsl:when test="exists(imvert:type-name) and not($name = 'Melding' or $name = 'AantalVoorkomens' or $name = 'Sortering' or $name = 'Functie' or $name = 'Volgnummer')">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 34',$debugging)"/>
 
                 <ep:construct type="simpleContentcomplexData" prefix="{$StUF-prefix}" namespaceId="{$StUF-namespaceIdentifier}">
