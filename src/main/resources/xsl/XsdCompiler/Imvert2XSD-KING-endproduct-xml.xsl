@@ -26,9 +26,7 @@
     <xsl:import href="../common/extension/Imvert-common-text.xsl"/>
     
     <xsl:import href="Imvert2XSD-KING-enrich-excel.xsl"/>
-    
     <xsl:import href="Imvert2XSD-KING-common.xsl"/>
-    
     <xsl:import href="Imvert2XSD-KING-create-endproduct-rough-structure.xsl"/>
     <xsl:import href="Imvert2XSD-KING-create-enriched-rough-messages.xsl"/>
     <xsl:import href="Imvert2XSD-KING-create-endproduct-structure.xsl"/>
