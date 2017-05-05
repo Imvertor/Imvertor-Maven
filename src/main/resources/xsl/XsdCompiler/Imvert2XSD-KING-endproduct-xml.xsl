@@ -1876,6 +1876,7 @@
                     <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
                     <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
                     <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                    <ep:min-occurs>0</ep:min-occurs>
                 </ep:construct>                     
             </ep:seq>
         </ep:construct>
@@ -2164,6 +2165,9 @@
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 34',$debugging)"/>
 
                 <ep:construct type="simpleContentcomplexData" prefix="{$StUF-prefix}" namespaceId="{$StUF-namespaceIdentifier}">
+                    <xsl:if test="empty($nillable-patroon)">
+                        <xsl:attribute name="wildcard" select="'true'"/>
+                    </xsl:if>                    
                     <xsl:sequence select="imf:create-output-element('ep:name', concat($name,'-e'))"/>
                     <xsl:sequence select="imf:create-output-element('ep:tech-name', concat($name,'-e'))"/>
                     <ep:type-name imvert:checksum="{$checksum-string}">
@@ -2174,6 +2178,7 @@
                             <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
                             <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
                             <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                            <ep:min-occurs>0</ep:min-occurs>
                         </ep:construct>                     
                     </ep:seq>
                 </ep:construct>

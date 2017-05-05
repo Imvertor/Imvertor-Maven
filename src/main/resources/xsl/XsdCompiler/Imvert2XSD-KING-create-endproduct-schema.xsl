@@ -14,8 +14,8 @@
 	xmlns:ep="http://www.imvertor.org/schema/endproduct"
 	xmlns:ss="http://schemas.openxmlformats.org/spreadsheetml/2006/main" version="2.0">
 
-	<xsl:output indent="yes" method="xml" encoding="UTF-8"/>
-
+	<xsl:output indent="yes" method="xml" encoding="UTF-8" exclude-result-prefixes="#all"/>
+	
 	<xsl:variable name="stylesheet-code">SKS</xsl:variable>
 	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
 
@@ -27,13 +27,16 @@
 	<xsl:variable name="typeBericht" select="/ep:message-set/ep:message/ep:type"/>
 	<xsl:variable name="berichtCode" select="/ep:message-set/ep:message/ep:code"/>
 
+	<xsl:variable name="elementFormDefault" select="if (imf:boolean(imf:get-config-string('cli','elementisqualified','yes'))) then 'qualified' else 'unqualified'"/>
+	<xsl:variable name="attributeFormDefault" select="if (imf:boolean(imf:get-config-string('cli','attributeisqualified','no'))) then 'qualified' else 'unqualified'"/>
+	
 	<xsl:template match="ep:message-set">
 		<xsl:variable name="message-set-prefix" select="ep:namespace-prefix"/>
 		<xsl:variable name="message-set-namespaceIdentifier" select="ep:namespace"/>
 		<xsl:variable name="msg" select="'Creating the StUF XML-Schema'"/>
 		<xsl:sequence select="imf:msg('DEBUG', $msg)"/>
 		<xs:schema targetNamespace="{$message-set-namespaceIdentifier}"
-			elementFormDefault="qualified" attributeFormDefault="unqualified"
+			elementFormDefault="{$elementFormDefault}" attributeFormDefault="{$attributeFormDefault}"
 			version="{concat(ep:patch-number,'-',ep:release)}">
 			<xsl:variable name="namespaces">
 				<xsl:copy-of select="ep:namespaces"/>
@@ -73,10 +76,9 @@
 					<xs:include schemaLocation="../0302/stuf0302.xsd"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302"
-						schemaLocation="../0302/stuf0302.xsd"/>
-					<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302"
-						schemaLocation="StUF-simpleTypes.xsd"/>
+					<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="../0302/stuf0302.xsd"/>
+					<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="StUF-simpleTypes.xsd"/>
+					<!--xs:import namespace="http://www.opengis.net/gml" schemaLocation="../../gml-3.1.1.2/gml/3.1.1/base/gml.xsd"/-->
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:for-each
@@ -185,7 +187,7 @@
 		</xsl:variable>
 		<xsl:variable name="data-type" select="ep:data-type"/>
 		<xs:element>
-			<xsl:if test="ep:voidable = 'Ja'">
+			<xsl:if test="ep:voidable = 'true'">
 				<xsl:attribute name="nillable" select="'true'"/>
 			</xsl:if>
 			<xsl:choose>
@@ -571,6 +573,9 @@
 				</xsl:if>
 				<xs:simpleContent>
 					<xs:extension base="{ep:type-name}">
+						<xsl:if test="@wildcard = 'true'">
+							<xs:attribute name="wildcard" type="{$StUF-prefix}:Wildcard"/>
+						</xsl:if>
 						<xsl:apply-templates select="ep:seq/ep:construct[@ismetadata]"
 							mode="generateAttributes"/>
 					</xs:extension>

@@ -1268,8 +1268,6 @@
 		</xsl:variable>
 		<xsl:variable name="authentiek" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie authentiek')"/>
 		<xsl:variable name="inOnderzoek" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie in onderzoek')"/>
-		<!-- ROME: Het komt blijkjbaar voor dat de tagged value 'Mogelijk geen waarde' niet aanwezig is. Dit moet wellicht gecorrigeerd worden
-			       maar voorlopig interpreteer ik de waarde dan als 'NEE'. -->
 		<xsl:variable name="min-waarde" select="imf:get-most-relevant-compiled-taggedvalue(., 'Minimum waarde (inclusief)')"/>
 		<xsl:variable name="max-waarde" select="imf:get-most-relevant-compiled-taggedvalue(., 'Maximum waarde (inclusief)')"/>
 		<xsl:variable name="min-length" select="imf:get-most-relevant-compiled-taggedvalue(., 'Minimum lengte')"/>
@@ -1503,7 +1501,16 @@
 						<xsl:variable name="compiled-name" select="imf:useable-attribute-name(imf:get-compiled-name(.),.)"/>
 						<xsl:variable name="type-name" select="imf:capitalize($compiled-name)"/>
 						<xsl:variable name="stuf-scalar" select="imf:get-stuf-scalar-attribute-type(.)"/>
+
+						<xsl:variable name="type-is-scalar-non-emptyable" select="imvert:type-name = ('scalar-integer','scalar-decimal')"/>
+
+						<xsl:variable name="facet-length" select="imvert:min-length"/>
+						<xsl:variable name="facet-pattern" select="imf:get-most-relevant-compiled-taggedvalue(.,'Formeel patroon')"/>
+						<xsl:variable name="facet-minval" select="imf:get-most-relevant-compiled-taggedvalue(.,'Minimum waarde (inclusief)')"/>
+						<xsl:variable name="facet-maxval" select="imf:get-most-relevant-compiled-taggedvalue(.,'Maximum waarde (inclusief)')"/>
 						
+						<xsl:variable name="type-has-facets" select="exists(($facet-pattern, $facet-length, $facet-minval,$facet-maxval))"/>
+
 						<xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
 						<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
 						<xsl:choose>
@@ -1621,6 +1628,33 @@
 							</xsl:when>
 							<xsl:otherwise/>
 						</xsl:choose>
+						
+						<xsl:if test="($type-is-scalar-non-emptyable or $type-has-facets) and
+										$name != 'melding' and
+										$name != 'berichtcode' and
+										$name != 'organisatie' and 
+										$name != 'applicatie' and 
+										$name != 'administratie' and 
+										$name != 'gebruiker' and
+										$name != 'referentienummer' and 
+										$name != 'crossRefnummer' and
+										$name != 'entiteitType' and
+										$name != 'sortering' and
+										$name != 'indicatorVervolgvraag' and
+										$name != 'maximumAantal' and
+										$name != 'indicatorAfnemerIndicatie' and
+										$name != 'peiltijdstipMaterieel' and
+										$name != 'peiltijdstipFormeel' and
+										$name != 'indicatorAantal' and
+										$name != 'indicatorHistorie' and
+										$name != 'aantalVoorkomens' and
+										$name != 'volgnummer' and
+										$name != 'indicatorLaatsteBericht' and
+										$name != 'mutatiesoort' and
+										$name != 'indicatorOvername'">
+							<xsl:sequence select="imf:create-output-element('ep:voidable', 'true')"/>
+							<!--xsl:attribute name="nillable">true</xsl:attribute-->
+						</xsl:if>						
 						
 						
 						<?x xsl:choose>
