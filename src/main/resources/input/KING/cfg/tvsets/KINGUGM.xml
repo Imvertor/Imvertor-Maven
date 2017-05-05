@@ -191,7 +191,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" origin="system" id="Positie">
+        <tv norm="space"  id="Positie"><!-- origin="system" -->
             <name lang="nl">Positie</name>
             <name lang="en">Position</name>
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->

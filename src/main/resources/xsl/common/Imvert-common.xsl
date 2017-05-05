@@ -549,7 +549,7 @@
         </imvert:filter>
     </xsl:function>
    
-    <!-- true when value is text is 'yes'|'true', false when 'no'|'false', otherwise false  -->  
+    <!-- true when value is text is 'yes'|'true' | 1, false when 'no'|'false' | 0, if evaluates to true then true,else false  -->  
     <xsl:function name="imf:boolean" as="xs:boolean">
         <xsl:param name="this" as="item()?"/>
         <xsl:variable name="v" select="lower-case(string($this))"/>

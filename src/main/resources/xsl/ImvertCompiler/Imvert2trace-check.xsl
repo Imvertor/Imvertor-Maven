@@ -93,13 +93,22 @@
     <xsl:template match="imvert:class | imvert:attribute | imvert:association">
         <xsl:variable name="this" select="."/>
         <!-- when not derived, skip any traces -->
-        <xsl:variable name="is-derived" select="imf:boolean((ancestor::imvert:package/imvert:derived)[1])"/>
-       
+        <xsl:variable name="is-derived" select="imf:boolean((ancestor::*/imvert:derived)[1])"/>
+        
+        <xsl:variable name="is-derived-tv" select="(imf:get-tagged-value(.,'Is afgeleid'),'Zie package')[1]"/>
+        <xsl:variable name="is-derived-by-tv" select="$is-derived-tv = 'Ja'"/>
+        <xsl:variable name="look-at-package" select="$is-derived-tv = 'Zie package'"/>
+        
+        <xsl:variable name="must-be-derived" select="($is-derived and $look-at-package) or $is-derived-by-tv"/>
+        <!--<xsl:message select="imf:insert-fragments-by-index('[1] [2] [3] [4]',($is-derived-tv,$is-derived-by-tv,$look-at-package,$must-be-derived))"/>-->
+        
         <xsl:sequence select="imf:report-warning($this, 
-            $validate-trace-full and $is-derived and (empty($this/imvert:trace) and empty($this/imvert:proxy)),
+            $validate-trace-full and 
+            $must-be-derived and  
+            (empty($this/imvert:trace) and empty($this/imvert:proxy)),
             'This construct should be derived (but is not)',())"/>
         
-        <xsl:if test="$is-derived">
+        <xsl:if test="$must-be-derived">
             <xsl:for-each select="($this/imvert:trace,$this/imvert:proxy)">
                 <xsl:variable name="trace-id" select="."/>        
                 <xsl:variable name="trace-construct" select="imf:get-trace-construct-by-id(..,$trace-id,$all-derived-models-doc)"/>        

@@ -27,6 +27,19 @@
 
     <desc>Metamodel for Kadaster exchange models</desc>
 
+    <profiles>
+        <profile lang="nl">
+            <id>KADNL</id>
+            <release>0.9</release>
+            <desc>Kadaster Grouping (NL)</desc> 
+        </profile>
+        <profile lang="en">
+            <id>KADEN</id>
+            <release>0.9</release>
+            <desc>Kadaster Grouping (EN)</desc>
+        </profile>
+    </profiles>
+    
     <naming>
         <package>
             <format>UpperCamel</format>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<visuals xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <!-- 
+        these visuals specify the basic visual aspects of the UML profile  
+    -->
+    <name>KKG</name>
+
+    <desc lang="en">Visuals for KKG exchange models</desc>
+    <desc lang="nl">Visuele aspecten van KKG logische modellen</desc>
+
+    <measures>
+        <measure id="WHITE">16777215</measure>
+        <measure id="BLACK">0</measure>
+        <measure id="SMALL">1</measure>
+        <measure id="THICK">2</measure>
+    </measures>
+
+    <stereo id="stereotype-name-relatieklasse">
+        <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+    </stereo>
+    <stereo id="stereotype-name-composite">
+        <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="SMALL"/>
+    </stereo>
+    <stereo id="stereotype-name-attribute"/>
+    <stereo id="stereotype-name-relatiesoort"/>
+    <stereo id="stereotype-name-externekoppeling"/>
+    <stereo id="stereotype-name-data-element"/>
+    <stereo id="stereotype-name-attributegroup"/>
+    <stereo id="stereotype-name-union">
+        <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
+    </stereo>
+    <stereo id="stereotype-name-union-element"/>
+    <stereo id="stereotype-name-enumeration">
+        <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
+    </stereo>
+    <stereo id="stereotype-name-enum"/>
+    <stereo id="stereotype-name-datatype">
+        <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
+    </stereo>
+    <stereo id="stereotype-name-complextype">
+        <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
+    </stereo>
+    <stereo id="stereotype-name-objecttype">
+        <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+    </stereo>
+    <stereo id="stereotype-name-referentielijst">
+        <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
+    </stereo>
+    <stereo id="stereotype-name-referentie-element"/>
+    <stereo id="stereotype-name-codelist">
+        <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
+    </stereo>
+    <stereo id="stereotype-name-system-reference-package"/>
+    <stereo id="stereotype-name-system-reference-class"/>
+    <stereo id="stereotype-name-reference"/>
+    <stereo id="stereotype-name-composite-id"/>
+    <stereo id="stereotype-name-relation-role"/>
+    <stereo id="stereotype-name-identificatie"/>
+    <stereo id="stereotype-name-koppelklasse">
+        <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
+    </stereo>
+    <stereo id="stereotype-name-voidable"/>
+    <stereo id="stereotype-name-generalization"/>
+    <stereo id="stereotype-name-static-liskov"/>
+    <stereo id="stereotype-name-static-generalization"/>
+    <stereo id="stereotype-name-dynamic-generalization"/>
+    <stereo id="stereotype-name-formele-historie"/>
+    <stereo id="stereotype-name-formele-levensduur"/>
+    <stereo id="stereotype-name-materiele-historie"/>
+    <stereo id="stereotype-name-materiele-levensduur"/>
+    <stereo id="stereotype-name-anonymous"/>
+
+</visuals>

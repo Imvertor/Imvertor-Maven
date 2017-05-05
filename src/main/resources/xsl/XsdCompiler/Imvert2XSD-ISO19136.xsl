@@ -174,6 +174,8 @@
                 <xsl:sequence select="imf:get-annotation(.,imf:get-schema-info(.),imf:get-appinfo-version(.))"/>
                 
                 <!-- XSD complextypes -->
+                <xsl:sequence select="imf:create-comment(.,'ALL PRODUCTS')"/>
+                <xsl:apply-templates select="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-product')]"/>
                 <xsl:sequence select="imf:create-comment(.,'ALL OBJECTTYPES')"/>
                 <xsl:apply-templates select="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-objecttype')]"/>
                 <xsl:sequence select="imf:create-comment(.,'ALL ASSOCIATIONCLASSES')"/>
@@ -201,6 +203,11 @@
          
     </xsl:template>
         
+    <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-product')]">
+        <xsl:sequence select="imf:create-comment(.,'A product')"/>
+        <xsl:next-match/> <!-- i.e. template that matches imvert:class --> 
+    </xsl:template>
+ 
     <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-objecttype')]">
         <xsl:sequence select="imf:create-comment(.,'An objecttype')"/>
         <xsl:next-match/> <!-- i.e. template that matches imvert:class --> 

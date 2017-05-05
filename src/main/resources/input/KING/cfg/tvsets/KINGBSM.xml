@@ -303,9 +303,22 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" origin="system" id="Positie">
+        <tv id="Positie"><!-- origin="system" -->
             <derive>yes</derive>
             <stereotypes>
+                <stereo required="no">stereotype-name-entiteitrelatie</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv id="IsDerived">
+            <stereotypes>
+                <!-- bericht typen -->
+                <stereo required="no">stereotype-name-antwoordberichttype</stereo>
+                <stereo required="no">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo required="no">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo required="no">stereotype-name-vraagberichttype</stereo>
+                <stereo required="no">stereotype-name-vrijberichttype</stereo>
+                
                 <stereo required="no">stereotype-name-entiteitrelatie</stereo>
             </stereotypes>
         </tv>

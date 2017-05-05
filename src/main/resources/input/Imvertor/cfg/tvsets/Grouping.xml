@@ -199,5 +199,46 @@
                 <stereo required="yes">stereotype-name-internal-package</stereo>
             </stereotypes>
         </tv>
+        
+        <tv norm="space" id="IsDerived">
+            <name lang="nl">Is afgeleid</name>
+            <name lang="en">Is derived</name>
+            <derive>no</derive>
+            <stereotypes>
+                <!-- packages -->
+                <stereo required="no">stereotype-name-base-package</stereo>
+                <stereo required="no">stereotype-name-application-package</stereo>
+                <stereo required="no">stereotype-name-domain-package</stereo>
+                <stereo required="no">stereotype-name-external-package</stereo>
+                <stereo required="no">stereotype-name-internal-package</stereo>
+                <!-- constructs -->
+                <stereo required="no">stereotype-name-objecttype</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-referentie-element</stereo>
+                <stereo required="no">stereotype-name-union-element</stereo>
+                <stereo required="no">stereotype-name-enum</stereo>
+                <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatieklasse</stereo>
+                <stereo required="no">stereotype-name-enumeration</stereo>
+                <stereo required="no">stereotype-name-referentielijst</stereo>
+                <stereo required="no">stereotype-name-complextype</stereo>
+                <stereo required="no">stereotype-name-datatype</stereo>
+                <stereo required="no">stereotype-name-union</stereo>
+                <stereo required="no">stereotype-name-interface</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value default="no">Nee</value>
+                <value default="no">Ja</value>
+                <value default="yes">Zie package</value>
+            </declared-values>
+            <declared-values lang="en">
+                <value default="no">No</value>
+                <value default="no">Yes</value>
+                <value default="yes">See package</value>
+            </declared-values>
+            
+        </tv>
     </tagged-values>
 </tagset>

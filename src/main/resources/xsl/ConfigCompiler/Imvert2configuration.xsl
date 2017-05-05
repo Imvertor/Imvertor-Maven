@@ -165,7 +165,13 @@
                 <profiles>
                     <xsl:for-each-group select="$metamodel//profiles/profile" group-by="@lang">
                         <xsl:apply-templates select="current-group()[1]" mode="#current"/>
-                    </xsl:for-each-group>        
+                    </xsl:for-each-group>   
+                    <xsl:for-each-group select="$metamodel//profiles/visuals/measures/measure" group-by="@id">
+                        <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                    </xsl:for-each-group>   
+                    <xsl:for-each-group select="$metamodel//profiles/visuals/stereo" group-by="@id">
+                        <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                    </xsl:for-each-group>   
                 </profiles>
                 
                 <scalars>

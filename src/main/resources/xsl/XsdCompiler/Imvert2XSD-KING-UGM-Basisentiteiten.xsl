@@ -65,10 +65,12 @@
     <xsl:variable name="target-namespace" select="$imvert-document/imvert:packages/imvert:base-namespace"/>
     <xsl:variable name="StUF-prefix" select="'StUF'"/>
     
-    <xsl:variable name="schemafile-ent-name" select="concat($prefix,'_ent_basis.xsd')"/>
+    <xsl:variable name="version" select="'0320'"/><!-- TODO configure -->
+    
+    <xsl:variable name="schemafile-ent-name" select="concat($prefix,$version,'_ent_basis.xsd')"/>
     <xsl:variable name="schemafile-ent" select="concat($xsd-folder-path,'/', $schemafile-ent-name)"/>
     
-    <xsl:variable name="schemafile-dat-name" select="concat($prefix,'_datatypes.xsd')"/>
+    <xsl:variable name="schemafile-dat-name" select="concat($prefix,$version,'_datatypes.xsd')"/>
     <xsl:variable name="schemafile-dat" select="concat($xsd-folder-path,'/', $schemafile-dat-name)"/>
     
     <xsl:template match="/">
@@ -314,6 +316,18 @@
                     </xsl:for-each>
                 </xs:choice>
             </xs:complexType>
+            <xs:complexType name="{concat(imvert:alias,'-matchgegevens')}">
+                <xs:complexContent>
+                    <xs:restriction base="{concat($prefix,':',imvert:alias,'-basis')}">
+                        <xs:choice minOccurs="1" maxOccurs="{count($concrete-subclasses)}">
+                            <xsl:for-each select="$concrete-subclasses">
+                                <xs:element name="{imvert:name}" type="{concat($prefix, ':', imvert:alias,'-matchgegevens')}"/>
+                            </xsl:for-each>
+                        </xs:choice>
+                    </xs:restriction>
+                </xs:complexContent>
+            </xs:complexType>
+            
         </xsl:variable>
         
         <xsl:choose> <!-- TODO DONE ComplexType PES-basis moet een extension zijn van SUB-abstract -->
@@ -593,7 +607,7 @@
                 <xsl:when test="exists($applicable-attribute)">
                     <xsl:sequence select="imf:create-comment('Attribute redirected to referentie tabel; Case: Type verwijst naar tabelentiteit')"/>
                     
-                    <xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info(.)"/>
+                    <xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info($applicable-attribute)"/>
                     <xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
                     <xs:element
                         name="{$compiled-name}" 
@@ -897,7 +911,7 @@
             <xs:attributeGroup ref="{$StUF-prefix}:entiteit"/>
         </xs:complexType>
         
-        <xsl:variable name="target-is-supertype-label" select="if (exists(imf:get-subclasses($target))) then '-basis' else '-matchgegevens'"/>
+        <xsl:variable name="target-is-supertype-label" select="'-matchgegevens'"/>
         <xsl:sequence select="imf:create-comment(concat('mode-global-association-type Outgoing Association matchgegevens # ',@display-name))"/>
         <xs:complexType name="{$associatie-naam}-matchgegevens">
             <xs:annotation>

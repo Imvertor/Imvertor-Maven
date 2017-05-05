@@ -19,6 +19,8 @@
             <label title="SOURCE" tagged-value="TV-HERKOMST"/>
             <label title="NOTE"/>
             <label title="EXAMPLE"/>
+            <label title="DEFINITION"/>
+            <label title="URI"/>
         </section>
     </notes-rule>
 

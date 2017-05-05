@@ -52,6 +52,40 @@
             <stereotypes>
                 <stereo required="no">stereotype-name-relation-role</stereo> 
             </stereotypes>
-        </tv>      
+        </tv>  
+       
+        <!-- 
+            KKG ISO gebruikt Notes als een verzamelbak voor allerlei tagged values; definitie is dus een "computed tagged value".
+            Deze wordt dus niet opgenomen in EA profiel.
+        -->
+        <tv norm="note" id="CFG-TV-DEFINITION" origin="system">
+            <name lang="nl">Definitie</name>
+            <name lang="en">Definition</name>
+            <desc lang="nl">De beschrijving van de betekenis van de construct zoals gespecificeerd in de catalogus van de desbetreffende (basis)registratie of informatiemodel. </desc>
+            <desc lang="en">The description of the meaning of the construct as specified in the catalog of the relevant (basic) registration or information model.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="yes">stereotype-name-objecttype</stereo>
+                <stereo required="yes">stereotype-name-attribute</stereo>
+                <stereo required="yes">stereotype-name-attributegroup</stereo>
+                <stereo required="yes">stereotype-name-relatieklasse</stereo>
+                <stereo required="yes">stereotype-name-referentielijst</stereo>
+                <stereo required="yes">stereotype-name-referentie-element</stereo>
+                <stereo required="yes">stereotype-name-relation-role</stereo> 
+                <stereo required="yes">stereotype-name-enumeration</stereo>
+                <stereo required="yes">stereotype-name-codelist</stereo>
+                <stereo required="yes">stereotype-name-datatype</stereo>
+                <stereo required="yes">stereotype-name-complextype</stereo>
+                <stereo required="yes">stereotype-name-union</stereo>
+
+                <stereo required="no">stereotype-name-data-element</stereo>
+                <stereo required="no">stereotype-name-union-element</stereo>
+                <stereo required="no">stereotype-name-enum</stereo>
+                
+                <stereo required="yes">stereotype-name-external-package</stereo>
+                <stereo required="yes">stereotype-name-view-package</stereo>
+            </stereotypes>
+        </tv>
+        
     </tagged-values>
 </tagset>
