@@ -57,8 +57,8 @@
        <entry name="Year" base="scalar-year_" facet="___" state="E"/>
        <entry name="_" base="_" facet="___" state="E"/>
        <entry name="Integer1" base="scalar-integer_1" facet="___" state="E"/>
-       <entry name="Integer1_P1" base="scalar-integer_11" facet="__0_" state="E"/>
-       <entry name="Integer1_P2" base="scalar-integer_12" facet="__-99999999999_99999999999" state="E"/>
+       <entry name="Integer11" base="scalar-integer_11" facet="__0_" state="E"/>
+       <entry name="Integer12" base="scalar-integer_12" facet="__-99999999999_99999999999" state="E"/>
        <entry name="Integer2_P1" base="scalar-integer_2" facet="__-9_9" state="E"/>
        <entry name="Integer2_P2" base="scalar-integer_2" facet="[0-9]{2}___" state="E"/>
        <entry name="Integer2" base="scalar-integer_2" facet="___" state="E"/>

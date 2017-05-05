@@ -10,13 +10,16 @@
     
     <!-- INSPIRE -->
     
-    <xsl:variable name="default-section-title" select="$configuration-notesrules-file/notes-rule/@default"/>
+    <xsl:variable name="inspire-notes-default-section-title" select="$configuration-notesrules-file/notes-rule/@default"/>
+    <xsl:variable name="inspire-notes-parts" select="distinct-values($configuration-notesrules-file/notes-rule/section/label/@title)"/>
+    <xsl:variable name="inspire-notes-parts-subpattern" select="string-join(for $part in $inspire-notes-parts return concat('(',$part,')'),'|')"/> <!-- (DEFINITION)|(SOURCE)|(EXAMPLE)|(URI)|(NOTE) -->
+    <xsl:variable name="inspire-notes-parts-subpattern-count" select="count($inspire-notes-parts)"/>
     
     <xsl:function name="imf:inspire-notes-sections" as="element(wrap)">
         <xsl:param name="text"/>
         <!-- several kinds of dashes. https://www.cs.tut.fi/~jkorpela/dashes.html -->
         <xsl:variable name="grp" select="'[&#45;&#8208;&#8209;&#8210;&#8211;&#8212;&#8213;&#8722;]{2}'"/>
-        <xsl:variable name="proc-text" select="if (matches($text,concat('^\s*',$grp),'s')) then $text else concat('-- ',$default-section-title,' --&#10;', $text)"/>
+        <xsl:variable name="proc-text" select="if (matches($text,concat('^\s*',$grp),'s')) then $text else concat('-- ',$inspire-notes-default-section-title,' --&#10;', $text)"/>
         <wrap>
             <xsl:analyze-string select="$proc-text" regex="{$grp}\s*(.*?)\s*{$grp}">
                 <xsl:matching-substring>
@@ -38,13 +41,14 @@
     
     <xsl:function name="imf:inspire-notes-parts" as="element()*">
         <xsl:param name="text"/>
-        <xsl:analyze-string select="$text" regex="((DEFINITION)|(SOURCE)|(EXAMPLE)|(URI)|(NOTE))\s+(.*?)\n\s*?(\n|$)" flags="s">
+        
+        <xsl:analyze-string select="$text" regex="({$inspire-notes-parts-subpattern})\s+(.*?)\n\s*?(\n|$)" flags="s">
             <xsl:matching-substring>
                 <typ>
                     <xsl:value-of select="regex-group(1)"/>
                 </typ>
                 <val>
-                    <xsl:value-of select="regex-group(7)"/>
+                    <xsl:value-of select="regex-group($inspire-notes-parts-subpattern-count + 2)"/>
                 </val>
             </xsl:matching-substring>
             <xsl:non-matching-substring>

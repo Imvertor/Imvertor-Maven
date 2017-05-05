@@ -12,13 +12,13 @@
     
     <name>BRO</name>
     
-    <stereotypes>
+   <!-- <stereotypes>
         <stereo id="stereotype-name-IMBRO/A">
             <name lang="en">IMBRO/A</name>
             <name lang="nl">IMBRO/A</name>
             <construct>attribute</construct>
             <toplevel>false</toplevel>
         </stereo>
-    </stereotypes>
+    </stereotypes> -->
     
 </metamodel>

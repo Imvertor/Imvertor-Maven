@@ -906,7 +906,7 @@
             <xs:attributeGroup ref="{$StUF-prefix}:entiteit"/>
         </xs:complexType>
         
-        <xsl:variable name="target-is-supertype-label" select="if (exists(imf:get-subclasses($target))) then '-basis' else '-matchgegevens'"/>
+        <xsl:variable name="target-is-supertype-label" select="'-matchgegevens'"/>
         <xsl:sequence select="imf:create-comment(concat('mode-global-association-type Outgoing Association matchgegevens # ',@display-name))"/>
         <xs:complexType name="{$associatie-naam}-matchgegevens">
             <xs:annotation>

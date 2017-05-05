@@ -152,7 +152,7 @@
                 <value default="yes">No</value>
             </declared-values>
         </tv>
-        <tv norm="space" origin="system" id="Position">
+        <tv norm="space"  id="Position"><!-- origin="system" -->
             <name lang="nl">Positie</name>
             <name lang="en">Position</name>
             <desc lang="nl">TODO</desc>

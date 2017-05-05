@@ -638,7 +638,7 @@
     <xsl:template match="imvert:class[imvert:designation='datatype']" priority="1">
         <!--setup-->
         <xsl:variable name="datatype-stereos" 
-            select="('stereotype-name-datatype','stereotype-name-complextype','stereotype-name-union','stereotype-name-referentielijst','stereotype-name-codelist','stereotype-name-interface')"/>
+            select="('stereotype-name-datatype','stereotype-name-complextype','stereotype-name-union','stereotype-name-referentielijst','stereotype-name-codelist','stereotype-name-interface','stereotype-name-enumeration')"/>
         <!--validation-->
         <xsl:sequence select="imf:report-warning(., 
             not(imvert:stereotype=imf:get-config-stereotypes($datatype-stereos)), 

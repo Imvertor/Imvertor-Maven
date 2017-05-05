@@ -199,12 +199,12 @@
     <item>
         <key>COMPLEX DATATYPE</key>
         <trans lang="nl">Complex datatype</trans>
-        <trans lang="en">Datatype</trans>
+        <trans lang="en">ComplexType</trans>
     </item>
     <item>
         <key>DATATYPE</key>
         <trans lang="nl">Datatype</trans>
-        <trans lang="en">PrimitiveType</trans>
+        <trans lang="en">SimpleType</trans>
     </item>
     <item>
         <key>DATA ELMENT</key>
