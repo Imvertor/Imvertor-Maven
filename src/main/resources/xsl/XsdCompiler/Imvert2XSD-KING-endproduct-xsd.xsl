@@ -41,7 +41,7 @@
     
     <xsl:import href="Imvert2XSD-KING-create-endproduct-schema.xsl"/>
     
-    <xsl:output indent="yes" method="xml" encoding="UTF-8"/>
+    <xsl:output indent="yes" method="xml" encoding="UTF-8" exclude-result-prefixes="#all"/>
     
     <!-- set the processing parameters of the stylesheets. -->
     <xsl:variable name="stylesheet-code">SKS</xsl:variable>
