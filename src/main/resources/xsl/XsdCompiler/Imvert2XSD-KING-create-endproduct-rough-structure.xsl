@@ -30,9 +30,6 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="$prefix"/>
-				<!--xsl:value-of select="TODO"/>
-				<xsl:variable name="msg" select="'You have not provided a short alias. Define the tagged value &quot;Verkorte alias&quot; on the package with the stereotyp &quot;Koppelvlak&quot;.'" as="xs:string"/>
-				<xsl:sequence select="imf:msg('WARN',$msg)"/-->
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
@@ -85,38 +82,42 @@
 			</xsl:variable>
 			<xsl:variable name="berichtstereotype" select="imvert:stereotype"/>
 			<xsl:variable name="berichtCode" select="imvert:tagged-values/imvert:tagged-value[imvert:name = 'Berichtcode']/imvert:value"/>
+			
+			<!-- ROME: De volgende if kan verwijderd worden zodra duidelijk is hoe een Du02 bericht vertaald moet worden. -->
 			<xsl:if test="$berichtCode = ''">
 				<xsl:message
 					select="concat('ERROR ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : The berichtcode can not be determined. To be able to generate correct messages this is neccessary. Check your model for missing tagged values. (', $berichtstereotype)"
 				/>
 			</xsl:if>
 			<!-- create the message -->
-			<ep:rough-message>
-				<xsl:sequence select="imf:create-debug-track(concat('Constructing the rough-message: ',imvert:name/@original),$debugging)"/>
-
-				<xsl:sequence select="imf:create-output-element('ep:name', imvert:name/@original)"/>
-				<xsl:sequence select="imf:create-output-element('ep:code', $berichtCode)"/>
-				<xsl:sequence select="imf:create-output-element('ep:id', imvert:id)"/>
-				<xsl:sequence select="imf:create-output-element('ep:fundamentalMnemonic', $fundamentalMnemonic)"/>
-
-				<xsl:sequence select="imf:create-output-element('ep:verkorteAlias', $prefix)"/>
-				<!-- Start of the message is always a class with an imvert:stereotype 
-					with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE', 'KENNISGEVINGBERICHTTYPE', 'SYNCHRONISATIEBERICHTTYPE'
-					or 'VRIJ BERICHTTYPE'. Since the toplevel structure of a message complies to different rules in comparison with 
-					the entiteiten structure this template is initialized within the 'create-toplevel-rough-message-structure' mode. -->
-				<xsl:apply-templates
-					select="
-						.[imvert:stereotype = imf:get-config-stereotypes((
-						'stereotype-name-vraagberichttype',
-						'stereotype-name-antwoordberichttype',
-						'stereotype-name-kennisgevingberichttype',
-						'stereotype-name-synchronisatieberichttype',
-						'stereotype-name-vrijberichttype'))]"
-					mode="create-toplevel-rough-message-structure">
-					<xsl:with-param name="berichtCode" select="$berichtCode"/>
-					<xsl:with-param name="useStuurgegevens" select="'yes'"/>
-				</xsl:apply-templates>
-			</ep:rough-message>
+			<xsl:if test="$berichtCode != 'Du02'">
+				<ep:rough-message>
+					<xsl:sequence select="imf:create-debug-track(concat('Constructing the rough-message: ',imvert:name/@original),$debugging)"/>
+	
+					<xsl:sequence select="imf:create-output-element('ep:name', imvert:name/@original)"/>
+					<xsl:sequence select="imf:create-output-element('ep:code', $berichtCode)"/>
+					<xsl:sequence select="imf:create-output-element('ep:id', imvert:id)"/>
+					<xsl:sequence select="imf:create-output-element('ep:fundamentalMnemonic', $fundamentalMnemonic)"/>
+	
+					<xsl:sequence select="imf:create-output-element('ep:verkorteAlias', $prefix)"/>
+					<!-- Start of the message is always a class with an imvert:stereotype 
+						with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE', 'KENNISGEVINGBERICHTTYPE', 'SYNCHRONISATIEBERICHTTYPE'
+						or 'VRIJ BERICHTTYPE'. Since the toplevel structure of a message complies to different rules in comparison with 
+						the entiteiten structure this template is initialized within the 'create-toplevel-rough-message-structure' mode. -->
+					<xsl:apply-templates
+						select="
+							.[imvert:stereotype = imf:get-config-stereotypes((
+							'stereotype-name-vraagberichttype',
+							'stereotype-name-antwoordberichttype',
+							'stereotype-name-kennisgevingberichttype',
+							'stereotype-name-synchronisatieberichttype',
+							'stereotype-name-vrijberichttype'))]"
+						mode="create-toplevel-rough-message-structure">
+						<xsl:with-param name="berichtCode" select="$berichtCode"/>
+						<xsl:with-param name="useStuurgegevens" select="'yes'"/>
+					</xsl:apply-templates>
+				</ep:rough-message>
+			</xsl:if>
 		</xsl:for-each>
 		
 		<xsl:sequence select="imf:create-debug-comment('Template 1: imvert:package[mode=create-rough-message-structure] End',$debugging)"/>
@@ -831,6 +832,7 @@
 					<xsl:with-param name="type-id" select="$type-id"/>
 					<xsl:with-param name="constructName" select="'-'"/>
 					<xsl:with-param name="historyApplies" select="'no'"/>
+					<xsl:with-param name="typeCode" select="'entiteitrelatie'"/>					
 				</xsl:call-template>
 			</xsl:when>
 		</xsl:choose>
@@ -839,10 +841,6 @@
 	</xsl:template>
 
 	<!-- This template (8) generates the structure of a relatie on a relatie. -->
-	<!-- ROME: De werking van dit template moet adhv van een voorbeeld gecheckt 
-		en mogelijk geoptimaliseerd worden. Zo is de vraag of een association-class 
-		een supertype kan hebben. Zo ja dan moeten er nog apply-templates worden 
-		opgenomen voor het verwerken van de supertypes. -->
 	<xsl:template match="imvert:association-class" mode="create-rough-message-content">
 		<xsl:param name="proces-type" select="'associations'"/>
 		<xsl:param name="id-trail"/>
@@ -860,9 +858,6 @@
 			<xsl:with-param name="berichtCode" select="$berichtCode"/>
 			<xsl:with-param name="context" select="$context"/>
 		</xsl:apply-templates>
-		<!-- ROME: Aangezien een association-class alleen de attributen levert 
-			van een relatie en dat relatie element al ergens anders zijn XML-attributes 
-			toegekend krijgt hoeven er hier geen attributes meer toegekend te worden. -->
 		
 		<xsl:sequence select="imf:create-debug-comment('Template8: imvert:association-class[mode=create-rough-message-content] End',$debugging)"/>
 	</xsl:template>
@@ -1066,24 +1061,6 @@
 				</ep:construct>
 			</xsl:when>
 		</xsl:choose>
-		
-		<!--ep:attribute>
-			<xsl:sequence
-				select="imf:create-output-element('ep:name', imvert:name/@original)"/>
-			
-			<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
-			<xsl:variable name="subpath" select="$supplier/@subpath"/>
-
-			<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpath),$debugging)"/>
-
-			<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
-
-			<xsl:sequence
-				select="imf:create-output-element('ep:verkorteAlias', imf:getVerkorteAlias($UGM))"/>
-			<xsl:sequence
-				select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
-			
-		</ep:attribute-->
 	</xsl:template>
 
 	<xsl:template name="createRoughEntityConstruct">
@@ -1356,11 +1333,6 @@
 			</xsl:when>
 			<!-- The association is a 'berichtRelatie' and it contains a 'bericht'. 
 				 This situation can occur whithin the context of a 'vrij bericht'. -->
-			<!-- ROME: Checken of de volgende when idd de berichtRelatie afhandelt 
-				en of alle benodigde (standaard) elementen wel gegenereerd worden. Er wordt 
-				geen supertype in afgehandeld, ik weet even niet meer waarom. 
-				Volgens mij wordt hierin ook een class met stereotype GROEP afgehandeld 
-				waarvoor geen constructRef gemaakt hoeft te worden.-->
 			<xsl:when test="key('class',$type-id)">
 				<xsl:sequence select="imf:create-debug-comment('key(class,$type-id)',$debugging)"/>
 				<xsl:apply-templates select="key('class',$type-id)"
@@ -1402,9 +1374,6 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="$prefix"/>
-				<!--xsl:value-of select="TODO"/>
-									<xsl:variable name="msg" select="concat('You have not provided a short alias for the UGM application: ',$supplier/@application,'. Define the tagged value &quot;Verkorte alias&quot; on the package with the stereotyp &quot;Koppelvlak&quot;.')" as="xs:string"/>
-									<xsl:sequence select="imf:msg('WARN',$msg)"/-->
 			</xsl:otherwise>
 		</xsl:choose>
 
@@ -1420,9 +1389,6 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="$namespaceIdentifier"/>
-				<!--xsl:value-of select="TODO"/>
-									<xsl:variable name="msg" select="concat('You have not provided a short alias for the UGM application: ',$supplier/@application,'. Define the tagged value &quot;Verkorte alias&quot; on the package with the stereotyp &quot;Koppelvlak&quot;.')" as="xs:string"/>
-									<xsl:sequence select="imf:msg('WARN',$msg)"/-->
 			</xsl:otherwise>
 		</xsl:choose>
 
