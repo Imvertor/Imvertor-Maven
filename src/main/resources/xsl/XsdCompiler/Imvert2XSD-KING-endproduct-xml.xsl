@@ -2011,7 +2011,6 @@
         <xsl:variable name="matchgegeven" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie kerngegeven')"/>
         <xsl:variable name="authentiek" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie authentiek')"/>
         <xsl:variable name="inOnderzoek" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie in onderzoek')"/>
-        <xsl:variable name="regels" select="imf:get-most-relevant-compiled-taggedvalue(., 'Regels')"/>
 
         <xsl:if test="not(contains($verwerkingsModus, 'matchgegeven') and $matchgegeven = 'JA')">
             <xsl:sequence select="imf:create-debug-comment('Debuglocation 31',$debugging)"/>
@@ -2031,7 +2030,6 @@
                             <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
                             <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
                             <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
-                            <xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/>
                         </ep:found-tagged-values>
                         
                         <!-- ROME: volgende 3 regels later weghalen. -->
@@ -2051,7 +2049,6 @@
                 <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
                 <xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
                 <xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
-                <xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/>
                 
                 <!-- When a tagged-value 'Positie' exists this is used to assign a value to 'ep:position' if not the value of the element 'imvert:position' is used. -->
                 <xsl:choose>

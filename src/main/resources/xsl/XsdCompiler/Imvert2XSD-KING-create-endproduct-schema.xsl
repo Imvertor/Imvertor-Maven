@@ -272,7 +272,7 @@
 						<!-- When a construct contains facets (which means it has to become an element without child elements) and it contains metadata constructs a 
 							 extension complexType needs to be generated which contains the xml-attributes based on a simpleType which contains the facets. -->
 						<xsl:when
-							test="(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:regels or ep:enum) and ep:type-name and .//ep:construct[@ismetadata]">
+							test="(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:enum) and ep:type-name and .//ep:construct[@ismetadata]">
 							<xsl:sequence
 								select="imf:create-debug-comment('Debuglocation 5007', $debugging)"/>
 							<xsl:if test="ep:documentation">
@@ -300,7 +300,7 @@
 						<!-- When a construct contains facets (which means it has to become an element without child elements) and it doesn't contain metadata constructs 
 							 a restriction simpleType can be generated which contains the facets. -->
 						<xsl:when
-							test="(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:regels or ep:enum) and ep:type-name">
+							test="(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:enum) and ep:type-name">
 							<xsl:sequence
 								select="imf:create-debug-comment('Debuglocation 5008', $debugging)"/>
 							<xsl:if test="ep:documentation">

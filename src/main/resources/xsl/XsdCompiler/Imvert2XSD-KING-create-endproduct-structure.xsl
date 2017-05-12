@@ -1273,7 +1273,6 @@
 		<xsl:variable name="min-length" select="imf:get-most-relevant-compiled-taggedvalue(., 'Minimum lengte')"/>
 		<xsl:variable name="patroon" select="imf:get-most-relevant-compiled-taggedvalue(., 'Patroon')"/>
 		<xsl:variable name="formeelPatroon" select="imf:get-most-relevant-compiled-taggedvalue(., 'Formeel patroon')"/>
-		<xsl:variable name="regels" select="imf:get-most-relevant-compiled-taggedvalue(., 'Regels')"/>
 		
 		
 		<xsl:if test="not(contains($verwerkingsModus, 'matchgegeven') and $matchgegeven = 'NEE') and (($generateHistorieConstruct = 'MaterieleHistorie' and contains($materieleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorie' and contains($formeleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorieRelatie' and contains($formeleHistorie, 'Ja')) or $generateHistorieConstruct = 'Nee')">
@@ -1302,8 +1301,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:max-value', $max-waarde)"/>
 					<xsl:sequence select="imf:create-output-element('ep:min-value', $min-waarde)"/>
 					<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)"/>
-					<xsl:sequence select="imf:create-output-element('ep:formeel-patroon', $formeelPatroon)"/>
-					<xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/-->
+					<xsl:sequence select="imf:create-output-element('ep:formeel-patroon', $formeelPatroon)"/-->
 				</xsl:when>
 				<xsl:when test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype = 'COMPLEX DATATYPE'">
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1032',$debugging)"/>
@@ -1330,7 +1328,6 @@
 									<xsl:sequence select="imf:create-output-element('ep:min-value', $min-waarde)"/>
 									<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)"/>
 									<xsl:sequence select="imf:create-output-element('ep:formeel-patroon', $formeelPatroon)"/>
-									<xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/>
 								</ep:found-tagged-values>
 							</ep:tagged-values>
 						</xsl:if>
@@ -1384,7 +1381,6 @@
 									<xsl:sequence select="imf:create-output-element('ep:min-value', $min-waarde)"/>
 									<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)"/>
 									<xsl:sequence select="imf:create-output-element('ep:formeel-patroon', $formeelPatroon)"/>
-									<xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/>
 								</ep:found-tagged-values>
 							</ep:tagged-values>
 						</xsl:if>
@@ -1493,7 +1489,6 @@
 									<xsl:sequence select="imf:create-output-element('ep:min-value', $min-waarde)"/>
 									<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)"/>
 									<xsl:sequence select="imf:create-output-element('ep:formeel-patroon', $formeelPatroon)"/>
-									<xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/>
 								</ep:found-tagged-values>
 							</ep:tagged-values>
 						</xsl:if>
@@ -1683,7 +1678,6 @@
 						<xsl:sequence select="imf:create-output-element('ep:min-value', $min-waarde)"/>
 						<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)"/>
 						<xsl:sequence select="imf:create-output-element('ep:formeel-patroon', $formeelPatroon)"/>
-						<xsl:sequence select="imf:create-output-element('ep:regels', $regels)"/>
 						<xsl:choose>
 							<xsl:when test="$tech-name = 'entiteitType' and not(empty($fundamentalMnemonic))">
 								<xsl:sequence select="imf:create-output-element('ep:enum', $fundamentalMnemonic)"/>
