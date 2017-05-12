@@ -629,9 +629,8 @@
     
     <xsl:function name="imf:get-datatype-info" as="node()*">
         <xsl:param name="this" as="node()"/> <!-- packagedElement -->
-        <!-- IM-69 introduceer de mogelijkheid datatypen naar systeem typen te mappen -->
         <xsl:sequence select="imf:create-output-element('imvert:primitive',imf:get-profile-tagged-value($this,'primitive'))"/>
-        <xsl:sequence select="imf:create-output-element('imvert:pattern',imf:get-profile-tagged-value($this,('pattern','patroon')))"/>
+        <xsl:sequence select="imf:create-output-element('imvert:pattern',imf:get-formal-pattern($this))"/>
         <xsl:sequence select="imf:create-output-element('imvert:min-length',imf:get-profile-tagged-value($this,'minLength'))"/>
         <xsl:sequence select="imf:create-output-element('imvert:max-length',imf:get-profile-tagged-value($this,'maxLength'))"/>
         <xsl:sequence select="imf:create-output-element('imvert:union',imf:get-profile-tagged-value($this,'union'))"/>
@@ -718,7 +717,7 @@
         <xsl:sequence select="imf:create-output-element('imvert:min-occurs',$lbound)"/>
         <xsl:sequence select="imf:create-output-element('imvert:max-occurs',if ($ubound='*') then 'unbounded' else $ubound)"/>
         <xsl:sequence select="imf:create-output-element('imvert:position',imf:get-position-value($this,'100'))"/>
-        <xsl:sequence select="imf:create-output-element('imvert:pattern',imf:get-profile-tagged-value($this,('pattern','patroon')))"/>
+        <xsl:sequence select="imf:create-output-element('imvert:pattern',imf:get-formal-pattern($this))"/>
         <xsl:sequence select="imf:create-output-element('imvert:min-length',imf:get-profile-tagged-value($this,'minLength'))"/>
         <xsl:sequence select="imf:create-output-element('imvert:max-length',imf:get-profile-tagged-value($this,'maxLength'))"/>
         <xsl:sequence select="imf:create-output-element('imvert:any-from-package',imf:get-profile-tagged-value($this,'package'))"/>
@@ -1317,6 +1316,7 @@
             <xsl:for-each-group select="$additional-tagged-values" group-by="@id"> <!-- a set of tv elements, for a particular name -->
                 <xsl:for-each select="current-group()[last()]">
                     <xsl:variable name="n" select="name"/> <!-- a normalized name <n original="">name ; may be multiple and may be duplicate -->
+                    <xsl:variable name="id" select="current-grouping-key()"/>
                     <xsl:for-each select="$n">
                         <xsl:variable name="nname" select="."/>
                         <xsl:variable name="norm" select="../@norm"/>
@@ -1326,7 +1326,7 @@
                         <xsl:if test="exists($value-orig)">
                             <xsl:for-each select="$value-orig">
                                 <xsl:variable name="index" select="position()"/>
-                                <imvert:tagged-value>
+                                <imvert:tagged-value id="{$id}">
                                     <imvert:name original="{$nname/@original}">
                                         <xsl:value-of select="$nname"/>         
                                     </imvert:name>
@@ -1334,7 +1334,6 @@
                                         <xsl:sequence select="$value-norm[$index]"/>
                                     </imvert:value>
                                 </imvert:tagged-value>
-                                
                             </xsl:for-each>
                         </xsl:if>
                     </xsl:for-each>
@@ -1526,4 +1525,20 @@
         <xsl:value-of select="string-join($path,'')"/>
     </xsl:function>
     
+    <!-- 
+        When "formal pattern" is part of the metamodel, use that value; otherwise assume that the "pattern" holds the formal pattern 
+    -->
+    <xsl:function name="imf:get-formal-pattern" as="element(imvert:pattern)?">
+        <xsl:param name="this"/>
+        <xsl:variable name="localized-name-formal" select="imf:get-config-tagged-values('FormeelPatroon',false())"/>
+        <xsl:variable name="localized-name-informal" select="imf:get-config-tagged-values('Patroon',false())"/>
+        <xsl:choose>
+            <xsl:when test="$localized-name-formal eq '#unknown'">
+                <xsl:sequence select="imf:create-output-element('imvert:pattern',imf:get-profile-tagged-value($this,$localized-name-informal))"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:create-output-element('imvert:pattern',imf:get-profile-tagged-value($this,$localized-name-formal))"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
 </xsl:stylesheet>
