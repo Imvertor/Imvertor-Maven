@@ -259,19 +259,40 @@
 
     <xsl:template match="imvert:attributes" mode="short gegevensgroeptype">
         <xsl:variable name="r" as="element()*">
-            <xsl:apply-templates select="imvert:attribute" mode="#current"/>
-            <!-- als de class ook gegevensgroepen heeft, die attributen hier invoegen -->
-            <xsl:for-each select="../imvert:associations/imvert:association">
-                <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
-                <xsl:if test="$defining-class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')]">
-                    <!-- eerst gegevensgroeptype info -->
-                    <!--(4)-->
-                    <xsl:apply-templates select="." mode="composition"/>
-                    <!-- en dat de attributen daarin -->
-                    <xsl:apply-templates select="$defining-class/imvert:attributes/imvert:attribute" mode="gegevensgroeptype"/>
-                    <xsl:apply-templates select="$defining-class/imvert:associations/imvert:association" mode="gegevensgroeptype-as-attribute"/>
-                </xsl:if>
-            </xsl:for-each>
+            <xsl:choose>
+                <xsl:when test="imf:get-config-stereotypes('stereotype-name-association-to-composite') = '#unknown'">
+                    <!-- attribuut groepen zijn als attribuut opgenomen. -->
+                    <xsl:apply-templates select="imvert:attribute[not(imvert:stereotype = imf:get-config-stereotypes('stereotype-name-attributegroup'))]" mode="#current"/>
+                    <!-- als de class ook gegevensgroepen heeft, die attributen hier invoegen -->
+                    <xsl:for-each select="imvert:attribute[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-attributegroup')]">
+                        <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
+                        <xsl:if test="$defining-class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')]">
+                            <!-- eerst gegevensgroeptype info -->
+                            <!--(4)-->
+                            <xsl:apply-templates select="." mode="composition"/>
+                            <!-- en dat de attributen daarin -->
+                            <xsl:apply-templates select="$defining-class/imvert:attributes/imvert:attribute" mode="gegevensgroeptype"/>
+                            <xsl:apply-templates select="$defining-class/imvert:associations/imvert:association" mode="gegevensgroeptype-as-attribute"/>
+                        </xsl:if>
+                    </xsl:for-each>
+                </xsl:when>
+                <xsl:otherwise>
+                    <!-- attribuut groepen zijn via associatie gekoppeld. -->
+                    <xsl:apply-templates select="imvert:attribute" mode="#current"/>
+                    <!-- als de class ook gegevensgroepen heeft, die attributen hier invoegen -->
+                    <xsl:for-each select="../imvert:associations/imvert:association">
+                        <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
+                        <xsl:if test="$defining-class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')]">
+                            <!-- eerst gegevensgroeptype info -->
+                            <!--(4)-->
+                            <xsl:apply-templates select="." mode="composition"/>
+                            <!-- en dat de attributen daarin -->
+                            <xsl:apply-templates select="$defining-class/imvert:attributes/imvert:attribute" mode="gegevensgroeptype"/>
+                            <xsl:apply-templates select="$defining-class/imvert:associations/imvert:association" mode="gegevensgroeptype-as-attribute"/>
+                        </xsl:if>
+                    </xsl:for-each>
+                </xsl:otherwise>
+            </xsl:choose>
         </xsl:variable>
         <xsl:if test="exists($r)">
             <section type="SHORT-ATTRIBUTES">
@@ -318,7 +339,7 @@
         </part>
     </xsl:template>
     
-    <xsl:template match="imvert:association" mode="composition">
+    <xsl:template match="imvert:attribute | imvert:association" mode="composition">
         <!-- toon alsof het een attribuut is -->
         <xsl:variable name="type" select="imf:get-construct-by-id(imvert:type-id)"/>
        <part type="COMPOSER">

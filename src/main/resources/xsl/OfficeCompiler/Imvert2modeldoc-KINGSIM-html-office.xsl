@@ -196,8 +196,21 @@
         <tr>
             <xsl:choose>
                 <xsl:when test="@type = 'COMPOSER'">
-                   <!-- processed elsewhere -->
-                </xsl:when> 
+                    <td width="5%">&#160;</td>
+                    <td width="25%">
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
+                        <xsl:text>:</xsl:text>
+                    </td>
+                    <td width="50%">
+                        <xsl:apply-templates select="item[2]" mode="#current"/>
+                    </td>
+                    <td width="10%">
+                        <xsl:apply-templates select="item[3]" mode="#current"/>
+                    </td>
+                    <td width="10%">
+                        <xsl:apply-templates select="item[4]" mode="#current"/>
+                    </td>
+                </xsl:when>
                 <xsl:when test="$type = 'EXPLANATION'">
                     <td width="5%">&#160;</td>
                     <td width="95%">
