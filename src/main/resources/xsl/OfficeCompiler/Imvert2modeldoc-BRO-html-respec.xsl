@@ -19,20 +19,15 @@
     
     <xsl:template match="/book">
         <h2>Catalogus</h2>
-        <p>
-            <xsl:value-of select="@type"/>
-            :
-            <xsl:value-of select="@name"/>
-            :
-            <xsl:value-of select="@version"/>
-            :
-            <xsl:value-of select="@date"/>
+        <p class="ednote" title="Over deze catalogus">
+            Deze catalogus is automatisch samengesteld op basis van het UML model "<xsl:value-of select="@name"/>" door <xsl:value-of select="@version"/> op <xsl:value-of select="imf:format-dateTime(@date)"/>.
+           <br/>
+            Wanneer je technische fouten of onvolkomenheden aantreft, geef dit dan door aan <i>arjan.loeffen at armatiek.nl</i>, voor inhoudelijke fouten neem contact op met het modellenteam.
         </p>
         <xsl:apply-templates select="section" mode="domain"/>
     </xsl:template>
     
     <xsl:template match="section" mode="domain">
-        <strong>Domein: <xsl:value-of select="@name"/></strong>
         <xsl:apply-templates select="section" mode="detail"/>
     </xsl:template>
     
@@ -60,24 +55,23 @@
                 <xsl:variable name="level" select="count(ancestor::section) + 1"/>
                 <xsl:variable name="composer" select="content/part[@type = 'COMPOSER']/item[1]"/>
                 <a class="anchor" name="global-{@id}"/>
-                <section>
+                <div>
                     <xsl:element name="{concat('h',$level)}">
                         <xsl:value-of select="imf:translate-i3n('ATTRIBUTE',$language,())"/>
                         <xsl:value-of select="' '"/>
                         <xsl:value-of select="@name"/>
                         <xsl:value-of select="' '"/>
-                        <xsl:value-of select="imf:translate-i3n('OF-COMPOSITION',$language,())"/>
                         <xsl:value-of select="' '"/>
                         <xsl:value-of select="$composer"/>
                     </xsl:element>
                     <xsl:apply-templates mode="detail"/>
-                </section>
+                </div>
             </xsl:when>
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ASSOCIATION'">
                 <xsl:variable name="level" select="count(ancestor::section)"/>
                 <xsl:variable name="composer" select="content/part[@type = 'COMPOSER']/item[1]"/>
                 <a class="anchor" name="global-{@id}"/>
-                <section>
+                <div>
                     <xsl:element name="{concat('h',$level)}">
                         <xsl:value-of select="imf:translate-i3n('ASSOCIATION',$language,())"/>
                         <xsl:value-of select="' '"/>
@@ -88,9 +82,9 @@
                         <xsl:value-of select="$composer"/>
                     </xsl:element>
                     <xsl:apply-templates mode="detail"/>
-                </section>
+                </div>
             </xsl:when>
-            <xsl:otherwise>
+            <xsl:when test="starts-with(@type,'OVERVIEW-')">
                 <xsl:variable name="level" select="count(ancestor::section)"/>
                 <a class="anchor" name="global-{@id}"/>
                 <section>
@@ -101,6 +95,30 @@
                     </xsl:element>
                     <xsl:apply-templates mode="detail"/>
                 </section>
+            </xsl:when> 
+            <xsl:when test="@type = ('OBJECTTYPE')"> <!-- objecttypes are in TOC -->
+                <xsl:variable name="level" select="count(ancestor::section)"/>
+                <a class="anchor" name="global-{@id}"/>
+                <section>
+                    <xsl:element name="{concat('h',$level)}">
+                        <xsl:value-of select="imf:translate-i3n(@type,$language,())"/>
+                        <xsl:value-of select="' '"/>
+                        <xsl:value-of select="@name"/>
+                    </xsl:element>
+                    <xsl:apply-templates mode="detail"/>
+                </section>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:variable name="level" select="count(ancestor::section)"/>
+                <a class="anchor" name="global-{@id}"/>
+                <div>
+                    <xsl:element name="{concat('h',$level)}">
+                        <xsl:value-of select="imf:translate-i3n(@type,$language,())"/>
+                        <xsl:value-of select="' '"/>
+                        <xsl:value-of select="@name"/>
+                    </xsl:element>
+                    <xsl:apply-templates mode="detail"/>
+                </div>
             </xsl:otherwise>
         </xsl:choose>
        

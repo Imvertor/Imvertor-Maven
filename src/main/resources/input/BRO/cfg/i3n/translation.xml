@@ -83,7 +83,7 @@
     <item>
         <key>TOELICHTING</key>
         <trans lang="nl">Toelichting</trans>
-        <trans lang="en">Explanation</trans>
+        <trans lang="en">Description</trans>
     </item>
     <item>
         <key>DATUMOPNAME</key>
@@ -111,13 +111,12 @@
         <trans lang="nl">Kwaliteit</trans>
         <trans lang="en">Quality</trans>
     </item>
-    <?x
+  
     <item>
         <key>RELATIESOORT</key>
         <trans lang="nl">Relatiesoort</trans>
-        <trans lang="en">Relation</trans>
+        <trans lang="en">Association type</trans>
     </item>
-    x?>
     
     <!-- system defined types -->
 
@@ -184,6 +183,11 @@
         <key>REFERENTIELIJST</key>
         <key>REFERENCELIST</key>
         <trans lang="nl">Referentielijst</trans>
+        <trans lang="en">Reference list</trans>
+    </item>
+    <item>
+        <key>CODELIST</key>
+        <trans lang="nl">Codelist</trans>
         <trans lang="en">Codelist</trans>
     </item>
     <item>
@@ -197,7 +201,7 @@
         <trans lang="en">UnionElement</trans>
     </item>
     <item>
-        <key>COMPLEX DATATYPE</key>
+        <key>COMPLEXTYPE</key>
         <trans lang="nl">Complex datatype</trans>
         <trans lang="en">ComplexType</trans>
     </item>
@@ -218,110 +222,126 @@
         <trans lang="en">GroupType</trans>
         
     </item>
-
+    <item>
+        <key>CODE</key>
+        <key>CODE</key>
+        <trans lang="nl">Code</trans>
+        <trans lang="en">Code</trans>
+    </item>
+    
     <!-- heading labels -->
 
     <item>
         <key>OVERVIEW-OBJECTTYPE</key>
-        <trans lang="nl">Objecttype overzicht</trans>
-        <trans lang="en">FeatureTypes overview</trans>
+        <trans lang="nl">Objecttypen</trans>
+        <trans lang="en">FeatureTypes</trans>
     </item>
     <item>
         <key>OVERVIEW-ASSOCIATIONCLASS</key>
-        <trans lang="nl">Relatieklasse overzicht</trans>
-        <trans lang="en">AssociationClasses overview</trans>
+        <trans lang="nl">Relatieklassen</trans>
+        <trans lang="en">AssociationClasses</trans>
     </item>
     <item>
         <key>OVERVIEW-ENUMERATION</key>
-        <trans lang="nl">Enumeratie overzicht</trans>
-        <trans lang="en">Enumerations overview</trans>
+        <trans lang="nl">Enumeraties</trans>
+        <trans lang="en">Enumerations</trans>
     </item>
     <item>
         <key>OVERVIEW-REFERENCELIST</key>
-        <trans lang="nl">Referentielijst overzicht</trans>
-        <trans lang="en">Codelists overview</trans>
+        <trans lang="nl">Referentielijsten</trans>
+        <trans lang="en">Referencelists</trans>
+    </item>
+    <item>
+        <key>OVERVIEW-CODELIST</key>
+        <trans lang="nl">Codelists</trans>
+        <trans lang="en">Codelists</trans>
     </item>
     <item>
         <key>OVERVIEW-UNION</key>
-        <trans lang="nl">Union overzicht</trans>
-        <trans lang="en">Unions overview</trans>
+        <trans lang="nl">Unions</trans>
+        <trans lang="en">Unions</trans>
     </item>
     <item>
         <key>OVERVIEW-DATATYPE</key>
-        <trans lang="nl">Datatype overzicht</trans>
-        <trans lang="en">Datatypes overview</trans>
+        <trans lang="nl">Datatypen</trans>
+        <trans lang="en">SimpleTypes</trans>
     </item>
     <item>
         <key>DETAILS</key>
-        <trans lang="nl">Attribuut- en relatiesoorten</trans>
+        <trans lang="nl">Attribuut- en relatiesoort details</trans>
         <trans lang="en">Property details</trans>
     </item>
 
     <item>
         <key>DETAILS-OBJECTTYPE</key>
-        <trans lang="nl">Objecttypen</trans>
-        <trans lang="en">FeatureTypes</trans>
+        <trans lang="nl">Objecttype details</trans>
+        <trans lang="en">FeatureType details</trans>
     </item>
     <item>
         <key>DETAILS-ASSOCIATIONCLASS</key>
-        <trans lang="nl">Relatieklassen</trans>
-        <trans lang="en">AssociationClasses</trans>
+        <trans lang="nl">Relatieklasse details</trans>
+        <trans lang="en">Association slass details</trans>
     </item>
     <item>
         <key>DETAILS-ENUMERATION</key>
-        <trans lang="nl">Enumeraties</trans>
-        <trans lang="en">Enumerations</trans>
+        <trans lang="nl">Enumeratie details</trans>
+        <trans lang="en">Enumeration details</trans>
     </item>
     <item>
         <key>DETAILS-REFERENCELIST</key>
-        <trans lang="nl">Referentielijsten</trans>
-        <trans lang="en">Codelists</trans>
+        <trans lang="nl">Referentielijst details</trans>
+        <trans lang="en">Reference list details</trans>
+    </item>
+    <item>
+        <key>DETAILS-CODELIST</key>
+        <trans lang="nl">Codelist details</trans>
+        <trans lang="en">Code list details</trans>
     </item>
     <item>
         <key>DETAILS-UNION</key>
-        <trans lang="nl">Unions</trans>
-        <trans lang="en">Unions</trans>
+        <trans lang="nl">Union details</trans>
+        <trans lang="en">Union details</trans>
     </item>
     <item>
         <key>DETAILS-DATATYPE</key>
-        <trans lang="nl">Datatypen</trans>
-        <trans lang="en">Datatypes</trans>
+        <trans lang="nl">Datatype details</trans>
+        <trans lang="en">Simpletype details</trans>
     </item>
 
     <item>
         <key>DETAIL-ATTRIBUTE</key>
-        <trans lang="nl">Attribuutsoort</trans>
-        <trans lang="en">AttributeTypes</trans>
+        <trans lang="nl">Attribuutsoort details</trans>
+        <trans lang="en">AttributeType details</trans>
     </item>
     <item>
         <key>DETAIL-ASSOCIATION</key>
-        <trans lang="nl">Relatiesoort</trans>
-        <trans lang="en">AssociationTypes</trans>
+        <trans lang="nl">Relatiesoort details</trans>
+        <trans lang="en">AssociationType details</trans>
     </item>
     <item>
         <key>DETAIL-REFERENCEELEMENT</key>
-        <trans lang="nl">Referentie element</trans>
-        <trans lang="en">CodelistElements</trans>
+        <trans lang="nl">Referentie element details</trans>
+        <trans lang="en">Reference element details</trans>
     </item>
     <item>
         <key>DETAIL-UNIONELEMENT</key>
-        <trans lang="nl">Union element</trans>
-        <trans lang="en">UnionElements</trans>
+        <trans lang="nl">Union element details</trans>
+        <trans lang="en">Union element details</trans>
     </item>
     <item>
         <key>DETAIL-DATAELEMENT</key>
-        <trans lang="nl">Data element</trans>
-        <trans lang="en">DataElements</trans>
+        <trans lang="nl">Data element details</trans>
+        <trans lang="en">Data element details</trans>
     </item>
     <item>
         <key>DETAIL-ENUMERATION</key>
-        <trans lang="nl">Enumeratie</trans>
-        <trans lang="en">Enumerations</trans>
+        <trans lang="nl">Enumeratie details</trans>
+        <trans lang="en">Enumeration details</trans>
     </item>
     <item>
         <key>DETAIL-COMPOSITE</key>
-        <trans lang="nl">Gegevensgroeptype</trans>
-        <trans lang="en">GroupTypes</trans>
+        <trans lang="nl">Gegevensgroeptype details</trans>
+        <trans lang="en">GroupType details</trans>
     </item>
     <item>
         <key>ATTRIBUTE</key>
@@ -330,6 +350,7 @@
     </item>
     <item>
         <key>ASSOCIATION</key>
+        <key>RELATIESOORT</key>
         <trans lang="nl">Relatiesoort</trans>
         <trans lang="en">AssociationType</trans>
     </item>

@@ -122,125 +122,45 @@
         </xsl:copy>
     </xsl:template>
 
-<?x
-    <!-- temporary map from KKG to KK -->
-    
-    <xsl:template match="imvert:baretype">
-        
-        <xsl:choose>
-            <xsl:when test=". = 'REAL'"> 
-                <imvert:baretype original="Real">N20,10</imvert:baretype>
-                <imvert:type-name>scalar-decimal</imvert:type-name>
-                <imvert:total-digits>20</imvert:total-digits>
-                <imvert:fraction-digits>10</imvert:fraction-digits>
-            </xsl:when>
-            <xsl:when test=". = 'CHARACTERSTRING'">
-                <imvert:baretype original="CharacterString">AN</imvert:baretype>
-                <imvert:type-name>scalar-string</imvert:type-name>
-            </xsl:when>
-            <xsl:when test=". = 'BOOLEAN'">
-                <imvert:baretype original="Boolean">INDIC</imvert:baretype>
-                <imvert:type-name>scalar-boolean</imvert:type-name>
-            </xsl:when>
-            <xsl:when test=". = 'INTEGER'">
-                <imvert:baretype original="Integer">N100</imvert:baretype>
-                <imvert:type-name>scalar-integer</imvert:type-name>
-            </xsl:when>
-            <xsl:when test=". = 'DATE'">
-                <imvert:baretype original="Date">DATUM</imvert:baretype>
-                <imvert:type-name>scalar-date</imvert:type-name>
-            </xsl:when>
-            <xsl:when test=". = 'DATETIME'">
-                <imvert:baretype original="DateTime">DT</imvert:baretype>
-                <imvert:type-name>scalar-datetime</imvert:type-name>
-            </xsl:when>
-            <xsl:when test=". = 'YEAR'">
-                <imvert:baretype original="Year">YEAR</imvert:baretype>
-                <imvert:type-name>scalar-year</imvert:type-name>
-            </xsl:when>
-            <xsl:when test=". = 'MONTH'">
-                <imvert:baretype original="Month">MONTH</imvert:baretype>
-                <imvert:type-name>scalar-month</imvert:type-name>
-            </xsl:when>
-            <xsl:when test=". = 'DAY'">
-                <imvert:baretype original="Day">DAY</imvert:baretype>
-                <imvert:type-name>scalar-day</imvert:type-name>
-            </xsl:when>
-            <xsl:when test=". = 'URI'">
-                <imvert:baretype original="URI">URI</imvert:baretype>
-                <!--<imvert:type-name>scalar-uri</imvert:type-name>-->
-            </xsl:when>
+    <!-- transform inspire notes to tagged values -->
+    <xsl:template match="imvert:tagged-values">
+        <xsl:copy>
+            <!-- first copy all existing; only when a value is specified  -->
+            <xsl:apply-templates select="imvert:tagged-value[normalize-space(imvert:value)]"/>
             
-            <xsl:otherwise>
-                <xsl:sequence select="."/>
-            </xsl:otherwise>
-        </xsl:choose>
-        
-    </xsl:template>
-x?>    
-    
-    <?x
-    <!-- mapping KKG -->
-    
-    <xsl:template match="imvert:class[empty(imvert:stereotype)]">
-        <imvert:class>
-            <xsl:apply-templates/>
-            <xsl:choose>
-                <xsl:when test="false()">
-                    <!-- test of deze klasse als target van een compositie relatie voorkomt -->
-                </xsl:when>
-                <xsl:when test="true()">
-                    <imvert:stereotype premap="">OBJECTTYPE</imvert:stereotype>
-                </xsl:when>
-            </xsl:choose>
-        </imvert:class>
-    </xsl:template>
-    
-    <xsl:template match="imvert:attribute[empty(imvert:stereotype)]">
-        <imvert:attribute>
-            <xsl:apply-templates/>
-            <xsl:choose>
-                <xsl:when test="false()">
-                    <!-- test of dit een data element is  -->
-                </xsl:when>
-                <xsl:when test="true()">
-                    <imvert:stereotype premap="">ATTRIBUUTSOORT</imvert:stereotype>
-                </xsl:when>
-            </xsl:choose>
-        </imvert:attribute>
+            <!-- then add the tvs extracted from notes -->
+            <xsl:variable name="construct" select=".."/>
+            <xsl:for-each select="$construct/imvert:documentation/section">
+                <xsl:variable name="title" select="title"/>
+                <xsl:variable name="norm-title" select="upper-case($title)"/>
+                <xsl:variable name="body" select="body"/>
+                
+                <xsl:variable name="target-tv-id" select="$configuration-notesrules-file/notes-rule[@lang=$language]/section[upper-case(@title) = $norm-title]/@tagged-value"/>
+                
+                <xsl:variable name="current-tv" select="imf:get-tagged-value-by-id($construct,$target-tv-id)/imvert:value"/> <!-- the current tagged value if any -->
+                
+                <xsl:choose>
+                    <xsl:when test="empty($target-tv-id)">
+                        <xsl:sequence select="imf:msg($construct,'WARN','Notes field [1] not recognized, and skipped',$title)"/>
+                    </xsl:when>
+                    <xsl:when test="normalize-space($body) and normalize-space($current-tv)">
+                        <xsl:sequence select="imf:msg($construct,'ERROR','Tagged value [1] in notes field [2] already specified',($target-tv-id,$title))"/>
+                    </xsl:when>
+                    <xsl:when test="normalize-space($body)">
+                        <imvert:tagged-value origin="notes" id="{$target-tv-id}">
+                            <imvert:name original="{$title}">
+                                <xsl:value-of select="$norm-title"/>
+                            </imvert:name>
+                            <imvert:value>
+                                <xsl:value-of select="$body"/>
+                            </imvert:value>
+                        </imvert:tagged-value>
+                    </xsl:when>
+                </xsl:choose>
+            </xsl:for-each>
+        </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="imvert:association[empty(imvert:stereotype)]">
-        <imvert:attribute>
-            <xsl:apply-templates/>
-            <xsl:choose>
-                <xsl:when test="false()">
-                    <!-- test of dit een compositie relatie  is  -->
-                </xsl:when>
-                <xsl:when test="true()">
-                    <imvert:stereotype premap="">RELATIESOORT</imvert:stereotype>
-                </xsl:when>
-            </xsl:choose>
-        </imvert:attribute>
-    </xsl:template>
-    
-    <xsl:template match="imvert:stereotype">
-        <xsl:variable name="construct" select="parent::imvert:*"/>
-        <imvert:stereotype premap="{.}"> 
-            <xsl:choose>
-                <xsl:when test=". = 'FEATURETYPE'">OBJECTTYPE</xsl:when>
-                <xsl:when test=". = 'DATATYPE'">COMPLEX DATATYPE</xsl:when>
-                <xsl:when test=". = 'TYPE'">DATATYPE</xsl:when>
-                <xsl:when test=". = 'PROPERTY'">ATTRIBUUTSOORT</xsl:when>
-                <xsl:when test=". = 'CODEDVALUEDOMAIN'">COMPLEX DATATYPE</xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="."/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </imvert:stereotype>
-    </xsl:template>
-
-x?>
     <!-- 
        identity transform
     -->
@@ -250,4 +170,10 @@ x?>
         </xsl:copy>
     </xsl:template>    
   
+    <xsl:function name="imf:get-tagged-value-by-id" as="element(imvert:tagged-value)*">
+        <xsl:param name="construct"/>
+        <xsl:param name="tv-id"/>
+        <xsl:sequence select="$construct/imvert:tagged-values/imvert:tagged-value[@id = $tv-id]"/>
+    </xsl:function>
+   
 </xsl:stylesheet>

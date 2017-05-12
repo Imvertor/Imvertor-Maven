@@ -1218,7 +1218,7 @@
                 <xsl:choose>
                     <xsl:when test="empty($declared)">
                         <!-- an unknown tagged value, not configured anywhere -->
-                        <xsl:sequence select="imf:report-warning($this, true(), 'Tagged value not expected or unknown: [1]',.)"/>
+                        <xsl:sequence select="imf:report-warning($this, true(), 'Tagged value not expected or unknown: [1]',$name/@original)"/>
                     </xsl:when>
                     <xsl:when test="not($valid-for-stereotype)">
                         <xsl:sequence select="imf:report-warning($this, true(), 'Tagged value [1] not expected on stereotype [2]',($name/@original,$stereotype))"/>

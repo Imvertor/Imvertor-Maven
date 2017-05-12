@@ -41,8 +41,11 @@
     <xsl:variable name="quot"><!--'--></xsl:variable>
     
     <xsl:template match="/imvert:packages">
-        <book name="{imvert:application}" type="{imvert:stereotype}" id="{imvert:id}" version="{$imvertor-version}" date="{$generation-date}">
+        <xsl:variable name="sections" as="element()*">
             <xsl:apply-templates select="imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]"/>
+        </xsl:variable>
+        <book name="{imvert:application}" type="{imvert:stereotype}" id="{imvert:id}" version="{$imvertor-version}" date="{$generation-date}">
+            <xsl:apply-templates select="$sections" mode="section-cleanup"/>    
         </book>
     </xsl:template>
     
@@ -827,6 +830,20 @@
         <xsl:value-of select="$package/imvert:name/@original"/>
     </xsl:function>
     
-  
+    <!-- ======== cleanup all section structure: remove empties =========== -->
     
+    <xsl:template match="section" mode="section-cleanup">
+        <xsl:choose>
+            <xsl:when test="*">
+                <xsl:next-match/>
+            </xsl:when>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template match="node()|@*" mode="section-cleanup">
+        <xsl:copy>
+            <xsl:apply-templates select="@*" mode="section-cleanup"/>
+            <xsl:apply-templates select="node()" mode="section-cleanup"/>
+        </xsl:copy>
+    </xsl:template>    
 </xsl:stylesheet>
