@@ -46,7 +46,7 @@
 		<xsl:copy>
 			<xsl:copy-of select="@*"/>
 			<xsl:choose>
-				<xsl:when test="contains($berichtCode,'Lk') or (contains($berichtCode,'Di') and @context = 'update' or ancestor::ep:construct[@context = 'update'])">
+				<xsl:when test="contains($berichtCode,'Lk') or ((contains($berichtCode,'Di') or $berichtCode = 'Du01') and @context = 'update' or ancestor::ep:construct[@context = 'update'])">
 					<xsl:choose>
 						<xsl:when test="@type!='entity' and not(ancestor::ep:construct[@type='entity'])">
 							<!-- Het gaat hier om constructs voor parameters en stuurgegevens. -->
@@ -81,7 +81,7 @@
 						</xsl:when>
 					</xsl:choose>
 				</xsl:when>
-				<xsl:when test="contains($berichtCode,'La') or (contains($berichtCode,'Di') and @context = 'antwoord' or ancestor::ep:construct[@context = 'antwoord'])">
+				<xsl:when test="contains($berichtCode,'La') or ((contains($berichtCode,'Di') or $berichtCode = 'Du01') and @context = 'antwoord' or ancestor::ep:construct[@context = 'antwoord'])">
 					<xsl:choose>
 						<xsl:when test="@type!='entity' and not(ancestor::ep:construct[@type='entity'])">
 							<!-- Het gaat hier om constructs voor parameters en stuurgegevens. -->
@@ -130,7 +130,7 @@
 						</xsl:when>
 					</xsl:choose>
 				</xsl:when>
-				<xsl:when test="contains($berichtCode,'Lv') or (contains($berichtCode,'Di') and @context = 'vraag' or ancestor::ep:construct[@context = 'vraag'])">
+				<xsl:when test="contains($berichtCode,'Lv') or ((contains($berichtCode,'Di') or $berichtCode = 'Du01') and @context = 'vraag' or ancestor::ep:construct[@context = 'vraag'])">
 					<xsl:choose>
 						<xsl:when test="@type!='entity' and not(ancestor::ep:construct[@type='entity'])">
 								<!-- Het gaat hier om constructs voor parameters en stuurgegevens. -->
@@ -182,7 +182,7 @@
 						</xsl:when>
 					</xsl:choose>
 				</xsl:when>
-				<xsl:when test="contains($berichtCode,'Di')">
+				<xsl:when test="contains($berichtCode,'Di') or $berichtCode = 'Du01'">
 					<xsl:choose>
 						<xsl:when test="@type!='entity' and not(ancestor::ep:construct[@type='entity'])">
 							<!-- Het gaat hier om constructs voor parameters en stuurgegevens. -->
@@ -196,7 +196,7 @@
 					<xsl:attribute name="verwerkingsModus" select="'ROME'"/>
 				</xsl:otherwise>
 			</xsl:choose>
-			<xsl:if test="(contains($berichtCode,'La') or (contains($berichtCode,'Di') and @context = 'antwoord' or ancestor::ep:construct[@context = 'antwoord'])) and ep:name = 'gerelateerde' and parent::ep:construct[@indicatieFormeleHistorieRelatie='Ja']">
+			<xsl:if test="(contains($berichtCode,'La') or ((contains($berichtCode,'Di') or $berichtCode = 'Du01') and @context = 'antwoord' or ancestor::ep:construct[@context = 'antwoord'])) and ep:name = 'gerelateerde' and parent::ep:construct[@indicatieFormeleHistorieRelatie='Ja']">
 				<xsl:attribute name="indicatieFormeleHistorieRelatie" select="'Ja'"/>
 			</xsl:if>
 			<xsl:choose>

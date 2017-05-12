@@ -1145,7 +1145,6 @@
 					<!-- ROME: In het geval van een entiteitrelatie in een vrij bericht moet in alle namen van alle onderliggende complexTtypes en dus ook de verwijzingen daarheen
 							   de naam van die entiteitrelatie opgenomen worden. Dit om alle compelxTypes uniek te kunnen identificeren. 
 							   Bij de aanmaak van de complexType moet die naam dan natuurlijk ook meegenomen worden. -->
-					/-->
 				</ep:construct>
 
 			</xsl:when>
@@ -1163,8 +1162,9 @@
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
 					<xsl:sequence select="imf:create-output-element('ep:position', 200)"/>
+					<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($packageName,$berichtName,(),$alias,$elementName)"/></xsl:variable>
 					<xsl:sequence
-						select="imf:create-output-element('ep:type-name', imf:create-complexTypeName($packageName,$berichtName,$alias,$elementName))"/>
+						select="imf:create-output-element('ep:type-name', $type-name)"/>
 					<!-- ROME: In het geval van een entiteitrelatie in een vrij bericht moet in alle namen van alle onderliggende complexTtypes en dus ook de verwijzingen daarheen
 							   de naam van die entiteitrelatie opgenomen worden. Dit om alle compelxTypes uniek te kunnen identificeren. 
 							   Bij de aanmaak van de complexType moet die naam dan natuurlijk ook meegenomen worden. -->
@@ -1536,6 +1536,9 @@
 							</xsl:when>
 							<xsl:when test="$name = 'referentienummer' or $name = 'crossRefnummer'">
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':','Refnummer'))"/>
+							</xsl:when>
+							<xsl:when test="$name = 'functie'">
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':','Functie'))"/>
 							</xsl:when>
 							<!-- ROME: Volgende when zorgt er voor dat het element 'entiteitType' verwijst naar de complexType 'EntiteittypeStuurgegevens'.
 									   Dat complexType moet echter eigenlijk dynamisch opgebouwd worden zodat het element 'type' daarin specifiek op het bericht
