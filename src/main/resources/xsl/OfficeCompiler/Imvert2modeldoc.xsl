@@ -102,38 +102,9 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')]">
-        
-        <xsl:variable name="is-abstract-text" select="if (imf:boolean(imvert:abstract)) then 'Ja' else 'Nee'"/>
-        
-        <xsl:variable name="rel-aanduiding" select="imvert:associations/imvert:association[imvert:target-stereotype = imf:get-config-stereotypes('stereotype-name-composite-id')]"/>
-        <xsl:variable name="con-aanduiding" select="imf:get-construct-by-id-for-office($rel-aanduiding/imvert:type-id)"/>
-        <xsl:variable name="id-aanduiding" select="imf:get-tagged-value-unieke-aanduiding(.)"/>
-        
-        <xsl:variable name="aanduiding">
-            <xsl:choose>
-                <xsl:when test="exists($rel-aanduiding) and exists($id-aanduiding)">
-                    <xsl:value-of select="concat('Combinatie van ', $id-aanduiding,' en ', $con-aanduiding/imvert:name/@original)"/>
-                </xsl:when>
-                <xsl:when test="exists($rel-aanduiding)">
-                    <xsl:value-of select="$con-aanduiding/imvert:name/@original"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="$id-aanduiding"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-      
         <section name="{imvert:name/@original}" type="OBJECTTYPE" id="{imf:plugin-get-link-name(.)}">
           <content>
-             <xsl:sequence select="imf:create-part-2('NAAM',imvert:name/@original)"/>
-             <xsl:sequence select="imf:create-part-2('HERKOMST',imf:get-tagged-value(.,'Herkomst'))"/>
-             <xsl:sequence select="imf:create-part-2('DEFINITIE',imf:get-clean-documentation-string(imvert:documentation))"/>
-             <xsl:sequence select="imf:create-part-2('HERKOMSTDEFINITIE',imf:get-tagged-value(.,'Herkomst definitie'))"/>
-             <xsl:sequence select="imf:create-part-2('DATUMOPNAME',imf:get-tagged-value(.,'Datum opname'))"/>
-             <xsl:sequence select="imf:create-part-2('UNIEKEAANDUIDING',$aanduiding)"/>
-             <xsl:sequence select="imf:create-part-2('INDICATIEABSTRACTOBJECT',$is-abstract-text)"/>
-             <xsl:sequence select="imf:create-part-2('POPULATIE',imf:get-tagged-value(.,'Populatie'))"/>
-             <xsl:sequence select="imf:create-part-2('KWALITEITSBEGRIP',imf:get-tagged-value(.,'Kwaliteitsbegrip'))"/>
+              <xsl:sequence select="imf:create-parts(.,'NAAM ALTERNATIEVENAAM HERKOMST DEFINITIE HERKOMSTDEFINITIE DATUMOPNAME UNIEKEAANDUIDING INDICATIEABSTRACTOBJECT POPULATIE KWALITEITSBEGRIP')"/>
           </content>
           <!-- hier alle attributen; als ingebedde tabel -->
           <xsl:apply-templates select="imvert:attributes" mode="short"/>
@@ -147,10 +118,7 @@
         
         <section name="{imvert:name/@original}" type="ASSOCIATIONCLASS" id="{imf:plugin-get-link-name(.)}">
             <content>
-                <xsl:sequence select="imf:create-part-2('NAAM',imvert:name/@original)"/>
-                <xsl:sequence select="imf:create-part-2('MNEMONIC',imvert:alias)"/>
-                <xsl:sequence select="imf:create-part-2('DEFINITIE',imf:get-clean-documentation-string(imvert:documentation))"/>
-                <xsl:sequence select="imf:create-part-2('RELATIESOORT',imf:get-relatiesoort(.))"/>
+                <xsl:sequence select="imf:create-parts(.,'NAAM ALTERNATIEVENAAM MNEMONIC DEFINITIE RELATIESOORT')"/>
             </content>
             <!-- hier alle attributen; als ingebedde tabel -->
             <xsl:apply-templates select="imvert:attributes" mode="short"/>
@@ -164,14 +132,7 @@
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-referentielijst')]">
         <section name="{imvert:name/@original}" type="REFERENCELIST" id="{imf:plugin-get-link-name(.)}">
             <content>
-                <xsl:sequence select="imf:create-part-2('NAAM',imvert:name/@original)"/>
-                <xsl:sequence select="imf:create-part-2('MNEMONIC',imvert:alias)"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMST',imf:get-tagged-value(.,'Herkomst'))"/>
-                <xsl:sequence select="imf:create-part-2('DEFINITIE',imf:get-clean-documentation-string(imvert:documentation))"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMSTDEFINITIE',imf:get-tagged-value(.,'Herkomst definitie'))"/>
-                <xsl:sequence select="imf:create-part-2('DATUMOPNAME',imf:get-tagged-value(.,'Datum opname'))"/>
-                <xsl:sequence select="imf:create-part-2('DATALOCATIE',imf:get-tagged-value(.,'Data locatie'))"/>
-                <xsl:sequence select="imf:create-part-2('UNIEKEAANDUIDING',imf:get-tagged-value-unieke-aanduiding(.))"/>
+                <xsl:sequence select="imf:create-parts(.,'NAAM MNEMONIC ALTERNATIEVENAAM HERKOMST DEFINITIE HERKOMSTDEFINITIE DATUMOPNAME DATALOCATIE UNIEKEAANDUIDING')"/>
             </content>
             <!-- hier alle attributen; als ingebedde tabel -->
             <xsl:apply-templates select="imvert:attributes" mode="short"/>
@@ -182,12 +143,7 @@
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-codelist')]">
         <section name="{imvert:name/@original}" type="CODELIST" id="{imf:plugin-get-link-name(.)}">
             <content>
-                <xsl:sequence select="imf:create-part-2('NAAM',imvert:name/@original)"/>
-                <xsl:sequence select="imf:create-part-2('MNEMONIC',imvert:alias)"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMST',imf:get-tagged-value(.,'Herkomst'))"/>
-                <xsl:sequence select="imf:create-part-2('DEFINITIE',imf:get-clean-documentation-string(imvert:documentation))"/>
-                <xsl:sequence select="imf:create-part-2('DATUMOPNAME',imf:get-tagged-value(.,'Datum opname'))"/>
-                <xsl:sequence select="imf:create-part-2('DATALOCATIE',imf:get-tagged-value(.,'Data locatie'))"/>
+                <xsl:sequence select="imf:create-parts(.,'NAAM ALTERNATIEVENAAM MNEMONIC HERKOMST DEFINITIE DATUMOPNAME DATALOCATIE')"/>
             </content>
             <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>
         </section>
@@ -196,11 +152,7 @@
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union')]">
         <section name="{imvert:name/@original}" type="UNION" id="{imf:plugin-get-link-name(.)}">
             <content>
-                <xsl:sequence select="imf:create-part-2('NAAM',imvert:name/@original)"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMST',imf:get-tagged-value(.,'Herkomst'))"/>
-                <xsl:sequence select="imf:create-part-2('DEFINITIE',imf:get-clean-documentation-string(imvert:documentation))"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMSTDEFINITIE',imf:get-tagged-value(.,'Herkomst definitie'))"/>
-                <xsl:sequence select="imf:create-part-2('DATUMOPNAME',imf:get-tagged-value(.,'Datum opname'))"/>
+                <xsl:sequence select="imf:create-parts(.,'NAAM ALTERNATIEVENAAM HERKOMST DEFINITIE HERKOMSTDEFINITIE DATUMOPNAME')"/>
             </content>
             <!-- hier alle attributen; als ingebedde tabel -->
             <xsl:apply-templates select="imvert:attributes" mode="short"/>
@@ -211,12 +163,7 @@
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-complextype')]">
         <section name="{imvert:name/@original}" type="DATATYPE" id="{imf:plugin-get-link-name(.)}">
             <content>
-                <xsl:sequence select="imf:create-part-2('NAAM',imvert:name/@original)"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMST',imf:get-tagged-value(.,'Herkomst'))"/>
-                <xsl:sequence select="imf:create-part-2('DEFINITIE',imf:get-clean-documentation-string(imvert:documentation))"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMSTDEFINITIE',imf:get-tagged-value(.,'Herkomst definitie'))"/>
-                <xsl:sequence select="imf:create-part-2('DATUMOPNAME',imf:get-tagged-value(.,'Datum opname'))"/>
-                <xsl:sequence select="imf:create-part-2('PATROON',imf:get-tagged-value(.,'Patroon'))"/>
+                <xsl:sequence select="imf:create-parts(.,'NAAM ALTERNATIEVENAAM HERKOMST DEFINITIE HERKOMSTDEFINITIE DATUMOPNAME PATROON')"/>
             </content>
             <!-- hier alle attributen; als ingebedde tabel -->
             <xsl:apply-templates select="imvert:attributes" mode="short"/>
@@ -226,13 +173,12 @@
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-enumeration')]">
         <xsl:variable name="naam" select="imvert:name/@original"/>
-        <xsl:variable name="note" select="imf:get-clean-documentation-string(imvert:documentation)"/>
         <part>
             <item>
                 <xsl:sequence select="imf:create-idref(.)"/>
                 <xsl:sequence select="imf:create-content($naam)"/>          
             </item>
-            <xsl:sequence select="imf:create-element('item',$note)"/>          
+            <xsl:sequence select="imf:create-element('item',imf:get-tagged-value(.,'CFG-TV-DEFINITION'))"/>
         </part>
      </xsl:template>
 
@@ -240,15 +186,7 @@
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')]">
         <section name="{imvert:name/@original}" type="COMPOSITE" id="{imf:plugin-get-link-name(.)}">
             <content>
-                <xsl:sequence select="imf:create-part-2('NAAM',imvert:name/@original)"/>
-                <xsl:sequence select="imf:create-part-2('MNEMONIC',imvert:alias)"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMST',imf:get-tagged-value(.,'Herkomst'))"/> 
-                <xsl:sequence select="imf:create-part-2('DEFINITIE',imf:get-clean-documentation-string(imvert:documentation))"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMSTDEFINITIE',imf:get-tagged-value(.,'Herkomst definitie'))"/>
-                <xsl:sequence select="imf:create-part-2('DATUMOPNAME',imf:get-tagged-value(.,'Datum opname'))"/>
-                <xsl:sequence select="imf:create-part-2('UNIEKEAANDUIDING',imf:get-tagged-value-unieke-aanduiding(.))"/>
-                <xsl:sequence select="imf:create-part-2('POPULATIE',imf:get-tagged-value(.,'Populatie'))"/>
-                <xsl:sequence select="imf:create-part-2('KWALITEITSBEGRIP',imf:get-tagged-value(.,'Kwaliteitsbegrip'))"/>
+                <xsl:sequence select="imf:create-parts(.,'NAAM MNEMONIC HERKOMST DEFINITIE HERKOMSTDEFINITIE DATUMOPNAME UNIEKEAANDUIDING POPULATIE KWALITEITSBEGRIP')"/>
             </content>
             <!-- hier alle attributen; als ingebedde tabel -->
             <xsl:apply-templates select="imvert:attributes" mode="gegevensgroeptype"/>
@@ -313,7 +251,7 @@
        <xsl:variable name="type" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
        <part>
          <xsl:sequence select="imf:create-element('item',imf:create-link(.,'global',imvert:name/@original))"/> 
-         <xsl:sequence select="imf:create-element('item',imf:get-clean-documentation-string(imvert:documentation))"/>
+         <xsl:sequence select="imf:create-element('item',imf:get-tagged-value(.,'CFG-TV-DEFINITION'))"/>
          <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-translate-i3n(imf:plugin-splice(imvert:baretype),false())))"/>
          <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
        </part>
@@ -323,8 +261,8 @@
        <xsl:variable name="type" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
        <part type="COMPOSED">
           <xsl:sequence select="imf:create-element('item',imf:create-link(.,'global',imvert:name/@original))"/>
-          <xsl:sequence select="imf:create-element('item',imf:get-clean-documentation-string(imvert:documentation))"/>
-          <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-translate-i3n(imf:plugin-splice(imvert:baretype),false())))"/>
+           <xsl:sequence select="imf:create-element('item',imf:get-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+           <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-translate-i3n(imf:plugin-splice(imvert:baretype),false())))"/>
           <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
         </part>
     </xsl:template>
@@ -333,8 +271,8 @@
        <xsl:variable name="type" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
         <part type="COMPOSED">
            <xsl:sequence select="imf:create-element('item',imf:create-link(.,'global',imvert:name/@original))"/>
-           <xsl:sequence select="imf:create-element('item',imf:get-clean-documentation-string(imvert:documentation))"/>
-           <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-translate-i3n(imvert:type-name/@original,false())))"/>
+            <xsl:sequence select="imf:create-element('item',imf:get-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+            <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-translate-i3n(imvert:type-name/@original,false())))"/>
            <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
         </part>
     </xsl:template>
@@ -344,10 +282,10 @@
         <xsl:variable name="type" select="imf:get-construct-by-id(imvert:type-id)"/>
        <part type="COMPOSER">
           <item>
-             <xsl:sequence select="imf:create-element('value',imf:create-link(.,'global',imvert:name/@original))"/>
+             <xsl:sequence select="imf:create-element('value',imf:create-link($type,'global',imvert:name/@original))"/>
           </item>
           <item>
-             <xsl:sequence select="imf:create-element('value',imf:get-clean-documentation-string($type/imvert:documentation))"/>
+              <xsl:sequence select="imf:create-element('value',imf:get-tagged-value($type,'CFG-TV-DEFINITION'))"/>
           </item>
           <item>
              <!--<xsl:sequence select="imf:create-element('value',imf:plugin-translate-i3n(imvert:baretype,false()))"/>-->
@@ -389,7 +327,8 @@
               <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imvert:type-name/@original))"/>
               <xsl:sequence select="imf:create-element('item',('[',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs),']'))"/>
             </item>
-            <xsl:sequence select="imf:create-element('item',imf:get-clean-documentation-string(imvert:documentation))"/>
+            <xsl:sequence select="imf:create-element('item',imf:get-tagged-value($type,'CFG-TV-DEFINITION'))"/>
+            
         </part>
     </xsl:template>
     
@@ -408,9 +347,7 @@
                 </item>
                 <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imvert:type-name/@original))"/>
             </item>
-            <item>
-                <xsl:value-of select="imf:get-clean-documentation-string(imvert:documentation)"/>
-            </item>
+            <xsl:sequence select="imf:create-element('item',imf:get-tagged-value($type,'CFG-TV-DEFINITION'))"/>
         </part>
     </xsl:template>
     
@@ -437,7 +374,7 @@
             <content>
                 <part>
                     <xsl:sequence select="imf:create-element('item',imf:plugin-translate-i3n('DEFINITIE',true()))"/>
-                    <xsl:sequence select="imf:create-element('item',imf:get-clean-documentation-string(imvert:documentation))"/>
+                    <xsl:sequence select="imf:create-element('item',imf:get-tagged-value(.,'CFG-TV-DEFINITION'))"/>
                 </part>
             </content>
             <content>
@@ -451,26 +388,10 @@
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')]" mode="detail">
         
-        <xsl:variable name="min" select="imvert:min-occurs"/>
-        <xsl:variable name="max" select="imvert:max-occurs"/>
-        
         <section name="{imvert:name/@original}" type="DETAIL-COMPOSITE" id="{imf:plugin-get-link-name(.)}">
             <content>
                 <!-- precies hetzelfde als voor attributen ! -->
-                <xsl:sequence select="imf:create-part-2('NAAM',imvert:name/@original)"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMST',imf:get-tagged-value(.,'Herkomst'))"/>
-                <xsl:sequence select="imf:create-part-2('CODE',imf:get-tagged-value(.,'Code'))"/>
-                <xsl:sequence select="imf:create-part-2('DEFINITIE',imf:get-clean-documentation-string(imvert:documentation))"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMSTDEFINITIE',imf:get-tagged-value(.,'Herkomst definitie'))"/>
-                <xsl:sequence select="imf:create-part-2('DATUMOPNAME',imf:get-tagged-value(.,'Datum opname'))"/>
-                <xsl:sequence select="imf:create-part-2('MOGELIJKGEENWAARDE',imf:get-tagged-value(.,'Mogelijk geen waarde'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEMATERIELEHISTORIE',imf:get-tagged-value(.,'Indicatie materiële historie'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEFORMELEHISTORIE',imf:get-tagged-value(.,'Indicatie formele historie'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEINONDERZOEK',imf:get-tagged-value(.,'Indicatie in onderzoek'))"/>
-                <xsl:sequence select="imf:create-part-2('AANDUIDINGSTRIJDIGHEIDNIETIGHEID',imf:get-tagged-value(.,'Aanduiding strijdigheid/nietigheid'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEKARDINAILTEIT',imf:get-cardinality($min,$max))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEAUTHENTIEK',concat(imf:get-tagged-value(.,'Indicatie authentiek'), imf:authentiek-is-derived(.)))"/>
-                <xsl:sequence select="imf:create-part-2('REGELS',imf:get-tagged-value(.,'Regels'))"/>
+                <xsl:sequence select="imf:create-parts(.,'NAAM HERKOMST DEFINITIE HERKOMSTDEFINITIE DATUMOPNAME MOGELIJKGEENWAARDE INDICATIEMATERIELEHISTORIE INDICATIEFORMELEHISTORIE INDICATIEINONDERZOEK AANDUIDINGSTRIJDIGHEIDNIETIGHEID INDICATIEKARDINALITEIT INDICATIEAUTHENTIEK REGELS UNIEKEAANDUIDING POPULATIE KWALITEITSBEGRIP')"/>
             </content>
             <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>
             <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="detail"/>
@@ -478,7 +399,6 @@
         </section>
   
     </xsl:template>
-    
     
     <xsl:template match="imvert:attribute" mode="detail">
         <xsl:variable name="construct" select="../.."/>
@@ -511,23 +431,8 @@
         <xsl:variable name="is-afleidbaar-text" select="if (imf:boolean(imvert:is-value-derived)) then 'Ja' else 'Nee'"/>
         <section name="{imvert:name/@original}" type="DETAIL-ATTRIBUTE" id="{imf:plugin-get-link-name(.)}">
             <content>
-                <xsl:sequence select="imf:create-part-2('NAAM',imvert:name/@original)"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMST',imf:get-tagged-value(.,'Herkomst'))"/>
-                <xsl:sequence select="imf:create-part-2('CODE',imf:get-tagged-value(.,'Code'))"/>
-                <xsl:sequence select="imf:create-part-2('DEFINITIE',imf:get-clean-documentation-string(imvert:documentation))"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMSTDEFINITIE',imf:get-tagged-value(.,'Herkomst definitie'))"/>
-                <xsl:sequence select="imf:create-part-2('DATUMOPNAME',imf:get-tagged-value(.,'Datum opname'))"/>
-                <xsl:sequence select="imf:create-part-2('MOGELIJKGEENWAARDE',imf:get-tagged-value(.,'Mogelijk geen waarde'))"/>
-                <xsl:sequence select="imf:create-part-2('FORMAAT',imf:plugin-translate-i3n(imvert:baretype,false()))"/>
-                <xsl:sequence select="imf:create-part-2('PATROON',imf:get-tagged-value(.,'Patroon'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEMATERIELEHISTORIE',imf:get-tagged-value(.,'Indicatie materiële historie'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEFORMELEHISTORIE',imf:get-tagged-value(.,'Indicatie formele historie'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEINONDERZOEK',imf:get-tagged-value(.,'Indicatie in onderzoek'))"/>
-                <xsl:sequence select="imf:create-part-2('AANDUIDINGSTRIJDIGHEIDNIETIGHEID',imf:get-tagged-value(.,'Aanduiding strijdigheid/nietigheid'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEKARDINAILTEIT',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEAUTHENTIEK',concat(imf:get-tagged-value(.,'Indicatie authentiek'), imf:authentiek-is-derived(.)))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEAFLEIDBAAR',$is-afleidbaar-text)"/>
-                <xsl:sequence select="imf:create-part-2('REGELS',imf:get-tagged-value(.,'Regels'))"/>
+                <xsl:sequence select="imf:create-parts(.,'NAAM HERKOMST DEFINITIE HERKOMSTDEFINITIE DATUMOPNAME MOGELIJKGEENWAARDE FORMAAT PATROON INDICATIEMATERIELEHISTORIE INDICATIEFORMELEHISTORIE INDICATIEINONDERZOEK 
+                    AANDUIDINGSTRIJDIGHEIDNIETIGHEID INDICATIEKARDINALITEIT INDICATIEAUTHENTIEK INDICATIEAFLEIDBAAR REGELS')"/>
             </content>
             <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>                
         </section>       
@@ -537,8 +442,8 @@
         <part>
             <xsl:sequence select="imf:create-element('item',imvert:alias)"/>
             <xsl:sequence select="imf:create-element('item',imvert:name/@original)"/>
-            <xsl:sequence select="imf:create-element('item',imf:get-clean-documentation-string(imvert:documentation))"/>
-        </part>
+            <xsl:sequence select="imf:create-element('item',imf:get-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+       </part>
     </xsl:template>
     
     <xsl:template match="imvert:attribute" mode="detail-gegevensgroeptype">
@@ -549,22 +454,8 @@
                 <part type="COMPOSER">
                     <xsl:sequence select="imf:create-link($construct,'global', $construct/imvert:name/@original)"/>
                 </part>
-                <xsl:sequence select="imf:create-part-2('NAAM',imvert:name/@original)"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMST',imf:get-tagged-value(.,'Herkomst'))"/>
-                <xsl:sequence select="imf:create-part-2('CODE',imf:get-tagged-value(.,'Code'))"/>
-                <xsl:sequence select="imf:create-part-2('DEFINITIE',imf:get-clean-documentation-string(imvert:documentation))"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMSTDEFINITIE',imf:get-tagged-value(.,'Herkomst definitie'))"/>
-                <xsl:sequence select="imf:create-part-2('DATUMOPNAME',imf:get-tagged-value(.,'Datum opname'))"/>
-                <xsl:sequence select="imf:create-part-2('MOGELIJKGEENWAARDE',imf:get-tagged-value(.,'Mogelijk geen waarde'))"/>
-                <xsl:sequence select="imf:create-part-2('FORMAAT',imf:plugin-translate-i3n(imvert:baretype,false()))"/>
-                <xsl:sequence select="imf:create-part-2('PATROON',imf:get-tagged-value(.,'Patroon'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEMATERIELEHISTORIE',imf:get-tagged-value(.,'Indicatie materiële historie'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEFORMELEHISTORIE',imf:get-tagged-value(.,'Indicatie formele historie'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEINONDERZOEK',imf:get-tagged-value(.,'Indicatie in onderzoek'))"/>
-                <xsl:sequence select="imf:create-part-2('AANDUIDINGSTRIJDIGHEIDNIETIGHEID',imf:get-tagged-value(.,'Aanduiding strijdigheid/nietigheid'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEKARDINAILTEIT',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEAUTHENTIEK',concat(imf:get-tagged-value(.,'Indicatie authentiek'), imf:authentiek-is-derived(.)))"/>
-                <xsl:sequence select="imf:create-part-2('REGELS',imf:get-tagged-value(.,'Regels'))"/>
+                <xsl:sequence select="imf:create-parts(.,'NAAM HERKOMST DEFINITIE HERKOMSTDEFINITIE DATUMOPNAME MOGELIJKGEENWAARDE FORMAAT PATROON INDICATIEMATERIELEHISTORIE INDICATIEFORMELEHISTORIE INDICATIEINONDERZOEK 
+                    AANDUIDINGSTRIJDIGHEIDNIETIGHEID INDICATIEKARDINALITEIT INDICATIEAUTHENTIEK REGELS')"/>
             </content>
             <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>                
         </section>
@@ -575,15 +466,7 @@
         <xsl:variable name="is-identifying" select="imf:boolean(imvert:is-id)"/>
         <section name="{imvert:name/@original}" type="DETAIL-REFERENCEELEMENT" id="{imf:plugin-get-link-name(.)}">
             <content>
-                <xsl:sequence select="imf:create-part-2('NAAM',imvert:name/@original)"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMST',imf:get-tagged-value(.,'Herkomst'))"/>
-                <xsl:sequence select="imf:create-part-2('CODE',imf:get-tagged-value(.,'Code'))"/>
-                <xsl:sequence select="imf:create-part-2('DEFINITIE',imf:get-clean-documentation-string(imvert:documentation))"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMSTDEFINITIE',imf:get-tagged-value(.,'Herkomst definitie'))"/>
-                <xsl:sequence select="imf:create-part-2('DATUMOPNAME',imf:get-tagged-value(.,'Datum opname'))"/>
-                <xsl:sequence select="imf:create-part-2('FORMAAT',imf:plugin-translate-i3n(imvert:baretype,false()))"/>
-                <xsl:sequence select="imf:create-part-2('PATROON',imf:get-tagged-value(.,'Patroon'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEKARDINAILTEIT',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
+                <xsl:sequence select="imf:create-parts(.,'NAAM HERKOMST DEFINITIE HERKOMSTDEFINITIE DATUMOPNAME FORMAAT PATROON INDICATIEKARDINALITEIT')"/>
             </content>
             <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>                
         </section>
@@ -594,13 +477,7 @@
         <xsl:variable name="construct" select="../.."/>
         <section name="{imvert:name/@original}" type="DETAIL-UNIONELEMENT" id="{imf:plugin-get-link-name(.)}">
             <content>
-                <xsl:sequence select="imf:create-part-2('NAAM',imvert:name/@original)"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMST',imf:get-tagged-value(.,'Herkomst'))"/>
-                <xsl:sequence select="imf:create-part-2('DEFINITIE',imf:get-clean-documentation-string(imvert:documentation))"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMSTDEFINITIE',imf:get-tagged-value(.,'Herkomst definitie'))"/>
-                <xsl:sequence select="imf:create-part-2('FORMAAT',imf:plugin-translate-i3n(imvert:baretype,false()))"/>
-                <xsl:sequence select="imf:create-part-2('PATROON',imf:get-tagged-value(.,'Patroon'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEKARDINAILTEIT',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
+                <xsl:sequence select="imf:create-parts(.,'NAAM HERKOMST DEFINITIE HERKOMSTDEFINITIE FORMAAT PATROON INDICATIEKARDINALITEIT')"/>
             </content>
             <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>                
         </section>
@@ -611,12 +488,7 @@
         <xsl:variable name="is-afleidbaar-text" select="if (imf:boolean(imvert:is-value-derived)) then 'Ja' else 'Nee'"/>
         <section name="{imvert:name/@original}" type="DETAIL-DATAELEMENT" id="{imf:plugin-get-link-name(.)}">
             <content>
-                <xsl:sequence select="imf:create-part-2('NAAM',imvert:name/@original)"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMST',imf:get-tagged-value(.,'Herkomst'))"/>
-                <xsl:sequence select="imf:create-part-2('DEFINITIE',imf:get-clean-documentation-string(imvert:documentation))"/>
-                <xsl:sequence select="imf:create-part-2('FORMAAT',imf:plugin-translate-i3n(imvert:baretype,false()))"/>
-                <xsl:sequence select="imf:create-part-2('PATROON',imf:get-tagged-value(.,'Patroon'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEKARDINAILTEIT',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
+                <xsl:sequence select="imf:create-parts(.,'NAAM HERKOMST DEFINITIE FORMAAT PATROON INDICATIEKARDINALITEIT')"/>
             </content>
             <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>                
         </section>
@@ -635,25 +507,11 @@
     </xsl:template>
     
     <xsl:template match="imvert:association" mode="detail-normal">
-        <xsl:variable name="construct" select="../.."/>
-        <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
+     
         <section name="{imvert:name/@original}" type="DETAIL-ASSOCIATION" id="{imf:plugin-get-link-name(.)}">
             <content>
-                <xsl:sequence select="imf:create-part-2('NAAM',imvert:name/@original)"/>
-                <xsl:sequence select="imf:create-part-2('GERELATEERDOBJECTTYPE',imf:create-link($defining-class,'global',imvert:type-name/@original))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEKARDINAILTEIT',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMST',imf:get-tagged-value(.,'Herkomst'))"/>
-                <xsl:sequence select="imf:create-part-2('CODE',imf:get-tagged-value(.,'Code'))"/>
-                <xsl:sequence select="imf:create-part-2('DEFINITIE',imf:get-clean-documentation-string(imvert:documentation))"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMSTDEFINITIE',imf:get-tagged-value(.,'Herkomst definitie'))"/>
-                <xsl:sequence select="imf:create-part-2('DATUMOPNAME',imf:get-tagged-value(.,'Datum opname'))"/>
-                <xsl:sequence select="imf:create-part-2('MOGELIJKGEENWAARDE',imf:get-tagged-value(.,'Mogelijk geen waarde'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEMATERIELEHISTORIE',imf:get-tagged-value(.,'Indicatie materiële historie'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEFORMELEHISTORIE',imf:get-tagged-value(.,'Indicatie formele historie'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEINONDERZOEK',imf:get-tagged-value(.,'Indicatie in onderzoek'))"/>
-                <xsl:sequence select="imf:create-part-2('AANDUIDINGSTRIJDIGHEIDNIETIGHEID',imf:get-tagged-value(.,'Aanduiding strijdigheid/nietigheid'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEAUTHENTIEK',concat(imf:get-tagged-value(.,'Indicatie authentiek'), imf:authentiek-is-derived(.)))"/>                
-                <xsl:sequence select="imf:create-part-2('REGELS',imf:get-tagged-value(.,'Regels'))"/>
+                <xsl:sequence select="imf:create-parts(.,'NAAM GERELATEERDOBJECTTYPE INDICATIEKARDINALITEIT HERKOMST DEFINITIE HERKOMSTDEFINITIE 
+                    DATUMOPNAME MOGELIJKGEENWAARDE INDICATIEMATERIELEHISTORIE INDICATIEFORMELEHISTORIE INDICATIEINONDERZOEK AANDUIDINGSTRIJDIGHEIDNIETIGHEID INDICATIEAUTHENTIEK REGELS')"/>
             </content>
             <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>
         </section>
@@ -667,21 +525,9 @@
                 <part type="COMPOSER">
                     <xsl:sequence select="imf:create-link($construct,'global', $construct/imvert:name/@original)"/>
                 </part>
-                <xsl:sequence select="imf:create-part-2('NAAM',imvert:name/@original)"/>
-                <xsl:sequence select="imf:create-part-2('GERELATEERDOBJECTTYPE',imf:create-link($defining-class,'global',imvert:type-name/@original))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEKARDINAILTEIT',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMST',imf:get-tagged-value(.,'Herkomst'))"/>
-                <xsl:sequence select="imf:create-part-2('CODE',imf:get-tagged-value(.,'Code'))"/>
-                <xsl:sequence select="imf:create-part-2('DEFINITIE',imf:get-clean-documentation-string(imvert:documentation))"/>
-                <xsl:sequence select="imf:create-part-2('HERKOMSTDEFINITIE',imf:get-tagged-value(.,'Herkomst definitie'))"/>
-                <xsl:sequence select="imf:create-part-2('DATUMOPNAME',imf:get-tagged-value(.,'Datum opname'))"/>
-                <xsl:sequence select="imf:create-part-2('MOGELIJKGEENWAARDE',imf:get-tagged-value(.,'Mogelijk geen waarde'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEMATERIELEHISTORIE',imf:get-tagged-value(.,'Indicatie materiële historie'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEFORMELEHISTORIE',imf:get-tagged-value(.,'Indicatie formele historie'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEINONDERZOEK',imf:get-tagged-value(.,'Indicatie in onderzoek'))"/>
-                <xsl:sequence select="imf:create-part-2('AANDUIDINGSTRIJDIGHEIDNIETIGHEID',imf:get-tagged-value(.,'Aanduiding strijdigheid/nietigheid'))"/>
-                <xsl:sequence select="imf:create-part-2('INDICATIEAUTHENTIEK',concat(imf:get-tagged-value(.,'Indicatie authentiek'), imf:authentiek-is-derived(.)))"/>                
-                <xsl:sequence select="imf:create-part-2('REGELS',imf:get-tagged-value(.,'Regels'))"/>
+                <xsl:sequence select="imf:create-parts(.,'NAAM GERELATEERDOBJECTTYPE INDICATIEKARDINALITEIT HERKOMST DEFINITIE HERKOMSTDEFINITIE DATUMOPNAME MOGELIJKGEENWAARDE INDICATIEMATERIELEHISTORIE 
+                    INDICATIEFORMELEHISTORIE INDICATIEINONDERZOEK AANDUIDINGSTRIJDIGHEIDNIETIGHEID INDICATIEAUTHENTIEK REGELS')"/>
+                
             </content>
             <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>
         </section>
@@ -693,9 +539,9 @@
     -->
     <xsl:function name="imf:get-tagged-value" as="xs:string">
         <xsl:param name="this"/>
-        <xsl:param name="tv-name"/>
-        <xsl:variable name="normalized-tv-name" select="imf:get-normalized-name($tv-name,'tv-name')"/>
-        <xsl:value-of select="imf:get-clean-documentation-string($this/*/imvert:tagged-value[imvert:name = $normalized-tv-name][1]/imvert:value/@original)"/>
+        <xsl:param name="tv-id"/>
+        <xsl:variable name="value" select="$this/imvert:tagged-values/imvert:tagged-value[@id = $tv-id][1]/imvert:value"/>
+        <xsl:value-of select="imf:get-clean-documentation-string(($value/@original,$value)[1])"/>
     </xsl:function>
     
     <xsl:function name="imf:get-tagged-value-unieke-aanduiding">
@@ -713,6 +559,125 @@
       </part>
    </xsl:function>
 
+    <xsl:function name="imf:create-parts" as="element(part)*">
+        <xsl:param name="this" as="element()"/>
+        <xsl:param name="list" as="xs:string"/>
+    
+        <xsl:variable name="parts" select="tokenize($list,'\s+')"/>
+        <xsl:for-each select="$parts">
+            <xsl:variable name="part" select="."/>
+            <xsl:choose>
+                <xsl:when test="$part = 'NAAM'">
+                    <xsl:sequence select="imf:create-part-2('NAAM',$this/imvert:name/@original)"/>
+                </xsl:when>
+                <xsl:when test="$part = 'ALTERNATIEVENAAM'">
+                    <xsl:sequence select="imf:create-part-2('ALTERNATIEVENAAM',imf:get-tagged-value($this,'CFG-TV-NAME'))"/>
+                </xsl:when>
+                <xsl:when test="$part = 'MNEMONIC'">
+                    <xsl:sequence select="imf:create-part-2('MNEMONIC',$this/imvert:alias)"/>
+                </xsl:when>
+                <xsl:when test="$part = 'HERKOMST'">
+                    <xsl:sequence select="imf:create-part-2('HERKOMST',imf:get-tagged-value($this,'Herkomst'))"/> 
+                </xsl:when>
+                <xsl:when test="$part = 'DEFINITIE'">
+                    <xsl:sequence select="imf:create-part-2('DEFINITIE',imf:get-tagged-value($this,'CFG-TV-DEFINITION'))"/>
+                </xsl:when>
+                <xsl:when test="$part = 'HERKOMSTDEFINITIE'">
+                    <xsl:sequence select="imf:create-part-2('HERKOMSTDEFINITIE',imf:get-tagged-value($this,'CFG-TV-HERKOMSTDEFINITIE'))"/>
+                </xsl:when>
+                <xsl:when test="$part = 'DATUMOPNAME'">
+                    <xsl:sequence select="imf:create-part-2('DATUMOPNAME',imf:get-tagged-value($this,'DatumOpname'))"/>
+                </xsl:when>
+                <xsl:when test="$part = 'UNIEKEAANDUIDING'">
+                    <xsl:sequence select="imf:create-part-2('UNIEKEAANDUIDING',imf:get-tagged-value-unieke-aanduiding($this))"/>
+                </xsl:when>
+                <xsl:when test="$part = 'POPULATIE'">
+                    <xsl:sequence select="imf:create-part-2('POPULATIE',imf:get-tagged-value($this,'Populatie'))"/>
+                </xsl:when>
+                <xsl:when test="$part = 'KWALITEITSBEGRIP'">
+                    <xsl:sequence select="imf:create-part-2('KWALITEITSBEGRIP',imf:get-tagged-value($this,'Kwaliteit'))"/>
+                </xsl:when>
+                <xsl:when test="$part = 'MOGELIJKGEENWAARDE'">
+                    <xsl:sequence select="imf:create-part-2('MOGELIJKGEENWAARDE',imf:get-tagged-value($this,'MogelijkGeenWaarde'))"/>
+                </xsl:when>
+                <xsl:when test="$part = 'INDICATIEMATERIELEHISTORIE'">
+                    <xsl:sequence select="imf:create-part-2('INDICATIEMATERIELEHISTORIE',imf:get-tagged-value($this,'IndicatieMateriëleHistorie'))"/>
+                </xsl:when>
+                <xsl:when test="$part = 'INDICATIEFORMELEHISTORIE'">
+                    <xsl:sequence select="imf:create-part-2('INDICATIEFORMELEHISTORIE',imf:get-tagged-value($this,'IndicatieFormeleHistorie'))"/>
+                </xsl:when>
+                <xsl:when test="$part = 'INDICATIEINONDERZOEK'">
+                    <xsl:sequence select="imf:create-part-2('INDICATIEINONDERZOEK',imf:get-tagged-value($this,'IndicatieInOnderzoek'))"/>
+                </xsl:when>
+                <xsl:when test="$part = 'AANDUIDINGSTRIJDIGHEIDNIETIGHEID'">
+                    <xsl:sequence select="imf:create-part-2('AANDUIDINGSTRIJDIGHEIDNIETIGHEID',imf:get-tagged-value($this,'AanduidingStrijdigheidNietigheid'))"/>
+                </xsl:when>
+                <xsl:when test="$part = 'INDICATIEKARDINALITEIT'">
+                    <xsl:variable name="min" select="$this/imvert:min-occurs"/>
+                    <xsl:variable name="max" select="$this/imvert:max-occurs"/>
+                    <xsl:sequence select="imf:create-part-2('INDICATIEKARDINALITEIT',imf:get-cardinality($min,$max))"/>
+                </xsl:when>
+                <xsl:when test="$part = 'INDICATIEAUTHENTIEK'">
+                    <xsl:sequence select="imf:create-part-2('INDICATIEAUTHENTIEK',concat(imf:get-tagged-value($this,'IndicatieAuthentiek'), imf:authentiek-is-derived($this)))"/>
+                </xsl:when>
+                <xsl:when test="$part = 'REGELS'">
+                    <xsl:sequence select="imf:create-part-2('REGELS',imf:get-tagged-value($this,'Regels'))"/>
+                </xsl:when>
+                <xsl:when test="$part = 'UNIEKEAANDUIDING'">
+                    <xsl:variable name="rel-aanduiding" select="$this/imvert:associations/imvert:association[imvert:target-stereotype = imf:get-config-stereotypes('stereotype-name-composite-id')]"/>
+                    <xsl:variable name="con-aanduiding" select="imf:get-construct-by-id-for-office($rel-aanduiding/imvert:type-id)"/>
+                    <xsl:variable name="id-aanduiding" select="imf:get-tagged-value-unieke-aanduiding($this)"/>
+                    
+                    <xsl:variable name="aanduiding">
+                        <xsl:choose>
+                            <xsl:when test="exists($rel-aanduiding) and exists($id-aanduiding)">
+                                <xsl:value-of select="concat('Combinatie van ', $id-aanduiding,' en ', $con-aanduiding/imvert:name/@original)"/>
+                            </xsl:when>
+                            <xsl:when test="exists($rel-aanduiding)">
+                                <xsl:value-of select="$con-aanduiding/imvert:name/@original"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="$id-aanduiding"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:variable>
+                    <xsl:sequence select="imf:create-part-2('UNIEKEAANDUIDING',$aanduiding)"/>
+                </xsl:when>
+                <xsl:when test="$part = 'INDICATIEABSTRACTOBJECT'">
+                    <xsl:variable name="is-abstract-text" select="if (imf:boolean($this/imvert:abstract)) then 'YES' else 'NO'"/>
+                    <xsl:sequence select="imf:create-part-2('INDICATIEABSTRACTOBJECT',imf:plugin-translate-i3n($is-abstract-text,false()))"/>
+                </xsl:when>
+                <xsl:when test="$part = 'DATALOCATIE'">
+                    <xsl:sequence select="imf:create-part-2('DATALOCATIE',imf:get-tagged-value($this,'DataLocatie'))"/>         
+                </xsl:when>
+                <xsl:when test="$part = 'PATROON'">
+                    <xsl:sequence select="imf:create-part-2('PATROON',imf:get-tagged-value($this,'Patroon'))"/>         
+                </xsl:when>
+                <xsl:when test="$part = 'FORMEELPATROON'">
+                    <xsl:sequence select="imf:create-part-2('FORMEELPATROON',imf:get-tagged-value($this,'FormeelPatroon'))"/>         
+                </xsl:when>
+                <xsl:when test="$part = 'FORMAAT'">
+                    <xsl:sequence select="imf:create-part-2('FORMAAT',imf:plugin-translate-i3n($this/imvert:baretype,false()))"/>         
+                </xsl:when>
+                <xsl:when test="$part = 'RELATIESOORT'">
+                    <xsl:sequence select="imf:create-part-2('RELATIESOORT',imf:get-relatiesoort($this))"/>
+                </xsl:when>
+                <xsl:when test="$part = 'GERELATEERDOBJECTTYPE'">
+                    <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office($this/imvert:type-id)"/>          
+                    <xsl:sequence select="imf:create-part-2('GERELATEERDOBJECTTYPE',imf:create-link($defining-class,'global',$this/imvert:type-name/@original))"/>
+                </xsl:when>
+                <xsl:when test="$part = 'INDICATIEAFLEIDBAAR'">
+                    <xsl:variable name="is-afleidbaar-text" select="if (imf:boolean($this/imvert:is-value-derived)) then 'YES' else 'NO'"/>
+                    <xsl:sequence select="imf:create-part-2('INDICATIEAFLEIDBAAR',imf:plugin-translate-i3n($is-afleidbaar-text,false()))"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:sequence select="imf:msg($this,'FATAL','No such part: [1]',$part)"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:for-each>
+        
+    </xsl:function>
+    
     <xsl:function name="imf:get-cardinality" as="xs:string"> 
         <xsl:param name="min"/>
         <xsl:param name="max"/>
