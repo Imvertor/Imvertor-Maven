@@ -1199,10 +1199,11 @@
         <xsl:variable name="stereotype" select="$this/imvert:stereotype"/>
         <xsl:if test="$validate-tv-assignment">
             <xsl:for-each select="$this/imvert:tagged-values/imvert:tagged-value">
+                <xsl:variable name="id" select="@id"/>
                 <xsl:variable name="name" select="imvert:name"/>
                 <xsl:variable name="value" select="imvert:value"/>
             
-                <xsl:variable name="declared" select="$config-tagged-values[name = $name]"/>
+                <xsl:variable name="declared" select="$config-tagged-values[@id = $id]"/>
                 
                 <xsl:variable name="value-derived" select="imf:boolean($declared/derive)"/>
                
@@ -1216,6 +1217,9 @@
                 
                 <!--<xsl:message select="string-join(($name, $value, string($required-as-found),string($value-required)),';')"></xsl:message>-->
                 <xsl:choose>
+                    <xsl:when test="@origin='notes'"><!-- reading notes field may result in a tagged value, that is therefore system generated. It does not have to be part of the metamodel tagged value set. -->
+                        <!-- ignore -->
+                    </xsl:when>
                     <xsl:when test="empty($declared)">
                         <!-- an unknown tagged value, not configured anywhere -->
                         <xsl:sequence select="imf:report-warning($this, true(), 'Tagged value not expected or unknown: [1]',$name/@original)"/>

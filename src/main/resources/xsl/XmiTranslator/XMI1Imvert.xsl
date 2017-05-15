@@ -478,20 +478,25 @@
     <xsl:function name="imf:get-documentation-info" as="item()*">
         <xsl:param name="this" as="node()"/>
         <xsl:param name="name" as="xs:string"/>
-        <xsl:variable name="doctext" select="imf:get-system-tagged-value($this,$name,'')"/>
-        <xsl:variable name="relevant-doc-string" select="if (contains($doctext,imf:get-config-parameter('documentation-separator'))) then substring-before($doctext,imf:get-config-parameter('documentation-separator')) else $doctext"/>
         
+        <xsl:variable name="doctext" select="imf:get-system-tagged-value($this,$name,'')"/>
+        <xsl:variable name="relevant-doc-string" select="imf:fetch-relevant-doc-string($doctext)"/>
+        
+        <xsl:variable name="sections" as="element(section)*">
+            <!-- Parse into sections; raw text is section titled "Raw" --> 
+            <xsl:variable name="sections" select="imf:inspire-notes($relevant-doc-string)" as="element(section)*"/>
+            <!-- report if sections with same title occur -->
+            <xsl:variable name="duplicates" select="for $s in $sections return if ($s/following-sibling::section[title = $s/title]) then $s/title else ()" as="xs:string*"/>
+            <xsl:if test="exists($duplicates)">
+                <xsl:sequence select="imf:msg($this,'WARN','Duplicated note sections: [1]', string-join($duplicates,', '))"/>
+            </xsl:if>
+            <xsl:sequence select="$sections"/>
+        </xsl:variable>
+
         <xsl:variable name="f" select="imf:get-config-parameter('documentation-formatting')"/>
         <xsl:choose>
-            <xsl:when test="empty($doctext)"/>
+            <xsl:when test="empty($relevant-doc-string)"/>
             <xsl:when test="$f = 'inspire'">
-                <!-- Parse into sections; raw text is section titled "Raw" --> 
-                <xsl:variable name="sections" select="imf:inspire-notes($doctext)" as="element(section)*"/>
-                <!-- report if sections with same title occur -->
-                <xsl:variable name="duplicates" select="for $s in $sections return if ($s/following-sibling::section[title = $s/title]) then $s/title else ()" as="xs:string*"/>
-                <xsl:if test="exists($duplicates)">
-                    <xsl:sequence select="imf:msg($this,'WARN','Duplicated note sections: [1]', string-join($duplicates,', '))"/>
-                </xsl:if>
                 <imvert:documentation>
                     <xsl:sequence select="$sections"/>
                 </imvert:documentation>                        
@@ -1541,4 +1546,11 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
+    
+    <xsl:function name="imf:fetch-relevant-doc-string">
+        <xsl:param name="doctext"/>
+        <xsl:variable name="parts" select="tokenize($doctext,imf:get-config-parameter('documentation-separator'))"/>
+        <xsl:value-of select="$parts[1]"/>
+    </xsl:function>
+    
 </xsl:stylesheet>

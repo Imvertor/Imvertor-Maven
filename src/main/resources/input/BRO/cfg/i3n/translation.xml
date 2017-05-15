@@ -36,7 +36,7 @@
         <trans lang="en">Formal history?</trans>
     </item>
     <item>
-        <key>INDICATIEKARDINAILTEIT</key>
+        <key>INDICATIEKARDINALITEIT</key>
         <trans lang="nl">Kardinaliteit</trans>
         <trans lang="en">Multiplicity</trans>
     </item>
@@ -64,6 +64,11 @@
         <key>NAAM</key>
         <trans lang="nl">Naam</trans>
         <trans lang="en">Name</trans>
+    </item>
+    <item>    
+        <key>ALTERNATIEVENAAM</key>
+        <trans lang="nl">Natuurlijke naam</trans>
+        <trans lang="en">Natural name</trans>
     </item>
     <item>
         <key>HERKOMST</key>
@@ -430,6 +435,17 @@
         <trans lang="en">specializes</trans>
     </item>
     
+    <!-- standard tagged values -->
     
+    <item>
+        <key>YES</key>
+        <trans lang="nl">Ja</trans>
+        <trans lang="en">Yes</trans>
+    </item>
+    <item>
+        <key>NO</key>
+        <trans lang="nl">Nee</trans>
+        <trans lang="en">No</trans>
+    </item>
     
 </picklist>

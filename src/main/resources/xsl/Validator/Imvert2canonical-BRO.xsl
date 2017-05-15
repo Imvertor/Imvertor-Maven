@@ -120,46 +120,7 @@
                 </xsl:otherwise> 
             </xsl:choose>
         </xsl:copy>
-    </xsl:template>
-
-    <!-- transform inspire notes to tagged values -->
-    <xsl:template match="imvert:tagged-values">
-        <xsl:copy>
-            <!-- first copy all existing; only when a value is specified  -->
-            <xsl:apply-templates select="imvert:tagged-value[normalize-space(imvert:value)]"/>
-            
-            <!-- then add the tvs extracted from notes -->
-            <xsl:variable name="construct" select=".."/>
-            <xsl:for-each select="$construct/imvert:documentation/section">
-                <xsl:variable name="title" select="title"/>
-                <xsl:variable name="norm-title" select="upper-case($title)"/>
-                <xsl:variable name="body" select="body"/>
-                
-                <xsl:variable name="target-tv-id" select="$configuration-notesrules-file/notes-rule[@lang=$language]/section[upper-case(@title) = $norm-title]/@tagged-value"/>
-                
-                <xsl:variable name="current-tv" select="imf:get-tagged-value-by-id($construct,$target-tv-id)/imvert:value"/> <!-- the current tagged value if any -->
-                
-                <xsl:choose>
-                    <xsl:when test="empty($target-tv-id)">
-                        <xsl:sequence select="imf:msg($construct,'WARN','Notes field [1] not recognized, and skipped',$title)"/>
-                    </xsl:when>
-                    <xsl:when test="normalize-space($body) and normalize-space($current-tv)">
-                        <xsl:sequence select="imf:msg($construct,'ERROR','Tagged value [1] in notes field [2] already specified',($target-tv-id,$title))"/>
-                    </xsl:when>
-                    <xsl:when test="normalize-space($body)">
-                        <imvert:tagged-value origin="notes" id="{$target-tv-id}">
-                            <imvert:name original="{$title}">
-                                <xsl:value-of select="$norm-title"/>
-                            </imvert:name>
-                            <imvert:value>
-                                <xsl:value-of select="$body"/>
-                            </imvert:value>
-                        </imvert:tagged-value>
-                    </xsl:when>
-                </xsl:choose>
-            </xsl:for-each>
-        </xsl:copy>
-    </xsl:template>
+    </xsl:template>   
     
     <!-- 
        identity transform
@@ -169,11 +130,5 @@
             <xsl:apply-templates select="node()|@*"/>
         </xsl:copy>
     </xsl:template>    
-  
-    <xsl:function name="imf:get-tagged-value-by-id" as="element(imvert:tagged-value)*">
-        <xsl:param name="construct"/>
-        <xsl:param name="tv-id"/>
-        <xsl:sequence select="$construct/imvert:tagged-values/imvert:tagged-value[@id = $tv-id]"/>
-    </xsl:function>
    
 </xsl:stylesheet>

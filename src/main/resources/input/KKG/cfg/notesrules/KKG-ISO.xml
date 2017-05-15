@@ -8,15 +8,15 @@
     
     <desc>These are the schemes to apply to notes fields in order to determine the tagged values.</desc>
     
-    <notes-rule lang="en" default="Description">
+    <notes-rule lang="en" default="Definition">
         <!-- when nothing marked, assume Description -->
         
-        <section title="Name" tagged-value="TV-NAME"/>
-        <section title="Definition" tagged-value="TV-DEFINITION">
-            <!-- no labels allowd -->
+        <section title="Name" tagged-value="CFG-TV-NAME"/>
+        <section title="Definition" tagged-value="CFG-TV-DEFINITION">
+            <!-- no labels allowed -->
         </section>
-        <section title="Description" tagged-value="TV-DESCRIPTION">
-            <label title="SOURCE" tagged-value="TV-HERKOMST"/>
+        <section title="Description" tagged-value="Toelichting">
+            <label title="SOURCE" tagged-value="Herkomst"/>
             <label title="NOTE"/>
             <label title="EXAMPLE"/>
             <label title="DEFINITION"/>

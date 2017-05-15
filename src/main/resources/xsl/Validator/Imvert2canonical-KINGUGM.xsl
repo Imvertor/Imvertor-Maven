@@ -76,11 +76,12 @@
     <!-- UGM is opgesteld met dubbelingen van tagged values. Breng deze terug tot één. -->
     <xsl:template match="imvert:tagged-values">
         <imvert:tagged-values>
-            <xsl:for-each-group select="imvert:tagged-value" group-by="imvert:name">
+            <xsl:for-each-group select="imvert:tagged-value" group-by="@id">
                 <imvert:tagged-value>
+                    <xsl:copy-of select="current-group()[1]/@*"/>
                     <xsl:copy-of select="current-group()[1]/imvert:name"/>
                     <xsl:choose>
-                        <xsl:when test="current-grouping-key() = imf:get-normalized-name('Indicatie kerngegeven','tv-name')">
+                        <xsl:when test="current-grouping-key() = 'IndicatieKerngegeven'">
                             <xsl:variable name="values" select="current-group()/imvert:value"/>
                             <xsl:variable name="value" select="imf:boolean-or(for $b in $values return imf:boolean($b))"/>
                             <imvert:value original="{@original}">

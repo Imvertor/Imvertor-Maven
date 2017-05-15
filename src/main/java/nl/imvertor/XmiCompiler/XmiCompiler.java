@@ -159,6 +159,7 @@ public class XmiCompiler extends Step {
 			Transformer transformer = new Transformer();
 		    // transform 
 			boolean succeeds = true;
+			succeeds = succeeds ? transformer.transformStep("system/xmi-export-file-path", "system/xmi-file-path",  "properties/XMI_CONFIG_XSLPATH") : false ;
 			succeeds = succeeds ? transformer.transformStep("system/xmi-export-file-path", "system/xmi-file-path",  "properties/XMI_COMPACT_XSLPATH") : false ;
 				
 		}

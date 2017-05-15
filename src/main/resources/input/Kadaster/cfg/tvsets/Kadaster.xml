@@ -87,7 +87,7 @@
                 <stereo required="no">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="HerkomstDefinitie">
+        <tv norm="space" id="CFG-TV-HERKOMSTDEFINITIE">
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-objecttype</stereo>

@@ -80,8 +80,8 @@
             </declared-values>
         </tv>
         <tv norm="space" id="IndicatieAuthentiek">
-            <name lang="nl">Indicatie authentiek</name>
-            <name lang="en">Indication authentic</name>
+            <name lang="nl">Authentiek</name>
+            <name lang="en">Authentic</name>
             <desc lang="nl">TODO</desc>
             <desc lang="en">TODO</desc>
             <derive>yes</derive>
@@ -89,8 +89,6 @@
                 <!-- optional for inherited stereos -->
                 <stereo required="no">stereotype-name-attribute</stereo>
                 <stereo required="no">stereotype-name-composite</stereo>
-                <!-- and add this stereo -->
-                <stereo required="no">stereotype-name-data-element</stereo>
             </stereotypes>
         </tv>
         <tv norm="note" id="Toelichting">
@@ -199,7 +197,7 @@
                 <stereo required="yes">stereotype-name-codelist</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="HerkomstDefinitie">
+        <tv norm="space" id="CFG-TV-HERKOMSTDEFINITIE">
             <stereotypes>
             </stereotypes>
         </tv>
@@ -223,6 +221,12 @@
             <desc lang="en">TODO</desc>
             <derive>no</derive>
             <stereotypes>
+            </stereotypes>
+        </tv>
+        
+        <tv id="CFG-TV-DEFINITION" origin="system">
+            <stereotypes>
+                <stereo required="yes">stereotype-name-attributegroup</stereo>
             </stereotypes>
         </tv>
         

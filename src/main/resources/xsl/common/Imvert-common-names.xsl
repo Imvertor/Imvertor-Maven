@@ -30,8 +30,11 @@
     
     <!-- all common variables replaced by cfg references, see IM-119 -->
         
-    <xsl:variable name="language" select="imf:get-config-string('cli','language')"/>    
- 
+    <xsl:variable name="cli-language" select="imf:get-config-string('cli','language')"/>    <!-- this is the language of the metamodel -->
+
+    <xsl:variable name="language-model" select="imf:get-config-string('system','language-model')"/> <!-- this value is read from Project as tagged value "LANGUAGE" -->
+    <xsl:variable name="language" select="$cli-language"/>    
+    
     <!--
         Translate a key (e.g. "pattern") within a particular realm (such as "tv", for tagged value) to a valid alternative key (eg. "patroon") 
         in accordance with the language chosen (eg. "nl").
@@ -46,7 +49,7 @@
         <xsl:param name="key" as="xs:string*"/>
         <xsl:param name="realm" as="xs:string"/>
         <xsl:for-each select="$key">
-            <xsl:variable name="v" select="key('key-realms',concat($realm,'-',.,'-',$language),$realms)"/>
+            <xsl:variable name="v" select="key('key-realms',concat($realm,'-',.,'-',$language-model),$realms)"/>
             <xsl:value-of select="if (normalize-space($v)) then $v else $key"/>
         </xsl:for-each>
     </xsl:function>

@@ -265,10 +265,10 @@
                 <xsl:value-of select="$precompiled-name"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:variable name="name" select="$this/imvert:name/@original"/>
+                <xsl:variable name="name" select="imf:get-original-names($this)"/>
                 <xsl:variable name="project" select="$this/ancestor-or-self::imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-project-package')]"/>
-                <xsl:variable name="package-names" select="$this/ancestor-or-self::imvert:package[exists(ancestor-or-self::imvert:package = $project)]/imvert:name/@original"/>
-                <xsl:variable name="class-name" select="$this/ancestor-or-self::imvert:class[1]/imvert:name/@original"/>
+                <xsl:variable name="package-names" select="imf:get-original-names($this/ancestor-or-self::imvert:package[exists(ancestor-or-self::imvert:package = $project)])"/>
+                <xsl:variable name="class-name" select="imf:get-original-names($this/ancestor-or-self::imvert:class[1])"/>
                 <xsl:variable name="alias" select="$this/imvert:alias"/>
                 <xsl:choose>
                     <xsl:when test="$this/self::imvert:package">
@@ -1010,6 +1010,11 @@
         <xsl:variable name="path-parts" select="tokenize($norm-path, '/')" as="xs:string*"/>
         <xsl:variable name="encoded-path" select="string-join(for $p in $path-parts return encode-for-uri($p), '/')" as="xs:string"/>
         <xsl:value-of select="concat($protocol-prefix, $encoded-path)"/>        
+    </xsl:function>
+    
+    <xsl:function name="imf:get-original-names">
+        <xsl:param name="elements" as="element()*"/>
+        <xsl:sequence select="for $this in $elements return ($this/imvert:name/@original,$this/imvert:found-name)[1]"/>
     </xsl:function>
     
 </xsl:stylesheet>

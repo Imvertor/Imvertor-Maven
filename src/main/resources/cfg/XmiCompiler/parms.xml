@@ -51,6 +51,9 @@
       <TEMPLATE_TEMPLATE_FILE>${system/inp-folder-path}/eap/TEMPLATE.EAP</TEMPLATE_TEMPLATE_FILE>
       <TEMPLATE_TEMPLATE_FILE_GUID>${system/inp-folder-path}/eap/TEMPLATE.EAP.GUID</TEMPLATE_TEMPLATE_FILE_GUID>
 
+      <!-- path to xmi config -->
+      <XMI_CONFIG_XSLPATH>XMI1Config.xsl</XMI_CONFIG_XSLPATH>
+      
       <!-- path to compacter -->
       <XMI_COMPACT_XSLPATH>XMI1Compact.xsl</XMI_COMPACT_XSLPATH>
       

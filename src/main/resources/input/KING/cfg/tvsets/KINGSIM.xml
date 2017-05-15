@@ -50,7 +50,7 @@
                 <value>Zie groep</value>
             </declared-values>
         </tv>
-        <tv norm="space" id="HerkomstDefinitie">
+        <tv norm="space" id="CFG-TV-HERKOMSTDEFINITIE">
             <name lang="nl">Herkomst definitie</name>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <desc>

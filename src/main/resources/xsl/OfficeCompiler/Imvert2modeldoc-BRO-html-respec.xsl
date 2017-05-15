@@ -35,19 +35,19 @@
         <xsl:choose>
             <xsl:when test="@type = 'EXPLANATION'">
                 <p>
-                    <xsl:value-of select="imf:translate-i3n('EXPLANATION',$language,())"/>
+                    <xsl:value-of select="imf:translate-i3n('EXPLANATION',$language-model,())"/>
                 </p>
                 <xsl:apply-templates select="content/part/item" mode="#current"/>
             </xsl:when>
             <xsl:when test="@type = 'SHORT-ATTRIBUTES'">
                 <p>
-                    <xsl:value-of select="imf:translate-i3n('SHORT-ATTRIBUTES',$language,())"/>
+                    <xsl:value-of select="imf:translate-i3n('SHORT-ATTRIBUTES',$language-model,())"/>
                 </p>
                 <xsl:apply-templates mode="detail"/>
             </xsl:when>
             <xsl:when test="@type = 'SHORT-ASSOCIATIONS'">
                 <p>
-                    <xsl:value-of select="imf:translate-i3n('SHORT-ASSOCIATIONS',$language,())"/>
+                    <xsl:value-of select="imf:translate-i3n('SHORT-ASSOCIATIONS',$language-model,())"/>
                 </p>
                 <xsl:apply-templates mode="detail"/>
             </xsl:when>
@@ -57,7 +57,7 @@
                 <a class="anchor" name="global-{@id}"/>
                 <div>
                     <xsl:element name="{concat('h',$level)}">
-                        <xsl:value-of select="imf:translate-i3n('ATTRIBUTE',$language,())"/>
+                        <xsl:value-of select="imf:translate-i3n('ATTRIBUTE',$language-model,())"/>
                         <xsl:value-of select="' '"/>
                         <xsl:value-of select="@name"/>
                         <xsl:value-of select="' '"/>
@@ -73,11 +73,11 @@
                 <a class="anchor" name="global-{@id}"/>
                 <div>
                     <xsl:element name="{concat('h',$level)}">
-                        <xsl:value-of select="imf:translate-i3n('ASSOCIATION',$language,())"/>
+                        <xsl:value-of select="imf:translate-i3n('ASSOCIATION',$language-model,())"/>
                         <xsl:value-of select="' '"/>
                         <xsl:value-of select="@name"/>
                         <xsl:value-of select="' '"/>
-                        <xsl:value-of select="imf:translate-i3n('OF-COMPOSITION',$language,())"/>
+                        <xsl:value-of select="imf:translate-i3n('OF-COMPOSITION',$language-model,())"/>
                         <xsl:value-of select="' '"/>
                         <xsl:value-of select="$composer"/>
                     </xsl:element>
@@ -89,7 +89,7 @@
                 <a class="anchor" name="global-{@id}"/>
                 <section>
                     <xsl:element name="{concat('h',$level)}">
-                        <xsl:value-of select="imf:translate-i3n(@type,$language,())"/>
+                        <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                         <xsl:value-of select="' '"/>
                         <xsl:value-of select="@name"/>
                     </xsl:element>
@@ -101,7 +101,7 @@
                 <a class="anchor" name="global-{@id}"/>
                 <section>
                     <xsl:element name="{concat('h',$level)}">
-                        <xsl:value-of select="imf:translate-i3n(@type,$language,())"/>
+                        <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                         <xsl:value-of select="' '"/>
                         <xsl:value-of select="@name"/>
                     </xsl:element>
@@ -113,7 +113,7 @@
                 <a class="anchor" name="global-{@id}"/>
                 <div>
                     <xsl:element name="{concat('h',$level)}">
-                        <xsl:value-of select="imf:translate-i3n(@type,$language,())"/>
+                        <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                         <xsl:value-of select="' '"/>
                         <xsl:value-of select="@name"/>
                     </xsl:element>
@@ -140,7 +140,7 @@
     <xsl:template match="itemtype" mode="detail">
         <td>
             <i>
-                <xsl:value-of select="if (@type) then imf:translate-i3n(@type,$language,()) else ''"/>
+                <xsl:value-of select="if (@type) then imf:translate-i3n(@type,$language-model,()) else ''"/>
             </i>
         </td>
     </xsl:template>

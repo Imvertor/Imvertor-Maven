@@ -206,6 +206,7 @@
             <derive>no</derive>
             <stereotypes>
                 <!-- packages -->
+                <stereo required="no">stereotype-name-project-package</stereo>
                 <stereo required="no">stereotype-name-base-package</stereo>
                 <stereo required="no">stereotype-name-application-package</stereo>
                 <stereo required="no">stereotype-name-domain-package</stereo>
@@ -240,5 +241,57 @@
             </declared-values>
             
         </tv>
+    
+        <tv id="Toelichting">
+            <stereotypes>
+                <stereo required="no">stereotype-name-project-package</stereo>
+                <stereo required="no">stereotype-name-base-package</stereo>
+                <stereo required="no">stereotype-name-application-package</stereo>
+                <stereo required="no">stereotype-name-domain-package</stereo>
+                <stereo required="no">stereotype-name-view-package</stereo>
+                <stereo required="no">stereotype-name-external-package</stereo>
+                <stereo required="no">stereotype-name-internal-package</stereo>
+            </stereotypes>
+        </tv>  
+
+        <tv id="CFG-TV-NAME">
+            <stereotypes>
+                <stereo required="no">stereotype-name-project-package</stereo>
+                <stereo required="no">stereotype-name-base-package</stereo>
+                <stereo required="no">stereotype-name-application-package</stereo>
+                <stereo required="no">stereotype-name-domain-package</stereo>
+                <stereo required="no">stereotype-name-view-package</stereo>
+                <stereo required="no">stereotype-name-external-package</stereo>
+                <stereo required="no">stereotype-name-internal-package</stereo>
+            </stereotypes>
+        </tv>  
+        
+        <tv id="CFG-TV-DEFINITION" origin="system">
+            <stereotypes>
+                <stereo required="no">stereotype-name-project-package</stereo>
+                <stereo required="no">stereotype-name-base-package</stereo>
+                <stereo required="no">stereotype-name-application-package</stereo>
+                <stereo required="no">stereotype-name-domain-package</stereo>
+                <stereo required="no">stereotype-name-view-package</stereo>
+                <stereo required="no">stereotype-name-external-package</stereo>
+                <stereo required="no">stereotype-name-internal-package</stereo>
+            </stereotypes>
+        </tv>  
+        
+        <tv norm="space" id="CFG-TV-LANGUAGEMETAMODEL">
+            <name lang="#ALL">LANGUAGE</name>
+            <derive>no</derive>
+            <stereotypes>
+                <!-- packages -->
+                <stereo required="no">stereotype-name-project-package</stereo><!-- if not specified, user cli/language -->
+            </stereotypes>
+            <declared-values lang="#ALL">
+                <value default="no">en</value>
+                <value default="yes">nl</value>
+            </declared-values>
+        </tv>
+        
     </tagged-values>
+    
+    
 </tagset>

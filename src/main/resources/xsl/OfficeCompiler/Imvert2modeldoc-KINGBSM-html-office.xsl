@@ -99,7 +99,7 @@
     <xsl:template match="section" mode="detail">
         <xsl:choose>
             <xsl:when test="@type = 'EXPLANATION'">
-                <xsl:sequence select="imf:create-nonheader(imf:translate-i3n('EXPLANATION',$language,()))"/>
+                <xsl:sequence select="imf:create-nonheader(imf:translate-i3n('EXPLANATION',$language-model,()))"/>
                 <table>
                     <tbody>
                         <tr>
@@ -112,11 +112,11 @@
                 </table>
             </xsl:when>
             <xsl:when test="@type = 'SHORT-ATTRIBUTES'">
-                <xsl:sequence select="imf:create-nonheader(imf:translate-i3n('SHORT-ATTRIBUTES',$language,()))"/>
+                <xsl:sequence select="imf:create-nonheader(imf:translate-i3n('SHORT-ATTRIBUTES',$language-model,()))"/>
                 <xsl:apply-templates mode="detail"/>
             </xsl:when>
             <xsl:when test="@type = 'SHORT-ASSOCIATIONS'">
-                <xsl:sequence select="imf:create-nonheader(imf:translate-i3n('SHORT-ASSOCIATIONS',$language,()))"/>
+                <xsl:sequence select="imf:create-nonheader(imf:translate-i3n('SHORT-ASSOCIATIONS',$language-model,()))"/>
                 <xsl:apply-templates mode="detail"/>
             </xsl:when>
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ATTRIBUTE'">
@@ -125,11 +125,11 @@
                 <div>
                     <a class="anchor" name="global-{@id}"/>
                     <xsl:element name="{concat('h',$level)}">
-                        <xsl:value-of select="imf:translate-i3n('ATTRIBUTE',$language,())"/>
+                        <xsl:value-of select="imf:translate-i3n('ATTRIBUTE',$language-model,())"/>
                         <xsl:value-of select="' '"/>
                         <xsl:value-of select="@name"/>
                         <xsl:value-of select="' '"/>
-                        <xsl:value-of select="imf:translate-i3n('OF-COMPOSITION',$language,())"/>
+                        <xsl:value-of select="imf:translate-i3n('OF-COMPOSITION',$language-model,())"/>
                         <xsl:value-of select="' '"/>
                         <xsl:value-of select="$composer"/>
                     </xsl:element>
@@ -142,11 +142,11 @@
                 <div>
                     <a class="anchor" name="global-{@id}"/>
                     <xsl:element name="{concat('h',$level)}">
-                        <xsl:value-of select="imf:translate-i3n('ASSOCIATION',$language,())"/>
+                        <xsl:value-of select="imf:translate-i3n('ASSOCIATION',$language-model,())"/>
                         <xsl:value-of select="' '"/>
                         <xsl:value-of select="@name"/>
                         <xsl:value-of select="' '"/>
-                        <xsl:value-of select="imf:translate-i3n('OF-COMPOSITION',$language,())"/>
+                        <xsl:value-of select="imf:translate-i3n('OF-COMPOSITION',$language-model,())"/>
                         <xsl:value-of select="' '"/>
                         <xsl:value-of select="$composer"/>
                     </xsl:element>
@@ -158,7 +158,7 @@
                 <div>
                     <a class="anchor" name="global-{@id}"/>
                     <xsl:element name="{concat('h',$level)}">
-                        <xsl:value-of select="imf:translate-i3n(@type,$language,())"/>
+                        <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                         <xsl:value-of select="' '"/>
                         <xsl:value-of select="@name"/>
                     </xsl:element>
@@ -185,7 +185,7 @@
     <xsl:template match="itemtype" mode="detail">
         <td>
             <i>
-                <xsl:value-of select="if (@type) then imf:translate-i3n(@type,$language,()) else ''"/>
+                <xsl:value-of select="if (@type) then imf:translate-i3n(@type,$language-model,()) else ''"/>
             </i>
         </td>
     </xsl:template>

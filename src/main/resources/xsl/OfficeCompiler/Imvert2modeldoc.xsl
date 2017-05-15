@@ -780,7 +780,7 @@
     <xsl:function name="imf:plugin-translate-i3n" as="xs:string?">
         <xsl:param name="key"/>
         <xsl:param name="must-be-known"/>
-        <xsl:value-of select="imf:translate-i3n(upper-case($key), $language, if ($must-be-known) then () else $key)"/> 
+        <xsl:value-of select="imf:translate-i3n(upper-case($key), $language-model, if ($must-be-known) then () else $key)"/> 
     </xsl:function>
     
     <!-- 

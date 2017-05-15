@@ -18,7 +18,13 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
-  
+
+   <!-- 
+        this metamodel is subject to standard Grouping conventions 
+    -->
+   
+   <xi:include href="../../../Imvertor/cfg/metamodels/Grouping.xml"/>
+   
    <xi:include href="../../../BP/cfg/metamodels/BP.xml"/>
   
    <xi:include href="KINGSIM-scalar.xml"/> 

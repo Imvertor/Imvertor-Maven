@@ -41,7 +41,7 @@
                 <stereo required="yes">stereotype-name-relatiesoort</stereo> 
             </stereotypes>
         </tv>
-        <tv id="HerkomstDefinitie">
+        <tv id="CFG-TV-HERKOMSTDEFINITIE">
             <stereotypes>
                 <stereo required="yes">stereotype-name-relatiesoort</stereo> 
             </stereotypes>

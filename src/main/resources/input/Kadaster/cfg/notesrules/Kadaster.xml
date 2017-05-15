@@ -6,6 +6,18 @@
   
     <name>Kadaster</name>
     
-    <!-- no rules -->
-
+    <desc>Kadaster only allows definitions to occur in notes field.</desc>
+    
+    <notes-rule lang="nl" default="Definitie">
+        <section title="Definitie" tagged-value="CFG-TV-DEFINITION">
+            <label title="URI"/><!-- should be single URI -->
+        </section>
+    </notes-rule>
+    
+    <notes-rule lang="en" default="Definition">
+        <section title="Definition" tagged-value="CFG-TV-DEFINITION">
+            <label title="URI"/><!-- should be single URI -->
+        </section>
+    </notes-rule>
+    
 </notes-rules>

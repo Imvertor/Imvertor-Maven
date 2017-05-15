@@ -19,12 +19,6 @@
 -->
 <metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <!-- 
-        this metamodel is subject to standard Grouping conventions 
-    -->
-    
-    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping.xml"/>
-    
     <name>BP</name>
 
     <desc>Metamodel for Dutch Best Practices based registrations</desc>

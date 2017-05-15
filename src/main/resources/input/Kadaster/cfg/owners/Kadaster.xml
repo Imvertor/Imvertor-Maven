@@ -62,7 +62,7 @@
     <!-- 
         other configurable info
     -->
-    <parameter name="documentation-formatting">html</parameter>
+    <parameter name="documentation-formatting">inspire</parameter>
     
     <parameter name="documentation-separator">---</parameter>
     <parameter name="documentation-newline">&#10;</parameter>

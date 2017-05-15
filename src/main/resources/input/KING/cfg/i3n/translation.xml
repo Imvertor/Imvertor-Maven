@@ -40,7 +40,7 @@
         <trans lang="nl">Indicatie in onderzoek</trans>
     </item>
     <item>
-        <key>INDICATIEKARDINAILTEIT</key>
+        <key>INDICATIEKARDINALITEIT</key>
         <trans lang="nl">Indicatie kardinaliteit</trans>
     </item>
     <item>
@@ -62,6 +62,11 @@
     <item>    
         <key>NAAM</key>
         <trans lang="nl">Naam</trans>
+    </item>
+    <item>    
+        <key>ALTERNATIEVENAAM</key>
+        <trans lang="nl">Alternatieve naam</trans>
+        <trans lang="en">Alternative name</trans>
     </item>
     <item>
         <key>HERKOMST</key>
@@ -365,6 +370,17 @@
         <trans lang="nl">is specialisatie van</trans>
     </item>
     
-    
+    <!-- standard tagged values -->
+
+    <item>
+        <key>YES</key>
+        <trans lang="nl">Ja</trans>
+        <trans lang="en">Yes</trans>
+    </item>
+    <item>
+        <key>NO</key>
+        <trans lang="nl">Nee</trans>
+        <trans lang="en">No</trans>
+    </item>
     
 </picklist>
