@@ -39,8 +39,8 @@
       </cli-parm> 
       <cli-parm>
          <name>language</name>
-         <arg>ISO 639-1</arg>
-         <tip>Default langugage of the metamodel and model. A language code from ISO 639-1. </tip>
+         <arg>ISO 639-1 codes</arg>
+         <tip>Langugage of the metamodel and model. Specify metamodel:model, like "en:nl", or single code for both..</tip>
          <required>false</required>
       </cli-parm> 
       <cli-parm>

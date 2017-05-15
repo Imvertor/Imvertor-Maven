@@ -30,10 +30,10 @@
     
     <!-- all common variables replaced by cfg references, see IM-119 -->
         
-    <xsl:variable name="cli-language" select="imf:get-config-string('cli','language')"/>    <!-- this is the language of the metamodel -->
+    <xsl:variable name="cli-language" select="tokenize(imf:get-config-string('cli','language'),':')"/>    <!-- this is the language of the metamodel:model -->
 
-    <xsl:variable name="language-model" select="imf:get-config-string('system','language-model')"/> <!-- this value is read from Project as tagged value "LANGUAGE" -->
-    <xsl:variable name="language" select="$cli-language"/>    
+    <xsl:variable name="language-model" select="$cli-language[last()]"/>
+    <xsl:variable name="language" select="$cli-language[1]"/>    
     
     <!--
         Translate a key (e.g. "pattern") within a particular realm (such as "tv", for tagged value) to a valid alternative key (eg. "patroon") 

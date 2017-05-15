@@ -65,6 +65,7 @@
     <parameter name="documentation-formatting">inspire</parameter>
     
     <parameter name="documentation-separator">---</parameter>
+    <parameter name="documentation-separator-pattern">---</parameter>
     <parameter name="documentation-newline">&#10;</parameter>
     <parameter name="concept-documentation-state-obsolete-uri">http://brk.kadaster.nl/id/lifecycle/afgekeurd</parameter>
 

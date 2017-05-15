@@ -278,19 +278,6 @@
             </stereotypes>
         </tv>  
         
-        <tv norm="space" id="CFG-TV-LANGUAGEMETAMODEL">
-            <name lang="#ALL">LANGUAGE</name>
-            <derive>no</derive>
-            <stereotypes>
-                <!-- packages -->
-                <stereo required="no">stereotype-name-project-package</stereo><!-- if not specified, user cli/language -->
-            </stereotypes>
-            <declared-values lang="#ALL">
-                <value default="no">en</value>
-                <value default="yes">nl</value>
-            </declared-values>
-        </tv>
-        
     </tagged-values>
     
     

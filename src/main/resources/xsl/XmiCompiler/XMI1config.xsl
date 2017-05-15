@@ -38,14 +38,16 @@
     <xsl:variable name="stylesheet-code">CNF</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
     
-    <!-- Fetch project-based tagged values for language settings; store to config. -->
+    <!-- Fetch some info from raw XMI and store to parms.xml -->
  
-    <xsl:variable name="document" select="/"/>
-
-    <xsl:template match="/">
-        <xsl:variable name="language-model" select="$document//UML:TaggedValue[@tag='LANGUAGE']/@value"/>
-    
+      <xsl:template match="/">
+        
+        <!--x
+        <xsl:variable name="language-model" select="//UML:TaggedValue[@tag='LANGUAGE']/@value"/>
         <xsl:sequence select="imf:set-config-string('system','language-model',($language-model,$cli-language)[1])"/>
+        x-->
+
+        <!-- no presets yet -->
         
     </xsl:template>
     

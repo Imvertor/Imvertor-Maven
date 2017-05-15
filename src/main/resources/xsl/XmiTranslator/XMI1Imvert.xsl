@@ -904,6 +904,7 @@
         <xsl:choose>
             <xsl:when test="exists($local-value)">
                  <xsl:sequence select="$local-value"/>   
+                <xsl:sequence select="imf:msg('DEBUG','Tagged value [1] is [2] (at mode 0) at path: [3] ', (imf:string-group($tagged-value-name),imf:compile-xpath($this),imf:string-group($local-value)))"/>
             </xsl:when>
             <xsl:when test="not($profiled)"><!-- assume that all tagged values in different locations in the XMI are profiled -->
                 <xsl:sequence select="()"/>
@@ -918,6 +919,7 @@
                 <xsl:choose>
                     <xsl:when test="exists($global-value)">
                         <xsl:sequence select="$global-value"/>   
+                        <xsl:sequence select="imf:msg('DEBUG','Tagged value [1] is [2] (at mode 1) at path: [3] ', (imf:string-group($tagged-value-name),imf:compile-xpath($this),imf:string-group($global-value)))"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:variable name="crole" select="imf:get-classifier-role($this)"/>
@@ -930,6 +932,7 @@
                         <xsl:choose>
                             <xsl:when test="exists($local-cr-value)">
                                 <xsl:sequence select="$local-cr-value"/>   
+                                <xsl:sequence select="imf:msg('DEBUG','Tagged value [1] is [2] (at mode 2) at path: [3] ', (imf:string-group($tagged-value-name),imf:compile-xpath($this),imf:string-group($local-cr-value)))"/>
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:variable name="tagged-values" select="$content/UML:TaggedValue[@modelElement=$crole/@xmi.id and imf:name-match(@tag,$tagged-value-name,'tv-name-ea')]"/>
@@ -941,6 +944,7 @@
                                 <xsl:choose>
                                     <xsl:when test="exists($global-cr-value)">
                                         <xsl:sequence select="$global-cr-value"/>   
+                                        <xsl:sequence select="imf:msg('DEBUG','Tagged value [1] is [2] (at mode 3) at path: [3] ', (imf:string-group($tagged-value-name),imf:compile-xpath($this),imf:string-group($global-cr-value)))"/>
                                     </xsl:when>
                                     <xsl:otherwise>
                                         <xsl:variable name="root-model" select="$content/UML:Model"/>
@@ -953,6 +957,8 @@
                                         <xsl:choose>
                                             <xsl:when test="exists($root-model-value)">
                                                 <xsl:sequence select="$root-model-value"/>   
+                                                <xsl:sequence select="imf:msg('DEBUG','Tagged value [1] is [2] (at mode 4) at path: [3] ', (imf:string-group($tagged-value-name),imf:compile-xpath($this),imf:string-group($root-model-value)))"/>
+                                                
                                             </xsl:when>
                                         </xsl:choose>
                                     </xsl:otherwise>
@@ -1374,7 +1380,7 @@
                         <xsl:sequence select="imf:create-output-element('imvert:weight',imf:get-system-tagged-value(.,'weight'))"/>
                         <xsl:sequence select="imf:create-output-element('imvert:status',imf:get-system-tagged-value(.,'status'))"/>
                         
-                        <xsl:variable name="relevant-doc-string" select="if (contains(.,imf:get-config-parameter('documentation-separator'))) then substring-before(.,imf:get-config-parameter('documentation-separator')) else ."/>
+                        <xsl:variable name="relevant-doc-string" select="imf:fetch-relevant-doc-string(.)"/>
                         <xsl:sequence select="imf:create-output-element('imvert:documentation',imf:get-system-tagged-value($relevant-doc-string,'description'))"/>
                        
                         <!-- when constraint on associatiosn: -->
@@ -1549,7 +1555,7 @@
     
     <xsl:function name="imf:fetch-relevant-doc-string">
         <xsl:param name="doctext"/>
-        <xsl:variable name="parts" select="tokenize($doctext,imf:get-config-parameter('documentation-separator'))"/>
+        <xsl:variable name="parts" select="tokenize($doctext,imf:get-config-parameter('documentation-separator-pattern'))"/>
         <xsl:value-of select="$parts[1]"/>
     </xsl:function>
     
