@@ -466,6 +466,10 @@
 							</xsl:for-each>									
 						</xsl:variable>
 						<xsl:if
+							test="($berichtCode = 'La07' or $berichtCode = 'La08' or $berichtCode = 'La09' or $berichtCode = 'La10') and contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiele historie'), 'JA')">
+							<xsl:attribute name="indicatieMaterieleHistorieRelatie" select="'Ja'"/>
+						</xsl:if>
+						<xsl:if
 							test="($berichtCode = 'La07' or $berichtCode = 'La08' or $berichtCode = 'La09' or $berichtCode = 'La10') and $tv-materieleHistorie-attributes//ep:tagged-value = 'JA' or $tv-materieleHistorie-attributes//ep:tagged-value = 'JAZIEREGELS'">
 							<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja op attributes'"/>
 						</xsl:if>
@@ -882,7 +886,7 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:attribute>
-					<xsl:attribute name="type" select="'group'"/>
+					<xsl:attribute name="type" select="'complex datatype'"/>
 					<xsl:if
 						test="($berichtCode = 'La07' or $berichtCode = 'La08' or $berichtCode = 'La09' or $berichtCode = 'La10') and 
 						((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'JA' or imvert:value = 'JAZIEREGELS')]) >= 1) or

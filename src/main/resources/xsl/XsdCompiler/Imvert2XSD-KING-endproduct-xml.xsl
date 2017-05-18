@@ -880,7 +880,7 @@
                 
                 <xsl:choose>
                    <!-- The following when generates global constructs based on uml groups. -->
-                    <xsl:when test="@type='group' and exists(imf:get-construct-by-id($id,$packages-doc))">
+                    <xsl:when test="@type=('group','complex datatype') and exists(imf:get-construct-by-id($id,$packages-doc))">
 
                         <xsl:sequence select="imf:create-debug-comment('Debuglocation 16',$debugging)"/>
                         
@@ -966,6 +966,14 @@
                                    <xsl:with-param name="context" select="$context" />
                                    <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
                                </xsl:apply-templates>
+                               <xsl:if test="@type='complex datatype'">
+                                   <ep:construct ismetadata="yes">
+                                       <ep:name>noValue</ep:name>
+                                       <ep:tech-name>noValue</ep:tech-name>
+                                       <ep:min-occurs>0</ep:min-occurs>
+                                       <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                                   </ep:construct>
+                               </xsl:if>
                            </ep:seq> 
                        </ep:construct>                       
                        
@@ -1289,7 +1297,7 @@
                     <xsl:variable name="historieType" select="'historieMaterieel'"/>
                     <xsl:choose>
                        <!-- The following when generates historieMaterieel global constructs based on uml groups. -->
-                        <xsl:when test="@type='group' and exists(imf:get-construct-by-id($id,$packages-doc))">
+                        <xsl:when test="@type=('group','complex datatype') and exists(imf:get-construct-by-id($id,$packages-doc))">
                            
                            <xsl:sequence select="imf:create-debug-track(concat('Constructing global materieleHistorie groupconstruct: ',$construct/imvert:name),$debugging)"/>
                             <xsl:sequence select="imf:create-debug-comment('Debuglocation 19',$debugging)"/>
@@ -1358,6 +1366,14 @@
                                        <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
                                    </xsl:apply-templates>
                                    <!-- Associations are never placed within historieMaterieel constructs. -->
+                                   <xsl:if test="@type='complex datatype'">
+                                       <ep:construct ismetadata="yes">
+                                           <ep:name>noValue</ep:name>
+                                           <ep:tech-name>noValue</ep:tech-name>
+                                           <ep:min-occurs>0</ep:min-occurs>
+                                           <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                                       </ep:construct>
+                                   </xsl:if>
                                </ep:seq> 
                            </ep:construct>                       
                            
@@ -1531,7 +1547,7 @@
                     <xsl:variable name="historieType" select="'historieFormeel'"/>
                     <xsl:choose>
                        <!-- The following when generates historieFormeel global constructs based on uml groups. -->
-                        <xsl:when test="@type='group' and exists(imf:get-construct-by-id($id,$packages-doc))">
+                        <xsl:when test="@type=('group','complex datatype') and exists(imf:get-construct-by-id($id,$packages-doc))">
                            
                            <xsl:sequence select="imf:create-debug-track(concat('Constructing global formeleHistorie groupconstruct: ',$construct/imvert:name),$debugging)"/>
                             <xsl:sequence select="imf:create-debug-comment('Debuglocation 22',$debugging)"/>
@@ -1593,6 +1609,14 @@
                                        <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
                                    </xsl:apply-templates>
                                    <!-- Associations are never placed within historieFormeel constructs. -->
+                                   <xsl:if test="@type='complex datatype'">
+                                       <ep:construct ismetadata="yes">
+                                           <ep:name>noValue</ep:name>
+                                           <ep:tech-name>noValue</ep:tech-name>
+                                           <ep:min-occurs>0</ep:min-occurs>
+                                           <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                                       </ep:construct>
+                                   </xsl:if>
                                </ep:seq> 
                            </ep:construct>                       
                            

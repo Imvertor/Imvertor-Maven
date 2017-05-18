@@ -1597,7 +1597,14 @@
 						<xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
 						<xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
 						<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
-						<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
+						<xsl:choose>
+							<xsl:when test="$verwerkingsModus = ('kennisgeving','matchgegevensKennisgeving') and $matchgegeven = 'JA'">
+								<xsl:sequence select="imf:create-output-element('ep:min-occurs', 1)"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
+							</xsl:otherwise>
+						</xsl:choose>
 						<!-- When a tagged-value 'Positie' exists this is used to assign a value 
 							to 'ep:position' if not the value of the element 'imvert:position' is used. -->
 						<xsl:choose>

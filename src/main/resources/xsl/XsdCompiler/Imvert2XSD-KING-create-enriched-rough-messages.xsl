@@ -59,11 +59,11 @@
 							<!-- Dit betreft een construct voor een entiteit op een dieper niveau. Typisch een dat gebruikt wordt in een gerelateerde. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevensKennisgeving')"/>
 						</xsl:when>
-						<xsl:when test="@type='group' and (count(ancestor::ep:construct[@type='entity']) = 1)">
+						<xsl:when test="@type=('group','complex datatype') and (count(ancestor::ep:construct[@type='entity']) = 1)">
 							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of group constructs die daar een nakomeling van zijn. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kennisgeving')"/>
 						</xsl:when>
-						<xsl:when test="@type='group' and (count(ancestor::ep:construct[@type='entity']) > 1)">
+						<xsl:when test="@type=('group','complex datatype') and (count(ancestor::ep:construct[@type='entity']) > 1)">
 							<!-- Dit betreft alle overige group constructs. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevensKennisgeving')"/>
 						</xsl:when>
@@ -98,17 +98,17 @@
 							<!-- Dit betreft een construct voor een entiteit op een nog dieper niveau. Typisch een dat gebruikt wordt in een gerelateerde. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
 						</xsl:when>
-						<xsl:when test="@type='group' and ancestor::ep:construct[ep:tech-name = 'gerelateerde']">
+						<xsl:when test="@type=('group','complex datatype') and ancestor::ep:construct[ep:tech-name = 'gerelateerde']">
 							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of een entiteit op het tweede niveau of 
 								 group constructs die daar een nakomeling van zijn. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'gerelateerdeAntwoord')"/>
 						</xsl:when>
-						<xsl:when test="@type='group' and ((count(ancestor::ep:construct[@type='entity']) = 1) or (count(ancestor::ep:construct[@type='entity']) = 2))">
+						<xsl:when test="@type=('group','complex datatype') and ((count(ancestor::ep:construct[@type='entity']) = 1) or (count(ancestor::ep:construct[@type='entity']) = 2))">
 							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of een entiteit op het tweede niveau of 
 								 group constructs die daar een nakomeling van zijn. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'antwoord')"/>
 						</xsl:when>
-						<xsl:when test="@type='group' and (count(ancestor::ep:construct[@type='entity']) > 2)">
+						<xsl:when test="@type=('group','complex datatype') and (count(ancestor::ep:construct[@type='entity']) > 2)">
 							<!-- Dit betreft alle overige group constructs. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
 						</xsl:when>
@@ -148,17 +148,17 @@
 							<!-- Dit betreft een construct voor een entiteit op een nog dieper niveau. Typisch een dat gebruikt wordt in een gerelateerde in de context. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
 						</xsl:when>
-						<xsl:when test="@type='group' and ancestor::ep:construct[ep:tech-name = 'gerelateerde']">
+						<xsl:when test="@type=('group','complex datatype') and ancestor::ep:construct[ep:tech-name = 'gerelateerde']">
 							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of een entiteit op het tweede niveau binnen de 
 								 context van een gelijk, totEnMet, vanaf of scope element of group constructs die daar een nakomeling van zijn. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'gerelateerdeVraag')"/>
 						</xsl:when>
-						<xsl:when test="@type='group' and ((count(ancestor::ep:construct[@type='entity']) = 1) or (count(ancestor::ep:construct[@type='entity']) = 2))">
+						<xsl:when test="@type=('group','complex datatype') and ((count(ancestor::ep:construct[@type='entity']) = 1) or (count(ancestor::ep:construct[@type='entity']) = 2))">
 							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of een entiteit op het tweede niveau binnen de 
 								 context van een gelijk, totEnMet, vanaf of scope element of group constructs die daar een nakomeling van zijn. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'vraag')"/>
 						</xsl:when>
-						<xsl:when test="@type='group' and (count(ancestor::ep:construct[@type='entity']) > 2)">
+						<xsl:when test="@type=('group','complex datatype') and (count(ancestor::ep:construct[@type='entity']) > 2)">
 							<!-- Dit betreft alle overige group constructs. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
 						</xsl:when>
@@ -196,6 +196,9 @@
 					<xsl:attribute name="verwerkingsModus" select="'ROME'"/>
 				</xsl:otherwise>
 			</xsl:choose>
+			<xsl:if test="(contains($berichtCode,'La') or ((contains($berichtCode,'Di') or $berichtCode = 'Du01') and @context = 'antwoord' or ancestor::ep:construct[@context = 'antwoord'])) and ep:name = 'gerelateerde' and parent::ep:construct[@indicatieMaterieleHistorieRelatie='Ja']">
+				<xsl:attribute name="indicatieMaterieleHistorieRelatie" select="'Ja'"/>
+			</xsl:if>
 			<xsl:if test="(contains($berichtCode,'La') or ((contains($berichtCode,'Di') or $berichtCode = 'Du01') and @context = 'antwoord' or ancestor::ep:construct[@context = 'antwoord'])) and ep:name = 'gerelateerde' and parent::ep:construct[@indicatieFormeleHistorieRelatie='Ja']">
 				<xsl:attribute name="indicatieFormeleHistorieRelatie" select="'Ja'"/>
 			</xsl:if>
