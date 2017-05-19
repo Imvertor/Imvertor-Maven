@@ -66,23 +66,6 @@
          <construct>class</construct>
          <toplevel>true</toplevel>
          <!-- relaties vanuit vrij bericht mogen een willekeurige naam hebben -->
-         <?x
-           <entity-relation-constraint>
-            <relation>gelijk</relation>
-            <relation>vanaf</relation>
-            <relation>tot en met</relation>
-            <relation>start</relation>
-            <relation>scope</relation>
-            <relation>entiteit</relation>
-            <relation>antwoord</relation>
-            <relation>update</relation>
-            <relation>selectie</relation>
-            <relation>actueel</relation>
-            <relation>oudste</relation>
-            <relation>wijziging</relation>
-            <relation>historie</relation>
-         </entity-relation-constraint>
-         ?>
       </stereo>
       <stereo id="stereotype-name-vraagberichttype">
          <name lang="en">Request message type</name>
@@ -96,6 +79,8 @@
             <relation lang="nl">tot en met</relation>
             <relation lang="nl">start</relation>
             <relation lang="nl">scope</relation>
+            <relation lang="nl">stuurgegevens</relation>
+            <relation lang="nl">parameters</relation>
          </entity-relation-constraint>
       </stereo>
       <stereo id="stereotype-name-antwoordberichttype">
@@ -106,6 +91,8 @@
          <toplevel>true</toplevel>
          <entity-relation-constraint>
             <relation lang="nl">antwoord</relation>
+            <relation lang="nl">stuurgegevens</relation>
+            <relation lang="nl">parameters</relation>
          </entity-relation-constraint>         
       </stereo>
       <stereo id="stereotype-name-kennisgevingberichttype">
@@ -116,6 +103,8 @@
          <toplevel>true</toplevel>
          <entity-relation-constraint>
             <relation lang="nl">object</relation>
+            <relation lang="nl">stuurgegevens</relation>
+            <relation lang="nl">parameters</relation>
          </entity-relation-constraint>
       </stereo>
       <stereo id="stereotype-name-synchronisatieberichttype">
@@ -126,6 +115,8 @@
          <toplevel>true</toplevel>
          <entity-relation-constraint>
             <relation lang="nl">object</relation>
+            <relation lang="nl">stuurgegevens</relation>
+            <relation lang="nl">parameters</relation>
          </entity-relation-constraint>
       </stereo>
      

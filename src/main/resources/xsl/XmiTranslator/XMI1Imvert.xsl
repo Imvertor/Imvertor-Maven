@@ -1536,21 +1536,10 @@
         <xsl:value-of select="string-join($path,'')"/>
     </xsl:function>
     
-    <!-- 
-        When "formal pattern" is part of the metamodel, use that value; otherwise assume that the "pattern" holds the formal pattern 
-    -->
-    <xsl:function name="imf:get-formal-pattern" as="element(imvert:pattern)?">
+    <xsl:function name="imf:get-formal-pattern" as="xs:string?">
         <xsl:param name="this"/>
-        <xsl:variable name="localized-name-formal" select="imf:get-config-tagged-values('FormeelPatroon',false())"/>
-        <xsl:variable name="localized-name-informal" select="imf:get-config-tagged-values('Patroon',false())"/>
-        <xsl:choose>
-            <xsl:when test="$localized-name-formal eq '#unknown'">
-                <xsl:sequence select="imf:create-output-element('imvert:pattern',imf:get-profile-tagged-value($this,$localized-name-informal))"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:sequence select="imf:create-output-element('imvert:pattern',imf:get-profile-tagged-value($this,$localized-name-formal))"/>
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:variable name="localized-name-formal" select="imf:get-config-tagged-values('FormeelPatroon',false())"/> <!-- "Formeel patroon"of "patroon", afhankelijk van metamodel -->
+        <xsl:sequence select="imf:get-profile-tagged-value($this,$localized-name-formal)[1]"/>
     </xsl:function>
     
     <xsl:function name="imf:fetch-relevant-doc-string">

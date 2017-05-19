@@ -320,6 +320,7 @@
                 <stereo required="no">stereotype-name-vrijberichttype</stereo>
                 
                 <stereo required="no">stereotype-name-entiteitrelatie</stereo>
+                <stereo required="no">stereotype-name-berichtrelatie</stereo>
             </stereotypes>
         </tv>
         

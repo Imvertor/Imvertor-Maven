@@ -73,6 +73,8 @@
             target-uri-prefix="../../../../xlink/1.0.0/xlinks.xsd"/>
     </local-schema>
     
-    <local-schema schemafolder="www.kadaster.nl/schemas-Procesresultaat-v20110922(0.6.0-20110922)"/>
+    <local-schema schemafolder="www.kadaster.nl/schemas-generiek-procesresultaat-v20110922(0.6.0-20110922)"/>
+
+    <local-schema schemafolder="www.kadaster.nl/schemas-generiek-log-v20120501(1.2.0-20120501)"/>
     
 </local-schemas>

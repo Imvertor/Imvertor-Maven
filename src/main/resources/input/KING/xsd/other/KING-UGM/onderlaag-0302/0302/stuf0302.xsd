@@ -54,7 +54,6 @@
 				- attribute exact verwijderd
 				- SimpleType Wildcard en WildcardEind toegevoegd
 				- De attributeGroup element verwijderd, omdat deze nog maar 1 attribute bevatte en waar deze voorkwam vervangen door een ref naar StUF:noValue
-				- ComplexTypes WildcardElement en WildcardEindElement toegevoegd
 			- RFC0430:
 			    - Alleen berichtcode toegestaan in de stuurgegevens van een Bv03-bericht
 			- RFC0432:
@@ -248,8 +247,14 @@
 	</element>
 	<!--Definitie van elementen die als element gerefd moeten worden in een sectormodel-->
 	<element name="extraElementen" type="StUF:ExtraElementen"/>
-	<element name="aanvullendeElementen" type="anyType"/>
-	<element name="tijdstipRegistratie" type="StUF:Tijdstip-e" nillable="true"/>
+	<element name="aanvullendeElementen">
+		<complexType>
+			<sequence>
+				<any namespace="##other" processContents="lax" maxOccurs="unbounded"/>
+			</sequence>
+		</complexType>
+	</element>
+	<element name="tijdstipRegistratie" type="StUF:Tijdstip-e"/>
 	<element name="tijdvakGeldigheid" type="StUF:TijdvakGeldigheid"/>
 	<element name="tijdvakObject" type="StUF:TijdvakObject"/>
 	<element name="tijdvakRelatie" type="StUF:TijdvakRelatie"/>
@@ -1173,43 +1178,27 @@
 	</complexType>
 	<complexType name="TijdvakGeldigheid">
 		<sequence>
-			<element name="beginGeldigheid" type="StUF:TijdstipMogelijkOnvolledig-e" nillable="true"/>
-			<element name="eindGeldigheid" type="StUF:TijdstipMogelijkOnvolledig-e" nillable="true"/>
+			<element name="beginGeldigheid" type="StUF:TijdstipMogelijkOnvolledig-e"/>
+			<element name="eindGeldigheid" type="StUF:TijdstipMogelijkOnvolledig-e"/>
 		</sequence>
 	</complexType>
 	<complexType name="TijdvakObject">
 		<sequence>
-			<element name="beginObject" type="StUF:TijdstipMogelijkOnvolledig-e" nillable="true"/>
-			<element name="eindObject" type="StUF:TijdstipMogelijkOnvolledig-e" nillable="true"/>
+			<element name="beginObject" type="StUF:TijdstipMogelijkOnvolledig-e"/>
+			<element name="eindObject" type="StUF:TijdstipMogelijkOnvolledig-e"/>
 		</sequence>
 	</complexType>
 	<complexType name="TijdvakObjectZonderIndicator">
 		<sequence>
-			<element name="beginObject" type="StUF:Datum-e" nillable="true"/>
-			<element name="eindObject" type="StUF:Datum-e" nillable="true"/>
+			<element name="beginObject" type="StUF:Datum-e"/>
+			<element name="eindObject" type="StUF:Datum-e"/>
 		</sequence>
 	</complexType>
 	<complexType name="TijdvakRelatie">
 		<sequence>
-			<element name="beginRelatie" type="StUF:TijdstipMogelijkOnvolledig-e" nillable="true"/>
-			<element name="eindRelatie" type="StUF:TijdstipMogelijkOnvolledig-e" nillable="true"/>
+			<element name="beginRelatie" type="StUF:TijdstipMogelijkOnvolledig-e"/>
+			<element name="eindRelatie" type="StUF:TijdstipMogelijkOnvolledig-e"/>
 		</sequence>
-	</complexType>
-	<complexType name="WildcardElement">
-		<simpleContent>
-			<extension base="string">
-				<attribute name="wildcard" type="StUF:Wildcard"/>
-				<attribute name="noValue" type="StUF:NoValue"/>
-			</extension>
-		</simpleContent>
-	</complexType>
-	<complexType name="WildcardEindElement">
-		<simpleContent>
-			<extension base="string">
-				<attribute name="wildcard" type="StUF:WildcardEind"/>
-				<attribute name="noValue" type="StUF:NoValue"/>
-			</extension>
-		</simpleContent>
 	</complexType>
 	<!--SimpleTypes en ComplexTypes voor gebruik binnen StUF-entiteiten-->
 	<simpleType name="dateTime">
@@ -1221,7 +1210,7 @@
 		<choice minOccurs="0">
 			<element name="tijdstip" type="StUF:dateTime"/>
 			<element name="datum" type="date"/>
-			<element name="jaarMaand" type="gMonth"/>
+			<element name="jaarMaand" type="gYearMonth"/>
 			<element name="jaar" type="gYear"/>
 		</choice>
 		<attribute name="noValue" type="StUF:NoValue"/>
@@ -1232,7 +1221,7 @@
 				<choice>
 					<element name="tijdstip" type="StUF:dateTime"/>
 					<element name="datum" type="date"/>
-					<element name="jaarMaand" type="gMonth"/>
+					<element name="jaarMaand" type="gYearMonth"/>
 					<element name="jaar" type="gYear"/>
 				</choice>
 				<attribute name="noValue" type="StUF:NoValue" use="prohibited"/>
@@ -1253,7 +1242,7 @@
 			<restriction base="StUF:TijdstipMogelijkOnvolledig-e">
 				<choice minOccurs="0">
 					<element name="datum" type="date"/>
-					<element name="jaarMaand" type="gMonth"/>
+					<element name="jaarMaand" type="gYearMonth"/>
 					<element name="jaar" type="gYear"/>
 				</choice>
 			</restriction>
@@ -1264,7 +1253,7 @@
 			<restriction base="StUF:DatumMogelijkOnvolledig-e">
 				<choice>
 					<element name="datum" type="date"/>
-					<element name="jaarMaand" type="gMonth"/>
+					<element name="jaarMaand" type="gYearMonth"/>
 					<element name="jaar" type="gYear"/>
 				</choice>
 				<attribute name="noValue" type="StUF:NoValue" use="prohibited"/>
@@ -1283,7 +1272,7 @@
 	<complexType name="Jaar-e">
 		<complexContent>
 			<restriction base="StUF:DatumMogelijkOnvolledig-e">
-				<choice minOccurs="0">
+				<choice>
 					<element name="jaar" type="gYear"/>
 				</choice>
 			</restriction>
@@ -1292,8 +1281,8 @@
 	<complexType name="JaarMaand-e">
 		<complexContent>
 			<restriction base="StUF:DatumMogelijkOnvolledig-e">
-				<choice minOccurs="0">
-					<element name="jaarMaand" type="gMonth"/>
+				<choice>
+					<element name="jaarMaand" type="gYearMonth"/>
 				</choice>
 			</restriction>
 		</complexContent>

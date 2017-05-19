@@ -87,20 +87,6 @@
             </stereotypes>
         </tv>
        
-        <tv norm="space" id="Patroon"><!-- MIG -->
-            <name lang="nl">Patroon</name>
-            <name lang="en">Pattern</name>
-            <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
-            <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-referentie-element</stereo>
-                <stereo required="no">stereotype-name-union-element</stereo>
-                <stereo required="no">stereotype-name-datatype</stereo>
-                <stereo required="no">stereotype-name-complextype</stereo>
-                <stereo required="no">stereotype-name-data-element</stereo>
-                <stereo required="no">stereotype-name-union-element</stereo>
-            </stereotypes>
-        </tv>
         <tv norm="space" id="MogelijkGeenWaarde">
             <name lang="nl">Mogelijk geen waarde</name>
             <name lang="en">Voidable</name>

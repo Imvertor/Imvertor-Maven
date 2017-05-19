@@ -3,9 +3,17 @@
 -->
 <conceptual-schemas>
     <svn-id>$Id: conceptual-schemas.xml 7209 2015-08-25 12:28:42Z arjan $</svn-id>
+    
     <mapping name="NEN3610_GML321">
         <use>GML321</use>
     </mapping>
+    
+    <mapping name="GML321_ENV">
+        <use>GML321</use>
+        <use>ENVPROC</use>
+        <use>ENVLOG</use>
+    </mapping>
+    
     <conceptual-schema>
         <description>ISO19107 Geographic information – Spatial schema</description>
         <url>http://www.kadaster.nl/conceptual-schemas/ISO19107</url>
@@ -235,6 +243,34 @@
             <type name="Real" primitive="true">xs:real</type>  
             <type name="Time" primitive="true">xs:time</type>  
             <type name="URI" primitive="true">xs:AnyURI</type>  
+        </map>
+    </conceptual-schema>
+    
+    <conceptual-schema>
+        <description>Service Envelop</description>
+        <url>http://www.kadaster.nl/conceptual-schemas/envelop</url>
+        <!-- -->
+        <map 
+            name="ENVPROC" 
+            namespace="http://www.kadaster.nl/schemas/generiek/procesresultaat/v20110922" 
+            version="0.6" 
+            phase="3" 
+            release="20110922" 
+            location="http://www.kadaster.nl/generiek/procesresultaat/0.6/GenProcesResultaat_v0_6.xsd">
+         
+            <type name="ENV_ProcesVerwerking">result:ProcesVerwerking</type>  
+ 
+        </map>
+        <map 
+            name="ENVLOG" 
+            namespace="http://www.kadaster.nl/schemas/Log/v20120501" 
+            version="1.2" 
+            phase="3" 
+            release="20120501" 
+            location="http://www.kadaster.nl/generiek/procesresultaat/0.6/GenProcesResultaat_v0_6.xsd">
+            
+            <type name="ENV_Log">log:Log</type>  
+            
         </map>
     </conceptual-schema>
     
