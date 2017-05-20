@@ -91,6 +91,12 @@
                 <!-- ignore -->
             </xsl:when>
             <!-- 
+                skip this one: this file is apssed when you simply copy the zip folder to the ref folder. It should not be checked.
+            -->
+            <xsl:when test="@path = 'executor.imvert.xml'">
+                <!-- ignore -->
+            </xsl:when>
+            <!-- 
                Process XML intermediate results. 
             -->
             <xsl:when test="starts-with(@path,'work\imvert\')">
