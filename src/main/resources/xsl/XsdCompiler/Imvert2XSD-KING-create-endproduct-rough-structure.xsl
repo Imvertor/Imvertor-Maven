@@ -23,36 +23,30 @@
 	<xsl:variable name="verkorteAlias" select="/imvert:packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='Verkorte alias']"/>
 	<xsl:variable name="namespaceIdentifier" select="/imvert:packages/imvert:base-namespace"/>
 	
-	<xsl:variable name="prefix" as="xs:string">
-		<xsl:choose>
-			<xsl:when test="not(empty($verkorteAlias))">
-				<xsl:value-of select="$verkorteAlias/imvert:value"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$prefix"/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
-	
 	<xsl:key name="associations" match="imvert:association" use="imvert:type-id"/>
 	
 	<!-- ======= Block of templates used to create the message structure. ======= -->
 
-	<!-- This template is used to start generating the ep structure for an individual message. -->
+	<!-- This template is used to start generating a rough ep structure for the individual messages.
+		 This rough ep structure is used as a base for creating the final ep structure. -->
 
 	<xsl:template
 		match="/imvert:packages/imvert:package[not(contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]"
 		mode="create-rough-message-structure">
-		<!-- this is an embedded message schema within the koppelvlak -->
+		<!-- This processes the package containing the koppelvlak messages. -->
 
-		<xsl:sequence select="imf:create-debug-comment('Template 1: imvert:package[mode=create-rough-message-structure]',$debugging)"/>
-		
+		<xsl:sequence select="imf:create-debug-comment('debug:start A00000 /debug:start',$debugging)"/>
 		<xsl:sequence select="imf:create-debug-track(concat('Constructing the rough-messages for package: ',imvert:name),$debugging)"/>
 
+		<!-- The following for-each processes all classes representing a messagetype except the classes representing the SYNCHRONISATIEBERICHTTYPE.
+			 That messagetype wil be added here too but at a later moment. The 'not(key('associations',imvert:id))' statement in the selection is used 
+			 to be sure the class doesn't represent an association within another class. Since synchronisation messages contain kennisgeving messages 
+			 this selection might be adapted or another solution must be found. -->
 		<xsl:for-each
-			select="imvert:class[(imvert:stereotype = 'VRAAGBERICHTTYPE' or imvert:stereotype = 'ANTWOORDBERICHTTYPE' or imvert:stereotype = 'KENNISGEVINGBERICHTTYPE' or imvert:stereotype = 'VRIJ BERICHTTYPE') and not(key('associations',imvert:id))]"> 
-			
-			<xsl:sequence select="imf:create-debug-comment(concat('imvert:id: ',imvert:id),$debugging)"/>
+			select="imvert:class[(imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-vraagberichttype',
+																				  'stereotype-name-antwoordberichttype',
+																				  'stereotype-name-kennisgevingberichttype',
+																				  'stereotype-name-vrijberichttype'))) and not(key('associations',imvert:id))]"> 
 				
 			<xsl:variable name="associationClassId" select="imvert:associations/imvert:association/imvert:type-id"/>
 			<xsl:variable name="fundamentalMnemonic">
@@ -86,12 +80,13 @@
 			<!-- ROME: De volgende if kan verwijderd worden zodra duidelijk is hoe een Du02 bericht vertaald moet worden. -->
 			<xsl:if test="$berichtCode = ''">
 				<xsl:message
-					select="concat('ERROR ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : The berichtcode can not be determined. To be able to generate correct messages this is neccessary. Check your model for missing tagged values. (', $berichtstereotype)"
+					select="concat('ERROR ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : The berichtcode can not be determined. To be able to generate correct messages this is neccessary. Check if your model contains the tagged value Berichtcode. (', $berichtstereotype)"
 				/>
 			</xsl:if>
-			<!-- create the message -->
+			<!-- create the message. Messages with a berichtCode value of 'Du02' aren't processed yet since the StUF standard doesn't specify how it should look like. -->
 			<xsl:if test="$berichtCode != 'Du02'">
 				<ep:rough-message>
+					<xsl:sequence select="imf:create-debug-comment('A00010]',$debugging)"/>
 					<xsl:sequence select="imf:create-debug-track(concat('Constructing the rough-message: ',imvert:name/@original),$debugging)"/>
 	
 					<xsl:sequence select="imf:create-output-element('ep:name', imvert:name/@original)"/>
@@ -120,10 +115,10 @@
 			</xsl:if>
 		</xsl:for-each>
 		
-		<xsl:sequence select="imf:create-debug-comment('Template 1: imvert:package[mode=create-rough-message-structure] End',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
 
-	<!-- This template (1) only processes imvert:class elements with an imvert:stereotype 
+	<!-- This template only processes imvert:class elements with an imvert:stereotype 
 		with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE', 'KENNISGEVINGBERICHTTYPE',
 		'SYNCHRONISATIEBERICHTTYPE'	or 'VRIJ BERICHTTYPE'. Those classes contain a relation 
 		to the 'Parameters' group (if not removed), a relation to a class with an imvert:stereotype 
@@ -143,7 +138,7 @@
 			object aren't allowed to contain 'stuurgegevens'. -->
 		<xsl:param name="useStuurgegevens" select="'yes'"/>
 
-		<xsl:sequence select="imf:create-debug-comment('Template 2: imvert:class[mode=create-toplevel-rough-message-structure]',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('debug:start A01000 /debug:start',$debugging)"/>
 		
 		<!-- The folowing 2 apply-templates initiate the processing of the 'imvert:association' 
 				elements with the stereotype 'GROEP COMPOSITIE' within the supertype 
@@ -162,7 +157,7 @@
 			mode="create-rough-message-content">
 			<!-- The 'id-trail' parameter has been introduced to be able to prevent 
 					recursive processing of classes. If the parser runs into an id already present 
-					within the trail (so the related object has already been processed) processing 
+					class within the trail (so the related object has already been processed) processing 
 					stops. -->
 			<xsl:with-param name="id-trail" select="concat('#1#', imvert:id, '#')"/>
 			<xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -177,24 +172,24 @@
 				is implemented. -->
 		<xsl:choose> 
 			<xsl:when test="not(contains($berichtCode, 'Di')) and not(contains($berichtCode, 'Du'))">
+				<xsl:sequence select="imf:create-debug-comment('A01010]',$debugging)"/>
 				<xsl:apply-templates
 					select="imvert:associations/imvert:association[imvert:stereotype = 'ENTITEITRELATIE']"
 					mode="create-rough-message-content">
 					<!-- The 'id-trail' parameter has been introduced to be able to prevent 
 					recursive processing of classes. If the parser runs into an id already present 
-					within the trail (so the related object has already been processed) processing 
+					class within the trail (so the related object has already been processed) processing 
 					stops. -->
 					<xsl:with-param name="id-trail" select="concat('#1#', imvert:id, '#')"/>
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 				</xsl:apply-templates>
-				
-				<xsl:sequence select="imf:create-debug-comment('Attribute1',$debugging)"/>
 				<xsl:apply-templates select="imvert:attributes/imvert:attribute">
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 				</xsl:apply-templates>
 				
 			</xsl:when>
 			<xsl:otherwise>
+				<xsl:sequence select="imf:create-debug-comment('A01020]',$debugging)"/>
 				<xsl:apply-templates
 					select="imvert:associations/imvert:association[imvert:stereotype = 'ENTITEITRELATIE']"
 					mode="create-rough-message-content">
@@ -218,8 +213,6 @@
 					mode="create-toplevel-rough-message-structure">
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 				</xsl:apply-templates>
-				
-				<xsl:sequence select="imf:create-debug-comment('Attribute2',$debugging)"/>
 				<xsl:apply-templates select="imvert:attributes/imvert:attribute">
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 				</xsl:apply-templates>
@@ -227,17 +220,17 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		
-		<xsl:sequence select="imf:create-debug-comment('Template 2: imvert:class[mode=create-toplevel-rough-message-structure] End',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
 
-	<!-- This template (2) takes care of processing superclasses of the class being 
+	<!-- This template takes care of processing superclasses of the class being 
 		processed. -->
 	<xsl:template match="imvert:supertype" mode="create-rough-message-content">
 		<xsl:param name="proces-type"/>
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="context"/>
 
-		<xsl:sequence select="imf:create-debug-comment('Template 3: imvert:supertype[mode=create-rough-message-content]',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('debug:start A02000 /debug:start',$debugging)"/>
 		
 		<xsl:variable name="type-id" select="imvert:type-id"/>
 		<xsl:apply-templates select="key('class',$type-id)"
@@ -247,12 +240,12 @@
 			<xsl:with-param name="context" select="$context"/>
 		</xsl:apply-templates>
 		
-		<xsl:sequence select="imf:create-debug-comment('Template 3: imvert:supertype[mode=create-rough-message-content] End',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
 
 	<!-- Declaration of the content of a superclass, an 'imvert:association' and 'imvert:association-class' 
 		finaly always takes place within an 'imvert:class' element. This element 
-		is processed within this template (3). -->
+		is processed within this template. -->
 	<xsl:template match="imvert:class" mode="create-rough-message-content">
 		<xsl:param name="proces-type" select="''"/>
 		<xsl:param name="id-trail"/>
@@ -261,13 +254,13 @@
 		<xsl:param name="historyApplies" select="'no'"/>
 		<xsl:variable name="id" select="imvert:id"/>
 
-		<xsl:sequence select="imf:create-debug-comment('Template 4: imvert:class[mode=create-rough-message-content]',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('debug:start A03000 /debug:start',$debugging)"/>
 		
 		<xsl:choose>
 			<!-- The following takes care of ignoring the processing of the attributes 
 				 belonging to the current class. Attributes aren't important for the rough structure. -->
 			<xsl:when test="$proces-type = 'attributes'">
-				<xsl:sequence select="imf:create-debug-comment('Attribute5',$debugging)"/>
+				<xsl:sequence select="imf:create-debug-comment('A03010]',$debugging)"/>
 				<xsl:apply-templates select="imvert:attributes/imvert:attribute">
 					<xsl:with-param name="proces-type" select="$proces-type"/>
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -278,6 +271,7 @@
 				 belonging to the current class. First the ones found within the superclass 
 				 of the current class followed by the ones within the current class. -->
 			<xsl:when test="$proces-type = 'associationsGroepCompositie'">
+				<xsl:sequence select="imf:create-debug-comment('A03020]',$debugging)"/>
 				<xsl:apply-templates select="imvert:supertype" mode="create-rough-message-content">
 					<xsl:with-param name="proces-type" select="$proces-type"/>
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -286,7 +280,6 @@
 				<!-- If the class hasn't been processed before it can be processed, else. 
 					to prevent recursion, processing is canceled. -->
 				<xsl:if test="not(contains($id-trail, concat('#2#', imvert:id, '#')))">
-					<xsl:sequence select="imf:create-debug-comment('imvert:class mode=create-rough-message-content and not(contains($id-trail, concat(#2#, imvert:id, #)))',$debugging)"/>
 			
 					<xsl:variable name="associationsOfBerichtrelatieType" select="$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:stereotype = 'BERICHTRELATIE']"/>
 					<xsl:variable name="classRelated2Association" select="$packages/imvert:package/imvert:class[imvert:id = $associationsOfBerichtrelatieType/imvert:type-id]"/>
@@ -326,6 +319,7 @@
 				 In this situation a choice has to be generated. -->
 			<xsl:when
 				test="$proces-type = 'associationsOrSupertypeRelatie' and $packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
+				<xsl:sequence select="imf:create-debug-comment('A03030]',$debugging)"/>
 				<ep:choice>
 					<xsl:for-each select="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
 						<ep:construct typeCode="gerelateerde" context="{$context}" type="entity" package="{ancestor::imvert:package/imvert:name}">
@@ -338,9 +332,6 @@
 
 							<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 							<xsl:variable name="subpath" select="$supplier/@subpath"/>
-
-							<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpath),$debugging)"/>
-
 							<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
 
 							<xsl:sequence
@@ -356,8 +347,6 @@
 								<xsl:with-param name="context" select="$context"/>
 							</xsl:apply-templates>
 							
-							<xsl:sequence select="imf:create-debug-comment('Attribute4',$debugging)"/>
-							
 						</ep:construct>
 					</xsl:for-each>
 				</ep:choice>
@@ -366,7 +355,8 @@
 				to the current class. First the ones found within the superclass of the current 
 				class followed by the ones within the current class. -->
 			<xsl:when
-				test="$proces-type = 'associationsRelatie' or $proces-type = 'associationsOrSupertypeRelatie'">
+				test="$proces-type = ('associationsRelatie','associationsOrSupertypeRelatie')">
+				<xsl:sequence select="imf:create-debug-comment('A03040]',$debugging)"/>
 				<xsl:apply-templates select="imvert:supertype" mode="create-rough-message-content">
 					<xsl:with-param name="proces-type" select="'associationsRelatie'"/>
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -401,10 +391,10 @@
 			</xsl:when>
 		</xsl:choose>
 		
-		<xsl:sequence select="imf:create-debug-comment('Template 4: imvert:class[mode=create-rough-message-content] End',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
 
-	<!-- This template (5) transforms an 'imvert:association' element to an 'ep:construct' element. -->
+	<!-- This template transforms an 'imvert:association' element to an 'ep:construct' element. -->
 	<xsl:template match="imvert:association" mode="create-rough-message-content">
 		<xsl:param name="id-trail"/>
 		<xsl:param name="berichtCode"/>
@@ -422,21 +412,21 @@
 			</xsl:choose>
 		</xsl:variable>
 
-		<xsl:sequence select="imf:create-debug-comment('Template 5: imvert:association[mode=create-rough-message-content]',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('debug:start A04000 /debug:start',$debugging)"/>
 		
 		<xsl:if test="not($useStuurgegevens = 'no' and imvert:name = 'stuurgegevens')">		
 			<ep:construct package="{ancestor::imvert:package/imvert:name}">
 				<xsl:attribute name="typeCode">
 					<xsl:choose>
-						<xsl:when test="imvert:name = 'stuurgegevens' or imvert:name = 'parameters' or imvert:name = 'zender' or imvert:name = 'ontvanger'"/>
+						<xsl:when test="imvert:name = ('stuurgegevens','parameters','zender','ontvanger')"/>
 						<xsl:when test="imvert:stereotype = 'GROEP COMPOSITIE'">groep</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="'relatie'"/>
 						</xsl:otherwise>						
 					</xsl:choose>
 				</xsl:attribute>
-				<xsl:if test="(imvert:name = 'zender' or imvert:name = 'ontvanger') and contains(ancestor::imvert:package/@display-name,'www.kinggemeenten.nl/BSM/Berichtstrukturen')">
-					<xsl:attribute name="className" select="imf:get-construct-by-id($type-id,$packages-doc)/imvert:name"/>
+				<xsl:if test="(imvert:name = ('zender','ontvanger')) and contains(ancestor::imvert:package/@display-name,'www.kinggemeenten.nl/BSM/Berichtstrukturen')">
+					<xsl:attribute name="className" select="imf:get-class-construct-by-id($type-id,$packages-doc)/imvert:name"/>
 				</xsl:if>
 				<xsl:attribute name="context">
 					<xsl:choose>
@@ -458,7 +448,7 @@
 						<xsl:variable name="tv-materieleHistorie-attributes">
 							<xsl:for-each select="imvert:association-class">
 								<xsl:variable name="association-class-type-id" select="imvert:type-id"/>
-								<xsl:for-each select="imf:get-construct-by-id($association-class-type-id,$packages-doc)/imvert:attributes/imvert:attribute">
+								<xsl:for-each select="imf:get-class-construct-by-id($association-class-type-id,$packages-doc)/imvert:attributes/imvert:attribute">
 									<ep:tagged-value>
 										<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie')"/>
 									</ep:tagged-value>
@@ -466,21 +456,21 @@
 							</xsl:for-each>									
 						</xsl:variable>
 						<xsl:if
-							test="($berichtCode = 'La07' or $berichtCode = 'La08' or $berichtCode = 'La09' or $berichtCode = 'La10') and contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiele historie'), 'JA')">
+							test="($berichtCode = ('La07','La08','La09','La10')) and contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiele historie'), 'JA')">
 							<xsl:attribute name="indicatieMaterieleHistorieRelatie" select="'Ja'"/>
 						</xsl:if>
 						<xsl:if
-							test="($berichtCode = 'La07' or $berichtCode = 'La08' or $berichtCode = 'La09' or $berichtCode = 'La10') and $tv-materieleHistorie-attributes//ep:tagged-value = 'JA' or $tv-materieleHistorie-attributes//ep:tagged-value = 'JAZIEREGELS'">
+							test="($berichtCode = ('La07','La08','La09','La10')) and $tv-materieleHistorie-attributes//ep:tagged-value = ('JA','JAZIEREGELS')">
 							<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja op attributes'"/>
 						</xsl:if>
 						<xsl:if
-							test="($berichtCode = 'La09' or $berichtCode = 'La10') and contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie'), 'JA')">
+							test="($berichtCode = ('La09','La10')) and contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie'), 'JA')">
 							<xsl:attribute name="indicatieFormeleHistorieRelatie" select="'Ja'"/>
 						</xsl:if>
 						<xsl:variable name="tv-formeleHistorie-attributes">
 							<xsl:for-each select="imvert:association-class">
 								<xsl:variable name="association-class-type-id" select="imvert:type-id"/>
-								<xsl:for-each select="imf:get-construct-by-id($association-class-type-id,$packages-doc)/imvert:attributes/imvert:attribute">
+								<xsl:for-each select="imf:get-class-construct-by-id($association-class-type-id,$packages-doc)/imvert:attributes/imvert:attribute">
 									<ep:tagged-value>
 										<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie')"/>
 									</ep:tagged-value>
@@ -488,14 +478,15 @@
 							</xsl:for-each>									
 						</xsl:variable>
 						<xsl:if
-							test="($berichtCode = 'La09' or $berichtCode = 'La10') and $tv-formeleHistorie-attributes//ep:tagged-value = 'JA'">
+							test="($berichtCode = ('La09','La10')) and $tv-formeleHistorie-attributes//ep:tagged-value = 'JA'">
 							<xsl:attribute name="indicatieFormeleHistorie" select="'Ja op attributes'"/>
 						</xsl:if>
+						<xsl:sequence select="imf:create-debug-comment('A04010]',$debugging)"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:choose>
 							<xsl:when
-								test="($berichtCode = 'La07' or $berichtCode = 'La08' or $berichtCode = 'La09' or $berichtCode = 'La10') and contains(imf:get-most-relevant-compiled-taggedvalue(key('class',$type-id), 'Indicatie materiële historie'), 'JA')">
+								test="($berichtCode = ('La07','La08','La09','La10')) and contains(imf:get-most-relevant-compiled-taggedvalue(key('class',$type-id), 'Indicatie materiële historie'), 'JA')">
 								<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja'"/>
 							</xsl:when>
 							<xsl:otherwise>
@@ -508,7 +499,7 @@
 								</xsl:variable>
 								<xsl:choose>
 									<xsl:when
-										test="($berichtCode = 'La07' or $berichtCode = 'La08' or $berichtCode = 'La09' or $berichtCode = 'La10') and $tv-materieleHistorie-attributes//ep:tagged-value = 'JA' or $tv-materieleHistorie-attributes//ep:tagged-value = 'JAZIEREGELS'">
+										test="($berichtCode = ('La07','La08','La09','La10')) and $tv-materieleHistorie-attributes//ep:tagged-value = ('JA','JAZIEREGELS')">
 										<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja op attributes'"/>
 									</xsl:when>
 								</xsl:choose>
@@ -516,7 +507,7 @@
 						</xsl:choose>
 						<xsl:choose>
 							<xsl:when
-								test="($berichtCode = 'La09' or $berichtCode = 'La10') and contains(imf:get-most-relevant-compiled-taggedvalue(key('class',$type-id), 'Indicatie formele historie'), 'JA')">
+								test="($berichtCode = ('La09','La10')) and contains(imf:get-most-relevant-compiled-taggedvalue(key('class',$type-id), 'Indicatie formele historie'), 'JA')">
 								<xsl:attribute name="indicatieFormeleHistorie" select="'Ja'"/>
 							</xsl:when>
 							<xsl:otherwise>
@@ -529,14 +520,17 @@
 								</xsl:variable>
 								<xsl:choose>
 									<xsl:when
-										test="($berichtCode = 'La09' or $berichtCode = 'La10') and $tv-formeleHistorie-attributes//ep:tagged-value = 'JA'">
+										test="($berichtCode = ('La09','La10')) and $tv-formeleHistorie-attributes//ep:tagged-value = 'JA'">
 										<xsl:attribute name="indicatieFormeleHistorie" select="'Ja op attributes'"/>
 									</xsl:when>
 								</xsl:choose>
 							</xsl:otherwise>
 						</xsl:choose>
+						<xsl:sequence select="imf:create-debug-comment('A04020]',$debugging)"/>
 					</xsl:otherwise>
 				</xsl:choose>
+				<xsl:sequence select="imf:create-debug-comment('A04030]',$debugging)"/>
+
 				<xsl:sequence select="imf:create-output-element('ep:name', imvert:name/@original)"/>
 				<xsl:sequence
 					select="imf:create-output-element('ep:tech-name', imf:get-normalized-name(imvert:name, 'element-name'))"/>
@@ -553,11 +547,9 @@
 					</xsl:otherwise>
 				</xsl:choose>
 				
-				<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
+				<xsl:variable name="relatie" select="."/>
+				<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct($relatie,'UGM')"/>
 				<xsl:variable name="subpath" select="$supplier/@subpath"/>
-
-				<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpath),$debugging)"/>
-
 				<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
 
 				<xsl:sequence
@@ -565,12 +557,9 @@
 				<xsl:sequence
 					select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
 				
-				<xsl:variable name="gerelateerde" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
+				<xsl:variable name="gerelateerde" select="imf:get-class-construct-by-id($type-id,$packages-doc)"/>
 				<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct($gerelateerde,'UGM')"/>
 				<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
-
-				<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpathGerelateerde),$debugging)"/>
-
 				<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
 
 				<xsl:sequence
@@ -592,10 +581,11 @@
 				has to be placed outside the 'gerelateerde' element it has to be done here. -->
 			</ep:construct>
 		</xsl:if> 		
-		<xsl:sequence select="imf:create-debug-comment('Template 5: imvert:association[mode=create-rough-message-content] End',$debugging)"/>
+
+		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
 
-	<!-- This template (5) takes care of associations from a 'vrijbericht' type 
+	<!-- This template takes care of associations from a 'vrijbericht' type 
 		to the other message types 'vraagbericht', 'antwoordbericht' and 'kennisgevingbericht'. -->
 	<!-- ROME: De werking van dit template moet nog gecheckt worden zodra er 
 		vrije berichten zijn. Waarschijnlijk moet er nog iets gebeuren met de context.
@@ -604,9 +594,9 @@
 		<xsl:param name="berichtCode"/>
 		<xsl:variable name="type-id" select="imvert:type-id"/>
 
-		<xsl:sequence select="imf:create-debug-comment('Template 6: imvert:association[mode=create-toplevel-rough-message-structure]',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('debug:start A05000 /debug:start',$debugging)"/>
 		
-		<xsl:variable name="construct" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
+		<xsl:variable name="gerelateerdeConstruct" select="imf:get-class-construct-by-id($type-id,$packages-doc)"/>
 		
 		<!-- If the association has a stereotype of 'BERICHTRELATIE' and it's part of a 'vrij bericht' it must refer to an embedded message
 			 of another type. In that case the following variable get's a value equal to the value of the 'berichtCode' of the embedded message.
@@ -652,9 +642,6 @@
 			
 			<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 			<xsl:variable name="subpath" select="$supplier/@subpath"/>
-
-			<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpath),$debugging)"/>
-
 			<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
 
 			<xsl:sequence
@@ -664,13 +651,12 @@
 			
 			<xsl:choose>
 				<xsl:when test="imvert:stereotype = 'ENTITEITRELATIE'">
+
+					<xsl:sequence select="imf:create-debug-comment('A05010]',$debugging)"/>
 					
-					<xsl:variable name="gerelateerde" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
-					<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
+					<xsl:variable name="gerelateerde" select="."/>
+					<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct($gerelateerde,'UGM')"/>
 					<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
-
-					<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpathGerelateerde),$debugging)"/>
-
 					<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
 
 					<xsl:sequence
@@ -682,7 +668,7 @@
 					<xsl:apply-templates select="." mode="create-rough-message-content">
 						<!-- The 'id-trail' parameter has been introduced to be able to prevent 
 							recursive processing of classes. If the parser runs into an id already present 
-							within the trail (so the related object has already been processed) processing 
+							class within the trail (so the related object has already been processed) processing 
 							stops. -->
 						<xsl:with-param name="id-trail" select="concat('#1#', imvert:id, '#')"/>
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -691,12 +677,11 @@
 				</xsl:when>
 				<xsl:when test="imvert:stereotype = 'BERICHTRELATIE'">
 					
-					<xsl:variable name="gerelateerde" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
-					<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
+					<xsl:sequence select="imf:create-debug-comment('A05020]',$debugging)"/>
+
+					<xsl:variable name="gerelateerde" select="."/>
+					<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct($gerelateerde,'UGM')"/>
 					<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
-
-					<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpathGerelateerde),$debugging)"/>
-
 					<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
 
 					<xsl:sequence
@@ -705,7 +690,7 @@
 						select="imf:create-output-element('ep:namespaceIdentifierGerelateerdeEntiteit', imf:getNamespaceIdentifier($UGMgerelateerde))"/>
 					
 					<xsl:apply-templates
-						select="$construct[imvert:stereotype = imf:get-config-stereotypes((
+						select="$gerelateerdeConstruct[imvert:stereotype = imf:get-config-stereotypes((
 							'stereotype-name-vraagberichttype',
 							'stereotype-name-antwoordberichttype',
 							'stereotype-name-kennisgevingberichttype'))]"
@@ -717,10 +702,10 @@
 			</xsl:choose>
 		</ep:construct>
 		
-		<xsl:sequence select="imf:create-debug-comment('Template 6: imvert:association[mode=create-toplevel-rough-message-structure] End',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
 
-	<!-- This template (6) transforms an 'imvert:association' element of stereotype 'ENTITEITRELATIE' to an 'ep:construct' 
+	<!-- This template transforms an 'imvert:association' element of stereotype 'ENTITEITRELATIE' to an 'ep:construct' 
 		element.. -->
 	<xsl:template match="imvert:association[imvert:stereotype = 'ENTITEITRELATIE']"
 		mode="create-rough-message-content">
@@ -732,11 +717,11 @@
 		<xsl:variable name="context">
 			<xsl:choose>
 				<xsl:when
-					test="imvert:name = 'gelijk' or imvert:name = 'vanaf' or imvert:name = 'totEnMet'">
+					test="imvert:name = ('gelijk','vanaf','totEnMet')">
 					<xsl:value-of select="'selectie'"/>
 				</xsl:when>
 				<xsl:when
-					test="imvert:name = 'start' or imvert:name = 'scope'">
+					test="imvert:name = ('start','scope')">
 					<xsl:value-of select="imvert:name"/>
 				</xsl:when>
 				<xsl:otherwise>-</xsl:otherwise>
@@ -744,10 +729,12 @@
 		</xsl:variable>
 		<xsl:variable name="type-id" select="imvert:type-id"/>
 
-		<xsl:sequence select="imf:create-debug-comment('Template 7: imvert:association[imvert:stereotype=ENTITEITRELATIE and mode=create-rough-message-content]',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('debug:start A06000 /debug:start',$debugging)"/>
 		
 		<xsl:choose>
 			<xsl:when test="contains($berichtCode, 'La') or contains($embeddedBerichtCode, 'La')">
+				<xsl:sequence select="imf:create-debug-comment('A06010]',$debugging)"/>
+
 				<xsl:call-template name="createRoughEntityConstruct">
 					<xsl:with-param name="id-trail" select="$id-trail"/>
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -756,9 +743,9 @@
 					<xsl:with-param name="constructName" select="'-'"/>
 					<xsl:with-param name="historyApplies">
 						<xsl:choose>
-							<xsl:when test="$berichtCode = 'La07' or $berichtCode = 'La08'"
+							<xsl:when test="$berichtCode = ('La07','La08')"
 								>yes-Materieel</xsl:when>
-							<xsl:when test="$berichtCode = 'La09' or $berichtCode = 'La10'"
+							<xsl:when test="$berichtCode = ('La09','La10')"
 								>yes</xsl:when>
 							<xsl:otherwise>no</xsl:otherwise>
 						</xsl:choose>
@@ -767,8 +754,8 @@
 			</xsl:when>
 			<xsl:when test="contains($berichtCode, 'Lv') or contains($embeddedBerichtCode, 'Lv')">
 				<xsl:choose>
-					<!--xsl:when test="$context = 'gelijk' or $context = 'vanaf' or $context = 'totEnMet'"-->
 					<xsl:when test="$context = 'selectie'">
+						<xsl:sequence select="imf:create-debug-comment('A06020]',$debugging)"/>
 						<xsl:call-template name="createRoughEntityConstruct">
 							<xsl:with-param name="id-trail" select="$id-trail"/>
 							<xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -781,6 +768,7 @@
 						</xsl:call-template>
 					</xsl:when>
 					<xsl:when test="$context = 'start'">
+						<xsl:sequence select="imf:create-debug-comment('A06030]',$debugging)"/>
 						<xsl:call-template name="createRoughEntityConstruct">
 							<xsl:with-param name="id-trail" select="$id-trail"/>
 							<xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -791,6 +779,7 @@
 						</xsl:call-template>
 					</xsl:when>
 					<xsl:when test="$context = 'scope'">
+						<xsl:sequence select="imf:create-debug-comment('A06040]',$debugging)"/>
 						<xsl:call-template name="createRoughEntityConstruct">
 							<xsl:with-param name="id-trail" select="$id-trail"/>
 							<xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -804,6 +793,7 @@
 
 			</xsl:when>
 			<xsl:when test="contains($berichtCode, 'Lk') or contains($embeddedBerichtCode, 'Lk')">
+				<xsl:sequence select="imf:create-debug-comment('A06050]',$debugging)"/>
 				<xsl:call-template name="createRoughEntityConstruct">
 					<xsl:with-param name="id-trail" select="$id-trail"/>
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -818,6 +808,7 @@
 			<xsl:when test="contains($berichtCode, 'Sh')"> </xsl:when>
 			<xsl:when test="contains($berichtCode, 'Sa')"> </xsl:when>
 			<xsl:when test="contains($berichtCode, 'Di')">
+				<xsl:sequence select="imf:create-debug-comment('A06080]',$debugging)"/>
 				<xsl:call-template name="createRoughEntityConstruct">
 					<xsl:with-param name="id-trail" select="$id-trail"/>
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -829,6 +820,7 @@
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:when test="contains($berichtCode, 'Du')">
+				<xsl:sequence select="imf:create-debug-comment('A06090]',$debugging)"/>
 				<xsl:call-template name="createRoughEntityConstruct">
 					<xsl:with-param name="id-trail" select="$id-trail"/>
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -841,10 +833,10 @@
 			</xsl:when>
 		</xsl:choose>
 		
-		<xsl:sequence select="imf:create-debug-comment('Template 7: imvert:association[imvert:stereotype=ENTITEITRELATIE and mode=create-rough-message-content] End',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
 
-	<!-- This template (8) generates the structure of a relatie on a relatie. -->
+	<!-- This template generates the structure of a relatie on a relatie. -->
 	<xsl:template match="imvert:association-class" mode="create-rough-message-content">
 		<xsl:param name="proces-type" select="'associations'"/>
 		<xsl:param name="id-trail"/>
@@ -853,7 +845,7 @@
 
 		<xsl:variable name="type-id" select="imvert:type-id"/>
 		
-		<xsl:sequence select="imf:create-debug-comment('Template8: imvert:association-class[mode=create-rough-message-content]',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('debug:start A07000 /debug:start',$debugging)"/>
 		
 		<xsl:apply-templates select="key('class',$type-id)"
 			mode="create-rough-message-content">
@@ -863,7 +855,7 @@
 			<xsl:with-param name="context" select="$context"/>
 		</xsl:apply-templates>
 		
-		<xsl:sequence select="imf:create-debug-comment('Template8: imvert:association-class[mode=create-rough-message-content] End',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
 
 	<xsl:template match="imvert:attribute">
@@ -872,10 +864,12 @@
 		<xsl:param name="context" select="'-'"/>
 		
 		<xsl:variable name="type-id" select="imvert:type-id"/>
+
+		<xsl:sequence select="imf:create-debug-comment('debug:start A08000 /debug:start',$debugging)"/>
 		
 		<xsl:choose>
 			<xsl:when test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype = 'COMPLEX DATATYPE'">
-				<xsl:sequence select="imf:create-debug-comment(concat('Class: ',$type-id),$debugging)"/>
+				<xsl:sequence select="imf:create-debug-comment('A08010]',$debugging)"/>
 				<ep:construct typeCode="groep">
 					<xsl:attribute name="context">
 						<xsl:choose>
@@ -888,13 +882,13 @@
 					</xsl:attribute>
 					<xsl:attribute name="type" select="'complex datatype'"/>
 					<xsl:if
-						test="($berichtCode = 'La07' or $berichtCode = 'La08' or $berichtCode = 'La09' or $berichtCode = 'La10') and 
-						((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'JA' or imvert:value = 'JAZIEREGELS')]) >= 1) or
-						(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'JA' or imvert:value = 'JAZIEREGELS')]) >= 1))">
+						test="($berichtCode = ('La07','La08','La09','La10')) and 
+						((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = ('JA','JAZIEREGELS'))]) >= 1) or
+						(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = ('JA','JAZIEREGELS'))]) >= 1))">
 						<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja'"/>
 					</xsl:if>
 					<xsl:if
-						test="($berichtCode = 'La09' or $berichtCode = 'La10') and
+						test="($berichtCode = ('La09','La10')) and
 						((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'JA']) >= 1) or
 						(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'JA']) >= 1))">
 						<xsl:attribute name="indicatieFormeleHistorie" select="'Ja'"/>
@@ -910,9 +904,6 @@
 					
 					<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 					<xsl:variable name="subpath" select="$supplier/@subpath"/>
-					
-					<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpath),$debugging)"/>
-					
 					<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
 					
 					<xsl:sequence
@@ -920,12 +911,9 @@
 					<xsl:sequence
 						select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
 					
-					<xsl:variable name="gerelateerde" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
+					<xsl:variable name="gerelateerde" select="imf:get-class-construct-by-id($type-id,$packages-doc)"/>
 					<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 					<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
-					
-					<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpathGerelateerde),$debugging)"/>
-					
 					<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
 					
 					<xsl:sequence
@@ -935,32 +923,32 @@
 					
 					<xsl:variable name="class-id" select="imvert:type-id"/>
 					<xsl:sequence
-						select="imf:create-output-element('ep:class-name', imf:get-construct-by-id($class-id,$packages-doc)/ep:name)"/>
+						select="imf:create-output-element('ep:class-name', $gerelateerde/ep:name)"/>
 					
-					<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]" mode="create-rough-message-content">
+					<xsl:apply-templates select="$gerelateerde" mode="create-rough-message-content">
 						<!-- The 'id-trail' parameter has been introduced to be able to prevent 
 							recursive processing of classes. If the parser runs into an id already present 
-							within the trail (so the related object has already been processed) processing 
+							class within the trail (so the related object has already been processed) processing 
 							stops. -->
 						<xsl:with-param name="proces-type" select="'attributes'"/>
 						<xsl:with-param name="id-trail" select="''"/>
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="context" select="'attribute'"/>
 					</xsl:apply-templates>
-					<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]" mode="create-rough-message-content">
+					<xsl:apply-templates select="$gerelateerde" mode="create-rough-message-content">
 						<!-- The 'id-trail' parameter has been introduced to be able to prevent 
 							recursive processing of classes. If the parser runs into an id already present 
-							within the trail (so the related object has already been processed) processing 
+							class within the trail (so the related object has already been processed) processing 
 							stops. -->
 						<xsl:with-param name="proces-type" select="'associationsGroepCompositie'"/>
 						<xsl:with-param name="id-trail" select="''"/>
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="context" select="'attribute'"/>
 					</xsl:apply-templates>
-					<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]" mode="create-rough-message-content">
+					<xsl:apply-templates select="$gerelateerde" mode="create-rough-message-content">
 						<!-- The 'id-trail' parameter has been introduced to be able to prevent 
 							recursive processing of classes. If the parser runs into an id already present 
-							within the trail (so the related object has already been processed) processing 
+							class within the trail (so the related object has already been processed) processing 
 							stops. -->
 						<xsl:with-param name="proces-type" select="'associationsRelatie'"/>
 						<xsl:with-param name="id-trail" select="''"/>
@@ -970,7 +958,7 @@
 				</ep:construct>
 			</xsl:when>
 			<xsl:when test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype = 'TABEL-ENTITEIT'">
-				<xsl:sequence select="imf:create-debug-comment(concat('Class: ',$type-id),$debugging)"/>
+				<xsl:sequence select="imf:create-debug-comment('A08020]',$debugging)"/>
 				<ep:construct typeCode="tabelEntiteit">
 					<xsl:attribute name="context">
 						<xsl:choose>
@@ -983,13 +971,13 @@
 					</xsl:attribute>
 					<xsl:attribute name="type" select="'entity'"/>
 					<xsl:if
-						test="($berichtCode = 'La07' or $berichtCode = 'La08' or $berichtCode = 'La09' or $berichtCode = 'La10') and 
-						((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'JA' or imvert:value = 'JAZIEREGELS')]) >= 1) or
-						(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'JA' or imvert:value = 'JAZIEREGELS')]) >= 1))">
+						test="($berichtCode = ('La07','La08','La09','La10')) and 
+						((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = ('JA','JAZIEREGELS'))]) >= 1) or
+						(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = ('JA','JAZIEREGELS'))]) >= 1))">
 						<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja'"/>
 					</xsl:if>
 					<xsl:if
-						test="($berichtCode = 'La09' or $berichtCode = 'La10') and
+						test="($berichtCode = ('La09','La10')) and
 						((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'JA']) >= 1) or
 						(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'JA']) >= 1))">
 						<xsl:attribute name="indicatieFormeleHistorie" select="'Ja'"/>
@@ -1005,9 +993,6 @@
 					
 					<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 					<xsl:variable name="subpath" select="$supplier/@subpath"/>
-					
-					<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpath),$debugging)"/>
-					
 					<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
 					
 					<xsl:sequence
@@ -1015,12 +1000,9 @@
 					<xsl:sequence
 						select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
 					
-					<xsl:variable name="gerelateerde" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
+					<xsl:variable name="gerelateerde" select="imf:get-class-construct-by-id($type-id,$packages-doc)"/>
 					<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 					<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
-					
-					<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpathGerelateerde),$debugging)"/>
-					
 					<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
 					
 					<xsl:sequence
@@ -1030,32 +1012,32 @@
 					
 					<xsl:variable name="class-id" select="imvert:type-id"/>
 					<xsl:sequence
-						select="imf:create-output-element('ep:class-name', imf:get-construct-by-id($class-id,$packages-doc)/ep:name)"/>
+						select="imf:create-output-element('ep:class-name', $gerelateerde/ep:name)"/>
 					
-					<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]" mode="create-rough-message-content">
+					<xsl:apply-templates select="$gerelateerde" mode="create-rough-message-content">
 						<!-- The 'id-trail' parameter has been introduced to be able to prevent 
 							recursive processing of classes. If the parser runs into an id already present 
-							within the trail (so the related object has already been processed) processing 
+							class within the trail (so the related object has already been processed) processing 
 							stops. -->
 						<xsl:with-param name="proces-type" select="'attributes'"/>
 						<xsl:with-param name="id-trail" select="''"/>
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="context" select="'attribute'"/>
 					</xsl:apply-templates>
-					<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]" mode="create-rough-message-content">
+					<xsl:apply-templates select="$gerelateerde" mode="create-rough-message-content">
 						<!-- The 'id-trail' parameter has been introduced to be able to prevent 
 							recursive processing of classes. If the parser runs into an id already present 
-							within the trail (so the related object has already been processed) processing 
+							class within the trail (so the related object has already been processed) processing 
 							stops. -->
 						<xsl:with-param name="proces-type" select="'associationsGroepCompositie'"/>
 						<xsl:with-param name="id-trail" select="''"/>
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="context" select="'attribute'"/>
 					</xsl:apply-templates>
-					<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]" mode="create-rough-message-content">
+					<xsl:apply-templates select="$gerelateerde" mode="create-rough-message-content">
 						<!-- The 'id-trail' parameter has been introduced to be able to prevent 
 							recursive processing of classes. If the parser runs into an id already present 
-							within the trail (so the related object has already been processed) processing 
+							class within the trail (so the related object has already been processed) processing 
 							stops. -->
 						<xsl:with-param name="proces-type" select="'associationsRelatie'"/>
 						<xsl:with-param name="id-trail" select="''"/>
@@ -1065,6 +1047,8 @@
 				</ep:construct>
 			</xsl:when>
 		</xsl:choose>
+
+		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
 
 	<xsl:template name="createRoughEntityConstruct">
@@ -1077,9 +1061,7 @@
 		<xsl:param name="typeCode" select="''"/>					
 		<xsl:param name="embeddedBerichtCode"/>
 		
-		<xsl:sequence select="imf:create-debug-comment('Template9: createRoughEntityConstruct',$debugging)"/>
-
-		<xsl:sequence select="imf:create-debug-comment(concat('berichtCode: ',$berichtCode),$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('debug:start A09000 /debug:start',$debugging)"/>
 		
 		<ep:construct package="{ancestor::imvert:package/imvert:name}">
 			<xsl:if test="$embeddedBerichtCode != ''">
@@ -1106,13 +1088,13 @@
 			</xsl:attribute>
 			<xsl:attribute name="type" select="'entity'"/>
 			<xsl:if
-				test="($berichtCode = 'La07' or $berichtCode = 'La08' or $berichtCode = 'La09' or $berichtCode = 'La10') and 
-				((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'JA' or imvert:value = 'JAZIEREGELS')]) >= 1) or
-				(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'JA' or imvert:value = 'JAZIEREGELS')]) >= 1))">
+				test="($berichtCode = ('La07','La08','La09','La10')) and 
+				((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = ('JA','JAZIEREGELS'))]) >= 1) or
+				(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = ('JA','JAZIEREGELS'))]) >= 1))">
 				<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja'"/>
 			</xsl:if>
 			<xsl:if
-				test="($berichtCode = 'La09' or $berichtCode = 'La10') and
+				test="($berichtCode = ('La09','La10')) and
 				((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'JA']) >= 1) or
 				(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'JA']) >= 1))">
 				<xsl:attribute name="indicatieFormeleHistorie" select="'Ja'"/>
@@ -1137,9 +1119,6 @@
 			
 			<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 			<xsl:variable name="subpath" select="$supplier/@subpath"/>
-
-			<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpath),$debugging)"/>
-
 			<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
 
 			<xsl:sequence
@@ -1147,13 +1126,9 @@
 			<xsl:sequence
 				select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
 			
-			<xsl:if test="$typeCode = 'entiteitrelatie' or $typeCode = 'berichtrelatie' or $typeCode = 'toplevel' or $typeCode = ''">
-				<xsl:variable name="gerelateerde" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
+			<xsl:if test="$typeCode = 'entiteitrelatie' or $typeCode = ('berichtrelatie','toplevel','')">
 				<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 				<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
-
-				<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpathGerelateerde),$debugging)"/>
-				
 				<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
 
 				<xsl:sequence
@@ -1165,7 +1140,7 @@
 			
 			<xsl:variable name="class-id" select="imvert:type-id"/>
 			<xsl:sequence
-				select="imf:create-output-element('ep:class-name', imf:get-construct-by-id($class-id,$packages-doc)/ep:name)"/>
+				select="imf:create-output-element('ep:class-name', imf:get-class-construct-by-id($class-id,$packages-doc)/ep:name)"/>
 			<xsl:apply-templates select="key('class',$type-id)"
 				mode="create-rough-message-content">
 				<xsl:with-param name="proces-type" select="'associationsGroepCompositie'"/>
@@ -1182,7 +1157,7 @@
 			</xsl:apply-templates>
 		</ep:construct>
 		
-		<xsl:sequence select="imf:create-debug-comment('Template9: createRoughEntityConstruct End',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
 
 	<!-- This template generates the structure of the 'gerelateerde' type element. -->
@@ -1193,7 +1168,7 @@
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="context"/>
 
-		<xsl:sequence select="imf:create-debug-comment('Template10: createRoughRelatiePartOfAssociation',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('debug:start A10000 /debug:start',$debugging)"/>
 		
 		<!-- The following choose processes the 3 situations an association can 
 			represent. -->
@@ -1201,7 +1176,7 @@
 			<!-- The association is a 'relatie' and it has to contain a 'gerelateerde' 
 				 construct. -->
 			<xsl:when test="key('class',$type-id) and imvert:stereotype = 'RELATIE'">
-				<xsl:sequence select="imf:create-debug-comment(concat('key(class,$type-id) and imvert:stereotype = RELATIE, met type-id: ',$type-id),$debugging)"/>
+				<xsl:sequence select="imf:create-debug-comment('A10010]',$debugging)"/>
 				<ep:construct typeCode="gerelateerde" package="{ancestor::imvert:package/imvert:name}">
 					<xsl:attribute name="context">
 						<xsl:choose>
@@ -1224,13 +1199,13 @@
 						<xsl:attribute name="type" select="'supertype'"/>
 					</xsl:if>
 					<xsl:if
-						test="($berichtCode = 'La07' or $berichtCode = 'La08' or $berichtCode = 'La09' or $berichtCode = 'La10') and
-						((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'JA' or imvert:value = 'JAZIEREGELS')]) >= 1) or
-						(count(key('class',$type-id)/imvert:attributes/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = 'JA' or imvert:value = 'JAZIEREGELS')]) >= 1))">
+						test="($berichtCode = ('La07','La08','La09','La10')) and
+						((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = ('JA','JAZIEREGELS'))]) >= 1) or
+						(count(key('class',$type-id)/imvert:attributes/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = ('JA','JAZIEREGELS'))]) >= 1))">
 						<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja'"/>
 					</xsl:if>
 					<xsl:if
-						test="($berichtCode = 'La09' or $berichtCode = 'La10') and
+						test="($berichtCode = ('La09','La10')) and
 						((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'JA']) >= 1) or
 						(count(key('class',$type-id)/imvert:attributes/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'JA']) >= 1))">
 						<xsl:attribute name="indicatieFormeleHistorie" select="'Ja'"/>
@@ -1242,9 +1217,6 @@
 					
 					<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 					<xsl:variable name="subpath" select="$supplier/@subpath"/>
-
-					<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpath),$debugging)"/>
-
 					<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
 
 					<xsl:sequence
@@ -1253,18 +1225,15 @@
 						select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
 					
 
-					<xsl:variable name="gerelateerde" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
-					<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct($gerelateerde,'UGM')"/>
-					<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
-
-					<xsl:sequence select="imf:create-debug-comment(concat('Subpath: ',$subpathGerelateerde),$debugging)"/>
-
-					<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
+					<xsl:variable name="relatie" select="imf:get-association-construct-by-id($type-id,$packages-doc)"/>
+					<xsl:variable name="supplierRelatie" select="imf:get-trace-supplier-for-construct($relatie,'UGM')"/>
+					<xsl:variable name="subpathRelatie" select="$supplierRelatie/@subpath"/>
+					<xsl:variable name="UGMRelatie" select="imf:get-imvert-system-doc($subpathRelatie)"/>
 
 					<xsl:sequence
-						select="imf:create-output-element('ep:verkorteAliasGerelateerdeEntiteit', imf:getVerkorteAlias($UGMgerelateerde))"/>
+						select="imf:create-output-element('ep:verkorteAliasGerelateerdeEntiteit', imf:getVerkorteAlias($UGMRelatie))"/>
 					<xsl:sequence
-						select="imf:create-output-element('ep:namespaceIdentifierGerelateerdeEntiteit', imf:getNamespaceIdentifier($UGMgerelateerde))"/>
+						select="imf:create-output-element('ep:namespaceIdentifierGerelateerdeEntiteit', imf:getNamespaceIdentifier($UGMRelatie))"/>
 					
 					<xsl:sequence
 						select="imf:create-output-element('ep:class-name', key('class',$type-id)/imvert:name)"/>
@@ -1311,8 +1280,8 @@
 				 and it contains a 'entiteit'. The attributes of the 'entiteit' class can 
 				 be placed directly within the current 'ep:seq'. -->
 			<xsl:when
-				test="imf:get-construct-by-id($type-id,$packages-doc)[imvert:stereotype = 'ENTITEITTYPE']">
-				<xsl:sequence select="imf:create-debug-comment('//imvert:class[imvert:id = $type-id and imvert:stereotype = ENTITEITTYPE]',$debugging)"/>
+				test="imf:get-association-construct-by-id($type-id,$packages-doc)[imvert:stereotype = 'ENTITEITTYPE']">
+				<xsl:sequence select="imf:create-debug-comment('A10020]',$debugging)"/>
 				<xsl:apply-templates select="key('class',$type-id)"
 					mode="create-rough-message-content">
 					<xsl:with-param name="proces-type" select="'attributes'"/>
@@ -1338,7 +1307,7 @@
 			<!-- The association is a 'berichtRelatie' and it contains a 'bericht'. 
 				 This situation can occur whithin the context of a 'vrij bericht'. -->
 			<xsl:when test="key('class',$type-id)">
-				<xsl:sequence select="imf:create-debug-comment('key(class,$type-id)',$debugging)"/>
+				<xsl:sequence select="imf:create-debug-comment('A10030]',$debugging)"/>
 				<xsl:apply-templates select="key('class',$type-id)"
 					mode="create-rough-message-content">
 					<xsl:with-param name="proces-type" select="'attributes'"/>
@@ -1363,7 +1332,7 @@
 			</xsl:when>
 		</xsl:choose>
 		
-		<xsl:sequence select="imf:create-debug-comment('Template10: createRoughRelatiePartOfAssociation End',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
 
 	<!-- ======= End block of templates used to create the message structure. ======= -->
