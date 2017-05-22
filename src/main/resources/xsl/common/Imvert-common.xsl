@@ -363,6 +363,23 @@
         </xsl:for-each>
     </xsl:function>
     
+    <!--
+        The function imf:get-construct-by-id hides the kind of construct which is requested.
+        Since it may be comfortable to see in the code which kind of constructs are requested the following 
+        2 functions are created which in fact are aliases of the imf:get-construct-by-id function.
+    -->
+    <xsl:function name="imf:get-class-construct-by-id" as="element()*">
+        <xsl:param name="id" as="xs:string"/>
+        <xsl:param name="root" as="node()*"/>
+        <xsl:sequence select="imf:get-construct-by-id($id,$root)"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-association-construct-by-id" as="element()*">
+        <xsl:param name="id" as="xs:string"/>
+        <xsl:param name="root" as="node()*"/>
+        <xsl:sequence select="imf:get-construct-by-id($id,$root)"/>
+    </xsl:function>
+    
     <!-- get the construct by ID where the id supplied is passed as the value of a trace (imvert:trace) -->
     <xsl:function name="imf:get-trace-construct-by-id">
         <xsl:param name="client"/>
