@@ -142,18 +142,47 @@
 
                 <xsl:element name="{name(.)}">
                     <xsl:apply-templates select="@*[local-name()!='prefix' and local-name()!='namespaceId']"/>
-                    <xsl:attribute name="prefix" select="$actualPrefix"/>
+                    <xsl:attribute name="prefix">
+                        <xsl:choose>
+                            <xsl:when test="@prefix = $StUF-prefix">
+                                <xsl:value-of select="$StUF-prefix"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="$actualPrefix"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:attribute>
                     <xsl:attribute name="namespaceId" select="@namespaceId"/>
                     <xsl:choose>
                         <xsl:when test="@orderingDesired = 'no' or ancestor::ep:seq[@orderingDesired = 'no']">
                             <xsl:apply-templates select="*">
-                                <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
+                                <!--xsl:with-param name="actualPrefix" select="$actualPrefix"/-->
+                                <xsl:with-param name="actualPrefix">
+                                    <xsl:choose>
+                                        <xsl:when test="@prefix = $StUF-prefix">
+                                            <xsl:value-of select="$StUF-prefix"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:value-of select="$actualPrefix"/>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </xsl:with-param>
                             </xsl:apply-templates>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:apply-templates select="*">
                                 <xsl:sort select="ep:position" order="ascending" data-type="number"/>
-                                <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
+                                <!--xsl:with-param name="actualPrefix" select="$actualPrefix"/-->
+                                <xsl:with-param name="actualPrefix">
+                                    <xsl:choose>
+                                        <xsl:when test="@prefix = $StUF-prefix">
+                                            <xsl:value-of select="$StUF-prefix"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:value-of select="$actualPrefix"/>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </xsl:with-param>
                             </xsl:apply-templates>              
                         </xsl:otherwise>
                     </xsl:choose>
@@ -204,7 +233,7 @@
                 <xsl:copy-of select="."/>
             </xsl:when>
             <!-- Following when's are used to split a construct if it contains subconstructs originated in more than one namespace.
-                 The first one if the prefix of the current construct isn't yet determined and teh second if it has been determined.
+                 The first one if the prefix of the current construct isn't yet determined and the second if it has been determined.
                  The construct is created for every namespace for which a subconstruct is present containing only those subconstruct
                  belonging to that namespace.
                  This type of processing is reported to the subsequent templates by the 'procesType' parameter with the value 'splitting'. -->

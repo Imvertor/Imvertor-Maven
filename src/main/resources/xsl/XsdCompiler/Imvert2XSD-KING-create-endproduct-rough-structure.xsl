@@ -535,9 +535,10 @@
 				<xsl:sequence
 					select="imf:create-output-element('ep:tech-name', imf:get-normalized-name(imvert:name, 'element-name'))"/>
 				<!-- De volgende elementen moeten alleengevuld worden als de relatie gekoppeld is aan een association-class. 
-					 De realtie heeft dan zelf attributen waarop historie van toepassing kan zijn. -->
+					 De relatie heeft dan zelf attributen waarop historie van toepassing kan zijn. -->
 				<xsl:choose>
-					<!-- In het geval van een associationgroup wordt er geen 'gerelateerde' elementen tussen gegenereerd en mag het id en type-id gewoon op het huidige element worden gegenereerd. -->
+					<!-- In het geval van een associationgroup wordt er geen 'gerelateerde' elementen tussen gegenereerd en mag het id en type-id gewoon 
+						 op het huidige element worden gegenereerd. -->
 					<xsl:when test="imvert:stereotype != 'RELATIE'">
 						<xsl:sequence select="imf:create-output-element('ep:origin-id', imvert:id)"/>
 						<xsl:sequence select="imf:create-output-element('ep:id', imvert:type-id)"/>
@@ -548,24 +549,39 @@
 				</xsl:choose>
 				
 				<xsl:variable name="relatie" select="."/>
+				
 				<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct($relatie,'UGM')"/>
 				<xsl:variable name="subpath" select="$supplier/@subpath"/>
+				<!-- If the current construct has a trace to a construct within a UGM model The following variable must get the value of the path to that UGM model
+					 however if the current construct is from the 'Berichtstructuren' package it must stay empty. In that case the elements 'ep:verkorteAlias' and
+					 'ep:namespaceIdentifier' wil get the related values from the StUF namespace. -->
 				<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
 
-				<xsl:sequence
-					select="imf:create-output-element('ep:verkorteAlias', imf:getVerkorteAlias($UGM))"/>
-				<xsl:sequence
-					select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
-				
-				<xsl:variable name="gerelateerde" select="imf:get-class-construct-by-id($type-id,$packages-doc)"/>
-				<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct($gerelateerde,'UGM')"/>
-				<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
-				<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
+				<xsl:choose>
+					<xsl:when test="ancestor::imvert:package[contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen')]">
+						<xsl:sequence
+							select="imf:create-output-element('ep:verkorteAlias', $StUF-prefix)"/>
+						<xsl:sequence
+							select="imf:create-output-element('ep:namespaceIdentifier', $StUF-namespaceIdentifier)"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:sequence
+							select="imf:create-output-element('ep:verkorteAlias', imf:getVerkorteAlias($UGM))"/>
+						<xsl:sequence
+							select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
 
-				<xsl:sequence
-					select="imf:create-output-element('ep:verkorteAliasGerelateerdeEntiteit', imf:getVerkorteAlias($UGMgerelateerde))"/>
-				<xsl:sequence
-					select="imf:create-output-element('ep:namespaceIdentifierGerelateerdeEntiteit', imf:getNamespaceIdentifier($UGMgerelateerde))"/>
+						<xsl:variable name="gerelateerde" select="imf:get-class-construct-by-id($type-id,$packages-doc)"/>
+						<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct($gerelateerde,'UGM')"/>
+						<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
+						<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
+						
+						<xsl:sequence
+							select="imf:create-output-element('ep:verkorteAliasGerelateerdeEntiteit', imf:getVerkorteAlias($UGMgerelateerde))"/>
+						<xsl:sequence
+							select="imf:create-output-element('ep:namespaceIdentifierGerelateerdeEntiteit', imf:getNamespaceIdentifier($UGMgerelateerde))"/>
+					</xsl:otherwise>
+				</xsl:choose>
+				
 				
 				
 				<xsl:call-template name="createRoughRelatiePartOfAssociation">

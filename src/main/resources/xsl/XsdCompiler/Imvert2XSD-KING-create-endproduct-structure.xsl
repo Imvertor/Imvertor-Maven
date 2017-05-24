@@ -2383,11 +2383,17 @@
 								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct3'. -->
 					
 					<ep:construct context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
-						<xsl:if test="$suppliers//supplier[1]/@verkorteAlias != ''">
-							<xsl:attribute name="prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
-							<xsl:attribute name="namespaceId" select="$suppliers//supplier[1]/@base-namespace"/>
-							<xsl:attribute name="UGMlevel" select="$suppliers//supplier[1]/@level"/>
-						</xsl:if>
+						<xsl:choose>
+							<xsl:when test="$suppliers//supplier[1]/@verkorteAlias != '' and imvert:name != 'parameters' and imvert:name != 'stuurgegevens' and imvert:name != 'ontvanger' and imvert:name != 'zender'">
+								<xsl:attribute name="prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
+								<xsl:attribute name="namespaceId" select="$suppliers//supplier[1]/@base-namespace"/>
+								<xsl:attribute name="UGMlevel" select="$suppliers//supplier[1]/@level"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:attribute name="prefix" select="$StUF-prefix"/>
+								<xsl:attribute name="namespaceId" select="$StUF-namespaceIdentifier"/>
+							</xsl:otherwise>
+						</xsl:choose>
 
 						<xsl:sequence select="imf:create-output-element('ep:name', imvert:name)"/>
 						<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)"/>
@@ -2406,16 +2412,28 @@
 							<xsl:otherwise/>
 						</xsl:choose>
 						<xsl:choose>
-							<xsl:when test="imvert:name != 'parameters' and imvert:name != 'stuurgegevens' and imvert:name != 'ontvanger' and imvert:name != 'zender' and $verwerkingsModusOfConstructRef != ''">
+							<!--xsl:when test="imvert:name != 'parameters' and imvert:name != 'stuurgegevens' and imvert:name != 'ontvanger' and imvert:name != 'zender' and $verwerkingsModusOfConstructRef != ''"-->
+							<xsl:when test="ancestor::imvert:package[not(contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen'))] and $verwerkingsModusOfConstructRef != ''">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056a',$debugging)"/>
 								<xsl:variable name="type-name"><xsl:value-of select="imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name,$verwerkingsModusOfConstructRef)"/></xsl:variable>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
 							</xsl:when>
-							<xsl:otherwise>
+							<!--xsl:when test="imvert:name != 'parameters' and imvert:name != 'stuurgegevens' and imvert:name != 'ontvanger' and imvert:name != 'zender' and $verwerkingsModusOfConstructRef = ''"-->
+							<xsl:when test="ancestor::imvert:package[not(contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen'))] and $verwerkingsModusOfConstructRef = ''">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056b',$debugging)"/>
 								<xsl:variable name="type-name"><xsl:value-of select="imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name)"/></xsl:variable>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
-							</xsl:otherwise>
+							</xsl:when>
+							<!-- In case of zender or ontvanger a referention to the type StUF:Systeem must be created. -->   
+							<xsl:when test="ancestor::imvert:package[contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen')] and (imvert:name = 'ontvanger' or imvert:name = 'zender')">
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056c',$debugging)"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', 'Systeem')"/>
+							</xsl:when>
+							<xsl:when test="ancestor::imvert:package[contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen')]">
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056d',$debugging)"/>
+								<xsl:variable name="type-name"><xsl:value-of select="imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name)"/></xsl:variable>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
+							</xsl:when>
 						</xsl:choose>
 					</ep:construct>
 					

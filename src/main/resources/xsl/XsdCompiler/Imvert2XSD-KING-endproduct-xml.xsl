@@ -879,7 +879,9 @@
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 15',$debugging)"/>
                 
                 <xsl:choose>
-                   <!-- The following when generates global constructs based on uml groups. -->
+                    <!-- If the name of the group is 'zender' or 'ontvanger' and its defined in the berichtstrukturen package nothing has to be generated. -->
+                    <xsl:when test="ep:verkorteAlias = $StUF-prefix and @type=('group','complex datatype') and (ep:name = 'zender' or ep:name = 'ontvanger') and exists(imf:get-construct-by-id($id,$packages-doc))"/>
+                    <!-- The following when generates global constructs based on uml groups. -->
                     <xsl:when test="@type=('group','complex datatype') and exists(imf:get-construct-by-id($id,$packages-doc))">
 
                         <xsl:sequence select="imf:create-debug-comment('Debuglocation 16',$debugging)"/>
