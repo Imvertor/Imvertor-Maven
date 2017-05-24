@@ -2164,7 +2164,8 @@
         <xsl:variable name="min-waarde" select="imf:get-taggedvalue(.,'Minimum waarde (inclusief)')"/>
         <xsl:variable name="max-waarde" select="imf:get-taggedvalue(.,'Maximum waarde (inclusief)')"/>
         <xsl:variable name="min-length" select="imf:get-taggedvalue(.,'Minimum lengte')"/>
-        <xsl:variable name="patroon" select="imf:get-taggedvalue(.,'Formeel patroon')"/>
+        <!--xsl:variable name="patroon" select="imf:get-taggedvalue(.,'Formeel patroon')"/-->
+        <xsl:variable name="patroon" select="imvert:pattern"/>
         
         <xsl:variable name="nillable-patroon" select="if (normalize-space($patroon)) then concat('(', $patroon,')?') else ()"/>
         

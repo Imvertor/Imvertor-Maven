@@ -1272,7 +1272,8 @@
 		<xsl:variable name="max-waarde" select="imf:get-most-relevant-compiled-taggedvalue(., 'Maximum waarde (inclusief)')"/>
 		<xsl:variable name="min-length" select="imf:get-most-relevant-compiled-taggedvalue(., 'Minimum lengte')"/>
 		<xsl:variable name="patroon" select="imf:get-most-relevant-compiled-taggedvalue(., 'Patroon')"/>
-		<xsl:variable name="formeelPatroon" select="imf:get-most-relevant-compiled-taggedvalue(., 'Formeel patroon')"/>
+		<!--xsl:variable name="formeelPatroon" select="imf:get-most-relevant-compiled-taggedvalue(., 'Formeel patroon')"/-->
+		<xsl:variable name="formeelPatroon" select="imvert:pattern"/>
 		
 		
 		<xsl:if test="not(contains($verwerkingsModus, 'matchgegeven') and $matchgegeven = 'NEE') and (($generateHistorieConstruct = 'MaterieleHistorie' and contains($materieleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorie' and contains($formeleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorieRelatie' and contains($formeleHistorie, 'Ja')) or $generateHistorieConstruct = 'Nee')">
