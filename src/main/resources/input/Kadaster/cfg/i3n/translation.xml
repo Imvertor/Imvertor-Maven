@@ -24,7 +24,7 @@
         <trans lang="nl">Formaat</trans>
     </item>
     <item>
-        <key>PATROON</key>
+        <key>FORMEELPATROON</key>
         <trans lang="nl">Patroon</trans>
     </item>
     <item>
@@ -58,6 +58,10 @@
     <item>
         <key>GERELATEERDOBJECTTYPE</key>
         <trans lang="nl">Gerelateerd objecttype</trans>
+    </item>
+    <item>    
+        <key>CFG-DOC-NORMNAME</key>
+        <trans lang="nl">Naam (genormaliseerd)</trans>
     </item>
     <item>    
         <key>NAAM</key>

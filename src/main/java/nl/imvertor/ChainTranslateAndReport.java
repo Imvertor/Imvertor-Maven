@@ -198,5 +198,6 @@ public class ChainTranslateAndReport {
 		} catch (Exception e) {
 			configurator.getRunner().fatal(logger,"Chain-level system error - Please notify your administrator: " + e.getMessage(),e,"PNYSA");
 		}
+		System.exit(0); // should be 1 , "okay"
 	}
 }

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:log="http://www.kadaster.nl/schemas/Log/v20120501" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.kadaster.nl/schemas/Log/v20120501" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.2">
+	<xsd:simpleType name="LogItemCategoryCodeType.Content">
+		<xsd:restriction base="xsd:token">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="15"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="LogItemSeverityCodeType">
+		<xsd:restriction base="xsd:token">
+			<xsd:length value="1"/>
+			<xsd:enumeration value="1"/>
+			<xsd:enumeration value="2"/>
+			<xsd:enumeration value="3"/>
+			<xsd:enumeration value="4"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="WebURIType">
+		<xsd:restriction base="xsd:anyURI"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="ProcessingResultCodeType">
+		<xsd:restriction base="xsd:token">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="2"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="NoteType">
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="200"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TypeIDType">
+		<xsd:restriction base="xsd:token">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="40"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="LogItemCategoryCodeType">
+		<xsd:simpleContent>
+			<xsd:extension base="log:LogItemCategoryCodeType.Content">
+				<xsd:attribute name="listVersionID">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:token">
+							<xsd:minLength value="1"/>
+							<xsd:maxLength value="15"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+				<xsd:attribute name="listAgencyID">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:token">
+							<xsd:minLength value="1"/>
+							<xsd:maxLength value="60"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+				<xsd:attribute name="listAgencySchemeID">
+					<xsd:simpleType>
+						<xsd:restriction base="xsd:token">
+							<xsd:minLength value="1"/>
+							<xsd:maxLength value="3"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:element name="Log" type="log:LogType"/>
+	<xsd:complexType name="LogType">
+		<xsd:sequence>
+			<xsd:element name="BusinessDocumentProcessingResultCode" type="log:ProcessingResultCodeType" minOccurs="0"/>
+			<xsd:element name="MaximumLogItemSeverityCode" type="log:LogItemSeverityCodeType" minOccurs="0"/>
+			<xsd:element name="Item" type="log:LogItemType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="LogItemType">
+		<xsd:sequence>
+			<xsd:element name="TypeID" type="log:TypeIDType" minOccurs="0"/>
+			<xsd:element name="CategoryCode" type="log:LogItemCategoryCodeType"/>
+			<xsd:element name="SeverityCode" type="log:LogItemSeverityCodeType" minOccurs="0"/>
+			<xsd:element name="Note" type="log:NoteType"/>
+			<xsd:element name="WebURI" type="log:WebURIType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

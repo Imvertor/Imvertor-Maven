@@ -71,7 +71,7 @@
 			<xsl:variable name="supplier" select="."/>
 			
 			<xsl:variable name="documentation" as="element(imvert:documentation)?">
-				<xsl:variable name="supplied-documentation" select="imf:get-trace-construct-by-supplier($supplier,$imvert-document)/imvert:documentation"/>
+				<xsl:variable name="supplied-documentation" select="imf:get-trace-construct-by-supplier($supplier,$imvert-document)/imvert:documentation//line"/>
 				<!-- copy the suppler info attributes to the documentation element -->
 				<xsl:if test="exists($supplied-documentation/node())">
 					<imvert:documentation>
@@ -87,43 +87,90 @@
 	</xsl:function>
 	
 	<!-- 
-		Get the latest (client) value specified or derived of any tagged value 
-	-->
-	<xsl:function name="imf:get-compiled-tagged-values" as="element(tv)*">
+		get all tagged values that are defined on this construct, 
+		including all tv's in all suppliers if the value may be derived.
+	--> 
+	<xsl:function name="imf:get-all-compiled-tagged-values" as="element(tv)*">
 		<xsl:param name="construct" as="element()"/> <!-- any construct that may have tagged values -->
 		<xsl:param name="include-empty" as="xs:boolean"/>
-			
+		
 		<xsl:variable name="suppliers" select="imf:get-trace-suppliers-for-construct($construct,1)"/>
 		
 		<xsl:variable name="tvs" as="element()*">
 			<!-- 
-				haal alle tagged values op die bekend zijn voor dit model, dus in de configuratie voorkomen 
+				haal alle tagged values op die bekend zijn voor dit model, dus in de configuratie voorkomen; deze zijn al ontdubbeld.
 			-->
-			<xsl:for-each-group select="imf:get-config-tagged-values()" group-by="name"> 
-				<!-- 
-					verzamel deze declararies bij naam, neem de laatste (meest specifieke) 
+			<xsl:for-each select="imf:get-config-tagged-values()">
+				<!--TODO compile list of all tagged values from all metamodels referenced by the client. 
+				
+				hoe????
+				Overweeg deze configuraties op te nemen in de etc folder; je kunt ze dan meteen uitlezen...
+				
+				Ook overwegen deze expliciet op te nemen in UGM configuratie. 
+				Het zijn dan cross-meta tagged values.
+				
 				-->
-				<xsl:for-each select="current-group()[last()]">
-					<xsl:variable name="tv-name" select="name"/>
-					<xsl:for-each select="if (imf:boolean(derive)) then $suppliers else $suppliers[1]">
-						<xsl:variable name="supplier" select="."/>
-						<xsl:variable name="supplier-construct" select="imf:get-trace-construct-by-supplier($supplier,$imvert-document)"/>
-						<xsl:variable name="tv" select="($supplier-construct/imvert:tagged-values/imvert:tagged-value[imvert:name=$tv-name and normalize-space(imvert:value)])[1]"/>
-						<xsl:if test="exists($tv)">
-							<tv 
-								name="{$tv-name}" 
-								original-name="{$tv/imvert:name/@original}" 
-								value="{$tv/imvert:value}" 
-								original-value="{$tv/imvert:value/@original}" 
-								project="{$supplier/@project}"
-								application="{$supplier/@application}"
-								release="{$supplier/@release}"
-								level="{$supplier/@level}"
-							/>
-						</xsl:if>
+				
+				<xsl:variable name="tv-id" select="@id"/>
+				<xsl:for-each select="if (imf:boolean(derive)) then $suppliers else $suppliers[1]">
+					<xsl:variable name="supplier" select="."/>
+					<xsl:variable name="supplier-construct" select="imf:get-trace-construct-by-supplier($supplier,$imvert-document)"/>
+					<xsl:variable name="tvs" select="($supplier-construct/imvert:tagged-values/imvert:tagged-value[@id=$tv-id and normalize-space(imvert:value)])"/>
+					<xsl:for-each select="$tvs">
+						<xsl:variable name="tv" select="."/>
+						<tv 
+							id="{$tv-id}" 
+							name="{$supplier/name}" 
+							original-name="{$tv/imvert:name/@original}" 
+							value="{$tv/imvert:value}" 
+							original-value="{$tv/imvert:value/@original}" 
+							project="{$supplier/@project}"
+							application="{$supplier/@application}"
+							release="{$supplier/@release}"
+							level="{$supplier/@level}"
+						/>
 					</xsl:for-each>
 				</xsl:for-each>
-			</xsl:for-each-group>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:sequence select="if ($include-empty) then $tvs else $tvs[normalize-space(@value)]"/>
+	</xsl:function>
+	
+	<!-- 
+		Get the latest (client) value specified or derived of any tagged value
+	-->
+	<!--TODO define using imf:get-all-compiled-tagged-values() -->
+	<xsl:function name="imf:get-compiled-tagged-values" as="element(tv)*">
+		<xsl:param name="construct" as="element()"/> <!-- any construct that may have tagged values -->
+		<xsl:param name="include-empty" as="xs:boolean"/>
+		
+		<xsl:variable name="suppliers" select="imf:get-trace-suppliers-for-construct($construct,1)"/>
+		
+		<xsl:variable name="tvs" as="element()*">
+			<!-- 
+				haal alle tagged values op die bekend zijn voor dit model, dus in de configuratie voorkomen; deze zijn al ontdubbeld.
+			-->
+			<xsl:for-each select="imf:get-config-tagged-values()"> 
+				<xsl:variable name="tv-id" select="@id"/>
+				<xsl:for-each select="if (imf:boolean(derive)) then $suppliers else $suppliers[1]">
+					<xsl:variable name="supplier" select="."/>
+					<xsl:variable name="supplier-construct" select="imf:get-trace-construct-by-supplier($supplier,$imvert-document)"/>
+					<xsl:variable name="tv" select="($supplier-construct/imvert:tagged-values/imvert:tagged-value[@id=$tv-id and normalize-space(imvert:value)])[1]"/>
+					<xsl:if test="exists($tv)">
+						<tv 
+							id="{$tv-id}" 
+							name="{name}" 
+							original-name="{$tv/imvert:name/@original}" 
+							value="{$tv/imvert:value}" 
+							original-value="{$tv/imvert:value/@original}" 
+							project="{$supplier/@project}"
+							application="{$supplier/@application}"
+							release="{$supplier/@release}"
+							level="{$supplier/@level}"
+						/>
+					</xsl:if>
+				</xsl:for-each>
+			</xsl:for-each>
 		</xsl:variable>
 		<xsl:sequence select="if ($include-empty) then $tvs else $tvs[normalize-space(@value)]"/>
 	</xsl:function>
@@ -149,7 +196,7 @@
 	<xsl:function name="imf:get-applicable-tagged-values" as="element(tv)*">
 		<xsl:param name="this" as="element()"/>
 		<xsl:variable name="all-tv" select="imf:get-compiled-tagged-values($this,false())"/>
-		<xsl:for-each-group select="$all-tv" group-by="@name">
+		<xsl:for-each-group select="$all-tv" group-by="@id">
 			<xsl:for-each select="current-group()">
 				<xsl:sort select="@level" data-type="number"/>
 				<xsl:if test="position() = 1">
@@ -163,24 +210,9 @@
 		<xsl:param name="this" as="element()"/>
 		<xsl:param name="tv-name" as="xs:string"/>
 		<xsl:variable name="tvs" select="imf:get-applicable-tagged-values($this)"/>
-		<xsl:variable name="val" select="$tvs[@name=$tv-name]/@value"/>
+		<xsl:variable name="tv-id" select="substring-after($tv-name,'##')"/>
+		<xsl:variable name="val" select="if (normalize-space($tv-id)) then $tvs[@id=$tv-id]/@value else $tvs[@name=$tv-name]/@value"/>
 		<xsl:sequence select="if (exists($val)) then string($val) else ()"/>
-	</xsl:function>
-	
-	<!-- This function gets the most relevant value of a specific tagged-value. The one which is in the current layer or 
-		 in the layer most near to the current layer. -->
-	<xsl:function name="imf:get-most-relevant-compiled-taggedvaluex" as="xs:string?">
-		<xsl:param name="this"/>
-		<xsl:param name="name"/>
-		<xsl:variable name="most-relevant-level">
-			<xsl:for-each select="$this//tv[@name = $name]">
-				<xsl:sort select="@level" data-type="number"/>
-				<xsl:if test="position() = 1">
-					<xsl:value-of select="@level"/>
-				</xsl:if>
-			</xsl:for-each>
-		</xsl:variable>
-		<xsl:value-of select="$this//tv[@name = $name and @level = $most-relevant-level]/@value"/>
 	</xsl:function>
 	
 	<xsl:function name="imf:get-adapted-display-name" as="xs:string?">

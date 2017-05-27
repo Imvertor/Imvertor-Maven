@@ -19,12 +19,17 @@
 -->
 <tagset xmlns:xi="http://www.w3.org/2001/XInclude">
    
+    
+    <name>KINGUGM</name>
+
     <!-- 
         this metamodel is subject to standard Grouping conventions 
     -->
     <xi:include href="../../../Imvertor/cfg/tvsets/Grouping.xml"/>
-    
-    <name>KINGUGM</name>
+    <!-- 
+        applications using this metamodel may reference cross-meta Tagged values taken from SIM
+    -->
+    <xi:include href="KINGUGM-cross-SIM.xml"/>
     
     <tagged-values>
         
@@ -203,6 +208,6 @@
                 <stereo required="no">stereotype-name-association-to-composite</stereo><!-- SIM Gegevensgroep compositie-->
             </stereotypes>
         </tv>
-        
+       
     </tagged-values>
 </tagset>

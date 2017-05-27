@@ -77,21 +77,22 @@ public class Validator extends Step {
 			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_PROXY_FILE", "properties/IMVERTOR_PROXY_XSLPATH","system/cur-imvertor-filepath") : false ;
 		}
 
-		// VALIDATION IN STEPS
-		int j = 1;
-		while (true) {
-			String xslname = "IMVERTOR_METAMODEL_" + mm + "_VALIDATE_XSLPATH" + ((j == 1) ? "" : ("_" + j));
-			String outname = "WORK_VALIDATE_FILE" + ((j == 1) ? "" : ("_" + j));
-			if (configurator.getParm("properties", xslname, false) != null) {
-				succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/" + outname, "properties/" + xslname) : false ;
-				j += 1;
-			} else break;
+		if (succeeds) {
+			// VALIDATION IN STEPS
+			int j = 1;
+			while (true) {
+				String xslname = "IMVERTOR_METAMODEL_" + mm + "_VALIDATE_XSLPATH" + ((j == 1) ? "" : ("_" + j));
+				String outname = "WORK_VALIDATE_FILE" + ((j == 1) ? "" : ("_" + j));
+				if (configurator.getParm("properties", xslname, false) != null) {
+					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/" + outname, "properties/" + xslname) : false ;
+					j += 1;
+				} else break;
+			}
+			
+			// final validation
+			// must be performed even when canonical validation fails.
+			succeeds = transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_VALIDATE_FILE", "properties/IMVERTOR_VALIDATE_XSLPATH") && succeeds ;
 		}
-		
-		// final validation
-		// must be performed even when canonical validation fails.
-		succeeds = transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_VALIDATE_FILE", "properties/IMVERTOR_VALIDATE_XSLPATH") && succeeds ;
-
 		// set two parameter to appinfo here
 		String docrelease = configurator.getParm("cli","docrelease");
 		configurator.setParm("appinfo","documentation-release",docrelease.equals("00000000") ? "" : "-" + docrelease);

@@ -65,7 +65,7 @@
                 <xsl:sequence select="imf:msg('ERROR','No project name specified')"/>
             </xsl:when>
             <xsl:when test="empty($project-package)">
-                <xsl:sequence select="imf:msg('ERROR','{NPFF1}No project found for: [1], searched for [2]', ($application-package-name,$project-name))"/>
+                <xsl:sequence select="imf:msg('ERROR','No project found for: [1], searched for [2]', ($application-package-name,$project-name))"/>
             </xsl:when>
             <xsl:when test="empty($app-package)">
                 <xsl:sequence select="imf:msg('ERROR','No application found: [1], available applications are: [2]', ($application-package-name, string-join($application-packages/@name,';')))"/>

@@ -40,6 +40,7 @@
     <xsl:variable name="configuration-schemarules-file" select="imf:prepare-config(imf:document($configuration-schemarules-name,true()))"/>
     <xsl:variable name="configuration-tvset-file" select="imf:prepare-config(imf:document($configuration-tvset-name,true()))"/>
     <xsl:variable name="configuration-notesrules-file" select="imf:prepare-config(imf:document($configuration-notesrules-name,true()))"/>
+    <xsl:variable name="configuration-docrules-file" select="imf:prepare-config(imf:document($configuration-docrules-name,true()))"/>
     
     <xsl:variable name="metamodel-name" select="imf:get-normalized-name(imf:get-config-string('cli','metamodel'),'system-name')"/>
     <xsl:variable name="schemarules-name" select="imf:get-normalized-name(imf:get-config-string('cli','schemarules'),'system-name')"/>
@@ -56,6 +57,7 @@
                 <xsl:sequence select="$configuration-schemarules-file"/>
                 <xsl:sequence select="$configuration-tvset-file"/>
                 <xsl:sequence select="$configuration-notesrules-file"/>
+                <xsl:sequence select="$configuration-docrules-file"/>
             </config>
         </xsl:variable>
         <xsl:variable name="config-compact">
@@ -91,6 +93,13 @@
     
     <xsl:template match="stereotypes/stereo/name" mode="prepare-config">
         <xsl:sequence select="imf:prepare-config-name-element(.,'stereotype-name')"/>
+    </xsl:template>
+    
+    <xsl:template match="doc-rule/name" mode="prepare-config">
+        <xsl:sequence select=".[empty(@lang) or @lang = ($language,'#ALL')]"/>
+    </xsl:template>
+    <xsl:template match="doc-rule/levels/level" mode="prepare-config">
+        <xsl:sequence select=".[empty(@lang) or @lang = ($language,'#ALL')]"/>
     </xsl:template>
     
     <xsl:function name="imf:prepare-config-name-element" as="element()?">
@@ -241,6 +250,7 @@
                             <xsl:variable name="tv-group" select="current-group()"/>
                             <xsl:apply-templates select="($tv-group/@norm)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($tv-group/@rules)[last()]" mode="#current"/>
+                            <xsl:apply-templates select="($tv-group/@cross-meta)[last()]" mode="#current"/>
                             
                             <!-- hier: de laatste naam binnen dezelfde taal? we moeten af van synoniemen. -->
                             <xsl:apply-templates select="imf:distinct($tv-group/name)" mode="#current"/>
@@ -269,6 +279,13 @@
                 <xsl:variable name="notes-rules" select="notes-rules"/> 
                 <xsl:apply-templates select="imf:distinct($notes-rules//notes-rule[@lang=($language,'#ALL')])" mode="#current"/>
             </notes-rules>
+            
+            <doc-rules>
+                <xsl:variable name="doc-rules" select="doc-rules"/> 
+                <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#ALL')]" group-by="@id">
+                    <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                </xsl:for-each-group>
+            </doc-rules>
             
         </config>
     </xsl:template>

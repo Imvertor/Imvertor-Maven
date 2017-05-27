@@ -35,10 +35,6 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
     
-    <!-- follow guidelines for Kadaster and KING (KK) -->
-    
-    <xsl:include href="Imvert2validation-KK.xsl"/>
-    
     <xsl:variable name="application-package" select="(//imvert:package[imvert:name/@original=$application-package-name])[1]"/>
     <xsl:variable name="domain-package" select="$application-package//imvert:package[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))]"/>
     
@@ -48,6 +44,13 @@
         <xsl:sequence select="imf:get-config-stereotypes('stereotype-name-variant-package')"/>
         <xsl:sequence select="imf:get-config-stereotypes('stereotype-name-application-package')"/>
     </xsl:variable>
+    
+    <xsl:variable name="datatype-stereos" 
+        select="('stereotype-name-datatype','stereotype-name-complextype','stereotype-name-union','stereotype-name-referentielijst','stereotype-name-codelist','stereotype-name-interface','stereotype-name-enumeration')"/>
+  
+    <!-- follow guidelines for Kadaster and KING (KK) -->
+    
+    <xsl:include href="Imvert2validation-KK.xsl"/>
     
     <!-- 
         Document validation; this validates the root (application-)package.

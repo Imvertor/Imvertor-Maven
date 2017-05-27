@@ -136,6 +136,9 @@
     
     <xsl:variable name="model-is-general" select="$application-package/imvert:model-level = 'general'"/>
     
+    <xsl:variable name="datatype-stereos" 
+        select="('stereotype-name-datatype','stereotype-name-complextype','stereotype-name-union','stereotype-name-referentielijst','stereotype-name-codelist','stereotype-name-interface','stereotype-name-enumeration')"/>
+    
     <xsl:key name="key-unique-id" match="//*[imvert:id]" use="imvert:id"/>
     
     <!-- 
@@ -637,8 +640,6 @@
     
     <xsl:template match="imvert:class[imvert:designation='datatype']" priority="1">
         <!--setup-->
-        <xsl:variable name="datatype-stereos" 
-            select="('stereotype-name-datatype','stereotype-name-complextype','stereotype-name-union','stereotype-name-referentielijst','stereotype-name-codelist','stereotype-name-interface','stereotype-name-enumeration')"/>
         <!--validation-->
         <xsl:sequence select="imf:report-warning(., 
             not(imvert:stereotype=imf:get-config-stereotypes($datatype-stereos)), 

@@ -195,6 +195,9 @@
         <xsl:variable name="type" select="ancestor::section/@type"/>
         <tr>
             <xsl:choose>
+                <xsl:when test="@type = ('PATROON','AANDUIDINGSTRIJDIGHEIDNIETIGHEID','REGELS')">
+                    <!-- skip, not relevant for Kadaster documentation -->
+                </xsl:when>
                 <xsl:when test="@type = 'COMPOSER' and $type='DETAIL-COMPOSITE-ATTRIBUTE'">
                     <!-- skip, do not show in detail listings -->
                 </xsl:when>

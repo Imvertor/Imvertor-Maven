@@ -48,19 +48,7 @@
         
         <xsl:variable name="designation" select="$defining-class/imvert:designation"/>
         <xsl:variable name="is-designated-interface" select="$defining-class/imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-interface'))"/>
-        <!--x
-        <xsl:variable name="is-designated-datatype" select="$defining-class/imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-datatype','stereotype-name-complextype'))"/>
-        <xsl:variable name="is-designated-enumeration" select="$defining-class/imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-enumeration','stereotype-name-codelist'))"/>
-        <xsl:variable name="is-designated-referentielijst" select="$defining-class/imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-referentielijst'))"/>
-        <xsl:variable name="is-designated-union" select="$defining-class/imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-union'))"/>
-        <xsl:variable name="is-datatyped" select="
-            $is-designated-datatype or 
-            $is-designated-enumeration or 
-            $is-designated-referentielijst or 
-            $is-designated-interface or 
-            $is-designated-union"/>
-        x-->
-        
+       
         <!-- Jira IM-420 -->
         <xsl:sequence select="imf:report-warning(., 
             not($is-grouptype) and not($designation=('datatype','enumeration') or $is-designated-interface or empty($defining-class)), 

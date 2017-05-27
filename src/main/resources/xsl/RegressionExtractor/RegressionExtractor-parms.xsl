@@ -56,4 +56,17 @@
         <xsl:call-template name="ignore"/>
     </xsl:template>
     
+    <!-- avoid warnings on different IDs in:
+        
+         <message>
+            ...
+            <steptext>The supplier "regression/SampleBase/20130318" is in phase "2". Are you sure you want to derive from that model?</steptext>
+            <id>regression-SampleBase-1.0.0-2-20130318-20170520-132141</id>
+         
+         This is a brute force approach.
+     -->
+    <xsl:template match="config/messages/message/id" mode="mode-intermediate-parms">
+        <xsl:call-template name="ignore"/>
+    </xsl:template>
+    
 </xsl:stylesheet>

@@ -52,6 +52,27 @@
         </xsl:copy>
     </xsl:template>
     
+    <xsl:template match="imvert:package">
+        <xsl:variable name="package-proxies" select=".//*[imvert:stereotype = $stereotype-proxy]"/>
+        <xsl:variable name="supplier-project" select="imvert:supplier/imvert:supplier-project"/>
+        <xsl:variable name="supplier-name" select="imvert:supplier/imvert:supplier-name"/>
+        <xsl:variable name="supplier-release" select="imvert:supplier/imvert:supplier-release"/>
+        <xsl:choose>
+            <xsl:when test="exists($package-proxies) and empty($supplier-project)">
+                <xsl:sequence select="imf:msg(..,'ERROR','No proxy supplier project specified')"/>
+            </xsl:when>
+            <xsl:when test="exists($package-proxies) and empty($supplier-name)">
+                <xsl:sequence select="imf:msg(..,'ERROR','No proxy supplier name specified')"/>
+            </xsl:when>
+            <xsl:when test="exists($package-proxies) and empty($supplier-release)">
+                <xsl:sequence select="imf:msg(..,'ERROR','No proxy supplier release specified')"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
     <!--TODO inlezen van losse documenten tegengaan; volg het gecompileerde suppliers document -->
     <xsl:template match="imvert:class[imvert:stereotype = $stereotype-proxy] | imvert:attribute[imvert:stereotype = $stereotype-proxy]" mode="client">
         <xsl:variable name="client" select="."/>
@@ -123,7 +144,7 @@
                     </xsl:variable>
                     <xsl:choose>
                         <xsl:when test="empty($result)">
-                            <xsl:sequence select="imf:msg(.,'ERROR', 'Unable to resolve the proxy trace, tried [1]',(string-join($supplier-subpaths,'; ')))"/>
+                            <xsl:sequence select="imf:msg(.,'ERROR', 'Unable to resolve the proxy trace, tried [1]',imf:string-group($supplier-subpaths))"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:sequence select="$result"/>

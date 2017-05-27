@@ -94,6 +94,7 @@
                                 <tr>
                                     <td>
                                         <xsl:value-of select="string-join(name/@original,', ')"/> 
+                                        <xsl:value-of select="string-join(name/@original,', ')"/> 
                                     </td>
                                     <td>
                                         <xsl:value-of select="string-join(stereotypes/stereo/@original,',  ')"/>

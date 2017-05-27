@@ -32,7 +32,8 @@
                 <stereo required="yes">stereotype-name-union</stereo>
                 <stereo required="yes">stereotype-name-complextype</stereo>
                 <stereo required="yes">stereotype-name-externekoppeling</stereo>
-                <stereo required="yes">stereotype-name-enumeration</stereo>
+             <!-- vervallen in 0.98  
+                 <stereo required="yes">stereotype-name-enumeration</stereo> -->
             </stereotypes>
         </tv> 
         <tv norm="space" rules="NOC" id="IndicatieMateriëleHistorie">
@@ -95,7 +96,8 @@
             <!-- in aanvulling op SBR -->
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-enumeration</stereo>
+                <!-- vervallen in 0.98
+                    <stereo required="no">stereotype-name-enumeration</stereo>-->
                 <stereo required="no">stereotype-name-codelist</stereo>
             </stereotypes>
         </tv> 

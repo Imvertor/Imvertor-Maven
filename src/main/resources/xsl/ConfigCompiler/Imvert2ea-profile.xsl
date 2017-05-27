@@ -53,7 +53,7 @@
             <Documentation id="{$profile-id}" name="{$profile-name}" version="{$profile-version}" notes="{$profile-notes}"/>
             <Content>
                 <Stereotypes>
-                    <xsl:for-each select="metamodel/stereotypes/stereo[not(@orrigin='system')]">
+                    <xsl:for-each select="metamodel/stereotypes/stereo[not(@origin='system') and empty(@cross-meta)]">
                         <xsl:sort select="."/>
                         <xsl:variable name="stereotype-norm-name" select="name"/>
                         <xsl:variable name="stereotype-id" select="@id"/>

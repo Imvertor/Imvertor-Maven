@@ -192,6 +192,7 @@
                             <span class="tid">
                                 <xsl:value-of select="@id"/>
                             </span>
+                            <xsl:value-of select="if (normalize-space(@cross-meta)) then concat('Cross meta: ', @cross-meta) else ''"/>
                         </td>
                         <td>
                            <xsl:value-of select="derive"/>

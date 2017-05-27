@@ -285,7 +285,7 @@
     <item>
         <key>DETAILS-ASSOCIATIONCLASS</key>
         <trans lang="nl">Relatieklasse details</trans>
-        <trans lang="en">Association slass details</trans>
+        <trans lang="en">Associationclass details</trans>
     </item>
     <item>
         <key>DETAILS-ENUMERATION</key>
