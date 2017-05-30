@@ -51,7 +51,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:package"><!-- only domain packs -->
-        <section type="DOMAIN" name="{imf:plugin-get-model-name(.)}" id="{imf:plugin-get-link-name(.)}">
+        <section type="DOMAIN" name="{imf:plugin-get-model-name(.)}" id="{imf:plugin-get-link-name(.,'global')}">
             <section type="OVERVIEW-OBJECTTYPE">
                 <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')]"/>
             </section>
@@ -103,7 +103,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')]">
-        <section name="{imvert:name/@original}" type="OBJECTTYPE" id="{imf:plugin-get-link-name(.)}">
+        <section name="{imvert:name/@original}" type="OBJECTTYPE" id="{imf:plugin-get-link-name(.,'global')}">
           <content>
               <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-OBJECTTYPE')"/>
           </content>
@@ -117,7 +117,7 @@
 
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-relatieklasse')]">
         
-        <section name="{imvert:name/@original}" type="ASSOCIATIONCLASS" id="{imf:plugin-get-link-name(.)}">
+        <section name="{imvert:name/@original}" type="ASSOCIATIONCLASS" id="{imf:plugin-get-link-name(.,'global')}">
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-ASSOCIATIONCLASS')"/>
             </content>
@@ -131,7 +131,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-referentielijst')]">
-        <section name="{imvert:name/@original}" type="REFERENCELIST" id="{imf:plugin-get-link-name(.)}">
+        <section name="{imvert:name/@original}" type="REFERENCELIST" id="{imf:plugin-get-link-name(.,'global')}">
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-REFERENCELIST')"/>
             </content>
@@ -142,7 +142,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-codelist')]">
-        <section name="{imvert:name/@original}" type="CODELIST" id="{imf:plugin-get-link-name(.)}">
+        <section name="{imvert:name/@original}" type="CODELIST" id="{imf:plugin-get-link-name(.,'global')}">
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-CODELIST')"/>
             </content>
@@ -151,7 +151,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union')]">
-        <section name="{imvert:name/@original}" type="UNION" id="{imf:plugin-get-link-name(.)}">
+        <section name="{imvert:name/@original}" type="UNION" id="{imf:plugin-get-link-name(.,'global')}">
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-UNION')"/>
             </content>
@@ -162,7 +162,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-complextype')]">
-        <section name="{imvert:name/@original}" type="DATATYPE" id="{imf:plugin-get-link-name(.)}">
+        <section name="{imvert:name/@original}" type="DATATYPE" id="{imf:plugin-get-link-name(.,'global')}">
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-DATATYPE')"/>
             </content>
@@ -176,7 +176,7 @@
         <xsl:variable name="naam" select="imvert:name/@original"/>
         <part>
             <item>
-                <xsl:sequence select="imf:create-idref(.)"/>
+                <xsl:sequence select="imf:create-idref(.,'detail')"/>
                 <xsl:sequence select="imf:create-content($naam)"/>          
             </item>
             <xsl:sequence select="imf:create-element('item',imf:get-tagged-value(.,'CFG-TV-DEFINITION'))"/>
@@ -185,7 +185,7 @@
 
     <!-- uitzondering: gegevensgroeptype wordt apart getoond. -->
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')]">
-        <section name="{imvert:name/@original}" type="COMPOSITE" id="{imf:plugin-get-link-name(.)}">
+        <section name="{imvert:name/@original}" type="COMPOSITE" id="{imf:plugin-get-link-name(.,'global')}">
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-COMPOSITE')"/>
             </content>
@@ -251,7 +251,7 @@
     <xsl:template match="imvert:attribute" mode="short">
        <xsl:variable name="type" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
        <part>
-         <xsl:sequence select="imf:create-element('item',imf:create-link(.,'global',imvert:name/@original))"/> 
+         <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imvert:name/@original))"/> 
          <xsl:sequence select="imf:create-element('item',imf:get-tagged-value(.,'CFG-TV-DEFINITION'))"/>
          <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-translate-i3n(imf:plugin-splice(imvert:baretype),false())))"/>
          <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
@@ -261,7 +261,7 @@
     <xsl:template match="imvert:attribute" mode="gegevensgroeptype">
        <xsl:variable name="type" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
        <part type="COMPOSED">
-          <xsl:sequence select="imf:create-element('item',imf:create-link(.,'global',imvert:name/@original))"/>
+          <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imvert:name/@original))"/>
            <xsl:sequence select="imf:create-element('item',imf:get-tagged-value(.,'CFG-TV-DEFINITION'))"/>
            <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-translate-i3n(imf:plugin-splice(imvert:baretype),false())))"/>
           <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
@@ -271,7 +271,7 @@
     <xsl:template match="imvert:association" mode="gegevensgroeptype-as-attribute">
        <xsl:variable name="type" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
         <part type="COMPOSED">
-           <xsl:sequence select="imf:create-element('item',imf:create-link(.,'global',imvert:name/@original))"/>
+           <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imvert:name/@original))"/>
             <xsl:sequence select="imf:create-element('item',imf:get-tagged-value(.,'CFG-TV-DEFINITION'))"/>
             <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-translate-i3n(imvert:type-name/@original,false())))"/>
            <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
@@ -283,7 +283,7 @@
         <xsl:variable name="type" select="imf:get-construct-by-id(imvert:type-id)"/>
        <part type="COMPOSER">
           <item>
-             <xsl:sequence select="imf:create-element('value',imf:create-link($type,'global',imvert:name/@original))"/>
+             <xsl:sequence select="imf:create-element('value',imf:create-link($type,'detail',imvert:name/@original))"/>
           </item>
           <item>
               <xsl:sequence select="imf:create-element('value',imf:get-tagged-value($type,'CFG-TV-DEFINITION'))"/>
@@ -324,7 +324,7 @@
                 -->
               <xsl:sequence select="imf:create-element('item',string(../../imvert:name/@original))"/>
               <xsl:sequence select="imf:create-element('item',('[',imf:get-cardinality(imvert:min-occurs-source,imvert:max-occurs-source),']'))"/>
-              <xsl:sequence select="imf:create-element('item',imf:create-link(.,'global',imvert:name/@original))"/>
+              <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imvert:name/@original))"/>
               <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imvert:type-name/@original))"/>
               <xsl:sequence select="imf:create-element('item',('[',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs),']'))"/>
             </item>
@@ -354,7 +354,7 @@
     
     <!-- Stel detailinfo samen voor een objecttype, relatieklasse, enumeratie -->
     <xsl:template match="imvert:class" mode="detail">
-        <section name="{imvert:name/@original}" type="{imvert:stereotype[1]}" id="{imf:plugin-get-link-name(.)}">
+        <section name="{imvert:name/@original}" type="{imvert:stereotype[1]}" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
            
             <xsl:variable name="associations" select="imvert:associations/imvert:association"/>
             <xsl:variable name="compositions" select="$associations[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-association-to-composite')]"/>
@@ -371,7 +371,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-enumeration')]" mode="detail">
-        <section name="{imvert:name/@original}" type="DETAIL-ENUMERATION" id="{imf:plugin-get-link-name(.)}">
+        <section name="{imvert:name/@original}" type="DETAIL-ENUMERATION" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
             <content>
                 <part>
                     <xsl:sequence select="imf:create-element('item',imf:plugin-translate-i3n('DEFINITIE',true()))"/>
@@ -389,7 +389,7 @@
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')]" mode="detail">
         
-        <section name="{imvert:name/@original}" type="DETAIL-COMPOSITE" id="{imf:plugin-get-link-name(.)}">
+        <section name="{imvert:name/@original}" type="DETAIL-COMPOSITE" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-COMPOSITE')"/>
             </content>
@@ -429,7 +429,7 @@
     <xsl:template match="imvert:attribute" mode="detail-normal">
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="is-afleidbaar-text" select="if (imf:boolean(imvert:is-value-derived)) then 'Ja' else 'Nee'"/>
-        <section name="{imvert:name/@original}" type="DETAIL-ATTRIBUTE" id="{imf:plugin-get-link-name(.)}">
+        <section name="{imvert:name/@original}" type="DETAIL-ATTRIBUTE" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-ATTRIBUTE')"/>
             </content>
@@ -448,7 +448,7 @@
     <xsl:template match="imvert:attribute" mode="detail-gegevensgroeptype">
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="is-identifying" select="imf:boolean(imvert:is-id)"/>
-        <section name="{imvert:name/@original}" type="DETAIL-COMPOSITE-ATTRIBUTE" id="{imf:plugin-get-link-name(.)}">
+        <section name="{imvert:name/@original}" type="DETAIL-COMPOSITE-ATTRIBUTE" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
             <content>
                 <part type="COMPOSER">
                     <xsl:sequence select="imf:create-link($construct,'global', $construct/imvert:name/@original)"/>
@@ -462,7 +462,7 @@
     <xsl:template match="imvert:attribute" mode="detail-referentie-element">
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="is-identifying" select="imf:boolean(imvert:is-id)"/>
-        <section name="{imvert:name/@original}" type="DETAIL-REFERENCEELEMENT" id="{imf:plugin-get-link-name(.)}">
+        <section name="{imvert:name/@original}" type="DETAIL-REFERENCEELEMENT" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-REFERENCEELEMENT')"/>
             </content>
@@ -473,7 +473,7 @@
     
     <xsl:template match="imvert:attribute" mode="detail-unionelement">
         <xsl:variable name="construct" select="../.."/>
-        <section name="{imvert:name/@original}" type="DETAIL-UNIONELEMENT" id="{imf:plugin-get-link-name(.)}">
+        <section name="{imvert:name/@original}" type="DETAIL-UNIONELEMENT" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-UNIONELEMENT')"/>
             </content>
@@ -484,7 +484,7 @@
     <xsl:template match="imvert:attribute" mode="detail-dataelement">
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="is-afleidbaar-text" select="if (imf:boolean(imvert:is-value-derived)) then 'Ja' else 'Nee'"/>
-        <section name="{imvert:name/@original}" type="DETAIL-DATAELEMENT" id="{imf:plugin-get-link-name(.)}">
+        <section name="{imvert:name/@original}" type="DETAIL-DATAELEMENT" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-DATAELEMENT')"/>
             </content>
@@ -506,7 +506,7 @@
     
     <xsl:template match="imvert:association" mode="detail-normal">
      
-        <section name="{imvert:name/@original}" type="DETAIL-ASSOCIATION" id="{imf:plugin-get-link-name(.)}">
+        <section name="{imvert:name/@original}" type="DETAIL-ASSOCIATION" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-ASSOCIATION')"/>
             </content>
@@ -517,7 +517,7 @@
     <xsl:template match="imvert:association" mode="detail-gegevensgroeptype">
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
-        <section name="{imvert:name/@original}" type="DETAIL-COMPOSITE-ASSOCIATION" id="{imf:plugin-get-link-name(.)}">
+        <section name="{imvert:name/@original}" type="DETAIL-COMPOSITE-ASSOCIATION" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
             <content>
                 <part type="COMPOSER">
                     <xsl:sequence select="imf:create-link($construct,'global', $construct/imvert:name/@original)"/>
@@ -820,7 +820,7 @@
         <xsl:param name="type"/>
         <xsl:param name="label"/>
         <item type="{$type}">
-            <xsl:sequence select="imf:create-idref($this)"/>
+            <xsl:sequence select="imf:create-idref($this,$type)"/>
             <xsl:sequence select="imf:create-content($label)"/>
         </item>
     </xsl:function>
@@ -847,8 +847,9 @@
     
     <xsl:function name="imf:create-idref">
         <xsl:param name="construct"/>
+        <xsl:param name="type"/><!-- global or detail -->
         <xsl:if test="exists($construct)">
-            <xsl:attribute name="idref" select="imf:plugin-get-link-name($construct)"/>
+            <xsl:attribute name="idref" select="imf:plugin-get-link-name($construct,$type)"/>
         </xsl:if>
     </xsl:function>
     
@@ -884,7 +885,8 @@
     
     <xsl:function name="imf:plugin-get-link-name">
         <xsl:param name="this"/>
-        <xsl:sequence select="generate-id($this)"/>
+        <xsl:param name="type"/> <!-- global or detail -->
+        <xsl:sequence select="concat($type,'_',generate-id($this))"/>
     </xsl:function>
     
     <!-- 

@@ -171,6 +171,8 @@
         
         <!-- is this the application package? -->
         <xsl:variable name="is-root-package" select="@name = $application-package-name"/>
+
+        <xsl:sequence select="if ($is-root-package) then imf:set-config-string('appinfo','application-alias',imf:get-alias(.,'P')) else ()"/>
         
         <imvert:package>
             <xsl:sequence select="imf:create-output-element('imvert:is-root-package',if ($is-root-package) then 'true' else ())"/>

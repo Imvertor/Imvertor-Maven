@@ -20,6 +20,7 @@
 
 package nl.imvertor.OfficeCompiler;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
@@ -67,6 +68,10 @@ public class OfficeCompiler extends Step {
 			runner.info(logger,"Creating documentation");
 			Transformer transformer = new Transformer();
 			
+			String template = configurator.getParm("cli","officename");
+			String fn = StringUtils.lowerCase(configurator.mergeParms(template));
+			configurator.setParm("appinfo", "office-documentation-filename", fn);
+			
 			boolean succeeds = true;
 			
 			// creates an XML modeldoc intermediate file which is the basis for output
@@ -75,12 +80,10 @@ public class OfficeCompiler extends Step {
 			succeeds = succeeds ? transformer.transformStep("properties/WORK_MODELDOC_FILE","properties/WORK_OFFICE_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_OFFICE_XSLPATH") : false;
 			
 			if (succeeds) {
-				// simply copy the html file as this is identical to the requested HTML
-				String fn = "office.html";
 				AnyFile infoOfficeFile = new AnyFile(configurator.getParm("properties","WORK_OFFICE_FILE"));
-				AnyFile officeFile = new AnyFile(configurator.getParm("system","work-etc-folder-path") + "/" + fn);
+				AnyFile officeFile = new AnyFile(configurator.getParm("system","work-etc-folder-path") + "/" + fn + ".html");
+				
 				infoOfficeFile.copyFile(officeFile);
-				configurator.setParm("appinfo", "office-documentation-filename", fn);
 				
 				// see if this result should be sent on to FTP
 				String target = configurator.getParm("cli", "passoffice",false);
@@ -90,9 +93,9 @@ public class OfficeCompiler extends Step {
 					String passuser = configurator.getParm("cli", "passuser");
 					String passpass = configurator.getParm("cli", "passpass");
 					
-					String targetpath = "ftp://" + passftp + passpath;
+					String targetpath = "ftp://" + passftp + passpath + officeFile.getName();
 					
-					runner.info(logger, "Uploading office HTML");
+					runner.info(logger, "Uploading office HTML as " + officeFile.getName());
 					
 					FtpFolder ftpFolder = new FtpFolder();
 					
@@ -107,9 +110,9 @@ public class OfficeCompiler extends Step {
 	
 					try {
 						ftpFolder.login();
-						ftpFolder.upload(officeFile.getCanonicalPath(),passpath);
+						ftpFolder.upload(officeFile.getCanonicalPath(),passpath + officeFile.getName());
 						ftpFolder.logout();
-					} catch (Exception e) {
+				    } catch (Exception e) {
 						runner.warn(logger, "Cannot upload office HTML to " + targetpath);
 					}
 				}

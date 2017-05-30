@@ -1186,5 +1186,30 @@ public class Configurator {
 	public boolean isEaEnabled() {
 		return eaEnabled;
 	}
-
+	/**
+	 * Merge parameters into a string, parameters taken from appinfo section of the parms.xml.
+	 * 
+	 * @param template
+	 * @return
+	 */
+	public String mergeParms(String template) {
+		String[] parts = StringUtils.splitPreserveAllTokens(template,"[]");
+		String releasename = "";
+		for (int i = 0; i < parts.length; i++) {
+			if (i % 2 == 0) { // even locations are strings
+				releasename += parts[i];
+			} else 
+				if (!parts[i].equals("")) { // uneven are names
+					try {
+						// this is a name, extract from declared application parameters
+						String val = getParm("appinfo", parts[i],false);
+						if (val == null) val = "[" + parts[i] + "]";
+						releasename += val;
+					} catch (Exception e) {
+						releasename += parts[i];
+					}
+			}
+		}
+		return StringUtils.replacePattern(releasename, "[^A-Za-z0-9_\\-.]", "");
+	}
 }

@@ -215,9 +215,12 @@
                 <xsl:sequence select="imf:report-warning($client,$supplier-is-string and $client/imvert:pattern and $supplier/imvert:pattern and not($client/imvert:pattern eq $supplier/imvert:pattern),
                     'Client pattern [1] not tested, must denote a subset of supplier pattern [2]',
                     ($client/imvert:pattern,$supplier/imvert:pattern))"/>
+                <!--TODO Task #489055 verbeteren van melding -->
+                <!--x
                 <xsl:sequence select="imf:report-error($client,$supplier-is-string and not($client/imvert:pattern ) and $supplier/imvert:pattern,
                     'Client must specialize or conform to supplier pattern [1]',
                     ($supplier/imvert:pattern))"/>
+                x-->
             </xsl:when>
             <xsl:when test="$client/imvert:type-name = 'scalar-integer'">
                 <xsl:sequence select="imf:report-error($client,not($supplier-is-int),

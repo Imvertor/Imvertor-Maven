@@ -25,6 +25,8 @@ import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
+import nl.imvertor.common.xsl.extensions.ImvertorStripAccents;
+import nl.imvertor.common.xsl.extensions.ImvertorValidateRegex;
 
 
 /**
@@ -55,6 +57,7 @@ public class Validator extends Step {
 				
 		// create a transformer
 		Transformer transformer = new Transformer();
+		transformer.setExtensionFunction(new ImvertorValidateRegex());
 		    
 	    // transform 
 		boolean succeeds = true;
@@ -100,7 +103,7 @@ public class Validator extends Step {
 		
 		// system/resolved-release-name
 		String template = configurator.getParm("cli","releasename");
-		configurator.setParm("appinfo","release-name",mergeParms(template),true);
+		configurator.setParm("appinfo","release-name",configurator.mergeParms(template),true);
 		
 		// we now know the application name and should show it. 
 		runner.info(logger, "Compiled name: " + configurator.getParm("appinfo","release-name"));
@@ -116,24 +119,5 @@ public class Validator extends Step {
 			 
 	}
 	
-	private String mergeParms(String template) {
-		String[] parts = StringUtils.splitPreserveAllTokens(template,"[]");
-		String releasename = "";
-		for (int i = 0; i < parts.length; i++) {
-			if (i % 2 == 0) { // even locations are strings
-				releasename += parts[i];
-			} else 
-				if (!parts[i].equals("")) { // uneven are names
-					try {
-						// this is a name, extract from declared application parameters
-						String val = configurator.getParm("appinfo", parts[i],false);
-						if (val == null) val = "[" + parts[i] + "]";
-						releasename += val;
-					} catch (Exception e) {
-						releasename += parts[i];
-					}
-			}
-		}
-		return StringUtils.replacePattern(releasename, "[^A-Za-z0-9_\\-.]", "");
-	}
+	
 }

@@ -30,6 +30,12 @@
          <required>false</required>
       </cli-parm> 
       <cli-parm>
+         <name>officename</name>
+         <arg>template</arg>
+         <tip>Name of the office result document file. You may use [...] parameters.</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
          <name>createofficemode</name>
          <arg>plain|click</arg>
          <tip>When creating office, use plain or clickable mode.</tip>

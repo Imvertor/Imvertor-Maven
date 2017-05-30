@@ -41,6 +41,7 @@
     
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
+    <xsl:import href="../common/extension/Imvert-common-regex.xsl"/>
     
     <xsl:variable name="release-pattern">^(\d{8})$</xsl:variable>
     <xsl:variable name="phase-pattern">^(0|1|2|3)$</xsl:variable>
@@ -718,7 +719,13 @@
             imvert:pattern and exists($defining-class) and not($defining-class/imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-datatype','stereotype-name-enumeration'))), 
             'A pattern as been defined on an attribute that is not a scalar type, datatype or enumeration')"/>
         -->
-        
+       
+        <xsl:variable name="pat" select="imvert:pattern"/>
+        <xsl:variable name="pat-msg" select="if (normalize-space($pat)) then imf:validate-regex($pat) else ''"/>
+        <xsl:sequence select="imf:report-error(., 
+            normalize-space($pat-msg), 
+            'Invalid regex [1]: [2]', ($pat, $pat-msg))"/>
+  
         <xsl:sequence select="imf:report-error(., 
             (imvert:is-id = 'true' and empty($superclasses/imvert:stereotype = imf:get-config-stereotypes($stereos))), 
             'Only classes stereotyped as [1] may have or inherit an attribute that is an ID',string-join($stereos,' or '))"/>
