@@ -259,8 +259,12 @@
             </xsl:when>
             <xsl:when test="$scheme = 'element-name'">
                 <!-- the name of an element may not contain * or ? or the like -->
-                <xsl:variable name="translated-name" select="imf:extract(normalize-space(translate($name, '/', '-')),'[A-Za-z0-9_:][A-Za-z0-9_\.\-:]+')"/>
-                <xsl:value-of select="concat(lower-case(substring($translated-name,1,1)),substring($translated-name,2,string-length($translated-name)-1))"/>
+                <!--xsl:variable name="translated-name" select="imf:extract(normalize-space(translate($name, '/', '-')),'[A-Za-z0-9_:][A-Za-z0-9_\.\-:]+')"/>
+                <xsl:value-of select="concat(lower-case(substring($translated-name,1,1)),substring($translated-name,2,string-length($translated-name)-1))"/-->
+
+
+                <xsl:variable name="translated-name" select="imf:extract(translate($name, '/', '-'),'[A-Za-z0-9_:][A-Za-z0-9_\s\.\-:]+')"/>
+                <xsl:value-of select="imf:get-normalized-name-sub($translated-name,'E',true())"/>
             </xsl:when>
             <xsl:when test="$scheme = 'type-name'">
                 <xsl:variable name="nameWithoutType">
@@ -287,10 +291,11 @@
     <xsl:variable name="naming-convention-class" select="($configuration-metamodel-file//naming/class/format)[last()]"/>
     <xsl:variable name="naming-convention-property" select="($configuration-metamodel-file//naming/property/format)[last()]"/>
     <xsl:variable name="naming-convention-tv" select="($configuration-metamodel-file//naming/tv/format)[last()]"/>
+    <xsl:variable name="naming-convention-element" select="($configuration-metamodel-file//naming/element/format)[last()]"/>
     
     <xsl:function name="imf:get-normalized-name-sub" as="xs:string">
         <xsl:param name="name-as-found" as="xs:string"/>
-        <xsl:param name="name-type" as="xs:string"/> <!-- P(ackage), C(lass), p(R)operty), (T)agged value name -->
+        <xsl:param name="name-type" as="xs:string"/> <!-- P(ackage), C(lass), p(R)operty), (T)agged value, (E)lement name -->
         <xsl:param name="metamodel-based" as="xs:boolean"/> <!-- when metamodel, then stricter rules; otherwise return an XML schema valid form -->
         
         <xsl:variable name="naming-convention" select="
@@ -298,6 +303,7 @@
             else if ($name-type = 'C')  then $naming-convention-class 
             else if ($name-type = 'R')  then $naming-convention-property
             else if ($name-type = 'T')  then $naming-convention-tv
+            else if ($name-type = 'E')  then $naming-convention-element
             else '#unknown'
             "/>
         

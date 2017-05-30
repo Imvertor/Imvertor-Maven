@@ -49,12 +49,6 @@
     <xsl:template match="ep:message-set" mode="patch">
         <xsl:sequence select="imf:create-debug-comment('Debuglocation 3000',$debugging)"/>
 
-        <!--ep:constructRef prefix="StUF" ismetadata="yes">
-            <ep:name>patch</ep:name>
-            <ep:tech-name>patch</ep:tech-name>
-            <ep:min-occurs>1</ep:min-occurs>
-            <ep:href>patch</ep:href>
-        </ep:constructRef-->
         <xsl:for-each-group select="/ep:message-set/ep:*[(name() = 'ep:message' or name() = 'ep:construct')]" group-by="@prefix">
             <xsl:variable name="groupPrefix" select="current-grouping-key()"/>
             <xsl:sequence select="imf:create-debug-comment('Debuglocation 3001',$debugging)"/>
@@ -149,12 +143,81 @@
                                               local-name()!='externalNamespace' and
                                               local-name()!='context' and
                                               local-name()!='berichtCode' and
-                                              local-name()!='berichtName']|text()"></xsl:apply-templates>
+                                              local-name()!='berichtName']|text()"/>
         </xsl:copy>
     </xsl:template>
 
+    <xsl:template match="ep:message-set/ep:construct">
+        <xsl:variable name="prefix" select="@prefix"/>
+        <xsl:variable name="tech-name" select="ep:tech-name"/>
+       <xsl:choose>
+           <xsl:when test="count(//ep:constructRef[@prefix = $prefix and ep:tech-name = $tech-name]) > 0">
+               <xsl:sequence select="imf:create-debug-comment('Debuglocation 3007',$debugging)"/>
+               <xsl:copy>
+                   <xsl:apply-templates select="*|@*[local-name()!='namespaceId' and 
+                       local-name()!='type' and 
+                       local-name()!='externalNamespace' and
+                       local-name()!='context' and
+                       local-name()!='berichtCode' and
+                       local-name()!='berichtName']|text()"/>
+               </xsl:copy>
+           </xsl:when>
+           <xsl:when test="count(//ep:superconstructRef[@prefix = $prefix and ep:tech-name = $tech-name]) > 0">
+               <xsl:sequence select="imf:create-debug-comment('Debuglocation 3008',$debugging)"/>
+               <xsl:copy>
+                   <xsl:apply-templates select="*|@*[local-name()!='namespaceId' and 
+                       local-name()!='type' and 
+                       local-name()!='externalNamespace' and
+                       local-name()!='context' and
+                       local-name()!='berichtCode' and
+                       local-name()!='berichtName']|text()"/>
+               </xsl:copy>
+           </xsl:when>
+           <xsl:when test="@isdatatype = 'yes' and count(//ep:construct[ep:type-name = concat($StUF-prefix,':',$tech-name)]) > 0">
+               <xsl:variable name="construct" select="//ep:construct[ep:type-name = concat($StUF-prefix,':',$tech-name)][1]"/>
+               <xsl:variable name="prefix2" select="$construct/@prefix"/>
+               <xsl:variable name="tech-name2" select="$construct/ep:tech-name"/>
+               <xsl:choose>
+                   <xsl:when test="count(//ep:constructRef[@prefix = $prefix2 and ep:tech-name = $tech-name2]) > 0">
+                       <xsl:sequence select="imf:create-debug-comment('Debuglocation 3009',$debugging)"/>
+                       <xsl:copy>
+                           <xsl:apply-templates select="*|@*[local-name()!='namespaceId' and 
+                               local-name()!='type' and 
+                               local-name()!='externalNamespace' and
+                               local-name()!='context' and
+                               local-name()!='berichtCode' and
+                               local-name()!='berichtName']|text()"/>
+                       </xsl:copy>
+                   </xsl:when>
+                   <xsl:when test="count(//ep:construct[ep:type-name = concat($StUF-prefix,':',$tech-name2)]) > 0">
+                       <xsl:sequence select="imf:create-debug-comment('Debuglocation 3010',$debugging)"/>
+                       <xsl:copy>
+                           <xsl:apply-templates select="*|@*[local-name()!='namespaceId' and 
+                               local-name()!='type' and 
+                               local-name()!='externalNamespace' and
+                               local-name()!='context' and
+                               local-name()!='berichtCode' and
+                               local-name()!='berichtName']|text()"/>
+                       </xsl:copy>
+                   </xsl:when>
+               </xsl:choose>
+           </xsl:when>
+           <xsl:when test="count(//ep:construct[ep:type-name = concat($StUF-prefix,':',$tech-name) or (@prefix = $prefix and ep:type-name = $tech-name)]) > 0">
+               <xsl:sequence select="imf:create-debug-comment('Debuglocation 3011',$debugging)"/>
+               <xsl:copy>
+                   <xsl:apply-templates select="*|@*[local-name()!='namespaceId' and 
+                       local-name()!='type' and 
+                       local-name()!='externalNamespace' and
+                       local-name()!='context' and
+                       local-name()!='berichtCode' and
+                       local-name()!='berichtName']|text()"/>
+               </xsl:copy>
+           </xsl:when>
+       </xsl:choose> 
+    </xsl:template>
+    
     <xsl:template match="ep:constructRef[@prefix = 'StUF' and ep:name = 'patch']">
-        <xsl:sequence select="imf:create-debug-comment('Debuglocation 3007',$debugging)"/>
+        <xsl:sequence select="imf:create-debug-comment('Debuglocation 3012',$debugging)"/>
 
         <xsl:copy-of select="$patch"/>    
     </xsl:template>

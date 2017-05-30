@@ -830,10 +830,11 @@
 						</xsl:choose>
 					</xsl:attribute>
 					<xs:simpleType>
+						<xsl:sequence select="imf:create-debug-comment('Debuglocation 5023a', $debugging)"/>
 						<xs:restriction>
 							<xsl:attribute name="base">
 								<xsl:choose>
-									<xsl:when test="ep:type-name = 'scalar-integer'">
+									<!--xsl:when test="ep:type-name = 'scalar-integer'">
 										<xsl:value-of select="'xs:integer'"/>
 									</xsl:when>
 									<xsl:when test="ep:type-name = 'scalar-decimal'">
@@ -847,6 +848,21 @@
 									</xsl:when>
 									<xsl:when test="ep:type-name = 'scalar-boolean'">
 										<xsl:value-of select="'xs:boolean'"/>
+									</xsl:when-->
+									<xsl:when test="ep:data-type = 'scalar-integer'">
+										<xsl:value-of select="'xs:integer'"/>
+									</xsl:when>
+									<xsl:when test="ep:data-type = 'scalar-decimal'">
+										<xsl:value-of select="'xs:decimal'"/>
+									</xsl:when>
+									<xsl:when test="ep:data-type = 'scalar-string'">
+										<xsl:value-of select="'xs:string'"/>
+									</xsl:when>
+									<xsl:when test="ep:data-type = 'scalar-date'">
+										<xsl:value-of select="'xs:dateTime'"/>
+									</xsl:when>
+									<xsl:when test="ep:data-type = 'scalar-boolean'">
+										<xsl:value-of select="'xs:boolean'"/>
 									</xsl:when>
 									<xsl:otherwise>
 										<xsl:value-of select="'xs:string'"/>
@@ -856,11 +872,11 @@
 							</xsl:attribute>
 							<xsl:if test="ep:length">
 								<xsl:choose>
-									<xsl:when test="ep:type-name = 'scalar-string'">
+									<xsl:when test="ep:data-type = 'scalar-string'">
 										<xs:length value="{ep:length}"/>
 									</xsl:when>
 									<xsl:when
-										test="ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal'">
+										test="ep:data-type = 'scalar-integer' or ep:data-type = 'scalar-decimal'">
 										<xs:totalDigits value="{ep:length}"/>
 									</xsl:when>
 								</xsl:choose>
@@ -872,22 +888,22 @@
 								<xs:minLength value="{ep:min-length}"/>
 							</xsl:if>
 							<xsl:if
-								test="ep:min-value and (ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-date')">
+								test="ep:min-value and (ep:data-type = 'scalar-integer' or ep:data-type = 'scalar-decimal' or ep:data-type = 'scalar-date')">
 								<xs:minInclusive value="{ep:min-value}"/>
 							</xsl:if>
 							<xsl:if
-								test="ep:max-value and (ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-date')">
+								test="ep:max-value and (ep:data-type = 'scalar-integer' or ep:data-type = 'scalar-decimal' or ep:data-type = 'scalar-date')">
 								<xs:maxInclusive value="{ep:max-value}"/>
 							</xsl:if>
 							<xsl:if test="ep:fraction-digits">
 								<xs:fractionDigits value="{ep:fraction-digits}"/>
 							</xsl:if>
 							<xsl:if
-								test="ep:enum and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal')">
+								test="ep:enum and (ep:data-type = 'scalar-string' or ep:data-type = 'scalar-date' or ep:data-type = 'scalar-integer' or ep:data-type = 'scalar-decimal')">
 								<xsl:apply-templates select="ep:enum"/>
 							</xsl:if>
 							<xsl:if
-								test="ep:formeel-patroon and (ep:type-name = 'scalar-string' or ep:type-name = 'scalar-date' or ep:type-name = 'scalar-integer' or ep:type-name = 'scalar-decimal' or ep:type-name = 'scalar-boolean')">
+								test="ep:formeel-patroon and (ep:data-type = 'scalar-string' or ep:data-type = 'scalar-date' or ep:data-type = 'scalar-integer' or ep:data-type = 'scalar-decimal' or ep:data-type = 'scalar-boolean')">
 								<xs:pattern value="{ep:formeel-patroon}"/>
 							</xsl:if>
 						</xs:restriction>

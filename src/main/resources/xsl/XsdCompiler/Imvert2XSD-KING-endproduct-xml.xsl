@@ -800,7 +800,7 @@
                                     
                                     <xsl:variable name="historieType" select="'historieMaterieel'"/>
                                     
-                                    <ep:construct berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+                                    <ep:construct berichtCode="{$berichtCode}" berichtName="{$berichtName}" prefix="{$prefix}">
                                         <ep:name>historieMaterieel</ep:name>
                                         <ep:tech-name>historieMaterieel</ep:tech-name>
                                         <ep:max-occurs>unbounded</ep:max-occurs>
@@ -827,7 +827,7 @@
                                     <!-- Location: 'ep:constructRef5'
 						                        Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef5'. -->
                                     
-                                    <ep:construct berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+                                    <ep:construct berichtCode="{$berichtCode}" berichtName="{$berichtName}" prefix="{$prefix}">
                                         <ep:name>historieFormeel</ep:name>
                                         <ep:tech-name>historieFormeel</ep:tech-name>
                                         <ep:max-occurs>unbounded</ep:max-occurs>
@@ -1209,7 +1209,7 @@
 
                                            <xsl:variable name="historieType" select="'historieMaterieel'"/>
                                            
-                                           <ep:construct berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+                                           <ep:construct berichtCode="{$berichtCode}" berichtName="{$berichtName}" prefix="{$prefix}">
                                                <ep:name>historieMaterieel</ep:name>
                                                <ep:tech-name>historieMaterieel</ep:tech-name>
                                                <ep:max-occurs>unbounded</ep:max-occurs>
@@ -1236,7 +1236,7 @@
                                            <!-- Location: 'ep:constructRef5'
 						                        Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef5'. -->
                                            
-                                           <ep:construct berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+                                           <ep:construct berichtCode="{$berichtCode}" berichtName="{$berichtName}" prefix="{$prefix}">
                                                <ep:name>historieFormeel</ep:name>
                                                <ep:tech-name>historieFormeel</ep:tech-name>
                                                <ep:max-occurs>unbounded</ep:max-occurs>

@@ -733,7 +733,7 @@
 		<xsl:variable name="context">
 			<xsl:choose>
 				<xsl:when
-					test="imvert:name = ('gelijk','vanaf','totEnMet')">
+					test="imvert:name = ('gelijk','vanaf','tot en met')">
 					<xsl:value-of select="'selectie'"/>
 				</xsl:when>
 				<xsl:when

@@ -972,7 +972,7 @@
 		<xsl:variable name="context">
 			<xsl:choose>
 				<xsl:when
-					test="imvert:name = 'gelijk' or imvert:name = 'vanaf' or imvert:name = 'totEnMet' or imvert:name = 'start' or imvert:name = 'scope'">
+					test="imvert:name = 'gelijk' or imvert:name = 'vanaf' or imvert:name = 'tot en met' or imvert:name = 'start' or imvert:name = 'scope'">
 						<xsl:value-of select="imvert:name"/>
 				</xsl:when>
 				<xsl:otherwise>-</xsl:otherwise>
@@ -1018,7 +1018,7 @@
 			</xsl:when>
 			<xsl:when test="contains($berichtCode, 'Lv')">
 				<xsl:choose>
-					<xsl:when test="$context = 'gelijk' or $context = 'vanaf' or $context = 'totEnMet'">
+					<xsl:when test="$context = 'gelijk' or $context = 'vanaf' or $context = 'tot en met'">
 						<xsl:sequence select="imf:create-debug-comment('Debuglocation 1022',$debugging)"/>
 						
 						<!-- Location: 'ep:constructRefxxx'
@@ -1028,14 +1028,14 @@
 							<xsl:variable name="alias" select="key('class',$type-id)/imvert:alias"/>
 							
 							<xsl:sequence select="imf:create-output-element('ep:name', imvert:name)"/>
-							<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)"/>
+							<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name(imvert:name, 'element-name'))"/>
 							<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
 							<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
 							<ep:position>
 								<xsl:choose>
 									<xsl:when test="imvert:name = 'gelijk'">100</xsl:when>
 									<xsl:when test="imvert:name = 'vanaf'">125</xsl:when>
-									<xsl:when test="imvert:name = 'totEnMet'">150</xsl:when>
+									<xsl:when test="imvert:name = 'tot en met'">150</xsl:when>
 								</xsl:choose>
 							</ep:position>
 							<xsl:choose>
@@ -1431,7 +1431,8 @@
 								class with the name 'Stuurgegevens', 'Systeem' or 'Parameters' mustn't get 
 								XML attributes. -->
 						<xsl:if
-							test="imvert:name != 'melding' and ancestor::imvert:class[imvert:name != 'Stuurgegevens'] and ancestor::imvert:class[imvert:name != 'Systeem'] and ancestor::imvert:class[imvert:name != 'Parameters']">
+							test="imvert:name != 'melding' and ancestor::imvert:class[imvert:name != 'Stuurgegevens'] and ancestor::imvert:class[imvert:name != 'Systeem'] 
+								  and ancestor::imvert:class[imvert:name != 'EntiteittypeStuurgegevens'] and ancestor::imvert:class[imvert:name != 'Parameters']">
 							<ep:seq>
 								<!-- The function imf:createAttributes is used to determine the XML 
 										attributes neccessary for this context. It has the following parameters: 
@@ -2412,13 +2413,11 @@
 							<xsl:otherwise/>
 						</xsl:choose>
 						<xsl:choose>
-							<!--xsl:when test="imvert:name != 'parameters' and imvert:name != 'stuurgegevens' and imvert:name != 'ontvanger' and imvert:name != 'zender' and $verwerkingsModusOfConstructRef != ''"-->
 							<xsl:when test="ancestor::imvert:package[not(contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen'))] and $verwerkingsModusOfConstructRef != ''">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056a',$debugging)"/>
 								<xsl:variable name="type-name"><xsl:value-of select="imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name,$verwerkingsModusOfConstructRef)"/></xsl:variable>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
 							</xsl:when>
-							<!--xsl:when test="imvert:name != 'parameters' and imvert:name != 'stuurgegevens' and imvert:name != 'ontvanger' and imvert:name != 'zender' and $verwerkingsModusOfConstructRef = ''"-->
 							<xsl:when test="ancestor::imvert:package[not(contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen'))] and $verwerkingsModusOfConstructRef = ''">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056b',$debugging)"/>
 								<xsl:variable name="type-name"><xsl:value-of select="imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name)"/></xsl:variable>
@@ -2428,6 +2427,10 @@
 							<xsl:when test="ancestor::imvert:package[contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen')] and (imvert:name = 'ontvanger' or imvert:name = 'zender')">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056c',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', 'Systeem')"/>
+							</xsl:when>
+							<xsl:when test="ancestor::imvert:package[contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen')] and (imvert:name = 'entiteittype')">
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056c',$debugging)"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', 'EntiteittypeStuurgegevens')"/>
 							</xsl:when>
 							<xsl:when test="ancestor::imvert:package[contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen')]">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056d',$debugging)"/>
@@ -3309,8 +3312,9 @@
 		<xsl:param name="this"/>
 		<xsl:for-each select="$this//imvert:documentation">
 			<xsl:sort select="@level" data-type="number" order="descending"/>
-			<xsl:copy-of select="xhtml:p"/>
+			<!--xsl:copy-of select="xhtml:p"/-->
 			<!--xsl:copy-of select="p"/-->
+			<xsl:copy-of select="*"/>
 		</xsl:for-each>
 	</xsl:function>
 

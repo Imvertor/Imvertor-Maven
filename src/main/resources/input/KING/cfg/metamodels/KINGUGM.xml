@@ -62,6 +62,9 @@
         <tv>
             <format>AsIs</format>
         </tv>
+        <element>
+            <format>LowerCamel</format>
+        </element>
     </naming>
     
     <stereotypes xml:id="stereotypes">

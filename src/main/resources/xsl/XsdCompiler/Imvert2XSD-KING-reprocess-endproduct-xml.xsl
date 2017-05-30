@@ -93,7 +93,16 @@
             <xsl:when test="@ismetadata='yes' and (($procesType='splitting' and $kv-prefix = $actualPrefix) or $procesType!='splitting')">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 2004',$debugging)"/>
                 
-                <xsl:copy-of select="."/>
+                <!-- ROME: Op de eoa wijze krijgt de parameter 'actualPrefix' van dit template niet de correcte waarde mee.
+                           Vandaar dat ik hieronder een nieuwe variabele aanmaak. -->
+                <xsl:variable name="actualPrefix2" select="ancestor::ep:construct[parent::ep:message-set]/@prefix"/>
+ 
+                <ep:constructRef>
+                    <xsl:apply-templates select="@prefix">
+                        <xsl:with-param name="actualPrefix" select="$actualPrefix2"/>
+                    </xsl:apply-templates>
+                    <xsl:apply-templates select="*|@*[not(name()='prefix')]"/>
+                </ep:constructRef>
             </xsl:when>
             <xsl:when test="not(@ismetadata='yes') and $procesType='splitting' and (@prefix = $actualPrefix or @prefix = '$actualPrefix')">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 2005',$debugging)"/>
@@ -545,7 +554,7 @@
             <xsl:copy-of select="."/>
         </xsl:if>
     </xsl:template>
-    
+
     <xsl:template match="@prefix">
         <xsl:param name="actualPrefix"/>
         <xsl:choose>
@@ -553,7 +562,9 @@
                 <xsl:copy-of select="."/>
             </xsl:when>
             <xsl:when test=". = '$actualPrefix'">
-                <xsl:attribute name="prefix" select="$actualPrefix"/>
+                <!--xsl:attribute name="prefix" select="$actualPrefix"/-->
+                <xsl:variable name="prefix" select="ancestor::ep:construct[parent::ep:message-set]/@prefix"/>
+                <xsl:attribute name="prefix" select="$prefix"/>
             </xsl:when>
             <xsl:when test=". != '$actualPrefix' and . != $actualPrefix">
                 <xsl:attribute name="prefix" select="$actualPrefix"/>
