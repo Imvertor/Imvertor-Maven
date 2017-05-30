@@ -24,6 +24,7 @@
        <entry name="String1" base="scalar-string_1" facet="___" state="E"/>
        <entry name="String10" base="scalar-string_10" facet="___" state="E"/>
        <entry name="String10_P1" base="scalar-string_10" facet="[0-9]{10}___" state="E"/>
+       <entry name="String10_P2" base="scalar-string_10" facet="^[0-9]{10}$___" state="E"/>
        <entry name="String100" base="scalar-string_100" facet="___" state="E"/>
        <entry name="String11" base="scalar-string_11" facet="___" state="E"/>
        <entry name="String11_P1" base="scalar-string_11" facet="[0-9]{1,5}-[0-9]{1,5}___" state="E"/>
@@ -31,6 +32,7 @@
        <entry name="String17_P1" base="scalar-string_17" facet="[0-9]{17}___" state="E"/>
        <entry name="String1_P1" base="scalar-string_1" facet="[a-zA-Z]___" state="E"/>
        <entry name="String1_P2" base="scalar-string_1" facet="j?___" state="E"/>
+       <entry name="String1_P3" base="scalar-string_1" facet="^[a-zA-Z]{1}$___" state="E"/>
        <entry name="String2" base="scalar-string_2" facet="___" state="E"/>
        <entry name="String20" base="scalar-string_20" facet="___" state="E"/>
        <entry name="String200" base="scalar-string_200" facet="___" state="E"/>
@@ -51,6 +53,8 @@
        <entry name="String4_P1" base="scalar-string_4" facet="[0-9]{1,4}___" state="E"/>
        <entry name="String4_P2" base="scalar-string_4" facet="[a-zA-Z0-9]{0,4}___" state="E"/>
        <entry name="String4_P3" base="scalar-string_4" facet="[0-9]{4}___" state="E"/>
+       <entry name="String4_P4" base="scalar-string_4" facet="^[0-9a-zA-Z]{1,4}$___" state="E"/>
+       <entry name="String4_P5" base="scalar-string_4" facet="^[0-9]{4}$___" state="E"/>
        <entry name="String5" base="scalar-string_5" facet="___" state="E"/>
        <entry name="String50" base="scalar-string_50" facet="___" state="E"/>
        <entry name="String500" base="scalar-string_500" facet="___" state="E"/>
@@ -58,13 +62,14 @@
        <entry name="String60" base="scalar-string_60" facet="___" state="E"/>
        <entry name="String625" base="scalar-string_625" facet="___" state="E"/>
        <entry name="String6_P1" base="scalar-string_6" facet="[0-9]{6}___" state="E"/>
+       <entry name="String6_P2" base="scalar-string_6" facet="^[1-9][0-9]{3}[A-Z]{2}$___" state="E"/>
        <entry name="String80" base="scalar-string_80" facet="___" state="E"/>
        <entry name="String8_P1" base="scalar-string_8" facet="[0-9]{8}___" state="E"/>
        <entry name="String9" base="scalar-string_9" facet="___" state="E"/>
        <entry name="String9_P1" base="scalar-string_9" facet="[0-9]{9}___" state="E"/>
        <entry name="String9_P2" base="scalar-string_9" facet="[0-9]{9}|\s{0}___" state="E"/>
        <entry name="String_P2" base="scalar-string_" facet="([A-Za-z0-9_\-,\.])+___" state="E"/>
-       
+
        <entry name="Uri" base="scalar-uri_" facet="___" state="E"/>
        
        <entry name="Year" base="scalar-year_" facet="___" state="E"/>
@@ -83,8 +88,10 @@
        <entry name="Integer3" base="scalar-integer_3" facet="___" state="E"/>
        <entry name="Integer4" base="scalar-integer_4" facet="___" state="E"/>
        <entry name="Integer5_P1" base="scalar-integer_5" facet="__1_99999" state="E"/>
+       <entry name="Integer5_P2" base="scalar-integer_5" facet="^[1-9][0-9]{0,4}$___" state="E"/>
        <entry name="Integer5" base="scalar-integer_5" facet="___" state="E"/>
        <entry name="Integer6_P1" base="scalar-integer_6" facet="__0_999999" state="E"/>
+       <entry name="Integer6" base="scalar-integer_6" facet="___" state="E"/>
        <entry name="Integer8" base="scalar-integer_8" facet="___" state="E"/>
 
-</simpletype-checksum>
+ </simpletype-checksum>
