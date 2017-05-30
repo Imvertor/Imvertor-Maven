@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <simpletype-checksum xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:UML="omg.org/UML1.3" xmlns:imvert="http://www.imvertor.org/schema/system" xmlns:imf="http://www.imvertor.org/xsl/functions" date="2017-05-04+01:00" subpath="UGM-UGMBG-0.0.0-1-20161010-20170504-124405" version="Imvertor OS 1.19.2.20170502" jobid="unspecified-job">
+       
        <entry name="Boolean" base="scalar-boolean_" facet="___" state="E"/>
        <entry name="Boolean_1" base="scalar-boolean_" facet="j|\s{0}___" state="E"/>
+       
        <entry name="Date" base="scalar-date_" facet="___" state="E"/>
+       
        <entry name="Datetime" base="scalar-datetime_" facet="___" state="E"/>
+       
        <entry name="Decimal12_2_P1" base="scalar-decimal_12_2" facet="__0_" state="E"/>
        <entry name="Decimal12_2_P2" base="scalar-decimal_12_2" facet="__0_9999999999" state="E"/>
        <entry name="Decimal20_2" base="scalar-decimal_20_2" facet="___" state="E"/>
        <entry name="Decimal4_1_P1" base="scalar-decimal_4_1" facet="__-90_90" state="E"/>
+       
        <entry name="Postcode" base="scalar-postcode_" facet="___" state="E"/>
+       
        <entry name="String" base="scalar-string_" facet="___" state="E"/>
+       <entry name="String_P1" base="scalar-string_" facet="^[a-zA-Z]{1}$___" state="E"/>
+       <entry name="String_P2" base="scalar-string_" facet="^[0-9a-zA-Z]{1,4}$___" state="E"/>
+       <entry name="String_P3" base="scalar-string_" facet="^[1-9][0-9]{3}[A-Z]{2}$___" state="E"/>
+       <entry name="String_P4" base="scalar-string_" facet="^[0-9]{4}$___" state="E"/>
+       <entry name="String_P5" base="scalar-string_" facet="^[0-9]{10}$___" state="E"/>
        <entry name="String1" base="scalar-string_1" facet="___" state="E"/>
        <entry name="String10" base="scalar-string_10" facet="___" state="E"/>
        <entry name="String10_P1" base="scalar-string_10" facet="[0-9]{10}___" state="E"/>
@@ -53,9 +64,15 @@
        <entry name="String9_P1" base="scalar-string_9" facet="[0-9]{9}___" state="E"/>
        <entry name="String9_P2" base="scalar-string_9" facet="[0-9]{9}|\s{0}___" state="E"/>
        <entry name="String_P2" base="scalar-string_" facet="([A-Za-z0-9_\-,\.])+___" state="E"/>
+       
        <entry name="Uri" base="scalar-uri_" facet="___" state="E"/>
+       
        <entry name="Year" base="scalar-year_" facet="___" state="E"/>
+       
        <entry name="_" base="_" facet="___" state="E"/>
+       
+       <entry name="Integer" base="scalar-integer_" facet="___" state="E"/>
+       <entry name="Integer_P1" base="scalar-integer_" facet="^[1-9][0-9]{0,4}$___" state="E"/>
        <entry name="Integer1" base="scalar-integer_1" facet="___" state="E"/>
        <entry name="Integer11" base="scalar-integer_11" facet="__0_" state="E"/>
        <entry name="Integer12" base="scalar-integer_12" facet="__-99999999999_99999999999" state="E"/>
@@ -69,4 +86,5 @@
        <entry name="Integer5" base="scalar-integer_5" facet="___" state="E"/>
        <entry name="Integer6_P1" base="scalar-integer_6" facet="__0_999999" state="E"/>
        <entry name="Integer8" base="scalar-integer_8" facet="___" state="E"/>
+
 </simpletype-checksum>
