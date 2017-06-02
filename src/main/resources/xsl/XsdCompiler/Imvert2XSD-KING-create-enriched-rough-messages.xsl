@@ -23,26 +23,41 @@
 	<xsl:variable name="kv-prefix" select="ep:rough-messages/ep:namespace-prefix"/>
 	
 	<xsl:template match="ep:rough-messages" mode="enrich-rough-messages">
+		<xsl:sequence select="imf:create-debug-comment('debug:start B00000 /debug:start',$debugging)"/>
+
 		<xsl:copy>
 			<xsl:apply-templates select="ep:rough-message" mode="enrich-rough-messages"/>
 		</xsl:copy>
+
+		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
 	
 	<xsl:template match="ep:rough-message" mode="enrich-rough-messages">
+		<xsl:sequence select="imf:create-debug-comment('debug:start B01000 /debug:start',$debugging)"/>
+
 		<xsl:copy>
 			<xsl:apply-templates select="*[name()!= 'ep:construct']"  mode="enrich-rough-messages"/>
 			<xsl:apply-templates select="ep:construct" mode="enrich-rough-messages">
 				<xsl:with-param name="berichtCode" select="ep:code"/>
 			</xsl:apply-templates>
 		</xsl:copy>
+		
+		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
 	
 	<xsl:template match="*" mode="enrich-rough-messages">
+		<xsl:sequence select="imf:create-debug-comment('debug:start B02000 /debug:start',$debugging)"/>
+		
 		<xsl:copy-of select="."/>
+		
+		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
 
 	<xsl:template match="ep:construct" mode="enrich-rough-messages">
 		<xsl:param name="berichtCode"/>
+
+		<xsl:sequence select="imf:create-debug-comment('debug:start B03000 /debug:start',$debugging)"/>
+		
 		<xsl:copy>
 			<xsl:copy-of select="@*"/>
 			<xsl:choose>
@@ -98,6 +113,13 @@
 							<!-- Dit betreft een construct voor een entiteit op een nog dieper niveau. Typisch een dat gebruikt wordt in een gerelateerde. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
 						</xsl:when>
+						<xsl:when test="@type=('group','complex datatype') and ancestor::ep:construct[(@type='association' and (count(ancestor::ep:construct[@type='entity']) > 1)) or 
+																									  (@type='supertype' and (count(ancestor::ep:construct[@type='entity']) = 1)) or
+																									  (@type=('group','complex datatype') and (count(ancestor::ep:construct[@type='entity']) > 2))]">
+							<!-- Dit betreft group constructs die nakomeling van zijn van een construct dat een 'verwerkingsModus' attribute met de waarde 'matchgegevens' krijgt.
+							     Deze moet natuurlijk zelf ook een 'verwerkingsModus' attribute met de waarde 'matchgegevens' krijgen. -->
+							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
+						</xsl:when>
 						<xsl:when test="@type=('group','complex datatype') and ancestor::ep:construct[ep:tech-name = 'gerelateerde']">
 							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of een entiteit op het tweede niveau of 
 								 group constructs die daar een nakomeling van zijn. -->
@@ -112,6 +134,16 @@
 							<!-- Dit betreft alle overige group constructs. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
 						</xsl:when>
+
+
+						<xsl:when test="@type='association' and ancestor::ep:construct[(@type='association' and (count(ancestor::ep:construct[@type='entity']) > 1)) or 
+																					   (@type='supertype' and (count(ancestor::ep:construct[@type='entity']) = 1))]">
+							<!-- Dit betreft group constructs die nakomeling van zijn van een construct dat een 'verwerkingsModus' attribute met de waarde 'matchgegevens' krijgt.
+							     Deze moet natuurlijk zelf ook een 'verwerkingsModus' attribute met de waarde 'matchgegevens' krijgen. -->
+							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
+						</xsl:when>
+
+
 						<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) = 1)">
 							<!-- Dit betreft association constructs binnen de construct voor de fundamentele entiteit. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'antwoord')"/>
@@ -148,6 +180,13 @@
 							<!-- Dit betreft een construct voor een entiteit op een nog dieper niveau. Typisch een dat gebruikt wordt in een gerelateerde in de context. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
 						</xsl:when>
+						<xsl:when test="@type=('group','complex datatype') and ancestor::ep:construct[(@type='association' and (count(ancestor::ep:construct[@type='entity']) > 1)) or
+																									  (@type='supertype' and (count(ancestor::ep:construct[@type='entity']) > 1)) or
+																									  (@type=('group','complex datatype') and (count(ancestor::ep:construct[@type='entity']) > 2))]">
+							<!-- Dit betreft group constructs die nakomeling van zijn van een construct dat een 'verwerkingsModus' attribute met de waarde 'matchgegevens' krijgt.
+							     Deze moet natuurlijk zelf ook een 'verwerkingsModus' attribute met de waarde 'matchgegevens' krijgen. -->
+							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
+						</xsl:when>
 						<xsl:when test="@type=('group','complex datatype') and ancestor::ep:construct[ep:tech-name = 'gerelateerde']">
 							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of een entiteit op het tweede niveau binnen de 
 								 context van een gelijk, totEnMet, vanaf of scope element of group constructs die daar een nakomeling van zijn. -->
@@ -162,6 +201,15 @@
 							<!-- Dit betreft alle overige group constructs. -->
 							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
 						</xsl:when>
+						
+						<xsl:when test="@type='association' and ancestor::ep:construct[(@type='association' and (count(ancestor::ep:construct[@type='entity']) > 1)) or
+																					   (@type='supertype' and (count(ancestor::ep:construct[@type='entity']) > 1))]">
+							<!-- Dit betreft group constructs die nakomeling van zijn van een construct dat een 'verwerkingsModus' attribute met de waarde 'matchgegevens' krijgt.
+							     Deze moet natuurlijk zelf ook een 'verwerkingsModus' attribute met de waarde 'matchgegevens' krijgen. -->
+							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
+						</xsl:when>
+						
+						
 						<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) = 1)">
 							<!-- Dit betreft association constructs binnen de construct voor de fundamentele entiteit binnen de 
 								 context van een gelijk, totEnMet, vanaf of scope element. -->
@@ -219,23 +267,35 @@
 			<xsl:if test="count(ancestor::ep:construct[@type='entity']) >= 1">
 				<xsl:sequence select="imf:create-debug-comment(concat('Count: ',count(ancestor::ep:construct[@type='entity']),' berichtCode: ',$berichtCode),$debugging)"/>
 			</xsl:if>
+			<xsl:if test="$debugging">
+				<xsl:sequence select="imf:create-output-element('ep:generated-id', generate-id(.))"/>
+			</xsl:if>
 			<xsl:apply-templates select="*[name()!= 'ep:construct' and name()!= 'ep:choice' and name()!='ep:attribute']"  mode="enrich-rough-messages"/>
 			<xsl:apply-templates select="ep:construct | ep:choice" mode="enrich-rough-messages">
 				<xsl:with-param name="berichtCode" select="$berichtCode"/>
 			</xsl:apply-templates>
 		</xsl:copy>
+		
+		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
 
 	<xsl:template match="ep:choice" mode="enrich-rough-messages">
 		<xsl:param name="berichtCode"/>
+
+		<xsl:sequence select="imf:create-debug-comment('debug:start B04000 /debug:start',$debugging)"/>
+		
 		<xsl:copy>
 			<xsl:apply-templates select="ep:construct" mode="enrich-rough-messages">
 				<xsl:with-param name="berichtCode" select="$berichtCode"/>
 			</xsl:apply-templates>
 		</xsl:copy>
+		
+		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
 	
 	<xsl:template match="ep:verkorteAliasGerelateerdeEntiteit" mode="enrich-rough-messages">
+		<xsl:sequence select="imf:create-debug-comment('debug:start B05000 /debug:start',$debugging)"/>
+		
 		<ep:verkorteAliasGerelateerdeEntiteit>
 			<xsl:choose>
 				<xsl:when test="..//ep:verkorteAlias = $prefix">
@@ -246,9 +306,13 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</ep:verkorteAliasGerelateerdeEntiteit>
+		
+		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
 	
 	<xsl:template match="ep:namespaceIdentifierGerelateerdeEntiteit" mode="enrich-rough-messages">
+		<xsl:sequence select="imf:create-debug-comment('debug:start B06000 /debug:start',$debugging)"/>
+		
 		<ep:namespaceIdentifierGerelateerdeEntiteit>
 			<xsl:choose>
 				<xsl:when test="..//ep:verkorteAlias = $prefix">
@@ -259,6 +323,8 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</ep:namespaceIdentifierGerelateerdeEntiteit>
+		
+		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
 	
 	<xsl:function name="imf:create-verwerkingsModus">

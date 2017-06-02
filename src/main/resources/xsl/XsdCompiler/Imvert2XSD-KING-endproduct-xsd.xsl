@@ -67,8 +67,9 @@
         <xsl:for-each select="ep:message-set">
             <xsl:variable name="xsd-file-url">
                 <xsl:choose>
-                    <xsl:when test="ep:name = 'STUF'"><xsl:value-of select="imf:file-to-url(concat($xsd-file-folder-path,'/StUF-simpleTypes.xsd'))"/></xsl:when>
-                    <xsl:otherwise><xsl:value-of select="imf:file-to-url(concat($xsd-file-folder-path,'/',ep:name,'.xsd'))"/></xsl:otherwise>
+                    <xsl:when test="ep:name = 'STUF'"><xsl:value-of select="imf:file-to-url(concat($xsd-file-folder-path,'/',../ep:message-set[@KV-namespace = 'yes']/@prefix,'0320_stuf_simpleTypes.xsd'))"/></xsl:when>
+                    <xsl:when test="@KV-namespace = 'yes'"><xsl:value-of select="imf:file-to-url(concat($xsd-file-folder-path,'/',@prefix,'0320.xsd'))"/></xsl:when>
+                    <xsl:otherwise><xsl:value-of select="imf:file-to-url(concat($xsd-file-folder-path,'/',../ep:message-set[@KV-namespace = 'yes']/@prefix,'0320_',@prefix,'0320.xsd'))"/></xsl:otherwise>
                     <!--xsl:when test="ep:name = 'STUF'"><xsl:value-of select="imf:file-to-url(concat($xsd-file-folder-path,'/',$koppelvlak-folder,'/StUF-simpleTypes.xsd'))"/></xsl:when>
                     <xsl:otherwise><xsl:value-of select="imf:file-to-url(concat($xsd-file-folder-path,'/',$koppelvlak-folder,'/',ep:name,'.xsd'))"/></xsl:otherwise-->
                 </xsl:choose>

@@ -456,17 +456,14 @@
 							</xsl:for-each>									
 						</xsl:variable>
 						<xsl:if
-							test="($berichtCode = ('La07','La08','La09','La10')) and contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiele historie'), 'JA')">
-							<xsl:attribute name="indicatieMaterieleHistorieRelatie" select="'Ja'"/>
-						</xsl:if>
-						<xsl:if
 							test="($berichtCode = ('La07','La08','La09','La10')) and $tv-materieleHistorie-attributes//ep:tagged-value = ('JA','JAZIEREGELS')">
 							<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja op attributes'"/>
 						</xsl:if>
-						<xsl:if
-							test="($berichtCode = ('La09','La10')) and contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie'), 'JA')">
-							<xsl:attribute name="indicatieFormeleHistorieRelatie" select="'Ja'"/>
-						</xsl:if>
+						<!-- ROME: historieMaterieelRelatie bestaat waarschijnlijk niet. -->
+						<!--xsl:if
+							test="($berichtCode = ('La07','La08','La09','La10')) and contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiele historie'), 'JA')">
+							<xsl:attribute name="indicatieMaterieleHistorieRelatie" select="'Ja'"/>
+						</xsl:if-->
 						<xsl:variable name="tv-formeleHistorie-attributes">
 							<xsl:for-each select="imvert:association-class">
 								<xsl:variable name="association-class-type-id" select="imvert:type-id"/>
@@ -480,6 +477,10 @@
 						<xsl:if
 							test="($berichtCode = ('La09','La10')) and $tv-formeleHistorie-attributes//ep:tagged-value = 'JA'">
 							<xsl:attribute name="indicatieFormeleHistorie" select="'Ja op attributes'"/>
+						</xsl:if>
+						<xsl:if
+							test="($berichtCode = ('La09','La10')) and contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie'), 'JA')">
+							<xsl:attribute name="indicatieFormeleHistorieRelatie" select="'Ja'"/>
 						</xsl:if>
 						<xsl:sequence select="imf:create-debug-comment('A04010]',$debugging)"/>
 					</xsl:when>
@@ -497,12 +498,9 @@
 										</ep:tagged-value>
 									</xsl:for-each>
 								</xsl:variable>
-								<xsl:choose>
-									<xsl:when
-										test="($berichtCode = ('La07','La08','La09','La10')) and $tv-materieleHistorie-attributes//ep:tagged-value = ('JA','JAZIEREGELS')">
-										<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja op attributes'"/>
-									</xsl:when>
-								</xsl:choose>
+								<xsl:if test="($berichtCode = ('La07','La08','La09','La10')) and $tv-materieleHistorie-attributes//ep:tagged-value = ('JA','JAZIEREGELS')">
+									<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja op attributes'"/>
+								</xsl:if>
 							</xsl:otherwise>
 						</xsl:choose>
 						<xsl:choose>
@@ -518,12 +516,9 @@
 										</ep:tagged-value>
 									</xsl:for-each>
 								</xsl:variable>
-								<xsl:choose>
-									<xsl:when
-										test="($berichtCode = ('La09','La10')) and $tv-formeleHistorie-attributes//ep:tagged-value = 'JA'">
-										<xsl:attribute name="indicatieFormeleHistorie" select="'Ja op attributes'"/>
-									</xsl:when>
-								</xsl:choose>
+								<xsl:if test="($berichtCode = ('La09','La10')) and $tv-formeleHistorie-attributes//ep:tagged-value = 'JA'">
+									<xsl:attribute name="indicatieFormeleHistorie" select="'Ja op attributes'"/>
+								</xsl:if>
 							</xsl:otherwise>
 						</xsl:choose>
 						<xsl:sequence select="imf:create-debug-comment('A04020]',$debugging)"/>
@@ -1226,8 +1221,8 @@
 						(count(key('class',$type-id)/imvert:attributes/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'JA']) >= 1))">
 						<xsl:attribute name="indicatieFormeleHistorie" select="'Ja'"/>
 					</xsl:if>
-					<ep:name>gerelateerde</ep:name>
-					<ep:tech-name>gerelateerde</ep:tech-name>
+					<xsl:sequence select="imf:create-output-element('ep:name', 'gerelateerde')"/>
+					<xsl:sequence select="imf:create-output-element('ep:tech-name', 'gerelateerde')"/>
 					<xsl:sequence select="imf:create-output-element('ep:origin-id', $id)"/>
 					<xsl:sequence select="imf:create-output-element('ep:id', $type-id)"/>
 					

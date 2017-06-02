@@ -32,6 +32,7 @@
 	
 	<xsl:template match="ep:message-set">
 		<xsl:variable name="message-set-prefix" select="ep:namespace-prefix"/>
+		<xsl:variable name="kv-prefix" select="../ep:message-set[@KV-namespace = 'yes']/@prefix"/>
 		<xsl:variable name="message-set-namespaceIdentifier" select="ep:namespace"/>
 		<xsl:variable name="msg" select="'Creating the StUF XML-Schema'"/>
 		<xsl:sequence select="imf:msg('DEBUG', $msg)"/>
@@ -73,7 +74,7 @@
 				</xsl:when>
 				<xsl:otherwise>
 					<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="../0302/stuf0302.xsd"/>
-					<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="StUF-simpleTypes.xsd"/>
+					<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="{concat($kv-prefix,'0320_stuf_simpleTypes.xsd')}"/>
 					<!-- ROME: Volgende import moet alleen geplaatst worden als er een GML construct gebruikt wordt. In dat geval moet ook
 							   geregeld worden dat de namespace-identifiers van GML in het schema gedeclareerd worden.-->
 					<!--xs:import namespace="http://www.opengis.net/gml" schemaLocation="../../gml-3.1.1.2/gml/3.1.1/base/gml.xsd"/-->
@@ -82,7 +83,7 @@
 			<xsl:for-each
 				select="$namespaces2bImported/ep:namespaces/ep:namespace[@prefix != $message-set-prefix and @prefix != '' and not(@prefix = preceding-sibling::ep:namespace/@prefix)]">
 				<xs:import namespace="{@identifier}"
-					schemaLocation="{concat(upper-case(@prefix),'.xsd')}"/>
+					schemaLocation="{concat($kv-prefix,'0320_',@prefix,'0320.xsd')}"/>
 			</xsl:for-each>
 
 			<xsl:sequence select="imf:create-debug-comment('ROME: Message elements', $debugging)"/>
