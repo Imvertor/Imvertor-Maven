@@ -423,7 +423,6 @@
     <xsl:template match="ep:construct[ep:tech-name = 'authentiek']">
         <xsl:param name="procesType" select="''"/>
         <xsl:param name="actualPrefix"/>
-        <!-- Following if takes care of removing al ep:constructs whithout content within their ep:seq or ep:choice element. -->
         <xsl:sequence select="imf:create-debug-comment('Debuglocation 2016',$debugging)"/>
 
         <xsl:variable name="authentiek">
@@ -434,7 +433,7 @@
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 2017',$debugging)"/>
 
                 <xsl:choose>
-                    <xsl:when test="ancestor::ep:construct[.//ep:construct[ep:authentiek and ep:authentiek != '']]">
+                    <xsl:when test="ancestor::ep:construct[.//ep:construct[ep:authentiek != '']]">
                         <xsl:sequence select="imf:create-debug-comment('Debuglocation 2018',$debugging)"/>
 
                         <xsl:sequence select="$authentiek"/>
@@ -459,7 +458,7 @@
             <xsl:when test="$procesType!='splitting'">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 2020',$debugging)"/>
                 <xsl:choose>
-                    <xsl:when test="ancestor::ep:construct[.//ep:construct[ep:authentiek and ep:authentiek != '']]">
+                    <xsl:when test="ancestor::ep:construct[.//ep:construct[ep:authentiek != '']]">
                         <xsl:sequence select="imf:create-debug-comment('Debuglocation 2021',$debugging)"/>
 
                         <xsl:sequence select="$authentiek"/>
@@ -489,7 +488,6 @@
         <xsl:param name="actualPrefix"/>
         <xsl:sequence select="imf:create-debug-comment('Debuglocation 2023',$debugging)"/>
 
-        <!-- Following if takes care of removing al ep:constructs whithout content within their ep:seq or ep:choice element. -->
         <xsl:variable name="inOnderzoek">
             <xsl:copy-of select="."/>
         </xsl:variable>
@@ -498,7 +496,7 @@
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 2024',$debugging)"/>
 
                 <xsl:choose>
-                    <xsl:when test="ancestor::ep:construct[.//ep:construct[ep:inOnderzoek and ep:inOnderzoek != '']]">
+                    <xsl:when test="ancestor::ep:construct[.//ep:construct[ep:inOnderzoek != '']]">
                         <xsl:sequence select="imf:create-debug-comment('Debuglocation 2025',$debugging)"/>
 
                         <xsl:sequence select="$inOnderzoek"/>
@@ -524,7 +522,7 @@
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 2027',$debugging)"/>
 
                 <xsl:choose>
-                    <xsl:when test="ancestor::ep:construct[.//ep:construct[ep:inOnderzoek and ep:inOnderzoek != '']]">
+                    <xsl:when test="ancestor::ep:construct[.//ep:construct[ep:inOnderzoek != '']]">
                         <xsl:sequence select="imf:create-debug-comment('Debuglocation 2028',$debugging)"/>
 
                         <xsl:sequence select="$inOnderzoek"/>
