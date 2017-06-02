@@ -58,7 +58,7 @@
         <xsl:sequence select="imf:get-config-tagged-values()"/>
     </xsl:variable> 
 
-    <xsl:variable name="xsd-folder-path" select="imf:get-config-string('system','xsd-folder-path')"/>
+    <!--xsl:variable name="xsd-folder-path" select="imf:get-config-string('system','xsd-folder-path')"/-->
 
     <!-- Within the next variable the configurations defined within the Base-configuration spreadsheet are placed in a processed XML format.
          With this configuration the attributes to be used on each location within the XML schemas are determined. -->
@@ -986,6 +986,7 @@
                         <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->                                
 
                         <xsl:sequence select="imf:create-debug-comment('Debuglocation 17',$debugging)"/>
+                        <xsl:sequence select="imf:create-debug-comment(concat('imvert:id: ',$construct/imvert:id),$debugging)"/>
                         
                         <xsl:variable name="docs">
                            <imvert:complete-documentation>
@@ -1028,6 +1029,7 @@
                                 
                                <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
                                <xsl:when test="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
+                                   <xsl:sequence select="imf:create-debug-comment('Debuglocation 17a',$debugging)"/>
                                    <xsl:apply-templates select="$construct"
                                        mode="create-message-content">
                                        <xsl:with-param name="berichtName" select="$berichtName"/>
@@ -1041,6 +1043,7 @@
                                </xsl:when>
                                <!-- Else the content of the current uml class is processed. -->
                                <xsl:otherwise>
+                                   <xsl:sequence select="imf:create-debug-comment('Debuglocation 17b',$debugging)"/>
                                    <ep:seq>
                                        <xsl:sequence
                                            select="imf:create-output-element('ep:min-occurs', 0)" />
@@ -1283,7 +1286,7 @@
                        
                    </xsl:when>
                     <xsl:otherwise>
-                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 17a',$debugging)"/>
+                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 17c',$debugging)"/>
                         <xsl:sequence select="imf:create-debug-comment(imvert:name,$debugging)"/>
                     </xsl:otherwise>
                 </xsl:choose>

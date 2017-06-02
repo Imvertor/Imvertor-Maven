@@ -136,17 +136,35 @@
     
     <xsl:template match="ep:suppliers"/>
 
-    <xsl:template match="*|@*">
+    <xsl:template match="*">
+        <xsl:sequence select="imf:create-debug-comment('Debuglocation 3013',$debugging)"/>
         <xsl:copy>
             <xsl:apply-templates select="*|@*[local-name()!='namespaceId' and 
-                                              local-name()!='type' and 
-                                              local-name()!='externalNamespace' and
-                                              local-name()!='context' and
-                                              local-name()!='berichtCode' and
-                                              local-name()!='berichtName']|text()"/>
+                local-name()!='type' and 
+                local-name()!='externalNamespace' and
+                local-name()!='context' and
+                local-name()!='berichtCode' and
+                local-name()!='berichtName']|text()"/>
         </xsl:copy>
     </xsl:template>
 
+    <xsl:template match="@*">
+        <xsl:copy>
+            <xsl:apply-templates select="text()"/>
+        </xsl:copy>
+    </xsl:template>
+
+    <!--xsl:template match="*|@*">
+        <xsl:copy>
+            <xsl:apply-templates select="*|@*[local-name()!='namespaceId' and 
+                local-name()!='type' and 
+                local-name()!='externalNamespace' and
+                local-name()!='context' and
+                local-name()!='berichtCode' and
+                local-name()!='berichtName']|text()"/>
+        </xsl:copy>
+    </xsl:template-->
+    
     <xsl:template match="ep:message-set/ep:construct">
         <xsl:variable name="prefix" select="@prefix"/>
         <xsl:variable name="tech-name" select="ep:tech-name"/>
