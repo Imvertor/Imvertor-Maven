@@ -717,6 +717,9 @@
 		<xsl:variable name="min-occurs" select="imvert:min-occurs"/>
 		<xsl:variable name="id" select="imvert:id"/>
 		<xsl:variable name="matchgegeven" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie kerngegeven')"/>
+		<!--xsl:if test="empty($matchgegeven)">
+			<xsl:sequence select="imf:msg(.,'WARN','Unable to get the tagged value Indicatie kerngegeven. The object might not be defined in the supplier (UGM).','')"/>
+		</xsl:if-->
 		<xsl:variable name="alias">
 			<xsl:choose>
 				<xsl:when test="imvert:stereotype = 'ENTITEITRELATIE'">
@@ -729,14 +732,34 @@
 		</xsl:variable>
 		<xsl:if test="$debugging">
 			<xsl:choose>
-				<xsl:when test="$currentMessage//ep:*[generate-id() = $generated-id and @context = $context]/ep:construct/ep:construct[ep:id = $type-id and @context = $context]">
+				<xsl:when test="$currentMessage//ep:*[generate-id() = $generated-id and ep:id = $id]">
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1014a',$debugging)"/>
 				</xsl:when>
-				<xsl:when test="$currentMessage//ep:*[generate-id() = $generated-id and @context = $context]/ep:construct[ep:id = $type-id]">
+				<xsl:when test="$currentMessage//ep:*[generate-id() = $generated-id]/ep:choice/ep:construct/ep:construct[ep:id = $id and @context = $context]">
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1014b',$debugging)"/>
 				</xsl:when>
-				<xsl:otherwise>
+				<xsl:when test="$currentMessage//ep:*[generate-id() = $generated-id]/ep:choice/ep:construct[ep:id = $id and @context = $context]">
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1014c',$debugging)"/>
+				</xsl:when>
+				<xsl:when test="$currentMessage//ep:*[generate-id() = $generated-id and @context = $context]/ep:construct/ep:construct[ep:id = $id]">
+					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1014d',$debugging)"/>
+				</xsl:when>
+				<xsl:when test="$currentMessage//ep:*[generate-id() = $generated-id and @context = $context]/ep:construct[ep:id = $id]">
+					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1014e',$debugging)"/>
+					<xsl:sequence select="imf:create-debug-comment(concat('ep:constructname: ',$currentMessage//ep:*[generate-id() = $generated-id]/ep:name,', @context :',$context,' ,id :',$id,' ,verwerkingsmodus :',$verwerkingsModus,' - ',$matchgegeven,'.'),$debugging)"/>
+					<xsl:for-each select="$currentMessage//ep:*[generate-id() = $generated-id and @context = $context and ep:construct[ep:id = $id]]">
+						<xsl:sequence select="imf:create-debug-comment(concat('$receivedGenerated-id: ',$generated-id,', generatedId :',generate-id(.), ' (ep:generated-id :',$currentMessage//ep:*[generate-id() = $generated-id]/ep:generated-id,')'),$debugging)"/>
+					</xsl:for-each>
+				</xsl:when>
+				<xsl:when test="$currentMessage//ep:*[generate-id() = $generated-id and @context = $context]/ep:construct[ep:id = $type-id]">
+					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1014f',$debugging)"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1014h',$debugging)"/>
+					<xsl:sequence select="imf:create-debug-comment(concat('ep:constructname: ',$currentMessage//ep:*[generate-id() = $generated-id]/ep:name,', @context :',$context,' ,id :',$id,' ,verwerkingsmodus :',$verwerkingsModus,' - ',$matchgegeven,'.'),$debugging)"/>
+					<xsl:for-each select="$currentMessage//ep:*[@context = $context and ep:construct[ep:id = $id]]">
+						<xsl:sequence select="imf:create-debug-comment(concat('$receivedGenerated-id: ',$generated-id,', generatedId :',generate-id(.), ' (ep:generated-id :',$currentMessage//ep:*[generate-id() = $generated-id]/ep:generated-id,')'),$debugging)"/>
+					</xsl:for-each>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:if>
@@ -779,8 +802,14 @@
 			</ep:suppliers>
 		</xsl:variable>
 		
-		<xsl:if test="not($verwerkingsModus = matchgegeven and $matchgegeven = 'NEE')">
+		<!-- ROME 802: Onderstaande uitbecommentarieerde regel moet de daaronder staande regel weer kunnen vervangen zodra het UGM RUIMTE is aangepast en de
+				   variabele '$matchgegeven' ook voor de relatie 'heeftFunctionaris' gevuld kan worden. -->
+		
+		<!--xsl:if test="not($verwerkingsModus = 'matchgegevens' and $matchgegeven = 'NEE')"-->
+		<xsl:if test="not($verwerkingsModus = 'matchgegevens' and ($matchgegeven = 'NEE' or empty($matchgegeven)))">
 			<xsl:sequence select="imf:create-debug-comment('Debuglocation 1015',$debugging)"/>
+
+			<xsl:sequence select="imf:create-debug-comment(concat('verwerkingsModusOfConstructRef: ',$verwerkingsModusOfConstructRef),$debugging)"/>
 			
 			<!-- Location: 'ep:constructRef1a'
 								 Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-.xsl' on the location with the id 'ep:construct1'. -->
