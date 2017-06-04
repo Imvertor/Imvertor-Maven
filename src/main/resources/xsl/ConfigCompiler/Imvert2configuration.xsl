@@ -41,6 +41,7 @@
     <xsl:variable name="configuration-tvset-file" select="imf:prepare-config(imf:document($configuration-tvset-name,true()))"/>
     <xsl:variable name="configuration-notesrules-file" select="imf:prepare-config(imf:document($configuration-notesrules-name,true()))"/>
     <xsl:variable name="configuration-docrules-file" select="imf:prepare-config(imf:document($configuration-docrules-name,true()))"/>
+    <xsl:variable name="configuration-shaclrules-file" select="imf:prepare-config(imf:document($configuration-shaclrules-name))"/><!-- not required -->
     
     <xsl:variable name="metamodel-name" select="imf:get-normalized-name(imf:get-config-string('cli','metamodel'),'system-name')"/>
     <xsl:variable name="schemarules-name" select="imf:get-normalized-name(imf:get-config-string('cli','schemarules'),'system-name')"/>
@@ -58,6 +59,7 @@
                 <xsl:sequence select="$configuration-tvset-file"/>
                 <xsl:sequence select="$configuration-notesrules-file"/>
                 <xsl:sequence select="$configuration-docrules-file"/>
+                <xsl:sequence select="$configuration-shaclrules-file"/>
             </config>
         </xsl:variable>
         <xsl:variable name="config-compact">
@@ -286,6 +288,13 @@
                     <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
                 </xsl:for-each-group>
             </doc-rules>
+            
+            <shacl-rules>
+                <xsl:variable name="shacl-rules" select="shacl-rules"/> 
+                <xsl:for-each select="$shacl-rules//vocabularies">
+                    <xsl:apply-templates select="." mode="#current"/>
+                </xsl:for-each>
+            </shacl-rules>
             
         </config>
     </xsl:template>

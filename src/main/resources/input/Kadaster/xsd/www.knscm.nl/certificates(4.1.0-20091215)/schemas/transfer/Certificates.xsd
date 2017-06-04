@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.knscm.nl/certificates"
+    xmlns:cert="http://www.knscm.nl/certificates"
+    xmlns:tns="http://www.knscm.nl/certificates" elementFormDefault="qualified">
+    
+    <!-- sample external schema -->
+    
+    <element name="Certificate" type="cert:Certificate"/>
+    
+    <complexType name="Certificate">
+        <sequence>
+            <element name="nr"/>
+            <element name="term"/>
+        </sequence>
+    </complexType>
+
+</schema>

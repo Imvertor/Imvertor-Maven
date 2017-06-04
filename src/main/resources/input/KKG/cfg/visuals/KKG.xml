@@ -38,7 +38,7 @@
         <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
     </stereo>
     <stereo id="stereotype-name-enum"/>
-    <stereo id="stereotype-name-datatype">
+    <stereo id="stereotype-name-simpletype">
         <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="WHITE" borderwidth="SMALL"/>
     </stereo>
     <stereo id="stereotype-name-complextype">

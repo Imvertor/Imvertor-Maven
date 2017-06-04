@@ -55,29 +55,41 @@
     <xsl:variable name="app-package" select="($model-packages,$application-packages)[imf:get-normalized-name(@name,'package-name') = imf:get-normalized-name($application-package-name,'package-name')]"/>
     <xsl:variable name="containing-packages" select="$app-package/ancestor::UML:Package"/>
     
-    <xsl:template match="/">
-        <xsl:sequence select="imf:track('Compacting')"/>
-        <xsl:choose>
-           <xsl:when test="empty($project-packages)">
-               <xsl:sequence select="imf:msg('ERROR','No projects found')"/>
-           </xsl:when>
-            <xsl:when test="not(normalize-space($project-name))">
-                <xsl:sequence select="imf:msg('ERROR','No project name specified')"/>
-            </xsl:when>
-            <xsl:when test="empty($project-package)">
-                <xsl:sequence select="imf:msg('ERROR','No project found for: [1], searched for [2]', ($application-package-name,$project-name))"/>
-            </xsl:when>
-            <xsl:when test="empty($app-package)">
-                <xsl:sequence select="imf:msg('ERROR','No application found: [1], available applications are: [2]', ($application-package-name, string-join($application-packages/@name,';')))"/>
-           </xsl:when>
-            <xsl:when test="count($app-package) ne 1">
-                <xsl:sequence select="imf:msg('ERROR','Several packages found with same application name: [1]', $application-package-name)"/>
-            </xsl:when>
-           <xsl:otherwise>
-               <xsl:apply-templates/>
-           </xsl:otherwise>
-       </xsl:choose>
-    </xsl:template>
+    <!--x
+    <xsl:variable name="known-classes" select="($app-package,$external-packages)//UML:Class"/>
+    x-->
+    
+    <xsl:template match="/XMI">
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
+            <xsl:sequence select="imf:track('Compacting')"/>
+            <xsl:choose>
+                <xsl:when test="empty($project-packages)">
+                    <xsl:sequence select="imf:msg('ERROR','No projects found')"/>
+                </xsl:when>
+                <xsl:when test="not(normalize-space($project-name))">
+                    <xsl:sequence select="imf:msg('ERROR','No project name specified')"/>
+                </xsl:when>
+                <xsl:when test="empty($project-package)">
+                    <xsl:sequence select="imf:msg('ERROR','No project found for: [1], searched for [2]', ($application-package-name,$project-name))"/>
+                </xsl:when>
+                <xsl:when test="empty($app-package)">
+                    <xsl:sequence select="imf:msg('ERROR','No application found: [1], available applications are: [2]', ($application-package-name, string-join($application-packages/@name,';')))"/>
+                </xsl:when>
+                <xsl:when test="count($app-package) ne 1">
+                    <xsl:sequence select="imf:msg('ERROR','Several packages found with same application name: [1]', $application-package-name)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates/>
+                </xsl:otherwise>
+            </xsl:choose>
+            <!--x
+            <XMI.extensions xmi.extender="IMVERTOR">
+                <xsl:apply-templates select=".//UML:Class" mode="stub"/>
+            </XMI.extensions>
+            x-->
+        </xsl:copy>
+     </xsl:template>
     
     <!-- 
         Create a full copy of the package and sub-structures for the application.
@@ -125,6 +137,19 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
+    
+    <!--x
+    <!- - 
+        any class found that is not within then application package or an external package is added as a stub 
+        This code is not yet used in imvertor; we are awaiting a more ribust approach.
+    - ->
+    <xsl:template match="UML:Class" mode="stub">
+        <xsl:if test="empty($known-classes intersect .)">
+            <xsl:variable name="id" select="@xmi.id"/>
+            <EAStub xmi.id="{$id}" name="{@name}"/>
+        </xsl:if>
+    </xsl:template>
+    x-->
     
     <xsl:function name="imf:get-xmi-stereotype" as="xs:string*">
         <xsl:param name="construct"/>

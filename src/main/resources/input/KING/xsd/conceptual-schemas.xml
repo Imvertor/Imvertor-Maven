@@ -22,8 +22,12 @@
             namespace="http://www.opengis.net/gml" 
             version="3.1.1" 
             phase="3" 
-            release="20050811" 
             location="http://www.opengis.net/gml/3.1.1/base/gml.xsd">
+            
+            <releases>
+                <release>20050811</release> 
+            </releases>
+            
             <!-- 
                 This maps onto the local copy maintained in /xsd/www.opengis.net/gml(3.1.1-20050811)
                 The following conceptual schema types map onto the specified types, eg. GM_ArcString maps onto gml:ArcString 
@@ -55,8 +59,10 @@
             namespace="http://www.opengis.net/gml/3.2" 
             version="3.2.1" 
             phase="3" 
-            release="20070906"
             location="http://schemas.opengis.net/gml/3.2.1/gml.xsd">
+            <releases>
+                <release>20070906</release> 
+            </releases>
             <!-- 
                 NEN3610:2011/Geonovum requires Simple Feature Profile, see http://www.ogcnetwork.net/gml-sf 
             -->
@@ -221,9 +227,12 @@
             namespace="http://www.kinggemeenten.nl/conceptual-schemas/SIM/GeneriekeDatatypen" 
             version="1.0.0" 
             phase="2" 
-            release="20160701" 
             location="http://www.kinggemeenten.nl">
-           
+
+            <releases>
+                <release>20160701</release> 
+            </releases>
+            
             <type 
                 name="NEN3610ID">NEN3610ID</type> 
             <type 

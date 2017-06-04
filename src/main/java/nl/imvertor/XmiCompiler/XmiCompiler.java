@@ -175,6 +175,27 @@ public class XmiCompiler extends Step {
 
 	}
 	
+	/*
+	 * this is a full export of all packages; suboptimal and therefore replaced. 
+	 * 
+	private XmlFile exportEapToXmi(EapFile eapFile, XmlFile xmifile) throws Exception {
+		String ownerName = configurator.getParm("cli", "owner");
+		String projectName = configurator.getParm("cli", "project");
+		String pn = ownerName + ": " + projectName;
+		
+		eapFile.open();
+		String rootPackageGUID = eapFile.getProjectPackageGUID(pn);
+		System.out.println(rootPackageGUID);
+		eapFile.close();
+		if (rootPackageGUID.equals("")) {
+			runner.error(logger,"Cannot find any project labeled \"" + pn + "\"", null, "CFAPL");
+			return null;
+		} else {
+			return eapFile.exportToXmiFile(xmifile.getCanonicalPath(), rootPackageGUID);
+		}
+	}
+	*/
+	
 	private XmlFile exportEapToXmi(EapFile eapFile, XmlFile xmifile) throws Exception {
 		eapFile.open();
 		String rootPackageGUID = eapFile.getRootPackageGUID();

@@ -133,7 +133,16 @@
 	<xsl:function name="imf:get-tagged-value-element" as="element(imvert:tagged-value)*">
 		<xsl:param name="this" as="node()"/>
 		<xsl:param name="tv-name" as="xs:string"/>
-		<xsl:sequence select="$this/imvert:tagged-values/imvert:tagged-value[imvert:name = imf:get-normalized-name($tv-name,'tv-name')]"/>
+		<xsl:variable name="tv-id" select="substring-after($tv-name,'##')"/>
+		<xsl:choose>
+			<xsl:when test="normalize-space($tv-id)">
+				<xsl:sequence select="$this/imvert:tagged-values/imvert:tagged-value[@id=$tv-id]"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<!--TODO deprecated, only by id --> 
+				<xsl:sequence select="$this/imvert:tagged-values/imvert:tagged-value[imvert:name = imf:get-normalized-name($tv-name,'tv-name')]"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:function>
 
 </xsl:stylesheet>

@@ -47,7 +47,7 @@
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
             <imvert:stereotype origin="system">
-                <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-datatype')[1]"/>
+                <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-simpletype')[1]"/>
             </imvert:stereotype>
         </xsl:copy>
     </xsl:template>

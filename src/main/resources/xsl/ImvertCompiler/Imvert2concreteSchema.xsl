@@ -40,6 +40,9 @@
     <xsl:variable name="conceptual-schema-mapping-file" select="imf:get-config-string('properties','CONCEPTUAL_SCHEMA_MAPPING_FILE')"/>
     <xsl:variable name="conceptual-schema-mapping" select="imf:document($conceptual-schema-mapping-file,true())/conceptual-schemas"/>
    
+    <xsl:variable name="stylesheet-code">CSCH</xsl:variable>
+    <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
+    
     <xsl:template match="/imvert:packages">
         <imvert:packages>
             <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-svn-id',$conceptual-schema-mapping/svn-id)"/>
@@ -51,7 +54,8 @@
     <xsl:template match="imvert:package">
         <xsl:choose>
             <xsl:when test="imf:is-conceptual(.)">
-                <xsl:variable name="map" select="imf:get-conceptual-schema-map(imvert:namespace,$conceptual-schema-mapping-name)"/>
+                <xsl:variable name="maps" select="imf:get-conceptual-schema-map(imvert:namespace,$conceptual-schema-mapping-name)"/>
+                <xsl:variable name="map" select="$maps[1]"/><!-- TODO must be multiple -->
                 <xsl:choose>
                     <xsl:when test="$map">
                         <!-- replace this by the concrete package -->
@@ -73,11 +77,30 @@
     </xsl:template>
  
     <xsl:template match="imvert:package/imvert:namespace" mode="conceptual">
-        <xsl:param name="map" as="element()"/>
+        <xsl:param name="map" as="element()+"/>
         <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-namespace',.)"/>
         <xsl:sequence select="imf:create-output-element('imvert:namespace',$map/@namespace)"/>
         <xsl:sequence select="imf:create-output-element('imvert:location',$map/@location)"/>
-        <xsl:sequence select="imf:create-output-element('imvert:release',$map/@release)"/>
+        <!--
+             when a release is specified, use that, only when known; otherise take the default release as defined in map
+        -->
+        <xsl:variable name="specified-release" select="../imvert:release"/>
+        <xsl:variable name="known-releases" select="$map/releases/release"/>
+        <xsl:choose>
+            <xsl:when test="exists($specified-release) and not($specified-release = $known-releases)">
+                <xsl:sequence select="imf:msg(..,'ERROR','No such release [1] configured for external package known as [2]',($specified-release,.))"/>
+            </xsl:when>
+            <xsl:when test="exists($specified-release)">
+                <xsl:sequence select="imf:create-output-element('imvert:release',$specified-release)"/>
+            </xsl:when>
+            <xsl:when test="empty($known-releases)">
+                <xsl:sequence select="imf:msg(..,'ERROR','No release specified and no known releases',())"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:create-output-element('imvert:release',$known-releases[last()])"/>
+            </xsl:otherwise>
+        </xsl:choose>
+     
     </xsl:template>
    
     <xsl:template match="imvert:package/imvert:version" mode="conceptual">
@@ -90,6 +113,10 @@
         <xsl:param name="map" as="element()"/>
         <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-phase',.)"/>
         <xsl:sequence select="imf:create-output-element('imvert:phase',$map/@phase)"/>
+    </xsl:template>
+    
+    <xsl:template match="imvert:package/imvert:release" mode="conceptual">
+        <!-- remove; is reset in other template -->
     </xsl:template>
     
     <xsl:template match="imvert:package/imvert:author" mode="conceptual">
@@ -190,12 +217,13 @@
     </xsl:template>
     
     <!-- return the conceptual schema <map> element which holds the mapping of conceptual names to construct in the schema -->
-    <xsl:function name="imf:get-conceptual-schema-map" as="element()?">
+    <xsl:function name="imf:get-conceptual-schema-map" as="element()*">
         <xsl:param name="url" as="xs:string"/>
         <xsl:param name="use-mapping" as="xs:string"/>
         <xsl:variable name="mapping-uses" select="$conceptual-schema-mapping//mapping[@name=$use-mapping]/use"/>
         <xsl:variable name="conceptual-schema" select="$conceptual-schema-mapping/conceptual-schema[url=$url]"/>
-        <xsl:variable name="selected-mapping" select="$conceptual-schema/map[@name=$mapping-uses][1]"/>
+        <xsl:variable name="selected-mapping" select="$conceptual-schema/map[@name=$mapping-uses]"/>
+        <xsl:sequence select="imf:msg('DEBUG','Use mapping [1] for URL [2], conceptual schemas [3], maps [4]',($use-mapping,$url,count($conceptual-schema),count($selected-mapping)))"/>
         <xsl:sequence select="$selected-mapping"/>
     </xsl:function>
     

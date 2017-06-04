@@ -138,7 +138,7 @@
     <xsl:variable name="model-is-general" select="$application-package/imvert:model-level = 'general'"/>
     
     <xsl:variable name="datatype-stereos" 
-        select="('stereotype-name-datatype','stereotype-name-complextype','stereotype-name-union','stereotype-name-referentielijst','stereotype-name-codelist','stereotype-name-interface','stereotype-name-enumeration')"/>
+        select="('stereotype-name-simpletype','stereotype-name-complextype','stereotype-name-union','stereotype-name-referentielijst','stereotype-name-codelist','stereotype-name-interface','stereotype-name-enumeration')"/>
     
     <xsl:key name="key-unique-id" match="//*[imvert:id]" use="imvert:id"/>
     
@@ -646,7 +646,7 @@
             not(imvert:stereotype=imf:get-config-stereotypes($datatype-stereos)), 
             'UML datatypes should be stereotyped as: [1] and not [2]',(string-join(imf:get-config-stereotypes($datatype-stereos),' or '),imf:string-group(imvert:stereotype)))"/>
         <xsl:sequence select="imf:report-error(., 
-            imvert:stereotype=imf:get-config-stereotypes('stereotype-name-datatype') and imvert:attributes/imvert:attribute, 
+            imvert:stereotype=imf:get-config-stereotypes('stereotype-name-simpletype') and imvert:attributes/imvert:attribute, 
             'Datatypes stereotyped as [1] may not have attributes',imf:string-group(imvert:stereotype))"/>
         <xsl:sequence select="imf:report-error(., 
             imvert:associations/imvert:association, 
@@ -716,7 +716,7 @@
         <!-- IM-325 -->       
         <!-- TODO ook referentielijsten kunnen patterns hebben. Hoe kunnen we dit het beste valideren?
         <xsl:sequence select="imf:report-error(., 
-            imvert:pattern and exists($defining-class) and not($defining-class/imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-datatype','stereotype-name-enumeration'))), 
+            imvert:pattern and exists($defining-class) and not($defining-class/imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-simpletype','stereotype-name-enumeration'))), 
             'A pattern as been defined on an attribute that is not a scalar type, datatype or enumeration')"/>
         -->
        

@@ -1,0 +1,88 @@
+/*
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+package nl.imvertor.ShaclCompiler;
+
+import org.apache.log4j.Logger;
+
+import nl.imvertor.common.Step;
+import nl.imvertor.common.Transformer;
+import nl.imvertor.common.file.AnyFolder;
+
+public class ShaclCompiler extends Step {
+
+	protected static final Logger logger = Logger.getLogger(ShaclCompiler.class);
+	
+	public static final String STEP_NAME = "SHACLCompiler";
+	public static final String VC_IDENTIFIER = "$Id: XsdCompiler.java 7509 2016-04-25 13:30:29Z arjan $";
+
+	/**
+	 *  run the main translation
+	 */
+	public boolean run() throws Exception{
+		
+		// set up the configuration for this step
+		configurator.setActiveStepName(STEP_NAME);
+		prepare();
+		
+		runner.info(logger,"Compiling SHACL");
+		generateSHACL();
+		// note: schema validation is a separate step
+		configurator.setStepDone(STEP_NAME);
+		
+		// save any changes to the work configuration for report and future steps
+	    configurator.save();
+	    
+	    report();
+	    
+	    return runner.succeeds();
+	}
+
+	/**
+	 * Generate Kadaster XSD from the compiled Imvert files.
+	 * 
+	 * @throws Exception
+	 */
+	public boolean generateSHACL() throws Exception {
+		
+		// create a transformer
+		Transformer transformer = new Transformer();
+						
+		boolean succeeds = true;
+		
+		// Create the folder; it is not expected to exist yet.
+		AnyFolder shaclFolder = new AnyFolder(configurator.getParm("system","work-shacl-folder-path"));
+		shaclFolder.mkdirs();
+				
+		AnyFolder shaclApplicationFolder = new AnyFolder(configurator.getParm("properties","RESULT_SHACL_APPLICATION_FOLDER"));
+		shaclApplicationFolder.mkdirs();
+		configurator.setParm("system","shacl-folder-path", shaclApplicationFolder.toURI().toString());
+	
+		runner.debug(logger,"CHAIN","Generating SHACL to " + shaclApplicationFolder);
+		
+		succeeds = succeeds && transformer.transformStep("system/cur-imvertor-filepath","properties/RESULT_SHACL_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_SHACL_XSLPATH");
+		
+		configurator.setParm("system","shacl-created","true");
+		
+		return succeeds;
+	}
+	
+	
+}

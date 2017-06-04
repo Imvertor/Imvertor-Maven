@@ -541,7 +541,7 @@
       
             <xsl:variable name="compiled-name-type" select="imf:get-compiled-name($type)"/>
             
-            <xsl:variable name="type-is-datatype" select="$type/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-datatype')"/>
+            <xsl:variable name="type-is-datatype" select="$type/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-simpletype')"/>
             <xsl:variable name="type-is-complextype" select="$type/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-complextype')"/>
             
             <xsl:variable name="type-is-scalar-non-emptyable" select="imvert:type-name = ('scalar-integer','scalar-decimal')"/>

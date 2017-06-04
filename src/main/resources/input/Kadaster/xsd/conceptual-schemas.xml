@@ -14,6 +14,11 @@
         <use>ENVLOG</use>
     </mapping>
     
+    <mapping name="CERTIFICATES">
+        <use>CERTIF</use>
+        <use>19115:CIT</use>
+    </mapping>
+    
     <conceptual-schema>
         <description>ISO19107 Geographic information – Spatial schema</description>
         <url>http://www.kadaster.nl/conceptual-schemas/ISO19107</url>
@@ -30,8 +35,12 @@
             namespace="http://www.opengis.net/gml" 
             version="3.1.1" 
             phase="3" 
-            release="20050811" 
             location="http://www.opengis.net/gml/3.1.1/base/gml.xsd">
+            
+            <!-- enter known releases; last is default -->
+            <releases>
+                <release>20050811</release> 
+            </releases>
             <!-- 
                 This maps onto the local copy maintained in /xsd/www.opengis.net/gml(3.1.1-20050811)
                 The following conceptual schema types map onto the specified types, eg. GM_ArcString maps onto gml:ArcString 
@@ -63,8 +72,11 @@
             namespace="http://www.opengis.net/gml/3.2" 
             version="3.2.1" 
             phase="3" 
-            release="20070906"
             location="http://schemas.opengis.net/gml/3.2.1/gml.xsd">
+            <releases>
+                <release>20070906</release> 
+            </releases>
+            
             <!-- 
                 NEN3610:2011/Geonovum requires Simple Feature Profile, see http://www.ogcnetwork.net/gml-sf 
             -->
@@ -255,9 +267,12 @@
             namespace="http://www.kadaster.nl/schemas/generiek/procesresultaat/v20110922" 
             version="0.6" 
             phase="3" 
-            release="20110922" 
             location="http://www.kadaster.nl/generiek/procesresultaat/0.6/GenProcesResultaat_v0_6.xsd">
-         
+
+            <releases>
+                <release>20110922</release> 
+            </releases>
+        
             <type name="ENV_ProcesVerwerking">result:ProcesVerwerking</type>  
  
         </map>
@@ -266,11 +281,63 @@
             namespace="http://www.kadaster.nl/schemas/Log/v20120501" 
             version="1.2" 
             phase="3" 
-            release="20120501" 
             location="http://www.kadaster.nl/generiek/procesresultaat/0.6/GenProcesResultaat_v0_6.xsd">
+            <releases>
+                <release>20120501</release> 
+            </releases>
             
             <type name="ENV_Log">log:Log</type>  
             
+        </map>
+    </conceptual-schema>
+    
+    <conceptual-schema>
+        <description>Sample: certificates</description>
+        <url>http://www.kadaster.nl/conceptual-schemas/certificates</url>
+        <map 
+            name="CERTIF" 
+            namespace="http://www.knscm.nl/certificates" 
+            version="4.1.0" 
+            phase="3" 
+            location="http://www.knscm.nl/schemas/transfer/Certificates.xsd">
+            
+            <releases>
+                <release>20091215</release> 
+            </releases>
+            
+            <type name="CERT_certificate">Certificate</type>  
+        </map>
+    </conceptual-schema>
+    
+    <!--
+        EAstub verwijst naar ID.
+        Als referentie naar ID die niet kan worden opgelost, check of er een external schema is.
+        Zo ja, voeg dan dat schema toe net zoals bij conceptual schema's.
+        
+        toegang tot de schema's van TC21 via
+        https://github.com/ISO-TC211/XML
+        die verwijst naar
+        http://standards.iso.org/iso
+        en bijv voor citation naar:
+        http://standards.iso.org/iso/19115/-3/cit/1.0
+        daarin zit
+        http://standards.iso.org/iso/19115/-3/cit/1.0/citation.xsd
+    -->
+    <conceptual-schema>
+        <description>Jira-X</description>
+        <url>http://www.kadaster.nl/conceptual-schemas/iso/19115/-3/cit/1.0</url>
+        <map 
+            name="19115:CIT" 
+            namespace="http://standards.iso.org/iso/19115/-3/cit/1.0" 
+            version="1.0" 
+            phase="3" 
+            location="http://standards.iso.org/iso/19115/-3/cit/1.0/citation.xsd">
+            
+            <releases>
+                <release>2006</release> 
+            </releases>
+            
+            <type name="CI_Citation">CI_Citation</type>  
         </map>
     </conceptual-schema>
     

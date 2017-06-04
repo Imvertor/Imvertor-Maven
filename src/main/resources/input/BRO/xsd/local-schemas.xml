@@ -46,6 +46,13 @@
             target-uri-prefix="../../gml/3.2.1/gml.xsd"/>
     </local-schema>
     
+    <local-schema schemafolder="standards.iso.org/iso-19115--3-cit-1.0(1.0-2006)">
+        <depends-on schemafolder="www.w3.org/1999-xlink(1.0.0-20010627)"/>
+        <local-map 
+            source-uri-prefix="http://www.w3.org/1999/xlink.xsd"
+            target-uri-prefix="../../.././../../xlink/1.0.0/xlinks.xsd"/>
+    </local-schema>
+    
     <local-schema schemafolder="www.kadaster.nl/schemas-KARIM-KIMBAG-adres-v20130601(1.0.0-20130601)">
         <local-map 
             source-uri-prefix="../../../xlink/1.0.0/xlinks.xsd"

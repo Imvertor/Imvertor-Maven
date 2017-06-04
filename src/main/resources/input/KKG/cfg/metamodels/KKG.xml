@@ -172,22 +172,22 @@
             <desc lang="nl">Één element in een enumeratie.</desc>
             <construct>attribute</construct>
         </stereo>
-        <stereo id="stereotype-name-datatype">
-            <name lang="nl">Datatype</name>
-            <name lang="en">SimpleType</name>
+        <stereo id="stereotype-name-simpletype">
+            <name lang="nl">Primitief datatype</name>
+            <name lang="en">Primitive datatype</name>
             <desc lang="en">TODO</desc>
             <desc lang="nl"></desc>
             <construct>datatype</construct>
         </stereo>
         <stereo id="stereotype-name-complextype">
-            <name lang="nl">Complex datatype</name>
-            <name lang="en">ComplexType</name>
+            <name lang="nl">Gestruktureerd datatype</name>
+            <name lang="en">Structured datatype</name>
             <desc lang="en">TODO</desc>
             <desc lang="nl">
                 Gestructureerd datatype zonder identiteit samengesteld uit minimaal twee onderdelen.
-                Voorbeeld: Complex datatype Bedrag bestaat uit de data elementen som en valuta.
+                Voorbeeld: Bedrag bestaat uit de data elementen som en valuta.
                 De eigenschappen tezamen vormen de identiteit (een complex datatype “identificeert zichzelf” zoals er maar één “4 liter” bestaat, 
-                in tegenstelling tot een persoon met voornaam Arjan, want zo kunnen meerdere mensen heten, zonder dezelfde persoon te zijn)
+                in tegenstelling tot een persoon met voornaam Piet, want zo kunnen meerdere mensen heten, zonder dezelfde persoon te zijn)
             </desc>
             <construct>datatype</construct>
         </stereo>

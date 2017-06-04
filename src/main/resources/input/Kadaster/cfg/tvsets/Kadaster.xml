@@ -180,7 +180,7 @@
             <stereotypes>
                 <stereo required="no">stereotype-name-attribute</stereo>
                 <stereo required="no">stereotype-name-referentie-element</stereo>
-                <stereo required="no">stereotype-name-datatype</stereo>
+                <stereo required="no">stereotype-name-simpletype</stereo>
                 <stereo required="no">stereotype-name-complextype</stereo>
                 <stereo required="no">stereotype-name-data-element</stereo>
                 <stereo required="no">stereotype-name-union-element</stereo>

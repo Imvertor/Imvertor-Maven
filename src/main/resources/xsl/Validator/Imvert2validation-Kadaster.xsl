@@ -34,6 +34,7 @@
     
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
+    <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     
     <xsl:variable name="application-package" select="(//imvert:package[imvert:name/@original=$application-package-name])[1]"/>
     <xsl:variable name="domain-package" select="$application-package//imvert:package[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))]"/>
@@ -46,7 +47,7 @@
     </xsl:variable>
     
     <xsl:variable name="datatype-stereos" 
-        select="('stereotype-name-datatype','stereotype-name-complextype','stereotype-name-union','stereotype-name-referentielijst','stereotype-name-codelist','stereotype-name-interface','stereotype-name-enumeration')"/>
+        select="('stereotype-name-simpletype','stereotype-name-complextype','stereotype-name-union','stereotype-name-referentielijst','stereotype-name-codelist','stereotype-name-interface','stereotype-name-enumeration')"/>
   
     <!-- follow guidelines for Kadaster and KING (KK) -->
     
@@ -121,13 +122,14 @@
     </xsl:template>
     
     <xsl:template match="imvert:class | imvert:attribute |imvert:association" priority="10">
-        
+        <xsl:variable name="tv" select="imf:get-tagged-value(.,'##MogelijkGeenWaarde')"/>
+            
         <xsl:sequence select="imf:report-warning(., 
-            imvert:stereotype = imf:get-config-stereotypes('stereotype-name-voidable') and empty(imf:get-tagged-value(.,'Mogelijk geen waarde')), 
-            'Voidable, but missing required tagged value &quot;Mogelijk geen waarde&quot;')"/>
+            imvert:stereotype = imf:get-config-stereotypes('stereotype-name-voidable') and empty($tv), 
+            'Voidable, but missing required tagged value [1]',imf:get-config-tagged-values('MogelijkGeenWaarde'))"/>
         <xsl:sequence select="imf:report-warning(., 
-            empty(imvert:stereotype = imf:get-config-stereotypes('stereotype-name-voidable')) and imf:get-tagged-value(.,'Mogelijk geen waarde'), 
-            'Tagged value &quot;Mogelijk geen waarde&quot; found, but not stereotyped as voidable' )"/>
+            empty(imvert:stereotype = imf:get-config-stereotypes('stereotype-name-voidable')) and exists($tv), 
+            'Tagged value [1] found, but not stereotyped as voidable',imf:get-config-tagged-values('MogelijkGeenWaarde'))"/>
         
         <xsl:next-match/>
     </xsl:template>

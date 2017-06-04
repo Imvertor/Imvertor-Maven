@@ -38,6 +38,7 @@ import nl.imvertor.Reporter.Reporter;
 import nl.imvertor.RunAnalyzer.RunAnalyzer;
 import nl.imvertor.RunInitializer.RunInitializer;
 import nl.imvertor.SchemaValidator.SchemaValidator;
+import nl.imvertor.ShaclCompiler.ShaclCompiler;
 import nl.imvertor.Validator.Validator;
 import nl.imvertor.XmiCompiler.XmiCompiler;
 import nl.imvertor.XmiTranslator.XmiTranslator;
@@ -75,6 +76,7 @@ public class ChainTranslateAndReport {
 			configurator.getCli(ConceptCollector.STEP_NAME);
 			configurator.getCli(ImvertCompiler.STEP_NAME);
 			configurator.getCli(XsdCompiler.STEP_NAME);
+			configurator.getCli(ShaclCompiler.STEP_NAME);
 			configurator.getCli(ReleaseComparer.STEP_NAME);
 			configurator.getCli(SchemaValidator.STEP_NAME);
 			configurator.getCli(HistoryCompiler.STEP_NAME);
@@ -168,9 +170,12 @@ public class ChainTranslateAndReport {
 				    succeeds = succeeds && (new EapCompiler()).run();
 			
 					// compile compliancy Excel
-				    if (configurator.isTrue("cli","createcomplyexcel"))
+				    if (configurator.isTrue("cli","createcomplyexcel",false))
 				    	succeeds = succeeds && (new ComplyCompiler()).run();
-			
+				     
+				    if (configurator.isTrue("cli","createshacl",false)) 
+				    	succeeds = succeeds && (new ShaclCompiler()).run();
+					    	
 			    }
 			} catch (Exception e) {
 				configurator.getRunner().error(logger,"Step-level system error - Please notify your system administrator: " + e.getMessage(),e);

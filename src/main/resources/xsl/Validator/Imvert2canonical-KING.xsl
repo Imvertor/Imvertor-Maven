@@ -121,7 +121,7 @@
         <xsl:copy>
             <xsl:apply-templates select="@*|node()"/>
             <imvert:stereotype origin="canon">
-                <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-datatype')"/>
+                <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-simpletype')"/>
             </imvert:stereotype>
         </xsl:copy>
     </xsl:template>

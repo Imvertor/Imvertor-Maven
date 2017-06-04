@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>SHACL compiler</name>
+      <version-control>$Id: parms.xml 7509 2016-04-25 13:30:29Z arjan $</version-control>
+   </id>
+   
+   <cli-parms>
+      <cli-parm>
+         <name>createshacl</name>
+         <arg>yes|no</arg>
+         <tip>Yes if SHACL RDF must be generated</tip>
+         <required>false</required>
+      </cli-parm> 
+      
+   </cli-parms>
+  
+   <properties>
+   
+      <RESULT_SHACL_FILE_PATH>${system/work-imvert-folder-path}/imvertor.35.shacl.ttl</RESULT_SHACL_FILE_PATH>   
+      
+      <RESULT_SHACL_APPLICATION_FOLDER>${system/work-shacl-folder-path}</RESULT_SHACL_APPLICATION_FOLDER>
+      
+      <IMVERTOR_METAMODEL_Kadaster_SHACL_XSLPATH>Imvert2SHACL-Kadaster.xsl</IMVERTOR_METAMODEL_Kadaster_SHACL_XSLPATH>
+      
+   </properties>
+   
+   <system>
+      <configuration-shaclrules-file>${system/inp-folder-path}/cfg/shaclrules/${cli/shaclrules}.xml</configuration-shaclrules-file>
+   </system>
+   
+</config>

@@ -231,6 +231,23 @@
                     <imvert:location>http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd</imvert:location>
                     <imvert:release>20010627</imvert:release>
                 </imvert:package>
+                <!-- check if outside constructs are found -->
+                <xsl:variable name="stubs" select="$xmi-document/XMI/XMI.extensions/EAStub"/>
+                <xsl:if test="exists($stubs)" >
+                    <imvert:package>
+                        <imvert:id>OUTSIDE</imvert:id>
+                        <xsl:for-each select="$stubs">
+                            <imvert:class-stub>
+                                <imvert:found-name>
+                                    <xsl:value-of select="@name"/>
+                                </imvert:found-name>
+                                <imvert:id>
+                                    <xsl:value-of select="@xmi.id"/>
+                                </imvert:id>
+                            </imvert:class-stub>
+                        </xsl:for-each>
+                    </imvert:package>
+                </xsl:if>
             </xsl:if>
         </imvert:package>
     </xsl:template>
@@ -246,7 +263,7 @@
         <xsl:variable name="stereotypes" select="imf:get-stereotypes(.)" as="xs:string*"/>
         <xsl:variable name="associations" select="imf:get-key($xmi-document,'key-document-associations-type',$id)"/>
         <xsl:variable name="is-abstract" select="if (imf:boolean(@isAbstract)) then 'true' else 'false'"/>
-        <xsl:variable name="is-datatype" select="$stereotypes=imf:get-config-stereotypes('stereotype-name-datatype') or imf:get-system-tagged-value(.,'ea_stype')='DataType'"/>
+        <xsl:variable name="is-datatype" select="$stereotypes=imf:get-config-stereotypes('stereotype-name-simpletype') or imf:get-system-tagged-value(.,'ea_stype')='DataType'"/>
         <xsl:variable name="is-complextype" select="$stereotypes=imf:get-config-stereotypes('stereotype-name-complextype')"/>
         <!-- TODO overal de referenties naar expliciete stereotype names vervangen door imf:get-config-stereotypes('stereotype-name-*') -->
         <xsl:variable name="class-cardinality" select="imf:get-class-cardinality-bounds(.)"/>

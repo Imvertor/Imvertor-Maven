@@ -30,6 +30,7 @@
 
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
+    <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     
     <xsl:variable name="associations" select="//imvert:association"/>
     
@@ -58,7 +59,7 @@
     -->
     <xsl:template match="imvert:tagged-values">
         <imvert:tagged-values>
-            <xsl:if test="../imvert:stereotype = 'VOIDABLE' and empty(imvert:tagged-value[imvert:name = 'mogelijk geen waarde'])">
+            <xsl:if test="../imvert:stereotype = 'VOIDABLE' and empty(imf:get-most-relevant-compiled-taggedvalue-element(.,'##MogelijkGeenWaarde'))">
                 <imvert:tagged-value origin='migrate'>
                     <imvert:name original="Mogelijk geen waarde">mogelijk geen waarde</imvert:name>
                     <imvert:value original="Ja">Ja</imvert:value>

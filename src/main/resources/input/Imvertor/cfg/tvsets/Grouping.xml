@@ -225,7 +225,7 @@
                 <stereo required="no">stereotype-name-enumeration</stereo>
                 <stereo required="no">stereotype-name-referentielijst</stereo>
                 <stereo required="no">stereotype-name-complextype</stereo>
-                <stereo required="no">stereotype-name-datatype</stereo>
+                <stereo required="no">stereotype-name-simpletype</stereo>
                 <stereo required="no">stereotype-name-union</stereo>
                 <stereo required="no">stereotype-name-interface</stereo>
             </stereotypes>

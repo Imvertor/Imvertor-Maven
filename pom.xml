@@ -128,7 +128,7 @@
 		    <artifactId>xml-resolver</artifactId>
 		    <version>1.2</version>
 		</dependency>
-
+		
 		<!-- non-mavenized depencies below; dependency on enterprise architect 
 			should be removed -->
 		<!-- note that they might have to distributed seperately due to copyright 

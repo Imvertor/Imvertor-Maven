@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<shacl-rules>
+    <name>Kadaster KKG</name>
+    <!-- 
+        Kadaster specific SHACL rules 
+    -->
+    <vocabularies>
+        <vocabulary>
+            <prefix>rdf</prefix>
+            <URI>http://www.w3.org/1999/02/22-rdf-syntax-ns#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>rdfs</prefix>
+            <URI>http://www.w3.org/2000/01/rdf-schema#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>xsd</prefix>
+            <URI>http://www.w3.org/2001/XMLSchema#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>owl</prefix>
+            <URI>http://www.w3.org/2002/07/owl#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>sh</prefix>
+            <URI>http://www.w3.org/ns/shacl#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>dcat</prefix>
+            <URI>http://www.w3.org/ns/dcat#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>dct</prefix>
+            <URI>http://purl.org/dc/terms/</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>dctype</prefix>
+            <URI>http://purl.org/dc/dcmitype/</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>foaf</prefix>
+            <URI>http://xmlns.com/foaf/0.1/</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>skos</prefix>
+            <URI>http://www.w3.org/2004/02/skos/core#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>skoslex</prefix>
+            <URI>http://bp4mc2.org/def/skos-lex/</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>prov</prefix>
+            <URI>http://www.w3.org/ns/prov#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>dqv</prefix>
+            <URI>http://www.w3.org/ns/dqv#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>adms</prefix>
+            <URI>http://www.w3.org/ns/adms#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>wdrs</prefix>
+            <URI>http://www.w3.org/2007/05/powder-s#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>xsi</prefix>
+            <URI>http://www.w3.org/2001/XMLSchema-instance</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>ldqd</prefix>
+            <URI>http://www.w3.org/2016/05/ldqd#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>kkg</prefix>
+            <URI>http://data.acceptatie.pdok.nl/KKG/def/model/</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>data</prefix>
+            <URI>http://data.ontwikkeling.pdok.nl/catalogus/dso/id/model#</URI>
+        </vocabulary>
+
+    </vocabularies>
+</shacl-rules>

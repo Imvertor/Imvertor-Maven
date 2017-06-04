@@ -123,7 +123,7 @@
             <desc>Één element in een enumeratie.</desc>
             <construct>attribute</construct>
         </stereo>
-        <stereo id="stereotype-name-datatype">
+        <stereo id="stereotype-name-simpletype">
             <name lang="en">Datatype</name>
             <name lang="nl">Datatype</name>
             <desc></desc>

@@ -131,7 +131,7 @@
                 <stereo required="no">stereotype-name-complextype</stereo>
                 <stereo required="no">stereotype-name-data-element</stereo>
                 <stereo required="no">stereotype-name-union-element</stereo>
-                <stereo required="no">stereotype-name-datatype</stereo>
+                <stereo required="no">stereotype-name-simpletype</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="FormeelPatroon">
@@ -144,7 +144,7 @@
                 <stereo required="no">stereotype-name-complextype</stereo>
                 <stereo required="no">stereotype-name-data-element</stereo>
                 <stereo required="no">stereotype-name-union-element</stereo>
-                <stereo required="no">stereotype-name-datatype</stereo>
+                <stereo required="no">stereotype-name-simpletype</stereo>
             </stereotypes>
         </tv>
         <tv norm="compact" id="MogelijkGeenWaarde">

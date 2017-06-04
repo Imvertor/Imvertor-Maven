@@ -43,7 +43,7 @@
                 <stereo>stereotype-name-referentielijst</stereo>
                 <stereo>stereotype-name-referentie-element</stereo>
                 <stereo>stereotype-name-enumeration</stereo>
-                <stereo>stereotype-name-datatype</stereo>
+                <stereo>stereotype-name-simpletype</stereo>
                 <stereo>stereotype-name-complextype</stereo>
                 <stereo>stereotype-name-union</stereo>
                 

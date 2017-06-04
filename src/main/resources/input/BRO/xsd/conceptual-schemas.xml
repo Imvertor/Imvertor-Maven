@@ -7,8 +7,9 @@
         <use>SampleExternalModelA</use>
     </mapping>
     
-    <mapping name="BRO_GML321">
+    <mapping name="BRO_INSPIRE">
         <use>GML321</use>
+        <use>ISO19115</use>
     </mapping>
     
     <conceptual-schema>
@@ -23,8 +24,11 @@
             namespace="http://www.bro.nl/SampleExternalModelA" 
             version="1.0.0" 
             phase="1" 
-            release="20170302"
             location="http://www.bro.nl/schemas/1.0.0/SampleExternalModelA.xsd">
+            
+            <releases>
+                <release>20170302</release> 
+            </releases>
             
             <type name="EM_AC1"  
                 asAttributeDesignation="complextype"
@@ -49,8 +53,12 @@
             namespace="http://www.opengis.net/gml/3.2" 
             version="3.2.1" 
             phase="3" 
-            release="20070906"
             location="http://schemas.opengis.net/gml/3.2.1/gml.xsd">
+           
+            <releases>
+                <release>20070906</release> 
+            </releases>
+            
             <!-- 
                 NEN3610:2011/Geonovum requires Simple Feature Profile, see http://www.ogcnetwork.net/gml-sf 
             -->
@@ -207,4 +215,45 @@
         </map>
     </conceptual-schema>
     
+    <conceptual-schema>
+        <description>ISO TC211 / ISO 19115:2006 Metadata (Corrigendum) - Citation and responsible party information</description>
+        <url>http://www.bro.nl/conceptual-schemas/iso/19115/metadata/cit</url>
+        <map 
+            name="ISO19115" 
+            namespace="http://standards.iso.org/iso/19115/-3/cit/1.0" 
+            version="1.0" 
+            phase="3" 
+            location="http://standards.iso.org/iso/19115/-3/cit/1.0/cit.xsd">
+            <desc>
+                Citation and responsible party information
+            </desc>
+            <releases>
+                <release>2006</release> 
+            </releases>
+            <type name="CI_Citation"
+                asAttributeDesignation="complextype"
+                asAttribute="CI_Citation_PropertyType">CI_Citation</type>
+        </map>
+    </conceptual-schema>
+    
+    <conceptual-schema>
+        <description>ISO TC211 / ISO 19115:2006 Metadata (Corrigendum) - Extent information</description>
+        <url>http://www.bro.nl/conceptual-schemas/iso/19115/metadata/gex</url>
+        <map 
+            name="ISO19115" 
+            namespace="http://standards.iso.org/iso/19115/-3/gex/1.0" 
+            version="1.0" 
+            phase="3" 
+            location="http://standards.iso.org/iso/19115/-3/gex/1.0/gex.xsd">
+            <desc>
+                Extent information
+            </desc>
+            <releases>
+                <release>2006</release> 
+            </releases>
+            <type name="EX_Extent"
+                asAttributeDesignation="complextype"
+                asAttribute="EX_Extent_PropertyType">EX_Extent</type>
+        </map>
+    </conceptual-schema>
 </conceptual-schemas>

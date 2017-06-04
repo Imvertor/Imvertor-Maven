@@ -162,7 +162,7 @@
                 <stereo required="yes">stereotype-name-referentie-element</stereo>
                 <stereo required="yes">stereotype-name-enumeration</stereo>
                 <stereo required="yes">stereotype-name-codelist</stereo>
-                <stereo required="yes">stereotype-name-datatype</stereo>
+                <stereo required="yes">stereotype-name-simpletype</stereo>
                 <stereo required="yes">stereotype-name-complextype</stereo>
                 <stereo required="yes">stereotype-name-union</stereo>
                 

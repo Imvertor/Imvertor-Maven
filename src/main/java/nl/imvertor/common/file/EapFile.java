@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.commons.io.FileUtils;
+import org.sparx.Collection;
 import org.sparx.EnumXMIType;
 import org.sparx.Package;
 import org.sparx.Project;
@@ -36,6 +37,9 @@ import org.sparx.Repository;
  * 
  * The EapFile is an AnyFile and therefore does not access the chain environment. 
  *  
+ * EA reference:
+ * http://www.sparxsystems.com/enterprise_architect_user_guide/10/automation_and_scripting/reference.html
+ * 
  * @author arjan
  *
  */
@@ -206,7 +210,8 @@ public class EapFile extends AnyFile {
 	 */
 	private void exportXML(String guid, String fullpath, boolean recurse) {
 		int xmiFlag = recurse ? 0 : 1;
-		project.ExportPackageXMIEx(project.GUIDtoXML(guid), EnumXMIType.xmiEADefault, exportDiagrams, exportDiagramImage, exportFormatXML, exportUseDTD, fullpath, xmiFlag);
+		String g = project.GUIDtoXML(guid);
+		project.ExportPackageXMIEx(g, EnumXMIType.xmiEADefault, exportDiagrams, exportDiagramImage, exportFormatXML, exportUseDTD, fullpath, xmiFlag);
 	}
 
 	/**
@@ -363,6 +368,29 @@ public class EapFile extends AnyFile {
 	}
 	
 	/**
+	 * Get the GUID of the requested application package
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public String getModelPackageGUID(String projectName, String modelName) throws Exception {
+		Package p = getPackageByName(repo.GetModels().GetAt((short) 0), projectName);
+		Package m = getPackageByName(p, modelName);
+		return (m != null) ? m.GetPackageGUID() : ""; 
+	}
+	/**
+	 * Get the GUID of the requested project package
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public String getProjectPackageGUID(String projectName) throws Exception {
+		Package p = getPackageByName(repo.GetModels().GetAt((short) 0), projectName);
+		return (p != null) ? p.GetPackageGUID() : ""; 
+	}
+	
+	/**
+	 * get the models the the repository
 	 * 
 	 * @return
 	 */
@@ -374,5 +402,45 @@ public class EapFile extends AnyFile {
 		}
 		return v;	
 	}
+	
+	/**
+	 * Get all models (packages) as a vector, by depth first selection.
+	 *  
+	 * @return
+	 */
+	public Vector<Package> getAllModels() {
+		Vector<Package> packs = new Vector<Package>();
+		for (short idx = 0; idx < repo.GetModels().GetCount(); idx++) {
+	        dumpPackage(packs,repo.GetModels().GetAt(idx));
+		}
+		return packs;
+		
+	}
+	
+	private void dumpPackage(Vector<Package> packs, Package p) {
+		packs.add(p);
+		Collection<Package> coll = p.GetPackages();
+		for (short idx = 0; idx < coll.GetCount(); idx++) {
+			dumpPackage(packs,coll.GetAt(idx));
+		}
+	}
+	
+	/**
+	 * get a package by name, that must occur anywhere within the package passed.
+	 * 
+	 * @param ancestorPack
+	 * @param packageName
+	 */
+	private Package getPackageByName(Package ancestorPack, String packageName) throws Exception {
+		Iterator<Package> pit = getPackageHierarchy(ancestorPack).iterator();
+		while (pit.hasNext()) {
+			Package selectedPackage = pit.next();
+			if (selectedPackage.GetStereotypeEx().equals("project") && selectedPackage.GetName().equals(packageName)) 
+				return selectedPackage; 
+		}
+		return null;
+	}
+	
+	
 }
 

@@ -353,19 +353,20 @@ public class Configurator {
 		String wff = workConfigurationFile.getCanonicalPath();
 		setParm(workConfiguration,"system","work-config-path", wff, true);
 		
-		setParm(workConfiguration,"system","work-app-folder-path",    wf + s + "app", true);
-		setParm(workConfiguration,"system","work-etc-folder-path", 	  wf + s + "app" + s + "etc", true);
-		setParm(workConfiguration,"system","work-xsd-folder-path",    wf + s + "app" + s + "xsd", true);
-		setParm(workConfiguration,"system","work-doc-folder-path",    wf + s + "app" + s + "doc", true);
-		setParm(workConfiguration,"system","work-uml-folder-path",    wf + s + "app" + s + "uml", true);
-		setParm(workConfiguration,"system","work-cmp-folder-path",    wf + s + "app" + s + "cmp", true);
-		setParm(workConfiguration,"system","work-job-folder-path",    wf + s + "app" + s + "job", true);
+		setParm(workConfiguration,"system","work-app-folder-path",     wf + s + "app", true);
+		setParm(workConfiguration,"system","work-etc-folder-path", 	   wf + s + "app" + s + "etc", true);
+		setParm(workConfiguration,"system","work-xsd-folder-path",     wf + s + "app" + s + "xsd", true);
+		setParm(workConfiguration,"system","work-doc-folder-path",     wf + s + "app" + s + "doc", true);
+		setParm(workConfiguration,"system","work-uml-folder-path",     wf + s + "app" + s + "uml", true);
+		setParm(workConfiguration,"system","work-cmp-folder-path",     wf + s + "app" + s + "cmp", true);
+		setParm(workConfiguration,"system","work-job-folder-path",     wf + s + "app" + s + "job", true);
+		setParm(workConfiguration,"system","work-shacl-folder-path",   wf + s + "app" + s + "shacl", true);
 				
-		setParm(workConfiguration,"system","work-rep-folder-path",    wf + s + "rep", true);
-		setParm(workConfiguration,"system","work-imvert-folder-path", wf + s + "imvert", true);
-		setParm(workConfiguration,"system","work-comply-folder-path", wf + s + "comply", true);
+		setParm(workConfiguration,"system","work-rep-folder-path",     wf + s + "rep", true);
+		setParm(workConfiguration,"system","work-imvert-folder-path",  wf + s + "imvert", true);
+		setParm(workConfiguration,"system","work-comply-folder-path",  wf + s + "comply", true);
 		setParm(workConfiguration,"system","work-profile-folder-path", wf + s + "profile", true);
-		setParm(workConfiguration,"system","work-debug-folder-path", wf + s + "debug", true);
+		setParm(workConfiguration,"system","work-debug-folder-path",   wf + s + "debug", true);
 		
 		// clear the workfolder
 		(new OutputFolder(getParm(workConfiguration,"system","work-app-folder-path",true))).clear(false);
