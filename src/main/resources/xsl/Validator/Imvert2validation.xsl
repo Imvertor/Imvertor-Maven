@@ -186,9 +186,9 @@
     
     <xsl:template match="imvert:package[.=$application-package]" priority="101">
         <xsl:sequence select="imf:track('Validating package [1]',imvert:name)"/>
-        <xsl:sequence select="imf:report-error(., 
+       <!-- <xsl:sequence select="imf:report-error(., 
             not(matches(imvert:version,imf:get-config-parameter('application-version-regex'))), 
-            'Version identifier has invalid format')"/>
+            'Version identifier has invalid format')"/> -->
         <xsl:sequence select="imf:report-error(., 
             not(normalize-space(imvert:namespace)), 
             'No root namespace defined for application')"/>
@@ -210,9 +210,11 @@
     
     <xsl:template match="imvert:package[.=$domain-package]" priority="101">
         <xsl:sequence select="imf:track('Validating package [1]',imvert:name)"/>
+        <!--x
         <xsl:sequence select="imf:report-error(., 
             not(matches(imvert:version,imf:get-config-parameter('domain-version-regex'))), 
             'Version identifier has invalid format')"/>
+        x-->
         <xsl:next-match/>
     </xsl:template>
     
@@ -222,15 +224,15 @@
     <xsl:template match="imvert:package[.=($application-package,$domain-package)]" priority="100">
         <!-- setup -->
         <xsl:variable name="this" select="."/>
-        <!-- validation -->
-        <!-- version and release check -->
      
-        <xsl:sequence select="imf:report-error(., 
-            not(matches(imvert:phase,$phase-pattern)), 
-            'Phase must be specified and must be 0, concept, 1, draft, 2, finaldraft, 3, or final')"/>
-        <xsl:sequence select="imf:report-error(., 
-            not(matches(imvert:release,$release-pattern)), 
-            'Release must be specified and takes the form YYYYMMDD')"/>
+        <!-- validation -->
+
+        <!-- version and release check -->
+        
+        <xsl:sequence select="imf:check-version($this)"/>
+        <xsl:sequence select="imf:check-phase($this)"/>
+        <xsl:sequence select="imf:check-release($this)"/>
+        
         <!-- naming -->
         <xsl:sequence select="imf:report-warning(., 
             not(imf:test-name-convention($this)), 
@@ -479,13 +481,12 @@
         <xsl:sequence select="imf:report-error(., 
             $is-derived and empty($supplier-release), 
             'Package is derived but no supplier release specified')"/>
-        
-        <xsl:sequence select="imf:report-error(., 
-            not(matches(imvert:phase,$phase-pattern)), 
-            'Phase must be specified and must be 0, concept, 1, draft, 2, finaldraft, 3, or final')"/>
-        <xsl:sequence select="imf:report-error(., 
-            not(matches(imvert:release,$release-pattern)), 
-            'Release must be specified and takes the form YYYYMMDD')"/>
+
+        <!-- version and release check -->
+        <!--<xsl:sequence select="imf:check-phase($this)"/>-->
+        <xsl:sequence select="imf:check-release($this)"/>
+       
+        <!-- additional release checks -->
         <xsl:sequence select="imf:report-error(., 
             imvert:ref-release and not(matches(imvert:ref-release,$release-pattern)), 
             'Reference release must take the form YYYMMDD')"/>
@@ -495,6 +496,7 @@
         <xsl:sequence select="imf:report-warning(., 
             imvert:base and (imvert:phase gt imvert:base/imvert:phase),
             'Supplier phase mismatch, supplier is not in same or later phase.')"/>
+        
         <xsl:apply-templates select="imvert:base" mode="version-chain"/>
     </xsl:template>
     
@@ -1408,5 +1410,34 @@
                 <xsl:sequence select="true()"/>
             </xsl:otherwise>
         </xsl:choose>
-       </xsl:function>
+   </xsl:function>
+    
+    <xsl:function name="imf:check-version">
+        <xsl:param name="this"/>
+        <xsl:variable name="cfg-version" select="$configuration-versionrules-file/version-rule/version"/>
+        <xsl:variable name="cfg-version-pattern" select="$cfg-version/pattern"/>
+        
+        <xsl:sequence select="imf:report-error($this, 
+            not(matches($this/imvert:version,$cfg-version-pattern)), 
+            'Version [1] must take the form [2] consisting of [3]', ($this/imvert:version, $cfg-version/format, imf:string-group($cfg-version/fragment/name)))"/>
+    </xsl:function>
+  
+    <xsl:function name="imf:check-phase">
+        <xsl:param name="this"/>
+        <xsl:variable name="cfg-phases" select="$configuration-versionrules-file/phase-rule/phase"/>
+        <xsl:variable name="cfg-phase" select="$cfg-phases[level = $this/imvert:phase]"/>
+        <xsl:variable name="phase-listing" select="for $p in $cfg-phases return concat($p/level,' (', $p/name, ')')"/>
+        
+        <xsl:sequence select="imf:report-error($this, 
+            empty($cfg-phase), 
+            'Phase [1] must be any of [2]', ($this/imvert:phase, imf:string-group($phase-listing)))"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:check-release">
+        <xsl:param name="this"/>
+        <xsl:sequence select="imf:report-error($this, 
+            not(matches($this/imvert:release,$release-pattern)), 
+            'Release must be specified and takes the form YYYYMMDD')"/>
+    </xsl:function>
+    
 </xsl:stylesheet>

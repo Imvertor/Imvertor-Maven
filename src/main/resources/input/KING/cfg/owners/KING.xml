@@ -78,8 +78,10 @@
         The local reference takes the form of a relative path, and is introduced by KING.
     </parameter>
 
+    <!--x
     <parameter name="application-version-regex">^\S+$</parameter>
     <parameter name="domain-version-regex">^\S+$</parameter>
+    x-->
     
     <patterns>
         <p name="POSTCODE" FORMAT="regex">\d{4}[A-Z]{2}</p>

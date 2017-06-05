@@ -573,7 +573,7 @@
         <xsl:variable name="scalar" select="$all-scalars[@id=$base-type][last()]"/>
         <xsl:choose>
             <xsl:when test="$base-type"> 
-                <xsl:variable name="xs-type" select="$scalar/type-map[@lang='xs']"/>
+                <xsl:variable name="xs-type" select="$scalar/type-map[@formal-lang='xs']"/>
                 <xsl:choose>
                     <xsl:when test="exists($scalar) and starts-with($xs-type,'#')">
                         <xsl:value-of select="$xs-type"/>

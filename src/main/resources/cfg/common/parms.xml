@@ -169,6 +169,12 @@
          <tip>Allow any construct to have multiple suppliers</tip>
          <required>false</required>
       </cli-parm>
+      <cli-parm>
+         <name>versionrules</name>
+         <arg>name</arg>
+         <tip>Name of the version rules file</tip>
+         <required>true</required>
+      </cli-parm>
    </cli-parms>
    
    <!-- properties zijn directe mapping vanuit imvertor.properties. Die moeten dus later netjes worden verwerkt -->
@@ -207,6 +213,7 @@
       <configuration-schemarules-file>${system/inp-folder-path}/cfg/schemarules/${cli/schemarules}.xml</configuration-schemarules-file>
       <configuration-notesrules-file>${system/inp-folder-path}/cfg/notesrules/${cli/notesrules}.xml</configuration-notesrules-file>
       <configuration-docrules-file>${system/inp-folder-path}/cfg/docrules/${cli/docrules}.xml</configuration-docrules-file>
+      <configuration-versionrules-file>${system/inp-folder-path}/cfg/versionrules/${cli/versionrules}.xml</configuration-versionrules-file>
       <configuration-metamodel-file>${system/inp-folder-path}/cfg/metamodels/${cli/metamodel}.xml</configuration-metamodel-file>
       <configuration-i3n-file>${system/inp-folder-path}/cfg/i3n/translation.xml</configuration-i3n-file>
    </system>

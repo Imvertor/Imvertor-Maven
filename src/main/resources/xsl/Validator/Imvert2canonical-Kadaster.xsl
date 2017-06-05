@@ -102,19 +102,18 @@
     </xsl:template>
     
     <xsl:template match="imvert:phase">
-        <xsl:variable name="original" select="normalize-space(lower-case(.))"/>
+        <xsl:variable name="found-value" select="normalize-space(lower-case(.))"/>
         <xsl:copy>
             <xsl:copy-of select="@*"/>
-            <xsl:attribute name="original" select="$original"/>
             <xsl:choose>
-                <xsl:when test="$original='1.0'">1</xsl:when> 
-                <xsl:when test="$original='concept'">0</xsl:when> 
-                <xsl:when test="$original='draft'">1</xsl:when> 
-                <xsl:when test="$original='finaldraft'">2</xsl:when> 
-                <xsl:when test="$original='final draft'">2</xsl:when> 
-                <xsl:when test="$original='final'">3</xsl:when> 
+                <xsl:when test="$found-value='1.0'">1</xsl:when> 
+                <xsl:when test="$found-value='concept'">0</xsl:when> 
+                <xsl:when test="$found-value='draft'">1</xsl:when> 
+                <xsl:when test="$found-value='finaldraft'">2</xsl:when> 
+                <xsl:when test="$found-value='final draft'">2</xsl:when> 
+                <xsl:when test="$found-value='final'">3</xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select="$original"/>
+                    <xsl:value-of select="imf:compute-phase(.)"/>
                 </xsl:otherwise> 
             </xsl:choose>
         </xsl:copy>
@@ -128,5 +127,5 @@
             <xsl:apply-templates select="node()|@*"/>
         </xsl:copy>
     </xsl:template>    
-  
+    
 </xsl:stylesheet>

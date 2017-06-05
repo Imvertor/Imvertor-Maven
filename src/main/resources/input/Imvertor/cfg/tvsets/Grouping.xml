@@ -20,7 +20,7 @@
                 <stereo required="no">stereotype-name-base-package</stereo>
                 <stereo required="no">stereotype-name-application-package</stereo>
             </stereotypes>
-            <declared-values lang="#ALL">
+            <declared-values lang="#all">
                 <value default="yes">model</value>
             </declared-values>
         </tv>

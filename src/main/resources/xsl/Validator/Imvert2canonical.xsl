@@ -160,6 +160,14 @@
         </xsl:copy>
     </xsl:template>
 
+    <!-- add an @original attibute to maintain original value before canonization -->
+    <xsl:template match="imvert:phase">
+        <xsl:copy>
+            <xsl:attribute name="original" select="."/>
+            <xsl:value-of select="."/>
+        </xsl:copy>
+    </xsl:template>
+    
     <xsl:template match="node()|@*">
         <xsl:copy>
             <xsl:copy-of select="@*"/>

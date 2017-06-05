@@ -31,45 +31,45 @@
             <desc>A CharacterString is an arbitrary-length sequence of characters including accents and special characters from
                 repertoire of one of the adopted character sets (ISO 19103, Draft Technical Specification 19103, Geographic information - Conceptual
                 schema language)</desc>
-            <type-map lang="xs">string</type-map>
+            <type-map formal-lang="xs">string</type-map>
             <max-length>true</max-length>
         </scalar>
         <scalar id="scalar-boolean">
             <name lang="nl">BOOLEAN</name>
             <name lang="en">BOOLEAN</name>
-            <type-map lang="xs">boolean</type-map>
+            <type-map formal-lang="xs">boolean</type-map>
         </scalar>
         <scalar id="scalar-decimal">
             <name lang="nl">REAL</name>
             <name lang="en">REAL</name>
             <type>string</type>
-            <type-map lang="xs">decimal</type-map>
+            <type-map formal-lang="xs">decimal</type-map>
             <fraction-digits>true</fraction-digits>
             <max-length>true</max-length>
         </scalar>
         <scalar id="scalar-integer">
             <name lang="nl">INTEGER</name>
             <name lang="en">INTEGER</name>
-            <type-map lang="xs">integer</type-map>
+            <type-map formal-lang="xs">integer</type-map>
             <max-length>true</max-length>
         </scalar>
         <scalar id="scalar-date">
             <name lang="nl">DATE</name>
             <name lang="en">DATE</name>
-            <type-map lang="xs">date</type-map>
+            <type-map formal-lang="xs">date</type-map>
             <?x
             <type-modifier>
                 <!-- a choice of the following types: -->
-                <type-map lang="xs">date</type-map>
-                <type-map lang="xs">gYearMonth</type-map>
-                <type-map lang="xs">gYear</type-map>
+                <type-map formal-lang="xs">date</type-map>
+                <type-map formal-lang="xs">gYearMonth</type-map>
+                <type-map formal-lang="xs">gYear</type-map>
             </type-modifier>
             x?>
         </scalar>    
         <scalar id="scalar-datetime">
             <name lang="nl">DATETIME</name>
             <name lang="en">DATETIME</name>
-            <type-map lang="xs">dateTime</type-map>
+            <type-map formal-lang="xs">dateTime</type-map>
             <?x
             <type-modifier>
                 <!-- must conform to the following pattern: -->
@@ -80,22 +80,22 @@
         <scalar id="scalar-year">
             <name lang="nl">YEAR</name>
             <name lang="en">YEAR</name>
-            <type-map lang="xs">gYear</type-map>
+            <type-map formal-lang="xs">gYear</type-map>
         </scalar>
         <scalar id="scalar-day">
             <name lang="nl">DAY</name>
             <name lang="en">DAY</name>
-            <type-map lang="xs">gDay</type-map>
+            <type-map formal-lang="xs">gDay</type-map>
         </scalar>
         <scalar id="scalar-month">
             <name lang="nl">MONTH</name>
             <name lang="en">MONTH</name>
-            <type-map lang="xs">gMonth</type-map>
+            <type-map formal-lang="xs">gMonth</type-map>
         </scalar>
         <scalar id="scalar-uri">
             <name lang="nl">URI</name>
             <name lang="en">URI</name>
-            <type-map lang="xs">anyURI</type-map>
+            <type-map formal-lang="xs">anyURI</type-map>
         </scalar>
       
     </scalars>

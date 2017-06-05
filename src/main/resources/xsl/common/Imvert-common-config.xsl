@@ -45,6 +45,7 @@
     <xsl:variable name="configuration-tvset-name" select="imf:get-config-string('system','configuration-tvset-file')"/>
     <xsl:variable name="configuration-notesrules-name" select="imf:get-config-string('system','configuration-notesrules-file')"/>
     <xsl:variable name="configuration-docrules-name" select="imf:get-config-string('system','configuration-docrules-file')"/>
+    <xsl:variable name="configuration-versionrules-name" select="imf:get-config-string('system','configuration-versionrules-file')"/>
     <xsl:variable name="configuration-shaclrules-name" select="imf:get-config-string('system','configuration-shaclrules-file','/none')"/>
     
     <xsl:variable name="configuration-file" select="imf:document(imf:get-config-string('properties','WORK_CONFIG_FILE'),true())"/>
@@ -55,6 +56,7 @@
     <xsl:variable name="configuration-tvset-file" select="$configuration-file/config/tagset"/>
     <xsl:variable name="configuration-notesrules-file" select="$configuration-file/config/notes-rules"/>
     <xsl:variable name="configuration-docrules-file" select="$configuration-file/config/doc-rules"/>
+    <xsl:variable name="configuration-versionrules-file" select="$configuration-file/config/version-rules"/>
     <xsl:variable name="configuration-shaclrules-file" select="$configuration-file/config/shacl-rules"/>
     
     <xsl:variable name="configuration-i3n-name" select="imf:get-config-string('system','configuration-i3n-file')"/>
@@ -210,7 +212,7 @@
         Language specific
     -->
     <xsl:function name="imf:get-config-scalar-names" as="xs:string*">
-        <xsl:sequence select="$configuration-metamodel-file//scalars/scalar/name[@lang=($language,'#ALL')]"/>
+        <xsl:sequence select="$configuration-metamodel-file//scalars/scalar/name[@lang=($language,'#all')]"/>
     </xsl:function>
     
     <!-- default -->

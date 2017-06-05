@@ -145,4 +145,14 @@
 		</xsl:choose>
 	</xsl:function>
 
+	<!-- 
+		return a value based on the value of name passed, or return the phase as found. This phase name is validated later in the chain. 
+	-->
+	<xsl:function name="imf:compute-phase">
+		<xsl:param name="phase"/>
+		<xsl:variable name="cfg-phases" select="$configuration-versionrules-file/phase-rule/phase"/>
+		<xsl:variable name="cfg-phase" select="$cfg-phases[(level,name) = $phase]"/>
+		<xsl:value-of select="if ($cfg-phase/level) then $cfg-phase/level else $phase"/>
+	</xsl:function>
+	
 </xsl:stylesheet>

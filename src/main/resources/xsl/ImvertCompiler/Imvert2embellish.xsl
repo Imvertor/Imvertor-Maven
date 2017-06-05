@@ -41,8 +41,17 @@
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
     
     <xsl:template match="/imvert:packages">
+       
+        <xsl:variable name="current-phase-level" select="imvert:phase"/>
+        <xsl:variable name="cfg-phase" select="$configuration-versionrules-file/phase-rule/phase[level = $current-phase-level]"/>
+        <xsl:variable name="is-fixed" select="imf:boolean($cfg-phase/is-fixed)"/>
+        <xsl:variable name="allow-docrelease" select="imf:boolean($cfg-phase/allow-docrelease)"/>
+
         <imvert:packages>
-            <imvert:id><xsl:value-of select="$application-package-release-name"/></imvert:id>
+            <xsl:sequence select="imf:create-output-element('imvert:id',$application-package-release-name)"/>
+            <xsl:sequence select="imf:create-output-element('imvert:is-fixed',$is-fixed)"/>
+            <xsl:sequence select="imf:create-output-element('imvert:allow-docrelease',$allow-docrelease)"/>
+           
             <!-- add run info, number of errors and warnings so far -->
             <imvert:process>
                 <imvert:job>
