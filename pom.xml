@@ -129,11 +129,6 @@
 			<version>1.2</version>
 		</dependency>
 
-
-		<!-- https://jena.apache.org/download/maven.html -->
-		<!--x <dependency> <groupId>org.apache.jena</groupId> <artifactId>apache-jena-libs</artifactId> 
-			<type>pom</type> <version>3.3.0</version> </dependency> x -->
-
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
 			<artifactId>rdf4j-runtime</artifactId>

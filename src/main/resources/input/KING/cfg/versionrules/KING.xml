@@ -43,6 +43,8 @@
             <!-- mag worden overschreven -->
             <is-fixed>no</is-fixed>
             <allow-docrelease>yes</allow-docrelease>
+            <!-- All property files are valid for processing such a model. -->
+            <props/>
         </phase>
         <phase id="CFG-PHASE-DRAFT">
             <name lang="nl">Klad</name>
@@ -56,6 +58,8 @@
             <!-- mag worden overschreven -->
             <is-fixed>no</is-fixed>
             <allow-docrelease>yes</allow-docrelease>
+            <!-- All property files are valid for processing such a model. -->
+            <props/>
         </phase>
         <phase id="CFG-PHASE-FINALDRAFT">
             <name lang="nl">Voorstel</name>
@@ -69,6 +73,8 @@
             <!-- mag worden overschreven -->
             <is-fixed>no</is-fixed>
             <allow-docrelease>yes</allow-docrelease>
+            <!-- All property files are valid for processing such a model. -->
+            <props/>
         </phase>
         <phase id="CFG-PHASE-FINAL">
             <name lang="nl">Vastgesteld</name>
@@ -82,6 +88,12 @@
             <!-- mag niet worden overschreven! -->
             <is-fixed>yes</is-fixed>
             <allow-docrelease>yes</allow-docrelease>
+            <!-- Only the following property files are valid for processing a Phase 3 model. -->
+            <props>
+                <prop>Server-KINGSIM-Release.properties</prop>
+                <prop>Server-KINGUGM-Release.properties</prop>
+                <prop>Server-KINGBSM-Release.properties</prop>
+            </props>
         </phase>
         <phase id="CFG-PHASE-REJECTED">
             <name lang="nl">Vervallen</name>
