@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFolder;
+import nl.imvertor.common.file.ShaclFile;
 
 public class ShaclCompiler extends Step {
 
@@ -44,7 +45,7 @@ public class ShaclCompiler extends Step {
 		
 		runner.info(logger,"Compiling SHACL");
 		generateSHACL();
-		// note: schema validation is a separate step
+	
 		configurator.setStepDone(STEP_NAME);
 		
 		// save any changes to the work configuration for report and future steps
@@ -73,11 +74,16 @@ public class ShaclCompiler extends Step {
 				
 		AnyFolder shaclApplicationFolder = new AnyFolder(configurator.getParm("properties","RESULT_SHACL_APPLICATION_FOLDER"));
 		shaclApplicationFolder.mkdirs();
+		
 		configurator.setParm("system","shacl-folder-path", shaclApplicationFolder.toURI().toString());
 	
 		runner.debug(logger,"CHAIN","Generating SHACL to " + shaclApplicationFolder);
 		
 		succeeds = succeeds && transformer.transformStep("system/cur-imvertor-filepath","properties/RESULT_SHACL_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_SHACL_XSLPATH");
+		
+		// validate
+		ShaclFile ShaclFile = new ShaclFile(configurator.getParm("properties", "RESULT_SHACL_FILE_PATH"));
+		ShaclFile.validate();
 		
 		configurator.setParm("system","shacl-created","true");
 		

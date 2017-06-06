@@ -7,7 +7,7 @@
 	<name>Imvertor</name>
 
 	<description>Imvertor under Maven</description>
-	
+
 	<dependencies>
 
 		<dependency>
@@ -69,11 +69,11 @@
 
 		<!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
 		<dependency>
-		    <groupId>commons-net</groupId>
-		    <artifactId>commons-net</artifactId>
-		    <version>3.3</version>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>3.3</version>
 		</dependency>
-				
+
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
@@ -110,7 +110,7 @@
 			<version>4.12</version>
 		</dependency>
 
-        <dependency>
+		<dependency>
 			<groupId>net.sourceforge.jexcelapi</groupId>
 			<artifactId>jxl</artifactId>
 			<version>2.6.12</version>
@@ -124,11 +124,38 @@
 
 		<!-- https://mvnrepository.com/artifact/xml-resolver/xml-resolver -->
 		<dependency>
-		    <groupId>xml-resolver</groupId>
-		    <artifactId>xml-resolver</artifactId>
-		    <version>1.2</version>
+			<groupId>xml-resolver</groupId>
+			<artifactId>xml-resolver</artifactId>
+			<version>1.2</version>
 		</dependency>
-		
+
+
+		<!-- https://jena.apache.org/download/maven.html -->
+		<!--x <dependency> <groupId>org.apache.jena</groupId> <artifactId>apache-jena-libs</artifactId> 
+			<type>pom</type> <version>3.3.0</version> </dependency> x -->
+
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-runtime</artifactId>
+			<version>2.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-rio-rdfxml</artifactId>
+			<version>2.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-rio-turtle</artifactId>
+			<version>2.2.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-nop</artifactId>
+			<version>1.7.25</version>
+		</dependency>
+
 		<!-- non-mavenized depencies below; dependency on enterprise architect 
 			should be removed -->
 		<!-- note that they might have to distributed seperately due to copyright 
@@ -142,7 +169,7 @@
 		</dependency>
 
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -156,5 +183,5 @@
 			</plugin>
 		</plugins>
 	</build>
-  
+
 </project>
