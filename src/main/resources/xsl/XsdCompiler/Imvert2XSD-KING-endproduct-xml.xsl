@@ -721,7 +721,12 @@
                                 <!-- ep:authentiek element is used to determine if a 'authentiek' element needs to be generated in the messages in the next higher level. -->
                                 <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
                                 <!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
-                                <ep:construct>
+                                <ep:construct type="complexData" prefix="bg" namespaceId="http://www.stufstandaarden.nl/basisschema/bg0320">
+                                    <ep:suppliers>
+                                        <ep:suppliers>
+                                            <supplier project="UGM" application="UGM BG" level="3" base-namespace="http://www.stufstandaarden.nl/basisschema/bg0320" verkorteAlias="bg"/>
+                                        </ep:suppliers>
+                                    </ep:suppliers>
                                     <ep:name>authentiek</ep:name>
                                     <ep:tech-name>authentiek</ep:tech-name>
                                     <ep:max-occurs>unbounded</ep:max-occurs>
@@ -1108,7 +1113,12 @@
                                                <xsl:sequence select="$attributes"/>
                                            </ep:seq>
                                        </ep:construct-->
-                                       <ep:construct>
+                                       <ep:construct type="complexData" prefix="bg" namespaceId="http://www.stufstandaarden.nl/basisschema/bg0320">
+                                           <ep:suppliers>
+                                               <ep:suppliers>
+                                                   <supplier project="UGM" application="UGM BG" level="3" base-namespace="http://www.stufstandaarden.nl/basisschema/bg0320" verkorteAlias="bg"/>
+                                               </ep:suppliers>
+                                           </ep:suppliers>
                                            <ep:name>authentiek</ep:name>
                                            <ep:tech-name>authentiek</ep:tech-name>
                                            <ep:max-occurs>unbounded</ep:max-occurs>
