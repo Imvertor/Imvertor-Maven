@@ -643,6 +643,18 @@
             select="imf:create-output-element(name(.), .)"/>	
     </xsl:template>
     
+    <xsl:template match="ep:namespaces">
+        <xsl:param name="actualPrefix"/>
+        <ep:namespaces>
+            <xsl:apply-templates select="ep:namespace">
+                <xsl:with-param name="actualPrefix" select="$actualPrefix"/>                
+            </xsl:apply-templates>
+            <xsl:if test="//ep:type-name[contains(.,'gml:')]">
+                <ep:namespace prefix="gml">http://www.opengis.net/gml</ep:namespace>
+            </xsl:if>
+        </ep:namespaces>
+    </xsl:template>
+    
     <xsl:template match="ep:namespace">
         <xsl:param name="actualPrefix"/>
         <xsl:sequence select="imf:create-debug-comment('Debuglocation 2030',$debugging)"/>

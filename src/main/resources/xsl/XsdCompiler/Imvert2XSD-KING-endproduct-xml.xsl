@@ -12,10 +12,7 @@
     xmlns:imvert-result="http://www.imvertor.org/schema/imvertor/application/v20160201"
     xmlns:ep="http://www.imvertor.org/schema/endproduct"
     
-    xmlns:bg="http://www.egem.nl/StUF/sector/bg/0310" 
     xmlns:metadata="http://www.kinggemeenten.nl/metadataVoorVerwerking" 
-    xmlns:ztc="http://www.kinggemeenten.nl/ztc0310" 
-    xmlns:stuf="http://www.stufstandaarden.nl/onderlaag/stuf0302" 
     
     xmlns:ss="http://schemas.openxmlformats.org/spreadsheetml/2006/main" 
     
@@ -236,8 +233,24 @@
             <xsl:for-each-group 
                 select="//imvert:attribute[empty(imvert:type-id)]" 
                 group-by="imf:useable-attribute-name(imf:get-compiled-name(.),.)">
-                <xsl:sequence select="imf:create-debug-comment('Debuglocation 4',$debugging)"/>
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 4a',$debugging)"/>
 
+                <xsl:apply-templates select="current-group()[1]" mode="mode-global-attribute-simpletype"/>
+            </xsl:for-each-group>
+
+            <xsl:for-each-group 
+                select="//imvert:attribute[imvert:type-package='GML3']" 
+                group-by="imvert:conceptual-schema-type">
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 4b',$debugging)"/>
+                
+                <xsl:apply-templates select="current-group()[1]" mode="mode-global-attribute-simpletype"/>
+            </xsl:for-each-group>
+            
+            <xsl:for-each-group 
+                select="//imvert:attribute[imvert:baretype = 'PuntOfVlak' or imvert:baretype = 'VlakOfMultivlak']" 
+                group-by="imvert:baretype">
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 4c',$debugging)"/>
+                
                 <xsl:apply-templates select="current-group()[1]" mode="mode-global-attribute-simpletype"/>
             </xsl:for-each-group>
             
@@ -2196,6 +2209,28 @@
         
         <xsl:variable name="name" select="imf:capitalize($compiled-name)"/>
         <xsl:choose>
+            <xsl:when test="imvert:type-package='GML3'">
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 35',$debugging)"/>
+                
+                <ep:construct type="simpleContentcomplexData" prefix="{$StUF-prefix}" namespaceId="{$StUF-namespaceIdentifier}">
+                    <xsl:if test="empty($nillable-patroon)">
+                        <xsl:attribute name="wildcard" select="'true'"/>
+                    </xsl:if>                    
+                    <xsl:sequence select="imf:create-output-element('ep:name', imvert:conceptual-schema-type)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:conceptual-schema-type)"/>
+                    <ep:type-name>
+                        <xsl:value-of select="imf:get-external-type-name(.,true())"/>
+                    </ep:type-name>
+                    <ep:seq>
+                        <ep:construct ismetadata="yes">
+                            <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                            <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                            <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                            <ep:min-occurs>0</ep:min-occurs>
+                        </ep:construct>                     
+                    </ep:seq>
+                </ep:construct>
+            </xsl:when>
             <xsl:when test="exists($stuf-scalar)">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 33',$debugging)"/>
                 <!-- gedefinieerd in onderlaag -->

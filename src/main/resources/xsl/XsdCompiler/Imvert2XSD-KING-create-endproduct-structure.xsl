@@ -7,9 +7,7 @@
 	xmlns:imvert="http://www.imvertor.org/schema/system"
 	xmlns:imf="http://www.imvertor.org/xsl/functions"
 	xmlns:imvert-result="http://www.imvertor.org/schema/imvertor/application/v20160201"
-	xmlns:bg="http://www.egem.nl/StUF/sector/bg/0310"
 	xmlns:metadata="http://www.kinggemeenten.nl/metadataVoorVerwerking"
-	xmlns:ztc="http://www.kinggemeenten.nl/ztc0310" xmlns:stuf="http://www.stufstandaarden.nl/onderlaag/stuf0302"
 	xmlns:ep="http://www.imvertor.org/schema/endproduct"
 	xmlns:ss="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
 	xmlns:xhtml="http://www.w3.org/1999/xhtml" version="2.0">
@@ -1540,86 +1538,84 @@
 						<xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
 						<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
 						<xsl:choose>
-							<?x xsl:when test="exists($stuf-scalar)">
-								<!-- gedefinieerd in onderlaag -->
-								<xsl:sequence select="imf:create-output-element('ep:data-type', imvert:type-name)"/>
-							</xsl:when x?>
-							<xsl:when test="contains(imvert:type-name,'scalar-postcode') or contains(imvert:type-name,'scalar-date')">
-								<xsl:sequence select="imf:create-output-element('ep:data-type', imvert:type-name)"/>
+							<xsl:when test="imvert:type-package='GML3'">
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imvert:conceptual-schema-type))"/>
 							</xsl:when>
-							
-							<!-- ROME: Alle hieronder staande sets van when's moet nog helemaal anders worden gecodeerd. Waarschijnlijk moet de eerste hierboven staande 
-								 	   uitbecommentarieerde when worden gebruikt. -->
-							<xsl:when test="$name = 'melding'">
+							<xsl:when test="$name = 'melding' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
 							</xsl:when>
-
-							<xsl:when test="$name = 'berichtcode'">
+							<xsl:when test="$name = 'berichtcode' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name),$berichtCode))"/>
 							</xsl:when>
-							<xsl:when test="$name = 'organisatie' or $name = 'applicatie' or $name = 'administratie' or $name = 'gebruiker'">
+							<xsl:when test="($name = 'organisatie' or $name = 'applicatie' or $name = 'administratie' or $name = 'gebruiker') and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
 							</xsl:when>
-							<xsl:when test="$name = 'referentienummer' or $name = 'crossRefnummer'">
+							<xsl:when test="($name = 'referentienummer' or $name = 'crossRefnummer') and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':','Refnummer'))"/>
 							</xsl:when>
-							<xsl:when test="$name = 'functie'">
+							<xsl:when test="$name = 'functie' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':','Functie'))"/>
 							</xsl:when>
 							<!-- ROME: Volgende when zorgt er voor dat het element 'entiteitType' verwijst naar de complexType 'EntiteittypeStuurgegevens'.
 									   Dat complexType moet echter eigenlijk dynamisch opgebouwd worden zodat het element 'type' daarin specifiek op het bericht
 									   gemaakt kan worden. -->
-							<xsl:when test="$name = 'entiteitType'">
+							<xsl:when test="$name = 'entiteitType' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':','EntiteittypeStuurgegevens'))"/>
 							</xsl:when>
-
-							<xsl:when test="$name = 'sortering'">
+							<xsl:when test="$name = 'sortering' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
 							</xsl:when>
-							<xsl:when test="$name = 'indicatorVervolgvraag'">
+							<xsl:when test="$name = 'indicatorVervolgvraag' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
 								<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-boolean')"/>
 							</xsl:when>
-							<xsl:when test="$name = 'maximumAantal'">
+							<xsl:when test="$name = 'maximumAantal' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
 							</xsl:when>
-							<xsl:when test="$name = 'indicatorAfnemerIndicatie'">
+							<xsl:when test="$name = 'indicatorAfnemerIndicatie' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
 								<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-boolean')"/>
 							</xsl:when>
-							<xsl:when test="$name = 'peiltijdstipMaterieel'">
+							<xsl:when test="$name = 'peiltijdstipMaterieel' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
 								<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-dateTime')"/>
 							</xsl:when>
-							<xsl:when test="$name = 'peiltijdstipFormeel'">
+							<xsl:when test="$name = 'peiltijdstipFormeel' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
 								<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-dateTime')"/>
 							</xsl:when>
-							<xsl:when test="$name = 'indicatorAantal'">
+							<xsl:when test="$name = 'indicatorAantal' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
 								<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-boolean')"/>
 							</xsl:when>
-							<!-- ?????? -->		
-							<xsl:when test="$name = 'indicatorHistorie'">
+							<xsl:when test="$name = 'indicatorHistorie' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
 							</xsl:when>
-							<xsl:when test="$name = 'aantalVoorkomens'">
+							<xsl:when test="$name = 'aantalVoorkomens' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
 							</xsl:when>
-							<!-- Er wordt nu nog 'sequencenumber' gebruikt. Dat moet nog gecorrigeerd. -->
-							<xsl:when test="$name = 'volgnummer'">
+							<xsl:when test="$name = 'volgnummer' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
 							</xsl:when>
-							<xsl:when test="$name = 'indicatorLaatsteBericht'">
+							<xsl:when test="$name = 'indicatorLaatsteBericht' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
 								<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-boolean')"/>
 							</xsl:when>
 							<!-- ROME: Volgende when voldoet voorlopig maar moet vanuit EA zo gewijzigd kunnen worden dat er slechts 1 mutatiesoort enum is. -->
-							<xsl:when test="$name = 'mutatiesoort'">
+							<xsl:when test="$name = 'mutatiesoort' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
 							</xsl:when>
-							<xsl:when test="$name = 'indicatorOvername'">
+							<xsl:when test="$name = 'indicatorOvername' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
 							</xsl:when>
-							<xsl:when test="imvert:type-name and not(contains(imvert:type-name,'scalar'))">
+							
+							
+							<!--xsl:when test="contains(imvert:type-name,'scalar')">
+								<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-stuf-scalar-attribute-type(.))"/>
+							</xsl:when-->
+							<xsl:when test="imvert:type-name = ('scalar-date','scalar-datetime','scalar-year','scalar-yearmonth','scalar-postcode','scalar-boolean')">
+								<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-stuf-scalar-attribute-type(.))"/>
+							</xsl:when>
+							
+							
+							<xsl:when test="not(contains(imvert:type-name,'scalar'))">
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',concat(imf:capitalize(imvert:type-name),'-e')))"/>
 							</xsl:when>
 							<xsl:otherwise>
-								<!--xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$href-name))"/-->
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$type-name,'-e'))"/>
 							</xsl:otherwise>
 						</xsl:choose>
