@@ -9,8 +9,6 @@
 	xmlns:imf="http://www.imvertor.org/xsl/functions"
 	xmlns:imvert-result="http://www.imvertor.org/schema/imvertor/application/v20160201"
 	xmlns:metadata="http://www.kinggemeenten.nl/metadataVoorVerwerking"
-	xmlns:ztc="http://www.kinggemeenten.nl/ztc0310"
-	xmlns:StUF="http://www.stufstandaarden.nl/onderlaag/stuf0302"
 	xmlns:ep="http://www.imvertor.org/schema/endproduct"
 	xmlns:ss="http://schemas.openxmlformats.org/spreadsheetml/2006/main" version="2.0">
 
@@ -71,6 +69,9 @@
 			<xsl:choose>
 				<xsl:when test="@prefix = $StUF-prefix">
 					<xs:include schemaLocation="../0302/stuf0302.xsd"/>
+					<xsl:if test="//ep:type-name[contains(.,'gml:')]">
+						<xs:import namespace="http://www.opengis.net/gml" schemaLocation="../gml-3.1.1.2/gml/3.1.1/base/gml.xsd"/>
+					</xsl:if>
 				</xsl:when>
 				<xsl:otherwise>
 					<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="../0302/stuf0302.xsd"/>
@@ -99,7 +100,7 @@
 			<xsl:sequence
 				select="imf:create-debug-comment('ROME: simpleType extending complexTypes', $debugging)"/>
 			<xsl:apply-templates
-				select="ep:construct[substring-after(ep:type-name, ':') = //ep:message-set/ep:construct[@isdatatype and @prefix = $StUF-prefix]/ep:tech-name and @prefix = $StUF-prefix]"
+				select="ep:construct[(substring-after(ep:type-name, ':') = //ep:message-set/ep:construct[@isdatatype and @prefix = $StUF-prefix]/ep:tech-name and @prefix = $StUF-prefix) or contains(ep:type-name,'gml:')]"
 				mode="simpleContentComplexType"/>
 
 			<xsl:sequence select="imf:create-debug-comment('ROME: simpleTypes', $debugging)"/>
@@ -547,27 +548,52 @@
 	<xsl:template match="ep:construct" mode="simpleContentComplexType">
 		<xsl:sequence select="imf:create-debug-comment('Debuglocation 5015', $debugging)"/>
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id, '{'), '}')"/>
-		<xsl:if test="ep:seq/ep:* or ep:choice/ep:*">
-			<xs:complexType>
-				<xsl:attribute name="name" select="ep:tech-name"/>
-				<xsl:if test="ep:documentation">
-					<xs:annotation>
-						<xs:documentation>
-							<xsl:value-of select="ep:documentation"/>
-						</xs:documentation>
-					</xs:annotation>
-				</xsl:if>
-				<xs:simpleContent>
-					<xs:extension base="{ep:type-name}">
-						<xsl:if test="@wildcard = 'true'">
-							<xs:attribute name="wildcard" type="{$StUF-prefix}:Wildcard"/>
-						</xsl:if>
-						<xsl:apply-templates select="ep:seq/ep:construct[@ismetadata]"
-							mode="generateAttributes"/>
-					</xs:extension>
-				</xs:simpleContent>
-			</xs:complexType>
-		</xsl:if>
+		<xsl:choose>
+			<xsl:when test="contains(ep:type-name,'gml:')">
+				<xsl:sequence select="imf:create-debug-comment('Debuglocation 5015b', $debugging)"/>
+				<xs:complexType>
+					<xsl:attribute name="name" select="ep:tech-name"/>
+					<xsl:if test="ep:documentation">
+						<xs:annotation>
+							<xs:documentation>
+								<xsl:value-of select="ep:documentation"/>
+							</xs:documentation>
+						</xs:annotation>
+					</xsl:if>
+					<xs:complexContent>
+						<xs:extension base="{ep:type-name}">
+							<xsl:if test="@wildcard = 'true'">
+								<xs:attribute name="wildcard" type="{$StUF-prefix}:Wildcard"/>
+							</xsl:if>
+							<xsl:apply-templates select="ep:seq/ep:construct[@ismetadata]"
+								mode="generateAttributes"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xsl:when>
+			<xsl:when test="ep:seq/ep:* or ep:choice/ep:*">
+				<xsl:sequence select="imf:create-debug-comment('Debuglocation 5015a', $debugging)"/>
+				<xs:complexType>
+					<xsl:attribute name="name" select="ep:tech-name"/>
+					<xsl:if test="ep:documentation">
+						<xs:annotation>
+							<xs:documentation>
+								<xsl:value-of select="ep:documentation"/>
+							</xs:documentation>
+						</xs:annotation>
+					</xsl:if>
+					<xs:simpleContent>
+						<xs:extension base="{ep:type-name}">
+							<xsl:if test="@wildcard = 'true'">
+								<xs:attribute name="wildcard" type="{$StUF-prefix}:Wildcard"/>
+							</xsl:if>
+							<xsl:apply-templates select="ep:seq/ep:construct[@ismetadata]"
+								mode="generateAttributes"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xsl:when>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="ep:construct" mode="simpleType">
