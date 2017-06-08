@@ -255,6 +255,7 @@
 		<xsl:variable name="id" select="imvert:id"/>
 
 		<xsl:sequence select="imf:create-debug-comment('debug:start A03000 /debug:start',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment(concat('Classname: ',imvert:name),$debugging)"/>
 		
 		<xsl:choose>
 			<!-- The following takes care of ignoring the processing of the attributes 
@@ -277,8 +278,8 @@
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 					<xsl:with-param name="context" select="$context"/>
 				</xsl:apply-templates>
-				<!-- If the class hasn't been processed before it can be processed, else. 
-					to prevent recursion, processing is canceled. -->
+				<!-- If the class hasn't been processed before it can be processed, else 
+					 processing is canceled to prevent recursion. -->
 				<xsl:if test="not(contains($id-trail, concat('#2#', imvert:id, '#')))">
 			
 					<xsl:variable name="associationsOfBerichtrelatieType" select="$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:stereotype = 'BERICHTRELATIE']"/>
@@ -314,6 +315,7 @@
 					</xsl:apply-templates>
 					
 				</xsl:if>
+				<xsl:sequence select="imf:create-debug-comment('End A03020]',$debugging)"/>
 			</xsl:when>
 			<!-- The following when initiates the processing of the associations refering to the current class as a superclass.
 				 In this situation a choice has to be generated. -->
@@ -1152,6 +1154,12 @@
 			<xsl:variable name="class-id" select="imvert:type-id"/>
 			<xsl:sequence
 				select="imf:create-output-element('ep:class-name', imf:get-class-construct-by-id($class-id,$packages-doc)/ep:name)"/>
+			<xsl:apply-templates select="key('class',$type-id)"
+				mode="create-rough-message-content">
+				<xsl:with-param name="proces-type" select="'attributes'"/>
+				<xsl:with-param name="berichtCode" select="$berichtCode"/>
+				<xsl:with-param name="context" select="$context"/>
+			</xsl:apply-templates>
 			<xsl:apply-templates select="key('class',$type-id)"
 				mode="create-rough-message-content">
 				<xsl:with-param name="proces-type" select="'associationsGroepCompositie'"/>
