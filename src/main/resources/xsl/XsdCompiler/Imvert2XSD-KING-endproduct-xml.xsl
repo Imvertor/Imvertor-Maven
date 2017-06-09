@@ -2177,12 +2177,6 @@
     <xsl:template match="imvert:attribute" mode="mode-global-attribute-simpletype">
         <xsl:sequence select="imf:create-debug-comment('Debuglocation 32',$debugging)"/>
         
-        <xsl:variable name="compiled-name" select="imf:useable-attribute-name(imf:get-compiled-name(.),.)"/>
-        <xsl:sequence select="imf:create-debug-comment($compiled-name,$debugging)"/>
-
-        <xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info(.)"/>
-        <xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
-        
         <xsl:variable name="stuf-scalar" select="imf:get-stuf-scalar-attribute-type(.)"/>
         
         <xsl:variable name="max-length" select="imvert:max-length"/>
@@ -2206,6 +2200,7 @@
             <xsl:sequence select="imf:create-facet('ep:length',$total-digits)"/>
             <xsl:sequence select="imf:create-facet('ep:fraction-digits',$fraction-digits)"/>
         </xsl:variable>
+        <xsl:variable name="compiled-name" select="imf:useable-attribute-name(imf:get-compiled-name(.),.)"/>
         
         <xsl:variable name="name" select="imf:capitalize($compiled-name)"/>
         <xsl:choose>
@@ -2238,14 +2233,18 @@
             <xsl:when test="exists(imvert:type-name) and not($name = 'Melding' or $name = 'AantalVoorkomens' or $name = 'Sortering' or $name = 'Functie' or $name = 'Volgnummer')">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 34',$debugging)"/>
 
-                <ep:construct type="simpleContentcomplexData" prefix="{$StUF-prefix}" namespaceId="{$StUF-namespaceIdentifier}">
+                <xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info(.)"/>
+                <xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
+                <xsl:variable name="tokens" select="tokenize($checksum-string,'\[SEP\]')"/>
+                
+                <ep:construct type="simpleContentcomplexData" prefix="{$StUF-prefix}" namespaceId="{$StUF-namespaceIdentifier}" imvert:checksum="{concat($checksum-string,'-simpleContentcomplexData')}">
                     <xsl:if test="empty($nillable-patroon)">
                         <xsl:attribute name="wildcard" select="'true'"/>
                     </xsl:if>                    
-                    <xsl:sequence select="imf:create-output-element('ep:name', concat($name,'-e'))"/>
-                    <xsl:sequence select="imf:create-output-element('ep:tech-name', concat($name,'-e'))"/>
+                    <xsl:sequence select="imf:create-output-element('ep:name', concat($tokens[1],'-e'))"/>
+                    <xsl:sequence select="imf:create-output-element('ep:tech-name', concat($tokens[1],'-e'))"/>
                     <ep:type-name imvert:checksum="{$checksum-string}">
-                        <xsl:value-of select="concat($StUF-prefix,':',$name)"/>
+                        <xsl:value-of select="concat($StUF-prefix,':',$tokens[1])"/>
                     </ep:type-name>
                     <ep:seq>
                         <ep:construct ismetadata="yes">
@@ -2256,9 +2255,9 @@
                         </ep:construct>                     
                     </ep:seq>
                 </ep:construct>
-                <ep:construct type="simpleData" prefix="{$StUF-prefix}" namespaceId="{$StUF-namespaceIdentifier}" isdatatype="yes">
-                    <xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
-                    <xsl:sequence select="imf:create-output-element('ep:tech-name', $name)"/>
+                <ep:construct type="simpleData" prefix="{$StUF-prefix}" namespaceId="{$StUF-namespaceIdentifier}" isdatatype="yes" imvert:checksum="{concat($checksum-string,'-simpleData')}">
+                    <xsl:sequence select="imf:create-output-element('ep:name', $tokens[1])"/>
+                    <xsl:sequence select="imf:create-output-element('ep:tech-name', $tokens[1])"/>
                     <xsl:choose>
                         <xsl:when test="imvert:type-name = 'scalar-integer'">
                             <ep:data-type>scalar-integer</ep:data-type>

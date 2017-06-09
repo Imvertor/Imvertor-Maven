@@ -211,15 +211,15 @@
         </xsl:choose>
     </xsl:template>
     
-    <xsl:template match="ep:construct[parent::ep:message-set]">
+    <xsl:template match="ep:construct[@type != 'simpleContentcomplexData' and @type != 'simpleData' and parent::ep:message-set]">
         <xsl:param name="actualPrefix"/>
-
+        
         <xsl:sequence select="imf:create-debug-comment('Debuglocation 2010',$debugging)"/>
-
+        
         <xsl:variable name="construct" select="."/>
         <xsl:variable name="prefix" select="@prefix"/>
         <xsl:variable name="uniquePrefixes" as="element(ep:prefixes)">
-           <xsl:variable name="listOfPrefixes">
+            <xsl:variable name="listOfPrefixes">
                 <ep:prefixes>
                     <xsl:for-each select=".//ep:suppliers/supplier">
                         <xsl:variable name="descendant-prefix" select="@verkorteAlias" as="attribute(verkorteAlias)"/>
@@ -262,7 +262,7 @@
             <!--xsl:when test="(@prefix = '$actualPrefix' and .//ep:construct[ep:tech-name != 'authentiek' and @prefix != $actualPrefix] and .//ep:construct/@prefix != $StUF-prefix) and (ep:seq/* | ep:choice/*)"-->
             <xsl:when test="(@prefix = '$actualPrefix' and .//ep:construct[ep:tech-name != 'authentiek' and @prefix != $actualPrefix and @prefix != $StUF-prefix]) and (ep:seq/* | ep:choice/*)">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 2011',$debugging)"/>
-
+                
                 <xsl:element name="{name(.)}">
                     <xsl:apply-templates select="@*[local-name()!='prefix' and local-name()!='namespaceId']"/>
                     <xsl:attribute name="prefix" select="$actualPrefix"/>
@@ -295,7 +295,7 @@
                     <xsl:variable name="uniquePrefix" select="."/>
                     <xsl:variable name="uniquePrefixLevel" select="@level"/>
                     <xsl:variable name="uniqueNamespace" select="@namespaceId"/>
-
+                    
                     <xsl:sequence select="imf:create-debug-comment('Debuglocation 2011a',$debugging)"/>
                     
                     <xsl:element name="{name($construct)}">
@@ -323,7 +323,7 @@
             <!--xsl:when test=".//ep:construct[ep:tech-name != 'authentiek' and @prefix != $prefix] and .//ep:construct/@prefix != $StUF-prefix and (ep:seq/* | ep:choice/*)"-->
             <xsl:when test=".//ep:construct[ep:tech-name != 'authentiek' and @prefix != $prefix and @prefix != $StUF-prefix] and (ep:seq/* | ep:choice/*)">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 2012',$debugging)"/>
-
+                
                 <xsl:element name="{name(.)}">
                     <xsl:apply-templates select="@*[local-name()!='prefix' and local-name()!='namespaceId']"/>
                     <xsl:attribute name="prefix" select="$prefix"/>
@@ -354,7 +354,7 @@
                 </xsl:element>
                 <xsl:for-each select="$uniquePrefixes//ep:prefix[. != $prefix]">
                     <xsl:sequence select="imf:create-debug-comment('Debuglocation 2012a',$debugging)"/>
-
+                    
                     <xsl:variable name="uniquePrefix" select="."/>
                     <xsl:variable name="uniquePrefixLevel" select="@level"/>
                     <xsl:variable name="uniqueNamespace" select="@namespaceId"/>
@@ -384,7 +384,7 @@
             <!-- Following when is used if the current construct doesn't contains subconstructs originated in more than one namespace. -->           
             <xsl:when test="ep:seq/* | ep:choice/*">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 2013',$debugging)"/>
-
+                
                 <xsl:element name="{name(.)}">
                     <xsl:apply-templates select="@*[local-name()!='prefix' and local-name()!='namespaceId']"/>
                     <xsl:attribute name="prefix" select="$prefix"/>
@@ -406,7 +406,7 @@
             </xsl:when>                
             <xsl:when test="@prefix = '$actualPrefix' and ep:seq/* | ep:choice/*">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 2014',$debugging)"/>
-
+                
                 <xsl:element name="{name(.)}">
                     <xsl:apply-templates select="@*[local-name()!='prefix' and local-name()!='namespaceId']"/>
                     <xsl:attribute name="prefix" select="@prefix"/>
@@ -429,7 +429,7 @@
             <!-- This construct is only used for metadata constructs. -->
             <xsl:otherwise>
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 2015',$debugging)"/>
-
+                
                 <xsl:copy-of select="."/>
             </xsl:otherwise>
         </xsl:choose>
@@ -665,6 +665,17 @@
             </xsl:apply-templates>
             <xsl:value-of select="."/>
         </xsl:element>       
+    </xsl:template>
+    
+    <xsl:template match="ep:construct[(@type = 'simpleContentcomplexData' or @type = 'simpleData') and parent::ep:message-set]">
+        
+        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2040',$debugging)"/>
+        <xsl:variable name="checksum" select="@imvert:checksum"/>
+        
+        <xsl:if test="not(preceding-sibling::ep:construct[(@type = 'simpleContentcomplexData' or @type = 'simpleData') and parent::ep:message-set and @imvert:checksum = $checksum])">
+            <xsl:copy-of select="."/>
+        </xsl:if>
+        
     </xsl:template>
     
 </xsl:stylesheet>

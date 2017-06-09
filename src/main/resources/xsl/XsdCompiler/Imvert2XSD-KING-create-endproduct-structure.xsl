@@ -1300,8 +1300,8 @@
 		<xsl:variable name="min-length" select="imf:get-most-relevant-compiled-taggedvalue(., 'Minimum lengte')"/>
 		<xsl:variable name="patroon" select="imf:get-most-relevant-compiled-taggedvalue(., 'Patroon')"/>
 		<!--xsl:variable name="formeelPatroon" select="imf:get-most-relevant-compiled-taggedvalue(., 'Formeel patroon')"/-->
-		<xsl:variable name="formeelPatroon" select="imvert:pattern"/>
-		
+		<xsl:variable name="formeelPatroon" select="imvert:pattern"/>		
+		<xsl:variable name="compiled-name" select="imf:useable-attribute-name(imf:get-compiled-name(.),.)"/>
 		
 		<xsl:if test="not(contains($verwerkingsModus, 'matchgegeven') and $matchgegeven = 'NEE') and (($generateHistorieConstruct = 'MaterieleHistorie' and contains($materieleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorie' and contains($formeleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorieRelatie' and contains($formeleHistorie, 'Ja')) or $generateHistorieConstruct = 'Nee')">
 
@@ -1310,26 +1310,11 @@
 				<xsl:when test="$processType = 'keyTabelEntiteit'">
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1031',$debugging)"/>
 					
-					<xsl:variable name="compiled-name" select="imf:useable-attribute-name(imf:get-compiled-name(.),.)"/>
-					<xsl:variable name="name" select="imf:capitalize($compiled-name)"/>
+					<xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info(.)"/>
+					<xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
+					<xsl:variable name="tokens" select="tokenize($checksum-string,'\[SEP\]')"/>
 					
-					<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$name,'-e'))"/>
-					<!--xsl:choose>
-						<xsl:when test="contains($type-name,'scalar')">
-							<xsl:sequence select="imf:create-output-element('ep:data-type', $type-name)"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
-						</xsl:otherwise>
-					</xsl:choose-->
-					<!--xsl:sequence select="imf:create-output-element('ep:length', $total-digits)"/>
-					<xsl:sequence select="imf:create-output-element('ep:fraction-digits', $fraction-digits)"/>
-					<xsl:sequence select="imf:create-output-element('ep:max-length', $max-length)"/>
-					<xsl:sequence select="imf:create-output-element('ep:min-length', $min-length)"/>
-					<xsl:sequence select="imf:create-output-element('ep:max-value', $max-waarde)"/>
-					<xsl:sequence select="imf:create-output-element('ep:min-value', $min-waarde)"/>
-					<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)"/>
-					<xsl:sequence select="imf:create-output-element('ep:formeel-patroon', $formeelPatroon)"/-->
+					<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$tokens[1],'-e'))"/>
 				</xsl:when>
 				<xsl:when test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype = 'COMPLEX DATATYPE'">
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1032',$debugging)"/>
@@ -1496,6 +1481,10 @@
 				<xsl:otherwise>				
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034',$debugging)"/>
 
+					<xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info(.)"/>
+					<xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
+					<xsl:variable name="tokens" select="tokenize($checksum-string,'\[SEP\]')"/>
+
 					<ep:construct type="complexData">
 						<xsl:if test="$suppliers//supplier[1]/@verkorteAlias != ''">
 							<xsl:attribute name="prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
@@ -1616,7 +1605,7 @@
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',concat(imf:capitalize(imvert:type-name),'-e')))"/>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$type-name,'-e'))"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$tokens[1],'-e'))"/>
 							</xsl:otherwise>
 						</xsl:choose>
 						<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
