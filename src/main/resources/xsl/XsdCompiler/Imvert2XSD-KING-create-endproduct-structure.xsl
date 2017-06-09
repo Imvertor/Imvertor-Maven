@@ -702,8 +702,11 @@
 		<xsl:variable name="tech-name">
 			<xsl:choose>
 				<xsl:when test="imvert:stereotype = 'RELATIE'">
-					<xsl:value-of
+					<!--xsl:value-of
 						select="imf:get-normalized-name(concat(imvert:name, imf:get-normalized-name(imvert:type-name, 'addition-relation-name')), 'element-name')"
+					/-->
+					<xsl:value-of
+						select="imf:get-normalized-name(imvert:name, 'element-name')"
 					/>
 				</xsl:when>
 				<xsl:otherwise>
@@ -932,7 +935,8 @@
 					<xsl:value-of select="imf:get-normalized-name(imvert:name, 'element-name')"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="imf:get-normalized-name(concat(imvert:name, imf:get-normalized-name(imvert:type-name, 'addition-relation-name')), 'element-name')"/>
+					<!--xsl:value-of select="imf:get-normalized-name(concat(imvert:name, imf:get-normalized-name(imvert:type-name, 'addition-relation-name')), 'element-name')"/-->
+					<xsl:value-of select="imf:get-normalized-name(imvert:name, 'element-name')"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
