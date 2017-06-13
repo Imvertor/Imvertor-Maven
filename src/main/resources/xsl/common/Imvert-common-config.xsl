@@ -206,6 +206,20 @@
         <xsl:param name="names" as="xs:string*"/>
         <xsl:sequence select="imf:get-config-tagged-values($names,false())"/>
     </xsl:function>
+    
+    <!-- 
+        Return the IDs of all tagged values that are in scope of the construct passed, i..e that can be declared on that construct.
+    -->
+    <xsl:function name="imf:get-config-applicable-tagged-value-ids" as="xs:string*">
+        <xsl:param name="construct" as="element()"/>
+        <xsl:variable name="stereotype-names" select="$construct/imvert:stereotype"/>
+ 
+        <xsl:variable name="tvs" select="$configuration-tvset-file//tagged-values/tv[stereotypes/stereo = $stereotype-names]"/>
+        <xsl:for-each-group select="$tvs" group-by="@id">
+            <xsl:value-of select="current-grouping-key()"/>
+        </xsl:for-each-group>
+    </xsl:function>
+        
     <!-- 
         Return all possible scalar names (such as AN or DT)
      

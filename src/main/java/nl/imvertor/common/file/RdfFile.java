@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.log4j.Logger;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.impl.LinkedHashModel;
+import org.eclipse.rdf4j.rio.ParseErrorListener;
 import org.eclipse.rdf4j.rio.RDFFormat;
 import org.eclipse.rdf4j.rio.RDFHandlerException;
 import org.eclipse.rdf4j.rio.RDFParseException;
@@ -13,10 +15,16 @@ import org.eclipse.rdf4j.rio.RDFParser;
 import org.eclipse.rdf4j.rio.Rio;
 import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 
+import nl.imvertor.OfficeCompiler.OfficeCompiler;
+import nl.imvertor.common.Configurator;
+import nl.imvertor.common.exceptions.ConfiguratorException;
+
 public class RdfFile extends AnyFile {
 
 	private static final long serialVersionUID = -8890889086447502503L;
 	
+	protected static final Logger logger = Logger.getLogger(RdfFile.class);
+
 	private boolean isOpen = false;
 	private Model model;
 	
@@ -45,7 +53,7 @@ public class RdfFile extends AnyFile {
 		//TODO open and mainatin model in memory for query and the like.
 	}
 	
-	public void parse() throws Exception {
+	public void parse(Configurator configurator) throws Exception {
 	
 		if (isOpen) close();
 		
@@ -57,31 +65,25 @@ public class RdfFile extends AnyFile {
 				 java.net.URL documentURL = this.toURI().toURL();
 				 InputStream inputStream = documentURL.openStream();
 
-				 RDFParser rdfParser = Rio.createParser(RDFFormat.TURTLE);
+				 RDFFormat format = RDFFormat.TURTLE;
+				 RDFParser rdfParser = Rio.createParser(format);
+				 
+				 ParseErrorListener el = new MyParseErrorListener(this, configurator);
+				 rdfParser.setParseErrorListener(el);
 
 				 Model model = new LinkedHashModel();
 				 rdfParser.setRDFHandler(new StatementCollector(model));
 				 try {
 					 rdfParser.parse(inputStream, documentURL.toString());
-				 }
-				 catch (IOException e) {
-					 // handle IO problems (e.g. the file could not be read)
-					 throw e;
-				 }
-				 catch (RDFParseException e) {
-					 // handle unrecoverable parse error
-					 throw e;
-				 }
-				 catch (RDFHandlerException e) {
-					 // handle a problem encountered by the RDFHandler
-					 throw e;
-				 }
-				 finally {
+				 } catch (Exception e) {
+					// ignore
+				} finally {
 					 inputStream.close();
 				 }
 
 			 } else 
-				 throw new Exception("No known file extension: " + ext);
+				configurator.getRunner().fatal(logger,"Not a known RDF file extension: " + ext,null,"rdf-unk","some-wiki-ref");
+		
 			 isOpen = true;
 		} else {
 			throw new Exception("No such file: " + this.getAbsolutePath());
@@ -125,4 +127,44 @@ public class RdfFile extends AnyFile {
 	public void canonize(RdfFile resultRdfFile) throws Exception {
 		//TODO		
 	}
+
+	public class MyParseErrorListener implements ParseErrorListener {
+		
+		private Configurator configurator;
+		private RdfFile file;
+		
+		public MyParseErrorListener(RdfFile file, Configurator configurator) {
+			super();
+			this.file = file;
+			this.configurator = configurator;
+		}
+		
+		@Override
+		public void warning(String msg, long lineNo, long colNo) {
+			try {
+				this.configurator.getRunner().warn(logger,"At "+ file.getName() + " [" + lineNo + ":" + colNo + "]:" + msg);
+			} catch (IOException | ConfiguratorException e) {
+				//ignore
+			}
+		}
+		
+		@Override
+		public void fatalError(String msg, long lineNo, long colNo) {
+			try {
+				this.configurator.getRunner().error(logger,"Fatal at "+ file.getName() + " [" + lineNo + ":" + colNo + "]:" + msg);
+			} catch (IOException | ConfiguratorException e) {
+				//ignore
+			}
+		}
+		
+		@Override
+		public void error(String msg, long lineNo, long colNo) {
+			try {
+				this.configurator.getRunner().error(logger,"At " + file.getName() + " [" + lineNo + ":" + colNo + "]:" + msg);
+			} catch (IOException | ConfiguratorException e) {
+				// ignore
+			}
+		}
+	};
 }
+

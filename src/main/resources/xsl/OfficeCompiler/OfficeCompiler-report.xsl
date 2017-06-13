@@ -36,7 +36,7 @@
     <xsl:template match="/config">
         <xsl:variable name="messages" select="$configuration//messages/message[src='XMI1Imvert']"/>
         <xsl:variable name="errors" select="$messages[type=('FATAL','ERROR')]"/>
-        
+        <xsl:variable name="office-filename" select="imf:get-config-string('appinfo','office-documentation-filename')"/>
         <report>
             <step-display-name>Office compiler</step-display-name>
             <status>
@@ -49,7 +49,7 @@
             </summary>
             <page>
                 <title>Office documentation</title>
-                <content-ref href="../../etc/office.html"/>
+                <content-ref href="{concat('../../etc/',$office-filename,'.html')}"/>
             </page>
         </report>
         

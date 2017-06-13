@@ -174,14 +174,14 @@
         </stereo>
         <stereo id="stereotype-name-simpletype">
             <name lang="nl">Primitief datatype</name>
-            <name lang="en">Primitive datatype</name>
+            <name lang="en">PrimitiveDatatype</name>
             <desc lang="en">TODO</desc>
             <desc lang="nl"></desc>
             <construct>datatype</construct>
         </stereo>
         <stereo id="stereotype-name-complextype">
             <name lang="nl">Gestruktureerd datatype</name>
-            <name lang="en">Structured datatype</name>
+            <name lang="en">StructuredDatatype</name>
             <desc lang="en">TODO</desc>
             <desc lang="nl">
                 Gestructureerd datatype zonder identiteit samengesteld uit minimaal twee onderdelen.

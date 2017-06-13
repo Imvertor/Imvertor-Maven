@@ -17,10 +17,10 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<shacl-rules>
+<shacl-rules xmlns:xi="http://www.w3.org/2001/XInclude">
     <name>Kadaster KKG</name>
     <!-- 
-        Kadaster specific SHACL rules 
+        Kadaster KKG specific SHACL rules 
     -->
     <vocabularies>
         <vocabulary>
@@ -101,4 +101,17 @@
         </vocabulary>
 
     </vocabularies>
+    
+    <node-mapping>
+        <!-- 
+            Alleen de tagged values die hier zijn opgenomen worden omgezet naar een regel in TTL Shacl 
+        
+        Dit worden constructies zoals kkg:definitie '''Identifier or geographic name.....''';
+	    -->
+        <map id="CFG-TV-DEFINITION" type="3q" lang="#all">kkg:definitie</map>
+       
+       
+        
+        
+    </node-mapping>
 </shacl-rules>

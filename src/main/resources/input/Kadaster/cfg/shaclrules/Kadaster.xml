@@ -1,4 +1,5 @@
-/*
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
  * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
  * 
  * This file is part of Imvertor.
@@ -15,35 +16,12 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
+-->
+<shacl-rules xmlns:xi="http://www.w3.org/2001/XInclude">
+    <name>Kadaster</name>
+    <!-- 
+        Kadaster specific SHACL rules 
+    -->
+    <xi:include href="KadasterKKG.xml"/>
 
-package nl.imvertor.common.file;
-
-import java.io.File;
-
-import nl.imvertor.common.Configurator;
-
-/**
- * A representation of a Shacl file.
- * 
- * @author arjan
- *
- */
-
-public class ShaclFile extends RdfFile {
-
-	private static final long serialVersionUID = 1L;
-
-	public ShaclFile(String pathname) {
-		super(pathname);
-	}
-	
-	public ShaclFile(File file) {
-		super(file);
-	}
-	
-	public void validate(Configurator configurator) throws Exception {
-		this.parse(configurator);
-	}
-}
+</shacl-rules>

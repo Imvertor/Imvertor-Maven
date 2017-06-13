@@ -8,12 +8,17 @@
 
 	<description>Imvertor under Maven</description>
 
+    <!-- ASL = The Apache Software License, Version 2.0, http://www.apache.org/licenses/LICENSE-2.0.txt -->
+	<!-- MSL = mozilla license, https://www.mozilla.org/en-US/MPL/2.0/ -->
+	<!-- ESL = Eclipse software license, http://www.eclipse.org/legal/epl-v10.html -->
+	
 	<dependencies>
 
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.15</version>
+			<!-- ASL -->
 			<exclusions>
 				<exclusion>
 					<groupId>com.sun.jmx</groupId>
@@ -35,36 +40,42 @@
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 			<version>1.9.2</version>
+			<!-- ASL -->
 		</dependency>
 
 		<dependency>
 			<groupId>commons-cli</groupId>
 			<artifactId>commons-cli</artifactId>
 			<version>1.2</version>
+			<!-- ASL -->
 		</dependency>
 
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
+			<!-- ASL -->
 		</dependency>
 
 		<dependency>
 			<groupId>commons-jxpath</groupId>
 			<artifactId>commons-jxpath</artifactId>
 			<version>1.3</version>
+			<!-- ASL -->
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.3.2</version>
+			<!-- ASL -->
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-configuration2</artifactId>
 			<version>2.0</version> <!-- 2.0beta1 version not found -->
+			<!-- ASL -->
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
@@ -72,42 +83,49 @@
 			<groupId>commons-net</groupId>
 			<artifactId>commons-net</artifactId>
 			<version>3.3</version>
+			<!-- ASL -->
 		</dependency>
 
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 			<version>1.1.3</version>
+			<!-- ASL -->
 		</dependency>
 
 		<dependency>
 			<groupId>org.eclipse.birt.runtime.3_7_1</groupId>
 			<artifactId>org.apache.xerces</artifactId>
 			<version>2.9.0</version>
+			<!-- ASL -->
 		</dependency>
 
 		<dependency>
 			<groupId>net.sf.saxon</groupId>
 			<artifactId>Saxon-HE</artifactId>
 			<version>9.6.0-7</version>
+			<!-- MSL -->
 		</dependency>
 
 		<dependency>
 			<groupId>xmlunit</groupId>
 			<artifactId>xmlunit</artifactId>
 			<version>1.5</version>
+			<!-- ASL -->
 		</dependency>
 
 		<dependency>
 			<groupId>org.ccil.cowan.tagsoup</groupId>
 			<artifactId>tagsoup</artifactId>
 			<version>1.2.1</version>
+			<!-- ASL -->
 		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
+			<!-- ESL -->
 		</dependency>
 
 		<dependency>
@@ -176,6 +194,21 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>1.12</version>
+				<executions>
+					<execution>
+						<id>download-licenses</id>
+						<goals>
+							<goal>download-licenses</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 

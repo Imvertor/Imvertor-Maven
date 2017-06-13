@@ -43,13 +43,12 @@
     <xsl:variable name="configuration-docrules-file" select="imf:prepare-config(imf:document($configuration-docrules-name,true()))"/>
     <xsl:variable name="configuration-versionrules-file" select="imf:prepare-config(imf:document($configuration-versionrules-name,true()))"/>
     <xsl:variable name="configuration-shaclrules-file" select="imf:prepare-config(imf:document($configuration-shaclrules-name))"/><!-- not required -->
-    
+   
     <xsl:variable name="metamodel-name" select="imf:get-normalized-name(imf:get-config-string('cli','metamodel'),'system-name')"/>
     <xsl:variable name="schemarules-name" select="imf:get-normalized-name(imf:get-config-string('cli','schemarules'),'system-name')"/>
     <xsl:variable name="tvset-name" select="imf:get-normalized-name(imf:get-config-string('cli','tvset'),'system-name')"/>
     
     <xsl:template match="/">
-        
         <!--<xsl:apply-templates select="/" mode="speed-analyzer"/>-->
        
         <xsl:variable name="config-raw">
@@ -293,6 +292,9 @@
             <shacl-rules>
                 <xsl:variable name="shacl-rules" select="shacl-rules"/> 
                 <xsl:for-each select="$shacl-rules//vocabularies">
+                    <xsl:apply-templates select="." mode="#current"/>
+                </xsl:for-each>
+                <xsl:for-each select="$shacl-rules//node-mapping">
                     <xsl:apply-templates select="." mode="#current"/>
                 </xsl:for-each>
             </shacl-rules>

@@ -213,12 +213,12 @@
     <item>
         <key>DATATYPE</key>
         <trans lang="nl">Primitief datatype</trans>
-        <trans lang="en">Primitive datatype</trans>
+        <trans lang="en">PrimitiveDatatype</trans>
     </item>
     <item>
         <key>DATA ELMENT</key>
         <trans lang="nl">Data element</trans>
-        <trans lang="en">Data element</trans>
+        <trans lang="en">DataElement</trans>
     </item>
     <item>
         <key>GEGEVENSGROEPTYPE</key>

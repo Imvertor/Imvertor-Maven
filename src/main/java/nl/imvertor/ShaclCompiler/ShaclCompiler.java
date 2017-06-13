@@ -83,7 +83,7 @@ public class ShaclCompiler extends Step {
 		
 		// validate
 		ShaclFile ShaclFile = new ShaclFile(configurator.getParm("properties", "RESULT_SHACL_FILE_PATH"));
-		ShaclFile.validate();
+		ShaclFile.validate(configurator);
 		
 		configurator.setParm("system","shacl-created","true");
 		
