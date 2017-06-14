@@ -1317,8 +1317,20 @@
 					<xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info(.)"/>
 					<xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
 					<xsl:variable name="tokens" select="tokenize($checksum-string,'\[SEP\]')"/>
+
+					<xsl:variable name="type-is-scalar-non-emptyable" select="imvert:type-name = ('scalar-integer','scalar-decimal')"/>
+					
+					<xsl:variable name="facet-length" select="imvert:min-length"/>
+					<xsl:variable name="facet-pattern" select="imf:get-most-relevant-compiled-taggedvalue(.,'Formeel patroon')"/>
+					<xsl:variable name="facet-minval" select="imf:get-most-relevant-compiled-taggedvalue(.,'Minimum waarde (inclusief)')"/>
+					<xsl:variable name="facet-maxval" select="imf:get-most-relevant-compiled-taggedvalue(.,'Maximum waarde (inclusief)')"/>
+					
+					<xsl:variable name="type-has-facets" select="exists(($facet-pattern, $facet-length, $facet-minval,$facet-maxval))"/>
 					
 					<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$tokens[1],'-e'))"/>
+					<xsl:if test="($type-is-scalar-non-emptyable or $type-has-facets) and not(ancestor::imvert:package[contains(@formal-name,'Berichtstructuren')])">
+						<xsl:sequence select="imf:create-output-element('ep:voidable', 'true')"/>
+					</xsl:if>						
 				</xsl:when>
 				<xsl:when test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype = 'COMPLEX DATATYPE'">
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1032',$debugging)"/>
@@ -1409,9 +1421,6 @@
 						<xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
 						<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
 						<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
-						<xsl:if test="(imvert:type-name = 'scalar-integer' or imvert:type-name = 'scalar-decimal') and not(ancestor::imvert:package[contains(@formal-name,'Berichtstructuren')])">
-							<xsl:sequence select="imf:create-output-element('ep:voidable', 'Ja')"/>
-						</xsl:if>
 						
 						<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]/imvert:attributes/imvert:attribute[imvert:is-id = 'true']"  mode="create-message-content">
 							<xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -1671,7 +1680,6 @@
 										$name != 'mutatiesoort' and
 										$name != 'indicatorOvername'">
 							<xsl:sequence select="imf:create-output-element('ep:voidable', 'true')"/>
-							<!--xsl:attribute name="nillable">true</xsl:attribute-->
 						</xsl:if>						
 						
 						
