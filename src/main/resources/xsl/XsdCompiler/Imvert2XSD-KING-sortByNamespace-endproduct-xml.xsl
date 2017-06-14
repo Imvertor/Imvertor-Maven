@@ -126,7 +126,7 @@
                     <ep:construct prefix="{$groupPrefix}" ismetadata="yes">
                         <ep:name>patch</ep:name>
                         <ep:tech-name>patch</ep:tech-name>
-                        <ep:data-type>scalar-integer</ep:data-type>
+                        <ep:data-type>scalar-nonNegativeInteger</ep:data-type>
                         <ep:min-value>0</ep:min-value>
                     </ep:construct>
                 </xsl:if>
