@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- SVN: $Id: Imvert2XSD-KING-endproduct.xsl 3 2015-11-05 10:35:07Z ArjanLoeffen 
-	$ This stylesheet generates the EP file structure based on the embellish 
-	file of a BSM EAP file. -->
+<!-- Robert Melskens	2017-06-09	This stylesheet enriches the rough EP file structure generated in the previous
+									step. The result serves as a base for creating the final EP file structure.
+									The most important enrichment is determining the verwerkingsModus of each level.
+									With this information the next step can determine teh content of each ep:construct
+									structure. For example a verwerkingsModus with the value 'matchgegevens...' means
+									only matchgegevens are allowed in the content. -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:UML="omg.org/UML1.3"
 	xmlns:imvert="http://www.imvertor.org/schema/system"
@@ -53,9 +56,13 @@
 		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
 
+	<!-- This template is the most important template in this stylesheet. Depending on the context of the construct 
+		 and the position within the structure of constructs a copy of the construct, optionally extended with an attribute 
+		 'verwerkingsModus', is created with a relevant value. In the next processing step for each construct a 
+		 complexType is created based on the 'verwerkingsModus' attribute with relevant content. -->
 	<xsl:template match="ep:construct" mode="enrich-rough-messages">
 		<xsl:param name="berichtCode"/>
-
+		
 		<xsl:sequence select="imf:create-debug-comment('debug:start B03000 /debug:start',$debugging)"/>
 		
 		<xsl:copy>
@@ -64,179 +71,170 @@
 				<xsl:when test="contains($berichtCode,'Lk') or ((contains($berichtCode,'Di') or $berichtCode = 'Du01') and @context = 'update' or ancestor::ep:construct[@context = 'update'])">
 					<xsl:choose>
 						<xsl:when test="@type!='entity' and not(ancestor::ep:construct[@type='entity'])">
-							<!-- Het gaat hier om constructs voor parameters en stuurgegevens. -->
+							<!-- This concerns constructs for 'parameters' and 'stuurgegevens'. They don't get a 'verwerkingsModus' attribute. -->
 						</xsl:when>
 						<xsl:when test="@type='entity' and not(ancestor::ep:construct[@type='entity'])">
-							<!-- Dit betreft een construct voor een fundamentele entiteit. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kennisgeving')"/>
+							<!-- This concerns a construct for a fundamental 'entiteit'. -->
+							<xsl:attribute name="verwerkingsModus" select="'kennisgeving'"/>
 						</xsl:when>
 						<xsl:when test="@type='entity' and (count(ancestor::ep:construct[@type='entity']) >= 1)">
-							<!-- Dit betreft een construct voor een entiteit op een dieper niveau. Typisch een dat gebruikt wordt in een gerelateerde. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevensKennisgeving')"/>
+							<!-- This concerns a construct for an 'entiteit' on a deeper level. Typically one used within a 'gerelateerde' construct. -->
+							<xsl:attribute name="verwerkingsModus" select="'matchgegevensKennisgeving'"/>
 						</xsl:when>
 						<xsl:when test="@type=('group','complex datatype') and (count(ancestor::ep:construct[@type='entity']) = 1)">
-							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of group constructs die daar een nakomeling van zijn. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kennisgeving')"/>
+							<!-- This concerns group constructs within a construct for a fundamental 'entiteit' or group constructs which are descendant of such a construct. -->
+							<xsl:attribute name="verwerkingsModus" select="'kennisgeving'"/>
 						</xsl:when>
 						<xsl:when test="@type=('group','complex datatype') and (count(ancestor::ep:construct[@type='entity']) > 1)">
-							<!-- Dit betreft alle overige group constructs. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevensKennisgeving')"/>
+							<!-- This concerns all other group constructs. -->
+							<xsl:attribute name="verwerkingsModus" select="'matchgegevensKennisgeving'"/>
 						</xsl:when>
 						<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) = 1)">
-							<!-- Dit betreft association constructs binnen de construct voor de fundamentele entiteit. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'kennisgeving')"/>
+							<!-- This concerns association constructs within a construct for a fundamental 'entiteit'. -->
+							<xsl:attribute name="verwerkingsModus" select="'kennisgeving'"/>
 						</xsl:when>
 						<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) > 1)">
-							<!-- Dit betreft alle overige association constructs. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevensKennisgeving')"/>
+							<!-- This concerns all other association constructs. -->
+							<xsl:attribute name="verwerkingsModus" select="'matchgegevensKennisgeving'"/>
 						</xsl:when>
 						<xsl:when test="@type='supertype' and (count(ancestor::ep:construct[@type='entity']) >= 1)">
-							<!-- Dit betreft alle supertype constructs. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevensKennisgeving')"/>
+							<!-- This concerns all supertype constructs. -->
+							<xsl:attribute name="verwerkingsModus" select="'matchgegevensKennisgeving'"/>
 						</xsl:when>
 					</xsl:choose>
 				</xsl:when>
 				<xsl:when test="contains($berichtCode,'La') or ((contains($berichtCode,'Di') or $berichtCode = 'Du01') and @context = 'antwoord' or ancestor::ep:construct[@context = 'antwoord'])">
 					<xsl:choose>
 						<xsl:when test="@type!='entity' and not(ancestor::ep:construct[@type='entity'])">
-							<!-- Het gaat hier om constructs voor parameters en stuurgegevens. -->
+							<!-- This concerns constructs for 'parameters' and 'stuurgegevens'. They don't get a 'verwerkingsModus' attribute. -->
 						</xsl:when>
 						<xsl:when test="@type='entity' and not(ancestor::ep:construct[@type='entity'])">
-							<!-- Dit betreft een construct voor een fundamentele entiteit. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'antwoord')"/>
+							<!-- This concerns a construct for a fundamental 'entiteit'. -->
+							<xsl:attribute name="verwerkingsModus" select="'antwoord'"/>
 						</xsl:when>
 						<xsl:when test="@type='entity' and (count(ancestor::ep:construct[@type='entity']) = 1)">
-							<!-- Dit betreft een construct voor een entiteit op het tweede niveau. Typisch een dat gebruikt wordt in een gerelateerde. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'gerelateerdeAntwoord')"/>
+							<!-- This concerns a construct for an 'entiteit' on the second level. Typically one used within a 'gerelateerde' construct. -->
+							<xsl:attribute name="verwerkingsModus" select="'gerelateerdeAntwoord'"/>
 						</xsl:when>
 						<xsl:when test="@type='entity' and (count(ancestor::ep:construct[@type='entity']) > 1)">
-							<!-- Dit betreft een construct voor een entiteit op een nog dieper niveau. Typisch een dat gebruikt wordt in een gerelateerde. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
+							<!-- This concerns a construct for an 'entiteit' on a deeper level than second level. This one is also typically used within a 'gerelateerde' construct. -->
+							<xsl:attribute name="verwerkingsModus" select="'matchgegevens'"/>
 						</xsl:when>
 						<xsl:when test="@type=('group','complex datatype') and ancestor::ep:construct[(@type='association' and (count(ancestor::ep:construct[@type='entity']) > 1)) or 
-																									  (@type='supertype' and (count(ancestor::ep:construct[@type='entity']) = 1)) or
-																									  (@type=('group','complex datatype') and (count(ancestor::ep:construct[@type='entity']) > 2))]">
-							<!-- Dit betreft group constructs die nakomeling van zijn van een construct dat een 'verwerkingsModus' attribute met de waarde 'matchgegevens' krijgt.
-							     Deze moet natuurlijk zelf ook een 'verwerkingsModus' attribute met de waarde 'matchgegevens' krijgen. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
+							(@type='supertype' and (count(ancestor::ep:construct[@type='entity']) = 1)) or
+							(@type=('group','complex datatype') and (count(ancestor::ep:construct[@type='entity']) > 2))]">
+							<!-- This concerns group constructs descendants of a construct getting a 'verwerkingsModus' attribute with the value 'matchgegevens'.
+							     These group constructs must themselves also get a 'verwerkingsModus' attribute with the value 'matchgegevens'. -->
+							<xsl:attribute name="verwerkingsModus" select="'matchgegevens'"/>
 						</xsl:when>
 						<xsl:when test="@type=('group','complex datatype') and ancestor::ep:construct[ep:tech-name = 'gerelateerde']">
-							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of een entiteit op het tweede niveau of 
-								 group constructs die daar een nakomeling van zijn. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'gerelateerdeAntwoord')"/>
+							<!-- This concerns group constructs which are descendants of constructs for the 'gerelateerde' construct. -->
+							<xsl:attribute name="verwerkingsModus" select="'gerelateerdeAntwoord'"/>
 						</xsl:when>
 						<xsl:when test="@type=('group','complex datatype') and ((count(ancestor::ep:construct[@type='entity']) = 1) or (count(ancestor::ep:construct[@type='entity']) = 2))">
-							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of een entiteit op het tweede niveau of 
-								 group constructs die daar een nakomeling van zijn. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'antwoord')"/>
+							<!-- This concerns group constructs within the construct of a fundamental 'entiteit' or an 'entiteit' on the second level or 
+								 group constructs which are descendants of those constructs. -->
+							<xsl:attribute name="verwerkingsModus" select="'antwoord'"/>
 						</xsl:when>
 						<xsl:when test="@type=('group','complex datatype') and (count(ancestor::ep:construct[@type='entity']) > 2)">
-							<!-- Dit betreft alle overige group constructs. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
+							<!-- This concerns all other group constructs. -->
+							<xsl:attribute name="verwerkingsModus" select="'matchgegevens'"/>
 						</xsl:when>
-
-
 						<xsl:when test="@type='association' and ancestor::ep:construct[(@type='association' and (count(ancestor::ep:construct[@type='entity']) > 1)) or 
-																					   (@type='supertype' and (count(ancestor::ep:construct[@type='entity']) = 1))]">
-							<!-- Dit betreft group constructs die nakomeling van zijn van een construct dat een 'verwerkingsModus' attribute met de waarde 'matchgegevens' krijgt.
-							     Deze moet natuurlijk zelf ook een 'verwerkingsModus' attribute met de waarde 'matchgegevens' krijgen. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
+							(@type='supertype' and (count(ancestor::ep:construct[@type='entity']) = 1))]">
+							<!-- This concerns association constructs which are descendants of construct getting a 'verwerkingsModus' attributevalue 'matchgegevens'.
+							     These association constructs must themselves also get a 'verwerkingsModus' attribute with the value 'matchgegevens'. -->
+							<xsl:attribute name="verwerkingsModus" select="'matchgegevens'"/>
 						</xsl:when>
-
-
 						<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) = 1)">
-							<!-- Dit betreft association constructs binnen de construct voor de fundamentele entiteit. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'antwoord')"/>
+							<!-- This concerns association constructs within construct for a fundamental 'entiteit'. -->
+							<xsl:attribute name="verwerkingsModus" select="'antwoord'"/>
 						</xsl:when>
 						<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) > 1)">
-							<!-- Dit betreft alle overige association constructs. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
+							<!-- This concerns all other association constructs. -->
+							<xsl:attribute name="verwerkingsModus" select="'matchgegevens'"/>
 						</xsl:when>
 						<xsl:when test="@type='supertype' and (count(ancestor::ep:construct[@type='entity']) = 1)">
-							<!-- Dit betreft supertype constructs voor de construct van de fundamentele entiteit. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'antwoord')"/>
+							<!-- This concerns supertype constructs within construct for a fundamental 'entiteit'. -->
+							<xsl:attribute name="verwerkingsModus" select="'antwoord'"/>
 						</xsl:when>
 						<xsl:when test="@type='supertype' and (count(ancestor::ep:construct[@type='entity']) > 1)">
-							<!-- Dit betreft alle overige supertype constructs. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
+							<!-- This concerns all other supertype constructs. -->
+							<xsl:attribute name="verwerkingsModus" select="'matchgegevens'"/>
 						</xsl:when>
 					</xsl:choose>
 				</xsl:when>
 				<xsl:when test="contains($berichtCode,'Lv') or ((contains($berichtCode,'Di') or $berichtCode = 'Du01') and @context = 'vraag' or ancestor::ep:construct[@context = 'vraag'])">
 					<xsl:choose>
 						<xsl:when test="@type!='entity' and not(ancestor::ep:construct[@type='entity'])">
-								<!-- Het gaat hier om constructs voor parameters en stuurgegevens. -->
+							<!-- This concerns constructs for 'parameters' and 'stuurgegevens'. They don't get a 'verwerkingsModus' attribute. -->
 						</xsl:when>
 						<xsl:when test="@type='entity' and not(ancestor::ep:construct[@type='entity'])">
-							<!-- Dit betreft een construct voor een fundamentele entiteiten in de context van een gelijk, totEnMet, vanaf of scope element. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'vraag')"/>
+							<!-- This concerns a construct for a fundamental 'entiteit' in the 'gelijk', 'totEnMet', 'vanaf' of 'scope' context. -->
+							<xsl:attribute name="verwerkingsModus" select="'vraag'"/>
 						</xsl:when>
 						<xsl:when test="@type='entity' and (count(ancestor::ep:construct[@type='entity']) = 1)">
-							<!-- Dit betreft een construct voor een entiteit op het tweede niveau. Typisch een dat gebruikt wordt in een gerelateerde in de 
-								 context van een gelijk, totEnMet, vanaf of scope element. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'gerelateerdeVraag')"/>
+							<!-- This concerns a construct for an 'entiteit' on the second level. Typically one used within a 'gerelateerde' construct in the 
+								 'gelijk', 'totEnMet', 'vanaf' of 'scope' context. -->
+							<xsl:attribute name="verwerkingsModus" select="'gerelateerdeVraag'"/>
 						</xsl:when>
 						<xsl:when test="@type='entity' and (count(ancestor::ep:construct[@type='entity']) > 1)">
-							<!-- Dit betreft een construct voor een entiteit op een nog dieper niveau. Typisch een dat gebruikt wordt in een gerelateerde in de context. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
+							<!-- This concerns a construct for an 'entiteit' on a deeper level than second level. This one is also typically used within a 'gerelateerde' construct. -->
+							<xsl:attribute name="verwerkingsModus" select="'matchgegevens'"/>
 						</xsl:when>
 						<xsl:when test="@type=('group','complex datatype') and ancestor::ep:construct[(@type='association' and (count(ancestor::ep:construct[@type='entity']) > 1)) or
-																									  (@type='supertype' and (count(ancestor::ep:construct[@type='entity']) > 1)) or
-																									  (@type=('group','complex datatype') and (count(ancestor::ep:construct[@type='entity']) > 2))]">
-							<!-- Dit betreft group constructs die nakomeling van zijn van een construct dat een 'verwerkingsModus' attribute met de waarde 'matchgegevens' krijgt.
-							     Deze moet natuurlijk zelf ook een 'verwerkingsModus' attribute met de waarde 'matchgegevens' krijgen. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
+							(@type='supertype' and (count(ancestor::ep:construct[@type='entity']) > 1)) or
+							(@type=('group','complex datatype') and (count(ancestor::ep:construct[@type='entity']) > 2))]">
+							<!-- This concerns group constructs descendants of a construct getting a 'verwerkingsModus' attribute with the value 'matchgegevens'.
+							     These group constructs must themselves also get a 'verwerkingsModus' attribute with the value 'matchgegevens'. -->
+							<xsl:attribute name="verwerkingsModus" select="'matchgegevens'"/>
 						</xsl:when>
 						<xsl:when test="@type=('group','complex datatype') and ancestor::ep:construct[ep:tech-name = 'gerelateerde']">
-							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of een entiteit op het tweede niveau binnen de 
-								 context van een gelijk, totEnMet, vanaf of scope element of group constructs die daar een nakomeling van zijn. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'gerelateerdeVraag')"/>
+							<!-- This concerns group constructs which are descendants of constructs for the 'gerelateerde' construct. -->
+							<xsl:attribute name="verwerkingsModus" select="'gerelateerdeVraag'"/>
 						</xsl:when>
 						<xsl:when test="@type=('group','complex datatype') and ((count(ancestor::ep:construct[@type='entity']) = 1) or (count(ancestor::ep:construct[@type='entity']) = 2))">
-							<!-- Dit betreft group constructs binnen de construct voor de fundamentele entiteit of een entiteit op het tweede niveau binnen de 
-								 context van een gelijk, totEnMet, vanaf of scope element of group constructs die daar een nakomeling van zijn. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'vraag')"/>
+							<!-- This concerns group constructs whithin constructs for the fundamental 'entiteit' construct or an 'entiteit' construct on the 
+								 second level in the 'gelijk', 'totEnMet', 'vanaf' of 'scope' context. -->
+							<xsl:attribute name="verwerkingsModus" select="'vraag'"/>
 						</xsl:when>
 						<xsl:when test="@type=('group','complex datatype') and (count(ancestor::ep:construct[@type='entity']) > 2)">
-							<!-- Dit betreft alle overige group constructs. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
+							<!-- This concerns all other group constructs. -->
+							<xsl:attribute name="verwerkingsModus" select="'matchgegevens'"/>
 						</xsl:when>
-						
 						<xsl:when test="@type='association' and ancestor::ep:construct[(@type='association' and (count(ancestor::ep:construct[@type='entity']) > 1)) or
-																					   (@type='supertype' and (count(ancestor::ep:construct[@type='entity']) > 1))]">
-							<!-- Dit betreft group constructs die nakomeling van zijn van een construct dat een 'verwerkingsModus' attribute met de waarde 'matchgegevens' krijgt.
-							     Deze moet natuurlijk zelf ook een 'verwerkingsModus' attribute met de waarde 'matchgegevens' krijgen. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
+							(@type='supertype' and (count(ancestor::ep:construct[@type='entity']) > 1))]">
+							<!-- This concerns association constructs descendants of a construct getting a 'verwerkingsModus' attribute with the value 'matchgegevens'.
+							     These group constructs must themselves also get a 'verwerkingsModus' attribute with the value 'matchgegevens'. -->
+							<xsl:attribute name="verwerkingsModus" select="'matchgegevens'"/>
 						</xsl:when>
-						
-						
 						<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) = 1)">
-							<!-- Dit betreft association constructs binnen de construct voor de fundamentele entiteit binnen de 
-								 context van een gelijk, totEnMet, vanaf of scope element. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'vraag')"/>
+							<!-- This concerns association constructs whithin constructs for the fundamental 'entiteit' construct in the 'gelijk', 
+								 'totEnMet', 'vanaf' of 'scope' context. -->
+							<xsl:attribute name="verwerkingsModus" select="'vraag'"/>
 						</xsl:when>
 						<xsl:when test="@type='association' and (count(ancestor::ep:construct[@type='entity']) > 1)">
-							<!-- Dit betreft alle overige association constructs. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
+							<!-- This concerns all association constructs. -->
+							<xsl:attribute name="verwerkingsModus" select="'matchgegevens'"/>
 						</xsl:when>
 						<xsl:when test="@type='supertype' and (count(ancestor::ep:construct[@type='entity']) = 1)">
-							<!-- Dit betreft supertype constructs voor de construct van de fundamentele entiteit binnen de 
-								 context van een gelijk, totEnMet, vanaf of scope element. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'vraag')"/>
+							<!-- This concerns supertype constructs whithin constructs for the fundamental 'entiteit' construct in the 'gelijk', 
+								 'totEnMet', 'vanaf' of 'scope' context. -->
+							<xsl:attribute name="verwerkingsModus" select="'vraag'"/>
 						</xsl:when>
 						<xsl:when test="@type='supertype' and (count(ancestor::ep:construct[@type='entity']) > 1)">
-							<!-- Dit betreft alle overige supertype constructs. -->
-							<xsl:attribute name="verwerkingsModus" select="imf:create-verwerkingsModus(.,'matchgegevens')"/>
+							<!-- This concerns all supertype constructs. -->
+							<xsl:attribute name="verwerkingsModus" select="'matchgegevens'"/>
 						</xsl:when>
 					</xsl:choose>
 				</xsl:when>
 				<xsl:when test="contains($berichtCode,'Di') or $berichtCode = 'Du01'">
 					<xsl:choose>
 						<xsl:when test="@type!='entity' and not(ancestor::ep:construct[@type='entity'])">
-							<!-- Het gaat hier om constructs voor parameters en stuurgegevens. -->
+							<!-- This concerns constructs for 'parameters' and 'stuurgegevens'. They don't get a 'verwerkingsModus' attribute. -->
 						</xsl:when>
 						<xsl:when test="@typeCode = 'entiteitrelatie' or ancestor::ep:construct[@typeCode = 'entiteitrelatie']">
-							<!-- Dit betreft constructs die vanuit een vrijbericht direct naar  fundamentele entiteit lopen. -->
+							<!-- This concerns association constructs relating a 'vrijbericht' to a fundamental 'entiteit'. -->
 						</xsl:when>
 					</xsl:choose>
 				</xsl:when>
@@ -254,11 +252,11 @@
 				<xsl:when test="contains($berichtCode,'Di') or contains($berichtCode,'Du')">
 					<xsl:choose>
 						<xsl:when test="@typeCode = 'entiteitrelatie' or ancestor::ep:construct[@typeCode = 'entiteitrelatie']">
-							<!-- Dit betreft constructs die vanuit een vrijbericht direct naar  fundamentele entiteit lopen. -->
+							<!-- This concerns association constructs having a 'typeCode' attributevalue of 'entiteitrelatie' and relating a 'vrijbericht' to a fundamental 'entiteit'. -->
 							<xsl:attribute name="entiteitOrBerichtRelatie" select="ancestor-or-self::ep:construct[@typeCode = 'entiteitrelatie']/ep:name"/>
 						</xsl:when>
 						<xsl:when test="@typeCode = 'berichtrelatie' or ancestor::ep:construct[@typeCode = 'berichtrelatie']">
-							<!-- Dit betreft constructs die vanuit een vrijbericht direct naar  fundamentele entiteit lopen. -->
+							<!-- This concerns association constructs relating a 'vrijbericht' to a fundamental 'entiteit'. -->
 							<xsl:attribute name="entiteitOrBerichtRelatie" select="ancestor-or-self::ep:construct[@typeCode = 'berichtrelatie']/ep:name"/>
 						</xsl:when>
 					</xsl:choose>
@@ -278,7 +276,7 @@
 		
 		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
-
+	
 	<xsl:template match="ep:choice" mode="enrich-rough-messages">
 		<xsl:param name="berichtCode"/>
 
@@ -327,6 +325,7 @@
 		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
 	</xsl:template>
 	
+	<!-- ROME: Deze functie slaat n.m.m. nergens op en heeft geen toegevoegde waarde. -->
 	<xsl:function name="imf:create-verwerkingsModus">
 		<xsl:param name="contextnode"/>
 		<xsl:param name="verwerkingsModus"/>
