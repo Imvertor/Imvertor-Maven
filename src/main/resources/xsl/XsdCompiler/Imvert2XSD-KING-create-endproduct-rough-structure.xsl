@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- SVN: $Id: Imvert2XSD-KING-endproduct.xsl 3 2015-11-05 10:35:07Z ArjanLoeffen 
-	$ This stylesheet generates the EP file structure based on the embellish 
-	file of a BSM EAP file. -->
+<!-- Robert Melskens	2017-06-09	This stylesheet generates a rough EP file structure based on the embellish 
+									file of a BSM EAP file. This rough structure will be enriched in the next step
+									and the result of that step serves as a base for creating the final EP file structure. -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:UML="omg.org/UML1.3"
 	xmlns:imvert="http://www.imvertor.org/schema/system"
@@ -77,12 +77,12 @@
 			<xsl:variable name="berichtstereotype" select="imvert:stereotype"/>
 			<xsl:variable name="berichtCode" select="imvert:tagged-values/imvert:tagged-value[imvert:name = 'Berichtcode']/imvert:value"/>
 			
-			<!-- ROME: De volgende if kan verwijderd worden zodra duidelijk is hoe een Du02 bericht vertaald moet worden. -->
 			<xsl:if test="$berichtCode = ''">
 				<xsl:message
 					select="concat('ERROR ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : The berichtcode can not be determined. To be able to generate correct messages this is neccessary. Check if your model contains the tagged value Berichtcode. (', $berichtstereotype)"
 				/>
 			</xsl:if>
+			<!-- ROME: De volgende xsl:if wrapper kan verwijderd worden zodra duidelijk is hoe een Du02 bericht vertaald moet worden. -->
 			<!-- create the message. Messages with a berichtCode value of 'Du02' aren't processed yet since the StUF standard doesn't specify how it should look like. -->
 			<xsl:if test="$berichtCode != 'Du02'">
 				<ep:rough-message>
@@ -121,13 +121,14 @@
 	<!-- This template only processes imvert:class elements with an imvert:stereotype 
 		with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE', 'KENNISGEVINGBERICHTTYPE',
 		'SYNCHRONISATIEBERICHTTYPE'	or 'VRIJ BERICHTTYPE'. Those classes contain a relation 
-		to the 'Parameters' group (if not removed), a relation to a class with an imvert:stereotype 
+		to a class with an imvert:stereotype 
 		with the value 'ENTITEITTYPE' or, in case of a ''VRIJ BERICHTTYPE', a relation 
 		with one or more classes with an imvert:stereotype with the value 'VRAAGBERICHTTYPE', 
 		'ANTWOORDBERICHTTYPE', 'VRIJ BERICHTTYPE' or 'KENNISGEVINGBERICHTTYPE'. These 
 		classes also have a supertype with an imvert:stereotype with the value 'BERICHTTYPE' 
 		which contain a 'melding' attribuut and have a relation to the 'Stuurgegevens' 
-		group. This supertype is also processed here. -->
+		group a relation to the 'Parameters' group (if not removed). 
+		This supertype is also processed here. -->
 	<xsl:template match="imvert:class" mode="create-toplevel-rough-message-structure">
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="embeddedBerichtCode"/>
@@ -146,7 +147,7 @@
 				'ANTWOORDBERICHTTYPE', 'VRIJ BERICHTTYPE' or 'KENNISGEVINGBERICHTTYPE' and 
 				those within the current class. The first one generates the 'stuurgegevens' 
 				element, the second one the 'parameters' element. 
-				The empty value for the variable 'context' guarantee's not xml attributes are 
+				The value '-' for the variable 'context' guarantee's no xml attributes are 
 				generated with the attributen.-->
 		<xsl:apply-templates select="imvert:supertype" mode="create-rough-message-content">
 			<xsl:with-param name="proces-type" select="'associationsGroepCompositie'"/>
@@ -290,6 +291,11 @@
 						<xsl:with-param name="id-trail">
 							<xsl:choose>
 								<xsl:when
+									test="contains($id-trail, concat('#2#', imvert:id, '#'))">
+									<xsl:value-of
+										select="concat('#3#', imvert:id, '#', $id-trail)"/>
+								</xsl:when>
+								<xsl:when
 									test="contains($id-trail, concat('#1#', imvert:id, '#'))">
 									<xsl:value-of
 										select="concat('#2#', imvert:id, '#', $id-trail)"/>
@@ -367,12 +373,17 @@
 				<!-- If the class hasn't been processed before it can be processed, else. 
 					to prevent recursion, processing is canceled. -->
 				<xsl:choose>
-					<xsl:when test="not(contains($id-trail, concat('#2#', imvert:id, '#')))">
+					<xsl:when test="not(contains($id-trail, concat('#3#', imvert:id, '#')))">
 						<xsl:apply-templates
 							select="imvert:associations/imvert:association[imvert:stereotype = 'RELATIE']"
 							mode="create-rough-message-content">
 							<xsl:with-param name="id-trail">
 								<xsl:choose>
+									<xsl:when
+										test="contains($id-trail, concat('#2#', imvert:id, '#'))">
+										<xsl:value-of
+											select="concat('#3#', imvert:id, '#', $id-trail)"/>
+									</xsl:when>
 									<xsl:when
 										test="contains($id-trail, concat('#1#', imvert:id, '#'))">
 										<xsl:value-of
@@ -461,11 +472,6 @@
 							test="($berichtCode = ('La07','La08','La09','La10')) and $tv-materieleHistorie-attributes//ep:tagged-value = ('JA','JAZIEREGELS')">
 							<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja op attributes'"/>
 						</xsl:if>
-						<!-- ROME: historieMaterieelRelatie bestaat waarschijnlijk niet. -->
-						<!--xsl:if
-							test="($berichtCode = ('La07','La08','La09','La10')) and contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiele historie'), 'JA')">
-							<xsl:attribute name="indicatieMaterieleHistorieRelatie" select="'Ja'"/>
-						</xsl:if-->
 						<xsl:variable name="tv-formeleHistorie-attributes">
 							<xsl:for-each select="imvert:association-class">
 								<xsl:variable name="association-class-type-id" select="imvert:type-id"/>
@@ -599,10 +605,7 @@
 	</xsl:template>
 
 	<!-- This template takes care of associations from a 'vrijbericht' type 
-		to the other message types 'vraagbericht', 'antwoordbericht' and 'kennisgevingbericht'. -->
-	<!-- ROME: De werking van dit template moet nog gecheckt worden zodra er 
-		vrije berichten zijn. Waarschijnlijk moet er nog iets gebeuren met de context.
-		Ook moet er nog voor gezorgd worden dat het 'functie' xml attribute gegenereerd wordt.-->
+		 to the other message types 'vraagbericht', 'antwoordbericht' and 'kennisgevingbericht'. -->
 	<xsl:template match="imvert:association" mode="create-toplevel-rough-message-structure">
 		<xsl:param name="berichtCode"/>
 		<xsl:variable name="type-id" select="imvert:type-id"/>
@@ -1269,8 +1272,6 @@
 					</xsl:apply-templates>
 					<xsl:apply-templates select="key('class',$type-id)" mode="create-rough-message-content">
 						<xsl:with-param name="proces-type" select="'associationsOrSupertypeRelatie'"/>
-						<!-- ROME: Het is de vraag of deze parameter en het checken op id 
-							nog wel noodzakelijk is. -->
 						<xsl:with-param name="id-trail" select="$id-trail"/>
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="context" select="$context"/>
