@@ -246,6 +246,9 @@
                 <xsl:apply-templates select="current-group()[1]" mode="mode-global-attribute-simpletype"/>
             </xsl:for-each-group>
             
+            
+            <!-- ROME: Mogelijk dat deze later kan komen te vervalllen als baretype 'PuntOfVlak' of 'VlakOfMultivlak' niet meer bestaan.
+                       Deze moeten nmm nl. vervangen worden door GML3 types. -->
             <xsl:for-each-group 
                 select="//imvert:attribute[imvert:baretype = 'PuntOfVlak' or imvert:baretype = 'VlakOfMultivlak']" 
                 group-by="imvert:baretype">
@@ -1063,8 +1066,11 @@
                                <xsl:otherwise>
                                    <xsl:sequence select="imf:create-debug-comment('Debuglocation 17b',$debugging)"/>
                                    <ep:seq>
-                                       <xsl:sequence
-                                           select="imf:create-output-element('ep:min-occurs', 0)" />
+                                       <!-- Onderstaande min-Occurs is verwijdert nadat bleek dat de complexType 
+                                            'NPS.Natuurlijkpersoon-selecteerPersoonResponse-antwoord' daardoor niet overeen kwam met
+                                            'NPS-basis'. -->
+                                       <!--xsl:sequence
+                                           select="imf:create-output-element('ep:min-occurs', 0)" /-->
                                        <!-- The uml attributes of the uml class are placed here. -->
                                        <xsl:apply-templates select="$construct"
                                            mode="create-message-content">
@@ -1809,7 +1815,7 @@
             <!-- The following if takes care of creating global construct elements for each ep:construct element representing a 'relatie'. -->
             <xsl:when test="@typeCode='relatie'">
                  
-                <xsl:sequence select="imf:create-debug-track('Constructing the global constructs representing a relation',$debugging)"/>
+                <xsl:sequence select="imf:create-debug-track(concat('Constructing the global constructs representing a relation with the name ',ep:name),$debugging)"/>
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 24',$debugging)"/>
 
                 <!-- Within the schema's we want to have global constructs for relations. However for that kind of objects no uml classes are available.
@@ -2064,95 +2070,96 @@
         <xsl:variable name="authentiek" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie authentiek')"/>
         <xsl:variable name="inOnderzoek" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie in onderzoek')"/>
 
-        <xsl:if test="not(contains($verwerkingsModus, 'matchgegeven') and $matchgegeven = 'JA')">
-            <xsl:sequence select="imf:create-debug-comment('Debuglocation 31',$debugging)"/>
-            
-            <!-- Location: 'ep:construct10'
+        <xsl:choose>
+            <xsl:when test="not(contains($verwerkingsModus, 'matchgegevens') and $matchgegeven = 'JA')">
+                     <xsl:sequence select="imf:create-debug-comment('Debuglocation 31a',$debugging)"/>
+                    
+                    <!-- Location: 'ep:construct10'
 				 Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-structure.xsl' on the location with the id 'ep:constructRef10'. -->			
-            
-            <ep:construct type="complexData" prefix="{$verkorteAliasGerelateerdeEntiteit}" namespaceId="{$namespaceIdentifierGerelateerdeEntiteit}">
-                <xsl:if test="$debugging">
-                    <xsl:variable name="materieleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie')"/>
-                    <xsl:variable name="formeleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie')"/>
-                    <ep:tagged-values>
-                        <xsl:copy-of select="$tvs"/>
-                        <ep:found-tagged-values>
-                            <xsl:sequence select="imf:create-output-element('ep:materieleHistorie', $materieleHistorie)"/>
-                            <xsl:sequence select="imf:create-output-element('ep:formeleHistorie', $formeleHistorie)"/>
-                            <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
-                            <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
-                            <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
-                        </ep:found-tagged-values>
+                    
+                    <ep:construct type="complexData" prefix="{$verkorteAliasGerelateerdeEntiteit}" namespaceId="{$namespaceIdentifierGerelateerdeEntiteit}">
+                        <xsl:if test="$debugging">
+                            <xsl:variable name="materieleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie')"/>
+                            <xsl:variable name="formeleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie')"/>
+                            <ep:tagged-values>
+                                <xsl:copy-of select="$tvs"/>
+                                <ep:found-tagged-values>
+                                    <xsl:sequence select="imf:create-output-element('ep:materieleHistorie', $materieleHistorie)"/>
+                                    <xsl:sequence select="imf:create-output-element('ep:formeleHistorie', $formeleHistorie)"/>
+                                    <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
+                                    <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
+                                    <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
+                                </ep:found-tagged-values>
+                                
+                                <!-- ROME: volgende 3 regels later weghalen. -->
+                                <indicatieMaterieleHistorie><xsl:value-of select="$indicatieMaterieleHistorie"/></indicatieMaterieleHistorie>
+                                <indicatieFormeleHistorie><xsl:value-of select="$indicatieFormeleHistorie"/></indicatieFormeleHistorie>
+                                <indicatieFormeleHistorieRelatie><xsl:value-of select="$indicatieFormeleHistorieRelatie"/></indicatieFormeleHistorieRelatie>
+                                
+                            </ep:tagged-values>
+                        </xsl:if>
+                        <xsl:sequence select="imf:create-output-element('ep:name', $tech-name)"/>
+                        <xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
+                        <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
                         
-                        <!-- ROME: volgende 3 regels later weghalen. -->
-                        <indicatieMaterieleHistorie><xsl:value-of select="$indicatieMaterieleHistorie"/></indicatieMaterieleHistorie>
-                        <indicatieFormeleHistorie><xsl:value-of select="$indicatieFormeleHistorie"/></indicatieFormeleHistorie>
-                        <indicatieFormeleHistorieRelatie><xsl:value-of select="$indicatieFormeleHistorieRelatie"/></indicatieFormeleHistorieRelatie>
+                        <!-- ROME: Het is de vraag of een relatie als authentiek bestempelt kan worden. Zo niet dan moet onderstaande sequence verwijderd worden. -->
+                        <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
+                        <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
+                        <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
+                        <xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
+                        <xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
                         
-                    </ep:tagged-values>
-                </xsl:if>
-                <xsl:sequence select="imf:create-output-element('ep:name', $tech-name)"/>
-                <xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
-                <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
-                
-                <!-- ROME: Het is de vraag of een relatie als authentiek bestempelt kan worden. Zo niet dan moet onderstaande sequence verwijderd worden. -->
-                <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
-                <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
-                <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
-                <xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
-                <xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
-                
-                <!-- When a tagged-value 'Positie' exists this is used to assign a value to 'ep:position' if not the value of the element 'imvert:position' is used. -->
-                <xsl:choose>
-                    <xsl:when
-                        test="imvert:stereotype != 'RELATIE' and imvert:tagged-values/imvert:tagged-value/imvert:name = 'Positie'">
-                        <xsl:sequence
-                            select="imf:create-output-element('ep:position', imvert:tagged-values/imvert:tagged-value[imvert:name = 'Positie']/imvert:value)"/>
-                        <xsl:sequence select="imf:create-output-element('ep:tv-position', 'yes')"/>
-                    </xsl:when>
-                    <xsl:when test="imvert:stereotype != 'RELATIE' and imvert:position">
-                        <xsl:sequence select="imf:create-output-element('ep:position', imvert:position)"/>
-                    </xsl:when>
-                    <xsl:otherwise/>
-                </xsl:choose>
-                <!-- An 'ep:construct' based on an 'imvert:association' element can contain 
+                        <!-- When a tagged-value 'Positie' exists this is used to assign a value to 'ep:position' if not the value of the element 'imvert:position' is used. -->
+                        <xsl:choose>
+                            <xsl:when
+                                test="imvert:stereotype != 'RELATIE' and imvert:tagged-values/imvert:tagged-value/imvert:name = 'Positie'">
+                                <xsl:sequence
+                                    select="imf:create-output-element('ep:position', imvert:tagged-values/imvert:tagged-value[imvert:name = 'Positie']/imvert:value)"/>
+                                <xsl:sequence select="imf:create-output-element('ep:tv-position', 'yes')"/>
+                            </xsl:when>
+                            <xsl:when test="imvert:stereotype != 'RELATIE' and imvert:position">
+                                <xsl:sequence select="imf:create-output-element('ep:position', imvert:position)"/>
+                            </xsl:when>
+                            <xsl:otherwise/>
+                        </xsl:choose>
+                        <!-- An 'ep:construct' based on an 'imvert:association' element can contain 
 			several other 'ep:construct' elements (e.g. 'ep:constructs' for the attributes 
 			of the association itself or for the associations of the association) therefore 
 			an 'ep:seq' element is generated here. -->
-                <ep:seq>
-                    <!-- ROME: De test op de variabele $oderingDesired is hier wellicht niet 
+                        <ep:seq>
+                            <!-- ROME: De test op de variabele $oderingDesired is hier wellicht niet 
 				meer nodig omdat er nu een separaat template is voor het afhandelen het 'imvert:association' 
 				element met het stereotype 'ENTITEITRELATIE'. -->
-                    <xsl:if test="$orderingDesired = 'no'">
-                        <xsl:attribute name="orderingDesired" select="'no'"/>
-                    </xsl:if>
-                    <xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
-                    <xsl:call-template name="createRelatiePartOfAssociation">
-                        <xsl:with-param name="type-id" select="$type-id"/>
-                        <xsl:with-param name="berichtCode" select="$berichtCode"/>
-                        <xsl:with-param name="berichtName" select="$berichtName"/>
-                        <xsl:with-param name="generated-id" select="$generated-id"/>
-                        <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                        <xsl:with-param name="context" select="$context"/>
-                        <xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
-                        <xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
-                        <xsl:with-param name="indicatieFormeleHistorie" select="$indicatieFormeleHistorie"/>
-                        <xsl:with-param name="indicatieFormeleHistorieRelatie" select="$indicatieFormeleHistorieRelatie"/>
-                        <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                    </xsl:call-template>
-                    <!-- Only in case of an association representing a 'relatie' and containing 
+                            <xsl:if test="$orderingDesired = 'no'">
+                                <xsl:attribute name="orderingDesired" select="'no'"/>
+                            </xsl:if>
+                            <xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
+                            <xsl:call-template name="createRelatiePartOfAssociation">
+                                <xsl:with-param name="type-id" select="$type-id"/>
+                                <xsl:with-param name="berichtCode" select="$berichtCode"/>
+                                <xsl:with-param name="berichtName" select="$berichtName"/>
+                                <xsl:with-param name="generated-id" select="$generated-id"/>
+                                <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                <xsl:with-param name="context" select="$context"/>
+                                <xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
+                                <xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
+                                <xsl:with-param name="indicatieFormeleHistorie" select="$indicatieFormeleHistorie"/>
+                                <xsl:with-param name="indicatieFormeleHistorieRelatie" select="$indicatieFormeleHistorieRelatie"/>
+                                <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                            </xsl:call-template>
+                            <!-- Only in case of an association representing a 'relatie' and containing 
 				a 'gerelateerde' construct (within the above choose the first 'when' XML 
 				Attributes for the 'relatie' type element have to be generated. Because these 
 				has to be placed outside the 'gerelateerde' element it has to be done here. -->
-                    <xsl:if test="imvert:stereotype = 'RELATIE'">
-                        <!-- The function imf:createAttributes is used to determine the XML 
+                            <xsl:if test="imvert:stereotype = 'RELATIE'">
+                                <!-- The function imf:createAttributes is used to determine the XML 
 					attributes neccessary for this context. It has the following parameters: 
 					- typecode - berichttype - context - datumType The first 3 parameters relate 
 					to columns with the same name within an Excel spreadsheet used to configure 
 					a.o. XML attributes usage. The last parameter is used to determine the need 
 					for the XML-attribute 'StUF:indOnvolledigeDatum'. -->
-                        
-                        <!-- ROME: De berichtcode is niet als globale variabele aanwezig en 
+                                
+                                <!-- ROME: De berichtcode is niet als globale variabele aanwezig en 
 					kan dus niet zomaar opgeroepen worden. Hij kan helaas ook niet eenvoudig 
 					verkregen worden aangezien het element op basis waarvan de berichtcode kan 
 					worden gegenereerd geen ancestor is van het huidige element. Er zijn 2 opties: 
@@ -2162,16 +2169,124 @@
 					bevat is dan wel altijd de ancestor van het element dat het nodig heeft. 
 					Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook 
 					nog herleid en doorgegeven worden. -->
-                        <xsl:if test="$generateHistorieConstruct = 'Nee'">
-                            <xsl:variable name="attributes"
-                                select="imf:createAttributes('relatie', substring($berichtCode, 1, 2), $context, 'no', $alias, 'no', $prefix, $id, '')"/>
-                            <xsl:sequence select="$attributes"/>
-                        </xsl:if> 
+                                <xsl:if test="$generateHistorieConstruct = 'Nee'">
+                                    <xsl:variable name="attributes"
+                                        select="imf:createAttributes('relatie', substring($berichtCode, 1, 2), $context, 'no', $alias, 'no', $prefix, $id, '')"/>
+                                    <xsl:sequence select="$attributes"/>
+                                </xsl:if> 
+                            </xsl:if>
+                        </ep:seq>
+                    </ep:construct>
+            </xsl:when>
+            <xsl:when test="contains($verwerkingsModus, 'matchgegevens') and $matchgegeven = 'JA'">
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 31b',$debugging)"/>
+                
+                <!-- Location: 'ep:construct10'
+				 Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-structure.xsl' on the location with the id 'ep:constructRef10'. -->			
+                
+                <ep:construct type="complexData" prefix="{$verkorteAliasGerelateerdeEntiteit}" namespaceId="{$namespaceIdentifierGerelateerdeEntiteit}">
+                    <xsl:if test="$debugging">
+                        <xsl:variable name="materieleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie')"/>
+                        <xsl:variable name="formeleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie')"/>
+                        <ep:tagged-values>
+                            <xsl:copy-of select="$tvs"/>
+                            <ep:found-tagged-values>
+                                <xsl:sequence select="imf:create-output-element('ep:materieleHistorie', $materieleHistorie)"/>
+                                <xsl:sequence select="imf:create-output-element('ep:formeleHistorie', $formeleHistorie)"/>
+                                <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
+                                <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
+                                <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
+                            </ep:found-tagged-values>
+                            
+                            <!-- ROME: volgende 3 regels later weghalen. -->
+                            <indicatieMaterieleHistorie><xsl:value-of select="$indicatieMaterieleHistorie"/></indicatieMaterieleHistorie>
+                            <indicatieFormeleHistorie><xsl:value-of select="$indicatieFormeleHistorie"/></indicatieFormeleHistorie>
+                            <indicatieFormeleHistorieRelatie><xsl:value-of select="$indicatieFormeleHistorieRelatie"/></indicatieFormeleHistorieRelatie>
+                            
+                        </ep:tagged-values>
                     </xsl:if>
-                </ep:seq>
-            </ep:construct>
-        </xsl:if>
-    </xsl:template>
+                    <xsl:sequence select="imf:create-output-element('ep:name', $tech-name)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+                    
+                    <!-- ROME: Het is de vraag of een relatie als authentiek bestempelt kan worden. Zo niet dan moet onderstaande sequence verwijderd worden. -->
+                    <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
+                    
+                    <!-- When a tagged-value 'Positie' exists this is used to assign a value to 'ep:position' if not the value of the element 'imvert:position' is used. -->
+                    <xsl:choose>
+                        <xsl:when
+                            test="imvert:stereotype != 'RELATIE' and imvert:tagged-values/imvert:tagged-value/imvert:name = 'Positie'">
+                            <xsl:sequence
+                                select="imf:create-output-element('ep:position', imvert:tagged-values/imvert:tagged-value[imvert:name = 'Positie']/imvert:value)"/>
+                            <xsl:sequence select="imf:create-output-element('ep:tv-position', 'yes')"/>
+                        </xsl:when>
+                        <xsl:when test="imvert:stereotype != 'RELATIE' and imvert:position">
+                            <xsl:sequence select="imf:create-output-element('ep:position', imvert:position)"/>
+                        </xsl:when>
+                        <xsl:otherwise/>
+                    </xsl:choose>
+                    <!-- An 'ep:construct' based on an 'imvert:association' element can contain 
+			several other 'ep:construct' elements (e.g. 'ep:constructs' for the attributes 
+			of the association itself or for the associations of the association) therefore 
+			an 'ep:seq' element is generated here. -->
+                    <ep:seq>
+                        <!-- ROME: De test op de variabele $oderingDesired is hier wellicht niet 
+				meer nodig omdat er nu een separaat template is voor het afhandelen het 'imvert:association' 
+				element met het stereotype 'ENTITEITRELATIE'. -->
+                        <xsl:if test="$orderingDesired = 'no'">
+                            <xsl:attribute name="orderingDesired" select="'no'"/>
+                        </xsl:if>
+                        <xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
+                        <xsl:call-template name="createRelatiePartOfAssociation">
+                            <xsl:with-param name="type-id" select="$type-id"/>
+                            <xsl:with-param name="berichtCode" select="$berichtCode"/>
+                            <xsl:with-param name="berichtName" select="$berichtName"/>
+                            <xsl:with-param name="generated-id" select="$generated-id"/>
+                            <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                            <xsl:with-param name="context" select="$context"/>
+                            <xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
+                            <xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
+                            <xsl:with-param name="indicatieFormeleHistorie" select="$indicatieFormeleHistorie"/>
+                            <xsl:with-param name="indicatieFormeleHistorieRelatie" select="$indicatieFormeleHistorieRelatie"/>
+                            <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                        </xsl:call-template>
+                        <!-- Only in case of an association representing a 'relatie' and containing 
+				a 'gerelateerde' construct (within the above choose the first 'when' XML 
+				Attributes for the 'relatie' type element have to be generated. Because these 
+				has to be placed outside the 'gerelateerde' element it has to be done here. -->
+                        <xsl:if test="imvert:stereotype = 'RELATIE'">
+                            <!-- The function imf:createAttributes is used to determine the XML 
+					attributes neccessary for this context. It has the following parameters: 
+					- typecode - berichttype - context - datumType The first 3 parameters relate 
+					to columns with the same name within an Excel spreadsheet used to configure 
+					a.o. XML attributes usage. The last parameter is used to determine the need 
+					for the XML-attribute 'StUF:indOnvolledigeDatum'. -->
+                            
+                            <!-- ROME: De berichtcode is niet als globale variabele aanwezig en 
+					kan dus niet zomaar opgeroepen worden. Hij kan helaas ook niet eenvoudig 
+					verkregen worden aangezien het element op basis waarvan de berichtcode kan 
+					worden gegenereerd geen ancestor is van het huidige element. Er zijn 2 opties: 
+					* De berichtcode als parameter aan alle templates toevoegen en steeds doorgeven. 
+					* De attributes pas aan de EP structuur toevoegen in een aparte slag nadat 
+					de EP structuur al gegenereerd is. Het message element dat de berichtcode 
+					bevat is dan wel altijd de ancestor van het element dat het nodig heeft. 
+					Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook 
+					nog herleid en doorgegeven worden. -->
+                            <xsl:if test="$generateHistorieConstruct = 'Nee'">
+                                <xsl:variable name="attributes"
+                                    select="imf:createAttributes('relatie', substring($berichtCode, 1, 2), $context, 'no', $alias, 'no', $prefix, $id, '')"/>
+                                <xsl:sequence select="$attributes"/>
+                            </xsl:if> 
+                        </xsl:if>
+                    </ep:seq>
+                </ep:construct>
+            </xsl:when>
+        </xsl:choose>
+   </xsl:template>
 
     <!-- called only with attributes that have no type-id -->
     <xsl:template match="imvert:attribute" mode="mode-global-attribute-simpletype">
