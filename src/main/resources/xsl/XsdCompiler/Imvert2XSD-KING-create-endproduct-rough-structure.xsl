@@ -416,14 +416,6 @@
 		<xsl:param name="useStuurgegevens" select="'yes'"/>
 
 		<xsl:variable name="type-id" select="imvert:type-id"/>
-		<xsl:variable name="MogelijkGeenWaarde">
-			<xsl:choose>
-				<xsl:when
-					test="imvert:tagged-values/imvert:tagged-value/imvert:name = 'MogelijkGeenWaarde'"
-					>yes</xsl:when>
-				<xsl:otherwise>no</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
 
 		<xsl:sequence select="imf:create-debug-comment('debug:start A04000 /debug:start',$debugging)"/>
 		
@@ -1114,6 +1106,12 @@
 				((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'JA']) >= 1) or
 				(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'JA']) >= 1))">
 				<xsl:attribute name="indicatieFormeleHistorie" select="'Ja'"/>
+			</xsl:if>
+
+
+			<!-- I.h.k.v. RM #488759 moet ik op termijn op basis van $alias een specifieke 'EntiteittypeStuurgegevens' per bericht maken. -->
+			<xsl:if test="not($berichtCode = ('Di01','Di02','Du01','Du02'))">
+				<xsl:attribute name="alias" select="//imvert:class[imvert:id = $type-id]/imvert:alias"/>
 			</xsl:if>
 			<xsl:choose>
 				<xsl:when test="$constructName = '-'">
