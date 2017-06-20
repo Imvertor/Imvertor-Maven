@@ -53,7 +53,7 @@
         <!-- 
             process the imvertor info 
         -->
-        <xsl:apply-templates select="/imvert:packages/imvert:package" mode="mode-object"/>
+        <xsl:apply-templates select="$document-packages" mode="mode-object"/>
         
     </xsl:template>
    
@@ -66,11 +66,12 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')]" mode="mode-object">
-            <xsl:variable name="this" select="."/>
+        <xsl:variable name="this" select="."/>
         
         <xsl:value-of select="imf:ttl-construct($this)"/>
-        <xsl:value-of select="imf:ttl(('data:',$this/imvert:name,' rdf:type kkg:Objecttype;'))"/>
-        <xsl:value-of select="imf:ttl((' kkg:naam ',imf:ttl-value($this/imvert:name,'1q'),';'))"/>
+        <xsl:value-of select="imf:ttl((imf:ttl-get-full-name($this),' rdf:type kkg:Objecttype;'))"/>
+        <xsl:value-of select="imf:ttl((' kkg:naam ',imf:ttl-value($this/imvert:name,'2q'),';'))"/>
+        <xsl:value-of select="for $super in imf:get-superclass($this) return imf:ttl((' kkg:verwijstNaarGenerieke ',imf:ttl-get-full-name($super),';'))"/>
         <xsl:sequence select="imf:ttl-get-all-tvs($this)"/>
         
         <!-- loop door alle attributen en associaties heen, en plaats een property (predicate object)-->
@@ -84,30 +85,58 @@
         <xsl:apply-templates select="$this/imvert:attributes/imvert:attribute[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-attribute')]" mode="mode-subject"/>
         <xsl:apply-templates select="$this/imvert:attributes/imvert:attribute[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-attributegroup')]" mode="mode-subject"/>
         <xsl:apply-templates select="$this/imvert:associations/imvert:association[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-relation-role')]" mode="mode-subject"/>
+
+        <!-- maak datatypen voor de primitieve datatypen -->
+        <xsl:apply-templates select="$this/imvert:attributes/imvert:attribute[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-attribute')]" mode="mode-datatype"/>
         
     </xsl:template>
     
     <xsl:template match="imvert:attribute[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-attribute')]" mode="mode-object">
         <xsl:variable name="this" select="."/>
-        <xsl:value-of select="imf:ttl((' kkg:bezitAttribuutsoort data:',$this/imvert:name, ';'))"/>
+        <xsl:value-of select="imf:ttl((' kkg:bezitAttribuutsoort ',imf:ttl-get-full-name($this), ';'))"/>
     </xsl:template>
     
     <xsl:template match="imvert:attribute[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-attribute')]" mode="mode-subject">
         <xsl:variable name="this" select="."/>
         
         <xsl:value-of select="imf:ttl-construct($this)"/>
-        <xsl:value-of select="imf:ttl(('data:',$this/imvert:name,' rdf:type kkg:Attribuutsoort;'))"/>
-        <xsl:value-of select="imf:ttl((' kkg:naam ',imf:ttl-value($this/imvert:name,'1q'),';'))"/>
+        <xsl:value-of select="imf:ttl((imf:ttl-get-full-name($this),' rdf:type kkg:Attribuutsoort;'))"/>
+        <xsl:value-of select="imf:ttl((' kkg:naam ',imf:ttl-value($this/imvert:name,'2q'),';'))"/>
         
         <xsl:variable name="defining-class" select="imf:ttl-get-defining-class($this)"/>
-        <xsl:value-of select="if (exists($defining-class)) then imf:ttl((' kkg:heeftDatatype data:',$defining-class/imvert:name,';')) else ()"/>
-
+        <xsl:choose>
+            <xsl:when test="exists($defining-class)">
+                <xsl:value-of select="imf:ttl((' kkg:heeftDatatype ',imf:ttl-get-full-name($defining-class),';'))"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:variable name="datatype-name" select="imf:ttl-get-full-name($this)"/>
+                <xsl:value-of select="imf:ttl((' kkg:heeftDatatype data:',$datatype-name,';'))"/>
+            </xsl:otherwise>
+        </xsl:choose>
+       
+        <xsl:value-of select="imf:ttl((' kkg:minKardinaliteit ',imvert:min-occurs,';'))"/>
+        <xsl:value-of select="imf:ttl((' kkg:maxKardinaliteit ',imvert:max-occurs,';'))"/>
+        
         <xsl:sequence select="imf:ttl-get-all-tvs($this)"/>
         
         <xsl:value-of select="imf:ttl('.')"/>
         
     </xsl:template>
     
+    <xsl:template match="imvert:attribute[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-attribute')]" mode="mode-datatype">
+        <xsl:variable name="this" select="."/>
+        <xsl:choose>
+            <xsl:when test="empty(imvert:type-id)">
+            
+                <xsl:variable name="datatype-name" select="imf:ttl-get-full-name($this)"/>
+                <xsl:value-of select="imf:ttl(($datatype-name,' rdf:type kkg:PrimitiefDatatype',';'))"/>
+                <xsl:value-of select="imf:ttl(' # more?')"/>
+                <xsl:value-of select="imf:ttl('.')"/>
+                
+            </xsl:when>
+        </xsl:choose>
+        
+    </xsl:template>
         
     <xsl:template match="node()" mode="#all">
         <!-- skip -->        
@@ -124,7 +153,8 @@
     </xsl:function>
     
     <xsl:variable name="str3quot">'''</xsl:variable>
-    <xsl:variable name="str1quot">"</xsl:variable>
+    <xsl:variable name="str2quot">"</xsl:variable>
+    <xsl:variable name="str1quot">'</xsl:variable>
     
     <!-- return (name, type) sequence -->
     <xsl:function name="imf:ttl-map" as="element(map)?">
@@ -138,6 +168,9 @@
         <xsl:choose>
             <xsl:when test="$type = '3q'">
                 <xsl:value-of select="concat($str3quot,$string,$str3quot)"/>
+            </xsl:when>
+            <xsl:when test="$type = '2q'">
+                <xsl:value-of select="concat($str2quot,$string,$str2quot)"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="concat($str1quot,$string,$str1quot)"/>
@@ -172,4 +205,13 @@
         </xsl:if>
     </xsl:function>
     
+    <xsl:function name="imf:ttl-get-full-name">
+        <xsl:param name="class"/>
+        <!--
+        <xsl:variable name="dn" select="subsequence(tokenize(imf:get-display-name($class),'\s\('),1,1)"/>
+        <xsl:value-of select="concat('data:', string-join(tokenize($dn,'[^A-Za-z0-9]+'),'_'))"/>
+        -->
+        <xsl:value-of select="concat('data:', $class/@formal-name)"/>
+    </xsl:function>
+        
 </xsl:stylesheet>

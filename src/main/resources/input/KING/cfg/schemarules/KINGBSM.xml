@@ -26,7 +26,7 @@
     -->
     <name-value-mapping>
         <tagged-values>
-            <tv id="Berichtcode">
+            <tv id="CFG-TV-BERICHTCODE">
                 <name lang="nl">Berichtcode</name>
                 <schema-name lang="nl">berichtcode</schema-name>
                 <external-schema-type>StUF:Berichtcode</external-schema-type>

@@ -736,8 +736,8 @@
         <!-- Jira IM-419 -->
         <xsl:sequence select="imf:report-warning(., 
             $is-designated-referentielijst 
-            and normalize-space(imf:get-tagged-value(.,'Data locatie'))
-            and normalize-space(imf:get-tagged-value($defining-class,'Data locatie')), 
+            and normalize-space(imf:get-tagged-value(.,'##CFG-TV-DATALOCATION'))
+            and normalize-space(imf:get-tagged-value($defining-class,'##CFG-TV-DATALOCATION')), 
             '[1] has been specified on attribute as well as on [2]', ('Data location',$defining-class))"/>
         
         <xsl:sequence select="imf:check-stereotype-assignment(.)"/>

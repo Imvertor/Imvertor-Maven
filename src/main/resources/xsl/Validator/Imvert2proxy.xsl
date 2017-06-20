@@ -159,7 +159,7 @@
         <!-- skip -->
     </xsl:template>
     
-    <xsl:template match="imvert:tagged-value[imvert:name = ('Regels','Toelichting')]" mode="supplier">
+    <xsl:template match="imvert:tagged-value[@ID = ('CFG-TV-RULES','CFG-TV-DESCRIPTION')]" mode="supplier">
         <!-- skip; never copy these from the supplier. -->
     </xsl:template>
     

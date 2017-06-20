@@ -79,7 +79,7 @@ public class ShaclCompiler extends Step {
 	
 		runner.debug(logger,"CHAIN","Generating SHACL to " + shaclApplicationFolder);
 		
-		succeeds = succeeds && transformer.transformStep("system/cur-imvertor-filepath","properties/RESULT_SHACL_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_SHACL_XSLPATH");
+		succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_SHACL_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_SHACL_XSLPATH");
 		
 		// validate
 		ShaclFile ShaclFile = new ShaclFile(configurator.getParm("properties", "RESULT_SHACL_FILE_PATH"));

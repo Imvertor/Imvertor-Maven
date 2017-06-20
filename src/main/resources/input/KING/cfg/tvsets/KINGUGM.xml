@@ -33,7 +33,7 @@
     
     <tagged-values>
         
-        <tv norm="compact" rules="NOC" id="IndicatieKerngegeven">
+        <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIEKERNGEGEVEN">
             <name lang="nl">Indicatie kerngegeven</name>
             <derive>yes</derive>
             <stereotypes>
@@ -47,7 +47,7 @@
                 <value default="yes">Nee</value>
             </declared-values>
         </tv>
-        <tv norm="space" rules="NOC" id="IndicatieAuthentiek">
+        <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONAUTHENTIC">
             <name lang="nl">Indicatie authentiek</name>
             <derive>yes</derive>
             <stereotypes>
@@ -57,7 +57,7 @@
             </stereotypes>
          </tv>
         
-        <tv norm="compact" rules="NOC" id="IndicatieMateriëleHistorie">
+        <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
             <name lang="nl">Indicatie materiële historie</name>
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
@@ -73,7 +73,7 @@
                 <value>Ja, zie regels</value>
             </declared-values>
         </tv>
-        <tv norm="compact" rules="NOC" id="IndicatieFormeleHistorie">
+        <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIONFORMALHISTORY">
             <name lang="nl">Indicatie formele historie</name>
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
@@ -88,12 +88,12 @@
                 <value>N.v.t.</value>
             </declared-values>
         </tv>
-        <tv norm="space" id="IndicatieInOnderzoek">
+        <tv norm="space" id="CFG-TV-INDICATIEINONDERZOEK">
             <name lang="nl">Indicatie in onderzoek</name>
             <derive>yes</derive><!-- UGM mag op supplier terugvallen, maar SIM is niet een supplier voor deze config, dus expliciet de naam opnemen.-->
         </tv>
         
-        <tv norm="space" id="IndicatieTerugrelatie">
+        <tv norm="space" id="CFG-TV-INDICATIETERUGRELATIE">
             <name lang="nl">Indicatie terugrelatie</name>
             <name lang="en">Indication reverse relation</name>
             <derive>no</derive>
@@ -101,16 +101,16 @@
                 <stereo required="yes">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="MnemonicIndicatieTerugrelatie">
+        <tv norm="space" id="CFG-TV-MNEMONICINDICATIETERUGRELATIE">
             <name lang="nl">Mnemonic relatiesoort terugrelatie</name>
             <name lang="en">Mnemonic indication reverse relation</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-relatiesoort</stereo><!-- alleen verplicht als IndicatieTerugrelatie is Ja -->
+                <stereo required="no">stereotype-name-relatiesoort</stereo><!-- alleen verplicht als CFG-TV-INDICATIETERUGRELATIE is Ja -->
             </stereotypes>
         </tv>
        
-        <tv norm="space" validate="" rules="" id="VerkorteAlias">
+        <tv norm="space" validate="" rules="" id="CFG-TV-VERKORTEALIAS">
             <name lang="nl">Verkorte alias</name>
             <name lang="en">Short alias</name>
             <derive>no</derive>
@@ -122,7 +122,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="Patroon">
+        <tv norm="space" id="CFG-TV-PATTERN">
             <name lang="nl">Patroon</name>
             <name lang="en">Pattern</name>
             <derive>no</derive>
@@ -134,7 +134,7 @@
                 <stereo required="no">stereotype-name-simpletype</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="FormeelPatroon">
+        <tv norm="space" id="CFG-TV-FORMALPATTERN">
             <name lang="nl">Formeel patroon</name>
             <name lang="en">Formal pattern</name>
             <derive>no</derive>
@@ -147,7 +147,7 @@
                 <stereo required="no">stereotype-name-simpletype</stereo>
             </stereotypes>
         </tv>
-        <tv norm="compact" id="MogelijkGeenWaarde">
+        <tv norm="compact" id="CFG-TV-VOIDABLE">
             <name lang="nl">Mogelijk geen waarde</name>
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
@@ -161,7 +161,7 @@
             </declared-values>
         </tv>
         
-        <tv norm="space" id="MinimumLengte">
+        <tv norm="space" id="CFG-TV-MINLENGTH">
             <name lang="nl">Minimum lengte</name>
             <derive>no</derive>
             <stereotypes>
@@ -170,7 +170,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="MinimumWaardeInclusief">
+        <tv norm="space" id="CFG-TV-MINVALUEINCLUSIVE">
             <name lang="nl">Minimum waarde (inclusief)</name>
             <derive>no</derive>
             <stereotypes>
@@ -179,7 +179,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="MaximumWaardeInclusief">
+        <tv norm="space" id="CFG-TV-MAXVALUEINCLUSIVE">
             <name lang="nl">Maximum waarde (inclusief)</name>
             <derive>no</derive>
             <stereotypes>
@@ -188,7 +188,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="DataLocatie"><!-- MIG -->
+        <tv norm="space" id="CFG-TV-DATALOCATION"><!-- MIG -->
             <name lang="nl">Data locatie</name>
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
@@ -197,7 +197,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space"  id="Positie"><!-- origin="system" -->
+        <tv norm="space"  id="CFG-TV-POSITION"><!-- origin="system" -->
             <name lang="nl">Positie</name>
             <name lang="en">Position</name>
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->

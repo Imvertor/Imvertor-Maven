@@ -61,7 +61,7 @@
    
     <xsl:variable name="all-simpletype-attributes" select="//imvert:attribute[empty(imvert:type)]"/> <!-- needed for disambiguation of duplicate attribute names -->
     
-    <xsl:variable name="prefix" select="imf:get-tagged-value($imvert-document/imvert:packages,'Verkorte alias')"/>
+    <xsl:variable name="prefix" select="imf:get-tagged-value($imvert-document/imvert:packages,'##CFG-TV-VERKORTEALIAS')"/>
     <xsl:variable name="target-namespace" select="$imvert-document/imvert:packages/imvert:base-namespace"/>
     <xsl:variable name="StUF-prefix" select="'StUF'"/>
     
@@ -385,7 +385,7 @@
     <xsl:template match="imvert:class" mode="mode-global-matchgegevens">
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
         <!-- <xsl:variable name="matchgegevens-x" select="imvert:*/imvert:*[imf:boolean(imvert:is-id)]"/> -->
-        <xsl:variable name="matchgegevens" select="imvert:*/imvert:*[starts-with(imf:get-most-relevant-compiled-taggedvalue(.,'Indicatie kerngegeven'),'J')]"/><!-- attributes and associations. -->
+        <xsl:variable name="matchgegevens" select="imvert:*/imvert:*[starts-with(imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-INDICATIEKERNGEGEVEN'),'J')]"/><!-- attributes and associations. -->
         <xsl:variable name="matchgegevens-att" select="$matchgegevens[self::imvert:attribute]"/>
         <xsl:variable name="matchgegevens-cmp" select="$matchgegevens[self::imvert:association and imvert:aggregation = 'composite']"/>
         <xsl:variable name="matchgegevens-ass" select="$matchgegevens[self::imvert:association and not(imvert:aggregation = 'composite')]"/>
@@ -552,9 +552,9 @@
             <xsl:variable name="type-is-external" select="exists(imvert:conceptual-schema-type)"/>
            
             <xsl:variable name="facet-length" select="imvert:min-length"/>
-            <xsl:variable name="facet-pattern" select="imf:get-most-relevant-compiled-taggedvalue(.,'Formeel patroon')"/>
-            <xsl:variable name="facet-minval" select="imf:get-most-relevant-compiled-taggedvalue(.,'Minimum waarde (inclusief)')"/>
-            <xsl:variable name="facet-maxval" select="imf:get-most-relevant-compiled-taggedvalue(.,'Maximum waarde (inclusief)')"/>
+            <xsl:variable name="facet-pattern" select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-FORMALPATTERN')"/>
+            <xsl:variable name="facet-minval" select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-MINVALUEINCLUSIVE')"/>
+            <xsl:variable name="facet-maxval" select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-MAXVALUEINCLUSIVE')"/>
             
             <xsl:variable name="facet-show" select="(exists($facet-length),exists($facet-pattern),exists($facet-minval),exists($facet-maxval))"/>
             
@@ -945,10 +945,10 @@
         <xsl:variable name="total-digits" select="imvert:total-digits"/>
         <xsl:variable name="fraction-digits" select="imvert:fraction-digits"/>
         
-        <xsl:variable name="min-waarde" select="imf:get-taggedvalue(.,'Minimum waarde (inclusief)')"/>
-        <xsl:variable name="max-waarde" select="imf:get-taggedvalue(.,'Maximum waarde (inclusief)')"/>
-        <xsl:variable name="min-length" select="imf:get-taggedvalue(.,'Minimum lengte')"/>
-        <xsl:variable name="patroon" select="imf:get-taggedvalue(.,'Formeel patroon')"/>
+        <xsl:variable name="min-waarde" select="imf:get-taggedvalue(.,'##CFG-TV-MINVALUEINCLUSIVE')"/>
+        <xsl:variable name="max-waarde" select="imf:get-taggedvalue(.,'##CFG-TV-MAXVALUEINCLUSIVE')"/>
+        <xsl:variable name="min-length" select="imf:get-taggedvalue(.,'##CFG-TV-MINLENGTH')"/>
+        <xsl:variable name="patroon" select="imf:get-taggedvalue(.,'##CFG-TV-FORMALPATTERN')"/>
         
         <xsl:variable name="nillable-patroon" select="if (normalize-space($patroon)) then concat('(', $patroon,')?') else ()"/>
         
@@ -1501,7 +1501,7 @@
     <xsl:function name="imf:property-is-in-onderzoek" as="xs:boolean">
         <xsl:param name="this" as="element()"/><!-- imvert:class (gegevensgroep) of imvert:attribute -->
         <!-- see if any of the relevant tagged values for this attribute is authentic -->
-        <xsl:variable name="tv" select="imf:get-most-relevant-compiled-taggedvalue($this,'Indicatie in onderzoek')"/>
+        <xsl:variable name="tv" select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-INDICATIEINONDERZOEK')"/>
         <xsl:sequence select="$tv = 'Ja' or ($tv = 'Zie groep' and imf:property-is-in-onderzoek($this/../..))"/>
     </xsl:function>        
     

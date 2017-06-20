@@ -16,7 +16,7 @@
         <!-- BP follows SBR requirements -->
         <xi:include href="../../../BiZa/cfg/tvsets/SBR.xml"/>
         
-        <tv norm="space" id="DatumOpname">
+        <tv norm="space" id="CFG-TV-DATERECORDED">
             <name lang="nl">Datum opname</name>
             <name lang="en">Date recorded</name>
             <desc lang="nl">De datum waarop de constructie is opgenomen in het informatiemodel.</desc>
@@ -36,7 +36,7 @@
                  <stereo required="yes">stereotype-name-enumeration</stereo> -->
             </stereotypes>
         </tv> 
-        <tv norm="space" rules="NOC" id="IndicatieMateriëleHistorie">
+        <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
             <name lang="nl">Indicatie materiële historie</name>
             <name lang="en">Indication material history</name>
             <desc lang="nl">TODO</desc>
@@ -58,7 +58,7 @@
                 <value>See group</value>
             </declared-values>
         </tv>
-        <tv norm="space" rules="NOC" id="IndicatieFormeleHistorie">
+        <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONFORMALHISTORY">
             <name lang="nl">Indicatie formele historie</name>
             <name lang="en">Indication formal history</name>
             <desc lang="nl">TODO</desc>
@@ -80,7 +80,7 @@
                 <value>See group</value>
             </declared-values>
         </tv>
-        <tv norm="space" id="IndicatieAuthentiek">
+        <tv norm="space" id="CFG-TV-INDICATIONAUTHENTIC">
             <name lang="nl">Authentiek</name>
             <name lang="en">Authentic</name>
             <desc lang="nl">TODO</desc>
@@ -92,7 +92,7 @@
                 <stereo required="no">stereotype-name-composite</stereo>
             </stereotypes>
         </tv>
-        <tv norm="note" id="Toelichting">
+        <tv norm="note" id="CFG-TV-DESCRIPTION">
             <!-- in aanvulling op SBR -->
             <derive>yes</derive>
             <stereotypes>
@@ -101,7 +101,7 @@
                 <stereo required="no">stereotype-name-codelist</stereo>
             </stereotypes>
         </tv> 
-        <tv norm="space" id="Patroon"><!-- MIG -->
+        <tv norm="space" id="CFG-TV-PATTERN"><!-- MIG -->
             <name lang="nl">Patroon</name>
             <name lang="en">Pattern</name>
             <desc lang="nl">TODO</desc>
@@ -116,7 +116,7 @@
                 <stereo required="no">stereotype-name-union-element</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="FormeelPatroon">
+        <tv norm="space" id="CFG-TV-FORMALPATTERN">
             <name lang="nl">Formeel patroon</name>
             <name lang="en">Formal pattern</name>
             <desc lang="nl">TODO</desc>
@@ -130,7 +130,7 @@
                 <stereo required="no">stereotype-name-simpletype</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="MogelijkGeenWaarde">
+        <tv norm="space" id="CFG-TV-VOIDABLE">
             <name lang="nl">Mogelijk geen waarde</name>
             <name lang="en">Voidable</name>
             <desc lang="nl">TODO</desc>
@@ -151,7 +151,7 @@
                 <value default="yes">No</value>
             </declared-values>
         </tv>
-        <tv norm="space"  id="Position"><!-- origin="system" -->
+        <tv norm="space"  id="CFG-TV-POSITION"><!-- origin="system" -->
             <name lang="nl">Positie</name>
             <name lang="en">Position</name>
             <desc lang="nl">TODO</desc>
@@ -166,7 +166,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="Lengte">
+        <tv norm="space" id="CFG-TV-LENGTH">
             <name lang="nl">Lengte</name>
             <name lang="en">Length</name>
             <desc lang="nl">TODO</desc>
@@ -180,7 +180,7 @@
                 <stereo required="no">stereotype-name-referentie-element</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="Locatie"><!-- In addition to Grouping tvset -->
+        <tv norm="space" id="CFG-TV-LOCATION"><!-- In addition to Grouping tvset -->
             <name lang="nl">Locatie</name>
             <name lang="en">Location</name>
             <desc lang="nl">TODO</desc>
@@ -192,18 +192,18 @@
                 <stereo required="yes">stereotype-name-referentielijst</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="Herkomst">
+        <tv norm="space" id="CFG-TV-SOURCE">
             <stereotypes>
                 <stereo required="yes">stereotype-name-enumeration</stereo>
                 <stereo required="yes">stereotype-name-codelist</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="CFG-TV-HERKOMSTDEFINITIE">
+        <tv norm="space" id="CFG-TV-SOURCEOFDEFINITION">
             <stereotypes>
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="BaseMapping">
+        <tv norm="space" id="CFG-TV-BASEMAPPING">
             <name lang="nl">Base-mapping</name>
             <name lang="en">Base-mapping</name>
             <desc lang="nl">TODO</desc>
@@ -215,7 +215,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="Relation">
+        <tv norm="space" id="CFG-TV-RELATION">
             <name lang="nl">Relatie</name>
             <name lang="en">Relation</name>
             <desc lang="nl">TODO</desc>

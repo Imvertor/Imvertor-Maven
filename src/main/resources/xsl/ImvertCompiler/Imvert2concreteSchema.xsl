@@ -78,6 +78,7 @@
  
     <xsl:template match="imvert:package/imvert:namespace" mode="conceptual">
         <xsl:param name="map" as="element()+"/>
+        <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-name',$map/@name)"/>
         <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-namespace',.)"/>
         <xsl:sequence select="imf:create-output-element('imvert:namespace',$map/@namespace)"/>
         <xsl:sequence select="imf:create-output-element('imvert:location',$map/@location)"/>

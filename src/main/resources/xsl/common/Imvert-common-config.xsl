@@ -182,7 +182,7 @@
         Return the names of the tagged values as found in the source, as expected by the configuration.
         
         Example:
-         get the tagged value with id "Position". 
+         get the tagged value with id "CFG-TV-POSITION". 
          If language is nl,
          then the function returns "positie" (the normalized dutch name).
     -->

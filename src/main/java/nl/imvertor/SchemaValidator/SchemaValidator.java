@@ -82,7 +82,7 @@ public class SchemaValidator extends Step {
 		
 		Vector<ErrorHandlerMessage> vl = validateSchemasSub(xsdApplicationFolder);
 		if (vl.size() != 0) 
-			runner.error(logger, vl.size() + " errors/warnings found in generated XSD. This release should not be distributed. Please notify your administrator.");
+			runner.info(logger, vl.size() + " errors/warnings found in generated XSD. This release should not be distributed. Please notify your administrator.");
 		Iterator<ErrorHandlerMessage> it = vl.iterator();
 		while (it.hasNext()) {
 			ErrorHandlerMessage m = it.next();

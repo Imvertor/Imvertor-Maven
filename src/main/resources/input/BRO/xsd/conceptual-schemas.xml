@@ -194,6 +194,7 @@
                 asAttributeDesignation="complextype"
                 asAttribute="MultiGeometryPropertyType">MultiPrimitive</type> 
             
+            <!--x
             <type name="GM_Aggregate"  
                 asAttributeDesignation="complextype"
                 asAttribute="MultiGeometryPropertyType">MultiGeometry</type>
@@ -201,8 +202,14 @@
             <type name="GM_MultiPrimtive"  
                 asAttributeDesignation="complextype"                
                 asAttribute="MultiGeometryPropertyType">MultiGeometry</type>
+            x-->
             
-            <type name="Measure">MeasureType</type>  
+            <type name="Measure"  
+                asAttributeDesignation="simpletype"                
+                asAttribute="MeasureType"
+                inSubstitution="measure">Measure</type>
+            
+           
             <type name="Binary" primitive="true">xs:binary</type>  
             <type name="Boolean" primitive="true">xs:boolean</type>  
             <type name="CharacterString" primitive="true">xs:string</type>  

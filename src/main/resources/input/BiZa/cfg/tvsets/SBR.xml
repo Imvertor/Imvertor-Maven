@@ -23,7 +23,7 @@
     <web>http://stelselcatalogus.logius.nl/over-de-stelselcatalogus/metadata/</web>
     
     <tagged-values xml:id="tagset">
-        <tv norm="space" id="Herkomst">
+        <tv norm="space" id="CFG-TV-SOURCE">
             <name lang="nl">Herkomst</name>
             <name lang="en">Source</name>
             <desc lang="nl">De registratie in wiens catalogus de constructie is gespecificeerd (oftewel de registratie waar de constructie deel van uitmaakt). 
@@ -44,7 +44,7 @@
                 <stereo required="yes">stereotype-name-union-element</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="CFG-TV-HERKOMSTDEFINITIE">
+        <tv norm="space" id="CFG-TV-SOURCEOFDEFINITION">
             <name lang="nl">Herkomst definitie</name>
             <name lang="en">Source of definition</name>
             <desc lang="nl">TODO</desc>
@@ -59,7 +59,7 @@
         </tv>
         
         <!-- TODO Vaststellen per tagged value of deze derived moeten worden of niet. -->
-        <tv norm="space" id="Eigenaar">
+        <tv norm="space" id="CFG-TV-ONWER">
             <name lang="nl">Eigenaar</name>
             <name lang="en">Owned by</name>
             <desc lang="nl">TODO</desc>
@@ -71,7 +71,7 @@
                 <stereo required="no">stereotype-name-composite</stereo> <!-- TODO anders dan metamodel -->
             </stereotypes>
         </tv>
-        <tv norm="note" id="Populatie">
+        <tv norm="note" id="CFG-TV-POPULATION">
             <name lang="nl">Populatie</name>
             <name lang="en">Population</name>
             <desc lang="nl">TODO</desc>
@@ -81,7 +81,7 @@
                 <stereo required="no">stereotype-name-objecttype</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="Kwaliteit">
+        <tv norm="space" id="CFG-TV-QUALITY">
             <name lang="nl">Kwaliteit</name>
             <name lang="en">Quality</name>
             <desc lang="nl">TODO</desc>
@@ -91,7 +91,7 @@
                 <stereo required="no">stereotype-name-objecttype</stereo>
             </stereotypes>
         </tv>
-        <tv norm="note" id="Regels">
+        <tv norm="note" id="CFG-TV-RULES">
             <name lang="nl">Regels</name>
             <name lang="en">Rules</name>
             <desc lang="nl">TODO</desc>
@@ -103,7 +103,7 @@
                 <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
-        <tv norm="note" id="Toelichting">
+        <tv norm="note" id="CFG-TV-DESCRIPTION">
             <name lang="nl">Toelichting</name>
             <name lang="en">Description</name>
             <desc lang="nl">TODO</desc>

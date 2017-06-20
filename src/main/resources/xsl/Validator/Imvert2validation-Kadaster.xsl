@@ -122,14 +122,14 @@
     </xsl:template>
     
     <xsl:template match="imvert:class | imvert:attribute |imvert:association" priority="10">
-        <xsl:variable name="tv" select="imf:get-tagged-value(.,'##MogelijkGeenWaarde')"/>
+        <xsl:variable name="tv" select="imf:get-tagged-value(.,'##CFG-TV-VOIDABLE')"/>
             
         <xsl:sequence select="imf:report-warning(., 
             imvert:stereotype = imf:get-config-stereotypes('stereotype-name-voidable') and empty($tv), 
-            'Voidable, but missing required tagged value [1]',imf:get-config-tagged-values('MogelijkGeenWaarde'))"/>
+            'Voidable, but missing required tagged value [1]',imf:get-config-tagged-values('CFG-TV-VOIDABLE'))"/>
         <xsl:sequence select="imf:report-warning(., 
             empty(imvert:stereotype = imf:get-config-stereotypes('stereotype-name-voidable')) and exists($tv), 
-            'Tagged value [1] found, but not stereotyped as voidable',imf:get-config-tagged-values('MogelijkGeenWaarde'))"/>
+            'Tagged value [1] found, but not stereotyped as voidable',imf:get-config-tagged-values('CFG-TV-VOIDABLE'))"/>
         
         <xsl:next-match/>
     </xsl:template>

@@ -111,7 +111,7 @@
           <xsl:apply-templates select="imvert:attributes" mode="short"/>
           <!-- hier alle relaties; als ingebedde tabel -->
           <xsl:apply-templates select="imvert:associations" mode="short"/>
-          <xsl:sequence select="imf:create-toelichting(imf:get-tagged-value(.,'Toelichting'))"/>
+          <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
        </section>
     </xsl:template>
 
@@ -125,7 +125,7 @@
             <xsl:apply-templates select="imvert:attributes" mode="short"/>
             <!-- hier alle relaties; als ingebedde tabel -->
             <xsl:apply-templates select="imvert:associations" mode="short"/>
-            <xsl:sequence select="imf:create-toelichting(imf:get-tagged-value(.,'Toelichting'))"/>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>
        
     </xsl:template>
@@ -137,7 +137,7 @@
             </content>
             <!-- hier alle attributen; als ingebedde tabel -->
             <xsl:apply-templates select="imvert:attributes" mode="short"/>
-            <xsl:sequence select="imf:create-toelichting(imf:get-tagged-value(.,'Toelichting'))"/>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>
     </xsl:template>
     
@@ -146,7 +146,7 @@
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-CODELIST')"/>
             </content>
-            <xsl:sequence select="imf:create-toelichting(imf:get-tagged-value(.,'Toelichting'))"/>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>
     </xsl:template>
     
@@ -157,7 +157,7 @@
             </content>
             <!-- hier alle attributen; als ingebedde tabel -->
             <xsl:apply-templates select="imvert:attributes" mode="short"/>
-            <xsl:sequence select="imf:create-toelichting(imf:get-tagged-value(.,'Toelichting'))"/>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>
     </xsl:template>
     
@@ -168,7 +168,7 @@
             </content>
             <!-- hier alle attributen; als ingebedde tabel -->
             <xsl:apply-templates select="imvert:attributes" mode="short"/>
-            <xsl:sequence select="imf:create-toelichting(imf:get-tagged-value(.,'Toelichting'))"/>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>
     </xsl:template>
     
@@ -179,7 +179,7 @@
                 <xsl:sequence select="imf:create-idref(.,'detail')"/>
                 <xsl:sequence select="imf:create-content($naam)"/>          
             </item>
-            <xsl:sequence select="imf:create-element('item',imf:get-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+            <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
         </part>
      </xsl:template>
 
@@ -252,7 +252,7 @@
        <xsl:variable name="type" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
        <part>
          <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imvert:name/@original))"/> 
-         <xsl:sequence select="imf:create-element('item',imf:get-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+         <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
          <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-translate-i3n(imf:plugin-splice(imvert:baretype),false())))"/>
          <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
        </part>
@@ -262,7 +262,7 @@
        <xsl:variable name="type" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
        <part type="COMPOSED">
           <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imvert:name/@original))"/>
-           <xsl:sequence select="imf:create-element('item',imf:get-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+           <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
            <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-translate-i3n(imf:plugin-splice(imvert:baretype),false())))"/>
           <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
         </part>
@@ -272,7 +272,7 @@
        <xsl:variable name="type" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
         <part type="COMPOSED">
            <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imvert:name/@original))"/>
-            <xsl:sequence select="imf:create-element('item',imf:get-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+            <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
             <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imf:plugin-translate-i3n(imvert:type-name/@original,false())))"/>
            <xsl:sequence select="imf:create-element('item',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
         </part>
@@ -286,7 +286,7 @@
              <xsl:sequence select="imf:create-element('value',imf:create-link($type,'detail',imvert:name/@original))"/>
           </item>
           <item>
-              <xsl:sequence select="imf:create-element('value',imf:get-tagged-value($type,'CFG-TV-DEFINITION'))"/>
+              <xsl:sequence select="imf:create-element('value',imf:get-formatted-tagged-value($type,'CFG-TV-DEFINITION'))"/>
           </item>
           <item>
              <!--<xsl:sequence select="imf:create-element('value',imf:plugin-translate-i3n(imvert:baretype,false()))"/>-->
@@ -328,7 +328,7 @@
               <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imvert:type-name/@original))"/>
               <xsl:sequence select="imf:create-element('item',('[',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs),']'))"/>
             </item>
-            <xsl:sequence select="imf:create-element('item',imf:get-tagged-value($type,'CFG-TV-DEFINITION'))"/>
+            <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value($type,'CFG-TV-DEFINITION'))"/>
             
         </part>
     </xsl:template>
@@ -348,7 +348,7 @@
                 </item>
                 <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imvert:type-name/@original))"/>
             </item>
-            <xsl:sequence select="imf:create-element('item',imf:get-tagged-value($type,'CFG-TV-DEFINITION'))"/>
+            <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value($type,'CFG-TV-DEFINITION'))"/>
         </part>
     </xsl:template>
     
@@ -375,7 +375,7 @@
             <content>
                 <part>
                     <xsl:sequence select="imf:create-element('item',imf:plugin-translate-i3n('DEFINITIE',true()))"/>
-                    <xsl:sequence select="imf:create-element('item',imf:get-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+                    <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
                 </part>
             </content>
             <content>
@@ -393,7 +393,7 @@
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-COMPOSITE')"/>
             </content>
-            <xsl:sequence select="imf:create-toelichting(imf:get-tagged-value(.,'Toelichting'))"/>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
             <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="detail"/>
             <xsl:apply-templates select="imvert:associations/imvert:association" mode="detail"/>
         </section>
@@ -433,7 +433,7 @@
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-ATTRIBUTE')"/>
             </content>
-            <xsl:sequence select="imf:create-toelichting(imf:get-tagged-value(.,'Toelichting'))"/>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>       
     </xsl:template>
     
@@ -441,7 +441,7 @@
         <part>
             <xsl:sequence select="imf:create-element('item',imvert:alias)"/>
             <xsl:sequence select="imf:create-element('item',imvert:name/@original)"/>
-            <xsl:sequence select="imf:create-element('item',imf:get-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+            <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
        </part>
     </xsl:template>
     
@@ -455,7 +455,7 @@
                 </part>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE')"/>
             </content>
-            <xsl:sequence select="imf:create-toelichting(imf:get-tagged-value(.,'Toelichting'))"/>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>
     </xsl:template>
     
@@ -466,7 +466,7 @@
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-REFERENCEELEMENT')"/>
             </content>
-            <xsl:sequence select="imf:create-toelichting(imf:get-tagged-value(.,'Toelichting'))"/>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>
         
     </xsl:template>
@@ -477,7 +477,7 @@
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-UNIONELEMENT')"/>
             </content>
-            <xsl:sequence select="imf:create-toelichting(imf:get-tagged-value(.,'Toelichting'))"/>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>
     </xsl:template>
     
@@ -488,7 +488,7 @@
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-DATAELEMENT')"/>
             </content>
-            <xsl:sequence select="imf:create-toelichting(imf:get-tagged-value(.,'Toelichting'))"/>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>
     </xsl:template>
   
@@ -510,7 +510,7 @@
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-ASSOCIATION')"/>
             </content>
-            <xsl:sequence select="imf:create-toelichting(imf:get-tagged-value(.,'Toelichting'))"/>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>
     </xsl:template>
     
@@ -524,19 +524,19 @@
                 </part>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-COMPOSITE-ASSOCIATION')"/>
             </content>
-            <xsl:sequence select="imf:create-toelichting(imf:get-tagged-value(.,'Toelichting'))"/>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>
         
     </xsl:template>
     
-    <xsl:function name="imf:get-tagged-value" as="xs:string">        
-        <xsl:param name="this"/>
+    <xsl:function name="imf:get-formatted-tagged-value" as="xs:string">        
+        <xsl:param name="this" />
         <xsl:param name="tv-id"/>
         <xsl:variable name="value" select="imf:get-most-relevant-compiled-taggedvalue($this,concat('##',$tv-id))"/>
         <xsl:value-of select="imf:get-clean-documentation-string($value)"/>
     </xsl:function>
     
-    <xsl:function name="imf:get-tagged-value-cfg" as="item()*">        
+    <xsl:function name="imf:get-formatted-tagged-value-cfg" as="item()*">        
         <xsl:param name="level"/>
         <xsl:param name="this"/>
         <xsl:param name="tv-id"/>
@@ -636,46 +636,46 @@
                     <xsl:sequence select="imf:create-part-2(.,$this/imvert:name/@original)"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-ALTERNATIEVENAAM'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-tagged-value-cfg(.,$this,'CFG-TV-NAME'))"/>
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-NAME'))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-MNEMONIC'">
                     <xsl:sequence select="imf:create-part-2(.,$this/imvert:alias)"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-HERKOMST'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-tagged-value-cfg(.,$this,'Herkomst'))"/> 
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-SOURCE'))"/> 
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-DEFINITIE'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-tagged-value-cfg(.,$this,'CFG-TV-DEFINITION'))"/>
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-DEFINITION'))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-HERKOMSTDEFINITIE'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-tagged-value-cfg(.,$this,'CFG-TV-HERKOMSTDEFINITIE'))"/>
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-SOURCEOFDEFINITION'))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-DATUMOPNAME'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-tagged-value-cfg(.,$this,'DatumOpname'))"/>
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-DATERECORDED'))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-UNIEKEAANDUIDING'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-tagged-value-unieke-aanduiding($this))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-POPULATIE'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-tagged-value-cfg(.,$this,'Populatie'))"/>
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-POPULATION'))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-KWALITEITSBEGRIP'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-tagged-value-cfg(.,$this,'Kwaliteit'))"/>
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-QUALITY'))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-MOGELIJKGEENWAARDE'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-tagged-value-cfg(.,$this,'MogelijkGeenWaarde'))"/>
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-VOIDABLE'))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEMATERIELEHISTORIE'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-tagged-value-cfg(.,$this,'IndicatieMateriëleHistorie'))"/>
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-INDICATIONMATERIALHISTORY'))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEFORMELEHISTORIE'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-tagged-value-cfg(.,$this,'IndicatieFormeleHistorie'))"/>
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-INDICATIONFORMALHISTORY'))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEINONDERZOEK'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-tagged-value-cfg(.,$this,'IndicatieInOnderzoek'))"/>
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-INDICATIEINONDERZOEK'))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-AANDUIDINGSTRIJDIGHEIDNIETIGHEID'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-tagged-value-cfg(.,$this,'AanduidingStrijdigheidNietigheid'))"/>
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-AANDUIDINGSTRIJDIGHEIDNIETIGHEID'))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEKARDINALITEIT'">
                     <xsl:variable name="min" select="$this/imvert:min-occurs"/>
@@ -683,10 +683,10 @@
                     <xsl:sequence select="imf:create-part-2(.,imf:get-cardinality($min,$max))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEAUTHENTIEK'">
-                    <xsl:sequence select="imf:create-part-2(.,concat(imf:get-tagged-value($this,'IndicatieAuthentiek'), imf:authentiek-is-derived($this)))"/>
+                    <xsl:sequence select="imf:create-part-2(.,concat(imf:get-formatted-tagged-value($this,'CFG-TV-INDICATIONAUTHENTIC'), imf:authentiek-is-derived($this)))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-REGELS'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-tagged-value-cfg(.,$this,'Regels'))"/>
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-RULES'))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-UNIEKEAANDUIDING'">
                     <xsl:variable name="rel-aanduiding" select="$this/imvert:associations/imvert:association[imvert:target-stereotype = imf:get-config-stereotypes('stereotype-name-composite-id')]"/>
@@ -713,13 +713,13 @@
                     <xsl:sequence select="imf:create-part-2(.,imf:plugin-translate-i3n($is-abstract-text,false()))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-DATALOCATIE'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-tagged-value-cfg(.,$this,'DataLocatie'))"/>         
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-DATALOCATION'))"/>         
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-PATROON'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-tagged-value-cfg(.,$this,'Patroon'))"/>         
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-PATTERN'))"/>         
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-FORMEELPATROON'">
-                    <xsl:sequence select="imf:create-part-2(.,imf:get-tagged-value-cfg(.,$this,'FormeelPatroon'))"/>         
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-FORMALPATTERN'))"/>         
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-FORMAAT'">
                     <xsl:sequence select="imf:create-part-2(.,imf:plugin-translate-i3n($this/imvert:baretype,false()))"/>         
@@ -787,7 +787,7 @@
     
     <xsl:function name="imf:authentiek-is-derived">
         <xsl:param name="this"/>
-        <xsl:if test="imf:get-tagged-value($this,'derived') = '1'">
+        <xsl:if test="imf:get-formatted-tagged-value($this,'derived') = '1'">
             <xsl:value-of select="' (is afgeleid)'"/>
         </xsl:if>
     </xsl:function>

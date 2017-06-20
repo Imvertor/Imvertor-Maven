@@ -113,8 +113,8 @@
     -->
     <xsl:template match="imvert:position">
         <imvert:position>
-            <xsl:variable name="tv-pos" select="../imvert:tagged-values/imvert:tagged-value[imvert:name = imf:get-config-tagged-values('Position')]/imvert:value"/>
-            <xsl:value-of select="if (exists($tv-pos)) then string($tv-pos) else ."/>
+            <xsl:variable name="tv-pos" select="imf:get-tagged-value(..,'##CFG-TV-POSITION')"/>
+            <xsl:value-of select="if (exists($tv-pos)) then $tv-pos else ."/>
         </imvert:position>
     </xsl:template>
     

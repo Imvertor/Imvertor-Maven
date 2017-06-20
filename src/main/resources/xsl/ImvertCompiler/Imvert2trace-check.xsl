@@ -95,7 +95,7 @@
         <!-- when not derived, skip any traces -->
         <xsl:variable name="is-derived" select="imf:boolean((ancestor::*/imvert:derived)[1])"/>
         
-        <xsl:variable name="is-derived-tv" select="(imf:get-tagged-value(.,'Is afgeleid'),'Zie package')[1]"/>
+        <xsl:variable name="is-derived-tv" select="(imf:get-tagged-value(.,'##CFG-TV-ISDERIVED'),'Zie package')[1]"/>
         <xsl:variable name="is-derived-by-tv" select="$is-derived-tv = 'Ja'"/>
         <xsl:variable name="look-at-package" select="$is-derived-tv = 'Zie package'"/>
         

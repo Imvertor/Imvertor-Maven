@@ -105,12 +105,21 @@
     <node-mapping>
         <!-- 
             Alleen de tagged values die hier zijn opgenomen worden omgezet naar een regel in TTL Shacl 
-        
-        Dit worden constructies zoals kkg:definitie '''Identifier or geographic name.....''';
+            Dit worden constructies zoals kkg:definitie '''Identifier or geographic name.....''';
 	    -->
         <map id="CFG-TV-DEFINITION" type="3q" lang="#all">kkg:definitie</map>
-       
-       
+        <map id="CFG-TV-DESCRIPTION" type="2q" lang="#all">kkg:toelichting</map>
+        <map id="CFG-TV-POPULATION" type="2q" lang="#all">kkg:populatie</map>
+        <map id="CFG-TV-LENGTH" type="2q" lang="#all">kkg:lengte</map>
+        <map id="CFG-TV-SOURCE" type="2q" lang="#all">kkg:herkomst</map>
+        <map id="CFG-TV-INDICATIONAUTHENTIC" type="2q" lang="#all">kkg:indicatieAuthentiek</map>
+        <map id="CFG-TV-VOIDABLE" type="2q" lang="#all">kkg:mogelijkGeenWaarde</map>
+        <map id="CFG-TV-INDICATIONFORMALHISTORY" type="2q" lang="#all">kkg:indicatieFormeleHistorie</map>
+        <map id="CFG-TV-INDICATIONMATERIALHISTORY" type="2q" lang="#all">kkg:indicatieMaterieleHistorie</map>
+        <map id="CFG-TV-DATERECORDED" type="2q" lang="#all">kkg:datumOpname</map>
+        <map id="CFG-TV-SOURCEOFDEFINITION" type="2q" lang="#all">kkg:herkomstDefinitie</map>
+      
+        
         
         
     </node-mapping>

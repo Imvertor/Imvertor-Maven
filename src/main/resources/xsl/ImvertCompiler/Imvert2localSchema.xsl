@@ -72,7 +72,7 @@
                 <xsl:sequence select="imf:msg(.,'ERROR','Release is missing.',())"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:variable name="schemafolder" select="imf:get-schema-foldername(imvert:namespace,imvert:version,imvert:release)"/>
+                <xsl:variable name="schemafolder" select="imf:get-schema-foldername(imvert:namespace,imvert:version,imvert:release,imvert:conceptual-schema-name)"/>
                 <!-- if this is an imported external package, include in the list --> 
                 <xsl:value-of select="$schemafolder"/>
                 <!-- if this requires other external schemas, include them here --> 

@@ -179,7 +179,7 @@
             <xsl:attribute name="type" select="$type"/>
             <xsl:attribute name="display-name" select="$display-name"/>
             <xsl:attribute name="base-namespace" select="$client-construct/ancestor::imvert:packages/imvert:base-namespace"/>
-            <xsl:attribute name="verkorteAlias" select="$client-construct/ancestor::imvert:packages/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Verkorte alias']/imvert:value"/>
+            <xsl:attribute name="verkorteAlias" select="imf:get-tagged-value($client-construct/ancestor::imvert:packages,'##CFG-TV-VERKORTEALIAS')"/>
         </supplier>
         
     </xsl:function>

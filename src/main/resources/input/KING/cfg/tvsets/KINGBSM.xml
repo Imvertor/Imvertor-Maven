@@ -33,7 +33,7 @@
                 <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv x?>
-        <tv norm="space" rules="NOC" id="IndicatieAuthentiek">
+        <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONAUTHENTIC">
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-attribute</stereo>
@@ -41,7 +41,7 @@
                 <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" rules="NOC" id="IndicatieInOnderzoek">
+        <tv norm="space" rules="NOC" id="CFG-TV-INDICATIEINONDERZOEK">
             <name lang="nl">Indicatie in onderzoek</name>
             <derive>yes</derive><!-- BSM mag op supplier  terugvallen-->
             <stereotypes>
@@ -50,7 +50,7 @@
                 <stereo required="yes">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
-        <tv norm="compact"  rules="NOC" id="IndicatieMateriëleHistorie">
+        <tv norm="compact"  rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-attribute</stereo>
@@ -58,7 +58,7 @@
                 <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
          </tv>
-        <tv norm="compact" rules="NOC" id="IndicatieFormeleHistorie">
+        <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIONFORMALHISTORY">
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-attribute</stereo>
@@ -67,7 +67,7 @@
             </stereotypes>
        </tv>
         
-        <tv norm="space"  rules="NOC" id="FunctieBerichtrelatie">
+        <tv norm="space"  rules="NOC" id="CFG-TV-FUNCTIEBERICHTRELATIE">
             <name lang="nl">Functie berichtrelatie</name>
             <derive>no</derive>
             <stereotypes>
@@ -79,7 +79,7 @@
                 <value default="yes">antwoord</value>
             </declared-values>
         </tv>
-        <tv norm="space"  rules="NOC" id="FunctieEntiteitrelatie">
+        <tv norm="space"  rules="NOC" id="CFG-TV-FUNCTIEENTITEITRELATIE">
             <name lang="nl">Functie entiteitrelatie</name>
             <derive>no</derive>
             <stereotypes>
@@ -90,15 +90,15 @@
             </declared-values>
         </tv>
         
-        <tv id="VerkorteAlias">
+        <tv id="CFG-TV-VERKORTEALIAS">
             <derive>yes</derive>
         </tv>
         
-        <tv norm="space" id="FormeelPatroon">
+        <tv norm="space" id="CFG-TV-FORMALPATTERN">
             <derive>yes</derive> <!-- mag worden overgenomen vanuit UGM -->
         </tv>
         
-        <tv norm="space" validate="" rules="" id="Berichtcode">
+        <tv norm="space" validate="" rules="" id="CFG-TV-BERICHTCODE">
             <name lang="nl">Berichtcode</name>
             <derive>no</derive>
             <inherit>yes</inherit>
@@ -222,7 +222,7 @@
             </declared-values>
         </tv>
         
-        <tv norm="space" validate="" rules="" id="Voorwaarde">
+        <tv norm="space" validate="" rules="" id="CFG-TV-VOORWAARDE">
             <name lang="nl">Voorwaarde</name>
             <desc>Opnemen ter documentatie van een bericht.</desc>
             <derive>no</derive>
@@ -236,7 +236,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" validate="" rules="" id="Trigger">
+        <tv norm="space" validate="" rules="" id="CFG-TV-TRIGGER">
             <name lang="nl">Trigger</name>
             <desc>Opnemen ter documentatie van een bericht.</desc>
             <derive>no</derive>
@@ -249,7 +249,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" validate="" rules="" id="DirectGevolg">
+        <tv norm="space" validate="" rules="" id="CFG-TV-DIRECTGEVOLG">
             <name lang="nl">Direct gevolg</name>
             <desc>Opnemen ter documentatie van een bericht.</desc>
             <derive>no</derive>
@@ -262,7 +262,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" validate="" rules="" id="Bijzonderheden">
+        <tv norm="space" validate="" rules="" id="CFG-TV-BIJZONDERHEDEN">
             <name lang="nl">Bijzonderheden</name>
             <desc>Opnemen ter documentatie van een bericht.</desc>
             <derive>no</derive>
@@ -275,42 +275,42 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="Release">
+        <tv norm="space" id="CFG-TV-RELEASE">
             <name lang="nl">Release</name>
             <stereotypes>
                 <stereo required="yes">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="SupplierProject">
+        <tv norm="space" id="CFG-TV-SUPPLIERPROJECT">
             <stereotypes>
                 <stereo required="yes">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="SupplierName">
+        <tv norm="space" id="CFG-TV-SUPPLIERNAME">
             <stereotypes>
                 <stereo required="yes">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="SupplierPackageName">
+        <tv norm="space" id="CFG-TV-SUPPLIERPACKAGENAME">
             <stereotypes>
                 <stereo required="no">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="SupplierRelease">
+        <tv norm="space" id="CFG-TV-SUPPLIERRELEASE">
             <stereotypes>
                 <stereo required="yes">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
         
-        <tv id="Positie"><!-- origin="system" -->
+        <tv id="CFG-TV-POSITION"><!-- origin="system" -->
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-entiteitrelatie</stereo>
             </stereotypes>
         </tv>
         
-        <tv id="IsDerived">
+        <tv id="CFG-TV-ISDERIVED">
             <stereotypes>
                 <!-- bericht typen -->
                 <stereo required="no">stereotype-name-antwoordberichttype</stereo>

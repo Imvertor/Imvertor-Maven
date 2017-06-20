@@ -27,7 +27,7 @@ p.supplierMark {
     color: gray;  
 }
 tr.tableHeader th {
-    background-color: #EEEEEE;
+    background-color: #A5B1D5;
     font-weight: bold;
     font-style: italic;
 }
@@ -55,11 +55,11 @@ span.value {
 }
 h1 {
     font-size: 1.5em;
-    color: navy;
+    color: #005199;
 }
 h2 {
     font-size: 1em;
-    color: navy;
+    color: #005199;
 }
 a {
     color: blue;
@@ -83,7 +83,7 @@ tr.cmp-system {
 .overview {
     font-weight: bold;
     color: white;
-    background-color: navy;
+    background-color: #005199;
     padding: 0.5em 2em;
 }
 .app {

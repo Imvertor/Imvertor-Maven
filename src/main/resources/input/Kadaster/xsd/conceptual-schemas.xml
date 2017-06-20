@@ -10,6 +10,7 @@
     
     <mapping name="GML321_ENV">
         <use>GML321</use>
+        <use>ENVPROD</use>
         <use>ENVPROC</use>
         <use>ENVLOG</use>
     </mapping>
@@ -259,34 +260,62 @@
     </conceptual-schema>
     
     <conceptual-schema>
-        <description>Service Envelop</description>
-        <url>http://www.kadaster.nl/conceptual-schemas/envelop</url>
+        <description>Service Envelop Procesresultaat</description>
+        <url>http://www.kadaster.nl/conceptual-schemas/envelop/Proces</url>
         <!-- -->
         <map 
             name="ENVPROC" 
             namespace="http://www.kadaster.nl/schemas/generiek/procesresultaat/v20110922" 
             version="0.6" 
             phase="3" 
-            location="http://www.kadaster.nl/generiek/procesresultaat/0.6/GenProcesResultaat_v0_6.xsd">
+            location="http://www.kadaster.nl/generiek/procesresultaat/GenProcesResultaat_v0_6.xsd">
 
             <releases>
                 <release>20110922</release> 
             </releases>
         
-            <type name="ENV_ProcesVerwerking">result:ProcesVerwerking</type>  
+            <type name="ProcesResultaat">ProcesVerwerking</type>  
  
         </map>
+      
+    </conceptual-schema>
+    
+    <conceptual-schema>
+        <description>Service Envelop Logging</description>
+        <url>http://www.kadaster.nl/conceptual-schemas/envelop/Log</url>
+        <!-- -->
         <map 
             name="ENVLOG" 
             namespace="http://www.kadaster.nl/schemas/Log/v20120501" 
             version="1.2" 
             phase="3" 
-            location="http://www.kadaster.nl/generiek/procesresultaat/0.6/GenProcesResultaat_v0_6.xsd">
+            location="http://www.kadaster.nl/Log/LogType_v1_2.xsd">
+            
             <releases>
                 <release>20120501</release> 
             </releases>
             
-            <type name="ENV_Log">log:Log</type>  
+            <type name="Log">Log</type>  
+            
+        </map>
+    </conceptual-schema>
+    
+    <conceptual-schema>
+        <description>Service Envelop Productgegevens</description>
+        <url>http://www.kadaster.nl/conceptual-schemas/envelop/Product</url>
+        <!-- -->
+        <map 
+            name="ENVPROD" 
+            namespace="http://www.kadaster.nl/schemas/kik-inzage/verzoektotinformatieantwoord/productgegevens/v20170101" 
+            version="1.0.0" 
+            phase="3" 
+            location="http://www.kadaster.nl/kik-inzage/verzoektotinformatieantwoord/productgegevens/v20170101/ProductGegevens.xsd">
+            
+            <releases>
+                <release>20170101</release> 
+            </releases>
+            
+            <type name="ProductGegevens">ProductGegevens</type>  
             
         </map>
     </conceptual-schema>
@@ -327,7 +356,7 @@
         <description>Jira-X</description>
         <url>http://www.kadaster.nl/conceptual-schemas/iso/19115/-3/cit/1.0</url>
         <map 
-            name="19115:CIT" 
+            name="19115_CIT" 
             namespace="http://standards.iso.org/iso/19115/-3/cit/1.0" 
             version="1.0" 
             phase="3" 

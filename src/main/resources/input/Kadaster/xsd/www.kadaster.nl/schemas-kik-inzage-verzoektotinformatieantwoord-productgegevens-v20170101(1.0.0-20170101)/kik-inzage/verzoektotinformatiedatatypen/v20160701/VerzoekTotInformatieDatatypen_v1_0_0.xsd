@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:vtidt="http://www.kadaster.nl/schemas/kik-inzage/verzoektotinformatiedatatypen/v20160701" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.kadaster.nl/schemas/kik-inzage/verzoektotinformatiedatatypen/v20160701" elementFormDefault="qualified">
+	<xs:simpleType name="N5">
+		<xs:restriction base="xs:integer"/>
+	</xs:simpleType>
+	<xs:simpleType name="AN40">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="40"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="N4">
+		<xs:restriction base="xs:integer"/>
+	</xs:simpleType>
+	<xs:element name="Waardelijst" type="vtidt:Waardelijst"/>
+	<xs:complexType name="Waardelijst">
+		<xs:sequence>
+			<xs:element name="code" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>De code van deze waarde. De code is uniek binnen de waardenlijst en taalonafhankelijk. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="waarde" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>De waarde zoals aangetroffen in de waardenlijst. het moment waarop de waarde geassocieerd is met de meegeleverde code is onbepaald.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AN250">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="250"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN17">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="17"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN39">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="39"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="Melding" type="vtidt:Melding"/>
+	<xs:complexType name="Melding">
+		<xs:annotation>
+			<xs:documentation>Meldingtekst en nummer.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="nummer" type="vtidt:AN6" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Nummer van een melding.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="tekst" type="vtidt:AN250" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Tekst behorende bij een melding.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AN255">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NEN3610ID">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="NL\.IMKAD\.[A-Za-z]+\.[1-9][0-9]{0,14}(\.[0-9]+)?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="N3">
+		<xs:restriction base="xs:integer"/>
+	</xs:simpleType>
+	<xs:simpleType name="Postcode">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[1-9]{1}[0-9]{3}[A-Z]{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN24">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="24"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN395">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="395"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="D9">
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="9"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN6">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="6"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VersieAanvraagBericht">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="5.0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="N7">
+		<xs:restriction base="xs:integer">
+			<xs:totalDigits value="7"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="D8">
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="8"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN240">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="240"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN65">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="65"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN8">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="8"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN35">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="35"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN14">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="14"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN20-3">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="3"/>
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN12">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="12"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN9">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="3"/>
+			<xs:maxLength value="9"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN1">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="N10">
+		<xs:restriction base="xs:integer">
+			<xs:totalDigits value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="D20">
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN16">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Year">
+		<xs:restriction base="xs:gYear"/>
+	</xs:simpleType>
+	<xs:simpleType name="AN20">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN10">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN80">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="80"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN5">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="5"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN15">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN4">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN130">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="130"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="N9">
+		<xs:restriction base="xs:integer">
+			<xs:totalDigits value="9"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN200">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="200"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="N15">
+		<xs:restriction base="xs:integer">
+			<xs:totalDigits value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN124">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="124"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="N16">
+		<xs:restriction base="xs:integer">
+			<xs:totalDigits value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN55">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="55"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN50">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN2">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="N8">
+		<xs:restriction base="xs:integer">
+			<xs:totalDigits value="8"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

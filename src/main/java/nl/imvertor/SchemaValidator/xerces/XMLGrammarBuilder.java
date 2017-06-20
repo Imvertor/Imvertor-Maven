@@ -99,7 +99,7 @@ public class XMLGrammarBuilder implements XMLErrorHandler {
      * @throws XNIException */
     public static void main(String argv[]) throws XNIException, IOException {
         XMLGrammarBuilder builder = new XMLGrammarBuilder(true);
-        builder.parseXSD("c:\\temp\\a\\xsd\\Ruilakte\\aanbod\\v20121101\\Ruilakte_Aanbod_v1_1_2.xsd");
+        builder.parseXSD("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-work\\BRO\\app\\xsd\\root\\brocommon\\v20170701\\GMW_BroCommon [BroCommon]_v1_0.xsd'");
     } 
   
     private static XMLInputSource stringToXIS(String uri) {

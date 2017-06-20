@@ -120,6 +120,19 @@
     </xsl:template>
     
     <!-- 
+        Een service heeft mogelijk 4 envelop-connecties (proces, header, log, product). 
+        Daarnaast heeft het een uitgaande relatie naar een <<product>
+    -->
+    <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-service')]/imvert:associations/imvert:association[empty(imvert:name)]">
+        <xsl:copy>
+            <xsl:apply-templates select="node()|@*"/>
+            <imvert:name original="">
+                <xsl:value-of select="concat('generated-name-',generate-id())"/>
+            </imvert:name>
+        </xsl:copy>
+    </xsl:template>
+    
+    <!-- 
        identity transform
     -->
     <xsl:template match="node()|@*">

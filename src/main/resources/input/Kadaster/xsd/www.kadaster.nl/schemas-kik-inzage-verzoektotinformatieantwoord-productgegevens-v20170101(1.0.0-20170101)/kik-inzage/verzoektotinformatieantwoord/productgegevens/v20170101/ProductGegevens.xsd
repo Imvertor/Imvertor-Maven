@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2015 sp1 (x64) (http://www.altova.com) by ﻿Kadaster (Kadaster) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vtiapg="http://www.kadaster.nl/schemas/kik-inzage/verzoektotinformatieantwoord/productgegevens/v20170101" xmlns:vtidt="http://www.kadaster.nl/schemas/kik-inzage/verzoektotinformatiedatatypen/v20160701" targetNamespace="http://www.kadaster.nl/schemas/kik-inzage/verzoektotinformatieantwoord/productgegevens/v20170101" elementFormDefault="qualified">
+	<xs:import namespace="http://www.kadaster.nl/schemas/kik-inzage/verzoektotinformatiedatatypen/v20160701" schemaLocation="../../../verzoektotinformatiedatatypen/v20160701/VerzoekTotInformatieDatatypen_v1_0_0.xsd"/>
+	<xs:element name="ProductGegevens" type="vtiapg:ProductGegevens"/>
+	<xs:complexType name="ProductGegevens">
+		<xs:sequence>
+			<xs:element name="klantreferentie" type="vtidt:AN20-3" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>De referentie van de klant voor het aangevraagde product. Deze komt uiteindelijk op het factuur. De klantreferentie komt ook op het product </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="productieordernummer" type="vtidt:AN50" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Door SEA1 toegekend nummer aan deze opdracht (dit productienummer wordt ook als referentie meegegeven in de keten van componenten binnen het Kadaster)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="tijdstipSamenstellingBericht" type="xs:dateTime" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="aantalGeleverdeEenheden" type="vtidt:N10" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="aanvraagGegevens" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Gegevens uit de aanvraag.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="meldingProduct" type="vtidt:Melding" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Nummer en meldingtekst van meldingen die expliciet bij het product horen.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

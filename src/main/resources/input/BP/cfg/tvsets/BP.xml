@@ -30,7 +30,7 @@
         <!-- BP follows SBR requirements -->
         <xi:include href="../../../BiZa/cfg/tvsets/SBR.xml"/>
       
-        <tv norm="space" id="DatumOpname">
+        <tv norm="space" id="CFG-TV-DATERECORDED">
             <name lang="nl">Datum opname</name>
             <name lang="en">Date recorded</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
@@ -46,7 +46,7 @@
                 <stereo required="yes">stereotype-name-externekoppeling</stereo>
             </stereotypes>
         </tv> 
-        <tv norm="space" rules="NOC" id="IndicatieMateriëleHistorie">
+        <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
             <name lang="nl">Indicatie materiële historie</name>
             <name lang="en">Indication material history</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
@@ -61,7 +61,7 @@
                 <value>Zie groep</value>
             </declared-values>
         </tv>
-        <tv norm="space" rules="NOC" id="IndicatieFormeleHistorie">
+        <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONFORMALHISTORY">
             <name lang="nl">Indicatie formele historie</name>
             <name lang="en">Indication formal history</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
@@ -76,7 +76,7 @@
                 <value>Zie groep</value>
             </declared-values>
         </tv>
-        <tv norm="space" id="IndicatieAuthentiek">
+        <tv norm="space" id="CFG-TV-INDICATIONAUTHENTIC">
             <name lang="nl">Indicatie authentiek</name>
             <name lang="en">Indication authentic</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
@@ -87,7 +87,7 @@
             </stereotypes>
         </tv>
        
-        <tv norm="space" id="MogelijkGeenWaarde">
+        <tv norm="space" id="CFG-TV-VOIDABLE">
             <name lang="nl">Mogelijk geen waarde</name>
             <name lang="en">Voidable</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
@@ -102,7 +102,7 @@
             </declared-values>
         </tv>
        
-        <tv norm="space" id="DataLocatie"><!-- MIG -->
+        <tv norm="space" id="CFG-TV-DATALOCATION"><!-- MIG -->
             <name lang="nl">Data locatie</name>
             <name lang="en">Data location</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
@@ -112,7 +112,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space"  id="Position"><!-- origin="system" -->
+        <tv norm="space"  id="CFG-TV-POSITION"><!-- origin="system" -->
             <name lang="nl">Positie</name>
             <name lang="en">Position</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->

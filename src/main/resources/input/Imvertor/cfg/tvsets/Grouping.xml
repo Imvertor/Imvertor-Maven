@@ -8,7 +8,7 @@
     
     <tagged-values>
         
-        <tv norm="space" id="Imvertor">
+        <tv norm="space" id="CFG-TV-IMVERTOR">
             <name lang="nl">Imvertor</name>
             <name lang="en">Imvertor</name>
             <derive>no</derive>
@@ -25,7 +25,7 @@
             </declared-values>
         </tv>
         
-        <tv norm="compact" id="Level">
+        <tv norm="compact" id="CFG-TV-LEVEL">
             <name lang="nl">Niveau</name>
             <name lang="en">Level</name>
             <derive>no</derive>
@@ -48,7 +48,7 @@
             </declared-values>
         </tv>
         
-        <tv norm="space" id="Beheerder">
+        <tv norm="space" id="CFG-TV-ADMINISTRATOR">
             <name lang="nl">Beheerder</name>
             <name lang="en">Administrator</name>
             <derive>yes</derive>
@@ -57,7 +57,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="Locatie">
+        <tv norm="space" id="CFG-TV-LOCATION">
             <name lang="nl">Locatie</name>
             <name lang="en">Location</name>
             <derive>yes</derive>
@@ -66,7 +66,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="Release">
+        <tv norm="space" id="CFG-TV-RELEASE">
             <name lang="nl">Release</name>
             <name lang="en">Release</name>
             <derive>no</derive>
@@ -81,7 +81,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="RefRelease">
+        <tv norm="space" id="CFG-TV-REFRELEASE">
             <name lang="nl">Ref-release</name>
             <name lang="en">Ref-release</name>
             <derive>no</derive>
@@ -91,7 +91,7 @@
                 <stereo required="no">stereotype-name-external-package</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="RefVersion">
+        <tv norm="space" id="CFG-TV-REFVERSION">
             <name lang="nl">Ref-version</name>
             <name lang="en">Ref-version</name>
             <derive>no</derive>
@@ -102,7 +102,7 @@
             </stereotypes>
         </tv>
 
-        <tv norm="space" id="SupplierProject">
+        <tv norm="space" id="CFG-TV-SUPPLIERPROJECT">
             <name lang="nl">Supplier-project</name>
             <name lang="en">Supplier-project</name>
             <derive>no</derive>
@@ -111,7 +111,7 @@
                 <stereo required="yes">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="SupplierName">
+        <tv norm="space" id="CFG-TV-SUPPLIERNAME">
             <name lang="nl">Supplier-name</name>
             <name lang="en">Supplier-name</name>
             <!--<name lang="nl">Supplier name</name>-->
@@ -121,7 +121,7 @@
                 <stereo required="yes">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="SupplierPackageName">
+        <tv norm="space" id="CFG-TV-SUPPLIERPACKAGENAME">
             <name lang="nl">Supplier-package-name</name>
             <name lang="en">Supplier-package-name</name>
             <!--<name lang="nl">Supplier package name</name>-->
@@ -131,7 +131,7 @@
                 <stereo required="no">stereotype-name-view-package</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="SupplierRelease">
+        <tv norm="space" id="CFG-TV-SUPPLIERRELEASE">
             <name lang="nl">Supplier-release</name>
             <name lang="en">Supplier-release</name>
             <!--<name lang="nl">Supplier release</name>-->
@@ -141,9 +141,9 @@
                 <stereo required="yes">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="Svnid">
-            <name lang="nl">Svnid</name>
-            <name lang="en">Svnid</name>
+        <tv norm="space" id="CFG-TV-VERSIONID">
+            <name lang="nl">Versie ID</name>
+            <name lang="en">Version ID</name>
             <derive>no</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-base-package</stereo>
@@ -154,7 +154,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" validate="url" id="WebLocatie">
+        <tv norm="space" validate="url" id="CFG-TV-WEBLOCATION">
             <name lang="nl">Web locatie</name>
             <name lang="en">Web-location</name>
             <derive>yes</derive>
@@ -166,7 +166,7 @@
                 <stereo required="no">stereotype-name-domain-package</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" validate="url" id="XsdLocatie">
+        <tv norm="space" validate="url" id="CFG-TV-XSDLOCATION">
             <name lang="nl">XSD locatie</name>
             <name lang="en">XSD-location</name>
             <derive>yes</derive>
@@ -175,7 +175,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="InternalProject">
+        <tv norm="space" id="CFG-TV-INTERNALPROJECT">
             <name lang="nl">Intern project</name>
             <name lang="en">Internal project</name>
             <derive>no</derive>
@@ -183,7 +183,7 @@
                 <stereo required="yes">stereotype-name-internal-package</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="InternalName">
+        <tv norm="space" id="CFG-TV-INTERNALNAME">
             <name lang="nl">Interne naam</name>
             <name lang="en">Internal name</name>
             <derive>no</derive>
@@ -191,7 +191,7 @@
                 <stereo required="yes">stereotype-name-internal-package</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="InternalRelease">
+        <tv norm="space" id="CFG-TV-INTERNALRELEASE">
             <name lang="nl">Interne release</name>
             <name lang="en">Internal release</name>
             <derive>no</derive>
@@ -200,7 +200,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="IsDerived">
+        <tv norm="space" id="CFG-TV-ISDERIVED">
             <name lang="nl">Is afgeleid</name>
             <name lang="en">Is derived</name>
             <derive>no</derive>
@@ -242,7 +242,7 @@
             
         </tv>
     
-        <tv id="Toelichting">
+        <tv id="CFG-TV-DESCRIPTION">
             <stereotypes>
                 <stereo required="no">stereotype-name-project-package</stereo>
                 <stereo required="no">stereotype-name-base-package</stereo>

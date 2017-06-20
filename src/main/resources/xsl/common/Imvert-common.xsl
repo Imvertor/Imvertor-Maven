@@ -599,8 +599,10 @@
         <xsl:param name="namespace" as="xs:string"/>
         <xsl:param name="version" as="xs:string"/>
         <xsl:param name="release" as="xs:string?"/><!-- not known for external and system packages -->
+        <xsl:param name="map-name" as="xs:string"/>
         <xsl:variable name="parts" select="imf:get-uri-parts($namespace)"/>
-        <xsl:value-of select="concat($parts/server,'/',replace($parts/path,'/','-'),'(',$version, '-', $release,')')"/>
+        <xsl:value-of select="concat($parts/server,'/',replace($parts/path,'/','-'),'(',$version, '-', $release,')')"/> 
+        <!-- TODO:  <xsl:value-of select="concat($parts/server,'/',$map-name,'-',$release)"/> -->
     </xsl:function>
     
     <xsl:function name="imf:extract" as="xs:string">
@@ -821,8 +823,9 @@
     -->
     <xsl:function name="imf:get-short-name" as="xs:string">
         <xsl:param name="fullname" as="xs:string"/>
-        <xsl:variable name="is-ref" select="ends-with($fullname,imf:get-config-parameter('reference-suffix-name'))"/>
-        <xsl:variable name="basename" select="if ($is-ref) then substring($fullname,1,string-length($fullname) - string-length(imf:get-config-parameter('reference-suffix-name'))) else $fullname"/>
+        <xsl:variable name="actual-name" select="tokenize($fullname,'\s\[')[1]"/>
+        <xsl:variable name="is-ref" select="ends-with($actual-name,imf:get-config-parameter('reference-suffix-name'))"/>
+        <xsl:variable name="basename" select="if ($is-ref) then substring($actual-name,1,string-length($actual-name) - string-length(imf:get-config-parameter('reference-suffix-name'))) else $actual-name"/>
         <xsl:variable name="prefix" select="lower-case(string-join(tokenize($basename,'[^A-Z]+'),''))"/>
         <xsl:variable name="full-raw" select="string-join(tokenize($basename,'[^a-zA-Z0-9_]+'),'')"/>
         <xsl:variable name="full" select="if (matches($full-raw,'^[0-9_].*')) then concat('n',$full-raw) else $full-raw"/>
@@ -1032,6 +1035,52 @@
     <xsl:function name="imf:get-original-names">
         <xsl:param name="elements" as="element()*"/>
         <xsl:sequence select="for $this in $elements return ($this/imvert:name/@original,$this/imvert:found-name)[1]"/>
+    </xsl:function>
+    
+    <!-- 
+		return the tagged value or empty sequence when that tagged value is not found. If a value is passed, check if the value is the same.
+	-->
+    <xsl:function name="imf:get-tagged-value" as="xs:string?">
+        <xsl:param name="this" as="node()"/>
+        <xsl:param name="tv-name" as="xs:string"/>
+        <xsl:param name="tv-value" as="xs:string?"/>
+        <xsl:variable name="tv" select="imf:get-tagged-value-element($this,$tv-name)[1]"/> <!-- TODO validate all values, may be multiple -->
+        <xsl:variable name="value" select="string($tv/imvert:value)"/>
+        <xsl:choose>
+            <xsl:when test="empty($tv)">
+                <xsl:sequence select="()"/>
+            </xsl:when>
+            <xsl:when test="empty($tv-value)">
+                <xsl:value-of select="$value"/>
+            </xsl:when>
+            <xsl:when test="$value = $tv-value">
+                <xsl:sequence select="$value"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="()"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-tagged-value" as="xs:string?">
+        <xsl:param name="this" as="node()"/>
+        <xsl:param name="tv-name" as="xs:string"/> <!-- ADD ## FOR id -->
+        <xsl:sequence select="imf:get-tagged-value($this,$tv-name,())"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-tagged-value-element" as="element(imvert:tagged-value)*">
+        <xsl:param name="this" as="node()"/>
+        <xsl:param name="tv-name" as="xs:string"/>
+        <xsl:variable name="tv-id" select="substring-after($tv-name,'##')"/>
+        <xsl:choose>
+            <xsl:when test="normalize-space($tv-id)">
+                <xsl:sequence select="$this/imvert:tagged-values/imvert:tagged-value[@id=$tv-id]"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <!--TODO deprecated, only by id --> 
+                <xsl:sequence select="$this/imvert:tagged-values/imvert:tagged-value[imvert:name = imf:get-normalized-name($tv-name,'tv-name')]"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     
 </xsl:stylesheet>

@@ -143,7 +143,7 @@
     
     <xsl:template match="imvert:position">
         <!-- get the tagged value that sets the position ans use that value; if no such tagged value, use the current value -->
-        <xsl:variable name="position-specified" select="imf:get-tagged-value(..,imf:get-normalized-names('position','tv-name'))"/>
+        <xsl:variable name="position-specified" select="imf:get-tagged-value(..,'##CFG-TV-POSITION')"/>
         <xsl:variable name="position-calculated" select="($position-specified,.)[1]"/>
         <xsl:copy>
             <xsl:attribute name="original" select="."/>
@@ -158,12 +158,6 @@
         </xsl:copy>
     </xsl:template>
    
-    <xsl:function name="imf:get-tagged-value" as="xs:string?">
-        <xsl:param name="this" as="element()"/>
-        <xsl:param name="tv-norm-name" as="xs:string"/>
-        <xsl:sequence select="$this/imvert:tagged-values/imvert:tagged-value[imvert:name=$tv-norm-name]/imvert:value"/>
-    </xsl:function>
-
     <xsl:function name="imf:get-embellish-suppliers" as="element()*">
         <xsl:param name="construct"/>
         <xsl:if test="$debugging">

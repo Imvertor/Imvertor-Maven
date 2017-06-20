@@ -160,7 +160,7 @@
     </xsl:template>
     
     <!--
-     <tv id="Herkomst" norm="space">
+     <tv id="CFG-TV-SOURCE" norm="space">
             <name lang="nl" original="Herkomst">herkomst</name>
             <derive>yes</derive>
             <stereotypes>

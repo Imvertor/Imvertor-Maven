@@ -25,13 +25,13 @@
         <!-- kadaster follows BP requirements -->
         <xi:include href="../../../BP/cfg/tvsets/BP.xml"/>
         
-        <tv norm="space" id="DatumOpname">
+        <tv norm="space" id="CFG-TV-DATERECORDED">
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" rules="NOC" id="IndicatieMateriëleHistorie">
+        <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
            <derive>yes</derive>
             <stereotypes>
                 <!-- optional for the following stereo's -->
@@ -41,7 +41,7 @@
             </stereotypes>
             <!-- declared-values inherited -->
         </tv>
-        <tv norm="space" rules="NOC" id="IndicatieFormeleHistorie">
+        <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONFORMALHISTORY">
             <derive>yes</derive>
             <stereotypes>
                 <!-- optional for the following stereo's -->
@@ -51,26 +51,26 @@
             </stereotypes>
             <!-- declared-values inherited -->
         </tv>
-        <tv norm="space" id="Eigenaar">
+        <tv norm="space" id="CFG-TV-ONWER">
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-koppelklasse</stereo>
                 <stereo required="no">stereotype-name-attribute</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="Populatie">
+        <tv norm="space" id="CFG-TV-POPULATION">
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-attribute</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="Kwaliteit">
+        <tv norm="space" id="CFG-TV-QUALITY">
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-attribute</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="Gebruiksvoorwaarden">
+        <tv norm="space" id="CFG-TV-CONDITIONSOFUSE">
             <name lang="nl">Gebruiksvoorwaarden</name>
             <name lang="en">Conditions of use</name>
             <derive>yes</derive>
@@ -80,13 +80,13 @@
                 <stereo required="no">stereotype-name-attribute</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="Herkomst">
+        <tv norm="space" id="CFG-TV-SOURCE">
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="CFG-TV-HERKOMSTDEFINITIE">
+        <tv norm="space" id="CFG-TV-SOURCEOFDEFINITION">
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-objecttype</stereo>
@@ -96,7 +96,7 @@
                 <stereo required="no">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="Wetgeving">
+        <tv norm="space" id="CFG-TV-LEGISLATION">
             <name lang="nl">Wetgeving</name>
             <name lang="en">Legislation</name>
             <derive>yes</derive>
@@ -107,7 +107,7 @@
                 <stereo required="no">stereotype-name-complextype</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="Toegankelijkheid">
+        <tv norm="space" id="CFG-TV-ACCESSIBILITY">
             <name lang="nl">Toegankelijkheid</name>
             <name lang="en">Accessibility</name>
             <derive>yes</derive>
@@ -118,14 +118,14 @@
                 <stereo required="no">stereotype-name-complextype</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="MogelijkGeenWaarde">
+        <tv norm="space" id="CFG-TV-VOIDABLE">
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-data-element</stereo>
                 <stereo required="no">stereotype-name-voidable</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="IndicatieAuthentiek">
+        <tv norm="space" id="CFG-TV-INDICATIONAUTHENTIC">
             <derive>yes</derive>
             <stereotypes>
                 <!-- optuonal for inherited stereos -->
@@ -135,7 +135,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="BegripLocatie">
+        <tv norm="space" id="CFG-TV-CONCEPTLOCATION">
             <name lang="nl">Begrip locatie</name>
             <name lang="en">Concept location</name>
             <derive>yes</derive>
@@ -144,7 +144,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="DataLocatie">
+        <tv norm="space" id="CFG-TV-DATALOCATION">
             <name lang="nl">Data locatie</name>
             <name lang="en">Data location</name>
             <derive>yes</derive>
@@ -154,7 +154,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="BaseMapping">
+        <tv norm="space" id="CFG-TV-BASEMAPPING">
             <name lang="nl">Base-mapping</name>
             <name lang="en">Base-mapping</name>
             <derive>no</derive>
@@ -164,7 +164,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="Relation">
+        <tv norm="space" id="CFG-TV-RELATION">
             <name lang="nl">Relatie</name>
             <name lang="en">Relation</name>
             <derive>no</derive>
@@ -173,7 +173,7 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="FormeelPatroon">
+        <tv norm="space" id="CFG-TV-FORMALPATTERN">
             <name lang="nl">Patroon</name>
             <name lang="en">Pattern</name>
             <derive>yes</derive>
@@ -187,39 +187,17 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="IncludeBDMH">
-            <name lang="#all">Include-bdmh</name>
+        <tv norm="space" id="CFG-TV-ENVELOPEMETHOD">
+            <name lang="nl">Methode</name>
+            <name lang="en">Method</name>
+            <desc lang="nl">De verwerkingsmethode bij het samenstellen van de "envelop" van een schema. Er zijn twee varianten, SAE en BDS.</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-service</stereo>
             </stereotypes>
             <declared-values lang="nl">
-                <value default="yes">Ja</value>
-                <value>Nee</value>
-            </declared-values>
-        </tv>
-        
-        <tv norm="space" id="IncludeLog">
-            <name lang="#all">Include-log</name>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo required="no">stereotype-name-service</stereo>
-            </stereotypes>
-            <declared-values lang="nl">
-                <value default="yes">Ja</value>
-                <value>Nee</value>
-            </declared-values>
-        </tv>
-  
-        <tv norm="space" id="IncludeProces">
-            <name lang="#all">Include-proces</name>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo required="no">stereotype-name-service</stereo>
-            </stereotypes>
-            <declared-values lang="nl">
-                <value default="yes">Ja</value>
-                <value>Nee</value>
+                <value default="yes">BDS</value>
+                <value default="no">SAE</value>
             </declared-values>
         </tv>
         

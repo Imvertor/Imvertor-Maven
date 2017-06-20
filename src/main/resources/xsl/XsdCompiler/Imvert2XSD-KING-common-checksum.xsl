@@ -87,10 +87,10 @@
       
         <xsl:variable name="typ" select="$attribute/imvert:type-name"/>
         <xsl:variable name="len" select="$computed-len"/>
-        <xsl:variable name="pat" select="imf:get-tagged-value($attribute,'Formeel patroon')"/>
-        <xsl:variable name="mle" select="imf:get-tagged-value($attribute,'Minimum lengte')"/>
-        <xsl:variable name="min" select="imf:get-tagged-value($attribute,'Minimum waarde (inclusief)')"/>
-        <xsl:variable name="max" select="imf:get-tagged-value($attribute,'Maximum waarde (inclusief)')"/>
+        <xsl:variable name="pat" select="imf:get-tagged-value($attribute,'##CFG-TV-FORMALPATTERN')"/>
+        <xsl:variable name="mle" select="imf:get-tagged-value($attribute,'##CFG-TV-MINLENGTH')"/>
+        <xsl:variable name="min" select="imf:get-tagged-value($attribute,'##CFG-TV-MINVALUEINCLUSIVE')"/>
+        <xsl:variable name="max" select="imf:get-tagged-value($attribute,'##CFG-TV-MAXVALUEINCLUSIVE')"/>
         
         <xsl:variable name="base" select="concat($typ,'_',$len)"/>
         <xsl:variable name="facet" select="concat($pat,'_',$mle,'_',$min,'_',$max)"/>

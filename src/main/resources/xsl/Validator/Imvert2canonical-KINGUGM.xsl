@@ -81,7 +81,7 @@
                     <xsl:copy-of select="current-group()[1]/@*"/>
                     <xsl:copy-of select="current-group()[1]/imvert:name"/>
                     <xsl:choose>
-                        <xsl:when test="current-grouping-key() = 'IndicatieKerngegeven'">
+                        <xsl:when test="current-grouping-key() = 'CFG-TV-INDICATIEKERNGEGEVEN'">
                             <xsl:variable name="values" select="current-group()/imvert:value"/>
                             <xsl:variable name="value" select="imf:boolean-or(for $b in $values return imf:boolean($b))"/>
                             <imvert:value original="{@original}">

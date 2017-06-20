@@ -159,9 +159,9 @@
     
     <xsl:function name="imf:get-intern-doc" as="document-node()?">
         <xsl:param name="intern-pack"/>
-        <xsl:variable name="project" select="imf:get-tagged-value($intern-pack,'InternalProject')"/>
-        <xsl:variable name="application" select="imf:get-tagged-value($intern-pack,'InternalName')"/>
-        <xsl:variable name="release" select="imf:get-tagged-value($intern-pack,'InternalRelease')"/>
+        <xsl:variable name="project" select="imf:get-tagged-value($intern-pack,'##CFG-TV-INTERNALPROJECT')"/>
+        <xsl:variable name="application" select="imf:get-tagged-value($intern-pack,'##CFG-TV-INTERNALNAME')"/>
+        <xsl:variable name="release" select="imf:get-tagged-value($intern-pack,'##CFG-TV-INTERNALRELEASE')"/>
         <xsl:variable name="subpath" select="concat($project,'/',$application,'/',$release)"/>
         <xsl:variable name="sys-subpath" select="concat('applications\',$subpath)"/>
         <xsl:variable name="path" select="concat($managed-output-folder, '\',$sys-subpath,'\etc\system.imvert.xml')"/>
@@ -175,20 +175,6 @@
                 <xsl:sequence select="$doc"/>
             </xsl:otherwise>
         </xsl:choose>
-    </xsl:function>
-    
-    <xsl:function name="imf:get-tagged-value" as="xs:string?">
-        <xsl:param name="this" as="node()"/>
-        <xsl:param name="tv-name" as="xs:string"/>
-        <xsl:variable name="norm-name" select="imf:get-config-item-by-id($configuration-tvset-file,$tv-name)/name[@lang=$language]"/>
-        <xsl:variable name="tv" select="$this/imvert:tagged-values/imvert:tagged-value[imvert:name = $norm-name]"/>
-        <xsl:value-of select="string($tv/imvert:value)"/>
-    </xsl:function>
-    
-    <xsl:function name="imf:get-config-item-by-id">
-        <xsl:param name="config-tree"/>
-        <xsl:param name="id"/>
-        <xsl:sequence select="($config-tree//*[@id=$id])[last()]"/>
     </xsl:function>
     
     <xsl:function name="imf:get-duplicate-packages" as="element(imvert:package)*">

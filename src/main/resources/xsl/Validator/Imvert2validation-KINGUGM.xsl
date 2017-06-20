@@ -46,9 +46,9 @@
         <xsl:next-match/>
     </xsl:template>
     
-    <xsl:template match="imvert:tagged-value[imvert:name = (
-        imf:get-normalized-name('Minimum waarde (inclusief)','tv-name'),
-        imf:get-normalized-name('Maximum waarde (inclusief)','tv-name')
+    <xsl:template match="imvert:tagged-value[imvert:id = (
+        'CFG-TV-MINVALUEINCLUSIVE',
+        'CFG-TV-MAXVALUEINCLUSIVE'
         )]">
         <!-- setup -->
         <xsl:variable name="construct" select="../.."/>
@@ -63,7 +63,7 @@
     
     <xsl:template match="imvert:is-id">
         <!-- setup -->
-        <xsl:variable name="tv-k" select="imf:get-tagged-value-element(..,'Indicatie kerngegeven')"/>
+        <xsl:variable name="tv-k" select="imf:get-tagged-value-element(..,'##CFG-TV-INDICATIEKERNGEGEVEN')"/>
         
         <!-- validate -->
         <xsl:sequence select="imf:report-warning(.., 
@@ -75,7 +75,7 @@
     
     <xsl:template match="imvert:static">
         <!-- setup -->
-        <xsl:variable name="tv-k" select="imf:get-tagged-value-element(..,'Indicatie kerngegeven')"/>
+        <xsl:variable name="tv-k" select="imf:get-tagged-value-element(..,'##CFG-TV-INDICATIEKERNGEGEVEN')"/>
         
         <!-- validate -->
         <xsl:sequence select="imf:report-warning(.., 
@@ -85,17 +85,14 @@
         <xsl:next-match/>
     </xsl:template>
     
-    <xsl:variable name="kerngegeven-name" select="imf:get-normalized-name('Indicatie kerngegeven','tv-name')"/>
-    
-    <xsl:template match="imvert:tagged-value[imvert:name = $kerngegeven-name]">
+    <xsl:template match="imvert:tagged-value[@id = 'CFG-TV-INDICATIEKERNGEGEVEN']">
         <!-- setup -->
         <xsl:variable name="construct" select="../.."/>
-        <xsl:variable name="tv-value" select="imvert:value"/>
         
         <!-- validate -->
         <xsl:sequence select="imf:report-warning(.., 
-            not(imf:boolean($tv-value)) and imf:boolean($construct/imvert:static), 
-            'Construct that assigns yes to the tagged value [1] must be static', $kerngegeven-name)"/>
+            not(imf:boolean(imvert:value)) and imf:boolean($construct/imvert:static), 
+            'Construct that assigns yes to the tagged value [1] must be static', imvert:name/@original)"/>
         
         <xsl:next-match/>
     </xsl:template>
@@ -103,6 +100,7 @@
     <xsl:template match="*[self::imvert:class | self::imvert:attribute | imvert:association]/imvert:name">
         <!-- setup -->
         <xsl:variable name="name" select="."/>
+   
         <!-- validate -->
         <xsl:sequence select="imf:report-warning(., 
             not(../imvert:stereotype = 'ENUM') and

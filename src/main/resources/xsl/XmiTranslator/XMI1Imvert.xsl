@@ -1321,7 +1321,7 @@
     <xsl:function name="imf:get-svn-info" as="node()*">
         <xsl:param name="this" as="node()"/> <!-- a package -->
         <!-- [dollar]Id: tester-base-pack_package1.xml 4186 2012-01-05 16:02:47Z arjan [dollar] -->
-        <xsl:variable name="id" select="imf:get-profile-tagged-value($this,'svnid')"/>
+        <xsl:variable name="id" select="imf:get-profile-tagged-value($this,'Version ID')"/>
         <xsl:if test="$id">
             <xsl:sequence select="imf:create-output-element('imvert:svn-string',substring($id,2,string-length($id) - 2))"/>
             <xsl:analyze-string select="$id" regex="\$Id: (.+) (\d+) ([0-9\-]+) ([0-9:Z]+) (.+)\$">
@@ -1557,7 +1557,7 @@
     
     <xsl:function name="imf:get-formal-pattern" as="xs:string?">
         <xsl:param name="this"/>
-        <xsl:variable name="localized-name-formal" select="imf:get-config-tagged-values('FormeelPatroon',false())"/> <!-- "Formeel patroon"of "patroon", afhankelijk van metamodel -->
+        <xsl:variable name="localized-name-formal" select="imf:get-config-tagged-values('CFG-TV-FORMALPATTERN',false())"/> <!-- "Formeel patroon"of "patroon", afhankelijk van metamodel -->
         <xsl:sequence select="imf:get-profile-tagged-value($this,$localized-name-formal)[1]"/>
     </xsl:function>
     

@@ -59,7 +59,7 @@
     -->
     <xsl:template match="imvert:tagged-values">
         <imvert:tagged-values>
-            <xsl:if test="../imvert:stereotype = 'VOIDABLE' and empty(imf:get-most-relevant-compiled-taggedvalue-element(.,'##MogelijkGeenWaarde'))">
+            <xsl:if test="../imvert:stereotype = 'VOIDABLE' and empty(imf:get-most-relevant-compiled-taggedvalue-element(.,'##CFG-TV-VOIDABLE'))">
                 <imvert:tagged-value origin='migrate'>
                     <imvert:name original="Mogelijk geen waarde">mogelijk geen waarde</imvert:name>
                     <imvert:value original="Ja">Ja</imvert:value>

@@ -48,7 +48,7 @@ public class XsdFile extends XmlFile {
 		XMLGrammarBuilder gb = new XMLGrammarBuilder(quiet);
 		gb.setHonourAllSchemaLocations(setHonourAllSchemaLocations);
 		gb.setSchemaFullChecking(setSchemaFullChecking);
-		gb.parseXSD(this.getCanonicalPath());
+		gb.parseXSD(this.toURI().toString());
 		ErrorHandler e = gb.getErrorHandler();
 		return e.getErrors();
 	}

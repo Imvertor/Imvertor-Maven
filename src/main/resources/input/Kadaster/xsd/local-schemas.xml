@@ -75,6 +75,8 @@
     
     <local-schema schemafolder="www.kadaster.nl/schemas-generiek-procesresultaat-v20110922(0.6.0-20110922)"/>
 
+    <local-schema schemafolder="www.kadaster.nl/schemas-generiek-productgegevens-v20170101(1.0.0-20170101)"/>
+    
     <local-schema schemafolder="www.kadaster.nl/schemas-generiek-log-v20120501(1.2.0-20120501)"/>
     
 </local-schemas>

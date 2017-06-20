@@ -321,6 +321,79 @@
         </xsl:choose>
     </xsl:template>
     
+    <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-service')]">
+        
+        <xsl:variable name="method" select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-ENVELOPEMETHOD')"/>
+     
+        <xsl:variable name="type-name" select="imvert:name"/>
+        <xsl:variable name="package-name" select="parent::imvert:package/imvert:name"/>
+
+        <xsl:variable name="assocs" select="imvert:associations/imvert:association"/>
+        <xsl:variable name="targets" select="for $target in $assocs/imvert:type-id return imf:get-construct-by-id($target)"/>
+        <xsl:variable name="interfaces" select="$targets[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-interface')]"/>
+        <xsl:choose>
+            <xsl:when test="$method = 'SAE'">
+                <xs:element name="{$type-name}">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="antwoord">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xsl:if test="$interfaces/imvert:name = 'ProcesVerwerking'">
+                                            <xs:element ref="EnvelopProces:ProcesVerwerking"/>
+                                        </xsl:if> 
+                                        <xs:element ref="{imf:get-type('VerzoekTotInformatieAntwoord',$package-name)}"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xsl:if test="$interfaces/imvert:name = 'Log'">
+                                <xs:element ref="EnvelopLog:Log"/>
+                            </xsl:if>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="VerzoekTotInformatieAntwoord">
+                    <xs:complexType>
+                        <xs:complexContent>
+                            <xs:extension base="{imf:get-type('VerzoekTotInformatieAntwoordBasis',$package-name)}">
+                                <xs:sequence>
+                                    <xs:element ref="{imf:get-type('GeleverdProduct',$package-name)}" minOccurs="0"/>
+                                </xs:sequence>
+                            </xs:extension>
+                        </xs:complexContent>
+                    </xs:complexType>
+                </xs:element>
+                <xs:complexType name="VerzoekTotInformatieAntwoordBasis">
+                    <xs:sequence>
+                        <xsl:if test="$interfaces/imvert:name = 'ProductGegevens'">
+                            <xs:element ref="EnvelopProduct:ProductGegevens"/>
+                        </xsl:if>
+                    </xs:sequence>
+                </xs:complexType>
+                <xs:element name="GeleverdProduct">
+                    <xs:complexType>
+                        <xs:choice>
+                            <xsl:for-each select="$assocs">
+                                <!-- alleen de links naar objecttypen hier opnemen -->
+                                <xsl:variable name="target" select="imf:get-construct-by-id(imvert:type-id)"/>
+                                <xsl:if test="$target/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')">
+                                    <xs:element ref="{imf:get-type($target/imvert:name,$target/parent::imvert:package/imvert:name)}"/>
+                                </xsl:if>
+                            </xsl:for-each>
+                        </xs:choice>
+                    </xs:complexType>
+                </xs:element>
+
+            </xsl:when>
+            <xsl:when test="$method = 'BDS'">
+                
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:msg('ERROR', 'Unknown service envelope serialization method: [1]', $method)"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
     <xsl:template match="imvert:class">
         <xsl:variable name="package-name" select="parent::imvert:package/imvert:name"/>
         <xsl:variable name="type-name" select="imvert:name"/>

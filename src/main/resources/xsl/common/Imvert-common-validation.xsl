@@ -100,52 +100,6 @@
 	</xsl:function>
 	
 	<!-- 
-		return the tagged value or empty sequence when that tagged value is not found. If a value is passed, check if the value is the same.
-	-->
-	<xsl:function name="imf:get-tagged-value" as="xs:string?">
-		<xsl:param name="this" as="node()"/>
-		<xsl:param name="tv-name" as="xs:string"/>
-		<xsl:param name="tv-value" as="xs:string?"/>
-		<xsl:variable name="tv" select="imf:get-tagged-value-element($this,$tv-name)[1]"/> <!-- TODO validate all values, may be multiple -->
-		<xsl:variable name="value" select="string($tv/imvert:value)"/>
-		<xsl:choose>
-			<xsl:when test="empty($tv)">
-				<xsl:sequence select="()"/>
-			</xsl:when>
-			<xsl:when test="empty($tv-value)">
-				<xsl:value-of select="$value"/>
-			</xsl:when>
-			<xsl:when test="$value = $tv-value">
-				<xsl:sequence select="$value"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:sequence select="()"/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:function>
-	
-	<xsl:function name="imf:get-tagged-value" as="xs:string?">
-		<xsl:param name="this" as="node()"/>
-		<xsl:param name="tv-name" as="xs:string"/>
-		<xsl:sequence select="imf:get-tagged-value($this,$tv-name,())"/>
-	</xsl:function>
-	
-	<xsl:function name="imf:get-tagged-value-element" as="element(imvert:tagged-value)*">
-		<xsl:param name="this" as="node()"/>
-		<xsl:param name="tv-name" as="xs:string"/>
-		<xsl:variable name="tv-id" select="substring-after($tv-name,'##')"/>
-		<xsl:choose>
-			<xsl:when test="normalize-space($tv-id)">
-				<xsl:sequence select="$this/imvert:tagged-values/imvert:tagged-value[@id=$tv-id]"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<!--TODO deprecated, only by id --> 
-				<xsl:sequence select="$this/imvert:tagged-values/imvert:tagged-value[imvert:name = imf:get-normalized-name($tv-name,'tv-name')]"/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:function>
-
-	<!-- 
 		return a value based on the value of name passed, or return the phase as found. This phase name is validated later in the chain. 
 	-->
 	<xsl:function name="imf:compute-phase">

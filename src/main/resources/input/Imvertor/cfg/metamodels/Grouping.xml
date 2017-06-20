@@ -30,13 +30,6 @@
             <desc lang="nl">Een package waarvan de daarin opgenomen constructies ls één geheel worden beheerd, en waarvan dus een gezamenlijke versie wordt onderhouden</desc>
             <construct>package</construct>
         </stereo>
-        <stereo id="stereotype-name-subdomain-package">
-            <name lang="en">Subdomain</name>
-            <name lang="nl">Subdomein</name>
-            <desc>Een package binnen een (sub)domain package dat alleen voor het gemak is opgenomen en geen rol speelt in het technisch beheer. 
-                Constructies in subdomain packages worden opgevat als behorende bij het domain package.</desc>
-            <construct>package</construct>
-        </stereo>
         
         <stereo id="stereotype-name-application-package">
             <name lang="en">Application</name>
