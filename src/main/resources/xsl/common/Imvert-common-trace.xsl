@@ -166,7 +166,7 @@
             else local-name($client-construct)
             "/>
         <xsl:variable name="display-name" select="$client-construct/(@display-name,imvert:name)[1]"/>
-        
+        <xsl:variable name="root" select="$client-construct/ancestor::imvert:packages"/>
         <supplier>
             <xsl:attribute name="id" select="$client-construct/imvert:id"/>
             <xsl:attribute name="project" select="$client-project"/>
@@ -177,7 +177,9 @@
             <xsl:attribute name="type" select="$type"/>
             <xsl:attribute name="display-name" select="$display-name"/>
             <xsl:attribute name="base-namespace" select="$client-construct/ancestor::imvert:packages/imvert:base-namespace"/>
-            <xsl:attribute name="verkorteAlias" select="imf:get-tagged-value($client-construct/ancestor::imvert:packages,'##CFG-TV-VERKORTEALIAS')"/>
+            <xsl:if test="$root">
+                <xsl:attribute name="verkorteAlias" select="imf:get-tagged-value($root,'##CFG-TV-VERKORTEALIAS')"/>
+            </xsl:if>
         </supplier>
         
     </xsl:function>

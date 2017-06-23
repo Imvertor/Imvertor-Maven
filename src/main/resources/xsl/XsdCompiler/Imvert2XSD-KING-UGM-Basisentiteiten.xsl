@@ -61,7 +61,7 @@
    
     <xsl:variable name="all-simpletype-attributes" select="//imvert:attribute[empty(imvert:type)]"/> <!-- needed for disambiguation of duplicate attribute names -->
     
-    <xsl:variable name="prefix" select="imf:get-tagged-value($imvert-document/imvert:packages,'##CFG-TV-VERKORTEALIAS')"/>
+    <xsl:variable name="prefix" select="imf:get-taggedvalue($imvert-document/imvert:packages,'##CFG-TV-VERKORTEALIAS')"/>
     <xsl:variable name="target-namespace" select="$imvert-document/imvert:packages/imvert:base-namespace"/>
     <xsl:variable name="StUF-prefix" select="'StUF'"/>
     
@@ -385,7 +385,7 @@
     <xsl:template match="imvert:class" mode="mode-global-matchgegevens">
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
         <!-- <xsl:variable name="matchgegevens-x" select="imvert:*/imvert:*[imf:boolean(imvert:is-id)]"/> -->
-        <xsl:variable name="matchgegevens" select="imvert:*/imvert:*[starts-with(imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-INDICATIEKERNGEGEVEN'),'J')]"/><!-- attributes and associations. -->
+        <xsl:variable name="matchgegevens" select="imvert:*/imvert:*[starts-with(imf:get-taggedvalue(.,'##CFG-TV-INDICATIEKERNGEGEVEN'),'J')]"/><!-- attributes and associations. -->
         <xsl:variable name="matchgegevens-att" select="$matchgegevens[self::imvert:attribute]"/>
         <xsl:variable name="matchgegevens-cmp" select="$matchgegevens[self::imvert:association and imvert:aggregation = 'composite']"/>
         <xsl:variable name="matchgegevens-ass" select="$matchgegevens[self::imvert:association and not(imvert:aggregation = 'composite')]"/>
@@ -552,9 +552,9 @@
             <xsl:variable name="type-is-external" select="exists(imvert:conceptual-schema-type)"/>
            
             <xsl:variable name="facet-length" select="imvert:min-length"/>
-            <xsl:variable name="facet-pattern" select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-FORMALPATTERN')"/>
-            <xsl:variable name="facet-minval" select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-MINVALUEINCLUSIVE')"/>
-            <xsl:variable name="facet-maxval" select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-MAXVALUEINCLUSIVE')"/>
+            <xsl:variable name="facet-pattern" select="imf:get-taggedvalue(.,'##CFG-TV-FORMALPATTERN')"/>
+            <xsl:variable name="facet-minval" select="imf:get-taggedvalue(.,'##CFG-TV-MINVALUEINCLUSIVE')"/>
+            <xsl:variable name="facet-maxval" select="imf:get-taggedvalue(.,'##CFG-TV-MAXVALUEINCLUSIVE')"/>
             
             <xsl:variable name="facet-show" select="(exists($facet-length),exists($facet-pattern),exists($facet-minval),exists($facet-maxval))"/>
             
@@ -614,7 +614,7 @@
                         type="{$prefix}:{imf:capitalize(imf:useable-attribute-name($applicable-compiled-name,.))}-e" 
                         minOccurs="{$min-occurs}" 
                         maxOccurs="{$cardinality[4]}"
-                        imvert:checksum="{$checksum-string}"
+                        imvert-checksum="{$checksum-string}"
                         >
                         <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
                         <xsl:if test="$type-is-scalar-non-emptyable or $type-has-facets">
@@ -659,10 +659,10 @@
                         type="{$prefix}:{imf:capitalize(imf:useable-attribute-name($applicable-compiled-name,.))}-e" 
                         minOccurs="{$min-occurs}" 
                         maxOccurs="{$cardinality[4]}"
-                        imvert:checksum="{$checksum-string}"
+                        imvert-checksum="{$checksum-string}"
                         >
                         <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
-                        <xsl:if test="$type-is-scalar-non-emptyable or $type-has-facets">
+                        <xsl:if test="$type-is-scalar-non-emptyable">
                             <xsl:attribute name="nillable">true</xsl:attribute>
                         </xsl:if>
                         <xsl:sequence select="imf:create-comment(concat('Facets: length ', $facet-show[1],' pattern ', $facet-show[2],' minval ', $facet-show[3],' maxval ', $facet-show[4]))"/> 
@@ -969,9 +969,9 @@
             </xsl:when>
             <xsl:when test="exists(imvert:type-name)">
                 <xsl:sequence select="imf:create-comment(concat('mode-global-attribute-simpletype Attribuut type (simple) # ',@display-name))"/>
-                <xs:complexType name="{$name}-e" imvert:checksum="{$checksum-string}">
+                <xs:complexType name="{$name}-e" imvert-checksum="{$checksum-string}">
                     <xs:simpleContent>
-                        <xs:extension base="{$prefix}:{$name}" imvert:checksum="{$checksum-string}">
+                        <xs:extension base="{$prefix}:{$name}" imvert-checksum="{$checksum-string}">
                             <xs:attribute name="noValue" type="{$StUF-prefix}:NoValue"/>
                             <xsl:if test="empty($nillable-patroon)">
                                 <xs:attribute name="wildcard" type="{$StUF-prefix}:Wildcard"/>
@@ -979,7 +979,7 @@
                         </xs:extension>
                     </xs:simpleContent>
                 </xs:complexType>
-                <xs:simpleType name="{$name}" imvert:checksum="{$checksum-string}">
+                <xs:simpleType name="{$name}" imvert-checksum="{$checksum-string}">
                     <xsl:choose>
                         <xsl:when test="imvert:type-name = 'scalar-integer'">
                             <xs:restriction base="xs:integer">
@@ -1257,11 +1257,11 @@
     -->
     <xsl:function name="imf:get-history" as="xs:boolean+">
         <xsl:param name="this"/>
-        <xsl:variable name="formal-this" select="imf:get-most-relevant-compiled-taggedvalue($this,'Indicatie formele historie')"/>
-        <xsl:variable name="formal-grp" select="imf:get-most-relevant-compiled-taggedvalue(imf:get-groepattribuutsoort($this),'Indicatie formele historie')"/>
+        <xsl:variable name="formal-this" select="imf:get-taggedvalue($this,'##CFG-TV-INDICATIONFORMALHISTORY')"/>
+        <xsl:variable name="formal-grp" select="imf:get-taggedvalue(imf:get-groepattribuutsoort($this),'##CFG-TV-INDICATIONFORMALHISTORY')"/>
         <xsl:variable name="formal" select="if ($formal-this = 'ZIEGROEP') then $formal-grp else $formal-this"/>
-        <xsl:variable name="material-this" select="imf:get-most-relevant-compiled-taggedvalue($this,'Indicatie materiële historie')"/>
-        <xsl:variable name="material-grp" select="imf:get-most-relevant-compiled-taggedvalue(imf:get-groepattribuutsoort($this),'Indicatie materiële historie')"/>
+        <xsl:variable name="material-this" select="imf:get-taggedvalue($this,'##CFG-TV-INDICATIONMATERIALHISTORY')"/>
+        <xsl:variable name="material-grp" select="imf:get-taggedvalue(imf:get-groepattribuutsoort($this),'##CFG-TV-INDICATIONMATERIALHISTORY')"/>
         <xsl:variable name="material" select="if ($material-this = 'ZIEGROEP') then $material-grp else $material-this"/>
         <xsl:sequence select="(imf:boolean($this,$formal),imf:boolean($this,$material))"/>
     </xsl:function>
@@ -1283,7 +1283,7 @@
     <xsl:function name="imf:property-is-authentiek" as="xs:boolean">
         <xsl:param name="this" as="element()"/>
         <!-- see if any or the relevant tagged values for this attribute is authentic -->
-        <xsl:variable name="tv" select="imf:get-most-relevant-compiled-taggedvalue($this,'Indicatie authentiek')"/>
+        <xsl:variable name="tv" select="imf:get-taggedvalue($this,'##CFG-TV-INDICATIONAUTHENTIC')"/>
         <xsl:sequence select="$tv = ('Authentiek', 'Basisgegeven', 'Landelijk kerngegeven','Gemeentelijk kerngegeven','Overig')"/>
     </xsl:function>     
     
@@ -1295,7 +1295,16 @@
     <xsl:function name="imf:get-taggedvalue" as="xs:string?">
         <xsl:param name="this"/>
         <xsl:param name="name"/>
-        <xsl:value-of select="$this/imvert:tagged-values/imvert:tagged-value[imvert:name = $name]/imvert:value"/>
+        <xsl:choose>
+            <!-- the imvert:packages root element is never derived. To get the tagged value directly. -->
+            <xsl:when test="$this/self::imvert:packages">
+                <xsl:sequence select="imf:get-tagged-value($this,$name)"/>
+            </xsl:when>
+            <!-- any other element may be derived. So get the tagged value from the derivation tree. -->
+            <xsl:otherwise>
+                <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($this,$name)"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     
     <xsl:function name="imf:get-groepattribuutsoort" as="element()?">
@@ -1501,7 +1510,7 @@
     <xsl:function name="imf:property-is-in-onderzoek" as="xs:boolean">
         <xsl:param name="this" as="element()"/><!-- imvert:class (gegevensgroep) of imvert:attribute -->
         <!-- see if any of the relevant tagged values for this attribute is authentic -->
-        <xsl:variable name="tv" select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-INDICATIEINONDERZOEK')"/>
+        <xsl:variable name="tv" select="imf:get-taggedvalue($this,'##CFG-TV-INDICATIEINONDERZOEK')"/>
         <xsl:sequence select="$tv = 'Ja' or ($tv = 'Zie groep' and imf:property-is-in-onderzoek($this/../..))"/>
     </xsl:function>        
     
@@ -1599,8 +1608,8 @@
     
     <!-- ============== resolve checksums ============== -->
     
-    <xsl:template match="*[exists(@imvert:checksum)]" mode="resolve-checksums">
-        <xsl:variable name="checksum" select="@imvert:checksum"/>
+    <xsl:template match="*[exists(@imvert-checksum)]" mode="resolve-checksums">
+        <xsl:variable name="checksum" select="@imvert-checksum"/>
         <xsl:variable name="tokens" select="tokenize($checksum,'\[SEP\]')"/>
         <xsl:choose>
             <xsl:when test="self::xs:element">
@@ -1620,14 +1629,14 @@
                     <xsl:apply-templates mode="#current"/>
                 </xs:extension>
             </xsl:when>
-            <xsl:when test="self::xs:complexType and count(preceding::xs:complexType[@imvert:checksum = $checksum]) = 0">
+            <xsl:when test="self::xs:complexType and count(preceding::xs:complexType[@imvert-checksum = $checksum]) = 0">
                 <xsl:sequence select="imf:create-comment(concat('Resolve checksum on complextype - ', $checksum))"/>
                 <xsl:sequence select="imf:create-comment(concat('Type name is ', @name))"/>
                 <xs:complexType name="{$tokens[1]}-e">
                     <xsl:apply-templates mode="#current"/>
                 </xs:complexType>
             </xsl:when>
-            <xsl:when test="self::xs:simpleType and count(preceding::xs:simpleType[@imvert:checksum = $checksum]) = 0">
+            <xsl:when test="self::xs:simpleType and count(preceding::xs:simpleType[@imvert-checksum = $checksum]) = 0">
                 <xsl:sequence select="imf:create-comment(concat('Resolve checksum on simpletype - ', $checksum))"/>
                 <xsl:sequence select="imf:create-comment(concat('Type name is ', @name))"/>
                 <xs:simpleType name="{$tokens[1]}">
