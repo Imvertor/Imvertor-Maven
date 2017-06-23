@@ -601,8 +601,8 @@
         <xsl:param name="release" as="xs:string?"/><!-- not known for external and system packages -->
         <xsl:param name="map-name" as="xs:string"/>
         <xsl:variable name="parts" select="imf:get-uri-parts($namespace)"/>
-        <xsl:value-of select="concat($parts/server,'/',replace($parts/path,'/','-'),'(',$version, '-', $release,')')"/> 
-        <!-- TODO:  <xsl:value-of select="concat($parts/server,'/',$map-name,'-',$release)"/> -->
+        <!-- <xsl:value-of select="concat($parts/server,'/',replace($parts/path,'/','-'),'(',$version, '-', $release,')')"/> -->
+        <xsl:value-of select="concat($parts/server,'/',$map-name,'-',$release)"/>
     </xsl:function>
     
     <xsl:function name="imf:extract" as="xs:string">
@@ -1038,13 +1038,15 @@
     </xsl:function>
     
     <!-- 
-		return the tagged value or empty sequence when that tagged value is not found. If a value is passed, check if the value is the same.
+		Return the tagged value (as a string),
+		or empty sequence when that tagged value is not found. 
+		If a value is passed, check if the value is the same.
 	-->
     <xsl:function name="imf:get-tagged-value" as="xs:string?">
         <xsl:param name="this" as="node()"/>
-        <xsl:param name="tv-name" as="xs:string"/>
+        <xsl:param name="tv-id" as="xs:string"/>
         <xsl:param name="tv-value" as="xs:string?"/>
-        <xsl:variable name="tv" select="imf:get-tagged-value-element($this,$tv-name)[1]"/> <!-- TODO validate all values, may be multiple -->
+        <xsl:variable name="tv" select="imf:get-tagged-value-element($this,$tv-id)[1]"/> <!-- TODO validate all values, may be multiple -->
         <xsl:variable name="value" select="string($tv/imvert:value)"/>
         <xsl:choose>
             <xsl:when test="empty($tv)">
@@ -1064,23 +1066,97 @@
     
     <xsl:function name="imf:get-tagged-value" as="xs:string?">
         <xsl:param name="this" as="node()"/>
-        <xsl:param name="tv-name" as="xs:string"/> <!-- ADD ## FOR id -->
-        <xsl:sequence select="imf:get-tagged-value($this,$tv-name,())"/>
+        <xsl:param name="tv-id" as="xs:string"/> <!-- ADD ## FOR id -->
+        <xsl:sequence select="imf:get-tagged-value($this,$tv-id,())"/>
     </xsl:function>
     
     <xsl:function name="imf:get-tagged-value-element" as="element(imvert:tagged-value)*">
         <xsl:param name="this" as="node()"/>
-        <xsl:param name="tv-name" as="xs:string"/>
-        <xsl:variable name="tv-id" select="substring-after($tv-name,'##')"/>
+        <xsl:param name="tv-id" as="xs:string"/>
+        <xsl:variable name="tv-id-use" select="substring-after($tv-id,'##')"/>
         <xsl:choose>
-            <xsl:when test="normalize-space($tv-id)">
-                <xsl:sequence select="$this/imvert:tagged-values/imvert:tagged-value[@id=$tv-id]"/>
+            <xsl:when test="normalize-space($tv-id-use)">
+                <xsl:sequence select="$this/imvert:tagged-values/imvert:tagged-value[@id=$tv-id-use]"/>
             </xsl:when>
             <xsl:otherwise>
-                <!--TODO deprecated, only by id --> 
-                <xsl:sequence select="$this/imvert:tagged-values/imvert:tagged-value[imvert:name = imf:get-normalized-name($tv-name,'tv-name')]"/>
+                <!--TODO deprecated, only by id -->
+                <xsl:sequence select="imf:msg($this,'WARN','DEPRECATED Tagged value by name [1], use ID',$tv-id)"/>
+                <xsl:sequence select="$this/imvert:tagged-values/imvert:tagged-value[imvert:name = imf:get-normalized-name($tv-id,'tv-name')]"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
     
+    <!-- =========== optimization ============== -->
+    
+    <!--
+        Get the tagged value passed by ID, return string values of all applicable tagged values. 
+
+        If $mode is 'local', do not access the derivation tree. 
+        If $mode is 'relevant', return most relevant tagged value. 
+        If $mode is 'all', return all derived tagged values.
+    --> 
+    <xsl:function name="imf:get-tv-as-string" as="xs:string*">
+        <xsl:param name="this" as="node()"/>
+        <xsl:param name="tv-id" as="xs:string"/>
+        <xsl:param name="mode" as="xs:string"/> 
+        <xsl:sequence select="for $tv in imf:get-tv-as-element($this, $tv-id, $mode) return string($tv/imvert:value)"/>        
+    </xsl:function>
+    <xsl:function name="imf:get-tv-as-string" as="xs:string*">
+        <xsl:param name="this" as="node()"/>
+        <xsl:param name="tv-id" as="xs:string"/>
+        <xsl:sequence select="for $tv in imf:get-tv-as-element($this, $tv-id, 'relevant') return string($tv/imvert:value)"/>        
+    </xsl:function>
+    
+    <!--
+        Get the tagged value passed by ID, return all applicable imvert:tagged-value elements. 
+
+        If $mode is 'local', do not access the derivation tree. 
+        If $mode is 'relevant', return most relevant tagged value. 
+        If $mode is 'all', return all derived tagged values.
+    --> 
+    <xsl:function name="imf:get-tv-as-element" as="element(imvert:tagged-value)*">
+        <xsl:param name="this" as="node()"/>
+        <xsl:param name="tv-id" as="xs:string"/>
+        <xsl:param name="mode" as="xs:string"/>
+        
+        <xsl:variable name="stack" as="element()*">
+            <xsl:variable name="suppliers" select="imf:get-supplier-constructs($this)"/>
+            <xsl:for-each select="$suppliers">
+                <xsl:sequence select="imf:get-tv-as-element(.,$tv-id,$mode)"/>
+            </xsl:for-each>
+        </xsl:variable>
+
+        <xsl:choose>
+            <xsl:when test="$mode = 'local'">
+                <xsl:sequence select="$this/imvert:tagged-values/imvert:tagged-value[@id=$tv-id]"/>
+            </xsl:when>
+            <xsl:when test="$mode = 'all'">
+                <xsl:sequence select="$stack"/>
+            </xsl:when>
+            <xsl:when test="$mode = 'relevant'">
+                <xsl:sequence select="$stack[1]"/>
+            </xsl:when>
+        </xsl:choose>
+    </xsl:function>
+    <xsl:function name="imf:get-tv-as-element" as="element(imvert:tagged-value)*">
+        <xsl:param name="this" as="node()"/>
+        <xsl:param name="tv-id" as="xs:string"/>
+        <xsl:sequence select="imf:get-tv-as-element($this, $tv-id, 'relevant')"/>        
+    </xsl:function>
+    
+    <!--
+        Get the suppliers of the construct passed. 
+        Empty when no derivation tree is available or no traces are set. 
+    --> 
+    <xsl:function name="imf:get-supplier-constructs" as="element()*">
+        <xsl:param name="this" as="node()"/>
+       
+        <xsl:if test="exists($all-derived-models-doc)">
+            <xsl:for-each select="$this/imvert:trace">
+                <xsl:sequence select="imf:get-construct-by-id(.,$all-derived-models-doc)"/>
+                <xsl:sequence select="imf:get-supplier-constructs(.)"/>
+            </xsl:for-each>
+        </xsl:if>
+    </xsl:function>    
+
 </xsl:stylesheet>

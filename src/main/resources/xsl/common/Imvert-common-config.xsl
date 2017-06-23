@@ -179,7 +179,8 @@
     </xsl:function>
     
     <!-- 
-        Return the names of the tagged values as found in the source, as expected by the configuration.
+        Return the normalized names of the tagged values as found in the source, as expected by the configuration.
+        Pass the ID's of the tagged values.
         
         Example:
          get the tagged value with id "CFG-TV-POSITION". 
@@ -187,15 +188,15 @@
          then the function returns "positie" (the normalized dutch name).
     -->
     <xsl:function name="imf:get-config-tagged-values" as="xs:string*">
-        <xsl:param name="names" as="xs:string*"/>
+        <xsl:param name="ids" as="xs:string*"/>
         <xsl:param name="must-exist" as="xs:boolean"/>
-        <xsl:variable name="v" select="$configuration-tvset-file//tagged-values/tv[@id = $names]/name[@lang=$language]"/>
+        <xsl:variable name="v" select="$configuration-tvset-file//tagged-values/tv[@id = $ids]/name[@lang=$language]"/>
         <xsl:choose>
             <xsl:when test="exists($v)">
                 <xsl:sequence select="for $c in $v return string($c)"/>
             </xsl:when>
             <xsl:when test="$must-exist">
-                <xsl:sequence select="imf:msg('ERROR','Tagged value is/are not defined: [1]', string-join($names,', '))"/>
+                <xsl:sequence select="imf:msg('ERROR','Tagged value is/are not defined: [1]', string-join($ids,', '))"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="'#unknown'"/>
@@ -203,8 +204,8 @@
         </xsl:choose>
     </xsl:function>
     <xsl:function name="imf:get-config-tagged-values" as="xs:string*">
-        <xsl:param name="names" as="xs:string*"/>
-        <xsl:sequence select="imf:get-config-tagged-values($names,false())"/>
+        <xsl:param name="ids" as="xs:string*"/>
+        <xsl:sequence select="imf:get-config-tagged-values($ids,false())"/>
     </xsl:function>
     
     <!-- 
@@ -391,6 +392,14 @@
         </xsl:if>
     </xsl:function>
     
+    <!-- 
+        Get the normalized value for a tagged value passed.  Pass the value itself (not the tv construct).
+        A normalization rule is a named rule, and the normalization schema is a name of a predefined schem. Currently only tv is recognized. Example (scheme / rule):
+        •	Tv / Space – normalized space.
+        •	Tv / Note – pass as-is
+        •	Tv / Compact – extract letters and digits, convert to upper case. 
+        When no rule is specified, return the value as-is.
+    -->
     <xsl:function name="imf:get-tagged-value-norm-by-scheme" as="xs:string?">
         <xsl:param name="value"/>
         <xsl:param name="normalization-rule"/> <!-- e.g. "space" -->
@@ -402,9 +411,9 @@
             <xsl:when test="$normalization-scheme ='tv' and $normalization-rule = 'space'">
                 <xsl:value-of select="normalize-space($value)"/>
             </xsl:when>
-            <xsl:when test="$normalization-scheme ='tv' and $normalization-rule = 'case'">
+            <!--<xsl:when test="$normalization-scheme ='tv' and $normalization-rule = 'case'">
                 <xsl:value-of select="normalize-space($value)"/>
-            </xsl:when>
+            </xsl:when>-->
             <xsl:when test="$normalization-scheme ='tv' and $normalization-rule = 'note'">
                 <xsl:value-of select="imf:import-ea-note($value)"/>
             </xsl:when>

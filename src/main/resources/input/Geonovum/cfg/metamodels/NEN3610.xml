@@ -17,13 +17,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<schema-rules xmlns:xi="http://www.w3.org/2001/XInclude">
+<metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <xi:include href="../../../Geonovum/cfg/schemarules/NEN3610.xml"/>
+    <!-- Geonovum NEN3610 follows KKG ISO requirements -->
+    <xi:include href="../../../KKG/cfg/metamodels/KKG-ISO.xml"/>
+
+    <name>Geonovum NEN3610</name>
     
-    <name>BRO</name>
-    <!-- 
-        BRO specific rules 
-    -->
+    <desc>
+        Metamodel for Geonovum NEN3610 extensions.
+        Standard at https://www.geonovum.nl/onderwerpen/basismodel-geo-informatie-nen3610/algemeen-basismodel-geo-informatie-nen3610 .
+        Conformance test at https://www.geonovum.nl/documenten/testprotocol-nen-3610-modellering .
+    </desc>
     
-</schema-rules>
+</metamodel>

@@ -21,14 +21,14 @@
 
     <profiles>
         <profile lang="nl">
-            <id>KKGISONL</id>
+            <id>KKGNL</id>
             <release>0.9</release>
-            <desc>KKG-ISO Grouping (NL)</desc> 
+            <desc>KKG Grouping (NL)</desc> 
         </profile>
         <profile lang="en">
-            <id>KKGISOEN</id>
+            <id>KKGEN</id>
             <release>0.9</release>
-            <desc>KKG-ISO Grouping (EN)</desc>
+            <desc>KKG Grouping (EN)</desc>
         </profile>
         
         <!-- and include the visual conventions -->     

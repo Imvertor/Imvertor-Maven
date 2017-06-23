@@ -208,17 +208,17 @@
 	
 	<xsl:function name="imf:get-most-relevant-compiled-taggedvalue" as="xs:string?">
 		<xsl:param name="this" as="element()"/>
-		<xsl:param name="tv-name" as="xs:string"/><!-- ADD # FOR ID -->
-		<xsl:variable name="elm" select="imf:get-most-relevant-compiled-taggedvalue-element($this,$tv-name)"/>
+		<xsl:param name="tv-id" as="xs:string"/><!-- ADD # FOR ID -->
+		<xsl:variable name="elm" select="imf:get-most-relevant-compiled-taggedvalue-element($this,$tv-id)"/>
 		<xsl:sequence select="if (exists($elm)) then string($elm/@value) else ()"/>
 	</xsl:function>
 	
 	<xsl:function name="imf:get-most-relevant-compiled-taggedvalue-element" as="element(tv)?">
 		<xsl:param name="this" as="element()"/>
-		<xsl:param name="tv-name" as="xs:string"/>
+		<xsl:param name="tv-id" as="xs:string"/>
 		<xsl:variable name="tvs" select="imf:get-applicable-tagged-values($this)"/>
-		<xsl:variable name="tv-id" select="substring-after($tv-name,'##')"/>
-		<xsl:variable name="elm" select="if (normalize-space($tv-id)) then $tvs[@id=$tv-id] else $tvs[@name=$tv-name]"/>
+		<xsl:variable name="tv-id-use" select="substring-after($tv-id,'##')"/>
+		<xsl:variable name="elm" select="if (normalize-space($tv-id-use)) then $tvs[@id=$tv-id-use] else $tvs[@name=$tv-id]"/>
 		<xsl:sequence select="if (exists($elm)) then $elm else ()"/>
 	</xsl:function>
 	

@@ -847,7 +847,7 @@
         <xsl:variable name="name" select="imvert:name"/>
         <xsl:variable name="defining-class" select="imf:get-construct-by-id(imvert:type-id)"/>
         <xsl:variable name="defining-classes" select="($defining-class, imf:get-superclasses($defining-class))"/>
-        <xsl:variable name="is-combined-identification" select="imf:get-tagged-value($this,'Gecombineerde identificatie')"/>
+        <xsl:variable name="is-combined-identification" select="imf:get-tagged-value($this,'##CFG-TV=GECOMBINEERDEIDENTIFICATIE')"/>
         <xsl:variable name="target-navigable" select="imvert:target-navigable"/>
         <!--validation-->
         

@@ -8,7 +8,7 @@
         
         Including scalars.
     --> 
-    <xi:include href="../../../KKG/cfg/metamodels/KKG.xml"/>
+    <xi:include href="../../../Geonovum/cfg/metamodels/NEN3610.xml"/>
     
     <name>BRO</name>
     

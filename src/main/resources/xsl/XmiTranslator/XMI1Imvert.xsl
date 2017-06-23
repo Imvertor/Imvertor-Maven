@@ -215,6 +215,7 @@
                     <imvert:found-name>Xlinks</imvert:found-name>
                     <imvert:short-name>xlinks</imvert:short-name>
                     <imvert:id>XLINKS</imvert:id>
+                    <imvert:conceptual-schema-name>XLINKS</imvert:conceptual-schema-name>
                     <imvert:namespace>http://www.w3.org/1999/xlink</imvert:namespace>
                     <imvert:documentation>
                         <body xmlns="http://www.w3.org/1999/xhtml">XLinks is an external specification. For documentation please consult http://www.w3.org/TR/xlink/</body>

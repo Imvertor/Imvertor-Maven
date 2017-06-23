@@ -22,6 +22,8 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:imvert="http://www.imvertor.org/schema/system"
     
+    xmlns:imf="http://www.imvertor.org/xsl/functions"
+    
     exclude-result-prefixes="#all"
     version="2.0">
     
@@ -38,5 +40,8 @@
         name="document-classes" 
         select="$imvert-document//imvert:class"
         as="node()*"/>
+    
+    <xsl:variable name="all-derived-models-path" select="imf:get-config-string('properties','WORK_DEPENDENCIES_FILE',())"/>
+    <xsl:variable name="all-derived-models-doc" select="imf:document($all-derived-models-path,false())"/>
     
 </xsl:stylesheet>

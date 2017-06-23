@@ -1,0 +1,174 @@
+<domeinen>
+    <!-- see https://3.basecamp.com/3407963/buckets/1485677/uploads/535159541 -->
+    <desc> Aangeleverd door Alterra. Afkortingen voor alle BRO registratieobjecten. Deze zijn vastgesteld door TNO. </desc>
+
+    <domein>
+        <name lang="nl">Bodem- en grondonderzoek</name>
+        <name lang="en">Subsurface Research</name>
+        <abbrev>SR</abbrev>
+        <registratieobject>
+            <name lang="nl">Geotechnisch sondeeronderzoek</name>
+            <name lang="en">Cone penetration test</name>
+            <abbrev>CPT</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Geo-elektrisch onderzoek</name>
+            <name lang="en">Geo-electric survey</name>
+            <abbrev>GES</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Seismisch onderzoek</name>
+            <name lang="en">Seismic survey</name>
+            <abbrev>SMS</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Booronderzoek</name>
+            <name lang="en">Borehole research</name>
+            <abbrev>BHR</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Bodemkundig booronderzoek</name>
+            <name lang="en">Borehole research-Pedology</name>
+            <abbrev>BHR-P</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Bodemkundig profielkuilonderzoek</name>
+            <name lang="en">Soil pit research</name>
+            <abbrev>SPR</abbrev>
+        </registratieobject>
+    </domein>
+    <domein>
+        <name lang="nl">Bodemkwaliteit</name>
+        <name lang="en">Soil Quality</name>
+        <abbrev>SQ</abbrev>
+        <registratieobject>
+            <name lang="nl">Bodemmeetnet</name>
+            <name lang="en">Soil monitoring network</name>
+            <abbrev>SMN</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Bodemsamenstellingsonderzoek</name>
+            <name lang="en">Soil analysis report</name>
+            <abbrev>SAR</abbrev>
+        </registratieobject>
+    </domein>
+
+    <domein>
+        <name lang="nl">Grondwater-monitoring</name>
+        <name lang="en">Groundwater Monitoring</name>
+        <abbrev>GM</abbrev>
+        <registratieobject>
+            <name lang="nl">Grondwatermonitoringput</name>
+            <name lang="en">Groundwater monitoring well</name>
+            <abbrev>GMW</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Grondwaterstandonderzoek</name>
+            <name lang="en">Groundwater level dossier</name>
+            <abbrev>GLD</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Grondwatersamenstellingsonderzoek</name>
+            <name lang="en">Groundwater analysis report</name>
+            <abbrev>GAR</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Grondwatermonitoringnet</name>
+            <name lang="en">Groundwater monitoring network</name>
+            <abbrev>GMN</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Synthese Grondwaterkwantiteit</name>
+            <name lang="en">Groundwater level synthesis</name>
+            <abbrev>GLS</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Synthese Grondwaterkwaliteit</name>
+            <name lang="en">Groundwater quality synthesis</name>
+            <abbrev>GQS</abbrev>
+        </registratieobject>
+    </domein>
+  
+    <domein>
+        <name lang="nl">Mijnbouwwet</name>
+        <name lang="en">Exploration&amp; Production</name>
+        <abbrev>EP</abbrev>
+        <registratieobject>
+            <name lang="nl">Mijnbouwwet boorgatsysteem </name>
+            <name lang="en">Exploration borehole </name>
+            <abbrev>EBH</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Mijnbouwwet booronderzoek </name>
+            <name lang="en">Exploration borehole research</name>
+            <abbrev>EBR</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Mijnbouwwet putsysteem</name>
+            <name lang="en">Production well system</name>
+            <abbrev>PWS</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Mijnbouwwet productiedossier </name>
+            <name lang="en">Production figures dossier</name>
+            <abbrev>PFD</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Mijnbouwwetvergunning </name>
+            <name lang="en">Exploration production (and storage) licence</name>
+            <abbrev>EPL</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Koolwaterstof reservedossier </name>
+            <name lang="en">Hydrocarbon reserves dossier</name>
+            <abbrev>HRD</abbrev>
+        </registratieobject>
+    </domein>
+
+    <domein>
+        <name lang="nl">Grondwater-gebruik</name>
+        <name lang="en">Groundwater Utilisation</name>
+        <abbrev>GU</abbrev>
+        <registratieobject>
+            <name lang="nl">Grondwatergebruiksysteem</name>
+            <name lang="en">Groundwater utilisation facility</name>
+            <abbrev>GUF</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Grondwaterproductiedossier</name>
+            <name lang="en">Groundwater production dossier</name>
+            <abbrev>GPD</abbrev>
+        </registratieobject>
+    </domein>
+
+    <domein>
+        <name lang="nl">Modellen</name>
+        <name lang="en">Models and Maps</name>
+        <abbrev>MM</abbrev>
+        <registratieobject>
+            <name lang="nl">Bodem- en grondwatertrappenkaart</name>
+            <name lang="en">Soil and groundwater map</name>
+            <abbrev>SGM</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Geomorfologische kaart </name>
+            <name lang="en">Geomorphological map</name>
+            <abbrev>GMM</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">REGIS</name>
+            <name lang="en">Hydrogeological model</name>
+            <abbrev>HGM</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">GeoTOP</name>
+            <name lang="en">GeoTOP model</name>
+            <abbrev>GTM</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Koolwaterstofvoorkomen </name>
+            <name lang="en">Hydrocarbon accumulation</name>
+            <abbrev>HCA</abbrev>
+        </registratieobject>
+    </domein>
+</domeinen>

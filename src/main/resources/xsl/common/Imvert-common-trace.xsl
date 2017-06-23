@@ -17,8 +17,6 @@
 
     <xsl:variable name="application-package-subpath" select="imf:get-trace-supplier-subpath($project-name,$application-package-name,$application-package-release)"/>
     
-    <xsl:variable name="all-derived-models-path" select="imf:get-config-string('properties','WORK_DEPENDENCIES_FILE',())"/>
-    <xsl:variable name="all-derived-models-doc" select="imf:document($all-derived-models-path,false())"/>
     <xsl:variable name="all-derived-models" select="$all-derived-models-doc/imvert:package-dependencies/imvert:supplier-contents"/>
     
     <xsl:function name="imf:get-construct-formal-trace-name" as="xs:string">

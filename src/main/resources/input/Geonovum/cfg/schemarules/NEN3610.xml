@@ -18,12 +18,11 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <schema-rules xmlns:xi="http://www.w3.org/2001/XInclude">
-    
-    <xi:include href="../../../Geonovum/cfg/schemarules/NEN3610.xml"/>
-    
-    <name>BRO</name>
+    <name>NEN3610</name>
+
+    <xi:include href="../../../ISO/cfg/schemarules/ISO19136.xml"/>
+
     <!-- 
-        BRO specific rules 
+        Geonovum NEN3610 specific rules 
     -->
-    
 </schema-rules>

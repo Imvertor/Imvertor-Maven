@@ -91,7 +91,7 @@
                 </xsl:call-template>
                 <body>
                     <img src="{imf:get-config-parameter('web-logo')}"/>
-                    <xsl:sequence select="imf:create-report-page-header('Processing report')"/>
+                    <xsl:sequence select="imf:create-report-page-header('IMVERTOR Processing report')"/>
                     <p>Created by:
                         <xsl:value-of select="imf:get-config-string('run','version')"/>
                     </p>

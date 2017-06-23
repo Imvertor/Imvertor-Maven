@@ -5,6 +5,7 @@
     <svn-id>$Id: conceptual-schemas.xml 7209 2015-08-25 12:28:42Z arjan $</svn-id>
     
     <mapping name="NEN3610_GML321">
+        <use>NEN3610</use>
         <use>GML321</use>
     </mapping>
     
@@ -262,7 +263,7 @@
     <conceptual-schema>
         <description>Service Envelop Procesresultaat</description>
         <url>http://www.kadaster.nl/conceptual-schemas/envelop/Proces</url>
-        <!-- -->
+        <!-- schemas-generiek-procesresultaat-v20110922(0.6-20110922) -->
         <map 
             name="ENVPROC" 
             namespace="http://www.kadaster.nl/schemas/generiek/procesresultaat/v20110922" 
@@ -283,7 +284,7 @@
     <conceptual-schema>
         <description>Service Envelop Logging</description>
         <url>http://www.kadaster.nl/conceptual-schemas/envelop/Log</url>
-        <!-- -->
+        <!-- schemas-generiek-procesresultaat-v20110922(0.6-20110922) -->
         <map 
             name="ENVLOG" 
             namespace="http://www.kadaster.nl/schemas/Log/v20120501" 
@@ -303,7 +304,7 @@
     <conceptual-schema>
         <description>Service Envelop Productgegevens</description>
         <url>http://www.kadaster.nl/conceptual-schemas/envelop/Product</url>
-        <!-- -->
+        <!-- schemas-kik-inzage-verzoektotinformatieantwoord-productgegevens-v20170101(1.0.0-20170101) -->
         <map 
             name="ENVPROD" 
             namespace="http://www.kadaster.nl/schemas/kik-inzage/verzoektotinformatieantwoord/productgegevens/v20170101" 
@@ -316,6 +317,30 @@
             </releases>
             
             <type name="ProductGegevens">ProductGegevens</type>  
+            
+        </map>
+    </conceptual-schema>
+
+    <conceptual-schema>
+        <description>NEN3610 (2011)</description>
+        <url>http://www.kadaster.nl/conceptual-schemas/NEN3610</url>
+        <map 
+            name="NEN3610" 
+            namespace="http://www.geonovum.nl/NEN3610" 
+            version="2011" 
+            phase="3" 
+            location="http://www.geonovum.nl/NEN3610/v20110301/NEN3610_NEN3610_v1_0_0.xsd">
+            
+            <releases>
+                <release>20110301</release> 
+            </releases>
+            
+            <type name="NEN3610ID">NEN3610ID</type>  
+            <type name="GeoObject">GeoObject</type>  
+            <type name="Historie">Historie</type>  
+            <type name="Levensduur">Levensduur</type>  
+            <type name="RegistratiefGebied">RegistratiefGebied</type>  
+            <type name="VoidReasonValue">VoidReasonValue</type>  
             
         </map>
     </conceptual-schema>

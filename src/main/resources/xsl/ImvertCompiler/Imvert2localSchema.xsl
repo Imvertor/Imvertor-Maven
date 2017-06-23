@@ -71,6 +71,9 @@
             <xsl:when test="empty(imvert:release)">
                 <xsl:sequence select="imf:msg(.,'ERROR','Release is missing.',())"/>
             </xsl:when>
+            <xsl:when test="empty(imvert:conceptual-schema-name)">
+                <xsl:sequence select="imf:msg(.,'FATAL','Conceptual-schema-name is missing.',())"/>
+            </xsl:when>
             <xsl:otherwise>
                 <xsl:variable name="schemafolder" select="imf:get-schema-foldername(imvert:namespace,imvert:version,imvert:release,imvert:conceptual-schema-name)"/>
                 <!-- if this is an imported external package, include in the list --> 

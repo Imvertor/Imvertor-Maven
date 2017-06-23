@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <!-- 
+        this metamodel is subject to standard Grouping conventions 
+    -->
+    <xi:include href="KKG.xml"/>
+   
+    <name>KKG ISO</name>
+    
+    <desc lang="en">TODO</desc>
+    <desc lang="nl">Metamodel for KKG ISO exchange models</desc>
+
+    <profiles>
+        <profile lang="nl">
+            <id>KKGISONL</id>
+            <release>0.9</release>
+            <desc>KKG-ISO Grouping (NL)</desc> 
+        </profile>
+        <profile lang="en">
+            <id>KKGISOEN</id>
+            <release>0.9</release>
+            <desc>KKG-ISO Grouping (EN)</desc>
+        </profile>
+    </profiles>
+    
+    <naming>
+        <package>
+            <format>UpperCamel</format>
+        </package>
+        <class>
+            <format>UpperCamel</format>
+        </class>
+        <property>
+            <format>LowerCamel</format>
+        </property>
+        <tv>
+            <format>lowercase</format>
+        </tv>
+    </naming>
+    
+    <stereotypes xml:id="stereotypes">
+
+        <!-- 
+            For each stereotype, define a formal name, the name(s) in UML, description, the construct(s) to which the stereotype applies, and possible rules.
+        -->
+      
+        <stereo id="stereotype-name-identification">
+            <name lang="nl">Identificatie</name>
+            <name lang="en">Identification</name>
+            <desc lang="en">
+            </desc>
+            <desc lang="nl">	
+            </desc>
+            <construct>attribute</construct>
+        </stereo>
+       
+    </stereotypes>
+</metamodel>
