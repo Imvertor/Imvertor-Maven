@@ -20,7 +20,7 @@
 	<xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-create-endproduct-rough-structure.xsl 1
 		2016-12-01 13:32:00Z RobertMelskens $</xsl:variable>
 
-	<xsl:variable name="verkorteAlias" select="/imvert:packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='Verkorte alias']"/>
+	<xsl:variable name="verkorteAlias" select="imf:get-tagged-value(/imvert:packages,'##CFG-TV-VERKORTEALIAS')"/>
 	<xsl:variable name="namespaceIdentifier" select="/imvert:packages/imvert:base-namespace"/>
 	
 	<xsl:key name="associations" match="imvert:association" use="imvert:type-id"/>
@@ -65,21 +65,11 @@
 				</xsl:choose>
 			</xsl:variable>
 			
-			<xsl:variable name="berichtType">
-				<xsl:choose>
-					<xsl:when test="imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-vraagberichttype'))">Vraagbericht</xsl:when>
-					<xsl:when test="imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-antwoordberichttype'))">Antwoordbericht</xsl:when>
-					<xsl:when test="imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-kennisgevingberichttype'))">kennisgevingbericht</xsl:when>
-					<xsl:when test="imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-synchronisatieberichttype'))">synchronisatiebericht</xsl:when>
-					<xsl:when test="imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-vrijberichttype'))">Vrij bericht</xsl:when>
-				</xsl:choose>
-			</xsl:variable>
-			<xsl:variable name="berichtstereotype" select="imvert:stereotype"/>
 			<xsl:variable name="berichtCode" select="imvert:tagged-values/imvert:tagged-value[imvert:name = 'Berichtcode']/imvert:value"/>
 			
 			<xsl:if test="$berichtCode = ''">
 				<xsl:message
-					select="concat('ERROR ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : The berichtcode can not be determined. To be able to generate correct messages this is neccessary. Check if your model contains the tagged value Berichtcode. (', $berichtstereotype)"
+					select="concat('ERROR ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : The berichtcode can not be determined. To be able to generate correct messages this is neccessary. Check if your model contains the tagged value Berichtcode. (', imvert:stereotype)"
 				/>
 			</xsl:if>
 			<!-- ROME: De volgende xsl:if wrapper kan verwijderd worden zodra duidelijk is hoe een Du02 bericht vertaald moet worden. -->
@@ -133,12 +123,6 @@
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="embeddedBerichtCode"/>
 		
-		<!-- The purpose of this parameter is to determine if the element 'stuurgegevens' 
-			must be generated or not. This is important because the 'kennisgevingbericht' , 
-			'vraagbericht' or 'antwoordbericht' objects within the context of a 'vrijbericht' 
-			object aren't allowed to contain 'stuurgegevens'. -->
-		<xsl:param name="useStuurgegevens" select="'yes'"/>
-
 		<xsl:sequence select="imf:create-debug-comment('debug:start A01000 /debug:start',$debugging)"/>
 		
 		<!-- The folowing 2 apply-templates initiate the processing of the 'imvert:association' 
@@ -252,7 +236,6 @@
 		<xsl:param name="id-trail"/>
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="context"/>
-		<xsl:param name="historyApplies" select="'no'"/>
 		<xsl:variable name="id" select="imvert:id"/>
 
 		<xsl:sequence select="imf:create-debug-comment('debug:start A03000 /debug:start',$debugging)"/>
@@ -340,6 +323,9 @@
 
 							<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 							<xsl:variable name="subpath" select="$supplier/@subpath"/>
+							<!-- If the current construct has a trace to a construct within a UGM model The following variable must get the value of the path to that UGM model
+								 however if the current construct is from the 'Berichtstructuren' package it must stay empty. In that case the elements 'ep:verkorteAlias' and
+								 'ep:namespaceIdentifier' wil get the related values from the StUF namespace. -->
 							<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
 
 							<xsl:sequence
@@ -412,7 +398,12 @@
 		<xsl:param name="id-trail"/>
 		<xsl:param name="berichtCode"/>
 		<xsl:param name="context"/>
-		<xsl:param name="historyApplies" select="'no'"/>
+
+		<!-- The purpose of this parameter is to determine if the element 'stuurgegevens' 
+			must be generated or not. This is important because the 'kennisgevingbericht' , 
+			'vraagbericht' or 'antwoordbericht' objects within the context of a 'vrijbericht' 
+			object aren't allowed to contain 'stuurgegevens'. -->
+		
 		<xsl:param name="useStuurgegevens" select="'yes'"/>
 
 		<xsl:variable name="type-id" select="imvert:type-id"/>
@@ -455,7 +446,7 @@
 								<xsl:variable name="association-class-type-id" select="imvert:type-id"/>
 								<xsl:for-each select="imf:get-class-construct-by-id($association-class-type-id,$packages-doc)/imvert:attributes/imvert:attribute">
 									<ep:tagged-value>
-										<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie')"/>
+										<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIONMATERIALHISTORY')"/>
 									</ep:tagged-value>
 								</xsl:for-each>
 							</xsl:for-each>									
@@ -464,12 +455,16 @@
 							test="($berichtCode = ('La07','La08','La09','La10')) and $tv-materieleHistorie-attributes//ep:tagged-value = ('JA','JAZIEREGELS')">
 							<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja op attributes'"/>
 						</xsl:if>
+						<xsl:if
+							test="($berichtCode = ('La07','La08','La09','La10')) and contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiele historie'), 'JA')">
+							<xsl:attribute name="indicatieMaterieleHistorieRelatie" select="'Ja op attributes'"/>
+						</xsl:if>
 						<xsl:variable name="tv-formeleHistorie-attributes">
 							<xsl:for-each select="imvert:association-class">
 								<xsl:variable name="association-class-type-id" select="imvert:type-id"/>
 								<xsl:for-each select="imf:get-class-construct-by-id($association-class-type-id,$packages-doc)/imvert:attributes/imvert:attribute">
 									<ep:tagged-value>
-										<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie')"/>
+										<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIONFORMALHISTORY')"/>
 									</ep:tagged-value>
 								</xsl:for-each>
 							</xsl:for-each>									
@@ -479,7 +474,7 @@
 							<xsl:attribute name="indicatieFormeleHistorie" select="'Ja op attributes'"/>
 						</xsl:if>
 						<xsl:if
-							test="($berichtCode = ('La09','La10')) and contains(imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie'), 'JA')">
+							test="($berichtCode = ('La09','La10')) and contains(imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIONFORMALHISTORY'), 'JA')">
 							<xsl:attribute name="indicatieFormeleHistorieRelatie" select="'Ja'"/>
 						</xsl:if>
 						<xsl:sequence select="imf:create-debug-comment('A04010]',$debugging)"/>
@@ -487,14 +482,14 @@
 					<xsl:otherwise>
 						<xsl:choose>
 							<xsl:when
-								test="($berichtCode = ('La07','La08','La09','La10')) and contains(imf:get-most-relevant-compiled-taggedvalue(key('class',$type-id), 'Indicatie materiële historie'), 'JA')">
+								test="($berichtCode = ('La07','La08','La09','La10')) and contains(imf:get-most-relevant-compiled-taggedvalue(key('class',$type-id), '##CFG-TV-INDICATIONMATERIALHISTORY'), 'JA')">
 								<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja'"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:variable name="tv-materieleHistorie-attributes">
 									<xsl:for-each select="key('class',$type-id)/imvert:attributes/imvert:attribute">
 										<ep:tagged-value>
-											<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie')"/>
+											<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIONMATERIALHISTORY')"/>
 										</ep:tagged-value>
 									</xsl:for-each>
 								</xsl:variable>
@@ -505,14 +500,14 @@
 						</xsl:choose>
 						<xsl:choose>
 							<xsl:when
-								test="($berichtCode = ('La09','La10')) and contains(imf:get-most-relevant-compiled-taggedvalue(key('class',$type-id), 'Indicatie formele historie'), 'JA')">
+								test="($berichtCode = ('La09','La10')) and contains(imf:get-most-relevant-compiled-taggedvalue(key('class',$type-id), '##CFG-TV-INDICATIONFORMALHISTORY'), 'JA')">
 								<xsl:attribute name="indicatieFormeleHistorie" select="'Ja'"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:variable name="tv-formeleHistorie-attributes">
 									<xsl:for-each select="key('class',$type-id)/imvert:attributes/imvert:attribute">
 										<ep:tagged-value>
-											<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie')"/>
+											<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIONFORMALHISTORY')"/>
 										</ep:tagged-value>
 									</xsl:for-each>
 								</xsl:variable>
@@ -650,6 +645,9 @@
 			
 			<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 			<xsl:variable name="subpath" select="$supplier/@subpath"/>
+			<!-- If the current construct has a trace to a construct within a UGM model The following variable must get the value of the path to that UGM model
+				 however if the current construct is from the 'Berichtstructuren' package it must stay empty. In that case the elements 'ep:verkorteAlias' and
+				 'ep:namespaceIdentifier' wil get the related values from the StUF namespace. -->
 			<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
 
 			<xsl:sequence
@@ -719,7 +717,6 @@
 		mode="create-rough-message-content">
 		<xsl:param name="id-trail"/>
 		<xsl:param name="berichtCode"/>
-		<xsl:param name="historyApplies" select="'no'"/>
 		<xsl:param name="embeddedBerichtCode"/>
 		
 		<xsl:variable name="context">
@@ -749,15 +746,6 @@
 					<xsl:with-param name="context" select="$context"/>
 					<xsl:with-param name="type-id" select="$type-id"/>
 					<xsl:with-param name="constructName" select="'-'"/>
-					<xsl:with-param name="historyApplies">
-						<xsl:choose>
-							<xsl:when test="$berichtCode = ('La07','La08')"
-								>yes-Materieel</xsl:when>
-							<xsl:when test="$berichtCode = ('La09','La10')"
-								>yes</xsl:when>
-							<xsl:otherwise>no</xsl:otherwise>
-						</xsl:choose>
-					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:when test="contains($berichtCode, 'Lv') or contains($embeddedBerichtCode, 'Lv')">
@@ -770,7 +758,6 @@
 							<xsl:with-param name="context" select="$context"/>
 							<xsl:with-param name="type-id" select="$type-id"/>
 							<xsl:with-param name="constructName" select="'-'"/>
-							<xsl:with-param name="historyApplies" select="'no'"/>
 							<xsl:with-param name="typeCode" select="'toplevel'"/>					
 							<xsl:with-param name="embeddedBerichtCode" select="$embeddedBerichtCode"/>
 						</xsl:call-template>
@@ -783,7 +770,6 @@
 							<xsl:with-param name="context" select="$context"/>
 							<xsl:with-param name="type-id" select="$type-id"/>
 							<xsl:with-param name="constructName" select="'-'"/>
-							<xsl:with-param name="historyApplies" select="'no'"/>
 						</xsl:call-template>
 					</xsl:when>
 					<xsl:when test="$context = 'scope'">
@@ -794,7 +780,6 @@
 							<xsl:with-param name="context" select="$context"/>
 							<xsl:with-param name="type-id" select="$type-id"/>
 							<xsl:with-param name="constructName" select="'-'"/>
-							<xsl:with-param name="historyApplies" select="'no'"/>
 						</xsl:call-template>
 					</xsl:when>
 				</xsl:choose>
@@ -808,7 +793,6 @@
 					<xsl:with-param name="context" select="$context"/>
 					<xsl:with-param name="type-id" select="$type-id"/>
 					<xsl:with-param name="constructName" select="'-'"/>
-					<xsl:with-param name="historyApplies" select="'no'"/>
 					<xsl:with-param name="typeCode" select="'toplevel'"/>					
 					<xsl:with-param name="embeddedBerichtCode" select="$embeddedBerichtCode"/>
 				</xsl:call-template>
@@ -823,7 +807,6 @@
 					<xsl:with-param name="context" select="$context"/>
 					<xsl:with-param name="type-id" select="$type-id"/>
 					<xsl:with-param name="constructName" select="'-'"/>
-					<xsl:with-param name="historyApplies" select="'no'"/>
 					<xsl:with-param name="typeCode" select="'entiteitrelatie'"/>					
 				</xsl:call-template>
 			</xsl:when>
@@ -835,7 +818,6 @@
 					<xsl:with-param name="context" select="$context"/>
 					<xsl:with-param name="type-id" select="$type-id"/>
 					<xsl:with-param name="constructName" select="'-'"/>
-					<xsl:with-param name="historyApplies" select="'no'"/>
 					<xsl:with-param name="typeCode" select="'entiteitrelatie'"/>					
 				</xsl:call-template>
 			</xsl:when>
@@ -890,15 +872,17 @@
 					</xsl:attribute>
 					<xsl:attribute name="type" select="'complex datatype'"/>
 					<xsl:if
-						test="($berichtCode = ('La07','La08','La09','La10')) and 
-						((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = ('JA','JAZIEREGELS'))]) >= 1) or
-						(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = ('JA','JAZIEREGELS'))]) >= 1))">
+						test="($berichtCode = ('La07','La08','La09','La10')) and
+						((count(key('class',$type-id)/imvert:attributes/imvert:attribute[imf:get-tagged-value(.,'##CFG-TV-INDICATIONMATERIALHISTORY') = ('JA','JAZIEREGELS')]) >= 1)
+						or
+						(count(key('class',$type-id)/imvert:associations/imvert:association[imf:get-tagged-value(.,'##CFG-TV-INDICATIONMATERIALHISTORY') = ('JA','JAZIEREGELS')]) >= 1))">
 						<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja'"/>
 					</xsl:if>
 					<xsl:if
-						test="($berichtCode = ('La09','La10')) and
-						((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'JA']) >= 1) or
-						(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'JA']) >= 1))">
+						test="($berichtCode = ('La09','La10')) and 
+						((count(key('class',$type-id)/imvert:attributes/imvert:attribute[imf:get-tagged-value(.,'##CFG-TV-INDICATIONFORMALHISTORY') ='JA']) >= 1)
+						or
+						(count(key('class',$type-id)/imvert:associations/imvert:association[imf:get-tagged-value(.,'##CFG-TV-INDICATIONFORMALHISTORY') ='JA']) >= 1))">
 						<xsl:attribute name="indicatieFormeleHistorie" select="'Ja'"/>
 					</xsl:if>
 					<xsl:attribute name="className" select="//imvert:class[imvert:id = $type-id]/imvert:name"/>
@@ -912,6 +896,9 @@
 					
 					<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 					<xsl:variable name="subpath" select="$supplier/@subpath"/>
+					<!-- If the current construct has a trace to a construct within a UGM model The following variable must get the value of the path to that UGM model
+					 	 however if the current construct is from the 'Berichtstructuren' package it must stay empty. In that case the elements 'ep:verkorteAlias' and
+					 	 'ep:namespaceIdentifier' wil get the related values from the StUF namespace. -->
 					<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
 					
 					<xsl:sequence
@@ -929,7 +916,6 @@
 					<xsl:sequence
 						select="imf:create-output-element('ep:namespaceIdentifierGerelateerdeEntiteit', imf:getNamespaceIdentifier($UGMgerelateerde))"/>
 					
-					<xsl:variable name="class-id" select="imvert:type-id"/>
 					<xsl:sequence
 						select="imf:create-output-element('ep:class-name', $gerelateerde/ep:name)"/>
 					
@@ -979,15 +965,17 @@
 					</xsl:attribute>
 					<xsl:attribute name="type" select="'entity'"/>
 					<xsl:if
-						test="($berichtCode = ('La07','La08','La09','La10')) and 
-						((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = ('JA','JAZIEREGELS'))]) >= 1) or
-						(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = ('JA','JAZIEREGELS'))]) >= 1))">
+						test="($berichtCode = ('La07','La08','La09','La10')) and
+						((count(key('class',$type-id)/imvert:attributes/imvert:attribute[imf:get-tagged-value(.,'##CFG-TV-INDICATIONMATERIALHISTORY') = ('JA','JAZIEREGELS')]) >= 1)
+						or
+						(count(key('class',$type-id)/imvert:associations/imvert:association[imf:get-tagged-value(.,'##CFG-TV-INDICATIONMATERIALHISTORY') = ('JA','JAZIEREGELS')]) >= 1))">
 						<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja'"/>
 					</xsl:if>
 					<xsl:if
-						test="($berichtCode = ('La09','La10')) and
-						((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'JA']) >= 1) or
-						(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'JA']) >= 1))">
+						test="($berichtCode = ('La09','La10')) and 
+						((count(key('class',$type-id)/imvert:attributes/imvert:attribute[imf:get-tagged-value(.,'##CFG-TV-INDICATIONFORMALHISTORY') ='JA']) >= 1)
+						or
+						(count(key('class',$type-id)/imvert:associations/imvert:association[imf:get-tagged-value(.,'##CFG-TV-INDICATIONFORMALHISTORY') ='JA']) >= 1))">
 						<xsl:attribute name="indicatieFormeleHistorie" select="'Ja'"/>
 					</xsl:if>
 					<xsl:attribute name="className" select="//imvert:class[imvert:id = $type-id]/imvert:name"/>
@@ -1001,6 +989,9 @@
 					
 					<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 					<xsl:variable name="subpath" select="$supplier/@subpath"/>
+					<!-- If the current construct has a trace to a construct within a UGM model The following variable must get the value of the path to that UGM model
+						 however if the current construct is from the 'Berichtstructuren' package it must stay empty. In that case the elements 'ep:verkorteAlias' and
+						 'ep:namespaceIdentifier' wil get the related values from the StUF namespace. -->
 					<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
 					
 					<xsl:sequence
@@ -1018,7 +1009,6 @@
 					<xsl:sequence
 						select="imf:create-output-element('ep:namespaceIdentifierGerelateerdeEntiteit', imf:getNamespaceIdentifier($UGMgerelateerde))"/>
 					
-					<xsl:variable name="class-id" select="imvert:type-id"/>
 					<xsl:sequence
 						select="imf:create-output-element('ep:class-name', $gerelateerde/ep:name)"/>
 					
@@ -1065,7 +1055,6 @@
 		<xsl:param name="context"/>
 		<xsl:param name="type-id"/>
 		<xsl:param name="constructName"/>
-		<xsl:param name="historyApplies"/>
 		<xsl:param name="typeCode" select="''"/>					
 		<xsl:param name="embeddedBerichtCode"/>
 		
@@ -1096,17 +1085,20 @@
 			</xsl:attribute>
 			<xsl:attribute name="type" select="'entity'"/>
 			<xsl:if
-				test="($berichtCode = ('La07','La08','La09','La10')) and 
-				((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = ('JA','JAZIEREGELS'))]) >= 1) or
-				(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = ('JA','JAZIEREGELS'))]) >= 1))">
+				test="($berichtCode = ('La07','La08','La09','La10')) and
+				((count(key('class',$type-id)/imvert:attributes/imvert:attribute[imf:get-tagged-value(.,'##CFG-TV-INDICATIONMATERIALHISTORY') = ('JA','JAZIEREGELS')]) >= 1)
+				or
+				(count(key('class',$type-id)/imvert:associations/imvert:association[imf:get-tagged-value(.,'##CFG-TV-INDICATIONMATERIALHISTORY') = ('JA','JAZIEREGELS')]) >= 1))">
 				<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja'"/>
 			</xsl:if>
 			<xsl:if
-				test="($berichtCode = ('La09','La10')) and
-				((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'JA']) >= 1) or
-				(count(key('class',$type-id)/imvert:associations/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'JA']) >= 1))">
+				test="($berichtCode = ('La09','La10')) and 
+				((count(key('class',$type-id)/imvert:attributes/imvert:attribute[imf:get-tagged-value(.,'##CFG-TV-INDICATIONFORMALHISTORY') ='JA']) >= 1)
+				or
+				(count(key('class',$type-id)/imvert:associations/imvert:association[imf:get-tagged-value(.,'##CFG-TV-INDICATIONFORMALHISTORY') ='JA']) >= 1))">
 				<xsl:attribute name="indicatieFormeleHistorie" select="'Ja'"/>
 			</xsl:if>
+			
 
 
 			<!-- I.h.k.v. RM #488759 moet ik op termijn op basis van $alias een specifieke 'EntiteittypeStuurgegevens' per bericht maken. -->
@@ -1133,6 +1125,9 @@
 			
 			<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 			<xsl:variable name="subpath" select="$supplier/@subpath"/>
+			<!-- If the current construct has a trace to a construct within a UGM model The following variable must get the value of the path to that UGM model
+				 however if the current construct is from the 'Berichtstructuren' package it must stay empty. In that case the elements 'ep:verkorteAlias' and
+				 'ep:namespaceIdentifier' wil get the related values from the StUF namespace. -->
 			<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
 
 			<xsl:sequence
@@ -1220,14 +1215,16 @@
 					</xsl:if>
 					<xsl:if
 						test="($berichtCode = ('La07','La08','La09','La10')) and
-						((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = ('JA','JAZIEREGELS'))]) >= 1) or
-						(count(key('class',$type-id)/imvert:attributes/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie materiële historie' and (imvert:value = ('JA','JAZIEREGELS'))]) >= 1))">
+						((count(key('class',$type-id)/imvert:attributes/imvert:attribute[imf:get-tagged-value(.,'##CFG-TV-INDICATIONMATERIALHISTORY') = ('JA','JAZIEREGELS')]) >= 1)
+						or
+						(count(key('class',$type-id)/imvert:associations/imvert:association[imf:get-tagged-value(.,'##CFG-TV-INDICATIONMATERIALHISTORY') = ('JA','JAZIEREGELS')]) >= 1))">
 						<xsl:attribute name="indicatieMaterieleHistorie" select="'Ja'"/>
 					</xsl:if>
 					<xsl:if
-						test="($berichtCode = ('La09','La10')) and
-						((count(key('class',$type-id)/imvert:attributes/imvert:attribute/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'JA']) >= 1) or
-						(count(key('class',$type-id)/imvert:attributes/imvert:association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'Indicatie formele historie' and imvert:value = 'JA']) >= 1))">
+						test="($berichtCode = ('La09','La10')) and 
+						((count(key('class',$type-id)/imvert:attributes/imvert:attribute[imf:get-tagged-value(.,'##CFG-TV-INDICATIONFORMALHISTORY') ='JA']) >= 1)
+						or
+						(count(key('class',$type-id)/imvert:associations/imvert:association[imf:get-tagged-value(.,'##CFG-TV-INDICATIONFORMALHISTORY') ='JA']) >= 1))">
 						<xsl:attribute name="indicatieFormeleHistorie" select="'Ja'"/>
 					</xsl:if>
 					<xsl:sequence select="imf:create-output-element('ep:name', 'gerelateerde')"/>
@@ -1237,6 +1234,9 @@
 					
 					<xsl:variable name="supplier" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 					<xsl:variable name="subpath" select="$supplier/@subpath"/>
+					<!-- If the current construct has a trace to a construct within a UGM model The following variable must get the value of the path to that UGM model
+						 however if the current construct is from the 'Berichtstructuren' package it must stay empty. In that case the elements 'ep:verkorteAlias' and
+						 'ep:namespaceIdentifier' wil get the related values from the StUF namespace. -->
 					<xsl:variable name="UGM" select="imf:get-imvert-system-doc($subpath)"/>
 
 					<xsl:sequence
@@ -1358,10 +1358,11 @@
 	<xsl:function name="imf:getVerkorteAlias" as="xs:string">
 		<xsl:param name="UGM"/>
 
-		<xsl:variable name="verkorteAlias" select="$UGM/imvert:packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='Verkorte alias']"/>
+
 		<xsl:choose>
-			<xsl:when test="not(empty($verkorteAlias))">
-				<xsl:value-of select="$verkorteAlias/imvert:value"/>
+			<xsl:when test="$UGM/imvert:packages">
+				<xsl:variable name="verkorteAlias" select="imf:get-tagged-value($UGM/imvert:packages,'##CFG-TV-VERKORTEALIAS')"></xsl:variable>
+				<xsl:value-of select="$verkorteAlias"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="$prefix"/>

@@ -114,12 +114,12 @@
     </xsl:variable>
 
     <!-- ROME: Het betreft hier de verkorte alias van het koppelvlak. -->
-    <xsl:variable name="verkorteAlias" select="$packages/imvert:tagged-values/imvert:tagged-value[imvert:name/@original='Verkorte alias']"/>
+    <xsl:variable name="verkorteAlias" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
     
     <xsl:variable name="prefix" as="xs:string">
         <xsl:choose>
             <xsl:when test="not(empty($verkorteAlias))">
-                <xsl:value-of select="$verkorteAlias/imvert:value"/>
+                <xsl:value-of select="$verkorteAlias"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="TODO"/>
@@ -630,8 +630,8 @@
            </xsl:choose>
        </xsl:variable>
         <xsl:variable name="elementName" select="$construct/imvert:name"/>
-        <xsl:variable name="authentiek" select="imf:get-most-relevant-compiled-taggedvalue($construct, 'Indicatie authentiek')"/>
-        <xsl:variable name="inOnderzoek" select="imf:get-most-relevant-compiled-taggedvalue($construct, 'Indicatie in onderzoek')"/>
+        <xsl:variable name="authentiek" select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-INDICATIONAUTHENTIC')"/>
+        <xsl:variable name="inOnderzoek" select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-INDICATIEINONDERZOEK')"/>
 
         <xsl:sequence select="imf:create-debug-comment(concat('generated-id ',$generated-id),$debugging)"/>
         <xsl:sequence select="imf:create-debug-comment(concat('verwerkingsModus ',$verwerkingsModus),$debugging)"/>
@@ -1812,7 +1812,7 @@
                 <!-- If 'Formele historie' is applicable for the current class a historieFormeel global construct based on the current class is generated. -->
             </xsl:when>
 
-            <!-- The following if takes care of creating global construct elements for each ep:construct element representing a 'relatie'. -->
+            <!-- The following when takes care of creating global construct elements for each ep:construct element representing a 'relatie'. -->
             <xsl:when test="@typeCode='relatie'">
                  
                 <xsl:sequence select="imf:create-debug-track(concat('Constructing the global constructs representing a relation with the name ',ep:name),$debugging)"/>
@@ -1831,6 +1831,7 @@
                     <xsl:with-param name="currentMessage" select="$currentMessage"/>
                     <xsl:with-param name="context" select="$context"/>
                     <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
+                    <xsl:with-param name="indicatieMaterieleHistorieRelatie" select="@indicatieMaterieleHistorieRelatie"/>
                     <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
                     <xsl:with-param name="indicatieFormeleHistorieRelatie" select="@indicatieFormeleHistorieRelatie"/>
                     <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
@@ -1856,6 +1857,7 @@
                         <xsl:with-param name="context" select="$context"/>
                         <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
                         <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
+                        <xsl:with-param name="indicatieMaterieleHistorieRelatie" select="@indicatieMaterieleHistorieRelatie"/>
                         <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
                         <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
                         <xsl:with-param name="verkorteAliasGerelateerdeEntiteit" select="ep:verkorteAliasGerelateerdeEntiteit"/>
@@ -1865,6 +1867,8 @@
                 
                 
                 <!-- If 'Formele historie' is applicable for the current class and messagetype a historieFormeel global construct based on the current class is generated. -->
+                <!-- ROME: checken of de parameter 'indicatieMaterieleHistorie' wel doorgegeven moeten worden.
+                           Volgens mij hoeft er nl. in een 'historieFormeel' helemaal geen 'historieMaterieel' element gegenereerd te worden. --> 
                 <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes')">
                     
                     <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorie constructs: ',$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
@@ -1887,6 +1891,9 @@
                 </xsl:if>
                 
                 <!-- If 'Formele historie' is applicable for the current class and messagetype a historieFormeel global construct based on the current class is generated. -->
+                <!-- ROME: checken of de parameters 'indicatieMaterieleHistorieRelatie' en 'indicatieMaterieleHistorie' wel doorgegeven moeten worden.
+                           Volgens mij hoeft er nl. in een 'historieFormeelRelatie' helemaal geen 'historieMaterieel' of 'historieMaterieelRelatie' element gegenereerd
+                           te worden. --> 
                 <xsl:if test="@indicatieFormeleHistorieRelatie='Ja'">
                     
                     <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorieRelatie constructs: ',$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
@@ -1901,6 +1908,7 @@
                         <xsl:with-param name="context" select="$context"/>
                         <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorieRelatie'"/>
                         <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
+                        <xsl:with-param name="indicatieMaterieleHistorieRelatie" select="@indicatieMaterieleHistorieRelatie"/>
                         <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
                         <xsl:with-param name="indicatieFormeleHistorieRelatie" select="@indicatieFormeleHistorieRelatie"/>
                         <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
@@ -1973,6 +1981,7 @@
         <xsl:param name="orderingDesired" select="'yes'"/>
         <xsl:param name="generateHistorieConstruct" select="'Nee'"/>
         <xsl:param name="indicatieMaterieleHistorie" select="'Nee'"/>
+        <xsl:param name="indicatieMaterieleHistorieRelatie" select="'Nee'"/>
         <xsl:param name="indicatieFormeleHistorie" select="'Nee'"/>
         <xsl:param name="indicatieFormeleHistorieRelatie" select="'Nee'"/>
         <xsl:param name="useStuurgegevens" select="'yes'"/>                                       
@@ -2066,21 +2075,21 @@
                 <xsl:copy-of select="imf:get-compiled-tagged-values(., true())"/>
             </ep:tagged-values>
         </xsl:variable>
-        <xsl:variable name="matchgegeven" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie kerngegeven')"/>
-        <xsl:variable name="authentiek" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie authentiek')"/>
-        <xsl:variable name="inOnderzoek" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie in onderzoek')"/>
+        <xsl:variable name="matchgegeven" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIEKERNGEGEVEN')"/>
+        <xsl:variable name="authentiek" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIONAUTHENTIC')"/>
+        <xsl:variable name="inOnderzoek" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIEINONDERZOEK')"/>
 
         <xsl:choose>
             <xsl:when test="not(contains($verwerkingsModus, 'matchgegevens') and $matchgegeven = 'JA')">
-                     <xsl:sequence select="imf:create-debug-comment('Debuglocation 31a',$debugging)"/>
+                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 31a',$debugging)"/>
                     
                     <!-- Location: 'ep:construct10'
 				 Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-structure.xsl' on the location with the id 'ep:constructRef10'. -->			
                     
                     <ep:construct type="complexData" prefix="{$verkorteAliasGerelateerdeEntiteit}" namespaceId="{$namespaceIdentifierGerelateerdeEntiteit}">
                         <xsl:if test="$debugging">
-                            <xsl:variable name="materieleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie')"/>
-                            <xsl:variable name="formeleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie')"/>
+                            <xsl:variable name="materieleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIONMATERIALHISTORY')"/>
+                            <xsl:variable name="formeleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIONFORMALHISTORY')"/>
                             <ep:tagged-values>
                                 <xsl:copy-of select="$tvs"/>
                                 <ep:found-tagged-values>
@@ -2090,11 +2099,10 @@
                                     <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
                                     <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
                                 </ep:found-tagged-values>
-                                
-                                <!-- ROME: volgende 3 regels later weghalen. -->
-                                <indicatieMaterieleHistorie><xsl:value-of select="$indicatieMaterieleHistorie"/></indicatieMaterieleHistorie>
-                                <indicatieFormeleHistorie><xsl:value-of select="$indicatieFormeleHistorie"/></indicatieFormeleHistorie>
-                                <indicatieFormeleHistorieRelatie><xsl:value-of select="$indicatieFormeleHistorieRelatie"/></indicatieFormeleHistorieRelatie>
+                                <xsl:sequence select="imf:create-output-element('indicatieMaterieleHistorie', $indicatieMaterieleHistorie)"/>
+                                <xsl:sequence select="imf:create-output-element('indicatieMaterieleHistorieRelatie', $indicatieMaterieleHistorieRelatie)"/>
+                                <xsl:sequence select="imf:create-output-element('indicatieFormeleHistorie', $indicatieFormeleHistorie)"/>
+                                <xsl:sequence select="imf:create-output-element('indicatieFormeleHistorieRelatie', $indicatieFormeleHistorieRelatie)"/>
                                 
                             </ep:tagged-values>
                         </xsl:if>
@@ -2109,19 +2117,11 @@
                         <xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
                         <xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
                         
+                        <xsl:variable name="Positie" select="imf:get-tagged-value(.,'##CFG-TV-POSITION')"/>
+                        
+                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 31aa',$debugging)"/>
                         <!-- When a tagged-value 'Positie' exists this is used to assign a value to 'ep:position' if not the value of the element 'imvert:position' is used. -->
-                        <xsl:choose>
-                            <xsl:when
-                                test="imvert:stereotype != 'RELATIE' and imvert:tagged-values/imvert:tagged-value/imvert:name = 'Positie'">
-                                <xsl:sequence
-                                    select="imf:create-output-element('ep:position', imvert:tagged-values/imvert:tagged-value[imvert:name = 'Positie']/imvert:value)"/>
-                                <xsl:sequence select="imf:create-output-element('ep:tv-position', 'yes')"/>
-                            </xsl:when>
-                            <xsl:when test="imvert:stereotype != 'RELATIE' and imvert:position">
-                                <xsl:sequence select="imf:create-output-element('ep:position', imvert:position)"/>
-                            </xsl:when>
-                            <xsl:otherwise/>
-                        </xsl:choose>
+                        <xsl:sequence select="imf:create-position-element(., $Positie, 'no')"/>
                         <!-- An 'ep:construct' based on an 'imvert:association' element can contain 
 			several other 'ep:construct' elements (e.g. 'ep:constructs' for the attributes 
 			of the association itself or for the associations of the association) therefore 
@@ -2143,6 +2143,7 @@
                                 <xsl:with-param name="context" select="$context"/>
                                 <xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
                                 <xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
+                                <xsl:with-param name="indicatieMaterieleHistorieRelatie" select="$indicatieMaterieleHistorieRelatie"/>
                                 <xsl:with-param name="indicatieFormeleHistorie" select="$indicatieFormeleHistorie"/>
                                 <xsl:with-param name="indicatieFormeleHistorieRelatie" select="$indicatieFormeleHistorieRelatie"/>
                                 <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
@@ -2186,8 +2187,8 @@
                 
                 <ep:construct type="complexData" prefix="{$verkorteAliasGerelateerdeEntiteit}" namespaceId="{$namespaceIdentifierGerelateerdeEntiteit}">
                     <xsl:if test="$debugging">
-                        <xsl:variable name="materieleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie materiële historie')"/>
-                        <xsl:variable name="formeleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., 'Indicatie formele historie')"/>
+                        <xsl:variable name="materieleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIONMATERIALHISTORY')"/>
+                        <xsl:variable name="formeleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIONFORMALHISTORY')"/>
                         <ep:tagged-values>
                             <xsl:copy-of select="$tvs"/>
                             <ep:found-tagged-values>
@@ -2198,10 +2199,10 @@
                                 <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
                             </ep:found-tagged-values>
                             
-                            <!-- ROME: volgende 3 regels later weghalen. -->
-                            <indicatieMaterieleHistorie><xsl:value-of select="$indicatieMaterieleHistorie"/></indicatieMaterieleHistorie>
-                            <indicatieFormeleHistorie><xsl:value-of select="$indicatieFormeleHistorie"/></indicatieFormeleHistorie>
-                            <indicatieFormeleHistorieRelatie><xsl:value-of select="$indicatieFormeleHistorieRelatie"/></indicatieFormeleHistorieRelatie>
+                            <xsl:sequence select="imf:create-output-element('indicatieMaterieleHistorie', $indicatieMaterieleHistorie)"/>
+                            <xsl:sequence select="imf:create-output-element('indicatieMaterieleHistorieRelatie', $indicatieMaterieleHistorieRelatie)"/>
+                            <xsl:sequence select="imf:create-output-element('indicatieFormeleHistorie', $indicatieFormeleHistorie)"/>
+                            <xsl:sequence select="imf:create-output-element('indicatieFormeleHistorieRelatie', $indicatieFormeleHistorieRelatie)"/>
                             
                         </ep:tagged-values>
                     </xsl:if>
@@ -2216,19 +2217,10 @@
                     <xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
                     <xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
                     
+                    <xsl:variable name="Positie" select="imf:get-tagged-value(.,'##CFG-TV-POSITION')"/>
+                    
                     <!-- When a tagged-value 'Positie' exists this is used to assign a value to 'ep:position' if not the value of the element 'imvert:position' is used. -->
-                    <xsl:choose>
-                        <xsl:when
-                            test="imvert:stereotype != 'RELATIE' and imvert:tagged-values/imvert:tagged-value/imvert:name = 'Positie'">
-                            <xsl:sequence
-                                select="imf:create-output-element('ep:position', imvert:tagged-values/imvert:tagged-value[imvert:name = 'Positie']/imvert:value)"/>
-                            <xsl:sequence select="imf:create-output-element('ep:tv-position', 'yes')"/>
-                        </xsl:when>
-                        <xsl:when test="imvert:stereotype != 'RELATIE' and imvert:position">
-                            <xsl:sequence select="imf:create-output-element('ep:position', imvert:position)"/>
-                        </xsl:when>
-                        <xsl:otherwise/>
-                    </xsl:choose>
+                    <xsl:sequence select="imf:create-position-element(., $Positie, 'no')"/>
                     <!-- An 'ep:construct' based on an 'imvert:association' element can contain 
 			several other 'ep:construct' elements (e.g. 'ep:constructs' for the attributes 
 			of the association itself or for the associations of the association) therefore 
@@ -2250,6 +2242,7 @@
                             <xsl:with-param name="context" select="$context"/>
                             <xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
                             <xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
+                            <xsl:with-param name="indicatieMaterieleHistorieRelatie" select="$indicatieMaterieleHistorieRelatie"/>
                             <xsl:with-param name="indicatieFormeleHistorie" select="$indicatieFormeleHistorie"/>
                             <xsl:with-param name="indicatieFormeleHistorieRelatie" select="$indicatieFormeleHistorieRelatie"/>
                             <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
@@ -2298,10 +2291,10 @@
         <xsl:variable name="total-digits" select="imvert:total-digits"/>
         <xsl:variable name="fraction-digits" select="imvert:fraction-digits"/>
         
-        <xsl:variable name="min-waarde" select="imf:get-taggedvalue(.,'Minimum waarde (inclusief)')"/>
-        <xsl:variable name="max-waarde" select="imf:get-taggedvalue(.,'Maximum waarde (inclusief)')"/>
-        <xsl:variable name="min-length" select="imf:get-taggedvalue(.,'Minimum lengte')"/>
-        <!--xsl:variable name="patroon" select="imf:get-taggedvalue(.,'Formeel patroon')"/-->
+        <xsl:variable name="min-waarde" select="imf:get-taggedvalue(.,'##CFG-TV-MINVALUEINCLUSIVE')"/>
+        <xsl:variable name="max-waarde" select="imf:get-taggedvalue(.,'##CFG-TV-MAXVALUEINCLUSIVE')"/>
+        <xsl:variable name="min-length" select="imf:get-taggedvalue(.,'##CFG-TV-MINLENGTH')"/>
+        <!--xsl:variable name="patroon" select="imf:get-taggedvalue(.,'##CFG-TV-FORMALPATTERN')"/-->
         <xsl:variable name="patroon" select="imvert:pattern"/>
         
         <xsl:variable name="nillable-patroon" select="if (normalize-space($patroon)) then concat('(', $patroon,')?') else ()"/>
@@ -2725,6 +2718,40 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:for-each>
+        
+    </xsl:function>
+    
+    <xsl:function name="imf:create-position-element" as="element()*">
+        <xsl:param name="node"/>
+        <xsl:param name="positie"/>
+
+        <xsl:sequence select="imf:create-position-element($node, $positie, 'not applicable')"/>
+    </xsl:function>        
+
+    <xsl:function name="imf:create-position-element" as="element()*">
+        <xsl:param name="node"/>
+        <xsl:param name="positie"/>
+        <xsl:param name="relatieIndicatie"/>
+        <xsl:choose>
+            <xsl:when
+                test="$relatieIndicatie = 'no' and $node/imvert:stereotype != 'RELATIE' and not(empty($positie))">
+                <xsl:sequence
+                    select="imf:create-output-element('ep:position', $positie)"/>
+                <xsl:sequence select="imf:create-output-element('ep:tv-position', 'yes')"/>
+            </xsl:when>
+            <xsl:when test="$relatieIndicatie = 'no' and $node/imvert:stereotype != 'RELATIE' and $node/imvert:position">
+                <xsl:sequence select="imf:create-output-element('ep:position', $node/imvert:position)"/>
+            </xsl:when>
+            <xsl:when test="$relatieIndicatie != 'no' and not(empty($positie))">
+                <xsl:sequence
+                    select="imf:create-output-element('ep:position', $positie)"/>
+                <xsl:sequence select="imf:create-output-element('ep:tv-position', 'yes')"/>
+            </xsl:when>
+            <xsl:when test="$relatieIndicatie != 'no' and $node/imvert:position">
+                <xsl:sequence select="imf:create-output-element('ep:position', $node/imvert:position)"/>
+            </xsl:when>
+            <xsl:otherwise/>
+        </xsl:choose>
         
     </xsl:function>
 </xsl:stylesheet>
