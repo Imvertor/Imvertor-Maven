@@ -24,6 +24,9 @@
         
         <!-- kadaster follows BP requirements -->
         <xi:include href="../../../BP/cfg/tvsets/BP.xml"/>
+       
+        <!-- kadaster has special grouping requirements -->
+        <xi:include href="Grouping.xml"/>
         
         <tv norm="space" id="CFG-TV-DATERECORDED">
             <derive>yes</derive>
@@ -190,14 +193,13 @@
         <tv norm="space" id="CFG-TV-ENVELOPEMETHOD">
             <name lang="nl">Methode</name>
             <name lang="en">Method</name>
-            <desc lang="nl">De verwerkingsmethode bij het samenstellen van de "envelop" van een schema. Er zijn twee varianten, SAE en BDS.</desc>
+            <desc lang="nl">De verwerkingsmethode bij het samenstellen van de "envelop" van een schema. Er is nu nog maar één variant: BDS.</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-service</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value default="yes">BDS</value>
-                <value default="no">SAE</value>
             </declared-values>
         </tv>
         

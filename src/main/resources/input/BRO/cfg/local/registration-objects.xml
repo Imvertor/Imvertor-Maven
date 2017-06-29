@@ -1,6 +1,13 @@
+<!-- 
+    zie https://3.basecamp.com/3407963/buckets/1485677/uploads/535159541
+-->
+
 <domeinen>
-    <!-- see https://3.basecamp.com/3407963/buckets/1485677/uploads/535159541 -->
-    <desc> Aangeleverd door Alterra. Afkortingen voor alle BRO registratieobjecten. Deze zijn vastgesteld door TNO. </desc>
+    <desc> 
+        Een lijst van domeinen en registratie objecten, met alle info die nodig is voor documentatie oid.
+        Aangeleverd door Alterra. 
+        Deze info is vastgesteld door TNO. 
+    </desc>
 
     <domein>
         <name lang="nl">Bodem- en grondonderzoek</name>

@@ -20,8 +20,12 @@
 <tagset xmlns:xi="http://www.w3.org/2001/XInclude">
     <name>KING</name>
     <tagged-values>
+      
         <!-- KING follows BP requirements -->
         <xi:include href="../../../BP/cfg/tvsets/BP.xml"/>
+        
+        <!-- KING refines grouping -->
+        <xi:include href="Grouping.xml"/>
         
         <tv norm="space" id="CFG-TV-AANDUIDINGSTRIJDIGHEIDNIETIGHEID">
             <name lang="nl">Aanduiding strijdigheid/nietigheid</name>

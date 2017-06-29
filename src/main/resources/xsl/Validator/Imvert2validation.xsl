@@ -1268,13 +1268,14 @@
         <xsl:param name="this" as="element()"/> <!-- any element that may have tagged values-->
         <xsl:if test="$validate-tv-missing">
             <xsl:variable name="stereotype" select="$this/imvert:stereotype"/>
-            <xsl:for-each select="$config-tagged-values[stereotypes/stereo = $stereotype]">
+            <xsl:for-each select="$config-tagged-values[stereotypes/stereo = $stereotype]"> <!-- i.e. <tv> elements -->
                 <xsl:variable name="tv-name" select="name"/>
+                <xsl:variable name="tv-id" select="@id"/>
                 <xsl:variable name="tv-is-derivable" select="derive = 'yes'"/>
                 <xsl:variable name="tv-is-required" select="exists(stereotypes/stereo[. = $stereotype and @required = 'yes'])"/>
                 <!-- TODO if a tv is derivable and required but is not actually derived, provide warning at some stage -->
                 <xsl:sequence select="imf:report-warning($this, 
-                    $tv-is-required and not($tv-is-derivable) and empty($this/imvert:tagged-values/imvert:tagged-value[imvert:name = $tv-name]),
+                    $tv-is-required and not($tv-is-derivable) and empty($this/imvert:tagged-values/imvert:tagged-value[@id = $tv-id]),
                     'Tagged value [1] not specified but required for [2]',($tv-name,$stereotype))"/>
             </xsl:for-each>
         </xsl:if> 

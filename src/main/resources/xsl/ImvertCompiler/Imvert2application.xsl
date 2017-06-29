@@ -78,6 +78,7 @@
                     <xsl:sequence select="."/>
                 </xsl:for-each-group>
             </xsl:variable>
+           
             <xsl:apply-templates select="$result-external-packages" mode="finalize"/>
             
         </imvert:packages>

@@ -332,20 +332,14 @@
         <xsl:variable name="targets" select="for $target in $assocs/imvert:type-id return imf:get-construct-by-id($target)"/>
         <xsl:variable name="interfaces" select="$targets[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-interface')]"/>
         <xsl:choose>
-            <xsl:when test="$method = 'SAE'">
+            <xsl:when test="$method = 'BDS'">
                 <xs:element name="{$type-name}">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="antwoord">
-                                <xs:complexType>
-                                    <xs:sequence>
-                                        <xsl:if test="$interfaces/imvert:name = 'ProcesVerwerking'">
-                                            <xs:element ref="EnvelopProces:ProcesVerwerking"/>
-                                        </xsl:if> 
-                                        <xs:element ref="{imf:get-type('VerzoekTotInformatieAntwoord',$package-name)}"/>
-                                    </xs:sequence>
-                                </xs:complexType>
-                            </xs:element>
+                            <xsl:if test="$interfaces/imvert:name = 'ProcesVerwerking'">
+                                <xs:element ref="EnvelopProces:ProcesVerwerking"/>
+                            </xsl:if> 
+                            <xs:element ref="{imf:get-type('VerzoekTotInformatieAntwoord',$package-name)}"/>
                             <xsl:if test="$interfaces/imvert:name = 'Log'">
                                 <xs:element ref="EnvelopLog:Log"/>
                             </xsl:if>
@@ -383,10 +377,6 @@
                         </xs:choice>
                     </xs:complexType>
                 </xs:element>
-
-            </xsl:when>
-            <xsl:when test="$method = 'BDS'">
-                
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:msg('ERROR', 'Unknown service envelope serialization method: [1]', $method)"/>

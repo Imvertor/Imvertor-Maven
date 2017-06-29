@@ -39,6 +39,13 @@
             target-uri-prefix="../xlink/1.0.0/xlinks.xsd"/>
     </local-schema>
     
+    <local-schema schemafolder="www.w3.org/XLINKS-20010627">
+        <depends-on schemafolder="www.w3.org/XML-1998"/>
+        <local-map 
+            source-uri-prefix="http://www.w3.org/2001/xml.xsd"
+            target-uri-prefix="../../1998/namespace/xml.xsd"/>
+    </local-schema>
+    
     <local-schema schemafolder="www.geonovum.nl/NEN3610-20110301">
         <depends-on schemafolder="www.opengis.net/GML321-20070906"/>
         <local-map 

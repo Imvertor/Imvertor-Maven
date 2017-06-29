@@ -245,8 +245,8 @@
     </xsl:function>
     
     <xsl:function name="imf:get-normalized-name" as="xs:string">
-        <xsl:param name="name"/>
-        <xsl:param name="scheme"/>
+        <xsl:param name="name" as="xs:string"/>
+        <xsl:param name="scheme" as="xs:string"/>
         <xsl:choose>
             <xsl:when test="$scheme = 'package-name'">
                 <xsl:value-of select="imf:get-normalized-name-sub($name,'P',true())"/>
@@ -338,6 +338,9 @@
             </xsl:when>
             <xsl:when test="$naming-convention = 'lowercase'">
                 <xsl:value-of select="lower-case($name-as-found)"/>
+            </xsl:when>
+            <xsl:when test="$naming-convention = 'Upperstart'">
+                <xsl:value-of select="concat(upper-case(substring($name-as-found,1,1)), substring($name-as-found,2))"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:variable name="metamodel-form">
