@@ -23,9 +23,9 @@ public class GithubFile {
 		String sha = args[3];
 		
 		String jsonstring = "{"
-				+ "\"message\": \"Test JAVA 1\","
+				+ "\"message\": \"Test JAVA 2\","
 				+ "\"committer\": {\"name\": \"Arjan Loeffen\",\"email\": \"arjan.loeffen@armatiek.nl\"},"
-				+ "\"content\": \"bXkgbmV3IGZpbGUgY29udGVudHM=\",\"sha\": \"" + sha + "\""
+				+ "\"content\": \"bXkgbmV3IGZpbGUgY29udGVudHM=\""
 				+ "}";
 		
 		GithubFile f = new GithubFile(new URL(args[0]), args[1], args[2]);

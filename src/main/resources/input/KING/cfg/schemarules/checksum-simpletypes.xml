@@ -55,6 +55,8 @@
       <entry name="String12" base="scalar-string_12" facet="___" state="E"/>
       <entry name="String12_P1" base="scalar-string_12" facet="[0-9]{12}___" state="E"/>
       <entry name="String14" base="scalar-string_14" facet="___" state="E"/>
+      <entry name="String16_P1" base="scalar-string_16" facet="[0-9]{4}[0-9]{2}[0-9]{10}___" state="E"/>
+      <entry name="String16" base="scalar-string_16" facet="___" state="E"/>
       <entry name="String17_P1" base="scalar-string_17" facet="[0-9]{17}___" state="E"/>
       <entry name="String20" base="scalar-string_20" facet="___" state="E"/>
       <entry name="String24" base="scalar-string_24" facet="___" state="E"/>

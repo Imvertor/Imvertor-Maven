@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <name>Grouping for KING</name>
+  
+    <desc>Deviations and additions to generic grouping for KING metamodels.</desc>  
+   
+    <tagged-values>
+        
+          <tv norm="space" id="CFG-TV-ISDERIVED">
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-association-to-composite</stereo>
+            </stereotypes>            
+        </tv>
+        
+    </tagged-values>
+    
+</tagset>

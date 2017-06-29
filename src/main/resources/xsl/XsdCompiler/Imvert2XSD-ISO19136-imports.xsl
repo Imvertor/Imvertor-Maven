@@ -140,6 +140,7 @@
                         </xsl:choose>
                         <namespace prefix="gml" uri="http://www.opengis.net/gml/3.2"/> 
                     </xsl:when>
+                    
                     <xsl:otherwise>
                         <xsl:sequence select="imf:msg('ERROR', 'The qualifier [1] cannot be mapped onto a application or external schema',$prefix)"/>
                     </xsl:otherwise>

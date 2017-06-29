@@ -358,6 +358,7 @@ public class EapFile extends AnyFile {
 	}
 	
 	/**
+	 * Return the GUID of the root package
 	 * 
 	 * @return
 	 * @throws Exception
@@ -402,7 +403,22 @@ public class EapFile extends AnyFile {
 		}
 		return v;	
 	}
-	
+	/**
+	 * Get the models the the repository by name. The name must be an exact match.
+	 * 
+	 * @return
+	 */
+	public Vector<Package> getModelsByName(String name) {
+		Vector<Package> v = new Vector<Package>();
+		Iterator<Package> it = repo.GetModels().iterator();
+		while (it.hasNext()) {
+			Package pack = it.next();
+			if (pack.GetName().equals(name))
+				v.add(pack);
+		}
+		return v;	
+	}
+		
 	/**
 	 * Get all models (packages) as a vector, by depth first selection.
 	 *  
@@ -435,7 +451,7 @@ public class EapFile extends AnyFile {
 		Iterator<Package> pit = getPackageHierarchy(ancestorPack).iterator();
 		while (pit.hasNext()) {
 			Package selectedPackage = pit.next();
-			if (selectedPackage.GetStereotypeEx().equals("project") && selectedPackage.GetName().equals(packageName)) 
+			if (selectedPackage.GetStereotypeEx().toLowerCase().equals("project") && selectedPackage.GetName().equals(packageName)) 
 				return selectedPackage; 
 		}
 		return null;

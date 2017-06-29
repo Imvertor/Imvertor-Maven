@@ -187,6 +187,7 @@
             <xsl:sequence select="imf:get-stereotypes-info(.,'my')"/>
             <xsl:sequence select="imf:get-external-resources-info(.)"/>
             <xsl:sequence select="imf:get-config-info(.)"/>
+            
             <xsl:for-each select="UML:Namespace.ownedElement/UML:Class"> <!-- was: [not(imf:get-stereotype-local-names(*/UML:Stereotype/@name)='enumeration')] -->
                 <xsl:sort select="replace(@name,'_','')"/>
                 <xsl:apply-templates select="." mode="class-normal"/>
@@ -205,7 +206,7 @@
             </xsl:for-each>
             
             <xsl:sequence select="imf:fetch-additional-tagged-values(.)"/>
-
+            
             <!-- get package wide constraints -->
             <xsl:sequence select="imf:get-constraint-info(.)"/>
 
@@ -238,14 +239,14 @@
                     <imvert:package>
                         <imvert:id>OUTSIDE</imvert:id>
                         <xsl:for-each select="$stubs">
-                            <imvert:class-stub>
+                            <imvert:class origin="stub" umltype="{@UMLType}">
                                 <imvert:found-name>
                                     <xsl:value-of select="@name"/>
                                 </imvert:found-name>
                                 <imvert:id>
                                     <xsl:value-of select="@xmi.id"/>
                                 </imvert:id>
-                            </imvert:class-stub>
+                            </imvert:class>
                         </xsl:for-each>
                     </imvert:package>
                 </xsl:if>
@@ -551,6 +552,7 @@
             Als die niet is gespecificeerd op de relatie, neem dan de data locatie van de gerefereneerde waardelijst klasse op.
         -->
         <xsl:variable name="type-id" select="$this/UML:StructuralFeature.type/UML:Classifier/@xmi.idref"/>
+        <xsl:variable name="type-name" select="$this/UML:ModelElement.taggedValue/UML:TaggedValue[@tag='type']/@value"/>
         <xsl:variable name="vl" select="imf:element-by-id($type-id)"/>
         <xsl:variable name="dataloc" select="if (exists($vl)) then (imf:get-profile-tagged-value($vl,'data-location'),imf:get-profile-tagged-value($vl,'Data locatie')) else ()"/>
         <xsl:variable name="webloc" select="if (exists($vl)) then (imf:get-profile-tagged-value($vl,'web-location'),imf:get-profile-tagged-value($vl,'Web locatie')) else ()"/>
@@ -664,16 +666,19 @@
     <xsl:function name="imf:get-attribute-info" as="node()*">
         <xsl:param name="this" as="node()"/> <!-- an UML:Attribute -->
         <xsl:variable name="type-id" select="$this/UML:StructuralFeature.type/UML:Classifier/@xmi.idref"/>
+        <xsl:variable name="type-tv-name" select="$this/UML:ModelElement.taggedValue/UML:TaggedValue[@tag='type']/@value"/>
+        
+        <xsl:if test="$type-id and not($type-tv-name) and not(starts-with($type-id,'eaxmiid'))">
+            <xsl:sequence select="imf:msg($this, 'FATAL','Attribute type conflict at UML:Classifier [1], at path [2]',($type-id,imf:compile-name-path($this)))"/>
+        </xsl:if>
+        
         <xsl:variable name="type" select="imf:element-by-id($type-id)"/>
         <xsl:variable name="type-fullname" select="$type/@name"/>
         <xsl:variable name="type-modifier" select="if (contains($type-fullname,'?')) then '?' else if (contains($type-fullname,'+P')) then '+P' else ()"/> 
         <xsl:variable name="type-name" select="if (exists($type-modifier)) then substring-before($type-fullname,$type-modifier) else $type-fullname"/>
         
-        <xsl:variable name="type-normname" select="imf:get-normalized-name($type-name,'baretype-name')"/>
-        <xsl:variable name="scalar" select="$all-scalars[name[@lang=$language] = $type-normname][last()]"/>
-        
         <xsl:choose>
-            <xsl:when test="not($type-name)">
+            <xsl:when test="empty($type-name)">
                 <!-- this is an enumeration (value), skip -->
             </xsl:when>
             <!-- process the baretypes -->
@@ -711,6 +716,9 @@
             
             <!-- process the other scalars: -->
             <xsl:when test="substring($type-id,1,5) = ('eaxmi')">
+                <xsl:variable name="type-normname" select="imf:get-normalized-name($type-name,'baretype-name')"/>
+                <xsl:variable name="scalar" select="$all-scalars[name[@lang=$language] = $type-normname][last()]"/>
+
                 <xsl:sequence select="imf:create-output-element('imvert:baretype',$type-normname)"/>
                 <xsl:sequence select="imf:create-output-element('imvert:type-name',$scalar/@id)"/>
                 <xsl:choose>
@@ -978,8 +986,10 @@
                                             <xsl:when test="exists($root-model-value)">
                                                 <xsl:sequence select="$root-model-value"/>   
                                                 <xsl:sequence select="imf:msg('DEBUG','Tagged value [1] is [2] (at mode 4) at path: [3] ', (imf:string-group($tagged-value-name),imf:compile-xpath($this),imf:string-group($root-model-value)))"/>
-                                                
                                             </xsl:when>
+                                            <xsl:otherwise>
+                                                <!-- not specified -->
+                                            </xsl:otherwise>
                                         </xsl:choose>
                                     </xsl:otherwise>
                                 </xsl:choose>
@@ -1343,6 +1353,7 @@
     -->
     <xsl:function name="imf:fetch-additional-tagged-values" as="element()*">
         <xsl:param name="this" as="element()"/>
+        <?x 
         <imvert:tagged-values>
             <xsl:for-each-group select="$additional-tagged-values" group-by="@id"> <!-- a set of tv elements, for a particular name -->
                 <xsl:for-each select="current-group()[last()]">
@@ -1371,8 +1382,11 @@
                 </xsl:for-each>
             </xsl:for-each-group>
         </imvert:tagged-values>
+        x?>
+        <xsl:sequence select="imf:get-tvquick-info($this)"/>
+       
     </xsl:function>
-    
+  
     <xsl:function name="imf:get-stereotype-local-names" as="xs:string*">
         <xsl:param name="stereotypes" as="xs:string*"/>
         <xsl:sequence select="for $s in $stereotypes return imf:get-stereotype-local-name($s)"/>
@@ -1548,7 +1562,7 @@
     <xsl:function name="imf:compile-name-path">
         <xsl:param name="this"/>
         <xsl:variable name="names" select="$this/ancestor-or-self::*/@name"/>
-        <xsl:value-of select="string-join(reverse($names),' / ')"/>
+        <xsl:value-of select="string-join($names,' / ')"/>
     </xsl:function>
     <xsl:function name="imf:compile-xpath">
         <xsl:param name="this"/>
@@ -1566,6 +1580,94 @@
         <xsl:param name="doctext"/>
         <xsl:variable name="parts" select="tokenize($doctext,imf:get-config-parameter('documentation-separator-pattern'))"/>
         <xsl:value-of select="$parts[1]"/>
+    </xsl:function>
+    
+    
+    <!-- == optimization == -->
+    
+    <xsl:function name="imf:get-tvquick-info" as="node()*">
+        <xsl:param name="this" as="node()"/>
+        <xsl:sequence select="imf:fetch-additional-tagged-values-quick($this)"/> 
+    </xsl:function>   
+    
+    <xsl:function name="imf:fetch-additional-tagged-values-quick" as="element()*">
+        <xsl:param name="this" as="element()"/>
+        
+        <xsl:variable name="tagged-values" select="imf:get-tagged-values-quick($this,true())"/>
+      
+        <imvert:tagged-values>
+            <xsl:for-each select="$tagged-values"> <!-- <tv> elements --> 
+                <xsl:variable name="name" select="@tag"/>
+                <xsl:variable name="level" select="@imvert-level"/>
+                <xsl:variable name="norm-name" select="imf:get-normalized-name($name,'tv-name')"/>
+                <xsl:variable name="declared-tv" select="$additional-tagged-values[name = $norm-name]"/>
+                <xsl:variable name="value" select="@value"/>
+                <xsl:variable name="norm-value" select="imf:get-tagged-value-norm(.,$declared-tv/@norm)"/>
+                <xsl:if test="exists($declared-tv) and normalize-space($norm-value)">
+                    <imvert:tagged-value id="{$declared-tv/@id}" level="{$level}">
+                        <imvert:name original="{$name}">
+                            <xsl:value-of select="$norm-name"/>
+                        </imvert:name>
+                        <imvert:value original="{$value}">
+                            <xsl:value-of select="$norm-value"/>
+                        </imvert:value>
+                    </imvert:tagged-value>
+                </xsl:if>
+            </xsl:for-each>
+        </imvert:tagged-values>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-tagged-values-quick" as="element(UML:TaggedValue)*">
+        <xsl:param name="this" as="node()"/>
+        <xsl:param name="profiled" as="xs:boolean"></xsl:param>
+        <!-- 
+            this implements the equivalent of:
+            if ($local-value) then $local-value else 
+            if ($global-value) then $global-value else 
+            if ($local-cr-value) then $local-cr-value else 
+            if ($global-cr-value) then $global-cr-value else 
+            if ($root-model-value) then $root-model-value else 
+            ()
+        -->
+        <xsl:variable name="crole" select="imf:get-classifier-role($this)"/>
+        <xsl:variable name="root-model" select="$content/UML:Model"/>
+        
+        <xsl:variable name="local-value" select="imf:filter-tagged-values-quick($this/UML:ModelElement.taggedValue/UML:TaggedValue,$profiled,1)"/>
+        <xsl:variable name="global-value" select="imf:filter-tagged-values-quick($content/UML:TaggedValue[@modelElement=$this/@xmi.id],$profiled,2)"/>
+        <xsl:variable name="local-cr-value" select="imf:filter-tagged-values-quick($crole/UML:ModelElement.taggedValue/UML:TaggedValue,$profiled,3)"/>
+        <xsl:variable name="global-cr-value" select="imf:filter-tagged-values-quick($content/UML:TaggedValue[@modelElement=$crole/@xmi.id],$profiled,4)"/>
+        <xsl:variable name="root-model-value" select="imf:filter-tagged-values-quick($content/UML:TaggedValue[@modelElement=$root-model/@xmi.id],$profiled,5)"/>
+        
+        <!-- 
+            assume that tagged values must be degfined on the same level, and local valueshave prio 
+        -->
+        <xsl:variable name="tagged-values" select="
+            if (exists($local-value)) then $local-value else 
+            if (exists($global-value)) then $global-value else 
+            if (exists($local-cr-value)) then $local-cr-value else
+            if (exists($global-cr-value)) then $global-cr-value else 
+            $root-model-value
+            "/>
+        
+        <xsl:sequence select="$tagged-values"/>
+        
+    </xsl:function>
+    
+    <xsl:function name="imf:filter-tagged-values-quick" as="element(UML:TaggedValue)*">
+        <xsl:param name="tvs"/>
+        <xsl:param name="profiled"/>
+        <xsl:param name="level"/>
+        <xsl:sequence select="for $tv in $tvs[imf:tagged-value-select-profiled(.,$profiled)] return imf:set-level-quick($tv,$level)"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:set-level-quick" as="element(UML:TaggedValue)">
+        <xsl:param name="tv"/>
+        <xsl:param name="level"/>
+        <xsl:element name="{name($tv)}">
+            <xsl:copy-of select="$tv/@*"/>
+            <xsl:attribute name="imvert-level" select="$level"/>
+            <xsl:copy-of select="$tv/node()"/>
+        </xsl:element>
     </xsl:function>
     
 </xsl:stylesheet>

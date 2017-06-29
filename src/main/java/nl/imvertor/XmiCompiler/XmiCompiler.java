@@ -23,9 +23,11 @@ package nl.imvertor.XmiCompiler;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Iterator;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.sparx.Package;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
@@ -76,6 +78,8 @@ public class XmiCompiler extends Step {
 		XmiFile xmiFile = umlFile.getExtension().toLowerCase().equals("xmi") ? new XmiFile(umlFile) : null;
 		ZipFile zipFile = umlFile.getExtension().toLowerCase().equals("zip") ? new ZipFile(umlFile) : null; // always holds single XMI
 		
+		boolean succeeds = true;
+		
 		if (activeFileOrigin == null && zipFile != null) {
 			runner.debug(logger,"CHAIN", "Try compressed XMI file at: " + zipFile);
 			if (zipFile.isFile()) {
@@ -120,10 +124,14 @@ public class XmiCompiler extends Step {
 				String f2 = passedFile.getFileInfo();
 				if (!f1.equals(f2) || mustReread) {
 					runner.info(logger,"Reading" + filespec);
-					exportEapToXmi((EapFile) passedFile, activeFile);
-					// and place file info in ID file
-					idFile.setContent(passedFile.getFileInfo());
-					cleanXMI(activeFile);
+					String projectname = configurator.getParm("cli", "owner") + ": " + configurator.getParm("cli", "project");
+					if (exportEapToXmi((EapFile) passedFile, activeFile,projectname) != null) { 
+						// and place file info in ID file
+						idFile.setContent(passedFile.getFileInfo());
+						cleanXMI(activeFile);
+					} else {
+						succeeds = false;
+					}
 				} else {
 					runner.info(logger,"Reusing" + filespec);
 				}
@@ -148,20 +156,21 @@ public class XmiCompiler extends Step {
 				cleanXMI(activeFile);
 			}
 		
-			if (configurator.isTrue(configurator.getParm("cli","migrate",false))) 
-				migrateXMI(activeFile);
-			
-			configurator.setParm("system","xmi-export-file-path",activeFile.getCanonicalPath());
-			configurator.setParm("system","xmi-file-path",activeFile.getCanonicalPath() + ".compact.xmi");
-			
-			// now compact the XMI file: remove all irrelevant sections
-			runner.debug(logger,"CHAIN", "Compacting XMI: " + activeFile.getCanonicalPath());
-			Transformer transformer = new Transformer();
-		    // transform 
-			boolean succeeds = true;
-			succeeds = succeeds ? transformer.transformStep("system/xmi-export-file-path", "system/xmi-file-path",  "properties/XMI_CONFIG_XSLPATH") : false ;
-			succeeds = succeeds ? transformer.transformStep("system/xmi-export-file-path", "system/xmi-file-path",  "properties/XMI_COMPACT_XSLPATH") : false ;
+			if (succeeds) {
+				if (configurator.isTrue(configurator.getParm("cli","migrate",false))) 
+					migrateXMI(activeFile);
 				
+				configurator.setParm("system","xmi-export-file-path",activeFile.getCanonicalPath());
+				configurator.setParm("system","xmi-file-path",activeFile.getCanonicalPath() + ".compact.xmi");
+				
+				// now compact the XMI file: remove all irrelevant sections
+				runner.debug(logger,"CHAIN", "Compacting XMI: " + activeFile.getCanonicalPath());
+				Transformer transformer = new Transformer();
+		
+				// transform 
+				succeeds = succeeds ? transformer.transformStep("system/xmi-export-file-path", "system/xmi-file-path",  "properties/XMI_CONFIG_XSLPATH") : false ;
+				succeeds = succeeds ? transformer.transformStep("system/xmi-export-file-path", "system/xmi-file-path",  "properties/XMI_COMPACT_XSLPATH") : false ;
+			}
 		}
 					
 		configurator.setStepDone(STEP_NAME);
@@ -203,6 +212,37 @@ public class XmiCompiler extends Step {
 		eapFile.close();
 		return r;
 	}
+	private XmlFile exportEapToXmi(EapFile eapFile, XmlFile xmifile, String projectname) throws Exception {
+		eapFile.open();
+		String projectPackageGUID = eapFile.getProjectPackageGUID(projectname);
+		XmlFile r = null;
+		if (projectPackageGUID.equals("")) {
+			configurator.getRunner().error(logger, "No such project \"" + projectname + "\" found");
+		} else {
+			r = eapFile.exportToXmiFile(xmifile.getCanonicalPath(), projectPackageGUID);
+		}
+		eapFile.close();
+		return r;
+	}
+	
+	/*
+	private XmlFile exportEapToXmi(EapFile eapFile, XmlFile xmifile, String modelName) throws Exception {
+		XmlFile r = null;
+		Vector<Package> models = eapFile.getModelsByName(modelName);
+		if (models.size() > 1) 
+			runner.error(logger,"More than one model found by name " + modelName);
+		else if (models.size() == 0) 
+			runner.error(logger,"No model found by name " + modelName);
+		else {
+			Package model = models.get(0);
+			String modelGUID = eapFile.getPackageGUID(model);
+			// determine which project this is in
+			r = eapFile.exportToXmiFile(xmifile.getCanonicalPath(), projectGUID);
+			
+		}
+		return r;
+	}
+	*/
 	
 	/**
 	 * Fix on EA bug. XMI must not contain invalid character references. Hope this solves it.

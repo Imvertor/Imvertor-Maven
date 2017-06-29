@@ -59,6 +59,9 @@
       <!-- location of the generated validation file; this is a dummy file as all reported messages are made part of the process parms file. -->
       <WORK_VALIDATE_FILE>${system/work-imvert-folder-path}/imvertor.13.validate.xml</WORK_VALIDATE_FILE>
       
+      <!-- external stubs require the conceptual schema mapping file to be known -->
+      <CONCEPTUAL_SCHEMA_MAPPING_FILE>${system/inp-folder-path}/xsd/conceptual-schemas.xml</CONCEPTUAL_SCHEMA_MAPPING_FILE>
+      
       <!--
      
       <WORK_DOCS_FILE>${system/work-imvert-folder-path}/imvertor.10.docs.xml</WORK_DOCS_FILE>
@@ -108,6 +111,9 @@
     
       <WORK_PROXY_FILE>${system/work-imvert-folder-path}/imvertor.031.proxy.xml</WORK_PROXY_FILE>
       <IMVERTOR_PROXY_XSLPATH>Imvert2proxy.xsl</IMVERTOR_PROXY_XSLPATH>
+      
+      <WORK_INTERFACE_FILE>${system/work-imvert-folder-path}/imvertor.032.interface.xml</WORK_INTERFACE_FILE>
+      <IMVERTOR_INTERFACE_XSLPATH>Imvert2interface.xsl</IMVERTOR_INTERFACE_XSLPATH>
       
    </properties>
 </config>

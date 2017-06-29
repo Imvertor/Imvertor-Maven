@@ -226,18 +226,23 @@ public class XsdCompiler extends Step {
 			valid = valid && transformer.transformStep("properties/RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_SORT_ENDPRODUCT_XML_XSLPATH");
 			valid = valid && transformer.transformStep("properties/RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_ENDPRODUCT_XSD_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XSD_XSLPATH");
 		
-			// and copy the onderlaag; this is a copy of all stuff in that folder
-			AnyFolder onderlaag = new AnyFolder(configurator.getParm("properties", "STUF_ONDERLAAG_0302"));
-			onderlaag.copy(configurator.getParm("system", "work-xsd-folder-path"));
+			if (valid) {
+				// and copy the onderlaag; this is a copy of all stuff in that folder
+				AnyFolder onderlaag = new AnyFolder(configurator.getParm("properties", "STUF_ONDERLAAG_0302"));
+				onderlaag.copy(configurator.getParm("system", "work-xsd-folder-path"));
+			}
 			
 			// and create a table representation; 
 			valid = valid && transformer.transformStep("properties/RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH","properties/ENDPRODUCT_DOC_TABLES_FILE_PATH", "properties/IMVERTOR_ENDPRODUCT_DOC_TABLES_XSLPATH");
-			// simply copy the table html file
-			String fn = "office.tables.html";
-			AnyFile infoOfficeTableFile = new AnyFile(configurator.getParm("properties","ENDPRODUCT_DOC_TABLES_FILE_PATH"));
-			AnyFile officeTableFile = new AnyFile(configurator.getParm("system","work-etc-folder-path") + "/" + fn);
-			infoOfficeTableFile.copyFile(officeTableFile);
-			configurator.setParm("appinfo", "office-table-documentation-filename", fn);
+			
+			if (valid) {
+				// simply copy the table html file
+				String fn = "office.tables.html";
+				AnyFile infoOfficeTableFile = new AnyFile(configurator.getParm("properties","ENDPRODUCT_DOC_TABLES_FILE_PATH"));
+				AnyFile officeTableFile = new AnyFile(configurator.getParm("system","work-etc-folder-path") + "/" + fn);
+				infoOfficeTableFile.copyFile(officeTableFile);
+				configurator.setParm("appinfo", "office-table-documentation-filename", fn);
+			}
 			
 		} else // model
 			valid = valid && transformer.transformStep("properties/WORK_SCHEMA_FILE","properties/RESULT_XSD_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_XSD_XSLPATH");

@@ -69,12 +69,12 @@
       <APPLICATION_BASE_FOLDER>${properties/APPLICATIONS_FOLDER}/${cli/project}/${cli/application}</APPLICATION_BASE_FOLDER>
       
       <IMVERTOR_PRETRACE_XSLPATH>Imvert2pretrace.xsl</IMVERTOR_PRETRACE_XSLPATH>
-      <WORK_PRETRACE_FILE>${system/work-imvert-folder-path}/imvertor.031.pretrace.xml</WORK_PRETRACE_FILE>
+      <WORK_PRETRACE_FILE>${system/work-imvert-folder-path}/imvertor.033.pretrace.xml</WORK_PRETRACE_FILE>
       
       <IMVERTOR_DOMAINS_XSLPATH>Imvert2domain.xsl</IMVERTOR_DOMAINS_XSLPATH>
-      <WORK_DOMAINS_FILE>${system/work-imvert-folder-path}/imvertor.032.domains.xml</WORK_DOMAINS_FILE>
+      <WORK_DOMAINS_FILE>${system/work-imvert-folder-path}/imvertor.034.domains.xml</WORK_DOMAINS_FILE>
       
-      <WORK_VARIANT_FILE>${system/work-imvert-folder-path}/imvertor.05.variant.xml</WORK_VARIANT_FILE>
+      <WORK_VARIANT_FILE>${system/work-imvert-folder-path}/imvertor.05.application.xml</WORK_VARIANT_FILE>
 
       <IMVERTOR_COPYDOWN_XSLPATH>Imvert2copydown.xsl</IMVERTOR_COPYDOWN_XSLPATH>
       <WORK_COPYDOWN_FILE>${system/work-imvert-folder-path}/imvertor.06.copydown.xml</WORK_COPYDOWN_FILE>
@@ -92,7 +92,6 @@
       <WORK_DEPENDENCIES_FILE>${system/work-imvert-folder-path}/imvertor.04.dependencies.xml</WORK_DEPENDENCIES_FILE>
       
       <IMVERTOR_LOCALSCHEMA_XSLPATH>Imvert2localSchema.xsl</IMVERTOR_LOCALSCHEMA_XSLPATH>
-      <CONCEPTUAL_SCHEMA_MAPPING_FILE>${system/inp-folder-path}/xsd/conceptual-schemas.xml</CONCEPTUAL_SCHEMA_MAPPING_FILE>
       
       <WORK_LOCALSCHEMA_FILE>${system/work-imvert-folder-path}/imvertor.09.local.xml</WORK_LOCALSCHEMA_FILE> 
       <LOCAL_SCHEMA_MAPPING_FILE>${system/inp-folder-path}/xsd/local-schemas.xml</LOCAL_SCHEMA_MAPPING_FILE>

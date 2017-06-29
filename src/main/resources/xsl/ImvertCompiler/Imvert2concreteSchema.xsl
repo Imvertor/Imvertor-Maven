@@ -143,11 +143,11 @@
     
     <xsl:template match="imvert:class/imvert:name" mode="conceptual">
         <xsl:param name="map" as="element()"/>
-        <xsl:variable name="mapped-name" select="$map/type[@name=current()/@original]"/>
+        <xsl:variable name="mapped-xsd-type" select="$map/construct[name = current()/@original]/xsd-type"/>
         <xsl:choose>
-            <xsl:when test="$mapped-name">
+            <xsl:when test="$mapped-xsd-type">
                 <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-class-name',.)"/>
-                <xsl:sequence select="imf:create-output-element('imvert:name',$mapped-name)"/>
+                <xsl:sequence select="imf:create-output-element('imvert:name',$mapped-xsd-type/@name)"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:msg('ERROR','Cannot determine an element name for interface name [1] when using mapping [2]',(.,$conceptual-schema-mapping-name))"/>
@@ -182,17 +182,17 @@
             <xsl:when test="imf:is-conceptual($class)">
                 <!-- class in a conceptual schema package -->
                 <xsl:variable name="map" select="imf:get-conceptual-schema-map($pack/imvert:namespace,$conceptual-schema-mapping-name)"/>
-                <xsl:variable name="mapped-type" select="$map/type[@name=current()/@original]"/>
+                <xsl:variable name="mapped-xsd-type" select="$map/construct[name = current()/@original]/xsd-type"/>
                 <xsl:choose>
-                    <xsl:when test="$mapped-type">
+                    <xsl:when test="$mapped-xsd-type">
                         <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-type',.)"/>
-                        <xsl:if test="imf:boolean($mapped-type/@primitive)">
-                            <xsl:sequence select="imf:create-output-element('imvert:primitive',$mapped-type/@name)"/>
+                        <xsl:if test="imf:boolean($mapped-xsd-type/@primitive)">
+                            <xsl:sequence select="imf:create-output-element('imvert:primitive',$mapped-xsd-type/@name)"/>
                         </xsl:if>
-                        <xsl:sequence select="imf:create-output-element(name(.),$mapped-type)"/>
-                        <xsl:variable name="att-name" select="$mapped-type/@asAttribute"/>
-                        <xsl:variable name="att-desig" select="$mapped-type/@asAttributeDesignation"/>
-                        <xsl:variable name="att-hasNilreason" select="$mapped-type/@hasNilreason"/>
+                        <xsl:sequence select="imf:create-output-element(name(.),$mapped-xsd-type)"/>
+                        <xsl:variable name="att-name" select="$mapped-xsd-type/@asAttribute"/>
+                        <xsl:variable name="att-desig" select="$mapped-xsd-type/@asAttributeDesignation"/>
+                        <xsl:variable name="att-hasNilreason" select="$mapped-xsd-type/@hasNilreason"/>
                         <xsl:variable name="is-union-element" select="parent::imvert:attribute/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union-element')"/>
                         <xsl:choose>
                             <!-- when in context of attribute, and not a union element, check if an asAttribute is specified -->

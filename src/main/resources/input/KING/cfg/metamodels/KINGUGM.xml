@@ -60,7 +60,7 @@
             <format>AsIs</format>
         </property>
         <tv>
-            <format>AsIs</format>
+            <format>Upperstart</format> <!-- first character must be upper case. -->
         </tv>
         <element>
             <format>LowerCamel</format>

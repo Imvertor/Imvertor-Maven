@@ -72,6 +72,14 @@
         <xsl:variable name="proxy" select="imf:get-config-stereotypes(('stereotype-name-att-proxy','stereotype-name-obj-proxy','stereotype-name-grp-proxy','stereotype-name-prd-proxy'), false())"/>
         <xsl:sequence select="imf:set-config-string('system','supports-proxy',if ($proxy = '#unknown') then 'no' else 'yes')"/>
         
+       <!--x
+       <xsl:result-document href="file:/c:/temp/config.xml">
+            <debug>
+                <xsl:sequence select="imf:document($configuration-metamodel-name,true())"></xsl:sequence>
+            </debug>
+        </xsl:result-document>
+        x-->
+        
     </xsl:template>
     
     <!-- name normalization on all configuration files -->

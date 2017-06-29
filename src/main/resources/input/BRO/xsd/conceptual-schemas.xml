@@ -13,6 +13,7 @@
     </mapping>
     
     <conceptual-schema>
+        <name>Sample1</name>
         <description>Sample conceptual schema, see «Application» Github-14-metamodel links</description>
         <!-- 
             This URL is the formal name fo the schema witin the EA project. 
@@ -25,23 +26,31 @@
             version="1.0.0" 
             phase="1" 
             location="http://www.bro.nl/schemas/1.0.0/SampleExternalModelA.xsd">
-            
+
             <releases>
-                <release>20170302</release> 
+                <release>20170302</release>
             </releases>
-            
-            <type name="EM_AC1"  
-                asAttributeDesignation="complextype"
-                asAttribute="AC1type">AC1</type>  
-                
-            <type name="EM_AC2"  
-                asAttributeDesignation="complextype"
-                asAttribute="AC2type">AC2</type>  
-                
-         </map>
+
+            <construct>
+                <name>EM_AC1</name>
+                <xsd-type name="AC1" asAttributeDesignation="complextype" asAttribute="AC1type"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>EM_AC2</name>
+                <xsd-type name="AC2" asAttributeDesignation="complextype" asAttribute="AC2type"/>
+                <managed-ids/>
+            </construct>
+
+        </map>
     </conceptual-schema>
     
     <conceptual-schema>
+        <name>GML3</name>
+        
+        <short-name>GML3</short-name>
+        
         <description>ISO19107 Geographic information – Spatial schema</description>
         <!-- 
             This URL is the formal name fo the schema witin the EA project. 
@@ -54,31 +63,66 @@
             version="3.2.1" 
             phase="3" 
             location="http://schemas.opengis.net/gml/3.2.1/gml.xsd">
-           
+
             <releases>
-                <release>20070906</release> 
+                <release>20070906</release>
             </releases>
-            
+
             <!-- 
                 NEN3610:2011/Geonovum requires Simple Feature Profile, see http://www.ogcnetwork.net/gml-sf 
             -->
-            <type name="GM_AbstractFeature">AbstractFeature</type>  
-            <type name="GM_AbstractFeatureType">AbstractFeatureType</type>  
-            
-            <type name="GM_AbstractFeatureCollection">AbstractFeatureCollection</type>  
-            <type name="GM_AbstractFeatureCollectionType">AbstractFeatureCollectionType</type>  
-            
-            <type name="GM_AbstractFeatureMember">AbstractFeatureMember</type>  
-            <type name="GM_AbstractFeatureMemberType">AbstractFeatureMemberType</type>  
-            
-            <type name="GM_AbstractGML">AbstractGML</type>  
-            <type name="GM_AbstractGMLType">AbstractGMLType</type>  
-            
+            <construct>
+                <!-- this is the name of the construct in the UML model -->
+                <name>GM_AbstractFeature</name>
+                <!-- this is a mapping to the XSD constrcuts within the schema -->
+                <xsd-type name="AbstractFeature"/>
+                <!-- this is a list of possible ID's, that can be used when conflicts occur (several constructs with same Name) -->
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>GM_AbstractFeatureType</name>
+                <xsd-type name="AbstractFeatureType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_AbstractFeatureCollection</name>
+                <xsd-type name="AbstractFeatureCollection"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>GM_AbstractFeatureCollectionType</name>
+                <xsd-type name="AbstractFeatureCollectionType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_AbstractFeatureMember</name>
+                <xsd-type name="AbstractFeatureMember"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>GM_AbstractFeatureMemberType</name>
+                <xsd-type name="AbstractFeatureMemberType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_AbstractGML</name>
+                <xsd-type name="AbstractGML"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>GM_AbstractGMLType</name>
+                <xsd-type name="AbstractGMLType"/>
+                <managed-ids/>
+            </construct>
+
             <!-- see mapping listed at 
                 Table D.2 — Implementation of types from the ISO 19100 series of International Standards -->
-            
+
             <!-- TODO aanvullen -->
-            
+
             <!-- Instructions on what GML types to use: 
 			Preferably use: 
 			http://www.geonovum.nl/wegwijzer/standaarden/opengis%C2%AE-gml-simple-features-profile 
@@ -100,100 +144,149 @@
 			which is not always (less) the case for other types, like AbstractSurfaceType of AbstractCurveType. Add extra documentation that the implementation will, of will not, use xlink and/or will or will not use certain subtypes.
 			
 			 -->
-            <type name="GM_Point"  
-                asAttributeDesignation="complextype"
-                asAttribute="PointPropertyType">Point</type>  
-            
-            <type name="GM_Curve"  
-                asAttributeDesignation="complextype"
-                asAttribute="CurvePropertyType">Curve</type>  
-            
-            <type name="GM_Surface"  
-                asAttributeDesignation="complextype"
-                asAttribute="SurfacePropertyType">Surface</type> 
-            
-            <type name="GM_MultiPoint"  
-                asAttributeDesignation="complextype"
-                asAttribute="MultiPointPropertyType">MultiPoint</type> 
-            
-            <type name="GM_MultiSurface"  
-                asAttributeDesignation="complextype"
-                asAttribute="MultiSurfacePropertyType">MultiSurface</type> 
-            
-            <type name="GM_MultiCurve"  
-                asAttributeDesignation="complextype"
-                asAttribute="MultiCurvePropertyType">MultiCurve</type> 
-            
-            <type name="GM_Geometry"  
-                asAttributeDesignation="complextype"
-                asAttribute="GeometryPropertyType">Geometry</type>              
-            
-            <type name="GM_MultiGeometry"  
-                asAttributeDesignation="complextype"
-                asAttribute="MultiGeometryPropertyType">MultiGeometry</type>
-            
-            <!-- preferable not to be used in  schema's - also, types below are not yet edited to always be PropertyType: --> 
-            
-            <type name="GM_ArcString"  
-                asAttributeDesignation="complextype"
-                asAttribute="ArcStringPropertyType">ArcString</type>          
-            
-            <type name="GM_LineString"  
-                asAttributeDesignation="complextype"
-                asAttribute="LineStringPropertyType">LineStringSegment</type>  
-            
-            <type name="GM_Polygon"  
-                asAttributeDesignation="complextype"
-                asAttribute="PolygonPatchType">PolygonPatch</type>  
-            
-            <type name="GM_Object"  
-                asAttributeDesignation="complextype"
-                asAttribute="GeometryPropertyType">Object</type>  
-            
-            <type name="GM_Primitive"  
-                asAttributeDesignation="complextype"
-                asAttribute="GeometricPrimtivePropertyType">Primitve</type>  
-            
-            <type name="GM_Position"  
-                asAttributeDesignation="complextype"
-                asAttribute="geometricPositionGroup">Position</type>  
-            
-            <type name="GM_PointArray"  
-                asAttributeDesignation="complextype"
-                asAttribute="geometricPositionListGroup">PointArray</type>  
-            
-            <type name="GM_Solid"  
-                asAttributeDesignation="complextype"
-                asAttribute="SolidPropertyType">Solid</type> 
-            
-            <type name="GM_OrientableCurve"  
-                asAttributeDesignation="complextype"
-                asAttribute="CurvePropertyType">OrientableCurve</type> 
-            
-            <type name="GM_OrientableSurface"  
-                asAttributeDesignation="complextype"
-                asAttribute="SurfacePropertyType">OrientableSurface</type> 
-            
-            <type name="GM_CompositePoint"  
-                asAttributeDesignation="complextype"
-                asAttribute="PointPropertyType">CompositePoint</type> 
-            
-            <type name="GM_Complex"  
-                asAttributeDesignation="complextype"
-                asAttribute="GeometricComplexPropertyType">Complex</type> 
-            
-            <type name="GM_Aggregate"  
-                asAttributeDesignation="complextype"
-                asAttribute="MultiGeometryPropertyType">Aggregate</type> 
-            
-            <type name="GM_MultiSolid"  
-                asAttributeDesignation="complextype"
-                asAttribute="MultiMultiSolidPropertyType">MultiSolid</type> 
-            
-            <type name="GM_MultiPrimitive"  
-                asAttributeDesignation="complextype"
-                asAttribute="MultiGeometryPropertyType">MultiPrimitive</type> 
-            
+            <construct>
+                <name>GM_Point</name>
+                <xsd-type name="Point" asAttributeDesignation="complextype" asAttribute="PointPropertyType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_Curve</name>
+                <xsd-type name="Curve" asAttributeDesignation="complextype" asAttribute="CurvePropertyType"/>
+                <managed-ids origin="https://www.imvertor.org/svn/BRO/XMI-data/FOUNDATION ISO 191362007 GML (EXTERNAL).xml">
+                    <id>{C9FA3E43-DED1-42bc-A579-4C0771E987A9}</id>
+                </managed-ids>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_Surface</name>
+                <xsd-type name="Surface" asAttributeDesignation="complextype" asAttribute="SurfacePropertyType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_MultiPoint</name>
+                <xsd-type name="MultiPoint" asAttributeDesignation="complextype" asAttribute="MultiPointPropertyType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_MultiSurface</name>
+                <xsd-type name="MultiSurface" asAttributeDesignation="complextype" asAttribute="MultiSurfacePropertyType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_MultiCurve</name>
+                <xsd-type name="MultiCurve" asAttributeDesignation="complextype" asAttribute="MultiCurvePropertyType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_Geometry</name>
+                <xsd-type name="Geometry" asAttributeDesignation="complextype" asAttribute="GeometryPropertyType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_MultiGeometry</name>
+                <xsd-type name="MultiGeometry" asAttributeDesignation="complextype" asAttribute="MultiGeometryPropertyType"/>
+                <managed-ids/>
+            </construct>
+
+            <!-- preferable not to be used in  schema's - also, types below are not yet edited to always be PropertyType: -->
+
+            <construct>
+                <name>GM_ArcString</name>
+                <xsd-type name="ArcString" asAttributeDesignation="complextype" asAttribute="ArcStringType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_LineString</name>
+                <xsd-type name="LineStringSegment" asAttributeDesignation="complextype" asAttribute="LineStringType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_Polygon</name>
+                <xsd-type name="PolygonPatch" asAttributeDesignation="complextype" asAttribute="PolygonPatchType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_Object</name>
+                <xsd-type name="Object" asAttributeDesignation="complextype" asAttribute="GeometryPropertyType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_Primitive</name>
+                <xsd-type name="Primitve" asAttributeDesignation="complextype" asAttribute="GeometricPrimtivePropertyType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_Position</name>
+                <xsd-type name="Position" asAttributeDesignation="complextype" asAttribute="geometricPositionGroup"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_PointArray</name>
+                <xsd-type name="PointArray" asAttributeDesignation="complextype" asAttribute="geometricPositionListGroup"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_Solid</name>
+                <xsd-type name="Solid" asAttributeDesignation="complextype" asAttribute="SolidPropertyType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_OrientableCurve</name>
+                <xsd-type name="OrientableCurve" asAttributeDesignation="complextype" asAttribute="CurvePropertyType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_OrientableSurface</name>
+                <xsd-type name="OrientableSurface" asAttributeDesignation="complextype" asAttribute="SurfacePropertyType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_CompositePoint</name>
+                <xsd-type name="CompositePoint" asAttributeDesignation="complextype" asAttribute="PointPropertyType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_Complex</name>
+                <xsd-type name="Complex" asAttributeDesignation="complextype" asAttribute="GeometricComplexPropertyType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_Aggregate</name>
+                <xsd-type name="Aggregate" asAttributeDesignation="complextype" asAttribute="MultiGeometryPropertyType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_MultiSolid</name>
+                <xsd-type name="MultiSolid" asAttributeDesignation="complextype" asAttribute="MultiMultiSolidPropertyType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_MultiPrimitive</name>
+                <xsd-type name="MultiPrimitive" asAttributeDesignation="complextype" asAttribute="MultiGeometryPropertyType"/>
+                <managed-ids/>
+            </construct>
+
             <!--x
             <type name="GM_Aggregate"  
                 asAttributeDesignation="complextype"
@@ -203,26 +296,68 @@
                 asAttributeDesignation="complextype"                
                 asAttribute="MultiGeometryPropertyType">MultiGeometry</type>
             x-->
-            
-            <type name="Measure"  
-                asAttributeDesignation="simpletype"                
-                asAttribute="MeasureType"
-                inSubstitution="measure">Measure</type>
-            
-           
-            <type name="Binary" primitive="true">xs:binary</type>  
-            <type name="Boolean" primitive="true">xs:boolean</type>  
-            <type name="CharacterString" primitive="true">xs:string</type>  
-            <type name="Date" primitive="true">xs:date</type>  
-            <type name="DateTime" primitive="true">xs:dateTime</type>  
-            <type name="Integer" primitive="true">xs:integer</type>  
-            <type name="Real" primitive="true">xs:real</type>  
-            <type name="Time" primitive="true">xs:time</type>  
-            <type name="URI" primitive="true">xs:AnyURI</type>  
+
+            <construct>
+                <name>Measure</name>
+                <xsd-type name="Measure" asAttributeDesignation="simpletype" asAttribute="MeasureType" inSubstitution="measure"/>
+                <!--  
+                <managed-ids origin="(ISO 19107:2003 Spatial Schema)">
+                    <id>{5071C012-977C-491a-AF2C-315CC2F4F9F9}</id>
+                </managed-ids>
+                -->
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>Binary</name>
+                <xsd-type name="xs:binary" primitive="true"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>Boolean</name>
+                <xsd-type name="xs:boolean" primitive="true"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>CharacterString</name>
+                <xsd-type name="xs:string" primitive="true"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>Date</name>
+                <xsd-type name="xs:date" primitive="true"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>DateTime</name>
+                <xsd-type name="xs:dateTime" primitive="true"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>Integer</name>
+                <xsd-type name="xs:integer" primitive="true"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>Real</name>
+                <xsd-type name="xs:real" primitive="true"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>Time</name>
+                <xsd-type name="xs:time" primitive="true"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>URI</name>
+                <xsd-type name="xs:AnyURI" primitive="true"/>
+                <managed-ids/>
+            </construct>
         </map>
     </conceptual-schema>
     
     <conceptual-schema>
+        <name>Citation and responsible party information</name>
         <description>ISO TC211 / ISO 19115:2006 Metadata (Corrigendum) - Citation and responsible party information</description>
         <url>http://www.bro.nl/conceptual-schemas/iso/19115/metadata/cit</url>
         <map 
@@ -237,13 +372,19 @@
             <releases>
                 <release>2006</release> 
             </releases>
-            <type name="CI_Citation"
-                asAttributeDesignation="complextype"
-                asAttribute="CI_Citation_PropertyType">CI_Citation</type>
+           
+            <construct>
+                <name>CI_Citation</name>
+                <xsd-type name="CI_Citation" asAttributeDesignation="complextype" asAttribute="CI_Citation_PropertyType"/>
+                <managed-ids>
+                    <id>EAID_5AB3D01D_E919_49ee_ACD0_281BAA7FE584</id>
+                </managed-ids>
+            </construct>
         </map>
     </conceptual-schema>
     
     <conceptual-schema>
+        <name>Extent information</name>
         <description>ISO TC211 / ISO 19115:2006 Metadata (Corrigendum) - Extent information</description>
         <url>http://www.bro.nl/conceptual-schemas/iso/19115/metadata/gex</url>
         <map 
@@ -258,9 +399,11 @@
             <releases>
                 <release>2006</release> 
             </releases>
-            <type name="EX_Extent"
-                asAttributeDesignation="complextype"
-                asAttribute="EX_Extent_PropertyType">EX_Extent</type>
+            <construct>
+                <name>EX_Extent</name>
+                <xsd-type name="EX_Extent" asAttributeDesignation="complextype" asAttribute="EX_Extent_PropertyType"/>
+                <managed-ids/>
+            </construct>
         </map>
     </conceptual-schema>
     
