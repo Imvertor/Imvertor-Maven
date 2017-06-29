@@ -385,7 +385,7 @@
     <xsl:template match="imvert:class" mode="mode-global-matchgegevens">
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
         <!-- <xsl:variable name="matchgegevens-x" select="imvert:*/imvert:*[imf:boolean(imvert:is-id)]"/> -->
-        <xsl:variable name="matchgegevens" select="imvert:*/imvert:*[starts-with(imf:get-taggedvalue(.,'##CFG-TV-INDICATIEKERNGEGEVEN'),'J')]"/><!-- attributes and associations. -->
+        <xsl:variable name="matchgegevens" select="imvert:*/imvert:*[starts-with(imf:get-taggedvalue(.,'##CFG-TV-INDICATIEMATCHGEGEVEN'),'J')]"/><!-- attributes and associations. -->
         <xsl:variable name="matchgegevens-att" select="$matchgegevens[self::imvert:attribute]"/>
         <xsl:variable name="matchgegevens-cmp" select="$matchgegevens[self::imvert:association and imvert:aggregation = 'composite']"/>
         <xsl:variable name="matchgegevens-ass" select="$matchgegevens[self::imvert:association and not(imvert:aggregation = 'composite')]"/>
@@ -401,7 +401,9 @@
         <xsl:variable name="body-kern">
             <xs:sequence>
                 <!-- attributes in order found -->
-                <xsl:apply-templates select="$matchgegevens-att" mode="mode-local-attribute"/>
+                <xsl:apply-templates select="$matchgegevens-att" mode="mode-local-attribute">
+                    <xsl:with-param name="matchgegevens" select="true()"/>
+                </xsl:apply-templates>
                 <!-- assocations sorted -->
                 <xsl:apply-templates select="$matchgegevens-cmp" mode="mode-local-composition">
                     <xsl:with-param name="matchgegevens" select="true()"/>
@@ -418,7 +420,7 @@
         <xsl:if test="not($is-abstract)">
             <xsl:sequence select="imf:create-comment(concat('mode-global-matchgegevens matchgegevens # ',@display-name))"/>
             <xs:complexType name="{imvert:alias}-matchgegevens">
-                    <xs:complexContent>
+                <xs:complexContent>
                     <xs:restriction base="{$prefix}:{imvert:alias}-basis">
                         <xsl:sequence select="$body-kern"/>
                         <xs:attribute ref="{$prefix}:entiteittype" fixed="{imvert:alias}" use="required"/>
@@ -518,6 +520,7 @@
     <!-- LOCAL SUBSTRUCTURES -->
     
     <xsl:template match="imvert:attribute" mode="mode-local-attribute">
+        <xsl:param name="matchgegevens" select="false()"/>
         
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
         
@@ -562,7 +565,7 @@
             
             <xsl:variable name="scalar-att-type" select="imf:get-stuf-scalar-attribute-type(.)"/>
             
-            <xsl:variable name="min-occurs" select="if ($this-is-complextype) then 1 else 0"/>
+            <xsl:variable name="min-occurs" select="if ($this-is-complextype or $matchgegevens) then 1 else 0"/>
             
             <xsl:sequence select="imf:create-comment(concat('mode-local-attribute Local attribute # ',@display-name))"/>
             
@@ -771,11 +774,13 @@
                 <xsl:variable name="has-form-his" select="$history[1]"/>
                 <xsl:variable name="has-mat-his" select="$history[2]"/>
                 
+                <xsl:variable name="target-minoccurs" select="if ($matchgegevens) then 1 else 0"/>
                 <xsl:variable name="target-cardinality" select="if ($has-mat-his and not($has-form-his)) then 'unbounded' else $cardinality[4]"/> <!-- als materiele historie en niet formeel, dan is target altijd unbounded -->
+                
                 <xs:element
                     name="{$assoc-name}" 
                     type="{$heen-typeref}" 
-                    minOccurs="0" 
+                    minOccurs="{$target-minoccurs}" 
                     maxOccurs="{$target-cardinality}"
                     > <!-- must be 0, fixed -->
                     <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
@@ -797,6 +802,8 @@
         <xsl:variable name="cardinality" select="imf:get-cardinality(.)"/>
         <xsl:variable name="history" select="imf:get-history(.)"/>
         
+        <xsl:variable name="target-minoccurs" select="if ($matchgegevens) then 1 else 0"/>
+        
         <xsl:variable name="type" select="imf:get-class(.)"/>
         <xsl:variable name="compiled-name-type" select="imf:get-compiled-name($type)"/>
        
@@ -807,7 +814,7 @@
         <xs:element
             name="{$compiled-name}" 
             type="{concat($prefix, ':', $compiled-name-type)}-basis" 
-            minOccurs="0" 
+            minOccurs="{$target-minoccurs}" 
             maxOccurs="{$cardinality[4]}"
             >
             <xsl:sequence select="imf:create-historie-attributes($history[1] or $group-history[1],$history[2] or $group-history[2])"/>
@@ -919,7 +926,7 @@
             </xs:annotation>
             <xs:complexContent>
                 <xs:restriction base="{$prefix}:{$associatie-naam}-basis">
-                    <xs:sequence minOccurs="0">
+                    <xs:sequence minOccurs="1">
                         <xs:element 
                             name="gerelateerde" 
                             type="{$prefix}:{$target/imvert:alias}{$target-is-supertype-label}"

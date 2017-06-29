@@ -73,15 +73,35 @@
         </xsl:copy>
     </xsl:template>  
 
+        
     <!-- UGM is opgesteld met dubbelingen van tagged values. Breng deze terug tot één. -->
     <xsl:template match="imvert:tagged-values">
+        
+        <!-- PATCH 
+            sommige UGM zijn nog opgesteld met indicatie kerngegeven. Migreer. Task #488870 -->
+        <xsl:variable name="tagged-values-migrated" as="element(imvert:tagged-value)*">
+            <xsl:for-each select="imvert:tagged-value">
+                <xsl:choose>
+                    <xsl:when test="@id = 'CFG-TV-INDICATIEKERNGEGEVEN'">
+                        <imvert:tagged-value id="CFG-TV-INDICATIEMATCHGEGEVEN">
+                            <imvert:name origibal="Indicatie matchgegeven">Indicatie matchgegeven</imvert:name>
+                            <xsl:sequence select="imvert:value"/>
+                        </imvert:tagged-value>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:sequence select="."/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:for-each>
+        </xsl:variable>
+        
         <imvert:tagged-values>
-            <xsl:for-each-group select="imvert:tagged-value" group-by="@id">
+            <xsl:for-each-group select="$tagged-values-migrated" group-by="@id">
                 <imvert:tagged-value>
                     <xsl:copy-of select="current-group()[1]/@*"/>
                     <xsl:copy-of select="current-group()[1]/imvert:name"/>
                     <xsl:choose>
-                        <xsl:when test="current-grouping-key() = 'CFG-TV-INDICATIEKERNGEGEVEN'">
+                        <xsl:when test="current-grouping-key() = 'CFG-TV-INDICATIEMATCHGEGEVEN'">
                             <xsl:variable name="values" select="current-group()/imvert:value"/>
                             <xsl:variable name="value" select="imf:boolean-or(for $b in $values return imf:boolean($b))"/>
                             <imvert:value original="{@original}">

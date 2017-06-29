@@ -63,7 +63,7 @@
     
     <xsl:template match="imvert:is-id">
         <!-- setup -->
-        <xsl:variable name="tv-k" select="imf:get-tagged-value-element(..,'##CFG-TV-INDICATIEKERNGEGEVEN')"/>
+        <xsl:variable name="tv-k" select="imf:get-tagged-value-element(..,'##CFG-TV-INDICATIEMATCHGEGEVEN')"/>
         
         <!-- validate -->
         <xsl:sequence select="imf:report-warning(.., 
@@ -75,7 +75,7 @@
     
     <xsl:template match="imvert:static">
         <!-- setup -->
-        <xsl:variable name="tv-k" select="imf:get-tagged-value-element(..,'##CFG-TV-INDICATIEKERNGEGEVEN')"/>
+        <xsl:variable name="tv-k" select="imf:get-tagged-value-element(..,'##CFG-TV-INDICATIEMATCHGEGEVEN')"/>
         
         <!-- validate -->
         <xsl:sequence select="imf:report-warning(.., 
@@ -85,7 +85,7 @@
         <xsl:next-match/>
     </xsl:template>
     
-    <xsl:template match="imvert:tagged-value[@id = 'CFG-TV-INDICATIEKERNGEGEVEN']">
+    <xsl:template match="imvert:tagged-value[@id = 'CFG-TV-INDICATIEMATCHGEGEVEN']">
         <!-- setup -->
         <xsl:variable name="construct" select="../.."/>
         
