@@ -2326,6 +2326,7 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
+					<xsl:variable name="inOnderzoek" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIEINONDERZOEK')"/>
 					
 					<xsl:if test="($berichtCode = 'La07' or $berichtCode = 'La08' or $berichtCode = 'La09' or $berichtCode = 'La10') and ($generateHistorieConstruct = 'MaterieleHistorie' and contains($indicatieMaterieleHistorie,'Ja'))
 								  and contains($generateMaterieleHistorieOnAssociation,'Ja')">
@@ -2343,7 +2344,8 @@
 							<xsl:variable name="historieType" select="'historieMaterieel'"/>
 
 							<xsl:sequence select="imf:create-output-element('ep:name', imvert:name)"/>							
-							<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)"/>							
+							<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)"/>								
+							<xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>					
 							<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)"/>
 							<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)"/>
 							
@@ -2435,6 +2437,7 @@
 					</xsl:variable>
 					<!-- The ep:constructRef is temporarily provided with a 'context' attribute and a 'ep:id' element to be able to create global constructs later.
 						 These are removed later since they aren't part of the 'ep' structure. -->
+					<xsl:variable name="inOnderzoek" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIEINONDERZOEK')"/>
 					
 					<!-- Location: 'ep:constructRef3'
 								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct3'. -->
@@ -2458,6 +2461,7 @@
 
 						<xsl:sequence select="imf:create-output-element('ep:name', imvert:name)"/>
 						<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)"/>
+						<xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
 						<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)"/>
 						<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)"/>
 						

@@ -374,10 +374,6 @@
                             <xsl:sequence select="imf:create-output-element('ep:name', ep:tech-name)"/>
                             <xsl:sequence select="imf:create-output-element('ep:tech-name', ep:tech-name)"/>
                         </ep:superconstructRef>
-                        <xsl:if test="$debugging">
-                            <xsl:copy-of select="$uniquePrefixes"/>
-                            <xsl:value-of select="$prefix"/>
-                        </xsl:if> 
                         <xsl:choose>
                             <xsl:when test="@orderingDesired = 'no' or ancestor::ep:seq[@orderingDesired = 'no']">
                                 <xsl:apply-templates select="*">
@@ -566,18 +562,18 @@
             <xsl:copy-of select="."/>
         </xsl:variable>
         <xsl:choose>
-            <xsl:when test="$procesType='splitting' and $prefix4metadataConstructs = $actualPrefix">
+            <xsl:when test="($procesType='splitting' and $prefix4metadataConstructs = $actualPrefix) or $procesType!='splitting'">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 2024',$debugging)"/>
 
-                <xsl:choose>
+                <!--xsl:choose>
                     <xsl:when test="ancestor::ep:construct[.//ep:construct[ep:inOnderzoek != '']]">
                         <xsl:sequence select="imf:create-debug-comment('Debuglocation 2025',$debugging)"/>
-
+                        
                         <xsl:sequence select="$inOnderzoek"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:sequence select="imf:create-debug-comment('Debuglocation 2026',$debugging)"/>
-
+                        
                         <xsl:variable name="inOnderzoekValid">
                             <xsl:for-each select="ep:constructRef[starts-with(ep:href,'Grp')]">
                                 <xsl:variable name="href" select="ep:href"/>
@@ -590,9 +586,31 @@
                             <xsl:sequence select="$inOnderzoek"/>                        
                         </xsl:if>
                     </xsl:otherwise>
+                </xsl:choose-->
+                <xsl:choose>
+                    <xsl:when test="ancestor::ep:construct[.//ep:construct[ep:inOnderzoek = 'Ja']]">
+                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2025',$debugging)"/>
+
+                        <xsl:sequence select="$inOnderzoek"/>
+                    </xsl:when>
+                    <xsl:when test="ancestor::ep:construct[.//ep:construct[ep:inOnderzoek = 'Zie groep']]">
+                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2026',$debugging)"/>
+
+                        <xsl:variable name="inOnderzoekValid">
+                            <xsl:for-each select="ep:constructRef[starts-with(ep:href,'Grp')]">
+                                <xsl:variable name="href" select="ep:href"/>
+                                <xsl:if test="//ep:construct[ep:tech-name = $href and .//ep:construct[ep:inOnderzoek and ep:inOnderzoek = 'Ja']]">
+                                    <xsl:value-of select="'yes'"/>
+                                </xsl:if>
+                            </xsl:for-each>
+                        </xsl:variable>
+                        <xsl:if test="contains($inOnderzoekValid,'yes')">
+                            <xsl:sequence select="$inOnderzoek"/>                        
+                        </xsl:if>
+                    </xsl:when>
                 </xsl:choose>
             </xsl:when>
-            <xsl:when test="$procesType!='splitting'">
+            <!--xsl:when test="$procesType!='splitting'">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 2027',$debugging)"/>
 
                 <xsl:choose>
@@ -617,7 +635,7 @@
                         </xsl:if>
                     </xsl:otherwise>
                 </xsl:choose>
-            </xsl:when>
+            </xsl:when-->
         </xsl:choose>
     </xsl:template>
     
