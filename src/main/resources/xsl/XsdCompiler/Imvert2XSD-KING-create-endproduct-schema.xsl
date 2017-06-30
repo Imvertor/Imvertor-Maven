@@ -70,7 +70,7 @@
 			<xsl:choose>
 				<xsl:when test="@prefix = $StUF-prefix">
 					<xs:include schemaLocation="../0302/stuf0302.xsd"/>
-				</xsl:when>
+				</xsl:when> 
 				<xsl:otherwise>
 					<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="../0302/stuf0302.xsd"/>
 					<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="{concat($kv-prefix,'0320_stuf_simpleTypes.xsd')}"/>
