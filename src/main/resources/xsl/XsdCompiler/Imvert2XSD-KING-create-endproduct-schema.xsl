@@ -70,16 +70,13 @@
 			<xsl:choose>
 				<xsl:when test="@prefix = $StUF-prefix">
 					<xs:include schemaLocation="../0302/stuf0302.xsd"/>
-					<xsl:if test="//ep:type-name[contains(.,'gml:')]">
-						<xs:import namespace="http://www.opengis.net/gml" schemaLocation="../gml-3.1.1.2/gml/3.1.1/base/gml.xsd"/>
-					</xsl:if>
 				</xsl:when>
 				<xsl:otherwise>
 					<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="../0302/stuf0302.xsd"/>
 					<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="{concat($kv-prefix,'0320_stuf_simpleTypes.xsd')}"/>
-					<!-- ROME: Volgende import moet alleen geplaatst worden als er een GML construct gebruikt wordt. In dat geval moet ook
-							   geregeld worden dat de namespace-identifiers van GML in het schema gedeclareerd worden.-->
-					<!--xs:import namespace="http://www.opengis.net/gml" schemaLocation="../../gml-3.1.1.2/gml/3.1.1/base/gml.xsd"/-->
+					<xsl:if test="//ep:type-name[contains(.,'gml:')]">
+						<xs:import namespace="http://www.opengis.net/gml" schemaLocation="../gml-3.1.1.2/gml/3.1.1/base/gml.xsd"/>
+					</xsl:if>
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:for-each
@@ -101,7 +98,7 @@
 			<xsl:sequence
 				select="imf:create-debug-comment('ROME: simpleType extending complexTypes', $debugging)"/>
 			<xsl:apply-templates
-				select="ep:construct[(substring-after(ep:type-name, ':') = //ep:message-set/ep:construct[@isdatatype and @prefix = $StUF-prefix]/ep:tech-name and @prefix = $StUF-prefix) or contains(ep:type-name,'gml:')]"
+				select="ep:construct[(substring-after(ep:type-name, ':') = //ep:message-set/ep:construct[@isdatatype and @prefix = ancestor::ep:message-set/@prefix]/ep:tech-name) or contains(ep:type-name,'gml:')]"
 				mode="simpleContentComplexType"/>
 
 			<xsl:sequence select="imf:create-debug-comment('ROME: simpleTypes', $debugging)"/>
@@ -546,6 +543,44 @@
 		</xsl:if>
 	</xsl:template>
 
+	<!-- ROME: Volgende template is alvast aangemaakt i.h.k.v. RM #489092. -->
+	<!--xsl:template match="ep:construct[$restrictionMode != '']" mode="complexType">
+		<xsl:sequence select="imf:create-debug-comment('Debuglocation 5012', $debugging)"/>
+		
+		<xsl:variable name="id" select="substring-before(substring-after(ep:id, '{'), '}')"/>
+		<xsl:if test="ep:seq/ep:* or ep:choice/ep:*">
+			<xs:complexType>
+				<xsl:attribute name="name" select="ep:tech-name"/>
+				<xsl:if test="ep:documentation">
+					<xs:annotation>
+						<xs:documentation>
+							<xsl:value-of select="ep:documentation"/>
+						</xs:documentation>
+					</xs:annotation>
+				</xsl:if>
+				<xsl:choose>
+					<xsl:when test="ep:superconstructRef">
+						<xsl:sequence
+							select="imf:create-debug-comment('Debuglocation 5013', $debugging)"/>
+						<xs:complexContent>
+							<xs:extension
+								base="{concat(ep:superconstructRef/@prefix,':',ep:superconstructRef/ep:tech-name)}">
+								<xsl:apply-templates select="ep:seq | ep:choice"/>
+								<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+							</xs:extension>
+						</xs:complexContent>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:sequence
+							select="imf:create-debug-comment('Debuglocation 5014', $debugging)"/>
+						<xsl:apply-templates select="ep:seq | ep:choice"/>
+						<xsl:apply-templates select="ep:seq" mode="generateAttributes"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xs:complexType>
+		</xsl:if>
+	</xsl:template-->
+	
 	<xsl:template match="ep:construct" mode="simpleContentComplexType">
 		<xsl:sequence select="imf:create-debug-comment('Debuglocation 5015', $debugging)"/>
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id, '{'), '}')"/>
