@@ -723,6 +723,7 @@
         -->
        
         <xsl:variable name="pat" select="imvert:pattern"/>
+        <!-- redmine #489056 Formal pattern -->
         <xsl:variable name="pat-msg" select="if (normalize-space($pat)) then imf:validate-regex($pat) else ''"/>
         <xsl:sequence select="imf:report-error(., 
             normalize-space($pat-msg), 

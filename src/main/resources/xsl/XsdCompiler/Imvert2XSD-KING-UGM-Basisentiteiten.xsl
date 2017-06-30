@@ -65,7 +65,7 @@
     <xsl:variable name="target-namespace" select="$imvert-document/imvert:packages/imvert:base-namespace"/>
     <xsl:variable name="StUF-prefix" select="'StUF'"/>
     
-    <xsl:variable name="version" select="'0320'"/><!-- TODO configure -->
+    <xsl:variable name="version" select="'0320'"/><!-- TODO #489065 configure -->
     
     <xsl:variable name="schemafile-ent-name" select="concat($prefix,$version,'_ent_basis.xsd')"/>
     <xsl:variable name="schemafile-ent" select="concat($xsd-folder-path,'/', $schemafile-ent-name)"/>
