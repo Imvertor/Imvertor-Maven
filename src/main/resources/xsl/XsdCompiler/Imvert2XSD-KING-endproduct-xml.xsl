@@ -2164,6 +2164,7 @@
 					bevat is dan wel altijd de ancestor van het element dat het nodig heeft. 
 					Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook 
 					nog herleid en doorgegeven worden. -->
+                                
                                 <xsl:if test="$generateHistorieConstruct = 'Nee'">
                                     <xsl:variable name="attributes"
                                         select="imf:createAttributes('relatie', substring($berichtCode, 1, 2), $context, 'no', $alias, 'no', $prefix, $id, '')"/>
