@@ -161,8 +161,8 @@
                 <xsl:variable name="xml-doc" select="imf:document($xml-path, true())"/>
                 <xsl:sequence select="$xml-doc"/-->
                 <!--xsl:sequence select="$enriched-endproduct-base-config-excel"/-->
-                <xsl:sequence select="$rough-messages"/>
-                <xsl:sequence select="$enriched-rough-messages"/>
+                <!--xsl:sequence select="$rough-messages"/>
+                <xsl:sequence select="$enriched-rough-messages"/-->
             </xsl:if>
             
             <xsl:sequence select="imf:track('Constructing the messages')"/>
@@ -859,7 +859,7 @@
                                     <ep:construct berichtCode="{$berichtCode}" berichtName="{$berichtName}" prefix="{$prefix}">
                                         <ep:name>historieFormeel</ep:name>
                                         <ep:tech-name>historieFormeel</ep:tech-name>
-                                        <ep:max-occurs>unbounded</ep:max-occurs>
+                                        <ep:max-occurs>1</ep:max-occurs>
                                         <ep:min-occurs>0</ep:min-occurs>
                                         <ep:position>180</ep:position>
                                         <xsl:choose>
@@ -1256,7 +1256,7 @@
                                            <ep:construct berichtCode="{$berichtCode}" berichtName="{$berichtName}" prefix="{$prefix}">
                                                <ep:name>historieFormeel</ep:name>
                                                <ep:tech-name>historieFormeel</ep:tech-name>
-                                               <ep:max-occurs>unbounded</ep:max-occurs>
+                                               <ep:max-occurs>1</ep:max-occurs>
                                                <ep:min-occurs>0</ep:min-occurs>
                                                <ep:position>180</ep:position>
                                                <xsl:choose>
@@ -1533,7 +1533,7 @@
                                                <ep:construct prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                                                    <ep:name>historieFormeel</ep:name>
                                                    <ep:tech-name>historieFormeel</ep:tech-name>
-                                                   <ep:max-occurs>unbounded</ep:max-occurs>
+                                                   <ep:max-occurs>1</ep:max-occurs>
                                                    <ep:min-occurs>0</ep:min-occurs>
                                                    <ep:position>175</ep:position>
                                                    <!-- The value of the type-name is dependant on the availability of an alias. -->
@@ -1770,7 +1770,7 @@
                                            <ep:construct prefix="{$prefix}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
                                                <ep:name>historieFormeel</ep:name>
                                                <ep:tech-name>historieFormeel</ep:tech-name>
-                                               <ep:max-occurs>unbounded</ep:max-occurs>
+                                               <ep:max-occurs>1</ep:max-occurs>
                                                <ep:min-occurs>0</ep:min-occurs>
                                                <ep:position>175</ep:position>
                                                <!-- The value of the type-name is dependant on the availability of an alias. -->
@@ -2069,6 +2069,7 @@
             </ep:tagged-values>
         </xsl:variable>
         <xsl:variable name="matchgegeven" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIEKERNGEGEVEN')"/>
+        <!--xsl:variable name="matchgegeven" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIEMATCHGEGEVEN')"/-->
         <xsl:variable name="authentiek" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIONAUTHENTIC')"/>
         <xsl:variable name="inOnderzoek" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIEINONDERZOEK')"/>
 
