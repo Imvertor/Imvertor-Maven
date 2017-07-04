@@ -10,7 +10,9 @@
     
     <!--  -->
 
-    <version-rule>
+
+
+    <!--version-rule>
         <version id="CFG-VERSION-MMB">
             <name lang="#all">MajorMinorBugfix</name>
             <desc lang="en">Versions must be specified as 99.99.99 or 99.99 (major, minor, bugfix).</desc>
@@ -26,6 +28,17 @@
             <fragment group="4" required="no">
                 <name lang="#all">Bugfix version</name>
                 <desc lang="en"></desc>
+            </fragment>
+        </version>
+    </version-rule-->            
+    
+    <version-rule>
+        <version id="CFG-VERSION-MMB">
+            <name lang="#all">MajorMinorBugfix</name>
+            <desc lang="en">Versions must be specified as an integer with length 4.</desc>
+            <pattern>(\d){4}</pattern>
+            <fragment group="1" required="yes">
+                <name lang="#all">Version (not empty)</name>
             </fragment>
         </version>
     </version-rule>            
