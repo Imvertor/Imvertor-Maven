@@ -36,6 +36,10 @@
     <xsl:variable name="StUF-prefix" select="'StUF'"/>
     <xsl:variable name="kv-prefix" select="/ep:message-set/ep:namespace-prefix"/>
     
+    <xsl:variable name="message-set">
+        <xsl:copy-of select="."/>
+    </xsl:variable>
+    
     <xsl:variable name="patch">
         <xsl:apply-templates select="ep:message-set" mode="patch"/>        
     </xsl:variable>
@@ -144,7 +148,8 @@
                 local-name()!='externalNamespace' and
                 local-name()!='context' and
                 local-name()!='berichtCode' and
-                local-name()!='berichtName']|text()"/>
+                local-name()!='berichtName' and
+                local-name()!='level']|text()"/>
         </xsl:copy>
     </xsl:template>
 
@@ -164,7 +169,8 @@
                        local-name()!='externalNamespace' and
                        local-name()!='context' and
                        local-name()!='berichtCode' and
-                       local-name()!='berichtName']|text()"/>
+                       local-name()!='berichtName' and
+                       local-name()!='level']|text()"/>
                </xsl:copy>
            </xsl:when>
            <xsl:when test="count(//ep:superconstructRef[@prefix = $prefix and ep:tech-name = $tech-name]) > 0">
@@ -175,11 +181,12 @@
                        local-name()!='externalNamespace' and
                        local-name()!='context' and
                        local-name()!='berichtCode' and
-                       local-name()!='berichtName']|text()"/>
+                       local-name()!='berichtName' and
+                       local-name()!='level']|text()"/>
                </xsl:copy>
            </xsl:when>
-           <xsl:when test="@isdatatype = 'yes' and count(//ep:construct[ep:type-name = concat($StUF-prefix,':',$tech-name)]) > 0">
-               <xsl:variable name="construct" select="//ep:construct[ep:type-name = concat($StUF-prefix,':',$tech-name)][1]"/>
+           <xsl:when test="@isdatatype = 'yes' and count(//ep:construct[ep:type-name = concat(@prefix,':',$tech-name)]) > 0">
+               <xsl:variable name="construct" select="//ep:construct[ep:type-name = concat(@prefix,':',$tech-name)][1]"/>
                <xsl:variable name="prefix2" select="$construct/@prefix"/>
                <xsl:variable name="tech-name2" select="$construct/ep:tech-name"/>
                <xsl:choose>
@@ -191,10 +198,11 @@
                                local-name()!='externalNamespace' and
                                local-name()!='context' and
                                local-name()!='berichtCode' and
-                               local-name()!='berichtName']|text()"/>
+                               local-name()!='berichtName' and
+                               local-name()!='level']|text()"/>
                        </xsl:copy>
                    </xsl:when>
-                   <xsl:when test="count(//ep:construct[ep:type-name = concat($StUF-prefix,':',$tech-name2)]) > 0">
+                   <xsl:when test="count(//ep:construct[ep:type-name = concat(@prefix,':',$tech-name2)]) > 0">
                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 3010',$debugging)"/>
                        <xsl:copy>
                            <xsl:apply-templates select="*|@*[local-name()!='namespaceId' and 
@@ -202,12 +210,13 @@
                                local-name()!='externalNamespace' and
                                local-name()!='context' and
                                local-name()!='berichtCode' and
-                               local-name()!='berichtName']|text()"/>
+                               local-name()!='berichtName' and
+                               local-name()!='level']|text()"/>
                        </xsl:copy>
                    </xsl:when>
                </xsl:choose>
            </xsl:when>
-           <xsl:when test="count(//ep:construct[ep:type-name = concat($StUF-prefix,':',$tech-name) or (@prefix = $prefix and ep:type-name = $tech-name)]) > 0">
+           <xsl:when test="count(//ep:construct[ep:type-name = concat(@prefix,':',$tech-name) or (ep:type-name = $tech-name)]) > 0">
                <xsl:sequence select="imf:create-debug-comment('Debuglocation 3011',$debugging)"/>
                <xsl:copy>
                    <xsl:apply-templates select="*|@*[local-name()!='namespaceId' and 
@@ -215,7 +224,8 @@
                        local-name()!='externalNamespace' and
                        local-name()!='context' and
                        local-name()!='berichtCode' and
-                       local-name()!='berichtName']|text()"/>
+                       local-name()!='berichtName' and
+                       local-name()!='level']|text()"/>
                </xsl:copy>
            </xsl:when>
        </xsl:choose> 
@@ -226,4 +236,52 @@
 
         <xsl:copy-of select="$patch"/>    
     </xsl:template>
+    
+    <xsl:template match="ep:type-name">
+        <xsl:variable name="type-name" select="."/>
+        <xsl:choose>
+            <xsl:when test="contains($type-name,':')">
+                <xsl:copy-of select="."/>
+            </xsl:when>
+            <xsl:when test="../@prefix = $StUF-prefix">
+                <xsl:copy-of select="."/>
+            </xsl:when>
+            <xsl:when test="/ep:message-set/ep:construct[ep:tech-name = $type-name and not(@level)]">
+                <xsl:copy-of select="."/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:variable name="lowestLevelPrefix">
+                    <xsl:value-of select="imf:get-LowestLevetPrefix(.,2)"/>
+                </xsl:variable>
+                <xsl:choose>
+                    <xsl:when test="$lowestLevelPrefix = 'noConstruct'">
+                        <xsl:copy-of select="."/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <ep:type-name><xsl:value-of select="concat($lowestLevelPrefix,':',.)"/></ep:type-name>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:function name="imf:get-LowestLevetPrefix" as="xs:string">
+        <xsl:param name="type-name"/>
+        <xsl:param name="level" as="xs:integer"/>
+        
+        <xsl:choose>
+            <xsl:when test="not($message-set/ep:message-set/ep:construct[ep:tech-name = $type-name])">
+                <xsl:value-of select="'noConstruct'"/>
+            </xsl:when>
+            <xsl:when test="count($message-set/ep:message-set/ep:construct[ep:tech-name = $type-name]) = 1">
+                <xsl:value-of select="$message-set/ep:message-set/ep:construct[ep:tech-name = $type-name]/@prefix"/>
+            </xsl:when>
+            <xsl:when test="$message-set/ep:message-set/ep:construct[ep:tech-name = $type-name and @level = $level]">
+                <xsl:value-of select="$message-set/ep:message-set/ep:construct[ep:tech-name = $type-name and @level = $level]/@prefix"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="imf:get-LowestLevetPrefix($type-name,$level + 1)"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
 </xsl:stylesheet>

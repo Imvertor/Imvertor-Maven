@@ -327,7 +327,6 @@
                     </xs:restriction>
                 </xs:complexContent>
             </xs:complexType>
-            
         </xsl:variable>
         
         <xsl:choose> <!-- TODO DONE ComplexType PES-basis moet een extension zijn van SUB-abstract -->
@@ -384,11 +383,22 @@
     
     <xsl:template match="imvert:class" mode="mode-global-matchgegevens">
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
-        <!-- <xsl:variable name="matchgegevens-x" select="imvert:*/imvert:*[imf:boolean(imvert:is-id)]"/> -->
-        <xsl:variable name="matchgegevens" select="imvert:*/imvert:*[starts-with(imf:get-taggedvalue(.,'##CFG-TV-INDICATIEMATCHGEGEVEN'),'J')]"/><!-- attributes and associations. -->
-        <xsl:variable name="matchgegevens-att" select="$matchgegevens[self::imvert:attribute]"/>
-        <xsl:variable name="matchgegevens-cmp" select="$matchgegevens[self::imvert:association and imvert:aggregation = 'composite']"/>
-        <xsl:variable name="matchgegevens-ass" select="$matchgegevens[self::imvert:association and not(imvert:aggregation = 'composite')]"/>
+        
+        <xsl:variable name="matchgegevens-att" select="imvert:attributes/imvert:attribute[starts-with(imf:get-taggedvalue(.,'##CFG-TV-INDICATIEMATCHGEGEVEN'),'J')]"/>
+        <xsl:variable name="matchgegevens-ass" select="imvert:associations/imvert:association[starts-with(imf:get-taggedvalue(.,'##CFG-TV-INDICATIEMATCHGEGEVEN'),'J') and not(imvert:aggregation = 'composite')]"/>
+       
+        <!-- determine if associations to groups with matchgegevens exist -->
+        <xsl:variable name="matchgegevens-cmp" as="element(imvert:association)*">
+            <xsl:for-each select="imvert:associations/imvert:association[imvert:aggregation = 'composite']">
+                <xsl:variable name="defining-class" select="imf:get-by-id(imvert:type-id)"/>
+                <xsl:variable name="is-group" select="$defining-class/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')"/>
+                <xsl:variable name="has-matchgegeven" select="for $att in $defining-class/imvert:attributes/imvert:attribute return starts-with(imf:get-taggedvalue($att,'##CFG-TV-INDICATIEMATCHGEGEVEN'),'J')"/>
+                <xsl:if test="$is-group and imf:boolean-or($has-matchgegeven)">
+                    <xsl:message>GROEP HEEFT MATCHGEGEVENS</xsl:message>
+                  <xsl:sequence select="."/>
+                </xsl:if> 
+            </xsl:for-each>
+        </xsl:variable>
         
         <xsl:variable name="superclasses" select="imf:get-superclasses(.)"/>
         <xsl:variable name="subclasses" select="imf:get-subclasses(.)"/>
@@ -407,7 +417,6 @@
                 <!-- assocations sorted -->
                 <xsl:apply-templates select="$matchgegevens-cmp" mode="mode-local-composition">
                     <xsl:with-param name="matchgegevens" select="true()"/>
-                    <xsl:sort select="imvert:name"/>
                 </xsl:apply-templates>
                 <xsl:apply-templates select="$matchgegevens-ass" mode="mode-local-association">
                     <xsl:with-param name="matchgegevens" select="true()"/>

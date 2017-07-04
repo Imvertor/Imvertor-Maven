@@ -42,21 +42,5 @@
         </tv>
     </naming>
     
-    <stereotypes xml:id="stereotypes">
 
-        <!-- 
-            For each stereotype, define a formal name, the name(s) in UML, description, the construct(s) to which the stereotype applies, and possible rules.
-        -->
-      
-        <stereo id="stereotype-name-identification">
-            <name lang="nl">Identificatie</name>
-            <name lang="en">Identification</name>
-            <desc lang="en">
-            </desc>
-            <desc lang="nl">	
-            </desc>
-            <construct>attribute</construct>
-        </stereo>
-       
-    </stereotypes>
 </metamodel>

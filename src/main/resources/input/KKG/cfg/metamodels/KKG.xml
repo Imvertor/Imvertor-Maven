@@ -137,6 +137,7 @@
             <desc lang="nl">
                 Gestructureerd datatype zonder identiteit waarvan precies één van de
                 (ten minste twee) onderdelen (attributes) aanwezig is in elke instantie. 
+                [ISO/TS 19103:2005]
                 Voorbeeld: Union LineOrPolygon. Union element Line of union element Polygon is van toepassing bij een instantie.
             </desc>
             <construct>datatype</construct>
@@ -317,13 +318,7 @@
             <name lang="en">LinkType</name>
             <construct>class</construct>
         </stereo>
-        <stereo id="stereotype-name-voidable">
-            <name lang="en">Voidable</name>
-            <name lang="nl">Voidable</name>
-            <construct>attribute</construct>
-            <construct>association</construct>
-        </stereo>
-
+      
         <stereo id="stereotype-name-generalization">
             <name lang="nl">Generalisatie</name>
             <name lang="en">InheritanceRelation</name>
@@ -345,28 +340,7 @@
             <construct>generalization</construct>
         </stereo>
 
-        <stereo id="stereotype-name-formele-historie">
-            <name lang="nl">Formelehistorie</name>
-            <name lang="en">FormalHistory</name>
-            <construct>attribute</construct>
-        </stereo>
-        <stereo id="stereotype-name-formele-levensduur">
-            <name lang="nl">Formelelevensduur</name>
-            <name lang="en">FormalLifecycle</name>
-            <construct>attribute</construct>
-        </stereo>
-        <stereo id="stereotype-name-materiele-historie">
-            <name lang="nl">Materielehistorie</name>
-            <name lang="en">MaterialHistory</name>
-            <construct>attribute</construct>
-        </stereo>
-        <stereo id="stereotype-name-materiele-levensduur">
-            <name lang="nl">Materielelevensduur</name>
-            <name lang="en">MaterialLifecycle</name>
-            <construct>attribute</construct>
-        </stereo>
-
-        <stereo id="stereotype-name-anonymous">
+       <stereo id="stereotype-name-anonymous">
             <name lang="nl">Anoniem</name>
             <name lang="en">Anonymous</name>
             <construct>attribute</construct>

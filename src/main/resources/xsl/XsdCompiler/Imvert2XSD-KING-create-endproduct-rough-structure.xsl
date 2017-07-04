@@ -65,7 +65,8 @@
 				</xsl:choose>
 			</xsl:variable>
 			
-			<xsl:variable name="berichtCode" select="imvert:tagged-values/imvert:tagged-value[imvert:name = 'Berichtcode']/imvert:value"/>
+			<!-- ROME deze tagged-value met en id ophalen. CFG-TV-BERICHTCODE-->
+			<xsl:variable name="berichtCode" select="imf:get-tagged-value(.,'##CFG-TV-BERICHTCODE')"/>
 			
 			<xsl:if test="$berichtCode = ''">
 				<xsl:message
@@ -607,7 +608,7 @@
 		<xsl:variable name="embeddedBerichtCode">
 			<xsl:choose>
 				<xsl:when test="imvert:stereotype = 'BERICHTRELATIE' and contains($berichtCode, 'Di')">
-					<xsl:value-of select="key('class',$type-id)//imvert:tagged-value[imvert:name = 'Berichtcode']/imvert:value"/>
+					<xsl:value-of select="imf:get-tagged-value(key('class',$type-id),'##CFG-TV-BERICHTCODE')"/>
 				</xsl:when>
 				<xsl:otherwise/>
 			</xsl:choose>
