@@ -154,7 +154,12 @@
                 <ent-part>
                     <xsl:sequence select="imf:create-comment(' *** Declaratie van gegevensgroeptypen *** ')"/>
                     
-                    <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-composite')]" mode="mode-global-gegevensgroeptype"/>
+                    <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-composite')]" mode="mode-global-gegevensgroeptype">
+                        <xsl:with-param name="matchgegevens" select="false()"/>
+                    </xsl:apply-templates>
+                    <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-composite')]" mode="mode-global-gegevensgroeptype">
+                        <xsl:with-param name="matchgegevens" select="true()"/>
+                    </xsl:apply-templates>
                 </ent-part>
 
                 <dat-part>
@@ -417,6 +422,7 @@
                 <!-- assocations sorted -->
                 <xsl:apply-templates select="$matchgegevens-cmp" mode="mode-local-composition">
                     <xsl:with-param name="matchgegevens" select="true()"/>
+                    <xsl:sort select="@type-display-name"/><!-- de naam van de groep als basis voor opeenvolging -->
                 </xsl:apply-templates>
                 <xsl:apply-templates select="$matchgegevens-ass" mode="mode-local-association">
                     <xsl:with-param name="matchgegevens" select="true()"/>
@@ -443,25 +449,46 @@
     
     <!-- Groepsattribuutsoort -->
     <xsl:template match="imvert:class" mode="mode-global-gegevensgroeptype">
+        <xsl:param name="matchgegevens" select="false()"/>
         
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
         
+        <xsl:variable name="suffix" select="if ($matchgegevens) then '-matchgegevens' else '-basis'"/>
         <xsl:sequence select="imf:create-comment(concat('mode-global-gegevensgroeptype Groepsattribuutsoort # ',@display-name))"/>
         
-        <xs:complexType name="{imf:capitalize($compiled-name)}-basis">
-            <xs:sequence minOccurs="0">
-                <xsl:sequence select="imf:create-comment('mode-global-gegevensgroeptype (Attributes)')"/>
-                <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-attribute"/>
-                <xsl:sequence select="imf:create-comment('mode-global-gegevensgroeptype (Groepen)')"/>
-                <xsl:apply-templates select="imvert:associations/imvert:association[imvert:aggregation = 'composite']" mode="mode-local-composition">
-                    <xsl:sort select="imvert:name"/>
-                </xsl:apply-templates>
-                <xsl:sequence select="imf:create-comment('mode-global-gegevensgroeptype (Associations)')"/>
-                <xsl:apply-templates select="imvert:associations/imvert:association[not(imvert:aggregation = 'composite')]" mode="mode-local-association">
-                    <xsl:with-param name="richting">uitgaand</xsl:with-param>
-                    <xsl:sort select="imvert:name"/>
-                </xsl:apply-templates>
-            </xs:sequence>
+        <xs:complexType name="{imf:capitalize($compiled-name)}{$suffix}">
+            <xsl:variable name="seq">
+                <xs:sequence minOccurs="0">
+                    <xsl:sequence select="imf:create-comment('mode-global-gegevensgroeptype (Attributes)')"/>
+                    <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-attribute">
+                        <xsl:with-param name="matchgegevens" select="$matchgegevens"/>
+                    </xsl:apply-templates>
+                    <xsl:sequence select="imf:create-comment('mode-global-gegevensgroeptype (Groepen)')"/>
+                    <xsl:apply-templates select="imvert:associations/imvert:association[imvert:aggregation = 'composite']" mode="mode-local-composition">
+                        <xsl:with-param name="matchgegevens" select="$matchgegevens"/>
+                        <xsl:sort select="@type-display-name"/><!-- de naam van de groep als basis voor opeenvolging -->
+                    </xsl:apply-templates>
+                    <xsl:sequence select="imf:create-comment('mode-global-gegevensgroeptype (Associations)')"/>
+                    <xsl:apply-templates select="imvert:associations/imvert:association[not(imvert:aggregation = 'composite')]" mode="mode-local-association">
+                        <xsl:with-param name="matchgegevens" select="$matchgegevens"/>
+                        <xsl:with-param name="richting">uitgaand</xsl:with-param>
+                        <xsl:sort select="imvert:name"/>
+                    </xsl:apply-templates>
+                </xs:sequence>
+            </xsl:variable>
+                <xsl:choose>
+                    <xsl:when test="$matchgegevens">
+                        <xs:complexContent>
+                            <xs:restriction base="{$prefix}:{imf:capitalize($compiled-name)}-basis">
+                                <xsl:sequence select="$seq"/>
+                            </xs:restriction>
+                        </xs:complexContent>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:sequence select="$seq"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+
         </xs:complexType>
     </xsl:template>
     
@@ -579,6 +606,11 @@
             <xsl:sequence select="imf:create-comment(concat('mode-local-attribute Local attribute # ',@display-name))"/>
             
             <xsl:choose>
+                
+                <xsl:when test="$matchgegevens and not(starts-with(imf:get-taggedvalue(.,'##CFG-TV-INDICATIEMATCHGEGEVEN'),'J'))">
+                    <!-- het is geen matchgegeven, dus laat weg. -->
+                </xsl:when>
+                
                 <xsl:when test="$type-is-scalar-empty">
                     <xsl:sequence select="imf:create-comment('Scalar en kan leeg worden; Case: Type is een voorgedefinieerd type')"/>
                     <xs:element
@@ -818,11 +850,13 @@
        
         <xsl:variable name="group-history" select="imf:get-history($type)"/>
         
+        <xsl:variable name="suffix" select="if ($matchgegevens) then '-matchgegevens' else '-basis'"/>
+
         <xsl:sequence select="imf:create-comment(concat('mode-local-composition Association # ',@display-name))"/>
         
         <xs:element
             name="{$compiled-name}" 
-            type="{concat($prefix, ':', $compiled-name-type)}-basis" 
+            type="{concat($prefix, ':', $compiled-name-type)}{$suffix}" 
             minOccurs="{$target-minoccurs}" 
             maxOccurs="{$cardinality[4]}"
             >
