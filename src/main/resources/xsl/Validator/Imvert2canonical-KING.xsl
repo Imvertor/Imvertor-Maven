@@ -142,14 +142,6 @@
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="imvert:version">
-        <xsl:copy>
-            <xsl:copy-of select="@*"/>
-            <xsl:attribute name="original" select="."/>
-            <xsl:value-of select="'0.0.0'"/>
-        </xsl:copy>
-    </xsl:template>
-    
     <xsl:template match="imvert:tagged-value[imvert:name = imf:get-normalized-name('Indicatie formele historie','tv-name')]/imvert:value">
         <imvert:value>
             <xsl:copy-of select="@*"/>
