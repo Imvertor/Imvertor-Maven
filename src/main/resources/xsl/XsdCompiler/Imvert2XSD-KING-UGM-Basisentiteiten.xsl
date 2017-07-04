@@ -572,150 +572,148 @@
         <!-- when referentietabel, assume the attribute is the is-id attriubute of the referentie tabel -->
         <xsl:variable name="applicable-attribute" select="if ($type-is-referentietabel) then $type//imvert:attribute[imf:boolean(imvert:is-id)] else ()"/>
        
-        <xsl:for-each select="($applicable-attribute,.)[1]"> <!-- singleton -->
             
-            <xsl:variable name="applicable-compiled-name" select="imf:get-compiled-name(.)"/>
+        <xsl:variable name="applicable-compiled-name" select="imf:get-compiled-name(.)"/>
+        
+        <xsl:variable name="type" select="imf:get-class(.)"/> <!-- possibly overrules the original att type  -->
+  
+        <xsl:variable name="compiled-name-type" select="imf:get-compiled-name($type)"/>
+        
+        <xsl:variable name="type-is-datatype" select="$type/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-simpletype')"/>
+        <xsl:variable name="type-is-complextype" select="$type/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-complextype')"/>
+        
+        <xsl:variable name="type-is-scalar-non-emptyable" select="imvert:type-name = ('scalar-integer','scalar-decimal')"/>
+        <xsl:variable name="type-is-scalar-empty" select="imvert:type-name = ('scalar-date','scalar-year','scalar-yearmonth','scalar-datetime','scalar-postcode','scalar-boolean')"/>
+        <xsl:variable name="type-is-enumeration" select="imf:get-stereotype($type) = imf:get-config-stereotypes('stereotype-name-enumeration')"/>
+        <xsl:variable name="type-is-union" select="imf:get-stereotype($type) = imf:get-config-stereotypes('stereotype-name-union')"/>
+        
+        <xsl:variable name="type-is-external" select="exists(imvert:conceptual-schema-type)"/>
+       
+        <xsl:variable name="facet-length" select="imvert:min-length"/>
+        <xsl:variable name="facet-pattern" select="imf:get-taggedvalue(.,'##CFG-TV-FORMALPATTERN')"/>
+        <xsl:variable name="facet-minval" select="imf:get-taggedvalue(.,'##CFG-TV-MINVALUEINCLUSIVE')"/>
+        <xsl:variable name="facet-maxval" select="imf:get-taggedvalue(.,'##CFG-TV-MAXVALUEINCLUSIVE')"/>
+        
+        <xsl:variable name="facet-show" select="(exists($facet-length),exists($facet-pattern),exists($facet-minval),exists($facet-maxval))"/>
+        
+        <xsl:variable name="type-has-facets" select="exists(($facet-pattern, $facet-length, $facet-minval,$facet-maxval))"/>
+        
+        <xsl:variable name="scalar-att-type" select="imf:get-stuf-scalar-attribute-type(.)"/>
+        
+        <xsl:variable name="min-occurs" select="if ($this-is-complextype or $matchgegevens) then 1 else 0"/>
+        
+        <xsl:sequence select="imf:create-comment(concat('mode-local-attribute Local attribute # ',@display-name))"/>
+        
+        <xsl:choose>
             
-            <xsl:variable name="type" select="imf:get-class(.)"/> <!-- possibly overrules the original att type  -->
-      
-            <xsl:variable name="compiled-name-type" select="imf:get-compiled-name($type)"/>
+            <xsl:when test="$matchgegevens and not(starts-with(imf:get-taggedvalue(.,'##CFG-TV-INDICATIEMATCHGEGEVEN'),'J'))">
+                <!-- het is geen matchgegeven, dus laat weg. -->
+            </xsl:when>
             
-            <xsl:variable name="type-is-datatype" select="$type/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-simpletype')"/>
-            <xsl:variable name="type-is-complextype" select="$type/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-complextype')"/>
+            <xsl:when test="$type-is-scalar-empty">
+                <xsl:sequence select="imf:create-comment('Scalar en kan leeg worden; Case: Type is een voorgedefinieerd type')"/>
+                <xs:element
+                    name="{$compiled-name}" 
+                    type="{$scalar-att-type}" 
+                    minOccurs="{$min-occurs}" 
+                    maxOccurs="{$cardinality[4]}"
+                    >
+                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                </xs:element>
+            </xsl:when>
             
-            <xsl:variable name="type-is-scalar-non-emptyable" select="imvert:type-name = ('scalar-integer','scalar-decimal')"/>
-            <xsl:variable name="type-is-scalar-empty" select="imvert:type-name = ('scalar-date','scalar-year','scalar-yearmonth','scalar-datetime','scalar-postcode','scalar-boolean')"/>
-            <xsl:variable name="type-is-enumeration" select="imf:get-stereotype($type) = imf:get-config-stereotypes('stereotype-name-enumeration')"/>
-            <xsl:variable name="type-is-union" select="imf:get-stereotype($type) = imf:get-config-stereotypes('stereotype-name-union')"/>
+            <xsl:when test="$type-is-enumeration">
+                <xsl:sequence select="imf:create-comment('Een enumeratie; Case: Type verwijst naar enumeratie')"/>
+                <xs:element
+                    name="{$compiled-name}" 
+                    type="{$prefix}:{imf:capitalize($compiled-name-type)}-e" 
+                    minOccurs="{$min-occurs}"  
+                    maxOccurs="{$cardinality[4]}"
+                    >
+                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                </xs:element>
+            </xsl:when>
             
-            <xsl:variable name="type-is-external" select="exists(imvert:conceptual-schema-type)"/>
-           
-            <xsl:variable name="facet-length" select="imvert:min-length"/>
-            <xsl:variable name="facet-pattern" select="imf:get-taggedvalue(.,'##CFG-TV-FORMALPATTERN')"/>
-            <xsl:variable name="facet-minval" select="imf:get-taggedvalue(.,'##CFG-TV-MINVALUEINCLUSIVE')"/>
-            <xsl:variable name="facet-maxval" select="imf:get-taggedvalue(.,'##CFG-TV-MAXVALUEINCLUSIVE')"/>
+            <xsl:when test="$type-is-union">
+                <xsl:sequence select="imf:create-comment('Een union; Case: Type verwijst naar union')"/>
+                <xs:element
+                    name="{$compiled-name}" 
+                    type="{$prefix}:{imf:capitalize($compiled-name-type)}-e" 
+                    minOccurs="{$min-occurs}" 
+                    maxOccurs="{$cardinality[4]}"
+                    >
+                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                </xs:element>
+            </xsl:when>
             
-            <xsl:variable name="facet-show" select="(exists($facet-length),exists($facet-pattern),exists($facet-minval),exists($facet-maxval))"/>
-            
-            <xsl:variable name="type-has-facets" select="exists(($facet-pattern, $facet-length, $facet-minval,$facet-maxval))"/>
-            
-            <xsl:variable name="scalar-att-type" select="imf:get-stuf-scalar-attribute-type(.)"/>
-            
-            <xsl:variable name="min-occurs" select="if ($this-is-complextype or $matchgegevens) then 1 else 0"/>
-            
-            <xsl:sequence select="imf:create-comment(concat('mode-local-attribute Local attribute # ',@display-name))"/>
-            
-            <xsl:choose>
+            <!-- TODO type is tabel entiteit -->
+            <xsl:when test="exists($applicable-attribute)">
+                <xsl:sequence select="imf:create-comment('Attribute redirected to referentie tabel; Case: Type verwijst naar tabelentiteit')"/>
                 
-                <xsl:when test="$matchgegevens and not(starts-with(imf:get-taggedvalue(.,'##CFG-TV-INDICATIEMATCHGEGEVEN'),'J'))">
-                    <!-- het is geen matchgegeven, dus laat weg. -->
-                </xsl:when>
-                
-                <xsl:when test="$type-is-scalar-empty">
-                    <xsl:sequence select="imf:create-comment('Scalar en kan leeg worden; Case: Type is een voorgedefinieerd type')"/>
-                    <xs:element
-                        name="{$compiled-name}" 
-                        type="{$scalar-att-type}" 
-                        minOccurs="{$min-occurs}" 
-                        maxOccurs="{$cardinality[4]}"
-                        >
-                        <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
-                    </xs:element>
-                </xsl:when>
-                
-                <xsl:when test="$type-is-enumeration">
-                    <xsl:sequence select="imf:create-comment('Een enumeratie; Case: Type verwijst naar enumeratie')"/>
-                    <xs:element
-                        name="{$compiled-name}" 
-                        type="{$prefix}:{imf:capitalize($compiled-name-type)}-e" 
-                        minOccurs="{$min-occurs}"  
-                        maxOccurs="{$cardinality[4]}"
-                        >
-                        <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
-                    </xs:element>
-                </xsl:when>
-                
-                <xsl:when test="$type-is-union">
-                    <xsl:sequence select="imf:create-comment('Een union; Case: Type verwijst naar union')"/>
-                    <xs:element
-                        name="{$compiled-name}" 
-                        type="{$prefix}:{imf:capitalize($compiled-name-type)}-e" 
-                        minOccurs="{$min-occurs}" 
-                        maxOccurs="{$cardinality[4]}"
-                        >
-                        <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
-                    </xs:element>
-                </xsl:when>
-                
-                <!-- TODO type is tabel entiteit -->
-                <xsl:when test="exists($applicable-attribute)">
-                    <xsl:sequence select="imf:create-comment('Attribute redirected to referentie tabel; Case: Type verwijst naar tabelentiteit')"/>
-                    
-                    <xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info($applicable-attribute)"/>
-                    <xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
-                    <xs:element
-                        name="{$compiled-name}" 
-                        type="{$prefix}:{imf:capitalize(imf:useable-attribute-name($applicable-compiled-name,.))}-e" 
-                        minOccurs="{$min-occurs}" 
-                        maxOccurs="{$cardinality[4]}"
-                        imvert-checksum="{$checksum-string}"
-                        >
-                        <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
-                        <xsl:if test="$type-is-scalar-non-emptyable or $type-has-facets">
-                            <xsl:attribute name="nillable">true</xsl:attribute>
-                        </xsl:if>
-                    </xs:element>
-                </xsl:when>
-                
-                <xsl:when test="$type-is-complextype"><!-- DONE Complex datatype niet goed geïmplementeerd -->
-                    <xsl:sequence select="imf:create-comment('Een complex datatype Case: Type verwijst naar complex-datatype')"/>
-                    <xs:element
-                        name="{$compiled-name}" 
-                        type="{$prefix}:{imf:capitalize($compiled-name-type)}-e" 
-                        minOccurs="{$min-occurs}" 
-                        maxOccurs="{$cardinality[4]}"
-                        >
-                        <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
-                    </xs:element>
-                </xsl:when>
-                
-                <xsl:when test="$type-is-external">
-                    <xsl:sequence select="imf:create-comment('Een extern type; Case: Type verwijst naar interface')"/>
-                    <xsl:variable name="external-type-name" select="imvert:baretype"/>
-                    <xs:element
-                        name="{$compiled-name}" 
-                        type="{$prefix}:{imf:capitalize($external-type-name)}-e" 
-                        minOccurs="{$min-occurs}" 
-                        maxOccurs="{$cardinality[4]}"
-                        >
-                        <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
-                    </xs:element>
-                </xsl:when>
-                
-                <xsl:otherwise>
-                    <xsl:sequence select="imf:create-comment('Een simpel datatype; Else:  Custom type')"/> 
+                <xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info($applicable-attribute)"/>
+                <xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
+                <xs:element
+                    name="{$compiled-name}" 
+                    type="{$prefix}:{imf:capitalize(imf:useable-attribute-name($applicable-compiled-name,.))}-e" 
+                    minOccurs="{$min-occurs}" 
+                    maxOccurs="{$cardinality[4]}"
+                    imvert-checksum="{$checksum-string}"
+                    >
+                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                    <xsl:if test="$type-is-scalar-non-emptyable or $type-has-facets">
+                        <xsl:attribute name="nillable">true</xsl:attribute>
+                    </xsl:if>
+                </xs:element>
+            </xsl:when>
+            
+            <xsl:when test="$type-is-complextype"><!-- DONE Complex datatype niet goed geïmplementeerd -->
+                <xsl:sequence select="imf:create-comment('Een complex datatype Case: Type verwijst naar complex-datatype')"/>
+                <xs:element
+                    name="{$compiled-name}" 
+                    type="{$prefix}:{imf:capitalize($compiled-name-type)}-e" 
+                    minOccurs="{$min-occurs}" 
+                    maxOccurs="{$cardinality[4]}"
+                    >
+                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                </xs:element>
+            </xsl:when>
+            
+            <xsl:when test="$type-is-external">
+                <xsl:sequence select="imf:create-comment('Een extern type; Case: Type verwijst naar interface')"/>
+                <xsl:variable name="external-type-name" select="imvert:baretype"/>
+                <xs:element
+                    name="{$compiled-name}" 
+                    type="{$prefix}:{imf:capitalize($external-type-name)}-e" 
+                    minOccurs="{$min-occurs}" 
+                    maxOccurs="{$cardinality[4]}"
+                    >
+                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                </xs:element>
+            </xsl:when>
+            
+            <xsl:otherwise>
+                <xsl:sequence select="imf:create-comment('Een simpel datatype; Else:  Custom type')"/> 
 
-                    <xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info(.)"/>
-                    <xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
+                <xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info(.)"/>
+                <xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
 
-                    <xs:element
-                        name="{$compiled-name}" 
-                        type="{$prefix}:{imf:capitalize(imf:useable-attribute-name($applicable-compiled-name,.))}-e" 
-                        minOccurs="{$min-occurs}" 
-                        maxOccurs="{$cardinality[4]}"
-                        imvert-checksum="{$checksum-string}"
-                        >
-                        <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
-                        <xsl:if test="$type-is-scalar-non-emptyable">
-                            <xsl:attribute name="nillable">true</xsl:attribute>
-                        </xsl:if>
-                        <xsl:sequence select="imf:create-comment(concat('Facets: length ', $facet-show[1],' pattern ', $facet-show[2],' minval ', $facet-show[3],' maxval ', $facet-show[4]))"/> 
-                    </xs:element>
-                </xsl:otherwise>
-                
-            </xsl:choose>
+                <xs:element
+                    name="{$compiled-name}" 
+                    type="{$prefix}:{imf:capitalize(imf:useable-attribute-name($applicable-compiled-name,.))}-e" 
+                    minOccurs="{$min-occurs}" 
+                    maxOccurs="{$cardinality[4]}"
+                    imvert-checksum="{$checksum-string}"
+                    >
+                    <xsl:sequence select="imf:create-historie-attributes($history[1],$history[2])"/>
+                    <xsl:if test="$type-is-scalar-non-emptyable">
+                        <xsl:attribute name="nillable">true</xsl:attribute>
+                    </xsl:if>
+                    <xsl:sequence select="imf:create-comment(concat('Facets: length ', $facet-show[1],' pattern ', $facet-show[2],' minval ', $facet-show[3],' maxval ', $facet-show[4]))"/> 
+                </xs:element>
+            </xsl:otherwise>
             
-        </xsl:for-each>
+        </xsl:choose>
+            
        
     </xsl:template>
     
@@ -807,7 +805,9 @@
         
         <xsl:variable name="assoc-name" select="imvert:name"/> <!-- was: concat(imvert:name,imf:capitalize($target/imvert:name)), nu met de hand -->
         <xsl:choose>
-            
+            <xsl:when test="$matchgegevens and not(starts-with(imf:get-taggedvalue(.,'##CFG-TV-INDICATIEMATCHGEGEVEN'),'J'))">
+                <!-- het is geen matchgegeven, dus laat weg. -->
+            </xsl:when>
             <xsl:when test="$richting = 'uitgaand'">
                 <xsl:sequence select="imf:create-comment(concat('mode-local-association Uitgaande relatie # ',@display-name))"/>
                 
