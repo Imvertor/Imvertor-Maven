@@ -807,6 +807,7 @@
         
         <xsl:variable name="assoc-name" select="imvert:name"/> <!-- was: concat(imvert:name,imf:capitalize($target/imvert:name)), nu met de hand -->
         <xsl:choose>
+            
             <xsl:when test="$richting = 'uitgaand'">
                 <xsl:sequence select="imf:create-comment(concat('mode-local-association Uitgaande relatie # ',@display-name))"/>
                 
