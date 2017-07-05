@@ -33,10 +33,10 @@
     </version-rule-->            
     
     <version-rule>
-        <version id="CFG-VERSION-MMB">
-            <name lang="#all">MajorMinorBugfix</name>
-            <desc lang="en">Versions must be specified as an integer with length 4.</desc>
-            <pattern>(\d){4}</pattern>
+        <version id="CFG-VERSION-NEM">
+            <name lang="#all">Nonempty</name>
+            <desc lang="en">Versions must be non-empty.</desc>
+            <pattern>.+</pattern>
             <fragment group="1" required="yes">
                 <name lang="#all">Version (not empty)</name>
             </fragment>
