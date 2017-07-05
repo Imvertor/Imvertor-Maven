@@ -156,6 +156,7 @@
         <xsl:variable name="client-project" select="$client-application/imvert:project"/>
         <xsl:variable name="client-name" select="$client-application/imvert:application"/>
         <xsl:variable name="client-release" select="$client-application/imvert:release"/>
+        <xsl:variable name="client-version" select="$client-application/imvert:version"/>
         
         <xsl:variable name="client-subpath" select="imf:get-subpath($client-project,$client-name,$client-release)"/>
         
@@ -171,6 +172,7 @@
             <xsl:attribute name="id" select="$client-construct/imvert:id"/>
             <xsl:attribute name="project" select="$client-project"/>
             <xsl:attribute name="application" select="$client-name"/>
+            <xsl:attribute name="version" select="$client-version"/>
             <xsl:attribute name="release" select="$client-release"/>
             <xsl:attribute name="level" select="$level"/>
             <xsl:attribute name="subpath" select="$client-subpath"/>

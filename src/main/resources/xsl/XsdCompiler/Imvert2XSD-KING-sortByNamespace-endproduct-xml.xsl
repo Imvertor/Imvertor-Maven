@@ -85,10 +85,16 @@
 
             <xsl:variable name="groupPrefix" select="current-grouping-key()"/>
             <xsl:variable name="groupNamespaceId" select="../ep:construct[@prefix = $groupPrefix and @namespaceId and @namespaceId!=''][1]/@namespaceId"/>
+            <xsl:variable name="groupVersion" select="../ep:construct[@prefix = $groupPrefix and @version and @version!=''][1]/@version"/>
             <ep:message-set prefix="{$groupPrefix}">
-                <xsl:if test="$kv-prefix = $groupPrefix">
-                    <xsl:attribute name="KV-namespace" select="'yes'"/>
-                </xsl:if>
+                <xsl:choose>
+                    <xsl:when test="$kv-prefix = $groupPrefix">
+                        <xsl:attribute name="KV-namespace" select="'yes'"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:attribute name="version" select="$groupVersion"/>                        
+                    </xsl:otherwise>
+                </xsl:choose>
                 <xsl:choose>
                     <xsl:when test="$groupPrefix = $kv-prefix">
                         <xsl:sequence select="imf:create-debug-comment('Debuglocation 3004',$debugging)"/>

@@ -817,6 +817,7 @@
 					<xsl:attribute name="prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
 					<xsl:attribute name="namespaceId" select="$suppliers//supplier[1]/@base-namespace"/>
 					<xsl:attribute name="UGMlevel" select="$suppliers//supplier[1]/@level"/>
+					<xsl:attribute name="version" select="$suppliers//supplier[1]/@version"/>
 				</xsl:if>
 				<xsl:sequence select="imf:create-output-element('ep:name', $tech-name)"/>
 				<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
@@ -1317,6 +1318,7 @@
 							<xsl:attribute name="prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
 							<xsl:attribute name="namespaceId" select="$suppliers//supplier[1]/@base-namespace"/>
 							<xsl:attribute name="UGMlevel" select="$suppliers//supplier[1]/@level"/>
+							<xsl:attribute name="version" select="$suppliers//supplier[1]/@version"/>
 						</xsl:if>
 						<xsl:if test="$debugging">
 							<ep:tagged-values>
@@ -1373,6 +1375,7 @@
 							<xsl:attribute name="prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
 							<xsl:attribute name="namespaceId" select="$suppliers//supplier[1]/@base-namespace"/>
 							<xsl:attribute name="UGMlevel" select="$suppliers//supplier[1]/@level"/>
+							<xsl:attribute name="version" select="$suppliers//supplier[1]/@version"/>
 						</xsl:if>
 						<xsl:if test="$debugging">
 							<ep:tagged-values>
@@ -1485,6 +1488,7 @@
 							<xsl:attribute name="prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
 							<xsl:attribute name="namespaceId" select="$suppliers//supplier[1]/@base-namespace"/>
 							<xsl:attribute name="UGMlevel" select="$suppliers//supplier[1]/@level"/>
+							<xsl:attribute name="version" select="$suppliers//supplier[1]/@version"/>
 						</xsl:if>
 						<ep:suppliers>
 							<xsl:copy-of select="$suppliers"/>
@@ -2448,6 +2452,7 @@
 								<xsl:attribute name="prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
 								<xsl:attribute name="namespaceId" select="$suppliers//supplier[1]/@base-namespace"/>
 								<xsl:attribute name="UGMlevel" select="$suppliers//supplier[1]/@level"/>
+								<xsl:attribute name="version" select="$suppliers//supplier[1]/@version"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:attribute name="prefix" select="$StUF-prefix"/>

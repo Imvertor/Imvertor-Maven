@@ -134,6 +134,8 @@
 
     <xsl:variable name="namespaceIdentifier" select="$packages/imvert:base-namespace"/>
     
+    <xsl:variable name="version" select="$packages/imvert:version"/>
+    
     <!-- Within this variable all messages defined within the BSM of the koppelvlak are placed, transformed to the imvertor endproduct (ep) format.-->
     <xsl:variable name="imvert-endproduct">
         
@@ -146,6 +148,7 @@
             <xsl:sequence select="imf:create-output-element('ep:patch-number', 'TO-DO')"/>
             <xsl:sequence select="imf:create-output-element('ep:namespace', $packages/imvert:base-namespace)"/>
             <xsl:sequence select="imf:create-output-element('ep:namespace-prefix', $prefix)"/>
+            <xsl:sequence  select="imf:create-output-element('ep:version', $version)"/>
             
             <!-- ROME: Volgende structuur moet, zodra we meerdere namespaces volledig ondersteunen, afgeleid worden van alle in gebruik zijnde namespaces.
                        Ik vraag me dus af of ook de $prefix variabele meerdere prefixes moet kunnen omvatten. 
@@ -673,10 +676,12 @@
                         <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
                             <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
                             <xsl:attribute name="namespaceId" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
+                            <xsl:attribute name="version" select="ep:UGMversionGerelateerdeEntiteit"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:attribute name="prefix" select="ep:verkorteAlias"/>
                             <xsl:attribute name="namespaceId" select="ep:namespaceIdentifier"/>
+                            <xsl:attribute name="version" select="ep:version"/>
                         </xsl:otherwise>
                     </xsl:choose>
                     <!-- The value of the tech-name is dependant on the availability of an alias. -->
@@ -938,10 +943,12 @@
                                <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
                                    <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
                                    <xsl:attribute name="namespaceId" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
+                                   <xsl:attribute name="version" select="ep:UGMversionGerelateerdeEntiteit"/>
                                </xsl:when>
                                <xsl:otherwise>
                                    <xsl:attribute name="prefix" select="ep:verkorteAlias"/>
                                    <xsl:attribute name="namespaceId" select="ep:namespaceIdentifier"/>
+                                   <xsl:attribute name="version" select="ep:version"/>
                                </xsl:otherwise>
                            </xsl:choose>
                             <xsl:sequence
@@ -1032,10 +1039,12 @@
                                 <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
                                     <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
                                     <xsl:attribute name="namespaceId" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
+                                    <xsl:attribute name="version" select="ep:UGMversionGerelateerdeEntiteit"/>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:attribute name="prefix" select="ep:verkorteAlias"/>
                                     <xsl:attribute name="namespaceId" select="ep:namespaceIdentifier"/>
+                                    <xsl:attribute name="version" select="ep:version"/>
                                 </xsl:otherwise>
                             </xsl:choose>
                             <!-- The value of the tech-name is dependant on the availability of an alias. -->
@@ -1339,10 +1348,12 @@
                                     <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
                                         <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
                                         <xsl:attribute name="namespaceId" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
+                                        <xsl:attribute name="version" select="ep:UGMversionGerelateerdeEntiteit"/>
                                     </xsl:when>
                                     <xsl:otherwise>
                                         <xsl:attribute name="prefix" select="ep:verkorteAlias"/>
                                         <xsl:attribute name="namespaceId" select="ep:namespaceIdentifier"/>
+                                        <xsl:attribute name="version" select="ep:version"/>
                                     </xsl:otherwise>
                                 </xsl:choose>
                                 <xsl:sequence
@@ -1419,10 +1430,12 @@
                                     <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
                                         <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
                                         <xsl:attribute name="namespaceId" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
+                                        <xsl:attribute name="version" select="ep:UGMversionGerelateerdeEntiteit"/>
                                     </xsl:when>
                                     <xsl:otherwise>
                                         <xsl:attribute name="prefix" select="ep:verkorteAlias"/>
                                         <xsl:attribute name="namespaceId" select="ep:namespaceIdentifier"/>
+                                        <xsl:attribute name="version" select="ep:version"/>
                                     </xsl:otherwise>
                                 </xsl:choose>
                                <!-- The value of the tech-name is dependant on the availability of an alias. -->
@@ -1589,10 +1602,12 @@
                                     <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
                                         <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
                                         <xsl:attribute name="namespaceId" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
+                                        <xsl:attribute name="version" select="ep:UGMversionGerelateerdeEntiteit"/>
                                     </xsl:when>
                                     <xsl:otherwise>
                                         <xsl:attribute name="prefix" select="ep:verkorteAlias"/>
                                         <xsl:attribute name="namespaceId" select="ep:namespaceIdentifier"/>
+                                        <xsl:attribute name="version" select="ep:version"/>
                                     </xsl:otherwise>
                                 </xsl:choose>
                                 <xsl:sequence
@@ -1662,10 +1677,12 @@
                                     <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
                                         <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
                                         <xsl:attribute name="namespaceId" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
+                                        <xsl:attribute name="version" select="ep:UGMversionGerelateerdeEntiteit"/>
                                     </xsl:when>
                                     <xsl:otherwise>
                                         <xsl:attribute name="prefix" select="ep:verkorteAlias"/>
                                         <xsl:attribute name="namespaceId" select="ep:namespaceIdentifier"/>
+                                        <xsl:attribute name="version" select="ep:version"/>
                                     </xsl:otherwise>
                                 </xsl:choose>
                                 <!-- The value of the tech-name is dependant on the availability of an alias. -->
@@ -1822,6 +1839,7 @@
                     <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
                     <xsl:with-param name="verkorteAliasGerelateerdeEntiteit" select="ep:verkorteAliasGerelateerdeEntiteit"/>
                     <xsl:with-param name="namespaceIdentifierGerelateerdeEntiteit" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
+                    <xsl:with-param name="UGMversionGerelateerdeEntiteit" select="ep:UGMversionGerelateerdeEntiteit"/>
                 </xsl:apply-templates>
 
                 <!-- There are 2 types of history parameters. The first one configures if history is applicable for the current context. History isn't applicable for example for each message type.
@@ -1847,6 +1865,7 @@
                         <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
                         <xsl:with-param name="verkorteAliasGerelateerdeEntiteit" select="ep:verkorteAliasGerelateerdeEntiteit"/>
                         <xsl:with-param name="namespaceIdentifierGerelateerdeEntiteit" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
+                        <xsl:with-param name="UGMversionGerelateerdeEntiteit" select="ep:UGMversionGerelateerdeEntiteit"/>
                     </xsl:apply-templates>
                 </xsl:if>
                 
@@ -1872,6 +1891,7 @@
                         <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
                         <xsl:with-param name="verkorteAliasGerelateerdeEntiteit" select="ep:verkorteAliasGerelateerdeEntiteit"/>
                         <xsl:with-param name="namespaceIdentifierGerelateerdeEntiteit" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
+                        <xsl:with-param name="UGMversionGerelateerdeEntiteit" select="ep:UGMversionGerelateerdeEntiteit"/>
                     </xsl:apply-templates>
                 </xsl:if>
                 
@@ -1899,6 +1919,7 @@
                         <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
                         <xsl:with-param name="verkorteAliasGerelateerdeEntiteit" select="ep:verkorteAliasGerelateerdeEntiteit"/>
                         <xsl:with-param name="namespaceIdentifierGerelateerdeEntiteit" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
+                        <xsl:with-param name="UGMversionGerelateerdeEntiteit" select="ep:UGMversionGerelateerdeEntiteit"/>
                     </xsl:apply-templates>
                 </xsl:if>
 
@@ -1981,6 +2002,7 @@
         <xsl:param name="verwerkingsModus"/>
         <xsl:param name="verkorteAliasGerelateerdeEntiteit"/>
         <xsl:param name="namespaceIdentifierGerelateerdeEntiteit"/>
+        <xsl:param name="UGMversionGerelateerdeEntiteit"/>
         
         <xsl:sequence select="imf:create-debug-comment('Debuglocation 30',$debugging)"/>
 
@@ -2079,7 +2101,7 @@
                     <!-- Location: 'ep:construct10'
 				 Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-structure.xsl' on the location with the id 'ep:constructRef10'. -->			
                     
-                    <ep:construct type="complexData" prefix="{$verkorteAliasGerelateerdeEntiteit}" namespaceId="{$namespaceIdentifierGerelateerdeEntiteit}">
+                    <ep:construct type="complexData" prefix="{$verkorteAliasGerelateerdeEntiteit}" namespaceId="{$namespaceIdentifierGerelateerdeEntiteit}" version="{$UGMversionGerelateerdeEntiteit}">
                         <xsl:if test="$debugging">
                             <xsl:variable name="materieleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIONMATERIALHISTORY')"/>
                             <xsl:variable name="formeleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIONFORMALHISTORY')"/>
@@ -2179,7 +2201,7 @@
                 <!-- Location: 'ep:construct10'
 				 Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-structure.xsl' on the location with the id 'ep:constructRef10'. -->			
                 
-                <ep:construct type="complexData" prefix="{$verkorteAliasGerelateerdeEntiteit}" namespaceId="{$namespaceIdentifierGerelateerdeEntiteit}">
+                <ep:construct type="complexData" prefix="{$verkorteAliasGerelateerdeEntiteit}" namespaceId="{$namespaceIdentifierGerelateerdeEntiteit}" version="{$UGMversionGerelateerdeEntiteit}">
                     <xsl:if test="$debugging">
                         <xsl:variable name="materieleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIONMATERIALHISTORY')"/>
                         <xsl:variable name="formeleHistorie" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIONFORMALHISTORY')"/>

@@ -64,12 +64,25 @@
     
     <xsl:template match="ep:message-sets">
         <!--xsl:for-each select="$imvert-endproduct/ep:message-set"-->
+        <xsl:variable name="version" select="ep:message-set[@KV-namespace = 'yes']/ep:version"/>
+        <xsl:variable name="prefix" select="ep:message-set[@KV-namespace = 'yes']/@prefix"/>
+        <xsl:variable name="xsd-result-subpath-BSM" select="concat($xsd-file-folder-path,'/',$prefix,$version)"/>
         <xsl:for-each select="ep:message-set">
             <xsl:variable name="xsd-file-url">
                 <xsl:choose>
-                    <xsl:when test="ep:name = 'STUF'"><xsl:value-of select="imf:file-to-url(concat($xsd-file-folder-path,'/',../ep:message-set[@KV-namespace = 'yes']/@prefix,'0320_stuf_simpleTypes.xsd'))"/></xsl:when>
-                    <xsl:when test="@KV-namespace = 'yes'"><xsl:value-of select="imf:file-to-url(concat($xsd-file-folder-path,'/',@prefix,'0320.xsd'))"/></xsl:when>
-                    <xsl:otherwise><xsl:value-of select="imf:file-to-url(concat($xsd-file-folder-path,'/',../ep:message-set[@KV-namespace = 'yes']/@prefix,'0320_',@prefix,'0320.xsd'))"/></xsl:otherwise>
+                    <xsl:when test="ep:name = 'STUF'">
+                        <xsl:value-of select="imf:file-to-url(concat($xsd-result-subpath-BSM,'/',$prefix,$version,'_stuf_simpleTypes.xsd'))"/>
+                    </xsl:when>
+                    <xsl:when test="@KV-namespace = 'yes'">
+                        <xsl:sequence select="imf:set-config-string('system','xsd-result-subpath-BSM',$xsd-result-subpath-BSM)"/>
+                        <xsl:value-of select="imf:file-to-url(concat($xsd-result-subpath-BSM,'/',$prefix,$version,'.xsd'))"/>
+                    </xsl:when>
+                    <!-- ROME: hieronder moet nog een variabele gedeclareerd worden waarin het versie nummer van het horizontale sectormodel wordt opgeslagen.
+                               Daarna kan dit in het path verwerkt worden. -->
+                    <xsl:otherwise>
+                        <xsl:variable name="UGMversion" select="@version"/>
+                        <xsl:value-of select="imf:file-to-url(concat($xsd-result-subpath-BSM,'/',$prefix,$version,'_',@prefix,$UGMversion,'.xsd'))"/>
+                    </xsl:otherwise>
                     <!--xsl:when test="ep:name = 'STUF'"><xsl:value-of select="imf:file-to-url(concat($xsd-file-folder-path,'/',$koppelvlak-folder,'/StUF-simpleTypes.xsd'))"/></xsl:when>
                     <xsl:otherwise><xsl:value-of select="imf:file-to-url(concat($xsd-file-folder-path,'/',$koppelvlak-folder,'/',ep:name,'.xsd'))"/></xsl:otherwise-->
                 </xsl:choose>
@@ -82,10 +95,10 @@
             </xsl:result-document>
         </xsl:for-each>
         
-        <xsl:for-each select="ep:message-set[1]">
+        <?x xsl:for-each select="ep:message-set[1]">
             <!-- singleton -->
             <xsl:sequence select="imf:set-config-string('system','xsd-result-subpath-BSM',concat(ep:project,'/',ep:name,'/',ep:release))"/>
-        </xsl:for-each>
+        </xsl:for-each x?>
         
     </xsl:template>
     

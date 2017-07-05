@@ -186,6 +186,7 @@
 			<supplier 
 				project="{$supplier/@project}"
 				application="{$supplier/@application}"
+				version="{$supplier/@version}"
 				level="{$supplier/@level}"
 				base-namespace="{$supplier/@base-namespace}"
 				verkorteAlias="{$supplier/@verkorteAlias}"

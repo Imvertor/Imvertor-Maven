@@ -32,6 +32,7 @@
 	<xsl:template match="ep:message-set">
 		<xsl:variable name="message-set-prefix" select="ep:namespace-prefix"/>
 		<xsl:variable name="kv-prefix" select="../ep:message-set[@KV-namespace = 'yes']/@prefix"/>
+		<xsl:variable name="kv-version" select="../ep:message-set[@KV-namespace = 'yes']/ep:version"/>
 		<xsl:variable name="message-set-namespaceIdentifier" select="ep:namespace"/>
 		<xsl:variable name="msg" select="'Creating the StUF XML-Schema'"/>
 		<xsl:sequence select="imf:msg('DEBUG', $msg)"/>
@@ -54,7 +55,9 @@
 							<xsl:variable name="prefix" select="@prefix"/>
 							<ep:namespace
 								identifier="{$namespaces//ep:namespace[@prefix = $prefix]}"
-								prefix="{$prefix}"/>
+								prefix="{$prefix}">
+								<xsl:attribute name="version" select="//ep:message-set[@prefix = $prefix]/@version"/>
+							</ep:namespace>
 						</xsl:for-each>
 					</xsl:if>
 				</ep:namespaces>
@@ -73,7 +76,7 @@
 				</xsl:when> 
 				<xsl:otherwise>
 					<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="../0302/stuf0302.xsd"/>
-					<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="{concat($kv-prefix,'0320_stuf_simpleTypes.xsd')}"/>
+					<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="{concat($kv-prefix,$kv-version,'_stuf_simpleTypes.xsd')}"/>
 					<xsl:if test="//ep:type-name[contains(.,'gml:')]">
 						<xs:import namespace="http://www.opengis.net/gml" schemaLocation="../gml-3.1.1.2/gml/3.1.1/base/gml.xsd"/>
 					</xsl:if>
@@ -82,7 +85,7 @@
 			<xsl:for-each
 				select="$namespaces2bImported/ep:namespaces/ep:namespace[@prefix != $message-set-prefix and @prefix != '' and not(@prefix = preceding-sibling::ep:namespace/@prefix)]">
 				<xs:import namespace="{@identifier}"
-					schemaLocation="{concat($kv-prefix,'0320_',@prefix,'0320.xsd')}"/>
+					schemaLocation="{concat($kv-prefix,$kv-version,'_',@prefix,@version,'.xsd')}"/>
 			</xsl:for-each>
 
 			<xsl:sequence select="imf:create-debug-comment('ROME: Message elements', $debugging)"/>

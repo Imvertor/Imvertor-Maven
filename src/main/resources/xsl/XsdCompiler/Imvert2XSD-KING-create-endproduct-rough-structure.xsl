@@ -333,6 +333,8 @@
 								select="imf:create-output-element('ep:verkorteAlias', imf:getVerkorteAlias($UGM))"/>
 							<xsl:sequence
 								select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
+							<xsl:sequence
+								select="imf:create-output-element('ep:version', imf:getVersion($UGM))"/>
 							
 
 							<xsl:apply-templates select=".[name() != 'imvert:attributes']" mode="create-rough-message-content">
@@ -554,13 +556,17 @@
 							select="imf:create-output-element('ep:verkorteAlias', $StUF-prefix)"/>
 						<xsl:sequence
 							select="imf:create-output-element('ep:namespaceIdentifier', $StUF-namespaceIdentifier)"/>
+						<xsl:sequence
+							select="imf:create-output-element('ep:version', $version)"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:sequence
 							select="imf:create-output-element('ep:verkorteAlias', imf:getVerkorteAlias($UGM))"/>
 						<xsl:sequence
 							select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
-
+						<xsl:sequence
+							select="imf:create-output-element('ep:version', imf:getVersion($UGM))"/>
+						
 						<xsl:variable name="gerelateerde" select="imf:get-class-construct-by-id($type-id,$packages-doc)"/>
 						<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct($gerelateerde,'UGM')"/>
 						<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
@@ -570,6 +576,8 @@
 							select="imf:create-output-element('ep:verkorteAliasGerelateerdeEntiteit', imf:getVerkorteAlias($UGMgerelateerde))"/>
 						<xsl:sequence
 							select="imf:create-output-element('ep:namespaceIdentifierGerelateerdeEntiteit', imf:getNamespaceIdentifier($UGMgerelateerde))"/>
+						<xsl:sequence
+							select="imf:create-output-element('ep:UGMversionGerelateerdeEntiteit', imf:getVersion($UGMgerelateerde))"/>
 					</xsl:otherwise>
 				</xsl:choose>
 				
@@ -655,6 +663,8 @@
 				select="imf:create-output-element('ep:verkorteAlias', imf:getVerkorteAlias($UGM))"/>
 			<xsl:sequence
 				select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
+			<xsl:sequence
+				select="imf:create-output-element('ep:version', imf:getVersion($UGM))"/>
 			
 			<xsl:choose>
 				<xsl:when test="imvert:stereotype = 'ENTITEITRELATIE'">
@@ -670,6 +680,8 @@
 						select="imf:create-output-element('ep:verkorteAliasGerelateerdeEntiteit', imf:getVerkorteAlias($UGMgerelateerde))"/>
 					<xsl:sequence
 						select="imf:create-output-element('ep:namespaceIdentifierGerelateerdeEntiteit', imf:getNamespaceIdentifier($UGMgerelateerde))"/>
+					<xsl:sequence
+						select="imf:create-output-element('ep:UGMversionGerelateerdeEntiteit', imf:getVersion($UGMgerelateerde))"/>
 					
 
 					<xsl:apply-templates select="." mode="create-rough-message-content">
@@ -695,6 +707,8 @@
 						select="imf:create-output-element('ep:verkorteAliasGerelateerdeEntiteit', imf:getVerkorteAlias($UGMgerelateerde))"/>
 					<xsl:sequence
 						select="imf:create-output-element('ep:namespaceIdentifierGerelateerdeEntiteit', imf:getNamespaceIdentifier($UGMgerelateerde))"/>
+					<xsl:sequence
+						select="imf:create-output-element('ep:UGMversionGerelateerdeEntiteit', imf:getVersion($UGMgerelateerde))"/>
 					
 					<xsl:apply-templates
 						select="$gerelateerdeConstruct[imvert:stereotype = imf:get-config-stereotypes((
@@ -906,6 +920,8 @@
 						select="imf:create-output-element('ep:verkorteAlias', imf:getVerkorteAlias($UGM))"/>
 					<xsl:sequence
 						select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
+					<xsl:sequence
+						select="imf:create-output-element('ep:version', imf:getVersion($UGM))"/>
 					
 					<xsl:variable name="gerelateerde" select="imf:get-class-construct-by-id($type-id,$packages-doc)"/>
 					<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
@@ -916,6 +932,8 @@
 						select="imf:create-output-element('ep:verkorteAliasGerelateerdeEntiteit', imf:getVerkorteAlias($UGMgerelateerde))"/>
 					<xsl:sequence
 						select="imf:create-output-element('ep:namespaceIdentifierGerelateerdeEntiteit', imf:getNamespaceIdentifier($UGMgerelateerde))"/>
+					<xsl:sequence
+						select="imf:create-output-element('ep:UGMversionGerelateerdeEntiteit', imf:getVersion($UGMgerelateerde))"/>
 					
 					<xsl:sequence
 						select="imf:create-output-element('ep:class-name', $gerelateerde/ep:name)"/>
@@ -999,6 +1017,8 @@
 						select="imf:create-output-element('ep:verkorteAlias', imf:getVerkorteAlias($UGM))"/>
 					<xsl:sequence
 						select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
+					<xsl:sequence
+						select="imf:create-output-element('ep:version', imf:getVersion($UGM))"/>
 					
 					<xsl:variable name="gerelateerde" select="imf:get-class-construct-by-id($type-id,$packages-doc)"/>
 					<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
@@ -1009,6 +1029,8 @@
 						select="imf:create-output-element('ep:verkorteAliasGerelateerdeEntiteit', imf:getVerkorteAlias($UGMgerelateerde))"/>
 					<xsl:sequence
 						select="imf:create-output-element('ep:namespaceIdentifierGerelateerdeEntiteit', imf:getNamespaceIdentifier($UGMgerelateerde))"/>
+					<xsl:sequence
+						select="imf:create-output-element('ep:UGMversionGerelateerdeEntiteit', imf:getVersion($UGMgerelateerde))"/>
 					
 					<xsl:sequence
 						select="imf:create-output-element('ep:class-name', $gerelateerde/ep:name)"/>
@@ -1135,6 +1157,8 @@
 				select="imf:create-output-element('ep:verkorteAlias', imf:getVerkorteAlias($UGM))"/>
 			<xsl:sequence
 				select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
+			<xsl:sequence
+				select="imf:create-output-element('ep:version', imf:getVersion($UGM))"/>
 			
 			<xsl:if test="$typeCode = 'entiteitrelatie' or $typeCode = ('berichtrelatie','toplevel','')">
 				<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
@@ -1145,7 +1169,9 @@
 					select="imf:create-output-element('ep:verkorteAliasGerelateerdeEntiteit', imf:getVerkorteAlias($UGMgerelateerde))"/>
 				<xsl:sequence
 					select="imf:create-output-element('ep:namespaceIdentifierGerelateerdeEntiteit', imf:getNamespaceIdentifier($UGMgerelateerde))"/>
-
+				<xsl:sequence
+					select="imf:create-output-element('ep:UGMversionGerelateerdeEntiteit', imf:getVersion($UGMgerelateerde))"/>
+				
 			</xsl:if>
 			
 			<xsl:variable name="class-id" select="imvert:type-id"/>
@@ -1244,6 +1270,8 @@
 						select="imf:create-output-element('ep:verkorteAlias', imf:getVerkorteAlias($UGM))"/>
 					<xsl:sequence
 						select="imf:create-output-element('ep:namespaceIdentifier', imf:getNamespaceIdentifier($UGM))"/>
+					<xsl:sequence
+						select="imf:create-output-element('ep:version', imf:getVersion($UGM))"/>
 					
 
 					<xsl:variable name="relatie" select="imf:get-association-construct-by-id($type-id,$packages-doc)"/>
@@ -1255,6 +1283,8 @@
 						select="imf:create-output-element('ep:verkorteAliasGerelateerdeEntiteit', imf:getVerkorteAlias($UGMRelatie))"/>
 					<xsl:sequence
 						select="imf:create-output-element('ep:namespaceIdentifierGerelateerdeEntiteit', imf:getNamespaceIdentifier($UGMRelatie))"/>
+					<xsl:sequence
+						select="imf:create-output-element('ep:UGMversionGerelateerdeEntiteit', imf:getVersion($UGMRelatie))"/>
 					
 					<xsl:sequence
 						select="imf:create-output-element('ep:class-name', key('class',$type-id)/imvert:name)"/>
@@ -1385,6 +1415,22 @@
 			</xsl:otherwise>
 		</xsl:choose>
 
+		
+	</xsl:function>
+
+	<xsl:function name="imf:getVersion" as="xs:string">
+		<xsl:param name="UGM"/>
+		
+		
+		<xsl:choose>
+			<xsl:when test="$UGM/imvert:packages">
+				<xsl:variable name="UGMversion" select="$UGM/imvert:packages/imvert:version"></xsl:variable>
+				<xsl:value-of select="$UGMversion"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$version"/>
+			</xsl:otherwise>
+		</xsl:choose>
 		
 	</xsl:function>
 </xsl:stylesheet>
