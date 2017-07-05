@@ -9,7 +9,8 @@
         <use>GML321</use>
     </mapping>
     
-    <mapping name="GML321_ENV">
+    <mapping name="NEN3610_GML321_ENV">
+        <use>NEN3610</use>
         <use>GML321</use>
         <use>ENVPROD</use>
         <use>ENVPROC</use>
