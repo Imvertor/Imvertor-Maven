@@ -331,39 +331,45 @@
         <xsl:variable name="assocs" select="imvert:associations/imvert:association"/>
         <xsl:variable name="targets" select="for $target in $assocs/imvert:type-id return imf:get-construct-by-id($target)"/>
         <xsl:variable name="interfaces" select="$targets[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-interface')]"/>
-        <xsl:variable name="objects" select="$targets[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')]"/>
+        <xsl:variable name="products" select="$targets[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-product')]"/>
       
         <!-- get the name of the first association that has a name entered by the modeller. --> 
         <xsl:variable name="rname" select="($assocs/imvert:name[not(@origin = 'system')])[1]"/>
-        <xsl:variable name="results-name" select="if ($objects[2] or empty($rname)) then 'GeleverdProduct' else $rname"/>
+        <xsl:variable name="results-name" select="if ($products[2] or empty($rname)) then 'GeleverdProduct' else $rname"/>
+        
+        <xsl:variable name="EnvelopProces-prefix" select="imf:get-short-name('EnvelopProces')"/>
+        <xsl:variable name="EnvelopProduct-prefix" select="imf:get-short-name('EnvelopProduct')"/>
+        <xsl:variable name="EnvelopLog-prefix" select="imf:get-short-name('EnvelopLog')"/>
         
         <xs:element name="{$type-name}">
             <xs:complexType>
                 <xs:sequence>
                     <xsl:if test="$interfaces/imvert:name = 'ProcesVerwerking'">
-                        <xs:element ref="EnvelopProces:ProcesVerwerking"/>
+                        <xs:element ref="{$EnvelopProces-prefix}:ProcesVerwerking"/>
                     </xsl:if> 
                     <xsl:if test="$interfaces/imvert:name = 'ProductGegevens'">
-                        <xs:element ref="EnvelopProduct:ProductGegevens"/>
+                        <xs:element ref="{$EnvelopProduct-prefix}:ProductGegevens"/>
                     </xsl:if> 
                     <xs:element ref="{imf:get-type($results-name,$package-name)}"/>
                     <xsl:if test="$interfaces/imvert:name = 'Log'">
-                        <xs:element ref="EnvelopLog:Log"/>
+                        <xs:element ref="{$EnvelopLog-prefix}:Log"/>
                     </xsl:if>
                 </xs:sequence>
             </xs:complexType>
         </xs:element>
         <xs:element name="{$results-name}">
             <xs:complexType>
-                <xs:choice>
+                <xs:sequence>
                     <xsl:for-each select="$assocs">
                         <!-- alleen de links naar objecttypen hier opnemen -->
                         <xsl:variable name="target" select="imf:get-construct-by-id(imvert:type-id)"/>
-                        <xsl:if test="$target/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')">
-                            <xs:element ref="{imf:get-type($target/imvert:name,$target/parent::imvert:package/imvert:name)}"/>
+                        <xsl:if test="$target/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-product')">
+                            <xsl:variable name="min-occurs" select="imvert:min-occurs"/>
+                            <xsl:variable name="max-occurs" select="imvert:max-occurs"/>
+                            <xs:element ref="{imf:get-type($target/imvert:name,$target/parent::imvert:package/imvert:name)}" minOccurs="{$min-occurs}" maxOccurs="{$max-occurs}"/>
                         </xsl:if>
                     </xsl:for-each>
-                </xs:choice>
+                </xs:sequence>
             </xs:complexType>
         </xs:element>
     </xsl:template>

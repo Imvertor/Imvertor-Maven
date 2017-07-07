@@ -94,6 +94,7 @@
                 
                 <!-- determine for this prefix which schema is created -->
                 <xsl:variable name="prefix" select="."/>
+                
                 <xsl:variable name="schema-def" select="$schema-defs[imvert:prefix = $prefix]"/>
                 <xsl:variable name="schema-namespace" select="$schema-def/imvert:namespace"/>
                 <xsl:variable name="schema-subpath" select="$schema-def/imvert:result-file-subpath"/>
