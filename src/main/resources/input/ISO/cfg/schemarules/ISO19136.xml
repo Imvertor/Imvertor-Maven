@@ -20,6 +20,9 @@
 <schema-rules>
     
     <name>ISO 19136</name>
+    <desc lang="en">Rule for creating ISO 19136 XML schemas</desc>
+    <desc lang="nl">Regels voor het maken van ISO 19136 XML schema's</desc>
+    
     <!-- 
         ISO GML specific rules 
     -->

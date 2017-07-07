@@ -4,16 +4,16 @@
 -->
 <metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
     
+    <name>KKG ISO</name>
+    
+    <desc lang="en">Metamodel voor KKG ISO uitwisselingsmodellen</desc>
+    <desc lang="nl">Metamodel for KKG ISO exchange models</desc>
+    
     <!-- 
         this metamodel is subject to standard Grouping conventions 
     -->
     <xi:include href="KKG.xml"/>
    
-    <name>KKG ISO</name>
-    
-    <desc lang="en">TODO</desc>
-    <desc lang="nl">Metamodel for KKG ISO exchange models</desc>
-
     <profiles>
         <profile lang="nl">
             <id>KKGISONL</id>

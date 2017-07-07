@@ -17,6 +17,6 @@
         create a standard office oriented HTML representation of the section structure 
     -->
     
-    <!--TODO dit gaat nu nog even via UGM, moet apart worden uitgecodeerd of overgeslagen. -->
+    <!--TODO dit gaat nu og even via UGM, moet apart worden uitegecodeerd of overgeslagen. -->
 
 </xsl:stylesheet>

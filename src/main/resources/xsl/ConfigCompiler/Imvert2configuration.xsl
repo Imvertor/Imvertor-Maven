@@ -177,7 +177,7 @@
                 
                 <profiles>
                     <xsl:for-each-group select="$metamodel//profiles/profile" group-by="@lang">
-                        <xsl:apply-templates select="current-group()[1]" mode="#current"/>
+                        <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
                     </xsl:for-each-group>   
                     <xsl:for-each-group select="$metamodel//profiles/visuals/measures/measure" group-by="@id">
                         <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
@@ -321,7 +321,7 @@
     <xsl:template match="@*" mode="finish-config">
         <xsl:copy/>
     </xsl:template>
-    
+   
     <xsl:function name="imf:distinct" as="element()*">
         <xsl:param name="elms" as="element()*"/>
         <xsl:for-each-group select="$elms" group-by="concat(string(.),@lang)">

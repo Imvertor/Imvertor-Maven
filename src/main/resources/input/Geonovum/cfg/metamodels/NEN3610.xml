@@ -19,16 +19,29 @@
 -->
 <metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <!-- Geonovum NEN3610 follows KKG ISO requirements -->
-    <xi:include href="../../../KKG/cfg/metamodels/KKG-ISO.xml"/>
-
-    <name>Geonovum NEN3610</name>
+    <name>NEN3610</name>
     
-    <desc>
+    <desc lang="en">
         Metamodel for Geonovum NEN3610 extensions.
         Standard at https://www.geonovum.nl/onderwerpen/basismodel-geo-informatie-nen3610/algemeen-basismodel-geo-informatie-nen3610 .
         Conformance test at https://www.geonovum.nl/documenten/testprotocol-nen-3610-modellering .
     </desc>
+    
+    <!-- Geonovum NEN3610 follows KKG ISO requirements -->
+    <xi:include href="../../../KKG/cfg/metamodels/KKG-ISO.xml"/>
+    
+    <profiles>
+        <profile lang="nl"> <!-- ACTUALLY, there is no dutch variant -->
+            <id>NEN3610</id>
+            <release>1.0</release>
+            <desc>NEN3610 Grouping (NL)</desc> 
+        </profile>
+        <profile lang="en">
+            <id>NEN3610</id>
+            <release>1.0</release>
+            <desc>NEN3610 Grouping (EN)</desc>
+        </profile>
+    </profiles>
     
     <stereotypes xml:id="stereotypes">
         
@@ -51,7 +64,7 @@
 
         <stereo id="stereotype-name-complextype">
             <name lang="nl">Datatype</name>
-            <name lang="en">Datatype</name>
+            <name lang="en">Datatype</name>  <!-- in addition to StructuredDatatype -->
             <desc lang="en">
             </desc>
             <desc lang="nl">

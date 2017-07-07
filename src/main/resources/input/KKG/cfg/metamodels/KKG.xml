@@ -4,6 +4,10 @@
 -->
 <metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
     
+    <name>KKG</name>
+    <desc lang="en">Metamodel for KKG models</desc>
+    <desc lang="nl">Metamodel voor KKG modellen</desc>
+    
     <!-- 
         this metamodel is subject to standard Grouping conventions 
     -->
@@ -13,11 +17,6 @@
         scalars specified separately 
     -->
     <xi:include href="KKG-scalar.xml"/>
-    
-    <name>KKG</name>
-    
-    <desc lang="en">TODO</desc>
-    <desc lang="nl">Metamodel for KKG exchange models</desc>
 
     <profiles>
         <profile lang="nl">

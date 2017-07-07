@@ -100,7 +100,7 @@
         <xsl:variable name="interface" select="$intern-classes[imvert:id = $id]"/> <!-- the interface class -->
         <xsl:variable name="interface-name" select="$interface/imvert:name"/>
         <xsl:variable name="referenced-construct" select="$external-classes[imvert:name = $interface-name]"/> <!-- selects all external classes by the name of the interface -->
-        
+       
         <xsl:choose>
             <xsl:when test="empty($interface)">
                 <!-- no redirect needed, use the current ID -->

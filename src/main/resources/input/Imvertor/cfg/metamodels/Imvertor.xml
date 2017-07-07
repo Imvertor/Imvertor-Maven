@@ -18,11 +18,10 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
+    <name>Imvertor</name>
+    <desc lang="en">Metamodel for Imvertor</desc>
+ 
     <!-- Imvertor follows Kadaster requirements -->
     <xi:include href="../../../Kadaster/cfg/metamodels/Kadaster.xml"/>
     
-    <name>Imvertor</name>
-
-    <desc>Metamodel for Imvertor</desc>
-   
 </metamodel>

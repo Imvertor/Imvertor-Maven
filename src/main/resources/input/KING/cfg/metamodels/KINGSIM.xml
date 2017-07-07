@@ -19,6 +19,10 @@
 -->
 <metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
 
+   <name>KINGSIM</name>
+   
+   <desc lang="en">Metamodel for KING/VNG information models: semantisch informatiemodel</desc>
+   
    <!-- 
         this metamodel is subject to standard Grouping conventions 
     -->
@@ -29,10 +33,7 @@
   
    <xi:include href="KINGSIM-scalar.xml"/> 
   
-   <name>KINGSIM</name>
-
-   <desc>Metamodel for KING/VNG information models: semantisch informatiemodel</desc>
-
+   
    <!-- 
       The normal direction of the composition is from Whole to Part (source to target). 
       If this is reversed (as is discussied in Task #487339), set this parameter to "part", otherwise set to "whole" (default).

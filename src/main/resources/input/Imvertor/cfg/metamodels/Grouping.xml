@@ -8,10 +8,10 @@
         The grouping metamodel specifies how structural features are defined, excluding functional parts such as classes, attributes and associations 
     -->
     
-    <name>Grouping Metamodel</name>
-
-    <desc>Metamodel for Grouping</desc>
-
+    <name>Grouping</name>
+    <desc lang="nl">Metamodel voor Grouping</desc>
+    <desc lang="en">Metamodel for Grouping</desc>
+    
     <stereotypes xml:id="stereotypes">
 
         <!-- 

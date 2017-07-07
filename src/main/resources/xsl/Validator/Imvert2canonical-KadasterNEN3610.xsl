@@ -29,11 +29,11 @@
     version="2.0">
 
     <!-- 
-        Kadaster KKG canonization extends Kadaster canonization.
-    
-        THIS STYLESHEET IS CALLED IN THE CHAIN AND WORKS ON THE RESULTS OF THE PREVIOUS CHAIN CANONIZATION 
-    
+         Kadaster KKG canonization extends Kadaster canonization.
+        
+         THIS STYLESHEET IS CALLED IN THE CHAIN AND WORKS ON THE RESULTS OF THE PREVIOUS CHAIN CANONIZATION 
     -->
+    
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
     
@@ -51,4 +51,5 @@
             <xsl:apply-templates select="node()|@*"/>
         </xsl:copy>
     </xsl:template>    
+    
 </xsl:stylesheet>

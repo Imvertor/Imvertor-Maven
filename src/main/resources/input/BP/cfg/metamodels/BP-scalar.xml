@@ -21,7 +21,7 @@
  
     <name>BP-scalar</name>
 
-    <desc>Metamodel for Dutch Best Practices based registrations, scalars</desc>
+    <desc lang="en">Metamodel for Dutch Best Practices based registrations, scalars</desc>
     
     <scalars xml:id="scalars">
         
@@ -92,7 +92,6 @@
         </scalar>
         <scalar id="scalar-boolean">
             <name lang="nl">INDIC</name>
-            <name lang="nl">INDICATIE</name>
             <type-map formal-lang="xs">boolean</type-map>
             <!--<pattern lang="nl">(Ja)|(Nee)</pattern>-->
         </scalar>

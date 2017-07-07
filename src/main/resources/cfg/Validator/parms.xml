@@ -62,12 +62,6 @@
       <!-- external stubs require the conceptual schema mapping file to be known -->
       <CONCEPTUAL_SCHEMA_MAPPING_FILE>${system/inp-folder-path}/xsd/conceptual-schemas.xml</CONCEPTUAL_SCHEMA_MAPPING_FILE>
       
-      <!--
-     
-      <WORK_DOCS_FILE>${system/work-imvert-folder-path}/imvertor.10.docs.xml</WORK_DOCS_FILE>
-      
-      -->
-      
       <!-- stylesheets for validation of canonical and regulatr imvertor files -->   
       <IMVERTOR_VALIDATE_XSLPATH alias="VAL">Imvert2validation.xsl</IMVERTOR_VALIDATE_XSLPATH>
       
@@ -87,6 +81,12 @@
       <IMVERTOR_METAMODEL_KadasterKKG_CANONICAL_XSLPATH_2>Imvert2canonical-KadasterKKG.xsl</IMVERTOR_METAMODEL_KadasterKKG_CANONICAL_XSLPATH_2>
       <IMVERTOR_METAMODEL_KadasterKKG_VALIDATE_XSLPATH>Imvert2validation-KadasterKKG.xsl</IMVERTOR_METAMODEL_KadasterKKG_VALIDATE_XSLPATH>
       
+      <IMVERTOR_METAMODEL_KadasterNEN3610_CANONICAL_XSLPATH>Imvert2canonical.xsl</IMVERTOR_METAMODEL_KadasterNEN3610_CANONICAL_XSLPATH>
+      <IMVERTOR_METAMODEL_KadasterNEN3610_CANONICAL_XSLPATH_2>Imvert2canonical-Kadaster.xsl</IMVERTOR_METAMODEL_KadasterNEN3610_CANONICAL_XSLPATH_2>
+      <IMVERTOR_METAMODEL_KadasterNEN3610_CANONICAL_XSLPATH_3>Imvert2canonical-KadasterKKG.xsl</IMVERTOR_METAMODEL_KadasterNEN3610_CANONICAL_XSLPATH_3>
+      <IMVERTOR_METAMODEL_KadasterNEN3610_CANONICAL_XSLPATH_4>Imvert2canonical-KadasterNEN3610.xsl</IMVERTOR_METAMODEL_KadasterNEN3610_CANONICAL_XSLPATH_4>
+      <IMVERTOR_METAMODEL_KadasterNEN3610_VALIDATE_XSLPATH>Imvert2validation-KadasterNEN3610.xsl</IMVERTOR_METAMODEL_KadasterNEN3610_VALIDATE_XSLPATH>
+     
       <IMVERTOR_METAMODEL_ISO19103_CANONICAL_XSLPATH>Imvert2canonical-ISO19103.xsl</IMVERTOR_METAMODEL_ISO19103_CANONICAL_XSLPATH>
       <IMVERTOR_METAMODEL_ISO19103_VALIDATE_XSLPATH>Imvert2validation-ISO19103.xsl</IMVERTOR_METAMODEL_ISO19103_VALIDATE_XSLPATH>
       

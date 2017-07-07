@@ -20,8 +20,7 @@
 <metamodel>
     
     <name>ISO19100</name>
-
-    <desc>Metamodel for ISO 19100 exchange models</desc>
+    <desc lang="en">Metamodel for ISO 19100 exchange models</desc>
 
     <stereotypes>
         <stereo id="stereotype-name-iso19103-applicationschema">

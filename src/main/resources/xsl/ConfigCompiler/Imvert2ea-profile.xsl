@@ -53,10 +53,13 @@
             <Documentation id="{$profile-id}" name="{$profile-name}" version="{$profile-version}" notes="{$profile-notes}"/>
             <Content>
                 <Stereotypes>
-                    <xsl:for-each select="metamodel/stereotypes/stereo[not(@origin='system') and empty(@cross-meta)]">
+                    <xsl:for-each select="metamodel/stereotypes/stereo[not(@origin='system') and empty(@cross-meta)]/name">
                         <xsl:sort select="."/>
-                        <xsl:variable name="stereotype-norm-name" select="name"/>
-                        <xsl:variable name="stereotype-id" select="@id"/>
+                        
+                        <xsl:variable name="name" select="."/> <!-- content is normalized name -->
+                        <xsl:variable name="stereo" select=".."/>
+                        
+                        <xsl:variable name="stereotype-id" select="$stereo/@id"/>
                         
                         <xsl:variable name="visual" select="$visuals[@id = $stereotype-id]/visual"/>
                         
@@ -65,10 +68,10 @@
                         <xsl:variable name="bordercolor" select="imf:map-measure($measures,$visual/@bordercolor,'0')"/>
                         <xsl:variable name="borderwidth" select="imf:map-measure($measures,$visual/@borderwidth,'1')"/>
                         
-                        <xsl:comment select="$stereotype-norm-name"/>
+                        <xsl:comment select="$stereotype-id"/>
                         <Stereotype 
-                            name="{name/@original}" 
-                            notes="{desc}" 
+                            name="{$name/@original}" 
+                            notes="{$stereo/desc}" 
                             cx="100" cy="80" 
                             bgcolor="{$backgroundcolor}" 
                             fontcolor="{$fontcolor}" 
@@ -76,12 +79,12 @@
                             borderwidth="{$borderwidth}" 
                             hideicon="0">
                             <AppliesTo>
-                                <xsl:for-each select="construct">
+                                <xsl:for-each select="$stereo/construct">
                                     <Apply type="{imf:get-apply(.)}"/>
                                 </xsl:for-each>
                             </AppliesTo>
                             <TaggedValues>
-                                <xsl:for-each select="$tagged-values/tv[stereotypes/stereo = $stereotype-norm-name][not(@orrigin='system')]">
+                                <xsl:for-each select="$tagged-values/tv[stereotypes/stereo = $name and not(@origin='system')]">
                                     <xsl:sort select="."/>
                                     <xsl:variable name="tv-name" select="name/@original"/>
                                     <xsl:variable name="tv-values" select="string-join(declared-values/value/@original,',')"/>

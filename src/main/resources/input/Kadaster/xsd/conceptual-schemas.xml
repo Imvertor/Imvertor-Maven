@@ -465,7 +465,7 @@
         <url>http://www.kadaster.nl/conceptual-schemas/NEN3610</url>
         <map 
             name="NEN3610" 
-            namespace="http://www.geonovum.nl/NEN3610" 
+            namespace="http://www.geonovum.nl/NEN3610/schemas/v20110301" 
             version="2011" 
             phase="3" 
             location="http://www.geonovum.nl/NEN3610/v20110301/NEN3610_NEN3610_v1_0_0.xsd">

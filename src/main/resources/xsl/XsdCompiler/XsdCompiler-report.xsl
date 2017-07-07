@@ -129,6 +129,12 @@
                         <xsl:sequence select="imf:report-label('Schemas', '(TODO ISO19136)')"/>
                     </summary>
                 </xsl:when>
+                <xsl:when test="$schemarules = 'KadasterNEN3610'">
+                    <status/>
+                    <summary>
+                        <xsl:sequence select="imf:report-label('Schemas', '(TODO KadasterNEN3610)')"/>
+                    </summary>
+                </xsl:when>
                 <xsl:otherwise>
                     <xsl:sequence select="imf:msg('FATAL','No such schemarules: [1]', $schemarules)"/>
                 </xsl:otherwise>

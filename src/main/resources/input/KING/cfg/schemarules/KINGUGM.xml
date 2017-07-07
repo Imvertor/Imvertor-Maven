@@ -22,5 +22,7 @@
         KING specific rules for UGM schemas
     -->
     <name>KINGUGM</name>
-
+    <desc lang="en">Rule for processing UGM models to XML schemas</desc>
+    <desc lang="nl">Regels voor het verwerken van UGM modellen tot XML schema's</desc>
+    
 </schema-rules>

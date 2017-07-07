@@ -19,11 +19,11 @@
 -->
 <metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <!-- Kadaster KKG follows KKG ISO requirements -->
+    <name>KadasterKKG</name>
+    <desc lang="en">Metamodel for Kadaster specific KKG extensions</desc>
+    <desc lang="nl">Metamodel voor Kadaster specifieke KKG uitbreidingen</desc>
+    
     <xi:include href="../../../KKG/cfg/metamodels/KKG.xml"/>
 
-    <name>KKG (Kadaster)</name>
-    
-    <desc>Metamodel for Kadaster KKG extensions</desc>
     
 </metamodel>

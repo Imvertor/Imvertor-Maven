@@ -21,7 +21,7 @@
   
     <name>BP</name>
 
-    <desc>Metamodel for Dutch Best Practices based registrations</desc>
+    <desc lang="en">Metamodel for Dutch Best Practices based registrations</desc>
     
     <stereotypes xml:id="stereotypes">
 

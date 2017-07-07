@@ -5,6 +5,8 @@
 <tagset xmlns:xi="http://www.w3.org/2001/XInclude">
   
     <name>KKG-ISO</name>
+    <desc lang="en">Metamodel for ISO conformant KKG extensions</desc>
+    <desc lang="nl">Metamodel voor ISO vereiste KKG uitbreidingen</desc>
     
     <desc> This is the profile of KKG for ISO compliance.</desc>
     

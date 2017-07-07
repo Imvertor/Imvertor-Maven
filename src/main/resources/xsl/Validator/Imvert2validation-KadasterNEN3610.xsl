@@ -17,14 +17,25 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<schema-rules>
+<xsl:stylesheet 
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    
+    xmlns:imvert="http://www.imvertor.org/schema/system"
+    xmlns:ext="http://www.imvertor.org/xsl/extensions"
+    xmlns:imf="http://www.imvertor.org/xsl/functions"
+    
+    exclude-result-prefixes="#all" 
+    version="2.0">
+
     <!-- 
-        KING specific rules for SIM based schemas
+        Kadaster KKG validation extends Kadaster validation.
+        
+        TODO check or rearrange.
+        
     -->
-    <name>KINGSIM</name>
-    <desc lang="en">Rule for processing SIM models to XML schemas</desc>
-    <desc lang="nl">Regels voor het verwerken van SIM modellen tot XML schema's</desc>
     
-    <!-- KING produces no schemas based in SIM directly (yet) -->
-    
-</schema-rules>
+    <xsl:import href="Imvert2validation-KadasterKKG.xsl"/>
+   
+
+</xsl:stylesheet>

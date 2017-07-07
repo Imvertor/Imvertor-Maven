@@ -19,6 +19,10 @@
 -->
 <metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
 
+    <name>Kadaster</name>
+    <desc lang="nl">Metamodel voor Kadaster uitwisselingsmodellen</desc>
+    <desc lang="en">Metamodel for Kadaster exchange models</desc>
+    
     <!-- 
         this metamodel is subject to standard Grouping conventions 
     -->
@@ -30,10 +34,7 @@
     <xi:include href="../../../BP/cfg/metamodels/BP.xml"/>
     <xi:include href="../../../BP/cfg/metamodels/BP-scalar.xml"/>
     
-    <name>Kadaster</name>
-
-    <desc>Metamodel for Kadaster exchange models</desc>
-
+   
     <profiles>
         <profile lang="nl">
             <id>KADNL</id>
