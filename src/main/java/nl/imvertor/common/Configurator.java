@@ -367,6 +367,7 @@ public class Configurator {
 		setParm(workConfiguration,"system","work-comply-folder-path",  wf + s + "comply", true);
 		setParm(workConfiguration,"system","work-profile-folder-path", wf + s + "profile", true);
 		setParm(workConfiguration,"system","work-debug-folder-path",   wf + s + "debug", true);
+		setParm(workConfiguration,"system","work-log-folder-path",     wf + s + "log", true);
 		
 		// clear the workfolder
 		(new OutputFolder(getParm(workConfiguration,"system","work-app-folder-path",true))).clear(false);
@@ -375,6 +376,7 @@ public class Configurator {
 		(new OutputFolder(getParm(workConfiguration,"system","work-comply-folder-path",true))).clear(false);
 		(new OutputFolder(getParm(workConfiguration,"system","work-profile-folder-path",true))).clear(false);
 		(new OutputFolder(getParm(workConfiguration,"system","work-debug-folder-path",true))).clear(false);
+		(new OutputFolder(getParm(workConfiguration,"system","work-log-folder-path",true))).clear(false);
 				
 		setParm(workConfiguration,"system","managedoutputfolder", outputFolder.getCanonicalPath(), true);
 		setParm(workConfiguration,"system","managedinstallfolder", baseFolder.getCanonicalPath(), true);

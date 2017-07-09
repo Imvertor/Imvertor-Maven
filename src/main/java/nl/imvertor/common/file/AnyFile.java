@@ -525,6 +525,18 @@ public class AnyFile extends File  {
 			createNewFile();
 		}
 	}
+	
+	public String getLastLine() throws IOException {
+		String lastLine = ""; 
+		while (true) {
+			String line = getNextLine();
+			if (line == null) 
+				break;
+			else
+				lastLine = line;
+		}
+		return lastLine;
+	}
 }
 
 

@@ -20,12 +20,15 @@
 
 package nl.imvertor.OfficeCompiler;
 
+import java.io.File;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
+import nl.imvertor.common.file.ExecFile;
 import nl.imvertor.common.file.FtpFolder;
 
 public class OfficeCompiler extends Step {
@@ -115,6 +118,42 @@ public class OfficeCompiler extends Step {
 				    } catch (Exception e) {
 						runner.warn(logger, "Cannot upload office HTML to " + targetpath);
 					}
+				} else if (target != null && target.equals("git")) {
+					/*
+					    set branch=%1
+						set local-repos=%2
+						set remote-repos=%3
+						set local-file-name=%4
+						set local-file-path=%5
+						set commit-comment=%6
+						set log-file-path=%7
+					 */
+					AnyFile gitlogFile = new AnyFile(configurator.getParm("system","work-log-folder-path") + File.separator + "office-git.log");
+				
+					String gitbranch  = configurator.getParm("cli", "gitbranch");  //%1
+					String gitlocalrepos = configurator.getParm("cli", "gitlocalrepos"); //%2
+					String gitremoterepos = configurator.getParm("cli", "gitremoterepos"); //%3
+					String gitlocalfilename = officeFile.getName(); //%4
+					String gitlocalfilepath = officeFile.getParentFile().getAbsolutePath(); //%5
+					String gitcomment = configurator.mergeParms(configurator.getParm("cli", "gitcomment")); //%6
+					String gitlog = gitlogFile.getAbsolutePath(); //%7
+					
+					runner.info(logger, "GIT Pushing office HTML as " + officeFile.getName());
+					
+					String gitBatch = configurator.getBaseFolder().getCanonicalPath() + "\\etc\\bat\\update-git.bat";
+					
+					(new ExecFile(gitBatch)).execute(configurator,new String[] {
+							gitbranch,
+							gitlocalrepos,
+							gitremoterepos,
+							gitlocalfilename,
+							gitlocalfilepath,
+							gitcomment,
+							">" + gitlog
+					},15000,false); // 15 seconds timeout
+				    
+					 // the SHA s the last line of the log.
+					configurator.setParm("appinfo", "office-git-sha", gitlogFile.getLastLine());
 				}
 			}
 		} else {

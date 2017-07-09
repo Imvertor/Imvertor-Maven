@@ -45,6 +45,7 @@ import nl.imvertor.XmiTranslator.XmiTranslator;
 import nl.imvertor.XsdCompiler.XsdCompiler;
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Release;
+import nl.imvertor.common.file.ExecFile;
 
 public class ChainTranslateAndReport {
 
