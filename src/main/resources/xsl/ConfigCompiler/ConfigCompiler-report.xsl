@@ -92,33 +92,33 @@
                     <td>
                         <xsl:value-of select="."/>
                     </td>
+                    <td>
+                        <xsl:value-of select="@src"/>
+                    </td>
                 </tr>
             </xsl:for-each>
         </xsl:variable>
-        <xsl:sequence select="imf:create-result-table-by-tr($rows,'parameter:30,value:70','table-owner')"/>
+        <xsl:sequence select="imf:create-result-table-by-tr($rows,'parameter:30,value:50,config:20','table-owner')"/>
     </xsl:template>
 
     <xsl:template match="/config" mode="metamodel-scalars">
         <xsl:variable name="rows" as="element(tr)*">
-            <xsl:for-each-group select="$configuration-metamodel-file//scalars/scalar" group-by="@id">
-                <xsl:sort select="current-group()[last()]/name[1]"/>
-                <xsl:variable name="metamodels" select="current-group()[last()]/ancestor::metamodel"/>
-                <xsl:for-each select="current-group()[last()]">
-                    <tr>
-                        <td>
-                            <xsl:value-of select="string-join(name,', ')"/>
-                            <span class="tid">
-                                <xsl:value-of select="@id"/>
-                            </span>
-                        </td>
-                        <td>
-                            <xsl:value-of select="string-join($metamodels/name,',  ')"/>
-                        </td>
-                    </tr>
-                </xsl:for-each>
-            </xsl:for-each-group>
+            <xsl:for-each select="$configuration-metamodel-file//scalars/scalar">
+                <xsl:sort select="name[1]"/>
+                <tr>
+                    <td>
+                        <xsl:value-of select="string-join(name,', ')"/>
+                        <span class="tid">
+                            <xsl:value-of select="@id"/>
+                        </span>
+                    </td>
+                    <td>
+                        <xsl:value-of select="name[1]/@src"/>
+                    </td>
+                </tr>
+            </xsl:for-each>
         </xsl:variable>
-        <xsl:sequence select="imf:create-result-table-by-tr($rows,'scalar:50,metamodel:50','table-scalars')"/>
+        <xsl:sequence select="imf:create-result-table-by-tr($rows,'scalar:80,config:20','table-scalars')"/>
     </xsl:template>
     
     <!--
@@ -135,28 +135,25 @@
     -->
     <xsl:template match="/config" mode="metamodel-stereos">
         <xsl:variable name="rows" as="element(tr)*">
-            <xsl:for-each-group select="$configuration-metamodel-file//stereotypes/stereo" group-by="@id">
-                <xsl:sort select="current-group()[last()]/name[1]"/>
-                <xsl:variable name="metamodels" select="current-group()[last()]/ancestor::metamodel"/>
-                <xsl:for-each select="current-group()[last()]">
-                    <tr>
-                        <td>
-                            <xsl:value-of select="string-join(name,', ')"/>
-                            <span class="tid">
-                                <xsl:value-of select="@id"/>
-                            </span>
-                        </td>
-                        <td>
-                            <xsl:value-of select="string-join(construct,', ')"/>
-                        </td>
-                        <td>
-                            <xsl:value-of select="string-join($metamodels/name,', ')"/>
-                        </td>
-                    </tr>
-                </xsl:for-each>
-            </xsl:for-each-group>
+            <xsl:for-each select="$configuration-metamodel-file//stereotypes/stereo">
+                <xsl:sort select="name[1]"/>
+                <tr>
+                    <td>
+                        <xsl:value-of select="string-join(name,', ')"/>
+                        <span class="tid">
+                            <xsl:value-of select="@id"/>
+                        </span>
+                    </td>
+                    <td>
+                        <xsl:value-of select="string-join(construct,', ')"/>
+                    </td>
+                    <td>
+                        <xsl:value-of select="name[1]/@src"/>
+                    </td>
+                </tr>
+            </xsl:for-each>
         </xsl:variable>
-        <xsl:sequence select="imf:create-result-table-by-tr($rows,'stereo:40,on constructs:40,metamodel:20','table-stereos')"/>
+        <xsl:sequence select="imf:create-result-table-by-tr($rows,'stereo:40,on constructs:40,config:20','table-stereos')"/>
     </xsl:template>
     
     <!--
@@ -182,40 +179,37 @@
     -->
     <xsl:template match="/config" mode="metamodel-tvs">
         <xsl:variable name="rows" as="element(tr)*">
-            <xsl:for-each-group select="$configuration-tvset-file//tagged-values/tv" group-by="@id">
-                <xsl:sort select="current-group()[last()]/name[1]"/>
-                <xsl:variable name="tagsets" select="current-group()[last()]/ancestor::tagset"/>
-                <xsl:for-each select="current-group()[last()]">
-                    <tr>
-                        <td>
-                            <xsl:value-of select="string-join(name,', ')"/>
-                            <span class="tid">
-                                <xsl:value-of select="@id"/>
-                            </span>
-                            <xsl:value-of select="if (normalize-space(@cross-meta)) then concat('Cross meta: ', @cross-meta) else ''"/>
-                        </td>
-                        <td>
-                           <xsl:value-of select="derive"/>
-                        </td>
-                        <td>
-                            <xsl:value-of select="string-join($tagsets/name,', ')"/>
-                        </td>
-                        <td>
-                            <xsl:variable name="subrows" as="element(tr)*">
-                                <xsl:for-each select="stereotypes/stereo">
-                                    <tr>
-                                        <td><xsl:value-of select="."/></td>
-                                        <td><xsl:value-of select="@original"/></td>
-                                        <td><xsl:value-of select="@required"/></td>
-                                    </tr>
-                                </xsl:for-each>            
-                            </xsl:variable>
-                            <xsl:sequence select="imf:create-result-table-by-tr($subrows,'name:40,original name:40,required:20',concat('table-tvs-',generate-id(.)))"/>
-                        </td>
-                    </tr>
-                </xsl:for-each>
-            </xsl:for-each-group>
+            <xsl:for-each select="$configuration-tvset-file//tagged-values/tv">
+                <xsl:sort select="name[1]"/>
+                <tr>
+                    <td>
+                        <xsl:value-of select="string-join(name,', ')"/>
+                        <span class="tid">
+                            <xsl:value-of select="@id"/>
+                        </span>
+                        <xsl:value-of select="if (normalize-space(@cross-meta)) then concat('Cross meta: ', @cross-meta) else ''"/>
+                    </td>
+                    <td>
+                       <xsl:value-of select="derive"/>
+                    </td>
+                    <td>
+                        <xsl:variable name="subrows" as="element(tr)*">
+                            <xsl:for-each select="stereotypes/stereo">
+                                <tr>
+                                    <td><xsl:value-of select="."/></td>
+                                    <td><xsl:value-of select="@original"/></td>
+                                    <td><xsl:value-of select="@required"/></td>
+                                </tr>
+                            </xsl:for-each>            
+                        </xsl:variable>
+                        <xsl:sequence select="imf:create-result-table-by-tr($subrows,'name:40,original name:40,required:20',concat('table-tvs-',generate-id(.)))"/>
+                    </td>
+                    <td>
+                        <xsl:value-of select="name[1]/@src"/>
+                    </td>
+                </tr>
+            </xsl:for-each>
         </xsl:variable>
-        <xsl:sequence select="imf:create-result-table-by-tr($rows,'tagged value:20,derive?:10,tagsets:10,stereos:55','table-tvs')"/>
+        <xsl:sequence select="imf:create-result-table-by-tr($rows,'tagged value:20,derive?:10,stereos:55,config:10','table-tvs')"/>
     </xsl:template>
 </xsl:stylesheet>

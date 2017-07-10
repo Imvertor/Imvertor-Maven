@@ -2,7 +2,8 @@
 <!-- 
  * Copyright (C) 
 -->
-<project-owner>
+<project-owner type="config">
+    
     <name>BRO</name>
     <!-- 
         enter a list of CSS, JS, anything to be copied to the outut file, separate with ";" 

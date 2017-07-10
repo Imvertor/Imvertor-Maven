@@ -17,8 +17,11 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
+    <!-- Geonovum NEN3610 follows KKG ISO requirements -->
+    <xi:include href="../../../KKG/cfg/metamodels/KKG-ISO.xml"/>
+   
     <name>NEN3610</name>
     
     <desc lang="en">
@@ -26,9 +29,6 @@
         Standard at https://www.geonovum.nl/onderwerpen/basismodel-geo-informatie-nen3610/algemeen-basismodel-geo-informatie-nen3610 .
         Conformance test at https://www.geonovum.nl/documenten/testprotocol-nen-3610-modellering .
     </desc>
-    
-    <!-- Geonovum NEN3610 follows KKG ISO requirements -->
-    <xi:include href="../../../KKG/cfg/metamodels/KKG-ISO.xml"/>
     
     <profiles>
         <profile lang="nl"> <!-- ACTUALLY, there is no dutch variant -->

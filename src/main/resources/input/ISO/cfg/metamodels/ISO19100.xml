@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<metamodel>
+<metamodel type="config">
     
     <name>ISO19100</name>
     <desc lang="en">Metamodel for ISO 19100 exchange models</desc>

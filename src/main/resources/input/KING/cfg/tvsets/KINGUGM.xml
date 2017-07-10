@@ -17,16 +17,13 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<tagset xmlns:xi="http://www.w3.org/2001/XInclude">
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
    
-    
-    <name>KINGUGM</name>
-
     <!-- 
         this metamodel is subject to standard Grouping conventions 
     -->
     <xi:include href="../../../Imvertor/cfg/tvsets/Grouping.xml"/>
-
+    
     <!-- KING refines grouping -->
     <xi:include href="Grouping.xml"/>
 
@@ -34,6 +31,8 @@
         applications using this metamodel may reference cross-meta Tagged values taken from SIM
     -->
     <xi:include href="KINGUGM-cross-SIM.xml"/>
+
+    <name>KINGUGM</name>
     
     <tagged-values>
         

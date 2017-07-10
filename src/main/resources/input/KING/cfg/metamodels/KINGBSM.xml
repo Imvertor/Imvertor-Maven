@@ -17,16 +17,16 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
+   <!-- TODO ga uit van UGM maar alleen de pacakge struktuur wijkt enigzins af. Dit anders oplossen?-->
+   <xi:include href="KINGUGM.xml"/>
+   
    <name>KINGBSM</name>
    
    <desc lang="nl">Metamodel voor KING/VNG informatie modellen: bericht specificatie model</desc>
    <desc lang="en">Metamodel for KING/VNG information models: bericht specificatie model</desc>
    
-   <!-- TODO ga uit van UGM maar alleen de pacakge struktuur wijkt enigzins af. Dit anders oplossen?-->
-   <xi:include href="KINGUGM.xml"/>
-  
    <stereotypes xml:id="stereotypes">
 
       <!-- packages override standard grouping -->

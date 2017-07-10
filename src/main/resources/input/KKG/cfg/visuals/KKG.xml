@@ -2,7 +2,7 @@
 <!-- 
  * Copyright (C) 2016 
 -->
-<visuals xmlns:xi="http://www.w3.org/2001/XInclude">
+<visuals type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
 
     <!-- 
         these visuals specify the basic visual aspects of the UML profile  

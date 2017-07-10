@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<schema-rules>
+<schema-rules type="config">
     <!-- 
         KING specific rules for SIM based schemas
     -->

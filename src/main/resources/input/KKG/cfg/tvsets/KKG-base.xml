@@ -2,7 +2,7 @@
 <!-- 
  * Copyright (C) 
 -->
-<tagset xmlns:xi="http://www.w3.org/2001/XInclude">
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
     <name>KKG-base</name>
     <desc>This is a KKG profile for XXX <!-- ik neem hier even aan dat relaties via relatiesoort worden getagged. --></desc>

@@ -17,7 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<project-owner>
+<project-owner type="config">
+    
     <name>Imvertor</name>
     <parameter name="web-css">../web/css/report.css</parameter> 
     <parameter name="web-logo">../web/img/Logo.jpg</parameter> 

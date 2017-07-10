@@ -17,12 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-   <name>KINGSIM</name>
-   
-   <desc lang="en">Metamodel for KING/VNG information models: semantisch informatiemodel</desc>
-   
    <!-- 
         this metamodel is subject to standard Grouping conventions 
     -->
@@ -30,9 +26,12 @@
    <xi:include href="../../../Imvertor/cfg/metamodels/Grouping.xml"/>
    
    <xi:include href="../../../BP/cfg/metamodels/BP.xml"/>
-  
+   
    <xi:include href="KINGSIM-scalar.xml"/> 
-  
+
+   <name>KINGSIM</name>
+   
+   <desc lang="en">Metamodel for KING/VNG information models: semantisch informatiemodel</desc>
    
    <!-- 
       The normal direction of the composition is from Whole to Part (source to target). 

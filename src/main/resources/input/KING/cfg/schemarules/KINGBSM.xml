@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<schema-rules xmlns:xi="http://www.w3.org/2001/XInclude">
+<schema-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
 
     <name>KINGBSM</name>
     <desc lang="en">Rule for processing BSM models to XML schemas</desc>

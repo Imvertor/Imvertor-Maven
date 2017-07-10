@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<tagset xmlns:xi="http://www.w3.org/2001/XInclude">
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
     <!-- 
         this metamodel is subject to standard Grouping conventions 

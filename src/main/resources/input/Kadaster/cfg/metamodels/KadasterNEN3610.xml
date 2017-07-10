@@ -17,12 +17,12 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+   
+    <xi:include href="../../../Geonovum/cfg/metamodels/NEN3610.xml"/>
     
     <name>KadasterNEN3610</name>
     <desc lang="en">Metamodel for Kadaster specific NEN3610 extensions</desc>
     <desc lang="nl">Metamodel voor Kadaster specifieke NEN3610 uitbreidingen</desc>
-    
-    <xi:include href="../../../Geonovum/cfg/metamodels/NEN3610.xml"/>
     
 </metamodel>

@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<shacl-rules xmlns:xi="http://www.w3.org/2001/XInclude">
+<shacl-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     <name>Kadaster KKG</name>
     <!-- 
         Kadaster KKG specific SHACL rules 

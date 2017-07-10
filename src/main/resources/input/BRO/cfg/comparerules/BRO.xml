@@ -3,12 +3,12 @@
  * Copyright (C) 
 -->
 <compare-rules xmlns:xi="http://www.w3.org/2001/XInclude">
-    <name>BRO</name>
-
     <!-- 
         BRO follows KKG
     --> 
     <xi:include href="../../../KKG/cfg/comparerules/KKG.xml"/>
+    
+    <name>BRO</name>
     
     <!-- for tagged values: -->
    

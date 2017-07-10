@@ -2,11 +2,12 @@
 <!-- 
  * Copyright (C) 
 -->
-<tagset xmlns:xi="http://www.w3.org/2001/XInclude">
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
     <!-- 
         Kadaster KKG follows KKG
     --> 
     <xi:include href="../../../KKG/cfg/tvsets/KKG.xml"/>
     
+    <name>Kadaster KKG</name>
 </tagset>

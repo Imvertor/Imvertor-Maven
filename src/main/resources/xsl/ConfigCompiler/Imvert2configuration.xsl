@@ -153,11 +153,11 @@
     </xsl:function>
     
     
-    <!-- == finish the config, compact to a single config with no duplicates or extensions === -->
+    <!-- === finish the config, compact to a single config with no duplicates or extensions === -->
     
     <xsl:template match="config" mode="finish-config">
         <config xmlns:xi="http://www.w3.org/2001/XInclude">
-            <project-owner>
+            <project-owner root="true">
                 <xsl:variable name="project-owner" select="project-owner"/> 
                 <xsl:apply-templates select="$project-owner/name" mode="#current"/>
                 <xsl:for-each-group select="$project-owner/parameter" group-by="@name">
@@ -170,7 +170,7 @@
                 </patterns>
             </project-owner>
             
-            <metamodel>
+            <metamodel root="true">
                 <xsl:variable name="metamodel" select="metamodel"/>
                 <xsl:apply-templates select="$metamodel/name" mode="#current"/>
                 <xsl:apply-templates select="$metamodel/desc" mode="#current"/>
@@ -227,7 +227,7 @@
                 
             </metamodel>
             
-            <schema-rules>
+            <schema-rules root="true">
                 <xsl:variable name="schema-rules" select="schema-rules"/> 
                 <xsl:apply-templates select="imf:distinct($schema-rules/name[@lang=($language,'#all')])" mode="#current"/>
                 
@@ -243,7 +243,7 @@
                 </name-value-mapping>
             </schema-rules>
 
-            <tagset>
+            <tagset root="true">
                 <xsl:variable name="tagset" select="tagset"/> 
                 <xsl:apply-templates select="imf:distinct($tagset/name[@lang=($language,'#all')])" mode="#current"/>
                 <xsl:apply-templates select="imf:distinct($tagset/desc[@lang=($language,'#all')])" mode="#current"/>
@@ -279,25 +279,25 @@
                 </tagged-values>
             </tagset>
 
-            <notes-rules>
+            <notes-rules root="true">
                 <xsl:variable name="notes-rules" select="notes-rules"/> 
                 <xsl:apply-templates select="imf:distinct($notes-rules//notes-rule[@lang=($language,'#all')])" mode="#current"/>
             </notes-rules>
             
-            <version-rules>
+            <version-rules root="true">
                 <xsl:variable name="version-rules" select="version-rules"/> 
                 <xsl:apply-templates select="$version-rules//version-rule" mode="#current"/>
                 <xsl:apply-templates select="$version-rules//phase-rule" mode="#current"/>
             </version-rules>
 
-            <doc-rules>
+            <doc-rules root="true">
                 <xsl:variable name="doc-rules" select="doc-rules"/> 
                 <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#all')]" group-by="@id">
                     <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
                 </xsl:for-each-group>
             </doc-rules>
             
-            <shacl-rules>
+            <shacl-rules root="true">
                 <xsl:variable name="shacl-rules" select="shacl-rules"/> 
                 <xsl:for-each select="$shacl-rules//vocabularies">
                     <xsl:apply-templates select="." mode="#current"/>
@@ -312,8 +312,11 @@
     
     <xsl:template match="*" mode="finish-config">
         <xsl:if test="empty(@lang) or @lang = ($language,'#all')">
+            <xsl:variable name="preceding-names" select="ancestor::*[@type = 'config']/name"/>
             <xsl:copy>
                 <xsl:apply-templates select="@*" mode="#current"/>
+                <!-- add the origins of the configurated value, i.e. the call stack -->
+                <xsl:attribute name="src" select="string-join($preceding-names,' &lt; ')"/>
                 <xsl:apply-templates select="node()" mode="#current"/>
             </xsl:copy>
         </xsl:if>

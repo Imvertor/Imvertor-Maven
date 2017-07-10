@@ -17,7 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<project-owner>
+<project-owner type="config">
+    
     <name>Kadaster</name>
     <!-- 
         enter a list of CSS, JS, anything to be copied to the outut file, separate with ";" 

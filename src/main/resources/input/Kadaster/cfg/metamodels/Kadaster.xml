@@ -17,24 +17,23 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
 
-    <name>Kadaster</name>
-    <desc lang="nl">Metamodel voor Kadaster uitwisselingsmodellen</desc>
-    <desc lang="en">Metamodel for Kadaster exchange models</desc>
-    
     <!-- 
         this metamodel is subject to standard Grouping conventions 
     -->
     
     <xi:include href="../../../Imvertor/cfg/metamodels/Grouping.xml"/>
-
+    
     <!-- kadaster follows BP requirements -->
-
+    
     <xi:include href="../../../BP/cfg/metamodels/BP.xml"/>
     <xi:include href="../../../BP/cfg/metamodels/BP-scalar.xml"/>
     
-   
+    <name>Kadaster</name>
+    <desc lang="nl">Metamodel voor Kadaster uitwisselingsmodellen</desc>
+    <desc lang="en">Metamodel for Kadaster exchange models</desc>
+    
     <profiles>
         <profile lang="nl">
             <id>KADNL</id>

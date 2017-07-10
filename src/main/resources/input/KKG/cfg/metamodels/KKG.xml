@@ -2,7 +2,7 @@
 <!-- 
  * Copyright (C) 2016 
 -->
-<metamodel xmlns:xi="http://www.w3.org/2001/XInclude">
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
     <name>KKG</name>
     <desc lang="en">Metamodel for KKG models</desc>

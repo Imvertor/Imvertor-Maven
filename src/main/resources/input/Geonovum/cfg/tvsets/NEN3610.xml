@@ -2,15 +2,17 @@
 <!-- 
  * Copyright (C) 
 -->
-<tagset xmlns:xi="http://www.w3.org/2001/XInclude">
-  
-    <name>NEN3610</name>
-    <desc lang="en">Tagset for NEN3610 conformant KKG-ISO extensions</desc>
-    <desc lang="nl">Tags voor NEN3610 vereiste KKG-ISO uitbreidingen</desc>
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
     <!-- 
         Geonovum NEN3610 follows KKG-ISO-EN
     --> 
     <xi:include href="../../../KKG/cfg/tvsets/KKG-ISO.xml"/>
+    
+    <name>NEN3610</name>
+    <desc lang="en">Tagset for NEN3610 conformant KKG-ISO extensions</desc>
+    <desc lang="nl">Tags voor NEN3610 vereiste KKG-ISO uitbreidingen</desc>
+    
+  
     
 </tagset>

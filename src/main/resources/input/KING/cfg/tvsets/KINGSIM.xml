@@ -17,16 +17,16 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<tagset xmlns:xi="http://www.w3.org/2001/XInclude">
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <!-- KING follows BP requirements -->
+    <xi:include href="../../../BP/cfg/tvsets/BP.xml"/>
+    
+    <!-- KING refines grouping -->
+    <xi:include href="Grouping.xml"/>
+    
     <name>KING</name>
     <tagged-values>
       
-        <!-- KING follows BP requirements -->
-        <xi:include href="../../../BP/cfg/tvsets/BP.xml"/>
-        
-        <!-- KING refines grouping -->
-        <xi:include href="Grouping.xml"/>
-        
         <tv norm="space" id="CFG-TV-AANDUIDINGSTRIJDIGHEIDNIETIGHEID">
             <name lang="nl">Aanduiding strijdigheid/nietigheid</name>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->

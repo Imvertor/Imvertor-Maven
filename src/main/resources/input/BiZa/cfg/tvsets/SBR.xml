@@ -17,7 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<tagset>
+<tagset type="config">
+    
     <name>SBR</name>
     <descr>Stelsel basisregistraties</descr>
     <web>http://stelselcatalogus.logius.nl/over-de-stelselcatalogus/metadata/</web>

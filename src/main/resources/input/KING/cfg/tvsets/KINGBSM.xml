@@ -17,13 +17,13 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<tagset xmlns:xi="http://www.w3.org/2001/XInclude">
-    <svn>$Id: KINGUGM.xml 7445 2016-03-03 13:53:34Z arjan $</svn>
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <xi:include href="KINGUGM.xml"/>
+    
     <name>KINGBSM</name>
     
     <tagged-values>
-        
-        <xi:include href="KINGUGM.xml"/>
         
         <?x tv norm="space"  rules="NOC" id="IndicatieKerngegeven">
             <derive>yes</derive>

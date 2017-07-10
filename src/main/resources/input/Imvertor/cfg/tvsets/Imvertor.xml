@@ -17,9 +17,10 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<tagset>
+<tagset type="config">
 
     <name>Imvertor</name>
     <tagged-values>
     </tagged-values>
+
 </tagset>

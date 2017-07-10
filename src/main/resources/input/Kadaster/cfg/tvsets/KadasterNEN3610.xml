@@ -2,11 +2,12 @@
 <!-- 
  * Copyright (C) 
 -->
-<tagset xmlns:xi="http://www.w3.org/2001/XInclude">
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
     <!-- 
         Kadaster NEN3610 follows NEN3610 rules.
     --> 
     <xi:include href="../../../Geonovum/cfg/tvsets/NEN3610.xml"/>
     
+    <name>Kadaster NEN3610</name>
 </tagset>
