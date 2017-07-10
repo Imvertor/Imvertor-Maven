@@ -42,64 +42,30 @@
         </imvert:packages>
     </xsl:template>
     
-    <!-- generate the correct name here -->
-    <xsl:template match="imvert:found-name">
-        <xsl:variable name="type" select="
-            if (parent::imvert:package) then 'package-name' else 
-            if (parent::imvert:attribute) then 'property-name' else
-            if (parent::imvert:association) then 'property-name' else 'class-name'"/>
-        <imvert:name original="{.}">
-            <xsl:value-of select="imf:get-normalized-name(.,$type)"/>
-        </imvert:name>
-    </xsl:template>
-    
-    <xsl:template match="imvert:supplier-packagename">
-        <imvert:supplier-package-name original="{.}">
-            <xsl:value-of select="imf:get-normalized-name(.,'package-name')"/>
-        </imvert:supplier-package-name>
-    </xsl:template>
-    
-    <!-- generate the correct name for types specified, but only when the type is declared as a class (i.e. no system types) -->
-    <xsl:template match="imvert:*[imvert:type-id]/imvert:type-name">
-        <imvert:type-name original="{.}">
-            <xsl:value-of select="imf:get-normalized-name(.,'class-name')"/>
-        </imvert:type-name>
-    </xsl:template>
-    
-    <!-- generate the correct name for packages of types specified -->
-    <xsl:template match="imvert:type-package">
-        <imvert:type-package original="{.}">
-            <xsl:value-of select="imf:get-normalized-name(.,'package-name')"/>
-        </imvert:type-package>
-    </xsl:template>
-    
-    <!-- when composition, and no name, generate name of the target class on that composition relation -->
-    <!-- 
-        KKG ISO doesnt require composition relation stereotype.
-        when composition, and no stereotype, put the composition stereotype there -->
-    <xsl:template match="imvert:association[imvert:aggregation='composite']">
+    <!-- in KKG ISO, stereotype on associations are implied --> 
+    <xsl:template match="imvert:association">
+        
+        <xsl:variable name="target-class" select="imf:get-construct-by-id(imvert:type-id)"/>
+        <xsl:variable name="target-is-objecttype" select="$target-class/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')"/>
+        <xsl:variable name="stereo-relatiesoort" select="imf:get-config-stereotypes('stereotype-name-relatiesoort')"/>
+        
         <imvert:association>
             <xsl:choose>
-                <xsl:when test="empty(imvert:found-name)">
-                    <imvert:name original="" origin="system">
+                <xsl:when test="$target-is-objecttype and empty(imvert:name)">
+                    <imvert:name origin="system">
                         <xsl:value-of select="imf:get-normalized-name(imvert:type-name,'property-name')"/>
                     </imvert:name>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:apply-templates select="imvert:found-name"/>
+                    <xsl:apply-templates select="imvert:name"/>
                 </xsl:otherwise>
             </xsl:choose>
-            <xsl:choose>
-                <xsl:when test="empty(imvert:stereotype)">
-                    <imvert:stereotype origin="system">
-                        <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-association-to-composite')"/>
-                    </imvert:stereotype>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:apply-templates select="imvert:stereotype"/>
-                </xsl:otherwise>
-            </xsl:choose>
-            <xsl:apply-templates select="*[not(self::imvert:stereotype or self::imvert:found-name)]"/>
+            <xsl:if test="$target-is-objecttype and not(imvert:stereotype = $stereo-relatiesoort)">
+                <imvert:stereotype origin="system">
+                    <xsl:value-of select="$stereo-relatiesoort"/>
+                </imvert:stereotype>
+            </xsl:if>
+            <xsl:apply-templates select="*[not(self::imvert:name)]"/>
         </imvert:association>
     </xsl:template>
     

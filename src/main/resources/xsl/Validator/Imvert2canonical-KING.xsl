@@ -56,64 +56,11 @@
         </xsl:choose>
     </xsl:template>
     
-    <!-- generate the correct name here -->
-    <xsl:template match="imvert:found-name">
-        <xsl:variable name="type" select="
-            if (parent::imvert:package) then 'package-name' else 
-            if (parent::imvert:attribute) then 'property-name' else
-            if (parent::imvert:association) then 'property-name' else 'class-name'"/>
-        <imvert:name original="{.}">
-            <xsl:value-of select="imf:get-normalized-name(.,$type)"/>
-        </imvert:name>
-    </xsl:template>
-    
     <!-- REDMINE #487818 -->
     <xsl:template match="imvert:supplier-package-name">
         <imvert:supplier-package-name original="{.}">
             <xsl:value-of select="imf:get-normalized-name(.,'package-name')"/>
         </imvert:supplier-package-name>
-    </xsl:template>
-    
-    <!-- generate the correct name for types specified, but only when the type is declared as a class (i.e. no system types) -->
-    <xsl:template match="imvert:*[imvert:type-id]/imvert:type-name">
-        <imvert:type-name original="{.}">
-            <xsl:value-of select="imf:get-normalized-name(.,'class-name')"/>
-        </imvert:type-name>
-    </xsl:template>
-    
-    <!-- generate the correct name for packages of types specified -->
-    <xsl:template match="imvert:type-package">
-        <imvert:type-package original="{.}">
-            <xsl:value-of select="imf:get-normalized-name(.,'package-name')"/>
-        </imvert:type-package>
-    </xsl:template>
-    
-    <!-- when composition, and no name, generate name of the target class on that composition relation -->
-    <!-- when composition, and no stereotype, put the composition stereotype there -->
-    <xsl:template match="imvert:association[imvert:aggregation='composite']">
-        <imvert:association>
-            <xsl:choose>
-                <xsl:when test="empty(imvert:found-name)">
-                    <imvert:name original="{imvert:type-name}" origin="system">
-                        <xsl:value-of select="imf:get-normalized-name(imvert:type-name,'property-name')"/>
-                    </imvert:name>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:apply-templates select="imvert:found-name"/>
-                </xsl:otherwise>
-            </xsl:choose>
-            <xsl:choose>
-                <xsl:when test="empty(imvert:stereotype)">
-                    <imvert:stereotype>
-                        <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-association-to-composite')"/>
-                    </imvert:stereotype>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:apply-templates select="imvert:stereotype"/>
-                </xsl:otherwise>
-            </xsl:choose>
-            <xsl:apply-templates select="*[not(self::imvert:stereotype or self::imvert:found-name)]"/>
-        </imvert:association>
     </xsl:template>
     
     <!-- assume any datatype to be steroetyped as datatype, when no stereotype is provided. -->

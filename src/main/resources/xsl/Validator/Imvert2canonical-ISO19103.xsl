@@ -46,8 +46,8 @@
         </imvert:packages>
     </xsl:template>
     
-    <xsl:template match="imvert:package[imvert:class/imvert:associations/imvert:association[imvert:found-name='FeatureMember']]">
-        <xsl:variable name="assoc" select="imvert:class/imvert:associations/imvert:association[imvert:found-name='FeatureMember'][1]"/>
+    <xsl:template match="imvert:package[imvert:class/imvert:associations/imvert:association[imvert:name='FeatureMember']]">
+        <xsl:variable name="assoc" select="imvert:class/imvert:associations/imvert:association[imvert:name='FeatureMember'][1]"/>
         <imvert:package>
             <xsl:apply-templates/>
             <!-- and add the intermediate feature member class -->
@@ -55,7 +55,7 @@
                 <imvert:origin>
                     <xsl:value-of select="imf:get-config-parameter('name-origin-system')"/>
                 </imvert:origin>
-                <xsl:apply-templates select="$assoc/imvert:found-name"/>
+                <xsl:apply-templates select="$assoc/imvert:name"/>
                 <imvert:abstract>false</imvert:abstract>
                 <imvert:id>
                     <xsl:value-of select="generate-id($assoc)"/>
@@ -128,20 +128,20 @@
         FeatureMember is a relation. 
         This must be replaced by a class definition which inherits properties of GM_AbstractFeatureMember.
     -->
-    <xsl:template match="imvert:association[imvert:found-name='FeatureMember']">
+    <xsl:template match="imvert:association[imvert:name='FeatureMember']">
         <imvert:association>
             <imvert:origin>
                 <xsl:value-of select="imf:get-config-parameter('name-origin-system')"/>
             </imvert:origin>
             <imvert:name>(anonymous)</imvert:name>
             <imvert:type-name>
-                <xsl:value-of select="imvert:found-name"/>
+                <xsl:value-of select="imvert:name"/>
             </imvert:type-name>
             <imvert:type-id>
                 <xsl:value-of select="generate-id(.)"/>
             </imvert:type-id>
             <imvert:type-package>
-                <xsl:value-of select="ancestor::imvert:package[1]/imvert:found-name"/>
+                <xsl:value-of select="ancestor::imvert:package[1]/imvert:name"/>
             </imvert:type-package>
             <xsl:sequence select="imvert:min-occurs-source"/>
             <xsl:sequence select="imvert:max-occurs-source"/>
@@ -167,7 +167,7 @@
     </xsl:template> 
     
     <!-- generate the correct name here -->
-    <xsl:template match="imvert:found-name">
+    <xsl:template match="imvert:name">
         <imvert:name original="{.}">
             <xsl:value-of select="."/> <!-- no change -->
         </imvert:name>
@@ -187,7 +187,7 @@
         <xsl:param name="gm-substitutionGroup"/>
         <imvert:supertype>
             <xsl:sequence select="imf:create-output-element('imvert:type-name',$gm-extensionbase)"/>
-            <xsl:sequence select="imf:create-output-element('imvert:type-id',$gml-interfaces[imvert:found-name=$gm-extensionbase]/imvert:id)"/>
+            <xsl:sequence select="imf:create-output-element('imvert:type-id',$gml-interfaces[imvert:name=$gm-extensionbase]/imvert:id)"/>
             <xsl:sequence select="imf:create-output-element('imvert:type-package','GML3')"/>
             <xsl:sequence select="imf:create-output-element('imvert:xsd-substitutiongroup',$gm-substitutionGroup)"/>
         </imvert:supertype>

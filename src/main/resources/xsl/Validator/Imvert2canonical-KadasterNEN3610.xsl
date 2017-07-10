@@ -37,11 +37,12 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
     
-    <!--
-
-        More rules?
-        
-    -->
+    <xsl:template match="/imvert:packages">
+        <imvert:packages>
+            <xsl:sequence select="imf:compile-imvert-header(.)"/>
+            <xsl:apply-templates select="imvert:package"/>
+        </imvert:packages>
+    </xsl:template>
     
     <!-- 
        identity transform

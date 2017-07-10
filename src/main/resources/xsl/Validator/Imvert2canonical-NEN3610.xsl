@@ -29,7 +29,7 @@
     version="2.0">
 
     <!-- 
-          Transform BP UML constructs to canonical UML constructs.
+        Canonization of NEN3610 models.
     -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
@@ -41,38 +41,7 @@
             <xsl:apply-templates select="imvert:package"/>
         </imvert:packages>
     </xsl:template>
-  
-    <xsl:template match="imvert:phase">
-        <xsl:variable name="found-value" select="normalize-space(lower-case(.))"/>
-        <xsl:copy>
-            <xsl:copy-of select="@*"/>
-            <xsl:choose>
-                <xsl:when test="$found-value='1.0'">1</xsl:when> 
-                <xsl:when test="$found-value='concept'">0</xsl:when> 
-                <xsl:when test="$found-value='draft'">1</xsl:when> 
-                <xsl:when test="$found-value='finaldraft'">2</xsl:when> 
-                <xsl:when test="$found-value='final draft'">2</xsl:when> 
-                <xsl:when test="$found-value='final'">3</xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="imf:compute-phase(.)"/>
-                </xsl:otherwise> 
-            </xsl:choose>
-        </xsl:copy>
-    </xsl:template>
-    
-    <!-- 
-        Een service heeft mogelijk 4 envelop-connecties (proces, header, log, product). 
-        Daarnaast heeft het een uitgaande relatie naar een <<product>
-    -->
-    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-service')]/imvert:associations/imvert:association[empty(imvert:name)]">
-        <xsl:copy>
-            <xsl:apply-templates select="node()|@*"/>
-            <imvert:name origin="system">
-                <xsl:value-of select="concat('generated-name-',generate-id())"/>
-            </imvert:name>
-        </xsl:copy>
-    </xsl:template>
-    
+     
     <!-- 
        identity transform
     -->
@@ -81,5 +50,5 @@
             <xsl:apply-templates select="node()|@*"/>
         </xsl:copy>
     </xsl:template>    
-    
+   
 </xsl:stylesheet>
