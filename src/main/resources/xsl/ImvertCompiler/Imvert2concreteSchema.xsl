@@ -57,7 +57,7 @@
                 <xsl:variable name="maps" select="imf:get-conceptual-schema-map(imvert:namespace,$conceptual-schema-mapping-name)"/>
                 <xsl:variable name="map" select="$maps[1]"/><!-- TODO must be multiple -->
                 <xsl:choose>
-                    <xsl:when test="$map">
+                    <xsl:when test="exists($map)">
                         <!-- replace this by the concrete package -->
                         <imvert:package>
                             <xsl:apply-templates mode="conceptual">

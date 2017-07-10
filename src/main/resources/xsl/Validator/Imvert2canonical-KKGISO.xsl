@@ -84,6 +84,33 @@
         </xsl:copy>
     </xsl:template>
     
+    <!-- in KKG ISO, stereotype on associations are implied --> 
+    <xsl:template match="imvert:association">
+        
+        <xsl:variable name="target-class" select="imf:get-construct-by-id(imvert:type-id)"/>
+        <xsl:variable name="target-is-objecttype" select="$target-class/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')"/>
+        <xsl:variable name="stereo-relatiesoort" select="imf:get-config-stereotypes('stereotype-name-relatiesoort')"/>
+        
+        <imvert:association>
+            <xsl:choose>
+                <xsl:when test="$target-is-objecttype and empty(imvert:name)">
+                    <imvert:name origin="system">
+                        <xsl:value-of select="imf:get-normalized-name(imvert:type-name,'property-name')"/>
+                    </imvert:name>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates select="imvert:name"/>
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:if test="$target-is-objecttype and not(imvert:stereotype = $stereo-relatiesoort)">
+                <imvert:stereotype origin="system">
+                    <xsl:value-of select="$stereo-relatiesoort"/>
+                </imvert:stereotype>
+            </xsl:if>
+            <xsl:apply-templates select="*[not(self::imvert:name)]"/>
+        </imvert:association>
+    </xsl:template>
+    
     <!-- 
        identity transform
     -->
