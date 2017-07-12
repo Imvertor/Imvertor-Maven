@@ -381,16 +381,23 @@
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 2012',$debugging)"/>
                 <xsl:sequence select="imf:create-debug-track('Debuglocation 2012',$debugging)"/>
                 
-                <xsl:if test="$debugging">
+                <!--xsl:if test="$debugging">
                     <xsl:copy-of select="$uniquePrefixes"/>
-                </xsl:if>
+                </xsl:if-->
 
                 <!-- The construct element within the kv-namespace must only be created if there are descendant construct elements which belong to the kv-namespace. -->
                 <xsl:if test=".//ep:construct[@prefix = $prefix and not(@ismetadata = 'yes')]">
                     <xsl:element name="{name(.)}">
                         <xsl:apply-templates select="@*[local-name()!='prefix' and local-name()!='namespaceId']"/>
                         <xsl:attribute name="prefix" select="$prefix"/>
-                        <xsl:attribute name="level" select="$uniquePrefixes//ep:prefix[. = $prefix]/@level"/>
+                        <xsl:attribute name="level">
+                            <xsl:choose>
+                                <xsl:when test="$uniquePrefixes//ep:prefix[. = $prefix]">
+                                    <xsl:value-of select="$uniquePrefixes//ep:prefix[. = $prefix]/@level"/>
+                                </xsl:when>
+                                <xsl:otherwise>1</xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:attribute>
                         <xsl:attribute name="version" select="$uniquePrefixes//ep:prefix[. = $prefix]/@version"/>
                         <xsl:attribute name="namespaceId" select="@namespaceId"/>
                         <ep:superconstructRef>
@@ -604,29 +611,6 @@
             <xsl:when test="($procesType='splitting' and $prefix4metadataConstructs = $actualPrefix) or $procesType!='splitting'">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 2024',$debugging)"/>
                 <xsl:sequence select="imf:create-debug-track('Debuglocation 2024',$debugging)"/>
-                
-                <!--xsl:choose>
-                    <xsl:when test="ancestor::ep:construct[.//ep:construct[ep:inOnderzoek != '']]">
-                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2025',$debugging)"/>
-                        
-                        <xsl:sequence select="$inOnderzoek"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2026',$debugging)"/>
-                        
-                        <xsl:variable name="inOnderzoekValid">
-                            <xsl:for-each select="ep:constructRef[starts-with(ep:href,'Grp')]">
-                                <xsl:variable name="href" select="ep:href"/>
-                                <xsl:if test="//ep:construct[ep:tech-name = $href and .//ep:construct[ep:inOnderzoek and ep:inOnderzoek != '']]">
-                                    <xsl:value-of select="'yes'"/>
-                                </xsl:if>
-                            </xsl:for-each>
-                        </xsl:variable>
-                        <xsl:if test="contains($inOnderzoekValid,'yes')">
-                            <xsl:sequence select="$inOnderzoek"/>                        
-                        </xsl:if>
-                    </xsl:otherwise>
-                </xsl:choose-->
                 <xsl:choose>
                     <xsl:when test="ancestor::ep:construct[.//ep:construct[ep:inOnderzoek = 'Ja']]">
                         <xsl:sequence select="imf:create-debug-comment('Debuglocation 2025',$debugging)"/>
@@ -652,32 +636,6 @@
                     </xsl:when>
                 </xsl:choose>
             </xsl:when>
-            <!--xsl:when test="$procesType!='splitting'">
-                <xsl:sequence select="imf:create-debug-comment('Debuglocation 2027',$debugging)"/>
-
-                <xsl:choose>
-                    <xsl:when test="ancestor::ep:construct[.//ep:construct[ep:inOnderzoek != '']]">
-                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2028',$debugging)"/>
-
-                        <xsl:sequence select="$inOnderzoek"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 2029',$debugging)"/>
-
-                        <xsl:variable name="inOnderzoekValid">
-                            <xsl:for-each select="ep:constructRef[starts-with(ep:href,'Grp')]">
-                                <xsl:variable name="href" select="ep:href"/>
-                                <xsl:if test="//ep:construct[ep:tech-name = $href and .//ep:construct[ep:inOnderzoek and ep:inOnderzoek != '']]">
-                                    <xsl:value-of select="'yes'"/>
-                                </xsl:if>
-                            </xsl:for-each>
-                        </xsl:variable>
-                        <xsl:if test="contains($inOnderzoekValid,'yes')">
-                            <xsl:sequence select="$inOnderzoek"/>                        
-                        </xsl:if>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:when-->
         </xsl:choose>
     </xsl:template>
     

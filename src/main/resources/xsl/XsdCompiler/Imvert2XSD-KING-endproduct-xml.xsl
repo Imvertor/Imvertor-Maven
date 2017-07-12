@@ -305,11 +305,11 @@
                 </xsl:copy>
         </xsl:variable>
         
-        <xsl:if test="$debugging">
+        <!--xsl:if test="$debugging">
             <ep:currentMessage>
                 <xsl:sequence select="$currentMessage"/>
             </ep:currentMessage>
-        </xsl:if>
+        </xsl:if-->
         
         <xsl:sequence select="imf:track('Constructing the global constructs',$debugging)"/>
 
@@ -1940,7 +1940,25 @@
                 <xsl:copy-of select="imf:get-UGM-suppliers(.)"/>
             </ep:suppliers>
         </xsl:variable>
-        <xsl:variable name="construct-Prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
+        
+        <xsl:if test="$debugging">
+            <ep:allsuppliers>
+                <xsl:variable name="allSuppliers" select="imf:get-trace-suppliers-for-construct(.,1)"/>
+                <xsl:copy-of select="$allSuppliers"/>
+            </ep:allsuppliers>
+            <xsl:copy-of select="$suppliers"/>
+        </xsl:if>
+        
+        <xsl:variable name="construct-Prefix">
+            <xsl:choose>
+                <xsl:when test="$suppliers//supplier[1]">
+                    <xsl:value-of select="$suppliers//supplier[1]/@verkorteAlias"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="$kv-prefix"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         <!--xsl:variable name="construct-Namespace" select="$suppliers//supplier[1]/@base-namespace"/-->
 
         <xsl:comment select="concat('ROME: ',parent::imvert:*/imvert:name)"/>
