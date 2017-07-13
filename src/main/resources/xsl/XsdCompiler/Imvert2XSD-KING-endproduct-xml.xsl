@@ -1940,25 +1940,7 @@
                 <xsl:copy-of select="imf:get-UGM-suppliers(.)"/>
             </ep:suppliers>
         </xsl:variable>
-        
-        <xsl:if test="$debugging">
-            <ep:allsuppliers>
-                <xsl:variable name="allSuppliers" select="imf:get-trace-suppliers-for-construct(.,1)"/>
-                <xsl:copy-of select="$allSuppliers"/>
-            </ep:allsuppliers>
-            <xsl:copy-of select="$suppliers"/>
-        </xsl:if>
-        
-        <xsl:variable name="construct-Prefix">
-            <xsl:choose>
-                <xsl:when test="$suppliers//supplier[1]">
-                    <xsl:value-of select="$suppliers//supplier[1]/@verkorteAlias"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="$kv-prefix"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
+        <xsl:variable name="construct-Prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
         <!--xsl:variable name="construct-Namespace" select="$suppliers//supplier[1]/@base-namespace"/-->
 
         <xsl:comment select="concat('ROME: ',parent::imvert:*/imvert:name)"/>
@@ -2096,6 +2078,7 @@
         <xsl:variable name="type-name" select="imvert:type-name"/>
         <xsl:variable name="max-occurs" select="imvert:max-occurs"/>
         <xsl:variable name="min-occurs" select="imvert:min-occurs"/>
+        <xsl:variable name="position" select="imvert:position"/>
         <xsl:variable name="id" select="imvert:id"/>
         <xsl:variable name="docs">
             <imvert:complete-documentation>
@@ -2148,13 +2131,7 @@
                         <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
                         <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
                         <xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
-                        <xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
-                        
-                        <xsl:variable name="Positie" select="imf:get-tagged-value(.,'##CFG-TV-POSITION')"/>
-                        
-                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 31aa',$debugging)"/>
-                        <!-- When a tagged-value 'Positie' exists this is used to assign a value to 'ep:position' if not the value of the element 'imvert:position' is used. -->
-                        <xsl:sequence select="imf:create-position-element(., $Positie, 'no')"/>
+                        <xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>                       
                         <!-- An 'ep:construct' based on an 'imvert:association' element can contain 
 			several other 'ep:construct' elements (e.g. 'ep:constructs' for the attributes 
 			of the association itself or for the associations of the association) therefore 
@@ -2250,11 +2227,6 @@
                     <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
                     <xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
                     <xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
-                    
-                    <xsl:variable name="Positie" select="imf:get-tagged-value(.,'##CFG-TV-POSITION')"/>
-                    
-                    <!-- When a tagged-value 'Positie' exists this is used to assign a value to 'ep:position' if not the value of the element 'imvert:position' is used. -->
-                    <xsl:sequence select="imf:create-position-element(., $Positie, 'no')"/>
                     <!-- An 'ep:construct' based on an 'imvert:association' element can contain 
 			several other 'ep:construct' elements (e.g. 'ep:constructs' for the attributes 
 			of the association itself or for the associations of the association) therefore 
@@ -2762,37 +2734,4 @@
         
     </xsl:function>
     
-    <xsl:function name="imf:create-position-element" as="element()*">
-        <xsl:param name="node"/>
-        <xsl:param name="positie"/>
-
-        <xsl:sequence select="imf:create-position-element($node, $positie, 'not applicable')"/>
-    </xsl:function>        
-
-    <xsl:function name="imf:create-position-element" as="element()*">
-        <xsl:param name="node"/>
-        <xsl:param name="positie"/>
-        <xsl:param name="relatieIndicatie"/>
-        <xsl:choose>
-            <xsl:when
-                test="$relatieIndicatie = 'no' and $node/imvert:stereotype != 'RELATIE' and not(empty($positie))">
-                <xsl:sequence
-                    select="imf:create-output-element('ep:position', $positie)"/>
-                <xsl:sequence select="imf:create-output-element('ep:tv-position', 'yes')"/>
-            </xsl:when>
-            <xsl:when test="$relatieIndicatie = 'no' and $node/imvert:stereotype != 'RELATIE' and $node/imvert:position">
-                <xsl:sequence select="imf:create-output-element('ep:position', $node/imvert:position)"/>
-            </xsl:when>
-            <xsl:when test="$relatieIndicatie != 'no' and not(empty($positie))">
-                <xsl:sequence
-                    select="imf:create-output-element('ep:position', $positie)"/>
-                <xsl:sequence select="imf:create-output-element('ep:tv-position', 'yes')"/>
-            </xsl:when>
-            <xsl:when test="$relatieIndicatie != 'no' and $node/imvert:position">
-                <xsl:sequence select="imf:create-output-element('ep:position', $node/imvert:position)"/>
-            </xsl:when>
-            <xsl:otherwise/>
-        </xsl:choose>
-        
-    </xsl:function>
 </xsl:stylesheet>

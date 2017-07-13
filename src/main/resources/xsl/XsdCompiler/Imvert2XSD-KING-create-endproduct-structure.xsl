@@ -518,12 +518,8 @@
 								<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)" />
 								<xsl:sequence select="imf:create-output-element('ep:max-occurs', 1)"/>
 								<xsl:sequence select="imf:create-output-element('ep:min-occurs', 1)"/>
-								
-								<xsl:variable name="Positie" select="imf:get-tagged-value(.,'##CFG-TV-POSITION')"/>
-								
-								<!-- When a tagged-value 'Positie' exists this is used to assign a value 
-									 to 'ep:position' if not the value of the element 'imvert:position' is used. -->
-								<xsl:sequence select="imf:create-position-element(., $Positie)"/>
+								<xsl:sequence select="imf:create-output-element('ep:position', imvert:position)"/>
+
 								<xsl:choose>
 									<xsl:when test="not(empty($verwerkingsModusOfConstructRef)) and $verwerkingsModusOfConstructRef != ''">
 										<xsl:sequence select="imf:create-output-element('ep:type-name', imf:create-complexTypeName(ancestor::imvert:package/imvert:name,$berichtName,$verwerkingsModusOfConstructRef,$alias,$element))"/>							
@@ -714,6 +710,7 @@
 		</xsl:variable>
 		<xsl:variable name="max-occurs" select="imvert:max-occurs"/>
 		<xsl:variable name="min-occurs" select="imvert:min-occurs"/>
+		<xsl:variable name="position" select="imvert:position"/>
 		<xsl:variable name="id" select="imvert:id"/>
 		<xsl:variable name="matchgegeven" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIEKERNGEGEVEN')"/>
 		<!--xsl:if test="empty($matchgegeven)">
@@ -823,14 +820,8 @@
 				<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
 				<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
 				<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
-				
-				<xsl:variable name="Positie" select="imf:get-tagged-value(.,'##CFG-TV-POSITION')"/>
-				
-				<!-- When a tagged-value 'Positie' exists this is used to assign a value 
-					 to 'ep:position' if not the value of the element 'imvert:position' is used. -->
-				<xsl:sequence select="imf:create-position-element(., $Positie)"/>
-				<xsl:variable name="type-name"><xsl:value-of select="$href"/></xsl:variable>
-				<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
+				<xsl:sequence select="imf:create-output-element('ep:position', $position)"/>
+				<xsl:sequence select="imf:create-output-element('ep:type-name', $href)"/>
 			</ep:construct>
 
 		</xsl:if>
@@ -932,6 +923,7 @@
 		</xsl:variable>
 		<xsl:variable name="max-occurs" select="imvert:max-occurs"/>
 		<xsl:variable name="min-occurs" select="imvert:min-occurs"/>
+		<xsl:variable name="position" select="imvert:position"/>
 		<xsl:variable name="type-id" select="imvert:type-id"/>
 		<xsl:variable name="verwerkingsModusOfConstructRef">
 			<xsl:choose>
@@ -955,14 +947,8 @@
 			<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
 			<xsl:sequence select="imf:create-output-element('ep:max-occurs',$max-occurs)"/>
 			<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
-			
-			<xsl:variable name="Positie" select="imf:get-tagged-value(.,'##CFG-TV-POSITION')"/>
-			
-			<!-- When a tagged-value 'Positie' exists this is used to assign a value 
-				 to 'ep:position' if not the value of the element 'imvert:position' is used. -->
-			<xsl:sequence select="imf:create-position-element(., $Positie)"/>
-			<xsl:variable name="type-name"><xsl:value-of select="$href"/></xsl:variable>
-			<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
+			<xsl:sequence select="imf:create-output-element('ep:position', $position)"/>
+			<xsl:sequence select="imf:create-output-element('ep:type-name', $href)"/>
 		</ep:construct>
 
 	</xsl:template>
@@ -1209,6 +1195,7 @@
 		<xsl:variable name="type-modifier" select="imvert:type-modifier"/>
 		<xsl:variable name="max-occurs" select="imvert:max-occurs"/>
 		<xsl:variable name="min-occurs" select="imvert:min-occurs"/>
+		<xsl:variable name="position" select="imvert:position"/>
 		<xsl:variable name="max-length" select="imvert:max-length"/>
 		<xsl:variable name="total-digits" select="imvert:total-digits"/>
 		<xsl:variable name="fraction-digits" select="imvert:fraction-digits"/>
@@ -1283,7 +1270,6 @@
 		<xsl:variable name="max-waarde" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-MAXVALUEINCLUSIVE')"/>
 		<xsl:variable name="min-length" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-MINLENGTH')"/>
 		<xsl:variable name="patroon" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')"/>
-		<!--xsl:variable name="formeelPatroon" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-FORMALPATTERN')"/-->
 		<xsl:variable name="formeelPatroon" select="imvert:pattern"/>		
 		<xsl:variable name="compiled-name" select="imf:useable-attribute-name(imf:get-compiled-name(.),.)"/>
 		
@@ -1341,24 +1327,7 @@
 						<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
 						<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
 						<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
-						
-						<xsl:variable name="Positie" select="imf:get-tagged-value(.,'##CFG-TV-POSITION')"/>
-						
-						<!-- When a tagged-value 'Positie' exists this is used to assign a value 
-								to 'ep:position' if not the value of the element 'imvert:position' is used. -->
-						<xsl:choose>
-							<xsl:when
-								test="not(empty($Positie))">
-								<xsl:sequence
-									select="imf:create-output-element('ep:position', $Positie)"/>
-								<xsl:sequence select="imf:create-output-element('ep:tv-position', 'yes')"/>
-							</xsl:when>
-							<xsl:when test="imvert:position">
-								<xsl:sequence
-									select="imf:create-output-element('ep:position', imvert:position)"/>
-							</xsl:when>
-							<xsl:otherwise/>
-						</xsl:choose>
+						<xsl:sequence select="imf:create-output-element('ep:position', $position)"/>
 						<xsl:sequence
 							select="imf:create-output-element('ep:type-name', imf:create-Grp-complexTypeName('',$berichtName,$type,$name,$verwerkingsModus))" />
 					</ep:construct>
@@ -1401,6 +1370,7 @@
 						<xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
 						<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
 						<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
+						<xsl:sequence select="imf:create-output-element('ep:position', $position)"/>
 						
 						<xsl:apply-templates select="//imvert:class[imvert:id = $type-id]/imvert:attributes/imvert:attribute[imvert:is-id = 'true']"  mode="create-message-content">
 							<xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -1418,23 +1388,6 @@
 							<xsl:with-param name="processType" select="'keyTabelEntiteit'"/>
 						</xsl:apply-templates>
 						
-						<xsl:variable name="Positie" select="imf:get-tagged-value(.,'##CFG-TV-POSITION')"/>
-
-						<!-- When a tagged-value 'Positie' exists this is used to assign a value 
-								to 'ep:position' if not the value of the element 'imvert:position' is used. -->
-						<xsl:choose>
-							<xsl:when
-								test="not(empty($Positie))">
-								<xsl:sequence
-									select="imf:create-output-element('ep:position', $Positie)"/>
-								<xsl:sequence select="imf:create-output-element('ep:tv-position', 'yes')"/>
-							</xsl:when>
-							<xsl:when test="imvert:position">
-								<xsl:sequence
-									select="imf:create-output-element('ep:position', imvert:position)"/>
-							</xsl:when>
-							<xsl:otherwise/>
-						</xsl:choose>
 						<!-- Attributes with the name 'melding' or which are descendants of a 
 								class with the name 'Stuurgegevens', 'Systeem' or 'Parameters' mustn't get 
 								XML attributes. -->
@@ -1639,22 +1592,7 @@
 									mode="create-datatype-content"/>
 							</xsl:when>
 						</xsl:choose>
-						
-						<xsl:variable name="Positie" select="imf:get-tagged-value(.,'##CFG-TV-POSITION')"/>
-						
-						<xsl:choose>
-							<xsl:when
-								test="not(empty($Positie))">
-								<xsl:sequence
-									select="imf:create-output-element('ep:position', $Positie)"/>
-								<xsl:sequence select="imf:create-output-element('ep:tv-position', 'yes')"/>
-							</xsl:when>
-							<xsl:when test="imvert:position">
-								<xsl:sequence
-									select="imf:create-output-element('ep:position', imvert:position)"/>
-							</xsl:when>
-							<xsl:otherwise/>
-						</xsl:choose>
+						<xsl:sequence select="imf:create-output-element('ep:position', $position)"/>
 
 						<xsl:if test="$type-is-scalar-non-emptyable and
 										$name != 'melding' and
@@ -1722,24 +1660,8 @@
 						<xsl:if test="(imvert:type-name = 'scalar-integer' or imvert:type-name = 'scalar-decimal') and not(ancestor::imvert:package[contains(@formal-name,'Berichtstructuren')])">
 							<xsl:sequence select="imf:create-output-element('ep:voidable', 'Ja')"/>
 						</xsl:if>
+						<xsl:sequence select="imf:create-output-element('ep:position', imvert:position)"/>
 						
-						<xsl:variable name="Positie" select="imf:get-tagged-value(.,'##CFG-TV-POSITION')"/>
-						
-						<!-- When a tagged-value 'Positie' exists this is used to assign a value 
-							to 'ep:position' if not the value of the element 'imvert:position' is used. -->
-						<xsl:choose>
-							<xsl:when
-								test="not(empty($Positie))">
-								<xsl:sequence
-									select="imf:create-output-element('ep:position', $Positie)"/>
-								<xsl:sequence select="imf:create-output-element('ep:tv-position', 'yes')"/>
-							</xsl:when>
-							<xsl:when test="imvert:position">
-								<xsl:sequence
-									select="imf:create-output-element('ep:position', imvert:position)"/>
-							</xsl:when>
-							<xsl:otherwise/>
-						</xsl:choose>
 						<!-- Attributes with the name 'melding' or which are descendants of a 
 							class with the name 'Stuurgegevens', 'Systeem' or 'Parameters' mustn't get 
 							XML attributes. -->
@@ -2201,8 +2123,7 @@
 							<ep:max-occurs>unbounded</ep:max-occurs>
 							<ep:min-occurs>0</ep:min-occurs>
 							<ep:position>154</ep:position>
-							<xsl:variable name="type-name"><xsl:value-of select="$href"/></xsl:variable>
-							<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
+							<xsl:sequence select="imf:create-output-element('ep:type-name', $href)"/>
 						</ep:construct>
 
 					</xsl:if>
@@ -2223,8 +2144,7 @@
 							<ep:max-occurs>unbounded</ep:max-occurs>
 							<ep:min-occurs>0</ep:min-occurs>
 							<ep:position>155</ep:position>
-							<xsl:variable name="type-name"><xsl:value-of select="$href"/></xsl:variable>
-							<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
+							<xsl:sequence select="imf:create-output-element('ep:type-name', $href)"/>
 						</ep:construct>
 
 					</xsl:if>
@@ -2245,8 +2165,7 @@
 							<ep:max-occurs>unbounded</ep:max-occurs>
 							<ep:min-occurs>0</ep:min-occurs>
 							<ep:position>155</ep:position>
-							<xsl:variable name="type-name"><xsl:value-of select="$href"/></xsl:variable>
-							<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
+							<xsl:sequence select="imf:create-output-element('ep:type-name', $href)"/>
 						</ep:construct>
 
 					</xsl:if>
@@ -2352,15 +2271,12 @@
 							<xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>					
 							<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)"/>
 							<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)"/>
-							
-							<xsl:variable name="Positie" select="imf:get-tagged-value(.,'##CFG-TV-POSITION')"/>
-							
+
 							<xsl:choose>
 								<xsl:when
-									test="not(empty($Positie))">
+									test="imf:get-tagged-value(.,'##CFG-TV-POSITION')">
 									<xsl:sequence
-										select="imf:create-output-element('ep:position', $Positie)"/>
-									<xsl:sequence select="imf:create-output-element('ep:tv-position', 'yes')"/>
+										select="imf:create-output-element('ep:position', imvert:position)"/>
 								</xsl:when>
 								<xsl:when test="imvert:position">
 									<xsl:sequence select="imf:create-output-element('ep:position', 120)"/>
@@ -2391,14 +2307,11 @@
 							<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)"/>
 							<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)"/>
 							
-							<xsl:variable name="Positie" select="imf:get-tagged-value(.,'##CFG-TV-POSITION')"/>
-							
 							<xsl:choose>
 								<xsl:when
-									test="not(empty($Positie))">
+									test="imf:get-tagged-value(.,'##CFG-TV-POSITION')">
 									<xsl:sequence
-										select="imf:create-output-element('ep:position', $Positie)"/>
-									<xsl:sequence select="imf:create-output-element('ep:tv-position', 'yes')"/>
+										select="imf:create-output-element('ep:position', imvert:position)"/>
 								</xsl:when>
 								<xsl:when test="imvert:position">
 									<xsl:sequence select="imf:create-output-element('ep:position', 120)"/>
@@ -2470,14 +2383,11 @@
 						<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)"/>
 						<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)"/>
 						
-						<xsl:variable name="Positie" select="imf:get-tagged-value(.,'##CFG-TV-POSITION')"/>
-						
 						<xsl:choose>
 							<xsl:when
-								test="not(empty($Positie))">
+								test="imf:get-tagged-value(.,'##CFG-TV-POSITION')">
 								<xsl:sequence
-									select="imf:create-output-element('ep:position', $Positie)"/>
-								<xsl:sequence select="imf:create-output-element('ep:tv-position', 'yes')"/>
+									select="imf:create-output-element('ep:position', imvert:position)"/>
 							</xsl:when>
 							<xsl:when test="imvert:position">
 								<xsl:sequence select="imf:create-output-element('ep:position', 120)"/>
@@ -2553,25 +2463,6 @@
 						of juist minder elementen gegenereerd worden. Denk aan 'inOnderzoek' maar 
 						ook aan 'tijdvakRelatie', 'historieMaterieel' en 'historieFormeel'. -->
 					<xsl:if test="not(contains(@verwerkingsModus,'matchgegevens'))">
-						<!-- ep:authentiek element is used to determine if a 'authentiek' element needs to be generated in the messages in the next higher level. -->
-						<!--xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/-->
-
-
-						<!-- ROME: RFC0486 RFC: Metagegeven <authentiek> schrappen -->
-						<!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
-						<!--ep:construct type="complexData" prefix="bg" namespaceId="http://www.stufstandaarden.nl/basisschema/bg0320">
-							<ep:suppliers>
-								<ep:suppliers>
-									<supplier project="UGM" application="UGM BG" level="3" base-namespace="http://www.stufstandaarden.nl/basisschema/bg0320" verkorteAlias="bg"/>
-								</ep:suppliers>
-							</ep:suppliers>
-							<ep:name>authentiek</ep:name>
-							<ep:tech-name>authentiek</ep:tech-name>
-							<ep:max-occurs>unbounded</ep:max-occurs>
-							<ep:min-occurs>0</ep:min-occurs>
-							<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':StatusMetagegeven-basis'))"/>						
-							<ep:position>145</ep:position>
-						</ep:construct-->
 						<!-- ep:inOnderzoek element is used to determine if a 'inOnderzoek' element needs to be generated in the messages in the next higher level. -->
 						<!--xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/-->
 						<!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
