@@ -71,10 +71,6 @@ public class OfficeCompiler extends Step {
 			runner.info(logger,"Creating documentation");
 			Transformer transformer = new Transformer();
 			
-			String template = configurator.getParm("cli","officename");
-			String fn = StringUtils.lowerCase(configurator.mergeParms(template));
-			configurator.setParm("appinfo", "office-documentation-filename", fn);
-			
 			boolean succeeds = true;
 			
 			// creates an XML modeldoc intermediate file which is the basis for output
@@ -83,6 +79,10 @@ public class OfficeCompiler extends Step {
 			succeeds = succeeds ? transformer.transformStep("properties/WORK_MODELDOC_FILE","properties/WORK_OFFICE_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_OFFICE_XSLPATH") : false;
 			
 			if (succeeds) {
+				String template = configurator.getParm("cli","officename");
+				String fn = configurator.mergeParms(template);
+				configurator.setParm("appinfo", "office-documentation-filename", fn);
+				
 				AnyFile infoOfficeFile = new AnyFile(configurator.getParm("properties","WORK_OFFICE_FILE"));
 				AnyFile officeFile = new AnyFile(configurator.getParm("system","work-etc-folder-path") + "/" + fn + ".html");
 				
@@ -119,24 +119,27 @@ public class OfficeCompiler extends Step {
 						runner.warn(logger, "Cannot upload office HTML to " + targetpath);
 					}
 				} else if (target != null && target.equals("git")) {
+					
 					/*
-					    set branch=%1
-						set local-repos=%2
-						set remote-repos=%3
-						set local-file-name=%4
-						set local-file-path=%5
-						set commit-comment=%6
-						set log-file-path=%7
+					 * Each environment may locate the GIT local project repository at a different location. 
+					 * Pick up the correct location here, and place it at system/gitloc
+					 * This is a path to the local file system.
+					 * This can in turn be picked up by the property file.
+					 * 
 					 */
+					configurator.setParm("system", "gitloc", (new File(System.getProperty("gitloc.dir"))).getCanonicalPath()); // path at the local filesystem
+						
 					AnyFile gitlogFile = new AnyFile(configurator.getParm("system","work-log-folder-path") + File.separator + "office-git.log");
 				
-					String gitbranch  = configurator.getParm("cli", "gitbranch");  //%1
-					String gitlocalrepos = configurator.getParm("cli", "gitlocalrepos"); //%2
-					String gitremoterepos = configurator.getParm("cli", "gitremoterepos"); //%3
-					String gitlocalfilename = officeFile.getName(); //%4
-					String gitlocalfilepath = officeFile.getParentFile().getAbsolutePath(); //%5
-					String gitcomment = configurator.mergeParms(configurator.getParm("cli", "gitcomment")); //%6
-					String gitlog = gitlogFile.getAbsolutePath(); //%7
+					// the following parms are compiled from other parms and setetings, as a property.
+					
+					String gitbranch              	= configurator.getParm("cli", "gitbranch");  //%1
+					String gitlocalrepos 	      	= configurator.mergeParms(configurator.getParm("cli", "gitlocalrepos")); //%2
+					String gitremoterepos         	= configurator.mergeParms(configurator.getParm("cli", "gitremoterepos")); //%3
+					String gitlocalfilename 		= officeFile.getName(); //%4
+					String gitlocalfilepath 		= officeFile.getParentFile().getAbsolutePath(); //%5
+					String gitcomment 				= configurator.mergeParms(configurator.getParm("cli", "gitcomment")); //%6
+					String gitlog 					= gitlogFile.getAbsolutePath(); //%7
 					
 					runner.info(logger, "GIT Pushing office HTML as " + officeFile.getName());
 					

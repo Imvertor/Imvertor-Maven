@@ -125,12 +125,30 @@
         <xsl:variable name="digit-before" select="ep:length - 1 - ep:fraction-digits"/>
         <xsl:variable name="digit-after" select="ep:fraction-digits"/>
         <xsl:variable name="digit-pattern" select="concat('[+\-]?\d{', $digit-before, '},\d{', $digit-after, '}')"/> 
+     
+        <xsl:variable name="reference-id" as="xs:string?">
+            <xsl:variable name="message-set" select="/ep:message-sets/ep:message-set[@prefix = current()/@prefix]" as="element(ep:message-set)*"/>
+            <xsl:choose>
+                <xsl:when test="empty(@prefix)">
+                    <!-- skip; when no prefix, this is a scalar type -->
+                </xsl:when>
+                <xsl:when test="self::ep:constructRef">
+                    <xsl:variable name="expected-name" select="tokenize(ep:href,':')[last()]"/>
+                    <xsl:variable name="construct" select="$message-set//ep:construct[ep:tech-name = $expected-name]"/> <!-- assume this is ALWAYS available -->
+                    <xsl:value-of select="if (exists($construct)) then imf:get-id($construct) else ()"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:variable name="expected-name" select="ep:type-name"/>
+                    <xsl:variable name="construct" select="$message-set//ep:construct[ep:tech-name = $expected-name]"/> <!-- assume this MAY BE available -->
+                    <xsl:value-of select="if (exists($construct)) then imf:get-id($construct) else ()"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         
         <cp:prop type="spec" group="{$group-type}">
-            <xsl:if test="self::ep:constructRef">
-                <xsl:variable name="id" select="imf:get-id(//ep:construct[ep:tech-name = current()/ep:href])"/>
+            <xsl:if test="$reference-id">
                 <xsl:attribute name="ref">
-                    <xsl:value-of select="$id"/>
+                    <xsl:value-of select="$reference-id"/>
                 </xsl:attribute>
             </xsl:if>
             
@@ -204,9 +222,8 @@
     </xsl:function>
     
     <xsl:function name="imf:get-id">
-        <xsl:param name="this"/>
-        <xsl:variable name="id" select="if ($this/ep:id) then $this/ep:id else generate-id($this)"/>
-        <xsl:value-of select="replace($id,'[\{\}]','_')"/>
+        <xsl:param name="this" as="element()"/>
+        <xsl:value-of select="generate-id($this)"/>
     </xsl:function>
   
     <xsl:function name="imf:get-qualified-name">

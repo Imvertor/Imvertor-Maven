@@ -104,8 +104,8 @@ public class Validator extends Step {
 		configurator.setParm("appinfo","generation-id",configurator.getParm("system","generation-id"));
 		
 		// system/resolved-release-name
-		String template = configurator.getParm("cli","releasename");
-		configurator.setParm("appinfo","release-name",configurator.mergeParms(template),true);
+		String releasename = configurator.mergeParms(configurator.getParm("cli","releasename"));
+		configurator.setParm("appinfo","release-name",StringUtils.replacePattern(releasename, "[^A-Za-z0-9_\\-.]", ""),true);
 		
 		// we now know the application name and should show it. 
 		runner.info(logger, "Compiled name: " + configurator.getParm("appinfo","release-name"));

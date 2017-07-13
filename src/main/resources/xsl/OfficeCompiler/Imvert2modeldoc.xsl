@@ -42,10 +42,16 @@
     <xsl:variable name="quot"><!--'--></xsl:variable>
     
     <xsl:template match="/imvert:packages">
+        
         <xsl:variable name="sections" as="element()*">
             <xsl:apply-templates select="imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]"/>
         </xsl:variable>
         <book name="{imvert:application}" type="{imvert:stereotype}" id="{imvert:id}" version="{$imvertor-version}" date="{$generation-date}">
+       
+            <!-- first call a general initialization function -->
+            <xsl:sequence select="imf:initialize-modeldoc()"/>
+            
+            <!-- then generate the contents -->
             <xsl:apply-templates select="$sections" mode="section-cleanup"/>    
         </book>
     </xsl:template>
@@ -896,6 +902,10 @@
         <xsl:param name="package" as="element(imvert:package)"/>
         
         <xsl:value-of select="$package/imvert:name/@original"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:initialize-modeldoc" as="item()*">
+        <!-- stub: may be implemented by any modeldoc -->
     </xsl:function>
     
     <!-- ======== cleanup all section structure: remove empties =========== -->

@@ -18,7 +18,7 @@
     -->
     
     <xsl:template match="/book">
-        <h2>Catalogus</h2>
+      <h2>Catalogus</h2>
         <p class="ednote" title="Over deze catalogus">
             Deze catalogus is automatisch samengesteld op basis van het UML model 
             "<xsl:value-of select="@name"/>" door <xsl:value-of select="@version"/> op <xsl:value-of select="imf:format-dateTime(@date)"/>.

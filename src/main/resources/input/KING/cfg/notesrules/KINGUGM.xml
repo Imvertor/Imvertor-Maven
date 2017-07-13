@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <name>KINGUGM</name>
+    
+    <desc>KINGUGM does not introduce definitions, only descriptions.</desc>
+    
+    <notes-rule lang="nl" default="Omschrijving">
+        <section title="Omschrijving" tagged-value="CFG-TV-DESCRIPTION">
+            <!-- no labels -->
+        </section>
+    </notes-rule>
+    
+</notes-rules>

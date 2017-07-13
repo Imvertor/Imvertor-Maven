@@ -29,6 +29,7 @@ call "%javaexe%" %jvmparms% ^
     -Dinput.dir="%inpdir%" ^
     -Dwork.dir="%workdir%" ^
     -Downer.name=%owner% ^
+    -Dgitloc.dir=%imvertor_os_gitloc% ^
     -classpath "%bindir%\bin\%jar%_lib" ^
     -jar "%bindir%\bin\%jar%.jar" ^
     -rebuildref yes ^

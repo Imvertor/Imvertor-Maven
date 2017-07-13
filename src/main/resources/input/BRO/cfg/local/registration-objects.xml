@@ -8,7 +8,17 @@
         Aangeleverd door Alterra. 
         Deze info is vastgesteld door TNO. 
     </desc>
-
+    <domein>
+        <name lang="nl">Voorbeeld domein</name>
+        <name lang="en">Sample domein</name>
+        <abbrev>S</abbrev>
+        <registratieobject>
+            <name lang="nl">Voorbeeld object</name>
+            <name lang="en">Sample object</name>
+            <abbrev>SAMPLE</abbrev>
+        </registratieobject>
+    </domein>
+    
     <domein>
         <name lang="nl">Bodem- en grondonderzoek</name>
         <name lang="en">Subsurface Research</name>

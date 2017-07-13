@@ -45,6 +45,7 @@ call "%javaexe%" %jvmparms% ^
     -Downer.name="%owner%" ^
     -Dwork.dir="%workdir%\%jobid%" ^
     -Dea.enabled=%imvertor_os_eaenabled% ^
+    -Dgitloc.dir=%imvertor_os_gitloc% ^
     -classpath "%bindir%\bin\ChainTranslateAndReport_lib" ^
     -jar "%bindir%\bin\%jar%.jar" ^
 	-arguments "%propfilepath%" ^

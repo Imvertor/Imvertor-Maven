@@ -42,9 +42,9 @@ if not exist %local-repos%                  "%git%" clone %remote-repos% %local-
 echo 2
 cd %local-repos%
 echo 3
-if exist %local-repos%\*.*                  "%git%" pull %branch%
-echo 4
-if not exist %local-repos%\*.*              "%git%" checkout -b %branch%
+								            "%git%" checkout -b %branch%
+                                            "%git%" pull %branch%
+rem echo 4
 echo 5
 "%git%" reset --hard origin/%branch%
 echo 6

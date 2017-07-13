@@ -1190,29 +1190,41 @@ public class Configurator {
 		return eaEnabled;
 	}
 	/**
-	 * Merge parameters into a string, parameters taken from appinfo section of the parms.xml.
+	 * Merge parameters into a string, parameters taken by default from appinfo section of the parms.xml; otherwise use [group/name] syntax.
 	 * 
 	 * @param template
 	 * @return
 	 */
 	public String mergeParms(String template) {
 		String[] parts = StringUtils.splitPreserveAllTokens(template,"[]");
-		String releasename = "";
+		String result = "";
 		for (int i = 0; i < parts.length; i++) {
 			if (i % 2 == 0) { // even locations are strings
-				releasename += parts[i];
+				result += parts[i];
 			} else 
-				if (!parts[i].equals("")) { // uneven are names
+				if (!parts[i].equals("")) { // uneven are (group and) name
 					try {
+						String[] subs = StringUtils.splitPreserveAllTokens(parts[i],"/");
+						String group = null;
+						String name = null;
+						if (subs.length == 1) {
+							group = "appinfo";
+							name = subs[0];
+						} else if (subs.length == 2) {
+							group = subs[0];
+							name = subs[1];
+						} else {
+							runner.fatal(logger, "Invalid reference to property: [" + parts[i] + "]", null, "IRTP1");
+						}
 						// this is a name, extract from declared application parameters
-						String val = getParm("appinfo", parts[i],false);
+						String val = getParm(group, name,false);
 						if (val == null) val = "[" + parts[i] + "]";
-						releasename += val;
+						result += val;
 					} catch (Exception e) {
-						releasename += parts[i];
+						result += parts[i];
 					}
 			}
 		}
-		return StringUtils.replacePattern(releasename, "[^A-Za-z0-9_\\-.]", "");
+		return result;
 	}
 }
