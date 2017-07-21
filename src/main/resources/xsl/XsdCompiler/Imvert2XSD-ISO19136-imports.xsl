@@ -113,7 +113,6 @@
                         <namespace prefix="xs" uri="http://www.w3.org/2001/XMLSchema"/> 
                     </xsl:when>
                     <xsl:when test="$prefix = 'xlink'">
-                        <!-- this is referenced within referencing packages -->
                         <xsl:choose>
                             <xsl:when test="imf:boolean($external-schemas-reference-by-url)">
                                 <xs:import namespace="http://www.w3.org/1999/xlink"
@@ -127,7 +126,7 @@
                         <namespace prefix="xlink" uri="http://www.w3.org/1999/xlink"/> 
                     </xsl:when>
                     <xsl:when test="$prefix = 'gml'">
-                        <!-- this is referenced within referencing packages -->
+                        <!--
                         <xsl:choose>
                             <xsl:when test="imf:boolean($external-schemas-reference-by-url)">
                                 <xs:import namespace="http://www.opengis.net/gml/3.2"
@@ -139,10 +138,11 @@
                             </xsl:otherwise>
                         </xsl:choose>
                         <namespace prefix="gml" uri="http://www.opengis.net/gml/3.2"/> 
+                        -->
                     </xsl:when>
                     
                     <xsl:otherwise>
-                        <xsl:sequence select="imf:msg('ERROR', 'The qualifier [1] cannot be mapped onto a application or external schema',$prefix)"/>
+                        <xsl:sequence select="imf:msg('ERROR', 'The qualifier [1] cannot be mapped onto an application or external schema',$prefix)"/>
                     </xsl:otherwise>
                 </xsl:choose>
                 

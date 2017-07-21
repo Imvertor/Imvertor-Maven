@@ -173,7 +173,7 @@
     </doc-rule>
     <doc-rule id="CFG-DOC-POPULATIE">
         <name lang="nl">Populatie</name>
-        <name lang="en">Pupulation</name>
+        <name lang="en">Population</name>
         <levels>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
             

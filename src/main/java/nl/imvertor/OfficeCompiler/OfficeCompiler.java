@@ -155,8 +155,28 @@ public class OfficeCompiler extends Step {
 							">" + gitlog
 					},15000,false); // 15 seconds timeout
 				    
-					 // the SHA s the last line of the log.
-					configurator.setParm("appinfo", "office-git-sha", gitlogFile.getLastLine());
+					// now read the log. Check for [ERR];code. If not 0, assume error, and notify
+					String line = "";
+					String err = ""; // when [ERR] found, read next line integer code.
+					String stp = ""; // when [STP] found, read next line step name.
+					String sha = ""; // when [SHa] found, read next line Git SHA.
+					while (line != null) {
+						line = gitlogFile.getNextLine();
+						if (line == null) 
+							break;
+						else if (line.equals("[ERR]"))
+							err = line = gitlogFile.getNextLine();
+						else if (line.equals("[STP]"))
+							stp = line = gitlogFile.getNextLine();
+						else if (line.equals("[SHA]"))
+							sha = line = gitlogFile.getNextLine();
+					}
+					if (!err.equals("") && Integer.parseInt(err) != 0)
+						runner.error(logger, "Cannot align the data with upstream: step \"" + stp + "\" returns \"" + err + "\"");
+					
+					configurator.setParm("appinfo", "office-git-stp", stp);
+					configurator.setParm("appinfo", "office-git-err", err);
+					configurator.setParm("appinfo", "office-git-sha", sha);
 				}
 			}
 		} else {

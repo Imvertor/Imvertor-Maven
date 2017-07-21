@@ -47,18 +47,31 @@
     </conceptual-schema>
     
     <conceptual-schema>
-        <name>GML3</name>
-        
-        <short-name>GML3</short-name>
-        
+        <!--
+            name for documentation purposes
+        -->
+        <name>Geography Markup Language 3</name>
+        <!-- 
+            The prefix as used in the schemas (also namespace prefix in qualified name)
+        -->
+        <short-name>gml</short-name>
+        <!-- 
+            Description for documentation purposes
+        -->
         <description>ISO19107 Geographic information – Spatial schema</description>
         <!-- 
             This URL is the formal name fo the schema witin the EA project. 
             Insert it as the alias of the <<external>> package. 
         -->
         <url>http://www.bro.nl/conceptual-schemas/ISO19107</url>
+        <!-- 
+            base catalog template, where the [name] is replaced by the catalog name provides for each construct
+        -->
+        <catalog>http://www.opengeospatial.org/standards/gml[name]</catalog>        
+        
+        <?x
         <map 
-            name="GML321" 
+            name="GML321(vervallen)" 
             namespace="http://www.opengis.net/gml/3.2" 
             version="3.2.1" 
             phase="3" 
@@ -354,12 +367,60 @@
                 <managed-ids/>
             </construct>
         </map>
+        
+        x?>
+        
+        <map 
+            name="GML321" 
+            namespace="http://www.opengis.net/gml/3.2" 
+            version="0.0.2-3.2.1" 
+            phase="3" 
+            location="http://www.broservices.nl/profile/gml/1.0/gml-profile.xsd"> 
+            
+            <releases>
+                <release>BROPROFILE</release>
+            </releases>
+           
+            <!-- 
+               GML 3.2.1 profile for BRO.
+               Based on: gml:AbstractFeature, gml:ReferenceType, gml:PointPropertyType, gml:EnvelopeType, gml:MeasureType, gml:TimeInstantPropertyType, (gml:CodeWithAuthorityType)
+            -->
+            <construct>
+                <!-- this is the name of the construct in the UML model -->
+                <name>GM_AbstractFeature</name>
+                <!-- catalog reference -->
+                <catalog>#AbstractFeature</catalog>
+                <!-- this is a mapping to the XSD constructs within the schema -->
+                <xsd-type name="AbstractFeature" asAttributeDesignation="complextype" asAttribute="AbstractFeatureType"/>
+                <!-- this is a list of possible ID's, that can be used when conflicts occur (several constructs with same Name) -->
+                <managed-ids/>
+            </construct>
+            
+            <construct>
+                <name>GM_LineString</name>
+                <catalog>#LineString</catalog>
+                <xsd-type name="LineString" asAttributeDesignation="complextype" asAttribute="LineStringType"/>
+                <managed-ids/>
+            </construct>
+            
+            <construct>
+                <name>GM_Point</name>
+                <catalog>#Point</catalog>
+                <xsd-type name="Point" asAttributeDesignation="complextype" asAttribute="PointPropertyType"/>
+                <managed-ids/>
+            </construct>
+            
+        </map>
+        
     </conceptual-schema>
     
     <conceptual-schema>
+        
         <name>Citation and responsible party information</name>
+        <short-name>cit</short-name>
         <description>ISO TC211 / ISO 19115:2006 Metadata (Corrigendum) - Citation and responsible party information</description>
         <url>http://www.bro.nl/conceptual-schemas/iso/19115/metadata/cit</url>
+        
         <map 
             name="ISO19115" 
             namespace="http://standards.iso.org/iso/19115/-3/cit/1.0" 
@@ -384,9 +445,12 @@
     </conceptual-schema>
     
     <conceptual-schema>
+        
         <name>Extent information</name>
+        <short-name>gex</short-name>
         <description>ISO TC211 / ISO 19115:2006 Metadata (Corrigendum) - Extent information</description>
         <url>http://www.bro.nl/conceptual-schemas/iso/19115/metadata/gex</url>
+        
         <map 
             name="ISO19115" 
             namespace="http://standards.iso.org/iso/19115/-3/gex/1.0" 

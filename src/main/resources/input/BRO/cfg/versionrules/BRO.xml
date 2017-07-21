@@ -32,10 +32,10 @@
     
     <phase-rule>
         <phase id="CFG-PHASE-INIT">
-            <name lang="nl">Initieel</name>
-            <name lang="en">Initial</name>
+            <name lang="nl">Werkversie</name>
+            <name lang="en">Work version</name>
             <level>0</level>
-            <desc lang="nl">Initiële versies zijn in ontwikkeling en worden niet intern verspreid.</desc>
+            <desc lang="nl">Werkversies zijn in ontwikkeling en worden niet intern verspreid.</desc>
             <!-- 
                 kan optreden als supplier voor ieder level kleiner of gelijk aan 0
             -->
@@ -47,10 +47,10 @@
             <props/>
         </phase>
         <phase id="CFG-PHASE-DRAFT">
-            <name lang="nl">Klad</name>
-            <name lang="en">Draft</name>
+            <name lang="nl">Consultatieversie</name>
+            <name lang="en">Consultation version</name>
             <level>1</level>
-            <desc lang="nl">Klad versies zijn in ontwikkeling en kunnen intern worden verspreid.</desc>
+            <desc lang="nl">Consultatieversies zijn in ontwikkeling en kunnen intern worden verspreid.</desc>
             <!-- 
                 kan optreden als supplier voor ieder level kleiner of gelijk aan 1
             -->
@@ -62,10 +62,10 @@
             <props/>
         </phase>
         <phase id="CFG-PHASE-FINALDRAFT">
-            <name lang="nl">Voorstel</name>
-            <name lang="en">Final draft</name>
+            <name lang="nl">Ter vaststelling</name>
+            <name lang="en">For acceptance</name>
             <level>2</level>
-            <desc lang="nl">Voorstel versies zijn in ontwikkeling en kunnen extern worden verspreid, ter consultatie.</desc>
+            <desc lang="nl">Versies ter vaststelling zijn in ontwikkeling en kunnen extern worden verspreid, met het doel deze te laten vaststellen.</desc>
             <!-- 
                 kan optreden als supplier voor ieder level kleiner of gelijk aan 2
             -->

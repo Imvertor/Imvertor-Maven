@@ -207,6 +207,7 @@
     </item>
     <item>
         <key>COMPLEXTYPE</key>
+        <key>STRUCTUREDDATATYPE</key>
         <trans lang="nl">Gestruktureerd datatype</trans>
         <trans lang="en">Structured datatype</trans>
     </item>

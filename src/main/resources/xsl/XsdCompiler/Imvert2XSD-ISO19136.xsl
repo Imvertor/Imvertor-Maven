@@ -297,13 +297,13 @@
         <xs:element name="{$type-name}" type="{imf:get-type($type-name,$package-name)}{$Type-suffix}" abstract="{$abstract}">
             <xsl:choose>
                 <xsl:when test="not($supertype-name) and $is-objecttype">
-                    <xsl:attribute name="substitutionGroup" select="'GML3:AbstractFeature'"/>
+                    <xsl:attribute name="substitutionGroup" select="'gml:AbstractFeature'"/>
                 </xsl:when>
                 <xsl:when test="not($supertype-name) and $is-grouptype">
-                    <!--<xsl:attribute name="substitutionGroup" select="'GML3:AbstractFeature'"/>-->
+                    <!--<xsl:attribute name="substitutionGroup" select="'gml:AbstractFeature'"/>-->
                 </xsl:when>
                 <xsl:when test="not($supertype-name)">
-                    <!--<xsl:attribute name="substitutionGroup" select="'GML3:AbstractObject'"/>-->
+                    <!--<xsl:attribute name="substitutionGroup" select="'gml:AbstractObject'"/>-->
                 </xsl:when>
                 <xsl:when test="$supertype-substitutiongroup = $name-none">
                     <!-- nothing: explicit skip of this link to the subsitution group -->
@@ -418,7 +418,7 @@
                                 <xsl:value-of  select="concat(imf:get-type($supertype-name,$supertype-package-name),$Type-suffix)"/> 
                             </xsl:when>
                             <xsl:when test="$is-objecttype">
-                                <xsl:value-of  select="'GML3:AbstractFeatureType'"/> 
+                                <xsl:value-of  select="'gml:AbstractFeatureType'"/> 
                             </xsl:when>
                             <xsl:otherwise>
                                 <!-- none -->
@@ -456,8 +456,8 @@
                             <xsl:choose>
                                 <xsl:when test="$is-objecttype">
                                     <!-- if featureType, add this -->
-                                    <xs:attributeGroup ref="GML3:AssociationAttributeGroup"/>
-                                    <xs:attributeGroup ref="GML3:OwnershipAttributeGroup"/>
+                                    <xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+                                    <xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <!-- all other cases, skip -->
@@ -833,7 +833,7 @@
                 </xsl:variable>
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
-                    <xsl:attribute name="type" select="'GML3:ReferenceType'"/>
+                    <xsl:attribute name="type" select="'gml:ReferenceType'"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:sequence select="imf:create-comment($this,'A codelist type')"/>
@@ -983,13 +983,13 @@
                         <xsl:sequence select="imf:create-comment($this,'A member of a union')"/>
                         <xsl:sequence select="imf:get-annotation($this)"/>
                         <xs:complexContent>
-                            <xs:extension base="GML3:AbstractMemberType">
+                            <xs:extension base="gml:AbstractMemberType">
                                 <xs:sequence>
                                     <xs:element>
                                         <xsl:attribute name="ref" select="$type"/>
                                     </xs:element>
                                 </xs:sequence>
-                                <xs:attributeGroup ref="GML3:AssociationAttributeGroup"/>
+                                <xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
                             </xs:extension>
                         </xs:complexContent>
                     </xs:complexType>

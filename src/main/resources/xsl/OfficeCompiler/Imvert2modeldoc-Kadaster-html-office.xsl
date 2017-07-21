@@ -16,6 +16,7 @@
     <!-- 
         create a standard office oriented HTML representation of the section structure 
     -->
+    <xsl:variable name="subpath" select="imf:get-subpath(imf:project,imf:application,imf:release)"/>
     
     <xsl:template match="/book">
         <html>
@@ -67,6 +68,10 @@
                     a.link:hover {
                     color: blue;
                     text-decoration: underline;
+                    }
+                    span.supplier {
+                        display: block;
+                        color: gray;
                     }
                 </style>
             </head>
@@ -290,9 +295,21 @@
         </tr>
     </xsl:template>
     
-    <!--<xsl:template match="item/item" mode="detail">
-        <xsl:apply-templates mode="#current"/>
-    </xsl:template>-->
+    <!-- when type is traced, show the subpaths of all supplier infos -->
+    <xsl:template match="item[@type='TRACED']" mode="detail">
+        <xsl:choose>
+            <xsl:when test=". ne $subpath">
+                <span class="supplier">
+                    <xsl:value-of select="item[1]"/> <!-- type is SUPPLIER -->
+                </span>
+            </xsl:when>
+            <xsl:otherwise>
+               <!-- this is the client info, do not show that subpath. -->         
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:apply-templates select="item[2]" mode="#current"/>
+        
+    </xsl:template>
     
     <xsl:template match="item" mode="#all">
         <xsl:choose>

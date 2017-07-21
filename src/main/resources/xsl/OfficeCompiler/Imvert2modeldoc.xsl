@@ -328,9 +328,13 @@
                 <!--
                 Voorbeeld: ZAAKTYPE [1..*] heeft relevant BESLUITTYPE [0..*]
                 -->
+                <xsl:variable name="relation" select="imvert:name"/>
+                <xsl:variable name="target" select="imvert:role-target"/>
+                <xsl:variable name="relation-original-name" select="if (exists($relation) and exists($target)) then concat($relation/@original,': ',$target/@original) else ($relation/@original,$target/@original)"/>
+                
               <xsl:sequence select="imf:create-element('item',string(../../imvert:name/@original))"/>
               <xsl:sequence select="imf:create-element('item',('[',imf:get-cardinality(imvert:min-occurs-source,imvert:max-occurs-source),']'))"/>
-              <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',imvert:name/@original))"/>
+              <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',$relation-original-name))"/>
               <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imvert:type-name/@original))"/>
               <xsl:sequence select="imf:create-element('item',('[',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs),']'))"/>
             </item>
@@ -633,14 +637,26 @@
         
         <xsl:for-each select="$configuration-docrules-file/doc-rule/levels/level[. = $level]">
            
-           <xsl:variable name="doc-rule-id" select="../../@id"/>
+            <xsl:variable name="relation" select="$this/imvert:name"/>
+            <xsl:variable name="target" select="$this/imvert:role-target"/>
+            <xsl:variable name="relation-name" select="if (exists($relation) and exists($target)) then concat($relation,': ',$target) else ($relation,$target)"/>
+            <xsl:variable name="relation-original-name" select="if (exists($relation) and exists($target)) then concat($relation/@original,': ',$target/@original) else ($relation/@original,$target/@original)"/>
+           
+            <xsl:variable name="doc-rule-id" select="../../@id"/>
+           
             <xsl:choose>
+                <!-- 
+                    create and entry "name", "target role name" or "name: target role name" 
+                -->
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-NORMNAAM'">
-                    <xsl:sequence select="imf:create-part-2(.,$this/imvert:name)"/>
+                    <xsl:sequence select="imf:create-part-2(.,$relation-name)"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-NAAM'">
-                    <xsl:sequence select="imf:create-part-2(.,$this/imvert:name/@original)"/>
+                    <xsl:sequence select="imf:create-part-2(.,$relation-original-name)"/>
                 </xsl:when>
+                <!-- 
+                    remainder is specified on target or relation, as may be the case 
+                -->
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-ALTERNATIEVENAAM'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-NAME'))"/>
                 </xsl:when>

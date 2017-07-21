@@ -594,11 +594,11 @@
         <xsl:copy>
             <xsl:for-each select="$blocks">
                 <xsl:variable name="message-row" select="imf:get-row-for-block(.)"/>
-                <xsl:for-each select="cp:prop[@type='spec']">     
+                <xsl:for-each select="cp:prop[@type=('header','spec')]">     
+                    <xsl:variable name="construct-col" select="if (@type='header') then 'A' else 'B'"/>
                     <xsl:variable name="construct-row" select="$message-row + count(preceding-sibling::cp:prop)"/>
                     <xsl:variable name="comment-lines" as="element(r)*">
-                        <xsl:sequence select="imf:create-data-comment('Naam',cp:name)"/>    
-                        <xsl:sequence select="imf:create-data-comment('Is ID',cp:xxx)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Is ID',cp:xxx)"/>    <!-- TODO -->
                         <xsl:sequence select="imf:create-data-comment('Type',cp:type)"/>    
                         <xsl:sequence select="imf:create-data-comment('Min lengte',cp:minlength)"/>    
                         <xsl:sequence select="imf:create-data-comment('Max lengte',cp:maxlength)"/>    
@@ -611,9 +611,11 @@
                         <xsl:sequence select="imf:create-data-comment('Min waarde',cp:mininclusive)"/>    
                         <xsl:sequence select="imf:create-data-comment('Max waarde',cp:maxinclusive)"/>    
                         <xsl:sequence select="imf:create-data-comment('Documentatie',cp:documentation)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Tip',cp:tip)"/>   
                     </xsl:variable>
                     <xsl:if test="exists($comment-lines)">
-                        <comment ref="B{$construct-row}" authorId="0" > <!-- TODO ? shapeId="comment_{$sheet-number}_{$message-row}" -->
+                   <!--x     <xsl:message select="string-join((string($construct-col), string($construct-row), $comment-lines[last()]),':')"></xsl:message>   x-->
+                        <comment ref="{$construct-col}{$construct-row}" authorId="0" > <!-- TODO ? shapeId="comment_{$sheet-number}_{$message-row}" -->
                             <text>
                                 <xsl:sequence select="$comment-lines"/>
                             </text>
@@ -687,34 +689,6 @@
             <xsl:for-each select="$namespaces">
                 <xsl:variable name="message-row" select="position() + 1"/>
                 <row r="{$message-row}" spans="1:2">
-                    <c r="A{$message-row}" s="1" t="inlineStr">
-                        <is>
-                            <t>
-                                <xsl:value-of select="@prefix"/>
-                            </t>
-                        </is>
-                    </c>
-                    <c r="B{$message-row}" s="1" t="inlineStr">
-                        <is>
-                            <t>
-                                <xsl:value-of select="."/>
-                            </t>
-                        </is>
-                    </c>
-                </row>
-            </xsl:for-each>
-        </xsl:copy>
-    </xsl:template>
-    
-    <!-- sheet data must be added based on namespace declarations -->
-    <xsl:template match="sheetData" mode="process-metadata">
-        <xsl:copy>
-            <!-- skip first row -->
-            <xsl:apply-templates select="row[1]"/>
-            
-            <xsl:for-each select="$namespaces">
-                <xsl:variable name="message-row" select="position() + 1"/>
-                <row r="{$message-row}" spans="1:2">
                     <c r="A{$message-row}" s="0" t="inlineStr">
                         <is>
                             <t>
@@ -731,17 +705,38 @@
                     </c>
                 </row>
             </xsl:for-each>
-            <!--xx toon kleurtjes:
+        </xsl:copy>
+    </xsl:template>
+    
+    <!-- add all info required for processing the XML here -->
+    <xsl:template match="sheetData" mode="process-metadata">
+        <xsl:copy>
+            <!-- skip first row -->
+            <xsl:apply-templates select="row[1]"/>
+            
+            <row r="2" spans="1:2">
+                <c r="A2" s="0" t="inlineStr">
+                    <is>
+                        <t>TEST label</t>
+                    </is>
+                </c>
+                <c r="B2" s="0" t="inlineStr">
+                    <is>
+                        <t>TEST waarde</t>
+                    </is>
+                </c>
+            </row>
+            
             <xsl:for-each select="0 to 10">
-                <row r="{. + 6}" spans="1:1">
-                    <c r="A{. + 6}" s="{.}" t="inlineStr">
+                <row r="{. + 6}" spans="2:2">
+                    <c r="B{. + 6}" s="{.}" t="inlineStr">
                         <is>
-                            <t>TESTJE</t>
+                            <t>TESTJE @s = <xsl:value-of select="."/></t>
                         </is>
                     </c>
                 </row>
             </xsl:for-each>
-            xx-->
+           
         </xsl:copy>
     </xsl:template>
     
@@ -758,7 +753,8 @@
             <!-- process all messages and top constructs -->
             <xsl:for-each select="$blocks">
                 <xsl:variable name="message-row" select="imf:get-row-for-block(.)"/>
-                <xsl:variable name="message-name" select="cp:prop[@type='header']"/>
+                <xsl:variable name="message-name" select="cp:prop[@type='header']/cp:name"/>
+                <xsl:variable name="message-tip" select="cp:prop[@type='header']/cp:tip"/>
                 <xsl:variable name="col-letters" select="tokenize('B C D E F G H I J K','\s')"/>
                 
                 <!-- create header -->

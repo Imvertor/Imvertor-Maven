@@ -73,11 +73,11 @@
             </cp:sheet>
             <cp:sheet>
                 <!-- de namespace declaraties -->
-                <xsl:for-each select="ep:message-set/ep:namespaces/ep:namespace">
-                    <cp:ns prefix="{@prefix}">
-                        <xsl:value-of select="."/>
+                <xsl:for-each-group select="ep:message-set/ep:namespaces/ep:namespace" group-by="@prefix">
+                    <cp:ns prefix="{current-group()[1]/@prefix}">
+                        <xsl:value-of select="current-group()[1]"/>
                     </cp:ns>
-                </xsl:for-each>
+                </xsl:for-each-group>
             </cp:sheet>
         </cp:sheets>
     </xsl:template>
@@ -85,7 +85,7 @@
     <xsl:template match="ep:message" mode="prepare-flat-block"> <!-- for sheet 1 -->
         <cp:block sheet="1">
             <cp:prop type="header">
-                <xsl:value-of select="imf:get-qualified-name(.)"/>
+                <xsl:sequence select="imf:create-element('cp:name',imf:get-qualified-name(.))"/>
             </cp:prop>
             <xsl:apply-templates select="(ep:seq|ep:choice)" mode="prepare-flat"/>
             <cp:prop type="empty"/>
@@ -93,10 +93,12 @@
     </xsl:template>
     
     <xsl:template match="ep:construct" mode="prepare-flat-block"> <!-- for sheet 2 -->
+       
         <cp:block sheet="2">
             <xsl:sequence select="imf:create-element('cp:id',imf:get-id(.))"/>
             <cp:prop type="header">
-                <xsl:value-of select="imf:get-qualified-name(.)"/>
+                <xsl:sequence select="imf:create-element('cp:name',concat(imf:get-qualified-name(.), if (ep:tip-1) then ' (ETC)' else ''))"/>
+                <xsl:sequence select="imf:create-element('cp:tip',concat('Let op! Meerdere referenties met verschillende namen naar dit element: ', ep:tip-1))"/>
             </cp:prop>
             <xsl:apply-templates select="(ep:seq|ep:choice)" mode="prepare-flat"/>
             <cp:prop type="empty"/>
@@ -125,25 +127,13 @@
         <xsl:variable name="digit-before" select="ep:length - 1 - ep:fraction-digits"/>
         <xsl:variable name="digit-after" select="ep:fraction-digits"/>
         <xsl:variable name="digit-pattern" select="concat('[+\-]?\d{', $digit-before, '},\d{', $digit-after, '}')"/> 
-     
+        <xsl:variable name="type-name" select="ep:type-name"/>
+
         <xsl:variable name="reference-id" as="xs:string?">
-            <xsl:variable name="message-set" select="/ep:message-sets/ep:message-set[@prefix = current()/@prefix]" as="element(ep:message-set)*"/>
-            <xsl:choose>
-                <xsl:when test="empty(@prefix)">
-                    <!-- skip; when no prefix, this is a scalar type -->
-                </xsl:when>
-                <xsl:when test="self::ep:constructRef">
-                    <xsl:variable name="expected-name" select="tokenize(ep:href,':')[last()]"/>
-                    <xsl:variable name="construct" select="$message-set//ep:construct[ep:tech-name = $expected-name]"/> <!-- assume this is ALWAYS available -->
-                    <xsl:value-of select="if (exists($construct)) then imf:get-id($construct) else ()"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:variable name="expected-name" select="ep:type-name"/>
-                    <xsl:variable name="construct" select="$message-set//ep:construct[ep:tech-name = $expected-name]"/> <!-- assume this MAY BE available -->
-                    <xsl:value-of select="if (exists($construct)) then imf:get-id($construct) else ()"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
+            <xsl:variable name="construct" select="root(.)//ep:construct[(ep:tech-name, ep:name) = current()/ep:href]"/>
+            <xsl:if test="exists($construct)">
+                <xsl:value-of select="imf:get-id($construct)"/>
+            </xsl:if>        </xsl:variable>
         
         <cp:prop type="spec" group="{$group-type}">
             <xsl:if test="$reference-id">
@@ -171,7 +161,7 @@
             <xsl:sequence select="imf:create-element('cp:kerngegeven',if (.//ep:kerngegeven = 'Ja') then 'Ja' else ())"/>
             <xsl:sequence select="imf:create-element('cp:voidable',.//ep:mogelijk-geen-waarde)"/>
             <xsl:sequence select="imf:create-element('cp:authentiek',.//ep:authentiek)"/>
-            
+           
         </cp:prop>
       
         <!-- subconstructs may occur, always in sequence and attributes -->
@@ -228,10 +218,13 @@
   
     <xsl:function name="imf:get-qualified-name">
         <xsl:param name="this"/>
-        <xsl:variable name="my-prefix" select="$this/@prefix"/>
+        <xsl:value-of select="$this/ep:name"/>
+        <!--x
+            <xsl:variable name="my-prefix" select="$this/@prefix"/>
         <xsl:variable name="is-attribute" select="$this/@ismetadata = 'yes'"/>
         <xsl:variable name="prefix" select="if (exists($my-prefix)) then $my-prefix else if ($is-attribute) then '' else ($this/ancestor-or-self::*/@prefix)[1]"/>
         <xsl:value-of select="concat(if ($prefix != '') then concat($prefix,':') else '',$this/ep:tech-name)"/>
+        x-->
     </xsl:function>
     
 </xsl:stylesheet>
