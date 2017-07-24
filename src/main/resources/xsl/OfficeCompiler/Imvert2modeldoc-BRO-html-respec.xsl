@@ -56,7 +56,7 @@
                     <h5>
                         <xsl:value-of select="imf:translate-i3n('EXPLANATION',$language-model,())"/>
                     </h5>
-                    <xsl:apply-templates select="content/part/item" mode="#current"/>
+                    <xsl:apply-templates select="content[not(@approach='association')]/part/item" mode="#current"/>
                 </section>
             </xsl:when>
             <xsl:when test="@type = 'SHORT-ATTRIBUTES'">
@@ -73,7 +73,7 @@
             </xsl:when>
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ATTRIBUTE'">
                 <xsl:variable name="level" select="count(ancestor::section) + 1"/>
-                <xsl:variable name="composer" select="content/part[@type = 'COMPOSER']/item[1]"/>
+                <xsl:variable name="composer" select="content[not(@approach='association')]/part[@type = 'COMPOSER']/item[1]"/>
                 <section id="{$id}" class="notoc">
                     <xsl:element name="{concat('h',$level)}">
                         <xsl:value-of select="imf:translate-i3n('ATTRIBUTE',$language-model,())"/>
@@ -88,7 +88,7 @@
             </xsl:when>
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ASSOCIATION'">
                 <xsl:variable name="level" select="count(ancestor::section)"/>
-                <xsl:variable name="composer" select="content/part[@type = 'COMPOSER']/item[1]"/>
+                <xsl:variable name="composer" select="content[not(@approach='association')]/part[@type = 'COMPOSER']/item[1]"/>
                 <section id="{$id}" class="notoc">
                     <xsl:element name="{concat('h',$level)}">
                         <xsl:value-of select="imf:translate-i3n('ASSOCIATION',$language-model,())"/>
@@ -154,6 +154,10 @@
             
         </xsl:choose>
        
+    </xsl:template>
+ 
+    <xsl:template match="content[@approach='association']" mode="detail">
+        <!-- skip -->
     </xsl:template>
     
     <xsl:template match="content" mode="detail">

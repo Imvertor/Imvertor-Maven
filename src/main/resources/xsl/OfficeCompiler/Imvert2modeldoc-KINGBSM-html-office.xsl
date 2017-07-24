@@ -105,7 +105,7 @@
                         <tr>
                             <td width="5%">&#160;</td>
                             <td width="95%">
-                                <xsl:apply-templates select="content/part/item" mode="#current"/>
+                                <xsl:apply-templates select="content[not(@approach='target')]/part/item" mode="#current"/>
                             </td>
                         </tr>
                     </tbody>
@@ -121,7 +121,7 @@
             </xsl:when>
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ATTRIBUTE'">
                 <xsl:variable name="level" select="count(ancestor::section)"/>
-                <xsl:variable name="composer" select="content/part[@type = 'COMPOSER']/item[1]"/>
+                <xsl:variable name="composer" select="content[not(@approach='target')]/part[@type = 'COMPOSER']/item[1]"/>
                 <div>
                     <a class="anchor" name="global-{@id}"/>
                     <xsl:element name="{concat('h',$level)}">
@@ -138,7 +138,7 @@
             </xsl:when>
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ASSOCIATION'">
                 <xsl:variable name="level" select="count(ancestor::section)"/>
-                <xsl:variable name="composer" select="content/part[@type = 'COMPOSER']/item[1]"/>
+                <xsl:variable name="composer" select="content[not(@approach='target')]/part[@type = 'COMPOSER']/item[1]"/>
                 <div>
                     <a class="anchor" name="global-{@id}"/>
                     <xsl:element name="{concat('h',$level)}">
@@ -167,6 +167,10 @@
             </xsl:otherwise>
         </xsl:choose>
        
+    </xsl:template>
+
+    <xsl:template match="content[@approach='target']" mode="detail">
+        <!-- skip -->
     </xsl:template>
     
     <xsl:template match="content" mode="detail">

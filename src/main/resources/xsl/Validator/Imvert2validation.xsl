@@ -849,7 +849,7 @@
         <xsl:variable name="defining-class" select="imf:get-construct-by-id(imvert:type-id)"/>
         <xsl:variable name="defining-classes" select="($defining-class, imf:get-superclasses($defining-class))"/>
         <xsl:variable name="is-combined-identification" select="imf:get-tagged-value($this,'##CFG-TV=GECOMBINEERDEIDENTIFICATIE')"/>
-        <xsl:variable name="target-navigable" select="imvert:target-navigable"/>
+        <xsl:variable name="target-navigable" select="imvert:target/imvert:navigable"/>
         <!--validation-->
         
         <xsl:sequence select="imf:report-error(., 
@@ -907,7 +907,7 @@
         -->
 
         <xsl:sequence select="imf:report-warning(., 
-            not($defining-class/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-composite')) and imf:boolean(imvert:source-navigable), 
+            not($defining-class/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-composite')) and imf:boolean(imvert:source/imvert:navigable), 
             'Source of any relation should not be navigable')"/>
         
         <xsl:sequence select="imf:report-error(., 

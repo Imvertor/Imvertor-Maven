@@ -609,7 +609,7 @@
         <xsl:variable name="package-name" select="$this/ancestor::imvert:package[last()]/imvert:name"/>
         
         <xsl:variable name="name" select="$this/imvert:name"/>
-        <xsl:variable name="target-role-name" select="$this/imvert:role-target"/>
+        <xsl:variable name="target-role-name" select="$this/imvert:target/imvert:role"/>
         <xsl:variable name="found-type" select="imf:get-type($this/imvert:type-name,$this/imvert:type-package)"/>
       
         <xsl:variable name="is-any" select="$found-type = '#any'"/>

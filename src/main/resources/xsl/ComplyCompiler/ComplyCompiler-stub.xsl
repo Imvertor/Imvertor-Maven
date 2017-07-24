@@ -33,6 +33,12 @@
             </ep:message-sets>
         </xsl:variable>
       
+        <!--x
+        <xsl:result-document href="file:/c:/temp/test.xml">
+            <xsl:sequence select="$doc1"></xsl:sequence>
+        </xsl:result-document>
+        x-->
+        
         <!-- 
             stap 2: maak de EP aan als instantie georienteerde specificatie, ipv. schema georienteerd
         -->
@@ -83,7 +89,9 @@
         zet een top-niveau type om naar een element definitie, met de naam van het element wat naar dit type verwijst. 
     -->
     <xsl:template match="ep:message-set/ep:construct"> <!-- bijv. verstrekFiets -->
-        <xsl:variable name="is-complex-type" select="imf:is-complex-type(.)"/>
+        
+        <xsl:variable name="is-complex-type" select="imf:is-complex-type(.)"/> <!-- note that no e-type is a complex types -->
+        
         <xsl:choose>
             <xsl:when test="$is-complex-type">
                 <xsl:comment select="concat('@1 Transformed global complex element type: ', ep:tech-name)"/>
@@ -126,6 +134,8 @@
     -->
     <xsl:template match="ep:seq/ep:construct | ep:choice/ep:construct"> <!-- bijv. verstrekFiets -->
         <xsl:variable name="is-typed" select="exists(ep:type-name)"/>
+        <xsl:variable name="is-e-typed" select="ends-with(ep:type-name,'-e')"/>
+        
         <xsl:variable name="is-datatype" select="root(.)//ep:construct[(ep:tech-name = current()/ep:data-type) and @isdatatype='yes']"/>
         
         <xsl:variable name="type" select="root(.)//ep:construct[ep:tech-name = current()/ep:type-name]"/>
@@ -140,17 +150,32 @@
                 <ep:construct>
                     <xsl:copy-of select="@*"/>
                     <xsl:apply-templates/>
-                    <xsl:if test="$attributes">
-                        <ep:seq>
-                            <xsl:apply-templates select="$attributes"/>
-                        </ep:seq>
-                    </xsl:if>
-                    <!-- if referencing a complex type, place the reference -->
-                    <xsl:if test="$is-complex-type">
-                        <ep:href origin="stub">
-                            <xsl:value-of select="ep:type-name"/>
-                        </ep:href>
-                    </xsl:if>
+                    <xsl:choose>
+                        <xsl:when test="$is-e-typed">
+                            <xsl:comment select="concat('This is an -e type: ',ep:tech-name)"/>
+                            <!-- haal alle eigenschappen van het uiteindelijk datatype op. -->
+                            <xsl:variable name="e-type" select="root(.)//ep:construct[ep:tech-name = current()/ep:type-name]"/>
+                            <xsl:variable name="data-type" select="root(.)//ep:construct[ep:tech-name = $e-type/ep:type-name]"/>
+                            <!-- plaats de attributen van het e-type (ééntje, namelijk @bg:noValue) -->
+                            <xsl:comment select="concat('insert the -e type attributes: ', $e-type/ep:tech-name)"/>
+                            <xsl:apply-templates select="$e-type/ep:seq"/>
+                            <!-- plaats de eigenschappen van het data-type (potentieel meerdere), behalve de namen -->
+                            <xsl:comment select="concat('insert the properties of the datatype: ',$data-type/ep:tech-name)"/>
+                            <xsl:apply-templates select="$data-type/*[empty((self::ep:tech-name,self::ep:name))]"/>
+                        </xsl:when>
+                        <xsl:when test="$attributes">
+                            <xsl:comment select="concat('This is not an -e type, and has attribute: ',ep:tech-name)"/>
+                            <ep:seq>
+                                <xsl:apply-templates select="$attributes"/>
+                            </ep:seq>
+                            <!-- if referencing a complex type, place the reference -->
+                            <xsl:if test="$is-complex-type">
+                                <ep:href origin="stub">
+                                    <xsl:value-of select="ep:type-name"/>
+                                </ep:href>
+                            </xsl:if>
+                        </xsl:when>
+                    </xsl:choose>
                 </ep:construct>
             </xsl:when>
             <xsl:otherwise>
@@ -189,6 +214,12 @@
     </xsl:template>
     xx-->
     
+    <xsl:function name="imf:is-complex-type" as="xs:boolean">
+        <xsl:param name="construct" as="element(ep:construct)"/>
+        <xsl:variable name="seq" select="$construct/*/ep:construct[not(@ismetadata = 'yes')]"/>
+        <xsl:sequence select="exists($seq)"/>
+    </xsl:function>
+    
     <!-- === step 3 afwerking === -->
     
     <xsl:template match="ep:message-set/ep:construct" mode="postproc"> <!-- STUB Robert gaat misschien het EP format voor de onderlaag dynamisch aanmaken ipv statisch -->
@@ -196,8 +227,6 @@
             <xsl:next-match/>          
         </xsl:if>
     </xsl:template>
-    
-    
     
     <!-- === gemeenschappelijk === -->
     
@@ -207,10 +236,5 @@
         </xsl:copy>
     </xsl:template>
     
-    <xsl:function name="imf:is-complex-type" as="xs:boolean">
-        <xsl:param name="construct" as="element(ep:construct)"/>
-        <xsl:variable name="seq" select="$construct/*/ep:construct[not(@ismetadata = 'yes')]"/>
-        <xsl:sequence select="exists($seq)"/>
-    </xsl:function>
        
 </xsl:stylesheet>

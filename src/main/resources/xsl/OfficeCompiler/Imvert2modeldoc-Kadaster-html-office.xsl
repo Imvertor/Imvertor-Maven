@@ -16,7 +16,7 @@
     <!-- 
         create a standard office oriented HTML representation of the section structure 
     -->
-    <xsl:variable name="subpath" select="imf:get-subpath(imf:project,imf:application,imf:release)"/>
+    <xsl:variable name="subpath" select="/book/@subpath"/>
     
     <xsl:template match="/book">
         <html>
@@ -110,7 +110,7 @@
                         <tr>
                             <td width="5%">&#160;</td>
                             <td width="95%">
-                                <xsl:apply-templates select="content/part/item" mode="#current"/>
+                                <xsl:apply-templates select="content[not(@approach='target')]/part/item" mode="#current"/>
                             </td>
                         </tr>
                     </tbody>
@@ -126,7 +126,7 @@
             </xsl:when>
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ATTRIBUTE'">
                 <xsl:variable name="level" select="count(ancestor::section)"/>
-                <xsl:variable name="composer" select="content/part[@type = 'COMPOSER']/item[1]"/>
+                <xsl:variable name="composer" select="content[not(@approach='target')]/part[@type = 'COMPOSER']/item[1]"/>
                 <div>
                     <a class="anchor" name="global-{@id}"/>
                     <xsl:element name="{concat('h',$level)}">
@@ -143,7 +143,7 @@
             </xsl:when>
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ASSOCIATION'">
                 <xsl:variable name="level" select="count(ancestor::section)"/>
-                <xsl:variable name="composer" select="content/part[@type = 'COMPOSER']/item[1]"/>
+                <xsl:variable name="composer" select="content[not(@approach='target')]/part[@type = 'COMPOSER']/item[1]"/>
                 <div>
                     <a class="anchor" name="global-{@id}"/>
                     <xsl:element name="{concat('h',$level)}">
@@ -172,6 +172,10 @@
             </xsl:otherwise>
         </xsl:choose>
        
+    </xsl:template>
+    
+    <xsl:template match="content[@approach='target']" mode="detail">
+        <!-- skip -->
     </xsl:template>
     
     <xsl:template match="content" mode="detail">
@@ -287,9 +291,8 @@
                         <xsl:apply-templates select="item[2]" mode="#current"/>
                     </td>
                 </xsl:when>
-                
                 <xsl:otherwise>
-                    <xsl:message select="concat('ONBEKEND: ', string-join($type,', ') , ' - ',$items)"></xsl:message>
+                    <xsl:sequence select="imf:msg(.,'FATAL','Unknown modeldoc part: [1], items: [2]', (string-join($type,', ') ,$items))"></xsl:sequence>
                 </xsl:otherwise>
             </xsl:choose>
         </tr>
@@ -298,17 +301,16 @@
     <!-- when type is traced, show the subpaths of all supplier infos -->
     <xsl:template match="item[@type='TRACED']" mode="detail">
         <xsl:choose>
-            <xsl:when test=". ne $subpath">
+            <xsl:when test="item[@type = 'SUPPLIER'] ne $subpath">
                 <span class="supplier">
-                    <xsl:value-of select="item[1]"/> <!-- type is SUPPLIER -->
+                    <xsl:value-of select="item[@type = 'SUPPLIER']"/> <!-- type is SUPPLIER -->
                 </span>
             </xsl:when>
             <xsl:otherwise>
                <!-- this is the client info, do not show that subpath. -->         
             </xsl:otherwise>
         </xsl:choose>
-        <xsl:apply-templates select="item[2]" mode="#current"/>
-        
+        <xsl:apply-templates select="item[not(@type = 'SUPPLIER')]" mode="#current"/>
     </xsl:template>
     
     <xsl:template match="item" mode="#all">

@@ -53,7 +53,7 @@
         <xsl:variable name="defining-class" select="imf:get-construct-by-id(imvert:type-id)"/>
         <xsl:variable name="defining-classes" select="($defining-class, imf:get-superclasses($defining-class))"/>
         <xsl:variable name="is-combined-identification" select="imf:get-tagged-value($this,'##CFG-TV=GECOMBINEERDEIDENTIFICATIE')"/>
-        <xsl:variable name="target-navigable" select="imvert:target-navigable"/>
+        <xsl:variable name="target-navigable" select="imvert:target/imvert:navigable"/>
         <xsl:variable name="stereotypes" select="imvert:stereotype"/>
         <xsl:variable name="class-stereotypes" select="$class/imvert:stereotype"/>
         

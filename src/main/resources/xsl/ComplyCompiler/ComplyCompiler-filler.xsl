@@ -922,7 +922,7 @@
   
     <xsl:function name="imf:safe-text">
         <xsl:param name="text"/>
-        <xsl:variable name="textr" select="replace($text,concat('[^A-Za-z0-9:@%&amp;\*;,\.=+\-\s\(\)\{\}\[\]\?!\\',$quot,$apos,']'),'?')"/>
+        <xsl:variable name="textr" select="replace($text,concat('[^A-Za-z0-9:_@%&amp;\*;,\.=+\-\s\(\)\{\}\[\]\?!\\',$quot,$apos,']'),'?')"/>
         <xsl:value-of select="if ($textr = $text) then $text else concat($textr,'&#10;[Description character issues resolved, see original text for full explanation]')">
         </xsl:value-of>
     </xsl:function>

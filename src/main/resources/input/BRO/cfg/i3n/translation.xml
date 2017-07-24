@@ -423,7 +423,17 @@
         <trans lang="en">Association name</trans>
     </item>
     <item>
+        <key>ROLE-NAME</key>
+        <trans lang="nl">Rol naam met kardinaliteiten</trans>
+        <trans lang="en">Role name</trans>
+    </item>
+    <item>
         <key>ASSOCIATION-DEFINITION</key>
+        <trans lang="nl">Definitie</trans>
+        <trans lang="en">Definition</trans>
+    </item>
+    <item>
+        <key>ROLE-DEFINITION</key>
         <trans lang="nl">Definitie</trans>
         <trans lang="en">Definition</trans>
     </item>

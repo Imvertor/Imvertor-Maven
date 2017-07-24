@@ -883,8 +883,8 @@
         
         <xsl:variable name="suffix" select="imf:get-relation-suffix(.)"/>
         
-        <xsl:variable name="source-alias" select="imvert:source-alias"/>
-        <xsl:variable name="target-alias" select="imvert:target-alias"/>
+        <xsl:variable name="source-alias" select="imvert:source/imvert:alias"/>
+        <xsl:variable name="target-alias" select="imvert:target/imvert:alias"/>
        
         <xsl:variable name="target-is-supertype-label" select="'-basis'"/>
         
@@ -1466,15 +1466,15 @@
     <!-- return suffixes to append to relation names. [1] is incoming, [2] is outgoing -->
     <xsl:function name="imf:get-relation-suffix" as="xs:string+">
         <xsl:param name="this"/> <!-- an Association element -->
-        <xsl:variable name="targetAlias" select="$this/imvert:target-alias"/>
+        <xsl:variable name="targetAlias" select="$this/imvert:target/imvert:alias"/>
         <xsl:variable name="targetId" select="imf:get-type-id($this)"/>
         
-        <xsl:variable name="other-associations" select="root($this)//imvert:association[imvert:target-alias = $targetAlias and imf:get-type-id(.) = $targetId]"/>
+        <xsl:variable name="other-associations" select="root($this)//imvert:association[imvert:target/imvert:alias = $targetAlias and imf:get-type-id(.) = $targetId]"/>
         <xsl:variable name="class" select="$this/ancestor::imvert:class"/>
         <xsl:value-of select="if (count($other-associations) gt 1) then imf:capitalize($class/imvert:name) else ''"/>
 
         <xsl:variable name="class" select="root($this)//imvert:class[imf:get-id(.) = $targetId]"/>
-        <xsl:value-of select="if (count($this/../imvert:association[imvert:target-alias = $targetAlias]) gt 1) then imf:capitalize($class/imvert:name) else ''"/>
+        <xsl:value-of select="if (count($this/../imvert:association[imvert:target/imvert:alias = $targetAlias]) gt 1) then imf:capitalize($class/imvert:name) else ''"/>
 
     </xsl:function>
     

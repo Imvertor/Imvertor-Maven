@@ -54,10 +54,10 @@
         </imvert:name>
     </xsl:template>
     
-    <xsl:template match="imvert:role-target">
-        <imvert:role-target original="{.}">
+    <xsl:template match="imvert:role">
+        <imvert:role original="{.}">
             <xsl:value-of select="imf:get-normalized-name(.,'property-name')"/>
-        </imvert:role-target>
+        </imvert:role>
     </xsl:template>
 
     <xsl:template match="imvert:supplier-packagename">
@@ -211,7 +211,8 @@
             <xsl:apply-templates select="imvert:tagged-value[normalize-space(imvert:value)]"/>
             
             <!-- then add the tvs extracted from notes -->
-            <xsl:variable name="construct" select=".."/>
+            <xsl:variable name="construct" select=".."/> 
+            <!-- construct may be a class, attribute, package, ... but also a source or target (within association) -->
             <xsl:for-each select="$construct[exists(imvert:stereotype)]/imvert:documentation/section"> <!-- only for constructs with stereotyes; no rules are defined for other constructs -->
                 <xsl:variable name="title" select="title"/>
                 <xsl:variable name="norm-title" select="upper-case($title)"/>
@@ -241,6 +242,9 @@
                             </imvert:value>
                         </imvert:tagged-value>
                     </xsl:when>
+                    <xsl:otherwise>
+                        <!-- none -->
+                    </xsl:otherwise>
                 </xsl:choose>
             </xsl:for-each>
         </xsl:copy>

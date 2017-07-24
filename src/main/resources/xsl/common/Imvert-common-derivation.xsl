@@ -137,14 +137,22 @@
 	</xsl:function>
 	
 	<!-- 
-		Get the latest (client) value specified or derived of any tagged value
+		Get the latest (client) value specified or derived of any tagged value.
+		
+		Note that for associations tagged values are set on associations as well as roles.
+		To this end a providing-construct is constructed, which should in all such cases be the imvert:association (not the imvert:target).
 	-->
-	<!--TODO define using imf:get-all-compiled-tagged-values() -->
+	<!--TODO define using imf:get-all-compiled-tagged-values() 
+		let op: in dat geval ook de providing-construct daarin opnemen...
+	-->
 	<xsl:function name="imf:get-compiled-tagged-values" as="element(tv)*">
 		<xsl:param name="construct" as="element()"/> <!-- any construct that may have tagged values -->
 		<xsl:param name="include-empty" as="xs:boolean"/>
 		
-		<xsl:variable name="suppliers" select="imf:get-trace-suppliers-for-construct($construct,1)"/>
+		<!-- if target, then follow the trace on the imvert:association -->
+		<xsl:variable name="traceable-construct" select="if ($construct/self::imvert:target) then $construct/.. else $construct"/> 
+		
+		<xsl:variable name="suppliers" select="imf:get-trace-suppliers-for-construct($traceable-construct,1)"/>
 		
 		<xsl:variable name="tvs" as="element()*">
 			<!-- 
@@ -155,7 +163,11 @@
 				<xsl:for-each select="if (imf:boolean(derive)) then $suppliers else $suppliers[1]">
 					<xsl:variable name="supplier" select="."/>
 					<xsl:variable name="supplier-construct" select="imf:get-trace-construct-by-supplier($supplier,$imvert-document)"/>
-					<xsl:variable name="tv" select="($supplier-construct/imvert:tagged-values/imvert:tagged-value[@id=$tv-id and normalize-space(imvert:value)])[1]"/>
+					
+					<!-- if target, then check the tv of the targets -->
+					<xsl:variable name="providing-construct" select="if ($construct/self::imvert:target) then $supplier-construct/imvert:target else $supplier-construct"/>
+					
+					<xsl:variable name="tv" select="($providing-construct/imvert:tagged-values/imvert:tagged-value[@id=$tv-id and normalize-space(imvert:value)])[1]"/>
 					<xsl:if test="exists($tv)">
 						<tv 
 							id="{$tv-id}" 

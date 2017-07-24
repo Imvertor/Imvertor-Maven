@@ -118,7 +118,7 @@
         <xsl:next-match/>
     </xsl:template>
     
-    <xsl:template match="imvert:association[imvert:target-stereotype = imf:get-config-stereotypes('stereotype-name-composite-id')]">
+    <xsl:template match="imvert:association[imvert:target/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite-id')]">
         <!--TODO is this rule required? we already test if an objecttype has an ID attribute --> 
    
         <xsl:variable name="this" select="."/>

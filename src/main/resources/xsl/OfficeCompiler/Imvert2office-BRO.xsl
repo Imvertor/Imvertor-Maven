@@ -179,7 +179,7 @@
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')]">
         <xsl:variable name="is-abstract-text" select="if (imf:boolean(imvert:abstract)) then 'Ja' else 'Nee'"/>
         
-        <xsl:variable name="rel-aanduiding" select="imvert:associations/imvert:association[imvert:target-stereotype = imf:get-config-stereotypes('stereotype-name-composite-id')]"/>
+        <xsl:variable name="rel-aanduiding" select="imvert:associations/imvert:association[imvert:target/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite-id')]"/>
         <xsl:variable name="con-aanduiding" select="imf:get-construct-by-id($rel-aanduiding/imvert:type-id)"/>
         <xsl:variable name="id-aanduiding" select="imf:get-tagged-value-unieke-aanduiding(.)"/>
         
@@ -695,7 +695,7 @@
     <xsl:template match="imvert:association" mode="detail">
         <xsl:variable name="construct" select="../.."/>
         <xsl:variable name="defining-class" select="if (exists(imvert:type-id)) then imf:get-construct-by-id(imvert:type-id) else ()"/>
-        <xsl:variable name="is-identifying" select="imvert:target-stereotype = imf:get-config-stereotypes('stereotype-name-composite-id')"/>
+        <xsl:variable name="is-identifying" select="imvert:target/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite-id')"/>
         <h4>
             <xsl:value-of select="concat('Relatiesoort ', imvert:name/@original)"/>
         </h4>

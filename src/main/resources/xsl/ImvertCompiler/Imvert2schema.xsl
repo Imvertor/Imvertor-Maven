@@ -219,10 +219,10 @@
             <xsl:apply-templates select="imvert:position"/>
             <xsl:apply-templates select="imvert:copy-down-type-id"/>
             
-            <xsl:apply-templates select="imvert:source-name"/>
-            <xsl:apply-templates select="imvert:source-alias"/>
-            <xsl:apply-templates select="imvert:target-name"/>
-            <xsl:apply-templates select="imvert:target-alias"/>
+            <xsl:apply-templates select="imvert:source/imvert:name"/>
+            <xsl:apply-templates select="imvert:source/imvert:alias"/>
+            <xsl:apply-templates select="imvert:target/imvert:name"/>
+            <xsl:apply-templates select="imvert:target/imvert:alias"/>
             
             <xsl:call-template name="_Identifiable">
                 <xsl:with-param name="name" select="imvert:name"/>
@@ -319,8 +319,8 @@
             <xsl:apply-templates select="imvert:type-name"/>
             <xsl:apply-templates select="imvert:type-id"/>
             <xsl:apply-templates select="imvert:type-package"/>
-            <xsl:apply-templates select="imvert:source-navigable"/>
-            <xsl:apply-templates select="imvert:target-navigable"/>
+            <xsl:apply-templates select="imvert:source/imvert:navigable"/>
+            <xsl:apply-templates select="imvert:target/imvert:navigable"/>
         </xsl:variable>
         <imvert-result:associationClass>
             <xsl:sequence select="imf:create-group('AssociationClassReference',$group)"/>

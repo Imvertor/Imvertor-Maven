@@ -364,8 +364,6 @@
                                     <xsl:sequence select="imf:get-association-documentation-info(.)"/>
                                     <!-- <xsl:sequence select="imf:get-history-info(.)"/>-->
                                     <xsl:sequence select="imf:get-stereotypes-info(.,'my')"/>
-                                    <xsl:sequence select="imf:get-stereotypes-info(.,'src')"/>
-                                    <xsl:sequence select="imf:get-stereotypes-info(.,'dst')"/>
                                     <xsl:sequence select="imf:get-constraint-info(.)"/>
                                     <xsl:sequence select="imf:get-association-class-info(.)"/>
                                     <xsl:sequence select="imf:fetch-additional-tagged-values(.)"/>
@@ -467,33 +465,29 @@
         <xsl:variable name="stereotypes" select="imf:get-stereotypes($this,$origin)"/>
         <xsl:for-each select="$stereotypes">
             <xsl:sort select="."/>
-            <xsl:choose>
-                <xsl:when test="$origin = 'my'">
-                    <xsl:sequence select="imf:create-output-element('imvert:stereotype',imf:get-normalized-name(.,'stereotype-name'))"/>
-                </xsl:when>
-                <xsl:when test="$origin = 'dst'">
-                    <xsl:sequence select="imf:create-output-element('imvert:target-stereotype',imf:get-normalized-name(.,'stereotype-name'))"/>
-                </xsl:when>
-                <xsl:when test="$origin = 'src'">
-                    <xsl:sequence select="imf:create-output-element('imvert:source-stereotype',imf:get-normalized-name(.,'stereotype-name'))"/>
-                </xsl:when>
-            </xsl:choose>
+            <xsl:sequence select="imf:create-output-element('imvert:stereotype',imf:get-normalized-name(.,'stereotype-name'))"/>
         </xsl:for-each>
     </xsl:function>
     
     <xsl:function name="imf:get-element-documentation-info" as="node()*">
         <xsl:param name="this" as="node()"/>
-        <xsl:sequence select="imf:get-documentation-info($this,'documentation')"/>
+        <imvert:documentation>
+            <xsl:sequence select="imf:get-documentation-info($this,'documentation')"/>
+        </imvert:documentation>
     </xsl:function>
    
     <xsl:function name="imf:get-attribute-documentation-info" as="node()*">
         <xsl:param name="this" as="node()"/>
-        <xsl:sequence select="imf:get-documentation-info($this,'description')"/>
+        <imvert:documentation>
+            <xsl:sequence select="imf:get-documentation-info($this,'description')"/>
+        </imvert:documentation>
     </xsl:function>
   
     <xsl:function name="imf:get-association-documentation-info" as="node()*">
-        <xsl:param name="this" as="node()"/> <!-- UML:Association -->
-        <xsl:sequence select="imf:get-documentation-info($this,'documentation')"/> 
+        <xsl:param name="this" as="node()"/>
+        <imvert:documentation>
+            <xsl:sequence select="imf:get-documentation-info($this,'documentation')"/>                   
+        </imvert:documentation>
     </xsl:function>
     
     <xsl:function name="imf:get-documentation-info" as="item()*">
@@ -502,7 +496,6 @@
         
         <xsl:variable name="doctext" select="imf:get-system-tagged-value($this,$name,'')"/>
         <xsl:variable name="relevant-doc-string" select="imf:fetch-relevant-doc-string($doctext)"/>
-        
         <xsl:variable name="sections" as="element(section)*">
             <!-- Parse into sections; raw text is section titled "Raw" --> 
             <xsl:variable name="sections" select="imf:inspire-notes($relevant-doc-string)" as="element(section)*"/>
@@ -518,19 +511,13 @@
         <xsl:choose>
             <xsl:when test="empty($relevant-doc-string)"/>
             <xsl:when test="$f = 'inspire'">
-                <imvert:documentation>
-                    <xsl:sequence select="$sections"/>
-                </imvert:documentation>                        
+                <xsl:sequence select="$sections"/>
             </xsl:when>
             <xsl:when test="normalize-space($relevant-doc-string) and $f = 'html'">
-                <imvert:documentation>
-                    <xsl:sequence select="imf:eadoc-to-xhtml($relevant-doc-string)" exclude-result-prefixes="#all"/>
-                </imvert:documentation>
+                <xsl:sequence select="imf:eadoc-to-xhtml($relevant-doc-string)" exclude-result-prefixes="#all"/>
             </xsl:when>
             <xsl:when test="normalize-space($relevant-doc-string) and $f = 'plain'">
-                <imvert:documentation>
-                    <xsl:value-of select="$relevant-doc-string"/>
-                </imvert:documentation>
+                <xsl:value-of select="$relevant-doc-string"/>
             </xsl:when>
         </xsl:choose>
        
@@ -776,8 +763,6 @@
         <xsl:sequence select="imf:create-output-element('imvert:type-name',$type/@name)"/>
         <xsl:sequence select="imf:create-output-element('imvert:type-id',$type-id)"/> 
         <xsl:sequence select="imf:create-output-element('imvert:type-package',imf:get-package-name($type-id))"/>
-        <xsl:sequence select="imf:create-output-element('imvert:role-source',$source-role)"/>
-        <xsl:sequence select="imf:create-output-element('imvert:role-target',$target-role)"/>
         <xsl:sequence select="imf:create-output-element('imvert:min-occurs',$target-bounds[1])"/>
         <xsl:sequence select="imf:create-output-element('imvert:max-occurs',$target-bounds[2])"/>
         <xsl:sequence select="imf:create-output-element('imvert:min-occurs-source',$source-bounds[1])"/>
@@ -788,14 +773,23 @@
         <xsl:variable name="source-parse" select="imf:parse-style($source/*/UML:TaggedValue[@tag='sourcestyle']/@value)"/>
         <xsl:variable name="target-parse" select="imf:parse-style($target/*/UML:TaggedValue[@tag='deststyle']/@value)"/>
         
-        <xsl:sequence select="imf:create-output-element('imvert:source-alias',normalize-space($source-parse[@name='alias']))"/>
-        <xsl:sequence select="imf:create-output-element('imvert:target-alias',normalize-space($target-parse[@name='alias']))"/>
+        <imvert:source>
+            <xsl:sequence select="imf:get-stereotypes-info($this,'src')"/>
+            <xsl:sequence select="imf:create-output-element('imvert:role',$source-role)"/>
+            <xsl:sequence select="imf:create-output-element('imvert:navigable',if ($source-parse[@name='Navigable'] = 'Navigable') then 'true' else 'false')"/>
+            <xsl:sequence select="imf:create-output-element('imvert:alias',normalize-space($source-parse[@name='alias']))"/>
+            <xsl:sequence select="imf:create-output-element('imvert:documentation',imf:get-documentation-info($source,'description'),(),false(),false())"/>
+            <xsl:sequence select="imf:create-output-element('imvert:tagged-values',imf:fetch-additional-tagged-values($source)/*,(),false(),false())"/>
+        </imvert:source>
         
-        <xsl:sequence select="imf:create-output-element('imvert:source-navigable',if ($source-parse[@name='Navigable'] = 'Navigable') then 'true' else 'false')"/>
-        <xsl:sequence select="imf:create-output-element('imvert:target-navigable',if ($target-parse[@name='Navigable'] = 'Navigable') then 'true' else 'false')"/>
-        
-        <xsl:sequence select="imf:create-output-element('imvert:source-tagged-values',imf:fetch-additional-tagged-values($source)/*,(),false(),false())"/>
-        <xsl:sequence select="imf:create-output-element('imvert:target-tagged-values',imf:fetch-additional-tagged-values($target)/*,(),false(),false())"/>
+        <imvert:target>
+            <xsl:sequence select="imf:get-stereotypes-info($this,'dst')"/>
+            <xsl:sequence select="imf:create-output-element('imvert:role',$target-role)"/>
+            <xsl:sequence select="imf:create-output-element('imvert:navigable',if ($target-parse[@name='Navigable'] = 'Navigable') then 'true' else 'false')"/>
+            <xsl:sequence select="imf:create-output-element('imvert:alias',normalize-space($target-parse[@name='alias']))"/>
+            <xsl:sequence select="imf:create-output-element('imvert:documentation',imf:get-documentation-info($target,'description'),(),false(),false())"/>
+            <xsl:sequence select="imf:create-output-element('imvert:tagged-values',imf:fetch-additional-tagged-values($target)/*,(),false(),false())"/>
+        </imvert:target>
         
     </xsl:function>
     
