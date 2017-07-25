@@ -29,16 +29,14 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
-import nl.imvertor.SchemaValidator.xerces.ErrorHandlerMessage;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.exceptions.ConfiguratorException;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.XmlFile;
-import nl.imvertor.common.file.XsdFile;
 import nl.imvertor.common.file.ZipFile;
 
-public class ComplyExtractor  extends Step {
+public class ComplyExtractor extends Step {
 
 	protected static final Logger logger = Logger.getLogger(ComplyExtractor.class);
 	
@@ -75,7 +73,9 @@ public class ComplyExtractor  extends Step {
 
 		XmlFile contentFile = new XmlFile(serializeFolder,AnyFolder.SERIALIZED_CONTENT_XML_FILENAME);
 		configurator.setParm("system", "comply-content-file", contentFile.getCanonicalPath());
+		// extract the instance info from the serialized OO XML excel file 
 		succeeds = succeeds ? transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_EXTRACT_FILE", "properties/WORK_COMPLY_EXTRACT_XSLPATH","system/comply-content-file") : false;
+		// build the XML instances
 		succeeds = succeeds ? transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_BUILD_FILE", "properties/WORK_COMPLY_BUILD_XSLPATH","system/comply-content-file") : false;
 		
 		// now first generate the test files
@@ -88,8 +88,12 @@ public class ComplyExtractor  extends Step {
 		
 		//validate the generate XML instances against the schema.
 		AnyFolder folder = new AnyFolder(configurator.getParm("properties","WORK_COMPLY_MAKE_FOLDER_VALID"));
-		succeeds = succeeds ? validateAndReport(folder) : false;
-			
+		if (folder.exists())
+			succeeds = succeeds ? validateAndReport(folder) : false;
+		else {
+			succeeds = false;
+			runner.error(logger,"No instances created.");
+		}
 		configurator.setStepDone(STEP_NAME);
 		 
 		// save any changes to the work configuration for report and future steps

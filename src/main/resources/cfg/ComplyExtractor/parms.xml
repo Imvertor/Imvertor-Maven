@@ -74,6 +74,13 @@
          <tip>Explain</tip>
          <required>true</required>
       </cli-parm> 
+      <!-- specifiek voor deze chain -->
+      <cli-parm>
+         <name>arguments</name>
+         <arg>path</arg>
+         <tip>Include these arguments</tip>
+         <required>false</required>
+      </cli-parm> 
       
       <!-- niet relevant; anders opzetten: -->
       <cli-parm>

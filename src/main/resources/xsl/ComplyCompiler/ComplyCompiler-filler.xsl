@@ -440,7 +440,7 @@
             </xsl:for-each>
         </xsl:variable>
         <xsl:if test="exists($result)">
-            <dataValidations>
+            <dataValidations count="{count($result)}">
                 <xsl:sequence select="$result"/>
             </dataValidations>
         </xsl:if>
@@ -459,6 +459,7 @@
             <xsl:if test="$operator">
                 <xsl:attribute name="operator" select="$operator"/>
             </xsl:if>
+            <xsl:comment select="concat('data validation on ',$prop/cp:name)"/>
             <formula1>
                 <xsl:value-of select="$formula1"/>
             </formula1>

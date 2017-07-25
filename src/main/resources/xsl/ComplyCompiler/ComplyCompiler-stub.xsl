@@ -51,9 +51,14 @@
             stap 3: verwijder alle constructies die geen ep:name hebben; 
             dit zijn namelijk constructies die niet gebruik worden door de berichten of het BG gedeelte (dus komen alleen voor in de onderlaag). 
         -->
-        <ep:message-sets>
-            <xsl:apply-templates select="$doc2/ep:message-set" mode="postproc"/>
-        </ep:message-sets>
+        <xsl:variable name="doc3" as="element(ep:message-sets)">
+            <ep:message-sets>
+                <xsl:apply-templates select="$doc2/ep:message-set" mode="postproc"/>
+            </ep:message-sets>
+        </xsl:variable>
+        
+        <xsl:sequence select="$doc3"/>
+        
     </xsl:template>
    
     <!-- === step 1 afwerking === -->
@@ -168,14 +173,16 @@
                             <ep:seq>
                                 <xsl:apply-templates select="$attributes"/>
                             </ep:seq>
-                            <!-- if referencing a complex type, place the reference -->
-                            <xsl:if test="$is-complex-type">
-                                <ep:href origin="stub">
-                                    <xsl:value-of select="ep:type-name"/>
-                                </ep:href>
-                            </xsl:if>
                         </xsl:when>
                     </xsl:choose>
+                    <xsl:if test="not($is-e-typed)">
+                        <!-- if referencing a complex type, place the reference -->
+                        <xsl:if test="$is-complex-type">
+                            <ep:href origin="stub">
+                                <xsl:value-of select="ep:type-name"/>
+                            </ep:href>
+                        </xsl:if>
+                    </xsl:if>
                 </ep:construct>
             </xsl:when>
             <xsl:otherwise>
@@ -205,6 +212,13 @@
         <xsl:next-match/>
     </xsl:template>
     
+    <xsl:template match="ep:seq/ep:construct/ep:enum">
+        <!-- stub: verwijder, want deze mag hier eigenlijk niet staan. -->
+    </xsl:template>
+    <xsl:template match="ep:choice/ep:construct/ep:enum">
+        <!-- stub: verwijder, want deze mag hier eigenlijk niet staan. -->
+    </xsl:template>
+    
     <!--xx
     <xsl:template match="ep:patroon">
         <xsl:next-match/>
@@ -226,6 +240,17 @@
         <xsl:if test="normalize-space(ep:name)">
             <xsl:next-match/>          
         </xsl:if>
+    </xsl:template>
+    
+    <xsl:template match="ep:enum" mode="postproc"> <!-- STUB Robert genereert te veel ENUMs en bovendie is er een vage limiet aan het aantal enums van een formula1. Inperken maar. -->
+        <xsl:choose>
+            <xsl:when test="count(preceding-sibling::ep:enum) gt 3">
+                <!-- skip this one -->
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <!-- === gemeenschappelijk === -->

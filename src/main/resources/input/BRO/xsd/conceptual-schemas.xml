@@ -375,7 +375,7 @@
             namespace="http://www.opengis.net/gml/3.2" 
             version="0.0.2-3.2.1" 
             phase="3" 
-            location="http://www.broservices.nl/profile/gml/1.0/gml-profile.xsd"> 
+            location="http://www.opengis.net/gml/3.2/gml-profile.xsd"> 
             
             <releases>
                 <release>BROPROFILE</release>
@@ -409,6 +409,14 @@
                 <xsd-type name="Point" asAttributeDesignation="complextype" asAttribute="PointPropertyType"/>
                 <managed-ids/>
             </construct>
+
+            <construct>
+                <name>GM_ArcString</name>
+                <catalog>#ArcString</catalog>
+                <xsd-type name="ArcString" asAttributeDesignation="complextype" asAttribute="ArcStringType"/>
+                <managed-ids/>
+            </construct>
+            
             
         </map>
         

@@ -98,7 +98,7 @@
             <xsl:sequence select="imf:create-element('cp:id',imf:get-id(.))"/>
             <cp:prop type="header">
                 <xsl:sequence select="imf:create-element('cp:name',concat(imf:get-qualified-name(.), if (ep:tip-1) then ' (ETC)' else ''))"/>
-                <xsl:sequence select="imf:create-element('cp:tip',concat('Let op! Meerdere referenties met verschillende namen naar dit element: ', ep:tip-1))"/>
+                <!--x <xsl:sequence select="imf:create-element('cp:tip',concat('Let op! Meerdere referenties met verschillende namen naar dit element: ', ep:tip-1))"/> x-->
             </cp:prop>
             <xsl:apply-templates select="(ep:seq|ep:choice)" mode="prepare-flat"/>
             <cp:prop type="empty"/>
