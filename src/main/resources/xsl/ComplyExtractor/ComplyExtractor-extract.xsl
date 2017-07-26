@@ -80,6 +80,9 @@
             <namespaces>
                 <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet4.xml']" mode="create-namespaces"/>
             </namespaces>
+            <info>
+                <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet5.xml']" mode="create-info"/>
+            </info>
         </testset>
     </xsl:template>
     
@@ -93,11 +96,11 @@
         <!-- list of all start row numbers; skip the header at position 1  -->
         <xsl:variable name="start-row-nrs" select="for $r in ($worksheet-rows[position() gt 1 and not(imf:get-cell-info(.,1,$sheet-nr)/@val = '')]) return xs:integer($r/@r)" as="xs:integer*"/>
         
-        <?x
+        <!--
         <xsl:message select="concat('2>', count($worksheet-rows))"/>
         <xsl:message select="concat('2>', $last-r)"/>
         <xsl:message select="concat('2>', count($start-row-nrs))"/>
-        x?>
+        -->
         
         <xsl:for-each select="$start-row-nrs">
             <xsl:variable name="index" select="position()"/>
@@ -111,12 +114,12 @@
             <xsl:variable name="cur-row" select="$worksheet-rows[xs:integer(@r) eq $cur-r]"/>
             <xsl:variable name="following-rows" select="$worksheet-rows[xs:integer(@r) gt $cur-r and xs:integer(@r) lt $next-r]"/>
             
-            <?x 
+            <!--
             <xsl:message select="concat('1>', count($worksheet-rows))"/>
             <xsl:message select="concat('1>', string-join(for $s in $start-row-nrs return string($s),' '))"/>
             <xsl:message select="concat('1>', count($following-rows))"/>
-            x?>
-
+            -->
+            
             <!-- the last column is the last for the first row. All columns are filled and named. -->
             <xsl:variable name="last-col" select="count($worksheet-rows[@r eq '1']/*:c)"/>
             <!-- the first cell holds the type of group -->
@@ -171,6 +174,17 @@
         </xsl:for-each>
     </xsl:template>
     
+    <xsl:template match="cw:file" mode="create-info">
+        <xsl:variable name="worksheet-rows" select="*:worksheet/*:sheetData/*:row"/>
+        <xsl:for-each select="$worksheet-rows">
+            <xsl:variable name="name" select="imf:get-string(*:c[1])"/>
+            <xsl:variable name="value" select="imf:get-string(*:c[2])"/>
+            <i prefix="{$name}">
+                <xsl:value-of select="$value"/>
+            </i>
+        </xsl:for-each>
+    </xsl:template>
+    
     <xsl:template match="node()|@*">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
@@ -199,7 +213,7 @@
         <xsl:variable name="letter" select="substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ',$index,1)"/>
         <xsl:variable name="c" select="$row/*:c[starts-with(@r,$letter)]"/>
         <xsl:variable name="v" select="imf:get-string($c)"/>
-      
+        
         <!-- determine the link form for this cell, e.g. Gegevensgroepen!$A$2 -->
         <xsl:variable name="cell-index" select="concat($sheet-gegevensgroepen-tab-name,'!$',$letter,'$',$row/@r)"/>
         <!-- determine the internal ID, e.g. EA002k3j4h5k2j34h5l-->

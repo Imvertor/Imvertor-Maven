@@ -74,7 +74,10 @@
         <xsl:variable name="my-qualifier" select="../imvert:prefix"/>
         <xsl:variable name="my-fullpath" select="../imvert:result-file-fullpath"/>
         <xsl:variable name="is-referencing" select="imf:boolean(../imvert:is-referencing)"/>
-        
+      
+        <xsl:variable name="locpath-levels" select="count(tokenize(../imvert:result-file-subpath,'/'))"/> <!-- how much is this XSD imbedded within the /xsd folder? -->
+        <xsl:variable name="locpath" select="string-join(for $i in (1 to ($locpath-levels - 1)) return '../','')"/> <!-- levels minus 1 --> 
+       
         <xsl:variable name="qualifiers" as="xs:string*">
             
             <xsl:variable name="uniontokens" select="for $type in .//xs:union/@memberTypes return tokenize($type,'\s+')"/>
@@ -102,7 +105,8 @@
                 <xsl:choose>
                     <xsl:when test="exists($schema-subpath)">
                         <!-- schema found. This is a generated schema. -->
-                        <xs:import namespace="{$schema-namespace}" schemaLocation="../../{$schema-subpath}"/>
+                        
+                        <xs:import namespace="{$schema-namespace}" schemaLocation="{$locpath}{$schema-subpath}"/>
                         <namespace prefix="{$prefix}" uri="{$schema-namespace}"/> 
                     </xsl:when>
                     <xsl:when test="$prefix = 'xs'">
@@ -118,7 +122,7 @@
                             </xsl:when>
                             <xsl:otherwise>
                                 <xs:import namespace="http://www.w3.org/1999/xlink"
-                                    schemaLocation="../../../xlink/1.0.0/xlinks.xsd"/>
+                                    schemaLocation="{$locpath}xlink/1.0.0/xlinks.xsd"/>
                             </xsl:otherwise>
                         </xsl:choose>
                         <namespace prefix="xlink" uri="http://www.w3.org/1999/xlink"/> 
@@ -132,7 +136,7 @@
           
         </xsl:variable>
         
-        <xsl:result-document href="{$my-fullpath}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
+        <xsl:result-document href="{imf:file-to-url($my-fullpath)}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
             <xsl:copy>
                 <xsl:copy-of select="@*"/>
                 <xsl:for-each select="$imports[self::namespace]">

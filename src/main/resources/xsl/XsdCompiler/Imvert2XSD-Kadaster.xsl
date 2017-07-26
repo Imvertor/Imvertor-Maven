@@ -45,16 +45,10 @@
     
     <xsl:param name="config-file-path">unknown-file</xsl:param>
    
-    <xsl:variable name="xsd-folder-path" select="imf:get-config-string('system','xsd-folder-path')"/>
-
+    <xsl:variable name="xsd-folder-path" select="imf:get-config-string('system','work-xsd-folder-path')"/>
+    <xsl:variable name="xsd-folder-subpath" select="imf:get-config-string('cli','xsdsubpath')"/>
+        
     <xsl:variable name="is-forced-nillable" select="imf:boolean(imf:get-config-string('cli','forcenillable'))"/>
-    
-    <!-- 
-        Determine which type is defined in which package 
-    -->
-    <xsl:variable name="type-in-package" as="element()*">
-        <xsl:apply-templates select="$imvert-document//imvert:class" mode="type-in-package"/>
-    </xsl:variable>
     
     <!-- 
         What types result in an attribute in stead of an element? 
@@ -75,15 +69,6 @@
         as="node()*"/>
     
     <xsl:variable name="base-namespace" select="/imvert:packages/imvert:base-namespace"/>
-    
-    <xsl:template match="imvert:class" mode="type-in-package">
-        <type 
-            name="{imvert:name}"
-            id="{imvert:id}"
-            prefix="{imf:get-short-name(parent::imvert:package/imvert:name)}" 
-            ns="{imf:get-namespace(parent::imvert:package)}" 
-            file="{imf:get-xsd-filesubpath(parent::imvert:package)}"/>
-    </xsl:template>
     
     <xsl:template match="/">
         <imvert:schemas>
@@ -109,11 +94,13 @@
                         <xsl:sequence select="imf:create-info-element('imvert:namespace',$external-package/imvert:namespace)"/>
                         <xsl:choose>
                             <xsl:when test="imf:boolean($external-schemas-reference-by-url)">
+                                <xsl:comment>Referenced by URL</xsl:comment>
                                 <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$external-package/imvert:location)"/>
                             </xsl:when>
                             <xsl:otherwise>
+                                <xsl:comment>Referenced by local path</xsl:comment>
                                 <xsl:variable name="schema-subpath" select="imf:get-xsd-filesubpath($external-package)"/>
-                                <xsl:variable name="file-fullpath" select="imf:get-xsd-filefullpath($external-package)"/>
+                                <xsl:variable name="file-fullpath" select="concat($xsd-folder-path,'/',$schema-subpath)"/>
                                 <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$schema-subpath)"/>
                                 <xsl:sequence select="imf:create-info-element('imvert:result-file-fullpath',$file-fullpath)"/>
                             </xsl:otherwise>
@@ -224,6 +211,8 @@
         
         </imvert:schema>
         
+        <?x uitfaseren?
+            
         <xsl:variable name="must-cva" select="imf:boolean(imf:get-config-string('cli','create-cva-files'))"/>
         <xsl:variable name="atts" select="$this-package//imvert:attribute[imvert:type-name=imf:get-config-parameter('class-name-waardelijst')]"/>
         <xsl:if test="$must-cva and $atts[1]">
@@ -268,7 +257,8 @@
             </imvert:cva>
     
         </xsl:if>
-      
+        ?>
+        
     </xsl:template>
         
     <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-enumeration')]">
@@ -329,8 +319,12 @@
         <xsl:variable name="package-name" select="parent::imvert:package/imvert:name"/>
 
         <xsl:variable name="assocs" select="imvert:associations/imvert:association"/>
+        <xsl:variable name="assoc-pr" select="$assocs[imvert:type-name='ProcesResultaat']"/>
+        <xsl:variable name="assoc-pg" select="$assocs[imvert:type-name='ProductGegevens']"/>
+        <xsl:variable name="assoc-log" select="$assocs[imvert:type-name='Log']"/>
+        <xsl:variable name="assoc-prd" select="$assocs except ($assoc-pr,$assoc-pg,$assoc-log)"/> <!-- rest of the assocs must be products -->
+        
         <xsl:variable name="targets" select="for $target in $assocs/imvert:type-id return imf:get-construct-by-id($target)"/>
-        <xsl:variable name="interfaces" select="$targets[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-interface')]"/>
         <xsl:variable name="products" select="$targets[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-product')]"/>
       
         <!-- get the name of the first association that has a name entered by the modeller. --> 
@@ -344,31 +338,27 @@
         <xs:element name="{$type-name}">
             <xs:complexType>
                 <xs:sequence>
-                    <xsl:if test="$interfaces/imvert:name = 'ProcesVerwerking'">
-                        <xs:element ref="{$EnvelopProces-prefix}:ProcesVerwerking"/>
+                    <xsl:if test="exists($assoc-pr)">
+                        <xs:element ref="{$EnvelopProces-prefix}:ProcesVerwerking" minOccurs="{$assoc-pr/imvert:min-occurs}" maxOccurs="{$assoc-pr/imvert:max-occurs}"/>
                     </xsl:if> 
-                    <xsl:if test="$interfaces/imvert:name = 'ProductGegevens'">
-                        <xs:element ref="{$EnvelopProduct-prefix}:ProductGegevens"/>
+                    <xsl:if test="exists($assoc-pg)">
+                        <xs:element ref="{$EnvelopProduct-prefix}:ProductGegevens" minOccurs="{$assoc-pg/imvert:min-occurs}" maxOccurs="{$assoc-pg/imvert:max-occurs}"/>
                     </xsl:if> 
-                    <xs:element ref="{imf:get-type($results-name,$package-name)}"/>
-                    <xsl:if test="$interfaces/imvert:name = 'Log'">
-                        <xs:element ref="{$EnvelopLog-prefix}:Log"/>
-                    </xsl:if>
-                </xs:sequence>
-            </xs:complexType>
-        </xs:element>
-        <xs:element name="{$results-name}">
-            <xs:complexType>
-                <xs:sequence>
-                    <xsl:for-each select="$assocs">
-                        <!-- alleen de links naar objecttypen hier opnemen -->
+                    <xsl:for-each select="$assoc-prd">
                         <xsl:variable name="target" select="imf:get-construct-by-id(imvert:type-id)"/>
-                        <xsl:if test="$target/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-product')">
-                            <xsl:variable name="min-occurs" select="imvert:min-occurs"/>
-                            <xsl:variable name="max-occurs" select="imvert:max-occurs"/>
-                            <xs:element ref="{imf:get-type($target/imvert:name,$target/parent::imvert:package/imvert:name)}" minOccurs="{$min-occurs}" maxOccurs="{$max-occurs}"/>
-                        </xsl:if>
+                        <xsl:variable name="min-occurs" select="imvert:min-occurs"/>
+                        <xsl:variable name="max-occurs" select="imvert:max-occurs"/>
+                        
+                        <!-- test if the target is a product -->
+                        <xsl:sequence select="
+                            if (not($target/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-product'))) 
+                            then imf:msg(.,'ERROR','Target in [1] is not [2]',(imf:get-config-stereotypes('stereotype-name-service'),imf:get-config-stereotypes('stereotype-name-product'))) else ()"/>
+                      
+                        <xs:element ref="{imf:get-type($target/imvert:name,$target/parent::imvert:package/imvert:name)}" minOccurs="{$min-occurs}" maxOccurs="{$max-occurs}"/>
                     </xsl:for-each>
+                    <xsl:if test="exists($assoc-log)">
+                        <xs:element ref="{$EnvelopLog-prefix}:Log"  minOccurs="{$assoc-log/imvert:min-occurs}" maxOccurs="{$assoc-log/imvert:max-occurs}"/>
+                    </xsl:if>
                 </xs:sequence>
             </xs:complexType>
         </xs:element>
@@ -1451,7 +1441,9 @@
 
     <!-- 
         Return the complete subpath and filename of the xsd file to be generated.
-        Sample: my/schema/MyappMypackage_1_0_3.xsd
+        Sample: xsd-folder/subpath/my/schema/MyappMypackage_1_0_3.xsd
+        
+        xsd-folder/subpath is provided as a cli parameter cli/xsdsubpath
     -->
     <xsl:function name="imf:get-xsd-filesubpath" as="xs:string">
         <xsl:param name="this" as="node()"/> <!-- a package -->
@@ -1461,13 +1453,11 @@
                     the package is external (GML, Xlink or the like). 
                     Place reference to that external pack. 
                     The package is copied alongside the target application package.
-                    Note that the xsd foilder path is set to the project name (e.g. IMKAD) but the external 
-                    schema's are copied to the folder at the parent location. So the folder path is 1 step up. 
                 --> 
-                <xsl:value-of select="concat('../',imf:get-uri-parts($this/imvert:location)/path)"/>
+                <xsl:value-of select="imf:get-uri-parts($this/imvert:location)/path"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="concat(imf:get-xsd-filefolder($this), '/', encode-for-uri(imf:get-xsd-filename($this)))"/>
+                <xsl:value-of select="concat($xsd-folder-subpath,'/',imf:get-xsd-filefolder($this), '/', encode-for-uri(imf:get-xsd-filename($this)))"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -1478,7 +1468,7 @@
     <xsl:function name="imf:get-xsd-filefullpath" as="xs:string">
         <xsl:param name="this" as="element()"/>
         <xsl:variable name="schema-subpath" select="imf:get-xsd-filesubpath($this)"/>
-        <xsl:value-of select="concat($xsd-folder-path,$schema-subpath)"/>
+        <xsl:value-of select="concat($xsd-folder-path,'/',$schema-subpath)"/>
     </xsl:function>
   
     <!-- 
@@ -1491,7 +1481,7 @@
         and release is: 
             20120307
         returns: 
-            /my/schema/v20120307
+            my/schema/v20120307
     -->    
     <xsl:function name="imf:get-xsd-filefolder" as="xs:string">
         <xsl:param name="this" as="node()"/> <!-- an imvert:package -->
