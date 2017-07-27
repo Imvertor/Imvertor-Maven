@@ -5,6 +5,8 @@ rem this batch file is part of the BRO OFFICE implementation, and allows a singl
 rem =====================================================================================================================================
 
 set git=%imvertor_os_gitexe%
+REM set gitmail=%imvertor_os_gitusermail%
+REM set gitname=%imvertor_os_gitusername%
 
 if not %1.==. goto external
 
@@ -74,6 +76,10 @@ goto next
 @rem Commit to the index
 		@echo [STP]
 		@echo commit
+		
+        REM "%git%" config --global user.email "%gitmail%"
+        REM "%git%" config --global user.name  "%gitname%"
+  
 		"%git%" commit -m "%commit-comment%" "data\%local-file-name%"
 		if %ERRORLEVEL% neq 0 goto err   
 @rem Push upstream
