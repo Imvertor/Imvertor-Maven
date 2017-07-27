@@ -843,6 +843,7 @@
         <xsl:variable name="superclasses" select="imf:get-superclasses($class)"/>
         <xsl:variable name="package" select="$class/.."/>
         <xsl:variable name="is-collection" select="$class/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-collection')"/>
+        <xsl:variable name="is-process" select="$class/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-process')"/>
         <xsl:variable name="association-class-id" select="imvert:association-class/imvert:type-id"/>
         <xsl:variable name="property-names" select="$class/(imvert:atributes | imvert:associations)/*/imvert:name"/>
         <xsl:variable name="name" select="imvert:name"/>
@@ -865,7 +866,7 @@
             not($is-collection) and $this/imvert:name and not(imf:test-name-convention($this)), 
             'Association name does not obey convention')"/>
         <xsl:sequence select="imf:report-error(., 
-            (not($is-collection) and empty($association-class-id) and not(imvert:name)), 
+            (not($is-collection) and not($is-process) and empty($association-class-id) and not(imvert:name)), 
             'Association without name.')"/>
         <xsl:sequence select="imf:report-error(., 
             not(imf:check-multiplicity(imvert:min-occurs,imvert:max-occurs)), 

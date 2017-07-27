@@ -50,7 +50,7 @@
     
     <!-- 1  introduce collection class -->
     
-    <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-product','stereotype-name-process','stereotype-name-service'))]">
+    <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-product'))]">
         <xsl:variable name="collection-name" select="concat(imvert:name,imf:get-config-parameter('imvertor-translate-suffix-components'))"/>
         <xsl:variable name="collection-id" select="concat('collection_', generate-id(.))"/>
         <xsl:variable name="collection-package-name" select="../imvert:name"/>

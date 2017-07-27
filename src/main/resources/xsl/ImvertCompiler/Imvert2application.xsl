@@ -91,68 +91,6 @@
         </xsl:copy>
     </xsl:template>
     
-    <!--x 
-    <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-product','stereotype-name-process','stereotype-name-service'))]">
-        <xsl:variable name="collection-name" select="concat(imvert:name,imf:get-config-parameter('imvertor-translate-suffix-components'))"/>
-        <xsl:variable name="collection-id" select="concat('collection_', generate-id(.))"/>
-        <xsl:variable name="collection-package-name" select="../imvert:name"/>
-        <xsl:variable name="collection-class" as="element()?">
-            <!- - when no collection type class referenced, roll your own - -> 
-            <!- - IM-110 but only when buildcollection yes - ->
-            <xsl:if test="imf:boolean($buildcollection)">
-                <xsl:if test="not(imvert:associations/imvert:association/imvert:type-id[imf:get-construct-by-id(.)/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-collection')])">
-                    <xsl:sequence select="imf:msg('INFO','Catalog class [1] ([2]) does not include any collection. Appending [3].', (string(imf:get-construct-name(.)), string-join(imvert:stereotype,', '),$collection-name))"/>
-                    <imvert:class>
-                        <xsl:sequence select="imf:create-output-element('imvert:id',$collection-id)"/>
-                        <xsl:sequence select="imf:create-output-element('imvert:name',$collection-name)"/>
-                        <xsl:sequence select="imf:create-output-element('imvert:stereotype',imf:get-config-stereotypes('stereotype-name-collection'))"/>
-                        <xsl:sequence select="imf:create-output-element('imvert:abstract','false')"/>
-                        <xsl:sequence select="imf:create-output-element('imvert:origin',imf:get-config-parameter('name-origin-system'))"/>
-                        <imvert:associations>
-                            <xsl:variable name="all-collection-member-classes" select="imf:get-all-collection-member-classes(.)"/>
-                            <xsl:for-each select="$all-collection-member-classes">
-                                <imvert:association>
-                                    <xsl:sequence select="imf:create-output-element('imvert:type-name',imvert:name)"/>
-                                    <xsl:sequence select="imf:create-output-element('imvert:type-id',imvert:id)"/>
-                                    <xsl:sequence select="imf:create-output-element('imvert:type-package',../imvert:name)"/>
-                                    <xsl:sequence select="imf:create-output-element('imvert:min-occurs','0')"/>
-                                    <xsl:sequence select="imf:create-output-element('imvert:max-occurs','unbounded')"/>
-                                </imvert:association>
-                            </xsl:for-each>
-                        </imvert:associations>
-                    </imvert:class>
-                </xsl:if>
-            </xsl:if>
-        </xsl:variable>
-        <xsl:variable name="super-classes" select="imf:get-superclasses(.)"/>
-        <xsl:variable name="super-products" select="$super-classes[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-product','stereotype-name-process','stereotype-name-service'))]"/>
-        <xsl:copy>
-            <xsl:copy-of select="@*"/>
-            <xsl:sequence select="*[not(self::imvert:associations)]"/>
-            <imvert:associations>
-                <xsl:sequence select="imvert:associations/imvert:association"/>
-                <!- - 
-                    IM-136 
-                    alleen deze constructie als geen subtype van een ander product.
-                - ->
-                <xsl:if test="$collection-class and empty($super-products)">
-                    <imvert:association>
-                        <xsl:sequence select="imf:create-output-element('imvert:name',imf:get-config-parameter('imvertor-translate-association-components'))"/>
-                        <xsl:sequence select="imf:create-output-element('imvert:type-name',$collection-name)"/>
-                        <xsl:sequence select="imf:create-output-element('imvert:type-id',$collection-id)"/>
-                        <xsl:sequence select="imf:create-output-element('imvert:type-package',$collection-package-name)"/>
-                        <xsl:sequence select="imf:create-output-element('imvert:min-occurs','1')"/>
-                        <xsl:sequence select="imf:create-output-element('imvert:max-occurs','1')"/>
-                        <xsl:sequence select="imf:create-output-element('imvert:position','999')"/>
-                    </imvert:association>
-                </xsl:if>
-            </imvert:associations>
-        </xsl:copy>
-            
-        <xsl:sequence select="$collection-class"/>
-    </xsl:template>
-    x-->
-    
     <!-- finalization: add some info to the compiled document fragment -->
     
     <xsl:template match="*" mode="finalize">

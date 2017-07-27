@@ -204,5 +204,19 @@
             </declared-values>
         </tv>
         
+        <tv norm="space" id="CFG-TV-SERVICE">
+            <name lang="nl">Service</name>
+            <name lang="en">Service</name>
+            <desc lang="nl">Wanneer een domein package de basis vormt voor een setje (Messages, Response) wordt deze tagged value gezet.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-domain-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>yes</value>
+                <value default="yes">no</value>
+            </declared-values>
+        </tv>
+        
     </tagged-values>
 </tagset>

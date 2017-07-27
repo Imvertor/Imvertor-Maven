@@ -46,6 +46,10 @@
         <xsl:sequence select="imf:get-config-stereotypes('stereotype-name-application-package')"/>
     </xsl:variable>
     
+    <!-- all service packages are packages that have the tv service=yes, or end with Messsages or Resultaat -->
+    <xsl:variable name="all-service-base-packages" select="$domain-package[imf:boolean(imf:get-tagged-value(.,'##CFG-TV-SERVICE'))]"/>
+    <xsl:variable name="all-service-packages" select="$domain-package[. = $all-service-base-packages or ends-with(imvert:name,'Messages') or ends-with(imvert:name,'Resultaat') ]"/>
+    
     <xsl:variable name="datatype-stereos" 
         select="('stereotype-name-simpletype','stereotype-name-complextype','stereotype-name-union','stereotype-name-referentielijst','stereotype-name-codelist','stereotype-name-interface','stereotype-name-enumeration')"/>
   
@@ -87,7 +91,11 @@
     
     <xsl:template match="imvert:class">
         <xsl:variable name="package" select=".."/>
+        
         <xsl:variable name="is-external" select="$package/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-external-package')"/>
+        
+        <xsl:variable name="package-is-service" select="$package = $all-service-packages"/>
+        <xsl:variable name="class-is-service" select="imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-service','stereotype-name-process'))"/>
         
         <!--
             Only Abstract classes start with _underscore        
@@ -98,6 +106,11 @@
         <xsl:sequence select="imf:report-warning(., 
             not($is-external) and not(imf:boolean(imvert:abstract)) and starts-with(imvert:name,'_'), 
             'Concrete class name should not start with underscore.')"/>
+        
+        <!-- services and processes should only occur within service packages -->
+        <xsl:sequence select="imf:report-warning(., 
+            $class-is-service and not($package-is-service),
+            'Service class [1] found outside a service package',imf:string-group(imvert:stereotype))"/>
         
         <xsl:next-match/>
     </xsl:template>
@@ -174,15 +187,41 @@
         <xsl:sequence select="imf:report-error(., 
             (matches(substring-after(imvert:namespace,$application/imvert:namespace),'.*?//')),
             'Namespace of the domain package holds empty path //')"/>
-        
+    
         <!-- validate the version chain -->
         <xsl:if test="exists(ancestor-or-self::imvert:package[not(imf:boolean(imvert:derived))])">
             <xsl:apply-templates select="." mode="version-chain"/>
         </xsl:if>
+    
+        <!-- De namespace (alias) van een domein package met naam *Messages moet eindigen op /service. -->
+        <xsl:sequence select="imf:report-warning(., 
+            ends-with(imvert:name,'Messages') and not(ends-with(imvert:alias,'/service')),
+            'Namespace [1] should end with [2]',(imvert:alias,'/service'))"/>
+        
         <!-- check as regular package -->
         <xsl:next-match/>
     </xsl:template>
     
+    <!-- a service base package requires two other packages to be available --> 
+    <xsl:template match="imvert:package[.=$all-service-base-packages]" priority="40">
+        
+        <xsl:variable name="name" select="imvert:name"/>
+        <xsl:variable name="msg-name" select="concat($name,'Messages')"/>
+        <xsl:variable name="res-name" select="concat($name,'Resultaat')"/>
+        <xsl:variable name="msg-package" select="../imvert:package[imvert:name = $msg-name]"/>
+        <xsl:variable name="res-package" select="../imvert:package[imvert:name = $res-name]"/>
+        
+        <xsl:sequence select="imf:report-warning(., 
+            empty($msg-package),
+            'No message package [1] found for service package [2]',($msg-name,$name))"/>
+        <xsl:sequence select="imf:report-warning(., 
+            empty($res-package),
+            'No result package [1] found for service package [2]',($res-name,$name))"/>
+        
+        <!-- check as regular package -->
+        <xsl:next-match/>
+    </xsl:template>
+   
     <!-- 
         other validation 
     -->

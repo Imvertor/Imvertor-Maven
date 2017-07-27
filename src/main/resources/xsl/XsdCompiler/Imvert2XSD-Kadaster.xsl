@@ -322,7 +322,7 @@
         <xsl:variable name="assoc-pr" select="$assocs[imvert:type-name='ProcesResultaat']"/>
         <xsl:variable name="assoc-pg" select="$assocs[imvert:type-name='ProductGegevens']"/>
         <xsl:variable name="assoc-log" select="$assocs[imvert:type-name='Log']"/>
-        <xsl:variable name="assoc-prd" select="$assocs except ($assoc-pr,$assoc-pg,$assoc-log)"/> <!-- rest of the assocs must be products -->
+        <xsl:variable name="assoc-proces" select="$assocs except ($assoc-pr,$assoc-pg,$assoc-log)"/> <!-- rest of the assocs must be products -->
         
         <xsl:variable name="targets" select="for $target in $assocs/imvert:type-id return imf:get-construct-by-id($target)"/>
         <xsl:variable name="products" select="$targets[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-product')]"/>
@@ -335,6 +335,9 @@
         <xsl:variable name="EnvelopProduct-prefix" select="imf:get-short-name('EnvelopProduct')"/>
         <xsl:variable name="EnvelopLog-prefix" select="imf:get-short-name('EnvelopLog')"/>
         
+        <xsl:variable name="is-request" select="ends-with(imvert:name,'Request')"/>
+        <xsl:variable name="is-response" select="ends-with(imvert:name,'Response')"/>
+        
         <xs:element name="{$type-name}">
             <xs:complexType>
                 <xs:sequence>
@@ -344,18 +347,43 @@
                     <xsl:if test="exists($assoc-pg)">
                         <xs:element ref="{$EnvelopProduct-prefix}:ProductGegevens" minOccurs="{$assoc-pg/imvert:min-occurs}" maxOccurs="{$assoc-pg/imvert:max-occurs}"/>
                     </xsl:if> 
-                    <xsl:for-each select="$assoc-prd">
-                        <xsl:variable name="target" select="imf:get-construct-by-id(imvert:type-id)"/>
-                        <xsl:variable name="min-occurs" select="imvert:min-occurs"/>
-                        <xsl:variable name="max-occurs" select="imvert:max-occurs"/>
-                        
-                        <!-- test if the target is a product -->
-                        <xsl:sequence select="
-                            if (not($target/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-product'))) 
-                            then imf:msg(.,'ERROR','Target in [1] is not [2]',(imf:get-config-stereotypes('stereotype-name-service'),imf:get-config-stereotypes('stereotype-name-product'))) else ()"/>
-                      
-                        <xs:element ref="{imf:get-type($target/imvert:name,$target/parent::imvert:package/imvert:name)}" minOccurs="{$min-occurs}" maxOccurs="{$max-occurs}"/>
-                    </xsl:for-each>
+                    <xsl:variable name="products" as="element()*">
+                        <xsl:for-each select="$assoc-proces">
+                            <xsl:variable name="target" select="imf:get-construct-by-id(imvert:type-id)"/>
+                            <xsl:variable name="min-occurs" select="imvert:min-occurs"/>
+                            <xsl:variable name="max-occurs" select="imvert:max-occurs"/>
+                            
+                            <!-- test if the target is a product -->
+                            <xsl:sequence select="
+                                if (not($target/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-process'))) 
+                                then imf:msg(.,'ERROR','Target in [1] is not [2]',(imf:get-config-stereotypes('stereotype-name-service'),imf:get-config-stereotypes('stereotype-name-product'))) else ()"/>
+                            
+                            <xs:element ref="{imf:get-type($target/imvert:name,$target/parent::imvert:package/imvert:name)}" minOccurs="{$min-occurs}" maxOccurs="{$max-occurs}"/>
+                        </xsl:for-each>
+                    </xsl:variable>
+                    <xsl:choose>
+                        <xsl:when test="$is-request">
+                            <xs:element name="verzoek">
+                                <xs:complexType>
+                                    <xs:choice>
+                                        <xsl:sequence select="$products"/>
+                                    </xs:choice>
+                                </xs:complexType>
+                            </xs:element>
+                        </xsl:when>
+                        <xsl:when test="$is-response">
+                            <xs:element name="antwoord">
+                                <xs:complexType>
+                                    <xs:choice>
+                                        <xsl:sequence select="$products"/>
+                                    </xs:choice>
+                                </xs:complexType>
+                            </xs:element>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence select="imf:msg(.,'ERROR','This service is not a request or response',())"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                     <xsl:if test="exists($assoc-log)">
                         <xs:element ref="{$EnvelopLog-prefix}:Log"  minOccurs="{$assoc-log/imvert:min-occurs}" maxOccurs="{$assoc-log/imvert:max-occurs}"/>
                     </xsl:if>

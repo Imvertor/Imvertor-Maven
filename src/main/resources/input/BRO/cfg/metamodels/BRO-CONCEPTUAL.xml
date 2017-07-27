@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <!-- 
+        BRO follows KKG ISO (alt 2)
+        
+        Including scalars.
+    --> 
+    <xi:include href="../../../KKG/cfg/metamodels/KKG-ISO.xml"/>
+    
+    <name>BRO</name>
+    
+   <!-- <stereotypes>
+        <stereo id="stereotype-name-IMBRO/A">
+            <name lang="en">IMBRO/A</name>
+            <name lang="nl">IMBRO/A</name>
+            <construct>attribute</construct>
+            <toplevel>false</toplevel>
+        </stereo>
+    </stereotypes> -->
+    
+</metamodel>
