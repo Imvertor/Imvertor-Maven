@@ -52,7 +52,8 @@
         -->
         <name>Geography Markup Language 3</name>
         <!-- 
-            The prefix as used in the schemas (also namespace prefix in qualified name)
+            The prefix as used in the schemas (also namespace prefix in qualified name).
+            Note that this "gml" short name is used as a prefix in XSD, and that this prefix is hardcoded in XSD generation XSLT.
         -->
         <short-name>gml</short-name>
         <!-- 
@@ -409,14 +410,6 @@
                 <xsd-type name="Point" asAttributeDesignation="complextype" asAttribute="PointPropertyType"/>
                 <managed-ids/>
             </construct>
-
-            <construct>
-                <name>GM_ArcString</name>
-                <catalog>#ArcString</catalog>
-                <xsd-type name="ArcString" asAttributeDesignation="complextype" asAttribute="ArcStringType"/>
-                <managed-ids/>
-            </construct>
-            
             
         </map>
         

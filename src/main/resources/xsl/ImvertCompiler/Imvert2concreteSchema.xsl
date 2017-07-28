@@ -103,6 +103,12 @@
         </xsl:choose>
      
     </xsl:template>
+    
+    <!-- replace the short name by the short name configured in the conceptual map --> 
+    <xsl:template match="imvert:package/imvert:short-name" mode="conceptual">
+        <xsl:param name="map" as="element()"/>
+        <xsl:sequence select="imf:create-output-element('imvert:short-name',$map/parent::conceptual-schema/short-name)"/>
+    </xsl:template>
    
     <xsl:template match="imvert:package/imvert:version" mode="conceptual">
         <xsl:param name="map" as="element()"/>
@@ -231,7 +237,7 @@
     <xsl:template match="*" mode="conceptual #default">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
-            <xsl:apply-templates/>
+            <xsl:apply-templates mode="#current"/>
         </xsl:copy>
     </xsl:template>
     

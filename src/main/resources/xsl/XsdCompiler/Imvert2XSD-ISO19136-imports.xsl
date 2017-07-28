@@ -99,15 +99,10 @@
                 <!-- determine for this prefix which schema is created -->
                 <xsl:variable name="prefix" select="."/>
                 <xsl:variable name="schema-def" select="$schema-defs[imvert:prefix = $prefix]"/>
-                <xsl:variable name="schema-namespace" select="$schema-def/imvert:namespace"/>
-                <xsl:variable name="schema-subpath" select="$schema-def/imvert:result-file-subpath"/>
+                <xsl:variable name="schema-namespace" select="$schema-def[1]/imvert:namespace"/>
+                <xsl:variable name="schema-subpath" select="$schema-def[1]/imvert:result-file-subpath"/>
                 
                 <xsl:choose>
-                    <xsl:when test="exists($schema-subpath)">
-                        <!-- schema found. This is a generated schema. -->
-                        <xs:import namespace="{$schema-namespace}" schemaLocation="../../{$schema-subpath}"/>
-                        <namespace prefix="{$prefix}" uri="{$schema-namespace}"/> 
-                    </xsl:when>
                     <xsl:when test="$prefix = 'xs'">
                         <!-- native -->
                         <namespace prefix="xs" uri="http://www.w3.org/2001/XMLSchema"/> 
@@ -125,22 +120,14 @@
                         </xsl:choose>
                         <namespace prefix="xlink" uri="http://www.w3.org/1999/xlink"/> 
                     </xsl:when>
-                    <xsl:when test="$prefix = 'gml'">
-                        <!--
-                        <xsl:choose>
-                            <xsl:when test="imf:boolean($external-schemas-reference-by-url)">
-                                <xs:import namespace="http://www.opengis.net/gml/3.2"
-                                    schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xs:import namespace="http://www.opengis.net/gml/3.2"
-                                    schemaLocation="../../../gml/3.2.1/gml.xsd"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                        <namespace prefix="gml" uri="http://www.opengis.net/gml/3.2"/> 
-                        -->
+                    <xsl:when test="count(distinct-values($schema-def/imvert:namespace)) ne 1">
+                        <xsl:sequence select="imf:msg('ERROR', 'The qualifier [1] is not associated with a single namespace: [2]',($prefix,imf:string-group(distinct-values($schema-def/imvert:namespace))))"/>
                     </xsl:when>
-                    
+                    <xsl:when test="exists($schema-subpath)">
+                        <!-- schema found. This is a generated schema. -->
+                        <xs:import namespace="{$schema-namespace}" schemaLocation="../../{$schema-subpath}"/>
+                        <namespace prefix="{$prefix}" uri="{$schema-namespace}"/> 
+                    </xsl:when>
                     <xsl:otherwise>
                         <xsl:sequence select="imf:msg('ERROR', 'The qualifier [1] cannot be mapped onto an application or external schema',$prefix)"/>
                     </xsl:otherwise>
