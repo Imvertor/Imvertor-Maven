@@ -137,6 +137,7 @@
                 </xsl:variable>
                 <xsl:sequence select="imf:create-output-element('imvert:id',imf:get-ref-id(.))"/>
                 <xsl:sequence select="imf:create-output-element('imvert:name',imf:get-ref-name(.))"/>
+                <xsl:sequence select="imf:create-output-element('imvert:short-name',concat(imvert:short-name,imf:get-config-parameter('reference-suffix-short')))"/>
                 <xsl:sequence select="imf:create-output-element('imvert:namespace',imf:get-ref-namespace(.))"/>
                 <xsl:sequence select="imf:create-output-element('imvert:documentation',$gs,(),false())"/>
                 <xsl:sequence select="imf:create-output-element('imvert:author','(System)')"/>

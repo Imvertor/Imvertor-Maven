@@ -26,6 +26,7 @@
         <name>Spatial schema</name>
         <description>ISO19107 Geographic information – Spatial schema</description>
         <url>http://www.kadaster.nl/conceptual-schemas/ISO19107</url>
+        <short-name>gml</short-name>
         <!--
         <web>http://www.iso.org/iso/catalogue_detail.htm?csnumber=26012</web>
         <web>http://de.wikipedia.org/wiki/ISO_19107</web>
@@ -387,6 +388,7 @@
         <name>Procesresultaat</name>
         <description>Service Envelop Procesresultaat</description>
         <url>http://www.kadaster.nl/conceptual-schemas/envelop/Proces</url>
+        <short-name>pr</short-name>
         <!-- schemas-generiek-procesresultaat-v20110922(0.6-20110922) -->
         <map 
             name="ENVPROC" 
@@ -413,6 +415,8 @@
         <name>Logging</name>
         <description>Service Envelop Logging</description>
         <url>http://www.kadaster.nl/conceptual-schemas/envelop/Log</url>
+        <short-name>lg</short-name>
+        
         <!-- schemas-generiek-procesresultaat-v20110922(0.6-20110922) -->
         <map 
             name="ENVLOG" 
@@ -438,6 +442,7 @@
         <name>Productgegevens</name>
         <description>Service Envelop Productgegevens</description>
         <url>http://www.kadaster.nl/conceptual-schemas/envelop/Product</url>
+        <short-name>pg</short-name>
         <!-- schemas-kik-inzage-verzoektotinformatieantwoord-productgegevens-v20170101(1.0.0-20170101) -->
         <map 
             name="ENVPROD" 
@@ -463,6 +468,7 @@
         <name>NEN3610</name>
         <description>NEN3610 (2011)</description>
         <url>http://www.kadaster.nl/conceptual-schemas/NEN3610</url>
+        <short-name>nen3610</short-name>
         <map 
             name="NEN3610" 
             namespace="http://www.geonovum.nl/NEN3610/schemas/v20110301" 
@@ -512,6 +518,7 @@
         <name>Certificaten (example)</name>
         <description>Sample: certificates</description>
         <url>http://www.kadaster.nl/conceptual-schemas/certificates</url>
+        <short-name>certif</short-name>
         <map 
             name="CERTIF" 
             namespace="http://www.knscm.nl/certificates" 

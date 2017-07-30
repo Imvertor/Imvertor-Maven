@@ -58,7 +58,7 @@
         <xsl:sequence select="imf:get-config-tagged-values()"/>
     </xsl:variable> 
 
-    <!--xsl:variable name="xsd-folder-path" select="imf:get-config-string('system','xsd-folder-path')"/-->
+    <!--xsl:variable name="xsd-folder-path" select="imf:get-config-string('system','xsd-application-folder-path')"/-->
 
     <!-- Within the next variable the configurations defined within the Base-configuration spreadsheet are placed in a processed XML format.
          With this configuration the attributes to be used on each location within the XML schemas are determined. -->

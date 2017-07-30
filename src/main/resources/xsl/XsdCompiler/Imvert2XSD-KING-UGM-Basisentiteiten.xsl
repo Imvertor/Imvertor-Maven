@@ -48,7 +48,7 @@
     <xsl:variable name="stylesheet-code">BES</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
 
-    <xsl:variable name="xsd-folder-path" select="imf:get-config-string('system','xsd-folder-path')"/>
+    <xsl:variable name="xsd-application-folder-path" select="imf:get-config-string('system','xsd-application-folder-path')"/>
     <xsl:variable name="allow-comments-in-schema" select="true() or $debug = 'true'"/>
     
     <xsl:variable 
@@ -68,10 +68,10 @@
     <xsl:variable name="version" select="'0320'"/><!-- TODO #489065 configure -->
     
     <xsl:variable name="schemafile-ent-name" select="concat($prefix,$version,'_ent_basis.xsd')"/>
-    <xsl:variable name="schemafile-ent" select="concat($xsd-folder-path,'/', $schemafile-ent-name)"/>
+    <xsl:variable name="schemafile-ent" select="concat($xsd-application-folder-path,'/', $schemafile-ent-name)"/>
     
     <xsl:variable name="schemafile-dat-name" select="concat($prefix,$version,'_datatypes.xsd')"/>
-    <xsl:variable name="schemafile-dat" select="concat($xsd-folder-path,'/', $schemafile-dat-name)"/>
+    <xsl:variable name="schemafile-dat" select="concat($xsd-application-folder-path,'/', $schemafile-dat-name)"/>
     
     <xsl:template match="/">
         <root/><!-- dummy output -->

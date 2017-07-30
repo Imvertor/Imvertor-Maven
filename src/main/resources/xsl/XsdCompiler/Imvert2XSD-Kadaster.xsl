@@ -45,9 +45,9 @@
     
     <xsl:param name="config-file-path">unknown-file</xsl:param>
    
-    <xsl:variable name="xsd-folder-path" select="imf:get-config-string('system','work-xsd-folder-path')"/>
-    <xsl:variable name="xsd-folder-subpath" select="imf:get-config-string('cli','xsdsubpath')"/>
-        
+    <xsl:variable name="work-xsd-folder-url" select="imf:file-to-url(imf:get-config-string('system','work-xsd-folder-path'))"/>
+    <xsl:variable name="xsd-subpath" select="imf:get-config-string('cli','xsdsubpath')"/>
+    
     <xsl:variable name="is-forced-nillable" select="imf:boolean(imf:get-config-string('cli','forcenillable'))"/>
     
     <!-- 
@@ -59,8 +59,13 @@
     <xsl:variable name="xml-attribute-type" select="('ID')"/>
 
     <xsl:variable 
+        name="external-schemas" 
+        select="$imvert-document//imvert:package[imvert:stereotype=(imf:get-config-stereotypes(('stereotype-name-external-package','stereotype-name-system-package')))]" 
+        as="element(imvert:package)*"/>
+    
+    <xsl:variable 
         name="external-schema-names" 
-        select="$imvert-document//imvert:package[imvert:stereotype=(imf:get-config-stereotypes(('stereotype-name-external-package','stereotype-name-system-package')))]/imvert:name" 
+        select="$external-schemas/imvert:name" 
         as="xs:string*"/>
     
     <xsl:variable 
@@ -90,7 +95,7 @@
                     <xsl:variable name="external-package" select="imf:get-construct-by-id(../imvert:type-package-id)"/>
                     <imvert:schema>
                         <xsl:sequence select="imf:create-info-element('imvert:name',$external-package/imvert:name)"/>
-                        <xsl:sequence select="imf:create-info-element('imvert:prefix',imf:get-short-name(.))"/>
+                        <xsl:sequence select="imf:create-info-element('imvert:prefix',$external-package/imvert:short-name)"/>
                         <xsl:sequence select="imf:create-info-element('imvert:namespace',$external-package/imvert:namespace)"/>
                         <xsl:choose>
                             <xsl:when test="imf:boolean($external-schemas-reference-by-url)">
@@ -100,7 +105,7 @@
                             <xsl:otherwise>
                                 <xsl:comment>Referenced by local path</xsl:comment>
                                 <xsl:variable name="schema-subpath" select="imf:get-xsd-filesubpath($external-package)"/>
-                                <xsl:variable name="file-fullpath" select="concat($xsd-folder-path,'/',$schema-subpath)"/>
+                                <xsl:variable name="file-fullpath" select="imf:get-xsd-filefullpath($external-package)"/>
                                 <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$schema-subpath)"/>
                                 <xsl:sequence select="imf:create-info-element('imvert:result-file-fullpath',$file-fullpath)"/>
                             </xsl:otherwise>
@@ -154,11 +159,10 @@
         <xsl:variable name="schemafile" select="imf:get-xsd-filefullpath(.)"/>
         <imvert:schema> 
             <xsl:sequence select="imvert:name"/>
-            <xsl:sequence select="imf:create-info-element('imvert:prefix',imf:get-short-name(imvert:name))"/>
+            <xsl:sequence select="imf:create-info-element('imvert:prefix',imvert:short-name)"/>
             <xsl:sequence select="imf:create-info-element('imvert:is-referencing',$this-package-is-referencing)"/>
             <xsl:sequence select="imf:create-info-element('imvert:namespace',imf:get-namespace(.))"/>
             <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$schema-subpath)"/>
-            <xsl:sequence select="imf:create-info-element('imvert:xsd-path',$xsd-folder-path)"/>
             <xsl:sequence select="imf:create-info-element('imvert:result-file-fullpath',$schemafile)"/>
         
             <xs:schema>
@@ -171,7 +175,7 @@
                 <xsl:attribute name="version" select="concat($schema-version,'-',$schema-phase)"/>
         
                 <!-- set my own namespaces (qualified) -->
-                <xsl:namespace name="{imf:get-short-name(imvert:name)}" select="imf:get-namespace(.)"/>
+                <xsl:namespace name="{imvert:short-name}" select="imf:get-namespace(.)"/>
                 
                 <!-- version info -->
                 <xsl:sequence select="imf:get-annotation(.,imf:get-schema-info(.),imf:get-appinfo-version(.))"/>
@@ -331,9 +335,9 @@
         <xsl:variable name="rname" select="($assocs/imvert:name[not(@origin = 'system')])[1]"/>
         <xsl:variable name="results-name" select="if ($products[2] or empty($rname)) then 'GeleverdProduct' else $rname"/>
         
-        <xsl:variable name="EnvelopProces-prefix" select="imf:get-short-name('EnvelopProces')"/>
-        <xsl:variable name="EnvelopProduct-prefix" select="imf:get-short-name('EnvelopProduct')"/>
-        <xsl:variable name="EnvelopLog-prefix" select="imf:get-short-name('EnvelopLog')"/>
+        <xsl:variable name="EnvelopProces-prefix" select="'pr'"/>
+        <xsl:variable name="EnvelopProduct-prefix" select="'pg'"/>
+        <xsl:variable name="EnvelopLog-prefix" select="'lg'"/>
         
         <xsl:variable name="is-request" select="ends-with(imvert:name,'Request')"/>
         <xsl:variable name="is-response" select="ends-with(imvert:name,'Response')"/>
@@ -595,13 +599,16 @@
         See also http://stackoverflow.com/questions/626319/add-attributes-to-a-simpletype-or-restrictrion-to-a-complextype-in-xml-schema
     --> 
     <xsl:template match="imvert:attribute" mode="nil-reason">
-        <xsl:variable name="basetype-name" select="imf:get-restriction-basetype-name(.)"/> <!-- e.g. Class1_att2_Basetype -->
-        <xsl:variable name="type" select="imf:get-type(imvert:type-name,imvert:type-package)"/>
+        <xsl:variable name="basetype-name" select="imf:get-restriction-basetype-name(.)"/> <!-- e.g. Basetype_Bike_color -->
+        
+        <xsl:variable name="scalar" select="$all-scalars[@id=current()/imvert:type-name]"/> <!-- this is a scalar-string or the like -->
+        <xsl:variable name="xs-type" select="$scalar/type-map[@formal-lang='xs']"/> <!-- returns xs:string or the like -->
+        
         <xs:simpleType name="{$basetype-name}">
             <xs:annotation>
                 <xs:documentation><p>Generated class. Introduced because the identified attribute is voidable and is a restriction of a simple type.</p></xs:documentation>
             </xs:annotation>
-            <xs:restriction base="{$type}">
+            <xs:restriction base="xs:{$xs-type}">
                 <xsl:sequence select="imf:create-datatype-property(.)"/>
             </xs:restriction>
         </xs:simpleType>
@@ -645,48 +652,71 @@
         The package name is always specified but is irrelevant for scalars.
     -->
     <xsl:function name="imf:get-type" as="xs:string">
-        <xsl:param name="uml-type" as="xs:string"/>
-        <xsl:param name="package-name" as="xs:string?"/>
+        <xsl:param name="uml-type" as="xs:string"/> 
+        <xsl:param name="package-name" as="xs:string?"/> 
         
-        <!-- IM-69
-            introduceer de mogelijkheid datatypen naar systeem typen te mappen 
-        -->
+        <!-- check if the package is external -->
+        <xsl:variable name="external-package" select="$external-schemas[imvert:name = $package-name]"/>
+        
         <xsl:variable name="defining-class" select="imf:get-class($uml-type,$package-name)"/>
-        <xsl:variable name="primitive" select="$defining-class/imvert:primitive"/>
+        <xsl:variable name="defining-package" select="$defining-class/.."/>
         
-        <xsl:variable name="uml-type-name" select="if (contains($uml-type,':')) then substring-after($uml-type,':') else $uml-type"/>
-        <xsl:variable name="primitive-type" select="substring-after($uml-type-name,'http://schema.omg.org/spec/UML/2.1/uml.xml#')"/>
-        <xsl:variable name="base-type" select="
-            if ($primitive)
-            then $primitive
-            else
-                if ($primitive-type) 
-                then $primitive-type 
-                else 
-                    if (not($package-name) or imf:is-system-package($package-name)) 
-                    then $uml-type-name 
-                    else ''"/>
-        <xsl:variable name="scalar" select="$all-scalars[@id=$base-type][last()]"/>
         <xsl:choose>
-            <xsl:when test="$base-type"> 
-                <xsl:variable name="xs-type" select="$scalar/type-map[@formal-lang='xs']"/>
+            <xsl:when test="exists($external-package)">
+                <xsl:value-of select="concat($external-package/imvert:short-name,':',$uml-type)"/>
+            </xsl:when>
+            
+            <xsl:when test="$package-name and empty($defining-package)">
+                <!-- this is a class that is not known. This is the case for nilreasons on scalar types, we need to create a class for that. -->  
+                <xsl:variable name="short-name" select="$document-packages[imvert:name = $package-name]/imvert:short-name"/>
+                <xsl:value-of select="concat($short-name,':',$uml-type)"/>
+            </xsl:when>
+           
+            <xsl:otherwise>
+                
+                <xsl:variable name="primitive" select="$defining-class/imvert:primitive"/> <!-- e.g. BOOLEAN -->
+                
+                <xsl:variable name="uml-type-name" select="if (contains($uml-type,':')) then substring-after($uml-type,':') else $uml-type"/>
+                <xsl:variable name="primitive-type" select="substring-after($uml-type-name,'http://schema.omg.org/spec/UML/2.1/uml.xml#')"/>
+                
+                <xsl:variable name="base-type" select="
+                    if ($primitive)
+                    then $primitive
+                    else
+                        if ($primitive-type) 
+                        then $primitive-type 
+                        else 
+                            if (not($package-name) or imf:is-system-package($package-name)) 
+                            then $uml-type-name 
+                            else ''"/>
+                
+                <xsl:variable name="scalar" select="$all-scalars[@id=$base-type][last()]"/>
+                
                 <xsl:choose>
-                    <xsl:when test="exists($scalar) and starts-with($xs-type,'#')">
-                        <xsl:value-of select="$xs-type"/>
-                    </xsl:when> 
-                    <xsl:when test="exists($scalar)">
-                        <xsl:value-of select="concat('xs:', $xs-type)"/>
+                    <xsl:when test="$base-type"> 
+                        <xsl:variable name="xs-type" select="$scalar/type-map[@formal-lang='xs']"/>
+                        <xsl:choose>
+                            <xsl:when test="exists($scalar) and starts-with($xs-type,'#')">
+                                <xsl:value-of select="$xs-type"/>
+                            </xsl:when> 
+                            <xsl:when test="exists($scalar)">
+                                <xsl:value-of select="concat('xs:', $xs-type)"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="'xs:string'"/>
+                                <xsl:sequence select="imf:msg('ERROR', 'Unknown native type: [1]', $base-type)"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:value-of select="'xs:string'"/>
-                        <xsl:sequence select="imf:msg('ERROR', 'Unknown native type: [1]', $base-type)"/>
+                        <xsl:value-of select="concat($defining-package/imvert:short-name,':',$uml-type-name)"/>
                     </xsl:otherwise>
                 </xsl:choose>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="concat(imf:get-short-name($package-name),':',$uml-type-name)"/>
+                
             </xsl:otherwise>
         </xsl:choose>
+        
+        
     </xsl:function>
     
     <xsl:function name="imf:create-element-property" as="item()*">
@@ -1434,7 +1464,7 @@
         
     <xsl:function name="imf:get-qname" as="xs:string">
         <xsl:param name="class" as="node()"/>
-        <xsl:value-of select="concat(imf:get-short-name($class/parent::imvert:package/imvert:name),':',$class/imvert:name)"/>
+        <xsl:value-of select="concat($class/parent::imvert:package/imvert:short-name,':',$class/imvert:name)"/>
     </xsl:function>
     
     <xsl:function name="imf:get-namespace" as="xs:string">
@@ -1485,7 +1515,7 @@
                 <xsl:value-of select="imf:get-uri-parts($this/imvert:location)/path"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="concat($xsd-folder-subpath,'/',imf:get-xsd-filefolder($this), '/', encode-for-uri(imf:get-xsd-filename($this)))"/>
+                <xsl:value-of select="concat($xsd-subpath, '/', imf:get-xsd-filefolder($this), '/', encode-for-uri(imf:get-xsd-filename($this)))"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -1496,7 +1526,7 @@
     <xsl:function name="imf:get-xsd-filefullpath" as="xs:string">
         <xsl:param name="this" as="element()"/>
         <xsl:variable name="schema-subpath" select="imf:get-xsd-filesubpath($this)"/>
-        <xsl:value-of select="concat($xsd-folder-path,'/',$schema-subpath)"/>
+        <xsl:value-of select="concat($work-xsd-folder-url,'/',$schema-subpath)"/>
     </xsl:function>
   
     <!-- 

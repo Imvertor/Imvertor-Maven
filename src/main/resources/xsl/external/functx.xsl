@@ -77,4 +77,15 @@
 			replace($arg,'^\s+','')
 			"/>
 	</xsl:function>
+	
+	<xsl:function name="functx:repeat-string" as="xs:string">
+		<xsl:param name="stringToRepeat" as="xs:string?"/>
+		<xsl:param name="count" as="xs:integer"/>
+		
+		<xsl:sequence select="
+			string-join((for $i in 1 to $count return $stringToRepeat),
+			'')
+			"/>
+		
+	</xsl:function>
 </xsl:stylesheet>

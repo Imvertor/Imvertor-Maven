@@ -20,6 +20,9 @@
             Insert it as the alias of the <<external>> package. 
         -->
         <url>http://www.bro.nl/conceptual-schemas/SampleExternalModelA</url>
+         
+        <short-name>sample</short-name>
+        
         <map 
             name="SampleExternalModelA" 
             namespace="http://www.bro.nl/SampleExternalModelA" 

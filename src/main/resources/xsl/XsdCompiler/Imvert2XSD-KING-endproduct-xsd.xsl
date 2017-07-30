@@ -53,7 +53,7 @@
     <!--xsl:variable name="imvert-endproduct" select="imf:document(imf:get-config-string('properties','RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH'))"/-->  
     
     
-    <!--xsl:variable name="xsd-folder-path" select="imf:get-config-string('system','xsd-folder-path')"/-->
+    <!--xsl:variable name="xsd-folder-path" select="imf:get-config-string('system','xsd-application-folder-path')"/-->
     <!--xsl:variable name="koppelvlak-folder" select="substring-after(ep:message-sets/ep:message-set[@KV-namespace='yes']/ep:namespace,'http://www.stufstandaarden.nl/koppelvlak/')"/-->
     <xsl:variable name="xsd-file-folder-path" select="imf:get-config-string('properties','RESULT_XSD_APPLICATION_FOLDER')"/>
     <!--xsl:variable name="xsd-file-url" select="imf:file-to-url(concat($xsd-file-folder-path,'/koppelvlak.xsd'))"/-->

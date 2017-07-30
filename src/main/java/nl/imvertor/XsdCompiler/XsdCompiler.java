@@ -111,7 +111,7 @@ public class XsdCompiler extends Step {
 				
 		AnyFolder xsdApplicationFolder = new AnyFolder(configurator.getParm("properties","RESULT_XSD_APPLICATION_FOLDER"));
 		xsdApplicationFolder.mkdirs();
-		configurator.setParm("system","xsd-folder-path", xsdApplicationFolder.toURI().toString());
+		configurator.setParm("system","xsd-application-folder-path", xsdApplicationFolder.toURI().toString());
 	
 		runner.debug(logger,"CHAIN","Generating XML schemas to " + xsdApplicationFolder);
 		
@@ -149,7 +149,7 @@ public class XsdCompiler extends Step {
 				
 		AnyFolder xsdApplicationFolder = new AnyFolder(configurator.getParm("properties","RESULT_XSD_APPLICATION_FOLDER"));
 		xsdApplicationFolder.mkdirs();
-		configurator.setParm("system","xsd-folder-path", xsdApplicationFolder.toURI().toString());
+		configurator.setParm("system","xsd-application-folder-path", xsdApplicationFolder.toURI().toString());
 	
 		runner.debug(logger,"CHAIN","Generating XML schemas to " + xsdApplicationFolder);
 		
@@ -180,7 +180,7 @@ public class XsdCompiler extends Step {
 				
 		AnyFolder xsdApplicationFolder = new AnyFolder(configurator.getParm("properties","RESULT_XSD_APPLICATION_FOLDER"));
 		xsdApplicationFolder.mkdirs();
-		configurator.setParm("system","xsd-folder-path", xsdApplicationFolder.toURI().toString());
+		configurator.setParm("system","xsd-application-folder-path", xsdApplicationFolder.toURI().toString());
 	
 		runner.debug(logger,"CHAIN","Generating XML schemas to " + xsdApplicationFolder);
 		
@@ -216,7 +216,7 @@ public class XsdCompiler extends Step {
 				
 		AnyFolder xsdApplicationFolder = new AnyFolder(configurator.getParm("properties","RESULT_XSD_APPLICATION_FOLDER"));
 		xsdApplicationFolder.mkdirs();
-		configurator.setParm("system","xsd-folder-path", xsdApplicationFolder.toURI().toString());
+		configurator.setParm("system","xsd-application-folder-path", xsdApplicationFolder.toURI().toString());
 	
 		runner.debug(logger,"CHAIN","Generating BSM XML schemas to " + xsdApplicationFolder);
 		
@@ -281,7 +281,7 @@ public class XsdCompiler extends Step {
 				
 		AnyFolder xsdApplicationFolder = new AnyFolder(configurator.getParm("properties","RESULT_XSD_APPLICATION_FOLDER"));
 		xsdApplicationFolder.mkdirs();
-		configurator.setParm("system","xsd-folder-path", xsdApplicationFolder.toURI().toString());
+		configurator.setParm("system","xsd-application-folder-path", xsdApplicationFolder.toURI().toString());
 	
 		runner.debug(logger,"CHAIN","Generating UGM XML schemas to " + xsdApplicationFolder);
 		

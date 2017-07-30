@@ -26,6 +26,8 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:functx="http://www.functx.com"
+    
     xmlns:ekf="http://EliotKimber/functions"
 
     exclude-result-prefixes="#all"
@@ -35,7 +37,7 @@
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
   
     <xsl:variable name="schema-defs" select="/imvert:schemas/imvert:schema"/>
-    
+  
     <xsl:template match="/imvert:schemas">
         
        <!-- 
@@ -45,7 +47,6 @@
             <imvert:prefix>a</imvert:name>
             <imvert:namespace>http://www.kadaster.nl/schemas/PersoonZoekenEnOpvoeren/CDMKAD-adres/v20150201</imvert:namespace>
             <imvert:result-file-subpath>CDMKAD-adres/v20150201/PersoonZoekenEnOpvoeren_Adres_v1_8_0.xsd</imvert:result-file-subpath>
-            <imvert:xsd-path>file:/D:/projects/validprojects/Kadaster-Imvertor/Imvertor-OS-work/default/app/xsd/PersoonZoekenEnOpvoeren/</imvert:xsd-path>
             <imvert:result-file-fullpath>file:/D:/projects/validprojects/Kadaster-Imvertor/Imvertor-OS-work/default/app/xsd/PersoonZoekenEnOpvoeren/CDMKAD-adres/v20150201/PersoonZoekenEnOpvoeren_Adres_v1_8_0.xsd</imvert:result-file-fullpath>
         </imvert:schema>
        -->
@@ -74,6 +75,7 @@
     <xsl:template match="xs:schema">
         
         <xsl:variable name="my-qualifier" select="../imvert:prefix"/>
+        <xsl:variable name="my-subpath" select="../imvert:result-file-subpath"/>
         <xsl:variable name="my-fullpath" select="../imvert:result-file-fullpath"/>
         <xsl:variable name="is-referencing" select="imf:boolean(../imvert:is-referencing)"/>
         
@@ -102,6 +104,12 @@
                 <xsl:variable name="schema-namespace" select="$schema-def[1]/imvert:namespace"/>
                 <xsl:variable name="schema-subpath" select="$schema-def[1]/imvert:result-file-subpath"/>
                 
+                <!-- 
+                    The steps to take back to the xsd folder, for all generated model schemas 
+                    This is the number of folders in the subpath, and two added folders for application name & release. 
+                -->
+                <xsl:variable name="steps-back" select="functx:repeat-string('../',count(tokenize($my-subpath,'/')) - 1)"/>     
+                
                 <xsl:choose>
                     <xsl:when test="$prefix = 'xs'">
                         <!-- native -->
@@ -125,7 +133,7 @@
                     </xsl:when>
                     <xsl:when test="exists($schema-subpath)">
                         <!-- schema found. This is a generated schema. -->
-                        <xs:import namespace="{$schema-namespace}" schemaLocation="../../{$schema-subpath}"/>
+                        <xs:import namespace="{$schema-namespace}" schemaLocation="{$steps-back}{$schema-subpath}"/>
                         <namespace prefix="{$prefix}" uri="{$schema-namespace}"/> 
                     </xsl:when>
                     <xsl:otherwise>

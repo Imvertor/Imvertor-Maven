@@ -42,8 +42,9 @@
     
     <xsl:param name="config-file-path">unknown-file</xsl:param>
    
-    <xsl:variable name="xsd-folder-path" select="imf:get-config-string('system','xsd-folder-path')"/>
-
+    <xsl:variable name="work-xsd-folder-url" select="imf:file-to-url(imf:get-config-string('system','work-xsd-folder-path'))"/>
+    <xsl:variable name="xsd-subpath" select="imf:get-config-string('cli','xsdsubpath')"/>
+    
     <xsl:variable name="is-forced-nillable" select="imf:boolean(imf:get-config-string('cli','forcenillable'))"/>
     
     <xsl:variable name="current-datetime" select="imf:format-dateTime(imf:get-config-string('run','start'))"/>
@@ -160,7 +161,6 @@
             <xsl:sequence select="imf:create-info-element('imvert:is-referencing',$this-package-is-referencing)"/>
             <xsl:sequence select="imf:create-info-element('imvert:namespace',imf:get-namespace(.))"/>
             <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$schema-subpath)"/>
-            <xsl:sequence select="imf:create-info-element('imvert:xsd-path',$xsd-folder-path)"/>
             <xsl:sequence select="imf:create-info-element('imvert:result-file-fullpath',$schemafile)"/>
         
             <xs:schema>
@@ -1274,7 +1274,7 @@
 
     <!-- 
         Return the complete subpath and filename of the xsd file to be generated.
-        Sample: my/schema/MyappMypackage_1_0_3.xsd
+        Sample: subpath/my/schema/MyappMypackage_1_0_3.xsd
     -->
     <xsl:function name="imf:get-xsd-filesubpath" as="xs:string">
         <xsl:param name="this" as="node()"/> <!-- a package -->
@@ -1284,13 +1284,11 @@
                     the package is external (GML, Xlink or the like). 
                     Place reference to that external pack. 
                     The package is copied alongside the target application package.
-                    Note that the xsd foilder path is set to the project name (e.g. IMKAD) but the external 
-                    schema's are copied to the folder at the parent location. So the folder path is 1 step up. 
                 --> 
-                <xsl:value-of select="concat('../',imf:get-uri-parts($this/imvert:location)/path)"/>
+                <xsl:value-of select="imf:get-uri-parts($this/imvert:location)/path"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="concat(imf:get-xsd-filefolder($this), '/', encode-for-uri(imf:get-xsd-filename($this)))"/>
+                <xsl:value-of select="concat($xsd-subpath, '/', imf:get-xsd-filefolder($this), '/', encode-for-uri(imf:get-xsd-filename($this)))"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -1301,7 +1299,7 @@
     <xsl:function name="imf:get-xsd-filefullpath" as="xs:string">
         <xsl:param name="this" as="element()"/>
         <xsl:variable name="schema-subpath" select="imf:get-xsd-filesubpath($this)"/>
-        <xsl:value-of select="concat($xsd-folder-path,$schema-subpath)"/>
+        <xsl:value-of select="concat($work-xsd-folder-url,'/',$schema-subpath)"/>
     </xsl:function>
   
     <!-- 
