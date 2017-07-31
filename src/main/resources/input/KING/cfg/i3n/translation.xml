@@ -117,35 +117,35 @@
 
     <item>
         <key>BOOLEAN</key>
-        <trans lang="nl">xxBoolean</trans>
+        <trans lang="nl">Boolean</trans>
     </item>
     <item>
         <key>DATE</key>
-        <trans lang="nl">xxDatum</trans>
+        <trans lang="nl">Datum</trans>
     </item>
     <item>
         <key>DATETIME</key>
-        <trans lang="nl">xxDatumTijd</trans>
+        <trans lang="nl">DatumTijd</trans>
     </item>
     <item>
         <key>TIME</key>
-        <trans lang="nl">xxTijd</trans>
+        <trans lang="nl">Tijd</trans>
     </item>
     <item>
         <key>INTEGER</key>
-        <trans lang="nl">xxInt</trans>
+        <trans lang="nl">Int</trans>
     </item>
     <item>
         <key>FLOAT</key>
-        <trans lang="nl">xxReal</trans>
+        <trans lang="nl">Real</trans>
     </item>
     <item>
         <key>YEAR</key>
-        <trans lang="nl">xxJaar</trans>
+        <trans lang="nl">Jaar</trans>
     </item>
     <item>
         <key>TXT</key>
-        <trans lang="nl">xxTekst</trans>
+        <trans lang="nl">Tekst</trans>
     </item>
 
     <item>

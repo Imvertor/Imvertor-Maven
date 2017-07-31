@@ -41,22 +41,32 @@
     
     <xsl:function name="imf:inspire-notes-parts" as="element()*">
         <xsl:param name="text"/>
-        
-        <xsl:analyze-string select="$text" regex="({$inspire-notes-parts-subpattern})\s+(.*?)\n\s*?(\n|$)" flags="s">
-            <xsl:matching-substring>
-                <typ>
-                    <xsl:value-of select="regex-group(1)"/>
-                </typ>
-                <val>
-                    <xsl:value-of select="regex-group($inspire-notes-parts-subpattern-count + 2)"/>
-                </val>
-            </xsl:matching-substring>
-            <xsl:non-matching-substring>
+        <xsl:choose>
+            <xsl:when test="normalize-space($inspire-notes-parts-subpattern)">
+                <!-- labels have been defined -->
+                <xsl:analyze-string select="$text" regex="({$inspire-notes-parts-subpattern})\s+(.*?)\n\s*?(\n|$)" flags="s">
+                    <xsl:matching-substring>
+                        <typ>
+                            <xsl:value-of select="regex-group(1)"/>
+                        </typ>
+                        <val>
+                            <xsl:value-of select="regex-group($inspire-notes-parts-subpattern-count + 2)"/>
+                        </val>
+                    </xsl:matching-substring>
+                    <xsl:non-matching-substring>
+                        <txt>
+                            <xsl:value-of select="."/>
+                        </txt>
+                    </xsl:non-matching-substring>
+                </xsl:analyze-string>
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- no labels have been defined -->
                 <txt>
-                    <xsl:value-of select="."/>
+                    <xsl:value-of select="$text"/>
                 </txt>
-            </xsl:non-matching-substring>
-        </xsl:analyze-string>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     
     <xsl:function name="imf:inspire-notes" as="element(section)*">

@@ -138,6 +138,11 @@
         </xsl:choose>
     </xsl:template>
     
+    <!-- The name of a tagged value must be normalized here, for cases where such names are entered manually -->
+    <xsl:template match="UML:TaggedValue/@tag">
+        <xsl:attribute name="tag" select="normalize-space(.)"/>
+    </xsl:template>
+    
     <!--x
     <!- - 
         any class found that is not within then application package or an external package is added as a stub 
@@ -168,7 +173,7 @@
     
     <xsl:template match="node()|@*">
         <xsl:copy>
-            <xsl:copy-of select="@*"/>
+            <xsl:apply-templates select="@*"/>
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>

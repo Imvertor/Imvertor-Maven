@@ -171,8 +171,8 @@
                 <stereo required="no">stereotype-name-union-element</stereo>
                 <stereo required="no">stereotype-name-enum</stereo>
                 
-                <stereo required="yes">stereotype-name-external-package</stereo>
-                <stereo required="yes">stereotype-name-view-package</stereo>
+                <stereo required="no">stereotype-name-external-package</stereo>
+                <stereo required="no">stereotype-name-view-package</stereo>
             </stereotypes>
         </tv>
     </tagged-values>

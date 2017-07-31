@@ -55,13 +55,7 @@
         <name lang="nl">Alternatieve naam</name>
         <name lang="en">Alternative name</name>
         <levels>
-            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
-            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
-            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
-            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
-            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
-            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
-            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+           <!-- none -->
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-MNEMONIC">

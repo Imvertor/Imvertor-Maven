@@ -580,8 +580,8 @@
     <xsl:function name="imf:get-formatted-tagged-value" as="xs:string">        
         <xsl:param name="this" />
         <xsl:param name="tv-id"/>
-        <xsl:variable name="value" select="imf:get-most-relevant-compiled-taggedvalue($this,concat('##',$tv-id))"/>
-        <xsl:value-of select="imf:get-clean-documentation-string($value)"/>
+        <xsl:variable name="tv-element" select="imf:get-most-relevant-compiled-taggedvalue-element($this,concat('##',$tv-id))"/>
+        <xsl:value-of select="imf:get-clean-documentation-string(imf:get-tv-value($tv-element))"/>
     </xsl:function>
     
     <xsl:function name="imf:get-formatted-tagged-value-cfg" as="item()*">        
@@ -592,21 +592,20 @@
             <xsl:when test="$level/@compile = 'full'">
                 <xsl:variable name="all-tv" select="imf:get-all-compiled-tagged-values($this,false())"/>
                 <xsl:variable name="vals" select="$all-tv[@id = $tv-id]"/>
-                <!--<xsl:message select="(imf:get-display-name($this), $tv-id, $vals/@value)"/>-->
                 <xsl:for-each select="$vals">
                     <item type="TRACED">
                         <item type="SUPPLIER">
                             <xsl:value-of select="imf:get-subpath(@project,@application,@release)"/>
                         </item>
                         <item>
-                            <xsl:value-of select="imf:get-clean-documentation-string(@value)"/>
+                            <xsl:value-of select="imf:get-clean-documentation-string(imf:get-tv-value(.))"/>
                         </item>
                     </item>
                 </xsl:for-each>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:variable name="val" select="imf:get-most-relevant-compiled-taggedvalue($this,concat('##',$tv-id))"/>
-                <xsl:value-of select="imf:get-clean-documentation-string($val)"/>
+                <xsl:variable name="tv-element" select="imf:get-most-relevant-compiled-taggedvalue-element($this,concat('##',$tv-id))"/>
+                <xsl:value-of select="imf:get-clean-documentation-string(imf:get-tv-value($tv-element))"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -987,6 +986,11 @@
             </xsl:otherwise>
         </xsl:choose>
         
+    </xsl:function>
+    
+    <xsl:function name="imf:get-tv-value">
+        <xsl:param name="tv-element" as="element(tv)?"/>
+        <xsl:value-of select="$tv-element/@value"/>
     </xsl:function>
     
     <!-- ======== cleanup all section structure: remove empties =========== -->
