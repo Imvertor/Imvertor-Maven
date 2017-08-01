@@ -100,7 +100,7 @@
     <xsl:template match="*[self::imvert:class | self::imvert:attribute | imvert:association]/imvert:name">
         <!-- setup -->
         <xsl:variable name="name" select="."/>
-   
+        
         <!-- validate -->
         <xsl:sequence select="imf:report-warning(., 
             not(../imvert:stereotype = 'ENUM') and
@@ -109,5 +109,17 @@
         
         <xsl:next-match/>
     </xsl:template>
+    
+    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-referentielijst')]">
+        <!-- setup -->
+        
+        <!-- validate -->
+        <xsl:sequence select="imf:report-error(., 
+            empty(*/imvert:attribute[imvert:is-id = 'true']), 
+            'At least one attribute must identify this [1]', (imf:get-config-stereotypes('stereotype-name-referentielijst')))"/>
+        
+        <xsl:next-match/>
+    </xsl:template>
+    
     
 </xsl:stylesheet>

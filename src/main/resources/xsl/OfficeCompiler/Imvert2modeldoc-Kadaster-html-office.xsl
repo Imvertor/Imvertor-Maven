@@ -315,6 +315,11 @@
     
     <xsl:template match="item" mode="#all">
         <xsl:choose>
+            <xsl:when test="exists(@idref) and @idref-type='external'">
+                <a class="external-link" href="{@idref}"> <!--this is an URL -->
+                    <xsl:apply-templates mode="#current"/>
+                </a>
+            </xsl:when>
             <xsl:when test="exists(@idref)">
                 <a class="link" href="#global-{@idref}">
                     <xsl:apply-templates mode="#current"/>

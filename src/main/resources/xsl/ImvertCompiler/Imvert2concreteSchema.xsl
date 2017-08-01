@@ -36,9 +36,7 @@
     
     <xsl:import href="../common/Imvert-common.xsl"/>
     
-    <xsl:variable name="conceptual-schema-mapping-name" select="imf:get-config-string('cli','mapping')"/>
-    <xsl:variable name="conceptual-schema-mapping-file" select="imf:get-config-string('properties','CONCEPTUAL_SCHEMA_MAPPING_FILE')"/>
-    <xsl:variable name="conceptual-schema-mapping" select="imf:document($conceptual-schema-mapping-file,true())/conceptual-schemas"/>
+    <xsl:import href="../common/Imvert-common-conceptual-map.xsl"/>
    
     <xsl:variable name="stylesheet-code">CSCH</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
@@ -149,11 +147,12 @@
     
     <xsl:template match="imvert:class/imvert:name" mode="conceptual">
         <xsl:param name="map" as="element()"/>
-        <xsl:variable name="mapped-xsd-type" select="$map/construct[name = current()/@original]/xsd-type"/>
+        
+        <xsl:variable name="mapped-construct" select="$map/construct[name = current()/@original]"/>
         <xsl:choose>
-            <xsl:when test="$mapped-xsd-type">
+            <xsl:when test="$mapped-construct">
                 <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-class-name',.)"/>
-                <xsl:sequence select="imf:create-output-element('imvert:name',$mapped-xsd-type/@name)"/>
+                <xsl:sequence select="imf:create-output-element('imvert:name',$mapped-construct/xsd-type/@name)"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:msg('ERROR','Cannot determine an element name for interface name [1] when using mapping [2]',(.,$conceptual-schema-mapping-name))"/>

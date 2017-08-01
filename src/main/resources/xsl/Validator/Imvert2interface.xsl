@@ -33,11 +33,8 @@
     -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
-    
-    <xsl:variable name="conceptual-schema-mapping-name" select="imf:get-config-string('cli','mapping')"/>
-    <xsl:variable name="conceptual-schema-mapping-file" select="imf:get-config-string('properties','CONCEPTUAL_SCHEMA_MAPPING_FILE')"/>
-    <xsl:variable name="conceptual-schema-mapping" select="imf:document($conceptual-schema-mapping-file,true())/conceptual-schemas"/>
-    
+    <xsl:import href="../common/Imvert-common-conceptual-map.xsl"/>
+        
     <xsl:template match="/imvert:packages">
         <xsl:copy>
             <xsl:sequence select="imf:compile-imvert-header(.)"/>
@@ -79,6 +76,9 @@
                     <imvert:id>
                         <xsl:value-of select="imvert:id"/>
                     </imvert:id>
+                    <imvert:catalog>
+                        <xsl:sequence select="imf:create-catalog-url($construct)"/>     
+                    </imvert:catalog>
                     <imvert:stereotype id="CFG-ST-INTERFACE">
                         <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-interface')"/>
                     </imvert:stereotype>

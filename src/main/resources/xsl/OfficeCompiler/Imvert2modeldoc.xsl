@@ -876,10 +876,22 @@
         <xsl:param name="this"/>
         <xsl:param name="type"/>
         <xsl:param name="label"/>
-        <item type="{$type}">
-            <xsl:sequence select="imf:create-idref($this,$type)"/>
-            <xsl:sequence select="imf:create-content($label)"/>
-        </item>
+        <!--
+            if the link is to an external type, insert catalog reference, otherwise insert a link to this documentation 
+        -->
+        <xsl:choose>
+            <xsl:when test="exists($this/imvert:catalog) ">
+                <item type="{$type}">
+                    <xsl:sequence select="imf:create-external-idref($this)"/>
+                    <xsl:sequence select="imf:create-external-content($label)"/>
+                </item>
+            </xsl:when>
+            <xsl:otherwise>
+                <item type="{$type}">
+                    <xsl:sequence select="imf:create-idref($this,$type)"/>
+                    <xsl:sequence select="imf:create-content($label)"/>
+                </item>            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     
     <xsl:function name="imf:get-construct-by-id-for-office">
@@ -908,6 +920,17 @@
         <xsl:if test="exists($construct)">
             <xsl:attribute name="idref" select="imf:plugin-get-link-name($construct,$type)"/>
         </xsl:if>
+    </xsl:function>
+    
+    <xsl:function name="imf:create-external-content">
+        <xsl:param name="content"/>
+        <xsl:sequence select="if ($content instance of attribute()) then string($content) else $content"/>
+    </xsl:function>
+
+    <xsl:function name="imf:create-external-idref">
+        <xsl:param name="construct"/>
+        <xsl:attribute name="idref" select="imf:plugin-get-external-link-name($construct)"/>
+        <xsl:attribute name="idref-type" select="'external'"/>
     </xsl:function>
     
     <!-- =========== plugins ============= -->
@@ -946,6 +969,11 @@
         <xsl:variable name="isrole" select="exists($this/self::imvert:target)"/>
         <xsl:variable name="construct" select="if ($isrole) then $this/.. else $this"/>
         <xsl:sequence select="concat($type,'_',generate-id($construct))"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:plugin-get-external-link-name">
+        <xsl:param name="this"/>
+        <xsl:value-of select="$this/imvert:catalog"/>
     </xsl:function>
     
     <!-- 
