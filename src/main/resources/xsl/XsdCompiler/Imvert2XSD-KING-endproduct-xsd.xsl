@@ -75,6 +75,7 @@
                     </xsl:when>
                     <xsl:when test="@KV-namespace = 'yes'">
                         <xsl:sequence select="imf:set-config-string('system','xsd-result-subpath-BSM',$xsd-result-subpath-BSM)"/>
+                        <xsl:sequence select="imf:set-config-string('appinfo','xsd-result-subpath-kv',concat($prefix,$version,'/',$prefix,$version,'.xsd'))"/>
                         <xsl:value-of select="imf:file-to-url(concat($xsd-result-subpath-BSM,'/',$prefix,$version,'.xsd'))"/>
                     </xsl:when>
                     <!-- ROME: hieronder moet nog een variabele gedeclareerd worden waarin het versie nummer van het horizontale sectormodel wordt opgeslagen.

@@ -686,25 +686,9 @@
         <xsl:copy>
             <!-- skip first row -->
             <xsl:apply-templates select="row[1]"/>
-            
             <xsl:for-each select="$namespaces">
                 <xsl:variable name="message-row" select="position() + 1"/>
-                <row r="{$message-row}" spans="1:2">
-                    <c r="A{$message-row}" s="0" t="inlineStr">
-                        <is>
-                            <t>
-                                <xsl:value-of select="@prefix"/>
-                            </t>
-                        </is>
-                    </c>
-                    <c r="B{$message-row}" s="0" t="inlineStr">
-                        <is>
-                            <t>
-                                <xsl:value-of select="."/>
-                            </t>
-                        </is>
-                    </c>
-                </row>
+                <xsl:sequence select="imf:create-row($message-row,@prefix,.,3)"/>
             </xsl:for-each>
         </xsl:copy>
     </xsl:template>
@@ -715,32 +699,55 @@
             <!-- skip first row -->
             <xsl:apply-templates select="row[1]"/>
             
-            <row r="2" spans="1:2">
-                <c r="A2" s="0" t="inlineStr">
-                    <is>
-                        <t>TEST label</t>
-                    </is>
-                </c>
-                <c r="B2" s="0" t="inlineStr">
-                    <is>
-                        <t>TEST waarde</t>
-                    </is>
-                </c>
-            </row>
+            <xsl:sequence select="imf:create-row(2,'creation-version',imf:get-config-string('run','version'),3)"/>
+            <xsl:sequence select="imf:create-row(3,'creation-date',imf:format-dateTime(current-dateTime()),3)"/>
+        
+            <xsl:sequence select="imf:create-row(5,'edit-version','(enter version info here)',0)"/>
+            <xsl:sequence select="imf:create-row(6,'edit-date','(enter date here)',0)"/>
             
+            <xsl:sequence select="imf:create-row(9,'schema-prefix',imf:get-config-string('appinfo','koppelvlak-namespace-prefix'),3)"/>
+            <xsl:sequence select="imf:create-row(10,'schema-namespace',imf:get-config-string('appinfo','koppelvlak-namespace'),3)"/>
+            <xsl:sequence select="imf:create-row(11,'schema-subpath',imf:get-config-string('appinfo','xsd-result-subpath-kv'),3)"/>
+       
+            <xsl:sequence select="imf:create-row(13,'job-id',imf:get-config-string('cli','jobid'),3)"/>
+            <xsl:sequence select="imf:create-row(14,'project-name',imf:get-config-string('appinfo','project-name'),3)"/>
+            <xsl:sequence select="imf:create-row(15,'model-name',imf:get-config-string('appinfo','application-name'),3)"/>
+            <xsl:sequence select="imf:create-row(16,'model-release',imf:get-config-string('appinfo','release'),3)"/>
+            
+            <!--x
             <xsl:for-each select="0 to 10">
-                <row r="{. + 6}" spans="2:2">
-                    <c r="B{. + 6}" s="{.}" t="inlineStr">
+                <row r="{. + 30}" spans="2:2">
+                    <c r="B{. + 30}" s="{.}" t="inlineStr">
                         <is>
                             <t>TESTJE @s = <xsl:value-of select="."/></t>
                         </is>
                     </c>
                 </row>
             </xsl:for-each>
-           
+            x-->
+            
         </xsl:copy>
     </xsl:template>
     
+    <xsl:function name="imf:create-row">
+        <xsl:param name="rownr"/>
+        <xsl:param name="name"/>
+        <xsl:param name="value"/>
+        <xsl:param name="style"/>
+        <row r="{$rownr}" spans="1:2">
+            <c r="A{$rownr}" s="{$style}" t="inlineStr">
+                <is>
+                    <t><xsl:value-of select="$name"/></t>
+                </is>
+            </c>
+            <c r="B{$rownr}" s="{$style}" t="inlineStr">
+                <is>
+                    <t><xsl:value-of select="$value"/></t>
+                </is>
+            </c>
+        </row>
+    </xsl:function>
+
     <!-- standard processing of sheet data -->
     <xsl:template match="sheetData" mode="process-all">
         <xsl:param name="blocks"/>
