@@ -80,9 +80,9 @@
             <namespaces>
                 <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet4.xml']" mode="create-namespaces"/>
             </namespaces>
-            <info>
+            <parameters>
                 <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet5.xml']" mode="create-info"/>
-            </info>
+            </parameters>
         </testset>
     </xsl:template>
     
@@ -154,7 +154,7 @@
 
     <xsl:template match="cw:file" mode="create-vars">
         <xsl:variable name="worksheet-rows" select="*:worksheet/*:sheetData/*:row"/>
-        <xsl:for-each select="$worksheet-rows">
+        <xsl:for-each select="$worksheet-rows[position() gt 1]">
             <xsl:variable name="name" select="imf:get-string(*:c[1])"/>
             <xsl:variable name="value" select="imf:get-string(*:c[2])"/>
             <variable name="{$name}">
@@ -165,7 +165,7 @@
     
     <xsl:template match="cw:file" mode="create-namespaces">
         <xsl:variable name="worksheet-rows" select="*:worksheet/*:sheetData/*:row"/>
-        <xsl:for-each select="$worksheet-rows">
+        <xsl:for-each select="$worksheet-rows[position() gt 1]">
             <xsl:variable name="name" select="imf:get-string(*:c[1])"/>
             <xsl:variable name="value" select="imf:get-string(*:c[2])"/>
             <ns prefix="{$name}">
@@ -176,12 +176,12 @@
     
     <xsl:template match="cw:file" mode="create-info">
         <xsl:variable name="worksheet-rows" select="*:worksheet/*:sheetData/*:row"/>
-        <xsl:for-each select="$worksheet-rows">
+        <xsl:for-each select="$worksheet-rows[position() gt 1]">
             <xsl:variable name="name" select="imf:get-string(*:c[1])"/>
             <xsl:variable name="value" select="imf:get-string(*:c[2])"/>
-            <i prefix="{$name}">
+            <parm name="{$name}">
                 <xsl:value-of select="$value"/>
-            </i>
+            </parm>
         </xsl:for-each>
     </xsl:template>
     

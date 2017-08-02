@@ -20,6 +20,7 @@ public class FillerToExcel {
 		
 		// do something here; process the __content.xml file
 		targetExcel.deserializeFromXml(processingFolder,true);
-		
+	
+		System.out.println("Done.");
 	}
 }
