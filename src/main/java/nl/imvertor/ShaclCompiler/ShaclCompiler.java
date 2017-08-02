@@ -26,6 +26,7 @@ import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.ShaclFile;
+import nl.imvertor.common.file.XmlFile;
 
 public class ShaclCompiler extends Step {
 
@@ -81,9 +82,15 @@ public class ShaclCompiler extends Step {
 		
 		succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_SHACL_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_SHACL_XSLPATH");
 		
-		// validate
-		ShaclFile ShaclFile = new ShaclFile(configurator.getParm("properties", "RESULT_SHACL_FILE_PATH"));
-		ShaclFile.validate(configurator);
+		if (succeeds) {
+			// validate
+			ShaclFile shaclFile = new ShaclFile(configurator.getParm("properties", "RESULT_SHACL_FILE_PATH"));
+			shaclFile.validate(configurator);
+			
+			// copy to the app folder
+			XmlFile appShaclFile = new XmlFile(shaclFolder,"shacl.ttl");
+			shaclFile.copyFile(appShaclFile);
+		}
 		
 		configurator.setParm("system","shacl-created","true");
 		
