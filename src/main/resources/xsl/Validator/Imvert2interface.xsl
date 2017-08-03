@@ -55,7 +55,7 @@
                             <xsl:sequence select="$constructs"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:sequence select="imf:msg('ERROR','Reference to [1] in outside model could not be resolved when using mapping [2]',(imvert:name,$conceptual-schema-mapping-name))"/>
+                            <xsl:sequence select="imf:msg('WARN','Reference to [1] in outside model could not be resolved when using mapping [2]',(imvert:name,$conceptual-schema-mapping-name))"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
