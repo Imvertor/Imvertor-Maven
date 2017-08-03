@@ -100,19 +100,19 @@
         <!-- more when product -->
     </xsl:variable>
    
-    <xsl:variable name="application-package" select="//imvert:package[imvert:name/@original=$application-package-name and imvert:stereotype= imf:get-config-stereotypes(('stereotype-name-application-package','stereotype-name-base-package'))][1]"/>
+    <xsl:variable name="application-package" select="//imvert:package[imvert:name=imf:get-normalized-name($application-package-name,'package-name') and imvert:stereotype= imf:get-config-stereotypes(('stereotype-name-application-package','stereotype-name-base-package'))][1]"/>
     
     <!-- 
         The set of external packages includes all packages that are <<external>> of any subpackage thereof.
         The external package must also define any class that is referenced by the application.
     -->
-    <xsl:variable name="external-package" select="//imvert:package[ancestor-or-self::imvert:package/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-external-package') and (imvert:class/imvert:id = $application-package//(imvert:type-id | imvert:supertype/imvert:type-id)) or imvert:stereotype=imf:get-config-stereotypes('stereotype-name-system-package')]"/>
+    <xsl:variable name="external-package" select="//imvert:package[ancestor-or-self::imvert:package/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-external-package') and (imvert:class/imvert:id = $application-package//imvert:type-id) or imvert:stereotype=imf:get-config-stereotypes('stereotype-name-system-package')]"/>
     
     <!-- 
         The set of internal packages includes all packages that are <<external>> of any subpackage thereof.
         The external package must also define any class that is referenced by the application.
     -->
-    <xsl:variable name="internal-package" select="//imvert:package[ancestor-or-self::imvert:package/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-internal-package') and (imvert:class/imvert:id = $application-package//(imvert:type-id | imvert:supertype/imvert:type-id))]"/>
+    <xsl:variable name="internal-package" select="//imvert:package[ancestor-or-self::imvert:package/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-internal-package') and (imvert:class/imvert:id = $application-package//imvert:type-id)]"/>
     <!-- 
         The set of compoennts packages includes all packages that are <<components>> of any subpackage thereof.
     -->

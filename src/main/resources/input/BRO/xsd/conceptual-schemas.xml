@@ -112,7 +112,7 @@
             <construct>
                 <name>GM_Polygon</name>
                 <catalog-entry>#Polygon</catalog-entry>
-                <xsd-type name="PolygonPatch" asAttributeDesignation="complextype" asAttribute="PolygonPatchType"/>
+                <xsd-type name="Polygon" asAttributeDesignation="complextype" asAttribute="PolygonType"/>
                 <managed-ids/>
             </construct>
             <construct>
@@ -125,18 +125,6 @@
                 <name>GM_AbstractGeometry</name>
                 <catalog-entry>#AbstractGeometry</catalog-entry>
                 <xsd-type name="AbstractGeometry" asAttributeDesignation="complextype" asAttribute="AbstractGeometryType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GM_TimeInstant</name>
-                <catalog-entry>#TimeInstant</catalog-entry>
-                <xsd-type name="TimeInstant" asAttributeDesignation="complextype" asAttribute="TimeInstantType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GM_TimePeriod</name>
-                <catalog-entry>#TimePeriod</catalog-entry>
-                <xsd-type name="TimePeriod" asAttributeDesignation="complextype" asAttribute="TimePeriodType"/>
                 <managed-ids/>
             </construct>
             <construct>
@@ -161,6 +149,34 @@
                 <name>GM_LinearRing</name>
                 <catalog-entry>#LinearRing</catalog-entry>
                 <xsd-type name="LinearRing" asAttributeDesignation="complextype" asAttribute="LinearRingType"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>GM_Object</name>
+                <catalog-entry>#GM_Object</catalog-entry>
+                <xsd-type name="AbstractGeometry" asAttributeDesignation="complextype" asAttribute="AbstractGeometryType"/>
+                <managed-ids/>
+            </construct>
+            
+            <!-- TODO verplaatsen? is onderdeel van GML toch? -->
+            <construct>
+                <name>TM_Instant</name>
+                <catalog-entry>#TimeInstant</catalog-entry>
+                <xsd-type name="TimeInstant" asAttributeDesignation="complextype" asAttribute="TimeInstantType"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>TM_Period</name>
+                <catalog-entry>#TimePeriod</catalog-entry>
+                <xsd-type name="TimePeriod" asAttributeDesignation="complextype" asAttribute="TimePeriodType"/>
+                <managed-ids/>
+            </construct>
+      
+            <!-- TODO verplaatsen naar generic conceptual model, base types, INSPIRE base types: Identifier -->
+            <construct>
+                <name>Identifier</name>
+                <catalog-entry>#Identifier</catalog-entry>
+                <xsd-type name="Identifier" asAttributeDesignation="complextype" asAttribute="IdentifierType"/>
                 <managed-ids/>
             </construct>
             
