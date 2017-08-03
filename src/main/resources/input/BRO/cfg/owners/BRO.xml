@@ -19,7 +19,8 @@
     </parameter> 
     
     <!-- single logo image -->
-    <parameter name="web-logo">../web/img/logo.gif</parameter> 
+    <parameter name="web-logo">../web/img/logo-small.jpg</parameter> 
+    <parameter name="web-logo-big">../web/img/logo-big.jpg</parameter> 
     
     <parameter name="pretext-encoding">
         This schema is based on an UML specification, which is transformed by the Imvertor software. Imvertor modules are in the public domain, see http://www.imvertor.org.

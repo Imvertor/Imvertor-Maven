@@ -45,6 +45,17 @@
     <xsl:variable name="doc-folder-path" select="imf:get-config-string('system','work-doc-folder-path')"/>
     <xsl:variable name="doc-folder-url" select="imf:filespec($doc-folder-path,'U')[2]"/>
 
+    <xsl:variable name="no-subpath">
+        <xsl:variable name="rtry" as="xs:string*">
+            <xsl:value-of select="imf:get-config-string('appinfo','project','project?')"/>
+            <xsl:value-of select="imf:get-config-string('appinfo','application-name','model?')"/>
+            <xsl:value-of select="imf:get-config-string('appinfo','release','release?')"/>
+        </xsl:variable> 
+        <xsl:value-of select="string-join($rtry,'/')"/>
+    </xsl:variable>
+    
+    <xsl:variable name="status" select="if (imf:get-config-string('appinfo','error-count') = '0' and imf:get-config-string('appinfo','warning-count') = '0') then 'okay' else 'notokay'"/>
+    
     <xsl:template match="/config">
         
         <!-- compile complete set of reports from all steps -->
@@ -74,7 +85,7 @@
                 </xsl:call-template>
                 <frameset cols="20%,80%" title="Imvertor documentation">
                     <frame src="toc/index.html" name="toc" title="Table of contents"/>
-                    <frame src="overview/index.html" name="contents" title="Contents"/>
+                    <frame src="home/index.html" name="contents" title="Contents"/>
                     <noframes>
                         <h2>Frame Alert</h2>
                         <p>This document is designed to be viewed using the frames feature. If you see this message, you are using a non-frame-capable web client.</p>
@@ -90,23 +101,13 @@
                     <xsl:with-param name="title" select="'Imvert - TOC'"/>
                 </xsl:call-template>
                 <body>
-                    <img src="{imf:get-config-parameter('web-logo')}"/>
                     <xsl:sequence select="imf:create-report-page-header('IMVERTOR Processing report')"/>
-                    <p>Created by:
-                        <xsl:value-of select="imf:get-config-string('run','version')"/>
-                    </p>
-                    <xsl:if test="$job-id">
-                        <p>Job: 
-                            <a href="{$dashboard-reference}" target="imvertorDashboard">
-                                <xsl:value-of select="$job-id"/>
-                            </a>, user <xsl:value-of select="$user-id"/></p>  
-                    </xsl:if>
-                    <p>
-                        <b>
-                            <xsl:value-of select="imf:get-config-string('appinfo','status-message')"/>
-                        </b>
-                    </p>
                     <ol>
+                        <li>
+                            <a href="../home/index.html" target="contents">
+                                Home
+                            </a>
+                        </li>
                         <li>
                             <a href="../overview/index.html" target="contents">
                                 Overview
@@ -114,6 +115,39 @@
                         </li>
                         <xsl:apply-templates select="$reports/page" mode="toc"/>
                     </ol>
+                </body>
+            </html>
+        </xsl:result-document>
+        
+        
+        <!-- create a home page-->
+        <xsl:result-document href="{$doc-folder-url}/home/index.html">
+            <html>
+                <xsl:call-template name="create-html-head">
+                    <xsl:with-param name="title" select="'Imvert - Home'"/>
+                    <xsl:with-param name="table-ids" select="()"/>
+                </xsl:call-template>
+                <body>
+                    <div class="home">
+                        <xsl:sequence select="imf:create-report-home-header('IMVERTOR Processing report')"/>
+                        <p>Created by:
+                            <xsl:value-of select="imf:get-config-string('run','version')"/>
+                        </p>
+                        <xsl:if test="$job-id">
+                            <p>Job: 
+                                <a href="{$dashboard-reference}" target="imvertorDashboard">
+                                    <xsl:value-of select="$job-id"/>
+                                </a>, user <xsl:value-of select="$user-id"/></p>  
+                        </xsl:if>
+                        <p class="processing-status-{$status}">
+                            <xsl:value-of select="imf:get-config-string('appinfo','status-message')"/>
+                        </p>
+                        <!--TODO
+                        <p>
+                            Check the <a href="../readme/index.html">"readme" section</a> for more information about the contents of this release.
+                        </p>
+                        -->
+                    </div>
                 </body>
             </html>
         </xsl:result-document>
@@ -296,9 +330,28 @@
     </xsl:template>
         
     <xsl:function name="imf:create-report-page-header">
-        <xsl:param name="title"></xsl:param>
-        <h1><xsl:value-of select="$title"/></h1>
+        <xsl:param name="title"/>
+        <img src="{imf:get-config-parameter('web-logo')}" class="overview-logo"/>
+        <div class="overview-title">
+            <xsl:value-of select="$title"/>
+        </div>
         <div  class="overview">
+            <p>
+                <xsl:value-of select="imf:get-config-string('appinfo','subpath',$no-subpath)"/>
+            </p>  
+        </div>
+    </xsl:function>
+    
+    <xsl:function name="imf:create-report-home-header">
+        <xsl:param name="title"></xsl:param>
+        <img src="{imf:get-config-parameter('web-logo-big')}" class="home-logo"/>
+        <div class="home-title">
+            <xsl:value-of select="$title"/>
+        </div>
+        <div class="home-block">
+            <p class="subpath">
+                <xsl:value-of select="imf:get-config-string('appinfo','subpath',$no-subpath)"/>
+            </p>
             <p>
                 <xsl:value-of select="imf:get-config-string('appinfo','original-project-name')"/>
             </p>
@@ -317,7 +370,6 @@
                 Generated at
                 <xsl:value-of select="imf:format-dateTime(current-dateTime())"/>
             </p>  
-           
         </div>
     </xsl:function>
 </xsl:stylesheet>

@@ -1,3 +1,6 @@
+/* 
+ * standard color orange = #C65019
+ */
 body {
 	background-color: #FFFFFF;
 	font-family: "Arial", sans-serif;
@@ -56,11 +59,11 @@ span.value {
 }
 h1 {
     font-size: 1.5em;
-    color: navy;
+    color: #C65019;
 }
 h2 {
     font-size: 1em;
-    color: navy;
+    color: #C65019;
 }
 a {
     color: blue;
@@ -84,9 +87,61 @@ tr.cmp-system {
 .overview {
     font-weight: bold;
     color: white;
-    background-color: #c65019;
+    background-color: #C65019;
     padding: 0.5em 2em;
+    border-radius: 0.5em;
+}
+img.overview-logo {
+   display: block;
+   margin: auto;
+}
+.overview-title {
+   font-weight: bold;
+   color: gray;
+   margin: 2em;
 }
 .app {
     font-size: 150%;
+}
+.home {
+    width: 50%;
+    margin-left: 25%;
+    text-align: center;
+}
+.home-block {
+    font-weight: bold;
+    color: white;
+    background-color: #C65019;
+    padding: 2em 2em;
+    border-radius: 1em;
+}
+img.home-logo {
+   display: block;
+   margin: auto;
+}
+.home-title {
+   font-weight: bold;
+   color: gray;
+   margin: 2em;
+}
+.subpath {
+    font-size: 120%;
+    font-style: italic;
+    padding-bottom: 2em;
+}
+.readme-block {
+    font-weight: normal;
+    color: black;
+    background-color: white;
+    padding: 2em 2em;
+    width: 80%;
+    margin-left: 10%;
+}
+.processing-status-okay {
+    font-weight:bold;
+    color: black;
+}
+.processing-status-not-okay {
+    font-weight:bold;
+    color: red;
 }
