@@ -146,7 +146,7 @@
                 <managed-ids/>
             </construct>
             <construct>
-                <name>GM_LinearRing</name>
+                <name>LinearRing</name>
                 <catalog-entry>#LinearRing</catalog-entry>
                 <xsd-type name="LinearRing" asAttributeDesignation="complextype" asAttribute="LinearRingType"/>
                 <managed-ids/>
@@ -155,6 +155,12 @@
                 <name>GM_Object</name>
                 <catalog-entry>#GM_Object</catalog-entry>
                 <xsd-type name="AbstractGeometry" asAttributeDesignation="complextype" asAttribute="AbstractGeometryType"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>GM_MultiSurface</name>
+                <catalog-entry>#MultiSurface</catalog-entry>
+                <xsd-type name="MultiSurface" asAttributeDesignation="complextype" asAttribute="MultiSurfaceType"/>
                 <managed-ids/>
             </construct>
             
@@ -177,6 +183,18 @@
                 <name>Identifier</name>
                 <catalog-entry>#Identifier</catalog-entry>
                 <xsd-type name="Identifier" asAttributeDesignation="complextype" asAttribute="IdentifierType"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>OtherSoilNameType</name>
+                <catalog-entry>#OtherSoilNameType</catalog-entry>
+                <xsd-type name="OtherSoilNameType" asAttributeDesignation="complextype" asAttribute="OtherSoilNameType"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>WRBSoilNameType</name>
+                <catalog-entry>#WRBSoilNameType</catalog-entry>
+                <xsd-type name="WRBSoilNameType" asAttributeDesignation="complextype" asAttribute="WRBSoilNameType"/>
                 <managed-ids/>
             </construct>
             
