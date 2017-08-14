@@ -54,7 +54,7 @@
         <xsl:value-of select="string-join($rtry,'/')"/>
     </xsl:variable>
     
-    <xsl:variable name="status" select="if (imf:get-config-string('appinfo','error-count') = '0' and imf:get-config-string('appinfo','warning-count') = '0') then 'okay' else 'notokay'"/>
+    <xsl:variable name="status" select="if (imf:get-config-string('appinfo','error-count') = '0' and imf:get-config-string('appinfo','warning-count') = '0') then 'okay' else 'not-okay'"/>
     
     <xsl:template match="/config">
         
