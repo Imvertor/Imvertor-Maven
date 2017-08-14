@@ -247,7 +247,9 @@
             <xs:restriction base="xs:string">
                 <xsl:for-each select="imvert:attributes/imvert:attribute">
                     <xsl:sort select="xs:integer(imvert:position)" order="ascending"/>
-                    <xs:enumeration value="{imvert:name/@original}"/>
+                    <xs:enumeration value="{imvert:name/@original}">
+                        <xsl:sequence select="imf:get-annotation(.)"/>
+                    </xs:enumeration>
                 </xsl:for-each>
             </xs:restriction>
         </xs:simpleType>
@@ -1496,10 +1498,13 @@
     
     <xsl:function name="imf:compile-documentation">
         <xsl:param name="this"/>
-        <xsl:variable name="name" select="$this/imvert:name/@original"/>
-        <xsl:variable name="definition" select="imf:get-most-relevant-compiled-taggedvalue($this,'definition')"/>
-        <xsl:variable name="explanation" select="imf:get-most-relevant-compiled-taggedvalue($this,'explanation')"/>
-        <xsl:value-of select="replace(concat('Name: ', $name,'\nDefinition: ', $definition,'\nExplanation: ', $explanation,'\n'),'\\n','&#10;')"/>
+        <xsl:variable name="name" select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-NAME')"/>
+        <xsl:variable name="definition" select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-DEFINITION')"/>
+        <xsl:variable name="explanation" select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-DESCRIPTION')"/>
+        <xsl:variable name="pnam" select="if ($name) then concat('Name: ', $name) else ()"/>
+        <xsl:variable name="pdef" select="if ($definition) then concat('Definition: ', $definition) else ()"/>
+        <xsl:variable name="pexp" select="if ($explanation) then concat('Explanantion: ', $explanation) else ()"/>
+        <xsl:value-of select="string-join(($pnam,$pdef,$pexp),'&#10;')"/>
     </xsl:function>
     
 </xsl:stylesheet>
