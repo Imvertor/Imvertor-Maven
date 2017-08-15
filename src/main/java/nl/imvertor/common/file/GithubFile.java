@@ -1,119 +1,154 @@
 package nl.imvertor.common.file;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
-import java.net.URL;
+import java.io.File;
+import java.net.URI;
+import java.util.HashMap;
 
-import javax.net.ssl.HttpsURLConnection;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.http.HttpHeaders;
+import org.json.JSONObject;
 
-public class GithubFile {
+/**
+ * This class implements the full commit and push of a file to the specified Github location.
+ * 
+ * 
+ * @author arjan
+ *
+ */
+public class GithubFile extends HttpFile {
 	
-	private URL url;
-	private String user = null;
-	private String pass = null;
+   	private static final long serialVersionUID = 1671504389004682658L;
 	
-	private int status = -1; // latest response
-	private String message = null; // latest response
-	
+	public String error = "";
+	public String stage = "init";
+		
 	public static void main(String[] args) throws Exception {
-		String sha = args[3];
 		
-		String jsonstring = "{"
-				+ "\"message\": \"Test JAVA 2\","
-				+ "\"committer\": {\"name\": \"Arjan Loeffen\",\"email\": \"arjan.loeffen@armatiek.nl\"},"
-				+ "\"content\": \"bXkgbmV3IGZpbGUgY29udGVudHM=\""
-				+ "}";
+		/*
+		PropertiesFile props = new PropertiesFile(args[0]);
 		
-		GithubFile f = new GithubFile(new URL(args[0]), args[1], args[2]);
-		System.out.println(f.put(jsonstring));
-		//System.out.println(f.get());
+		String USER = props.getProperty("user");
+		String REPO = props.getProperty("repo");
+		String OAUTH = props.getProperty("token");
+		
+		String BRANCH = props.getProperty("branch");
+		String INFILE = props.getProperty("infile");
+		String OUTFILE = props.getProperty("outfile");
+		String MESSAGE = props.getProperty("message");
+		String HTMLFILE = props.getProperty("htmlfile");
+
+		GithubFile file = new GithubFile(HTMLFILE);
+		file.publish(USER, REPO, OAUTH, BRANCH, INFILE, OUTFILE, MESSAGE);
+		*/
 	}
-	
-	public GithubFile(URL url) {
-		this.url = url;
+
+	public GithubFile(File file) {
+		super(file);
 	}
-	
-	public GithubFile(URL url, String user, String pass) {
-		this.url = url;
-		this.user = user;
-		this.pass = pass;
-		
-		Authenticator.setDefault (new Authenticator() {
-		    protected PasswordAuthentication getPasswordAuthentication() {
-		        return new PasswordAuthentication (user, pass.toCharArray());
-		    }
-		});
+
+	public GithubFile(String file) {
+		super(file);
 	}
+
+    public void publish(
+			String USER,
+			String REPO,
+			String OAUTH,
+			String BRANCH,
+			String INFILE,
+			String OUTFILE,
+			String MESSAGE) throws Exception {
 	
-	public String put(String contents) throws IOException  {
+ 		String SHA_LATEST_COMMIT = null;
+		String SHA_TREE = null;
+		String SHA_NEW_TREE = null;
+		String SHA_NEW_COMMIT = null;
+		String SHA_FINALIZE = null;
+		String CONTENT = null;
 		
-		String responseString = null;
+		String payload = null;
 		
-		HttpsURLConnection httpsURLConnection = null;
-		DataOutputStream dataOutputStream = null;
-		try {
-		    httpsURLConnection = (HttpsURLConnection) url.openConnection();
-		    httpsURLConnection.setRequestMethod("PUT");
-		    httpsURLConnection.setDoInput(true);
-		    httpsURLConnection.setDoOutput(true);
-		    dataOutputStream = new DataOutputStream(httpsURLConnection.getOutputStream());
-		    dataOutputStream.write(contents.getBytes());
-		    
-		    this.status = httpsURLConnection.getResponseCode();
-		    this.message = httpsURLConnection.getResponseMessage();
-		    
-		    if (this.status == 200 || this.status == 204) {
-			    BufferedReader in = new BufferedReader(new InputStreamReader(httpsURLConnection.getInputStream()));
-				String inputLine;
-				StringBuffer response = new StringBuffer();
-				while ((inputLine = in.readLine()) != null) {
-					response.append(inputLine);
-				}
-				in.close();
-				responseString = response.toString();
-		    }
-		} 
-		finally {
-		    if (dataOutputStream != null) {
-		        try {
-		            dataOutputStream.flush();
-		            dataOutputStream.close();
-		        } catch (IOException exception) {
-		           this.status = 0;
-		        }
-		    }
-		    if (httpsURLConnection != null) {
-		        httpsURLConnection.disconnect();
-		    }
+		JSONObject object;
+		while (true) {
+			
+			stage = "GET Request: save sha-latest-commit";
+			object = getFromRemote(USER, REPO, OAUTH,"git/refs/heads/" + BRANCH);
+			if (getStatus() < 400) 
+				SHA_LATEST_COMMIT = object.getJSONObject("object").getString("sha");
+			else 
+				break;
+			
+			stage = "GET Request: save sha-base-tree";
+			object = getFromRemote(USER, REPO, OAUTH,"git/commits/" + SHA_LATEST_COMMIT);
+			if (getStatus() < 400) 
+				SHA_TREE = object.getJSONObject("tree").getString("sha");
+			else 
+				break;
+			
+			stage = "POST Request: save sha-new-tree";
+			String escaped = StringEscapeUtils.escapeJson(getContent());
+			payload = "{\"base_tree\": \""+SHA_TREE+"\",\"tree\": [{\"path\": \""+OUTFILE+"\",\"mode\": \"100644\",\"type\": \"blob\",\"content\": \""+escaped+"\"}]}"; //  \"encoding\": \"utf-8\", 
+			object = postToRemote(USER, REPO, OAUTH,"git/trees", payload);
+			
+			if (getStatus() < 400) 
+				SHA_NEW_TREE = object.getString("sha");
+			else 
+				break;
+				
+			stage = "POST Request: save sha-newest-commit";
+			payload = "{\"parents\": [\""+SHA_LATEST_COMMIT+"\"],\"tree\": \""+SHA_NEW_TREE+"\",\"message\": \""+MESSAGE+"\"}";
+			object = postToRemote(USER, REPO, OAUTH,"git/commits", payload);
+			if (getStatus() < 400) 
+				SHA_NEW_COMMIT = object.getString("sha");
+			else 
+				break;
+				
+			stage = "POST Request: finalize";
+			payload = "{\"sha\": \""+SHA_NEW_COMMIT+"\"}";
+			object = postToRemote(USER, REPO, OAUTH,"git/refs/heads/" + BRANCH, payload);
+			if (getStatus() < 400) 
+				SHA_FINALIZE = object.getJSONObject("object").getString("sha");
+			
+			break;
+				
 		}
-		return responseString;
+		
+		// TODO wat te doen met de tussenresultaten (sha's), relevant?
+		
+		if (getStatus() >= 400) 
+			error = object.getString("message");
+		
 	}
 	
-	public String get() throws IOException {
-		   HttpsURLConnection httpsURLConnection = null;
-		   try {
-			   httpsURLConnection = (HttpsURLConnection) url.openConnection();
-			   httpsURLConnection.setRequestMethod("GET");
+	public JSONObject getFromRemote(String USER, String REPO, String OAUTH, String suburl) throws Exception {
+		URI url = URI.create("https://api.github.com/repos/" + USER + "/" + REPO + "/" + suburl);
+	    
+		HashMap<String,String> headerMap = new HashMap<String,String>();
+		headerMap.put(HttpHeaders.AUTHORIZATION,"token " + OAUTH);
 		
-			   this.status = httpsURLConnection.getResponseCode();
-			   this.message = httpsURLConnection.getResponseMessage();
-			    
-			   BufferedReader in = new BufferedReader(new InputStreamReader(httpsURLConnection.getInputStream()));
-			   String inputLine;
-			   StringBuffer response = new StringBuffer();
-			   while ((inputLine = in.readLine()) != null) {
-				   response.append(inputLine);
-			   }
-			   in.close();
-			   return response.toString();
-		   } finally {
-			   if (httpsURLConnection != null) {
-				   httpsURLConnection.disconnect();
-			   }
-		   }
+		String result = get(url, headerMap);
+		
+		return new JSONObject(result);
+	}
+	
+	public JSONObject postToRemote(String USER, String REPO, String OAUTH, String suburl, String payload) throws Exception {
+	
+		URI url = URI.create("https://api.github.com/repos/" + USER + "/" + REPO + "/" + suburl);
+	     
+		HashMap<String,String> headerMap = new HashMap<String,String>();
+		headerMap.put(HttpHeaders.AUTHORIZATION,"token " + OAUTH);
+		headerMap.put(HttpHeaders.ACCEPT, "application/json");
+		headerMap.put(HttpHeaders.CONTENT_TYPE, "application/json");
+		
+		String result = post(HttpFile.METHOD_POST_CONTENT, url, headerMap, null, payload);
+		
+		return new JSONObject(result);
+	}
+
+	public String getError() {
+		return error;
+	}
+	public String getStage() {
+		return stage;
 	}
 }

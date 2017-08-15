@@ -22,7 +22,6 @@ package nl.imvertor.OfficeCompiler;
 
 import java.io.File;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
@@ -30,6 +29,7 @@ import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.ExecFile;
 import nl.imvertor.common.file.FtpFolder;
+import nl.imvertor.common.file.GithubFile;
 
 public class OfficeCompiler extends Step {
 
@@ -120,64 +120,28 @@ public class OfficeCompiler extends Step {
 					}
 				} else if (target != null && target.equals("git")) {
 					
-					/*
-					 * Each environment may locate the GIT local project repository at a different location. 
-					 * Pick up the correct location here, and place it at system/gitloc
-					 * This is a path to the local file system.
-					 * This can in turn be picked up by the property file.
-					 * 
-					 */
-					configurator.setParm("system", "gitloc", (new File(System.getProperty("gitloc.dir"))).getCanonicalPath()); // path at the local filesystem
-						
-					AnyFile gitlogFile = new AnyFile(configurator.getParm("system","work-log-folder-path") + File.separator + "office-git.log");
-				
-					// the following parms are compiled from other parms and setetings, as a property.
+					// the following parms are compiled from other parms and settings, as a property.
 					
-					String gitbranch              	= configurator.getParm("cli", "gitbranch");  //%1
-					String gitlocalrepos 	      	= configurator.mergeParms(configurator.getParm("cli", "gitlocalrepos")); //%2
-					String gitremoterepos         	= configurator.mergeParms(configurator.getParm("cli", "gitremoterepos")); //%3
-					String gitlocalfilename 		= officeFile.getName(); //%4
-					String gitlocalfilepath 		= officeFile.getParentFile().getAbsolutePath(); //%5
-					String gitcomment 				= configurator.mergeParms(configurator.getParm("cli", "gitcomment")); //%6
-					String gitlog 					= gitlogFile.getAbsolutePath(); //%7
+					String gitbranch              	= configurator.getParm("cli", "gitbranch");  // BRANCH
+					String gituser 			      	= configurator.getParm("cli", "gituser"); // USER
+					String gittoken              	= configurator.getParm("cli", "gittoken"); // OAUTH
+					
+					// the following may contain references to other parms between [..]
+					String gitrepos     	      	= configurator.mergeParms(configurator.getParm("cli", "gitrepos")); // REPOS
+					String gitcomment 				= configurator.mergeParms(configurator.getParm("cli", "gitcomment")); //MESSAGE
 					
 					runner.info(logger, "GIT Pushing office HTML as " + officeFile.getName());
 					
-					String gitBatch = configurator.getBaseFolder().getCanonicalPath() + "\\etc\\bat\\update-git.bat";
-					
-					(new ExecFile(gitBatch)).execute(configurator,new String[] {
-							gitbranch,
-							gitlocalrepos,
-							gitremoterepos,
-							gitlocalfilename,
-							gitlocalfilepath,
-							gitcomment,
-							">" + gitlog
-					},15000,false); // 15 seconds timeout
+					GithubFile gitfile = new GithubFile(officeFile.getCanonicalPath());
+					gitfile.publish(gituser, gitrepos, gittoken, gitbranch, gitfile.getName(), "data/" + gitfile.getName(), gitcomment);
 				    
-					// now read the log. Check for [ERR];code. If not 0, assume error, and notify
-					String line = "";
-					String err = ""; // when [ERR] found, read next line integer code.
-					String stp = ""; // when [STP] found, read next line step name.
-					String sha = ""; // when [SHa] found, read next line Git SHA.
-					while (line != null) {
-						line = gitlogFile.getNextLine();
-						if (line == null) 
-							break;
-						else if (line.equals("[ERR]"))
-							err = line = gitlogFile.getNextLine();
-						else if (line.equals("[STP]"))
-							stp = line = gitlogFile.getNextLine();
-						else if (line.equals("[SHA]"))
-							sha = line = gitlogFile.getNextLine();
-					}
-					if (!err.equals("") && Integer.parseInt(err) != 0)
-						runner.error(logger, "Cannot align the data with upstream: step \"" + stp + "\" returns \"" + err + "\"");
+					if (!gitfile.getError().equals(""))
+						runner.error(logger, "Cannot align the data with upstream: step \"" + gitfile.getStage() + "\" returns \"" + gitfile.getError() + "\"");
 					
-					configurator.setParm("appinfo", "office-git-stp", stp);
-					configurator.setParm("appinfo", "office-git-err", err);
-					configurator.setParm("appinfo", "office-git-sha", sha);
-				}
+					configurator.setParm("appinfo", "office-git-stp", gitfile.getStage());
+					configurator.setParm("appinfo", "office-git-err", gitfile.getError());
+				
+				} 
 			}
 		} else {
 			runner.error(logger,"Transformation to Office format not implemented yet!");
