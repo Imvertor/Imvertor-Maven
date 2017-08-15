@@ -124,7 +124,7 @@ public class OfficeCompiler extends Step {
 					
 					String gitbranch              	= configurator.getParm("cli", "gitbranch");  // BRANCH
 					String gituser 			      	= configurator.getParm("cli", "gituser"); // USER
-					String gittoken              	= configurator.getParm("cli", "gittoken"); // OAUTH
+					String gittoken              	= System.getProperty("git.token"); // OAUTH
 					
 					// the following may contain references to other parms between [..]
 					String gitrepos     	      	= configurator.mergeParms(configurator.getParm("cli", "gitrepos")); // REPOS
@@ -140,7 +140,8 @@ public class OfficeCompiler extends Step {
 					
 					configurator.setParm("appinfo", "office-git-stp", gitfile.getStage());
 					configurator.setParm("appinfo", "office-git-err", gitfile.getError());
-				
+					configurator.setParm("appinfo", "office-git-uri", gitfile.getURI().toString());
+					
 				} 
 			}
 		} else {

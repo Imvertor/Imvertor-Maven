@@ -19,9 +19,10 @@ public class GithubFile extends HttpFile {
 	
    	private static final long serialVersionUID = 1671504389004682658L;
 	
-	public String error = "";
-	public String stage = "init";
-		
+	private String error = "";
+	private String stage = "init";
+	private URI url;
+	
 	public static void main(String[] args) throws Exception {
 		
 		/*
@@ -121,11 +122,10 @@ public class GithubFile extends HttpFile {
 	}
 	
 	public JSONObject getFromRemote(String USER, String REPO, String OAUTH, String suburl) throws Exception {
-		URI url = URI.create("https://api.github.com/repos/" + USER + "/" + REPO + "/" + suburl);
+		url = URI.create("https://api.github.com/repos/" + USER + "/" + REPO + "/" + suburl);
 	    
 		HashMap<String,String> headerMap = new HashMap<String,String>();
 		headerMap.put(HttpHeaders.AUTHORIZATION,"token " + OAUTH);
-		
 		String result = get(url, headerMap);
 		
 		return new JSONObject(result);
@@ -133,7 +133,7 @@ public class GithubFile extends HttpFile {
 	
 	public JSONObject postToRemote(String USER, String REPO, String OAUTH, String suburl, String payload) throws Exception {
 	
-		URI url = URI.create("https://api.github.com/repos/" + USER + "/" + REPO + "/" + suburl);
+		url = URI.create("https://api.github.com/repos/" + USER + "/" + REPO + "/" + suburl);
 	     
 		HashMap<String,String> headerMap = new HashMap<String,String>();
 		headerMap.put(HttpHeaders.AUTHORIZATION,"token " + OAUTH);
@@ -145,10 +145,28 @@ public class GithubFile extends HttpFile {
 		return new JSONObject(result);
 	}
 
+	/**
+	 * get the last error reported, or "" when no errors.
+	 * 
+	 * @return
+	 */
 	public String getError() {
 		return error;
 	}
+	/**
+	 * Get the most recent stage.
+	 * 
+	 * @return
+	 */
 	public String getStage() {
 		return stage;
+	}
+	/**
+	 * Return the latest URI call
+	 * 
+	 * @return
+	 */
+	public URI getURI() {
+		return url;
 	}
 }
