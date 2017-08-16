@@ -429,6 +429,11 @@
         </xsl:choose>
     </xsl:function>
     
+    <xsl:function name="imf:get-config-name-by-id" as="xs:string">
+        <xsl:param name="id"/> <!-- any ID -->
+        <xsl:sequence select="$configuration-file//*[@id=$id]/name[@lang=($language,'#all')]"/>
+    </xsl:function>
+    
     <!-- return all nodes the result from parsing the EA note string. This is a sequence of text line .-->  
     <xsl:function name="imf:import-ea-note" as="item()*">
         <xsl:param name="note-ea" as="xs:string"/>

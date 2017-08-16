@@ -114,8 +114,8 @@
             </xsl:otherwise>
         </xsl:choose>
        
-        <xsl:value-of select="imf:ttl((' kkg:minKardinaliteit ',imvert:min-occurs,';'))"/>
-        <xsl:value-of select="imf:ttl((' kkg:maxKardinaliteit ',imvert:max-occurs,';'))"/>
+        <xsl:value-of select="imf:ttl((' kkg:minKardinaliteit ',imf:ttl-value($this/imvert:min-occurs,'2q'),';'))"/>
+        <xsl:value-of select="imf:ttl((' kkg:maxKardinaliteit ',imf:ttl-value($this/imvert:max-occurs,'2q'),';'))"/>
         
         <xsl:sequence select="imf:ttl-get-all-tvs($this)"/>
         

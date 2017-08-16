@@ -13,7 +13,7 @@
         
         <section title="Name" tagged-value="CFG-TV-NAME"/>
         <section title="Definition" tagged-value="CFG-TV-DEFINITION">
-            <!-- no labels allowed -->
+            <label title="URI"/> <!-- Dit moet dan feitelijk de enige waarde zjn. Het verwijst naar het LDT. -->
         </section>
         <section title="Description" tagged-value="CFG-TV-DESCRIPTION">
             <label title="SOURCE" tagged-value="Herkomst"/>
@@ -29,7 +29,7 @@
         
         <section title="Naam" tagged-value="CFG-TV-NAME"/>
         <section title="Definitie" tagged-value="CFG-TV-DEFINITION">
-            <!-- no labels allowed -->
+            <label title="URI"/>
         </section>
         <section title="Toelichting" tagged-value="CFG-TV-DESCRIPTION">
             <label title="BRON" tagged-value="Herkomst"/>

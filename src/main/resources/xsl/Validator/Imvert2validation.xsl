@@ -100,7 +100,7 @@
         <!-- more when product -->
     </xsl:variable>
    
-    <xsl:variable name="application-package" select="//imvert:package[imvert:name=imf:get-normalized-name($application-package-name,'package-name') and imvert:stereotype= imf:get-config-stereotypes(('stereotype-name-application-package','stereotype-name-base-package'))][1]"/>
+    <xsl:variable name="application-package" select="//imvert:package[imf:boolean(imvert:is-root-package)]"/>
     
     <!-- 
         The set of external packages includes all packages that are <<external>> of any subpackage thereof.

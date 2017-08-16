@@ -38,7 +38,9 @@
             <step-display-name>SHACL compiler</step-display-name>
             <status/>
             <summary>
-                <xsl:sequence select="imf:report-label('SHACL', '(TODO SHACL)')"/>
+                <info label="Status">
+                    <xsl:sequence select="imf:report-key-label('Shacle created','system','shacl-created')"/>
+                </info>
             </summary>
 
        </report>

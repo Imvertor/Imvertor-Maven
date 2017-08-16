@@ -456,7 +456,7 @@
         <xsl:sequence select="imf:create-comment(concat('mode-global-gegevensgroeptype Groepsattribuutsoort # ',@display-name))"/>
         
         <xs:complexType name="{imf:capitalize($compiled-name)}{$suffix}">
-            <xsl:variable name="seq">
+            <xsl:variable name="seq" as="element(xs:sequence)">
                 <xs:sequence minOccurs="0">
                     <xsl:sequence select="imf:create-comment('mode-global-gegevensgroeptype (Attributes)')"/>
                     <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-attribute">
@@ -476,7 +476,7 @@
                 </xs:sequence>
             </xsl:variable>
                 <xsl:choose>
-                    <xsl:when test="$matchgegevens">
+                    <xsl:when test="$matchgegevens and exists($seq/*)"> <!-- Bug #489153 -->
                         <xs:complexContent>
                             <xs:restriction base="{$prefix}:{imf:capitalize($compiled-name)}-basis">
                                 <xsl:sequence select="$seq"/>

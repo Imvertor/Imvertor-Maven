@@ -38,7 +38,7 @@
     
     <xsl:import href="Imvert2validation-KK.xsl"/>
     
-    <xsl:variable name="application-package" select="(//imvert:package[imvert:name/@original=$application-package-name])[1]"/>
+    <xsl:variable name="application-package" select="//imvert:package[imf:boolean(imvert:is-root-package)]"/>
     
     <xsl:variable name="tvs" select="imf:get-config-tagged-values()" as="element(tv)*"/>
     
