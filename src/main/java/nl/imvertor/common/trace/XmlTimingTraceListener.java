@@ -62,7 +62,7 @@ public class XmlTimingTraceListener implements TraceListener {
 
     Logger out = new StandardLogger();
     private long t_total;
-    /*@NotNull*/ private Stack<InstructionDetails> instructs = new Stack();
+    /*@NotNull*/ private Stack<InstructionDetails> instructs = new Stack<InstructionDetails>();
     /*@NotNull*/ HashMap<InstructionInfo, InstructionDetails> instructMap = new HashMap<InstructionInfo, InstructionDetails>();
     /*@Nullable*/ private Configuration config = Configurator.getInstance().getSaxonConfiguration();
 
