@@ -4,7 +4,7 @@ import java.io.File;
 import java.net.URI;
 import java.util.HashMap;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.http.HttpHeaders;
 import org.json.JSONObject;
 
@@ -19,6 +19,8 @@ public class GithubFile extends HttpFile {
 	
    	private static final long serialVersionUID = 1671504389004682658L;
 	
+	private String encoding = "UTF-8";
+
 	private String error = "";
 	private String stage = "init";
 	private URI url;
@@ -139,6 +141,7 @@ public class GithubFile extends HttpFile {
 		headerMap.put(HttpHeaders.AUTHORIZATION,"token " + OAUTH);
 		headerMap.put(HttpHeaders.ACCEPT, "application/json");
 		headerMap.put(HttpHeaders.CONTENT_TYPE, "application/json");
+		headerMap.put(HttpHeaders.CONTENT_ENCODING, encoding);
 		
 		String result = post(HttpFile.METHOD_POST_CONTENT, url, headerMap, null, payload);
 		
@@ -168,5 +171,9 @@ public class GithubFile extends HttpFile {
 	 */
 	public URI getURI() {
 		return url;
+	}
+
+	public void setEncoding(String encoding) {
+		this.encoding= encoding;
 	}
 }
