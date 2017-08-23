@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2017 sp2 (x64) (http://www.altova.com) by Maarten van den Broek (messageDesign B.V.) -->
+<!-- edited with XMLSpy v2017 rel. 3 sp1 (x64) (http://www.altova.com) by Maarten van den Broek (messageDesign B.V.) -->
 <schema xmlns:StUF="http://www.stufstandaarden.nl/onderlaag/stuf0302" xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<annotation>
 		<documentation xml:lang="nl">
@@ -16,6 +16,7 @@
                   - peiltijdstipMaterieel en peiltijdstipFormeel in de complexTypes ParametersVraag en ParametersAntwoord en hun restrictions
 				- ComplexTypes DatumMetIndicator en TijdstipMetIndicator verwijderd en de complexTypes DatumMogelijkOnvolledig-e en TijdstipMogelijkOnvolledig-e toegevoegd als extensions op StUF:dateTime. De verwijzingen naar de verwijderde complextTypes waar nodig aangepast.
 				- Datum-e en Tijdstip-e gedefinieerd als restriction van TijdstipMogelijkOnvolledig-e met de choice met minOccurs="0", zodat er geen nillable="true" nodig is.
+				- Jaar-r, Datum-r en Tijdstip-r toegevoegd
 				- SimpleTypes Datum en Tijdstip verwijderd
 				- TijdvakObjectZonderIndicator niet langer gedefinieerd als een restriction
 				- eindObject resp. eindRelatie verplicht gemaakt in TijdvakObject en TijdvakRelatie, omdat weglaten van deze elementen impliceert dat de waarde onbekend is.
@@ -33,7 +34,7 @@
 				- SimpleType BerichtcodeF001 hernoemd naar BerichtcodeFo01
 				- Binnen de definities van de Fo01, Fo02, Fo03, Bv01, Bv02 en Bv03-berichten de fixed value voor de berichtcode vervangen door een verwijzing naar het corresponderende simpleType voor de berichtcode.
 			- RFC0345: Het patchnummer in het bericht
-				- Het attribute patch is toegevoegd
+				- Het simpleType Patchnummer is toegevoegd
 			- RFC0391:
 				- In het simpleType Entiteittype facet maxLength verwijderd en het pattern [a-zA-Z0-9_]{1,30} toegevoegd
 				- ComplexType EntiteittypeStuurgegevens toegevoegd en gezet als type op alle entiteittype elementen binnen stuurgegevens
@@ -1058,8 +1059,6 @@
 		<attribute name="verwerkingssoort" type="StUF:Verwerkingssoort"/>
 		<attribute name="functie" type="StUF:FunctieVrijBerichtElement"/>
 	</attributeGroup>
-	<!--definitie van overige attributes-->
-	<attribute name="patch" type="nonNegativeInteger"/>
 	<!--definitie complexTypes -->
 	<complexType name="AnytypeKennisgeving">
 		<sequence>
@@ -1237,6 +1236,16 @@
 			</restriction>
 		</complexContent>
 	</complexType>
+	<complexType name="Tijdstip-r">
+		<complexContent>
+			<restriction base="StUF:Tijdstip-e">
+				<choice>
+					<element name="tijdstip" type="StUF:dateTime"/>
+				</choice>
+				<attribute name="noValue" type="StUF:NoValue" use="prohibited"/>
+			</restriction>
+		</complexContent>
+	</complexType>
 	<complexType name="DatumMogelijkOnvolledig-e">
 		<complexContent>
 			<restriction base="StUF:TijdstipMogelijkOnvolledig-e">
@@ -1269,12 +1278,32 @@
 			</restriction>
 		</complexContent>
 	</complexType>
+	<complexType name="Datum-r">
+		<complexContent>
+			<restriction base="StUF:Datum-e">
+				<choice>
+					<element name="datum" type="date"/>
+				</choice>
+				<attribute name="noValue" type="StUF:NoValue" use="prohibited"/>
+			</restriction>
+		</complexContent>
+	</complexType>
 	<complexType name="Jaar-e">
 		<complexContent>
 			<restriction base="StUF:DatumMogelijkOnvolledig-e">
+				<choice minOccurs="0">
+					<element name="jaar" type="gYear"/>
+				</choice>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<complexType name="Jaar-r">
+		<complexContent>
+			<restriction base="StUF:Jaar-e">
 				<choice>
 					<element name="jaar" type="gYear"/>
 				</choice>
+				<attribute name="noValue" type="StUF:NoValue" use="prohibited"/>
 			</restriction>
 		</complexContent>
 	</complexType>
@@ -2253,6 +2282,11 @@
 	<simpleType name="Organisatie">
 		<restriction base="string">
 			<maxLength value="200"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="Patchnummer">
+		<restriction base="string">
+			<enumeration value="[0-9]{2}"/>
 		</restriction>
 	</simpleType>
 	<simpleType name="Refnummer">
