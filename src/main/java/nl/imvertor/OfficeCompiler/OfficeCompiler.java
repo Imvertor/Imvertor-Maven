@@ -133,6 +133,7 @@ public class OfficeCompiler extends Step {
 					runner.info(logger, "GIT Pushing office HTML as " + officeFile.getName());
 					
 					GithubFile gitfile = new GithubFile(officeFile.getCanonicalPath());
+					gitfile.setEncoding("UTF-8");
 					gitfile.publish(gituser, gitrepos, gittoken, gitbranch, gitfile.getName(), "data/" + gitfile.getName(), gitcomment);
 				    
 					if (!gitfile.getError().equals(""))

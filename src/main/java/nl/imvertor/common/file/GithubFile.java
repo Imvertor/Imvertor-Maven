@@ -1,7 +1,9 @@
 package nl.imvertor.common.file;
 
 import java.io.File;
+import java.io.InputStreamReader;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 import org.apache.commons.text.StringEscapeUtils;
@@ -89,8 +91,8 @@ public class GithubFile extends HttpFile {
 				break;
 			
 			stage = "POST Request: save sha-new-tree";
-			String escaped = StringEscapeUtils.escapeJson(getContent());
-			payload = "{\"base_tree\": \""+SHA_TREE+"\",\"tree\": [{\"path\": \""+OUTFILE+"\",\"mode\": \"100644\",\"type\": \"blob\",\"content\": \""+escaped+"\"}]}"; //  \"encoding\": \"utf-8\", 
+			String escaped = StringEscapeUtils.escapeJson(getContent(StandardCharsets.UTF_8.name()));
+			payload = "{\"base_tree\": \""+SHA_TREE+"\",\"tree\": [{\"path\": \""+OUTFILE+"\",\"mode\": \"100644\",\"type\": \"blob\",\"content\": \""+escaped+"\"}]}"; //  
 			object = postToRemote(USER, REPO, OAUTH,"git/trees", payload);
 			
 			if (getStatus() < 400) 

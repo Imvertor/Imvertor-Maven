@@ -27,7 +27,10 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -148,8 +151,21 @@ public class AnyFile extends File  {
 	}
 	
 	public String getContent() throws IOException {
+		return getContent(guessEncoding());
+	}
+	
+	/**
+	 * Return a string containing the entire file contents. 
+	 * Pass encoding, i.e. the name of a character set.
+	 * Get the right name using StandardCharsets.UTF_8 etc.
+	 * 
+	 * @param encoding
+	 * @return
+	 * @throws IOException
+	 */
+	public String getContent(String encoding) throws IOException {
 		StringBuffer fileData = new StringBuffer(1000);
-        BufferedReader reader = new BufferedReader(new FileReader(this));
+	    BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(this), encoding));
         char[] buf = new char[1024];
         int numRead=0;
         while((numRead=reader.read(buf)) != -1){
