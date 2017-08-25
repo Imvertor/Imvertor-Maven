@@ -1,7 +1,6 @@
 package nl.imvertor.common.file;
 
 import java.io.File;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;

@@ -28,7 +28,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
@@ -151,7 +150,9 @@ public class AnyFile extends File  {
 	}
 	
 	public String getContent() throws IOException {
-		return getContent(guessEncoding());
+		String encoding = guessEncoding();
+		if (encoding == null) encoding = StandardCharsets.UTF_8.name();
+		return getContent(encoding);
 	}
 	
 	/**
