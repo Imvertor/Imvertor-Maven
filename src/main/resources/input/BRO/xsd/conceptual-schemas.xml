@@ -10,6 +10,8 @@
     <mapping name="BRO_INSPIRE">
         <use>GML321</use>
         <use>ISO19115</use>
+        <use>BRO-SAMPLE1</use><!-- registratie object -->
+        <use>BRO-SAMPLE2</use><!-- registratie object -->
     </mapping>
     
     <conceptual-schema>
@@ -258,5 +260,63 @@
             </construct>
         </map>
     </conceptual-schema>
+
+    <conceptual-schema>
+        
+        <name>BRO registration objects</name>
+        <short-name>bro</short-name>
+        <description>All registration object aspects that can be referenced between models</description>
+        <url>http://www.bro.nl/conceptual-schemas/bro/1.0/</url>
+        
+        <catalog>https://broprogramma.github.io/SAMPLE/[entry]</catalog>        
+        
+        <map 
+            name="BRO-SAMPLE1" 
+            namespace="http://determine/" 
+            version="1.0" 
+            phase="3" 
+            location="http://determine/sample1.xsd">
+            <desc>
+                Test voor relatie BRO-003 Sample 1
+            </desc>
+            <releases>
+                <release>2006</release> 
+            </releases>
+            
+            <construct>
+                <name>SampleClass1</name>
+                <catalog-entry>#global_class_Model_Biker<!-- een stub!--></catalog-entry>
+                <xsd-type name="SampleClass1" asAttributeDesignation="complextype" asAttribute="SampleClass1Type"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>SampleClass3</name>
+                <catalog-entry>#global_class_Model_Brick<!-- een stub!--></catalog-entry>
+                <xsd-type name="SampleClass3" asAttributeDesignation="complextype" asAttribute="SampleClass3Type"/>
+                <managed-ids/>
+            </construct>
+        </map>
+        <map 
+            name="BRO-SAMPLE2" 
+            namespace="http://determine/" 
+            version="1.0" 
+            phase="3" 
+            location="http://determine/sample2.xsd">
+            <desc>
+                Test voor relatie BRO-003 Sample 2
+            </desc>
+            <releases>
+                <release>2006</release> 
+            </releases>
+       
+            <construct>
+                <name>SampleClass2</name>
+                <catalog-entry>#global_class_Model_Bike<!-- een stub!--></catalog-entry>
+                <xsd-type name="SampleClass2" asAttributeDesignation="complextype" asAttribute="SampleClass2Type"/>
+                <managed-ids/>
+            </construct>
+        </map>
+    </conceptual-schema>
+    
     
 </conceptual-schemas>

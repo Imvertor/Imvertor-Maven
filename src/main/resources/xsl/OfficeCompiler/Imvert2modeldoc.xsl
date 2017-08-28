@@ -968,7 +968,8 @@
         <xsl:param name="type"/> <!-- global or detail -->
         <xsl:variable name="isrole" select="exists($this/self::imvert:target)"/>
         <xsl:variable name="construct" select="if ($isrole) then $this/.. else $this"/>
-        <xsl:sequence select="concat($type,'_',generate-id($construct))"/>
+        <xsl:variable name="link-name" select="if ($construct/@formal-name) then $construct/@formal-name else generate-id($construct)"/>
+        <xsl:sequence select="concat($type,'_',$link-name)"/>
     </xsl:function>
     
     <xsl:function name="imf:plugin-get-external-link-name">

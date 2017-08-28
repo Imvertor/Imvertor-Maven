@@ -17,6 +17,16 @@
             <name lang="en">Sample object</name>
             <abbrev>SAMPLE</abbrev>
         </registratieobject>
+        <registratieobject>
+            <name lang="nl">Voorbeeld object 1</name>
+            <name lang="en">Sample object 1</name>
+            <abbrev>SAMPLE1</abbrev>
+        </registratieobject>
+        <registratieobject>
+            <name lang="nl">Voorbeeld object 2</name>
+            <name lang="en">Sample object 2</name>
+            <abbrev>SAMPLE2</abbrev>
+        </registratieobject>
     </domein>
     
     <domein>

@@ -33,11 +33,6 @@
         </xsl:analyze-string>
     </xsl:function>
     
-    <xsl:function name="imf:plugin-get-link-name">
-        <xsl:param name="this"/>
-        <xsl:sequence select="generate-id($this)"/>
-    </xsl:function>
-    
     <!-- 
         return a section name for a model passed as a package 
     -->
