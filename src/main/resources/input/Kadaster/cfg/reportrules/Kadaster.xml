@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<report-rules type="config">
+    
+    <name>Kadaster</name>
+    
+    <desc lang="en">Rules for building a report on the Imvertor run</desc>
+    <desc lang="nl">Regels voor het opstellen van een rapport op het Imvertor proces</desc>
+    
+    <!-- 
+        Kadaster specific rules 
+    -->
+    
+    <!-- 
+        Within a title, intro or other text you can reference any parameter by inserting a ${group/name}, for example: 
+        
+        ${run/version}
+        may return
+        Imvertor OS 1.28.1.201708xx
+    -->
+    <report>
+        <sections langage="#all">
+            <section id="CFG-REPORT-HOME">
+                <include language="#all">yes</include>
+                <title>Home</title>
+                <intro>
+                    <p>This report is informative only.</p>
+                </intro>
+                <content/>
+            </section>
+            <section id="CFG-REPORT-OVERVIEW">
+                <include language="#all">yes</include>
+                <title>Overview</title>
+                <intro>
+                    <p>This is an overview of all steps taken in building the Imvertor results.</p>
+                </intro>
+                <content/>
+            </section>
+            <section id="CFG-REPORT-CONFIGURATION">
+                <include language="#all">yes</include>
+                <title>Configuration</title>
+                <intro>
+                    <p>This is an overview of several configuration settings used in building the Imvertor results.</p>
+                </intro>
+                <section id="CFG-REPORT-CONFIGURATION-OWNER">
+                    <include language="#all">yes</include>
+                    <title>Owner information</title>
+                    <intro>
+                        <p>This following parameters are specified for ${cli/owner}.</p>
+                    </intro>
+                    <content/>
+                </section>
+                <section id="CFG-REPORT-CONFIGURATION-SCALARS">
+                    <include language="#all">yes</include>
+                    <title>Scalars</title>
+                    <intro>
+                        <p>This following scalars are supported.</p>
+                    </intro>
+                    <content/>
+                </section>
+                <section id="CFG-REPORT-CONFIGURATION-STEREOTYPES">
+                    <include language="#all">yes</include>
+                    <title>Stereotypes</title>
+                    <intro>
+                        <p>This following stereotypes are recongnized.</p>
+                    </intro>
+                    <content/>
+                </section>
+                <section id="CFG-REPORT-CONFIGURATION-TAGGEDVALUES">
+                    <include language="#all">yes</include>
+                    <title>Owner information</title>
+                    <intro>
+                        <p>This following tagged values are recognized.</p>
+                    </intro>
+                    <content/>
+                </section>
+            </section>
+            <section id="CFG-REPORT-QUICKVIEW">
+                <include language="#all">yes</include>
+                <title>Quick view</title>
+                <intro>
+                    <p>
+                        This table reports all packages, contained classes, and contained properties, i.e. attributes (attrib) and associations (assoc).
+                    </p>
+                    <p>
+                        There are ${appinfo/count-domain-classes} classes, with
+                        ${appinfo/count-domain-attributes} attributes and 
+                        ${appinfo/count-domain-associations} associations.
+                        This may include system generated classes.
+                    </p>
+                    <p>
+                        For each class the following is specified:
+                    </p>
+                    <ul>
+                        <li>Is this a natural root class? Only classes that are nit (indirectly) referenced are natural roots.</li>
+                        <li>P::C in which P = package C = class</li>
+                        <li>Stereotype</li>
+                        <li>Supertype</li>
+                    </ul>
+                    <p>
+                        For each class property the following is specified:
+                    </p>
+                    <ul>
+                        <li>Number in sequence (order of the elements in the XML schema, higher number after lower number)</li>
+                        <li>P::C.p in which P = package C = class, p = property</li>
+                        <li>Type of the property</li>
+                        <li>Multiplicity</li>
+                        <li>Stereotype</li>
+                    </ul>
+                </intro>
+                <content/>
+            </section>
+        </sections>
+    </report>
+</report-rules>

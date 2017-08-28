@@ -50,8 +50,8 @@
         -->
         
         <stereo id="stereotype-name-external-objecttype">
-            <name lang="nl">Extern</name>
-            <name lang="en">External</name>
+            <name lang="nl">extern</name>
+            <name lang="en">external</name>
             <desc lang="en">
             </desc>
             <desc lang="nl">
@@ -63,8 +63,8 @@
         </stereo>
 
         <stereo id="stereotype-name-complextype">
-            <name lang="nl">Datatype</name>
-            <name lang="en">Datatype</name>  <!-- in addition to StructuredDatatype -->
+            <name lang="nl">datatype</name>
+            <name lang="en">datatype</name>  <!-- in addition to StructuredDatatype -->
             <desc lang="en">
             </desc>
             <desc lang="nl">
@@ -74,8 +74,8 @@
         </stereo>
 
         <stereo id="stereotype-name-identification">
-            <name lang="nl">Identificatie</name>
-            <name lang="en">Identification</name>
+            <name lang="nl">identificatie</name>
+            <name lang="en">identification</name>
             <desc lang="en">
             </desc>
             <desc lang="nl">
@@ -85,8 +85,8 @@
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-voidable">
-            <name lang="en">Voidable</name>
-            <name lang="nl">Voidable</name>
+            <name lang="en">voidable</name>
+            <name lang="nl">voidable</name>
             <desc lang="en">
             </desc>
             <desc lang="nl">
@@ -99,8 +99,8 @@
         </stereo>
         
         <stereo id="stereotype-name-formele-historie">
-            <name lang="nl">Formelehistorie</name>
-            <name lang="en">FormalHistory</name>
+            <name lang="nl">formeleHistorie</name>
+            <name lang="en">formalHistory</name>
             <desc lang="nl">
                 attribuut voor historie van veranderingen van eigenschappen van een
                 object in de registratie
@@ -108,8 +108,8 @@
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-formele-levensduur">
-            <name lang="nl">Formelelevensduur</name>
-            <name lang="en">FormalLifecycle</name>
+            <name lang="nl">formeleLevensduur</name>
+            <name lang="en">formalLifecycle</name>
             <desc lang="nl">
                 Attribuut voor vastleggen van tijdsinterval van geldigheid van het
                 object in de registratie
@@ -117,8 +117,8 @@
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-materiele-historie">
-            <name lang="nl">Materielehistorie</name>
-            <name lang="en">MaterialHistory</name>
+            <name lang="nl">materieleHistorie</name>
+            <name lang="en">materialHistory</name>
             <desc lang="nl">
                 Attribuut voor historie van veranderingen van eigenschappen van een
                 object in de werkelijkheid
@@ -126,8 +126,8 @@
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-materiele-levensduur">
-            <name lang="nl">Materielelevensduur</name>
-            <name lang="en">MaterialLifecycle</name>
+            <name lang="nl">materieleLevensduur</name>
+            <name lang="en">materialLifecycle</name>
             <desc lang="nl">
                 Attribuut voor vastleggen van tijdsinterval van geldigheid van het
                 object in de werkelijkheid

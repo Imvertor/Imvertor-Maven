@@ -55,9 +55,7 @@
     <xsl:variable name="app-package" select="($model-packages,$application-packages)[imf:get-normalized-name(@name,'package-name') = imf:get-normalized-name($application-package-name,'package-name')]"/>
     <xsl:variable name="containing-packages" select="$app-package/ancestor::UML:Package"/>
     
-    <!--x
     <xsl:variable name="known-classes" select="($app-package,$external-packages)//UML:Class"/>
-    x-->
     
     <xsl:template match="/XMI">
         <xsl:copy>
@@ -83,11 +81,9 @@
                     <xsl:apply-templates/>
                 </xsl:otherwise>
             </xsl:choose>
-            <!--x
             <XMI.extensions xmi.extender="IMVERTOR">
                 <xsl:apply-templates select=".//UML:Class" mode="stub"/>
             </XMI.extensions>
-            x-->
         </xsl:copy>
      </xsl:template>
     
@@ -143,18 +139,15 @@
         <xsl:attribute name="tag" select="normalize-space(.)"/>
     </xsl:template>
     
-    <!--x
-    <!- - 
+    <!-- 
         any class found that is not within then application package or an external package is added as a stub 
-        This code is not yet used in imvertor; we are awaiting a more ribust approach.
-    - ->
+    -->
     <xsl:template match="UML:Class" mode="stub">
-        <xsl:if test="empty($known-classes intersect .)">
+        <xsl:if test="empty($known-classes intersect .) and not(imf:boolean(@isRoot))">
             <xsl:variable name="id" select="@xmi.id"/>
             <EAStub xmi.id="{$id}" name="{@name}"/>
         </xsl:if>
     </xsl:template>
-    x-->
     
     <xsl:function name="imf:get-xmi-stereotype" as="xs:string*">
         <xsl:param name="construct"/>
