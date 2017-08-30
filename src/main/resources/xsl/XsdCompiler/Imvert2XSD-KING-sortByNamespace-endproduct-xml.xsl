@@ -53,17 +53,17 @@
     <xsl:template match="ep:message-set" mode="patch">
         <xsl:sequence select="imf:create-debug-comment('Debuglocation 3000',$debugging)"/>
 
-        <xsl:for-each-group select="/ep:message-set/ep:*[(name() = 'ep:message' or name() = 'ep:construct')]" group-by="@prefix">
-            <xsl:variable name="groupPrefix" select="current-grouping-key()"/>
+        <!--xsl:for-each-group select="/ep:message-set/ep:*[(name() = 'ep:message' or name() = 'ep:construct')]" group-by="@prefix">
+            <xsl:variable name="groupPrefix" select="current-grouping-key()"/-->
             <xsl:sequence select="imf:create-debug-comment('Debuglocation 3001',$debugging)"/>
             
-            <ep:constructRef prefix="{$groupPrefix}" ismetadata="yes">
+            <ep:constructRef prefix="{$kv-prefix}" ismetadata="yes">
                 <ep:name>patch</ep:name>
                 <ep:tech-name>patch</ep:tech-name>
                 <ep:min-occurs>1</ep:min-occurs>
                 <ep:href>patch</ep:href>
             </ep:constructRef>
-        </xsl:for-each-group>            
+        <!--/xsl:for-each-group-->            
     </xsl:template>
     
     <xsl:template match="ep:message-set">
@@ -136,7 +136,7 @@
                     <ep:construct prefix="{$groupPrefix}" ismetadata="yes">
                         <ep:name>patch</ep:name>
                         <ep:tech-name>patch</ep:tech-name>
-                        <ep:data-type>scalar-nonNegativeInteger</ep:data-type>
+                        <ep:type-name>StUF:Patchnummer</ep:type-name>
                         <ep:min-value>0</ep:min-value>
                     </ep:construct>
                 </xsl:if>
@@ -166,7 +166,9 @@
     <xsl:template match="ep:message-set/ep:construct">
         <xsl:variable name="prefix" select="@prefix"/>
         <xsl:variable name="tech-name" select="ep:tech-name"/>
-       <xsl:choose>
+ 
+        
+        <xsl:choose>
            <xsl:when test="count(//ep:constructRef[@prefix = $prefix and ep:tech-name = $tech-name]) > 0">
                <xsl:sequence select="imf:create-debug-comment('Debuglocation 3007',$debugging)"/>
                <xsl:copy>
@@ -192,11 +194,21 @@
                </xsl:copy>
            </xsl:when>
            <xsl:when test="@isdatatype = 'yes' and count(//ep:construct[ep:type-name = concat(@prefix,':',$tech-name)]) > 0">
-               <xsl:variable name="construct" select="//ep:construct[ep:type-name = concat(@prefix,':',$tech-name)][1]"/>
-               <xsl:variable name="prefix2" select="$construct/@prefix"/>
-               <xsl:variable name="tech-name2" select="$construct/ep:tech-name"/>
+               <!-- ROME: Voor de onderstaande variabele heb ik helaas een omslachtige methode moet gebruiken omdat
+                    <xsl:variable name="construct" select="//ep:construct[ep:type-name = concat(@prefix,':',$tech-name)][1]">
+                    niet werkte. Daarbij werd de variabele 'tech-nameReferingConstruct' niet goed gevuld.
+                    De reden daarvoor was mij echter een raadsel. -->
+               <xsl:variable name="construct">
+                   <ep:construct prefix="{//ep:construct[ep:type-name = concat(@prefix,':',$tech-name)][1]/@prefix}">
+                       <ep:tech-name><xsl:value-of select="//ep:construct[ep:type-name = concat(@prefix,':',$tech-name)][1]/ep:tech-name"/></ep:tech-name>
+                       <!--xsl:sequence  select="//ep:construct[ep:type-name = concat(@prefix,':',$tech-name)][1]"/-->
+                   </ep:construct>
+               </xsl:variable>
+               <xsl:variable name="prefixReferingConstruct" select="$construct//ep:construct[not(ancestor::ep:seq)]/@prefix"/>
+               <xsl:variable name="tech-nameReferingConstruct" select="$construct//ep:construct[not(ancestor::ep:seq)]/ep:tech-name"/>
+               
                <xsl:choose>
-                   <xsl:when test="count(//ep:constructRef[@prefix = $prefix2 and ep:tech-name = $tech-name2]) > 0">
+                   <xsl:when test="count(//ep:constructRef[@prefix = $prefixReferingConstruct and ep:tech-name = $tech-nameReferingConstruct]) > 0">
                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 3009',$debugging)"/>
                        <xsl:copy>
                            <xsl:apply-templates select="*|@*[local-name()!='namespaceId' and 
@@ -208,7 +220,7 @@
                                local-name()!='level']|text()"/>
                        </xsl:copy>
                    </xsl:when>
-                   <xsl:when test="count(//ep:construct[ep:type-name = concat(@prefix,':',$tech-name2)]) > 0">
+                   <xsl:when test="count(//ep:construct[ep:type-name = concat(@prefix,':',$tech-nameReferingConstruct)]) > 0">
                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 3010',$debugging)"/>
                        <xsl:copy>
                            <xsl:apply-templates select="*|@*[local-name()!='namespaceId' and 
