@@ -128,12 +128,14 @@
                 <xsl:apply-templates select="current-group()"/>
                 
                 <xsl:if test="$groupPrefix != $StUF-prefix">
-                    <ep:construct prefix="{$groupPrefix}" ismetadata="yes">
+                    <ep:construct prefix="{$kv-prefix}" ismetadata="yes">
                         <ep:name>entiteittype</ep:name>
                         <ep:tech-name>entiteittype</ep:tech-name>
                         <ep:data-type>scalar-string</ep:data-type>
                     </ep:construct>
-                    <ep:construct prefix="{$groupPrefix}" ismetadata="yes">
+                </xsl:if>
+                <xsl:if test="$groupPrefix = $kv-prefix">
+                    <ep:construct prefix="{$kv-prefix}" ismetadata="yes">
                         <ep:name>patch</ep:name>
                         <ep:tech-name>patch</ep:tech-name>
                         <ep:type-name>StUF:Patchnummer</ep:type-name>
