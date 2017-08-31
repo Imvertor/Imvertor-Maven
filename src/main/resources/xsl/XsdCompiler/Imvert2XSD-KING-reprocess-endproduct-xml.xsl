@@ -764,7 +764,7 @@
             </xsl:when>
             <xsl:when test="$uniquePrefixes//ep:prefix[@level = $prefixLevel]">
                 <xsl:sequence select="imf:create-debug-track('Debuglocation 2050b',$debugging)"/>
-                <xsl:variable name="nextPrefix" select="$uniquePrefixes//ep:prefix[@level = $currentPrefixLevel + 1]"/>
+                <xsl:variable name="nextPrefix" select="$uniquePrefixes//ep:prefix[@level = $prefixLevel + 1]"/>
                 <xsl:sequence select="imf:get-prefix-4-metadataConstructs($construct, $uniquePrefixes, $nextPrefix, $prefixLevel + 1)"/>
             </xsl:when>
             <xsl:otherwise>
