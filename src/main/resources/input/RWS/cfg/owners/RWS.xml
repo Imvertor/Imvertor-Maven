@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<project-owner type="config">
+    
+    <name>RWS</name>
+    <!-- 
+        enter a list of CSS, JS, anything to be copied to the outut file, separate with ";" 
+    -->
+    <parameter name="web-css">
+        ../web/css/report.css;
+        ../web/themes/blue/style.css;
+    </parameter> 
+    
+    <parameter name="web-scripts">
+        ../web/script/jquery/jquery-latest.js;
+        ../web/script/tablesorter/jquery.tablesorter.min.js;
+    </parameter> 
+    
+    <!-- single logo image -->
+    <parameter name="web-logo">../web/img/logo-small.jpg</parameter> 
+    <parameter name="web-logo-big">../web/img/logo-big.jpg</parameter> 
+    
+    <parameter name="pretext-encoding">
+        This schema is based on an UML specification, which is transformed by the Imvertor software. Imvertor modules are in the public domain, see http://www.imvertor.org.
+    </parameter>
+  
+    <!-- 
+        some constructs in UML have a fixed value
+    -->
+    <parameter name="fixed-identification-attribute-name">identificatie</parameter>
+    <parameter name="url-prefix-conceptual-schema">http://www.rws.nl/conceptual-schemas/</parameter>
+    <parameter name="url-prefix-schema-waardelijsten">http://www.rws.nl/schemas/waardelijsten/</parameter>
+    <parameter name="class-name-waardelijst">Waardelijst</parameter>
+    
+    <!--
+        serialisation parameters, i.e. for translation to XSD or documentation.
+    -->
+    <parameter name="reference-suffix-id">_R</parameter>
+    <parameter name="reference-suffix-name">Ref</parameter>
+    <parameter name="reference-suffix-short">-ref</parameter>
+    
+    <parameter name="name-origin-system">system</parameter>
+    <parameter name="package-name-typen">Typen</parameter>
+    <parameter name="imvertor-translate-association-components">components</parameter>
+    <parameter name="imvertor-translate-suffix-components">Components</parameter>
+    
+    <!-- 
+        other configurable info
+    -->
+    
+    <parameter name="documentation-formatting">inspire</parameter>
+    
+    <parameter name="documentation-separator">---</parameter>
+    <parameter name="documentation-separator-pattern">---</parameter>
+    <parameter name="documentation-newline">&#10;</parameter>
+    <parameter name="concept-documentation-state-obsolete-uri">http://brk.RWS.nl/id/lifecycle/afgekeurd</parameter>
+
+    <parameter name="local-mapping-notification">
+        This schema is provided by RWS as a local copy, as a convenience to the user.
+        This schema may itself reference a local copy of the schema originally referenced by URI. 
+        The local reference takes the form of a relative path, and is introduced by RWS.
+    </parameter>
+    
+    <!--x
+    <parameter name="application-version-regex">^\S+$</parameter>
+    <parameter name="domain-version-regex">^(\d+\.\d+\.\d+)$</parameter>
+    x-->
+</project-owner>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<compare-rules xmlns:xi="http://www.w3.org/2001/XInclude">
+    <!-- 
+        RWS follows KKG
+    --> 
+    <xi:include href="../../../KKG/cfg/comparerules/KKG.xml"/>
+    
+    <name>RWS</name>
+    
+    <!-- for tagged values: -->
+   
+</compare-rules>

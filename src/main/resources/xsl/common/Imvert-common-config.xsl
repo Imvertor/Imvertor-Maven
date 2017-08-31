@@ -60,7 +60,7 @@
     <xsl:variable name="configuration-shaclrules-file" select="$configuration-file/config/shacl-rules"/>
     
     <xsl:variable name="configuration-i3n-name" select="imf:get-config-string('system','configuration-i3n-file')"/>
-    <xsl:variable name="configuration-i3n-file" select="imf:document($configuration-i3n-name,true())/picklist"/>
+    <xsl:variable name="configuration-i3n-file" select="imf:document($configuration-i3n-name,true())"/>
     
     <xsl:variable name="all-scalars" select="$configuration-metamodel-file//scalars/scalar"/>
     
@@ -448,7 +448,7 @@
         <xsl:param name="key" as="xs:string"/>
         <xsl:param name="lang" as="xs:string"/>
         <xsl:param name="default" as="xs:string?"/>
-        <xsl:variable name="trans" select="$configuration-i3n-file/item[key=$key]/trans[@lang = $lang]"/>
+        <xsl:variable name="trans" select="($configuration-i3n-file//item[key=$key]/trans[@lang = $lang])[last()]"/>
         <xsl:value-of select="if (exists($trans)) then $trans else if (exists($default)) then $default else concat('[TODO: ', $key, ']')"/>
     </xsl:function>
     

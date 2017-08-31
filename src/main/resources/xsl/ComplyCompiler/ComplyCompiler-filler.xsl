@@ -42,6 +42,8 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:functx="http://www.functx.com"
+    
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     
     xmlns:ep="http://www.imvertor.org/schema/endproduct"
@@ -386,57 +388,76 @@
                         <xsl:variable name="group-row" select="count($group-header/preceding::cp:prop[../@sheet='2']) + 2"/>
                         <xsl:sequence select="imf:create-data-validation(.,'list',(),concat($sheet-gegevensgroepen-tab-name,'!$D$', $group-row, ':$K$', $group-row),(),$sqref)"/>
                     </xsl:when>
-                 
-                    <!-- getalminmaxwaarde - geheel getal met minimum en maximum waarde -->
-                    <xsl:when test="cp:type = 'scalar-integer' and cp:mininclusive and cp:maxinclusive">
-                        <xsl:sequence select="imf:create-data-validation(.,'whole',(),cp:mininclusive,cp:maxinclusive,$sqref)"/>
-                    </xsl:when>  
-                    <!-- getalminmaxwaarde - geheel getal met minimum waarde -->
-                    <xsl:when test="cp:type = 'scalar-integer' and cp:mininclusive">
-                        <xsl:sequence select="imf:create-data-validation(.,'whole','greaterThanOrEqual',cp:mininclusive,(),$sqref)"/>
-                    </xsl:when>                    
-                    <!-- getalminmaxwaarde - geheel getal met maximum waarde -->
-                    <xsl:when test="cp:type = 'scalar-integer' and cp:maxinclusive">
-                        <xsl:sequence select="imf:create-data-validation(.,'whole','lowerThanOrEqual',(),cp:maxinclusive,$sqref)"/>
-                    </xsl:when>                    
-                    
-                    
-                    <!-- ?? gebroken getal -->
-                    <xsl:when test="cp:type = 'scalar-decimal' and cp:totaldigits">
-                        <xsl:sequence select="imf:create-data-validation(.,'whole',(),concat('-',$form),$form,$sqref)"/>
-                    </xsl:when>
-                    
-                    <xsl:when test="cp:type = 'scalar-boolean'">
-                        <xsl:sequence select="imf:create-data-validation(.,'list',(),concat($quot,'0,1,true,false',$quot),(),$sqref)"/>
-                    </xsl:when>
-                    
-                    <!-- tekenreeks of getal met vaste lengte -->
-                    <xsl:when test="cp:type = ('scalar-string','scalar-integer') and cp:minlength and cp:maxlength and (cp:minlength eq cp:maxlength)">
-                        <xsl:sequence select="imf:create-data-validation(.,'textLength','equal',cp:maxlength,(),$sqref)"/>
-                    </xsl:when>
-                    <xsl:when test="cp:type = ('scalar-string','scalar-integer') and cp:minlength and cp:maxlength">
-                        <xsl:sequence select="imf:create-data-validation(.,'textLength',(),cp:minlength,cp:maxlength,$sqref)"/>
-                    </xsl:when>
-                    
-                    <?TODO
-                    <!-- tekenreeks of getal met minimale lengte -->
-                    <xsl:when test="cp:type = ('scalar-string','scalar-integer') and cp:minlength">
-                        <xsl:sequence select="imf:create-data-validation(.,'textLength','greaterThanOrEqual',cp:minlength,(),$sqref)"/>
-                    </xsl:when>
-                    ?>
-                    
-                    <!-- tekenreeks of getal met maximale lengte -->
-                    <xsl:when test="cp:type = ('scalar-string','scalar-integer') and cp:maxlength">
-                        <xsl:sequence select="imf:create-data-validation(.,'textLength','lessThanOrEqual',cp:maxlength,(),$sqref)"/>
-                    </xsl:when>
-                    
-                    <!-- enumeratie - enumeratie -->
                     <xsl:when test="cp:enum">
                         <xsl:sequence select="imf:create-data-validation(.,'list',(),concat($quot,cp:enum,$quot),(),$sqref)"/>
                     </xsl:when>
-                    
+                    <xsl:when test="cp:type = 'scalar-integer'">
+                        <!-- when no bounds set, calculate integer value, always positive. -->
+                        <xsl:variable name="mininclusive" select="
+                            if (cp:mininclusive) 
+                            then cp:mininclusive 
+                            else 
+                                if (cp:minlength) 
+                                then 10 * (xs:integer(cp:minlength) - 1) 
+                                else ()"/>
+                        <xsl:variable name="maxinclusive" select="
+                            if (cp:maxinclusive) 
+                            then cp:maxinclusive 
+                            else 
+                                if (cp:maxlength) 
+                                then xs:integer(functx:repeat-string('9',xs:integer(cp:maxlength)))  
+                                else ()"/>
+                        <xsl:choose>
+                            <!-- getalminmaxwaarde - geheel getal met minimum en maximum waarde -->
+                            <xsl:when test="$mininclusive and $maxinclusive">
+                                <xsl:sequence select="imf:create-data-validation(.,'whole',(),$mininclusive,$maxinclusive,$sqref)"/>
+                            </xsl:when>  
+                            <!-- getalminmaxwaarde - geheel getal met minimum waarde -->
+                            <xsl:when test="$mininclusive">
+                                <xsl:sequence select="imf:create-data-validation(.,'whole','greaterThanOrEqual',$mininclusive,(),$sqref)"/>
+                            </xsl:when>                    
+                            <!-- getalminmaxwaarde - geheel getal met maximum waarde -->
+                            <xsl:when test="$maxinclusive">
+                                <xsl:sequence select="imf:create-data-validation(.,'whole','lessThanOrEqual',$maxinclusive,(),$sqref)"/>
+                            </xsl:when>                    
+                            <!-- geheel getal -->
+                            <xsl:otherwise>
+                                <xsl:sequence select="imf:create-data-validation(.,'whole',(),(),(),$sqref)"/>
+                            </xsl:otherwise>                    
+                        </xsl:choose>
+                    </xsl:when>
+                    <xsl:when test="cp:type = 'scalar-decimal'">
+                        <xsl:choose>
+                            <!-- ?? gebroken getal -->
+                            <xsl:when test="cp:totaldigits">
+                                <xsl:sequence select="imf:create-data-validation(.,'whole',(),concat('-',$form),$form,$sqref)"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <!-- no additional validations -->
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:when>
+                    <xsl:when test="cp:type = 'scalar-boolean'">
+                        <xsl:sequence select="imf:create-data-validation(.,'list',(),concat($quot,'0,1,true,false',$quot),(),$sqref)"/>
+                    </xsl:when>
+                    <xsl:when test="cp:type = 'scalar-string'">
+                        <xsl:choose>
+                            <xsl:when test="cp:minlength and cp:maxlength and (cp:minlength eq cp:maxlength)">
+                                <xsl:sequence select="imf:create-data-validation(.,'textLength','equal',cp:maxlength,(),$sqref)"/>
+                            </xsl:when>
+                            <xsl:when test="cp:minlength and cp:maxlength">
+                                <xsl:sequence select="imf:create-data-validation(.,'textLength',(),cp:minlength,cp:maxlength,$sqref)"/>
+                            </xsl:when>
+                            <!-- tekenreeks of getal met maximale lengte -->
+                            <xsl:when test="cp:maxlength">
+                                <xsl:sequence select="imf:create-data-validation(.,'textLength','lessThanOrEqual',cp:maxlength,(),$sqref)"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <!-- no additional validations -->
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:when>
                 </xsl:choose>
-                
             </xsl:for-each>
         </xsl:variable>
         <xsl:if test="exists($result)">

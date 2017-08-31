@@ -656,7 +656,7 @@
         <xsl:variable name="type-tv-name" select="$this/UML:ModelElement.taggedValue/UML:TaggedValue[@tag='type']/@value"/>
         
         <xsl:if test="$type-id and not($type-tv-name) and not(starts-with($type-id,'eaxmiid'))">
-            <xsl:sequence select="imf:msg($this, 'FATAL','Attribute type conflict at UML:Classifier [1], at path [2]',($type-id,imf:compile-name-path($this)))"/>
+            <xsl:sequence select="imf:msg($this, 'ERROR','Attribute type conflict at UML:Classifier [1], at path [2]',($type-id,imf:compile-name-path($this)))"/>
         </xsl:if>
         
         <xsl:variable name="type" select="imf:element-by-id($type-id)"/>

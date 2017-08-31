@@ -1,0 +1,163 @@
+<!-- 
+    Mappings for conceptual schemas fro RWS
+-->
+<conceptual-schemas>
+  
+    <mapping name="RWS_GML">
+        <use>GML321</use>
+    </mapping>
+    
+    <conceptual-schema>
+        <!--
+            name for documentation purposes
+        -->
+        <name>Geography Markup Language 3</name>
+        <!-- 
+            The prefix as used in the schemas (also namespace prefix in qualified name).
+            Note that this "gml" short name is used as a prefix in XSD, and that this prefix is hardcoded in XSD generation XSLT.
+        -->
+        <short-name>gml</short-name>
+        <!-- 
+            Description for documentation purposes
+        -->
+        <description>ISO19107 Geographic information – Spatial schema</description>
+        <!-- 
+            This URL is the formal name fo the schema witin the EA project. 
+            Insert it as the alias of the <<external>> package. 
+        -->
+        <url>http://www.rws.nl/conceptual-schemas/ISO19107</url>
+        <!-- 
+            base catalog template, where the [entry] is replaced by the catalog name provides for each construct
+        -->
+        <catalog>http://www.opengeospatial.org/standards/gml[entry]</catalog>        
+        
+        <map 
+            name="GML321" 
+            namespace="http://www.opengis.net/gml/3.2" 
+            version="0.0.2-3.2.1" 
+            phase="3" 
+            location="http://www.opengis.net/gml/3.2/gml-profile.xsd"> 
+            
+            <releases>
+                <release>RWSPROFILE</release>
+            </releases>
+           
+            <!-- 
+               GML 3.2.1 profile for RWS.
+            -->
+            <construct>
+                <!-- this is the name of the construct in the UML model -->
+                <name>GM_AbstractFeature</name>
+                <!-- catalog reference -->
+                <catalog-entry>#AbstractFeature</catalog-entry>
+                <!-- this is a mapping to the XSD constructs within the schema -->
+                <xsd-type name="AbstractFeature" asAttributeDesignation="complextype" asAttribute="AbstractFeatureType"/>
+                <!-- this is a list of possible ID's, that can be used when conflicts occur (several constructs with same Name) -->
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>GM_LineString</name>
+                <catalog-entry>#LineString</catalog-entry>
+                <xsd-type name="LineString" asAttributeDesignation="complextype" asAttribute="LineStringType"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>GM_Point</name>
+                <catalog-entry>#Point</catalog-entry>
+                <xsd-type name="Point" asAttributeDesignation="complextype" asAttribute="PointPropertyType"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>GM_Polygon</name>
+                <catalog-entry>#Polygon</catalog-entry>
+                <xsd-type name="Polygon" asAttributeDesignation="complextype" asAttribute="PolygonType"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>GM_Envelope</name>
+                <catalog-entry>#Envelope</catalog-entry>
+                <xsd-type name="Envelope" asAttributeDesignation="complextype" asAttribute="EnvelopeType"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>GM_AbstractGeometry</name>
+                <catalog-entry>#AbstractGeometry</catalog-entry>
+                <xsd-type name="AbstractGeometry" asAttributeDesignation="complextype" asAttribute="AbstractGeometryType"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>GM_AbstractCurve</name>
+                <catalog-entry>#AbstractCurve</catalog-entry>
+                <xsd-type name="AbstractCurve" asAttributeDesignation="complextype" asAttribute="AbstractCurveType"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>GM_AbstractSurface</name>
+                <catalog-entry>#AbstractSurface</catalog-entry>
+                <xsd-type name="AbstractSurface" asAttributeDesignation="complextype" asAttribute="AbstractSurfaceType"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>GM_AbstractRing</name>
+                <catalog-entry>#AbstractRing</catalog-entry>
+                <xsd-type name="AbstractRing" asAttributeDesignation="complextype" asAttribute="AbstractRingType"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>LinearRing</name>
+                <catalog-entry>#LinearRing</catalog-entry>
+                <xsd-type name="LinearRing" asAttributeDesignation="complextype" asAttribute="LinearRingType"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>GM_Object</name>
+                <catalog-entry>#GM_Object</catalog-entry>
+                <xsd-type name="AbstractGeometry" asAttributeDesignation="complextype" asAttribute="AbstractGeometryType"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>GM_MultiSurface</name>
+                <catalog-entry>#MultiSurface</catalog-entry>
+                <xsd-type name="MultiSurface" asAttributeDesignation="complextype" asAttribute="MultiSurfaceType"/>
+                <managed-ids/>
+            </construct>
+            
+            <!-- TODO verplaatsen? is onderdeel van GML toch? -->
+            <construct>
+                <name>TM_Instant</name>
+                <catalog-entry>#TimeInstant</catalog-entry>
+                <xsd-type name="TimeInstant" asAttributeDesignation="complextype" asAttribute="TimeInstantType"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>TM_Period</name>
+                <catalog-entry>#TimePeriod</catalog-entry>
+                <xsd-type name="TimePeriod" asAttributeDesignation="complextype" asAttribute="TimePeriodType"/>
+                <managed-ids/>
+            </construct>
+      
+            <!-- TODO verplaatsen naar generic conceptual model, base types, INSPIRE base types: Identifier -->
+            <construct>
+                <name>Identifier</name>
+                <catalog-entry>#Identifier</catalog-entry>
+                <xsd-type name="Identifier" asAttributeDesignation="complextype" asAttribute="IdentifierType"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>OtherSoilNameType</name>
+                <catalog-entry>#OtherSoilNameType</catalog-entry>
+                <xsd-type name="OtherSoilNameType" asAttributeDesignation="complextype" asAttribute="OtherSoilNameType"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>WRBSoilNameType</name>
+                <catalog-entry>#WRBSoilNameType</catalog-entry>
+                <xsd-type name="WRBSoilNameType" asAttributeDesignation="complextype" asAttribute="WRBSoilNameType"/>
+                <managed-ids/>
+            </construct>
+            
+        </map>
+        
+    </conceptual-schema>
+    
+</conceptual-schemas>
