@@ -30,7 +30,7 @@
 	<xsl:variable name="attributeFormDefault" select="if (imf:boolean(imf:get-config-string('cli','attributeisqualified','no'))) then 'qualified' else 'unqualified'"/>
 	
 	<xsl:template match="ep:message-set">
-		<xsl:variable name="message-set-prefix" select="ep:namespace-prefix"/>
+		<xsl:variable name="message-set-prefix" select="@prefix"/>
 		<xsl:variable name="kv-prefix" select="../ep:message-set[@KV-namespace = 'yes']/@prefix"/>
 		<xsl:variable name="kv-version" select="../ep:message-set[@KV-namespace = 'yes']/ep:version"/>
 		<xsl:variable name="message-set-namespaceIdentifier" select="ep:namespace"/>
@@ -51,7 +51,7 @@
 				<ep:namespaces>
 					<xsl:if test="@KV-namespace = 'yes'">
 						<xsl:for-each
-							select=".//ep:constructRef[@prefix and not(@prefix = $message-set-prefix) and not(@prefix = $StUF-prefix) and not(@prefix = '$actualPrefix')] | .//ep:construct[@prefix and not(@prefix = $message-set-prefix) and not(@prefix = $StUF-prefix) and not(@prefix = '$ACTUALPREFIX')]">
+							select=".//ep:superconstructRef[@prefix and not(@prefix = $message-set-prefix) and not(@prefix = $StUF-prefix) and not(@prefix = '$actualPrefix')] | .//ep:constructRef[@prefix and not(@prefix = $message-set-prefix) and not(@prefix = $StUF-prefix) and not(@prefix = '$actualPrefix')] | .//ep:construct[@prefix and not(@prefix = $message-set-prefix) and not(@prefix = $StUF-prefix) and not(@prefix = '$ACTUALPREFIX')]">
 							<xsl:variable name="prefix" select="@prefix"/>
 							<ep:namespace
 								identifier="{$namespaces//ep:namespace[@prefix = $prefix]}"
@@ -74,6 +74,12 @@
 					<xsl:value-of select="@identifier"/>
 				</xsl:namespace>
 			</xsl:for-each>
+			
+			<xsl:if test="$debugging and @prefix = $kv-prefix">
+				<xsl:result-document href="file:/c:/temp/namespaces2bImported.xml">
+					<xsl:sequence select="$namespaces2bImported"/>
+				</xsl:result-document>
+			</xsl:if>
 
 			<xsl:sequence select="$annot"/>
 			

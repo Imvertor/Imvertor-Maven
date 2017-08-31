@@ -897,6 +897,7 @@
                                     		with the same name within an Excel spreadsheet used to configure a.o. XML 
                                     		attributes usage. The last parameter is used to determine the need for the 
                                     		XML-attribute 'StUF:indOnvolledigeDatum'. -->
+                                <xsl:sequence select="imf:create-debug-comment('Debuglocation 14a',$debugging)"/>
                                 <xsl:sequence select="imf:create-debug-comment(concat('Attributes voor ',$typeCode,', berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $alias),$debugging)"/>
                                 <xsl:variable name="attributes"
                                     select="imf:createAttributes($typeCode, substring($berichtCode,1,2), $context, 'no', $alias,'no', $prefix, $id, '')" />
@@ -924,6 +925,7 @@
                        <xsl:variable name="type" select="'Grp'"/>
                        <xsl:variable name="name">
                            <xsl:choose>
+                               <xsl:when test="ep:name = 'zender' or ep:name = 'ontvanger'"><xsl:value-of select="'Systeem'"/></xsl:when>
                                <xsl:when test="@className"><xsl:value-of select="@className"/></xsl:when>
                                <xsl:otherwise><xsl:value-of select="ep:name"/></xsl:otherwise>
                            </xsl:choose>
@@ -940,6 +942,11 @@
                        
                         <ep:construct type="group">
                            <xsl:choose>
+                               <xsl:when test="ep:name = 'parameters' or ep:name = 'stuurgegevens' or ep:name = 'zender' or ep:name = 'ontvanger'">
+                                   <xsl:attribute name="prefix" select="$StUF-prefix"/>
+                                   <xsl:attribute name="namespaceId" select="$StUF-namespaceIdentifier"/>
+                                   <xsl:attribute name="version" select="ep:UGMversionGerelateerdeEntiteit"/>
+                               </xsl:when>
                                <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
                                    <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
                                    <xsl:attribute name="namespaceId" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
@@ -1022,7 +1029,6 @@
                         <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->                                
 
                         <xsl:sequence select="imf:create-debug-comment('Debuglocation 17',$debugging)"/>
-                        <xsl:sequence select="imf:create-debug-comment(concat('imvert:id: ',$construct/imvert:id),$debugging)"/>
                         
                         <xsl:variable name="docs">
                            <imvert:complete-documentation>
@@ -1298,6 +1304,7 @@
                                     		with the same name within an Excel spreadsheet used to configure a.o. XML 
                                     		attributes usage. The last parameter is used to determine the need for the 
                                     		XML-attribute 'StUF:indOnvolledigeDatum'. -->
+                                       <xsl:sequence select="imf:create-debug-comment('Debuglocation 17ba',$debugging)"/>
                                        <xsl:sequence select="imf:create-debug-comment(concat('Attributes voor ',$typeCode,', berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $alias),$debugging)"/>
                                        <xsl:variable name="attributes"
                                            select="imf:createAttributes($typeCode, substring($berichtCode,1,2), $context, 'no', $alias,'no', $prefix, $id, '')" />
@@ -1940,7 +1947,21 @@
                 <xsl:copy-of select="imf:get-UGM-suppliers(.)"/>
             </ep:suppliers>
         </xsl:variable>
-        <xsl:variable name="construct-Prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
+        
+        <!-- ROME: Uitbecommentarieerde variabele is vervangen door de die daaronder.
+                   Dit is slechts tijdelijk todat er een alternatieve constructie is voor het definieren van custom stuurgegevens en parameters. -->
+        
+        <!--xsl:variable name="construct-Prefix" select="$suppliers//supplier[1]/@verkorteAlias"/-->
+        <xsl:variable name="construct-Prefix">
+            <xsl:choose>
+                <xsl:when test="$suppliers//supplier[1]/@verkorteAlias != ''">
+                    <xsl:value-of select="$suppliers//supplier[1]/@verkorteAlias"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="'StUF'"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         <!--xsl:variable name="construct-Namespace" select="$suppliers//supplier[1]/@base-namespace"/-->
 
         <xsl:comment select="concat('ROME: ',parent::imvert:*/imvert:name)"/>

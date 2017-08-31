@@ -83,7 +83,9 @@
 				with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE', 'VRIJ BERICHTTYPE', 
 				'KENNISGEVINGBERICHTTYPE' or 'SYNCHRONISATIEBERICHTTYPE' and those within the current class. 
 				The empty value for the variable 'context' guarantee's no xml attributes are 
-				generated with the attributen.-->
+				generated with the attributen.
+				If custom stuurgegevens and parameters are used no imvert:supertype will be available and the 
+				apply-template on that element is never fired.-->
 			<xsl:apply-templates select="imvert:supertype" mode="create-message-content">
 				<xsl:with-param name="berichtCode" select="$berichtCode"/>
 				<xsl:with-param name="berichtName" select="$berichtName"/>
@@ -120,8 +122,7 @@
 				<xsl:with-param name="context" select="'-'"/>
 			</xsl:apply-templates>
 			
-			<!-- ROME: volgens mij worden ook parameters nu door de hierbovenstaande apply-templates gegenereerd.
-					   Die zitten nu immers ook in het supertype. De vraag is of de onderstaande apply-templates nog iets doet. -->
+			<xsl:sequence select="imf:create-debug-comment('Debuglocation 1000A',$debugging)"/>
 			<xsl:apply-templates
 				select="./imvert:associations/imvert:association[imvert:stereotype = 'GROEP COMPOSITIE']"
 				mode="create-message-content">
@@ -132,7 +133,8 @@
 				<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
 				<xsl:with-param name="context" select="''"/>
 			</xsl:apply-templates>
-
+			<xsl:sequence select="imf:create-debug-comment('Debuglocation 1000B',$debugging)"/>
+			
 			<!-- At this level an association with a class having the stereotype 'ENTITEITTYPE' 
 				 always has the stereotype 'ENTITEITRELATIE'. The following apply-templates 
 				 initiates the processing of such an association.
@@ -1434,8 +1436,21 @@
 					<xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
 					<xsl:variable name="tokens" select="tokenize($checksum-string,'\[SEP\]')"/>
 					
-					<xsl:variable name="construct-Prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
-
+					<!-- ROME: Uitbecommentarieerde variabele is vervangen door de die daaronder.
+                   Dit is slechts tijdelijk todat er een alternatieve constructie is voor het definieren van custom stuurgegevens en parameters. -->
+					
+					<!--xsl:variable name="construct-Prefix" select="$suppliers//supplier[1]/@verkorteAlias"/-->
+					<xsl:variable name="construct-Prefix">
+						<xsl:choose>
+							<xsl:when test="$suppliers//supplier[1]/@verkorteAlias != ''">
+								<xsl:value-of select="$suppliers//supplier[1]/@verkorteAlias"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="'StUF'"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+					
 					<ep:construct type="complexData">
 						<xsl:if test="$suppliers//supplier[1]/@verkorteAlias != ''">
 							<xsl:attribute name="prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
@@ -2323,34 +2338,102 @@
 
 					</xsl:if>
 				</xsl:when>
-				<!-- The association is a 'groep compositie' and it has to contain a constructRef. -->
+				<!--xsl:when
+					test="key('class',$type-id) and imvert:stereotype = 'GROEP COMPOSITIE' and ancestor::imvert:package[contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen')] and imvert:name = 'parameters' and contains('Di01 Di02 Du01 Du02',$berichtCode) and $context = 'entiteit'">
+					<xsl:sequence select="imf:report-warning(., 
+						imvert:name = 'parameters' and contains('Di01 Di02 Du01 Du02',$berichtCode) and $context = 'entiteit',
+						'A parameters element is not allowed within an object with a functie attributevalue of entiteit in a Dixx or Duxx message.',())"/>				
+				</xsl:when-->	
+				<!-- The association is a 'groep compositie' from the 'Berichtstrukturen' package and it has to contain a constructRef. -->
 				<xsl:when
-					test="key('class',$type-id) and imvert:stereotype = 'GROEP COMPOSITIE'">
-					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056',$debugging)"/>
-
-					<xsl:variable name="type" select="'Grp'"/>
+					test="key('class',$type-id) and imvert:stereotype = 'GROEP COMPOSITIE' and ancestor::imvert:package[contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen')]">
+					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056a',$debugging)"/>
+					
 					<xsl:variable name="name">
 						<xsl:choose>
-							<xsl:when test="(imvert:name = 'zender' or imvert:name = 'ontvanger') and contains(ancestor::imvert:package/@display-name,'www.kinggemeenten.nl/BSM/Berichtstrukturen')">
-								<xsl:value-of select="imf:get-construct-by-id($type-id,$packages-doc)/imvert:name"/>
+							<xsl:when test="imvert:name = 'stuurgegevens'">
+								<xsl:value-of select="concat('Stuurgegevens',$berichtCode)"/>
 							</xsl:when>
+							<xsl:when test="imvert:name = 'parameters' and contains('Lv01 Lv02 Lv03 Lv04 Lv05 Lv06 Lv07 Lv08 Lv09 Lv10',$berichtCode)">
+								<xsl:value-of select="'ParametersVraag'"/>
+							</xsl:when>
+							<xsl:when test="imvert:name = 'parameters' and contains('La01 La07 La09',$berichtCode)">
+								<xsl:value-of select="'ParametersAntwoordSynchroon'"/>
+							</xsl:when>
+							<xsl:when test="imvert:name = 'parameters' and $berichtCode = 'La05'">
+								<xsl:value-of select="'ParametersAntwoordSynchroonFormeel'"/>
+							</xsl:when>
+							<xsl:when test="imvert:name = 'parameters' and $berichtCode = 'La03'">
+								<xsl:value-of select="'ParametersAntwoordSynchroonMaterieel'"/>
+							</xsl:when>
+							<xsl:when test="imvert:name = 'parameters' and contains('La02 La08 La10',$berichtCode)">
+								<xsl:value-of select="'ParametersAntwoordAsynchroon'"/>
+							</xsl:when>
+							<xsl:when test="imvert:name = 'parameters' and $berichtCode = 'La06'">
+								<xsl:value-of select="'ParametersAntwoordAsynchroonFormeel'"/>
+							</xsl:when>
+							<xsl:when test="imvert:name = 'parameters' and $berichtCode = 'La04'">
+								<xsl:value-of select="'ParametersAntwoordAsynchroonMaterieel'"/>
+							</xsl:when>
+							<xsl:when test="imvert:name = 'parameters' and $berichtCode = 'Lk01'">
+								<xsl:value-of select="'ParametersLk01'"/>
+							</xsl:when>
+							<xsl:when test="imvert:name = 'parameters' and $berichtCode = 'Lk02'">
+								<xsl:value-of select="'ParametersLk02'"/>
+							</xsl:when>
+							<xsl:when test="imvert:name = 'parameters' and contains('Lk05 Lk06',$berichtCode)">
+								<xsl:value-of select="'ParametersKennisgeving'"/>
+							</xsl:when>
+							<xsl:when test="imvert:name = 'parameters' and contains('Di01 Di02 Du01 Du02',$berichtCode) and $context = 'update'">
+								<xsl:value-of select="'ParametersKennisgeving'"/>
+							</xsl:when>
+							<xsl:when test="imvert:name = 'parameters' and contains('Di01 Di02 Du01 Du02',$berichtCode) and $context = 'selectie'">
+								<xsl:value-of select="'ParametersVraag-basis'"/>
+							</xsl:when>
+							<xsl:when test="imvert:name = 'parameters' and contains('Di01 Di02 Du01 Du02',$berichtCode) and $context = 'antwoord'">
+								<xsl:value-of select="'ParametersAntwoord'"/>
+							</xsl:when>
+							<!-- ROME: Volgende moet nog worden ingevuld. Het betreft de invulling van een parameters element op toplevel niveai van een vrijbericht.
+									   Waarschjijnlijk moet dit custom worden aangemaakt.-->
 							<xsl:otherwise>
-								<xsl:value-of select="imvert:name"/>
+								<xsl:value-of select="'ParametersNaderTeBepalen'"/>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
-					<xsl:variable name="bepalingVerwerkingsModusOfConstructRef">
-						<xsl:choose>
-							<xsl:when test="$currentMessage//ep:*[generate-id() = $generated-id]/ep:construct/ep:construct[ep:id = $type-id and @context = $context]">
-								<xsl:value-of select="'1'"/>
-							</xsl:when>
-							<xsl:when test="$currentMessage//ep:*[generate-id() = $generated-id]/ep:construct[ep:id = $type-id and @context = $context]">
-								<xsl:value-of select="'2'"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="'3'"/>
-							</xsl:otherwise>				
-						</xsl:choose>
+
+					<!-- The ep:constructRef is temporarily provided with a 'context' attribute and a 'ep:id' element to be able to create global constructs later.
+						 These are removed later since they aren't part of the 'ep' structure. -->
+					
+					<!-- Location: 'ep:constructRef3'
+								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct3'. -->
+					
+					<xsl:if test="imvert:name = 'parameters' or imvert:name = 'stuurgegevens'">
+						<ep:construct context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+							<xsl:attribute name="prefix" select="$StUF-prefix"/>
+							<xsl:attribute name="namespaceId" select="$StUF-namespaceIdentifier"/>
+							
+							<xsl:if test="$debugging">
+								<xsl:copy-of select="$suppliers"/>
+							</xsl:if>
+							
+							<xsl:sequence select="imf:create-output-element('ep:name', imvert:name)"/>
+							<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)"/>
+							<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)"/>
+							<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)"/>
+							<xsl:sequence select="imf:create-output-element('ep:position', imvert:position)"/>
+							<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056b',$debugging)"/>
+							<xsl:sequence select="imf:create-output-element('ep:type-name', $name)"/>
+						</ep:construct>
+					</xsl:if>
+				</xsl:when>
+				<!-- The association is a 'groep compositie' and it has to contain a constructRef. -->
+				<xsl:when
+					test="key('class',$type-id) and imvert:stereotype = 'GROEP COMPOSITIE'">
+					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056c',$debugging)"/>
+
+					<xsl:variable name="type" select="'Grp'"/>
+					<xsl:variable name="name">
+						<xsl:value-of select="imvert:name"/>
 					</xsl:variable>
 					<!-- The ep:constructRef is temporarily provided with a 'context' attribute and a 'ep:id' element to be able to create global constructs later.
 						 These are removed later since they aren't part of the 'ep' structure. -->
@@ -2395,34 +2478,32 @@
 							<xsl:otherwise/>
 						</xsl:choose>
 						<xsl:choose>
-							<xsl:when test="ancestor::imvert:package[not(contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen'))] and $verwerkingsModusOfConstructRef != ''">
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056a',$debugging)"/>
+							<!-- In case of zender or ontvanger a referention to the type StUF:Systeem must be created. -->   
+							<xsl:when test="(imvert:name = 'ontvanger' or imvert:name = 'zender')">
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056f',$debugging)"/>
+								<!--xsl:sequence select="imf:create-output-element('ep:type-name', 'Systeem')"/-->
+								<xsl:sequence
+									select="imf:create-output-element('ep:type-name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,'Systeem',$verwerkingsModus))" />
+							</xsl:when>
+							<xsl:when test="(imvert:name = 'entiteittype')">
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056g',$debugging)"/>
+								
+								
+								<!-- ROME: I.h.k.v. RM #488759 zou ik op termijn op basis van $alias een specifieke 'EntiteittypeStuurgegevens' per bericht moeten maken.
+										   Dit streven is echter niet verenigbaar met het hergebruiken van de stuurgegevens en parameters complexTypes van de onderlaag. -->
+								<!-- Variabele 'alias' is blijkbaar niet altijd gevuld. Bij KV Prefill geeft onderstaande regel nl. een foutmelding. -->
+								<!--xsl:sequence select="imf:create-debug-comment($alias,$debugging)"/-->
+								
+								
+								
+								<xsl:sequence select="imf:create-output-element('ep:type-name', 'EntiteittypeStuurgegevens')"/>
+							</xsl:when>
+							<xsl:when test="$verwerkingsModusOfConstructRef != ''">
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056d',$debugging)"/>
 								<xsl:variable name="type-name"><xsl:value-of select="imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name,$verwerkingsModusOfConstructRef)"/></xsl:variable>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
 							</xsl:when>
-							<xsl:when test="ancestor::imvert:package[not(contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen'))] and $verwerkingsModusOfConstructRef = ''">
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056b',$debugging)"/>
-								<xsl:variable name="type-name"><xsl:value-of select="imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name)"/></xsl:variable>
-								<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
-							</xsl:when>
-							<!-- In case of zender or ontvanger a referention to the type StUF:Systeem must be created. -->   
-							<xsl:when test="ancestor::imvert:package[contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen')] and (imvert:name = 'ontvanger' or imvert:name = 'zender')">
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056c',$debugging)"/>
-								<xsl:sequence select="imf:create-output-element('ep:type-name', 'Systeem')"/>
-							</xsl:when>
-							<xsl:when test="ancestor::imvert:package[contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen')] and (imvert:name = 'entiteittype')">
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056d',$debugging)"/>
-
-
-								<!-- ROME: I.h.k.v. RM #488759 moet ik op termijn op basis van $alias een specifieke 'EntiteittypeStuurgegevens' per bericht maken. -->
-								<!-- Variabele 'alias' is blijkbaar niet altijd gevuld. Bij KV Prefill geeft onderstaande regel nl. een foutmelding. -->
-								<!--xsl:sequence select="imf:create-debug-comment($alias,$debugging)"/-->
-
-
-
-								<xsl:sequence select="imf:create-output-element('ep:type-name', 'EntiteittypeStuurgegevens')"/>
-							</xsl:when>
-							<xsl:when test="ancestor::imvert:package[contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen')]">
+							<xsl:when test="$verwerkingsModusOfConstructRef = ''">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056e',$debugging)"/>
 								<xsl:variable name="type-name"><xsl:value-of select="imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name)"/></xsl:variable>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
