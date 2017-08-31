@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <!-- RWS follows BRO -->
+    <xi:include href="../../../BRO/cfg/docrules/BRO.xml"/>
+    
+    <name>RWS</name>
+    
+    <desc>RWS specific requirements on documentation.</desc>
+    
+</doc-rules>

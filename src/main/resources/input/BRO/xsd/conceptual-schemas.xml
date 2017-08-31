@@ -10,6 +10,7 @@
     <mapping name="BRO_INSPIRE">
         <use>GML321</use>
         <use>ISO19115</use>
+        <use>INSPIRE</use>
         <use>BRO-SAMPLE1</use><!-- registratie object -->
         <use>BRO-SAMPLE2</use><!-- registratie object -->
     </mapping>
@@ -318,5 +319,40 @@
         </map>
     </conceptual-schema>
     
+    <conceptual-schema>
+        
+        <name>INSPIRE</name>
+        <short-name>INSPIRE</short-name>
+        <description>
+            The INSPIRE Feature Concept Dictionary (IFCD) acts as a common feature concept dictionary for all 
+            INSPIRE data specifications. The common feature concept dictionary contains terms and definitions 
+            required for specifying thematic spatial object types and it is main role is in particular to 
+            support the harmonisation effort and to identify conflicts between the specifications of the spatial 
+            object types in the different themes.</description>
+        <url>http://www.bro.nl/conceptual-schemas/INSPIRE</url>
+        
+        <catalog>http://inspire.ec.europa.eu/featureconcept/[entry]</catalog>        
+        
+        <map 
+            name="INSPIRE" 
+            namespace="http://inspire.ec.europa.eu/" 
+            version="1.0" 
+            phase="3" 
+            location="http://inspire.ec.europa.eu/sample1.xsd">
+            <desc>
+                Links to the INSPIRE cataloque and schemas.
+            </desc>
+            <releases>
+                <release>2006</release> 
+            </releases>
+            
+            <construct>
+                <name>ActivityComplex</name>
+                <catalog-entry>ActivityComplex</catalog-entry>
+                <xsd-type name="ActivityComplex" asAttributeDesignation="complextype" asAttribute="ActivityComplexType"/>
+                <managed-ids/>
+            </construct>
+        </map>
+    </conceptual-schema>
     
 </conceptual-schemas>

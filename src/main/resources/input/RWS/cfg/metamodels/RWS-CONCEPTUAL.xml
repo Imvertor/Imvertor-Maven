@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <!-- 
+        RWS follows KKG ISO (alt 2)
+        
+        Including scalars.
+    --> 
+    <xi:include href="../../../KKG/cfg/metamodels/KKG-ISO.xml"/>
+    
+    <name>RWS</name>
+    
+</metamodel>

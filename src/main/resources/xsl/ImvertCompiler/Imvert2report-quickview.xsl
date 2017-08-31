@@ -29,6 +29,8 @@
     version="2.0">
 
     <xsl:template match="imvert:packages" mode="quickview">
+
+        <!-- preprare the reportrules info -->
         <xsl:variable name="domain-packages" select="root()//imvert:package[imvert:stereotype=imf:get-config-stereotypes(
             ('stereotype-name-domain-package',
             'stereotype-name-view-package',
@@ -36,6 +38,12 @@
             'stereotype-name-external-package',
             'stereotype-name-components-package'
             ))]"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','count-domain-packages', count($domain-packages))"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','count-domain-classes', count($domain-packages/imvert:class))"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','count-domain-attributes', count($domain-packages/imvert:class/*/imvert:attribute))"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','count-domain-associations', count($domain-packages/imvert:class/*/imvert:association))"/>
+
+        <!-- build the page -->
         <xsl:variable name="title">Quick view</xsl:variable>
         <page>
             <title>Quick view</title>
@@ -73,6 +81,8 @@
                             <li>Stereotype</li>
                         </ul>
                     </div>
+                </div>
+                <div class="content">
                     <table>
                         <xsl:apply-templates select="$domain-packages" mode="quickview"/>
                     </table>

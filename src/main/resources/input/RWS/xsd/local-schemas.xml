@@ -1,0 +1,25 @@
+<!-- 
+    Mappings for local schemas 
+-->
+<local-schemas>
+    <svn-id>$Id: local-schemas.xml 7209 2015-08-25 12:28:42Z arjan $</svn-id>
+    
+    <local-schema schemafolder="www.opengis.net/GML321-BROPROFILE">
+        <!-- 
+            This schema depends on the local schema folders specified below.
+        -->
+        <depends-on schemafolder="www.w3.org/XLINKS-BROPROFILE"/>
+        <!-- 
+            Define which local paths will be valid for internet imports and includes 
+            This specifies the source URI prefix, as found in the local copy,
+            and the target URI prefix, that will be valid for the local copy.
+        -->
+        <local-map 
+            source-uri-prefix="https://www.broservices.nl/profile/xlink/1.0/xlink-profile.xsd"
+            target-uri-prefix="../../xlink/1.0.0/xlink-profile.xsd"/>
+        
+    </local-schema>
+    
+   
+    
+</local-schemas>

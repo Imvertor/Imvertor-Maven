@@ -97,7 +97,7 @@
         <cp:block sheet="2">
             <xsl:sequence select="imf:create-element('cp:id',imf:get-id(.))"/>
             <cp:prop type="header">
-                <xsl:sequence select="imf:create-element('cp:name',concat(imf:get-qualified-name(.), if (ep:tip-1) then ' (ETC)' else ''))"/>
+                <xsl:sequence select="imf:create-element('cp:name',concat(ep:name, ' - ', imf:get-qualified-name(.), if (ep:tip-1) then ' (ETC)' else ''))"/>
                 <!--x <xsl:sequence select="imf:create-element('cp:tip',concat('Let op! Meerdere referenties met verschillende namen naar dit element: ', ep:tip-1))"/> x-->
             </cp:prop>
             <xsl:apply-templates select="(ep:seq|ep:choice)" mode="prepare-flat"/>
@@ -218,7 +218,7 @@
   
     <xsl:function name="imf:get-qualified-name">
         <xsl:param name="this"/>
-        <xsl:value-of select="$this/ep:name"/>
+        <xsl:value-of select="$this/ep:tech-name"/>
         <!--x
             <xsl:variable name="my-prefix" select="$this/@prefix"/>
         <xsl:variable name="is-attribute" select="$this/@ismetadata = 'yes'"/>
