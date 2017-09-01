@@ -880,6 +880,9 @@
 							<xsl:otherwise>optional</xsl:otherwise>
 						</xsl:choose>
 					</xsl:attribute>
+					<xsl:if test="ep:enum[@fixed = 'yes']">
+						<xsl:attribute name="fixed" select="ep:enum"/>
+					</xsl:if>
 				</xs:attribute>
 				<xsl:sequence select="imf:create-debug-comment('Debuglocation 5020', $debugging)"/>
 			</xsl:when>
@@ -892,6 +895,9 @@
 							<xsl:otherwise>optional</xsl:otherwise>
 						</xsl:choose>
 					</xsl:attribute>
+					<xsl:if test="ep:enum[@fixed = 'yes']">
+						<xsl:attribute name="fixed" select="ep:enum"/>
+					</xsl:if>
 				</xs:attribute>
 				<xsl:sequence select="imf:create-debug-comment('Debuglocation 5021', $debugging)"/>
 			</xsl:when>
@@ -905,6 +911,9 @@
 							<xsl:otherwise>optional</xsl:otherwise>
 						</xsl:choose>
 					</xsl:attribute>
+					<xsl:if test="ep:enum[@fixed = 'yes']">
+						<xsl:attribute name="fixed" select="ep:enum"/>
+					</xsl:if>
 				</xs:attribute>
 				<xsl:sequence select="imf:create-debug-comment('Debuglocation 5022', $debugging)"/>
 			</xsl:when>
@@ -1023,7 +1032,7 @@
 					<xsl:otherwise>optional</xsl:otherwise>
 				</xsl:choose>
 			</xsl:attribute>
-			<xsl:if test="ep:enum">
+			<xsl:if test="ep:enum[@fixed = 'yes']">
 				<xsl:attribute name="fixed" select="ep:enum"/>
 			</xsl:if>
 		</xs:attribute>

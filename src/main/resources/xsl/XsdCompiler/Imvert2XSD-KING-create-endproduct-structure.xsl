@@ -744,20 +744,20 @@
 				</xsl:when>
 				<xsl:when test="$currentMessage//ep:*[generate-id() = $generated-id and @context = $context]/ep:construct[ep:id = $id]">
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1014e',$debugging)"/>
-					<xsl:sequence select="imf:create-debug-comment(concat('ep:constructname: ',$currentMessage//ep:*[generate-id() = $generated-id]/ep:name,', @context :',$context,' ,id :',$id,' ,verwerkingsmodus :',$verwerkingsModus,' - ',$matchgegeven,'.'),$debugging)"/>
+					<!--xsl:sequence select="imf:create-debug-comment(concat('ep:constructname: ',$currentMessage//ep:*[generate-id() = $generated-id]/ep:name,', @context :',$context,' ,id :',$id,' ,verwerkingsmodus :',$verwerkingsModus,' - ',$matchgegeven,'.'),$debugging)"/>
 					<xsl:for-each select="$currentMessage//ep:*[generate-id() = $generated-id and @context = $context and ep:construct[ep:id = $id]]">
 						<xsl:sequence select="imf:create-debug-comment(concat('$receivedGenerated-id: ',$generated-id,', generatedId :',generate-id(.), ' (ep:generated-id :',$currentMessage//ep:*[generate-id() = $generated-id]/ep:generated-id,')'),$debugging)"/>
-					</xsl:for-each>
+					</xsl:for-each-->
 				</xsl:when>
 				<xsl:when test="$currentMessage//ep:*[generate-id() = $generated-id and @context = $context]/ep:construct[ep:id = $type-id]">
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1014f',$debugging)"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1014h',$debugging)"/>
-					<xsl:sequence select="imf:create-debug-comment(concat('ep:constructname: ',$currentMessage//ep:*[generate-id() = $generated-id]/ep:name,', @context :',$context,' ,id :',$id,' ,verwerkingsmodus :',$verwerkingsModus,' - ',$matchgegeven,'.'),$debugging)"/>
+					<!--xsl:sequence select="imf:create-debug-comment(concat('ep:constructname: ',$currentMessage//ep:*[generate-id() = $generated-id]/ep:name,', @context :',$context,' ,id :',$id,' ,verwerkingsmodus :',$verwerkingsModus,' - ',$matchgegeven,'.'),$debugging)"/>
 					<xsl:for-each select="$currentMessage//ep:*[@context = $context and ep:construct[ep:id = $id]]">
 						<xsl:sequence select="imf:create-debug-comment(concat('$receivedGenerated-id: ',$generated-id,', generatedId :',generate-id(.), ' (ep:generated-id :',$currentMessage//ep:*[generate-id() = $generated-id]/ep:generated-id,')'),$debugging)"/>
-					</xsl:for-each>
+					</xsl:for-each-->
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:if>
@@ -817,6 +817,9 @@
 					<xsl:attribute name="namespaceId" select="$suppliers//supplier[1]/@base-namespace"/>
 					<xsl:attribute name="UGMlevel" select="$suppliers//supplier[1]/@level"/>
 					<xsl:attribute name="version" select="$suppliers//supplier[1]/@version"/>
+				</xsl:if>
+				<xsl:if test="$debugging">
+					<xsl:copy-of select="$suppliers"/>
 				</xsl:if>
 				<xsl:sequence select="imf:create-output-element('ep:name', $tech-name)"/>
 				<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
@@ -3102,21 +3105,6 @@
 			<ep:min-occurs>0</ep:min-occurs>
 			<ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
 		</ep:construct>
-		<xsl:if test="$attributeTypeRow//col[@name = 'Exact' and data = 'O']">
-			<ep:construct ismetadata="yes">
-				<ep:name>exact</ep:name>
-				<ep:tech-name>exact</ep:tech-name>
-				<ep:min-occurs>0</ep:min-occurs>
-				<ep:data-type>scalar-boolean</ep:data-type>
-			</ep:construct>
-		</xsl:if>
-		<xsl:if test="$attributeTypeRow//col[@name = 'Exact' and data = 'V']">
-			<ep:construct ismetadata="yes">
-				<ep:name>exact</ep:name>
-				<ep:tech-name>exact</ep:tech-name>
-				<ep:data-type>scalar-boolean</ep:data-type>
-			</ep:construct>
-		</xsl:if>
 		<!-- ROME: De vraag is of ik het gebruik van het XML attribute 'StUF:indOnvolledigeDatum' 
 			wel in het spreadsheet moet configureren. Moeten niet gewoon alle elementen 
 			van het datumType dit XML attribute krijgen? -->
@@ -3126,11 +3114,7 @@
 				<ep:name>indOnvolledigeDatum</ep:name>
 				<ep:tech-name>indOnvolledigeDatum</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
-				<ep:data-type>scalar-string</ep:data-type>
-				<ep:enum>J</ep:enum>
-				<ep:enum>M</ep:enum>
-				<ep:enum>D</ep:enum>
-				<ep:enum>V</ep:enum>
+				<ep:type-name>StUF:IndOnvolledigeDatum</ep:type-name>
 			</ep:construct>
 		</xsl:if>
 		<xsl:if
@@ -3138,11 +3122,7 @@
 			<ep:construct ismetadata="yes">
 				<ep:name>indOnvolledigeDatum</ep:name>
 				<ep:tech-name>indOnvolledigeDatum</ep:tech-name>
-				<ep:data-type>scalar-string</ep:data-type>
-				<ep:enum>J</ep:enum>
-				<ep:enum>M</ep:enum>
-				<ep:enum>D</ep:enum>
-				<ep:enum>V</ep:enum>
+				<ep:type-name>StUF:IndOnvolledigeDatum</ep:type-name>
 			</ep:construct>
 		</xsl:if>
 		<xsl:if
@@ -3168,8 +3148,10 @@
 					warning gegenereerd moeten worden. Dit moet nog geimplementeerd worden. -->
 				<xsl:choose>
 					<xsl:when test="not(empty($mnemonic))">
-						<xsl:sequence select="imf:create-output-element('ep:enum', $mnemonic)"/>
 						<ep:min-occurs>0</ep:min-occurs>
+						<ep:enum fixed="yes">
+							<xsl:value-of select="$mnemonic"/>
+						</ep:enum>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:variable name="msg"
@@ -3191,7 +3173,9 @@
 					warning gegenereerd moeten worden. Dit moet nog geimplementeerd worden. -->
 				<xsl:choose>
 					<xsl:when test="not(empty($mnemonic))">
-						<xsl:sequence select="imf:create-output-element('ep:enum', $mnemonic)"/>
+						<ep:enum fixed="yes">
+							<xsl:value-of select="$mnemonic"/>
+						</ep:enum>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:variable name="msg"
@@ -3297,34 +3281,38 @@
 				<ep:name>functie</ep:name>
 				<ep:tech-name>functie</ep:tech-name>
 				<ep:min-occurs>0</ep:min-occurs>
-				<ep:data-type>scalar-string</ep:data-type>
-				<ep:enum>
+				<ep:type-name>StUF:FunctieVrijBerichtElement</ep:type-name>
 					<xsl:choose>
-						<xsl:when test="$enriched-rough-messages//ep:construct[ep:id = $constructId and @typeCode = 'berichtrelatie']">
-							<xsl:value-of select="$enriched-rough-messages//ep:construct[ep:id = $constructId]/@context"/>							
+						<xsl:when test="$enriched-rough-messages//ep:construct[ep:id = $constructId and @typeCode = 'berichtrelatie']/@context != ''">
+							<ep:enum fixed="yes">
+								<xsl:value-of select="$enriched-rough-messages//ep:construct[ep:id = $constructId]/@context"/>
+							</ep:enum>
 						</xsl:when>
 						<xsl:when test="$enriched-rough-messages//ep:construct[ep:id = $constructId and @typeCode = 'entiteitrelatie']">
-							<xsl:value-of select="'entiteit'"/>							
+							<ep:enum fixed="yes">
+								<xsl:value-of select="'entiteit'"/>
+							</ep:enum>
 						</xsl:when>
 					</xsl:choose>
-				</ep:enum>
 			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'Functie' and data = 'V']">
 			<ep:construct ismetadata="yes">
 				<ep:name>functie</ep:name>
 				<ep:tech-name>functie</ep:tech-name>
-				<ep:data-type>scalar-string</ep:data-type>
-				<ep:enum>
+				<ep:type-name>StUF:FunctieVrijBerichtElement</ep:type-name>
 					<xsl:choose>
-						<xsl:when test="$enriched-rough-messages//ep:construct[ep:id = $constructId and @typeCode = 'berichtrelatie']">
-							<xsl:value-of select="$enriched-rough-messages//ep:construct[ep:id = $constructId]/@context"/>							
+						<xsl:when test="$enriched-rough-messages//ep:construct[ep:id = $constructId and @typeCode = 'berichtrelatie']/@context != ''">
+							<ep:enum fixed="yes">
+								<xsl:value-of select="$enriched-rough-messages//ep:construct[ep:id = $constructId]/@context"/>
+							</ep:enum>
 						</xsl:when>
 						<xsl:when test="$enriched-rough-messages//ep:construct[ep:id = $constructId and @typeCode = 'entiteitrelatie']">
-							<xsl:value-of select="'entiteit'"/>							
+							<ep:enum fixed="yes">
+								<xsl:value-of select="'entiteit'"/>
+							</ep:enum>
 						</xsl:when>
 					</xsl:choose>
-				</ep:enum>
 			</ep:construct>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'Groepsnaam' and data = 'O']">
