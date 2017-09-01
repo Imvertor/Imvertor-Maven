@@ -1458,10 +1458,10 @@
 							<xsl:attribute name="UGMlevel" select="$suppliers//supplier[1]/@level"/>
 							<xsl:attribute name="version" select="$suppliers//supplier[1]/@version"/>
 						</xsl:if>
-						<ep:suppliers>
-							<xsl:copy-of select="$suppliers"/>
-						</ep:suppliers>
 						<xsl:if test="$debugging">
+							<ep:suppliers>
+								<xsl:copy-of select="$suppliers"/>
+							</ep:suppliers>
 							<ep:tagged-values>
 								<xsl:copy-of select="$tvs"/>
 								<ep:found-tagged-values>
@@ -1601,11 +1601,11 @@
 							<xsl:when test="$tech-name = 'berichtcode'">
 								<xsl:sequence select="imf:create-output-element('ep:enum', $berichtCode)"/>
 							</xsl:when>
-							<xsl:when test="imvert:type-id">
+							<!--xsl:when test="imvert:type-id">
 								<xsl:apply-templates
 									select="imf:get-construct-by-id($type-id,$packages-doc)[imvert:stereotype = 'ENUMERATION']"
 									mode="create-datatype-content"/>
-							</xsl:when>
+							</xsl:when-->
 						</xsl:choose>
 						<xsl:sequence select="imf:create-output-element('ep:position', $position)"/>
 
