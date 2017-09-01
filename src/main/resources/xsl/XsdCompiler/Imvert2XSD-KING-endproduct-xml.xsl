@@ -2362,19 +2362,35 @@
                             <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
                             <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
                             <ep:min-occurs>0</ep:min-occurs>
-                        </ep:construct> 
-                        <!-- ROME: Onderzoeken hoe we kunnen bepalen of een wildcard bij GML types opgenomen moet worden.
-                                   Een wildcard mag immers alleen bij een stringtype opgenomen worden en alleen binnen selecties. -->
-                        <xsl:if test="(empty($nillable-patroon) or $min-length = 0)">
+                        </ep:construct>
+                    </ep:seq>
+                </ep:construct>
+                <!-- ROME: Onderzoeken hoe we kunnen bepalen of er een apart type met wildcard bij GML types opgenomen moet worden.
+                           Een wildcard mag immers alleen bij een stringtype opgenomen worden en alleen binnen selecties.
+                           Nog geen idee hoe ik kan bepalen of een GML type String based is.-->
+                <xsl:if test="(empty($nillable-patroon) or $min-length = 0)">
+                    <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}">
+                        <xsl:sequence select="imf:create-output-element('ep:name', concat(imf:capitalize(imvert:baretype),'Vraag-e'))"/>
+                        <xsl:sequence select="imf:create-output-element('ep:tech-name', concat(imf:capitalize(imvert:baretype),'Vraag-e'))"/>
+                        <ep:type-name>
+                            <xsl:value-of select="imf:get-external-type-name(.,true())"/>
+                        </ep:type-name>
+                        <ep:seq>
+                            <ep:construct ismetadata="yes">
+                                <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                                <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                                <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                                <ep:min-occurs>0</ep:min-occurs>
+                            </ep:construct> 
                             <ep:construct ismetadata="yes">
                                 <xsl:sequence select="imf:create-output-element('ep:name', 'wildcard')"/>
                                 <xsl:sequence select="imf:create-output-element('ep:tech-name', 'wildcard')"/>
                                 <ep:type-name><xsl:value-of select="concat($StUF-prefix,':Wildcard')"/></ep:type-name>
                                 <ep:min-occurs>0</ep:min-occurs>
                             </ep:construct>                     
-                        </xsl:if>                    
-                    </ep:seq>
-                </ep:construct>
+                        </ep:seq>
+                    </ep:construct>
+                </xsl:if>
             </xsl:when>
             <xsl:when test="exists($stuf-scalar)">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 33',$debugging)"/>
@@ -2404,16 +2420,31 @@
                             <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
                             <ep:min-occurs>0</ep:min-occurs>
                         </ep:construct>                     
-                        <xsl:if test="(empty($nillable-patroon) or $min-length = 0) and starts-with($checksum-string,'String')">
+                    </ep:seq>
+                </ep:construct>
+                <xsl:if test="(empty($nillable-patroon) or $min-length = 0) and starts-with($checksum-string,'String')">
+                    <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}" imvert:checksum="{concat($checksum-string,'-Vraag-simpleContentcomplexData')}">
+                        <xsl:sequence select="imf:create-output-element('ep:name', concat($tokens[1],'Vraag-e'))"/>
+                        <xsl:sequence select="imf:create-output-element('ep:tech-name', concat($tokens[1],'Vraag-e'))"/>
+                        <ep:type-name imvert:checksum="{$checksum-string}">
+                            <xsl:value-of select="concat($construct-Prefix,':',$tokens[1])"/>
+                        </ep:type-name>
+                        <ep:seq>
+                            <ep:construct ismetadata="yes">
+                                <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                                <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                                <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                                <ep:min-occurs>0</ep:min-occurs>
+                            </ep:construct>                     
                             <ep:construct ismetadata="yes">
                                 <xsl:sequence select="imf:create-output-element('ep:name', 'wildcard')"/>
                                 <xsl:sequence select="imf:create-output-element('ep:tech-name', 'wildcard')"/>
                                 <ep:type-name><xsl:value-of select="concat($StUF-prefix,':Wildcard')"/></ep:type-name>
                                 <ep:min-occurs>0</ep:min-occurs>
                             </ep:construct>                     
-                        </xsl:if>                    
-                    </ep:seq>
-                </ep:construct>
+                        </ep:seq>
+                    </ep:construct>
+                </xsl:if> 
                 <!--ep:construct type="simpleData" prefix="{$construct-Prefix}" namespaceId="{construct-Namespace}" isdatatype="yes" imvert:checksum="{concat($checksum-string,'-simpleData')}"-->
                 <ep:construct type="simpleData" prefix="{$construct-Prefix}" isdatatype="yes" imvert:checksum="{concat($checksum-string,'-simpleData')}">
                     <xsl:sequence select="imf:create-output-element('ep:name', $tokens[1])"/>

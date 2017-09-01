@@ -1273,10 +1273,12 @@
 		<xsl:variable name="inOnderzoek" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIEINONDERZOEK')"/>
 		<xsl:variable name="min-waarde" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-MINVALUEINCLUSIVE')"/>
 		<xsl:variable name="max-waarde" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-MAXVALUEINCLUSIVE')"/>
-		<xsl:variable name="min-length" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-MINLENGTH')"/>
+		<xsl:variable name="min-length" select="xs:integer(imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-MINLENGTH'))"/>
 		<xsl:variable name="patroon" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')"/>
 		<xsl:variable name="formeelPatroon" select="imvert:pattern"/>		
 		<xsl:variable name="compiled-name" select="imf:useable-attribute-name(imf:get-compiled-name(.),.)"/>
+		<xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info(.)"/>
+		<xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
 		
 		<xsl:if test="not(contains($verwerkingsModus, 'matchgegeven') and $matchgegeven = 'NEE') and (($generateHistorieConstruct = 'MaterieleHistorie' and contains($materieleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorie' and contains($formeleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorieRelatie' and contains($formeleHistorie, 'Ja')) or $generateHistorieConstruct = 'Nee')">
 
@@ -1285,8 +1287,6 @@
 				<xsl:when test="$processType = 'keyTabelEntiteit'">
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1031',$debugging)"/>
 					
-					<xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info(.)"/>
-					<xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
 					<xsl:variable name="tokens" select="tokenize($checksum-string,'\[SEP\]')"/>
 
 					<xsl:variable name="construct-Prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
@@ -1489,10 +1489,24 @@
 
 						<xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
 						<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
+						
+						<xsl:variable name="vraagIndicatie">
+							<xsl:choose>
+								<xsl:when test="contains($berichtCode,'Lv') and 
+												(
+													(imvert:type-package='GML3' and (empty($formeelPatroon) or $min-length = 0)) or 
+													((empty($formeelPatroon) or $min-length = 0) and starts-with($checksum-string,'String'))
+												)">
+									<xsl:value-of select="'Vraag'"/>
+								</xsl:when>
+								<xsl:otherwise/>
+							</xsl:choose>
+						</xsl:variable>
+						
 						<xsl:choose> 
 							<xsl:when test="imvert:type-package='GML3'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034a',$debugging)"/>
-								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',concat(imf:capitalize(imvert:baretype),'-e')))"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',concat(imf:capitalize(imvert:baretype),$vraagIndicatie,'-e')))"/>
 							</xsl:when>
 							<xsl:when test="$name = 'melding' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034b',$debugging)"/>
@@ -1584,11 +1598,11 @@
 							</xsl:when>
 							<xsl:when test="not(contains(imvert:type-name,'scalar'))">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034w',$debugging)"/>
-								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',concat(imf:capitalize(imvert:type-name),'-e')))"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',concat(imf:capitalize(imvert:type-name),$vraagIndicatie,'-e')))"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034x',$debugging)"/>
-								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',$tokens[1],'-e'))"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',$tokens[1],$vraagIndicatie,'-e'))"/>
 							</xsl:otherwise>
 						</xsl:choose>
 						<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
