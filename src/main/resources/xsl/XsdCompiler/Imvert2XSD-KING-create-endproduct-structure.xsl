@@ -516,7 +516,7 @@
 								 Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct1'. -->
 
 							<ep:construct berichtCode="{$berichtCode}" berichtName="{$berichtName}">
-								<xsl:sequence select="imf:create-output-element('ep:name', imvert:name)" />
+								<xsl:sequence select="imf:create-output-element('ep:name', imvert:name/@original)" />
 								<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)" />
 								<xsl:sequence select="imf:create-output-element('ep:max-occurs', 1)"/>
 								<xsl:sequence select="imf:create-output-element('ep:min-occurs', 1)"/>
@@ -914,7 +914,7 @@
 		<xsl:sequence select="imf:create-debug-comment('Debuglocation 1019',$debugging)"/>
 		
 		<xsl:variable name="packageName" select="ancestor::imvert:package/imvert:name"/>
-		<xsl:variable name="name" select="imvert:name"/>
+		<xsl:variable name="name" select="imvert:name/@original"/>
 		<xsl:variable name="tech-name">
 			<xsl:choose>
 				<xsl:when test="imvert:stereotype = 'BERICHTRELATIE'">
@@ -948,7 +948,7 @@
 								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructxxx'. -->
 				
 		<ep:construct berichtCode="{$berichtCode}" berichtName="{$berichtName}">
-			<xsl:sequence select="imf:create-output-element('ep:name', $tech-name)"/>
+			<xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
 			<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
 			<xsl:sequence select="imf:create-output-element('ep:max-occurs',$max-occurs)"/>
 			<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
@@ -1304,7 +1304,7 @@
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1032',$debugging)"/>
 					
 					<xsl:variable name="type" select="'Grp'"/>
-					<xsl:variable name="name" select="//imvert:class[imvert:id = $type-id]/imvert:name"/>
+					<xsl:variable name="name" select="//imvert:class[imvert:id = $type-id]/imvert:name/@original"/>
 					
 					<ep:construct berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 						<xsl:if test="$suppliers//supplier[1]/@verkorteAlias != ''">
@@ -1344,7 +1344,7 @@
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1033',$debugging)"/>
 					
 					<xsl:variable name="type" select="'Grp'"/>
-					<xsl:variable name="name" select="//imvert:class[imvert:id = $type-id]/imvert:name"/>
+					<xsl:variable name="name" select="//imvert:class[imvert:id = $type-id]/imvert:name/@original"/>
 					
 					<ep:construct type="complexData">
 						<xsl:if test="$suppliers//supplier[1]/@verkorteAlias != ''">
@@ -2977,7 +2977,7 @@
 		
 		<xsl:sequence select="imf:create-debug-comment('Debuglocation 1067',$debugging)"/>
 
-		<xsl:variable name="name" select="imvert:name"/>
+		<xsl:variable name="name" select="imvert:name/@original"/>
 		<xsl:variable name="min-occurs" select="imvert:min-occurs"/>
 		<xsl:variable name="max-occurs" select="imvert:max-occurs"/>
 

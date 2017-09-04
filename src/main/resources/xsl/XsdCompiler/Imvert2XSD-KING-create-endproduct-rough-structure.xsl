@@ -649,6 +649,7 @@
 			</xsl:attribute>
 			<xsl:attribute name="type" select="'association'"/>
 			<xsl:sequence select="imf:create-output-element('ep:name', imvert:name/@original)"/>
+			<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name(imvert:name, 'element-name'))"/>
 			<xsl:sequence select="imf:create-output-element('ep:origin-id', imvert:id)"/>
 			<xsl:sequence select="imf:create-output-element('ep:id', imvert:type-id)"/>
 			

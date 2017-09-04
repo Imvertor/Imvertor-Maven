@@ -251,7 +251,7 @@
        </xsl:choose> 
     </xsl:template>
     
-    <xsl:template match="ep:constructRef[@prefix = 'StUF' and ep:name = 'patch']">
+    <xsl:template match="ep:constructRef[@prefix = 'StUF' and ep:tech-name = 'patch']">
         <xsl:sequence select="imf:create-debug-comment('Debuglocation 3012',$debugging)"/>
 
         <xsl:copy-of select="$patch"/>    

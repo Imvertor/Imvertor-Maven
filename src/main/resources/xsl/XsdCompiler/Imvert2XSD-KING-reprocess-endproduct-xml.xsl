@@ -327,7 +327,7 @@
                     </xsl:if>
                     <ep:superconstructRef>
                         <xsl:attribute name="prefix" select="$uniquePrefixes//ep:prefix[xs:integer(@level) = 3]"/>
-                        <xsl:sequence select="imf:create-output-element('ep:name', ep:tech-name)"/>
+                        <xsl:sequence select="imf:create-output-element('ep:name', ep:name)"/>
                         <xsl:sequence select="imf:create-output-element('ep:tech-name', ep:tech-name)"/>
                     </ep:superconstructRef>
                     <xsl:choose>
@@ -403,7 +403,7 @@
                         <xsl:attribute name="namespaceId" select="@namespaceId"/>
                         <ep:superconstructRef>
                             <xsl:attribute name="prefix" select="$uniquePrefixes//ep:prefix[xs:integer(@level) = 3]"/>
-                            <xsl:sequence select="imf:create-output-element('ep:name', ep:tech-name)"/>
+                            <xsl:sequence select="imf:create-output-element('ep:name', ep:name)"/>
                             <xsl:sequence select="imf:create-output-element('ep:tech-name', ep:tech-name)"/>
                         </ep:superconstructRef>
                         <xsl:choose>
@@ -451,7 +451,7 @@
                             <xsl:if test="$uniquePrefixes//ep:prefix[@level = $currentPrefixLevel + 1]">
                                 <ep:superconstructRef>
                                     <xsl:attribute name="prefix" select="$uniquePrefixes//ep:prefix[xs:integer(@level) = $currentPrefixLevel + 1]"/>
-                                    <xsl:sequence select="imf:create-output-element('ep:name', ep:tech-name)"/>
+                                    <xsl:sequence select="imf:create-output-element('ep:name', ep:name)"/>
                                     <xsl:sequence select="imf:create-output-element('ep:tech-name', ep:tech-name)"/>
                                 </ep:superconstructRef>
                             </xsl:if>
