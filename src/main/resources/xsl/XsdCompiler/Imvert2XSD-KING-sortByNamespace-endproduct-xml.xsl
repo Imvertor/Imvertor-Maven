@@ -297,20 +297,29 @@
         <xsl:sequence select="imf:create-debug-track(concat('Type-name: ',$type-name,', Level: ',$level),$debugging)"/>
         
         <xsl:choose>
-            <xsl:when test="not($message-set/ep:message-set/ep:construct[ep:tech-name = $type-name])">
-                <xsl:sequence select="imf:create-debug-track('Ok1',$debugging)"/>
+            <xsl:when test="not($message-set/ep:message-set/ep:construct[ep:tech-name = $type-name]) and 
+                            not($message-set/ep:message-set/ep:construct[ep:tech-name = substring-after($type-name,':')])">
+                <xsl:sequence select="imf:create-debug-track('get-LowestLevelPrefix-1',$debugging)"/>
                 <xsl:value-of select="'noConstruct'"/>
             </xsl:when>
             <xsl:when test="count($message-set/ep:message-set/ep:construct[ep:tech-name = $type-name]) = 1">
-                <xsl:sequence select="imf:create-debug-track('Ok2',$debugging)"/>
+                <xsl:sequence select="imf:create-debug-track('get-LowestLevelPrefix-2',$debugging)"/>
                 <xsl:value-of select="$message-set/ep:message-set/ep:construct[ep:tech-name = $type-name]/@prefix"/>
             </xsl:when>
+            <xsl:when test="count($message-set/ep:message-set/ep:construct[ep:tech-name = substring-after($type-name,':')]) = 1">
+                <xsl:sequence select="imf:create-debug-track('get-LowestLevelPrefix-3',$debugging)"/>
+                <xsl:value-of select="$message-set/ep:message-set/ep:construct[ep:tech-name = substring-after($type-name,':')]/@prefix"/>
+            </xsl:when>
             <xsl:when test="$message-set/ep:message-set/ep:construct[ep:tech-name = $type-name and xs:integer(@level) = $level]">
-                <xsl:sequence select="imf:create-debug-track('Ok3',$debugging)"/>
+                <xsl:sequence select="imf:create-debug-track('get-LowestLevelPrefix-4',$debugging)"/>
                 <xsl:value-of select="$message-set/ep:message-set/ep:construct[ep:tech-name = $type-name and xs:integer(@level) = $level]/@prefix"/>
             </xsl:when>
+            <xsl:when test="$message-set/ep:message-set/ep:construct[ep:tech-name = substring-after($type-name,':') and xs:integer(@level) = $level]">
+                <xsl:sequence select="imf:create-debug-track('get-LowestLevelPrefix-5',$debugging)"/>
+                <xsl:value-of select="$message-set/ep:message-set/ep:construct[ep:tech-name = substring-after($type-name,':') and xs:integer(@level) = $level]/@prefix"/>
+            </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="imf:create-debug-track('Ok4',$debugging)"/>
+                <xsl:sequence select="imf:create-debug-track('get-LowestLevelPrefix-6',$debugging)"/>
                 <xsl:value-of select="imf:get-LowestLevelPrefix($type-name,$level + 1)"/>
             </xsl:otherwise>
         </xsl:choose>
