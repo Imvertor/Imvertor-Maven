@@ -194,6 +194,7 @@
             <!-- Following when removes constructs refering to global constructs with empty ep:seq or ep:choice.
                  Those global constructs will be removed, since they have no content, so constructs refering to them must be removed too. -->
             <xsl:when test="not(@ismetadata='yes') and ep:type-name = //ep:message-set/ep:construct[@prefix = $prefix and ((ep:seq and not(ep:seq/*)) or (ep:choice and not(ep:choice/*)))]/ep:tech-name"/>
+            <xsl:when test="not(@ismetadata='yes') and substring-after(ep:type-name,':') = //ep:message-set/ep:construct[@prefix = $prefix and ((ep:seq and not(ep:seq/*)) or (ep:choice and not(ep:choice/*)))]/ep:tech-name"/>
             <!-- Following when splits the constructs within the current construct over one or more copies of the 
                  current constructs based on the amount of different prefixes the child constructs belong to. -->
             <xsl:when test="not(@ismetadata='yes') and 

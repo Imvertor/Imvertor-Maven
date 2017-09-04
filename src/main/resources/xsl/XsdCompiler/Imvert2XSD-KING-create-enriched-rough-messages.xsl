@@ -23,12 +23,13 @@
 	<xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-create-enriched-rough-messages.xsl 1
 		2016-12-01 13:33:00Z RobertMelskens $</xsl:variable>
 	
-	<xsl:variable name="kv-prefix" select="ep:rough-messages/ep:namespace-prefix"/>
+	<!--xsl:variable name="kv-prefix" select="ep:rough-messages/ep:namespace-prefix"/-->
 	
 	<xsl:template match="ep:rough-messages" mode="enrich-rough-messages">
 		<xsl:sequence select="imf:create-debug-comment('debug:start B00000 /debug:start',$debugging)"/>
 
 		<xsl:copy>
+			<xsl:attribute name="kv-prefix" select="$kv-prefix"/>
 			<xsl:apply-templates select="ep:rough-message" mode="enrich-rough-messages"/>
 		</xsl:copy>
 

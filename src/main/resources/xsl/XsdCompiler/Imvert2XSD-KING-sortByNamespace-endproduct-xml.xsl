@@ -264,10 +264,14 @@
                 <xsl:copy-of select="."/>
             </xsl:when>
             <xsl:when test="../@prefix = $StUF-prefix">
-                <xsl:copy-of select="."/>
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 3012a',$debugging)"/>             
+                <ep:type-name><xsl:value-of select="concat($StUF-prefix,':',.)"/></ep:type-name>
+                <!--xsl:copy-of select="."/-->
             </xsl:when>
             <xsl:when test="/ep:message-set/ep:construct[ep:tech-name = $type-name and not(@level)]">
-                <xsl:copy-of select="."/>
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 3012b',$debugging)"/>             
+                <ep:type-name><xsl:value-of select="concat(../@prefix,':',.)"/></ep:type-name>
+                <!--xsl:copy-of select="."/-->
             </xsl:when>
             <xsl:otherwise>
                 <xsl:variable name="lowestLevelPrefix">
@@ -275,6 +279,7 @@
                 </xsl:variable>
                 <xsl:choose>
                     <xsl:when test="$lowestLevelPrefix = 'noConstruct'">
+                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 3012c',$debugging)"/>             
                         <xsl:copy-of select="."/>
                     </xsl:when>
                     <xsl:otherwise>

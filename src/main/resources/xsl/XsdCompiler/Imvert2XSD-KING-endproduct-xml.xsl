@@ -109,6 +109,7 @@
         </ep:rough-messages>
     </xsl:variable>
     
+    
     <xsl:variable name="enriched-rough-messages">
         <xsl:sequence select="imf:track('Constructing the enriched rough message-structure')"/>
         
@@ -116,16 +117,19 @@
 
     </xsl:variable>
 
-    <!-- ROME: Het betreft hier de verkorte alias van het koppelvlak. -->
+    <!-- ROME: Het betreft hier de verkorte alias van het koppelvlak. Eerste variabele moet nog vervangen worden door de tweede. -->
     <xsl:variable name="verkorteAlias" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
+    <xsl:variable name="kv-prefix" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
+    
+    <!--xsl:variable name="kv-prefix" select="$enriched-rough-messages//@kv-prefix"/-->
     
     <xsl:variable name="prefix" as="xs:string">
         <xsl:choose>
-            <xsl:when test="not(empty($verkorteAlias))">
-                <xsl:value-of select="$verkorteAlias"/>
+            <xsl:when test="not(empty($kv-prefix))">
+                <xsl:value-of select="$kv-prefix"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="TODO"/>
+                <xsl:value-of select="'TODO'"/>
                 <xsl:variable name="msg" select="'You have not provided a short alias. Define the tagged value &quot;Verkorte alias&quot; on the package with the stereotyp &quot;Koppelvlak&quot;.'" as="xs:string"/>
                 <xsl:sequence select="imf:msg('WARN',$msg)"/>
             </xsl:otherwise>
@@ -282,6 +286,9 @@
                 
                 <!-- xsl:sequence select="$imvert-endproduct/*"/ -->
             </xsl:result-document x?> 
+            <xsl:result-document href="file:/c:/temp/rough-messages.xml">
+                <xsl:sequence select="$rough-messages"/>
+            </xsl:result-document>
             <xsl:result-document href="file:/c:/temp/enriched-rough-messages.xml">
                 <xsl:sequence select="$enriched-rough-messages"/>
             </xsl:result-document>
