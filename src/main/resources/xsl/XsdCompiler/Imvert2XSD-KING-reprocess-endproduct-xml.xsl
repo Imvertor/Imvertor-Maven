@@ -194,6 +194,7 @@
             <!-- Following when removes constructs refering to global constructs with empty ep:seq or ep:choice.
                  Those global constructs will be removed, since they have no content, so constructs refering to them must be removed too. -->
             <xsl:when test="not(@ismetadata='yes') and ep:type-name = //ep:message-set/ep:construct[@prefix = $prefix and ((ep:seq and not(ep:seq/*)) or (ep:choice and not(ep:choice/*)))]/ep:tech-name"/>
+            <xsl:when test="not(@ismetadata='yes') and substring-after(ep:type-name,':') = //ep:message-set/ep:construct[@prefix = $prefix and ((ep:seq and not(ep:seq/*)) or (ep:choice and not(ep:choice/*)))]/ep:tech-name"/>
             <!-- Following when splits the constructs within the current construct over one or more copies of the 
                  current constructs based on the amount of different prefixes the child constructs belong to. -->
             <xsl:when test="not(@ismetadata='yes') and 
@@ -326,7 +327,7 @@
                     </xsl:if>
                     <ep:superconstructRef>
                         <xsl:attribute name="prefix" select="$uniquePrefixes//ep:prefix[xs:integer(@level) = 3]"/>
-                        <xsl:sequence select="imf:create-output-element('ep:name', ep:tech-name)"/>
+                        <xsl:sequence select="imf:create-output-element('ep:name', ep:name)"/>
                         <xsl:sequence select="imf:create-output-element('ep:tech-name', ep:tech-name)"/>
                     </ep:superconstructRef>
                     <xsl:choose>
@@ -402,7 +403,7 @@
                         <xsl:attribute name="namespaceId" select="@namespaceId"/>
                         <ep:superconstructRef>
                             <xsl:attribute name="prefix" select="$uniquePrefixes//ep:prefix[xs:integer(@level) = 3]"/>
-                            <xsl:sequence select="imf:create-output-element('ep:name', ep:tech-name)"/>
+                            <xsl:sequence select="imf:create-output-element('ep:name', ep:name)"/>
                             <xsl:sequence select="imf:create-output-element('ep:tech-name', ep:tech-name)"/>
                         </ep:superconstructRef>
                         <xsl:choose>
@@ -450,7 +451,7 @@
                             <xsl:if test="$uniquePrefixes//ep:prefix[@level = $currentPrefixLevel + 1]">
                                 <ep:superconstructRef>
                                     <xsl:attribute name="prefix" select="$uniquePrefixes//ep:prefix[xs:integer(@level) = $currentPrefixLevel + 1]"/>
-                                    <xsl:sequence select="imf:create-output-element('ep:name', ep:tech-name)"/>
+                                    <xsl:sequence select="imf:create-output-element('ep:name', ep:name)"/>
                                     <xsl:sequence select="imf:create-output-element('ep:tech-name', ep:tech-name)"/>
                                 </ep:superconstructRef>
                             </xsl:if>

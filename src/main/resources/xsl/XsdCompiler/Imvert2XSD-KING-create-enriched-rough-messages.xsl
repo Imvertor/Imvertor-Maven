@@ -23,12 +23,13 @@
 	<xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-create-enriched-rough-messages.xsl 1
 		2016-12-01 13:33:00Z RobertMelskens $</xsl:variable>
 	
-	<xsl:variable name="kv-prefix" select="ep:rough-messages/ep:namespace-prefix"/>
+	<!--xsl:variable name="kv-prefix" select="ep:rough-messages/ep:namespace-prefix"/-->
 	
 	<xsl:template match="ep:rough-messages" mode="enrich-rough-messages">
 		<xsl:sequence select="imf:create-debug-comment('debug:start B00000 /debug:start',$debugging)"/>
 
 		<xsl:copy>
+			<xsl:attribute name="kv-prefix" select="$kv-prefix"/>
 			<xsl:apply-templates select="ep:rough-message" mode="enrich-rough-messages"/>
 		</xsl:copy>
 
@@ -242,10 +243,10 @@
 					<xsl:attribute name="verwerkingsModus" select="'ROME'"/>
 				</xsl:otherwise>
 			</xsl:choose>
-			<xsl:if test="(contains($berichtCode,'La') or ((contains($berichtCode,'Di') or $berichtCode = 'Du01') and @context = 'antwoord' or ancestor::ep:construct[@context = 'antwoord'])) and ep:name = 'gerelateerde' and parent::ep:construct[@indicatieMaterieleHistorieRelatie='Ja']">
+			<xsl:if test="(contains($berichtCode,'La') or ((contains($berichtCode,'Di') or $berichtCode = 'Du01') and @context = 'antwoord' or ancestor::ep:construct[@context = 'antwoord'])) and ep:tech-name = 'gerelateerde' and parent::ep:construct[@indicatieMaterieleHistorieRelatie='Ja']">
 				<xsl:attribute name="indicatieMaterieleHistorieRelatie" select="'Ja'"/>
 			</xsl:if>
-			<xsl:if test="(contains($berichtCode,'La') or ((contains($berichtCode,'Di') or $berichtCode = 'Du01') and @context = 'antwoord' or ancestor::ep:construct[@context = 'antwoord'])) and ep:name = 'gerelateerde' and parent::ep:construct[@indicatieFormeleHistorieRelatie='Ja']">
+			<xsl:if test="(contains($berichtCode,'La') or ((contains($berichtCode,'Di') or $berichtCode = 'Du01') and @context = 'antwoord' or ancestor::ep:construct[@context = 'antwoord'])) and ep:tech-name = 'gerelateerde' and parent::ep:construct[@indicatieFormeleHistorieRelatie='Ja']">
 				<xsl:attribute name="indicatieFormeleHistorieRelatie" select="'Ja'"/>
 			</xsl:if>
 			<xsl:choose>
@@ -253,11 +254,11 @@
 					<xsl:choose>
 						<xsl:when test="@typeCode = 'entiteitrelatie' or ancestor::ep:construct[@typeCode = 'entiteitrelatie']">
 							<!-- This concerns association constructs having a 'typeCode' attributevalue of 'entiteitrelatie' and relating a 'vrijbericht' to a fundamental 'entiteit'. -->
-							<xsl:attribute name="entiteitOrBerichtRelatie" select="ancestor-or-self::ep:construct[@typeCode = 'entiteitrelatie']/ep:name"/>
+							<xsl:attribute name="entiteitOrBerichtRelatie" select="ancestor-or-self::ep:construct[@typeCode = 'entiteitrelatie']/ep:tech-name"/>
 						</xsl:when>
 						<xsl:when test="@typeCode = 'berichtrelatie' or ancestor::ep:construct[@typeCode = 'berichtrelatie']">
 							<!-- This concerns association constructs relating a 'vrijbericht' to a fundamental 'entiteit'. -->
-							<xsl:attribute name="entiteitOrBerichtRelatie" select="ancestor-or-self::ep:construct[@typeCode = 'berichtrelatie']/ep:name"/>
+							<xsl:attribute name="entiteitOrBerichtRelatie" select="ancestor-or-self::ep:construct[@typeCode = 'berichtrelatie']/ep:tech-name"/>
 						</xsl:when>
 					</xsl:choose>
 				</xsl:when>

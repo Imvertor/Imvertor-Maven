@@ -109,6 +109,7 @@
         </ep:rough-messages>
     </xsl:variable>
     
+    
     <xsl:variable name="enriched-rough-messages">
         <xsl:sequence select="imf:track('Constructing the enriched rough message-structure')"/>
         
@@ -116,16 +117,19 @@
 
     </xsl:variable>
 
-    <!-- ROME: Het betreft hier de verkorte alias van het koppelvlak. -->
+    <!-- ROME: Het betreft hier de verkorte alias van het koppelvlak. Eerste variabele moet nog vervangen worden door de tweede. -->
     <xsl:variable name="verkorteAlias" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
+    <xsl:variable name="kv-prefix" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
+    
+    <!--xsl:variable name="kv-prefix" select="$enriched-rough-messages//@kv-prefix"/-->
     
     <xsl:variable name="prefix" as="xs:string">
         <xsl:choose>
-            <xsl:when test="not(empty($verkorteAlias))">
-                <xsl:value-of select="$verkorteAlias"/>
+            <xsl:when test="not(empty($kv-prefix))">
+                <xsl:value-of select="$kv-prefix"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="TODO"/>
+                <xsl:value-of select="'TODO'"/>
                 <xsl:variable name="msg" select="'You have not provided a short alias. Define the tagged value &quot;Verkorte alias&quot; on the package with the stereotyp &quot;Koppelvlak&quot;.'" as="xs:string"/>
                 <xsl:sequence select="imf:msg('WARN',$msg)"/>
             </xsl:otherwise>
@@ -282,6 +286,9 @@
                 
                 <!-- xsl:sequence select="$imvert-endproduct/*"/ -->
             </xsl:result-document x?> 
+            <xsl:result-document href="file:/c:/temp/rough-messages.xml">
+                <xsl:sequence select="$rough-messages"/>
+            </xsl:result-document>
             <xsl:result-document href="file:/c:/temp/enriched-rough-messages.xml">
                 <xsl:sequence select="$enriched-rough-messages"/>
             </xsl:result-document>
@@ -347,9 +354,9 @@
         
        <xsl:sequence select="imf:create-debug-track('Constructing the global constructs for antwoord constructs',$debugging)"/>
             
-        <xsl:for-each select="$currentMessage/ep:rough-message[contains(ep:code, 'La')]//ep:construct[ep:name = 'antwoord']">
+        <xsl:for-each select="$currentMessage/ep:rough-message[contains(ep:code, 'La')]//ep:construct[ep:tech-name = 'antwoord']">
 
-            <xsl:sequence select="imf:create-debug-track('for-each select=$currentMessage/ep:rough-message[contains(ep:code, La)]//ep:construct[ep:name = antwoord]',$debugging)"/>
+            <xsl:sequence select="imf:create-debug-track('for-each select=$currentMessage/ep:rough-message[contains(ep:code, La)]//ep:construct[ep:tech-name = antwoord]',$debugging)"/>
             <xsl:sequence select="imf:create-debug-comment('Debuglocation 7',$debugging)"/>
             
             <xsl:variable name="berichtName" select="ancestor::ep:rough-message/ep:name"/>
@@ -419,13 +426,13 @@
                 </ep:seq>
             </ep:construct>                  
             
-            <xsl:sequence select="imf:create-debug-track('for-each select=$currentMessage/ep:rough-message[contains(ep:code, La)]//ep:construct[ep:name = antwoord] End-for-each',$debugging)"/>
+            <xsl:sequence select="imf:create-debug-track('for-each select=$currentMessage/ep:rough-message[contains(ep:code, La)]//ep:construct[ep:tech-name = antwoord] End-for-each',$debugging)"/>
             
         </xsl:for-each>
             
         <xsl:sequence select="imf:create-debug-track('Constructing the global constructs for start constructs',$debugging)"/>
             
-        <xsl:for-each select="$currentMessage/ep:rough-message[contains(ep:code, 'Lv')]//ep:construct[ep:name = 'start']">
+        <xsl:for-each select="$currentMessage/ep:rough-message[contains(ep:code, 'Lv')]//ep:construct[ep:tech-name = 'start']">
             <xsl:sequence select="imf:create-debug-comment('Debuglocation 9',$debugging)"/>
             
             <xsl:variable name="berichtName" select="ancestor::ep:rough-message/ep:name"/>
@@ -459,7 +466,7 @@
             <xsl:variable name="association" select="imf:get-construct-by-id($id,$packages-doc)"/>
             <xsl:variable name="elementName" select="$construct/imvert:name"/>
             
-            <xsl:sequence select="imf:create-debug-track('for-each select=$currentMessage/ep:rough-message[contains(ep:code, Lv)]//ep:construct[ep:name = start]',$debugging)"/>
+            <xsl:sequence select="imf:create-debug-track('for-each select=$currentMessage/ep:rough-message[contains(ep:code, Lv)]//ep:construct[ep:tech-name = start]',$debugging)"/>
 
             <!-- Location: 'ep:construct8'
 				 Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef8'. -->
@@ -497,13 +504,13 @@
                 </ep:seq>
             </ep:construct>
             
-            <xsl:sequence select="imf:create-debug-track('for-each select=$currentMessage/ep:rough-message[contains(ep:code, Lv)]//ep:construct[ep:name = start] End-for-each',$debugging)"/>
+            <xsl:sequence select="imf:create-debug-track('for-each select=$currentMessage/ep:rough-message[contains(ep:code, Lv)]//ep:construct[ep:tech-name = start] End-for-each',$debugging)"/>
             
         </xsl:for-each>
             
         <xsl:sequence select="imf:create-debug-track('Constructing the global constructs for antwoord scope',$debugging)"/>
             
-        <xsl:for-each select="$currentMessage/ep:rough-message[contains(ep:code, 'Lv')]//ep:construct[ep:name = 'scope']">
+        <xsl:for-each select="$currentMessage/ep:rough-message[contains(ep:code, 'Lv')]//ep:construct[ep:tech-name = 'scope']">
             <xsl:sequence select="imf:create-debug-comment('Debuglocation 11',$debugging)"/>
             
             <xsl:variable name="berichtName" select="ancestor::ep:rough-message/ep:name"/>
@@ -537,7 +544,7 @@
             <xsl:variable name="association" select="imf:get-construct-by-id($id,$packages-doc)"/>
             <xsl:variable name="elementName" select="$construct/imvert:name"/>
             
-            <xsl:sequence select="imf:create-debug-track('for-each select=$currentMessage/ep:rough-message[contains(ep:code, Lv)]//ep:construct[ep:name = scope]',$debugging)"/>
+            <xsl:sequence select="imf:create-debug-track('for-each select=$currentMessage/ep:rough-message[contains(ep:code, Lv)]//ep:construct[ep:tech-name = scope]',$debugging)"/>
                         
             <!-- Location: 'ep:construct9'
 								    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef9'. -->
@@ -573,7 +580,7 @@
                 </ep:seq>
             </ep:construct>
             
-            <xsl:sequence select="imf:create-debug-track('for-each select=$currentMessage/ep:rough-message[contains(ep:code, Lv)]//ep:construct[ep:name = scope] End-for-each',$debugging)"/>
+            <xsl:sequence select="imf:create-debug-track('for-each select=$currentMessage/ep:rough-message[contains(ep:code, Lv)]//ep:construct[ep:tech-name = scope] End-for-each',$debugging)"/>
             
         </xsl:for-each>        
     </xsl:template>
@@ -587,10 +594,10 @@
         <xsl:variable name="berichtName" as="xs:string">
             <xsl:choose>
                 <xsl:when test="(contains(ancestor::ep:rough-message/ep:code,'Di') or contains(ancestor::ep:rough-message/ep:code,'Du')) and ancestor-or-self::ep:construct/@typeCode = 'entiteitrelatie'">
-                    <xsl:value-of select="concat(ancestor::ep:rough-message/ep:name,'-',ancestor-or-self::ep:construct[@typeCode = 'entiteitrelatie']/ep:name)"/>
+                    <xsl:value-of select="concat(ancestor::ep:rough-message/ep:name,'-',ancestor-or-self::ep:construct[@typeCode = 'entiteitrelatie']/ep:tech-name)"/>
                 </xsl:when>
                 <xsl:when test="(contains(ancestor::ep:rough-message/ep:code,'Di') or contains(ancestor::ep:rough-message/ep:code,'Du')) and ancestor-or-self::ep:construct/@typeCode = 'berichtrelatie'">
-                    <xsl:value-of select="concat(ancestor::ep:rough-message/ep:name,'-',ancestor-or-self::ep:construct[@typeCode = 'berichtrelatie']/ep:name)"/>
+                    <xsl:value-of select="concat(ancestor::ep:rough-message/ep:name,'-',ancestor-or-self::ep:construct[@typeCode = 'berichtrelatie']/ep:tech-name)"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of select="ancestor::ep:rough-message/ep:name"/>
@@ -915,7 +922,7 @@
                 
                 <xsl:choose>
                     <!-- If the name of the group is 'zender' or 'ontvanger' and its defined in the berichtstrukturen package nothing has to be generated. -->
-                    <xsl:when test="ep:verkorteAlias = $StUF-prefix and @type=('group','complex datatype') and (ep:name = 'zender' or ep:name = 'ontvanger') and exists(imf:get-construct-by-id($id,$packages-doc))"/>
+                    <xsl:when test="ep:verkorteAlias = $StUF-prefix and @type=('group','complex datatype') and (ep:tech-name = 'zender' or ep:tech-name = 'ontvanger') and exists(imf:get-construct-by-id($id,$packages-doc))"/>
                     <!-- The following when generates global constructs based on uml groups. -->
                     <xsl:when test="@type=('group','complex datatype') and exists(imf:get-construct-by-id($id,$packages-doc))">
 
@@ -923,11 +930,11 @@
                         
                        <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
                        <xsl:variable name="type" select="'Grp'"/>
-                       <xsl:variable name="name">
+                       <xsl:variable name="tech-name">
                            <xsl:choose>
-                               <xsl:when test="ep:name = 'zender' or ep:name = 'ontvanger'"><xsl:value-of select="'Systeem'"/></xsl:when>
+                               <xsl:when test="ep:tech-name = 'zender' or ep:tech-name = 'ontvanger'"><xsl:value-of select="'Systeem'"/></xsl:when>
                                <xsl:when test="@className"><xsl:value-of select="@className"/></xsl:when>
-                               <xsl:otherwise><xsl:value-of select="ep:name"/></xsl:otherwise>
+                               <xsl:otherwise><xsl:value-of select="ep:tech-name"/></xsl:otherwise>
                            </xsl:choose>
                        </xsl:variable>
                        <xsl:variable name="docs">
@@ -942,7 +949,7 @@
                        
                         <ep:construct type="group">
                            <xsl:choose>
-                               <xsl:when test="ep:name = 'parameters' or ep:name = 'stuurgegevens' or ep:name = 'zender' or ep:name = 'ontvanger'">
+                               <xsl:when test="ep:tech-name = 'parameters' or ep:tech-name = 'stuurgegevens' or ep:tech-name = 'zender' or ep:tech-name = 'ontvanger'">
                                    <xsl:attribute name="prefix" select="$StUF-prefix"/>
                                    <xsl:attribute name="namespaceId" select="$StUF-namespaceIdentifier"/>
                                    <xsl:attribute name="version" select="ep:UGMversionGerelateerdeEntiteit"/>
@@ -959,9 +966,9 @@
                                </xsl:otherwise>
                            </xsl:choose>
                             <xsl:sequence
-                                select="imf:create-output-element('ep:name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name,$verwerkingsModus))" />
+                                select="imf:create-output-element('ep:name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$tech-name,$verwerkingsModus))" />
                             <xsl:sequence
-                               select="imf:create-output-element('ep:tech-name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name,$verwerkingsModus))" />
+                               select="imf:create-output-element('ep:tech-name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$tech-name,$verwerkingsModus))" />
                            <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
                            <!-- ep:authentiek element is used to determine if a 'authentiek' element needs to be generated in the messages in the next higher level. -->
                            <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
@@ -1339,7 +1346,7 @@
                             
                            <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
                            <xsl:variable name="type" select="'Grp'"/>
-                           <xsl:variable name="name" select="ep:name"/>
+                           <xsl:variable name="tech-name" select="ep:tech-name"/>
                            <xsl:variable name="docs">
                                <imvert:complete-documentation>
                                    <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
@@ -1364,9 +1371,9 @@
                                     </xsl:otherwise>
                                 </xsl:choose>
                                 <xsl:sequence
-                                    select="imf:create-output-element('ep:name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name,$historieType))" />
+                                    select="imf:create-output-element('ep:name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$tech-name,$historieType))" />
                                 <xsl:sequence
-                                   select="imf:create-output-element('ep:tech-name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name,$historieType))" />
+                                   select="imf:create-output-element('ep:tech-name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$tech-name,$historieType))" />
                                <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
                                <ep:seq>
                                    
@@ -1593,7 +1600,7 @@
                             
                             <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
                             <xsl:variable name="type" select="'Grp'"/>
-                           <xsl:variable name="name" select="ep:name"/>
+                           <xsl:variable name="tech-name" select="ep:tech-name"/>
                            <xsl:variable name="docs">
                                <imvert:complete-documentation>
                                    <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
@@ -1618,9 +1625,9 @@
                                     </xsl:otherwise>
                                 </xsl:choose>
                                 <xsl:sequence
-                                    select="imf:create-output-element('ep:name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name,$historieType))" />
+                                    select="imf:create-output-element('ep:name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$tech-name,$historieType))" />
                                 <xsl:sequence
-                                   select="imf:create-output-element('ep:tech-name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name,$historieType))" />
+                                   select="imf:create-output-element('ep:tech-name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$tech-name,$historieType))" />
                                <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
                                <ep:seq>
                                    <!-- The uml attributes, of the uml group, for which historieFormeel is applicable are placed here. -->
@@ -1824,7 +1831,7 @@
             <!-- The following when takes care of creating global construct elements for each ep:construct element representing a 'relatie'. -->
             <xsl:when test="@typeCode='relatie'">
                  
-                <xsl:sequence select="imf:create-debug-track(concat('Constructing the global constructs representing a relation with the name ',ep:name),$debugging)"/>
+                <xsl:sequence select="imf:create-debug-track(concat('Constructing the global constructs representing a relation with the name ',ep:tech-name),$debugging)"/>
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 24',$debugging)"/>
 
                 <!-- Within the schema's we want to have global constructs for relations. However for that kind of objects no uml classes are available.
@@ -2362,19 +2369,35 @@
                             <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
                             <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
                             <ep:min-occurs>0</ep:min-occurs>
-                        </ep:construct> 
-                        <!-- ROME: Onderzoeken hoe we kunnen bepalen of een wildcard bij GML types opgenomen moet worden.
-                                   Een wildcard mag immers alleen bij een stringtype opgenomen worden en alleen binnen selecties. -->
-                        <xsl:if test="(empty($nillable-patroon) or $min-length = 0)">
+                        </ep:construct>
+                    </ep:seq>
+                </ep:construct>
+                <!-- ROME: Onderzoeken hoe we kunnen bepalen of er een apart type met wildcard bij GML types opgenomen moet worden.
+                           Een wildcard mag immers alleen bij een stringtype opgenomen worden en alleen binnen selecties.
+                           Nog geen idee hoe ik kan bepalen of een GML type String based is.-->
+                <xsl:if test="(empty($nillable-patroon) or $min-length = 0)">
+                    <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}">
+                        <xsl:sequence select="imf:create-output-element('ep:name', concat(imf:capitalize(imvert:baretype),'Vraag-e'))"/>
+                        <xsl:sequence select="imf:create-output-element('ep:tech-name', concat(imf:capitalize(imvert:baretype),'Vraag-e'))"/>
+                        <ep:type-name>
+                            <xsl:value-of select="imf:get-external-type-name(.,true())"/>
+                        </ep:type-name>
+                        <ep:seq>
+                            <ep:construct ismetadata="yes">
+                                <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                                <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                                <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                                <ep:min-occurs>0</ep:min-occurs>
+                            </ep:construct> 
                             <ep:construct ismetadata="yes">
                                 <xsl:sequence select="imf:create-output-element('ep:name', 'wildcard')"/>
                                 <xsl:sequence select="imf:create-output-element('ep:tech-name', 'wildcard')"/>
                                 <ep:type-name><xsl:value-of select="concat($StUF-prefix,':Wildcard')"/></ep:type-name>
                                 <ep:min-occurs>0</ep:min-occurs>
                             </ep:construct>                     
-                        </xsl:if>                    
-                    </ep:seq>
-                </ep:construct>
+                        </ep:seq>
+                    </ep:construct>
+                </xsl:if>
             </xsl:when>
             <xsl:when test="exists($stuf-scalar)">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 33',$debugging)"/>
@@ -2404,16 +2427,31 @@
                             <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
                             <ep:min-occurs>0</ep:min-occurs>
                         </ep:construct>                     
-                        <xsl:if test="(empty($nillable-patroon) or $min-length = 0) and starts-with($checksum-string,'String')">
+                    </ep:seq>
+                </ep:construct>
+                <xsl:if test="(empty($nillable-patroon) or $min-length = 0) and starts-with($checksum-string,'String')">
+                    <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}" imvert:checksum="{concat($checksum-string,'-Vraag-simpleContentcomplexData')}">
+                        <xsl:sequence select="imf:create-output-element('ep:name', concat($tokens[1],'Vraag-e'))"/>
+                        <xsl:sequence select="imf:create-output-element('ep:tech-name', concat($tokens[1],'Vraag-e'))"/>
+                        <ep:type-name imvert:checksum="{$checksum-string}">
+                            <xsl:value-of select="concat($construct-Prefix,':',$tokens[1])"/>
+                        </ep:type-name>
+                        <ep:seq>
+                            <ep:construct ismetadata="yes">
+                                <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                                <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                                <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                                <ep:min-occurs>0</ep:min-occurs>
+                            </ep:construct>                     
                             <ep:construct ismetadata="yes">
                                 <xsl:sequence select="imf:create-output-element('ep:name', 'wildcard')"/>
                                 <xsl:sequence select="imf:create-output-element('ep:tech-name', 'wildcard')"/>
                                 <ep:type-name><xsl:value-of select="concat($StUF-prefix,':Wildcard')"/></ep:type-name>
                                 <ep:min-occurs>0</ep:min-occurs>
                             </ep:construct>                     
-                        </xsl:if>                    
-                    </ep:seq>
-                </ep:construct>
+                        </ep:seq>
+                    </ep:construct>
+                </xsl:if> 
                 <!--ep:construct type="simpleData" prefix="{$construct-Prefix}" namespaceId="{construct-Namespace}" isdatatype="yes" imvert:checksum="{concat($checksum-string,'-simpleData')}"-->
                 <ep:construct type="simpleData" prefix="{$construct-Prefix}" isdatatype="yes" imvert:checksum="{concat($checksum-string,'-simpleData')}">
                     <xsl:sequence select="imf:create-output-element('ep:name', $tokens[1])"/>
