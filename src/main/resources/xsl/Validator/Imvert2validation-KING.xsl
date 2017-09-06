@@ -64,8 +64,14 @@
     
     <xsl:template match="imvert:class">
        
+        <!-- setup -->
+        <xsl:variable name="prec-name" select="preceding::imvert:class[imvert:name = current()/imvert:name][1]"/>
         <xsl:variable name="this-id" select="imvert:id"/>
         <xsl:variable name="is-associationclass" select="$document-classes//imvert:association-class/imvert:type-id = $this-id"/>
+        
+        <!--<xsl:sequence select="imf:report-error(., 
+            $prec-name, 
+            'Duplicate name [1] not allowed, already occurs on [2]', (imvert:name,$prec-name))"/>-->
         
         <!-- association classes -->
         <xsl:sequence select="imf:report-error(., 

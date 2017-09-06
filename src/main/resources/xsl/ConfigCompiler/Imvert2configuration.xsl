@@ -35,14 +35,23 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="Imvert2configuration-speed-analyzer.xsl"/>
     
-    <xsl:variable name="configuration-owner-file" select="imf:prepare-config(imf:document($configuration-owner-name,true()))"/>
-    <xsl:variable name="configuration-metamodel-file" select="imf:prepare-config(imf:document($configuration-metamodel-name,true()))"/>
-    <xsl:variable name="configuration-schemarules-file" select="imf:prepare-config(imf:document($configuration-schemarules-name,true()))"/>
-    <xsl:variable name="configuration-tvset-file" select="imf:prepare-config(imf:document($configuration-tvset-name,true()))"/>
-    <xsl:variable name="configuration-notesrules-file" select="imf:prepare-config(imf:document($configuration-notesrules-name,true()))"/>
-    <xsl:variable name="configuration-docrules-file" select="imf:prepare-config(imf:document($configuration-docrules-name,true()))"/>
-    <xsl:variable name="configuration-versionrules-file" select="imf:prepare-config(imf:document($configuration-versionrules-name,true()))"/>
-    <xsl:variable name="configuration-shaclrules-file" select="imf:prepare-config(imf:document($configuration-shaclrules-name))"/><!-- not required -->
+    <xsl:variable name="configuration-owner-doc" select="imf:document($configuration-owner-name,true())"/>
+    <xsl:variable name="configuration-metamodel-doc" select="imf:document($configuration-metamodel-name,true())"/>
+    <xsl:variable name="configuration-schemarules-doc" select="imf:document($configuration-schemarules-name,true())"/>
+    <xsl:variable name="configuration-tvset-doc" select="imf:document($configuration-tvset-name,true())"/>
+    <xsl:variable name="configuration-notesrules-doc" select="imf:document($configuration-notesrules-name,true())"/>
+    <xsl:variable name="configuration-docrules-doc" select="imf:document($configuration-docrules-name,true())"/>
+    <xsl:variable name="configuration-versionrules-doc" select="imf:document($configuration-versionrules-name,true())"/>
+    <xsl:variable name="configuration-shaclrules-doc" select="imf:document($configuration-shaclrules-name)"/><!-- not required -->
+    
+    <xsl:variable name="configuration-owner-file" select="imf:prepare-config($configuration-owner-doc)"/>
+    <xsl:variable name="configuration-metamodel-file" select="imf:prepare-config($configuration-metamodel-doc)"/>
+    <xsl:variable name="configuration-schemarules-file" select="imf:prepare-config($configuration-schemarules-doc)"/>
+    <xsl:variable name="configuration-tvset-file" select="imf:prepare-config($configuration-tvset-doc)"/>
+    <xsl:variable name="configuration-notesrules-file" select="imf:prepare-config($configuration-notesrules-doc)"/>
+    <xsl:variable name="configuration-docrules-file" select="imf:prepare-config($configuration-docrules-doc)"/>
+    <xsl:variable name="configuration-versionrules-file" select="imf:prepare-config($configuration-versionrules-doc)"/>
+    <xsl:variable name="configuration-shaclrules-file" select="imf:prepare-config($configuration-shaclrules-doc)"/><!-- not required -->
    
     <xsl:variable name="metamodel-name" select="imf:get-normalized-name(imf:get-config-string('cli','metamodel'),'system-name')"/>
     <xsl:variable name="schemarules-name" select="imf:get-normalized-name(imf:get-config-string('cli','schemarules'),'system-name')"/>
@@ -157,6 +166,18 @@
     
     <xsl:template match="config" mode="finish-config">
         <config xmlns:xi="http://www.w3.org/2001/XInclude">
+            
+            <prologue>
+                <metamodels>
+                    <xsl:for-each select="$configuration-metamodel-doc//metamodel">
+                        <metamodel>
+                            <xsl:sequence select="name"/>
+                        </metamodel>
+                    </xsl:for-each>
+                </metamodels>
+                <!-- TODO more info required? -->
+            </prologue>
+            
             <project-owner root="true">
                 <xsl:variable name="project-owner" select="project-owner"/> 
                 <xsl:apply-templates select="$project-owner/name" mode="#current"/>

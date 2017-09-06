@@ -229,6 +229,28 @@
                 <stereo required="no">stereotype-name-association-to-composite</stereo><!-- SIM Gegevensgroep compositie-->
             </stereotypes>
         </tv>
+        
+        <tv norm="space"  id="CFG-TV-SUBSETLABEL">
+            <name lang="nl">Subset label</name>
+            <name lang="en">Subset label</name>
+            <desc>A label assigned to any construct to be used for disambiguation in subset (restriction) constructs.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-objecttype</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatieklasse</stereo>
+                <stereo required="no">stereotype-name-referentielijst</stereo>
+                <stereo required="no">stereotype-name-referentie-element</stereo>
+                <stereo required="no">stereotype-name-enumeration</stereo>
+                <stereo required="no">stereotype-name-simpletype</stereo>
+                <stereo required="no">stereotype-name-complextype</stereo>
+                <stereo required="no">stereotype-name-union</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
+                <stereo required="no">stereotype-name-union-element</stereo>
+                <stereo required="no">stereotype-name-enum</stereo>
+            </stereotypes>
+        </tv>
        
     </tagged-values>
 </tagset>

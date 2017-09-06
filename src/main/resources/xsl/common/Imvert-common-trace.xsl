@@ -95,54 +95,61 @@
         -->
         <xsl:variable name="suppliers" select="($client-construct/ancestor-or-self::imvert:*)/imvert:supplier"/> 
         
-        <xsl:for-each select="$suppliers">
-            
-            <xsl:variable name="supplier-project" select="imvert:supplier-project"/>
-            <xsl:variable name="supplier-name" select="imvert:supplier-name"/>
-            <xsl:variable name="supplier-release" select="imvert:supplier-release"/>
-            
-            <xsl:variable name="subpath" select="imf:get-trace-supplier-subpath($supplier-project,$supplier-name,$supplier-release)"/>
-            <xsl:variable name="supplier-application" select="imf:get-trace-supplier-application($subpath)"/>
-          
-            <xsl:choose>
-                <xsl:when test="empty($supplier-project)">
-                    <xsl:sequence select="imf:msg(..,'ERROR','No supplier project specified')"/>
-                </xsl:when>
-                <xsl:when test="empty($supplier-name)">
-                    <xsl:sequence select="imf:msg(..,'ERROR','No supplier name specified')"/>
-                </xsl:when>
-                <xsl:when test="empty($supplier-release)">
-                    <xsl:sequence select="imf:msg(..,'ERROR','No supplier release specified')"/>
-                </xsl:when>
-                <xsl:when test="empty($supplier-application)">
-                    <xsl:sequence select="imf:msg(..,'ERROR','No supplier document found for project [1], application [2] at release [3]',($supplier-project,$supplier-name,$supplier-release))"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:for-each select="$client-construct/imvert:trace">
-                        
-                        <xsl:variable name="trace-id" select="string(.)"/>   
-                        <xsl:if test="not($trace-id = $hits)">
-                            <xsl:variable name="supplier-constructs" select="imf:get-trace-construct-by-id(..,$trace-id,$all-derived-models-doc)"/>
-                            <!-- several constructs with same ID are copy-down constructs: assume for trace purposes all are the same -->
-                            <xsl:variable name="supplier-construct" select="$supplier-constructs[1]"/>
+        <xsl:variable name="supplier-constructs" as="element(supplier)*">
+            <xsl:for-each select="$suppliers">
+                
+                <xsl:variable name="supplier-project" select="imvert:supplier-project"/>
+                <xsl:variable name="supplier-name" select="imvert:supplier-name"/>
+                <xsl:variable name="supplier-release" select="imvert:supplier-release"/>
+                
+                <xsl:variable name="subpath" select="imf:get-trace-supplier-subpath($supplier-project,$supplier-name,$supplier-release)"/>
+                <xsl:variable name="supplier-application" select="imf:get-trace-supplier-application($subpath)"/>
+                
+                <xsl:choose>
+                    <xsl:when test="empty($supplier-project)">
+                        <xsl:sequence select="imf:msg(..,'ERROR','No supplier project specified')"/>
+                    </xsl:when>
+                    <xsl:when test="empty($supplier-name)">
+                        <xsl:sequence select="imf:msg(..,'ERROR','No supplier name specified')"/>
+                    </xsl:when>
+                    <xsl:when test="empty($supplier-release)">
+                        <xsl:sequence select="imf:msg(..,'ERROR','No supplier release specified')"/>
+                    </xsl:when>
+                    <xsl:when test="empty($supplier-application)">
+                        <xsl:sequence select="imf:msg(..,'ERROR','No supplier document found for project [1], application [2] at release [3]',($supplier-project,$supplier-name,$supplier-release))"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:for-each select="$client-construct/imvert:trace">
                             
-                            <xsl:choose>
-                                <xsl:when test="exists($supplier-construct)">
-                                    <xsl:sequence select="imf:get-trace-suppliers-for-construct-depth-first($supplier-construct,$level + 1,$hits)"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <!-- doesnt exists there -->
-                                    <xsl:sequence select="imf:msg(..,'ERROR','Trace cannot be resolved: [1]', $trace-id)"/>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </xsl:if>
-                        
-                    </xsl:for-each>
-                </xsl:otherwise>
-            </xsl:choose>
-            
-         </xsl:for-each>
-            
+                            <xsl:variable name="trace-id" select="string(.)"/>   
+                            <xsl:if test="not($trace-id = $hits)">
+                                <xsl:variable name="supplier-constructs" select="imf:get-trace-construct-by-id(..,$trace-id,$all-derived-models-doc)"/>
+                                <!-- several constructs with same ID are copy-down constructs: assume for trace purposes all are the same -->
+                                <xsl:variable name="supplier-construct" select="$supplier-constructs[1]"/>
+                                
+                                <xsl:choose>
+                                    <xsl:when test="exists($supplier-construct)">
+                                        <xsl:sequence select="imf:get-trace-suppliers-for-construct-depth-first($supplier-construct,$level + 1,$hits)"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <!-- doesnt exists there -->
+                                        <supplier stub="{$trace-id}"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:if>
+                            
+                        </xsl:for-each>
+                    </xsl:otherwise>
+                </xsl:choose>
+                
+            </xsl:for-each>       
+         </xsl:variable>
+     
+         <xsl:if test="$supplier-constructs[@stub]">
+             <xsl:sequence select="imf:msg($client-construct,'ERROR','Trace(s) cannot be resolved: [1]', imf:string-group(distinct-values($supplier-constructs/@stub)))"/>
+         </xsl:if>
+         <xsl:sequence select="$supplier-constructs[not(@stub)]"/>
+        
     </xsl:function>
     
     <!-- return a wrapper <supplier> for the construct passed -->

@@ -58,6 +58,7 @@
     <xsl:variable name="configuration-docrules-file" select="$configuration-file/config/doc-rules"/>
     <xsl:variable name="configuration-versionrules-file" select="$configuration-file/config/version-rules"/>
     <xsl:variable name="configuration-shaclrules-file" select="$configuration-file/config/shacl-rules"/>
+    <xsl:variable name="configuration-prologue" select="$configuration-file/config/prologue"/>
     
     <xsl:variable name="configuration-i3n-name" select="imf:get-config-string('system','configuration-i3n-file')"/>
     <xsl:variable name="configuration-i3n-file" select="imf:document($configuration-i3n-name,true())"/>

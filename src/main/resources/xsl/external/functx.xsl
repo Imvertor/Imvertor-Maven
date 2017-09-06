@@ -88,4 +88,35 @@
 			"/>
 		
 	</xsl:function>
+	
+	<xsl:function name="functx:value-union" as="xs:anyAtomicType*">
+		<xsl:param name="arg1" as="xs:anyAtomicType*"/>
+		<xsl:param name="arg2" as="xs:anyAtomicType*"/>
+		
+		<xsl:sequence select="
+			distinct-values(($arg1, $arg2))
+			"/>
+		
+	</xsl:function>
+	
+	<xsl:function name="functx:value-intersect" as="xs:anyAtomicType*">
+		<xsl:param name="arg1" as="xs:anyAtomicType*"/>
+		<xsl:param name="arg2" as="xs:anyAtomicType*"/>
+		
+		<xsl:sequence select="
+			distinct-values($arg1[.=$arg2])
+			"/>
+		
+	</xsl:function>
+	
+	<xsl:function name="functx:value-except" as="xs:anyAtomicType*">
+		<xsl:param name="arg1" as="xs:anyAtomicType*"/>
+		<xsl:param name="arg2" as="xs:anyAtomicType*"/>
+		
+		<xsl:sequence select="
+			distinct-values($arg1[not(.=$arg2)])
+			"/>
+		
+	</xsl:function>
+	
 </xsl:stylesheet>

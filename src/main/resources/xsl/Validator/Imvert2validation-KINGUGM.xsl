@@ -30,6 +30,8 @@
 
     <!-- 
         Validation of the UML only for KING rules, which follow the BP rules mostly. 
+        
+        
     -->
     
     <xsl:import href="Imvert2validation-KING.xsl"/>
@@ -120,6 +122,5 @@
         
         <xsl:next-match/>
     </xsl:template>
-    
-    
+        
 </xsl:stylesheet>

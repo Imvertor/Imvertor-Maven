@@ -27,7 +27,8 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
    
     xmlns:ekf="http://EliotKimber/functions"
-
+    xmlns:functx="http://www.functx.com"
+    
     xmlns:StUF="http://www.stufstandaarden.nl/onderlaag/stuf0302"
     xmlns:metadata="http://www.stufstandaarden.nl/metadataVoorVerwerking" 
    
@@ -72,6 +73,8 @@
     
     <xsl:variable name="schemafile-dat-name" select="concat($prefix,$version,'_datatypes.xsd')"/>
     <xsl:variable name="schemafile-dat" select="concat($xsd-application-folder-path,'/', $schemafile-dat-name)"/>
+    
+    <xsl:variable name="metamodel" select="imf:extract-main-metamodel(/*)"/>
     
     <xsl:template match="/">
         <root/><!-- dummy output -->
@@ -217,8 +220,13 @@
         <xsl:apply-templates select="$schema" mode="xsd-test"/>
  
         <!-- cleanup -->
+        <xsl:variable name="schema-markers" as="element()*"> <!-- markers verwijderen -->
+            <xsl:apply-templates select="$schema" mode="xsd-markers"/>
+        </xsl:variable>
+        
+        <!-- cleanup -->
         <xsl:variable name="schema-clean" as="element()*"> <!-- ent-part and dat-part -->
-            <xsl:apply-templates select="$schema" mode="xsd-cleanup"/>
+            <xsl:apply-templates select="$schema-markers" mode="xsd-cleanup"/>
         </xsl:variable>
         
         <!-- select the ents parts -->
@@ -283,7 +291,7 @@
                         <xs:element name="historieFormeel" 
                             type="{concat($prefix, ':', imvert:alias,'-basis')}"  
                             minOccurs="0" 
-                            maxOccurs="1"/>  
+                            />  
                     </xsl:if>
                 </xsl:if>
                             
@@ -334,55 +342,59 @@
             </xs:complexType>
         </xsl:variable>
         
-        <xsl:choose> <!-- TODO DONE ComplexType PES-basis moet een extension zijn van SUB-abstract -->
-            <xsl:when test="$is-subtype and exists($superclasses[2])">  <!-- no example -->
-                <xsl:sequence select="imf:msg(.,'ERROR','Unable to define subtype for multiple supertypes: [1]',string-join($superclasses[1]/imvert:name/@original,', '))"/>
-            </xsl:when>
-            
-            <xsl:when test="$is-subtype and $is-supertype"> <!-- e.g. PES -->
-                <xsl:sequence select="imf:create-comment(concat('mode-global-objecttype Objecttype is sub- and supertype # ',imvert:name/@original))"/>
-                <xs:complexType name="{imvert:alias}-super">
-                    <xsl:sequence select="imf:create-annotation(.)"/>
-                    <xs:complexContent>
-                        <xs:extension base="{concat($prefix,':',$superclasses[1]/imvert:alias,'-super')}">
-                            <xsl:sequence select="$basis-body"/>     
-                        </xs:extension>
-                    </xs:complexContent>
-                </xs:complexType>
+        <xsl:variable name="declaration">
+            <xsl:choose> <!-- TODO DONE ComplexType PES-basis moet een extension zijn van SUB-abstract -->
+                <xsl:when test="$is-subtype and exists($superclasses[2])">  <!-- no example -->
+                    <xsl:sequence select="imf:msg(.,'ERROR','Unable to define subtype for multiple supertypes: [1]',string-join($superclasses[1]/imvert:name/@original,', '))"/>
+                </xsl:when>
                 
-                <xsl:sequence select="$super-basis"/>
-            </xsl:when>
-            
-            <xsl:when test="$is-supertype">  <!-- e.g. SUB -->
-                <xsl:sequence select="imf:create-comment(concat('mode-global-objecttype Objecttype is supertype but not subtype# ',imvert:name/@original))"/>
-                <xs:complexType name="{imvert:alias}-super">
-                    <xsl:sequence select="imf:create-annotation(.)"/>
-                    <xsl:sequence select="$basis-body"/>
-                </xs:complexType>
+                <xsl:when test="$is-subtype and $is-supertype"> <!-- e.g. PES -->
+                    <xsl:sequence select="imf:create-comment(concat('mode-global-objecttype Objecttype is sub- and supertype # ',imvert:name/@original))"/>
+                    <xs:complexType name="{imvert:alias}-super">
+                        <xsl:sequence select="imf:create-annotation(.)"/>
+                        <xs:complexContent>
+                            <xs:extension base="{concat($prefix,':',$superclasses[1]/imvert:alias,'-super')}">
+                                <xsl:sequence select="$basis-body"/>     
+                            </xs:extension>
+                        </xs:complexContent>
+                    </xs:complexType>
+                    
+                    <xsl:sequence select="$super-basis"/>
+                </xsl:when>
                 
-                <xsl:sequence select="$super-basis"/>
-            </xsl:when>
-            
-            <xsl:when test="$is-subtype"> <!-- e.g. NPS -->
-                <xsl:sequence select="imf:create-comment(concat('mode-global-objecttype Objecttype is subtype # ',imvert:name/@original))"/>
-                <xs:complexType name="{imvert:alias}-basis">
-                    <xsl:sequence select="imf:create-annotation(.)"/>
-                    <xs:complexContent>
-                        <xs:extension base="{concat($prefix,':',$superclasses[1]/imvert:alias,'-super')}">
-                            <xsl:sequence select="$basis-body"/>     
-                        </xs:extension>
-                    </xs:complexContent>
-                </xs:complexType>
-            </xsl:when>
-          
-            <xsl:otherwise>  <!-- e.g. PND maar ook RON referentiebtabel -->
-                <xsl:sequence select="imf:create-comment(concat('mode-global-objecttype Objecttype is not a subtype or supertype # ',imvert:name/@original))"/>
-                <xs:complexType name="{imvert:alias}-basis">
-                    <xsl:sequence select="imf:create-annotation(.)"/>
-                    <xsl:sequence select="$basis-body"/>
-                </xs:complexType>
-            </xsl:otherwise>
-        </xsl:choose>
+                <xsl:when test="$is-supertype">  <!-- e.g. SUB -->
+                    <xsl:sequence select="imf:create-comment(concat('mode-global-objecttype Objecttype is supertype but not subtype# ',imvert:name/@original))"/>
+                    <xs:complexType name="{imvert:alias}-super">
+                        <xsl:sequence select="imf:create-annotation(.)"/>
+                        <xsl:sequence select="$basis-body"/>
+                    </xs:complexType>
+                    
+                    <xsl:sequence select="$super-basis"/>
+                </xsl:when>
+                
+                <xsl:when test="$is-subtype"> <!-- e.g. NPS -->
+                    <xsl:sequence select="imf:create-comment(concat('mode-global-objecttype Objecttype is subtype # ',imvert:name/@original))"/>
+                    <xs:complexType name="{imvert:alias}-basis">
+                        <xsl:sequence select="imf:create-annotation(.)"/>
+                        <xs:complexContent>
+                            <xs:extension base="{concat($prefix,':',$superclasses[1]/imvert:alias,'-super')}">
+                                <xsl:sequence select="$basis-body"/>     
+                            </xs:extension>
+                        </xs:complexContent>
+                    </xs:complexType>
+                </xsl:when>
+                
+                <xsl:otherwise>  <!-- e.g. PND maar ook RON referentiebtabel -->
+                    <xsl:sequence select="imf:create-comment(concat('mode-global-objecttype Objecttype is not a subtype or supertype # ',imvert:name/@original))"/>
+                    <xs:complexType name="{imvert:alias}-basis">
+                        <xsl:sequence select="imf:create-annotation(.)"/>
+                        <xsl:sequence select="$basis-body"/>
+                    </xs:complexType>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        
+        <xsl:sequence select="imf:create-subset-marker(.,$declaration)"/>
            
     </xsl:template>
     
@@ -1604,6 +1616,47 @@
         </xsl:choose>
     </xsl:function>
     
+    <xsl:function name="imf:create-subset-marker" as="element(marker)?">
+        <xsl:param name="construct"/>
+        <xsl:param name="xsd-construct"/>
+        
+        <xsl:variable name="supplier-constructs" select="imf:get-supplier-constructs($construct)"/>
+        <xsl:variable name="supplier-constructs-same-metamodel" select="$supplier-constructs[imf:extract-main-metamodel($construct) = $metamodel]"/>
+        
+        <xsl:if test="$supplier-constructs-same-metamodel">
+            
+            <!-- is the construct a subset constructs? -->
+            <xsl:variable name="supplier-prop" select="$supplier-constructs-same-metamodel/*/(imvert:attribute|imvert:association)/imvert:name"/>
+            <xsl:variable name="client-prop" select="$construct/*/(imvert:attribute|imvert:association)/imvert:name"/>
+            
+            <xsl:variable name="supplier-additional-prop" select="functx:value-except($supplier-prop,$client-prop)"/>
+            <xsl:variable name="client-additional-prop" select="functx:value-except($client-prop,$supplier-prop)"/>
+            
+            <xsl:variable name="is-subset" select="exists($supplier-additional-prop)"/>
+            <xsl:variable name="client-label" select="imf:get-most-relevant-compiled-taggedvalue($construct,'##CFG-TV-SUBSETLABEL')"/>
+            <xsl:variable name="supplier-label" select="$supplier-constructs-same-metamodel/imvert:alias"/>
+            
+            <xsl:sequence select="imf:report-error($construct, 
+                $supplier-constructs-same-metamodel[2], 
+                'Multiple potential subset constructs found: [1]',imf:string-group($supplier-constructs-same-metamodel/imvert:name))"/>
+            
+            <xsl:sequence select="imf:report-error($construct, 
+                $client-additional-prop, 
+                'Subset classes may not introduce attributes or associations: [1]',$client-additional-prop)"/>
+            
+            <xsl:sequence select="imf:report-error($construct, 
+                $is-subset and empty($client-label), 
+                'Tagged value [1] for this subset not specified',imf:get-config-name-by-id('CFG-TV-SUBSETLABEL'))"/>
+           
+            <!-- return that alias -->
+            <marker is-subset="{$is-subset}" client-label="{$client-label}" supplier-label="{$supplier-label}" supplier-prefix="{$prefix}">
+                <xsl:sequence select="$xsd-construct"/>
+            </marker>
+            
+        </xsl:if>
+        
+    </xsl:function>
+    
     <!-- ====================xsd test ================== -->
    
     <xsl:template match="xs:schema" mode="xsd-test">
@@ -1636,6 +1689,12 @@
         </xsl:for-each-group>
     </xsl:function>
     
+    <xsl:function name="imf:extract-main-metamodel" as="xs:string">
+        <xsl:param name="class"/>
+        <xsl:variable name="mm-tokens" select="tokenize($class/ancestor-or-self::imvert:packages[last()]/imvert:metamodel,';')"/>
+        <xsl:value-of select="$mm-tokens[1]"/>
+    </xsl:function>
+    
     <!-- =================== select ent =================== -->
 
     <xsl:template match="xs:schema" mode="xsd-ent">
@@ -1650,6 +1709,32 @@
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:apply-templates select=".//*:dat-part/node()" mode="resolve-checksums"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <!-- ============== resolve markers ================= -->
+    
+    <xsl:template match="xs:complexType[imf:boolean(parent::marker/@is-subset)]" mode="xsd-markers">
+        <xsl:variable name="supplier-prefix" select="../@supplier-prefix"/>
+        <xsl:variable name="supplier-label" select="../@supplier-label"/>
+        <xsl:variable name="client-label" select="../@client-label"/>
+        <xsl:sequence select="imf:create-comment(concat('Resolve markers: ', $supplier-prefix,' ', $supplier-label, ' ', $client-label))"/>
+        <xs:complexType name="{concat($supplier-label,'-',$client-label)}">
+            <xs:complexContent>
+                <xs:restriction base="{$supplier-prefix}:{$supplier-label}">
+                    <xsl:apply-templates mode="#current"/>
+                </xs:restriction>
+            </xs:complexContent>
+        </xs:complexType>
+    </xsl:template>
+    
+    <xsl:template match="marker" mode="xsd-markers">
+        <xsl:apply-templates mode="#current"/>
+    </xsl:template>
+    
+    <xsl:template match="node()|@*" mode="xsd-markers">
+        <xsl:copy>
+            <xsl:apply-templates select="node()|@*" mode="#current"/>
         </xsl:copy>
     </xsl:template>
     

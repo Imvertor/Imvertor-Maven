@@ -117,6 +117,7 @@
             <xsl:sequence select="imf:create-output-element('imvert:debug',$debugging)"/>
             <xsl:sequence select="imf:create-output-element('imvert:project',$project-name)"/>
             <xsl:sequence select="imf:create-output-element('imvert:application',$application-package-name)"/>
+            <xsl:sequence select="imf:create-output-element('imvert:metamodel',string-join($configuration-prologue/metamodels/metamodel/name,';'))"/>
             <xsl:sequence select="imf:create-output-element('imvert:generated',$generation-date)"/>
             <xsl:sequence select="imf:create-output-element('imvert:generator',$imvertor-version)"/>
             <xsl:sequence select="imf:create-output-element('imvert:exported',concat(replace(/XMI/@timestamp,' ','T'),'Z'))"/>
@@ -163,7 +164,7 @@
         <xsl:variable name="package-name" select="@name" as="xs:string"/>
         <xsl:variable name="package-id" select="@xmi.id" as="xs:string"/>
         <xsl:variable name="namespace" select="imf:get-alias(.,'P')"/>
-        <xsl:variable name="metamodel" select="imf:get-profile-tagged-value(.,'metamodel',())"/>
+        <xsl:variable name="metamodel" select="string-join($configuration,' ')"/>
         <xsl:variable name="model-level" select="imf:get-profile-tagged-value(.,'level','compact')"/>
         
         <xsl:variable name="supplier-info" select="imf:get-supplier-info(.,$parent-is-derived)" as="element()*"/>
@@ -179,7 +180,6 @@
             <xsl:sequence select="imf:get-id-info(.,'P')"/>
             <xsl:sequence select="$supplier-info"/>
             <xsl:sequence select="imf:create-output-element('imvert:namespace',$namespace)"/>
-            <xsl:sequence select="imf:create-output-element('imvert:metamodel',$metamodel)"/>
             <xsl:sequence select="imf:create-output-element('imvert:model-level',$model-level)"/>
             <xsl:sequence select="imf:get-element-documentation-info(.)"/>
             <xsl:sequence select="imf:get-history-info(.)"/>

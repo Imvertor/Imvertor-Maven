@@ -37,5 +37,16 @@
     
    
     <!-- TODO what special validations for KING SIM? -->
+    <xsl:template match="imvert:class">
+        <!-- setup -->
+        <xsl:variable name="prec-alias" select="preceding::imvert:class[imvert:alias = current()/imvert:alias][1]"/>
+        
+        <!-- validate -->
+       <!--<xsl:sequence select="imf:report-error(., 
+            exists(imvert:alias) and $prec-alias, 
+            'Duplicate alias [1] not allowed, already occurs on [2]', (imvert:alias,$prec-alias))"/>-->
+        
+        <xsl:next-match/>
+    </xsl:template>    
     
 </xsl:stylesheet>

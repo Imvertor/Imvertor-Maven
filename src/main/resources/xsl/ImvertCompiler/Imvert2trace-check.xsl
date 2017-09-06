@@ -62,9 +62,9 @@
                 <xsl:variable name="warnings" select="xs:integer((imvert:process/imvert:warnings,0)[1])"/>
                 <xsl:variable name="phase" select="(imvert:phase,'0')[1]"/>
                 
-                <xsl:sequence select="imf:report-warning(., 
+                <xsl:sequence select="imf:report-error(., 
                     $errors != 0,
-                    'The supplier [1] has [2] errors. Are you sure you want to derive from that model?',($subpath,$errors))"/>
+                    'The supplier [1] has [2] errors. You cannot derive from that model.',($subpath,$errors))"/>
                 <xsl:sequence select="imf:report-warning(., 
                     $warnings != 0,
                     'The supplier [1] has [2] warnings. Are you sure you want to derive from that model?',($subpath,$warnings))"/>
