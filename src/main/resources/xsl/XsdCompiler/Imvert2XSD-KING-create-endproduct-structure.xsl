@@ -194,12 +194,12 @@
 					</xsl:for-each>
 				</xsl:otherwise>
 			</xsl:choose>
-			<ep:constructRef prefix="StUF" ismetadata="yes">
+			<ep:construct prefix="{$kv-prefix}" ismetadata="yes">
 				<ep:name>patch</ep:name>
 				<ep:tech-name>patch</ep:tech-name>
-				<ep:min-occurs>1</ep:min-occurs>
-				<ep:href>patch</ep:href>
-			</ep:constructRef>
+				<ep:min-value>0</ep:min-value>
+				<ep:href><xsl:value-of select="concat($StUF-prefix,':','Patchnummer')"/></ep:href>
+			</ep:construct>
 		</ep:seq>
 	</xsl:template>
 
