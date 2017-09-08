@@ -404,6 +404,7 @@
                         <xsl:attribute name="version" select="$uniquePrefixes//ep:prefix[. = $prefix]/@version"/>
                         <xsl:attribute name="namespaceId" select="@namespaceId"/>
                         <xsl:if test="$prefix != $uniquePrefixes//ep:prefix[xs:integer(@level) = 3]">
+                            <xsl:sequence select="imf:create-debug-comment('Debuglocation 2012a',$debugging)"/>
                             <ep:superconstructRef>
                                 <xsl:attribute name="prefix" select="$uniquePrefixes//ep:prefix[xs:integer(@level) = 3]"/>
                                 <xsl:sequence select="imf:create-output-element('ep:name', ep:name)"/>
@@ -434,8 +435,8 @@
                     </xsl:element>
                 </xsl:if>
                 <xsl:for-each select="$uniquePrefixes//ep:prefix[. != $prefix]">
-                    <xsl:sequence select="imf:create-debug-comment('Debuglocation 2012a',$debugging)"/>
-                    <xsl:sequence select="imf:create-debug-track('Debuglocation 2012a',$debugging)"/>
+                    <xsl:sequence select="imf:create-debug-comment('Debuglocation 2012b',$debugging)"/>
+                    <xsl:sequence select="imf:create-debug-track('Debuglocation 2012b',$debugging)"/>
                     
                     <xsl:variable name="currentPrefix" select="."/>
                     <xsl:variable name="currentPrefixLevel" select="xs:integer(@level)" as="xs:integer"/>
@@ -451,8 +452,9 @@
                             <xsl:attribute name="level" select="$currentPrefixLevel"/>
                             <xsl:attribute name="namespaceId" select="$currentNamespace"/>
                             <xsl:attribute name="version" select="$currentVersion"/>
-                            <xsl:sequence select="imf:create-debug-track('Debuglocation 2012a1',$debugging)"/>
+                            <xsl:sequence select="imf:create-debug-track('Debuglocation 2012c',$debugging)"/>
                             <xsl:if test="$uniquePrefixes//ep:prefix[@level = $currentPrefixLevel + 1]">
+                                <xsl:sequence select="imf:create-debug-comment('Debuglocation 2012d',$debugging)"/>
                                 <ep:superconstructRef>
                                     <xsl:attribute name="prefix" select="$uniquePrefixes//ep:prefix[xs:integer(@level) = $currentPrefixLevel + 1]"/>
                                     <xsl:sequence select="imf:create-output-element('ep:name', $construct/ep:name)"/>
@@ -466,8 +468,8 @@
                             </xsl:if> 
                             <xsl:choose>
                                 <xsl:when test="$construct/@orderingDesired = 'no' or $construct/ancestor::ep:seq[@orderingDesired = 'no']">
-                                    <xsl:sequence select="imf:create-debug-comment('Debuglocation 2012aa',$debugging)"/>
-                                    <xsl:sequence select="imf:create-debug-track('Debuglocation 2012aa',$debugging)"/>
+                                    <xsl:sequence select="imf:create-debug-comment('Debuglocation 2012e',$debugging)"/>
+                                    <xsl:sequence select="imf:create-debug-track('Debuglocation 2012e',$debugging)"/>
                                     <xsl:apply-templates select="$construct/*">
                                         <xsl:with-param name="procesType" select="'splitting'"/>
                                         <xsl:with-param name="actualPrefix" select="$currentPrefix"/>
@@ -477,8 +479,8 @@
                                     </xsl:apply-templates>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <xsl:sequence select="imf:create-debug-comment('Debuglocation 2012ab',$debugging)"/>
-                                    <xsl:sequence select="imf:create-debug-track('Debuglocation 2012ab',$debugging)"/>
+                                    <xsl:sequence select="imf:create-debug-comment('Debuglocation 2012f',$debugging)"/>
+                                    <xsl:sequence select="imf:create-debug-track('Debuglocation 2012f',$debugging)"/>
                                     <xsl:apply-templates select="$construct/*">
                                         <xsl:sort select="ep:position" order="ascending" data-type="number"/>
                                         <xsl:with-param name="procesType" select="'splitting'"/>
@@ -716,22 +718,7 @@
             <xsl:copy-of select="."/>
         </xsl:variable>
         <xsl:sequence select="$suppliers"/>
-        <!--xsl:copy>
-            <xsl:apply-templates select="ep:suppliers"/>
-        </xsl:copy-->	
     </xsl:template>
-    
-    <!--xsl:template match="ep:suppliers">
-        <xsl:copy>
-            <xsl:apply-templates select="supplier"/>
-        </xsl:copy>	
-    </xsl:template>
-    
-    <xsl:template match="supplier">
-        <xsl:copy>
-            <xsl:apply-templates select="@*"/>
-        </xsl:copy>	
-    </xsl:template-->
     
     <xsl:template match="ep:namespaces">
         <xsl:param name="actualPrefix"/>

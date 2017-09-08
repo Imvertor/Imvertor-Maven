@@ -1533,10 +1533,10 @@
 							<xsl:attribute name="UGMlevel" select="$suppliers//supplier[1]/@level"/>
 							<xsl:attribute name="version" select="$suppliers//supplier[1]/@version"/>
 						</xsl:if>
+						<ep:suppliers>
+							<xsl:copy-of select="$suppliers"/>
+						</ep:suppliers>
 						<xsl:if test="$debugging">
-							<ep:suppliers>
-								<xsl:copy-of select="$suppliers"/>
-							</ep:suppliers>
 							<ep:tagged-values>
 								<xsl:copy-of select="$tvs"/>
 								<ep:found-tagged-values>
@@ -1552,7 +1552,6 @@
 								</ep:found-tagged-values>
 							</ep:tagged-values>
 						</xsl:if>
-
 						<xsl:variable name="compiled-name" select="imf:useable-attribute-name(imf:get-compiled-name(.),.)"/>
 						<xsl:variable name="type-name" select="imf:capitalize($compiled-name)"/>
 						<xsl:variable name="stuf-scalar" select="imf:get-stuf-scalar-attribute-type(.)"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Robert Melskens	2017-06-09	This stylesheet enriches the rough EP file structure generated in the previous
+<!-- Robert Melskens 	2017-06-09	This stylesheet enriches the rough EP file structure generated in the previous
 									step. The result serves as a base for creating the final EP file structure.
 									The most important enrichment is determining the verwerkingsModus of each level.
 									With this information the next step can determine teh content of each ep:construct
