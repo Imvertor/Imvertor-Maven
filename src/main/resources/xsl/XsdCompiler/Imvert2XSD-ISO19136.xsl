@@ -1046,7 +1046,7 @@
                     <xsl:sequence select="imf:create-comment($this,'An external type')"/>
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                     <!-- TODO continue: introduce correct reference / see IM-59 -->
-                    <xsl:variable name="reftype" select="if ($this/ancestor::imvert:package[last()][imvert:metamodel='BP']) then $type else $type"/>
+                    <xsl:variable name="reftype" select="$type"/>
                     <xs:complexType>
                         <xs:sequence>
                             <xs:element ref="{$reftype}" minOccurs="{$min-occurs-target}" maxOccurs="{$this/imvert:max-occurs}"/>

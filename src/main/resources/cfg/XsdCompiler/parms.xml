@@ -73,8 +73,8 @@
       </cli-parm>
       <cli-parm>
          <name>nilapproach</name>
-         <arg>choice|att</arg>
-         <tip>Specify how nillable constructs must be represented: as choice, or as attribute</tip>
+         <arg>att|elm</arg>
+         <tip>Specify how nillable constructs must be represented: as a counter-element (default), or as attribute</tip>
          <required>false</required>
       </cli-parm>
       <cli-parm>
@@ -155,7 +155,16 @@
       <!-- 
          UGM transformation to Basisentiteiten schema 
       --> 
-      <IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH>
+      <IMVERTOR_METAMODEL_KINGUGM_XSD_MAIN_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten-main.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_MAIN_XSLPATH>
+      <IMVERTOR_METAMODEL_KINGUGM_XSD_SUBSET_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten-postform-subset.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_SUBSET_XSLPATH>
+      <IMVERTOR_METAMODEL_KINGUGM_XSD_CLEANUP_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten-postform-cleanup.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_CLEANUP_XSLPATH>
+      <IMVERTOR_METAMODEL_KINGUGM_XSD_ENTDAT_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten-postform-entdat.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_ENTDAT_XSLPATH>
+   
+      <RESULT_METAMODEL_KINGUGM_XSD_MAIN>${system/work-imvert-folder-path}/imvertor.25.xsd-main.xml</RESULT_METAMODEL_KINGUGM_XSD_MAIN>
+      <RESULT_METAMODEL_KINGUGM_XSD_SUBSET>${system/work-imvert-folder-path}/imvertor.26.xsd-subset.xml</RESULT_METAMODEL_KINGUGM_XSD_SUBSET>
+      <RESULT_METAMODEL_KINGUGM_XSD_CLEANUP>${system/work-imvert-folder-path}/imvertor.27.xsd-cleanup.xml</RESULT_METAMODEL_KINGUGM_XSD_CLEANUP>
+      <RESULT_METAMODEL_KINGUGM_XSD_ENTDAT>${system/work-imvert-folder-path}/imvertor.28.xsd-entdat.xml</RESULT_METAMODEL_KINGUGM_XSD_ENTDAT>
+     
       <RESULT_METAMODEL_KINGUGM_XSD_FILEPATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_METAMODEL_KINGUGM_XSD_FILEPATH>
       
       <!-- checksum info for simpletypes -->

@@ -217,6 +217,29 @@
                 <value default="yes">no</value>
             </declared-values>
         </tv>
+    
+        <tv norm="space" id="CFG-TV-REASONNOVALUE">
+            <name lang="nl">Reden geen waarde</name>
+            <name lang="en">Reason no value</name>
+            <desc lang="nl">Moet de reden waarom een gegeven géén waarde heeft (nillable) worden opgegeven?
+               Als 'ja' dan altijd opgegeven (als aan de orde), of 'default' dan zie documentatie voor de default reden. 
+               <!--Implementatie: bij 'ja' wordt de al bedachte constructie toegevoegd. Als je er twee wilt op kunnen geven, is het altijd 
+               nodig om te kiezen voor 'ja', maar 'ja' mag ook gebruikt worden als er alleen sprake kan zijn van maar 1 reden. --> 
+            </desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-attribute</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+            </declared-values>
+            <declared-values lang="en">
+                <value>Yes</value>
+                <value default="yes">No</value>
+            </declared-values>
+        </tv>
+        
         
     </tagged-values>
 </tagset>

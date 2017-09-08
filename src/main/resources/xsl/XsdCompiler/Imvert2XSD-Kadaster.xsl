@@ -728,6 +728,7 @@
         
         <xsl:variable name="is-voidable" select="$this/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-voidable')"/>
         <xsl:variable name="is-nillable" select="$is-voidable or $force-nillable"/>
+        <xsl:variable name="has-nilreason" select="imf:boolean(imf:get-tagged-value($this,'##CFG-TV-REASONNOVALUE'))"/>
         
         <xsl:variable name="is-restriction" select="imf:is-restriction($this)"/>
         <xsl:variable name="is-estimation" select="imf:is-estimation($this)"/>
@@ -813,31 +814,7 @@
                     </xs:simpleType>
                 </xs:element>
             </xsl:when>
-            <!-- base types such as xs:string and xs:boolean -->
-            <xsl:when test="$type=('xs:dateTime','xs:date','xs:time') and $is-type-modified-incomplete and $is-nillable"> <!-- incomplete type, and could be, but may may not be empty -->
-                <xs:element>
-                    <xsl:attribute name="name" select="$name"/>
-                    <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
-                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:attribute name="nillable">true</xsl:attribute>
-                    <xsl:sequence select="imf:debug($this,'A voidable incomplete datetime, date or time')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
-                    <xs:complexType>
-                        <xs:simpleContent>
-                            <xsl:variable name="fixtype">
-                                <xsl:choose>
-                                    <xsl:when test="$type='xs:dateTime'">Fixtype_incompleteDateTime</xsl:when>
-                                    <xsl:when test="$type='xs:date'">Fixtype_incompleteDate</xsl:when>
-                                    <xsl:when test="$type='xs:time'">Fixtype_incompleteTime</xsl:when>
-                                </xsl:choose>
-                            </xsl:variable>
-                            <xs:extension base="{imf:get-type($fixtype,$package-name)}">
-                                <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
-                            </xs:extension>
-                        </xs:simpleContent>
-                    </xs:complexType>
-                </xs:element>
-            </xsl:when>
+            
             <xsl:when test="$type=('xs:dateTime','xs:date','xs:time') and $is-type-modified-incomplete"> <!-- incomplete type -->
                 <xsl:variable name="fixtype">
                     <xsl:choose>
@@ -846,38 +823,58 @@
                         <xsl:when test="$type='xs:time'">Fixtype_incompleteTime</xsl:when>
                     </xsl:choose>
                 </xsl:variable>
-                <xs:element>
-                    <xsl:attribute name="name" select="$name"/>
-                    <xsl:attribute name="type" select="imf:get-type($fixtype,$package-name)"/>
-                    <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
-                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:debug($this,'An incomplete datetime, date or time')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
-                </xs:element>
+                <mark approach="elm" nillable="{$is-nillable}" nilreason="{$has-nilreason}">
+                    <xs:element>
+                        <xsl:attribute name="name" select="$name"/>
+                        <xsl:attribute name="type" select="imf:get-type($fixtype,$package-name)"/>
+                        <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
+                        <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                        <xsl:sequence select="imf:debug($this,'An incomplete datetime, date or time')"/>
+                        <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    </xs:element>
+                </mark>
+                <mark approach="att" nillable="{$is-nillable}" nilreason="{$has-nilreason}">
+                    <xs:element>
+                        <xsl:attribute name="name" select="$name"/>
+                        <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
+                        <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                        <xsl:sequence select="imf:debug($this,'A voidable incomplete datetime, date or time')"/>
+                        <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                        <xs:complexType>
+                            <xs:simpleContent>
+                                <xs:extension base="{imf:get-type($fixtype,$package-name)}">
+                                    <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
+                                </xs:extension>
+                            </xs:simpleContent>
+                        </xs:complexType>
+                    </xs:element>
+                </mark>
             </xsl:when>
             
             <xsl:when test="starts-with($type,'xs:') and $is-nillable"> 
-                <xs:element>
-                    <xsl:attribute name="name" select="$name"/>
-                    <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
-                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:attribute name="nillable">true</xsl:attribute>
-                    <xsl:sequence select="imf:debug($this,'A voidable primitive type')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
-                    <xs:complexType>
-                        <xs:simpleContent>
-                            <!-- 
-                                Determine the effective type, this is the actual type such as xs:string or a generated basetype 
-                                When basetype, the type referenced in the extension is the generated type, 'Basetype_*', introduced at the end of the schema 
-                            -->
-                            <xsl:variable name="effective-type" select="if ($is-restriction) then imf:get-type($basetype-name,$package-name) else $type"/>
-                            <xs:extension base="{$effective-type}">
-                                <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
-                                <xsl:sequence select="imf:create-estimation($is-estimation)"/>
-                            </xs:extension>
-                        </xs:simpleContent>
-                    </xs:complexType>
-                </xs:element>
+                <mark approach="elm" nillable="{$is-nillable}" nilreason="{$has-nilreason}">
+                    <xs:element>
+                        <xsl:attribute name="name" select="$name"/>
+                        <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
+                        <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                        <xsl:sequence select="imf:debug($this,'A voidable primitive type')"/>
+                        <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                  
+                        <xs:complexType>
+                            <xs:simpleContent>
+                                <!-- 
+                                    Determine the effective type, this is the actual type such as xs:string or a generated basetype 
+                                    When basetype, the type referenced in the extension is the generated type, 'Basetype_*', introduced at the end of the schema 
+                                -->
+                                <xsl:variable name="effective-type" select="if ($is-restriction) then imf:get-type($basetype-name,$package-name) else $type"/>
+                                <xs:extension base="{$effective-type}">
+                                    <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
+                                    <xsl:sequence select="imf:create-estimation($is-estimation)"/>
+                                </xs:extension>
+                            </xs:simpleContent>
+                        </xs:complexType>
+                    </xs:element>
+                </mark>
             </xsl:when>
             <xsl:when test="starts-with($type,'xs:') and $is-restriction"> <!-- any xsd primitve type such as xs:string, with local restrictions such as patterns -->
                 <xs:element>
@@ -946,52 +943,56 @@
             </xsl:when>
             <xsl:when test="$is-enumeration and $is-nillable">
                 <!-- an enumeration or a datatype such as postcode -->
-                <xs:element>
-                    <xsl:attribute name="name" select="$name"/>
-                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
-                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:attribute name="nillable">true</xsl:attribute>
-                    <xsl:sequence select="imf:debug($this,'A voidable enumeration')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
-                    <xs:complexType>
-                        <xs:simpleContent>
-                            <xs:extension base="{$type}">
-                                <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
-                            </xs:extension>
-                        </xs:simpleContent>
-                    </xs:complexType>
-                </xs:element>
+                <mark approach="elm" nillable="{$is-nillable}" nilreason="{$has-nilreason}">
+                    <xs:element>
+                        <xsl:attribute name="name" select="$name"/>
+                        <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                        <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                        <xsl:attribute name="nillable">true</xsl:attribute>
+                        <xsl:sequence select="imf:debug($this,'A voidable enumeration')"/>
+                        <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                        <xs:complexType>
+                            <xs:simpleContent>
+                                <xs:extension base="{$type}">
+                                    <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
+                                </xs:extension>
+                            </xs:simpleContent>
+                        </xs:complexType>
+                    </xs:element>
+                </mark>
             </xsl:when>
             <xsl:when test="($is-complextype or $is-conceptual-complextype) and $is-nillable">
                 <!-- note that we do not support avoiding substitution on complex datatypes --> 
-                <xs:element>
-                    <xsl:attribute name="name" select="$name"/>
-                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
-                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:attribute name="nillable">true</xsl:attribute>
-                    <xsl:sequence select="imf:debug($this,'A voidable complex type')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
-                    <xs:complexType>
-                        <xsl:variable name="ext">
-                            <xs:extension base="{$type}">
-                                <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
-                            </xs:extension>
-                        </xsl:variable>
-                        <xsl:choose>
-                            <xsl:when test="exists($defining-class/imvert:pattern)">
-                                <xsl:sequence select="imf:debug($this,'The referenced type is simplified by pattern')"/>
-                                <xs:simpleContent>
-                                    <xsl:sequence select="$ext"/>
-                                </xs:simpleContent>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xs:complexContent>
-                                    <xsl:sequence select="$ext"/>
-                                </xs:complexContent>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xs:complexType>
-                </xs:element>
+                <mark approach="elm" nillable="{$is-nillable}" nilreason="{$has-nilreason}">
+                    <xs:element>
+                        <xsl:attribute name="name" select="$name"/>
+                        <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                        <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                        <xsl:attribute name="nillable">true</xsl:attribute>
+                        <xsl:sequence select="imf:debug($this,'A voidable complex type')"/>
+                        <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                        <xs:complexType>
+                            <xsl:variable name="ext">
+                                <xs:extension base="{$type}">
+                                    <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
+                                </xs:extension>
+                            </xsl:variable>
+                            <xsl:choose>
+                                <xsl:when test="exists($defining-class/imvert:pattern)">
+                                    <xsl:sequence select="imf:debug($this,'The referenced type is simplified by pattern')"/>
+                                    <xs:simpleContent>
+                                        <xsl:sequence select="$ext"/>
+                                    </xs:simpleContent>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xs:complexContent>
+                                        <xsl:sequence select="$ext"/>
+                                    </xs:complexContent>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xs:complexType>
+                    </xs:element>
+                </mark>
             </xsl:when>
             <xsl:when test="($is-complextype or $is-conceptual-complextype)">
                 <!-- note that we do not support avoiding substitution on complex datatypes --> 
@@ -1005,21 +1006,23 @@
                 </xs:element>
             </xsl:when>
             <xsl:when test="$is-datatype and $is-nillable">
-                <xs:element>
-                    <xsl:attribute name="name" select="$name"/>
-                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
-                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:attribute name="nillable">true</xsl:attribute>
-                    <xsl:sequence select="imf:debug($this,'A voidable datatype')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
-                    <xs:complexType>
-                        <xs:simpleContent>
-                            <xs:extension base="{$type}">
-                                <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
-                            </xs:extension>
-                        </xs:simpleContent>
-                    </xs:complexType>
-                </xs:element>
+                <mark approach="elm" nillable="{$is-nillable}" nilreason="{$has-nilreason}">
+                    <xs:element>
+                        <xsl:attribute name="name" select="$name"/>
+                        <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                        <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                        <xsl:attribute name="nillable">true</xsl:attribute>
+                        <xsl:sequence select="imf:debug($this,'A voidable datatype')"/>
+                        <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                        <xs:complexType>
+                            <xs:simpleContent>
+                                <xs:extension base="{$type}">
+                                    <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
+                                </xs:extension>
+                            </xs:simpleContent>
+                        </xs:complexType>
+                    </xs:element>
+                </mark>
             </xsl:when>
             <xsl:when test="$is-enumeration or $is-datatype">
                 <xs:element>
@@ -1042,21 +1045,23 @@
                 </xs:element>
             </xsl:when>
             <xsl:when test="$is-choice and $is-nillable"> 
-                <xs:element>
-                    <xsl:attribute name="name" select="$name"/>
-                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
-                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:attribute name="nillable">true</xsl:attribute>
-                    <xsl:sequence select="imf:debug($this,'The type of this property is a union, and voidable')"/>
-                    <xsl:sequence select="imf:get-annotation($this)"/>
-                    <xs:complexType>
-                        <xs:complexContent>
-                            <xs:extension base="{$type}">
-                                <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
-                            </xs:extension>
-                        </xs:complexContent>
-                    </xs:complexType>
-                </xs:element>
+                <mark approach="elm" nillable="{$is-nillable}" nilreason="{$has-nilreason}">
+                    <xs:element>
+                        <xsl:attribute name="name" select="$name"/>
+                        <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                        <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                        <xsl:attribute name="nillable">true</xsl:attribute>
+                        <xsl:sequence select="imf:debug($this,'The type of this property is a union, and voidable')"/>
+                        <xsl:sequence select="imf:get-annotation($this)"/>
+                        <xs:complexType>
+                            <xs:complexContent>
+                                <xs:extension base="{$type}">
+                                    <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
+                                </xs:extension>
+                            </xs:complexContent>
+                        </xs:complexType>
+                    </xs:element>
+                </mark>
             </xsl:when>
             <xsl:when test="$is-choice"> 
                 <xs:element>
@@ -1079,20 +1084,22 @@
                 </xs:element>
             </xsl:when>
             <xsl:when test="$is-external and $is-nillable">
-                <xs:element>
-                    <xsl:attribute name="name" select="$name"/>
-                    <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
-                    <xsl:attribute name="maxOccurs" select="1"/>
-                    <xsl:attribute name="nillable">true</xsl:attribute>
-                    <xsl:sequence select="imf:debug($this,'A voidable external type')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element ref="{$type}" minOccurs="{$min-occurs-target}" maxOccurs="{$this/imvert:max-occurs}"/>
-                        </xs:sequence>
-                        <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
-                    </xs:complexType>
-                </xs:element>
+                <mark approach="elm" nillable="{$is-nillable}" nilreason="{$has-nilreason}">
+                    <xs:element>
+                        <xsl:attribute name="name" select="$name"/>
+                        <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
+                        <xsl:attribute name="maxOccurs" select="1"/>
+                        <xsl:attribute name="nillable">true</xsl:attribute>
+                        <xsl:sequence select="imf:debug($this,'A voidable external type')"/>
+                        <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="{$type}" minOccurs="{$min-occurs-target}" maxOccurs="{$this/imvert:max-occurs}"/>
+                            </xs:sequence>
+                            <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
+                        </xs:complexType>
+                    </xs:element>
+                </mark>
             </xsl:when>
             <xsl:when test="$is-external">
                 <xs:element>
@@ -1102,7 +1109,7 @@
                     <xsl:sequence select="imf:debug($this,'An external type')"/>
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                     <!-- TODO continue: introduce correct reference / see IM-59 -->
-                    <xsl:variable name="reftype" select="if ($this/ancestor::imvert:package[last()][imvert:metamodel='BP']) then $type else $type"/>
+                    <xsl:variable name="reftype" select="$type"/>
                     <xs:complexType>
                         <xs:sequence>
                             <xs:element ref="{$reftype}" minOccurs="{$min-occurs-target}" maxOccurs="{$this/imvert:max-occurs}"/>
@@ -1233,29 +1240,31 @@
                         </xs:sequence>
                     </xsl:when>
                     <xsl:otherwise>
-                        <xs:element>
-                            <xsl:attribute name="name" select="$name"/>
-                            <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
-                            <xsl:attribute name="maxOccurs" select="1"/>
-                            <xsl:choose>
-                                <xsl:when test="$is-composite and imf:boolean($anonymous-components) and $is-nillable">
-                                    <xsl:attribute name="nillable">true</xsl:attribute>
-                                    <xsl:sequence select="imf:debug($this,'An objecttype, anonymous, but voidable')"/>
-                                    <xsl:sequence select="imf:msg('WARN','Anonymous component is voidable and therefore must be named: [1]',$name)"/>
-                                </xsl:when>
-                                <xsl:when test="$is-nillable">
-                                    <xsl:attribute name="nillable">true</xsl:attribute>
-                                    <xsl:sequence select="imf:debug($this,'An objecttype, voidable')"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:sequence select="imf:debug($this,'An objecttype')"/>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                            <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
-                            <xs:complexType>
-                                <xsl:sequence select="$content"/>
-                            </xs:complexType>                            
-                        </xs:element>
+                        <mark approach="elm" nillable="{$is-nillable}" nilreason="{$has-nilreason}">
+                            <xs:element>
+                                <xsl:attribute name="name" select="$name"/>
+                                <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
+                                <xsl:attribute name="maxOccurs" select="1"/>
+                                <xsl:choose>
+                                    <xsl:when test="$is-composite and imf:boolean($anonymous-components) and $is-nillable">
+                                        <xsl:attribute name="nillable">true</xsl:attribute>
+                                        <xsl:sequence select="imf:debug($this,'An objecttype, anonymous, but voidable')"/>
+                                        <xsl:sequence select="imf:msg('WARN','Anonymous component is voidable and therefore must be named: [1]',$name)"/>
+                                    </xsl:when>
+                                    <xsl:when test="$is-nillable">
+                                        <xsl:attribute name="nillable">true</xsl:attribute>
+                                        <xsl:sequence select="imf:debug($this,'An objecttype, voidable')"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:sequence select="imf:debug($this,'An objecttype')"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                                <xs:complexType>
+                                    <xsl:sequence select="$content"/>
+                                </xs:complexType>                            
+                            </xs:element>
+                        </mark>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
@@ -1265,9 +1274,6 @@
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="1"/>
-                    <xsl:if test="$is-nillable">
-                        <xsl:attribute name="nillable">true</xsl:attribute>
-                    </xsl:if>
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                     <xs:complexType>
                         <xsl:variable name="result">

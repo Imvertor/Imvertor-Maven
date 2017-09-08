@@ -285,8 +285,11 @@ public class XsdCompiler extends Step {
 	
 		runner.debug(logger,"CHAIN","Generating UGM XML schemas to " + xsdApplicationFolder);
 		
-		//TODO let the stylesheet operate on system, not on model file. Try to determine if model file is required alltogether.
-		valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_METAMODEL_KINGUGM_XSD_FILEPATH", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_XSLPATH");
+		//TODO let the stylesheet operate on system, not on model file. Try to determine if model file is required altogether.
+		valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_METAMODEL_KINGUGM_XSD_MAIN", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_MAIN_XSLPATH","system/work-config-path");
+		valid = valid && transformer.transformStep("system/work-config-path","properties/RESULT_METAMODEL_KINGUGM_XSD_SUBSET", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_SUBSET_XSLPATH","system/work-config-path");
+		valid = valid && transformer.transformStep("system/work-config-path","properties/RESULT_METAMODEL_KINGUGM_XSD_CLEANUP", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_CLEANUP_XSLPATH","system/work-config-path");
+		valid = valid && transformer.transformStep("system/work-config-path","properties/RESULT_METAMODEL_KINGUGM_XSD_ENTDAT", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_ENTDAT_XSLPATH","system/work-config-path");
 		
 		// fetch all checksum info from parms file and store to the local blackboard.
 		valid = valid && transformer.transformStep("system/work-config-path","properties/IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH_LOCAL", "properties/IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XSLPATH");

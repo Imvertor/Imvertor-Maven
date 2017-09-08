@@ -38,71 +38,57 @@
           
         This is:
           
-        1/ redefine nilreason (cli:nilapproach):  nil-approach-choice
+        1/ redefine nilreason (cli:nilapproach):  nil-approach-counter
           
     -->
     
-    <xsl:variable name="nil-approach" select="imf:get-config-string('cli','nilapproach','att')"/>
+    <xsl:variable name="nil-approach" select="imf:get-config-string('cli','nilapproach','elm')"/>
     
     <xsl:template match="/">
         <xsl:apply-templates/>
     </xsl:template>
     
-    
-    <!-- =========== nil-approach-choice ================== -->
-    
-    <xsl:template match="*[@nillable='true']">
+    <!-- =========== nil-approach-counter ================== -->
+ 
+    <xsl:template match="mark">
         <xsl:choose>
-            <xsl:when test="$nil-approach = 'choice'">
-                <!-- follow new choice approach -->
-                <xsl:copy>
-                    <xsl:apply-templates select="@*"  mode="nil-approach-choice"/>
-                    <xsl:apply-templates select="node()" mode="nil-approach-choice"/>
-                </xsl:copy>
+            <xsl:when test="../@approach = $nil-approach">
+                <xsl:apply-templates/>
             </xsl:when>
-            <xsl:when test="$nil-approach = 'att'">
-                <!-- as generated -->
-                <xsl:next-match/>
-            </xsl:when>
+            <xsl:otherwise>
+                <!-- remove this section; it is not conform the requested approach -->
+            </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
-    <?x
-    <xsl:template match="*[@nillable='true']/xs:complexType/xs:complexContent/xs:extension" mode="nil-approach-choice">
-        
-        
+
+    <xsl:template match="mark[@approach = 'elm']/xs:element">
+        <xsl:next-match/>
+        <!-- add nilreason when needed -->    
+        <xsl:if test="imf:boolean(../@nilreason)">
+            <xs:element name="{@name}Nilreason" type="xs:string" minOccurs="0"/>
+        </xsl:if>
     </xsl:template>
     
-    <xsl:template match="*[@nillable='true']/xs:complexType/xs:simpleContent/xs:extension" mode="nil-approach-choice">
-        
-        
+    <xsl:template match="mark[@approach = 'att']/xs:element">
+        <xsl:copy>
+            <xsl:apply-templates/>
+            <!-- add nilreason when needed -->
+            <xsl:choose>
+                <xsl:when test="imf:boolean(../@nilreason)">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="{../@type}">
+                                <xs:attribute name="nilReason" type="xs:string" use="optional"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:attribute name="type" select="../@type"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:copy>
     </xsl:template>
-    ?>
-    
-    <xsl:template match="*[@nillable='true']/xs:complexType/xs:sequence" mode="nil-approach-choice">
-        <xsl:comment select="'nil-approach-choice 2'"/>
-        <xs:choice minOccurs="1" maxOccurs="1">
-            <xsl:sequence select="."/>
-            <xs:element name="nilReason" type="xs:string"/>
-        </xs:choice>
-    </xsl:template>
-    
-    <xsl:template match="*[@nillable='true']/xs:complexType/xs:choice" mode="nil-approach-choice">
-        <xsl:comment select="'nil-approach-choice 1'"/>
-        <xs:choice minOccurs="1" maxOccurs="1">
-            <xsl:sequence select="."/>
-            <xs:element name="nilReason" type="xs:string"/>
-        </xs:choice>
-    </xsl:template>
-    
-    <xsl:template match="xs:attribute[@name='nilReason']" mode="nil-approach-choice">
-        <!-- remove -->
-    </xsl:template>
-    
-    <xsl:template match="@nillable" mode="nil-approach-choice">
-        <!-- remove -->
-    </xsl:template>
-    
     
     <!-- =========== common ================== -->
     

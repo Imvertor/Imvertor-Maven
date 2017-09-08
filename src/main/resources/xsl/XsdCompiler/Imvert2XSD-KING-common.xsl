@@ -159,7 +159,12 @@
         </workbook>
     </xsl:function>
     
-    <xsl:function name="imf:create-debug-comment">
+    <xsl:function name="imf:create-debug-comment" as="comment()?">
+        <xsl:param name="text"/>
+        <xsl:sequence select="imf:create-debug-comment($text,$debugging)"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:create-debug-comment" as="comment()?">
         <xsl:param name="text" as="xs:string"/>
         <xsl:param name="debugging" as="xs:boolean"/>
         <xsl:if test="$debugging">
@@ -174,5 +179,12 @@
             <xsl:sequence select="imf:track($text)"/>
         </xsl:if>
     </xsl:function>
+    
+    <xsl:function name="imf:extract-main-metamodel" as="xs:string">
+        <xsl:param name="class"/>
+        <xsl:variable name="mm-tokens" select="tokenize($class/ancestor-or-self::imvert:packages[last()]/imvert:metamodel,';')"/>
+        <xsl:value-of select="$mm-tokens[1]"/>
+    </xsl:function>
+    
     
 </xsl:stylesheet>

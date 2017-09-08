@@ -136,7 +136,7 @@
                         <namespace prefix="{$prefix}" uri="{$schema-namespace}"/> 
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:sequence select="imf:msg('ERROR', 'The qualifier [1] cannot be mapped onto an application or external schema',$prefix)"/>
+                        <xsl:sequence select="imf:msg('FATAL', 'The qualifier [1] cannot be mapped onto an application or external schema',$prefix)"/>
                     </xsl:otherwise>
                 </xsl:choose>
                 

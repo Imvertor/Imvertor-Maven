@@ -42,8 +42,9 @@
     <xsl:import href="../common/extension/Imvert-common-text.xsl"/>
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
     
+    <xsl:include href="Imvert2XSD-KING-common.xsl"/>
     <xsl:include href="Imvert2XSD-KING-common-checksum.xsl"/>
-   
+    
     <xsl:output indent="yes" method="xml" encoding="UTF-8" exclude-result-prefixes="#all"/>
     
     <xsl:variable name="stylesheet-code">BES</xsl:variable>
@@ -62,22 +63,14 @@
    
     <xsl:variable name="all-simpletype-attributes" select="//imvert:attribute[empty(imvert:type)]"/> <!-- needed for disambiguation of duplicate attribute names -->
     
+    <xsl:variable name="version" select="'0320'"/><!-- TODO #489065 configure -->
     <xsl:variable name="prefix" select="imf:get-taggedvalue($imvert-document/imvert:packages,'##CFG-TV-VERKORTEALIAS')"/>
     <xsl:variable name="target-namespace" select="$imvert-document/imvert:packages/imvert:base-namespace"/>
     <xsl:variable name="StUF-prefix" select="'StUF'"/>
     
-    <xsl:variable name="version" select="'0320'"/><!-- TODO #489065 configure -->
-    
-    <xsl:variable name="schemafile-ent-name" select="concat($prefix,$version,'_ent_basis.xsd')"/>
-    <xsl:variable name="schemafile-ent" select="concat($xsd-application-folder-path,'/', $schemafile-ent-name)"/>
-    
-    <xsl:variable name="schemafile-dat-name" select="concat($prefix,$version,'_datatypes.xsd')"/>
-    <xsl:variable name="schemafile-dat" select="concat($xsd-application-folder-path,'/', $schemafile-dat-name)"/>
-    
     <xsl:variable name="metamodel" select="imf:extract-main-metamodel(/*)"/>
     
     <xsl:template match="/">
-        <root/><!-- dummy output -->
         <xsl:choose>
             <xsl:when test="empty($prefix)">
                 <xsl:sequence select="imf:msg(imvert:packages,'ERROR','No prefix specified',())"/>
@@ -129,7 +122,7 @@
                 </ent-part>
                 
                 <ent-part>
-                    <xsl:sequence select="imf:create-comment(' *** Declaratie van Basistypen *** ')"/>
+                    <xsl:sequence select="imf:create-debug-comment(' *** Declaratie van Basistypen *** ')"/>
                     
                     <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-objecttype')]" mode="mode-global-objecttype"/>
                     <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-referentielijst')]" mode="mode-global-objecttype"/>
@@ -137,7 +130,7 @@
                 </ent-part>
 
                 <ent-part>
-                    <xsl:sequence select="imf:create-comment(' *** Declaratie van Associatietypen *** ')"/>
+                    <xsl:sequence select="imf:create-debug-comment(' *** Declaratie van Associatietypen *** ')"/>
                     
                     <xsl:for-each-group 
                         select="//imvert:association[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-relatiesoort')]" 
@@ -147,7 +140,7 @@
                 </ent-part>
 
                 <ent-part>
-                    <xsl:sequence select="imf:create-comment(' *** Declaratie van matchgegevens *** ')"/>
+                    <xsl:sequence select="imf:create-debug-comment(' *** Declaratie van matchgegevens *** ')"/>
                     
                     <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-objecttype')]" mode="mode-global-matchgegevens"/>
                     <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-referentielijst')]" mode="mode-global-matchgegevens"/>
@@ -155,7 +148,7 @@
                 </ent-part>
 
                 <ent-part>
-                    <xsl:sequence select="imf:create-comment(' *** Declaratie van gegevensgroeptypen *** ')"/>
+                    <xsl:sequence select="imf:create-debug-comment(' *** Declaratie van gegevensgroeptypen *** ')"/>
                     
                     <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-composite')]" mode="mode-global-gegevensgroeptype">
                         <xsl:with-param name="matchgegevens" select="false()"/>
@@ -166,7 +159,7 @@
                 </ent-part>
 
                 <dat-part>
-                    <xsl:sequence select="imf:create-comment(' *** Declaratie van simple types *** ')"/>
+                    <xsl:sequence select="imf:create-debug-comment(' *** Declaratie van simple types *** ')"/>
                     
                     <xsl:for-each-group 
                         select="//imvert:attribute[empty(imvert:type-id)]" 
@@ -176,7 +169,7 @@
                 </dat-part>
                 
                 <ent-part>
-                    <xsl:sequence select="imf:create-comment(' *** Declaratie van niet-simpletypes *** ')"/>
+                    <xsl:sequence select="imf:create-debug-comment(' *** Declaratie van niet-simpletypes *** ')"/>
                     
                     <xsl:for-each-group 
                         select="//imvert:attribute[exists(imvert:type-id) and empty(imvert:conceptual-schema-type)]" 
@@ -186,7 +179,7 @@
                 </ent-part>
                 
                 <dat-part>
-                    <xsl:sequence select="imf:create-comment(' *** Declaratie van Externe typen *** ')"/>
+                    <xsl:sequence select="imf:create-debug-comment(' *** Declaratie van Externe typen *** ')"/>
                 
                     <xsl:for-each-group 
                         select="//imvert:attribute[exists(imvert:conceptual-schema-type)]" 
@@ -196,19 +189,19 @@
                 </dat-part>
                 
                 <dat-part>
-                    <xsl:sequence select="imf:create-comment(' *** Declaratie van Complex datatypes *** ')"/>
+                    <xsl:sequence select="imf:create-debug-comment(' *** Declaratie van Complex datatypes *** ')"/>
     
                     <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-complextype')]" mode="mode-global-complextype"/>
                 </dat-part>
                 
                 <dat-part>
-                    <xsl:sequence select="imf:create-comment(' *** Declaratie van Enumeraties *** ')"/>
+                    <xsl:sequence select="imf:create-debug-comment(' *** Declaratie van Enumeraties *** ')"/>
                     
                     <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-enumeration')]" mode="mode-global-enumeration"/>
                 </dat-part>
          
                 <dat-part>
-                    <xsl:sequence select="imf:create-comment(' *** Declaratie van Unions *** ')"/>
+                    <xsl:sequence select="imf:create-debug-comment(' *** Declaratie van Unions *** ')"/>
                     
                     <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-union')]" mode="mode-global-union"/>
                 </dat-part>
@@ -219,26 +212,12 @@
         <!-- check validity of schema -->
         <xsl:apply-templates select="$schema" mode="xsd-test"/>
  
-        <!-- resolve markers -->
-        <xsl:variable name="schema-markers" as="element()*"> 
-            <xsl:apply-templates select="$schema" mode="xsd-markers"/>
-        </xsl:variable>
+        <schemas>
+            <schema version="{$version}" prefix="{$prefix}" target-namespace="{$target-namespace}">
+                <xsl:sequence select="$schema"/>
+            </schema>
+        </schemas>
         
-        <!-- cleanup -->
-        <xsl:variable name="schema-clean" as="element()*"> <!-- ent-part and dat-part -->
-            <xsl:apply-templates select="$schema-markers" mode="xsd-cleanup"/>
-        </xsl:variable>
-        
-        <!-- select the ents parts -->
-        <xsl:result-document href="{$schemafile-ent}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
-            <xsl:apply-templates select="$schema-clean" mode="xsd-ent"/>
-        </xsl:result-document>
-        
-        <!-- select the datatypes part -->
-        <xsl:result-document href="{$schemafile-dat}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
-            <xsl:apply-templates select="$schema-clean" mode="xsd-dat"/>
-        </xsl:result-document>
-      
     </xsl:template>
     
     <xsl:template match="imvert:class" mode="mode-global-objecttype">
@@ -258,10 +237,10 @@
         
         <xsl:variable name="basis-body" as="element()*">
             <xs:sequence>
-                <xsl:sequence select="imf:create-comment('mode-global-objecttype (Attributes)')"/>
+                <xsl:sequence select="imf:create-debug-comment('mode-global-objecttype (Attributes)')"/>
                 <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-attribute"/>
                 
-                <xsl:sequence select="imf:create-comment('mode-global-objecttype (Compositie relaties)')"/>
+                <xsl:sequence select="imf:create-debug-comment('mode-global-objecttype (Compositie relaties)')"/>
                 <xsl:apply-templates select="imvert:associations/imvert:association[imvert:aggregation = 'composite']" mode="mode-local-composition">
                     <xsl:sort select="imvert:name"/>
                 </xsl:apply-templates>
@@ -295,7 +274,7 @@
                     </xsl:if>
                 </xsl:if>
                             
-                <xsl:sequence select="imf:create-comment('mode-global-objecttype (Associations: uitgaand)')"/>
+                <xsl:sequence select="imf:create-debug-comment('mode-global-objecttype (Associations: uitgaand)')"/>
                 <xsl:apply-templates select="imvert:associations/imvert:association[not(imvert:aggregation = 'composite')]" mode="mode-local-association">
                     <xsl:with-param name="richting">uitgaand</xsl:with-param>
                     <xsl:sort select="imvert:name"/>
@@ -321,7 +300,7 @@
         
         <!-- Algo 20170501 Vervolgstap -->
         <xsl:variable name="super-basis" as="node()+">
-            <xsl:sequence select="imf:create-comment('mode-global-objecttype (A supertype required choices, Vervolgstap)')"/>
+            <xsl:sequence select="imf:create-debug-comment('mode-global-objecttype (A supertype required choices, Vervolgstap)')"/>
             <xs:complexType name="{concat(imvert:alias,'-basis')}">
                 <xs:choice minOccurs="0" maxOccurs="{count($concrete-subclasses)}">
                     <xsl:for-each select="$concrete-subclasses">
@@ -349,7 +328,7 @@
                 </xsl:when>
                 
                 <xsl:when test="$is-subtype and $is-supertype"> <!-- e.g. PES -->
-                    <xsl:sequence select="imf:create-comment(concat('mode-global-objecttype Objecttype is sub- and supertype # ',imvert:name/@original))"/>
+                    <xsl:sequence select="imf:create-debug-comment(concat('mode-global-objecttype Objecttype is sub- and supertype # ',imvert:name/@original))"/>
                     <xs:complexType name="{imvert:alias}-super">
                         <xsl:sequence select="imf:create-annotation(.)"/>
                         <xs:complexContent>
@@ -363,7 +342,7 @@
                 </xsl:when>
                 
                 <xsl:when test="$is-supertype">  <!-- e.g. SUB -->
-                    <xsl:sequence select="imf:create-comment(concat('mode-global-objecttype Objecttype is supertype but not subtype# ',imvert:name/@original))"/>
+                    <xsl:sequence select="imf:create-debug-comment(concat('mode-global-objecttype Objecttype is supertype but not subtype# ',imvert:name/@original))"/>
                     <xs:complexType name="{imvert:alias}-super">
                         <xsl:sequence select="imf:create-annotation(.)"/>
                         <xsl:sequence select="$basis-body"/>
@@ -373,7 +352,7 @@
                 </xsl:when>
                 
                 <xsl:when test="$is-subtype"> <!-- e.g. NPS -->
-                    <xsl:sequence select="imf:create-comment(concat('mode-global-objecttype Objecttype is subtype # ',imvert:name/@original))"/>
+                    <xsl:sequence select="imf:create-debug-comment(concat('mode-global-objecttype Objecttype is subtype # ',imvert:name/@original))"/>
                     <xs:complexType name="{imvert:alias}-basis">
                         <xsl:sequence select="imf:create-annotation(.)"/>
                         <xs:complexContent>
@@ -385,7 +364,7 @@
                 </xsl:when>
                 
                 <xsl:otherwise>  <!-- e.g. PND maar ook RON referentiebtabel -->
-                    <xsl:sequence select="imf:create-comment(concat('mode-global-objecttype Objecttype is not a subtype or supertype # ',imvert:name/@original))"/>
+                    <xsl:sequence select="imf:create-debug-comment(concat('mode-global-objecttype Objecttype is not a subtype or supertype # ',imvert:name/@original))"/>
                     <xs:complexType name="{imvert:alias}-basis">
                         <xsl:sequence select="imf:create-annotation(.)"/>
                         <xsl:sequence select="$basis-body"/>
@@ -444,7 +423,7 @@
         </xsl:variable>
         
         <xsl:if test="not($is-abstract)">
-            <xsl:sequence select="imf:create-comment(concat('mode-global-matchgegevens matchgegevens # ',@display-name))"/>
+            <xsl:sequence select="imf:create-debug-comment(concat('mode-global-matchgegevens matchgegevens # ',@display-name))"/>
             <xs:complexType name="{imvert:alias}-matchgegevens">
                 <xs:complexContent>
                     <xs:restriction base="{$prefix}:{imvert:alias}-basis">
@@ -465,21 +444,21 @@
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
         
         <xsl:variable name="suffix" select="if ($matchgegevens) then '-matchgegevens' else '-basis'"/>
-        <xsl:sequence select="imf:create-comment(concat('mode-global-gegevensgroeptype Groepsattribuutsoort # ',@display-name))"/>
+        <xsl:sequence select="imf:create-debug-comment(concat('mode-global-gegevensgroeptype Groepsattribuutsoort # ',@display-name))"/>
         
         <xs:complexType name="{imf:capitalize($compiled-name)}{$suffix}">
             <xsl:variable name="seq" as="element(xs:sequence)">
                 <xs:sequence minOccurs="0">
-                    <xsl:sequence select="imf:create-comment('mode-global-gegevensgroeptype (Attributes)')"/>
+                    <xsl:sequence select="imf:create-debug-comment('mode-global-gegevensgroeptype (Attributes)')"/>
                     <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-attribute">
                         <xsl:with-param name="matchgegevens" select="$matchgegevens"/>
                     </xsl:apply-templates>
-                    <xsl:sequence select="imf:create-comment('mode-global-gegevensgroeptype (Groepen)')"/>
+                    <xsl:sequence select="imf:create-debug-comment('mode-global-gegevensgroeptype (Groepen)')"/>
                     <xsl:apply-templates select="imvert:associations/imvert:association[imvert:aggregation = 'composite']" mode="mode-local-composition">
                         <xsl:with-param name="matchgegevens" select="$matchgegevens"/>
                         <xsl:sort select="@type-display-name"/><!-- de naam van de groep als basis voor opeenvolging -->
                     </xsl:apply-templates>
-                    <xsl:sequence select="imf:create-comment('mode-global-gegevensgroeptype (Associations)')"/>
+                    <xsl:sequence select="imf:create-debug-comment('mode-global-gegevensgroeptype (Associations)')"/>
                     <xsl:apply-templates select="imvert:associations/imvert:association[not(imvert:aggregation = 'composite')]" mode="mode-local-association">
                         <xsl:with-param name="matchgegevens" select="$matchgegevens"/>
                         <xsl:with-param name="richting">uitgaand</xsl:with-param>
@@ -506,7 +485,7 @@
     <xsl:template match="imvert:class" mode="mode-global-complextype">
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
         
-        <xsl:sequence select="imf:create-comment(concat('mode-global-complextype Complextype # ',imvert:name/@original))"/>
+        <xsl:sequence select="imf:create-debug-comment(concat('mode-global-complextype Complextype # ',imvert:name/@original))"/>
         <xs:complexType name="{imf:capitalize($compiled-name)}-e">
             <xs:complexContent>
                 <xs:extension base="{$prefix}:{imf:capitalize($compiled-name)}">
@@ -525,7 +504,7 @@
     <xsl:template match="imvert:class" mode="mode-global-enumeration">
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
         
-        <xsl:sequence select="imf:create-comment(concat('mode-global-enumeration Enumeration # ',imvert:name/@original))"/>
+        <xsl:sequence select="imf:create-debug-comment(concat('mode-global-enumeration Enumeration # ',imvert:name/@original))"/>
         
         <xs:complexType name="{imf:capitalize($compiled-name)}-e"> 
             <xs:simpleContent>
@@ -547,7 +526,7 @@
     <xsl:template match="imvert:class" mode="mode-global-union">
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
         
-        <xsl:sequence select="imf:create-comment(concat('mode-global-union Union # ',imvert:name/@original))"/>
+        <xsl:sequence select="imf:create-debug-comment(concat('mode-global-union Union # ',imvert:name/@original))"/>
         <xs:complexType name="{imf:capitalize($compiled-name)}-e">
             <xs:complexContent>
                 <xs:extension base="{$prefix}:{imf:capitalize($compiled-name)}">
@@ -607,7 +586,7 @@
         
         <xsl:variable name="min-occurs" select="if ($this-is-complextype or $matchgegevens) then 1 else 0"/>
         
-        <xsl:sequence select="imf:create-comment(concat('mode-local-attribute Local attribute # ',@display-name))"/>
+        <xsl:sequence select="imf:create-debug-comment(concat('mode-local-attribute Local attribute # ',@display-name))"/>
         
         <xsl:choose>
             
@@ -616,7 +595,7 @@
             </xsl:when>
             
             <xsl:when test="$type-is-scalar-empty">
-                <xsl:sequence select="imf:create-comment('Scalar en kan leeg worden; Case: Type is een voorgedefinieerd type')"/>
+                <xsl:sequence select="imf:create-debug-comment('Scalar en kan leeg worden; Case: Type is een voorgedefinieerd type')"/>
                 <xs:element
                     name="{$compiled-name}" 
                     type="{$scalar-att-type}" 
@@ -628,7 +607,7 @@
             </xsl:when>
             
             <xsl:when test="$type-is-enumeration">
-                <xsl:sequence select="imf:create-comment('Een enumeratie; Case: Type verwijst naar enumeratie')"/>
+                <xsl:sequence select="imf:create-debug-comment('Een enumeratie; Case: Type verwijst naar enumeratie')"/>
                 <xs:element
                     name="{$compiled-name}" 
                     type="{$prefix}:{imf:capitalize($compiled-name-type)}-e" 
@@ -640,7 +619,7 @@
             </xsl:when>
             
             <xsl:when test="$type-is-union">
-                <xsl:sequence select="imf:create-comment('Een union; Case: Type verwijst naar union')"/>
+                <xsl:sequence select="imf:create-debug-comment('Een union; Case: Type verwijst naar union')"/>
                 <xs:element
                     name="{$compiled-name}" 
                     type="{$prefix}:{imf:capitalize($compiled-name-type)}-e" 
@@ -653,7 +632,7 @@
             
             <!--Type is tabel entiteit -->
             <xsl:when test="not($applicable-attribute is $this-attribute)">
-                <xsl:sequence select="imf:create-comment('Attribute redirected to referentie tabel; Case: Type verwijst naar tabelentiteit')"/>
+                <xsl:sequence select="imf:create-debug-comment('Attribute redirected to referentie tabel; Case: Type verwijst naar tabelentiteit')"/>
 
                 <xsl:variable name="applicable-compiled-name" select="imf:get-compiled-name($applicable-attribute)"/>
                 
@@ -674,7 +653,7 @@
             </xsl:when>
             
             <xsl:when test="$type-is-complextype"><!-- DONE Complex datatype niet goed geïmplementeerd -->
-                <xsl:sequence select="imf:create-comment('Een complex datatype Case: Type verwijst naar complex-datatype')"/>
+                <xsl:sequence select="imf:create-debug-comment('Een complex datatype Case: Type verwijst naar complex-datatype')"/>
                 <xs:element
                     name="{$compiled-name}" 
                     type="{$prefix}:{imf:capitalize($compiled-name-type)}-e" 
@@ -686,7 +665,7 @@
             </xsl:when>
             
             <xsl:when test="$type-is-external">
-                <xsl:sequence select="imf:create-comment('Een extern type; Case: Type verwijst naar interface')"/>
+                <xsl:sequence select="imf:create-debug-comment('Een extern type; Case: Type verwijst naar interface')"/>
                 <xsl:variable name="external-type-name" select="imvert:baretype"/>
                 <xs:element
                     name="{$compiled-name}" 
@@ -699,7 +678,7 @@
             </xsl:when>
             
             <xsl:otherwise>
-                <xsl:sequence select="imf:create-comment('Een simpel datatype; Else:  Custom type')"/> 
+                <xsl:sequence select="imf:create-debug-comment('Een simpel datatype; Else:  Custom type')"/> 
 
                 <xsl:variable name="applicable-compiled-name" select="imf:get-compiled-name($applicable-attribute)"/>
                 
@@ -784,7 +763,7 @@
     <xsl:template match="imvert:attribute" mode="mode-local-enum">
         
         <!-- STUB De naam van een enumeratie is die overgenomen uit SIM. Niet camelcase. Vooralsnog ook daar ophalen. -->
-        <xsl:sequence select="imf:create-comment(concat('mode-local-attribute Local enum # ',@display-name))"/>
+        <xsl:sequence select="imf:create-debug-comment(concat('mode-local-attribute Local enum # ',@display-name))"/>
         
         <xsl:variable name="supplier" select="imf:get-trace-suppliers-for-construct(.,1)[@project='SIM'][1]"/>
         <xsl:variable name="construct" select="if ($supplier) then imf:get-trace-construct-by-supplier($supplier,$imvert-document) else ()"/>
@@ -817,7 +796,7 @@
                 <!-- het is geen matchgegeven, dus laat weg. -->
             </xsl:when>
             <xsl:when test="$richting = 'uitgaand'">
-                <xsl:sequence select="imf:create-comment(concat('mode-local-association Uitgaande relatie # ',@display-name))"/>
+                <xsl:sequence select="imf:create-debug-comment(concat('mode-local-association Uitgaande relatie # ',@display-name))"/>
                 
                 <xsl:variable name="heen-typeref" select="concat($prefix, ':', imvert:alias,if ($matchgegevens) then '-matchgegevens' else '-basis')"/>
                 
@@ -861,7 +840,7 @@
         
         <xsl:variable name="suffix" select="if ($matchgegevens) then '-matchgegevens' else '-basis'"/>
 
-        <xsl:sequence select="imf:create-comment(concat('mode-local-composition Association # ',@display-name))"/>
+        <xsl:sequence select="imf:create-debug-comment(concat('mode-local-composition Association # ',@display-name))"/>
         
         <xs:element
             name="{$compiled-name}" 
@@ -900,7 +879,7 @@
        
         <xsl:variable name="target-is-supertype-label" select="'-basis'"/>
         
-        <xsl:sequence select="imf:create-comment(concat('mode-global-association-type Outgoing Association declaration # ',@display-name))"/>
+        <xsl:sequence select="imf:create-debug-comment(concat('mode-global-association-type Outgoing Association declaration # ',@display-name))"/>
     
         <xsl:variable name="associatie-naam" select="imvert:alias"/>
         
@@ -915,10 +894,10 @@
                 
                 <!-- add the attributes & associations of the association class, if any -->
                 
-                <xsl:sequence select="imf:create-comment('mode-global-association-type (Attributes)')"/>
+                <xsl:sequence select="imf:create-debug-comment('mode-global-association-type (Attributes)')"/>
                 <xsl:apply-templates select="$association-class-attributes" mode="mode-local-attribute"/>
                 
-                <xsl:sequence select="imf:create-comment('mode-global-association-type (Compositie relaties)')"/>
+                <xsl:sequence select="imf:create-debug-comment('mode-global-association-type (Compositie relaties)')"/>
                 <xsl:apply-templates select="$association-class-compositions" mode="mode-local-composition">
                     <xsl:sort select="imvert:name"/>
                 </xsl:apply-templates>
@@ -971,7 +950,7 @@
         </xs:complexType>
         
         <xsl:variable name="target-is-supertype-label" select="'-matchgegevens'"/>
-        <xsl:sequence select="imf:create-comment(concat('mode-global-association-type Outgoing Association matchgegevens # ',@display-name))"/>
+        <xsl:sequence select="imf:create-debug-comment(concat('mode-global-association-type Outgoing Association matchgegevens # ',@display-name))"/>
         <xs:complexType name="{$associatie-naam}-matchgegevens">
             <xs:annotation>
                 <xs:documentation>Matchgegevens van de relatie.</xs:documentation>
@@ -1027,7 +1006,7 @@
                 <!-- gedefinieerd in onderlaag -->
             </xsl:when>
             <xsl:when test="exists(imvert:type-name)">
-                <xsl:sequence select="imf:create-comment(concat('mode-global-attribute-simpletype Attribuut type (simple) # ',@display-name))"/>
+                <xsl:sequence select="imf:create-debug-comment(concat('mode-global-attribute-simpletype Attribuut type (simple) # ',@display-name))"/>
                 <xs:complexType name="{$name}-e" imvert-checksum="{$checksum-string}">
                     <xs:simpleContent>
                         <xs:extension base="{$prefix}:{$name}" imvert-checksum="{$checksum-string}">
@@ -1107,12 +1086,12 @@
       
         <xsl:variable name="type-is-external" select="exists(imvert:conceptual-schema-type)"/>
         
-        <xsl:sequence select="imf:create-comment(concat('mode-global-attribute-niet-simpletype Attribuut type (not simple) # ',@display-name))"/>
+        <xsl:sequence select="imf:create-debug-comment(concat('mode-global-attribute-niet-simpletype Attribuut type (not simple) # ',@display-name))"/>
         
         <xsl:choose>
             <xsl:when test="$type-is-complextype"><!-- DONE removed: Complex datatype niet goed geïmplementeerd -->
                 <!--xx
-                <xsl:sequence select="imf:create-comment('Type is complex datatype')"/>
+                <xsl:sequence select="imf:create-debug-comment('Type is complex datatype')"/>
                 <xs:complexType name="{imf:capitalize($compiled-name)}">
                     <xs:complexContent>
                         <xs:extension base="{concat($prefix,':',imf:capitalize($compiled-type-name))}"/>
@@ -1123,7 +1102,7 @@
             <xsl:when test="$type-is-referentietabel">
                 <!-- skip! je verwijst niet naar referentietabellen maar altijd naar de key daarvan.
                     
-                <xsl:sequence select="imf:create-comment('Type is referentie tabel')"/>
+                <xsl:sequence select="imf:create-debug-comment('Type is referentie tabel')"/>
                 <xs:complexType name="{imf:capitalize($compiled-name)}">
                     <xs:complexContent>
                         <xs:extension base="{concat($prefix,':',imf:capitalize($compiled-type-name),'-basis')}"/>
@@ -1133,7 +1112,7 @@
             </xsl:when>
             <!--xx
             <xsl:when test="$type-is-enumeration">
-                <xsl:sequence select="imf:create-comment('Type is enumeration')"/>
+                <xsl:sequence select="imf:create-debug-comment('Type is enumeration')"/>
                 <xs:complexType name="{imf:capitalize($compiled-name)}-e">
                     <xs:simpleContent>
                         <xs:extension base="{concat($prefix,':',imf:capitalize($compiled-type-name))}"/>
@@ -1146,7 +1125,7 @@
             </xsl:when>
             <xsl:when test="$type-is-union">
                 <!--xx
-                <xsl:sequence select="imf:create-comment('Type is union')"/>
+                <xsl:sequence select="imf:create-debug-comment('Type is union')"/>
                 <xs:complexType name="{imf:capitalize($compiled-name)}-e">
                     <xs:complexContent>
                         <xs:extension base="{$prefix}:{imf:capitalize($compiled-name)}">
@@ -1162,7 +1141,7 @@
             xx-->
             </xsl:when>
             <xsl:when test="$type-is-external">
-                <xsl:sequence select="imf:create-comment('Type is external')"/>
+                <xsl:sequence select="imf:create-debug-comment('Type is external')"/>
                 <xs:complexType name="{imf:capitalize(imvert:baretype)}-e">
                     <xs:complexContent>
                         <xs:extension base="{imf:get-external-type-name(.,true())}">
@@ -1172,7 +1151,7 @@
                 </xs:complexType>
             </xsl:when>
             <xsl:when test="$type-is-interface">
-                <xsl:sequence select="imf:create-comment('Type is interface')"/>
+                <xsl:sequence select="imf:create-debug-comment('Type is interface')"/>
                 <xs:complexType name="{imf:capitalize($compiled-name)}-e">
                     <xs:complexContent>
                         <xs:extension base="{$prefix}:{imf:capitalize($compiled-name)}">
@@ -1187,7 +1166,7 @@
                 </xs:complexType>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="imf:create-comment(concat('TODO Geen bekend type: ',string-join($type-stereo,';')))"/>
+                <xsl:sequence select="imf:create-debug-comment(concat('TODO Geen bekend type: ',string-join($type-stereo,';')))"/>
             </xsl:otherwise>
         </xsl:choose>
         
@@ -1200,7 +1179,7 @@
         
         <xsl:choose>
             <xsl:when test="exists($stuf-scalar)">
-                <xsl:sequence select="imf:create-comment(concat('mode-global-attribute-referentie-element Referentie element 1 # ',imvert:name/@original))"/>
+                <xsl:sequence select="imf:create-debug-comment(concat('mode-global-attribute-referentie-element Referentie element 1 # ',imvert:name/@original))"/>
        
                 <xs:simpleType name="{concat(imf:capitalize($compiled-name),'-e')}"> 
                     <xs:restriction base="{$stuf-scalar}"/>
@@ -1208,7 +1187,7 @@
                 
             </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="imf:create-comment(concat('mode-global-attribute-referentie-element Referentie element 2 # ',imvert:name/@original))"/>
+                <xsl:sequence select="imf:create-debug-comment(concat('mode-global-attribute-referentie-element Referentie element 2 # ',imvert:name/@original))"/>
                 
                 <xs:complexType name="{concat(imf:capitalize($compiled-name),'-e')}">
                     <xs:simpleContent>
@@ -1532,13 +1511,6 @@
     
     </xsl:function>
     
-    <xsl:function name="imf:create-comment" as="comment()?">
-        <xsl:param name="text"/>
-        <xsl:if test="$debugging">
-            <xsl:comment select="$text"/>
-        </xsl:if>
-    </xsl:function>
-    
     <xsl:function name="imf:create-facet" as="element()?">
         <xsl:param name="elementname"/>
         <xsl:param name="content"/>
@@ -1616,13 +1588,13 @@
         </xsl:choose>
     </xsl:function>
     
-    <xsl:function name="imf:create-subset-class-marker" as="element(marker)?">
+    <xsl:function name="imf:create-subset-class-marker" as="node()*">
         <xsl:param name="construct"/>
         <xsl:param name="xsd-construct"/>
      
-        <xsl:variable name="marker-info" select="imf:get-subset-class-info(.)"/>
+        <xsl:variable name="marker-info" select="imf:get-subset-class-info($construct)"/>
         <xsl:choose>
-            <xsl:when test="$marker-info">
+            <xsl:when test="exists($marker-info)">
                 <subset-class-marker>
                     <xsl:copy-of select="$marker-info/@*"/>
                     <xsl:sequence select="$xsd-construct"/>
@@ -1658,6 +1630,8 @@
                 <xsl:variable name="client-label" select="imf:get-most-relevant-compiled-taggedvalue($construct,'##CFG-TV-SUBSETLABEL')"/>
                 <xsl:variable name="supplier-label" select="$supplier-constructs-same-metamodel/imvert:alias"/>
                 
+                <xsl:variable name="supplier-prefix" select="imf:get-taggedvalue($supplier-constructs[1]/ancestor::imvert:packages[last()],'##CFG-TV-VERKORTEALIAS')"/>
+                
                 <xsl:sequence select="imf:report-error($construct, 
                     $supplier-constructs-same-metamodel[2], 
                     'Multiple potential subset constructs found: [1]',imf:string-group($supplier-constructs-same-metamodel/imvert:name))"/>
@@ -1671,7 +1645,12 @@
                     'Tagged value [1] for this subset not specified',imf:get-config-name-by-id('CFG-TV-SUBSETLABEL'))"/>
                
                 <!-- return that alias -->
-                <subset-class-info is-subset="{$is-subset}" client-label="{$client-label}" supplier-label="{$supplier-label}" supplier-prefix="{$prefix}"/>
+                <subset-class-info 
+                    is-subset="{$is-subset}" 
+                    client-label="{$client-label}" 
+                    supplier-label="{$supplier-label}" 
+                    client-prefix="{$prefix}" 
+                    supplier-prefix="{$supplier-prefix}"/>
             
             </xsl:when>
             <xsl:otherwise>
@@ -1679,13 +1658,6 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
-    
-    <xsl:function name="imf:extract-main-metamodel" as="xs:string">
-        <xsl:param name="class"/>
-        <xsl:variable name="mm-tokens" select="tokenize($class/ancestor-or-self::imvert:packages[last()]/imvert:metamodel,';')"/>
-        <xsl:value-of select="$mm-tokens[1]"/>
-    </xsl:function>
-    
     
     <!-- ====================xsd test ================== -->
    
@@ -1718,119 +1690,7 @@
             <xsl:value-of select="substring-after(current-grouping-key(),':')"/>
         </xsl:for-each-group>
     </xsl:function>
-    
-    <!-- =================== select ent =================== -->
-
-    <xsl:template match="xs:schema" mode="xsd-ent">
-        <xsl:copy>
-            <xsl:copy-of select="@*"/>
-            <xs:include schemaLocation="{$schemafile-dat-name}"/>
-            <xsl:apply-templates select=".//*:ent-part/node()" mode="resolve-checksums"/>
-        </xsl:copy>
-    </xsl:template>
-    
-    <xsl:template match="xs:schema" mode="xsd-dat">
-        <xsl:copy>
-            <xsl:copy-of select="@*"/>
-            <xsl:apply-templates select=".//*:dat-part/node()" mode="resolve-checksums"/>
-        </xsl:copy>
-    </xsl:template>
-    
-    <!-- ============== resolve markers ================= -->
-    
-    <xsl:template match="xs:complexType[imf:boolean(parent::marker/@is-subset)]" mode="xsd-markers">
-        <xsl:variable name="supplier-prefix" select="../@supplier-prefix"/>
-        <xsl:variable name="supplier-label" select="../@supplier-label"/>
-        <xsl:variable name="client-label" select="../@client-label"/>
-        <xsl:sequence select="imf:create-comment(concat('Resolve markers: ', $supplier-prefix,' ', $supplier-label, ' ', $client-label))"/>
-        <xs:complexType name="{concat($supplier-label,'-',$client-label)}">
-            <xs:complexContent>
-                <xs:restriction base="{$supplier-prefix}:{$supplier-label}">
-                    <xsl:apply-templates mode="#current"/>
-                </xs:restriction>
-            </xs:complexContent>
-        </xs:complexType>
-    </xsl:template>
-    
-    <xsl:template match="marker" mode="xsd-markers">
-        <xsl:apply-templates mode="#current"/>
-    </xsl:template>
-    
-    <xsl:template match="node()|@*" mode="xsd-markers">
-        <xsl:copy>
-            <xsl:apply-templates select="node()|@*" mode="#current"/>
-        </xsl:copy>
-    </xsl:template>
-    
-    <!-- ============== resolve checksums ============== -->
-    
-    <xsl:template match="*[exists(@imvert-checksum)]" mode="resolve-checksums">
-        <xsl:variable name="checksum" select="@imvert-checksum"/>
-        <xsl:variable name="tokens" select="tokenize($checksum,'\[SEP\]')"/>
-        <xsl:choose>
-            <xsl:when test="self::xs:element">
-                <xsl:sequence select="imf:create-comment(concat('Resolve checksum on element - ', $checksum))"/>
-                <xsl:sequence select="imf:create-comment(concat('Element type is ', @type))"/>
-                <xsl:variable name="prefix" select="tokenize(@type,':')[1]"/>
-                <xs:element type="{$prefix}:{$tokens[1]}-e">
-                    <xsl:apply-templates select="@name | @minOccurs | @maxOccurs | @metadata:* | @nillable" mode="#current"/>
-                    <xsl:apply-templates select="node()" mode="#current"/>
-                </xs:element>
-            </xsl:when>
-            <xsl:when test="self::xs:extension">
-                <xsl:variable name="prefix" select="tokenize(@base,':')[1]"/>
-                <xsl:sequence select="imf:create-comment(concat('Resolve checksum on extension - ', $checksum))"/>
-                <xsl:sequence select="imf:create-comment(concat('Extension base is ', @base))"/>
-                <xs:extension base="{$prefix}:{$tokens[1]}">
-                    <xsl:apply-templates mode="#current"/>
-                </xs:extension>
-            </xsl:when>
-            <xsl:when test="self::xs:complexType and count(preceding::xs:complexType[@imvert-checksum = $checksum]) = 0">
-                <xsl:sequence select="imf:create-comment(concat('Resolve checksum on complextype - ', $checksum))"/>
-                <xsl:sequence select="imf:create-comment(concat('Type name is ', @name))"/>
-                <xs:complexType name="{$tokens[1]}-e">
-                    <xsl:apply-templates mode="#current"/>
-                </xs:complexType>
-            </xsl:when>
-            <xsl:when test="self::xs:simpleType and count(preceding::xs:simpleType[@imvert-checksum = $checksum]) = 0">
-                <xsl:sequence select="imf:create-comment(concat('Resolve checksum on simpletype - ', $checksum))"/>
-                <xsl:sequence select="imf:create-comment(concat('Type name is ', @name))"/>
-                <xs:simpleType name="{$tokens[1]}">
-                    <xsl:apply-templates mode="#current"/>
-                </xs:simpleType>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:sequence select="imf:create-comment(concat('Resolve checksum, removed duplicate - ', $checksum))"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-    
-    <xsl:template match="node()" mode="resolve-checksums">
-        <xsl:copy>
-            <xsl:apply-templates select="@*" mode="#current"/>
-            <xsl:apply-templates select="node()" mode="#current"/>
-        </xsl:copy>
-    </xsl:template>
-    
-    <xsl:template match="@*" mode="resolve-checksums">
-        <xsl:copy/>
-    </xsl:template>
-    
-    <!-- =================== cleanup =================== -->
-   
-    <xsl:template match="*" mode="xsd-cleanup">
-        <xsl:copy>
-            <xsl:copy-of select="@*"/>
-            <xsl:apply-templates mode="#current"/>
-        </xsl:copy>
-    </xsl:template>
-    
-    <xsl:template match="comment()" mode="xsd-cleanup">
-        <xsl:if test="$allow-comments-in-schema">
-            <xsl:sequence select="."/>
-        </xsl:if>
-    </xsl:template>
-    
+       
     <xsl:template match="imvert:dummy"/>
     
 </xsl:stylesheet>
