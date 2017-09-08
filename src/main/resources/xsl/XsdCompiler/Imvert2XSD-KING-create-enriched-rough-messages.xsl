@@ -297,6 +297,9 @@
 		
 		<ep:verkorteAliasGerelateerdeEntiteit>
 			<xsl:choose>
+				<xsl:when test=". != ''">
+					<xsl:value-of select="."/>
+				</xsl:when>
 				<xsl:when test="..//ep:verkorteAlias = $prefix">
 					<xsl:value-of select="$prefix"/>
 				</xsl:when>

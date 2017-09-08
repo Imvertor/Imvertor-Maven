@@ -302,7 +302,9 @@
                 </xsl:for-each>
             </ep:prefixes>
         </xsl:variable>
+        <xsl:variable name="tech-name" select="ep:tech-name"/>
         <xsl:choose>
+            <xsl:when test="preceding-sibling::ep:construct[ep:tech-name = $tech-name]"/>
             <xsl:when test="@ismetadata">
                 <xsl:copy-of select="."/>
             </xsl:when>
@@ -401,11 +403,13 @@
                         </xsl:attribute>
                         <xsl:attribute name="version" select="$uniquePrefixes//ep:prefix[. = $prefix]/@version"/>
                         <xsl:attribute name="namespaceId" select="@namespaceId"/>
-                        <ep:superconstructRef>
-                            <xsl:attribute name="prefix" select="$uniquePrefixes//ep:prefix[xs:integer(@level) = 3]"/>
-                            <xsl:sequence select="imf:create-output-element('ep:name', ep:name)"/>
-                            <xsl:sequence select="imf:create-output-element('ep:tech-name', ep:tech-name)"/>
-                        </ep:superconstructRef>
+                        <xsl:if test="$prefix != $uniquePrefixes//ep:prefix[xs:integer(@level) = 3]">
+                            <ep:superconstructRef>
+                                <xsl:attribute name="prefix" select="$uniquePrefixes//ep:prefix[xs:integer(@level) = 3]"/>
+                                <xsl:sequence select="imf:create-output-element('ep:name', ep:name)"/>
+                                <xsl:sequence select="imf:create-output-element('ep:tech-name', ep:tech-name)"/>
+                            </ep:superconstructRef>
+                        </xsl:if>
                         <xsl:choose>
                             <xsl:when test="@orderingDesired = 'no' or ancestor::ep:seq[@orderingDesired = 'no']">
                                 <xsl:apply-templates select="*">
@@ -439,7 +443,7 @@
                     <xsl:variable name="currentVersion" select="@version"/>
                     <xsl:sequence select="imf:create-debug-comment(concat('process uniquePrefix: ',$currentPrefix),$debugging)"/>
                     <!-- The construct element within the namespace related to the current prefix must only be created if there are descendant construct elements 
-                         which belong to the that namespace. -->
+                         which belong to that namespace. -->
                     <xsl:if test="$construct//ep:construct[@prefix = $currentPrefix and not(@ismetadata = 'yes')]">
                         <xsl:element name="{name($construct)}">
                             <xsl:apply-templates select="$construct/@*[local-name()!='prefix' and local-name()!='namespaceId']"/>
@@ -451,8 +455,8 @@
                             <xsl:if test="$uniquePrefixes//ep:prefix[@level = $currentPrefixLevel + 1]">
                                 <ep:superconstructRef>
                                     <xsl:attribute name="prefix" select="$uniquePrefixes//ep:prefix[xs:integer(@level) = $currentPrefixLevel + 1]"/>
-                                    <xsl:sequence select="imf:create-output-element('ep:name', ep:name)"/>
-                                    <xsl:sequence select="imf:create-output-element('ep:tech-name', ep:tech-name)"/>
+                                    <xsl:sequence select="imf:create-output-element('ep:name', $construct/ep:name)"/>
+                                    <xsl:sequence select="imf:create-output-element('ep:tech-name', $construct/ep:tech-name)"/>
                                 </ep:superconstructRef>
                             </xsl:if>
                             <xsl:if test="$debugging">
@@ -493,6 +497,22 @@
             <xsl:when test="ep:seq/* | ep:choice/*">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 2013',$debugging)"/>
                 <xsl:sequence select="imf:create-debug-track('Debuglocation 2013',$debugging)"/>
+                
+                <xsl:variable name="currentConstruct"><xsl:copy-of select="."/></xsl:variable>
+                <xsl:variable name="lowestLevelPrefixOfPresentConstructs">
+                    <ep:prefixes>
+                        <xsl:for-each select="$suppliers//supplier">
+                            <xsl:if test="count($currentConstruct//ep:construct/@prefix = current()/@verkorteAlias) > 0">
+                                <ep:prefix level="{@level}" prefix="{@verkorteAlias}"/>
+                            </xsl:if>
+                        </xsl:for-each>
+                    </ep:prefixes>
+                </xsl:variable>
+                <xsl:variable name="evaluatedPrefix" select="$lowestLevelPrefixOfPresentConstructs//ep:prefix[last]/@prefix"/>
+                <!--xsl:result-document href="file:/c:/temp/currentConstruct.xml">
+                    <xsl:sequence select="$currentConstruct"/>
+                </xsl:result-document-->
+                <xsl:sequence select="imf:create-debug-comment(concat('evaluatedPrefix: ',$evaluatedPrefix),$debugging)"/>
                 
                 <xsl:element name="{name(.)}">
                     <xsl:apply-templates select="@*[local-name()!='prefix' and local-name()!='namespaceId']"/>
@@ -690,6 +710,28 @@
         <xsl:sequence
             select="imf:create-output-element(name(.), .)"/>	
     </xsl:template>
+    
+    <xsl:template match="ep:suppliers">
+        <xsl:variable name="suppliers">
+            <xsl:copy-of select="."/>
+        </xsl:variable>
+        <xsl:sequence select="$suppliers"/>
+        <!--xsl:copy>
+            <xsl:apply-templates select="ep:suppliers"/>
+        </xsl:copy-->	
+    </xsl:template>
+    
+    <!--xsl:template match="ep:suppliers">
+        <xsl:copy>
+            <xsl:apply-templates select="supplier"/>
+        </xsl:copy>	
+    </xsl:template>
+    
+    <xsl:template match="supplier">
+        <xsl:copy>
+            <xsl:apply-templates select="@*"/>
+        </xsl:copy>	
+    </xsl:template-->
     
     <xsl:template match="ep:namespaces">
         <xsl:param name="actualPrefix"/>

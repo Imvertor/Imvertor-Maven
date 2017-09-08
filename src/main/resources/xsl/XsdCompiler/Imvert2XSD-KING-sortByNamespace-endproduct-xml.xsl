@@ -261,15 +261,16 @@
         <xsl:variable name="type-name" select="."/>
         <xsl:choose>
             <xsl:when test="contains($type-name,':')">
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 3013a',$debugging)"/>
                 <xsl:copy-of select="."/>
             </xsl:when>
             <xsl:when test="../@prefix = $StUF-prefix">
-                <xsl:sequence select="imf:create-debug-comment('Debuglocation 3012a',$debugging)"/>             
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 3012b',$debugging)"/>             
                 <ep:type-name><xsl:value-of select="concat($StUF-prefix,':',.)"/></ep:type-name>
                 <!--xsl:copy-of select="."/-->
             </xsl:when>
             <xsl:when test="/ep:message-set/ep:construct[ep:tech-name = $type-name and not(@level)]">
-                <xsl:sequence select="imf:create-debug-comment('Debuglocation 3012b',$debugging)"/>             
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 3012c',$debugging)"/>             
                 <ep:type-name><xsl:value-of select="concat(../@prefix,':',.)"/></ep:type-name>
                 <!--xsl:copy-of select="."/-->
             </xsl:when>
@@ -279,11 +280,34 @@
                 </xsl:variable>
                 <xsl:choose>
                     <xsl:when test="$lowestLevelPrefix = 'noConstruct'">
-                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 3012c',$debugging)"/>             
+                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 3012d',$debugging)"/>             
                         <xsl:copy-of select="."/>
                     </xsl:when>
                     <xsl:otherwise>
-                        <ep:type-name><xsl:value-of select="concat($lowestLevelPrefix,':',.)"/></ep:type-name>
+                        <xsl:variable name="ancestorPrefix" select="string(ancestor::ep:construct[parent::ep:message-set]/@prefix)"/>
+                        <xsl:variable name="suppliersParentConstruct" select="ancestor::ep:construct[parent::ep:message-set]/ep:suppliers"/>
+
+                        <xsl:sequence select="imf:create-debug-comment($ancestorPrefix,$debugging)"/>
+                        
+                        <!-- Following choose is necessary to prevent situations where a type-name refers to a namespace which is lower in the hierarchy. --> 
+                        <xsl:choose>
+                            <xsl:when test="ancestor::ep:message">
+                                <xsl:sequence select="imf:create-debug-comment('Debuglocation 3012e',$debugging)"/>
+                                <ep:type-name><xsl:value-of select="concat($lowestLevelPrefix,':',.)"/></ep:type-name>                                
+                            </xsl:when>
+                            <xsl:when test="$suppliersParentConstruct//supplier[@verkorteAlias = $lowestLevelPrefix]/@level > $suppliersParentConstruct//supplier[@verkorteAlias = $ancestorPrefix]/@level">
+                                <xsl:sequence select="imf:create-debug-comment('Debuglocation 3012f',$debugging)"/>
+                                <ep:type-name><xsl:value-of select="concat($lowestLevelPrefix,':',.)"/></ep:type-name>                                
+                            </xsl:when>
+                            <xsl:when test="$suppliersParentConstruct//supplier[@verkorteAlias = $lowestLevelPrefix]/@level = $suppliersParentConstruct//supplier[@verkorteAlias = $ancestorPrefix]/@level">
+                                <xsl:sequence select="imf:create-debug-comment('Debuglocation 3012g',$debugging)"/>
+                                <ep:type-name><xsl:value-of select="concat($lowestLevelPrefix,':',.)"/></ep:type-name>                                
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:sequence select="imf:create-debug-comment('Debuglocation 3012h',$debugging)"/>
+                                <ep:type-name><xsl:value-of select="concat($ancestorPrefix,':',.)"/></ep:type-name>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:otherwise>

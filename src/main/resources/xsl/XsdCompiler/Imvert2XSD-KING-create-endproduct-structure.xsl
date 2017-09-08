@@ -281,6 +281,18 @@
 		<xsl:sequence select="imf:create-debug-comment('Debuglocation 1005',$debugging)"/>
 
 		<xsl:variable name="id" select="imvert:id"/>
+		<xsl:variable name="berichtType">
+			<xsl:choose>
+				<xsl:when test="$berichtCode = 'La01' or $berichtCode = 'La02'">La0102</xsl:when>
+				<xsl:when test="$berichtCode = 'La03' or $berichtCode = 'La04'">La0304</xsl:when>
+				<xsl:when test="$berichtCode = 'La05' or $berichtCode = 'La06'">La0506</xsl:when>
+				<xsl:when test="$berichtCode = 'La07' or $berichtCode = 'La08'">La0708</xsl:when>
+				<xsl:when test="$berichtCode = 'La09' or $berichtCode = 'La10'">La0910</xsl:when>
+				<xsl:when test="contains($berichtCode,'Lv')">Lv</xsl:when>
+				<xsl:when test="contains($berichtCode,'Lk')">Lk</xsl:when>
+				<xsl:otherwise><xsl:value-of select="$berichtName"/></xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		
 			<xsl:choose>
 				<!-- The following when initiate the processing of the attributes belonging 
@@ -524,10 +536,10 @@
 
 								<xsl:choose>
 									<xsl:when test="not(empty($verwerkingsModusOfConstructRef)) and $verwerkingsModusOfConstructRef != ''">
-										<xsl:sequence select="imf:create-output-element('ep:type-name', imf:create-complexTypeName(ancestor::imvert:package/imvert:name,$berichtName,$verwerkingsModusOfConstructRef,$alias,$element))"/>							
+										<xsl:sequence select="imf:create-output-element('ep:type-name', imf:create-complexTypeName(ancestor::imvert:package/imvert:name,$berichtType,$verwerkingsModusOfConstructRef,$alias,$element))"/>							
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:sequence select="imf:create-output-element('ep:type-name', imf:create-complexTypeName(ancestor::imvert:package/imvert:name,$berichtName,(),$alias,$element))"/>							
+										<xsl:sequence select="imf:create-output-element('ep:type-name', imf:create-complexTypeName(ancestor::imvert:package/imvert:name,$berichtType,(),$alias,$element))"/>							
 									</xsl:otherwise>
 								</xsl:choose>
 							</ep:construct>
@@ -783,14 +795,29 @@
 				</xsl:when>
 			</xsl:choose>
 		</xsl:variable>
+		<xsl:variable name="berichtType">
+			<xsl:choose>
+				<xsl:when test="$berichtCode = 'La01' or $berichtCode = 'La02'">La0102</xsl:when>
+				<xsl:when test="$berichtCode = 'La03' or $berichtCode = 'La04'">La0304</xsl:when>
+				<xsl:when test="$berichtCode = 'La05' or $berichtCode = 'La06'">La0506</xsl:when>
+				<xsl:when test="$berichtCode = 'La07' or $berichtCode = 'La08'">La0708</xsl:when>
+				<xsl:when test="$berichtCode = 'La09' or $berichtCode = 'La10'">La0910</xsl:when>
+				<xsl:when test="contains($berichtCode,'Lv')">Lv</xsl:when>
+				<xsl:when test="contains($berichtCode,'Lk')">Lk</xsl:when>
+				<xsl:when test="(contains($berichtCode,'Di') or contains($berichtCode,'Du')) and $verwerkingsModusOfConstructRef = 'kennisgeving'">Lk</xsl:when>
+				<xsl:when test="(contains($berichtCode,'Di') or contains($berichtCode,'Du')) and $verwerkingsModusOfConstructRef = 'antwoord'">La</xsl:when>
+				<xsl:when test="(contains($berichtCode,'Di') or contains($berichtCode,'Du')) and $verwerkingsModusOfConstructRef = 'vraag'">Lv</xsl:when>
+				<xsl:otherwise><xsl:value-of select="$berichtName"/></xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:variable name="packageName" select="ancestor::imvert:package/imvert:name"/>
 		<xsl:variable name="href">
 			<xsl:choose>
 				<xsl:when test="not(empty($verwerkingsModusOfConstructRef) or $verwerkingsModusOfConstructRef = '')">
-					<xsl:value-of select="imf:create-complexTypeName($packageName,$berichtName,$verwerkingsModusOfConstructRef,$alias,$name)"/>					
+					<xsl:value-of select="imf:create-complexTypeName($packageName,$berichtType,$verwerkingsModusOfConstructRef,$alias,$name)"/>					
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="imf:create-complexTypeName($packageName,$berichtName,(),$alias,$name)"/>					
+					<xsl:value-of select="imf:create-complexTypeName($packageName,$berichtType,(),$alias,$name)"/>					
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -913,6 +940,18 @@
 
 		<xsl:sequence select="imf:create-debug-comment('Debuglocation 1019',$debugging)"/>
 		
+		<xsl:variable name="berichtType">
+			<xsl:choose>
+				<xsl:when test="$berichtCode = 'La01' or $berichtCode = 'La02'">La0102</xsl:when>
+				<xsl:when test="$berichtCode = 'La03' or $berichtCode = 'La04'">La0304</xsl:when>
+				<xsl:when test="$berichtCode = 'La05' or $berichtCode = 'La06'">La0506</xsl:when>
+				<xsl:when test="$berichtCode = 'La07' or $berichtCode = 'La08'">La0708</xsl:when>
+				<xsl:when test="$berichtCode = 'La09' or $berichtCode = 'La10'">La0910</xsl:when>
+				<xsl:when test="contains($berichtCode,'Lv')">Lv</xsl:when>
+				<xsl:when test="contains($berichtCode,'Lk')">Lk</xsl:when>
+				<xsl:otherwise><xsl:value-of select="$berichtName"/></xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:variable name="packageName" select="ancestor::imvert:package/imvert:name"/>
 		<xsl:variable name="name" select="imvert:name/@original"/>
 		<xsl:variable name="tech-name">
@@ -942,7 +981,7 @@
 		</xsl:variable>
 		<xsl:variable name="construct" select="imf:get-construct-by-id($type-id,$packages-doc)"/>
 		<xsl:variable name="elementName" select="$construct/imvert:name"/>
-		<xsl:variable name="href" select="imf:create-complexTypeName($packageName,$berichtName,(),(),$elementName)"/>
+		<xsl:variable name="href" select="imf:create-complexTypeName($packageName,$berichtType,(),(),$elementName)"/>
 		
 		<!-- Location: 'ep:constructRefxxx'
 								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructxxx'. -->
@@ -1007,6 +1046,15 @@
 				
 				<!-- Location: 'ep:constructRef7'
 								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct7'. -->
+				<xsl:variable name="berichtType">
+					<xsl:choose>
+						<xsl:when test="$berichtCode = 'La01' or $berichtCode = 'La02'">La0102</xsl:when>
+						<xsl:when test="$berichtCode = 'La03' or $berichtCode = 'La04'">La0304</xsl:when>
+						<xsl:when test="$berichtCode = 'La05' or $berichtCode = 'La06'">La0506</xsl:when>
+						<xsl:when test="$berichtCode = 'La07' or $berichtCode = 'La08'">La0708</xsl:when>
+						<xsl:when test="$berichtCode = 'La09' or $berichtCode = 'La10'">La0910</xsl:when>
+					</xsl:choose>
+				</xsl:variable>
 				
 				<ep:construct berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 					<xsl:sequence select="imf:create-output-element('ep:name', imvert:name)"/>
@@ -1014,19 +1062,23 @@
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', 1)"/>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', 0)"/>
 					<xsl:sequence select="imf:create-output-element('ep:position', 200)"/>
-					<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($packageName,$berichtName,'antwoord',(),'object')"/></xsl:variable>
-					<xsl:sequence
-						select="imf:create-output-element('ep:type-name', $type-name)"/>
+					<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($packageName,$berichtType,'antwoord',(),'object')"/></xsl:variable>
+					<!-- The prefix is added at a later stage because at this moment ti's not possible to determine the correct one. -->	
+					<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
 				</ep:construct>
 
 			</xsl:when>
 			<xsl:when test="contains($berichtCode, 'Lv')">
+				
+				<xsl:variable name="berichtType" select="'Lv'"/>
 				<xsl:choose>
 					<xsl:when test="$context = 'gelijk' or $context = 'vanaf' or $context = 'tot en met'">
 						<xsl:sequence select="imf:create-debug-comment('Debuglocation 1022',$debugging)"/>
 						
 						<!-- Location: 'ep:constructRefxxx'
 								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructxxx'. -->
+
+						<xsl:variable name="berichtType" select="'Lv'"/>
 						
 						<ep:construct context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 							<xsl:variable name="alias" select="key('class',$type-id)/imvert:alias"/>
@@ -1044,11 +1096,12 @@
 							</ep:position>
 							<xsl:choose>
 								<xsl:when test="not(empty($alias))">
-									<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($packageName,$berichtName,'vraag',$alias,$elementName)"/></xsl:variable>
+									<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($packageName,$berichtType,'vraag',$alias,$elementName)"/></xsl:variable>
+									<!-- The prefix is added at a later stage because at this moment ti's not possible to determine the correct one. -->	
 									<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
 								</xsl:when>
 								<xsl:otherwise>
-									<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($packageName,$berichtName,'vraag',(),$elementName)"/></xsl:variable>
+									<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($packageName,$berichtType,'vraag',(),$elementName)"/></xsl:variable>
 									<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
 								</xsl:otherwise>
 							</xsl:choose>
@@ -1067,7 +1120,8 @@
 							<xsl:sequence select="imf:create-output-element('ep:max-occurs', 1)"/>
 							<xsl:sequence select="imf:create-output-element('ep:min-occurs', 0)"/>
 							<xsl:sequence select="imf:create-output-element('ep:position', 225)"/>
-							<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($packageName,$berichtName,'scope',(),'object')"/></xsl:variable>
+							<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($packageName,$berichtType,'scope',(),'object')"/></xsl:variable>
+							<!-- The prefix is added at a later stage because at this moment ti's not possible to determine the correct one. -->	
 							<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
 						</ep:construct>
 
@@ -1084,7 +1138,8 @@
 							<xsl:sequence select="imf:create-output-element('ep:max-occurs', 1)"/>
 							<xsl:sequence select="imf:create-output-element('ep:min-occurs', 0)"/>
 							<xsl:sequence select="imf:create-output-element('ep:position', 250)"/>
-							<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($packageName,$berichtName,'scope',(),'object')"/></xsl:variable>
+							<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($packageName,$berichtType,'scope',(),'object')"/></xsl:variable>
+							<!-- The prefix is added at a later stage because at this moment ti's not possible to determine the correct one. -->	
 							<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
 						</ep:construct>
 
@@ -1094,6 +1149,8 @@
 			<xsl:when test="contains($berichtCode, 'Lk')">
 				<xsl:sequence select="imf:create-debug-comment('Debuglocation 1025',$debugging)"/>
 				
+				<xsl:variable name="berichtType" select="'Lk'"/>
+
 				<!-- Location: 'ep:constructRef1'
 								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct1'. -->
 				
@@ -1107,13 +1164,14 @@
 					<xsl:sequence select="imf:create-output-element('ep:position', 200)"/>
 					<xsl:variable name="associationName" select="imvert:name"/>
 					<xsl:variable name="verwerkingsModus" select="$currentMessage//ep:*[ep:id = $type-id and contains(ep:tech-name, $associationName)]/@verwerkingsModus"/>
+					<!-- The prefix is added at a later stage because at this moment ti's not possible to determine the correct one. -->	
 					<xsl:choose>
 						<xsl:when test="not(empty($alias))">
-							<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($packageName,$berichtName,$verwerkingsModus[1],$alias,$elementName)"/></xsl:variable>
+							<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($packageName,$berichtType,$verwerkingsModus[1],$alias,$elementName)"/></xsl:variable>
 							<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($packageName,$berichtName,'kennisgeving',(),$elementName)"/></xsl:variable>
+							<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($packageName,$berichtType,'kennisgeving',(),$elementName)"/></xsl:variable>
 							<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
 						</xsl:otherwise>
 					</xsl:choose>
@@ -1196,6 +1254,18 @@
 		
 		<xsl:sequence select="imf:create-debug-comment('Debuglocation 1030',$debugging)"/>
 
+		<xsl:variable name="berichtType">
+			<xsl:choose>
+				<xsl:when test="$berichtCode = 'La01' or $berichtCode = 'La02'">La0102</xsl:when>
+				<xsl:when test="$berichtCode = 'La03' or $berichtCode = 'La04'">La0304</xsl:when>
+				<xsl:when test="$berichtCode = 'La05' or $berichtCode = 'La06'">La0506</xsl:when>
+				<xsl:when test="$berichtCode = 'La07' or $berichtCode = 'La08'">La0708</xsl:when>
+				<xsl:when test="$berichtCode = 'La09' or $berichtCode = 'La10'">La0910</xsl:when>
+				<xsl:when test="contains($berichtCode,'Lv')">Lv</xsl:when>
+				<xsl:when test="contains($berichtCode,'Lk')">Lk</xsl:when>
+				<xsl:otherwise><xsl:value-of select="$berichtName"/></xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:variable name="name" select="imvert:name/@original"/>
 		<xsl:variable name="tech-name" select="imf:get-normalized-name(imvert:name, 'element-name')"/>
 		<xsl:variable name="type-name" select="imvert:type-name"/>
@@ -1336,7 +1406,7 @@
 						<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
 						<xsl:sequence select="imf:create-output-element('ep:position', $position)"/>
 						<xsl:sequence
-							select="imf:create-output-element('ep:type-name', imf:create-Grp-complexTypeName('',$berichtName,$type,$name,$verwerkingsModus))" />
+							select="imf:create-output-element('ep:type-name', imf:create-Grp-complexTypeName('',$berichtType,$type,$name,$verwerkingsModus))" />
 					</ep:construct>
 
 				</xsl:when>
@@ -1831,6 +1901,18 @@
 
 		<xsl:sequence select="imf:create-debug-comment('Debuglocation 1038',$debugging)"/>
 
+		<xsl:variable name="berichtType">
+			<xsl:choose>
+				<xsl:when test="$berichtCode = 'La01' or $berichtCode = 'La02'">La0102</xsl:when>
+				<xsl:when test="$berichtCode = 'La03' or $berichtCode = 'La04'">La0304</xsl:when>
+				<xsl:when test="$berichtCode = 'La05' or $berichtCode = 'La06'">La0506</xsl:when>
+				<xsl:when test="$berichtCode = 'La07' or $berichtCode = 'La08'">La0708</xsl:when>
+				<xsl:when test="$berichtCode = 'La09' or $berichtCode = 'La10'">La0910</xsl:when>
+				<xsl:when test="contains($berichtCode,'Lv')">Lv</xsl:when>
+				<xsl:when test="contains($berichtCode,'Lk')">Lk</xsl:when>
+				<xsl:otherwise><xsl:value-of select="$berichtName"/></xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:variable name="verwerkingsModusOfConstructRef">
 			<xsl:choose>
 				<xsl:when test="$currentMessage//ep:*[generate-id() = $generated-id]/ep:construct/ep:construct[ep:id = $type-id and @context = $context]">
@@ -1915,11 +1997,11 @@
 								<ep:position>1</ep:position>
 								<xsl:choose>
 									<xsl:when test="not(empty($verwerkingsModusOfConstructRef)) and $verwerkingsModusOfConstructRef != ''">
-										<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName(ancestor::imvert:package/imvert:name,$berichtName,$verwerkingsModusOfConstructRef,$mnemonic,$elementName)"/></xsl:variable>
+										<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName(ancestor::imvert:package/imvert:name,$berichtType,$verwerkingsModusOfConstructRef,$mnemonic,$elementName)"/></xsl:variable>
 										<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName(ancestor::imvert:package/imvert:name,$berichtName,(),$mnemonic,$elementName)"/></xsl:variable>
+										<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName(ancestor::imvert:package/imvert:name,$berichtType,(),$mnemonic,$elementName)"/></xsl:variable>
 										<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
 									</xsl:otherwise>
 								</xsl:choose>
@@ -2146,7 +2228,7 @@
 					<xsl:if test="contains($indicatieMaterieleHistorie,'Ja') and $generateHistorieConstruct!='MaterieleHistorie' and $generateHistorieConstruct!='FormeleHistorie' and $generateHistorieConstruct!='FormeleHistorieRelatie' and $verwerkingsModus = 'antwoord'">
 						<xsl:sequence select="imf:create-debug-comment('Debuglocation 1049',$debugging)"/>
 
-						<xsl:variable name="href" select="imf:create-complexTypeName($packageName,$berichtName,'HistorieMaterieel',$mnemonic,imvert:name)"/>						
+						<xsl:variable name="href" select="imf:create-complexTypeName($packageName,$berichtType,'HistorieMaterieel',$mnemonic,imvert:name)"/>						
 						
 						<!-- Location: 'ep:constructRef10a'
 				 			 Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct10'. -->			
@@ -2167,7 +2249,7 @@
 					<xsl:if test="contains($indicatieFormeleHistorie,'Ja') and $verwerkingsModus = 'antwoord'">
 						<xsl:sequence select="imf:create-debug-comment('Debuglocation 1050',$debugging)"/>
 
-						<xsl:variable name="href" select="imf:create-complexTypeName($packageName,$berichtName,'HistorieFormeel',$mnemonic,imvert:name)"/>						
+						<xsl:variable name="href" select="imf:create-complexTypeName($packageName,$berichtType,'HistorieFormeel',$mnemonic,imvert:name)"/>						
 						
 						<!-- Location: 'ep:constructRef10b'
 				 			 Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct10'. -->			
@@ -2188,7 +2270,7 @@
 					<xsl:if test="contains($indicatieFormeleHistorieRelatie,'Ja') and $generateHistorieConstruct!='MaterieleHistorie' and $generateHistorieConstruct!='FormeleHistorie' and $verwerkingsModus = 'antwoord'">
 						<xsl:sequence select="imf:create-debug-comment('Debuglocation 1051',$debugging)"/>
 
-						<xsl:variable name="href" select="imf:create-complexTypeName($packageName,$berichtName,'HistorieFormeelRelatie',$mnemonic,imvert:name)"/>						
+						<xsl:variable name="href" select="imf:create-complexTypeName($packageName,$berichtType,'HistorieFormeelRelatie',$mnemonic,imvert:name)"/>						
 						
 						<!-- Location: 'ep:constructRef10c'
 				 			 Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct10'. -->			
@@ -2317,7 +2399,7 @@
 								</xsl:when>
 								<xsl:otherwise/>
 							</xsl:choose>
-							<xsl:sequence select="imf:create-output-element('ep:type-name', imf:create-Grp-complexTypeName(ancestor::imvert:package/imvert:name,$berichtName,$type,$name,$historieType))"/>
+							<xsl:sequence select="imf:create-output-element('ep:type-name', imf:create-Grp-complexTypeName(ancestor::imvert:package/imvert:name,$berichtType,$type,$name,$historieType))"/>
 						</ep:construct>
 
 					</xsl:if>
@@ -2352,7 +2434,7 @@
 								</xsl:when>
 								<xsl:otherwise/>
 							</xsl:choose>
-							<xsl:sequence select="imf:create-output-element('ep:type-name', imf:create-Grp-complexTypeName(ancestor::imvert:package/imvert:name,$berichtName,$type,$name,$historieType))"/>
+							<xsl:sequence select="imf:create-output-element('ep:type-name', imf:create-Grp-complexTypeName(ancestor::imvert:package/imvert:name,$berichtType,$type,$name,$historieType))"/>
 						</ep:construct>
 
 					</xsl:if>
@@ -2512,7 +2594,7 @@
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056f',$debugging)"/>
 								<!--xsl:sequence select="imf:create-output-element('ep:type-name', 'Systeem')"/-->
 								<xsl:sequence
-									select="imf:create-output-element('ep:type-name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,'Systeem',$verwerkingsModus))" />
+									select="imf:create-output-element('ep:type-name', imf:create-Grp-complexTypeName($packageName,$berichtType,$type,'Systeem',$verwerkingsModus))" />
 							</xsl:when>
 							<xsl:when test="(imvert:name = 'entiteittype')">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056g',$debugging)"/>
@@ -2529,7 +2611,7 @@
 							</xsl:when>
 							<xsl:when test="$verwerkingsModusOfConstructRef != ''">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056d',$debugging)"/>
-								<xsl:variable name="type-name"><xsl:value-of select="imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name,$verwerkingsModusOfConstructRef)"/></xsl:variable>
+								<xsl:variable name="type-name"><xsl:value-of select="imf:create-Grp-complexTypeName($packageName,$berichtType,$type,$name,$verwerkingsModusOfConstructRef)"/></xsl:variable>
 								<xsl:choose>
 									<xsl:when test="$currentPrefix != $StUF-prefix">
 										<xsl:sequence select="imf:create-output-element('ep:type-name', concat($currentPrefix,':',$type-name))"/>										
@@ -2543,7 +2625,7 @@
 							
 							<xsl:when test="$verwerkingsModusOfConstructRef = ''">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056e',$debugging)"/>
-								<xsl:variable name="type-name"><xsl:value-of select="imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$name)"/></xsl:variable>
+								<xsl:variable name="type-name"><xsl:value-of select="imf:create-Grp-complexTypeName($packageName,$berichtType,$type,$name)"/></xsl:variable>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
 							</xsl:when>
 						</xsl:choose>
