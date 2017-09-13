@@ -40,30 +40,10 @@
         <xsl:copy-of select="."/>
     </xsl:variable>
     
-    <xsl:variable name="patch">
-        <xsl:apply-templates select="ep:message-set" mode="patch"/>        
-    </xsl:variable>
-
     <xsl:template match="/">      
         <ep:message-sets>
             <xsl:apply-templates select="ep:message-set"/>
         </ep:message-sets>
-    </xsl:template>
-    
-    <xsl:template match="ep:message-set" mode="patch">
-        <xsl:sequence select="imf:create-debug-comment('Debuglocation 3000',$debugging)"/>
-
-        <!--xsl:for-each-group select="/ep:message-set/ep:*[(name() = 'ep:message' or name() = 'ep:construct')]" group-by="@prefix">
-            <xsl:variable name="groupPrefix" select="current-grouping-key()"/-->
-            <xsl:sequence select="imf:create-debug-comment('Debuglocation 3001',$debugging)"/>
-            
-            <ep:constructRef prefix="{$kv-prefix}" ismetadata="yes">
-                <ep:name>patch</ep:name>
-                <ep:tech-name>patch</ep:tech-name>
-                <ep:min-occurs>1</ep:min-occurs>
-                <ep:href>patch</ep:href>
-            </ep:constructRef>
-        <!--/xsl:for-each-group-->            
     </xsl:template>
     
     <xsl:template match="ep:message-set">
@@ -132,14 +112,6 @@
                         <ep:name>entiteittype</ep:name>
                         <ep:tech-name>entiteittype</ep:tech-name>
                         <ep:data-type>scalar-string</ep:data-type>
-                    </ep:construct>
-                </xsl:if>
-                <xsl:if test="$groupPrefix = $kv-prefix">
-                    <ep:construct prefix="{$kv-prefix}" ismetadata="yes">
-                        <ep:name>patch</ep:name>
-                        <ep:tech-name>patch</ep:tech-name>
-                        <ep:type-name>StUF:Patchnummer</ep:type-name>
-                        <ep:min-value>0</ep:min-value>
                     </ep:construct>
                 </xsl:if>
             </ep:message-set>
@@ -249,12 +221,6 @@
                </xsl:copy>
            </xsl:when>
        </xsl:choose> 
-    </xsl:template>
-    
-    <xsl:template match="ep:constructRef[@prefix = 'StUF' and ep:tech-name = 'patch']">
-        <xsl:sequence select="imf:create-debug-comment('Debuglocation 3012',$debugging)"/>
-
-        <xsl:copy-of select="$patch"/>    
     </xsl:template>
     
     <xsl:template match="ep:type-name">
