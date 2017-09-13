@@ -248,7 +248,7 @@
         <xsl:variable name="this-package" select="."/>
         <xsl:variable name="root-release" select="imvert:release" as="xs:string?"/>
         <xsl:variable name="subpackage-releases" select="imvert:package/imvert:release[not(.=('99999999','00000000'))]" as="xs:string*"/>
-        <xsl:variable name="collections" select="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-collection')]"/>
+        <xsl:variable name="collections" select="imvert:package/imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-collection')]"/>
         <!--validation-->
 
         <xsl:sequence select="imf:report-error(., 

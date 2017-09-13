@@ -45,7 +45,6 @@
     <xsl:variable name="stylesheet-code">BESSUB</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
 
-    
     <xsl:template match="/schemas">
         <xsl:next-match/>
     </xsl:template>
@@ -56,16 +55,23 @@
     
     <!-- ============== resolve markers ================= -->
     
-    <xsl:template match="xs:complexType[exists(parent::subset-class-marker)]">
-        <xsl:variable name="supplier-prefix" select="../@supplier-prefix"/>
-        <xsl:variable name="supplier-label" select="../@supplier-label"/>
-        <xsl:variable name="client-prefix" select="../@client-prefix"/>
-        <xsl:variable name="client-label" select="../@client-label"/>
+    <xsl:template match="xs:complexType">
+        <xsl:variable name="is-subsetting" select="exists(../imvert:subset-info)"/>
+        <xsl:variable name="is-subset" select="imf:boolean(../imvert:subset-info/imvert:is-subset-class)"/>
+        <xsl:variable name="is-restriction" select="imf:boolean(../imvert:subset-info/imvert:is-restriction-class)"/>
+        <xsl:variable name="effective-name" select="../imvert:subset-info/imvert:effective-name"/>
+        
+        <xsl:variable name="supplier-prefix" select="../imvert:subset-info/imvert:supplier-prefix"/>
+        <xsl:variable name="supplier-label" select="../imvert:subset-info/imvert:supplier-label"/>
  
         <xsl:choose>
-            <xsl:when test="imf:boolean(parent::subset-class-marker/@is-subset)">
-                <xsl:sequence select="imf:create-debug-comment(concat('A Subset-class: client-prefix=', $client-prefix,' supplier-prefix=', $supplier-prefix, ' supplier-label=', $supplier-label, ' client-label=', $client-label))"/>
-                <xs:complexType name="{$supplier-label}-{$client-label}">
+            <xsl:when test="not($is-subsetting)">
+                <!-- het hele mechanisme van subsetting speelt niet want geen UGM dat teruggaat op UGM -->
+                <xsl:next-match/>
+            </xsl:when>
+            <xsl:when test="$is-restriction">
+                <xsl:sequence select="imf:create-debug-comment(concat('A subset + restriction class: ', @name))"/>
+                <xs:complexType name="{$effective-name}">
                     <xs:complexContent>
                         <xs:restriction base="{$supplier-prefix}:{$supplier-label}-basis">
                             <!-- om dat heten restrictie betreft moet alles worden omgezet naar de supplier namespace. -->
@@ -74,11 +80,13 @@
                     </xs:complexContent>
                 </xs:complexType>        
             </xsl:when>
+            <xsl:when test="$is-subset"> 
+                <xsl:sequence select="imf:create-debug-comment(concat('A subset class but not a restriction class, so remove: ', @name))"/>
+                <!-- remove this -->
+            </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="imf:create-debug-comment(concat('Not a Subset-class: client-prefix=', $client-prefix,' supplier-prefix=', $supplier-prefix, ' supplier-label=', $supplier-label, ' client-label=', $client-label))"/>
-                <xs:complexType name="{$supplier-label}-{$client-label}" type="{$supplier-prefix}:{$supplier-label}-basis">
-                    <xsl:apply-templates select="xs:annotation"/>
-                </xs:complexType>
+                <xsl:sequence select="imf:create-debug-comment(concat('Not a subset class: ', @name))"/>
+                <xsl:next-match/>
             </xsl:otherwise>
         </xsl:choose>
         
@@ -87,15 +95,18 @@
     <xsl:template match="subset-class-marker">
         <xsl:apply-templates/>
     </xsl:template>
+    <xsl:template match="imvert:subset-info">
+        <!-- skip -->
+    </xsl:template>
     
     <!-- vervang de prefix door de supplier prefix -->
     <xsl:template match="xs:element/@type" mode="subset-supplier">
-        <xsl:variable name="supplier-prefix" select="ancestor::subset-class-marker[last()]/@supplier-prefix"/>
+        <xsl:variable name="supplier-prefix" select="ancestor::subset-class-marker[last()]/imvert:subset-info/imvert:supplier-prefix"/>
         <xsl:variable name="type" select="substring-after(.,':')"/>
         <xsl:attribute name="type" select="concat($supplier-prefix,':',$type)"/>
     </xsl:template>
     <xsl:template match="xs:attribute/@ref" mode="subset-supplier">
-        <xsl:variable name="supplier-prefix" select="ancestor::subset-class-marker[last()]/@supplier-prefix"/>
+        <xsl:variable name="supplier-prefix" select="ancestor::subset-class-marker[last()]/imvert:subset-info/imvert:supplier-prefix"/>
         <xsl:variable name="type" select="substring-after(.,':')"/>
         <xsl:attribute name="ref" select="concat($supplier-prefix,':',$type)"/>
     </xsl:template>

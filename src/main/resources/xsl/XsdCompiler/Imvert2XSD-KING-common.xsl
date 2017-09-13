@@ -181,8 +181,8 @@
     </xsl:function>
     
     <xsl:function name="imf:extract-main-metamodel" as="xs:string">
-        <xsl:param name="class"/>
-        <xsl:variable name="mm-tokens" select="tokenize($class/ancestor-or-self::imvert:packages[last()]/imvert:metamodel,';')"/>
+        <xsl:param name="this"/>
+        <xsl:variable name="mm-tokens" select="tokenize($this/ancestor-or-self::imvert:packages[last()]/imvert:metamodel,';')"/>
         <xsl:value-of select="$mm-tokens[1]"/>
     </xsl:function>
     

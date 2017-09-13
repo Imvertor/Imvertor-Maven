@@ -286,7 +286,8 @@ public class XsdCompiler extends Step {
 		runner.debug(logger,"CHAIN","Generating UGM XML schemas to " + xsdApplicationFolder);
 		
 		//TODO let the stylesheet operate on system, not on model file. Try to determine if model file is required altogether.
-		valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_METAMODEL_KINGUGM_XSD_MAIN", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_MAIN_XSLPATH","system/work-config-path");
+		valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_METAMODEL_KINGUGM_XSD_PREFORM", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_PREFORM_XSLPATH","system/work-config-path");
+		valid = valid && transformer.transformStep("system/work-config-path","properties/RESULT_METAMODEL_KINGUGM_XSD_MAIN", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_MAIN_XSLPATH","system/work-config-path");
 		valid = valid && transformer.transformStep("system/work-config-path","properties/RESULT_METAMODEL_KINGUGM_XSD_SUBSET", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_SUBSET_XSLPATH","system/work-config-path");
 		valid = valid && transformer.transformStep("system/work-config-path","properties/RESULT_METAMODEL_KINGUGM_XSD_CLEANUP", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_CLEANUP_XSLPATH","system/work-config-path");
 		valid = valid && transformer.transformStep("system/work-config-path","properties/RESULT_METAMODEL_KINGUGM_XSD_ENTDAT", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_ENTDAT_XSLPATH","system/work-config-path");

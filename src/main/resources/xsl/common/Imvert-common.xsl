@@ -385,23 +385,27 @@
         <xsl:param name="client"/>
         <xsl:param name="supplier-id"/>
         <xsl:param name="document-roots" as="document-node()*"/>
-        <xsl:variable name="supplier-id-corrected">
-            <xsl:choose>
-                <xsl:when test="$client/self::imvert:class">
-                    <xsl:value-of select="$supplier-id"/> <!-- EAID_xxx becomes EAID_xxx -->
-                </xsl:when>
-                <xsl:when test="$client/self::imvert:attribute">
-                    <xsl:value-of select="$supplier-id"/>  <!-- {xxx} becomes {xxx} -->
-                </xsl:when>
-                <xsl:when test="$client/self::imvert:association and starts-with($supplier-id,'EAID_')">
-                    <xsl:value-of select="$supplier-id"/>  <!-- EAID_xxx becomes EAID_xxx ; already transformed in earlier stage -->
-                </xsl:when>
-                <xsl:when test="$client/self::imvert:association">
-                    <xsl:value-of select="concat('EAID_',replace(substring($supplier-id,2,string-length($supplier-id) - 2),'-','_'))"/> <!-- {xx-x} becomes EAID_xx_x -->
-                </xsl:when>
-            </xsl:choose>
-        </xsl:variable>
+        <xsl:variable name="supplier-id-corrected" select="imf:get-corrected-id($supplier-id,local-name($client))"/>
         <xsl:sequence select="imf:get-construct-by-id($supplier-id-corrected,$document-roots)"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-corrected-id">
+        <xsl:param name="id"/>
+        <xsl:param name="type"/>
+        <xsl:choose>
+            <xsl:when test="$type = 'class'">
+                <xsl:value-of select="$id"/> <!-- EAID_xxx becomes EAID_xxx -->
+            </xsl:when>
+            <xsl:when test="$type = 'attribute'">
+                <xsl:value-of select="$id"/>  <!-- {xxx} becomes {xxx} -->
+            </xsl:when>
+            <xsl:when test="$type = 'association' and starts-with($id,'EAID_')">
+                <xsl:value-of select="$id"/>  <!-- EAID_xxx becomes EAID_xxx ; already transformed in earlier stage -->
+            </xsl:when>
+            <xsl:when test="$type = 'association'">
+                <xsl:value-of select="concat('EAID_',replace(substring($id,2,string-length($id) - 2),'-','_'))"/> <!-- {xx-x} becomes EAID_xx_x -->
+            </xsl:when>
+        </xsl:choose>
     </xsl:function>
     
     <xsl:function name="imf:distinct-nodes" as="element()*">
@@ -1153,8 +1157,8 @@
        
         <xsl:if test="exists($all-derived-models-doc)">
             <xsl:for-each select="$this/imvert:trace">
-                <xsl:sequence select="imf:get-construct-by-id(.,$all-derived-models-doc)"/>
-                <xsl:sequence select="imf:get-supplier-constructs(.)"/>
+                <xsl:sequence select="imf:get-construct-by-id(imf:get-corrected-id(.,local-name($this)),$all-derived-models-doc)"/>
+                <!--x <xsl:sequence select="imf:get-supplier-constructs(.)"/> x-->
             </xsl:for-each>
         </xsl:if>
     </xsl:function>    
