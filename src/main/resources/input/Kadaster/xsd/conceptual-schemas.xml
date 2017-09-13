@@ -482,32 +482,32 @@
 
             <construct>
                 <name>NEN3610ID</name>
-                <xsd-type name="NEN3610ID"/>
+                <xsd-type name="NEN3610ID" asAttributeDesignation="complextype" asAttribute="NEN3610ID"/>
                 <managed-ids/>
             </construct>
             <construct>
                 <name>GeoObject</name>
-                <xsd-type name="GeoObject"/>
+                <xsd-type name="GeoObject" asAttributeDesignation="complextype" asAttribute="GeoObject"/>
                 <managed-ids/>
             </construct>
             <construct>
                 <name>Historie</name>
-                <xsd-type name="Historie"/>
+                <xsd-type name="Historie" asAttributeDesignation="complextype" asAttribute="Historie"/>
                 <managed-ids/>
             </construct>
             <construct>
                 <name>Levensduur</name>
-                <xsd-type name="Levensduur"/>
+                <xsd-type name="Levensduur" asAttributeDesignation="complextype" asAttribute="Levensduur"/>
                 <managed-ids/>
             </construct>
             <construct>
                 <name>RegistratiefGebied</name>
-                <xsd-type name="RegistratiefGebied"/>
+                <xsd-type name="RegistratiefGebied" asAttributeDesignation="complextype" asAttribute="RegistratiefGebied"/>
                 <managed-ids/>
             </construct>
             <construct>
                 <name>VoidReasonValue</name>
-                <xsd-type name="VoidReasonValue"/>
+                <xsd-type name="VoidReasonValue" asAttributeDesignation="complextype" asAttribute="VoidReasonValue"/>
                 <managed-ids/>
             </construct>
 
