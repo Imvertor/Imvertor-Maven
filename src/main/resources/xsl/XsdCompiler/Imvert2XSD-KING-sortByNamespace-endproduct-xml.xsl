@@ -182,7 +182,7 @@
                <xsl:variable name="tech-nameReferingConstruct" select="$construct//ep:construct[not(ancestor::ep:seq)]/ep:tech-name"/>
                
                <xsl:choose>
-                   <xsl:when test="count(//ep:constructRef[@prefix = $prefixReferingConstruct and ep:tech-name = $tech-nameReferingConstruct]) > 0">
+                   <xsl:when test="count(//ep:construct[@prefix = $prefixReferingConstruct and ep:tech-name = $tech-nameReferingConstruct]) > 0">
                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 3009',$debugging)"/>
                        <xsl:copy>
                            <xsl:apply-templates select="*|@*[local-name()!='namespaceId' and 

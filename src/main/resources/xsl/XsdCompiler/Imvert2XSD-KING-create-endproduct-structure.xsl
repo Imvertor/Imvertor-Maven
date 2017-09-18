@@ -1267,6 +1267,7 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="name" select="imvert:name/@original"/>
+		<xsl:variable name="baretype" select="imvert:baretype"/>
 		<xsl:variable name="tech-name" select="imf:get-normalized-name(imvert:name, 'element-name')"/>
 		<xsl:variable name="type-name" select="imvert:type-name"/>
 		<xsl:variable name="type-modifier" select="imvert:type-modifier"/>
@@ -1579,89 +1580,133 @@
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034a',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',concat(imf:capitalize(imvert:baretype),$vraagIndicatie,'-e')))"/>
 							</xsl:when>
-							<xsl:when test="$name = 'melding' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
+							<xsl:when test="$name = 'melding' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034b',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
 							</xsl:when>
-							<xsl:when test="$name = 'berichtcode' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
+							<!--l:when test="$baretype = 'Berichtcode' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="$baretype = 'Berichtcode' and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034c',$debugging)"/>
-								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name),$berichtCode))"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$baretype,$berichtCode))"/>
 							</xsl:when>
-							<xsl:when test="($name = 'organisatie' or $name = 'applicatie' or $name = 'administratie' or $name = 'gebruiker') and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
+							<!--xsl:when test="($baretype = 'Organisatie' or $baretype = 'Applicatie' or $baretype = 'Administratie' or $baretype = 'Gebruiker') and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="($baretype = 'Organisatie' or $baretype = 'Applicatie' or $baretype = 'Administratie' or $baretype = 'Gebruiker') and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034d',$debugging)"/>
-								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$baretype))"/>
 							</xsl:when>
-							<xsl:when test="($name = 'referentienummer' or $name = 'crossRefnummer') and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
+							<!--xsl:when test="($baretype = 'Refnummer' or $name = 'crossRefnummer') and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="($baretype = 'Refnummer' or $name = 'crossRefnummer') and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034e',$debugging)"/>
-								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':','Refnummer'))"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$baretype))"/>
 							</xsl:when>
-							<xsl:when test="$name = 'functie' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
+							<!--xsl:when test="$baretype = 'Functie' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="$baretype = 'Functie' and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034f',$debugging)"/>
-								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':','Functie'))"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$baretype))"/>
 							</xsl:when>
-							<xsl:when test="$name = 'tijdstipBericht' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
+							<!--xsl:when test="$name = 'tijdstipBericht' and $baretype = 'Tijdstip' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="$name = 'tijdstipBericht' and $baretype = 'Tijdstip' and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034g',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':','dateTime'))"/>
 							</xsl:when>
 							<!-- ROME: Volgende when zorgt er voor dat het element 'entiteitType' verwijst naar de complexType 'EntiteittypeStuurgegevens'.
 									   Dat complexType moet echter eigenlijk dynamisch opgebouwd worden zodat het element 'type' daarin specifiek op het bericht
 									   gemaakt kan worden. -->
-							<xsl:when test="$name = 'entiteitType' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
+							<!--xsl:when test="$baretype = 'EntiteitType' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<!--xsl:when test="$name = 'entiteittype' and $baretype = 'EntiteitType' and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034h',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':','EntiteittypeStuurgegevens'))"/>
-							</xsl:when>
-							<xsl:when test="$name = 'sortering' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
+							</xsl:when-->
+							<!--xsl:when test="$baretype = 'Sortering' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="$baretype = 'Sortering' and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034i',$debugging)"/>
-								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$baretype))"/>
 							</xsl:when>
-							<xsl:when test="$name = 'indicatorVervolgvraag' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
+							<!--xsl:when test="$name = 'indicatorVervolgvraag' and $baretype = 'INDIC' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="$name = 'indicatorVervolgvraag' and $baretype = 'INDIC' and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034j',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-boolean')"/>
 							</xsl:when>
-							<xsl:when test="$name = 'maximumAantal' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
+							<!--xsl:when test="$baretype = 'MaximumAantal' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="$baretype = 'MaximumAantal' and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034k',$debugging)"/>
-								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$baretype))"/>
 							</xsl:when>
-							<xsl:when test="$name = 'indicatorAfnemerIndicatie' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
+							<!--xsl:when test="$name = 'indicatorAfnemerIndicatie' and $baretype = 'INDIC' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="$name = 'indicatorAfnemerIndicatie' and $baretype = 'INDIC' and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034l',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-boolean')"/>
 							</xsl:when>
-							<xsl:when test="$name = 'peiltijdstipMaterieel' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
+							<!--xsl:when test="$name = 'peiltijdstipMaterieel' and $baretype = 'Tijdstip' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="$name = 'peiltijdstipMaterieel' and $baretype = 'Tijdstip' and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034m',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-dateTime')"/>
 							</xsl:when>
-							<xsl:when test="$name = 'peiltijdstipFormeel' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
+							<!--xsl:when test="$name = 'peiltijdstipFormeel' and $baretype = 'Tijdstip' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="$name = 'peiltijdstipFormeel' and $baretype = 'Tijdstip' and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034n',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-dateTime')"/>
 							</xsl:when>
-							<xsl:when test="$name = 'indicatorAantal' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
+							<!--xsl:when test="$name = 'indicatorAantal' and $baretype = 'INDIC' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="$name = 'indicatorAantal' and $baretype = 'INDIC' and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034o',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-boolean')"/>
 							</xsl:when>
-							<xsl:when test="$name = 'indicatorHistorie' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
+							<!--xsl:when test="$baretype = 'IndicatorHistorie' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="$baretype = 'IndicatorHistorie' and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034p',$debugging)"/>
-								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$baretype))"/>
 							</xsl:when>
-							<xsl:when test="$name = 'aantalVoorkomens' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
+							<!--xsl:when test="$baretype = 'AantalVoorkomens' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="$baretype = 'AantalVoorkomens' and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034q',$debugging)"/>
-								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$baretype))"/>
 							</xsl:when>
-							<xsl:when test="$name = 'volgnummer' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
+							<!--xsl:when test="$baretype = 'Volgnummer' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="$baretype = 'Volgnummer' and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034r',$debugging)"/>
-								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$baretype))"/>
 							</xsl:when>
-							<xsl:when test="$name = 'indicatorLaatsteBericht' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
+							<!--xsl:when test="$name = 'indicatorLaatsteBericht' and $baretype = 'INDIC' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="$name = 'indicatorLaatsteBericht' and $baretype = 'INDIC' and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034s',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-boolean')"/>
 							</xsl:when>
 							<!-- ROME: Volgende when voldoet voorlopig maar moet vanuit EA zo gewijzigd kunnen worden dat er slechts 1 mutatiesoort enum is. -->
-							<xsl:when test="$name = 'mutatiesoort' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
+							<!--xsl:when test="$baretype = 'Mutatiesoort' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="$baretype = 'Mutatiesoort' and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034t',$debugging)"/>
-								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$baretype))"/>
 							</xsl:when>
-							<xsl:when test="$name = 'indicatorOvername' and ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]'">
+							<!--xsl:when test="$baretype = 'IndicatorOvername' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="$baretype = 'IndicatorOvername' and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034u',$debugging)"/>
-								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',imf:capitalize($name)))"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$baretype))"/>
+							</xsl:when>
+
+
+							<!--xsl:when test="$baretype = 'EntiteittypeStuurgegevens' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="$baretype = 'Sectormodel' and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034t',$debugging)"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':','Entiteittype'))"/>
+							</xsl:when>
+							<!--xsl:when test="$baretype = 'Mutatiesoort' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="$baretype = 'Versienr' and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034t',$debugging)"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$baretype))"/>
+							</xsl:when>
+							<!--xsl:when test="$baretype = 'EntiteitType' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')"-->
+							<xsl:when test="$baretype = 'Entiteittype' and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen'">
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034h',$debugging)"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':','Entiteittype'))"/>
+							</xsl:when>
+							
+
+
+							<xsl:when test="ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen' and imf:get-most-relevant-compiled-taggedvalue(ancestor::imvert:class, '##CFG-TV-SUBSETLABEL')">
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034y',$debugging)"/>
+								<xsl:variable name="subsetLabel" select="imf:get-most-relevant-compiled-taggedvalue(ancestor::imvert:class, '##CFG-TV-SUBSETLABEL')"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',concat(imf:capitalize($name),'-',$subsetLabel)))"/>
 							</xsl:when>
 							<xsl:when test="imvert:type-name = ('scalar-date','scalar-datetime','scalar-year','scalar-yearmonth','scalar-postcode','scalar-boolean')">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034v',$debugging)"/>
@@ -1912,6 +1957,13 @@
 				<xsl:otherwise><xsl:value-of select="$berichtName"/></xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+		<xsl:variable name="tech-name">
+			<xsl:choose>
+				<xsl:when test="imvert:name = 'zender' or imvert:name = 'ontvanger'"><xsl:value-of select="'Systeem'"/></xsl:when>
+				<xsl:when test="@className"><xsl:value-of select="@className"/></xsl:when>
+				<xsl:otherwise><xsl:value-of select="imvert:name"/></xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:variable name="verwerkingsModusOfConstructRef">
 			<xsl:choose>
 				<xsl:when test="$currentMessage//ep:*[generate-id() = $generated-id]/ep:construct/ep:construct[ep:id = $type-id and @context = $context]">
@@ -1938,6 +1990,56 @@
 		<xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
 		<xsl:variable name="packageName" select="ancestor::imvert:package/imvert:name"/> 
 
+		<xsl:variable name="name">
+			<xsl:choose>
+				<xsl:when test="imvert:name = 'stuurgegevens'">
+					<xsl:value-of select="concat('Stuurgegevens',$berichtCode)"/>
+				</xsl:when>
+				<xsl:when test="imvert:name = 'parameters' and contains('Lv01 Lv02 Lv03 Lv04 Lv05 Lv06 Lv07 Lv08 Lv09 Lv10',$berichtCode)">
+					<xsl:value-of select="'ParametersVraag'"/>
+				</xsl:when>
+				<xsl:when test="imvert:name = 'parameters' and contains('La01 La07 La09',$berichtCode)">
+					<xsl:value-of select="'ParametersAntwoordSynchroon'"/>
+				</xsl:when>
+				<xsl:when test="imvert:name = 'parameters' and $berichtCode = 'La05'">
+					<xsl:value-of select="'ParametersAntwoordSynchroonFormeel'"/>
+				</xsl:when>
+				<xsl:when test="imvert:name = 'parameters' and $berichtCode = 'La03'">
+					<xsl:value-of select="'ParametersAntwoordSynchroonMaterieel'"/>
+				</xsl:when>
+				<xsl:when test="imvert:name = 'parameters' and contains('La02 La08 La10',$berichtCode)">
+					<xsl:value-of select="'ParametersAntwoordAsynchroon'"/>
+				</xsl:when>
+				<xsl:when test="imvert:name = 'parameters' and $berichtCode = 'La06'">
+					<xsl:value-of select="'ParametersAntwoordAsynchroonFormeel'"/>
+				</xsl:when>
+				<xsl:when test="imvert:name = 'parameters' and $berichtCode = 'La04'">
+					<xsl:value-of select="'ParametersAntwoordAsynchroonMaterieel'"/>
+				</xsl:when>
+				<xsl:when test="imvert:name = 'parameters' and $berichtCode = 'Lk01'">
+					<xsl:value-of select="'ParametersLk01'"/>
+				</xsl:when>
+				<xsl:when test="imvert:name = 'parameters' and $berichtCode = 'Lk02'">
+					<xsl:value-of select="'ParametersLk02'"/>
+				</xsl:when>
+				<xsl:when test="imvert:name = 'parameters' and contains('Lk05 Lk06',$berichtCode)">
+					<xsl:value-of select="'ParametersKennisgeving'"/>
+				</xsl:when>
+				<xsl:when test="imvert:name = 'parameters' and contains('Di01 Di02 Du01 Du02',$berichtCode) and $context = 'update'">
+					<xsl:value-of select="'ParametersKennisgeving'"/>
+				</xsl:when>
+				<xsl:when test="imvert:name = 'parameters' and contains('Di01 Di02 Du01 Du02',$berichtCode) and $context = 'selectie'">
+					<xsl:value-of select="'ParametersVraag-basis'"/>
+				</xsl:when>
+				<xsl:when test="imvert:name = 'parameters' and contains('Di01 Di02 Du01 Du02',$berichtCode) and $context = 'antwoord'">
+					<xsl:value-of select="'ParametersAntwoord'"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="imvert:name"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		
 
 		<!-- I.h.k.v. RM #488759 moet ik op termijn op basis van $alias een specifieke 'EntiteittypeStuurgegevens' per bericht maken. -->
 		<xsl:variable name="alias" select="$currentMessage//ep:construct[@alias][1]/@alias"/>
@@ -2378,7 +2480,7 @@
 						
 						<ep:construct context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 							<xsl:variable name="type" select="'Grp'"/>
-							<xsl:variable name="name" select="imvert:name"/>
+							<!--xsl:variable name="name" select="imvert:name"/-->
 							<xsl:variable name="historieType" select="'historieMaterieel'"/>
 
 							<xsl:sequence select="imf:create-output-element('ep:name', imvert:name)"/>							
@@ -2414,7 +2516,7 @@
 						
 						<ep:construct context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 							<xsl:variable name="type" select="'Grp'"/>
-							<xsl:variable name="name" select="imvert:name"/>
+							<!--xsl:variable name="name" select="imvert:name"/-->
 							<xsl:variable name="historieType" select="'historieFormeel'"/>
 
 							<xsl:sequence select="imf:create-output-element('ep:name', imvert:name)"/>							
@@ -2449,7 +2551,7 @@
 					test="key('class',$type-id) and imvert:stereotype = 'GROEP COMPOSITIE' and ancestor::imvert:package[contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen')]">
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056a',$debugging)"/>
 					
-					<xsl:variable name="name">
+					<?x xsl:variable name="name">
 						<xsl:choose>
 							<xsl:when test="imvert:name = 'stuurgegevens'">
 								<xsl:value-of select="concat('Stuurgegevens',$berichtCode)"/>
@@ -2499,7 +2601,7 @@
 								<xsl:value-of select="'ParametersNaderTeBepalen'"/>
 							</xsl:otherwise>
 						</xsl:choose>
-					</xsl:variable>
+					</xsl:variable x?>
 
 					<!-- The ep:constructRef is temporarily provided with a 'context' attribute and a 'ep:id' element to be able to create global constructs later.
 						 These are removed later since they aren't part of the 'ep' structure. -->
@@ -2532,9 +2634,9 @@
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056c',$debugging)"/>
 
 					<xsl:variable name="type" select="'Grp'"/>
-					<xsl:variable name="name">
+					<!--xsl:variable name="name">
 						<xsl:value-of select="imvert:name"/>
-					</xsl:variable>
+					</xsl:variable-->
 					<!-- The ep:constructRef is temporarily provided with a 'context' attribute and a 'ep:id' element to be able to create global constructs later.
 						 These are removed later since they aren't part of the 'ep' structure. -->
 					<xsl:variable name="inOnderzoek" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIEINONDERZOEK')"/>
@@ -2589,14 +2691,23 @@
 						</xsl:choose>
 						<xsl:choose>
 							<!-- In case of zender or ontvanger a referention to the type StUF:Systeem must be created. -->   
-							<xsl:when test="(imvert:name = 'ontvanger' or imvert:name = 'zender')">
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056f',$debugging)"/>
-								<!--xsl:sequence select="imf:create-output-element('ep:type-name', 'Systeem')"/-->
+							<xsl:when test="(imvert:name = 'parameters' or imvert:name = 'stuurgegevens' or imvert:name = 'ontvanger' or imvert:name = 'zender') and 
+								not(empty(imf:get-most-relevant-compiled-taggedvalue(imf:get-association-construct-by-id(imvert:type-id,$packages-doc), '##CFG-TV-SUBSETLABEL')))">
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056d',$debugging)"/>
 								<xsl:sequence
-									select="imf:create-output-element('ep:type-name', imf:create-Grp-complexTypeName($packageName,$berichtType,$type,'Systeem',$verwerkingsModus))" />
+									select="imf:create-output-element('ep:type-name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$tech-name,@verwerkingsModus))" />
 							</xsl:when>
-							<xsl:when test="(imvert:name = 'entiteittype')">
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056g',$debugging)"/>
+							<xsl:when test="(imvert:name = 'ontvanger' or imvert:name = 'zender')">
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056d',$debugging)"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':','Systeem'))"/>
+							</xsl:when>
+							<xsl:when test="(imvert:name = 'parameters' or imvert:name = 'stuurgegevens')">
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056d',$debugging)"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',$name))"/>
+							</xsl:when>
+							<xsl:when test="(imvert:name = 'entiteittype') and 
+								not(empty(imf:get-most-relevant-compiled-taggedvalue(imf:get-association-construct-by-id(imvert:type-id,$packages-doc), '##CFG-TV-SUBSETLABEL')))">
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056e',$debugging)"/>
 								
 								
 								<!-- ROME: I.h.k.v. RM #488759 zou ik op termijn op basis van $alias een specifieke 'EntiteittypeStuurgegevens' per bericht moeten maken.
@@ -2604,18 +2715,22 @@
 								<!-- Variabele 'alias' is blijkbaar niet altijd gevuld. Bij KV Prefill geeft onderstaande regel nl. een foutmelding. -->
 								<!--xsl:sequence select="imf:create-debug-comment($alias,$debugging)"/-->
 								
-								
-								
+								<xsl:sequence
+									select="imf:create-output-element('ep:type-name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$tech-name,@verwerkingsModus))" />
+							</xsl:when>
+							<xsl:when test="(imvert:name = 'entiteittype')">
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056f',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', 'EntiteittypeStuurgegevens')"/>
 							</xsl:when>
 							<xsl:when test="$verwerkingsModusOfConstructRef != ''">
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056d',$debugging)"/>
-								<xsl:variable name="type-name"><xsl:value-of select="imf:create-Grp-complexTypeName($packageName,$berichtType,$type,$name,$verwerkingsModusOfConstructRef)"/></xsl:variable>
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056g',$debugging)"/>
 								<xsl:choose>
 									<xsl:when test="$currentPrefix != $StUF-prefix">
+										<xsl:variable name="type-name"><xsl:value-of select="imf:create-Grp-complexTypeName($packageName,$berichtType,$type,$name,$verwerkingsModusOfConstructRef)"/></xsl:variable>
 										<xsl:sequence select="imf:create-output-element('ep:type-name', concat($currentPrefix,':',$type-name))"/>										
 									</xsl:when>
 									<xsl:when test="$currentPrefix = $StUF-prefix">
+										<xsl:variable name="type-name"><xsl:value-of select="imf:create-Grp-complexTypeName($packageName,$berichtType,$type,$name,$verwerkingsModusOfConstructRef)"/></xsl:variable>
 										<xsl:sequence select="imf:create-output-element('ep:type-name', concat($currentPrefix,':',$type-name))"/>										
 									</xsl:when>
 								</xsl:choose>
@@ -2623,7 +2738,7 @@
 							</xsl:when>
 							
 							<xsl:when test="$verwerkingsModusOfConstructRef = ''">
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056e',$debugging)"/>
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1056h',$debugging)"/>
 								<xsl:variable name="type-name"><xsl:value-of select="imf:create-Grp-complexTypeName($packageName,$berichtType,$type,$name)"/></xsl:variable>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
 							</xsl:when>

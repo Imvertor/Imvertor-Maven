@@ -709,8 +709,9 @@
     
     <xsl:template match="*[not(*) and not(name() = 'ep:tv-position') and not(name() = 'ep:namespace')]">
         <xsl:param name="actualPrefix"/>
-        <xsl:sequence
-            select="imf:create-output-element(name(.), .)"/>	
+        <xsl:copy-of select="."/>
+        <!--xsl:sequence
+            select="imf:create-output-element(name(.), .)"/-->	
     </xsl:template>
     
     <xsl:template match="ep:suppliers">

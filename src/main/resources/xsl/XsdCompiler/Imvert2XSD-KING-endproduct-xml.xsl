@@ -244,7 +244,8 @@
                 select="//imvert:attribute[empty(imvert:type-id)]" 
                 group-by="imf:useable-attribute-name(imf:get-compiled-name(.),.)">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 4a',$debugging)"/>
-
+                <xsl:sequence select="imf:create-debug-comment(imvert:name,$debugging)"/>
+                
                 <xsl:apply-templates select="current-group()[1]" mode="mode-global-attribute-simpletype"/>
             </xsl:for-each-group>
 
@@ -980,94 +981,104 @@
                        
                        <!-- Location: 'ep:construct3'
 						    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef3'. -->
-                       
-                        <ep:construct type="group">
-                           <xsl:choose>
-                               <xsl:when test="ep:tech-name = 'parameters' or ep:tech-name = 'stuurgegevens' or ep:tech-name = 'zender' or ep:tech-name = 'ontvanger'">
-                                   <xsl:attribute name="prefix" select="$StUF-prefix"/>
-                                   <xsl:attribute name="namespaceId" select="$StUF-namespaceIdentifier"/>
-                                   <xsl:attribute name="version" select="ep:UGMversionGerelateerdeEntiteit"/>
-                               </xsl:when>
-                               <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
-                                   <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
-                                   <xsl:attribute name="namespaceId" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
-                                   <xsl:attribute name="version" select="ep:UGMversionGerelateerdeEntiteit"/>
-                               </xsl:when>
-                               <xsl:otherwise>
-                                   <xsl:attribute name="prefix" select="ep:verkorteAlias"/>
-                                   <xsl:attribute name="namespaceId" select="ep:namespaceIdentifier"/>
-                                   <xsl:attribute name="version" select="ep:version"/>
-                               </xsl:otherwise>
-                           </xsl:choose>
-                            <!--xsl:if test="$debugging"-->
-                            <ep:suppliers>
-                                <xsl:copy-of select="$suppliers"/>
-                            </ep:suppliers>
-                            <!--/xsl:if-->
-                            <xsl:sequence
-                                select="imf:create-output-element('ep:name', imf:create-Grp-complexTypeName($packageName,$berichtType,$type,$tech-name,$verwerkingsModus))" />
-                            <xsl:sequence
-                               select="imf:create-output-element('ep:tech-name', imf:create-Grp-complexTypeName($packageName,$berichtType,$type,$tech-name,$verwerkingsModus))" />
-                           <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
-                           <!-- ep:authentiek element is used to determine if a 'authentiek' element needs to be generated in the messages in the next higher level. -->
-                           <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
-                           <!-- ep:inOnderzoek element is used to determine if a 'inOnderzoek' element needs to be generated in the messages in the next higher level. -->
-                           <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
-                           <ep:seq>
-                               
-                               <!-- Within the following apply-templates parameters are used which are also used in other apply-templates in this and other stylesheets.
-                                    These have the following function:
-                                    
-                                    proces-type: 
-                                    -->
-                               
-                               <!-- The uml attributes of the uml group are placed here. -->
-                               <xsl:sequence select="imf:create-debug-comment(concat('fundamentalMnemonic: ',$fundamentalMnemonic),$debugging)"/>
-
-                               <xsl:apply-templates select="$construct"
-                                   mode="create-message-content">
-                                   <xsl:with-param name="berichtName" select="$berichtName"/>
-                                   <xsl:with-param name="proces-type" select="'attributes'" />
-                                   <xsl:with-param name="berichtCode" select="$berichtCode" />
-                                   <xsl:with-param name="generated-id" select="$generated-id"/>
-                                   <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                   <xsl:with-param name="context" select="$context" />
-                                   <xsl:with-param name="fundamentalMnemonic" select="$fundamentalMnemonic"/>
-                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                               </xsl:apply-templates>
-                               <!-- The uml groups of the uml group are placed here. -->
-                               <xsl:apply-templates select="$construct"
-                                   mode="create-message-content">
-                                   <xsl:with-param name="berichtName" select="$berichtName"/>
-                                   <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
-                                   <xsl:with-param name="berichtCode" select="$berichtCode" />
-                                   <xsl:with-param name="generated-id" select="$generated-id"/>
-                                   <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                   <xsl:with-param name="context" select="$context" />
-                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                               </xsl:apply-templates>
-                                <!-- The uml associations of the uml group are placed here. -->
-                               <xsl:apply-templates select="$construct"
-                                   mode="create-message-content">
-                                   <xsl:with-param name="berichtName" select="$berichtName"/>
-                                   <xsl:with-param name="proces-type" select="'associationsRelatie'" />
-                                   <xsl:with-param name="berichtCode" select="$berichtCode" />
-                                   <xsl:with-param name="generated-id" select="$generated-id"/>
-                                   <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                                   <xsl:with-param name="context" select="$context" />
-                                   <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-                               </xsl:apply-templates>
-                               <xsl:if test="@type='complex datatype'">
-                                   <ep:construct ismetadata="yes">
-                                       <ep:name>noValue</ep:name>
-                                       <ep:tech-name>noValue</ep:tech-name>
-                                       <ep:min-occurs>0</ep:min-occurs>
-                                       <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
-                                   </ep:construct>
-                               </xsl:if>
-                           </ep:seq> 
-                       </ep:construct>                       
-                       
+ 
+                        <!-- Only if the ancestor package isn't the 'Berichtstructuren' package a construct is generated. -->
+                        <xsl:if test="ancestor-or-self::ep:construct/@package != 'Model [Berichtstructuren]'">
+                            <ep:construct type="group">
+                               <xsl:choose>
+                                   <xsl:when test="ep:tech-name = 'parameters' or ep:tech-name = 'stuurgegevens' or ep:tech-name = 'zender' or ep:tech-name = 'ontvanger' or ep:tech-name = 'entiteittype'">
+                                       <xsl:attribute name="prefix" select="$StUF-prefix"/>
+                                       <xsl:attribute name="namespaceId" select="$StUF-namespaceIdentifier"/>
+                                       <xsl:attribute name="version" select="ep:UGMversionGerelateerdeEntiteit"/>
+                                   </xsl:when>
+                                   <xsl:when test="ep:verkorteAliasGerelateerdeEntiteit">
+                                       <xsl:attribute name="prefix" select="ep:verkorteAliasGerelateerdeEntiteit"/>
+                                       <xsl:attribute name="namespaceId" select="ep:namespaceIdentifierGerelateerdeEntiteit"/>
+                                       <xsl:attribute name="version" select="ep:UGMversionGerelateerdeEntiteit"/>
+                                   </xsl:when>
+                                   <xsl:otherwise>
+                                       <xsl:attribute name="prefix" select="ep:verkorteAlias"/>
+                                       <xsl:attribute name="namespaceId" select="ep:namespaceIdentifier"/>
+                                       <xsl:attribute name="version" select="ep:version"/>
+                                   </xsl:otherwise>
+                               </xsl:choose>
+                                <ep:suppliers>
+                                    <xsl:copy-of select="$suppliers"/>
+                                </ep:suppliers>
+                                <xsl:choose>
+                                    <xsl:when test="ep:tech-name = 'parameters' or ep:tech-name = 'stuurgegevens' or ep:tech-name = 'zender' or ep:tech-name = 'ontvanger' or ep:tech-name = 'entiteittype'">
+                                        <xsl:sequence
+                                            select="imf:create-output-element('ep:name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$tech-name,$verwerkingsModus))" />
+                                        <xsl:sequence
+                                            select="imf:create-output-element('ep:tech-name', imf:create-Grp-complexTypeName($packageName,$berichtName,$type,$tech-name,$verwerkingsModus))" />
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:sequence
+                                            select="imf:create-output-element('ep:name', imf:create-Grp-complexTypeName($packageName,$berichtType,$type,$tech-name,$verwerkingsModus))" />
+                                        <xsl:sequence
+                                            select="imf:create-output-element('ep:tech-name', imf:create-Grp-complexTypeName($packageName,$berichtType,$type,$tech-name,$verwerkingsModus))" />
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                               <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+                               <!-- ep:authentiek element is used to determine if a 'authentiek' element needs to be generated in the messages in the next higher level. -->
+                               <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
+                               <!-- ep:inOnderzoek element is used to determine if a 'inOnderzoek' element needs to be generated in the messages in the next higher level. -->
+                               <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
+                               <ep:seq>
+                                   
+                                   <!-- Within the following apply-templates parameters are used which are also used in other apply-templates in this and other stylesheets.
+                                        These have the following function:
+                                        
+                                        proces-type: 
+                                        -->
+                                   
+                                   <!-- The uml attributes of the uml group are placed here. -->
+                                   <xsl:sequence select="imf:create-debug-comment(concat('fundamentalMnemonic: ',$fundamentalMnemonic),$debugging)"/>
+    
+                                   <xsl:apply-templates select="$construct"
+                                       mode="create-message-content">
+                                       <xsl:with-param name="berichtName" select="$berichtName"/>
+                                       <xsl:with-param name="proces-type" select="'attributes'" />
+                                       <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                       <xsl:with-param name="generated-id" select="$generated-id"/>
+                                       <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                       <xsl:with-param name="context" select="$context" />
+                                       <xsl:with-param name="fundamentalMnemonic" select="$fundamentalMnemonic"/>
+                                       <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                                   </xsl:apply-templates>
+                                   <!-- The uml groups of the uml group are placed here. -->
+                                   <xsl:apply-templates select="$construct"
+                                       mode="create-message-content">
+                                       <xsl:with-param name="berichtName" select="$berichtName"/>
+                                       <xsl:with-param name="proces-type" select="'associationsGroepCompositie'" />
+                                       <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                       <xsl:with-param name="generated-id" select="$generated-id"/>
+                                       <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                       <xsl:with-param name="context" select="$context" />
+                                       <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                                   </xsl:apply-templates>
+                                    <!-- The uml associations of the uml group are placed here. -->
+                                   <xsl:apply-templates select="$construct"
+                                       mode="create-message-content">
+                                       <xsl:with-param name="berichtName" select="$berichtName"/>
+                                       <xsl:with-param name="proces-type" select="'associationsRelatie'" />
+                                       <xsl:with-param name="berichtCode" select="$berichtCode" />
+                                       <xsl:with-param name="generated-id" select="$generated-id"/>
+                                       <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                                       <xsl:with-param name="context" select="$context" />
+                                       <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+                                   </xsl:apply-templates>
+                                   <xsl:if test="@type='complex datatype'">
+                                       <ep:construct ismetadata="yes">
+                                           <ep:name>noValue</ep:name>
+                                           <ep:tech-name>noValue</ep:tech-name>
+                                           <ep:min-occurs>0</ep:min-occurs>
+                                           <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                                       </ep:construct>
+                                   </xsl:if>
+                               </ep:seq> 
+                           </ep:construct>                       
+                        </xsl:if>
                    </xsl:when>
                     <!-- The following when generates global constructs based on uml classes. -->
                     <xsl:when test="exists(imf:get-construct-by-id($id,$packages-doc))">
@@ -2003,7 +2014,6 @@
         <!-- ROME: Uitbecommentarieerde variabele is vervangen door de die daaronder.
                    Dit is slechts tijdelijk todat er een alternatieve constructie is voor het definieren van custom stuurgegevens en parameters. -->
         
-        <!--xsl:variable name="construct-Prefix" select="$suppliers//supplier[1]/@verkorteAlias"/-->
         <xsl:variable name="construct-Prefix">
             <xsl:choose>
                 <xsl:when test="$suppliers//supplier[1]/@verkorteAlias != ''">
@@ -2014,11 +2024,48 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <!--xsl:variable name="construct-Namespace" select="$suppliers//supplier[1]/@base-namespace"/-->
 
         <xsl:comment select="concat('ROME: ',parent::imvert:*/imvert:name)"/>
+
+        <!-- In case of a enumeration class a subset label only is available if it concerns a custom datatype for de berichtstructuren
+             (stuurgegevens and parameters). -->
+        <xsl:variable name="subsetLabel" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-SUBSETLABEL')"/>
         
-        <xsl:if test="not(imf:capitalize($compiled-name) = 'Berichtcode' or imf:capitalize($compiled-name) = 'IndicatorOvername')">
+        <xsl:choose>
+            <xsl:when test="not(empty($subsetLabel))">
+                <ep:construct type="simpleData" prefix="{$construct-Prefix}" isdatatype="yes">
+                    <xsl:sequence select="imf:create-output-element('ep:name', concat(imf:capitalize($compiled-name),'-',$subsetLabel))"/>
+                    <xsl:sequence select="imf:create-output-element('ep:tech-name', concat(imf:capitalize($compiled-name),'-',$subsetLabel))"/>
+                    <xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-string')"/>
+                    <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-enum"/>
+                </ep:construct>
+            </xsl:when>
+            <xsl:when test="not(imf:capitalize($compiled-name) = 'Berichtcode' or imf:capitalize($compiled-name) = 'IndicatorOvername')">
+                <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}">
+                    <xsl:sequence select="imf:create-output-element('ep:name', concat(imf:capitalize($compiled-name),'-e'))"/>
+                    <xsl:sequence select="imf:create-output-element('ep:tech-name', concat(imf:capitalize($compiled-name),'-e'))"/>
+                    <ep:type-name>
+                        <xsl:value-of select="concat($construct-Prefix,':',imf:capitalize($compiled-name))"/>
+                    </ep:type-name>
+                    <ep:seq>
+                        <ep:construct ismetadata="yes">
+                            <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                            <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                            <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                            <ep:min-occurs>0</ep:min-occurs>
+                        </ep:construct>                     
+                    </ep:seq>
+                </ep:construct>
+                <ep:construct type="simpleData" prefix="{$construct-Prefix}" isdatatype="yes">
+                    <xsl:sequence select="imf:create-output-element('ep:name', imf:capitalize($compiled-name))"/>
+                    <xsl:sequence select="imf:create-output-element('ep:tech-name', imf:capitalize($compiled-name))"/>
+                    <xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-string')"/>
+                    <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-enum"/>
+                    <ep:enum></ep:enum>
+                </ep:construct>
+            </xsl:when>
+        </xsl:choose>
+        <!--xsl:if test="not(imf:capitalize($compiled-name) = 'Berichtcode' or imf:capitalize($compiled-name) = 'IndicatorOvername')">
             <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}">
                 <xsl:sequence select="imf:create-output-element('ep:name', concat(imf:capitalize($compiled-name),'-e'))"/>
                 <xsl:sequence select="imf:create-output-element('ep:tech-name', concat(imf:capitalize($compiled-name),'-e'))"/>
@@ -2041,7 +2088,7 @@
                 <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-enum"/>
                 <ep:enum></ep:enum>
             </ep:construct>
-        </xsl:if>
+        </xsl:if-->
     </xsl:template>
 
     <xsl:template match="imvert:attribute" mode="mode-local-enum">
@@ -2386,6 +2433,7 @@
     <!-- called only with attributes that have no type-id -->
     <xsl:template match="imvert:attribute" mode="mode-global-attribute-simpletype">
         <xsl:sequence select="imf:create-debug-comment('Debuglocation 32',$debugging)"/>
+
         
         <xsl:variable name="suppliers" as="element(ep:suppliers)">
             <ep:suppliers>
@@ -2406,22 +2454,30 @@
         <xsl:variable name="patroon" select="imvert:pattern"/>
         
         <xsl:variable name="nillable-patroon" select="if (normalize-space($patroon)) then concat('(', $patroon,')?') else ()"/>
+
+        <!--xsl:if test="imvert:name = 'hotseflots2'">
+            <xsl:sequence select="imf:create-debug-comment(concat(imvert:name,' -',normalize-space(string($min-length)),';'),$debugging)"/>
+        </xsl:if-->
         
         <xsl:variable name="facetten">
-            <xsl:sequence select="imf:create-facet('ep:formeel-patroon',$nillable-patroon)"/>
-            <xsl:sequence select="imf:create-facet('ep:min-value',$min-waarde)"/>
-            <xsl:sequence select="imf:create-facet('ep:max-value',$max-waarde)"/>
-            <xsl:sequence select="imf:create-facet('ep:min-length',$min-length)"/>
-            <xsl:sequence select="imf:create-facet('ep:max-length',$max-length)"/>
-            <xsl:sequence select="imf:create-facet('ep:length',$total-digits)"/>
-            <xsl:sequence select="imf:create-facet('ep:fraction-digits',$fraction-digits)"/>
+            <!--xsl:if test="imvert:name != 'hotseflots2'"-->
+                <xsl:sequence select="imf:create-facet('ep:formeel-patroon',$nillable-patroon)"/>
+                <xsl:sequence select="imf:create-facet('ep:min-value',$min-waarde)"/>
+                <xsl:sequence select="imf:create-facet('ep:max-value',$max-waarde)"/>
+                <xsl:sequence select="imf:create-facet('ep:min-length',string($min-length))"/>
+                <xsl:sequence select="imf:create-facet('ep:max-length',$max-length)"/>
+                <xsl:sequence select="imf:create-facet('ep:length',$total-digits)"/>
+                <xsl:sequence select="imf:create-facet('ep:fraction-digits',$fraction-digits)"/>
+            <!--/xsl:if-->
         </xsl:variable>
         <xsl:variable name="compiled-name" select="imf:useable-attribute-name(imf:get-compiled-name(.),.)"/>
         
         <xsl:variable name="name" select="imf:capitalize($compiled-name)"/>
+        <xsl:variable name="subsetLabel" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-SUBSETLABEL')"/>
+        
         <xsl:choose>
             <xsl:when test="imvert:type-package='GML3'">
-                <xsl:sequence select="imf:create-debug-comment('Debuglocation 35',$debugging)"/>
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 32a',$debugging)"/>
 
                 <xsl:variable name="construct-Prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
                 
@@ -2467,21 +2523,67 @@
                     </ep:construct>
                 </xsl:if>
             </xsl:when>
+            <!-- The only situation in which imvert:attribute elements have the tagged value 'Subset label' is when they're part of the custom 'parameters',
+                 'stuurgegevens' or 'systeem' groep. In that case the construct always has to be placed within the StUF namespace. -->
+            <xsl:when test="not(empty($subsetLabel))">
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 32b',$debugging)"/>
+                <xsl:variable name="attributeName" select="imvert:name/@original"/>
+                <ep:construct type="simpleData" prefix="{$StUF-prefix}" isdatatype="yes">
+                    <xsl:sequence select="imf:create-output-element('ep:name', concat(imf:capitalize($attributeName),'-',$subsetLabel))"/>
+                    <xsl:sequence select="imf:create-output-element('ep:tech-name', concat(imf:capitalize($attributeName),'-',$subsetLabel))"/>
+                    <xsl:choose>
+                        <xsl:when test="imvert:type-name = 'scalar-integer'">
+                            <ep:data-type>scalar-integer</ep:data-type>
+                            <xsl:sequence select="$facetten"/>
+                        </xsl:when>
+                        <xsl:when test="imvert:type-name = 'scalar-string'">
+                            <ep:data-type>scalar-string</ep:data-type>
+                            <xsl:sequence select="$facetten"/>
+                        </xsl:when>
+                        <xsl:when test="imvert:type-name = 'scalar-decimal'">
+                            <ep:data-type>scalar-decimal</ep:data-type>
+                            <xsl:sequence select="$facetten"/>
+                        </xsl:when>
+                        <xsl:when test="imvert:type-name = 'scalar-boolean'">
+                            <ep:data-type>scalar-boolean</ep:data-type>
+                            <xsl:sequence select="$facetten"/>
+                        </xsl:when>
+                        <xsl:when test="imvert:type-name = 'scalar-date'">
+                            <ep:data-type>scalar-date</ep:data-type>
+                            <xsl:sequence select="$facetten"/>
+                        </xsl:when>
+                        <xsl:when test="imvert:type-name = 'scalar-txt'">
+                            <ep:data-type>scalar-string</ep:data-type>
+                            <xsl:sequence select="$facetten"/>
+                        </xsl:when>    
+                        <xsl:when test="imvert:type-name = 'scalar-uri'">
+                            <ep:data-type>xs:anyURI</ep:data-type>
+                            <xsl:sequence select="$facetten"/>
+                        </xsl:when>
+                        <xsl:when test="imvert:type-name = 'scalar-postcode'">
+                            <ep:data-type>scalar-postcode</ep:data-type>
+                            <xsl:sequence select="$facetten"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the simple attribute type: [1]', imvert:type-name)"/>
+                        </xsl:otherwise>                
+                    </xsl:choose>
+                </ep:construct>
+                
+            </xsl:when>
             <xsl:when test="exists($stuf-scalar)">
-                <xsl:sequence select="imf:create-debug-comment('Debuglocation 33',$debugging)"/>
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 32c',$debugging)"/>
                 <!-- gedefinieerd in onderlaag -->
             </xsl:when>
             <xsl:when test="exists(imvert:type-name) and not($name = 'Melding' or $name = 'AantalVoorkomens' or $name = 'Sortering' or $name = 'Functie' or $name = 'Volgnummer')">
-                <xsl:sequence select="imf:create-debug-comment('Debuglocation 34',$debugging)"/>
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 32d',$debugging)"/>
 
                 <xsl:variable name="checksum-strings" select="imf:get-blackboard-simpletype-entry-info(.)"/>
                 <xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
                 <xsl:variable name="tokens" select="tokenize($checksum-string,'\[SEP\]')"/>
                 
                 <xsl:variable name="construct-Prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
-                <!--xsl:variable name="construct-Namespace" select="$suppliers//supplier[1]/@base-namespace"/-->
                 
-                <!--ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}" namespaceId="{$construct-Namespace}" imvert:checksum="{concat($checksum-string,'-simpleContentcomplexData')}"-->
                 <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}" imvert:checksum="{concat($checksum-string,'-simpleContentcomplexData')}">
                     <xsl:sequence select="imf:create-output-element('ep:name', concat($tokens[1],'-e'))"/>
                     <xsl:sequence select="imf:create-output-element('ep:tech-name', concat($tokens[1],'-e'))"/>
