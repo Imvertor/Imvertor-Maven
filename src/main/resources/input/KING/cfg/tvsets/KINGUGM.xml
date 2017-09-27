@@ -239,6 +239,7 @@
                 <stereo required="no">stereotype-name-objecttype</stereo>
                 <stereo required="no">stereotype-name-relatiesoort</stereo>
                 <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-association-to-composite</stereo>
                 <stereo required="no">stereotype-name-relatieklasse</stereo>
                 <stereo required="no">stereotype-name-referentielijst</stereo>
                 <stereo required="no">stereotype-name-referentie-element</stereo>

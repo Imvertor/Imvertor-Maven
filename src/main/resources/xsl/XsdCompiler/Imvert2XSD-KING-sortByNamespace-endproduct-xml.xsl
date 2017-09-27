@@ -119,6 +119,8 @@
     </xsl:template>
     
     <xsl:template match="ep:suppliers"/>
+    
+    <xsl:template match="ep:tagged-values"/>
 
     <xsl:template match="*">
         <xsl:sequence select="imf:create-debug-comment('Debuglocation 3013',$debugging)"/>
