@@ -2253,8 +2253,8 @@
             </xsl:choose>
         </xsl:variable>
         <xsl:variable name="type-name" select="imvert:type-name"/>
-        <xsl:variable name="max-occurs" select="imvert:max-occurs"/>
-        <xsl:variable name="min-occurs" select="imvert:min-occurs"/>
+        <xsl:variable name="max-occurs" select="imvert:max-occurs-source"/>
+        <xsl:variable name="min-occurs" select="imvert:min-occurs-source"/>
         <xsl:variable name="position" select="imvert:position"/>
         <xsl:variable name="id" select="imvert:id"/>
         <xsl:variable name="docs">
@@ -2315,8 +2315,6 @@
                         <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
                         <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
                         <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
-                        <xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
-                        <xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>                       
                         <!-- An 'ep:construct' based on an 'imvert:association' element can contain 
 			several other 'ep:construct' elements (e.g. 'ep:constructs' for the attributes 
 			of the association itself or for the associations of the association) therefore 
@@ -2413,8 +2411,6 @@
                     <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
                     <xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
                     <xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
-                    <xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
-                    <xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
                     <!-- An 'ep:construct' based on an 'imvert:association' element can contain 
 			several other 'ep:construct' elements (e.g. 'ep:constructs' for the attributes 
 			of the association itself or for the associations of the association) therefore 

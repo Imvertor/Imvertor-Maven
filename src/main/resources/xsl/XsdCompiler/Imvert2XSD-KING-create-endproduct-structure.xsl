@@ -724,8 +724,8 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:variable name="max-occurs" select="imvert:max-occurs"/>
-		<xsl:variable name="min-occurs" select="imvert:min-occurs"/>
+		<xsl:variable name="max-occurs" select="imvert:max-occurs-source"/>
+		<xsl:variable name="min-occurs" select="imvert:min-occurs-source"/>
 		<xsl:variable name="position" select="imvert:position"/>
 		<xsl:variable name="id" select="imvert:id"/>
 		<xsl:variable name="matchgegeven" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIEKERNGEGEVEN')"/>
@@ -2087,8 +2087,8 @@
 								<ep:name>gerelateerde</ep:name>
 								<ep:tech-name>gerelateerde</ep:tech-name>
 								<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
-								<ep:max-occurs>1</ep:max-occurs>
-								<ep:min-occurs>0</ep:min-occurs>
+								<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)"/>
+								<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)"/>
 								<ep:position>1</ep:position>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', imf:create-complexTypeName($berichtName,'matchgegevens',$mnemonic,$elementName))"/>							
 							</ep:construct-->
@@ -2105,8 +2105,8 @@
 								<ep:name>gerelateerde</ep:name>
 								<ep:tech-name>gerelateerde</ep:tech-name>
 								<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
-								<ep:max-occurs>1</ep:max-occurs>
-								<ep:min-occurs>0</ep:min-occurs>
+								<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)"/>
+								<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)"/>
 								<ep:position>1</ep:position>
 								<xsl:choose>
 									<xsl:when test="not(empty($verwerkingsModusOfConstructRef)) and $verwerkingsModusOfConstructRef != ''">
