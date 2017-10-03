@@ -951,7 +951,7 @@
                 
             </xsl:when>
             <!-- The following if takes care of creating global construct elements for each ep:construct element not representing a 'relatie'. -->
-            <xsl:when test="@typeCode!='relatie'">
+            <xsl:when test="@typeCode!='relatie' and @typeCode!='toplevel-relatie'">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 15',$debugging)"/>
                 
                 <xsl:choose>
@@ -1068,6 +1068,7 @@
                                        <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
                                    </xsl:apply-templates>
                                    <xsl:if test="@type='complex datatype'">
+                                       <xsl:sequence select="imf:create-debug-comment('Debuglocation 16a',$debugging)"/>
                                        <ep:construct ismetadata="yes">
                                            <ep:name>noValue</ep:name>
                                            <ep:tech-name>noValue</ep:tech-name>
@@ -1482,6 +1483,7 @@
                                    </xsl:apply-templates>
                                    <!-- Associations are never placed within historieMaterieel constructs. -->
                                    <xsl:if test="@type='complex datatype'">
+                                       <xsl:sequence select="imf:create-debug-comment('Debuglocation 19a',$debugging)"/>
                                        <ep:construct ismetadata="yes">
                                            <ep:name>noValue</ep:name>
                                            <ep:tech-name>noValue</ep:tech-name>
@@ -1741,6 +1743,7 @@
                                    </xsl:apply-templates>
                                    <!-- Associations are never placed within historieFormeel constructs. -->
                                    <xsl:if test="@type='complex datatype'">
+                                       <xsl:sequence select="imf:create-debug-comment('Debuglocation 22a',$debugging)"/>
                                        <ep:construct ismetadata="yes">
                                            <ep:name>noValue</ep:name>
                                            <ep:tech-name>noValue</ep:tech-name>
@@ -1924,7 +1927,7 @@
             </xsl:when>
 
             <!-- The following when takes care of creating global construct elements for each ep:construct element representing a 'relatie'. -->
-            <xsl:when test="@typeCode='relatie'">
+            <xsl:when test="@typeCode='relatie' or @typeCode='toplevel-relatie'">
                  
                 <xsl:sequence select="imf:create-debug-track(concat('Constructing the global constructs representing a relation with the name ',ep:tech-name),$debugging)"/>
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 24',$debugging)"/>
@@ -1941,6 +1944,7 @@
                     <xsl:with-param name="generated-id" select="$generated-id"/>
                     <xsl:with-param name="currentMessage" select="$currentMessage"/>
                     <xsl:with-param name="context" select="$context"/>
+                    <xsl:with-param name="typeCode" select="@typeCode"/>
                     <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
                     <xsl:with-param name="indicatieMaterieleHistorieRelatie" select="@indicatieMaterieleHistorieRelatie"/>
                     <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
@@ -1967,6 +1971,7 @@
                         <xsl:with-param name="generated-id" select="$generated-id"/>
                         <xsl:with-param name="currentMessage" select="$currentMessage"/>
                         <xsl:with-param name="context" select="$context"/>
+                        <xsl:with-param name="typeCode" select="@typeCode"/>
                         <xsl:with-param name="generateHistorieConstruct" select="'MaterieleHistorie'"/>
                         <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
                         <xsl:with-param name="indicatieMaterieleHistorieRelatie" select="@indicatieMaterieleHistorieRelatie"/>
@@ -1994,6 +1999,7 @@
                         <xsl:with-param name="generated-id" select="$generated-id"/>
                         <xsl:with-param name="currentMessage" select="$currentMessage"/>
                         <xsl:with-param name="context" select="$context"/>
+                        <xsl:with-param name="typeCode" select="@typeCode"/>
                         <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorie'"/>
                         <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
                         <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
@@ -2020,6 +2026,7 @@
                         <xsl:with-param name="generated-id" select="$generated-id"/>
                         <xsl:with-param name="currentMessage" select="$currentMessage"/>
                         <xsl:with-param name="context" select="$context"/>
+                        <xsl:with-param name="typeCode" select="@typeCode"/>
                         <xsl:with-param name="generateHistorieConstruct" select="'FormeleHistorieRelatie'"/>
                         <xsl:with-param name="indicatieMaterieleHistorie" select="@indicatieMaterieleHistorie"/>
                         <xsl:with-param name="indicatieMaterieleHistorieRelatie" select="@indicatieMaterieleHistorieRelatie"/>
@@ -2151,6 +2158,7 @@
         <xsl:param name="generated-id"/>
         <xsl:param name="currentMessage"/>
         <xsl:param name="context"/>
+        <xsl:param name="typeCode"/>
         <xsl:param name="orderingDesired" select="'yes'"/>
         <xsl:param name="generateHistorieConstruct" select="'Nee'"/>
         <xsl:param name="indicatieMaterieleHistorie" select="'Nee'"/>
@@ -2365,8 +2373,10 @@
 					nog herleid en doorgegeven worden. -->
                                 
                                 <xsl:if test="$generateHistorieConstruct = 'Nee'">
+                                    <xsl:sequence select="imf:create-debug-comment('Debuglocation attributes 3',$debugging)"/>
+                                    <xsl:sequence select="imf:create-debug-comment(concat('typeCode: relatie, berichtType: ',substring($berichtCode, 1, 2),', context: ',$context,', datumType: no, mnemonic: ',$alias,', onvolledigeDatum: no, prefix: ',$prefix,', constructId: ',$id,', dataType: -'),$debugging)"/>
                                     <xsl:variable name="attributes"
-                                        select="imf:createAttributes('relatie', substring($berichtCode, 1, 2), $context, 'no', $alias, 'no', $prefix, $id, '')"/>
+                                        select="imf:createAttributes($typeCode, substring($berichtCode, 1, 2), $context, 'no', $alias, 'no', $prefix, $id, '')"/>
                                     <xsl:sequence select="$attributes"/>
                                 </xsl:if> 
                             </xsl:if>
@@ -2460,8 +2470,9 @@
 					Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook 
 					nog herleid en doorgegeven worden. -->
                             <xsl:if test="$generateHistorieConstruct = 'Nee'">
+                                <xsl:sequence select="imf:create-debug-comment('Debuglocation attributes 4',$debugging)"/>
                                 <xsl:variable name="attributes"
-                                    select="imf:createAttributes('relatie', substring($berichtCode, 1, 2), $context, 'no', $alias, 'no', $prefix, $id, '')"/>
+                                    select="imf:createAttributes($typeCode, substring($berichtCode, 1, 2), $context, 'no', $alias, 'no', $prefix, $id, '')"/>
                                 <xsl:sequence select="$attributes"/>
                             </xsl:if> 
                         </xsl:if>

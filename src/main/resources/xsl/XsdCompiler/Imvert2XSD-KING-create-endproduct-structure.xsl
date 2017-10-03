@@ -1510,6 +1510,7 @@
 										<xsl:otherwise>no</xsl:otherwise>
 									</xsl:choose>
 								</xsl:variable>
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation attributes 1',$debugging)"/>
 								<xsl:variable name="attributes"
 									select="imf:createAttributes('bottomlevel', '-', '-', $datumType, '', $onvolledigeDatum, $prefix, $id, imvert:type-name)"/>
 								<xsl:sequence select="$attributes"/>
@@ -2832,6 +2833,7 @@
 						bevat is dan wel altijd de ancestor van het element dat het nodig heeft. 
 						Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook 
 						nog herleid en doorgegeven worden. -->
+					<xsl:sequence select="imf:create-debug-comment('Debuglocation attributes 2',$debugging)"/>
 					<xsl:variable name="attributes"
 						select="imf:createAttributes('toplevel', substring($berichtCode, 1, 2), $context, 'no', $mnemonic, 'no', $prefix, '', '')"/>
 					<xsl:sequence select="$attributes"/>
@@ -3294,12 +3296,24 @@
 			the koppelvlak namespace will need a type-name, enum or other format defining 
 			element. -->
 
-		<ep:construct ismetadata="yes">
-			<ep:name>noValue</ep:name>
-			<ep:tech-name>noValue</ep:tech-name>
-			<ep:min-occurs>0</ep:min-occurs>
-			<ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
-		</ep:construct>
+		<xsl:if
+			test="$attributeTypeRow//col[@name = 'NoValue' and data = 'O']">
+			<ep:construct ismetadata="yes">
+				<ep:name>noValue</ep:name>
+				<ep:tech-name>noValue</ep:tech-name>
+				<ep:min-occurs>0</ep:min-occurs>
+				<ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+			</ep:construct>
+		</xsl:if>
+		<xsl:if
+			test="$attributeTypeRow//col[@name = 'NoValue' and data = 'V']">
+			<ep:construct ismetadata="yes">
+				<ep:name>noValue</ep:name>
+				<ep:tech-name>noValue</ep:tech-name>
+				<ep:min-occurs>1</ep:min-occurs>
+				<ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+			</ep:construct>
+		</xsl:if>
 		<!-- ROME: De vraag is of ik het gebruik van het XML attribute 'StUF:indOnvolledigeDatum' 
 			wel in het spreadsheet moet configureren. Moeten niet gewoon alle elementen 
 			van het datumType dit XML attribute krijgen? -->

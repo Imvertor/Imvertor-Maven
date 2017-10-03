@@ -308,9 +308,6 @@
             <xsl:when test="@ismetadata">
                 <xsl:copy-of select="."/>
             </xsl:when>
-            <!-- Following if takes care of removing al ep:constructs whithout content within their ep:seq or ep:choice element. -->
-            <xsl:when test="ep:seq and not(ep:seq/*)"/>
-            <xsl:when test="ep:choice and not(ep:choice/*)"/>
             <!-- Following when's are used to split a construct if it contains subconstructs originated in more than one namespace.
                  The first one if the prefix of the current construct isn't yet determined and the second if it has been determined.
                  The construct is created for every namespace for which a subconstruct is present containing only those subconstruct
@@ -495,7 +492,29 @@
                     </xsl:if>
                 </xsl:for-each>                
             </xsl:when>
-            <!-- Following when is used if the current construct doesn't contains subconstructs originated in more than one namespace. -->           
+            <xsl:when test="@prefix = '$actualPrefix' and (ep:seq/* | ep:choice/*)">
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 2014',$debugging)"/>
+                <xsl:sequence select="imf:create-debug-track('Debuglocation 2014',$debugging)"/>
+                
+                <xsl:element name="{name(.)}">
+                    <xsl:apply-templates select="@*[local-name()!='prefix' and local-name()!='namespaceId']"/>
+                    <xsl:attribute name="prefix" select="@prefix"/>
+                    <xsl:attribute name="namespaceId" select="@namespaceId"/>
+                    <xsl:choose>
+                        <xsl:when test="@orderingDesired = 'no' or ancestor::ep:seq[@orderingDesired = 'no']">
+                            <xsl:apply-templates select="*">
+                                <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
+                            </xsl:apply-templates>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:apply-templates select="*">
+                                <xsl:sort select="ep:position" order="ascending" data-type="number"/>
+                                <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
+                            </xsl:apply-templates>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:element>
+            </xsl:when>              
             <xsl:when test="ep:seq/* | ep:choice/*">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 2013',$debugging)"/>
                 <xsl:sequence select="imf:create-debug-track('Debuglocation 2013',$debugging)"/>
@@ -535,30 +554,9 @@
                     </xsl:choose>
                 </xsl:element>
             </xsl:when>                
-            <xsl:when test="@prefix = '$actualPrefix' and ep:seq/* | ep:choice/*">
-                <xsl:sequence select="imf:create-debug-comment('Debuglocation 2014',$debugging)"/>
-                <xsl:sequence select="imf:create-debug-track('Debuglocation 2014',$debugging)"/>
-                
-                <xsl:element name="{name(.)}">
-                    <xsl:apply-templates select="@*[local-name()!='prefix' and local-name()!='namespaceId']"/>
-                    <xsl:attribute name="prefix" select="@prefix"/>
-                    <xsl:attribute name="namespaceId" select="@namespaceId"/>
-                    <xsl:choose>
-                        <xsl:when test="@orderingDesired = 'no' or ancestor::ep:seq[@orderingDesired = 'no']">
-                            <xsl:apply-templates select="*">
-                                <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
-                            </xsl:apply-templates>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:apply-templates select="*">
-                                <xsl:sort select="ep:position" order="ascending" data-type="number"/>
-                                <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
-                            </xsl:apply-templates>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:element>
-            </xsl:when>              
             <!-- This construct is only used for metadata constructs. -->
+            <!-- Following if takes care of removing al ep:constructs whithout content within their ep:seq or ep:choice element. -->
+            <xsl:when test="(ep:seq and not(ep:seq/*)) or (ep:choice and not(ep:choice/*))"/>
             <xsl:otherwise>
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 2015',$debugging)"/>
                 <xsl:sequence select="imf:create-debug-track('Debuglocation 2015',$debugging)"/>

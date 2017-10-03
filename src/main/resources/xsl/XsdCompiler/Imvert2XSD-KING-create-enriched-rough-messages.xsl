@@ -67,7 +67,16 @@
 		<xsl:sequence select="imf:create-debug-comment('debug:start B03000 /debug:start',$debugging)"/>
 		
 		<xsl:copy>
-			<xsl:copy-of select="@*"/>
+			<!--xsl:copy-of select="@*"/-->
+			<xsl:copy-of select="@*[name() != 'typeCode']"/>
+			<xsl:choose>
+				<xsl:when test="@typeCode = 'relatie' and parent::ep:construct[contains(@berichtCode,'Lk') and @typeCode='toplevel']">
+					<xsl:attribute name="typeCode" select="'toplevel-relatie'"/>					
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:copy-of select="@typeCode"/>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:choose>
 				<xsl:when test="contains($berichtCode,'Lk') or ((contains($berichtCode,'Di') or $berichtCode = 'Du01') and @context = 'update' or ancestor::ep:construct[@context = 'update'])">
 					<xsl:choose>
