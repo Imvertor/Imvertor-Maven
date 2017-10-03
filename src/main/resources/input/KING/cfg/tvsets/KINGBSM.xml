@@ -356,6 +356,21 @@
             </declared-values>
         </tv>
         
+        <tv norm="space" id="CFG-TV-E-TYPESALLOWED">
+            <name lang="nl">e-types genereren</name>
+            <desc>
+                Geeft aan of de -e complexTypes in de XML-schema's mee gegenereerd moeten worden.
+                Standaard worden deze mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
+            </desc>
+            <stereotypes>
+                <stereo required="no">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Nee</value>
+                <value default="yes">Ja</value>
+            </declared-values>
+        </tv>
+        
         
     </tagged-values>
 </tagset>

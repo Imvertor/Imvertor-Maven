@@ -1375,8 +1375,14 @@
 					<xsl:variable name="construct-Prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
 					
 					<xsl:variable name="type-is-scalar-non-emptyable" select="imvert:type-name = ('scalar-integer','scalar-decimal')"/>
-					
-					<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',$tokens[1],'-e'))"/>
+					<xsl:choose>
+						<xsl:when test="$global-e-types-allowed = 'Ja'">
+							<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',$tokens[1],'-e'))"/>							
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',$tokens[1]))"/>							
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:if test="($type-is-scalar-non-emptyable) and not(ancestor::imvert:package[contains(@formal-name,'Berichtstructuren')])">
 						<xsl:sequence select="imf:create-output-element('ep:voidable', 'true')"/>
 					</xsl:if>						
@@ -1592,7 +1598,14 @@
 						<xsl:choose> 
 							<xsl:when test="imvert:type-package='GML3'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034a',$debugging)"/>
-								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',concat(imf:capitalize(imvert:baretype),$vraagIndicatie,'-e')))"/>
+								<xsl:choose>
+									<xsl:when test="$global-e-types-allowed = 'Ja'">
+										<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',imf:capitalize(imvert:baretype),$vraagIndicatie,'-e'))"/>										
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',imf:capitalize(imvert:baretype)))"/>
+									</xsl:otherwise>
+								</xsl:choose>
 							</xsl:when>
 							<xsl:when test="$name = 'melding' and (ancestor::imvert:package/imvert:name = 'Model [Berichtstructuren]' or ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen')">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034b',$debugging)"/>
@@ -1728,11 +1741,25 @@
 							</xsl:when>
 							<xsl:when test="not(contains(imvert:type-name,'scalar'))">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034w',$debugging)"/>
-								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',concat(imf:capitalize(imvert:type-name),$vraagIndicatie,'-e')))"/>
+								<xsl:choose>
+									<xsl:when test="$global-e-types-allowed = 'Ja'">
+										<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',imf:capitalize(imvert:type-name),$vraagIndicatie,'-e'))"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',imf:capitalize(imvert:type-name)))"/>
+									</xsl:otherwise>
+								</xsl:choose>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034x',$debugging)"/>
-								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',$tokens[1],$vraagIndicatie,'-e'))"/>
+								<xsl:choose>
+									<xsl:when test="$global-e-types-allowed = 'Ja'">
+										<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',$tokens[1],$vraagIndicatie,'-e'))"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',$tokens[1]))"/>
+									</xsl:otherwise>
+								</xsl:choose>
 							</xsl:otherwise>
 						</xsl:choose>
 						<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>

@@ -175,13 +175,15 @@
                     niet werkte. Daarbij werd de variabele 'tech-nameReferingConstruct' niet goed gevuld.
                     De reden daarvoor was mij echter een raadsel. -->
                <xsl:variable name="construct">
-                   <ep:construct prefix="{//ep:construct[ep:type-name = concat(@prefix,':',$tech-name)][1]/@prefix}">
-                       <ep:tech-name><xsl:value-of select="//ep:construct[ep:type-name = concat(@prefix,':',$tech-name)][1]/ep:tech-name"/></ep:tech-name>
+                   <ep:construct prefix="{(//ep:construct[ep:type-name = concat(@prefix,':',$tech-name)])[1]/@prefix}">
+                       <ep:tech-name><xsl:value-of select="(//ep:construct[ep:type-name = concat(@prefix,':',$tech-name)])[1]/ep:tech-name"/></ep:tech-name>
                        <!--xsl:sequence  select="//ep:construct[ep:type-name = concat(@prefix,':',$tech-name)][1]"/-->
                    </ep:construct>
                </xsl:variable>
-               <xsl:variable name="prefixReferingConstruct" select="$construct//ep:construct[not(ancestor::ep:seq)]/@prefix"/>
-               <xsl:variable name="tech-nameReferingConstruct" select="$construct//ep:construct[not(ancestor::ep:seq)]/ep:tech-name"/>
+               <!--xsl:variable name="prefixReferingConstruct" select="$construct//ep:construct[not(ancestor::ep:seq)]/@prefix"/>
+               <xsl:variable name="tech-nameReferingConstruct" select="$construct//ep:construct[not(ancestor::ep:seq)]/ep:tech-name"/-->
+               <xsl:variable name="prefixReferingConstruct" select="$construct//ep:construct/@prefix"/>
+               <xsl:variable name="tech-nameReferingConstruct" select="$construct//ep:construct/ep:tech-name"/>
                
                <xsl:choose>
                    <xsl:when test="count(//ep:construct[@prefix = $prefixReferingConstruct and ep:tech-name = $tech-nameReferingConstruct]) > 0">
