@@ -52,7 +52,7 @@
  
     <xsl:template match="mark">
         <xsl:choose>
-            <xsl:when test="../@approach = $nil-approach">
+            <xsl:when test="@approach = $nil-approach">
                 <xsl:apply-templates/>
             </xsl:when>
             <xsl:otherwise>
@@ -61,20 +61,27 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="mark[@approach = 'elm']/xs:element">
-        <xsl:next-match/>
+    <!-- 
+        assign the nillable attribute to all elements that are marked nillable 
+    -->
+    <xsl:template match="xs:element[parent::mark[@approach = 'elm' and imf:boolean(@nillable)]]">
+        <xs:element>
+            <xsl:apply-templates select="@*"/>
+            <xsl:attribute name="nillable">true</xsl:attribute>
+            <xsl:apply-templates select="node()"/>
+        </xs:element>
         <!-- add nilreason when needed -->    
-        <xsl:if test="imf:boolean(../@nilreason)">
+        <xsl:if test="imf:boolean(parent::mark/@nilreason)">
             <xs:element name="{@name}Nilreason" type="xs:string" minOccurs="0"/>
         </xsl:if>
     </xsl:template>
     
-    <xsl:template match="mark[@approach = 'att']/xs:element">
+    <xsl:template match="xs:element[parent::mark[@approach = 'att']]">
         <xsl:copy>
             <xsl:apply-templates/>
             <!-- add nilreason when needed -->
             <xsl:choose>
-                <xsl:when test="imf:boolean(../@nilreason)">
+                <xsl:when test="imf:boolean(parent::mark/@nilreason)">
                     <xs:complexType>
                         <xs:simpleContent>
                             <xs:extension base="{../@type}">

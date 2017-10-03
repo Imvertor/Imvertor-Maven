@@ -161,6 +161,12 @@
                 <managed-ids/>
             </construct>
             <construct>
+                <name>GM_Surface</name>
+                <catalog-entry>#Surface</catalog-entry>
+                <xsd-type name="Surface" asAttributeDesignation="complextype" asAttribute="SurfacePropertyType"/>
+                <managed-ids/>
+            </construct>
+            <construct>
                 <name>GM_MultiSurface</name>
                 <catalog-entry>#MultiSurface</catalog-entry>
                 <xsd-type name="MultiSurface" asAttributeDesignation="complextype" asAttribute="MultiSurfaceType"/>

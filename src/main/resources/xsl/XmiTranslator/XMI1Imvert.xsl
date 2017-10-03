@@ -1115,7 +1115,7 @@
     <xsl:function name="imf:get-package-name" as="xs:string">
         <xsl:param name="type-id" as="xs:string?"/>
         <xsl:variable name="class" select="imf:get-key($xmi-document,'key-construct-by-id',$type-id)"/>
-        <xsl:value-of select="imf:get-canonical-name(($class/ancestor-or-self::UML:Package)[last()]/@name)"/>
+        <xsl:value-of select="imf:get-canonical-name((($class/ancestor-or-self::UML:Package)[last()]/@name,'OUTSIDE')[1])"/>
     </xsl:function>
     
     <xsl:function name="imf:date-to-isodate" as="xs:string?">
