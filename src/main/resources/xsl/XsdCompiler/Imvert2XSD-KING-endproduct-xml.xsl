@@ -120,6 +120,16 @@
     <!-- ROME: Het betreft hier de verkorte alias van het koppelvlak. Eerste variabele moet nog vervangen worden door de tweede. -->
     <xsl:variable name="verkorteAlias" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
     <xsl:variable name="kv-prefix" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
+    <xsl:variable name="global-empty-enumeration">
+        <xsl:choose>
+            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-EMPTYENUMERATION'))">
+                <xsl:value-of select="'Ja'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-EMPTYENUMERATION')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
     
     <!--xsl:variable name="kv-prefix" select="$enriched-rough-messages//@kv-prefix"/-->
     
@@ -143,7 +153,7 @@
     <!-- Within this variable all messages defined within the BSM of the koppelvlak are placed, transformed to the imvertor endproduct (ep) format.-->
     <xsl:variable name="imvert-endproduct">
         
-        <ep:message-set>
+        <ep:message-set global-empty-enumeration="{$global-empty-enumeration}">
             <xsl:sequence select="imf:create-debug-comment('Debuglocation 1',$debugging)"/>
 
             <xsl:sequence select="imf:create-output-element('ep:name', $packages/imvert:application)"/>
@@ -2050,6 +2060,16 @@
     <xsl:template match="imvert:class" mode="mode-global-enumeration">
         <xsl:sequence select="imf:create-debug-comment('Debuglocation 28',$debugging)"/>
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
+        <xsl:variable name="local-empty-enumeration">
+            <xsl:choose>
+                <xsl:when test="empty(imf:get-tagged-value(.,'##CFG-TV-EMPTYENUMERATION'))">
+                    <xsl:value-of select="$global-empty-enumeration"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="imf:get-tagged-value(.,'##CFG-TV-EMPTYENUMERATION')"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         
         <xsl:variable name="suppliers" as="element(ep:suppliers)">
             <ep:suppliers>
@@ -2107,7 +2127,9 @@
                     <xsl:sequence select="imf:create-output-element('ep:tech-name', imf:capitalize($compiled-name))"/>
                     <xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-string')"/>
                     <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-enum"/>
-                    <ep:enum></ep:enum>
+                    <xsl:if test="$local-empty-enumeration = 'Ja'">
+                        <ep:enum></ep:enum>
+                    </xsl:if>
                 </ep:construct>
             </xsl:when>
         </xsl:choose>
