@@ -120,13 +120,24 @@
     <!-- ROME: Het betreft hier de verkorte alias van het koppelvlak. Eerste variabele moet nog vervangen worden door de tweede. -->
     <xsl:variable name="verkorteAlias" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
     <xsl:variable name="kv-prefix" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
-    <xsl:variable name="global-empty-enumeration">
+    <xsl:variable name="global-empty-enumeration-allowed">
         <xsl:choose>
-            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-EMPTYENUMERATION'))">
+            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-EMPTYENUMERATIONALLOWED'))">
                 <xsl:value-of select="'Ja'"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-EMPTYENUMERATION')"/>
+                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-EMPTYENUMERATIONALLOWED')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    
+    <xsl:variable name="global-noValue-allowed">
+        <xsl:choose>
+            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-NOVALUEALLOWED'))">
+                <xsl:value-of select="'Ja'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-NOVALUEALLOWED')"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:variable>
@@ -153,7 +164,7 @@
     <!-- Within this variable all messages defined within the BSM of the koppelvlak are placed, transformed to the imvertor endproduct (ep) format.-->
     <xsl:variable name="imvert-endproduct">
         
-        <ep:message-set global-empty-enumeration="{$global-empty-enumeration}">
+        <ep:message-set global-empty-enumeration-allowed="{$global-empty-enumeration-allowed}">
             <xsl:sequence select="imf:create-debug-comment('Debuglocation 1',$debugging)"/>
 
             <xsl:sequence select="imf:create-output-element('ep:name', $packages/imvert:application)"/>
@@ -2060,13 +2071,13 @@
     <xsl:template match="imvert:class" mode="mode-global-enumeration">
         <xsl:sequence select="imf:create-debug-comment('Debuglocation 28',$debugging)"/>
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
-        <xsl:variable name="local-empty-enumeration">
+        <xsl:variable name="local-empty-enumeration-allowed">
             <xsl:choose>
-                <xsl:when test="empty(imf:get-tagged-value(.,'##CFG-TV-EMPTYENUMERATION'))">
-                    <xsl:value-of select="$global-empty-enumeration"/>
+                <xsl:when test="empty(imf:get-tagged-value(.,'##CFG-TV-EMPTYENUMERATIONALLOWED'))">
+                    <xsl:value-of select="$global-empty-enumeration-allowed"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select="imf:get-tagged-value(.,'##CFG-TV-EMPTYENUMERATION')"/>
+                    <xsl:value-of select="imf:get-tagged-value(.,'##CFG-TV-EMPTYENUMERATIONALLOWED')"/>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
@@ -2113,21 +2124,23 @@
                     <ep:type-name>
                         <xsl:value-of select="concat($construct-Prefix,':',imf:capitalize($compiled-name))"/>
                     </ep:type-name>
-                    <ep:seq>
-                        <ep:construct ismetadata="yes">
-                            <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
-                            <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
-                            <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
-                            <ep:min-occurs>0</ep:min-occurs>
-                        </ep:construct>                     
-                    </ep:seq>
+                    <xsl:if test="$global-noValue-allowed = 'Ja'">                        
+                        <ep:seq>
+                            <ep:construct ismetadata="yes">
+                                <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                                <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                                <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                                <ep:min-occurs>0</ep:min-occurs>
+                            </ep:construct>                     
+                        </ep:seq>
+                    </xsl:if>
                 </ep:construct>
                 <ep:construct type="simpleData" prefix="{$construct-Prefix}" isdatatype="yes">
                     <xsl:sequence select="imf:create-output-element('ep:name', imf:capitalize($compiled-name))"/>
                     <xsl:sequence select="imf:create-output-element('ep:tech-name', imf:capitalize($compiled-name))"/>
                     <xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-string')"/>
                     <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-enum"/>
-                    <xsl:if test="$local-empty-enumeration = 'Ja'">
+                    <xsl:if test="$local-empty-enumeration-allowed = 'Ja'">
                         <ep:enum></ep:enum>
                     </xsl:if>
                 </ep:construct>
@@ -2507,7 +2520,6 @@
     <!-- called only with attributes that have no type-id -->
     <xsl:template match="imvert:attribute" mode="mode-global-attribute-simpletype">
         <xsl:sequence select="imf:create-debug-comment('Debuglocation 32',$debugging)"/>
-
         
         <xsl:variable name="suppliers" as="element(ep:suppliers)">
             <ep:suppliers>
@@ -2561,14 +2573,16 @@
                     <ep:type-name>
                         <xsl:value-of select="imf:get-external-type-name(.,true())"/>
                     </ep:type-name>
-                    <ep:seq>
-                        <ep:construct ismetadata="yes">
-                            <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
-                            <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
-                            <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
-                            <ep:min-occurs>0</ep:min-occurs>
-                        </ep:construct>
-                    </ep:seq>
+                    <xsl:if test="$global-noValue-allowed = 'Ja'">
+                        <ep:seq>
+                            <ep:construct ismetadata="yes">
+                                <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                                <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                                <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                                <ep:min-occurs>0</ep:min-occurs>
+                            </ep:construct>
+                        </ep:seq>
+                    </xsl:if>
                 </ep:construct>
                 <!-- ROME: Onderzoeken hoe we kunnen bepalen of er een apart type met wildcard bij GML types opgenomen moet worden.
                            Een wildcard mag immers alleen bij een stringtype opgenomen worden en alleen binnen selecties.
@@ -2581,12 +2595,14 @@
                             <xsl:value-of select="imf:get-external-type-name(.,true())"/>
                         </ep:type-name>
                         <ep:seq>
-                            <ep:construct ismetadata="yes">
-                                <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
-                                <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
-                                <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
-                                <ep:min-occurs>0</ep:min-occurs>
-                            </ep:construct> 
+                            <xsl:if test="$global-noValue-allowed = 'Ja'">
+                                <ep:construct ismetadata="yes">
+                                    <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                                    <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                                    <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                                    <ep:min-occurs>0</ep:min-occurs>
+                                </ep:construct>
+                            </xsl:if>
                             <ep:construct ismetadata="yes">
                                 <xsl:sequence select="imf:create-output-element('ep:name', 'wildcard')"/>
                                 <xsl:sequence select="imf:create-output-element('ep:tech-name', 'wildcard')"/>
@@ -2664,14 +2680,16 @@
                     <ep:type-name imvert:checksum="{$checksum-string}">
                         <xsl:value-of select="concat($construct-Prefix,':',$tokens[1])"/>
                     </ep:type-name>
-                    <ep:seq>
-                        <ep:construct ismetadata="yes">
-                            <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
-                            <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
-                            <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
-                            <ep:min-occurs>0</ep:min-occurs>
-                        </ep:construct>                     
-                    </ep:seq>
+                    <xsl:if test="$global-noValue-allowed = 'Ja'">
+                        <ep:seq>
+                            <ep:construct ismetadata="yes">
+                                <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                                <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                                <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                                <ep:min-occurs>0</ep:min-occurs>
+                            </ep:construct>                     
+                        </ep:seq>
+                    </xsl:if>
                 </ep:construct>
                 <xsl:if test="(empty($nillable-patroon) or $min-length = 0) and starts-with($checksum-string,'String')">
                     <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}" imvert:checksum="{concat($checksum-string,'-Vraag-simpleContentcomplexData')}">
@@ -2681,12 +2699,14 @@
                             <xsl:value-of select="concat($construct-Prefix,':',$tokens[1])"/>
                         </ep:type-name>
                         <ep:seq>
-                            <ep:construct ismetadata="yes">
-                                <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
-                                <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
-                                <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
-                                <ep:min-occurs>0</ep:min-occurs>
-                            </ep:construct>                     
+                            <xsl:if test="$global-noValue-allowed = 'Ja'">
+                                <ep:construct ismetadata="yes">
+                                    <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                                    <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                                    <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                                    <ep:min-occurs>0</ep:min-occurs>
+                                </ep:construct>
+                            </xsl:if>
                             <ep:construct ismetadata="yes">
                                 <xsl:sequence select="imf:create-output-element('ep:name', 'wildcard')"/>
                                 <xsl:sequence select="imf:create-output-element('ep:tech-name', 'wildcard')"/>

@@ -324,15 +324,30 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" rules="NOC" id="CFG-TV-EMPTYENUMERATION">
+        <tv norm="space" id="CFG-TV-EMPTYENUMERATIONALLOWED">
             <name lang="nl">Lege enumeration toegestaan</name>
             <desc>
                 Geeft aan of er aan elke enumeratie simpleType ook een lege enumeratie toegevoegd moet worden.
-                Standaard wordt dit meegegenereerd. Kan zowel op Koppelvlak niveau als op attribuut niveau worden 
+                Standaard wordt dit mee gegenereerd. Kan zowel op Koppelvlak niveau als op attribuut niveau worden 
                 gedefinieerd waarbij die op attribuutniveau die op op Koppelvlak niveau overrulled. 
             </desc>
             <stereotypes>
                 <stereo required="no">stereotype-name-enumeration</stereo>
+                <stereo required="no">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Nee</value>
+                <value default="yes">Ja</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-NOVALUEALLOWED">
+            <name lang="nl">noValue toegestaan</name>
+            <desc>
+                Geeft aan of het StUF:noValue attribute in de XML-schema's mee gegenereerd wordt.
+                Standaard wordt dit mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
+            </desc>
+            <stereotypes>
                 <stereo required="no">stereotype-name-application-package</stereo>
             </stereotypes>
             <declared-values lang="nl">

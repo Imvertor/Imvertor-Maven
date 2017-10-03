@@ -3297,7 +3297,7 @@
 			element. -->
 
 		<xsl:if
-			test="$attributeTypeRow//col[@name = 'NoValue' and data = 'O']">
+			test="$attributeTypeRow//col[@name = 'NoValue' and data = 'O'] and $global-noValue-allowed = 'Ja'">
 			<ep:construct ismetadata="yes">
 				<ep:name>noValue</ep:name>
 				<ep:tech-name>noValue</ep:tech-name>
@@ -3306,7 +3306,7 @@
 			</ep:construct>
 		</xsl:if>
 		<xsl:if
-			test="$attributeTypeRow//col[@name = 'NoValue' and data = 'V']">
+			test="$attributeTypeRow//col[@name = 'NoValue' and data = 'V'] and $global-noValue-allowed = 'Ja'">
 			<ep:construct ismetadata="yes">
 				<ep:name>noValue</ep:name>
 				<ep:tech-name>noValue</ep:tech-name>

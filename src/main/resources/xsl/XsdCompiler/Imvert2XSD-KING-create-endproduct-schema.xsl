@@ -614,16 +614,13 @@
 					</xsl:if>
 					<xs:complexContent>
 						<xs:extension base="{ep:type-name}">
-							<xsl:if test="@wildcard = 'true'">
-								<xs:attribute name="wildcard" type="{$StUF-prefix}:Wildcard"/>
-							</xsl:if>
 							<xsl:apply-templates select="ep:seq/ep:construct[@ismetadata]"
 								mode="generateAttributes"/>
 						</xs:extension>
 					</xs:complexContent>
 				</xs:complexType>
 			</xsl:when>
-			<xsl:when test="ep:seq/ep:* or ep:choice/ep:*">
+			<!--xsl:when test="ep:seq/ep:* or ep:choice/ep:*">
 				<xsl:sequence select="imf:create-debug-comment('Debuglocation 5015a', $debugging)"/>
 				<xs:complexType>
 					<xsl:attribute name="name" select="ep:tech-name"/>
@@ -636,15 +633,31 @@
 					</xsl:if>
 					<xs:simpleContent>
 						<xs:extension base="{ep:type-name}">
-							<xsl:if test="@wildcard = 'true'">
-								<xs:attribute name="wildcard" type="{$StUF-prefix}:Wildcard"/>
-							</xsl:if>
 							<xsl:apply-templates select="ep:seq/ep:construct[@ismetadata]"
 								mode="generateAttributes"/>
 						</xs:extension>
 					</xs:simpleContent>
 				</xs:complexType>
-			</xsl:when>
+			</xsl:when-->
+			<xsl:otherwise>
+				<xsl:sequence select="imf:create-debug-comment('Debuglocation 5015a', $debugging)"/>
+				<xs:complexType>
+					<xsl:attribute name="name" select="ep:tech-name"/>
+					<xsl:if test="ep:documentation">
+						<xs:annotation>
+							<xs:documentation>
+								<xsl:value-of select="ep:documentation"/>
+							</xs:documentation>
+						</xs:annotation>
+					</xsl:if>
+					<xs:simpleContent>
+						<xs:extension base="{ep:type-name}">
+							<xsl:apply-templates select="ep:seq/ep:construct[@ismetadata]"
+								mode="generateAttributes"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 
