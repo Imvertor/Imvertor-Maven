@@ -1593,7 +1593,7 @@
             <xsl:for-each select="$tagged-values"> <!-- <tv> elements --> 
                 <xsl:variable name="name" select="@tag"/>
                 <xsl:variable name="level" select="@imvert-level"/>
-                <xsl:variable name="norm-name" select="imf:get-normalized-name($name,'tv-name')"/>
+                <xsl:variable name="norm-name" select="imf:get-normalized-name(string($name),'tv-name')"/>
                 <xsl:variable name="declared-tv" select="$additional-tagged-values[name = $norm-name]"/>
                 <xsl:variable name="value" select="@value"/>
                 <xsl:variable name="norm-value" select="imf:get-tagged-value-norm(.,$declared-tv/@norm)"/>

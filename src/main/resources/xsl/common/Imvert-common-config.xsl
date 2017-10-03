@@ -381,10 +381,10 @@
         Pass a name found in some specification, and name(s) expected, and check if the names match according to a naming scheme.
     -->
     <xsl:function name="imf:name-match" as="xs:boolean">
-        <xsl:param name="found-name" as="xs:string"/>
+        <xsl:param name="found-name" as="xs:string?"/>
         <xsl:param name="expected-name" as="xs:string*"/>
         <xsl:param name="scheme" as="xs:string"/>
-        <xsl:sequence select="imf:get-normalized-name($found-name,$scheme) = (for $n in $expected-name return imf:get-normalized-name($n,$scheme))"/>
+        <xsl:sequence select="imf:get-normalized-name(string($found-name),$scheme) = (for $n in $expected-name return imf:get-normalized-name($n,$scheme))"/>
     </xsl:function>
     
     <!-- return normalized string value, or HTML content when applicable -->
