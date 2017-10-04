@@ -153,6 +153,30 @@
         </xsl:choose>
     </xsl:variable>
     
+    
+    <xsl:variable name="global-tijdvakGeldigheid-allowed">
+        <xsl:choose>
+            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-E-TIJDVAKGELDIGHEIDALLOWED'))">
+                <xsl:value-of select="'Optioneel'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-E-TIJDVAKGELDIGHEIDALLOWED')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    
+    
+    <xsl:variable name="global-tijdstipRegistratie-allowed">
+        <xsl:choose>
+            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-E-TIJDSTIPREGISTRATIEALLOWED'))">
+                <xsl:value-of select="'Optioneel'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-E-TIJDSTIPREGISTRATIEALLOWED')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    
     <!--xsl:variable name="kv-prefix" select="$enriched-rough-messages//@kv-prefix"/-->
     
     <xsl:variable name="prefix" as="xs:string">
@@ -769,6 +793,7 @@
                         
                         <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
                         <xsl:when test="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
+                            <xsl:sequence select="imf:create-debug-comment('Debuglocation 14a',$debugging)"/>
                             <xsl:apply-templates select="$construct"
                                 mode="create-message-content">
                                 <xsl:with-param name="berichtName" select="$berichtName"/>
@@ -785,6 +810,7 @@
                             <ep:seq>
                                 <xsl:sequence
                                     select="imf:create-output-element('ep:min-occurs', 0)" />
+                                <xsl:sequence select="imf:create-debug-comment('Debuglocation 14b',$debugging)"/>
                                 <!-- The uml attributes of the uml class are placed here. -->
                                 <xsl:apply-templates select="$construct"
                                     mode="create-message-content">
@@ -796,6 +822,7 @@
                                     <xsl:with-param name="context" select="''" />
                                     <xsl:with-param name="verwerkingsModus" select="''"/>
                                 </xsl:apply-templates>
+                                <xsl:sequence select="imf:create-debug-comment('Debuglocation 14c',$debugging)"/>
                                 <!-- The uml groups of the uml class are placed here. -->
                                 <xsl:apply-templates select="$construct"
                                     mode="create-message-content">
@@ -855,22 +882,42 @@
                                     'stereotype-name-antwoordberichttype',
                                     'stereotype-name-kennisgevingberichttype',
                                     'stereotype-name-synchronisatieberichttype'))) and not(contains(@verwerkingsModus,'matchgegevens'))">
-                                    <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                        <ep:name>tijdvakGeldigheid</ep:name>
-                                        <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
-                                        <ep:max-occurs>1</ep:max-occurs>
-                                        <ep:min-occurs>0</ep:min-occurs>
-                                        <ep:position>155</ep:position>
-                                        <ep:href>StUF:tijdvakGeldigheid</ep:href>
-                                    </ep:constructRef>
-                                    <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                        <ep:name>tijdstipRegistratie</ep:name>
-                                        <ep:tech-name>tijdstipRegistratie</ep:tech-name>
-                                        <ep:max-occurs>1</ep:max-occurs>
-                                        <ep:min-occurs>0</ep:min-occurs>
-                                        <ep:position>160</ep:position>
-                                        <ep:href>StUF:tijdstipRegistratie</ep:href>
-                                    </ep:constructRef>
+                                    <xsl:if test="$global-tijdvakGeldigheid-allowed != 'Nee'">
+                                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 14d',$debugging)"/>
+                                        <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                            <ep:name>tijdvakGeldigheid</ep:name>
+                                            <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
+                                            <ep:max-occurs>1</ep:max-occurs>
+                                            <xsl:choose>
+                                                <xsl:when test="$global-tijdvakGeldigheid-allowed = 'Verplicht'">
+                                                    <ep:min-occurs>1</ep:min-occurs>
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                    <ep:min-occurs>0</ep:min-occurs>
+                                                </xsl:otherwise>
+                                            </xsl:choose>
+                                            <ep:position>155</ep:position>
+                                            <ep:href>StUF:tijdvakGeldigheid</ep:href>
+                                        </ep:constructRef>
+                                    </xsl:if>
+                                    <xsl:if test="$global-tijdstipRegistratie-allowed != 'Nee'">
+                                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 14e',$debugging)"/>
+                                        <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                            <ep:name>tijdstipRegistratie</ep:name>
+                                            <ep:tech-name>tijdstipRegistratie</ep:tech-name>
+                                            <ep:max-occurs>1</ep:max-occurs>
+                                            <xsl:choose>
+                                                <xsl:when test="$global-tijdstipRegistratie-allowed = 'Verplicht'">
+                                                    <ep:min-occurs>1</ep:min-occurs>
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                    <ep:min-occurs>0</ep:min-occurs>
+                                                </xsl:otherwise>
+                                            </xsl:choose>
+                                            <ep:position>160</ep:position>
+                                            <ep:href>StUF:tijdstipRegistratie</ep:href>
+                                        </ep:constructRef>
+                                    </xsl:if>
                                     <ep:constructRef prefix="StUF" externalNamespace="yes">
                                         <ep:name>extraElementen</ep:name>
                                         <ep:tech-name>extraElementen</ep:tech-name>
@@ -1300,22 +1347,42 @@
                                            'stereotype-name-antwoordberichttype',
                                            'stereotype-name-kennisgevingberichttype',
                                            'stereotype-name-synchronisatieberichttype'))) and not(contains(@verwerkingsModus,'matchgegevens'))">
-                                           <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                               <ep:name>tijdvakGeldigheid</ep:name>
-                                               <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
-                                               <ep:max-occurs>1</ep:max-occurs>
-                                               <ep:min-occurs>0</ep:min-occurs>
-                                               <ep:position>155</ep:position>
-                                               <ep:href>StUF:tijdvakGeldigheid</ep:href>
-                                           </ep:constructRef>
-                                           <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                               <ep:name>tijdstipRegistratie</ep:name>
-                                               <ep:tech-name>tijdstipRegistratie</ep:tech-name>
-                                               <ep:max-occurs>1</ep:max-occurs>
-                                               <ep:min-occurs>0</ep:min-occurs>
-                                               <ep:position>160</ep:position>
-                                               <ep:href>StUF:tijdstipRegistratie</ep:href>
-                                           </ep:constructRef>
+                                           <xsl:if test="$global-tijdvakGeldigheid-allowed != 'Nee'">
+                                               <xsl:sequence select="imf:create-debug-comment('Debuglocation 17d',$debugging)"/>
+                                               <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                                   <ep:name>tijdvakGeldigheid</ep:name>
+                                                   <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
+                                                   <ep:max-occurs>1</ep:max-occurs>
+                                                   <xsl:choose>
+                                                       <xsl:when test="$global-tijdvakGeldigheid-allowed = 'Verplicht'">
+                                                           <ep:min-occurs>1</ep:min-occurs>
+                                                       </xsl:when>
+                                                       <xsl:otherwise>
+                                                           <ep:min-occurs>0</ep:min-occurs>
+                                                       </xsl:otherwise>
+                                                   </xsl:choose>
+                                                   <ep:position>155</ep:position>
+                                                   <ep:href>StUF:tijdvakGeldigheid</ep:href>
+                                               </ep:constructRef>
+                                           </xsl:if>
+                                           <xsl:if test="$global-tijdstipRegistratie-allowed != 'Nee'">
+                                               <xsl:sequence select="imf:create-debug-comment('Debuglocation 17e',$debugging)"/>
+                                               <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                                   <ep:name>tijdstipRegistratie</ep:name>
+                                                   <ep:tech-name>tijdstipRegistratie</ep:tech-name>
+                                                   <ep:max-occurs>1</ep:max-occurs>
+                                                   <xsl:choose>
+                                                       <xsl:when test="$global-tijdstipRegistratie-allowed = 'Verplicht'">
+                                                           <ep:min-occurs>1</ep:min-occurs>
+                                                       </xsl:when>
+                                                       <xsl:otherwise>
+                                                           <ep:min-occurs>0</ep:min-occurs>
+                                                       </xsl:otherwise>
+                                                   </xsl:choose>
+                                                   <ep:position>160</ep:position>
+                                                   <ep:href>StUF:tijdstipRegistratie</ep:href>
+                                               </ep:constructRef>
+                                           </xsl:if>
                                            <ep:constructRef prefix="StUF" externalNamespace="yes">
                                                <ep:name>extraElementen</ep:name>
                                                <ep:tech-name>extraElementen</ep:tech-name>
@@ -1587,6 +1654,7 @@
                                     
                                    
                                    <xsl:when test="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
+                                       <xsl:sequence select="imf:create-debug-comment('Debuglocation 20a',$debugging)"/>
                                        <xsl:apply-templates select="$construct"
                                            mode="create-message-content">
                                            <xsl:with-param name="berichtName" select="$berichtName"/>
@@ -1604,6 +1672,7 @@
                                    <!-- Else the content of the current uml class is processed. -->
                                    <xsl:otherwise>
                                        <ep:seq>
+                                           <xsl:sequence select="imf:create-debug-comment('Debuglocation 20b',$debugging)"/>
                                            <!-- The uml attributes of the uml class are placed here. -->
                                            <xsl:apply-templates select="$construct"
                                                mode="create-message-content">
@@ -1618,6 +1687,7 @@
                                                <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
                                                <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
                                            </xsl:apply-templates>
+                                           <xsl:sequence select="imf:create-debug-comment('Debuglocation 20c',$debugging)"/>
                                            <!-- The uml groups, of the uml group, for which historiematerieel is applicable are placed here. -->
                                            <xsl:apply-templates select="$construct"
                                                mode="create-message-content">
@@ -1651,6 +1721,14 @@
                                                <ep:min-occurs>0</ep:min-occurs>
                                                <ep:position>150</ep:position>
                                            </ep:constructRef -->
+                                           <xsl:if test="$global-tijdvakGeldigheid-allowed != 'Verplicht'">
+                                               <xsl:variable name="msg"
+                                                   select="concat('The tagged value [tijdvakGeldigheid genereren] is set to ',$global-tijdvakGeldigheid-allowed,'. However in the historieMaterieel elements within the messagetype ', $berichtCode, ' it must be required.')"/>
+                                               <xsl:sequence select="imf:msg('WARN', $msg)"/>
+                                           </xsl:if>
+                                           <xsl:sequence select="imf:create-debug-comment('Debuglocation 20d',$debugging)"/>
+                                           <!-- ROME: Het Kadaster wil het genereren van tijdvakGeldigheid kunnen uitschakelen.
+                                                      In deze situatie is het echter verplicht. Wat doen we er dan mee? -->
                                            <ep:constructRef prefix="StUF" externalNamespace="yes">
                                                <ep:name>tijdvakGeldigheid</ep:name>
                                                <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
@@ -1659,13 +1737,27 @@
                                                <ep:position>155</ep:position>
                                                <ep:href>StUF:tijdvakGeldigheid</ep:href>
                                            </ep:constructRef>
+                                           
                                            <!-- If 'Formele historie' is applicable for the current class a the following construct and constructRef are generated. -->
                                            <xsl:if test="@indicatieFormeleHistorie='Ja'">
+                                               <xsl:if test="$global-tijdstipRegistratie-allowed = 'Nee'">
+                                                   <xsl:variable name="msg"
+                                                       select="concat('The tagged value [tijdstipRegistratie genereren] is set to ',$global-tijdstipRegistratie-allowed,'. However in the historieMaterieel elements within the messagetype ', $berichtCode, ' it must be at least optional.')"/>
+                                                   <xsl:sequence select="imf:msg('WARN', $msg)"/>
+                                               </xsl:if>
+                                               <xsl:sequence select="imf:create-debug-comment('Debuglocation 20e',$debugging)"/>
                                                <ep:constructRef prefix="StUF" externalNamespace="yes">
                                                    <ep:name>tijdstipRegistratie</ep:name>
                                                    <ep:tech-name>tijdstipRegistratie</ep:tech-name>
                                                    <ep:max-occurs>1</ep:max-occurs>
-                                                   <ep:min-occurs>0</ep:min-occurs>
+                                                   <xsl:choose>
+                                                       <xsl:when test="$global-tijdstipRegistratie-allowed = 'Verplicht'">
+                                                           <ep:min-occurs>1</ep:min-occurs>
+                                                       </xsl:when>
+                                                       <xsl:otherwise>
+                                                           <ep:min-occurs>0</ep:min-occurs>
+                                                       </xsl:otherwise>
+                                                   </xsl:choose>
                                                    <ep:position>160</ep:position>
                                                    <ep:href>StUF:tijdstipRegistratie</ep:href>
                                                </ep:constructRef>
@@ -1846,6 +1938,7 @@
                                    
                                    
                                    <xsl:when test="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
+                                       <xsl:sequence select="imf:create-debug-comment('Debuglocation 23a',$debugging)"/>
                                        <xsl:apply-templates select="$construct"
                                            mode="create-message-content">
                                            <xsl:with-param name="berichtName" select="$berichtName"/>
@@ -1862,6 +1955,7 @@
                                    <!-- Else the content of the current uml class is processed. -->
                                    <xsl:otherwise>                                     
                                        <ep:seq>
+                                           <xsl:sequence select="imf:create-debug-comment('Debuglocation 23b',$debugging)"/>
                                            <!-- The uml attributes of the uml class are placed here. -->
                                            <xsl:apply-templates select="$construct"
                                                mode="create-message-content">
@@ -1875,6 +1969,7 @@
                                                <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
                                                <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
                                            </xsl:apply-templates>
+                                           <xsl:sequence select="imf:create-debug-comment('Debuglocation 23c',$debugging)"/>
                                            <!-- The uml groups, of the uml group, for which historiematerieel is applicable are placed here. -->
                                            <xsl:apply-templates select="$construct"
                                                mode="create-message-content">
@@ -1907,6 +2002,12 @@
                                                <ep:min-occurs>0</ep:min-occurs>
                                                <ep:position>150</ep:position>
                                            </ep:constructRef -->
+                                           <xsl:if test="$global-tijdvakGeldigheid-allowed != 'Verplicht'">
+                                               <xsl:variable name="msg"
+                                                   select="concat('The tagged value [tijdvakGeldigheid genereren] is set to ',$global-tijdvakGeldigheid-allowed,'. However in the historieFormeel element within the messagetype ', $berichtCode, ' it must be required.')"/>
+                                               <xsl:sequence select="imf:msg('WARN', $msg)"/>
+                                           </xsl:if>
+                                           <xsl:sequence select="imf:create-debug-comment('Debuglocation 23d',$debugging)"/>
                                            <ep:constructRef prefix="StUF" externalNamespace="yes">
                                                <ep:name>tijdvakGeldigheid</ep:name>
                                                <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
@@ -1915,6 +2016,12 @@
                                                <ep:position>155</ep:position>
                                                <ep:href>StUF:tijdvakGeldigheid</ep:href>
                                            </ep:constructRef>
+                                           <xsl:if test="$global-tijdstipRegistratie-allowed = ('Nee','Optioneel')">
+                                               <xsl:variable name="msg"
+                                                   select="concat('The tagged value [tijdstipRegistratie genereren] is set to ',$global-tijdstipRegistratie-allowed,'. However in the historieFormeel element within the messagetype ', $berichtCode, ' it must be required.')"/>
+                                               <xsl:sequence select="imf:msg('WARN', $msg)"/>
+                                           </xsl:if>
+                                           <xsl:sequence select="imf:create-debug-comment('Debuglocation 23e',$debugging)"/>
                                            <ep:constructRef prefix="StUF" externalNamespace="yes">
                                                <ep:name>tijdstipRegistratie</ep:name>
                                                <ep:tech-name>tijdstipRegistratie</ep:tech-name>

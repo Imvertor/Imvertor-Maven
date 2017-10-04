@@ -2244,10 +2244,12 @@
 								<ep:href>StUF:tijdvakRelatie</ep:href>
 							</ep:constructRef>
 						</xsl:if>
-						<!-- A 'tijdvakGeldigheid' element is only allowed when the relatie has attributes. -->
+						<!-- A 'tijdvakGeldigheid' element is only allowed when the relatie has attributes. 
+							 It can only be skipped if $generateHistorieConstruct isn't equal to 'MaterieleHistorie' or 'FormeleHistorie'. -->
+						
 						<!-- ROME: Het is de vraag of het voldoende is om te checken dat er een association-class is.
 							 Wellicht moet er ook gecheckt worden of die association class ook attributes heeft. -->
-						<xsl:if test="imvert:association-class">
+						<xsl:if test="imvert:association-class and not($generateHistorieConstruct != ('MaterieleHistorie','FormeleHistorie') and $global-tijdvakGeldigheid-allowed = 'Nee')">
 							<xsl:sequence select="imf:create-debug-comment('Debuglocation 1046',$debugging)"/>
 
 							<ep:constructRef prefix="StUF" externalNamespace="yes">
@@ -2256,8 +2258,22 @@
 								<ep:max-occurs>1</ep:max-occurs>
 								<ep:min-occurs>
 									<xsl:choose>
-										<xsl:when test="($generateHistorieConstruct = 'MaterieleHistorie' and contains($indicatieMaterieleHistorie, 'Ja')) or 
-														($generateHistorieConstruct = 'FormeleHistorie' and contains($indicatieFormeleHistorie, 'Ja'))">1</xsl:when>
+										<xsl:when test="($generateHistorieConstruct = 'MaterieleHistorie' and contains($indicatieMaterieleHistorie, 'Ja'))">
+											<xsl:value-of select="1"/>
+											<xsl:if test="$global-tijdvakGeldigheid-allowed = ('Nee','Optioneel')">
+												<xsl:variable name="msg"
+													select="concat('The tagged value [tijdvakGeldigheid genereren] is set to ',$global-tijdvakGeldigheid-allowed,'. However in the historieMaterieel elements within the messagetype ', $berichtCode, ' it must be required.')"/>
+												<xsl:sequence select="imf:msg('WARN', $msg)"/>
+											</xsl:if>
+										</xsl:when>
+										<xsl:when test="($generateHistorieConstruct = 'FormeleHistorie' and contains($indicatieFormeleHistorie, 'Ja')) or $global-tijdvakGeldigheid-allowed = 'Verplicht'">
+											<xsl:value-of select="1"/>
+											<xsl:if test="$global-tijdvakGeldigheid-allowed = ('Nee','Optioneel')">
+												<xsl:variable name="msg"
+													select="concat('The tagged value [tijdvakGeldigheid genereren] is set to ',$global-tijdvakGeldigheid-allowed,'. However in the historieFormeel elements within the messagetype ', $berichtCode, ' it must be required.')"/>
+												<xsl:sequence select="imf:msg('WARN', $msg)"/>
+											</xsl:if>
+										</xsl:when>
 										<xsl:otherwise>0</xsl:otherwise>
 									</xsl:choose>							
 								</ep:min-occurs>
@@ -2265,22 +2281,32 @@
 								<ep:href>StUF:tijdvakGeldigheid</ep:href>
 							</ep:constructRef>
 						</xsl:if>
-						<xsl:sequence select="imf:create-debug-comment('Debuglocation 1047',$debugging)"/>
 
-						<!-- A 'tijdstipRegistratie' element must be created always within a relatie entiteit. -->
-						<ep:constructRef prefix="StUF" externalNamespace="yes">
-							<ep:name>tijdstipRegistratie</ep:name>
-							<ep:tech-name>tijdstipRegistratie</ep:tech-name>
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>
-								<xsl:choose>
-									<xsl:when test="$generateHistorieConstruct = 'FormeleHistorie'">1</xsl:when>
-									<xsl:otherwise>0</xsl:otherwise>
-								</xsl:choose>
-							</ep:min-occurs>
-							<ep:position>151</ep:position>
-							<ep:href>StUF:tijdstipRegistratie</ep:href>
+						<!-- The tijdstipRegistratie element can only be skipped if $generateHistorieConstruct isn't equal to 'FormeleHistorie'. -->
+						<xsl:if test="not($generateHistorieConstruct != 'FormeleHistorie' and $global-tijdstipRegistratie-allowed = 'Nee')">
+							<xsl:sequence select="imf:create-debug-comment('Debuglocation 1047',$debugging)"/>
+							<!-- A 'tijdstipRegistratie' element must be created always within a relatie entiteit. -->
+							<ep:constructRef prefix="StUF" externalNamespace="yes">
+								<ep:name>tijdstipRegistratie</ep:name>
+								<ep:tech-name>tijdstipRegistratie</ep:tech-name>
+								<ep:max-occurs>1</ep:max-occurs>
+								<ep:min-occurs>
+									<xsl:choose>
+										<xsl:when test="$generateHistorieConstruct = 'FormeleHistorie' or $global-tijdstipRegistratie-allowed = 'Verplicht'">
+											<xsl:value-of select="1"/>
+											<xsl:if test="$global-tijdstipRegistratie-allowed = ('Nee','Optioneel')">
+												<xsl:variable name="msg"
+													select="concat('The tagged value [tijdstipRegistratie genereren] is set to ',$global-tijdstipRegistratie-allowed,'. However in the historieFormeel element within the messagetype ', $berichtCode, ' it must be required.')"/>
+												<xsl:sequence select="imf:msg('WARN', $msg)"/>
+											</xsl:if>
+										</xsl:when>
+										<xsl:otherwise>0</xsl:otherwise>
+									</xsl:choose>
+								</ep:min-occurs>
+								<ep:position>151</ep:position>
+								<ep:href>StUF:tijdstipRegistratie</ep:href>
 						</ep:constructRef>
+						</xsl:if>
 
 						<!-- Within a relatie entiteit 'extraElementen' and 'aanvullendeElementen' elementen are only allowed when the construct being created
 							 itself isn't a 'historieMaterieel', 'historieFormeel' of 'historieFormeelRelatie' element. -->
@@ -2773,6 +2799,7 @@
 						<!-- ep:inOnderzoek element is used to determine if a 'inOnderzoek' element needs to be generated in the messages in the next higher level. -->
 						<!--xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/-->
 						<!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
+						<xsl:sequence select="imf:create-debug-comment('Debuglocation 1057a',$debugging)"/>
 						<ep:construct prefix="{$prefix}">
 							<ep:name>inOnderzoek</ep:name>
 							<ep:tech-name>inOnderzoek</ep:tech-name>
@@ -2789,22 +2816,42 @@
 								<xsl:sequence select="$attributes"/>
 							</ep:seq-->
 						</ep:construct>
-						<ep:constructRef prefix="StUF" externalNamespace="yes">
-							<ep:name>tijdvakGeldigheid</ep:name>
-							<ep:tech-name>tijdvakGeldigheid</ep:tech-name>
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>0</ep:min-occurs>
-							<ep:position>150</ep:position>
-							<ep:href>StUF:tijdvakGeldigheid</ep:href>
-						</ep:constructRef>
-						<ep:constructRef prefix="StUF" externalNamespace="yes">
-							<ep:name>tijdstipRegistratie</ep:name>
-							<ep:tech-name>tijdstipRegistratie</ep:tech-name>
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>0</ep:min-occurs>
-							<ep:position>151</ep:position>
-							<ep:href>StUF:tijdstipRegistratie</ep:href>
-						</ep:constructRef>
+						<xsl:if test="$global-tijdvakGeldigheid-allowed != 'Nee'">
+							<xsl:sequence select="imf:create-debug-comment('Debuglocation 1057b',$debugging)"/>
+							<ep:constructRef prefix="StUF" externalNamespace="yes">
+								<ep:name>tijdvakGeldigheid</ep:name>
+								<ep:tech-name>tijdvakGeldigheid</ep:tech-name>
+								<ep:max-occurs>1</ep:max-occurs>
+								<xsl:choose>
+									<xsl:when test="$global-tijdvakGeldigheid-allowed = 'Verplicht'">
+										<ep:min-occurs>1</ep:min-occurs>
+									</xsl:when>
+									<xsl:otherwise>
+										<ep:min-occurs>0</ep:min-occurs>
+									</xsl:otherwise>
+								</xsl:choose>
+								<ep:position>150</ep:position>
+								<ep:href>StUF:tijdvakGeldigheid</ep:href>
+							</ep:constructRef>
+						</xsl:if>
+						<xsl:if test="$global-tijdstipRegistratie-allowed != 'Nee'">
+							<xsl:sequence select="imf:create-debug-comment('Debuglocation 1057c',$debugging)"/>
+							<ep:constructRef prefix="StUF" externalNamespace="yes">
+								<ep:name>tijdstipRegistratie</ep:name>
+								<ep:tech-name>tijdstipRegistratie</ep:tech-name>
+								<ep:max-occurs>1</ep:max-occurs>
+								<xsl:choose>
+									<xsl:when test="$global-tijdstipRegistratie-allowed = 'Verplicht'">
+										<ep:min-occurs>1</ep:min-occurs>
+									</xsl:when>
+									<xsl:otherwise>
+										<ep:min-occurs>0</ep:min-occurs>
+									</xsl:otherwise>
+								</xsl:choose>
+								<ep:position>151</ep:position>
+								<ep:href>StUF:tijdstipRegistratie</ep:href>
+							</ep:constructRef>
+						</xsl:if>
 						<ep:constructRef prefix="StUF" externalNamespace="yes">
 							<ep:name>extraElementen</ep:name>
 							<ep:tech-name>extraElementen</ep:tech-name>
@@ -3021,6 +3068,7 @@
 						<!-- ep:inOnderzoek element is used to determine if a 'inOnderzoek' element needs to be generated in the messages in the next higher level. -->
 						<!--xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/-->
 						<!-- The next construct is neccessary in a next xslt step to be able to determine if such an element is desired. -->
+						<xsl:sequence select="imf:create-debug-comment('Debuglocation 1061a',$debugging)"/>
 						<ep:construct prefix="{$prefix}">
 							<ep:name>inOnderzoek</ep:name>
 							<ep:tech-name>inOnderzoek</ep:tech-name>
@@ -3037,22 +3085,42 @@
 								<xsl:sequence select="$attributes"/>
 							</ep:seq-->
 						</ep:construct>
-						<ep:constructRef prefix="StUF" externalNamespace="yes">
-							<ep:name>tijdvakGeldigheid</ep:name>
-							<ep:tech-name>tijdvakGeldigheid</ep:tech-name>
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>0</ep:min-occurs>
-							<ep:position>150</ep:position>
-							<ep:href>StUF:tijdvakGeldigheid</ep:href>
-						</ep:constructRef>
-						<ep:constructRef prefix="StUF" externalNamespace="yes">
-							<ep:name>tijdstipRegistratie</ep:name>
-							<ep:tech-name>tijdstipRegistratie</ep:tech-name>
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>0</ep:min-occurs>
-							<ep:position>151</ep:position>
-							<ep:href>StUF:tijdstipRegistratie</ep:href>
-						</ep:constructRef>
+						<xsl:if test="$global-tijdvakGeldigheid-allowed != 'Nee'">
+							<xsl:sequence select="imf:create-debug-comment('Debuglocation 1061b',$debugging)"/>
+							<ep:constructRef prefix="StUF" externalNamespace="yes">
+								<ep:name>tijdvakGeldigheid</ep:name>
+								<ep:tech-name>tijdvakGeldigheid</ep:tech-name>
+								<ep:max-occurs>1</ep:max-occurs>
+								<xsl:choose>
+									<xsl:when test="$global-tijdvakGeldigheid-allowed = 'Verplicht'">
+										<ep:min-occurs>1</ep:min-occurs>
+									</xsl:when>
+									<xsl:otherwise>
+										<ep:min-occurs>0</ep:min-occurs>
+									</xsl:otherwise>
+								</xsl:choose>
+								<ep:position>150</ep:position>
+								<ep:href>StUF:tijdvakGeldigheid</ep:href>
+							</ep:constructRef>
+						</xsl:if>
+						<xsl:if test="$global-tijdstipRegistratie-allowed != 'Nee'">
+							<xsl:sequence select="imf:create-debug-comment('Debuglocation 1061c',$debugging)"/>
+							<ep:constructRef prefix="StUF" externalNamespace="yes">
+								<ep:name>tijdstipRegistratie</ep:name>
+								<ep:tech-name>tijdstipRegistratie</ep:tech-name>
+								<ep:max-occurs>1</ep:max-occurs>
+								<xsl:choose>
+									<xsl:when test="$global-tijdstipRegistratie-allowed = 'Verplicht'">
+										<ep:min-occurs>1</ep:min-occurs>
+									</xsl:when>
+									<xsl:otherwise>
+										<ep:min-occurs>0</ep:min-occurs>
+									</xsl:otherwise>
+								</xsl:choose>
+								<ep:position>151</ep:position>
+								<ep:href>StUF:tijdstipRegistratie</ep:href>
+							</ep:constructRef>
+						</xsl:if>
 						<ep:constructRef prefix="StUF" externalNamespace="yes">
 							<ep:name>extraElementen</ep:name>
 							<ep:tech-name>extraElementen</ep:tech-name>

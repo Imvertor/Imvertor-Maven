@@ -370,7 +370,38 @@
                 <value default="yes">Ja</value>
             </declared-values>
         </tv>
+             
+        <tv norm="space" id="CFG-TV-E-TIJDVAKGELDIGHEIDALLOWED">
+            <name lang="nl">tijdvakGeldigheid genereren</name>
+            <desc>
+                Geeft aan of en zo ja hoe in de XML-schema's de 'tijdvakGeldigheid' elementen worden mee gegenereerd.
+                Standaard worden deze optioneel mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
+            </desc>
+            <stereotypes>
+                <stereo required="no">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Nee</value>
+                <value default="yes">Optioneel</value>
+                <value>Verplicht</value>
+            </declared-values>
+        </tv>
         
+        <tv norm="space" id="CFG-TV-E-TIJDSTIPREGISTRATIEALLOWED">
+            <name lang="nl">tijdstipRegistratie genereren</name>
+            <desc>
+                Geeft aan of en zo ja hoe in de XML-schema's de 'tijdstipRegistratie' elementen worden mee gegenereerd.
+                Standaard worden deze optioneel mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
+            </desc>
+            <stereotypes>
+                <stereo required="no">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Nee</value>
+                <value default="yes">Optioneel</value>
+                <value>Verplicht</value>
+            </declared-values>
+        </tv>
         
     </tagged-values>
 </tagset>
