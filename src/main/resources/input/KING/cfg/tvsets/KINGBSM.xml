@@ -324,6 +324,85 @@
             </stereotypes>
         </tv>
         
+        <tv norm="space" id="CFG-TV-EMPTYENUMERATIONALLOWED">
+            <name lang="nl">Lege enumeration toegestaan</name>
+            <desc>
+                Geeft aan of er aan elke enumeratie simpleType ook een lege enumeratie toegevoegd moet worden.
+                Standaard wordt dit mee gegenereerd. Kan zowel op Koppelvlak niveau als op attribuut niveau worden 
+                gedefinieerd waarbij die op attribuutniveau die op op Koppelvlak niveau overrulled. 
+            </desc>
+            <stereotypes>
+                <stereo required="no">stereotype-name-enumeration</stereo>
+                <stereo required="no">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Nee</value>
+                <value default="yes">Ja</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-NOVALUEALLOWED">
+            <name lang="nl">noValue toegestaan</name>
+            <desc>
+                Geeft aan of het StUF:noValue attribute in de XML-schema's mee gegenereerd wordt.
+                Standaard wordt dit mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
+            </desc>
+            <stereotypes>
+                <stereo required="no">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Nee</value>
+                <value default="yes">Ja</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-E-TYPESALLOWED">
+            <name lang="nl">e-types genereren</name>
+            <desc>
+                Geeft aan of de -e complexTypes in de XML-schema's mee gegenereerd moeten worden.
+                Standaard worden deze mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
+            </desc>
+            <stereotypes>
+                <stereo required="no">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Nee</value>
+                <value default="yes">Ja</value>
+            </declared-values>
+        </tv>
+             
+        <tv norm="space" id="CFG-TV-E-TIJDVAKGELDIGHEIDALLOWED">
+            <name lang="nl">tijdvakGeldigheid genereren</name>
+            <desc>
+                Geeft aan of en zo ja hoe in de XML-schema's de 'tijdvakGeldigheid' elementen worden mee gegenereerd.
+                Standaard worden deze optioneel mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
+            </desc>
+            <stereotypes>
+                <stereo required="no">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Nee</value>
+                <value default="yes">Optioneel</value>
+                <value>Verplicht</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-E-TIJDSTIPREGISTRATIEALLOWED">
+            <name lang="nl">tijdstipRegistratie genereren</name>
+            <desc>
+                Geeft aan of en zo ja hoe in de XML-schema's de 'tijdstipRegistratie' elementen worden mee gegenereerd.
+                Standaard worden deze optioneel mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
+            </desc>
+            <stereotypes>
+                <stereo required="no">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Nee</value>
+                <value default="yes">Optioneel</value>
+                <value>Verplicht</value>
+            </declared-values>
+        </tv>
+        
     </tagged-values>
 </tagset>
 

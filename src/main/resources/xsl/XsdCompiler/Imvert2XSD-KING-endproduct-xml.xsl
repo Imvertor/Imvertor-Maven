@@ -120,6 +120,62 @@
     <!-- ROME: Het betreft hier de verkorte alias van het koppelvlak. Eerste variabele moet nog vervangen worden door de tweede. -->
     <xsl:variable name="verkorteAlias" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
     <xsl:variable name="kv-prefix" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
+    <xsl:variable name="global-empty-enumeration-allowed">
+        <xsl:choose>
+            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-EMPTYENUMERATIONALLOWED'))">
+                <xsl:value-of select="'Ja'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-EMPTYENUMERATIONALLOWED')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    
+    <xsl:variable name="global-noValue-allowed">
+        <xsl:choose>
+            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-NOVALUEALLOWED'))">
+                <xsl:value-of select="'Ja'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-NOVALUEALLOWED')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    
+    <xsl:variable name="global-e-types-allowed">
+        <xsl:choose>
+            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-E-TYPESALLOWED'))">
+                <xsl:value-of select="'Ja'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-E-TYPESALLOWED')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    
+    
+    <xsl:variable name="global-tijdvakGeldigheid-allowed">
+        <xsl:choose>
+            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-E-TIJDVAKGELDIGHEIDALLOWED'))">
+                <xsl:value-of select="'Optioneel'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-E-TIJDVAKGELDIGHEIDALLOWED')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    
+    
+    <xsl:variable name="global-tijdstipRegistratie-allowed">
+        <xsl:choose>
+            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-E-TIJDSTIPREGISTRATIEALLOWED'))">
+                <xsl:value-of select="'Optioneel'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-E-TIJDSTIPREGISTRATIEALLOWED')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
     
     <!--xsl:variable name="kv-prefix" select="$enriched-rough-messages//@kv-prefix"/-->
     
@@ -143,7 +199,7 @@
     <!-- Within this variable all messages defined within the BSM of the koppelvlak are placed, transformed to the imvertor endproduct (ep) format.-->
     <xsl:variable name="imvert-endproduct">
         
-        <ep:message-set>
+        <ep:message-set global-empty-enumeration-allowed="{$global-empty-enumeration-allowed}">
             <xsl:sequence select="imf:create-debug-comment('Debuglocation 1',$debugging)"/>
 
             <xsl:sequence select="imf:create-output-element('ep:name', $packages/imvert:application)"/>
@@ -737,6 +793,7 @@
                         
                         <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
                         <xsl:when test="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
+                            <xsl:sequence select="imf:create-debug-comment('Debuglocation 14a',$debugging)"/>
                             <xsl:apply-templates select="$construct"
                                 mode="create-message-content">
                                 <xsl:with-param name="berichtName" select="$berichtName"/>
@@ -753,6 +810,7 @@
                             <ep:seq>
                                 <xsl:sequence
                                     select="imf:create-output-element('ep:min-occurs', 0)" />
+                                <xsl:sequence select="imf:create-debug-comment('Debuglocation 14b',$debugging)"/>
                                 <!-- The uml attributes of the uml class are placed here. -->
                                 <xsl:apply-templates select="$construct"
                                     mode="create-message-content">
@@ -764,6 +822,7 @@
                                     <xsl:with-param name="context" select="''" />
                                     <xsl:with-param name="verwerkingsModus" select="''"/>
                                 </xsl:apply-templates>
+                                <xsl:sequence select="imf:create-debug-comment('Debuglocation 14c',$debugging)"/>
                                 <!-- The uml groups of the uml class are placed here. -->
                                 <xsl:apply-templates select="$construct"
                                     mode="create-message-content">
@@ -823,22 +882,42 @@
                                     'stereotype-name-antwoordberichttype',
                                     'stereotype-name-kennisgevingberichttype',
                                     'stereotype-name-synchronisatieberichttype'))) and not(contains(@verwerkingsModus,'matchgegevens'))">
-                                    <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                        <ep:name>tijdvakGeldigheid</ep:name>
-                                        <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
-                                        <ep:max-occurs>1</ep:max-occurs>
-                                        <ep:min-occurs>0</ep:min-occurs>
-                                        <ep:position>155</ep:position>
-                                        <ep:href>StUF:tijdvakGeldigheid</ep:href>
-                                    </ep:constructRef>
-                                    <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                        <ep:name>tijdstipRegistratie</ep:name>
-                                        <ep:tech-name>tijdstipRegistratie</ep:tech-name>
-                                        <ep:max-occurs>1</ep:max-occurs>
-                                        <ep:min-occurs>0</ep:min-occurs>
-                                        <ep:position>160</ep:position>
-                                        <ep:href>StUF:tijdstipRegistratie</ep:href>
-                                    </ep:constructRef>
+                                    <xsl:if test="$global-tijdvakGeldigheid-allowed != 'Nee'">
+                                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 14d',$debugging)"/>
+                                        <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                            <ep:name>tijdvakGeldigheid</ep:name>
+                                            <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
+                                            <ep:max-occurs>1</ep:max-occurs>
+                                            <xsl:choose>
+                                                <xsl:when test="$global-tijdvakGeldigheid-allowed = 'Verplicht'">
+                                                    <ep:min-occurs>1</ep:min-occurs>
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                    <ep:min-occurs>0</ep:min-occurs>
+                                                </xsl:otherwise>
+                                            </xsl:choose>
+                                            <ep:position>155</ep:position>
+                                            <ep:href>StUF:tijdvakGeldigheid</ep:href>
+                                        </ep:constructRef>
+                                    </xsl:if>
+                                    <xsl:if test="$global-tijdstipRegistratie-allowed != 'Nee'">
+                                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 14e',$debugging)"/>
+                                        <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                            <ep:name>tijdstipRegistratie</ep:name>
+                                            <ep:tech-name>tijdstipRegistratie</ep:tech-name>
+                                            <ep:max-occurs>1</ep:max-occurs>
+                                            <xsl:choose>
+                                                <xsl:when test="$global-tijdstipRegistratie-allowed = 'Verplicht'">
+                                                    <ep:min-occurs>1</ep:min-occurs>
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                    <ep:min-occurs>0</ep:min-occurs>
+                                                </xsl:otherwise>
+                                            </xsl:choose>
+                                            <ep:position>160</ep:position>
+                                            <ep:href>StUF:tijdstipRegistratie</ep:href>
+                                        </ep:constructRef>
+                                    </xsl:if>
                                     <ep:constructRef prefix="StUF" externalNamespace="yes">
                                         <ep:name>extraElementen</ep:name>
                                         <ep:tech-name>extraElementen</ep:tech-name>
@@ -1268,22 +1347,42 @@
                                            'stereotype-name-antwoordberichttype',
                                            'stereotype-name-kennisgevingberichttype',
                                            'stereotype-name-synchronisatieberichttype'))) and not(contains(@verwerkingsModus,'matchgegevens'))">
-                                           <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                               <ep:name>tijdvakGeldigheid</ep:name>
-                                               <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
-                                               <ep:max-occurs>1</ep:max-occurs>
-                                               <ep:min-occurs>0</ep:min-occurs>
-                                               <ep:position>155</ep:position>
-                                               <ep:href>StUF:tijdvakGeldigheid</ep:href>
-                                           </ep:constructRef>
-                                           <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                               <ep:name>tijdstipRegistratie</ep:name>
-                                               <ep:tech-name>tijdstipRegistratie</ep:tech-name>
-                                               <ep:max-occurs>1</ep:max-occurs>
-                                               <ep:min-occurs>0</ep:min-occurs>
-                                               <ep:position>160</ep:position>
-                                               <ep:href>StUF:tijdstipRegistratie</ep:href>
-                                           </ep:constructRef>
+                                           <xsl:if test="$global-tijdvakGeldigheid-allowed != 'Nee'">
+                                               <xsl:sequence select="imf:create-debug-comment('Debuglocation 17d',$debugging)"/>
+                                               <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                                   <ep:name>tijdvakGeldigheid</ep:name>
+                                                   <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
+                                                   <ep:max-occurs>1</ep:max-occurs>
+                                                   <xsl:choose>
+                                                       <xsl:when test="$global-tijdvakGeldigheid-allowed = 'Verplicht'">
+                                                           <ep:min-occurs>1</ep:min-occurs>
+                                                       </xsl:when>
+                                                       <xsl:otherwise>
+                                                           <ep:min-occurs>0</ep:min-occurs>
+                                                       </xsl:otherwise>
+                                                   </xsl:choose>
+                                                   <ep:position>155</ep:position>
+                                                   <ep:href>StUF:tijdvakGeldigheid</ep:href>
+                                               </ep:constructRef>
+                                           </xsl:if>
+                                           <xsl:if test="$global-tijdstipRegistratie-allowed != 'Nee'">
+                                               <xsl:sequence select="imf:create-debug-comment('Debuglocation 17e',$debugging)"/>
+                                               <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                                   <ep:name>tijdstipRegistratie</ep:name>
+                                                   <ep:tech-name>tijdstipRegistratie</ep:tech-name>
+                                                   <ep:max-occurs>1</ep:max-occurs>
+                                                   <xsl:choose>
+                                                       <xsl:when test="$global-tijdstipRegistratie-allowed = 'Verplicht'">
+                                                           <ep:min-occurs>1</ep:min-occurs>
+                                                       </xsl:when>
+                                                       <xsl:otherwise>
+                                                           <ep:min-occurs>0</ep:min-occurs>
+                                                       </xsl:otherwise>
+                                                   </xsl:choose>
+                                                   <ep:position>160</ep:position>
+                                                   <ep:href>StUF:tijdstipRegistratie</ep:href>
+                                               </ep:constructRef>
+                                           </xsl:if>
                                            <ep:constructRef prefix="StUF" externalNamespace="yes">
                                                <ep:name>extraElementen</ep:name>
                                                <ep:tech-name>extraElementen</ep:tech-name>
@@ -1555,6 +1654,7 @@
                                     
                                    
                                    <xsl:when test="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
+                                       <xsl:sequence select="imf:create-debug-comment('Debuglocation 20a',$debugging)"/>
                                        <xsl:apply-templates select="$construct"
                                            mode="create-message-content">
                                            <xsl:with-param name="berichtName" select="$berichtName"/>
@@ -1572,6 +1672,7 @@
                                    <!-- Else the content of the current uml class is processed. -->
                                    <xsl:otherwise>
                                        <ep:seq>
+                                           <xsl:sequence select="imf:create-debug-comment('Debuglocation 20b',$debugging)"/>
                                            <!-- The uml attributes of the uml class are placed here. -->
                                            <xsl:apply-templates select="$construct"
                                                mode="create-message-content">
@@ -1586,6 +1687,7 @@
                                                <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
                                                <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
                                            </xsl:apply-templates>
+                                           <xsl:sequence select="imf:create-debug-comment('Debuglocation 20c',$debugging)"/>
                                            <!-- The uml groups, of the uml group, for which historiematerieel is applicable are placed here. -->
                                            <xsl:apply-templates select="$construct"
                                                mode="create-message-content">
@@ -1619,6 +1721,14 @@
                                                <ep:min-occurs>0</ep:min-occurs>
                                                <ep:position>150</ep:position>
                                            </ep:constructRef -->
+                                           <xsl:if test="$global-tijdvakGeldigheid-allowed != 'Verplicht'">
+                                               <xsl:variable name="msg"
+                                                   select="concat('The tagged value [tijdvakGeldigheid genereren] is set to ',$global-tijdvakGeldigheid-allowed,'. However in the historieMaterieel elements within the messagetype ', $berichtCode, ' it must be required.')"/>
+                                               <xsl:sequence select="imf:msg('WARN', $msg)"/>
+                                           </xsl:if>
+                                           <xsl:sequence select="imf:create-debug-comment('Debuglocation 20d',$debugging)"/>
+                                           <!-- ROME: Het Kadaster wil het genereren van tijdvakGeldigheid kunnen uitschakelen.
+                                                      In deze situatie is het echter verplicht. Wat doen we er dan mee? -->
                                            <ep:constructRef prefix="StUF" externalNamespace="yes">
                                                <ep:name>tijdvakGeldigheid</ep:name>
                                                <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
@@ -1627,13 +1737,27 @@
                                                <ep:position>155</ep:position>
                                                <ep:href>StUF:tijdvakGeldigheid</ep:href>
                                            </ep:constructRef>
+                                           
                                            <!-- If 'Formele historie' is applicable for the current class a the following construct and constructRef are generated. -->
                                            <xsl:if test="@indicatieFormeleHistorie='Ja'">
+                                               <xsl:if test="$global-tijdstipRegistratie-allowed = 'Nee'">
+                                                   <xsl:variable name="msg"
+                                                       select="concat('The tagged value [tijdstipRegistratie genereren] is set to ',$global-tijdstipRegistratie-allowed,'. However in the historieMaterieel elements within the messagetype ', $berichtCode, ' it must be at least optional.')"/>
+                                                   <xsl:sequence select="imf:msg('WARN', $msg)"/>
+                                               </xsl:if>
+                                               <xsl:sequence select="imf:create-debug-comment('Debuglocation 20e',$debugging)"/>
                                                <ep:constructRef prefix="StUF" externalNamespace="yes">
                                                    <ep:name>tijdstipRegistratie</ep:name>
                                                    <ep:tech-name>tijdstipRegistratie</ep:tech-name>
                                                    <ep:max-occurs>1</ep:max-occurs>
-                                                   <ep:min-occurs>0</ep:min-occurs>
+                                                   <xsl:choose>
+                                                       <xsl:when test="$global-tijdstipRegistratie-allowed = 'Verplicht'">
+                                                           <ep:min-occurs>1</ep:min-occurs>
+                                                       </xsl:when>
+                                                       <xsl:otherwise>
+                                                           <ep:min-occurs>0</ep:min-occurs>
+                                                       </xsl:otherwise>
+                                                   </xsl:choose>
                                                    <ep:position>160</ep:position>
                                                    <ep:href>StUF:tijdstipRegistratie</ep:href>
                                                </ep:constructRef>
@@ -1814,6 +1938,7 @@
                                    
                                    
                                    <xsl:when test="$packages/imvert:package/imvert:class[imvert:supertype/imvert:type-id = $id]">
+                                       <xsl:sequence select="imf:create-debug-comment('Debuglocation 23a',$debugging)"/>
                                        <xsl:apply-templates select="$construct"
                                            mode="create-message-content">
                                            <xsl:with-param name="berichtName" select="$berichtName"/>
@@ -1830,6 +1955,7 @@
                                    <!-- Else the content of the current uml class is processed. -->
                                    <xsl:otherwise>                                     
                                        <ep:seq>
+                                           <xsl:sequence select="imf:create-debug-comment('Debuglocation 23b',$debugging)"/>
                                            <!-- The uml attributes of the uml class are placed here. -->
                                            <xsl:apply-templates select="$construct"
                                                mode="create-message-content">
@@ -1843,6 +1969,7 @@
                                                <xsl:with-param name="indicatieFormeleHistorie" select="@indicatieFormeleHistorie"/>
                                                <xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
                                            </xsl:apply-templates>
+                                           <xsl:sequence select="imf:create-debug-comment('Debuglocation 23c',$debugging)"/>
                                            <!-- The uml groups, of the uml group, for which historiematerieel is applicable are placed here. -->
                                            <xsl:apply-templates select="$construct"
                                                mode="create-message-content">
@@ -1875,6 +2002,12 @@
                                                <ep:min-occurs>0</ep:min-occurs>
                                                <ep:position>150</ep:position>
                                            </ep:constructRef -->
+                                           <xsl:if test="$global-tijdvakGeldigheid-allowed != 'Verplicht'">
+                                               <xsl:variable name="msg"
+                                                   select="concat('The tagged value [tijdvakGeldigheid genereren] is set to ',$global-tijdvakGeldigheid-allowed,'. However in the historieFormeel element within the messagetype ', $berichtCode, ' it must be required.')"/>
+                                               <xsl:sequence select="imf:msg('WARN', $msg)"/>
+                                           </xsl:if>
+                                           <xsl:sequence select="imf:create-debug-comment('Debuglocation 23d',$debugging)"/>
                                            <ep:constructRef prefix="StUF" externalNamespace="yes">
                                                <ep:name>tijdvakGeldigheid</ep:name>
                                                <ep:tech-name>tijdvakGeldigheid</ep:tech-name>
@@ -1883,6 +2016,12 @@
                                                <ep:position>155</ep:position>
                                                <ep:href>StUF:tijdvakGeldigheid</ep:href>
                                            </ep:constructRef>
+                                           <xsl:if test="$global-tijdstipRegistratie-allowed = ('Nee','Optioneel')">
+                                               <xsl:variable name="msg"
+                                                   select="concat('The tagged value [tijdstipRegistratie genereren] is set to ',$global-tijdstipRegistratie-allowed,'. However in the historieFormeel element within the messagetype ', $berichtCode, ' it must be required.')"/>
+                                               <xsl:sequence select="imf:msg('WARN', $msg)"/>
+                                           </xsl:if>
+                                           <xsl:sequence select="imf:create-debug-comment('Debuglocation 23e',$debugging)"/>
                                            <ep:constructRef prefix="StUF" externalNamespace="yes">
                                                <ep:name>tijdstipRegistratie</ep:name>
                                                <ep:tech-name>tijdstipRegistratie</ep:tech-name>
@@ -2050,6 +2189,16 @@
     <xsl:template match="imvert:class" mode="mode-global-enumeration">
         <xsl:sequence select="imf:create-debug-comment('Debuglocation 28',$debugging)"/>
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
+        <xsl:variable name="local-empty-enumeration-allowed">
+            <xsl:choose>
+                <xsl:when test="empty(imf:get-tagged-value(.,'##CFG-TV-EMPTYENUMERATIONALLOWED'))">
+                    <xsl:value-of select="$global-empty-enumeration-allowed"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="imf:get-tagged-value(.,'##CFG-TV-EMPTYENUMERATIONALLOWED')"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         
         <xsl:variable name="suppliers" as="element(ep:suppliers)">
             <ep:suppliers>
@@ -2087,27 +2236,33 @@
                 </ep:construct>
             </xsl:when>
             <xsl:when test="not(imf:capitalize($compiled-name) = 'Berichtcode' or imf:capitalize($compiled-name) = 'IndicatorOvername')">
-                <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}">
-                    <xsl:sequence select="imf:create-output-element('ep:name', concat(imf:capitalize($compiled-name),'-e'))"/>
-                    <xsl:sequence select="imf:create-output-element('ep:tech-name', concat(imf:capitalize($compiled-name),'-e'))"/>
-                    <ep:type-name>
-                        <xsl:value-of select="concat($construct-Prefix,':',imf:capitalize($compiled-name))"/>
-                    </ep:type-name>
-                    <ep:seq>
-                        <ep:construct ismetadata="yes">
-                            <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
-                            <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
-                            <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
-                            <ep:min-occurs>0</ep:min-occurs>
-                        </ep:construct>                     
-                    </ep:seq>
-                </ep:construct>
+                <xsl:if test="$global-e-types-allowed = 'Ja'">
+                    <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}">
+                        <xsl:sequence select="imf:create-output-element('ep:name', concat(imf:capitalize($compiled-name),'-e'))"/>
+                        <xsl:sequence select="imf:create-output-element('ep:tech-name', concat(imf:capitalize($compiled-name),'-e'))"/>
+                        <ep:type-name>
+                            <xsl:value-of select="concat($construct-Prefix,':',imf:capitalize($compiled-name))"/>
+                        </ep:type-name>
+                        <xsl:if test="$global-noValue-allowed = 'Ja'">                        
+                            <ep:seq>
+                                <ep:construct ismetadata="yes">
+                                    <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                                    <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                                    <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                                    <ep:min-occurs>0</ep:min-occurs>
+                                </ep:construct>                     
+                            </ep:seq>
+                        </xsl:if>
+                    </ep:construct>
+                </xsl:if>
                 <ep:construct type="simpleData" prefix="{$construct-Prefix}" isdatatype="yes">
                     <xsl:sequence select="imf:create-output-element('ep:name', imf:capitalize($compiled-name))"/>
                     <xsl:sequence select="imf:create-output-element('ep:tech-name', imf:capitalize($compiled-name))"/>
                     <xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-string')"/>
                     <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-enum"/>
-                    <ep:enum></ep:enum>
+                    <xsl:if test="$local-empty-enumeration-allowed = 'Ja'">
+                        <ep:enum></ep:enum>
+                    </xsl:if>
                 </ep:construct>
             </xsl:when>
         </xsl:choose>
@@ -2485,7 +2640,6 @@
     <!-- called only with attributes that have no type-id -->
     <xsl:template match="imvert:attribute" mode="mode-global-attribute-simpletype">
         <xsl:sequence select="imf:create-debug-comment('Debuglocation 32',$debugging)"/>
-
         
         <xsl:variable name="suppliers" as="element(ep:suppliers)">
             <ep:suppliers>
@@ -2533,50 +2687,56 @@
 
                 <xsl:variable name="construct-Prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
                 
-                <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}">
-                    <xsl:sequence select="imf:create-output-element('ep:name', concat(imf:capitalize(imvert:baretype),'-e'))"/>
-                    <xsl:sequence select="imf:create-output-element('ep:tech-name', concat(imf:capitalize(imvert:baretype),'-e'))"/>
-                    <ep:type-name>
-                        <xsl:value-of select="imf:get-external-type-name(.,true())"/>
-                    </ep:type-name>
-                    <ep:seq>
-                        <ep:construct ismetadata="yes">
-                            <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
-                            <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
-                            <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
-                            <ep:min-occurs>0</ep:min-occurs>
-                        </ep:construct>
-                    </ep:seq>
-                </ep:construct>
-                <!-- ROME: Onderzoeken hoe we kunnen bepalen of er een apart type met wildcard bij GML types opgenomen moet worden.
-                           Een wildcard mag immers alleen bij een stringtype opgenomen worden en alleen binnen selecties.
-                           Nog geen idee hoe ik kan bepalen of een GML type String based is.-->
-                <xsl:if test="(empty($nillable-patroon) or $min-length = 0)">
+                <xsl:if test="$global-e-types-allowed = 'Ja'">
                     <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}">
-                        <xsl:sequence select="imf:create-output-element('ep:name', concat(imf:capitalize(imvert:baretype),'Vraag-e'))"/>
-                        <xsl:sequence select="imf:create-output-element('ep:tech-name', concat(imf:capitalize(imvert:baretype),'Vraag-e'))"/>
+                        <xsl:sequence select="imf:create-output-element('ep:name', concat(imf:capitalize(imvert:baretype),'-e'))"/>
+                        <xsl:sequence select="imf:create-output-element('ep:tech-name', concat(imf:capitalize(imvert:baretype),'-e'))"/>
                         <ep:type-name>
                             <xsl:value-of select="imf:get-external-type-name(.,true())"/>
                         </ep:type-name>
-                        <ep:seq>
-                            <ep:construct ismetadata="yes">
-                                <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
-                                <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
-                                <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
-                                <ep:min-occurs>0</ep:min-occurs>
-                            </ep:construct> 
-                            <ep:construct ismetadata="yes">
-                                <xsl:sequence select="imf:create-output-element('ep:name', 'wildcard')"/>
-                                <xsl:sequence select="imf:create-output-element('ep:tech-name', 'wildcard')"/>
-                                <ep:type-name><xsl:value-of select="concat($StUF-prefix,':Wildcard')"/></ep:type-name>
-                                <ep:min-occurs>0</ep:min-occurs>
-                            </ep:construct>                     
-                        </ep:seq>
+                        <xsl:if test="$global-noValue-allowed = 'Ja'">
+                            <ep:seq>
+                                <ep:construct ismetadata="yes">
+                                    <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                                    <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                                    <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                                    <ep:min-occurs>0</ep:min-occurs>
+                                </ep:construct>
+                            </ep:seq>
+                        </xsl:if>
                     </ep:construct>
+                    <!-- ROME: Onderzoeken hoe we kunnen bepalen of er een apart type met wildcard bij GML types opgenomen moet worden.
+                               Een wildcard mag immers alleen bij een stringtype opgenomen worden en alleen binnen selecties.
+                               Nog geen idee hoe ik kan bepalen of een GML type String based is.-->
+                    <xsl:if test="(empty($nillable-patroon) or $min-length = 0)">
+                        <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}">
+                            <xsl:sequence select="imf:create-output-element('ep:name', concat(imf:capitalize(imvert:baretype),'Vraag-e'))"/>
+                            <xsl:sequence select="imf:create-output-element('ep:tech-name', concat(imf:capitalize(imvert:baretype),'Vraag-e'))"/>
+                            <ep:type-name>
+                                <xsl:value-of select="imf:get-external-type-name(.,true())"/>
+                            </ep:type-name>
+                            <ep:seq>
+                                <xsl:if test="$global-noValue-allowed = 'Ja'">
+                                    <ep:construct ismetadata="yes">
+                                        <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                                        <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                                        <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                                        <ep:min-occurs>0</ep:min-occurs>
+                                    </ep:construct>
+                                </xsl:if>
+                                <ep:construct ismetadata="yes">
+                                    <xsl:sequence select="imf:create-output-element('ep:name', 'wildcard')"/>
+                                    <xsl:sequence select="imf:create-output-element('ep:tech-name', 'wildcard')"/>
+                                    <ep:type-name><xsl:value-of select="concat($StUF-prefix,':Wildcard')"/></ep:type-name>
+                                    <ep:min-occurs>0</ep:min-occurs>
+                                </ep:construct>                     
+                            </ep:seq>
+                        </ep:construct>
+                    </xsl:if>
                 </xsl:if>
             </xsl:when>
             <!-- The only situation in which imvert:attribute elements have the tagged value 'Subset label' is when they're part of the custom 'parameters',
-                 'stuurgegevens' or 'systeem' groep. In that case the construct always has to be placed within the StUF namespace. -->
+                 'stuurgegevens' or 'systeem' groep. In that case the construct always has to be placed within the StUF namespace and no -e complextype is neccessary. -->
             <xsl:when test="not(empty($subsetLabel))">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 32b',$debugging)"/>
                 <xsl:variable name="attributeName" select="imvert:name/@original"/>
@@ -2636,44 +2796,50 @@
                 
                 <xsl:variable name="construct-Prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
                 
-                <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}" imvert:checksum="{concat($checksum-string,'-simpleContentcomplexData')}">
-                    <xsl:sequence select="imf:create-output-element('ep:name', concat($tokens[1],'-e'))"/>
-                    <xsl:sequence select="imf:create-output-element('ep:tech-name', concat($tokens[1],'-e'))"/>
-                    <ep:type-name imvert:checksum="{$checksum-string}">
-                        <xsl:value-of select="concat($construct-Prefix,':',$tokens[1])"/>
-                    </ep:type-name>
-                    <ep:seq>
-                        <ep:construct ismetadata="yes">
-                            <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
-                            <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
-                            <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
-                            <ep:min-occurs>0</ep:min-occurs>
-                        </ep:construct>                     
-                    </ep:seq>
-                </ep:construct>
-                <xsl:if test="(empty($nillable-patroon) or $min-length = 0) and starts-with($checksum-string,'String')">
-                    <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}" imvert:checksum="{concat($checksum-string,'-Vraag-simpleContentcomplexData')}">
-                        <xsl:sequence select="imf:create-output-element('ep:name', concat($tokens[1],'Vraag-e'))"/>
-                        <xsl:sequence select="imf:create-output-element('ep:tech-name', concat($tokens[1],'Vraag-e'))"/>
+                <xsl:if test="$global-e-types-allowed = 'Ja'">
+                    <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}" imvert:checksum="{concat($checksum-string,'-simpleContentcomplexData')}">
+                        <xsl:sequence select="imf:create-output-element('ep:name', concat($tokens[1],'-e'))"/>
+                        <xsl:sequence select="imf:create-output-element('ep:tech-name', concat($tokens[1],'-e'))"/>
                         <ep:type-name imvert:checksum="{$checksum-string}">
                             <xsl:value-of select="concat($construct-Prefix,':',$tokens[1])"/>
                         </ep:type-name>
-                        <ep:seq>
-                            <ep:construct ismetadata="yes">
-                                <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
-                                <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
-                                <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
-                                <ep:min-occurs>0</ep:min-occurs>
-                            </ep:construct>                     
-                            <ep:construct ismetadata="yes">
-                                <xsl:sequence select="imf:create-output-element('ep:name', 'wildcard')"/>
-                                <xsl:sequence select="imf:create-output-element('ep:tech-name', 'wildcard')"/>
-                                <ep:type-name><xsl:value-of select="concat($StUF-prefix,':Wildcard')"/></ep:type-name>
-                                <ep:min-occurs>0</ep:min-occurs>
-                            </ep:construct>                     
-                        </ep:seq>
+                        <xsl:if test="$global-noValue-allowed = 'Ja'">
+                            <ep:seq>
+                                <ep:construct ismetadata="yes">
+                                    <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                                    <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                                    <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                                    <ep:min-occurs>0</ep:min-occurs>
+                                </ep:construct>                     
+                            </ep:seq>
+                        </xsl:if>
                     </ep:construct>
-                </xsl:if> 
+                    <xsl:if test="(empty($nillable-patroon) or $min-length = 0) and starts-with($checksum-string,'String')">
+                        <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}" imvert:checksum="{concat($checksum-string,'-Vraag-simpleContentcomplexData')}">
+                            <xsl:sequence select="imf:create-output-element('ep:name', concat($tokens[1],'Vraag-e'))"/>
+                            <xsl:sequence select="imf:create-output-element('ep:tech-name', concat($tokens[1],'Vraag-e'))"/>
+                            <ep:type-name imvert:checksum="{$checksum-string}">
+                                <xsl:value-of select="concat($construct-Prefix,':',$tokens[1])"/>
+                            </ep:type-name>
+                            <ep:seq>
+                                <xsl:if test="$global-noValue-allowed = 'Ja'">
+                                    <ep:construct ismetadata="yes">
+                                        <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                                        <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                                        <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                                        <ep:min-occurs>0</ep:min-occurs>
+                                    </ep:construct>
+                                </xsl:if>
+                                <ep:construct ismetadata="yes">
+                                    <xsl:sequence select="imf:create-output-element('ep:name', 'wildcard')"/>
+                                    <xsl:sequence select="imf:create-output-element('ep:tech-name', 'wildcard')"/>
+                                    <ep:type-name><xsl:value-of select="concat($StUF-prefix,':Wildcard')"/></ep:type-name>
+                                    <ep:min-occurs>0</ep:min-occurs>
+                                </ep:construct>                     
+                            </ep:seq>
+                        </ep:construct>
+                    </xsl:if>
+                </xsl:if>
                 <!--ep:construct type="simpleData" prefix="{$construct-Prefix}" namespaceId="{construct-Namespace}" isdatatype="yes" imvert:checksum="{concat($checksum-string,'-simpleData')}"-->
                 <ep:construct type="simpleData" prefix="{$construct-Prefix}" isdatatype="yes" imvert:checksum="{concat($checksum-string,'-simpleData')}">
                     <xsl:sequence select="imf:create-output-element('ep:name', $tokens[1])"/>
