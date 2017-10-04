@@ -180,7 +180,7 @@
             <construct>datatype</construct>
         </stereo>
         <stereo id="stereotype-name-complextype">
-            <name lang="nl">Gestruktureerd datatype</name>
+            <name lang="nl">Gestructureerd datatype</name>
             <name lang="en">StructuredDatatype</name>
             <desc lang="en">TODO</desc>
             <desc lang="nl">
