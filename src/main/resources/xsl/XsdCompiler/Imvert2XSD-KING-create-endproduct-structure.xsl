@@ -181,7 +181,7 @@
 						or 'KENNISGEVINGBERICHTTYPE' and those linking to a class with a imvert:stereotype 
 						with the value 'ENTITEITRELATIE' must also be processed as from toplevel-message 
 						type. -->
-						<xsl:apply-templates select=".[imvert:stereotype != 'ENTITEITRELATIE']"
+						<xsl:apply-templates select=".[imvert:stereotype != 'ENTITEITRELATIE' and imvert:name != 'stuurgegevens' and imvert:name != 'parameters']"
 							mode="create-toplevel-message-structure-constructRef">
 							<xsl:with-param name="berichtCode" select="$berichtCode"/>
 							<xsl:with-param name="berichtName" select="concat($berichtName,'-',imvert:name)"/>
@@ -1603,7 +1603,7 @@
 										<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',imf:capitalize(imvert:baretype),$vraagIndicatie,'-e'))"/>										
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',imf:capitalize(imvert:baretype)))"/>
+										<xsl:value-of select="imf:get-external-type-name(.,true())"/>
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:when>
