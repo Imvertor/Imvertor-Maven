@@ -6,17 +6,25 @@
   
     <name>Kadaster</name>
     
-    <desc>Kadaster only allows definitions to occur in notes field.</desc>
+    <desc>Kadaster only allows definitions and descriptions to occur in notes field.</desc>
     
-    <notes-rule lang="nl" default="Definitie">
-        <section title="Definitie" tagged-value="CFG-TV-DEFINITION">
-            <label title="URI"/><!-- should be single URI -->
+    <notes-rule lang="en" default="Definition">
+        <!-- when nothing marked, assume Definition -->
+        
+        <section title="Definition" tagged-value="CFG-TV-DEFINITION">
+            <label title="URI"/> <!-- Dit moet dan feitelijk de enige waarde zjn. Het verwijst naar het LDT. -->
+        </section>
+        <section title="Description" tagged-value="CFG-TV-DESCRIPTION">
+            <label title="URI"/>
         </section>
     </notes-rule>
     
-    <notes-rule lang="en" default="Definition">
-        <section title="Definition" tagged-value="CFG-TV-DEFINITION">
-            <label title="URI"/><!-- should be single URI -->
+    <notes-rule lang="nl" default="Definitie">
+        <section title="Definitie" tagged-value="CFG-TV-DEFINITION">
+            <label title="URI"/>
+        </section>
+        <section title="Toelichting" tagged-value="CFG-TV-DESCRIPTION">
+            <label title="URI"/>
         </section>
     </notes-rule>
     

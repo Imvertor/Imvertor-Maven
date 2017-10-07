@@ -68,10 +68,55 @@
                 <xsl:sequence select="imf:msg(..,'ERROR','No proxy supplier release specified')"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:next-match/>
+                <!-- resolve all proxies. This introduces types that may not have been specified as proxies -->
+                <xsl:variable name="proxied-content" as="node()*">
+                    <xsl:apply-templates/>
+                </xsl:variable>
+                <!-- 
+                    classes that are not represented as proxies, but that occur as the type of some attribute that is proxied, must be copied to the client 
+                -->
+                <xsl:variable name="resolved-proxied-content" as="element()*">
+                    <xsl:for-each select="$proxied-content//imvert:attribute/imvert:type-id">
+                        <xsl:variable name="type-id" select="."/>
+                        <xsl:message select="$type-id"></xsl:message>
+                        <!-- check if type id is resolved, and if not, try to get it from supplier -->
+                        <xsl:variable name="construct" select="imf:get-construct-by-id($type-id,$proxied-content)"/>
+                        <!-- if this is not found, copy the construct -->
+                        <xsl:if test="empty($construct)">
+                            <xsl:variable name="supplier-subpaths" select="imf:get-construct-supplier-system-subpaths(.)" as="xs:string*"/>
+                            <xsl:variable name="result" as="element()*">
+                                <xsl:for-each select="$supplier-subpaths">
+                                    <xsl:variable name="supplier-doc" select="imf:get-imvert-supplier-doc(.)"/>
+                                    <xsl:variable name="supplier" select="imf:get-construct-by-id($type-id,$supplier-doc)"/>
+                                    <xsl:sequence select="$supplier"/>
+                                </xsl:for-each>
+                            </xsl:variable>
+                            <xsl:choose>
+                                <xsl:when test="$result[2]">
+                                    <xsl:sequence select="imf:msg(..,'ERROR','Too many supplier types [1], applicable suppliers are: [2]',(imf:string-group(for $n in $result return imf:get-display-name($n)),imf:string-group($supplier-subpaths)))"/>
+                                </xsl:when>
+                                <xsl:when test="$result[1]">
+                                    <xsl:sequence select="$result"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:sequence select="imf:msg(..,'ERROR','Cannot determine the supplier type, applicable suppliers are: [1]',(imf:string-group($supplier-subpaths)))"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:if>
+                    </xsl:for-each>
+                </xsl:variable>
+                
+                <imvert:package>
+                    <xsl:apply-templates select="@*"/>
+                    <xsl:sequence select="$proxied-content"/>
+                    <xsl:comment>DRAGGED:</xsl:comment>
+                    <xsl:sequence select="$resolved-proxied-content"/>
+                </imvert:package>
+                
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
+    
     
     <!--TODO inlezen van losse documenten tegengaan; volg het gecompileerde suppliers document -->
     <xsl:template match="imvert:class[imvert:stereotype = $stereotype-proxy] | imvert:attribute[imvert:stereotype = $stereotype-proxy]" mode="client">
@@ -95,7 +140,7 @@
                             <xsl:variable name="supplier" select="imf:get-construct-by-id($trace-id,$supplier-doc)"/>
                             <xsl:choose>
                                 <xsl:when test="empty($supplier-doc)">
-                                    <xsl:sequence select="imf:msg($client,'WARNING','No such supplier document: [1]',.)"/>
+                                    <xsl:sequence select="imf:msg($client,'WARNING','No such supplier model: [1]',.)"/>
                                 </xsl:when>
                                 <xsl:when test="exists($supplier)">
                                     <!-- this is reached only once. -->
@@ -155,13 +200,23 @@
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="imvert:id | imvert:class/imvert:name | imvert:attribute/imvert:name | imvert:min-occurs | imvert:max-occurs | imvert:attributes | imvert:associations | imvert:tagged-values" mode="supplier">
+    <xsl:template match="
+        imvert:id | 
+        imvert:class/imvert:name | 
+        imvert:supertype | 
+        imvert:attribute/imvert:name | 
+        imvert:min-occurs | 
+        imvert:max-occurs | 
+        imvert:attributes | 
+        imvert:associations | 
+        imvert:tagged-values" mode="supplier">
         <!-- skip -->
     </xsl:template>
     
     <xsl:template match="imvert:tagged-value[@ID = ('CFG-TV-RULES','CFG-TV-DESCRIPTION')]" mode="supplier">
         <!-- skip; never copy these from the supplier. -->
     </xsl:template>
+    
     
     <?x
     <!-- 

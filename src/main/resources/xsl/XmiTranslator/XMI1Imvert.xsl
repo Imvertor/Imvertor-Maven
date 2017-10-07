@@ -580,12 +580,16 @@
         <xsl:variable name="id" select="distinct-values(($this/@xmi.id, imf:get-system-tagged-value($this,'ea_guid')))"/> 
         <xsl:sequence select="imf:create-output-element('imvert:id',$id[1])"/>
         <xsl:sequence select="imf:create-output-element('imvert:keywords',imf:get-system-tagged-value($this,'keywords'))"/> 
-        <xsl:sequence select="imf:create-output-element('imvert:is-value-derived',if (imf:get-system-tagged-value($this,'derived') = '1') then 'true' else ())"/> 
+     
         <xsl:sequence select="imf:create-output-element('imvert:is-id',if ($xref-isid) then 'true' else ())"/> 
         <xsl:for-each select="imf:get-trace-id($this,$type)">
             <xsl:sequence select="imf:create-output-element('imvert:trace',.)"/> 
         </xsl:for-each>
         <xsl:sequence select="imf:create-output-element('imvert:dependency',imf:get-dependency-id($this,$type))"/> 
+       
+        <xsl:variable name="att-der" select="imf:get-system-tagged-value($this,'derived') = '1'"/>
+        <xsl:variable name="ass-der" select="$parsed-xref-properties[@id=generate-id($this)]/imvert:props/imvert:des[imvert:name = 'isDerived']/imvert:valu = '-1'"/>
+        <xsl:sequence select="imf:create-output-element('imvert:is-value-derived',if ($att-der or $ass-der) then 'true' else ())"/> 
         
     </xsl:function>
     
@@ -734,6 +738,7 @@
         </xsl:choose>
         <xsl:variable name="lbound" select="imf:get-system-tagged-value($this,'lowerBound')"/>
         <xsl:variable name="ubound" select="imf:get-system-tagged-value($this,'upperBound')"/>
+        
         <xsl:sequence select="imf:create-output-element('imvert:min-occurs',$lbound)"/>
         <xsl:sequence select="imf:create-output-element('imvert:max-occurs',if ($ubound='*') then 'unbounded' else $ubound)"/>
         <xsl:sequence select="imf:create-output-element('imvert:position',imf:get-position-value($this,'100'))"/>
@@ -741,6 +746,7 @@
         <xsl:sequence select="imf:create-output-element('imvert:min-length',imf:get-profile-tagged-value($this,'minLength'))"/>
         <xsl:sequence select="imf:create-output-element('imvert:max-length',imf:get-profile-tagged-value($this,'maxLength'))"/>
         <xsl:sequence select="imf:create-output-element('imvert:any-from-package',imf:get-profile-tagged-value($this,'package'))"/>
+       
     </xsl:function>
     
     <xsl:function name="imf:get-association-info" as="node()*">
@@ -790,7 +796,7 @@
             <xsl:sequence select="imf:create-output-element('imvert:documentation',imf:get-documentation-info($target,'description'),(),false(),false())"/>
             <xsl:sequence select="imf:create-output-element('imvert:tagged-values',imf:fetch-additional-tagged-values($target)/*,(),false(),false())"/>
         </imvert:target>
-        
+               
     </xsl:function>
     
     <xsl:function name="imf:get-association-end-bounds" as="xs:string*">

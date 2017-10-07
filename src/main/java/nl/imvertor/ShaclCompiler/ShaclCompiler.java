@@ -60,6 +60,8 @@ public class ShaclCompiler extends Step {
 	/**
 	 * Generate Kadaster XSD from the compiled Imvert files.
 	 * 
+	 * See http://shacl.org/playground/ for validator
+	 * 
 	 * @throws Exception
 	 */
 	public boolean generateSHACL() throws Exception {

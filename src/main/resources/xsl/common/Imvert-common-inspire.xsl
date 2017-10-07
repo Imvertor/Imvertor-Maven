@@ -88,20 +88,24 @@
     </xsl:function>
     
     <xsl:template match="sec" mode="inspire-notes">
-        <section>
-            <title>
-                <xsl:value-of select="."/>
-            </title>
-            <body>
-                <xsl:apply-templates select="following-sibling::bdy[1]/typ" mode="inspire-notes"/>
-                <xsl:apply-templates select="following-sibling::bdy[1]/txt" mode="inspire-notes"/>
-            </body>
-        </section>
+        <xsl:variable name="sec-content" as="element()*">
+            <xsl:apply-templates select="following-sibling::*[1][self::bdy]/(typ | txt)" mode="inspire-notes"/>
+        </xsl:variable>
+        <xsl:if test="exists($sec-content)">
+            <section>
+                <title>
+                    <xsl:value-of select="."/>
+                </title>
+                <body>
+                    <xsl:sequence select="$sec-content"/>
+                </body>
+            </section>
+        </xsl:if>
     </xsl:template>
     
     <xsl:template match="typ" mode="inspire-notes">
         <label type="{.}">
-            <xsl:apply-templates select="following-sibling::val[1]" mode="inspire-notes"/>
+            <xsl:apply-templates select="following-sibling::*[1][self::val]" mode="inspire-notes"/>
         </label>
     </xsl:template>
     

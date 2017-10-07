@@ -23,21 +23,60 @@
         Kadaster KKG specific SHACL rules 
     -->
     <vocabularies>
+        
+        <vocabulary>
+            <prefix>model</prefix>
+            <URI>http://data.test.pdok.nl/catalogus/dso/kkg</URI>
+        </vocabulary>
         <vocabulary>
             <prefix>rdf</prefix>
             <URI>http://www.w3.org/1999/02/22-rdf-syntax-ns#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>owl</prefix>
+            <URI>http://www.w3.org/2002/07/owl#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>uml</prefix>
+            <URI>http://www.omg.org/spec/UML/20131001/</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>kkg</prefix>
+            <URI>http://bp4mc2.org/def/kkg/id/begrip</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>skos</prefix>
+            <URI>http://www.w3.org/2004/02/skos/core#</URI>
         </vocabulary>
         <vocabulary>
             <prefix>rdfs</prefix>
             <URI>http://www.w3.org/2000/01/rdf-schema#</URI>
         </vocabulary>
         <vocabulary>
-            <prefix>xsd</prefix>
-            <URI>http://www.w3.org/2001/XMLSchema#</URI>
+            <prefix>ldqd</prefix>
+            <URI>http://unknown/#ldqd</URI>
         </vocabulary>
         <vocabulary>
-            <prefix>owl</prefix>
-            <URI>http://www.w3.org/2002/07/owl#</URI>
+            <prefix>prov</prefix>
+            <URI>http://unknown/#prov</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>xsi</prefix>
+            <URI>http://unknown/#xsi</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>primitive</prefix>
+            <URI>http://unknown/#primitive</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>dct</prefix>
+            <URI>http://unknown/#dct</URI>
+        </vocabulary>
+        
+        <!--x
+        <vocabulary>
+            <prefix>xsd</prefix>
+            <URI>http://www.w3.org/2001/XMLSchema#</URI>
         </vocabulary>
         <vocabulary>
             <prefix>sh</prefix>
@@ -60,16 +99,8 @@
             <URI>http://xmlns.com/foaf/0.1/</URI>
         </vocabulary>
         <vocabulary>
-            <prefix>skos</prefix>
-            <URI>http://www.w3.org/2004/02/skos/core#</URI>
-        </vocabulary>
-        <vocabulary>
             <prefix>skoslex</prefix>
             <URI>http://bp4mc2.org/def/skos-lex/</URI>
-        </vocabulary>
-        <vocabulary>
-            <prefix>prov</prefix>
-            <URI>http://www.w3.org/ns/prov#</URI>
         </vocabulary>
         <vocabulary>
             <prefix>dqv</prefix>
@@ -92,35 +123,36 @@
             <URI>http://www.w3.org/2016/05/ldqd#</URI>
         </vocabulary>
         <vocabulary>
-            <prefix>kkg</prefix>
-            <URI>http://data.acceptatie.pdok.nl/KKG/def/model/</URI>
-        </vocabulary>
-        <vocabulary>
             <prefix>data</prefix>
             <URI>http://data.ontwikkeling.pdok.nl/catalogus/dso/id/model#</URI>
         </vocabulary>
+        x-->
 
     </vocabularies>
     
     <node-mapping>
         <!-- 
             Alleen de tagged values die hier zijn opgenomen worden omgezet naar een regel in TTL Shacl 
-            Dit worden constructies zoals kkg:definitie '''Identifier or geographic name.....''';
+            Dit worden constructies zoals model:definition '''Identifier or geographic name.....''';
+            
+            zie https://github.com/bp4mc2/bp4mc2/blob/master/model/kkg/KKG%20stereotypes%20and%20tagged%20values.md
 	    -->
-        <map id="CFG-TV-DEFINITION" type="3q" lang="#all">kkg:definitie</map>
-        <map id="CFG-TV-DESCRIPTION" type="2q" lang="#all">kkg:toelichting</map>
-        <map id="CFG-TV-POPULATION" type="2q" lang="#all">kkg:populatie</map>
-        <map id="CFG-TV-LENGTH" type="2q" lang="#all">kkg:lengte</map>
-        <map id="CFG-TV-SOURCE" type="2q" lang="#all">kkg:herkomst</map>
-        <map id="CFG-TV-INDICATIONAUTHENTIC" type="2q" lang="#all">kkg:indicatieAuthentiek</map>
-        <map id="CFG-TV-VOIDABLE" type="2q" lang="#all">kkg:mogelijkGeenWaarde</map>
+        <map id="CFG-TV-INDICATIONAUTHENTIC" type="2q" lang="#all">ldqd:trustworthiness</map>
+        <map id="CFG-TV-CODE" type="2q" lang="#all">kkg:code</map>
+        <map id="CFG-TV-DATERECORDED" type="2q" lang="#all">prov:generatedAtTime</map>
+        <map id="CFG-TV-DEFINITION" type="3q" lang="#all">skos:definition</map>
+        <map id="CFG-TV-FORMALPATTERN" type="2q" lang="#all">kkg:domeinFormeelPatroon</map>
+        <map id="CFG-TV-LENGTH" type="2q" lang="#all">kkg:domeinLengte</map>
+        <map id="CFG-TV-PATTERN" type="2q" lang="#all">kkg:domeinPatroon</map>
+        <map id="CFG-TV-SOURCE" type="2q" lang="#all">skos:editorialNote</map>
+        <map id="CFG-TV-SOURCEOFDEFINITION" type="2q" lang="#all">dct:source</map>
         <map id="CFG-TV-INDICATIONFORMALHISTORY" type="2q" lang="#all">kkg:indicatieFormeleHistorie</map>
         <map id="CFG-TV-INDICATIONMATERIALHISTORY" type="2q" lang="#all">kkg:indicatieMaterieleHistorie</map>
-        <map id="CFG-TV-DATERECORDED" type="2q" lang="#all">kkg:datumOpname</map>
-        <map id="CFG-TV-SOURCEOFDEFINITION" type="2q" lang="#all">kkg:herkomstDefinitie</map>
-      
-        
-        
+        <map id="CFG-TV-QUALITY" type="2q" lang="#all">ldqd:semanticAccuracy</map>
+        <map id="CFG-TV-LOCATION" type="2q" lang="#all">kkg:locatie</map>
+        <map id="CFG-TV-VOIDABLE" type="2q" lang="#all">xsi:nil</map>
+        <map id="CFG-TV-POPULATION" type="2q" lang="#all">ldqd:completeness</map>
+        <map id="CFG-TV-DESCRIPTION" type="2q" lang="#all">skos:scopeNote</map>
         
     </node-mapping>
 </shacl-rules>
