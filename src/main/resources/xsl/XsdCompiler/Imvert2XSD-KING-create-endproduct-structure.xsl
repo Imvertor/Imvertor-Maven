@@ -181,7 +181,7 @@
 						or 'KENNISGEVINGBERICHTTYPE' and those linking to a class with a imvert:stereotype 
 						with the value 'ENTITEITRELATIE' must also be processed as from toplevel-message 
 						type. -->
-						<xsl:apply-templates select=".[imvert:stereotype != 'ENTITEITRELATIE']"
+						<xsl:apply-templates select=".[imvert:stereotype != 'ENTITEITRELATIE' and imvert:name != 'stuurgegevens' and imvert:name != 'parameters']"
 							mode="create-toplevel-message-structure-constructRef">
 							<xsl:with-param name="berichtCode" select="$berichtCode"/>
 							<xsl:with-param name="berichtName" select="concat($berichtName,'-',imvert:name)"/>
@@ -1603,7 +1603,7 @@
 										<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',imf:capitalize(imvert:baretype),$vraagIndicatie,'-e'))"/>										
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',imf:capitalize(imvert:baretype)))"/>
+										<xsl:value-of select="imf:get-external-type-name(.,true())"/>
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:when>
@@ -2315,22 +2315,26 @@
 							$generateHistorieConstruct != 'FormeleHistorieRelatie'">
 							<xsl:sequence select="imf:create-debug-comment('Debuglocation 1048',$debugging)"/>
 
-							<ep:constructRef prefix="StUF" externalNamespace="yes">
-								<ep:name>extraElementen</ep:name>
-								<ep:tech-name>extraElementen</ep:tech-name>
-								<ep:max-occurs>1</ep:max-occurs>
-								<ep:min-occurs>0</ep:min-occurs>
-								<ep:position>152</ep:position>
-								<ep:href>StUF:extraElementen</ep:href>
-							</ep:constructRef>
-							<ep:constructRef prefix="StUF" externalNamespace="yes">
-								<ep:name>aanvullendeElementen</ep:name>
-								<ep:tech-name>aanvullendeElementen</ep:tech-name>
-								<ep:max-occurs>1</ep:max-occurs>
-								<ep:min-occurs>0</ep:min-occurs>
-								<ep:position>153</ep:position>
-								<ep:href>StUF:aanvullendeElementen</ep:href>
-							</ep:constructRef>
+							<xsl:if test="$global-extraElementen-allowed != 'Nee'">
+								<ep:constructRef prefix="StUF" externalNamespace="yes">
+									<ep:name>extraElementen</ep:name>
+									<ep:tech-name>extraElementen</ep:tech-name>
+									<ep:max-occurs>1</ep:max-occurs>
+									<ep:min-occurs>0</ep:min-occurs>
+									<ep:position>152</ep:position>
+									<ep:href>StUF:extraElementen</ep:href>
+								</ep:constructRef>
+							</xsl:if>
+							<xsl:if test="$global-aanvullendeElementen-allowed != 'Nee'">
+								<ep:constructRef prefix="StUF" externalNamespace="yes">
+									<ep:name>aanvullendeElementen</ep:name>
+									<ep:tech-name>aanvullendeElementen</ep:tech-name>
+									<ep:max-occurs>1</ep:max-occurs>
+									<ep:min-occurs>0</ep:min-occurs>
+									<ep:position>153</ep:position>
+									<ep:href>StUF:aanvullendeElementen</ep:href>
+								</ep:constructRef>
+							</xsl:if>
 						</xsl:if>
 					</xsl:if>
 
@@ -2852,22 +2856,26 @@
 								<ep:href>StUF:tijdstipRegistratie</ep:href>
 							</ep:constructRef>
 						</xsl:if>
-						<ep:constructRef prefix="StUF" externalNamespace="yes">
-							<ep:name>extraElementen</ep:name>
-							<ep:tech-name>extraElementen</ep:tech-name>
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>0</ep:min-occurs>
-							<ep:position>152</ep:position>
-							<ep:href>StUF:extraElementen</ep:href>
-						</ep:constructRef>
-						<ep:constructRef prefix="StUF" externalNamespace="yes">
-							<ep:name>aanvullendeElementen</ep:name>
-							<ep:tech-name>aanvullendeElementen</ep:tech-name>
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>0</ep:min-occurs>
-							<ep:position>153</ep:position>
-							<ep:href>StUF:aanvullendeElementen</ep:href>
-						</ep:constructRef>
+						<xsl:if test="$global-extraElementen-allowed != 'Nee'">
+							<ep:constructRef prefix="StUF" externalNamespace="yes">
+								<ep:name>extraElementen</ep:name>
+								<ep:tech-name>extraElementen</ep:tech-name>
+								<ep:max-occurs>1</ep:max-occurs>
+								<ep:min-occurs>0</ep:min-occurs>
+								<ep:position>152</ep:position>
+								<ep:href>StUF:extraElementen</ep:href>
+							</ep:constructRef>
+						</xsl:if>
+						<xsl:if test="$global-aanvullendeElementen-allowed != 'Nee'">
+							<ep:constructRef prefix="StUF" externalNamespace="yes">
+								<ep:name>aanvullendeElementen</ep:name>
+								<ep:tech-name>aanvullendeElementen</ep:tech-name>
+								<ep:max-occurs>1</ep:max-occurs>
+								<ep:min-occurs>0</ep:min-occurs>
+								<ep:position>153</ep:position>
+								<ep:href>StUF:aanvullendeElementen</ep:href>
+							</ep:constructRef>
+						</xsl:if>
 					</xsl:if>
 					<xsl:apply-templates select="key('class',$type-id)"
 						mode="create-message-content">
@@ -3121,22 +3129,26 @@
 								<ep:href>StUF:tijdstipRegistratie</ep:href>
 							</ep:constructRef>
 						</xsl:if>
-						<ep:constructRef prefix="StUF" externalNamespace="yes">
-							<ep:name>extraElementen</ep:name>
-							<ep:tech-name>extraElementen</ep:tech-name>
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>0</ep:min-occurs>
-							<ep:position>152</ep:position>
-							<ep:href>StUF:extraElementen</ep:href>
-						</ep:constructRef>
-						<ep:constructRef prefix="StUF" externalNamespace="yes">
-							<ep:name>aanvullendeElementen</ep:name>
-							<ep:tech-name>aanvullendeElementen</ep:tech-name>
-							<ep:max-occurs>1</ep:max-occurs>
-							<ep:min-occurs>0</ep:min-occurs>
-							<ep:position>153</ep:position>
-							<ep:href>StUF:aanvullendeElementen</ep:href>
-						</ep:constructRef>
+						<xsl:if test="$global-extraElementen-allowed != 'Nee'">
+							<ep:constructRef prefix="StUF" externalNamespace="yes">
+								<ep:name>extraElementen</ep:name>
+								<ep:tech-name>extraElementen</ep:tech-name>
+								<ep:max-occurs>1</ep:max-occurs>
+								<ep:min-occurs>0</ep:min-occurs>
+								<ep:position>152</ep:position>
+								<ep:href>StUF:extraElementen</ep:href>
+							</ep:constructRef>
+						</xsl:if>
+						<xsl:if test="$global-aanvullendeElementen-allowed != 'Nee'">
+							<ep:constructRef prefix="StUF" externalNamespace="yes">
+								<ep:name>aanvullendeElementen</ep:name>
+								<ep:tech-name>aanvullendeElementen</ep:tech-name>
+								<ep:max-occurs>1</ep:max-occurs>
+								<ep:min-occurs>0</ep:min-occurs>
+								<ep:position>153</ep:position>
+								<ep:href>StUF:aanvullendeElementen</ep:href>
+							</ep:constructRef>
+						</xsl:if>
 					</xsl:if>
 					<xsl:apply-templates select="imvert:supertype" mode="create-message-content">
 						<xsl:with-param name="proces-type" select="'associationsRelatie'"/>

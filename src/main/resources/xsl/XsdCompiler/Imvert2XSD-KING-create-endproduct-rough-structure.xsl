@@ -134,11 +134,13 @@
 				element, the second one the 'parameters' element. 
 				The value '-' for the variable 'context' guarantee's no xml attributes are 
 				generated with the attributen.-->
+		<xsl:sequence select="imf:create-debug-comment('debug:start A01000a /debug:start',$debugging)"/>
 		<xsl:apply-templates select="imvert:supertype" mode="create-rough-message-content">
 			<xsl:with-param name="proces-type" select="'associationsGroepCompositie'"/>
 			<xsl:with-param name="berichtCode" select="$berichtCode"/>
 			<xsl:with-param name="context" select="'-'"/>
 		</xsl:apply-templates>
+		<xsl:sequence select="imf:create-debug-comment('debug:start A01000b /debug:start',$debugging)"/>
 		<xsl:apply-templates select="imvert:associations/imvert:association[imvert:stereotype = 'GROEP COMPOSITIE']"
 			mode="create-rough-message-content">
 			<!-- The 'id-trail' parameter has been introduced to be able to prevent 
@@ -175,7 +177,7 @@
 				
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:sequence select="imf:create-debug-comment('A01020]',$debugging)"/>
+				<xsl:sequence select="imf:create-debug-comment('A01020a]',$debugging)"/>
 				<xsl:apply-templates
 					select="imvert:associations/imvert:association[imvert:stereotype = 'ENTITEITRELATIE']"
 					mode="create-rough-message-content">
@@ -194,8 +196,9 @@
 					or 'KENNISGEVINGBERICHTTYPE' and those linking to a class with a imvert:stereotype 
 					with the value 'ENTITEITRELATIE' must also be processed as from toplevel-message 
 					type. -->
+				<xsl:sequence select="imf:create-debug-comment('A01020b]',$debugging)"/>
 				<xsl:apply-templates
-					select="imvert:associations/imvert:association[imvert:stereotype != 'ENTITEITRELATIE']"
+					select="imvert:associations/imvert:association[imvert:stereotype != 'ENTITEITRELATIE' and imvert:name != 'stuurgegevens' and imvert:name != 'parameters']"
 					mode="create-toplevel-rough-message-structure">
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 				</xsl:apply-templates>

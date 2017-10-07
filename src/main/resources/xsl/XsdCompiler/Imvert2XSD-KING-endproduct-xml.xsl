@@ -99,6 +99,81 @@
     
     <!-- needed for disambiguation of duplicate attribute names -->
     <xsl:variable name="all-simpletype-attributes" select="//imvert:attribute[empty(imvert:type)]"/> 
+
+    <!-- ROME: Het betreft hier de verkorte alias van het koppelvlak. Eerste variabele moet nog vervangen worden door de tweede. -->
+    <xsl:variable name="verkorteAlias" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
+    <xsl:variable name="kv-prefix" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
+    <xsl:variable name="global-empty-enumeration-allowed">
+        <xsl:choose>
+            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-EMPTYENUMERATIONALLOWED'))">
+                <xsl:value-of select="'Ja'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-EMPTYENUMERATIONALLOWED')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="global-noValue-allowed">
+        <xsl:choose>
+            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-NOVALUEALLOWED'))">
+                <xsl:value-of select="'Ja'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-NOVALUEALLOWED')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="global-e-types-allowed">
+        <xsl:choose>
+            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-E-TYPESALLOWED'))">
+                <xsl:value-of select="'Ja'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-E-TYPESALLOWED')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="global-tijdvakGeldigheid-allowed">
+        <xsl:choose>
+            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-TIJDVAKGELDIGHEIDALLOWED'))">
+                <xsl:value-of select="'Optioneel'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-TIJDVAKGELDIGHEIDALLOWED')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="global-tijdstipRegistratie-allowed">
+        <xsl:choose>
+            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-TIJDSTIPREGISTRATIEALLOWED'))">
+                <xsl:value-of select="'Optioneel'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-TIJDSTIPREGISTRATIEALLOWED')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="global-extraElementen-allowed">
+        <xsl:choose>
+            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-EXTRAELEMENTENALLOWED'))">
+                <xsl:value-of select="'Ja'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-EXTRAELEMENTENALLOWED')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="global-aanvullendeElementen-allowed">
+        <xsl:choose>
+            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-AANVULLENDEELEMENTENALLOWED'))">
+                <xsl:value-of select="'Ja'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-AANVULLENDEELEMENTENALLOWED')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    
     
     <!-- Within this variable a rough message structure is created to be able to determine e.g. the correct global construct structures. -->
     <xsl:variable name="rough-messages">
@@ -117,66 +192,6 @@
 
     </xsl:variable>
 
-    <!-- ROME: Het betreft hier de verkorte alias van het koppelvlak. Eerste variabele moet nog vervangen worden door de tweede. -->
-    <xsl:variable name="verkorteAlias" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
-    <xsl:variable name="kv-prefix" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
-    <xsl:variable name="global-empty-enumeration-allowed">
-        <xsl:choose>
-            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-EMPTYENUMERATIONALLOWED'))">
-                <xsl:value-of select="'Ja'"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-EMPTYENUMERATIONALLOWED')"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:variable>
-    
-    <xsl:variable name="global-noValue-allowed">
-        <xsl:choose>
-            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-NOVALUEALLOWED'))">
-                <xsl:value-of select="'Ja'"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-NOVALUEALLOWED')"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:variable>
-    
-    <xsl:variable name="global-e-types-allowed">
-        <xsl:choose>
-            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-E-TYPESALLOWED'))">
-                <xsl:value-of select="'Ja'"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-E-TYPESALLOWED')"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:variable>
-    
-    
-    <xsl:variable name="global-tijdvakGeldigheid-allowed">
-        <xsl:choose>
-            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-E-TIJDVAKGELDIGHEIDALLOWED'))">
-                <xsl:value-of select="'Optioneel'"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-E-TIJDVAKGELDIGHEIDALLOWED')"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:variable>
-    
-    
-    <xsl:variable name="global-tijdstipRegistratie-allowed">
-        <xsl:choose>
-            <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-E-TIJDSTIPREGISTRATIEALLOWED'))">
-                <xsl:value-of select="'Optioneel'"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-E-TIJDSTIPREGISTRATIEALLOWED')"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:variable>
-    
     <!--xsl:variable name="kv-prefix" select="$enriched-rough-messages//@kv-prefix"/-->
     
     <xsl:variable name="prefix" as="xs:string">
@@ -918,22 +933,26 @@
                                             <ep:href>StUF:tijdstipRegistratie</ep:href>
                                         </ep:constructRef>
                                     </xsl:if>
-                                    <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                        <ep:name>extraElementen</ep:name>
-                                        <ep:tech-name>extraElementen</ep:tech-name>
-                                        <ep:max-occurs>1</ep:max-occurs>
-                                        <ep:min-occurs>0</ep:min-occurs>
-                                        <ep:position>165</ep:position>
-                                        <ep:href>StUF:extraElementen</ep:href>
-                                    </ep:constructRef>
-                                    <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                        <ep:name>aanvullendeElementen</ep:name>
-                                        <ep:tech-name>aanvullendeElementen</ep:tech-name>
-                                        <ep:max-occurs>1</ep:max-occurs>
-                                        <ep:min-occurs>0</ep:min-occurs>
-                                        <ep:position>170</ep:position>
-                                        <ep:href>StUF:aanvullendeElementen</ep:href>
-                                    </ep:constructRef>
+                                    <xsl:if test="$global-extraElementen-allowed != 'Nee'">
+                                        <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                            <ep:name>extraElementen</ep:name>
+                                            <ep:tech-name>extraElementen</ep:tech-name>
+                                            <ep:max-occurs>1</ep:max-occurs>
+                                            <ep:min-occurs>0</ep:min-occurs>
+                                            <ep:position>165</ep:position>
+                                            <ep:href>StUF:extraElementen</ep:href>
+                                        </ep:constructRef>
+                                    </xsl:if>
+                                    <xsl:if test="$global-aanvullendeElementen-allowed != 'Nee'">
+                                        <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                            <ep:name>aanvullendeElementen</ep:name>
+                                            <ep:tech-name>aanvullendeElementen</ep:tech-name>
+                                            <ep:max-occurs>1</ep:max-occurs>
+                                            <ep:min-occurs>0</ep:min-occurs>
+                                            <ep:position>170</ep:position>
+                                            <ep:href>StUF:aanvullendeElementen</ep:href>
+                                        </ep:constructRef>
+                                    </xsl:if>
                                 </xsl:if>
                                 <!-- ROME: Hieronder worden de construcRefs voor historieMaterieel en historieFormeel aangemaakt.
                                             Dit moet echter gebeuren a.d.h.v. de berichtcode. Die verfijning moet nog worden aangebracht in de if statements. -->
@@ -1383,22 +1402,26 @@
                                                    <ep:href>StUF:tijdstipRegistratie</ep:href>
                                                </ep:constructRef>
                                            </xsl:if>
-                                           <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                               <ep:name>extraElementen</ep:name>
-                                               <ep:tech-name>extraElementen</ep:tech-name>
-                                               <ep:max-occurs>1</ep:max-occurs>
-                                               <ep:min-occurs>0</ep:min-occurs>
-                                               <ep:position>165</ep:position>
-                                               <ep:href>StUF:extraElementen</ep:href>
-                                           </ep:constructRef>
-                                           <ep:constructRef prefix="StUF" externalNamespace="yes">
-                                               <ep:name>aanvullendeElementen</ep:name>
-                                               <ep:tech-name>aanvullendeElementen</ep:tech-name>
-                                               <ep:max-occurs>1</ep:max-occurs>
-                                               <ep:min-occurs>0</ep:min-occurs>
-                                               <ep:position>170</ep:position>
-                                               <ep:href>StUF:aanvullendeElementen</ep:href>
-                                           </ep:constructRef>
+                                           <xsl:if test="$global-extraElementen-allowed != 'Nee'">
+                                               <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                                   <ep:name>extraElementen</ep:name>
+                                                   <ep:tech-name>extraElementen</ep:tech-name>
+                                                   <ep:max-occurs>1</ep:max-occurs>
+                                                   <ep:min-occurs>0</ep:min-occurs>
+                                                   <ep:position>165</ep:position>
+                                                   <ep:href>StUF:extraElementen</ep:href>
+                                               </ep:constructRef>
+                                           </xsl:if>
+                                           <xsl:if test="$global-aanvullendeElementen-allowed != 'Nee'">
+                                               <ep:constructRef prefix="StUF" externalNamespace="yes">
+                                                   <ep:name>aanvullendeElementen</ep:name>
+                                                   <ep:tech-name>aanvullendeElementen</ep:tech-name>
+                                                   <ep:max-occurs>1</ep:max-occurs>
+                                                   <ep:min-occurs>0</ep:min-occurs>
+                                                   <ep:position>170</ep:position>
+                                                   <ep:href>StUF:aanvullendeElementen</ep:href>
+                                               </ep:constructRef>
+                                           </xsl:if>
                                        </xsl:if>
                                        <!-- ROME: Hieronder worden de construcRefs voor historieMaterieel en historieFormeel aangemaakt.
                                             Dit moet echter gebeuren a.d.h.v. de berichtcode. Die verfijning moet nog worden aangebracht in de if statements. -->
@@ -1721,7 +1744,7 @@
                                                <ep:min-occurs>0</ep:min-occurs>
                                                <ep:position>150</ep:position>
                                            </ep:constructRef -->
-                                           <xsl:if test="$global-tijdvakGeldigheid-allowed != 'Verplicht'">
+                                           <xsl:if test="$global-tijdvakGeldigheid-allowed = ('Nee','Optioneel')">
                                                <xsl:variable name="msg"
                                                    select="concat('The tagged value [tijdvakGeldigheid genereren] is set to ',$global-tijdvakGeldigheid-allowed,'. However in the historieMaterieel elements within the messagetype ', $berichtCode, ' it must be required.')"/>
                                                <xsl:sequence select="imf:msg('WARN', $msg)"/>
@@ -2002,7 +2025,7 @@
                                                <ep:min-occurs>0</ep:min-occurs>
                                                <ep:position>150</ep:position>
                                            </ep:constructRef -->
-                                           <xsl:if test="$global-tijdvakGeldigheid-allowed != 'Verplicht'">
+                                           <xsl:if test="$global-tijdvakGeldigheid-allowed = ('Nee','Optioneel')">
                                                <xsl:variable name="msg"
                                                    select="concat('The tagged value [tijdvakGeldigheid genereren] is set to ',$global-tijdvakGeldigheid-allowed,'. However in the historieFormeel element within the messagetype ', $berichtCode, ' it must be required.')"/>
                                                <xsl:sequence select="imf:msg('WARN', $msg)"/>
