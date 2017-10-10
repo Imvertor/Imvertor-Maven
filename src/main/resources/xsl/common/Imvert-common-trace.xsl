@@ -31,6 +31,10 @@
         <xsl:sequence select="imf:compile-construct-formal-name($type-name,$effective-package-name,$effective-class-name,$effective-prop-name)"/>
     </xsl:function>
     
+    <!-- 
+        Get all supaths that are defined for any element within the Imvertor tree. 
+        This checks the imvert:supplier elements of any parent element, and fetches the subpaths for these. 
+    -->
     <xsl:function name="imf:get-construct-supplier-system-subpaths" as="xs:string*">
         <xsl:param name="this" as="element()"/>
         <xsl:variable name="suppliers" select="($this/ancestor-or-self::imvert:*)/imvert:supplier"/>

@@ -43,8 +43,6 @@
     
     <xsl:variable name="local-constructs" select="('name', 'id')"/> <!-- 'attributes', 'associations', ? -->
     
-    <xsl:variable name="document-proxies" select="//*[imvert:stereotype = $stereotype-proxy]"/>
-    
     <xsl:template match="/imvert:packages">
         <xsl:copy>
             <xsl:sequence select="imf:compile-imvert-header(.)"/>
@@ -52,72 +50,84 @@
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="imvert:package">
+    <xsl:template match="imvert:package[imf:boolean(imvert:is-root-package)]" mode="client">
+        <xsl:variable name="this-package" select="."/>
+        
         <xsl:variable name="package-proxies" select=".//*[imvert:stereotype = $stereotype-proxy]"/>
         <xsl:variable name="supplier-project" select="imvert:supplier/imvert:supplier-project"/>
         <xsl:variable name="supplier-name" select="imvert:supplier/imvert:supplier-name"/>
         <xsl:variable name="supplier-release" select="imvert:supplier/imvert:supplier-release"/>
         <xsl:choose>
             <xsl:when test="exists($package-proxies) and empty($supplier-project)">
-                <xsl:sequence select="imf:msg(..,'ERROR','No proxy supplier project specified')"/>
+                <xsl:sequence select="imf:msg(..,'ERROR','Proxies found, but no proxy supplier project specified',())"/>
             </xsl:when>
             <xsl:when test="exists($package-proxies) and empty($supplier-name)">
-                <xsl:sequence select="imf:msg(..,'ERROR','No proxy supplier name specified')"/>
+                <xsl:sequence select="imf:msg(..,'ERROR','Proxy supplier project found, but no proxy supplier name specified',())"/>
             </xsl:when>
             <xsl:when test="exists($package-proxies) and empty($supplier-release)">
-                <xsl:sequence select="imf:msg(..,'ERROR','No proxy supplier release specified')"/>
+                <xsl:sequence select="imf:msg(..,'ERROR','Proxy supplier project found, but no proxy supplier release specified',())"/>
             </xsl:when>
             <xsl:otherwise>
-                <!-- resolve all proxies. This introduces types that may not have been specified as proxies -->
+                <!-- resolve all proxies. This introduces (drags) types that occur as the type of a proxied attribute. -->
                 <xsl:variable name="proxied-content" as="node()*">
-                    <xsl:apply-templates/>
+                    <xsl:apply-templates mode="client"/>
                 </xsl:variable>
-                <!-- 
-                    classes that are not represented as proxies, but that occur as the type of some attribute that is proxied, must be copied to the client 
-                -->
-                <xsl:variable name="resolved-proxied-content" as="element()*">
-                    <xsl:for-each select="$proxied-content//imvert:attribute/imvert:type-id">
-                        <xsl:variable name="type-id" select="."/>
-                        <xsl:message select="$type-id"></xsl:message>
-                        <!-- check if type id is resolved, and if not, try to get it from supplier -->
-                        <xsl:variable name="construct" select="imf:get-construct-by-id($type-id,$proxied-content)"/>
-                        <!-- if this is not found, copy the construct -->
-                        <xsl:if test="empty($construct)">
-                            <xsl:variable name="supplier-subpaths" select="imf:get-construct-supplier-system-subpaths(.)" as="xs:string*"/>
-                            <xsl:variable name="result" as="element()*">
-                                <xsl:for-each select="$supplier-subpaths">
-                                    <xsl:variable name="supplier-doc" select="imf:get-imvert-supplier-doc(.)"/>
-                                    <xsl:variable name="supplier" select="imf:get-construct-by-id($type-id,$supplier-doc)"/>
-                                    <xsl:sequence select="$supplier"/>
-                                </xsl:for-each>
-                            </xsl:variable>
-                            <xsl:choose>
-                                <xsl:when test="$result[2]">
-                                    <xsl:sequence select="imf:msg(..,'ERROR','Too many supplier types [1], applicable suppliers are: [2]',(imf:string-group(for $n in $result return imf:get-display-name($n)),imf:string-group($supplier-subpaths)))"/>
-                                </xsl:when>
-                                <xsl:when test="$result[1]">
-                                    <xsl:sequence select="$result"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:sequence select="imf:msg(..,'ERROR','Cannot determine the supplier type, applicable suppliers are: [1]',(imf:string-group($supplier-subpaths)))"/>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </xsl:if>
-                    </xsl:for-each>
-                </xsl:variable>
-                
                 <imvert:package>
                     <xsl:apply-templates select="@*"/>
                     <xsl:sequence select="$proxied-content"/>
-                    <xsl:comment>DRAGGED:</xsl:comment>
-                    <xsl:sequence select="$resolved-proxied-content"/>
                 </imvert:package>
-                
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
     
-    
+    <xsl:template match="imvert:package[imf:boolean(imvert:is-root-package)]/imvert:package" mode="client">
+       
+        <xsl:variable name="root-package" select=".."/>
+
+        <xsl:variable name="proxied-content" as="node()*">
+            <xsl:apply-templates mode="client"/>
+        </xsl:variable>
+        
+        <!-- 
+            classes that are not represented as proxies, but that occur as the type of some attribute that is proxied, must be copied to the client.
+            We call this ""dragging" the type info the model of the client.
+        -->
+        <xsl:variable name="dragged-proxied-content" as="element()*">
+            <xsl:for-each-group select="$proxied-content//imvert:attribute" group-by="imvert:type-id">
+                <xsl:variable name="type-id" select="current-grouping-key()"/>
+                <!-- check if type id is resolved, and if not, try to get it from supplier (drag) -->
+                <xsl:variable name="construct" select="imf:get-construct-by-id($type-id)"/>
+                <!-- if this is not found, drag the construct -->
+                <xsl:if test="empty($construct)">
+                    <xsl:variable name="supplier-subpaths" select="imf:get-construct-supplier-system-subpaths($root-package)" as="xs:string*"/>
+                    <xsl:variable name="result" as="element()*">
+                        <xsl:for-each select="$supplier-subpaths">
+                            <xsl:variable name="supplier-doc" select="imf:get-imvert-supplier-doc(.)"/>
+                            <xsl:variable name="supplier" select="imf:get-construct-by-id($type-id,$supplier-doc)"/>
+                            <xsl:sequence select="$supplier"/>
+                        </xsl:for-each>
+                    </xsl:variable>
+                    <xsl:choose>
+                        <xsl:when test="$result[2]">
+                            <xsl:sequence select="imf:msg(.,'ERROR','Too many supplier types [1], applicable suppliers are: [2]',(imf:string-group(for $n in $result return imf:get-display-name($n)),imf:string-group($supplier-subpaths)))"/>
+                        </xsl:when>
+                        <xsl:when test="$result[1]">
+                            <xsl:sequence select="$result"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <!-- resolve in some other way or signal error later -->
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:if>
+            </xsl:for-each-group>
+        </xsl:variable>
+        <imvert:package>
+            <xsl:apply-templates select="@*"/>
+            <xsl:sequence select="$proxied-content"/>
+            <xsl:sequence select="$dragged-proxied-content"/>
+        </imvert:package>
+    </xsl:template>
+
     <!--TODO inlezen van losse documenten tegengaan; volg het gecompileerde suppliers document -->
     <xsl:template match="imvert:class[imvert:stereotype = $stereotype-proxy] | imvert:attribute[imvert:stereotype = $stereotype-proxy]" mode="client">
         <xsl:variable name="client" select="."/>
@@ -130,7 +140,7 @@
                     <xsl:sequence select="imf:msg(.,'ERROR', 'Proxy requires a single outgoing trace, [1] traces found',count($trace-id))"/>
                 </xsl:when>
                 <xsl:when test="empty($supplier-subpaths)">
-                    <xsl:sequence select="imf:msg(.,'ERROR','Could not determine a supplier subpath')"/>
+                    <xsl:sequence select="imf:msg(.,'ERROR','Could not determine a supplier subpath',())"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <!-- get the construct traced in any supplier -->
@@ -161,7 +171,7 @@
                                     -->
                                     <xsl:apply-templates select="$supplier/*" mode="supplier"/>
                                     
-                                    <!-- process the attributes and associations -->
+                                    <!-- process the attributes and associations (will not fire when client is imvert:attribute) -->
                                     <xsl:apply-templates select="$client/imvert:attributes" mode="client"/>
                                     <xsl:apply-templates select="$client/imvert:associations" mode="client"/>
                                     

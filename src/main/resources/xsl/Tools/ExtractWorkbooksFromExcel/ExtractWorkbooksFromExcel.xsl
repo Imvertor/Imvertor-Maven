@@ -53,12 +53,13 @@
     </xsl:template>
     
     <xsl:template match="*:c">
-            <xsl:variable name="c" select="imf:get-string(.)"/>
-            <xsl:if test="normalize-space($c)">
-                <cell nr="{position()}">
-                    <xsl:sequence select="$c"/>
-                </cell>
-            </xsl:if> 
+        <xsl:variable name="c" select="imf:get-string(.)"/>
+        <xsl:if test="normalize-space($c)">
+            <xsl:variable name="col-letter" select="tokenize(@r,'\d+')[1]"/>
+            <cell nr="{string-length(substring-before('ABCDEFGHIJKLMNOPQRSTUVWXYZ',$col-letter)) + 1}" ch="{$col-letter}">
+                <xsl:sequence select="$c"/>
+            </cell>
+        </xsl:if> 
     </xsl:template>
     
     <!-- 

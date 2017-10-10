@@ -851,6 +851,8 @@
         <xsl:variable name="defining-classes" select="($defining-class, imf:get-superclasses($defining-class))"/>
         <xsl:variable name="is-combined-identification" select="imf:get-tagged-value($this,'##CFG-TV=GECOMBINEERDEIDENTIFICATIE')"/>
         <xsl:variable name="target-navigable" select="imvert:target/imvert:navigable"/>
+        <xsl:variable name="defining-class-is-group" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-composite')"/>
+        
         <!--validation-->
         
         <xsl:sequence select="imf:report-error(., 
@@ -866,7 +868,7 @@
             not($is-collection) and $this/imvert:name and not(imf:test-name-convention($this)), 
             'Association name does not obey convention')"/>
         <xsl:sequence select="imf:report-error(., 
-            (not($is-collection) and not($is-process) and empty($association-class-id) and not(imvert:name)), 
+            (not($is-collection) and not($is-process) and not($defining-class-is-group) and empty($association-class-id) and not(imvert:name)), 
             'Association without name.')"/>
         <xsl:sequence select="imf:report-error(., 
             not(imf:check-multiplicity(imvert:min-occurs,imvert:max-occurs)), 
