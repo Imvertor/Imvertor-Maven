@@ -43,9 +43,9 @@ import nl.imvertor.Validator.Validator;
 import nl.imvertor.XmiCompiler.XmiCompiler;
 import nl.imvertor.XmiTranslator.XmiTranslator;
 import nl.imvertor.XsdCompiler.XsdCompiler;
+import nl.imvertor.YamlCompiler.YamlCompiler;
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Release;
-import nl.imvertor.common.file.ExecFile;
 
 public class ChainTranslateAndReport {
 
@@ -78,6 +78,7 @@ public class ChainTranslateAndReport {
 			configurator.getCli(ImvertCompiler.STEP_NAME);
 			configurator.getCli(XsdCompiler.STEP_NAME);
 			configurator.getCli(ShaclCompiler.STEP_NAME);
+			configurator.getCli(YamlCompiler.STEP_NAME);
 			configurator.getCli(ReleaseComparer.STEP_NAME);
 			configurator.getCli(SchemaValidator.STEP_NAME);
 			configurator.getCli(HistoryCompiler.STEP_NAME);
@@ -176,6 +177,9 @@ public class ChainTranslateAndReport {
 				     
 				    if (configurator.isTrue("cli","createshacl",false)) 
 				    	succeeds = succeeds && (new ShaclCompiler()).run();
+		
+				    if (configurator.isTrue("cli","createyaml",false)) 
+				    	succeeds = succeeds && (new YamlCompiler()).run();
 					    	
 			    }
 			} catch (Exception e) {

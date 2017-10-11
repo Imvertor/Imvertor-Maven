@@ -361,6 +361,7 @@ public class Configurator {
 		setParm(workConfiguration,"system","work-cmp-folder-path",     wf + s + "app" + s + "cmp", true);
 		setParm(workConfiguration,"system","work-job-folder-path",     wf + s + "app" + s + "job", true);
 		setParm(workConfiguration,"system","work-shacl-folder-path",   wf + s + "app" + s + "shacl", true);
+		setParm(workConfiguration,"system","work-yaml-folder-path",    wf + s + "app" + s + "yaml", true);
 				
 		setParm(workConfiguration,"system","work-rep-folder-path",     wf + s + "rep", true);
 		setParm(workConfiguration,"system","work-imvert-folder-path",  wf + s + "imvert", true);

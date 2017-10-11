@@ -81,6 +81,10 @@ public class RdfFile extends AnyFile {
 					 inputStream.close();
 				 }
 
+			 }  if (ext.equals("yml")) {
+				 
+				 // TODO
+				 
 			 } else 
 				configurator.getRunner().fatal(logger,"Not a known RDF file extension: " + ext,null,"rdf-unk","some-wiki-ref");
 		
