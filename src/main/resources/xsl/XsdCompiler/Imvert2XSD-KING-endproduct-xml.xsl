@@ -136,7 +136,7 @@
     <xsl:variable name="global-tijdvakGeldigheid-allowed">
         <xsl:choose>
             <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-TIJDVAKGELDIGHEIDALLOWED'))">
-                <xsl:value-of select="'Optioneel'"/>
+                <xsl:value-of select="'Leeg'"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-TIJDVAKGELDIGHEIDALLOWED')"/>
@@ -146,7 +146,7 @@
     <xsl:variable name="global-tijdstipRegistratie-allowed">
         <xsl:choose>
             <xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-TIJDSTIPREGISTRATIEALLOWED'))">
-                <xsl:value-of select="'Optioneel'"/>
+                <xsl:value-of select="'Leeg'"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-TIJDSTIPREGISTRATIEALLOWED')"/>
