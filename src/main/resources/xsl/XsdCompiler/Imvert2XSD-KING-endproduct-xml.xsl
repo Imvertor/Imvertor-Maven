@@ -20,14 +20,15 @@
     
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
-    <xsl:import href="../common/extension/Imvert-common-text.xsl"/>
+    <xsl:import href="../common/extension/Imvert-common-text.xsl"/>   
+    <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     
     <xsl:import href="Imvert2XSD-KING-enrich-excel.xsl"/>
     
     <xsl:import href="Imvert2XSD-KING-common.xsl"/>
     
-    <xsl:import href="Imvert2XSD-KING-create-endproduct-rough-structure.xsl"/>
-    <xsl:import href="Imvert2XSD-KING-create-enriched-rough-messages.xsl"/>
+    <!--xsl:import href="Imvert2XSD-KING-create-endproduct-rough-structure.xsl"/>
+    <xsl:import href="Imvert2XSD-KING-create-enriched-rough-messages.xsl"/-->
     <xsl:import href="Imvert2XSD-KING-create-endproduct-structure.xsl"/>
 
     <xsl:include href="Imvert2XSD-KING-common-checksum.xsl"/>
@@ -48,7 +49,8 @@
     <xsl:variable name="stylesheet" as="xs:string">Imvert2XSD-KING-endproduct-xml</xsl:variable>
     <xsl:variable name="stylesheet-version" as="xs:string">$Id: Imvert2XSD-KING-endproduct-xml.xsl 7509 2016-04-25 13:30:29Z arjan $</xsl:variable>  
 
-    <xsl:variable name="StUF-prefix" select="'StUF'"/>
+    <xsl:variable name="StUF-prefix" select="'StUF'"/>   
+    <xsl:variable name="StUF-namespaceIdentifier" select="'http://www.stufstandaarden.nl/onderlaag/stuf0302'"/>
     <xsl:variable name="GML-prefix" select="'gml'"/>
     
     <xsl:variable name="config-schemarules">
@@ -175,24 +177,7 @@
     </xsl:variable>
     
     
-    <!-- Within this variable a rough message structure is created to be able to determine e.g. the correct global construct structures. -->
-    <xsl:variable name="rough-messages">
-         <xsl:sequence select="imf:track('Constructing the rough message-structure')"/>
-        
-        <ep:rough-messages>
-            <xsl:apply-templates select="$packages/imvert:package[imvert:stereotype = 'BERICHT' and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]" mode="create-rough-message-structure"/>
-        </ep:rough-messages>
-    </xsl:variable>
-    
-    
-    <xsl:variable name="enriched-rough-messages">
-        <xsl:sequence select="imf:track('Constructing the enriched rough message-structure')"/>
-        
-        <xsl:apply-templates select="$rough-messages/ep:rough-messages" mode="enrich-rough-messages"/>
-
-    </xsl:variable>
-
-    <!--xsl:variable name="kv-prefix" select="$enriched-rough-messages//@kv-prefix"/-->
+    <xsl:variable name="enriched-rough-messages" select="imf:document(imf:get-config-string('properties','ENRICHED_ROUGH_ENDPRODUCT_XML_FILE_PATH'))"/>  
     
     <xsl:variable name="prefix" as="xs:string">
         <xsl:choose>
@@ -212,8 +197,8 @@
     <xsl:variable name="version" select="$packages/imvert:version"/>
     
     <!-- Within this variable all messages defined within the BSM of the koppelvlak are placed, transformed to the imvertor endproduct (ep) format.-->
-    <xsl:variable name="imvert-endproduct">
-        
+    <xsl:template match="/">
+         
         <ep:message-set global-empty-enumeration-allowed="{$global-empty-enumeration-allowed}">
             <xsl:sequence select="imf:create-debug-comment('Debuglocation 1',$debugging)"/>
 
@@ -235,12 +220,19 @@
             </ep:namespaces>
             
             <xsl:if test="$debugging">
-                <!--xsl:variable name="xml-path" select="imf:serializeExcel($endproduct-base-config-excel,concat($workfolder-path,'/excel.xml'),$excel-97-dtd-path)"/>
-                <xsl:variable name="xml-doc" select="imf:document($xml-path, true())"/>
-                <xsl:sequence select="$xml-doc"/-->
-                <!--xsl:sequence select="$enriched-endproduct-base-config-excel"/-->
-                <!--xsl:sequence select="$rough-messages"/>
-                <xsl:sequence select="$enriched-rough-messages"/-->
+                <!--xsl:result-document href="file:/c:/temp/imvert-schema-rules.xml">
+                    <xsl:sequence select="$config-schemarules"/>
+                </xsl:result-document> 
+                <xsl:result-document href="file:/c:/temp/imvert-tagged-values.xml">
+                    <xsl:sequence select="$config-tagged-values"/>
+                </xsl:result-document> 
+                <xsl:result-document href="file:/c:/temp/enriched-endproduct-base-config-excel.xml">
+                    <xsl:sequence select="$enriched-endproduct-base-config-excel"/>
+                </xsl:result-document> 
+                <xsl:result-document href="file:/c:/temp/enriched-rough-messages2.xml">
+                    <xsl:sequence select="$enriched-rough-messages"/>
+                </xsl:result-document--> 
+                    
             </xsl:if>
             
             <xsl:sequence select="imf:track('Constructing the messages')"/>
@@ -342,22 +334,23 @@
             <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-enumeration') and generate-id(.) = generate-id(key('enumerationClass',imvert:name,$packages)[1])]" mode="mode-global-enumeration"/>
             
         </ep:message-set>
-     </xsl:variable>
-    
-    <xsl:template match="/">
+
+    </xsl:template>
+
+    <?x xsl:template match="/">
         <!-- This template is used to place the content of the variable '$imvert-endproduct' within the ep file. -->
         <xsl:if test="$debugging">
-            <?x xsl:result-document href="file:/c:/temp/imvert-schema-rules.xml">
+            <xsl:result-document href="file:/c:/temp/imvert-schema-rules.xml">
                 <xsl:sequence select="$config-schemarules"/>
-            </xsl:result-document x?> 
-            <?x xsl:result-document href="file:/c:/temp/imvert-tagged-values.xml">
+            </xsl:result-document> 
+            <xsl:result-document href="file:/c:/temp/imvert-tagged-values.xml">
                 <xsl:sequence select="$config-tagged-values"/>
-            </xsl:result-document x?> 
-            <?x xsl:result-document href="file:/c:/temp/imvert-endproduct.xml">
+            </xsl:result-document> 
+            <xsl:result-document href="file:/c:/temp/imvert-endproduct.xml">
                 <xsl:sequence select="$enriched-endproduct-base-config-excel"/>
                 
                 <!-- xsl:sequence select="$imvert-endproduct/*"/ -->
-            </xsl:result-document x?> 
+            </xsl:result-document> 
             <xsl:result-document href="file:/c:/temp/rough-messages.xml">
                 <xsl:sequence select="$rough-messages"/>
             </xsl:result-document>
@@ -367,7 +360,7 @@
         </xsl:if>
         
         <xsl:sequence select="$imvert-endproduct/*"/>
-    </xsl:template>
+    </xsl:template x?>
     
     <xsl:template match="ep:rough-message">
         <xsl:variable name="fundamentalMnemonic" select="ep:fundamentalMnemonic" as="xs:string"/>

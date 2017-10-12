@@ -12,15 +12,11 @@
 	xmlns:ss="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
 	xmlns:xhtml="http://www.w3.org/1999/xhtml" version="2.0">
 
-	<xsl:import href="../common/Imvert-common-derivation.xsl"/>
-
 	<xsl:output indent="yes" method="xml" encoding="UTF-8"/>
 
 	<xsl:variable name="stylesheet">Imvert2XSD-KING-create-endproduct-structure</xsl:variable>
 	<xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-create-endproduct-structure.xsl 1
 		2015-11-11 11:50:00Z RobertMelskens $</xsl:variable>
-
-	<xsl:variable name="StUF-namespaceIdentifier" select="'http://www.stufstandaarden.nl/onderlaag/stuf0302'"/>
 	
 	<!-- ======= Block of templates used to create the message structure. ======= -->
 
