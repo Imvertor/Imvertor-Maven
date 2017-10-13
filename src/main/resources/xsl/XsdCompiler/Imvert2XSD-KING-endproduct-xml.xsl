@@ -3240,20 +3240,35 @@
         <xsl:param name="attribute"/>
         
         <xsl:choose>
-            <xsl:when test="$attribute/imvert:type-name = 'scalar-date' and $attribute/imvert:type-modifier = '?'">
+            <xsl:when test="$attribute/imvert:type-name = 'scalar-date' and $attribute/imvert:type-modifier = '?' and $global-e-types-allowed = 'Ja'">
                 <xsl:value-of select="concat($StUF-prefix,':DatumMogelijkOnvolledig-e')"/>
             </xsl:when>
-            <xsl:when test="$attribute/imvert:type-name = 'scalar-date'">
+            <xsl:when test="$attribute/imvert:type-name = 'scalar-date' and $attribute/imvert:type-modifier = '?' and $global-e-types-allowed = 'Nee'">
+                <xsl:value-of select="concat($StUF-prefix,':DatumMogelijkOnvolledig-r')"/>
+            </xsl:when>
+            <xsl:when test="$attribute/imvert:type-name = 'scalar-date' and $global-e-types-allowed = 'Ja'">
                 <xsl:value-of select="concat($StUF-prefix,':Datum-e')"/>
             </xsl:when>
-            <xsl:when test="$attribute/imvert:type-name = 'scalar-datetime' and $attribute/imvert:type-modifier = '?'">
+            <xsl:when test="$attribute/imvert:type-name = 'scalar-date' and $global-e-types-allowed = 'Nee'">
+                <xsl:value-of select="concat($StUF-prefix,':Datum-r')"/>
+            </xsl:when>
+            <xsl:when test="$attribute/imvert:type-name = 'scalar-datetime' and $attribute/imvert:type-modifier = '?' and $global-e-types-allowed = 'Ja'">
                 <xsl:value-of select="concat($StUF-prefix,':TijdstipMogelijkOnvolledig-e')"/>
             </xsl:when>
-            <xsl:when test="$attribute/imvert:type-name = 'scalar-datetime'">
+            <xsl:when test="$attribute/imvert:type-name = 'scalar-datetime' and $attribute/imvert:type-modifier = '?' and $global-e-types-allowed = 'Nee'">
+                <xsl:value-of select="concat($StUF-prefix,':TijdstipMogelijkOnvolledig-r')"/>
+            </xsl:when>
+            <xsl:when test="$attribute/imvert:type-name = 'scalar-datetime' and $global-e-types-allowed = 'Ja'">
                 <xsl:value-of select="concat($StUF-prefix,':Tijdstip-e')"/>
             </xsl:when>
-            <xsl:when test="$attribute/imvert:type-name = 'scalar-year'">
+            <xsl:when test="$attribute/imvert:type-name = 'scalar-datetime' and $global-e-types-allowed = 'Nee'">
+                <xsl:value-of select="concat($StUF-prefix,':Tijdstip-r')"/>
+            </xsl:when>
+            <xsl:when test="$attribute/imvert:type-name = 'scalar-year' and $global-e-types-allowed = 'Ja'">
                 <xsl:value-of select="concat($StUF-prefix,':Jaar-e')"/>
+            </xsl:when>
+            <xsl:when test="$attribute/imvert:type-name = 'scalar-year' and $global-e-types-allowed = 'Nee'">
+                <xsl:value-of select="concat($StUF-prefix,':Jaar-r')"/>
             </xsl:when>
             <xsl:when test="$attribute/imvert:type-name = 'scalar-yearmonth'">
                 <xsl:value-of select="concat($StUF-prefix,':JaarMaand-e')"/>
