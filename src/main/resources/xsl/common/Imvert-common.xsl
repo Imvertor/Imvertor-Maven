@@ -29,8 +29,7 @@
     xmlns:imvert-history="http://www.imvertor.org/schema/history"
     xmlns:imvert-appconfig="http://www.imvertor.org/schema/appconfig"
     xmlns:imvert-message="http://www.imvertor.org/schema/message"
-    xmlns:imvert-ep="http://www.imvertor.org/schema/endproduct"
-           xmlns:ep="http://www.imvertor.org/schema/endproduct"
+    xmlns:ep="http://www.imvertor.org/schema/endproduct"
     
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     xmlns:ekf="http://EliotKimber/functions"
