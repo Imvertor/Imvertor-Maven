@@ -259,6 +259,7 @@
     
     <xsl:function name="imf:get-construct-name" as="xs:string">
         <xsl:param name="this" as="element()"/>
+
         <xsl:variable name="precompiled-name" select="$this/@display-name"/>
         <xsl:choose>
             <xsl:when test="exists($precompiled-name)">
@@ -267,7 +268,7 @@
             <xsl:otherwise>
                 <xsl:variable name="name" select="imf:get-original-names($this)"/>
                 <xsl:variable name="project" select="$this/ancestor-or-self::imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-project-package')]"/>
-                <xsl:variable name="package-names" select="imf:get-original-names($this/ancestor-or-self::imvert:package[exists(ancestor-or-self::imvert:package = $project)])"/>
+                <xsl:variable name="package-names" select="imf:get-original-names($this/ancestor-or-self::imvert:package[imf:member-of($project,ancestor-or-self::imvert:package)])"/>
                 <xsl:variable name="class-name" select="imf:get-original-names($this/ancestor-or-self::imvert:class[1])"/>
                 <xsl:variable name="alias" select="$this/imvert:alias"/>
                 <xsl:choose>
@@ -292,6 +293,11 @@
                     </xsl:when>
                     <xsl:when test="$this/self::imvert:association">
                         <xsl:sequence select="imf:compile-construct-name($package-names,$class-name,$name,imf:get-aggregation($this),$alias)"/>
+                    </xsl:when>
+                    <xsl:when test="$this/self::imvert:source | $this/self::imvert:target">
+                        <xsl:variable name="assoc" select="$this/.."/>
+                        <xsl:variable name="type" select="concat('[', imf:get-original-names($assoc), ':', $this/imvert:role/@original,']')"/>
+                        <xsl:sequence select="imf:compile-construct-name($package-names,$class-name,$type,(),$alias)"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:sequence select="imf:compile-construct-name($package-names,$name,local-name($this),(),$alias)"/>
@@ -633,7 +639,7 @@
         <!-- if any class is subtype of some other class in this collection, remove it. If not we would get ambiguous references. -->
         <xsl:variable name="r2" as="element()*">
             <xsl:for-each select="$r1">
-                <xsl:sequence select="if (imf:get-superclasses(.) = $r1) then () else ."/>
+                <xsl:sequence select="if (imf:member-of($r1,imf:get-superclasses(.))) then () else ."/>
             </xsl:for-each>
         </xsl:variable>
         <xsl:sequence select="$r2"/>
@@ -644,7 +650,7 @@
         <xsl:param name="processed" as="element()*"/> 
         <xsl:variable name="result" as="element()*">
             <xsl:choose>
-                <xsl:when test="$processed = $class">
+                <xsl:when test="imf:member-of($class,$processed)">
                     <!-- skip -->
                 </xsl:when>
                 <xsl:otherwise>
@@ -945,7 +951,7 @@
             <xsl:when test="$is-external and $is-conceptual">
                 <xsl:sequence select="true()"/>
             </xsl:when>
-            <xsl:when test="$is-external and $pack = $construct">
+           <xsl:when test="$is-external and imf:member-of($construct,$pack)">
                 <!--<xsl:sequence select="imf:msg($construct, 'WARN','External packages must start with URL prefix [1]',($prefix))"/>-->
                 <xsl:sequence select="false()"/>
             </xsl:when>
@@ -1163,4 +1169,11 @@
         </xsl:if>
     </xsl:function>    
 
+    <!-- return true when any node in set 1 is member of set 2 -->
+    <xsl:function name="imf:member-of" as="xs:boolean">
+        <xsl:param name="nodes1" as="node()*"/>
+        <xsl:param name="nodes2" as="node()*"/>
+        <xsl:sequence select="exists($nodes1 intersect $nodes2)"/>
+    </xsl:function>
+    
 </xsl:stylesheet>
