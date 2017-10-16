@@ -144,6 +144,8 @@
       
       <IMVERTOR_METAMODEL_KINGBSM_XSDSOURCE>system</IMVERTOR_METAMODEL_KINGBSM_XSDSOURCE>
       
+      <IMVERTOR_METAMODEL_KINGBSM_ROUGH_ENDPRODUCT_XML_XSLPATH alias="EPROUGH">Imvert2XSD-KING-create-endproduct-rough-structure.xsl</IMVERTOR_METAMODEL_KINGBSM_ROUGH_ENDPRODUCT_XML_XSLPATH>
+      <IMVERTOR_METAMODEL_KINGBSM_ENRICHED_ROUGH_ENDPRODUCT_XML_XSLPATH alias="EPENRICHED">Imvert2XSD-KING-create-enriched-rough-messages.xsl</IMVERTOR_METAMODEL_KINGBSM_ENRICHED_ROUGH_ENDPRODUCT_XML_XSLPATH>
       <IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XML_XSLPATH alias="EPXML">Imvert2XSD-KING-endproduct-xml.xsl</IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XML_XSLPATH>
       <IMVERTOR_METAMODEL_KINGBSM_REPROCESS_ENDPRODUCT_XML_XSLPATH alias="EPORDER">Imvert2XSD-KING-reprocess-endproduct-xml.xsl</IMVERTOR_METAMODEL_KINGBSM_REPROCESS_ENDPRODUCT_XML_XSLPATH>
       <IMVERTOR_METAMODEL_KINGBSM_SORT_ENDPRODUCT_XML_XSLPATH alias="EPSORT">Imvert2XSD-KING-sortByNamespace-endproduct-xml.xsl</IMVERTOR_METAMODEL_KINGBSM_SORT_ENDPRODUCT_XML_XSLPATH>
@@ -177,7 +179,13 @@
       <!-- workfolder for serialized excel -->
       <work-serialize-folder>${system/work-folder-path}/serializer/temp-folder</work-serialize-folder>
       <!-- workfolder for processing the  -->
+      <ROUGH_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.26.rough-endproduct-xml.xml</ROUGH_ENDPRODUCT_XML_FILE_PATH>
+      <ENRICHED_ROUGH_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.27.enriched.rough-endproduct-xml.xml</ENRICHED_ROUGH_ENDPRODUCT_XML_FILE_PATH>
+
+      <!-- Volgende wordt volgens mij nooit aangemaakt. -->
       <RESULT_ENDPRODUCT_MSG_FILE_PATH>${system/work-imvert-folder-path}/imvertor.27.endproduct-msg.xml</RESULT_ENDPRODUCT_MSG_FILE_PATH>
+
+
       <RESULT_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.28.endproduct-xml.xml</RESULT_ENDPRODUCT_XML_FILE_PATH>   
       <RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.29.reprocessed-endproduct-xml.xml</RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH>
       <RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.30.sorted-endproduct-xml.xml</RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH>

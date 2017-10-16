@@ -16,14 +16,46 @@
 	xmlns:ep="http://www.imvertor.org/schema/endproduct"
 	xmlns:ss="http://schemas.openxmlformats.org/spreadsheetml/2006/main" version="2.0">
 
-
+	<xsl:import href="../common/Imvert-common.xsl"/>
+	<xsl:import href="../common/Imvert-common-validation.xsl"/>
+	<xsl:import href="../common/extension/Imvert-common-text.xsl"/>	
+	<xsl:import href="../common/Imvert-common-derivation.xsl"/>
+	<xsl:import href="Imvert2XSD-KING-common.xsl"/>
+	
 	<xsl:output indent="yes" method="xml" encoding="UTF-8"/>
 
 	<xsl:variable name="stylesheet">Imvert2XSD-KING-create-enriched-rough-messages</xsl:variable>
 	<xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-create-enriched-rough-messages.xsl 1
 		2016-12-01 13:33:00Z RobertMelskens $</xsl:variable>
+	<xsl:variable name="stylesheet-code" as="xs:string">SKS</xsl:variable>
+	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
+	<xsl:variable name="embellish-file" select="imf:document(imf:get-config-string('properties','WORK_EMBELLISH_FILE'))"/>  
+	<xsl:variable name="packages" select="$embellish-file/imvert:packages"/>	
 	
-	<!--xsl:variable name="kv-prefix" select="ep:rough-messages/ep:namespace-prefix"/-->
+	<xsl:variable name="StUF-prefix" select="'StUF'"/>	
+	<xsl:variable name="StUF-namespaceIdentifier" select="'http://www.stufstandaarden.nl/onderlaag/stuf0302'"/>
+	<xsl:variable name="kv-prefix" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
+	<xsl:variable name="prefix" as="xs:string">
+		<xsl:choose>
+			<xsl:when test="not(empty($kv-prefix))">
+				<xsl:value-of select="$kv-prefix"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="'TODO'"/>
+				<xsl:variable name="msg" select="'You have not provided a short alias. Define the tagged value &quot;Verkorte alias&quot; on the package with the stereotyp &quot;Koppelvlak&quot;.'" as="xs:string"/>
+				<xsl:sequence select="imf:msg('WARN',$msg)"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+
+	<xsl:variable name="version" select="$packages/imvert:version"/>
+	
+	<xsl:template match="/">
+		<xsl:sequence select="imf:track('Constructing the enriched rough message-structure')"/>
+		
+		<xsl:apply-templates select="ep:rough-messages" mode="enrich-rough-messages"/>
+
+	</xsl:template>
 	
 	<xsl:template match="ep:rough-messages" mode="enrich-rough-messages">
 		<xsl:sequence select="imf:create-debug-comment('debug:start B00000 /debug:start',$debugging)"/>
@@ -327,7 +359,7 @@
 		<ep:namespaceIdentifierGerelateerdeEntiteit>
 			<xsl:choose>
 				<xsl:when test="..//ep:verkorteAlias = $prefix">
-					<xsl:value-of select="$packages-doc/imvert:packages/imvert:base-namespace"/>
+					<xsl:value-of select="$packages/imvert:base-namespace"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="."/>

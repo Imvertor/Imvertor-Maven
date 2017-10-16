@@ -13,15 +13,45 @@
 	xmlns:ep="http://www.imvertor.org/schema/endproduct"
 	xmlns:ss="http://schemas.openxmlformats.org/spreadsheetml/2006/main" version="2.0">
 
-
+	<xsl:import href="../common/Imvert-common.xsl"/>
+	<xsl:import href="../common/Imvert-common-validation.xsl"/>
+	<xsl:import href="../common/extension/Imvert-common-text.xsl"/>	
+	<xsl:import href="../common/Imvert-common-derivation.xsl"/>	
+	<xsl:import href="Imvert2XSD-KING-common.xsl"/>
+	
 	<xsl:output indent="yes" method="xml" encoding="UTF-8"/>
+
+	<xsl:key name="class" match="imvert:class" use="imvert:id" />
 
 	<xsl:variable name="stylesheet">Imvert2XSD-KING-create-endproduct-rough-structure</xsl:variable>
 	<xsl:variable name="stylesheet-version">$Id: Imvert2XSD-KING-create-endproduct-rough-structure.xsl 1
 		2016-12-01 13:32:00Z RobertMelskens $</xsl:variable>
+	<xsl:variable name="stylesheet-code" as="xs:string">SKS</xsl:variable>
+	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
+	
+	<xsl:variable name="embellish-file" select="/"/>
+	<xsl:variable name="packages" select="$embellish-file/imvert:packages"/>
+	<xsl:variable name="verkorteAlias" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
+	<xsl:variable name="namespaceIdentifier" select="$packages/imvert:base-namespace"/>
+	
+	<xsl:variable name="StUF-prefix" select="'StUF'"/>	
+	<xsl:variable name="StUF-namespaceIdentifier" select="'http://www.stufstandaarden.nl/onderlaag/stuf0302'"/>
+	<xsl:variable name="kv-prefix" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
+	<xsl:variable name="prefix" as="xs:string">
+		<xsl:choose>
+			<xsl:when test="not(empty($kv-prefix))">
+				<xsl:value-of select="$kv-prefix"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="'TODO'"/>
+				<xsl:variable name="msg" select="'You have not provided a short alias. Define the tagged value &quot;Verkorte alias&quot; on the package with the stereotyp &quot;Koppelvlak&quot;.'" as="xs:string"/>
+				<xsl:sequence select="imf:msg('WARN',$msg)"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 
-	<xsl:variable name="verkorteAlias" select="imf:get-tagged-value(/imvert:packages,'##CFG-TV-VERKORTEALIAS')"/>
-	<xsl:variable name="namespaceIdentifier" select="/imvert:packages/imvert:base-namespace"/>
+	<xsl:variable name="version" select="$packages/imvert:version"/>
+	
 	
 	<xsl:key name="associations" match="imvert:association" use="imvert:type-id"/>
 	
@@ -30,8 +60,17 @@
 	<!-- This template is used to start generating a rough ep structure for the individual messages.
 		 This rough ep structure is used as a base for creating the final ep structure. -->
 
+	<xsl:template match="/">
+		<xsl:sequence select="imf:track('Constructing the rough message-structure')"/>
+		
+		<ep:rough-messages>
+			<xsl:apply-templates select="$packages/imvert:package[imvert:stereotype = 'BERICHT' and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]" mode="create-rough-message-structure"/>
+		</ep:rough-messages>
+
+	</xsl:template>
+	
 	<xsl:template
-		match="/imvert:packages/imvert:package[not(contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]"
+		match="imvert:package[not(contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]"
 		mode="create-rough-message-structure">
 		<!-- This processes the package containing the koppelvlak messages. -->
 
@@ -428,7 +467,7 @@
 					</xsl:choose>
 				</xsl:attribute>
 				<xsl:if test="(imvert:name = ('zender','ontvanger')) and contains(ancestor::imvert:package/@display-name,'www.kinggemeenten.nl/BSM/Berichtstrukturen')">
-					<xsl:attribute name="className" select="imf:get-class-construct-by-id($type-id,$packages-doc)/imvert:name"/>
+					<xsl:attribute name="className" select="imf:get-class-construct-by-id($type-id,$embellish-file)/imvert:name"/>
 				</xsl:if>
 				<xsl:attribute name="context">
 					<xsl:choose>
@@ -450,7 +489,7 @@
 						<xsl:variable name="tv-materieleHistorie-attributes">
 							<xsl:for-each select="imvert:association-class">
 								<xsl:variable name="association-class-type-id" select="imvert:type-id"/>
-								<xsl:for-each select="imf:get-class-construct-by-id($association-class-type-id,$packages-doc)/imvert:attributes/imvert:attribute">
+								<xsl:for-each select="imf:get-class-construct-by-id($association-class-type-id,$embellish-file)/imvert:attributes/imvert:attribute">
 									<ep:tagged-value>
 										<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIONMATERIALHISTORY')"/>
 									</ep:tagged-value>
@@ -468,7 +507,7 @@
 						<xsl:variable name="tv-formeleHistorie-attributes">
 							<xsl:for-each select="imvert:association-class">
 								<xsl:variable name="association-class-type-id" select="imvert:type-id"/>
-								<xsl:for-each select="imf:get-class-construct-by-id($association-class-type-id,$packages-doc)/imvert:attributes/imvert:attribute">
+								<xsl:for-each select="imf:get-class-construct-by-id($association-class-type-id,$embellish-file)/imvert:attributes/imvert:attribute">
 									<ep:tagged-value>
 										<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIONFORMALHISTORY')"/>
 									</ep:tagged-value>
@@ -570,7 +609,7 @@
 						<xsl:sequence
 							select="imf:create-output-element('ep:version', imf:getVersion($UGM))"/>
 						
-						<xsl:variable name="gerelateerde" select="imf:get-class-construct-by-id($type-id,$packages-doc)"/>
+						<xsl:variable name="gerelateerde" select="imf:get-class-construct-by-id($type-id,$embellish-file)"/>
 						<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct($gerelateerde,'UGM')"/>
 						<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
 						<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
@@ -611,7 +650,7 @@
 
 		<xsl:sequence select="imf:create-debug-comment('debug:start A05000 /debug:start',$debugging)"/>
 		
-		<xsl:variable name="gerelateerdeConstruct" select="imf:get-class-construct-by-id($type-id,$packages-doc)"/>
+		<xsl:variable name="gerelateerdeConstruct" select="imf:get-class-construct-by-id($type-id,$embellish-file)"/>
 		
 		<!-- If the association has a stereotype of 'BERICHTRELATIE' and it's part of a 'vrij bericht' it must refer to an embedded message
 			 of another type. In that case the following variable get's a value equal to the value of the 'berichtCode' of the embedded message.
@@ -927,7 +966,7 @@
 					<xsl:sequence
 						select="imf:create-output-element('ep:version', imf:getVersion($UGM))"/>
 					
-					<xsl:variable name="gerelateerde" select="imf:get-class-construct-by-id($type-id,$packages-doc)"/>
+					<xsl:variable name="gerelateerde" select="imf:get-class-construct-by-id($type-id,$embellish-file)"/>
 					<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 					<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
 					<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
@@ -1024,7 +1063,7 @@
 					<xsl:sequence
 						select="imf:create-output-element('ep:version', imf:getVersion($UGM))"/>
 					
-					<xsl:variable name="gerelateerde" select="imf:get-class-construct-by-id($type-id,$packages-doc)"/>
+					<xsl:variable name="gerelateerde" select="imf:get-class-construct-by-id($type-id,$embellish-file)"/>
 					<xsl:variable name="supplierGerelateerde" select="imf:get-trace-supplier-for-construct(.,'UGM')"/>
 					<xsl:variable name="subpathGerelateerde" select="$supplierGerelateerde/@subpath"/>
 					<xsl:variable name="UGMgerelateerde" select="imf:get-imvert-system-doc($subpathGerelateerde)"/>
@@ -1180,7 +1219,7 @@
 			
 			<xsl:variable name="class-id" select="imvert:type-id"/>
 			<xsl:sequence
-				select="imf:create-output-element('ep:class-name', imf:get-class-construct-by-id($class-id,$packages-doc)/ep:name)"/>
+				select="imf:create-output-element('ep:class-name', imf:get-class-construct-by-id($class-id,$embellish-file)/ep:name)"/>
 			<xsl:apply-templates select="key('class',$type-id)"
 				mode="create-rough-message-content">
 				<xsl:with-param name="proces-type" select="'attributes'"/>
@@ -1278,7 +1317,7 @@
 						select="imf:create-output-element('ep:version', imf:getVersion($UGM))"/>
 					
 
-					<xsl:variable name="relatie" select="imf:get-association-construct-by-id($type-id,$packages-doc)"/>
+					<xsl:variable name="relatie" select="imf:get-association-construct-by-id($type-id,$embellish-file)"/>
 					<xsl:variable name="supplierRelatie" select="imf:get-trace-supplier-for-construct($relatie,'UGM')"/>
 					<xsl:variable name="subpathRelatie" select="$supplierRelatie/@subpath"/>
 					<xsl:variable name="UGMRelatie" select="imf:get-imvert-system-doc($subpathRelatie)"/>
@@ -1333,7 +1372,7 @@
 				 and it contains a 'entiteit'. The attributes of the 'entiteit' class can 
 				 be placed directly within the current 'ep:seq'. -->
 			<xsl:when
-				test="imf:get-association-construct-by-id($type-id,$packages-doc)[imvert:stereotype = 'ENTITEITTYPE']">
+				test="imf:get-association-construct-by-id($type-id,$embellish-file)[imvert:stereotype = 'ENTITEITTYPE']">
 				<xsl:sequence select="imf:create-debug-comment('A10020]',$debugging)"/>
 				<xsl:apply-templates select="key('class',$type-id)"
 					mode="create-rough-message-content">
