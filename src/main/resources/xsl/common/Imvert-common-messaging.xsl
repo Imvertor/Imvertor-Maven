@@ -64,7 +64,7 @@
         <xsl:param name="info" as="item()*"/>
         
         <xsl:if test="not($type = 'DEBUG') or imf:debug-mode()">
-            <xsl:variable name="name" select="if ($this=$document) then '' else imf:get-construct-name($this)"/>
+            <xsl:variable name="name" select="if ($this=$document) then '(ROOT)' else imf:get-construct-name($this)"/>
             <xsl:variable name="id" select="$this/imvert:id"/>
             <xsl:variable name="ctext" select="imf:msg-insert-parms($text,$info)"/>
             <xsl:variable name="wiki" select="if ($type = ('ERROR', 'WARN', 'FATAL')) then imf:get-wiki-key($text) else ''"/>

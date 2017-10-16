@@ -184,7 +184,7 @@
         </imvert:report>
     </xsl:template>
     
-    <xsl:template match="imvert:package[.=$application-package]" priority="101">
+    <xsl:template match="imvert:package[imf:member-of(.,$application-package)]" priority="101">
         <xsl:sequence select="imf:track('Validating package [1]',imvert:name)"/>
        <!-- <xsl:sequence select="imf:report-error(., 
             not(matches(imvert:version,imf:get-config-parameter('application-version-regex'))), 
@@ -195,7 +195,7 @@
         <xsl:next-match/>
     </xsl:template>
     
-    <xsl:template match="imvert:package[.. = $application-package]" priority="102">
+    <xsl:template match="imvert:package[imf:member-of(..,$application-package)]" priority="102">
         <!-- redmine #487837 Packages in <<application>> moeten bekend stereotype hebben -->
         <xsl:sequence select="imf:report-error(., 
             empty(imvert:stereotype = imf:get-normalized-names(
@@ -208,7 +208,7 @@
         <xsl:next-match/>
     </xsl:template>
     
-    <xsl:template match="imvert:package[.=$domain-package]" priority="101">
+    <xsl:template match="imvert:package[imf:member-of(.,$domain-package)]" priority="101">
         <xsl:sequence select="imf:track('Validating package [1]',imvert:name)"/>
         <!--x
         <xsl:sequence select="imf:report-error(., 
@@ -221,7 +221,7 @@
     <!--
         Rules for the application and domain packages
     -->
-    <xsl:template match="imvert:package[.=($application-package,$domain-package)]" priority="100">
+    <xsl:template match="imvert:package[imf:member-of(.,($application-package,$domain-package))]" priority="100">
         <!-- setup -->
         <xsl:variable name="this" select="."/>
      
@@ -243,7 +243,7 @@
     <!--
         Rules for the application package
     -->
-    <xsl:template match="imvert:package[.=$application-package]" priority="50">
+    <xsl:template match="imvert:package[imf:member-of(.,$application-package)]" priority="50">
         <!--setup-->
         <xsl:variable name="this-package" select="."/>
         <xsl:variable name="root-release" select="imvert:release" as="xs:string?"/>
@@ -286,7 +286,7 @@
         <xsl:for-each select=".//imvert:type-id">
             <xsl:variable name="refed-class" select="imf:get-construct-by-id(.)"/>
             <xsl:variable name="refed-name" select="../imvert:type-name"/> <!-- IM-91 -->
-            <xsl:variable name="fails" select="not(imf:get-top-package($refed-class) = $this-package or imf:get-internal-package($refed-class) or imf:get-external-package($refed-class))"/>
+            <xsl:variable name="fails" select="not(imf:member-of(imf:get-top-package($refed-class),$this-package) or imf:get-internal-package($refed-class) or imf:get-external-package($refed-class))"/>
             <xsl:choose>
                   <xsl:when test="exists(parent::imvert:supertype)">
                       <xsl:sequence select="imf:report-error(ancestor::*[imvert:name][1], 
@@ -329,7 +329,7 @@
                     <xsl:variable name="shared-class" select="."/>
                     <!-- IM-71 when any class references this class and this is not by a static liskov, assume the referenced class is to be made part of the collection --> 
                     <xsl:sequence select="imf:report-warning(., 
-                        (not($shared-class = $all-calculated-collection-classes) and not($document-classes/imvert:substitution/imvert:supplier-id = $shared-class/imvert:id)), 
+                        (not(imf:member-of($shared-class,$all-calculated-collection-classes)) and not($document-classes/imvert:substitution/imvert:supplier-id = $shared-class/imvert:id)), 
                         'Object type [1] is part of the collection for product class [2], but cannot be referenced from within that product',($shared-class,$product))"/>
                 </xsl:for-each>
             </xsl:for-each>
@@ -347,7 +347,7 @@
     <!--
         Rules for the domain packages
     -->
-    <xsl:template match="imvert:package[.=$domain-package]" priority="50">
+    <xsl:template match="imvert:package[imf:member-of(.,$domain-package)]" priority="50">
         <!--setup-->
         <xsl:variable name="is-schema-package" select="if (imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))) then true() else false()"/>
         <xsl:variable name="classnames" select="distinct-values(imf:get-duplicates(imvert:class/imvert:name))" as="xs:string*"/>
@@ -361,7 +361,7 @@
             not(empty($classnames)), 
             'Duplicate class name within (sub)package(s): [1]',$classnames)"/>
         <xsl:sequence select="imf:report-error(., 
-            ancestor::imvert:package[.=$domain-package],
+            ancestor::imvert:package[imf:member-of(.,$domain-package)],
             'Domain packages cannot be nested')"/>
       
         <!-- validate the version chain -->
@@ -375,7 +375,7 @@
     <!--
         Rules for the subdomain packages
     -->
-    <xsl:template match="imvert:package[.=$subdomain-package]">
+    <xsl:template match="imvert:package[imf:member-of(.,$subdomain-package)]">
         <!--setup-->
         <!--validation -->
         <xsl:sequence select="imf:report-warning(., 
@@ -388,7 +388,7 @@
     <!--
         Rules for the external packages
     -->
-    <xsl:template match="imvert:package[. = $external-package]">
+    <xsl:template match="imvert:package[imf:member-of(.,$external-package)]">
         <!--setup-->
         <!--validation -->
         <xsl:sequence select="imf:report-error(., 
@@ -404,7 +404,7 @@
         Rules for the internal packages
         REDMINE #487612
     -->
-    <xsl:template match="imvert:package[. = $internal-package]">
+    <xsl:template match="imvert:package[imf:member-of(.,$internal-package)]">
         <!--setup-->
         <!--validation -->
     
@@ -425,7 +425,7 @@
         <!-- IM-85 -->
         <xsl:sequence select="imf:report-error(., 
             (count($packs-with-same-short-name) gt 1), 
-            'Duplicate package short name: [1], check packages: [2]', (imvert:short-name, string-join($packs-with-same-short-name[. != $this]/imvert:name,', ')))"/>
+            'Duplicate package short name: [1], check packages: [2]', (imvert:short-name, string-join($packs-with-same-short-name[not(imf:member-of(.,$this))]/imvert:name,', ')))"/>
         <xsl:sequence select="imf:report-error(., 
             (count(../imvert:package[imvert:name=$this/imvert:name]) gt 1), 
             'Duplicate package name.')"/>
@@ -1324,7 +1324,7 @@
         <xsl:param name="property" as="element()"/>
         <xsl:variable name="this-release" select="$property/ancestor::imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')][1]/imvert:release"/>
         <xsl:variable name="refed-type-id" select="$property/imvert:type-id"/>
-        <xsl:variable name="refed-release" select="if ($refed-type-id) then imf:get-construct-by-id($refed-type-id)/ancestor::imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package') or .=$external-package][1]/imvert:release else '00000000'"/>
+        <xsl:variable name="refed-release" select="if ($refed-type-id) then imf:get-construct-by-id($refed-type-id)/ancestor::imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package') or imf:member-of(.,$external-package)][1]/imvert:release else '00000000'"/>
         <xsl:value-of select="if (($this-release ge $refed-release) or not($refed-release))  then true() else false()"/>
     </xsl:function>
     
@@ -1339,14 +1339,14 @@
     <!-- IM-91 -->
     <xsl:function name="imf:get-external-package" as="element()?">
         <xsl:param name="construct" as="element()?"/>
-        <xsl:sequence select="$construct/ancestor-or-self::imvert:package[.=$external-package][1]"/>
+        <xsl:sequence select="$construct/ancestor-or-self::imvert:package[imf:member-of(.,$external-package)][1]"/>
     </xsl:function>
     
     <!-- return the internal package that this construct is part of. --> 
     <!-- REDMINE #487612 -->
     <xsl:function name="imf:get-internal-package" as="element()?">
         <xsl:param name="construct" as="element()?"/>
-        <xsl:sequence select="$construct/ancestor-or-self::imvert:package[.=$internal-package][1]"/>
+        <xsl:sequence select="$construct/ancestor-or-self::imvert:package[imf:member-of(.,$internal-package)][1]"/>
     </xsl:function>
     
     <xsl:function name="imf:value-trim">

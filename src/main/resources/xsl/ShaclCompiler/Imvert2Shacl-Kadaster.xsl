@@ -274,8 +274,8 @@
         <xsl:value-of select="imf:ttl(('prov:wasDerivedFrom',imf:ttl-value($this/imvert:is-value-derived,'2q')))"/>
         <xsl:value-of select="imf:ttl(('kkg:typeAggregatie',if (imvert:aggregation = 'composite') then imf:ttl-value('composite','2q') else ()))"/>
         
-        <xsl:value-of select="imf:ttl(('kkg:minKardinaliteit',if ($this/imvert:min-occurs != '1') then imf:ttl-value($this/imvert:min-occurs,'2q') else ()))"/>
-        <xsl:value-of select="imf:ttl(('kkg:maxKardinaliteit',if ($this/imvert:max-occurs != '1') then imf:ttl-value($this/imvert:max-occurs,'2q') else ()))"/>
+        <xsl:value-of select="imf:ttl(('kkg:minKardinaliteit',imf:ttl-value($this/imvert:min-occurs,'2q')))"/>
+        <xsl:value-of select="imf:ttl(('kkg:maxKardinaliteit',imf:ttl-value($this/imvert:max-occurs,'2q')))"/>
         
         <xsl:sequence select="imf:ttl-get-all-tvs($this/imvert:target)"/>
         

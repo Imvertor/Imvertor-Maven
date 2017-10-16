@@ -53,14 +53,14 @@
             
             <xsl:sequence select="imf:report-error(., not($application-package), 'No such application package found: [1]', ($application-package-name))"/>
             <!-- process the application package -->
-            <xsl:apply-templates select="imvert:package[.=$application-package]"/>
+            <xsl:apply-templates select="imvert:package[imf:member-of(.,$application-package)]"/>
         </imvert:report>
     </xsl:template>
     
     <!--
         Rules for the application package
     -->
-    <xsl:template match="imvert:package[.=$application-package]">
+    <xsl:template match="imvert:package[imf:member-of(.,$application-package)]">
         <!--setup-->
         <xsl:variable name="this-package" select="."/>
    
@@ -71,7 +71,7 @@
     <!--
         Rules for the domain packages
     -->
-    <xsl:template match="imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-iso')19103-applicationschema]">
+    <xsl:template match="imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]">
         <!--setup-->
         <xsl:variable name="this-package" select="."/>
         

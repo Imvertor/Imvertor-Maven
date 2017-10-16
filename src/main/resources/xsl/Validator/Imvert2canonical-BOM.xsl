@@ -37,7 +37,7 @@
     
     <xsl:variable name="project-package" select="(//imvert:package[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-project-package')])[1]"/>
     <xsl:variable name="base-package" select="($project-package//imvert:package[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-base-package')])[1]"/>
-    <xsl:variable name="external-package" select="$project-package/imvert:package[. != $base-package]"/>
+    <xsl:variable name="external-package" select="$project-package/imvert:package[not(imf:member-of(.,$base-package))]"/>
     
     <xsl:template match="/imvert:packages">
         <imvert:packages>
@@ -47,7 +47,7 @@
     </xsl:template>
     
     <!-- <<project >> package -->
-    <xsl:template match="imvert:package[.=$project-package]">
+    <xsl:template match="imvert:package[imf:member-of(.,$project-package)]">
         <imvert:package>
             <xsl:apply-templates select="*[not(self::imvert:package)]"/>
             <xsl:apply-templates select="imvert:package"/>
@@ -55,7 +55,7 @@
     </xsl:template>
     
     <!-- <<base>> package -->
-    <xsl:template match="imvert:package[.=$base-package]">
+    <xsl:template match="imvert:package[imf:member-of(.,$base-package)]">
         <imvert:package>
             <xsl:apply-templates select="*"/>
             <xsl:variable name="s" as="element()+">
@@ -74,7 +74,7 @@
     </xsl:template>
     
     <!-- <<external>> package: all siblings of the base -->
-    <xsl:template match="imvert:package[.=$external-package]">
+    <xsl:template match="imvert:package[imf:member-of(.,$external-package)]">
         <imvert:package>
             <xsl:apply-templates select="*"/>
             <xsl:variable name="s" as="element()+">

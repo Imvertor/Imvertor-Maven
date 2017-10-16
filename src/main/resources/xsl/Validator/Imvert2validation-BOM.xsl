@@ -54,7 +54,7 @@
             
             <xsl:sequence select="imf:report-error(., not($application-package), 'No such application package found: [1]', ($application-package-name))"/>
             <!-- process the application package -->
-            <xsl:apply-templates select="imvert:package[.=$application-package]"/>
+            <xsl:apply-templates select="imvert:package[imf:member-of(.,$application-package)]"/>
         </imvert:report>
     </xsl:template>
       

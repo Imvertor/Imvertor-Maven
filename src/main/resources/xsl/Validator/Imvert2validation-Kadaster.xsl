@@ -48,7 +48,7 @@
     
     <!-- all service packages are packages that have the tv service=yes, or end with Messsages or Resultaat -->
     <xsl:variable name="all-service-base-packages" select="$domain-package[imf:boolean(imf:get-tagged-value(.,'##CFG-TV-SERVICE'))]"/>
-    <xsl:variable name="all-service-packages" select="$domain-package[. = $all-service-base-packages or ends-with(imvert:name,'Messages') or ends-with(imvert:name,'Resultaat') ]"/>
+    <xsl:variable name="all-service-packages" select="$domain-package[imf:member-of(.,$all-service-base-packages) or ends-with(imvert:name,'Messages') or ends-with(imvert:name,'Resultaat') ]"/>
     
     <xsl:variable name="datatype-stereos" 
         select="('stereotype-name-simpletype','stereotype-name-complextype','stereotype-name-union','stereotype-name-referentielijst','stereotype-name-codelist','stereotype-name-interface','stereotype-name-enumeration')"/>
@@ -77,7 +77,7 @@
         </imvert:report>
     </xsl:template>
       
-    <xsl:template match="imvert:package[.=$application-package]">
+    <xsl:template match="imvert:package[imf:member-of(.,$application-package)]">
         <!--setup-->
         <xsl:variable name="this-package" select="."/>
         <xsl:variable name="root-release" select="imvert:release" as="xs:string?"/>
@@ -94,7 +94,7 @@
         
         <xsl:variable name="is-external" select="$package/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-external-package')"/>
         
-        <xsl:variable name="package-is-service" select="$package = $all-service-packages"/>
+        <xsl:variable name="package-is-service" select="imf:member-of($package,$all-service-packages)"/>
         <xsl:variable name="class-is-service" select="imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-service','stereotype-name-process'))"/>
         
         <!--
@@ -169,7 +169,7 @@
     <!--
         Rules for the domain packages
     -->
-    <xsl:template match="imvert:package[.=$domain-package]" priority="50">
+    <xsl:template match="imvert:package[imf:member-of(.,$domain-package)]" priority="50">
         <!--setup-->
         <xsl:variable name="is-schema-package" select="if (imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))) then true() else false()"/>
         <xsl:variable name="classnames" select="distinct-values(imf:get-duplicates(imvert:class/imvert:name))" as="xs:string*"/>
@@ -203,7 +203,7 @@
     </xsl:template>
     
     <!-- a service base package requires two other packages to be available --> 
-    <xsl:template match="imvert:package[.=$all-service-base-packages]" priority="40">
+    <xsl:template match="imvert:package[imf:member-of(.,$all-service-base-packages)]" priority="40">
         
         <xsl:variable name="name" select="imvert:name"/>
         <xsl:variable name="msg-name" select="concat($name,'Messages')"/>

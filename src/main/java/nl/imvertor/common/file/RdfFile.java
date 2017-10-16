@@ -81,7 +81,7 @@ public class RdfFile extends AnyFile {
 					 inputStream.close();
 				 }
 
-			 }  if (ext.equals("yml")) {
+			 } else if (ext.equals("yml")) {
 				 
 				 // TODO
 				 

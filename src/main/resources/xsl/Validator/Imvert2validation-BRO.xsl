@@ -28,7 +28,7 @@
     <xsl:template match="/imvert:packages">
         <imvert:report>
             <!-- process the application package -->
-            <xsl:apply-templates select="imvert:package[.=$application-package]"/>
+            <xsl:apply-templates select="imvert:package[imf:member-of(.,$application-package)]"/>
         </imvert:report>
     </xsl:template>
       
