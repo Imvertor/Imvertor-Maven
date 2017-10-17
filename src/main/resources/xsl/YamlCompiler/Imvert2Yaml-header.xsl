@@ -32,14 +32,15 @@
     version="2.0">
 
     <xsl:import href="../common/Imvert-common.xsl"/>
-  
+    <xsl:import href="EP-YAML_v2.xsl"/>
+    
     <xsl:variable name="stylesheet-code">YAMLH</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
     
     <xsl:output method="text"/>
     
     <xsl:template match="/">
-        test yaml header
+        <xsl:apply-templates/>
     </xsl:template>
         
 </xsl:stylesheet>

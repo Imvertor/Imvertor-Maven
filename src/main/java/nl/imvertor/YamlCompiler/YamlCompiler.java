@@ -21,11 +21,13 @@
 package nl.imvertor.YamlCompiler;
 
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
+import nl.imvertor.common.file.JsonFile;
 import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.file.YamlFile;
 
@@ -45,8 +47,8 @@ public class YamlCompiler extends Step {
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
 		
-		if (configurator.isTrue("cli","createxmlschema"))
-			generateYAML();
+		runner.info(logger,"Compiling YAML");
+		generateYAML();
 	
 		configurator.setStepDone(STEP_NAME);
 		
@@ -66,8 +68,6 @@ public class YamlCompiler extends Step {
 	 * @throws Exception
 	 */
 	public boolean generateYAML() throws Exception {
-		
-		runner.info(logger,"Compiling YAML");
 		
 		// create a transformer
 		Transformer transformer = new Transformer();
@@ -94,17 +94,21 @@ public class YamlCompiler extends Step {
 			AnyFile bodyFile = new AnyFile(configurator.getParm("properties", "RESULT_YAMLBODY_FILE_PATH"));
 			YamlFile yamlFile = new YamlFile(configurator.getParm("properties", "RESULT_YAML_FILE_PATH"));
 			
-			yamlFile.setContent(headerFile.getContent() + bodyFile.getContent());
-			
 			// validate
-			yamlFile.validate(configurator);
+			String hc = headerFile.getContent();
+			String bc = bodyFile.getContent();
 			
-			// copy to the app folder
-			XmlFile appYamlFile = new XmlFile(yamlFolder,"yaml.ttl");
-			yamlFile.copyFile(appYamlFile);
-		}
-		
-		configurator.setParm("system","yaml-created","true");
+			succeeds = succeeds && YamlFile.validate(configurator, hc);
+			succeeds = succeeds && JsonFile.validate(configurator, bc);
+			
+			if (succeeds) {
+				yamlFile.setContent(hc + JsonFile.prettyPrint(bc));
+				// copy to the app folder
+				XmlFile appYamlFile = new XmlFile(yamlFolder,"yaml.ttl");
+				yamlFile.copyFile(appYamlFile);
+			} 
+		} 
+		configurator.setParm("system","yaml-created",succeeds);
 		
 		return succeeds;
 	}

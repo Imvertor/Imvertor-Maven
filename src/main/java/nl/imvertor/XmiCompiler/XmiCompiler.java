@@ -125,6 +125,14 @@ public class XmiCompiler extends Step {
 				if (!f1.equals(f2) || mustReread) {
 					runner.info(logger,"Reading" + filespec);
 					String projectname = configurator.getParm("cli", "owner") + ": " + configurator.getParm("cli", "project");
+					
+					// For development environment, export images here.
+					// The type of image is set to PNG
+					if (configurator.isTrue(configurator.getParm("cli", "createimagemap"))) 
+						((EapFile) passedFile).setExportDiagrams(EapFile.EXPORT_IMAGE_TYPE_PNG);
+					else
+						((EapFile) passedFile).setExportDiagrams(EapFile.EXPORT_IMAGE_TYPE_NONE);
+					
 					if (exportEapToXmi((EapFile) passedFile, activeFile,projectname) != null) { 
 						// and place file info in ID file
 						idFile.setContent(passedFile.getFileInfo());
@@ -139,13 +147,16 @@ public class XmiCompiler extends Step {
 				// XMI is provided in compressed form
 				AnyFolder tempFolder = new AnyFolder(configurator.getParm("properties","WORK_ZIP_FOLDER"));
 				((ZipFile) passedFile).decompress(tempFolder);
-				File[] files = tempFolder.listFiles();
+				File[] files = tempFolder.listFiles(); // may be one file (xmi) or two (xmi and Images folder)
 				if (files.length == 0) 
 					runner.fatal(logger, "No files found in ZIP",null,"NFFIZ");
-				else if (files.length > 1) 
+				else if (files.length > 2) 
 					runner.fatal(logger, "Multiple files found in ZIP",null,"MFFIZ");
 				else {
-					(new AnyFile(files[0])).copyFile(activeFile);
+					File file = (files[0].getName().equals("Images")) ? files[1] : files[0];
+					File folder = (files[0].getName().equals("Images")) ? files[0] : files[1];
+					(new AnyFile(file)).copyFile(activeFile);
+					(new AnyFolder(folder)).copy(activeFile.getParentFile().getCanonicalPath());
 					cleanXMI(activeFile);
 				}
 				tempFolder.deleteDirectory();

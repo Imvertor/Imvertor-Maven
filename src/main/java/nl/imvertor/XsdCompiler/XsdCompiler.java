@@ -57,33 +57,30 @@ public class XsdCompiler extends Step {
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
 		
-		if (true) { // TODO determine conditions
-
-			runner.info(logger,"Compiling XML schemas");
-			
-			String schemarules = configurator.getSchemarules();
-			if (schemarules.equals("Kadaster")) {
-				generateXsdKadaster();
-				supplyExternalSchemas();
-			} else if (schemarules.equals("BRO")) {
-				generateXsdBRO();
-				supplyExternalSchemas();
-			} else if (schemarules.equals("KINGUGM")) {
-				generateUgmXsdKING();
-			} else if (schemarules.equals("KINGBSM")) {
-				generateBsmXsdKING();
-			} else if (schemarules.equals("ISO19136")) {
-				generateXsdISO19136();
-				supplyExternalSchemas();
-			} else if (schemarules.equals("KadasterNEN3610")) {
-				generateXsdISO19136();
-				supplyExternalSchemas();
-			} else
-				runner.error(logger,"Schemarules not implemented: " + schemarules);
-			
-			// note: schema validation is a separate step
-			configurator.setStepDone(STEP_NAME);
-		} 
+		runner.info(logger,"Compiling XML schemas");
+		
+		String schemarules = configurator.getSchemarules();
+		if (schemarules.equals("Kadaster")) {
+			generateXsdKadaster();
+			supplyExternalSchemas();
+		} else if (schemarules.equals("BRO")) {
+			generateXsdBRO();
+			supplyExternalSchemas();
+		} else if (schemarules.equals("KINGUGM")) {
+			generateUgmXsdKING();
+		} else if (schemarules.equals("KINGBSM")) {
+			generateBsmXsdKING();
+		} else if (schemarules.equals("ISO19136")) {
+			generateXsdISO19136();
+			supplyExternalSchemas();
+		} else if (schemarules.equals("KadasterNEN3610")) {
+			generateXsdISO19136();
+			supplyExternalSchemas();
+		} else
+			runner.error(logger,"Schemarules not implemented: " + schemarules);
+		
+		// note: schema validation is a separate step
+		configurator.setStepDone(STEP_NAME);
 		
 		// save any changes to the work configuration for report and future steps
 	    configurator.save();

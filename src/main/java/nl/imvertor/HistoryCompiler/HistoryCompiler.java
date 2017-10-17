@@ -47,14 +47,12 @@ public class HistoryCompiler extends Step {
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
 
-		if (true) { // TODO determine conditions
-			runner.info(logger,"Merging version info");
+		runner.info(logger,"Merging version info");
 
-			transformer = new Transformer();
-			mergeVersionsInfo();
-		
-			configurator.setStepDone(STEP_NAME);
-		}
+		transformer = new Transformer();
+		mergeVersionsInfo();
+	
+		configurator.setStepDone(STEP_NAME);
 		
 		// save any changes to the work configuration for report and future steps
 	    configurator.save();

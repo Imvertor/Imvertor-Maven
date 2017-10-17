@@ -21,20 +21,27 @@
 package nl.imvertor.common.file;
 
 import java.io.File;
+import java.io.IOException;
+
+import org.apache.log4j.Logger;
+
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import nl.imvertor.common.Configurator;
+import nl.imvertor.common.exceptions.ConfiguratorException;
 
 /**
- * A representation of a Shacl file.
+ * A representation of a YAML file.
  * 
  * @author arjan
  *
  */
 
-public class YamlFile extends RdfFile {
+public class YamlFile extends AnyFile {
 
 	private static final long serialVersionUID = 1L;
-
+	protected static final Logger logger = Logger.getLogger(YamlFile.class);
+	
 	public YamlFile(String pathname) {
 		super(pathname);
 	}
@@ -43,8 +50,14 @@ public class YamlFile extends RdfFile {
 		super(file);
 	}
 	
-	public void validate(Configurator configurator) throws Exception {
-		this.parse(configurator);
+	public static boolean validate(Configurator configurator, String yamlString) throws IOException, ConfiguratorException {
+        try {
+        	(new YAMLFactory()).createParser(yamlString);	
+        	return true;
+        } catch (Exception e) {
+        	configurator.getRunner().error(logger, "Invalid Yaml: \"" + e.getMessage() + "\"", null, "", "IY");
+            return false;
+        }
 	}
 	
 }

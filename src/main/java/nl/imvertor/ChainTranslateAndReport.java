@@ -163,8 +163,9 @@ public class ChainTranslateAndReport {
 						succeeds = succeeds && (new XsdCompiler()).run();
 								
 					// validate the generated XSDs 
-					if (configurator.isTrue("cli","validateschema",false) || configurator.getRunner().isFinal())
-						succeeds = succeeds && (new SchemaValidator()).run();
+					if (configurator.isTrue("cli","createxmlschema",false))
+						if (configurator.isTrue("cli","validateschema",false) || configurator.getRunner().isFinal())
+							succeeds = succeeds && (new SchemaValidator()).run();
 								
 					// compile the history info 
 					if (configurator.isTrue("cli","createhistory",false))
@@ -178,14 +179,16 @@ public class ChainTranslateAndReport {
 				    succeeds = succeeds && (new EapCompiler()).run();
 			
 					// compile compliancy Excel
-				    if (configurator.isTrue("cli","createcomplyexcel",false))
-				    	succeeds = succeeds && (new ComplyCompiler()).run();
+				   	if (configurator.isTrue("cli","createxmlschema",false))
+					    if (configurator.isTrue("cli","createcomplyexcel",false))
+				    		succeeds = succeeds && (new ComplyCompiler()).run();
 				     
 				    if (configurator.isTrue("cli","createshacl",false)) 
 				    	succeeds = succeeds && (new ShaclCompiler()).run();
 		
-				    if (configurator.isTrue("cli","createyaml",false)) 
-				    	succeeds = succeeds && (new YamlCompiler()).run();
+					if (configurator.isTrue("cli","createxmlschema",false))
+					    if (configurator.isTrue("cli","createyaml",false)) 
+				    		succeeds = succeeds && (new YamlCompiler()).run();
 					    	
 			    }
 			} catch (Exception e) {

@@ -47,12 +47,23 @@ public class EapFile extends AnyFile {
 
 	private static final long serialVersionUID = -6533178446439903883L;
 
+	public static int SUPPRESS_DIAGRAM = 0;
+	public static int EXPORT_DIAGRAM = 1;
+	public static int EXPORT_DIAGRAM_AND_ALTERNATE = 2;
+	
+	public static int EXPORT_IMAGE_TYPE_NONE = -1;
+	public static int EXPORT_IMAGE_TYPE_EMF = 0;
+	public static int EXPORT_IMAGE_TYPE_BMP = 1;
+	public static int EXPORT_IMAGE_TYPE_GIF = 2;
+	public static int EXPORT_IMAGE_TYPE_PNG = 3;
+	public static int EXPORT_IMAGE_TYPE_JPG = 4;
+	
 	private Repository repo;
 	private Project project;
 	private String htmlReportStyle;
 
-	public int exportDiagrams = 1; // 0 = Do not export diagrams, 1 = Export diagrams, 2 = Export diagrams along with alternate images
-	public int exportDiagramImage = -1; // DiagramImage:  - the format for diagram images to be created at the same time; accepted values: -1=NONE 0=EMF 1=BMP 2=GIF 3=PNG 4=JPG.
+	public int exportDiagrams = SUPPRESS_DIAGRAM; // 0 = Do not export diagrams, 1 = Export diagrams, 2 = Export diagrams along with alternate images
+	public int exportDiagramImage = EXPORT_IMAGE_TYPE_PNG; // DiagramImage:  - the format for diagram images to be created at the same time; accepted values: -1=NONE 0=EMF 1=BMP 2=GIF 3=PNG 4=JPG.
 	public int exportFormatXML = 1; // FormatXML:  - true if XML output should be formatted prior to saving.
 	public int exportUseDTD = 0; // UseDTD: - true if a DTD should be used.
 	
@@ -72,6 +83,14 @@ public class EapFile extends AnyFile {
 	 */
 	public EapFile(File file) {
 		super(file.getAbsolutePath());
+	}
+	
+	public void setExportDiagrams(int imageFormat) {
+		if (imageFormat >= 0) {
+			exportDiagrams = 1;
+			exportDiagramImage = imageFormat;
+		} else 
+			exportDiagrams = 0;
 	}
 	
 	/**
