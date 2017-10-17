@@ -65,9 +65,7 @@ public class OfficeCompiler extends Step {
 		String op = configurator.getParm("cli", "createoffice");
 		String mm = configurator.getParm("cli","metamodel");
 		
-		if (op.equals("none")) {
-			// skip this
-		} else if (op.equals("html")) {
+		if (op.equals("html")) {
 			runner.info(logger,"Creating documentation");
 			Transformer transformer = new Transformer();
 			

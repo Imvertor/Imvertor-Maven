@@ -133,7 +133,8 @@ public class ChainTranslateAndReport {
 			    	}
 			    	
 			    	// Add information to the Imvertor file that is specific for a particular run
-			    	succeeds = succeeds && (new ApcModifier()).run();
+			    	if (true) // TODO must add condition here
+			    		succeeds = succeeds && (new ApcModifier()).run();
 					
 					// analyze the readme file. this records the state of the previous release.
 				    succeeds = succeeds && (new ReadmeAnalyzer()).run();
@@ -145,7 +146,8 @@ public class ChainTranslateAndReport {
 				    succeeds = configurator.prepareRelease() && succeeds;
 					
 					// get all concept info to be used in validation: URI references must be valid.
-				    succeeds = succeeds && (new ConceptCollector()).run();
+				    if (!configurator.getParm("cli","refreshconcepts").equals("never")) 
+				    	succeeds = succeeds && (new ConceptCollector()).run();
 					
 					// compile a final usable representation of the input file for XML schema generation.
 					// TODO determine if this steps must be split into several steps
@@ -157,16 +159,20 @@ public class ChainTranslateAndReport {
 				    succeeds = succeeds && (new ReleaseComparer()).run();
 				    			
 					// generate the XSD 
-				    succeeds = succeeds && (new XsdCompiler()).run();
+					if (configurator.isTrue("cli","createxmlschema",false))
+						succeeds = succeeds && (new XsdCompiler()).run();
 								
 					// validate the generated XSDs 
-				    succeeds = succeeds && (new SchemaValidator()).run();
+					if (configurator.isTrue("cli","validateschema",false) || configurator.getRunner().isFinal())
+						succeeds = succeeds && (new SchemaValidator()).run();
 								
 					// compile the history info 
-				    succeeds = succeeds && (new HistoryCompiler()).run();
+					if (configurator.isTrue("cli","createhistory",false))
+						succeeds = succeeds && (new HistoryCompiler()).run();
 								
 					// compile Office documentation 
-				    succeeds = succeeds && (new OfficeCompiler()).run();
+					if (!configurator.getParm("cli","createoffice").equals("none"))
+						succeeds = succeeds && (new OfficeCompiler()).run();
 			
 					// compile templates and reports on UML EAP 
 				    succeeds = succeeds && (new EapCompiler()).run();

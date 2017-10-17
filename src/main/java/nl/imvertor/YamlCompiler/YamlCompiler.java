@@ -45,8 +45,8 @@ public class YamlCompiler extends Step {
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
 		
-		runner.info(logger,"Compiling YAML");
-		generateYAML();
+		if (configurator.isTrue("cli","createxmlschema"))
+			generateYAML();
 	
 		configurator.setStepDone(STEP_NAME);
 		
@@ -66,6 +66,8 @@ public class YamlCompiler extends Step {
 	 * @throws Exception
 	 */
 	public boolean generateYAML() throws Exception {
+		
+		runner.info(logger,"Compiling YAML");
 		
 		// create a transformer
 		Transformer transformer = new Transformer();

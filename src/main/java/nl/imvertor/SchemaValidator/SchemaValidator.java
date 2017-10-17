@@ -48,18 +48,19 @@ public class SchemaValidator extends Step {
 		// set up the configuration for this step
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
-		runner.info(logger,"Validating XML schemas");
-		
-		boolean valid = true;
+
+		// set some status info
 		configurator.setParm("appinfo","schema-validation-status",
-			configurator.isTrue("cli","validateschema") ? "requested" : runner.isFinal() ? "required" : 
+				configurator.isTrue("cli","validateschema") ? "requested" : runner.isFinal() ? "required" : 
 				configurator.isTrue("cli","createxmlschema") ? "skipped" : "schemas not generated");
-	
-		if (configurator.isTrue("cli","createxmlschema"))
-			if (configurator.isTrue("cli","validateschema") || runner.isFinal()) {
-				valid = validateSchemas();
-				configurator.setStepDone(STEP_NAME);
-			}
+		
+		// determine if we have created schemas 
+		if (configurator.isTrue("cli","createxmlschema")) {
+			runner.info(logger,"Validating XML schemas");
+			boolean valid = true;
+			valid = validateSchemas();
+			configurator.setStepDone(STEP_NAME);
+		}
 		
 		// save any changes to the work configuration for report and future steps
 	    configurator.save();

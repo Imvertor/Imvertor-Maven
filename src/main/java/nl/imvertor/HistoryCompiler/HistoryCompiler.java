@@ -46,7 +46,8 @@ public class HistoryCompiler extends Step {
 		// set up the configuration for this step
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
-		if (configurator.isTrue("cli","createhistory")) {
+
+		if (true) { // TODO determine conditions
 			runner.info(logger,"Merging version info");
 
 			transformer = new Transformer();

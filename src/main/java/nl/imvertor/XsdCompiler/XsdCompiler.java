@@ -56,9 +56,11 @@ public class XsdCompiler extends Step {
 		// set up the configuration for this step
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
-		runner.info(logger,"Compiling XML schemas");
 		
-		if (configurator.isTrue("cli","createxmlschema")) {
+		if (true) { // TODO determine conditions
+
+			runner.info(logger,"Compiling XML schemas");
+			
 			String schemarules = configurator.getSchemarules();
 			if (schemarules.equals("Kadaster")) {
 				generateXsdKadaster();

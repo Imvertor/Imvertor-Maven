@@ -44,9 +44,11 @@ public class ShaclCompiler extends Step {
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
 		
-		runner.info(logger,"Compiling SHACL");
-		generateSHACL();
-	
+		if (true) { // TODO determine conditions
+			runner.info(logger,"Compiling SHACL");
+			generateSHACL();
+		}
+		
 		configurator.setStepDone(STEP_NAME);
 		
 		// save any changes to the work configuration for report and future steps
