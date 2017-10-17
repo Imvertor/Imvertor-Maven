@@ -28,7 +28,6 @@ import nl.imvertor.common.Transformer;
 
 /**
  * Translate XMI file to Imvertor format.
- *  
  * 
  * @author arjan
  *
@@ -56,6 +55,9 @@ public class XmiTranslator extends Step {
 	    // transform 
 		boolean succeeds = true;
 		succeeds = succeeds ? transformer.transformStep("system/xmi-file-path", "properties/WORK_BASE_FILE",  "properties/XMI_IMVERTOR_XSLPATH","system/cur-imvertor-filepath") : false ;
+		
+		if (configurator.isTrue("cli","createimagemap")) 
+			succeeds = succeeds ? transformer.transformStep("system/xmi-file-path", "properties/WORK_BASE_IMAGEMAP_FILE",  "properties/XMI_IMVERTOR_IMAGEMAP_XSLPATH") : false ;
 		
 		configurator.setStepDone(STEP_NAME);
 		

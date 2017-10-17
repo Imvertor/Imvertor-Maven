@@ -44,5 +44,10 @@
       <!-- rules for parsing notes field -->
       <configuration-notesrules-file>${system/inp-folder-path}/cfg/notesrules/${cli/notesrules}.xml</configuration-notesrules-file>
 
+      <!--  names of the file created by the image map module  -->
+      <WORK_BASE_IMAGEMAP_FILE>${system/work-imvert-folder-path}/imvertor.01.imagemap.xml</WORK_BASE_IMAGEMAP_FILE>
+      <!--  names of the step stylesheets  -->
+      <XMI_IMVERTOR_IMAGEMAP_XSLPATH>XMI1imagemap.xsl</XMI_IMVERTOR_IMAGEMAP_XSLPATH>
+
    </properties>
 </config>

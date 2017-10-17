@@ -20,6 +20,8 @@
 
 package nl.imvertor.ImvertCompiler;
 
+import java.io.File;
+
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
@@ -80,11 +82,21 @@ public class ImvertCompiler extends Step {
 				succeeds = succeeds ? transformer.transformStep("properties/WORK_EMBELLISH_FILE", "properties/WORK_DERIVATION_FILE", "properties/IMVERTOR_DERIVATION_XSLPATH") : false ;
 			
 			AnyFolder etcFolder = new AnyFolder(configurator.getParm("system","work-etc-folder-path"));
+			AnyFolder workFolder = new AnyFolder(System.getProperty("work.dir"));
 			
 			XmlFile infoEmbellishFile = new XmlFile(configurator.getParm("properties", "WORK_EMBELLISH_FILE"));
 			XmlFile oldEmbellishFile = new XmlFile(etcFolder,"system.imvert.xml");
 			infoEmbellishFile.copyFile(oldEmbellishFile); // IM-172 compare must work on simpler imvertor format
 			
+			XmlFile infoImageMapFile = new XmlFile(configurator.getParm("properties", "WORK_BASE_IMAGEMAP_FILE"));
+			XmlFile oldImageMapFile = new XmlFile(etcFolder,"system.imagemap.xml");
+			AnyFolder infoImageFolder = new AnyFolder(workFolder,"xmi" + File.separator + "Images");
+			AnyFolder oldImageFolder = new AnyFolder(etcFolder,"Images");
+			if (infoImageMapFile.isFile()) {
+				infoImageMapFile.copyFile(oldImageMapFile);
+				infoImageFolder.copy(oldImageFolder);
+			}
+				
 			XmlFile infoSupplierFile = new XmlFile(configurator.getParm("properties", "WORK_SUPPLIER_FILE"));
 			XmlFile oldSupplierFile = new XmlFile(etcFolder,"supplier.imvert.xml");
 			if (infoSupplierFile.isFile()) infoSupplierFile.copyFile(oldSupplierFile); // #488281 optimization of supplier access

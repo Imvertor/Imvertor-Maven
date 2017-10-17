@@ -148,17 +148,22 @@ public class XmiCompiler extends Step {
 				AnyFolder tempFolder = new AnyFolder(configurator.getParm("properties","WORK_ZIP_FOLDER"));
 				((ZipFile) passedFile).decompress(tempFolder);
 				File[] files = tempFolder.listFiles(); // may be one file (xmi) or two (xmi and Images folder)
+				
 				if (files.length == 0) 
 					runner.fatal(logger, "No files found in ZIP",null,"NFFIZ");
-				else if (files.length > 2) 
-					runner.fatal(logger, "Multiple files found in ZIP",null,"MFFIZ");
-				else {
+				else if (files.length == 1) {
+					(new AnyFile(files[0])).copyFile(activeFile);
+					cleanXMI(activeFile);
+				} else if (files.length == 2) {
 					File file = (files[0].getName().equals("Images")) ? files[1] : files[0];
 					File folder = (files[0].getName().equals("Images")) ? files[0] : files[1];
 					(new AnyFile(file)).copyFile(activeFile);
-					(new AnyFolder(folder)).copy(activeFile.getParentFile().getCanonicalPath());
+					AnyFolder targetFolder = new AnyFolder(activeFile.getParentFile().getCanonicalPath() + File.separator + "Images");
+					(new AnyFolder(folder)).copy(targetFolder);
 					cleanXMI(activeFile);
-				}
+				} else  
+					runner.fatal(logger, "Multiple files found in ZIP",null,"MFFIZ"); 
+				
 				tempFolder.deleteDirectory();
 			} else {
 				// XMI is provided directly
