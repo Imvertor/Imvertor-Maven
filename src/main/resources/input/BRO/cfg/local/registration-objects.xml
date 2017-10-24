@@ -30,6 +30,17 @@
     </domein>
     
     <domein>
+        <name lang="nl">Gemeenschappelijk</name>
+        <name lang="en">Common</name>
+        <abbrev>C</abbrev>
+        <registratieobject>
+            <name lang="nl">Gemeenschappelijke constructies</name>
+            <name lang="en">Common constructs</name>
+            <abbrev>CC</abbrev>
+        </registratieobject>
+    </domein>
+    
+    <domein>
         <name lang="nl">Bodem- en grondonderzoek</name>
         <name lang="en">Subsurface Research</name>
         <abbrev>SR</abbrev>

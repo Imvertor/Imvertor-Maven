@@ -62,7 +62,7 @@
                     }
                     a.link {
                     color: inherit;
-                    text-decoration: underline;
+                    text-decoration: none;
                     }
                     a.link:hover {
                     color: blue;
@@ -241,6 +241,36 @@
                         <xsl:if test="@type = 'COMPOSED'">- </xsl:if>
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                         <xsl:if test="@type = 'COMPOSER'">:</xsl:if>
+                    </td>
+                    <td width="50%">
+                        <xsl:apply-templates select="item[2]" mode="#current"/>
+                    </td>
+                    <td width="10%">
+                        <xsl:apply-templates select="item[3]" mode="#current"/>
+                    </td>
+                    <td width="10%">
+                        <xsl:apply-templates select="item[4]" mode="#current"/>
+                    </td>
+                </xsl:when>
+                <xsl:when test="$type = 'SHORT-DATAELEMENTS'">
+                    <td width="5%">&#160;</td>
+                    <td width="25%">
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
+                    </td>
+                    <td width="50%">
+                        <xsl:apply-templates select="item[2]" mode="#current"/>
+                    </td>
+                    <td width="10%">
+                        <xsl:apply-templates select="item[3]" mode="#current"/>
+                    </td>
+                    <td width="10%">
+                        <xsl:apply-templates select="item[4]" mode="#current"/>
+                    </td>
+                </xsl:when>
+                <xsl:when test="$type = 'SHORT-UNIONELEMENTS'">
+                    <td width="5%">&#160;</td>
+                    <td width="25%">
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
                     </td>
                     <td width="50%">
                         <xsl:apply-templates select="item[2]" mode="#current"/>

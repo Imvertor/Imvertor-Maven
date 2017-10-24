@@ -19,7 +19,7 @@
         <xsl:apply-templates select="*" mode="translate"/>
     </xsl:template>
     
-    <xsl:template match="@*" mode="translate">
+    <xsl:template match="@name | @notes | @description | @id | @version" mode="translate">
         <xsl:variable name="type" select="local-name()"/>
         
         <xsl:choose>
@@ -52,12 +52,12 @@
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:message select="concat('No translation for: ',$type,'=', $att)"/>
-                        <xsl:copy-of select="."/>
+                        <xsl:attribute name="{$type}" select="$att"/>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:copy-of select="."/>
+                <xsl:next-match/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -67,6 +67,10 @@
             <xsl:apply-templates select="@*" mode="#current"/>
             <xsl:apply-templates select="node()" mode="#current"/>
         </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="@*" mode="translate">
+        <xsl:copy-of select="."/>
     </xsl:template>
     
     <xsl:function name="imf:resolve-context" as="element()*">

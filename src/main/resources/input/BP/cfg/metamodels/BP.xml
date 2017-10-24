@@ -116,6 +116,7 @@
             </desc>
             <construct>class</construct>
             <construct>datatype</construct>
+            <construct>enumeration</construct>
         </stereo>
         <stereo id="stereotype-name-enum">
             <name lang="en">Enum</name>

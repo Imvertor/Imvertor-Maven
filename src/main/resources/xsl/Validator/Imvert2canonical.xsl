@@ -95,6 +95,10 @@
         </xsl:copy>
     </xsl:template>
     
+    <xsl:template match="imvert:class[imvert:designation = 'enumeration' and imvert:stereotype = imf:get-config-stereotypes('stereotype-name-codelist')]/imvert:stereotype[. = imf:get-config-stereotypes('stereotype-name-enumeration')]">
+        <!-- remove this stereotype: <<enumeration>> is implied by <<codelist>> -->
+    </xsl:template>
+    
     <xsl:template match="imvert:class/imvert:supertype">
         <xsl:choose>
             <xsl:when test="exists(imvert:type-id) and empty(imf:get-construct-by-id(imvert:type-id)) and $chop">

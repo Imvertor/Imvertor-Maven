@@ -24,11 +24,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
+import org.apache.log4j.Logger;
+
 import jxl.Workbook;
 import jxl.demo.XML;
+import nl.imvertor.common.Configurator;
+import nl.imvertor.common.Transformer;
 
 public class ExcelFile extends AnyFile {
 
+	public static final Logger logger = Logger.getLogger(ExecFile.class);
 	private static final long serialVersionUID = 2409879811971148189L;
 	
 	public ExcelFile(String filepath) {
@@ -50,6 +55,7 @@ public class ExcelFile extends AnyFile {
 	 */
 	public XmlFile toXmlFile(File outFile, File sourceDtdFile) throws Exception {
 		// first insert the DTD location for the Excel module
+		
 		String dtdUrl = (new AnyFile(sourceDtdFile)).toURI().toURL().toString();
 		FileInputStream is = new FileInputStream(this);
 		FileOutputStream os = new FileOutputStream(outFile);
@@ -60,6 +66,11 @@ public class ExcelFile extends AnyFile {
 		os.close();
 		XmlFile resultFile = new XmlFile(outFile);
 		resultFile.replaceAll("<!DOCTYPE workbook SYSTEM \"formatworkbook.dtd\">","<!DOCTYPE workbook SYSTEM \"" + dtdUrl + "\">");
+		// when we could not create well-formed XML, remove. 
+		if (!resultFile.isWellFormed()) {
+			resultFile.delete();
+			Configurator.getInstance().getRunner().error(logger, "Cannot create a (valid) XML representation of this Excel file: " + this.getName() + ", because: " + resultFile.getLastError());
+		}
 		return resultFile;
 	}
 	

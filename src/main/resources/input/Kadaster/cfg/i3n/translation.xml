@@ -324,6 +324,14 @@
         <key>SHORT-ASSOCIATIONS</key>
         <trans lang="nl">Overzicht relaties</trans>
     </item>
+    <item>
+        <key>SHORT-DATAELEMENTS</key>
+        <trans lang="nl">Overzicht data elementen</trans>
+    </item>
+    <item>
+        <key>SHORT-UNIONELEMENTS</key>
+        <trans lang="nl">Overzicht union elementen</trans>
+    </item>
     
     <item>
         <key>EXPLANATION</key>
@@ -365,6 +373,40 @@
     <item>
         <key>ASSOCIATION-DEFINITION</key>
         <trans lang="nl">Definitie</trans>
+    </item>
+    
+    <item>
+        <key>DATAELEMENT-NAME</key>
+        <trans lang="nl">Data element</trans>
+    </item>
+    <item>
+        <key>DATAELEMENT-DEFINITION</key>
+        <trans lang="nl">Definitie</trans>
+    </item>
+    <item>
+        <key>DATAELEMENT-FORMAT</key>
+        <trans lang="nl">Formaat</trans>
+    </item>
+    <item>
+        <key>DATAELEMENT-CARD</key>
+        <trans lang="nl">Card</trans>
+    </item>
+    
+    <item>
+        <key>UNIONELEMENT-NAME</key>
+        <trans lang="nl">Union element</trans>
+    </item>
+    <item>
+        <key>UNIONELEMENT-DEFINITION</key>
+        <trans lang="nl">Definitie</trans>
+    </item>
+    <item>
+        <key>UNIONELEMENT-FORMAT</key>
+        <trans lang="nl">Formaat</trans>
+    </item>
+    <item>
+        <key>UNIONELEMENT-CARD</key>
+        <trans lang="nl">Card</trans>
     </item>
     
     <!-- intermediate text -->

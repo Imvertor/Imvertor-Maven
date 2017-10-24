@@ -201,10 +201,22 @@
                         <colgroup width="50%"/>
                 </xsl:when>
                 <xsl:when test="$type = 'SHORT-ATTRIBUTES'"> <!-- 30 50 10 10 -->
-                        <colgroup width="30%"/>
-                        <colgroup width="50%"/>
-                        <colgroup width="10%"/>
-                        <colgroup width="10%"/>
+                    <colgroup width="30%"/>
+                    <colgroup width="50%"/>
+                    <colgroup width="10%"/>
+                    <colgroup width="10%"/>
+                </xsl:when>
+                <xsl:when test="$type = 'SHORT-DATAELEMENTS'"> <!-- 30 50 10 10 -->
+                    <colgroup width="30%"/>
+                    <colgroup width="50%"/>
+                    <colgroup width="10%"/>
+                    <colgroup width="10%"/>
+                </xsl:when>
+                <xsl:when test="$type = 'SHORT-UNIONELEMENTS'"> <!-- 30 50 10 10 -->
+                    <colgroup width="30%"/>
+                    <colgroup width="50%"/>
+                    <colgroup width="10%"/>
+                    <colgroup width="10%"/>
                 </xsl:when>
                 <xsl:when test="$type = 'DETAIL-ENUMERATION' and $items = 2"> <!-- 40 60 -->
                         <colgroup width="40%"/>
@@ -271,6 +283,34 @@
                         <xsl:if test="@type = 'COMPOSED'">- </xsl:if>
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                         <xsl:if test="@type = 'COMPOSER'">:</xsl:if>
+                    </td>
+                    <td>
+                        <xsl:apply-templates select="item[2]" mode="#current"/>
+                    </td>
+                    <td>
+                        <xsl:apply-templates select="item[3]" mode="#current"/>
+                    </td>
+                    <td>
+                        <xsl:apply-templates select="item[4]" mode="#current"/>
+                    </td>
+                </xsl:when>
+                <xsl:when test="$type = 'SHORT-DATAELEMENTS'">
+                    <td>
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
+                    </td>
+                    <td>
+                        <xsl:apply-templates select="item[2]" mode="#current"/>
+                    </td>
+                    <td>
+                        <xsl:apply-templates select="item[3]" mode="#current"/>
+                    </td>
+                    <td>
+                        <xsl:apply-templates select="item[4]" mode="#current"/>
+                    </td>
+                </xsl:when>
+                <xsl:when test="$type = 'SHORT-UNIONELEMENTS'">
+                    <td>
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
                     </td>
                     <td>
                         <xsl:apply-templates select="item[2]" mode="#current"/>

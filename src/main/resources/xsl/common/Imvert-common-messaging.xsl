@@ -146,6 +146,6 @@
     <!-- when sequence passed as msg parameter, return "1", "2" in stead of "1,2" -->
     <xsl:function name="imf:string-group" as="xs:string">
         <xsl:param name="values" as="item()*"/>
-        <xsl:sequence select="string-join(for $v in $values return string($v),'&quot;,&quot;')"/>
+        <xsl:sequence select="string-join(for $v in $values return string($v),'&quot;, &quot;')"/>
     </xsl:function>
 </xsl:stylesheet>

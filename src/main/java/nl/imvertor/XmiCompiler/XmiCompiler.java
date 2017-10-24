@@ -125,7 +125,8 @@ public class XmiCompiler extends Step {
 				if (!f1.equals(f2) || mustReread) {
 					runner.info(logger,"Reading" + filespec);
 					String projectname = configurator.getParm("cli", "owner") + ": " + configurator.getParm("cli", "project");
-					
+					String modelname = (configurator.isTrue("cli", "supports-external",true)) ? null : configurator.getParm("cli", "application");
+							
 					// For development environment, export images here.
 					// The type of image is set to PNG
 					if (configurator.isTrue(configurator.getParm("cli", "createimagemap"))) 
@@ -133,7 +134,7 @@ public class XmiCompiler extends Step {
 					else
 						((EapFile) passedFile).setExportDiagrams(EapFile.EXPORT_IMAGE_TYPE_NONE);
 					
-					if (exportEapToXmi((EapFile) passedFile, activeFile,projectname) != null) { 
+					if (exportEapToXmi((EapFile) passedFile, activeFile,projectname,modelname) != null) { 
 						// and place file info in ID file
 						idFile.setContent(passedFile.getFileInfo());
 						cleanXMI(activeFile);
@@ -228,15 +229,22 @@ public class XmiCompiler extends Step {
 		eapFile.close();
 		return r;
 	}
-	private XmlFile exportEapToXmi(EapFile eapFile, XmlFile xmifile, String projectname) throws Exception {
+	
+	private XmlFile exportEapToXmi(EapFile eapFile, XmlFile xmifile, String projectName) throws Exception {
+		return exportEapToXmi(eapFile, xmifile,projectName,null);
+	}
+	
+	private XmlFile exportEapToXmi(EapFile eapFile, XmlFile xmifile, String projectName, String modelName) throws Exception {
 		eapFile.open();
-		String projectPackageGUID = eapFile.getProjectPackageGUID(projectname);
+		String packageGUID = (modelName == null) ? eapFile.getProjectPackageGUID(projectName) : eapFile.getModelPackageGUID(projectName, modelName);
 		XmlFile r = null;
-		if (projectPackageGUID.equals("")) {
-			configurator.getRunner().error(logger, "No such project \"" + projectname + "\" found");
-		} else {
-			r = eapFile.exportToXmiFile(xmifile.getCanonicalPath(), projectPackageGUID);
-		}
+		if (packageGUID.equals("")) 
+			if (modelName == null)
+				configurator.getRunner().error(logger, "No such project \"" + projectName + "\" found");
+			else
+				configurator.getRunner().error(logger, "No such project/model \"" + projectName + "/" + modelName + "\" found");
+		else 
+			r = eapFile.exportToXmiFile(xmifile.getCanonicalPath(), packageGUID);
 		eapFile.close();
 		return r;
 	}

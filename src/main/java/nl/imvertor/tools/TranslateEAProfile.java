@@ -9,7 +9,7 @@ import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.file.XslFile;
 import nl.imvertor.common.file.ZipFile;
 
-public class ExtractWorkbooksFromExcel {
+public class TranslateEAProfile {
 
 	public static void main(String[] args) throws Exception {
 		

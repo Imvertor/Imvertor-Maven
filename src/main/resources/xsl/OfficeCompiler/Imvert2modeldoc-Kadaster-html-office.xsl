@@ -260,6 +260,36 @@
                         <xsl:apply-templates select="item[4]" mode="#current"/>
                     </td>
                 </xsl:when>
+                <xsl:when test="$type = 'SHORT-DATAELEMENTS'">
+                    <td width="5%">&#160;</td>
+                    <td width="25%">
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
+                    </td>
+                    <td width="50%">
+                        <xsl:apply-templates select="item[2]" mode="#current"/>
+                    </td>
+                    <td width="10%">
+                        <xsl:apply-templates select="item[3]" mode="#current"/>
+                    </td>
+                    <td width="10%">
+                        <xsl:apply-templates select="item[4]" mode="#current"/>
+                    </td>
+                </xsl:when>
+                <xsl:when test="$type = 'SHORT-UNIONELEMENTS'">
+                    <td width="5%">&#160;</td>
+                    <td width="25%">
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
+                    </td>
+                    <td width="50%">
+                        <xsl:apply-templates select="item[2]" mode="#current"/>
+                    </td>
+                    <td width="10%">
+                        <xsl:apply-templates select="item[3]" mode="#current"/>
+                    </td>
+                    <td width="10%">
+                        <xsl:apply-templates select="item[4]" mode="#current"/>
+                    </td>
+                </xsl:when>
                 <xsl:when test="$type = 'DETAIL-ENUMERATION' and $items = 2"> 
                     <td width="40%">
                         <b>

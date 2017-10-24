@@ -40,7 +40,7 @@
     <cw:file type="bin" path="Alkmaar\RVK Objecten\AAstandaard.xls" date="1288614394000" name="AAstandaard.xls" ishidden="false" isreadonly="true" ext="xls" fullpath="D:\data\project\Erfdienstbaarheden\RVK\input\Alkmaar\RVK Objecten\AAstandaard.xls"/>
   
   -->
-  <xsl:variable name="basepath" select="'d:\data\project\Erfdienstbaarheden\RVK'"/>
+  <xsl:variable name="basepath" select="/bootstrap/data-folder"/>
   
   <xsl:variable name="temp-files-path" select="concat($basepath,'\work\files.xml')"/>
   <xsl:variable name="c" select="imf:serializeFolder(concat($basepath,'\input'),$temp-files-path,'')"/>
@@ -51,7 +51,7 @@
   
   <xsl:template match="/">
     <xsl:message select="concat($cnt,' files')"/>
-    <xsl:apply-templates select="$selected-files[not(contains(@fullpath,'SPEC objecten')) and contains(@fullpath,'.xls')]"/>
+    <xsl:apply-templates select="$selected-files[not(contains(@fullpath,'SPEC objecten')) and contains(@fullpath,'.xls')]"/> <!-- e.g. NDP02_I_RVK.xls -->
   </xsl:template>
   
   <xsl:template match="cw:file">
@@ -65,7 +65,7 @@
 
     <xsl:variable name="existing-content" select="imf:document($work-path)"/>
     <xsl:variable name="created-work-path" select="imf:serializeExcel($excel-path,$work-path,$excel-97-dtd-path)"/>
-    <xsl:variable name="excel-content" select="if (exists($existing-content)) then $existing-content else imf:document($created-work-path,true())"/>
+    <xsl:variable name="excel-content" select="if (exists($existing-content)) then $existing-content else imf:document($created-work-path)"/>
    
     <xsl:variable name="prepared" as="element(row)*">
       <xsl:apply-templates select="$excel-content/workbook/sheet/row" mode="prepare"/>
@@ -325,6 +325,10 @@
       <xsl:apply-templates select="@*"/>
       <xsl:apply-templates select="node()"/>
     </xsl:copy>
+  </xsl:template>
+  
+  <xsl:template match="dummy">
+    <!-- ignore -->
   </xsl:template>
   
   <xsl:template match="*" mode="compact">

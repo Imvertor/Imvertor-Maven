@@ -470,7 +470,7 @@ public class EapFile extends AnyFile {
 		Iterator<Package> pit = getPackageHierarchy(ancestorPack).iterator();
 		while (pit.hasNext()) {
 			Package selectedPackage = pit.next();
-			if (selectedPackage.GetStereotypeEx().toLowerCase().equals("project") && selectedPackage.GetName().equals(packageName)) 
+			if (selectedPackage.GetName().equals(packageName)) // removed: selectedPackage.GetStereotypeEx().toLowerCase().equals("project") && 
 				return selectedPackage; 
 		}
 		return null;

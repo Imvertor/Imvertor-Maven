@@ -107,12 +107,19 @@
                             <xsl:sequence select="$supplier"/>
                         </xsl:for-each>
                     </xsl:variable>
+                    <!-- determine which release these ID's are taken from -->
+                    <xsl:variable name="stamps" select="for $s in $result return concat($s/imvert:created,'',$s/imvert:modified)"/>
+                    <xsl:variable name="names" select="for $s in $result return $s/imvert:name"/>
                     <xsl:choose>
-                        <xsl:when test="$result[2]">
-                            <xsl:sequence select="imf:msg(.,'ERROR','Too many supplier types [1], applicable suppliers are: [2]',(imf:string-group(for $n in $result return imf:get-display-name($n)),imf:string-group($supplier-subpaths)))"/>
+                        <xsl:when test="$result[2] and distinct-values($names)[2]">
+                            <xsl:sequence select="imf:msg(.,'ERROR','Proxy supplier constructs with different name: [1]. Applicable suppliers are: [2]',(imf:string-group($names),imf:string-group($supplier-subpaths)))"/>
+                        </xsl:when>
+                        <xsl:when test="$result[2] and distinct-values($stamps)[2]">
+                            <xsl:sequence select="imf:msg(.,'ERROR','Proxy supplier constructs have different timestamps: stamps are [1]. Applicable suppliers are: [2]',(imf:string-group($stamps),imf:string-group($supplier-subpaths)))"/>
                         </xsl:when>
                         <xsl:when test="$result[1]">
-                            <xsl:sequence select="$result"/>
+                            <!-- we assume here that the referenced constructs are the same, so take the first. -->
+                            <xsl:sequence select="$result[1]"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <!-- resolve in some other way or signal error later -->

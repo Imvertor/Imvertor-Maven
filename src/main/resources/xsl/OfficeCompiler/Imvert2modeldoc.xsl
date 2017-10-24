@@ -205,6 +205,14 @@
     </xsl:template>
 
     <xsl:template match="imvert:attributes" mode="short gegevensgroeptype">
+        
+        <xsl:variable name="attribute-kind" select="
+            if (../imvert:stereotype = imf:get-config-stereotypes('stereotype-name-complextype')) then 'D' 
+            else if (../imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union')) then 'U'
+            else 'A'"/>
+        
+            <!-- (D)ata element or (U)nion element or (A)ttribute -->
+        
         <xsl:variable name="r" as="element()*">
             <xsl:choose>
                 <xsl:when test="imf:get-config-stereotypes('stereotype-name-association-to-composite') = '#unknown'">
@@ -242,17 +250,47 @@
             </xsl:choose>
         </xsl:variable>
         <xsl:if test="exists($r)">
-            <section type="SHORT-ATTRIBUTES">
-              <content>
-                 <itemtype/>
-                 <itemtype type="ATTRIBUTE-NAME"/>
-                 <itemtype type="ATTRIBUTE-DEFINITION"/>
-                 <itemtype type="ATTRIBUTE-FORMAT"/>
-                 <itemtype type="ATTRIBUTE-CARD"/>
-                 <!-- and add rows -->
-                 <xsl:sequence select="$r"/>
-              </content>
-           </section>
+            <xsl:choose>
+                <xsl:when test="$attribute-kind = 'A'">
+                    <section type="SHORT-ATTRIBUTES">
+                        <content>
+                            <itemtype/>
+                            <itemtype type="ATTRIBUTE-NAME"/>
+                            <itemtype type="ATTRIBUTE-DEFINITION"/>
+                            <itemtype type="ATTRIBUTE-FORMAT"/>
+                            <itemtype type="ATTRIBUTE-CARD"/>
+                            <!-- and add rows -->
+                            <xsl:sequence select="$r"/>
+                        </content>
+                    </section>
+                </xsl:when>
+                <xsl:when test="$attribute-kind = 'U'">
+                    <section type="SHORT-UNIONELEMENTS">
+                        <content>
+                            <itemtype/>
+                            <itemtype type="UNIONELEMENT-NAME"/>
+                            <itemtype type="UNIONELEMENT-DEFINITION"/>
+                            <itemtype type="UNIONELEMENT-FORMAT"/>
+                            <itemtype type="UNIONELEMENT-CARD"/>
+                            <!-- and add rows -->
+                            <xsl:sequence select="$r"/>
+                        </content>
+                    </section>
+                </xsl:when>
+                <xsl:otherwise>
+                    <section type="SHORT-DATAELEMENTS">
+                        <content>
+                            <itemtype/>
+                            <itemtype type="DATAELEMENT-NAME"/>
+                            <itemtype type="DATAELEMENT-DEFINITION"/>
+                            <itemtype type="DATAELEMENT-FORMAT"/>
+                            <itemtype type="DATAELEMENT-CARD"/>
+                            <!-- and add rows -->
+                            <xsl:sequence select="$r"/>
+                        </content>
+                    </section>
+                </xsl:otherwise>
+            </xsl:choose>
         </xsl:if>
     </xsl:template>
     
@@ -1019,7 +1057,7 @@
     
     <xsl:function name="imf:get-tv-value">
         <xsl:param name="tv-element" as="element(tv)?"/>
-        <xsl:value-of select="$tv-element/@value"/>
+        <xsl:value-of select="if (normalize-space($tv-element/@original-value)) then $tv-element/@original-value else $tv-element/@value"/>
     </xsl:function>
     
     <!-- ======== cleanup all section structure: remove empties =========== -->

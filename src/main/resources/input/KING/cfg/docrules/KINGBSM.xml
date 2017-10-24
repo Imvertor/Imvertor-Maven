@@ -78,7 +78,7 @@
         <name lang="en">Origin</name>
         <levels>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
-            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
+          <!--  <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level> -->
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
@@ -122,7 +122,7 @@
         <name lang="en">Origin of definition</name>
         <levels>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
-            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
+         <!--  <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level> -->
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
@@ -145,10 +145,10 @@
         <name lang="en">Date</name>
         <levels>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
-            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
+        <!--    <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level> -->
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
-            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
+        <!--    <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level> -->
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
@@ -157,9 +157,17 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
-            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+        <!--    <level show="force" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level> -->
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-DATALOCATIE">
+        <name lang="nl">Data locatie</name>
+        <name lang="en">Data location</name>
+        <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-UNIEKEAANDUIDING">
@@ -167,8 +175,9 @@
         <name lang="en">Identifier</name>
         <levels>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
-  
-            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
+            
+            <!--<level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>-->
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-POPULATIE">
@@ -177,7 +186,7 @@
         <levels>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
             
-            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+           <!-- <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level> -->
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-KWALITEITSBEGRIP">
@@ -186,7 +195,7 @@
         <levels>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
             
-            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+          <!--  <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level> -->
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-INDICATIEABSTRACTOBJECT">
@@ -302,10 +311,23 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>        </levels>
     </doc-rule>
+    <doc-rule id="CFG-DOC-FORMAAT">
+        <name lang="nl">Formaat</name>
+        <name lang="en">Format</name>
+        <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
+        </levels>
+    </doc-rule>
     <doc-rule id="CFG-DOC-PATROON">
         <name lang="nl">Patroon</name>
         <name lang="en">Pattern</name>
         <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
@@ -324,17 +346,6 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
         </levels>
     </doc-rule>
-    <doc-rule id="CFG-DOC-FORMAAT">
-        <name lang="nl">Formaat</name>
-        <name lang="en">Format</name>
-        <levels>
-            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
-            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
-            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
-            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
-            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
-        </levels>
-    </doc-rule>
     <doc-rule id="CFG-DOC-RELATIESOORT">
         <name lang="nl">Relatiesoort</name>
         <levels>
@@ -342,7 +353,7 @@
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-GERELATEERDOBJECTTYPE">
-        <name lang="nl">Gerelateerd obecttype</name>
+        <name lang="nl">Gerelateerd objecttype</name>
         <name lang="en">Associated objecttype</name>
         <levels>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>

@@ -88,7 +88,7 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	protected static final int WFCODE_WARNING = 1;
 	protected static final int WFCODE_ERROR = 2;
 	protected static final int WFCODE_FATAL = 3;
-
+	
 	// parameters die de verwerking van het XML file bepalen
 
 	public boolean namespace = true; // namespace aware?
@@ -104,6 +104,7 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	private Document dom = null;
 	
 	private int wfcode = WFCODE_OKAY; // a code indicating the Wellformedness of the XML file.
+	private String lastError = "";
 	
 	private Vector<String> messages = new Vector<String>();
 	
@@ -268,6 +269,7 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 			builder.parse(new InputSource(url));
 			
 		} catch (Exception e) {
+			lastError = e.getMessage();
 			wfcode = WFCODE_FATAL;
 		}
 		return wfcode < WFCODE_ERROR;
@@ -292,6 +294,7 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 			String url = this.toURI().toURL().toString();
 			builder.parse(new InputSource(url));
 		} catch (Exception e) {
+			lastError = e.getMessage();
 			wfcode = WFCODE_FATAL;
 		}
 		return wfcode < WFCODE_ERROR;
@@ -299,6 +302,10 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	
 	public Vector<String> getMessages() {
 		return messages;
+	}
+	
+	public String getLastError() {
+		return lastError;
 	}
 	
 	/**

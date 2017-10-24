@@ -1006,13 +1006,12 @@
         <xsl:param name="tagged-value-name" as="xs:string*"/>
         <xsl:param name="normalized" as="xs:string?"/>
         <xsl:param name="profiled" as="xs:boolean"/>
-        <xsl:sequence select="for $tv in imf:get-tagged-values($this,$tagged-value-name,$profiled) return imf:get-tagged-value-norm($tv,$normalized)"/>
+        <xsl:sequence select="for $tv in imf:get-tagged-values($this,$tagged-value-name,$profiled) return imf:get-tagged-value-norm(imf:get-tagged-value-original($tv),$normalized)"/>
     </xsl:function>
     
-    <!-- return normalized string value, or HTML content when applicable -->
-    <xsl:function name="imf:get-tagged-value-norm" as="item()*"> 
+    <!-- return string value, as found -->
+    <xsl:function name="imf:get-tagged-value-original" as="xs:string?"> 
         <xsl:param name="tv" as="element()?"/>
-        <xsl:param name="norm" as="xs:string?"/>
        
         <xsl:variable name="value" select="$tv/@value"/>
         <xsl:if test="normalize-space($value)">
@@ -1035,14 +1034,17 @@
                     then $tv/XMI.extension/UML:Comment/@name
                     else $tokens[1]
             "/>
-            <xsl:sequence select="
-                if (exists($value-select))
-                then 
-                    imf:get-tagged-value-norm-by-scheme($value-select,$norm,'tv')
-                else
-                    ()"/>
+            <xsl:sequence select="if (normalize-space($value-select)) then $value-select else ()"/>
         </xsl:if>
    </xsl:function>
+    
+    <!-- return normalized string value-->
+    <xsl:function name="imf:get-tagged-value-norm" as="xs:string?"> 
+        <xsl:param name="value" as="xs:string?"/>
+        <xsl:param name="norm" as="xs:string?"/>
+        
+        <xsl:sequence select="if (exists($value)) then imf:get-tagged-value-norm-by-scheme($value,$norm,'tv') else ()"/>
+    </xsl:function>
     
     <xsl:function name="imf:tagged-value-select-profiled" as="xs:boolean">
         <xsl:param name="tv"/>
@@ -1601,8 +1603,8 @@
                 <xsl:variable name="level" select="@imvert-level"/>
                 <xsl:variable name="norm-name" select="imf:get-normalized-name(string($name),'tv-name')"/>
                 <xsl:variable name="declared-tv" select="$additional-tagged-values[name = $norm-name]"/>
-                <xsl:variable name="value" select="@value"/>
-                <xsl:variable name="norm-value" select="imf:get-tagged-value-norm(.,$declared-tv/@norm)"/>
+                <xsl:variable name="value" select="imf:get-tagged-value-original(.)"/>
+                <xsl:variable name="norm-value" select="imf:get-tagged-value-norm($value,$declared-tv/@norm)"/>
                 <xsl:if test="exists($declared-tv) and normalize-space($norm-value)">
                     <imvert:tagged-value id="{$declared-tv/@id}" level="{$level}">
                         <imvert:name original="{$name}">

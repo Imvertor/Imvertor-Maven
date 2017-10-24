@@ -69,11 +69,23 @@
                         <div>
                             <xsl:apply-templates select="." mode="metamodel-stereos"/>
                         </div>      
-                    </div>       
+                    </div>  
+                    <div>
+                        <h1>Metamodel: stereotype descriptions</h1>
+                        <div>
+                            <xsl:apply-templates select="." mode="metamodel-stereos-desc"/>
+                        </div>      
+                    </div>  
                     <div>
                         <h1>Tagged values</h1>
                         <div>
                             <xsl:apply-templates select="." mode="metamodel-tvs"/>
+                        </div>      
+                    </div>       
+                    <div>
+                        <h1>Tagged value descriptions</h1>
+                        <div>
+                            <xsl:apply-templates select="." mode="metamodel-tvs-desc"/>
                         </div>      
                     </div>       
                 </content>
@@ -156,6 +168,26 @@
         <xsl:sequence select="imf:create-result-table-by-tr($rows,'stereo:40,on constructs:40,config:20','table-stereos')"/>
     </xsl:template>
     
+    <xsl:template match="/config" mode="metamodel-stereos-desc">
+        <xsl:variable name="rows" as="element(tr)*">
+            <xsl:for-each select="$configuration-metamodel-file//stereotypes/stereo">
+                <xsl:sort select="name[1]"/>
+                <tr>
+                    <td>
+                        <xsl:value-of select="string-join(name,', ')"/>
+                        <span class="tid">
+                            <xsl:value-of select="@id"/>
+                        </span>
+                    </td>
+                    <td>
+                        <xsl:value-of select="string-join(desc,', ')"/>
+                    </td>
+                </tr>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:sequence select="imf:create-result-table-by-tr($rows,'stereo:20,description:80','table-stereo-desc')"/>
+    </xsl:template>
+    
     <!--
      <tv id="CFG-TV-SOURCE" norm="space">
             <name lang="nl" original="Herkomst">herkomst</name>
@@ -211,5 +243,25 @@
             </xsl:for-each>
         </xsl:variable>
         <xsl:sequence select="imf:create-result-table-by-tr($rows,'tagged value:20,derive?:10,stereos:55,config:10','table-tvs')"/>
+    </xsl:template>
+    
+    <xsl:template match="/config" mode="metamodel-tvs-desc">
+        <xsl:variable name="rows" as="element(tr)*">
+            <xsl:for-each select="$configuration-tvset-file//tagged-values/tv">
+                <xsl:sort select="name[1]"/>
+                <tr>
+                    <td>
+                        <xsl:value-of select="string-join(name,', ')"/>
+                        <span class="tid">
+                            <xsl:value-of select="@id"/>
+                        </span>
+                    </td>
+                    <td>
+                        <xsl:value-of select="desc"/>
+                    </td>
+                </tr>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:sequence select="imf:create-result-table-by-tr($rows,'tagged value:20,description:80','table-tvs-desc')"/>
     </xsl:template>
 </xsl:stylesheet>
