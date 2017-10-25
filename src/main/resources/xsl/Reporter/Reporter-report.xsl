@@ -47,7 +47,7 @@
 
     <xsl:variable name="no-subpath">
         <xsl:variable name="rtry" as="xs:string*">
-            <xsl:value-of select="imf:get-config-string('appinfo','project','project?')"/>
+            <xsl:value-of select="imf:get-config-string('appinfo','project-name','project?')"/>
             <xsl:value-of select="imf:get-config-string('appinfo','application-name','model?')"/>
             <xsl:value-of select="imf:get-config-string('appinfo','release','release?')"/>
         </xsl:variable> 

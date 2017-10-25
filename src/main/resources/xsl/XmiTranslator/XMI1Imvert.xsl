@@ -130,6 +130,9 @@
             <xsl:sequence select="imf:set-config-string('appinfo','original-project-name',$root-package/@name)"/>
             <xsl:sequence select="imf:set-config-string('appinfo','original-application-name',$application-package-name)"/>
             
+            <xsl:sequence select="imf:set-config-string('appinfo','project-name',$project-name)"/>
+            <xsl:sequence select="imf:set-config-string('appinfo','application-name',$application-package-name)"/>
+            
             <xsl:choose>
                 <xsl:when test="empty($root-package)">
                     <xsl:sequence select="imf:msg('ERROR',concat(
@@ -174,6 +177,7 @@
         <xsl:variable name="is-root-package" select="@name = $application-package-name"/>
 
         <xsl:sequence select="if ($is-root-package) then imf:set-config-string('appinfo','application-alias',imf:get-alias(.,'P')) else ()"/>
+        <xsl:sequence select="if ($is-root-package) then imf:set-config-string('appinfo','release',imf:get-profile-tagged-value(.,'release')[1]) else ()"/>
         
         <imvert:package>
             <xsl:sequence select="imf:create-output-element('imvert:is-root-package',if ($is-root-package) then 'true' else ())"/>
@@ -635,6 +639,13 @@
             else if ($parent-is-derived and $not-derived-because-stated) then 'false' 
             else if ($parent-is-derived) then 'true' 
             else    'false')"/>
+        
+        <!-- avoid duplicate models for derivation -->
+        <xsl:variable name="shortened-subpaths" select="for $s in $supplier-info return concat($s/imvert:supplier-project, '/', $s/imvert:supplier-name)"/>
+        <xsl:if test="count(distinct-values($shortened-subpaths)) ne count($shortened-subpaths)">
+            <xsl:sequence select="imf:msg($this,'ERROR','Attempt to derive from more than one releases of the same package: [1]',$shortened-subpaths)"/>
+        </xsl:if>
+        
     </xsl:function>
    
     <xsl:function name="imf:get-config-info" as="node()*">
