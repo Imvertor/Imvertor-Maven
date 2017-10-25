@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -166,7 +167,7 @@ public class AnyFile extends File  {
 	 */
 	public String getContent(String encoding) throws IOException {
 		StringBuffer fileData = new StringBuffer(1000);
-	    BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(this), encoding));
+	    BufferedReader reader = new BufferedReader(new InputStreamReader(getFileInputStream(), encoding));
         char[] buf = new char[1024];
         int numRead=0;
         while((numRead=reader.read(buf)) != -1){
@@ -463,12 +464,16 @@ public class AnyFile extends File  {
 	}
 	
 	public String getHead(int numberBytes) throws Exception {
-		FileInputStream is = new FileInputStream(this.getAbsolutePath());
+		FileInputStream is = getFileInputStream();
 		byte bytes[] = new byte[numberBytes];
         is.read(bytes);
         String r = new String(bytes, "UTF-8");
         is.close();
         return r;
+	}
+	
+	public FileInputStream getFileInputStream() throws FileNotFoundException {
+		return new FileInputStream(this.getAbsolutePath());
 	}
 	
 	/**
@@ -480,7 +485,7 @@ public class AnyFile extends File  {
 	 */
 	public String guessEncoding() throws IOException {
 		byte[] buf = new byte[4096];
-	    FileInputStream fis = new FileInputStream(this.getAbsolutePath());
+	    FileInputStream fis = getFileInputStream();
 
 	    // (1)
 	    UniversalDetector detector = new UniversalDetector(null);

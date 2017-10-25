@@ -24,17 +24,27 @@
     -->
     <vocabularies>
         
-        <vocabulary>
-            <prefix>model</prefix>
-            <URI>http://data.test.pdok.nl/catalogus/dso/kkg</URI>
-        </vocabulary>
+        <base>http://localhost:8080/catalogus/dso/</base>
+        
         <vocabulary>
             <prefix>rdf</prefix>
             <URI>http://www.w3.org/1999/02/22-rdf-syntax-ns#</URI>
         </vocabulary>
         <vocabulary>
+            <prefix>rdfs</prefix>
+            <URI>http://www.w3.org/2000/01/rdf-schema#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>xsd</prefix>
+            <URI>http://www.w3.org/2001/XMLSchema#</URI>
+        </vocabulary>
+        <vocabulary>
             <prefix>owl</prefix>
             <URI>http://www.w3.org/2002/07/owl#</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>sh</prefix>
+            <URI>http://www.w3.org/ns/shacl#</URI>
         </vocabulary>
         <vocabulary>
             <prefix>uml</prefix>
@@ -48,10 +58,7 @@
             <prefix>skos</prefix>
             <URI>http://www.w3.org/2004/02/skos/core#</URI>
         </vocabulary>
-        <vocabulary>
-            <prefix>rdfs</prefix>
-            <URI>http://www.w3.org/2000/01/rdf-schema#</URI>
-        </vocabulary>
+        
         <vocabulary>
             <prefix>ldqd</prefix>
             <URI>http://unknown/#ldqd</URI>
@@ -65,23 +72,11 @@
             <URI>http://unknown/#xsi</URI>
         </vocabulary>
         <vocabulary>
-            <prefix>primitive</prefix>
-            <URI>http://unknown/#primitive</URI>
-        </vocabulary>
-        <vocabulary>
             <prefix>dct</prefix>
             <URI>http://unknown/#dct</URI>
-        </vocabulary>
-        
+        </vocabulary>        
+    
         <!--x
-        <vocabulary>
-            <prefix>xsd</prefix>
-            <URI>http://www.w3.org/2001/XMLSchema#</URI>
-        </vocabulary>
-        <vocabulary>
-            <prefix>sh</prefix>
-            <URI>http://www.w3.org/ns/shacl#</URI>
-        </vocabulary>
         <vocabulary>
             <prefix>dcat</prefix>
             <URI>http://www.w3.org/ns/dcat#</URI>
@@ -154,5 +149,10 @@
         <map id="CFG-TV-POPULATION" type="2q" lang="#all">ldqd:completeness</map>
         <map id="CFG-TV-DESCRIPTION" type="2q" lang="#all">skos:scopeNote</map>
         
+        <!--x
+        <map id="CFG-TV-ADMINISTRATOR" type="2q" lang="#all">?</map>
+        <map id="CFG-TV-OWNER" type="2q" lang="#all">?</map>
+        <map id="CFG-TV-RULES" type="2q" lang="#all">?</map>
+        x-->
     </node-mapping>
 </shacl-rules>

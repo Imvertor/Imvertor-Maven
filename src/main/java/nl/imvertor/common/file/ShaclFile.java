@@ -22,6 +22,15 @@ package nl.imvertor.common.file;
 
 import java.io.File;
 
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.riot.RiotException;
+import org.apache.jena.util.FileUtils;
+import org.apache.log4j.Logger;
+import org.topbraid.shacl.util.ModelPrinter;
+import org.topbraid.shacl.validation.ValidationUtil;
+import org.topbraid.spin.util.JenaUtil;
+
 import nl.imvertor.common.Configurator;
 
 /**
@@ -34,7 +43,11 @@ import nl.imvertor.common.Configurator;
 public class ShaclFile extends RdfFile {
 
 	private static final long serialVersionUID = 1L;
-
+	protected static final Logger logger = Logger.getLogger(ShaclFile.class);
+	
+	private Model dataShape;
+	private Model dataModel;
+	
 	public ShaclFile(String pathname) {
 		super(pathname);
 	}
@@ -44,6 +57,70 @@ public class ShaclFile extends RdfFile {
 	}
 	
 	public void validate(Configurator configurator) throws Exception {
-		this.parse(configurator);
+		super.parse(configurator);
+		
+		if (true) { // TODO handle error situation
+			this.parse(configurator);
+		}
+	}
+	
+	public void parse(Configurator configurator) throws Exception {
+
+		try {
+			// Load the main data model
+			dataShape = JenaUtil.createMemoryModel();
+			dataShape.read(this.getFileInputStream(), "",
+					FileUtils.langTurtle);
+			
+		} catch (RiotException re) {
+			configurator.getRunner().error(logger,re.getMessage());
+			
+		} catch (Exception e) {
+			throw e;
+		}
+		
+	}
+
+	public void parse(Configurator configurator, String ttlDataFilePath) throws Exception {
+
+		parse(configurator);
+		// if the model is read okay, parse the TTL data file passed.
+		
+		if (configurator.getRunner().succeeds()) {
+			try {
+				
+				dataModel = JenaUtil.createMemoryModel();
+				RdfFile dataFile = new RdfFile(ttlDataFilePath);
+				dataModel.read(dataFile.getFileInputStream(), "",
+						FileUtils.langTurtle);
+		
+				// Perform the validation of everything, using the data model
+				// also as the shapes model - you may have them separated
+				Resource report = ValidationUtil.validateModel(dataModel, dataShape, true);
+		
+				/* This will return a small report on the status of the model. Format:
+				
+					@base          <http://example.org/random> .
+					@prefix ex:    <http://example.org#> .
+					@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+					@prefix uml:   <http://bp4mc2.org/def/uml#> .
+					@prefix sh:    <http://www.w3.org/ns/shacl#> .
+					@prefix kkg:   <http://bp4mc2.org/def/kkg/id/begrip> .
+					@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+					
+					[ a            sh:ValidationReport ;
+					  sh:conforms  true
+					] .
+				*/
+				//ModelPrinter.get().print(report.getModel());
+				
+			} catch (RiotException re) {
+				configurator.getRunner().error(logger,re.getMessage());
+				
+			} catch (Exception e) {
+				throw e;
+			}
+		}
+		
 	}
 }

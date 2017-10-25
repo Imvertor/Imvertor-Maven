@@ -74,8 +74,9 @@
         <xsl:variable name="type-name" select="local-name($this)"/>
         <xsl:variable name="package-name" select="$this/ancestor-or-self::imvert:package[imvert:stereotype = $traceable-package-stereotypes][1]/imvert:name"/>
         <xsl:variable name="class-name" select="$this/ancestor-or-self::imvert:class[1]/imvert:name"/>
+        <xsl:variable name="role-name" select="$this/imvert:target/imvert:role"/> 
         <xsl:variable name="prop-name" select="$this[self::imvert:attribute | self::association]/imvert:name"/> 
-        <xsl:sequence select="imf:compile-construct-formal-name($type-name,$package-name,$class-name,$prop-name)"/>
+        <xsl:sequence select="imf:compile-construct-formal-name($type-name,$package-name,$class-name,if (exists($role-name)) then $role-name else $prop-name)"/>
     </xsl:function>
     
     <xsl:function name="imf:compile-construct-formal-name" as="xs:string">
