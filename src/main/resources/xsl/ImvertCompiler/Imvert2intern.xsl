@@ -144,10 +144,17 @@
     </xsl:template>
    
     <xsl:template match="node()" mode="intern-origin">
-        <xsl:copy>
-            <xsl:copy-of select="@*"/>
-            <xsl:apply-templates mode="intern-origin"/>
-        </xsl:copy>
+        <xsl:choose>
+            <xsl:when test="self::imvert:class and exists(imf:get-construct-by-id(imvert:id))">
+                <xsl:comment>INTERN-ORIGIN SKIPPED: <xsl:value-of select="imvert:id"/></xsl:comment>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:copy>
+                    <xsl:copy-of select="@*"/>
+                    <xsl:apply-templates mode="intern-origin"/>
+                </xsl:copy>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <xsl:template match="node()" mode="intern-redirect">
