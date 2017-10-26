@@ -71,6 +71,10 @@
             ), 
             'Relation with stereotype [1] for class with stereotype [2] has inappropriate name',($stereotypes,$class-stereotypes))"/>
         
+        <xsl:sequence select="imf:report-warning(., 
+            (count($property-names[.=$name]) gt 1), 
+            'Duplicate property name.')"/>
+        
         <xsl:next-match/>
     </xsl:template>
     

@@ -123,4 +123,20 @@
         <xsl:next-match/>
     </xsl:template>
         
+    <xsl:template match="imvert:association">
+        <!--setup-->
+        <xsl:variable name="this" select="."/>
+        <xsl:variable name="class" select="../.."/>
+        <xsl:variable name="property-names" select="$class/(imvert:atributes | imvert:associations)/*/imvert:name"/>
+        <xsl:variable name="name" select="imvert:name"/>
+      
+        <!--validation-->
+        
+        <xsl:sequence select="imf:report-warning(., 
+            (count($property-names[.=$name]) gt 1), 
+            'Duplicate property name.')"/>
+    
+        <xsl:next-match/>
+
+    </xsl:template>
 </xsl:stylesheet>

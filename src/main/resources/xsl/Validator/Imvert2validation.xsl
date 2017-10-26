@@ -873,9 +873,6 @@
         <xsl:sequence select="imf:report-error(., 
             not(imf:check-multiplicity(imvert:min-occurs,imvert:max-occurs)), 
             'Invalid target multiplicity.')"/>
-        <xsl:sequence select="imf:report-warning(., 
-            (count($property-names[.=$name]) gt 1), 
-            'Duplicate property name.')"/>
         
         <xsl:sequence select="imf:check-stereotype-assignment(.)"/>
         <xsl:sequence select="imf:check-tagged-value-occurs(.)"/>
