@@ -632,13 +632,17 @@
         <xsl:variable name="derived-because-stated" select="(exists($derived) and imf:boolean($derived))"/>
         <xsl:variable name="not-derived-because-stated" select="(exists($derived) and not(imf:boolean($derived)))"/>
         
-        <xsl:sequence select="imf:create-output-element('imvert:derived',
-            if (exists($supplier-info) and $not-derived-because-stated) then 'false' 
-            else if ($derived-because-stated) then 'true' 
-            else if (exists($supplier-info)) then 'true' 
-            else if ($parent-is-derived and $not-derived-because-stated) then 'false' 
-            else if ($parent-is-derived) then 'true' 
-            else    'false')"/>
+        <xsl:variable name="derived-code" select="
+            if (exists($supplier-info) and $not-derived-because-stated) then ('false','Supplier info found, but stated not to be derived') 
+            else if ($derived-because-stated) then ('true','Stated to be derived') 
+            else if (exists($supplier-info)) then ('true','Supplier info found') 
+            else if ($parent-is-derived and $not-derived-because-stated) then ('false','Parent is derived, but stated not to be derived') 
+            else if ($parent-is-derived) then ('true','Parent is derived') 
+            else    ('false','No indication of derivation')
+        "/>
+        <imvert:derived reason="{$derived-code[2]}">
+            <xsl:value-of select="$derived-code[1]"/>
+        </imvert:derived>
         
         <!-- avoid duplicate models for derivation -->
         <xsl:variable name="shortened-subpaths" select="for $s in $supplier-info return concat($s/imvert:supplier-project, '/', $s/imvert:supplier-name)"/>
