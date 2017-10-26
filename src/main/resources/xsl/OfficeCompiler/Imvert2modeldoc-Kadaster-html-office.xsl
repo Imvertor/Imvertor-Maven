@@ -128,7 +128,9 @@
                 <xsl:variable name="level" select="count(ancestor::section)"/>
                 <xsl:variable name="composer" select="content[not(@approach='target')]/part[@type = 'COMPOSER']/item[1]"/>
                 <div>
-                    <a class="anchor" name="global-{@id}"/>
+                    <xsl:if test="@id">
+                        <a class="anchor" name="{@id}"/>
+                    </xsl:if>
                     <xsl:element name="{concat('h',$level)}">
                         <xsl:value-of select="imf:translate-i3n('ATTRIBUTE',$language-model,())"/>
                         <xsl:value-of select="' '"/>
@@ -145,7 +147,9 @@
                 <xsl:variable name="level" select="count(ancestor::section)"/>
                 <xsl:variable name="composer" select="content[not(@approach='target')]/part[@type = 'COMPOSER']/item[1]"/>
                 <div>
-                    <a class="anchor" name="global-{@id}"/>
+                    <xsl:if test="@id">
+                        <a class="anchor" name="{@id}"/>
+                    </xsl:if>
                     <xsl:element name="{concat('h',$level)}">
                         <xsl:value-of select="imf:translate-i3n('ASSOCIATION',$language-model,())"/>
                         <xsl:value-of select="' '"/>
@@ -161,7 +165,9 @@
             <xsl:otherwise>
                 <xsl:variable name="level" select="count(ancestor::section)"/>
                 <div>
-                    <a class="anchor" name="global-{@id}"/>
+                    <xsl:if test="@id">
+                        <a class="anchor" name="{@id}"/>
+                    </xsl:if>
                     <xsl:element name="{concat('h',$level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                         <xsl:value-of select="' '"/>
@@ -351,7 +357,7 @@
                 </a>
             </xsl:when>
             <xsl:when test="exists(@idref)">
-                <a class="link" href="#global-{@idref}">
+                <a class="link" href="#{@idref}">
                     <xsl:apply-templates mode="#current"/>
                 </a>
             </xsl:when>
