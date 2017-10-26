@@ -67,6 +67,13 @@
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
         </levels>
     </doc-rule>
+    <doc-rule id="CFG-DOC-GERELATEERDOBJECTTYPE">
+        <name lang="nl">Gerelateerd objecttype</name>
+        <name lang="en">Associated objecttype</name>
+        <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
     <doc-rule id="CFG-DOC-HERKOMST">
         <name lang="nl">Herkomst</name>
         <name lang="en">Origin</name>
@@ -333,13 +340,6 @@
         <name lang="nl">Relatiesoort</name>
         <levels>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
-        </levels>
-    </doc-rule>
-    <doc-rule id="CFG-DOC-GERELATEERDOBJECTTYPE">
-        <name lang="nl">Gerelateerd objecttype</name>
-        <name lang="en">Associated objecttype</name>
-        <levels>
-            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-INDICATIEAFLEIDBAAR">
