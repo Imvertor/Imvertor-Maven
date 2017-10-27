@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Imvertor</groupId>
 	<artifactId>Imvertor</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1-SNAPSHOT</version>
 	<name>Imvertor</name>
 
 	<description>Imvertor under Maven</description>
@@ -70,7 +70,14 @@
 		    <artifactId>commons-text</artifactId>
 		    <version>1.1</version>
 		</dependency>
-
+		
+		<!-- https://mvnrepository.com/artifact/commons-lang/commons-lang -->
+		<dependency>
+		    <groupId>commons-lang</groupId>
+		    <artifactId>commons-lang</artifactId>
+		    <version>2.6</version>
+		</dependency>
+				
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-configuration2</artifactId>
@@ -272,6 +279,7 @@
 				</executions>
 			</plugin>
 
+			<!-- 
 	      <plugin>
 	        <artifactId>maven-assembly-plugin</artifactId>
 	        <executions>
@@ -288,6 +296,32 @@
 	          </descriptorRefs>
 	        </configuration>
 	      </plugin>
+	      -->
+	      <plugin>
+		      <!-- Build an executable JAR -->
+		     <artifactId>maven-assembly-plugin</artifactId>
+	          <executions>
+	          <execution>
+	            <phase>package</phase>
+	            <goals>
+	              <goal>single</goal>
+	            </goals>
+	          </execution>
+	        </executions>
+		      <configuration>
+			      <descriptorRefs>
+		            <descriptorRef>jar-with-dependencies</descriptorRef>
+		          </descriptorRefs>
+	            <archive>
+		          <manifest>
+		          <!--  
+		            <addClasspath>true</addClasspath>
+		            <classpathPrefix>lib/</classpathPrefix>
+		            --><mainClass>nl.imvertor.ChainTranslateAndReport</mainClass>
+		          </manifest>
+		        </archive>
+		      </configuration>
+		   </plugin>
 		</plugins>
 	</build>
 
