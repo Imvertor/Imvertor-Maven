@@ -112,21 +112,5 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space"  id="CFG-TV-POSITION"><!-- origin="system" -->
-            <name lang="nl">Positie</name>
-            <name lang="en">Position</name>
-            <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
-            <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
-                <stereo required="no">stereotype-name-union-element</stereo>
-                <stereo required="no">stereotype-name-enum</stereo>
-                <stereo required="no">stereotype-name-data-element</stereo>
-                <stereo required="no">stereotype-name-referentie-element</stereo>
-                <stereo required="no">stereotype-name-association-to-composite</stereo>
-                <stereo required="no">stereotype-name-enum</stereo>
-            </stereotypes>
-        </tv>
-        
     </tagged-values>
 </tagset>

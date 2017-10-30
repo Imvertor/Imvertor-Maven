@@ -217,19 +217,7 @@
                 <stereo required="no">stereotype-name-attribute</stereo><!-- SIM Referentie element -->
             </stereotypes>
         </tv>
-        
-        <tv norm="space"  id="CFG-TV-POSITION"><!-- origin="system" -->
-            <name lang="nl">Positie</name>
-            <name lang="en">Position</name>
-            <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
-            <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo><!--SIM Attribuutsoort, Union element, Data element, Referentie element-->
-                <stereo required="no">stereotype-name-relatiesoort</stereo><!-- SIM: Relatiesoort  -->
-                <stereo required="no">stereotype-name-enum</stereo>
-                <stereo required="no">stereotype-name-association-to-composite</stereo><!-- SIM Gegevensgroep compositie-->
-            </stereotypes>
-        </tv>
-        
+                
         <tv norm="space"  id="CFG-TV-SUBSETLABEL">
             <name lang="nl">Subset label</name>
             <name lang="en">Subset label</name>

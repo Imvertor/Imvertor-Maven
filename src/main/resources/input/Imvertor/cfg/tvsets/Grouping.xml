@@ -203,6 +203,8 @@
         <tv norm="space" id="CFG-TV-ISDERIVED">
             <name lang="nl">Is afgeleid</name>
             <name lang="en">Is derived</name>
+            <desc lang="nl">Deze constructie is al dan niet afgeleid van een "supplier model". 
+                Wanneer je niks opgeeft wordt afleiding vastgesteld op basis van het package waarin het voorkomt.</desc>
             <derive>no</derive>
             <stereotypes>
                 <!-- packages -->
@@ -284,6 +286,23 @@
                 <stereo required="no">stereotype-name-internal-package</stereo>
             </stereotypes>
         </tv>  
+        
+        <tv norm="space"  id="CFG-TV-POSITION"><!-- origin="system" -->
+            <name lang="nl">Positie</name>
+            <name lang="en">Position</name>
+            <desc lang="nl">De positie van de construct binnen producten waarin deze opeenvolging een rol speelt.</desc>
+            <desc lang="en">The position of the construct in products in which sequences play a role.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo required="no">stereotype-name-union-element</stereo>
+                <stereo required="no">stereotype-name-enum</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
+                <stereo required="no">stereotype-name-referentie-element</stereo>
+                <stereo required="no">stereotype-name-association-to-composite</stereo>
+            </stereotypes>
+        </tv>
         
     </tagged-values>
     

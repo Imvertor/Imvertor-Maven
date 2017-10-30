@@ -303,7 +303,7 @@
             </stereotypes>
         </tv>
         
-        <tv id="CFG-TV-POSITION"><!-- origin="system" -->
+        <tv id="CFG-TV-POSITION"><!-- origin="system"; in aanvulling op grouping! -->
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-entiteitrelatie</stereo>

@@ -151,20 +151,6 @@
                 <value default="yes">No</value>
             </declared-values>
         </tv>
-        <tv norm="space"  id="CFG-TV-POSITION"><!-- origin="system" -->
-            <name lang="nl">Positie</name>
-            <name lang="en">Position</name>
-            <desc lang="nl">TODO</desc>
-            <desc lang="en">TODO</desc>
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-union-element</stereo>
-                <stereo required="no">stereotype-name-enum</stereo>
-                <stereo required="no">stereotype-name-data-element</stereo>
-                <stereo required="no">stereotype-name-referentie-element</stereo>
-            </stereotypes>
-        </tv>
         
         <tv norm="space" id="CFG-TV-LENGTH">
             <name lang="nl">Lengte</name>
