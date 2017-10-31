@@ -99,9 +99,9 @@
     <xsl:function name="imf:matches" as="xs:boolean">
         <xsl:param name="source-att"/>
         <xsl:param name="config-att"/>
+       <!--<xsl:message select="concat($source-att,' = ', $config-att)"/>-->
 
         <xsl:variable name="attval" select="if (ends-with($config-att,'...')) then substring($config-att,1,string-length($config-att) - 3) else ()"/>
         <xsl:sequence select="if (exists($attval)) then starts-with($source-att,$attval) else $source-att = $config-att"/>
-        
     </xsl:function>
 </xsl:stylesheet>

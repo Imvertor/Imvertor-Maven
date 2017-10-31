@@ -45,11 +45,10 @@
             <xsl:apply-templates select="*:c"/>
         </xsl:variable>
         <xsl:if test="exists($c)">
-            <row nr="{position()}">
+            <row nr="{@r}">
                 <xsl:sequence select="$c"/>
             </row>
         </xsl:if> 
-
     </xsl:template>
     
     <xsl:template match="*:c">
