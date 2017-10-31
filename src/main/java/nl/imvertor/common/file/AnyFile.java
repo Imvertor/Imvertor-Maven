@@ -30,6 +30,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -508,6 +509,23 @@ public class AnyFile extends File  {
         return encoding;
  	}
 
+	/**
+	 * Get the character set for the encoding name passed.
+	 * If encoding is not specified, return UTF-8 Charset.
+	 * 
+	 * @param encoding
+	 * @return
+	 * @throws Exception 
+	 */
+	public static Charset getCharsetForEncoding(String encoding) throws Exception {
+		if (encoding == null)
+			return StandardCharsets.UTF_8;
+		else if (encoding.equals("UTF-8"))
+			return StandardCharsets.UTF_8;
+		else 
+			throw new Exception("Unsupported encoding: " + encoding);
+	}
+	
 	private static String match(String s, String regex) {
 		Matcher m = Pattern.compile(regex).matcher(s);
 		if (m.find()) 
@@ -521,19 +539,38 @@ public class AnyFile extends File  {
 	 * If  no more lines available, close the stream and return null. 
 	 * Next call, reopen the stream and start again.
 	 * 
+	 * Encoding is optional; when not provided guess the encoding of the file.
+	 * 
 	 * @return
-	 * @throws IOException
+	 * @throws Exception 
 	 */
-	public String getNextLine() throws IOException {
+	public String getNextLine() throws Exception {
+		Charset cs = getCharsetForEncoding(guessEncoding());
+		return getNextLine(cs);
+	}
+	
+	public String getNextLine(Charset cs) throws IOException {
 		String line = null;
 		
-		if (lineReader == null)
-			lineReader = new BufferedReader(new FileReader(this));
-	
+		if (lineReader == null) {
+			FileInputStream is = new FileInputStream(this);
+			InputStreamReader isr = new InputStreamReader(is, cs);
+			lineReader = new BufferedReader(isr);
+		}
 		if (!(lineReader.ready() && (line = lineReader.readLine()) != null))
-				lineReader.close();	
+				close();	
 	
 		return line;
+	}
+	
+	/**
+	 * Close the file for line reading. 
+	 * Closing a closed file has no effect.
+	 * @throws IOException 
+	 */
+	public void close() throws IOException {
+		if (lineReader != null) 
+			lineReader.close();
 	}
 	
 	/**
@@ -548,7 +585,7 @@ public class AnyFile extends File  {
 		}
 	}
 	
-	public String getLastLine() throws IOException {
+	public String getLastLine() throws Exception {  // TODO introduce encoding like in  getNextLine()
 		String lastLine = ""; 
 		while (true) {
 			String line = getNextLine();

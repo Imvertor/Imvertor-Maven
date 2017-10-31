@@ -272,9 +272,9 @@ public class XmiCompiler extends Step {
 	 * Fix on EA bug. XMI must not contain invalid character references. Hope this solves it.
 	 * 
 	 * @param xmiFile
-	 * @throws IOException
+	 * @throws Exception 
 	 */
-	private void cleanXMI(XmlFile xmiFile) throws IOException {
+	private void cleanXMI(XmlFile xmiFile) throws Exception {
 		AnyFile outFile = new AnyFile(File.createTempFile("cleanXMI.", ".xmi"));
 		outFile.deleteOnExit();
 		//FileWriterWithEncoding writer = outFile.getWriterWithEncoding("UTF-8", false);

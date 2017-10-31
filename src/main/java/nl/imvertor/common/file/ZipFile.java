@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -247,6 +248,7 @@ public class ZipFile extends AnyFile {
 						contentWriter.append(StringUtils.removePattern(line, xmlRegex) + linesep);
 					linesRead += 1;
 				}
+				f.close();
 				contentWriter.append("</cw:file>");
 			} else {	
 				AnyFile fb = new AnyFile(serializeFolder,relpath);
