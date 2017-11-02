@@ -283,6 +283,8 @@
                     </xsl:choose>
                 </xsl:variable>
                 <xsl:variable name="berichtCode" select="imf:get-tagged-value($message-construct,'##CFG-TV-BERICHTCODE')" as="xs:string"/>
+                <xsl:variable name="serviceName" select="imf:get-tagged-value($message-construct,'##CFG-TV-SERVICENAME')" as="xs:string"/>
+                <xsl:variable name="messageType" select="imf:get-tagged-value($message-construct,'##CFG-TV-MESSAGETYPE')" as="xs:string"/>
                 <xsl:variable name="docs">
                     <imvert:complete-documentation>
                         <xsl:copy-of select="imf:get-compiled-documentation($message-construct)"/>
@@ -300,7 +302,7 @@
                     />
                 </xsl:if>
                 
-                <ep:message prefix="{$prefix}">
+                <ep:message prefix="{$prefix}" servicename="{$serviceName}" messagetype="{$messageType}">
                     <xsl:sequence select="imf:create-output-element('ep:code', $berichtCode)"/>
                     <xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
                     <xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>

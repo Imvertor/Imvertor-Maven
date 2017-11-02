@@ -275,6 +275,36 @@
             </stereotypes>
         </tv>
         
+        <tv norm="space" validate="" rules="" id="CFG-TV-MESSAGETYPE">
+            <name lang="nl">messagetype</name>
+            <derive>no</derive>
+            <inherit>yes</inherit>
+            <stereotypes>
+                <stereo required="yes">stereotype-name-vraagberichttype</stereo>
+                <stereo required="yes">stereotype-name-antwoordberichttype</stereo>
+                <stereo required="yes">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo required="yes">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo required="yes">stereotype-name-vrijberichttype</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>request</value>
+                <value>response</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="CFG-TV-SERVICENAME">
+            <name lang="nl">servicename</name>
+            <derive>no</derive>
+            <inherit>yes</inherit>
+            <stereotypes>
+                <stereo required="yes">stereotype-name-vraagberichttype</stereo>
+                <stereo required="yes">stereotype-name-antwoordberichttype</stereo>
+                <stereo required="yes">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo required="yes">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo required="yes">stereotype-name-vrijberichttype</stereo>
+            </stereotypes>
+        </tv>
+        
         <tv norm="space" id="CFG-TV-RELEASE">
             <name lang="nl">Release</name>
             <stereotypes>
