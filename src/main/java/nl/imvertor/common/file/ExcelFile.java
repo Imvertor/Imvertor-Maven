@@ -92,7 +92,6 @@ public class ExcelFile extends AnyFile {
 	public XmlFile toXmlFile(File outFile) throws Exception {
 		// copy the DTD file from resources to a work location
 		AnyFile dtdFile = new AnyFile(Configurator.getInstance().getBaseFolder().getCanonicalPath() + "/etc/dtd/ExcelFile/formatworkbook.dtd");
-		dtdFile.deleteOnExit();
 		return toXmlFile(outFile, dtdFile);
 	}
 	

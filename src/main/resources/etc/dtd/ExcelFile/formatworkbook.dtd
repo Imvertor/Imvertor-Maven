@@ -1,4 +1,4 @@
-<!-- The DTD required for the XML demonstration program xlrd.XML  -->
+<!-- The DTD required for the XML demonstration program xlrd.XML -->
 
 <!ELEMENT workbook (sheet*)>
 
