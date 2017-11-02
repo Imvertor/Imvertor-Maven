@@ -90,8 +90,10 @@ public class ExcelFile extends AnyFile {
 	 * @throws Exception
 	 */
 	public XmlFile toXmlFile(File outFile) throws Exception {
-		ClassLoader classLoader = getClass().getClassLoader();
-		return toXmlFile(outFile, new File(classLoader.getResource("static/dtd/ExcelFile/formatworkbook.dtd").getFile()));
+		// copy the DTD file from resources to a work location
+		AnyFile dtdFile = new AnyFile(Configurator.getInstance().getBaseFolder().getCanonicalPath() + "/etc/dtd/ExcelFile/formatworkbook.dtd");
+		dtdFile.deleteOnExit();
+		return toXmlFile(outFile, dtdFile);
 	}
 	
 	public XmlFile toXmlFile(String outPath) throws Exception {
