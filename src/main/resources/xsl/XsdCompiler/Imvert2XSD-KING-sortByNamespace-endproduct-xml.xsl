@@ -108,7 +108,7 @@
                 <xsl:apply-templates select="current-group()"/>
                 
                 <xsl:if test="$groupPrefix != $StUF-prefix">
-                    <ep:construct prefix="{$kv-prefix}" ismetadata="yes">
+                    <ep:construct prefix="{$groupPrefix}" ismetadata="yes" type='object'>
                         <ep:name>entiteittype</ep:name>
                         <ep:tech-name>entiteittype</ep:tech-name>
                         <ep:data-type>scalar-string</ep:data-type>
@@ -142,12 +142,16 @@
     <xsl:template match="ep:message-set/ep:construct">
         <xsl:variable name="prefix" select="@prefix"/>
         <xsl:variable name="tech-name" select="ep:tech-name"/>
- 
+        <xsl:variable name="type-name" select="concat(@prefix,':',$tech-name)"/>
+        <xsl:if test="$debugging and ep:tech-name = 'StatusMetagegeven-basis'">
+            <xsl:comment><xsl:value-of select="ep:tech-name"/>-1</xsl:comment>
+        </xsl:if>
         
         <xsl:choose>
            <xsl:when test="count(//ep:constructRef[@prefix = $prefix and ep:tech-name = $tech-name]) > 0">
                <xsl:sequence select="imf:create-debug-comment('Debuglocation 3007',$debugging)"/>
                <xsl:copy>
+                   <xsl:apply-templates select="@type[.='object']"/> 
                    <xsl:apply-templates select="*|@*[local-name()!='namespaceId' and 
                        local-name()!='type' and 
                        local-name()!='externalNamespace' and
@@ -160,6 +164,7 @@
            <xsl:when test="count(//ep:superconstructRef[@prefix = $prefix and ep:tech-name = $tech-name]) > 0">
                <xsl:sequence select="imf:create-debug-comment('Debuglocation 3008',$debugging)"/>
                <xsl:copy>
+                   <xsl:apply-templates select="@type[.='object']"/> 
                    <xsl:apply-templates select="*|@*[local-name()!='namespaceId' and 
                        local-name()!='type' and 
                        local-name()!='externalNamespace' and
@@ -169,14 +174,19 @@
                        local-name()!='level']|text()"/>
                </xsl:copy>
            </xsl:when>
-           <xsl:when test="@isdatatype = 'yes' and count(//ep:construct[ep:type-name = concat(@prefix,':',$tech-name)]) > 0">
+            <!--xsl:when test="@isdatatype = 'yes' and count(//ep:construct[ep:type-name = concat(@prefix,':',$tech-name)]) > 0"-->
+            <xsl:when test="@isdatatype = 'yes' and count(//ep:construct[ep:type-name = $type-name]) > 0">
+               <?x !-- ROME: Ik heb geen idee meer waarom de volgende variabelen en de daaropvolgende choose nodig is.
+                    Je zou immers zeggen dat de bovenstaande test al voldoende checkt of replicatie van de construct nodig is. 
+                    Nakijken en als er geen reden voor is deze code eenvoudiger maken. Als er wel een reden voor is documenteren. -->
+               
                <!-- ROME: Voor de onderstaande variabele heb ik helaas een omslachtige methode moet gebruiken omdat
                     <xsl:variable name="construct" select="//ep:construct[ep:type-name = concat(@prefix,':',$tech-name)][1]">
                     niet werkte. Daarbij werd de variabele 'tech-nameReferingConstruct' niet goed gevuld.
                     De reden daarvoor was mij echter een raadsel. -->
                <xsl:variable name="construct">
-                   <ep:construct prefix="{(//ep:construct[ep:type-name = concat(@prefix,':',$tech-name)])[1]/@prefix}">
-                       <ep:tech-name><xsl:value-of select="(//ep:construct[ep:type-name = concat(@prefix,':',$tech-name)])[1]/ep:tech-name"/></ep:tech-name>
+                   <ep:construct prefix="{(//ep:construct[ep:type-name = $type-name])[1]/@prefix}">
+                       <ep:tech-name><xsl:value-of select="(//ep:construct[ep:type-name = $type-name])[1]/ep:tech-name"/></ep:tech-name>
                        <!--xsl:sequence  select="//ep:construct[ep:type-name = concat(@prefix,':',$tech-name)][1]"/-->
                    </ep:construct>
                </xsl:variable>
@@ -184,11 +194,17 @@
                <xsl:variable name="tech-nameReferingConstruct" select="$construct//ep:construct[not(ancestor::ep:seq)]/ep:tech-name"/-->
                <xsl:variable name="prefixReferingConstruct" select="$construct//ep:construct/@prefix"/>
                <xsl:variable name="tech-nameReferingConstruct" select="$construct//ep:construct/ep:tech-name"/>
-               
-               <xsl:choose>
+                <xsl:variable name="type-nameReferingConstruct" select="concat(@prefix,':',$tech-name)"/>
+                <xsl:if test="$debugging and ep:tech-name = 'Wildcard'">
+                    <ep:test>Wildcard: prefix: <xsl:value-of select="$prefix"/>, type-name: <xsl:value-of select="$type-name"/>, prefixReferingConstruct: <xsl:value-of select="prefixReferingConstruct"/>, tech-nameReferingConstruct: <xsl:value-of select="$tech-nameReferingConstruct"/>, type-nameReferingConstruct: <xsl:value-of select="$type-nameReferingConstruct"/>
+                    </ep:test>
+                </xsl:if>
+                
+                <xsl:choose>
                    <xsl:when test="count(//ep:construct[@prefix = $prefixReferingConstruct and ep:tech-name = $tech-nameReferingConstruct]) > 0">
-                       <xsl:sequence select="imf:create-debug-comment('Debuglocation 3009',$debugging)"/>
+                       <xsl:sequence select="imf:create-debug-comment('Debuglocation 3009',$debugging)"/ x?>
                        <xsl:copy>
+                           <xsl:apply-templates select="@type[.='object']"/> 
                            <xsl:apply-templates select="*|@*[local-name()!='namespaceId' and 
                                local-name()!='type' and 
                                local-name()!='externalNamespace' and
@@ -197,8 +213,8 @@
                                local-name()!='berichtName' and
                                local-name()!='level']|text()"/>
                        </xsl:copy>
-                   </xsl:when>
-                   <xsl:when test="count(//ep:construct[ep:type-name = concat(@prefix,':',$tech-nameReferingConstruct)]) > 0">
+                   <?x /xsl:when>
+                    <xsl:when test="count(//ep:construct[ep:type-name = $type-nameReferingConstruct]) > 0">
                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 3010',$debugging)"/>
                        <xsl:copy>
                            <xsl:apply-templates select="*|@*[local-name()!='namespaceId' and 
@@ -210,11 +226,12 @@
                                local-name()!='level']|text()"/>
                        </xsl:copy>
                    </xsl:when>
-               </xsl:choose>
+               </xsl:choose x?>
            </xsl:when>
-           <xsl:when test="count(//ep:construct[ep:type-name = concat(@prefix,':',$tech-name) or (ep:type-name = $tech-name)]) > 0">
+           <xsl:when test="count(//ep:construct[ep:type-name = concat($prefix,':',$tech-name) or (ep:type-name = $tech-name)]) > 0">
                <xsl:sequence select="imf:create-debug-comment('Debuglocation 3011',$debugging)"/>
                <xsl:copy>
+                   <xsl:apply-templates select="@type[.='object']"/> 
                    <xsl:apply-templates select="*|@*[local-name()!='namespaceId' and 
                        local-name()!='type' and 
                        local-name()!='externalNamespace' and

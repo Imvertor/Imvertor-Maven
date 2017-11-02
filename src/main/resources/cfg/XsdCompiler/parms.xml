@@ -152,7 +152,13 @@
       <IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XSD_XSLPATH alias="EPXSD">Imvert2XSD-KING-endproduct-xsd.xsl</IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XSD_XSLPATH>
       
       <!-- locatie van de stuf onderlaag -->
-      <STUF_ONDERLAAG_0302>${system/inp-folder-path}/xsd/other/KING-UGM/onderlaag-0302</STUF_ONDERLAAG_0302>
+      <KINGBSM_STUF_ONDERLAAG_0302>${system/inp-folder-path}/xsd/other/KING-BSM/onderlaag-0302</KINGBSM_STUF_ONDERLAAG_0302>
+      <KINGUGM_STUF_ONDERLAAG_0302>${system/inp-folder-path}/xsd/other/KING-UGM/onderlaag-0302</KINGUGM_STUF_ONDERLAAG_0302>
+     
+      <!-- 
+         Where to find the standaard "EP formaat voor onderlaag"
+       -->
+      <KINGBSM_EPFORMAAT_XMLPATH>${system/inp-folder-path}/etc/EP/ep-stuf-onderlaag.xml</KINGBSM_EPFORMAAT_XMLPATH>
       
       <!-- 
          UGM transformation to Basisentiteiten schema 

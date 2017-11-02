@@ -196,6 +196,29 @@
     
     <xsl:variable name="version" select="$packages/imvert:version"/>
     
+    <xsl:variable name="ep-onderlaag-path" select="imf:get-config-string('properties','KINGBSM_EPFORMAAT_XMLPATH')"/>
+    <xsl:variable name="ep-onderlaag" select="imf:document($ep-onderlaag-path,true())/ep:message-set"/>
+
+    <xsl:variable name="constructs-ep-onderlaag">
+        <!--xsl:apply-templates select="$ep-onderlaag/ep:*[local-name() != ('name','release','date','patch-number','namespace','namespace-prefix','namespaces')]" mode="replicate-ep-structure"/-->
+        <xsl:apply-templates select="$ep-onderlaag/ep:construct" mode="replicate-ep-structure"/>
+    </xsl:variable>
+    
+    <!--xsl:template match="ep:message-set" mode="replicate-ep-structure">
+        <ep:test>Yep</ep:test>
+    </xsl:template-->
+    
+    <xsl:template match="*" mode="replicate-ep-structure">
+        <xsl:copy exclude-result-prefixes="#all">
+            <xsl:apply-templates select="*|@*|text()" mode="replicate-ep-structure"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="@*" mode="replicate-ep-structure">
+        <xsl:copy-of select="."/>
+    </xsl:template>
+    
+    
     <!-- Within this variable all messages defined within the BSM of the koppelvlak are placed, transformed to the imvertor endproduct (ep) format.-->
     <xsl:template match="/">
          
@@ -237,63 +260,69 @@
             
             <xsl:sequence select="imf:track('Constructing the messages')"/>
             
-                <xsl:for-each select="$enriched-rough-messages/ep:rough-messages/ep:rough-message">
-                    <xsl:sequence select="imf:create-debug-comment('Debuglocation 2',$debugging)"/>
+            <xsl:sequence select="imf:create-debug-comment('Debuglocation 1a',$debugging)"/>
+            <xsl:result-document href="file:/c:/temp/onderlaag.xml">
+                <xsl:copy-of select="$constructs-ep-onderlaag"/>
+            </xsl:result-document> 
+            <xsl:sequence select="$constructs-ep-onderlaag"/>
+            
+            <xsl:for-each select="$enriched-rough-messages/ep:rough-messages/ep:rough-message">
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 2',$debugging)"/>
 
-                    <xsl:variable name="currentMessage" select="."/>
-                    <xsl:variable name="id" select="ep:id" as="xs:string"/>
-                    <!-- Following imf:get-construct-by-id gets a imvert:class element. -->
-                    <xsl:variable name="message-construct" select="imf:get-construct-by-id($id,$packages-doc)"/>
-                    <xsl:variable name="berichtstereotype" select="$message-construct/imvert:stereotype" as="xs:string"/>
-                    <xsl:variable name="berichtSoort" as="xs:string">
-                        <xsl:choose>
-                            <xsl:when test="$berichtstereotype = 'VRAAGBERICHTTYPE'">Vraagbericht</xsl:when>
-                            <xsl:when test="$berichtstereotype = 'ANTWOORDBERICHTTYPE'">Antwoordbericht</xsl:when>
-                            <xsl:when test="$berichtstereotype = 'KENNISGEVINGBERICHTTYPE'">Kennisgevingbericht</xsl:when>
-                            <xsl:when test="$berichtstereotype = 'VRIJ BERICHTTYPE'">Vrij bericht</xsl:when>
-                        </xsl:choose>
-                    </xsl:variable>
-                    <xsl:variable name="berichtCode" select="imf:get-tagged-value($message-construct,'##CFG-TV-BERICHTCODE')" as="xs:string"/>
-                    <xsl:variable name="docs">
-                        <imvert:complete-documentation>
-                            <xsl:copy-of select="imf:get-compiled-documentation($message-construct)"/>
-                        </imvert:complete-documentation>
-                    </xsl:variable>
-                    <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
-                    <xsl:variable name="name" select="$message-construct/imvert:name/@original" as="xs:string"/>
-                    <xsl:variable name="tech-name" select="imf:get-normalized-name($message-construct/imvert:name, 'element-name')" as="xs:string"/>
-                    <xsl:variable name="package-type" select="$packages/imvert:package[imvert:class[imvert:id = $id]]/imvert:stereotype" as="xs:string"/>
-                    <xsl:variable name="release" select="$packages/imvert:release" as="xs:string"/>
-                    
-                    <xsl:if test="not(string($berichtCode))">
-                        <xsl:message 
-                            select="concat('ERROR ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : The berichtcode can not be determined. To be able to generate correct messages this is neccessary. Check your model for missing tagged values. (', $berichtstereotype,')')"
-                        />
-                    </xsl:if>
-                    
-                    <ep:message prefix="{$prefix}">
-                        <xsl:sequence select="imf:create-output-element('ep:code', $berichtCode)"/>
-                        <xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
-                        <xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
-                        <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
-                        <xsl:sequence select="imf:create-output-element('ep:package-type', $package-type)"/>
-                        <xsl:sequence select="imf:create-output-element('ep:release', $release)"/>
-                        <xsl:sequence select="imf:create-output-element('ep:type', $berichtSoort)"/>
-                        <!-- Start of the message is always a class with an imvert:stereotype 
-					with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE', 'VRIJ BERICHTTYPE', 
-					'KENNISGEVINGBERICHTTYPE' or 'SYNCHRONISATIEBERICHTTYPE'. Since the toplevel structure of a message 
-					complies to different rules in comparison with the entiteiten structure this 
-					template is initialized within the 'create-initial-message-structure' mode. -->
-                        <xsl:apply-templates
-                            select="$message-construct"
-                            mode="create-toplevel-message-structure">
-                            <xsl:with-param name="berichtCode" select="$berichtCode"/>
-                            <xsl:with-param name="berichtName" select="$name"/>
-                            <xsl:with-param name="generated-id" select="generate-id(.)"/>
-                            <xsl:with-param name="currentMessage" select="$currentMessage"/>
-                        </xsl:apply-templates>
-                    </ep:message>
-                </xsl:for-each>
+                <xsl:variable name="currentMessage" select="."/>
+                <xsl:variable name="id" select="ep:id" as="xs:string"/>
+                <!-- Following imf:get-construct-by-id gets a imvert:class element. -->
+                <xsl:variable name="message-construct" select="imf:get-construct-by-id($id,$packages-doc)"/>
+                <xsl:variable name="berichtstereotype" select="$message-construct/imvert:stereotype" as="xs:string"/>
+                <xsl:variable name="berichtSoort" as="xs:string">
+                    <xsl:choose>
+                        <xsl:when test="$berichtstereotype = 'VRAAGBERICHTTYPE'">Vraagbericht</xsl:when>
+                        <xsl:when test="$berichtstereotype = 'ANTWOORDBERICHTTYPE'">Antwoordbericht</xsl:when>
+                        <xsl:when test="$berichtstereotype = 'KENNISGEVINGBERICHTTYPE'">Kennisgevingbericht</xsl:when>
+                        <xsl:when test="$berichtstereotype = 'VRIJ BERICHTTYPE'">Vrij bericht</xsl:when>
+                    </xsl:choose>
+                </xsl:variable>
+                <xsl:variable name="berichtCode" select="imf:get-tagged-value($message-construct,'##CFG-TV-BERICHTCODE')" as="xs:string"/>
+                <xsl:variable name="docs">
+                    <imvert:complete-documentation>
+                        <xsl:copy-of select="imf:get-compiled-documentation($message-construct)"/>
+                    </imvert:complete-documentation>
+                </xsl:variable>
+                <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
+                <xsl:variable name="name" select="$message-construct/imvert:name/@original" as="xs:string"/>
+                <xsl:variable name="tech-name" select="imf:get-normalized-name($message-construct/imvert:name, 'element-name')" as="xs:string"/>
+                <xsl:variable name="package-type" select="$packages/imvert:package[imvert:class[imvert:id = $id]]/imvert:stereotype" as="xs:string"/>
+                <xsl:variable name="release" select="$packages/imvert:release" as="xs:string"/>
+                
+                <xsl:if test="not(string($berichtCode))">
+                    <xsl:message 
+                        select="concat('ERROR ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : The berichtcode can not be determined. To be able to generate correct messages this is neccessary. Check your model for missing tagged values. (', $berichtstereotype,')')"
+                    />
+                </xsl:if>
+                
+                <ep:message prefix="{$prefix}">
+                    <xsl:sequence select="imf:create-output-element('ep:code', $berichtCode)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:package-type', $package-type)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:release', $release)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:type', $berichtSoort)"/>
+                    <!-- Start of the message is always a class with an imvert:stereotype 
+				with the value 'VRAAGBERICHTTYPE', 'ANTWOORDBERICHTTYPE', 'VRIJ BERICHTTYPE', 
+				'KENNISGEVINGBERICHTTYPE' or 'SYNCHRONISATIEBERICHTTYPE'. Since the toplevel structure of a message 
+				complies to different rules in comparison with the entiteiten structure this 
+				template is initialized within the 'create-initial-message-structure' mode. -->
+                    <xsl:apply-templates
+                        select="$message-construct"
+                        mode="create-toplevel-message-structure">
+                        <xsl:with-param name="berichtCode" select="$berichtCode"/>
+                        <xsl:with-param name="berichtName" select="$name"/>
+                        <xsl:with-param name="generated-id" select="generate-id(.)"/>
+                        <xsl:with-param name="currentMessage" select="$currentMessage"/>
+                    </xsl:apply-templates>
+                </ep:message>
+            </xsl:for-each>
 
            <xsl:apply-templates select="$enriched-rough-messages/ep:rough-messages/ep:rough-message"/>
             

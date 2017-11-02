@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
  * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
  * 
@@ -71,7 +70,7 @@
             <xsl:variable name="xsd-file-url">
                 <xsl:choose>
                     <xsl:when test="ep:name = 'STUF'">
-                        <xsl:value-of select="imf:file-to-url(concat($xsd-result-subpath-BSM,'/',$prefix,$version,'_stuf_simpleTypes.xsd'))"/>
+                        <xsl:value-of select="imf:file-to-url(concat($xsd-result-subpath-BSM,'/',$prefix,$version,'_stuf0302.xsd'))"/>
                     </xsl:when>
                     <xsl:when test="@KV-namespace = 'yes'">
                         <xsl:sequence select="imf:set-config-string('system','xsd-result-subpath-BSM',$xsd-result-subpath-BSM)"/>
