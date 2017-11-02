@@ -50,10 +50,20 @@
             <prefix>uml</prefix>
             <URI>http://www.omg.org/spec/UML/20131001/</URI>
         </vocabulary>
+        
+        <vocabulary>
+            <prefix>kkgshape</prefix>
+            <URI>http://localhost:8080/dso/shacl/def/model/</URI>
+        </vocabulary>
+        <vocabulary>
+            <prefix>kkgbegrip</prefix>
+            <URI>http://bp4mc2.org/kkg/id/begrip/</URI>
+        </vocabulary>
         <vocabulary>
             <prefix>kkg</prefix>
-            <URI>http://bp4mc2.org/def/kkg/id/begrip</URI>
+            <URI>http://bp4mc2.org/def/kkg#</URI>
         </vocabulary>
+        
         <vocabulary>
             <prefix>skos</prefix>
             <URI>http://www.w3.org/2004/02/skos/core#</URI>
@@ -61,19 +71,19 @@
         
         <vocabulary>
             <prefix>ldqd</prefix>
-            <URI>http://unknown/#ldqd</URI>
+            <URI>http://www.w3.org/2016/05/ldqd#</URI>
         </vocabulary>
         <vocabulary>
             <prefix>prov</prefix>
-            <URI>http://unknown/#prov</URI>
+            <URI>http://www.w3.org/ns/prov#</URI>
         </vocabulary>
         <vocabulary>
             <prefix>xsi</prefix>
-            <URI>http://unknown/#xsi</URI>
+            <URI>http://www.w3.org/2001/XMLSchema-instance/</URI>
         </vocabulary>
         <vocabulary>
             <prefix>dct</prefix>
-            <URI>http://unknown/#dct</URI>
+            <URI>http://purl.org/dc/terms/</URI>
         </vocabulary>        
     
         <!--x

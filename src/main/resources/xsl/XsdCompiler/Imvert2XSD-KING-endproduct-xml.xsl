@@ -82,7 +82,7 @@
                 </xsl:when>
                 <xsl:when test="ends-with(lower-case($endproduct-base-config-excel),'.xls')">
                     <!-- excel 97-2003 --> 
-                    <xsl:variable name="xml-path" select="imf:serializeExcel($endproduct-base-config-excel,concat($workfolder-path,'/excel.xml'),$excel-97-dtd-path)"/>
+                    <xsl:variable name="xml-path" select="imf:serializeExcel($endproduct-base-config-excel,concat($workfolder-path,'/excel.xml'))"/>
                     <xsl:variable name="xml-doc" select="imf:document($xml-path, true())"/>
                     
                     <!-- excel 97-2003 is'nt an XML format. Using the above variables the format is translated to XML.

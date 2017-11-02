@@ -31,8 +31,6 @@
   
   <xsl:output method="xml" indent="yes"/>
   
-  <xsl:variable name="excel-97-dtd-path" select="imf:get-config-string('properties','FORMATWORKBOOK_DTD')"/>
-  
   <!--
   Zwolle Zoetermeer Utrecht Rotterdam Roermond Middelburg Lelystad Leeuwarden Groningen Eindhoven Breda Assen Arnhem Apeldoorn Amsterdam Alkmaar 
   
@@ -64,7 +62,7 @@
     <xsl:message select="concat('SERIALIZING: ', position(), ' of ', $cnt, ' ', $excel-path)"></xsl:message>
 
     <xsl:variable name="existing-content" select="imf:document($work-path)"/>
-    <xsl:variable name="created-work-path" select="imf:serializeExcel($excel-path,$work-path,$excel-97-dtd-path)"/>
+    <xsl:variable name="created-work-path" select="imf:serializeExcel($excel-path,$work-path)"/>
     <xsl:variable name="excel-content" select="if (exists($existing-content)) then $existing-content else imf:document($created-work-path)"/>
    
     <xsl:variable name="prepared" as="element(row)*">
@@ -283,8 +281,7 @@
   <xsl:function name="imf:serializeExcel" as="xs:string*">
     <xsl:param name="excelpath"/>
     <xsl:param name="xmlpath"/>
-    <xsl:param name="dtdpath"/>
-    <xsl:sequence select="ext:imvertorExcelSerializer($excelpath,$xmlpath,$dtdpath)"/>
+    <xsl:sequence select="ext:imvertorExcelSerializer($excelpath,$xmlpath)"/>
   </xsl:function>
   <!--
         Serialize the folder holing the Excels.

@@ -82,7 +82,9 @@ public class AnyFile extends File  {
 	public LinkedList<File> files;
 	
 	private BufferedReader lineReader = null;
-
+	
+	private Charset charset;
+	
 	public AnyFile(String pathname) {
 		super(pathname);
 	}
@@ -522,6 +524,8 @@ public class AnyFile extends File  {
 			return StandardCharsets.UTF_8;
 		else if (encoding.equals("UTF-8"))
 			return StandardCharsets.UTF_8;
+		else if (encoding.equals("WINDOWS-1252"))
+			 return StandardCharsets.ISO_8859_1;
 		else 
 			throw new Exception("Unsupported encoding: " + encoding);
 	}
@@ -545,11 +549,15 @@ public class AnyFile extends File  {
 	 * @throws Exception 
 	 */
 	public String getNextLine() throws Exception {
-		Charset cs = getCharsetForEncoding(guessEncoding());
-		return getNextLine(cs);
+		if (charset == null) 
+			charset = getCharsetForEncoding(guessEncoding());
+		return getNextLine(charset);
 	}
 	
 	public String getNextLine(Charset cs) throws IOException {
+		if (charset == null) 
+			charset = cs;
+
 		String line = null;
 		
 		if (lineReader == null) {

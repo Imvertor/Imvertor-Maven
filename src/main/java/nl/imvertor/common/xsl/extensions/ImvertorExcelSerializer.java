@@ -20,6 +20,8 @@
 
 package nl.imvertor.common.xsl.extensions;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.lib.ExtensionFunctionCall;
 import net.sf.saxon.lib.ExtensionFunctionDefinition;
@@ -30,7 +32,6 @@ import net.sf.saxon.value.SequenceType;
 import net.sf.saxon.value.StringValue;
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Transformer;
-import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.ExcelFile;
 import nl.imvertor.common.file.XmlFile;
 
@@ -53,16 +54,15 @@ public class ImvertorExcelSerializer extends ExtensionFunctionDefinition {
 	}
 
 	public int getMinimumNumberOfArguments() {
-		return 3;
+		return 2;
 	}
 
 	public int getMaximumNumberOfArguments() {
-		return 3;
+		return 2;
 	}
 
 	public SequenceType[] getArgumentTypes() {
 		return new SequenceType[] { 
-				SequenceType.SINGLE_STRING,
 				SequenceType.SINGLE_STRING,
 				SequenceType.SINGLE_STRING
 		};
@@ -81,16 +81,21 @@ public class ImvertorExcelSerializer extends ExtensionFunctionDefinition {
 		public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
 
 			try {
-				String filepath = Transformer.getStringvalue(arguments[0]);
-				String xmlpath = Transformer.getStringvalue(arguments[1]);
-				String dtdpath = Transformer.getStringvalue(arguments[2]);
-				ExcelFile excelFile = new ExcelFile(filepath);
-				XmlFile xmlFile = new XmlFile(xmlpath);
-				AnyFile dtdFile = new AnyFile(dtdpath);
-			    if (!excelFile.isFile()) throw new Exception("Not a file: " + excelFile.getCanonicalPath());
-			    if (!dtdFile.isFile()) throw new Exception("Not a file: " + dtdFile.getCanonicalPath());
-			    xmlFile.getParentFile().mkdirs();
-				excelFile.toXmlFile(xmlpath, dtdpath);
+				String excelPath = Transformer.getStringvalue(arguments[0]);
+				String xmlPath = Transformer.getStringvalue(arguments[1]);
+			
+				String[] exts = StringUtils.split(excelPath,".");
+				String ext = StringUtils.lowerCase(exts[exts.length - 1]);
+				
+				XmlFile xmlFile = new XmlFile(xmlPath);
+				
+				if (ext.equals("xls")) {
+					ExcelFile excelFile = new ExcelFile(excelPath);
+				    xmlFile.getParentFile().mkdirs();
+					excelFile.toXmlFile(xmlFile);					
+				} else {
+					// assume excel > 2003
+				}
 				return StringValue.makeStringValue(xmlFile.getCanonicalPath());
 			} catch (Exception e) {
 				throw new XPathException(e);

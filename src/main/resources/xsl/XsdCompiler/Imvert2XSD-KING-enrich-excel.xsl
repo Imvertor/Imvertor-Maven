@@ -55,9 +55,8 @@
     
     <!-- for excel 97 -->
     <!-- The last variable in this block contains the raw XML version of the base-configuration.xls file. --> 
-    <xsl:variable name="excel-97-dtd-path" select="imf:get-config-string('properties','FORMATWORKBOOK_DTD')"/>
     <xsl:variable name="endproduct-base-config-excel" select="imf:get-config-string('system','endproduct-base-config-file')"/>
-    <xsl:variable name="endproduct-base-config-excel-url" select="imf:serializeExcel($endproduct-base-config-excel,concat($workfolder-path,'/excel.xml'),$excel-97-dtd-path)"/>
+    <xsl:variable name="endproduct-base-config-excel-url" select="imf:serializeExcel($endproduct-base-config-excel,concat($workfolder-path,'/excel.xml'))"/>
     <xsl:variable name="endproduct-base-config-excel-doc" select="imf:document($endproduct-base-config-excel-url)"/> 
     
     <!-- Kolomnamen -->

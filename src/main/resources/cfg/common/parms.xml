@@ -189,10 +189,6 @@
       <!-- folder what will hold the release of this application when it is invalid, and should not override existing application --> 
       <INVALID_APPLICATION_FOLDER>${properties/APPLICATION_BASE_FOLDER}/${appinfo/release}-invalid</INVALID_APPLICATION_FOLDER>
       
-      <!--  Excel to XML -->
-      <WORKBOOK_DTD>${system/etc-folder-path}/dtd/workbook.dtd</WORKBOOK_DTD>
-      <FORMATWORKBOOK_DTD>${system/etc-folder-path}/dtd/formatworkbook.dtd</FORMATWORKBOOK_DTD>
-      
       <!-- identity transform stylesheet -->
       <IMVERTOR_IDENTITY_TRANSFORM_XSLPATH>Imvert2identity.xsl</IMVERTOR_IDENTITY_TRANSFORM_XSLPATH>
       
