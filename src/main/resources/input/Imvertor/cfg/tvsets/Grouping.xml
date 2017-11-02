@@ -300,7 +300,6 @@
                 <stereo required="no">stereotype-name-enum</stereo>
                 <stereo required="no">stereotype-name-data-element</stereo>
                 <stereo required="no">stereotype-name-referentie-element</stereo>
-                <stereo required="no">stereotype-name-association-to-composite</stereo>
             </stereotypes>
         </tv>
         

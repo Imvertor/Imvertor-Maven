@@ -61,7 +61,7 @@ public class ApcModifier extends Step {
 			
 			// create the XML file from the excel.
 			ExcelFile ef = new ExcelFile(configurator.getParm("cli","apcfile"));
-			ef.toXmlFile(configurator.getParm("properties","WORK_APPCONFIG_EXCEL_FILE"), configurator.getParm("properties","FORMATWORKBOOK_DTD"));
+			ef.toXmlFile(configurator.getParm("properties","WORK_APPCONFIG_EXCEL_FILE"));
 			configurator.setParm("system","apc-file-path",ef.getCanonicalPath());
 			
 			// set up the appconfig file as an XML file

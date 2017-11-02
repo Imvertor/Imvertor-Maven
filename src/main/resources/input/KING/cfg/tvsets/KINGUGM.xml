@@ -219,8 +219,8 @@
         </tv>
                 
         <tv norm="space"  id="CFG-TV-SUBSETLABEL">
-            <name lang="nl">Subset label</name>
-            <name lang="en">Subset label</name>
+            <name lang="nl">Restriction identifier</name>
+            <name lang="en">Restriction identifier</name>
             <desc>A label assigned to any construct to be used for disambiguation in subset (restriction) constructs.</desc>
             <derive>yes</derive>
             <stereotypes>

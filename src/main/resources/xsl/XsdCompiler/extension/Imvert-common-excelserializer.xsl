@@ -35,8 +35,7 @@
     <xsl:function name="imf:serializeExcel" as="xs:string*">
         <xsl:param name="excelpath"/>
         <xsl:param name="xmlpath"/>
-        <xsl:param name="dtdpath"/>
-        <xsl:sequence select="ext:imvertorExcelSerializer($excelpath,$xmlpath,$dtdpath)"/>
+        <xsl:sequence select="ext:imvertorExcelSerializer($excelpath,$xmlpath)"/>
     </xsl:function>
     
 </xsl:stylesheet>

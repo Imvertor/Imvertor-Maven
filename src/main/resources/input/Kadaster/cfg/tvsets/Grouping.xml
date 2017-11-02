@@ -10,13 +10,20 @@
    
     <tagged-values>
         
-          <tv norm="space" id="CFG-TV-ISDERIVED">
+        <tv norm="space" id="CFG-TV-ISDERIVED">
             <derive>no</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-association-to-composite</stereo>
             </stereotypes>            
         </tv>
+        <tv norm="space"  id="CFG-TV-POSITION">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-association-to-composite</stereo>
+            </stereotypes>
+        </tv>
         
     </tagged-values>
-    
+
+   
 </tagset>

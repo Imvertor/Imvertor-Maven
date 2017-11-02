@@ -23,6 +23,7 @@ package nl.imvertor.XmiCompiler;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
 import org.apache.commons.lang3.StringUtils;
@@ -277,12 +278,10 @@ public class XmiCompiler extends Step {
 	private void cleanXMI(XmlFile xmiFile) throws Exception {
 		AnyFile outFile = new AnyFile(File.createTempFile("cleanXMI.", ".xmi"));
 		outFile.deleteOnExit();
-		//FileWriterWithEncoding writer = outFile.getWriterWithEncoding("UTF-8", false);
 		FileWriter writer = outFile.getWriter(false);
 		String line = xmiFile.getNextLine();
 		while (line != null) {
 			line = StringUtils.replacePattern(line, "&#5[0-9]{4};", "X");
-			//line = StringUtils.replacePattern(line, "encoding=\"windows-1252\"", "encoding=\"UTF-8\"");
 			writer.write(line + "\n");
 			line = xmiFile.getNextLine();
 		}

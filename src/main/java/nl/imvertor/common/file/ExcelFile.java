@@ -36,6 +36,12 @@ public class ExcelFile extends AnyFile {
 	public static final Logger logger = Logger.getLogger(ExecFile.class);
 	private static final long serialVersionUID = 2409879811971148189L;
 	
+	public static void main(String[] args) throws Exception {
+		ExcelFile excelfile1 = new ExcelFile("c:\\Temp\\Book1.xls");
+		excelfile1.toXmlFile(new File("c:/temp/result1.xml"));
+		System.out.println("Done 1.");
+	}
+	
 	public ExcelFile(String filepath) {
 		super(filepath);
 	}
@@ -48,6 +54,8 @@ public class ExcelFile extends AnyFile {
 
 	/**
 	 * Transform the Excel file to XML structure.
+	 * Pass the DTD File to use.
+	 * Normally this is implied, use toXmlFile(File outFile) in stead.
 	 *  
 	 * @return XmlFile
 	 * @param filePath
@@ -74,8 +82,20 @@ public class ExcelFile extends AnyFile {
 		return resultFile;
 	}
 	
-	public XmlFile toXmlFile(String outPath, String dtdPath) throws Exception {
-		return toXmlFile(new File(outPath), new File(dtdPath));
+	/**
+	 * Transform Excel, by passing the resource DTD (for formatted workbooks).
+	 * 
+	 * @param outFile The result XML file.
+	 * @return
+	 * @throws Exception
+	 */
+	public XmlFile toXmlFile(File outFile) throws Exception {
+		ClassLoader classLoader = getClass().getClassLoader();
+		return toXmlFile(outFile, new File(classLoader.getResource("static/dtd/ExcelFile/formatworkbook.dtd").getFile()));
+	}
+	
+	public XmlFile toXmlFile(String outPath) throws Exception {
+		return toXmlFile(new File(outPath));
 	}
 	
 	public void setSuppressWarnings(boolean suppress) {

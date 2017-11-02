@@ -79,7 +79,7 @@ public class HistoryCompiler extends Step {
 				File hisXmlFile = File.createTempFile("mergeVersionsInfo.", ".xml");
 				configurator.setParm("step","HIS_XML_FILE_PATH",hisXmlFile.getCanonicalPath());
 				hisXmlFile.deleteOnExit();
-				ef.toXmlFile(hisXmlFile.getCanonicalPath(),configurator.getParm("properties","FORMATWORKBOOK_DTD"));
+				ef.toXmlFile(hisXmlFile.getCanonicalPath());
 				
 			   // transform 
 				boolean succeeds = true;

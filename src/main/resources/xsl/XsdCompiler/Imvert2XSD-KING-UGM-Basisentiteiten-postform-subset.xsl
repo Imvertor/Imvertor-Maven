@@ -73,7 +73,7 @@
                 <xsl:sequence select="imf:create-debug-comment(concat('A subset + restriction class: ', @name))"/>
                 <xs:complexType name="{$effective-name}">
                     <xs:complexContent>
-                        <xs:restriction base="{$supplier-prefix}:{$supplier-label}-basis">
+                        <xs:restriction base="{$supplier-prefix}:TODO{$supplier-label}-basis">
                             <!-- om dat heten restrictie betreft moet alles worden omgezet naar de supplier namespace. -->
                             <xsl:apply-templates mode="subset-supplier"/>
                         </xs:restriction>
