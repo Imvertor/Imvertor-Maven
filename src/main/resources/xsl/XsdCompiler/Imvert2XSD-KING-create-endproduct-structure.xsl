@@ -1039,6 +1039,8 @@
 		<xsl:variable name="max-occurs" select="imvert:max-occurs"/>
 		<xsl:variable name="min-occurs" select="imvert:min-occurs"/>
 		<xsl:variable name="subsetLabel" select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-SUBSETLABEL')"/>
+
+		<xsl:sequence select="imf:create-debug-comment(imvert:id,$debugging)"/>
 		
 		<xsl:choose>
 			<xsl:when test="contains($berichtCode, 'La')">
@@ -1064,7 +1066,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:position', 200)"/>
 					<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($berichtType,'antwoord',(),'object')"/></xsl:variable>
 					<!-- The prefix is added at a later stage because at this moment ti's not possible to determine the correct one. -->	
-					<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
+					<xsl:sequence select="imf:create-output-element('ep:type-name', concat($kv-prefix,':',$type-name))"/>
 				</ep:construct>
 
 			</xsl:when>
@@ -1122,9 +1124,9 @@
 							<xsl:sequence select="imf:create-output-element('ep:max-occurs', 1)"/>
 							<xsl:sequence select="imf:create-output-element('ep:min-occurs', 0)"/>
 							<xsl:sequence select="imf:create-output-element('ep:position', 225)"/>
-							<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($berichtType,'scope',(),'object')"/></xsl:variable>
+							<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($berichtName,'scope',(),'object')"/></xsl:variable>
 							<!-- The prefix is added at a later stage because at this moment ti's not possible to determine the correct one. -->	
-							<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
+							<xsl:sequence select="imf:create-output-element('ep:type-name', concat($kv-prefix,':',$type-name))"/>
 						</ep:construct>
 
 					</xsl:when>
@@ -1140,9 +1142,9 @@
 							<xsl:sequence select="imf:create-output-element('ep:max-occurs', 1)"/>
 							<xsl:sequence select="imf:create-output-element('ep:min-occurs', 0)"/>
 							<xsl:sequence select="imf:create-output-element('ep:position', 250)"/>
-							<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($berichtType,'scope',(),'object')"/></xsl:variable>
+							<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($berichtName,'scope',(),'object')"/></xsl:variable>
 							<!-- The prefix is added at a later stage because at this moment ti's not possible to determine the correct one. -->	
-							<xsl:sequence select="imf:create-output-element('ep:type-name', $type-name)"/>
+							<xsl:sequence select="imf:create-output-element('ep:type-name', concat($kv-prefix,':',$type-name))"/>
 						</ep:construct>
 
 					</xsl:when>
