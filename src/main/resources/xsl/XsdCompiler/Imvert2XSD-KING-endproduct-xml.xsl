@@ -577,9 +577,9 @@
                 <xsl:attribute name="prefix" select="$prefix"/>
                 <xsl:attribute name="namespaceId" select="$namespaceIdentifier"/>
                 <xsl:sequence
-                    select="imf:create-output-element('ep:name', imf:create-complexTypeName($berichtType,'start',(),'object'))" />
+                    select="imf:create-output-element('ep:name', imf:create-complexTypeName($berichtName,'start',(),'object'))" />
                 <xsl:sequence
-                    select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($berichtType,'start',(),'object'))" />
+                    select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($berichtName,'start',(),'object'))" />
                 <xsl:sequence
                     select="imf:create-output-element('ep:prefix', $prefix)" />
                 <ep:seq orderingDesired="no">
@@ -652,8 +652,8 @@
             <ep:construct type="complexData">
                 <xsl:attribute name="prefix" select="$prefix"/>
                 <xsl:attribute name="namespaceId" select="$namespaceIdentifier"/>
-                <xsl:sequence select="imf:create-output-element('ep:name', imf:create-complexTypeName($berichtType,'scope',(),'object'))" />
-                <xsl:sequence select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($berichtType,'scope',(),'object'))" />
+                <xsl:sequence select="imf:create-output-element('ep:name', imf:create-complexTypeName($berichtName,'scope',(),'object'))" />
+                <xsl:sequence select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($berichtName,'scope',(),'object'))" />
                 <xsl:sequence
                     select="imf:create-output-element('ep:prefix', $prefix)" />
                 <ep:seq orderingDesired="no">
@@ -2841,7 +2841,16 @@
                 <xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
                 <xsl:variable name="tokens" select="tokenize($checksum-string,'\[SEP\]')"/>
                 
-                <xsl:variable name="construct-Prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
+                <xsl:variable name="construct-Prefix">
+                    <xsl:choose>
+                        <xsl:when test="contains(ancestor::imvert:class/imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen')">
+                            <xsl:value-of select="$StUF-prefix"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="$suppliers//supplier[1]/@verkorteAlias"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
                 
                 <xsl:if test="$global-e-types-allowed = 'Ja'">
                     <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}" imvert:checksum="{concat($checksum-string,'-simpleContentcomplexData')}">
