@@ -313,6 +313,9 @@
 
             <doc-rules root="true">
                 <xsl:variable name="doc-rules" select="doc-rules"/> 
+             
+                <xsl:apply-templates select="$doc-rules//link-by[last()]" mode="#current"/>
+
                 <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#all')]" group-by="@id">
                     <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
                 </xsl:for-each-group>

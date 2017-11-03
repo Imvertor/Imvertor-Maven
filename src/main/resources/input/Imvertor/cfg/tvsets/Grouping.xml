@@ -12,9 +12,13 @@
             <name lang="nl">Imvertor</name>
             <name lang="en">Imvertor</name>
             <derive>no</derive>
+            <desc lang="nnl">
+                Deze waarde geeft aan dat het pakket een volledig model is dat kan worden verwerkt door de Imvertor-software.
+                Deze waarde is vereist door de Imvertor add-in op Enterprise Architect.
+            </desc>
             <desc lang="en">
-                The Imvertor tagged value specifies that the package is a full model that can be processed by to the Imvertor software. 
-                This tagged value is required by the Imvertor extension (addin) on Enterprise Architect.
+                This specifies that the package is a full model that can be processed by to the Imvertor software. 
+                This tagged value is required by the Imvertor add-in on Enterprise Architect.
             </desc>
             <stereotypes>
                 <stereo required="no">stereotype-name-base-package</stereo>
@@ -29,11 +33,17 @@
             <name lang="nl">Niveau</name>
             <name lang="en">Level</name>
             <derive>no</derive>
+            <desc lang="nl">
+                Het niveau is een waarde uit een beperkte set:
+                "algemeen" betekent dat het model een fundament is van een ander model en moet worden opgenomen.
+                Het modelleert generieke constructies die deel uitmaken van de echte wereld. Dit omvat meestal abstracte object typen. Het kan andere constructen bevatten.
+                "specifiek" betekent dat het model een bepaald domein beschrijft of een samenhangend deel ervan .
+            </desc>
             <desc lang="en">
                 The level is a value taken froma restricted set: 
                 "general" means that the model is a fundament of any other model and should be included. 
                 It models generic constructs that are part of the real world. This typically includes abstract featureTypes. It may include any other constructs.
-                "specific" means that the model is a particular to a domain and models that domain of a conherent part of it.  
+                "specific" means that the model is a particular to a domain and models that domain or a conherent part of it.  
             </desc>
             <stereotypes>
                 <stereo required="no">stereotype-name-base-package</stereo>

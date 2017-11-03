@@ -350,6 +350,9 @@
     </xsl:template>
     
     <xsl:template match="item" mode="#all">
+        <xsl:if test="@id"><!-- this hasd been introduced to support the case of listed enumerations -->
+            <a class="anchor" name="{@id}"/>
+        </xsl:if>
         <xsl:choose>
             <xsl:when test="exists(@idref) and @idref-type='external'">
                 <a class="external-link" href="{@idref}"> <!--this is an URL -->

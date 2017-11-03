@@ -36,6 +36,7 @@
     
     <xsl:template match="section" mode="detail">
         <xsl:variable name="id" select="@id"/>
+        <xsl:variable name="eaid" select="@eaid"/>
         <xsl:choose>
             <!-- de kop van de details sectie. -->
             <xsl:when test="@type = 'DETAILS'">
@@ -115,6 +116,7 @@
             </xsl:when> 
             <xsl:when test="@type = ('OBJECTTYPE')"> <!-- objecttypes are in TOC -->
                 <xsl:variable name="level" select="count(ancestor::section)"/>
+                <div id="{$eaid}">&#160;</div>
                 <section id="{$id}">
                     <xsl:element name="{concat('h',$level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
@@ -362,6 +364,9 @@
     </xsl:template>-->
     
     <xsl:template match="item" mode="#all">
+        <xsl:if test="@id"><!-- this hasd been introduced to support the case of listed enumerations -->
+            <a class="anchor" name="{@id}"/>
+        </xsl:if>
         <xsl:choose>
             <xsl:when test="exists(@idref) and @idref-type='external'">
                 <a class="external-link" href="{@idref}"> <!--this is an URL -->

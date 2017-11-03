@@ -160,6 +160,9 @@
             <xsl:otherwise>
                 <xsl:variable name="level" select="count(ancestor::section)"/>
                 <div>
+                    <xsl:if test="@eaid">
+                        <a name="{@eaid}"/><!-- used for graph links -->
+                    </xsl:if>
                     <xsl:if test="@id">
                         <a class="anchor" name="{@id}"/>
                     </xsl:if>
@@ -332,6 +335,9 @@
     </xsl:template>-->
     
     <xsl:template match="item" mode="#all">
+        <xsl:if test="@id"><!-- this hasd been introduced to support the case of listed enumerations -->
+            <a class="anchor" name="{@id}"/>
+        </xsl:if>
         <xsl:choose>
             <xsl:when test="exists(@idref) and @idref-type='external'">
                 <a class="external-link" href="{@idref}"> <!--this is an URL -->

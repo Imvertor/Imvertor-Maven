@@ -160,8 +160,11 @@
             <xsl:otherwise>
                 <xsl:variable name="level" select="count(ancestor::section)"/>
                 <div>
+                    <xsl:if test="@eaid">
+                        <a name="{@eaid}"/><!-- used for graph links -->
+                    </xsl:if>
                     <xsl:if test="@id">
-                        <a class="anchor" name="global-{@id}"/>
+                        <a class="anchor" name="{@id}"/>
                     </xsl:if>
                     <xsl:element name="{concat('h',$level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
@@ -258,6 +261,36 @@
                         <xsl:apply-templates select="item[4]" mode="#current"/>
                     </td>
                 </xsl:when>
+                <xsl:when test="$type = 'SHORT-DATAELEMENTS'">
+                    <td width="5%">&#160;</td>
+                    <td width="25%">
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
+                    </td>
+                    <td width="50%">
+                        <xsl:apply-templates select="item[2]" mode="#current"/>
+                    </td>
+                    <td width="10%">
+                        <xsl:apply-templates select="item[3]" mode="#current"/>
+                    </td>
+                    <td width="10%">
+                        <xsl:apply-templates select="item[4]" mode="#current"/>
+                    </td>
+                </xsl:when>
+                <xsl:when test="$type = 'SHORT-UNIONELEMENTS'">
+                    <td width="5%">&#160;</td>
+                    <td width="25%">
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
+                    </td>
+                    <td width="50%">
+                        <xsl:apply-templates select="item[2]" mode="#current"/>
+                    </td>
+                    <td width="10%">
+                        <xsl:apply-templates select="item[3]" mode="#current"/>
+                    </td>
+                    <td width="10%">
+                        <xsl:apply-templates select="item[4]" mode="#current"/>
+                    </td>
+                </xsl:when>
                 <xsl:when test="$type = 'DETAIL-ENUMERATION' and $items = 2"> 
                     <td width="40%">
                         <b>
@@ -302,6 +335,9 @@
     </xsl:template>-->
     
     <xsl:template match="item" mode="#all">
+        <xsl:if test="@id"><!-- this hasd been introduced to support the case of listed enumerations -->
+            <a class="anchor" name="{@id}"/>
+        </xsl:if>
         <xsl:choose>
             <xsl:when test="exists(@idref) and @idref-type='external'">
                 <a class="external-link" href="{@idref}"> <!--this is an URL -->

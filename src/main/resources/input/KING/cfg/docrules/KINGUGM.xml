@@ -8,6 +8,8 @@
     
     <desc>KING UGM specific requirements on documentation.</desc>
     
+    <link-by>NAME</link-by><!-- link by EAID or NAME -->
+    
     <doc-rule id="CFG-DOC-NORMNAAM">
         <name lang="nl">Naam (genormaliseerd)</name>
         <name lang="en">Name (normalized)</name>

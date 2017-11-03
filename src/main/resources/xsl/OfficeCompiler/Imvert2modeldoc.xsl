@@ -43,8 +43,9 @@
     
     <xsl:variable name="subpath" select="imf:get-subpath(/*/imvert:project,/*/imvert:application,/*/imvert:release)"/>
     
+    <xsl:variable name="link-by-eaid" select="($configuration-docrules-file/link-by,'EAID')[1] eq 'EAID'"/>
+    
     <xsl:template match="/imvert:packages">
-        
         <xsl:variable name="sections" as="element()*">
             <xsl:apply-templates select="imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]"/>
         </xsl:variable>
@@ -111,7 +112,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')]">
-        <section name="{imf:get-name(.,true())}" type="OBJECTTYPE" id="{imf:plugin-get-link-name(.,'global')}">
+        <section name="{imf:get-name(.,true())}" type="OBJECTTYPE" id="{imf:plugin-get-link-name(.,'global')}" eaid="{imf:plugin-get-link-name(.,'graph')}">
           <content>
               <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-OBJECTTYPE')"/>
           </content>
@@ -183,7 +184,7 @@
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-enumeration')]">
         <xsl:variable name="naam" select="imf:get-name(.,true())"/>
         <part>
-            <item>
+            <item id="{imf:plugin-get-link-name(.,'global')}">
                 <xsl:sequence select="imf:create-idref(.,'detail')"/>
                 <xsl:sequence select="imf:create-content($naam)"/>          
             </item>
@@ -1001,12 +1002,17 @@
         </xsl:if>
     </xsl:function>
     
+    <!-- 
+        return the link name. 
+        when doc-rule: link-by is set to EAID, use the ID, else use the formal name. 
+    -->
     <xsl:function name="imf:plugin-get-link-name">
         <xsl:param name="this"/>
-        <xsl:param name="type"/> <!-- global or detail -->
+        <xsl:param name="type"/> <!-- global or detail or graph; when graph always use the EAID -->
         <xsl:variable name="isrole" select="exists($this/self::imvert:target)"/>
         <xsl:variable name="construct" select="if ($isrole) then $this/.. else $this"/>
-        <xsl:variable name="link-name" select="if ($construct/@formal-name) then $construct/@formal-name else generate-id($construct)"/>
+        <xsl:variable name="link-id" select="if ($type = 'graph' or $link-by-eaid) then $construct/imvert:id else $construct/@formal-name"/>
+        <xsl:variable name="link-name" select="if ($link-id) then $link-id else generate-id($construct)"/>
         <xsl:sequence select="concat($type,'_',$link-name)"/>
     </xsl:function>
     
