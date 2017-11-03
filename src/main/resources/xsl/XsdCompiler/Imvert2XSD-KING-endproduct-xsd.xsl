@@ -48,19 +48,12 @@
 
     <xsl:variable name="use-EAPconfiguration" select="'yes'"/>
     
-    <!--xsl:variable name="imvert-endproduct" select="imf:document(imf:get-config-string('properties','RESULT_ENDPRODUCT_XML_FILE_PATH'))"/-->  
-    <!--xsl:variable name="imvert-endproduct" select="imf:document(imf:get-config-string('properties','RESULT_ORDERED_ENDPRODUCT_XML_FILE_PATH'))"/-->  
-    
-    
-    <!--xsl:variable name="xsd-folder-path" select="imf:get-config-string('system','xsd-application-folder-path')"/-->
-    <!--xsl:variable name="koppelvlak-folder" select="substring-after(ep:message-sets/ep:message-set[@KV-namespace='yes']/ep:namespace,'http://www.stufstandaarden.nl/koppelvlak/')"/-->
     <xsl:variable name="xsd-file-folder-path" select="imf:get-config-string('properties','RESULT_XSD_APPLICATION_FOLDER')"/>
-    <!--xsl:variable name="xsd-file-url" select="imf:file-to-url(concat($xsd-file-folder-path,'/koppelvlak.xsd'))"/-->
     
     <xsl:template match="/">
         <xsl:apply-templates/>
     </xsl:template>
-    
+
     <xsl:template match="ep:message-sets">
         <!--xsl:for-each select="$imvert-endproduct/ep:message-set"-->
         <xsl:variable name="version" select="ep:message-set[@KV-namespace = 'yes']/ep:version"/>
@@ -73,18 +66,13 @@
                         <xsl:value-of select="imf:file-to-url(concat($xsd-result-subpath-BSM,'/',$prefix,$version,'_stuf0302.xsd'))"/>
                     </xsl:when>
                     <xsl:when test="@KV-namespace = 'yes'">
-                        <xsl:sequence select="imf:set-config-string('system','xsd-result-subpath-BSM',$xsd-result-subpath-BSM)"/>
                         <xsl:sequence select="imf:set-config-string('appinfo','xsd-result-subpath-kv',concat($prefix,$version,'/',$prefix,$version,'.xsd'))"/>
                         <xsl:value-of select="imf:file-to-url(concat($xsd-result-subpath-BSM,'/',$prefix,$version,'.xsd'))"/>
                     </xsl:when>
-                    <!-- ROME: hieronder moet nog een variabele gedeclareerd worden waarin het versie nummer van het horizontale sectormodel wordt opgeslagen.
-                               Daarna kan dit in het path verwerkt worden. -->
                     <xsl:otherwise>
                         <xsl:variable name="UGMversion" select="@version"/>
                         <xsl:value-of select="imf:file-to-url(concat($xsd-result-subpath-BSM,'/',$prefix,$version,'_',@prefix,$UGMversion,'.xsd'))"/>
                     </xsl:otherwise>
-                    <!--xsl:when test="ep:name = 'STUF'"><xsl:value-of select="imf:file-to-url(concat($xsd-file-folder-path,'/',$koppelvlak-folder,'/StUF-simpleTypes.xsd'))"/></xsl:when>
-                    <xsl:otherwise><xsl:value-of select="imf:file-to-url(concat($xsd-file-folder-path,'/',$koppelvlak-folder,'/',ep:name,'.xsd'))"/></xsl:otherwise-->
                 </xsl:choose>
             </xsl:variable>
             <result>
@@ -94,12 +82,6 @@
                 <xsl:apply-templates select="."/>
             </xsl:result-document>
         </xsl:for-each>
-        
-        <?x xsl:for-each select="ep:message-set[1]">
-            <!-- singleton -->
-            <xsl:sequence select="imf:set-config-string('system','xsd-result-subpath-BSM',concat(ep:project,'/',ep:name,'/',ep:release))"/>
-        </xsl:for-each x?>
-        
     </xsl:template>
     
     <xsl:template match="/imvert:dummy"/>
