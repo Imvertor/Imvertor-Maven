@@ -84,7 +84,7 @@ public class ExcelFile extends AnyFile {
 	
 	/**
 	 * Transform Excel, by passing the resource DTD (for formatted workbooks).
-	 * 
+	 *  
 	 * @param outFile The result XML file.
 	 * @return
 	 * @throws Exception
