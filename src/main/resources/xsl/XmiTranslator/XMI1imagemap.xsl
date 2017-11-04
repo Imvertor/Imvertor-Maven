@@ -27,6 +27,7 @@
     xmlns:xmi="http://schema.omg.org/spec/XMI/2.1"
     
     xmlns:imvert="http://www.imvertor.org/schema/system"
+    xmlns:imvert-imap="http://www.imvertor.org/schema/imagemap"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
@@ -43,18 +44,32 @@
      <xsl:variable name="xmi-document" select="/"/>
 
     <xsl:template match="/">
-        <imvert:map>
+        <imvert-imap:map>
             <xsl:apply-templates select="//UML:Diagram"/>
-        </imvert:map>
+        </imvert-imap:map>
     </xsl:template>
     
     <xsl:template match="UML:Diagram[@diagramType = 'ClassDiagram']">
-        <imvert:diagram>
-            <imvert:id>
+        <imvert-imap:diagram>
+            <imvert-imap:name>
+                <xsl:value-of select="@name"/>
+            </imvert-imap:name>
+            <imvert-imap:id>
                 <xsl:value-of select="@xmi.id"/>
-            </imvert:id>
+            </imvert-imap:id>
+            <imvert-imap:type>
+                <xsl:value-of select="@diagramType"/>
+            </imvert-imap:type>
+            <imvert-imap:in-package>
+                <xsl:value-of select="@owner"/>
+            </imvert-imap:in-package>
+            <xsl:for-each select="UML:ModelElement.taggedValue/UML:TaggedValue[@tag = 'stereotype']">
+                <imvert-imap:stereotype>
+                    <xsl:value-of select="@value"/>
+                </imvert-imap:stereotype>
+            </xsl:for-each>
             <xsl:apply-templates select="UML:Diagram.element/UML:DiagramElement"/>
-        </imvert:diagram>
+        </imvert-imap:diagram>
     </xsl:template>
     
     <!-- example:
@@ -65,23 +80,23 @@
             style="DUID=072A17DA;"/>
     -->
     <xsl:template match="UML:DiagramElement">
-        <imvert:geo>
-            <imvert:model-element-id>
+        <imvert-imap:map>
+            <imvert-imap:for-id>
                 <xsl:value-of select="@subject"/>
-            </imvert:model-element-id>
+            </imvert-imap:for-id>
             <xsl:analyze-string select="@geometry" regex="(.*?)=(.*?);">
                 <xsl:matching-substring>
                     <xsl:if test="starts-with(regex-group(1),'img')">
-                        <imvert:loc type="{regex-group(1)}">
+                        <imvert-imap:loc type="{regex-group(1)}">
                             <xsl:value-of select="regex-group(2)"/>
-                        </imvert:loc>
+                        </imvert-imap:loc>
                     </xsl:if>
                 </xsl:matching-substring>
                 <xsl:non-matching-substring>
                     <!-- ignore, should not occur -->
                 </xsl:non-matching-substring>
             </xsl:analyze-string>
-        </imvert:geo>
+        </imvert-imap:map>
     </xsl:template>
     
     
