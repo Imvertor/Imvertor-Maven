@@ -237,20 +237,35 @@
                     <imvert:location>http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd</imvert:location>
                     <imvert:release>20010627</imvert:release>
                 </imvert:package>
-                <!-- check if outside constructs are found -->
+                <!-- check if outside constructs are found 
+                
+                   Ignore stubs that are source in a association. 
+                   This is because traces may be recorded at the target, in stead of the source.  
+                -->
                 <xsl:variable name="stubs" select="$xmi-document/XMI/XMI.extensions/EAStub"/>
                 <xsl:if test="exists($stubs)" >
                     <imvert:package>
                         <imvert:id>OUTSIDE</imvert:id>
                         <xsl:for-each select="$stubs">
-                            <imvert:class origin="stub" umltype="{@UMLType}">
-                                <imvert:found-name>
-                                    <xsl:value-of select="@name"/>
-                                </imvert:found-name>
-                                <imvert:id>
-                                    <xsl:value-of select="@xmi.id"/>
-                                </imvert:id>
-                            </imvert:class>
+                           <xsl:variable name="id" select="string(@xmi.id)"/>
+                            <xsl:variable name="attribute-end" select="exists($xmi-document//UML:Attribute/UML:StructuralFeature.type/UML:Classifier[@xmi.idref = $id])"/>
+                            <xsl:variable name="association-end" select="exists($xmi-document//UML:AssociationEnd[@type = $id]/UML:ModelElement.taggedValue/UML:TaggedValue[@tag='ea_end' and @value = 'source'])"/>
+                            <xsl:variable name="generalization-end" select="exists($xmi-document//UML:Generalization[@supertype = $id])"/>
+                            <xsl:choose>
+                                <xsl:when test="$attribute-end or $association-end or $generalization-end">
+                                    <imvert:class origin="stub" umltype="{@UMLType}">
+                                        <imvert:found-name>
+                                            <xsl:value-of select="@name"/>
+                                        </imvert:found-name>
+                                        <imvert:id>
+                                            <xsl:value-of select="$id"/>
+                                        </imvert:id>
+                                    </imvert:class> 
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:comment select="concat('Removed construct that is not referenced by this model: ', @name)"/>
+                               </xsl:otherwise>
+                           </xsl:choose> 
                         </xsl:for-each>
                     </imvert:package>
                 </xsl:if>
