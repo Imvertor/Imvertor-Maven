@@ -44,9 +44,9 @@
      <xsl:variable name="xmi-document" select="/"/>
 
     <xsl:template match="/">
-        <imvert-imap:map>
+        <imvert-imap:diagrams>
             <xsl:apply-templates select="//UML:Diagram"/>
-        </imvert-imap:map>
+        </imvert-imap:diagrams>
     </xsl:template>
     
     <xsl:template match="UML:Diagram[@diagramType = 'ClassDiagram']">

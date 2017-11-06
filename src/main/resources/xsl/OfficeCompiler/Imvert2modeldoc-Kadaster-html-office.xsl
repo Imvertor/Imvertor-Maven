@@ -3,6 +3,8 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
     
     xmlns:imvert="http://www.imvertor.org/schema/system"
+    xmlns:imvert-imap="http://www.imvertor.org/schema/imagemap"
+   
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
@@ -103,6 +105,37 @@
     
     <xsl:template match="section" mode="detail">
         <xsl:choose>
+            <xsl:when test="@type = 'IMAGEMAP'">
+                <xsl:variable name="imagemap-path" select="imf:get-config-string('properties','WORK_BASE_IMAGEMAP_FILE')"/>
+                <xsl:variable name="imagemap" select="imf:document($imagemap-path)/imvert-imap:diagrams"/>
+                <div>
+                    <xsl:variable name="level" select="count(ancestor::section)"/>
+                    <xsl:element name="{concat('h',$level)}">
+                        <xsl:value-of select="imf:translate-i3n('IMAGEMAP',$language-model,())"/>
+                    </xsl:element>
+                    <xsl:for-each select="$imagemap/imvert-imap:diagram">
+                        <xsl:variable name="diagram-id" select="imvert-imap:id"/>
+                        <xsl:variable name="diagram-path" select="concat('Images/',$diagram-id,'.png')"/><!-- TODO as configured -->
+                        <xsl:variable name="diagram-label" select="imvert-imap:name"/>
+                        <p>TODO diagram Titel......</p>
+                        <img src="{$diagram-path}" alt="{$diagram-label}" usemap="#imagemap-{$diagram-id}"/>
+                        <p>TODO diagram Onderschrift......</p>
+                        <map name="imagemap-{$diagram-id}">
+                            <xsl:for-each select="imvert-imap:map">
+                                <xsl:variable name="section-id" select="imvert-imap:for-id"/>
+                                <xsl:variable name="section" select="$document//section[@ea-id = $section-id]"/>
+                                <xsl:variable name="section-name" select="$section/name"/>
+                                <area 
+                                    shape="rect" 
+                                    coords="{imvert-imap:loc[@type = 'imgL']},{imvert-imap:loc[@type = 'imgB']},{imvert-imap:loc[@type = 'imgR']},{imvert-imap:loc[@type = 'imgT']}" 
+                                    alt="{$section-name}" 
+                                    href="#graph_{$section-id}"/>
+                            </xsl:for-each>
+                        </map>
+                    </xsl:for-each>
+                    <p>TODO sectie onderschrift......</p>
+                </div>
+            </xsl:when>
             <xsl:when test="@type = 'EXPLANATION'">
                 <xsl:sequence select="imf:create-nonheader(imf:translate-i3n('EXPLANATION',$language-model,()))"/>
                 <table>
@@ -128,9 +161,7 @@
                 <xsl:variable name="level" select="count(ancestor::section)"/>
                 <xsl:variable name="composer" select="content[not(@approach='target')]/part[@type = 'COMPOSER']/item[1]"/>
                 <div>
-                    <xsl:if test="@id">
-                        <a class="anchor" name="{@id}"/>
-                    </xsl:if>
+                    <xsl:sequence select="imf:create-anchors(.)"/>
                     <xsl:element name="{concat('h',$level)}">
                         <xsl:value-of select="imf:translate-i3n('ATTRIBUTE',$language-model,())"/>
                         <xsl:value-of select="' '"/>
@@ -147,9 +178,7 @@
                 <xsl:variable name="level" select="count(ancestor::section)"/>
                 <xsl:variable name="composer" select="content[not(@approach='target')]/part[@type = 'COMPOSER']/item[1]"/>
                 <div>
-                    <xsl:if test="@id">
-                        <a class="anchor" name="{@id}"/>
-                    </xsl:if>
+                    <xsl:sequence select="imf:create-anchors(.)"/>
                     <xsl:element name="{concat('h',$level)}">
                         <xsl:value-of select="imf:translate-i3n('ASSOCIATION',$language-model,())"/>
                         <xsl:value-of select="' '"/>
@@ -165,9 +194,7 @@
             <xsl:otherwise>
                 <xsl:variable name="level" select="count(ancestor::section)"/>
                 <div>
-                    <xsl:if test="@id">
-                        <a class="anchor" name="{@id}"/>
-                    </xsl:if>
+                    <xsl:sequence select="imf:create-anchors(.)"/>
                     <xsl:element name="{concat('h',$level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                         <xsl:value-of select="' '"/>
@@ -350,9 +377,8 @@
     </xsl:template>
     
     <xsl:template match="item" mode="#all">
-        <xsl:if test="@id"><!-- this hasd been introduced to support the case of listed enumerations -->
-            <a class="anchor" name="{@id}"/>
-        </xsl:if>
+        <!-- this hasd been introduced to support the case of listed enumerations -->
+        <xsl:sequence select="imf:create-anchors(.)"/>
         <xsl:choose>
             <xsl:when test="exists(@idref) and @idref-type='external'">
                 <a class="external-link" href="{@idref}"> <!--this is an URL -->
@@ -389,4 +415,13 @@
         </table>
     </xsl:function>
     
+    <xsl:function name="imf:create-anchors" as="element()*">
+        <xsl:param name="section-or-item"/>
+        <xsl:if test="$section-or-item/@ea-id">
+            <a class="anchor" name="graph_{$section-or-item/@ea-id}"/>
+        </xsl:if>
+        <xsl:if test="$section-or-item/@id">
+            <a class="anchor" name="{$section-or-item/@id}"/>
+        </xsl:if>
+    </xsl:function>
 </xsl:stylesheet>

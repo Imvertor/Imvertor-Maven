@@ -22,6 +22,7 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 
     xmlns:imvert="http://www.imvertor.org/schema/system"
+    
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
 
@@ -61,6 +62,19 @@
     
     <xsl:template match="imvert:package"><!-- only domain packs -->
         <section type="DOMAIN" name="{imf:plugin-get-model-name(.)}" id="{imf:plugin-get-link-name(.,'global')}">
+  
+            <xsl:variable name="insert-diagrams" select="imf:boolean(imf:get-config-string('cli','createimagemap'))"/> <!-- TODO dit moet beter, eiegnlijk een parameter in modeldoc config -->
+            <xsl:choose>
+                <xsl:when test="$insert-diagrams">
+                    <section type="IMAGEMAP" name="{imf:plugin-get-model-name(.)}-imagemap" id="{imf:plugin-get-link-name(.,'imagemap')}">
+                        <sentinel/>
+                    </section>
+                </xsl:when>
+                <xsl:otherwise>
+                    <!-- no alternatives -->
+                </xsl:otherwise>
+            </xsl:choose>
+
             <section type="OVERVIEW-OBJECTTYPE">
                 <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')]"/>
             </section>
@@ -112,7 +126,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')]">
-        <section name="{imf:get-name(.,true())}" type="OBJECTTYPE" id="{imf:plugin-get-link-name(.,'global')}" eaid="{imf:plugin-get-link-name(.,'graph')}">
+        <section name="{imf:get-name(.,true())}" type="OBJECTTYPE" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
           <content>
               <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-OBJECTTYPE')"/>
           </content>
@@ -126,7 +140,7 @@
 
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-relatieklasse')]">
         
-        <section name="{imf:get-name(.,true())}" type="ASSOCIATIONCLASS" id="{imf:plugin-get-link-name(.,'global')}">
+        <section name="{imf:get-name(.,true())}" type="ASSOCIATIONCLASS" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-ASSOCIATIONCLASS')"/>
             </content>
@@ -140,7 +154,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-referentielijst')]">
-        <section name="{imf:get-name(.,true())}" type="REFERENCELIST" id="{imf:plugin-get-link-name(.,'global')}">
+        <section name="{imf:get-name(.,true())}" type="REFERENCELIST" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-REFERENCELIST')"/>
             </content>
@@ -151,7 +165,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-codelist')]">
-        <section name="{imf:get-name(.,true())}" type="CODELIST" id="{imf:plugin-get-link-name(.,'global')}">
+        <section name="{imf:get-name(.,true())}" type="CODELIST" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-CODELIST')"/>
             </content>
@@ -160,7 +174,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union')]">
-        <section name="{imf:get-name(.,true())}" type="UNION" id="{imf:plugin-get-link-name(.,'global')}">
+        <section name="{imf:get-name(.,true())}" type="UNION" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-UNION')"/>
             </content>
@@ -171,7 +185,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-complextype')]">
-        <section name="{imf:get-name(.,true())}" type="DATATYPE" id="{imf:plugin-get-link-name(.,'global')}">
+        <section name="{imf:get-name(.,true())}" type="DATATYPE" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-DATATYPE')"/>
             </content>
@@ -184,7 +198,7 @@
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-enumeration')]">
         <xsl:variable name="naam" select="imf:get-name(.,true())"/>
         <part>
-            <item id="{imf:plugin-get-link-name(.,'global')}">
+            <item id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
                 <xsl:sequence select="imf:create-idref(.,'detail')"/>
                 <xsl:sequence select="imf:create-content($naam)"/>          
             </item>
@@ -194,7 +208,7 @@
 
     <!-- uitzondering: gegevensgroeptype wordt apart getoond. -->
     <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')]">
-        <section name="{imf:get-name(.,true())}" type="COMPOSITE" id="{imf:plugin-get-link-name(.,'global')}">
+        <section name="{imf:get-name(.,true())}" type="COMPOSITE" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-COMPOSITE')"/>
             </content>
