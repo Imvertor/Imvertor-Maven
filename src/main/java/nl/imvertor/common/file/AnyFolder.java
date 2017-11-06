@@ -21,12 +21,15 @@
 package nl.imvertor.common.file;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Vector;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.commons.lang3.StringUtils;
+
+import nl.imvertor.common.file.filter.FileExistsFileFilter;
 
 public class AnyFolder extends AnyFile {
 
@@ -38,11 +41,16 @@ public class AnyFolder extends AnyFile {
 	static public String FOLDER_CONTENT_WRAPPER_NAMESPACE = "http://www.armatiek.nl/namespace/folder-content-wrapper";
 	static public String SERIALIZED_CONTENT_XML_FILENAME = "__content.xml";
 	
-	private String linesep = System.getProperty("line.separator");
 	private String serializedFilePath = SERIALIZED_CONTENT_XML_FILENAME;
 	
  	// create a pattern that matches <?xml ... ?>
 	private String xmlRegex = "<\\?(x|X)(m|M)(l|L).*?\\?>";
+	
+	public static void main(String[] args) throws Exception {
+		AnyFolder a1 = new AnyFolder("c:/Temp/a1");
+		AnyFolder a2 = new AnyFolder("c:/Temp/a2");
+		a1.copy(a2,false);
+	}
 	
 	public AnyFolder(File file) {
 		super(file);
@@ -63,8 +71,22 @@ public class AnyFolder extends AnyFile {
 	 * @param targetFolder
 	 * @throws Exception
 	 */
+	public void copy(AnyFolder targetFolder, boolean overwriteAll) throws Exception {
+		if (overwriteAll) {
+			FileUtils.copyDirectory(this, targetFolder);
+		} else {
+			FileFilter filter = new FileExistsFileFilter(this,targetFolder);
+			FileUtils.copyDirectory(this, targetFolder, filter);
+		}
+	}
+	/**
+	 * Copy and overwrite the file/folder(s).
+	 * 
+	 * @param targetFolder
+	 * @throws Exception
+	 */
 	public void copy(AnyFolder targetFolder) throws Exception {
-		FileUtils.copyDirectory(this, targetFolder);
+		copy(targetFolder,true);
 	}
 	public void copy(String targetFolder) throws Exception {
 		FileUtils.copyDirectory(this, (new File(targetFolder)));
