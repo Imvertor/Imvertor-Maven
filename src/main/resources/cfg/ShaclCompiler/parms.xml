@@ -30,6 +30,12 @@
          <tip>Yes if SHACL RDF must be generated</tip>
          <required>false</required>
       </cli-parm> 
+      <cli-parm>
+         <name>validateshacl</name>
+         <arg>yes|no</arg>
+         <tip>Yes if SHACL RDF must be validated after it has been generated</tip>
+         <required>false</required>
+      </cli-parm> 
       
    </cli-parms>
   

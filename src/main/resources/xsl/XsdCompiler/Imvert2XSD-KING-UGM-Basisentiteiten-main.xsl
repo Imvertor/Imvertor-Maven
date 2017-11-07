@@ -91,19 +91,23 @@
         <!-- als er één construct is die subsetting is, dan moet je de onderliggende schema's invoegen -->
         <xsl:variable name="is-subset-derived" select="exists(.//imvert:subset-info[imf:boolean(imvert:is-subsetting)])"/>
         
+        <xsl:variable name="includes" select="if ($is-subset-derived) then ('TODO5678') else ()"/>
+        
         <xsl:variable name="schema" as="element(schema)">
             <schema 
                 version="{$version}" 
                 prefix="{$pack-prefix}" 
                 target-namespace="{$target-namespace}" 
                 attribute-form-default="{$attributeFormDefault}" 
-                element-form-default="{$elementFormDefault}">
-                
+                element-form-default="{$elementFormDefault}"
+                >
+                <xsl:if test="$includes">
+                    <xsl:attribute name="includes" select="$includes"/>
+                </xsl:if>
                 <xsl:choose>
                     <xsl:when test="$is-subset-derived">
                         <ent-part>
-                            <!-- STUB -->
-                            <xs:include schemaLocation="../../../../../../..//applications/UGM/RM-000 UGM supplier/20140401/xsd/bg0320/entiteiten/bg0320_ent_basis.xsd"/>
+                            <xs:include schemaLocation="../../{$includes}/entiteiten/{$includes}_ent_basis.xsd"/>
                             
                             <xsl:for-each select="imvert:xsd-import">
                                 <xs:import schemaLocation="{@xsd-prefix}{@xsd-version}_ent_basis.xsd" namespace="{@xsd-target-namespace}" imvert-xsd-prefix="{@xsd-prefix}"/>    
@@ -130,8 +134,7 @@
                 <xsl:choose>
                     <xsl:when test="$is-subset-derived">
                         <dat-part>
-                            <!-- STUB -->
-                            <xs:include schemaLocation="../../../../../../..//applications/UGM/RM-000 UGM supplier/20140401/xsd/bg0320/entiteiten/bg0320_datatypes.xsd"/>
+                            <xs:include schemaLocation="../../{$includes}/entiteiten/{$includes}_datatypes.xsd"/>
                      
                             <xsl:for-each select="imvert:xsd-import">
                                 <xs:import schemaLocation="{@xsd-prefix}{@xsd-version}_datatypes.xsd" namespace="{@xsd-target-namespace}" imvert-xsd-prefix="{@xsd-prefix}"/>

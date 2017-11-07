@@ -47,6 +47,8 @@
     
     <xsl:variable name="metamodel" select="imf:extract-main-metamodel(/*)"/>
     
+    <xsl:variable name="version" select="/imvert:packages/imvert:version"/> <!-- neem aan dat UGM versies van clients en suppliers gelijk oplopen, bijv. 0320  -->
+
     <xsl:template match="/imvert:packages">
         
         <!-- plaats alle subset info -->
@@ -57,9 +59,8 @@
         <!-- maak zoveel packages als er target namespaces zijn; ieder imvert:package resulteert in een schema -->
         <xsl:variable name="cc2" as="element(imvert:package)*">
             <xsl:for-each-group select="$cc1/imvert:class" group-by="imvert:subset-info/imvert:effective-prefix">
-                <xsl:variable name="version" select="'0320'"/>
                 <xsl:variable name="prefix" select="current-grouping-key()"/>
-                <imvert:package xsd-prefix="{$prefix}" xsd-version="{$version}" xsd-target-namespace="http://www.stufstandaarden.nl/basisschema/{$prefix}{$version}">
+                <imvert:package xsd-prefix="{$prefix}" xsd-version="{$version}" xsd-target-namespace="http://www.stufstandaarden.nl/basisschema/{$prefix}{$version}" >
                     <xsl:sequence select="current-group()"/>   
                 </imvert:package>
             </xsl:for-each-group>
@@ -88,6 +89,17 @@
         <imvert:packages>
             <xsl:sequence select="$cc3"/>
         </imvert:packages>
+        
+        <!-- set some info for access in later steps -->
+        
+        <xsl:sequence select="imf:set-config-string('appinfo','xsd-short-name',imf:get-tagged-value(.,'##CFG-TV-VERKORTEALIAS'))"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','xsd-version',imvert:version)"/>
+        
+        <xsl:variable name="supplier" select="imvert:supplier[imvert:supplier-project = current()/imvert:project]"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','subset-supplier-project',$supplier/imvert:supplier-project)"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','subset-supplier-name',$supplier/imvert:supplier-name)"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','subset-supplier-release',$supplier/imvert:supplier-release)"/>
+        
     </xsl:template>
     
     <!-- 1  introduce subset information -->

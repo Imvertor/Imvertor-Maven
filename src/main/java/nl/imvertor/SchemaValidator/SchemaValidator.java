@@ -76,7 +76,7 @@ public class SchemaValidator extends Step {
 	 */
 	public boolean validateSchemas() throws Exception {
 		
-		AnyFolder xsdApplicationFolder = new AnyFolder(configurator.getParm("properties","RESULT_XSD_APPLICATION_FOLDER"));
+		AnyFolder xsdApplicationFolder = new AnyFolder(configurator.getParm("system","xsd-application-folder-path"));
 		
 		Vector<ErrorHandlerMessage> vl = validateSchemasSub(xsdApplicationFolder);
 		if (vl.size() != 0) 

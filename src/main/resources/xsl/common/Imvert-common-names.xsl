@@ -84,7 +84,7 @@
         <xsl:param name="package-name" as="xs:string?"/>
         <xsl:param name="class-name" as="xs:string?"/>
         <xsl:param name="property-name" as="xs:string?"/>
-        <xsl:value-of select="string-join(($type-name,$package-name,$class-name,$property-name),'_')"/>
+        <xsl:value-of select="imf:extract(string-join(($type-name,$package-name,$class-name,$property-name),'_'),'[A-Za-z0-9_]')"/>
     </xsl:function>  
     
 </xsl:stylesheet>

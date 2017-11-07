@@ -27,7 +27,6 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.riot.RiotException;
 import org.apache.jena.util.FileUtils;
 import org.apache.log4j.Logger;
-import org.topbraid.shacl.util.ModelPrinter;
 import org.topbraid.shacl.validation.ValidationUtil;
 import org.topbraid.spin.util.JenaUtil;
 

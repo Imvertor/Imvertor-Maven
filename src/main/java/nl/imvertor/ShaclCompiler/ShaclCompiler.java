@@ -85,16 +85,16 @@ public class ShaclCompiler extends Step {
 		succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_SHACL_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_SHACL_XSLPATH");
 		
 		if (succeeds) {
-			// validate
 			ShaclFile shaclFile = new ShaclFile(configurator.getParm("properties", "RESULT_SHACL_FILE_PATH"));
-			shaclFile.validate(configurator);
+			
+			if (configurator.isTrue("cli","validateshacl",true)) 
+				shaclFile.validate(configurator);
 			
 			// copy to the app folder
 			XmlFile appShaclFile = new XmlFile(shaclFolder,"shacl.ttl");
 			shaclFile.copyFile(appShaclFile);
+			configurator.setParm("system","shacl-created","true");
 		}
-		
-		configurator.setParm("system","shacl-created","true");
 		
 		return succeeds;
 	}
