@@ -268,7 +268,12 @@ public class Configurator {
 	 */
 	public AnyFolder getApplicationFolder(String releaseNumber) throws IOException, ConfiguratorException {
 		String sep = File.separator;
-		return new AnyFolder(getOutputFolder() + sep + "applications" + sep + getParm("appinfo","project-name") + sep + getParm("appinfo","application-name") + sep + releaseNumber);
+		return getApplicationFolder(getParm("appinfo","project-name"),getParm("appinfo","application-name"),releaseNumber);
+	}
+
+	public AnyFolder getApplicationFolder(String projectname, String modelName, String releaseNumber) throws IOException, ConfiguratorException {
+		String sep = File.separator;
+		return new AnyFolder(getOutputFolder() + sep + "applications" + sep + projectname + sep + modelName + sep + releaseNumber);
 	}
 
 	public File getOutputFolder() {

@@ -47,6 +47,11 @@
 
     <xsl:template match="/schemas">
         <xsl:next-match/>
+        
+        <!-- pass info to the final steps -->
+        
+        <xsl:sequence select="imf:set-config-string('appinfo','xsd-is-subset',.//imvert:is-subsetting = 'true')"/>
+        
     </xsl:template>
     
     <xsl:template match="schema">
@@ -64,7 +69,7 @@
         <xsl:variable name="supplier-prefix" select="../imvert:subset-info/imvert:supplier-prefix"/>
         <xsl:variable name="supplier-label" select="../imvert:subset-info/imvert:supplier-label"/>
  
-        <xsl:choose>
+       <xsl:choose>
             <xsl:when test="not($is-subsetting)">
                 <!-- het hele mechanisme van subsetting speelt niet want geen UGM dat teruggaat op UGM -->
                 <xsl:next-match/>

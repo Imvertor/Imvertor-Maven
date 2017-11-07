@@ -110,7 +110,7 @@ public class XsdCompiler extends Step {
 				
 		AnyFolder xsdApplicationFolder = new AnyFolder(configurator.getParm("properties","RESULT_XSD_APPLICATION_FOLDER"));
 		xsdApplicationFolder.mkdirs();
-		configurator.setParm("system","xsd-application-folder-path", xsdApplicationFolder.toURI().toString());
+		configurator.setParm("system","xsd-application-folder-path", configurator.mergeParms(xsdApplicationFolder.getCanonicalPath()));
 	
 		runner.debug(logger,"CHAIN","Generating XML schemas to " + xsdApplicationFolder);
 		
@@ -148,8 +148,8 @@ public class XsdCompiler extends Step {
 				
 		AnyFolder xsdApplicationFolder = new AnyFolder(configurator.getParm("properties","RESULT_XSD_APPLICATION_FOLDER"));
 		xsdApplicationFolder.mkdirs();
-		configurator.setParm("system","xsd-application-folder-path", xsdApplicationFolder.toURI().toString());
-	
+		configurator.setParm("system","xsd-application-folder-path", configurator.mergeParms(xsdApplicationFolder.getCanonicalPath()));
+		
 		runner.debug(logger,"CHAIN","Generating XML schemas to " + xsdApplicationFolder);
 		
 		valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_XSD_PREFORM_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KKG_XSD_PREFORM_XSLPATH","system/cur-imvertor-filepath");
@@ -179,8 +179,8 @@ public class XsdCompiler extends Step {
 				
 		AnyFolder xsdApplicationFolder = new AnyFolder(configurator.getParm("properties","RESULT_XSD_APPLICATION_FOLDER"));
 		xsdApplicationFolder.mkdirs();
-		configurator.setParm("system","xsd-application-folder-path", xsdApplicationFolder.toURI().toString());
-	
+		configurator.setParm("system","xsd-application-folder-path", configurator.mergeParms(xsdApplicationFolder.getCanonicalPath()));
+		
 		runner.debug(logger,"CHAIN","Generating XML schemas to " + xsdApplicationFolder);
 		
 		valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_XSD_PREFORM_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_ISO19136_XSD_PREFORM_XSLPATH","system/cur-imvertor-filepath");
@@ -215,8 +215,8 @@ public class XsdCompiler extends Step {
 				
 		AnyFolder xsdApplicationFolder = new AnyFolder(configurator.getParm("properties","RESULT_XSD_APPLICATION_FOLDER"));
 		xsdApplicationFolder.mkdirs();
-		configurator.setParm("system","xsd-application-folder-path", xsdApplicationFolder.toURI().toString());
-	
+		configurator.setParm("system","xsd-application-folder-path", configurator.mergeParms(xsdApplicationFolder.getCanonicalPath()));
+		
 		runner.debug(logger,"CHAIN","Generating BSM XML schemas to " + xsdApplicationFolder);
 		
 		String infoXsdSourceFilePath = configurator.getParm("properties", "IMVERTOR_METAMODEL_KINGBSM_XSDSOURCE"); // system or model
@@ -280,26 +280,38 @@ public class XsdCompiler extends Step {
 		AnyFolder xsdFolder = new AnyFolder(configurator.getParm("system","work-xsd-folder-path"));
 		xsdFolder.mkdirs();
 				
-		AnyFolder xsdApplicationFolder = new AnyFolder(configurator.getParm("properties","RESULT_XSD_APPLICATION_FOLDER"));
-		xsdApplicationFolder.mkdirs();
-		configurator.setParm("system","xsd-application-folder-path", xsdApplicationFolder.toURI().toString());
-	
-		runner.debug(logger,"CHAIN","Generating UGM XML schemas to " + xsdApplicationFolder);
-		
 		//TODO let the stylesheet operate on system, not on model file. Try to determine if model file is required altogether.
 		valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_METAMODEL_KINGUGM_XSD_PREFORM", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_PREFORM_XSLPATH","system/work-config-path");
 		valid = valid && transformer.transformStep("system/work-config-path","properties/RESULT_METAMODEL_KINGUGM_XSD_MAIN", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_MAIN_XSLPATH","system/work-config-path");
 		valid = valid && transformer.transformStep("system/work-config-path","properties/RESULT_METAMODEL_KINGUGM_XSD_SUBSET", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_SUBSET_XSLPATH","system/work-config-path");
 		valid = valid && transformer.transformStep("system/work-config-path","properties/RESULT_METAMODEL_KINGUGM_XSD_CLEANUP", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_CLEANUP_XSLPATH","system/work-config-path");
+		
+		// now all is ready to generate the actual schemas
+		AnyFolder xsdApplicationFolder = new AnyFolder(configurator.mergeParms(configurator.getParm("properties","RESULT_XSD_APPLICATION_FOLDER")));
+		configurator.setParm("system","xsd-application-folder-path", configurator.mergeParms(xsdApplicationFolder.getCanonicalPath()));
+
+		runner.debug(logger,"CHAIN","Generating UGM XML schemas to " + xsdApplicationFolder);
+		
 		valid = valid && transformer.transformStep("system/work-config-path","properties/RESULT_METAMODEL_KINGUGM_XSD_ENTDAT", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_ENTDAT_XSLPATH","system/work-config-path");
 		
 		// fetch all checksum info from parms file and store to the local blackboard.
 		valid = valid && transformer.transformStep("system/work-config-path","properties/IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH_LOCAL", "properties/IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XSLPATH");
 		
-		// and copy the onderlaag; this is a copy of all stuff in that folder
+		// copy the onderlaag; this is a copy of all stuff in that folder
 		AnyFolder onderlaag = new AnyFolder(configurator.getParm("properties", "KINGUGM_STUF_ONDERLAAG_0302"));
 		onderlaag.copy(configurator.getParm("system", "work-xsd-folder-path"));
 		
+		// copy all schema's compiled for the supplier UGMs.
+		// these never replace the schema's just compiled.
+		if (configurator.isTrue("appinfo", "xsd-is-subset")) {
+			String projectName = configurator.getParm("appinfo","subset-supplier-project");
+			String modelName = configurator.getParm("appinfo","subset-supplier-name");
+			String releaseNumber = configurator.getParm("appinfo","subset-supplier-release");
+					
+			AnyFolder supplier = new AnyFolder(configurator.getApplicationFolder(projectName,modelName,releaseNumber) + "/xsd"); // D:/data/project/Imvertor/Imvertor-OS-output/KING/applications
+			supplier.copy(configurator.getParm("system", "work-xsd-folder-path"),false);
+			
+		}
 		// tell that a schema has been created
 		configurator.setParm("system","schema-created","true");
 				
