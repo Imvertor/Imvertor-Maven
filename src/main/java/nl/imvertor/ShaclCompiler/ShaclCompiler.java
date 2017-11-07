@@ -87,7 +87,7 @@ public class ShaclCompiler extends Step {
 		if (succeeds) {
 			ShaclFile shaclFile = new ShaclFile(configurator.getParm("properties", "RESULT_SHACL_FILE_PATH"));
 			
-			if (configurator.isTrue("cli","validateshacl",true)) 
+			if (configurator.isTrue("cli","validateshacl",false)) 
 				shaclFile.validate(configurator);
 			
 			// copy to the app folder
