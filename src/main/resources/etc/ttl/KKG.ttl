@@ -1,5 +1,4 @@
 # picked up from https://github.com/bp4mc2/bp4mc2/blob/master/model/kkg/KKG.ttl 
-# https://github.com/bp4mc2/bp4mc2/commit/1e64349016d7e8b42d7613832cd33de119c73483#diff-898c64397a619ac7f98f870fb886c5a9
 
 @prefix rdf:		<http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 @prefix rdfs:		<http://www.w3.org/2000/01/rdf-schema#>.
@@ -224,7 +223,7 @@ kkgshape:KKG rdf:type owl:Ontology;
 
 kkgshape:Attribuutsoort rdf:type sh:NodeShape;
 	rdfs:label "Attribuutsoort";
-	sh:name "Â«AttribuutsoortÂ»";
+	sh:name "«Attribuutsoort»";
 	sh:property [
 		sh:path rdf:type;
 		sh:hasValue owl:DatatypeProperty;
@@ -262,7 +261,7 @@ kkgshape:AttribuutsoortStereotype rdf:type sh:NodeShape;
 
 kkgshape:Codelijst rdf:type sh:NodeShape;
 	rdfs:label "Codelijst";
-	sh:name "Â«CodelijstÂ»";
+	sh:name "«Codelijst»";
 	sh:property [
 			sh:path rdf:type;
 			sh:hasValue owl:DatatypeProperty;
@@ -287,7 +286,7 @@ kkgshape:CodelijstStereotype rdf:type sh:NodeShape;
 
 kkgshape:GestructureerdDatatype rdf:type sh:NodeShape;
 	rdfs:label "Gestructureerd Datatype";
-	sh:name "Â«Gestructureerd DatatypeÂ»";
+	sh:name "«Gestructureerd Datatype»";
 	sh:property [
 		sh:path rdf:type;
 		sh:hasValue owl:DatatypeProperty;
@@ -313,7 +312,7 @@ kkgshape:GestructureerdDatatypeStereotype rdf:type sh:NodeShape;
 	
 kkgshape:Constraint rdf:type sh:NodeShape;
 	rdfs:label "Constraint";
-	sh:name "Â«ConstraintÂ»";
+	sh:name "«Constraint»";
 	sh:property [
 		sh:path rdf:type;
 		sh:hasValue owl:DatatypeProperty;
@@ -334,7 +333,7 @@ kkgshape:ConstraintStereotype rdf:type sh:NodeShape;
 
 kkgshape:DataElement rdf:type sh:NodeShape;
 	rdfs:label "Data element";
-	sh:name "Â«Data elementÂ»";
+	sh:name "«Data element»";
 	sh:property [
 		sh:path rdf:type;
 		sh:hasValue owl:DatatypeProperty;
@@ -360,7 +359,7 @@ kkgshape:DataElementStereotype rdf:type sh:NodeShape;
 
 kkgshape:Enumeratie rdf:type sh:NodeShape;
 	rdfs:label "Enumeratie";
-	sh:name "Â«EnumeratieÂ»";
+	sh:name "«Enumeratie»";
 	sh:property [
 		sh:path rdf:type;
 		sh:hasValue owl:DatatypeProperty;
@@ -380,7 +379,7 @@ kkgshape:EnumeratieStereotype rdf:type sh:NodeShape;
 
 kkgshape:Enumeratiewaarde rdf:type sh:NodeShape;
 	rdfs:label "Enumeratiewaarde";
-	sh:name "Â«EnumeratiewaardeÂ»";
+	sh:name "«Enumeratiewaarde»";
 	sh:property [
 		sh:path rdf:type;
 		sh:hasValue owl:DatatypeProperty;
@@ -401,7 +400,7 @@ kkgshape:EnumeratiewaardeStereotype rdf:type sh:NodeShape;
 
 kkgshape:Gegevensgroep rdf:type sh:NodeShape;
 	rdfs:label "Gegevensgroep";
-  sh:name "Â«GegevensgroepÂ»";
+  sh:name "«Gegevensgroep»";
 	sh:property [
 		sh:path rdf:type;
 		sh:hasValue owl:ObjectProperty;
@@ -430,7 +429,7 @@ kkgshape:GegevensgroepStereotype rdf:type sh:NodeShape;
 
 kkgshape:Gegevensgroeptype rdf:type sh:NodeShape;
 	rdfs:label "Gegevensgroeptype";
-	sh:name "Â«GegevensgroeptypeÂ»";
+	sh:name "«Gegevensgroeptype»";
   sh:property [
 		sh:path rdf:type;
 		sh:hasValue owl:Class;
@@ -464,7 +463,7 @@ kkgshape:Generalisatie rdf:type sh:NodeShape;
 
 kkgshape:ObjectType rdf:type sh:NodeShape;
 	rdfs:label "ObjectType";
-	sh:name "Â«ObjectTypeÂ»";
+	sh:name "«ObjectType»";
 	sh:property [
 		sh:path rdf:type;
 		sh:hasValue owl:Class;
@@ -495,7 +494,7 @@ kkgshape:ObjectTypeStereotype rdf:type sh:NodeShape;
 
 kkgshape:PrimitiefDatatype rdf:type sh:NodeShape;
 	rdfs:label "Primitief Datatype";
-	sh:name "Â«Primitief DatatypeÂ»";
+	sh:name "«Primitief Datatype»";
   sh:property [
 		sh:path rdf:type;
 		sh:hasValue owl:DatatypeProperty;
@@ -522,7 +521,7 @@ kkgshape:PrimitiefDatatypeStereotype rdf:type sh:NodeShape;
 
 kkgshape:ReferentieElement rdf:type sh:NodeShape;
 	rdfs:label "Referentie element";
-	sh:name "Â«Referentie elementÂ»";
+	sh:name "«Referentie element»";
   sh:property [
 		sh:path rdf:type;
 		sh:hasValue owl:ObjectProperty;
@@ -549,7 +548,7 @@ kkgshape:ReferentieElementStereotype rdf:type sh:NodeShape;
 
 kkgshape:Referentielijst rdf:type sh:NodeShape;
 	rdfs:label "Referentielijst";
-	sh:name "Â«ReferentielijstÂ»";
+	sh:name "«Referentielijst»";
   sh:property [
 		sh:path rdf:type;
 		sh:hasValue rdfs:Datatype
@@ -572,7 +571,7 @@ kkgshape:ReferentielijstStereotype rdf:type sh:NodeShape;
 
 kkgshape:Relatieklasse rdf:type kkgshape:Nodeshape;
 	rdfs:label "Relatieklasse";
-	sh:name "Â«RelatieklasseÂ»";
+	sh:name "«Relatieklasse»";
   sh:property [
 		sh:path rdf:type;
 		sh:hasValue owl:Class;
@@ -593,7 +592,7 @@ kkgshape:RelatieklasseStereotype rdf:type kkgshape:NodeShape;
 
 kkgshape:RelatierolAlt1 rdf:type sh:NodeShape;
 	rdfs:label "Relatierol";
-	sh:name "Â«RelatierolÂ»";
+	sh:name "«Relatierol»";
   sh:property [
 		sh:path rdf:type;
 		sh:hasValue owl:DatatypeProperty;
@@ -612,7 +611,7 @@ kkgshape:RelatierolAlt1Stereotype rdf:type sh:NodeShape;
 
 kkgshape:RelatiesoortAlt1 rdf:type sh:NodeShape;
 	rdfs:label "Relatiesoort";
-	sh:name "Â«RelatiesoortÂ»";
+	sh:name "«Relatiesoort»";
   sh:property [
 		sh:path rdf:type;
 		sh:hasValue owl:ObjectProperty;
@@ -647,7 +646,7 @@ kkgshape:RelatiesoortAlt1 rdf:type sh:NodeShape;
 
 kkgshape:RelatierolAlt2 rdf:type sh:NodeShape;
 	rdfs:label "Relatierol";
-	sh:name "Â«RelatierolÂ»";
+	sh:name "«Relatierol»";
   sh:property [
 		sh:path rdf:type;
 		sh:hasValue owl:DatatypeProperty;
@@ -675,7 +674,7 @@ kkgshape:RelatierolAlt2Stereotype rdf:type sh:NodeShape;
 
 kkgshape:RelatiesoortAlt2 rdf:type sh:NodeShape;
 	rdfs:label "Relatiesoort";
-	sh:name "Â«RelatiesoortÂ»";
+	sh:name "«Relatiesoort»";
   sh:property [
 		sh:path rdf:type;
 		sh:hasValue owl:DatatypeProperty;
@@ -694,7 +693,7 @@ kkgshape:RelatiesoortAlt2Stereotype rdf:type sh:NodeShape;
 
 kkgshape:Union rdf:type sh:NodeShape;
 	rdfs:label "Union";
-	sh:name "Â«UnionÂ»";
+	sh:name "«Union»";
   sh:property [
 		sh:path rdf:type;
 		sh:hasValue rdfs:Datatype;
@@ -716,7 +715,7 @@ kkgshape:UnionStereotype rdf:type sh:NodeShape;
 
 kkgshape:UnionElement rdf:type sh:NodeShape;
 	rdfs:label "Union element";
-	sh:name "Â«Union elementÂ»";
+	sh:name "«Union element»";
 	sh:property [
 		sh:path rdf:type;
 		sh:hasValue owl:DatatypeProperty;

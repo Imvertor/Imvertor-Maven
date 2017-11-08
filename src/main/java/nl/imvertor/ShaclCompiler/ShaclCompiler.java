@@ -20,11 +20,16 @@
 
 package nl.imvertor.ShaclCompiler;
 
+import java.io.File;
+
 import org.apache.log4j.Logger;
 
+import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
+import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
+import nl.imvertor.common.file.RdfFile;
 import nl.imvertor.common.file.ShaclFile;
 import nl.imvertor.common.file.XmlFile;
 
@@ -87,9 +92,12 @@ public class ShaclCompiler extends Step {
 		if (succeeds) {
 			ShaclFile shaclFile = new ShaclFile(configurator.getParm("properties", "RESULT_SHACL_FILE_PATH"));
 			
-			if (configurator.isTrue("cli","validateshacl",false)) 
-				shaclFile.validate(configurator);
-			
+			if (configurator.isTrue("cli","validateshacl",false)) { 
+				ShaclFile shapesGraphFile = new ShaclFile(Configurator.getInstance().getBaseFolder().getCanonicalPath() + "/etc/ttl/KKG.ttl");
+				ShaclFile bigFile = new ShaclFile(configurator.getParm("properties","BIG_SHACL_FILE_PATH"));
+				bigFile.setContent("### SHAPES GRAPH FILE COPY ###\n" + shapesGraphFile.getContent() + "\n### SHACL FILE COPY ###\n" + shaclFile.getContent());
+				bigFile.validate(configurator);
+			}
 			// copy to the app folder
 			XmlFile appShaclFile = new XmlFile(shaclFolder,"shacl.ttl");
 			shaclFile.copyFile(appShaclFile);

@@ -27,6 +27,7 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.riot.RiotException;
 import org.apache.jena.util.FileUtils;
 import org.apache.log4j.Logger;
+import org.topbraid.shacl.util.ModelPrinter;
 import org.topbraid.shacl.validation.ValidationUtil;
 import org.topbraid.spin.util.JenaUtil;
 
@@ -57,10 +58,8 @@ public class ShaclFile extends RdfFile {
 	
 	public void validate(Configurator configurator) throws Exception {
 		super.parse(configurator);
-		
-		if (true) { // TODO handle error situation
-			this.parse(configurator);
-		}
+		// and parse this file; this is the validation of the model itself 
+		this.parse(configurator);
 	}
 	
 	public void parse(Configurator configurator) throws Exception {

@@ -41,6 +41,8 @@
   
    <properties>
    
+      <BIG_SHACL_FILE_PATH>${system/work-imvert-folder-path}/imvertor.35.shacl-big.ttl</BIG_SHACL_FILE_PATH>   
+   
       <RESULT_SHACL_FILE_PATH>${system/work-imvert-folder-path}/imvertor.35.shacl.ttl</RESULT_SHACL_FILE_PATH>   
       
       <RESULT_SHACL_APPLICATION_FOLDER>${system/work-shacl-folder-path}</RESULT_SHACL_APPLICATION_FOLDER>
