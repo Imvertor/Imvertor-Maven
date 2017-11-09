@@ -285,12 +285,25 @@
                 <xsl:variable name="berichtCode" select="imf:get-tagged-value($message-construct,'##CFG-TV-BERICHTCODE')" as="xs:string"/>
                 <xsl:variable name="serviceName" select="imf:get-tagged-value($message-construct,'##CFG-TV-SERVICENAME')" as="xs:string"/>
                 <xsl:variable name="messageType" select="imf:get-tagged-value($message-construct,'##CFG-TV-MESSAGETYPE')" as="xs:string"/>
-                <xsl:variable name="docs">
-                    <imvert:complete-documentation>
-                        <xsl:copy-of select="imf:get-compiled-documentation($message-construct)"/>
-                    </imvert:complete-documentation>
+                <xsl:variable name="doc">
+                    <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DEFINITION')))">
+                        <ep:definition>
+                            <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DEFINITION')"/>
+                        </ep:definition>
+                    </xsl:if>
+                    <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DESCRIPTION')))">
+                        <ep:description>
+                            <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DESCRIPTION')"/>
+                        </ep:description>
+                    </xsl:if>
+                    <xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')))">
+                        <ep:pattern>
+                            <ep:p>
+                                <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')"/>
+                            </ep:p>
+                        </ep:pattern>
+                    </xsl:if>
                 </xsl:variable>
-                <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
                 <xsl:variable name="name" select="$message-construct/imvert:name/@original" as="xs:string"/>
                 <xsl:variable name="tech-name" select="imf:get-normalized-name($message-construct/imvert:name, 'element-name')" as="xs:string"/>
                 <xsl:variable name="package-type" select="$packages/imvert:package[imvert:class[imvert:id = $id]]/imvert:stereotype" as="xs:string"/>
@@ -306,7 +319,7 @@
                     <xsl:sequence select="imf:create-output-element('ep:code', $berichtCode)"/>
                     <xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
                     <xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
-                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
                     <xsl:sequence select="imf:create-output-element('ep:package-type', $package-type)"/>
                     <xsl:sequence select="imf:create-output-element('ep:release', $release)"/>
                     <xsl:sequence select="imf:create-output-element('ep:type', $berichtSoort)"/>
@@ -513,7 +526,7 @@
                     
                     <xsl:sequence select="imf:create-debug-comment('Debuglocation 8',$debugging)"/>
 
-                    <ep:construct context="{@context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+                    <ep:construct context="{@context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}" addedLevel="yes">
                         <ep:name>object</ep:name>
                         <ep:tech-name>object</ep:tech-name>
                         <xsl:sequence
@@ -589,7 +602,7 @@
                         
                     <xsl:sequence select="imf:create-debug-comment('Debuglocation 10',$debugging)"/>
 
-                    <ep:construct context="{@context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+                    <ep:construct context="{@context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}" addedLevel="yes">
                         <ep:name>object</ep:name>
                         <ep:tech-name>object</ep:tech-name>
                         <xsl:sequence
@@ -663,7 +676,7 @@
                         
                     <xsl:sequence select="imf:create-debug-comment('Debuglocation 12',$debugging)"/>
 
-                    <ep:construct context="{@context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
+                    <ep:construct context="{@context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}" addedLevel="yes">
                         <ep:name>object</ep:name>
                         <ep:tech-name>object</ep:tech-name>
                         <xsl:sequence
@@ -784,12 +797,25 @@
             <xsl:when test="$currentMessage = ''">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 14',$debugging)"/>
                 
-                <xsl:variable name="docs">
-                    <imvert:complete-documentation>
-                        <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
-                    </imvert:complete-documentation>
+                <xsl:variable name="doc">
+                    <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DEFINITION')))">
+                        <ep:definition>
+                            <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DEFINITION')"/>
+                        </ep:definition>
+                    </xsl:if>
+                    <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DESCRIPTION')))">
+                        <ep:description>
+                            <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DESCRIPTION')"/>
+                        </ep:description>
+                    </xsl:if>
+                    <xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')))">
+                        <ep:pattern>
+                            <ep:p>
+                                <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')"/>
+                            </ep:p>
+                        </ep:pattern>
+                    </xsl:if>
                 </xsl:variable>
-                <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
                 
                 <!-- Location: 'ep:construct1'
 						    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-structure.xsl' on the location with the id 'ep:constructRef1'. -->
@@ -827,7 +853,7 @@
                                 select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($berichtType,(),(),(),$subsetLabel))" />
                         </xsl:otherwise>
                     </xsl:choose>
-                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
                     <xsl:choose>
                         
                         <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
@@ -1093,13 +1119,26 @@
                                <xsl:otherwise><xsl:value-of select="ep:tech-name"/></xsl:otherwise>
                            </xsl:choose>
                        </xsl:variable>
-                       <xsl:variable name="docs">
-                           <imvert:complete-documentation>
-                               <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
-                           </imvert:complete-documentation>
-                       </xsl:variable>
-                       <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
-                       
+                        <xsl:variable name="doc">
+                            <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DEFINITION')))">
+                                <ep:definition>
+                                    <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DEFINITION')"/>
+                                </ep:definition>
+                            </xsl:if>
+                            <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DESCRIPTION')))">
+                                <ep:description>
+                                    <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DESCRIPTION')"/>
+                                </ep:description>
+                            </xsl:if>
+                            <xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')))">
+                                <ep:pattern>
+                                    <ep:p>
+                                        <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')"/>
+                                    </ep:p>
+                                </ep:pattern>
+                            </xsl:if>
+                        </xsl:variable>
+                        
                        <!-- Location: 'ep:construct3'
 						    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef3'. -->
  
@@ -1140,7 +1179,7 @@
                                             select="imf:create-output-element('ep:tech-name', imf:create-Grp-complexTypeName($berichtType,$type,$tech-name,$verwerkingsModus,$subsetLabel))" />
                                     </xsl:otherwise>
                                 </xsl:choose>
-                               <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+                                <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
                                <!-- ep:authentiek element is used to determine if a 'authentiek' element needs to be generated in the messages in the next higher level. -->
                                <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
                                <!-- ep:inOnderzoek element is used to determine if a 'inOnderzoek' element needs to be generated in the messages in the next higher level. -->
@@ -1209,12 +1248,25 @@
 
                         <xsl:sequence select="imf:create-debug-comment('Debuglocation 17',$debugging)"/>
                         
-                        <xsl:variable name="docs">
-                           <imvert:complete-documentation>
-                               <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
-                           </imvert:complete-documentation>
-                       </xsl:variable>
-                       <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
+                        <xsl:variable name="doc">
+                            <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DEFINITION')))">
+                                <ep:definition>
+                                    <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DEFINITION')"/>
+                                </ep:definition>
+                            </xsl:if>
+                            <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DESCRIPTION')))">
+                                <ep:description>
+                                    <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DESCRIPTION')"/>
+                                </ep:description>
+                            </xsl:if>
+                            <xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')))">
+                                <ep:pattern>
+                                    <ep:p>
+                                        <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')"/>
+                                    </ep:p>
+                                </ep:pattern>
+                            </xsl:if>
+                        </xsl:variable>
                         
                        <!-- Location: 'ep:construct1'
 						    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-structure.xsl' on the location with the id 'ep:constructRef1'. -->
@@ -1232,11 +1284,9 @@
                                     <xsl:attribute name="version" select="ep:version"/>
                                 </xsl:otherwise>
                             </xsl:choose>
-                            <!--xsl:if test="$debugging"-->
-                                <ep:suppliers>
-                                    <xsl:copy-of select="$suppliers"/>
-                                </ep:suppliers>
-                            <!--/xsl:if-->
+                            <ep:suppliers>
+                                <xsl:copy-of select="$suppliers"/>
+                            </ep:suppliers>
                             <!-- The value of the tech-name is dependant on the availability of an alias. -->
                             <!--xsl:sequence select="imf:create-debug-comment($elementName,$debugging)"/-->
                             <xsl:choose>
@@ -1261,7 +1311,7 @@
                                        select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($berichtType,$verwerkingsModus,(),(),$subsetLabel))" />
                                </xsl:otherwise>
                            </xsl:choose>
-                           <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+                            <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
                            <xsl:choose>
                                 
                                <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
@@ -1562,16 +1612,28 @@
                            <xsl:sequence select="imf:create-debug-track(concat('Constructing global materieleHistorie groupconstruct: ',$construct/imvert:name),$debugging)"/>
                             <xsl:sequence select="imf:create-debug-comment('Debuglocation 19',$debugging)"/>
                             
-                           <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
                            <xsl:variable name="type" select="'Grp'"/>
                            <xsl:variable name="tech-name" select="ep:tech-name"/>
-                           <xsl:variable name="docs">
-                               <imvert:complete-documentation>
-                                   <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
-                               </imvert:complete-documentation>
-                           </xsl:variable>
-                           <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
-                           
+                            <xsl:variable name="doc">
+                                <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DEFINITION')))">
+                                    <ep:definition>
+                                        <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DEFINITION')"/>
+                                    </ep:definition>
+                                </xsl:if>
+                                <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DESCRIPTION')))">
+                                    <ep:description>
+                                        <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DESCRIPTION')"/>
+                                    </ep:description>
+                                </xsl:if>
+                                <xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')))">
+                                    <ep:pattern>
+                                        <ep:p>
+                                            <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')"/>
+                                        </ep:p>
+                                    </ep:pattern>
+                                </xsl:if>
+                            </xsl:variable>
+                            
                            <!-- Location: 'ep:construct4'
 						    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef4'. -->
                            
@@ -1592,7 +1654,7 @@
                                     select="imf:create-output-element('ep:name', imf:create-Grp-complexTypeName($berichtType,$type,$tech-name,$historieType,$subsetLabel))" />
                                 <xsl:sequence
                                    select="imf:create-output-element('ep:tech-name', imf:create-Grp-complexTypeName($berichtType,$type,$tech-name,$historieType,$subsetLabel))" />
-                               <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+                                <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
                                <ep:seq>
                                    
                                    <!-- ROME: M.b.v. het XML attribute 'indicatieMaterieleHistorie' en 'indicatieFormeleHistorie' op het huidige rough-message construct 
@@ -1647,13 +1709,26 @@
                            <xsl:sequence select="imf:create-debug-track(concat('Constructing global materieleHistorie construct: ',$construct/imvert:name),$debugging)"/>
                             <xsl:sequence select="imf:create-debug-comment('Debuglocation 20',$debugging)"/>
                             
-                            <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
-                            <xsl:variable name="docs">
-                               <imvert:complete-documentation>
-                                   <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
-                               </imvert:complete-documentation>                           </xsl:variable>
-                           <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
-                           
+                            <xsl:variable name="doc">
+                                <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DEFINITION')))">
+                                    <ep:definition>
+                                        <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DEFINITION')"/>
+                                    </ep:definition>
+                                </xsl:if>
+                                <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DESCRIPTION')))">
+                                    <ep:description>
+                                        <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DESCRIPTION')"/>
+                                    </ep:description>
+                                </xsl:if>
+                                <xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')))">
+                                    <ep:pattern>
+                                        <ep:p>
+                                            <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')"/>
+                                        </ep:p>
+                                    </ep:pattern>
+                                </xsl:if>
+                            </xsl:variable>
+                            
                            
                            <!-- Location: 'ep:construct2'
 						    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef2'. -->
@@ -1694,7 +1769,7 @@
                                            select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($berichtType,$historieType,(),(),$subsetLabel))" />
                                    </xsl:otherwise>
                                </xsl:choose>
-                               <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+                                <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
                                <xsl:choose>
                                    <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
                                    
@@ -1854,16 +1929,28 @@
                            <xsl:sequence select="imf:create-debug-track(concat('Constructing global formeleHistorie groupconstruct: ',$construct/imvert:name),$debugging)"/>
                             <xsl:sequence select="imf:create-debug-comment('Debuglocation 22',$debugging)"/>
                             
-                            <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
                             <xsl:variable name="type" select="'Grp'"/>
                            <xsl:variable name="tech-name" select="ep:tech-name"/>
-                           <xsl:variable name="docs">
-                               <imvert:complete-documentation>
-                                   <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
-                               </imvert:complete-documentation>
-                           </xsl:variable>
-                           <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
-                           
+                            <xsl:variable name="doc">
+                                <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DEFINITION')))">
+                                    <ep:definition>
+                                        <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DEFINITION')"/>
+                                    </ep:definition>
+                                </xsl:if>
+                                <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DESCRIPTION')))">
+                                    <ep:description>
+                                        <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DESCRIPTION')"/>
+                                    </ep:description>
+                                </xsl:if>
+                                <xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')))">
+                                    <ep:pattern>
+                                        <ep:p>
+                                            <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')"/>
+                                        </ep:p>
+                                    </ep:pattern>
+                                </xsl:if>
+                            </xsl:variable>
+                            
                            <!-- Location: 'ep:construct5'
 						    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef5'. -->
                            
@@ -1884,7 +1971,7 @@
                                     select="imf:create-output-element('ep:name', imf:create-Grp-complexTypeName($berichtType,$type,$tech-name,$historieType,$subsetLabel))" />
                                 <xsl:sequence
                                    select="imf:create-output-element('ep:tech-name', imf:create-Grp-complexTypeName($berichtType,$type,$tech-name,$historieType,$subsetLabel))" />
-                               <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+                                <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
                                <ep:seq>
                                    <!-- The uml attributes, of the uml group, for which historieFormeel is applicable are placed here. -->
                                    <xsl:apply-templates select="$construct"
@@ -1932,15 +2019,27 @@
                            <xsl:sequence select="imf:create-debug-track(concat('Constructing global formeleHistorie construct: ',$construct/imvert:name),$debugging)"/>
                             <xsl:sequence select="imf:create-debug-comment('Debuglocation 23',$debugging)"/>
                             
-                            <!--xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages-doc)"/-->
-                            <xsl:variable name="docs">
-                               <imvert:complete-documentation>
-                                   <xsl:copy-of select="imf:get-compiled-documentation($construct)"/>
-                               </imvert:complete-documentation>
-                           </xsl:variable>
-                           <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
-                           
-                           <!-- Location: 'ep:construct6'
+                            <xsl:variable name="doc">
+                                <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DEFINITION')))">
+                                    <ep:definition>
+                                        <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DEFINITION')"/>
+                                    </ep:definition>
+                                </xsl:if>
+                                <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DESCRIPTION')))">
+                                    <ep:description>
+                                        <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DESCRIPTION')"/>
+                                    </ep:description>
+                                </xsl:if>
+                                <xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')))">
+                                    <ep:pattern>
+                                        <ep:p>
+                                            <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')"/>
+                                        </ep:p>
+                                    </ep:pattern>
+                                </xsl:if>
+                            </xsl:variable>
+
+                            <!-- Location: 'ep:construct6'
 						    Matches with ep:constructRef created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:constructRef6'. -->
                            
                             <ep:construct type="complexData">
@@ -1979,7 +2078,7 @@
                                            select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($berichtType,$historieType,(),(),$subsetLabel))" />
                                    </xsl:otherwise>
                                </xsl:choose>
-                               <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+                                <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
                                <xsl:choose>
                                    <!-- When the uml class is a superclass of other uml classes it's content is determined by processing the subclasses. -->
                                    
@@ -2284,7 +2383,7 @@
             </xsl:when>
             <xsl:when test="not(imf:capitalize($compiled-name) = 'Berichtcode' or imf:capitalize($compiled-name) = 'IndicatorOvername')">
                 <xsl:if test="$global-e-types-allowed = 'Ja'">
-                    <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}">
+                    <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}" addedLevel="yes">
                         <xsl:sequence select="imf:create-output-element('ep:name', concat(imf:capitalize($compiled-name),'-e'))"/>
                         <xsl:sequence select="imf:create-output-element('ep:tech-name', concat(imf:capitalize($compiled-name),'-e'))"/>
                         <ep:type-name>
@@ -2401,8 +2500,6 @@
                 <xsl:otherwise><xsl:value-of select="$verwerkingsModusOfConstructRef"/></xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <xsl:sequence select="imf:create-debug-comment(concat('Typering: ',$typering,' verwerkingsModus: ',$verwerkingsModus,' verwerkingsModusOfConstructRef: ',$verwerkingsModusOfConstructRef),$debugging)"/>
-        
         <xsl:variable name="historyName">
             <xsl:choose>
                 <xsl:when test="$generateHistorieConstruct = 'MaterieleHistorie' and contains($indicatieMaterieleHistorie,'Ja')">-historieMaterieel</xsl:when>
@@ -2425,9 +2522,6 @@
         <xsl:variable name="name" select="imvert:name/@original"/>
         <xsl:variable name="elementName" select="imvert:name"/>
         <xsl:variable name="subsetLabel" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-SUBSETLABEL')"/>
-        
-        <xsl:sequence select="imf:create-debug-comment(concat('typering for construct with id ',$type-id, ' and parent construct (',$currentMessage//ep:*[generate-id() = $generated-id]/ep:id,') with generated-id ',$generated-id,': ',$typering),$debugging)"/>
-        
         <xsl:variable name="tech-name">
             <xsl:choose>
                 <xsl:when
@@ -2467,12 +2561,25 @@
         <xsl:variable name="min-occurs" select="imvert:min-occurs-source"/>
         <xsl:variable name="position" select="imvert:position"/>
         <xsl:variable name="id" select="imvert:id"/>
-        <xsl:variable name="docs">
-            <imvert:complete-documentation>
-                <xsl:copy-of select="imf:get-compiled-documentation(.)"/>
-            </imvert:complete-documentation>
+        <xsl:variable name="doc">
+            <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DEFINITION')))">
+                <ep:definition>
+                    <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DEFINITION')"/>
+                </ep:definition>
+            </xsl:if>
+            <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DESCRIPTION')))">
+                <ep:description>
+                    <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DESCRIPTION')"/>
+                </ep:description>
+            </xsl:if>
+            <xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')))">
+                <ep:pattern>
+                    <ep:p>
+                        <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')"/>
+                    </ep:p>
+                </ep:pattern>
+            </xsl:if>
         </xsl:variable>
-        <xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
         <xsl:variable name="tvs" as="element(ep:tagged-values)">
             <ep:tagged-values>
                 <xsl:copy-of select="imf:get-compiled-tagged-values(., true())"/>
@@ -2519,7 +2626,7 @@
                         </xsl:if>
                         <xsl:sequence select="imf:create-output-element('ep:name', $tech-name)"/>
                         <xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
-                        <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+                        <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
                         
                         <!-- ROME: Het is de vraag of een relatie als authentiek bestempelt kan worden. Zo niet dan moet onderstaande sequence verwijderd worden. -->
                         <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
@@ -2617,7 +2724,7 @@
                     </xsl:if>
                     <xsl:sequence select="imf:create-output-element('ep:name', $tech-name)"/>
                     <xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
-                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
                     
                     <!-- ROME: Het is de vraag of een relatie als authentiek bestempelt kan worden. Zo niet dan moet onderstaande sequence verwijderd worden. -->
                     <xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
@@ -2735,7 +2842,7 @@
                 <xsl:variable name="construct-Prefix" select="$suppliers//supplier[1]/@verkorteAlias"/>
                 
                 <xsl:if test="$global-e-types-allowed = 'Ja'">
-                    <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}">
+                    <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}" addedLevel="yes">
                         <xsl:sequence select="imf:create-output-element('ep:name', concat(imf:capitalize(imvert:baretype),'-e'))"/>
                         <xsl:sequence select="imf:create-output-element('ep:tech-name', concat(imf:capitalize(imvert:baretype),'-e'))"/>
                         <ep:type-name>
@@ -2756,7 +2863,7 @@
                                Een wildcard mag immers alleen bij een stringtype opgenomen worden en alleen binnen selecties.
                                Nog geen idee hoe ik kan bepalen of een GML type String based is.-->
                     <xsl:if test="(empty($nillable-patroon) or $min-length = 0)">
-                        <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}">
+                        <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}" addedLevel="yes">
                             <xsl:sequence select="imf:create-output-element('ep:name', concat(imf:capitalize(imvert:baretype),'Vraag-e'))"/>
                             <xsl:sequence select="imf:create-output-element('ep:tech-name', concat(imf:capitalize(imvert:baretype),'Vraag-e'))"/>
                             <ep:type-name>
@@ -2853,7 +2960,7 @@
                 </xsl:variable>
                 
                 <xsl:if test="$global-e-types-allowed = 'Ja'">
-                    <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}" imvert:checksum="{concat($checksum-string,'-simpleContentcomplexData')}">
+                    <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}" imvert:checksum="{concat($checksum-string,'-simpleContentcomplexData')}" addedLevel="yes">
                         <xsl:sequence select="imf:create-output-element('ep:name', concat($tokens[1],'-e'))"/>
                         <xsl:sequence select="imf:create-output-element('ep:tech-name', concat($tokens[1],'-e'))"/>
                         <ep:type-name imvert:checksum="{$checksum-string}">

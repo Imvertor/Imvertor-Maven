@@ -147,10 +147,13 @@
 	<xsl:template match="ep:message">
 		<xsl:sequence select="imf:create-debug-comment('Debuglocation 5000', $debugging)"/>
 		<xs:element name="{ep:tech-name}">
-			<xsl:if test="ep:documentation">
+			<xsl:if test="ep:documentation/*">
 				<xs:annotation>
 					<xs:documentation>
-						<xsl:value-of select="ep:documentation"/>
+						<!--xsl:value-of select="ep:documentation"/-->
+						<xsl:apply-templates select="ep:documentation/ep:definition"/>
+						<xsl:apply-templates select="ep:documentation/ep:description"/>
+						<xsl:apply-templates select="ep:documentation/ep:pattern"/>
 					</xs:documentation>
 				</xs:annotation>
 			</xsl:if>
@@ -160,7 +163,30 @@
 			</xs:complexType>
 		</xs:element>
 	</xsl:template>
-
+	
+	<xsl:template match="ep:definition">
+		<xsl:text>DEFINITIE: </xsl:text><xsl:apply-templates select="ep:p"/><xsl:text>
+</xsl:text>
+	</xsl:template>
+	
+	<xsl:template match="ep:description">
+		<xsl:text>OMSCHRIJVING: </xsl:text><xsl:apply-templates select="ep:p"/><xsl:text>
+</xsl:text>
+	</xsl:template>
+	
+	<xsl:template match="ep:pattern">
+		<xsl:text>PATROON: </xsl:text><xsl:apply-templates select="ep:p"/><xsl:text>
+</xsl:text>
+	</xsl:template>
+	
+	<xsl:template match="ep:p">
+		<xsl:value-of select="."/>
+		<xsl:choose>
+			<xsl:when test="following-sibling::ep:p"><xsl:text>
+</xsl:text></xsl:when>
+		</xsl:choose>
+	</xsl:template>
+	
 	<xsl:template match="ep:seq">
 		<xsl:if
 			test="ep:constructRef[not(@ismetadata)] | ep:construct[not(@ismetadata)] | ep:seq | ep:choice">
@@ -229,10 +255,12 @@
 					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
 					<xsl:sequence
 						select="imf:create-debug-comment('Debuglocation 5005', $debugging)"/>
-					<xsl:if test="ep:documentation">
+					<xsl:if test="ep:documentation/*">
 						<xs:annotation>
 							<xs:documentation>
-								<xsl:value-of select="ep:documentation"/>
+								<xsl:apply-templates select="ep:documentation/ep:definition"/>
+								<xsl:apply-templates select="ep:documentation/ep:description"/>
+								<xsl:apply-templates select="ep:documentation/ep:pattern"/>
 							</xs:documentation>
 						</xs:annotation>
 					</xsl:if>
@@ -244,10 +272,12 @@
 					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
 					<xsl:sequence
 						select="imf:create-debug-comment('Debuglocation 5006', $debugging)"/>
-					<xsl:if test="ep:documentation">
+					<xsl:if test="ep:documentation/*">
 						<xs:annotation>
 							<xs:documentation>
-								<xsl:value-of select="ep:documentation"/>
+								<xsl:apply-templates select="ep:documentation/ep:definition"/>
+								<xsl:apply-templates select="ep:documentation/ep:description"/>
+								<xsl:apply-templates select="ep:documentation/ep:pattern"/>
 							</xs:documentation>
 						</xs:annotation>
 					</xsl:if>
@@ -297,10 +327,12 @@
 					<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
 					<xsl:sequence
 						select="imf:create-debug-comment('Debuglocation 5006', $debugging)"/>
-					<xsl:if test="ep:documentation">
+					<xsl:if test="ep:documentation/*">
 						<xs:annotation>
 							<xs:documentation>
-								<xsl:value-of select="ep:documentation"/>
+								<xsl:apply-templates select="ep:documentation/ep:definition"/>
+								<xsl:apply-templates select="ep:documentation/ep:description"/>
+								<xsl:apply-templates select="ep:documentation/ep:pattern"/>
 							</xs:documentation>
 						</xs:annotation>
 					</xsl:if>
@@ -316,10 +348,12 @@
 							test="(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:enum) and ep:type-name and .//ep:construct[@ismetadata]">
 							<xsl:sequence
 								select="imf:create-debug-comment('Debuglocation 5007', $debugging)"/>
-							<xsl:if test="ep:documentation">
+							<xsl:if test="ep:documentation/*">
 								<xs:annotation>
 									<xs:documentation>
-										<xsl:value-of select="ep:documentation"/>
+										<xsl:apply-templates select="ep:documentation/ep:definition"/>
+										<xsl:apply-templates select="ep:documentation/ep:description"/>
+										<xsl:apply-templates select="ep:documentation/ep:pattern"/>
 									</xs:documentation>
 								</xs:annotation>
 							</xsl:if>
@@ -344,10 +378,12 @@
 							test="(ep:length or ep:max-length or ep:min-length or ep:max-value or ep:min-value or ep:fraction-digits or ep:formeel-patroon or ep:enum) and ep:type-name">
 							<xsl:sequence
 								select="imf:create-debug-comment('Debuglocation 5008', $debugging)"/>
-							<xsl:if test="ep:documentation">
+							<xsl:if test="ep:documentation/*">
 								<xs:annotation>
 									<xs:documentation>
-										<xsl:value-of select="ep:documentation"/>
+										<xsl:apply-templates select="ep:documentation/ep:definition"/>
+										<xsl:apply-templates select="ep:documentation/ep:description"/>
+										<xsl:apply-templates select="ep:documentation/ep:pattern"/>
 									</xs:documentation>
 								</xs:annotation>
 							</xsl:if>
@@ -422,10 +458,12 @@
 						<xsl:when test="$type-name and .//ep:construct[@ismetadata]">
 							<xsl:sequence
 								select="imf:create-debug-comment('Debuglocation 5009', $debugging)"/>
-							<xsl:if test="ep:documentation">
+							<xsl:if test="ep:documentation/*">
 								<xs:annotation>
 									<xs:documentation>
-										<xsl:value-of select="ep:documentation"/>
+										<xsl:apply-templates select="ep:documentation/ep:definition"/>
+										<xsl:apply-templates select="ep:documentation/ep:description"/>
+										<xsl:apply-templates select="ep:documentation/ep:pattern"/>
 									</xs:documentation>
 								</xs:annotation>
 							</xsl:if>
@@ -466,10 +504,12 @@
 						<xsl:when test="ep:type-name">
 							<xsl:sequence
 								select="imf:create-debug-comment('Debuglocation 5010', $debugging)"/>
-							<xsl:if test="ep:documentation">
+							<xsl:if test="ep:documentation/*">
 								<xs:annotation>
 									<xs:documentation>
-										<xsl:value-of select="ep:documentation"/>
+										<xsl:apply-templates select="ep:documentation/ep:definition"/>
+										<xsl:apply-templates select="ep:documentation/ep:description"/>
+										<xsl:apply-templates select="ep:documentation/ep:pattern"/>
 									</xs:documentation>
 								</xs:annotation>
 							</xsl:if>
@@ -506,10 +546,12 @@
 						<xsl:when test=".//ep:construct">
 							<xsl:sequence
 								select="imf:create-debug-comment('Debuglocation 5011', $debugging)"/>
-							<xsl:if test="ep:documentation">
+							<xsl:if test="ep:documentation/*">
 								<xs:annotation>
 									<xs:documentation>
-										<xsl:value-of select="ep:documentation"/>
+										<xsl:apply-templates select="ep:documentation/ep:definition"/>
+										<xsl:apply-templates select="ep:documentation/ep:description"/>
+										<xsl:apply-templates select="ep:documentation/ep:pattern"/>
 									</xs:documentation>
 								</xs:annotation>
 							</xsl:if>
@@ -525,10 +567,12 @@
 						<xsl:otherwise>
 							<xsl:sequence
 								select="imf:create-debug-comment('Debuglocation 5012', $debugging)"/>
-							<xsl:if test="ep:documentation">
+							<xsl:if test="ep:documentation/*">
 								<xs:annotation>
 									<xs:documentation>
-										<xsl:value-of select="ep:documentation"/>
+										<xsl:apply-templates select="ep:documentation/ep:definition"/>
+										<xsl:apply-templates select="ep:documentation/ep:description"/>
+										<xsl:apply-templates select="ep:documentation/ep:pattern"/>
 									</xs:documentation>
 								</xs:annotation>
 							</xsl:if>
@@ -566,10 +610,12 @@
 			<xsl:when test="ep:seq/ep:* or ep:choice/ep:*">
 				<xsl:sequence select="imf:create-debug-comment('Debuglocation 5013b', $debugging)"/>
 				<xs:complexType name="{ep:tech-name}">
-					<xsl:if test="ep:documentation">
+					<xsl:if test="ep:documentation/*">
 						<xs:annotation>
 							<xs:documentation>
-								<xsl:value-of select="ep:documentation"/>
+								<xsl:apply-templates select="ep:documentation/ep:definition"/>
+								<xsl:apply-templates select="ep:documentation/ep:description"/>
+								<xsl:apply-templates select="ep:documentation/ep:pattern"/>
 							</xs:documentation>
 						</xs:annotation>
 					</xsl:if>
@@ -618,10 +664,12 @@
 		<xsl:if test="ep:seq/ep:* or ep:choice/ep:*">
 			<xs:complexType>
 				<xsl:attribute name="name" select="ep:tech-name"/>
-				<xsl:if test="ep:documentation">
+				<xsl:if test="ep:documentation/*">
 					<xs:annotation>
 						<xs:documentation>
-							<xsl:value-of select="ep:documentation"/>
+						<xsl:apply-templates select="ep:documentation/ep:definition"/>
+						<xsl:apply-templates select="ep:documentation/ep:description"/>
+						<xsl:apply-templates select="ep:documentation/ep:pattern"/>
 						</xs:documentation>
 					</xs:annotation>
 				</xsl:if>
@@ -657,10 +705,12 @@
 				<xsl:sequence select="imf:create-debug-comment('Debuglocation 5015b', $debugging)"/>
 				<xs:complexType>
 					<xsl:attribute name="name" select="ep:tech-name"/>
-					<xsl:if test="ep:documentation">
+					<xsl:if test="ep:documentation/*">
 						<xs:annotation>
 							<xs:documentation>
-								<xsl:value-of select="ep:documentation"/>
+								<xsl:apply-templates select="ep:documentation/ep:definition"/>
+								<xsl:apply-templates select="ep:documentation/ep:description"/>
+								<xsl:apply-templates select="ep:documentation/ep:pattern"/>
 							</xs:documentation>
 						</xs:annotation>
 					</xsl:if>
@@ -676,10 +726,12 @@
 				<xsl:sequence select="imf:create-debug-comment('Debuglocation 5015a', $debugging)"/>
 				<xs:complexType>
 					<xsl:attribute name="name" select="ep:tech-name"/>
-					<xsl:if test="ep:documentation">
+					<xsl:if test="ep:documentation/*">
 						<xs:annotation>
 							<xs:documentation>
-								<xsl:value-of select="ep:documentation"/>
+						<xsl:apply-templates select="ep:documentation/ep:definition"/>
+						<xsl:apply-templates select="ep:documentation/ep:description"/>
+						<xsl:apply-templates select="ep:documentation/ep:pattern"/>
 							</xs:documentation>
 						</xs:annotation>
 					</xsl:if>
@@ -695,10 +747,12 @@
 				<xsl:sequence select="imf:create-debug-comment('Debuglocation 5015a', $debugging)"/>
 				<xs:complexType>
 					<xsl:attribute name="name" select="ep:tech-name"/>
-					<xsl:if test="ep:documentation">
+					<xsl:if test="ep:documentation/*">
 						<xs:annotation>
 							<xs:documentation>
-								<xsl:value-of select="ep:documentation"/>
+								<xsl:apply-templates select="ep:documentation/ep:definition"/>
+								<xsl:apply-templates select="ep:documentation/ep:description"/>
+								<xsl:apply-templates select="ep:documentation/ep:pattern"/>
 							</xs:documentation>
 						</xs:annotation>
 					</xsl:if>
@@ -809,10 +863,12 @@
 				</xsl:choose>
 				<xsl:attribute name="minOccurs" select="ep:min-occurs"/>
 				<xsl:attribute name="maxOccurs" select="ep:max-occurs"/>
-				<xsl:if test="ep:documentation">
+				<xsl:if test="ep:documentation/*">
 					<xs:annotation>
 						<xs:documentation>
-							<xsl:value-of select="ep:documentation"/>
+							<xsl:apply-templates select="ep:documentation/ep:definition"/>
+							<xsl:apply-templates select="ep:documentation/ep:description"/>
+							<xsl:apply-templates select="ep:documentation/ep:pattern"/>
 						</xs:documentation>
 					</xs:annotation>
 				</xsl:if>

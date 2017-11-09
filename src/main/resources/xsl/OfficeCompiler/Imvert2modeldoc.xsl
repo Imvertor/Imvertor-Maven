@@ -884,17 +884,6 @@
         </xsl:choose>
     </xsl:function>
     
-    <xsl:function name="imf:get-clean-documentation-string">
-        <xsl:param name="doc-string"/>
-        <xsl:variable name="r1" select="substring-after($doc-string,'&lt;memo&gt;')"/>
-        <xsl:variable name="r2" select="if (normalize-space($r1)) then $r1 else $doc-string"/>
-        <xsl:variable name="r3" select="if (starts-with($r2,'[newline]')) then substring($r2,10) else $r2"/>
-        <xsl:variable name="r4" select="replace($r3,'\[newline\]',' ')"/>
-        <xsl:variable name="r5" select="replace($r4,'&lt;.*?&gt;','')"/>
-        <xsl:variable name="r6" select="replace($r5,'Description:','')"/>
-        <xsl:value-of select="$r6"/>
-    </xsl:function>
-    
     <xsl:function name="imf:authentiek-is-derived">
         <xsl:param name="this"/>
         <xsl:if test="imf:get-formatted-tagged-value($this,'derived') = '1'">

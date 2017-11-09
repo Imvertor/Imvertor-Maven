@@ -1293,12 +1293,26 @@
 				<xsl:otherwise>no</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:variable name="docs">
-			<imvert:complete-documentation>
-				<xsl:copy-of select="imf:get-compiled-documentation(.)"/>
-			</imvert:complete-documentation>
+		<xsl:variable name="doc">
+			<xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DEFINITION')))">
+				<ep:definition>
+					<xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DEFINITION')"/>
+				</ep:definition>
+			</xsl:if>
+			<xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DESCRIPTION')))">
+				<ep:description>
+					<xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DESCRIPTION')"/>
+				</ep:description>
+			</xsl:if>
+			<xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')))">
+				<ep:pattern>
+					<ep:p>
+						<xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')"/>
+					</ep:p>
+				</ep:pattern>
+			</xsl:if>
 		</xsl:variable>
-		<xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
+		
 		<xsl:variable name="suppliers" as="element(ep:suppliers)">
 			<ep:suppliers>
 				<xsl:copy-of select="imf:get-UGM-suppliers(.)"/>
@@ -1404,7 +1418,7 @@
 							<ep:tagged-values>
 								<xsl:copy-of select="$tvs"/>
 								<ep:found-tagged-values>
-									<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+									<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
 									<xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
 									<xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
 									<xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
@@ -1418,7 +1432,7 @@
 						</xsl:if>
 						<xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
 						<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
-						<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+						<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
 						<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
 						<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
 						<xsl:sequence select="imf:create-output-element('ep:position', $position)"/>
@@ -1444,7 +1458,7 @@
 							<ep:tagged-values>
 								<xsl:copy-of select="$tvs"/>
 								<ep:found-tagged-values>
-									<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+									<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>									
 									<xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
 									<xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
 									<xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
@@ -1458,7 +1472,7 @@
 						</xsl:if>
 						<xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
 						<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
-						<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+						<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>						
 						<xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
 						<xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
 						<xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
@@ -1559,7 +1573,7 @@
 							<ep:tagged-values>
 								<xsl:copy-of select="$tvs"/>
 								<ep:found-tagged-values>
-									<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+									<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>									
 									<xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
 									<xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
 									<xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
@@ -1792,7 +1806,7 @@
 								</xsl:choose>
 							</xsl:otherwise>
 						</xsl:choose>
-						<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+						<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
 						<xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
 						<xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
 						<xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
@@ -1849,7 +1863,7 @@
 							</xsl:otherwise>
 						</xsl:choose>
 						<xsl:sequence select="imf:create-output-element('ep:type-modifier', $type-modifier)"/>
-						<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+						<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
 						<xsl:sequence select="imf:create-output-element('ep:authentiek', $authentiek)"/>
 						<xsl:sequence select="imf:create-output-element('ep:inOnderzoek', $inOnderzoek)"/>
 						<xsl:sequence select="imf:create-output-element('ep:kerngegeven', $matchgegeven)"/>
@@ -2053,12 +2067,25 @@
 				<xsl:copy-of select="imf:get-UGM-suppliers(.)"/>
 			</ep:suppliers>
 		</xsl:variable>
-		<xsl:variable name="docs">
-			<imvert:complete-documentation>
-				<xsl:copy-of select="imf:get-compiled-documentation(key('class',$type-id))"/>
-			</imvert:complete-documentation>
+		<xsl:variable name="doc">
+			<xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DEFINITION')))">
+				<ep:definition>
+					<xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DEFINITION')"/>
+				</ep:definition>
+			</xsl:if>
+			<xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DESCRIPTION')))">
+				<ep:description>
+					<xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DESCRIPTION')"/>
+				</ep:description>
+			</xsl:if>
+			<xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')))">
+				<ep:pattern>
+					<ep:p>
+						<xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')"/>
+					</ep:p>
+				</ep:pattern>
+			</xsl:if>
 		</xsl:variable>
-		<xsl:variable name="doc" select="imf:merge-documentation($docs)"/>
 		<xsl:variable name="subsetLabel" select="imf:get-most-relevant-compiled-taggedvalue(imf:get-association-construct-by-id(imvert:type-id,$packages-doc), '##CFG-TV-SUBSETLABEL')"/>		
 		<xsl:variable name="name">
 			<xsl:choose>
@@ -2144,7 +2171,7 @@
 							<!--ep:construct context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 								<ep:name>gerelateerde</ep:name>
 								<ep:tech-name>gerelateerde</ep:tech-name>
-								<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+								<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
 								<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)"/>
 								<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)"/>
 								<ep:position>1</ep:position>
@@ -2162,7 +2189,7 @@
 							<ep:construct context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 								<ep:name>gerelateerde</ep:name>
 								<ep:tech-name>gerelateerde</ep:tech-name>
-								<xsl:sequence select="imf:create-output-element('ep:documentation', $doc)"/>
+								<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
 								<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)"/>
 								<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)"/>
 								<ep:position>1</ep:position>
@@ -3693,15 +3720,28 @@
 		</xsl:if>
 	</xsl:function>
 
-	<!-- This function merges all documentation form the highest layer up to the current layer. -->
+	<!-- This function merges all documentation from the highest layer up to the current layer. -->
 	<xsl:function name="imf:merge-documentation">
 		<xsl:param name="this"/>
-		<xsl:for-each select="$this//imvert:documentation">
-			<xsl:sort select="@level" data-type="number" order="descending"/>
-			<!--xsl:copy-of select="xhtml:p"/-->
-			<!--xsl:copy-of select="p"/-->
-			<xsl:copy-of select="*"/>
+		<xsl:param name="tv-id"/>
+		
+		
+		<xsl:variable name="all-tv" select="imf:get-all-compiled-tagged-values($this,false())"/>
+		<xsl:variable name="vals" select="$all-tv[@id = $tv-id]"/>
+		<xsl:for-each select="$vals">
+			<xsl:variable name="p" select="normalize-space(imf:get-clean-documentation-string(imf:get-tv-value.local(.)))"/>
+			<xsl:if test="not($p = '')">
+				<ep:p subpath="{imf:get-subpath(@project,@application,@nrelease)}">
+					<xsl:value-of select="$p"/>
+				</ep:p>
+			</xsl:if>
 		</xsl:for-each>
 	</xsl:function>
 
+
+	<xsl:function name="imf:get-tv-value.local">
+		<xsl:param name="tv-element" as="element(tv)?"/>
+		<xsl:value-of select="if (normalize-space($tv-element/@original-value)) then $tv-element/@original-value else $tv-element/@value"/>
+	</xsl:function>	
+	
 </xsl:stylesheet>
