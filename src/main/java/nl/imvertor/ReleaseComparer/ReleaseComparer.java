@@ -21,7 +21,6 @@
 package nl.imvertor.ReleaseComparer;
 
 import java.io.File;
-import java.net.URL;
 
 import org.apache.log4j.Logger;
 
@@ -95,7 +94,7 @@ public class ReleaseComparer extends Step {
 		
 		if (releaseCheck) { // a request is made to produce a release comparison
 			String releaseString = configurator.getParm("cli","comparewith",false);
-			Boolean release = releaseString != null && !releaseString.equals("00000000");
+			//Boolean release = releaseString != null && !releaseString.equals("00000000");
 			
 			String curReleaseString = configurator.getParm("appinfo","release");
 			

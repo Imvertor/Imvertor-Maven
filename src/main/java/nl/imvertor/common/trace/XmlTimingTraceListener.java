@@ -142,10 +142,8 @@ public class XmlTimingTraceListener implements TraceListener {
             writer.writeEndElement();
             writer.writeEndDocument();
             writer.close();
-        } catch (XPathException e) {
-            System.err.println("Unable to transform timing profile information: " + e.getMessage());
         } catch (TransformerException e) {
-            System.err.println("Unable to render timing profile information: " + e.getMessage());
+            System.err.println("Unable to transform or render timing profile information: " + e.getMessage());
         } catch (XMLStreamException e) {
             System.err.println("Unable to generate timing profile information: " + e.getMessage());
         }

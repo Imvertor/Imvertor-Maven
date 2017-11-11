@@ -23,11 +23,9 @@ package nl.imvertor.common.file;
 import java.io.File;
 
 import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.riot.RiotException;
 import org.apache.jena.util.FileUtils;
 import org.apache.log4j.Logger;
-import org.topbraid.shacl.util.ModelPrinter;
 import org.topbraid.shacl.validation.ValidationUtil;
 import org.topbraid.spin.util.JenaUtil;
 
@@ -94,7 +92,7 @@ public class ShaclFile extends RdfFile {
 		
 				// Perform the validation of everything, using the data model
 				// also as the shapes model - you may have them separated
-				Resource report = ValidationUtil.validateModel(dataModel, dataShape, true);
+				ValidationUtil.validateModel(dataModel, dataShape, true); // returns Resource report
 		
 				/* This will return a small report on the status of the model. Format:
 				

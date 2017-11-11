@@ -267,7 +267,6 @@ public class Configurator {
 	 * @throws IOException 
 	 */
 	public AnyFolder getApplicationFolder(String releaseNumber) throws IOException, ConfiguratorException {
-		String sep = File.separator;
 		return getApplicationFolder(getParm("appinfo","project-name"),getParm("appinfo","application-name"),releaseNumber);
 	}
 

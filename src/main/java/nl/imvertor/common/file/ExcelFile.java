@@ -29,7 +29,6 @@ import org.apache.log4j.Logger;
 import jxl.Workbook;
 import jxl.demo.XML;
 import nl.imvertor.common.Configurator;
-import nl.imvertor.common.Transformer;
 
 public class ExcelFile extends AnyFile {
 

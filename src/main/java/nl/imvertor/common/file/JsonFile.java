@@ -193,7 +193,7 @@ public class JsonFile extends AnyFile {
 	 */
 	public static boolean validate(Configurator configurator, String jsonString) throws IOException, ConfiguratorException {
 		try {
-			JSONObject json = new JSONObject(jsonString); // Convert text to object
+			new JSONObject(jsonString); // Convert text to object
 		} catch (Exception e) {
 			configurator.getRunner().error(logger, "Invalid Json: \"" + e.getMessage() + "\"", null, "", "IJ");
 			return false;

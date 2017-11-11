@@ -20,14 +20,11 @@
 
 package nl.imvertor.OfficeCompiler;
 
-import java.io.File;
-
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
-import nl.imvertor.common.file.ExecFile;
 import nl.imvertor.common.file.FtpFolder;
 import nl.imvertor.common.file.GithubFile;
 

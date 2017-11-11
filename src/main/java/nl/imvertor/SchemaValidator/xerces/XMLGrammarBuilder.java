@@ -25,7 +25,6 @@ import org.apache.xerces.parsers.XMLGrammarPreparser;
 import org.apache.xerces.util.SymbolTable;
 import org.apache.xerces.util.XMLGrammarPoolImpl;
 import org.apache.xerces.xni.XNIException;
-import org.apache.xerces.xni.grammars.Grammar;
 import org.apache.xerces.xni.grammars.XMLGrammarDescription;
 import org.apache.xerces.xni.parser.XMLErrorHandler;
 import org.apache.xerces.xni.parser.XMLInputSource;
@@ -136,7 +135,7 @@ public class XMLGrammarBuilder implements XMLErrorHandler {
     public void parseXSD(String xsdFile) throws XNIException, IOException {
     	preparser.registerPreparser(XMLGrammarDescription.XML_SCHEMA, null);
     	preparePreparser();
-        Grammar g = preparser.preparseGrammar(XMLGrammarDescription.XML_SCHEMA, stringToXIS(xsdFile));
+        preparser.preparseGrammar(XMLGrammarDescription.XML_SCHEMA, stringToXIS(xsdFile)); // ignore Grammar g result
         finishPreparser();
     }
     public void parseByDTD(String xmlFile, String dtdFile) throws XNIException, IOException {
