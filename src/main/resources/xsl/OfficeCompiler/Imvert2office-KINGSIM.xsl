@@ -33,7 +33,7 @@
     -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
-    <!--<xsl:import href="Imvert2validation-common.xsl"/>-->
+    <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     
     <xsl:output method="html" indent="yes" omit-xml-declaration="yes"/>
     
