@@ -80,7 +80,8 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	protected static final String EXTERNAL_PARAMETER_ENTITIES_ID = "http://xml.org/sax/features/external-parameter-entities";
 	protected static final String EXTERNAL_GENERAL_ENTITIES_ID = "http://xml.org/sax/features/external-general-entities";
 	protected static final String IGNORE_DTD_FEATURE_ID = "http://apache.org/xml/features/nonvalidating/load-external-dtd"; // http://www.isocra.com/2006/05/making-xerces-ignore-a-dtd/
-	
+	protected static final String ALLOW_MULTIPLE_NS_IMPORTS = "http://apache.org/xml/features/honour-all-schemaLocations"; // https://marc.info/?l=xerces-j-dev&m=108734363319300
+		
 	protected static final String LEXICAL_HANDLER_PROPERTY_ID = "http://xml.org/sax/properties/lexical-handler";
 	protected static final String DEFAULT_PARSER_NAME = "org.apache.xerces.parsers.SAXParser";
 
@@ -100,6 +101,7 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	public boolean auto = false; // automagically determine how to parse this file?
 	public boolean external = false; // externe entiteiten ophalen?
 	public boolean inquiry = false; // zoek alleen maar naar informatie over dit file?
+	public boolean allownsimports = false; // sta toe dat dezelfde namespace in meerdere schemas worden gedeclareerd
 
 	private Document dom = null;
 	
@@ -196,6 +198,7 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		docFactory.setFeature(SCHEMA_FULL_CHECKING_FEATURE_ID, schemacheck);
 		docFactory.setFeature(EXTERNAL_GENERAL_ENTITIES_ID, external);
 		docFactory.setFeature(EXTERNAL_PARAMETER_ENTITIES_ID, external);
+		docFactory.setFeature(ALLOW_MULTIPLE_NS_IMPORTS, allownsimports);
 		
 		DocumentBuilder db = docFactory.newDocumentBuilder();
 		return db.parse(in);
