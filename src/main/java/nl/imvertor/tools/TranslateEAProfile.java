@@ -2,7 +2,7 @@ package nl.imvertor.tools;
 
 import java.util.HashMap;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.OOXmlFile;
