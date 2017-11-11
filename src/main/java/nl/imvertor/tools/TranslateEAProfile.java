@@ -1,6 +1,5 @@
 package nl.imvertor.tools;
 
-import java.io.File;
 import java.util.HashMap;
 
 import org.apache.commons.lang.StringUtils;
@@ -9,7 +8,6 @@ import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.OOXmlFile;
 import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.file.XslFile;
-import nl.imvertor.common.file.ZipFile;
 
 public class TranslateEAProfile {
 

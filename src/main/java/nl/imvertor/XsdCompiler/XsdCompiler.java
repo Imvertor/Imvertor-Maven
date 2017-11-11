@@ -20,9 +20,6 @@
 
 package nl.imvertor.XsdCompiler;
 
-import java.io.File;
-import java.util.HashMap;
-
 import javax.xml.xpath.XPathConstants;
 
 import org.apache.commons.lang3.StringUtils;

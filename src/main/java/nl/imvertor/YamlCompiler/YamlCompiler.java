@@ -21,7 +21,6 @@
 package nl.imvertor.YamlCompiler;
 
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;

@@ -62,7 +62,6 @@ public class Runner {
 	private String[] debugmodes = new String[0]; // debugmodes are codes; initially empty.
 	
 	private Integer appPhase = APPLICATION_PHASE_UNKNOWN;
-	private Boolean releasing = false;
 	private Boolean mayRelease = true;
 
 	private boolean internetAvailable = false;

@@ -85,7 +85,7 @@ public class ImvertorFolderSerializer extends ExtensionFunctionDefinition {
 				String folderpath = Transformer.getStringvalue(arguments[0]);
 				String filepath = Transformer.getStringvalue(arguments[1]);
 				// TODO add this for speed: constraint to specific file info
-				String constraints = Transformer.getStringvalue(arguments[2]);
+				//String constraints = Transformer.getStringvalue(arguments[2]);
 				
 				if (filepath.startsWith("file:/")) filepath = filepath.substring(6);
 				if (folderpath.startsWith("file:/")) folderpath = folderpath.substring(6);

@@ -67,8 +67,8 @@ public class GithubFile extends HttpFile {
 		String SHA_TREE = null;
 		String SHA_NEW_TREE = null;
 		String SHA_NEW_COMMIT = null;
-		String SHA_FINALIZE = null;
-		String CONTENT = null;
+		//String SHA_FINALIZE = null;
+		//String CONTENT = null;
 		
 		String payload = null;
 		
@@ -111,7 +111,7 @@ public class GithubFile extends HttpFile {
 			payload = "{\"sha\": \""+SHA_NEW_COMMIT+"\"}";
 			object = postToRemote(USER, REPO, OAUTH,"git/refs/heads/" + BRANCH, payload);
 			if (getStatus() < 400) 
-				SHA_FINALIZE = object.getJSONObject("object").getString("sha");
+				object.getJSONObject("object").getString("sha"); // could assign to SHA_FINALIZE but is not used.
 			
 			break;
 				

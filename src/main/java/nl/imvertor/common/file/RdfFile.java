@@ -9,13 +9,10 @@ import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.impl.LinkedHashModel;
 import org.eclipse.rdf4j.rio.ParseErrorListener;
 import org.eclipse.rdf4j.rio.RDFFormat;
-import org.eclipse.rdf4j.rio.RDFHandlerException;
-import org.eclipse.rdf4j.rio.RDFParseException;
 import org.eclipse.rdf4j.rio.RDFParser;
 import org.eclipse.rdf4j.rio.Rio;
 import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 
-import nl.imvertor.OfficeCompiler.OfficeCompiler;
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.exceptions.ConfiguratorException;
 
@@ -26,7 +23,7 @@ public class RdfFile extends AnyFile {
 	protected static final Logger logger = Logger.getLogger(RdfFile.class);
 
 	private boolean isOpen = false;
-	private Model model;
+	//private Model model;
 	
 	public static int EXPORT_FORMAT_XML = 0;
 	public static int EXPORT_FORMAT_XMLABBREVIATED = 1;
@@ -35,7 +32,7 @@ public class RdfFile extends AnyFile {
 	public static int EXPORT_FORMAT_TRIG = 4;
 	public static int EXPORT_FORMAT_N3 = 5;
 	
-	private String[] map = {"RDF/XML", "RDF/XML-ABBREV", "N-TRIPLE", "TURTLE", "TriG", "N3"};
+	//private String[] map = {"RDF/XML", "RDF/XML-ABBREV", "N-TRIPLE", "TURTLE", "TriG", "N3"};
 	
 	public RdfFile(String pathname) {
 		super(pathname);
@@ -98,7 +95,7 @@ public class RdfFile extends AnyFile {
 	public void close() {
 		
 		// release memory
-		model = null;
+		//model = null;
 		
 		isOpen = false;
 	}

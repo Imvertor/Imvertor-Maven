@@ -20,16 +20,12 @@
 
 package nl.imvertor.ShaclCompiler;
 
-import java.io.File;
-
 import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
-import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
-import nl.imvertor.common.file.RdfFile;
 import nl.imvertor.common.file.ShaclFile;
 import nl.imvertor.common.file.XmlFile;
 

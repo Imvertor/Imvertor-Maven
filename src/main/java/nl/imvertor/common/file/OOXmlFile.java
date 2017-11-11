@@ -3,7 +3,6 @@ package nl.imvertor.common.file;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.attribute.FileAttribute;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
