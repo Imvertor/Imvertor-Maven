@@ -21,9 +21,11 @@
 package nl.imvertor.XsdCompiler;
 
 import java.io.File;
+import java.util.HashMap;
 
 import javax.xml.xpath.XPathConstants;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.w3c.dom.NodeList;
 
@@ -277,8 +279,8 @@ public class XsdCompiler extends Step {
 		boolean valid = true;
 		
 		// Create the folder; it is not expected to exist yet.
-		AnyFolder xsdFolder = new AnyFolder(configurator.getParm("system","work-xsd-folder-path"));
-		xsdFolder.mkdirs();
+		AnyFolder xsdTempFolder = new AnyFolder(configurator.getParm("system","work-xsd-folder-path"));
+		xsdTempFolder.mkdirs();
 				
 		//TODO let the stylesheet operate on system, not on model file. Try to determine if model file is required altogether.
 		valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_METAMODEL_KINGUGM_XSD_PREFORM", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_PREFORM_XSLPATH","system/work-config-path");
@@ -297,24 +299,31 @@ public class XsdCompiler extends Step {
 		// fetch all checksum info from parms file and store to the local blackboard.
 		valid = valid && transformer.transformStep("system/work-config-path","properties/IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH_LOCAL", "properties/IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XSLPATH");
 		
+		// pretty print the schema's just generated
+		AnyFolder xsdFolder = new AnyFolder(configurator.getParm("system","work-xsd-folder-path") + ".cleaned");
+		prettyPrintXml(xsdTempFolder, xsdFolder);
+		xsdTempFolder.deleteDirectory();
+		xsdFolder.renameTo(xsdTempFolder); // now "xsd""
+		
 		// copy the onderlaag; this is a copy of all stuff in that folder
 		AnyFolder onderlaag = new AnyFolder(configurator.getParm("properties", "KINGUGM_STUF_ONDERLAAG_0302"));
 		onderlaag.copy(configurator.getParm("system", "work-xsd-folder-path"));
 		
-		// copy all schema's compiled for the supplier UGMs.
-		// these never replace the schema's just compiled.
+		// copy all schema's compiled for the supplier UGMs. 
+		// This may be 0 or more.
+		// These never replace the schema's just compiled.
 		if (configurator.isTrue("appinfo", "xsd-is-subset")) {
-			String projectName = configurator.getParm("appinfo","subset-supplier-project");
-			String modelName = configurator.getParm("appinfo","subset-supplier-name");
-			String releaseNumber = configurator.getParm("appinfo","subset-supplier-release");
-					
-			AnyFolder supplier = new AnyFolder(configurator.getApplicationFolder(projectName,modelName,releaseNumber) + "/xsd"); // D:/data/project/Imvertor/Imvertor-OS-output/KING/applications
-			supplier.copy(configurator.getParm("system", "work-xsd-folder-path"),false);
-			
+			String[] projectNames = StringUtils.split(configurator.getParm("appinfo","subset-supplier-project"),';');
+			String[] modelNames = StringUtils.split(configurator.getParm("appinfo","subset-supplier-name"),';');
+			String[] releaseNumbers = StringUtils.split(configurator.getParm("appinfo","subset-supplier-release"),';');
+			for (int i = 0; i < projectNames.length; i++) {
+				AnyFolder supplier = new AnyFolder(configurator.getApplicationFolder(projectNames[i],modelNames[i],releaseNumbers[i]) + "/xsd"); 
+				supplier.copy(configurator.getParm("system", "work-xsd-folder-path"),false);
+			}
 		}
 		// tell that a schema has been created
 		configurator.setParm("system","schema-created","true");
-				
+						
 		return valid;
 	}
 	
@@ -354,5 +363,16 @@ public class XsdCompiler extends Step {
 		transformer.setXslParm("local-schema-mapping-file", (new AnyFile(configurator.getParm("properties","LOCAL_SCHEMA_MAPPING_FILE"))).toURI().toString());
 		transformer.transformFolder(xsdFolder, targetXsdFolder, ".*\\.xsd", xslFile);
 	}
+	
+	/*
+	 * Clean all XSD's, reformatting them as a neat tree
+	 */
+	private void prettyPrintXml(AnyFolder xsdFolder, AnyFolder targetXsdFolder) throws Exception {
+		XslFile prettyPrinter = new XslFile(configurator.getBaseFolder(),"xsl/common/tools/PrettyPrinter.xsl");
+		Transformer transformer = new Transformer();
+		transformer.setXslParm("xml-mixed","false");
+		transformer.transformFolder(xsdFolder, targetXsdFolder, ".*\\.xsd", prettyPrinter);
+	}
+	
 	
 }

@@ -78,11 +78,11 @@
          <required>false</required>
       </cli-parm>
       <cli-parm>
-         <!-- required by KING approach -->
          <name>endproductbaseconfig</name>
          <arg>File name</arg><!-- REDMINE #487934 PATH BECOMES FILE NAME -->
-         <tip>Name of the Excel file holding the base product configuration (KING)</tip>
+         <tip>Name of the Excel file holding the base product configuration</tip>
          <required>false</required>
+         <owner>KING</owner>
       </cli-parm>
       <cli-parm>
          <!-- required by Kadaster approach -->
@@ -109,7 +109,13 @@
          <tip>A path within the result XSD folder to which the XSDs for the model provided are written.</tip>
          <required>true</required>
       </cli-parm>
-      
+      <cli-parm>
+         <name>createxsdrestrictions</name>
+         <arg>yes|no</arg>
+         <tip>Yes if restrictions of a supplier model must be inserted in the XML schema.</tip>
+         <required>false</required>
+         <owner>KING</owner>
+      </cli-parm>
    </cli-parms>
   
    <properties>

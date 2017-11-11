@@ -47,8 +47,6 @@
     
     <xsl:variable name="metamodel" select="imf:extract-main-metamodel(/*)"/>
     
-    <xsl:variable name="version" select="/imvert:packages/imvert:version"/> <!-- neem aan dat UGM versies van clients en suppliers gelijk oplopen, bijv. 0320  -->
-
     <xsl:template match="/imvert:packages">
         
         <!-- plaats alle subset info -->
@@ -60,6 +58,7 @@
         <xsl:variable name="cc2" as="element(imvert:package)*">
             <xsl:for-each-group select="$cc1/imvert:class" group-by="imvert:subset-info/imvert:effective-prefix">
                 <xsl:variable name="prefix" select="current-grouping-key()"/>
+                <xsl:variable name="version" select="current-group()[1]/imvert:subset-info/imvert:effective-version"/>
                 <imvert:package xsd-prefix="{$prefix}" xsd-version="{$version}" xsd-target-namespace="http://www.stufstandaarden.nl/basisschema/{$prefix}{$version}" >
                     <xsl:sequence select="current-group()"/>   
                 </imvert:package>
@@ -96,9 +95,13 @@
         <xsl:sequence select="imf:set-config-string('appinfo','xsd-version',imvert:version)"/>
         
         <xsl:variable name="supplier" select="imvert:supplier[imvert:supplier-project = current()/imvert:project]"/>
-        <xsl:sequence select="imf:set-config-string('appinfo','subset-supplier-project',$supplier/imvert:supplier-project)"/>
-        <xsl:sequence select="imf:set-config-string('appinfo','subset-supplier-name',$supplier/imvert:supplier-name)"/>
-        <xsl:sequence select="imf:set-config-string('appinfo','subset-supplier-release',$supplier/imvert:supplier-release)"/>
+        <!-- 
+            de volgende leveren één of meerdere suppliers op, gescheiden door ; 
+            subset supplier project is altijd UGM
+        -->
+        <xsl:sequence select="imf:set-config-string('appinfo','subset-supplier-project',string-join($supplier/imvert:supplier-project,';'))"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','subset-supplier-name',string-join($supplier/imvert:supplier-name,';'))"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','subset-supplier-release',string-join($supplier/imvert:supplier-release,';'))"/>
         
     </xsl:template>
     
@@ -129,6 +132,8 @@
         
         <xsl:variable name="client-label" select="imf:get-most-relevant-compiled-taggedvalue($construct,'##CFG-TV-SUBSETLABEL')"/>
         <xsl:variable name="client-prefix" select="imf:get-tagged-value(root($construct)/imvert:packages,'##CFG-TV-VERKORTEALIAS')"/>
+
+        <xsl:variable name="my-version" select="root($construct)/imvert:packages/imvert:version"/>
         
         <xsl:variable name="label" as="xs:string">
             <xsl:choose>
@@ -149,6 +154,7 @@
                     <xsl:sequence select="imf:create-output-element('imvert:is-subsetting','false')"/>
                     <xsl:sequence select="imf:create-output-element('imvert:effective-name',$label)"/>
                     <xsl:sequence select="imf:create-output-element('imvert:effective-prefix',$client-prefix)"/>
+                    <xsl:sequence select="imf:create-output-element('imvert:effective-version',$my-version)"/>
                 </imvert:subset-info> 
             </xsl:when>
             <xsl:when test="exists($supplier-constructs-same-metamodel)">
@@ -163,8 +169,10 @@
                 <xsl:variable name="is-subset" select="exists($supplier-additional-prop)"/>
                 <xsl:variable name="is-restriction" select="$is-subset or $construct/self::imvert:association"/> <!-- associaties zijn altijd een subset -->
                 
-                <xsl:variable name="supplier-prefix" select="imf:get-tagged-value($supplier-constructs-same-metamodel[1]/ancestor::imvert:packages[last()],'##CFG-TV-VERKORTEALIAS')"/>
-               
+                <xsl:variable name="root" select="$supplier-constructs-same-metamodel[1]/ancestor::imvert:packages[last()]"/>
+                <xsl:variable name="supplier-prefix" select="imf:get-tagged-value($root,'##CFG-TV-VERKORTEALIAS')"/>
+                <xsl:variable name="effective-version" select="$root/imvert:version"/>
+                
                 <!-- Wanneer subset, dan NPS-btr ander NPS. Want het betreft hoe dan ook een link naar het supplier schema -->
                 <xsl:variable name="effective-name" select="string-join(($label,if ($is-restriction) then $client-label else ()),'-')"/>
                 
@@ -190,6 +198,10 @@
                     <xsl:sequence select="imf:create-output-element('imvert:supplier-prefix',$supplier-prefix)"/>
                     <xsl:sequence select="imf:create-output-element('imvert:effective-name',$effective-name)"/>
                     <xsl:sequence select="imf:create-output-element('imvert:effective-prefix',$supplier-prefix)"/>
+                    <xsl:sequence select="imf:create-output-element('imvert:effective-version',$effective-version)"/>
+                    <add>
+                        <xsl:value-of select="$supplier-additional-prop"/>
+                    </add>
                 </imvert:subset-info>
                 
             </xsl:when>
@@ -199,6 +211,7 @@
                     <xsl:sequence select="imf:create-output-element('imvert:is-subsetting','false')"/>
                     <xsl:sequence select="imf:create-output-element('imvert:effective-name',$label)"/>
                     <xsl:sequence select="imf:create-output-element('imvert:effective-prefix',$client-prefix)"/>
+                    <xsl:sequence select="imf:create-output-element('imvert:effective-version',$my-version)"/>
                 </imvert:subset-info> 
             </xsl:when>
             <xsl:otherwise>
@@ -209,6 +222,7 @@
                     <xsl:sequence select="imf:create-output-element('imvert:client-prefix',$client-prefix)"/>
                     <xsl:sequence select="imf:create-output-element('imvert:effective-name',$label)"/>
                     <xsl:sequence select="imf:create-output-element('imvert:effective-prefix',$client-prefix)"/>
+                    <xsl:sequence select="imf:create-output-element('imvert:effective-version',$my-version)"/>
                 </imvert:subset-info>
             </xsl:otherwise>
         </xsl:choose>

@@ -68,13 +68,13 @@
         <xsl:variable name="xsd-application-folder-path" select="imf:get-config-string('system','xsd-application-folder-path')"/>
         
         <!-- als dit schema includeert, plaats dan de naam van het geincludeerde file voor de naam van dit file -->
-        <xsl:variable name="file-name-suffix" select="if (exists(@includes)) then concat('_', @includes) else ''"/>
+        <xsl:variable name="file-name-prefix" select="if (exists(@includes)) then concat(@i-am,'_') else ''"/>
         
         <!-- TODO deze file namen samenstellen op basis van info opgenomen in de vorige stappen.-->
         
-        <xsl:variable name="schemafile-ent-name" select="concat(@prefix,@version,$file-name-suffix,'_ent_basis.xsd')"/>
+        <xsl:variable name="schemafile-ent-name" select="concat($file-name-prefix,@prefix,@version,'_ent_basis.xsd')"/>
         <xsl:variable name="schemafile-ent" select="concat($xsd-application-folder-path,'/', $schemafile-ent-name)"/>
-        <xsl:variable name="schemafile-dat-name" select="concat(@prefix,@version,$file-name-suffix,'_datatypes.xsd')"/>
+        <xsl:variable name="schemafile-dat-name" select="concat($file-name-prefix,@prefix,@version,'_datatypes.xsd')"/>
         <xsl:variable name="schemafile-dat" select="concat($xsd-application-folder-path,'/', $schemafile-dat-name)"/>
         
         <!-- select the ents parts -->
