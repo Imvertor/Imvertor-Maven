@@ -109,6 +109,7 @@ public class SchemaValidator extends Step {
 				vl.addAll(validateSchemasSub(new AnyFolder(file)));
 			} else if (file.getName().toLowerCase().endsWith(".xsd")) {
 				XsdFile schema = new XsdFile(file);
+				schema.allownsimports = true;
 				Vector<ErrorHandlerMessage> v = schema.validateGrammar(true, true, true);
 				vl.addAll(v);
 			}
