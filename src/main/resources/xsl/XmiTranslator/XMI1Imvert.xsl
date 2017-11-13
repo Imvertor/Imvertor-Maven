@@ -249,7 +249,7 @@
                         <xsl:for-each select="$stubs">
                            <xsl:variable name="id" select="string(@xmi.id)"/>
                             <xsl:variable name="attribute-end" select="exists($xmi-document//UML:Attribute/UML:StructuralFeature.type/UML:Classifier[@xmi.idref = $id])"/>
-                            <xsl:variable name="association-end" select="exists($xmi-document//UML:AssociationEnd[@type = $id]/UML:ModelElement.taggedValue/UML:TaggedValue[@tag='ea_end' and @value = 'source'])"/>
+                            <xsl:variable name="association-end" select="exists($xmi-document//UML:AssociationEnd[@type = $id]/UML:ModelElement.taggedValue/UML:TaggedValue[@tag='ea_end' and @value = 'target'])"/>
                             <xsl:variable name="generalization-end" select="exists($xmi-document//UML:Generalization[@supertype = $id])"/>
                             <xsl:choose>
                                 <xsl:when test="$attribute-end or $association-end or $generalization-end">
