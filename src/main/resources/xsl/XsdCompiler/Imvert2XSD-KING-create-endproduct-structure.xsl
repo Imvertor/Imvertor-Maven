@@ -724,7 +724,7 @@
 		<xsl:variable name="min-occurs" select="imvert:min-occurs-source"/>
 		<xsl:variable name="position" select="imvert:position"/>
 		<xsl:variable name="id" select="imvert:id"/>
-		<xsl:variable name="matchgegeven" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIEKERNGEGEVEN')"/>
+		<xsl:variable name="matchgegeven" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIEMATCHGEGEVEN')"/>
 		<!--xsl:if test="empty($matchgegeven)">
 			<xsl:sequence select="imf:msg(.,'WARN','Unable to get the tagged value Indicatie kerngegeven. The object might not be defined in the supplier (UGM).','')"/>
 		</xsl:if-->
@@ -1323,7 +1323,7 @@
 				<xsl:copy-of select="imf:get-compiled-tagged-values(., true())"/>
 			</ep:tagged-values>
 		</xsl:variable>
-		<xsl:variable name="matchgegeven" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIEKERNGEGEVEN')"/>
+		<xsl:variable name="matchgegeven" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIEMATCHGEGEVEN')"/>
 		<!-- ROME: Met de volgende variabelen wordt bepaald of materiele en/of formele historie voor het attribute van toepassing is.
 				   Indien het attribute in een groep zit waarvoor historie niet van toepassing is maar op een van de groepsattributen wel 
 				   dan is in beide variabelen de eerste when tak van toepassing en wordt daarmee bepaald of de betreffende historietype  
