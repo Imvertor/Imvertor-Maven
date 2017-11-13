@@ -114,7 +114,11 @@
             <xsl:when test="$construct = 'association'">Association</xsl:when>
             <xsl:when test="$construct = 'enumeration'">Enumeration</xsl:when>
             <xsl:when test="$construct = 'associationend'">AssociationEnd</xsl:when>
+            <xsl:when test="$construct = 'associationrole'">AssociationRole</xsl:when>
             <xsl:when test="$construct = 'generalization'">Generalization</xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:msg($construct,'FATAL','Unknown stereotype appliance: [1]', $construct)"/>
+            </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
     
