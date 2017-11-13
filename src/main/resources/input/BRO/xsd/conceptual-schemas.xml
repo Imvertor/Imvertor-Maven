@@ -150,6 +150,10 @@
             </construct>
             <construct>
                 <name>LinearRing</name>
+                <desc>
+                    LinearRing is in GML / ISO19136 gedefinieerd. Het heeft geen corresponderende klasse in ISO19107 maar is in GML toegevoegd als convenience type, 
+                    een simpelere vorm van GM_Ring en formeel een subklasse daarvan. 
+                </desc>
                 <catalog-entry>#LinearRing</catalog-entry>
                 <xsd-type name="LinearRing" asAttributeDesignation="complextype" asAttribute="LinearRingType"/>
                 <managed-ids/>
