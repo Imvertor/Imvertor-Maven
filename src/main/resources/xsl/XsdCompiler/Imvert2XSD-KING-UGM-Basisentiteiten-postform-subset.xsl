@@ -69,9 +69,10 @@
         
         <xsl:variable name="supplier-prefix" select="../imvert:subset-info/imvert:supplier-prefix"/>
         <xsl:variable name="supplier-label" select="../imvert:subset-info/imvert:supplier-label"/>
-        <xsl:variable name="supplier-suffix" select="if (ends-with(@name,'matchgegevens')) then '-matchgegevens' else '-basis'"/>
+       
+        <xsl:variable name="is-matchgegevens" select="ends-with(@name,'matchgegevens')"/>
         
-       <xsl:choose>
+        <xsl:choose>
             <xsl:when test="not($is-subsetting)">
                 <!-- het hele mechanisme van subsetting speelt niet want geen UGM dat teruggaat op UGM -->
                 <xsl:next-match/>
@@ -80,21 +81,17 @@
                <xsl:sequence select="imf:create-debug-comment(concat('A subset and restriction class, but cli/createxsdrestrictions is false, so do not restrict: ', @name))"/>
                <xsl:next-match/>
            </xsl:when>
+           <xsl:when test="$is-restriction and $is-matchgegevens">
+               <xsl:sequence select="imf:create-debug-comment(concat('Matchgegevens, so do not restrict: ', @name))"/>
+               <xsl:next-match/>
+           </xsl:when>
            <xsl:when test="$is-restriction">
                 <xsl:sequence select="imf:create-debug-comment(concat('A subset and restriction class: ', @name))"/>
                 <xs:complexType name="{@name}">
                     <xs:complexContent>
-                        <xs:restriction base="{$supplier-prefix}:{$supplier-label}{$supplier-suffix}">
-                            <xsl:choose>
-                                <xsl:when test="ends-with(@name,'matchgegevens')">
-                                    <xsl:sequence select="imf:create-debug-comment(concat('TODO matchgegevens: ', @name))"/>
-                                    <!-- ignore content for now -->  
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <!-- om dat heten restrictie betreft moet alles worden omgezet naar de supplier namespace. -->
-                                    <xsl:apply-templates mode="subset-supplier"/>
-                                </xsl:otherwise>
-                            </xsl:choose>
+                        <xs:restriction base="{$supplier-prefix}:{$supplier-label}-basis">
+                            <!-- om dat heten restrictie betreft moet alles worden omgezet naar de supplier namespace. -->
+                            <xsl:apply-templates mode="subset-supplier"/>
                         </xs:restriction>
                     </xs:complexContent>
                 </xs:complexType>        

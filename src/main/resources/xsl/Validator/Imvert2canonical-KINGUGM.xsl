@@ -82,6 +82,9 @@
         <xsl:variable name="tagged-values-migrated" as="element(imvert:tagged-value)*">
             <xsl:for-each select="imvert:tagged-value">
                 <xsl:choose>
+                    <xsl:when test="@id = 'CFG-TV-INDICATIEMATCHGEGEVEN' and ../imvert:tagged-value/@id = 'CFG-TV-INDICATIEKERNGEGEVEN'">
+                        <!-- skip, als kerngegeven opgegegen let dan niet op matchgegeven -->
+                    </xsl:when>
                     <xsl:when test="@id = 'CFG-TV-INDICATIEKERNGEGEVEN'">
                         <imvert:tagged-value id="CFG-TV-INDICATIEMATCHGEGEVEN">
                             <imvert:name origibal="Indicatie matchgegeven">Indicatie matchgegeven</imvert:name>

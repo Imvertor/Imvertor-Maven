@@ -498,45 +498,51 @@
         
         <xsl:sequence select="imf:create-debug-comment(concat('mode-global-gegevensgroeptype Groepsattribuutsoort # ',@display-name))"/>
         
-        <xsl:variable name="declaration">
-            <xs:complexType name="{imf:capitalize($compiled-name)}{imf:get-effective-suffix(.,$matchgegevens)}">
-                <xsl:variable name="seq" as="element(xs:sequence)">
-                    <xs:sequence minOccurs="0">
-                        <xsl:sequence select="imf:create-debug-comment('mode-global-gegevensgroeptype (Attributes)')"/>
-                        <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-attribute">
-                            <xsl:with-param name="matchgegevens" select="$matchgegevens"/>
-                        </xsl:apply-templates>
-                        <xsl:sequence select="imf:create-debug-comment('mode-global-gegevensgroeptype (Groepen)')"/>
-                        <xsl:apply-templates select="imvert:associations/imvert:association[imvert:aggregation = 'composite']" mode="mode-local-composition">
-                            <xsl:with-param name="matchgegevens" select="$matchgegevens"/>
-                            <xsl:sort select="@type-display-name"/><!-- de naam van de groep als basis voor opeenvolging -->
-                        </xsl:apply-templates>
-                        <xsl:sequence select="imf:create-debug-comment('mode-global-gegevensgroeptype (Associations)')"/>
-                        <xsl:apply-templates select="imvert:associations/imvert:association[not(imvert:aggregation = 'composite')]" mode="mode-local-association">
-                            <xsl:with-param name="matchgegevens" select="$matchgegevens"/>
-                            <xsl:with-param name="richting">uitgaand</xsl:with-param>
-                            <xsl:sort select="imvert:name"/>
-                        </xsl:apply-templates>
-                    </xs:sequence>
-                </xsl:variable>
-                <xsl:choose>
-                    <xsl:when test="$matchgegevens and exists($seq/*)"> <!-- Bug #489153 -->
-                        <xsl:sequence select="imf:create-debug-comment('Bug #489153')"/>
-                        <xs:complexContent>
-                            <xs:restriction base="{imf:get-effective-prefix(.)}:{imf:capitalize($compiled-name)}{imf:get-effective-suffix(.,false())}">
-                                <xsl:sequence select="$seq"/>
-                            </xs:restriction>
-                        </xs:complexContent>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:sequence select="$seq"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-                
-            </xs:complexType>
+        <xsl:variable name="seq" as="element(xs:sequence)">
+            <xs:sequence minOccurs="0">
+                <xsl:sequence select="imf:create-debug-comment('mode-global-gegevensgroeptype (Attributes)')"/>
+                <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-attribute">
+                    <xsl:with-param name="matchgegevens" select="$matchgegevens"/>
+                </xsl:apply-templates>
+                <xsl:sequence select="imf:create-debug-comment('mode-global-gegevensgroeptype (Groepen)')"/>
+                <xsl:apply-templates select="imvert:associations/imvert:association[imvert:aggregation = 'composite']" mode="mode-local-composition">
+                    <xsl:with-param name="matchgegevens" select="$matchgegevens"/>
+                    <xsl:sort select="@type-display-name"/><!-- de naam van de groep als basis voor opeenvolging -->
+                </xsl:apply-templates>
+                <xsl:sequence select="imf:create-debug-comment('mode-global-gegevensgroeptype (Associations)')"/>
+                <xsl:apply-templates select="imvert:associations/imvert:association[not(imvert:aggregation = 'composite')]" mode="mode-local-association">
+                    <xsl:with-param name="matchgegevens" select="$matchgegevens"/>
+                    <xsl:with-param name="richting">uitgaand</xsl:with-param>
+                    <xsl:sort select="imvert:name"/>
+                </xsl:apply-templates>
+            </xs:sequence>
         </xsl:variable>
-        
-        <xsl:sequence select="imf:create-subset-class-marker(.,$declaration)"/>
+     
+         <xsl:choose>
+             <xsl:when test="$matchgegevens and empty($seq/*)">
+                 <xsl:sequence select="imf:create-debug-comment('Matchgegevens requested, but none found.')"/>
+             </xsl:when>
+             <xsl:otherwise>
+                 <xsl:variable name="declaration">
+                     <xs:complexType name="{imf:capitalize($compiled-name)}{imf:get-effective-suffix(.,$matchgegevens)}">
+                         <xsl:choose>
+                             <xsl:when test="$matchgegevens and exists($seq/*)">
+                                 <xsl:sequence select="imf:create-debug-comment('Matchgegevens requested, some found.')"/>
+                                 <xs:complexContent>
+                                     <xs:restriction base="{imf:get-effective-prefix(.)}:{imf:capitalize($compiled-name)}{imf:get-effective-suffix(.,false())}">
+                                         <xsl:sequence select="$seq"/>
+                                     </xs:restriction>
+                                 </xs:complexContent>
+                             </xsl:when>
+                             <xsl:otherwise>
+                                 <xsl:sequence select="$seq"/>
+                             </xsl:otherwise>
+                         </xsl:choose>
+                     </xs:complexType>
+                 </xsl:variable>
+                 <xsl:sequence select="imf:create-subset-class-marker(.,$declaration)"/>
+             </xsl:otherwise>
+         </xsl:choose>
     </xsl:template>
     
     <xsl:template match="imvert:class" mode="mode-global-complextype">

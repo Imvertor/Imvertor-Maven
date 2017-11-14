@@ -50,6 +50,20 @@
                 <value default="yes">Nee</value>
             </declared-values>
         </tv>
+        <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIEKERNGEGEVEN"><!-- TODO remove! -->
+            <name lang="nl">Indicatie kerngegeven</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo required="no">stereotype-name-relatieklasse</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+            </declared-values>
+        </tv>
         <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONAUTHENTIC">
             <name lang="nl">Indicatie authentiek</name>
             <derive>yes</derive>
