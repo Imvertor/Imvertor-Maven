@@ -20,7 +20,9 @@
 
 package nl.imvertor.YamlCompiler;
 
+import org.apache.jena.sparql.function.library.leviathan.cartesian;
 import org.apache.log4j.Logger;
+import org.json.JSONException;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
@@ -96,16 +98,18 @@ public class YamlCompiler extends Step {
 			// validate
 			String hc = headerFile.getContent();
 			String bc = bodyFile.getContent();
-			
 			succeeds = succeeds && YamlFile.validate(configurator, hc);
 			succeeds = succeeds && JsonFile.validate(configurator, bc);
 			
-			if (succeeds) {
+			// in all cases copy results to app folder
+					if (succeeds) 
 				yamlFile.setContent(hc + JsonFile.prettyPrint(bc));
-				// copy to the app folder
-				XmlFile appYamlFile = new XmlFile(yamlFolder,"yaml.ttl");
-				yamlFile.copyFile(appYamlFile);
-			} 
+			else 
+				yamlFile.setContent(hc + bc);
+		
+			// copy to the app folder
+			XmlFile appYamlFile = new XmlFile(yamlFolder,"yaml.ttl");
+			yamlFile.copyFile(appYamlFile);
 		} 
 		configurator.setParm("system","yaml-created",succeeds);
 		
