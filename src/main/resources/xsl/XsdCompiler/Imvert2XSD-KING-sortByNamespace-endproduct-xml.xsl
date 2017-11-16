@@ -63,9 +63,10 @@
         <xsl:for-each-group select="ep:*[name() = 'ep:message' or name() = 'ep:construct']" group-by="@prefix">
             <xsl:sequence select="imf:create-debug-comment('Debuglocation 3003',$debugging)"/>
 
+            <xsl:variable name="group" select="current-group()"/>
             <xsl:variable name="groupPrefix" select="current-grouping-key()"/>
-            <xsl:variable name="groupNamespaceId" select="../ep:construct[@prefix = $groupPrefix and @namespaceId and @namespaceId!=''][1]/@namespaceId"/>
-            <xsl:variable name="groupVersion" select="../ep:construct[@prefix = $groupPrefix and @version and @version!=''][1]/@version"/>
+            <xsl:variable name="groupNamespaceId" select="($group//ep:*[@prefix = $groupPrefix and normalize-space(@namespaceId)])[1]/@namespaceId"/>
+            <xsl:variable name="groupVersion" select=" ($group//ep:*[@prefix = $groupPrefix and normalize-space(@version)])[1]/@version"/>
             <ep:message-set prefix="{$groupPrefix}">
                 <xsl:choose>
                     <xsl:when test="$kv-prefix = $groupPrefix">
