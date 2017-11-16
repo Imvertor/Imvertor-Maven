@@ -47,6 +47,7 @@
     <xsl:include href="Imvert-common-uri.xsl"/>
     <xsl:include href="Imvert-common-keys.xsl"/>
     <xsl:include href="Imvert-common-trace.xsl"/>
+    <xsl:include href="Imvert-common-debug.xsl"/>
     
     <xsl:include href="../external/relpath_util.xsl"/>
     <xsl:include href="../external/functx.xsl"/>

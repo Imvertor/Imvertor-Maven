@@ -34,4 +34,11 @@
         <xsl:sequence select="ext:imvertorExpathWrite($file-path,$xml-contents)"/>
     </xsl:function>
     
+    <xsl:function name="imf:expath-write" as="xs:boolean?">
+        <xsl:param name="file-path"/>
+        <xsl:param name="xml-contents"/>
+        <xsl:param name="output-parameters"/>
+        <xsl:sequence select="ext:imvertorExpathWrite($file-path,$xml-contents,$output-parameters)"/>
+    </xsl:function>
+    
 </xsl:stylesheet>
