@@ -72,6 +72,12 @@
          <required>false</required>
       </cli-parm>
       <cli-parm>
+         <name>cleanupschemas</name>
+         <arg>yes|no</arg>
+         <tip>Yes if schemas should be indented and cleared of insignificant whitespace</tip>
+         <required>false</required>
+      </cli-parm>
+      <cli-parm>
          <name>nilapproach</name>
          <arg>att|elm</arg>
          <tip>Specify how nillable constructs must be represented: as a counter-element (default), or as attribute</tip>

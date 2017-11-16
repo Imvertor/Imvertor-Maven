@@ -145,23 +145,25 @@
         </xsl:variable>
         
         <xsl:result-document href="{$my-fullpath}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
-            <xsl:copy>
-                <xsl:copy-of select="@*"/>
-                <xsl:for-each select="$imports[self::namespace]">
-                    <xsl:namespace name="{@prefix}" select="@uri"/>
-                </xsl:for-each>
-                <xsl:apply-templates select="xs:annotation"/>
-                <xsl:sequence select="$imports[self::xs:import]"/>
-                <xsl:apply-templates select="node()[empty(self::xs:annotation)]"/>
-            </xsl:copy>
+            <xsl:variable name="doc">
+                <xsl:copy>
+                    <xsl:copy-of select="@*"/>
+                    <xsl:for-each select="$imports[self::namespace]">
+                        <xsl:namespace name="{@prefix}" select="@uri"/>
+                    </xsl:for-each>
+                    <xsl:apply-templates select="xs:annotation"/>
+                    <xsl:sequence select="$imports[self::xs:import]"/>
+                    <xsl:apply-templates select="node()[empty(self::xs:annotation)]"/>
+                </xsl:copy>
+            </xsl:variable>
+            <xsl:sequence select="if (imf:boolean(imf:get-config-string('cli','cleanupschemas','no'))) then imf:pretty-print($doc,false()) else $doc"/>
         </xsl:result-document>
        
     </xsl:template>
         
-    <xsl:template match="node()|@*" mode="#all">
+    <xsl:template match="node()|@*">
         <xsl:copy>
-            <xsl:apply-templates select="@*" mode="#current"/>
-            <xsl:apply-templates select="node()" mode="#current"/>
+            <xsl:apply-templates select="node()|@*"/>
         </xsl:copy>
     </xsl:template>
     

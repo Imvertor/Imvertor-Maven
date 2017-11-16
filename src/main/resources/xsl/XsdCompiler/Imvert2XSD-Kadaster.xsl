@@ -777,7 +777,7 @@
         
         <xsl:variable name="data-location" select="imf:get-appinfo-location($this)"/>
         
-        <mark nillable="{$is-nillable}" nilreason="{$has-nilreason}">
+        <mark approach="elm" nillable="{$is-nillable}" nilreason="{$has-nilreason}">
             <xsl:choose>
             <!-- any type, i.e. #any -->
             <xsl:when test="$is-any">
@@ -1286,7 +1286,9 @@
         <xsl:sequence select="imf:create-doc-element('xs:appinfo','http://www.imvertor.org/schema-info/phase',$this/imvert:phase)"/>
         <xsl:sequence select="imf:create-doc-element('xs:appinfo','http://www.imvertor.org/schema-info/release',imf:get-release($this))"/> 
         <xsl:sequence select="imf:create-doc-element('xs:appinfo','http://www.imvertor.org/schema-info/generated',$generation-date)"/> 
-        <xsl:sequence select="imf:create-doc-element('xs:appinfo','http://www.imvertor.org/schema-info/svn',concat($char-dollar,'Id',$char-dollar))"/>
+        <xsl:sequence select="imf:create-doc-element('xs:appinfo','http://www.imvertor.org/schema-info/generator',$imvertor-version)"/>
+        <xsl:sequence select="imf:create-doc-element('xs:appinfo','http://www.imvertor.org/schema-info/owner',$owner-name)"/> 
+        <!--<xsl:sequence select="imf:create-doc-element('xs:appinfo','http://www.imvertor.org/schema-info/svn',concat($char-dollar,'Id',$char-dollar))"/>-->
     </xsl:function>
     
     <xsl:function name="imf:get-appinfo-location" as="node()*">

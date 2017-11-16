@@ -104,10 +104,10 @@
     
     <!-- =========== common ================== -->
     
-    <xsl:template match="node()|@*" mode="#all">
+    <xsl:template match="node()|@*">
         <xsl:copy>
-            <xsl:apply-templates select="@*" mode="#current"/>
-            <xsl:apply-templates select="node()" mode="#current"/>
+            <xsl:apply-templates select="@*"/>
+            <xsl:apply-templates select="node()"/>
         </xsl:copy>
     </xsl:template>
     
