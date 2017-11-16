@@ -128,8 +128,8 @@
             'Identification attribute is not marked as ID')"/>
         
         <xsl:sequence select="imf:report-warning(., 
-            (imvert:is-id = 'true' and not(imvert:stereotype=imf:get-config-stereotypes('stereotype-name-identificatie'))), 
-            'Attribute is marked as ID but is not stereotyped as [1]', imf:get-config-stereotypes('stereotype-name-identificatie'))"/>
+            (imvert:is-id = 'true' and not(imvert:stereotype=imf:get-config-stereotypes('stereotype-name-identification'))), 
+            'Attribute is marked as ID but is not stereotyped as [1]', imf:get-config-stereotypes('stereotype-name-identification'))"/>
                 
         <xsl:next-match/>
     </xsl:template>

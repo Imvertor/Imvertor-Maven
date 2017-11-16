@@ -307,45 +307,12 @@
         </stereo>
     
         <!-- generic -->
-
-        <stereo id="stereotype-name-identificatie">
-            <name lang="nl">Identificatie</name>
-            <name lang="en">Identification</name>
-            <construct>attribute</construct>
-        </stereo>
-        <stereo id="stereotype-name-koppelklasse">
-            <name lang="nl">Koppelklasse</name>
-            <name lang="en">LinkType</name>
-            <construct>class</construct>
-        </stereo>
       
         <stereo id="stereotype-name-generalization">
             <name lang="nl">Generalisatie</name>
             <name lang="en">InheritanceRelation</name>
             <construct>generalization</construct>
         </stereo>
-        <stereo id="stereotype-name-static-liskov">
-            <name lang="nl">Static liskov</name>
-            <name lang="en">StaticLiskov</name>
-            <construct>generalization</construct>
-        </stereo>
-        <stereo id="stereotype-name-static-generalization">
-            <name lang="nl">Static</name>
-            <name lang="en">Static</name>
-            <construct>generalization</construct>
-        </stereo>
-        <stereo id="stereotype-name-dynamic-generalization">
-            <name lang="nl">Dynamisch</name>
-            <name lang="en">Dynamic</name>
-            <construct>generalization</construct>
-        </stereo>
-
-       <stereo id="stereotype-name-anonymous">
-            <name lang="nl">Anoniem</name>
-            <name lang="en">Anonymous</name>
-            <construct>attribute</construct>
-            <construct>association</construct>
-        </stereo>
-        
+             
     </stereotypes>
 </metamodel>

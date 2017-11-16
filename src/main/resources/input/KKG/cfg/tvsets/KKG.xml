@@ -166,6 +166,7 @@
                 <stereo required="no">stereotype-name-referentie-element</stereo>
             </stereotypes>
         </tv>
+        
         <tv norm="space" id="CFG-TV-LOCATION"><!-- In addition to Grouping tvset -->
             <name lang="nl">Locatie</name>
             <name lang="en">Location</name>

@@ -150,7 +150,7 @@
             <xsl:value-of select="imf:get-normalized-name(.,'property-name')"/>
         </imvert:name>
         <imvert:stereotype>
-            <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-identificatie')[1]"/>
+            <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-identification')[1]"/>
         </imvert:stereotype>
         <is-id>true</is-id>
     </xsl:template>

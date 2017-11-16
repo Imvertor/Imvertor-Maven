@@ -70,7 +70,7 @@
             <construct>class</construct>
         </stereo>
 
-        <stereo id="stereotype-name-identificatie">
+        <stereo id="stereotype-name-identification">
             <name lang="nl">Identificatie</name>
             <name lang="en">Identification</name>
             <construct>attribute</construct>

@@ -171,5 +171,13 @@
             <construct>class</construct>
         </stereo>
         
+        <!-- system defined -->
+        <stereo id="stereotype-name-anonymous">
+            <name lang="nl">Anoniem</name>
+            <name lang="en">Anonymous</name>
+            <construct>attribute</construct>
+            <construct>association</construct>
+        </stereo>
+        
     </stereotypes>
 </metamodel>

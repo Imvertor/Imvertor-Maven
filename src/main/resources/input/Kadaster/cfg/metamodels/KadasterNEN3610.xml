@@ -25,4 +25,32 @@
     <desc lang="en">Metamodel for Kadaster specific NEN3610 extensions</desc>
     <desc lang="nl">Metamodel voor Kadaster specifieke NEN3610 uitbreidingen</desc>
     
+    <stereotypes xml:id="stereotypes">
+    
+        <stereo id="stereotype-name-koppelklasse">
+            <name lang="nl">Koppelklasse</name>
+            <name lang="en">LinkType</name>
+            <construct>class</construct>
+        </stereo>
+    
+        <stereo id="stereotype-name-static-liskov">
+            <name lang="nl">Static liskov</name>
+            <name lang="en">StaticLiskov</name>
+            <construct>generalization</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-static-generalization">
+            <name lang="nl">Static</name>
+            <name lang="en">Static</name>
+            <construct>generalization</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-dynamic-generalization">
+            <name lang="nl">Dynamisch</name>
+            <name lang="en">Dynamic</name>
+            <construct>generalization</construct>
+        </stereo>
+        
+    </stereotypes>
+    
 </metamodel>

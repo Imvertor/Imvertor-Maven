@@ -84,6 +84,7 @@
             </desc>
             <construct>attribute</construct>
         </stereo>
+        
         <stereo id="stereotype-name-voidable">
             <name lang="en">voidable</name>
             <name lang="nl">voidable</name>

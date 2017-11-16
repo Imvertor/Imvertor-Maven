@@ -59,7 +59,7 @@
     <stereo id="stereotype-name-reference"/>
     <stereo id="stereotype-name-composite-id"/>
     <stereo id="stereotype-name-relation-role"/>
-    <stereo id="stereotype-name-identificatie"/>
+    <stereo id="stereotype-name-identification"/>
     <stereo id="stereotype-name-koppelklasse">
         <visual backgroundcolor="WHITE" fontcolor="BLACK" bordercolor="BLACK" borderwidth="THICK"/>
     </stereo>
