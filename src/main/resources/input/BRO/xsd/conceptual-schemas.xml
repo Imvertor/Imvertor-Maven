@@ -7,10 +7,11 @@
         <use>SampleExternalModelA</use>
     </mapping>
     
-    <mapping name="BRO_INSPIRE">
+    <mapping name="BRO_GEOSTANDAARDEN">
         <use>GML321</use>
         <use>ISO19115</use>
         <use>INSPIRE</use>
+        <use>NEN3610</use>
         <use>BRO-SAMPLE1</use><!-- registratie object -->
         <use>BRO-SAMPLE2</use><!-- registratie object -->
     </mapping>
@@ -362,6 +363,75 @@
                 <xsd-type name="ActivityComplex" asAttributeDesignation="complextype" asAttribute="ActivityComplexType"/>
                 <managed-ids/>
             </construct>
+        </map>
+    </conceptual-schema>
+    
+    <conceptual-schema>
+        <name>NEN3610</name>
+        <description>NEN3610 (2011)</description>
+        <url>http://www.bro.nl/conceptual-schemas/nen3610/1.0/</url>
+        <short-name>nen3610</short-name>
+        <map 
+            name="NEN3610" 
+            namespace="http://www.geonovum.nl/NEN3610/schemas/v20110301" 
+            version="2011" 
+            phase="3" 
+            location="http://www.geonovum.nl/NEN3610/v20110301/NEN3610_NEN3610_v1_0_0.xsd">
+            
+            <releases>
+                <release>20110301</release>
+            </releases>
+            
+            <construct>
+                <name>NEN3610ID</name>
+                <catalog-entry>https://www.geonovum.nl/onderwerpen/basismodel-geo-informatie-nen3610</catalog-entry>
+                <xsd-type name="NEN3610ID" asAttributeDesignation="complextype" asAttribute="NEN3610ID"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>GeoObject</name>
+                <catalog-entry>https://www.geonovum.nl/onderwerpen/basismodel-geo-informatie-nen3610</catalog-entry>
+                <xsd-type name="GeoObject" asAttributeDesignation="complextype" asAttribute="GeoObject"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>Historie</name>
+                <catalog-entry>https://www.geonovum.nl/onderwerpen/basismodel-geo-informatie-nen3610</catalog-entry>
+                <xsd-type name="Historie" asAttributeDesignation="complextype" asAttribute="Historie"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>Levensduur</name>
+                <catalog-entry>https://www.geonovum.nl/onderwerpen/basismodel-geo-informatie-nen3610</catalog-entry>
+                <xsd-type name="Levensduur" asAttributeDesignation="complextype" asAttribute="Levensduur"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>VoidReasonValue</name>
+                <catalog-entry>https://www.geonovum.nl/onderwerpen/basismodel-geo-informatie-nen3610</catalog-entry>
+                <xsd-type name="VoidReasonValue" asAttributeDesignation="complextype" asAttribute="VoidReasonValue"/>
+                <managed-ids/>
+            </construct>
+            
+            <construct>
+                <name>Gebouw</name>
+                <catalog-entry>http://definities.geostandaarden.nl/nen3610/id/begrip/Gebouw</catalog-entry>
+                <xsd-type name="Gebouw" asAttributeDesignation="complextype" asAttribute="Gebouw"/>
+                <managed-ids/>
+            </construct>
+            <construct>
+                <name>RegistratiefGebied</name>
+                <catalog-entry>http://definities.geostandaarden.nl/nen3610/id/begrip/RegistratiefGebied</catalog-entry>
+                <xsd-type name="RegistratiefGebied" asAttributeDesignation="complextype" asAttribute="RegistratiefGebied"/>
+                <managed-ids/>
+            </construct>  
+            <construct>
+                <name>GeoObject</name>
+                <catalog-entry>http://definities.geostandaarden.nl/nen3610/id/begrip/GeoObject</catalog-entry>
+                <xsd-type name="RegistratiefGebied" asAttributeDesignation="complextype" asAttribute="GeoObject"/>
+                <managed-ids/>
+            </construct>  
+     
         </map>
     </conceptual-schema>
     

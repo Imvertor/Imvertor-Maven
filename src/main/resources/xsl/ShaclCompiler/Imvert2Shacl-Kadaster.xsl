@@ -227,8 +227,8 @@
         <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-enum')">
             <xsl:value-of select="imf:ttl(('rdf:type','kkg:Enum'))"/>     
         </xsl:if>
-        <!-- stereotype-name-identificatie -->
-        <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-identificatie')">
+        <!-- stereotype-name-identification -->
+        <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-identification')">
             <xsl:value-of select="imf:ttl(('uml:stereotype','kkg:identificatie'))"/>
         </xsl:if>
         
