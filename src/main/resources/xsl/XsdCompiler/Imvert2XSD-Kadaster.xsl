@@ -777,7 +777,7 @@
         
         <xsl:variable name="data-location" select="imf:get-appinfo-location($this)"/>
         
-        <mark approach="elm" nillable="{$is-nillable}" nilreason="{$has-nilreason}">
+        <mark nillable="{$is-nillable}" nilreason="{$has-nilreason}">
             <xsl:choose>
             <!-- any type, i.e. #any -->
             <xsl:when test="$is-any">

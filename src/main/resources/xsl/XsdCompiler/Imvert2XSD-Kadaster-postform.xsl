@@ -77,6 +77,9 @@
     </xsl:template>
     
     <xsl:template match="xs:element[parent::mark[@approach = 'att']]">
+        <xsl:sequence select="imf:msg('ERROR','STUB Unsupported nil approach',())"/>
+        
+        <?x
         <xsl:copy>
             <xsl:apply-templates/>
             <!-- add nilreason when needed -->
@@ -95,6 +98,8 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:copy>
+        ?>
+        
     </xsl:template>
     
     <!-- =========== common ================== -->
