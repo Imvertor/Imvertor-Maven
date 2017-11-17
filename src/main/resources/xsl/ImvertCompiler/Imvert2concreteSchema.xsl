@@ -152,7 +152,10 @@
         <xsl:choose>
             <xsl:when test="$mapped-construct">
                 <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-class-name',.)"/>
-                <xsl:sequence select="imf:create-output-element('imvert:name',$mapped-construct/xsd-type/@name)"/>
+                <imvert:name>
+                    <xsl:copy-of select="@*"/>
+                    <xsl:value-of select="$mapped-construct/xsd-type/@name"/>
+                </imvert:name>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:msg('ERROR','Cannot determine an element name for interface name [1] when using mapping [2]',(.,$conceptual-schema-mapping-name))"/>
@@ -221,17 +224,6 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
-    <!-- return the conceptual schema <map> element which holds the mapping of conceptual names to construct in the schema -->
-    <xsl:function name="imf:get-conceptual-schema-map" as="element()*">
-        <xsl:param name="url" as="xs:string"/>
-        <xsl:param name="use-mapping" as="xs:string"/>
-        <xsl:variable name="mapping-uses" select="$conceptual-schema-mapping//mapping[@name=$use-mapping]/use"/>
-        <xsl:variable name="conceptual-schema" select="$conceptual-schema-mapping/conceptual-schema[url=$url]"/>
-        <xsl:variable name="selected-mapping" select="$conceptual-schema/map[@name=$mapping-uses]"/>
-        <xsl:sequence select="imf:msg('DEBUG','Use mapping [1] for URL [2], conceptual schemas [3], maps [4]',($use-mapping,$url,count($conceptual-schema),count($selected-mapping)))"/>
-        <xsl:sequence select="$selected-mapping"/>
-    </xsl:function>
     
     <xsl:template match="*" mode="conceptual #default">
         <xsl:copy>

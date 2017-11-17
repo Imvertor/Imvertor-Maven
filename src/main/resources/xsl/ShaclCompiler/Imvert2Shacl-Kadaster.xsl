@@ -33,6 +33,7 @@
 
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
+    <xsl:import href="../common/Imvert-common-conceptual-map.xsl"/>
     
     <xsl:variable name="stylesheet-code">SHACL</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
@@ -101,47 +102,62 @@
        
         <!-- specific properties of class types -->
         
-        <!-- stereotype-name-objecttype -->
-        <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')">
-            <xsl:value-of select="imf:ttl(('rdf:type','owl:Class'))"/>
-        </xsl:if>
-        <!-- stereotype-name-composite -->
-        <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')">
-            <xsl:value-of select="imf:ttl(('rdf:type','owl:Class'))"/>
-        </xsl:if>
-        <!-- stereotype-name-koppelklasse -->
-        <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-koppelklasse')">
-            <xsl:value-of select="imf:ttl(('rdf:type','owl:Class'))"/>
-        </xsl:if>
-        <!-- stereotype-name-relatieklasse -->
-        <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-relatieklasse')">
-            <xsl:value-of select="imf:ttl(('rdf:type','owl:Class'))"/>
-        </xsl:if>
-        <!-- stereotype-name-enumeration -->
-        <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-enumeration')">
-            <xsl:value-of select="imf:ttl(('rdf:type','rdfs:Datatype'))"/>
-        </xsl:if>
-        <!-- stereotype-name-codelist -->
-        <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-codelist')">
-            <xsl:value-of select="imf:ttl(('rdf:type','rdfs:Datatype'))"/>
-        </xsl:if>
-        <!-- stereotype-name-complextype -->
-        <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-complextype')">
-            <xsl:value-of select="imf:ttl(('rdf:type','rdfs:DatatypeProperty'))"/>
-        </xsl:if>
-        <!-- stereotype-name-simpletype -->
-        <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-simpletype')">
-            <xsl:value-of select="imf:ttl(('rdf:type','rdfs:DatatypeProperty'))"/>
-        </xsl:if>
-        <!-- stereotype-name-referentielijst -->
-        <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-referentielijst')">
-            <xsl:value-of select="imf:ttl(('rdf:type','rdfs:Datatype'))"/>
-        </xsl:if>
-        <!-- stereotype-name-union -->
-        <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union')">
-            <xsl:value-of select="imf:ttl(('rdf:type','rdfs:Datatype'))"/>
-        </xsl:if>
-        
+        <xsl:variable name="types" as="xs:string*">
+            <!-- stereotype-name-objecttype -->
+            <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')">
+                <xsl:value-of select="imf:ttl(('rdf:type','owl:Class'))"/>
+            </xsl:if>
+            <!-- stereotype-name-composite -->
+            <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')">
+                <xsl:value-of select="imf:ttl(('rdf:type','owl:Class'))"/>
+            </xsl:if>
+            <!-- stereotype-name-koppelklasse -->
+            <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-koppelklasse')">
+                <xsl:value-of select="imf:ttl(('rdf:type','owl:Class'))"/>
+            </xsl:if>
+            <!-- stereotype-name-relatieklasse -->
+            <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-relatieklasse')">
+                <xsl:value-of select="imf:ttl(('rdf:type','owl:Class'))"/>
+            </xsl:if>
+            <!-- stereotype-name-enumeration -->
+            <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-enumeration')">
+                <xsl:value-of select="imf:ttl(('rdf:type','rdfs:Datatype'))"/>
+            </xsl:if>
+            <!-- stereotype-name-codelist -->
+            <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-codelist')">
+                <xsl:value-of select="imf:ttl(('rdf:type','rdfs:Datatype'))"/>
+            </xsl:if>
+            <!-- stereotype-name-complextype -->
+            <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-complextype')">
+                <xsl:value-of select="imf:ttl(('rdf:type','rdfs:DatatypeProperty'))"/>
+            </xsl:if>
+            <!-- stereotype-name-simpletype -->
+            <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-simpletype')">
+                <xsl:value-of select="imf:ttl(('rdf:type','rdfs:DatatypeProperty'))"/>
+            </xsl:if>
+            <!-- stereotype-name-referentielijst -->
+            <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-referentielijst')">
+                <xsl:value-of select="imf:ttl(('rdf:type','rdfs:Datatype'))"/>
+            </xsl:if>
+            <!-- stereotype-name-union -->
+            <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union')">
+                <xsl:value-of select="imf:ttl(('rdf:type','rdfs:Datatype'))"/>
+            </xsl:if>
+            <!-- stereotype-name-interface -->
+            <xsl:if test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-interface')">
+                <xsl:variable name="type" select="imf:get-conceptual-construct(.)/rdf-type/@name"/>
+                <xsl:value-of select="imf:ttl(('rdf:type',$type))"/>
+            </xsl:if>
+        </xsl:variable>
+       
+        <xsl:choose>
+            <xsl:when test="exists($types)">
+                <xsl:value-of select="string-join($types,'')"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:msg(.,'FATAL','Unable to determine the rdfs:type',())"/>
+            </xsl:otherwise>
+        </xsl:choose>
         <xsl:sequence select="imf:ttl-get-all-tvs($this)"/>
         
         <xsl:value-of select="imf:ttl('.')"/>
@@ -486,4 +502,6 @@
             <xsl:otherwise>TODO</xsl:otherwise>
         </xsl:choose>
     </xsl:function>
+    
+    
 </xsl:stylesheet>

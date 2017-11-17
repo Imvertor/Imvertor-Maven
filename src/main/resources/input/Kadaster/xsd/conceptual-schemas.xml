@@ -60,26 +60,31 @@
             <construct>
                 <name>GM_MultiSurface</name>
                 <xsd-type name="MultiSurface" asAttributeDesignation="complextype" asAttribute="MultiSurfacePropertyType"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
             <construct>
                 <name>GM_Curve</name>
                 <xsd-type name="Curve" asAttributeDesignation="complextype" asAttribute="CurvePropertyType"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
             <construct>
                 <name>GM_ArcString</name>
                 <xsd-type name="ArcString" asAttributeDesignation="complextype" asAttribute="ArcStringPropertyType"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
             <construct>
                 <name>GM_LineString</name>
                 <xsd-type name="LineString" asAttributeDesignation="complextype" asAttribute="LineStringPropertyType"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
             <construct>
                 <name>GM_Point</name>
                 <xsd-type name="Point" asAttributeDesignation="complextype" asAttribute="PointPropertyType"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
 
@@ -156,7 +161,7 @@
             <!-- see mapping listed at 
                 Table D.2 — Implementation of types from the ISO 19100 series of International Standards -->
 
-            <!-- TODO aanvullen -->
+            <!-- TODO aanvullen en checken -->
 
             <!-- Instructions on what GML types to use: 
 			Preferably use: 
@@ -182,36 +187,42 @@
             <construct>
                 <name>GM_Point</name>
                 <xsd-type name="Point" asAttributeDesignation="complextype" asAttribute="PointPropertyType" hasNilreason="true"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
 
             <construct>
                 <name>GM_Curve</name>
                 <xsd-type name="Curve" asAttributeDesignation="complextype" asAttribute="CurvePropertyType" hasNilreason="true"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
 
             <construct>
                 <name>GM_Surface</name>
                 <xsd-type name="Surface" asAttributeDesignation="complextype" asAttribute="SurfacePropertyType" hasNilreason="true"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
 
             <construct>
                 <name>GM_MultiPoint</name>
                 <xsd-type name="MultiPoint" asAttributeDesignation="complextype" asAttribute="MultiPointPropertyType" hasNilreason="true"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
 
             <construct>
                 <name>GM_MultiSurface</name>
                 <xsd-type name="MultiSurface" asAttributeDesignation="complextype" asAttribute="MultiSurfacePropertyType" hasNilreason="true"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
 
             <construct>
                 <name>GM_MultiCurve</name>
                 <xsd-type name="MultiCurve" asAttributeDesignation="complextype" asAttribute="MultiCurvePropertyType" hasNilreason="true"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
 
@@ -232,18 +243,21 @@
             <construct>
                 <name>GM_ArcString</name>
                 <xsd-type name="ArcString" asAttributeDesignation="complextype" asAttribute="ArcStringPropertyType" hasNilreason="true"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
 
             <construct>
                 <name>GM_LineString</name>
                 <xsd-type name="LineStringSegment" asAttributeDesignation="complextype" asAttribute="LineStringPropertyType" hasNilreason="true"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
 
             <construct>
                 <name>GM_Polygon</name>
                 <xsd-type name="PolygonPatch" asAttributeDesignation="complextype" asAttribute="PolygonPatchType" hasNilreason="true"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
 
@@ -268,30 +282,35 @@
             <construct>
                 <name>GM_PointArray</name>
                 <xsd-type name="PointArray" asAttributeDesignation="complextype" asAttribute="geometricPositionListGroup" hasNilreason="true"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
 
             <construct>
                 <name>GM_Solid</name>
                 <xsd-type name="Solid" asAttributeDesignation="complextype" asAttribute="SolidPropertyType" hasNilreason="true"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
 
             <construct>
                 <name>GM_OrientableCurve</name>
                 <xsd-type name="OrientableCurve" asAttributeDesignation="complextype" asAttribute="CurvePropertyType" hasNilreason="true"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
 
             <construct>
                 <name>GM_OrientableSurface</name>
                 <xsd-type name="OrientableSurface" asAttributeDesignation="complextype" asAttribute="SurfacePropertyType" hasNilreason="true"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
 
             <construct>
                 <name>GM_CompositePoint</name>
                 <xsd-type name="CompositePoint" asAttributeDesignation="complextype" asAttribute="PointPropertyType" hasNilreason="true"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
 
@@ -310,24 +329,20 @@
             <construct>
                 <name>GM_MultiSolid</name>
                 <xsd-type name="MultiSolid" asAttributeDesignation="complextype" asAttribute="MultiMultiSolidPropertyType" hasNilreason="true"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
 
             <construct>
                 <name>GM_MultiPrimitive</name>
                 <xsd-type name="MultiPrimitive" asAttributeDesignation="complextype" asAttribute="MultiGeometryPropertyType" hasNilreason="true"/>
+                <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
 
             <construct>
                 <name>GM_Aggregate</name>
-                <xsd-type name="MultiGeometry" asAttributeDesignation="complextype" asAttribute="MultiGeometryPropertyType" hasNilreason="true"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_MultiPrimtive</name>
-                <xsd-type name="MultiGeometry" asAttributeDesignation="complextype" asAttribute="MultiGeometryPropertyType" hasNilreason="true"/>
+                <xsd-type name="Aggregate" asAttributeDesignation="complextype" asAttribute="AggregatePropertyType" hasNilreason="true"/>
                 <managed-ids/>
             </construct>
 
