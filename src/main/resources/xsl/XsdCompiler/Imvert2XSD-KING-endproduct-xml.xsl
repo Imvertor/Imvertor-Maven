@@ -176,7 +176,6 @@
         </xsl:choose>
     </xsl:variable>
     
-    
     <xsl:variable name="enriched-rough-messages" select="imf:document(imf:get-config-string('properties','ENRICHED_ROUGH_ENDPRODUCT_XML_FILE_PATH'))"/>  
     
     <xsl:variable name="prefix" as="xs:string">
@@ -200,26 +199,21 @@
     <xsl:variable name="ep-onderlaag" select="imf:document($ep-onderlaag-path,true())/ep:message-set"/>
 
     <xsl:variable name="constructs-ep-onderlaag">
-        <!--xsl:apply-templates select="$ep-onderlaag/ep:*[local-name() != ('name','release','date','patch-number','namespace','namespace-prefix','namespaces')]" mode="replicate-ep-structure"/-->
         <xsl:apply-templates select="$ep-onderlaag/ep:construct" mode="replicate-ep-structure"/>
     </xsl:variable>
     
-    <!--xsl:template match="ep:message-set" mode="replicate-ep-structure">
-        <ep:test>Yep</ep:test>
-    </xsl:template-->
-    
     <xsl:template match="*" mode="replicate-ep-structure">
-        <xsl:copy exclude-result-prefixes="#all">
+        <xsl:copy copy-namespaces="no">
             <xsl:apply-templates select="*|@*|text()" mode="replicate-ep-structure"/>
         </xsl:copy>
     </xsl:template>
     
     <xsl:template match="@*" mode="replicate-ep-structure">
-        <xsl:copy-of select="."/>
+        <xsl:copy-of select="." copy-namespaces="no"/>
     </xsl:template>
     
     
-    <!-- Within this variable all messages defined within the BSM of the koppelvlak are placed, transformed to the imvertor endproduct (ep) format.-->
+    <!-- Within this template all messages defined within the BSM of the koppelvlak are transformed to the imvertor endproduct (ep) format.-->
     <xsl:template match="/">
          
         <ep:message-set global-empty-enumeration-allowed="{$global-empty-enumeration-allowed}">
@@ -243,27 +237,23 @@
             </ep:namespaces>
             
             <xsl:if test="$debugging">
-                <!--xsl:result-document href="file:/c:/temp/imvert-schema-rules.xml">
+                <xsl:sequence select="imf:debug-document($config-schemarules,'imvert-schema-rules.xml',true(),false())"/>
+                 <!--xsl:result-document href="file:/c:/temp/imvert-schema-rules.xml">
                     <xsl:sequence select="$config-schemarules"/>
-                </xsl:result-document> 
-                <xsl:result-document href="file:/c:/temp/imvert-tagged-values.xml">
-                    <xsl:sequence select="$config-tagged-values"/>
-                </xsl:result-document> 
-                <xsl:result-document href="file:/c:/temp/enriched-endproduct-base-config-excel.xml">
-                    <xsl:sequence select="$enriched-endproduct-base-config-excel"/>
-                </xsl:result-document> 
-                <xsl:result-document href="file:/c:/temp/enriched-rough-messages2.xml">
-                    <xsl:sequence select="$enriched-rough-messages"/>
                 </xsl:result-document--> 
-                    
+                <xsl:sequence select="imf:debug-document($config-tagged-values,'imvert-tagged-values.xml',true(),false())"/>
+                <!--xsl:result-document href="file:/c:/temp/imvert-tagged-values.xml">
+                    <xsl:sequence select="$config-tagged-values"/>
+                </xsl:result-document--> 
+                <xsl:sequence select="imf:debug-document($enriched-endproduct-base-config-excel,'enriched-endproduct-base-config-excel.xml',true(),false())"/>
+                <!--xsl:result-document href="file:/c:/temp/enriched-endproduct-base-config-excel.xml">
+                    <xsl:sequence select="$enriched-endproduct-base-config-excel"/>
+                </xsl:result-document--> 
             </xsl:if>
             
             <xsl:sequence select="imf:track('Constructing the messages')"/>
             
             <xsl:sequence select="imf:create-debug-comment('Debuglocation 1a',$debugging)"/>
-            <xsl:result-document href="file:/c:/temp/onderlaag.xml">
-                <xsl:copy-of select="$constructs-ep-onderlaag"/>
-            </xsl:result-document> 
             <xsl:sequence select="$constructs-ep-onderlaag"/>
             
             <xsl:for-each select="$enriched-rough-messages/ep:rough-messages/ep:rough-message">
