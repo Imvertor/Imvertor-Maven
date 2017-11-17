@@ -261,9 +261,6 @@
             <xsl:sequence select="imf:track('Constructing the messages')"/>
             
             <xsl:sequence select="imf:create-debug-comment('Debuglocation 1a',$debugging)"/>
-            <xsl:result-document href="file:/c:/temp/onderlaag.xml">
-                <xsl:copy-of select="$constructs-ep-onderlaag"/>
-            </xsl:result-document> 
             <xsl:sequence select="$constructs-ep-onderlaag"/>
             
             <xsl:for-each select="$enriched-rough-messages/ep:rough-messages/ep:rough-message">
