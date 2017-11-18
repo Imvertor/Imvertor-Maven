@@ -18,28 +18,22 @@
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     
-    <xsl:variable name="ep-onderlaag-path" select="imf:get-config-string('properties','IMVERTOR_COMPLY_EPFORMAAT_XMLPATH')"/>
-    <xsl:variable name="ep-onderlaag" select="imf:document($ep-onderlaag-path,true())/ep:message-set"/>
+    <xsl:variable name="stylesheet-code">CCSTUB</xsl:variable>
+    <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
     
     <xsl:variable name="default-namespace-prefix" select="/ep:message-sets/ep:message-set[imf:boolean(@KV-namespace)]/@prefix"/>
     
     <xsl:template match="/ep:message-sets">
+        
         <!-- 
             stap 1: maak van alle namen expliciete qualified names 
         -->
         <xsl:variable name="doc1" as="element(ep:message-sets)">
             <ep:message-sets>
                 <xsl:apply-templates select="node()|@*" mode="preproc"/>
-                <!-- and append the onderlaag -->
-                <xsl:apply-templates select="$ep-onderlaag" mode="preproc"/>
             </ep:message-sets>
         </xsl:variable>
-      
-        <!--x
-        <xsl:result-document href="file:/c:/temp/test.xml">
-            <xsl:sequence select="$doc1"></xsl:sequence>
-        </xsl:result-document>
-        x-->
+        <xsl:sequence select="imf:debug-document($doc1,'test1.xml',true(),false())"/>
         
         <!-- 
             stap 2: maak de EP aan als instantie georienteerde specificatie, ipv. schema georienteerd
@@ -48,16 +42,17 @@
             <ep:message-sets>
                 <xsl:apply-templates select="$doc1/ep:message-set"/>
             </ep:message-sets>        </xsl:variable>
-        
+        <xsl:sequence select="imf:debug-document($doc2,'test2.xml',true(),false())"/>
+       
         <!-- 
-            stap 3: verwijder alle constructies die geen ep:name hebben; 
-            dit zijn namelijk constructies die niet gebruik worden door de berichten of het BG gedeelte (dus komen alleen voor in de onderlaag). 
+            stap 3: enums inperken, en laatste issues omzeilen
         -->
         <xsl:variable name="doc3" as="element(ep:message-sets)">
             <ep:message-sets>
                 <xsl:apply-templates select="$doc2/ep:message-set" mode="postproc"/>
             </ep:message-sets>
         </xsl:variable>
+        <xsl:sequence select="imf:debug-document($doc3,'test3.xml',true(),false())"/>
         
         <xsl:sequence select="$doc3"/>
         
@@ -89,6 +84,13 @@
             <xsl:value-of select="$qualified-name"/>
         </ep:name>
     </xsl:template>
+   
+    <?x
+    <xsl:template match="ep:seq/ep:seq[ep:construct[imf:boolean(@ismetadata)]]" mode="preproc">
+        <xsl:apply-templates mode="#current"/>
+        <!-- stub: verwijder deze tussen-seq, want deze seq is niet de bedoeling. -->
+    </xsl:template>
+    x?>
     
     <!-- === step 2 afwerking === -->
     
@@ -105,7 +107,7 @@
             <xsl:when test="$is-complex-type">
                 <xsl:comment select="concat('@1 Transformed global complex element type: ', ep:tech-name)"/>
                 <xsl:variable name="referencing-element" select="root(.)//ep:construct[ep:type-name = current()/ep:tech-name]"/>
-                <xsl:variable name="non-attributes" select="ep:seq/ep:*[not(@ismetadata='yes')]"/>
+                <xsl:variable name="non-attributes" select="ep:seq/ep:*[not(imf:boolean(@ismetadata))]"/>
                 <xsl:variable name="distinct-names" select="distinct-values($referencing-element/ep:tech-name)"/>
                 <ep:construct>
                     <xsl:copy-of select="@*"/>
@@ -162,6 +164,7 @@
                 
                 <xsl:comment select="concat('@2 Transformed local element type: ', ep:tech-name)"/>
                 <xsl:variable name="attributes" select="$type/ep:seq/ep:*[imf:boolean(@ismetadata)]"/>
+                <xsl:variable name="non-attributes" select="$type/ep:seq/ep:*[not(imf:boolean(@ismetadata))]"/>
                 <ep:construct>
                     <xsl:copy-of select="@*"/>
                     <xsl:apply-templates/>
@@ -171,10 +174,10 @@
                     <xsl:variable name="data-type2" select="root(.)//ep:construct[ep:tech-name = $type/ep:type-name][ep:data-type]"/><!-- hop over, typisch voor -e types. -->
                     <xsl:variable name="data-type" select="($data-type1,$data-type2)[1]"/>
                     
-                    <xsl:variable name="seq1" as="node()*">
-                        <xsl:apply-templates select="$type/ep:seq/*"/>
+                    <xsl:variable name="non-attributes-seq" as="node()*">
+                        <xsl:apply-templates select="$non-attributes"/>
                     </xsl:variable>
-                    <xsl:variable name="seq2" as="node()*">
+                    <xsl:variable name="attributes-seq" as="node()*">
                         <xsl:apply-templates select="$attributes"/>
                     </xsl:variable>
 
@@ -186,13 +189,13 @@
                         </xsl:when>
                         <xsl:when test="$data-type">
                             <xsl:comment select="concat('This is a wrapper for a datatype: ',ep:tech-name)"/>
-                            <xsl:if test="$seq1 or $seq2">
+                            <xsl:if test="$non-attributes-seq or $attributes-seq">
                                 <ep:seq>
                                     <!-- plaats de attributen van het e-type (ééntje, namelijk @bg:noValue) -->
                                     <xsl:comment select="concat('Insert the wrapper attributes: ', $type/ep:tech-name)"/>
-                                    <xsl:sequence select="$seq1"/>
+                                    <xsl:sequence select="$non-attributes-seq"/>
                                     <xsl:comment select="'Insert the metadata attributes'"/>
-                                    <xsl:sequence select="$seq2"/>
+                                    <xsl:sequence select="$attributes-seq"/>
                                 </ep:seq>
                             </xsl:if>
                             <!-- plaats de eigenschappen van het data-type (potentieel meerdere), behalve de namen -->
@@ -205,10 +208,10 @@
                                 <xsl:sequence select="$seq1"/>
                             </ep:seq>
                         </xsl:when>-->
-                        <xsl:when test="$seq2">
+                        <xsl:when test="$attributes-seq">
                             <xsl:comment select="concat('This is not wrapper, and has attribute: ',ep:tech-name)"/>
                             <ep:seq>
-                                <xsl:sequence select="$seq2"/>
+                                <xsl:sequence select="$attributes-seq"/>
                             </ep:seq>
                         </xsl:when>
                         <xsl:otherwise>
@@ -273,17 +276,11 @@
     -->
     <xsl:function name="imf:is-complex-type" as="xs:boolean">
         <xsl:param name="construct" as="element(ep:construct)"/>
-        <xsl:variable name="seq" select="$construct/*/ep:construct[not(@ismetadata = 'yes')]"/>
+        <xsl:variable name="seq" select="$construct//ep:construct[not(imf:boolean(@ismetadata))]"/>
         <xsl:sequence select="exists($seq)"/>
     </xsl:function>
     
-    <!-- === step 3 afwerking === -->
-    
-    <xsl:template match="ep:message-set/ep:construct" mode="postproc"> <!-- STUB Robert gaat misschien het EP format voor de onderlaag dynamisch aanmaken ipv statisch -->
-        <xsl:if test="normalize-space(ep:name)">
-            <xsl:next-match/>          
-        </xsl:if>
-    </xsl:template>
+    <!-- === step 3 afwerking enums === -->
     
     <xsl:template match="ep:enum" mode="postproc"> <!-- STUB Robert genereert te veel ENUMs en bovendie is er een vage limiet aan het aantal enums van een formula1. Inperken maar. -->
         <xsl:choose>
@@ -304,5 +301,4 @@
         </xsl:copy>
     </xsl:template>
     
-       
-</xsl:stylesheet>
+ </xsl:stylesheet>

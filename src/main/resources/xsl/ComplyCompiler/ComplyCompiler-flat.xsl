@@ -106,7 +106,7 @@
     </xsl:template>
     
     <xsl:template match="ep:seq" mode="prepare-flat">
-        <xsl:apply-templates select="ep:construct | ep:constructRef" mode="prepare-flat">
+        <xsl:apply-templates select="ep:seq | ep:choice | ep:construct | ep:constructRef" mode="prepare-flat">
             <xsl:with-param name="group-type">seq</xsl:with-param>
         </xsl:apply-templates>
     </xsl:template>

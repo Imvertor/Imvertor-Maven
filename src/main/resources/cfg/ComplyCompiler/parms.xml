@@ -66,9 +66,9 @@
          path to temporary output of transforming __content.xml; this is not compressed back into the result Excel.
       -->
       -->
-      <WORK_COMPLY_STUB_FILE>${system/work-imvert-folder-path}/imvertor.48.stub.xml</WORK_COMPLY_STUB_FILE>
-      <WORK_COMPLY_FLAT_FILE>${system/work-imvert-folder-path}/imvertor.49.flat.xml</WORK_COMPLY_FLAT_FILE>
-      <WORK_COMPLY_FILL_FILE>${system/work-imvert-folder-path}/imvertor.50.filler.xml</WORK_COMPLY_FILL_FILE>
+      <WORK_COMPLY_STUB_FILE>${system/work-imvert-folder-path}/imvertor.48.comply-stub.xml</WORK_COMPLY_STUB_FILE>
+      <WORK_COMPLY_FLAT_FILE>${system/work-imvert-folder-path}/imvertor.49.comply-flat.xml</WORK_COMPLY_FLAT_FILE>
+      <WORK_COMPLY_FILL_FILE>${system/work-imvert-folder-path}/imvertor.50.comply-filler.xml</WORK_COMPLY_FILL_FILE>
       
    </properties>
 </config>
