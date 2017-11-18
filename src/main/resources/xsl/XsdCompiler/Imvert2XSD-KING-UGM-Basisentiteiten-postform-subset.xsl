@@ -48,6 +48,8 @@
     <xsl:variable name="must-apply-restrictions" select="imf:boolean(imf:get-config-string('cli','createxsdrestrictions','false'))"/>
     
     <xsl:template match="/schemas">
+        <xsl:sequence select="imf:track('Postforming schemas',())"/>
+        
         <xsl:next-match/>
         
         <!-- pass info to the final steps -->

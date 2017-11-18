@@ -72,6 +72,7 @@
     </xsl:template>
     
     <xsl:template match="xs:schema">
+        <xsl:sequence select="imf:track('Processing imports',())"/>
         
         <xsl:variable name="my-qualifier" select="../imvert:prefix"/>
         <xsl:variable name="my-subpath" select="../imvert:result-file-subpath"/>

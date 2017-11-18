@@ -64,6 +64,7 @@
     </xsl:template>
     
     <xsl:template match="schema">
+        <xsl:sequence select="imf:track('Exporting schema',())"/>
         
         <xsl:variable name="xsd-application-folder-path" select="imf:get-config-string('system','xsd-application-folder-path')"/>
         

@@ -40,11 +40,12 @@
         This is:
           
         1/ Introduce collection class when required.
-        2/ Create ref packages when buildcollection is requested.
+        2/ Create ref packages when buildcollection is requested.s
           
     -->
     
     <xsl:template match="/">
+        <xsl:sequence select="imf:track('Preforming schemas',())"/>
         <xsl:apply-templates/>
     </xsl:template>
     

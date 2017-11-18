@@ -49,6 +49,8 @@
     
     <xsl:template match="/imvert:packages">
         
+        <xsl:sequence select="imf:track('Preprocessing [1]',imvert:name)"/>
+        
         <!-- plaats alle subset info -->
         <xsl:variable name="cc1" as="node()*">
             <xsl:apply-templates/>

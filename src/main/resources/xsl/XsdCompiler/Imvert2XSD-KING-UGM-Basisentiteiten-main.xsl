@@ -70,6 +70,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:packages">
+        
         <xsl:variable name="schemas">
             <schemas>
                 <xsl:apply-templates select="imvert:package"/>
@@ -96,6 +97,8 @@
         
         <xsl:variable name="includes" select="if ($is-subset-derived) then concat($pack-prefix,$pack-version) else ()"/>
         <xsl:variable name="i-am" select="concat($main-prefix,$main-version)"/>
+        
+        <xsl:sequence select="imf:track('Creating schema for [1]',$target-namespace)"/>
         
         <xsl:variable name="schema" as="element(schema)">
             <schema 

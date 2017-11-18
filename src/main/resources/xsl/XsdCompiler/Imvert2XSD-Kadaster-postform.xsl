@@ -45,6 +45,7 @@
     <xsl:variable name="nil-approach" select="imf:get-config-string('cli','nilapproach','elm')"/>
     
     <xsl:template match="/">
+        <xsl:sequence select="imf:track('Applying nil approach',())"/>
         <xsl:apply-templates/>
     </xsl:template>
     
