@@ -38,7 +38,7 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     
     <!-- 
-        the mode is test or valid. 
+        The mode is test or valid. 
         If valid, insert variable values and save to different location. The test cases will be validated.
     -->
     <xsl:param name="generation-mode">final</xsl:param>
@@ -53,8 +53,11 @@
     
     <xsl:template match="message">
         <xsl:variable name="file-path" select="imf:file-to-url(concat($tests-path,'/',@file-name,'.xml'))"/>
-        <xsl:result-document href="{$file-path}">
+        <xsl:variable name="doc">
             <xsl:apply-templates select="*"/>
+        </xsl:variable>
+        <xsl:result-document href="{$file-path}">
+            <xsl:sequence select="imf:pretty-print($doc,false())"/>
         </xsl:result-document>
     </xsl:template>
 

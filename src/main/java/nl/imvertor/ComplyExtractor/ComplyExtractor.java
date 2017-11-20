@@ -47,6 +47,8 @@ public class ComplyExtractor extends Step {
 	 *  run the step
 	 */
 	public boolean run() throws Exception{
+		
+		// file:/D:/projects/validprojects/Kadaster-Imvertor/Imvertor-OS-work/KING/app/xsd/bsmr0320/bsmr0320.xsd
 			
 		// set up the configuration for this step
 		configurator.setActiveStepName(STEP_NAME);
