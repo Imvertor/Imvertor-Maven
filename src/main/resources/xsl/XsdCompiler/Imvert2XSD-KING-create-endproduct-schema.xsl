@@ -477,19 +477,19 @@
 										<xsl:attribute name="base">
 											<xsl:choose>
 												<xsl:when test="$type-name = 'scalar-integer'">
-												<xsl:value-of select="'xs:integer'"/>
+													<xsl:value-of select="'xs:integer'"/>
 												</xsl:when>
 												<xsl:when test="$type-name = 'scalar-decimal'">
-												<xsl:value-of select="'xs:decimal'"/>
+													<xsl:value-of select="'xs:decimal'"/>
 												</xsl:when>
 												<xsl:when test="$type-name = 'scalar-string'">
-												<xsl:value-of select="'xs:string'"/>
+													<xsl:value-of select="'xs:string'"/>
 												</xsl:when>
 												<xsl:when test="$type-name = 'scalar-boolean'">
-												<xsl:value-of select="'xs:boolean'"/>
+													<xsl:value-of select="'xs:boolean'"/>
 												</xsl:when>
 												<xsl:otherwise>
-												<xsl:value-of select="'xs:string'"/>
+													<xsl:value-of select="'xs:string'"/>
 												</xsl:otherwise>
 												<!-- Voor de situaties waar sprake is van een andere package (bijv. GML3) moet nog code vervaardigd worden. -->
 											</xsl:choose>
