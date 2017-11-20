@@ -2689,7 +2689,7 @@
 					
 					<xsl:if test="imvert:name = 'parameters' or imvert:name = 'stuurgegevens'">
 						<ep:construct context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
-							<xsl:attribute name="prefix" select="$StUF-prefix"/>
+							<xsl:attribute name="prefix" select="$kv-prefix"/>
 							<xsl:attribute name="namespaceId" select="$StUF-namespaceIdentifier"/>
 							
 							<xsl:if test="$debugging">
