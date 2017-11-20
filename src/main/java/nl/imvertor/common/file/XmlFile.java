@@ -110,13 +110,12 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	
 	private Vector<String> messages = new Vector<String>();
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
 		//XmlFile file = new XmlFile("D:\\projects\\arjan\\Java development\\CommonHandlers\\sandbox\\EHcache\\config\\ehcache.xml");
-		XmlFile file = new XmlFile("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-work\\default\\comply\\template\\xl\\worksheets\\sheet1.xml");
+		XmlFile file = new XmlFile("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-work\\KING-comply-extract\\app\\tests\\npsla09-1.xml");
 		System.out.println(file.isValid());
 		file.getMessages();
-		
 	}
 	
 	public XmlFile(String pathname) {
@@ -494,5 +493,20 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		boolean result = valid && (differences == 0);
 	
 		return result;
+	}
+	
+	/*
+	 * Replace this file by a pretty printed form
+	 */
+	public void prettyPrintXml(boolean hasMixedContent) throws Exception {
+		XslFile prettyPrinter = new XslFile(Configurator.getInstance().getBaseFolder(),"xsl/common/tools/PrettyPrinter.xsl");
+		Transformer transformer = new Transformer();
+		transformer.setXslParm("xml-mixed-content",(hasMixedContent) ? "true" : "false");
+		
+		// Create a temporary file 
+		AnyFile tmpFile = new AnyFile(File.createTempFile("prettyPrintXml.", ".xml"));
+		transformer.transform(this, tmpFile, prettyPrinter,"PRETTYPRINTER");
+		tmpFile.copyFile(this);
+		tmpFile.delete();
 	}
 }

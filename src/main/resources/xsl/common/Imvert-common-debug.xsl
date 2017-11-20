@@ -23,6 +23,7 @@
         </output:serialization-parameters>
     </xsl:variable>
     
+    <!-- write sequence to file, specify if pretty printed or assuming mixed content occurs --> 
     <xsl:function name="imf:debug-document">
         <xsl:param name="sequence" as="item()*"/>
         <xsl:param name="filename" as="xs:string"/>
@@ -53,6 +54,13 @@
                 <xsl:sequence select="imf:expath-write($path,$doc,if ($prettyprint) then $xml-indented else $xml-not-indented)"/>
             </xsl:when>
         </xsl:choose>
+    </xsl:function>
+    
+    <!-- write sequence to file, not pretty printed and assuming mixed content occurs --> 
+    <xsl:function name="imf:debug-document">
+        <xsl:param name="sequence" as="item()*"/>
+        <xsl:param name="filename" as="xs:string"/>
+        <xsl:sequence select="imf:debug-document($sequence,$filename,false(),true())"/>
     </xsl:function>
     
 </xsl:stylesheet>

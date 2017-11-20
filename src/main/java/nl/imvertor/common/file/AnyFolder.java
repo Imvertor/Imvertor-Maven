@@ -29,6 +29,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.commons.lang3.StringUtils;
 
+import nl.imvertor.common.Configurator;
+import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.filter.FileExistsFileFilter;
 
 public class AnyFolder extends AnyFile {
@@ -240,5 +242,15 @@ public class AnyFolder extends AnyFile {
 	
 	private String cleanXmlPI(XmlFile fx) throws IOException {
 		return StringUtils.removePattern(fx.getContent(), xmlRegex);
+	}
+	
+	/*
+	 * Clean all XML's, reformatting them as a neat tree
+	 */
+	public void prettyPrintXml(AnyFolder targetXmlFolder,boolean hasMixedContent) throws Exception {
+		XslFile prettyPrinter = new XslFile(Configurator.getInstance().getBaseFolder(),"xsl/common/tools/PrettyPrinter.xsl");
+		Transformer transformer = new Transformer();
+		transformer.setXslParm("xml-mixed-content",(hasMixedContent) ? "true" : "false");
+		transformer.transformFolder(this, targetXmlFolder, ".*\\.xml", prettyPrinter);
 	}
 }
