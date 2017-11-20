@@ -12,8 +12,10 @@
         <use>ISO19115</use>
         <use>INSPIRE</use>
         <use>NEN3610</use>
-        <use>BRO-SAMPLE1</use><!-- registratie object -->
-        <use>BRO-SAMPLE2</use><!-- registratie object -->
+        <use>BRO</use> <!-- cross references between BRO models -->
+        <!-- samples -->
+        <use>BRO-SAMPLE1</use>
+        <use>BRO-SAMPLE2</use>
     </mapping>
     
     <conceptual-schema>
@@ -93,7 +95,7 @@
             -->
             <construct>
                 <!-- this is the name of the construct in the UML model -->
-                <name>GM_AbstractFeature</name>
+                <name>AbstractFeature</name>
                 <!-- catalog reference -->
                 <catalog-entry>#AbstractFeature</catalog-entry>
                 <!-- this is a mapping to the XSD constructs within the schema -->
@@ -282,6 +284,22 @@
         
         <catalog>https://broprogramma.github.io/SAMPLE/[entry]</catalog>        
         
+        <map 
+            name="BRO" 
+            namespace="http://determine/" 
+            version="1.0" 
+            phase="3" 
+            location="http://determine/BRO.xsd">
+            <desc>
+               Registratie objecten en aanpalende constructies 
+            </desc>
+            <releases>
+                <release>2017</release> 
+            </releases>
+            
+           <!-- TODO -->
+            
+        </map>
         <map 
             name="BRO-SAMPLE1" 
             namespace="http://determine/" 

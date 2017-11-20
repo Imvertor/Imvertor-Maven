@@ -35,6 +35,49 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-conceptual-map.xsl"/>
         
+    <xsl:variable name="outside-mapped-classes" as="element(imvert:class)*">
+        <xsl:for-each select="//imvert:package[imvert:id = 'OUTSIDE']/imvert:class"> <!-- all stubs -->
+            <xsl:variable name="constructs" select="$conceptual-schema-mapping//construct[name = current()/imvert:name]" as="element(construct)*"/>
+            <xsl:variable name="construct" as="element(construct)?">
+                <xsl:choose>
+                    <xsl:when test="$constructs[2]">
+                        <xsl:sequence select="$constructs[managed-ids/id = current()/imvert:id][1]"/>
+                    </xsl:when>
+                    <xsl:when test="$constructs[1]">
+                        <xsl:sequence select="$constructs"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:sequence select="imf:msg('WARN','Reference to [1] in outside model could not be resolved when using mapping [2]',(imvert:name,$conceptual-schema-mapping-name))"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:variable>
+            <!-- 
+                We have drilled down to single construct (or none if error) 
+                Get the URL of the conceptual schema this is part of.
+            -->
+            <xsl:variable name="cs" select="($construct/ancestor::conceptual-schema/url)[1]"/>
+            <xsl:variable name="cn" select="($construct/ancestor::conceptual-schema/name)[1]"/>
+            <xsl:variable name="sn" select="($construct/ancestor::conceptual-schema/short-name)[1]"/>
+            <xsl:variable name="ve" select="($construct/ancestor::map/@version)[1]"/>
+            <xsl:variable name="ph" select="($construct/ancestor::map/@phase)[1]"/>
+            
+            <imvert:class origin="system" cs="{$cs}" cn="{$cn}" sn="{$sn}" ve="{$ve}" ph="{$ph}">
+                <imvert:name original="{imvert:name}">
+                    <xsl:value-of select="imvert:name"/>
+                </imvert:name>
+                <imvert:id>
+                    <xsl:value-of select="imvert:id"/>
+                </imvert:id>
+                <imvert:catalog>
+                    <xsl:sequence select="imf:create-catalog-url($construct)"/>     
+                </imvert:catalog>
+                <imvert:stereotype id="CFG-ST-INTERFACE">
+                    <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-interface')"/>
+                </imvert:stereotype>
+            </imvert:class>
+        </xsl:for-each>
+    </xsl:variable>    
+    
     <xsl:template match="/imvert:packages">
         <xsl:copy>
             <xsl:sequence select="imf:compile-imvert-header(.)"/>
@@ -43,52 +86,10 @@
     </xsl:template>
     
     <xsl:template match="imvert:package[imvert:id = 'OUTSIDE']">
-        <xsl:variable name="mapped-classes" as="element(imvert:class)*">
-            <xsl:for-each select="imvert:class"> <!-- all stubs -->
-                <xsl:variable name="constructs" select="$conceptual-schema-mapping//construct[name = current()/imvert:name]" as="element(construct)*"/>
-                <xsl:variable name="construct" as="element(construct)?">
-                    <xsl:choose>
-                        <xsl:when test="$constructs[2]">
-                            <xsl:sequence select="$constructs[managed-ids/id = current()/imvert:id][1]"/>
-                        </xsl:when>
-                        <xsl:when test="$constructs[1]">
-                            <xsl:sequence select="$constructs"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:sequence select="imf:msg('WARN','Reference to [1] in outside model could not be resolved when using mapping [2]',(imvert:name,$conceptual-schema-mapping-name))"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:variable>
-                <!-- 
-                    We have drilled down to single construct (or none if error) 
-                    Get the URL of the conceptual schema this is part of.
-                -->
-                <xsl:variable name="cs" select="($construct/ancestor::conceptual-schema/url)[1]"/>
-                <xsl:variable name="cn" select="($construct/ancestor::conceptual-schema/name)[1]"/>
-                <xsl:variable name="sn" select="($construct/ancestor::conceptual-schema/short-name)[1]"/>
-                <xsl:variable name="ve" select="($construct/ancestor::map/@version)[1]"/>
-                <xsl:variable name="ph" select="($construct/ancestor::map/@phase)[1]"/>
-                
-                <imvert:class origin="system" cs="{$cs}" cn="{$cn}" sn="{$sn}" ve="{$ve}" ph="{$ph}">
-                    <imvert:name original="{imvert:name}">
-                        <xsl:value-of select="imvert:name"/>
-                    </imvert:name>
-                    <imvert:id>
-                        <xsl:value-of select="imvert:id"/>
-                    </imvert:id>
-                    <imvert:catalog>
-                        <xsl:sequence select="imf:create-catalog-url($construct)"/>     
-                    </imvert:catalog>
-                    <imvert:stereotype id="CFG-ST-INTERFACE">
-                        <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-interface')"/>
-                    </imvert:stereotype>
-                </imvert:class>
-            </xsl:for-each>
-        </xsl:variable>    
         <!--
            we now have a set of maps; must group them together and build external packages from these.
         -->
-        <xsl:for-each-group select="$mapped-classes" group-by="@cs">
+        <xsl:for-each-group select="$outside-mapped-classes" group-by="@cs">
             <imvert:package origin="system">
                 <imvert:id>
                     <xsl:value-of select="concat('GENERATED-PACKAGE-ID-',position())"/>
@@ -120,6 +121,16 @@
         </xsl:for-each-group>
     </xsl:template>
         
+    <xsl:template match="imvert:type-package[. = 'OUTSIDE']">
+        <!-- replace this package name by the mapped name -->    
+        <xsl:variable name="type-id" select="../imvert:type-id"/>
+        <xsl:variable name="outside-class" select="$outside-mapped-classes[imvert:id = $type-id]"/>
+        <xsl:variable name="outside-package-name" select="$outside-class/@cn"/>
+        <imvert:type-package original="$outside-package-name" origin="OUTSIDE">
+            <xsl:value-of select="$outside-package-name"/>
+        </imvert:type-package>
+    </xsl:template>
+  
     <xsl:template match="node()" mode="#all">
         <xsl:copy>
             <xsl:copy-of select="@*"/>

@@ -106,7 +106,10 @@
         The set of external packages includes all packages that are <<external>> of any subpackage thereof.
         The external package must also define any class that is referenced by the application.
     -->
-    <xsl:variable name="external-package" select="//imvert:package[ancestor-or-self::imvert:package/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-external-package') and (imvert:class/imvert:id = $application-package//imvert:type-id) or imvert:stereotype=imf:get-config-stereotypes('stereotype-name-system-package')]"/>
+    <xsl:variable name="external-package" select="//imvert:package[
+        (ancestor-or-self::imvert:package/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-external-package') 
+         and (imvert:class/imvert:id = $application-package//imvert:type-id)) 
+        or imvert:stereotype=imf:get-config-stereotypes('stereotype-name-system-package')]"/>
     
     <!-- 
         The set of internal packages includes all packages that are <<external>> of any subpackage thereof.

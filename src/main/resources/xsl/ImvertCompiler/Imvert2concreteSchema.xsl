@@ -53,8 +53,11 @@
         <xsl:choose>
             <xsl:when test="imf:is-conceptual(.)">
                 <xsl:variable name="maps" select="imf:get-conceptual-schema-map(imvert:namespace,$conceptual-schema-mapping-name)"/>
-                <xsl:variable name="map" select="$maps[1]"/><!-- TODO must be multiple -->
+                <xsl:variable name="map" select="$maps[construct/name = current()/imvert:class/imvert:name]"/><!-- select the map that declares any of the conceptual constructs -->
                 <xsl:choose>
+                    <xsl:when test="exists($map[2])">
+                        <xsl:sequence select="imf:msg('FATAL','More than one applicable map for namespace [1] when using mapping [2]',(imvert:namespace,$conceptual-schema-mapping-name))"/>
+                    </xsl:when>
                     <xsl:when test="exists($map)">
                         <!-- replace this by the concrete package -->
                         <imvert:package>
@@ -147,7 +150,6 @@
     
     <xsl:template match="imvert:class/imvert:name" mode="conceptual">
         <xsl:param name="map" as="element()"/>
-        
         <xsl:variable name="mapped-construct" select="$map/construct[name = current()/@original]"/>
         <xsl:choose>
             <xsl:when test="$mapped-construct">
