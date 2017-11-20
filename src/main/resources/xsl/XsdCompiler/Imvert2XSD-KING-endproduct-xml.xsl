@@ -238,17 +238,8 @@
             
             <xsl:if test="$debugging">
                 <xsl:sequence select="imf:debug-document($config-schemarules,'imvert-schema-rules.xml',true(),false())"/>
-                 <!--xsl:result-document href="file:/c:/temp/imvert-schema-rules.xml">
-                    <xsl:sequence select="$config-schemarules"/>
-                </xsl:result-document--> 
                 <xsl:sequence select="imf:debug-document($config-tagged-values,'imvert-tagged-values.xml',true(),false())"/>
-                <!--xsl:result-document href="file:/c:/temp/imvert-tagged-values.xml">
-                    <xsl:sequence select="$config-tagged-values"/>
-                </xsl:result-document--> 
                 <xsl:sequence select="imf:debug-document($enriched-endproduct-base-config-excel,'enriched-endproduct-base-config-excel.xml',true(),false())"/>
-                <!--xsl:result-document href="file:/c:/temp/enriched-endproduct-base-config-excel.xml">
-                    <xsl:sequence select="$enriched-endproduct-base-config-excel"/>
-                </xsl:result-document--> 
             </xsl:if>
             
             <xsl:sequence select="imf:track('Constructing the messages')"/>
