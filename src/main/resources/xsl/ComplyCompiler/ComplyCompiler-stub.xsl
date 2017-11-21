@@ -67,7 +67,9 @@
         </ep:type-name>
     </xsl:template>
     <xsl:template match="ep:tech-name" mode="preproc"> <!-- STUB Robert past zijn code aan -->
-        <xsl:variable name="qualified-name" select="if (contains(.,':')) then . else concat((ancestor::ep:*/@prefix)[last()],':',.)"/>
+        <xsl:variable name="parent" select=".."/>
+        <xsl:variable name="is-metadata" select="empty($parent/self::ep:constructRef) and imf:boolean($parent/@ismetadata)"/>
+        <xsl:variable name="qualified-name" select="if ($is-metadata) then . else if (contains(.,':')) then . else concat((ancestor::ep:*/@prefix)[last()],':',.)"/>
         <ep:tech-name>
             <xsl:value-of select="$qualified-name"/>
         </ep:tech-name>
@@ -79,7 +81,9 @@
         </ep:href>
     </xsl:template>
     <xsl:template match="ep:name" mode="preproc"> 
-        <xsl:variable name="qualified-name" select="if (contains(.,':')) then . else concat((ancestor::ep:*/@prefix)[last()],':',.)"/>
+        <xsl:variable name="parent" select=".."/>
+        <xsl:variable name="is-metadata" select="empty($parent/self::ep:constructRef) and imf:boolean($parent/@ismetadata)"/>
+        <xsl:variable name="qualified-name" select="if ($is-metadata) then . else if (contains(.,':')) then . else concat((ancestor::ep:*/@prefix)[last()],':',.)"/>
         <ep:name>
             <xsl:value-of select="$qualified-name"/>
         </ep:name>
@@ -200,7 +204,19 @@
                             </xsl:if>
                             <!-- plaats de eigenschappen van het data-type (potentieel meerdere), behalve de namen -->
                             <xsl:comment select="concat('Insert the properties of the datatype: ',$data-type/ep:tech-name)"/>
-                            <xsl:apply-templates select="$data-type/*[empty((self::ep:tech-name,self::ep:name))]"/>
+                            <xsl:apply-templates select="$data-type/*[empty((self::ep:tech-name,self::ep:name,self::ep:enum))]"/>
+                           
+                            <!-- if fixed enum, set that, else copy all possible enums (if any) from the datatype. --> 
+                            <xsl:choose>
+                                <xsl:when test="ep:enum[imf:boolean(@fixed)]">
+                                    <!-- already added by default template-->
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <!-- add the datatype enums to this construct -->
+                                    <xsl:apply-templates select="$data-type/ep:enum"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                     
                         </xsl:when>
                         <!--<xsl:when test="$seq1">
                             <xsl:comment select="concat('This is wrapper, and has attribute: ',ep:tech-name)"/>
@@ -254,14 +270,7 @@
         
         <xsl:next-match/>
     </xsl:template>
-    
-    <xsl:template match="ep:seq/ep:construct/ep:enum">
-        <!-- stub: verwijder, want deze mag hier eigenlijk niet staan. -->
-    </xsl:template>
-    <xsl:template match="ep:choice/ep:construct/ep:enum">
-        <!-- stub: verwijder, want deze mag hier eigenlijk niet staan. -->
-    </xsl:template>
-    
+     
     <!--xx
     <xsl:template match="ep:patroon">
         <xsl:next-match/>

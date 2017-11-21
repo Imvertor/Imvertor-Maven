@@ -126,7 +126,7 @@
         <xsl:sequence select="imf:debug(.,'Group label [1]', (@label))"/>
         <message file-name="{@label}">
             <xsl:variable name="parse" select="imf:ns-parse(@type)"/>
-            <xsl:element name="{$parse[3]}:{$parse[2]}" namespace="{$parse[4]}">
+            <xsl:element name="{imf:get-name-with-prefix($parse)}" namespace="{$parse[4]}">
                 
                 <xsl:variable name="following-attributes" select="imf:get-subattributes(cell[1])"/>
                 <xsl:if test="exists($following-attributes)">
@@ -161,14 +161,14 @@
             </xsl:when>
             <xsl:when test="count($linked-group) eq 1">
                 <xsl:variable name="parse" select="imf:ns-parse(@name)"/>
-                <xsl:element name="{$parse[3]}:{$parse[2]}" namespace="{$parse[4]}">
+                <xsl:element name="{imf:get-name-with-prefix($parse)}" namespace="{$parse[4]}">
                     <xsl:apply-templates select="$following-attributes" mode="attribute-cell"/>
                     <xsl:apply-templates select="$linked-group" mode="data-column"/>
                 </xsl:element>
             </xsl:when>
             <xsl:when test="exists($following-attributes)">
                 <xsl:variable name="parse" select="imf:ns-parse(@name)"/>
-                <xsl:element name="{$parse[3]}:{$parse[2]}" namespace="{$parse[4]}">
+                <xsl:element name="{imf:get-name-with-prefix($parse)}" namespace="{$parse[4]}">
                     <xsl:apply-templates select="$following-attributes" mode="attribute-cell"/>
                     <!-- no content -->
                 </xsl:element>
@@ -194,7 +194,7 @@
     <xsl:template match="cell[starts-with(@name,'@')]"  mode="attribute-cell">
         <xsl:if test="normalize-space(@value)">
             <xsl:variable name="parse" select="imf:ns-parse(@name)"/>
-            <xsl:attribute name="{$parse[3]}:{$parse[2]}" namespace="{$parse[4]}" select="@value"/>
+            <xsl:attribute name="{imf:get-name-with-prefix($parse)}" namespace="{$parse[4]}" select="@value"/>
         </xsl:if>
     </xsl:template>
     
@@ -213,7 +213,7 @@
         <xsl:variable name="linked-group" select="$testset/groups[@part = '2']/group[@label = $label and @id = $link]"/>
         
         <xsl:variable name="parse" select="imf:ns-parse(@name)"/>
-         <xsl:element name="{$parse[3]}:{$parse[2]}" namespace="{$parse[4]}">
+        <xsl:element name="{imf:get-name-with-prefix($parse)}" namespace="{$parse[4]}">
             <xsl:variable name="following-attributes" select="imf:get-attributes(.)"/>
             <xsl:apply-templates select="$following-attributes" mode="attribute-cell"/>
             <xsl:choose>
@@ -237,7 +237,7 @@
         <xsl:variable name="name" select="@name"/>
         <xsl:sequence select="imf:debug(.,'data-cell Cell text [1]', ($name))"/>
         <xsl:variable name="parse" select="imf:ns-parse(@name)"/>
-        <xsl:element name="{$parse[3]}:{$parse[2]}" namespace="{$parse[4]}"> <!--StUF:noValue -->
+        <xsl:element name="{imf:get-name-with-prefix($parse)}" namespace="{$parse[4]}"> <!--StUF:noValue -->
             <xsl:variable name="following-attributes" select="imf:get-attributes(.)"/>
             <xsl:apply-templates select="$following-attributes" mode="attribute-cell"/>
             <xsl:value-of select="@value"/>
@@ -301,22 +301,29 @@
         4 the namespace, or /unknown
     -->    
     <xsl:function name="imf:ns-parse" as="xs:string+">
-        <xsl:param name="name"/>
-        <xsl:variable name="is-att" select="starts-with($name,'@')"/>
-        <xsl:variable name="parse" select="tokenize($name,':')"/>
-        <xsl:variable name="prefix" select="if ($is-att) then substring($parse[1],2) else $parse[1]"/>
-        <xsl:variable name="ns" select="$all-namespaces[@prefix=$prefix]"/>
+        <xsl:param name="passed-name"/>
+        <xsl:variable name="is-att" select="starts-with($passed-name,'@')"/>
+        <xsl:variable name="parse" select="tokenize($passed-name,':')"/>
         <xsl:choose>
             <xsl:when test="$parse[2]">
-                <xsl:value-of select="$is-att"/>
-                <xsl:value-of select="$parse[2]"/>
-                <xsl:value-of select="$prefix"/>
+                <!-- format: @abc:def or abc:def-->
+                <xsl:variable name="prefix" select="if ($is-att) then substring($parse[1],2) else $parse[1]"/>
+                <xsl:variable name="name" select="$parse[2]"/>
+                <xsl:variable name="ns" select="$all-namespaces[@prefix=$prefix]"/>
+           
                 <xsl:sequence select="if (empty($ns)) then imf:msg('ERROR','No namespace for prefix [1]',$prefix) else ()"/>
+                
+                <xsl:value-of select="$is-att"/>
+                <xsl:value-of select="$name"/>
+                <xsl:value-of select="$prefix"/>
                 <xsl:value-of select="($ns,'/unknown')[1]"/>
             </xsl:when>
             <xsl:otherwise>
+                <!-- format: @def or def -->
+                <xsl:variable name="name" select="if ($is-att) then substring($parse[1],2) else $parse[1]"/>
+               
                 <xsl:value-of select="$is-att"/>
-                <xsl:value-of select="$parse[1]"/>
+                <xsl:value-of select="$name"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -326,4 +333,10 @@
             <xsl:apply-templates select="*" mode="testje"></xsl:apply-templates>
         </xsl:element>
     </xsl:template>
+    
+    <xsl:function name="imf:get-name-with-prefix">
+        <xsl:param name="parse"/>
+        <xsl:value-of select="if ($parse[3]) then concat($parse[3],':',$parse[2]) else $parse[2]"/>
+    </xsl:function>
+    
 </xsl:stylesheet>
