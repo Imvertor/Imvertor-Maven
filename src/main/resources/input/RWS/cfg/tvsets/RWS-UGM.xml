@@ -5,9 +5,9 @@
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
     <!-- 
-        RWS follows NEN3610
+        RWS follows KING
     --> 
-    <xi:include href="../../../Geonovum/cfg/tvsets/NEN3610.xml"/>
+    <xi:include href="../../../KING/cfg/metamodels/KINGUGM.xml"/>
     
     <name>RWS</name>
     

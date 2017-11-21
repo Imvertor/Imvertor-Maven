@@ -4,13 +4,12 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     <!-- 
-        RWS follows KKG
-        
-        Including scalars.
+       
     --> 
-    <xi:include href="../../../Geonovum/cfg/metamodels/NEN3610.xml"/>
+    <xi:include href="../../../KING/cfg/metamodels/KINGBSM.xml"/>
     
     <name>RWS</name>
     
-  
+ 
+    
 </metamodel>
