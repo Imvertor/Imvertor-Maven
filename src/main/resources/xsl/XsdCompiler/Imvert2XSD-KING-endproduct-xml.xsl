@@ -198,27 +198,15 @@
     <xsl:variable name="ep-onderlaag-path" select="imf:get-config-string('properties','KINGBSM_EPFORMAAT_XMLPATH')"/>
     <xsl:variable name="ep-onderlaag" select="imf:document($ep-onderlaag-path,true())/ep:message-set"/>
 
+    <!-- Within this variable all messages defined within the BSM of the koppelvlak are transformed to the imvertor endproduct (ep) format.-->
     <xsl:variable name="constructs-ep-onderlaag">
         <xsl:apply-templates select="$ep-onderlaag/ep:construct" mode="replicate-ep-structure"/>
     </xsl:variable>
     
-    <xsl:template match="*" mode="replicate-ep-structure">
-        <xsl:copy copy-namespaces="no">
-            <xsl:apply-templates select="*|@*|text()" mode="replicate-ep-structure"/>
-        </xsl:copy>
-    </xsl:template>
-    
-    <xsl:template match="@*" mode="replicate-ep-structure">
-        <xsl:copy-of select="." copy-namespaces="no"/>
-    </xsl:template>
-    
-    
-    <!-- Within this template all messages defined within the BSM of the koppelvlak are transformed to the imvertor endproduct (ep) format.-->
-    <xsl:template match="/">
-         
+    <xsl:variable name="endproduct">
         <ep:message-set global-empty-enumeration-allowed="{$global-empty-enumeration-allowed}">
             <xsl:sequence select="imf:create-debug-comment('Debuglocation 1',$debugging)"/>
-
+            
             <xsl:sequence select="imf:create-output-element('ep:name', $packages/imvert:application)"/>
             <xsl:sequence select="imf:create-output-element('ep:release', $packages/imvert:release)"/>
             <xsl:sequence select="imf:create-output-element('ep:date', substring-before($packages/imvert:generated,'T'))"/>
@@ -249,7 +237,7 @@
             
             <xsl:for-each select="$enriched-rough-messages/ep:rough-messages/ep:rough-message">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 2',$debugging)"/>
-
+                
                 <xsl:variable name="currentMessage" select="."/>
                 <xsl:variable name="id" select="ep:id" as="xs:string"/>
                 <!-- Following imf:get-construct-by-id gets a imvert:class element. -->
@@ -319,15 +307,15 @@
                     </xsl:apply-templates>
                 </ep:message>
             </xsl:for-each>
-
-           <xsl:apply-templates select="$enriched-rough-messages/ep:rough-messages/ep:rough-message"/>
             
-           <xsl:for-each select="$enriched-rough-messages//ep:construct[@typeCode='tabelEntiteit' and generate-id(.) = generate-id(key('construct-id',ep:id,$enriched-rough-messages)[1])]">                   
-               <xsl:sequence select="imf:create-debug-comment('Debuglocation 3',$debugging)"/>
-
-               <xsl:call-template name="processMainConstructs"/>
-           </xsl:for-each>
-
+            <xsl:apply-templates select="$enriched-rough-messages/ep:rough-messages/ep:rough-message"/>
+            
+            <xsl:for-each select="$enriched-rough-messages//ep:construct[@typeCode='tabelEntiteit' and generate-id(.) = generate-id(key('construct-id',ep:id,$enriched-rough-messages)[1])]">                   
+                <xsl:sequence select="imf:create-debug-comment('Debuglocation 3',$debugging)"/>
+                
+                <xsl:call-template name="processMainConstructs"/>
+            </xsl:for-each>
+            
             <xsl:for-each-group 
                 select="//imvert:attribute[empty(imvert:type-id)]" 
                 group-by="imf:useable-attribute-name(imf:get-compiled-name(.),.)">
@@ -336,7 +324,7 @@
                 
                 <xsl:apply-templates select="current-group()[1]" mode="mode-global-attribute-simpletype"/>
             </xsl:for-each-group>
-
+            
             <xsl:for-each-group 
                 select="//imvert:attribute[imvert:type-package='GML3']" 
                 group-by="imvert:conceptual-schema-type">
@@ -359,9 +347,25 @@
             <xsl:apply-templates select="//imvert:class[imf:get-stereotype(.) = imf:get-config-stereotypes('stereotype-name-enumeration') and generate-id(.) = generate-id(key('enumerationClass',imvert:name,$packages)[1])]" mode="mode-global-enumeration"/>
             
         </ep:message-set>
-
+                
+    </xsl:variable>
+    
+    <xsl:template match="/">
+        
+        <xsl:sequence select="imf:pretty-print($endproduct,false())"/>
+        
     </xsl:template>
-
+    
+    <xsl:template match="*" mode="replicate-ep-structure">
+        <xsl:copy copy-namespaces="no">
+            <xsl:apply-templates select="*|@*|text()" mode="replicate-ep-structure"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="@*" mode="replicate-ep-structure">
+        <xsl:copy-of select="." copy-namespaces="no"/>
+    </xsl:template>
+    
     <?x xsl:template match="/">
         <!-- This template is used to place the content of the variable '$imvert-endproduct' within the ep file. -->
         <xsl:if test="$debugging">

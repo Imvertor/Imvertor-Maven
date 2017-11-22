@@ -1197,7 +1197,17 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xs:attribute ref="{concat($actualPrefix,':',ep:href)}">
+		<xs:attribute>
+			<xsl:attribute name="ref">
+				<xsl:choose>
+					<xsl:when test="contains(ep:href,':')">
+						<xsl:value-of select="ep:href"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="concat($actualPrefix,':',ep:href)"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
 			<xsl:attribute name="use">
 				<xsl:choose>
 					<xsl:when test="not(ep:min-occurs) or ep:min-occurs = 1">required</xsl:when>

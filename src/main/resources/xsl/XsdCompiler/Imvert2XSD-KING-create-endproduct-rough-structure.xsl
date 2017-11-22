@@ -52,6 +52,15 @@
 
 	<xsl:variable name="version" select="$packages/imvert:version"/>
 	
+	<xsl:variable name="rough-messages">
+		<xsl:sequence select="imf:track('Constructing the rough message-structure')"/>
+		
+		<ep:rough-messages>
+			<xsl:apply-templates select="$packages/imvert:package[imvert:stereotype = 'BERICHT' and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]" mode="create-rough-message-structure"/>
+		</ep:rough-messages>
+		
+	</xsl:variable>
+	
 	
 	<xsl:key name="associations" match="imvert:association" use="imvert:type-id"/>
 	
@@ -63,9 +72,11 @@
 	<xsl:template match="/">
 		<xsl:sequence select="imf:track('Constructing the rough message-structure')"/>
 		
-		<ep:rough-messages>
+		<xsl:sequence select="imf:pretty-print($rough-messages,false())"/>
+		
+		<!--ep:rough-messages>
 			<xsl:apply-templates select="$packages/imvert:package[imvert:stereotype = 'BERICHT' and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]" mode="create-rough-message-structure"/>
-		</ep:rough-messages>
+		</ep:rough-messages-->
 
 	</xsl:template>
 	

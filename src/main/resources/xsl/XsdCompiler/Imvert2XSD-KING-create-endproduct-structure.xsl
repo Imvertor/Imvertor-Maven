@@ -3533,6 +3533,8 @@
 					</xsl:otherwise>
 				</xsl:choose>
 				<ep:href>entiteittype</ep:href>
+				<!--xsl:sequence
+					select="imf:create-output-element('ep:href', '$actualPrefix:entiteittype')" /-->
 			</ep:constructRef>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'Entiteittype' and data = 'V']">
@@ -3557,6 +3559,8 @@
 					</xsl:otherwise>
 				</xsl:choose>
 				<ep:href>entiteittype</ep:href>
+				<!--xsl:sequence
+					select="imf:create-output-element('ep:href', '$actualPrefix:entiteittype')" /-->
 			</ep:constructRef>
 		</xsl:if>
 		<xsl:if test="$attributeTypeRow//col[@name = 'SleutelVerzendend' and data = 'O']">

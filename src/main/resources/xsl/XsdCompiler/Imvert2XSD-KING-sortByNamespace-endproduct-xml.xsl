@@ -40,10 +40,16 @@
         <xsl:copy-of select="."/>
     </xsl:variable>
     
-    <xsl:template match="/">      
+    <xsl:variable name="sorted-endproduct">
         <ep:message-sets>
-            <xsl:apply-templates select="ep:message-set"/>
+            <xsl:apply-templates select="/ep:message-set"/>
         </ep:message-sets>
+    </xsl:variable>
+    
+    <xsl:template match="/">
+        
+        <xsl:sequence select="imf:pretty-print($sorted-endproduct,false())"/>
+        
     </xsl:template>
     
     <xsl:template match="ep:message-set">

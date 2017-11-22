@@ -50,10 +50,16 @@
 
 	<xsl:variable name="version" select="$packages/imvert:version"/>
 	
-	<xsl:template match="/">
+	<xsl:variable name="enriched-rough-messages">
 		<xsl:sequence select="imf:track('Constructing the enriched rough message-structure')"/>
 		
-		<xsl:apply-templates select="ep:rough-messages" mode="enrich-rough-messages"/>
+		<xsl:apply-templates select="/ep:rough-messages" mode="enrich-rough-messages"/>
+		
+	</xsl:variable>
+	
+	<xsl:template match="/">
+		
+		<xsl:sequence select="imf:pretty-print($enriched-rough-messages,false())"/>
 
 	</xsl:template>
 	
