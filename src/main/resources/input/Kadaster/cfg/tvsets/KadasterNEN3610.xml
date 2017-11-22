@@ -10,4 +10,100 @@
     <xi:include href="../../../Geonovum/cfg/tvsets/NEN3610.xml"/>
     
     <name>Kadaster NEN3610</name>
+  
+    <tagged-values>  
+
+        <tv norm="space" id="CFG-TV-DATERECORDED">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-koppelklasse</stereo>
+                <stereo required="no">stereotype-name-meervoudige-relatieklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-OWNER">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-koppelklasse</stereo>
+                <stereo required="no">stereotype-name-meervoudige-relatieklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-CONDITIONSOFUSE">
+            <name lang="nl">Gebruiksvoorwaarden</name>
+            <name lang="en">Conditions of use</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-objecttype</stereo>
+                <stereo required="no">stereotype-name-koppelklasse</stereo>
+                <stereo required="no">stereotype-name-meervoudige-relatieklasse</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-SOURCE">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-koppelklasse</stereo>
+                <stereo required="no">stereotype-name-meervoudige-relatieklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-SOURCEOFDEFINITION">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-koppelklasse</stereo>
+                <stereo required="no">stereotype-name-meervoudige-relatieklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-LEGISLATION">
+            <name lang="nl">Wetgeving</name>
+            <name lang="en">Legislation</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-objecttype</stereo>
+                <stereo required="no">stereotype-name-koppelklasse</stereo>
+                <stereo required="no">stereotype-name-meervoudige-relatieklasse</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-complextype</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-ACCESSIBILITY">
+            <name lang="nl">Toegankelijkheid</name>
+            <name lang="en">Accessibility</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-objecttype</stereo>
+                <stereo required="no">stereotype-name-koppelklasse</stereo>
+                <stereo required="no">stereotype-name-meervoudige-relatieklasse</stereo>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-complextype</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-CONCEPTLOCATION">
+            <name lang="nl">Begrip locatie</name>
+            <name lang="en">Concept location</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-objecttype</stereo>
+                <stereo required="no">stereotype-name-koppelklasse</stereo>
+                <stereo required="no">stereotype-name-meervoudige-relatieklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-BASEMAPPING">
+            <name lang="nl">Base-mapping</name>
+            <name lang="en">Base-mapping</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-objecttype</stereo>
+                <stereo required="no">stereotype-name-koppelklasse</stereo>
+                <stereo required="no">stereotype-name-meervoudige-relatieklasse</stereo>
+            </stereotypes>
+        </tv>
+        
+    </tagged-values>
 </tagset>

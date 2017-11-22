@@ -55,7 +55,7 @@
             </stereotypes>
             <!-- declared-values inherited -->
         </tv>
-        <tv norm="space" id="CFG-TV-ONWER">
+        <tv norm="space" id="CFG-TV-OWNER">
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-koppelklasse</stereo>

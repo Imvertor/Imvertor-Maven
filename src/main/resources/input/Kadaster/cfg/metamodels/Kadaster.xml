@@ -80,6 +80,7 @@
             <name lang="en">Link class</name>
             <construct>class</construct>
         </stereo>
+        
         <stereo id="stereotype-name-voidable">
             <name lang="en">Voidable</name>
             <name lang="nl">Voidable</name>
