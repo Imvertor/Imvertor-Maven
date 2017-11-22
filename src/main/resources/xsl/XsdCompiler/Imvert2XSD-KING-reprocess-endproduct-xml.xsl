@@ -36,9 +36,17 @@
     <xsl:variable name="StUF-prefix" select="'StUF'"/>
     <xsl:variable name="kv-prefix" select="/ep:message-set/ep:namespace-prefix"/>
     
-    <xsl:template match="/">      
-        <xsl:apply-templates select="ep:message-set"/>
-   </xsl:template>
+    <xsl:variable name="reprocessed-endproduct">
+
+        <xsl:apply-templates select="/ep:message-set"/>
+        
+    </xsl:variable>
+    
+    <xsl:template match="/">
+        
+        <xsl:sequence select="imf:pretty-print($reprocessed-endproduct,false())"/>
+        
+    </xsl:template>
     
     <xsl:template match="ep:message-set">
         <xsl:sequence select="imf:track('reprocessing the message-set')"/>
@@ -61,9 +69,15 @@
         
 
         <xsl:element name="{name(.)}">
-            <xsl:apply-templates select="@*">
-                <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
-            </xsl:apply-templates>
+            <xsl:if test="@prefix">
+                <xsl:variable name="prefix">
+                    <xsl:apply-templates select="@prefix">
+                        <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
+                    </xsl:apply-templates>
+                </xsl:variable>
+                <xsl:attribute name="prefix" select="$prefix"/>
+            </xsl:if>
+            <xsl:apply-templates select="@*[not(name()='prefix')]"/>
             <xsl:choose>
                 <xsl:when test="@orderingDesired = 'no' or ancestor::ep:seq[@orderingDesired = 'no']">
                     <xsl:sequence select="imf:create-debug-comment('Debuglocation 2001',$debugging)"/>
@@ -117,20 +131,24 @@
                 <xsl:variable name="actualPrefix2" select="ancestor::ep:construct[parent::ep:message-set]/@prefix"/>
  
                 <ep:constructRef>
-                    <xsl:apply-templates select="@prefix">
-                        <xsl:with-param name="actualPrefix" select="$actualPrefix2"/>
-                        <xsl:with-param name="prefix4metadataConstructs">
-                            <xsl:choose>
-                                <xsl:when test="ep:tech-name = 'entiteittype'">
-                                    <xsl:value-of select="$prefix4metadataConstructs"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:value-of select="''"/>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </xsl:with-param>
-                    </xsl:apply-templates>
-                    <xsl:apply-templates select="*|@*[not(name()='prefix')]"/>
+                    <xsl:variable name="prefix">
+                        <xsl:apply-templates select="@prefix">
+                            <xsl:with-param name="actualPrefix" select="$actualPrefix2"/>
+                            <xsl:with-param name="prefix4metadataConstructs">
+                                <xsl:choose>
+                                    <xsl:when test="ep:tech-name = 'entiteittype'">
+                                        <xsl:value-of select="$prefix4metadataConstructs"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:value-of select="''"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:with-param>
+                        </xsl:apply-templates>
+                    </xsl:variable>
+                    <xsl:attribute name="prefix" select="$prefix"/>
+                    <xsl:apply-templates select="*[not(name()='ep:href')]|@*[not(name()='prefix')]"/>
+                    <xsl:sequence select="imf:create-output-element('ep:href', concat($prefix,':',ep:href))"/>
                 </ep:constructRef>
             </xsl:when>
             <xsl:when test="not(@ismetadata='yes') and $procesType='splitting' and (@prefix = $actualPrefix or @prefix = '$actualPrefix')">
@@ -671,24 +689,29 @@
         <xsl:param name="prefix4metadataConstructs" select="''"/>
         <xsl:choose>
             <xsl:when test="$prefix4metadataConstructs != ''">
-                <xsl:attribute name="prefix" select="$prefix4metadataConstructs"/>
+                <!--xsl:attribute name="prefix" select="$prefix4metadataConstructs"/-->
+                <xsl:value-of select="$prefix4metadataConstructs"/>
             </xsl:when>
             <xsl:when test="parent::ep:namespace">
-                <xsl:copy-of select="."/>
+                <!--xsl:copy-of select="."/-->
+                <xsl:value-of select="."/>
             </xsl:when>
             <xsl:when test=". = '$actualPrefix'">
-                <!--xsl:attribute name="prefix" select="$actualPrefix"/-->
-                <xsl:variable name="prefix" select="ancestor::ep:construct[parent::ep:message-set]/@prefix"/>
-                <xsl:attribute name="prefix" select="$prefix"/>
+                 <xsl:variable name="prefix" select="ancestor::ep:construct[parent::ep:message-set]/@prefix"/>
+                <!--xsl:attribute name="prefix" select="$prefix"/-->
+                <xsl:value-of select="$prefix"/>
             </xsl:when>
             <xsl:when test=". != '$actualPrefix' and . != $actualPrefix">
-                <xsl:attribute name="prefix" select="$actualPrefix"/>
+                <!--xsl:attribute name="prefix" select="$actualPrefix"/-->
+                <xsl:value-of select="$actualPrefix"/>
             </xsl:when>
             <xsl:when test=". != '$actualPrefix'">
-                <xsl:copy-of select="."/>
+                <!--xsl:copy-of select="."/-->
+                <xsl:value-of select="."/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:attribute name="prefix" select="$actualPrefix"/>
+                <!--xsl:attribute name="prefix" select="$actualPrefix"/-->
+                <xsl:value-of select="$actualPrefix"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -737,9 +760,15 @@
         <xsl:sequence select="imf:create-debug-track('Debuglocation 2030',$debugging)"/>
         
         <xsl:element name="{name(.)}">
-            <xsl:apply-templates select="@*">
-                <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
-            </xsl:apply-templates>
+            <xsl:if test="@prefix">
+                <xsl:variable name="prefix">
+                    <xsl:apply-templates select="@prefix">
+                        <xsl:with-param name="actualPrefix" select="$actualPrefix"/>
+                    </xsl:apply-templates>
+                </xsl:variable>
+                <xsl:attribute name="prefix" select="$prefix"/>
+            </xsl:if>
+            <xsl:apply-templates select="@*[not(name()='prefix')]"/>
             <xsl:value-of select="."/>
         </xsl:element>       
     </xsl:template>
