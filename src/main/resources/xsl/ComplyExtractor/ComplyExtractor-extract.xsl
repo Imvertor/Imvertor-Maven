@@ -57,33 +57,49 @@
         provided as local <var> elements.
     -->    
     <xsl:template match="/cw:files">
-        <testset>
-            <xsl:attribute name="generated" select="current-dateTime()"/>
-            <xsl:attribute name="excel-creator" select="cw:file[@path='docProps\core.xml']/*:coreProperties/*:creator"/>
-            <xsl:attribute name="excel-lastModifiedBy" select="cw:file[@path='docProps\core.xml']/*:coreProperties/*:lastModifiedBy"/>
-            <xsl:attribute name="excel-created" select="cw:file[@path='docProps\core.xml']/*:coreProperties/*:created"/>
-            <xsl:attribute name="excel-modified" select="cw:file[@path='docProps\core.xml']/*:coreProperties/*:modified"/>
-            <xsl:attribute name="excel-app-version" select="cw:file[@path='docProps\app.xml']/*:Properties/*:AppVersion"/>
-            <groups part="1">
-                <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet1.xml']" mode="create-group">
-                    <xsl:with-param name="sheet-nr" select="1"/>
-                </xsl:apply-templates>
-            </groups>
-            <groups part="2">
-                <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet2.xml']" mode="create-group">
-                    <xsl:with-param name="sheet-nr" select="2"/>
-                </xsl:apply-templates>
-            </groups>
-            <variables>
-                <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet3.xml']" mode="create-vars"/>
-            </variables>
-            <namespaces>
-                <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet4.xml']" mode="create-namespaces"/>
-            </namespaces>
-            <parameters>
-                <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet5.xml']" mode="create-info"/>
-            </parameters>
-        </testset>
+        <xsl:variable name="testset" as="element(testset)">
+            <testset>
+                <xsl:attribute name="generated" select="current-dateTime()"/>
+                <xsl:attribute name="excel-creator" select="cw:file[@path='docProps\core.xml']/*:coreProperties/*:creator"/>
+                <xsl:attribute name="excel-lastModifiedBy" select="cw:file[@path='docProps\core.xml']/*:coreProperties/*:lastModifiedBy"/>
+                <xsl:attribute name="excel-created" select="cw:file[@path='docProps\core.xml']/*:coreProperties/*:created"/>
+                <xsl:attribute name="excel-modified" select="cw:file[@path='docProps\core.xml']/*:coreProperties/*:modified"/>
+                <xsl:attribute name="excel-app-version" select="cw:file[@path='docProps\app.xml']/*:Properties/*:AppVersion"/>
+                <groups part="1">
+                    <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet1.xml']" mode="create-group">
+                        <xsl:with-param name="sheet-nr" select="1"/>
+                    </xsl:apply-templates>
+                </groups>
+                <groups part="2">
+                    <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet2.xml']" mode="create-group">
+                        <xsl:with-param name="sheet-nr" select="2"/>
+                    </xsl:apply-templates>
+                </groups>
+                <variables>
+                    <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet3.xml']" mode="create-vars"/>
+                </variables>
+                <namespaces>
+                    <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet4.xml']" mode="create-namespaces"/>
+                </namespaces>
+                <parameters>
+                    <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet5.xml']" mode="create-info"/>
+                </parameters>
+            </testset>
+        </xsl:variable>
+        <xsl:sequence select="$testset"/>
+        
+        <xsl:sequence select="imf:set-config-string('appinfo','model-subpath',imf:get-subpath(
+            $testset/parameters/parm[@name='project-name'],
+            $testset/parameters/parm[@name='model-name'],
+            $testset/parameters/parm[@name='model-release']))"/>
+       
+        <xsl:sequence select="imf:set-config-string('appinfo','schema-subpath',$testset/parameters/parm[@name='schema-subpath'])"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','creation-version',$testset/parameters/parm[@name='creation-version'])"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','creation-date',$testset/parameters/parm[@name='creation-date'])"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','edit-version',$testset/parameters/parm[@name='edit-version'])"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','edit-date',$testset/parameters/parm[@name='edit-date'])"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','job-id',$testset/parameters/parm[@name='job-id'])"/>
+        
     </xsl:template>
     
     <xsl:template match="cw:file" mode="create-group">

@@ -32,6 +32,7 @@ import org.apache.log4j.Logger;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.exceptions.ConfiguratorException;
+import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.file.ZipFile;
@@ -77,6 +78,27 @@ public class ComplyExtractor extends Step {
 		configurator.setParm("system", "comply-content-file", contentFile.getCanonicalPath());
 		// extract the instance info from the serialized OO XML excel file 
 		succeeds = succeeds ? transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_EXTRACT_FILE", "properties/WORK_COMPLY_EXTRACT_XSLPATH","system/comply-content-file") : false;
+		
+		// copy the XSD's to the test file location
+		if (succeeds) {
+			// get the location of the schema and copy that complete folder from the managed output folder to the result folder
+			String subpath = configurator.getParm("appinfo", "model-subpath");
+			String xsdpath = configurator.getOutputFolder() + "/applications/" + subpath + "/xsd";
+			String locpath = configurator.getParm("appinfo", "schema-subpath");
+		
+			AnyFile xsdFile = new AnyFile(configurator.getOutputFolder() + "/applications/" + subpath + "/xsd/" + locpath);
+			AnyFolder sourceXsdFolder = new AnyFolder(xsdpath);
+			
+			if (sourceXsdFolder.isDirectory() && xsdFile.isFile()) {
+				// copy this xsd folder to the result folder
+				AnyFolder targetXsdFolder = new AnyFolder(configurator.getWorkFolder("app/xsd"));
+				sourceXsdFolder.copy(targetXsdFolder);		
+			} else { 
+				runner.error(logger, "No such model XSD folder: " + subpath);
+				succeeds = false;
+			}
+		}
+		
 		// build the XML instances
 		succeeds = succeeds ? transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_BUILD_FILE", "properties/WORK_COMPLY_BUILD_XSLPATH","system/comply-content-file") : false;
 		

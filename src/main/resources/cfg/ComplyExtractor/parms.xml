@@ -31,12 +31,6 @@
          <required>true</required>
       </cli-parm> 
       <cli-parm>
-         <name>xsdpath</name>
-         <arg>URL template</arg>
-         <tip>Full URL template (with parameters between [...]) accessing the main XSD to which the generated XML test files must conform</tip>
-         <required>true</required>
-      </cli-parm> 
-      <cli-parm>
          <name>executor</name>
          <arg>URL</arg>
          <tip>The URL of the instance of Imvertor executor, for example: http://imvertor.linkedmatter.com/imvertor-executor</tip>

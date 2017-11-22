@@ -78,7 +78,7 @@
        
     </xsl:variable>
     
-    <xsl:variable name="schema-path" select="imf:insert-fragments-by-name(imf:get-config-string('cli','xsdpath'),$frags)"/>
+    <xsl:variable name="schema-path" select="concat('../../app/xsd/',imf:get-config-string('appinfo','schema-subpath'))"/>
     
     <xsl:template match="/">
         <xsl:variable name="root" select="*"/>
