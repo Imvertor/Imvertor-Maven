@@ -54,6 +54,8 @@
         </sheet>
     -->
 
+    <xsl:import href="../common/Imvert-common.xsl"/>
+    
     <xsl:output method="xml" indent="yes"/>
     
     <xsl:template match="/">
@@ -158,8 +160,8 @@
            
             <xsl:sequence select="imf:create-element('cp:regels',ep:regels)"/>
    
-            <xsl:sequence select="imf:create-element('cp:kerngegeven',if (.//ep:kerngegeven = 'Ja') then 'Ja' else ())"/>
-            <xsl:sequence select="imf:create-element('cp:voidable',.//ep:mogelijk-geen-waarde)"/>
+            <xsl:sequence select="imf:create-element('cp:matchgegeven',if (imf:boolean(.//ep:kerngegeven)) then 'Ja' else ())"/>
+            <xsl:sequence select="imf:create-element('cp:voidable',if (imf:boolean(.//ep:voidable = 'true')) then 'Ja' else ())"/>
             <xsl:sequence select="imf:create-element('cp:authentiek',.//ep:authentiek)"/>
            
         </cp:prop>
@@ -168,16 +170,6 @@
         <xsl:apply-templates select="ep:seq" mode="prepare-flat"/>
         
     </xsl:template>
-    
-  
-    
-    
-    
-    
-    
-    
-    
-    
     
     <xsl:template match="node()|@*" mode="prepare-flat">
         <!-- remove -->
@@ -226,6 +218,5 @@
         <xsl:value-of select="concat(if ($prefix != '') then concat($prefix,':') else '',$this/ep:tech-name)"/>
         x-->
     </xsl:function>
-    
   
 </xsl:stylesheet>

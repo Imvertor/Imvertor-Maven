@@ -627,7 +627,7 @@
                         <xsl:sequence select="imf:create-data-comment('Patroon',cp:pattern)"/>    
                         <xsl:sequence select="imf:create-data-comment('Patroon beschrijving',cp:patterndesc)"/>    
                         <xsl:sequence select="imf:create-data-comment('Voidable',cp:voidable)"/>    
-                        <xsl:sequence select="imf:create-data-comment('Kerngegeven',cp:kerngegeven)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Matchgegeven',cp:matchgegeven)"/>    
                         <xsl:sequence select="imf:create-data-comment('Authentiek',cp:authentiek)"/>    
                         <xsl:sequence select="imf:create-data-comment('Regels',cp:regels)"/>    
                         <xsl:sequence select="imf:create-data-comment('Min waarde',cp:mininclusive)"/>    
@@ -952,7 +952,7 @@
     <xsl:function name="imf:safe-text">
         <xsl:param name="text"/>
         <xsl:variable name="textr" select="replace($text,concat('[^A-Za-z0-9:_@%&amp;\*;,\.=+\-\s\(\)\{\}\[\]\?!\\',$quot,$apos,']'),'?')"/>
-        <xsl:value-of select="if ($textr = $text) then $text else concat($textr,'&#10;[Description character issues resolved, see original text for full explanation]')">
+        <xsl:value-of select="if ($textr = $text) then $text else $textr"> <!-- was: concat($textr,'&#10;[Description character issues resolved, see original text for full explanation]') -->
         </xsl:value-of>
     </xsl:function>
 </xsl:stylesheet>
