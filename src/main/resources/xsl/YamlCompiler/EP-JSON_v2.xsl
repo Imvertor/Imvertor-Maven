@@ -3,32 +3,41 @@
     <xsl:output method="text" indent="yes" omit-xml-declaration="yes"/>
 
     <xsl:template match="ep:message-sets">
+        
+        <!-- vind de koppelvlak namespace: -->      
+        <xsl:variable name="kvnamespace" select="ep:message-set[@KV-namespace = 'yes']/@prefix"></xsl:variable>
+        
         <xsl:value-of select="'{'"/>
         <!--definitions -->
         <xsl:value-of select="'&quot;components&quot;: {'"/>
         <xsl:value-of select="'&quot;schemas&quot;: {'"/>
 
-        <xsl:for-each select="ep:message-set/ep:construct[@prefix = 'bsmr'][not(@ismetadata)]">
+        <xsl:for-each select="ep:message-set/ep:construct[@prefix = $kvnamespace][not(@ismetadata)]">
             <xsl:call-template name="construct"/>
         </xsl:for-each>
         <!-- Alle types behalve superconstructs uit andere namespaces -->
         <xsl:value-of select="','"/>
-        <xsl:for-each select="ep:message-set[@prefix != 'bsmr' and @prefix != 'StUF']/ep:construct[@prefix != 'bsmr' and @prefix != 'StUF'][not(@ismetadata)][not(@addedLevel)][not(@isdatatype)][not(starts-with(ep:type-name, 'StUF:'))]">
+        <xsl:for-each select="ep:message-set[@prefix != $kvnamespace]/ep:construct[@prefix != $kvnamespace][not(@ismetadata)][not(@addedLevel)][not(@isdatatype)]">
             <xsl:variable name="prefixNameSup" select="@prefix"/>
             <xsl:variable name="elementNameSup" select="ep:tech-name"/>
-            <xsl:if test="not(exists(/ep:message-sets/ep:message-set[@prefix='bsmr']/ep:construct/ep:superconstructRef[@prefix=$prefixNameSup][ep:tech-name=$elementNameSup]))">
+            <xsl:if test="not(exists(/ep:message-sets/ep:message-set[@prefix=$kvnamespace]/ep:construct/ep:superconstructRef[@prefix=$prefixNameSup][ep:tech-name=$elementNameSup]))">
                 <xsl:call-template name="construct"/>
             </xsl:if>
         </xsl:for-each>
         <!-- Voor alle dataType objecten uit andere namespaces (superconstruct data types) -->
         <xsl:value-of select="','"/>
-        <xsl:for-each select="ep:message-set[@prefix != 'bsmr']/ep:construct[@prefix != 'bsmr'][@isdatatype][not(@addedLevel)]">
+        <xsl:for-each select="ep:message-set[@prefix != $kvnamespace]/ep:construct[@prefix != $kvnamespace][@isdatatype][not(@addedLevel)]">
             <xsl:variable name="techname" select="ep:tech-name"/>
             <!-- if statement is voor het uitsluiten van dubbele types in meerdere namespaces (String10, String20) -->
-            <xsl:if test="not(exists(/ep:message-sets/ep:message-set/ep:construct[@prefix = 'bsmr'][@isdatatype = 'yes'][ep:tech-name = $techname]))">
+            <xsl:if test="not(exists(/ep:message-sets/ep:message-set/ep:construct[@prefix = $kvnamespace][@isdatatype = 'yes'][ep:tech-name = $techname]))">
                 <xsl:call-template name="construct"/>
             </xsl:if>
         </xsl:for-each>
+        
+        
+        <!-- Toevoeging voor missend Datum  en TijdstipMogelijkOnvolledig datatype (tijdelijk)-->
+        <xsl:value-of select="',&quot;Datum&quot;: {&quot;type&quot;: &quot;string&quot;}'"/>
+        <xsl:value-of select="',&quot;TijdstipMogelijkOnvolledig&quot;: {&quot;type&quot;: &quot;string&quot;}'"/>
 
         <xsl:value-of select="'}'"/>
         <xsl:value-of select="'}'"/>
@@ -51,6 +60,21 @@
                 </xsl:variable>
                 <xsl:value-of select="concat('&quot;type&quot;: &quot;',$datatype,'&quot;')"/>
             </xsl:when>
+            <xsl:when test="exists(ep:choice)">
+                <!-- Choise elementen -->
+                <xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
+                
+                <xsl:for-each select="ep:choice">
+                    <xsl:value-of select="'&quot;oneOf&quot;: ['"/>
+                    <xsl:for-each select="ep:construct[@prefix = $prefixName][not(@ismetadata)][not(@addedLevel)]">
+                        <xsl:call-template name="choiceProperty"/>
+                        <xsl:if test="position() != last()">
+                            <xsl:value-of select="','"/>
+                        </xsl:if>
+                    </xsl:for-each>
+                    <xsl:value-of select="']'"/>
+                </xsl:for-each>
+            </xsl:when>
             <xsl:otherwise>
 
 
@@ -63,7 +87,7 @@
                     <xsl:variable name="prefix" select="ep:superconstructRef/@prefix"/>
                     
                     <xsl:variable name="name" select="ep:superconstructRef/ep:tech-name"/>
-                    <xsl:for-each select="/ep:message-sets/ep:message-set[@prefix = $prefix]/ep:construct[@prefix = $prefix][ep:tech-name = $name]/ep:seq/ep:construct[not(@ismetadata)][not(starts-with(ep:type-name, 'StUF:'))]">
+                    <xsl:for-each select="/ep:message-sets/ep:message-set[@prefix = $prefix]/ep:construct[@prefix = $prefix][ep:tech-name = $name]/ep:seq/ep:construct[not(@ismetadata)]">
                         <xsl:call-template name="property"/>
                         <xsl:value-of select="','"/>
                     </xsl:for-each>
@@ -77,18 +101,8 @@
                     </xsl:if>
                 </xsl:for-each>
                 
-                <!-- Choise elementen 
-                <xsl:for-each select="ep:choice">
-                    <xsl:value-of select="'&quot;oneOf&quot;: ['"/>
-                    <xsl:for-each select="ep:construct[@prefix = $prefixName][not(@ismetadata)][not(@addedLevel)]">
-                        <xsl:call-template name="choiceProperty"/>
-                        <xsl:if test="position() != last()">
-                            <xsl:value-of select="','"/>
-                        </xsl:if>
-                    </xsl:for-each>
-                    <xsl:value-of select="']'"/>
-                </xsl:for-each>
-                -->
+                
+                
                 <xsl:value-of select="'}'"/>
             </xsl:otherwise>
         </xsl:choose>
@@ -109,9 +123,11 @@
             </xsl:call-template>
         </xsl:variable>
         
+        <xsl:if test="exists(ep:type-name) or exists(ep:data-type)">
         <xsl:value-of select="concat('&quot;', ep:tech-name,'&quot;: {' )"/>
         <xsl:value-of select="$derivedTypeName"/>
         <xsl:value-of select="'}'"/>
+        </xsl:if>
     </xsl:template>
     
     <xsl:template name="choiceProperty">  
@@ -131,7 +147,11 @@
         <xsl:param name="typeName"/>
         <xsl:param name="typePrefix"/>
         <xsl:choose>
-            <xsl:when test="exists(/ep:message-sets//ep:construct[ep:tech-name = $typeName][@prefix=$typePrefix][exists(@addedLevel)])">
+            <xsl:when test="exists(ep:data-type)">
+                <!-- Uitzondering voor constructs die niet verwijzen naar een ander type, maar die een datatype als soort hebben -->
+                <xsl:value-of select="'&quot;type&quot;: &quot;string&quot;'"></xsl:value-of>
+            </xsl:when>
+            <xsl:when test="exists(/ep:message-sets//ep:construct[ep:tech-name = $typeName][@prefix=$typePrefix][exists(@addedLevel)]/ep:type-name)">
                 <xsl:value-of
                     select="concat('&quot;$ref&quot;: &quot;#/components/schemas/', substring-after(/ep:message-sets//ep:construct[ep:tech-name = $typeName][@prefix=$typePrefix][exists(@addedLevel)]/ep:type-name, ':'), '&quot;')"
                 />

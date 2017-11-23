@@ -4,6 +4,10 @@
     
     <xsl:template match="ep:message-sets">
         
+        <!-- vind de koppelvlak namespace: -->      
+        <xsl:variable name="kvnamespace" select="ep:message-set[@KV-namespace = 'yes']/@prefix"></xsl:variable>
+        
+        
         <!-- header-->
         <xsl:text>openapi: 3.0.0
 info:
@@ -18,12 +22,13 @@ info:
         <xsl:for-each select="ep:message-set/ep:message[@messagetype = 'request']">
             <xsl:variable name="servicename" select="@servicename"/>
             <xsl:if test="exists(/ep:message-sets/ep:message-set/ep:message[@servicename = $servicename][@messagetype = 'response'])">
-            <xsl:text>&#xa; </xsl:text><xsl:value-of select="concat('/AAA/',ep:tech-name,':')"/>
+            <xsl:text>&#xa; </xsl:text><xsl:value-of select="concat('/',$kvnamespace,'/',ep:tech-name,':')"/>
             <xsl:text>&#xa;  post:
    tags:
-    - AAA
+    - </xsl:text><xsl:value-of select="$kvnamespace"/>
+                <xsl:text>   
    summary: ''
-   operationId: AAA_</xsl:text><xsl:value-of select="ep:tech-name"/>
+   operationId: </xsl:text><xsl:value-of select="concat($kvnamespace, '_', ep:tech-name)"/>
             <xsl:text>&#xa;   requestBody: 
         description: OK
         required: true
