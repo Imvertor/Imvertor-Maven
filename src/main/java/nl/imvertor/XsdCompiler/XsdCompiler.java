@@ -72,6 +72,9 @@ public class XsdCompiler extends Step {
 		} else if (schemarules.equals("ISO19136")) {
 			generateXsdISO19136();
 			supplyExternalSchemas();
+		} else if (schemarules.equals("RWS")) {
+			generateXsdISO19136();
+			supplyExternalSchemas();
 		} else if (schemarules.equals("KadasterNEN3610")) {
 			generateXsdISO19136();
 			supplyExternalSchemas();

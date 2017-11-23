@@ -47,7 +47,7 @@
             -->
             <construct>
                 <!-- this is the name of the construct in the UML model -->
-                <name>GM_AbstractFeature</name>
+                <name>AbstractFeature</name>
                 <!-- catalog reference -->
                 <catalog-entry>#AbstractFeature</catalog-entry>
                 <!-- this is a mapping to the XSD constructs within the schema -->
@@ -105,6 +105,10 @@
             </construct>
             <construct>
                 <name>LinearRing</name>
+                <desc>
+                    LinearRing is in GML / ISO19136 gedefinieerd. Het heeft geen corresponderende klasse in ISO19107 maar is in GML toegevoegd als convenience type, 
+                    een simpelere vorm van GM_Ring en formeel een subklasse daarvan. 
+                </desc>
                 <catalog-entry>#LinearRing</catalog-entry>
                 <xsd-type name="LinearRing" asAttributeDesignation="complextype" asAttribute="LinearRingType"/>
                 <managed-ids/>
@@ -116,9 +120,54 @@
                 <managed-ids/>
             </construct>
             <construct>
+                <name>GM_Surface</name>
+                <catalog-entry>#Surface</catalog-entry>
+                <xsd-type name="Surface" asAttributeDesignation="complextype" asAttribute="SurfacePropertyType"/>
+                <managed-ids/>
+            </construct>
+            <construct>
                 <name>GM_MultiSurface</name>
                 <catalog-entry>#MultiSurface</catalog-entry>
                 <xsd-type name="MultiSurface" asAttributeDesignation="complextype" asAttribute="MultiSurfaceType"/>
+                <managed-ids/>
+            </construct>
+
+            <construct>
+                <name>GM_Curve</name>
+                <xsd-type name="Curve" asAttributeDesignation="complextype" asAttribute="CurvePropertyType"/>
+                <rdf-type name="rdfs:Datatype"/>
+                <managed-ids/>
+            </construct>
+            
+            <construct>
+                <name>GM_MultiCurve</name>
+                <xsd-type name="MultiCurve" asAttributeDesignation="complextype" asAttribute="MultiCurvePropertyType" hasNilreason="true"/>
+                <rdf-type name="rdfs:Datatype"/>
+                <managed-ids/>
+            </construct>
+            
+            <construct>
+                <name>GM_Geometry</name>
+                <xsd-type name="Geometry" asAttributeDesignation="complextype" asAttribute="GeometryPropertyType" hasNilreason="true"/>
+                <managed-ids/>
+            </construct>
+            
+            <construct>
+                <name>GM_MultiGeometry</name>
+                <xsd-type name="MultiGeometry" asAttributeDesignation="complextype" asAttribute="MultiGeometryPropertyType" hasNilreason="true"/>
+                <managed-ids/>
+            </construct>
+            
+            <construct>
+                <name>GM_MultiPoint</name>
+                <xsd-type name="MultiPoint" asAttributeDesignation="complextype" asAttribute="MultiPointPropertyType" hasNilreason="true"/>
+                <rdf-type name="rdfs:Datatype"/>
+                <managed-ids/>
+            </construct>
+            
+            <construct>
+                <name>Measure</name>
+                <xsd-type name="MeasureType"/>
                 <managed-ids/>
             </construct>
             
