@@ -825,6 +825,25 @@
 				<xsl:copy-of select="imf:get-UGM-suppliers(.)"/>
 			</ep:suppliers>
 		</xsl:variable>
+		<xsl:variable name="doc">
+			<xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DEFINITION')))">
+				<ep:definition>
+					<xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DEFINITION')"/>
+				</ep:definition>
+			</xsl:if>
+			<xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DESCRIPTION')))">
+				<ep:description>
+					<xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DESCRIPTION')"/>
+				</ep:description>
+			</xsl:if>
+			<xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')))">
+				<ep:pattern>
+					<ep:p>
+						<xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')"/>
+					</ep:p>
+				</ep:pattern>
+			</xsl:if>
+		</xsl:variable>
 		
 		<!-- The following construct is not created if the variable $verwerkingsModus is equal to 'matchgegevens' and the variable
 		     $matchgegeven is equal to 'NEE'. So in case the $verwerkingsModus isn't equal to 'matchgegevens' and in case the $verwerkingsModus 
@@ -852,6 +871,7 @@
 				<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
 				<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
 				<xsl:sequence select="imf:create-output-element('ep:position', $position)"/>
+				<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
 				<xsl:sequence select="imf:create-output-element('ep:type-name', $href)"/>
 			</ep:construct>
 

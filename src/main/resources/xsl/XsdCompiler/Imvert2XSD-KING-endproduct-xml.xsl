@@ -478,6 +478,16 @@
             <xsl:variable name="id" select="ep:origin-id"/>
             <xsl:variable name="verwerkingsModus" select="'antwoord'"/>
             <xsl:variable name="construct" select="imf:get-class-construct-by-id($relatedObjectId,$packages-doc)"/>
+
+
+            <!--xsl:if test="$debugging and name($construct) = 'imvert:class'">
+                <xsl:sequence select="imf:debug-document($construct,'class.xml',true(),false())"/>
+            </xsl:if>
+            <xsl:if test="$debugging and not(name($construct) = 'imvert:class')">
+                <xsl:sequence select="imf:debug-document($construct,'notclass.xml',true(),false())"/>
+            </xsl:if-->
+
+
             <xsl:variable name="alias">
                 <xsl:choose>
                     <xsl:when test="empty($construct/imvert:alias) or not($construct/imvert:alias)"/>
