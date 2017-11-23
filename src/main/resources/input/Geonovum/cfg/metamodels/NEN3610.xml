@@ -62,17 +62,6 @@
             <construct>class</construct><!-- only for object types -->
         </stereo>
 
-        <stereo id="stereotype-name-complextype">
-            <name lang="nl">datatype</name>
-            <name lang="en">datatype</name>  <!-- in addition to StructuredDatatype -->
-            <desc lang="en">
-            </desc>
-            <desc lang="nl">
-                Gestructureerd datatype zonder identiteit.
-            </desc>
-            <construct>class</construct><!-- only for object types -->
-        </stereo>
-
         <stereo id="stereotype-name-identification">
             <name lang="nl">identificatie</name>
             <name lang="en">identification</name>
