@@ -373,6 +373,8 @@
         The function imf:get-construct-by-id hides the kind of construct which is requested.
         Since it may be comfortable to see in the code which kind of constructs are requested the following 
         2 functions are created which in fact are aliases of the imf:get-construct-by-id function.
+        ATTENTION: Using these functions doesn't prevent getting an element of the kind the function isn't related to.
+                   It's only an indication  what kind of elements the code is searching for.
     -->
     <xsl:function name="imf:get-class-construct-by-id" as="element()*">
         <xsl:param name="id" as="xs:string"/>

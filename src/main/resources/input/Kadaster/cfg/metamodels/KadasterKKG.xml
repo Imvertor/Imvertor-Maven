@@ -21,7 +21,7 @@
     
     <xi:include href="../../../KKG/cfg/metamodels/KKG.xml"/>
 
-    <name>KadasterKKG</name>
+    <name>Kadaster KKG</name>
     <desc lang="en">Metamodel for Kadaster specific KKG extensions</desc>
     <desc lang="nl">Metamodel voor Kadaster specifieke KKG uitbreidingen</desc>
     

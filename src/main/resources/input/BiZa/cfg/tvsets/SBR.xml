@@ -60,7 +60,7 @@
         </tv>
         
         <!-- TODO Vaststellen per tagged value of deze derived moeten worden of niet. -->
-        <tv norm="space" id="CFG-TV-ONWER">
+        <tv norm="space" id="CFG-TV-OWNER">
             <name lang="nl">Eigenaar</name>
             <name lang="en">Owned by</name>
             <desc lang="nl">TODO</desc>

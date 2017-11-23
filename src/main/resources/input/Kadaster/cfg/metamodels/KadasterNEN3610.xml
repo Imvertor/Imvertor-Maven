@@ -21,7 +21,7 @@
    
     <xi:include href="../../../Geonovum/cfg/metamodels/NEN3610.xml"/>
     
-    <name>KadasterNEN3610</name>
+    <name>Kadaster NEN3610</name>
     <desc lang="en">Metamodel for Kadaster specific NEN3610 extensions</desc>
     <desc lang="nl">Metamodel voor Kadaster specifieke NEN3610 uitbreidingen</desc>
     
@@ -33,6 +33,22 @@
             <construct>class</construct>
         </stereo>
     
+        <stereo id="stereotype-name-meervoudige-relatieklasse">
+            <name lang="nl">Meervoudige Relatieklasse</name>
+            <name lang="en">MultipleAssociationClass</name>
+            <desc lang="nl">	
+                Een relatiesoort waarover gegevens over de relatie tussen een object een veelvoud aan andere objecten (in de vorm van een derde soort object) worden vastgelegd.
+                Vermijdt ambiguiteit met KKG Relatieklasse.
+                Voorbeeld: Perceel wordt "gefilieerd" naar meerdere andere percelen (splitsing en samenvoeging).
+            </desc>
+            <desc lang="en">
+                A type of relationship about which data about the relationship between an object and a multitude of other objects (in the form of a third type of object) are recorded.
+                 Avoids ambiguity with KKG AssociationClass.
+                 Example: Plot is "filmed" into several other parcels (split and merge).
+            </desc>
+            <construct>class</construct>
+        </stereo>
+        
         <stereo id="stereotype-name-static-liskov">
             <name lang="nl">Static liskov</name>
             <name lang="en">StaticLiskov</name>
