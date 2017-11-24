@@ -36,6 +36,9 @@
     <xsl:import href="../common/Imvert-common-entity.xsl"/>
     <xsl:import href="../common/Imvert-common-compact.xsl"/>
     
+    <xsl:variable name="stylesheet-code">CE-E</xsl:variable>
+    <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
+    
     <xsl:variable name="sheet-gegevensgroepen-tab-name">Gegevensgroepen</xsl:variable>
     
     <xsl:variable name="__content" select="/"/>

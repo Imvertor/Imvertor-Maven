@@ -38,6 +38,9 @@
     <xsl:import href="../common/Imvert-common-entity.xsl"/>
     <xsl:import href="../common/Imvert-common-compact.xsl"/>
 
+    <xsl:variable name="stylesheet-code">CE-B</xsl:variable>
+    <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
+    
     <xsl:variable name="testset" select="/testset"/>
     
     <xsl:variable name="all-test-values" select="$testset/variables/variable"/>
@@ -114,7 +117,9 @@
                     <xsl:apply-templates select="current-group()" mode="message-column"/>
                 </xsl:for-each-group>
             </xsl:variable>
-            
+           
+            <!--<xsl:sequence select="imf:debug-document($messages,'ComplyExtractor-build.xml')"/>-->
+        
             <!-- the remove all "blanks" -->
             <xsl:apply-templates select="$messages" mode="common-compact"/>
             <!-- done -->
@@ -214,6 +219,7 @@
         
         <xsl:variable name="parse" select="imf:ns-parse(@name)"/>
         <xsl:element name="{imf:get-name-with-prefix($parse)}" namespace="{$parse[4]}">
+            <xsl:attribute name="cclabel" select="$label"/> <!-- assigns a reserved attribute to the element, signalling the compacter not to remove this element. The attribute WILL be removed. -->            
             <xsl:variable name="following-attributes" select="imf:get-attributes(.)"/>
             <xsl:apply-templates select="$following-attributes" mode="attribute-cell"/>
             <xsl:choose>
