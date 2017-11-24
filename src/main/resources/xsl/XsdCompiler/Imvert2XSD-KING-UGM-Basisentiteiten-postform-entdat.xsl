@@ -80,16 +80,22 @@
         
         <!-- select the ents parts -->
         <xsl:result-document href="{imf:file-to-url($schemafile-ent)}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
-            <xsl:apply-templates select="." mode="xsd-ent">
-                <xsl:with-param name="schemafile-dat-name" select="$schemafile-dat-name"/>
-            </xsl:apply-templates>
+            <xsl:variable name="doc">
+                <xsl:apply-templates select="." mode="xsd-ent">
+                    <xsl:with-param name="schemafile-dat-name" select="$schemafile-dat-name"/>
+                </xsl:apply-templates>
+            </xsl:variable>
+            <xsl:sequence select="if (imf:boolean(imf:get-config-string('cli','cleanupschemas','no'))) then imf:pretty-print($doc,false()) else $doc"/>
         </xsl:result-document>
         
         <!-- select the datatypes part -->
         <xsl:result-document href="{imf:file-to-url($schemafile-dat)}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
-            <xsl:apply-templates select="." mode="xsd-dat"/>
+            <xsl:variable name="doc">
+                <xsl:apply-templates select="." mode="xsd-dat"/>
+            </xsl:variable>
+            <xsl:sequence select="if (imf:boolean(imf:get-config-string('cli','cleanupschemas','no'))) then imf:pretty-print($doc,false()) else $doc"/>
         </xsl:result-document>
-      
+        
     </xsl:template>
     
     <xsl:function name="imf:get-taggedvalue" as="xs:string?">
