@@ -144,13 +144,21 @@
                 </xsl:attribute>
             </xsl:if>
             
+            <!-- improve representation of types -->
+            <xsl:variable name="d" select="substring-after(ep:data-type, 'scalar-')"/>
+            <xsl:variable name="datatype" select="
+                if (ep:enum[2]) then 'enumeration' else 
+                if (ep:enum) then 'fixed value' else 
+                if ($d) then $d
+                else ep:data-type"/>
+            
             <xsl:sequence select="imf:create-element('cp:name',imf:get-qualified-name(.))"/>
             <xsl:sequence select="imf:create-element('cp:cardinal',imf:format-cardinality(ep:min-occurs,ep:max-occurs))"/>
             <xsl:sequence select="imf:create-element('cp:documentation',ep:documentation)"/>
             <xsl:sequence select="imf:create-element('cp:attribute',string($as-attribute))"/>
             <xsl:sequence select="imf:create-element('cp:fixed',if (ep:enum[2]) then () else ep:enum[1])"/>
             <xsl:sequence select="imf:create-element('cp:enum',string-join(ep:enum,', '))"/>
-            <xsl:sequence select="imf:create-element('cp:type',ep:data-type)"/>  <!-- TODO types die Frank noemt zijn: int integer nonNegativeInteger positiveInteger decimal -->
+            <xsl:sequence select="imf:create-element('cp:type',$datatype)"/>  
             <xsl:sequence select="imf:create-element('cp:pattern',if (exists(ep:formeel-patroon)) then ep:formeel-patroon else if (ep:fraction-digits) then $digit-pattern else ())"/>
             <xsl:sequence select="imf:create-element('cp:patterndesc',ep:patroon)"/>
             <xsl:sequence select="imf:create-element('cp:mininclusive',ep:min-value)"/>
