@@ -31,7 +31,7 @@
     exclude-result-prefixes="#all"
     version="2.0">
     
-    <xsl:import href="Imvert2XSD-ISO1936-postform.xsl"/>
+    <xsl:import href="Imvert2XSD-ISO19136-postform.xsl"/>
     
     <!-- 
         This stylesheet adds some post-processes.
