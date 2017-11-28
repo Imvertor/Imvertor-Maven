@@ -299,31 +299,34 @@ public class XsdCompiler extends Step {
 		// fetch all checksum info from parms file and store to the local blackboard.
 		valid = valid && transformer.transformStep("system/work-config-path","properties/IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH_LOCAL", "properties/IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XSLPATH");
 		
-		// pretty print the schema's just generated
-		AnyFolder xsdFolder = new AnyFolder(configurator.getParm("system","work-xsd-folder-path") + ".cleaned");
-		prettyPrintXml(xsdTempFolder, xsdFolder);
-		xsdTempFolder.deleteDirectory();
-		xsdFolder.renameTo(xsdTempFolder); // now "xsd""
-		
-		// copy the onderlaag; this is a copy of all stuff in that folder
-		AnyFolder onderlaag = new AnyFolder(configurator.getParm("properties", "KINGUGM_STUF_ONDERLAAG_0302"));
-		onderlaag.copy(configurator.getParm("system", "work-xsd-folder-path"));
-		
-		// copy all schema's compiled for the supplier UGMs. 
-		// This may be 0 or more.
-		// These never replace the schema's just compiled.
-		if (configurator.isTrue("appinfo", "xsd-is-subset")) {
-			String[] projectNames = StringUtils.split(configurator.getParm("appinfo","subset-supplier-project"),';');
-			String[] modelNames = StringUtils.split(configurator.getParm("appinfo","subset-supplier-name"),';');
-			String[] releaseNumbers = StringUtils.split(configurator.getParm("appinfo","subset-supplier-release"),';');
-			for (int i = 0; i < projectNames.length; i++) {
-				AnyFolder supplier = new AnyFolder(configurator.getApplicationFolder(projectNames[i],modelNames[i],releaseNumbers[i]) + "/xsd"); 
-				supplier.copy(configurator.getParm("system", "work-xsd-folder-path"),false);
+		if (valid) {
+			// pretty print the schema's just generated
+			AnyFolder xsdFolder = new AnyFolder(configurator.getParm("system","work-xsd-folder-path") + ".cleaned");
+			prettyPrintXml(xsdTempFolder, xsdFolder);
+			xsdTempFolder.deleteDirectory();
+			xsdFolder.renameTo(xsdTempFolder); // now "xsd""
+			
+			// copy the onderlaag; this is a copy of all stuff in that folder
+			AnyFolder onderlaag = new AnyFolder(configurator.getParm("properties", "KINGUGM_STUF_ONDERLAAG_0302"));
+			onderlaag.copy(configurator.getParm("system", "work-xsd-folder-path"));
+			
+			// copy all schema's compiled for the supplier UGMs. 
+			// This may be 0 or more.
+			// These never replace the schema's just compiled.
+			if (configurator.isTrue("appinfo", "xsd-is-subset")) {
+				String[] projectNames = StringUtils.split(configurator.getParm("appinfo","subset-supplier-project"),';');
+				String[] modelNames = StringUtils.split(configurator.getParm("appinfo","subset-supplier-name"),';');
+				String[] releaseNumbers = StringUtils.split(configurator.getParm("appinfo","subset-supplier-release"),';');
+				for (int i = 0; i < projectNames.length; i++) {
+					AnyFolder supplier = new AnyFolder(configurator.getApplicationFolder(projectNames[i],modelNames[i],releaseNumbers[i]) + "/xsd"); 
+					supplier.copy(configurator.getParm("system", "work-xsd-folder-path"),false);
+				}
 			}
-		}
-		// tell that a schema has been created
-		configurator.setParm("system","schema-created","true");
-						
+			// tell that a schema has been created
+			configurator.setParm("system","schema-created","true");
+		} else {
+			configurator.setParm("system","schema-created","false");
+			}
 		return valid;
 	}
 	

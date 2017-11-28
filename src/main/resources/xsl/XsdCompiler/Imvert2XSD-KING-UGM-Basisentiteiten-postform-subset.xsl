@@ -45,7 +45,7 @@
     <xsl:variable name="stylesheet-code">BESSUB</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
 
-    <xsl:variable name="must-apply-restrictions" select="imf:boolean(imf:get-config-string('cli','createxsdrestrictions','false'))"/>
+    <xsl:variable name="must-apply-restrictions" select="imf:boolean(imf:get-config-string('cli','sys_createxsdrestrictions','false'))"/>
     
     <xsl:template match="/schemas">
         <xsl:sequence select="imf:track('Postforming schemas',())"/>
@@ -80,7 +80,7 @@
                 <xsl:next-match/>
             </xsl:when>
            <xsl:when test="$is-restriction and not($must-apply-restrictions)">
-               <xsl:sequence select="imf:create-debug-comment(concat('A subset and restriction class, but cli/createxsdrestrictions is false, so do not restrict: ', @name))"/>
+               <xsl:sequence select="imf:create-debug-comment(concat('A subset and restriction class, but cli/sys_createxsdrestrictions is false, so do not restrict: ', @name))"/>
                <xsl:next-match/>
            </xsl:when>
            <xsl:when test="$is-restriction and $is-matchgegevens">

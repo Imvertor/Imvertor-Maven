@@ -126,7 +126,7 @@ public class XmiCompiler extends Step {
 				if (!f1.equals(f2) || mustReread) {
 					runner.info(logger,"Reading" + filespec);
 					String projectname = configurator.getParm("cli", "owner") + ": " + configurator.getParm("cli", "project");
-					String modelname = (configurator.isTrue("cli", "supports-external",true)) ? null : configurator.getParm("cli", "application");
+					String modelname = (configurator.isTrue("cli", "sys_supportsexternal",true)) ? null : configurator.getParm("cli", "application");
 							
 					// For development environment, export images here.
 					// The type of image is set to PNG

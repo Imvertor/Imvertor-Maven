@@ -7,8 +7,17 @@
         <use>GML321</use>
     </mapping>
     <conceptual-schema>
-        <name>Spatial schema</name>
+        <name>Geography Markup Language 3</name>
+        <!-- 
+            The prefix as used in the schemas (also namespace prefix in qualified name).
+            Note that this "gml" short name is used as a prefix in XSD, and that this prefix is hardcoded in XSD generation XSLT.
+        -->
+        <short-name>gml</short-name>
+        <!-- 
+            Description for documentation purposes
+        -->
         <description>ISO19107 Geographic information – Spatial schema</description>
+        
         <url>http://www.kadaster.nl/conceptual-schemas/ISO19107</url>
         <!--
         <web>http://www.iso.org/iso/catalogue_detail.htm?csnumber=26012</web>
@@ -28,6 +37,7 @@
             
             <releases>
                 <release>20070906</release>
+                <release>20100128</release>
             </releases>
             <!-- 
                 NEN3610:2011/Geonovum requires Simple Feature Profile, see http://www.ogcnetwork.net/gml-sf 

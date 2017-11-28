@@ -731,7 +731,7 @@
         <!-- determine the name; hard koderen -->
         <xsl:for-each select="$attribute"> <!-- singleton -->
             <xsl:choose>
-                <xsl:when test="imvert:type-package='GML3'">
+                <xsl:when test="imvert:type-package='Geography Markup Language 3'">
                     <xsl:variable name="type-suffix" select="if ($as-type) then 'Type' else ''"/>
                     <xsl:variable name="type-prefix">
                         <xsl:choose>
@@ -759,12 +759,12 @@
                             <xsl:when test="imvert:conceptual-schema-type = 'GM_CompositePoint'">gml:CompositePoint</xsl:when>
                             <xsl:when test="imvert:conceptual-schema-type = 'GM_MultiSolid'">gml:MultiSolid</xsl:when>
                             <xsl:otherwise>
-                                <xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the GML type [1]', imvert:conceptual-schema-type)"/>
+                                <xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the [1] type [2]', (imvert:type-package,imvert:conceptual-schema-type))"/>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:variable>
                     <xsl:value-of select="concat($type-prefix,$type-suffix)"/>
-               </xsl:when>
+                </xsl:when>
                 <xsl:when test="empty(imvert:type-package)">
                     <!-- TODO -->
                 </xsl:when>

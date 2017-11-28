@@ -45,11 +45,22 @@
 
     <xsl:variable name="all-packages" select="//UML:Package"/>
     
+    <!-- 
+        collect all packages that are <<project>>. Asume no  package is project when the model is exported. 
+        This is the new approach (previously we exported projects in stead of models).
+    -->
     <xsl:variable name="project-packages" select="$all-packages[imf:get-xmi-stereotype(.) = imf:get-config-stereotypes('stereotype-name-project-package')]"/>
-    <xsl:variable name="project-package" select="$project-packages[imf:is-applicable-project-package(.)][1]"/>
-    <xsl:variable name="application-packages" select="$project-package//UML:Package[imf:get-xmi-stereotype(.) = imf:get-config-stereotypes('stereotype-name-application-package')]"/>
-    <xsl:variable name="model-packages" select="$project-package//UML:Package[imf:get-xmi-stereotype(.) = imf:get-config-stereotypes('stereotype-name-base-package')]"/>
+    <!-- 
+        the root of the application model tree is either the project package, or the application model itself 
+    --> 
+    <xsl:variable name="project-package" select="($project-packages[imf:is-applicable-project-package(.)],$all-packages)[1]"/>
     
+    <xsl:variable name="application-packages" select="$project-package/descendant-or-self::UML:Package[imf:get-xmi-stereotype(.) = imf:get-config-stereotypes('stereotype-name-application-package')]"/>
+    <xsl:variable name="model-packages" select="$project-package/descendant-or-self::UML:Package[imf:get-xmi-stereotype(.) = imf:get-config-stereotypes('stereotype-name-base-package')]"/>
+    
+    <!-- 
+        external package should not occur in the model-mode
+    -->    
     <xsl:variable name="external-packages" select="$all-packages[imf:get-xmi-stereotype(.) = imf:get-config-stereotypes('stereotype-name-external-package')]"/>
     
     <xsl:variable name="app-package" select="($model-packages,$application-packages)[imf:get-normalized-name(@name,'package-name') = imf:get-normalized-name($application-package-name,'package-name')]"/>
@@ -58,33 +69,57 @@
     <xsl:variable name="known-classes" select="($app-package,$external-packages)//UML:Class"/>
     
     <xsl:template match="/XMI">
+        
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:sequence select="imf:track('Compacting')"/>
+            
             <xsl:choose>
                 <xsl:when test="empty($project-packages)">
-                    <xsl:sequence select="imf:msg('ERROR','No projects found')"/>
-                </xsl:when>
-                <xsl:when test="not(normalize-space($project-name))">
-                    <xsl:sequence select="imf:msg('ERROR','No project name specified')"/>
-                </xsl:when>
-                <xsl:when test="empty($project-package)">
-                    <xsl:sequence select="imf:msg('ERROR','No project found for: [1], searched for [2]', ($application-package-name,$project-name))"/>
-                </xsl:when>
-                <xsl:when test="empty($app-package)">
-                    <xsl:sequence select="imf:msg('ERROR','No application found: [1], available applications are: [2]', ($application-package-name, string-join($application-packages/@name,';')))"/>
-                </xsl:when>
-                <xsl:when test="count($app-package) ne 1">
-                    <xsl:sequence select="imf:msg('ERROR','Several packages found with same application name: [1]', $application-package-name)"/>
+                    <!-- NIEUWE CASUS -->
+                    <xsl:choose>
+                        <xsl:when test="empty($app-package)">
+                            <xsl:sequence select="imf:msg('ERROR','No application found: [1], available applications are: [2]', ($application-package-name, string-join($application-packages/@name,';')))"/>
+                        </xsl:when>
+                        <xsl:when test="count($app-package) ne 1">
+                            <xsl:sequence select="imf:msg('ERROR','Several packages found with same application name: [1]', $application-package-name)"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:apply-templates/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <XMI.extensions xmi.extender="IMVERTOR">
+                        <xsl:apply-templates select=".//UML:Class" mode="stub"/>
+                    </XMI.extensions>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:apply-templates/>
+                    <!-- OUDE CASUS -->
+                    <xsl:choose>
+                        <xsl:when test="empty($project-packages)">
+                            <xsl:sequence select="imf:msg('ERROR','No projects found')"/>
+                        </xsl:when>
+                        <xsl:when test="not(normalize-space($project-name))">
+                            <xsl:sequence select="imf:msg('ERROR','No project name specified')"/>
+                        </xsl:when>
+                        <xsl:when test="empty($project-package)">
+                            <xsl:sequence select="imf:msg('ERROR','No project found for: [1], searched for [2]', ($application-package-name,$project-name))"/>
+                        </xsl:when>
+                        <xsl:when test="empty($app-package)">
+                            <xsl:sequence select="imf:msg('ERROR','No application found: [1], available applications are: [2]', ($application-package-name, string-join($application-packages/@name,';')))"/>
+                        </xsl:when>
+                        <xsl:when test="count($app-package) ne 1">
+                            <xsl:sequence select="imf:msg('ERROR','Several packages found with same application name: [1]', $application-package-name)"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:apply-templates/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <XMI.extensions xmi.extender="IMVERTOR">
+                        <xsl:apply-templates select=".//UML:Class" mode="stub"/>
+                    </XMI.extensions>
                 </xsl:otherwise>
             </xsl:choose>
-            <XMI.extensions xmi.extender="IMVERTOR">
-                <xsl:apply-templates select=".//UML:Class" mode="stub"/>
-            </XMI.extensions>
-        </xsl:copy>
+         </xsl:copy>
      </xsl:template>
     
     <!-- 
@@ -137,6 +172,11 @@
     <!-- The name of a tagged value must be normalized here, for cases where such names are entered manually -->
     <xsl:template match="UML:TaggedValue/@tag">
         <xsl:attribute name="tag" select="normalize-space(.)"/>
+    </xsl:template>
+    
+    <!-- remove EAdefects (issues) -->
+    <xsl:template match="XMI.extensions/EAModel.defect">
+        <xsl:comment>EAdefects removed</xsl:comment>
     </xsl:template>
     
     <!-- 

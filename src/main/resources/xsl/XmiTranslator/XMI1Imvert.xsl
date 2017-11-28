@@ -89,6 +89,16 @@
         name="document-generalizations" 
         select="$xmi-document//UML:Generalization"
         as="element(UML:Generalization)*"/>
+    
+    <xsl:variable 
+        name="document-association-traces" 
+        select="$document-associations[UML:ModelElement.stereotype/UML:Stereotype/@name = 'trace']"/>
+    
+    <xsl:variable 
+        name="document-association-nontraces" 
+        select="$document-associations except $document-association-traces"
+        as="element(UML:Association)*"/>
+    
 
     <xsl:key name="key-construct-by-id" match="//*[@xmi.id]" use="@xmi.id"/>
     <xsl:key name="key-construct-by-idref" match="//*[@xmi:idref]" use="@xmi:idref"/>
@@ -125,7 +135,8 @@
             <xsl:sequence select="imf:compile-imvert-filter()"/>
             
             <xsl:variable name="project-name-shown" select="($project-name, concat($owner-name,': ',$project-name))" as="xs:string+"/>
-            <xsl:variable name="root-package" select="$document-packages[@name = $project-name-shown][imf:get-stereotypes(.)=imf:get-config-stereotypes('stereotype-name-project-package')]"/>
+            <xsl:variable name="project-package" select="$document-packages[imf:get-stereotypes(.)=imf:get-config-stereotypes('stereotype-name-project-package')]"/>
+            <xsl:variable name="root-package" select="$project-package[@name = $project-name-shown]"/>
             
             <xsl:sequence select="imf:set-config-string('appinfo','original-project-name',$root-package/@name)"/>
             <xsl:sequence select="imf:set-config-string('appinfo','original-application-name',$application-package-name)"/>
@@ -134,7 +145,7 @@
             <xsl:sequence select="imf:set-config-string('appinfo','application-name',$application-package-name)"/>
             
             <xsl:choose>
-                <xsl:when test="empty($root-package)">
+                <xsl:when test="exists($project-package) and empty($root-package)">
                     <xsl:sequence select="imf:msg('ERROR',concat(
                         'Specified project &quot;', 
                         string-join($project-name-shown,'&quot; or &quot;'),
@@ -153,6 +164,69 @@
                         <xsl:sort select="imf:get-alias(.,'P')"/>
                         <xsl:apply-templates select="."/>
                     </xsl:for-each>
+                    
+                    <!-- check if xlinks must be included -->
+                    <xsl:if test="not(exists($document-packages[imf:get-normalized-name(@name,'package-name') = imf:get-normalized-name('xlinks','package-name')]))" >
+                        <imvert:package>
+                            <imvert:found-name>Xlinks</imvert:found-name>
+                            <imvert:short-name>xlinks</imvert:short-name>
+                            <imvert:id>XLINKS</imvert:id>
+                            <imvert:conceptual-schema-name>XLINKS</imvert:conceptual-schema-name>
+                            <imvert:namespace>http://www.w3.org/1999/xlink</imvert:namespace>
+                            <imvert:documentation>
+                                <body xmlns="http://www.w3.org/1999/xhtml">XLinks is an external specification. For documentation please consult http://www.w3.org/TR/xlink/</body>
+                            </imvert:documentation>
+                            <imvert:created>2014-10-30T17:01:50</imvert:created>
+                            <imvert:modified>2014-10-30T17:01:50</imvert:modified>
+                            <imvert:version>1.0.0</imvert:version>
+                            <imvert:phase>3</imvert:phase>
+                            <imvert:author>Simon Cox</imvert:author>
+                            <imvert:svn-string>Id: xlinks.xml 346 2013-05-06 08:34:33Z loeffa </imvert:svn-string>
+                            <imvert:stereotype>
+                                <xsl:value-of select="imf:get-normalized-name('system','stereotype-name')"/>
+                            </imvert:stereotype>
+                            <imvert:location>http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd</imvert:location>
+                            <imvert:release>20010627</imvert:release>
+                        </imvert:package>
+                    </xsl:if>
+                    
+                    <!-- check if outside constructs are found 
+                    
+                       Ignore stubs that are source in a association. 
+                       This is because traces may be recorded at the target, in stead of the source.  
+                    -->
+                    <xsl:variable name="stubs" select="$xmi-document/XMI/XMI.extensions/EAStub"/>
+                    <xsl:if test="exists($stubs)" >
+                        <imvert:package>
+                            <imvert:id>OUTSIDE</imvert:id>
+                            <xsl:for-each select="$stubs">
+                                <xsl:variable name="id" select="string(@xmi.id)"/>
+                                <xsl:variable name="attribute-end" select="exists($xmi-document//UML:Attribute/UML:StructuralFeature.type/UML:Classifier[@xmi.idref = $id])"/>
+                                <xsl:variable name="association-end" select="exists($document-association-nontraces//UML:AssociationEnd[@type = $id]/UML:ModelElement.taggedValue/UML:TaggedValue[@tag='ea_end' and @value = 'target'])"/>
+                                <xsl:variable name="generalization-end" select="exists($xmi-document//UML:Generalization[@supertype = $id])"/>
+                                <xsl:choose>
+                                    <xsl:when test="$attribute-end or $association-end or $generalization-end">
+                                        <imvert:class origin="stub" umltype="{@UMLType}">
+                                         <!--
+                                            <xsl:comment select="string-join(('attribute-end', string($attribute-end), for $x in ($xmi-document//UML:Attribute[UML:StructuralFeature.type/UML:Classifier[@xmi.idref = $id]]/@name) return string($x)),' ')"/>
+                                            <xsl:comment select="string-join(('associate-end', string($association-end), for $x in ($xmi-document//UML:AssociationEnd[@type = $id and UML:ModelElement.taggedValue/UML:TaggedValue[@tag='ea_end' and @value = 'target']]/../../@xmi.id) return string($x)),' ')"/>
+                                            <xsl:comment select="string-join(('generaliz-end', string($generalization-end), $xmi-document//UML:Generalization[@supertype = $id]//*[@tag='ea_sourceName']/@value),' ')"/>
+                                         -->
+                                            <imvert:found-name>
+                                                <xsl:value-of select="@name"/>
+                                            </imvert:found-name>
+                                            <imvert:id>
+                                                <xsl:value-of select="$id"/>
+                                            </imvert:id>
+                                        </imvert:class> 
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:comment select="concat('Removed construct that is not referenced by this model: ', @name)"/>
+                                    </xsl:otherwise>
+                                </xsl:choose> 
+                            </xsl:for-each>
+                        </imvert:package>
+                    </xsl:if>
                 </xsl:otherwise>
             </xsl:choose>
         </imvert:packages>
@@ -211,65 +285,13 @@
             
             <xsl:sequence select="imf:fetch-additional-tagged-values(.)"/>
             
+            <xsl:if test="$is-root-package">
+                <xsl:sequence select="imf:fetch-additional-tagged-values($content/UML:Model)"/>
+            </xsl:if>
+            
             <!-- get package wide constraints -->
             <xsl:sequence select="imf:get-constraint-info(.)"/>
-
-            <!-- check if xlinks must be included -->
-            <xsl:if test="imf:get-stereotypes(.)=imf:get-config-stereotypes('stereotype-name-project-package') and not(exists($document-packages[imf:get-normalized-name(@name,'package-name') = imf:get-normalized-name('xlinks','package-name')]))" >
-                <imvert:package>
-                    <imvert:found-name>Xlinks</imvert:found-name>
-                    <imvert:short-name>xlinks</imvert:short-name>
-                    <imvert:id>XLINKS</imvert:id>
-                    <imvert:conceptual-schema-name>XLINKS</imvert:conceptual-schema-name>
-                    <imvert:namespace>http://www.w3.org/1999/xlink</imvert:namespace>
-                    <imvert:documentation>
-                        <body xmlns="http://www.w3.org/1999/xhtml">XLinks is an external specification. For documentation please consult http://www.w3.org/TR/xlink/</body>
-                    </imvert:documentation>
-                    <imvert:created>2014-10-30T17:01:50</imvert:created>
-                    <imvert:modified>2014-10-30T17:01:50</imvert:modified>
-                    <imvert:version>1.0.0</imvert:version>
-                    <imvert:phase>3</imvert:phase>
-                    <imvert:author>Simon Cox</imvert:author>
-                    <imvert:svn-string>Id: xlinks.xml 346 2013-05-06 08:34:33Z loeffa </imvert:svn-string>
-                    <imvert:stereotype>
-                        <xsl:value-of select="imf:get-normalized-name('system','stereotype-name')"/>
-                    </imvert:stereotype>
-                    <imvert:location>http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd</imvert:location>
-                    <imvert:release>20010627</imvert:release>
-                </imvert:package>
-                <!-- check if outside constructs are found 
-                
-                   Ignore stubs that are source in a association. 
-                   This is because traces may be recorded at the target, in stead of the source.  
-                -->
-                <xsl:variable name="stubs" select="$xmi-document/XMI/XMI.extensions/EAStub"/>
-                <xsl:if test="exists($stubs)" >
-                    <imvert:package>
-                        <imvert:id>OUTSIDE</imvert:id>
-                        <xsl:for-each select="$stubs">
-                           <xsl:variable name="id" select="string(@xmi.id)"/>
-                            <xsl:variable name="attribute-end" select="exists($xmi-document//UML:Attribute/UML:StructuralFeature.type/UML:Classifier[@xmi.idref = $id])"/>
-                            <xsl:variable name="association-end" select="exists($xmi-document//UML:AssociationEnd[@type = $id]/UML:ModelElement.taggedValue/UML:TaggedValue[@tag='ea_end' and @value = 'target'])"/>
-                            <xsl:variable name="generalization-end" select="exists($xmi-document//UML:Generalization[@supertype = $id])"/>
-                            <xsl:choose>
-                                <xsl:when test="$attribute-end or $association-end or $generalization-end">
-                                    <imvert:class origin="stub" umltype="{@UMLType}">
-                                        <imvert:found-name>
-                                            <xsl:value-of select="@name"/>
-                                        </imvert:found-name>
-                                        <imvert:id>
-                                            <xsl:value-of select="$id"/>
-                                        </imvert:id>
-                                    </imvert:class> 
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:comment select="concat('Removed construct that is not referenced by this model: ', @name)"/>
-                               </xsl:otherwise>
-                           </xsl:choose> 
-                        </xsl:for-each>
-                    </imvert:package>
-                </xsl:if>
-            </xsl:if>
+           
         </imvert:package>
     </xsl:template>
     
@@ -1511,9 +1533,6 @@
         For example, if class1 has a trace relation with class2, return the ID of class2.
         If multiple traces, return multiple ID's.  
     -->   
-
-    <xsl:variable name="document-association-traces" select="$document-associations[UML:ModelElement.stereotype/UML:Stereotype/@name = 'trace']"/>
-    
     <xsl:function name="imf:get-trace-id" as="xs:string*">
         <xsl:param name="construct"/>
         <xsl:param name="type"/>
@@ -1651,7 +1670,7 @@
     
     <xsl:function name="imf:get-tagged-values-quick" as="element(UML:TaggedValue)*">
         <xsl:param name="this" as="node()"/>
-        <xsl:param name="profiled" as="xs:boolean"></xsl:param>
+        <xsl:param name="profiled" as="xs:boolean"/>
         <!-- 
             this implements the equivalent of:
             if ($local-value) then $local-value else 
@@ -1668,17 +1687,17 @@
         <xsl:variable name="global-value" select="imf:filter-tagged-values-quick($content/UML:TaggedValue[@modelElement=$this/@xmi.id],$profiled,2)"/>
         <xsl:variable name="local-cr-value" select="imf:filter-tagged-values-quick($crole/UML:ModelElement.taggedValue/UML:TaggedValue,$profiled,3)"/>
         <xsl:variable name="global-cr-value" select="imf:filter-tagged-values-quick($content/UML:TaggedValue[@modelElement=$crole/@xmi.id],$profiled,4)"/>
-        <xsl:variable name="root-model-value" select="imf:filter-tagged-values-quick($content/UML:TaggedValue[@modelElement=$root-model/@xmi.id],$profiled,5)"/>
+        <!--<xsl:variable name="root-model-value" select="imf:filter-tagged-values-quick($content/UML:TaggedValue[@modelElement=$root-model/@xmi.id],$profiled,5)"/>-->
         
         <!-- 
-            assume that tagged values must be degfined on the same level, and local valueshave prio 
+            assume that tagged values must be defined on the same level, and local valueshave prio 
         -->
         <xsl:variable name="tagged-values" select="
             if (exists($local-value)) then $local-value else 
             if (exists($global-value)) then $global-value else 
             if (exists($local-cr-value)) then $local-cr-value else
             if (exists($global-cr-value)) then $global-cr-value else 
-            $root-model-value
+            ()
             "/>
         
         <xsl:sequence select="$tagged-values"/>
