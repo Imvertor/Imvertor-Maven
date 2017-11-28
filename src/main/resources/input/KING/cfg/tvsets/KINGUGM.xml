@@ -214,6 +214,27 @@
             </stereotypes>
         </tv>
                 
+        <tv id="CFG-TV-DESCRIPTION">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo>stereotype-name-objecttype</stereo>
+                <stereo>stereotype-name-attribute</stereo>
+                <stereo>stereotype-name-relatiesoort</stereo>
+                <stereo>stereotype-name-composite</stereo>
+                <stereo>stereotype-name-relatieklasse</stereo>
+                <stereo>stereotype-name-referentielijst</stereo>
+                <stereo>stereotype-name-referentie-element</stereo>
+                <stereo>stereotype-name-enumeration</stereo>
+                <stereo>stereotype-name-simpletype</stereo>
+                <stereo>stereotype-name-complextype</stereo>
+                <stereo>stereotype-name-union</stereo>
+                
+                <stereo>stereotype-name-data-element</stereo>
+                <stereo>stereotype-name-union-element</stereo>
+                <stereo>stereotype-name-enum</stereo>
+            </stereotypes>
+        </tv>
+        
         <tv norm="space"  id="CFG-TV-SUBSETLABEL">
             <name lang="nl">Restriction identifier</name>
             <name lang="en">Restriction identifier</name>
