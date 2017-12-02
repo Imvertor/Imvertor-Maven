@@ -60,21 +60,23 @@
     <xsl:function name="imf:replace-inet-references" as="xs:string">
         <xsl:param name="content"/>
         <xsl:variable name="r">
-            <xsl:analyze-string select="$content" regex="(&quot;\$inet://)([^&quot;]+)">
-                <xsl:matching-substring>
-                    <xsl:choose>
-                        <xsl:when test="starts-with(regex-group(2),'http')">
-                            <xsl:value-of select="concat('&quot;',regex-group(2))"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="concat('&quot;http://',regex-group(2))"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:matching-substring>
-                <xsl:non-matching-substring>
-                    <xsl:value-of select="."/>
-                </xsl:non-matching-substring>
-            </xsl:analyze-string>     
+            <xsl:if test="normalize-space($content)">
+                <xsl:analyze-string select="$content" regex="(&quot;\$inet://)([^&quot;]+)">
+                    <xsl:matching-substring>
+                        <xsl:choose>
+                            <xsl:when test="starts-with(regex-group(2),'http')">
+                                <xsl:value-of select="concat('&quot;',regex-group(2))"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="concat('&quot;http://',regex-group(2))"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:matching-substring>
+                    <xsl:non-matching-substring>
+                        <xsl:value-of select="."/>
+                    </xsl:non-matching-substring>
+                </xsl:analyze-string>
+            </xsl:if>
         </xsl:variable>
         <xsl:value-of select="$r"/>
     </xsl:function>

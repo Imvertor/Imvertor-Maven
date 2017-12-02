@@ -43,6 +43,8 @@
         <!-- 
             This conceptual schema is mapped onto all kinds of XML constructs.  
         -->
+        <!--TODO issue bij imvert2imterface. In die stylesheet wordt de map niet goed geactiveerd. Vooralsnog maar even deze map deactiveren. -->
+        <?x 
         <map 
             name="GML311" 
             namespace="http://www.opengis.net/gml" 
@@ -107,6 +109,7 @@
                 <managed-ids/>
             </construct>
         </map>
+        x?>
         
         <map 
             name="GML321" 

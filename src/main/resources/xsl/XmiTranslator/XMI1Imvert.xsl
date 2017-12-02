@@ -282,11 +282,18 @@
             <xsl:for-each select="UML:Namespace.ownedElement/UML:Dependency[imf:get-stereotype-local-names(UML:ModelElement.stereotype/UML:Stereotype/@name)='import' and @client=$package-id]">
                 <xsl:sequence select="imf:create-output-element('imvert:imported-package-id',@supplier)"/>
             </xsl:for-each>
-            
-            <xsl:sequence select="imf:fetch-additional-tagged-values(.)"/>
-            
-            <xsl:if test="$is-root-package">
-                <xsl:sequence select="imf:fetch-additional-tagged-values($content/UML:Model)"/>
+           
+            <xsl:variable name="seq" as="element(imvert:tagged-values)*">
+                <xsl:sequence select="imf:fetch-additional-tagged-values(.)"/>
+                <!-- sometimes tags are placed on the model in stead of on the package -->
+                <xsl:if test="$is-root-package">
+                    <xsl:sequence select="imf:fetch-additional-tagged-values($content/UML:Model)"/>
+                </xsl:if>
+            </xsl:variable>
+            <xsl:if test="exists($seq)">
+                <imvert:tagged-values>
+                    <xsl:sequence select="$seq/*"/>
+                </imvert:tagged-values>           
             </xsl:if>
             
             <!-- get package wide constraints -->
@@ -536,7 +543,8 @@
         <xsl:param name="name" as="xs:string"/>
         
         <xsl:variable name="doctext" select="imf:get-system-tagged-value($this,$name,'')"/>
-        <xsl:variable name="relevant-doc-string" select="imf:fetch-relevant-doc-string($doctext)"/>
+        <xsl:variable name="xhtml-doctext" select="imf:eadoc-to-xhtml($doctext)"/>
+        <xsl:variable name="relevant-doc-string" select="imf:fetch-relevant-doc-string(string-join($xhtml-doctext,''))"/>
         <xsl:variable name="sections" as="element(section)*">
             <!-- Parse into sections; raw text is section titled "Raw" --> 
             <xsl:variable name="sections" select="imf:inspire-notes($relevant-doc-string)" as="element(section)*"/>
@@ -1407,38 +1415,7 @@
     -->
     <xsl:function name="imf:fetch-additional-tagged-values" as="element()*">
         <xsl:param name="this" as="element()"/>
-        <?x 
-        <imvert:tagged-values>
-            <xsl:for-each-group select="$additional-tagged-values" group-by="@id"> <!-- a set of tv elements, for a particular name -->
-                <xsl:for-each select="current-group()[last()]">
-                    <xsl:variable name="n" select="name"/> <!-- a normalized name <n original="">name ; may be multiple and may be duplicate -->
-                    <xsl:variable name="id" select="current-grouping-key()"/>
-                    <xsl:for-each select="$n">
-                        <xsl:variable name="nname" select="."/>
-                        <xsl:variable name="norm" select="../@norm"/>
-                        <!-- TODO solve a duplicate (redundant) call here --> 
-                        <xsl:variable name="value-orig" select="imf:get-profile-tagged-value($this,$nname)"/>
-                        <xsl:variable name="value-norm" select="imf:get-profile-tagged-value($this,$nname,$norm)"/>
-                        <xsl:if test="exists($value-orig)">
-                            <xsl:for-each select="$value-orig">
-                                <xsl:variable name="index" select="position()"/>
-                                <imvert:tagged-value id="{$id}">
-                                    <imvert:name original="{$nname/@original}">
-                                        <xsl:value-of select="$nname"/>         
-                                    </imvert:name>
-                                    <imvert:value original="{$value-orig[$index]}">
-                                        <xsl:sequence select="$value-norm[$index]"/>
-                                    </imvert:value>
-                                </imvert:tagged-value>
-                            </xsl:for-each>
-                        </xsl:if>
-                    </xsl:for-each>
-                </xsl:for-each>
-            </xsl:for-each-group>
-        </imvert:tagged-values>
-        x?>
         <xsl:sequence select="imf:get-tvquick-info($this)"/>
-       
     </xsl:function>
   
     <xsl:function name="imf:get-stereotype-local-names" as="xs:string*">
@@ -1636,17 +1613,16 @@
     
     <!-- == optimization == -->
     
-    <xsl:function name="imf:get-tvquick-info" as="node()*">
+    <xsl:function name="imf:get-tvquick-info" as="element(imvert:tagged-values)?">
         <xsl:param name="this" as="node()"/>
         <xsl:sequence select="imf:fetch-additional-tagged-values-quick($this)"/> 
     </xsl:function>   
     
-    <xsl:function name="imf:fetch-additional-tagged-values-quick" as="element()*">
+    <xsl:function name="imf:fetch-additional-tagged-values-quick" as="element(imvert:tagged-values)?">
         <xsl:param name="this" as="element()"/>
         
         <xsl:variable name="tagged-values" select="imf:get-tagged-values-quick($this,true())"/>
-      
-        <imvert:tagged-values>
+        <xsl:variable name="seq" as="element()*">
             <xsl:for-each select="$tagged-values"> <!-- <tv> elements --> 
                 <xsl:variable name="name" select="@tag"/>
                 <xsl:variable name="level" select="@imvert-level"/>
@@ -1665,7 +1641,9 @@
                     </imvert:tagged-value>
                 </xsl:if>
             </xsl:for-each>
-        </imvert:tagged-values>
+        </xsl:variable>
+        <xsl:sequence select="imf:create-output-element('imvert:tagged-values',$seq,(),false())"/>
+
     </xsl:function>
     
     <xsl:function name="imf:get-tagged-values-quick" as="element(UML:TaggedValue)*">

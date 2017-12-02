@@ -260,7 +260,7 @@
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="node()|@*" mode="#all">
+    <xsl:template match="node()|@*" mode="#default mode-tv">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:apply-templates mode="#current"/>
