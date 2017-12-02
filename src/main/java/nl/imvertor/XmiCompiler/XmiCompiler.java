@@ -175,7 +175,14 @@ public class XmiCompiler extends Step {
 			}
 		
 			if (succeeds) {
-				if (configurator.isTrue(configurator.getParm("cli","migrate",false))) 
+				// first copy this source file to xmi folder when requested; this does not include the images!
+				if (configurator.isTrue("cli","copyxmi",false)) {
+					File targetFile = new File(configurator.getParm("system","work-xmi-folder-path"),"model.xmi");
+					activeFile.copyFile(targetFile);
+				}
+				
+				// then process it.
+				if (configurator.isTrue("cli","migrate",false)) 
 					migrateXMI(activeFile);
 				
 				configurator.setParm("system","xmi-export-file-path",activeFile.getCanonicalPath());

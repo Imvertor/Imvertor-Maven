@@ -366,7 +366,8 @@ public class Configurator {
 		setParm(workConfiguration,"system","work-job-folder-path",     wf + s + "app" + s + "job", true);
 		setParm(workConfiguration,"system","work-shacl-folder-path",   wf + s + "app" + s + "shacl", true);
 		setParm(workConfiguration,"system","work-yaml-folder-path",    wf + s + "app" + s + "yaml", true);
-				
+		setParm(workConfiguration,"system","work-xmi-folder-path",     wf + s + "app" + s + "xmi", true);
+					
 		setParm(workConfiguration,"system","work-rep-folder-path",     wf + s + "rep", true);
 		setParm(workConfiguration,"system","work-imvert-folder-path",  wf + s + "imvert", true);
 		setParm(workConfiguration,"system","work-comply-folder-path",  wf + s + "comply", true);
@@ -382,6 +383,7 @@ public class Configurator {
 		(new OutputFolder(getParm(workConfiguration,"system","work-profile-folder-path",true))).clear(false);
 		(new OutputFolder(getParm(workConfiguration,"system","work-debug-folder-path",true))).clear(false);
 		(new OutputFolder(getParm(workConfiguration,"system","work-log-folder-path",true))).clear(false);
+		(new OutputFolder(getParm(workConfiguration,"system","work-xmi-folder-path",true))).clear(false);
 				
 		setParm(workConfiguration,"system","managedoutputfolder", outputFolder.getCanonicalPath(), true);
 		setParm(workConfiguration,"system","managedinstallfolder", baseFolder.getCanonicalPath(), true);
