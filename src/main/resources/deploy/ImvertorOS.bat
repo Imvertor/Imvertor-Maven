@@ -55,7 +55,7 @@ IF NOT EXIST "%JAVA_HOME%\bin\java.exe" SET javaexe=java.exe
 call "%javaexe%" %jvmparms% ^
     -Dhttp.proxyHost=%imvertor_os_proxyhost% ^
 	-Dhttp.proxyPort=%imvertor_os_proxyport% ^
-    -Dlog4j.configuration="file:%bindir%\cfg\log4j.properties" ^
+    -Dlog4j.configuration="file:%bindir%\log4j.properties" ^
 	-Dinstall.dir="%bindir%" ^
 	-Doutput.dir="%outdir%" ^
     -Downer.name="%owner%" ^
