@@ -1526,7 +1526,7 @@
 						<!-- Attributes with the name 'melding' or which are descendants of a 
 								class with the name 'Stuurgegevens', 'Systeem' or 'Parameters' mustn't get 
 								XML attributes. -->
-						<xsl:if
+						<?x xsl:if
 							test="imvert:name != 'melding' and ancestor::imvert:class[imvert:name != 'Stuurgegevens'] and ancestor::imvert:class[imvert:name != 'Systeem'] 
 								  and ancestor::imvert:class[imvert:name != 'EntiteittypeStuurgegevens'] and ancestor::imvert:class[imvert:name != 'Parameters']">
 							<ep:seq>
@@ -1558,9 +1558,9 @@
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation attributes 1',$debugging)"/>
 								<xsl:variable name="attributes"
 									select="imf:createAttributes('bottomlevel', '-', '-', $datumType, '', $onvolledigeDatum, $prefix, $id, imvert:type-name)"/>
-								<xsl:sequence select="$attributes"/>
+								<xsl:sequence select="$attributes">
 							</ep:seq>
-						</xsl:if>
+						</xsl:if x?>
 					</ep:construct>
 				</xsl:when>
 				<xsl:otherwise>				
