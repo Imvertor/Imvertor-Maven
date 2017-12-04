@@ -42,5 +42,38 @@
         </tv>
     </naming>
     
+    <stereotypes xml:id="stereotypes">
 
+        <stereo id="stereotype-name-enumeration">
+            <name lang="nl">Enumeratie</name>
+            <name lang="en">Enumeration</name>
+            <desc lang="en">
+                A list of the possible domain values ​​or constants of a attribute type that is unchangeable.</desc>
+            <desc lang="nl">
+                Een lijst met een opsomming van de mogelijke domeinwaarden oftewel constanten van een 
+                attribuutsoort die onveranderlijk is.
+            </desc>
+            <construct>datatype</construct>
+            <construct>enumeration</construct>
+        </stereo>
+        <stereo id="stereotype-name-enum">
+            <name lang="nl">Enumeratiewaarde</name>
+            <name lang="en">Enum</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl">Één element in een enumeratie.</desc>
+            <construct>attribute</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-codelist">
+            <name lang="nl">Codelijst</name>
+        </stereo>
+
+        <stereo id="stereotype-name-union">
+            <name lang="nl">Keuze</name>
+        </stereo>
+        <stereo id="stereotype-name-union-element">
+            <name lang="nl">Keuze element</name>
+        </stereo>
+        
+    </stereotypes>
 </metamodel>

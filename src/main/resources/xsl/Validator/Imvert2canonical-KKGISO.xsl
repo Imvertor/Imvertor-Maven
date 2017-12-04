@@ -69,6 +69,10 @@
         </imvert:association>
     </xsl:template>
     
+    <xsl:template match="imvert:stereotype[. = 'ENUMERATION' and $language = 'nl']">
+        <!-- EA inserted stereotype ENUMERATION removed -->
+    </xsl:template>
+    
     <!-- 
        identity transform
     -->

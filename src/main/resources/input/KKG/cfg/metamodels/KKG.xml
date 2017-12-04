@@ -137,7 +137,7 @@
                 Gestructureerd datatype zonder identiteit waarvan precies één van de
                 (ten minste twee) onderdelen (attributes) aanwezig is in elke instantie. 
                 [ISO/TS 19103:2005]
-                Voorbeeld: Union LineOrPolygon. Union element Line of union element Polygon is van toepassing bij een instantie.
+                Voorbeeld: Keuze LineOrPolygon. Keuze element Line of Keuze element Polygon is van toepassing bij een instantie.
             </desc>
             <construct>datatype</construct>
         </stereo>
@@ -148,31 +148,12 @@
                 A part of an Union expressed in a class of a class (attribute) represented within the Union.
                 Example: union element Line, union element Polygon both part of Union LineOrPolygon</desc>
             <desc lang="nl">
-                Een onderdeel van een Union uitgedrukt in een eigenschap van een class (attribute) die als keuze binnen de Union is gerepresenteerd.
-                Voorbeeld: union element Line, union element Polygon beiden onderdeel uitmakend van Union LineOrPolygon
+                Een onderdeel van een Keuze uitgedrukt in een eigenschap van een class (attribute) die als optie binnen de keuze is gerepresenteerd.
+                Voorbeeld: Keuze element Line, Keuze element Polygon beiden onderdeel uitmakend van Keuze LineOrPolygon
             </desc>
             <construct>attribute</construct>
         </stereo>
 
-        <stereo id="stereotype-name-enumeration">
-            <name lang="nl">Enumeration</name>
-            <name lang="en">Enumeration</name>
-            <desc lang="en">
-                A list of the possible domain values ​​or constants of a attribute type that is unchangeable.</desc>
-            <desc lang="nl">
-                Een lijst met een opsomming van de mogelijke domeinwaarden oftewel constanten van een 
-                attribuutsoort die onveranderlijk is.
-            </desc>
-            <construct>datatype</construct>
-            <construct>enumeration</construct>
-        </stereo>
-        <stereo id="stereotype-name-enum">
-            <name lang="nl">Enumeratiewaarde</name>
-            <name lang="en">Enum</name>
-            <desc lang="en">TODO</desc>
-            <desc lang="nl">Één element in een enumeratie.</desc>
-            <construct>attribute</construct>
-        </stereo>
         <stereo id="stereotype-name-simpletype">
             <name lang="nl">Primitief datatype</name>
             <name lang="en">PrimitiveDatatype</name>
@@ -243,15 +224,16 @@
             <desc lang="nl">
                 Een enkele waarde onttrokken aan een externe lijst van waarden.
                 
-                Zowel referentielijsten als codelists zijn in feite waardelijsten. In tegenstelling echter tot de referentielijst wordt een 
-                codelist niet in het informatiemodel beschreven, omdat de definitie en semantiek geheel in de externe waardelijst staat en niet 
-                (nader) geduid hoeft te worden in het informatiemodel zelf. Een codelist heeft in het informatiemodel daarom geen definitie en 
+                Zowel referentielijsten als codelijsten zijn in feite waardelijsten. In tegenstelling echter tot de referentielijst wordt een 
+                codelijst niet in het informatiemodel beschreven, omdat de definitie en semantiek geheel in de externe waardelijst staat en niet 
+                (nader) geduid hoeft te worden in het informatiemodel zelf. Een codelijst heeft in het informatiemodel daarom geen definitie en 
                 geen attributen. De externe waardelijst zelf bevat, naast gewone attributen, ook altijd één specifiek attribuut, met daarin 
-                de domeinwaarden die gebruikt mogen/moeten worden in de registratie. In het gebruik is een Codelist daarom analoog aan een 
+                de domeinwaarden die gebruikt mogen/moeten worden in de registratie. In het gebruik is een codelijst daarom analoog aan een 
                 Enumeratie. Welk specifiek attribuut dit is en wat de betekenis daarvan is staat in de codelist zelf gedefinieerd.
                 
             </desc>
             <construct>datatype</construct>
+            <construct>enumeration</construct>
         </stereo>
   
         <stereo id="stereotype-name-system-reference-package">
