@@ -23,7 +23,12 @@ package nl.imvertor;
 import org.apache.log4j.Logger;
 
 import nl.imvertor.ComplyExtractor.ComplyExtractor;
+import nl.imvertor.ConfigCompiler.ConfigCompiler;
+import nl.imvertor.ReadmeCompiler.ReadmeCompiler;
+import nl.imvertor.ReleaseCompiler.ReleaseCompiler;
+import nl.imvertor.Reporter.Reporter;
 import nl.imvertor.RunAnalyzer.RunAnalyzer;
+import nl.imvertor.RunInitializer.RunInitializer;
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Release;
 
@@ -40,13 +45,16 @@ public class ChainCompliancy {
 			System.out.println("Imvertor - " + Release.getNotice());
 			
 			configurator.getRunner().info(logger, "Framework version - " + Release.getVersionString());
-			configurator.getRunner().info(logger, "Chain version - " + "Compliancy extraction 0.1");
+			configurator.getRunner().info(logger, "Chain version - " + "Compliancy extraction 0.9");
 					
 			configurator.prepare(); // note that the process config is relative to the step folder path
 			configurator.getRunner().prepare();
 			
 			// parameter processing
+			configurator.getCli(ConfigCompiler.STEP_NAME);
 			configurator.getCli(ComplyExtractor.STEP_NAME);
+			configurator.getCli(Reporter.STEP_NAME);
+			configurator.getCli(ReleaseCompiler.STEP_NAME);
 			
 			configurator.setParmsFromOptions(args);
 			configurator.setParmsFromEnv();
@@ -54,17 +62,31 @@ public class ChainCompliancy {
 		    configurator.save();
 		   
 		    configurator.getRunner().info(logger,"Processing application " + configurator.getParm("cli","project") +"/"+ configurator.getParm("cli","application"));
+	    	configurator.getRunner().setDebug();
 		    
 		    boolean succeeds = true;
-		    		    
-			// compile compliancy xml
-			succeeds = succeeds && (new ComplyExtractor()).run();
-		
+		    
+		    // initialize this run. 
+		    (new RunInitializer()).run();
+		    
+		    try {
+		    	// Build the configuration file
+			    succeeds = (new ConfigCompiler()).run();
+			    
+		    	// compile compliancy xml
+				succeeds = succeeds && (new ComplyExtractor()).run();
+				
+		    } catch (Exception e) {
+				configurator.getRunner().error(logger,"Step-level system error - Please notify your system administrator: " + e.getMessage(),e);
+			}   
 			// analyze this run. 
 		    (new RunAnalyzer()).run();
 
 		    // Run the reporter in all cases; grabs all fragments and status info in parms.xml and compiles the documentation.
-			//TODO (new Reporter()).run();
+ 			(new Reporter()).run();
+ 			
+ 			// compile the release as well as the ZIP release
+ 			(new ReleaseCompiler()).run();
 			
 			configurator.windup();
 			

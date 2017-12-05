@@ -2,10 +2,11 @@
 SETLOCAL ENABLEEXTENSIONS
 
 set jar=%~1
-set jobid=%~2
-set propfile=%~3
-set owner=%~4
-set reg=%~5
+set artifact=%~2
+set jobid=%~3
+set propfile=%~4
+set owner=%~5
+set reg=%~6
 
 set d=%~dp0
 cd %d%
@@ -46,11 +47,13 @@ call "%javaexe%" %jvmparms% ^
     -Dwork.dir="%workdir%\%jobid%" ^
     -Dea.enabled=%imvertor_os_eaenabled% ^
     -Dgit.token=%imvertor_os_git_token% ^
-    -classpath "%bindir%\bin\ChainTranslateAndReport_lib" ^
-    -jar "%bindir%\bin\%jar%.jar" ^
+    -cp "%bindir%\bin\%jar%.jar" ^
+	nl.imvertor.%artifact% ^
 	-arguments "%propfilepath%" ^
 	-owner "%owner%"
 
+    rem removed: -classpath "%bindir%\bin\ChainTranslateAndReport_lib" ^
+    
 goto END
 
 :END

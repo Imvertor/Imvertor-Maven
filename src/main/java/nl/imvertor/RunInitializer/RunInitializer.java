@@ -41,7 +41,7 @@ public class RunInitializer extends Step {
 	/**
 	 *  run the main translation
 	 */
-	public boolean run() throws Exception{
+	public boolean run() throws Exception {
 		
 		// set up the configuration for this step
 		configurator.setActiveStepName(STEP_NAME);
