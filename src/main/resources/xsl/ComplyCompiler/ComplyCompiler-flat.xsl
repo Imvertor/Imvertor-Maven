@@ -129,8 +129,7 @@
         <xsl:variable name="digit-before" select="ep:length - 1 - ep:fraction-digits"/>
         <xsl:variable name="digit-after" select="ep:fraction-digits"/>
         <xsl:variable name="digit-pattern" select="concat('[+\-]?\d{', $digit-before, '},\d{', $digit-after, '}')"/> 
-        <xsl:variable name="type-name" select="ep:type-name"/>
-
+       
         <xsl:variable name="reference-id" as="xs:string?">
             <xsl:variable name="construct" select="root(.)//ep:construct[(ep:tech-name, ep:name) = current()/ep:href]"/>
             <xsl:if test="exists($construct)">
@@ -154,7 +153,7 @@
             
             <xsl:sequence select="imf:create-element('cp:name',imf:get-qualified-name(.))"/>
             <xsl:sequence select="imf:create-element('cp:cardinal',imf:format-cardinality(ep:min-occurs,ep:max-occurs))"/>
-            <xsl:sequence select="imf:create-element('cp:documentation',ep:documentation)"/>
+            <xsl:sequence select="imf:create-element('cp:documentation',string-join(ep:documentation/*,'/'))"/>
             <xsl:sequence select="imf:create-element('cp:attribute',string($as-attribute))"/>
             <xsl:sequence select="imf:create-element('cp:fixed',if (ep:enum[2]) then () else ep:enum[1])"/>
             <xsl:sequence select="imf:create-element('cp:enum',string-join(ep:enum,', '))"/>
