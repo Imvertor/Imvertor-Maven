@@ -448,7 +448,7 @@
         
        <xsl:sequence select="imf:create-debug-track('Constructing the global constructs for antwoord constructs',$debugging)"/>
             
-        <xsl:for-each select="$currentMessage/ep:rough-message[contains(ep:code, 'La')]//ep:construct[ep:tech-name = 'antwoord']">
+        <xsl:for-each select="$currentMessage/ep:rough-message[contains(ep:code, 'La')]//ep:construct[@typeCode='toplevel']">
 
             <xsl:sequence select="imf:create-debug-track('for-each select=$currentMessage/ep:rough-message[contains(ep:code, La)]//ep:construct[ep:tech-name = antwoord]',$debugging)"/>
             <xsl:sequence select="imf:create-debug-comment('Debuglocation 7',$debugging)"/>
@@ -497,7 +497,7 @@
                 </xsl:choose>
             </xsl:variable>
             <xsl:variable name="association" select="imf:get-association-construct-by-id($id,$packages-doc)"/>
-            <xsl:variable name="elementName" select="$construct/imvert:name"/>           
+            <xsl:variable name="elementName" select="$association/imvert:name"/>           
             <xsl:variable name="subsetLabel" select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-SUBSETLABEL')"/>
             
             <!-- Location: 'ep:construct7'
@@ -507,9 +507,9 @@
                 <xsl:attribute name="prefix" select="$prefix"/>
                 <xsl:attribute name="namespaceId" select="$namespaceIdentifier"/>
                 <xsl:sequence
-                    select="imf:create-output-element('ep:name', imf:create-complexTypeName($berichtType,'antwoord',(),'object'))" />
+                    select="imf:create-output-element('ep:name', imf:create-complexTypeName($berichtType,'antwoord',(),$elementName))" />
                 <xsl:sequence
-                     select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($berichtType,'antwoord',(),'object'))" />
+                    select="imf:create-output-element('ep:tech-name', imf:create-complexTypeName($berichtType,'antwoord',(),$elementName))" />
                 <xsl:sequence
                     select="imf:create-output-element('ep:prefix', $prefix)" />
                 
@@ -521,15 +521,15 @@
                     <xsl:sequence select="imf:create-debug-comment('Debuglocation 8',$debugging)"/>
 
                     <ep:construct context="{@context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}" addedLevel="yes">
-                        <ep:name>object</ep:name>
-                        <ep:tech-name>object</ep:tech-name>
+                         <xsl:sequence
+                             select="imf:create-output-element('ep:name', $elementName)" />
+                        <xsl:sequence
+                            select="imf:create-output-element('ep:tech-name', $elementName)" />
                         <xsl:sequence
                             select="imf:create-output-element('ep:max-occurs', $association/imvert:max-occurs)" />
                         <xsl:sequence
                             select="imf:create-output-element('ep:min-occurs', $association/imvert:min-occurs)" />
                         <ep:position>1</ep:position>
-                        <!--xsl:sequence
-                            select="imf:create-output-element('ep:type-name', imf:create-complexTypeName($berichtType,$verwerkingsModus,$alias,$elementName))" /-->
                         <xsl:sequence
                             select="imf:create-output-element('ep:type-name', imf:create-complexTypeName($berichtType,$verwerkingsModus,$alias,(),$subsetLabel))" />
                     </ep:construct>

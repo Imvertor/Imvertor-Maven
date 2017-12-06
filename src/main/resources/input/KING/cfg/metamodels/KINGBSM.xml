@@ -90,11 +90,11 @@
          <desc>TODO</desc>
          <construct>class</construct>
          <toplevel>true</toplevel>
-         <entity-relation-constraint>
+         <!--entity-relation-constraint>
             <relation lang="nl">antwoord</relation>
             <relation lang="nl">stuurgegevens</relation>
             <relation lang="nl">parameters</relation>
-         </entity-relation-constraint>         
+         </entity-relation-constraint-->         
       </stereo>
       <stereo id="stereotype-name-kennisgevingberichttype">
          <name lang="en">Push message type</name>
