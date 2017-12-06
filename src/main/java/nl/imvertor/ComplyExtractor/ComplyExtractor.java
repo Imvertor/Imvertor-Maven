@@ -112,9 +112,10 @@ public class ComplyExtractor extends Step {
 		
 		//validate the generate XML instances against the schema.
 		AnyFolder folder = new AnyFolder(configurator.getParm("properties","WORK_COMPLY_MAKE_FOLDER_VALID"));
-		if (folder.exists())
-			succeeds = succeeds ? validateAndReport(folder) : false;
-		else {
+		if (folder.exists()) {
+			succeeds = succeeds ? validateAndReport(folder,"XML") : false;
+			succeeds = succeeds ? validateAndReport(folder,"WUS") : false;
+		} else {
 			succeeds = false;
 			runner.error(logger,"No instances created.");
 		}
@@ -130,23 +131,23 @@ public class ComplyExtractor extends Step {
 	}
 	
 	/** 
-	 * Process the validation results into reportable messages.
+	 * Process the test instance validation results into reportable messages.
 	 * 
 	 * @param folder
 	 * @return
 	 * @throws IOException
 	 * @throws ConfiguratorException
 	 */
-	public boolean validateAndReport(AnyFolder folder) throws IOException, ConfiguratorException {
-		Vector<String> vl = validateXmlFolder(folder);
+	public boolean validateAndReport(AnyFolder folder,String validationType) throws IOException, ConfiguratorException {
+		Vector<String> vl = validateXmlFolder(folder,validationType);
 		if (vl.size() != 0) 
-			runner.error(logger, vl.size() + " errors/warnings found in generated XSD. This release should not be distributed. Please notify your administrator.");
+			runner.error(logger, vl.size() + " " + validationType + " errors/warnings found in generated test instances.");
 		Iterator<String> it = vl.iterator();
 		while (it.hasNext()) {
 			String m = it.next();
-			runner.error(logger, "XML test instance error: " + m);
+			runner.msg("COMPLY" + validationType,m);
 		}
-		configurator.setParm("appinfo","test-instance-error-count", vl.size());
+		configurator.setParm("appinfo","compliancy-error-count-" + validationType, vl.size());
 		return (vl.size() == 0) ? true : false;
 	}
 	
@@ -157,21 +158,29 @@ public class ComplyExtractor extends Step {
 	 * @param folder
 	 * @return
 	 */
-	public Vector<String> validateXmlFolder(AnyFolder folder) {
+	public Vector<String> validateXmlFolder(AnyFolder folder, String validationType) {
 		//TODO improve format of message, check out xsd validation step.
 		File[] filesAndDirs = folder.listFiles();
 		List<File> filesDirs = Arrays.asList(filesAndDirs);
 		Vector<String> vl = new Vector<String>();
 		for (File file : filesDirs) {
 			if (file.isDirectory()) {
-				vl.addAll(validateXmlFolder(new AnyFolder(file)));
+				vl.addAll(validateXmlFolder(new AnyFolder(file),validationType));
 			} else if (file.getName().endsWith(".xml")) {
 				XmlFile xmlFile = new XmlFile(file);
-				xmlFile.isValid();
-				Vector<String> v = xmlFile.getMessages();
-				vl.addAll(v);			
+				Vector<String> v = null;
+				if (validationType.equals("XML")) {
+					xmlFile.isValid();
+					v = xmlFile.getMessages();
+				} else if (validationType.equals("WUS")) {
+					// temporary
+					String[] m = {"(filenaam.xml) wus-melding"};
+					v = new Vector<String>(Arrays.asList(m));
+				}
+				vl.addAll(v);
 			}
 		}
 		return vl;
 	}
+
 }

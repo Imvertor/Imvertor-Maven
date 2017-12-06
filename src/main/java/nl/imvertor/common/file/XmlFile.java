@@ -386,17 +386,17 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	
 	@Override
 	public void error(SAXParseException exception) throws SAXException {
-		messages.add(exception.getMessage());
+		messages.add("(" + getName() + ") " + exception.getMessage());
 		wfcode = WFCODE_ERROR;
 	}
 	@Override
 	public void fatalError(SAXParseException exception) throws SAXException {
-		messages.add(exception.getMessage());
+		messages.add("(" + getName() + ") " + exception.getMessage());
 		wfcode = WFCODE_FATAL;
 	}
 	@Override
 	public void warning(SAXParseException exception) throws SAXException {
-		messages.add(exception.getMessage());
+		messages.add("(" + getName() + ") " + exception.getMessage());
         wfcode = WFCODE_WARNING;
 	}
 

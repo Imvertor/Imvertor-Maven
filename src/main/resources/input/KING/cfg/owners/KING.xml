@@ -89,4 +89,10 @@
         <p name="POSTCODE" FORMAT="regex">\d{4}[A-Z]{2}</p>
     </patterns>
     
+    <!-- 
+        relevante info voor Compliancy test generator 
+    -->
+    <!-- Validatie wordt uitgevoerd door het bericht als Soap aanroep (ingepakt in Soap envelop) te sturen naar: -->
+    <parameter name="complyextractor-URL">http://87.250.154.42:7080/opentunnel/201512345678/wus/stvadhoc</parameter>
+    
 </project-owner>    

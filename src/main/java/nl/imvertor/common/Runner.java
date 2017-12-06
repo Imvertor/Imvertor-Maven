@@ -313,7 +313,12 @@ public class Runner {
 	 * @throws IOException 
 	 */
 	public void info(Logger logger, String text) throws IOException, ConfiguratorException {
+		info(logger,text,false);
+	}
+	
+	public void info(Logger logger, String text, boolean store) throws IOException, ConfiguratorException {
 		logger.info(text);
+		if (store) messenger.writeMsg(logger.getName(), "INFO", "", text);
 		track(text);
 	}
 	
@@ -400,6 +405,11 @@ public class Runner {
 		}
 	}
 	
+	public void msg(String type, String text) {
+		messenger.writeMsg(logger.getName(), type, "", text);
+	}
+	
+
 	
 	/*
 	 * return a count of all errors found
