@@ -20,26 +20,6 @@
 	
 	<!-- ======= Block of templates used to create the message structure. ======= -->
 
-	<!-- ROME De volgende check moeten we n.m.m. nog ergens inbouwen. -->
-	<?x <xsl:choose>
-			<xsl:when
-				test="contains($berichtCode, 'Lk') and (imvert:max-occurs > 2 or imvert:max-occurs = 'unbounded')">
-				<xsl:variable name="msg"
-					select="concat('The element ', $name, ' has a maxOccurs of ', imvert:max-occurs, '. In Kennisgevingen only a maxOccurs between 1 and 2 is allowed.')"/>
-				<xsl:sequence select="imf:msg('ERROR', $msg)"/>
-			</xsl:when>
-			<xsl:when
-				test="($berichtCode = 'La02' or $berichtCode = 'La04' or $berichtCode = 'La06' or $berichtCode = 'La08' or $berichtCode = 'La10') and imvert:max-occurs != '1'">
-				<xsl:variable name="msg"
-					select="concat('The element ', $name, ' has a maxOccurs of ', imvert:max-occurs, '. In asynchrone messages only a maxOccurs of 1 is allowed.')"/>
-				<xsl:sequence select="imf:msg('ERROR', $msg)"/>
-			</xsl:when>
-		</xsl:choose>
-		<xsl:if test="contains($berichtCode, 'Lk') and imvert:min-occurs > 1">
-			<xsl:variable name="msg"
-				select="concat('The element ', $name, ' has a minOccurs of ', imvert:min-occurs, '. In Kennisgevingen only a minOccurs of 1 is allowed.')"/>
-			<xsl:sequence select="imf:msg('WARN', $msg)"/>
-		</xsl:if>  x?>
 	
 	<!-- This template is used to start generating the ep structure for all individual messages. -->
 
@@ -1064,7 +1044,15 @@
 		<xsl:choose>
 			<xsl:when test="contains($berichtCode, 'La')">
 				<xsl:sequence select="imf:create-debug-comment('Debuglocation 1021',$debugging)"/>
+
+				<xsl:variable name="name" select="imvert:name"/>
 				
+				<xsl:if
+					test="($berichtCode = 'La02' or $berichtCode = 'La04' or $berichtCode = 'La06' or $berichtCode = 'La08' or $berichtCode = 'La10') and imvert:max-occurs != '1'">
+					<xsl:variable name="msg"
+						select="concat('The element ', $name, ' has a maxOccurs of ', imvert:max-occurs, '. In asynchrone messages only a maxOccurs of 1 is allowed.')"/>
+					<xsl:sequence select="imf:msg('ERROR', $msg)"/>
+				</xsl:if>
 				<!-- Location: 'ep:constructRef7'
 								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct7'. -->
 				<xsl:variable name="berichtType">
@@ -1078,12 +1066,12 @@
 				</xsl:variable>
 				
 				<ep:construct berichtCode="{$berichtCode}" berichtName="{$berichtName}">
-					<xsl:sequence select="imf:create-output-element('ep:name', imvert:name)"/>
-					<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)"/>
+					<xsl:sequence select="imf:create-output-element('ep:name', 'antwoord')"/>
+					<xsl:sequence select="imf:create-output-element('ep:tech-name', 'antwoord')"/>
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', 1)"/>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', 0)"/>
 					<xsl:sequence select="imf:create-output-element('ep:position', 200)"/>
-					<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($berichtType,'antwoord',(),'object')"/></xsl:variable>
+					<xsl:variable name="type-name"><xsl:value-of select="imf:create-complexTypeName($berichtType,'antwoord',(),$name)"/></xsl:variable>
 					<!-- The prefix is added at a later stage because at this moment ti's not possible to determine the correct one. -->	
 					<xsl:sequence select="imf:create-output-element('ep:type-name', concat($kv-prefix,':',$type-name))"/>
 				</ep:construct>
@@ -1173,15 +1161,35 @@
 				<xsl:sequence select="imf:create-debug-comment('Debuglocation 1025',$debugging)"/>
 				
 				<xsl:variable name="berichtType" select="'Lk'"/>
+				<xsl:variable name="name" select="imvert:name"/>
 
 				<!-- Location: 'ep:constructRef1'
-								    Matches with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct1'. -->
+								    Matches
+								    with ep:construct created in 'Imvert2XSD-KING-endproduct-xml.xsl' on the location with the id 'ep:construct1'. -->
+				<!-- ROME De volgende check moeten we n.m.m. nog ergens inbouwen. -->
+				<xsl:if test="$name != 'object'">
+					<xsl:variable name="msg"
+						select="concat('Within a Lk messsage the element containing the entiteit must have the name object. Now it has the name ', $name, '.')"/>
+					<xsl:sequence select="imf:msg('ERROR', $msg)"/>
+				</xsl:if>
+				<xsl:if
+					test="imvert:max-occurs > 2 or imvert:max-occurs = 'unbounded'">
+					<xsl:variable name="msg"
+						select="concat('The element ', $name, ' has a maxOccurs of ', imvert:max-occurs, '. In Kennisgevingen only a maxOccurs of 1 and 2 is allowed.')"/>
+					<xsl:sequence select="imf:msg('ERROR', $msg)"/>
+				</xsl:if>
+				<xsl:if test="imvert:min-occurs > 1">
+					<xsl:variable name="msg"
+						select="concat('The element ', $name, ' has a minOccurs of ', imvert:min-occurs, '. In Kennisgevingen only a minOccurs of 1 is allowed.')"/>
+					<xsl:sequence select="imf:msg('WARN', $msg)"/>
+				</xsl:if>
 				
+
 				<ep:construct context="{$context}" berichtCode="{$berichtCode}" berichtName="{$berichtName}">
 					<xsl:variable name="alias" select="key('class',$type-id)/imvert:alias"/>
 					
-					<xsl:sequence select="imf:create-output-element('ep:name', imvert:name)"/>
-					<xsl:sequence select="imf:create-output-element('ep:tech-name', imvert:name)"/>
+					<xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
+					<xsl:sequence select="imf:create-output-element('ep:tech-name', $name)"/>
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', $max-occurs)"/>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', $min-occurs)"/>
 					<xsl:sequence select="imf:create-output-element('ep:position', 200)"/>
@@ -1522,45 +1530,6 @@
 							<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
 							<xsl:with-param name="processType" select="'keyTabelEntiteit'"/>
 						</xsl:apply-templates>
-						
-						<!-- Attributes with the name 'melding' or which are descendants of a 
-								class with the name 'Stuurgegevens', 'Systeem' or 'Parameters' mustn't get 
-								XML attributes. -->
-						<?x xsl:if
-							test="imvert:name != 'melding' and ancestor::imvert:class[imvert:name != 'Stuurgegevens'] and ancestor::imvert:class[imvert:name != 'Systeem'] 
-								  and ancestor::imvert:class[imvert:name != 'EntiteittypeStuurgegevens'] and ancestor::imvert:class[imvert:name != 'Parameters']">
-							<ep:seq>
-								<!-- The function imf:createAttributes is used to determine the XML 
-										attributes neccessary for this context. It has the following parameters: 
-										- typecode - berichttype - context - datumType The first 3 parameters relate 
-										to columns with the same name within an Excel spreadsheet used to configure 
-										a.o. XML attributes usage. The last parameter is used to determine the need 
-										for the XML-attribute 'StUF:indOnvolledigeDatum'. -->
-								
-								<!-- ROME: De berichtcode is niet als globale variabele aanwezig en 
-										kan dus niet zomaar opgeroepen worden. Hij kan helaas ook niet eenvoudig 
-										verkregen worden aangezien het element op basis waarvan de berichtcode kan 
-										worden gegenereerd geen ancestor is van het huidige element. Er zijn 2 opties: 
-										* De berichtcode als parameter aan alle templates toevoegen en steeds doorgeven. 
-										* De attributes pas aan de EP structuur toevoegen in een aparte slag nadat 
-										de EP structuur al gegenereerd is. Het message element dat de berichtcode 
-										bevat is dan nl. wel altijd de ancestor van het element dat het nodig heeft. 
-										Voor nu heb ik gekozen voor de eerste optie. Overigens moet de context ook 
-										nog herleid en doorgegeven worden. -->
-								<xsl:variable name="datumType">
-									<xsl:choose>
-										<!-- ROME: Zodra scalar-xxx is doorgevoerd kan de eerste when verwijderd 
-												worden. -->
-										<xsl:when test="imvert:type-name = 'scalar-date'">yes</xsl:when>
-										<xsl:otherwise>no</xsl:otherwise>
-									</xsl:choose>
-								</xsl:variable>
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation attributes 1',$debugging)"/>
-								<xsl:variable name="attributes"
-									select="imf:createAttributes('bottomlevel', '-', '-', $datumType, '', $onvolledigeDatum, $prefix, $id, imvert:type-name)"/>
-								<xsl:sequence select="$attributes">
-							</ep:seq>
-						</xsl:if x?>
 					</ep:construct>
 				</xsl:when>
 				<xsl:otherwise>				
