@@ -22,18 +22,25 @@ package nl.imvertor.ComplyExtractor;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpHeaders;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.exceptions.ConfiguratorException;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
+import nl.imvertor.common.file.HttpFile;
 import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.file.ZipFile;
 
@@ -113,8 +120,10 @@ public class ComplyExtractor extends Step {
 		//validate the generate XML instances against the schema.
 		AnyFolder folder = new AnyFolder(configurator.getParm("properties","WORK_COMPLY_MAKE_FOLDER_VALID"));
 		if (folder.exists()) {
-			succeeds = succeeds ? validateAndReport(folder,"XML") : false;
-			succeeds = succeeds ? validateAndReport(folder,"WUS") : false;
+			if (configurator.isTrue("cli","complyValidateXML"))
+				succeeds = succeeds ? validateAndReport(folder,"XML") : false;
+			if (configurator.isTrue("cli","complyValidateSTP"))
+				succeeds = succeeds ? validateAndReport(folder,"STP") : false;
 		} else {
 			succeeds = false;
 			runner.error(logger,"No instances created.");
@@ -135,10 +144,9 @@ public class ComplyExtractor extends Step {
 	 * 
 	 * @param folder
 	 * @return
-	 * @throws IOException
-	 * @throws ConfiguratorException
+	 * @throws Exception 
 	 */
-	public boolean validateAndReport(AnyFolder folder,String validationType) throws IOException, ConfiguratorException {
+	public boolean validateAndReport(AnyFolder folder,String validationType) throws Exception {
 		Vector<String> vl = validateXmlFolder(folder,validationType);
 		if (vl.size() != 0) 
 			runner.error(logger, vl.size() + " " + validationType + " errors/warnings found in generated test instances.");
@@ -157,9 +165,12 @@ public class ComplyExtractor extends Step {
 	 * 
 	 * @param folder
 	 * @return
+	 * @throws Exception 
 	 */
-	public Vector<String> validateXmlFolder(AnyFolder folder, String validationType) {
-		//TODO improve format of message, check out xsd validation step.
+	public Vector<String> validateXmlFolder(AnyFolder folder, String validationType) throws Exception {
+		
+		URI stpUrl = URI.create(configurator.getParm("cli","complySTPurl"));
+		
 		File[] filesAndDirs = folder.listFiles();
 		List<File> filesDirs = Arrays.asList(filesAndDirs);
 		Vector<String> vl = new Vector<String>();
@@ -172,10 +183,10 @@ public class ComplyExtractor extends Step {
 				if (validationType.equals("XML")) {
 					xmlFile.isValid();
 					v = xmlFile.getMessages();
-				} else if (validationType.equals("WUS")) {
-					// temporary
-					String[] m = {"(filenaam.xml) wus-melding"};
-					v = new Vector<String>(Arrays.asList(m));
+				} else if (validationType.equals("STP")) {
+					// for each instance, pass to SOAP server STP.
+					String[] messages = postToSTP(stpUrl,xmlFile);
+					v = new Vector<String>(Arrays.asList(messages));
 				}
 				vl.addAll(v);
 			}
@@ -183,4 +194,36 @@ public class ComplyExtractor extends Step {
 		return vl;
 	}
 
+	public String[] postToSTP(URI url, XmlFile xmlInstance) throws Exception {
+		
+		HttpFile httpFile = new HttpFile("unknown");
+		
+		HashMap<String,String> headerMap = new HashMap<String,String>();
+		headerMap.put(HttpHeaders.ACCEPT, "text/xml");
+		headerMap.put(HttpHeaders.CONTENT_TYPE, "text/xml");
+		headerMap.put(HttpHeaders.CONTENT_ENCODING, "UTF-8");
+	
+		// transform to soap wrapper
+		Transformer transformer = new Transformer();
+		transformer.setXslParm("xmlfile-name", xmlInstance.getName());
+		boolean succeeds = true;
+		
+		// creates an XML modeldoc intermediate file which is the basis for output
+		configurator.setParm("system","comply-input-file",xmlInstance.getCanonicalPath());
+		succeeds = succeeds ? transformer.transformStep("system/comply-input-file", "properties/IMVERTOR_COMPLY_EXTRACT_SOAP_REQUEST_FILE", "properties/IMVERTOR_COMPLY_EXTRACT_SOAP_REQUEST_XSLPATH") : false;
+
+		// pass the contents as body to STP
+		XmlFile soapRequestXml = new XmlFile(configurator.getParm("properties", "IMVERTOR_COMPLY_EXTRACT_SOAP_REQUEST_FILE"));
+		String result = httpFile.post(HttpFile.METHOD_POST_CONTENT, url, headerMap, null, soapRequestXml.getContent("UTF-8"));
+		
+		// transform to messages
+		XmlFile soapResponseXml = new XmlFile(configurator.getParm("properties", "IMVERTOR_COMPLY_EXTRACT_SOAP_RESPONSE_FILE"));
+		soapResponseXml.setContent(result);
+		succeeds = succeeds ? transformer.transformStep("properties/IMVERTOR_COMPLY_EXTRACT_SOAP_RESPONSE_FILE", "properties/IMVERTOR_COMPLY_EXTRACT_SOAP_FLAT_FILE", "properties/IMVERTOR_COMPLY_EXTRACT_SOAP_RESPONSE_XSLPATH") : false;
+		
+		AnyFile messagesFile = new AnyFile(configurator.getParm("properties", "IMVERTOR_COMPLY_EXTRACT_SOAP_FLAT_FILE"));
+		
+		return StringUtils.splitByWholeSeparator(messagesFile.getContent(),"[nl]");
+	}
+	
 }

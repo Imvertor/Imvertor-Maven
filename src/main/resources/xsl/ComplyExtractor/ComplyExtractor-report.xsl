@@ -35,8 +35,8 @@
     
     <xsl:variable name="messages" select="/config/messages/message"/>
     
-    <xsl:variable name="xml-errors" select="xs:integer(imf:get-config-string('appinfo','compliancy-error-count-XML','-1'))"/>
-    <xsl:variable name="wus-errors" select="xs:integer(imf:get-config-string('appinfo','compliancy-error-count-WUS','-1'))"/>
+    <xsl:variable name="XML-errors" select="xs:integer(imf:get-config-string('appinfo','compliancy-error-count-XML','-1'))"/>
+    <xsl:variable name="STP-errors" select="xs:integer(imf:get-config-string('appinfo','compliancy-error-count-STP','-1'))"/>
     
     <xsl:template match="/config">
         <report>
@@ -44,19 +44,38 @@
             <summary>
                 <!-- general -->
                 <info label="Comply extractor">
-                    <xsl:sequence select="imf:report-label('XML errors',if ($xml-errors eq -1) then 'No validation performed' else $xml-errors)"/>
-                    <xsl:sequence select="imf:report-label('WUS errors',if ($wus-errors eq -1) then 'No validation performed' else $wus-errors)"/>
+                    <xsl:sequence select="imf:report-label('XML errors',if ($XML-errors eq -1) then 'No validation performed' else $XML-errors)"/>
+                    <xsl:sequence select="imf:report-label('STP errors',if ($STP-errors eq -1) then 'No validation performed' else $STP-errors)"/>
                 </info>
              </summary>
-            <xsl:if test="$xml-errors gt 0 or $wus-errors gt 0">
+            <xsl:if test="$XML-errors gt 0 or $STP-errors gt 0">
                 <page>
                     <title>Compliancy errors</title>
+                    <info>
+                        <xsl:value-of select="concat('(', $XML-errors,' XML exceptions, ', $STP-errors, ' STP exceptions)')"/>
+                    </info>
                     <content>
-                        <xsl:if test="$xml-errors gt 0">
+                        <div>
+                            <h1>Explanation</h1>
+                            <p>This is the overview of all exceptions (errors and warnings) on processing the compliancy test instances generated.</p>
+                            <p>Two checks are made on each instance: </p>
+                            <ul>
+                                <li>
+                                    XML schema validation; results shown when some occur. 
+                                    <xsl:value-of select="if ($XML-errors eq -1) then 'No validation performed.' else concat($XML-errors, ' exceptions for this run.')"/> 
+                                </li>
+                                <li>
+                                    STP validation; results shown when some occur. 
+                                    <xsl:value-of select="if ($STP-errors eq -1) then 'No validation performed.' else concat($STP-errors, ' exceptions for this run.')"/> 
+                                    
+                                </li>
+                            </ul>
+                        </div>
+                        <xsl:if test="$XML-errors gt 0">
                             <div>
-                                <h1>XML parse errors</h1>
+                                <h1>XML parse exceptions</h1>
                                 <div>
-                                    <table id="table-xml-parse-errors" class="tablesorter">
+                                    <table id="table-XML-parse-errors" class="tablesorter">
                                         <col style="width:30%"/>
                                         <col style="width:70%"/>
                                         <thead>
@@ -81,7 +100,7 @@
                                                             <xsl:value-of select="$parts[1]"/>
                                                         </td>
                                                         <td>
-                                                            <xsl:value-of select="$parts[2]"/>
+                                                            <xsl:sequence select="imf:render-XML-message($parts[2])"/>
                                                         </td>
                                                     </tr>
                                                 </xsl:if>
@@ -91,11 +110,11 @@
                                 </div>
                             </div>
                         </xsl:if>
-                        <xsl:if test="$wus-errors gt 0">
+                        <xsl:if test="$STP-errors gt 0">
                             <div>
-                                <h1>WUS messages</h1>
+                                <h1>STP exceptions</h1>
                                 <div>
-                                    <table id="table-wus-errors" class="tablesorter">
+                                    <table id="table-STP-errors" class="tablesorter">
                                         <col style="width:30%"/>
                                         <col style="width:70%"/>
                                         <thead>
@@ -105,7 +124,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <xsl:for-each select="$messages[type='COMPLYWUS']">
+                                            <xsl:for-each select="$messages[type='COMPLYSTP']">
                                                 <xsl:variable name="parts" as="xs:string*">
                                                     <xsl:analyze-string select="text" regex="^\((.*?)\)(.*)$">
                                                         <xsl:matching-substring>
@@ -120,7 +139,7 @@
                                                             <xsl:value-of select="$parts[1]"/>
                                                         </td>
                                                         <td>
-                                                            <xsl:value-of select="$parts[2]"/>
+                                                            <xsl:sequence select="imf:render-STP-message($parts[2])"/>
                                                         </td>
                                                     </tr>
                                                 </xsl:if>
@@ -135,5 +154,45 @@
             </xsl:if>
            </report>
    </xsl:template>
+    
+    <!-- example: 	cvc-complex-type.2.1: Element 'StUF:datum' must have no character or element information item [children], because the type's content type is empty. -->
+    <xsl:function name="imf:render-XML-message">
+        <xsl:param name="message" as="xs:string"/>
+        <xsl:analyze-string select="$message" regex="^(.*?):\s(.*?)$">
+            <xsl:matching-substring>
+                <xsl:variable name="error" select="true()"/>
+                <span class="{if ($error) then 'ERROR' else 'WARNING'}">
+                    <xsl:value-of select="if ($error) then 'ERROR' else 'WARNING'"/>
+                    <xsl:value-of select="', ref: '"/>
+                    <a target="w3c-source-reference" href="{concat('https://www.w3.org/TR/xmlschema11-1/#',substring-before(regex-group(1),'.'))}">
+                        <xsl:value-of select="regex-group(1)"/>
+                    </a>
+                    <xsl:value-of select="concat('. Message: ',regex-group(2))"/>
+                </span>
+            </xsl:matching-substring>
+            <xsl:non-matching-substring>
+                UNRECOGNIZED MESSAGE: [<xsl:value-of select="$message"/>]
+            </xsl:non-matching-substring>
+        </xsl:analyze-string>
+    </xsl:function>
+  
+    <!-- example: E:STP00158:F:Couldn't define message type. -->
+    <xsl:function name="imf:render-STP-message">
+        <xsl:param name="message" as="xs:string"/>
+        <xsl:analyze-string select="$message" regex="^(.):(.*?):(.*?):(.*)$">
+            <xsl:matching-substring>
+                <xsl:variable name="error" select="regex-group(1) = 'E'"/>
+                <span class="{if ($error) then 'ERROR' else 'WARNING'}">
+                    <xsl:value-of select="if ($error) then 'ERROR' else 'WARNING'"/>
+                    <xsl:value-of select="concat(', code: ',regex-group(2))"/>
+                    <xsl:value-of select="concat(', status: ',regex-group(3))"/>
+                    <xsl:value-of select="concat('. Message: ',regex-group(4))"/>
+                </span>
+            </xsl:matching-substring>
+            <xsl:non-matching-substring>
+                UNRECOGNIZED REPLY: [<xsl:value-of select="$message"/>]
+            </xsl:non-matching-substring>
+        </xsl:analyze-string>
+    </xsl:function>
     
 </xsl:stylesheet>
