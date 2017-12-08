@@ -64,9 +64,9 @@
             explain="Excel metadata parameter 'schema-subpath'"/> <!-- bsmr0320/bsmr0320_bg0320.xsd -->
         
         <!-- passed as command line parameter -->
-        <frag 
+        <?x <frag 
             key="executor" value="{imf:get-config-string('cli','executor')}"
-            explain="command line parameter 'executor'"/>
+            explain="command line parameter 'executor'"/> x?>
         
         <!-- needed? -->
         <frag 

@@ -44,7 +44,7 @@
     
     <xsl:variable name="schema-error-count" select="imf:get-config-string('appinfo','schema-error-count','0')"/>
     
-    <xsl:variable name="messages" select="/config/messages/message"/>
+    <xsl:variable name="messages" select="/config/messages/message[type = ('FATAL','ERROR','WARN','INFO','DEBUG','TRACE')]"/>
     
     <xsl:template match="/config">
         

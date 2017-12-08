@@ -31,11 +31,32 @@
          <required>true</required>
       </cli-parm> 
       <cli-parm>
+         <name>complySTPurl</name>
+         <arg>URL</arg>
+         <tip>URL of the compliancy test platform</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>complyValidateXML</name>
+         <arg>yes|no</arg>
+         <tip>Yes if the xml must be parsed / validated before sending to test platform</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>complyValidateSTP</name>
+         <arg>yes|no</arg>
+         <tip>Yes if the xml must be passed to the test platform</tip>
+         <required>true</required>
+      </cli-parm> 
+      
+      <?x
+      <cli-parm>
          <name>executor</name>
          <arg>URL</arg>
          <tip>The URL of the instance of Imvertor executor, for example: http://imvertor.linkedmatter.com/imvertor-executor</tip>
          <required>true</required>
       </cli-parm> 
+      x?>
       
       <!-- relevant: -->
       <cli-parm>
@@ -144,5 +165,27 @@
          folder that stores the extracted template (temporary, serialized zip) 
        -->
       <WORK_COMPLY_TEMPLATE_FOLDERPATH>${system/work-comply-folder-path}/template</WORK_COMPLY_TEMPLATE_FOLDERPATH>
+      
+      <!--
+         Where to store the intermediate Soap envelop (request format)?
+      -->
+      <IMVERTOR_COMPLY_EXTRACT_SOAP_REQUEST_FILE>${system/work-imvert-folder-path}/imvertor.64.cmp.soap-request.xml</IMVERTOR_COMPLY_EXTRACT_SOAP_REQUEST_FILE>
+      <!-- 
+         stylesheet to create the soap request
+      -->
+      <IMVERTOR_COMPLY_EXTRACT_SOAP_REQUEST_XSLPATH alias="SOAPREQ">ComplyExtractor-soap-request.xsl</IMVERTOR_COMPLY_EXTRACT_SOAP_REQUEST_XSLPATH>
+      <!--
+         Where to store the intermediate Soap envelop (response format)?
+      -->
+      <IMVERTOR_COMPLY_EXTRACT_SOAP_RESPONSE_FILE>${system/work-imvert-folder-path}/imvertor.65.cmp.soap-response.xml</IMVERTOR_COMPLY_EXTRACT_SOAP_RESPONSE_FILE>
+      <!-- 
+         stylesheet to process the soap response
+      -->
+      <IMVERTOR_COMPLY_EXTRACT_SOAP_RESPONSE_XSLPATH alias="SOAPRES">ComplyExtractor-soap-response.xsl</IMVERTOR_COMPLY_EXTRACT_SOAP_RESPONSE_XSLPATH>
+      <!--
+         Where to store the falt result of the response transformer?
+      -->
+      <IMVERTOR_COMPLY_EXTRACT_SOAP_FLAT_FILE>${system/work-imvert-folder-path}/imvertor.66.cmp.properties</IMVERTOR_COMPLY_EXTRACT_SOAP_FLAT_FILE>
+      
    </properties>
 </config>
