@@ -267,8 +267,7 @@
             </xsl:when>
             <xsl:otherwise>
                 <xsl:variable name="name" select="imf:get-original-names($this)"/>
-                <xsl:variable name="project" select="$this/ancestor-or-self::imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-project-package')]"/>
-                <xsl:variable name="package-names" select="imf:get-original-names($this/ancestor-or-self::imvert:package[imf:member-of($project,ancestor-or-self::imvert:package)])"/>
+                <xsl:variable name="package-names" select="imf:get-original-names($this/ancestor-or-self::imvert:package)"/>
                 <xsl:variable name="class-name" select="imf:get-original-names($this/ancestor-or-self::imvert:class[1])"/>
                 <xsl:variable name="alias" select="$this/imvert:alias"/>
                 <xsl:choose>
