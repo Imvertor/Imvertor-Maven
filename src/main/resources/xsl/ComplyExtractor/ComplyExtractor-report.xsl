@@ -52,7 +52,7 @@
                 <page>
                     <title>Compliancy errors</title>
                     <info>
-                        <xsl:value-of select="concat('(', $XML-errors,' XML exceptions, ', $STP-errors, ' STP exceptions)')"/>
+                        <xsl:value-of select="concat('(', ($XML-errors + $STP-errors),' exceptions, ')"/>
                     </info>
                     <content>
                         <div>

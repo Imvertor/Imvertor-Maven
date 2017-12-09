@@ -91,11 +91,23 @@
         </xsl:variable>
         <xsl:sequence select="$testset"/>
         
+        <xsl:sequence select="imf:set-config-string('appinfo','project-name','COMPLY')"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','application-name',$testset/parameters/parm[@name='model-name'])"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','release',$testset/parameters/parm[@name='model-release'])"/>
+        
+        <xsl:sequence select="imf:set-config-string('appinfo','subpath',imf:get-subpath(
+            'COMPLY',
+            $testset/parameters/parm[@name='model-name'],
+            $testset/parameters/parm[@name='model-release']))"/>
+
+        <xsl:sequence select="imf:set-config-string('appinfo','release-name','TODO-DETERMINE-RELEASE-NAME')"/>
+
+
         <xsl:sequence select="imf:set-config-string('appinfo','model-subpath',imf:get-subpath(
             $testset/parameters/parm[@name='project-name'],
             $testset/parameters/parm[@name='model-name'],
             $testset/parameters/parm[@name='model-release']))"/>
-       
+   
         <xsl:sequence select="imf:set-config-string('appinfo','schema-subpath',$testset/parameters/parm[@name='schema-subpath'])"/>
         <xsl:sequence select="imf:set-config-string('appinfo','creation-version',$testset/parameters/parm[@name='creation-version'])"/>
         <xsl:sequence select="imf:set-config-string('appinfo','creation-date',$testset/parameters/parm[@name='creation-date'])"/>
