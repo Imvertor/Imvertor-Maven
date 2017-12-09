@@ -240,7 +240,7 @@
                         <xsl:sequence select="imf:msg($construct,'WARN','Notes field [1] not recognized, and skipped',$title)"/>
                     </xsl:when>
                     <xsl:when test="normalize-space($body) and normalize-space($current-tv)">
-                        <xsl:sequence select="imf:msg($construct,'ERROR','Tagged value [1] in notes field [2] already specified',($target-tv-id,$title))"/>
+                        <xsl:sequence select="imf:msg($construct,'WARN','Tagged value [1] in notes field [2] already specified',($norm-title,$title))"/>
                     </xsl:when>
                     <xsl:when test="normalize-space($body)">
                         <imvert:tagged-value origin="notes" id="{$target-tv-id}">
