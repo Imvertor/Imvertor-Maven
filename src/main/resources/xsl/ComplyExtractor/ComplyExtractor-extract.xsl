@@ -60,6 +60,7 @@
         provided as local <var> elements.
     -->    
     <xsl:template match="/cw:files">
+        <xsl:sequence select="imf:track('Reading Excel')"/>
         <xsl:variable name="testset" as="element(testset)">
             <testset>
                 <xsl:attribute name="generated" select="current-dateTime()"/>

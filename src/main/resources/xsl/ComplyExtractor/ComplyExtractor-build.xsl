@@ -84,6 +84,8 @@
     <xsl:variable name="schema-path" select="concat('../../app/xsd/',imf:get-config-string('appinfo','schema-subpath'))"/>
     
     <xsl:template match="/">
+        <xsl:sequence select="imf:track('Building intermediate structure')"/>
+        
         <xsl:variable name="root" select="*"/>
         
         <!-- test if all fragments are available -->

@@ -52,7 +52,7 @@
                 <xsl:variable name="status" select="if ($ValidationStatus = 'S') then (if (.//stp:ValidationRule/stp:Status = 'W') then 'W' else 'S') else 'E'"/>
                 
                 <xsl:for-each select=".//stp:ValidationRule">
-                    <xsl:value-of select="concat('(',$xmlfile-name,')',$status,':',stp:Code,':',stp:Status,':',stp:Message,$nl)"/>
+                    <xsl:value-of select="concat('STP:(',$xmlfile-name,')',$status,':',stp:Code,':',stp:Status,':',stp:Message,$nl)"/>
                 </xsl:for-each>   
             </xsl:otherwise>
         </xsl:choose>

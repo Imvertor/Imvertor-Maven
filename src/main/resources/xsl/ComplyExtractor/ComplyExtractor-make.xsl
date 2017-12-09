@@ -52,6 +52,7 @@
     </xsl:template>
     
     <xsl:template match="message">
+        <xsl:sequence select="imf:track('Creating message [1]',@file-name)"/>
         <xsl:variable name="file-path" select="imf:file-to-url(concat($tests-path,'/',@file-name,'.xml'))"/>
         <xsl:variable name="doc">
             <xsl:apply-templates select="*"/>

@@ -116,10 +116,7 @@ public class ComplyExtractor extends Step {
 		//validate the generate XML instances against the schema.
 		AnyFolder folder = new AnyFolder(configurator.getParm("properties","WORK_COMPLY_MAKE_FOLDER_VALID"));
 		if (folder.exists()) {
-			if (configurator.isTrue("cli","complyValidateXML"))
-				succeeds = succeeds ? validateAndReport(folder,"XML") : false;
-			if (configurator.isTrue("cli","complyValidateSTP"))
-				succeeds = succeeds ? validateAndReport(folder,"STP") : false;
+				succeeds = succeeds ? validateAndReport(folder) : false;
 		} else {
 			succeeds = false;
 			runner.error(logger,"No instances created.");
@@ -142,16 +139,16 @@ public class ComplyExtractor extends Step {
 	 * @return
 	 * @throws Exception 
 	 */
-	public boolean validateAndReport(AnyFolder folder,String validationType) throws Exception {
-		Vector<String> vl = validateXmlFolder(folder,validationType);
+	public boolean validateAndReport(AnyFolder folder) throws Exception {
+		Vector<String> vl = validateXmlFolder(folder);
 		if (vl.size() != 0) 
-			runner.error(logger, vl.size() + " " + validationType + " errors/warnings found in generated test instances.");
+			runner.error(logger, vl.size() + " exceptions found in generated test instances.");
 		Iterator<String> it = vl.iterator();
 		while (it.hasNext()) {
 			String m = it.next();
-			runner.msg("COMPLY" + validationType,m);
+			runner.msg("COMPLY",m);
 		}
-		configurator.setParm("appinfo","compliancy-error-count-" + validationType, vl.size());
+		configurator.setParm("appinfo","compliancy-error-count", vl.size());
 		return (vl.size() == 0) ? true : false;
 	}
 	
@@ -163,7 +160,7 @@ public class ComplyExtractor extends Step {
 	 * @return
 	 * @throws Exception 
 	 */
-	public Vector<String> validateXmlFolder(AnyFolder folder, String validationType) throws Exception {
+	public Vector<String> validateXmlFolder(AnyFolder folder) throws Exception {
 		
 		URI stpUrl = URI.create(configurator.getParm("cli","complySTPurl"));
 		
@@ -172,19 +169,22 @@ public class ComplyExtractor extends Step {
 		Vector<String> vl = new Vector<String>();
 		for (File file : filesDirs) {
 			if (file.isDirectory()) {
-				vl.addAll(validateXmlFolder(new AnyFolder(file),validationType));
+				vl.addAll(validateXmlFolder(new AnyFolder(file)));
 			} else if (file.getName().endsWith(".xml")) {
 				XmlFile xmlFile = new XmlFile(file);
 				Vector<String> v = null;
-				if (validationType.equals("XML")) {
-					xmlFile.isValid();
+				Boolean succeeds = true;
+				if (configurator.isTrue("cli","complyValidateXML")) {
+					succeeds = xmlFile.isValid();
 					v = xmlFile.getMessages();
-				} else if (validationType.equals("STP")) {
+					vl.addAll(v);
+				} 
+				if (succeeds && configurator.isTrue("cli","complyValidateSTP")) {
 					// for each instance, pass to SOAP server STP.
 					String[] messages = postToSTP(stpUrl,xmlFile);
 					v = new Vector<String>(Arrays.asList(messages));
+					vl.addAll(v);
 				}
-				vl.addAll(v);
 			}
 		}
 		return vl;
