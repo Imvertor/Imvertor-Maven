@@ -174,6 +174,7 @@ public class ComplyExtractor extends Step {
 				XmlFile xmlFile = new XmlFile(file);
 				Vector<String> v = null;
 				Boolean succeeds = true;
+				runner.track("Validating " + xmlFile.getName());
 				if (configurator.isTrue("cli","complyValidateXML")) {
 					succeeds = xmlFile.isValid();
 					v = xmlFile.getMessages();
