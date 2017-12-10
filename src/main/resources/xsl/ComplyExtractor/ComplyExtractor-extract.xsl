@@ -92,12 +92,12 @@
         </xsl:variable>
         <xsl:sequence select="$testset"/>
         
-        <xsl:sequence select="imf:set-config-string('appinfo','project-name','COMPLY')"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','project-name','#COMPLY')"/>
         <xsl:sequence select="imf:set-config-string('appinfo','application-name',$testset/parameters/parm[@name='model-name'])"/>
         <xsl:sequence select="imf:set-config-string('appinfo','release',$testset/parameters/parm[@name='model-release'])"/>
         
         <xsl:sequence select="imf:set-config-string('appinfo','subpath',imf:get-subpath(
-            'COMPLY',
+            '#COMPLY',
             $testset/parameters/parm[@name='model-name'],
             $testset/parameters/parm[@name='model-release']))"/>
 
