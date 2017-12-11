@@ -10,7 +10,7 @@
     version="2.0">
  
     <xsl:function name="imf:pretty-print" as="node()?">
-        <xsl:param name="document" as="document-node()?"/>
+        <xsl:param name="document" as="node()?"/> <!-- typically pass document or element -->
         <xsl:param name="mixed-content" as="xs:boolean"/>
         <xsl:choose>
             <xsl:when test="$mixed-content">
