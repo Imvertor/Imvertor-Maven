@@ -632,7 +632,8 @@
                         <xsl:sequence select="imf:create-data-comment('Regels',cp:regels)"/>    
                         <xsl:sequence select="imf:create-data-comment('Min waarde',cp:mininclusive)"/>    
                         <xsl:sequence select="imf:create-data-comment('Max waarde',cp:maxinclusive)"/>    
-                        <xsl:sequence select="imf:create-data-comment('Documentatie',cp:documentation)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Definitie',cp:definition)"/>    
+                        <xsl:sequence select="imf:create-data-comment('Omschrijving',cp:description)"/>    
                         <xsl:sequence select="imf:create-data-comment('Tip',cp:tip)"/>   
                     </xsl:variable>
                     <xsl:if test="exists($comment-lines)">

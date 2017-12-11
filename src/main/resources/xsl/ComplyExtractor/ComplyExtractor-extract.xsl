@@ -101,8 +101,7 @@
             $testset/parameters/parm[@name='model-name'],
             $testset/parameters/parm[@name='model-release']))"/>
 
-        <xsl:sequence select="imf:set-config-string('appinfo','release-name','TODO-DETERMINE-RELEASE-NAME')"/>
-
+        <xsl:sequence select="imf:set-config-string('appinfo','release-name',$application-package-release-name)"/>
 
         <xsl:sequence select="imf:set-config-string('appinfo','model-subpath',imf:get-subpath(
             $testset/parameters/parm[@name='project-name'],

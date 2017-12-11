@@ -153,7 +153,8 @@
             
             <xsl:sequence select="imf:create-element('cp:name',imf:get-qualified-name(.))"/>
             <xsl:sequence select="imf:create-element('cp:cardinal',imf:format-cardinality(ep:min-occurs,ep:max-occurs))"/>
-            <xsl:sequence select="imf:create-element('cp:documentation',string-join(ep:documentation/*,'/'))"/>
+            <xsl:sequence select="imf:create-element('cp:definition',string-join(ep:documentation/ep:definition/*,'/'))"/>
+            <xsl:sequence select="imf:create-element('cp:description',string-join(ep:documentation/ep:description/*,'/'))"/>
             <xsl:sequence select="imf:create-element('cp:attribute',string($as-attribute))"/>
             <xsl:sequence select="imf:create-element('cp:fixed',if (ep:enum[2]) then () else ep:enum[1])"/>
             <xsl:sequence select="imf:create-element('cp:enum',string-join(ep:enum,', '))"/>

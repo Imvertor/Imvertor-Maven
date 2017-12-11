@@ -213,31 +213,30 @@
     
     <!-- sheet2, each next cell in column: a link  -->
     <xsl:template match="cell[exists(@link)]" mode="data-cell">
-        <xsl:sequence select="imf:debug(.,'data-cell Cell link value - type [1] label [2] link [3]', (@name, @value,@link))"/>
+        <xsl:sequence select="imf:debug(.,'data-cell Cell link value - type [1] label [2] link [3]', (imf:string-group(@name), imf:string-group(@value), imf:string-group(@link)))"/>
         
         <xsl:variable name="label" select="@value"/>
         <xsl:variable name="link" select="@link"/>
         <xsl:variable name="linked-group" select="$testset/groups[@part = '2']/group[@label = $label and @id = $link]"/>
         
         <xsl:variable name="parse" select="imf:ns-parse(@name)"/>
-        <xsl:element name="{imf:get-name-with-prefix($parse)}" namespace="{$parse[4]}">
-            <xsl:attribute name="cclabel" select="$label"/> <!-- assigns a reserved attribute to the element, signalling the compacter not to remove this element. The attribute WILL be removed. -->            
-            <xsl:variable name="following-attributes" select="imf:get-attributes(.)"/>
-            <xsl:apply-templates select="$following-attributes" mode="attribute-cell"/>
-            <xsl:choose>
-                <xsl:when test="empty($label)">
-                    <!-- skip a link cell when no value specified. -->
-                </xsl:when>
-                <xsl:when test="exists($linked-group)">
+        <xsl:choose>
+            <xsl:when test="empty($label)">
+                <!-- skip a link cell when no value specified. -->
+            </xsl:when>
+            <xsl:when test="exists($linked-group)">
+                <xsl:element name="{imf:get-name-with-prefix($parse)}" namespace="{$parse[4]}">
+                    <xsl:attribute name="cclabel" select="$label"/> <!-- assigns a reserved attribute to the element, signalling the compacter not to remove this element. The attribute WILL be removed. -->            
+                    <xsl:variable name="following-attributes" select="imf:get-attributes(.)"/>
+                    <xsl:apply-templates select="$following-attributes" mode="attribute-cell"/>
                     <xsl:apply-templates select="$linked-group" mode="data-column"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:sequence select="imf:debug(.,'ERROR', ())"/>
-                    <xsl:sequence select="imf:msg(.,'ERROR','Cannot resolve link to [1] as defined on [2]',($link,$label))"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:element> 
-        
+                </xsl:element> 
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:debug(.,'ERROR', ())"/>
+                <xsl:sequence select="imf:msg(.,'ERROR','Cannot resolve link to [1] as defined on [2]',($link,$label))"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <!-- sheet 1 and 2, each next cell in column: a value  -->
