@@ -1584,6 +1584,7 @@
 						<xsl:variable name="compiled-name" select="imf:useable-attribute-name(imf:get-compiled-name(.),.)"/>
 						<xsl:variable name="type-name" select="imf:capitalize($compiled-name)"/>
 						<xsl:variable name="stuf-scalar" select="imf:get-stuf-scalar-attribute-type(.)"/>
+						<xsl:variable name="conceptual-schema-type" select="imvert:conceptual-schema-type"/>
 
 						<xsl:variable name="type-is-scalar-non-emptyable" select="imvert:type-name = ('scalar-integer','scalar-decimal')"/>
 
@@ -1604,6 +1605,9 @@
 						</xsl:variable>
 						
 						<xsl:choose> 
+							<xsl:when test="not(empty($conceptual-schema-type))">
+								<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-external-type-name(.,true()))"/>
+							</xsl:when>
 							<xsl:when test="imvert:type-package='GML3'">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034a',$debugging)"/>
 								<xsl:choose>
