@@ -88,6 +88,9 @@
                 <parameters>
                     <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet5.xml']" mode="create-info"/>
                 </parameters>
+                <import-messages>
+                    <xsl:apply-templates select="cw:file[@path = 'xl\worksheets\sheet6.xml']" mode="create-scenario"/>
+                </import-messages>
             </testset>
         </xsl:variable>
         <xsl:sequence select="$testset"/>
@@ -213,6 +216,22 @@
             <parm name="{$name}">
                 <xsl:value-of select="$value"/>
             </parm>
+        </xsl:for-each>
+    </xsl:template>
+    
+    <xsl:template match="cw:file" mode="create-scenario">
+        <xsl:variable name="worksheet-rows" select="*:worksheet/*:sheetData/*:row"/>
+        <xsl:for-each select="$worksheet-rows[position() gt 1]">
+            <xsl:variable name="standaard" select="imf:get-string(*:c[1])"/>
+            <xsl:variable name="scenario" select="imf:get-string(*:c[2])"/>
+            <xsl:variable name="stap" select="imf:get-string(*:c[3])"/>
+            <xsl:variable name="bericht" select="imf:get-string(*:c[4])"/>
+            <message>
+                <category><xsl:value-of select="$standaard"/></category>
+                <scenario><xsl:value-of select="$scenario"/></scenario>
+                <step><xsl:value-of select="$stap"/></step>
+                <content><xsl:value-of select="$bericht"/>.xml</content>
+            </message>
         </xsl:for-each>
     </xsl:template>
     

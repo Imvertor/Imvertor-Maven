@@ -162,6 +162,14 @@
       <WORK_COMPLY_MAKE_FOLDER_VALID>${system/work-comply-folder-path}/tests</WORK_COMPLY_MAKE_FOLDER_VALID>
       <WORK_COMPLY_MAKE_FILE_VALID>${system/work-imvert-folder-path}/imvertor.63.make-valid.xml</WORK_COMPLY_MAKE_FILE_VALID>
       <!-- 
+         stylesheet to create the scenario file
+      -->
+      <WORK_COMPLY_SCENARIO_XSLPATH alias="COMSC">ComplyExtractor-scenario.xsl</WORK_COMPLY_SCENARIO_XSLPATH>
+      <!-- 
+         path to scenario file.
+      -->
+      <WORK_COMPLY_SCENARIO_FILE>${system/work-imvert-folder-path}/imvertor.61.scenario.xml</WORK_COMPLY_SCENARIO_FILE>
+      <!-- 
          folder that stores the extracted template (temporary, serialized zip) 
        -->
       <WORK_COMPLY_TEMPLATE_FOLDERPATH>${system/work-comply-folder-path}/template</WORK_COMPLY_TEMPLATE_FOLDERPATH>

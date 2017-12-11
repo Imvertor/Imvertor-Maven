@@ -102,6 +102,13 @@ public class ComplyExtractor extends Step {
 			}
 		}
 		
+		// build a scenario file
+		succeeds = succeeds ? transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_SCENARIO_FILE", "properties/WORK_COMPLY_SCENARIO_XSLPATH") : false;
+
+		AnyFile targetXmlFile = new AnyFile(configurator.getWorkFolder("app/tests"),"stp-config.xml");
+		AnyFile scenario = new AnyFile(configurator.getParm("properties","WORK_COMPLY_SCENARIO_FILE"));
+		scenario.copyFile(targetXmlFile);		
+
 		// build the XML instances
 		succeeds = succeeds ? transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_BUILD_FILE", "properties/WORK_COMPLY_BUILD_XSLPATH","system/comply-content-file") : false;
 		
@@ -112,7 +119,7 @@ public class ComplyExtractor extends Step {
 		// then do the same, but insert variables in order to test the validity of the tests
 		transformer.setXslParm("generation-mode", "valid");
 		succeeds = succeeds ? transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_MAKE_FILE_VALID", "properties/WORK_COMPLY_MAKE_XSLPATH") : false;
-		
+
 		//validate the generate XML instances against the schema.
 		AnyFolder folder = new AnyFolder(configurator.getParm("properties","WORK_COMPLY_MAKE_FOLDER_VALID"));
 		if (folder.exists()) {
@@ -121,6 +128,7 @@ public class ComplyExtractor extends Step {
 			succeeds = false;
 			runner.error(logger,"No instances created.");
 		}
+
 		configurator.setStepDone(STEP_NAME);
 		 
 		// save any changes to the work configuration for report and future steps
