@@ -120,7 +120,7 @@
                         <xsl:sequence select="imf:msg(..,'ERROR','No supplier release specified')"/>
                     </xsl:when>
                     <xsl:when test="empty($supplier-application)">
-                        <xsl:sequence select="imf:msg(..,'ERROR','No supplier document found for project [1], application [2] at release [3]',($supplier-project,$supplier-name,$supplier-release))"/>
+                        <xsl:sequence select="imf:msg(..,'ERROR','No supplier document found for [1]',$subpath)"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:for-each select="$client-construct/imvert:trace">
