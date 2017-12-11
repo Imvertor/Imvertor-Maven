@@ -19,7 +19,7 @@
         <xsl:param name="text"/>
         <!-- several kinds of dashes. https://www.cs.tut.fi/~jkorpela/dashes.html -->
         <xsl:variable name="grp" select="'[&#45;&#8208;&#8209;&#8210;&#8211;&#8212;&#8213;&#8722;]{2}'"/>
-        <xsl:variable name="proc-text" select="if (matches($text,concat('^\s*',$grp),'s')) then $text else concat('-- ',$inspire-notes-default-section-title,' --&#10;', $text)"/>
+        <xsl:variable name="proc-text" select="if (matches($text,concat('^\s*',$grp))) then $text else concat('-- ',$inspire-notes-default-section-title,' --&#10;', $text)"/>
         <wrap>
             <xsl:analyze-string select="$proc-text" regex="{$grp}\s*(.*?)\s*{$grp}">
                 <xsl:matching-substring>

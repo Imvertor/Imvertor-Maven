@@ -1606,7 +1606,7 @@
     
     <xsl:function name="imf:fetch-relevant-doc-string">
         <xsl:param name="doctext"/>
-        <xsl:variable name="parts" select="tokenize($doctext,imf:get-config-parameter('documentation-separator-pattern'))"/>
+        <xsl:variable name="parts" select="tokenize($doctext,imf:get-config-parameter('documentation-separator-pattern'),'s')"/>
         <xsl:value-of select="$parts[1]"/>
     </xsl:function>
     
