@@ -97,6 +97,7 @@ public class ComplyExtractor extends Step {
 				AnyFolder targetXsdFolder = new AnyFolder(configurator.getWorkFolder("app/xsd"));
 				sourceXsdFolder.copy(targetXsdFolder);		
 			} else { 
+				runner.info(logger, "XSD file expected at " + xsdFile.getCanonicalPath());
 				runner.error(logger, "No such model XSD folder for " + subpath + " at " + subpath + "/xsd/" + locpath);
 				succeeds = false;
 			}
