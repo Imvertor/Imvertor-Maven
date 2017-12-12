@@ -97,7 +97,7 @@ public class ComplyExtractor extends Step {
 				AnyFolder targetXsdFolder = new AnyFolder(configurator.getWorkFolder("app/xsd"));
 				sourceXsdFolder.copy(targetXsdFolder);		
 			} else { 
-				runner.error(logger, "No such model XSD folder: " + subpath);
+				runner.error(logger, "No such model XSD folder for " + subpath + " at " + subpath + "/xsd/" + locpath);
 				succeeds = false;
 			}
 		}
@@ -105,10 +105,12 @@ public class ComplyExtractor extends Step {
 		// build a scenario file
 		succeeds = succeeds ? transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_SCENARIO_FILE", "properties/WORK_COMPLY_SCENARIO_XSLPATH") : false;
 
-		AnyFile targetXmlFile = new AnyFile(configurator.getWorkFolder("app/tests"),"stp-config.xml");
-		AnyFile scenario = new AnyFile(configurator.getParm("properties","WORK_COMPLY_SCENARIO_FILE"));
-		scenario.copyFile(targetXmlFile);		
-
+		if (succeeds) { 
+			AnyFile targetXmlFile = new AnyFile(configurator.getWorkFolder("app/tests"),"stp-config.xml");
+			AnyFile scenario = new AnyFile(configurator.getParm("properties","WORK_COMPLY_SCENARIO_FILE"));
+			scenario.copyFile(targetXmlFile);		
+		}
+		
 		// build the XML instances
 		succeeds = succeeds ? transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_BUILD_FILE", "properties/WORK_COMPLY_BUILD_XSLPATH","system/comply-content-file") : false;
 		

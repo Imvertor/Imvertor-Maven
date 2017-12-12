@@ -54,6 +54,8 @@ public class RunInitializer extends Step {
 		initFile.setContent("<root/>");
 	
 		configurator.setParm("system", "cur-imvertor-filepath", initFile.getCanonicalPath());
+		
+		configurator.setParm("appinfo", "project-name", "UNKNOWN-PROJECT-NAME");
 		configurator.setParm("appinfo", "application-name", "UNKNOWN-APPLICATION-NAME");
 		configurator.setParm("appinfo", "release-name", "UNKNOWN-RELEASE-NAME");
 		configurator.setParm("appinfo", "release", "UNKNOWN-RELEASE");
