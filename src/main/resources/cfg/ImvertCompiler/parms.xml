@@ -63,11 +63,6 @@
    
    <properties>
       
-      <!--  location of all individual applications -->
-      <APPLICATIONS_FOLDER>${system/managedoutputfolder}/applications</APPLICATIONS_FOLDER>
-
-      <APPLICATION_BASE_FOLDER>${properties/APPLICATIONS_FOLDER}/${cli/project}/${cli/application}</APPLICATION_BASE_FOLDER>
-      
       <IMVERTOR_PRETRACE_XSLPATH>Imvert2pretrace.xsl</IMVERTOR_PRETRACE_XSLPATH>
       <WORK_PRETRACE_FILE>${system/work-imvert-folder-path}/imvertor.033.pretrace.xml</WORK_PRETRACE_FILE>
       

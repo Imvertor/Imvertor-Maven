@@ -179,9 +179,12 @@
    
    <!-- properties zijn directe mapping vanuit imvertor.properties. Die moeten dus later netjes worden verwerkt -->
    <properties>
-   
+
+      <!--  location of all individual applications -->
+      <APPLICATIONS_FOLDER>${system/managedoutputfolder}/applications</APPLICATIONS_FOLDER>
+      
       <!-- default base folder, will be overwritten when more info is available -->
-      <APPLICATION_BASE_FOLDER>${system/managedoutputfolder}/applications/${cli/project}/${cli/application}</APPLICATION_BASE_FOLDER>
+      <APPLICATION_BASE_FOLDER>${system/managedoutputfolder}/applications/${appinfo/project-name}/${appinfo/application-name}</APPLICATION_BASE_FOLDER>
       
       <!-- folder what will hold the release of this application --> 
       <APPLICATION_FOLDER>${properties/APPLICATION_BASE_FOLDER}/${appinfo/release}</APPLICATION_FOLDER>
@@ -195,7 +198,7 @@
       <!--  location of all distributed (and mass integrated) materials: documentation and schemas -->
       <DISTRIBUTION_FOLDER>${system/managedoutputfolder}/distributions</DISTRIBUTION_FOLDER>
       <!--  location of result release material (per application) -->
-      <DISTRIBUTION_APPLICATION_FOLDER>${properties/DISTRIBUTION_FOLDER}/${cli/project}/${cli/application}</DISTRIBUTION_APPLICATION_FOLDER>
+      <DISTRIBUTION_APPLICATION_FOLDER>${properties/DISTRIBUTION_FOLDER}/${appinfo/project-name}/${appinfo/application-name}</DISTRIBUTION_APPLICATION_FOLDER>
       
       <!-- location of the XML catalog file; this is a generated file, only for compare step -->
       <GENERATED_CATALOG_FILEPATH>${system/work-folder-path}/catalog.xml</GENERATED_CATALOG_FILEPATH>

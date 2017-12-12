@@ -129,6 +129,17 @@ public class ComplyExtractor extends Step {
 			runner.error(logger,"No instances created.");
 		}
 
+		// finally set some release info
+		configurator.setParm("appinfo","compliancy-filename",template.getNameNoExtension());
+		configurator.setParm("appinfo","generation-id",configurator.getParm("system","generation-id"));
+		
+		// system/resolved-release-name
+		String releasename = configurator.mergeParms(configurator.getParm("cli","releasename"));
+		configurator.setParm("appinfo","release-name",StringUtils.replacePattern(releasename, "[^A-Za-z0-9_\\-.]", ""),true);
+		
+		// we now know the application name and should show it. 
+		runner.info(logger, "Compiled name: " + configurator.getParm("appinfo","release-name"));
+		
 		configurator.setStepDone(STEP_NAME);
 		 
 		// save any changes to the work configuration for report and future steps
