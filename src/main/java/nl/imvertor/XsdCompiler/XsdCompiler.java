@@ -117,7 +117,13 @@ public class XsdCompiler extends Step {
 		runner.debug(logger,"CHAIN","Generating XML schemas to " + xsdApplicationFolder);
 		
 		valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_XSD_PREFORM_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_XSD_PREFORM_XSLPATH","system/cur-imvertor-filepath");
-		valid = valid && transformer.transformStep("system/cur-imvertor-filepath","properties/RESULT_XSD_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_XSD_XSLPATH","system/cur-imvertor-filepath");
+		
+		String n = configurator.getParm("cli","STUBnilreason",false);
+		if (n != null && n.equals("1.28"))
+			valid = valid && transformer.transformStep("system/cur-imvertor-filepath","properties/RESULT_XSD_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_XSD_1.28_XSLPATH","system/cur-imvertor-filepath");
+		else
+			valid = valid && transformer.transformStep("system/cur-imvertor-filepath","properties/RESULT_XSD_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_XSD_XSLPATH","system/cur-imvertor-filepath");
+		
 		valid = valid && transformer.transformStep("system/cur-imvertor-filepath","properties/RESULT_XSD_POSTFORM_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_XSD_POSTFORM_XSLPATH","system/cur-imvertor-filepath");
 		valid = valid && transformer.transformStep("system/cur-imvertor-filepath","properties/RESULT_XSD_IMPORT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_XSD_IMPORT_XSLPATH","system/cur-imvertor-filepath");
 		

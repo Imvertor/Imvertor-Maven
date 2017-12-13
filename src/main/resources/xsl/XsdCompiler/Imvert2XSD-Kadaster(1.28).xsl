@@ -18,15 +18,10 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<!-- adaptations
-     
-     after 1.27.1
-        introduce <mark approach="elm"">
-        remove estimations
-        remove approach="att"
-
+<!-- 
+    This is the kadaster XSD stylesheet for 1.28. It is retained in later releases in order to support the old nilreason aproach. When obsolete, remove.
+    This stylesheet is activated by cli/migratenilreason = 1.28 and 
 -->
-
 <xsl:stylesheet 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -86,6 +81,8 @@
     <xsl:variable name="base-namespace" select="/imvert:packages/imvert:base-namespace"/>
     
     <xsl:template match="/">
+        <xsl:sequence select="imf:msg('WARN','This XML schema is generated using a deprecated Nil reason approach')"/>
+
         <imvert:schemas>
             <xsl:sequence select="imf:create-info-element('imvert:exporter',$imvert-document/imvert:packages/imvert:exporter)"/>
             <xsl:sequence select="imf:create-info-element('imvert:schema-exported',$imvert-document/imvert:packages/imvert:exported)"/>
@@ -738,9 +735,9 @@
         
         <xsl:variable name="is-voidable" select="$this/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-voidable')"/>
         <xsl:variable name="is-nillable" select="$is-voidable or $force-nillable"/>
-        <xsl:variable name="has-nilreason" select="imf:boolean(imf:get-tagged-value($this,'##CFG-TV-REASONNOVALUE'))"/>
         
         <xsl:variable name="is-restriction" select="imf:is-restriction($this)"/>
+        <xsl:variable name="is-estimation" select="imf:is-estimation($this)"/>
         <xsl:variable name="basetype-name" select="if ($is-nillable) then imf:get-restriction-basetype-name($this) else ''"/>
         <xsl:variable name="package-name" select="$this/ancestor::imvert:package[last()]/imvert:name"/>
         
@@ -777,8 +774,7 @@
         
         <xsl:variable name="data-location" select="imf:get-appinfo-location($this)"/>
         
-        <mark nillable="{$is-nillable}" nilreason="{$has-nilreason}">
-            <xsl:choose>
+        <xsl:choose>
             <!-- any type, i.e. #any -->
             <xsl:when test="$is-any">
                 <xsl:variable name="package-name" select="$this/imvert:any-from-package"/>
@@ -824,9 +820,33 @@
                     </xs:simpleType>
                 </xs:element>
             </xsl:when>
-            
+            <!-- base types such as xs:string and xs:boolean -->
+            <xsl:when test="$type=('xs:dateTime','xs:date','xs:time') and $is-type-modified-incomplete and $is-nillable"> <!-- incomplete type, and could be, but may may not be empty -->
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:attribute name="nillable">true</xsl:attribute>
+                    <xsl:sequence select="imf:debug($this,'A voidable incomplete datetime, date or time')"/>
+                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xsl:variable name="fixtype">
+                                <xsl:choose>
+                                    <xsl:when test="$type='xs:dateTime'">Fixtype_incompleteDateTime</xsl:when>
+                                    <xsl:when test="$type='xs:date'">Fixtype_incompleteDate</xsl:when>
+                                    <xsl:when test="$type='xs:time'">Fixtype_incompleteTime</xsl:when>
+                                </xsl:choose>
+                            </xsl:variable>
+                            <xs:extension base="{imf:get-type($fixtype,$package-name)}">
+                                <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+            </xsl:when>
             <xsl:when test="$type=('xs:dateTime','xs:date','xs:time') and $is-type-modified-incomplete"> <!-- incomplete type -->
-                 <xsl:variable name="fixtype">
+                <xsl:variable name="fixtype">
                     <xsl:choose>
                         <xsl:when test="$type='xs:dateTime'">Fixtype_incompleteDateTime</xsl:when>
                         <xsl:when test="$type='xs:date'">Fixtype_incompleteDate</xsl:when>
@@ -842,6 +862,30 @@
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                 </xs:element>
             </xsl:when>
+            
+            <xsl:when test="starts-with($type,'xs:') and $is-nillable"> 
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:attribute name="nillable">true</xsl:attribute>
+                    <xsl:sequence select="imf:debug($this,'A voidable primitive type')"/>
+                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <!-- 
+                                Determine the effective type, this is the actual type such as xs:string or a generated basetype 
+                                When basetype, the type referenced in the extension is the generated type, 'Basetype_*', introduced at the end of the schema 
+                            -->
+                            <xsl:variable name="effective-type" select="if ($is-restriction) then imf:get-type($basetype-name,$package-name) else $type"/>
+                            <xs:extension base="{$effective-type}">
+                                <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
+                                <xsl:sequence select="imf:create-estimation($is-estimation)"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+            </xsl:when>
             <xsl:when test="starts-with($type,'xs:') and $is-restriction"> <!-- any xsd primitve type such as xs:string, with local restrictions such as patterns -->
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
@@ -849,11 +893,26 @@
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:sequence select="imf:debug($this,'A restriction on a primitive type')"/>
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
-                    <xs:simpleType>
-                        <xs:restriction base="{$type}">
-                            <xsl:sequence select="imf:create-datatype-property($this)"/>
-                        </xs:restriction>
-                    </xs:simpleType>
+                    <xsl:choose>
+                        <xsl:when test="false() and $is-estimation"> <!-- deactivated! -->
+                            <!-- TODO research / This is a restriction on xs:string datatype, but also extension as attributes are added. How? -->
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:restriction base="{$type}">
+                                        <xsl:sequence select="imf:create-datatype-property($this)"/>
+                                    </xs:restriction>
+                                    <xsl:sequence select="imf:create-estimation($is-estimation)"/>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xs:simpleType>
+                                <xs:restriction base="{$type}">
+                                    <xsl:sequence select="imf:create-datatype-property($this)"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xs:element>
             </xsl:when>
             <xsl:when test="$type=('xs:string') and not($this/imvert:baretype='TXT')"> <!-- these types could be, but may may not be empty -->
@@ -868,21 +927,6 @@
                             <xs:pattern value="\S.*"/> <!-- Note: do not use xs:minLength as this allows for a single space -->
                         </xs:restriction>
                     </xs:simpleType>
-                </xs:element>
-            </xsl:when>
-            <xsl:when test="starts-with($type,'xs:')"> 
-                <!-- 
-                    Determine the effective type, this is the actual type such as xs:string or a generated basetype 
-                    When basetype, the type referenced in the extension is the generated type, 'Basetype_*', introduced at the end of the schema 
-                -->
-                <xsl:variable name="effective-type" select="if ($is-restriction) then imf:get-type($basetype-name,$package-name) else $type"/>
-                <xs:element>
-                    <xsl:attribute name="name" select="$name"/>
-                    <xsl:attribute name="type" select="$effective-type"/>
-                    <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
-                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:debug($this,'A voidable primitive type')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                 </xs:element>
             </xsl:when>
             <xsl:when test="starts-with($type,'xs:')"> 
@@ -907,15 +951,53 @@
                     <xsl:sequence select="imf:get-annotation($this)"/>
                 </xs:element>
             </xsl:when>
-            <xsl:when test="$is-enumeration">
+            <xsl:when test="$is-enumeration and $is-nillable">
                 <!-- an enumeration or a datatype such as postcode -->
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
-                    <xsl:attribute name="type" select="$type"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:debug($this,'An enumeration')"/>
+                    <xsl:attribute name="nillable">true</xsl:attribute>
+                    <xsl:sequence select="imf:debug($this,'A voidable enumeration')"/>
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="{$type}">
+                                <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+            </xsl:when>
+            <xsl:when test="($is-complextype or $is-conceptual-complextype) and $is-nillable">
+                <!-- note that we do not support avoiding substitution on complex datatypes --> 
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:attribute name="nillable">true</xsl:attribute>
+                    <xsl:sequence select="imf:debug($this,'A voidable complex type')"/>
+                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xs:complexType>
+                        <xsl:variable name="ext">
+                            <xs:extension base="{$type}">
+                                <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
+                            </xs:extension>
+                        </xsl:variable>
+                        <xsl:choose>
+                            <xsl:when test="exists($defining-class/imvert:pattern)">
+                                <xsl:sequence select="imf:debug($this,'The referenced type is simplified by pattern')"/>
+                                <xs:simpleContent>
+                                    <xsl:sequence select="$ext"/>
+                                </xs:simpleContent>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xs:complexContent>
+                                    <xsl:sequence select="$ext"/>
+                                </xs:complexContent>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xs:complexType>
                 </xs:element>
             </xsl:when>
             <xsl:when test="($is-complextype or $is-conceptual-complextype)">
@@ -927,6 +1009,23 @@
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:sequence select="imf:debug($this,'A complex type')"/>
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                </xs:element>
+            </xsl:when>
+            <xsl:when test="$is-datatype and $is-nillable">
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:attribute name="nillable">true</xsl:attribute>
+                    <xsl:sequence select="imf:debug($this,'A voidable datatype')"/>
+                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="{$type}">
+                                <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
                 </xs:element>
             </xsl:when>
             <xsl:when test="$is-enumeration or $is-datatype">
@@ -949,6 +1048,23 @@
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                 </xs:element>
             </xsl:when>
+            <xsl:when test="$is-choice and $is-nillable"> 
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:attribute name="nillable">true</xsl:attribute>
+                    <xsl:sequence select="imf:debug($this,'The type of this property is a union, and voidable')"/>
+                    <xsl:sequence select="imf:get-annotation($this)"/>
+                    <xs:complexType>
+                        <xs:complexContent>
+                            <xs:extension base="{$type}">
+                                <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
+                            </xs:extension>
+                        </xs:complexContent>
+                    </xs:complexType>
+                </xs:element>
+            </xsl:when>
             <xsl:when test="$is-choice"> 
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
@@ -969,6 +1085,22 @@
                     <xsl:sequence select="imf:get-annotation($this)"/>
                 </xs:element>
             </xsl:when>
+            <xsl:when test="$is-external and $is-nillable">
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
+                    <xsl:attribute name="maxOccurs" select="1"/>
+                    <xsl:attribute name="nillable">true</xsl:attribute>
+                    <xsl:sequence select="imf:debug($this,'A voidable external type')"/>
+                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="{$type}" minOccurs="{$min-occurs-target}" maxOccurs="{$this/imvert:max-occurs}"/>
+                        </xs:sequence>
+                        <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
+                    </xs:complexType>
+                </xs:element>
+            </xsl:when>
             <xsl:when test="$is-external">
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
@@ -977,7 +1109,7 @@
                     <xsl:sequence select="imf:debug($this,'An external type')"/>
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                     <!-- TODO continue: introduce correct reference / see IM-59 -->
-                    <xsl:variable name="reftype" select="$type"/>
+                    <xsl:variable name="reftype" select="if ($this/ancestor::imvert:package[last()][imvert:metamodel='BP']) then $type else $type"/>
                     <xs:complexType>
                         <xs:sequence>
                             <xs:element ref="{$reftype}" minOccurs="{$min-occurs-target}" maxOccurs="{$this/imvert:max-occurs}"/>
@@ -1093,6 +1225,9 @@
                             </xs:choice>
                         </xsl:otherwise>
                     </xsl:choose>
+                    <xsl:if test="$is-nillable">
+                        <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
+                    </xsl:if>
                 </xsl:variable>
                 <xsl:choose>
                     <xsl:when test="$is-composite and imf:boolean($anonymous-components) and not($is-nillable)">
@@ -1111,10 +1246,12 @@
                             <xsl:attribute name="maxOccurs" select="1"/>
                             <xsl:choose>
                                 <xsl:when test="$is-composite and imf:boolean($anonymous-components) and $is-nillable">
+                                    <xsl:attribute name="nillable">true</xsl:attribute>
                                     <xsl:sequence select="imf:debug($this,'An objecttype, anonymous, but voidable')"/>
                                     <xsl:sequence select="imf:msg('WARN','Anonymous component is voidable and therefore must be named: [1]',$name)"/>
                                 </xsl:when>
                                 <xsl:when test="$is-nillable">
+                                    <xsl:attribute name="nillable">true</xsl:attribute>
                                     <xsl:sequence select="imf:debug($this,'An objecttype, voidable')"/>
                                 </xsl:when>
                                 <xsl:otherwise>
@@ -1135,6 +1272,9 @@
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="1"/>
+                    <xsl:if test="$is-nillable">
+                        <xsl:attribute name="nillable">true</xsl:attribute>
+                    </xsl:if>
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                     <xs:complexType>
                         <xsl:variable name="result">
@@ -1187,11 +1327,13 @@
                                 <xsl:sequence select="$result"/>
                             </xs:sequence>
                         </xsl:if>
+                        <xsl:if test="$is-nillable">
+                            <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
+                        </xsl:if>
                     </xs:complexType>
                 </xs:element>
             </xsl:otherwise>
         </xsl:choose>
-        </mark>
     </xsl:function>
     
     <xsl:function name="imf:create-attribute-property" as="item()*">
@@ -1249,6 +1391,10 @@
         <xsl:param name="this" as="node()"/>
         <xsl:value-of select="exists($this/(imvert:pattern | imvert:max-length | imvert:total-digits | imvert:fraction-digits))"/>
     </xsl:function>
+    <xsl:function name="imf:is-estimation" as="xs:boolean">
+        <xsl:param name="this" as="node()"/>
+        <xsl:value-of select="$this/imvert:stereotype = 'estimation'"/>
+    </xsl:function>
     
     <?x associates komen niet meer voor?
         
@@ -1270,6 +1416,13 @@
         </xsl:if>
     </xsl:function>
     
+    <xsl:function name="imf:create-estimation">
+        <xsl:param name="is-estimation" as="xs:boolean"/>
+        <xsl:if test="$is-estimation">
+            <xs:attribute name="estimated" type="xs:boolean" use="optional"/>
+        </xsl:if>
+    </xsl:function>
+    
     <xsl:function name="imf:get-documentation" as="node()*">
         <xsl:param name="construct" as="node()"/>
         <xsl:sequence select="imf:create-doc-element('xs:documentation','http://www.imvertor.org/schema-info/technical-documentation',
@@ -1286,9 +1439,7 @@
         <xsl:sequence select="imf:create-doc-element('xs:appinfo','http://www.imvertor.org/schema-info/phase',$this/imvert:phase)"/>
         <xsl:sequence select="imf:create-doc-element('xs:appinfo','http://www.imvertor.org/schema-info/release',imf:get-release($this))"/> 
         <xsl:sequence select="imf:create-doc-element('xs:appinfo','http://www.imvertor.org/schema-info/generated',$generation-date)"/> 
-        <xsl:sequence select="imf:create-doc-element('xs:appinfo','http://www.imvertor.org/schema-info/generator',$imvertor-version)"/>
-        <xsl:sequence select="imf:create-doc-element('xs:appinfo','http://www.imvertor.org/schema-info/owner',$owner-name)"/> 
-        <!--<xsl:sequence select="imf:create-doc-element('xs:appinfo','http://www.imvertor.org/schema-info/svn',concat($char-dollar,'Id',$char-dollar))"/>-->
+        <xsl:sequence select="imf:create-doc-element('xs:appinfo','http://www.imvertor.org/schema-info/svn',concat($char-dollar,'Id',$char-dollar))"/>
     </xsl:function>
     
     <xsl:function name="imf:get-appinfo-location" as="node()*">

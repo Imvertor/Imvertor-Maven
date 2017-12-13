@@ -52,20 +52,13 @@
     <!-- =========== nil-approach-counter ================== -->
  
     <xsl:template match="mark">
-        <xsl:choose>
-            <xsl:when test="@approach = $nil-approach">
-                <xsl:apply-templates/>
-            </xsl:when>
-            <xsl:otherwise>
-                <!-- remove this section; it is not conform the requested approach -->
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:apply-templates/>
     </xsl:template>
 
     <!-- 
         assign the nillable attribute to all elements that are marked nillable 
     -->
-    <xsl:template match="xs:element[parent::mark[@approach = 'elm' and imf:boolean(@nillable)]]">
+    <xsl:template match="xs:element[parent::mark[imf:boolean(@nillable)]]">
         <xs:element>
             <xsl:apply-templates select="@*"/>
             <xsl:attribute name="nillable">true</xsl:attribute>
@@ -76,33 +69,7 @@
             <xs:element name="{@name}Nilreason" type="xs:string" minOccurs="0"/>
         </xsl:if>
     </xsl:template>
-    
-    <xsl:template match="xs:element[parent::mark[@approach = 'att']]">
-        <xsl:sequence select="imf:msg('ERROR','STUB Unsupported nil approach',())"/>
         
-        <?x
-        <xsl:copy>
-            <xsl:apply-templates/>
-            <!-- add nilreason when needed -->
-            <xsl:choose>
-                <xsl:when test="imf:boolean(parent::mark/@nilreason)">
-                    <xs:complexType>
-                        <xs:simpleContent>
-                            <xs:extension base="{../@type}">
-                                <xs:attribute name="nilReason" type="xs:string" use="optional"/>
-                            </xs:extension>
-                        </xs:simpleContent>
-                    </xs:complexType>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:attribute name="type" select="../@type"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:copy>
-        ?>
-        
-    </xsl:template>
-    
     <!-- =========== common ================== -->
     
     <xsl:template match="node()|@*">

@@ -115,6 +115,12 @@
          <tip>A path within the result XSD folder to which the XSDs for the model provided are written.</tip>
          <required>true</required>
       </cli-parm>
+      <cli-parm>
+         <name>STUBnilreason</name>
+         <arg>Release number</arg>
+         <tip>When specified, pass the release number of Imvertor which nilreason approach must be used. Currently supported: 1.28.</tip>
+         <required>false</required>
+      </cli-parm>
    </cli-parms>
   
    <properties>
@@ -134,6 +140,7 @@
       <IMVERTOR_METAMODEL_Kadaster_XSDSOURCE>system</IMVERTOR_METAMODEL_Kadaster_XSDSOURCE>
       <IMVERTOR_METAMODEL_Kadaster_XSD_PREFORM_XSLPATH>Imvert2XSD-Kadaster-preform.xsl</IMVERTOR_METAMODEL_Kadaster_XSD_PREFORM_XSLPATH>
       <IMVERTOR_METAMODEL_Kadaster_XSD_XSLPATH>Imvert2XSD-Kadaster.xsl</IMVERTOR_METAMODEL_Kadaster_XSD_XSLPATH>
+      <IMVERTOR_METAMODEL_Kadaster_XSD_1.28_XSLPATH>Imvert2XSD-Kadaster(1.28).xsl</IMVERTOR_METAMODEL_Kadaster_XSD_1.28_XSLPATH>
       <IMVERTOR_METAMODEL_Kadaster_XSD_POSTFORM_XSLPATH>Imvert2XSD-Kadaster-postform.xsl</IMVERTOR_METAMODEL_Kadaster_XSD_POSTFORM_XSLPATH>
       <IMVERTOR_METAMODEL_Kadaster_XSD_IMPORT_XSLPATH>Imvert2XSD-Kadaster-imports.xsl</IMVERTOR_METAMODEL_Kadaster_XSD_IMPORT_XSLPATH>
       
