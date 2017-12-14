@@ -55,11 +55,6 @@
                 <stereo required="no">stereotype-name-relation-role</stereo> 
             </stereotypes>
         </tv>  
-        <tv id="CFG-TV-INDICATIONAUTHENTIC">
-            <stereotypes>
-                <stereo required="yes">stereotype-name-relation-role</stereo> 
-            </stereotypes>
-        </tv>  
         
         <tv id="CFG-TV-NAME">
             <stereotypes>

@@ -25,6 +25,8 @@
             <stereotypes>
                 <stereo required="yes">stereotype-name-objecttype</stereo>
                 <stereo required="yes">stereotype-name-attribute</stereo>
+                <stereo required="yes">stereotype-name-relatiesoort</stereo>
+                <stereo required="yes">stereotype-name-attributegroup</stereo>
                 <stereo required="yes">stereotype-name-composite</stereo>
                 <stereo required="yes">stereotype-name-referentielijst</stereo>
                 <stereo required="yes">stereotype-name-codelist</stereo>
@@ -45,7 +47,9 @@
             <stereotypes>
                 <!-- optional for the following stereo's -->
                 <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-attributegroup</stereo>
                 <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -67,7 +71,9 @@
             <stereotypes>
                 <!-- optional for the following stereo's -->
                 <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-attributegroup</stereo>
                 <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -89,7 +95,9 @@
             <stereotypes>
                 <!-- optional for inherited stereos -->
                 <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-attributegroup</stereo>
                 <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
         <tv norm="note" id="CFG-TV-DESCRIPTION">
@@ -138,7 +146,9 @@
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-attributegroup</stereo>
                 <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
                 <stereo required="no">stereotype-name-data-element</stereo>
                 <stereo required="no">stereotype-name-voidable</stereo>
             </stereotypes>
@@ -214,7 +224,7 @@
         
         <tv id="CFG-TV-DEFINITION" origin="system">
             <stereotypes>
-                <stereo required="yes">stereotype-name-attributegroup</stereo>
+                <stereo required="no">stereotype-name-attributegroup</stereo>
             </stereotypes>
         </tv>
         
