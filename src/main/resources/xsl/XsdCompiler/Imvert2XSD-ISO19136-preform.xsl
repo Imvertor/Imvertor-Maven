@@ -66,7 +66,10 @@
         used for association ends at S of SA and at A of AT with the exception that the
         multiplicity at the association end at S of association SA is set to 1.
      -->
-    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-relatieklasse')]">
+    
+    <xsl:variable name="all-association-class-id" select="$document//imvert:association-class/imvert:type-id"/>
+    
+    <xsl:template match="imvert:class[imvert:id = $all-association-class-id]">
         <xsl:variable name="this" select="."/>
         <xsl:variable name="association" select="$imvert-document//imvert:association[imvert:association-class/imvert:type-id = $this/imvert:id]"/>
         <imvert:class>
@@ -76,7 +79,7 @@
                 <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-objecttype')"/>
             </imvert:stereotype>
             <imvert:associations>
-                <xsl:apply-templates select="self::imvert:associations/imvert:association"/>
+                <xsl:apply-templates select="imvert:associations/imvert:association"/>
                 <!-- en voeg de nieuwe uitgaande relatie toe -->
                 <imvert:association>
                     <xsl:apply-templates select="$association/@*"/>
