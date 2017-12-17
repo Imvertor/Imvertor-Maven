@@ -395,6 +395,7 @@ public class EapFile extends AnyFile {
 	 */
 	public String getModelPackageGUID(String projectName, String modelName) throws Exception {
 		Package p = getPackageByName(repo.GetModels().GetAt((short) 0), projectName);
+		if (p == null) return "";
 		Package m = getPackageByName(p, modelName);
 		return (m != null) ? m.GetPackageGUID() : ""; 
 	}

@@ -65,7 +65,7 @@ public class ConfigCompiler  extends Step {
 			// and copy this file to the etc folder
 			AnyFolder etcFolder = new AnyFolder(configurator.getParm("system","work-etc-folder-path"));
 			XmlFile tempProfileFile = new XmlFile(configurator.getParm("properties", "WORK_EAPROFILE_FILE"));
-			XmlFile profileFile = new XmlFile(etcFolder,"ea-profile.xml");
+			XmlFile profileFile = new XmlFile(etcFolder,configurator.getParm("appinfo","ea-profile-file-name"));
 			tempProfileFile.copyFile(profileFile); 
 		}
 		
