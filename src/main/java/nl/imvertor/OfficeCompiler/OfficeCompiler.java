@@ -85,60 +85,62 @@ public class OfficeCompiler extends Step {
 				
 				// see if this result should be sent on to FTP
 				String target = configurator.getParm("cli", "passoffice",false);
-				if (target != null && target.equals("ftp")) {
-					String passftp  = configurator.getParm("cli", "passftp");
-					String passpath = configurator.getParm("cli", "passpath");
-					String passuser = configurator.getParm("cli", "passuser");
-					String passpass = configurator.getParm("cli", "passpass");
-					
-					String targetpath = "ftp://" + passftp + passpath + officeFile.getName();
-					
-					runner.info(logger, "Uploading office HTML as " + officeFile.getName());
-					
-					FtpFolder ftpFolder = new FtpFolder();
-					
-					ftpFolder.server = passftp;
-					ftpFolder.protocol = "false";
-					ftpFolder.username = passuser;
-					ftpFolder.password = passpass;
-	
-					ftpFolder.connectTimeout = 120000;
-					ftpFolder.controlKeepAliveTimeout = 180;
-					ftpFolder.dataTimeout = 120000;
-	
-					try {
-						ftpFolder.login();
-						ftpFolder.upload(officeFile.getCanonicalPath(),passpath + officeFile.getName());
-						ftpFolder.logout();
-				    } catch (Exception e) {
-						runner.warn(logger, "Cannot upload office HTML to " + targetpath);
-					}
-				} else if (target != null && target.equals("git")) {
-					
-					// the following parms are compiled from other parms and settings, as a property.
-					
-					String gitbranch              	= configurator.getParm("cli", "gitbranch");  // BRANCH
-					String gituser 			      	= configurator.getParm("cli", "gituser"); // USER
-					String gittoken              	= System.getProperty("git.token"); // OAUTH
-					
-					// the following may contain references to other parms between [..]
-					String gitrepos     	      	= configurator.mergeParms(configurator.getParm("cli", "gitrepos")); // REPOS
-					String gitcomment 				= configurator.mergeParms(configurator.getParm("cli", "gitcomment")); //MESSAGE
-					
-					runner.info(logger, "GIT Pushing office HTML as " + officeFile.getName());
-					
-					GithubFile gitfile = new GithubFile(officeFile.getCanonicalPath());
-					gitfile.setEncoding("UTF-8");
-					gitfile.publish(gituser, gitrepos, gittoken, gitbranch, gitfile.getName(), "data/" + gitfile.getName(), gitcomment);
-				    
-					if (!gitfile.getError().equals(""))
-						runner.error(logger, "Cannot align the data with upstream: step \"" + gitfile.getStage() + "\" returns \"" + gitfile.getError() + "\"");
-					
-					configurator.setParm("appinfo", "office-git-stp", gitfile.getStage());
-					configurator.setParm("appinfo", "office-git-err", gitfile.getError());
-					configurator.setParm("appinfo", "office-git-uri", gitfile.getURI().toString());
-					
-				} 
+				if (target != null) 
+					if (target.equals("ftp")) {
+						String passftp  = configurator.getParm("cli", "passftp");
+						String passpath = configurator.getParm("cli", "passpath");
+						String passuser = configurator.getParm("cli", "passuser");
+						String passpass = configurator.getParm("cli", "passpass");
+						
+						String targetpath = "ftp://" + passftp + passpath + officeFile.getName();
+						
+						runner.info(logger, "Uploading office HTML as " + officeFile.getName());
+						
+						FtpFolder ftpFolder = new FtpFolder();
+						
+						ftpFolder.server = passftp;
+						ftpFolder.protocol = "false";
+						ftpFolder.username = passuser;
+						ftpFolder.password = passpass;
+		
+						ftpFolder.connectTimeout = 120000;
+						ftpFolder.controlKeepAliveTimeout = 180;
+						ftpFolder.dataTimeout = 120000;
+		
+						try {
+							ftpFolder.login();
+							ftpFolder.upload(officeFile.getCanonicalPath(),passpath + officeFile.getName());
+							ftpFolder.logout();
+					    } catch (Exception e) {
+							runner.warn(logger, "Cannot upload office HTML to " + targetpath);
+						}
+					} else if (target.equals("git")) {
+						
+						// the following parms are compiled from other parms and settings, as a property.
+						
+						String gitbranch              	= configurator.getParm("cli", "gitbranch");  // BRANCH
+						String gituser 			      	= configurator.getParm("cli", "gituser"); // USER
+						String gittoken              	= System.getProperty("git.token"); // OAUTH
+						
+						// the following may contain references to other parms between [..]
+						String gitrepos     	      	= configurator.mergeParms(configurator.getParm("cli", "gitrepos")); // REPOS
+						String gitcomment 				= configurator.mergeParms(configurator.getParm("cli", "gitcomment")); //MESSAGE
+						
+						runner.info(logger, "GIT Pushing office HTML as " + officeFile.getName());
+						
+						GithubFile gitfile = new GithubFile(officeFile.getCanonicalPath());
+						gitfile.setEncoding("UTF-8");
+						gitfile.publish(gituser, gitrepos, gittoken, gitbranch, gitfile.getName(), "data/" + gitfile.getName(), gitcomment);
+					    
+						if (!gitfile.getError().equals(""))
+							runner.error(logger, "Cannot align the data with upstream: step \"" + gitfile.getStage() + "\" returns \"" + gitfile.getError() + "\"");
+						
+						configurator.setParm("appinfo", "office-git-stp", gitfile.getStage());
+						configurator.setParm("appinfo", "office-git-err", gitfile.getError());
+						configurator.setParm("appinfo", "office-git-uri", gitfile.getURI().toString());
+						
+					} 
+				// all other cases: do not pass anywhere. 
 			}
 		} else {
 			runner.error(logger,"Transformation to Office format not implemented yet!");

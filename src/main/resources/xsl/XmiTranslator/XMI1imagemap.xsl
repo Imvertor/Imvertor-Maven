@@ -63,6 +63,9 @@
             <imvert-imap:in-package>
                 <xsl:value-of select="@owner"/>
             </imvert-imap:in-package>
+            <imvert-imap:documentation>
+                <xsl:value-of select="UML:ModelElement.taggedValue/UML:TaggedValue[@tag = 'documentation']/@value"/>
+            </imvert-imap:documentation>
             <xsl:for-each select="UML:ModelElement.taggedValue/UML:TaggedValue[@tag = 'stereotype']">
                 <imvert-imap:stereotype>
                     <xsl:value-of select="@value"/>

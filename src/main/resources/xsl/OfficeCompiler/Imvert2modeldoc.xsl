@@ -22,6 +22,7 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 
     xmlns:imvert="http://www.imvertor.org/schema/system"
+    xmlns:imvert-imap="http://www.imvertor.org/schema/imagemap"
     
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
@@ -46,8 +47,12 @@
     
     <xsl:variable name="link-by-eaid" select="($configuration-docrules-file/link-by,'EAID')[1] eq 'EAID'"/>
     
+    <xsl:variable name="imagemap-path" select="imf:get-config-string('properties','WORK_BASE_IMAGEMAP_FILE')"/>
+    <xsl:variable name="imagemap" select="imf:document($imagemap-path)/imvert-imap:diagrams"/>
+    
     <xsl:template match="/imvert:packages">
         <xsl:variable name="sections" as="element()*">
+            <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <xsl:apply-templates select="imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]"/>
         </xsl:variable>
         <book name="{imvert:application}" subpath="{$subpath}" type="{imvert:stereotype}" id="{imvert:id}" version="{$imvertor-version}" date="{$generation-date}">
@@ -63,17 +68,7 @@
     <xsl:template match="imvert:package"><!-- only domain packs -->
         <section type="DOMAIN" name="{imf:plugin-get-model-name(.)}" id="{imf:plugin-get-link-name(.,'global')}">
   
-            <xsl:variable name="insert-diagrams" select="imf:boolean(imf:get-config-string('cli','createimagemap'))"/> <!-- TODO dit moet beter, eiegnlijk een parameter in modeldoc config -->
-            <xsl:choose>
-                <xsl:when test="$insert-diagrams">
-                    <section type="IMAGEMAP" name="{imf:plugin-get-model-name(.)}-imagemap" id="{imf:plugin-get-link-name(.,'imagemap')}">
-                        <sentinel/>
-                    </section>
-                </xsl:when>
-                <xsl:otherwise>
-                    <!-- no alternatives -->
-                </xsl:otherwise>
-            </xsl:choose>
+            <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
 
             <section type="OVERVIEW-OBJECTTYPE">
                 <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')]"/>
@@ -1028,7 +1023,7 @@
         return a section name for a model passed as a package 
     -->
     <xsl:function name="imf:plugin-get-model-name">
-        <xsl:param name="package" as="element(imvert:package)"/>
+        <xsl:param name="package" as="element()"/><!-- imvert:package or imvert:packages -->
         
         <xsl:value-of select="imf:get-name($package,true())"/>
     </xsl:function>
@@ -1067,6 +1062,40 @@
     <xsl:function name="imf:get-tv-value">
         <xsl:param name="tv-element" as="element(tv)?"/>
         <xsl:value-of select="if (normalize-space($tv-element/@original-value)) then $tv-element/@original-value else $tv-element/@value"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:create-section-for-diagrams">
+        <xsl:param name="package"/> <!-- either the packages (=model) or a package -->
+        
+        <xsl:variable name="insert-diagrams" select="imf:boolean(imf:get-config-string('cli','createimagemap'))"/> <!-- TODO dit moet beter, eiegnlijk een parameter in modeldoc config -->
+        <xsl:variable name="diagrams-in-package" select="$imagemap/imvert-imap:diagram[imvert-imap:in-package = $package/imvert:id]"/>
+        <xsl:choose>
+            <xsl:when test="$insert-diagrams">
+                <section type="IMAGEMAPS" name="{imf:plugin-get-model-name($package)}-imagemap" id="{imf:plugin-get-link-name($package,'imagemap')}">
+                    <xsl:for-each select="$diagrams-in-package">
+                        <section type="IMAGEMAP" name="{imvert-imap:name}" id="{imvert-imap:id}">
+                            <content>
+                                <part type="CFG-DOC-TYPE">
+                                    <item>Type</item>
+                                    <item><xsl:value-of select="imvert-imap:stereotype"/></item>
+                                </part>
+                                <part type="CFG-DOC-NAAM">
+                                    <item>Naam</item>
+                                    <item><xsl:value-of select="imvert-imap:name"/></item>
+                                </part>
+                                <part type="CFG-DOC-NAAM">
+                                    <item>Omschrijving</item>
+                                    <item><xsl:value-of select="imvert-imap:documentation"/></item>
+                                </part>
+                            </content>
+                        </section>    
+                    </xsl:for-each>
+                </section>
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- no alternatives -->
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     
     <!-- ======== cleanup all section structure: remove empties =========== -->

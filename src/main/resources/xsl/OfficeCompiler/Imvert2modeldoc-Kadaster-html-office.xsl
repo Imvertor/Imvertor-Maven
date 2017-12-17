@@ -20,6 +20,9 @@
     -->
     <xsl:variable name="subpath" select="/book/@subpath"/>
     
+    <xsl:variable name="imagemap-path" select="imf:get-config-string('properties','WORK_BASE_IMAGEMAP_FILE')"/>
+    <xsl:variable name="imagemap" select="imf:document($imagemap-path)/imvert-imap:diagrams"/>
+    
     <xsl:template match="/book">
         <html>
             <head>
@@ -90,7 +93,8 @@
                 <p>
                     ID: <xsl:value-of select="@id"/>
                 </p>
-                <xsl:apply-templates select="section" mode="domain"/>
+                <xsl:apply-templates select="section[not(@type='DOMAIN')]" mode="detail"/>
+                <xsl:apply-templates select="section[@type='DOMAIN']" mode="domain"/>
             </body>
         </html>
         
@@ -105,36 +109,33 @@
     
     <xsl:template match="section" mode="detail">
         <xsl:choose>
-            <xsl:when test="@type = 'IMAGEMAP'">
-                <xsl:variable name="imagemap-path" select="imf:get-config-string('properties','WORK_BASE_IMAGEMAP_FILE')"/>
-                <xsl:variable name="imagemap" select="imf:document($imagemap-path)/imvert-imap:diagrams"/>
-                <div>
-                    <xsl:variable name="level" select="count(ancestor::section)"/>
-                    <xsl:element name="{concat('h',$level)}">
-                        <xsl:value-of select="imf:translate-i3n('IMAGEMAP',$language-model,())"/>
-                    </xsl:element>
-                    <xsl:for-each select="$imagemap/imvert-imap:diagram">
-                        <xsl:variable name="diagram-id" select="imvert-imap:id"/>
-                        <xsl:variable name="diagram-path" select="concat('Images/',$diagram-id,'.png')"/><!-- TODO as configured -->
-                        <xsl:variable name="diagram-label" select="imvert-imap:name"/>
-                        <p>TODO diagram Titel......</p>
-                        <img src="{$diagram-path}" alt="{$diagram-label}" usemap="#imagemap-{$diagram-id}"/>
-                        <p>TODO diagram Onderschrift......</p>
-                        <map name="imagemap-{$diagram-id}">
-                            <xsl:for-each select="imvert-imap:map">
-                                <xsl:variable name="section-id" select="imvert-imap:for-id"/>
-                                <xsl:variable name="section" select="$document//section[@ea-id = $section-id]"/>
-                                <xsl:variable name="section-name" select="$section/name"/>
-                                <area 
-                                    shape="rect" 
-                                    coords="{imvert-imap:loc[@type = 'imgL']},{imvert-imap:loc[@type = 'imgB']},{imvert-imap:loc[@type = 'imgR']},{imvert-imap:loc[@type = 'imgT']}" 
-                                    alt="{$section-name}" 
-                                    href="#graph_{$section-id}"/>
-                            </xsl:for-each>
-                        </map>
-                    </xsl:for-each>
-                    <p>TODO sectie onderschrift......</p>
-                </div>
+            <xsl:when test="@type = 'IMAGEMAPS'">
+                <xsl:for-each select="section[@type = 'IMAGEMAP']">
+                    <xsl:variable name="diagram-id" select="@id"/>
+                    <div>
+                        <xsl:variable name="level" select="count(ancestor::section)"/>
+                        <xsl:element name="{concat('h',$level)}">
+                            <xsl:value-of select="imf:translate-i3n('IMAGEMAP',$language-model,())"/>
+                        </xsl:element>
+                        <xsl:for-each select="$imagemap/imvert-imap:diagram[imvert-imap:id = $diagram-id]"> <!-- singleton -->
+                            <xsl:variable name="diagram-path" select="concat('Images/',$diagram-id,'.png')"/><!-- TODO as configured -->
+                            <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}"/>
+                            <map name="imagemap-{$diagram-id}">
+                                <xsl:for-each select="imvert-imap:map">
+                                    <xsl:variable name="section-id" select="imvert-imap:for-id"/>
+                                    <xsl:variable name="section" select="$document//section[@ea-id = $section-id]"/>
+                                    <xsl:variable name="section-name" select="$section/name"/>
+                                    <area 
+                                        shape="rect" 
+                                        coords="{imvert-imap:loc[@type = 'imgL']},{imvert-imap:loc[@type = 'imgB']},{imvert-imap:loc[@type = 'imgR']},{imvert-imap:loc[@type = 'imgT']}" 
+                                        alt="{$section-name}" 
+                                        href="#graph_{$section-id}"/>
+                                </xsl:for-each>
+                            </map>
+                        </xsl:for-each>
+                        <xsl:apply-templates mode="detail"/>                    </div>
+                </xsl:for-each>
+     
             </xsl:when>
             <xsl:when test="@type = 'EXPLANATION'">
                 <xsl:sequence select="imf:create-nonheader(imf:translate-i3n('EXPLANATION',$language-model,()))"/>

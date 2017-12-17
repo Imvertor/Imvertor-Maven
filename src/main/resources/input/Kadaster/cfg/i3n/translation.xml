@@ -222,6 +222,14 @@
     <!-- heading labels -->
 
     <item>
+        <key>IMAGEMAPS</key>
+        <trans lang="nl">Overzichtsdiagrammen</trans>
+    </item>
+    <item>
+        <key>IMAGEMAP</key>
+        <trans lang="nl">Diagram</trans>
+    </item>
+    <item>
         <key>OVERVIEW-OBJECTTYPE</key>
         <trans lang="nl">Objecttype overzicht</trans>
     </item>
