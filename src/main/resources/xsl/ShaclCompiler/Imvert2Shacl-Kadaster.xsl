@@ -153,23 +153,25 @@
         <xsl:choose>
             <xsl:when test="exists($types)">
                 <xsl:value-of select="string-join($types,'')"/>
+     
+                <xsl:sequence select="imf:ttl-get-all-tvs($this)"/>
+                
+                <xsl:value-of select="imf:ttl('.')"/>
+                
+                <!-- loop door alle attributen en associaties heen, en maak daarvoor een subject -->
+                <xsl:apply-templates select="$this/imvert:attributes/imvert:attribute[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-attribute')]" mode="mode-data-subject"/>
+                <xsl:apply-templates select="$this/imvert:attributes/imvert:attribute[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-attributegroup')]" mode="mode-data-subject"/>
+                <xsl:apply-templates select="$this/imvert:attributes/imvert:attribute[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-enum')]" mode="mode-data-subject"/>
+                <xsl:apply-templates select="$this/imvert:attributes/imvert:attribute[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-referentie-element')]" mode="mode-data-subject"/>
+                <xsl:apply-templates select="$this/imvert:attributes/imvert:attribute[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union-element')]" mode="mode-data-subject"/>
+                
+                <xsl:apply-templates select="$this/imvert:associations/imvert:association[imvert:target/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-relation-role')]" mode="mode-data-subject"/>
+
             </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="imf:msg(.,'FATAL','Unable to determine the rdfs:type',())"/>
+                <xsl:sequence select="imf:msg(.,'ERROR','Unable to determine the rdfs:type',())"/>
             </xsl:otherwise>
         </xsl:choose>
-        <xsl:sequence select="imf:ttl-get-all-tvs($this)"/>
-        
-        <xsl:value-of select="imf:ttl('.')"/>
-        
-        <!-- loop door alle attributen en associaties heen, en maak daarvoor een subject -->
-        <xsl:apply-templates select="$this/imvert:attributes/imvert:attribute[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-attribute')]" mode="mode-data-subject"/>
-        <xsl:apply-templates select="$this/imvert:attributes/imvert:attribute[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-attributegroup')]" mode="mode-data-subject"/>
-        <xsl:apply-templates select="$this/imvert:attributes/imvert:attribute[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-enum')]" mode="mode-data-subject"/>
-        <xsl:apply-templates select="$this/imvert:attributes/imvert:attribute[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-referentie-element')]" mode="mode-data-subject"/>
-        <xsl:apply-templates select="$this/imvert:attributes/imvert:attribute[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union-element')]" mode="mode-data-subject"/>
-        
-        <xsl:apply-templates select="$this/imvert:associations/imvert:association[imvert:target/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-relation-role')]" mode="mode-data-subject"/>
         
     </xsl:template>
     
