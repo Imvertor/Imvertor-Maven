@@ -37,10 +37,11 @@
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
   
     <xsl:variable name="schema-defs" select="/imvert:schemas/imvert:schema"/>
-    
+  
     <xsl:template match="/imvert:schemas">
         
-      <!-- for each schema, has entry in the form: 
+       <!-- 
+        each schema has entry in the form: 
         <imvert:schema>
             <imvert:name original="Adres">Adres</imvert:name>
             <imvert:prefix>a</imvert:name>

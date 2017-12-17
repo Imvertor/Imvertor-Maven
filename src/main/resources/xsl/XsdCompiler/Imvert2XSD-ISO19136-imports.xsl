@@ -47,10 +47,10 @@
             <imvert:prefix>a</imvert:name>
             <imvert:namespace>http://www.kadaster.nl/schemas/PersoonZoekenEnOpvoeren/CDMKAD-adres/v20150201</imvert:namespace>
             <imvert:result-file-subpath>CDMKAD-adres/v20150201/PersoonZoekenEnOpvoeren_Adres_v1_8_0.xsd</imvert:result-file-subpath>
+            <imvert:xsd-path>file:/D:/projects/validprojects/Kadaster-Imvertor/Imvertor-OS-work/default/app/xsd/PersoonZoekenEnOpvoeren/</imvert:xsd-path>
             <imvert:result-file-fullpath>file:/D:/projects/validprojects/Kadaster-Imvertor/Imvertor-OS-work/default/app/xsd/PersoonZoekenEnOpvoeren/CDMKAD-adres/v20150201/PersoonZoekenEnOpvoeren_Adres_v1_8_0.xsd</imvert:result-file-fullpath>
         </imvert:schema>
-       -->
-        
+      -->
         <imvert:schemas>
             <xsl:apply-templates select="imvert:schema"/>
         </imvert:schemas>  
@@ -73,12 +73,13 @@
     </xsl:template>
     
     <xsl:template match="xs:schema">
+        <xsl:sequence select="imf:track('Processing imports',())"/>
         
         <xsl:variable name="my-qualifier" select="../imvert:prefix"/>
         <xsl:variable name="my-subpath" select="../imvert:result-file-subpath"/>
         <xsl:variable name="my-fullpath" select="../imvert:result-file-fullpath"/>
         <xsl:variable name="is-referencing" select="imf:boolean(../imvert:is-referencing)"/>
-        
+      
         <xsl:variable name="qualifiers" as="xs:string*">
             
             <xsl:variable name="uniontokens" select="for $type in .//xs:union/@memberTypes return tokenize($type,'\s+')"/>
@@ -123,7 +124,7 @@
                             </xsl:when>
                             <xsl:otherwise>
                                 <xs:import namespace="http://www.w3.org/1999/xlink"
-                                    schemaLocation="../../../xlink/1.0.0/xlinks.xsd"/>
+                                    schemaLocation="{$steps-back}xlink/1.0.0/xlinks.xsd"/>
                             </xsl:otherwise>
                         </xsl:choose>
                         <namespace prefix="xlink" uri="http://www.w3.org/1999/xlink"/> 
@@ -137,7 +138,7 @@
                         <namespace prefix="{$prefix}" uri="{$schema-namespace}"/> 
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:sequence select="imf:msg('ERROR', 'The qualifier [1] cannot be mapped onto an application or external schema',$prefix)"/>
+                        <xsl:sequence select="imf:msg('FATAL', 'The qualifier [1] cannot be mapped onto an application or external schema',$prefix)"/>
                     </xsl:otherwise>
                 </xsl:choose>
                 
@@ -146,23 +147,25 @@
         </xsl:variable>
         
         <xsl:result-document href="{$my-fullpath}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
-            <xsl:copy>
-                <xsl:copy-of select="@*"/>
-                <xsl:for-each select="$imports[self::namespace]">
-                    <xsl:namespace name="{@prefix}" select="@uri"/>
-                </xsl:for-each>
-                <xsl:apply-templates select="xs:annotation"/>
-                <xsl:sequence select="$imports[self::xs:import]"/>
-                <xsl:apply-templates select="node()[empty(self::xs:annotation)]"/>
-            </xsl:copy>
+            <xsl:variable name="doc">
+                <xsl:copy>
+                    <xsl:copy-of select="@*"/>
+                    <xsl:for-each select="$imports[self::namespace]">
+                        <xsl:namespace name="{@prefix}" select="@uri"/>
+                    </xsl:for-each>
+                    <xsl:apply-templates select="xs:annotation"/>
+                    <xsl:sequence select="$imports[self::xs:import]"/>
+                    <xsl:apply-templates select="node()[empty(self::xs:annotation)]"/>
+                </xsl:copy>
+            </xsl:variable>
+            <xsl:sequence select="if (imf:boolean(imf:get-config-string('cli','cleanupschemas','no'))) then imf:pretty-print($doc,false()) else $doc"/>
         </xsl:result-document>
        
     </xsl:template>
         
-    <xsl:template match="node()|@*" mode="#all">
+    <xsl:template match="node()|@*">
         <xsl:copy>
-            <xsl:apply-templates select="@*" mode="#current"/>
-            <xsl:apply-templates select="node()" mode="#current"/>
+            <xsl:apply-templates select="node()|@*"/>
         </xsl:copy>
     </xsl:template>
     
