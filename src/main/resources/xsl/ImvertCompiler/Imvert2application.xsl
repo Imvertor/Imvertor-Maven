@@ -60,6 +60,7 @@
             
             <xsl:sequence select="imf:compile-imvert-filter()"/>
             
+            <xsl:sequence select="$application-package/imvert:id"/>
             <xsl:sequence select="$application-package/imvert:supplier"/>
             <xsl:sequence select="$application-package/imvert:stereotype"/>
             <xsl:sequence select="$application-package/imvert:documentation"/>

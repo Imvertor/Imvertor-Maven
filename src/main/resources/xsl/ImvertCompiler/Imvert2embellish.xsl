@@ -48,7 +48,7 @@
         <xsl:variable name="allow-docrelease" select="imf:boolean($cfg-phase/allow-docrelease)"/>
 
         <imvert:packages>
-            <xsl:sequence select="imf:create-output-element('imvert:id',$application-package-release-name)"/>
+            <xsl:sequence select="imf:create-output-element('imvert:model-id',$application-package-release-name)"/>
             <xsl:sequence select="imf:create-output-element('imvert:is-fixed',$is-fixed)"/>
             <xsl:sequence select="imf:create-output-element('imvert:allow-docrelease',$allow-docrelease)"/>
            
