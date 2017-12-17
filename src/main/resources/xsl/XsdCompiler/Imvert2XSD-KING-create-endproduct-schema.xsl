@@ -231,8 +231,11 @@
 		</xs:choice>
 	</xsl:template>
 
-	<xsl:template match="ep:construct">
+	<xsl:template match="ep:construct">	
 		<xsl:sequence select="imf:create-debug-comment('Debuglocation 5004', $debugging)"/>
+		<xsl:if test="$debugging and ep:name = 'BerichtcodeLa01'">
+			<xsl:sequence select="imf:create-debug-comment(ep:name, $debugging)"/>
+		</xsl:if>
 		
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id, '{'), '}')"/>
 		<xsl:variable name="type-name">
@@ -633,6 +636,9 @@
 
 	<xsl:template match="ep:construct" mode="complexType">
 		<xsl:sequence select="imf:create-debug-comment('Debuglocation 5013', $debugging)"/>
+		<xsl:if test="$debugging and ep:name = 'BerichtcodeLa01'">
+			<xsl:sequence select="imf:create-debug-comment(ep:name, $debugging)"/>
+		</xsl:if>
 		
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id, '{'), '}')"/>
 		<xsl:choose>
@@ -693,6 +699,47 @@
 			<xsl:when test="@type = 'object'">
 				<xs:element name="{ep:tech-name}" type="{ep:type-name}"/>
 			</xsl:when>
+			<xsl:when test="contains(ep:type-name,concat($StUF-prefix,':'))">
+				<xs:simpleType name="{ep:tech-name}">
+					<xs:annotation>
+						<xs:documentation>
+							<xsl:apply-templates select="ep:documentation/ep:definition"/>
+							<xsl:apply-templates select="ep:documentation/ep:description"/>
+							<xsl:apply-templates select="ep:documentation/ep:pattern"/>
+						</xs:documentation>
+					</xs:annotation>
+					<xs:restriction>
+						<xsl:attribute name="base" select="ep:type-name"/>
+						<xsl:if test="ep:length">
+							<xs:length value="{ep:length}"/>
+						</xsl:if>
+						<xsl:if test="ep:max-length">
+							<xs:maxLength value="{ep:max-length}"/>
+						</xsl:if>
+						<xsl:if test="ep:min-length">
+							<xs:minLength value="{ep:min-length}"/>
+						</xsl:if>
+						<xsl:if
+							test="ep:min-value">
+							<xs:minInclusive value="{ep:min-value}"/>
+						</xsl:if>
+						<xsl:if
+							test="ep:max-value">
+							<xs:maxInclusive value="{ep:max-value}"/>
+						</xsl:if>
+						<xsl:if test="ep:fraction-digits">
+							<xs:fractionDigits value="{ep:fraction-digits}"/>
+						</xsl:if>
+						<xsl:if test="ep:enum">
+							<xsl:apply-templates select="ep:enum"/>
+						</xsl:if>
+						<xsl:if
+							test="ep:formeel-patroon">
+							<xs:pattern value="{ep:formeel-patroon}"/>
+						</xsl:if>
+					</xs:restriction>
+				</xs:simpleType>
+			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
 
@@ -738,6 +785,9 @@
 	
 	<xsl:template match="ep:construct" mode="simpleContentComplexType">
 		<xsl:sequence select="imf:create-debug-comment('Debuglocation 5015', $debugging)"/>
+		<xsl:if test="$debugging and ep:name = 'BerichtcodeLa01'">
+			<xsl:sequence select="imf:create-debug-comment(ep:name, $debugging)"/>
+		</xsl:if>
 		
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id, '{'), '}')"/>
 		<xsl:choose>
@@ -809,6 +859,10 @@
 
 	<xsl:template match="ep:construct" mode="simpleType">
 		<xsl:sequence select="imf:create-debug-comment('Debuglocation 5016', $debugging)"/>
+		<xsl:if test="$debugging and ep:name = 'BerichtcodeLa01'">
+			<xsl:sequence select="imf:create-debug-comment(ep:name, $debugging)"/>
+		</xsl:if>
+
 		<xsl:variable name="data-type" select="ep:data-type"/>
 		<xs:simpleType name="{ep:tech-name}">
 			<xs:annotation>
