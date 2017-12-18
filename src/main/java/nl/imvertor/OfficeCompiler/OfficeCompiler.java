@@ -59,8 +59,8 @@ public class OfficeCompiler extends Step {
 	 * @throws Exception
 	 */
 	public void generateOfficeReport() throws Exception {
-		String op = configurator.getParm("cli", "createoffice");
-		String mm = configurator.getParm("cli","metamodel");
+		String op = configurator.getXParm("cli/createoffice");
+		String mm = configurator.getXParm("cli/metamodel");
 		
 		if (op.equals("html")) {
 			runner.info(logger,"Creating documentation");
@@ -74,23 +74,23 @@ public class OfficeCompiler extends Step {
 			succeeds = succeeds ? transformer.transformStep("properties/WORK_MODELDOC_FILE","properties/WORK_OFFICE_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_OFFICE_XSLPATH") : false;
 			
 			if (succeeds) {
-				String template = configurator.getParm("cli","officename");
+				String template = configurator.getXParm("cli/officename");
 				String fn = configurator.mergeParms(template);
-				configurator.setParm("appinfo", "office-documentation-filename", fn);
+				configurator.setXParm("appinfo/office-documentation-filename", fn);
 				
-				AnyFile infoOfficeFile = new AnyFile(configurator.getParm("properties","WORK_OFFICE_FILE"));
-				AnyFile officeFile = new AnyFile(configurator.getParm("system","work-etc-folder-path") + "/" + fn + ".html");
+				AnyFile infoOfficeFile = new AnyFile(configurator.getXParm("properties/WORK_OFFICE_FILE"));
+				AnyFile officeFile = new AnyFile(configurator.getXParm("system/work-etc-folder-path") + "/" + fn + ".html");
 				
 				infoOfficeFile.copyFile(officeFile);
 				
 				// see if this result should be sent on to FTP
-				String target = configurator.getParm("cli", "passoffice",false);
+				String target = configurator.getXParm("cli/passoffice",false);
 				if (target != null) 
 					if (target.equals("ftp")) {
-						String passftp  = configurator.getParm("cli", "passftp");
-						String passpath = configurator.getParm("cli", "passpath");
-						String passuser = configurator.getParm("cli", "passuser");
-						String passpass = configurator.getParm("cli", "passpass");
+						String passftp  = configurator.getXParm("cli/passftp");
+						String passpath = configurator.getXParm("cli/passpath");
+						String passuser = configurator.getXParm("cli/passuser");
+						String passpass = configurator.getXParm("cli/passpass");
 						
 						String targetpath = "ftp://" + passftp + passpath + officeFile.getName();
 						
@@ -118,13 +118,13 @@ public class OfficeCompiler extends Step {
 						
 						// the following parms are compiled from other parms and settings, as a property.
 						
-						String gitbranch              	= configurator.getParm("cli", "gitbranch");  // BRANCH
-						String gituser 			      	= configurator.getParm("cli", "gituser"); // USER
+						String gitbranch              	= configurator.getXParm("cli/gitbranch");  // BRANCH
+						String gituser 			      	= configurator.getXParm("cli/gituser"); // USER
 						String gittoken              	= System.getProperty("git.token"); // OAUTH
 						
 						// the following may contain references to other parms between [..]
-						String gitrepos     	      	= configurator.mergeParms(configurator.getParm("cli", "gitrepos")); // REPOS
-						String gitcomment 				= configurator.mergeParms(configurator.getParm("cli", "gitcomment")); //MESSAGE
+						String gitrepos     	      	= configurator.mergeParms(configurator.getXParm("cli/gitrepos")); // REPOS
+						String gitcomment 				= configurator.mergeParms(configurator.getXParm("cli/gitcomment")); //MESSAGE
 						
 						runner.info(logger, "GIT Pushing office HTML as " + officeFile.getName());
 						
@@ -135,9 +135,9 @@ public class OfficeCompiler extends Step {
 						if (!gitfile.getError().equals(""))
 							runner.error(logger, "Cannot align the data with upstream: step \"" + gitfile.getStage() + "\" returns \"" + gitfile.getError() + "\"");
 						
-						configurator.setParm("appinfo", "office-git-stp", gitfile.getStage());
-						configurator.setParm("appinfo", "office-git-err", gitfile.getError());
-						configurator.setParm("appinfo", "office-git-uri", gitfile.getURI().toString());
+						configurator.setXParm("appinfo/office-git-stp", gitfile.getStage());
+						configurator.setXParm("appinfo/office-git-err", gitfile.getError());
+						configurator.setXParm("appinfo/office-git-uri", gitfile.getURI().toString());
 						
 					} 
 				// all other cases: do not pass anywhere. 

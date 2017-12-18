@@ -49,12 +49,12 @@ public class ReleaseCompiler  extends Step {
 			runner.info(logger,"Compiling ZIP release");
 		
 			// local temporary spot to store the zip to.
-			targetZipFolder = new AnyFolder(configurator.getParm("properties","WORK_RELEASES_FOLDER"));
+			targetZipFolder = new AnyFolder(configurator.getXParm("properties/WORK_RELEASES_FOLDER"));
 			if (targetZipFolder.isDirectory()) targetZipFolder.deleteDirectory(); // clear from any previous zips
 			targetZipFolder.mkdirs();
 		
 			// The place where to copy the zip result for distribution.
-			targetUserZipFolder = new AnyFolder(configurator.getParm("properties","FINAL_RELEASES_FOLDER"));
+			targetUserZipFolder = new AnyFolder(configurator.getXParm("properties/FINAL_RELEASES_FOLDER"));
 			targetUserZipFolder.mkdirs();
 			
 			createZipRelease();
@@ -81,13 +81,13 @@ public class ReleaseCompiler  extends Step {
 	 */
 	public void createZipRelease() throws Exception {
 		AnyFolder workFolder = new AnyFolder(configurator.getWorkFolder("app"));
-		ZipFile zip = new ZipFile(configurator.getParm("properties","WORK_RELEASE_FILE"));
+		ZipFile zip = new ZipFile(configurator.getXParm("properties/WORK_RELEASE_FILE"));
 		zip.compress(workFolder);
 		// copy this file to the indicated result path
 		String f = targetUserZipFolder.getCanonicalPath() + "/" + zip.getName();
 		ZipFile userZipFile = new ZipFile(f);
 		zip.copyFile(userZipFile);
-		configurator.setParm("system","zip-release-filepath", userZipFile.getCanonicalPath());
+		configurator.setXParm("system/zip-release-filepath", userZipFile.getCanonicalPath());
 		runner.info(logger, "ZIP release saved at: " + userZipFile.getCanonicalPath());
 	}
 }

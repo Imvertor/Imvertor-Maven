@@ -49,17 +49,17 @@ public class RunInitializer extends Step {
 		runner.info(logger, "Initializing this run");
 		
 		// create empty workfile
-		XmlFile initFile = new XmlFile(configurator.getParm("properties","WORK_INITIALIZER_FILE"));
+		XmlFile initFile = new XmlFile(configurator.getXParm("properties/WORK_INITIALIZER_FILE"));
 		initFile.getParentFile().mkdirs();
 		initFile.setContent("<root/>");
 	
-		configurator.setParm("system", "cur-imvertor-filepath", initFile.getCanonicalPath());
+		configurator.setXParm("system/cur-imvertor-filepath", initFile.getCanonicalPath());
 		
-		configurator.setParm("appinfo", "project-name", "UNKNOWN-PROJECT-NAME");
-		configurator.setParm("appinfo", "application-name", "UNKNOWN-APPLICATION-NAME");
-		configurator.setParm("appinfo", "release-name", "UNKNOWN-RELEASE-NAME");
-		configurator.setParm("appinfo", "release", "UNKNOWN-RELEASE");
-		configurator.setParm("properties", "WORK_BASE_FILE", initFile.getCanonicalPath());
+		configurator.setXParm("appinfo/project-name", "UNKNOWN-PROJECT-NAME");
+		configurator.setXParm("appinfo/application-name", "UNKNOWN-APPLICATION-NAME");
+		configurator.setXParm("appinfo/release-name", "UNKNOWN-RELEASE-NAME");
+		configurator.setXParm("appinfo/release", "UNKNOWN-RELEASE");
+		configurator.setXParm("properties/WORK_BASE_FILE", initFile.getCanonicalPath());
 		configurator.setStepDone(STEP_NAME);
 		
 	    // save any changes to the work configuration for report and future steps

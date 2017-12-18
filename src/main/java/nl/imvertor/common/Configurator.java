@@ -250,7 +250,7 @@ public class Configurator {
 	 * @throws IOException 
 	 */
 	public AnyFolder getApplicationFolder() throws IOException, ConfiguratorException {
-		return getApplicationFolder(getParm("appinfo","release"));
+		return getApplicationFolder(getXParm("appinfo/release"));
 	}
 
 	/**
@@ -267,7 +267,7 @@ public class Configurator {
 	 * @throws IOException 
 	 */
 	public AnyFolder getApplicationFolder(String releaseNumber) throws IOException, ConfiguratorException {
-		return getApplicationFolder(getParm("appinfo","project-name"),getParm("appinfo","application-name"),releaseNumber);
+		return getApplicationFolder(getXParm("appinfo/project-name"),getXParm("appinfo/application-name"),releaseNumber);
 	}
 
 	public AnyFolder getApplicationFolder(String projectname, String modelName, String releaseNumber) throws IOException, ConfiguratorException {
@@ -353,40 +353,40 @@ public class Configurator {
 		// set system props.
 		String s = File.separator;
 		String wf = workFolder.getCanonicalPath();
-		setParm(workConfiguration,"system","work-folder-path", wf, true);
+		setXParm(workConfiguration,"system/work-folder-path", wf, true);
 		String wff = workConfigurationFile.getCanonicalPath();
-		setParm(workConfiguration,"system","work-config-path", wff, true);
+		setXParm(workConfiguration,"system/work-config-path", wff, true);
 		
-		setParm(workConfiguration,"system","work-app-folder-path",     wf + s + "app", true);
-		setParm(workConfiguration,"system","work-etc-folder-path", 	   wf + s + "app" + s + "etc", true);
-		setParm(workConfiguration,"system","work-xsd-folder-path",     wf + s + "app" + s + "xsd", true);
-		setParm(workConfiguration,"system","work-doc-folder-path",     wf + s + "app" + s + "doc", true);
-		setParm(workConfiguration,"system","work-uml-folder-path",     wf + s + "app" + s + "uml", true);
-		setParm(workConfiguration,"system","work-cmp-folder-path",     wf + s + "app" + s + "cmp", true);
-		setParm(workConfiguration,"system","work-job-folder-path",     wf + s + "app" + s + "job", true);
-		setParm(workConfiguration,"system","work-shacl-folder-path",   wf + s + "app" + s + "shacl", true);
-		setParm(workConfiguration,"system","work-yaml-folder-path",    wf + s + "app" + s + "yaml", true);
-		setParm(workConfiguration,"system","work-xmi-folder-path",     wf + s + "app" + s + "xmi", true);
+		setXParm(workConfiguration,"system/work-app-folder-path",     wf + s + "app", true);
+		setXParm(workConfiguration,"system/work-etc-folder-path", 	   wf + s + "app" + s + "etc", true);
+		setXParm(workConfiguration,"system/work-xsd-folder-path",     wf + s + "app" + s + "xsd", true);
+		setXParm(workConfiguration,"system/work-doc-folder-path",     wf + s + "app" + s + "doc", true);
+		setXParm(workConfiguration,"system/work-uml-folder-path",     wf + s + "app" + s + "uml", true);
+		setXParm(workConfiguration,"system/work-cmp-folder-path",     wf + s + "app" + s + "cmp", true);
+		setXParm(workConfiguration,"system/work-job-folder-path",     wf + s + "app" + s + "job", true);
+		setXParm(workConfiguration,"system/work-shacl-folder-path",   wf + s + "app" + s + "shacl", true);
+		setXParm(workConfiguration,"system/work-yaml-folder-path",    wf + s + "app" + s + "yaml", true);
+		setXParm(workConfiguration,"system/work-xmi-folder-path",     wf + s + "app" + s + "xmi", true);
 					
-		setParm(workConfiguration,"system","work-rep-folder-path",     wf + s + "rep", true);
-		setParm(workConfiguration,"system","work-imvert-folder-path",  wf + s + "imvert", true);
-		setParm(workConfiguration,"system","work-comply-folder-path",  wf + s + "comply", true);
-		setParm(workConfiguration,"system","work-profile-folder-path", wf + s + "profile", true);
-		setParm(workConfiguration,"system","work-debug-folder-path",   wf + s + "debug", true);
-		setParm(workConfiguration,"system","work-log-folder-path",     wf + s + "log", true);
+		setXParm(workConfiguration,"system/work-rep-folder-path",     wf + s + "rep", true);
+		setXParm(workConfiguration,"system/work-imvert-folder-path",  wf + s + "imvert", true);
+		setXParm(workConfiguration,"system/work-comply-folder-path",  wf + s + "comply", true);
+		setXParm(workConfiguration,"system/work-profile-folder-path", wf + s + "profile", true);
+		setXParm(workConfiguration,"system/work-debug-folder-path",   wf + s + "debug", true);
+		setXParm(workConfiguration,"system/work-log-folder-path",     wf + s + "log", true);
 		
 		// clear the workfolder
-		(new OutputFolder(getParm(workConfiguration,"system","work-app-folder-path",true))).clear(false);
-		(new OutputFolder(getParm(workConfiguration,"system","work-rep-folder-path",true))).clear(false);
-		(new OutputFolder(getParm(workConfiguration,"system","work-imvert-folder-path",true))).clear(false);
-		(new OutputFolder(getParm(workConfiguration,"system","work-comply-folder-path",true))).clear(false);
-		(new OutputFolder(getParm(workConfiguration,"system","work-profile-folder-path",true))).clear(false);
-		(new OutputFolder(getParm(workConfiguration,"system","work-debug-folder-path",true))).clear(false);
-		(new OutputFolder(getParm(workConfiguration,"system","work-log-folder-path",true))).clear(false);
-		(new OutputFolder(getParm(workConfiguration,"system","work-xmi-folder-path",true))).clear(false);
+		(new OutputFolder(getXParm(workConfiguration,"system/work-app-folder-path",true))).clear(false);
+		(new OutputFolder(getXParm(workConfiguration,"system/work-rep-folder-path",true))).clear(false);
+		(new OutputFolder(getXParm(workConfiguration,"system/work-imvert-folder-path",true))).clear(false);
+		(new OutputFolder(getXParm(workConfiguration,"system/work-comply-folder-path",true))).clear(false);
+		(new OutputFolder(getXParm(workConfiguration,"system/work-profile-folder-path",true))).clear(false);
+		(new OutputFolder(getXParm(workConfiguration,"system/work-debug-folder-path",true))).clear(false);
+		(new OutputFolder(getXParm(workConfiguration,"system/work-log-folder-path",true))).clear(false);
+		(new OutputFolder(getXParm(workConfiguration,"system/work-xmi-folder-path",true))).clear(false);
 				
-		setParm(workConfiguration,"system","managedoutputfolder", outputFolder.getCanonicalPath(), true);
-		setParm(workConfiguration,"system","managedinstallfolder", baseFolder.getCanonicalPath(), true);
+		setXParm(workConfiguration,"system/managedoutputfolder", outputFolder.getCanonicalPath(), true);
+		setXParm(workConfiguration,"system/managedinstallfolder", baseFolder.getCanonicalPath(), true);
 
 		setActiveStepName("common");
 		prepareStep();
@@ -417,7 +417,7 @@ public class Configurator {
 		workConfiguration = new XMLConfiguration(cc);
 		workConfiguration.setExpressionEngine(new XPathExpressionEngine());
 		
-		setParm(workConfiguration, "steps", "step-name", currentStepName, false);
+		setXParm(workConfiguration, "steps/step-name", currentStepName, false);
 
 	}
 
@@ -468,29 +468,29 @@ public class Configurator {
 	 */
 	public void windup() throws Exception {
 		
-		setParm("run","time",runtime());
+		setXParm("run/time",runtime());
 		
-		OutputFolder appWorkFolder = new OutputFolder(getParm("system","work-app-folder-path"));
+		OutputFolder appWorkFolder = new OutputFolder(getXParm("system/work-app-folder-path"));
 		OutputFolder appFinalFolder;
 	
 		if (runner.getMayRelease()) {
-			appFinalFolder = new OutputFolder(getParm("properties","APPLICATION_FOLDER"));
+			appFinalFolder = new OutputFolder(getXParm("properties/APPLICATION_FOLDER"));
 		} else {
-			appFinalFolder = new OutputFolder(getParm("properties","INVALID_APPLICATION_FOLDER"));
+			appFinalFolder = new OutputFolder(getXParm("properties/INVALID_APPLICATION_FOLDER"));
 		}
 		// copy the complete application folder to the final destination. Note that a zip release may already have been compiled.
 		appFinalFolder.clearIfExists(false);
 		appWorkFolder.copy(appFinalFolder);	
 		
 		// set this as a system property; to be picked up by any outside application such as xslweb executor
-		setParm("system", "result-output-folder", appFinalFolder.getCanonicalPath());
+		setXParm("system/result-output-folder", appFinalFolder.getCanonicalPath());
 		
 		save();
 		
 		if (runner.isFinal() && isTrue("system","schema-created",false)) { 
 			runner.info(logger, "Copying the result XML schemas to distribution folder");
-			AnyFolder sourceXsdFolder = new AnyFolder(getParm("system","work-xsd-folder-path"));
-			AnyFolder targetXsdFolder = new AnyFolder(getParm("properties","DISTRIBUTION_APPLICATION_FOLDER"));
+			AnyFolder sourceXsdFolder = new AnyFolder(getXParm("system/work-xsd-folder-path"));
+			AnyFolder targetXsdFolder = new AnyFolder(getXParm("properties/DISTRIBUTION_APPLICATION_FOLDER"));
 			runner.debug(logger,"CHAIN","Distributing " + sourceXsdFolder + " to " + targetXsdFolder);
 			targetXsdFolder.mkdirs();
 			sourceXsdFolder.copy(targetXsdFolder);
@@ -597,7 +597,7 @@ public class Configurator {
 			schemarules = (schemarules == null) ? DEFAULT_SCHEMARULES : schemarules;
 			
 			// set the task
-			setParm(workConfiguration,"appinfo","task",getParm(workConfiguration,"cli","task",true),true);
+			setXParm(workConfiguration,"appinfo/task",getParm(workConfiguration,"cli","task",true),true);
 			
 		    // If forced compilation, try all steps irrespective of any errors
 		    forceCompile = isTrue(getParm(workConfiguration,"cli","forcecompile",true)); 
@@ -607,9 +607,9 @@ public class Configurator {
 
 		    docRelease = docReleaseString != null && !docReleaseString.equals("00000000");
 		    if (docRelease) 
-		    	setParm("system","documentation-release","-" + docReleaseString);
+		    	setXParm("system/documentation-release","-" + docReleaseString);
 		    else 
-		    	setParm("system","documentation-release","");
+		    	setXParm("system/documentation-release","");
 	
 	    } else {
 			// this is a free chain run
@@ -629,15 +629,15 @@ public class Configurator {
 	 * @throws ConfiguratorException 
 	 */
 	public void setParmsFromEnv() throws IOException, ConfiguratorException {
-		setParm(workConfiguration, "system","folder-path",baseFolder.getCanonicalPath(),true);
-		setFileParm(workConfiguration, "system","etc-folder-path","etc",baseFolder);
-		setFileParm(workConfiguration, "system","cfg-folder-path","cfg",baseFolder);
-		setFileParm(workConfiguration, "system","xsl-folder-path","xsl",baseFolder);
+		setXParm(workConfiguration, "system/folder-path",baseFolder.getCanonicalPath(),true);
+		setFileXParm(workConfiguration, "system/etc-folder-path","etc",baseFolder);
+		setFileXParm(workConfiguration, "system/cfg-folder-path","cfg",baseFolder);
+		setFileXParm(workConfiguration, "system/xsl-folder-path","xsl",baseFolder);
 		
-		setParm(workConfiguration, "system","inp-folder-path",inputFolder.getCanonicalPath(),true);
+		setXParm(workConfiguration, "system/inp-folder-path",inputFolder.getCanonicalPath(),true);
 		
 		// also set some general relevant info
-		setParm(workConfiguration, "system",  "generation-id", getCurrentDate("yyyyMMdd-HHmmss"),true);
+		setXParm(workConfiguration, "system/generation-id", getCurrentDate("yyyyMMdd-HHmmss"),true);
     	
 	}
 
@@ -657,6 +657,9 @@ public class Configurator {
 	public void setParm(String group, String name, Object value) throws IOException, ConfiguratorException {
 		setParm(workConfiguration, group, name, value, true);
 	}
+	public void setXParm(String name, Object value) throws IOException, ConfiguratorException {
+		setXParm(workConfiguration, name, value, true);
+	}
 
 	/**
 	 * Set a parameter. 
@@ -672,6 +675,9 @@ public class Configurator {
 	 */
 	public void setParm(String group, String name, String value, boolean replace) throws IOException, ConfiguratorException {
 		setParm(workConfiguration, group, name, value, replace);
+	}
+	public void setXParm(String name, String value, boolean replace) throws IOException, ConfiguratorException {
+		setXParm(workConfiguration, name, value, replace);
 	}
 	/**
 	 * Get a parameter. A parameter is in all cases member of a group.
@@ -690,6 +696,9 @@ public class Configurator {
 	public String getParm(String group, String name) throws IOException, ConfiguratorException {
 		return getParm(workConfiguration, group, name, true);
 	}
+	public String getXParm(String name) throws IOException, ConfiguratorException {
+		return getXParm(workConfiguration, name, true);
+	}
 
 	/**
 	 * See getParm(). 
@@ -706,6 +715,9 @@ public class Configurator {
 	 */
 	public String getParm(String group, String name, boolean mustExist) throws IOException, ConfiguratorException {
 		return getParm(workConfiguration, group, name, mustExist);
+	}
+	public String getXParm(String name, boolean mustExist) throws IOException, ConfiguratorException {
+		return getXParm(workConfiguration, name, mustExist);
 	}
 	
 	/**
@@ -734,15 +746,18 @@ public class Configurator {
 	 * @throws ConfiguratorException
 	 */
 	private void setParm(XMLConfiguration xmlConfig, String group, String name, Object value, boolean replace) throws ConfiguratorException {
-		String gn = group + "/" + name;
+		setXParm(xmlConfig, group + "/" + name,value,replace);
+	}
+	
+	private void setXParm(XMLConfiguration xmlConfig, String name, Object value, boolean replace) throws ConfiguratorException {
 		String svalue = (value == null) ? "" : StringUtils.trim(value.toString());
 		if (replace)
-			xmlConfig.setProperty(gn, svalue);
+			xmlConfig.setProperty(name, svalue);
 		else 
-			xmlConfig.addProperty(gn, svalue);
+			xmlConfig.addProperty(name, svalue);
 		
 		// if this is a debug parameter, set debug level
-	    if (gn.equals("cli/debug") && isTrue(svalue)) {
+	    if (name.equals("cli/debug") && isTrue(svalue)) {
 	    	Logger.getRootLogger().setLevel(Level.DEBUG);
 	    	getRunner().debug(logger,"CHAIN","Debugging started.");
 	    }
@@ -777,15 +792,19 @@ public class Configurator {
 	 * @throws ConfigurationException 
 	 */
 	private String getParm(XMLConfiguration xmlConfig, String group, String name, boolean mustExist) throws ConfiguratorException {
-		String v = xmlConfig.getString(group + "/" + name + "[last()]");
+		return getXParm(xmlConfig, group + "/" + name, mustExist);
+	}
+	
+	private String getXParm(XMLConfiguration xmlConfig, String name, boolean mustExist) throws ConfiguratorException {
+		String v = xmlConfig.getString(name + "[last()]");
 		if (mustExist && v == null)
-			throw new ConfiguratorException("Parameter not set: " + group + "/" + name);
+			throw new ConfiguratorException("Parameter not set: " + name);
 		else if (v == null)
 			return v;
 		else if (isInterpolated(v))
 			return v;
 		else
-			throw new ConfiguratorException("Cannot resolve configuration parameter: " + group + "/" + name + ", value is (" + v + ")");
+			throw new ConfiguratorException("Cannot resolve configuration parameter: " + name + ", value is (" + v + ")");
 	}
 	
 	/**
@@ -820,11 +839,11 @@ public class Configurator {
 	 * @throws IOException
 	 * @throws ConfiguratorException 
 	 */
-	private void setFileParm(XMLConfiguration xmlConfig, String type, String name, String subpath, File rootFile) throws IOException, ConfiguratorException {
+	private void setFileXParm(XMLConfiguration xmlConfig, String name, String subpath, File rootFile) throws IOException, ConfiguratorException {
 		subpath = StringUtils.trim(subpath);
 		if (rootFile == null) rootFile = new File(System.getProperty("user.dir"));
 		File f = isFullPath(subpath) ? new File(subpath) : new File(rootFile, subpath);
-		setParm(xmlConfig, type, name, f.getCanonicalPath(),true);
+		setXParm(xmlConfig, name, f.getCanonicalPath(),true);
 	}
 	
 	/**
@@ -987,9 +1006,9 @@ public class Configurator {
 	 * 
 	 */
 	public boolean prepareRelease() throws IOException, ConfiguratorException {
-		String ph = getParm("appinfo", "previous-phase",false);
-		String ts = getParm("appinfo", "previous-task",false);
-		String er = getParm("appinfo", "previous-errors",false);
+		String ph = getXParm("appinfo/previous-phase",false);
+		String ts = getXParm("appinfo/previous-task",false);
+		String er = getXParm("appinfo/previous-errors",false);
 		
 		if (ph != null && ph.equals("3") && ts.equals("release") && er.equals("0") && !docRelease) {
 			runner.error(logger, "Cannot replace a final release");

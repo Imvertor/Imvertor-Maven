@@ -218,7 +218,7 @@ public class Transformer {
 
 		PrintStream stream = null;
 		if (getProfiled()) {
-			File profileFolder = new File(configurator.getParm("system","work-profile-folder-path"));
+			File profileFolder = new File(configurator.getXParm("system/work-profile-folder-path"));
 			File profileFile = new File(profileFolder, xslfile.getName() + ".profile.xml");
 			
 			XmlTimingTraceListener tracer = new XmlTimingTraceListener();

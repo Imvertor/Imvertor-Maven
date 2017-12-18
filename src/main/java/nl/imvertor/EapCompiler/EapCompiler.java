@@ -57,7 +57,7 @@ public class EapCompiler extends Step {
 		prepare();
 
 		// get the template file information, notably the GUID for the model in this template. 
-		templateFile = new EapFile(configurator.getParm("properties","TEMPLATE_TEMPLATE_FILE"));
+		templateFile = new EapFile(configurator.getXParm("properties/TEMPLATE_TEMPLATE_FILE"));
 			
 		// compile EAP from template based on current Imvertor file.
 		boolean must = runner.getAppPhase() == Runner.APPLICATION_PHASE_FINAL;
@@ -66,7 +66,7 @@ public class EapCompiler extends Step {
 		boolean wantDerived = configurator.isTrue("cli","createderivedeap"); 
 		boolean canProcessEA = configurator.isEaEnabled();
 		
-		AnyFile umlfile = new AnyFile(configurator.getParm("cli","umlfile"));
+		AnyFile umlfile = new AnyFile(configurator.getXParm("cli/umlfile"));
 		boolean iseap = umlfile.getExtension().equals("eap");
 		boolean isxmi = umlfile.getExtension().equals("xmi");
 		boolean iszip = umlfile.getExtension().equals("zip");
@@ -124,8 +124,8 @@ public class EapCompiler extends Step {
 		transformer.transformStep("system/xmi-export-file-path","properties/RESULT_TEMPLATE_XMI_FILE", "properties/IMVERTOR_TEMPLATE_XSLPATH");
 	
 		// copy this to the etc folder
-		XmlFile tempXmiFile = new XmlFile(configurator.getParm("properties", "RESULT_TEMPLATE_XMI_FILE"));
-		XmlFile targetXmiFile = new XmlFile(new File(configurator.getParm("system", "work-etc-folder-path")),"template.xmi");
+		XmlFile tempXmiFile = new XmlFile(configurator.getXParm("properties/RESULT_TEMPLATE_XMI_FILE"));
+		XmlFile targetXmiFile = new XmlFile(new File(configurator.getXParm("system/work-etc-folder-path")),"template.xmi");
 		tempXmiFile.copyFile(targetXmiFile);
 	}
 	
@@ -143,8 +143,8 @@ public class EapCompiler extends Step {
 		transformer.transformStep("system/xmi-file-path","properties/WORK_FULL_XMI_FILE", "properties/IMVERTOR_REPORTINGCOPY_XSLPATH");
 		
 		// copy this to the etc folder
-		XmlFile tempXmiFile = new XmlFile(configurator.getParm("properties", "WORK_FULL_XMI_FILE"));
-		XmlFile targetXmiFile = new XmlFile(new File(configurator.getParm("system", "work-etc-folder-path")),"derived.xmi");
+		XmlFile tempXmiFile = new XmlFile(configurator.getXParm("properties/WORK_FULL_XMI_FILE"));
+		XmlFile targetXmiFile = new XmlFile(new File(configurator.getXParm("system/work-etc-folder-path")),"derived.xmi");
 		tempXmiFile.copyFile(targetXmiFile);
 	}
 	
@@ -162,12 +162,12 @@ public class EapCompiler extends Step {
 		generateXmiTemplate();
 		
 		runner.info(logger,"Creating template EAP file");
-		EapFile localCopyFile = new EapFile(configurator.getParm("properties","RESULT_TEMPLATE_EAP_FILE")); // result eap file
+		EapFile localCopyFile = new EapFile(configurator.getXParm("properties/RESULT_TEMPLATE_EAP_FILE")); // result eap file
 		// Create template file by copying the template file, and importing the XMI
 		runner.debug(logger,"CHAIN","Importing XMI into EAP: " + localCopyFile.getName());
 		templateFile.copyFile(localCopyFile);
 		localCopyFile.open();
-		localCopyFile.importFromXmiFile(configurator.getParm("properties","RESULT_TEMPLATE_XMI_FILE"));
+		localCopyFile.importFromXmiFile(configurator.getXParm("properties/RESULT_TEMPLATE_XMI_FILE"));
 		localCopyFile.close();
 		
 		return localCopyFile;
@@ -184,7 +184,7 @@ public class EapCompiler extends Step {
 		
 		runner.warn(logger,"Creation of EA UML documentation is deprecated.");
 		
-		EapFile eapFile = new EapFile(configurator.getParm("cli","umlfile"));
+		EapFile eapFile = new EapFile(configurator.getXParm("cli/umlfile"));
 		
 		runner.info(logger,"Reporting on EA UML");
 		boolean succeeds = true;
@@ -199,9 +199,9 @@ public class EapCompiler extends Step {
 		 */
 		runner.debug(logger,"CHAIN","Enhancing EAP information");
 		
-		EapFile tempEapFile = new EapFile(configurator.getParm("properties", "WORK_EAP_FILE"));
-		XmlFile tempXmiFile = new XmlFile(configurator.getParm("properties", "WORK_TEMP_XMI_FILE"));
-		XmlFile fullXmiFile = new XmlFile(configurator.getParm("properties", "WORK_FULL_XMI_FILE"));
+		EapFile tempEapFile = new EapFile(configurator.getXParm("properties/WORK_EAP_FILE"));
+		XmlFile tempXmiFile = new XmlFile(configurator.getXParm("properties/WORK_TEMP_XMI_FILE"));
+		XmlFile fullXmiFile = new XmlFile(configurator.getXParm("properties/WORK_FULL_XMI_FILE"));
 	
 		// TODO opening EA files is time consuming; can this be enhanced?
 		eapFile.open();
@@ -218,26 +218,26 @@ public class EapCompiler extends Step {
 		
 		runner.debug(logger,"CHAIN","Importing enhanced information into EAP");
 		
-		AnyFile gf = new AnyFile(configurator.getParm("properties","TEMPLATE_TEMPLATE_FILE_GUID"));
+		AnyFile gf = new AnyFile(configurator.getXParm("properties/TEMPLATE_TEMPLATE_FILE_GUID"));
 		if (gf.isFile()) {
 			String templateFileModelGUID = gf.getContent();
-			configurator.setParm("system","template-file-model-guid", templateFileModelGUID);
+			configurator.setXParm("system/template-file-model-guid", templateFileModelGUID);
 			templateFile.copyFile(tempEapFile);
 			tempEapFile.open();
 			try {
 				tempEapFile.importXML(templateFileModelGUID, fullXmiFile.getCanonicalPath());
 				if (configurator.isTrue("cli","createumlreport")) {
-					File workDirectoryToReport = new File(configurator.getParm("system","work-uml-folder-path"),"report");
-					File directoryToReport = new File(configurator.getParm("properties","RESULT_UML_FOLDER"));
+					File workDirectoryToReport = new File(configurator.getXParm("system/work-uml-folder-path"),"report");
+					File directoryToReport = new File(configurator.getXParm("properties/RESULT_UML_FOLDER"));
 					runner.debug(logger,"CHAIN","Generating UML report to " + directoryToReport);
-					tempEapFile.exportToHtmlReport(workDirectoryToReport.getAbsolutePath(), configurator.getParm("cli","application"), "");
-					configurator.setParm("system", "uml-report-available", "true");
+					tempEapFile.exportToHtmlReport(workDirectoryToReport.getAbsolutePath(), configurator.getXParm("cli/application"), "");
+					configurator.setXParm("system/uml-report-available", "true");
 				}
 			} finally {
 				tempEapFile.close();
 			}
 			if (configurator.isTrue("cli","createumlreport") && configurator.isTrue("cli","createderivedeap")) {
-				EapFile targetFile = new EapFile(configurator.getParm("properties","RESULT_DERIVED_EAP_FILE")); 
+				EapFile targetFile = new EapFile(configurator.getXParm("properties/RESULT_DERIVED_EAP_FILE")); 
 				tempEapFile.copyFile(targetFile);
 			}
 		} else

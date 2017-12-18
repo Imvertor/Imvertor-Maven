@@ -60,13 +60,13 @@ public class ComplyExtractor extends Step {
 		runner.info(logger,"Extracting Compliancy XML");
 		
 		// STUB
-		configurator.setParm("appinfo","release","00000001");
+		configurator.setXParm("appinfo/release","00000001");
 		
 		boolean succeeds = true;
 		
 		// fetch the fill-in form file, and serialize it to a folder
-		String templateFilepath = configurator.getParm("cli", "cmpfile", true);
-		String unzipFolderpath = configurator.getParm("properties", "WORK_COMPLY_TEMPLATE_FOLDERPATH", true);
+		String templateFilepath = configurator.getXParm("cli/cmpfile", true);
+		String unzipFolderpath = configurator.getXParm("properties/WORK_COMPLY_TEMPLATE_FOLDERPATH", true);
 
 		ZipFile template = new ZipFile(templateFilepath);
 		AnyFolder serializeFolder = new AnyFolder(unzipFolderpath);
@@ -78,16 +78,16 @@ public class ComplyExtractor extends Step {
 		Transformer transformer = new Transformer();
 
 		XmlFile contentFile = new XmlFile(serializeFolder,AnyFolder.SERIALIZED_CONTENT_XML_FILENAME);
-		configurator.setParm("system", "comply-content-file", contentFile.getCanonicalPath());
+		configurator.setXParm("system/comply-content-file", contentFile.getCanonicalPath());
 		// extract the instance info from the serialized OO XML excel file 
 		succeeds = succeeds ? transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_EXTRACT_FILE", "properties/WORK_COMPLY_EXTRACT_XSLPATH","system/comply-content-file") : false;
 		
 		// copy the XSD's to the test file location
 		if (succeeds) {
 			// get the location of the schema and copy that complete folder from the managed output folder to the result folder
-			String subpath = configurator.getParm("appinfo", "model-subpath");
+			String subpath = configurator.getXParm("appinfo/model-subpath");
 			String xsdpath = configurator.getOutputFolder() + "/applications/" + subpath + "/xsd";
-			String locpath = configurator.getParm("appinfo", "schema-subpath");
+			String locpath = configurator.getXParm("appinfo/schema-subpath");
 		
 			AnyFile xsdFile = new AnyFile(configurator.getOutputFolder() + "/applications/" + subpath + "/xsd/" + locpath);
 			AnyFolder sourceXsdFolder = new AnyFolder(xsdpath);
@@ -108,7 +108,7 @@ public class ComplyExtractor extends Step {
 
 		if (succeeds) { 
 			AnyFile targetXmlFile = new AnyFile(configurator.getWorkFolder("app/tests"),"stp-config.xml");
-			AnyFile scenario = new AnyFile(configurator.getParm("properties","WORK_COMPLY_SCENARIO_FILE"));
+			AnyFile scenario = new AnyFile(configurator.getXParm("properties/WORK_COMPLY_SCENARIO_FILE"));
 			scenario.copyFile(targetXmlFile);		
 		}
 		
@@ -124,7 +124,7 @@ public class ComplyExtractor extends Step {
 		succeeds = succeeds ? transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_MAKE_FILE_VALID", "properties/WORK_COMPLY_MAKE_XSLPATH") : false;
 
 		//validate the generate XML instances against the schema.
-		AnyFolder folder = new AnyFolder(configurator.getParm("properties","WORK_COMPLY_MAKE_FOLDER_VALID"));
+		AnyFolder folder = new AnyFolder(configurator.getXParm("properties/WORK_COMPLY_MAKE_FOLDER_VALID"));
 		if (folder.exists()) {
 				succeeds = succeeds ? validateAndReport(folder) : false;
 		} else {
@@ -133,15 +133,15 @@ public class ComplyExtractor extends Step {
 		}
 
 		// finally set some release info
-		configurator.setParm("appinfo","compliancy-filename",template.getNameNoExtension());
-		configurator.setParm("appinfo","generation-id",configurator.getParm("system","generation-id"));
+		configurator.setXParm("appinfo/compliancy-filename",template.getNameNoExtension());
+		configurator.setXParm("appinfo/generation-id",configurator.getXParm("system/generation-id"));
 		
 		// system/resolved-release-name
-		String releasename = configurator.mergeParms(configurator.getParm("cli","releasename"));
-		configurator.setParm("appinfo","release-name",StringUtils.replacePattern(releasename, "[^A-Za-z0-9_\\-.]", ""),true);
+		String releasename = configurator.mergeParms(configurator.getXParm("cli/releasename"));
+		configurator.setXParm("appinfo/release-name",StringUtils.replacePattern(releasename, "[^A-Za-z0-9_\\-.]", ""),true);
 		
 		// we now know the application name and should show it. 
-		runner.info(logger, "Compiled name: " + configurator.getParm("appinfo","release-name"));
+		runner.info(logger, "Compiled name: " + configurator.getXParm("appinfo/release-name"));
 		
 		configurator.setStepDone(STEP_NAME);
 		 
@@ -170,7 +170,7 @@ public class ComplyExtractor extends Step {
 			String m = it.next();
 			runner.msg("COMPLY",m);
 		}
-		configurator.setParm("appinfo","compliancy-error-count", vl.size());
+		configurator.setXParm("appinfo/compliancy-error-count", vl.size());
 		return (vl.size() == 0) ? true : false;
 	}
 	
@@ -184,7 +184,7 @@ public class ComplyExtractor extends Step {
 	 */
 	public Vector<String> validateXmlFolder(AnyFolder folder) throws Exception {
 		
-		URI stpUrl = URI.create(configurator.getParm("cli","complySTPurl"));
+		URI stpUrl = URI.create(configurator.getXParm("cli/complySTPurl"));
 		
 		File[] filesAndDirs = folder.listFiles();
 		List<File> filesDirs = Arrays.asList(filesAndDirs);
@@ -228,19 +228,19 @@ public class ComplyExtractor extends Step {
 		boolean succeeds = true;
 		
 		// creates an XML modeldoc intermediate file which is the basis for output
-		configurator.setParm("system","comply-input-file",xmlInstance.getCanonicalPath());
+		configurator.setXParm("system/comply-input-file",xmlInstance.getCanonicalPath());
 		succeeds = succeeds ? transformer.transformStep("system/comply-input-file", "properties/IMVERTOR_COMPLY_EXTRACT_SOAP_REQUEST_FILE", "properties/IMVERTOR_COMPLY_EXTRACT_SOAP_REQUEST_XSLPATH") : false;
 
 		// pass the contents as body to STP
-		XmlFile soapRequestXml = new XmlFile(configurator.getParm("properties", "IMVERTOR_COMPLY_EXTRACT_SOAP_REQUEST_FILE"));
+		XmlFile soapRequestXml = new XmlFile(configurator.getXParm("properties/IMVERTOR_COMPLY_EXTRACT_SOAP_REQUEST_FILE"));
 		String result = httpFile.post(HttpFile.METHOD_POST_CONTENT, url, headerMap, null, soapRequestXml.getContent("UTF-8"));
 		
 		// transform to messages
-		XmlFile soapResponseXml = new XmlFile(configurator.getParm("properties", "IMVERTOR_COMPLY_EXTRACT_SOAP_RESPONSE_FILE"));
+		XmlFile soapResponseXml = new XmlFile(configurator.getXParm("properties/IMVERTOR_COMPLY_EXTRACT_SOAP_RESPONSE_FILE"));
 		soapResponseXml.setContent(result);
 		succeeds = succeeds ? transformer.transformStep("properties/IMVERTOR_COMPLY_EXTRACT_SOAP_RESPONSE_FILE", "properties/IMVERTOR_COMPLY_EXTRACT_SOAP_FLAT_FILE", "properties/IMVERTOR_COMPLY_EXTRACT_SOAP_RESPONSE_XSLPATH") : false;
 		
-		AnyFile messagesFile = new AnyFile(configurator.getParm("properties", "IMVERTOR_COMPLY_EXTRACT_SOAP_FLAT_FILE"));
+		AnyFile messagesFile = new AnyFile(configurator.getXParm("properties/IMVERTOR_COMPLY_EXTRACT_SOAP_FLAT_FILE"));
 		
 		return StringUtils.splitByWholeSeparator(messagesFile.getContent(),"[nl]");
 	}

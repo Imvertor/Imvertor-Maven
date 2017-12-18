@@ -418,8 +418,8 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	 */
 	public boolean compare(XmlFile testXmlFile, Configurator configurator) throws Exception {
 		
-		String compareLabel = configurator.getParm("system", "compare-label");
-		String compareKey = configurator.getParm("cli", "comparekey",false);
+		String compareLabel = configurator.getXParm("system/compare-label");
+		String compareKey = configurator.getXParm("cli/comparekey",false);
 		if (compareKey == null) compareKey = "name";
 		
 		// create a transformer
@@ -429,9 +429,9 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		Boolean valid = true;
 		
 		//TODO Duplicate, redundant?
-		XmlFile ctrlNameFile = new XmlFile(configurator.getParm("properties","WORK_COMPARE_CONTROL_NAME_FILE")); // imvertor.20.docrelease.1.1.compare-control-name.xml
-		XmlFile testNameFile = new XmlFile(configurator.getParm("properties","WORK_COMPARE_TEST_NAME_FILE")); // imvertor.20.docrelease.1.2.compare-test-name.xml
-		XmlFile infoConfig   = new XmlFile(configurator.getParm("properties","IMVERTOR_COMPARE_CONFIG")); // Imvert-compare-config.xml
+		XmlFile ctrlNameFile = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_CONTROL_NAME_FILE")); // imvertor.20.docrelease.1.1.compare-control-name.xml
+		XmlFile testNameFile = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_TEST_NAME_FILE")); // imvertor.20.docrelease.1.2.compare-test-name.xml
+		XmlFile infoConfig   = new XmlFile(configurator.getXParm("properties/IMVERTOR_COMPARE_CONFIG")); // Imvert-compare-config.xml
 	
 		// This transformer will pass regular XML parameters to the stylesheet. 
 		// This is because the compare core code is not part of the Imvertor framework, but developed separately.
@@ -446,19 +446,19 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		transformer.setXslParm("compare-label", compareLabel);
 		
 		// determine temporary files
-		XmlFile controlModelFile = new XmlFile(configurator.getParm("properties","WORK_COMPARE_CONTROL_MODEL_FILE")); // imvertor.20.docrelease.1.1.compare-control-model.xml
-		XmlFile testModelFile = new XmlFile(configurator.getParm("properties","WORK_COMPARE_TEST_MODEL_FILE")); // imvertor.20.docrelease.1.2.compare-test-model.xml
-		XmlFile controlSimpleFile = new XmlFile(configurator.getParm("properties","WORK_COMPARE_CONTROL_SIMPLE_FILE")); // imvertor.20.docrelease.1.1.compare-control-simple.xml
-		XmlFile testSimpleFile = new XmlFile(configurator.getParm("properties","WORK_COMPARE_TEST_SIMPLE_FILE")); // imvertor.20.docrelease.1.2.compare-test-simple.xml
+		XmlFile controlModelFile = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_CONTROL_MODEL_FILE")); // imvertor.20.docrelease.1.1.compare-control-model.xml
+		XmlFile testModelFile = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_TEST_MODEL_FILE")); // imvertor.20.docrelease.1.2.compare-test-model.xml
+		XmlFile controlSimpleFile = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_CONTROL_SIMPLE_FILE")); // imvertor.20.docrelease.1.1.compare-control-simple.xml
+		XmlFile testSimpleFile = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_TEST_SIMPLE_FILE")); // imvertor.20.docrelease.1.2.compare-test-simple.xml
 		
-		XmlFile diffXml = new XmlFile(configurator.getParm("properties","WORK_COMPARE_DIFF_FILE")); // imvertor.20.docrelease.2.compare-diff.xml
-		XmlFile listingXml = new XmlFile(configurator.getParm("properties","WORK_COMPARE_LISTING_FILE")); // imvertor.20.docrelease.3.compare-listing.xml
+		XmlFile diffXml = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_DIFF_FILE")); // imvertor.20.docrelease.2.compare-diff.xml
+		XmlFile listingXml = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_LISTING_FILE")); // imvertor.20.docrelease.3.compare-listing.xml
 			
-		XslFile tempXsl = new XslFile(configurator.getParm("properties","COMPARE_GENERATED_XSLPATH"));
+		XslFile tempXsl = new XslFile(configurator.getXParm("properties/COMPARE_GENERATED_XSLPATH"));
 		
 		//clean 
-		XslFile cleanerXsl = new XslFile(configurator.getParm("properties","IMVERTOR_COMPARE_CLEAN_XSLPATH"));
-		XslFile simpleXsl = new XslFile(configurator.getParm("properties","IMVERTOR_COMPARE_SIMPLE_XSLPATH"));
+		XslFile cleanerXsl = new XslFile(configurator.getXParm("properties/IMVERTOR_COMPARE_CLEAN_XSLPATH"));
+		XslFile simpleXsl = new XslFile(configurator.getXParm("properties/IMVERTOR_COMPARE_SIMPLE_XSLPATH"));
 		
 		valid = valid && transformer.transform(this,controlModelFile,cleanerXsl,null);
 		valid = valid && transformer.transform(testXmlFile,testModelFile,cleanerXsl,null);
@@ -473,7 +473,7 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		valid = valid && transformer.transform(testModelFile,testSimpleFile,simpleXsl,null);
 		
 		// compare 
-		XslFile compareXsl = new XslFile(configurator.getParm("properties","COMPARE_GENERATOR_XSLPATH"));
+		XslFile compareXsl = new XslFile(configurator.getXParm("properties/COMPARE_GENERATOR_XSLPATH"));
 		
 		transformer.setXslParm("ctrl-filepath", controlSimpleFile.getCanonicalPath());
 		transformer.setXslParm("test-filepath", testSimpleFile.getCanonicalPath());
@@ -482,12 +482,12 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		valid = valid && transformer.transform(controlSimpleFile, tempXsl, compareXsl,null);
 		
 		// create listing
-		XslFile listingXsl = new XslFile(configurator.getParm("properties","IMVERTOR_COMPARE_LISTING_XSLPATH"));
+		XslFile listingXsl = new XslFile(configurator.getXParm("properties/IMVERTOR_COMPARE_LISTING_XSLPATH"));
 		valid = valid && transformer.transform(controlSimpleFile,listingXml,listingXsl,null);
 		
 		// get the number of differences found
 		int differences = ((NodeList) listingXml.xpathToObject("/*/*",null,XPathConstants.NODESET)).getLength();
-		configurator.setParm("appinfo", "compare-differences-" + compareLabel, differences);
+		configurator.setXParm("appinfo/compare-differences-" + compareLabel, differences);
 
 		// Build report
 		boolean result = valid && (differences == 0);

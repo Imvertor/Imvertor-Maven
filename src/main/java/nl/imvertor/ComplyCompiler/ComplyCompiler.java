@@ -50,7 +50,7 @@ public class ComplyCompiler  extends Step {
 		 Boolean develop = false; // TODO remove temporary
 		*/
 		
-		if (configurator.getParm("system","imvertor-ep-result",false) == null)
+		if (configurator.getXParm("system/imvertor-ep-result",false) == null)
 			runner.warn(logger, "Creation of Excel requires an EP file");
 		else {
 			// set up the configuration for this step
@@ -59,8 +59,8 @@ public class ComplyCompiler  extends Step {
 			runner.info(logger,"Compiling Compliancy Excel");
 			
 			// fetch the template file, and serialize it to a folder
-			String templateFilepath = configurator.getParm("properties", "IMVERTOR_COMPLY_TEMPLATE_EXCELPATH", true);
-			String unzipFolderpath = configurator.getParm("properties", "WORK_COMPLY_TEMPLATE_FOLDERPATH", true);
+			String templateFilepath = configurator.getXParm("properties/IMVERTOR_COMPLY_TEMPLATE_EXCELPATH", true);
+			String unzipFolderpath = configurator.getXParm("properties/WORK_COMPLY_TEMPLATE_FOLDERPATH", true);
 
 			ZipFile template = new ZipFile(templateFilepath);
 			AnyFolder serializeFolder = new AnyFolder(unzipFolderpath);
@@ -94,7 +94,7 @@ public class ComplyCompiler  extends Step {
 			}
 			*/
 			
-			configurator.setParm("system", "comply-content-file", contentFile.getCanonicalPath());
+			configurator.setXParm("system/comply-content-file", contentFile.getCanonicalPath());
 			transformer.transformStep("system/imvertor-ep-result","properties/WORK_COMPLY_STUB_FILE", "properties/WORK_COMPLY_STUB_XSLPATH","system/imvertor-ep-result");
 			transformer.transformStep("system/imvertor-ep-result","properties/WORK_COMPLY_FLAT_FILE", "properties/WORK_COMPLY_FLAT_XSLPATH","system/imvertor-ep-result");
 			transformer.transformStep("system/comply-content-file","properties/WORK_COMPLY_FILL_FILE", "properties/WORK_COMPLY_FILL_XSLPATH");
@@ -103,13 +103,13 @@ public class ComplyCompiler  extends Step {
 			// And pack the result.
 			// Store in the folder for result compliancy fill-in forms
 			
-			AnyFolder formFolder = new AnyFolder(configurator.getParm("properties","IMVERTOR_COMPLY_TARGET"));
+			AnyFolder formFolder = new AnyFolder(configurator.getXParm("properties/IMVERTOR_COMPLY_TARGET"));
 			formFolder.mkdirs();
 			
-			String zipname = configurator.getParm("appinfo", "application-name") + ".xlsx";
+			String zipname = configurator.getXParm("appinfo/application-name") + ".xlsx";
 			ZipFile formFile = new ZipFile(formFolder,zipname);
 			
-			XmlFile newContentFile = new XmlFile(configurator.getParm("properties","WORK_COMPLY_FILL_FILE",true));
+			XmlFile newContentFile = new XmlFile(configurator.getXParm("properties/WORK_COMPLY_FILL_FILE",true));
 			newContentFile.copyFile(contentFile);
 			formFile.deserializeFromXml(serializeFolder,true);
 			
@@ -136,7 +136,7 @@ public class ComplyCompiler  extends Step {
 				}
 			}
 			
-			configurator.setParm("appinfo","compliancy-result-form-path",formFile.getCanonicalPath());
+			configurator.setXParm("appinfo/compliancy-result-form-path",formFile.getCanonicalPath());
 				
 			configurator.setStepDone(STEP_NAME);
 			 

@@ -45,7 +45,7 @@ public class ApcModifier extends Step {
 	 */
 	public boolean run() throws Exception {
 		
-		String apc = configurator.getParm("cli","apcfile",false);
+		String apc = configurator.getXParm("cli/apcfile",false);
 		
 		// set up the configuration for this step
 		configurator.setActiveStepName(STEP_NAME);
@@ -60,9 +60,9 @@ public class ApcModifier extends Step {
 		if (apc != null) {
 			
 			// create the XML file from the excel.
-			ExcelFile ef = new ExcelFile(configurator.getParm("cli","apcfile"));
-			ef.toXmlFile(configurator.getParm("properties","WORK_APPCONFIG_EXCEL_FILE"));
-			configurator.setParm("system","apc-file-path",ef.getCanonicalPath());
+			ExcelFile ef = new ExcelFile(configurator.getXParm("cli/apcfile"));
+			ef.toXmlFile(configurator.getXParm("properties/WORK_APPCONFIG_EXCEL_FILE"));
+			configurator.setXParm("system/apc-file-path",ef.getCanonicalPath());
 			
 			// set up the appconfig file as an XML file
 			transformer.transformStep("properties/WORK_APPCONFIG_EXCEL_FILE", "properties/WORK_APPCONFIG_FILE", "properties/IMVERTOR_APPCONFIG_XSLPATH");

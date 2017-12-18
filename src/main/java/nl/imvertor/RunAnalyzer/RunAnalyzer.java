@@ -53,7 +53,7 @@ public class RunAnalyzer extends Step {
 		
 		// when profiling, compile the tally profile file 
 		if (runner.getDebug()) {
-			File profileFolder = new File(configurator.getParm("system","work-profile-folder-path"));
+			File profileFolder = new File(configurator.getXParm("system/work-profile-folder-path"));
 			String tally = "<profiles total=\"" + configurator.runtime() + "\">";
 			String[] files = profileFolder.list();
 			for (int f = 0; f < files.length; f++) {
@@ -62,11 +62,11 @@ public class RunAnalyzer extends Step {
 			}
 			tally += "</profiles>";
 			AnyFile profilesDoc = new AnyFile(profileFolder,"profiles.xml");
-			configurator.setParm("system", "profiles-doc", profilesDoc.getCanonicalPath(), true);
+			configurator.setXParm("system/profiles-doc", profilesDoc.getCanonicalPath(), true);
 			profilesDoc.setContent(tally);
 		}	
 		
-		if (configurator.getParm("system", "cur-imvertor-filepath",false) != null) {
+		if (configurator.getXParm("system/cur-imvertor-filepath",false) != null) {
 			Transformer transformer = new Transformer();
 			transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_ANALYZER_FILE", "properties/RUN_ANALYZER_XSL"); 
 			//TODO general: also provide default empty input, and default empty output files.

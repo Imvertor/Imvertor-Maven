@@ -79,11 +79,11 @@ public class ReadmeAnalyzer  extends Step {
 			String[] tok = StringUtils.split(toks[i],":");
 			if (tok.length == 2) {
 				switch (tok[0]) {
-					case "ph": configurator.setParm("appinfo", "previous-phase", tok[1],true); 
-					case "ts": configurator.setParm("appinfo", "previous-task", tok[1],true); 
-					case "er": configurator.setParm("appinfo", "previous-errors", tok[1],true); 
-					case "re": configurator.setParm("appinfo", "previous-release", tok[1],true); 
-					case "dt": configurator.setParm("appinfo", "previous-date", tok[1],true); 
+					case "ph": configurator.setXParm("appinfo/previous-phase", tok[1],true); 
+					case "ts": configurator.setXParm("appinfo/previous-task", tok[1],true); 
+					case "er": configurator.setXParm("appinfo/previous-errors", tok[1],true); 
+					case "re": configurator.setXParm("appinfo/previous-release", tok[1],true); 
+					case "dt": configurator.setXParm("appinfo/previous-date", tok[1],true); 
 				}
 			}
 		}
@@ -91,7 +91,7 @@ public class ReadmeAnalyzer  extends Step {
 		// TODO improve by writing and reading a xml file. For now, check this file contents by regex. Rather brute force.
 		//create a transformer
 		//Transformer transformer = new Transformer();
-		//String xslFilePath = configurator.getXslPath(configurator.getParm("properties", "IMVERTOR_README_ANALYZE_XSLPATH"));
+		//String xslFilePath = configurator.getXslPath(configurator.getXParm("properties/IMVERTOR_README_ANALYZE_XSLPATH"));
 	    //return transformer.transform(readmeFilePath, null, xslFilePath);
 	}
 }

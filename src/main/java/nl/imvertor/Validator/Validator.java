@@ -53,7 +53,7 @@ public class Validator extends Step {
 		prepare();
 		runner.info(logger,"Validating model");
 
-		String mm = configurator.getParm("cli","metamodel");
+		String mm = configurator.getXParm("cli/metamodel");
 				
 		// create a transformer
 		Transformer transformer = new Transformer();
@@ -99,16 +99,16 @@ public class Validator extends Step {
 			succeeds = transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_VALIDATE_FILE", "properties/IMVERTOR_VALIDATE_XSLPATH") && succeeds ;
 		}
 		// set two parameter to appinfo here
-		String docrelease = configurator.getParm("cli","docrelease");
-		configurator.setParm("appinfo","documentation-release",docrelease.equals("00000000") ? "" : "-" + docrelease);
-		configurator.setParm("appinfo","generation-id",configurator.getParm("system","generation-id"));
+		String docrelease = configurator.getXParm("cli/docrelease");
+		configurator.setXParm("appinfo/documentation-release",docrelease.equals("00000000") ? "" : "-" + docrelease);
+		configurator.setXParm("appinfo/generation-id",configurator.getXParm("system/generation-id"));
 		
 		// system/resolved-release-name
-		String releasename = configurator.mergeParms(configurator.getParm("cli","releasename"));
-		configurator.setParm("appinfo","release-name",StringUtils.replacePattern(releasename, "[^A-Za-z0-9_\\-.]", ""),true);
+		String releasename = configurator.mergeParms(configurator.getXParm("cli/releasename"));
+		configurator.setXParm("appinfo/release-name",StringUtils.replacePattern(releasename, "[^A-Za-z0-9_\\-.]", ""),true);
 		
 		// we now know the application name and should show it. 
-		runner.info(logger, "Compiled name: " + configurator.getParm("appinfo","release-name"));
+		runner.info(logger, "Compiled name: " + configurator.getXParm("appinfo/release-name"));
 		
 		configurator.setStepDone(STEP_NAME);
 		

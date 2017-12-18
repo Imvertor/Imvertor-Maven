@@ -67,10 +67,10 @@ public class GenericTransformer extends Step {
 		transformer.setExtensionFunction(new ImvertorFolderSerializer());
 			
 	    // check the input 
-		AnyFile infile = new AnyFile(configurator.getParm("cli","infile"));
-		AnyFile outfile = new AnyFile(configurator.getParm("cli","outfile"));
-		AnyFile xslfile = new AnyFile(configurator.getParm("cli","xslfile"));
-		String extension = configurator.getParm("cli","extension");
+		AnyFile infile = new AnyFile(configurator.getXParm("cli/infile"));
+		AnyFile outfile = new AnyFile(configurator.getXParm("cli/outfile"));
+		AnyFile xslfile = new AnyFile(configurator.getXParm("cli/xslfile"));
+		String extension = configurator.getXParm("cli/extension");
 		
 		if (infile.isDirectory() && outfile.isDirectory()) {
 			// process the full folder

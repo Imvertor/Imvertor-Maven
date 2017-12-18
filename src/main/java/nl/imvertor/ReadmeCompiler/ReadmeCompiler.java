@@ -58,14 +58,14 @@ public class ReadmeCompiler extends Step {
 		Transformer transformer = new Transformer();
 		
 		// work-app-folder-path
-		AnyFile readmeFile = new AnyFile(configurator.getParm("system","work-app-folder-path") + "/readme.html");
-		configurator.setParm("system","readme-file-path",readmeFile.getCanonicalPath());
+		AnyFile readmeFile = new AnyFile(configurator.getXParm("system/work-app-folder-path") + "/readme.html");
+		configurator.setXParm("system/readme-file-path",readmeFile.getCanonicalPath());
 		
-		//configurator.setParm("appinfo","error-count",Integer.toString(runner.getErrorCount()));
+		//configurator.setXParm("appinfo/error-count",Integer.toString(runner.getErrorCount()));
 	
-		String path = configurator.getParm("appinfo","application-name");
-		transformer.setXslParm("xsd-files-generated",listFiles(configurator.getParm("system", "work-xsd-folder-path") + "/" + path, "xsd/" + path + "/"));
-		transformer.setXslParm("etc-files-generated",listFiles(configurator.getParm("system", "work-etc-folder-path"),"etc/"));
+		String path = configurator.getXParm("appinfo/application-name");
+		transformer.setXslParm("xsd-files-generated",listFiles(configurator.getXParm("system/work-xsd-folder-path") + "/" + path, "xsd/" + path + "/"));
+		transformer.setXslParm("etc-files-generated",listFiles(configurator.getXParm("system/work-etc-folder-path"),"etc/"));
 		transformer.transformStep("properties/WORK_BASE_FILE", "system/readme-file-path", "properties/IMVERTOR_README_XSLPATH");
 		
 		configurator.setStepDone(STEP_NAME);

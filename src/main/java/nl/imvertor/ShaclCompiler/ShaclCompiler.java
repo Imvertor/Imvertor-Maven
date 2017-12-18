@@ -73,31 +73,31 @@ public class ShaclCompiler extends Step {
 		boolean succeeds = true;
 		
 		// Create the folder; it is not expected to exist yet.
-		AnyFolder shaclFolder = new AnyFolder(configurator.getParm("system","work-shacl-folder-path"));
+		AnyFolder shaclFolder = new AnyFolder(configurator.getXParm("system/work-shacl-folder-path"));
 		shaclFolder.mkdirs();
 				
-		AnyFolder shaclApplicationFolder = new AnyFolder(configurator.getParm("properties","RESULT_SHACL_APPLICATION_FOLDER"));
+		AnyFolder shaclApplicationFolder = new AnyFolder(configurator.getXParm("properties/RESULT_SHACL_APPLICATION_FOLDER"));
 		shaclApplicationFolder.mkdirs();
 		
-		configurator.setParm("system","shacl-folder-path", shaclApplicationFolder.toURI().toString());
+		configurator.setXParm("system/shacl-folder-path", shaclApplicationFolder.toURI().toString());
 	
 		runner.debug(logger,"CHAIN","Generating SHACL to " + shaclApplicationFolder);
 		
 		succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_SHACL_FILE_PATH", "properties/IMVERTOR_METAMODEL_Kadaster_SHACL_XSLPATH");
 		
 		if (succeeds) {
-			ShaclFile shaclFile = new ShaclFile(configurator.getParm("properties", "RESULT_SHACL_FILE_PATH"));
+			ShaclFile shaclFile = new ShaclFile(configurator.getXParm("properties/RESULT_SHACL_FILE_PATH"));
 			
 			if (configurator.isTrue("cli","validateshacl",false)) { 
 				ShaclFile shapesGraphFile = new ShaclFile(Configurator.getInstance().getBaseFolder().getCanonicalPath() + "/etc/ttl/KKG.ttl");
-				ShaclFile bigFile = new ShaclFile(configurator.getParm("properties","BIG_SHACL_FILE_PATH"));
+				ShaclFile bigFile = new ShaclFile(configurator.getXParm("properties/BIG_SHACL_FILE_PATH"));
 				bigFile.setContent("### SHAPES GRAPH FILE COPY ###\n" + shapesGraphFile.getContent() + "\n### SHACL FILE COPY ###\n" + shaclFile.getContent());
 				bigFile.validate(configurator);
 			}
 			// copy to the app folder
 			XmlFile appShaclFile = new XmlFile(shaclFolder,"shacl.ttl");
 			shaclFile.copyFile(appShaclFile);
-			configurator.setParm("system","shacl-created","true");
+			configurator.setXParm("system/shacl-created","true");
 		}
 		
 		return succeeds;

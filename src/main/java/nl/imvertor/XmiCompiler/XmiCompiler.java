@@ -72,7 +72,7 @@ public class XmiCompiler extends Step {
 
 		// check what file is passed on the command line.
 		
-		AnyFile umlFile = new AnyFile(configurator.getFile(configurator.getParm("cli", "umlfile")));
+		AnyFile umlFile = new AnyFile(configurator.getFile(configurator.getXParm("cli/umlfile")));
 		boolean mustReread = configurator.isTrue("cli", "refreshxmi", false);
 
 		EapFile eapFile = umlFile.getExtension().toLowerCase().equals("eap") ? new EapFile(umlFile) : null;
@@ -112,7 +112,7 @@ public class XmiCompiler extends Step {
 			runner.error(logger,"No such ZIP, XMI or EAP file");
 		} else {
 			String filespec = " " + passedFile + " (" + activeFileOrigin + ")";
-			activeFile = new XmlFile(configurator.getParm("properties","WORK_XMI_FOLDER") + File.separator + passedFile.getName() + ".xmi");
+			activeFile = new XmlFile(configurator.getXParm("properties/WORK_XMI_FOLDER") + File.separator + passedFile.getName() + ".xmi");
 			
 			if (passedFile instanceof EapFile) {
 				// EAP is provided
@@ -125,12 +125,12 @@ public class XmiCompiler extends Step {
 				String f2 = passedFile.getFileInfo();
 				if (!f1.equals(f2) || mustReread) {
 					runner.info(logger,"Reading" + filespec);
-					String projectname = configurator.getParm("cli", "owner") + ": " + configurator.getParm("cli", "project");
-					String modelname = (configurator.isTrue("cli", "sys_supportsexternal",true)) ? null : configurator.getParm("cli", "application");
+					String projectname = configurator.getXParm("cli/owner") + ": " + configurator.getXParm("cli/project");
+					String modelname = (configurator.isTrue("cli", "sys_supportsexternal",true)) ? null : configurator.getXParm("cli/application");
 							
 					// For development environment, export images here.
 					// The type of image is set to PNG
-					if (configurator.isTrue(configurator.getParm("cli", "createimagemap"))) 
+					if (configurator.isTrue(configurator.getXParm("cli/createimagemap"))) 
 						((EapFile) passedFile).setExportDiagrams(EapFile.EXPORT_IMAGE_TYPE_PNG);
 					else
 						((EapFile) passedFile).setExportDiagrams(EapFile.EXPORT_IMAGE_TYPE_NONE);
@@ -147,7 +147,7 @@ public class XmiCompiler extends Step {
 				}
 			} else if (passedFile instanceof ZipFile) {
 				// XMI is provided in compressed form
-				AnyFolder tempFolder = new AnyFolder(configurator.getParm("properties","WORK_ZIP_FOLDER"));
+				AnyFolder tempFolder = new AnyFolder(configurator.getXParm("properties/WORK_ZIP_FOLDER"));
 				((ZipFile) passedFile).decompress(tempFolder);
 				File[] files = tempFolder.listFiles(); // may be one file (xmi) or two (xmi and Images folder)
 				
@@ -177,7 +177,7 @@ public class XmiCompiler extends Step {
 			if (succeeds) {
 				// first copy this source file to xmi folder when requested; this does not include the images!
 				if (configurator.isTrue("cli","copyxmi",false)) {
-					File targetFile = new File(configurator.getParm("system","work-xmi-folder-path"),"model.xmi");
+					File targetFile = new File(configurator.getXParm("system/work-xmi-folder-path"),"model.xmi");
 					activeFile.copyFile(targetFile);
 				}
 				
@@ -185,8 +185,8 @@ public class XmiCompiler extends Step {
 				if (configurator.isTrue("cli","migrate",false)) 
 					migrateXMI(activeFile);
 				
-				configurator.setParm("system","xmi-export-file-path",activeFile.getCanonicalPath());
-				configurator.setParm("system","xmi-file-path",activeFile.getCanonicalPath() + ".compact.xmi");
+				configurator.setXParm("system/xmi-export-file-path",activeFile.getCanonicalPath());
+				configurator.setXParm("system/xmi-file-path",activeFile.getCanonicalPath() + ".compact.xmi");
 				
 				// now compact the XMI file: remove all irrelevant sections
 				runner.debug(logger,"CHAIN", "Compacting XMI: " + activeFile.getCanonicalPath());
@@ -213,8 +213,8 @@ public class XmiCompiler extends Step {
 	 * this is a full export of all packages; suboptimal and therefore replaced. 
 	 * 
 	private XmlFile exportEapToXmi(EapFile eapFile, XmlFile xmifile) throws Exception {
-		String ownerName = configurator.getParm("cli", "owner");
-		String projectName = configurator.getParm("cli", "project");
+		String ownerName = configurator.getXParm("cli/owner");
+		String projectName = configurator.getXParm("cli/project");
 		String pn = ownerName + ": " + projectName;
 		
 		eapFile.open();
@@ -300,7 +300,7 @@ public class XmiCompiler extends Step {
 	private void migrateXMI(XmlFile xmiFile) throws Exception {
 		AnyFile outFile = new AnyFile(File.createTempFile("migrateXMI.", ".xmi"));
 		outFile.deleteOnExit();
-		String xslFilePath = configurator.getXslPath(configurator.getParm("properties", "XMI_MIGRATE_XSLPATH"));
+		String xslFilePath = configurator.getXslPath(configurator.getXParm("properties/XMI_MIGRATE_XSLPATH"));
 		XslFile xslFile = new XslFile(xslFilePath);
 		runner.debug(logger,"CHAIN", "Migrating XMI: " + activeFile.getCanonicalPath());
 		Transformer transformer = new Transformer();

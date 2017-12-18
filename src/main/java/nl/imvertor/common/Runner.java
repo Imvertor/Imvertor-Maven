@@ -149,7 +149,7 @@ public class Runner {
 	public Integer getAppPhase() throws IOException, ConfiguratorException {
 		if (appPhase == -1) {
 			appPhase = 0;
-			String phase = Configurator.getInstance().getParm("appinfo", "phase",false);
+			String phase = Configurator.getInstance().getXParm("appinfo/phase",false);
 			try {appPhase = (phase != null) ? Integer.parseInt(phase) : appPhase;} catch (NumberFormatException e) {};
 		}
 		return appPhase;
@@ -196,7 +196,7 @@ public class Runner {
 		debugging = Configurator.getInstance().isTrue("cli","debug");
 		// debug is stored in debugmode
 		if (debugging) {
-			String debugmode = Configurator.getInstance().getParm("cli","debugmode"); // a string separated list of codes
+			String debugmode = Configurator.getInstance().getXParm("cli/debugmode"); // a string separated list of codes
 			debugmodes = StringUtils.split(debugmode.replace(" ", ""),';');
 		}
 	}	
@@ -226,7 +226,7 @@ public class Runner {
 	 * @throws IOException 
 	 */
 	public Boolean getReleasing() throws IOException, ConfiguratorException {
-		String r = Configurator.getInstance().getParm("cli","task",false);
+		String r = Configurator.getInstance().getXParm("cli/task",false);
 		return (r == null) ? false : r.equals("release");
 	}
 	
@@ -252,7 +252,7 @@ public class Runner {
 	 */
 	public void error(Logger logger, String text, Exception e, String id, String wiki) throws IOException, ConfiguratorException {
 		imvertorErrors += 1;
-		Configurator.getInstance().setParm("system", "error-count", String.valueOf(imvertorErrors),true);
+		Configurator.getInstance().setXParm("system/error-count", String.valueOf(imvertorErrors),true);
 		messenger.writeMsg(logger.getName(), "ERROR", "", text, id, wiki);
 		logger.error(text,e);
 	}
@@ -272,13 +272,13 @@ public class Runner {
 	 */
 	public void error(Logger logger, String text, String id, String wiki) throws IOException, ConfiguratorException {
 		imvertorErrors += 1;
-		Configurator.getInstance().setParm("system", "error-count", String.valueOf(imvertorErrors),true);
+		Configurator.getInstance().setXParm("system/error-count", String.valueOf(imvertorErrors),true);
 		messenger.writeMsg(logger.getName(), "ERROR", "", text, id, wiki);
 		logger.error(text);
 	}
 	public void error(Logger logger, String text) throws IOException, ConfiguratorException {
 		imvertorErrors += 1;
-		Configurator.getInstance().setParm("system", "error-count", String.valueOf(imvertorErrors),true);
+		Configurator.getInstance().setXParm("system/error-count", String.valueOf(imvertorErrors),true);
 		messenger.writeMsg(logger.getName(), "ERROR", "", text, null,null);
 		logger.error(text);
 	}
@@ -295,7 +295,7 @@ public class Runner {
 	 */
 	public void warn(Logger logger, String text, String id, String wiki) throws IOException, ConfiguratorException {
 		imvertorWarnings += 1;
-		Configurator.getInstance().setParm("system", "warning-count", String.valueOf(imvertorWarnings),true);
+		Configurator.getInstance().setXParm("system/warning-count", String.valueOf(imvertorWarnings),true);
 		messenger.writeMsg(logger.getName(), "WARN", "", text, id, wiki);
 		logger.warn(text);
 	}
@@ -364,7 +364,7 @@ public class Runner {
 	public void fatal(Logger logger, String text, Exception e, String id, String wiki)  {
 		try {
 			imvertorErrors += 1;
-			Configurator.getInstance().setParm("system", "error-count", String.valueOf(imvertorErrors),true);
+			Configurator.getInstance().setXParm("system/error-count", String.valueOf(imvertorErrors),true);
 			messenger.writeMsg(logger.getName(), "FATAL", "", text, id, wiki);
 			logger.fatal(text);
 			info(logger, "");
@@ -464,7 +464,7 @@ public class Runner {
 		if (!internetAvailable) {
 			debug(logger,"CHAIN", "Try internet connection");
 			
-			String proxyTestUrl = Configurator.getInstance().getParm("cli", "proxyurl");
+			String proxyTestUrl = Configurator.getInstance().getXParm("cli/proxyurl");
 			
 			URL address = new URL(proxyTestUrl);
 			try {

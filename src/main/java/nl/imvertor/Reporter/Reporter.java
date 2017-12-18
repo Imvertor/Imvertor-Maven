@@ -52,12 +52,12 @@ public class Reporter extends Step {
 		runner.info(logger,"Compiling final report");
 
 		// copy the HTML stuff to the result documentation workfolder
-		String owner = configurator.getParm("cli", "owner");
-		String sourceHtml = configurator.getParm("system", "configuration-owner-web-folder");
+		String owner = configurator.getXParm("cli/owner");
+		String sourceHtml = configurator.getXParm("system/configuration-owner-web-folder");
 		AnyFolder sourceHtmlFolder = new AnyFolder(sourceHtml);
 		if (!sourceHtmlFolder.isDirectory())
 			throw new Exception("Not a folder: " + sourceHtmlFolder.getCanonicalPath());
-		OutputFolder targetHtmlFolder = new OutputFolder(configurator.getParm("system","work-doc-folder-path") + "/web");
+		OutputFolder targetHtmlFolder = new OutputFolder(configurator.getXParm("system/work-doc-folder-path") + "/web");
 		if (targetHtmlFolder.exists()) 
 			targetHtmlFolder.clear(false);
 		sourceHtmlFolder.copy(targetHtmlFolder);

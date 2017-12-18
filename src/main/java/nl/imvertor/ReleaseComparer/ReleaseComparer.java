@@ -56,7 +56,7 @@ public class ReleaseComparer extends Step {
 		// add the generated XSL to the catalog
 		// note that the catalog is global to all steps.
 		
-		String url = (new File(configurator.getParm("properties", "COMPARE_GENERATED_XSLPATH"))).toURI().toURL().toString();
+		String url = (new File(configurator.getXParm("properties/COMPARE_GENERATED_XSLPATH"))).toURI().toURL().toString();
 		configurator.addCatalogMap(
 				"http://www.imvertor.org/imvertor/1.0/xslt/compare/compare-generated.xsl", 
 				url);
@@ -71,9 +71,9 @@ public class ReleaseComparer extends Step {
 		// save any changes to the work configuration for report and future steps
 	    configurator.save();
 	    
-	    XmlFile ctrlNameFile = new XmlFile(configurator.getParm("properties","WORK_COMPARE_CONTROL_NAME_FILE"));
-		XmlFile testNameFile = new XmlFile(configurator.getParm("properties","WORK_COMPARE_TEST_NAME_FILE"));
-		XmlFile infoConfig   = new XmlFile(configurator.getParm("properties","IMVERTOR_COMPARE_CONFIG"));
+	    XmlFile ctrlNameFile = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_CONTROL_NAME_FILE"));
+		XmlFile testNameFile = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_TEST_NAME_FILE"));
+		XmlFile infoConfig   = new XmlFile(configurator.getXParm("properties/IMVERTOR_COMPARE_CONFIG"));
 		
 		Transformer stepTransformer = new Transformer();
 		stepTransformer.setXslParm("ctrl-name-mapping-filepath", ctrlNameFile.toURI().toString());
@@ -87,20 +87,20 @@ public class ReleaseComparer extends Step {
 	}
 	
 	private boolean releaseCompare() throws Exception {
-		configurator.setParm("system", "compare-label", "release",true);
+		configurator.setXParm("system/compare-label", "release",true);
 		
-		String cmp = configurator.getParm("cli","compare",false);
+		String cmp = configurator.getXParm("cli/compare",false);
 		Boolean releaseCheck = (cmp != null) && cmp.equals("release");
 		
 		if (releaseCheck) { // a request is made to produce a release comparison
-			String releaseString = configurator.getParm("cli","comparewith",false);
+			String releaseString = configurator.getXParm("cli/comparewith",false);
 			//Boolean release = releaseString != null && !releaseString.equals("00000000");
 			
-			String curReleaseString = configurator.getParm("appinfo","release");
+			String curReleaseString = configurator.getXParm("appinfo/release");
 			
 			// This step succeeds when a release may be made, depending on possible differences in the most recent and current model file 
 			XmlFile oldModelFile = new XmlFile(configurator.getApplicationFolder(releaseString), "etc/model.imvert.xml");
-			XmlFile newModelFile = new XmlFile(configurator.getParm("properties", "WORK_SCHEMA_FILE"));
+			XmlFile newModelFile = new XmlFile(configurator.getXParm("properties/WORK_SCHEMA_FILE"));
 		
 			if (oldModelFile.exists()) {
 				if (releaseString.equals(curReleaseString))
@@ -118,15 +118,15 @@ public class ReleaseComparer extends Step {
 	
 	private boolean docReleaseCompare() throws Exception {
 		// Set the compare label; this label is used in temporary file names. eg. docRelease
-		configurator.setParm("system", "compare-label", "documentation",true); 
+		configurator.setXParm("system/compare-label", "documentation",true); 
 		
 		// set the docrelease. This is either not specified, or 00000000, or a valid date in the form YYYYMMDD
-		String docreleaseString = configurator.getParm("cli","docrelease",false);
+		String docreleaseString = configurator.getXParm("cli/docrelease",false);
 		Boolean docRelease = docreleaseString != null && !docreleaseString.equals("00000000");
 		
 		// This step succeeds when a release may be made, depending on possible differences in the most recent and current model file 
 		XmlFile oldModelFile = new XmlFile(configurator.getApplicationFolder(), "etc/model.imvert.xml");
-		XmlFile infoSchemaFile = new XmlFile(configurator.getParm("properties", "WORK_SCHEMA_FILE"));
+		XmlFile infoSchemaFile = new XmlFile(configurator.getXParm("properties/WORK_SCHEMA_FILE"));
 		
 		if (docRelease) { // a request is made to produce a docrelease
 			runner.info(logger,"Comparing releases for documentation release");
@@ -149,12 +149,12 @@ public class ReleaseComparer extends Step {
 	private boolean supplierCompare() throws Exception {
 
 		// Set the compare label; this label is used in temporary file names. eg. docRelease
-		configurator.setParm("system", "compare-label", "derivation",true); 
+		configurator.setXParm("system/compare-label", "derivation",true); 
 					
-		String subpath = configurator.getParm("appinfo","supplier-etc-model-imvert-subpath",false); // sample format: "green/SampleBase/20130318"
+		String subpath = configurator.getXParm("appinfo/supplier-etc-model-imvert-subpath",false); // sample format: "green/SampleBase/20130318"
 		String path = configurator.getOutputFolder() + "/applications/" + subpath + "/etc/model.imvert.xml"; // sample format: "c:\applications\green/SampleBase/20130318/etc/system.imvert.xml"
 		
-		String cmp = configurator.getParm("cli","compare",false);
+		String cmp = configurator.getXParm("cli/compare",false);
 		Boolean supplierCheck = (cmp != null) && cmp.equals("supplier");
 		
 		if (supplierCheck) {
@@ -163,7 +163,7 @@ public class ReleaseComparer extends Step {
 			else if (subpath.length() > 0) {
 				
 				XmlFile supplierModelFile = new XmlFile(path);
-				XmlFile clientModelFile = new XmlFile(configurator.getParm("properties", "WORK_SCHEMA_FILE"));
+				XmlFile clientModelFile = new XmlFile(configurator.getXParm("properties/WORK_SCHEMA_FILE"));
 				
 				if (supplierCheck) // a request is made to check differences with the supplier
 					if (supplierModelFile.exists()) { 

@@ -51,8 +51,8 @@ public class Step {
 		// create a transformer
 		String sn = configurator.getActiveStepName();
 		String infile = configurator.getConfigFilepath(); 
-		String outfile = configurator.getParm("system","work-rep-folder-path") + "/" + sn + "-report.xml"; 
-		String xslfile = configurator.getParm("system","xsl-folder-path") + "/" + sn + "/" + sn + "-report.xsl"; 
+		String outfile = configurator.getXParm("system/work-rep-folder-path") + "/" + sn + "-report.xml"; 
+		String xslfile = configurator.getXParm("system/xsl-folder-path") + "/" + sn + "/" + sn + "-report.xsl"; 
 		return transformer.transform(infile,outfile,xslfile,null);
 	}
 	

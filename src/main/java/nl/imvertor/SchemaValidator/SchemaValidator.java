@@ -50,7 +50,7 @@ public class SchemaValidator extends Step {
 		prepare();
 
 		// set some status info
-		configurator.setParm("appinfo","schema-validation-status",
+		configurator.setXParm("appinfo/schema-validation-status",
 				configurator.isTrue("cli","validateschema") ? "requested" : runner.isFinal() ? "required" : 
 				configurator.isTrue("cli","createxmlschema") ? "skipped" : "schemas not generated");
 		
@@ -76,7 +76,7 @@ public class SchemaValidator extends Step {
 	 */
 	public boolean validateSchemas() throws Exception {
 		
-		AnyFolder xsdApplicationFolder = new AnyFolder(configurator.getParm("system","xsd-application-folder-path"));
+		AnyFolder xsdApplicationFolder = new AnyFolder(configurator.getXParm("system/xsd-application-folder-path"));
 		
 		Vector<ErrorHandlerMessage> vl = validateSchemasSub(xsdApplicationFolder);
 		if (vl.size() != 0) 
@@ -96,7 +96,7 @@ public class SchemaValidator extends Step {
 					break;
 			}
 		}
-		configurator.setParm("appinfo","schema-error-count", vl.size());
+		configurator.setXParm("appinfo/schema-error-count", vl.size());
 		return (vl.size() == 0) ? true : false;
 	}
 	

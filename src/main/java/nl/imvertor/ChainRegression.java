@@ -46,7 +46,7 @@ public class ChainRegression {
 			configurator.getRunner().prepare();
 			
 			// TODO temporary
-			configurator.setParm("appinfo", "release", "99999999");
+			configurator.setXParm("appinfo/release", "99999999");
 			
 			// parameter processing
 			configurator.getCli(RegressionExtractor.STEP_NAME); // builds a single XML file for integral comparison of ref and tst.
@@ -57,7 +57,7 @@ public class ChainRegression {
 		
 		    configurator.save();
 		   
-		    configurator.getRunner().info(logger,"Processing " + configurator.getParm("cli","tstfolder"));
+		    configurator.getRunner().info(logger,"Processing " + configurator.getXParm("cli/tstfolder"));
 		    
 		    boolean succeeds = true;
 		    		    

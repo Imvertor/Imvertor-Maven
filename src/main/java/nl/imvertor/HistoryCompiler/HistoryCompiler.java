@@ -72,12 +72,12 @@ public class HistoryCompiler extends Step {
 	 */
 	private boolean mergeVersionsInfo() throws Exception {
 		// transform the Excel holding history info for this application to XML specification
-		ExcelFile ef = new ExcelFile(configurator.getParm("properties","USER_HISTORY_FILE"));
+		ExcelFile ef = new ExcelFile(configurator.getXParm("properties/USER_HISTORY_FILE"));
 		if (ef.exists()) {
 	
 			if (ef.isValid()) {
 				File hisXmlFile = File.createTempFile("mergeVersionsInfo.", ".xml");
-				configurator.setParm("step","HIS_XML_FILE_PATH",hisXmlFile.getCanonicalPath());
+				configurator.setXParm("step/HIS_XML_FILE_PATH",hisXmlFile.getCanonicalPath());
 				hisXmlFile.deleteOnExit();
 				ef.toXmlFile(hisXmlFile.getCanonicalPath());
 				
@@ -91,8 +91,8 @@ public class HistoryCompiler extends Step {
 				succeeds = succeeds ? transformer.transformStep("properties/WORK_DEPENDENCIES_FILE","properties/WORK_VERSIONS_FILE", "properties/IMVERTOR_VERSIONS_MERGER_XSLPATH") : false;
 		
 				// copy the file to the etc folder for future reference and comparisons
-				AnyFolder etcFolder = new AnyFolder(configurator.getParm("system","work-etc-folder-path"));
-				XmlFile infoVersionsFile = new XmlFile(configurator.getParm("properties", "WORK_HISTORY_FILE"));	
+				AnyFolder etcFolder = new AnyFolder(configurator.getXParm("system/work-etc-folder-path"));
+				XmlFile infoVersionsFile = new XmlFile(configurator.getXParm("properties/WORK_HISTORY_FILE"));	
 				XmlFile hisModelFile = new XmlFile(etcFolder,"history.imvert.xml");	
 				infoVersionsFile.copyFile(hisModelFile);
 				

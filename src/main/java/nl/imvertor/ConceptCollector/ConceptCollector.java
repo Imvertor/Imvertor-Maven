@@ -47,26 +47,26 @@ public class ConceptCollector extends Step {
 		// This is the file holding imvert representation of all concepts
 		// The parameter file holds a name in which the release date is placed between [YYYYMMDD]. 
 		
-		String infoConceptsFilePath = StringUtils.replace(configurator.getParm("properties","CONCEPT_DOCUMENTATION_PATH"), "[release]", configurator.getParm("appinfo","release"));
+		String infoConceptsFilePath = StringUtils.replace(configurator.getXParm("properties/CONCEPT_DOCUMENTATION_PATH"), "[release]", configurator.getXParm("appinfo/release"));
 		infoConceptsFile = new XmlFile(infoConceptsFilePath);
-	    configurator.setParm("appinfo","concepts-file",infoConceptsFile.getCanonicalPath()); 
+	    configurator.setXParm("appinfo/concepts-file",infoConceptsFile.getCanonicalPath()); 
 		
 	    // determine if concepts must be read.
 	    // This is when forced, of when the concepts file is not available, or when the application phase is 3 (final).
-	    boolean block = configurator.getParm("cli","refreshconcepts").equals("never");
+	    boolean block = configurator.getXParm("cli/refreshconcepts").equals("never");
 	    boolean forc = configurator.isTrue("cli","refreshconcepts");
 	    boolean must = (!infoConceptsFile.isFile() || !infoConceptsFile.isWellFormed() || infoConceptsFile.xpath("//*:concept").equals(""));
-	    boolean finl = configurator.getParm("appinfo", "phase").equals("3"); 	
+	    boolean finl = configurator.getXParm("appinfo/phase").equals("3"); 	
 	   
-	    if (forc) configurator.setParm("appinfo", "concepts-extraction-reason", "forced by user");
-	    if (must) configurator.setParm("appinfo", "concepts-extraction-reason", "must be refreshed");
-	    if (finl) configurator.setParm("appinfo", "concepts-extraction-reason", "final release");
+	    if (forc) configurator.setXParm("appinfo/concepts-extraction-reason", "forced by user");
+	    if (must) configurator.setXParm("appinfo/concepts-extraction-reason", "must be refreshed");
+	    if (finl) configurator.setXParm("appinfo/concepts-extraction-reason", "final release");
 	    
 	    if (!block && (forc || must || finl) ) {
 	    	
 	    	runner.info(logger,"Collecting concepts");
 	    	
-	    	configurator.setParm("appinfo", "concepts-extraction", "true");
+	    	configurator.setXParm("appinfo/concepts-extraction", "true");
 	    	
 			// This implementation accsses the internet, and reads RDF statements. Check if internet s avilable.
 			if (!runner.activateInternet())
@@ -82,9 +82,9 @@ public class ConceptCollector extends Step {
 			//TODO this extracts the RDF XML to a location in the managed output folder. Better is to check the common managed input folder, copy that and procesds, or recomnpile when not available in common input folder?
 			boolean okay = transformer.transformStep("system/cur-imvertor-filepath", "appinfo/concepts-file", "properties/IMVERTOR_EXTRACTCONCEPTS_XSLPATH");
 			if (okay)
-				configurator.setParm("appinfo", "concepts-extraction-succeeds", "true");
+				configurator.setXParm("appinfo/concepts-extraction-succeeds", "true");
 			else {
-				configurator.setParm("appinfo", "concepts-extraction-succeeds", "false");
+				configurator.setXParm("appinfo/concepts-extraction-succeeds", "false");
 				infoConceptsFile.delete(); 
 			}
 			succeeds = succeeds ? okay : false ;
@@ -93,9 +93,9 @@ public class ConceptCollector extends Step {
 			configurator.setStepDone(STEP_NAME);
 			
 	    } else {
-			configurator.setParm("appinfo", "concepts-extraction", "false");
-			configurator.setParm("appinfo", "concepts-extraction-reason", (block ? "blocked" : "precompiled"));
-			configurator.setParm("appinfo", "concepts-extraction-succeeds", "true");
+			configurator.setXParm("appinfo/concepts-extraction", "false");
+			configurator.setXParm("appinfo/concepts-extraction-reason", (block ? "blocked" : "precompiled"));
+			configurator.setXParm("appinfo/concepts-extraction-succeeds", "true");
 		}
 	
 	    // save any changes to the work configuration for report and future steps

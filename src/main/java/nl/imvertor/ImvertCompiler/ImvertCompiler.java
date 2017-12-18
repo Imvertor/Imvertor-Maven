@@ -56,7 +56,7 @@ public class ImvertCompiler extends Step {
 		// a compile list of steps to create all base files for final processing.
 		if (!configurator.isTrue("cli", "modelistraced")) {
 			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_PRETRACE_FILE", "properties/IMVERTOR_PRETRACE_XSLPATH","system/cur-imvertor-filepath") : false ;
-			configurator.setParm("system", "traces-available", "yes");
+			configurator.setXParm("system/traces-available", "yes");
 		}
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_DOMAINS_FILE", "properties/IMVERTOR_DOMAINS_XSLPATH","system/cur-imvertor-filepath") : false ;
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_DEPENDENCIES_FILE", "properties/IMVERTOR_DEPENDENCIES_XSLPATH") : false ;
@@ -81,14 +81,14 @@ public class ImvertCompiler extends Step {
 			if (configurator.isTrue("cli","validatederivation")) 
 				succeeds = succeeds ? transformer.transformStep("properties/WORK_EMBELLISH_FILE", "properties/WORK_DERIVATION_FILE", "properties/IMVERTOR_DERIVATION_XSLPATH") : false ;
 			
-			AnyFolder etcFolder = new AnyFolder(configurator.getParm("system","work-etc-folder-path"));
+			AnyFolder etcFolder = new AnyFolder(configurator.getXParm("system/work-etc-folder-path"));
 			AnyFolder workFolder = new AnyFolder(System.getProperty("work.dir"));
 			
-			XmlFile infoEmbellishFile = new XmlFile(configurator.getParm("properties", "WORK_EMBELLISH_FILE"));
+			XmlFile infoEmbellishFile = new XmlFile(configurator.getXParm("properties/WORK_EMBELLISH_FILE"));
 			XmlFile oldEmbellishFile = new XmlFile(etcFolder,"system.imvert.xml");
 			infoEmbellishFile.copyFile(oldEmbellishFile); // IM-172 compare must work on simpler imvertor format
 			
-			XmlFile infoImageMapFile = new XmlFile(configurator.getParm("properties", "WORK_BASE_IMAGEMAP_FILE"));
+			XmlFile infoImageMapFile = new XmlFile(configurator.getXParm("properties/WORK_BASE_IMAGEMAP_FILE"));
 			XmlFile oldImageMapFile = new XmlFile(etcFolder,"system.imagemap.xml");
 			AnyFolder infoImageFolder = new AnyFolder(workFolder,"xmi" + File.separator + "Images");
 			AnyFolder oldImageFolder = new AnyFolder(etcFolder,"Images");
@@ -97,17 +97,17 @@ public class ImvertCompiler extends Step {
 				infoImageFolder.copy(oldImageFolder);
 			}
 				
-			XmlFile infoSupplierFile = new XmlFile(configurator.getParm("properties", "WORK_SUPPLIER_FILE"));
+			XmlFile infoSupplierFile = new XmlFile(configurator.getXParm("properties/WORK_SUPPLIER_FILE"));
 			XmlFile oldSupplierFile = new XmlFile(etcFolder,"supplier.imvert.xml");
 			if (infoSupplierFile.isFile()) infoSupplierFile.copyFile(oldSupplierFile); // #488281 optimization of supplier access
 	    	
-			XmlFile infoSchemaFile = new XmlFile(configurator.getParm("properties", "WORK_SCHEMA_FILE"));
+			XmlFile infoSchemaFile = new XmlFile(configurator.getXParm("properties/WORK_SCHEMA_FILE"));
 			XmlFile oldModelFile = new XmlFile(etcFolder,"model.imvert.xml");
 			infoSchemaFile.copyFile(oldModelFile); // IM-169 schema based imvertor output
 			
 			//TODO copy the xsd to the etc. folder
-			AnyFolder sourceXsdFolder = new AnyFolder(configurator.getParm("properties", "IMVERTOR_APPLICATION_LOCATION_SOURCE")); 
-			AnyFolder targetXsdFolder = new AnyFolder(configurator.getParm("properties", "IMVERTOR_APPLICATION_LOCATION_TARGET")); 
+			AnyFolder sourceXsdFolder = new AnyFolder(configurator.getXParm("properties/IMVERTOR_APPLICATION_LOCATION_SOURCE")); 
+			AnyFolder targetXsdFolder = new AnyFolder(configurator.getXParm("properties/IMVERTOR_APPLICATION_LOCATION_TARGET")); 
 			sourceXsdFolder.copy(targetXsdFolder);
 		}
 		

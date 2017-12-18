@@ -95,7 +95,7 @@ public class ChainTranslateAndReport {
 		
 		    configurator.save();
 		   
-		    configurator.getRunner().info(logger,"Processing application " + configurator.getParm("cli","project") +"/"+ configurator.getParm("cli","application"));
+		    configurator.getRunner().info(logger,"Processing application " + configurator.getXParm("cli/project") +"/"+ configurator.getXParm("cli/application"));
 		    configurator.getRunner().setDebug();
 		    
 		    boolean succeeds = true;
@@ -146,7 +146,7 @@ public class ChainTranslateAndReport {
 				    succeeds = configurator.prepareRelease() && succeeds;
 					
 					// get all concept info to be used in validation: URI references must be valid.
-				    if (!configurator.getParm("cli","refreshconcepts").equals("never")) 
+				    if (!configurator.getXParm("cli/refreshconcepts").equals("never")) 
 				    	succeeds = succeeds && (new ConceptCollector()).run();
 					
 					// compile a final usable representation of the input file for XML schema generation.
@@ -172,7 +172,7 @@ public class ChainTranslateAndReport {
 						succeeds = succeeds && (new HistoryCompiler()).run();
 								
 					// compile Office documentation 
-					if (!configurator.getParm("cli","createoffice").equals("none"))
+					if (!configurator.getXParm("cli/createoffice").equals("none"))
 						succeeds = succeeds && (new OfficeCompiler()).run();
 			
 					// compile templates and reports on UML EAP 

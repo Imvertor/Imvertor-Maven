@@ -76,13 +76,13 @@ public class YamlCompiler extends Step {
 		boolean succeeds = true;
 		
 		// Create the folder; it is not expected to exist yet.
-		AnyFolder yamlFolder = new AnyFolder(configurator.getParm("system","work-yaml-folder-path"));
+		AnyFolder yamlFolder = new AnyFolder(configurator.getXParm("system/work-yaml-folder-path"));
 		yamlFolder.mkdirs();
 				
-		AnyFolder yamlApplicationFolder = new AnyFolder(configurator.getParm("properties","RESULT_YAML_APPLICATION_FOLDER"));
+		AnyFolder yamlApplicationFolder = new AnyFolder(configurator.getXParm("properties/RESULT_YAML_APPLICATION_FOLDER"));
 		yamlApplicationFolder.mkdirs();
 		
-		configurator.setParm("system","yaml-folder-path", yamlApplicationFolder.toURI().toString());
+		configurator.setXParm("system/yaml-folder-path", yamlApplicationFolder.toURI().toString());
 	
 		runner.debug(logger,"CHAIN","Generating YAML to " + yamlApplicationFolder);
 		
@@ -91,9 +91,9 @@ public class YamlCompiler extends Step {
 			
 		if (succeeds) {
 			// concatenate
-			AnyFile headerFile = new AnyFile(configurator.getParm("properties", "RESULT_YAMLHEADER_FILE_PATH"));
-			AnyFile bodyFile = new AnyFile(configurator.getParm("properties", "RESULT_YAMLBODY_FILE_PATH"));
-			YamlFile yamlFile = new YamlFile(configurator.getParm("properties", "RESULT_YAML_FILE_PATH"));
+			AnyFile headerFile = new AnyFile(configurator.getXParm("properties/RESULT_YAMLHEADER_FILE_PATH"));
+			AnyFile bodyFile = new AnyFile(configurator.getXParm("properties/RESULT_YAMLBODY_FILE_PATH"));
+			YamlFile yamlFile = new YamlFile(configurator.getXParm("properties/RESULT_YAML_FILE_PATH"));
 			
 			// validate
 			String hc = headerFile.getContent();
@@ -111,7 +111,7 @@ public class YamlCompiler extends Step {
 			XmlFile appYamlFile = new XmlFile(yamlFolder,"yaml.ttl");
 			yamlFile.copyFile(appYamlFile);
 		} 
-		configurator.setParm("system","yaml-created",succeeds);
+		configurator.setXParm("system/yaml-created",succeeds);
 		
 		return succeeds;
 	}
