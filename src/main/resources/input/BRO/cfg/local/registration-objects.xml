@@ -27,6 +27,11 @@
             <name lang="en">Sample object 2</name>
             <abbrev>SAMPLE2</abbrev>
         </registratieobject>
+        <registratieobject>
+            <name lang="nl">Voorbeeld BWB</name>
+            <name lang="en">Sample BWB</name>
+            <abbrev>SAMPLEBWB</abbrev>
+        </registratieobject>
     </domein>
     
     <domein>
