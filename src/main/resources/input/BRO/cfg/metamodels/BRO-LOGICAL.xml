@@ -12,6 +12,19 @@
     
     <name>BRO</name>
     
+    <profiles>
+        <profile lang="nl"> 
+            <id>NBGNL</id>
+            <release>0.9</release>
+            <desc>NEN3610-BRO Grouping (NL)</desc> 
+        </profile>
+        <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+            <id>NBGEN</id>
+            <release>0.9</release>
+            <desc>NEN3610-BRO Grouping (EN)</desc>
+        </profile>
+    </profiles>
+    
    <!-- <stereotypes>
         <stereo id="stereotype-name-IMBRO/A">
             <name lang="en">IMBRO/A</name>

@@ -31,14 +31,14 @@
     </desc>
     
     <profiles>
-        <profile lang="nl"> <!-- ACTUALLY, there is no dutch variant -->
-            <id>NEN3610</id>
-            <release>1.0</release>
+        <profile lang="nl">
+            <id>NGNL</id>
+            <release>0.9</release>
             <desc>NEN3610 Grouping (NL)</desc> 
         </profile>
         <profile lang="en">
-            <id>NEN3610</id>
-            <release>1.0</release>
+            <id>NGEN</id>
+            <release>0.9</release>
             <desc>NEN3610 Grouping (EN)</desc>
         </profile>
     </profiles>

@@ -33,6 +33,19 @@
    
    <desc lang="en">Metamodel for KING/VNG information models: semantisch informatiemodel</desc>
    
+   <profiles>
+      <profile lang="nl"> 
+         <id>MIGNL</id>
+         <release>1.0</release>
+         <desc>MIG Grouping (NL)</desc> 
+      </profile>
+      <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+         <id>MIGEN</id>
+         <release>1.0</release>
+         <desc>MIG Grouping (EN)</desc>
+      </profile>
+   </profiles>
+   
    <!-- 
       The normal direction of the composition is from Whole to Part (source to target). 
       If this is reversed (as is discussied in Task #487339), set this parameter to "part", otherwise set to "whole" (default).

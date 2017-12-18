@@ -127,7 +127,7 @@
         </stereo>
         
         <stereo id="stereotype-name-union">
-            <name lang="nl">Union</name>
+            <name lang="nl">Keuze</name>
             <name lang="en">Union</name>
             <desc lang="en">
                 Structured data type without identity of which exactly one of the
@@ -142,7 +142,7 @@
             <construct>datatype</construct>
         </stereo>
         <stereo id="stereotype-name-union-element">
-            <name lang="nl">Union element</name>
+            <name lang="nl">Keuze element</name>
             <name lang="en">UnionElement</name>
             <desc lang="en">
                 A part of an Union expressed in a class of a class (attribute) represented within the Union.

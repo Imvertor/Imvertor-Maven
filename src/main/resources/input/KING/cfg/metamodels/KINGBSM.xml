@@ -27,6 +27,19 @@
    <desc lang="nl">Metamodel voor KING/VNG informatie modellen: bericht specificatie model</desc>
    <desc lang="en">Metamodel for KING/VNG information models: bericht specificatie model</desc>
    
+   <profiles>
+      <profile lang="nl"> 
+         <id>MBGNL</id>
+         <release>1.0</release>
+         <desc>MBG Grouping (NL)</desc> 
+      </profile>
+      <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+         <id>MBGEN</id>
+         <release>1.0</release>
+         <desc>MBG Grouping (EN)</desc>
+      </profile>
+   </profiles>
+   
    <stereotypes xml:id="stereotypes">
 
       <!-- packages override standard grouping -->

@@ -25,6 +25,19 @@
     <desc lang="en">Metamodel for Kadaster specific NEN3610 extensions</desc>
     <desc lang="nl">Metamodel voor Kadaster specifieke NEN3610 uitbreidingen</desc>
     
+    <profiles>
+        <profile lang="nl"> 
+            <id>NKGNL</id>
+            <release>0.9</release>
+            <desc>NEN3610-KAD Grouping (NL)</desc> 
+        </profile>
+        <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+            <id>NKGEN</id>
+            <release>0.9</release>
+            <desc>NEN3610-KAD Grouping (EN)</desc>
+        </profile>
+    </profiles>
+    
     <stereotypes xml:id="stereotypes">
     
         <stereo id="stereotype-name-koppelklasse">

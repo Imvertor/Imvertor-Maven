@@ -36,12 +36,12 @@
     
     <profiles>
         <profile lang="nl">
-            <id>KADNL</id>
+            <id>KGNL</id>
             <release>0.9</release>
             <desc>Kadaster Grouping (NL)</desc> 
         </profile>
         <profile lang="en">
-            <id>KADEN</id>
+            <id>KGEN</id>
             <release>0.9</release>
             <desc>Kadaster Grouping (EN)</desc>
         </profile>

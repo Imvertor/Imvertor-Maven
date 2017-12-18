@@ -33,6 +33,19 @@
   
     <composition-direction-source>part</composition-direction-source>
     
+    <profiles>
+        <profile lang="nl"> 
+            <id>MUGNL</id>
+            <release>1.0</release>
+            <desc>MUG Grouping (NL)</desc> 
+        </profile>
+        <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+            <id>MUGEN</id>
+            <release>1.0</release>
+            <desc>MUG Grouping (EN)</desc>
+        </profile>
+    </profiles>
+    
     <!--
     <naming>
         <package>
