@@ -29,8 +29,8 @@ import nl.imvertor.ConfigCompiler.ConfigCompiler;
 import nl.imvertor.EapCompiler.EapCompiler;
 import nl.imvertor.HistoryCompiler.HistoryCompiler;
 import nl.imvertor.ImvertCompiler.ImvertCompiler;
+import nl.imvertor.ModelHistoryAnalyzer.ModelHistoryAnalyzer;
 import nl.imvertor.OfficeCompiler.OfficeCompiler;
-import nl.imvertor.ReadmeAnalyzer.ReadmeAnalyzer;
 import nl.imvertor.ReadmeCompiler.ReadmeCompiler;
 import nl.imvertor.ReleaseComparer.ReleaseComparer;
 import nl.imvertor.ReleaseCompiler.ReleaseCompiler;
@@ -73,7 +73,7 @@ public class ChainTranslateAndReport {
 			configurator.getCli(XmiCompiler.STEP_NAME);
 			configurator.getCli(XmiTranslator.STEP_NAME);
 			configurator.getCli(Validator.STEP_NAME);
-			configurator.getCli(ReadmeAnalyzer.STEP_NAME);
+			configurator.getCli(ModelHistoryAnalyzer.STEP_NAME);
 			configurator.getCli(ConceptCollector.STEP_NAME);
 			configurator.getCli(ImvertCompiler.STEP_NAME);
 			configurator.getCli(XsdCompiler.STEP_NAME);
@@ -136,8 +136,9 @@ public class ChainTranslateAndReport {
 			    	if (true) // TODO must add condition here
 			    		succeeds = succeeds && (new ApcModifier()).run();
 					
-					// analyze the readme file. this records the state of the previous release.
-				    succeeds = succeeds && (new ReadmeAnalyzer()).run();
+					// analyze the model history file. 
+			    	// this records the state of the previous release.
+				    succeeds = succeeds && (new ModelHistoryAnalyzer()).run();
 					
 					// check if we can start the release, i.e. overwrite the contents of the application folder
 					// this is not allowed when previous release was a release, no errors, and in phase 3.

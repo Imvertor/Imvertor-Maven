@@ -35,13 +35,15 @@
     
     <xsl:template match="/config">
         <report>
-            <step-display-name>Readme analyzer</step-display-name>
+            <step-display-name>Model history analyzer</step-display-name>
             <summary>
                 <info label="Previous application release">
                     <!-- These parameters have been set by the ReadmeAnalyzer. -->
                     <xsl:sequence select="imf:report-key-label('Phase', 'appinfo','previous-phase')"/>
                     <xsl:sequence select="imf:report-key-label('Errors', 'appinfo','previous-errors')"/>
+                    <xsl:sequence select="imf:report-key-label('Release', 'appinfo','previous-release')"/>
                     <xsl:sequence select="imf:report-key-label('Date', 'appinfo','previous-date')"/>
+                    <xsl:sequence select="imf:report-key-label('Imvertor', 'appinfo','previous-imvertor')"/>
                 </info>
             </summary>
         </report>

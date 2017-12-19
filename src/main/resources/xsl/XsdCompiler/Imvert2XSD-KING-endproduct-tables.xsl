@@ -18,7 +18,15 @@
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:imvert="http://www.imvertor.org/schema/system" xmlns:ext="http://www.imvertor.org/xsl/extensions" xmlns:imf="http://www.imvertor.org/xsl/functions" xmlns:ep="http://www.imvertor.org/schema/endproduct" exclude-result-prefixes="#all" version="2.0">
+<xsl:stylesheet 
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xmlns:imvert="http://www.imvertor.org/schema/system" 
+    xmlns:ext="http://www.imvertor.org/xsl/extensions" 
+    xmlns:imf="http://www.imvertor.org/xsl/functions" 
+    xmlns:ep="http://www.imvertor.org/schema/endproduct" 
+    exclude-result-prefixes="#all" 
+    version="2.0">
 
     <!-- 
        Produce a table for each messagetype.
@@ -32,7 +40,7 @@
 
     <xsl:variable name="quot"><!--'--></xsl:variable>
 
-    <xsl:template match="/ep:message-set">
+    <xsl:template match="/ep:message-sets">
         <html>
             <head>
                 <meta charset="UTF-8"/>
@@ -91,12 +99,12 @@
                     <li>Patch: <xsl:value-of select="ep:patch-number"/></li>
                     <li>Release: <xsl:value-of select="ep:release"/></li>
                 </ul>
-                <xsl:apply-templates select="ep:message"/>
+                <xsl:apply-templates select="ep:message-set"/>
             </body>
         </html>
     </xsl:template>
 
-    <xsl:template match="ep:message">
+    <xsl:template match="ep:message-set">
         <xsl:variable name="bericht-entiteit" select="ep:seq[1]/ep:construct[1]/ep:seq[1]/ep:construct[1]"/>
         <table>
             <col style="width:45%"/>

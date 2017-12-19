@@ -17,18 +17,20 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<config>
-   <id>
-      <name>Readme analyzer</name>
-      <version-control>$Id: parms.xml 7431 2016-02-24 12:46:42Z arjan $</version-control>
-   </id>
-   <cli-parms>
-      <!-- none -->
-   </cli-parms>
-   <properties>
-
-      <!-- TODO ReadmeAnalyzer.xsl is not used yet; find a correct way to determine/pass state / propertoies of previous run. -->
-      <IMVERTOR_README_ANALYZE_XSLPATH>ReadmeAnalyzer.xsl</IMVERTOR_README_ANALYZE_XSLPATH>
- 
-   </properties>
-</config>
+<xsl:stylesheet 
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+    
+    xmlns:imvert="http://www.imvertor.org/schema/system"
+    xmlns:imf="http://www.imvertor.org/xsl/functions"
+    
+    version="2.0">
+    
+    <!--
+       Set up for future use. is not called yet.
+    -->
+    
+   <xsl:template match="/">
+   
+   </xsl:template>
+    
+</xsl:stylesheet>
