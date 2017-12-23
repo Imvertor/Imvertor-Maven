@@ -99,7 +99,12 @@
         select="$document-associations except $document-association-traces"
         as="element(UML:Association)*"/>
     
-
+    <!-- 
+        Determine what package is the root package (the model).
+        This is the first package with the specified application name.
+    -->
+    <xsl:variable name="root-package" select="$document-packages[@name = $application-package-name][1]"/>
+    
     <xsl:key name="key-construct-by-id" match="//*[@xmi.id]" use="@xmi.id"/>
     <xsl:key name="key-construct-by-idref" match="//*[@xmi:idref]" use="@xmi:idref"/>
     <xsl:key name="key-packages-by-alias" match="//package" use="properties/@alias"/>
@@ -136,16 +141,16 @@
             
             <xsl:variable name="project-name-shown" select="($project-name, concat($owner-name,': ',$project-name))" as="xs:string+"/>
             <xsl:variable name="project-package" select="$document-packages[imf:get-stereotypes(.)=imf:get-config-stereotypes('stereotype-name-project-package')]"/>
-            <xsl:variable name="root-package" select="$project-package[@name = $project-name-shown]"/>
+            <xsl:variable name="root-project-package" select="$project-package[@name = $project-name-shown]"/>
             
-            <xsl:sequence select="imf:set-config-string('appinfo','original-project-name',$root-package/@name)"/>
+            <xsl:sequence select="imf:set-config-string('appinfo','original-project-name',$root-project-package/@name)"/>
             <xsl:sequence select="imf:set-config-string('appinfo','original-application-name',$application-package-name)"/>
             
             <xsl:sequence select="imf:set-config-string('appinfo','project-name',$project-name)"/>
             <xsl:sequence select="imf:set-config-string('appinfo','application-name',$application-package-name)"/>
             
             <xsl:choose>
-                <xsl:when test="exists($project-package) and empty($root-package)">
+                <xsl:when test="exists($project-package) and empty($root-project-package)">
                     <xsl:sequence select="imf:msg('ERROR',concat(
                         'Specified project &quot;', 
                         string-join($project-name-shown,'&quot; or &quot;'),
@@ -248,7 +253,7 @@
         <xsl:variable name="is-derived" select="imf:boolean($supplier-info[self::imvert:derived])"/>
         
         <!-- is this the application package? -->
-        <xsl:variable name="is-root-package" select="@name = $application-package-name"/>
+        <xsl:variable name="is-root-package" select=". is $root-package"/>
 
         <xsl:sequence select="if ($is-root-package) then imf:set-config-string('appinfo','application-alias',imf:get-alias(.,'P')) else ()"/>
         <xsl:sequence select="if ($is-root-package) then imf:set-config-string('appinfo','release',imf:get-profile-tagged-value(.,'release')[1]) else ()"/>

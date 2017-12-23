@@ -43,7 +43,7 @@
     
     <xsl:variable 
         name="application-package" 
-        select="//imvert:package[imvert:is-root-package='true']"
+        select="//imvert:package[imf:boolean(imvert:is-root-package)]"
         as="node()*"/>
     
     <!-- override document packages by the packages in the application tree -->

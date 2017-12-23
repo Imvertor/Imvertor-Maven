@@ -1143,7 +1143,7 @@
     -->
     <xsl:function name="imf:check-stereotype-assignment" as="element()*">
         <xsl:param name="this" as="element()"/> <!-- any element that may have stereotype -->
-        <xsl:variable name="result">
+        <xsl:variable name="result" as="xs:string*">
             <xsl:for-each select="$this/imvert:stereotype">
                 <xsl:variable name="stereotype" select="imf:get-normalized-name(.,'stereotype-name')"/>
                 <xsl:choose>
