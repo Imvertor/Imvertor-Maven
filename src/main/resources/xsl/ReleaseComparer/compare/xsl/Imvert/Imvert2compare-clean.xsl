@@ -46,9 +46,13 @@
        See Jira IM-147 "Documentatie release ondersteunen" and "IM-416 Compare aanbieden op supplier en op eerdere release"
     -->
    
+    <xsl:import href="../../../../common/Imvert-common.xsl"/>
     <xsl:import href="Imvert2compare-common.xsl"/>
     
     <xsl:output indent="no"/>
+    
+    <xsl:variable name="stylesheet-code">COMC</xsl:variable>
+    <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
     
     <!-- create to representations, removing all documentation level elements -->
     <xsl:template match="/">
@@ -68,7 +72,9 @@
         
         <xsl:variable name="must-copy" select="contains($info/@use,$imvert-compare-mode)"/>
         
-       <!--<xsl:message select="concat($compare-key,': ', local-name(.), ' - ', $use-name, '/', $info,'/',$info/@use,'/',$imvert-compare-mode, ': ', $must-copy)"/>-->
+       <xsl:sequence select="imf:msg(.,'DEBUG', 
+           'Compare key [1], local name [2], use name [3], info [4], use [5], compare mode [6], must copy [7]',
+           ($compare-key, local-name(.), $use-name, $info, $info/@use, $imvert-compare-mode, $must-copy))"/>
         
         <xsl:choose>
             <xsl:when test="$include-reference-packages = 'false' and exists(imvert-result:reference)">

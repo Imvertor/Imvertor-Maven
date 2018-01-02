@@ -151,32 +151,34 @@ public class ReleaseComparer extends Step {
 		// Set the compare label; this label is used in temporary file names. eg. docRelease
 		configurator.setXParm("system/compare-label", "derivation",true); 
 					
-		String subpath = configurator.getXParm("appinfo/supplier-etc-model-imvert-subpath",false); // sample format: "green/SampleBase/20130318"
-		String path = configurator.getOutputFolder() + "/applications/" + subpath + "/etc/model.imvert.xml"; // sample format: "c:\applications\green/SampleBase/20130318/etc/system.imvert.xml"
-		
 		String cmp = configurator.getXParm("cli/compare",false);
 		Boolean supplierCheck = (cmp != null) && cmp.equals("supplier");
 		
 		if (supplierCheck) {
+
+			String subpath = configurator.getXParm("appinfo/supplier-subpath",false); // sample format: "green/SampleBase/20130318"
+			//TODO may be multiple subpaths; getXParm not equipped to handle this, always returns last...
+			
 			if (subpath == null) 
 				runner.warn(logger, "Cannot compare client and supplier, unable to determine subpath for supplier");
 			else if (subpath.length() > 0) {
+
+				String path = configurator.getOutputFolder() + "/applications/" + subpath + "/etc/model.imvert.xml"; // sample format: "c:\applications\green/SampleBase/20130318/etc/system.imvert.xml"
 				
 				XmlFile supplierModelFile = new XmlFile(path);
 				XmlFile clientModelFile = new XmlFile(configurator.getXParm("properties/WORK_SCHEMA_FILE"));
 				
-				if (supplierCheck) // a request is made to check differences with the supplier
-					if (supplierModelFile.exists()) { 
-						runner.info(logger,"Comparing client and supplier releases");
-						runner.debug(logger,"CHAIN","Client is: " + clientModelFile);
-						runner.debug(logger,"CHAIN","Supplier is: " + supplierModelFile);
-						boolean equal = supplierModelFile.compare( clientModelFile, configurator); 
-						if (!equal) 
-							runner.info(logger,"Differences found between client and supplier.");
-					} else {
-						runner.warn(logger, "Cannot compare client and supplier when no supplier release could be found");
-						return false;
-					}
+				if (supplierModelFile.exists()) { 
+					runner.info(logger,"Comparing client and supplier releases");
+					runner.debug(logger,"CHAIN","Client is: " + clientModelFile);
+					runner.debug(logger,"CHAIN","Supplier is: " + supplierModelFile);
+					boolean equal = supplierModelFile.compare( clientModelFile, configurator); 
+					if (!equal) 
+						runner.info(logger,"Differences found between client and supplier.");
+				} else {
+					runner.warn(logger, "Cannot compare client and supplier when no supplier release could be found");
+					return false;
+				}
 			} else
 				runner.warn(logger, "Cannot compare client and supplier because the model is not derived");
 		}

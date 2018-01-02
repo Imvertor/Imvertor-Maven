@@ -120,6 +120,7 @@
    </cli-parms>
    
    <properties>
+      
       <!-- 
          Path to the stylesheet to filter ANY xml file found in the folder.
          This XSL is generic, and therefore calls upon any imported XSL (or such) to process specific types of file.
@@ -180,4 +181,9 @@
       -->
       <COMPARE_GENERATED_XSLPATH>${system/work-folder-path}/compare/generated.xsl</COMPARE_GENERATED_XSLPATH>
    </properties>
+   
+   <appinfo>
+      <project-name>regression</project-name>
+      <application-name>nightly</application-name>
+   </appinfo>
 </config>

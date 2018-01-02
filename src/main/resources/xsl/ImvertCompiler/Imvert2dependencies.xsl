@@ -44,6 +44,8 @@
             <!-- avoid duplicates, several models may reference the same supplier -->
             <xsl:for-each-group select="$suppliers" group-by="@subpath">
                 <xsl:sequence select="current-group()[1]"/>
+                <!-- and write this info to parms -->
+                <xsl:sequence select="imf:set-config-string('appinfo','supplier-subpath',current-grouping-key(),false())"/>
             </xsl:for-each-group>
             
         </imvert:package-dependencies>

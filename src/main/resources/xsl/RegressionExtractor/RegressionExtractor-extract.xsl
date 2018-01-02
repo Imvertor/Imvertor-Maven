@@ -52,6 +52,11 @@
          
          Note that date/time attribute and size attribute typically should be removed for regression comparisons.
          The other *:file data should be passed for reporting purposes.
+         
+         The folder passed holds the folders/files:
+         /job/*
+         /work/*
+         /executor.imvert.xml
       -->
     
     <xsl:include href="RegressionExtractor-imvert.xsl"/>

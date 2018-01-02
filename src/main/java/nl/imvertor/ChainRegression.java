@@ -20,6 +20,10 @@
 
 package nl.imvertor;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 
 import nl.imvertor.RegressionExtractor.RegressionExtractor;
@@ -45,9 +49,10 @@ public class ChainRegression {
 			configurator.prepare(); // note that the process config is relative to the step folder path
 			configurator.getRunner().prepare();
 			
-			// TODO temporary
-			configurator.setXParm("appinfo/release", "99999999");
-			
+			DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd"); // set format to 20171024
+			String releaseIdentifier = dateFormat.format(new Date());
+			configurator.setXParm("appinfo/release", releaseIdentifier);
+				
 			// parameter processing
 			configurator.getCli(RegressionExtractor.STEP_NAME); // builds a single XML file for integral comparison of ref and tst.
 			//configurator.getCli(RegressionComparer.STEP_NAME); // compares two XML representations.
