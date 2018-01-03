@@ -92,11 +92,12 @@ public class ImvertCompiler extends Step {
 			XmlFile oldImageMapFile = new XmlFile(etcFolder,"system.imagemap.xml");
 			AnyFolder infoImageFolder = new AnyFolder(workFolder,"xmi" + File.separator + "Images");
 			AnyFolder oldImageFolder = new AnyFolder(etcFolder,"Images");
-			if (infoImageMapFile.isFile()) {
+		
+			if (infoImageMapFile.isFile()) 
 				infoImageMapFile.copyFile(oldImageMapFile);
+			if (infoImageFolder.isDirectory())
 				infoImageFolder.copy(oldImageFolder);
-			}
-				
+
 			XmlFile infoSupplierFile = new XmlFile(configurator.getXParm("properties/WORK_SUPPLIER_FILE"));
 			XmlFile oldSupplierFile = new XmlFile(etcFolder,"supplier.imvert.xml");
 			if (infoSupplierFile.isFile()) infoSupplierFile.copyFile(oldSupplierFile); // #488281 optimization of supplier access
