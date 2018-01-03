@@ -33,7 +33,7 @@
         ../web/script/tablesorter/jquery.tablesorter.min.js;
     </parameter> 
     
-    <parameter name="web-logo">../web/img/logo-VNG-Realisatie-100px.png</parameter> 
+    <parameter name="web-logo">../web/img/logo-VNG-Realisatie-200px.png</parameter> 
     <parameter name="web-logo-big">../web/img/logo-VNG-Realisatie-400px.png</parameter> 
     
     <parameter name="pretext-encoding">
