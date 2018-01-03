@@ -46,8 +46,9 @@ call "%javaexe%" %jvmparms% ^
     -Downer.name="%owner%" ^
     -Dwork.dir="%workdir%\%jobid%" ^
     -Dea.enabled=%imvertor_os_eaenabled% ^
+    -Djava.library.path=%imvertor_os_eapath% ^
     -Dgit.token=%imvertor_os_git_token% ^
-    -cp "%bindir%\bin\%jar%.jar" ^
+    -cp "%bindir%\bin\EA\eaapi.jar;%bindir%\bin\%jar%.jar" ^
 	nl.imvertor.%artifact% ^
 	-arguments "%propfilepath%" ^
 	-owner "%owner%"

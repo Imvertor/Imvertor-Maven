@@ -33,8 +33,8 @@
         ../web/script/tablesorter/jquery.tablesorter.min.js;
     </parameter> 
     
-    <parameter name="web-logo">../web/img/logo-KING-small.jpg</parameter> 
-    <parameter name="web-logo-big">../web/img/logo-KING-medium.jpg</parameter> 
+    <parameter name="web-logo">../web/img/logo-VNG-Realisatie-100px.png</parameter> 
+    <parameter name="web-logo-big">../web/img/logo-VNG-Realisatie-400px.png</parameter> 
     
     <parameter name="pretext-encoding">
         This schema is based on an UML specification, which is transformed by the Imvertor software. Imvertor modules are in the public domain, see http://www.imvertor.org.
