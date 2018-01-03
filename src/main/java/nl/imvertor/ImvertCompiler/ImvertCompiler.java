@@ -95,7 +95,7 @@ public class ImvertCompiler extends Step {
 		
 			if (infoImageMapFile.isFile()) 
 				infoImageMapFile.copyFile(oldImageMapFile);
-			if (infoImageFolder.isDirectory() && infoImageFolder.listFiles().length != 0)
+			if (infoImageFolder.isDirectory() && infoImageFolder.list().length != 0)
 				infoImageFolder.copy(oldImageFolder);
 
 			XmlFile infoSupplierFile = new XmlFile(configurator.getXParm("properties/WORK_SUPPLIER_FILE"));

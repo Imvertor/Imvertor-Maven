@@ -161,7 +161,9 @@ public class XmiCompiler extends Step {
 					File folder = (files[0].getName().equals("Images")) ? files[0] : files[1];
 					(new AnyFile(file)).copyFile(activeFile);
 					AnyFolder targetFolder = new AnyFolder(activeFile.getParentFile().getCanonicalPath() + File.separator + "Images");
-					(new AnyFolder(folder)).copy(targetFolder);
+					AnyFolder sourceFolder = new AnyFolder(folder);
+					if (sourceFolder.isDirectory() && sourceFolder.list().length != 0)
+						sourceFolder.copy(targetFolder);
 					cleanXMI(activeFile);
 				} else  
 					runner.fatal(logger, "Multiple files found in ZIP",null,"MFFIZ"); 
