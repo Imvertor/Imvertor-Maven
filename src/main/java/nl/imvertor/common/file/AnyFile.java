@@ -30,8 +30,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Writer;
+import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,6 +44,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.commons.lang3.ArrayUtils;
@@ -79,7 +82,12 @@ public class AnyFile extends File  {
 		exts.put("properties","Properties");
 	}
 	
+	public static final Integer FILE_IDENTIFICATION = 1;
+	public static final Integer CONTENT_IDENTIFICATION = 2;
+	public static final Integer FILE_AND_CONTENT_IDENTIFICATION = 3;
+	
 	public LinkedList<File> files;
+	
 	
 	private BufferedReader lineReader = null;
 	
@@ -603,6 +611,18 @@ public class AnyFile extends File  {
 				lastLine = line;
 		}
 		return lastLine;
+	}
+	
+	/*
+	 * Return Etag based on MD5; this is a weak or strong referrer based on the file specs, its contents, or both 
+	 */
+	public String getETag(Integer type) throws IOException {
+		String content = 
+				(type == CONTENT_IDENTIFICATION) ? this.getContent() : 
+					(type == FILE_IDENTIFICATION) ? this.getFileInfo() : 
+						this.getFileInfo() + this.getContent();
+		
+		return String.valueOf(DigestUtils.md5(content));
 	}
 }
 
