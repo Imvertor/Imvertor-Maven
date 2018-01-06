@@ -123,17 +123,16 @@ public class OfficeCompiler extends Step {
 						String gitpass     	            = System.getProperty("git.pass"); // password
 						String gitlocal     	        = System.getProperty("git.local"); // location of local git 
 							
-						String gitpathremote     	    = configurator.mergeParms(configurator.getXParm("cli/gitpathremote",false)); //full patn to remote reos
-						String gitpathlocal     	    = configurator.mergeParms(configurator.getXParm("cli/gitpathlocal",false));  // full patrh to local repos
-						String gitcomment 				= configurator.mergeParms(configurator.getXParm("cli/gitcomment",false)); // comment to set on update
+						String gitpath     	            = configurator.mergeParms(configurator.getXParm("cli/gitpath")); //subpath to repos
+						String gitcomment 				= configurator.mergeParms(configurator.getXParm("cli/gitcomment")); // comment to set on update
 											
 						runner.info(logger, "GIT Pushing office HTML as " + officeFile.getName());
 						
-						AnyFolder gitfolder = new AnyFolder(gitlocal + gitpathlocal);
+						AnyFolder gitfolder = new AnyFolder(gitlocal + gitpath);
 						
 						// create and prepare the GIT resource pusher
 						ResourcePusher rp = new ResourcePusher();
-						rp.prepare("https://github.com" + gitpathremote, gitfolder, gituser, gitpass);
+						rp.prepare("https://github.com" + gitpath, gitfolder, gituser, gitpass);
 						
 						// copy the files to the work folder
 						catfolder.copy(new AnyFolder(gitfolder,"data"));

@@ -52,7 +52,8 @@
          <arg>ftp|git</arg>
          <tip>Enter "ftp" when the documentation file should be passed on directly to FTP, "git" when updating Github.</tip>
          <required>false</required>
-      </cli-parm> 
+      </cli-parm>
+      <!--
       <cli-parm>
          <name>passuser</name>
          <arg>username</arg>
@@ -77,6 +78,13 @@
          <tip>Path on server to the destination file e.g. /data/doc/result.html </tip>
          <required>When officepass is set to "ftp"</required>
       </cli-parm> 
+      -->
+      <cli-parm>
+         <name>gitpath</name>
+         <arg>path</arg>
+         <tip>Subpath to the remote GIT repository, starting with / e.g. /MyOrganization/MyRepository</tip>
+         <required>When officepass is set to "git"</required>
+      </cli-parm>  
       
    </cli-parms>
    <properties>
@@ -102,11 +110,11 @@
       <IMVERTOR_METAMODEL_RWS-C_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-RWS-CONCEPTUAL.xsl</IMVERTOR_METAMODEL_RWS-C_MODELDOC_XSLPATH>
       <IMVERTOR_METAMODEL_RWS-C_MODELDOC_OFFICE_XSLPATH alias="ITO">Imvert2modeldoc-RWS-CONCEPTUAL-html-office.xsl</IMVERTOR_METAMODEL_RWS-C_MODELDOC_OFFICE_XSLPATH>
       
-      <IMVERTOR_METAMODEL_BRO-L_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-BRO-LOGICAL.xsl</IMVERTOR_METAMODEL_BRO-L_MODELDOC_XSLPATH>
-      <IMVERTOR_METAMODEL_BRO-L_MODELDOC_OFFICE_XSLPATH alias="ITO">Imvert2modeldoc-BRO-LOGICAL-html-respec.xsl</IMVERTOR_METAMODEL_BRO-L_MODELDOC_OFFICE_XSLPATH>
+      <IMVERTOR_METAMODEL_RWS-L_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-RWS-LOGICAL.xsl</IMVERTOR_METAMODEL_RWS-L_MODELDOC_XSLPATH>
+      <IMVERTOR_METAMODEL_RWS-L_MODELDOC_OFFICE_XSLPATH alias="ITO">Imvert2modeldoc-RWS-LOGICAL-html-respec.xsl</IMVERTOR_METAMODEL_RWS-L_MODELDOC_OFFICE_XSLPATH>
       
-      <IMVERTOR_METAMODEL_BRO-B_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-BRO-MESSAGES.xsl</IMVERTOR_METAMODEL_BRO-B_MODELDOC_XSLPATH>
-      <IMVERTOR_METAMODEL_BRO-B_MODELDOC_OFFICE_XSLPATH alias="ITO">Imvert2modeldoc-BRO-MESSAGES-html-respec.xsl</IMVERTOR_METAMODEL_BRO-B_MODELDOC_OFFICE_XSLPATH>
+      <IMVERTOR_METAMODEL_RWS-B_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-RWS-MESSAGES.xsl</IMVERTOR_METAMODEL_RWS-B_MODELDOC_XSLPATH>
+      <IMVERTOR_METAMODEL_RWS-B_MODELDOC_OFFICE_XSLPATH alias="ITO">Imvert2modeldoc-RWS-MESSAGES-html-respec.xsl</IMVERTOR_METAMODEL_RWS-B_MODELDOC_OFFICE_XSLPATH>
       
       <IMVERTOR_METAMODEL_Kadaster_MODELDOC_XSLPATH alias="ITO">Imvert2modeldoc-Kadaster.xsl</IMVERTOR_METAMODEL_Kadaster_MODELDOC_XSLPATH>
       <IMVERTOR_METAMODEL_Kadaster_MODELDOC_OFFICE_XSLPATH alias="ITO">Imvert2modeldoc-Kadaster-html-office.xsl</IMVERTOR_METAMODEL_Kadaster_MODELDOC_OFFICE_XSLPATH>
