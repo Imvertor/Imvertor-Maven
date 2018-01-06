@@ -49,7 +49,7 @@
             </summary>
             <page>
                 <title>Office documentation</title>
-                <content-ref href="{concat('../../etc/',$office-filename,'.html')}"/>
+                <content-ref href="{concat('../../cat/',$office-filename,'.html')}"/>
             </page>
         </report>
         

@@ -82,6 +82,7 @@ public class ImvertCompiler extends Step {
 				succeeds = succeeds ? transformer.transformStep("properties/WORK_EMBELLISH_FILE", "properties/WORK_DERIVATION_FILE", "properties/IMVERTOR_DERIVATION_XSLPATH") : false ;
 			
 			AnyFolder etcFolder = new AnyFolder(configurator.getXParm("system/work-etc-folder-path"));
+			AnyFolder catFolder = new AnyFolder(configurator.getXParm("system/work-cat-folder-path"));
 			AnyFolder workFolder = new AnyFolder(System.getProperty("work.dir"));
 			
 			XmlFile infoEmbellishFile = new XmlFile(configurator.getXParm("properties/WORK_EMBELLISH_FILE"));
@@ -91,7 +92,7 @@ public class ImvertCompiler extends Step {
 			XmlFile infoImageMapFile = new XmlFile(configurator.getXParm("properties/WORK_BASE_IMAGEMAP_FILE"));
 			XmlFile oldImageMapFile = new XmlFile(etcFolder,"system.imagemap.xml");
 			AnyFolder infoImageFolder = new AnyFolder(workFolder,"xmi" + File.separator + "Images");
-			AnyFolder oldImageFolder = new AnyFolder(etcFolder,"Images");
+			AnyFolder oldImageFolder = new AnyFolder(catFolder,"Images");
 		
 			if (infoImageMapFile.isFile()) 
 				infoImageMapFile.copyFile(oldImageMapFile);

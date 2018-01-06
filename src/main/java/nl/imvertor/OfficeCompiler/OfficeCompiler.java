@@ -25,8 +25,9 @@ import org.apache.log4j.Logger;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
+import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.FtpFolder;
-import nl.imvertor.common.file.GithubFile;
+import nl.imvertor.common.git.ResourcePusher;
 
 public class OfficeCompiler extends Step {
 
@@ -79,7 +80,7 @@ public class OfficeCompiler extends Step {
 				configurator.setXParm("appinfo/office-documentation-filename", fn);
 				
 				AnyFile infoOfficeFile = new AnyFile(configurator.getXParm("properties/WORK_OFFICE_FILE"));
-				AnyFile officeFile = new AnyFile(configurator.getXParm("system/work-etc-folder-path") + "/" + fn + ".html");
+				AnyFile officeFile = new AnyFile(configurator.getXParm("system/work-cat-folder-path") + "/" + fn + ".html");
 				
 				infoOfficeFile.copyFile(officeFile);
 				
@@ -116,28 +117,29 @@ public class OfficeCompiler extends Step {
 						}
 					} else if (target.equals("git")) {
 						
-						// the following parms are compiled from other parms and settings, as a property.
+						AnyFolder catfolder = new AnyFolder(officeFile.getParent());
 						
-						String gitbranch              	= configurator.getXParm("cli/gitbranch");  // BRANCH
-						String gituser 			      	= configurator.getXParm("cli/gituser"); // USER
-						String gittoken              	= System.getProperty("git.token"); // OAUTH
-						
-						// the following may contain references to other parms between [..]
-						String gitrepos     	      	= configurator.mergeParms(configurator.getXParm("cli/gitrepos")); // REPOS
-						String gitcomment 				= configurator.mergeParms(configurator.getXParm("cli/gitcomment")); //MESSAGE
-						
+						String gituser     	            = System.getProperty("git.user"); // user name
+						String gitpass     	            = System.getProperty("git.pass"); // password
+						String gitlocal     	        = System.getProperty("git.local"); // location of local git 
+							
+						String gitpathremote     	    = configurator.mergeParms(configurator.getXParm("cli/gitpathremote",false)); //full patn to remote reos
+						String gitpathlocal     	    = configurator.mergeParms(configurator.getXParm("cli/gitpathlocal",false));  // full patrh to local repos
+						String gitcomment 				= configurator.mergeParms(configurator.getXParm("cli/gitcomment",false)); // comment to set on update
+											
 						runner.info(logger, "GIT Pushing office HTML as " + officeFile.getName());
 						
-						GithubFile gitfile = new GithubFile(officeFile.getCanonicalPath());
-						gitfile.setEncoding("UTF-8");
-						gitfile.publish(gituser, gitrepos, gittoken, gitbranch, gitfile.getName(), "data/" + gitfile.getName(), gitcomment);
-					    
-						if (!gitfile.getError().equals(""))
-							runner.error(logger, "Cannot align the data with upstream: step \"" + gitfile.getStage() + "\" returns \"" + gitfile.getError() + "\"");
+						AnyFolder gitfolder = new AnyFolder("d:/projects/gitprojects" + gitpathlocal);
 						
-						configurator.setXParm("appinfo/office-git-stp", gitfile.getStage());
-						configurator.setXParm("appinfo/office-git-err", gitfile.getError());
-						configurator.setXParm("appinfo/office-git-uri", gitfile.getURI().toString());
+						// create and prepare the GIT resource pusher
+						ResourcePusher rp = new ResourcePusher();
+						rp.prepare("https://github.com" + gitpathremote, gitfolder, gituser, gitpass);
+						
+						// copy the files to the work folder
+						catfolder.copy(new AnyFolder(gitfolder,"data"));
+				        
+						// push with appropriate comment
+						rp.push(gitcomment);
 						
 					} 
 				// all other cases: do not pass anywhere. 

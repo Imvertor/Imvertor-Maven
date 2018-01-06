@@ -358,13 +358,14 @@ public class Configurator {
 		setXParm(workConfiguration,"system/work-config-path", wff, true);
 		
 		setXParm(workConfiguration,"system/work-app-folder-path",     wf + s + "app", true);
-		setXParm(workConfiguration,"system/work-etc-folder-path", 	   wf + s + "app" + s + "etc", true);
+		setXParm(workConfiguration,"system/work-etc-folder-path", 	  wf + s + "app" + s + "etc", true);
 		setXParm(workConfiguration,"system/work-xsd-folder-path",     wf + s + "app" + s + "xsd", true);
 		setXParm(workConfiguration,"system/work-doc-folder-path",     wf + s + "app" + s + "doc", true);
 		setXParm(workConfiguration,"system/work-uml-folder-path",     wf + s + "app" + s + "uml", true);
 		setXParm(workConfiguration,"system/work-cmp-folder-path",     wf + s + "app" + s + "cmp", true);
 		setXParm(workConfiguration,"system/work-job-folder-path",     wf + s + "app" + s + "job", true);
 		setXParm(workConfiguration,"system/work-shacl-folder-path",   wf + s + "app" + s + "shacl", true);
+		setXParm(workConfiguration,"system/work-cat-folder-path",     wf + s + "app" + s + "cat", true);
 		setXParm(workConfiguration,"system/work-yaml-folder-path",    wf + s + "app" + s + "yaml", true);
 		setXParm(workConfiguration,"system/work-xmi-folder-path",     wf + s + "app" + s + "xmi", true);
 					

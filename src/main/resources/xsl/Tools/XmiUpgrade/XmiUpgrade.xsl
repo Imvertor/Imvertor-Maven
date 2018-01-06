@@ -53,8 +53,6 @@
             <xsl:sequence select="imf:insert-tagged-value(.,'Toegankelijkheid','Toegankelijkheid')"/>
             <xsl:sequence select="imf:insert-tagged-value(.,'Toelichting','Toelichting')"/>
             <xsl:sequence select="imf:insert-tagged-value(.,'Wetgeving','Wetgeving')"/>
-            
-            <xsl:sequence select="imf:insert-tagged-value(.,'Base-mapping','Base-mapping')"/>
         </tags> 
     </xsl:template>
     

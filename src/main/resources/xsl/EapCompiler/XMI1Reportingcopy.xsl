@@ -132,7 +132,7 @@
                     </xsl:choose>
                 </xsl:copy>
             </xsl:when>
-            <xsl:when test="@tag=('ref-version','ref-release','supplier-release','supplier-package-name','base-mapping')">
+            <xsl:when test="@tag=('ref-version','ref-release','supplier-release','supplier-package-name')">
                 <!-- removed, not to show in documentation -->
             </xsl:when>
             <xsl:otherwise>
