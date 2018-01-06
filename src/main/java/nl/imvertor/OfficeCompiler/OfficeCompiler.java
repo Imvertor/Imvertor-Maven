@@ -129,7 +129,7 @@ public class OfficeCompiler extends Step {
 											
 						runner.info(logger, "GIT Pushing office HTML as " + officeFile.getName());
 						
-						AnyFolder gitfolder = new AnyFolder("d:/projects/gitprojects" + gitpathlocal);
+						AnyFolder gitfolder = new AnyFolder(gitlocal + gitpathlocal);
 						
 						// create and prepare the GIT resource pusher
 						ResourcePusher rp = new ResourcePusher();
