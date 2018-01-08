@@ -56,9 +56,12 @@ public class XmiTranslator extends Step {
 		boolean succeeds = true;
 		succeeds = succeeds ? transformer.transformStep("system/xmi-file-path", "properties/WORK_BASE_FILE",  "properties/XMI_IMVERTOR_XSLPATH","system/cur-imvertor-filepath") : false ;
 		
-		if (configurator.isTrue("cli","createimagemap")) 
-			succeeds = succeeds ? transformer.transformStep("system/xmi-file-path", "properties/WORK_BASE_IMAGEMAP_FILE",  "properties/XMI_IMVERTOR_IMAGEMAP_XSLPATH") : false ;
-		
+		if (configurator.isTrue("cli","createimagemap"))
+			if (configurator.getXParm("system/xmi-image-count").equals("0"))
+				runner.warn(logger, "Imagemap not created because no diagram images found", null, "INCBNDIF");
+			else 
+			    succeeds = succeeds ? transformer.transformStep("system/xmi-file-path", "properties/WORK_BASE_IMAGEMAP_FILE",  "properties/XMI_IMVERTOR_IMAGEMAP_XSLPATH") : false ;
+			
 		configurator.setStepDone(STEP_NAME);
 		
 		// save any changes to the work configuration for report and future steps

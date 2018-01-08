@@ -127,9 +127,8 @@ public class XmiCompiler extends Step {
 					runner.info(logger,"Reading" + filespec);
 					String projectname = configurator.getXParm("cli/owner") + ": " + configurator.getXParm("cli/project");
 					String modelname = (configurator.isTrue("cli", "sys_supportsexternal",true)) ? null : configurator.getXParm("cli/application");
-							
-					// For development environment, export images here.
-					// The type of image is set to PNG
+					
+					// Export images here. The type of image is set to PNG. The images are stored in /XMI folder under /Images.
 					if (configurator.isTrue(configurator.getXParm("cli/createimagemap"))) 
 						((EapFile) passedFile).setExportDiagrams(EapFile.EXPORT_IMAGE_TYPE_PNG);
 					else
@@ -145,6 +144,13 @@ public class XmiCompiler extends Step {
 				} else {
 					runner.info(logger,"Reusing" + filespec);
 				}
+				
+				AnyFolder targetFolder = new AnyFolder(activeFile.getParentFile().getCanonicalPath() + "/Images");
+				if (targetFolder.isDirectory() && targetFolder.list().length != 0) {
+					configurator.setXParm("system/xmi-image-count", targetFolder.list().length);
+				} else
+					configurator.setXParm("system/xmi-image-count", 0);
+				
 			} else if (passedFile instanceof ZipFile) {
 				// XMI is provided in compressed form
 				AnyFolder tempFolder = new AnyFolder(configurator.getXParm("properties/WORK_ZIP_FOLDER"));
@@ -162,8 +168,11 @@ public class XmiCompiler extends Step {
 					(new AnyFile(file)).copyFile(activeFile);
 					AnyFolder targetFolder = new AnyFolder(activeFile.getParentFile().getCanonicalPath() + File.separator + "Images");
 					AnyFolder sourceFolder = new AnyFolder(folder);
-					if (sourceFolder.isDirectory() && sourceFolder.list().length != 0)
+					if (sourceFolder.isDirectory() && sourceFolder.list().length != 0) {
+						configurator.setXParm("system/xmi-image-count", sourceFolder.list().length);
 						sourceFolder.copy(targetFolder);
+					} else
+						configurator.setXParm("system/xmi-image-count", 0);
 					cleanXMI(activeFile);
 				} else  
 					runner.fatal(logger, "Multiple files found in ZIP",null,"MFFIZ"); 
