@@ -280,11 +280,11 @@
             <derive>no</derive>
             <inherit>yes</inherit>
             <stereotypes>
-                <stereo required="yes">stereotype-name-vraagberichttype</stereo>
-                <stereo required="yes">stereotype-name-antwoordberichttype</stereo>
-                <stereo required="yes">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo required="yes">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo required="yes">stereotype-name-vrijberichttype</stereo>
+                <stereo required="no">stereotype-name-vraagberichttype</stereo>
+                <stereo required="no">stereotype-name-antwoordberichttype</stereo>
+                <stereo required="no">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo required="no">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo required="no">stereotype-name-vrijberichttype</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>request</value>
@@ -297,11 +297,11 @@
             <derive>no</derive>
             <inherit>yes</inherit>
             <stereotypes>
-                <stereo required="yes">stereotype-name-vraagberichttype</stereo>
-                <stereo required="yes">stereotype-name-antwoordberichttype</stereo>
-                <stereo required="yes">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo required="yes">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo required="yes">stereotype-name-vrijberichttype</stereo>
+                <stereo required="no">stereotype-name-vraagberichttype</stereo>
+                <stereo required="no">stereotype-name-antwoordberichttype</stereo>
+                <stereo required="no">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo required="no">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo required="no">stereotype-name-vrijberichttype</stereo>
             </stereotypes>
         </tv>
         
