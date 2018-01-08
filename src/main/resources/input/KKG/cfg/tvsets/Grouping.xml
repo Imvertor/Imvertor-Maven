@@ -8,24 +8,25 @@
         this metamodel is subject to standard Grouping conventions 
     -->
     <xi:include href="../../../Imvertor/cfg/tvsets/Grouping.xml"/>
-    
-    <name>Grouping for Kadaster</name>
+
+    <name>Grouping for MIM</name>
   
-    <desc>Deviations and additions to generic grouping for Kadaster metamodel.</desc>  
+    <desc>Deviations and additions to generic grouping for MIM metamodels.</desc>  
    
     <tagged-values>
         
         <tv norm="space" id="CFG-TV-DATALOCATION">
-            <!-- bepaal de naam van deze tagged value hier, en ken toe aan nieuwe stereo's -->
-            <name lang="nl">Data locatie</name>
-            <name lang="en">Data location</name>
+            <name lang="nl">Locatie</name>
+            <name lang="en">Location</name>
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-data-element</stereo>
+                <stereo required="yes">stereotype-name-codelist</stereo>
+                <stereo required="yes">stereotype-name-referentielijst</stereo>
+                <stereo required="yes">stereotype-name-view-package</stereo>
             </stereotypes>
         </tv>
+        
     </tagged-values>
-
-   
+    
 </tagset>

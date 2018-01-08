@@ -5,10 +5,10 @@
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
     <!-- 
-        RWS follows KING
+        DSO follows MIM ISO
     --> 
-    <xi:include href="../../../KING/cfg/metamodels/KINGUGM.xml"/>
+    <xi:include href="../../../KKG/cfg/tvsets/KKG-ISO.xml"/>
     
-    <name>RWS</name>
+    <name>MIM-C-DSO</name>
     
 </tagset>

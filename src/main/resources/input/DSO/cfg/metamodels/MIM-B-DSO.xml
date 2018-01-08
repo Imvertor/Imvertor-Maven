@@ -4,12 +4,12 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     <!-- 
-        RWS follows KKG ISO (alt 2)
-        
-        Including scalars.
+       Berichten specificaties worden conform NEN3610 opgezet.
+       
     --> 
-    <xi:include href="../../../KKG/cfg/metamodels/KKG-ISO.xml"/>
+    <xi:include href="../../../Geonovum/cfg/metamodels/NEN3610.xml"/>
     
-    <name>RWS</name>
+    <name>MIM-B-DSO</name>
+    
     
 </metamodel>

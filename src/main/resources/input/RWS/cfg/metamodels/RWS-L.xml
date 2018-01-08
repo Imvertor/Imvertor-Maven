@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <!-- 
+        RWS follows NEN3610
+        
+        Including scalars.
+    --> 
+    <xi:include href="../../../DSO/cfg/metamodels/MIM-L-DSO.xml"/>
+    
+    <name>RWS-L</name>
+    
+    <profiles>
+        <profile lang="nl">
+            <id>RWSLNL</id>
+            <release>0.9</release>
+            <desc>RWS-L-DSO Grouping (NL)</desc> 
+        </profile>
+        <profile lang="en">
+            <id>RWSLEN</id>
+            <release>0.9</release>
+            <desc>RWS-L-DSO Grouping (EN)</desc>
+        </profile>
+    </profiles>
+    
+    <stereo id="stereotype-name-composite-id">
+        <name lang="en">Isid</name>
+        <name lang="nl">Isid</name>
+        <desc>TODO</desc>
+        <construct>association</construct>
+    </stereo>
+    
+</metamodel>

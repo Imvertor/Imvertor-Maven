@@ -4,9 +4,9 @@
 -->
 <notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="../../../DSO/cfg/notesrules/DSO.xml"/>
+    <xi:include href="../../../KKG/cfg/notesrules/KKG-ISO.xml"/>
     
-    <name>RWS</name>
+    <name>DSO</name>
     
     
 </notes-rules>

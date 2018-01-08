@@ -148,26 +148,6 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="CFG-TV-DATALOCATION">
-            <name lang="nl">Data locatie</name>
-            <name lang="en">Data location</name>
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-data-element</stereo>
-            </stereotypes>
-        </tv>
-        
-        <tv norm="space" id="CFG-TV-BASEMAPPING">
-            <name lang="nl">Base-mapping</name>
-            <name lang="en">Base-mapping</name>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo required="no">stereotype-name-objecttype</stereo>
-                <stereo required="no">stereotype-name-koppelklasse</stereo>
-            </stereotypes>
-        </tv>
-        
         <tv norm="space" id="CFG-TV-RELATION">
             <name lang="nl">Relatie</name>
             <name lang="en">Relation</name>
@@ -238,6 +218,20 @@
                 <value>Yes</value>
                 <value default="yes">No</value>
             </declared-values>
+        </tv>
+        
+        <!-- deze moeten naar grouping maar MIM kent deze niet meer ... -->
+        <tv norm="space" id="CFG-TV-ISDERIVED">
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-association-to-composite</stereo>
+            </stereotypes>            
+        </tv>
+        <tv norm="space"  id="CFG-TV-POSITION">
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-association-to-composite</stereo>
+            </stereotypes>
         </tv>
         
         

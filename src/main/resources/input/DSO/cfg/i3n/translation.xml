@@ -3,6 +3,6 @@
 
     <!-- translations for RWS -->
     
-    <xi:include href="../../../DSO/cfg/i3n/translation.xml"/>
+    <xi:include href="../../../BRO/cfg/i3n/translation.xml"/>
         
 </picklist>

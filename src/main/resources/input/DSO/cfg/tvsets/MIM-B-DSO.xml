@@ -20,10 +20,10 @@
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
     <!-- 
-        RWS follows KING
+        DSO follows KING approach for message composition
     --> 
     
-    <xi:include href="../../../KING/cfg/tvsets/KINGBSM.xml"/>
+    <xi:include href="../../../Geonovum/cfg/tvsets/NEN3610.xml"/>
     
     <name>RWS</name>
     

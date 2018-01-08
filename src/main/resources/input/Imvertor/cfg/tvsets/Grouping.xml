@@ -67,12 +67,24 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="CFG-TV-LOCATION">
+        <tv norm="space" id="CFG-TV-DATALOCATION">
+            <!-- per metamodel moet worden bepaald hoe je het wilt noemen. -->
+            <?x
             <name lang="nl">Locatie</name>
             <name lang="en">Location</name>
+            x?>
+            <desc lang="nl">
+               De locatie waar informatie over de gegevens van een construct te vinden zijn. 
+                Wanneer het een external of view package betreft: De verwijzing naar de locatie van het bijbehorende informatiemodel 
+                waar dit package een representatie van is. In alle andere gevallen moet het een waardenlijst betreffen. 
+                Het gaat dan om de verwijzing naar de plek waar de waarden beschikbaar worden gesteld.
+                De verwijzing heeft de vorm van een URI conform een gekozen URI strategie.
+            </desc>
             <derive>yes</derive>
+            <type>URI</type>
             <stereotypes>
                 <stereo required="no">stereotype-name-external-package</stereo><!--TODO externals that are conceptuals do not require this tagged value -->
+                <stereo required="yes">stereotype-name-view-package</stereo>
             </stereotypes>
         </tv>
         

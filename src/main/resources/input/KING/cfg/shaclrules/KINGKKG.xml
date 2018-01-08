@@ -154,7 +154,7 @@
         <map id="CFG-TV-INDICATIONFORMALHISTORY" type="2q" lang="#all">kkg:indicatieFormeleHistorie</map>
         <map id="CFG-TV-INDICATIONMATERIALHISTORY" type="2q" lang="#all">kkg:indicatieMaterieleHistorie</map>
         <map id="CFG-TV-QUALITY" type="2q" lang="#all">ldqd:semanticAccuracy</map>
-        <map id="CFG-TV-LOCATION" type="2q" lang="#all">kkg:locatie</map>
+        <map id="CFG-TV-DATALOCATION" type="2q" lang="#all">kkg:locatie</map>
         <map id="CFG-TV-VOIDABLE" type="2q" lang="#all">xsi:nil</map>
         <map id="CFG-TV-POPULATION" type="2q" lang="#all">ldqd:completeness</map>
         <map id="CFG-TV-DESCRIPTION" type="2q" lang="#all">skos:scopeNote</map>

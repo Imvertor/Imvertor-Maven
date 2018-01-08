@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <!-- 
+        RWS follows KING
+    --> 
+    <xi:include href="../../../DSO/cfg/tvsets/MIM-L-DSO.xml"/>
+   
+    <name>RWS-L</name>
+    
+    <tagged-values>
+        
+        <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIEMATCHGEGEVEN">
+            <name lang="nl">Indicatie matchgegeven</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo required="no">stereotype-name-relatieklasse</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Ja</value>
+                <value default="yes">Nee</value>
+            </declared-values>
+        </tv>
+      
+        <tv norm="space" validate="" rules="" id="CFG-TV-VERKORTEALIAS">
+            <name lang="nl">Verkorte alias</name>
+            <name lang="en">Short alias</name>
+            <derive>no</derive>
+            <desc lang="nl">Verkorte alias is een korte naam, die uiteindelijk gekoppeld is aan een namespace in XML schema. 
+                In feite is het dus een technisch configuratie-element.</desc>
+            <stereotypes>
+                <stereo required="yes">stereotype-name-application-package</stereo>
+                <stereo required="no">stereotype-name-base-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-MINLENGTH">
+            <name lang="nl">Minimum lengte</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-MINVALUEINCLUSIVE">
+            <name lang="nl">Minimum waarde (inclusief)</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-MAXVALUEINCLUSIVE">
+            <name lang="nl">Maximum waarde (inclusief)</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space"  id="CFG-TV-SUBSETLABEL">
+            <name lang="nl">Restriction identifier</name>
+            <name lang="en">Restriction identifier</name>
+            <desc>A label assigned to any construct to be used for disambiguation in subset (restriction) constructs.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-objecttype</stereo>
+                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo required="no">stereotype-name-composite</stereo>
+                <stereo required="no">stereotype-name-relatieklasse</stereo>
+                <stereo required="no">stereotype-name-referentielijst</stereo>
+                <stereo required="no">stereotype-name-referentie-element</stereo>
+                <stereo required="no">stereotype-name-enumeration</stereo>
+                <stereo required="no">stereotype-name-simpletype</stereo>
+                <stereo required="no">stereotype-name-complextype</stereo>
+                <stereo required="no">stereotype-name-union</stereo>
+                <stereo required="no">stereotype-name-data-element</stereo>
+                <stereo required="no">stereotype-name-union-element</stereo>
+                <stereo required="no">stereotype-name-enum</stereo>
+            </stereotypes>
+        </tv>
+        
+    </tagged-values>
+</tagset>

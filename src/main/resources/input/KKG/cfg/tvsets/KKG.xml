@@ -7,7 +7,7 @@
     <!-- 
         this metamodel is subject to standard Grouping conventions 
     -->
-    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping.xml"/>
+    <xi:include href="Grouping.xml"/>
     
     <name>KKG</name>
     
@@ -177,18 +177,6 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="CFG-TV-LOCATION"><!-- In addition to Grouping tvset -->
-            <name lang="nl">Locatie</name>
-            <name lang="en">Location</name>
-            <desc lang="nl">TODO</desc>
-            <desc lang="en">TODO</desc>
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="yes">stereotype-name-codelist</stereo>
-                <stereo required="yes">stereotype-name-referentielijst</stereo>
-            </stereotypes>
-        </tv>
         <tv norm="space" id="CFG-TV-SOURCE">
             <stereotypes>
                 <stereo required="yes">stereotype-name-enumeration</stereo>
@@ -197,18 +185,6 @@
         </tv>
         <tv norm="space" id="CFG-TV-SOURCEOFDEFINITION">
             <stereotypes>
-            </stereotypes>
-        </tv>
-        
-        <tv norm="space" id="CFG-TV-BASEMAPPING">
-            <name lang="nl">Base-mapping</name>
-            <name lang="en">Base-mapping</name>
-            <desc lang="nl">TODO</desc>
-            <desc lang="en">TODO</desc>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo required="no">stereotype-name-objecttype</stereo>
-                <stereo required="no">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
         

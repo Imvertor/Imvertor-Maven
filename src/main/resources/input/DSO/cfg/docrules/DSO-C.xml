@@ -4,11 +4,11 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <!-- RWS follows BRO -->
-    <xi:include href="../../../BRO/cfg/docrules/BRO.xml"/>
+    <xi:include href="../../../BRO/cfg/docrules/BRO-CONCEPTUAL.xml"/>
     
-    <name>RWS</name>
+    <name>DSO-C</name>
     
-    <desc>RWS specific requirements on documentation.</desc>
+    <desc>DSO specific requirements on conceptual documentation.</desc>
     
+     
 </doc-rules>

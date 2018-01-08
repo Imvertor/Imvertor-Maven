@@ -4,11 +4,13 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     <!-- 
-       
+        DSO follows NEN3610
+        
+        Including scalars.
     --> 
-    <xi:include href="../../../KING/cfg/metamodels/KINGBSM.xml"/>
+    <xi:include href="../../../Geonovum/cfg/metamodels/NEN3610.xml"/>
     
-    <name>RWS</name>
+    <name>MIM-L-DSO</name>
     
  
     

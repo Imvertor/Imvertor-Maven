@@ -19,9 +19,11 @@
 -->
 <schema-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <name>RWS</name>
+    <xi:include href="../../../Geonovum/cfg/schemarules/NEN3610.xml"/>
+    
+    <name>DSO</name>
     <!-- 
-        No rules. 
+        DSO specific rules 
     -->
     
 </schema-rules>

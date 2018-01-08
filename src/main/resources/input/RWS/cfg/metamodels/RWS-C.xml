@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <!-- 
+        RWS follows KKG ISO (alt 2)
+        
+        Including scalars.
+    --> 
+    <xi:include href="../../../DSO/cfg/metamodels/MIM-C-DSO.xml"/>
+    
+    <name>RWS-C</name>
+    
+    <profiles>
+        <profile lang="nl">
+            <id>RWSCNL</id>
+            <release>0.9</release>
+            <desc>RWS-C-DSO Grouping (NL)</desc> 
+        </profile>
+        <profile lang="en">
+            <id>RWSCEN</id>
+            <release>0.9</release>
+            <desc>RWS-C-DSO Grouping (EN)</desc>
+        </profile>
+    </profiles>
+    
+    
+</metamodel>

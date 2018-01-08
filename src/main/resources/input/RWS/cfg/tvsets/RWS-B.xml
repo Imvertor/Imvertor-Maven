@@ -19,45 +19,15 @@
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <xi:include href="KINGUGM.xml"/>
+    <!-- 
+        RWS follows KING
+    --> 
     
-    <name>KINGBSM</name>
+    <xi:include href="RWS-L.xml"/>
     
-    <tagged-values>
-        
-        <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONAUTHENTIC">
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
-            </stereotypes>
-        </tv>
-        <tv norm="space" rules="NOC" id="CFG-TV-INDICATIEINONDERZOEK">
-            <name lang="nl">Indicatie in onderzoek</name>
-            <derive>yes</derive><!-- BSM mag op supplier  terugvallen-->
-            <stereotypes>
-                <stereo required="yes">stereotype-name-attribute</stereo>
-                <stereo required="yes">stereotype-name-composite</stereo>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo>
-            </stereotypes>
-        </tv>
-        <tv norm="compact"  rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
-            </stereotypes>
-         </tv>
-        <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIONFORMALHISTORY">
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
-            </stereotypes>
-       </tv>
+    <name>RWS-B</name>
+    
+      <tagged-values>
         
         <tv norm="space"  rules="NOC" id="CFG-TV-FUNCTIEBERICHTRELATIE">
             <name lang="nl">Functie berichtrelatie</name>
@@ -272,11 +242,11 @@
             <derive>no</derive>
             <inherit>yes</inherit>
             <stereotypes>
-                <stereo required="no">stereotype-name-vraagberichttype</stereo>
-                <stereo required="no">stereotype-name-antwoordberichttype</stereo>
-                <stereo required="no">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo required="no">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo required="no">stereotype-name-vrijberichttype</stereo>
+                <stereo required="yes">stereotype-name-vraagberichttype</stereo>
+                <stereo required="yes">stereotype-name-antwoordberichttype</stereo>
+                <stereo required="yes">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo required="yes">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo required="yes">stereotype-name-vrijberichttype</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>request</value>
@@ -289,39 +259,11 @@
             <derive>no</derive>
             <inherit>yes</inherit>
             <stereotypes>
-                <stereo required="no">stereotype-name-vraagberichttype</stereo>
-                <stereo required="no">stereotype-name-antwoordberichttype</stereo>
-                <stereo required="no">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo required="no">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo required="no">stereotype-name-vrijberichttype</stereo>
-            </stereotypes>
-        </tv>
-        
-        <tv norm="space" id="CFG-TV-RELEASE">
-            <name lang="nl">Release</name>
-            <stereotypes>
-                <stereo required="yes">stereotype-name-application-package</stereo>
-            </stereotypes>
-        </tv>
-        
-        <tv norm="space" id="CFG-TV-SUPPLIERPROJECT">
-            <stereotypes>
-                <stereo required="yes">stereotype-name-application-package</stereo>
-            </stereotypes>
-        </tv>
-        <tv norm="space" id="CFG-TV-SUPPLIERNAME">
-            <stereotypes>
-                <stereo required="yes">stereotype-name-application-package</stereo>
-            </stereotypes>
-        </tv>
-        <tv norm="space" id="CFG-TV-SUPPLIERPACKAGENAME">
-            <stereotypes>
-                <stereo required="no">stereotype-name-application-package</stereo>
-            </stereotypes>
-        </tv>
-        <tv norm="space" id="CFG-TV-SUPPLIERRELEASE">
-            <stereotypes>
-                <stereo required="yes">stereotype-name-application-package</stereo>
+                <stereo required="yes">stereotype-name-vraagberichttype</stereo>
+                <stereo required="yes">stereotype-name-antwoordberichttype</stereo>
+                <stereo required="yes">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo required="yes">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo required="yes">stereotype-name-vrijberichttype</stereo>
             </stereotypes>
         </tv>
         

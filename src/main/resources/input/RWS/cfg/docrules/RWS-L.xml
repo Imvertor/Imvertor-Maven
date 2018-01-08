@@ -4,7 +4,7 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="RWS.xml"/>
+    <xi:include href="../../../DSO/cfg/docrules/DSO-L.xml"/>
     
     <name>RWS LOGICAL</name>
     

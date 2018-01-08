@@ -4,11 +4,11 @@
 -->
 <compare-rules xmlns:xi="http://www.w3.org/2001/XInclude">
     <!-- 
-        RWS follows DSO
+        DSO follows KKG
     --> 
-    <xi:include href="../../../DSO/cfg/comparerules/DSO.xml"/>
+    <xi:include href="../../../KKG/cfg/comparerules/KKG.xml"/>
     
-    <name>RWS</name>
+    <name>DSO</name>
     
     <!-- for tagged values: -->
    

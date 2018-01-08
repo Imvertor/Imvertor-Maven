@@ -7,8 +7,8 @@
     <!-- 
         RWS follows KKG ISO
     --> 
-    <xi:include href="../../../KKG/cfg/tvsets/KKG-ISO.xml"/>
+    <xi:include href="../../../DSO/cfg/tvsets/MIM-C-DSO.xml"/>
     
-    <name>RWS</name>
+    <name>RWS-C</name>
     
 </tagset>

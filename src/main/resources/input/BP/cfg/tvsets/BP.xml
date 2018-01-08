@@ -19,11 +19,6 @@
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <!-- 
-        this metamodel is subject to standard Grouping conventions 
-    -->
-    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping.xml"/>
-    
     <name>BP</name>
     <descr>Best Practices</descr>
     <tagged-values>
@@ -102,15 +97,5 @@
             </declared-values>
         </tv>
        
-        <tv norm="space" id="CFG-TV-DATALOCATION"><!-- MIG -->
-            <name lang="nl">Data locatie</name>
-            <name lang="en">Data location</name>
-            <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
-            <stereotypes>
-                <stereo required="no">stereotype-name-referentielijst</stereo>
-                <stereo required="no">stereotype-name-referentie-element</stereo>
-            </stereotypes>
-        </tv>
-        
     </tagged-values>
 </tagset>

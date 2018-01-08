@@ -5,10 +5,10 @@
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
     <!-- 
-        RWS follows KKG
+        DSO follows NEN3610
     --> 
     <xi:include href="../../../Geonovum/cfg/tvsets/NEN3610.xml"/>
     
-    <name>RWS</name>
+    <name>MIM-L-DSO</name>
     
 </tagset>

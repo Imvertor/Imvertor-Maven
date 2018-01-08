@@ -22,7 +22,7 @@
     <!-- 
         this metamodel is subject to standard Grouping conventions 
     -->
-    <xi:include href="../../../Imvertor/cfg/tvsets/Grouping.xml"/>
+    <xi:include href="Grouping.xml"/>
     
     <!-- KING refines grouping -->
     <xi:include href="Grouping.xml"/>
@@ -50,20 +50,7 @@
                 <value default="yes">Nee</value>
             </declared-values>
         </tv>
-        <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIEKERNGEGEVEN"><!-- TODO remove! -->
-            <name lang="nl">Indicatie kerngegeven</name>
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
-                <stereo required="no">stereotype-name-relatieklasse</stereo>
-            </stereotypes>
-            <declared-values lang="nl">
-                <value>Ja</value>
-                <value default="yes">Nee</value>
-            </declared-values>
-        </tv>
+     
         <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONAUTHENTIC">
             <name lang="nl">Indicatie authentiek</name>
             <derive>yes</derive>
@@ -110,23 +97,6 @@
             <derive>yes</derive><!-- UGM mag op supplier terugvallen, maar SIM is niet een supplier voor deze config, dus expliciet de naam opnemen.-->
         </tv>
         
-        <tv norm="space" id="CFG-TV-INDICATIETERUGRELATIE">
-            <name lang="nl">Indicatie terugrelatie</name>
-            <name lang="en">Indication reverse relation</name>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo>
-            </stereotypes>
-        </tv>
-        <tv norm="space" id="CFG-TV-MNEMONICINDICATIETERUGRELATIE">
-            <name lang="nl">Mnemonic relatiesoort terugrelatie</name>
-            <name lang="en">Mnemonic indication reverse relation</name>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo required="no">stereotype-name-relatiesoort</stereo><!-- alleen verplicht als CFG-TV-INDICATIETERUGRELATIE is Ja -->
-            </stereotypes>
-        </tv>
-       
         <tv norm="space" validate="" rules="" id="CFG-TV-VERKORTEALIAS">
             <name lang="nl">Verkorte alias</name>
             <name lang="en">Short alias</name>
@@ -205,15 +175,6 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="CFG-TV-DATALOCATION"><!-- MIG -->
-            <name lang="nl">Data locatie</name>
-            <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
-            <stereotypes>
-                <stereo required="no">stereotype-name-referentielijst</stereo><!-- SIM Referentielijst -->
-                <stereo required="no">stereotype-name-attribute</stereo><!-- SIM Referentie element -->
-            </stereotypes>
-        </tv>
-                
         <tv id="CFG-TV-DESCRIPTION">
             <derive>yes</derive>
             <stereotypes>

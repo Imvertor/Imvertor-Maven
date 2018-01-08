@@ -94,16 +94,5 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="CFG-TV-BASEMAPPING">
-            <name lang="nl">Base-mapping</name>
-            <name lang="en">Base-mapping</name>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo required="no">stereotype-name-objecttype</stereo>
-                <stereo required="no">stereotype-name-koppelklasse</stereo>
-                <stereo required="no">stereotype-name-meervoudige-relatieklasse</stereo>
-            </stereotypes>
-        </tv>
-        
     </tagged-values>
 </tagset>

@@ -209,15 +209,4 @@
         </stereo>
     </stereotypes>
     
-    <!-- POC, oud -->
-    <stereotypes>
-        <stereo id="stereotype-name-merged">
-            <name lang="en">Merged</name>
-            <name lang="nl">Samengevoegd</name>
-            <construct>class</construct>
-            <construct>attribute</construct>
-            <construct>association</construct>
-        </stereo>
-    </stereotypes>   
-    
 </metamodel>

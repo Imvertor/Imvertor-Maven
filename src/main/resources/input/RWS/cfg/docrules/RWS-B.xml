@@ -4,11 +4,10 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <xi:include href="RWS.xml"/>
+    <xi:include href="RWS-L.xml"/>
     
-    <name>RWS CONCEPTUAL</name>
+    <name>RWS MESSAGES</name>
     
-    <desc>RWS specific requirements on conceptual documentation.</desc>
-    
+    <desc>RWS specifieke eisen aan Koppelvlak specificaties</desc>
      
 </doc-rules>
