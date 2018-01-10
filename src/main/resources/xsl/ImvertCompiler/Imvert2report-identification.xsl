@@ -75,8 +75,8 @@
             <cell>
                 <xsl:choose>
                     <!-- Shared? - the class is stereotyped as an Object type, and therefore has a local ID -->
-                    <xsl:when test="$superclasses/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-objecttype')">inherit</xsl:when>
-                    <xsl:when test="imvert:stereotype=imf:get-config-stereotypes('stereotype-name-objecttype')">yes</xsl:when>
+                    <xsl:when test="$superclasses/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-objecttype','stereotype-name-koppelklasse'))">inherit</xsl:when>
+                    <xsl:when test="imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-objecttype','stereotype-name-koppelklasse'))">yes</xsl:when>
                 </xsl:choose>
             </cell>
         </row>
