@@ -73,7 +73,12 @@ public class Validator extends Step {
 				// curpath is "properties/WORK_BASE_FILE", 
 				succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/" + outname, "properties/" + xslname, "system/cur-imvertor-filepath") : false ;
 				i += 1;
-			} else break;
+			} else if (i == 0) {
+				// first canonization is required: for each metamodel a primary canonization must be configured 
+				runner.error(logger,"No such supported metamodel or invalid canonization configuration: " + mm);
+				break;
+			} else
+				break;
 		}
 		
 		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_INTERFACE_FILE", "properties/IMVERTOR_INTERFACE_XSLPATH","system/cur-imvertor-filepath") : false ;
@@ -91,7 +96,12 @@ public class Validator extends Step {
 				if (configurator.getParm("properties", xslname, false) != null) {
 					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/" + outname, "properties/" + xslname) : false ;
 					j += 1;
-				} else break;
+				} else if (i == 0) {
+					// first canonization is required: for each metamodel a primary canonization must be configured 
+					runner.error(logger,"No such supported metamodel or invalid validation configuration: " + mm);
+					break;
+				} else 
+					break;
 			}
 			
 			// final validation
