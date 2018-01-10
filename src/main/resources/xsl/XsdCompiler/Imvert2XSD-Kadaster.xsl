@@ -97,7 +97,7 @@
             
             <!-- 
                 Do we need to reference external schema's? 
-                If so, a reference is made to the name of the external schema. 
+                If so, a reference is made to the name of the external schema.
             -->
             <xsl:variable name="externals" select="//(imvert:type-package|imvert:supertype[not(imvert:stereotype=imf:get-config-stereotypes('stereotype-name-static-generalization'))]/imvert:type-package)[.=$external-schema-names]"/>
             <xsl:for-each-group select="$externals" group-by=".">
@@ -123,7 +123,28 @@
                     </imvert:schema>
                 </xsl:for-each>
             </xsl:for-each-group>
-            
+            <!-- add an external package that is a sentinel if not yet added -->
+            <xsl:for-each select="$imvert-document/imvert:packages/imvert:package[imf:boolean(imvert:sentinel) and not(imvert:name = $externals)]">
+                <xsl:variable name="external-package" select="."/>
+                <imvert:schema>
+                    <xsl:sequence select="imf:create-info-element('imvert:name',$external-package/imvert:name)"/>
+                    <xsl:sequence select="imf:create-info-element('imvert:prefix',$external-package/imvert:short-name)"/>
+                    <xsl:sequence select="imf:create-info-element('imvert:namespace',$external-package/imvert:namespace)"/>
+                    <xsl:choose>
+                        <xsl:when test="imf:boolean($external-schemas-reference-by-url)">
+                            <xsl:comment>Referenced by URL</xsl:comment>
+                            <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$external-package/imvert:location)"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:comment>Referenced by local path</xsl:comment>
+                            <xsl:variable name="schema-subpath" select="imf:get-xsd-filesubpath($external-package)"/>
+                            <xsl:variable name="file-fullpath" select="imf:get-xsd-filefullpath($external-package)"/>
+                            <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$schema-subpath)"/>
+                            <xsl:sequence select="imf:create-info-element('imvert:result-file-fullpath',$file-fullpath)"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </imvert:schema>
+            </xsl:for-each>
         </imvert:schemas>
     </xsl:template>
     

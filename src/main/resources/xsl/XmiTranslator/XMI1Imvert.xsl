@@ -210,6 +210,13 @@
                                 <xsl:variable name="association-end" select="exists($document-association-nontraces//UML:AssociationEnd[@type = $id]/UML:ModelElement.taggedValue/UML:TaggedValue[@tag='ea_end' and @value = 'target'])"/>
                                 <xsl:variable name="generalization-end" select="exists($xmi-document//UML:Generalization[@supertype = $id])"/>
                                 <xsl:choose>
+                                    <xsl:when test="@type = 'sentinel'">
+                                        <imvert:class origin="stub" umltype="class" type="sentinel">
+                                            <imvert:found-name>
+                                                <xsl:value-of select="@name"/>
+                                            </imvert:found-name>
+                                        </imvert:class> 
+                                    </xsl:when>
                                     <xsl:when test="$attribute-end or $association-end or $generalization-end">
                                         <imvert:class origin="stub" umltype="{@UMLType}">
                                          <!--

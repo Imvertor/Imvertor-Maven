@@ -98,7 +98,7 @@
         
         <xsl:variable name="imports" as="node()*">
             <xsl:for-each select="distinct-values($qualifiers)[not(. = $my-qualifier)]">
-                
+               
                 <!-- determine for this prefix which schema is created -->
                 <xsl:variable name="prefix" select="."/>
                 <xsl:variable name="schema-def" select="$schema-defs[imvert:prefix = $prefix]"/>

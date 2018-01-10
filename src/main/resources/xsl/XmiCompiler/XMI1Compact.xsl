@@ -90,6 +90,9 @@
                     </xsl:choose>
                     <XMI.extensions xmi.extender="IMVERTOR">
                         <xsl:apply-templates select=".//UML:Class" mode="stub"/>
+                        <xsl:for-each select="tokenize(imf:get-config-string('cli','sentinel'),';')">
+                            <EAStub type="sentinel" name="{.}"/>
+                        </xsl:for-each> 
                     </XMI.extensions>
                 </xsl:when>
                 <xsl:otherwise>
@@ -116,6 +119,9 @@
                     </xsl:choose>
                     <XMI.extensions xmi.extender="IMVERTOR">
                         <xsl:apply-templates select=".//UML:Class" mode="stub"/>
+                        <xsl:for-each select="tokenize(imf:get-config-string('cli','sentinel',''),';')">
+                            <EAStub type="sentinel" name="{.}"/>
+                        </xsl:for-each> 
                     </XMI.extensions>
                 </xsl:otherwise>
             </xsl:choose>

@@ -75,7 +75,14 @@
             
             <!-- if any type is taken from an external package, or if it is a system package, import that external package -->
             <xsl:variable name="result-external-packages" as="node()*">
-                <xsl:for-each-group select="$external-packages[(imvert:class/imvert:id = $result-packages//(imvert:type-id | imvert:supertype/imvert:type-id)) or imvert:stereotype=imf:get-config-stereotypes('stereotype-name-system-package')]" group-by="imvert:id">
+                <xsl:for-each-group select="$external-packages[
+                    imf:boolean(imvert:class/imvert:sentinel) 
+                    or 
+                    (imvert:class/imvert:id = $result-packages//(imvert:type-id | imvert:supertype/imvert:type-id)) 
+                    or 
+                    imvert:stereotype=imf:get-config-stereotypes('stereotype-name-system-package')]" 
+                    group-by="imvert:id">
+                
                     <xsl:sequence select="."/>
                 </xsl:for-each-group>
             </xsl:variable>

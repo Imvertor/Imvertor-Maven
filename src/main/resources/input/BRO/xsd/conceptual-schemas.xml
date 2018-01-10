@@ -214,6 +214,11 @@
                 <managed-ids/>
             </construct>
             
+            <construct>
+                <name>GM_SENTINEL</name>
+                <sentinel>true</sentinel>
+            </construct>
+            
         </map>
         
     </conceptual-schema>

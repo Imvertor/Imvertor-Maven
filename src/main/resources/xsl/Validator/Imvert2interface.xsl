@@ -35,6 +35,11 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-conceptual-map.xsl"/>
         
+    <!-- 
+        outside mapped classes  are classes that are referenced but not defined. 
+        They are considered to be configured using the conceptual schemas configuration.
+        Typical example are GML constructs.
+    -->
     <xsl:variable name="outside-mapped-classes" as="element(imvert:class)*">
         <xsl:for-each select="//imvert:package[imvert:id = 'OUTSIDE']/imvert:class"> <!-- all stubs -->
             <xsl:variable name="constructs" select="$conceptual-schema-mapping//construct[name = current()/imvert:name]" as="element(construct)*"/>
@@ -68,9 +73,14 @@
                 <imvert:id>
                     <xsl:value-of select="imvert:id"/>
                 </imvert:id>
-                <imvert:catalog>
-                    <xsl:sequence select="imf:create-catalog-url($construct)"/>     
-                </imvert:catalog>
+                <xsl:if test="exists($construct/catalog) ">
+                    <imvert:catalog>
+                        <xsl:sequence select="imf:create-catalog-url($construct)"/>     
+                    </imvert:catalog>
+                </xsl:if>
+                <xsl:if test="imf:boolean($construct/sentinel)">
+                    <imvert:sentinel>true</imvert:sentinel>
+                </xsl:if> 
                 <imvert:stereotype id="CFG-ST-INTERFACE">
                     <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-interface')"/>
                 </imvert:stereotype>
@@ -91,6 +101,10 @@
         -->
         <xsl:for-each-group select="$outside-mapped-classes" group-by="@cs">
             <imvert:package origin="system">
+                <!-- check if some class is a sentinel class; in that case this external package is relevant for this application -->
+                <xsl:if test="current-group()/imvert:sentinel = 'true'">
+                    <imvert:sentinel>true</imvert:sentinel>
+                </xsl:if>
                 <imvert:id>
                     <xsl:value-of select="concat('GENERATED-PACKAGE-ID-',position())"/>
                 </imvert:id>
@@ -116,7 +130,7 @@
                     <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-external-package')"/>
                 </imvert:stereotype>
                 <!-- and list all classes -->
-                <xsl:sequence select="current-group()"/>
+                <xsl:sequence select="for $c in current-group() return if ($c/@type = 'sentinel') then () else $c"/>
             </imvert:package>
         </xsl:for-each-group>
     </xsl:template>
