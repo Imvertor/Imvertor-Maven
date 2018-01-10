@@ -47,6 +47,12 @@
          <tip>Yes if the XMI file must be copied to the result folder.</tip>
          <required>false</required>
       </cli-parm> 
+      <cli-parm>
+         <name>sentinel</name>
+         <arg>Names</arg>
+         <tip>A (possibly empty) list of names of sentinels, separated by ';' and as configured for schema generation.</tip>
+         <required>false</required>
+      </cli-parm> 
       
    </cli-parms>
 
