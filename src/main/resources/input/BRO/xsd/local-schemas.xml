@@ -15,7 +15,7 @@
             and the target URI prefix, that will be valid for the local copy.
         -->
         <local-map 
-            source-uri-prefix="https://www.broservices.nl/profile/xlink/1.0/xlink-profile.xsd"
+            source-uri-prefix="https://schema.broservices.nl/profile/xlink/1.0/xlink-profile.xsd"
             target-uri-prefix="../../xlink/1.0.0/xlink-profile.xsd"/>
         
     </local-schema>

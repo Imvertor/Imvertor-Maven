@@ -1023,9 +1023,9 @@
         return a section name for a model passed as a package 
     -->
     <xsl:function name="imf:plugin-get-model-name">
-        <xsl:param name="package" as="element()"/><!-- imvert:package or imvert:packages -->
+        <xsl:param name="construct" as="element()"/><!-- imvert:package or imvert:packages -->
         
-        <xsl:value-of select="imf:get-name($package,true())"/>
+        <xsl:value-of select="imf:get-name($construct,true())"/>
     </xsl:function>
     
     <xsl:function name="imf:initialize-modeldoc" as="item()*">
@@ -1065,14 +1065,14 @@
     </xsl:function>
     
     <xsl:function name="imf:create-section-for-diagrams">
-        <xsl:param name="package"/> <!-- either the packages (=model) or a package -->
+        <xsl:param name="construct"/> <!-- either the packages (=model) or a package or a class -->
         
         <xsl:variable name="insert-diagrams" select="imf:boolean(imf:get-config-string('cli','createimagemap'))"/> <!-- TODO dit moet beter, eiegnlijk een parameter in modeldoc config -->
-        <xsl:variable name="diagrams-in-package" select="$imagemap/imvert-imap:diagram[imvert-imap:in-package = $package/imvert:id]"/>
+        <xsl:variable name="diagrams-in-construct" select="$imagemap/imvert-imap:diagram[imvert-imap:in-construct = $construct/imvert:id]"/>
         <xsl:choose>
-            <xsl:when test="$insert-diagrams">
-                <section type="IMAGEMAPS" name="{imf:plugin-get-model-name($package)}-imagemap" id="{imf:plugin-get-link-name($package,'imagemap')}">
-                    <xsl:for-each select="$diagrams-in-package">
+            <xsl:when test="$insert-diagrams and exists($diagrams-in-construct)">
+                <section type="IMAGEMAPS" name="{imf:plugin-get-model-name($construct)}-imagemap" id="{imf:plugin-get-link-name($construct,'imagemap')}">
+                    <xsl:for-each select="$diagrams-in-construct">
                         <section type="IMAGEMAP" name="{imvert-imap:name}" id="{imvert-imap:id}">
                             <content>
                                 <part type="CFG-DOC-TYPE">
@@ -1083,7 +1083,7 @@
                                     <item>Naam</item>
                                     <item><xsl:value-of select="imvert-imap:name"/></item>
                                 </part>
-                                <part type="CFG-DOC-NAAM">
+                                <part type="CFG-DOC-DESCRIPTION">
                                     <item>Omschrijving</item>
                                     <item><xsl:value-of select="imvert-imap:documentation"/></item>
                                 </part>

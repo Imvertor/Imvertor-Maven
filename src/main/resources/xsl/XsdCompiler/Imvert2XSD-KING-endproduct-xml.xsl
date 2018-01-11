@@ -2940,6 +2940,18 @@
                             <ep:data-type>scalar-postcode</ep:data-type>
                             <xsl:sequence select="$facetten"/>
                         </xsl:when>
+                        <xsl:when test="imvert:type-name = 'scalar-year'">
+                            <ep:data-type>xs:gYear</ep:data-type>
+                            <xsl:sequence select="$facetten"/>
+                        </xsl:when>
+                        <xsl:when test="imvert:type-name = 'scalar-month'">
+                            <ep:data-type>xs:gMonth</ep:data-type>
+                            <xsl:sequence select="$facetten"/>
+                        </xsl:when>
+                        <xsl:when test="imvert:type-name = 'scalar-day'">
+                            <ep:data-type>xs:gDay</ep:data-type>
+                            <xsl:sequence select="$facetten"/>
+                        </xsl:when>
                         <xsl:otherwise>
                             <xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the simple attribute type: [1]', imvert:type-name)"/>
                         </xsl:otherwise>                

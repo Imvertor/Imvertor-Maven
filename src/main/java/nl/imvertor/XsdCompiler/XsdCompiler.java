@@ -65,9 +65,9 @@ public class XsdCompiler extends Step {
 		} else if (schemarules.equals("BRO")) {
 			generateXsdBRO();
 			supplyExternalSchemas();
-		} else if (schemarules.equals("KINGUGM")) {
+		} else if (schemarules.equals("KINGUGM") || schemarules.equals("RWS-L")) {
 			generateUgmXsdKING();
-		} else if (schemarules.equals("KINGBSM")) {
+		} else if (schemarules.equals("KINGBSM") || schemarules.equals("RWS-B")) {
 			generateBsmXsdKING();
 		} else if (schemarules.equals("ISO19136")) {
 			generateXsdISO19136();

@@ -60,9 +60,9 @@
             <imvert-imap:type>
                 <xsl:value-of select="@diagramType"/>
             </imvert-imap:type>
-            <imvert-imap:in-package>
+            <imvert-imap:in-construct>
                 <xsl:value-of select="@owner"/>
-            </imvert-imap:in-package>
+            </imvert-imap:in-construct>
             <imvert-imap:documentation>
                 <xsl:value-of select="UML:ModelElement.taggedValue/UML:TaggedValue[@tag = 'documentation']/@value"/>
             </imvert-imap:documentation>

@@ -58,7 +58,7 @@
         
         <!-- maak zoveel packages als er target namespaces zijn; ieder imvert:package resulteert in een schema -->
         <xsl:variable name="cc2" as="element(imvert:package)*">
-            <xsl:for-each-group select="$cc1/imvert:class" group-by="imvert:subset-info/imvert:effective-prefix">
+            <xsl:for-each-group select="$cc1/imvert:class" group-by="(imvert:subset-info/imvert:effective-prefix,'default-prefix')[1]"> <!-- TODO wat is de default prefix? -->
                 <xsl:variable name="prefix" select="current-grouping-key()"/>
                 <xsl:variable name="version" select="current-group()[1]/imvert:subset-info/imvert:effective-version"/>
                 <imvert:package xsd-prefix="{$prefix}" xsd-version="{$version}" xsd-target-namespace="http://www.stufstandaarden.nl/basisschema/{$prefix}{$version}" >

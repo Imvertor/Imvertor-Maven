@@ -1160,6 +1160,21 @@
                                 <xsl:sequence select="$facetten"/>
                             </xs:restriction>
                         </xsl:when>
+                        <xsl:when test="imvert:type-name = 'scalar-year'">
+                            <xs:restriction base="xs:gYear">
+                                <xsl:sequence select="$facetten"/>
+                            </xs:restriction>
+                        </xsl:when>
+                        <xsl:when test="imvert:type-name = 'scalar-month'">
+                            <xs:restriction base="xs:gMonth">
+                                <xsl:sequence select="$facetten"/>
+                            </xs:restriction>
+                        </xsl:when>
+                        <xsl:when test="imvert:type-name = 'scalar-day'">
+                            <xs:restriction base="xs:gDay">
+                                <xsl:sequence select="$facetten"/>
+                            </xs:restriction>
+                        </xsl:when>
                         <xsl:otherwise>
                             <xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the simple attribute type: [1]', imvert:type-name)"/>
                         </xsl:otherwise>                

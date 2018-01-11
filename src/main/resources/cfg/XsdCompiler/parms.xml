@@ -216,11 +216,80 @@
       <IMVERTOR_METAMODEL_KKG_XSD_POSTFORM_XSLPATH>Imvert2XSD-ISO19136-BRO-postform.xsl</IMVERTOR_METAMODEL_KKG_XSD_POSTFORM_XSLPATH>
       <IMVERTOR_METAMODEL_KKG_XSD_IMPORT_XSLPATH>Imvert2XSD-ISO19136-imports.xsl</IMVERTOR_METAMODEL_KKG_XSD_IMPORT_XSLPATH>
  
+      <!-- 
+         RWS Koppelvlakken schema's (BSM)
+         
+         VOLGT KING
+      -->
+      <?x opnemen??
+         
+      <IMVERTOR_METAMODEL_RWS-B_XSDSOURCE>system</IMVERTOR_METAMODEL_RWS-B_XSDSOURCE>
+      
+      <IMVERTOR_METAMODEL_RWS-B_ROUGH_ENDPRODUCT_XML_XSLPATH alias="EPROUGH">Imvert2XSD-KING-create-endproduct-rough-structure.xsl</IMVERTOR_METAMODEL_RWS-B_ROUGH_ENDPRODUCT_XML_XSLPATH>
+      <IMVERTOR_METAMODEL_RWS-B_ENRICHED_ROUGH_ENDPRODUCT_XML_XSLPATH alias="EPENRICHED">Imvert2XSD-KING-create-enriched-rough-messages.xsl</IMVERTOR_METAMODEL_RWS-B_ENRICHED_ROUGH_ENDPRODUCT_XML_XSLPATH>
+      <IMVERTOR_METAMODEL_RWS-B_ENDPRODUCT_XML_XSLPATH alias="EPXML">Imvert2XSD-KING-endproduct-xml.xsl</IMVERTOR_METAMODEL_RWS-B_ENDPRODUCT_XML_XSLPATH>
+      <IMVERTOR_METAMODEL_RWS-B_REPROCESS_ENDPRODUCT_XML_XSLPATH alias="EPORDER">Imvert2XSD-KING-reprocess-endproduct-xml.xsl</IMVERTOR_METAMODEL_RWS-B_REPROCESS_ENDPRODUCT_XML_XSLPATH>
+      <IMVERTOR_METAMODEL_RWS-B_SORT_ENDPRODUCT_XML_XSLPATH alias="EPSORT">Imvert2XSD-KING-sortByNamespace-endproduct-xml.xsl</IMVERTOR_METAMODEL_RWS-B_SORT_ENDPRODUCT_XML_XSLPATH>
+      <IMVERTOR_METAMODEL_RWS-B_ENDPRODUCT_XSD_XSLPATH alias="EPXSD">Imvert2XSD-KING-endproduct-xsd.xsl</IMVERTOR_METAMODEL_RWS-B_ENDPRODUCT_XSD_XSLPATH>
+      
+      x?>
+
+      <?X      OVERNEMEN VAN KING, hard gecodeerd in de stylesheets/java
+     
+      <!-- locatie van de stuf onderlaag -->
+      <KINGBSM_STUF_ONDERLAAG_0302>${system/inp-folder-path}/xsd/other/KING-BSM/onderlaag-0302</KINGBSM_STUF_ONDERLAAG_0302>
+      <KINGUGM_STUF_ONDERLAAG_0302>${system/inp-folder-path}/xsd/other/KING-UGM/onderlaag-0302</KINGUGM_STUF_ONDERLAAG_0302>
+     
+      <!-- 
+         Where to find the standaard "EP formaat voor onderlaag"
+       -->
+      <KINGBSM_EPFORMAAT_XMLPATH>${system/inp-folder-path}/etc/EP/ep-stuf-onderlaag.xml</KINGBSM_EPFORMAAT_XMLPATH>
+      
+     
+      <!-- checksum info for simpletypes -->
+      <IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XSLPATH>Imvert2XSD-KING-compile-checksum.xsl</IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XSLPATH>
+      <IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH>${system/inp-folder-path}/cfg/schemarules/checksum-simpletypes.xml</IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH>
+      <IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH_LOCAL>${system/work-etc-folder-path}/checksum-simpletypes.xml</IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH_LOCAL>
+      
+      <!-- workfolder for serialized excel -->
+      <work-serialize-folder>${system/work-folder-path}/serializer/temp-folder</work-serialize-folder>
+      <!-- workfolder for processing the  -->
+      <ROUGH_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.26.rough-endproduct-xml.xml</ROUGH_ENDPRODUCT_XML_FILE_PATH>
+      <ENRICHED_ROUGH_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.27.enriched.rough-endproduct-xml.xml</ENRICHED_ROUGH_ENDPRODUCT_XML_FILE_PATH>
+      
+      <RESULT_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.28.endproduct-xml.xml</RESULT_ENDPRODUCT_XML_FILE_PATH>   
+      <RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.29.reprocessed-endproduct-xml.xml</RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH>
+      <RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.30.sorted-endproduct-xml.xml</RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH>
+      <RESULT_ENDPRODUCT_XSD_FILE_PATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_ENDPRODUCT_XSD_FILE_PATH>
+      
+      X?>
+      
+      <?x opnemen?
+      <!-- 
+         RWS-L transformation to Basisentiteiten schema 
+      --> 
+      <IMVERTOR_METAMODEL_RWS-L_XSD_PREFORM_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten-preform.xsl</IMVERTOR_METAMODEL_RWS-L_XSD_PREFORM_XSLPATH>
+      <IMVERTOR_METAMODEL_RWS-L_XSD_MAIN_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten-main.xsl</IMVERTOR_METAMODEL_RWS-L_XSD_MAIN_XSLPATH>
+      <IMVERTOR_METAMODEL_RWS-L_XSD_SUBSET_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten-postform-subset.xsl</IMVERTOR_METAMODEL_RWS-L_XSD_SUBSET_XSLPATH>
+      <IMVERTOR_METAMODEL_RWS-L_XSD_CLEANUP_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten-postform-cleanup.xsl</IMVERTOR_METAMODEL_RWS-L_XSD_CLEANUP_XSLPATH>
+      <IMVERTOR_METAMODEL_RWS-L_XSD_ENTDAT_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten-postform-entdat.xsl</IMVERTOR_METAMODEL_RWS-L_XSD_ENTDAT_XSLPATH>
+      
+      <RESULT_METAMODEL_RWS-L_XSD_PREFORM>${system/work-imvert-folder-path}/imvertor.25.xsd-preform.xml</RESULT_METAMODEL_RWS-L_XSD_PREFORM>
+      <RESULT_METAMODEL_RWS-L_XSD_MAIN>${system/work-imvert-folder-path}/imvertor.26.xsd-main.xml</RESULT_METAMODEL_RWS-L_XSD_MAIN>
+      <RESULT_METAMODEL_RWS-L_XSD_SUBSET>${system/work-imvert-folder-path}/imvertor.27.xsd-subset.xml</RESULT_METAMODEL_RWS-L_XSD_SUBSET>
+      <RESULT_METAMODEL_RWS-L_XSD_CLEANUP>${system/work-imvert-folder-path}/imvertor.28.xsd-cleanup.xml</RESULT_METAMODEL_RWS-L_XSD_CLEANUP>
+      <RESULT_METAMODEL_RWS-L_XSD_ENTDAT>${system/work-imvert-folder-path}/imvertor.29.xsd-entdat.xml</RESULT_METAMODEL_RWS-L_XSD_ENTDAT>
+      
+      <RESULT_METAMODEL_RWS-L_XSD_FILEPATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_METAMODEL_RWS-L_XSD_FILEPATH>
+     
+      x?>
+      
       <!-- common: -->
    
       <!-- location of the result XSD's when generating XML schemas -->
       <RESULT_XSD_APPLICATION_FOLDER>${system/work-xsd-folder-path}/${cli/xsdsubpath}</RESULT_XSD_APPLICATION_FOLDER>
       <RESULT_XSD_APPLICATION_ONDERLAAG_FOLDER>${system/work-xsd-folder-path}/0302</RESULT_XSD_APPLICATION_ONDERLAAG_FOLDER>
+      
       
       <!-- other metamodel specifics -->
       

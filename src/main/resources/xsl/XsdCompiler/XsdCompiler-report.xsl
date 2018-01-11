@@ -73,7 +73,7 @@
                         <xsl:sequence select="imf:report-label('Schemas', '(TODO KKG)')"/>
                     </summary>
                 </xsl:when>
-                <xsl:when test="$schemarules = ('KINGUGM','KINGBSM')">
+                <xsl:when test="$schemarules = ('KINGUGM','KINGBSM', 'RWS-L', 'RWS-B')">
                     <xsl:variable name="berichten-table" select="imf:create-berichten-table($berichten-infoset/berichten/*)"/>
                     <status/>
                     <summary>
