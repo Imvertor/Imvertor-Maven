@@ -3583,9 +3583,9 @@
 				<ep:min-occurs>0</ep:min-occurs>
 				<ep:type-name>StUF:FunctieVrijBerichtElement</ep:type-name>
 					<xsl:choose>
-						<xsl:when test="$enriched-rough-messages//ep:construct[ep:id = $constructId and @typeCode = 'berichtrelatie']/@context != ''">
+						<xsl:when test="$context != ''">
 							<ep:enum fixed="yes">
-								<xsl:value-of select="$enriched-rough-messages//ep:construct[ep:id = $constructId]/@context"/>
+								<xsl:value-of select="$context"/>
 							</ep:enum>
 						</xsl:when>
 						<xsl:when test="$enriched-rough-messages//ep:construct[ep:id = $constructId and @typeCode = 'entiteitrelatie']">
@@ -3602,9 +3602,9 @@
 				<ep:tech-name>functie</ep:tech-name>
 				<ep:type-name>StUF:FunctieVrijBerichtElement</ep:type-name>
 					<xsl:choose>
-						<xsl:when test="$enriched-rough-messages//ep:construct[ep:id = $constructId and @typeCode = 'berichtrelatie']/@context != ''">
+						<xsl:when test="$context != ''">
 							<ep:enum fixed="yes">
-								<xsl:value-of select="$enriched-rough-messages//ep:construct[ep:id = $constructId]/@context"/>
+								<xsl:value-of select="$context"/>
 							</ep:enum>
 						</xsl:when>
 						<xsl:when test="$enriched-rough-messages//ep:construct[ep:id = $constructId and @typeCode = 'entiteitrelatie']">
