@@ -1011,7 +1011,12 @@ public class Configurator {
 		String ts = getXParm("appinfo/previous-task",false);
 		String er = getXParm("appinfo/previous-errors",false);
 		
-		if (ph != null && ph.equals("3") && ts.equals("release") && er.equals("0") && !docRelease) {
+		if (
+				ph != null && ph.equals("3") && 
+				ts != null && ts.equals("release") && 
+				er != null && er.equals("0") && 
+				!docRelease
+			) {
 			runner.error(logger, "Cannot replace a final release");
 			runner.setMayRelease(false);
 			return false;
