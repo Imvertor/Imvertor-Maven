@@ -81,6 +81,9 @@ public class XmiCompiler extends Step {
 		
 		boolean succeeds = true;
 		
+		// assmume no images passed.
+		configurator.setXParm("system/xmi-image-count", 0);
+		
 		if (activeFileOrigin == null && zipFile != null) {
 			runner.debug(logger,"CHAIN", "Try compressed XMI file at: " + zipFile);
 			if (zipFile.isFile()) {
@@ -148,8 +151,7 @@ public class XmiCompiler extends Step {
 				AnyFolder targetFolder = new AnyFolder(activeFile.getParentFile().getCanonicalPath() + "/Images");
 				if (targetFolder.isDirectory() && targetFolder.list().length != 0) {
 					configurator.setXParm("system/xmi-image-count", targetFolder.list().length);
-				} else
-					configurator.setXParm("system/xmi-image-count", 0);
+				} 
 				
 			} else if (passedFile instanceof ZipFile) {
 				// XMI is provided in compressed form
@@ -171,8 +173,7 @@ public class XmiCompiler extends Step {
 					if (sourceFolder.isDirectory() && sourceFolder.list().length != 0) {
 						configurator.setXParm("system/xmi-image-count", sourceFolder.list().length);
 						sourceFolder.copy(targetFolder);
-					} else
-						configurator.setXParm("system/xmi-image-count", 0);
+					} 
 					cleanXMI(activeFile);
 				} else  
 					runner.fatal(logger, "Multiple files found in ZIP",null,"MFFIZ"); 
