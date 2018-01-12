@@ -62,7 +62,7 @@
 	</xsl:variable>
 	
 	
-	<xsl:key name="associations" match="imvert:association" use="imvert:type-id"/>
+	<xsl:key name="associations" match="imvert:association" use="concat(imvert:type-id,ancestor::imvert:package/imvert:id)"/>
 	
 	<!-- ======= Block of templates used to create the message structure. ======= -->
 
@@ -74,10 +74,6 @@
 		
 		<xsl:sequence select="imf:pretty-print($rough-messages,false())"/>
 		
-		<!--ep:rough-messages>
-			<xsl:apply-templates select="$packages/imvert:package[imvert:stereotype = 'BERICHT' and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]" mode="create-rough-message-structure"/>
-		</ep:rough-messages-->
-
 	</xsl:template>
 	
 	<xsl:template
@@ -92,11 +88,11 @@
 			 That messagetype wil be added here too but at a later moment. The 'not(key('associations',imvert:id))' statement in the selection is used 
 			 to be sure the class doesn't represent an association within another class. Since synchronisation messages contain kennisgeving messages 
 			 this selection might be adapted or another solution must be found. -->
-		<xsl:for-each
-			select="imvert:class[(imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-vraagberichttype',
-																				  'stereotype-name-antwoordberichttype',
-																				  'stereotype-name-kennisgevingberichttype',
-																				  'stereotype-name-vrijberichttype'))) and not(key('associations',imvert:id))]"> 
+			<xsl:for-each
+				select="imvert:class[(imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-vraagberichttype',
+				'stereotype-name-antwoordberichttype',
+				'stereotype-name-kennisgevingberichttype',
+				'stereotype-name-vrijberichttype'))) and not(key('associations',concat(imvert:id,ancestor::imvert:package/imvert:id)))]"> 
 				
 			<xsl:variable name="associationClassId" select="imvert:associations/imvert:association/imvert:type-id"/>
 			<xsl:variable name="fundamentalMnemonic">
