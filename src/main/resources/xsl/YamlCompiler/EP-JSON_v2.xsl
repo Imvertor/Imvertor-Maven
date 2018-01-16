@@ -12,8 +12,25 @@
         <xsl:value-of select="'&quot;components&quot;: {'"/>
         <xsl:value-of select="'&quot;schemas&quot;: {'"/>
 
+<!-- Verwerken van alle costructs uit KV namespace, dus ook dataTypes -->
         <xsl:for-each select="ep:message-set/ep:construct[@prefix = $kvnamespace][not(@ismetadata)]">
             <xsl:call-template name="construct"/>
+            <xsl:call-template name="construct-links"/>
+            <xsl:call-template name="construct-self">
+                <xsl:with-param name="kvnamespace" select="$kvnamespace"/>
+            </xsl:call-template>
+            <xsl:call-template name="construct-previous">
+                <xsl:with-param name="kvnamespace" select="$kvnamespace"/>
+            </xsl:call-template>
+            <xsl:call-template name="construct-next">
+                <xsl:with-param name="kvnamespace" select="$kvnamespace"/>
+            </xsl:call-template>
+            <xsl:call-template name="construct-first">
+                <xsl:with-param name="kvnamespace" select="$kvnamespace"/>
+            </xsl:call-template>
+            <xsl:call-template name="construct-last">
+                <xsl:with-param name="kvnamespace" select="$kvnamespace"/>
+            </xsl:call-template>
         </xsl:for-each>
         <!-- Alle types behalve superconstructs uit andere namespaces -->
         <xsl:value-of select="','"/>
@@ -22,6 +39,22 @@
             <xsl:variable name="elementNameSup" select="ep:tech-name"/>
             <xsl:if test="not(exists(/ep:message-sets/ep:message-set[@prefix=$kvnamespace]/ep:construct/ep:superconstructRef[@prefix=$prefixNameSup][ep:tech-name=$elementNameSup]))">
                 <xsl:call-template name="construct"/>
+                <xsl:call-template name="construct-links"/>
+                <xsl:call-template name="construct-self">
+                    <xsl:with-param name="kvnamespace" select="$kvnamespace"/>
+                </xsl:call-template>
+                <xsl:call-template name="construct-previous">
+                    <xsl:with-param name="kvnamespace" select="$kvnamespace"/>
+                </xsl:call-template>
+                <xsl:call-template name="construct-next">
+                    <xsl:with-param name="kvnamespace" select="$kvnamespace"/>
+                </xsl:call-template>
+                <xsl:call-template name="construct-first">
+                    <xsl:with-param name="kvnamespace" select="$kvnamespace"/>
+                </xsl:call-template>
+                <xsl:call-template name="construct-last">
+                    <xsl:with-param name="kvnamespace" select="$kvnamespace"/>
+                </xsl:call-template>
             </xsl:if>
         </xsl:for-each>
         <!-- Voor alle dataType objecten uit andere namespaces (superconstruct data types) -->
@@ -35,9 +68,10 @@
         </xsl:for-each>
         
         
-        <!-- Toevoeging voor missend Datum  en TijdstipMogelijkOnvolledig datatype (tijdelijk)-->
-        <xsl:value-of select="',&quot;Datum&quot;: {&quot;type&quot;: &quot;string&quot;}'"/>
+        <!-- Toevoeging voor missend Datum, Tijdstip  en TijdstipMogelijkOnvolledig datatype (tijdelijk)-->
+        <xsl:value-of select="'&quot;Datum&quot;: {&quot;type&quot;: &quot;string&quot;}'"/>
         <xsl:value-of select="',&quot;TijdstipMogelijkOnvolledig&quot;: {&quot;type&quot;: &quot;string&quot;}'"/>
+        <xsl:value-of select="',&quot;Tijdstip&quot;: {&quot;type&quot;: &quot;string&quot;}'"/>
 
         <xsl:value-of select="'}'"/>
         <xsl:value-of select="'}'"/>
@@ -50,15 +84,28 @@
 
 
         <xsl:value-of select="concat('&quot;', $elementName,'&quot;: {' )"/>
+        
+       
 
         <xsl:choose>
             <xsl:when test="@isdatatype = 'yes'">
                 <xsl:variable name="datatype">
                     <xsl:call-template name="deriveDataType">
-                        <xsl:with-param name="incomingType" select="substring-after(ep:data-type, 'scalar-')"/>
+                        <xsl:with-param name="incomingType">
+                            <xsl:choose>
+                                <xsl:when test="contains(ep:data-type, 'scalar-')">
+                                    <xsl:value-of select="substring-after(ep:data-type, 'scalar-')"></xsl:value-of>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:value-of select="ep:data-type"></xsl:value-of>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:with-param>
                     </xsl:call-template>
                 </xsl:variable>
+                
                 <xsl:value-of select="concat('&quot;type&quot;: &quot;',$datatype,'&quot;')"/>
+                <xsl:call-template name="stringExtended"/>
             </xsl:when>
             <xsl:when test="exists(ep:choice)">
                 <!-- Choise elementen -->
@@ -75,6 +122,7 @@
                     <xsl:value-of select="']'"/>
                 </xsl:for-each>
             </xsl:when>
+            
             <xsl:otherwise>
 
 
@@ -82,10 +130,10 @@
 
                 <xsl:value-of select="'&quot;properties&quot;: {'"/>
                 
+                
                 <!-- Waarden uit superconstruct (andere namespace) -->
                 <xsl:if test="exists(ep:superconstructRef)">
                     <xsl:variable name="prefix" select="ep:superconstructRef/@prefix"/>
-                    
                     <xsl:variable name="name" select="ep:superconstructRef/ep:tech-name"/>
                     <xsl:for-each select="/ep:message-sets/ep:message-set[@prefix = $prefix]/ep:construct[@prefix = $prefix][ep:tech-name = $name]/ep:seq/ep:construct[not(@ismetadata)]">
                         <xsl:call-template name="property"/>
@@ -93,26 +141,39 @@
                     </xsl:for-each>
                 </xsl:if>
                 
-                <!-- Waarden uit eigen namespace -->
-                <xsl:for-each select="ep:seq/ep:construct[@prefix = $prefixName][not(@ismetadata)]">
+                <xsl:if test="exists(ep:type-name)">
                     <xsl:call-template name="property"/>
-                    <xsl:if test="position() != last()">
+                    
+                    <xsl:value-of select="','"/>
+                </xsl:if>
+                
+                <!-- Waarden uit eigen namespace -->
+                <xsl:for-each select="ep:seq/ep:construct[@prefix = $prefixName][not(@ismetadata)][not(ep:seq)]">
+                    <xsl:call-template name="property"/>
+                    
+ 
                         <xsl:value-of select="','"/>
-                    </xsl:if>
+                    
                 </xsl:for-each>
                 
-                
-                
+                <!-- Links-->
+                <xsl:value-of select="'&quot;_links&quot;: {'"/>
+                <xsl:value-of select="concat('&quot;$ref&quot;: &quot;#/components/schemas/', $elementName,'-links&quot;')"/>
+                <xsl:value-of select="'}'"/>
+
+                 
+               
                 <xsl:value-of select="'}'"/>
             </xsl:otherwise>
         </xsl:choose>
+        
+        
+                
 
         <xsl:value-of select="'}'"/>
 
-        <xsl:if test="position() != last()">
-            <xsl:value-of select="','"/>
-        </xsl:if>
-
+        
+        <xsl:value-of select="','"/>
     </xsl:template>
     
     <xsl:template name="property">  
@@ -130,6 +191,7 @@
         </xsl:if>
     </xsl:template>
     
+    <!--Template voor constructs in choise elementen -->
     <xsl:template name="choiceProperty">  
         <xsl:variable name="derivedTypeName">
             <xsl:call-template name="derivePropertyTypeName">
@@ -150,18 +212,22 @@
             <xsl:when test="exists(ep:data-type)">
                 <!-- Uitzondering voor constructs die niet verwijzen naar een ander type, maar die een datatype als soort hebben -->
                 <xsl:value-of select="'&quot;type&quot;: &quot;string&quot;'"></xsl:value-of>
+<!--                <xsl:call-template name="cardinality2"/>-->
             </xsl:when>
             <xsl:when test="exists(/ep:message-sets//ep:construct[ep:tech-name = $typeName][@prefix=$typePrefix][exists(@addedLevel)]/ep:type-name)">
+                <xsl:call-template name="cardinality"/>
                 <xsl:value-of
                     select="concat('&quot;$ref&quot;: &quot;#/components/schemas/', substring-after(/ep:message-sets//ep:construct[ep:tech-name = $typeName][@prefix=$typePrefix][exists(@addedLevel)]/ep:type-name, ':'), '&quot;')"
                 />
             </xsl:when>
             <!-- Fix voor de StUF (Datum-e), Postcode-e en INDIC-e velden. Deze zouden eigenlijk met een @addedLevel moeten worden uitgerust-->
             <xsl:when test="$typePrefix = 'StUF' and ends-with($typeName, '-e')">
+                <xsl:call-template name="cardinality"/>
                 <xsl:value-of select="concat('&quot;$ref&quot;: &quot;#/components/schemas/', substring-before($typeName, '-e'), '&quot;')"/>
             </xsl:when>
             
             <xsl:otherwise>
+                <xsl:call-template name="cardinality"/>
                 <xsl:value-of select="concat('&quot;$ref&quot;: &quot;#/components/schemas/', $typeName, '&quot;')"/>
             </xsl:otherwise>
         </xsl:choose>
@@ -169,26 +235,203 @@
 
     <xsl:template name="deriveDataType">
         <xsl:param name="incomingType"/>
-
+        
+        <xsl:variable name="incomingTypeDerived">
         <xsl:choose>
-            <xsl:when test="$incomingType = 'decimal'">
-                <xsl:value-of select="'number'"/>
-            </xsl:when>
-            <xsl:when test="$incomingType = 'date'">
-                <xsl:value-of select="'string'"/>
-            </xsl:when>
-            <xsl:when test="$incomingType = 'dateTime'">
-                <xsl:value-of select="'string'"/>
-            </xsl:when>
-            <xsl:when test="$incomingType = 'nonNegativeInteger'">
-                <xsl:value-of select="'number'"/>
-            </xsl:when>
-            <xsl:when test="$incomingType = 'positiveInteger'">
-                <xsl:value-of select="'number'"/>
+            <xsl:when test="contains($incomingType, 'scalar-')">
+                <xsl:value-of select="substring-after($incomingType, 'scalar-')"></xsl:value-of>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="$incomingType"/>
+                <xsl:value-of select="$incomingType"></xsl:value-of>
             </xsl:otherwise>
         </xsl:choose>
+        </xsl:variable>
+        
+        <xsl:choose>
+            <xsl:when test="$incomingTypeDerived = 'decimal'">
+                <xsl:value-of select="'number'"/>
+            </xsl:when>
+            <xsl:when test="$incomingTypeDerived = 'date'">
+                <xsl:value-of select="'string'"/>
+            </xsl:when>
+            <xsl:when test="$incomingTypeDerived = 'dateTime'">
+                <xsl:value-of select="'string'"/>
+            </xsl:when>
+            <xsl:when test="$incomingTypeDerived = 'nonNegativeInteger'">
+                <xsl:value-of select="'number'"/>
+            </xsl:when>
+            <xsl:when test="$incomingTypeDerived = 'positiveInteger'">
+                <xsl:value-of select="'number'"/>
+            </xsl:when>
+            <xsl:when test="$incomingTypeDerived = 'primitive-dateTime'">
+                <xsl:value-of select="'string'"/>
+            </xsl:when>
+            <xsl:when test="$incomingTypeDerived = 'xs:anyURI'">
+                <xsl:value-of select="'string'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$incomingTypeDerived"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template name="cardinality">
+        <xsl:if test="exists(ep:min-occurs)">
+            <xsl:value-of select="concat('&quot;minOccurs&quot;: &quot;', ep:min-occurs,'&quot;,' )"/>
+        </xsl:if>
+        <xsl:if test="exists(ep:max-occurs)">
+            <xsl:value-of select="concat('&quot;maxOccurs&quot;: &quot;', ep:max-occurs,'&quot;,' )"/>
+        </xsl:if>
+    </xsl:template>
+    
+    <!-- Toevoegen van minimale en maximale string lengtes, en een eventueel patroon -->
+    <xsl:template name="stringExtended">
+        <xsl:if test="exists(ep:formeel-patroon)">
+            <xsl:value-of select="concat(',&quot;pattern&quot;: &quot;', replace(ep:formeel-patroon, '\\', '\\\\'),'&quot;' )"/>
+        </xsl:if>
+        <xsl:if test="exists(ep:min-length)">
+            <xsl:value-of select="concat(',&quot;minLength&quot;: ', ep:min-length )"/>
+        </xsl:if>
+        <xsl:if test="exists(ep:max-length)">
+            <xsl:value-of select="concat(',&quot;maxLength&quot;: ', ep:max-length )"/>
+        </xsl:if>
+        <xsl:if test="exists(ep:enum)">
+            <xsl:value-of select="',&quot;enum&quot;: ['"/>
+            <xsl:for-each select="ep:enum">
+                <xsl:value-of select="concat('&quot;',., '&quot;')"/>
+            <xsl:if test="position() != last()">
+                <xsl:value-of select="','"/>
+            </xsl:if>
+        </xsl:for-each>
+            <xsl:value-of select="']'"/>
+        </xsl:if>
+    </xsl:template>
+    
+    <xsl:template name="construct-links">
+        <xsl:variable name="prefixName" select="@prefix"/>
+        <xsl:variable name="elementName" select="ep:tech-name"/>
+        
+        <xsl:value-of select="concat('&quot;', $elementName,'-links&quot;: {' )"/>
+        <xsl:value-of select="'&quot;properties&quot;: {'"/>
+        <xsl:value-of select="'&quot;self&quot;: {'"/>
+        <xsl:value-of select="concat('&quot;$ref&quot;: &quot;#/components/schemas/', $elementName,'-self&quot;')"/>
+        <xsl:value-of select="'},'"/>
+        <xsl:value-of select="'&quot;previous&quot;: {'"/>
+        <xsl:value-of select="concat('&quot;$ref&quot;: &quot;#/components/schemas/', $elementName,'-previous&quot;')"/>
+        <xsl:value-of select="'},'"/>
+        <xsl:value-of select="'&quot;next&quot;: {'"/>
+        <xsl:value-of select="concat('&quot;$ref&quot;: &quot;#/components/schemas/', $elementName,'-next&quot;')"/>
+        <xsl:value-of select="'},'"/>
+        <xsl:value-of select="'&quot;first&quot;: {'"/>
+        <xsl:value-of select="concat('&quot;$ref&quot;: &quot;#/components/schemas/', $elementName,'-first&quot;')"/>
+        <xsl:value-of select="'},'"/>
+        <xsl:value-of select="'&quot;last&quot;: {'"/>
+        <xsl:value-of select="concat('&quot;$ref&quot;: &quot;#/components/schemas/', $elementName,'-last&quot;')"/>
+        <xsl:value-of select="'}'"/>
+        <xsl:value-of select="'}'"/>
+        <xsl:value-of select="'}'"/>
+        
+        <xsl:value-of select="','"/>
+        
+    </xsl:template>
+    
+    <xsl:template name="construct-self">
+        <xsl:param name="kvnamespace"/>
+        <xsl:variable name="prefixName" select="@prefix"/>
+        <xsl:variable name="elementName" select="ep:tech-name"/>
+        
+        <xsl:value-of select="concat('&quot;', $elementName,'-self&quot;: {' )"/>
+        <xsl:value-of select="'&quot;properties&quot;: {'"/>
+        <xsl:value-of select="'&quot;href&quot;: {'"/>
+        <xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
+        <xsl:value-of select="'&quot;format&quot;: &quot;URL&quot;,'"/>
+        <!--<xsl:value-of select="concat('&quot;example&quot;: &quot;', 'https://service.voorbeeldgemeente.nl/publiek/gemeenten/api/', $kvnamespace, '/', $elementName, '/12345','&quot;')"/>-->
+        <xsl:value-of select="concat('&quot;example&quot;: &quot;', 'https://service.voorbeeldgemeente.nl/publiek/gemeenten/api/', $kvnamespace, '/', $elementName, '?page=13','&quot;')"/>
+        <xsl:value-of select="'}'"/>
+        <xsl:value-of select="'}'"/>
+        <xsl:value-of select="'}'"/>
+        
+            <xsl:value-of select="','"/>
+        
+    </xsl:template>
+    
+    <xsl:template name="construct-previous">
+        <xsl:param name="kvnamespace"/>
+        <xsl:variable name="prefixName" select="@prefix"/>
+        <xsl:variable name="elementName" select="ep:tech-name"/>
+        
+        <xsl:value-of select="concat('&quot;', $elementName,'-previous&quot;: {' )"/>
+        <xsl:value-of select="'&quot;properties&quot;: {'"/>
+        <xsl:value-of select="'&quot;href&quot;: {'"/>
+        <xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
+        <xsl:value-of select="'&quot;format&quot;: &quot;URL&quot;,'"/>
+        <xsl:value-of select="concat('&quot;example&quot;: &quot;', 'https://service.voorbeeldgemeente.nl/publiek/gemeenten/api/', $kvnamespace, '/', $elementName, '?page=12','&quot;')"/>
+        <xsl:value-of select="'}'"/>
+        <xsl:value-of select="'}'"/>
+        <xsl:value-of select="'}'"/>
+        
+
+            <xsl:value-of select="','"/>
+        
+    </xsl:template>
+    
+    <xsl:template name="construct-next">
+        <xsl:param name="kvnamespace"/>
+        <xsl:variable name="prefixName" select="@prefix"/>
+        <xsl:variable name="elementName" select="ep:tech-name"/>
+        
+        <xsl:value-of select="concat('&quot;', $elementName,'-next&quot;: {' )"/>
+        <xsl:value-of select="'&quot;properties&quot;: {'"/>
+        <xsl:value-of select="'&quot;href&quot;: {'"/>
+        <xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
+        <xsl:value-of select="'&quot;format&quot;: &quot;URL&quot;,'"/>
+        <xsl:value-of select="concat('&quot;example&quot;: &quot;', 'https://service.voorbeeldgemeente.nl/publiek/gemeenten/api/', $kvnamespace, '/', $elementName, '?page=14','&quot;')"/>
+        <xsl:value-of select="'}'"/>
+        <xsl:value-of select="'}'"/>
+        <xsl:value-of select="'}'"/>
+        
+
+            <xsl:value-of select="','"/>
+        
+    </xsl:template>
+    
+    <xsl:template name="construct-first">
+        <xsl:param name="kvnamespace"/>
+        <xsl:variable name="prefixName" select="@prefix"/>
+        <xsl:variable name="elementName" select="ep:tech-name"/>
+        
+        <xsl:value-of select="concat('&quot;', $elementName,'-first&quot;: {' )"/>
+        <xsl:value-of select="'&quot;properties&quot;: {'"/>
+        <xsl:value-of select="'&quot;href&quot;: {'"/>
+        <xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
+        <xsl:value-of select="'&quot;format&quot;: &quot;URL&quot;,'"/>
+        <xsl:value-of select="concat('&quot;example&quot;: &quot;', 'https://service.voorbeeldgemeente.nl/publiek/gemeenten/api/', $kvnamespace, '/', $elementName, '?page=1','&quot;')"/>
+        <xsl:value-of select="'}'"/>
+        <xsl:value-of select="'}'"/>
+        <xsl:value-of select="'}'"/>
+        
+
+            <xsl:value-of select="','"/>
+        
+    </xsl:template>
+    
+    <xsl:template name="construct-last">
+        <xsl:param name="kvnamespace"/>
+        <xsl:variable name="prefixName" select="@prefix"/>
+        <xsl:variable name="elementName" select="ep:tech-name"/>
+        
+        <xsl:value-of select="concat('&quot;', $elementName,'-last&quot;: {' )"/>
+        <xsl:value-of select="'&quot;properties&quot;: {'"/>
+        <xsl:value-of select="'&quot;href&quot;: {'"/>
+        <xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
+        <xsl:value-of select="'&quot;format&quot;: &quot;URL&quot;,'"/>
+        <xsl:value-of select="concat('&quot;example&quot;: &quot;', 'https://service.voorbeeldgemeente.nl/publiek/gemeenten/api/', $kvnamespace, '/', $elementName, '?page=99','&quot;')"/>
+        <xsl:value-of select="'}'"/>
+        <xsl:value-of select="'}'"/>
+        <xsl:value-of select="'}'"/>
+        
+        <xsl:if test="position() != last()">
+            <xsl:value-of select="','"/>
+        </xsl:if>
     </xsl:template>
 </xsl:stylesheet>
