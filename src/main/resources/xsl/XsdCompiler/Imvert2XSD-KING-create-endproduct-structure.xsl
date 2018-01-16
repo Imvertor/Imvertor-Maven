@@ -3583,12 +3583,12 @@
 				<ep:min-occurs>0</ep:min-occurs>
 				<ep:type-name>StUF:FunctieVrijBerichtElement</ep:type-name>
 					<xsl:choose>
-						<xsl:when test="$context != ''">
+						<xsl:when test="$context != '' and $context != '-'">
 							<ep:enum fixed="yes">
 								<xsl:value-of select="$context"/>
 							</ep:enum>
 						</xsl:when>
-						<xsl:when test="$enriched-rough-messages//ep:construct[ep:id = $constructId and @typeCode = 'entiteitrelatie']">
+						<xsl:when test="$context = '-'">
 							<ep:enum fixed="yes">
 								<xsl:value-of select="'entiteit'"/>
 							</ep:enum>
@@ -3602,12 +3602,14 @@
 				<ep:tech-name>functie</ep:tech-name>
 				<ep:type-name>StUF:FunctieVrijBerichtElement</ep:type-name>
 					<xsl:choose>
-						<xsl:when test="$context != ''">
+						<xsl:when test="$context != '' and $context != '-'">
 							<ep:enum fixed="yes">
 								<xsl:value-of select="$context"/>
 							</ep:enum>
 						</xsl:when>
-						<xsl:when test="$enriched-rough-messages//ep:construct[ep:id = $constructId and @typeCode = 'entiteitrelatie']">
+						<xsl:when test="$context = '-'">
+							<!-- A 'functie' attribute with the value 'entiteit' is always optional. -->
+							<ep:min-occurs>0</ep:min-occurs>
 							<ep:enum fixed="yes">
 								<xsl:value-of select="'entiteit'"/>
 							</ep:enum>
