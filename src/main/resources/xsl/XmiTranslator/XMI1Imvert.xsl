@@ -137,6 +137,11 @@
             <xsl:sequence select="imf:create-output-element('imvert:generator',$imvertor-version)"/>
             <xsl:sequence select="imf:create-output-element('imvert:exported',concat(replace(/XMI/@timestamp,' ','T'),'Z'))"/>
             <xsl:sequence select="imf:create-output-element('imvert:exporter',concat(//XMI.documentation/XMI.exporter,' v ', //XMI.documentation/XMI.exporterVersion))"/>
+         
+            <imvert:supports>
+                <xsl:sequence select="imf:compile-support-info()"/>
+            </imvert:supports>
+            
             <xsl:sequence select="imf:compile-imvert-filter()"/>
             
             <xsl:variable name="project-name-shown" select="($project-name, concat($owner-name,': ',$project-name))" as="xs:string+"/>
@@ -187,7 +192,7 @@
                             <imvert:phase>3</imvert:phase>
                             <imvert:author>Simon Cox</imvert:author>
                             <imvert:svn-string>Id: xlinks.xml 346 2013-05-06 08:34:33Z loeffa </imvert:svn-string>
-                            <imvert:stereotype>
+                            <imvert:stereotype id="stereotype-name-system-package">
                                 <xsl:value-of select="imf:get-normalized-name('system','stereotype-name')"/>
                             </imvert:stereotype>
                             <imvert:location>http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd</imvert:location>
@@ -361,7 +366,14 @@
                                 <xsl:sequence select="imf:create-output-element('imvert:supplier',$supertype/@name)"/>
                                 <xsl:sequence select="imf:create-output-element('imvert:supplier-id',$supertype-id)"/>
                                 <xsl:sequence select="imf:create-output-element('imvert:supplier-package',imf:get-package-name($supertype-id))"/>
-                                <xsl:sequence select="for $s in $stereotypes return imf:create-output-element('imvert:stereotype',$s)"/>
+                                <xsl:for-each select="$stereotypes">
+                                    <xsl:variable name="s" select="."/>
+                                    <xsl:for-each select="imf:get-stereotypes-ids(.)">
+                                        <imvert:stereotype id="{.}">
+                                            <xsl:value-of select="$s"/>
+                                        </imvert:stereotype>
+                                    </xsl:for-each>
+                                </xsl:for-each>
                                 <xsl:sequence select="imf:create-output-element('imvert:position',imf:get-position-value($generalization,'100'))"/>
                             </imvert:substitution>     
                         </xsl:when>
@@ -370,7 +382,14 @@
                                 <xsl:sequence select="imf:create-output-element('imvert:type-name',$supertype/@name)"/>
                                 <xsl:sequence select="imf:create-output-element('imvert:type-id',$supertype-id)"/>
                                 <xsl:sequence select="imf:create-output-element('imvert:type-package',imf:get-package-name($supertype-id))"/>
-                                <xsl:sequence select="for $s in $stereotypes return imf:create-output-element('imvert:stereotype',$s)"/>
+                                <xsl:for-each select="$stereotypes">
+                                    <xsl:variable name="s" select="."/>
+                                    <xsl:for-each select="imf:get-stereotypes-ids(.)">
+                                        <imvert:stereotype id="{.}">
+                                            <xsl:value-of select="$s"/>
+                                        </imvert:stereotype>
+                                    </xsl:for-each>
+                                </xsl:for-each>
                                 <xsl:sequence select="imf:create-output-element('imvert:position',imf:get-position-value($generalization,'100'))"/>
                             </imvert:supertype>
                         </xsl:otherwise>
@@ -525,7 +544,12 @@
         <xsl:variable name="stereotypes" select="imf:get-stereotypes($this,$origin)"/>
         <xsl:for-each select="$stereotypes">
             <xsl:sort select="."/>
-            <xsl:sequence select="imf:create-output-element('imvert:stereotype',imf:get-normalized-name(.,'stereotype-name'))"/>
+            <xsl:variable name="name" select="imf:get-normalized-name(.,'stereotype-name')"/>
+            <xsl:for-each select="imf:get-stereotypes-ids($name)">
+                <imvert:stereotype id="{.}">
+                    <xsl:value-of select="$name"/>
+                </imvert:stereotype>
+            </xsl:for-each>
         </xsl:for-each>
     </xsl:function>
     
@@ -1449,7 +1473,13 @@
             <imvert:constraints>
                 <xsl:for-each select="$constraints">
                     <imvert:constraint>
-                        <xsl:sequence select="imf:create-output-element('imvert:stereotype',UML:ModelElement.stereotype/UML:Stereotype/@name)"/>
+                        <xsl:variable name="name" select="imf:get-normalized-name(UML:ModelElement.stereotype/UML:Stereotype/@name,'stereotype-name')"/>
+                        <xsl:variable name="name" select="imf:get-normalized-name(.,'stereotype-name')"/>
+                        <xsl:for-each select="imf:get-stereotypes-ids($name)">
+                            <imvert:stereotype id="{.}">
+                                <xsl:value-of select="$name"/>
+                            </imvert:stereotype>
+                        </xsl:for-each>
                         <xsl:sequence select="imf:create-output-element('imvert:type',imf:get-system-tagged-value(.,'documentation'))"/>
                         
                         <xsl:sequence select="imf:create-output-element('imvert:name',@name)"/>
@@ -1709,6 +1739,12 @@
             <xsl:attribute name="imvert-level" select="$level"/>
             <xsl:copy-of select="$tv/node()"/>
         </xsl:element>
+    </xsl:function>
+    
+    <xsl:function name="imf:compile-support-info" as="element(imvert:support)*">
+        <imvert:support>
+            <imvert:level>STEREOID</imvert:level>
+        </imvert:support>
     </xsl:function>
     
 </xsl:stylesheet>

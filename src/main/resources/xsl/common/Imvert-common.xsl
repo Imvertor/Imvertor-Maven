@@ -129,8 +129,8 @@
     <xsl:function name="imf:is-linkable" as="xs:boolean">
         <xsl:param name="class" as="element()"/>
         <xsl:variable name="class-id" select="$class/imvert:id"/>
-        <xsl:variable name="is-objecttype" select="$class/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')"/>
-        <xsl:variable name="is-not-static" select="exists($document-classes[imvert:supertype[imvert:type-id=$class-id and not(imvert:stereotype=imf:get-config-stereotypes('stereotype-name-static-generalization'))]])"/>
+        <xsl:variable name="is-objecttype" select="$class/imvert:stereotype/@id = ('stereotype-name-objecttype')"/>
+        <xsl:variable name="is-not-static" select="exists($document-classes[imvert:supertype[imvert:type-id=$class-id and not(imvert:stereotype/@id = ('stereotype-name-static-generalization'))]])"/>
         <xsl:variable name="is-not-lonely" select="exists($document-classes[*/*/imvert:type-id=$class-id])"/>
         <!-- is-not-lonely: this may be assocations or attributes; typically object types occur as attribute typs for unions. -->
         <xsl:variable name="is-not-sad" select="exists(for $c in (imf:get-superclasses($class)) return if (imf:is-linkable($c)) then 1 else ())"/>
@@ -139,7 +139,7 @@
         <xsl:variable name="id-attribute-inherited" select="($class, imf:get-superclasses($class))/*/imvert:attribute[imvert:is-id='true']"/>
         <xsl:variable name="id-attribute-inheriting" select="($class, imf:get-subclasses($class))/*/imvert:attribute[imvert:is-id='true']"/>
         <xsl:variable name="is-not-anonymous" select="exists(($id-attribute-inherited,$id-attribute-inheriting))"/>
-        <xsl:variable name="is-not-id-voidable" select="not($id-attribute-inherited/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-voidable'))"/>
+        <xsl:variable name="is-not-id-voidable" select="not($id-attribute-inherited/imvert:stereotype/@id = ('stereotype-name-voidable'))"/>
         
         <!--<xsl:message select="concat($class/imvert:name, ' - ', $is-objecttype, ' - ', $is-not-static, ' - ', $is-not-lonely, ' - ', $is-not-sad, ' - ', $is-not-anonymous, ' - ', $is-not-id-voidable)"></xsl:message>-->
         <xsl:sequence select="$is-objecttype and ($is-not-static or $is-not-lonely or $is-not-sad) and $is-not-anonymous and $is-not-id-voidable"/>
@@ -656,7 +656,7 @@
                 </xsl:when>
                 <xsl:otherwise>
                     <!-- return this class as part of the collection. -->
-                    <xsl:sequence select="if ($class/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-objecttype')) then $class else ()"/>
+                    <xsl:sequence select="if ($class/imvert:stereotype/@id = ('stereotype-name-objecttype')) then $class else ()"/>
                     <!-- get all classes related to this class or any of the supertypes/immediate subtypes. -->
                     <xsl:variable name="related" select="(imf:get-all-collection-related($class), imf:get-all-collection-supertype-related($class),imf:get-all-collection-subtype-related($class))/." as="element()*"/>
                     <!-- check these classes -->
@@ -693,7 +693,7 @@
         <xsl:for-each select="$class/imvert:associations/imvert:association">
             <xsl:variable name="defining-class" select="imf:get-construct-by-id(imvert:type-id)"/>
             <xsl:choose>
-                <xsl:when test="$defining-class/imvert:stereotype=(imf:get-config-stereotypes('stereotype-name-objecttype'))">
+                <xsl:when test="$defining-class/imvert:stereotype/@id = ('stereotype-name-objecttype'))">
                     <xsl:sequence select="$defining-class"/>
                 </xsl:when>
             </xsl:choose>
@@ -945,7 +945,7 @@
         <xsl:param name="construct" as="element()"/>
         <xsl:variable name="pack" select="$construct/ancestor-or-self::imvert:package" as="element()*"/>
         <xsl:variable name="prefix" select="tokenize(normalize-space(imf:get-config-parameter('url-prefix-conceptual-schema')),'\s+')"/>
-        <xsl:variable name="is-external" select="$pack/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-external-package')"/>
+        <xsl:variable name="is-external" select="$pack/imvert:stereotype/@id = ('stereotype-name-external-package')"/>
         <xsl:variable name="is-conceptual" select="exists($pack/imvert:namespace[(for $p in ($prefix) return starts-with(.,$p)) = true()])"/>
         
        <xsl:choose>
@@ -971,7 +971,7 @@
     -->
     <xsl:function name="imf:is-object-relation" as="xs:boolean">
         <xsl:param name="association" as="element()"/>
-        <xsl:variable name="associates-from-collection" select="$association/../../imvert:stereotype = imf:get-config-stereotypes('stereotype-name-collection')"/>
+        <xsl:variable name="associates-from-collection" select="$association/../../imvert:stereotype/@id = ('stereotype-name-collection')"/>
         <xsl:sequence select="not($associates-from-collection) and empty($association/imvert:tagged-values/imvert:tagged-value[imvert:name = 'relatie' and imvert:value='Referentie'])"/>
     </xsl:function>
     

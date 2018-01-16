@@ -29,14 +29,14 @@
     version="2.0">
 
     <!-- 
-          Transform KING UML constructs to canonical UML constructs.
-          This applies to the BSM.
+          Transform L-DSO constructs to canonical UML constructs.
+          This applies to the B-DSO.
     -->
     
     <xsl:import href="Imvert2canonical-RWS-common.xsl"/>
    
-    <xsl:variable name="koppelvlak-package" select="$document-packages[imvert:name/@original = $application-package-name and imvert:stereotype = imf:get-config-stereotypes('stereotype-name-application-package')][1]"/>
-    <xsl:variable name="bericht-packages" select="$koppelvlak-package//imvert:package[imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))]"/>
+    <xsl:variable name="koppelvlak-package" select="$document-packages[imvert:name/@original = $application-package-name and imvert:stereotype/@id = ('stereotype-name-application-package')][1]"/>
+    <xsl:variable name="bericht-packages" select="$koppelvlak-package//imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package')]"/>
     <xsl:variable name="bericht-classes" select="$bericht-packages//imvert:class"/>
     
     <xsl:template match="/imvert:packages">

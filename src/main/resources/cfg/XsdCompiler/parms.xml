@@ -156,12 +156,29 @@
       
       <IMVERTOR_METAMODEL_KINGBSM_XSDSOURCE>system</IMVERTOR_METAMODEL_KINGBSM_XSDSOURCE>
       
+      <IMVERTOR_METAMODEL_KINGBSM_XSD_MIGRATE_XSLPATH>Imvert2XSD-KING-BSM-migrate.xsl</IMVERTOR_METAMODEL_KINGBSM_XSD_MIGRATE_XSLPATH>
+      
       <IMVERTOR_METAMODEL_KINGBSM_ROUGH_ENDPRODUCT_XML_XSLPATH alias="EPROUGH">Imvert2XSD-KING-create-endproduct-rough-structure.xsl</IMVERTOR_METAMODEL_KINGBSM_ROUGH_ENDPRODUCT_XML_XSLPATH>
       <IMVERTOR_METAMODEL_KINGBSM_ENRICHED_ROUGH_ENDPRODUCT_XML_XSLPATH alias="EPENRICHED">Imvert2XSD-KING-create-enriched-rough-messages.xsl</IMVERTOR_METAMODEL_KINGBSM_ENRICHED_ROUGH_ENDPRODUCT_XML_XSLPATH>
       <IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XML_XSLPATH alias="EPXML">Imvert2XSD-KING-endproduct-xml.xsl</IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XML_XSLPATH>
       <IMVERTOR_METAMODEL_KINGBSM_REPROCESS_ENDPRODUCT_XML_XSLPATH alias="EPORDER">Imvert2XSD-KING-reprocess-endproduct-xml.xsl</IMVERTOR_METAMODEL_KINGBSM_REPROCESS_ENDPRODUCT_XML_XSLPATH>
       <IMVERTOR_METAMODEL_KINGBSM_SORT_ENDPRODUCT_XML_XSLPATH alias="EPSORT">Imvert2XSD-KING-sortByNamespace-endproduct-xml.xsl</IMVERTOR_METAMODEL_KINGBSM_SORT_ENDPRODUCT_XML_XSLPATH>
       <IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XSD_XSLPATH alias="EPXSD">Imvert2XSD-KING-endproduct-xsd.xsl</IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XSD_XSLPATH>
+      
+      <!-- intermediate result files -->
+      
+      <RESULT_METAMODEL_KINGBSM_XSD_MIGRATE>${system/work-imvert-folder-path}/imvertor.25.1.xsd-migrate.xml</RESULT_METAMODEL_KINGBSM_XSD_MIGRATE>
+      
+      <ROUGH_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.26.rough-endproduct-xml.xml</ROUGH_ENDPRODUCT_XML_FILE_PATH>
+      <ENRICHED_ROUGH_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.27.enriched.rough-endproduct-xml.xml</ENRICHED_ROUGH_ENDPRODUCT_XML_FILE_PATH>
+      
+      <!-- Volgende wordt volgens mij nooit aangemaakt. -->
+      <RESULT_ENDPRODUCT_MSG_FILE_PATH>${system/work-imvert-folder-path}/imvertor.27.endproduct-msg.xml</RESULT_ENDPRODUCT_MSG_FILE_PATH>
+      <RESULT_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.28.endproduct-xml.xml</RESULT_ENDPRODUCT_XML_FILE_PATH>   
+      <RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.29.reprocessed-endproduct-xml.xml</RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH>
+      <RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.30.sorted-endproduct-xml.xml</RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH>
+      <RESULT_ENDPRODUCT_XSD_FILE_PATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_ENDPRODUCT_XSD_FILE_PATH>
+      
       
       <!-- locatie van de stuf onderlaag -->
       <KINGBSM_STUF_ONDERLAAG_0302>${system/inp-folder-path}/xsd/other/KING-BSM/onderlaag-0302</KINGBSM_STUF_ONDERLAAG_0302>
@@ -175,13 +192,17 @@
       <!-- 
          UGM transformation to Basisentiteiten schema 
       --> 
+      <IMVERTOR_METAMODEL_KINGUGM_XSD_MIGRATE_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten-migrate.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_MIGRATE_XSLPATH>
+      
       <IMVERTOR_METAMODEL_KINGUGM_XSD_PREFORM_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten-preform.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_PREFORM_XSLPATH>
       <IMVERTOR_METAMODEL_KINGUGM_XSD_MAIN_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten-main.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_MAIN_XSLPATH>
       <IMVERTOR_METAMODEL_KINGUGM_XSD_SUBSET_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten-postform-subset.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_SUBSET_XSLPATH>
       <IMVERTOR_METAMODEL_KINGUGM_XSD_CLEANUP_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten-postform-cleanup.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_CLEANUP_XSLPATH>
       <IMVERTOR_METAMODEL_KINGUGM_XSD_ENTDAT_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten-postform-entdat.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_ENTDAT_XSLPATH>
    
-      <RESULT_METAMODEL_KINGUGM_XSD_PREFORM>${system/work-imvert-folder-path}/imvertor.25.xsd-preform.xml</RESULT_METAMODEL_KINGUGM_XSD_PREFORM>
+      <RESULT_METAMODEL_KINGUGM_XSD_MIGRATE>${system/work-imvert-folder-path}/imvertor.25.1.xsd-migrate.xml</RESULT_METAMODEL_KINGUGM_XSD_MIGRATE>
+      
+      <RESULT_METAMODEL_KINGUGM_XSD_PREFORM>${system/work-imvert-folder-path}/imvertor.25.2.xsd-preform.xml</RESULT_METAMODEL_KINGUGM_XSD_PREFORM>
       <RESULT_METAMODEL_KINGUGM_XSD_MAIN>${system/work-imvert-folder-path}/imvertor.26.xsd-main.xml</RESULT_METAMODEL_KINGUGM_XSD_MAIN>
       <RESULT_METAMODEL_KINGUGM_XSD_SUBSET>${system/work-imvert-folder-path}/imvertor.27.xsd-subset.xml</RESULT_METAMODEL_KINGUGM_XSD_SUBSET>
       <RESULT_METAMODEL_KINGUGM_XSD_CLEANUP>${system/work-imvert-folder-path}/imvertor.28.xsd-cleanup.xml</RESULT_METAMODEL_KINGUGM_XSD_CLEANUP>
@@ -196,20 +217,8 @@
       
       <!-- workfolder for serialized excel -->
       <work-serialize-folder>${system/work-folder-path}/serializer/temp-folder</work-serialize-folder>
-      <!-- workfolder for processing the  -->
-      <ROUGH_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.26.rough-endproduct-xml.xml</ROUGH_ENDPRODUCT_XML_FILE_PATH>
-      <ENRICHED_ROUGH_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.27.enriched.rough-endproduct-xml.xml</ENRICHED_ROUGH_ENDPRODUCT_XML_FILE_PATH>
-
-      <!-- Volgende wordt volgens mij nooit aangemaakt. -->
-      <RESULT_ENDPRODUCT_MSG_FILE_PATH>${system/work-imvert-folder-path}/imvertor.27.endproduct-msg.xml</RESULT_ENDPRODUCT_MSG_FILE_PATH>
-
-
-      <RESULT_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.28.endproduct-xml.xml</RESULT_ENDPRODUCT_XML_FILE_PATH>   
-      <RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.29.reprocessed-endproduct-xml.xml</RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH>
-      <RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.30.sorted-endproduct-xml.xml</RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH>
-      <RESULT_ENDPRODUCT_XSD_FILE_PATH>${system/work-xsd-folder-path}/${appinfo/project-name}.xml</RESULT_ENDPRODUCT_XSD_FILE_PATH>
       
-      <!-- BRO : -->
+         <!-- BRO : -->
       
       <IMVERTOR_METAMODEL_KKG_XSD_PREFORM_XSLPATH>Imvert2XSD-ISO19136-preform.xsl</IMVERTOR_METAMODEL_KKG_XSD_PREFORM_XSLPATH>
       <IMVERTOR_METAMODEL_KKG_XSD_XSLPATH>Imvert2XSD-ISO19136.xsl</IMVERTOR_METAMODEL_KKG_XSD_XSLPATH>

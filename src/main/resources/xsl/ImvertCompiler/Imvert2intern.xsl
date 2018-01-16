@@ -40,7 +40,7 @@
     
     <xsl:variable name="managed-output-folder" select="imf:get-config-string('system','managedoutputfolder')"/>
     
-    <xsl:variable name="intern-packages" select="//imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-internal-package')]" as="element(imvert:package)*"/>
+    <xsl:variable name="intern-packages" select="//imvert:package[imvert:stereotype/@id = ('stereotype-name-internal-package')]" as="element(imvert:package)*"/>
     <xsl:variable name="intern-classes" select="$intern-packages/imvert:class" as="element(imvert:class)*"/>
    
     <xsl:variable name="intern-referenced-docs" select="for $d in $intern-packages return imf:get-intern-doc($d)" as="document-node()*"/>
@@ -49,7 +49,7 @@
     <xsl:variable name="local-packages" select="/imvert:packages/imvert:package" as="element(imvert:package)*"/>
     
     <!-- get the classes that are shared, i.e. may be referenced by the internal package. Must be located in a domain package. -->
-    <xsl:variable name="external-classes" select="$external-packages[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-domain-package')]/imvert:class" as="element(imvert:class)*"/>
+    <xsl:variable name="external-classes" select="$external-packages[imvert:stereotype/@id = ('stereotype-name-domain-package')]/imvert:class" as="element(imvert:class)*"/>
     
     <xsl:template match="/imvert:packages">
         <xsl:copy>

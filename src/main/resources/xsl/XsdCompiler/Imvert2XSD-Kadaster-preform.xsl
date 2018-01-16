@@ -51,7 +51,7 @@
     
     <!-- 1  introduce collection class -->
     
-    <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-product'))]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-product')]">
         <xsl:variable name="collection-name" select="concat(imvert:name,imf:get-config-parameter('imvertor-translate-suffix-components'))"/>
         <xsl:variable name="collection-id" select="concat('collection_', generate-id(.))"/>
         <xsl:variable name="collection-package-name" select="../imvert:name"/>
@@ -60,12 +60,14 @@
             <!-- IM-110 but only when buildcollection yes -->
             <xsl:if test="imf:boolean($buildcollection)">
                 <xsl:if test="empty(imf:get-tagged-value(.,'##CFG-TV-ENVELOPEMETHOD'))">
-                    <xsl:if test="not(imvert:associations/imvert:association/imvert:type-id[imf:get-construct-by-id(.)/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-collection')])">
+                    <xsl:if test="not(imvert:associations/imvert:association/imvert:type-id[imf:get-construct-by-id(.)/imvert:stereotype/@id = ('stereotype-name-collection')])">
                         <xsl:sequence select="imf:msg('INFO','Catalog class [1] ([2]) does not include any collection. Appending [3].', (string(imf:get-construct-name(.)), string-join(imvert:stereotype,', '),$collection-name))"/>
                         <imvert:class>
                             <xsl:sequence select="imf:create-output-element('imvert:id',$collection-id)"/>
                             <xsl:sequence select="imf:create-output-element('imvert:name',$collection-name)"/>
-                            <xsl:sequence select="imf:create-output-element('imvert:stereotype',imf:get-config-stereotypes('stereotype-name-collection'))"/>
+                            <imvert:stereotype id="stereotype-name-collection">
+                                <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-collection')"/>
+                            </imvert:stereotype>
                             <xsl:sequence select="imf:create-output-element('imvert:abstract','false')"/>
                             <xsl:sequence select="imf:create-output-element('imvert:origin',imf:get-config-parameter('name-origin-system'))"/>
                             <imvert:associations>
@@ -86,7 +88,7 @@
             </xsl:if>
         </xsl:variable>
         <xsl:variable name="super-classes" select="imf:get-superclasses(.)"/>
-        <xsl:variable name="super-products" select="$super-classes[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-product','stereotype-name-process','stereotype-name-service'))]"/>
+        <xsl:variable name="super-products" select="$super-classes[imvert:stereotype/@id = ('stereotype-name-product','stereotype-name-process','stereotype-name-service')]"/>
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
             <xsl:apply-templates select="*[not(self::imvert:associations)]"/>
@@ -127,7 +129,7 @@
         -->
         <xsl:if test="
             imf:boolean($buildcollection)
-            and (imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))) 
+            and (imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package')) 
             and $identifiable-classes">
            
             <!-- some of the classes are identifiable, so create a new package -->
@@ -162,7 +164,9 @@
             <xsl:sequence select="imf:create-output-element('imvert:documentation',$gc,(),false())"/>
             <xsl:sequence select="imf:create-output-element('imvert:author','(System)')"/>
             <xsl:sequence select="imf:create-output-element('imvert:ref-master',imvert:name)"/>
-            <xsl:sequence select="imf:create-output-element('imvert:stereotype',imf:get-config-stereotypes('stereotype-name-system-reference-class'))"/>
+            <imvert:stereotype id="stereotype-name-system-reference-class">
+                <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-system-reference-class')"/>
+            </imvert:stereotype>
         </imvert:class>
     </xsl:template>
     

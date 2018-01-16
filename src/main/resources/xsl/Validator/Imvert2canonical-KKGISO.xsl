@@ -46,8 +46,7 @@
     <xsl:template match="imvert:association">
         
         <xsl:variable name="target-class" select="imf:get-construct-by-id(imvert:type-id)"/>
-        <xsl:variable name="target-is-objecttype" select="$target-class/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')"/>
-        <xsl:variable name="stereo-relatiesoort" select="imf:get-config-stereotypes('stereotype-name-relatiesoort')"/>
+        <xsl:variable name="target-is-objecttype" select="$target-class/imvert:stereotype/@id = ('stereotype-name-objecttype')"/>
         
         <imvert:association>
             <xsl:choose>
@@ -60,11 +59,13 @@
                     <xsl:apply-templates select="imvert:name"/>
                 </xsl:otherwise>
             </xsl:choose>
-            <xsl:if test="$target-is-objecttype and not(imvert:stereotype = $stereo-relatiesoort)">
-                <imvert:stereotype origin="system">
-                    <xsl:value-of select="$stereo-relatiesoort"/>
+            <!--x
+            <xsl:if test="$target-is-objecttype and not(imvert:stereotype/@id = 'stereotype-name-relatiesoort')">
+                <imvert:stereotype origin="system" id="stereotype-name-relatiesoort">
+                    <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-relatiesoort')"/>
                 </imvert:stereotype>
             </xsl:if>
+            x-->
             <xsl:apply-templates select="*[not(self::imvert:name)]"/>
         </imvert:association>
     </xsl:template>

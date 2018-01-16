@@ -35,8 +35,8 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
     
-    <xsl:variable name="project-package" select="(//imvert:package[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-project-package')])[1]"/>
-    <xsl:variable name="base-package" select="($project-package//imvert:package[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-base-package')])[1]"/>
+    <xsl:variable name="project-package" select="(//imvert:package[imvert:stereotype/@id = ('stereotype-name-project-package')])[1]"/>
+    <xsl:variable name="base-package" select="($project-package//imvert:package[imvert:stereotype/@id = ('stereotype-name-base-package')])[1]"/>
     <xsl:variable name="external-package" select="$project-package/imvert:package[not(imf:member-of(.,$base-package))]"/>
     
     <xsl:template match="/imvert:packages">
@@ -65,7 +65,7 @@
             </xsl:variable>
             <xsl:sequence select="imf:create-when-missing(.,$s)"/>
             <xsl:variable name="s" as="element()+">
-                <imvert:stereotype>
+                <imvert:stereotype id="stereotype-name-base-package">
                     <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-base-package')[1]"/>
                 </imvert:stereotype>
             </xsl:variable>
@@ -84,7 +84,7 @@
             </xsl:variable>
             <xsl:sequence select="imf:create-when-missing(.,$s)"/>
             <xsl:variable name="s" as="element()+">
-                <imvert:stereotype>
+                <imvert:stereotype id="stereotype-name-external-package">
                     <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-external-package')[1]"/>
                 </imvert:stereotype>
             </xsl:variable>
@@ -93,7 +93,7 @@
     </xsl:template>
     
     <!-- <<domain>> package -->
-    <xsl:template match="imvert:package[parent::imvert:package/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-base-package')]">
+    <xsl:template match="imvert:package[parent::imvert:package/imvert:stereotype/@id = ('stereotype-name-base-package')]">
         <imvert:package>
             <xsl:apply-templates select="*"/>
             <xsl:variable name="v" as="element()+">
@@ -103,7 +103,7 @@
             </xsl:variable>
             <xsl:sequence select="imf:create-when-missing(.,$v)"/>
             <xsl:variable name="v" as="element()+">
-                <imvert:stereotype>
+                <imvert:stereotype id="stereotype-name-domain-package">
                     <xsl:value-of select="imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))[1]"/>
                 </imvert:stereotype>
                 <imvert:version>
@@ -149,7 +149,7 @@
         <imvert:name original="{.}">
             <xsl:value-of select="imf:get-normalized-name(.,'property-name')"/>
         </imvert:name>
-        <imvert:stereotype>
+        <imvert:stereotype id="stereotype-name-identification">
             <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-identification')[1]"/>
         </imvert:stereotype>
         <is-id>true</is-id>

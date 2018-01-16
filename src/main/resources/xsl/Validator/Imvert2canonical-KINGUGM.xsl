@@ -42,13 +42,6 @@
         </imvert:packages>
     </xsl:template>
     
-    <xsl:template match="imvert:stereotype[starts-with(.,'MUG ')]">
-        <xsl:copy>
-            <xsl:copy-of select="@*"/>
-            <xsl:value-of select="substring-after(.,'MUG ')"/>
-        </xsl:copy>
-    </xsl:template>  
-      
     <!-- 
          sorteer alle associaties op alfabetische volgorde. Hierbij eerst de attribuutgroepen, daarna de relaties, dan de externe koppelingen 
      -->
@@ -57,15 +50,15 @@
             <xsl:copy-of select="@*"/>
             <xsl:apply-templates select="imvert:*[not(self::imvert:associations)]"/>
             <imvert:associations>
-                <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-association-to-composite')]">
+                <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-association-to-composite')]">
                     <xsl:sort select="imvert:name"/>
                     <xsl:apply-templates select="."/>
                 </xsl:for-each>
-                <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-relatiesoort')]">
+                <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-relatiesoort')]">
                     <xsl:sort select="imvert:name"/>
                     <xsl:apply-templates select="."/>
                 </xsl:for-each>
-                <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-externekoppeling')]">
+                <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-externekoppeling')]">
                     <xsl:sort select="imvert:name"/>
                     <xsl:apply-templates select="."/>
                 </xsl:for-each>

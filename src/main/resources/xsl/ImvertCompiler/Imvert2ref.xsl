@@ -53,7 +53,7 @@
                 A reference package is created only for domain packages, that have at least one class that is linkable.
             -->
             <xsl:variable name="identifiable-classes" select="imvert:class[imf:is-linkable(.)]"/>
-            <xsl:if test="(imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))) and $identifiable-classes">
+            <xsl:if test="(imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package')) and $identifiable-classes">
                 <!-- some of the classes are identifiable, so create a new package -->
                 <xsl:variable name="namespace" select="imvert:namespace"/>
                 <imvert:package>
@@ -86,7 +86,9 @@
             <xsl:sequence select="imf:create-output-element('imvert:documentation',$gc,(),false())"/>
             <xsl:sequence select="imf:create-output-element('imvert:author','(System)')"/>
             <xsl:sequence select="imf:create-output-element('imvert:ref-master',imvert:name)"/>
-            <xsl:sequence select="imf:create-output-element('imvert:stereotype',imf:get-config-stereotypes('stereotype-name-system-reference-class'))"/>
+            <imvert:stereotype id="stereotype-name-system-reference-class">
+                <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-system-reference-class')"/>
+            </imvert:stereotype>
         </imvert:class>
     </xsl:template>
   

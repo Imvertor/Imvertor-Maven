@@ -75,10 +75,10 @@
         
         <!-- association classes -->
         <xsl:sequence select="imf:report-error(., 
-            $is-associationclass and not(imvert:stereotype = imf:get-config-stereotypes('stereotype-name-relatieklasse')), 
+            $is-associationclass and not(imvert:stereotype/@id = ('stereotype-name-relatieklasse')), 
             'Association class must be stereotyped as [1]',imf:get-config-stereotypes('stereotype-name-relatieklasse'))"/>
         <xsl:sequence select="imf:report-error(., 
-            not($is-associationclass) and imvert:stereotype = imf:get-config-stereotypes('stereotype-name-relatieklasse'), 
+            not($is-associationclass) and imvert:stereotype/@id = ('stereotype-name-relatieklasse'), 
             'Class may not be stereotyped as [1]',imf:get-config-stereotypes('stereotype-name-relatieklasse'))"/>
         
         <xsl:next-match/>
@@ -124,7 +124,7 @@
         <xsl:next-match/>
     </xsl:template>
     
-    <xsl:template match="imvert:association[imvert:target/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite-id')]">
+    <xsl:template match="imvert:association[imvert:target/imvert:stereotype/@id = ('stereotype-name-composite-id')]">
         <!--TODO is this rule required? we already test if an objecttype has an ID attribute --> 
    
         <xsl:variable name="this" select="."/>
@@ -149,7 +149,7 @@
                 imf:get-construct-name($defining-class))"/>
             
             <xsl:sequence select="imf:report-error(., 
-                not($defining-class/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')), 
+                not($defining-class/imvert:stereotype/@id = ('stereotype-name-objecttype')), 
                 'Target class [1] must have stereotype [2] because the target in relation [3] is stereotyped as [4]', 
                 (imf:get-construct-name($defining-class),imf:get-config-stereotypes('stereotype-name-objecttype'), imvert:name, imf:get-config-stereotypes('stereotype-name-composite-id') ))"/>
         </xsl:if>

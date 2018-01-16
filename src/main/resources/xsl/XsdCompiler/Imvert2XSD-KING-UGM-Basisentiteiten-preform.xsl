@@ -139,7 +139,7 @@
         
         <xsl:variable name="label" as="xs:string">
             <xsl:choose>
-                <xsl:when test="$construct/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')">
+                <xsl:when test="$construct/imvert:stereotype/@id = ('stereotype-name-composite')">
                     <!-- een gegevens groep -->
                     <xsl:value-of select="concat(imf:capitalize($construct/imvert:name),'Grp')"/>
                 </xsl:when>

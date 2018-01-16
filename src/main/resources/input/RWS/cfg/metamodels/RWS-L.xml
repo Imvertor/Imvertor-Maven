@@ -25,6 +25,13 @@
         </profile>
     </profiles>
     
+    <naming>
+        <!-- in addition to included -->
+        <element>
+            <format>LowerCamel</format>
+        </element>
+    </naming>
+    
     <stereo id="stereotype-name-composite-id">
         <name lang="en">Isid</name>
         <name lang="nl">Isid</name>

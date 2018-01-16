@@ -28,7 +28,7 @@
     exclude-result-prefixes="#all" 
     version="2.0">
 
-    <xsl:variable name="referencelist-ids" select="$imvert-document/imvert:packages/imvert:package/imvert:class[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-referentielijst','stereotype-name-codelist'))]/imvert:id"/>
+    <xsl:variable name="referencelist-ids" select="$imvert-document/imvert:packages/imvert:package/imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst','stereotype-name-codelist')]/imvert:id"/>
     <xsl:variable name="lists" select="$imvert-document/imvert:packages/imvert:package/imvert:class/imvert:attributes/imvert:attribute[imvert:type-id = $referencelist-ids]"/>
     
     <xsl:template match="imvert:packages" mode="valuelists">

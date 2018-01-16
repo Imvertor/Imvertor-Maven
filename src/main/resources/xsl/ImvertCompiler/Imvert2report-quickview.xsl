@@ -31,13 +31,13 @@
     <xsl:template match="imvert:packages" mode="quickview">
 
         <!-- preprare the reportrules info -->
-        <xsl:variable name="domain-packages" select="root()//imvert:package[imvert:stereotype=imf:get-config-stereotypes(
-            ('stereotype-name-domain-package',
+        <xsl:variable name="domain-packages" select="root()//imvert:package[imvert:stereotype/@id = (
+            'stereotype-name-domain-package',
             'stereotype-name-view-package',
             'stereotype-name-internal-package',
             'stereotype-name-external-package',
-            'stereotype-name-components-package'
-            ))]"/>
+            'stereotype-name-components-package')]"/>
+        
         <xsl:sequence select="imf:set-config-string('appinfo','count-domain-packages', count($domain-packages))"/>
         <xsl:sequence select="imf:set-config-string('appinfo','count-domain-classes', count($domain-packages/imvert:class))"/>
         <xsl:sequence select="imf:set-config-string('appinfo','count-domain-attributes', count($domain-packages/imvert:class/*/imvert:attribute))"/>

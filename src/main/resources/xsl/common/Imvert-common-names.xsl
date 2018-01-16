@@ -63,7 +63,7 @@
         Since tracing and proxies are supported, we need formal names. Add support here. 
     -->
     
-    <xsl:variable name="traceable-package-stereotypes" select="imf:get-config-stereotypes(
+    <xsl:variable name="traceable-package-stereotypes" select="(
         ('stereotype-name-domain-package',
         'stereotype-name-view-package',
         'stereotype-name-intern-package',
@@ -72,7 +72,7 @@
     <xsl:function name="imf:get-construct-formal-name" as="xs:string">
         <xsl:param name="this" as="element()"/>
         <xsl:variable name="type-name" select="local-name($this)"/>
-        <xsl:variable name="package-name" select="$this/ancestor-or-self::imvert:package[imvert:stereotype = $traceable-package-stereotypes][1]/imvert:name"/>
+        <xsl:variable name="package-name" select="$this/ancestor-or-self::imvert:package[imvert:stereotype/@id = $traceable-package-stereotypes][1]/imvert:name"/>
         <xsl:variable name="class-name" select="$this/ancestor-or-self::imvert:class[1]/imvert:name"/>
         <xsl:variable name="role-name" select="$this/imvert:target/imvert:role"/> 
         <xsl:variable name="prop-name" select="$this[self::imvert:attribute | self::association]/imvert:name"/> 

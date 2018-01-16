@@ -37,14 +37,13 @@
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     
     <xsl:variable name="application-package" select="//imvert:package[imf:boolean(imvert:is-root-package)]"/>
-    <xsl:variable name="domain-package" select="$application-package//imvert:package[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))]"/>
+    <xsl:variable name="domain-package" select="$application-package//imvert:package[imvert:stereotype/@id = (('stereotype-name-domain-package','stereotype-name-view-package'))]"/>
     
     <!-- All possible application-level top-packages -->
-    <xsl:variable name="top-package-stereotypes" as="xs:string*">
-        <xsl:sequence select="imf:get-config-stereotypes('stereotype-name-base-package')"/>
-        <xsl:sequence select="imf:get-config-stereotypes('stereotype-name-variant-package')"/>
-        <xsl:sequence select="imf:get-config-stereotypes('stereotype-name-application-package')"/>
-    </xsl:variable>
+    <xsl:variable name="top-package-stereotypes" select="
+        ('stereotype-name-base-package',
+        'stereotype-name-variant-package',
+        'stereotype-name-application-package')"/>
     
     <!-- all service packages are packages that have the tv service=yes, or end with Messsages or Resultaat -->
     <xsl:variable name="all-service-base-packages" select="$domain-package[imf:boolean(imf:get-tagged-value(.,'##CFG-TV-SERVICE'))]"/>
@@ -82,9 +81,9 @@
         <xsl:variable name="this-package" select="."/>
         <xsl:variable name="root-release" select="imvert:release" as="xs:string?"/>
         <xsl:variable name="subpackage-releases" select="imvert:package/imvert:release[not(.=('99999999','00000000'))]" as="xs:string*"/>
-        <xsl:variable name="collections" select="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-collection')]"/>  
+        <xsl:variable name="collections" select="imvert:class[imvert:stereotype/@id = ('stereotype-name-collection')]"/>  
         <xsl:sequence select="imf:report-error(., 
-            ($document-classes/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-objecttype') and not($document-packages/imvert:name=('xlinks','Xlinks'))), 
+            ($document-classes/imvert:stereotype/@id = ('stereotype-name-objecttype') and not($document-packages/imvert:name=('xlinks','Xlinks'))), 
             'The model uses shared classes but the xlink package is not included (properly).')"/>
         <xsl:next-match/>
     </xsl:template>
@@ -92,10 +91,10 @@
     <xsl:template match="imvert:class">
         <xsl:variable name="package" select=".."/>
         
-        <xsl:variable name="is-external" select="$package/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-external-package')"/>
+        <xsl:variable name="is-external" select="$package/imvert:stereotype/@id = ('stereotype-name-external-package')"/>
         
         <xsl:variable name="package-is-service" select="imf:member-of($package,$all-service-packages)"/>
-        <xsl:variable name="class-is-service" select="imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-service','stereotype-name-process'))"/>
+        <xsl:variable name="class-is-service" select="imvert:stereotype/@id = (('stereotype-name-service','stereotype-name-process'))"/>
         
         <!--
             Only Abstract classes start with _underscore        
@@ -128,7 +127,7 @@
             'Identification attribute is not marked as ID')"/>
         
         <xsl:sequence select="imf:report-warning(., 
-            (imvert:is-id = 'true' and not(imvert:stereotype=imf:get-config-stereotypes('stereotype-name-identification'))), 
+            (imvert:is-id = 'true' and not(imvert:stereotype/@id = ('stereotype-name-identification'))), 
             'Attribute is marked as ID but is not stereotyped as [1]', imf:get-config-stereotypes('stereotype-name-identification'))"/>
                 
         <xsl:next-match/>
@@ -138,10 +137,10 @@
         <xsl:variable name="tv" select="imf:get-tagged-value(.,'##CFG-TV-VOIDABLE')"/>
             
         <xsl:sequence select="imf:report-warning(., 
-            imvert:stereotype = imf:get-config-stereotypes('stereotype-name-voidable') and empty($tv), 
+            imvert:stereotype/@id = ('stereotype-name-voidable') and empty($tv), 
             'Voidable, but missing required tagged value [1]',imf:get-config-tagged-values('CFG-TV-VOIDABLE'))"/>
         <xsl:sequence select="imf:report-warning(., 
-            empty(imvert:stereotype = imf:get-config-stereotypes('stereotype-name-voidable')) and exists($tv), 
+            empty(imvert:stereotype/@id = ('stereotype-name-voidable')) and exists($tv), 
             'Tagged value [1] found, but not stereotyped as voidable',imf:get-config-tagged-values('CFG-TV-VOIDABLE'))"/>
         
         <xsl:next-match/>
@@ -160,7 +159,7 @@
         <xsl:next-match/>
     </xsl:template>
     
-    <xsl:template match="imvert:class/imvert:supertype[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-static-generalization')]" priority="1">
+    <xsl:template match="imvert:class/imvert:supertype[imvert:stereotype/@id = ('stereotype-name-static-generalization')]" priority="1">
         <!--setup-->
         <!--validation-->
         <xsl:next-match/>
@@ -171,9 +170,9 @@
     -->
     <xsl:template match="imvert:package[imf:member-of(.,$domain-package)]" priority="50">
         <!--setup-->
-        <xsl:variable name="is-schema-package" select="if (imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))) then true() else false()"/>
+        <xsl:variable name="is-schema-package" select="if (imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package')) then true() else false()"/>
         <xsl:variable name="classnames" select="distinct-values(imf:get-duplicates(imvert:class/imvert:name))" as="xs:string*"/>
-        <xsl:variable name="application" select="ancestor::imvert:package[imvert:stereotype=$top-package-stereotypes][1]"/>
+        <xsl:variable name="application" select="ancestor::imvert:package[imvert:stereotype/@id = $top-package-stereotypes][1]"/>
         <!--validation -->
         <xsl:sequence select="imf:report-error(., 
             $is-schema-package and not(imvert:namespace), 

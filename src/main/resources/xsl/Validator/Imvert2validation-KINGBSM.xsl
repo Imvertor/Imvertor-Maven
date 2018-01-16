@@ -46,7 +46,7 @@
         <xsl:variable name="class" select="../.."/>
         <xsl:variable name="superclasses" select="imf:get-superclasses($class)"/>
         <xsl:variable name="package" select="$class/.."/>
-        <xsl:variable name="is-collection" select="$class/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-collection')"/>
+        <xsl:variable name="is-collection" select="$class/imvert:stereotype/@id = ('stereotype-name-collection')"/>
         <xsl:variable name="association-class-id" select="imvert:association-class/imvert:type-id"/>
         <xsl:variable name="property-names" select="$class/(imvert:atributes | imvert:associations)/*/imvert:name"/>
         <xsl:variable name="name" select="imvert:name"/>

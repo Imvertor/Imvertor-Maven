@@ -310,6 +310,7 @@ public class XmiCompiler extends Step {
 	}
 	
 	private void migrateXMI(XmlFile xmiFile) throws Exception {
+		runner.warn(logger,"This model is subject to migration rules, please consider aligning the model with the metamodel",null,"TMISTMR");
 		AnyFile outFile = new AnyFile(File.createTempFile("migrateXMI.", ".xmi"));
 		outFile.deleteOnExit();
 		String xslFilePath = configurator.getXslPath(configurator.getXParm("properties/XMI_MIGRATE_XSLPATH"));

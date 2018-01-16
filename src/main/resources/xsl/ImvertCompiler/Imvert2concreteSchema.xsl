@@ -203,7 +203,7 @@
                         <xsl:variable name="att-name" select="$mapped-xsd-type/@asAttribute"/>
                         <xsl:variable name="att-desig" select="$mapped-xsd-type/@asAttributeDesignation"/>
                         <xsl:variable name="att-hasNilreason" select="$mapped-xsd-type/@hasNilreason"/>
-                        <xsl:variable name="is-union-element" select="parent::imvert:attribute/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union-element')"/>
+                        <xsl:variable name="is-union-element" select="parent::imvert:attribute/imvert:stereotype/@id = ('stereotype-name-union-element')"/>
                         <xsl:choose>
                             <!-- when in context of attribute, and not a union element, check if an asAttribute is specified -->
                             <xsl:when test="parent::imvert:attribute and $att-name and not($is-union-element)">

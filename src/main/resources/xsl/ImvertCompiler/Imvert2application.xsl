@@ -38,7 +38,7 @@
     
     <xsl:variable 
         name="external-packages" 
-        select="//imvert:package[ancestor-or-self::imvert:package/imvert:stereotype=(imf:get-config-stereotypes(('stereotype-name-external-package','stereotype-name-system-package')))]" 
+        select="//imvert:package[ancestor-or-self::imvert:package/imvert:stereotype/@id = ('stereotype-name-external-package','stereotype-name-system-package')]" 
         as="node()*"/>
     
     <xsl:variable 
@@ -80,7 +80,7 @@
                     or 
                     (imvert:class/imvert:id = $result-packages//(imvert:type-id | imvert:supertype/imvert:type-id)) 
                     or 
-                    imvert:stereotype=imf:get-config-stereotypes('stereotype-name-system-package')]" 
+                    imvert:stereotype/@id = ('stereotype-name-system-package')]" 
                     group-by="imvert:id">
                 
                     <xsl:sequence select="."/>

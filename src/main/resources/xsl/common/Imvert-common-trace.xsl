@@ -22,7 +22,7 @@
     <xsl:function name="imf:get-construct-formal-trace-name" as="xs:string">
         <xsl:param name="this" as="element()"/>
         <xsl:variable name="type-name" select="local-name($this)"/>
-        <xsl:variable name="package-name" select="$this/ancestor-or-self::imvert:package[imvert:stereotype = $traceable-package-stereotypes][1]/imvert:name"/>
+        <xsl:variable name="package-name" select="$this/ancestor-or-self::imvert:package[imvert:stereotype/@id = $traceable-package-stereotypes][1]/imvert:name"/>
         <xsl:variable name="supplier-package-name" select="(($this/ancestor-or-self::imvert:package)/imvert:supplier/imvert:supplier-package-name)[1]"/>
         <xsl:variable name="effective-package-name" select="($supplier-package-name,$package-name)[1]"/>
         <!-- note that for classes and properties we do not support alternative names (yet) -->

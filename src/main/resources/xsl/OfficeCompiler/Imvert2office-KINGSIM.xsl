@@ -103,7 +103,7 @@
                 <P>
                     <b>DEPRECATED METHOD, PLEASE USE ABSTRACTION LEBEL</b>
                 </P>
-                <xsl:for-each select="imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]">
+                <xsl:for-each select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package')]">
                     <xsl:apply-templates select="."/>
                 </xsl:for-each>
             </body>
@@ -112,19 +112,19 @@
     
     <xsl:template match="imvert:package">
         <h1>Objecttype overzicht</h1>
-        <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')]"/>
+        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype')]"/>
         
         <h1>Relatieklasse overzicht</h1>
-        <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-relatieklasse')]"/>
+        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-relatieklasse')]"/>
         
         <h1>Referentielijsten overzicht</h1>
-        <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-referentielijst')]"/>
+        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]"/>
         
         <h1>Unions overzicht</h1>
-        <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union')]"/>
+        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]"/>
         
         <h1>Datatypen overzicht</h1>
-        <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-complextype')]"/>
+        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]"/>
       
         <h1>Enumeratie overzicht</h1>
         <table>
@@ -133,7 +133,7 @@
                     <td><b>Enumeratie</b></td>
                     <td><b>Definitie</b></td>
                 </tr>
-                <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-enumeration')]">
+                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]">
                     <xsl:sort select="imvert:name"/>
                 </xsl:apply-templates>
             </tbody>
@@ -142,32 +142,32 @@
         <h1>Attribuut- en relatiesoorten</h1>
         
         <h2>Objecttypen</h2>
-        <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')]" mode="detail"/>
+        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype')]" mode="detail"/>
         
         <h2>Relatieklassen</h2>
-        <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-relatieklasse')]" mode="detail"/>
+        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-relatieklasse')]" mode="detail"/>
         
         <h2>Referentielijsten</h2>
-        <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-referentielijst')]" mode="detail"/>
+        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]" mode="detail"/>
         
         <h2>Unions</h2>
-        <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union')]" mode="detail"/>
+        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]" mode="detail"/>
         
         <h2>Datatypen</h2>
-        <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-complextype')]" mode="detail"/>
+        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]" mode="detail"/>
         
         <h2>Enumeraties</h2>
-        <xsl:apply-templates select="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-enumeration')]" mode="detail">
+        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]" mode="detail">
             <xsl:sort select="imvert:name"/>
         </xsl:apply-templates>
         
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-objecttype')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype')]">
         
         <xsl:variable name="is-abstract-text" select="if (imf:boolean(imvert:abstract)) then 'Ja' else 'Nee'"/>
         
-        <xsl:variable name="rel-aanduiding" select="imvert:associations/imvert:association[imvert:target/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite-id')]"/>
+        <xsl:variable name="rel-aanduiding" select="imvert:associations/imvert:association[imvert:target/imvert:stereotype/@id = ('stereotype-name-composite-id')]"/>
         <xsl:variable name="con-aanduiding" select="imf:get-construct-by-id-for-office($rel-aanduiding/imvert:type-id)"/>
         <xsl:variable name="id-aanduiding" select="imf:get-tagged-value-unieke-aanduiding(.)"/>
         
@@ -208,7 +208,7 @@
         <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>
     </xsl:template>
 
-    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-relatieklasse')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-relatieklasse')]">
         <h2>
             <xsl:sequence select="('Relatieklasse ', imf:create-link-anchor(.,'global', imvert:name/@original))"/>
         </h2>
@@ -228,7 +228,7 @@
         
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-referentielijst')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]">
         <h2>
             <xsl:sequence select="('Referentielijst ', imf:create-link-anchor(.,'global', imvert:name/@original))"/>
         </h2>
@@ -249,7 +249,7 @@
         <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>
     </xsl:template>
 
-    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]">
         <h2>
             <xsl:sequence select="('Union ', imf:create-link-anchor(.,'global', imvert:name/@original))"/>
         </h2>
@@ -267,7 +267,7 @@
         <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-complextype')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]">
         <h2>
             <xsl:sequence select="('Datatype ', imf:create-link-anchor(.,'global', imvert:name/@original))"/>
         </h2>
@@ -286,14 +286,14 @@
         <xsl:sequence select="imf:create-toelichting(imf:get-clean-documentation-string(imf:get-tagged-value(.,'Toelichting')))"/>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-enumeration')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]">
         <xsl:variable name="naam" select="imvert:name/@original"/>
         <xsl:variable name="note" select="imf:get-clean-documentation-string(imvert:documentation)"/>
         <xsl:sequence select="imf:label-waarde(imf:create-link(.,'global',$naam),$note)"/>
      </xsl:template>
 
     <!-- uitzondering: gegevensgroeptype wordt apart getoond. -->
-    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]">
         <h4>
             <xsl:sequence select="(imvert:stereotype, ' ', imf:create-link-anchor(.,'global', imvert:name/@original))"/>
         </h4>
@@ -322,7 +322,7 @@
             <!-- als de class ook gegevensgroepen heeft, die attributen hier invoegen -->
             <xsl:for-each select="../imvert:associations/imvert:association">
                 <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
-                <xsl:if test="$defining-class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')]">
+                <xsl:if test="$defining-class[imvert:stereotype/@id = ('stereotype-name-composite')]">
                     <!-- eerst gegevensgroeptype info -->
                     <!--(4)-->
                     <xsl:apply-templates select="." mode="composition"/>
@@ -395,7 +395,7 @@
     <xsl:template match="imvert:associations" mode="short gegevensgroeptype">
         <xsl:variable name="r" as="element()*">
             <xsl:apply-templates select="../imvert:supertype" mode="#current"/>
-            <xsl:apply-templates select="imvert:association[not(imvert:stereotype = imf:get-config-stereotypes('stereotype-name-association-to-composite'))]" mode="#current"/>
+            <xsl:apply-templates select="imvert:association[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]" mode="#current"/>
         </xsl:variable>
         <xsl:if test="exists($r)">
             <p><b>Overzicht relaties</b></p>
@@ -462,7 +462,7 @@
         </h3>
         <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="detail"/>
         <xsl:variable name="associations" select="imvert:associations/imvert:association"/>
-        <xsl:variable name="compositions" select="$associations[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-association-to-composite')]"/>
+        <xsl:variable name="compositions" select="$associations[imvert:stereotype/@id = ('stereotype-name-association-to-composite')]"/>
         <xsl:for-each select="$compositions">
             <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
             <xsl:apply-templates select="$defining-class" mode="detail"/>
@@ -471,7 +471,7 @@
         <xsl:apply-templates select="($associations except $compositions)" mode="detail"/>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-enumeration')]" mode="detail">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]" mode="detail">
         <h3>
             <xsl:sequence select="('Enumeratie', ' ', imf:create-link-anchor(.,'global', imvert:name/@original))"/>
         </h3>
@@ -503,7 +503,7 @@
         </table>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')]" mode="detail">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]" mode="detail">
         
         <xsl:variable name="min" select="imvert:min-occurs"/>
         <xsl:variable name="max" select="imvert:max-occurs"/>
@@ -542,19 +542,19 @@
        <xsl:variable name="defining-class" select="imf:get-construct-by-id-for-office(imvert:type-id)"/>
         <xsl:variable name="naam" select="$construct/imvert:name/@original"/>
         <xsl:choose>
-            <xsl:when test="$defining-class/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')">
+            <xsl:when test="$defining-class/imvert:stereotype/@id = ('stereotype-name-composite')">
                 <xsl:apply-templates select="$defining-class" mode="detail"/>
             </xsl:when>
-            <xsl:when test="$construct/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')">
+            <xsl:when test="$construct/imvert:stereotype/@id = ('stereotype-name-composite')">
                 <xsl:apply-templates select="." mode="detail-gegevensgroeptype"/>
             </xsl:when>
-            <xsl:when test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-referentie-element')">
+            <xsl:when test="imvert:stereotype/@id = ('stereotype-name-referentie-element')">
                 <xsl:apply-templates select="." mode="detail-referentie-element"/>
             </xsl:when>
-            <xsl:when test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-union-element')">
+            <xsl:when test="imvert:stereotype/@id = ('stereotype-name-union-element')">
                 <xsl:apply-templates select="." mode="detail-unionelement"/>
             </xsl:when>
-            <xsl:when test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-data-element')">
+            <xsl:when test="imvert:stereotype/@id = ('stereotype-name-data-element')">
                 <xsl:apply-templates select="." mode="detail-dataelement"/>
             </xsl:when>
             <xsl:otherwise>
@@ -704,7 +704,7 @@
     <xsl:template match="imvert:association" mode="detail">
         <xsl:variable name="construct" select="../.."/>
         <xsl:choose>
-            <xsl:when test="$construct/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')">
+            <xsl:when test="$construct/imvert:stereotype/@id = ('stereotype-name-composite')">
                 <xsl:apply-templates select="." mode="detail-gegevensgroeptype"/>
             </xsl:when>
             <xsl:otherwise>

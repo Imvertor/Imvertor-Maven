@@ -47,9 +47,9 @@
         <xsl:variable name="parent-package" select=".."/>
         <xsl:choose>
             <!-- skip some types of empty packages -->
-            <xsl:when test="$parent-package/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-base-package')"/>
-            <xsl:when test="$parent-package/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-application-package')"/>
-            <xsl:when test="$parent-package/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-project-package')"/>
+            <xsl:when test="$parent-package/imvert:stereotype/@id = ('stereotype-name-base-package')"/>
+            <xsl:when test="$parent-package/imvert:stereotype/@id = ('stereotype-name-application-package')"/>
+            <xsl:when test="$parent-package/imvert:stereotype/@id = ('stereotype-name-project-package')"/>
             <xsl:otherwise>
                 <xsl:next-match/>
             </xsl:otherwise>
@@ -67,13 +67,13 @@
     <xsl:template match="imvert:class[imvert:designation = 'datatype' and empty(imvert:stereotype)]">
         <xsl:copy>
             <xsl:apply-templates select="@*|node()"/>
-            <imvert:stereotype origin="canon">
+            <imvert:stereotype origin="canon" id="stereotype-name-simpletype">
                 <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-simpletype')"/>
             </imvert:stereotype>
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="imvert:association[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-tekentechnisch')]" priority="-1">
+    <xsl:template match="imvert:association[imvert:stereotype/@id = ('stereotype-name-tekentechnisch')]" priority="-1">
         <!-- remove -->
     </xsl:template>
 

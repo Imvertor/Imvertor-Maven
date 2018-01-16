@@ -50,11 +50,11 @@
             <xsl:copy-of select="@*"/>
             <xsl:apply-templates select="imvert:*[not(self::imvert:associations)]"/>
             <imvert:associations>
-                <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-relatiesoort')]">
+                <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-relatiesoort')]">
                     <xsl:sort select="imvert:name"/>
                     <xsl:apply-templates select="."/>
                 </xsl:for-each>
-                <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-externekoppeling')]">
+                <xsl:for-each select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-externekoppeling')]">
                     <xsl:sort select="imvert:name"/>
                     <xsl:apply-templates select="."/>
                 </xsl:for-each>

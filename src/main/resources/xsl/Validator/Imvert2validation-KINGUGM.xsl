@@ -112,7 +112,7 @@
         <xsl:next-match/>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-referentielijst')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]">
         <!-- setup -->
         
         <!-- validate -->
@@ -122,7 +122,19 @@
         
         <xsl:next-match/>
     </xsl:template>
+  
+    <xsl:template match="imvert:class[not(imf:boolean(imvert:abstract))]" priority="10">
+        <!-- setup -->
+        <xsl:variable name="subtypes" select="imf:get-subclasses(.)"/>
         
+        <!-- validate -->
+        <xsl:sequence select="imf:report-error(., 
+            exists($subtypes), 
+            'Supertypes must be abstract', ())"/>
+        
+        <xsl:next-match/>
+    </xsl:template>
+    
     <xsl:template match="imvert:association">
         <!--setup-->
         <xsl:variable name="this" select="."/>

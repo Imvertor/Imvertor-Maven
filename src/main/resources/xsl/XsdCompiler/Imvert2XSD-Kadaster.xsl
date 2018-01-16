@@ -70,7 +70,7 @@
 
     <xsl:variable 
         name="external-schemas" 
-        select="$imvert-document//imvert:package[imvert:stereotype=(imf:get-config-stereotypes(('stereotype-name-external-package','stereotype-name-system-package')))]" 
+        select="$imvert-document//imvert:package[imvert:stereotype/@id = ('stereotype-name-external-package','stereotype-name-system-package')]" 
         as="element(imvert:package)*"/>
     
     <xsl:variable 
@@ -99,7 +99,7 @@
                 Do we need to reference external schema's? 
                 If so, a reference is made to the name of the external schema.
             -->
-            <xsl:variable name="externals" select="//(imvert:type-package|imvert:supertype[not(imvert:stereotype=imf:get-config-stereotypes('stereotype-name-static-generalization'))]/imvert:type-package)[.=$external-schema-names]"/>
+            <xsl:variable name="externals" select="//(imvert:type-package|imvert:supertype[not(imvert:stereotype/@id = ('stereotype-name-static-generalization'))]/imvert:type-package)[.=$external-schema-names]"/>
             <xsl:for-each-group select="$externals" group-by=".">
                 <xsl:for-each select="current-group()[1]"><!-- singleton imvert:type-package element--> 
                     <xsl:variable name="external-package" select="imf:get-construct-by-id(../imvert:type-package-id)"/>
@@ -212,17 +212,17 @@
                 <xsl:sequence select="imf:get-annotation(.,imf:get-schema-info(.),imf:get-appinfo-version(.))"/>
                 
                 <!-- XSD complextypes -->
-                <xsl:apply-templates select="imvert:class[not(imvert:stereotype=(imf:get-config-stereotypes(('stereotype-name-enumeration','stereotype-name-codelist','stereotype-name-simpletype'))))]"/>
+                <xsl:apply-templates select="imvert:class[not(imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist','stereotype-name-simpletype'))]"/>
             
                 <!-- XSD simpletypes -->
-                <xsl:apply-templates select="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-simpletype')]"/>
+                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]"/>
   
                 <!-- XSD enumerations -->
-                <xsl:apply-templates select="imvert:class[imvert:stereotype=(imf:get-config-stereotypes(('stereotype-name-enumeration','stereotype-name-codelist')))]"/>
+                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist')]"/>
                 
                 <!-- simple type attributes for attributes types that restrict a simple type; needed to set nilReason attribute -->
                 <xsl:apply-templates 
-                    select="imvert:class/imvert:attributes/imvert:attribute[(imvert:stereotype=imf:get-config-stereotypes('stereotype-name-voidable') or $is-forced-nillable) and imf:is-restriction(.)]"
+                    select="imvert:class/imvert:attributes/imvert:attribute[(imvert:stereotype/@id = ('stereotype-name-voidable') or $is-forced-nillable) and imf:is-restriction(.)]"
                     mode="nil-reason">
                     <xsl:with-param name="package-name" select="$this-package/imvert:name"/>
                 </xsl:apply-templates>
@@ -296,7 +296,7 @@
         
     </xsl:template>
         
-    <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-enumeration')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]">
         <xs:simpleType name="{imvert:name}">
             <xsl:sequence select="imf:get-annotation(.)"/>
             <xs:restriction base="xs:string">
@@ -308,7 +308,7 @@
         </xs:simpleType>
     </xsl:template>    
     
-    <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-codelist')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]">
         <xs:simpleType name="{imvert:name}">
             <xsl:sequence select="imf:get-annotation(.)"/>
             <xs:restriction base="xs:string">
@@ -320,7 +320,7 @@
         </xs:simpleType>
     </xsl:template>    
     
-    <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-simpletype')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]">
         <xsl:choose>
             <xsl:when test="imvert:attributes/* or imvert:associations/*">
                 <xsl:sequence select="imf:debug(.,'Datatype with data elements or associations')"/>
@@ -346,7 +346,7 @@
         </xsl:choose>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-service')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-service')]">
         
         <xsl:variable name="method" select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-ENVELOPEMETHOD')"/>
      
@@ -360,7 +360,7 @@
         <xsl:variable name="assoc-proces" select="$assocs except ($assoc-pr,$assoc-pg,$assoc-log)"/> <!-- rest of the assocs must be products -->
         
         <xsl:variable name="targets" select="for $target in $assocs/imvert:type-id return imf:get-construct-by-id($target)"/>
-        <xsl:variable name="products" select="$targets[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-product')]"/>
+        <xsl:variable name="products" select="$targets[imvert:stereotype/@id = ('stereotype-name-product')]"/>
       
         <!-- get the name of the first association that has a name entered by the modeller. --> 
         <xsl:variable name="rname" select="($assocs/imvert:name[not(@origin = 'system')])[1]"/>
@@ -390,7 +390,7 @@
                             
                             <!-- test if the target is a product -->
                             <xsl:sequence select="
-                                if (not($target/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-process'))) 
+                                if (not($target/imvert:stereotype/@id = ('stereotype-name-process'))) 
                                 then imf:msg(.,'ERROR','Target in [1] is not [2]',(imf:get-config-stereotypes('stereotype-name-service'),imf:get-config-stereotypes('stereotype-name-product'))) else ()"/>
                             
                             <xs:element ref="{imf:get-type($target/imvert:name,$target/parent::imvert:package/imvert:name)}" minOccurs="{$min-occurs}" maxOccurs="{$max-occurs}"/>
@@ -432,7 +432,7 @@
         <xsl:variable name="type-name" select="imvert:name"/>
         <xsl:variable name="type-id" select="imvert:id"/>
         <xsl:variable name="primitive" select="imvert:primitive"/>
-        <xsl:variable name="supertype" select="imvert:supertype[not(imvert:stereotype=imf:get-config-stereotypes('stereotype-name-static-generalization'))][1]"/>
+        <xsl:variable name="supertype" select="imvert:supertype[not(imvert:stereotype/@id = ('stereotype-name-static-generalization'))][1]"/>
         <xsl:variable name="supertype-name" select="$supertype/imvert:type-name"/>
         <xsl:variable name="supertype-package-name" select="$supertype/imvert:type-package"/>
         <xsl:variable name="supertype-substitutiongroup" select="$supertype/imvert:xsd-substitutiongroup"/> 
@@ -441,10 +441,10 @@
         <xsl:variable name="data-location" select="imf:get-appinfo-location(.)"/>
         
         <!-- all classes are element + complex type declaration; except for datatypes (<<datatype>>). -->
-        <xsl:variable name="is-choice-member" select="$document-classes[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-union') and imvert:attributes/imvert:attribute/imvert:type-id = $type-id]"/>
+        <xsl:variable name="is-choice-member" select="$document-classes[imvert:stereotype/@id = ('stereotype-name-union') and imvert:attributes/imvert:attribute/imvert:type-id = $type-id]"/>
         
         <xsl:sequence select="imf:debug(.,'Base class processing')"/>
-        <xsl:if test="not(imvert:stereotype=imf:get-config-stereotypes('stereotype-name-simpletype')) or $is-choice-member">
+        <xsl:if test="not(imvert:stereotype/@id = ('stereotype-name-simpletype')) or $is-choice-member">
             <xsl:sequence select="imf:debug(.,'A union element, or not a datatype')"/>
             <xs:element name="{$type-name}" type="{imf:get-type($type-name,$package-name)}" abstract="{$abstract}">
                 <xsl:choose>
@@ -467,19 +467,19 @@
         
         <xsl:variable name="content" as="element()?">
             <xsl:choose>
-                <xsl:when test="imvert:stereotype=imf:get-config-stereotypes('stereotype-name-system-reference-class') and not($supertype-name)">
+                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-system-reference-class') and not($supertype-name)">
                     <complex>
                         <xs:attribute name="type" type="xs:string" fixed="simple"/>
                         <xs:attribute ref="xlink:href" use="required"/>
                     </complex>
                 </xsl:when>
-                <xsl:when test="imvert:stereotype=imf:get-config-stereotypes('stereotype-name-union')">
+                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-union')">
                     <!-- attributes of a NEN3610 union, i.e. a choice between classes. The choice is a specialization of a datatype -->
                     <xsl:variable name="atts">
                         <xsl:for-each select="imvert:attributes/imvert:attribute">
                             <xsl:sort select="xs:integer(imvert:position)" order="ascending"/>
                             <xsl:variable name="defining-class" select="imf:get-defining-class(.)"/>   
-                            <xsl:variable name="defining-class-is-datatype" select="$defining-class/imvert:stereotype = imf:get-config-stereotypes(
+                            <xsl:variable name="defining-class-is-datatype" select="$defining-class/imvert:stereotype/@id = (
                                 ('stereotype-name-simpletype','stereotype-name-enumeration','stereotype-name-complextype','stereotype-name-union'))"/>   
                             <xsl:choose>
                                 <xsl:when test="$defining-class-is-datatype">
@@ -512,7 +512,7 @@
                         </complex>
                     </xsl:if>
                 </xsl:when>
-                <xsl:when test="imvert:stereotype=imf:get-config-stereotypes('stereotype-name-complextype') and exists(imvert:pattern)"><!-- IM-325 -->
+                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-complextype') and exists(imvert:pattern)"><!-- IM-325 -->
                     <simple>
                         <xs:annotation>
                             <xs:documentation>This complex datatype is transformed to a simple type because a content pattern is defined.</xs:documentation>
@@ -522,7 +522,7 @@
                         </xs:restriction>
                     </simple>
                 </xsl:when>
-                <xsl:when test="imvert:stereotype=imf:get-config-stereotypes('stereotype-name-simpletype') and exists(imvert:pattern)">
+                <xsl:when test="imvert:stereotype/@id = ('stereotype-name-simpletype') and exists(imvert:pattern)">
                     <simple>
                         <xs:restriction base="xs:string">
                             <xs:pattern value="{imvert:pattern}"/>
@@ -569,7 +569,7 @@
                         <xsl:variable name="incoming-refs" select="imf:get-references(.)"/>
                         <xsl:variable name="super-incoming-refs" select="for $c in imf:get-superclasses(.) return imf:get-references($c)"/>
                         
-                        <xsl:if test="imvert:stereotype=imf:get-config-stereotypes('stereotype-name-objecttype') and exists($incoming-refs) and not(exists($super-incoming-refs))">
+                        <xsl:if test="imvert:stereotype/@id = ('stereotype-name-objecttype') and exists($incoming-refs) and not(exists($super-incoming-refs))">
                             <xs:attribute name="id" type="xs:ID" use="optional"/>
                         </xsl:if>
                         <xsl:for-each select="imvert:attributes/imvert:attribute[imvert:type-name=$xml-attribute-type]">
@@ -757,7 +757,7 @@
         <xsl:variable name="is-property" select="exists(($this/self::imvert:attribute,$this/self::imvert:association))"/>
         <xsl:variable name="force-nillable" select="$is-property and $is-forced-nillable"/>
         
-        <xsl:variable name="is-voidable" select="$this/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-voidable')"/>
+        <xsl:variable name="is-voidable" select="$this/imvert:stereotype/@id = ('stereotype-name-voidable')"/>
         <xsl:variable name="is-nillable" select="$is-voidable or $force-nillable"/>
         <xsl:variable name="has-nilreason" select="imf:boolean(imf:get-tagged-value($this,'##CFG-TV-REASONNOVALUE'))"/>
         
@@ -772,10 +772,10 @@
         <xsl:variable name="is-mix" select="$found-type = '#mix'"/>
         
         <xsl:variable name="defining-class" select="imf:get-defining-class($this)"/>                            
-        <xsl:variable name="is-enumeration" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-enumeration')"/>
-        <xsl:variable name="is-datatype" select="$defining-class/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-simpletype')"/>
-        <xsl:variable name="is-complextype" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-complextype','stereotype-name-referentielijst'))"/>
-        <xsl:variable name="is-complextype" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-complextype','stereotype-name-referentielijst'))"/>
+        <xsl:variable name="is-enumeration" select="$defining-class/imvert:stereotype/@id = ('stereotype-name-enumeration')"/>
+        <xsl:variable name="is-datatype" select="$defining-class/imvert:stereotype/@id = ('stereotype-name-simpletype')"/>
+        <xsl:variable name="is-complextype" select="$defining-class/imvert:stereotype/@id = (('stereotype-name-complextype','stereotype-name-referentielijst'))"/>
+        <xsl:variable name="is-complextype" select="$defining-class/imvert:stereotype/@id = (('stereotype-name-complextype','stereotype-name-referentielijst'))"/>
         
         <xsl:variable name="is-conceptual-complextype" select="$this/imvert:attribute-type-designation='complextype'"/>
         <xsl:variable name="is-conceptual-hasnilreason" select="imf:boolean($this/imvert:attribute-type-hasnilreason)"/> <!-- IM-477 the conceptual type in external schema is nillable and therefore has nilReason attribute -->
@@ -784,12 +784,12 @@
         <xsl:variable name="type" select="if ($name-conceptual-type) then $name-conceptual-type else $found-type"/>
         
         <xsl:variable name="is-external" select="not($defining-class) and $this/imvert:type-package=$external-schema-names"/>
-        <xsl:variable name="is-choice" select="$defining-class/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-union')"/>
-        <xsl:variable name="is-choice-member" select="$this/ancestor::imvert:class/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-union')"/>
+        <xsl:variable name="is-choice" select="$defining-class/imvert:stereotype/@id = ('stereotype-name-union')"/>
+        <xsl:variable name="is-choice-member" select="$this/ancestor::imvert:class/imvert:stereotype/@id = ('stereotype-name-union')"/>
         <xsl:variable name="is-composite" select="$this/imvert:aggregation='composite'"/>
-        <xsl:variable name="is-collection-member" select="$this/../../imvert:stereotype=imf:get-config-stereotypes('stereotype-name-collection')"/>
+        <xsl:variable name="is-collection-member" select="$this/../../imvert:stereotype/@id = ('stereotype-name-collection')"/>
         <xsl:variable name="is-primitive" select="exists($this/imvert:primitive)"/>
-        <xsl:variable name="is-anonymous" select="$this/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-anonymous')"/>
+        <xsl:variable name="is-anonymous" select="$this/imvert:stereotype/@id = ('stereotype-name-anonymous')"/>
         <xsl:variable name="is-type-modified-incomplete" select="$this/imvert:type-modifier = '?'"/>
         
         <xsl:variable name="association-class-id" select="$this/imvert:association-class/imvert:type-id"/>
@@ -1218,7 +1218,7 @@
     <xsl:function name="imf:create-attribute-property" as="item()*">
         <xsl:param name="this" as="node()"/>
   
-        <xsl:variable name="voidable" select="$this/imvert:stereotype=imf:get-config-stereotypes('stereotype-name-voidable')"/>
+        <xsl:variable name="voidable" select="$this/imvert:stereotype/@id = ('stereotype-name-voidable')"/>
         <xsl:variable name="type" select="imf:get-type($this/imvert:type-name,$this/imvert:type-package)"/>
         <xs:attribute>
             <xsl:attribute name="name" select="$this/imvert:name"/>
@@ -1383,7 +1383,7 @@
     <xsl:function name="imf:get-xsd-filesubpath" as="xs:string">
         <xsl:param name="this" as="node()"/> <!-- a package -->
         <xsl:choose>
-            <xsl:when test="$this/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-external-package','stereotype-name-system-package'))"> 
+            <xsl:when test="$this/imvert:stereotype/@id = (('stereotype-name-external-package','stereotype-name-system-package'))"> 
                 <!-- 
                     the package is external (GML, Xlink or the like). 
                     Place reference to that external pack. 
@@ -1459,7 +1459,7 @@
     -->
     <xsl:function name="imf:get-reference-class-name" as="xs:string">
         <xsl:param name="this" as="node()"/> <!-- any defining class -->
-        <xsl:variable name="external-package" select="$this/ancestor::imvert:package[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-external-package')][1]"/>
+        <xsl:variable name="external-package" select="$this/ancestor::imvert:package[imvert:stereotype/@id = ('stereotype-name-external-package')][1]"/>
         <xsl:variable name="ref-classes" select="$reference-classes[imvert:ref-master=$this/imvert:name]"/> <!-- returns Class1Ref or the like -->
         <xsl:variable name="ref-class" select="$ref-classes[parent::imvert:package/imvert:ref-master=$this/parent::imvert:package/imvert:name]"/>
         <xsl:choose>

@@ -43,11 +43,11 @@
         <xsl:variable name="class" select="../.."/>
         <xsl:variable name="defining-class" select="if (imvert:type-id) then imf:get-construct-by-id(imvert:type-id) else ()"/>
         
-        <xsl:variable name="is-grouptype" select="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-attributegroup')"/>
-        <xsl:variable name="has-grouptype" select="$defining-class/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')"/>
+        <xsl:variable name="is-grouptype" select="imvert:stereotype/@id = ('stereotype-name-attributegroup')"/>
+        <xsl:variable name="has-grouptype" select="$defining-class/imvert:stereotype/@id = ('stereotype-name-composite')"/>
         
         <xsl:variable name="designation" select="$defining-class/imvert:designation"/>
-        <xsl:variable name="is-designated-interface" select="$defining-class/imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-interface'))"/>
+        <xsl:variable name="is-designated-interface" select="$defining-class/imvert:stereotype/@id = (('stereotype-name-interface'))"/>
        
         <!-- Jira IM-420 -->
         <xsl:sequence select="imf:report-warning(., 

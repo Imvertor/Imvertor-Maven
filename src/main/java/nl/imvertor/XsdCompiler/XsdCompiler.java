@@ -231,7 +231,11 @@ public class XsdCompiler extends Step {
 
 		// when system, use the embellish file; when model use the model.
 		if (infoXsdSourceFilePath.equals("system")) {
-			valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/ROUGH_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ROUGH_ENDPRODUCT_XML_XSLPATH");
+			
+			// Migrate between models. This is a stub stylesHeet, which transforms any metamodel to the StUF defined & required metamodel
+			valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_METAMODEL_KINGBSM_XSD_MIGRATE", "properties/IMVERTOR_METAMODEL_KINGBSM_XSD_MIGRATE_XSLPATH","system/work-config-path");
+			
+			valid = valid && transformer.transformStep("system/work-config-path","properties/ROUGH_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ROUGH_ENDPRODUCT_XML_XSLPATH");
 			valid = valid && transformer.transformStep("properties/ROUGH_ENDPRODUCT_XML_FILE_PATH","properties/ENRICHED_ROUGH_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ENRICHED_ROUGH_ENDPRODUCT_XML_XSLPATH");
 			valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XML_XSLPATH");
 			valid = valid && transformer.transformStep("properties/RESULT_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_REPROCESS_ENDPRODUCT_XML_XSLPATH");
@@ -287,9 +291,12 @@ public class XsdCompiler extends Step {
 		// Create the folder; it is not expected to exist yet.
 		AnyFolder xsdTempFolder = new AnyFolder(configurator.getXParm("system/work-xsd-folder-path"));
 		xsdTempFolder.mkdirs();
-				
+	
+		// Migrate between models. This is a stub stylesheet, which transforms any metamodel to the StUF defined & required metamodel
+		valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_METAMODEL_KINGUGM_XSD_MIGRATE", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_MIGRATE_XSLPATH","system/work-config-path");
+		
 		//TODO let the stylesheet operate on system, not on model file. Try to determine if model file is required altogether.
-		valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_METAMODEL_KINGUGM_XSD_PREFORM", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_PREFORM_XSLPATH","system/work-config-path");
+		valid = valid && transformer.transformStep("system/work-config-path","properties/RESULT_METAMODEL_KINGUGM_XSD_PREFORM", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_PREFORM_XSLPATH","system/work-config-path");
 		valid = valid && transformer.transformStep("system/work-config-path","properties/RESULT_METAMODEL_KINGUGM_XSD_MAIN", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_MAIN_XSLPATH","system/work-config-path");
 		valid = valid && transformer.transformStep("system/work-config-path","properties/RESULT_METAMODEL_KINGUGM_XSD_SUBSET", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_SUBSET_XSLPATH","system/work-config-path");
 		valid = valid && transformer.transformStep("system/work-config-path","properties/RESULT_METAMODEL_KINGUGM_XSD_CLEANUP", "properties/IMVERTOR_METAMODEL_KINGUGM_XSD_CLEANUP_XSLPATH","system/work-config-path");

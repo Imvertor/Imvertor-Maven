@@ -75,7 +75,7 @@
         <imvert:class>
             <xsl:apply-templates select="@*"/>
             <xsl:apply-templates select="node()[empty((self::imvert:associations,self::imvert:stereotype))]"/>
-            <imvert:stereotype>
+            <imvert:stereotype id="stereotype-name-objecttype">
                 <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-objecttype')"/>
             </imvert:stereotype>
             <imvert:associations>

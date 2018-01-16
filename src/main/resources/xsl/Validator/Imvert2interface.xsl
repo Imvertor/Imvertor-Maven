@@ -81,7 +81,7 @@
                 <xsl:if test="imf:boolean($construct/sentinel)">
                     <imvert:sentinel>true</imvert:sentinel>
                 </xsl:if> 
-                <imvert:stereotype id="CFG-ST-INTERFACE">
+                <imvert:stereotype id="stereotype-name-interface">
                     <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-interface')"/>
                 </imvert:stereotype>
             </imvert:class>
@@ -126,7 +126,7 @@
                 <imvert:namespace>
                     <xsl:value-of select="current-grouping-key()"/>
                 </imvert:namespace>
-                <imvert:stereotype id="CFG-ST-EXTERNAL">
+                <imvert:stereotype id="stereotype-name-external-package">
                     <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-external-package')"/>
                 </imvert:stereotype>
                 <!-- and list all classes -->

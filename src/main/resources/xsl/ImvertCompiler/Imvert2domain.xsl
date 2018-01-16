@@ -44,21 +44,21 @@
     <xsl:variable name="base-package" select="
         $document-packages[imvert:name=imf:get-normalized-name($application-package-name,'package-name') 
         and 
-        imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-base-package','stereotype-name-application-package'))]"/>
+        imvert:stereotype/@id = ('stereotype-name-base-package','stereotype-name-application-package')]"/>
     
     <xsl:variable name="known-package" select="(
-        imf:get-config-stereotypes('stereotype-name-domain-package'),
-        imf:get-config-stereotypes('stereotype-name-view-package'),
-        imf:get-config-stereotypes('stereotype-name-base-package'), 
-        imf:get-config-stereotypes('stereotype-name-application-package'), 
-        imf:get-config-stereotypes('stereotype-name-system-package'), 
-        imf:get-config-stereotypes('stereotype-name-components-package'), 
-        imf:get-config-stereotypes('stereotype-name-external-package'),
-        imf:get-config-stereotypes('stereotype-name-internal-package'))"/>
+        'stereotype-name-domain-package',
+        'stereotype-name-view-package',
+        'stereotype-name-base-package', 
+        'stereotype-name-application-package', 
+        'stereotype-name-system-package', 
+        'stereotype-name-components-package', 
+        'stereotype-name-external-package',
+        'stereotype-name-internal-package')"/>
     
     <xsl:variable name="domain-mapping" as="node()*">
         <xsl:for-each select="$base-package/descendant-or-self::imvert:package">
-            <xsl:variable name="domain" select="ancestor-or-self::imvert:package[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))][1]"/>
+            <xsl:variable name="domain" select="ancestor-or-self::imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package')][1]"/>
             <map sd-name="{imvert:name}" d-name="{if ($domain) then $domain/imvert:name else imvert:name}"/>
         </xsl:for-each>
     </xsl:variable>
@@ -104,9 +104,9 @@
     </xsl:template>
     
     <!-- een package dat geen domain is en valt binnen een root package wordt verwijderd. -->
-    <xsl:template match="imvert:package[not(imvert:stereotype=$known-package)]">
+    <xsl:template match="imvert:package[not(imvert:stereotype/@id = $known-package)]">
         <!-- een package dat ergens binnen een domein package is opgenomen wordt verwijderd -->
-        <xsl:if test="ancestor::imvert:package/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))">
+        <xsl:if test="ancestor::imvert:package/imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package')">
             <xsl:apply-templates select="imvert:class"/>
         </xsl:if>
         <xsl:apply-templates select="imvert:package"/>
@@ -136,6 +136,6 @@
     <!-- Return all packages that the element is part of, that are (within) a domain package -->
     <xsl:function name="imf:get-package-structure" as="element()*">
         <xsl:param name="this" as="element()"/>
-        <xsl:sequence select="$this/ancestor-or-self::imvert:package[ancestor-or-self::imvert:package/imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))]"/>
+        <xsl:sequence select="$this/ancestor-or-self::imvert:package[ancestor-or-self::imvert:package/imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package')]"/>
     </xsl:function>
 </xsl:stylesheet>

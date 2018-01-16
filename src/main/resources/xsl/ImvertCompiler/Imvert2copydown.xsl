@@ -43,7 +43,7 @@
 
     <xsl:template match="imvert:attributes">
         <xsl:copy>
-            <xsl:for-each  select="../imvert:supertype[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-static-generalization')]">
+            <xsl:for-each  select="../imvert:supertype[imvert:stereotype/@id = ('stereotype-name-static-generalization')]">
                 <xsl:sort select="xs:integer(imvert:position)" order="ascending"/>
                 <xsl:variable name="copy-down-superids" select="imvert:type-id"/>
                 <xsl:apply-templates select="$document-classes[imvert:id=$copy-down-superids]/imvert:attributes" mode="copy-down"/> 
@@ -53,7 +53,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:attributes" mode="copy-down">
-        <xsl:variable name="copy-down-superids" select="../imvert:supertype[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-static-generalization')]/imvert:type-id"/>
+        <xsl:variable name="copy-down-superids" select="../imvert:supertype[imvert:stereotype/@id = ('stereotype-name-static-generalization')]/imvert:type-id"/>
         <xsl:apply-templates select="$document-classes[imvert:id=$copy-down-superids]/imvert:attributes" mode="copy-down"/>  
         <xsl:apply-templates select="imvert:attribute" mode="copy-down"/>
     </xsl:template>
@@ -67,14 +67,14 @@
 
     <xsl:template match="imvert:associations">
         <xsl:copy>
-            <xsl:variable name="copy-down-superids" select="../imvert:supertype[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-static-generalization')]/imvert:type-id"/>
+            <xsl:variable name="copy-down-superids" select="../imvert:supertype[imvert:stereotype/@id = ('stereotype-name-static-generalization')]/imvert:type-id"/>
             <xsl:apply-templates select="$document-classes[imvert:id=$copy-down-superids]/imvert:associations" mode="copy-down"/>  
             <xsl:apply-templates/>
         </xsl:copy> 
     </xsl:template>
     
     <xsl:template match="imvert:associations" mode="copy-down">
-        <xsl:variable name="copy-down-superids" select="../imvert:supertype[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-static-generalization')]/imvert:type-id"/>
+        <xsl:variable name="copy-down-superids" select="../imvert:supertype[imvert:stereotype/@id = ('stereotype-name-static-generalization')]/imvert:type-id"/>
         <xsl:apply-templates select="$document-classes[imvert:id=$copy-down-superids]/imvert:associations" mode="copy-down"/>  
         <xsl:apply-templates select="imvert:association" mode="copy-down"/>
     </xsl:template>

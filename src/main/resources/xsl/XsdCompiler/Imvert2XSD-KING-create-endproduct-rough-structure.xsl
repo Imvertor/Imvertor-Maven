@@ -73,7 +73,7 @@
 		<xsl:sequence select="imf:track('Constructing the rough message-structure')"/>
 		
 		<xsl:sequence select="imf:pretty-print($rough-messages,false())"/>
-		
+
 	</xsl:template>
 	
 	<xsl:template
@@ -88,24 +88,25 @@
 			 That messagetype wil be added here too but at a later moment. The 'not(key('associations',imvert:id))' statement in the selection is used 
 			 to be sure the class doesn't represent an association within another class. Since synchronisation messages contain kennisgeving messages 
 			 this selection might be adapted or another solution must be found. -->
-			<xsl:for-each
-				select="imvert:class[(imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-vraagberichttype',
-				'stereotype-name-antwoordberichttype',
-				'stereotype-name-kennisgevingberichttype',
-				'stereotype-name-vrijberichttype'))) and not(key('associations',concat(imvert:id,ancestor::imvert:package/imvert:id)))]"> 
+		<xsl:for-each
+			select="imvert:class[(imvert:stereotype/@id = ('stereotype-name-vraagberichttype',
+														   'stereotype-name-antwoordberichttype',
+														   'stereotype-name-kennisgevingberichttype',
+														   'stereotype-name-vrijberichttype')) 
+														   and not(key('associations',concat(imvert:id,ancestor::imvert:package/imvert:id)))]"> 
 				
 			<xsl:variable name="associationClassId" select="imvert:associations/imvert:association/imvert:type-id"/>
 			<xsl:variable name="fundamentalMnemonic">
 				<xsl:choose>
-					<xsl:when test="imvert:stereotype = imf:get-config-stereotypes((
+					<xsl:when test="imvert:stereotype/@id = (
 						'stereotype-name-vraagberichttype',
 						'stereotype-name-antwoordberichttype',
 						'stereotype-name-kennisgevingberichttype',
-						'stereotype-name-synchronisatieberichttype'))">
+						'stereotype-name-synchronisatieberichttype')">
 						<xsl:value-of select="key('class',$associationClassId)/imvert:alias"/>
 					</xsl:when>
-					<xsl:when test="imvert:stereotype = imf:get-config-stereotypes((
-						'stereotype-name-vrijberichttype'))">
+					<xsl:when test="imvert:stereotype/@id = (
+						'stereotype-name-vrijberichttype')">
 						<xsl:value-of select="''"/>
 					</xsl:when>
 				</xsl:choose>
@@ -138,12 +139,12 @@
 						the entiteiten structure this template is initialized within the 'create-toplevel-rough-message-structure' mode. -->
 					<xsl:apply-templates
 						select="
-							.[imvert:stereotype = imf:get-config-stereotypes((
+							.[imvert:stereotype/@id = (
 							'stereotype-name-vraagberichttype',
 							'stereotype-name-antwoordberichttype',
 							'stereotype-name-kennisgevingberichttype',
 							'stereotype-name-synchronisatieberichttype',
-							'stereotype-name-vrijberichttype'))]"
+							'stereotype-name-vrijberichttype')]"
 						mode="create-toplevel-rough-message-structure">
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="useStuurgegevens" select="'yes'"/>
@@ -761,10 +762,10 @@
 						select="imf:create-output-element('ep:UGMversionGerelateerdeEntiteit', imf:getVersion($UGMgerelateerde))"/>
 					
 					<xsl:apply-templates
-						select="$gerelateerdeConstruct[imvert:stereotype = imf:get-config-stereotypes((
+						select="$gerelateerdeConstruct[imvert:stereotype/@id = (
 							'stereotype-name-vraagberichttype',
 							'stereotype-name-antwoordberichttype',
-							'stereotype-name-kennisgevingberichttype'))]"
+							'stereotype-name-kennisgevingberichttype')]"
 						mode="create-toplevel-rough-message-structure">
 						<xsl:with-param name="berichtCode" select="$berichtCode"/>
 						<xsl:with-param name="embeddedBerichtCode" select="$embeddedBerichtCode"/>

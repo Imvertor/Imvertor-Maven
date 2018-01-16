@@ -46,6 +46,7 @@
         <xsl:next-match/>
     </xsl:template>
     
+    <?X
     <!-- localize de stereotypes -->
     <xsl:template match="UML:Stereotype/@name">
         <xsl:variable name="v" select="lower-case(.)"/>
@@ -87,7 +88,22 @@
         
         <xsl:attribute name="value" select="$v5"/>
     </xsl:template>
-
+    X?>
+    
+    <xsl:template match="UML:Stereotype/@name[starts-with(.,'MUG ')]">
+        <xsl:attribute name="name" select="substring-after(.,'MUG ')"/>
+    </xsl:template>
+    <xsl:template match="UML:TaggedValue[@tag='stereotype']/@value[starts-with(.,'MUG ')]">
+        <xsl:attribute name="value" select="substring-after(.,'MUG ')"/>
+    </xsl:template>
+    
+    <xsl:template match="UML:Stereotype/@name[starts-with(.,'MBG ')]">
+        <xsl:attribute name="name" select="substring-after(.,'MBG ')"/>
+    </xsl:template>
+    <xsl:template match="UML:TaggedValue[@tag='stereotype']/@value[starts-with(.,'MBG ')]">
+        <xsl:attribute name="value" select="substring-after(.,'MBG ')"/>
+    </xsl:template>
+    
     <xsl:template match="node()|@*">
         <xsl:copy>
             <xsl:apply-templates select="@*"/>

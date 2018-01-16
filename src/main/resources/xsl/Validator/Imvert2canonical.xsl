@@ -89,13 +89,13 @@
     <xsl:template match="imvert:class[imvert:designation = 'datatype' and empty(imvert:stereotype)]">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
-            <imvert:stereotype origin="system">
+            <imvert:stereotype origin="system" id="stereotype-name-simpletype">
                 <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-simpletype')[1]"/>
             </imvert:stereotype>
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:designation = 'enumeration' and imvert:stereotype = imf:get-config-stereotypes('stereotype-name-codelist')]/imvert:stereotype[. = imf:get-config-stereotypes('stereotype-name-enumeration')]">
+    <xsl:template match="imvert:class[imvert:designation = 'enumeration' and imvert:stereotype/@id = ('stereotype-name-codelist')]/imvert:stereotype[@id = ('stereotype-name-enumeration')]">
         <!-- remove this stereotype: <<enumeration>> is implied by <<codelist>> -->
     </xsl:template>
     
@@ -113,15 +113,17 @@
     <xsl:template match="imvert:class[imvert:designation = 'enumeration']/imvert:attributes/imvert:attribute">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
-            <imvert:stereotype origin="system">
-                <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-enum')[1]"/>
-            </imvert:stereotype>
+            <xsl:if test="not(imvert:stereotype/@id = 'stereotype-name-enum')">
+                <imvert:stereotype origin="system" id="stereotype-name-enum">
+                    <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-enum')"/>
+                </imvert:stereotype>
+            </xsl:if>
         </xsl:copy>
     </xsl:template>
     
     <xsl:template match="imvert:association">
         <xsl:choose>
-            <xsl:when test="imvert:stereotype = imf:get-config-stereotypes('stereotype-name-trace')">
+            <xsl:when test="imvert:stereotype/@id = ('stereotype-name-trace')">
                 <!-- remove explicit trace relations; traces are recorded as imvert:trace (client to supplier) -->
             </xsl:when>
             <xsl:when test="exists(imvert:type-id) and empty(imf:get-construct-by-id(imvert:type-id)) and $chop">
@@ -152,7 +154,7 @@
     <xsl:template match="imvert:association[imvert:aggregation='composite']">
         <xsl:variable name="defining-class" select="imf:get-construct-by-id(imvert:type-id)"/>
         <xsl:choose>
-            <xsl:when test="$defining-class/imvert:stereotype = imf:get-config-stereotypes('stereotype-name-composite')">
+            <xsl:when test="$defining-class/imvert:stereotype/@id = ('stereotype-name-composite')">
                 <imvert:association>
                     <xsl:choose>
                         <xsl:when test="empty(imvert:found-name)">
@@ -166,7 +168,7 @@
                     </xsl:choose>
                     <xsl:choose>
                         <xsl:when test="empty(imvert:stereotype)">
-                            <imvert:stereotype>
+                            <imvert:stereotype id="stereotype-name-association-to-composite">
                                 <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-association-to-composite')"/>
                             </imvert:stereotype>
                         </xsl:when>

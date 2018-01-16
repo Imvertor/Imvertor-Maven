@@ -28,7 +28,7 @@
     exclude-result-prefixes="#all" 
     version="2.0">
 
-    <xsl:template match="imvert:association[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-relatiesoort')]">
+    <xsl:template match="imvert:association[imvert:stereotype/@id = ('stereotype-name-relatiesoort')]">
         
         <!-- setup -->
         <xsl:variable name="alias" select="imvert:alias"/>
@@ -45,7 +45,7 @@
         <xsl:next-match/>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-objecttype','stereotype-name-referentielijst'))]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype','stereotype-name-referentielijst')]">
         <!-- setup -->
         <xsl:variable name="alias" select="imvert:alias"/>
         

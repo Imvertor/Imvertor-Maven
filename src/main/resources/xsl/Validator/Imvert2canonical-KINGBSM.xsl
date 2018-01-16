@@ -35,8 +35,8 @@
     
     <xsl:import href="Imvert2canonical-KING-common.xsl"/>
    
-    <xsl:variable name="koppelvlak-package" select="$document-packages[imvert:name/@original = $application-package-name and imvert:stereotype = imf:get-config-stereotypes('stereotype-name-application-package')][1]"/>
-    <xsl:variable name="bericht-packages" select="$koppelvlak-package//imvert:package[imvert:stereotype = imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))]"/>
+    <xsl:variable name="koppelvlak-package" select="$document-packages[imvert:name/@original = $application-package-name and imvert:stereotype/@id = ('stereotype-name-application-package')][1]"/>
+    <xsl:variable name="bericht-packages" select="$koppelvlak-package//imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package')]"/>
     <xsl:variable name="bericht-classes" select="$bericht-packages//imvert:class"/>
     
     <xsl:template match="/imvert:packages">
@@ -69,18 +69,5 @@
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="imvert:stereotype[starts-with(.,'MBG ')]">
-        <xsl:copy>
-            <xsl:copy-of select="@*"/>
-            <xsl:value-of select="substring-after(.,'MBG ')"/>
-        </xsl:copy>
-    </xsl:template>  
-    
-    <xsl:template match="imvert:stereotype[starts-with(.,'MUG ')]">
-        <xsl:copy>
-            <xsl:copy-of select="@*"/>
-            <xsl:value-of select="substring-after(.,'MUG ')"/>
-        </xsl:copy>
-    </xsl:template>  
-    
+       
 </xsl:stylesheet>

@@ -39,7 +39,7 @@
     <xsl:variable name="output-folder" select="imf:get-config-string('system','managedoutputfolder')"/>
     <xsl:variable name="owner" select="imf:get-config-string('cli','owner')"/>
     
-    <xsl:variable name="stereotype-proxy" select="imf:get-config-stereotypes(('stereotype-name-att-proxy','stereotype-name-obj-proxy','stereotype-name-grp-proxy','stereotype-name-prd-proxy'))"/>
+    <xsl:variable name="stereotype-proxy" select="('stereotype-name-att-proxy','stereotype-name-obj-proxy','stereotype-name-grp-proxy','stereotype-name-prd-proxy')"/>
     
     <xsl:variable name="local-constructs" select="('name', 'id')"/> <!-- 'attributes', 'associations', ? -->
     
@@ -53,7 +53,7 @@
     <xsl:template match="imvert:package[imf:boolean(imvert:is-root-package)]" mode="client">
         <xsl:variable name="this-package" select="."/>
         
-        <xsl:variable name="package-proxies" select=".//*[imvert:stereotype = $stereotype-proxy]"/>
+        <xsl:variable name="package-proxies" select=".//*[imvert:stereotype/@id = $stereotype-proxy]"/>
         <xsl:variable name="supplier-project" select="imvert:supplier/imvert:supplier-project"/>
         <xsl:variable name="supplier-name" select="imvert:supplier/imvert:supplier-name"/>
         <xsl:variable name="supplier-release" select="imvert:supplier/imvert:supplier-release"/>
@@ -136,7 +136,7 @@
     </xsl:template>
 
     <!--TODO inlezen van losse documenten tegengaan; volg het gecompileerde suppliers document -->
-    <xsl:template match="imvert:class[imvert:stereotype = $stereotype-proxy] | imvert:attribute[imvert:stereotype = $stereotype-proxy]" mode="client">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = $stereotype-proxy] | imvert:attribute[imvert:stereotype/@id = $stereotype-proxy]" mode="client">
         <xsl:variable name="client" select="."/>
         <xsl:variable name="trace-id" select="$client/imvert:trace" as="element()*"/>
         <xsl:variable name="supplier-subpaths" select="imf:get-construct-supplier-system-subpaths($client)" as="xs:string*"/>

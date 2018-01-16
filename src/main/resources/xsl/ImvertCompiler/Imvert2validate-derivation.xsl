@@ -48,7 +48,6 @@
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     
-    <xsl:variable name="normalized-stereotype-enum" select="imf:get-config-stereotypes('stereotype-name-enum')"/>
     <!-- 
         Templates access application pairs, an process the client constructs. 
         Determine if the client construct is validly derived from supplier construct.
@@ -104,7 +103,7 @@
         <xsl:variable name="supplier-attributes" select="imf:get-trace-suppliers-for-construct($client-attribute,1)"/>
         <xsl:variable name="immediate-suppliers" select="$supplier-attributes[@level = '2']"/>
         
-        <xsl:variable name="is-enumeration" select="imvert:stereotype = $normalized-stereotype-enum"/> 
+        <xsl:variable name="is-enumeration" select="imvert:stereotype/@id = 'stereotype-name-enum'"/> 
       
         <xsl:choose>
             <xsl:when test="empty($client-attribute/imvert:trace)">

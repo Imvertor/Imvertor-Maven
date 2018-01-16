@@ -64,7 +64,7 @@
                 <imvert:associations>
                     <imvert:association>
                         <imvert:name>(anonymous)</imvert:name>
-                        <imvert:stereotype>
+                        <imvert:stereotype id="stereotype-name-anonymous">
                             <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-anonymous')"/>
                         </imvert:stereotype>
                         <xsl:sequence select="$assoc/imvert:type-name"/>
@@ -81,40 +81,41 @@
         </imvert:package>
     </xsl:template>
     
-    <xsl:template match="imvert:package/imvert:stereotype[.=imf:get-config-stereotypes('stereotype-name-iso-19103-applicationschema')]">
-        <imvert:stereotype original="{.}">
-            <xsl:value-of select="imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))"/>
+    <!-- TODO wat is hier aan de hand? -->
+    <xsl:template match="imvert:package/imvert:stereotype[@id = ('stereotype-name-iso-19103-applicationschema')]">
+        <imvert:stereotype original="{.}" id="stereotype-name-iso-19103-applicationschema">
+            <xsl:value-of select="imf:get-config-stereotypes(('stereotype-name-domain-package','stereotype-name-view-package'))[1]"/>
         </imvert:stereotype>
     </xsl:template>
     
-    <xsl:template match="imvert:package/imvert:stereotype[.=imf:get-config-stereotypes('stereotype-name-iso-19103-leaf')]">
+    <xsl:template match="imvert:package/imvert:stereotype[@id = ('stereotype-name-iso-19103-leaf')]">
         <imvert:stereotype original="{.}"/>
     </xsl:template>
-    <xsl:template match="imvert:package/imvert:stereotype[.=imf:get-config-stereotypes('stereotype-name-iso-19103-datatype')]">
-        <imvert:stereotype original="{.}">complex datatype</imvert:stereotype>
+    <xsl:template match="imvert:package/imvert:stereotype[@id = ('stereotype-name-iso-19103-datatype')]">
+        <imvert:stereotype original="{.}" id="stereotype-name-complextype">complex datatype</imvert:stereotype>
     </xsl:template>
     
-    <xsl:template match="imvert:package/imvert:stereotype[.=imf:get-config-stereotypes('stereotype-name-iso-19103-union')]">
-        <imvert:stereotype original="{.}">
+    <xsl:template match="imvert:package/imvert:stereotype[@id = ('stereotype-name-iso-19103-union')]">
+        <imvert:stereotype original="{.}" id="stereotype-name-union">
             <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-union')"/>
         </imvert:stereotype>
     </xsl:template>
-    <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-iso-19103-union')]/imvert:attributes/imvert:attribute">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-iso-19103-union')]/imvert:attributes/imvert:attribute">
         <xsl:copy>
             <xsl:apply-templates/>
-            <imvert:stereotype>
+            <imvert:stereotype id="stereotype-name-union-element">
                 <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-union-element')"/>
             </imvert:stereotype>
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-iso-19103-featurecollection and empty(imvert:supertype)')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-iso-19103-featurecollection and empty(imvert:supertype)')]">
         <xsl:copy>
             <xsl:apply-templates/>
             <xsl:sequence select="imf:create-GM-supertype('GM_AbstractGMLType','GM_AbstractGML')"/>
         </xsl:copy>
     </xsl:template> 
-    <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-iso-19103-featuretype and empty(imvert:supertype)')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-iso-19103-featuretype and empty(imvert:supertype)')]">
         <xsl:copy>
             <xsl:apply-templates/>
             <xsl:sequence select="imf:create-GM-supertype('GM_AbstractFeatureType','GM_AbstractFeature')"/>
@@ -148,20 +149,20 @@
             <xsl:sequence select="imvert:min-occurs"/>
             <xsl:sequence select="imvert:max-occurs"/>
             <xsl:sequence select="imvert:documentation"/>
-            <imvert:stereotype>
+            <imvert:stereotype id="stereotype-name-anonymous">
                 <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-anonymous')"/>
             </imvert:stereotype>
         </imvert:association>
     </xsl:template> 
     
-    <xsl:template match="imvert:class/imvert:stereotype[.=imf:get-config-stereotypes('stereotype-name-iso-19103-featurecollection')]">
-        <imvert:stereotype original="{.}">
+    <xsl:template match="imvert:class/imvert:stereotype[@id = ('stereotype-name-iso-19103-featurecollection')]">
+        <imvert:stereotype original="{.}" id="stereotype-name-collection">
             <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-collection')"/>
         </imvert:stereotype>
     </xsl:template> 
     
-    <xsl:template match="imvert:class/imvert:stereotype[.=imf:get-config-stereotypes('stereotype-name-iso-19103-featuretype')]">
-        <imvert:stereotype original="{.}">
+    <xsl:template match="imvert:class/imvert:stereotype[@id = ('stereotype-name-iso-19103-featuretype')]">
+        <imvert:stereotype original="{.}" id="stereotype-name-objecttype">
             <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-objecttype')"/>
         </imvert:stereotype>
     </xsl:template> 

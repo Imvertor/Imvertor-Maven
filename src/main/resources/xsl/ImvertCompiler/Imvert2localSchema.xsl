@@ -47,7 +47,7 @@
             <!-- compute schema dependencies of all packages in this release; remove possible doubles -->
             <imvert:local-schemas>
                 <xsl:variable name="schema-dependencies" as="xs:string*">
-                    <xsl:apply-templates select="imvert:package[imvert:stereotype=imf:get-config-stereotypes(('stereotype-name-external-package','stereotype-name-system-package'))]" mode="schema-dependencies"/>
+                    <xsl:apply-templates select="imvert:package[imvert:stereotype/@id = ('stereotype-name-external-package','stereotype-name-system-package')]" mode="schema-dependencies"/>
                 </xsl:variable>
                 <xsl:for-each-group select="$schema-dependencies" group-by="string(.)">
                     <imvert:local-schema>

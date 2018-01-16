@@ -71,7 +71,7 @@
     <!--
         Rules for the domain packages
     -->
-    <xsl:template match="imvert:package[imvert:stereotype = imf:get-config-stereotypes('stereotype-name-domain-package')]">
+    <xsl:template match="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package')]">
         <!--setup-->
         <xsl:variable name="this-package" select="."/>
         
