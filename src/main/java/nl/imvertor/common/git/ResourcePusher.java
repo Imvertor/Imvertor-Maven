@@ -157,7 +157,7 @@ public class ResourcePusher {
 			File workdir = new File("c:/temp/git");
 
 			// start up the local work folder
-			rp.prepare("https://github.com/Armatiek/jgittest.git", workdir, "arjan.loeffen@armatiek.nl", "Scrabble123");
+			rp.prepare("https://github.com/Armatiek/jgittest.git", workdir, "arjan.loeffen@armatiek.nl", "XXXXX");
 			
 			// copy file to that work folder
 			AnyFile testfile = new AnyFile(workdir,"test1.txt");
