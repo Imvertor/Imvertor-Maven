@@ -130,6 +130,9 @@ public class OfficeCompiler extends Step {
 						
 						AnyFolder gitfolder = new AnyFolder(gitlocal + gitpath);
 						
+						// must remove this folder, as pushes and pulls will not work from OTAPs.
+						if (gitfolder.isDirectory()) gitfolder.deleteDirectory();
+						
 						// create and prepare the GIT resource pusher
 						ResourcePusher rp = new ResourcePusher();
 						rp.prepare("https://github.com" + gitpath, gitfolder, gituser, gitpass);

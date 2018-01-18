@@ -93,6 +93,11 @@ public class AnyFile extends File  {
 	
 	private Charset charset;
 	
+	
+	public static String getFileContent(String filepath) throws IOException {
+		return (new AnyFile(filepath)).getContent();
+	}
+	
 	public AnyFile(String pathname) {
 		super(pathname);
 	}
