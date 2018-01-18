@@ -38,14 +38,11 @@
           
         This is:
           
-        1/ redefine nilreason (cli:nilapproach):  nil-approach-counter
+        1/ apply the nilreason
           
     -->
     
-    <xsl:variable name="nil-approach" select="imf:get-config-string('cli','nilapproach','elm')"/>
-    
     <xsl:template match="/">
-        <xsl:sequence select="imf:track('Applying nil approach',())"/>
         <xsl:apply-templates/>
     </xsl:template>
     

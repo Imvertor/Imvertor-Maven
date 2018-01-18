@@ -78,12 +78,6 @@
          <required>false</required>
       </cli-parm>
       <cli-parm>
-         <name>nilapproach</name>
-         <arg>att|elm</arg>
-         <tip>Specify how nillable constructs must be represented: as a counter-element (default), or as attribute</tip>
-         <required>false</required>
-      </cli-parm>
-      <cli-parm>
          <name>endproductbaseconfig</name>
          <arg>File name</arg><!-- REDMINE #487934 PATH BECOMES FILE NAME -->
          <tip>Name of the Excel file holding the base product configuration</tip>
