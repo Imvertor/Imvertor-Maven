@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
+import nl.imvertor.common.file.XmlFile;
 
 /**
  * Analyse the full run results and pass info to the parms file for final processing (reporting).
@@ -45,6 +46,12 @@ public class RunAnalyzer extends Step {
 	 *  run the main translation
 	 */
 	public boolean run() throws Exception{
+		
+		// First output the current parameter settings so that reporting hasd full access. 
+		// Subsequent assignments will, not influence the output anymore.
+		XmlFile xParmsChainFile = new XmlFile(configurator.getXParm("properties/WORK_XPARMS_CHAIN_FILE"));
+		
+		xParmsChainFile.setContent(configurator.getxParmLogger().export());
 		
 		// set up the configuration for this step
 		configurator.setActiveStepName(STEP_NAME);

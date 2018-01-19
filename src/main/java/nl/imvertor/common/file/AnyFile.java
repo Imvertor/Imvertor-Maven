@@ -94,8 +94,25 @@ public class AnyFile extends File  {
 	private Charset charset;
 	
 	
+	/**
+	 * Convenience method: fast read of file contents.
+	 * 
+	 * @param filepath
+	 * @return
+	 * @throws IOException
+	 */
 	public static String getFileContent(String filepath) throws IOException {
 		return (new AnyFile(filepath)).getContent();
+	}
+	/**
+	 * Convenience method: fast write to file.
+	 * 
+	 * @param filepath
+	 * @param content
+	 * @throws IOException
+	 */
+	public static void setFileContent(String filepath, String content) throws IOException {
+		(new AnyFile(filepath)).setContent(content);
 	}
 	
 	public AnyFile(String pathname) {

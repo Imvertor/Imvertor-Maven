@@ -40,7 +40,7 @@
       <cli-parm>
          <name>language</name>
          <arg>ISO 639-1 codes</arg>
-         <tip>Langugage of the metamodel and model. Specify metamodel:model, like "en:nl", or single code for both..</tip>
+         <tip>Language of the metamodel and model. Specify metamodel:model, like "en:nl", or single code for both.</tip>
          <required>false</required>
       </cli-parm> 
       <cli-parm>
@@ -203,6 +203,9 @@
       <!-- location of the XML catalog file; this is a generated file, only for compare step -->
       <GENERATED_CATALOG_FILEPATH>${system/work-folder-path}/catalog.xml</GENERATED_CATALOG_FILEPATH>
       
+      <!-- the file that holds the xparms as asisgned throughout the chain -->
+      <WORK_XPARMS_CHAIN_FILE>${system/work-imvert-folder-path}/imvertor.39.xparms.xml</WORK_XPARMS_CHAIN_FILE>
+          
    </properties>
    
    <system>

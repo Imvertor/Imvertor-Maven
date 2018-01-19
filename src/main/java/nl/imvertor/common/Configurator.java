@@ -59,6 +59,7 @@ import org.apache.commons.configuration2.tree.NodeCombiner;
 import org.apache.commons.configuration2.tree.OverrideCombiner;
 import org.apache.commons.configuration2.tree.xpath.XPathExpressionEngine;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.jena.shared.ConfigException;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.xml.resolver.Catalog;
@@ -74,6 +75,7 @@ import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.OutputFolder;
 import nl.imvertor.common.file.XmlFile;
+import nl.imvertor.common.log.XparmLogger;
 import nl.imvertor.common.wrapper.XMLConfiguration;
 
 /**
@@ -134,10 +136,13 @@ public class Configurator {
 	
 	private Integer runmode = RUN_MODE_RUN;
 	
+	private XparmLogger xParmLogger; // keeps track of the sequence of parameters set by the chain. A debugging tool.
+	
 	private Configurator()  {
 		
 		runner = new Runner();
 		options = new Options(); 
+		xParmLogger = new XparmLogger();
 		
 		try {
 			if (System.getProperty("run.mode") != null)
@@ -153,7 +158,7 @@ public class Configurator {
 				throw new ConfiguratorException("Not a folder: " + baseFolder.getCanonicalPath());
 			
 			if (System.getProperty("work.dir") == null)
-				throw new ConfiguratorException("Missing system parameter work.dir, please pass as -work.dir=[filepath]");
+				throw new ConfiguratorException("Missing system parameter work.dir, please pass as -Dwork.dir=[filepath]");
 			
 			workFolder = new AnyFolder(System.getProperty("work.dir"));
 			appFolder = new AnyFolder(workFolder,"app");
@@ -313,6 +318,7 @@ public class Configurator {
 	 * @throws ConfiguratorException
 	 */
 	public void setActiveStepName(String stepName) throws IOException, ConfiguratorException {
+		xParmLogger.openOrigin(stepName);
 		currentStepName = stepName;
 	}
 
@@ -553,6 +559,9 @@ public class Configurator {
 	 * @throws Exception 
 	 */
 	public void setParmsFromOptions(String[] args) throws Exception {
+		
+		xParmLogger.openOrigin("#CLI");
+		
 		CommandLine commandLine = null;
 		File curFolder = baseFolder;
 		try {
@@ -619,7 +628,7 @@ public class Configurator {
 	    // if warnings should be signaled
 	    suppressWarnings = isTrue("cli","suppresswarnings",false);
 	    
-	    
+	    xParmLogger.closeOrigin();
 	}
 	
 	/**
@@ -630,6 +639,8 @@ public class Configurator {
 	 * @throws ConfiguratorException 
 	 */
 	public void setParmsFromEnv() throws IOException, ConfiguratorException {
+		xParmLogger.openOrigin("#ENV");
+		
 		setXParm(workConfiguration, "system/folder-path",baseFolder.getCanonicalPath(),true);
 		setFileXParm(workConfiguration, "system/etc-folder-path","etc",baseFolder);
 		setFileXParm(workConfiguration, "system/cfg-folder-path","cfg",baseFolder);
@@ -639,7 +650,8 @@ public class Configurator {
 		
 		// also set some general relevant info
 		setXParm(workConfiguration, "system/generation-id", getCurrentDate("yyyyMMdd-HHmmss"),true);
-    	
+		
+		xParmLogger.closeOrigin();
 	}
 
 	/**
@@ -756,6 +768,9 @@ public class Configurator {
 			xmlConfig.setProperty(name, svalue);
 		else 
 			xmlConfig.addProperty(name, svalue);
+		
+		// add this setting to the Xparm log: a list of settings which clarifies which parameter was set by which step
+		xParmLogger.add(name, svalue, replace);
 		
 		// if this is a debug parameter, set debug level
 	    if (name.equals("cli/debug") && isTrue(svalue)) {
@@ -916,6 +931,9 @@ public class Configurator {
 	 * @throws Exception 
 	 */
 	private void loadFromPropertyFile(String filePath) throws Exception {
+		
+		xParmLogger.openOrigin(filePath);
+		
 		File f = getFile(filePath);
 		runner.debug(logger,"CHAIN","Reading property file " + f.getCanonicalPath());
 		Properties properties = new Properties();
@@ -946,6 +964,8 @@ public class Configurator {
 			setOptionIsReady(optionName, true);
 			
 		}
+		
+		xParmLogger.closeOrigin();
 	}
 	
 	private void loadFromPropertyFiles(File curFolder, String filenames) throws Exception {
@@ -957,6 +977,7 @@ public class Configurator {
 					incFile = new File(files[i]);
 				else 
 					incFile = new File(curFolder,files[i]);
+				xParmLogger.add("arguments", files[i], false);
 				loadFromPropertyFile(selectIncFile(incFile).getCanonicalPath());
 			}
 		}
@@ -1161,6 +1182,7 @@ public class Configurator {
 
 	public void setStepDone(String step) throws IOException, ConfiguratorException{
 		setParm("step-done", step, "true");
+		xParmLogger.closeOrigin();
 	}
 	public boolean getStepDone(String step) throws IOException, ConfiguratorException {
 		return isTrue(getParm("step-done", step, false));
@@ -1270,4 +1292,9 @@ public class Configurator {
 		ClassLoader classLoader = myClass.getClassLoader();
 		return classLoader.getResource(subpath).getFile();
 	}
+	
+	public XparmLogger getxParmLogger() {
+		return xParmLogger;
+	}
+
 }
