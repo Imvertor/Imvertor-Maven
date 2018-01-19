@@ -20,6 +20,9 @@
 
 package nl.imvertor.common;
 
+import org.apache.commons.lang3.StringUtils;
+
+import nl.imvertor.common.file.XmlFile;
 
 /**
  * This class represents the release info on Imvertor.
@@ -31,46 +34,46 @@ public class Release {
 	// TODO determine a valid version identifier based on all resources, i.e. java and XSLT 
 	
 	// change version number manually here, on each adaptation made in the imvertor sources! 
-	private static String imvertorVersion = "Imvertor OS 1.39.1"; 
+	private static XmlFile imvertorVersionInfo; 
 	
-	private static String imvertorSVNVersion = val("$Id: Release.java 7503 2016-04-15 14:46:57Z arjan $");
+	private static String imvertorSVNVersion = val1("$Id: Release.java 7503 2016-04-15 14:46:57Z arjan $");
 	
-	public static String getVersion() {
-		return imvertorVersion;
+	private static void loadVersionInfo() {
+		if (imvertorVersionInfo == null) {
+			ClassLoader classLoader = Release.class.getClassLoader();
+			imvertorVersionInfo = new XmlFile(classLoader.getResource("static/release/release.xml").getFile());
+		}
 	}
 	
-	public static String getVersionString() {
-		return imvertorVersion;
+	public static String getVersionString(String artifact) throws Exception {
+		loadVersionInfo();
+		String release = 
+				imvertorVersionInfo.xpath("/release-info/release[artifact = '" +artifact+ "']/major-minor")
+				+ "." +
+				imvertorVersionInfo.xpath("/release-info/release[artifact = '" +artifact+ "']/bugfix")
+				+ "." +
+				imvertorVersionInfo.xpath("/release-info/release[artifact = '" +artifact+ "']/date");
+		return release;
 	}
 	
 	public static String getReleaseString() {
 		return imvertorSVNVersion;
 	}
 	
-	private static String val(String svnString) {
+	private static String val1(String svnString) {
 		return svnString.substring(svnString.indexOf(" ") + 1, svnString.length() - 2);
 	}
-	
-	public static String getNotice() {
-		return 
-				"Copyright (C) 2016-2018 Dienst voor het Kadaster en de openbare registers.\n" 
-				+ "This program comes with ABSOLUTELY NO WARRANTY; for details pass -help program.\n" 
-				+ "This is free software, and you are welcome to redistribute it " 
-				+ "under certain conditions; pass -help license for full details.\n";
+	private static String val2(String String) {
+		return StringUtils.replacePattern(String, "((^|\n)(\u0020|\t)+)|((\u0020|\t)+($|\n))","\n");
 	}
 	
-	public static String getDetails() {
-		return 
-				"Imvertor is free software: you can redistribute it and/or modify "
-				+ "it under the terms of the GNU General Public License as published by "
-				+ "the Free Software Foundation, either version 3 of the License, or "
-				+ "(at your option) any later version.\n"
-				+ "\n"
-				+ "Imvertor is distributed in the hope that it will be useful, "
-				+ "but WITHOUT ANY WARRANTY; without even the implied warranty of "
-				+ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the "
-				+ "GNU General Public License for more details.\n"
-				+ "\n"
-				+ "A copy of the GNU General Public License is placed in install folder.";
+	public static String getNotice() throws Exception {
+		loadVersionInfo();
+		return val2(imvertorVersionInfo.xpath("/release-info/release[artifact = 'Imvertor']/notice"));
+	}
+	
+	public static String getDetails() throws Exception {
+		loadVersionInfo();
+		return val2(imvertorVersionInfo.xpath("/release-info/release[artifact = 'Imvertor']/details"));
 	}
 }

@@ -51,8 +51,9 @@ public class ChainKING {
 			// fixed: show copyright info
 			System.out.println("Imvertor - " + Release.getNotice());
 			
-			configurator.getRunner().info(logger, "Framework version - " + Release.getVersionString());
-			configurator.getRunner().info(logger, "Chain version - " + "ChainKING 0.1");
+			configurator.getRunner().info(logger, "Framework version - " + Release.getVersionString("Imvertor"));
+			configurator.getRunner().info(logger, "Chain version - " + Release.getVersionString("ChainKING"));
+
 	
 			configurator.prepare(); // note that the process config is relative to the step folder path
 			configurator.getRunner().prepare();

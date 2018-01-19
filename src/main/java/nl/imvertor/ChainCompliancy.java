@@ -42,10 +42,13 @@ public class ChainCompliancy {
 		
 		try {
 			// fixed: show copyright info
-			System.out.println("Imvertor - " + Release.getNotice());
+			System.out.println("Imvertor chain - Compliancy tester");
+			System.out.println("");
+			System.out.println(Release.getNotice());
+			System.out.println("");
 			
-			configurator.getRunner().info(logger, "Framework version - " + Release.getVersionString());
-			configurator.getRunner().info(logger, "Chain version - " + "Compliancy extraction 0.9");
+			configurator.getRunner().info(logger, "Framework version - " + Release.getVersionString("Imvertor"));
+			configurator.getRunner().info(logger, "Chain version - " + Release.getVersionString("ChainCompliancy"));
 					
 			configurator.prepare(); // note that the process config is relative to the step folder path
 			configurator.getRunner().prepare();

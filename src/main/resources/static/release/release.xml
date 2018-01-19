@@ -1,0 +1,47 @@
+<release-info>
+    <release>
+        <artifact>Imvertor</artifact>
+        <major-minor>1.39</major-minor>
+        <bugfix>1</bugfix>
+        <date>20180119</date>
+        <notice>Copyright (C) 2016-2018 Dienst voor het Kadaster en de openbare registers.
+            This program comes with ABSOLUTELY NO WARRANTY; for details pass -help program.
+            This is free software, and you are welcome to redistribute it
+            under certain conditions; pass -help license for full details.</notice>
+        <details>Imvertor is free software: you can redistribute it and/or modify
+            it under the terms of the GNU General Public License as published by
+            the Free Software Foundation, either version 3 of the License, or
+            (at your option) any later version.
+            
+            Imvertor is distributed in the hope that it will be useful,
+            but WITHOUT ANY WARRANTY; without even the implied warranty of
+            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+            GNU General Public License for more details.
+            
+            A copy of the GNU General Public License is placed in install folder.</details>
+    </release>
+    <release>
+        <artifact>ChainTranslateAndReport</artifact>
+        <major-minor>0.9</major-minor>
+        <bugfix>0</bugfix>
+        <date>20171231</date>
+    </release>
+    <release>
+        <artifact>GenericTransformer</artifact>
+        <major-minor>0.9</major-minor>
+        <bugfix>0</bugfix>
+        <date>20171231</date>
+    </release>
+    <release>
+        <artifact>ChainCompliancy</artifact>
+        <major-minor>0.9</major-minor>
+        <bugfix>0</bugfix>
+        <date>20171231</date>
+    </release>
+    <release>
+        <artifact>ChainRegression</artifact>
+        <major-minor>0.9</major-minor>
+        <bugfix>0</bugfix>
+        <date>20171231</date>
+    </release>
+</release-info>

@@ -350,7 +350,7 @@ public class Configurator {
 		workConfigurationFile.setContent(
 				"<config><run>"
 				+ "<start>" + currentISOdate() + "</start>"
-				+ "<version>" + Release.getVersionString() + "</version>"
+				+ "<version>" + Release.getVersionString("Imvertor") + "</version>"
 				+ "<release>" + Release.getReleaseString() + "</release>"
 				+ "</run></config>");
 		
@@ -1129,7 +1129,7 @@ public class Configurator {
 		}
 	}
 	
-	private void dieOnCli(String infotype) {
+	private void dieOnCli(String infotype) throws Exception {
 		HelpFormatter formatter = new HelpFormatter();
 		int width = 118;
 		int leftpad = 2;

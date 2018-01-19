@@ -57,10 +57,13 @@ public class ChainTranslateAndReport {
 		
 		try {
 			// fixed: show copyright info
-			System.out.println("Imvertor - " + Release.getNotice());
+			System.out.println("Imvertor chain - Translate and Report on Information model");
+			System.out.println("");
+			System.out.println(Release.getNotice());
+			System.out.println("");
 			
-			configurator.getRunner().info(logger, "Framework version - " + Release.getVersionString());
-			configurator.getRunner().info(logger, "Chain version - " + "Translate and report 0.9");
+			configurator.getRunner().info(logger, "Framework version - " + Release.getVersionString("Imvertor"));
+			configurator.getRunner().info(logger, "Chain version - " + Release.getVersionString("ChainTranslateAndReport"));
 			configurator.getRunner().info(logger, "Workspace at " + System.getProperty("work.dir"));
 			
 			configurator.prepare(); // note that the process config is relative to the step folder path

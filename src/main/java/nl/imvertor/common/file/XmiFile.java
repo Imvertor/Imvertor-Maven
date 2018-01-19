@@ -22,9 +22,6 @@ package nl.imvertor.common.file;
 
 import java.io.File;
 
-import nl.imvertor.common.Configurator;
-import nl.imvertor.common.Transformer;
-
 /**
  * A representation of an XMI file.
  * 

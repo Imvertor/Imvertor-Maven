@@ -36,7 +36,13 @@ public class ChainGenericTransformer {
 		Configurator configurator = Configurator.getInstance();
 		
 		try {
-			configurator.getRunner().info(logger, "Generic Transformer - " + Release.getVersionString());
+			System.out.println("Imvertor chain - Generic Transformer");
+			System.out.println("");
+			System.out.println(Release.getNotice());
+			System.out.println("");
+			
+			configurator.getRunner().info(logger, "Framework version - " + Release.getVersionString("Imvertor"));
+			configurator.getRunner().info(logger, "Chain version - " + Release.getVersionString("GenericTransformer"));
 			
 			configurator.prepare(); // note that the process config is relative to the step folder path
 			configurator.getRunner().prepare();

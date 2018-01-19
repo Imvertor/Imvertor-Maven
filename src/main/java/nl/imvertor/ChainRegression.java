@@ -40,11 +40,13 @@ public class ChainRegression {
 		Configurator configurator = Configurator.getInstance();
 		
 		try {
-			// fixed: show copyright info
-			System.out.println("Imvertor - " + Release.getNotice());
+			System.out.println("Imvertor chain - Regression tester");
+			System.out.println("");
+			System.out.println(Release.getNotice());
+			System.out.println("");
 			
-			configurator.getRunner().info(logger, "Framework version - " + Release.getVersionString());
-			configurator.getRunner().info(logger, "Chain version - " + "Regression tester 0.1.2");
+			configurator.getRunner().info(logger, "Framework version - " + Release.getVersionString("Imvertor"));
+			configurator.getRunner().info(logger, "Chain version - " + Release.getVersionString("ChainRegression"));
 					
 			configurator.prepare(); // note that the process config is relative to the step folder path
 			configurator.getRunner().prepare();
