@@ -50,9 +50,7 @@ public class Release {
 		String release = 
 				imvertorVersionInfo.xpath("/release-info/release[artifact = '" +artifact+ "']/major-minor")
 				+ "." +
-				imvertorVersionInfo.xpath("/release-info/release[artifact = '" +artifact+ "']/bugfix")
-				+ "." +
-				imvertorVersionInfo.xpath("/release-info/release[artifact = '" +artifact+ "']/date");
+				imvertorVersionInfo.xpath("/release-info/release[artifact = '" +artifact+ "']/bugfix");
 		return release;
 	}
 	
