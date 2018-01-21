@@ -53,6 +53,7 @@ import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.file.XslFile;
+import nl.imvertor.common.log.XsltCallLogger;
 import nl.imvertor.common.trace.XmlTimingTraceListener;
 import nl.imvertor.common.xsl.extensions.ImvertorFileSpec;
 import nl.imvertor.common.xsl.extensions.ImvertorParameterFile;
@@ -91,6 +92,8 @@ public class Transformer {
 	
 	private boolean profiled = false;
 	
+	
+
 	public Transformer() throws Exception {
 		super();
 		configurator = Configurator.getInstance();
@@ -169,7 +172,7 @@ public class Transformer {
 
 		String task = getProfiled() ? "Profiling" : "Transforming";
 		
-		Configurator.getInstance().getRunner().debug(logger,"CHAIN",task + " " + infile.getCanonicalPath() + " using " + xslfile.getName());
+		configurator.getRunner().debug(logger,"CHAIN",task + " " + infile.getCanonicalPath() + " using " + xslfile.getName());
 		
 		// first set the profile nature of the compiler
 		compiler.setCompileWithTracing(getProfiled());
@@ -240,7 +243,12 @@ public class Transformer {
 		if (!outfile.isFile())
 			throw new Exception("Transformation did not produce the expected file result " + outfile.getCanonicalPath());
 		
-		Configurator.getInstance().getRunner().debug(logger,"CHAIN","Transformation took " + (System.currentTimeMillis() - starttime) + " msec");
+		Long duration = (System.currentTimeMillis() - starttime);
+		
+		Configurator.getInstance().getRunner().debug(logger,"CHAIN","Transformation took " + duration + " msec");
+		
+		// send to log as to be able to determine the full chain of info through transformations. 
+		configurator.getXsltCallLogger().add(configurator.getCurrentStepName(), infile.getName(), xslfile.getName(), outfile.getName(), duration);
 		
 		return (configurator.forceCompile() || configurator.getRunner().getFirstErrorText(stylesheetIdentifier) == null);
 
@@ -375,4 +383,5 @@ public class Transformer {
 	public File getXslFile() {
 		return xslfile;
 	}
+	
 }

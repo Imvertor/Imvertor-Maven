@@ -76,6 +76,7 @@ import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.OutputFolder;
 import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.log.XparmLogger;
+import nl.imvertor.common.log.XsltCallLogger;
 import nl.imvertor.common.wrapper.XMLConfiguration;
 
 /**
@@ -137,12 +138,14 @@ public class Configurator {
 	private Integer runmode = RUN_MODE_RUN;
 	
 	private XparmLogger xParmLogger; // keeps track of the sequence of parameters set by the chain. A debugging tool.
+	private XsltCallLogger xsltCallLogger; // keeps track of the XSLT calls. A debugging tool.
 	
 	private Configurator()  {
 		
 		runner = new Runner();
 		options = new Options(); 
 		xParmLogger = new XparmLogger();
+		xsltCallLogger = new XsltCallLogger();
 		
 		try {
 			if (System.getProperty("run.mode") != null)
@@ -1295,6 +1298,13 @@ public class Configurator {
 	
 	public XparmLogger getxParmLogger() {
 		return xParmLogger;
+	}
+	public XsltCallLogger getXsltCallLogger() {
+		return xsltCallLogger;
+	}
+
+	public String getCurrentStepName() {
+		return currentStepName;
 	}
 
 }

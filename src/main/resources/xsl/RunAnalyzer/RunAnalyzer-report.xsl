@@ -36,6 +36,7 @@
     
     <xsl:include href="report-parameters.xsl"/>
     <xsl:include href="report-profiles.xsl"/>
+    <xsl:include href="report-xsltcalls.xsl"/>
     
     <xsl:variable name="error-count" select="imf:get-config-string('appinfo','error-count')"/>
     <xsl:variable name="warning-count" select="imf:get-config-string('appinfo','warning-count')"/>
@@ -123,7 +124,10 @@
                 
                 <!-- generated overview of parameters -->
                 <xsl:apply-templates select="." mode="doc-parameters"/>
-
+                
+                <!-- generated overview of xslt calls -->
+                <xsl:apply-templates select="." mode="xslt-calls"/>
+                
                 <!-- generate profile info -->
                 <xsl:variable name="profiles-doc-path" select="imf:get-config-string('system','profiles-doc')"/>
                 <xsl:if test="normalize-space($profiles-doc-path)">

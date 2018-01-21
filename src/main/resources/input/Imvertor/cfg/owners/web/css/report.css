@@ -43,6 +43,11 @@ td.package {
 td.class {
     background-color: #EEEEEE;
 }
+td.ix {
+    color: gray;
+    font-size: 70%;
+    padding: 0.6em;
+}
 span.label {
     
 }

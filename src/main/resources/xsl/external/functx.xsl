@@ -119,4 +119,35 @@
 		
 	</xsl:function>
 	
+	<xsl:function name="functx:pad-string-to-length" as="xs:string">
+		<xsl:param name="stringToPad" as="xs:string?"/>
+		<xsl:param name="padChar" as="xs:string"/>
+		<xsl:param name="length" as="xs:integer"/>
+		
+		<xsl:sequence select="
+			substring(
+				string-join (
+					($stringToPad, for $i in (1 to $length) return $padChar)
+					,'')
+					,1,$length)
+			"/>
+		
+	</xsl:function>
+	
+	<xsl:function name="functx:pad-integer-to-length" as="xs:string">
+		<xsl:param name="integerToPad" as="xs:anyAtomicType?"/>
+		<xsl:param name="length" as="xs:integer"/>
+		
+		<xsl:sequence select="
+			if ($length &lt; string-length(string($integerToPad)))
+			then error(xs:QName('functx:Integer_Longer_Than_Length'))
+			else 
+				concat(
+					functx:repeat-string(
+						'0',$length - string-length(string($integerToPad))),
+						string($integerToPad))
+			"/>
+		
+	</xsl:function>
+	
 </xsl:stylesheet>

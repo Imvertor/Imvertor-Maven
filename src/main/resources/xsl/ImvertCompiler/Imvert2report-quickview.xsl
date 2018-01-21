@@ -102,7 +102,7 @@
                 <xsl:sequence select="imf:report-label('Stereo',imvert:stereotype)"/>   
             </td>
         </tr>     
-        <xsl:sequence select="imf:create-table-header('pos:10,property:35,type:35,min:5,max:5,stereotype:10,origin:10')"/>
+        <xsl:sequence select="imf:create-table-header('pos:10,property:35,type:35,min:5,max:5,stereotype:10,origin:10',false())"/>
         <xsl:apply-templates select="imvert:class" mode="quickview"/>
     </xsl:template>
     

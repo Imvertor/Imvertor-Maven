@@ -50,8 +50,10 @@ public class RunAnalyzer extends Step {
 		// First output the current parameter settings so that reporting hasd full access. 
 		// Subsequent assignments will, not influence the output anymore.
 		XmlFile xParmsChainFile = new XmlFile(configurator.getXParm("properties/WORK_XPARMS_CHAIN_FILE"));
+		XmlFile xsltCallChainFile = new XmlFile(configurator.getXParm("properties/WORK_XSLTCALLS_CHAIN_FILE"));
 		
 		xParmsChainFile.setContent(configurator.getxParmLogger().export());
+		xsltCallChainFile.setContent(configurator.getXsltCallLogger().export());
 		
 		// set up the configuration for this step
 		configurator.setActiveStepName(STEP_NAME);

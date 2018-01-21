@@ -205,7 +205,10 @@
       
       <!-- the file that holds the xparms as asisgned throughout the chain -->
       <WORK_XPARMS_CHAIN_FILE>${system/work-imvert-folder-path}/imvertor.39.xparms.xml</WORK_XPARMS_CHAIN_FILE>
-          
+
+      <!-- the file that holds the xslt call info collected throughout the chain -->
+      <WORK_XSLTCALLS_CHAIN_FILE>${system/work-imvert-folder-path}/imvertor.39.xsltcalls.xml</WORK_XSLTCALLS_CHAIN_FILE>
+      
    </properties>
    
    <system>

@@ -24,6 +24,7 @@
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     xmlns:html="http://www.w3.org/1999/xhtml"    
+    xmlns:functx="http://www.functx.com"
     
     exclude-result-prefixes="#all"
     version="2.0">
@@ -61,12 +62,20 @@
         </a>
     </xsl:function>
     
+    <xsl:function name="imf:create-table-header" as="node()?">
+        <xsl:param name="tokens" as="xs:string"/>
+        <xsl:sequence select="imf:create-table-header($tokens,true())"/>
+    </xsl:function>        
     
     <xsl:function name="imf:create-table-header" as="node()?">
         <xsl:param name="tokens" as="xs:string"/>
+        <xsl:param name="add-index" as="xs:boolean"/>
         <xsl:variable name="tokenset" select="tokenize($tokens,',')"/>
         <xsl:if test="(for $x in $tokenset return substring-before($x,':')) != ''">
             <tr class="tableHeader">
+                <xsl:if test="$add-index">
+                    <th>#</th>
+                </xsl:if>
                 <xsl:for-each select="$tokenset">
                     <th>
                         <xsl:for-each select="tokenize(substring-before(.,':'),';')">
@@ -125,12 +134,21 @@
                 <xsl:attribute name="id" select="$id"/>
                 <xsl:attribute name="class" select="'tablesorter'"/>
             </xsl:if>
+            <col style="width:5%"/> 
             <xsl:sequence select="imf:create-table-rows($header)"/>
             <thead>
                 <xsl:sequence select="imf:create-table-header($header)"/>
             </thead>
             <tbody>
-               <xsl:sequence select="$rows"/>
+                <xsl:for-each select="$rows">
+                    <tr>
+                        <xsl:sequence select="@*"/>
+                        <td class="ix">
+                            <xsl:value-of select="functx:pad-integer-to-length(position(),5)"/>
+                        </td>
+                        <xsl:sequence select="td"/>
+                    </tr>
+                </xsl:for-each>
             </tbody>
         </table>
     </xsl:function>

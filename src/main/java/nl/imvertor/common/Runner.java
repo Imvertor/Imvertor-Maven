@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
+import java.util.Stack;
 
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.io.FileUtils;
@@ -69,6 +70,8 @@ public class Runner {
 	private Messenger messenger;
 	
 	private FileWriterWithEncoding trackerFileWriter;
+	
+	public static Stack<String> steps; 
 	
 	public Runner() {
 		super();
@@ -478,4 +481,5 @@ public class Runner {
 		}
 		return internetAvailable;
 	}
+	
 }
