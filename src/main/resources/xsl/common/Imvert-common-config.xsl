@@ -65,6 +65,9 @@
     
     <xsl:variable name="all-scalars" select="$configuration-metamodel-file//scalars/scalar"/>
     
+    <xsl:variable name="concept-uri-template" select="imf:get-config-parameter('concept-uri-template')"/>
+    <xsl:variable name="uri-resolve" select="imf:boolean(imf:get-config-string('cli','resolveuri','false'))"/>
+    
     <xsl:function name="imf:get-config-schemarules" as="element(tv)*">
         <xsl:sequence select="$configuration-schemarules-file//name-value-mapping/tagged-values/tv"/>
     </xsl:function>
@@ -424,6 +427,9 @@
             <xsl:when test="$normalization-scheme ='tv' and $normalization-rule = 'compact'">
                 <xsl:value-of select="imf:extract(upper-case($value),'[A-Z0-9]+')"/>
             </xsl:when>
+            <xsl:when test="$normalization-scheme ='tv' and $normalization-rule = 'concept'">
+                <xsl:value-of select="imf:get-concept-by-URI-or-name($value)"/>
+            </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:msg('ERROR','Unknown normalization rule [1] in scheme [2], for value [3]', ($normalization-rule,$normalization-scheme,$value))"/>
             </xsl:otherwise>
@@ -451,6 +457,17 @@
         <xsl:param name="default" as="xs:string?"/>
         <xsl:variable name="trans" select="($configuration-i3n-file//item[key=$key]/trans[@lang = $lang])[last()]"/>
         <xsl:value-of select="if (exists($trans)) then $trans else if (exists($default)) then $default else concat('[TODO: ', $key, ']')"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-concept-by-URI-or-name" as="xs:string?">
+        <xsl:param name="concept" as="xs:string"/>
+        <xsl:variable name="is-global-uri" select="matches($concept,'^https?:.*$')"/>
+        <xsl:variable name="create-global-uri" select="replace($concept-uri-template,'\[concept\]',$concept)"/>
+        <xsl:variable name="uri" select="if ($is-global-uri) then $concept else $create-global-uri"/>
+        <xsl:if test="$uri-resolve and empty(imf:document($uri,false()))">
+            <xsl:sequence select="imf:msg('WARNING','The URI [1] cannot be resolved', ($uri))"/>
+        </xsl:if>
+        <xsl:value-of select="$uri"/>
     </xsl:function>
     
 </xsl:stylesheet>

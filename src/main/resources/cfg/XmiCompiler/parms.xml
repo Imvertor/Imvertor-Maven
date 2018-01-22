@@ -53,6 +53,12 @@
          <tip>A (possibly empty) list of names of sentinels, separated by ';' and as configured for schema generation.</tip>
          <required>false</required>
       </cli-parm> 
+      <cli-parm>
+         <name>resolveuri</name>
+         <arg>yes|no</arg>
+         <tip>Yes if an URI entered as a tagged value must be tested.</tip>
+         <required>false</required>
+      </cli-parm> 
       
    </cli-parms>
 

@@ -79,6 +79,8 @@
     
     <parameter name="diagram-export-format">PNG</parameter>
    
+    <parameter name="concept-uri-template">https://brk.basisregistraties.overheid.nl/doc/begrip/[concept]</parameter>
+    
     <!--x
     <parameter name="application-version-regex">^\S+$</parameter>
     <parameter name="domain-version-regex">^(\d+\.\d+\.\d+)$</parameter>
