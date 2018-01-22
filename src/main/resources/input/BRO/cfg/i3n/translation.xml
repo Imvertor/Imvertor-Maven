@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<picklist>
-
+<picklist xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <!-- grouping translations -->
+    
+    <xi:include href="../../../Imvertor/cfg/i3n/translation.xml"/>
+    
     <!-- translations for BRO -->
 
     <!-- tagged values -->
@@ -238,6 +242,16 @@
     <!-- heading labels -->
 
     <item>
+        <key>IMAGEMAPS</key>
+        <trans lang="nl">Overzichtsdiagrammen</trans>
+        <trans lang="en">Overview diagrams</trans>
+    </item>
+    <item>
+        <key>IMAGEMAP</key>
+        <trans lang="nl">Diagram</trans>
+        <trans lang="en">Diagram</trans>
+    </item>
+    <item>
         <key>OVERVIEW-OBJECTTYPE</key>
         <trans lang="nl">Objecttypen</trans>
         <trans lang="en">Featuretypes</trans>
@@ -389,6 +403,22 @@
         <key>EXPLANATION</key>
         <trans lang="nl">Toelichting</trans>
         <trans lang="en">Explanation</trans>
+    </item>
+    
+    <item>
+        <key>DIAGRAM-TYPE</key>
+        <trans lang="nl">Diagram type</trans>
+        <trans lang="en">Diagram type</trans>
+    </item>
+    <item>
+        <key>DIAGRAM-NAME</key>
+        <trans lang="nl">Naam</trans>
+        <trans lang="en">Name</trans>
+    </item>
+    <item>
+        <key>DIAGRAM-DESCRIPTION</key>
+        <trans lang="nl">Omschrijving</trans>
+        <trans lang="en">Description</trans>
     </item>
     
     <!-- itemtypes -->

@@ -23,6 +23,8 @@
     <xsl:variable name="imagemap-path" select="imf:get-config-string('properties','WORK_BASE_IMAGEMAP_FILE')"/>
     <xsl:variable name="imagemap" select="imf:document($imagemap-path)/imvert-imap:diagrams"/>
     
+    <xsl:variable name="has-multiple-domains" select="count(/book/section[@type='DOMAIN']) gt 1"/>
+    
     <xsl:template match="/book">
         <html>
             <head>
@@ -78,6 +80,14 @@
                         display: block;
                         color: gray;
                     }
+                    div.imageinfo {
+                        margin: auto;
+                        width: 80%;
+                        text-align: center;
+                    }
+                    div.overview {
+                        
+                    }
                 </style>
             </head>
             <body>
@@ -101,10 +111,23 @@
     </xsl:template>
     
     <xsl:template match="section" mode="domain">
-        <div>
-            <strong>Domein: <xsl:value-of select="@name"/></strong>
-            <xsl:apply-templates select="section" mode="detail"/>
-        </div>
+        <xsl:choose>
+            <xsl:when test="$has-multiple-domains">
+                <xsl:variable name="level" select="imf:get-section-level(.)"/>
+                <div>
+                    <xsl:sequence select="imf:create-anchors(.)"/>
+                    <xsl:element name="{concat('h',$level)}">
+                        <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
+                        <xsl:value-of select="' '"/>
+                        <xsl:value-of select="@name"/>
+                    </xsl:element>
+                    <xsl:apply-templates mode="detail"/>
+                </div>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates select="section" mode="detail"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <xsl:template match="section" mode="detail">
@@ -112,28 +135,35 @@
             <xsl:when test="@type = 'IMAGEMAPS'">
                 <xsl:for-each select="section[@type = 'IMAGEMAP']">
                     <xsl:variable name="diagram-id" select="@id"/>
-                    <div>
-                        <xsl:variable name="level" select="count(ancestor::section)"/>
-                        <xsl:element name="{concat('h',$level)}">
-                            <xsl:value-of select="imf:translate-i3n('IMAGEMAP',$language-model,())"/>
-                        </xsl:element>
-                        <xsl:for-each select="$imagemap/imvert-imap:diagram[imvert-imap:id = $diagram-id]"> <!-- singleton -->
-                            <xsl:variable name="diagram-path" select="concat('Images/',$diagram-id,'.png')"/><!-- TODO as configured -->
-                            <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}"/>
-                            <map name="imagemap-{$diagram-id}">
-                                <xsl:for-each select="imvert-imap:map">
-                                    <xsl:variable name="section-id" select="imvert-imap:for-id"/>
-                                    <xsl:variable name="section" select="$document//section[@ea-id = $section-id]"/>
+                    <xsl:variable name="diagram" select="$imagemap/imvert-imap:diagram[imvert-imap:id = $diagram-id]"/>
+                    <xsl:variable name="diagram-path" select="concat('Images/',$diagram-id,'.png')"/><!-- TODO as configured -->
+                    <xsl:variable name="diagram-css-class" select="if ($diagram/imvert-imap:purpose = 'CFG-IMG-OVERVIEW') then 'overview' else ''"/>
+                        
+                    <div class="imageinfo {$diagram-css-class}">
+                        <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}"/>
+                        <map name="imagemap-{$diagram-id}">
+                            <xsl:for-each select="$diagram/imvert-imap:map">
+                                <xsl:variable name="section-id" select="imvert-imap:for-id"/>
+                                <xsl:variable name="section" select="$document//section[@ea-id = $section-id]"/>
+                                <xsl:if test="$section">
                                     <xsl:variable name="section-name" select="$section/name"/>
                                     <area 
                                         shape="rect" 
                                         coords="{imvert-imap:loc[@type = 'imgL']},{imvert-imap:loc[@type = 'imgB']},{imvert-imap:loc[@type = 'imgR']},{imvert-imap:loc[@type = 'imgT']}" 
                                         alt="{$section-name}" 
                                         href="#graph_{$section-id}"/>
-                                </xsl:for-each>
-                            </map>
-                        </xsl:for-each>
-                        <xsl:apply-templates mode="detail"/>                    </div>
+                                </xsl:if>
+                            </xsl:for-each>
+                        </map>
+                        <!-- create the caption -->
+                        <xsl:variable name="caption-desc" select="content/part[@type='CFG-DOC-DESCRIPTION']/item[2]"/>
+                        <p>
+                            <b>
+                                <xsl:value-of select="content/part[@type='CFG-DOC-NAAM']/item[2]"/>
+                            </b>
+                            <xsl:value-of select="if (normalize-space($caption-desc)) then concat(' &#8212; ',$caption-desc) else ()"/>
+                        </p>    
+                    </div>
                 </xsl:for-each>
      
             </xsl:when>
@@ -159,7 +189,7 @@
                 <xsl:apply-templates mode="detail"/>
             </xsl:when>
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ATTRIBUTE'">
-                <xsl:variable name="level" select="count(ancestor::section)"/>
+                <xsl:variable name="level" select="imf:get-section-level(.)"/>
                 <xsl:variable name="composer" select="content[not(@approach='target')]/part[@type = 'COMPOSER']/item[1]"/>
                 <div>
                     <xsl:sequence select="imf:create-anchors(.)"/>
@@ -176,7 +206,7 @@
                 </div>
             </xsl:when>
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ASSOCIATION'">
-                <xsl:variable name="level" select="count(ancestor::section)"/>
+                <xsl:variable name="level" select="imf:get-section-level(.)"/>
                 <xsl:variable name="composer" select="content[not(@approach='target')]/part[@type = 'COMPOSER']/item[1]"/>
                 <div>
                     <xsl:sequence select="imf:create-anchors(.)"/>
@@ -193,7 +223,7 @@
                 </div>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:variable name="level" select="count(ancestor::section)"/>
+                <xsl:variable name="level" select="imf:get-section-level(.)"/>
                 <div>
                     <xsl:sequence select="imf:create-anchors(.)"/>
                     <xsl:element name="{concat('h',$level)}">
@@ -425,4 +455,10 @@
             <a class="anchor" name="{$section-or-item/@id}"/>
         </xsl:if>
     </xsl:function>
+    
+    <xsl:function name="imf:get-section-level" as="xs:integer">
+        <xsl:param name="section" as="element(section)"/>
+        <xsl:value-of select="count($section/ancestor::section) + (if ($has-multiple-domains) then 2 else 1)"/>
+    </xsl:function>
+    
 </xsl:stylesheet>

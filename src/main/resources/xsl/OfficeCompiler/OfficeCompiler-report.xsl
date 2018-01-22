@@ -37,6 +37,7 @@
         <xsl:variable name="messages" select="$configuration//messages/message[src='XMI1Imvert']"/>
         <xsl:variable name="errors" select="$messages[type=('FATAL','ERROR')]"/>
         <xsl:variable name="office-filename" select="imf:get-config-string('appinfo','office-documentation-filename')"/>
+        <xsl:variable name="remote-url" select="imf:get-config-string('properties','giturl-resolved',())"/>
         <report>
             <step-display-name>Office compiler</step-display-name>
             <status>
@@ -49,7 +50,24 @@
             </summary>
             <page>
                 <title>Office documentation</title>
-                <content-ref href="{concat('../../cat/',$office-filename,'.html')}"/>
+                <content>
+                    <div>
+                        <h1>Documentation</h1>
+                        <xsl:choose>
+                            <xsl:when test="$remote-url">
+                                <p>This documentation is intended to be published remotely. Please check 
+                                    <a href="{$remote-url}" target="remote-url">
+                                        <xsl:value-of select="$remote-url"/>
+                                    </a>
+                                </p>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <p>This documentation is packaged for further processing.</p>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                        <p>Packaged documentation files are <a href="{concat('../../cat/',$office-filename,'.html')}">here</a>.</p>
+                    </div>
+                </content>
             </page>
         </report>
         

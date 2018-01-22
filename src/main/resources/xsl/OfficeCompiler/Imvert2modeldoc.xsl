@@ -51,17 +51,19 @@
     <xsl:variable name="imagemap" select="imf:document($imagemap-path)/imvert-imap:diagrams"/>
     
     <xsl:template match="/imvert:packages">
-        <xsl:variable name="sections" as="element()*">
-            <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
-            <xsl:apply-templates select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package')]"/>
-        </xsl:variable>
         <book name="{imvert:application}" subpath="{$subpath}" type="{imvert:stereotype}" id="{imvert:id}" version="{$imvertor-version}" date="{$generation-date}">
        
             <!-- first call a general initialization function -->
             <xsl:sequence select="imf:initialize-modeldoc()"/>
             
             <!-- then generate the contents -->
+            <xsl:variable name="sections" as="element()*">
+                <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
+                <!-- exclude package replacements (resolved stereotype internal) -->
+                <xsl:apply-templates select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package') and empty(imvert:package-replacement)]"/>
+            </xsl:variable>
             <xsl:apply-templates select="$sections" mode="section-cleanup"/>    
+
         </book>
     </xsl:template>
     
@@ -122,20 +124,21 @@
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype')]">
         <section name="{imf:get-name(.,true())}" type="OBJECTTYPE" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
-          <content>
-              <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-OBJECTTYPE')"/>
-          </content>
-          <!-- hier alle attributen; als ingebedde tabel -->
-          <xsl:apply-templates select="imvert:attributes" mode="short"/>
+            <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
+            <content>
+                <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-OBJECTTYPE')"/>
+            </content>
+            <!-- hier alle attributen; als ingebedde tabel -->
+            <xsl:apply-templates select="imvert:attributes" mode="short"/>
             <!-- hier alle relaties; als ingebedde tabel -->
             <xsl:apply-templates select="imvert:associations" mode="short"/>
             <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
-       </section>
+        </section>
     </xsl:template>
 
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-relatieklasse')]">
-        
         <section name="{imf:get-name(.,true())}" type="ASSOCIATIONCLASS" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
+            <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-ASSOCIATIONCLASS')"/>
             </content>
@@ -150,6 +153,7 @@
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]">
         <section name="{imf:get-name(.,true())}" type="REFERENCELIST" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
+            <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-REFERENCELIST')"/>
             </content>
@@ -161,6 +165,7 @@
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]">
         <section name="{imf:get-name(.,true())}" type="CODELIST" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
+            <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-CODELIST')"/>
             </content>
@@ -170,6 +175,7 @@
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]">
         <section name="{imf:get-name(.,true())}" type="UNION" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
+            <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-UNION')"/>
             </content>
@@ -181,6 +187,7 @@
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]">
         <section name="{imf:get-name(.,true())}" type="DATATYPE" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
+            <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-DATATYPE')"/>
             </content>
@@ -204,6 +211,7 @@
     <!-- uitzondering: gegevensgroeptype wordt apart getoond. -->
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]">
         <section name="{imf:get-name(.,true())}" type="COMPOSITE" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
+            <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-COMPOSITE')"/>
             </content>
@@ -1068,23 +1076,23 @@
         <xsl:param name="construct"/> <!-- either the packages (=model) or a package or a class -->
         
         <xsl:variable name="insert-diagrams" select="imf:boolean(imf:get-config-string('cli','createimagemap'))"/> <!-- TODO dit moet beter, eiegnlijk een parameter in modeldoc config -->
-        <xsl:variable name="diagrams-in-construct" select="$imagemap/imvert-imap:diagram[imvert-imap:in-construct = $construct/imvert:id]"/>
+        <xsl:variable name="diagrams-in-construct" select="$imagemap/imvert-imap:diagram[(imvert-imap:in-construct,imvert-imap:in-package)[1] = $construct/imvert:id]"/>
         <xsl:choose>
             <xsl:when test="$insert-diagrams and exists($diagrams-in-construct)">
                 <section type="IMAGEMAPS" name="{imf:plugin-get-model-name($construct)}-imagemap" id="{imf:plugin-get-link-name($construct,'imagemap')}">
                     <xsl:for-each select="$diagrams-in-construct">
                         <section type="IMAGEMAP" name="{imvert-imap:name}" id="{imvert-imap:id}">
                             <content>
-                                <part type="CFG-DOC-TYPE">
-                                    <item>Type</item>
-                                    <item><xsl:value-of select="imvert-imap:stereotype"/></item>
-                                </part>
                                 <part type="CFG-DOC-NAAM">
-                                    <item>Naam</item>
+                                    <item>
+                                        <xsl:value-of select="imf:plugin-translate-i3n('DIAGRAM-NAME',true())"/>
+                                    </item>
                                     <item><xsl:value-of select="imvert-imap:name"/></item>
                                 </part>
                                 <part type="CFG-DOC-DESCRIPTION">
-                                    <item>Omschrijving</item>
+                                    <item>
+                                        <xsl:value-of select="imf:plugin-translate-i3n('DIAGRAM-DESCRIPTION',true())"/>
+                                    </item>
                                     <item><xsl:value-of select="imvert-imap:documentation"/></item>
                                 </part>
                             </content>

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<picklist>
-
+<picklist xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <!-- grouping translations -->
+    
+    <xi:include href="../../../Imvertor/cfg/i3n/translation.xml"/>
+    
     <!-- tagged values -->
 
     <item>
@@ -157,8 +161,16 @@
         <trans lang="nl">Postcode</trans>
     </item>
 
+    <!-- stereotypes Grouping -->
+    
+    <item>
+        <key>DOMAIN</key>
+        <trans lang="nl">Domein</trans>
+        <trans lang="en">Domain</trans>
+    </item>
+    
     <!-- stereotypes SIM -->
-
+    
     <item>
         <key>OBJECTTYPE</key>
         <trans lang="nl">Objecttype</trans>
@@ -345,7 +357,23 @@
         <key>EXPLANATION</key>
         <trans lang="nl">Toelichting</trans>
     </item>
-    
+   
+    <item>
+        <key>DIAGRAM-TYPE</key>
+        <trans lang="nl">Diagram type</trans>
+        <trans lang="en">Diagram type</trans>
+    </item>
+    <item>
+        <key>DIAGRAM-NAME</key>
+        <trans lang="nl">Naam</trans>
+        <trans lang="en">Name</trans>
+    </item>
+    <item>
+        <key>DIAGRAM-DESCRIPTION</key>
+        <trans lang="nl">Omschrijving</trans>
+        <trans lang="en">Description</trans>
+    </item>
+   
     <!-- itemtypes -->
     
     <item>

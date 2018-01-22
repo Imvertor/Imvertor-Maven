@@ -50,6 +50,7 @@
     </xsl:template>
     
     <xsl:template match="UML:Diagram[@diagramType = 'ClassDiagram']">
+        <xsl:variable name="in-construct" select="UML:ModelElement.taggedValue/UML:TaggedValue[@tag='parent']/@value"/>
         <imvert-imap:diagram>
             <imvert-imap:name>
                 <xsl:value-of select="@name"/>
@@ -60,17 +61,25 @@
             <imvert-imap:type>
                 <xsl:value-of select="@diagramType"/>
             </imvert-imap:type>
-            <imvert-imap:in-construct>
+            <imvert-imap:in-package>
                 <xsl:value-of select="@owner"/>
-            </imvert-imap:in-construct>
+            </imvert-imap:in-package>
+            <xsl:if test="$in-construct">
+                <imvert-imap:in-construct>
+                    <xsl:value-of select="$in-construct"/>
+                </imvert-imap:in-construct>
+            </xsl:if>
             <imvert-imap:documentation>
                 <xsl:value-of select="UML:ModelElement.taggedValue/UML:TaggedValue[@tag = 'documentation']/@value"/>
             </imvert-imap:documentation>
-            <xsl:for-each select="UML:ModelElement.taggedValue/UML:TaggedValue[@tag = 'stereotype']">
-                <imvert-imap:stereotype>
-                    <xsl:value-of select="@value"/>
-                </imvert-imap:stereotype>
-            </xsl:for-each>
+            
+            <xsl:variable name="tk" select="for $c in tokenize(@name,'-') return normalize-space($c)"/>
+            <xsl:variable name="purpose" select="$configuration-docrules-file/image-purpose[marker = $tk[last()]]"/>
+            <xsl:if test="$purpose">
+                <imvert-imap:purpose>
+                    <xsl:value-of select="$purpose/@id"/>
+                </imvert-imap:purpose>
+            </xsl:if>
             <xsl:apply-templates select="UML:Diagram.element/UML:DiagramElement"/>
         </imvert-imap:diagram>
     </xsl:template>

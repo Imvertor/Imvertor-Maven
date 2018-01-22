@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<picklist>
-
+<picklist xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <!-- grouping translations -->
+    
+    <xi:include href="../../../Imvertor/cfg/i3n/translation.xml"/>
+    
     <!-- tagged values -->
 
     <item>

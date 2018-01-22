@@ -123,6 +123,7 @@ public class OfficeCompiler extends Step {
 						String gitpass     	            = System.getProperty("git.pass"); // password
 						String gitlocal     	        = System.getProperty("git.local"); // location of local git 
 							
+						String giturl     	            = configurator.mergeParms(configurator.getXParm("cli/giturl")); //url of web page
 						String gitpath     	            = configurator.mergeParms(configurator.getXParm("cli/gitpath")); //subpath to repos
 						String gitcomment 				= configurator.mergeParms(configurator.getXParm("cli/gitcomment")); // comment to set on update
 											
@@ -142,6 +143,8 @@ public class OfficeCompiler extends Step {
 				        
 						// push with appropriate comment
 						rp.push(gitcomment);
+						
+						configurator.setXParm("properties/giturl-resolved", giturl);
 						
 					} 
 				// all other cases: do not pass anywhere. 
