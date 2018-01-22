@@ -299,7 +299,7 @@ public class Runner {
 	public void warn(Logger logger, String text, String id, String wiki) throws IOException, ConfiguratorException {
 		imvertorWarnings += 1;
 		Configurator.getInstance().setXParm("system/warning-count", String.valueOf(imvertorWarnings),true);
-		messenger.writeMsg(logger.getName(), "WARN", "", text, id, wiki);
+		messenger.writeMsg(logger.getName(), "WARNING", "", text, id, wiki);
 		logger.warn(text);
 	}
 	public void warn(Logger logger, String text) throws IOException, ConfiguratorException {

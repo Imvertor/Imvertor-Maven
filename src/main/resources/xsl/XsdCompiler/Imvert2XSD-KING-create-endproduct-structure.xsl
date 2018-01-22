@@ -356,7 +356,7 @@
 								<xsl:if test="$isElementAllowed = 'no'">
 									<xsl:variable name="msg"
 										select="concat('Within messagetype ', $berichtCode, ' element ', imvert:name, ' is not allowed within stuurgegevens.')"/>
-									<xsl:sequence select="imf:msg('WARN', $msg)"/>
+									<xsl:sequence select="imf:msg('WARNING', $msg)"/>
 								</xsl:if>
 							</xsl:for-each>
 							<xsl:for-each select="./imvert:associations/imvert:association">
@@ -365,7 +365,7 @@
 								<xsl:if test="$isElementAllowed = 'no'">
 									<xsl:variable name="msg"
 										select="concat('Within messagetype ', $berichtCode, ' element ', imvert:name, ' is not allowed within stuurgegevens.')"/>
-									<xsl:sequence select="imf:msg('WARN', $msg)"/>
+									<xsl:sequence select="imf:msg('WARNING', $msg)"/>
 								</xsl:if>
 							</xsl:for-each>
 							<xsl:variable name="availableStuurgegevens">
@@ -391,7 +391,7 @@
 								<xsl:if test="count($availableStuurgegevens//imvert:name = @name) = 0">
 									<xsl:variable name="msg"
 										select="concat('Within messagetype ', $berichtCode, ' element ', @name, ' must be available within stuurgegevens.')"/>
-									<xsl:sequence select="imf:msg('WARN', $msg)"/>
+									<xsl:sequence select="imf:msg('WARNING', $msg)"/>
 								</xsl:if>
 							</xsl:for-each>
 						</xsl:when>
@@ -402,7 +402,7 @@
 								<xsl:if test="$isElementAllowed = 'no'">
 									<xsl:variable name="msg"
 										select="concat('Within messagetype ', $berichtCode, ' element ', imvert:name, ' is not allowed within parameters.')"/>
-									<xsl:sequence select="imf:msg('WARN', $msg)"/>
+									<xsl:sequence select="imf:msg('WARNING', $msg)"/>
 								</xsl:if>
 							</xsl:for-each>
 							<xsl:for-each select="./imvert:associations/imvert:association">
@@ -411,7 +411,7 @@
 								<xsl:if test="$isElementAllowed = 'no'">
 									<xsl:variable name="msg"
 										select="concat('Within messagetype ', $berichtCode, ' element ', imvert:name, ' is not allowed within parameters.')"/>
-									<xsl:sequence select="imf:msg('WARN', $msg)"/>
+									<xsl:sequence select="imf:msg('WARNING', $msg)"/>
 								</xsl:if>
 							</xsl:for-each>
 							<xsl:variable name="availableParameters">
@@ -437,7 +437,7 @@
 								<xsl:if test="count($availableParameters//imvert:name = @name) = 0">
 									<xsl:variable name="msg"
 										select="concat('Within messagetype ', $berichtCode, ' element ', @name, ' must be available within parameters.')"/>
-									<xsl:sequence select="imf:msg('WARN', $msg)"/>
+									<xsl:sequence select="imf:msg('WARNING', $msg)"/>
 								</xsl:if>
 							</xsl:for-each>
 						</xsl:when>
@@ -705,7 +705,7 @@
 		<xsl:variable name="id" select="imvert:id"/>
 		<xsl:variable name="matchgegeven" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIEMATCHGEGEVEN')"/>
 		<!--xsl:if test="empty($matchgegeven)">
-			<xsl:sequence select="imf:msg(.,'WARN','Unable to get the tagged value Indicatie kerngegeven. The object might not be defined in the supplier (UGM).','')"/>
+			<xsl:sequence select="imf:msg(.,'WARNING','Unable to get the tagged value Indicatie kerngegeven. The object might not be defined in the supplier (UGM).','')"/>
 		</xsl:if-->
 		<xsl:variable name="alias">
 			<xsl:choose>
@@ -1181,7 +1181,7 @@
 				<xsl:if test="imvert:min-occurs > 1">
 					<xsl:variable name="msg"
 						select="concat('The element ', $name, ' has a minOccurs of ', imvert:min-occurs, '. In Kennisgevingen only a minOccurs of 1 is allowed.')"/>
-					<xsl:sequence select="imf:msg('WARN', $msg)"/>
+					<xsl:sequence select="imf:msg('WARNING', $msg)"/>
 				</xsl:if>
 				
 
@@ -2241,7 +2241,7 @@
 											<xsl:if test="$global-tijdvakGeldigheid-allowed = ('Nee','Optioneel')">
 												<xsl:variable name="msg"
 													select="concat('The tagged value [tijdvakGeldigheid genereren] is set to ',$global-tijdvakGeldigheid-allowed,'. However in the historieMaterieel elements within the messagetype ', $berichtCode, ' it must be required.')"/>
-												<xsl:sequence select="imf:msg('WARN', $msg)"/>
+												<xsl:sequence select="imf:msg('WARNING', $msg)"/>
 											</xsl:if>
 										</xsl:when>
 										<xsl:when test="($generateHistorieConstruct = 'FormeleHistorie' and contains($indicatieFormeleHistorie, 'Ja')) or $global-tijdvakGeldigheid-allowed = 'Verplicht'">
@@ -2249,7 +2249,7 @@
 											<xsl:if test="$global-tijdvakGeldigheid-allowed = ('Nee','Optioneel')">
 												<xsl:variable name="msg"
 													select="concat('The tagged value [tijdvakGeldigheid genereren] is set to ',$global-tijdvakGeldigheid-allowed,'. However in the historieFormeel elements within the messagetype ', $berichtCode, ' it must be required.')"/>
-												<xsl:sequence select="imf:msg('WARN', $msg)"/>
+												<xsl:sequence select="imf:msg('WARNING', $msg)"/>
 											</xsl:if>
 										</xsl:when>
 										<xsl:otherwise>0</xsl:otherwise>
@@ -2275,7 +2275,7 @@
 											<xsl:if test="$global-tijdstipRegistratie-allowed = ('Nee','Optioneel')">
 												<xsl:variable name="msg"
 													select="concat('The tagged value [tijdstipRegistratie genereren] is set to ',$global-tijdstipRegistratie-allowed,'. However in the historieFormeel element within the messagetype ', $berichtCode, ' it must be required.')"/>
-												<xsl:sequence select="imf:msg('WARN', $msg)"/>
+												<xsl:sequence select="imf:msg('WARNING', $msg)"/>
 											</xsl:if>
 										</xsl:when>
 										<xsl:otherwise>0</xsl:otherwise>
@@ -3272,12 +3272,12 @@
 				<xsl:when test="$isElementAllowed = 'notAllowed'">
 					<xsl:variable name="msg"
 						select="concat('Within messagetype ', $berichtCode, ' element ', ., ' is not allowed within ', $parent, '.')"/>
-					<xsl:sequence select="imf:msg('WARN', $msg)"/>
+					<xsl:sequence select="imf:msg('WARNING', $msg)"/>
 				</xsl:when>
 				<xsl:when test="$isElementAllowed = 'noSuchElement'">
 					<xsl:variable name="msg"
 						select="concat('Within messagetype ', $berichtCode, ' the ', $parent, ' element ', ., ' is not known.')"/>
-					<xsl:sequence select="imf:msg('WARN', $msg)"/>
+					<xsl:sequence select="imf:msg('WARNING', $msg)"/>
 				</xsl:when>
 				<xsl:when test="$isElementAllowed = 'notInScope'"/>
 			</xsl:choose>
@@ -3291,8 +3291,8 @@
 			<xsl:if test="count($elements2bTested//imvert:name = $colName) = 0">
 				<xsl:variable name="msg"
 					select="concat('Within messagetype ', $berichtCode, ' element ', @name, ' must be available within ', $parent, '.')"/>
-				<xsl:sequence select="imf:msg('WARN', $msg)"/>
-				<!--xsl:message select="concat('WARN  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' element ', @name, ' must be available within ', $parent, '.')"/-->
+				<xsl:sequence select="imf:msg('WARNING', $msg)"/>
+				<!--xsl:message select="concat('WARNING  ', substring-before(string(current-date()), '+'), ' ', substring-before(string(current-time()), '+'), ' : Within messagetype ', $berichtCode, ' element ', @name, ' must be available within ', $parent, '.')"/-->
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
@@ -3425,7 +3425,7 @@
 			test="$attributeTypeRow//col[@name = 'IndOnvolledigeDatum' and data = 'V'] and $datumType = 'yes' and $onvolledigeDatum = 'no'">
 			<xsl:variable name="msg"
 				select="concat('The StUF:indOnvolledigeDatum attribute is required in the context ', $context, '. Provide for it within EA.')"/>
-			<xsl:sequence select="imf:msg('WARN', $msg)"/>
+			<xsl:sequence select="imf:msg('WARNING', $msg)"/>
 		</xsl:if>
 		<!-- ROME: De waarde van het attribute 'StUF:entiteittype' moet m.b.v. 
 			een enum constuctie worden gedefinieerd. Die waarde zal aan de functie meegegeven 
@@ -3452,7 +3452,7 @@
 					<xsl:otherwise>
 						<xsl:variable name="msg"
 							select="'No mnemonic has been supplied. Supply one with this entity using the alias field.'"/>
-						<xsl:sequence select="imf:msg('WARN', $msg)"/>
+						<xsl:sequence select="imf:msg('WARNING', $msg)"/>
 					</xsl:otherwise>
 				</xsl:choose>
 				<ep:href>entiteittype</ep:href>
@@ -3478,7 +3478,7 @@
 					<xsl:otherwise>
 						<xsl:variable name="msg"
 							select="'No mnemonic has been supplied. Supply one with this entity using the alias field.'"/>
-						<xsl:sequence select="imf:msg('WARN', $msg)"/>
+						<xsl:sequence select="imf:msg('WARNING', $msg)"/>
 					</xsl:otherwise>
 				</xsl:choose>
 				<ep:href>entiteittype</ep:href>

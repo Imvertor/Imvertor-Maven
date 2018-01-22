@@ -56,7 +56,7 @@
                     <xsl:sequence select="imf:msg('ERROR','Cannot find application configuration for [1] version [2]', ($application-package-name,$application-package-version))"/>
                 </xsl:when>
                 <xsl:when test="empty($startrow)">
-                    <xsl:sequence select="imf:msg('WARN','Cannot find any configuration commands for [1] version [2]', ($application-package-name,$application-package-version))"/>
+                    <xsl:sequence select="imf:msg('WARNING','Cannot find any configuration commands for [1] version [2]', ($application-package-name,$application-package-version))"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:sequence select="imf:compile-imvert-filter()"/>

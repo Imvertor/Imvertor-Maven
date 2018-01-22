@@ -65,7 +65,7 @@
                 <xsl:sequence select="imf:msg('TRACE','trace text')"/>
                 <xsl:sequence select="imf:msg('INFO','info text')"/>
                 <xsl:sequence select="imf:msg('DEBUG','debug text')"/>
-                <xsl:sequence select="imf:msg('WARN','warning text')"/>
+                <xsl:sequence select="imf:msg('WARNING','warning text')"/>
                 
                 <!-- parameters are represented as [n] in de error text; pass a sequence of objects to be inserted into the text -->
                 <xsl:sequence select="imf:msg('ERROR','error text [1]','parm')"/>

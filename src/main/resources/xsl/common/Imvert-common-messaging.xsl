@@ -32,7 +32,7 @@
         message types are 
         FATAL
         ERROR
-        WARN
+        WARNING
         INFO
         DEBUG
     -->
@@ -67,7 +67,7 @@
             <xsl:variable name="name" select="if ($this=$document) then '(ROOT)' else imf:get-construct-name($this)"/>
             <xsl:variable name="id" select="$this/imvert:id"/>
             <xsl:variable name="ctext" select="imf:msg-insert-parms($text,$info)"/>
-            <xsl:variable name="wiki" select="if ($type = ('ERROR', 'WARN', 'FATAL')) then imf:get-wiki-key($text) else ''"/>
+            <xsl:variable name="wiki" select="if ($type = ('ERROR', 'WARNING', 'FATAL')) then imf:get-wiki-key($text) else ''"/>
             <xsl:message>
                 <!-- note that messages are specially processed by Imvertor -->
                 <xsl:sequence select="imf:create-output-element('imvert-message:src',$xml-stylesheet-name)"/>

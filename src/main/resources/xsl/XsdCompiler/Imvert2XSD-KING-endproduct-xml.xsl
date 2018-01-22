@@ -186,7 +186,7 @@
             <xsl:otherwise>
                 <xsl:value-of select="'TODO'"/>
                 <xsl:variable name="msg" select="'You have not provided a short alias. Define the tagged value &quot;Verkorte alias&quot; on the package with the stereotyp &quot;Koppelvlak&quot;.'" as="xs:string"/>
-                <xsl:sequence select="imf:msg('WARN',$msg)"/>
+                <xsl:sequence select="imf:msg('WARNING',$msg)"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:variable>
@@ -291,7 +291,7 @@
                         <xsl:otherwise>
                             <xsl:variable name="msg"
                                 select="concat('The tagged value [servicename] is not set for the message ',$tech-name,'. If you want to create correct Open API documentation you need to set it.')"/>
-                            <xsl:sequence select="imf:msg('WARN', $msg)"/>
+                            <xsl:sequence select="imf:msg('WARNING', $msg)"/>
                         </xsl:otherwise>
                     </xsl:choose>
                     <xsl:choose>
@@ -301,7 +301,7 @@
                         <xsl:otherwise>
                             <xsl:variable name="msg"
                                 select="concat('The tagged value [messagetype] is not set for the message ',$tech-name,'. If you want to create correct Open API documentation you need to set it.')"/>
-                            <xsl:sequence select="imf:msg('WARN', $msg)"/>
+                            <xsl:sequence select="imf:msg('WARNING', $msg)"/>
                         </xsl:otherwise>
                     </xsl:choose>
                     <xsl:sequence select="imf:create-output-element('ep:code', $berichtCode)"/>
@@ -1856,7 +1856,7 @@
                                            <xsl:if test="$global-tijdvakGeldigheid-allowed = ('Nee','Optioneel')">
                                                <xsl:variable name="msg"
                                                    select="concat('The tagged value [tijdvakGeldigheid genereren] is set to ',$global-tijdvakGeldigheid-allowed,'. However in the historieMaterieel elements within the messagetype ', $berichtCode, ' it must be required.')"/>
-                                               <xsl:sequence select="imf:msg('WARN', $msg)"/>
+                                               <xsl:sequence select="imf:msg('WARNING', $msg)"/>
                                            </xsl:if>
                                            <xsl:sequence select="imf:create-debug-comment('Debuglocation 20d',$debugging)"/>
                                            <!-- ROME: Het Kadaster wil het genereren van tijdvakGeldigheid kunnen uitschakelen.
@@ -1875,7 +1875,7 @@
                                                <xsl:if test="$global-tijdstipRegistratie-allowed = 'Nee'">
                                                    <xsl:variable name="msg"
                                                        select="concat('The tagged value [tijdstipRegistratie genereren] is set to ',$global-tijdstipRegistratie-allowed,'. However in the historieMaterieel elements within the messagetype ', $berichtCode, ' it must be at least optional.')"/>
-                                                   <xsl:sequence select="imf:msg('WARN', $msg)"/>
+                                                   <xsl:sequence select="imf:msg('WARNING', $msg)"/>
                                                </xsl:if>
                                                <xsl:sequence select="imf:create-debug-comment('Debuglocation 20e',$debugging)"/>
                                                <ep:constructRef prefix="StUF" externalNamespace="yes">
@@ -2161,7 +2161,7 @@
                                            <xsl:if test="$global-tijdvakGeldigheid-allowed = ('Nee','Optioneel')">
                                                <xsl:variable name="msg"
                                                    select="concat('The tagged value [tijdvakGeldigheid genereren] is set to ',$global-tijdvakGeldigheid-allowed,'. However in the historieFormeel element within the messagetype ', $berichtCode, ' it must be required.')"/>
-                                               <xsl:sequence select="imf:msg('WARN', $msg)"/>
+                                               <xsl:sequence select="imf:msg('WARNING', $msg)"/>
                                            </xsl:if>
                                            <xsl:sequence select="imf:create-debug-comment('Debuglocation 23d',$debugging)"/>
                                            <ep:constructRef prefix="StUF" externalNamespace="yes">
@@ -2175,7 +2175,7 @@
                                            <xsl:if test="$global-tijdstipRegistratie-allowed = ('Nee','Optioneel')">
                                                <xsl:variable name="msg"
                                                    select="concat('The tagged value [tijdstipRegistratie genereren] is set to ',$global-tijdstipRegistratie-allowed,'. However in the historieFormeel element within the messagetype ', $berichtCode, ' it must be required.')"/>
-                                               <xsl:sequence select="imf:msg('WARN', $msg)"/>
+                                               <xsl:sequence select="imf:msg('WARNING', $msg)"/>
                                            </xsl:if>
                                            <xsl:sequence select="imf:create-debug-comment('Debuglocation 23e',$debugging)"/>
                                            <ep:constructRef prefix="StUF" externalNamespace="yes">

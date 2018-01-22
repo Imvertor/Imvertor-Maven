@@ -110,7 +110,7 @@ public class Messenger extends SequenceWriter {
 					case "ERROR":
 						runner.error(logger,ctext,id, wiki); // The ERROR level designates error events that might still allow the application to continue running.
 						break;  
-					case "WARN":
+					case "WARNING":
 						if (!suppresswarnings) runner.warn(logger,ctext,id, wiki); // The WARN level designates potentially harmful situations.
 						break;  
 					case "INFO": 

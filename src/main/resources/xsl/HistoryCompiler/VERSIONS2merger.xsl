@@ -89,7 +89,7 @@
         <xsl:variable name="history-imvert-file-document" select="imf:document($path,false())"/>
         <xsl:choose>
             <xsl:when test="empty($history-imvert-file-document)">
-                <xsl:sequence select="imf:msg('WARN','Cannot find history file [1]',$path)"/>
+                <xsl:sequence select="imf:msg('WARNING','Cannot find history file [1]',$path)"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:apply-templates select="$history-imvert-file-document/imvert-history:versions/imvert-history:filter" mode="content-copy"/>

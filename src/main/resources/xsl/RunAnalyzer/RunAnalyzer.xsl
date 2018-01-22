@@ -31,7 +31,7 @@
     <xsl:import href="../common/Imvert-common.xsl"/>
 
     <xsl:variable name="errors" select="$configuration/config/messages/message[type=('ERROR','FATAL')]"/>
-    <xsl:variable name="warnings" select="$configuration/config/messages/message[type='WARN']"/>
+    <xsl:variable name="warnings" select="$configuration/config/messages/message[type='WARNING']"/>
     <xsl:variable name="message" select="($errors,$warnings)[1]/text"/>
     
     <xsl:variable name="status-message" select="

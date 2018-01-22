@@ -1133,7 +1133,7 @@
                             <xsl:choose>
                                 <xsl:when test="$is-composite and imf:boolean($anonymous-components) and $is-nillable">
                                     <xsl:sequence select="imf:debug($this,'An objecttype, anonymous, but voidable')"/>
-                                    <xsl:sequence select="imf:msg('WARN','Anonymous component is voidable and therefore must be named: [1]',$name)"/>
+                                    <xsl:sequence select="imf:msg('WARNING','Anonymous component is voidable and therefore must be named: [1]',$name)"/>
                                 </xsl:when>
                                 <xsl:when test="$is-nillable">
                                     <xsl:sequence select="imf:debug($this,'An objecttype, voidable')"/>

@@ -45,7 +45,7 @@
     <xsl:template match="/imvert:packages">
         <imvert:packages>
             <xsl:sequence select="imf:compile-imvert-header(.)"/>
-            <xsl:sequence select="if (empty($concepts)) then imf:msg('WARN','No concepts found at [1]',$concept-documentation-path) else ()"/>
+            <xsl:sequence select="if (empty($concepts)) then imf:msg('WARNING','No concepts found at [1]',$concept-documentation-path) else ()"/>
             <xsl:apply-templates select="imvert:package"/>
         </imvert:packages>
     </xsl:template>
@@ -87,7 +87,7 @@
                         <xsl:choose>
                             <xsl:when test="starts-with(.,'#')"/>
                             <xsl:when test="not(unparsed-text-available(.))">
-                                <xsl:sequence select="imf:msg($this,'WARN','Cannot access URL [1]',.)"/>
+                                <xsl:sequence select="imf:msg($this,'WARNING','Cannot access URL [1]',.)"/>
                             </xsl:when>
                         </xsl:choose>
                     </xsl:non-matching-substring>
@@ -118,7 +118,7 @@
                     if (exists($def)) then $def else '(Geen definitie beschikbaar)',
                     if (exists($law)) then concat(' (',string-join($law,';'),')') else '')"/>
                 <xsl:if test="$obsolete != ''">
-                    <xsl:sequence select="imf:msg('WARN','The uri [11 is obsolete', $uri)"/>    
+                    <xsl:sequence select="imf:msg('WARNING','The uri [11 is obsolete', $uri)"/>    
                 </xsl:if>
             </xsl:when>
             <xsl:otherwise>

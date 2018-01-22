@@ -191,7 +191,7 @@
                         <t:waarde>Dienend en heersend </t:waarde>
                       </xsl:when>
                       <xsl:otherwise>
-                        <xsl:sequence select="imf:msg('WARN','Soort is onbekend: [1]',$soort)"/>
+                        <xsl:sequence select="imf:msg('WARNING','Soort is onbekend: [1]',$soort)"/>
                       </xsl:otherwise>
                     </xsl:choose>
                   </r:aanduidingErfdienstbaarheid>

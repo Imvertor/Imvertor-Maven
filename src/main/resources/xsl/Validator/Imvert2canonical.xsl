@@ -236,13 +236,13 @@
                 
                 <xsl:choose>
                     <xsl:when test="not(normalize-space($title))">
-                        <xsl:sequence select="imf:msg($construct,'WARN','Notes field has invalid format',())"/>
+                        <xsl:sequence select="imf:msg($construct,'WARNING','Notes field has invalid format',())"/>
                     </xsl:when>
                     <xsl:when test="empty($target-tv-id)">
-                        <xsl:sequence select="imf:msg($construct,'WARN','Notes field [1] not recognized, and skipped',$title)"/>
+                        <xsl:sequence select="imf:msg($construct,'WARNING','Notes field [1] not recognized, and skipped',$title)"/>
                     </xsl:when>
                     <xsl:when test="normalize-space($body) and normalize-space($current-tv)">
-                        <xsl:sequence select="imf:msg($construct,'WARN','Tagged value [1] in notes field [2] already specified',($norm-title,$title))"/>
+                        <xsl:sequence select="imf:msg($construct,'WARNING','Tagged value [1] in notes field [2] already specified',($norm-title,$title))"/>
                     </xsl:when>
                     <xsl:when test="normalize-space($body)">
                         <imvert:tagged-value origin="notes" id="{$target-tv-id}">

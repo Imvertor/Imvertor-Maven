@@ -76,14 +76,14 @@
 		<xsl:param name="this" as="node()"/>
 		<xsl:param name="condition" as="item()*"/>
 		<xsl:param name="message" as="xs:string"/>
-		<xsl:sequence select="imf:report-validation($this,$condition,'WARN',$message,())"/>
+		<xsl:sequence select="imf:report-validation($this,$condition,'WARNING',$message,())"/>
 	</xsl:function>
 	<xsl:function name="imf:report-warning" as="node()*">
 		<xsl:param name="this" as="node()"/>
 		<xsl:param name="condition" as="item()*"/>
 		<xsl:param name="message" as="xs:string"/>
 		<xsl:param name="parms" as="item()*"/>
-		<xsl:sequence select="imf:report-validation($this,$condition,'WARN',$message,$parms)"/>
+		<xsl:sequence select="imf:report-validation($this,$condition,'WARNING',$message,$parms)"/>
 	</xsl:function>
 	<xsl:function name="imf:report-error" as="node()*">
 		<xsl:param name="this" as="node()"/>

@@ -955,7 +955,7 @@
                 <xsl:sequence select="true()"/>
             </xsl:when>
            <xsl:when test="$is-external and imf:member-of($construct,$pack)">
-                <!--<xsl:sequence select="imf:msg($construct, 'WARN','External packages must start with URL prefix [1]',($prefix))"/>-->
+               <!--<xsl:sequence select="imf:msg($construct, 'WARNING','External packages must start with URL prefix [1]',($prefix))"/>-->
                 <xsl:sequence select="false()"/>
             </xsl:when>
             <xsl:when test="$is-external">
@@ -1093,7 +1093,7 @@
             </xsl:when>
             <xsl:otherwise>
                 <!--TODO deprecated, only by id -->
-                <xsl:sequence select="imf:msg($this,'WARN','DEPRECATED Tagged value by name [1], use ID',$tv-id)"/>
+                <xsl:sequence select="imf:msg($this,'WARNING','DEPRECATED Tagged value by name [1], use ID',$tv-id)"/>
                 <xsl:sequence select="$this/imvert:tagged-values/imvert:tagged-value[imvert:name = imf:get-normalized-name($tv-id,'tv-name')]"/>
             </xsl:otherwise>
         </xsl:choose>

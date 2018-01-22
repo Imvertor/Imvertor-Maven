@@ -45,7 +45,7 @@
 			<xsl:otherwise>
 				<xsl:value-of select="'TODO'"/>
 				<xsl:variable name="msg" select="'You have not provided a short alias. Define the tagged value &quot;Verkorte alias&quot; on the package with the stereotyp &quot;Koppelvlak&quot;.'" as="xs:string"/>
-				<xsl:sequence select="imf:msg('WARN',$msg)"/>
+				<xsl:sequence select="imf:msg('WARNING',$msg)"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>

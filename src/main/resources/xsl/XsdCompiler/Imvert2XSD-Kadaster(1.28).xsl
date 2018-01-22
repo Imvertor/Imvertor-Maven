@@ -81,7 +81,7 @@
     <xsl:variable name="base-namespace" select="/imvert:packages/imvert:base-namespace"/>
     
     <xsl:template match="/">
-        <xsl:sequence select="imf:msg('WARN','This XML schema is generated using a deprecated Nil reason approach')"/>
+        <xsl:sequence select="imf:msg('WARNING','This XML schema is generated using a deprecated Nil reason approach')"/>
 
         <imvert:schemas>
             <xsl:sequence select="imf:create-info-element('imvert:exporter',$imvert-document/imvert:packages/imvert:exporter)"/>
@@ -1248,7 +1248,7 @@
                                 <xsl:when test="$is-composite and imf:boolean($anonymous-components) and $is-nillable">
                                     <xsl:attribute name="nillable">true</xsl:attribute>
                                     <xsl:sequence select="imf:debug($this,'An objecttype, anonymous, but voidable')"/>
-                                    <xsl:sequence select="imf:msg('WARN','Anonymous component is voidable and therefore must be named: [1]',$name)"/>
+                                    <xsl:sequence select="imf:msg('WARNING','Anonymous component is voidable and therefore must be named: [1]',$name)"/>
                                 </xsl:when>
                                 <xsl:when test="$is-nillable">
                                     <xsl:attribute name="nillable">true</xsl:attribute>

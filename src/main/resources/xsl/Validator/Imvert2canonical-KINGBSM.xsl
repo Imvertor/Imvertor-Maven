@@ -47,7 +47,7 @@
             <xsl:if test="empty($koppelvlak-package) and imf:boolean(imf:get-config-string('cli','createxmlschema'))">
                 <xsl:sequence select="imf:set-config-string('cli','createxmlschema','no')"/>
                 <xsl:sequence select="imf:set-config-string('cli','validateschema','no')"/>
-                <xsl:sequence select="imf:report-warning(.,'WARN','STUB Blocked the attempt to generate a schema for BSM on model that is not stereotyped as [1]','KOPPELVLAK')"/>
+                <xsl:sequence select="imf:report-warning(.,'WARNING','STUB Blocked the attempt to generate a schema for BSM on model that is not stereotyped as [1]','KOPPELVLAK')"/>
             </xsl:if>
             
             <xsl:apply-templates select="imvert:package"/>

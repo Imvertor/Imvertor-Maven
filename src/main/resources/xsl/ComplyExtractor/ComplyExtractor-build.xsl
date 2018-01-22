@@ -91,7 +91,7 @@
         <!-- test if all fragments are available -->
         <xsl:for-each select="$frags">
             <xsl:if test="not(normalize-space(@value))">
-                 <xsl:sequence select="imf:msg($root,'WARN','May not be able to compile. Missing: [1]',@explain)"/>  
+                 <xsl:sequence select="imf:msg($root,'WARNING','May not be able to compile. Missing: [1]',@explain)"/>  
             </xsl:if>
         </xsl:for-each>
        
