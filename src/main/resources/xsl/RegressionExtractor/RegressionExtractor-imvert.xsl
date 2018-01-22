@@ -47,7 +47,7 @@
         ignore the following alltogether 
     -->
     <xsl:template match="
-        imvert:filter |
+        imvert:filters |
         imvert:generated |
         imvert:generator |
         imvert:debug |

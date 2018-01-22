@@ -75,15 +75,16 @@
         </xsl:variable>
      
         <imvert:packages>
-            <xsl:sequence select="*[not(self::imvert:package or self::imvert:filter)]"/>
+            <xsl:sequence select="*[not(self::imvert:package or self::imvert:filters)]"/>
             <xsl:sequence select="imf:create-output-element('imvert:base-namespace',$base-package/imvert:namespace)"/>
             <xsl:sequence select="imf:create-output-element('imvert:version',$base-package/imvert:version)"/>
             <xsl:sequence select="imf:create-output-element('imvert:phase',$base-package/imvert:phase)"/>
             <xsl:sequence select="imf:create-output-element('imvert:release',$base-package/imvert:release)"/>
             <!--<xsl:sequence select="imf:create-output-element('imvert:documentation',$base-package/imvert:documentation/node(),'',false(),false())"/>-->
-            <xsl:sequence select="imvert:filter"/>
-            <xsl:sequence select="imf:compile-imvert-filter()"/>
-            
+            <imvert:filters>
+                <xsl:sequence select="imvert:filters/imvert:filter"/>
+                <xsl:sequence select="imf:compile-imvert-filter()"/>
+            </imvert:filters>
             <xsl:choose>
                 <xsl:when test="empty($base-package)">
                     <xsl:sequence select="imf:msg('ERROR','No package [1] defined with stereotype base or application. Is the name valid?',$application-package-name)"/>

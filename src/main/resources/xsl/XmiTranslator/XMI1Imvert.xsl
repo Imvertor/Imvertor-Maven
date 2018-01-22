@@ -142,7 +142,9 @@
                 <xsl:sequence select="imf:compile-support-info()"/>
             </imvert:supports>
             
-            <xsl:sequence select="imf:compile-imvert-filter()"/>
+            <imvert:filters>
+                <xsl:sequence select="imf:compile-imvert-filter()"/>
+            </imvert:filters>
             
             <xsl:variable name="project-name-shown" select="($project-name, concat($owner-name,': ',$project-name))" as="xs:string+"/>
             <xsl:variable name="project-package" select="$document-packages[imf:get-stereotypes(.)=imf:get-config-stereotypes('stereotype-name-project-package')]"/>

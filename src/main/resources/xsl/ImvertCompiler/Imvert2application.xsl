@@ -55,10 +55,8 @@
     <xsl:template match="/imvert:packages">
         <imvert:packages>
             
-            <xsl:variable name="intro" select="*[not(self::imvert:package)]"/>
+            <xsl:variable name="intro" select="imf:compile-imvert-header(.)"/>
             <xsl:apply-templates select="$intro" mode="finalize"/>
-            
-            <xsl:sequence select="imf:compile-imvert-filter()"/>
             
             <xsl:sequence select="$application-package/imvert:id"/>
             <xsl:sequence select="$application-package/imvert:supplier"/>

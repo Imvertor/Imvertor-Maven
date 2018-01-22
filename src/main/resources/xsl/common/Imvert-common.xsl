@@ -558,9 +558,11 @@
         <!-- compile a header for imvert file; only packages are processed after this part -->
     <xsl:function name="imf:compile-imvert-header" as="element()*">
         <xsl:param name="packages" as="element()"/>
-        <xsl:sequence select="$packages/*[not(self::imvert:package or self::imvert:filter)]"/>
-        <xsl:sequence select="$packages/imvert:filter"/>
-        <xsl:sequence select="imf:compile-imvert-filter()"/>
+        <xsl:sequence select="$packages/*[not(self::imvert:package or self::imvert:filters)]"/>
+        <imvert:filters>
+            <xsl:sequence select="$packages/imvert:filters/imvert:filter"/>
+            <xsl:sequence select="imf:compile-imvert-filter()"/>
+        </imvert:filters>
     </xsl:function>
     
     <xsl:function name="imf:compile-imvert-filter" as="element()">

@@ -53,7 +53,7 @@
             <xsl:apply-templates select="imvert:conceptual-schema-svn-id"/>
             
             <xsl:variable name="group" as="element()*">
-                <xsl:apply-templates select="imvert:filter">
+                <xsl:apply-templates select="imvert:filters/imvert:filter">
                     <xsl:sort select="imvert:date"/>
                 </xsl:apply-templates><!-- ... -->
             </xsl:variable>
