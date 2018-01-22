@@ -29,6 +29,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,6 +43,10 @@ import java.util.TimeZone;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.xml.xpath.XPathConstants;
 
 import org.apache.commons.cli.BasicParser;
@@ -399,6 +405,9 @@ public class Configurator {
 		setXParm(workConfiguration,"system/managedinstallfolder", baseFolder.getCanonicalPath(), true);
 
 		setActiveStepName("common");
+		
+		prepareSSL();
+		
 		prepareStep();
 		
 	}
@@ -429,6 +438,32 @@ public class Configurator {
 		
 		setXParm(workConfiguration, "steps/step-name", currentStepName, false);
 
+	}
+	
+	public void prepareSSL() {
+		TrustManager[] trustAllCertsManager = new TrustManager[] { 
+			new X509TrustManager() {
+				@Override
+				public java.security.cert.X509Certificate[] getAcceptedIssuers() { 
+					return new java.security.cert.X509Certificate[0];
+				}
+				@Override
+				public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+					// trust all
+				}
+				@Override
+				public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+					// trust all
+				}
+			}
+		};
+		try {
+			SSLContext sc = SSLContext.getInstance("SSL");
+			sc.init(null, trustAllCertsManager, new java.security.SecureRandom());
+			HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+		} catch (KeyManagementException | NoSuchAlgorithmException e) {
+			runner.fatal(logger, "SSL init exception", e, "SIE");
+		}
 	}
 
 	/**

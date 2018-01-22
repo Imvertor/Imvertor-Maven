@@ -793,7 +793,7 @@
                 <xsl:sequence select="imf:document-from-cache($uri)"/>
             </xsl:when>
             <xsl:when test="empty($path)"><!-- an URL was passed, e.g. http://... -->
-                <xsl:sequence select="imf:document-from-cache($uri)"/>
+                <xsl:sequence select="if (imf:document-available($uri)) then imf:document-from-cache($uri) else ()"/>
             </xsl:when>
             <xsl:when test="imf:document-available($path)">
                 <xsl:sequence select="imf:document-from-cache($uri)"/>
