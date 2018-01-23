@@ -7,6 +7,8 @@ import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 
+import nl.imvertor.common.Configurator;
+
 public class OOXmlFile extends ZipFile {
 
 	private static final long serialVersionUID = 3914823189952042460L;
@@ -74,8 +76,7 @@ public class OOXmlFile extends ZipFile {
 			XmlFile resultFile = new XmlFile(workFolder,"__content.simple-workbook.xml");
 			
 			// create processable table format 
-			ClassLoader classLoader = getClass().getClassLoader();
-			XslFile extractXsl = new XslFile(classLoader.getResource("static/xsl/OOXmlFile/toXmlFile-SimpleWorkbook.xsl").getFile());
+			XslFile extractXsl = new XslFile(Configurator.getInstance().getResource("static/xsl/OOXmlFile/toXmlFile-SimpleWorkbook.xsl"));
 			HashMap<String,String> extractMap = extractXsl.getInitialParms();
 			extractMap.put("workfolder", workFolder.getCanonicalPath());
 			

@@ -130,7 +130,9 @@
         </xsl:variable>
         <imvert:package>
             <xsl:apply-templates select="@*"/>
+            <imvert:comment>PROXIED</imvert:comment>
             <xsl:sequence select="$proxied-content"/>
+            <imvert:comment>DRAGGED</imvert:comment>
             <xsl:sequence select="$dragged-proxied-content"/>
         </imvert:package>
     </xsl:template>
@@ -140,6 +142,7 @@
         <xsl:variable name="client" select="."/>
         <xsl:variable name="trace-id" select="$client/imvert:trace" as="element()*"/>
         <xsl:variable name="supplier-subpaths" select="imf:get-construct-supplier-system-subpaths($client)" as="xs:string*"/>
+        <imvert:comment><xsl:value-of select="string-join($supplier-subpaths,' | ')"/></imvert:comment>
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:choose>
@@ -160,6 +163,7 @@
                                     <xsl:sequence select="imf:msg($client,'WARNING','No such supplier model: [1]',.)"/>
                                 </xsl:when>
                                 <xsl:when test="exists($supplier)">
+                                    <imvert:comment>LOC1 <xsl:value-of select="imf:get-display-name($supplier)"/></imvert:comment>
                                     <!-- this is reached only once. -->
                                    
                                     <xsl:apply-templates select="$client/imvert:name" mode="client"/>

@@ -1326,9 +1326,8 @@ public class Configurator {
 	 * @param name
 	 * @return
 	 */
-	public String getResource(Class myClass, String subpath) {
-		ClassLoader classLoader = myClass.getClassLoader();
-		return classLoader.getResource(subpath).getFile();
+	public File getResource(String subpath) {
+		return new File(Configurator.getInstance().getBaseFolder(),subpath);
 	}
 	
 	public XparmLogger getxParmLogger() {

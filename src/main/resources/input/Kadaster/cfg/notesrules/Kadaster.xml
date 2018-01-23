@@ -6,7 +6,7 @@
   
     <name>Kadaster</name>
     
-    <desc>Kadaster only allows definitions and descriptions to occur in notes field.</desc>
+    <desc>Kadaster allows a few markers to occur in notes field.</desc>
     
     <notes-rule lang="en" default="Definition">
         <!-- when nothing marked, assume Definition -->
@@ -17,6 +17,9 @@
         <section title="Description" tagged-value="CFG-TV-DESCRIPTION">
             <label title="URI"/>
         </section>
+        <section title="Concept" tagged-value="CFG-TV-CONCEPTLOCATION">
+            <label title="URI"/>
+        </section>
     </notes-rule>
     
     <notes-rule lang="nl" default="Definitie">
@@ -24,6 +27,9 @@
             <label title="URI"/>
         </section>
         <section title="Toelichting" tagged-value="CFG-TV-DESCRIPTION">
+            <label title="URI"/>
+        </section>
+        <section title="Begrip" tagged-value="CFG-TV-CONCEPTLOCATION">
             <label title="URI"/>
         </section>
     </notes-rule>
