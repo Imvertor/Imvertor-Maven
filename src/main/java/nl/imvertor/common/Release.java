@@ -20,6 +20,8 @@
 
 package nl.imvertor.common;
 
+import java.io.IOException;
+
 import org.apache.commons.lang3.StringUtils;
 
 import nl.imvertor.common.file.XmlFile;
@@ -38,10 +40,15 @@ public class Release {
 	
 	private static String imvertorSVNVersion = val1("$Id: Release.java 7503 2016-04-15 14:46:57Z arjan $");
 	
-	private static void loadVersionInfo() {
+	private static void loadVersionInfo() throws IOException {
 		if (imvertorVersionInfo == null) {
+			/*
 			ClassLoader classLoader = Release.class.getClassLoader();
 			imvertorVersionInfo = new XmlFile(classLoader.getResource("static/release/release.xml").getFile());
+			*/
+			imvertorVersionInfo = new XmlFile("c:/temp/release.xml");
+			imvertorVersionInfo.setContent("<release-info/>");
+			
 		}
 	}
 	
