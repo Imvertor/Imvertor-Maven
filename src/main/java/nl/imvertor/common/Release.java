@@ -21,6 +21,7 @@
 package nl.imvertor.common;
 
 import java.io.IOException;
+import java.net.URL;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -42,13 +43,7 @@ public class Release {
 	
 	private static void loadVersionInfo() throws IOException {
 		if (imvertorVersionInfo == null) {
-			/*
-			ClassLoader classLoader = Release.class.getClassLoader();
-			imvertorVersionInfo = new XmlFile(classLoader.getResource("static/release/release.xml").getFile());
-			*/
-			imvertorVersionInfo = new XmlFile("c:/temp/release.xml");
-			imvertorVersionInfo.setContent("<release-info/>");
-			
+			imvertorVersionInfo = new XmlFile(Configurator.getInstance().getBaseFolder(), "static/release/release.xml");
 		}
 	}
 	
