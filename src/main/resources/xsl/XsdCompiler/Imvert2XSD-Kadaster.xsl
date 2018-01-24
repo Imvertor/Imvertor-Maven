@@ -757,9 +757,11 @@
         <xsl:variable name="is-property" select="exists(($this/self::imvert:attribute,$this/self::imvert:association))"/>
         <xsl:variable name="force-nillable" select="$is-property and $is-forced-nillable"/>
         
-        <xsl:variable name="is-voidable" select="$this/imvert:stereotype/@id = ('stereotype-name-voidable')"/>
-        <xsl:variable name="is-nillable" select="$is-voidable or $force-nillable"/>
         <xsl:variable name="has-nilreason" select="imf:boolean(imf:get-tagged-value($this,'##CFG-TV-REASONNOVALUE'))"/>
+        <xsl:variable name="has-voidable" select="imf:boolean(imf:get-tagged-value($this,'##CFG-TV-VOIDABLE'))"/>
+        
+        <xsl:variable name="is-voidable" select="$this/imvert:stereotype/@id = ('stereotype-name-voidable')"/> <!-- this is a kadaster combi: voidable and tv both required -->
+        <xsl:variable name="is-nillable" select="$is-voidable or $has-voidable or $force-nillable"/>
         
         <xsl:variable name="is-restriction" select="imf:is-restriction($this)"/>
         <xsl:variable name="basetype-name" select="if ($is-nillable) then imf:get-restriction-basetype-name($this) else ''"/>
