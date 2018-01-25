@@ -23,20 +23,28 @@
     </xsl:function>
     
     <xsl:template match="/" mode="imf:pretty-print-mixed imf:pretty-print-admin">
-        <xsl:apply-templates select="*" mode="#current"/>
+        <xsl:apply-templates select="*" mode="#current">
+            <xsl:with-param name="copy-namespaces" select="true()"/>
+        </xsl:apply-templates>
     </xsl:template>
     
     <xsl:template match="*" mode="imf:pretty-print-mixed imf:pretty-print-admin">
+        <xsl:param name="copy-namespaces" select="false()"/>
         <xsl:choose>
-            <xsl:when test="empty(parent::*)">
-                <xsl:copy>
-                    <xsl:copy-of select="descendant::*/namespace::*"/>
+            <xsl:when test="not($copy-namespaces)">
+                <xsl:copy copy-namespaces="no">
                     <xsl:apply-templates select="node()|@*" mode="#current"/>
                 </xsl:copy>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:copy copy-namespaces="no">
-                    <xsl:apply-templates select="node()|@*" mode="#current"/>
+                <xsl:copy>
+                    <xsl:if test="normalize-space(namespace-uri())">
+                        <!-- avoid message: XTDE0440: Cannot output a namespace node for the default namespace when the element is in no namespace -->                        
+                        <xsl:copy-of select="descendant-or-self::*/namespace::*"/>
+                    </xsl:if> 
+                    <xsl:apply-templates select="node()|@*" mode="#current">
+                        <xsl:with-param name="copy-namespaces" select="not(normalize-space(namespace-uri()))"/>
+                    </xsl:apply-templates>
                 </xsl:copy>
             </xsl:otherwise>
         </xsl:choose>
