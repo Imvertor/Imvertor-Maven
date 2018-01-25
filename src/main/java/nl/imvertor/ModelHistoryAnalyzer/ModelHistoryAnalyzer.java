@@ -71,6 +71,7 @@ public class ModelHistoryAnalyzer  extends Step {
 	 * @throws Exception
 	 */
 	public void analyze(XmlFile imvertorFile) throws Exception {
+		configurator.setXParm("appinfo/previous-task", imvertorFile.xpath("/*:packages/*:task"),true); 
 		configurator.setXParm("appinfo/previous-phase", imvertorFile.xpath("/*:packages/*:phase"),true); 
 		configurator.setXParm("appinfo/previous-errors", imvertorFile.xpath("/*:packages/*:process/*:errors"),true); 
 		configurator.setXParm("appinfo/previous-release", imvertorFile.xpath("/*:packages/*:release"),true); 

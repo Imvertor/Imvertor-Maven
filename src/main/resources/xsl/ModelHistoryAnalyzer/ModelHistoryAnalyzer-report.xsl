@@ -39,6 +39,7 @@
             <summary>
                 <info label="Previous application release">
                     <!-- These parameters have been set by the ReadmeAnalyzer. -->
+                    <xsl:sequence select="imf:report-key-label('Task', 'appinfo','previous-task')"/>
                     <xsl:sequence select="imf:report-key-label('Phase', 'appinfo','previous-phase')"/>
                     <xsl:sequence select="imf:report-key-label('Errors', 'appinfo','previous-errors')"/>
                     <xsl:sequence select="imf:report-key-label('Release', 'appinfo','previous-release')"/>

@@ -116,7 +116,8 @@
     <xsl:variable name="additional-tagged-values" select="imf:get-config-tagged-values()" as="element(tv)*"/>
     
     <xsl:variable name="allow-duplicate-tv" select="imf:boolean(imf:get-config-string('cli','allowduplicatetv','no'))"/>
-  
+    <xsl:variable name="imvertor-task" select="imf:get-config-string('cli','task','compile')"/>
+    
     <xsl:template match="/">
         <imvert:packages>
             <xsl:if test="$debugging">
@@ -130,6 +131,7 @@
                 </debug-info>
             </xsl:if>
             <xsl:sequence select="imf:create-output-element('imvert:debug',$debugging)"/>
+            <xsl:sequence select="imf:create-output-element('imvert:task',$imvertor-task)"/>
             <xsl:sequence select="imf:create-output-element('imvert:project',$project-name)"/>
             <xsl:sequence select="imf:create-output-element('imvert:application',$application-package-name)"/>
             <xsl:sequence select="imf:create-output-element('imvert:metamodel',string-join($configuration-prologue/metamodels/metamodel/name,';'))"/>
