@@ -83,7 +83,7 @@
                                 <!-- identifier for this support level --> 
                                 <level>STEREOID</level>
                                 <!-- severity of support violation: FATAL ERROR WARNING INFO --> 
-                                <severity>ERROR</severity>
+                                <severity>FATAL</severity>
                                 <!-- description to be shown in error message --> 
                                 <info>Stereotypes must have an ID</info>
                                 <!-- what minimum version is the feature implemented in? -->

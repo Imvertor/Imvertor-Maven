@@ -42,6 +42,7 @@
         </imvert:packages>
     </xsl:template>
     
+    <?x
     <!-- in KKG ISO, stereotype on associations are implied --> 
     <xsl:template match="imvert:association">
         
@@ -69,6 +70,7 @@
             <xsl:apply-templates select="*[not(self::imvert:name)]"/>
         </imvert:association>
     </xsl:template>
+    x?>
     
     <xsl:template match="imvert:stereotype[. = 'ENUMERATION' and $language = 'nl']">
         <!-- EA inserted stereotype ENUMERATION removed -->

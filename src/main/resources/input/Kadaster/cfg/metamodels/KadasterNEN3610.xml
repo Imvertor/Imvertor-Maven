@@ -40,6 +40,12 @@
     
     <stereotypes xml:id="stereotypes">
     
+        <stereo id="stereotype-name-collection">
+            <name lang="en">Collection</name>
+            <name lang="nl">Collectie</name>
+            <construct>class</construct>
+        </stereo>
+        
         <stereo id="stereotype-name-koppelklasse">
             <name lang="nl">Koppelklasse</name>
             <name lang="en">LinkType</name>
