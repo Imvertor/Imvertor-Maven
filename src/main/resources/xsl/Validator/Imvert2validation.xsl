@@ -802,7 +802,7 @@
         <!--validation-->
         <xsl:sequence select="imf:report-error(., 
             imvert:is-id = 'true', 
-            'Attribute may not identify a class stereotyped as [1]',../../imvert:stereotype[@id = ('stereotype-name-composite','stereotype-name-complextype')])"/>
+            'A class stereotyped as [1] may not have an identifying attribute',../../imvert:stereotype[@id = ('stereotype-name-composite','stereotype-name-complextype')])"/>
        
         <xsl:sequence select="imf:report-error(., 
             $class/imvert:stereotype/@id = ('stereotype-name-complextype') and not(imvert:stereotype/@id = 'stereotype-name-data-element'), 
