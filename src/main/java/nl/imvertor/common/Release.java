@@ -53,6 +53,12 @@ public class Release {
 				imvertorVersionInfo.xpath("/release-info/release[artifact = '" +artifact+ "']/major-minor")
 				+ "." +
 				imvertorVersionInfo.xpath("/release-info/release[artifact = '" +artifact+ "']/bugfix");
+		
+		// Add version adornment, such as "EVALUATION VERSION"
+		String va = System.getProperty("version.adornment");
+		if (va != null && !va.equals(""))
+			release += " - " + va;
+
 		return release;
 	}
 	

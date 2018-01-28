@@ -7,6 +7,7 @@ set jobid=%~3
 set propfile=%~4
 set owner=%~5
 set reg=%~6
+set adorn=%~7
 
 set d=%~dp0
 cd %d%
@@ -50,6 +51,7 @@ call "%javaexe%" %jvmparms% ^
     -Dgit.user=%imvertor_os_git_user% ^
     -Dgit.pass=%imvertor_os_git_pass% ^
     -Dgit.local=%imvertor_os_git_local% ^
+    -Dversion.adornment="%adorn%" ^
     -cp "%bindir%\bin\EA\eaapi.jar;%bindir%\bin\%jar%.jar" ^
 	nl.imvertor.%artifact% ^
 	-arguments "%propfilepath%" ^
