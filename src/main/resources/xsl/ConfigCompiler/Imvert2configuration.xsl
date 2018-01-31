@@ -280,7 +280,7 @@
                             <!-- hier: de laatste naam binnen dezelfde taal? we moeten af van synoniemen. -->
                             <xsl:apply-templates select="imf:distinct($tv-group/name)" mode="#current"/>
                             
-                            <xsl:apply-templates select="$tv-group/desc[@lang=($language,'#all')]" mode="#current"/>
+                            <xsl:apply-templates select="($tv-group/desc[@lang=($language,'#all')])[last()]" mode="#current"/>
                             <xsl:apply-templates select="($tv-group/derive)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($tv-group/inherit)[last()]" mode="#current"/>
                             <stereotypes>
