@@ -1,5 +1,9 @@
 <!-- 
     Mappings for local schemas 
+    
+    Changes: 
+    1/ changed www.w3.org/XLINKS-20010627 to www.w3.org/XLINKS-KADPROFILE
+
 -->
 <local-schemas>
     <svn-id>$Id: local-schemas.xml 7209 2015-08-25 12:28:42Z arjan $</svn-id>
@@ -9,7 +13,7 @@
             This schema depends on the local schema folders specified below.
         -->
         <depends-on schemafolder="www.isotc211.org/GEOMATICS-20050101"/>
-        <depends-on schemafolder="www.w3.org/XLINKS-20010627"/>
+        <depends-on schemafolder="www.w3.org/XLINKS-KADPROFILE"/>
         <depends-on schemafolder="www.w3.org/SMIL20-20010731"/>
         <!-- 
             Define which local paths will be valid for internet imports and includes 
@@ -30,7 +34,7 @@
     
     <local-schema schemafolder="www.isotc211.org/GEOMATICS-20050101">
         <depends-on schemafolder="www.opengis.net/GML321-20070906"/>
-        <depends-on schemafolder="www.w3.org/XLINKS-20010627"/>
+        <depends-on schemafolder="www.w3.org/XLINKS-KADPROFILE"/>
         <local-map 
             source-uri-prefix="../gml/gml.xsd"
             target-uri-prefix="../gml/3.2.1/gml.xsd"/>
