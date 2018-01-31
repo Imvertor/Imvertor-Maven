@@ -180,6 +180,10 @@ public class EapFile extends AnyFile {
 	}
 
 	/**
+	 * Open a EA instance for subsequent actions. 
+	 * 
+	 * Note that from Java we cannot access an open EA process (which would speed up things):
+	 * http://sparxsystems.com/forums/smf/index.php?topic=2066.0
 	 * 
 	 * @return
 	 * @throws Exception
@@ -206,6 +210,7 @@ public class EapFile extends AnyFile {
 			repo.CloseFile();
 			repo.Exit();
 			repo.destroy();
+			repo = null;
 		}
 	}
 
