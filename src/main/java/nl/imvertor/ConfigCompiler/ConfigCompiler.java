@@ -63,9 +63,9 @@ public class ConfigCompiler  extends Step {
 			succeeds = succeeds ? transformer.transformStep("properties/WORK_CONFIG_FILE", "properties/WORK_EAPROFILE_FILE", "properties/IMVERTOR_EAPROFILE_XSLPATH") : false ;
 		
 			// and copy this file to the etc folder
-			AnyFolder etcFolder = new AnyFolder(configurator.getXParm("system/work-etc-folder-path"));
+			AnyFolder eaFolder = new AnyFolder(configurator.getXParm("system/work-ea-folder-path"));
 			XmlFile tempProfileFile = new XmlFile(configurator.getXParm("properties/WORK_EAPROFILE_FILE"));
-			XmlFile profileFile = new XmlFile(etcFolder,configurator.getXParm("appinfo/ea-profile-file-name"));
+			XmlFile profileFile = new XmlFile(eaFolder,configurator.getXParm("appinfo/ea-profile-file-name"));
 			tempProfileFile.copyFile(profileFile); 
 		}
 		
