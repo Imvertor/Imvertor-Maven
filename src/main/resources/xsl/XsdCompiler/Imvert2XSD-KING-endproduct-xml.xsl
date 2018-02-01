@@ -241,13 +241,13 @@
                 <xsl:variable name="currentMessage" select="."/>
                 <xsl:variable name="id" select="ep:id" as="xs:string"/>
                 <xsl:variable name="message-construct" select="imf:get-class-construct-by-id($id,$packages-doc)"/>
-                <xsl:variable name="berichtstereotype" select="$message-construct/imvert:stereotype" as="xs:string"/>
+                <xsl:variable name="berichtstereotype" select="$message-construct/imvert:stereotype"/>
                 <xsl:variable name="berichtSoort" as="xs:string">
                     <xsl:choose>
-                        <xsl:when test="$berichtstereotype = 'VRAAGBERICHTTYPE'">Vraagbericht</xsl:when>
-                        <xsl:when test="$berichtstereotype = 'ANTWOORDBERICHTTYPE'">Antwoordbericht</xsl:when>
-                        <xsl:when test="$berichtstereotype = 'KENNISGEVINGBERICHTTYPE'">Kennisgevingbericht</xsl:when>
-                        <xsl:when test="$berichtstereotype = 'VRIJ BERICHTTYPE'">Vrij bericht</xsl:when>
+                        <xsl:when test="$berichtstereotype/@id = 'stereotype-name-vraagberichttype'">Vraagbericht</xsl:when>
+                        <xsl:when test="$berichtstereotype/@id = 'stereotype-name-antwoordberichttype'">Antwoordbericht</xsl:when>
+                        <xsl:when test="$berichtstereotype/@id = 'stereotype-name-kennisgevingberichttype'">Kennisgevingbericht</xsl:when>
+                        <xsl:when test="$berichtstereotype/@id = 'stereotype-name-vrijberichttype'">Vrij bericht</xsl:when>
                     </xsl:choose>
                 </xsl:variable>
                 <xsl:variable name="berichtCode" select="imf:get-tagged-value($message-construct,'##CFG-TV-BERICHTCODE')" as="xs:string"/>
@@ -274,7 +274,7 @@
                 </xsl:variable>
                 <xsl:variable name="name" select="$message-construct/imvert:name/@original" as="xs:string"/>
                 <xsl:variable name="tech-name" select="imf:get-normalized-name($message-construct/imvert:name, 'element-name')" as="xs:string"/>
-                <xsl:variable name="package-type" select="$packages/imvert:package[imvert:class[imvert:id = $id]]/imvert:stereotype" as="xs:string"/>
+                <xsl:variable name="package-type" select="$packages/imvert:package[imvert:class[imvert:id = $id]]/imvert:stereotype"/>
                 <xsl:variable name="release" select="$packages/imvert:release" as="xs:string"/>
                 
                 <xsl:if test="not(string($berichtCode))">
@@ -308,7 +308,7 @@
                     <xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
                     <xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
                     <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
-                    <xsl:sequence select="imf:create-output-element('ep:package-type', $package-type)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:package-type', $package-type)"/><!--TODO-->
                     <xsl:sequence select="imf:create-output-element('ep:release', $release)"/>
                     <xsl:sequence select="imf:create-output-element('ep:type', $berichtSoort)"/>
                     <!-- Start of the message is always a class with an imvert:stereotype 
@@ -1370,7 +1370,7 @@
                                            <!-- If the class is refered to form an association which is part of an VRIJ BERICHT no stuurgegevens must be generated. -->
                                            <xsl:with-param name="useStuurgegevens">
                                                <xsl:choose>
-                                                   <xsl:when test="$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:type-id = $id]/imvert:stereotype = 'BERICHTRELATIE'">
+                                                   <xsl:when test="$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:type-id = $id]/imvert:stereotype/@id = 'stereotype-name-berichtrelatie'">
                                                       <xsl:value-of select="'no'"/>
                                                    </xsl:when>
                                                    <xsl:otherwise>
@@ -2230,7 +2230,7 @@
                 <!-- Within the schema's we want to have global constructs for relations. However for that kind of objects no uml classes are available.
                         With the following apply-templates the global ep:construct elements are created presenting the relations. -->
                 
-                <xsl:variable name="association" select="$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']"/>
+                <xsl:variable name="association" select="$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:id = $id and imvert:stereotype/@id = 'relatiesoort']"/>
                 
                 <xsl:apply-templates select="$association"
                     mode="create-global-construct">
@@ -2284,7 +2284,7 @@
                            Volgens mij hoeft er nl. in een 'historieFormeel' helemaal geen 'historieMaterieel' element gegenereerd te worden. --> 
                 <xsl:if test="(@indicatieFormeleHistorie='Ja' or @indicatieFormeleHistorie='Ja op attributes')">
                     
-                    <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorie constructs: ',$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
+                    <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorie constructs: ',$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:id = $id and imvert:stereotype/@id = 'relatiesoort']/imvert:name),$debugging)"/>
                     <xsl:sequence select="imf:create-debug-comment('Debuglocation 26',$debugging)"/>
                     
                     <xsl:apply-templates select="$association"
@@ -2311,7 +2311,7 @@
                            te worden. --> 
                 <xsl:if test="@indicatieFormeleHistorieRelatie='Ja'">
                     
-                    <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorieRelatie constructs: ',$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:id = $id and imvert:stereotype = 'RELATIE']/imvert:name),$debugging)"/>
+                    <xsl:sequence select="imf:create-debug-track(concat('Constructing the formeleHistorieRelatie constructs: ',$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:id = $id and imvert:stereotype/@id = 'relatiesoort']/imvert:name),$debugging)"/>
                     <xsl:sequence select="imf:create-debug-comment('Debuglocation 27',$debugging)"/>
                     
                     <xsl:apply-templates select="$association"
@@ -2521,7 +2521,7 @@
         
         <xsl:variable name="alias">
             <xsl:choose>
-                <xsl:when test="imvert:stereotype = 'ENTITEITRELATIE'">
+                <xsl:when test="imvert:stereotype/@id = 'stereotype-name-entiteitrelatie'">
                     <xsl:value-of select="key('class',$type-id)/imvert:alias"/>
                 </xsl:when>
                 <xsl:otherwise>
@@ -2535,26 +2535,26 @@
         <xsl:variable name="tech-name">
             <xsl:choose>
                 <xsl:when
-                    test="imvert:stereotype = 'RELATIE' and key('class',$type-id)/imvert:alias and not(empty($typering) or $typering = '')">
+                    test="imvert:stereotype/@id = 'stereotype-name-relatiesoort' and key('class',$type-id)/imvert:alias and not(empty($typering) or $typering = '')">
                     <!--xsl:value-of
                         select="imf:create-complexTypeName($berichtType,$typering,$alias,$elementName)"/-->
                     <xsl:value-of
                         select="imf:create-complexTypeName($berichtType,$typering,$alias,(),$subsetLabel)"/>
                 </xsl:when>
                 <xsl:when
-                    test="imvert:stereotype = 'RELATIE' and key('class',$type-id)/imvert:alias">
+                    test="imvert:stereotype/@id = 'stereotype-name-relatiesoort' and key('class',$type-id)/imvert:alias">
                     <!--xsl:value-of
                         select="imf:create-complexTypeName($berichtType,(),$alias,$elementName)"/-->
                     <xsl:value-of
                         select="imf:create-complexTypeName($berichtType,(),$alias,(),$subsetLabel)"/>
                 </xsl:when>
-                <xsl:when test="imvert:stereotype = 'RELATIE' and not(empty($typering))">
+                <xsl:when test="imvert:stereotype/@id = 'stereotype-name-relatiesoort' and not(empty($typering))">
                     <!--xsl:value-of
                         select="imf:create-complexTypeName($berichtType,$typering,(),$elementName)"/-->
                     <xsl:value-of
                         select="imf:create-complexTypeName($berichtType,$typering,(),(),$subsetLabel)"/>
                 </xsl:when>
-                <xsl:when test="imvert:stereotype = 'RELATIE'">
+                <xsl:when test="imvert:stereotype/@id = 'stereotype-name-relatiesoort'">
                     <!--xsl:value-of
                         select="imf:create-complexTypeName($berichtType,(),(),$elementName)"/>
                     <xsl:value-of
@@ -2770,7 +2770,7 @@
 				a 'gerelateerde' construct (within the above choose the first 'when' XML 
 				Attributes for the 'relatie' type element have to be generated. Because these 
 				has to be placed outside the 'gerelateerde' element it has to be done here. -->
-                        <xsl:if test="imvert:stereotype = 'RELATIE'">
+                        <xsl:if test="imvert:stereotype/@id = 'stereotype-name-relatiesoort'">
                             <!-- The function imf:createAttributes is used to determine the XML 
 					attributes neccessary for this context. It has the following parameters: 
 					- typecode - berichttype - context - datumType The first 3 parameters relate 
@@ -3457,7 +3457,7 @@
         <xsl:value-of select="concat(upper-case(substring($name,1,1)),substring($name,2))"/>
     </xsl:function>
     
-    <xsl:function name="imf:get-stereotype" as="xs:string*">
+    <xsl:function name="imf:get-stereotype" as="xs:string*"><!--TODO-->
         <xsl:param name="this"/>
         <xsl:sequence select="$this/imvert:stereotype"/>
     </xsl:function>

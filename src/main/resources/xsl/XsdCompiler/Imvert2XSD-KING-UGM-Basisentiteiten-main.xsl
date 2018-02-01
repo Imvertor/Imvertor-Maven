@@ -1323,7 +1323,7 @@
         
     </xsl:template>
       
-    <xsl:function name="imf:get-compiled-name">
+    <xsl:function name="imf:get-compiled-name" as="xs:string">
         <xsl:param name="this" as="element()"/>
 
         <xsl:variable name="pack" select="imf:get-package($this)"/>
@@ -1337,6 +1337,10 @@
         <xsl:variable name="name" select="$name-form"/>
       
         <xsl:choose>
+            <xsl:when test="empty($name-raw)">
+                <xsl:sequence select="imf:msg($this,'ERROR','Association without name',())"/>
+                <xsl:value-of select="'NONAME'"/>
+            </xsl:when>
             <xsl:when test="$type = 'class' and $stereotype/@id = ('stereotype-name-composite')">
                 <xsl:value-of select="$alias"/>
             </xsl:when>

@@ -56,7 +56,7 @@
 		<xsl:sequence select="imf:track('Constructing the rough message-structure')"/>
 		
 		<ep:rough-messages>
-			<xsl:apply-templates select="$packages/imvert:package[imvert:stereotype = 'BERICHT' and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]" mode="create-rough-message-structure"/>
+			<xsl:apply-templates select="$packages/imvert:package[imvert:stereotype/@id = ('stereotype-name-bericht') and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]" mode="create-rough-message-structure"/>
 		</ep:rough-messages>
 		
 	</xsl:variable>
@@ -188,7 +188,7 @@
 			<xsl:with-param name="context" select="'-'"/>
 		</xsl:apply-templates>
 		<xsl:sequence select="imf:create-debug-comment('debug:start A01000b /debug:start',$debugging)"/>
-		<xsl:apply-templates select="imvert:associations/imvert:association[imvert:stereotype = 'GROEP COMPOSITIE']"
+		<xsl:apply-templates select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-association-to-composite')]"
 			mode="create-rough-message-content">
 			<!-- The 'id-trail' parameter has been introduced to be able to prevent 
 					recursive processing of classes. If the parser runs into an id already present 
@@ -209,7 +209,7 @@
 			<xsl:when test="not(contains($berichtCode, 'Di')) and not(contains($berichtCode, 'Du'))">
 				<xsl:sequence select="imf:create-debug-comment('A01010]',$debugging)"/>
 				<xsl:apply-templates
-					select="imvert:associations/imvert:association[imvert:stereotype = 'ENTITEITRELATIE']"
+					select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]"
 					mode="create-rough-message-content">
 					<!-- The 'id-trail' parameter has been introduced to be able to prevent 
 					recursive processing of classes. If the parser runs into an id already present 
@@ -226,7 +226,7 @@
 			<xsl:otherwise>
 				<xsl:sequence select="imf:create-debug-comment('A01020a]',$debugging)"/>
 				<xsl:apply-templates
-					select="imvert:associations/imvert:association[imvert:stereotype = 'ENTITEITRELATIE']"
+					select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]"
 					mode="create-rough-message-content">
 					<!-- The 'id-trail' parameter has been introduced to be able to prevent 
 					recursive processing of classes. If the parser runs into an id already present 
@@ -245,7 +245,7 @@
 					type. -->
 				<xsl:sequence select="imf:create-debug-comment('A01020b]',$debugging)"/>
 				<xsl:apply-templates
-					select="imvert:associations/imvert:association[imvert:stereotype != 'ENTITEITRELATIE' and imvert:name != 'stuurgegevens' and imvert:name != 'parameters']"
+					select="imvert:associations/imvert:association[imvert:stereotype/@id != 'stereotype-name-entiteitrelatie' and imvert:name != 'stuurgegevens' and imvert:name != 'parameters']"
 					mode="create-toplevel-rough-message-structure">
 					<xsl:with-param name="berichtCode" select="$berichtCode"/>
 				</xsl:apply-templates>
@@ -317,10 +317,10 @@
 					 processing is canceled to prevent recursion. -->
 				<xsl:if test="not(contains($id-trail, concat('#2#', imvert:id, '#')))">
 			
-					<xsl:variable name="associationsOfBerichtrelatieType" select="$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:stereotype = 'BERICHTRELATIE']"/>
+					<xsl:variable name="associationsOfBerichtrelatieType" select="$packages/imvert:package/imvert:class/imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-berichtrelatie')]"/>
 					<xsl:variable name="classRelated2Association" select="$packages/imvert:package/imvert:class[imvert:id = $associationsOfBerichtrelatieType/imvert:type-id]"/>
 					<xsl:apply-templates
-						select="imvert:associations/imvert:association[imvert:stereotype = 'GROEP COMPOSITIE']"
+						select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-association-to-composite')]"
 						mode="create-rough-message-content">
 						<xsl:with-param name="id-trail">
 							<xsl:choose>
@@ -414,7 +414,7 @@
 				<xsl:choose>
 					<xsl:when test="not(contains($id-trail, concat('#3#', imvert:id, '#')))">
 						<xsl:apply-templates
-							select="imvert:associations/imvert:association[imvert:stereotype = 'RELATIE']"
+							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-relatiesoort')]"
 							mode="create-rough-message-content">
 							<xsl:with-param name="id-trail">
 								<xsl:choose>
@@ -468,7 +468,7 @@
 				<xsl:attribute name="typeCode">
 					<xsl:choose>
 						<xsl:when test="imvert:name = ('stuurgegevens','parameters','zender','ontvanger')"/>
-						<xsl:when test="imvert:stereotype = 'GROEP COMPOSITIE'">groep</xsl:when>
+						<xsl:when test="imvert:stereotype/@id = ('stereotype-name-association-to-composite')">groep</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="'relatie'"/>
 						</xsl:otherwise>						
@@ -488,12 +488,12 @@
 				</xsl:attribute>
 				<xsl:attribute name="type">
 					<xsl:choose>
-						<xsl:when test="imvert:stereotype = 'GROEP COMPOSITIE'">group</xsl:when>
+						<xsl:when test="imvert:stereotype/@id = ('stereotype-name-association-to-composite')">group</xsl:when>
 						<xsl:otherwise>association</xsl:otherwise>
 					</xsl:choose>
 				</xsl:attribute>
 				<xsl:choose>
-					<xsl:when test="imvert:stereotype != 'GROEP COMPOSITIE'">
+					<xsl:when test="imvert:stereotype/@id != 'stereotype-name-association-to-composite'">
 						<xsl:variable name="tv-materieleHistorie-attributes">
 							<xsl:for-each select="imvert:association-class">
 								<xsl:variable name="association-class-type-id" select="imvert:type-id"/>
@@ -582,7 +582,7 @@
 				<xsl:choose>
 					<!-- In het geval van een associationgroup wordt er geen 'gerelateerde' elementen tussen gegenereerd en mag het id en type-id gewoon 
 						 op het huidige element worden gegenereerd. -->
-					<xsl:when test="imvert:stereotype != 'RELATIE'">
+					<xsl:when test="imvert:stereotype/@id != 'stereotype-name-relatiesoort'">
 						<xsl:sequence select="imf:create-output-element('ep:origin-id', imvert:id)"/>
 						<xsl:sequence select="imf:create-output-element('ep:id', imvert:type-id)"/>
 					</xsl:when>
@@ -665,7 +665,7 @@
 			 This variable is forwarded to be able to proces the content of the embedded message conforming its type later. -->
 		<xsl:variable name="embeddedBerichtCode">
 			<xsl:choose>
-				<xsl:when test="imvert:stereotype = 'BERICHTRELATIE' and contains($berichtCode, 'Di')">
+				<xsl:when test="imvert:stereotype/@id = ('stereotype-name-berichtrelatie') and contains($berichtCode, 'Di')">
 					<xsl:value-of select="imf:get-tagged-value(key('class',$type-id),'##CFG-TV-BERICHTCODE')"/>
 				</xsl:when>
 				<xsl:otherwise/>
@@ -675,7 +675,7 @@
 		<ep:construct package="{ancestor::imvert:package/imvert:name}">
 			<xsl:attribute name="typeCode">
 				<xsl:choose>
-					<xsl:when test="imvert:stereotype = 'BERICHTRELATIE'">
+					<xsl:when test="imvert:stereotype/@id = ('stereotype-name-berichtrelatie')">
 						<xsl:value-of select="'berichtrelatie'"/>
 					</xsl:when>
 					<xsl:otherwise/>
@@ -718,7 +718,7 @@
 				select="imf:create-output-element('ep:version', imf:getVersion($UGM))"/>
 			
 			<xsl:choose>
-				<xsl:when test="imvert:stereotype = 'ENTITEITRELATIE'">
+				<xsl:when test="imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')">
 
 					<xsl:sequence select="imf:create-debug-comment('A05010]',$debugging)"/>
 					
@@ -745,7 +745,7 @@
 						<xsl:with-param name="context" select="'-'"/>
 					</xsl:apply-templates>
 				</xsl:when>
-				<xsl:when test="imvert:stereotype = 'BERICHTRELATIE'">
+				<xsl:when test="imvert:stereotype/@id = ('stereotype-name-berichtrelatie')">
 					
 					<xsl:sequence select="imf:create-debug-comment('A05020]',$debugging)"/>
 
@@ -779,7 +779,7 @@
 
 	<!-- This template transforms an 'imvert:association' element of stereotype 'ENTITEITRELATIE' to an 'ep:construct' 
 		element.. -->
-	<xsl:template match="imvert:association[imvert:stereotype = 'ENTITEITRELATIE']"
+	<xsl:template match="imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]"
 		mode="create-rough-message-content">
 		<xsl:param name="id-trail"/>
 		<xsl:param name="berichtCode"/>
@@ -924,7 +924,7 @@
 		<xsl:sequence select="imf:create-debug-comment('debug:start A08000 /debug:start',$debugging)"/>
 		
 		<xsl:choose>
-			<xsl:when test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype = 'COMPLEX DATATYPE'">
+			<xsl:when test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype/@id = ('stereotype-name-complextype')">
 				<xsl:sequence select="imf:create-debug-comment('A08010]',$debugging)"/>
 				<ep:construct typeCode="groep">
 					<xsl:attribute name="context">
@@ -1021,7 +1021,7 @@
 					</xsl:apply-templates>
 				</ep:construct>
 			</xsl:when>
-			<xsl:when test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype = 'TABEL-ENTITEIT'">
+			<xsl:when test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype/@id = ('stereotype-name-referentielijst')">
 				<xsl:sequence select="imf:create-debug-comment('A08020]',$debugging)"/>
 				<ep:construct typeCode="tabelEntiteit">
 					<xsl:attribute name="context">
@@ -1268,7 +1268,7 @@
 		<xsl:choose>
 			<!-- The association is a 'relatie' and it has to contain a 'gerelateerde' 
 				 construct. -->
-			<xsl:when test="key('class',$type-id) and imvert:stereotype = 'RELATIE'">
+			<xsl:when test="key('class',$type-id) and imvert:stereotype/@id = ('stereotype-name-relatiesoort')">
 				<xsl:sequence select="imf:create-debug-comment('A10010]',$debugging)"/>
 				<ep:construct typeCode="gerelateerde" package="{ancestor::imvert:package/imvert:name}">
 					<xsl:attribute name="context">
@@ -1380,7 +1380,7 @@
 				 and it contains a 'entiteit'. The attributes of the 'entiteit' class can 
 				 be placed directly within the current 'ep:seq'. -->
 			<xsl:when
-				test="imf:get-association-construct-by-id($type-id,$embellish-file)[imvert:stereotype = 'ENTITEITTYPE']">
+				test="imf:get-association-construct-by-id($type-id,$embellish-file)[imvert:stereotype/@id = ('stereotype-name-objecttype')]">
 				<xsl:sequence select="imf:create-debug-comment('A10020]',$debugging)"/>
 				<xsl:apply-templates select="key('class',$type-id)"
 					mode="create-rough-message-content">
