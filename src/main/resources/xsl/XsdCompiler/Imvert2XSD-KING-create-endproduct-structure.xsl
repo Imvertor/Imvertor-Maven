@@ -192,7 +192,7 @@
 		<xsl:param name="useStuurgegevens" select="'yes'"/>
 		<xsl:param name="fundamentalMnemonic" select="''"/>
 		
-		<xsl:sequence select="imf:create-debug-comment('Debuglocation 1003',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('Debuglocation 1003a',$debugging)"/>
 		
 		<xsl:variable name="type-id" select="imvert:type-id"/>
 
@@ -208,6 +208,7 @@
 			<xsl:with-param name="useStuurgegevens" select="$useStuurgegevens"/>
 			<xsl:with-param name="fundamentalMnemonic" select="$fundamentalMnemonic"/>
 		</xsl:apply-templates>
+		<xsl:sequence select="imf:create-debug-comment('Debuglocation 1003b',$debugging)"/>
 	</xsl:template>
 
 	<xsl:template match="imvert:supertype" mode="create-message-content-constructRef">
@@ -219,7 +220,7 @@
 		<xsl:param name="proces-type"/>
 		<xsl:param name="context"/>
 		
-		<xsl:sequence select="imf:create-debug-comment('Debuglocation 1004',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('Debuglocation 1004a',$debugging)"/>
 
 		<xsl:variable name="type-id" select="imvert:type-id"/>
 		
@@ -233,6 +234,7 @@
 			<xsl:with-param name="proces-type" select="$proces-type"/>
 			<xsl:with-param name="context" select="$context"/>
 		</xsl:apply-templates>
+		<xsl:sequence select="imf:create-debug-comment('Debuglocation 1004b',$debugging)"/>
 	</xsl:template>
 	
 	<!-- Declaration of the content of a superclass, an 'imvert:association' and 'imvert:association-class' 
@@ -254,7 +256,7 @@
 		<xsl:param name="indicatieFormeleHistorie" select="'Nee'"/>
 		<xsl:param name="indicatieFormeleHistorieRelatie" select="'Nee'"/>
 		
-		<xsl:sequence select="imf:create-debug-comment('Debuglocation 1005',$debugging)"/>
+		<xsl:sequence select="imf:create-debug-comment('Debuglocation 1005a',$debugging)"/>
 
 		<xsl:variable name="id" select="imvert:id"/>
 		<xsl:variable name="berichtType">
@@ -318,7 +320,7 @@
 					<!-- ROME: Er wordt nu alleen gecheckt of de elementen die gedefinieerd 
 						worden wel voor mogen komen. De vraag is of ook gecheckt moet worden of de 
 						elementen die niet zijn gedefinieerd wel weggelaten mogen worden. -->
-					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1007',$debugging)"/>
+					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1007a',$debugging)"/>
 					
 					<!-- ROME: Volgende sectie is uitgeschakeld aangezien we stuurgegevens en parameters vanuit een gecontroleerde situatie toevoegen.
 							   Zodra dat niet meer het geval is moet er wel weer gecheckt worden of de inhoud van de stuurgegevens en parameters correct is. -->
@@ -457,6 +459,7 @@
 						<xsl:with-param name="useStuurgegevens" select="$useStuurgegevens"/>                                       
 						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
 					</xsl:apply-templates>
+					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1007b',$debugging)"/>
 					<xsl:apply-templates
 						select="./imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-association-to-composite')]"
 						mode="create-message-content">
@@ -473,6 +476,7 @@
 						<xsl:with-param name="useStuurgegevens" select="$useStuurgegevens"/>                                       
 						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
 					</xsl:apply-templates>
+					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1007c',$debugging)"/>
 				</xsl:when>
 				<!-- The following when initiates the processing of the classes refering to the current class as a superclass.
 					 In this situation a choice has to be generated. -->
@@ -563,6 +567,7 @@
 					</xsl:apply-templates>
 				</xsl:when>
 			</xsl:choose>
+		<xsl:sequence select="imf:create-debug-comment('Debuglocation 1005b',$debugging)"/>
 	</xsl:template>
 
 	<!-- This template takes care of creating the constructRef constructs form the current class but also from the supertype of the current class
@@ -576,8 +581,7 @@
 		<xsl:param name="proces-type" select="''"/>
 		<xsl:param name="context"/>
 		
-		<xsl:sequence select="imf:create-debug-comment('Debuglocation 1010',$debugging)"/>
-		
+		<xsl:sequence select="imf:create-debug-comment('Debuglocation 1010a',$debugging)"/>
 		<xsl:apply-templates select="imvert:supertype" mode="create-message-content-constructRef">
 			<xsl:with-param name="berichtCode" select="$berichtCode"/>
 			<xsl:with-param name="berichtName" select="$berichtName"/>
@@ -587,6 +591,7 @@
 			<xsl:with-param name="proces-type" select="$proces-type"/>
 			<xsl:with-param name="context" select="$context"/>
 		</xsl:apply-templates>
+		<xsl:sequence select="imf:create-debug-comment('Debuglocation 1010b',$debugging)"/>
 		<xsl:apply-templates select="./imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-relatiesoort')]"
 			mode="create-message-content-constructRef">
 			<xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -596,6 +601,7 @@
 			<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
 			<xsl:with-param name="context" select="$context"/>
 		</xsl:apply-templates>
+		<xsl:sequence select="imf:create-debug-comment('Debuglocation 1010c',$debugging)"/>
 		<xsl:apply-templates select="./imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]"
 			mode="create-message-content-constructRef">
 			<xsl:with-param name="berichtCode" select="$berichtCode"/>
@@ -2595,7 +2601,7 @@
 					</xsl:if>
 				</xsl:when>
 				<!--xsl:when
-					test="key('class',$type-id) and imvert:stereotype = GROEP COMPOSITIE' and ancestor::imvert:package[contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen')] and imvert:name = 'parameters' and contains('Di01 Di02 Du01 Du02',$berichtCode) and $context = 'entiteit'">
+					test="key('class',$type-id) and imvert:stereotype/@id = ('stereotype-name-association-to-composite') and ancestor::imvert:package[contains(imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen')] and imvert:name = 'parameters' and contains('Di01 Di02 Du01 Du02',$berichtCode) and $context = 'entiteit'">
 					<xsl:sequence select="imf:report-warning(., 
 						imvert:name = 'parameters' and contains('Di01 Di02 Du01 Du02',$berichtCode) and $context = 'entiteit',
 						'A parameters element is not allowed within an object with a functie attributevalue of entiteit in a Dixx or Duxx message.',())"/>				
