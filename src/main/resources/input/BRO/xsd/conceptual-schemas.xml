@@ -219,6 +219,15 @@
                 <sentinel>true</sentinel>
             </construct>
             
+            <construct>
+                <name>Measure</name>
+                <desc>
+                   
+                </desc>
+                <catalog-entry>#Measure</catalog-entry>
+                <xsd-type name="MeasureType" asAttributeDesignation="complextype" asAttribute="MeasureType"/>
+                <managed-ids/>
+            </construct>
         </map>
         
     </conceptual-schema>
