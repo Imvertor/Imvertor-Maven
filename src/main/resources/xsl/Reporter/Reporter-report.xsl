@@ -130,7 +130,7 @@
                 <body>
                     <div class="home">
                         <xsl:sequence select="imf:create-report-home-header('IMVERTOR Processing report')"/>
-                        <p>Created by:
+                        <p>Created by Imvertor
                             <xsl:value-of select="imf:get-config-string('run','version')"/>
                         </p>
                         <xsl:if test="$job-id">
@@ -291,10 +291,10 @@
     <!-- create a document-local TOC when more than one div -->
     <xsl:template match="content" mode="content-toc">
         <xsl:choose>
-            <xsl:when test="div[2]">
+            <xsl:when test=".//div[2]">
                 <p>Contents:</p>
                 <ol>
-                    <xsl:apply-templates select="div[h1]" mode="content-toc"/>
+                    <xsl:apply-templates select="div" mode="content-toc"/>
                 </ol>
             </xsl:when>
             <xsl:otherwise>
@@ -304,11 +304,16 @@
     </xsl:template>
     
     <xsl:template match="div" mode="content-toc">
+        <xsl:variable name="level" select="(h1|h2|h3|h4|h5|h6|h7)[1]"/>
         <li>
-            <a href="#{generate-id(h1)}">
-                <xsl:sequence select="h1/node()"/>
+            <a href="#{generate-id($level)}">
+                <xsl:sequence select="$level/node()"/>
             </a>
-        </li>
+            <xsl:if test=".//div[2]">
+                <ol>
+                    <xsl:apply-templates select="div" mode="#current"/>
+                </ol>
+            </xsl:if>        </li>
     </xsl:template>
     
     <!-- create a representation of the step report or summary values: mostly a copy but output may be enhanced. -->
@@ -316,7 +321,7 @@
         <xsl:apply-templates select="*" mode="content-body"/>
     </xsl:template>
     
-    <xsl:template match="h1" mode="content-body">
+    <xsl:template match="h1|h2|h3|h4|h5|h6|h7" mode="content-body">
         <a name="{generate-id()}"/>
         <xsl:next-match/>
     </xsl:template>
@@ -359,9 +364,11 @@
                 <xsl:value-of select="imf:get-config-string('appinfo','original-application-name')"/>
             </p>
             <p>
-                Release <xsl:value-of select="imf:get-config-string('appinfo','release')"/>,
-                version <xsl:value-of select="imf:get-config-string('appinfo','version')"/> at phase
-                <xsl:value-of select="imf:get-config-string('appinfo','phase')"/>
+                Release <xsl:value-of select="imf:get-config-string('appinfo','release')"/>
+                <xsl:if test="imf:get-config-string('appinfo','version')">
+                    version <xsl:value-of select="imf:get-config-string('appinfo','version')"/> 
+                    at phase <xsl:value-of select="imf:get-config-string('appinfo','phase')"/>
+                </xsl:if>
                 <br></br>
                 <xsl:value-of select="imf:get-config-string('appinfo','error-count')"/> errors,
                 <xsl:value-of select="imf:get-config-string('appinfo','warning-count')"/> warnings.

@@ -64,10 +64,27 @@ span.value {
 h1 {
     font-size: 1.5em;
     color: #000080;
+    font-weight: bold;
 }
 h2 {
+    font-size: 1.3em;
+    color: #000080;
+    font-weight: inherit;
+}
+h3 {
+    font-size: 1.1em;
+    color: #000080;
+    font-weight: bold;
+}
+h4 {
+    font-size: 1.1em;
+    color: #000080;
+    font-weight: inherit;
+}
+h5, h5, h7 {
     font-size: 1em;
     color: #000080;
+    font-style: italic;
 }
 a {
     color: blue;
