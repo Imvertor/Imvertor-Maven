@@ -25,6 +25,8 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:functx="http://www.functx.com"
+    
     exclude-result-prefixes="#all"
     version="2.0">
     
@@ -89,6 +91,14 @@
         </xsl:result-document>
         x-->
         
+        <!-- signal if not using the latest release of imvertor -->
+        <xsl:variable name="crx" select="imf:get-config-string('run','version')"/>
+        <xsl:variable name="lrx" select="imf:get-config-string('system','latest-imvertor-release')"/>
+        <xsl:variable name="cr" select="string-join(for $m in subsequence(tokenize($crx,'\.'),1,2) return functx:pad-integer-to-length($m,5),'')"/>
+        <xsl:variable name="lr" select="string-join(for $m in subsequence(tokenize($lrx,'\.'),1,2) return functx:pad-integer-to-length($m,5),'')"/>
+        <xsl:if test="$cr lt $lr">
+            <xsl:sequence select="imf:msg(.,'WARNING','You are using Imvertor version [1], however a more recent version [2] is available.',($crx,$lrx))"></xsl:sequence>
+        </xsl:if>
     </xsl:template>
     
     <!-- name normalization on all configuration files -->
