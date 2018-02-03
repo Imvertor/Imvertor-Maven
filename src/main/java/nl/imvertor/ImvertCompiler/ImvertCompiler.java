@@ -83,7 +83,7 @@ public class ImvertCompiler extends Step {
 			
 			AnyFolder etcFolder = new AnyFolder(configurator.getXParm("system/work-etc-folder-path"));
 			AnyFolder catFolder = new AnyFolder(configurator.getXParm("system/work-cat-folder-path"));
-			AnyFolder workFolder = new AnyFolder(System.getProperty("work.dir"));
+			AnyFolder workFolder = configurator.getWorkFolder();
 			
 			XmlFile infoEmbellishFile = new XmlFile(configurator.getXParm("properties/WORK_EMBELLISH_FILE"));
 			XmlFile oldEmbellishFile = new XmlFile(etcFolder,"system.imvert.xml");

@@ -60,7 +60,6 @@ call "%javaexe%" %jvmparms% ^
 	-Doutput.dir="%outdir%" ^
     -Downer.name="%owner%" ^
     -Dwork.dir="%workdir%\default" ^
-    -Dea.enabled=%imvertor_os_eaenabled% ^
     -Dgit.token=%imvertor_os_git_token% ^
     -classpath "%bindir%\bin\ChainTranslateAndReport_lib" ^
     -jar "%bindir%\bin\%jarfile%" ^

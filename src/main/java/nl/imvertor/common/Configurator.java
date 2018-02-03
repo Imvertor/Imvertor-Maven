@@ -137,11 +137,13 @@ public class Configurator {
 	
 	private HashMap<String,String> catalogMap = new HashMap<String,String> ();
 	
+	private Properties serverProperties;
+	
 	private PrintWriter pw = new PrintWriter(System.out);
 	
 	private long starttime = 0;
 	
-	private Integer runmode = RUN_MODE_RUN;
+	private Integer runmode = RUN_MODE_DEVELOPMENT;
 	
 	private XparmLogger xParmLogger; // keeps track of the sequence of parameters set by the chain. A debugging tool.
 	private XsltCallLogger xsltCallLogger; // keeps track of the XSLT calls. A debugging tool.
@@ -154,10 +156,6 @@ public class Configurator {
 		xsltCallLogger = new XsltCallLogger();
 		
 		try {
-			if (System.getProperty("run.mode") != null)
-				if (System.getProperty("run.mode").equals("development"))
-					runmode = RUN_MODE_DEVELOPMENT;
-
 			if (System.getProperty("install.dir") == null)
 				throw new ConfiguratorException("Missing system parameter install.dir, please pass as -Dinstall.dir=[filepath]");
 			
@@ -166,10 +164,15 @@ public class Configurator {
 			if (!baseFolder.isDirectory())
 				throw new ConfiguratorException("Not a folder: " + baseFolder.getCanonicalPath());
 			
-			if (System.getProperty("work.dir") == null)
-				throw new ConfiguratorException("Missing system parameter work.dir, please pass as -Dwork.dir=[filepath]");
+			if (System.getProperty("job.id") == null)
+				throw new ConfiguratorException("Missing system parameter job.id, please pass as -Djob.id=[name]");
 			
-			workFolder = new AnyFolder(System.getProperty("work.dir"));
+			// assume development, but if a runmode is supplied, and it is not development, assume deployed.
+			if (System.getProperty("run.mode") != null)
+				if (!System.getProperty("run.mode").equals("development"))
+					runmode = RUN_MODE_RUN;
+
+			workFolder = new AnyFolder(getServerProperty("work.dir") + "/" + System.getProperty("job.id"));
 			appFolder = new AnyFolder(workFolder,"app");
 			
 			if (!workFolder.isDirectory())
@@ -180,19 +183,18 @@ public class Configurator {
 			if (System.getProperty("owner.name") == null)
 				throw new ConfiguratorException("Missing system parameter owner.name, please pass as -Downer.name=[name]");
 			
-			inputFolder = new AnyFolder(baseFolder, "input" + File.separator + System.getProperty("owner.name"));
-			
-			if (System.getProperty("output.dir") == null)
-				throw new ConfiguratorException("Missing system parameter output.dir, please pass as -Doutput.dir=[filepath]");
-			
-			outputFolder = new AnyFolder(System.getProperty("output.dir"));
+			boolean regression = System.getProperty("is.reg") != null && System.getProperty("is.reg").equals("true");
+					
+			inputFolder  = new AnyFolder(baseFolder, "input" + File.separator + System.getProperty("owner.name"));
+			outputFolder = new AnyFolder(getServerProperty(
+					(regression) ? "output.dir.reg" : "output.dir") + "/" + System.getProperty("owner.name"));
 			
 			saxonConfig = new Configuration();
 		
 			messenger = new Messenger(saxonConfig.makePipelineConfiguration());
 			runner.setMessenger(messenger);
 			
-			String ee = System.getProperty("ea.enabled"); // true or false; false typically on server environment; see redmine #487932
+			String ee = getServerProperty("ea.enabled"); // true or false; false typically on server environment; see redmine #487932
 			eaEnabled = (ee == null || !ee.equals("false"));
 			
 		} catch (Exception e) {
@@ -374,6 +376,7 @@ public class Configurator {
 		
 		setXParm(workConfiguration,"system/work-app-folder-path",     wf + s + "app", true);
 		setXParm(workConfiguration,"system/work-etc-folder-path", 	  wf + s + "app" + s + "etc", true);
+		setXParm(workConfiguration,"system/work-ea-folder-path", 	  wf + s + "app" + s + "ea", true);
 		setXParm(workConfiguration,"system/work-xsd-folder-path",     wf + s + "app" + s + "xsd", true);
 		setXParm(workConfiguration,"system/work-doc-folder-path",     wf + s + "app" + s + "doc", true);
 		setXParm(workConfiguration,"system/work-uml-folder-path",     wf + s + "app" + s + "uml", true);
@@ -403,6 +406,8 @@ public class Configurator {
 				
 		setXParm(workConfiguration,"system/managedoutputfolder", outputFolder.getCanonicalPath(), true);
 		setXParm(workConfiguration,"system/managedinstallfolder", baseFolder.getCanonicalPath(), true);
+		
+		setXParm(workConfiguration,"system/latest-imvertor-release", getServerProperty("latest.imvertor.release"), true);
 
 		setActiveStepName("common");
 		
@@ -974,11 +979,8 @@ public class Configurator {
 		
 		File f = getFile(filePath);
 		runner.debug(logger,"CHAIN","Reading property file " + f.getCanonicalPath());
-		Properties properties = new Properties();
-		FileInputStream s = new FileInputStream(f);
-		BufferedReader in = new BufferedReader(new InputStreamReader(s, "UTF-8"));
-		properties.load(in); 
-		s.close();
+		
+		Properties properties = getProperties(f);
 		
 		// read arguments first
 		String arguments = properties.getProperty("arguments");
@@ -1341,4 +1343,23 @@ public class Configurator {
 		return currentStepName;
 	}
 
+	private Properties getProperties(File file) throws IOException {
+		Properties properties = new Properties();
+		FileInputStream s = new FileInputStream(file);
+		BufferedReader in = new BufferedReader(new InputStreamReader(s, "UTF-8"));
+		properties.load(in); 
+		s.close();
+		return properties;
+	}
+
+	private void getServerProperties() throws IOException {
+		String basefolder = (runmode == RUN_MODE_DEVELOPMENT) ? (new File(".")).getCanonicalPath() : System.getenv("imvertor_os_basefolder");
+		File propsFile = new File(basefolder + "/server.properties");
+		serverProperties = getProperties(propsFile);
+	}
+
+	public String getServerProperty(String key) throws IOException {
+		if (serverProperties == null) getServerProperties();
+		return serverProperties.getProperty(key);
+	}
 }

@@ -119,9 +119,9 @@ public class OfficeCompiler extends Step {
 						
 						AnyFolder catfolder = new AnyFolder(officeFile.getParent());
 						
-						String gituser     	            = System.getProperty("git.user"); // user name
-						String gitpass     	            = System.getProperty("git.pass"); // password
-						String gitlocal     	        = System.getProperty("git.local"); // location of local git 
+						String gituser     	            = configurator.getServerProperty("git.user"); // user name
+						String gitpass     	            = configurator.getServerProperty("git.pass"); // password
+						String gitlocal     	        = configurator.getServerProperty("git.local"); // location of local git repositories 
 							
 						String giturl     	            = configurator.mergeParms(configurator.getXParm("cli/giturl")); //url of web page
 						String gitpath     	            = configurator.mergeParms(configurator.getXParm("cli/gitpath")); //subpath to repos

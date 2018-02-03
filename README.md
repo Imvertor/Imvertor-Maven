@@ -37,7 +37,6 @@ VM arguments are:
 -Doutput.dir=%datadir%\Imvertor-OS-output
 -Dwork.dir=%datadir%\Imvertor-OS-work\default
 -Djava.library.path=c:\java\EnterpriseArchitect\Java-API
--Dea.enabled=true
 -Downer.name=Kadaster
 </pre>
 Note: If you want to access Enterprise Architect from within Imvertor, you need to install EA, and install some files as described on http://www.sparxsystems.com/enterprise_architect_user_guide/10/automation_and_scripting/setup.html
