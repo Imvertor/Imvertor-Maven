@@ -47,8 +47,8 @@ public class ChainCompliancy {
 			System.out.println(Release.getNotice());
 			System.out.println("");
 			
-			configurator.getRunner().info(logger, "Framework version - " + Release.getVersionString("Imvertor"));
-			configurator.getRunner().info(logger, "Chain version - " + Release.getVersionString("ChainCompliancy"));
+			configurator.getRunner().info(logger, "Framework version " + Release.getVersionString("Imvertor"));
+			configurator.getRunner().info(logger, "Chain version " + Release.getVersionString("ChainCompliancy"));
 					
 			configurator.prepare(); // note that the process config is relative to the step folder path
 			configurator.getRunner().prepare();
