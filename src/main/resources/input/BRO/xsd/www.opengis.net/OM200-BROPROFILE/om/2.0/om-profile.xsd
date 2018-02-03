@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema
+	xmlns:gml="http://www.opengis.net/gml/3.2"
+	xmlns:gmd="http://www.isotc211.org/2005/gmd"
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:om="http://www.opengis.net/om/2.0"
+	targetNamespace="http://www.opengis.net/om/2.0"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+	version="2.0.0">
+	<annotation>
+		<documentation>Observation profile for BRO.</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<import namespace="http://www.opengis.net/gml/3.2" schemaLocation="https://schema.broservices.nl/profile/gml/1.0/gml-profile.xsd"/>
+	<!-- ====================================================================== -->
+	<group
+		name="OM_CommonProperties">
+		<sequence>
+			<element
+				name="type"
+				type="gml:ReferenceType"
+				minOccurs="0"/>
+			<!-- TODO: check
+			<element
+				name="metadata"
+				type="gmd:MD_Metadata_PropertyType"
+				minOccurs="0"/>
+			-->
+			<element
+				name="relatedObservation"
+				type="om:ObservationContextPropertyType"
+				minOccurs="0"
+				maxOccurs="unbounded"/>
+			<!-- change of type to gml:TimeInstantPropertyType -->
+			<element
+				name="phenomenonTime"
+				type="gml:TimeInstantPropertyType"/>
+			<element
+				name="resultTime"
+				type="gml:TimeInstantPropertyType"
+				block="#all"/>
+			<element
+				name="validTime"
+				type="gml:TimePeriodPropertyType"
+				minOccurs="0"/>
+			<element
+				name="procedure"
+				type="om:OM_ProcessPropertyType"
+				nillable="true"/>
+			<element
+				name="parameter"
+				type="om:NamedValuePropertyType"
+				minOccurs="0"
+				maxOccurs="unbounded"/>
+			<element
+				name="observedProperty"
+				type="gml:ReferenceType"
+				nillable="true"/>
+			<element
+				name="featureOfInterest"
+				type="gml:FeaturePropertyType"
+				nillable="true"/>
+
+		</sequence>
+	</group>
+	<!-- ====================================================================== -->
+	<!-- TODO: restrict to specific type per registration object? -->
+	<element
+		name="result"/>
+	<!-- ====================================================================== -->
+	<complexType
+		name="OM_ObservationType">
+		<complexContent>
+			<extension
+				base="gml:AbstractFeatureType">
+				<sequence>
+					<group
+						ref="om:OM_CommonProperties"/>
+					<element
+						ref="om:result"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ====================================================================== -->
+	<element
+		name="OM_Observation"
+		type="om:OM_ObservationType"
+		substitutionGroup="gml:AbstractFeature"/>
+	<!-- ====================================================================== -->
+	<complexType
+		name="OM_ObservationPropertyType">
+		<sequence
+			minOccurs="0">
+			<element
+				ref="om:OM_Observation"/>
+		</sequence>
+		<attributeGroup
+			ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType
+		name="ObservationContextType">
+		<sequence>
+			<element
+				name="role"
+				type="gml:ReferenceType"/>
+			<element
+				name="relatedObservation"
+				type="gml:ReferenceType"/>
+		</sequence>
+	</complexType>
+	<!-- ====================================================================== -->
+	<element
+		name="ObservationContext"
+		type="om:ObservationContextType"/>
+	<!-- ====================================================================== -->
+	<complexType
+		name="ObservationContextPropertyType">
+		<sequence>
+			<element
+				ref="om:ObservationContext"/>
+		</sequence>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType
+		name="OM_ProcessPropertyType">
+		<sequence
+			minOccurs="0">
+			<any
+				namespace="##any"
+				processContents="lax"/>
+		</sequence>
+		<attributeGroup
+			ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType
+		name="NamedValueType">
+		<sequence>
+			<element
+				name="name"
+				type="gml:ReferenceType"/>
+			<element
+				name="value"/>
+		</sequence>
+	</complexType>
+	<!-- ====================================================================== -->
+	<element
+		name="NamedValue"
+		type="om:NamedValueType"/>
+	<!-- ====================================================================== -->
+	<complexType
+		name="NamedValuePropertyType">
+		<sequence
+			minOccurs="0">
+			<element
+				ref="om:NamedValue"/>
+		</sequence>
+		<attributeGroup
+			ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+</schema>

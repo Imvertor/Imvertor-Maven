@@ -9,6 +9,9 @@
     
     <mapping name="BRO_GEOSTANDAARDEN">
         <use>GML321</use>
+        <use>SWE201</use>
+        
+        
         <use>ISO19115</use>
         <use>INSPIRE</use>
         <use>NEN3610</use>
@@ -228,6 +231,35 @@
                 <xsd-type name="MeasureType" asAttributeDesignation="complextype" asAttribute="MeasureType"/>
                 <managed-ids/>
             </construct>
+        </map>
+        
+    </conceptual-schema>
+    
+    <conceptual-schema>
+        <name>SWE Common profile for BRO</name>
+        <short-name>swe</short-name>
+        <description>...TODO...</description>
+        <url>http://www.bro.nl/conceptual-schemas/SWE</url>
+        <catalog>http://www.opengeospatial.org/standards/swe[entry]</catalog>        
+        
+        <map 
+            name="SWE201" 
+            namespace="http://www.opengis.net/swe/2.0" 
+            version="2.0.1" 
+            phase="3" 
+            location="http://www.opengis.net/swe/2.0/swe-profile.xsd"> 
+            
+            <releases>
+                <release>SWEPROFILE</release>
+            </releases>
+            
+            <construct>
+                <name>UnitReference</name>
+                <catalog-entry>#UnitReference</catalog-entry>
+                <xsd-type name="UnitReference" asAttributeDesignation="complextype" asAttribute="UnitReference"/>
+                <managed-ids/>
+            </construct>
+            <!-- TODO etc -->
         </map>
         
     </conceptual-schema>

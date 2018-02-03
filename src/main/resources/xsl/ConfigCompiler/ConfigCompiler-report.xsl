@@ -68,7 +68,7 @@
                         <xsl:apply-templates select="." mode="metamodel-stereos-desc"/>
                     </div>  
                     <div>
-                        <h1>metamodel: Tagged values</h1>
+                        <h1>Metamodel: tagged values</h1>
                         <xsl:apply-templates select="." mode="metamodel-tvs"/>
                         <xsl:apply-templates select="." mode="metamodel-tvs-desc"/>
                     </div>       

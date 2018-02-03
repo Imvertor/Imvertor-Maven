@@ -39,16 +39,31 @@
         <xsl:param name="key" as="xs:string"/>
         <xsl:sequence select="imf:report-label($label,imf:get-config-string($group, $key,'--'))"/>
     </xsl:function>
+
+    <xsl:function name="imf:report-label" as="node()*">
+        <xsl:param name="label" as="xs:string"/>
+        <xsl:param name="value" as="item()*"/>
+        <xsl:sequence select="imf:report-label($label,$value,false())"/>
+    </xsl:function>        
     
     <xsl:function name="imf:report-label" as="node()*">
         <xsl:param name="label" as="xs:string"/>
         <xsl:param name="value" as="item()*"/>
+        <xsl:param name="as-is" as="xs:boolean"/>
         <xsl:if test="exists($value)">
             <span class="label">
                 <xsl:value-of select="concat($label,': ')"/>
             </span>
             <span class="value">
-                <xsl:value-of select="concat(string-join(for $v in $value return string($v),' | '),' ')"/>
+                <xsl:choose>
+                    <xsl:when test="empty($value)">--</xsl:when>
+                    <xsl:when test="$as-is">
+                        <xsl:sequence select="$value"/>                        
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="concat(string-join(for $v in $value return string($v),' | '),' ')"/>
+                    </xsl:otherwise>
+                </xsl:choose>
             </span>
             <br/>
         </xsl:if>
