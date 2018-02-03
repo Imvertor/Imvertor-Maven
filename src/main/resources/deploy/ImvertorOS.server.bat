@@ -10,6 +10,10 @@ SET reg=%~6
 SET adorn=%~7
 
 SET bindir=%~dp0
+IF %bindir:~-1%==\ SET bindir=%bindir:~0,-1%
+
+echo Imvertor bin install folder: "%bindir%"
+
 SET jvmparms=-Xms512m -Xmx1024m
 
 SET JAVA_HOME=%bindir%\bin\java\jre1.8.0_101
