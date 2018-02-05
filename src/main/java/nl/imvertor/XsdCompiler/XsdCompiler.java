@@ -237,7 +237,7 @@ public class XsdCompiler extends Step {
 			
 			valid = valid && transformer.transformStep("system/work-config-path","properties/ROUGH_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ROUGH_ENDPRODUCT_XML_XSLPATH");
 			valid = valid && transformer.transformStep("properties/ROUGH_ENDPRODUCT_XML_FILE_PATH","properties/ENRICHED_ROUGH_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ENRICHED_ROUGH_ENDPRODUCT_XML_XSLPATH");
-			valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XML_XSLPATH");
+			valid = valid && transformer.transformStep("properties/RESULT_METAMODEL_KINGBSM_XSD_MIGRATE","properties/RESULT_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XML_XSLPATH");
 			valid = valid && transformer.transformStep("properties/RESULT_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_REPROCESS_ENDPRODUCT_XML_XSLPATH");
 			valid = valid && transformer.transformStep("properties/RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_SORT_ENDPRODUCT_XML_XSLPATH");
 			valid = valid && transformer.transformStep("properties/RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_ENDPRODUCT_XSD_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XSD_XSLPATH");
