@@ -27,8 +27,6 @@
     
     <xsl:import href="Imvert2XSD-KING-common.xsl"/>
     
-    <!--xsl:import href="Imvert2XSD-KING-create-endproduct-rough-structure.xsl"/>
-    <xsl:import href="Imvert2XSD-KING-create-enriched-rough-messages.xsl"/-->
     <xsl:import href="Imvert2XSD-KING-create-endproduct-structure.xsl"/>
 
     <xsl:include href="Imvert2XSD-KING-common-checksum.xsl"/>
@@ -59,8 +57,6 @@
     <xsl:variable name="config-tagged-values">
         <xsl:sequence select="imf:get-config-tagged-values()"/>
     </xsl:variable> 
-
-    <!--xsl:variable name="xsd-folder-path" select="imf:get-config-string('system','xsd-application-folder-path')"/-->
 
     <!-- Within the next variable the configurations defined within the Base-configuration spreadsheet are placed in a processed XML format.
          With this configuration the attributes to be used on each location within the XML schemas are determined. -->
@@ -417,7 +413,6 @@
                    generate-id() op de node-tree waaruit deze variabele is voortgekomen.
                    Arjan stelt voor om i.p.v. het gebruik van generate-id() node comparison te gebruiken 
                    (Zie https://www.w3.org/TR/xpath-functions/#func-is-same-node) --> 
-        <!--xsl:variable name="currentMessage" select="."/-->           
         <xsl:variable name="currentMessage">
                 <xsl:copy>
                     <xsl:copy-of select="@*"/>
@@ -426,11 +421,11 @@
         </xsl:variable>
         <xsl:variable name="berichtCode" select="ep:code"/>
         
-        <!--xsl:if test="$debugging">
+        <?x xsl:if test="$debugging">
             <ep:currentMessage>
                 <xsl:sequence select="$currentMessage"/>
             </ep:currentMessage>
-        </xsl:if-->
+        </xsl:if x?>
         
         <xsl:sequence select="imf:track('Constructing the global constructs',$debugging)"/>
 
@@ -1103,7 +1098,7 @@
                                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 14a',$debugging)"/>
                                 <xsl:sequence select="imf:create-debug-comment(concat('Attributes voor ',$typeCode,', berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $alias),$debugging)"/>
                                 <xsl:variable name="attributes"
-                                    select="imf:createAttributes($typeCode, substring($berichtCode,1,2), $context, 'no', $alias,'no', $prefix, $id, '')" />
+                                    select="imf:createAttributes($typeCode, substring($berichtCode,1,2), $context, $alias,'no', $prefix, $id, '')" />
                                 <xsl:sequence select="$attributes" />
                             </ep:seq>
                         </xsl:otherwise>
@@ -1422,7 +1417,7 @@
                                            <ep:position>150</ep:position>
                                            <ep:seq>
                                                <xsl:variable name="attributes"
-                                                   select="imf:createAttributes('StatusMetagegeven-basis','-', '-', 'no','','no', $prefix, $id, '')"/>									
+                                                   select="imf:createAttributes('StatusMetagegeven-basis','-', '-','','no', $prefix, $id, '')"/>									
                                                <xsl:sequence select="$attributes"/>
                                            </ep:seq>
                                        </ep:construct-->
@@ -1592,7 +1587,7 @@
                                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 17ba',$debugging)"/>
                                        <xsl:sequence select="imf:create-debug-comment(concat('Attributes voor ',$typeCode,', berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $alias),$debugging)"/>
                                        <xsl:variable name="attributes"
-                                           select="imf:createAttributes($typeCode, substring($berichtCode,1,2), $context, 'no', $alias,'no', $prefix, $id, '')" />
+                                           select="imf:createAttributes($typeCode, substring($berichtCode,1,2), $context, $alias,'no', $prefix, $id, '')" />
                                        <xsl:sequence select="$attributes" />
                                    </ep:seq>
                                </xsl:otherwise>
@@ -2695,7 +2690,7 @@
                                     <xsl:sequence select="imf:create-debug-comment('Debuglocation attributes 3',$debugging)"/>
                                     <xsl:sequence select="imf:create-debug-comment(concat('typeCode: relatie, berichtType: ',substring($berichtCode, 1, 2),', context: ',$context,', datumType: no, mnemonic: ',$alias,', onvolledigeDatum: no, prefix: ',$prefix,', constructId: ',$id,', dataType: -'),$debugging)"/>
                                     <xsl:variable name="attributes"
-                                        select="imf:createAttributes($typeCode, substring($berichtCode, 1, 2), $context, 'no', $alias, 'no', $prefix, $id, '')"/>
+                                        select="imf:createAttributes($typeCode, substring($berichtCode, 1, 2), $context, $alias, 'no', $prefix, $id, '')"/>
                                     <xsl:sequence select="$attributes"/>
                                 </xsl:if> 
                             </xsl:if>
@@ -2791,7 +2786,7 @@
                             <xsl:if test="$generateHistorieConstruct = 'Nee'">
                                 <xsl:sequence select="imf:create-debug-comment('Debuglocation attributes 4',$debugging)"/>
                                 <xsl:variable name="attributes"
-                                    select="imf:createAttributes($typeCode, substring($berichtCode, 1, 2), $context, 'no', $alias, 'no', $prefix, $id, '')"/>
+                                    select="imf:createAttributes($typeCode, substring($berichtCode, 1, 2), $context, $alias, 'no', $prefix, $id, '')"/>
                                 <xsl:sequence select="$attributes"/>
                             </xsl:if> 
                         </xsl:if>
@@ -2963,6 +2958,7 @@
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 32c',$debugging)"/>
                 <!-- gedefinieerd in onderlaag -->
             </xsl:when>
+            <!-- ROME: Ik vraag me af of het type 'Melding' wel ergens voorkomt. Checken!. -->
             <xsl:when test="exists(imvert:type-name) and not($name = 'Melding' or $name = 'AantalVoorkomens' or $name = 'Sortering' or $name = 'Functie' or $name = 'Volgnummer')">
                 <xsl:sequence select="imf:create-debug-comment('Debuglocation 32d',$debugging)"/>
 

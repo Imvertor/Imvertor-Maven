@@ -84,11 +84,8 @@
 			<xsl:sequence select="$annot"/>
 			
 			<xsl:choose>
-				<xsl:when test="@prefix = $StUF-prefix">
-					<!--xs:include schemaLocation="../0302/stuf0302.xsd"/-->
-				</xsl:when> 
+				<xsl:when test="@prefix = $StUF-prefix"/>
 				<xsl:otherwise>
-					<!--xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="../0302/stuf0302.xsd"/-->
 					<xs:import namespace="http://www.stufstandaarden.nl/onderlaag/stuf0302" schemaLocation="{concat($kv-prefix,$kv-version,'_stuf0302.xsd')}"/>
 					<xsl:if test="//ep:type-name[contains(.,'gml:')]">
 						<xs:import namespace="http://www.opengis.net/gml" schemaLocation="../gml-3.1.1.2/gml/3.1.1/base/gml.xsd"/>
@@ -306,16 +303,7 @@
 				<xsl:when
 					test="
 						ep:data-type and
-						($data-type = 'scalar-date' or
-						$data-type = 'scalar-datetime' or
-						$data-type = 'scalar-year' or
-						$data-type = 'scalar-yearmonth' or
-						$data-type = 'primitive-date' or
-						$data-type = 'primitive-year' or
-						$data-type = 'primitive-yearmonth' or
-						$data-type = 'primitive-postcode' or
-						$data-type = 'scalar-boolean' or
-						$data-type = 'anyType')">
+						($data-type = ('scalar-date','scalar-datetime','scalar-year','scalar-yearmonth','primitive-date','primitive-year','primitive-yearmonth','primitive-postcode','scalar-boolean','anyType'))">
 					<xsl:attribute name="name" select="ep:tech-name"/>
 					<xsl:attribute name="type">
 						<xsl:choose>
