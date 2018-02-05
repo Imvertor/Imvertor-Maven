@@ -9,7 +9,9 @@
     <desc>Kadaster specific requirements on documentation.</desc>
     
     <link-by>NAME</link-by><!-- link by EAID or NAME -->
-    
+
+    <explanation-location>at-bottom</explanation-location> <!-- at-bottom or as-row --> 
+
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>
         <name lang="en">Overview diagram</name>

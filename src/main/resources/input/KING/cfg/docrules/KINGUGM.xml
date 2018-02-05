@@ -10,6 +10,8 @@
     
     <link-by>NAME</link-by><!-- link by EAID or NAME -->
     
+    <explanation-location>at-bottom</explanation-location> <!-- at-bottom or as-row --> 
+    
     <doc-rule id="CFG-DOC-NORMNAAM">
         <name lang="nl">Naam (genormaliseerd)</name>
         <name lang="en">Name (normalized)</name>

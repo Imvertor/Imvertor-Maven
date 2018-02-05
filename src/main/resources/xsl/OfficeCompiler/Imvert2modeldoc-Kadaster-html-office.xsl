@@ -354,7 +354,7 @@
                         <xsl:apply-templates select="item[4]" mode="#current"/>
                     </td>
                 </xsl:when>
-                <xsl:when test="$type = 'DETAIL-ENUMERATION' and $items = 2"> 
+                <xsl:when test="$type = ('DETAIL-ENUMERATION','DETAIL-CODELIST') and $items = 2"> 
                     <td width="40%">
                         <b>
                             <xsl:apply-templates select="item[1]" mode="#current"/>
@@ -364,7 +364,7 @@
                         <xsl:apply-templates select="item[2]" mode="#current"/>
                     </td>
                 </xsl:when>
-                <xsl:when test="$type = 'DETAIL-ENUMERATION' and $items = 3"> 
+                <xsl:when test="$type = ('DETAIL-ENUMERATION','DETAIL-CODELIST') and $items = 3"> 
                     <td width="10%">
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                     </td>

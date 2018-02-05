@@ -205,9 +205,19 @@
         <trans lang="en">Union</trans>
     </item>
     <item>
+        <key>KEUZE</key>
+        <trans lang="nl">Keuze</trans>
+        <trans lang="en">Choice</trans>
+    </item>
+    <item>
         <key>UNION ELMENT</key>
         <trans lang="nl">Union element</trans>
         <trans lang="en">Union element</trans>
+    </item>
+    <item>
+        <key>KEUZE ELMENT</key>
+        <trans lang="nl">Keuze element</trans>
+        <trans lang="en">Choice element</trans>
     </item>
     <item>
         <key>GESTRUCTUREERD DATATYPE</key>
@@ -359,6 +369,11 @@
         <trans lang="en">Enumeration details</trans>
     </item>
     <item>
+        <key>DETAIL-CODELIST</key>
+        <trans lang="nl">Codelijst details</trans>
+        <trans lang="en">Codelist details</trans>
+    </item>
+    <item>
         <key>DETAIL-COMPOSITE</key>
         <trans lang="nl">Gegevensgroeptype details</trans>
         <trans lang="en">GroupType details</trans>
@@ -396,7 +411,7 @@
     </item>
     <item>
         <key>SHORT-UNIONELEMENTS</key>
-        <trans lang="nl">Overzicht union elementen</trans>
+        <trans lang="nl">Overzicht keuze elementen</trans>
     </item>
     
     <item>

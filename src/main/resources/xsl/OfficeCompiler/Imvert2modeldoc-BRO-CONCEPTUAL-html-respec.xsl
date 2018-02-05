@@ -194,7 +194,7 @@
             <!-- een detail sectie, deze krijgen geen TOC ingang -->
             <xsl:when test="starts-with(@type,'DETAIL-')">
                 <xsl:sequence select="imf:create-anchors(.)"/>
-                <section id="{$id}" class="notoc">
+                <section id="{$id}">
                     <xsl:element name="{concat('h',$level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                         <xsl:value-of select="' '"/>
@@ -209,7 +209,7 @@
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:create-anchors(.)"/>
-                <section id="{$id}" class="notoc">
+                <section id="{$id}">
                     <xsl:element name="{concat('h',$level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                         <xsl:value-of select="' '"/>
@@ -285,11 +285,11 @@
                     <colgroup width="10%"/>
                     <colgroup width="10%"/>
                 </xsl:when>
-                <xsl:when test="$type = 'DETAIL-ENUMERATION' and $items = 2"> <!-- 40 60 -->
+                <xsl:when test="$type = ('DETAIL-ENUMERATION','DETAIL-CODELIST') and $items = 2"> <!-- 40 60 -->
                         <colgroup width="40%"/>
                         <colgroup width="60%"/>
                 </xsl:when>
-                <xsl:when test="$type = 'DETAIL-ENUMERATION' and $items = 3"> <!-- 10 30 60 -->
+                <xsl:when test="$type = ('DETAIL-ENUMERATION','DETAIL-CODELIST') and $items = 3"> <!-- 10 30 60 -->
                         <colgroup width="10%"/>
                         <colgroup width="30%"/>
                         <colgroup width="60%"/>
@@ -389,7 +389,7 @@
                         <xsl:apply-templates select="item[4]" mode="#current"/>
                     </td>
                 </xsl:when>
-                <xsl:when test="$type = 'DETAIL-ENUMERATION' and $items = 2"> <!-- 40 60 -->
+                <xsl:when test="$type = ('DETAIL-ENUMERATION','DETAIL-CODELIST') and $items = 2"> <!-- 40 60 -->
                     <th>
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                     </th>
@@ -397,7 +397,7 @@
                         <xsl:apply-templates select="item[2]" mode="#current"/>
                     </td>
                 </xsl:when>
-                <xsl:when test="$type = 'DETAIL-ENUMERATION' and $items = 3"> <!-- 10 30 60 -->
+                <xsl:when test="$type = ('DETAIL-ENUMERATION','DETAIL-CODELIST') and $items = 3"> <!-- 10 30 60 -->
                     <td>
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                     </td>

@@ -46,6 +46,7 @@
     <xsl:variable name="subpath" select="imf:get-subpath(/*/imvert:project,/*/imvert:application,/*/imvert:release)"/>
     
     <xsl:variable name="link-by-eaid" select="($configuration-docrules-file/link-by,'EAID')[1] eq 'EAID'"/>
+    <xsl:variable name="explanation-location" select="$configuration-docrules-file/explanation-location"/>
     
     <xsl:variable name="imagemap-path" select="imf:get-config-string('properties','WORK_BASE_IMAGEMAP_FILE')"/>
     <xsl:variable name="imagemap" select="imf:document($imagemap-path)/imvert-imap:diagrams"/>
@@ -88,7 +89,9 @@
                 <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]"/>
             </section>
             <section type="OVERVIEW-CODELIST">
-                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]"/>
+                <content>
+                    <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]"/>
+                </content>
             </section>
             <section type="OVERVIEW-ENUMERATION">
                 <content>
@@ -162,17 +165,7 @@
             <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>
     </xsl:template>
-    
-    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]">
-        <section name="{imf:get-name(.,true())}" type="CODELIST" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
-            <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
-            <content>
-                <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-CODELIST')"/>
-            </content>
-            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
-        </section>
-    </xsl:template>
-    
+   
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]">
         <section name="{imf:get-name(.,true())}" type="UNION" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
@@ -197,7 +190,7 @@
         </section>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist')]">
         <xsl:variable name="naam" select="imf:get-name(.,true())"/>
         <part>
             <item id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
@@ -467,6 +460,23 @@
             </xsl:for-each>
             <xsl:apply-templates select="($associations except $compositions)" mode="detail"/>       
         
+        </section>
+    </xsl:template>
+    
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="detail">
+        <section name="{imf:get-name(.,true())}" type="DETAIL-CODELIST" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
+            <content>
+                <part>
+                    <xsl:sequence select="imf:create-element('item',imf:plugin-translate-i3n('DEFINITIE',true()))"/>
+                    <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+                </part>
+            </content>
+            <content>
+                <itemtype type="CODE"/>
+                <itemtype type="NAME"/>
+                <itemtype type="DEFINITION"/>
+                <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="detail-enumeratie"/><!-- same as enumeration -->
+            </content>
         </section>
     </xsl:template>
     
@@ -763,6 +773,9 @@
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-HERKOMSTDEFINITIE'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-SOURCEOFDEFINITION'))"/>
                 </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-TOELICHTING'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-DESCRIPTION'))"/>
+                </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-DATUMOPNAME'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-DATERECORDED'))"/>
                 </xsl:when>
@@ -896,7 +909,7 @@
     
     <xsl:function name="imf:create-toelichting">
         <xsl:param name="documentatie"/>
-        <xsl:if test="normalize-space($documentatie)">
+        <xsl:if test="normalize-space($documentatie) and $explanation-location = 'at-bottom'">
             <section type="EXPLANATION">
                 <content>
                     <part>
@@ -1116,10 +1129,16 @@
         </xsl:choose>
     </xsl:template>
     
+    <xsl:template match="content[empty(part/item)]" mode="section-cleanup">
+        <!-- remove empty content -->
+    </xsl:template>
+    
     <xsl:template match="node()|@*" mode="section-cleanup">
         <xsl:copy>
             <xsl:apply-templates select="@*" mode="section-cleanup"/>
             <xsl:apply-templates select="node()" mode="section-cleanup"/>
         </xsl:copy>
     </xsl:template>    
+    
+    
 </xsl:stylesheet>
