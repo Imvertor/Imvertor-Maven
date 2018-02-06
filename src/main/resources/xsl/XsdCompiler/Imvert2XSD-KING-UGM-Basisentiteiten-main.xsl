@@ -643,15 +643,15 @@
         <xsl:variable name="this-is-complextype" select="$this-attribute/../../imvert:stereotype/@id = ('stereotype-name-complextype')"/>
    
         <xsl:variable name="this-type" select="imf:get-class($this-attribute)"/>
-        
+     
         <xsl:variable name="type-is-referentietabel" select="$this-type/imvert:stereotype/@id = ('stereotype-name-referentielijst')"/>
         
-        <!-- when referentietabel, assume the attribute is the is-id attribute of the referentie tabel -->
-        <xsl:variable name="applicable-attribute" select="if ($type-is-referentietabel) then $this-type//imvert:attribute[imf:boolean(imvert:is-id)] else $this-attribute"/>
+         <!-- when referentietabel, assume the attribute is the is-id attribute of the referentie tabel -->
+        <xsl:variable name="applicable-attribute" select="if ($type-is-referentietabel) then $this-type/*/imvert:attribute[imvert:is-id = 'true'] else $this-attribute"/>
         
         <xsl:variable name="type" select="imf:get-class($applicable-attribute)"/>
   
-        <xsl:variable name="compiled-name-type" select="imf:get-compiled-name($type)"/>
+        <xsl:variable name="compiled-name-type" select="if ($type) then imf:get-compiled-name($type) else ()"/><!-- TODO deze check zou niet nodig moeten zijn -->
         
         <xsl:variable name="type-is-datatype" select="$type/imvert:stereotype/@id = ('stereotype-name-simpletype')"/>
         <xsl:variable name="type-is-complextype" select="$type/imvert:stereotype/@id = ('stereotype-name-complextype')"/>
