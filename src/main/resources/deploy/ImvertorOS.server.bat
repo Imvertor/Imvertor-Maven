@@ -20,6 +20,8 @@ SET JAVA_HOME=%bindir%\bin\java\jre1.8.0_101
 IF EXIST "%JAVA_HOME%\bin\java.exe" SET javaexe=%JAVA_HOME%\bin\java.exe
 IF NOT EXIST "%JAVA_HOME%\bin\java.exe" SET javaexe=java.exe
 
+set PATH=%bindir%\bin\EA;
+
 call "%javaexe%" %jvmparms% ^
     -Dlog4j.configuration=file:%bindir%\log4j.properties ^
 	-Dinstall.dir="%bindir%" ^
