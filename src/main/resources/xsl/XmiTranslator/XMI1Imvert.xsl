@@ -135,6 +135,7 @@
             <xsl:sequence select="imf:create-output-element('imvert:project',$project-name)"/>
             <xsl:sequence select="imf:create-output-element('imvert:application',$application-package-name)"/>
             <xsl:sequence select="imf:create-output-element('imvert:metamodel',string-join($configuration-prologue/metamodels/metamodel/name,';'))"/>
+            <xsl:sequence select="imf:create-output-element('imvert:model-designation',$configuration-prologue/metamodels/metamodel/model-designation)"/>
             <xsl:sequence select="imf:create-output-element('imvert:generated',$generation-date)"/>
             <xsl:sequence select="imf:create-output-element('imvert:generator',$imvertor-version)"/>
             <xsl:sequence select="imf:create-output-element('imvert:exported',concat(replace(/XMI/@timestamp,' ','T'),'Z'))"/>

@@ -12,6 +12,8 @@
     
     <name>RWS-L</name>
     
+    <model-designation>LOGICAL</model-designation>
+    
     <profiles>
         <profile lang="nl">
             <id>RWSLNL</id>

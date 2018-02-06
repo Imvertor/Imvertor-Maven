@@ -182,6 +182,7 @@
                     <xsl:for-each select="$configuration-metamodel-doc//metamodel">
                         <metamodel>
                             <xsl:sequence select="name"/>
+                            <xsl:sequence select="model-designation"/>
                         </metamodel>
                     </xsl:for-each>
                 </metamodels>

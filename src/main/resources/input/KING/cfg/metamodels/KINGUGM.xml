@@ -33,6 +33,8 @@
   
     <composition-direction-source>part</composition-direction-source>
     
+    <model-designation>LOGICAL</model-designation>
+    
     <profiles>
         <profile lang="nl"> 
             <id>MUGNL</id>

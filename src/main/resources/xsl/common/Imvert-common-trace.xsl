@@ -130,7 +130,7 @@
                             
                             <xsl:variable name="trace-id" select="string(.)"/>   
                             <xsl:if test="not($trace-id = $hits)">
-                                <xsl:variable name="supplier-constructs" select="imf:get-trace-construct-by-id(..,$trace-id,$all-derived-models-doc)"/>
+                                <xsl:variable name="supplier-constructs" select="imf:get-trace-construct-by-id(..,$trace-id,$all-derived-models-doc)"/> 
                                 <!-- several constructs with same ID are copy-down constructs: assume for trace purposes all are the same -->
                                 <xsl:variable name="supplier-construct" select="$supplier-constructs[1]"/>
                                 
@@ -165,8 +165,12 @@
         <xsl:param name="client-construct" as="element()"/>
         <xsl:param name="level" as="xs:integer"/>
         
+        <xsl:variable name="root" select="$client-construct/ancestor::imvert:packages[1]"/>
+        
         <!-- return at least the info on this construct -->
-        <xsl:variable name="client-application" select="$client-construct/ancestor::imvert:packages[1]"/>
+        <xsl:variable name="client-application" select="$root"/>
+        <xsl:variable name="client-model-designation" select="$root/imvert:model-designation"/>
+        
         <xsl:variable name="client-project" select="$client-application/imvert:project"/>
         <xsl:variable name="client-name" select="$client-application/imvert:application"/>
         <xsl:variable name="client-release" select="$client-application/imvert:release"/>
@@ -181,7 +185,6 @@
             else local-name($client-construct)
             "/>
         <xsl:variable name="display-name" select="$client-construct/(@display-name,imvert:name)[1]"/>
-        <xsl:variable name="root" select="$client-construct/ancestor::imvert:packages"/>
         <supplier>
             <xsl:attribute name="id" select="$client-construct/imvert:id"/>
             <xsl:attribute name="project" select="$client-project"/>
@@ -194,6 +197,7 @@
             <xsl:attribute name="display-name" select="$display-name"/>
             <xsl:attribute name="base-namespace" select="$client-construct/ancestor::imvert:packages/imvert:base-namespace"/>
             <xsl:if test="$root">
+                <xsl:attribute name="model-designation" select="$client-model-designation"/>
                 <xsl:attribute name="verkorteAlias" select="imf:get-tagged-value($root,'##CFG-TV-VERKORTEALIAS')"/>
             </xsl:if>
         </supplier>
