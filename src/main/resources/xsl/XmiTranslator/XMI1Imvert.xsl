@@ -703,10 +703,14 @@
         <xsl:variable name="supplier-info" as="element()*">
             <xsl:for-each select="1 to $scount">
                 <xsl:variable name="index" select="position()"/>
+                <xsl:variable name="supplier-project" select="imf:fallback($supplier-projects, $index)"/>
+                <xsl:variable name="supplier-name" select="imf:fallback($supplier-names, $index)"/>
+                <xsl:variable name="supplier-release" select="imf:fallback($supplier-releases, $index)"/>
                 <imvert:supplier>
-                    <xsl:sequence select="imf:create-output-element('imvert:supplier-name',imf:fallback($supplier-names, $index))"/>
-                    <xsl:sequence select="imf:create-output-element('imvert:supplier-project',imf:fallback($supplier-projects, $index))"/>
-                    <xsl:sequence select="imf:create-output-element('imvert:supplier-release',imf:fallback($supplier-releases, $index))"/>
+                    <xsl:attribute name="subpath" select="imf:get-subpath($supplier-project,$supplier-name,$supplier-release)"/>
+                    <xsl:sequence select="imf:create-output-element('imvert:supplier-name',$supplier-name)"/>
+                    <xsl:sequence select="imf:create-output-element('imvert:supplier-project',$supplier-project)"/>
+                    <xsl:sequence select="imf:create-output-element('imvert:supplier-release',$supplier-release)"/>
                     <xsl:sequence select="imf:create-output-element('imvert:supplier-package-name',imf:fallback($supplier-packs,$index))"/>
                 </imvert:supplier>
             </xsl:for-each>
