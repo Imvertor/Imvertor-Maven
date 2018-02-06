@@ -39,18 +39,19 @@
     </xsl:template>
     
     <xsl:template match="section" mode="domain">
+        <xsl:variable name="id" select="@id"/>
         <xsl:choose>
             <xsl:when test="$has-multiple-domains">
                 <xsl:variable name="level" select="imf:get-section-level(.)"/>
-                <div>
-                    <xsl:sequence select="imf:create-anchors(.)"/>
+                <xsl:sequence select="imf:create-anchors(.)"/>
+                <section id="{$id}">
                     <xsl:element name="{concat('h',$level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                         <xsl:value-of select="' '"/>
                         <xsl:value-of select="@name"/>
                     </xsl:element>
                     <xsl:apply-templates select="section" mode="detail"/>
-                </div>
+                </section>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:apply-templates select="section" mode="detail"/>

@@ -1130,7 +1130,7 @@
     </xsl:template>
     
     <xsl:template match="content[empty(part/item)]" mode="section-cleanup">
-        <!-- remove empty content -->
+        <xsl:comment>removed empty content</xsl:comment>
     </xsl:template>
     
     <xsl:template match="node()|@*" mode="section-cleanup">
