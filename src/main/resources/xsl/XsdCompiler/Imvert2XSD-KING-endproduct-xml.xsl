@@ -3062,9 +3062,9 @@
                         </ep:construct>
                     </xsl:when>
                     <xsl:when test="$construct-Prefix = ''">
-                        <xsl:variable name="msg"
-                            select="concat('There is possibly an intern package within the BSM without any content (perhaps only an empty diagram). Delete it, it probably still has some ghost objects related to ',imvert:name,'.')"/>
-                        <xsl:sequence select="imf:msg('WARNING', $msg)"/>
+                      <!--  <xsl:variable name="msg"
+                            select="concat('There is possibly an intern package within the BSM without any content (perhaps only an empty diagram). Delete it, it probably still has some ghost objects related to ',imvert:name,'.')"/> -->
+                        <xsl:sequence select="imf:msg(.,'WARNING', 'Reference to an empty package found',())"/>
                     </xsl:when>
                 </xsl:choose>
                 
