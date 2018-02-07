@@ -1440,7 +1440,7 @@
                                             		ook al gegenereerd moeten worden als er ergens dieper onder het huidige niveau 
                                             		een element voorkomt waarbij op het gerelateerde attribuut historie is gedefinieerd. 
                                             		Dit geldt voor alle locaties waar onderstaande elementen worden gedefinieerd. -->
-                                       <xsl:if test="not($construct/imvert:stereotype = ((
+                                       <xsl:if test="not($construct/imvert:stereotype/@id = ((
                                            'stereotype-name-vraagberichttype',
                                            'stereotype-name-antwoordberichttype',
                                            'stereotype-name-kennisgevingberichttype',
