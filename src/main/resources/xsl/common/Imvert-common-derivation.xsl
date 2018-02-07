@@ -192,7 +192,8 @@
 		
 		<xsl:variable name="allSuppliers" select="imf:get-trace-suppliers-for-construct($construct,1)"/>
 
-		<xsl:for-each select="$allSuppliers[@project = ('UGM','L-DSO')]"> <!--TODO moet zijn: @model-designation = 'LOGICAL'-->
+		<!--xsl:for-each select="$allSuppliers[@project = ('UGM','L-DSO')]"--> <!--TODO moet zijn: @model-designation = 'LOGICAL'-->
+		<xsl:for-each select="$allSuppliers[@model-designation = 'LOGICAL']">
 			<xsl:sort select="./@level" order="descending"/>
 			<xsl:variable name="supplier" select="."/>
 			<supplier 

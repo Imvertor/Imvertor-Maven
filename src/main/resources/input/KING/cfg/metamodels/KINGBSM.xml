@@ -27,6 +27,8 @@
    <desc lang="nl">Metamodel voor KING/VNG informatie modellen: bericht specificatie model</desc>
    <desc lang="en">Metamodel for KING/VNG information models: bericht specificatie model</desc>
    
+   <model-designation>-</model-designation>
+
    <profiles>
       <profile lang="nl"> 
          <id>MBGNL</id>

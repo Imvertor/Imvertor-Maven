@@ -10,7 +10,9 @@
     <xi:include href="RWS-L.xml"/>
     
     <name>RWS-B</name>
-    
+
+   <model-designation>-</model-designation>
+   
    <profiles>
       <profile lang="nl">
          <id>RWSBNL</id>
