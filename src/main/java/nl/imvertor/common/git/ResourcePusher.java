@@ -26,6 +26,7 @@ public class ResourcePusher {
 	private File localWorkDir;
 	private String user;
 	private String pass;
+	private String email;
 	private Git git;
 	private boolean gitopen = false;
 
@@ -63,8 +64,10 @@ public class ResourcePusher {
 			/* Commit the files to the repository: */
 			git.commit()
 				.setMessage(commitMessage)
-				.call();
-
+				.setCommitter(user, email)
+				.setAuthor(user, email)
+			 	.call();
+			
 			runner.debug(logger, "GITHUB", "Pushing files to remote repository \"" + remoteRepositoryURI + "\" ...");
 			/* Push all changes to the remote server: */
 			return git.push()
@@ -119,7 +122,7 @@ public class ResourcePusher {
 	 *          password to login to remote repository * @return a Git object
 	 * @throws Exception
 	 */
-	public void prepare(String remoteRepositoryURI, File localWorkDir, String username, String password) throws Exception {
+	public void prepare(String remoteRepositoryURI, File localWorkDir, String username, String password, String email) throws Exception {
 
 		Runner runner = Configurator.getInstance().getRunner();
 
@@ -127,6 +130,7 @@ public class ResourcePusher {
 		this.localWorkDir = localWorkDir;
 		this.user = username;
 		this.pass = password;
+		this.email = email;
 
 		/* Make sure localWorkDir exists: */
 		if (!localWorkDir.isDirectory() && !localWorkDir.mkdirs())
@@ -157,7 +161,7 @@ public class ResourcePusher {
 			File workdir = new File("c:/temp/git");
 
 			// start up the local work folder
-			rp.prepare("https://github.com/Armatiek/jgittest.git", workdir, "arjan.loeffen@armatiek.nl", AnyFile.getFileContent("q:/git.txt"));
+			rp.prepare("https://github.com/Armatiek/jgittest.git", workdir, "ArjanLoeffen", AnyFile.getFileContent("q:/git.txt"),"arjan.loeffen@armatiek.nl");
 			
 			// copy file to that work folder
 			AnyFile testfile = new AnyFile(workdir,"test1.txt");

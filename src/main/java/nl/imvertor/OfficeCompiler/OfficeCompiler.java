@@ -119,6 +119,7 @@ public class OfficeCompiler extends Step {
 						
 						AnyFolder catfolder = new AnyFolder(officeFile.getParent());
 						
+						String gitemail     	        = configurator.getServerProperty("git.email"); // email address
 						String gituser     	            = configurator.getServerProperty("git.user"); // user name
 						String gitpass     	            = configurator.getServerProperty("git.pass"); // password
 						String gitlocal     	        = configurator.getServerProperty("git.local"); // location of local git repositories 
@@ -136,7 +137,7 @@ public class OfficeCompiler extends Step {
 						
 						// create and prepare the GIT resource pusher
 						ResourcePusher rp = new ResourcePusher();
-						rp.prepare("https://github.com" + gitpath, gitfolder, gituser, gitpass);
+						rp.prepare("https://github.com" + gitpath, gitfolder, gituser, gitpass, gitemail);
 						
 						// copy the files to the work folder
 						catfolder.copy(new AnyFolder(gitfolder,"data"));
