@@ -2815,25 +2815,18 @@
         <xsl:variable name="min-waarde" select="imf:get-tagged-value(.,'##CFG-TV-MINVALUEINCLUSIVE')"/>
         <xsl:variable name="max-waarde" select="imf:get-tagged-value(.,'##CFG-TV-MAXVALUEINCLUSIVE')"/>
         <xsl:variable name="min-length" select="xs:integer(imf:get-tagged-value(.,'##CFG-TV-MINLENGTH'))"/>
-        <!--xsl:variable name="patroon" select="imf:get-tagged-value(.,'##CFG-TV-FORMALPATTERN')"/-->
         <xsl:variable name="patroon" select="imvert:pattern"/>
         
         <xsl:variable name="nillable-patroon" select="if (normalize-space($patroon)) then concat('(', $patroon,')?') else ()"/>
 
-        <!--xsl:if test="imvert:name = 'hotseflots2'">
-            <xsl:sequence select="imf:create-debug-comment(concat(imvert:name,' -',normalize-space(string($min-length)),';'),$debugging)"/>
-        </xsl:if-->
-        
         <xsl:variable name="facetten">
-            <!--xsl:if test="imvert:name != 'hotseflots2'"-->
-                <xsl:sequence select="imf:create-facet('ep:formeel-patroon',$nillable-patroon)"/>
-                <xsl:sequence select="imf:create-facet('ep:min-value',$min-waarde)"/>
-                <xsl:sequence select="imf:create-facet('ep:max-value',$max-waarde)"/>
-                <xsl:sequence select="imf:create-facet('ep:min-length',string($min-length))"/>
-                <xsl:sequence select="imf:create-facet('ep:max-length',$max-length)"/>
-                <xsl:sequence select="imf:create-facet('ep:length',$total-digits)"/>
-                <xsl:sequence select="imf:create-facet('ep:fraction-digits',$fraction-digits)"/>
-            <!--/xsl:if-->
+            <xsl:sequence select="imf:create-facet('ep:formeel-patroon',$nillable-patroon)"/>
+            <xsl:sequence select="imf:create-facet('ep:min-value',$min-waarde)"/>
+            <xsl:sequence select="imf:create-facet('ep:max-value',$max-waarde)"/>
+            <xsl:sequence select="imf:create-facet('ep:min-length',string($min-length))"/>
+            <xsl:sequence select="imf:create-facet('ep:max-length',$max-length)"/>
+            <xsl:sequence select="imf:create-facet('ep:length',$total-digits)"/>
+            <xsl:sequence select="imf:create-facet('ep:fraction-digits',$fraction-digits)"/>
         </xsl:variable>
         <xsl:variable name="compiled-name" select="imf:useable-attribute-name(imf:get-compiled-name(.),.)"/>
         
@@ -2977,92 +2970,104 @@
                     </xsl:choose>
                 </xsl:variable>
                 
-                <xsl:if test="$global-e-types-allowed = 'Ja'">
-                    <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}" imvert:checksum="{concat($checksum-string,'-simpleContentcomplexData')}" addedLevel="yes">
-                        <xsl:sequence select="imf:create-output-element('ep:name', concat($tokens[1],'-e'))"/>
-                        <xsl:sequence select="imf:create-output-element('ep:tech-name', concat($tokens[1],'-e'))"/>
-                        <ep:type-name imvert:checksum="{$checksum-string}">
-                            <xsl:value-of select="concat($construct-Prefix,':',$tokens[1])"/>
-                        </ep:type-name>
-                        <xsl:if test="$global-noValue-allowed = 'Ja'">
-                            <ep:seq>
-                                <ep:construct ismetadata="yes">
-                                    <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
-                                    <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
-                                    <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
-                                    <ep:min-occurs>0</ep:min-occurs>
-                                </ep:construct>                     
-                            </ep:seq>
-                        </xsl:if>
-                    </ep:construct>
-                    <xsl:if test="(empty($nillable-patroon) or $min-length = 0) and starts-with($checksum-string,'String')">
-                        <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}" imvert:checksum="{concat($checksum-string,'-Vraag-simpleContentcomplexData')}">
-                            <xsl:sequence select="imf:create-output-element('ep:name', concat($tokens[1],'Vraag-e'))"/>
-                            <xsl:sequence select="imf:create-output-element('ep:tech-name', concat($tokens[1],'Vraag-e'))"/>
-                            <ep:type-name imvert:checksum="{$checksum-string}">
-                                <xsl:value-of select="concat($construct-Prefix,':',$tokens[1])"/>
-                            </ep:type-name>
-                            <ep:seq>
-                                <xsl:if test="$global-noValue-allowed = 'Ja'">
-                                    <ep:construct ismetadata="yes">
-                                        <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
-                                        <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
-                                        <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
-                                        <ep:min-occurs>0</ep:min-occurs>
-                                    </ep:construct>
+                <xsl:choose>
+                    <xsl:when test="$construct-Prefix != ''">
+                        <xsl:if test="$global-e-types-allowed = 'Ja'">
+                            <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}" imvert:checksum="{concat($checksum-string,'-simpleContentcomplexData')}" addedLevel="yes">
+                                <xsl:if test="$debugging">
+                                    <xsl:copy-of select="$suppliers"/>
                                 </xsl:if>
-                                <ep:construct ismetadata="yes">
-                                    <xsl:sequence select="imf:create-output-element('ep:name', 'wildcard')"/>
-                                    <xsl:sequence select="imf:create-output-element('ep:tech-name', 'wildcard')"/>
-                                    <ep:type-name><xsl:value-of select="concat($StUF-prefix,':Wildcard')"/></ep:type-name>
-                                    <ep:min-occurs>0</ep:min-occurs>
-                                </ep:construct>                     
-                            </ep:seq>
+                                <xsl:sequence select="imf:create-output-element('ep:name', concat($tokens[1],'-e'))"/>
+                                <xsl:sequence select="imf:create-output-element('ep:tech-name', concat($tokens[1],'-e'))"/>
+                                <ep:type-name imvert:checksum="{$checksum-string}">
+                                    <xsl:value-of select="concat($construct-Prefix,':',$tokens[1])"/>
+                                </ep:type-name>
+                                <xsl:if test="$global-noValue-allowed = 'Ja'">
+                                    <ep:seq>
+                                        <ep:construct ismetadata="yes">
+                                            <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                                            <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                                            <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                                            <ep:min-occurs>0</ep:min-occurs>
+                                        </ep:construct>                     
+                                    </ep:seq>
+                                </xsl:if>
+                            </ep:construct>
+                            <xsl:if test="(empty($nillable-patroon) or $min-length = 0) and starts-with($checksum-string,'String')">
+                                <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}" imvert:checksum="{concat($checksum-string,'-Vraag-simpleContentcomplexData')}">
+                                    <xsl:sequence select="imf:create-output-element('ep:name', concat($tokens[1],'Vraag-e'))"/>
+                                    <xsl:sequence select="imf:create-output-element('ep:tech-name', concat($tokens[1],'Vraag-e'))"/>
+                                    <ep:type-name imvert:checksum="{$checksum-string}">
+                                        <xsl:value-of select="concat($construct-Prefix,':',$tokens[1])"/>
+                                    </ep:type-name>
+                                    <ep:seq>
+                                        <xsl:if test="$global-noValue-allowed = 'Ja'">
+                                            <ep:construct ismetadata="yes">
+                                                <xsl:sequence select="imf:create-output-element('ep:name', 'noValue')"/>
+                                                <xsl:sequence select="imf:create-output-element('ep:tech-name', 'noValue')"/>
+                                                <ep:type-name><xsl:value-of select="concat($StUF-prefix,':NoValue')"/></ep:type-name>
+                                                <ep:min-occurs>0</ep:min-occurs>
+                                            </ep:construct>
+                                        </xsl:if>
+                                        <ep:construct ismetadata="yes">
+                                            <xsl:sequence select="imf:create-output-element('ep:name', 'wildcard')"/>
+                                            <xsl:sequence select="imf:create-output-element('ep:tech-name', 'wildcard')"/>
+                                            <ep:type-name><xsl:value-of select="concat($StUF-prefix,':Wildcard')"/></ep:type-name>
+                                            <ep:min-occurs>0</ep:min-occurs>
+                                        </ep:construct>                     
+                                    </ep:seq>
+                                </ep:construct>
+                            </xsl:if>
+                        </xsl:if>
+                        <ep:construct type="simpleData" prefix="{$construct-Prefix}" isdatatype="yes" imvert:checksum="{concat($checksum-string,'-simpleData')}">
+                            <xsl:sequence select="imf:create-output-element('ep:name', $tokens[1])"/>
+                            <xsl:sequence select="imf:create-output-element('ep:tech-name', $tokens[1])"/>
+                            <xsl:choose>
+                                <xsl:when test="imvert:type-name = 'scalar-integer'">
+                                    <ep:data-type>scalar-integer</ep:data-type>
+                                    <xsl:sequence select="$facetten"/>
+                                </xsl:when>
+                                <xsl:when test="imvert:type-name = 'scalar-string'">
+                                    <ep:data-type>scalar-string</ep:data-type>
+                                    <xsl:sequence select="$facetten"/>
+                                </xsl:when>
+                                <xsl:when test="imvert:type-name = 'scalar-decimal'">
+                                    <ep:data-type>scalar-decimal</ep:data-type>
+                                    <xsl:sequence select="$facetten"/>
+                                </xsl:when>
+                                <xsl:when test="imvert:type-name = 'scalar-boolean'">
+                                    <ep:data-type>scalar-boolean</ep:data-type>
+                                    <xsl:sequence select="$facetten"/>
+                                </xsl:when>
+                                <xsl:when test="imvert:type-name = 'scalar-date'">
+                                    <ep:data-type>scalar-date</ep:data-type>
+                                    <xsl:sequence select="$facetten"/>
+                                </xsl:when>
+                                <xsl:when test="imvert:type-name = 'scalar-txt'">
+                                    <ep:data-type>scalar-string</ep:data-type>
+                                    <xsl:sequence select="$facetten"/>
+                                </xsl:when>    
+                                <xsl:when test="imvert:type-name = 'scalar-uri'">
+                                    <ep:data-type>xs:anyURI</ep:data-type>
+                                    <xsl:sequence select="$facetten"/>
+                                </xsl:when>
+                                <xsl:when test="imvert:type-name = 'scalar-postcode'">
+                                    <ep:data-type>scalar-postcode</ep:data-type>
+                                    <xsl:sequence select="$facetten"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the simple attribute type: [1]', imvert:type-name)"/>
+                                </xsl:otherwise>                
+                            </xsl:choose>
                         </ep:construct>
-                    </xsl:if>
-                </xsl:if>
-                <!--ep:construct type="simpleData" prefix="{$construct-Prefix}" namespaceId="{construct-Namespace}" isdatatype="yes" imvert:checksum="{concat($checksum-string,'-simpleData')}"-->
-                <ep:construct type="simpleData" prefix="{$construct-Prefix}" isdatatype="yes" imvert:checksum="{concat($checksum-string,'-simpleData')}">
-                    <xsl:sequence select="imf:create-output-element('ep:name', $tokens[1])"/>
-                    <xsl:sequence select="imf:create-output-element('ep:tech-name', $tokens[1])"/>
-                    <xsl:choose>
-                        <xsl:when test="imvert:type-name = 'scalar-integer'">
-                            <ep:data-type>scalar-integer</ep:data-type>
-                            <xsl:sequence select="$facetten"/>
-                        </xsl:when>
-                        <xsl:when test="imvert:type-name = 'scalar-string'">
-                            <ep:data-type>scalar-string</ep:data-type>
-                            <xsl:sequence select="$facetten"/>
-                        </xsl:when>
-                        <xsl:when test="imvert:type-name = 'scalar-decimal'">
-                            <ep:data-type>scalar-decimal</ep:data-type>
-                            <xsl:sequence select="$facetten"/>
-                        </xsl:when>
-                        <xsl:when test="imvert:type-name = 'scalar-boolean'">
-                            <ep:data-type>scalar-boolean</ep:data-type>
-                            <xsl:sequence select="$facetten"/>
-                        </xsl:when>
-                        <xsl:when test="imvert:type-name = 'scalar-date'">
-                            <ep:data-type>scalar-date</ep:data-type>
-                            <xsl:sequence select="$facetten"/>
-                        </xsl:when>
-                        <xsl:when test="imvert:type-name = 'scalar-txt'">
-                            <ep:data-type>scalar-string</ep:data-type>
-                            <xsl:sequence select="$facetten"/>
-                        </xsl:when>    
-                        <xsl:when test="imvert:type-name = 'scalar-uri'">
-                            <ep:data-type>xs:anyURI</ep:data-type>
-                            <xsl:sequence select="$facetten"/>
-                        </xsl:when>
-                        <xsl:when test="imvert:type-name = 'scalar-postcode'">
-                            <ep:data-type>scalar-postcode</ep:data-type>
-                            <xsl:sequence select="$facetten"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the simple attribute type: [1]', imvert:type-name)"/>
-                        </xsl:otherwise>                
-                    </xsl:choose>
-                </ep:construct>
+                    </xsl:when>
+                    <xsl:when test="$construct-Prefix = ''">
+                        <xsl:variable name="msg"
+                            select="concat('There is possibly an intern package within the BSM without any content (perhaps only an empty diagram). Delete it, it probably still has some ghost objects related to ',imvert:name,'.')"/>
+                        <xsl:sequence select="imf:msg('WARNING', $msg)"/>
+                    </xsl:when>
+                </xsl:choose>
+                
             </xsl:when>
         </xsl:choose>
     </xsl:template>
