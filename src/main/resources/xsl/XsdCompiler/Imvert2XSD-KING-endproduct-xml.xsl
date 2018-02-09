@@ -366,6 +366,9 @@
     </xsl:variable>
     
     <xsl:template match="/">
+        <xsl:if test="$debugging">
+            <xsl:sequence select="imf:msg('INFO','Constructing the endproduct message structure.')"/>
+        </xsl:if>		
         
         <xsl:sequence select="imf:pretty-print($endproduct,false())"/>
         

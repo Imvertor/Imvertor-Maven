@@ -71,6 +71,9 @@
 
 	<xsl:template match="/">
 		<xsl:sequence select="imf:track('Constructing the rough message-structure')"/>
+		<xsl:if test="$debugging">
+			<xsl:sequence select="imf:msg('INFO','Constructing the rough message structure.')"/>
+		</xsl:if>		
 		
 		<xsl:sequence select="imf:pretty-print($rough-messages,false())"/>
 
