@@ -35,6 +35,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -491,16 +492,25 @@ public class AnyFile extends File  {
 	 * @throws Exception 
 	 */
 	public boolean isXml() throws Exception {
-	    return getExtension().equals("xml") || getHead(5).equals("<?xml") || getHead(4).equals("<xml");
+		if (getExtension().equals("xml")) return true;
+		if (getExtension().equals("xsl")) return true;
+		if (getExtension().equals("xslt")) return true;
+		if (getExtension().equals("xmi")) return true;
+		
+		byte[] head = getHeadBytes(5);
+		if ((new String(Arrays.copyOfRange(head,0,4), "UTF-8")).equals("<?xml")) return true;
+		if ((new String(Arrays.copyOfRange(head,0,4), "UTF-8")).equals("<xsl:")) return true;
+		if ((new String(Arrays.copyOfRange(head,0,3), "UTF-8")).equals("<xml")) return true;
+	
+		return false;
 	}
 	
-	public String getHead(int numberBytes) throws Exception {
+	public byte[] getHeadBytes(int numberBytes) throws Exception {
 		FileInputStream is = getFileInputStream();
 		byte bytes[] = new byte[numberBytes];
         is.read(bytes);
-        String r = new String(bytes, "UTF-8");
         is.close();
-        return r;
+        return bytes;
 	}
 	
 	public FileInputStream getFileInputStream() throws FileNotFoundException {
