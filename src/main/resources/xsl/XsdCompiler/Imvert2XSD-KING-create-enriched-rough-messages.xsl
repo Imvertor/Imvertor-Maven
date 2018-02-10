@@ -58,6 +58,9 @@
 	</xsl:variable>
 	
 	<xsl:template match="/">
+		<xsl:if test="$debugging">
+			<xsl:sequence select="imf:msg('INFO','Enriching the rough message structure.')"/>
+		</xsl:if>		
 		
 		<xsl:sequence select="imf:pretty-print($enriched-rough-messages,false())"/>
 

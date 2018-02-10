@@ -51,6 +51,10 @@
     <xsl:variable name="xsd-file-folder-path" select="imf:get-config-string('properties','RESULT_XSD_APPLICATION_FOLDER')"/>
     
     <xsl:template match="/">
+        <xsl:if test="$debugging">
+            <xsl:sequence select="imf:msg('INFO','Transforming the endproduct message structure to XML-Schema.')"/>
+        </xsl:if>		
+
         <xsl:apply-templates/>
     </xsl:template>
 
