@@ -87,9 +87,6 @@ public class Runner {
 		// remove pre-existing work folder; create new one. Keep existing xmi folder!
 		File wf = Configurator.getInstance().getWorkFolder();
 		if (wf.isDirectory()) {
-			FileUtils.deleteQuietly(new File(wf, "imvert"));
-			FileUtils.deleteQuietly(new File(wf, "doc"));
-			FileUtils.deleteQuietly(new File(wf, "report"));
 			FileUtils.deleteQuietly(new File(wf, Configurator.PARMS_FILE_NAME));
 			FileUtils.deleteQuietly(new File(wf, Configurator.TRACK_FILE_NAME));
 		} else {
