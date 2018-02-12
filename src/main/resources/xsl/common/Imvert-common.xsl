@@ -68,7 +68,7 @@
     
     <xsl:variable name="name-none">n-o-n-e</xsl:variable>
     
-    <xsl:variable name="release-info" as="element()+">
+    <xsl:variable name="release-info" as="element(frag)+">
         <frag key="year" value="{substring($application-package-release,1,4)}"/>
         <frag key="month" value="{substring($application-package-release,5,2)}"/>
         <frag key="day" value="{substring($application-package-release,7,2)}"/>
@@ -719,7 +719,7 @@
     -->
     <xsl:function name="imf:insert-fragments-by-name" as="xs:string">
         <xsl:param name="string" as="xs:string"/>
-        <xsl:param name="fragments" as="element()+"/>
+        <xsl:param name="fragments" as="element(frag)+"/>
         <xsl:variable name="result" as="xs:string*">
             <xsl:analyze-string select="$string" regex="\[(.+?)\]">
                 <xsl:matching-substring>

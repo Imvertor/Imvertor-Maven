@@ -179,7 +179,7 @@
 	<xsl:function name="imf:map-kenniskluis-uri" as="xs:string">
 		<xsl:param name="resource-url" as="xs:string"/>
 		<xsl:param name="about-id" as="xs:string"/>
-		<xsl:variable name="info" as="element()+">
+		<xsl:variable name="info" as="element(frag)+">
 			<xsl:sequence select="$release-info"/>
 			<frag key="key" value="{$about-id}"/>
 		</xsl:variable>

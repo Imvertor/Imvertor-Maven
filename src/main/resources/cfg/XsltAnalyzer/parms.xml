@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 Dienst voor het kadaster en de openbare registers
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>XsltAnalyzer parameters</name>
+      <version-control>$$</version-control>
+   </id>
+   <cli-parms>
+      <cli-parm>
+         <name>folder</name>
+         <arg>filepath</arg>
+         <tip>Input folder holding any number of XSLT files</tip>
+         <required>true</required>
+         <type>file</type>
+      </cli-parm> 
+   </cli-parms>
+   
+   <properties>
+      <!-- filter all files, by selecting the xslt files in the folder -->
+      <XSLTANALYZER_FILTER_XSL>XsltAnalyzer-filter.xsl</XSLTANALYZER_FILTER_XSL>   
+      
+      <!-- analyze all xslt files -->
+      <XSLTANALYZER_ANALYSIS_XSL>XsltAnalyzer-analysis.xsl</XSLTANALYZER_ANALYSIS_XSL>
+      
+      <!-- represent this analysis as a HTML -->
+      <XSLTANALYZER_HTML_XSL>XsltAnalyzer-html.xsl</XSLTANALYZER_HTML_XSL>   
+  
+      <!-- in the process, generate these files: -->
+      <XSLTANALYZER_FILTER_RESULT_XML>${system/work-imvert-folder-path}/imvertor.01.filtered.xml</XSLTANALYZER_FILTER_RESULT_XML>   
+      <XSLTANALYZER_ANALYSIS_RESULT_XML>${system/work-imvert-folder-path}/imvertor.02.analyzed.xml</XSLTANALYZER_ANALYSIS_RESULT_XML>   
+      <XSLTANALYZER_HTML_RESULT>${system/work-imvert-folder-path}/imvertor.03.analyzed.xml</XSLTANALYZER_HTML_RESULT>   
+      
+   </properties>
+</config>
