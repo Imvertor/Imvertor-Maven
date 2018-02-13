@@ -141,7 +141,14 @@
             <xsl:comment>Created as a stub for StUF alignment: moved role info to association</xsl:comment>
             
             <!-- plaats de rol naam als de naam van de associatie -->
-            <xsl:apply-templates select="imvert:target/imvert:role" mode="#current"/>
+            <xsl:choose>
+                <xsl:when test="imvert:target/imvert:role">
+                    <xsl:apply-templates select="imvert:target/imvert:role" mode="#current"/>
+                </xsl:when>
+                <xsl:otherwise>  <!-- TODO mag niet in MIM, relatie rollen worden gevolgd. -->
+                    <xsl:apply-templates select="imvert:name" mode="#current"/>
+                </xsl:otherwise>
+            </xsl:choose>
             
             <!-- zet het stereotype -->
             <imvert:stereotype id="stereotype-name-relatiesoort">RELATIE</imvert:stereotype>
