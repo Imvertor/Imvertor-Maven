@@ -65,11 +65,14 @@
                     -->
                     <table class="tablesorter"> 
                         <xsl:variable name="rows" as="element(tr)*">
-                            <xsl:for-each select="$configuration/config/cli/*[not(name() = 'arguments')]">
-                                <xsl:sort select="name()"/>
-                                <xsl:variable name="name" select="name()"/>
-                                <xsl:variable name="cli-info" select="$configuration/config/clispecs/clispec[longKey = $name]"/>
-                                <tr>
+                            <xsl:for-each select="$configuration/config/clispecs/clispec[not(longKey = 'arguments')]">
+                                <xsl:sort select="longKey"/>
+
+                                <xsl:variable name="cli-info" select="."/>
+                                <xsl:variable name="name" select="longKey"/>
+                                <xsl:variable name="value" select="$configuration/config/cli/*[name() = $name]"/>
+                                
+                                <tr class="{if (empty($value)) then 'cmp-system' else ''}">
                                     <td>
                                         <xsl:value-of select="$name"/> 
                                     </td>
@@ -77,7 +80,7 @@
                                         <xsl:value-of select="$cli-info/argKey"/>
                                     </td>
                                     <td>
-                                        <b><xsl:value-of select="imf:recognize-file(.)"/></b>
+                                        <b><xsl:value-of select="imf:recognize-file($value)"/></b>
                                     </td>
                                     <td>
                                         <xsl:value-of select="$cli-info/description"/>

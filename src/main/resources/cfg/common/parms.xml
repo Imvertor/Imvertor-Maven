@@ -29,6 +29,12 @@
          <arg>program|license</arg>
          <tip>Print program help and copyright/license info for this application</tip>
          <required>false</required>
+      </cli-parm>
+      <cli-parm>
+         <name>test1</name>
+         <arg>yes|no</arg>
+         <tip>Dest desc</tip>
+         <required>false</required>
       </cli-parm> 
       <cli-parm>
          <name>arguments</name>
@@ -203,7 +209,7 @@
       <!-- location of the XML catalog file; this is a generated file, only for compare step -->
       <GENERATED_CATALOG_FILEPATH>${system/work-folder-path}/catalog.xml</GENERATED_CATALOG_FILEPATH>
       
-      <!-- the file that holds the xparms as asisgned throughout the chain -->
+      <!-- the file that holds the xparms as assigned throughout the chain -->
       <WORK_XPARMS_CHAIN_FILE>${system/work-imvert-folder-path}/imvertor.39.xparms.xml</WORK_XPARMS_CHAIN_FILE>
 
       <!-- the file that holds the xslt call info collected throughout the chain -->
