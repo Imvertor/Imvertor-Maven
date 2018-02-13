@@ -2962,19 +2962,27 @@
                 <xsl:variable name="checksum-string" select="imf:store-blackboard-simpletype-entry-info($checksum-strings)"/>
                 <xsl:variable name="tokens" select="tokenize($checksum-string,'\[SEP\]')"/>
                 
-                <xsl:variable name="construct-Prefix">
+                <xsl:variable name="v" select="$suppliers//supplier[1]"/>
+               
+                <xsl:variable name="construct-Prefix" as="xs:string?">
                     <xsl:choose>
                         <xsl:when test="contains(ancestor::imvert:class/imvert:alias, '/www.kinggemeenten.nl/BSM/Berichtstrukturen')">
                             <xsl:value-of select="$StUF-prefix"/>
                         </xsl:when>
+                        <xsl:when test="empty($v)">
+                            <xsl:sequence select="imf:msg(.,'ERROR', 'No suppliers found.',())"/>
+                        </xsl:when>
+                        <xsl:when test="exists($v/@verkorteAlias)">
+                            <xsl:value-of select="$v/@verkorteAlias"/>
+                        </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="$suppliers//supplier[1]/@verkorteAlias"/>
+                            <xsl:sequence select="imf:msg(.,'ERROR', 'Supplier does not supply [1].',('Verkorte alias'))"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
                 
                 <xsl:choose>
-                    <xsl:when test="$construct-Prefix != ''">
+                    <xsl:when test="exists($construct-Prefix)">
                         <xsl:if test="$global-e-types-allowed = 'Ja'">
                             <ep:construct type="simpleContentcomplexData" prefix="{$construct-Prefix}" imvert:checksum="{concat($checksum-string,'-simpleContentcomplexData')}" addedLevel="yes">
                                 <xsl:if test="$debugging">
@@ -3064,11 +3072,9 @@
                             </xsl:choose>
                         </ep:construct>
                     </xsl:when>
-                    <xsl:when test="$construct-Prefix = ''">
-                      <!--  <xsl:variable name="msg"
-                            select="concat('There is possibly an intern package within the BSM without any content (perhaps only an empty diagram). Delete it, it probably still has some ghost objects related to ',imvert:name,'.')"/> -->
-                        <xsl:sequence select="imf:msg(.,'WARNING', 'Reference to an empty package found',())"/>
-                    </xsl:when>
+                    <xsl:otherwise>
+                        <!-- skip error situation -->
+                    </xsl:otherwise>
                 </xsl:choose>
                 
             </xsl:when>
