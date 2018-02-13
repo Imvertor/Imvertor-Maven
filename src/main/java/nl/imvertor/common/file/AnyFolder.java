@@ -152,9 +152,10 @@ public class AnyFolder extends AnyFile {
 	 * @param filterXslFile Pass XSL file to filter search file found, operating on the cw:file root element.
 	 * @param roleInfo Pass roleInfo when the result should be typed for further processing. This role info will appear on the @role attribute of the cw:files root element. 
 	 * @throws Exception
+	 * @returns Number of files selected
 	 */
 	
-	public void serializeToXml(XslFile filterXslFile, String roleInfo) throws Exception {
+	public int serializeToXml(XslFile filterXslFile, String roleInfo) throws Exception {
 		// create a content file. If local name, the relative, else assume absolute.
 		XmlFile content = (serializedFilePath == SERIALIZED_CONTENT_XML_FILENAME) ? new XmlFile(this,serializedFilePath) : new XmlFile(serializedFilePath);
     	// If from a previous run, remove
@@ -166,6 +167,7 @@ public class AnyFolder extends AnyFile {
     			+ "<cw:files xmlns:cw=\"" + FOLDER_CONTENT_WRAPPER_NAMESPACE + "\" role=\"" + roleInfo + "\">");
     	// now go through all files in the folder. Based in the XML or binary type of the file, add to XML stream.
     	Vector<String> files = this.listFilesToVector(true);
+    	int selected = 0;
     	for (int i = 0; i < files.size(); i++) {
     		AnyFile f = new AnyFile(files.get(i));
     		String relpath = f.getRelativePath(this);  // i.e. skip the "work1/" part
@@ -207,6 +209,7 @@ public class AnyFolder extends AnyFile {
  	    				filterXslFile.transform(wrapperInputFile,wrapperOutputFile);
      					// place that result in the content XML.
      					wrapperInputFile = wrapperOutputFile;
+     					selected += 1;
      				}
  					else
  						throw new IOException("No such XSL file: " + filterXslFile.getCanonicalPath());
@@ -217,14 +220,15 @@ public class AnyFolder extends AnyFile {
     	}
     	contentWriter.append("</cw:files>");
     	contentWriter.close();
+    	return selected;
 	}
 	
-	public void serializeToXml(XslFile filterXslFile) throws Exception {
-		serializeToXml(filterXslFile,"");
+	public int serializeToXml(XslFile filterXslFile) throws Exception {
+		return serializeToXml(filterXslFile,"");
 	}
 	
-	public void serializeToXml() throws Exception {
-		serializeToXml(null,"");
+	public int serializeToXml() throws Exception {
+		return serializeToXml(null,"");
 	}
 	
 	public void setSerializedFilePath(String path) {

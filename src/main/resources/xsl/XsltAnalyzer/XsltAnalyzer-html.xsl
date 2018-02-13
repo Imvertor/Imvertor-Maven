@@ -122,21 +122,29 @@
     <xsl:template match="import">
         <xsl:variable name="path" select="path"/>
         <p>
-            Imports 
-            <a href="#STYLESHEET_{$path}">
-                <xsl:value-of select="$path"/>
-            </a>
-            (which imports <xsl:value-of select="count(/analysis/stylesheet[path = $path]/imports/import)"/>)
+            Imports<br/>
+            <b>
+                <a href="#STYLESHEET_{$path}">
+                    <xsl:value-of select="$path"/>
+                </a>
+            </b>
+            <xsl:variable name="c" select="count(/analysis/stylesheet[path = $path]/imports/import)"/>
+            <xsl:if test="$c != 0">
+                <br/>
+                <xsl:value-of select="concat('Which imports ',$c)"/>
+            </xsl:if>
         </p>
     </xsl:template>
     
     <xsl:template match="imported-by">
         <xsl:variable name="path" select="path"/>
         <p>
-            Imported by 
-            <a href="#STYLESHEET_{$path}">
-                <xsl:value-of select="$path"/>
-            </a>
+            <xsl:variable name="c">
+                <a href="#STYLESHEET_{$path}">
+                    <xsl:value-of select="$path"/>
+                </a>
+            </xsl:variable>
+            <xsl:sequence select="imf:create-entry('Imported by',$c)"></xsl:sequence>
         </p>
     </xsl:template>
     
@@ -146,9 +154,15 @@
         </td>
     </xsl:template>
     
-    <xsl:template match="param">
+    <xsl:template match="function/params/param">
+        <p id="VARIABLE_{name}" class="fparam">
+            <xsl:sequence select="imf:create-entry('Declares param',concat('D$',name))"></xsl:sequence>
+        </p>
+    </xsl:template>
+    
+    <xsl:template match="stylesheet/params/param">
         <p id="VARIABLE_{name}">
-            Param: <xsl:value-of select="name"/>
+            <xsl:sequence select="imf:create-entry('Declares param',concat('D$',name))"></xsl:sequence>
         </p>
     </xsl:template>
     
@@ -164,7 +178,7 @@
     <xsl:template match="variable-call">
         <p class="{if (@local = 'true') then 'local-call' else 'global-call'}">
             <a href="#VARIABLE_{name}">
-                Variable: <xsl:value-of select="name"/>   
+                <xsl:sequence select="imf:create-entry('Calls variable',concat('C$',name))"/>
             </a>
         </p>
     </xsl:template>
@@ -181,7 +195,7 @@
     <xsl:template match="function-call">
         <p class="{if (@local = 'true') then 'local-call' else 'global-call'}">
             <a href="#FUNCTION_{name}">
-                Function: <xsl:value-of select="name"/>   
+                <xsl:sequence select="imf:create-entry('Calls function',concat('C%',name))"/>
             </a>
         </p>
     </xsl:template>
@@ -206,17 +220,20 @@
         </xsl:variable>
         
         <p id="VARIABLE_{$name}">
-            Variable: 
-            <xsl:value-of select="$name"/>   
-            <xsl:if test="$declarations">
-                <span class="warning">
-                    -- #WARNING Also declared in: 
-                    <xsl:for-each select="$declarations">
-                        <br/>
-                        <xsl:sequence select="."/>
-                    </xsl:for-each>
-                </span>
-            </xsl:if>
+            <xsl:variable name="c">
+                <xsl:value-of select="concat('D$',$name)"/>   
+                <xsl:if test="$declarations">
+                    <br/>
+                    <span class="warning">
+                        #WARNING Also declared in: 
+                        <xsl:for-each select="$declarations">
+                            <br/>
+                            <xsl:sequence select="."/>
+                        </xsl:for-each>
+                    </span>
+                </xsl:if>
+            </xsl:variable>
+            <xsl:sequence select="imf:create-entry('Declares variable',$c)"/>
         </p>
     </xsl:template>
     
@@ -228,9 +245,12 @@
     
     <xsl:template match="function">
         <p>
-            <a href="#FUNCTION_{name}">
-                <xsl:value-of select="template"/>
-            </a>
+            <xsl:variable name="c">
+                <a href="#FUNCTION_{name}">
+                    <xsl:value-of select="concat('D%',template)"/>
+                </a>
+            </xsl:variable>
+            <xsl:sequence select="imf:create-entry('Declares function',$c)"/>
         </p>
     </xsl:template>
     
@@ -280,6 +300,7 @@
             <style>
                 body {font-family: 'Courier New', Courier, monospace;}
                 h1,h2,h3,h4,h5 {color:blue;}
+                .fparam {color:lightgray;}
                 .local-call {color:lightgray;}
                 .global-call {color:inherit;}
                 a {color: inherit; text-decoration: inherit;}
@@ -293,4 +314,13 @@
         </head>
     </xsl:function>
  
+    <xsl:function name="imf:create-entry">
+        <xsl:param name="label"/>
+        <xsl:param name="content"/>
+        <xsl:value-of select="concat($label, ':')"/>
+        <br/>
+        <b>
+            <xsl:sequence select="$content"/>
+        </b>
+    </xsl:function>
 </xsl:stylesheet>

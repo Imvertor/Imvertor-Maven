@@ -67,7 +67,9 @@ public class XsltAnalyzer extends Step {
 			// process the full folder. Create an XML file holding all XSLTs.
 			AnyFolder infolder = new AnyFolder(folder);
 			infolder.setSerializedFilePath(serializedFile.getCanonicalPath());
-			infolder.serializeToXml(filterXslFile);
+			int selected = infolder.serializeToXml(filterXslFile);
+			
+			runner.info(logger,"Analyzing " + selected + " XSLT files");
 			
 			// transform this to an XML representation of all info
 			succeeds = succeeds ? transformer.transformStep(
