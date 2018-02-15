@@ -114,7 +114,8 @@
             
             <!-- ID in trace must be replaced by an underscore format (attributes are {X-Y-Z}, associations are X_Y_Z format) -->
             <xsl:for-each select="imvert:trace">
-                <xsl:comment select="concat('Trace removed, cannot yet trace from association to attribute: ', .)"/>
+                <xsl:sequence select="."/>
+                <xsl:comment select="concat('Trace okay?, cannot yet trace from association to attribute: ', .)"/>
             </xsl:for-each>
             
             <!-- and set the stereotype -->

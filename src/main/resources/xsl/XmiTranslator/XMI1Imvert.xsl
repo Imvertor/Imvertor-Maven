@@ -1332,7 +1332,7 @@
             <!-- als de property wordt gezet op een ClassifierRole en de base is een package, dan betreft het de base van deze role. -->
             <xsl:variable name="base" as="element()?">
                 <xsl:variable name="package-id" select="imf:get-system-tagged-value($this,'package2')"/>
-                <xsl:variable name="package-id-corrected" select="replace($package-id,'^EAID_','EAPK_')"/> <!-- EA specific! -->
+                <xsl:variable name="package-id-corrected" select="if ($normalize-ids) then $package-id else replace($package-id,'^EAID_','EAPK_')"/> <!-- EA specific! -->
                 <xsl:choose>
                     <xsl:when test="$this/self::UML:ClassifierRole and $package-id-corrected">
                         <xsl:sequence select="imf:element-by-id($package-id-corrected)"/>
@@ -1415,10 +1415,16 @@
 
     <xsl:function name="imf:get-classifier-role" as="node()?">
         <xsl:param name="this" as="node()"/>
-        <xsl:variable name="role" select="imf:element-by-id(concat('EAID_',substring($this/@xmi.id,6)))"/>
-        <xsl:variable name="id" select="concat('EAID_', substring($this/@xmi.id,6))"/>
+        <xsl:variable name="id" select="if ($normalize-ids) then $this/@xmi.id else concat('EAID_', substring($this/@xmi.id,6))"/>
+        <xsl:variable name="role" select="imf:element-by-id($id)"/>
         <!-- classifier role may also be identified through package2 tagged value. Take any classifier role with package2 is same as the ID -->
         <xsl:variable name="croles" select="$document-classifier-roles[UML:ModelElement.taggedValue/UML:TaggedValue[@tag='package2' and @value=$id]]"/>
+        <!--X
+        <xsl:message select="'-'"></xsl:message>
+        <xsl:message select="string($id)"></xsl:message>
+        <xsl:message select="concat('1>', string-join(for $r in $role return name($r),', '))"></xsl:message>
+        <xsl:message select="concat('2>', string-join(for $c in $croles return name($c),', '))"></xsl:message>
+        X-->
         <xsl:sequence select="if (exists($role)) then $role else $croles"/>
     </xsl:function>
     

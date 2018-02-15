@@ -400,6 +400,9 @@
         <xsl:param name="id"/>
         <xsl:param name="type"/>
         <xsl:choose>
+            <xsl:when test="$normalize-ids">
+                <xsl:value-of select="$id"/> <!-- All IDs and references are normalized to the 99.99.99.99.99 format -->
+            </xsl:when>
             <xsl:when test="$type = 'class'">
                 <xsl:value-of select="$id"/> <!-- EAID_xxx becomes EAID_xxx -->
             </xsl:when>

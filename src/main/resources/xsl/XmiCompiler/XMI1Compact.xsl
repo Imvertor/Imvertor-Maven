@@ -195,6 +195,22 @@
         </xsl:if>
     </xsl:template>
     
+    <!-- normalize all IDs directly accessed in attributes-->
+    <xsl:template match="@xmi.id | @xmi.idref | @base | UML:AssociationEnd/@type | @modelElement">
+        <xsl:attribute name="{name()}" select="if ($normalize-ids) then imf:normalize-id(.) else ."/>
+    </xsl:template>
+    
+    <xsl:template match="UML:ClassifierRole/@xmi.id">
+        <xsl:attribute name="{name()}" select="if ($normalize-ids) then concat('CROLE_',imf:normalize-id(.)) else ."/>
+    </xsl:template>
+    
+    <xsl:template match="UML:TaggedValue[@tag = ('SourceAttribute','SourceAssociation','ea_guid','package','package2')]">
+        <xsl:copy>
+            <xsl:apply-templates select="@*[not(name() = 'value')]"/>
+            <xsl:attribute name="value" select="if ($normalize-ids) then imf:normalize-id(@value) else @value"/>
+        </xsl:copy>
+    </xsl:template>
+    
     <xsl:function name="imf:get-xmi-stereotype" as="xs:string*">
         <xsl:param name="construct"/>
         <xsl:sequence select="for $c in ($construct/UML:ModelElement.taggedValue/UML:TaggedValue[@tag='stereotype']/@value) return imf:get-normalized-name($c,'stereotype-name')"/>
@@ -208,6 +224,30 @@
         <xsl:variable name="package-project-name" select="normalize-space(substring-after($package-name,':'))"/>
         
         <xsl:sequence select="$package-owner-name = $owner-name and $package-project-name = $project-name"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:normalize-id" as="xs:string">
+        <xsl:param name="id" as="xs:string?"/>
+        <xsl:choose>
+            <xsl:when test="empty($id)">
+                <xsl:value-of select="''"/>
+            </xsl:when>
+            <xsl:when test="starts-with($id,'{')">
+                <xsl:value-of select="replace(substring($id,2,string-length($id) - 2),'[_\-]','.')"/>
+            </xsl:when>
+            <xsl:when test="starts-with($id,'EAID_')">
+                <xsl:value-of select="replace(substring($id,6),'[_\-]','.')"/>
+            </xsl:when>
+            <xsl:when test="starts-with($id,'EAPK_')">
+                <xsl:value-of select="replace(substring($id,6),'[_\-]','.')"/>
+            </xsl:when>
+            <xsl:when test="starts-with($id,'MX_EAID_')">
+                <xsl:value-of select="concat(substring($id,1,9),replace(substring($id,9),'[_\-]','.'))"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="replace($id,'[_\-]','.')"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     
     <xsl:template match="node()|@*">

@@ -181,6 +181,12 @@
          <tip>Name of the version rules file</tip>
          <required>true</required>
       </cli-parm>
+      <cli-parm>
+         <name>normalizeids</name>
+         <arg>yes|no</arg>
+         <tip>Yes if XMI based ID's should be normalized, i.e. reduced to unique strings valid for Imvertor processing</tip>
+         <required>true</required>
+      </cli-parm>
    </cli-parms>
    
    <!-- properties zijn directe mapping vanuit imvertor.properties. Die moeten dus later netjes worden verwerkt -->

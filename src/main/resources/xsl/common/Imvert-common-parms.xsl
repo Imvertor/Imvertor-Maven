@@ -80,6 +80,7 @@
     <xsl:variable name="buildcollection" select="imf:get-config-string('cli','buildcollection','yes')"/>
     <xsl:variable name="profile-collection-wrappers" select="imf:get-config-string('system','profile-collection-wrappers','no')"/> <!--TODO profile-collection-wrappers is never set, and so always defaults to NO -->
     <xsl:variable name="normalize-names" select="imf:get-config-string('cli','normalizenames')"/>
+    <xsl:variable name="normalize-ids" select="imf:boolean(imf:get-config-string('cli','normalizeids'))"/>
     
     <xsl:variable name="applications-folder-path" select="imf:get-config-string('properties','APPLICATIONS_FOLDER')"/>
     <xsl:variable name="application-package-release-name" select="imf:get-config-string('appinfo','release-name')"/>

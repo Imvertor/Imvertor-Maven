@@ -28,7 +28,31 @@
     
     <!-- 
         A config string doesn't have to exist. If so, it returns an empty sequence.
+        
+        Preferred method is set-xparm() / set-xparm()
     -->
+    
+    <xsl:function name="imf:get-xparm" as="xs:string?">
+        <xsl:param name="group-and-name"/>
+        <xsl:sequence select="imf:get-config-string(substring-before($group-and-name,'/'),substring-after($group-and-name,'/'))"/>      
+    </xsl:function>
+    <xsl:function name="imf:get-xparm" as="xs:string?">
+        <xsl:param name="group-and-name"/>
+        <xsl:param name="default"/>
+        <xsl:sequence select="imf:get-config-string(substring-before($group-and-name,'/'),substring-after($group-and-name,'/'),$default)"/>      
+    </xsl:function>
+    
+    <xsl:function name="imf:set-xparm" as="item()*">
+        <xsl:param name="group-and-name"/>
+        <xsl:param name="value"/>
+        <xsl:sequence select="imf:set-config-string(substring-before($group-and-name,'/'),substring-after($group-and-name,'/'),$value)"/>      
+    </xsl:function>
+    <xsl:function name="imf:set-xparm" as="item()*">
+        <xsl:param name="group-and-name"/>
+        <xsl:param name="value"/>
+        <xsl:param name="overwrite"/>
+        <xsl:sequence select="imf:set-config-string(substring-before($group-and-name,'/'),substring-after($group-and-name,'/'),$value,$overwrite)"/>      
+    </xsl:function>
     
     <xsl:function name="imf:get-config-string" as="xs:string?">
         <xsl:param name="group"/>
