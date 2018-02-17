@@ -316,7 +316,7 @@
             <!-- determine which product(s) reference this collection. -->
             <xsl:variable name="collection" select="."/>
             <xsl:variable name="collection-id" select="imvert:id"/>
-            <xsl:variable name="products" select="$application-package/imvert:class[imvert:stereotype/@id = ('stereotype-name-product','stereotype-name-process','stereotype-name-service') and .//imvert:type-id=$collection-id]"/>
+            <xsl:variable name="products" select="$application-package/imvert:class[imvert:stereotype/@id = ('stereotype-name-product','stereotype-name-process','stereotype-name-service','stereotype-name-featurecollection') and .//imvert:type-id=$collection-id]"/>
             
             <xsl:for-each select="$products">
                 <xsl:variable name="product" select="."/>
@@ -1380,12 +1380,13 @@
         <xsl:variable name="is-used-ref" select="$document-classes/imvert:associations/imvert:association/imvert:type-id=$this-id"/>
        
         <xsl:variable name="superclass-is-target" select="imf:boolean-or((for $super-id in ($class/imvert:supertype/imvert:type-id) return imf:is-target-in-relation(imf:get-construct-by-id($super-id))))"/>
-        <xsl:variable name="subclass-is-target" select="imf:boolean-or((for $sub in (imf:get-immediate-subclasses($class,$document-classes)) return imf:is-target-in-relation($sub)))"/>
-        
+       <!-- <xsl:variable name="subclass-is-target" select="imf:boolean-or((for $sub in (imf:get-immediate-subclasses($class,$document-classes)) return imf:is-target-in-relation($sub)))"/> -->
+       
         <xsl:sequence select="$is-used-type or $is-used-ref or $superclass-is-target "/><!-- TODO or $subclass-is-target -->
+       
     </xsl:function>
 
-    <xsl:function name="imf:check-proper-class-tree" as="xs:boolean*">
+    <xsl:function name="imf:check-proper-class-tree" as="xs:boolean*" >
         <xsl:param name="class" as="element(imvert:class)"/>
         <xsl:param name="found" as="xs:string+"/> <!-- start off with the ID of the class itself -->
         <xsl:variable name="super" select="$class/imvert:supertype"/>

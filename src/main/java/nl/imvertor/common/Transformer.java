@@ -72,6 +72,8 @@ public class Transformer {
 	public static final Logger logger = Logger.getLogger(Transformer.class);
 	public static final String VC_IDENTIFIER = "$Id: Transformer.java 7487 2016-04-02 07:27:03Z arjan $";
 	
+	protected static boolean MAYPROFILE = false; // profiling required? then explicitly switch on in the chain!
+	
 	private ErrorListener errorListener;
 	private Messenger messageEmitter;
 
@@ -90,10 +92,8 @@ public class Transformer {
 	private File outfile;
 	private File xslfile;
 	
-	private boolean profiled = false;
+	private boolean profiled = false; // this is set irrespective of the MAYPROFILE setting. Both must be true in order for the transformer to profile.
 	
-	
-
 	public Transformer() throws Exception {
 		super();
 		configurator = Configurator.getInstance();
@@ -115,6 +115,16 @@ public class Transformer {
 		setExtensionFunction(new ImvertorExpathWrite());
 	}
 	
+	/**
+	 * Specify if the transformer may profile. 
+	 * Transformers are profiled, and when a stage has been reached where profiling is not applicable, the profiling may be switched off.
+	 *  
+	 * @param may
+	 */
+	public static void setMayProfile(boolean may) {
+		MAYPROFILE = may;
+	}
+
 	public void setProfiled(Boolean profiled) {
 		this.profiled = profiled;
 	}
@@ -125,8 +135,8 @@ public class Transformer {
 	 * @return
 	 */
 	public boolean getProfiled() {
-		profiled = true; //TODO PROFILING ON STYLESHEET ALIAS
-		return (configurator.getRunner().getDebug("#ALL") && profiled); // TODO must be the alias of the stylesheet, e.g. BES, or all #ALL
+		setProfiled(true); //TODO PROFILING ON STYLESHEET ALIAS
+		return (configurator.getRunner().getDebug("#ALL") && this.profiled && MAYPROFILE); // TODO must be the alias of the stylesheet, e.g. BES, or all #ALL
 	}
 	
 	/**

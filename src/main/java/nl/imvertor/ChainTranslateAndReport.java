@@ -46,6 +46,7 @@ import nl.imvertor.XsdCompiler.XsdCompiler;
 import nl.imvertor.YamlCompiler.YamlCompiler;
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Release;
+import nl.imvertor.common.Transformer;
 
 public class ChainTranslateAndReport {
 
@@ -112,6 +113,8 @@ public class ChainTranslateAndReport {
 		    	// Build the configuration file
 			    succeeds = (new ConfigCompiler()).run();
 			 
+			    Transformer.setMayProfile(true);
+			    
 			    // Create the XMI file from EAP or other sources
 			    succeeds = (new XmiCompiler()).run();
 				
@@ -193,12 +196,14 @@ public class ChainTranslateAndReport {
 					if (configurator.isTrue("cli","createxmlschema",false))
 					    if (configurator.isTrue("cli","createyaml",false)) 
 				    		succeeds = succeeds && (new YamlCompiler()).run();
-					    	
+						
 			    }
 			} catch (Exception e) {
 				configurator.getRunner().error(logger,"Step-level system error - Please notify your system administrator: " + e.getMessage(),e);
 			}   
 		    
+		    Transformer.setMayProfile(false);
+	    	
 			// analyze this run. 
 		    (new RunAnalyzer()).run();
 

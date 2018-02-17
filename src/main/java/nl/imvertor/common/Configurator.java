@@ -190,7 +190,9 @@ public class Configurator {
 					(regression) ? "output.dir.reg" : "output.dir") + "/" + System.getProperty("owner.name"));
 			
 			saxonConfig = new Configuration();
-		
+			
+			// possible addition: saxon 9,8: saxonConfig.setConfigurationProperty(FeatureKeys.TRACE_EXTERNAL_FUNCTIONS, true);
+			
 			messenger = new Messenger(saxonConfig.makePipelineConfiguration());
 			runner.setMessenger(messenger);
 			

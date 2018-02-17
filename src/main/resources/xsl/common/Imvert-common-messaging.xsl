@@ -57,7 +57,7 @@
         
         The message is stored when valid debug mode or when other type of message.
     -->
-    <xsl:function name="imf:msg" as="element()*">
+    <xsl:function name="imf:msg" as="empty-sequence()">
         <xsl:param name="this" as="node()"/>
         <xsl:param name="type" as="xs:string"/>
         <xsl:param name="text" as="xs:string"/>

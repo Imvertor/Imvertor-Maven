@@ -104,7 +104,7 @@
         </xsl:copy>
     </xsl:template>
     <xsl:template match="imvert:attribute">
-        <xsl:variable name="class" select="imf:get-construct-by-id(imvert:type-id)"/>
+        <xsl:variable name="class" select="if (imvert:type-id) then imf:get-construct-by-id(imvert:type-id) else ()"/>
         <xsl:copy>
             <xsl:attribute name="display-name" select="imf:get-display-name(.)"/>
             <xsl:attribute name="formal-name" select="imf:get-construct-formal-name(.)"/>

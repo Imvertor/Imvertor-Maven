@@ -38,7 +38,7 @@
     <xsl:variable name="phrase-maxlength" select="3"/>
     <xsl:variable name="phrase-separator" select="'_'"/>
     
-    <xsl:variable name="concept-documentation-path" select="imf:get-config-string('appinfo','concepts-file')"/>
+    <xsl:variable name="concept-documentation-path" select="imf:get-xparm('appinfo/concepts-file','/not-generated')"/>
     
     <xsl:variable name="concepts" select="imf:document($concept-documentation-path,false())/imvert:concepts"/>
     
