@@ -1182,4 +1182,28 @@
         <xsl:sequence select="exists($nodes1 intersect $nodes2)"/>
     </xsl:function>
     
+    <!--TODO move to xmi specific common stylesheet -->
+    <xsl:function name="imf:normalize-xmi-id" as="xs:string">
+        <xsl:param name="id" as="xs:string?"/>
+        <xsl:choose>
+            <xsl:when test="empty($id)">
+                <xsl:value-of select="''"/>
+            </xsl:when>
+            <xsl:when test="starts-with($id,'{')">
+                <xsl:value-of select="replace(substring($id,2,string-length($id) - 2),'[_\-]','.')"/>
+            </xsl:when>
+            <xsl:when test="starts-with($id,'EAID_')">
+                <xsl:value-of select="replace(substring($id,6),'[_\-]','.')"/>
+            </xsl:when>
+            <xsl:when test="starts-with($id,'EAPK_')">
+                <xsl:value-of select="replace(substring($id,6),'[_\-]','.')"/>
+            </xsl:when>
+            <xsl:when test="starts-with($id,'MX_EAID_')">
+                <xsl:value-of select="concat(substring($id,1,9),replace(substring($id,9),'[_\-]','.'))"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="replace($id,'[_\-]','.')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
 </xsl:stylesheet>

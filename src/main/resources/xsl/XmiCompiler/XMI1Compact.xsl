@@ -196,18 +196,38 @@
     </xsl:template>
     
     <!-- normalize all IDs directly accessed in attributes-->
-    <xsl:template match="@xmi.id | @xmi.idref | @base | UML:AssociationEnd/@type | @modelElement | @subtype | @supertype">
-        <xsl:attribute name="{name()}" select="if ($normalize-ids) then imf:normalize-id(.) else ."/>
+    <xsl:template match="
+        @xmi.id | 
+        @xmi.idref | 
+        @base | 
+        UML:AssociationEnd/@type | 
+        @modelElement | 
+        @subtype | 
+        @supertype |
+        UML:Class/@namespace | 
+        UML:Dependency/@client |
+        UML:Dependency/@supplier |
+        UML:Diagram/@owner |
+        UML:DiagramElement/@subject
+        ">
+        <xsl:attribute name="{name()}" select="if ($normalize-ids) then imf:normalize-xmi-id(.) else ."/>
     </xsl:template>
     
     <xsl:template match="UML:ClassifierRole/@xmi.id">
-        <xsl:attribute name="{name()}" select="if ($normalize-ids) then concat('CROLE_',imf:normalize-id(.)) else ."/>
+        <xsl:attribute name="{name()}" select="if ($normalize-ids) then concat('CROLE_',imf:normalize-xmi-id(.)) else ."/>
     </xsl:template>
     
-    <xsl:template match="UML:TaggedValue[@tag = ('SourceAttribute','SourceAssociation','ea_guid','package','package2')]">
+    <xsl:template match="UML:TaggedValue[@tag = (
+        'SourceAttribute',
+        'SourceAssociation',
+        'ea_guid',
+        'package',
+        'package2',
+        'parent',
+        '$ea_attsclassified')]">
         <xsl:copy>
             <xsl:apply-templates select="@*[not(name() = 'value')]"/>
-            <xsl:attribute name="value" select="if ($normalize-ids) then imf:normalize-id(@value) else @value"/>
+            <xsl:attribute name="value" select="if ($normalize-ids) then imf:normalize-xmi-id(@value) else @value"/>
         </xsl:copy>
     </xsl:template>
     
@@ -226,29 +246,7 @@
         <xsl:sequence select="$package-owner-name = $owner-name and $package-project-name = $project-name"/>
     </xsl:function>
     
-    <xsl:function name="imf:normalize-id" as="xs:string">
-        <xsl:param name="id" as="xs:string?"/>
-        <xsl:choose>
-            <xsl:when test="empty($id)">
-                <xsl:value-of select="''"/>
-            </xsl:when>
-            <xsl:when test="starts-with($id,'{')">
-                <xsl:value-of select="replace(substring($id,2,string-length($id) - 2),'[_\-]','.')"/>
-            </xsl:when>
-            <xsl:when test="starts-with($id,'EAID_')">
-                <xsl:value-of select="replace(substring($id,6),'[_\-]','.')"/>
-            </xsl:when>
-            <xsl:when test="starts-with($id,'EAPK_')">
-                <xsl:value-of select="replace(substring($id,6),'[_\-]','.')"/>
-            </xsl:when>
-            <xsl:when test="starts-with($id,'MX_EAID_')">
-                <xsl:value-of select="concat(substring($id,1,9),replace(substring($id,9),'[_\-]','.'))"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="replace($id,'[_\-]','.')"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:function>
+  
     
     <xsl:template match="node()|@*">
         <xsl:copy>

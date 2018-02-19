@@ -1348,12 +1348,12 @@
                         <xsl:matching-substring>
                             <xsl:variable name="props" select="regex-group(1)"/>
                             <imvert:props>
-                                <xsl:sequence select="imf:create-output-element('imvert:xid',imf:parse-xref-property-prop($props,'XID'))"/>
+                                <xsl:sequence select="imf:create-output-element('imvert:xid',imf:normalize-xmi-id(imf:parse-xref-property-prop($props,'XID')))"/>
                                 <xsl:sequence select="imf:create-output-element('imvert:nam',imf:parse-xref-property-prop($props,'NAM'))"/>
                                 <xsl:sequence select="imf:create-output-element('imvert:typ',imf:parse-xref-property-prop($props,'TYP'))"/>
                                 <xsl:sequence select="imf:create-output-element('imvert:vis',imf:parse-xref-property-prop($props,'VIS'))"/>
                                 <xsl:sequence select="imf:create-output-element('imvert:par',imf:parse-xref-property-prop($props,'PAR'))"/>
-                                <xsl:sequence select="imf:create-output-element('imvert:clt',imf:parse-xref-property-prop($props,'CLT'))"/>
+                                <xsl:sequence select="imf:create-output-element('imvert:clt',imf:normalize-xmi-id(imf:parse-xref-property-prop($props,'CLT')))"/>
                                 <xsl:sequence select="imf:create-output-element('imvert:sup',imf:parse-xref-property-prop($props,'SUP'))"/>
                                 <xsl:variable name="des" select="imf:parse-xref-property-prop($props,'DES')"/>
                                 <xsl:if test="exists($des)">
