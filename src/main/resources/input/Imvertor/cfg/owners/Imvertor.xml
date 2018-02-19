@@ -62,6 +62,10 @@
         The local reference takes the form of a relative path, and is introduced by Kadaster.
     </parameter>
     
+    <parameter name="diagram-export-format">PNG</parameter>
+    
+    <parameter name="concept-uri-template">https://unknown/[concept]</parameter>
+    
     <!--x
     <parameter name="application-version-regex">^\S+$</parameter>
     <parameter name="domain-version-regex">^\S+$</parameter>
