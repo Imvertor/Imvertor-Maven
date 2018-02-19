@@ -124,7 +124,7 @@
                 <xsl:variable name="composer" select="content[not(@approach='target')]/part[@type = 'COMPOSER']/item[1]"/>
                 <div>
                     <xsl:if test="@id">
-                        <a class="anchor" name="global-{@id}"/>
+                        <a class="anchor" name="{@id}"/>
                     </xsl:if>
                     <xsl:element name="{concat('h',$level)}">
                         <xsl:value-of select="imf:translate-i3n('ATTRIBUTE',$language-model,())"/>
@@ -143,7 +143,7 @@
                 <xsl:variable name="composer" select="content[not(@approach='target')]/part[@type = 'COMPOSER']/item[1]"/>
                 <div>
                     <xsl:if test="@id">
-                        <a class="anchor" name="global-{@id}"/>
+                        <a class="anchor" name="{@id}"/>
                     </xsl:if>
                     <xsl:element name="{concat('h',$level)}">
                         <xsl:value-of select="imf:translate-i3n('ASSOCIATION',$language-model,())"/>
@@ -345,7 +345,7 @@
                 </a>
             </xsl:when>
             <xsl:when test="exists(@idref)">
-                <a class="link" href="#global-{@idref}">
+                <a class="link" href="#{@idref}">
                     <xsl:apply-templates mode="#current"/>
                 </a>
             </xsl:when>
