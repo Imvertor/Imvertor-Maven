@@ -196,7 +196,7 @@
     </xsl:template>
     
     <!-- normalize all IDs directly accessed in attributes-->
-    <xsl:template match="@xmi.id | @xmi.idref | @base | UML:AssociationEnd/@type | @modelElement">
+    <xsl:template match="@xmi.id | @xmi.idref | @base | UML:AssociationEnd/@type | @modelElement | @subtype | @supertype">
         <xsl:attribute name="{name()}" select="if ($normalize-ids) then imf:normalize-id(.) else ."/>
     </xsl:template>
     
