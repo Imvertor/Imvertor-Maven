@@ -1588,7 +1588,7 @@
                                     		attributes usage. The last parameter is used to determine the need for the 
                                     		XML-attribute 'StUF:indOnvolledigeDatum'. -->
                                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 17ba',$debugging)"/>
-                                       <xsl:sequence select="imf:create-debug-comment(concat('Attributes voor ',$typeCode,', berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ' en mnemonic: ', $alias),$debugging)"/>
+                                       <xsl:sequence select="imf:create-debug-comment(concat('Attributes voor ',$typeCode,', berichtcode: ', substring($berichtCode,1,2) ,' context: ', $context, ', mnemonic: ', $alias,' en prefix: ', $prefix,' voor id:',$id),$debugging)"/>
                                        <xsl:variable name="attributes"
                                            select="imf:createAttributes($typeCode, substring($berichtCode,1,2), $context, $alias,'no', $prefix, $id, '')" />
                                        <xsl:sequence select="$attributes" />
