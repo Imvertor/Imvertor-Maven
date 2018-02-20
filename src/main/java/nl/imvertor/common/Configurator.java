@@ -174,8 +174,7 @@ public class Configurator {
 
 			boolean regression = System.getProperty("is.reg") != null && System.getProperty("is.reg").equals("true");
 			
-			workFolder = new AnyFolder(getServerProperty(
-					(regression) ? "work.dir.reg" : "work.dir") + "/" + System.getProperty("job.id"));
+			workFolder = new AnyFolder(getServerProperty("work.dir") + "/" + System.getProperty("job.id"));
 			appFolder = new AnyFolder(workFolder,"app");
 			
 			if (!workFolder.isDirectory())
