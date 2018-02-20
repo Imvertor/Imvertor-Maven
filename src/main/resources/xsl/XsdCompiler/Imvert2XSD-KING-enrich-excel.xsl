@@ -199,7 +199,7 @@
         <xsl:param name="colNumber"/>
         <xsl:param name="name-type"/>
         <xsl:variable name="name-element" select="$endproduct-base-config-excel-doc//sheet[name=$sheetName]/row[@number=1]/col[@number=$colNumber]/data"/>
-        <xsl:value-of select="imf:get-normalized-name($name-element,$name-type)"/>
+        <xsl:value-of select="$name-element"/>
     </xsl:function>
     
     <!-- Return the property element (imvert:attribute or imvert:association) for the package, class and property name passed.

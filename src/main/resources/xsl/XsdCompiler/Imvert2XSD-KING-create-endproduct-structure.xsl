@@ -3201,10 +3201,6 @@
 				[name = 'XML attributes']/row[col[@name = 'typecode']/data = $typeCode and
 				col[@name = 'berichttype']/data = $berichtType and
 				col[@name = 'context']/data = $context]"/>
-		<!--xsl:if test="$debugging">
-			<xsl:sequence select="$enriched-endproduct-base-config-excel//sheet
-				[name = 'XML attributes']"/>
-		</xsl:if-->
 		<!-- The following if statements checks if a specific column in the spreadsheetrow 
 			in the 'attributeTypeRow' variable contains an 'O' or an 'V'. If this is 
 			the case the related XML-Attribute is generated (required if the 'attributeTypeRow' 
@@ -3217,7 +3213,7 @@
 			element. -->
 
 		<xsl:if
-			test="$attributeTypeRow//col[@name = 'novalue' and data = 'O'] and $global-noValue-allowed = 'Ja'">
+			test="$attributeTypeRow//col[@name = 'noValue' and data = 'O'] and $global-noValue-allowed = 'Ja'">
 			<ep:construct ismetadata="yes">
 				<ep:name>noValue</ep:name>
 				<ep:tech-name>noValue</ep:tech-name>
@@ -3226,7 +3222,7 @@
 			</ep:construct>
 		</xsl:if>
 		<xsl:if
-			test="$attributeTypeRow//col[@name = 'novalue' and data = 'V'] and $global-noValue-allowed = 'Ja'">
+			test="$attributeTypeRow//col[@name = 'noValue' and data = 'V'] and $global-noValue-allowed = 'Ja'">
 			<ep:construct ismetadata="yes">
 				<ep:name>noValue</ep:name>
 				<ep:tech-name>noValue</ep:tech-name>
@@ -3293,7 +3289,7 @@
 					select="imf:create-output-element('ep:href', '$actualPrefix:entiteittype')" /-->
 			</ep:constructRef>
 		</xsl:if>
-		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelverzendend' and data = 'O']">
+		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelVerzendend' and data = 'O']">
 			<ep:construct ismetadata="yes">
 				<ep:name>sleutelVerzendend</ep:name>
 				<ep:tech-name>sleutelVerzendend</ep:tech-name>
@@ -3301,14 +3297,14 @@
 				<ep:type-name>StUF:Sleutel</ep:type-name>
 			</ep:construct>
 		</xsl:if>
-		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelverzendend' and data = 'V']">
+		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelVerzendend' and data = 'V']">
 			<ep:construct ismetadata="yes">
 				<ep:name>sleutelVerzendend</ep:name>
 				<ep:tech-name>sleutelVerzendend</ep:tech-name>
 				<ep:type-name>StUF:Sleutel</ep:type-name>
 			</ep:construct>
 		</xsl:if>
-		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelontvangend' and data = 'O']">
+		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelOntvangend' and data = 'O']">
 			<ep:construct ismetadata="yes">
 				<ep:name>sleutelOntvangend</ep:name>
 				<ep:tech-name>sleutelOntvangend</ep:tech-name>
@@ -3316,14 +3312,14 @@
 				<ep:type-name>StUF:Sleutel</ep:type-name>
 			</ep:construct>
 		</xsl:if>
-		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelontvangend' and data = 'V']">
+		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelOntvangend' and data = 'V']">
 			<ep:construct ismetadata="yes">
 				<ep:name>sleutelOntvangend</ep:name>
 				<ep:tech-name>sleutelOntvangend</ep:tech-name>
 				<ep:type-name>StUF:Sleutel</ep:type-name>
 			</ep:construct>
 		</xsl:if>
-		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelgegevensbeheer' and data = 'O']">
+		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelGegevensbeheer' and data = 'O']">
 			<ep:construct ismetadata="yes">
 				<ep:name>sleutelGegevensbeheer</ep:name>
 				<ep:tech-name>sleutelGegevensbeheer</ep:tech-name>
@@ -3331,14 +3327,14 @@
 				<ep:type-name>StUF:Sleutel</ep:type-name>
 			</ep:construct>
 		</xsl:if>
-		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelgegevensbeheer' and data = 'V']">
+		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelGegevensbeheer' and data = 'V']">
 			<ep:construct ismetadata="yes">
 				<ep:name>sleutelGegevensbeheer</ep:name>
 				<ep:tech-name>sleutelGegevensbeheer</ep:tech-name>
 				<ep:type-name>StUF:Sleutel</ep:type-name>
 			</ep:construct>
 		</xsl:if>
-		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelsynchronisatie' and data = 'O']">
+		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelSynchronisatie' and data = 'O']">
 			<ep:construct ismetadata="yes">
 				<ep:name>sleutelSynchronisatie</ep:name>
 				<ep:tech-name>sleutelSynchronisatie</ep:tech-name>
@@ -3346,7 +3342,7 @@
 				<ep:type-name>StUF:Sleutel</ep:type-name>
 			</ep:construct>
 		</xsl:if>
-		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelsynchronisatie' and data = 'V']">
+		<xsl:if test="$attributeTypeRow//col[@name = 'sleutelSynchronisatie' and data = 'V']">
 			<ep:construct ismetadata="yes">
 				<ep:name>sleutelSynchronisatie</ep:name>
 				<ep:tech-name>sleutelSynchronisatie</ep:tech-name>
