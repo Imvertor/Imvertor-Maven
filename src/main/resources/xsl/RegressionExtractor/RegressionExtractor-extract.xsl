@@ -96,15 +96,17 @@
                 <!-- ignore -->
             </xsl:when>
             <!-- 
-                skip this one: this file is apssed when you simply copy the zip folder to the ref folder. It should not be checked.
+                skip this one: this file is passed when you simply copy the zip folder to the ref folder. It should not be checked.
             -->
             <xsl:when test="@path = 'executor.imvert.xml'">
                 <!-- ignore -->
             </xsl:when>
             <!-- 
-               Process XML intermediate results. 
+               No not Process XML intermediate results. 
             -->
             <xsl:when test="starts-with(@path,'work\imvert\')">
+                <!-- ignore -->
+                <?x
                 <xsl:copy>
                     <xsl:copy-of select="@*[not(local-name(.) = ('date','size','fullpath'))]"/>
                     <xsl:choose>
@@ -161,8 +163,8 @@
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:copy>
+                x?>
             </xsl:when>
-            
             <!-- 
                 reports
             -->
@@ -175,7 +177,39 @@
             <xsl:when test="starts-with(@path, 'work\app\etc')">
                 <!-- ignore -->
             </xsl:when>
-          
+            <!--
+               Check the catalogue
+            -->
+            <xsl:when test="starts-with(@path, 'work\app\cat')">
+                <xsl:copy>
+                    <xsl:copy-of select="@*[not(local-name(.) = ('date','size','fullpath'))]"/>
+                    <xsl:apply-templates/>
+                </xsl:copy>
+            </xsl:when>
+            
+            <!-- process the EA profile -->
+            <xsl:when test="starts-with(@path, 'work\app\ea')">
+                <xsl:copy>
+                    <xsl:copy-of select="@*[not(local-name(.) = ('date','size','fullpath'))]"/>
+                    <xsl:apply-templates/>
+                </xsl:copy>
+            </xsl:when>
+            
+            <!-- skip the compare XSL -->
+            <xsl:when test="starts-with(@path, 'work\compare')">
+                <!-- ignore -->
+            </xsl:when>
+            
+            <!-- skip the profile info -->
+            <xsl:when test="starts-with(@path, 'work\profile')">
+                <!-- ignore -->
+            </xsl:when>
+            
+            <!-- process the compliancy info -->
+            <xsl:when test="starts-with(@path, 'work\compare')">
+                <!-- ignore -->
+            </xsl:when>
+            
             <!--
               documentation is not compared 
             -->
@@ -206,6 +240,12 @@
                     <xsl:apply-templates mode="mode-intermediate-parms"/>
                 </xsl:copy>
             </xsl:when>
+            <!--
+              skip the tracker info 
+            -->
+            <xsl:when test="@name = 'track.txt'">
+               <!-- ignore -->
+            </xsl:when>       
             
             <xsl:otherwise>
                 <error>
@@ -226,7 +266,7 @@
     
     <xsl:template name="ignore">
         <xsl:value-of select="'&#10;'"/>
-        <xsl:comment>...</xsl:comment>
+        <xsl:comment>IGNORED</xsl:comment>
         <xsl:value-of select="'&#10;'"/>
     </xsl:template>
     

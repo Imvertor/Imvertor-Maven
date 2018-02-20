@@ -53,6 +53,7 @@
         imvert:debug |
         imvert:exported |
         imvert:exporter |
+        imvert:model-id |
         imvert:resolved-suppliers |
         imvert:resolved-documentation |
         imvert:resolved-tagged-values" 
