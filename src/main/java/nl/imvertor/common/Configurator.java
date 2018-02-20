@@ -172,7 +172,10 @@ public class Configurator {
 				if (!System.getProperty("run.mode").equals("development"))
 					runmode = RUN_MODE_RUN;
 
-			workFolder = new AnyFolder(getServerProperty("work.dir") + "/" + System.getProperty("job.id"));
+			boolean regression = System.getProperty("is.reg") != null && System.getProperty("is.reg").equals("true");
+			
+			workFolder = new AnyFolder(getServerProperty(
+					(regression) ? "work.dir.reg" : "work.dir") + "/" + System.getProperty("job.id"));
 			appFolder = new AnyFolder(workFolder,"app");
 			
 			if (!workFolder.isDirectory())
@@ -183,8 +186,6 @@ public class Configurator {
 			if (System.getProperty("owner.name") == null)
 				throw new ConfiguratorException("Missing system parameter owner.name, please pass as -Downer.name=[name]");
 			
-			boolean regression = System.getProperty("is.reg") != null && System.getProperty("is.reg").equals("true");
-					
 			inputFolder  = new AnyFolder(baseFolder, "input" + File.separator + System.getProperty("owner.name"));
 			outputFolder = new AnyFolder(getServerProperty(
 					(regression) ? "output.dir.reg" : "output.dir") + "/" + System.getProperty("owner.name"));
