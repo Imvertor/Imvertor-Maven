@@ -32,19 +32,19 @@
       <cli-parm>
          <name>validatetvassignment</name>
          <arg>yes|no</arg>
-         <tip>Check if tagged values are assigned correctly</tip>
+         <tip>Yes if tagged value assignment is correct</tip>
          <required>true</required>
       </cli-parm> 
       <cli-parm>
          <name>validatetvmissing</name>
          <arg>yes|no</arg>
-         <tip>Check if tagged values that are required are specified</tip>
+         <tip>Yes if tagged values that are required are specified</tip>
          <required>true</required>
       </cli-parm> 
       <cli-parm>
          <name>validatedocmissing</name>
          <arg>yes|no</arg>
-         <tip>Check if the notes fields that are reuqired are filled</tip>
+         <tip>Yes if the notes fields that are required must be checked (for content)</tip>
          <required>true</required>
       </cli-parm> 
    </cli-parms>
