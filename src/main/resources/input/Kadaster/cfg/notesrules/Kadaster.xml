@@ -17,7 +17,7 @@
         <section title="Description" tagged-value="CFG-TV-DESCRIPTION">
             <label title="URI"/>
         </section>
-        <section title="Concept" tagged-value="CFG-TV-CONCEPTLOCATION">
+        <section title="Concept" tagged-value="CFG-TV-CONCEPT">
             <label title="URI"/>
         </section>
     </notes-rule>
@@ -29,7 +29,7 @@
         <section title="Toelichting" tagged-value="CFG-TV-DESCRIPTION">
             <label title="URI"/>
         </section>
-        <section title="Begrip" tagged-value="CFG-TV-CONCEPTLOCATION">
+        <section title="Begrip" tagged-value="CFG-TV-CONCEPT">
             <label title="URI"/>
         </section>
     </notes-rule>

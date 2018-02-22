@@ -139,9 +139,9 @@
             </stereotypes>
         </tv>
         
-        <tv norm="concept" id="CFG-TV-CONCEPTLOCATION">
-            <name lang="nl">Begrip locatie</name>
-            <name lang="en">Concept location</name>
+        <tv norm="concept" id="CFG-TV-CONCEPT">
+            <name lang="nl">Begrip</name>
+            <name lang="en">Concept</name>
             <desc lang="nl">
                 Verwijzing naar een begrip, zoals deze opgenomen is in een model van begrippen in de vorm van een term, of een URI. 
             </desc>

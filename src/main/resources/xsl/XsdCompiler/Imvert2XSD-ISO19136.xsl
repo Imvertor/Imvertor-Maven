@@ -203,7 +203,7 @@
                 
                 <!-- XSD complextypes -->
                 <xsl:sequence select="imf:create-comment(.,'ALL PRODUCTS')"/>
-                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-product')]"/>
+                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-product','stereotype-name-featurecollection')]"/>
                 <xsl:sequence select="imf:create-comment(.,'ALL OBJECTTYPES')"/>
                 <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype')]"/>
                 <xsl:sequence select="imf:create-comment(.,'ALL ASSOCIATIONCLASSES')"/>
@@ -234,6 +234,35 @@
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-product')]">
         <xsl:sequence select="imf:create-comment(.,'A product')"/>
         <xsl:next-match/> <!-- i.e. template that matches imvert:class --> 
+    </xsl:template>
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-featurecollection')]">
+        <xsl:sequence select="imf:create-comment(.,'A feature collection')"/>
+        
+        <xsl:variable name="package-name" select="parent::imvert:package/imvert:name"/>
+        <xsl:variable name="type-name" select="imvert:name"/>
+        
+        <xs:element name="{$type-name}" 
+            type="{imf:get-type($type-name,$package-name)}" 
+            substitutionGroup="gml:AbstractGML"/>
+        <xs:complexType name="{$type-name}Type">
+            <xs:complexContent>
+                <xs:extension base="gml:AbstractGMLType">
+                    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                        <xs:element name="featureMember">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="gml:AbstractFeatureMemberType">
+                                        <xs:sequence>
+                                            <xs:element ref="gml:AbstractFeature"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
     </xsl:template>
  
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype')]">
