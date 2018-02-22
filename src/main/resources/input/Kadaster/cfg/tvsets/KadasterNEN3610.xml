@@ -83,9 +83,9 @@
             </stereotypes>
         </tv>
         
-        <tv norm="space" id="CFG-TV-CONCEPTLOCATION">
-            <name lang="nl">Begrip locatie</name>
-            <name lang="en">Concept location</name>
+        <tv norm="space" id="CFG-TV-CONCEPT">
+            <name lang="nl">Begrip</name>
+            <name lang="en">Concept</name>
             <derive>yes</derive>
             <stereotypes>
                 <stereo required="no">stereotype-name-objecttype</stereo>
