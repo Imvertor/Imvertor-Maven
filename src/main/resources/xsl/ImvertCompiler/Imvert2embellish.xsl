@@ -48,6 +48,8 @@
         <xsl:variable name="allow-docrelease" select="imf:boolean($cfg-phase/allow-docrelease)"/>
 
         <imvert:packages>
+            <xsl:attribute name="subpath" select="imf:get-subpath(imvert:project,imvert:application,imvert:release)"/>
+            
             <xsl:sequence select="imf:create-output-element('imvert:model-id',$application-package-release-name)"/>
             <xsl:sequence select="imf:create-output-element('imvert:is-fixed',$is-fixed)"/>
             <xsl:sequence select="imf:create-output-element('imvert:allow-docrelease',$allow-docrelease)"/>
