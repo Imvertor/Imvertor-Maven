@@ -23,7 +23,7 @@
     <release>
         <artifact>ChainTranslateAndReport</artifact>
         <major-minor>0.9</major-minor>
-        <bugfix>0</bugfix>
+        <bugfix>1</bugfix>
     </release>
     <release>
         <artifact>GenericTransformer</artifact>
