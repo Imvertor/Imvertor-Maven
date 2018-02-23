@@ -240,7 +240,8 @@ public class XsdCompiler extends Step {
 			valid = valid && transformer.transformStep("properties/RESULT_METAMODEL_KINGBSM_XSD_MIGRATE","properties/RESULT_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XML_XSLPATH");
 			valid = valid && transformer.transformStep("properties/RESULT_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_REPROCESS_ENDPRODUCT_XML_XSLPATH");
 			valid = valid && transformer.transformStep("properties/RESULT_REPROCESSED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_SORT_ENDPRODUCT_XML_XSLPATH");
-			valid = valid && transformer.transformStep("properties/RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_ENDPRODUCT_XSD_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XSD_XSLPATH");
+			valid = valid && transformer.transformStep("properties/RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_CLEANED_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_CLEAN_ENDPRODUCT_XML_XSLPATH");
+			valid = valid && transformer.transformStep("properties/RESULT_CLEANED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_ENDPRODUCT_XSD_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ENDPRODUCT_XSD_XSLPATH");
 		
 			if (valid) {
 				// and copy the onderlaag; this is a copy of all stuff in that folder
@@ -249,7 +250,7 @@ public class XsdCompiler extends Step {
 			}
 			
 			// and create a table representation; 
-			valid = valid && transformer.transformStep("properties/RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH","properties/ENDPRODUCT_DOC_TABLES_FILE_PATH", "properties/IMVERTOR_ENDPRODUCT_DOC_TABLES_XSLPATH");
+			valid = valid && transformer.transformStep("properties/RESULT_CLEANED_ENDPRODUCT_XML_FILE_PATH","properties/ENDPRODUCT_DOC_TABLES_FILE_PATH", "properties/IMVERTOR_ENDPRODUCT_DOC_TABLES_XSLPATH");
 			
 			if (valid) {
 				// simply copy the table html file
@@ -267,7 +268,7 @@ public class XsdCompiler extends Step {
 		valid = valid && transformer.transformStep("system/work-config-path","properties/IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XMLPATH_LOCAL", "properties/IMVERTOR_BLACKBOARD_CHECKSUM_SIMPLETYPES_XSLPATH");
 		
 		// record the location of the resulting EP file for subsequent steps
-		configurator.setXParm("system/imvertor-ep-result",configurator.getXParm("properties/RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH"));
+		configurator.setXParm("system/imvertor-ep-result",configurator.getXParm("properties/RESULT_CLEANED_ENDPRODUCT_XML_FILE_PATH"));
 		// and tell that a schema has been created
 		configurator.setXParm("system/schema-created","true");
 		
