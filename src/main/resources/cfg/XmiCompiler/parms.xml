@@ -54,9 +54,9 @@
          <required>false</required>
       </cli-parm> 
       <cli-parm>
-         <name>resolveuri</name>
+         <name>resolveconcepturi</name>
          <arg>yes|no</arg>
-         <tip>Yes if an URI entered as a tagged value must be tested.</tip>
+         <tip>Yes if an URI entered as a tagged value for a concept must be tested.</tip>
          <required>false</required>
       </cli-parm> 
       

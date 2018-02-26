@@ -66,7 +66,7 @@
     <xsl:variable name="all-scalars" select="$configuration-metamodel-file//scalars/scalar"/>
     
     <xsl:variable name="concept-uri-template" select="imf:get-config-parameter('concept-uri-template')"/>
-    <xsl:variable name="uri-resolve" select="imf:boolean(imf:get-config-string('cli','resolveuri','false'))"/>
+    <xsl:variable name="concept-uri-resolve" select="imf:boolean(imf:get-config-string('cli','resolveconcepturi','false'))"/>
     
     <xsl:function name="imf:get-config-schemarules" as="element(tv)*">
         <xsl:sequence select="$configuration-schemarules-file//name-value-mapping/tagged-values/tv"/>
@@ -464,8 +464,8 @@
         <xsl:variable name="is-global-uri" select="matches($concept,'^https?:.*$')"/>
         <xsl:variable name="create-global-uri" select="replace($concept-uri-template,'\[concept\]',$concept)"/>
         <xsl:variable name="uri" select="if ($is-global-uri) then $concept else $create-global-uri"/>
-        <xsl:if test="$uri-resolve and empty(imf:document($uri,false()))">
-            <xsl:sequence select="imf:msg('WARNING','The URI [1] cannot be resolved', ($uri))"/>
+        <xsl:if test="$concept-uri-resolve and empty(imf:document($uri,false()))">
+            <xsl:sequence select="imf:msg('WARNING','The concept URI [1] cannot be resolved', ($uri))"/>
         </xsl:if>
         <xsl:value-of select="$uri"/>
     </xsl:function>
