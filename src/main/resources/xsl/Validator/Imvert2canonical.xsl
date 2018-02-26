@@ -230,7 +230,9 @@
                 <xsl:variable name="norm-title" select="upper-case($title)"/>
                 <xsl:variable name="body" select="body"/>
                 
-                <xsl:variable name="target-tv-id" select="$configuration-notesrules-file/notes-rule[@lang=$language]/section[upper-case(@title) = $norm-title]/@tagged-value"/>
+                <xsl:variable name="target-tv" select="$configuration-notesrules-file/notes-rule[@lang=$language]/section[upper-case(@title) = $norm-title]"/>
+                <xsl:variable name="target-tv-id" select="$target-tv/@tagged-value"/>
+                <xsl:variable name="target-tv-process" select="$target-tv/@process"/>
                 
                 <xsl:variable name="current-tv" select="imf:get-tagged-value-by-id($construct,$target-tv-id)/imvert:value"/> <!-- the current tagged value if any -->
                 
@@ -245,14 +247,31 @@
                         <xsl:sequence select="imf:msg($construct,'WARNING','Tagged value [1] in notes field [2] already specified',($norm-title,$title))"/>
                     </xsl:when>
                     <xsl:when test="normalize-space($body)">
-                        <imvert:tagged-value origin="notes" id="{$target-tv-id}">
-                            <imvert:name original="{$title}"><!-- Natural name -->
-                                <xsl:value-of select="$norm-title"/> 
-                            </imvert:name>
-                            <imvert:value>
-                                <xsl:value-of select="string-join(for $l in $body/*/* return imf:strip-ea-html($l),'&#10;')"/>
-                            </imvert:value>
-                        </imvert:tagged-value>
+                        <xsl:variable name="lines" as="xs:string*">
+                            <xsl:for-each select="$body/*/*">
+                                <xsl:value-of select="imf:strip-ea-html(.)"/>
+                            </xsl:for-each>
+                        </xsl:variable>
+                        <xsl:variable name="b" as="xs:string*">
+                            <xsl:choose>
+                                <xsl:when test="$target-tv-process = 'lines'"> <!-- when the body of the section possibly identifies several tagged values, e.g. Concept -->
+                                    <xsl:sequence select="$lines"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:value-of select="string-join($lines,'&#10;')"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:variable>
+                        <xsl:for-each select="$b">
+                            <imvert:tagged-value origin="notes" id="{$target-tv-id}">
+                                <imvert:name original="{$title}"><!-- Natural name -->
+                                    <xsl:value-of select="$norm-title"/> 
+                                </imvert:name>
+                                <imvert:value>
+                                    <xsl:value-of select="."/>
+                                </imvert:value>
+                            </imvert:tagged-value>
+                        </xsl:for-each>
                     </xsl:when>
                     <xsl:otherwise>
                         <!-- none -->
