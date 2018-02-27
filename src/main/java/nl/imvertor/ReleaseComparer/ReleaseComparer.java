@@ -108,8 +108,11 @@ public class ReleaseComparer extends Step {
 				else
 					runner.info(logger,"Comparing releases");
 				return oldModelFile.compare( newModelFile, configurator); 
+			} else if (releaseString != null ) {
+				runner.error(logger, "Cannot compare releases, because release \"" + releaseString + "\" could not be found");
+				return false;
 			} else {
-				runner.error(logger, "Cannot compare releases, because release " + releaseString + " could not be found");
+				runner.error(logger, "You have not supplied a release to compare with, please specify the \"comparewith\" property");
 				return false;
 			}	
 		}
