@@ -647,7 +647,11 @@
         <xsl:sequence select="imf:create-debug-track('Debuglocation 2023',$debugging)"/>
         
         <xsl:variable name="inOnderzoek">
-            <xsl:copy-of select="."/>
+            <!--xsl:copy-of select="."/-->
+            <xsl:copy>
+                <xsl:attribute name="prefix" select="$actualPrefix"/>
+                <xsl:apply-templates select="*"/>
+            </xsl:copy>
         </xsl:variable>
         <xsl:choose>
             <xsl:when test="($procesType='splitting' and $prefix4metadataConstructs = $actualPrefix) or $procesType!='splitting'">
