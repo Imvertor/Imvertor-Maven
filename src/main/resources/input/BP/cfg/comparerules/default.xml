@@ -99,6 +99,7 @@
         <elm use="DIV"  form="supertypes">Supertypes</elm>
         <elm use="DIV"  form="attributes">Attributes</elm>
         <elm use="DIV"  form="associations">Associations</elm>
+        <elm use="DIV"  form="constraints">Constraints</elm>
         <elm use="DIV"  form="enumeration">Enumeration</elm>
         <elm use="DIV"  form="associationClasses">Association classes</elm>
         <elm use="DIV"  form="substitutions">Substitutions</elm>
@@ -156,6 +157,11 @@
         <elm use="DIV"  form="package-replacement">Package replacement type</elm>
         
         <elm use="DIR"  form="trace">Trace</elm>
+
+        <elm use="DIV"  form="Constraint">Constraint</elm>
+        <elm use="DIV"  form="type">Type of constraint</elm>
+        <elm use="DIV"  form="weight">Weight of constraint</elm>
+        <elm use="DIV"  form="status">Status of constraint</elm>
         
     </elms>
 

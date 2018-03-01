@@ -162,6 +162,8 @@
                 <xsl:sort select="imvert:supplier"/>
             </xsl:apply-templates><!-- ... -->
             
+            <xsl:apply-templates select="imvert:constraints"/>
+            
         </imvert-result:Class>
     </xsl:template>
     
@@ -190,6 +192,8 @@
 
             <xsl:call-template name="_Type"/>
             <xsl:call-template name="_Cardinality"/>
+            
+            <xsl:apply-templates select="imvert:constraints"/>
                         
         </imvert-result:Attribute>
     </xsl:template>
@@ -209,6 +213,8 @@
             
             <xsl:call-template name="_Type"/>
             <xsl:call-template name="_Cardinality"/>
+            
+            <xsl:apply-templates select="imvert:constraints"/>
             
         </imvert-result:Attribute>
     </xsl:template>
@@ -236,6 +242,8 @@
             
             <xsl:apply-templates select="imvert:association-class" mode="association-class-reference"/>
             
+            <xsl:apply-templates select="imvert:constraints"/>
+            
         </imvert-result:Association>
     </xsl:template>
     
@@ -245,6 +253,9 @@
             <xsl:apply-templates select="imvert:type-id"/>
             <xsl:apply-templates select="imvert:type-package"/>
             <xsl:apply-templates select="imvert:stereotype"/>
+
+            <xsl:apply-templates select="imvert:constraints"/>
+            
         </imvert-result:Type>
     </xsl:template>
     
@@ -289,6 +300,24 @@
         <xsl:sequence select="imf:create-group('TaggedValue',$group)"/>
     </xsl:template>
     
+    <xsl:template match="imvert:constraints">
+        <xsl:variable name="group" as="element()*">
+            <xsl:apply-templates select="imvert:constraint">
+                <xsl:sort select="imvert:name"/>
+            </xsl:apply-templates>
+        </xsl:variable>
+        <xsl:sequence select="imf:create-group('constraints',$group)"/>
+    </xsl:template>
+    <xsl:template match="imvert:constraint">
+        <xsl:variable name="group" as="element()*">
+            <xsl:sequence select="imf:create-names(imvert:name)"/>
+            <xsl:apply-templates select="imvert:type"/>
+            <xsl:apply-templates select="imvert:weight"/>
+            <xsl:apply-templates select="imvert:status"/>
+        </xsl:variable>
+        <xsl:sequence select="imf:create-group('Constraint',$group)"/>
+    </xsl:template>
+    
     <xsl:template match="imvert:concepts">
         <xsl:variable name="group" as="element()*">
             <xsl:apply-templates select="imvert:concept">
@@ -310,6 +339,9 @@
             <xsl:apply-templates select="imvert:type-name"/>
             <xsl:apply-templates select="imvert:type-id"/>
             <xsl:apply-templates select="imvert:type-package"/>
+ 
+            <xsl:apply-templates select="imvert:constraints"/>
+            
         </xsl:variable>
         <xsl:sequence select="imf:create-group('AssociationClass',$group)"/>
     </xsl:template>
@@ -321,6 +353,9 @@
             <xsl:apply-templates select="imvert:type-package"/>
             <xsl:apply-templates select="imvert:source/imvert:navigable"/>
             <xsl:apply-templates select="imvert:target/imvert:navigable"/>
+ 
+            <xsl:apply-templates select="imvert:constraints"/>
+            
         </xsl:variable>
         <imvert-result:associationClass>
             <xsl:sequence select="imf:create-group('AssociationClassReference',$group)"/>

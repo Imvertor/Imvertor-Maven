@@ -135,6 +135,7 @@
                 <xsl:sequence select="imf:fetch-release(.)"/>
                 <xsl:sequence select="imf:fetch-derivation(.)"/>
                 <xsl:sequence select="imf:fetch-tagged(.)"/>
+                <xsl:sequence select="imf:fetch-constraint(.)"/>
                 
             </xsl:when>
             <xsl:when test="self::*:Attribute">
@@ -149,6 +150,7 @@
                 <xsl:sequence select="imf:fetch-type(.)"/>
                 <xsl:sequence select="imf:fetch-cardinality(.)"/>
                 <xsl:sequence select="imf:fetch-tagged(.)"/>
+                <xsl:sequence select="imf:fetch-constraint(.)"/>
             </xsl:when>
             <xsl:when test="self::*:Association">
                 <compos>
@@ -162,6 +164,7 @@
                 <xsl:sequence select="imf:fetch-type(.)"/>
                 <xsl:sequence select="imf:fetch-cardinality(.)"/>
                 <xsl:sequence select="imf:fetch-tagged(.)"/>
+                <xsl:sequence select="imf:fetch-constraint(.)"/>
             </xsl:when>
         </xsl:choose>
         
@@ -331,6 +334,17 @@
                     <xsl:value-of select="*:value"/>
                 </xsl:element>
             </xsl:for-each>
+        </xsl:for-each>
+    </xsl:function>
+    
+    <xsl:function name="imf:fetch-constraint">
+        <xsl:param name="this"/>
+        <xsl:for-each select="$this/*:constraints/*:Constraint">
+            <xsl:sort select="*:name"/>
+            <xsl:sequence select="imf:create-row(*:name)"/>
+            <xsl:sequence select="imf:create-row(*:type)"/>
+            <xsl:sequence select="imf:create-row(*:weight)"/>
+            <xsl:sequence select="imf:create-row(*:status)"/>
         </xsl:for-each>
     </xsl:function>
     
