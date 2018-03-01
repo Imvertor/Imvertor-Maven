@@ -23,14 +23,12 @@
     <xsl:template match="conceptual-schema" mode="metamodel-cs">
         <div>
             <h2>Conceptual schema for: <xsl:value-of select="name"/></h2>
-            <div>
-                <p><xsl:sequence select="imf:report-label('Description',description)"/></p>
-                <ul>
-                    <li><xsl:sequence select="imf:report-label('Short-name',short-name)"/></li>
-                    <li><xsl:sequence select="imf:report-label('URL',imf:get-xhtml-link(url,(),true()),true())"/></li>
-                </ul>
-                <xsl:apply-templates select="map" mode="#current"/>
-            </div>      
+            <p><xsl:sequence select="imf:report-label('Description',description)"/></p>
+            <ul>
+                <li><xsl:sequence select="imf:report-label('Short-name',short-name)"/></li>
+                <li><xsl:sequence select="imf:report-label('URL',imf:get-xhtml-link(url,(),true()),true())"/></li>
+            </ul>
+            <xsl:apply-templates select="map" mode="#current"/>
         </div>       
     </xsl:template>
 
@@ -94,8 +92,15 @@
                     </tr>
                 </xsl:for-each>
             </xsl:variable>
-            <xsl:sequence select="imf:create-result-table-by-tr($rows,'name:20,xsd-name:10,xsd-attribute:20,nilreason:10,rdf-name:20,ids:20','table-cs')"/>
-        </div>    
+            <xsl:choose>
+                <xsl:when test="$rows">
+                    <xsl:sequence select="imf:create-result-table-by-tr($rows,'name:20,xsd-name:10,xsd-attribute:20,nilreason:10,rdf-name:20,ids:20','table-cs')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <strong>(Map is empty)</strong>
+                </xsl:otherwise>
+            </xsl:choose>
+          </div>    
      
     </xsl:template>
     
