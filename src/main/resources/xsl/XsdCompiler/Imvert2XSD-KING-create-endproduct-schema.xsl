@@ -230,10 +230,6 @@
 
 	<xsl:template match="ep:construct">	
 		<xsl:sequence select="imf:create-debug-comment('Debuglocation 5004', $debugging)"/>
-		<xsl:if test="$debugging and ep:name = 'BerichtcodeLa01'">
-			<xsl:sequence select="imf:create-debug-comment(ep:name, $debugging)"/>
-		</xsl:if>
-		
 		<xsl:variable name="id" select="substring-before(substring-after(ep:id, '{'), '}')"/>
 		<xsl:variable name="type-name">
 			<xsl:choose>
