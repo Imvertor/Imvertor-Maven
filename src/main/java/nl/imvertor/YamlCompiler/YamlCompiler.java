@@ -102,10 +102,7 @@ public class YamlCompiler extends Step {
 			succeeds = succeeds && JsonFile.validate(configurator, bc);
 			
 			// in all cases copy results to app folder
-			if (succeeds) 
-				yamlFile.setContent(hc + JsonFile.prettyPrint(bc));
-			else 
-				yamlFile.setContent(hc + bc);
+			yamlFile.setContent(hc + bc);
 		
 			// copy to the app folder
 			XmlFile appYamlFile = new XmlFile(yamlFolder,"yaml.ttl");
