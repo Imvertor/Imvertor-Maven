@@ -86,8 +86,8 @@ public class YamlCompiler extends Step {
 	
 		runner.debug(logger,"CHAIN","Generating YAML to " + yamlApplicationFolder);
 		
-		succeeds = succeeds && transformer.transformStep("properties/RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_YAMLHEADER_FILE_PATH", "properties/IMVERTOR_METAMODEL_KING_YAMLHEADER_XSLPATH");
-		succeeds = succeeds && transformer.transformStep("properties/RESULT_SORTED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_YAMLBODY_FILE_PATH", "properties/IMVERTOR_METAMODEL_KING_YAMLBODY_XSLPATH");
+		succeeds = succeeds && transformer.transformStep("properties/RESULT_CLEANED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_YAMLHEADER_FILE_PATH", "properties/IMVERTOR_METAMODEL_KING_YAMLHEADER_XSLPATH");
+		succeeds = succeeds && transformer.transformStep("properties/RESULT_CLEANED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_YAMLBODY_FILE_PATH", "properties/IMVERTOR_METAMODEL_KING_YAMLBODY_XSLPATH");
 			
 		if (succeeds) {
 			// concatenate
