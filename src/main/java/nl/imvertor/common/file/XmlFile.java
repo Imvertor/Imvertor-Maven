@@ -22,6 +22,8 @@ package nl.imvertor.common.file;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -35,6 +37,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHeaders;
 import org.apache.log4j.Logger;
 import org.custommonkey.xmlunit.DetailedDiff;
 import org.custommonkey.xmlunit.Difference;
@@ -493,6 +496,98 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		boolean result = valid && (differences == 0);
 	
 		return result;
+	}
+	
+	/**
+	 * Compare two files based on XML diff REST interface.
+	 * 
+	 * @param testXmlFile
+	 * @param configurator
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean compareXMLDiff(XmlFile testXmlFile, Configurator configurator) throws Exception {
+		
+		String compareLabel = configurator.getXParm("system/compare-label");
+		String compareKey = configurator.getXParm("cli/comparekey",false);
+		if (compareKey == null) compareKey = "name";
+		
+		// create a transformer
+		Transformer transformer = new Transformer();
+		
+		Boolean valid = true;
+		
+		//TODO Duplicate, redundant?
+		XmlFile ctrlNameFile = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_CONTROL_NAME_FILE")); // imvertor.20.docrelease.1.1.compare-control-name.xml
+		XmlFile testNameFile = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_TEST_NAME_FILE")); // imvertor.20.docrelease.1.2.compare-test-name.xml
+		XmlFile infoConfig   = new XmlFile(configurator.getXParm("properties/IMVERTOR_COMPARE_CONFIG")); // Imvert-compare-config.xml
+	
+		// This transformer will pass regular XML parameters to the stylesheet. 
+		// This is because the compare core code is not part of the Imvertor framework, but developed separately.
+		// We therefore do not use the XMLConfiguration approach here.
+		transformer.setXslParm("compare-key", compareKey); // the name or id specifies how to determine "the same" construct
+		
+		transformer.setXslParm("info-config", infoConfig.toURI().toString());  
+		transformer.setXslParm("info-ctrlpath", this.getCanonicalPath());  
+		transformer.setXslParm("info-testpath", "(test path)");  
+
+		transformer.setXslParm("compare-label", compareLabel);
+		
+		// determine temporary files
+		XmlFile controlModelFile = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_CONTROL_MODEL_FILE")); // imvertor.20.docrelease.1.1.compare-control-model.xml
+		XmlFile testModelFile = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_TEST_MODEL_FILE")); // imvertor.20.docrelease.1.2.compare-test-model.xml
+		XmlFile controlSimpleFile = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_CONTROL_SIMPLE_FILE")); // imvertor.20.docrelease.1.1.compare-control-simple.xml
+		XmlFile testSimpleFile = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_TEST_SIMPLE_FILE")); // imvertor.20.docrelease.1.2.compare-test-simple.xml
+		
+		XmlFile diffXml = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_DIFF_FILE")); // imvertor.20.docrelease.2.compare-diff.xml
+		XmlFile listingXml = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_LISTING_FILE")); // imvertor.20.docrelease.3.compare-listing.xml
+			
+		XslFile tempXsl = new XslFile(configurator.getXParm("properties/COMPARE_GENERATED_XSLPATH"));
+		
+		//clean 
+		XslFile cleanerXsl = new XslFile(configurator.getXParm("properties/IMVERTOR_COMPARE_CLEAN_XSLPATH"));
+		XslFile simpleXsl = new XslFile(configurator.getXParm("properties/IMVERTOR_COMPARE_SIMPLE_XSLPATH"));
+		
+		valid = valid && transformer.transform(this,controlModelFile,cleanerXsl,null);
+		valid = valid && transformer.transform(testXmlFile,testModelFile,cleanerXsl,null);
+		
+		// simplify
+		transformer.setXslParm("ctrl-name-mapping-filepath", ctrlNameFile.toURI().toString()); // file:/D:/.../Imvertor-OS-work/imvert/imvertor.20.compare-control-name.xml
+		transformer.setXslParm("test-name-mapping-filepath", testNameFile.toURI().toString());
+		
+		transformer.setXslParm("comparison-role", "ctrl");
+		valid = valid && transformer.transform(controlModelFile,controlSimpleFile,simpleXsl,null);
+		transformer.setXslParm("comparison-role", "test");
+		valid = valid && transformer.transform(testModelFile,testSimpleFile,simpleXsl,null);
+		
+		// compare 
+		
+		String xmlDiffResult = callXmlDiff(controlSimpleFile, testSimpleFile);
+		AnyFile.setFileContent("c:/temp/diffresult.xml", xmlDiffResult);
+		// zie elders................
+		
+		return true;
+	}
+	
+	public String callXmlDiff(XmlFile pathA, XmlFile pathB) throws URISyntaxException, Exception {
+			
+			HttpFile httpFile = new HttpFile("unknown");
+			
+			HashMap<String,String> headerMap = new HashMap<String,String>();
+			headerMap.put(HttpHeaders.ACCEPT, "text/xml");
+			headerMap.put(HttpHeaders.CONTENT_TYPE, "text/xml");
+			headerMap.put(HttpHeaders.CONTENT_ENCODING, "UTF-8");
+		
+			URI uri = new URI("https://imvertor-tst.linkedmatter.com/xmldiff-service/xmldiff");
+			
+			HashMap<String,String> parmsMap = new HashMap<String,String>();
+			parmsMap.put("scenario", "scenario-1");
+			
+			String result = httpFile.post(HttpFile.METHOD_POST_CONTENT, uri, headerMap, parmsMap, new String[] {
+					"<documents><docA><my-doc a=\"b\"><A/></my-doc></docA><docB><my-doc a=\"c\"><B/></my-doc></docB></documents>"
+			}); //pathA.getCanonicalPath(), pathB.getCanonicalPath()}
+			return result;
+
 	}
 	
 	/*

@@ -50,7 +50,7 @@ public class HttpFile extends AnyFile {
      * @return Body of the request
      * @throws Exception 
      */
-	public String get(URI url, Map<String, String> headerMap) throws Exception {
+	public String get(URI url, Map<String, String> headerMap, HashMap<String, String> parms) throws Exception {
 		
 		// create a request builder
 		RequestBuilder builder = RequestBuilder.get();
@@ -64,6 +64,16 @@ public class HttpFile extends AnyFile {
 				builder.addHeader(e.getKey().toString(), e.getValue().toString());
 			}
 		}
+		
+	   // add parms
+ 		if (parms != null) {
+ 			Iterator<Entry<String,String>> paramIterator = parms.entrySet().iterator();
+ 			List<NameValuePair> params = new ArrayList<NameValuePair>();
+ 		 	while (paramIterator.hasNext()) {
+ 		 		Entry<String,String> e = paramIterator.next();
+ 		 		builder.addParameter(new BasicNameValuePair(e.getKey().toString(), e.getValue().toString()));
+ 	 		}
+ 	    }
 		
 		// build and execute the request
 		HttpClient client = HttpClients.custom().build();
@@ -89,7 +99,7 @@ public class HttpFile extends AnyFile {
 	 * @return
 	 * @throws Exception
 	 */
-	public String post(int method, URI url, Map<String, String> headerMap, HashMap<String, String> parms, String payload) throws Exception {
+	public String post(int method, URI url, Map<String, String> headerMap, HashMap<String, String> parms, String[] payload) throws Exception {
 		
 		CloseableHttpClient client = HttpClients.createDefault();
 	    HttpPost httpPost = new HttpPost(url);
@@ -116,13 +126,15 @@ public class HttpFile extends AnyFile {
  		
  		// check which type of post is intended
  		if (method == METHOD_POST_CONTENT && payload != null) {
-	 		StringEntity entity = new StringEntity(payload);
+	 		StringEntity entity = new StringEntity(payload[0]); // only the first content string is used
 		    httpPost.setEntity(entity);
  		} else if (method == METHOD_POST_FILE && payload != null) {
- 			File file = new File(payload);
- 			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
- 		    builder.addBinaryBody("file",file,
- 		      ContentType.APPLICATION_OCTET_STREAM, file.getName());
+			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+ 			for (int i = 0; i < payload.length; i++) {
+ 				File file = new File(payload[i]);
+ 	 		    builder.addBinaryBody("file",file,
+ 	 		      ContentType.APPLICATION_OCTET_STREAM, file.getName());
+ 			}
  		    HttpEntity multipart = builder.build();
  		    httpPost.setEntity(multipart);
  		} 

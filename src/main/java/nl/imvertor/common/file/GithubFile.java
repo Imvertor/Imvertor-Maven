@@ -129,7 +129,7 @@ public class GithubFile extends HttpFile {
 	    
 		HashMap<String,String> headerMap = new HashMap<String,String>();
 		headerMap.put(HttpHeaders.AUTHORIZATION,"token " + OAUTH);
-		String result = get(url, headerMap);
+		String result = get(url, headerMap, null);
 		
 		return new JSONObject(result);
 	}
@@ -144,7 +144,7 @@ public class GithubFile extends HttpFile {
 		headerMap.put(HttpHeaders.CONTENT_TYPE, "application/json");
 		headerMap.put(HttpHeaders.CONTENT_ENCODING, encoding);
 		
-		String result = post(HttpFile.METHOD_POST_CONTENT, url, headerMap, null, payload);
+		String result = post(HttpFile.METHOD_POST_CONTENT, url, headerMap, null, new String[] {payload});
 		
 		return new JSONObject(result);
 	}

@@ -41,6 +41,12 @@
       <tip>Assume the same construct has the same name, or the same ID.</tip>
       <required>false</required>
     </cli-parm>
+    <cli-parm>
+      <name>comparemethgod</name>
+      <arg>name</arg>
+      <tip>Specify a name of a known compare method or "default".</tip>
+      <required>false</required>
+    </cli-parm>
   </cli-parms>
 
   <properties>
