@@ -47,7 +47,7 @@
                     <xsl:sequence select="$intro"/>
                 </div>   
                 <xsl:choose>
-                    <xsl:when test="exists(/imvert:report/imvert:diffs)">
+                    <xsl:when test="exists(/imvert:report/imvert:diffs[imvert:diff])">
                         <table class="compare">
                             <tr class="tableHeader"        >
                                 <td>Package</td>

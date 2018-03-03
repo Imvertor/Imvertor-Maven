@@ -57,6 +57,7 @@ import org.xml.sax.SAXParseException;
 import net.sf.saxon.xpath.XPathFactoryImpl;
 import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Transformer;
+import nl.imvertor.common.helper.XmlDiff;
 import nl.imvertor.common.xsl.extensions.ImvertorCompareXML;
 
 /**
@@ -92,7 +93,10 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	protected static final int WFCODE_WARNING = 1;
 	protected static final int WFCODE_ERROR = 2;
 	protected static final int WFCODE_FATAL = 3;
-	
+
+	// create a pattern that matches <?xml ... ?>
+	public static String xmlRegex = "<\\?(x|X)(m|M)(l|L).*?\\?>";
+		
 	// parameters die de verwerking van het XML file bepalen
 
 	public boolean namespace = true; // namespace aware?
@@ -542,8 +546,6 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		XmlFile diffXml = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_DIFF_FILE")); // imvertor.20.docrelease.2.compare-diff.xml
 		XmlFile listingXml = new XmlFile(configurator.getXParm("properties/WORK_COMPARE_LISTING_FILE")); // imvertor.20.docrelease.3.compare-listing.xml
 			
-		XslFile tempXsl = new XslFile(configurator.getXParm("properties/COMPARE_GENERATED_XSLPATH"));
-		
 		//clean 
 		XslFile cleanerXsl = new XslFile(configurator.getXParm("properties/IMVERTOR_COMPARE_CLEAN_XSLPATH"));
 		XslFile simpleXsl = new XslFile(configurator.getXParm("properties/IMVERTOR_COMPARE_SIMPLE_XSLPATH"));
@@ -561,32 +563,28 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		valid = valid && transformer.transform(testModelFile,testSimpleFile,simpleXsl,null);
 		
 		// compare 
+		callXmlDiff(controlSimpleFile, testSimpleFile, diffXml);
 		
-		String xmlDiffResult = callXmlDiff(controlSimpleFile, testSimpleFile);
-		AnyFile.setFileContent("c:/temp/diffresult.xml", xmlDiffResult);
-		// zie elders................
+		// create listing
+		XslFile listingXsl = new XslFile(configurator.getXParm("properties/IMVERTOR_COMPARE_XMLDIFF_XSLPATH"));
+		valid = valid && transformer.transform(diffXml,listingXml,listingXsl,null);
 		
-		return true;
+		// get the number of differences found
+		int differences = ((NodeList) listingXml.xpathToObject("/*/*",null,XPathConstants.NODESET)).getLength();
+		configurator.setXParm("appinfo/compare-differences-" + compareLabel, differences);
+
+		// Build report
+		boolean result = valid && (differences == 0);
+	
+		return result;
 	}
 	
-	public String callXmlDiff(XmlFile pathA, XmlFile pathB) throws URISyntaxException, Exception {
+	public void callXmlDiff(XmlFile docA, XmlFile docB, XmlFile docResult) throws Exception {
 			
-			HttpFile httpFile = new HttpFile("unknown");
+			URI url = new URI(Configurator.getInstance().getServerProperty("xmldiff.url"));
 			
-			HashMap<String,String> headerMap = new HashMap<String,String>();
-			headerMap.put(HttpHeaders.ACCEPT, "text/xml");
-			headerMap.put(HttpHeaders.CONTENT_TYPE, "text/xml");
-			headerMap.put(HttpHeaders.CONTENT_ENCODING, "UTF-8");
-		
-			URI uri = new URI("https://imvertor-tst.linkedmatter.com/xmldiff-service/xmldiff");
-			
-			HashMap<String,String> parmsMap = new HashMap<String,String>();
-			parmsMap.put("scenario", "scenario-1");
-			
-			String result = httpFile.post(HttpFile.METHOD_POST_CONTENT, uri, headerMap, parmsMap, new String[] {
-					"<documents><docA><my-doc a=\"b\"><A/></my-doc></docA><docB><my-doc a=\"c\"><B/></my-doc></docB></documents>"
-			}); //pathA.getCanonicalPath(), pathB.getCanonicalPath()}
-			return result;
+			XmlDiff xmlDiff = new XmlDiff(url.toString());	
+			xmlDiff.compare(docA, docB, docResult);
 
 	}
 	

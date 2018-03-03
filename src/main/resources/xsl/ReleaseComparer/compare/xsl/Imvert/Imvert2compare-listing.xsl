@@ -48,10 +48,6 @@
     <xsl:variable name="ctrl-doc" select="document($ctrl-url)"/>
     <xsl:variable name="test-doc" select="document($test-url)"/>
 
-    <xsl:variable name="diffs">
-        <xsl:apply-templates select="$ctrl-doc/*" mode="compare"/> <!-- returns a sequence of diff elements -->
-    </xsl:variable>
-    
     <xsl:template match="/">
         <imvert:report>
             <imvert:ctrl>
@@ -60,6 +56,9 @@
             <imvert:test>
                 <xsl:value-of select="$test-url"/>
             </imvert:test>           
+            <xsl:variable name="diffs">
+                <xsl:apply-templates select="$ctrl-doc/*" mode="compare"/> <!-- returns a sequence of diff elements -->
+            </xsl:variable>
             <xsl:for-each-group select="$diffs/imvert:diff" group-by="@ctrl-id">
                 <imvert:diffs ctrl-id="{@ctrl-id}">
                     <xsl:for-each select="current-group()">

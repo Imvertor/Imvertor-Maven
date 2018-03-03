@@ -39,14 +39,12 @@ public class AnyFolder extends AnyFile {
 	 * 
 	 */
 	private static final long serialVersionUID = -4199645313296692076L;
-
+	
 	static public String FOLDER_CONTENT_WRAPPER_NAMESPACE = "http://www.armatiek.nl/namespace/folder-content-wrapper";
 	static public String SERIALIZED_CONTENT_XML_FILENAME = "__content.xml";
 	
 	private String serializedFilePath = SERIALIZED_CONTENT_XML_FILENAME;
 	
- 	// create a pattern that matches <?xml ... ?>
-	private String xmlRegex = "<\\?(x|X)(m|M)(l|L).*?\\?>";
 	
 	public static void main(String[] args) throws Exception {
 		AnyFolder a1 = new AnyFolder("c:/Temp/a1");
@@ -245,7 +243,7 @@ public class AnyFolder extends AnyFile {
 	}
 	
 	private String cleanXmlPI(XmlFile fx) throws IOException {
-		return StringUtils.removePattern(fx.getContent(), xmlRegex);
+		return StringUtils.removePattern(fx.getContent(), XmlFile.xmlRegex);
 	}
 	
 	/*
