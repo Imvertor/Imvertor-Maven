@@ -28,9 +28,9 @@
             <abbrev>SAMPLE2</abbrev>
         </registratieobject>
         <registratieobject>
-            <name lang="nl">Voorbeeld BWB</name>
-            <name lang="en">Sample BWB</name>
-            <abbrev>SAMPLEBWB</abbrev>
+            <name lang="nl">Voorbeeld EPL</name>
+            <name lang="en">Sample EPL</name>
+            <abbrev>SAMPLEEPL</abbrev>
         </registratieobject>
     </domein>
     
