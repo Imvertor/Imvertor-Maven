@@ -66,7 +66,8 @@
                             <xsl:variable name="supplier-construct" select="imf:get-supplier($supplier-doc,$formal-trace-name)"/>
                             <xsl:choose>
                                 <xsl:when test="empty($supplier-doc)">
-                                    <xsl:sequence select="imf:msg('WARNING',concat('No such supplier document: ',.))"/>
+                                    <!-- this must NOT occur; this error is part of regular validation -->
+                                    <xsl:sequence select="imf:msg('FATAL',concat('No such supplier document: ',.))"/>
                                 </xsl:when>
                                 <xsl:when test="exists($supplier-construct)">
                                     <imvert:trace origin="system" original-location="{.}">

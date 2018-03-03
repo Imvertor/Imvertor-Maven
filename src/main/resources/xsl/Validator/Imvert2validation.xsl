@@ -452,6 +452,13 @@
         <xsl:sequence select="imf:check-tagged-value-multi(.)"/>
         <xsl:sequence select="imf:check-tagged-value-assignment(.)"/>
         
+        <!-- check traces -->
+        <xsl:for-each select="imvert:supplier/@subpath">
+            <xsl:sequence select="imf:report-error(../..,
+                not(imf:exists-imvert-supplier-doc(.)), 
+                'No such supplier document: [1]', .)"/>
+        </xsl:for-each>
+        
         <!-- continue other validation -->
         <xsl:next-match/>
     </xsl:template>

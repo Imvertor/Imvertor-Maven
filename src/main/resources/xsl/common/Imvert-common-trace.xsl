@@ -270,6 +270,12 @@
         <xsl:param name="subpath"/>
         <xsl:sequence select="imf:document(concat($output-folder,'/applications/',$subpath,'/etc/system.imvert.xml'),false())"/>
     </xsl:function>
+    
+    <xsl:function name="imf:exists-imvert-system-doc" as="xs:boolean">
+        <xsl:param name="subpath"/>
+        <xsl:sequence select="imf:filespec(concat($output-folder,'/applications/',$subpath,'/etc/system.imvert.xml'))[5] = 'E'"/>
+    </xsl:function>
+    
     <xsl:function name="imf:get-imvert-supplier-doc" as="document-node()?">
         <xsl:param name="subpath"/>
         <?x
@@ -279,6 +285,10 @@
         ?>
         <xsl:sequence select="imf:get-imvert-system-doc($subpath)"/>
         
+    </xsl:function>
+    <xsl:function name="imf:exists-imvert-supplier-doc" as="xs:boolean">
+        <xsl:param name="subpath"/>
+        <xsl:sequence select="imf:exists-imvert-system-doc($subpath)"/>
     </xsl:function>
     
     <!--
