@@ -105,7 +105,7 @@ public class YamlCompiler extends Step {
 			yamlFile.setContent(hc + bc);
 		
 			// copy to the app folder
-			XmlFile appYamlFile = new XmlFile(yamlFolder,"yaml.ttl");
+			AnyFile appYamlFile = new AnyFile(yamlFolder,"yaml.yml");
 			yamlFile.copyFile(appYamlFile);
 		} 
 		configurator.setXParm("system/yaml-created",succeeds);
