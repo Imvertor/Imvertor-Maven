@@ -72,6 +72,7 @@
       generates WORK_COMPARE_*_SIMPLE_FILE
      -->
     <IMVERTOR_COMPARE_LISTING_XSLPATH>${properties/IMVERTOR_COMPARE_FOLDER}/xsl/Imvert/Imvert2compare-listing.xsl</IMVERTOR_COMPARE_LISTING_XSLPATH>
+    <IMVERTOR_COMPARE_XMLDIFF_XSLPATH>${properties/IMVERTOR_COMPARE_FOLDER}/xsl/Imvert/Imvert2compare-listing-xmldiff.xsl</IMVERTOR_COMPARE_XMLDIFF_XSLPATH>
     <!-- 
         The XML which holds the rules for comparion. This is assumd to be different for each type of metamodel / tagged value set.
     -->
