@@ -42,19 +42,14 @@
         </xsl:copy>
     </xsl:template>
     
-    <!-- ignore the following: -->
-    <xsl:template match="
-        config/run/start |
-        config/run/time |
-        config/system/generation-id |
-        config/system/zip-release-filepath |
-        config/appinfo/release-name |
-        config/appinfo/generation-id |
-        config/appinfo/*[starts-with(.,'previous-')] |
-        config/test |
-        config/step" 
-        mode="mode-intermediate-parms">
+    <!-- ignore almost all: -->
+    <xsl:template match="config/*" mode="mode-intermediate-parms">
         <xsl:call-template name="ignore"/>
+    </xsl:template>
+ 
+    <!-- but do look at messages: -->
+    <xsl:template match="config/messages" mode="mode-intermediate-parms" priority="1">
+        <xsl:apply-templates mode="#current"/>
     </xsl:template>
     
     <!-- avoid warnings on different IDs in:
