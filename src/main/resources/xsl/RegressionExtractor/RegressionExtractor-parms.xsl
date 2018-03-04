@@ -50,6 +50,7 @@
         config/system/zip-release-filepath |
         config/appinfo/release-name |
         config/appinfo/generation-id |
+        config/appinfo/*[starts-with(.,'previous-')] |
         config/test |
         config/step" 
         mode="mode-intermediate-parms">
