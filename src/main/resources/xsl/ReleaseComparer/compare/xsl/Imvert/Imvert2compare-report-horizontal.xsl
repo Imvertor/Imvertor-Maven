@@ -112,7 +112,10 @@
                     <xsl:variable name="orig-tv-ctrl" select="$ctrl-name-map[@elm=$type]/@orig"/>
                     <xsl:variable name="orig-tv-test" select="$test-name-map[@elm=$type]/@orig"/>
                     <xsl:variable name="orig-tv" select="if (exists($orig-tv-ctrl)) then $orig-tv-ctrl else $orig-tv-test"/>
-                    <xsl:value-of select="if (starts-with($type,'tv_')) then $orig-tv else $type"/>
+                    <xsl:variable name="orig-ct-ctrl" select="$ctrl-name-map[@elm=$type]/@orig"/>
+                    <xsl:variable name="orig-ct-test" select="$test-name-map[@elm=$type]/@orig"/>
+                    <xsl:variable name="orig-ct" select="if (exists($orig-ct-ctrl)) then $orig-ct-ctrl else $orig-ct-test"/>
+                    <xsl:value-of select="if (starts-with($type,'ct_')) then $orig-ct else $type"/>
                 </td>
                 <!-- explain -->
                 <td>

@@ -67,7 +67,10 @@
             if tagged value, then determine the key, else use the local name. 
             The key must be same as the @form on any elm element in the config. 
         -->
-        <xsl:variable name="use-name" select="if (self::imvert-result:TaggedValue) then concat('tv_',imvert-result:name) else local-name()"/>
+        <xsl:variable name="use-name" select="
+            if (self::imvert-result:TaggedValue) then concat('tv_',imvert-result:name) else 
+            if (self::imvert-result:Constraint) then concat('ct_',imvert-result:name) else 
+            local-name()"/>
         <xsl:variable name="info" select="key('imvert-compare-config',$use-name,$imvert-compare-config-doc)[last()]"/>
         
         <xsl:variable name="must-copy" select="contains($info/@use,$imvert-compare-mode)"/>
@@ -87,6 +90,9 @@
                 <xsl:copy-of select="."/>
             </xsl:when>
             <xsl:when test="$must-copy and starts-with($use-name,'tv_')">
+                <xsl:sequence select="."/>
+            </xsl:when>
+            <xsl:when test="$must-copy and starts-with($use-name,'ct_')">
                 <xsl:sequence select="."/>
             </xsl:when>
             <xsl:when test="$must-copy">

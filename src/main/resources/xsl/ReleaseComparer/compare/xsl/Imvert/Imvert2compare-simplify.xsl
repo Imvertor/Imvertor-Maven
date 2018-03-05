@@ -66,6 +66,9 @@
                 <xsl:for-each-group select="//*:TaggedValue" group-by="*:name">
                     <xsl:apply-templates select="current-group()[1]" mode="name-mapping"/>
                 </xsl:for-each-group>
+                <xsl:for-each-group select="//*:Constraint" group-by="*:name">
+                    <xsl:apply-templates select="current-group()[1]" mode="name-mapping"/>
+                </xsl:for-each-group>
             </maps>
         </xsl:result-document>
     </xsl:template>
@@ -108,6 +111,7 @@
                 <xsl:sequence select="imf:fetch-release(.)"/>
                 <xsl:sequence select="imf:fetch-derivation(.)"/>
                 <xsl:sequence select="imf:fetch-tagged(.)"/>
+                <xsl:sequence select="imf:fetch-constraint(.)"/>
                
             </xsl:when>
             <xsl:when test="self::*:Package">
@@ -123,6 +127,7 @@
                 <xsl:sequence select="imf:fetch-derivation(.)"/>
                 <xsl:sequence select="imf:fetch-conceptual(.)"/>
                 <xsl:sequence select="imf:fetch-tagged(.)"/>
+                <xsl:sequence select="imf:fetch-constraint(.)"/>
                 
             </xsl:when>
             <xsl:when test="self::*:Class">
@@ -136,7 +141,7 @@
                 <xsl:sequence select="imf:fetch-derivation(.)"/>
                 <xsl:sequence select="imf:fetch-tagged(.)"/>
                 <xsl:sequence select="imf:fetch-constraint(.)"/>
-                
+    
             </xsl:when>
             <xsl:when test="self::*:Attribute">
                 <compos>
@@ -151,6 +156,7 @@
                 <xsl:sequence select="imf:fetch-cardinality(.)"/>
                 <xsl:sequence select="imf:fetch-tagged(.)"/>
                 <xsl:sequence select="imf:fetch-constraint(.)"/>
+            
             </xsl:when>
             <xsl:when test="self::*:Association">
                 <compos>
@@ -166,6 +172,7 @@
                 <xsl:sequence select="imf:fetch-tagged(.)"/>
                 <xsl:sequence select="imf:fetch-constraint(.)"/>
             </xsl:when>
+          
         </xsl:choose>
         
     </xsl:template>
@@ -339,12 +346,14 @@
     
     <xsl:function name="imf:fetch-constraint">
         <xsl:param name="this"/>
-        <xsl:for-each select="$this/*:constraints/*:Constraint">
-            <xsl:sort select="*:name"/>
-            <xsl:sequence select="imf:create-row(*:name)"/>
-            <xsl:sequence select="imf:create-row(*:type)"/>
-            <xsl:sequence select="imf:create-row(*:weight)"/>
-            <xsl:sequence select="imf:create-row(*:status)"/>
+        <xsl:for-each select="$this/*:constraints">
+            <!-- only one -->
+            <xsl:for-each select="*:Constraint">
+                <xsl:sort select="*:name"/>
+                <xsl:element name="{ concat('ct_',imf:get-safe-string(*:name)) }">
+                    <xsl:value-of select="concat(*:type,' / ',*:weight, ' / ', *:status)"/>
+                </xsl:element>
+            </xsl:for-each>
         </xsl:for-each>
     </xsl:function>
     
@@ -495,6 +504,10 @@
     
     <xsl:template match="*:TaggedValue" mode="name-mapping">
         <map orig="{*:name} (tv)" elm="{concat('tv_', imf:get-safe-string(*:name))}"/>
+    </xsl:template>
+    
+    <xsl:template match="*:Constraint" mode="name-mapping">
+        <map orig="{*:name} (ct)" elm="{concat('ct_', imf:get-safe-string(*:name))}"/>
     </xsl:template>
     
 </xsl:stylesheet>
