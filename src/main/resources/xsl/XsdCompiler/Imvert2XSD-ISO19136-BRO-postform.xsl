@@ -34,7 +34,7 @@
     <xsl:import href="Imvert2XSD-ISO19136-postform.xsl"/>
     
     <!-- 
-        This stylesheet adds some post-processes.
+        This stylesheet adds some additional post-processes.
         
         This implements the BRO profile:
           

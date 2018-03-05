@@ -39,24 +39,25 @@
           
         This is:
           
-        1/ remove @minOccurs=1 and @maxOccurs=1
+        1/ remove @minOccurs=1 and @maxOccurs=1 when specify-xsd-occurrence=default
         2/ remove @abstract=false
         3/ redirect NE3610IDPropertyType to NEN3610ID type. This is a patch for non conforming NEN3610 schema.
    
     -->
+    <xsl:variable name="specify-xsd-occurrence-always" select="imf:get-config-parameter('specify-xsd-occurrence') = 'always'"/>
     
     <xsl:template match="/">
         <xsl:apply-templates/>
     </xsl:template>
     
     <xsl:template match="@minOccurs">
-        <xsl:if test="not(. = '1')">
+        <xsl:if test="$specify-xsd-occurrence-always or not(. = '1')">
             <xsl:next-match/>
         </xsl:if>
     </xsl:template>    
   
     <xsl:template match="@maxOccurs">
-        <xsl:if test="not(. = '1')">
+        <xsl:if test="$specify-xsd-occurrence-always or not(. = '1')">
             <xsl:next-match/>
         </xsl:if>
     </xsl:template>    
