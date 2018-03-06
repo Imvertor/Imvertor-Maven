@@ -70,7 +70,7 @@
                         <xsl:value-of select="imf:file-to-url(concat($xsd-result-subpath-BSM,'/',$prefix,$version,'_stuf0302.xsd'))"/>
                     </xsl:when>
                     <xsl:when test="@KV-namespace = 'yes'">
-                        <xsl:sequence select="imf:set-config-string('appinfo','kv-schema',concat($prefix,$version))"/>
+                        <xsl:sequence select="imf:set-config-string('appinfo','kv-schema-name',concat($prefix,$version))"/>
                         <xsl:sequence select="imf:set-config-string('appinfo','xsd-result-subpath-kv',concat($prefix,$version,'/',$prefix,$version,'.xsd'))"/>
                         <xsl:value-of select="imf:file-to-url(concat($xsd-result-subpath-BSM,'/',$prefix,$version,'.xsd'))"/>
                     </xsl:when>
