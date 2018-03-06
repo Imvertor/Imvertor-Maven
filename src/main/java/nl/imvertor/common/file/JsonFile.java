@@ -22,6 +22,12 @@ import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+
 import de.odysseus.staxon.json.JsonXMLConfig;
 import de.odysseus.staxon.json.JsonXMLConfigBuilder;
 import de.odysseus.staxon.json.JsonXMLInputFactory;
@@ -39,8 +45,10 @@ public class JsonFile extends AnyFile {
 		 
 	public JsonFile(File file) throws IOException {
 		super(file);
-	 }
-
+    }
+	public JsonFile(String pathname) {
+		super(pathname);
+	}
 	/**
      * Create a json representation of this file. 
      * 
@@ -197,6 +205,21 @@ public class JsonFile extends AnyFile {
 		} catch (Exception e) {
 			configurator.getRunner().error(logger, "Invalid Json: \"" + e.getMessage() + "\"", null, "", "IJ");
 			return false;
+		}
+		return true;
+	}
+	
+	public boolean convertToYaml(Configurator configurator, YamlFile resultYamlFile) throws IOException, ConfiguratorException {
+		try {
+			 // parse JSON
+	        JsonNode jsonNodeTree = new ObjectMapper().readTree(getContent());
+	        // save it as YAML
+	        YAMLMapper m = new YAMLMapper();
+	        m.disable(Feature.WRITE_DOC_START_MARKER);
+	        String jsonAsYaml = m.writeValueAsString(jsonNodeTree);
+	        resultYamlFile.setContent(jsonAsYaml);
+        } catch (Exception e) {
+			configurator.getRunner().error(logger,"Error parsing Json: " + e.getLocalizedMessage());
 		}
 		return true;
 	}

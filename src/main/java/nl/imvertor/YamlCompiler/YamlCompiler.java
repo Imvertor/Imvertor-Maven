@@ -91,22 +91,26 @@ public class YamlCompiler extends Step {
 			
 		if (succeeds) {
 			// concatenate
-			AnyFile headerFile = new AnyFile(configurator.getXParm("properties/RESULT_YAMLHEADER_FILE_PATH"));
-			AnyFile bodyFile = new AnyFile(configurator.getXParm("properties/RESULT_YAMLBODY_FILE_PATH"));
+			YamlFile headerFile = new YamlFile(configurator.getXParm("properties/RESULT_YAMLHEADER_FILE_PATH"));
+			JsonFile bodyFile = new JsonFile(configurator.getXParm("properties/RESULT_YAMLBODY_FILE_PATH"));
 			YamlFile yamlFile = new YamlFile(configurator.getXParm("properties/RESULT_YAML_FILE_PATH"));
 			
 			// validate
 			String hc = headerFile.getContent();
-			String bc = bodyFile.getContent();
 			succeeds = succeeds && YamlFile.validate(configurator, hc);
-			succeeds = succeeds && JsonFile.validate(configurator, bc);
+			succeeds = succeeds && bodyFile.convertToYaml(configurator, yamlFile);
+			String bc = yamlFile.getContent();
 			
 			// in all cases copy results to app folder
-			yamlFile.setContent(hc + bc);
+			yamlFile.setContent(hc + "\n" + bc);
+		
+			String schemaName = configurator.getXParm("appinfo/kv-schema-name");
 		
 			// copy to the app folder
-			AnyFile appYamlFile = new AnyFile(yamlFolder,"yaml.yml");
+			AnyFile appYamlFile = new AnyFile(yamlFolder,schemaName + ".yaml");
+			AnyFile appJsonFile = new AnyFile(yamlFolder,schemaName + ".json");
 			yamlFile.copyFile(appYamlFile);
+			bodyFile.copyFile(appJsonFile);
 		} 
 		configurator.setXParm("system/yaml-created",succeeds);
 		
