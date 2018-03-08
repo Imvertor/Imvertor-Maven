@@ -81,8 +81,12 @@ public class OfficeCompiler extends Step {
 				
 				AnyFile infoOfficeFile = new AnyFile(configurator.getXParm("properties/WORK_OFFICE_FILE"));
 				AnyFile officeFile = new AnyFile(configurator.getXParm("system/work-cat-folder-path") + "/" + fn + ".html");
-				
 				infoOfficeFile.copyFile(officeFile);
+				
+				// copy the modeldoc file alongside.
+				AnyFile infoModeldocFile = new AnyFile(configurator.getXParm("properties/WORK_MODELDOC_FILE"));
+				AnyFile modeldocFile = new AnyFile(configurator.getXParm("system/work-cat-folder-path") + "/" + fn + ".modeldoc.xml");
+				infoModeldocFile.copyFile(modeldocFile);
 				
 				// see if this result should be sent on to FTP
 				String target = configurator.getXParm("cli/passoffice",false);

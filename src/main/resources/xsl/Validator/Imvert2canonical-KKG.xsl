@@ -69,8 +69,8 @@
         </xsl:copy>
     </xsl:template>
     <xsl:template match="imvert:attribute[imvert:type-name = 'scalar-string']">
-        <xsl:variable name="pat" select="imf:get-tagged-value(.,'##CFG-TV-FORMALPATTERN')"/>
-        <xsl:variable name="parse" select="imf:parse-scalar-length(imf:get-tagged-value(.,'##CFG-TV-LENGTH'))"/>
+        <xsl:variable name="pat" select="if (imvert:pattern) then () else imf:get-tagged-value(.,'##CFG-TV-FORMALPATTERN')"/>
+        <xsl:variable name="parse" select="if (imvert:max-length) then () else imf:parse-scalar-length(imf:get-tagged-value(.,'##CFG-TV-LENGTH'))"/>
         <xsl:copy>
             <xsl:apply-templates/>
             <xsl:sequence select="imf:create-output-element('imvert:pattern',$pat)"/>

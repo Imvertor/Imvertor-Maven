@@ -29,7 +29,7 @@
       <h2>Catalogus</h2>
         <p class="note" title="Over deze catalogus">
             Deze catalogus is automatisch samengesteld op basis van het UML model 
-            "<xsl:value-of select="@name"/>" door <xsl:value-of select="@version"/> op <xsl:value-of select="imf:format-dateTime(@date)"/>.
+            "<xsl:value-of select="@name"/>" door <xsl:value-of select="@generator-version"/> op <xsl:value-of select="imf:format-dateTime(@generator-date)"/>.
            <br/>
             Wanneer je technische fouten of onvolkomenheden aantreft, geef dit dan door aan <i><xsl:value-of select="imf:get-config-string('cli','supportemail')"/></i> en geef de code 
             <i>"<xsl:value-of select="imf:get-config-string('appinfo','release-name')"/>"</i> door. 
@@ -79,7 +79,7 @@
                         <map name="imagemap-{$diagram-id}">
                             <xsl:for-each select="$diagram/imvert-imap:map">
                                 <xsl:variable name="section-id" select="imvert-imap:for-id"/>
-                                <xsl:variable name="section" select="$document//section[@ea-id = $section-id]"/>
+                                <xsl:variable name="section" select="$document//section[@uuid = $section-id]"/>
                                 <xsl:if test="$section">
                                     <xsl:variable name="section-name" select="$section/name"/>
                                     <area 
@@ -471,8 +471,8 @@
    
     <xsl:function name="imf:create-anchors" as="element()*">
         <xsl:param name="section-or-item"/>
-        <xsl:if test="$section-or-item/@ea-id">
-            <a class="anchor" name="graph_{$section-or-item/@ea-id}"/>
+        <xsl:if test="$section-or-item/@uuid">
+            <a class="anchor" name="graph_{$section-or-item/@uuid}"/>
         </xsl:if>
         <xsl:if test="$section-or-item/@id">
             <a class="anchor" name="{$section-or-item/@id}"/>

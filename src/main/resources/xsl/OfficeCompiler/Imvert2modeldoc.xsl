@@ -52,7 +52,7 @@
     <xsl:variable name="imagemap" select="imf:document($imagemap-path)/imvert-imap:diagrams"/>
     
     <xsl:template match="/imvert:packages">
-        <book name="{imvert:application}" subpath="{$subpath}" type="{imvert:stereotype}" id="{imvert:id}" version="{$imvertor-version}" date="{$generation-date}">
+        <book name="{imvert:application}" subpath="{$subpath}" type="{imvert:stereotype}" id="{imvert:id}" generator-version="{$imvertor-version}" generator-date="{$generation-date}">
        
             <!-- first call a general initialization function -->
             <xsl:sequence select="imf:initialize-modeldoc()"/>
@@ -126,7 +126,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype')]">
-        <section name="{imf:get-name(.,true())}" type="OBJECTTYPE" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
+        <section name="{imf:get-name(.,true())}" type="OBJECTTYPE" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-OBJECTTYPE')"/>
@@ -140,7 +140,7 @@
     </xsl:template>
 
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-relatieklasse')]">
-        <section name="{imf:get-name(.,true())}" type="ASSOCIATIONCLASS" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
+        <section name="{imf:get-name(.,true())}" type="ASSOCIATIONCLASS" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-ASSOCIATIONCLASS')"/>
@@ -155,7 +155,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]">
-        <section name="{imf:get-name(.,true())}" type="REFERENCELIST" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
+        <section name="{imf:get-name(.,true())}" type="REFERENCELIST" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-REFERENCELIST')"/>
@@ -167,7 +167,7 @@
     </xsl:template>
    
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]">
-        <section name="{imf:get-name(.,true())}" type="UNION" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
+        <section name="{imf:get-name(.,true())}" type="UNION" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-UNION')"/>
@@ -179,7 +179,7 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]">
-        <section name="{imf:get-name(.,true())}" type="DATATYPE" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
+        <section name="{imf:get-name(.,true())}" type="DATATYPE" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-DATATYPE')"/>
@@ -193,7 +193,7 @@
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist')]">
         <xsl:variable name="naam" select="imf:get-name(.,true())"/>
         <part>
-            <item id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
+            <item id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
                 <xsl:sequence select="imf:create-idref(.,'detail')"/>
                 <xsl:sequence select="imf:create-content($naam)"/>          
             </item>
@@ -203,7 +203,7 @@
 
     <!-- uitzondering: gegevensgroeptype wordt apart getoond. -->
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]">
-        <section name="{imf:get-name(.,true())}" type="COMPOSITE" id="{imf:plugin-get-link-name(.,'global')}" ea-id="{imvert:id}">
+        <section name="{imf:get-name(.,true())}" type="COMPOSITE" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-COMPOSITE')"/>

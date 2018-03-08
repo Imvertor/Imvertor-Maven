@@ -76,9 +76,9 @@
                     :
                     <xsl:value-of select="@name"/>
                     :
-                    <xsl:value-of select="@version"/>
+                    <xsl:value-of select="@generator-version"/>
                     :
-                    <xsl:value-of select="@date"/>
+                    <xsl:value-of select="@generator-date"/>
                 </p>
                 <p>
                     ID: <xsl:value-of select="@id"/>
