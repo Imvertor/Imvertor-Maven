@@ -50,7 +50,7 @@ public class Release {
 			imvertorVersionInfo = new XmlFile(configurator.getBaseFolder(), "static/release/release.xml");
 		}
 		if (imvertorBuildInfo == null) {
-			File propFile = new File(configurator.getBaseFolder(),"build.properties");
+			File propFile = new File(configurator.getBaseFolder().getParent(),"build.properties");
 			if (propFile.exists()) // may not exists outside of build process of Imvertor as intended by nightly build.
 				imvertorBuildInfo = configurator.getProperties(propFile);
 			else
