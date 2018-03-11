@@ -20,8 +20,9 @@
 
 package nl.imvertor.common;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -38,6 +39,7 @@ public class Release {
 	
 	// change version number manually here, on each adaptation made in the imvertor sources! 
 	private static XmlFile imvertorVersionInfo; 
+	private static Properties imvertorBuildInfo; 
 	
 	private static String imvertorSVNVersion = val1("$Id: Release.java 7503 2016-04-15 14:46:57Z arjan $");
 	
@@ -45,11 +47,22 @@ public class Release {
 		if (imvertorVersionInfo == null) {
 			imvertorVersionInfo = new XmlFile(Configurator.getInstance().getBaseFolder(), "static/release/release.xml");
 		}
+		if (imvertorBuildInfo == null) {
+			File propFile = new File("build.properties");
+			if (propFile.exists()) // may not exists outside of build process of Imvertor as intended by nightly build.
+				imvertorBuildInfo = Configurator.getInstance().getProperties(propFile);
+			else
+				imvertorBuildInfo = new Properties();
+		}
 	}
 	
 	public static String getVersionString(String artifact) throws Exception {
 		loadVersionInfo();
-		String release = 
+		
+		// release is set by build process or oitherwise read from release.xml. 
+		String release = imvertorBuildInfo.getProperty("release");
+		if (release == null)
+			release = 
 				imvertorVersionInfo.xpath("/release-info/release[artifact = '" +artifact+ "']/major-minor")
 				+ "." +
 				imvertorVersionInfo.xpath("/release-info/release[artifact = '" +artifact+ "']/bugfix");

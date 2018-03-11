@@ -1345,7 +1345,7 @@ public class Configurator {
 		return currentStepName;
 	}
 
-	private Properties getProperties(File file) throws IOException {
+	public Properties getProperties(File file) throws IOException {
 		Properties properties = new Properties();
 		FileInputStream s = new FileInputStream(file);
 		BufferedReader in = new BufferedReader(new InputStreamReader(s, "UTF-8"));
