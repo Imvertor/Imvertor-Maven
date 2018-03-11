@@ -44,13 +44,15 @@ public class Release {
 	private static String imvertorSVNVersion = val1("$Id: Release.java 7503 2016-04-15 14:46:57Z arjan $");
 	
 	private static void loadVersionInfo() throws IOException {
+		Configurator configurator = Configurator.getInstance();
+		
 		if (imvertorVersionInfo == null) {
-			imvertorVersionInfo = new XmlFile(Configurator.getInstance().getBaseFolder(), "static/release/release.xml");
+			imvertorVersionInfo = new XmlFile(configurator.getBaseFolder(), "static/release/release.xml");
 		}
 		if (imvertorBuildInfo == null) {
-			File propFile = new File("build.properties");
+			File propFile = new File(configurator.getBaseFolder(),"build.properties");
 			if (propFile.exists()) // may not exists outside of build process of Imvertor as intended by nightly build.
-				imvertorBuildInfo = Configurator.getInstance().getProperties(propFile);
+				imvertorBuildInfo = configurator.getProperties(propFile);
 			else
 				imvertorBuildInfo = new Properties();
 		}
