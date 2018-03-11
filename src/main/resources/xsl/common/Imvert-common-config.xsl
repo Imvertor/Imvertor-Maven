@@ -68,8 +68,8 @@
     <xsl:variable name="concept-uri-template" select="imf:get-config-parameter('concept-uri-template')"/>
     <xsl:variable name="concept-uri-resolve" select="imf:boolean(imf:get-config-string('cli','resolveconcepturi','false'))"/>
     
-    <xsl:function name="imf:get-config-schemarules" as="element(tv)*">
-        <xsl:sequence select="$configuration-schemarules-file//name-value-mapping/tagged-values/tv"/>
+    <xsl:function name="imf:get-config-schemarules" as="element(schema-rules)?">
+        <xsl:sequence select="$configuration-schemarules-file"/>
     </xsl:function>
 
     <xsl:function name="imf:get-config-tagged-values" as="element(tv)*">

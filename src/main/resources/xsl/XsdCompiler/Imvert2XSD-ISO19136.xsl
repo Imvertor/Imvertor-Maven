@@ -33,6 +33,10 @@
     exclude-result-prefixes="#all"
     version="2.0">
 
+    <!-- 
+        implementation of ISO 19136:2007
+    -->
+
     <xsl:import href="../common/Imvert-common.xsl"/>
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     <xsl:import href="../common/Imvert-common-doc.xsl"/>

@@ -22,8 +22,11 @@
     <xi:include href="../../../Geonovum/cfg/schemarules/NEN3610.xml"/>
     
     <name>BRO</name>
+    
     <!-- 
         BRO specific rules 
     -->
+    <!-- specify the minOccurs/maxOccurs when needed ("default") or "always" -->
+    <specify-xsd-occurrence>always</specify-xsd-occurrence><!-- only applies to ISO19136 -->
     
 </schema-rules>

@@ -46,9 +46,6 @@
     <parameter name="imvertor-translate-association-components">components</parameter>
     <parameter name="imvertor-translate-suffix-components">Components</parameter>
     
-    <!-- specify the minOccurs/maxOccurs when needed ("default") or "always" -->
-    <parameter name="specify-xsd-occurrence">always</parameter><!-- only applies to ISO19135 -->
-    
     <!-- 
         other configurable info
     -->

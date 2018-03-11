@@ -21,7 +21,11 @@
     <name>Kadaster</name>
     <desc lang="en">Rule for processing Kadaster models to XML schemas</desc>
     <desc lang="nl">Regels voor het verwerken van Kadaster modellen tot XML schema's</desc>
+    
     <!-- 
         Kadaster specific rules 
     -->
+    <!-- specify the minOccurs/maxOccurs when needed ("default" or "always") -->
+    <specify-xsd-occurrence>default</specify-xsd-occurrence><!-- only applies to ISO19136 -->
+
 </schema-rules>

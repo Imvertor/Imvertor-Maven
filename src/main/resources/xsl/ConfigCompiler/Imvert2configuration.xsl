@@ -273,6 +273,9 @@
                         </tv>
                     </xsl:for-each-group>
                 </name-value-mapping>
+          
+                <xsl:sequence select="$schema-rules//specify-xsd-occurrence[last()]"/>
+          
             </schema-rules>
 
             <tagset root="true">
