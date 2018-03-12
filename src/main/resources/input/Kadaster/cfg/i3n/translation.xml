@@ -191,6 +191,12 @@
         <trans lang="nl">Referentielijst</trans>
     </item>
     <item>
+        <key>CODELIST</key>
+        <trans lang="nl">Codelijst</trans>
+        <trans lang="en">Codelist</trans>
+    </item>
+    
+    <item>
         <key>UNION</key>
         <trans lang="nl">Union</trans>
     </item>
@@ -258,6 +264,11 @@
         <trans lang="nl">Referentielijst overzicht</trans>
     </item>
     <item>
+        <key>OVERVIEW-CODELIST</key>
+        <trans lang="nl">Codelijsten</trans>
+        <trans lang="en">Codelists</trans>
+    </item>
+    <item>
         <key>OVERVIEW-UNION</key>
         <trans lang="nl">Union overzicht</trans>
     </item>
@@ -286,6 +297,12 @@
         <key>DETAILS-REFERENCELIST</key>
         <trans lang="nl">Referentielijsten</trans>
     </item>
+    <item>
+        <key>DETAILS-CODELIST</key>
+        <trans lang="nl">Codelijst details</trans>
+        <trans lang="en">Code list details</trans>
+    </item>
+    
     <item>
         <key>DETAILS-UNION</key>
         <trans lang="nl">Unions</trans>
