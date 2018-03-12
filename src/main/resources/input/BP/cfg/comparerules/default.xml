@@ -40,11 +40,7 @@
         <elm use=""     form="localSchemaSvnId">localSchemaSvnId</elm>
         <elm use=""     form="conceptualschemaSvnId">conceptualschemaSvnId</elm>
         <elm use=""     form="refMaster">Reference master</elm>
-        <elm use=""     form="id">Identifier</elm>
-        <elm use=""     form="typeId">ID of the class implementing the type</elm>
-        <elm use=""     form="typePackageId">ID of the package that implements the type</elm>
-        <elm use=""     form="copyDownTypeId">ID of the class from which to down-copy attributes</elm>
-   
+       
         <!-- include for info compare -->
         <elm use="I"    form="generated">Generation date</elm>
         <elm use="I"    form="generator">ID/version of the generator</elm>
@@ -78,6 +74,11 @@
         <elm use="DIV"   form="attributeTypeDesignation">Role of the attribute type</elm>
         <elm use="DIV"   form="origin">Origin</elm>
         
+        <elm use="DIVR" form="id">Identifier</elm>
+        <elm use="DIVR" form="trace">Trace</elm>
+        <elm use="DIVR" form="typeId">ID of the class implementing the type</elm>
+        <elm use="DIVR" form="typePackageId">ID of the package that implements the type</elm>
+        <elm use="DIVR" form="copyDownTypeId">ID of the class from which to down-copy attributes</elm>
     </elms>
     
     <!-- model level -->
@@ -156,13 +157,11 @@
         <elm use="DIV"  form="LocalSchema">Local schema</elm>
         <elm use="DIV"  form="package-replacement">Package replacement type</elm>
         
-        <elm use="DIR"  form="trace">Trace</elm>
-
         <elm use="DIV"  form="Constraint">Constraint</elm>
         <elm use="DIV"  form="type">Type of constraint</elm>
         <elm use="DIV"  form="weight">Weight of constraint</elm>
         <elm use="DIV"  form="status">Status of constraint</elm>
-        
+
     </elms>
 
     <!-- for tagged values: -->

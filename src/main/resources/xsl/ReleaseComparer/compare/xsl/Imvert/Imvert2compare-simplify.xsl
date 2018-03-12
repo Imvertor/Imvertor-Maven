@@ -48,7 +48,7 @@
     
     <xsl:output indent="no"/>
     
-      <xsl:variable name="sep">-</xsl:variable>
+    <xsl:variable name="sep">-</xsl:variable>
     
     <!-- create to representations, removing all documentation level elements -->
     <xsl:template match="/">
@@ -56,7 +56,7 @@
             <xsl:apply-templates/>
         </xsl:variable>
         <root-of-compare role="{$comparison-role}">
-            <xsl:apply-templates select="$all" mode="nonempty"/> <!-- remove all elements that have no content --> 
+            <xsl:apply-templates select="$all" mode="nonempty"/> <!-- remove all elements that have no content, and those that could not be named. --> 
         </root-of-compare>
         <!-- no create a listing of element names and original names, used in reporting -->
         <xsl:variable name="fn" select="if ($comparison-role = 'ctrl') then $ctrl-name-mapping-filepath else $test-name-mapping-filepath"/>
@@ -179,6 +179,15 @@
 
     <xsl:template match="*" mode="nonempty">
         <xsl:choose>
+            <xsl:when test="local-name() = concat('I',$sep)">
+               <!-- skip -->     
+            </xsl:when>
+            <xsl:when test="local-name() = ('id')">
+                <!-- skip -->
+            </xsl:when>
+            <xsl:when test="local-name() = ('trace','typeId','typePackageId') and $compare-label = 'derivation'">
+                <!-- skip -->
+            </xsl:when>
             <xsl:when test=".//text()">
                 <xsl:copy>
                     <xsl:copy-of select="@*"/>
@@ -229,12 +238,25 @@
     <xsl:function name="imf:get-safe-name">
         <xsl:param name="this"/>
         <xsl:choose>
-            <xsl:when test="$compare-key = 'name'">
-                <xsl:value-of select="imf:get-compos-name($this)"/>
+            <xsl:when test="$comparison-role = 'test' and $compare-label = 'derivation'">
+                <!-- 
+                    In this case we replace the ID of the test file by the id of the supplier; if several suppliers, take the first.
+                    If no suppliers found (no traces occur), the resulting element <I-> will be removed alltogether in a final cleanup phase.
+                -->
+                <xsl:variable name="trace" select="$this/*:identification/*:Identifiable/*:trace[1]"/>
+                <xsl:value-of select="concat('I',$sep,imf:get-safe-string($trace))"/>
             </xsl:when>
-            <xsl:when test="$compare-key = 'id'">
+            <xsl:when test="$compare-label = 'derivation' or $compare-key = 'id'">
+                <!-- 
+                    Derivation compare is always based on traces. 
+                    This is acceptable because name based derivation is translated to ID based derivation.
+                    For the ctrl file (as in this case) we enforce that the ID is used as the comparison key.
+                -->
                 <xsl:variable name="id" select="$this/*:identification/*:Identifiable/*:id"/>
                 <xsl:value-of select="concat('I',$sep,imf:get-safe-string($id))"/>
+            </xsl:when>
+            <xsl:when test="$compare-key = 'name'">
+                <xsl:value-of select="imf:get-compos-name($this)"/>
             </xsl:when>
         </xsl:choose>
     </xsl:function>
@@ -249,6 +271,7 @@
         <xsl:variable name="name" select="imf:create-display-name($this)"/>
         <xsl:value-of select="concat('N',$sep,imf:get-safe-string($name))"/>
     </xsl:function>
+    
     <!-- 
         thematische functies, gegeven exact af wat er moet worden vergeleken. 
     -->

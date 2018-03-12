@@ -42,9 +42,9 @@
       <required>false</required>
     </cli-parm>
     <cli-parm>
-      <name>comparemethgod</name>
+      <name>comparemethod</name>
       <arg>name</arg>
-      <tip>Specify a name of a known compare method or "default".</tip>
+      <tip>Specify a name of a known compare method or "default". Currently known methods are: "xmldiff" and "xmlunit".</tip>
       <required>false</required>
     </cli-parm>
   </cli-parms>
