@@ -62,7 +62,7 @@
             <xsl:call-template name="_Identifiable">
                 <xsl:with-param name="name" select="imvert:application"/>
             </xsl:call-template>
-            
+             
             <xsl:variable name="group" as="element()*">
                 <xsl:apply-templates select="imvert:package">
                     <xsl:sort select="imvert:name"/>
@@ -77,6 +77,7 @@
             </xsl:variable>
             <xsl:sequence select="imf:create-group('localSchemas',$group)"/>
             
+            <xsl:call-template name="_Released"/>
             <xsl:call-template name="_Svn"/>
             <xsl:call-template name="_Derivable"/>
             <xsl:call-template name="_Tagged"/>
@@ -438,7 +439,7 @@
         </xsl:variable>
         <xsl:sequence select="imf:create-group('release',$group)"/>
         
-    </xsl:template>
+    </xsl:template>    
     
     <xsl:template name="_Derivable">
         <xsl:variable name="group" as="element()*">

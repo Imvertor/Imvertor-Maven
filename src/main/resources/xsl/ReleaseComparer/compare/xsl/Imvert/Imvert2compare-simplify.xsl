@@ -288,6 +288,8 @@
             <xsl:sequence select="imf:create-row(*:namespace)"/>
             <xsl:sequence select="imf:create-row(*:stereotype)"/>
             <xsl:sequence select="imf:create-row(*:trace)"/>
+            <xsl:sequence select="imf:create-row(*:scope)"/>
+            <xsl:sequence select="imf:create-row(*:visibility)"/>
         </xsl:for-each>
     </xsl:function>
 

@@ -117,6 +117,10 @@
         <elm use="DIV"  form="subpackage">Subpackage</elm>
         
         <elm use="DIV"  form="version">Version number</elm>
+        <elm use="DIV"  form="phase">Development phase</elm>
+        
+        <elm use="DIV"  form="scope">Scope</elm>
+        <elm use="DIV"  form="visibility">Visibility</elm>
         
         <elm use="DIV"  form="Type">Type</elm>
         <elm use="DIV"  form="typeName">Type name</elm>
