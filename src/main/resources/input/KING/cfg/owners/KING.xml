@@ -84,6 +84,9 @@
     
     <parameter name="concept-uri-template">https://unknown-concept-server/[concept]</parameter>
     
+    <!-- allow client scalars to be compared to any type of supplier? -->  
+    <parameter name="derivation-client-scalar-check">true</parameter>
+    
     <!--x
     <parameter name="application-version-regex">^\S+$</parameter>
     <parameter name="domain-version-regex">^\S+$</parameter>

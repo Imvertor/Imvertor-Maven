@@ -175,13 +175,16 @@
             <xsl:when test="empty($client/imvert:baretype) and empty($supplier/imvert:baretype)">
                 <!-- this is an enum; skip; this is dealt with elsewhere -->
             </xsl:when>
-            <xsl:when test="empty($supplier/imvert:type-id) and empty($client/imvert:type-id)">
+            <xsl:when test="empty($supplier/imvert:type-id) and empty($client/imvert:type-id) and $check-scalar-derivation">
                 <!-- compare base types -->
                 <xsl:sequence select="imf:check-baretype-related($client,$supplier)"/>
             </xsl:when>
             <xsl:when test="$supplier/imvert:type-id and $client/imvert:type-id">
                 <!-- compare class-based types -->
                 <xsl:sequence select="imf:check-classtype-related($client,$supplier)"/>
+            </xsl:when>
+            <xsl:when test="empty($client/imvert:type-id) and not($check-scalar-derivation)">
+                <!-- skip; scalar clients are never compared. -->
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:report-warning($client,true(),

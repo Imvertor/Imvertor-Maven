@@ -33,6 +33,7 @@
 	-->
 	<xsl:variable name="model-is-traced-by-user" select="imf:boolean(imf:get-config-string('cli','modelistraced'))"/>
 	<xsl:variable name="model-is-traced" select="imf:boolean(imf:get-config-string('system','traces-available'))"/>
+	<xsl:variable name="check-scalar-derivation" select="imf:boolean(imf:get-config-parameter('derivation-client-scalar-check'))"/>
 	
 	<!-- 
 		Combine all imvert documentation elements. 
