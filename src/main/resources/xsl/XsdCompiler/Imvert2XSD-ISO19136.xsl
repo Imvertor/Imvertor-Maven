@@ -289,7 +289,15 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]">
-        <!-- codelists are not declared glblly -->
+        <xsl:sequence select="imf:create-comment(.,'A codelist')"/>
+        <xsl:variable name="codespace" select="imf:get-tagged-value(.,'##CFG-TV-DATALOCATION')"/>
+        <xs:complexType name="{imvert:name}{$Type-suffix}">
+            <xs:simpleContent>
+                <xs:restriction base="gml:CodeWithAuthorityType">
+                    <xs:attribute name="codeSpace" type="xs:anyURI" use="required" fixed="{$codespace}" />
+                </xs:restriction>
+            </xs:simpleContent>
+        </xs:complexType>
     </xsl:template>    
 
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]">
@@ -396,7 +404,7 @@
                             <xsl:sort select="xs:integer(imvert:position)" order="ascending"/>
                             <xsl:variable name="defining-class" select="imf:get-defining-class(.)"/>   
                             <xsl:variable name="defining-class-is-datatype" select="$defining-class/imvert:stereotype/@id = (
-                                ('stereotype-name-simpletype','stereotype-name-enumeration','stereotype-name-complextype','stereotype-name-union'))"/>   
+                                ('stereotype-name-simpletype','stereotype-name-enumeration','stereotype-name-codelist','stereotype-name-complextype','stereotype-name-union'))"/>   
                             <xsl:choose>
                                 <xsl:when test="$defining-class-is-datatype">
                                     <xsl:sequence select="imf:create-comment(.,'A choice member, which is a datatype')"/>
@@ -905,7 +913,8 @@
                     <xsl:sequence select="imf:get-annotation($this)"/>
                 </xs:element>
             </xsl:when>
-            <xsl:when test="$is-codelist">
+            <!--
+            <xsl:when test="$is-codelist and $is-nillable">
                 <xsl:variable name="added-appinfo" as="element()">
                     <xs:appinfo>
                         <gmlexr:targetCodeList>
@@ -921,19 +930,20 @@
                     <xsl:sequence select="imf:create-comment($this,'A codelist type')"/>
                     <xsl:sequence select="imf:get-annotation($this,imf:get-appinfo-location($defining-class),$added-appinfo)"/>
                 </xs:element>
-            </xsl:when>
-            <xsl:when test="$is-enumeration and $is-nillable">
+             </xsl:when>
+            -->
+            <xsl:when test="($is-enumeration or $is-codelist) and $is-nillable">
                 <!-- an enumeration or a datatype such as postcode -->
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:attribute name="nillable">true</xsl:attribute>
-                    <xsl:sequence select="imf:create-comment($this,'A voidable enumeration')"/>
+                    <xsl:sequence select="imf:create-comment($this,'A voidable enumeration or codelist')"/>
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                     <xs:complexType>
                         <xs:simpleContent>
-                            <xs:extension base="{$type}">
+                            <xs:extension base="{$type}{$Type-suffix}">
                                 <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
                             </xs:extension>
                         </xs:simpleContent>
@@ -1009,13 +1019,13 @@
                     </xs:complexType>
                 </xs:element>
             </xsl:when>
-            <xsl:when test="$is-enumeration or $is-datatype">
+            <xsl:when test="$is-enumeration or $is-codelist or $is-datatype">
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="type" select="concat($type,$Type-suffix)"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-comment($this,'An enumeration or a datatype')"/>
+                    <xsl:sequence select="imf:create-comment($this,'An enumeration or codelist or datatype')"/>
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                 </xs:element>
             </xsl:when>
