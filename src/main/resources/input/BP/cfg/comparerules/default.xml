@@ -119,6 +119,7 @@
         <elm use="DIV"  form="version">Version number</elm>
         <elm use="DIV"  form="phase">Development phase</elm>
         
+        <elm use="DIV"  form="alias">Alias</elm>
         <elm use="DIV"  form="scope">Scope</elm>
         <elm use="DIV"  form="visibility">Visibility</elm>
         
