@@ -185,7 +185,7 @@
             'Namespace [1] of the domain package does not start with the application namespace [2].',(string(imvert:namespace), string(../imvert:namespace)))"/>
         <xsl:sequence select="imf:report-error(., 
             (matches(substring-after(imvert:namespace,$application/imvert:namespace),'.*?//')),
-            'Namespace of the domain package holds empty path //')"/>
+            'Namespace of the domain package holds empty path: [1]',imvert:namespace)"/>
     
         <!-- validate the version chain -->
         <xsl:if test="exists(ancestor-or-self::imvert:package[not(imf:boolean(imvert:derived))])">

@@ -276,10 +276,10 @@
                 <xsl:variable name="largest" select="imf:largest($subpackage-releases)"/>
                 <xsl:sequence select="imf:report-error(., 
                     ($root-release gt $largest), 
-                    'The root package release number [1] is too recent; none of the domain packages has this release; most recent is [2].',($root-release,$largest))"/>
+                    'The root package release number [1] is too recent. None of the domain packages has this release. Most recent is [2].',($root-release,$largest))"/>
                 <xsl:sequence select="imf:report-error(., 
                     ($root-release lt $largest), 
-                    'The root package release number [1] is too old; one or more of the domain packages has a more recent release: [2]',($root-release,$largest))"/>
+                    'The root package release number [1] is too old. One or more of the domain packages has a more recent release: [2]',($root-release,$largest))"/>
                 <xsl:sequence select="imf:report-error(., 
                     ($root-release != $largest), 
                     'The root package release number [1] is not found as the release of any domain package.',($root-release))"/>
@@ -1435,7 +1435,7 @@
         
         <xsl:sequence select="imf:report-error($this, 
             not(matches($this/imvert:version,$cfg-version-pattern)), 
-            'Version [1] must take the form [2] consisting of [3]', ($this/imvert:version, $cfg-version/format, imf:string-group($cfg-version/fragment/name)))"/>
+            'Version [1] must take the form [2] consisting of [3]', ($this/imvert:version, imf:string-group($cfg-version/pattern), imf:string-group($cfg-version/fragment/name)))"/>
     </xsl:function>
   
     <xsl:function name="imf:check-phase">
