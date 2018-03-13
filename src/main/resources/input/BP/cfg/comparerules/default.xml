@@ -135,7 +135,7 @@
         <elm use="DIV"  form="fractionDigits">Nr of digits in decimal</elm>
         <elm use="DIV"  form="totalDigits">Total number of digits in decimal</elm>
         <elm use="DIV"  form="dataLocation">Location of the data</elm>
-        <elm use="DIV"  form="position">Position of the element in XML schema</elm>
+        <elm use="DIV"  form="position">Position of the element in serialization</elm>
         <elm use="DIV"  form="attributeTypeName">Name of the type of the attribute</elm>
         <elm use="DIV"  form="conceptualSchemaType">Type in the conceptual schema</elm>
         
