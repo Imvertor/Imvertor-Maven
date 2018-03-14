@@ -156,33 +156,15 @@
     -->
     <xsl:template match="/imvert:packages">
         <imvert:report>
-            <!-- info used to determine report location are set here -->
-            <xsl:variable name="application-package-release" select="$application-package/imvert:release"/>
-            <xsl:variable name="application-package-version" select="$application-package/imvert:version"/>
-            <xsl:variable name="application-package-phase" select="$application-package/imvert:phase"/>
             
-            <xsl:variable name="release" select="if ($application-package-release) then $application-package-release else '00000000'"/>
-            <xsl:variable name="version" select="if ($application-package-version) then $application-package-version else '0.0.0'"/>
-            <xsl:variable name="phase" select="if ($application-package-phase) then $application-package-phase else '0'"/>
-            
-            <xsl:attribute name="release" select="$release"/>
-            <xsl:attribute name="version" select="$version"/>
-            <xsl:attribute name="phase" select="$phase"/>
+            <xsl:attribute name="release" select="imf:get-config-string('appinfo','release')"/>
+            <xsl:attribute name="version" select="imf:get-config-string('appinfo','version')"/>
+            <xsl:attribute name="phase" select="imf:get-config-string('appinfo','phase')"/>
             
             <classes>
                 <xsl:sequence select="$document-classes"></xsl:sequence>
             </classes>
-           
-            <!-- add info to configuration -->
-            <xsl:sequence select="imf:get-config-string('cli','project')"/>
-            
-            <xsl:sequence select="imf:set-config-string('appinfo','project-name',$project-name)"/>
-            <xsl:sequence select="imf:set-config-string('appinfo','application-name',$application-package-name)"/>
-            <xsl:sequence select="imf:set-config-string('appinfo','version',$version)"/>
-            <xsl:sequence select="imf:set-config-string('appinfo','phase',$phase)"/>
-            <xsl:sequence select="imf:set-config-string('appinfo','release',$release)"/>
-            <xsl:sequence select="imf:set-config-string('appinfo','subpath',imf:get-subpath($project-name,$application-package-name,$release))"/>
-            
+              
             <!-- determine if all constructs are unique -->
             <xsl:apply-templates select="*" mode="unique-id"/>
                 

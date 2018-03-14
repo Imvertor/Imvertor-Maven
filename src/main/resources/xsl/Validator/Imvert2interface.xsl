@@ -89,6 +89,26 @@
     </xsl:variable>    
     
     <xsl:template match="/imvert:packages">
+
+        <!-- set info on this model here (as early as possible!) -->
+        <xsl:variable name="application-package" select=".//imvert:package[imf:boolean(imvert:is-root-package)]"/>
+        
+        <xsl:variable name="application-package-release" select="$application-package/imvert:release"/>
+        <xsl:variable name="application-package-version" select="$application-package/imvert:version"/>
+        <xsl:variable name="application-package-phase" select="$application-package/imvert:phase"/>
+        
+        <xsl:variable name="release" select="if ($application-package-release) then $application-package-release else '00000000'"/>
+        <xsl:variable name="version" select="if ($application-package-version) then $application-package-version else '0.0.0'"/>
+        <xsl:variable name="phase" select="if ($application-package-phase) then $application-package-phase else '0'"/>
+        
+        <xsl:sequence select="imf:set-config-string('appinfo','project-name',$project-name)"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','application-name',$application-package-name)"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','version',$version)"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','phase',$phase)"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','release',$release)"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','subpath',imf:get-subpath($project-name,$application-package-name,$release))"/>
+            
+        <!-- then process -->
         <xsl:copy>
             <xsl:sequence select="imf:compile-imvert-header(.)"/>
             <xsl:apply-templates select="imvert:package"/>
