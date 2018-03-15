@@ -206,7 +206,7 @@
             <xsl:sequence select="imf:create-output-element('ep:name', $packages/imvert:application)"/>
             <xsl:sequence select="imf:create-output-element('ep:release', $packages/imvert:release)"/>
             <xsl:sequence select="imf:create-output-element('ep:date', substring-before($packages/imvert:generated,'T'))"/>
-            <xsl:sequence select="imf:create-output-element('ep:patch-number', 'TO-DO')"/>
+            <xsl:sequence select="imf:create-output-element('ep:patch-number', $packages/imvert:version)"/>
             <xsl:sequence select="imf:create-output-element('ep:namespace', $packages/imvert:base-namespace)"/>
             <xsl:sequence select="imf:create-output-element('ep:namespace-prefix', $prefix)"/>
             <xsl:sequence  select="imf:create-output-element('ep:version', $version)"/>
