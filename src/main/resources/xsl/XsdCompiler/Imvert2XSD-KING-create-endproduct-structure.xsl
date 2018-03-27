@@ -1358,6 +1358,7 @@
 				</xsl:when>
 				<xsl:when test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype/@id = ('stereotype-name-referentielijst')">
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1033',$debugging)"/>
+					<xsl:sequence select="imf:create-debug-comment($type-id,$debugging)"/>
 					
 					<xsl:variable name="type" select="'Grp'"/>
 					<xsl:variable name="name" select="//imvert:class[imvert:id = $type-id]/imvert:name/@original"/>
@@ -1633,8 +1634,12 @@
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034ah',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':INDIC-e'))"/>
 							</xsl:when>
-							<xsl:when test="not(contains(imvert:type-name,'scalar'))">
+							<xsl:when test="starts-with(imvert:type-name,'GM_')">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034ai',$debugging)"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-external-type-name(.,true()))"/>
+							</xsl:when>
+							<xsl:when test="not(contains(imvert:type-name,'scalar'))">
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034aj',$debugging)"/>
 								<xsl:choose>
 									<xsl:when test="$global-e-types-allowed = 'Ja'">
 										<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',imf:capitalize(imvert:type-name),$vraagIndicatie,'-e'))"/>
@@ -1645,7 +1650,7 @@
 								</xsl:choose>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034aj',$debugging)"/>
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034ak',$debugging)"/>
 								<xsl:choose>
 									<xsl:when test="$global-e-types-allowed = 'Ja'">
 										<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',$tokens[1],$vraagIndicatie,'-e'))"/>
