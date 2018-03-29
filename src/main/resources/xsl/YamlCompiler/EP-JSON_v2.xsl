@@ -12,8 +12,8 @@
         <xsl:value-of select="'&quot;components&quot;: {'"/>
         <xsl:value-of select="'&quot;schemas&quot;: {'"/>
 
-<!-- Verwerken van alle costructs uit KV namespace, dus ook dataTypes -->
-        <xsl:for-each select="ep:message-set/ep:construct[@prefix = $kvnamespace][not(@ismetadata)]">
+        <!-- Verwerken van alle costructs uit KV namespace, dus ook dataTypes  EN geen relatieNaarLosOpvraagbaarObject
+        <xsl:for-each select="ep:message-set/ep:construct[@prefix = $kvnamespace][not(@ismetadata)][not(@relatieNaarLosOpvraagbaarObject)]">
             <xsl:call-template name="construct"/>
             <xsl:call-template name="construct-links"/>
             <xsl:call-template name="construct-self">
@@ -31,8 +31,78 @@
             <xsl:call-template name="construct-last">
                 <xsl:with-param name="kvnamespace" select="$kvnamespace"/>
             </xsl:call-template>
+        </xsl:for-each>-->
+        <!-- Verwerken van alle costructs uit KV namespace, dus ook dataTypes  EN WEL relatieNaarLosOpvraagbaarObject
+        <xsl:for-each select="ep:message-set/ep:construct[@prefix = $kvnamespace][not(@ismetadata)][@relatieNaarLosOpvraagbaarObject]">
+            <xsl:value-of select="','"/>
+            <xsl:call-template name="construct_embedded">
+                <xsl:with-param name="kvnamespace" select="$kvnamespace"/>
+                <xsl:with-param name="elementName" select="@relatieNaarLosOpvraagbaarObject"/>
+                <xsl:with-param name="type" select="ep:type-name"/>
+            </xsl:call-template>
+            <xsl:call-template name="construct-self_embedded">
+                <xsl:with-param name="kvnamespace" select="$kvnamespace"/>
+                <xsl:with-param name="elementName" select="@relatieNaarLosOpvraagbaarObject"/>
+            </xsl:call-template>
         </xsl:for-each>
-        <!-- Alle types behalve superconstructs uit andere namespaces -->
+        -->
+        
+        <!-- Loop over constructs in KV-namespace -->
+        <xsl:for-each select="ep:message-set/ep:construct[@prefix = $kvnamespace][not(@ismetadata)]">
+            <xsl:variable name="constructName" select="ep:tech-name"/>
+            <xsl:choose>
+                <!-- Check of het een relatietype is. Als dat zo is, wordt het element embeddded opgenomen 
+                Relatietype is een constuct met een type name, die verwijst naar een construct met een entiteittype > 3-->
+                <xsl:when test="exists(ep:seq/ep:constructRef[ep:tech-name = 'entiteittype'][string-length(ep:enum[@fixed='yes']) > 3])">
+                    <xsl:variable name="relatieNaam">
+                        <xsl:choose>
+                            <xsl:when test="exists(/ep:message-sets//ep:construct[ep:type-name = concat(@prefix, ':', $constructName)])">
+                                <xsl:for-each select="/ep:message-sets//ep:construct[ep:type-name = concat(@prefix, ':', $constructName)]">
+                                    <xsl:value-of select="ep:tech-name"/>
+                                </xsl:for-each>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="concat(@prefix,'_',ep:tech-name)"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:variable>
+                    
+                    <xsl:call-template name="construct_embedded">
+                        <xsl:with-param name="kvnamespace" select="$kvnamespace"/>
+                        <xsl:with-param name="elementName" select="$relatieNaam"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="construct-self_embedded">
+                        <xsl:with-param name="kvnamespace" select="$kvnamespace"/>
+                        <xsl:with-param name="elementName" select="$relatieNaam"/>
+                    </xsl:call-template>
+                
+                </xsl:when>
+                <xsl:otherwise>
+                    <!-- De niet embedded constructs -->
+                    <xsl:call-template name="construct"/>
+                    <!-- Dit moet uitgezet omdat er te veel links gemaakt worden. Maar misschien wordt er nu te veel weg gehaald?  -->
+                    <xsl:if test="exists(ep:seq/ep:constructRef[ep:tech-name = 'entiteittype'])">
+                        <xsl:call-template name="construct-links"/>
+                        <xsl:call-template name="construct-self">
+                            <xsl:with-param name="kvnamespace" select="$kvnamespace"/>
+                        </xsl:call-template>
+                        <xsl:call-template name="construct-previous">
+                            <xsl:with-param name="kvnamespace" select="$kvnamespace"/>
+                        </xsl:call-template>
+                        <xsl:call-template name="construct-next">
+                            <xsl:with-param name="kvnamespace" select="$kvnamespace"/>
+                        </xsl:call-template>
+                        <xsl:call-template name="construct-first">
+                            <xsl:with-param name="kvnamespace" select="$kvnamespace"/>
+                        </xsl:call-template>
+                        <xsl:call-template name="construct-last">
+                            <xsl:with-param name="kvnamespace" select="$kvnamespace"/>
+                        </xsl:call-template>
+                    </xsl:if>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:for-each>
+        <!-- Alle types behalve superconstructs uit andere namespaces XXXXXXXX UITGEZET omdat stuurgegevens en extraElementen niet nodig zijn
         <xsl:value-of select="','"/>
         <xsl:for-each select="ep:message-set[@prefix != $kvnamespace]/ep:construct[@prefix != $kvnamespace][not(@ismetadata)][not(@addedLevel)][not(@isdatatype)]">
             <xsl:variable name="prefixNameSup" select="@prefix"/>
@@ -57,8 +127,9 @@
                 </xsl:call-template>
             </xsl:if>
         </xsl:for-each>
-        <!-- Voor alle dataType objecten uit andere namespaces (superconstruct data types) -->
-        <xsl:value-of select="','"/>
+         -->
+        <!-- Voor alle dataType objecten uit andere namespaces (superconstruct data types) 
+        <xsl:value-of select="','"/>-->
         <xsl:for-each select="ep:message-set[@prefix != $kvnamespace]/ep:construct[@prefix != $kvnamespace][@isdatatype][not(@addedLevel)]">
             <xsl:variable name="techname" select="ep:tech-name"/>
             <!-- if statement is voor het uitsluiten van dubbele types in meerdere namespaces (String10, String20) -->
@@ -72,6 +143,7 @@
         <xsl:value-of select="'&quot;Datum&quot;: {&quot;type&quot;: &quot;string&quot;}'"/>
         <xsl:value-of select="',&quot;TijdstipMogelijkOnvolledig&quot;: {&quot;type&quot;: &quot;string&quot;}'"/>
         <xsl:value-of select="',&quot;Tijdstip&quot;: {&quot;type&quot;: &quot;string&quot;}'"/>
+        
 
         <xsl:value-of select="'}'"/>
         <xsl:value-of select="'}'"/>
@@ -88,6 +160,7 @@
        
 
         <xsl:choose>
+            <!-- Datatypes -->
             <xsl:when test="@isdatatype = 'yes'">
                 <xsl:variable name="datatype">
                     <xsl:call-template name="deriveDataType">
@@ -107,6 +180,7 @@
                 <xsl:value-of select="concat('&quot;type&quot;: &quot;',$datatype,'&quot;')"/>
                 <xsl:call-template name="stringExtended"/>
             </xsl:when>
+            <!-- Choises -->
             <xsl:when test="exists(ep:choice)">
                 <!-- Choise elementen -->
                 <xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
@@ -122,7 +196,7 @@
                     <xsl:value-of select="']'"/>
                 </xsl:for-each>
             </xsl:when>
-            
+            <!-- Gewone properties -->
             <xsl:otherwise>
 
 
@@ -141,26 +215,75 @@
                     </xsl:for-each>
                 </xsl:if>
                 
+                <!-- Als er een verwijzing is naar ander constuct -->
                 <xsl:if test="exists(ep:type-name)">
                     <xsl:call-template name="property"/>
                     
+                    <!--<xsl:if test="position() != last()">
                     <xsl:value-of select="','"/>
+                    </xsl:if>-->
                 </xsl:if>
                 
                 <!-- Waarden uit eigen namespace -->
-                <xsl:for-each select="ep:seq/ep:construct[@prefix = $prefixName][not(@ismetadata)][not(ep:seq)]">
+                <!-- Die geen relatie zijn die los opvraagbaar zijn! 
+                <xsl:for-each select="ep:seq/ep:construct[@prefix = $prefixName][not(@ismetadata)][not(ep:seq)][not(@relatieNaarLosOpvraagbaarObject)]">
                     <xsl:call-template name="property"/>
-                    
- 
-                        <xsl:value-of select="','"/>
-                    
+                        <xsl:value-of select="','"/> 
+                </xsl:for-each>-->
+                <!-- Die WEL relatie zijn die los opvraagbaar zijn! 
+                <xsl:if test="exists(ep:seq/ep:construct[@prefix = $prefixName][not(@ismetadata)][not(ep:seq)][@relatieNaarLosOpvraagbaarObject])">
+                    <xsl:value-of select="'&quot;_embedded&quot;: {'"/>
+                    <xsl:for-each select="ep:seq/ep:construct[@prefix = $prefixName][not(@ismetadata)][not(ep:seq)][@relatieNaarLosOpvraagbaarObject]">
+                        <xsl:call-template name="embedded"/>
+                    </xsl:for-each>
+                    <xsl:value-of select="'},'"/>
+                </xsl:if>-->
+                
+                <!--Als er een sequence in de construct aanwezig is, opnieuw constructs afleiden -->
+                <xsl:for-each select="ep:seq/ep:construct[@prefix = $prefixName][not(@ismetadata)][not(ep:seq)]">
+                    <xsl:variable name="prefix" select="@prefix"/>
+                    <xsl:variable name="name" select="substring-after(ep:type-name, ':')"/>
+                    <xsl:choose>
+                        <xsl:when test="exists(/ep:message-sets/ep:message-set[@prefix = $prefix]/ep:construct[@prefix = $prefix][ep:tech-name = $name]/ep:seq/ep:constructRef[ep:tech-name = 'entiteittype'][string-length(ep:enum[@fixed='yes']) > 3])">
+                            <xsl:value-of select="'&quot;_embedded&quot;: {'"/>
+                                <xsl:call-template name="embedded">
+                                    <xsl:with-param name="typeName" select="ep:tech-name"/>
+                                </xsl:call-template>                            
+                            <xsl:value-of select="'}'"/>
+                            <xsl:if test="position() != last()">
+                                <xsl:value-of select="','"/> 
+                            </xsl:if>
+                        </xsl:when>
+                        <xsl:otherwise>
+                                <xsl:call-template name="property"/>
+                            <xsl:if test="position() != last()">
+                                <xsl:value-of select="','"/> 
+                            </xsl:if>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:for-each>
                 
-                <!-- Links-->
+                
+                <!-- Hier moet een opdeling komen van de constucts  die als property opgenomen moeten worden,
+                    En de constructs die als embedded elementen moeten worden opgenomen.-->
+                <!--<xsl:variable name="prefix" select="@prefix"/>
+                    <xsl:variable name="name" select="substring-after(ep:type-name, ':')"/>
+                    <xsl:choose>
+                        <xsl:when test="exists(/ep:message-sets/ep:message-set[@prefix = $prefix]/ep:construct[@prefix = $prefix][ep:tech-name = $name][@losOpvraagbaarObject = 'true'])">
+                            <xsl:call-template name="embedded"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:call-template name="property"/>
+                        </xsl:otherwise>
+                    </xsl:choose>-->
+                
+                <!-- Links alleen genereren als het een entiteittype is-->
+                <xsl:if test="exists(ep:seq/ep:constructRef[ep:tech-name = 'entiteittype'])">
+                    <xsl:value-of select="','"/>
                 <xsl:value-of select="'&quot;_links&quot;: {'"/>
                 <xsl:value-of select="concat('&quot;$ref&quot;: &quot;#/components/schemas/', $elementName,'-links&quot;')"/>
                 <xsl:value-of select="'}'"/>
-
+                </xsl:if>
                  
                
                 <xsl:value-of select="'}'"/>
@@ -189,6 +312,11 @@
         <xsl:value-of select="$derivedTypeName"/>
         <xsl:value-of select="'}'"/>
         </xsl:if>
+    </xsl:template>
+    
+    <xsl:template name="embedded"> 
+        <xsl:param name="typeName"/>
+        <xsl:value-of select="concat('&quot;$ref&quot;: &quot;#/components/schemas/', $typeName, '_embedded&quot;')"/>
     </xsl:template>
     
     <!--Template voor constructs in choise elementen -->
@@ -335,6 +463,7 @@
         
     </xsl:template>
     
+    
     <xsl:template name="construct-self">
         <xsl:param name="kvnamespace"/>
         <xsl:variable name="prefixName" select="@prefix"/>
@@ -344,7 +473,7 @@
         <xsl:value-of select="'&quot;properties&quot;: {'"/>
         <xsl:value-of select="'&quot;href&quot;: {'"/>
         <xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
-        <xsl:value-of select="'&quot;format&quot;: &quot;URL&quot;,'"/>
+        <xsl:value-of select="'&quot;format&quot;: &quot;URI&quot;,'"/>
         <!--<xsl:value-of select="concat('&quot;example&quot;: &quot;', 'https://service.voorbeeldgemeente.nl/publiek/gemeenten/api/', $kvnamespace, '/', $elementName, '/12345','&quot;')"/>-->
         <xsl:value-of select="concat('&quot;example&quot;: &quot;', 'https://service.voorbeeldgemeente.nl/publiek/gemeenten/api/', $kvnamespace, '/', $elementName, '?page=13','&quot;')"/>
         <xsl:value-of select="'}'"/>
@@ -352,6 +481,62 @@
         <xsl:value-of select="'}'"/>
         
             <xsl:value-of select="','"/>
+        
+    </xsl:template>
+    
+    <xsl:template name="construct_embedded">
+        <xsl:param name="kvnamespace"/>
+        <xsl:param name="elementName"/>
+        
+        <xsl:value-of select="concat('&quot;', $elementName,'_embedded&quot;: {' )"/>
+        <xsl:value-of select="'&quot;properties&quot;: {'"/>
+        <xsl:value-of select="concat('&quot;', $elementName,'&quot;: {' )"/>
+        <xsl:value-of select="concat('&quot;$ref&quot;: &quot;#/components/schemas/', $elementName,'_embedded_obj&quot;')"/>
+        
+        <xsl:value-of select="'}'"/>
+        <xsl:value-of select="'}'"/>
+        <xsl:value-of select="'}'"/>
+        <xsl:value-of select="','"/>
+        
+        <xsl:value-of select="concat('&quot;', $elementName,'_embedded_obj&quot;: {' )"/>
+        <xsl:value-of select="'&quot;properties&quot;: {'"/>
+        <xsl:value-of select="'&quot;_links&quot;: {'"/>
+        <xsl:value-of select="concat('&quot;$ref&quot;: &quot;#/components/schemas/', $elementName,'_embedded_links&quot;')"/>
+        <xsl:value-of select="'}'"/>
+
+        <xsl:for-each select="ep:seq/ep:construct[@prefix = $kvnamespace][not(@ismetadata)]">
+            <xsl:value-of select="','"/>
+            <xsl:call-template name="property"/>
+        </xsl:for-each>
+
+        <xsl:value-of select="'}'"/>
+        <xsl:value-of select="'}'"/>
+        
+        <xsl:value-of select="','"/>
+        
+    </xsl:template>
+    
+    <xsl:template name="construct-self_embedded">
+        <xsl:param name="kvnamespace"/>
+        <xsl:param name="elementName"/>
+        <xsl:variable name="prefixName" select="@prefix"/>
+        
+        <xsl:value-of select="concat('&quot;', $elementName,'_embedded_links&quot;: {' )"/>
+        <xsl:value-of select="'&quot;properties&quot;: {'"/>
+        <xsl:value-of select="'&quot;self&quot;: {'"/>
+        <xsl:value-of select="'&quot;properties&quot;: {'"/>
+        <xsl:value-of select="'&quot;href&quot;: {'"/>
+        <xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
+        <xsl:value-of select="'&quot;format&quot;: &quot;URI&quot;,'"/>
+        <!--<xsl:value-of select="concat('&quot;example&quot;: &quot;', 'https://service.voorbeeldgemeente.nl/publiek/gemeenten/api/', $kvnamespace, '/', $elementName, '/12345','&quot;')"/>-->
+        <xsl:value-of select="concat('&quot;example&quot;: &quot;', 'https://service.voorbeeldgemeente.nl/publiek/gemeenten/api/', $kvnamespace, '/', $elementName, '?page=13','&quot;')"/>
+        <xsl:value-of select="'}'"/>
+        <xsl:value-of select="'}'"/>
+        <xsl:value-of select="'}'"/>
+        <xsl:value-of select="'}'"/>
+        <xsl:value-of select="'}'"/>
+        
+        <xsl:value-of select="','"/>
         
     </xsl:template>
     
@@ -364,7 +549,7 @@
         <xsl:value-of select="'&quot;properties&quot;: {'"/>
         <xsl:value-of select="'&quot;href&quot;: {'"/>
         <xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
-        <xsl:value-of select="'&quot;format&quot;: &quot;URL&quot;,'"/>
+        <xsl:value-of select="'&quot;format&quot;: &quot;URI&quot;,'"/>
         <xsl:value-of select="concat('&quot;example&quot;: &quot;', 'https://service.voorbeeldgemeente.nl/publiek/gemeenten/api/', $kvnamespace, '/', $elementName, '?page=12','&quot;')"/>
         <xsl:value-of select="'}'"/>
         <xsl:value-of select="'}'"/>
@@ -384,7 +569,7 @@
         <xsl:value-of select="'&quot;properties&quot;: {'"/>
         <xsl:value-of select="'&quot;href&quot;: {'"/>
         <xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
-        <xsl:value-of select="'&quot;format&quot;: &quot;URL&quot;,'"/>
+        <xsl:value-of select="'&quot;format&quot;: &quot;URI&quot;,'"/>
         <xsl:value-of select="concat('&quot;example&quot;: &quot;', 'https://service.voorbeeldgemeente.nl/publiek/gemeenten/api/', $kvnamespace, '/', $elementName, '?page=14','&quot;')"/>
         <xsl:value-of select="'}'"/>
         <xsl:value-of select="'}'"/>
@@ -404,7 +589,7 @@
         <xsl:value-of select="'&quot;properties&quot;: {'"/>
         <xsl:value-of select="'&quot;href&quot;: {'"/>
         <xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
-        <xsl:value-of select="'&quot;format&quot;: &quot;URL&quot;,'"/>
+        <xsl:value-of select="'&quot;format&quot;: &quot;URI&quot;,'"/>
         <xsl:value-of select="concat('&quot;example&quot;: &quot;', 'https://service.voorbeeldgemeente.nl/publiek/gemeenten/api/', $kvnamespace, '/', $elementName, '?page=1','&quot;')"/>
         <xsl:value-of select="'}'"/>
         <xsl:value-of select="'}'"/>
@@ -424,14 +609,13 @@
         <xsl:value-of select="'&quot;properties&quot;: {'"/>
         <xsl:value-of select="'&quot;href&quot;: {'"/>
         <xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
-        <xsl:value-of select="'&quot;format&quot;: &quot;URL&quot;,'"/>
+        <xsl:value-of select="'&quot;format&quot;: &quot;URI&quot;,'"/>
         <xsl:value-of select="concat('&quot;example&quot;: &quot;', 'https://service.voorbeeldgemeente.nl/publiek/gemeenten/api/', $kvnamespace, '/', $elementName, '?page=99','&quot;')"/>
         <xsl:value-of select="'}'"/>
         <xsl:value-of select="'}'"/>
         <xsl:value-of select="'}'"/>
         
-        <xsl:if test="position() != last()">
-            <xsl:value-of select="','"/>
-        </xsl:if>
+        <xsl:value-of select="','"/>
+        
     </xsl:template>
 </xsl:stylesheet>
