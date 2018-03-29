@@ -1123,7 +1123,7 @@
                     <!-- The following when generates global constructs based on uml groups. -->
                     <xsl:when test="@type=('group','complex datatype') and exists($construct)">
 
-                        <xsl:sequence select="imf:create-debug-comment('Debuglocation 16',$debugging)"/>
+                       <xsl:sequence select="imf:create-debug-comment('Debuglocation 16',$debugging)"/>
                         
                        <xsl:variable name="type" select="'Grp'"/>
                        <xsl:variable name="tech-name">

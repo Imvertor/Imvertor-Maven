@@ -507,37 +507,43 @@
 		<xsl:param name="indicatieFormeleHistorieRelatie" select="'Nee'"/>
 		<!--xsl:param name="orderingDesired" select="'yes'"/-->
 		<xsl:param name="useStuurgegevens" select="'yes'"/>                                       
-
+		
 		<xsl:sequence select="imf:create-debug-comment('Debuglocation 1011',$debugging)"/>
 		
 		<xsl:variable name="type-id" select="imvert:type-id"/>
-
+		<xsl:variable name="matchgegeven" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIEMATCHGEGEVEN')"/>
+		
 		<!-- ROME: Net als in het template voor de attributen moet ook in dit template nog een check ingebouwd worden of historie wel van toepassing is op deze association
 			       Historie kan nl. wel van toepassing op de groep maar dat betekent nog niet dat deze association daarin opgenomen moet worden. -->
 		
-		<xsl:choose>
-			<xsl:when test="imvert:stereotype/@id = ('stereotype-name-association-to-composite') and ($useStuurgegevens = 'no' and imvert:name = 'stuurgegevens')">
-				<xsl:sequence select="imf:create-debug-comment('Debuglocation 1012',$debugging)"/>
-			</xsl:when>
-			<xsl:when test="imvert:stereotype/@id = ('stereotype-name-association-to-composite')">
-				<xsl:sequence select="imf:create-debug-comment('Debuglocation 1013',$debugging)"/>
-				
-				<xsl:call-template name="createRelatiePartOfAssociation">
-					<xsl:with-param name="berichtCode" select="$berichtCode"/>
-					<xsl:with-param name="berichtName" select="$berichtName"/>
-					<xsl:with-param name="generated-id" select="$generated-id"/>
-					<xsl:with-param name="currentMessage" select="$currentMessage"/>
-					<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
-					<xsl:with-param name="context" select="$context"/>
-					<xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
-					<xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
-					<xsl:with-param name="indicatieMaterieleHistorieRelatie" select="$indicatieMaterieleHistorieRelatie"/>
-					<xsl:with-param name="indicatieFormeleHistorie" select="$indicatieFormeleHistorie"/>
-					<xsl:with-param name="indicatieFormeleHistorieRelatie" select="$indicatieFormeleHistorieRelatie"/>
-					<xsl:with-param name="type-id" select="$type-id"/>
-				</xsl:call-template>			
-			</xsl:when>
-		</xsl:choose>
+		<!-- The following construct is not created if the variable $verwerkingsModus is equal to 'matchgegevens' and the variable
+		     $matchgegeven is equal to 'NEE'. So in case the $verwerkingsModus isn't equal to 'matchgegevens' and in case the $verwerkingsModus 
+		     is equal to 'matchgegevens' and the variable $matchgegeven isn't equal to 'NEE' the construct is always created -->
+		<xsl:if test="not($verwerkingsModus = 'matchgegevens' and ($matchgegeven = 'NEE' or empty($matchgegeven)))">
+			<xsl:choose>
+				<xsl:when test="imvert:stereotype/@id = ('stereotype-name-association-to-composite') and ($useStuurgegevens = 'no' and imvert:name = 'stuurgegevens')">
+					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1012',$debugging)"/>
+				</xsl:when>
+				<xsl:when test="imvert:stereotype/@id = ('stereotype-name-association-to-composite')">
+					<xsl:sequence select="imf:create-debug-comment('Debuglocation 1013',$debugging)"/>
+					
+					<xsl:call-template name="createRelatiePartOfAssociation">
+						<xsl:with-param name="berichtCode" select="$berichtCode"/>
+						<xsl:with-param name="berichtName" select="$berichtName"/>
+						<xsl:with-param name="generated-id" select="$generated-id"/>
+						<xsl:with-param name="currentMessage" select="$currentMessage"/>
+						<xsl:with-param name="verwerkingsModus" select="$verwerkingsModus"/>
+						<xsl:with-param name="context" select="$context"/>
+						<xsl:with-param name="generateHistorieConstruct" select="$generateHistorieConstruct"/>
+						<xsl:with-param name="indicatieMaterieleHistorie" select="$indicatieMaterieleHistorie"/>
+						<xsl:with-param name="indicatieMaterieleHistorieRelatie" select="$indicatieMaterieleHistorieRelatie"/>
+						<xsl:with-param name="indicatieFormeleHistorie" select="$indicatieFormeleHistorie"/>
+						<xsl:with-param name="indicatieFormeleHistorieRelatie" select="$indicatieFormeleHistorieRelatie"/>
+						<xsl:with-param name="type-id" select="$type-id"/>
+					</xsl:call-template>			
+				</xsl:when>
+			</xsl:choose>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="imvert:association" mode="create-message-content-constructRef">
@@ -712,7 +718,7 @@
 		<!-- The following construct is not created if the variable $verwerkingsModus is equal to 'matchgegevens' and the variable
 		     $matchgegeven is equal to 'NEE'. So in case the $verwerkingsModus isn't equal to 'matchgegevens' and in case the $verwerkingsModus 
 		     is equal to 'matchgegevens' and the variable $matchgegeven isn't equal to 'NEE' the construct is always created -->
-		<xsl:if test="not($verwerkingsModus = 'matchgegevens' and $matchgegeven = 'NEE')">
+		<xsl:if test="not($verwerkingsModus = 'matchgegevens' and ($matchgegeven = 'NEE' or empty($matchgegeven)))">
 			<xsl:sequence select="imf:create-debug-comment('Debuglocation 1015',$debugging)"/>
 
 			<xsl:sequence select="imf:create-debug-comment(concat('verwerkingsModusOfConstructRef: ',$verwerkingsModusOfConstructRef),$debugging)"/>
@@ -1291,7 +1297,11 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:if test="not(contains($verwerkingsModus, 'matchgegeven') and $matchgegeven = 'NEE') and (($generateHistorieConstruct = 'MaterieleHistorie' and contains($materieleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorie' and contains($formeleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorieRelatie' and contains($formeleHistorie, 'Ja')) or $generateHistorieConstruct = 'Nee')">
+
+		<!-- The following construct is a.o. not created if the variable $verwerkingsModus is equal to 'matchgegevens' and the variable
+		     $matchgegeven is equal to 'NEE'. So in case the $verwerkingsModus isn't equal to 'matchgegevens' and in case the $verwerkingsModus 
+		     is equal to 'matchgegevens' and the variable $matchgegeven isn't equal to 'NEE' the construct is always created -->
+		<xsl:if test="not(contains($verwerkingsModus, 'matchgegeven') and ($matchgegeven = 'NEE' or empty($matchgegeven))) and (($generateHistorieConstruct = 'MaterieleHistorie' and contains($materieleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorie' and contains($formeleHistorie, 'Ja')) or ($generateHistorieConstruct = 'FormeleHistorieRelatie' and contains($formeleHistorie, 'Ja')) or $generateHistorieConstruct = 'Nee')">
 
 			<xsl:choose>
 				<xsl:when test="$processType = 'keyTabelEntiteit'">
