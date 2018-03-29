@@ -25,6 +25,19 @@
                 <stereo required="no">stereotype-name-data-element</stereo>
             </stereotypes>
         </tv>
+        
+        <tv norm="space" id="CFG-TV-FEATURESET">
+            <name lang="nl">Objectenverzameling</name>
+            <name lang="en">Featureset</name>
+            <desc lang="nl">Naam van de verzameling van objecttypen. 
+                Als deze tagged value is opgegeven wordt een Feature Collection met die naam aangemaakt, met featureMembers.
+            </desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo required="no">stereotype-name-domain-package</stereo>
+            </stereotypes>
+        </tv>
+        
     </tagged-values>
 
    

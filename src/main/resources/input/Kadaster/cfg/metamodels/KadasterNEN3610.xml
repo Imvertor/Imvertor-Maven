@@ -40,14 +40,14 @@
     
     <stereotypes xml:id="stereotypes">
     
-        <stereo id="stereotype-name-featurecollection">
+        <!--<stereo id="stereotype-name-featurecollection">
             <name lang="en">FeatureCollection</name>
             <name lang="nl">Objectenverzameling</name>
             <desc lang="nl">Een verzameling van objecttypen. 
                 Zo'n verzameling wordt alleen gebruikt in toepassingen waarin objecttypen moeten worden uitgewisseld conform GML "featurecollections".
             </desc>
             <construct>class</construct>
-        </stereo>
+        </stereo>-->
         
         <stereo id="stereotype-name-collection">
             <name lang="en">Collection</name>
