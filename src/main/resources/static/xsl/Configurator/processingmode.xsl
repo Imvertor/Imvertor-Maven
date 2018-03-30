@@ -18,10 +18,10 @@
         <xsl:variable name="owner-sheet" select="."/>
         <xsl:variable name="meta-columns" select="row[@nr='1']/cell[. = 'Meta']/@nr"/>
         <xsl:variable name="stage-columns" select="row[@nr='1']/cell[. = 'Stage']/@nr"/>
+        <xsl:variable name="name-column"  select="row[@nr='1']/cell[. = 'Name']/@nr"/><!-- fixed: the property name -->
+        <xsl:variable name="required-column"  select="row[@nr='1']/cell[. = 'Required']/@nr"/><!-- fixed: TRUE or FALSE -->
+        <xsl:variable name="static-column"  select="row[@nr='1']/cell[. = 'Static']/@nr"/><!-- any value of the property should not be altered. -->
         
-        <xsl:variable name="name-column"  select="'2'"/><!-- fixed: the property name -->
-        <xsl:variable name="required-column"  select="'5'"/><!-- fixed: TRUE or FALSE -->
-        <xsl:variable name="static-column"  select="'10'"/><!-- any value of the property should not be altered. -->
         <xsl:variable name="meta-column"  select="row[@nr='2']/cell[@nr = $meta-columns and . = $meta]/@nr"/>
         <xsl:variable name="stage-column"  select="row[@nr='2']/cell[@nr = $stage-columns and . = $stage]/@nr"/>
         
@@ -48,7 +48,6 @@
         
     </xsl:template>
     
-   
     <xsl:template match="node()">
         <xsl:apply-templates select="node()"/>
     </xsl:template>
