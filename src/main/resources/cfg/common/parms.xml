@@ -31,17 +31,18 @@
          <required>false</required>
       </cli-parm>
       <cli-parm>
-         <name>test1</name>
-         <arg>yes|no</arg>
-         <tip>Dest desc</tip>
-         <required>false</required>
-      </cli-parm> 
-      <cli-parm>
          <name>arguments</name>
          <arg>filepath</arg>
          <tip>Path to the file holding (additional) arguments (in the form key = value)</tip>
          <required>false</required>
          <type>file</type>
+      </cli-parm> 
+      <cli-parm>
+         <name>processingmode</name>
+         <arg>Processing mode</arg>
+         <tip>Specify the processing mode. This takes the form "Owner:Meta:Stage"</tip>
+         <required>false</required>
+         <type>string</type>
       </cli-parm> 
       <cli-parm>
          <name>language</name>

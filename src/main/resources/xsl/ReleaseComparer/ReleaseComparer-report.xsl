@@ -47,7 +47,7 @@
            
             <!-- get the docrelease name, if any -->
             <xsl:sequence select="imf:set-config-string('system','compare-label','documentation',true())"/>
-            <xsl:variable name="documentation-release" select="imf:get-config-string('system', 'documentation-release', false())"/>
+            <xsl:variable name="documentation-release" select="imf:get-config-string('system', 'documentation-release','')"/>
             <!-- determine the location of the report generated -->
             <xsl:variable name="report-doc" select="imf:document(imf:get-config-string('properties', 'WORK_COMPARE_LISTING_FILE'))"/>
             <!-- get the number of differences found in check against previous release -->

@@ -20,16 +20,7 @@ public class OOXmlFile extends ZipFile {
 	public static final int OFFICE_TYPE_EXCEL = 1;
 	
 	private int officeType = -1; // records the type of file at hand
-	
-	public static void main(String[] args) throws Exception {
-		OOXmlFile excelfile1 = new OOXmlFile("c:\\Temp\\Book1.xlsx");
-		excelfile1.toXmlFile(new File("c:/temp/result1.xml"), new AnyFolder("c:/temp/result"), OOXmlFile.OFFICE_SERIALIZATION_TO_SIMPLE_WORKBOOK);
-		System.out.println("Done 1.");
-		OOXmlFile excelfile2 = new OOXmlFile("c:\\Temp\\Book1.xlsx");
-		excelfile2.toXmlFile(new File("c:/temp/result2.xml"), OOXmlFile.OFFICE_SERIALIZATION_TO_SIMPLE_WORKBOOK);
-		System.out.println("Done 2.");
-	}
-	
+		
 	public OOXmlFile(String filepath) throws IOException {
 		super(filepath);
 	}
@@ -60,10 +51,12 @@ public class OOXmlFile extends ZipFile {
 	 * Transform the Excel file to XML structure in accordance with the serialization convention specified.
 	 *  
 	 * @return XmlFile
-	 * @param filePath
+	 * @param outFile The XML output file holding the workbook serialization
+	 * @param workFolder A workfolder (temporary)
+	 * @param convention A convention to be used for outputting
 	 * @throws Exception 
 	 */
-	public XmlFile toXmlFile(File outFile, AnyFolder workFolder, int convention) throws Exception {
+	public XmlFile toXmlFile(XmlFile outFile, AnyFolder workFolder, int convention) throws Exception {
 		// find out what type of file this is
 		detemineOfficeType();
 		
@@ -73,16 +66,16 @@ public class OOXmlFile extends ZipFile {
 			serializeToXml(workFolder);
 			
 			XmlFile ooxmlFile = new XmlFile(workFolder,"__content.xml");
-			XmlFile resultFile = new XmlFile(workFolder,"__content.simple-workbook.xml");
+			//XmlFile resultFile = new XmlFile(workFolder,"__content.simple-workbook.xml");
 			
 			// create processable table format 
 			XslFile extractXsl = new XslFile(Configurator.getInstance().getResource("static/xsl/OOXmlFile/toXmlFile-SimpleWorkbook.xsl"));
 			HashMap<String,String> extractMap = extractXsl.getInitialParms();
 			extractMap.put("workfolder", workFolder.getCanonicalPath());
 			
-			extractXsl.transform( ooxmlFile.getCanonicalPath(), resultFile.getCanonicalPath());
+			extractXsl.transform( ooxmlFile.getCanonicalPath(), outFile.getCanonicalPath());
 			
-			return resultFile;
+			return outFile;
 		} else 
 			throw new Exception("Unknown OOXML serialization convention");
 	}
@@ -96,7 +89,7 @@ public class OOXmlFile extends ZipFile {
 	 * @return
 	 * @throws Exception
 	 */
-	public XmlFile toXmlFile(File outFile, int convention) throws Exception {
+	public XmlFile toXmlFile(XmlFile outFile, int convention) throws Exception {
 		AnyFolder workFolder = new AnyFolder(Files.createTempDirectory("OOXmlFile.").toFile());
 		XmlFile resultFile = toXmlFile(outFile, workFolder, convention);
 		workFolder.deleteDirectory();

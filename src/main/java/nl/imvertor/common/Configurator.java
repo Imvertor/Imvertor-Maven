@@ -79,8 +79,10 @@ import net.sf.saxon.Configuration;
 import nl.imvertor.common.exceptions.ConfiguratorException;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
+import nl.imvertor.common.file.OOXmlFile;
 import nl.imvertor.common.file.OutputFolder;
 import nl.imvertor.common.file.XmlFile;
+import nl.imvertor.common.file.XslFile;
 import nl.imvertor.common.log.XparmLogger;
 import nl.imvertor.common.log.XsltCallLogger;
 import nl.imvertor.common.wrapper.XMLConfiguration;
@@ -629,6 +631,8 @@ public class Configurator {
 				throw new Exception("Duplicate argument -" + optionName + " on command line");
 			if (optionName.equals("arguments")) 
 				loadFromPropertyFiles(curFolder,v[0]);
+			if (optionName.equals("processingmode")) 
+				loadFromStore(v[0]);
 			setParm(workConfiguration, "cli",optionName,v[0],true);
 			setOptionIsReady(optionName, true);
 		}
@@ -988,6 +992,9 @@ public class Configurator {
 		String arguments = properties.getProperty("arguments");
 		if (arguments != null)
 			loadFromPropertyFiles(f.getParentFile(),arguments);
+		String processingmode = properties.getProperty("processingmode");
+		if (processingmode != null)
+			loadFromStore(processingmode);
 		
 		// then process the arguments
 		Enumeration<Object> e = properties.keys();
@@ -1023,6 +1030,37 @@ public class Configurator {
 				loadFromPropertyFile(selectIncFile(incFile).getCanonicalPath());
 			}
 		}
+	}
+	
+	private void loadFromStore(String processingmode) throws Exception {
+		// the profileName is a selection of Meta and Stage in the parameter excel file; this is the "processing mode" in the Imvertor interfaces
+		
+		String owner = System.getProperty("owner.name");
+		File commonStoreFile = new File(inputFolder,"props/" + owner + ".xlsx");
+		
+		// get the column names
+		String[] cols = StringUtils.split(processingmode,":");
+		if (cols.length != 3)
+			throw new Exception("Incomplete format for processingmode: \"" + processingmode + "\", should be \"[owner]:[meta]:[stage]\"");
+				
+		OOXmlFile excelFile = new OOXmlFile(commonStoreFile);
+		
+		XmlFile tempFile = new XmlFile(File.createTempFile("storefile.", ".xml")); 
+		AnyFile propFile = new AnyFile(File.createTempFile("propfile.", ".properties")); 
+		
+		excelFile.toXmlFile(tempFile, OOXmlFile.OFFICE_SERIALIZATION_TO_SIMPLE_WORKBOOK);
+		
+		// This is the raw format. Transform this to a java property file.
+		XslFile propsXsl = new XslFile(Configurator.getInstance().getResource("static/xsl/Configurator/processingmode.xsl"));
+		HashMap<String,String> parms = propsXsl.getInitialParms();
+		parms.put("owner", StringUtils.normalizeSpace(cols[0]));
+		parms.put("meta", StringUtils.normalizeSpace(cols[1]));
+		parms.put("stage", StringUtils.normalizeSpace(cols[2]));
+		propsXsl.transform( tempFile.getCanonicalPath(), propFile.getCanonicalPath());		
+		//tempFile.copyFile("c:/temp/r.xml");
+		propFile.copyFile("c:/temp/r.properties");
+		loadFromPropertyFile(propFile.getCanonicalPath());
+		
 	}
 	
 	private File selectIncFile(File incFile) throws Exception {

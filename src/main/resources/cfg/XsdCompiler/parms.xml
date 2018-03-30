@@ -106,7 +106,7 @@
       <cli-parm>
          <name>xsdsubpath</name>
          <arg>subpath</arg>
-         <tip>A path within the result XSD folder to which the XSDs for the model provided are written.</tip>
+         <tip>A path within the result XSD folder to which the XSDs for the model provided are written. Named parameters such as [application-name] may be used.</tip>
          <required>true</required>
       </cli-parm>
       <cli-parm>

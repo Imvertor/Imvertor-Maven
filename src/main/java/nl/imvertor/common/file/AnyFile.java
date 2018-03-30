@@ -498,9 +498,9 @@ public class AnyFile extends File  {
 		if (getExtension().equals("xmi")) return true;
 		
 		byte[] head = getHeadBytes(5);
-		if ((new String(Arrays.copyOfRange(head,0,4), "UTF-8")).equals("<?xml")) return true;
-		if ((new String(Arrays.copyOfRange(head,0,4), "UTF-8")).equals("<xsl:")) return true;
-		if ((new String(Arrays.copyOfRange(head,0,3), "UTF-8")).equals("<xml")) return true;
+		if ((new String(Arrays.copyOfRange(head,0,5), "UTF-8")).equals("<?xml")) return true;
+		if ((new String(Arrays.copyOfRange(head,0,5), "UTF-8")).equals("<xsl:")) return true;
+		if ((new String(Arrays.copyOfRange(head,0,4), "UTF-8")).equals("<xml")) return true;
 	
 		return false;
 	}
