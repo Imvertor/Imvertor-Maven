@@ -25,6 +25,8 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:functx="http://www.functx.com"
+    
     exclude-result-prefixes="#all" 
     version="2.0">
 
@@ -60,6 +62,30 @@
             <xsl:comment>No data, report through messaging framework</xsl:comment>
             <xsl:apply-templates/>
         </imvert:report>
+    </xsl:template>
+    
+    <xsl:template match="/imvert:packages">
+     
+        <xsl:variable name="client-package" select="."/>
+        
+        <!-- GIT#22 -->
+        <!-- check if any supplier is generated using an older version of the Imvertor software -->
+        <xsl:variable name="client-generator" select="$client-package/imvert:generator"/>
+        <xsl:variable name="supplier-generators" select="imf:get-supplier-models($client-package)"/>
+        <xsl:variable name="newer-supplier-generators" select="for $g in $supplier-generators return if (imf:mm($g/imvert:generator) gt imf:mm($client-generator)) then $g else ()"/>
+        
+        <xsl:sequence select="imf:report-warning($client-package,
+            exists($newer-supplier-generators),
+            'The Imvertor release(s) [1] used by supplier(s) [2] are more recent than Imvertor release [3] used by client [4]. Consider upgrading to a more recent Imvertor release.',
+            (
+            imf:string-group($newer-supplier-generators/imvert:generator),
+            imf:string-group($newer-supplier-generators/imvert:subpath),
+            $client-generator,
+            $client-package/imvert:subpath
+            ))"/>
+        
+        <xsl:next-match/>
+        
     </xsl:template>
     
     <xsl:template match="imvert:package">
@@ -341,4 +367,23 @@
         </xsl:if> 
     </xsl:function>
     
+    <xsl:function name="imf:mm">
+        <xsl:param name="mmb"/>
+        <xsl:variable name="toks" select="tokenize($mmb,'\.')"/>
+        <xsl:value-of select="xs:integer($toks[1]) * 100 + xs:integer($toks[2])"/>
+    </xsl:function>
+    
+    <!--
+        Get the supplier models for the model passed. 
+        Empty when no derivation tree is available. 
+    --> 
+    <xsl:function name="imf:get-supplier-models" as="element(imvert:packages)*">
+        <xsl:param name="this" as="element(imvert:packages)"/>
+        <xsl:if test="exists($all-derived-models-doc)">
+            <xsl:for-each select="$this/imvert:supplier/@subpath">
+                <xsl:variable name="subpath" select="."/>
+                <xsl:sequence select="$all-derived-models-doc/imvert:package-dependencies/imvert:supplier-contents[@subpath = $subpath]/imvert:packages"/>
+            </xsl:for-each>
+        </xsl:if>
+    </xsl:function>   
 </xsl:stylesheet>
