@@ -104,6 +104,7 @@
         This is the first package with the specified application name.
     -->
     <xsl:variable name="root-package" select="$document-packages[@name = $application-package-name][1]"/>
+    <xsl:variable name="root-package-release" select="imf:get-profile-tagged-value($root-package,'release')[1]"/>
     
     <xsl:key name="key-construct-by-id" match="//*[@xmi.id]" use="@xmi.id"/>
     <xsl:key name="key-construct-by-idref" match="//*[@xmi:idref]" use="@xmi:idref"/>
@@ -134,6 +135,8 @@
             <xsl:sequence select="imf:create-output-element('imvert:task',$imvertor-task)"/>
             <xsl:sequence select="imf:create-output-element('imvert:project',$project-name)"/>
             <xsl:sequence select="imf:create-output-element('imvert:application',$application-package-name)"/>
+            <xsl:sequence select="imf:create-output-element('imvert:release',$root-package-release)"/>
+            
             <xsl:sequence select="imf:create-output-element('imvert:metamodel',string-join($configuration-prologue/metamodels/metamodel/name,';'))"/>
             <xsl:sequence select="imf:create-output-element('imvert:model-designation',$configuration-prologue/metamodels/metamodel/model-designation)"/>
             <xsl:sequence select="imf:create-output-element('imvert:generated',$generation-date)"/>

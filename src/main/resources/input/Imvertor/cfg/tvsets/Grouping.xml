@@ -193,7 +193,7 @@
             <name lang="en">XSD-location</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="yes">stereotype-name-external-package</stereo>
+                <stereo required="no">stereotype-name-external-package</stereo>
             </stereotypes>
         </tv>
         

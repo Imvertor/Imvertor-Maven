@@ -430,7 +430,6 @@
             'Top packages cannot be nested')"/>
         
         <xsl:sequence select="imf:check-stereotype-assignment(.)"/>
-        <xsl:sequence select="imf:check-tagged-value-occurs(.)"/>
         <xsl:sequence select="imf:check-tagged-value-multi(.)"/>
         <xsl:sequence select="imf:check-tagged-value-assignment(.)"/>
         
@@ -547,7 +546,6 @@
 
         <!--Classes can only occur as part of a domain package, as only domain packages are transformed to XML schemas. If you want classes to be (temporarity) stored elsewhere, place move them to a <<recyclebin>> package.-->
         <xsl:sequence select="imf:check-stereotype-assignment(.)"/>
-        <xsl:sequence select="imf:check-tagged-value-occurs(.)"/>
         <xsl:sequence select="imf:check-tagged-value-multi(.)"/>
         <xsl:sequence select="imf:check-tagged-value-assignment(.)"/>
         
@@ -738,7 +736,6 @@
             '[1] has been specified on attribute as well as on [2]', ('Data location',$defining-class))"/>
         
         <xsl:sequence select="imf:check-stereotype-assignment(.)"/>
-        <xsl:sequence select="imf:check-tagged-value-occurs(.)"/>
         <xsl:sequence select="imf:check-tagged-value-multi(.)"/>
         <xsl:sequence select="imf:check-tagged-value-assignment(.)"/>
         
@@ -870,7 +867,6 @@
             'Invalid target multiplicity.')"/>
         
         <xsl:sequence select="imf:check-stereotype-assignment(.)"/>
-        <xsl:sequence select="imf:check-tagged-value-occurs(.)"/>
         <xsl:sequence select="imf:check-tagged-value-multi(.)"/>
         <xsl:sequence select="imf:check-tagged-value-assignment(.)"/>
         
@@ -1256,25 +1252,6 @@
                 <xsl:sequence select="imf:report-error($this, count(current-group()) gt 1, 'Duplicate tagged values: [1]',current-grouping-key())"/>
             </xsl:for-each-group>
         </xsl:if>
-    </xsl:function>
-    
-    <!-- when validation level is M (Missing metadata), check if all required tagged values have been set -->
-    
-    <xsl:function name="imf:check-tagged-value-occurs" as="element()*">
-        <xsl:param name="this" as="element()"/> <!-- any element that may have tagged values-->
-        <xsl:if test="$validate-tv-missing">
-            <xsl:variable name="stereotype" select="$this/imvert:stereotype"/>
-            <xsl:for-each select="$config-tagged-values[stereotypes/stereo = $stereotype]"> <!-- i.e. <tv> elements -->
-                <xsl:variable name="tv-name" select="name"/>
-                <xsl:variable name="tv-id" select="@id"/>
-                <xsl:variable name="tv-is-derivable" select="derive = 'yes'"/>
-                <xsl:variable name="tv-is-required" select="exists(stereotypes/stereo[. = $stereotype and @required = 'yes'])"/>
-                <!-- TODO if a tv is derivable and required but is not actually derived, provide warning at some stage -->
-                <xsl:sequence select="imf:report-warning($this, 
-                    $tv-is-required and not($tv-is-derivable) and empty($this/imvert:tagged-values/imvert:tagged-value[@id = $tv-id]),
-                    'Tagged value [1] not specified but required for [2]',($tv-name,$stereotype))"/>
-            </xsl:for-each>
-        </xsl:if> 
     </xsl:function>
     
     <!-- remove duplicates from sequence -->

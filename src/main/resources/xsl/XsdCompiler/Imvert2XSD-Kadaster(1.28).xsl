@@ -51,7 +51,7 @@
     <xsl:param name="config-file-path">unknown-file</xsl:param>
    
     <xsl:variable name="work-xsd-folder-url" select="imf:file-to-url(imf:get-config-string('system','work-xsd-folder-path'))"/>
-    <xsl:variable name="xsd-subpath" select="imf:get-config-string('cli','xsdsubpath')"/>
+    <xsl:variable name="xsd-subpath" select="imf:merge-parms(imf:get-config-string('cli','xsdsubpath'))"/>
     
     <xsl:variable name="is-forced-nillable" select="imf:boolean(imf:get-config-string('cli','forcenillable'))"/>
     

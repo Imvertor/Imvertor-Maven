@@ -48,6 +48,8 @@
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     
+    <xsl:variable name="config-tagged-values" select="imf:get-config-tagged-values()"/>
+
     <!-- 
         Templates access application pairs, an process the client constructs. 
         Determine if the client construct is validly derived from supplier construct.
@@ -62,6 +64,11 @@
     
     <xsl:template match="imvert:package">
         <xsl:sequence select="imf:track('Validating derivation for package [1]',imvert:name)"/>
+
+        <xsl:variable name="client-package" select="."/>
+        
+        <xsl:sequence select="imf:check-tagged-value-occurs($client-package)"/>
+        
         <xsl:apply-templates/>
     </xsl:template>
     
@@ -71,7 +78,7 @@
         <xsl:variable name="immediate-suppliers" select="$supplier-classes[@level = '2']"/>
         
         <xsl:choose>
-            <xsl:when test="exists($client-class/imvert:trace)">
+            <xsl:when test="empty($client-class/imvert:trace)">
                 <!-- no trace so no compare neccessary -->
             </xsl:when>
             <xsl:otherwise>
@@ -88,9 +95,12 @@
                        ...         
                    </xsl:for-each>
                 -->
+                
             </xsl:otherwise>
         </xsl:choose>
         
+        <xsl:sequence select="imf:check-tagged-value-occurs($client-class)"/>
+     
         <xsl:apply-templates/>
         
     </xsl:template>
@@ -132,6 +142,9 @@
                </xsl:for-each>
             </xsl:otherwise>
         </xsl:choose>    
+        
+        <xsl:sequence select="imf:check-tagged-value-occurs($client-attribute)"/>
+        
     </xsl:template>
     
     <xsl:template match="imvert:association">
@@ -158,6 +171,7 @@
             </xsl:otherwise>
         </xsl:choose>    
         
+        <xsl:sequence select="imf:check-tagged-value-occurs($client-association)"/>
     </xsl:template>
     
     <xsl:template match="*|text()">
@@ -298,6 +312,33 @@
             </xsl:otherwise>
         </xsl:choose>
 
+    </xsl:function>
+    
+    <xsl:function name="imf:check-tagged-value-occurs" as="element()*">
+        <xsl:param name="this" as="element()"/> <!-- any element that may have tagged values-->
+        <xsl:if test="$validate-tv-missing">
+            <xsl:variable name="stereotype" select="$this/imvert:stereotype"/>
+            <xsl:for-each select="$config-tagged-values[stereotypes/stereo = $stereotype]"> <!-- i.e. <tv> elements -->
+                <xsl:variable name="tv-name" select="name"/>
+                <xsl:variable name="tv-id" select="@id"/>
+                <xsl:variable name="tv-is-derivable" select="derive = 'yes'"/>
+                <xsl:variable name="tv-is-required" select="exists(stereotypes/stereo[. = $stereotype and imf:boolean(@required)])"/>
+                <xsl:variable name="applicable-value" as="xs:string?">
+                    <xsl:choose>
+                        <xsl:when test="$tv-is-derivable">
+                            <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($this,concat('##',$tv-id))"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="$this/imvert:tagged-values/imvert:tagged-value[@id = $tv-id]/imvert:value"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
+                <!--<xsl:message select="concat(imf:get-display-name($this),',',$tv-name,':', $tv-is-required,'|',$tv-is-derivable, '|', $applicable-value,'|')"></xsl:message>-->
+                <xsl:sequence select="imf:report-warning($this, 
+                    $tv-is-required and not(normalize-space($applicable-value)),
+                    'Tagged value [1] not specified but required for [2]',($tv-name,$stereotype))"/>
+            </xsl:for-each>
+        </xsl:if> 
     </xsl:function>
     
 </xsl:stylesheet>

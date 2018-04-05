@@ -104,4 +104,9 @@
             )"/>      
     </xsl:function>
     
+    <xsl:function name="imf:merge-parms" as="xs:string">
+        <xsl:param name="template"/>
+        <xsl:value-of select=" ext:imvertorMergeParms(string($template))"/>      
+    </xsl:function>
+    
 </xsl:stylesheet>

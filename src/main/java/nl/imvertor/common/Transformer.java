@@ -56,6 +56,7 @@ import nl.imvertor.common.file.XslFile;
 import nl.imvertor.common.log.XsltCallLogger;
 import nl.imvertor.common.trace.XmlTimingTraceListener;
 import nl.imvertor.common.xsl.extensions.ImvertorFileSpec;
+import nl.imvertor.common.xsl.extensions.ImvertorMergeParms;
 import nl.imvertor.common.xsl.extensions.ImvertorParameterFile;
 import nl.imvertor.common.xsl.extensions.ImvertorTrack;
 import nl.imvertor.common.xsl.extensions.expath.ImvertorExpathWrite;
@@ -113,6 +114,7 @@ public class Transformer {
 		setExtensionFunction(new ImvertorParameterFile());
 		setExtensionFunction(new ImvertorTrack());
 		setExtensionFunction(new ImvertorExpathWrite());
+		setExtensionFunction(new ImvertorMergeParms());
 	}
 	
 	/**

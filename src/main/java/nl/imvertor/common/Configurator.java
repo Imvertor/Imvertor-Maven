@@ -1058,9 +1058,15 @@ public class Configurator {
 		parms.put("stage", StringUtils.normalizeSpace(cols[2]));
 		propsXsl.transform( tempFile.getCanonicalPath(), propFile.getCanonicalPath());		
 		//tempFile.copyFile("c:/temp/r.xml");
-		propFile.copyFile("c:/temp/r.properties");
+		//propFile.copyFile("c:/temp/r.properties");
+		// check if errors found
 		loadFromPropertyFile(propFile.getCanonicalPath());
+		// check if an error is signalled
 		
+		String err = getParm(workConfiguration,"cli","processingmode_error",false);
+		if (err != null)
+			throw new ConfigurationException(err);
+				
 	}
 	
 	private File selectIncFile(File incFile) throws Exception {
