@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<version-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <name>KOOP</name>
+    
+    <desc>KOOP specific version and phase rules</desc>
+    
+    <!--  -->
+
+    <version-rule>
+        <version id="CFG-VERSION-MMB">
+            <name lang="#all">MajorMinorBugfix</name>
+            <desc lang="en">Versions must be specified as 99.99.99 or 99.99 (major, minor, bugfix).</desc>
+            <pattern>(\d+)\.(\d+)(.(\d+))?</pattern>
+            <fragment group="1" required="yes">
+                <name lang="#all">Major version</name>
+                <desc lang="en"></desc>
+            </fragment>
+            <fragment group="2" required="yes">
+                <name lang="#all">Minor version</name>
+                <desc lang="en"></desc>
+            </fragment>
+            <fragment group="4" required="no">
+                <name lang="#all">Bugfix version</name>
+                <desc lang="en"></desc>
+            </fragment>
+        </version>
+    </version-rule>            
+    
+    <phase-rule>
+        <phase id="CFG-PHASE-INIT">
+            <name lang="nl">Werkversie</name>
+            <name lang="en">Work version</name>
+            <level>0</level>
+            <desc lang="nl">Werkversies zijn in ontwikkeling en worden niet intern verspreid.</desc>
+            <!-- 
+                kan optreden als supplier voor ieder level kleiner of gelijk aan 0
+            -->
+            <may-supply>0</may-supply>
+            <!-- mag worden overschreven -->
+            <is-fixed>no</is-fixed>
+            <allow-docrelease>yes</allow-docrelease>
+            <!-- All property files are valid for processing such a model. -->
+            <props/>
+        </phase>
+        <phase id="CFG-PHASE-DRAFT">
+            <name lang="nl">Consultatieversie</name>
+            <name lang="en">Consultation version</name>
+            <level>1</level>
+            <desc lang="nl">Consultatieversies zijn in ontwikkeling en kunnen intern worden verspreid.</desc>
+            <!-- 
+                kan optreden als supplier voor ieder level kleiner of gelijk aan 1
+            -->
+            <may-supply>1</may-supply>
+            <!-- mag worden overschreven -->
+            <is-fixed>no</is-fixed>
+            <allow-docrelease>yes</allow-docrelease>
+            <!-- All property files are valid for processing such a model. -->
+            <props/>
+        </phase>
+        <phase id="CFG-PHASE-FINALDRAFT">
+            <name lang="nl">Ter vaststelling</name>
+            <name lang="en">For acceptance</name>
+            <level>2</level>
+            <desc lang="nl">Versies ter vaststelling zijn in ontwikkeling en kunnen extern worden verspreid, met het doel deze te laten vaststellen.</desc>
+            <!-- 
+                kan optreden als supplier voor ieder level kleiner of gelijk aan 2
+            -->
+            <may-supply>2</may-supply>
+            <!-- mag worden overschreven -->
+            <is-fixed>no</is-fixed>
+            <allow-docrelease>yes</allow-docrelease>
+        </phase>
+        <phase id="CFG-PHASE-FINAL">
+            <name lang="nl">Vastgesteld</name>
+            <name lang="en">Final</name>
+            <level>3</level>
+            <desc lang="nl">Vastgestelde versies zijn gereed, kunnen extern worden verspreid, en dienen niet meer te worden vervangen.</desc>
+            <!-- 
+                kan optreden als supplier voor ieder level kleiner of gelijk aan 3
+            -->
+            <may-supply>3</may-supply>
+            <!-- mag niet worden overschreven! -->
+            <is-fixed>yes</is-fixed>
+            <allow-docrelease>yes</allow-docrelease>
+            <props>
+                <prop>Server-BRO-Release.properties</prop>
+            </props>
+        </phase>
+        <phase id="CFG-PHASE-REJECTED">
+            <name lang="nl">Vervallen</name>
+            <name lang="en">Rejected</name>
+            <level>4</level>
+            <desc lang="nl">Deze versie is vervallen en mag niet meer worden gebruikt, ook niet als supplier.</desc>
+            <may-supply>-1</may-supply>
+        </phase>
+    </phase-rule>   
+</version-rules>

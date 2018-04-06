@@ -1,0 +1,42 @@
+<!-- 
+    Mappings for conceptual schemas fro KOOP
+-->
+<conceptual-schemas>
+    
+    <mapping name="DEFAULT">
+        <use>default</use>
+    </mapping>
+    
+    <conceptual-schema>
+        <name>default</name>
+        <description>default</description>
+        <url>http://www.koop.nl/conceptual-schemas/default</url>
+        
+        <short-name>default</short-name>
+        
+        <map 
+            name="SampleExternalModelA" 
+            namespace="http://www.bro.nl/SampleExternalModelA" 
+            version="1.0.0" 
+            phase="1" 
+            location="http://www.bro.nl/schemas/1.0.0/SampleExternalModelA.xsd">
+            
+            <releases>
+                <release>20170302</release>
+            </releases>
+            
+            <construct>
+                <name>EM_AC1</name>
+                <xsd-type name="AC1" asAttributeDesignation="complextype" asAttribute="AC1type"/>
+                <managed-ids/>
+            </construct>
+            
+            <construct>
+                <name>EM_AC2</name>
+                <xsd-type name="AC2" asAttributeDesignation="complextype" asAttribute="AC2type"/>
+                <managed-ids/>
+            </construct>
+            
+        </map>
+    </conceptual-schema>
+</conceptual-schemas>

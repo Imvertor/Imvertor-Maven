@@ -1045,8 +1045,8 @@ public class Configurator {
 				
 		OOXmlFile excelFile = new OOXmlFile(commonStoreFile);
 		
-		XmlFile tempFile = new XmlFile(File.createTempFile("storefile.", ".xml")); 
-		AnyFile propFile = new AnyFile(File.createTempFile("propfile.", ".properties")); 
+		XmlFile tempFile = new XmlFile(getXParm(workConfiguration,"system/work-imvert-folder-path",true) + "/" + commonStoreFile.getName() + ".xml"); 
+		AnyFile propFile = new AnyFile(getXParm(workConfiguration,"system/work-imvert-folder-path",true) + "/" + commonStoreFile.getName() + ".properties"); 
 		
 		excelFile.toXmlFile(tempFile, OOXmlFile.OFFICE_SERIALIZATION_TO_SIMPLE_WORKBOOK);
 		

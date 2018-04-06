@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <!-- 
+        KOOP follows KKG ISO (alt 2)
+        
+        Including scalars.
+    --> 
+    <xi:include href="../../../KKG/cfg/metamodels/KKG-ISO.xml"/>
+    
+    <name>KOOP</name>
+    
+    <profiles>
+        <profile lang="nl"> 
+            <id>MKGNL</id>
+            <release>0.9</release>
+            <desc>MIM-KOOP Grouping (NL)</desc> 
+        </profile>
+        <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+            <id>MKGEN</id>
+            <release>0.9</release>
+            <desc>MIM-KOOP Grouping (EN)</desc>
+        </profile>
+    </profiles>
+    
+</metamodel>
