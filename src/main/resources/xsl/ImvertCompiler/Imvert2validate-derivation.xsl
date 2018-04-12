@@ -348,21 +348,32 @@
                 <xsl:variable name="tv-name" select="name"/>
                 <xsl:variable name="tv-id" select="@id"/>
                 <xsl:variable name="tv-is-derivable" select="derive = 'yes'"/>
-                <xsl:variable name="tv-is-required" select="exists(stereotypes/stereo[. = $stereotype and imf:boolean(@required)])"/>
-                <xsl:variable name="applicable-value" as="xs:string?">
+               
+                <xsl:variable name="minmax" select="tokenize(stereotypes/stereo[. = $stereotype][1]/@minmax,'\.\.')"/>
+                <xsl:variable name="min" select="xs:integer(($minmax[1],'1')[1])"/>
+                <xsl:variable name="max" select="xs:integer(for $m in ($minmax[2],'1')[1] return if ($m = '*') then '1000' else $m)"/>
+          
+                <xsl:variable name="values" select="$this/imvert:tagged-values/imvert:tagged-value[@id = $tv-id]/imvert:value"/>
+                
+                <xsl:variable name="applicable-values" as="xs:string*">
                     <xsl:choose>
-                        <xsl:when test="$tv-is-derivable">
-                            <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($this,concat('##',$tv-id))"/>
+                        <xsl:when test="empty($values) and $tv-is-derivable">
+                            <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($this,concat('##',$tv-id))"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="$this/imvert:tagged-values/imvert:tagged-value[@id = $tv-id]/imvert:value"/>
+                            <xsl:sequence select="$values"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
-                <!--<xsl:message select="concat(imf:get-display-name($this),',',$tv-name,':', $tv-is-required,'|',$tv-is-derivable, '|', $applicable-value,'|')"></xsl:message>-->
+                
+                <!--<xsl:message select="concat(imf:get-display-name($this),',',$tv-name,':', $min,'|',$max,'|',$tv-is-derivable, '|', string-join($applicable-values,';'))"/>-->
+                
                 <xsl:sequence select="imf:report-warning($this, 
-                    $tv-is-required and not(normalize-space($applicable-value)),
+                    $min eq 1 and empty($applicable-values),
                     'Tagged value [1] not specified but required for [2]',($tv-name,$stereotype))"/>
+                <xsl:sequence select="imf:report-warning($this, 
+                    count($applicable-values) gt $max,
+                    'Tagged value [1] specified too many times for [2]',($tv-name,$stereotype))"/>
             </xsl:for-each>
         </xsl:if> 
     </xsl:function>

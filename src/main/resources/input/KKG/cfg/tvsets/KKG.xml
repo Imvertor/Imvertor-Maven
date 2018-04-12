@@ -23,19 +23,19 @@
             <desc lang="en">The date on which the construct is added to the information model</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="yes">stereotype-name-objecttype</stereo>
-                <stereo required="yes">stereotype-name-attribute</stereo>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo>
-                <stereo required="yes">stereotype-name-attributegroup</stereo>
-                <stereo required="yes">stereotype-name-composite</stereo>
-                <stereo required="yes">stereotype-name-referentielijst</stereo>
-                <stereo required="yes">stereotype-name-codelist</stereo>
-                <stereo required="yes">stereotype-name-referentie-element</stereo>
-                <stereo required="yes">stereotype-name-union</stereo>
-                <stereo required="yes">stereotype-name-complextype</stereo>
-                <stereo required="yes">stereotype-name-externekoppeling</stereo>
+                <stereo minmax="1..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="1..1">stereotype-name-codelist</stereo>
+                <stereo minmax="1..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="1..1">stereotype-name-union</stereo>
+                <stereo minmax="1..1">stereotype-name-complextype</stereo>
+                <stereo minmax="1..1">stereotype-name-externekoppeling</stereo>
              <!-- vervallen in 0.98  
-                 <stereo required="yes">stereotype-name-enumeration</stereo> -->
+                 <stereo minmax="1..1">stereotype-name-enumeration</stereo> -->
             </stereotypes>
         </tv> 
         <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
@@ -46,10 +46,10 @@
             <derive>yes</derive>
             <stereotypes>
                 <!-- optional for the following stereo's -->
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-attributegroup</stereo>
-                <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -70,10 +70,10 @@
             <derive>yes</derive>
             <stereotypes>
                 <!-- optional for the following stereo's -->
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-attributegroup</stereo>
-                <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -94,10 +94,10 @@
             <derive>yes</derive>
             <stereotypes>
                 <!-- optional for inherited stereos -->
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-attributegroup</stereo>
-                <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
         <tv norm="note" id="CFG-TV-DESCRIPTION">
@@ -105,8 +105,8 @@
             <derive>yes</derive>
             <stereotypes>
                 <!-- vervallen in 0.98
-                    <stereo required="no">stereotype-name-enumeration</stereo>-->
-                <stereo required="no">stereotype-name-codelist</stereo>
+                    <stereo minmax="0..1">stereotype-name-enumeration</stereo>-->
+                <stereo minmax="0..1">stereotype-name-codelist</stereo>
             </stereotypes>
         </tv> 
         <tv norm="space" id="CFG-TV-PATTERN"><!-- MIG -->
@@ -116,12 +116,12 @@
             <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-referentie-element</stereo>
-                <stereo required="no">stereotype-name-simpletype</stereo>
-                <stereo required="no">stereotype-name-complextype</stereo>
-                <stereo required="no">stereotype-name-data-element</stereo>
-                <stereo required="no">stereotype-name-union-element</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-FORMALPATTERN">
@@ -131,11 +131,11 @@
             <desc lang="en">TODO</desc>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-complextype</stereo>
-                <stereo required="no">stereotype-name-data-element</stereo>
-                <stereo required="no">stereotype-name-union-element</stereo>
-                <stereo required="no">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-VOIDABLE">
@@ -145,12 +145,12 @@
             <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-attributegroup</stereo>
-                <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
-                <stereo required="no">stereotype-name-data-element</stereo>
-                <stereo required="no">stereotype-name-voidable</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-voidable</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -170,17 +170,17 @@
             <desc>Lengte van de waarde in posities.</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-data-element</stereo>
-                <stereo required="no">stereotype-name-union-element</stereo>
-                <stereo required="no">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
             </stereotypes>
         </tv>
         
         <tv norm="space" id="CFG-TV-SOURCE">
             <stereotypes>
-                <stereo required="yes">stereotype-name-enumeration</stereo>
-                <stereo required="yes">stereotype-name-codelist</stereo>
+                <stereo minmax="1..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="1..1">stereotype-name-codelist</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-SOURCEOFDEFINITION">
@@ -200,7 +200,7 @@
         
         <tv id="CFG-TV-DEFINITION" origin="system">
             <stereotypes>
-                <stereo required="no">stereotype-name-attributegroup</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
             </stereotypes>
         </tv>
         

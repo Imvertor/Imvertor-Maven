@@ -226,7 +226,7 @@
                                     <tr>
                                         <td><xsl:value-of select="."/></td>
                                         <td><xsl:value-of select="@original"/></td>
-                                        <td><xsl:value-of select="@required"/></td>
+                                        <td><xsl:value-of select="@minmax"/></td>
                                     </tr>
                                 </xsl:for-each>            
                             </xsl:variable>

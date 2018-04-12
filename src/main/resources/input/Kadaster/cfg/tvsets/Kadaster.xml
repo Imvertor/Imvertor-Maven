@@ -32,16 +32,16 @@
         <tv norm="space" id="CFG-TV-DATERECORDED">
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
            <derive>yes</derive>
             <stereotypes>
                 <!-- optional for the following stereo's -->
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <!-- declared-values inherited -->
         </tv>
@@ -49,29 +49,29 @@
             <derive>yes</derive>
             <stereotypes>
                 <!-- optional for the following stereo's -->
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <!-- declared-values inherited -->
         </tv>
         <tv norm="space" id="CFG-TV-OWNER">
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-koppelklasse</stereo>
-                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-POPULATION">
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-QUALITY">
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-CONDITIONSOFUSE">
@@ -79,25 +79,25 @@
             <name lang="en">Conditions of use</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-objecttype</stereo>
-                <stereo required="no">stereotype-name-koppelklasse</stereo>
-                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-SOURCE">
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-SOURCEOFDEFINITION">
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-objecttype</stereo>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
-                <stereo required="no">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-LEGISLATION">
@@ -105,10 +105,10 @@
             <name lang="en">Legislation</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-objecttype</stereo>
-                <stereo required="no">stereotype-name-koppelklasse</stereo>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-ACCESSIBILITY">
@@ -116,26 +116,26 @@
             <name lang="en">Accessibility</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-objecttype</stereo>
-                <stereo required="no">stereotype-name-koppelklasse</stereo>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-VOIDABLE">
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-data-element</stereo>
-                <stereo required="no">stereotype-name-voidable</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-voidable</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-INDICATIONAUTHENTIC">
             <derive>yes</derive>
             <stereotypes>
                 <!-- optional for inherited stereos -->
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
         
@@ -147,8 +147,8 @@
             </desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-objecttype</stereo>
-                <stereo required="no">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="0..*">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..*">stereotype-name-koppelklasse</stereo>
             </stereotypes>
         </tv>
         
@@ -157,7 +157,7 @@
             <name lang="en">Relation</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
         
@@ -166,12 +166,12 @@
             <name lang="en">Pattern</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-referentie-element</stereo>
-                <stereo required="no">stereotype-name-simpletype</stereo>
-                <stereo required="no">stereotype-name-complextype</stereo>
-                <stereo required="no">stereotype-name-data-element</stereo>
-                <stereo required="no">stereotype-name-union-element</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
             </stereotypes>
         </tv>
         
@@ -181,7 +181,7 @@
             <desc lang="nl">De verwerkingsmethode bij het samenstellen van de "envelop" van een schema. Er is nu nog maar één variant: BDS.</desc>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-service</stereo>
+                <stereo minmax="0..1">stereotype-name-service</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value default="yes">BDS</value>
@@ -194,7 +194,7 @@
             <desc lang="nl">Wanneer een domein package de basis vormt voor een setje (Messages, Response) wordt deze tagged value gezet.</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>yes</value>
@@ -212,7 +212,7 @@
             </desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -228,13 +228,13 @@
         <tv norm="space" id="CFG-TV-ISDERIVED">
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-association-to-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-association-to-composite</stereo>
             </stereotypes>            
         </tv>
         <tv norm="space"  id="CFG-TV-POSITION">
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-association-to-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-association-to-composite</stereo>
             </stereotypes>
         </tv>
         

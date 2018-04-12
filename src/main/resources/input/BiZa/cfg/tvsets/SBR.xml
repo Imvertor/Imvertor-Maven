@@ -33,16 +33,16 @@
             <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="yes">stereotype-name-objecttype</stereo>
-                <stereo required="yes">stereotype-name-complextype</stereo>
-                <stereo required="yes">stereotype-name-data-element</stereo>
-                <stereo required="yes">stereotype-name-attribute</stereo>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo>
-                <stereo required="yes">stereotype-name-composite</stereo>
-                <stereo required="yes">stereotype-name-referentielijst</stereo>
-                <stereo required="yes">stereotype-name-referentie-element</stereo>
-                <stereo required="yes">stereotype-name-union</stereo>
-                <stereo required="yes">stereotype-name-union-element</stereo>
+                <stereo minmax="1..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="1..1">stereotype-name-complextype</stereo>
+                <stereo minmax="1..1">stereotype-name-data-element</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="1..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="1..1">stereotype-name-union</stereo>
+                <stereo minmax="1..1">stereotype-name-union-element</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-SOURCEOFDEFINITION">
@@ -52,10 +52,10 @@
             <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="yes">stereotype-name-objecttype</stereo>
-                <stereo required="yes">stereotype-name-attribute</stereo>
-                <stereo required="yes">stereotype-name-composite</stereo>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
         
@@ -67,9 +67,9 @@
             <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-objecttype</stereo> <!-- TODO anders dan metamodel -->
-                <stereo required="no">stereotype-name-attribute</stereo> <!-- TODO anders dan metamodel -->
-                <stereo required="no">stereotype-name-composite</stereo> <!-- TODO anders dan metamodel -->
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo> <!-- TODO anders dan metamodel -->
+                <stereo minmax="0..1">stereotype-name-attribute</stereo> <!-- TODO anders dan metamodel -->
+                <stereo minmax="0..1">stereotype-name-composite</stereo> <!-- TODO anders dan metamodel -->
             </stereotypes>
         </tv>
         <tv norm="note" id="CFG-TV-POPULATION">
@@ -79,7 +79,7 @@
             <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-QUALITY">
@@ -89,7 +89,7 @@
             <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
             </stereotypes>
         </tv>
         <tv norm="note" id="CFG-TV-RULES">
@@ -99,9 +99,9 @@
             <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo> <!-- TODO niet op KKG -->
-                <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo> <!-- TODO niet op KKG -->
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
         <tv norm="note" id="CFG-TV-DESCRIPTION">
@@ -111,12 +111,12 @@
             <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-objecttype</stereo>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
-                <stereo required="no">stereotype-name-referentielijst</stereo>
-                <stereo required="no">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
             </stereotypes>
         </tv> 
         
@@ -130,17 +130,17 @@
             <derive>yes</derive>
             <extract-from-notes>yes</extract-from-notes><!-- value may be read from notes field usig KKG-ISO scheme -->
             <stereotypes>
-                <stereo required="no">stereotype-name-objecttype</stereo>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo> 
-                <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-referentielijst</stereo>
-                <stereo required="no">stereotype-name-codelist</stereo>
-                <stereo required="no">stereotype-name-referentie-element</stereo>
-                <stereo required="no">stereotype-name-union</stereo>
-                <stereo required="no">stereotype-name-complextype</stereo>
-                <stereo required="no">stereotype-name-externekoppeling</stereo>
-                <stereo required="no">stereotype-name-enumeration</stereo>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo> 
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="0..1">stereotype-name-codelist</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-externekoppeling</stereo>
+                <stereo minmax="0..1">stereotype-name-enumeration</stereo>
             </stereotypes>
         </tv> 
         
@@ -154,25 +154,25 @@
             <desc lang="en">The description of the meaning of the construct as specified in the catalog of the relevant (base) registration or information model.</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="yes">stereotype-name-objecttype</stereo>
-                <stereo required="yes">stereotype-name-attribute</stereo>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo>
-                <stereo required="yes">stereotype-name-composite</stereo>
-                <stereo required="yes">stereotype-name-relatieklasse</stereo>
-                <stereo required="yes">stereotype-name-referentielijst</stereo>
-                <stereo required="yes">stereotype-name-referentie-element</stereo>
-                <stereo required="yes">stereotype-name-enumeration</stereo>
-                <stereo required="yes">stereotype-name-codelist</stereo>
-                <stereo required="yes">stereotype-name-simpletype</stereo>
-                <stereo required="yes">stereotype-name-complextype</stereo>
-                <stereo required="yes">stereotype-name-union</stereo>
+                <stereo minmax="1..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="1..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="1..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="1..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="1..1">stereotype-name-codelist</stereo>
+                <stereo minmax="1..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="1..1">stereotype-name-complextype</stereo>
+                <stereo minmax="1..1">stereotype-name-union</stereo>
                 
-                <stereo required="no">stereotype-name-data-element</stereo>
-                <stereo required="no">stereotype-name-union-element</stereo>
-                <stereo required="no">stereotype-name-enum</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
                 
-                <stereo required="no">stereotype-name-external-package</stereo>
-                <stereo required="no">stereotype-name-view-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
             </stereotypes>
         </tv>
     </tagged-values>

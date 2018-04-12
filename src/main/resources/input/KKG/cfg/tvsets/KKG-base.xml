@@ -13,42 +13,42 @@
         
         <tv id="CFG-TV-DATERECORDED">
             <stereotypes>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo> 
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo> 
             </stereotypes>
         </tv> 
         <tv id="CFG-TV-INDICATIONMATERIALHISTORY">
             <stereotypes>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo> 
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo> 
             </stereotypes>
         </tv>
         <tv id="CFG-TV-INDICATIONFORMALHISTORY">
             <stereotypes>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo> 
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo> 
             </stereotypes>
         </tv>
         <tv id="CFG-TV-INDICATIONAUTHENTIC">
             <stereotypes>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo> 
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo> 
             </stereotypes>
         </tv>
         <tv id="CFG-TV-VOIDABLE">
             <stereotypes>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo> 
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo> 
             </stereotypes>
         </tv>
         <tv id="CFG-TV-SOURCE">
             <stereotypes>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo> 
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo> 
             </stereotypes>
         </tv>
         <tv id="CFG-TV-SOURCEOFDEFINITION">
             <stereotypes>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo> 
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo> 
             </stereotypes>
         </tv>
         <tv id="CFG-TV-DESCRIPTION">
             <stereotypes>
-                <stereo required="no">stereotype-name-relatiesoort</stereo> 
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo> 
             </stereotypes>
         </tv>      
     </tagged-values>

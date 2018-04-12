@@ -31,9 +31,9 @@
             <name lang="nl">Aanduiding strijdigheid/nietigheid</name>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <stereotypes>
-                <stereo required="yes">stereotype-name-attribute</stereo>
-                <stereo required="yes">stereotype-name-composite</stereo>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-INDICATIEINONDERZOEK">
@@ -44,9 +44,9 @@
                 of is uitgevoerd naar de juistheid van de attribuutwaarde. 
             </desc>
             <stereotypes>
-                <stereo required="yes">stereotype-name-attribute</stereo>
-                <stereo required="yes">stereotype-name-composite</stereo>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -63,20 +63,20 @@
             </desc>
             <stereotypes>
                 <!-- in addition to BP -->
-                <stereo required="yes">stereotype-name-referentielijst</stereo> 
-                <stereo required="yes">stereotype-name-referentie-element</stereo>
-                <stereo required="yes">stereotype-name-union</stereo>
-                <stereo required="yes">stereotype-name-union-element</stereo>
-                <stereo required="yes">stereotype-name-complextype</stereo>
-                <stereo required="yes">stereotype-name-data-element</stereo>
+                <stereo minmax="1..1">stereotype-name-referentielijst</stereo> 
+                <stereo minmax="1..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="1..1">stereotype-name-union</stereo>
+                <stereo minmax="1..1">stereotype-name-union-element</stereo>
+                <stereo minmax="1..1">stereotype-name-complextype</stereo>
+                <stereo minmax="1..1">stereotype-name-data-element</stereo>
             </stereotypes>
         </tv>
         <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
             <name lang="nl">Indicatie materiële historie</name>
             <stereotypes>
-                <stereo required="yes">stereotype-name-attribute</stereo>
-                <stereo required="yes">stereotype-name-composite</stereo>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <declared-values lang="nl">
@@ -90,9 +90,9 @@
         <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIONFORMALHISTORY">
             <name lang="nl">Indicatie formele historie</name>
             <stereotypes>
-                <stereo required="yes">stereotype-name-attribute</stereo>
-                <stereo required="yes">stereotype-name-composite</stereo>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <declared-values lang="nl">
@@ -106,17 +106,17 @@
             <name lang="nl">Indicatie authentiek</name>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <stereotypes>
-                <stereo required="yes">stereotype-name-attribute</stereo>
-                <stereo required="yes">stereotype-name-composite</stereo>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
         <tv norm="compact" rules="NOC" id="CFG-TV-VOIDABLE">
             <name lang="nl">Mogelijk geen waarde</name>
             <stereotypes>
-                <stereo required="yes">stereotype-name-attribute</stereo>
-                <stereo required="yes">stereotype-name-composite</stereo>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -128,7 +128,7 @@
             <name lang="nl">Groepnaam</name>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
             <stereotypes>
-                <stereo required="no">stereotype-name-tekentechnisch</stereo>
+                <stereo minmax="0..1">stereotype-name-tekentechnisch</stereo>
             </stereotypes>
         </tv>
         
@@ -141,29 +141,29 @@
                 welke (basis)registratie of informatiemodel het objecttype voorkomt (indien van toepassing).
             </desc>
             <stereotypes>
-                <stereo required="no">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
             </stereotypes>
         </tv>
 
         <tv norm="note" id="CFG-TV-POPULATION">   <!-- in aanvulling op SBR -->
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-obj-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
             </stereotypes>
         </tv>
         <tv norm="note" id="CFG-TV-DESCRIPTION">   <!-- in aanvulling op SBR -->
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-obj-proxy</stereo>
-                <stereo required="no">stereotype-name-att-proxy</stereo>
-                <stereo required="no">stereotype-name-grp-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
             </stereotypes>
         </tv>
         <tv norm="note" id="CFG-TV-RULES">   <!-- in aanvulling op SBR -->
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-att-proxy</stereo>
-                <stereo required="no">stereotype-name-grp-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-att-proxy</stereo>
+                <stereo minmax="0..1">stereotype-name-grp-proxy</stereo>
             </stereotypes>
         </tv>
         
@@ -172,12 +172,12 @@
             <name lang="en">Pattern</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-referentie-element</stereo>
-                <stereo required="no">stereotype-name-simpletype</stereo>
-                <stereo required="no">stereotype-name-complextype</stereo>
-                <stereo required="no">stereotype-name-data-element</stereo>
-                <stereo required="no">stereotype-name-union-element</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
             </stereotypes>
         </tv>
         

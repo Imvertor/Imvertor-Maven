@@ -28,34 +28,34 @@
         <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONAUTHENTIC">
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" rules="NOC" id="CFG-TV-INDICATIEINONDERZOEK">
             <name lang="nl">Indicatie in onderzoek</name>
             <derive>yes</derive><!-- BSM mag op supplier  terugvallen-->
             <stereotypes>
-                <stereo required="yes">stereotype-name-attribute</stereo>
-                <stereo required="yes">stereotype-name-composite</stereo>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
         <tv norm="compact"  rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
          </tv>
         <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIONFORMALHISTORY">
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
        </tv>
         
@@ -63,7 +63,7 @@
             <name lang="nl">Functie berichtrelatie</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-berichtrelatie</stereo>
+                <stereo minmax="0..1">stereotype-name-berichtrelatie</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>update</value>
@@ -75,7 +75,7 @@
             <name lang="nl">Functie entiteitrelatie</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-entiteitrelatie</stereo>
+                <stereo minmax="0..1">stereotype-name-entiteitrelatie</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>entiteit</value>
@@ -95,12 +95,12 @@
             <derive>no</derive>
             <inherit>yes</inherit>
             <stereotypes>
-                <?x stereo required="yes" lang="nl">Berichttype</stereo x?>
-                <stereo required="yes">stereotype-name-vraagberichttype</stereo>
-                <stereo required="yes">stereotype-name-antwoordberichttype</stereo>
-                <stereo required="yes">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo required="yes">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo required="yes">stereotype-name-vrijberichttype</stereo>
+                <?x stereo minmax="1..1" lang="nl">Berichttype</stereo x?>
+                <stereo minmax="1..1">stereotype-name-vraagberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-antwoordberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-vrijberichttype</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Bv01</value>
@@ -219,12 +219,12 @@
             <desc>Opnemen ter documentatie van een bericht.</desc>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-application-package</stereo>
-                <stereo required="no">stereotype-name-vraagberichttype</stereo>
-                <stereo required="no">stereotype-name-antwoordberichttype</stereo>
-                <stereo required="no">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo required="no">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo required="no">stereotype-name-vrijberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vrijberichttype</stereo>
             </stereotypes>
         </tv>
         
@@ -233,11 +233,11 @@
             <desc>Opnemen ter documentatie van een bericht.</desc>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-vraagberichttype</stereo>
-                <stereo required="no">stereotype-name-antwoordberichttype</stereo>
-                <stereo required="no">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo required="no">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo required="no">stereotype-name-vrijberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vrijberichttype</stereo>
             </stereotypes>
         </tv>
         
@@ -246,11 +246,11 @@
             <desc>Opnemen ter documentatie van een bericht.</desc>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-vraagberichttype</stereo>
-                <stereo required="no">stereotype-name-antwoordberichttype</stereo>
-                <stereo required="no">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo required="no">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo required="no">stereotype-name-vrijberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vrijberichttype</stereo>
             </stereotypes>
         </tv>
         
@@ -259,11 +259,11 @@
             <desc>Opnemen ter documentatie van een bericht.</desc>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-vraagberichttype</stereo>
-                <stereo required="no">stereotype-name-antwoordberichttype</stereo>
-                <stereo required="no">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo required="no">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo required="no">stereotype-name-vrijberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vrijberichttype</stereo>
             </stereotypes>
         </tv>
         
@@ -272,11 +272,11 @@
             <derive>no</derive>
             <inherit>yes</inherit>
             <stereotypes>
-                <stereo required="no">stereotype-name-vraagberichttype</stereo>
-                <stereo required="no">stereotype-name-antwoordberichttype</stereo>
-                <stereo required="no">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo required="no">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo required="no">stereotype-name-vrijberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vrijberichttype</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>request</value>
@@ -289,60 +289,60 @@
             <derive>no</derive>
             <inherit>yes</inherit>
             <stereotypes>
-                <stereo required="no">stereotype-name-vraagberichttype</stereo>
-                <stereo required="no">stereotype-name-antwoordberichttype</stereo>
-                <stereo required="no">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo required="no">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo required="no">stereotype-name-vrijberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vrijberichttype</stereo>
             </stereotypes>
         </tv>
         
         <tv norm="space" id="CFG-TV-RELEASE">
             <name lang="nl">Release</name>
             <stereotypes>
-                <stereo required="yes">stereotype-name-application-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
         
         <tv norm="space" id="CFG-TV-SUPPLIERPROJECT">
             <stereotypes>
-                <stereo required="yes">stereotype-name-application-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-SUPPLIERNAME">
             <stereotypes>
-                <stereo required="yes">stereotype-name-application-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-SUPPLIERPACKAGENAME">
             <stereotypes>
-                <stereo required="no">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-SUPPLIERRELEASE">
             <stereotypes>
-                <stereo required="yes">stereotype-name-application-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
         
         <tv id="CFG-TV-POSITION"><!-- origin="system"; in aanvulling op grouping! -->
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-entiteitrelatie</stereo>
+                <stereo minmax="0..1">stereotype-name-entiteitrelatie</stereo>
             </stereotypes>
         </tv>
         
         <tv id="CFG-TV-ISDERIVED">
             <stereotypes>
                 <!-- bericht typen -->
-                <stereo required="no">stereotype-name-antwoordberichttype</stereo>
-                <stereo required="no">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo required="no">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo required="no">stereotype-name-vraagberichttype</stereo>
-                <stereo required="no">stereotype-name-vrijberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vrijberichttype</stereo>
                 
-                <stereo required="no">stereotype-name-entiteitrelatie</stereo>
-                <stereo required="no">stereotype-name-berichtrelatie</stereo>
+                <stereo minmax="0..1">stereotype-name-entiteitrelatie</stereo>
+                <stereo minmax="0..1">stereotype-name-berichtrelatie</stereo>
             </stereotypes>
         </tv>
         
@@ -354,8 +354,8 @@
                 gedefinieerd waarbij die op attribuutniveau die op op Koppelvlak niveau overrulled. 
             </desc>
             <stereotypes>
-                <stereo required="no">stereotype-name-enumeration</stereo>
-                <stereo required="no">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Nee</value>
@@ -370,7 +370,7 @@
                 Standaard wordt dit mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
             </desc>
             <stereotypes>
-                <stereo required="no">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Nee</value>
@@ -385,7 +385,7 @@
                 Standaard worden deze mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
             </desc>
             <stereotypes>
-                <stereo required="no">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Nee</value>
@@ -400,7 +400,7 @@
                 Standaard worden deze optioneel mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
             </desc>
             <stereotypes>
-                <stereo required="no">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Nee</value>
@@ -416,7 +416,7 @@
                 Standaard worden deze optioneel mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
             </desc>
             <stereotypes>
-                <stereo required="no">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Nee</value>
@@ -433,7 +433,7 @@
                 Standaard worden deze optioneel mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
             </desc>
             <stereotypes>
-                <stereo required="no">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Nee</value>
@@ -449,7 +449,7 @@
                 Standaard worden deze optioneel mee gegenereerd. Kan alleen op  Koppelvlak niveau worden gedefinieerd. 
             </desc>
             <stereotypes>
-                <stereo required="no">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Nee</value>

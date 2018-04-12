@@ -1194,52 +1194,66 @@
         Go through all tagged values, and check if it is a known (declared) tagged value. 
         If so, check if it allowed on this stereotype. If not, produce warning.
         If so, check if value is specified when required.
+        If so, check if multiple declarations are allowed and found.
     -->
     <xsl:function name="imf:check-tagged-value-assignment" as="element()*">
         <xsl:param name="this" as="element()"/> <!-- any element that may have stereotype and tagged values-->
         
         <xsl:variable name="stereotype" select="$this/imvert:stereotype"/>
         <xsl:if test="$validate-tv-assignment">
-            <xsl:for-each select="$this/imvert:tagged-values/imvert:tagged-value">
-                <xsl:variable name="id" select="@id"/>
-                <xsl:variable name="name" select="imvert:name"/>
-                <xsl:variable name="value" select="imvert:value"/>
-            
-                <xsl:variable name="declared" select="$config-tagged-values[@id = $id]"/>
-                
-                <xsl:variable name="value-derived" select="imf:boolean($declared/derive)"/>
-               
-                <xsl:variable name="required-as-found" select="imf:boolean($declared/stereotypes/stereo[. = $stereotype][1]/@required)"/>
-                <xsl:variable name="value-required" select="not($value-derived) and $required-as-found"/> <!--TODO test if derived value is actually available --> 
-                <xsl:variable name="value-listing" select="$declared/declared-values/value"/>
-              
-                <xsl:variable name="valid-for-stereotype" select="$declared/stereotypes/stereo = $stereotype"/>
-                <xsl:variable name="valid-omitted" select="empty($stereotype) and $declared/stereotypes/stereo = $normalized-stereotype-none"/>
-                <xsl:variable name="valid-from-listing" select="$value = $value-listing"/>
-                
-                <!--<xsl:message select="string-join(($name, $value, string($required-as-found),string($value-required)),';')"></xsl:message>-->
-                <xsl:choose>
-                    <xsl:when test="@origin='notes'"><!-- reading notes field may result in a tagged value, that is therefore system generated. It does not have to be part of the metamodel tagged value set. -->
-                        <!-- ignore -->
-                    </xsl:when>
-                    <xsl:when test="empty($declared)">
-                        <!-- an unknown tagged value, not configured anywhere -->
-                        <xsl:sequence select="imf:report-warning($this, true(), 'Tagged value not expected or unknown: [1]',$name/@original)"/>
-                    </xsl:when>
-                    <xsl:when test="not($valid-for-stereotype)">
-                        <xsl:sequence select="imf:report-warning($this, true(), 'Tagged value [1] not expected on stereotype [2]',($name/@original,$stereotype))"/>
-                    </xsl:when>
-                    <xsl:when test="$value-required and not(normalize-space($value))">
-                        <xsl:sequence select="imf:report-error($this, true(), 'Tagged value [1] has no value',($name/@original))"/>
-                    </xsl:when>
-                    <xsl:when test="exists($value-listing) and not($valid-from-listing)">
-                        <xsl:sequence select="imf:report-error($this, true(), 'Tagged value [1] has undeclared value [2], allowed values are: [3]',($name/@original,imf:value-trim($value,80),string-join($value-listing,'&quot;, &quot;')))"/>
-                    </xsl:when>
-                    <xsl:when test="not($valid-omitted)">
-                        <!-- okay, allowed -->
-                    </xsl:when>
-                </xsl:choose>
-            </xsl:for-each>
+            <xsl:for-each-group select="$this/imvert:tagged-values/imvert:tagged-value" group-by="@id">
+                <xsl:variable name="first-in-group" select="."/>
+                <xsl:variable name="group" select="current-group()"/>
+                <xsl:for-each select="$group">
+                    <xsl:variable name="id" select="@id"/>
+                    <xsl:variable name="name" select="imvert:name"/>
+                    <xsl:variable name="value" select="imvert:value"/>
+                    
+                    <xsl:variable name="declared" select="$config-tagged-values[@id = $id]"/>
+                    
+                    <xsl:variable name="value-derived" select="imf:boolean($declared/derive)"/>
+                    
+                    <xsl:variable name="minmax" select="tokenize($declared/stereotypes/stereo[. = $stereotype][1]/@minmax,'\.\.')"/>
+                    <xsl:variable name="min" select="xs:integer(($minmax[1],'1')[1])"/>
+                    <xsl:variable name="max" select="xs:integer(for $m in ($minmax[2],'1')[1] return if ($m = '*') then '1000' else $m)"/>
+                    
+                    <xsl:variable name="value-required" select="not($value-derived) and $min ge 1"/> <!--TODO test if derived value is actually available --> 
+                    <xsl:variable name="value-max" select="not($value-derived) and $max ge 1"/> <!--TODO test if derived value is actually available --> 
+                    
+                    <xsl:variable name="value-listing" select="$declared/declared-values/value"/>
+                    
+                    <xsl:variable name="valid-for-stereotype" select="$declared/stereotypes/stereo = $stereotype"/>
+                    <xsl:variable name="valid-omitted" select="empty($stereotype) and $declared/stereotypes/stereo = $normalized-stereotype-none"/>
+                    <xsl:variable name="valid-from-listing" select="$value = $value-listing"/>
+                    
+                    <xsl:variable name="is-first-in-group" select=". is $first-in-group"/>
+                    
+                    <xsl:choose>
+                        <xsl:when test="@origin='notes'"><!-- reading notes field may result in a tagged value, that is therefore system generated. It does not have to be part of the metamodel tagged value set. -->
+                            <!-- ignore -->
+                        </xsl:when>
+                        <xsl:when test="$is-first-in-group and empty($declared)">
+                            <!-- an unknown tagged value, not configured anywhere -->
+                            <xsl:sequence select="imf:report-warning($this, true(), 'Tagged value not expected or unknown: [1]',$name/@original)"/>
+                        </xsl:when>
+                        <xsl:when test="$is-first-in-group and not($valid-for-stereotype)">
+                            <xsl:sequence select="imf:report-warning($this, true(), 'Tagged value [1] not expected on stereotype [2]',($name/@original,$stereotype))"/>
+                        </xsl:when>
+                        <xsl:when test="$is-first-in-group and $value-required and not(normalize-space($value))">
+                            <xsl:sequence select="imf:report-error($this, true(), 'Tagged value [1] has no value',($name/@original))"/>
+                        </xsl:when>
+                        <xsl:when test="$value-max and count($group) gt $max">
+                            <xsl:sequence select="imf:report-error($this, true(), 'Tagged value [1] occurs too often',($name/@original))"/>
+                        </xsl:when>
+                        <xsl:when test="exists($value-listing) and not($valid-from-listing)">
+                            <xsl:sequence select="imf:report-error($this, true(), 'Tagged value [1] has undeclared value [2], allowed values are: [3]',($name/@original,imf:value-trim($value,80),string-join($value-listing,'&quot;, &quot;')))"/>
+                        </xsl:when>
+                        <xsl:when test="not($valid-omitted)">
+                            <!-- okay, allowed -->
+                        </xsl:when>
+                    </xsl:choose>
+                </xsl:for-each>
+            </xsl:for-each-group>
         </xsl:if>
         
     </xsl:function>

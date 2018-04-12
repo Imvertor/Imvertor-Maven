@@ -16,55 +16,55 @@
         
         <tv id="CFG-TV-DATERECORDED">
             <stereotypes>
-                <stereo required="yes">stereotype-name-relation-role</stereo> 
+                <stereo minmax="1..1">stereotype-name-relation-role</stereo> 
             </stereotypes>
         </tv> 
         <tv id="CFG-TV-INDICATIONMATERIALHISTORY">
             <stereotypes>
-                <stereo required="yes">stereotype-name-relation-role</stereo> 
+                <stereo minmax="1..1">stereotype-name-relation-role</stereo> 
             </stereotypes>
         </tv>
         <tv id="CFG-TV-INDICATIONFORMALHISTORY">
             <stereotypes>
-                <stereo required="yes">stereotype-name-relation-role</stereo> 
+                <stereo minmax="1..1">stereotype-name-relation-role</stereo> 
             </stereotypes>
         </tv>
         <tv id="CFG-TV-INDICATIONAUTHENTIC">
             <stereotypes>
-                <stereo required="yes">stereotype-name-relation-role</stereo> 
+                <stereo minmax="1..1">stereotype-name-relation-role</stereo> 
             </stereotypes>
         </tv>
         <tv id="CFG-TV-VOIDABLE">
             <stereotypes>
-                <stereo required="yes">stereotype-name-relation-role</stereo> 
+                <stereo minmax="1..1">stereotype-name-relation-role</stereo> 
             </stereotypes>
         </tv>
         <tv id="CFG-TV-SOURCE">
             <stereotypes>
-                <stereo required="yes">stereotype-name-relation-role</stereo> 
+                <stereo minmax="1..1">stereotype-name-relation-role</stereo> 
             </stereotypes>
         </tv>
         <tv id="CFG-TV-SOURCEOFDEFINITION">
             <stereotypes>
-                <stereo required="yes">stereotype-name-relation-role</stereo> 
+                <stereo minmax="1..1">stereotype-name-relation-role</stereo> 
             </stereotypes>
         </tv>
         <tv id="CFG-TV-DESCRIPTION">
             <extract-from-notes>yes</extract-from-notes><!-- value may be read from notes field usig KKG-ISO scheme -->
             <stereotypes>
-                <stereo required="no">stereotype-name-relation-role</stereo> 
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo> 
             </stereotypes>
         </tv>  
         
         <tv id="CFG-TV-NAME">
             <stereotypes>
-                <stereo required="no">stereotype-name-relation-role</stereo> 
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo> 
             </stereotypes>
         </tv>
         
         <tv id="CFG-TV-DEFINITION" origin="system">
             <stereotypes>
-                <stereo required="yes">stereotype-name-relation-role</stereo> 
+                <stereo minmax="1..1">stereotype-name-relation-role</stereo> 
             </stereotypes>
         </tv>
     </tagged-values>

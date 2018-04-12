@@ -16,16 +16,16 @@
         <tv norm="space" id="CFG-TV-DATERECORDED">
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-koppelklasse</stereo>
-                <stereo required="no">stereotype-name-meervoudige-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-meervoudige-relatieklasse</stereo>
             </stereotypes>
         </tv>
         
         <tv norm="space" id="CFG-TV-OWNER">
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-koppelklasse</stereo>
-                <stereo required="no">stereotype-name-meervoudige-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-meervoudige-relatieklasse</stereo>
             </stereotypes>
         </tv>
         
@@ -34,26 +34,26 @@
             <name lang="en">Conditions of use</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-objecttype</stereo>
-                <stereo required="no">stereotype-name-koppelklasse</stereo>
-                <stereo required="no">stereotype-name-meervoudige-relatieklasse</stereo>
-                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-meervoudige-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
         </tv>
         
         <tv norm="space" id="CFG-TV-SOURCE">
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-koppelklasse</stereo>
-                <stereo required="no">stereotype-name-meervoudige-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-meervoudige-relatieklasse</stereo>
             </stereotypes>
         </tv>
         
         <tv norm="space" id="CFG-TV-SOURCEOFDEFINITION">
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-koppelklasse</stereo>
-                <stereo required="no">stereotype-name-meervoudige-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-meervoudige-relatieklasse</stereo>
             </stereotypes>
         </tv>
         
@@ -62,11 +62,11 @@
             <name lang="en">Legislation</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-objecttype</stereo>
-                <stereo required="no">stereotype-name-koppelklasse</stereo>
-                <stereo required="no">stereotype-name-meervoudige-relatieklasse</stereo>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-meervoudige-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
             </stereotypes>
         </tv>
         
@@ -75,11 +75,11 @@
             <name lang="en">Accessibility</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-objecttype</stereo>
-                <stereo required="no">stereotype-name-koppelklasse</stereo>
-                <stereo required="no">stereotype-name-meervoudige-relatieklasse</stereo>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-meervoudige-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
             </stereotypes>
         </tv>
         
@@ -88,9 +88,9 @@
             <name lang="en">Concept</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-objecttype</stereo>
-                <stereo required="no">stereotype-name-koppelklasse</stereo>
-                <stereo required="no">stereotype-name-meervoudige-relatieklasse</stereo>
+                <stereo minmax="0..*">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..*">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="0..*">stereotype-name-meervoudige-relatieklasse</stereo>
             </stereotypes>
         </tv>
         
@@ -104,8 +104,8 @@
             </desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -116,5 +116,18 @@
                 <value default="yes">No</value>
             </declared-values>
         </tv>
+        
+        <tv norm="space" id="CFG-TV-FEATURECOLLECTION">
+            <name lang="en">Feature collection</name>
+            <name lang="nl">Objectverzameling</name>
+            <desc lang="nl">Een verzameling van objecttypen. 
+                Zo'n verzameling wordt alleen gebruikt in toepassingen waarin objecttypen moeten worden uitgewisseld conform GML "featurecollections".
+            </desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+            </stereotypes>
+        </tv>
+        
     </tagged-values>
 </tagset>

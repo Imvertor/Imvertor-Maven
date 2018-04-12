@@ -20,10 +20,10 @@
             <name lang="en">Location</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="yes">stereotype-name-codelist</stereo>
-                <stereo required="yes">stereotype-name-referentielijst</stereo>
-                <stereo required="yes">stereotype-name-view-package</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-codelist</stereo>
+                <stereo minmax="1..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="1..1">stereotype-name-view-package</stereo>
             </stereotypes>
         </tv>
         

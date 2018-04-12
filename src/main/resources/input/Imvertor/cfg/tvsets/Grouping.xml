@@ -21,8 +21,8 @@
                 This tagged value is required by the Imvertor add-in on Enterprise Architect.
             </desc>
             <stereotypes>
-                <stereo required="no">stereotype-name-base-package</stereo>
-                <stereo required="no">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
             </stereotypes>
             <declared-values lang="#all">
                 <value default="yes">model</value>
@@ -46,7 +46,7 @@
                 "specific" means that the model is a particular to a domain and models that domain or a conherent part of it.  
             </desc>
             <stereotypes>
-                <stereo required="no">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value default="no">generiek</value>
@@ -63,7 +63,7 @@
             <name lang="en">Administrator</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
             </stereotypes>
         </tv>
         
@@ -83,8 +83,8 @@
             <derive>yes</derive>
             <type>URI</type>
             <stereotypes>
-                <stereo required="no">stereotype-name-external-package</stereo><!--TODO externals that are conceptuals do not require this tagged value -->
-                <stereo required="yes">stereotype-name-view-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo><!--TODO externals that are conceptuals do not require this tagged value -->
+                <stereo minmax="1..1">stereotype-name-view-package</stereo>
             </stereotypes>
         </tv>
         
@@ -93,12 +93,12 @@
             <name lang="en">Release</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="yes">stereotype-name-base-package</stereo>
-                <stereo required="yes">stereotype-name-application-package</stereo>
-                <stereo required="yes">stereotype-name-domain-package</stereo>
-                <stereo required="yes">stereotype-name-view-package</stereo>
-                <stereo required="no">stereotype-name-external-package</stereo>
-                <stereo required="yes">stereotype-name-internal-package</stereo>
+                <stereo minmax="1..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+                <stereo minmax="1..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="1..1">stereotype-name-view-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="1..1">stereotype-name-internal-package</stereo>
                 <!-- release van kadaster externe schema's wordt ingegenereerd binnen Imvert2concreteSchema.xsl -->
             </stereotypes>
         </tv>
@@ -108,9 +108,9 @@
             <name lang="en">Ref-release</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-domain-package</stereo>
-                <stereo required="no">stereotype-name-view-package</stereo>
-                <stereo required="no">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-REFVERSION">
@@ -118,9 +118,9 @@
             <name lang="en">Ref-version</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-domain-package</stereo>
-                <stereo required="no">stereotype-name-view-package</stereo>
-                <stereo required="no">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
             </stereotypes>
         </tv>
 
@@ -129,8 +129,8 @@
             <name lang="en">Supplier-project</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-base-package</stereo>
-                <stereo required="yes">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-SUPPLIERNAME">
@@ -139,8 +139,8 @@
             <!--<name lang="nl">Supplier name</name>-->
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-base-package</stereo>
-                <stereo required="yes">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-SUPPLIERPACKAGENAME">
@@ -149,8 +149,8 @@
             <!--<name lang="nl">Supplier package name</name>-->
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-domain-package</stereo>
-                <stereo required="no">stereotype-name-view-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-SUPPLIERRELEASE">
@@ -159,8 +159,8 @@
             <!--<name lang="nl">Supplier release</name>-->
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-base-package</stereo>
-                <stereo required="yes">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-VERSIONID">
@@ -168,11 +168,11 @@
             <name lang="en">Version ID</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-base-package</stereo>
-                <stereo required="no">stereotype-name-application-package</stereo>
-                <stereo required="no">stereotype-name-domain-package</stereo>
-                <stereo required="no">stereotype-name-external-package</stereo>
-                <stereo required="no">stereotype-name-view-package</stereo>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
             </stereotypes>
         </tv>
         
@@ -181,11 +181,11 @@
             <name lang="en">Web-location</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-base-package</stereo>
-                <stereo required="no">stereotype-name-application-package</stereo>
-                <stereo required="no">stereotype-name-external-package</stereo>
-                <stereo required="no">stereotype-name-view-package</stereo>
-                <stereo required="no">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" validate="url" id="CFG-TV-XSDLOCATION">
@@ -193,7 +193,7 @@
             <name lang="en">XSD-location</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
             </stereotypes>
         </tv>
         
@@ -202,7 +202,7 @@
             <name lang="en">Internal project</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="yes">stereotype-name-internal-package</stereo>
+                <stereo minmax="1..1">stereotype-name-internal-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-INTERNALNAME">
@@ -210,7 +210,7 @@
             <name lang="en">Internal name</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="yes">stereotype-name-internal-package</stereo>
+                <stereo minmax="1..1">stereotype-name-internal-package</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-INTERNALRELEASE">
@@ -218,7 +218,7 @@
             <name lang="en">Internal release</name>
             <derive>no</derive>
             <stereotypes>
-                <stereo required="yes">stereotype-name-internal-package</stereo>
+                <stereo minmax="1..1">stereotype-name-internal-package</stereo>
             </stereotypes>
         </tv>
         
@@ -230,35 +230,35 @@
             <derive>no</derive>
             <stereotypes>
                 <!-- packages -->
-                <stereo required="no">stereotype-name-project-package</stereo>
-                <stereo required="no">stereotype-name-base-package</stereo>
-                <stereo required="no">stereotype-name-application-package</stereo>
-                <stereo required="no">stereotype-name-domain-package</stereo>
-                <stereo required="no">stereotype-name-external-package</stereo>
-                <stereo required="no">stereotype-name-internal-package</stereo>
+                <stereo minmax="0..1">stereotype-name-project-package</stereo>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-internal-package</stereo>
                 
                 <!-- constructs -->
-                <stereo required="no">stereotype-name-objecttype</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
-                <stereo required="no">stereotype-name-data-element</stereo>
-                <stereo required="no">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
           
-                <stereo required="no">stereotype-name-referentielijst</stereo>
-                <stereo required="no">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
                 
-                <stereo required="no">stereotype-name-union</stereo>
-                <stereo required="no">stereotype-name-union-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
                 
-                <stereo required="no">stereotype-name-enumeration</stereo>
-                <stereo required="no">stereotype-name-enum</stereo>
+                <stereo minmax="0..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
                 
-                <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
                 
-                <stereo required="no">stereotype-name-complextype</stereo>
-                <stereo required="no">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
                 
-                <stereo required="no">stereotype-name-interface</stereo>
+                <stereo minmax="0..1">stereotype-name-interface</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value default="no">Nee</value>
@@ -275,37 +275,37 @@
     
         <tv id="CFG-TV-DESCRIPTION">
             <stereotypes>
-                <stereo required="no">stereotype-name-project-package</stereo>
-                <stereo required="no">stereotype-name-base-package</stereo>
-                <stereo required="no">stereotype-name-application-package</stereo>
-                <stereo required="no">stereotype-name-domain-package</stereo>
-                <stereo required="no">stereotype-name-view-package</stereo>
-                <stereo required="no">stereotype-name-external-package</stereo>
-                <stereo required="no">stereotype-name-internal-package</stereo>
+                <stereo minmax="0..1">stereotype-name-project-package</stereo>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-internal-package</stereo>
             </stereotypes>
         </tv>  
 
         <tv id="CFG-TV-NAME">
             <stereotypes>
-                <stereo required="no">stereotype-name-project-package</stereo>
-                <stereo required="no">stereotype-name-base-package</stereo>
-                <stereo required="no">stereotype-name-application-package</stereo>
-                <stereo required="no">stereotype-name-domain-package</stereo>
-                <stereo required="no">stereotype-name-view-package</stereo>
-                <stereo required="no">stereotype-name-external-package</stereo>
-                <stereo required="no">stereotype-name-internal-package</stereo>
+                <stereo minmax="0..1">stereotype-name-project-package</stereo>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-internal-package</stereo>
             </stereotypes>
         </tv>  
         
         <tv id="CFG-TV-DEFINITION" origin="system">
             <stereotypes>
-                <stereo required="no">stereotype-name-project-package</stereo>
-                <stereo required="no">stereotype-name-base-package</stereo>
-                <stereo required="no">stereotype-name-application-package</stereo>
-                <stereo required="no">stereotype-name-domain-package</stereo>
-                <stereo required="no">stereotype-name-view-package</stereo>
-                <stereo required="no">stereotype-name-external-package</stereo>
-                <stereo required="no">stereotype-name-internal-package</stereo>
+                <stereo minmax="0..1">stereotype-name-project-package</stereo>
+                <stereo minmax="0..1">stereotype-name-base-package</stereo>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-internal-package</stereo>
             </stereotypes>
         </tv>  
         
@@ -316,12 +316,12 @@
             <desc lang="en">The position of the construct in products in which sequences play a role.</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
-                <stereo required="no">stereotype-name-union-element</stereo>
-                <stereo required="no">stereotype-name-enum</stereo>
-                <stereo required="no">stereotype-name-data-element</stereo>
-                <stereo required="no">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
             </stereotypes>
         </tv>
         

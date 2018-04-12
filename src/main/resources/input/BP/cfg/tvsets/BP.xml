@@ -30,15 +30,15 @@
             <name lang="en">Date recorded</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
             <stereotypes>
-                <stereo required="yes">stereotype-name-objecttype</stereo>
-                <stereo required="yes">stereotype-name-attribute</stereo>
-                <stereo required="yes">stereotype-name-composite</stereo>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo> 
-                <stereo required="yes">stereotype-name-referentielijst</stereo>
-                <stereo required="yes">stereotype-name-referentie-element</stereo>
-                <stereo required="yes">stereotype-name-union</stereo>
-                <stereo required="yes">stereotype-name-complextype</stereo>
-                <stereo required="yes">stereotype-name-externekoppeling</stereo>
+                <stereo minmax="1..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo> 
+                <stereo minmax="1..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="1..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="1..1">stereotype-name-union</stereo>
+                <stereo minmax="1..1">stereotype-name-complextype</stereo>
+                <stereo minmax="1..1">stereotype-name-externekoppeling</stereo>
             </stereotypes>
         </tv> 
         <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
@@ -46,9 +46,9 @@
             <name lang="en">Indication material history</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
             <stereotypes>
-                <stereo required="yes">stereotype-name-attribute</stereo>
-                <stereo required="yes">stereotype-name-composite</stereo>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -61,9 +61,9 @@
             <name lang="en">Indication formal history</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
             <stereotypes>
-                <stereo required="yes">stereotype-name-attribute</stereo>
-                <stereo required="yes">stereotype-name-composite</stereo>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
@@ -76,9 +76,9 @@
             <name lang="en">Indication authentic</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
             <stereotypes>
-                <stereo required="yes">stereotype-name-attribute</stereo>
-                <stereo required="yes">stereotype-name-composite</stereo>
-                <stereo required="yes">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
        
@@ -87,9 +87,9 @@
             <name lang="en">Voidable</name>
             <derive>yes</derive><!-- BP kan altijd terugvallen op een supplier BP -->
             <stereotypes>
-                <stereo required="no">stereotype-name-attribute</stereo>
-                <stereo required="no">stereotype-name-composite</stereo>
-                <stereo required="no">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Ja</value>
