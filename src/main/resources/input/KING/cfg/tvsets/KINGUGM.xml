@@ -180,21 +180,21 @@
             <name lang="en">Description</name>
             <derive>yes</derive>
             <stereotypes>
-                <stereo>stereotype-name-objecttype</stereo>
-                <stereo>stereotype-name-attribute</stereo>
-                <stereo>stereotype-name-relatiesoort</stereo>
-                <stereo>stereotype-name-composite</stereo>
-                <stereo>stereotype-name-relatieklasse</stereo>
-                <stereo>stereotype-name-referentielijst</stereo>
-                <stereo>stereotype-name-referentie-element</stereo>
-                <stereo>stereotype-name-enumeration</stereo>
-                <stereo>stereotype-name-simpletype</stereo>
-                <stereo>stereotype-name-complextype</stereo>
-                <stereo>stereotype-name-union</stereo>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-union</stereo>
                 
-                <stereo>stereotype-name-data-element</stereo>
-                <stereo>stereotype-name-union-element</stereo>
-                <stereo>stereotype-name-enum</stereo>
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
             </stereotypes>
         </tv>
         
