@@ -348,8 +348,9 @@
                 <xsl:variable name="tv-name" select="name"/>
                 <xsl:variable name="tv-id" select="@id"/>
                 <xsl:variable name="tv-is-derivable" select="derive = 'yes'"/>
-               
-                <xsl:variable name="minmax" select="tokenize(stereotypes/stereo[. = $stereotype][1]/@minmax,'\.\.')"/>
+                <xsl:variable name="selected-stereotype" select="stereotypes/stereo[. = $stereotype]"/>
+             
+                <xsl:variable name="minmax" select="tokenize($selected-stereotype[1]/@minmax,'\.\.')"/>
                 <xsl:variable name="min" select="xs:integer(($minmax[1],'1')[1])"/>
                 <xsl:variable name="max" select="xs:integer(for $m in ($minmax[2],'1')[1] return if ($m = '*') then '1000' else $m)"/>
           
@@ -370,15 +371,15 @@
                
                 <!-- TODO see github#26 this may be removed when schema added --> 
                 <xsl:if test="empty($tv-name)">
-                    <xsl:sequence select="imf:msg($this,'FATAL','Tagged value without name for stereotype [1]',(imf:string-group($stereotype)))"/>
+                    <xsl:sequence select="imf:msg($this,'FATAL','Tagged value without name for stereotype [1]',(imf:string-group($selected-stereotype)))"/>
                 </xsl:if>
                 
                 <xsl:sequence select="imf:report-warning($this, 
                     $min eq 1 and empty($applicable-values),
-                    'Tagged value [1] not specified but required for [2]',($tv-name,imf:string-group($stereotype)))"/>
+                    'Tagged value [1] not specified but required for [2]',($tv-name,imf:string-group($selected-stereotype)))"/>
                 <xsl:sequence select="imf:report-warning($this, 
                     count($applicable-values) gt $max,
-                    'Tagged value [1] specified too many times for [2]',($tv-name,imf:string-group($stereotype)))"/>
+                    'Tagged value [1] specified too many times for [2]',($tv-name,imf:string-group($selected-stereotype)))"/>
             </xsl:for-each>
         </xsl:if> 
     </xsl:function>
