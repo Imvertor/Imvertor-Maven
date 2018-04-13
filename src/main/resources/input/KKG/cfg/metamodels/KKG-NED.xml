@@ -6,8 +6,8 @@
     
     <name>KKG ISO</name>
     
-    <desc lang="en">Metamodel voor KKG ISO uitwisselingsmodellen</desc>
-    <desc lang="nl">Metamodel for KKG ISO exchange models</desc>
+    <desc lang="en">Metamodel voor KKG uitwisselingsmodellen</desc>
+    <desc lang="nl">Metamodel for KKG exchange models</desc>
     
     <!-- 
         this metamodel is subject to standard Grouping conventions 
@@ -16,14 +16,14 @@
    
     <profiles>
         <profile lang="nl">
-            <id>KKGISONL</id>
+            <id>KKGNEDNL</id>
             <release>0.9</release>
-            <desc>KKG-ISO Grouping (NL)</desc> 
+            <desc>KKG-NED Grouping (NL)</desc> 
         </profile>
         <profile lang="en">
-            <id>KKGISOEN</id>
+            <id>KKGNEDEN</id>
             <release>0.9</release>
-            <desc>KKG-ISO Grouping (EN)</desc>
+            <desc>KKG-NED Grouping (EN)</desc>
         </profile>
     </profiles>
     
@@ -48,22 +48,13 @@
     
     <stereotypes xml:id="stereotypes">
 
-        <stereo id="stereotype-name-relation-role">
-            <name lang="nl">Relatierol</name>
-            <name lang="en">AssociationRole</name>
-            <construct>associationend</construct>
+        <stereo id="stereotype-name-relatiesoort">
+            <name lang="nl">Relatiesoort</name>
+            <name lang="en">AssociationType</name>
+            <desc lang="en">The type to which an associtation may belong.</desc>
+            <desc lang="nl">De soort waartoe een relatie kan behoren.</desc>
+            <construct>association</construct>
         </stereo>
       
-        <stereo id="stereotype-name-codelist">
-            <name lang="nl">Codelijst</name>
-        </stereo>
-
-        <stereo id="stereotype-name-union">
-            <name lang="nl">Keuze</name>
-        </stereo>
-        <stereo id="stereotype-name-union-element">
-            <name lang="nl">Keuze element</name>
-        </stereo>
-        
     </stereotypes>
 </metamodel>

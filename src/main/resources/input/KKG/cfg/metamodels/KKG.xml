@@ -5,8 +5,8 @@
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
     <name>KKG</name>
-    <desc lang="en">Metamodel for KKG models</desc>
-    <desc lang="nl">Metamodel voor KKG modellen</desc>
+    <desc lang="en">Metamodel for common constructs in MIM models</desc>
+    <desc lang="nl">Metamodel voor gemeenschappelijkheden in MIM modellen</desc>
     
     <!-- 
         this metamodel is subject to standard Grouping conventions 
@@ -50,6 +50,10 @@
         </tv>
     </naming>
     
+    <features>
+        <feature name="role-based"><!-- specify in concrete metamodel: true|false --></feature>
+    </features>
+    
     <stereotypes xml:id="stereotypes">
 
         <!-- 
@@ -89,13 +93,7 @@
             <desc lang="nl">De soort waartoe een attribuut kan behoren.</desc>
             <construct>attribute</construct>
         </stereo>
-        <stereo id="stereotype-name-relatiesoort">
-            <name lang="nl">Relatiesoort</name>
-            <name lang="en">AssociationType</name>
-            <desc lang="en">The type to which an associtation may belong.</desc>
-            <desc lang="nl">De soort waartoe een relatie kan behoren.</desc>
-            <construct>association</construct>
-        </stereo>
+      
         <stereo id="stereotype-name-externekoppeling">
             <name lang="nl">Externe koppeling</name>
             <name lang="en">ExternalLink</name>
@@ -235,7 +233,27 @@
             <construct>datatype</construct>
             <construct>enumeration</construct>
         </stereo>
-  
+
+        <stereo id="stereotype-name-enumeration">
+            <name lang="nl">Enumeratie</name>
+            <name lang="en">Enumeration</name>
+            <desc lang="en">
+                A list of the possible domain values ​​or constants of a attribute type that is unchangeable.</desc>
+            <desc lang="nl">
+                Een lijst met een opsomming van de mogelijke domeinwaarden oftewel constanten van een 
+                attribuutsoort die onveranderlijk is.
+            </desc>
+            <construct>datatype</construct>
+            <construct>enumeration</construct>
+        </stereo>
+        <stereo id="stereotype-name-enum">
+            <name lang="nl">Enumeratiewaarde</name>
+            <name lang="en">Enum</name>
+            <desc lang="en">TODO</desc>
+            <desc lang="nl">Één element in een enumeratie.</desc>
+            <construct>attribute</construct>
+        </stereo>
+        
         <stereo id="stereotype-name-system-reference-package">
             <name lang="nl">System-reference-package</name>
             <name lang="en">System-reference-package</name>
@@ -265,14 +283,13 @@
             </desc>
             <construct>class</construct>
         </stereo>
-        <!--
+    
         <stereo id="stereotype-name-codelist">
             <name lang="nl">Codelist</name>
             <name lang="en">Codelist</name> 
             <construct>class</construct>
             <construct>datatype</construct>
         </stereo>
-        -->
         
         <stereo id="stereotype-name-composite-id">
             <name lang="en">Isid</name>
@@ -281,13 +298,7 @@
             <desc lang="nl">Aanduiding dat een relatiesoort onderdeel uitmaakt van de unieke aanduiding van een object.</desc>
             <construct>association</construct>
         </stereo>
-        
-        <stereo id="stereotype-name-relation-role">
-            <name lang="nl">Relatierol</name>
-            <name lang="en">AssociationRole</name>
-            <construct>associationend</construct>
-        </stereo>
-    
+       
         <!-- generic -->
       
         <stereo id="stereotype-name-generalization">

@@ -835,6 +835,7 @@
         <xsl:variable name="superclasses" select="imf:get-superclasses($class)"/>
         <xsl:variable name="package" select="$class/.."/>
         <xsl:variable name="is-collection" select="$class/imvert:stereotype/@id = ('stereotype-name-collection')"/>
+        <xsl:variable name="is-featurecollection" select="$class/imvert:stereotype/@id = ('stereotype-name-featurecollection')"/>
         <xsl:variable name="is-process" select="$class/imvert:stereotype/@id = ('stereotype-name-process')"/>
         <xsl:variable name="association-class-id" select="imvert:association-class/imvert:type-id"/>
         <xsl:variable name="property-names" select="$class/(imvert:atributes | imvert:associations)/*/imvert:name"/>
@@ -844,6 +845,7 @@
         <xsl:variable name="is-combined-identification" select="imf:get-tagged-value($this,'##CFG-TV=GECOMBINEERDEIDENTIFICATIE')"/>
         <xsl:variable name="target-navigable" select="imvert:target/imvert:navigable"/>
         <xsl:variable name="defining-class-is-group" select="$defining-class/imvert:stereotype/@id = ('stereotype-name-composite')"/>
+        <xsl:variable name="meta-is-role-based" select="imf:boolean($configuration-metamodel-file//features/feature[@name='role-based'])"/>
         
         <!--validation-->
         
@@ -877,15 +879,26 @@
             $superclasses/*/imvert:association/imvert:name=$name, 
             'Association already defined on supertype')"/>
         
-        <!-- IM-133 -->
-        <xsl:sequence select="imf:report-error(., 
+        <xsl:variable name="must-test-on-assoc" select="
             not($is-collection) 
+            and not($is-featurecollection) 
             and $class/imvert:stereotype/@id = ('stereotype-name-objecttype') 
             and $defining-class/imvert:stereotype/@id = ('stereotype-name-objecttype')
             and not(imvert:stereotype/@id = ('stereotype-name-externekoppeling'))
-            and empty(imvert:association-class) 
+            and empty(imvert:association-class)"/>
+            
+        <!-- IM-133 -->
+        <xsl:sequence select="imf:report-error(., 
+            $must-test-on-assoc
+            and not($meta-is-role-based)
             and not(imvert:stereotype/@id = ('stereotype-name-relatiesoort')), 
             'Association to [1] must be stereotyped as [2]',(imf:get-config-stereotypes('stereotype-name-objecttype'),imf:get-config-stereotypes('stereotype-name-relatiesoort')))"/>
+     
+        <xsl:sequence select="imf:report-error(., 
+            $must-test-on-assoc  
+            and $meta-is-role-based
+            and not(imvert:target/imvert:stereotype/@id = ('stereotype-name-relation-role')), 
+            'Association role of [1] must be stereotyped as [2]',(imf:get-config-stereotypes('stereotype-name-objecttype'),imf:get-config-stereotypes('stereotype-name-relation-role')))"/>
         
         <xsl:sequence select="imf:report-error(., 
             $defining-class/imvert:stereotype/@id = ('stereotype-name-composite') and (number(imvert:max-occurs-source) ne 1), 

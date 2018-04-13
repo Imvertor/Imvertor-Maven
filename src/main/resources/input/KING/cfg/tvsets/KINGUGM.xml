@@ -176,6 +176,8 @@
         </tv>
         
         <tv id="CFG-TV-DESCRIPTION">
+            <name lang="nl">Toelichting</name>
+            <name lang="en">Description</name>
             <derive>yes</derive>
             <stereotypes>
                 <stereo>stereotype-name-objecttype</stereo>

@@ -274,6 +274,8 @@
         </tv>
     
         <tv id="CFG-TV-DESCRIPTION">
+            <name lang="nl">Omschrijving</name>
+            <name lang="en">Description</name>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-project-package</stereo>
                 <stereo minmax="0..1">stereotype-name-base-package</stereo>
@@ -286,6 +288,8 @@
         </tv>  
 
         <tv id="CFG-TV-NAME">
+            <name lang="nl">Naam</name>
+            <name lang="en">Name</name>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-project-package</stereo>
                 <stereo minmax="0..1">stereotype-name-base-package</stereo>
@@ -298,6 +302,8 @@
         </tv>  
         
         <tv id="CFG-TV-DEFINITION" origin="system">
+            <name lang="nl">Definitie</name>
+            <name lang="en">Definition</name>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-project-package</stereo>
                 <stereo minmax="0..1">stereotype-name-base-package</stereo>

@@ -241,6 +241,12 @@
                     </xsl:for-each-group>
                 </naming>
                 
+                <features>
+                    <xsl:for-each-group select="$metamodel//features/feature" group-by="@name">
+                        <xsl:apply-templates select="(current-group())[last()]" mode="#current"/>
+                    </xsl:for-each-group>
+                </features>
+                
                 <stereotypes>
                     <xsl:for-each-group select="$metamodel//stereotypes/stereo" group-by="@id">
                         <stereo id="{current-grouping-key()}">
@@ -291,8 +297,9 @@
                             <xsl:apply-templates select="($tv-group/@rules)[last()]" mode="#current"/>
                             <xsl:apply-templates select="($tv-group/@cross-meta)[last()]" mode="#current"/>
                             
-                            <!-- hier: de laatste naam binnen dezelfde taal? we moeten af van synoniemen. -->
-                            <xsl:apply-templates select="imf:distinct($tv-group/name)" mode="#current"/>
+                            <!-- hier: de laatste naam binnen dezelfde taal -->
+                            <!--<xsl:apply-templates select="imf:distinct($tv-group/name)" mode="#current"/>-->
+                            <xsl:apply-templates select="($tv-group/name)[last()]" mode="#current"/>
                             
                             <xsl:apply-templates select="($tv-group/desc[@lang=($language,'#all')])[last()]" mode="#current"/>
                             <xsl:apply-templates select="($tv-group/derive)[last()]" mode="#current"/>

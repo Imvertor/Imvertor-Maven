@@ -367,13 +367,18 @@
                 </xsl:variable>
                 
                 <!--<xsl:message select="concat(imf:get-display-name($this),',',$tv-name,':', $min,'|',$max,'|',$tv-is-derivable, '|', string-join($applicable-values,';'))"/>-->
+               
+                <!-- TODO see github#26 this may be removed when schema added --> 
+                <xsl:if test="empty($tv-name)">
+                    <xsl:sequence select="imf:msg($this,'FATAL','Tagged value without name for stereotype [1]',(imf:string-group($stereotype)))"/>
+                </xsl:if>
                 
                 <xsl:sequence select="imf:report-warning($this, 
                     $min eq 1 and empty($applicable-values),
-                    'Tagged value [1] not specified but required for [2]',($tv-name,$stereotype))"/>
+                    'Tagged value [1] not specified but required for [2]',($tv-name,imf:string-group($stereotype)))"/>
                 <xsl:sequence select="imf:report-warning($this, 
                     count($applicable-values) gt $max,
-                    'Tagged value [1] specified too many times for [2]',($tv-name,$stereotype))"/>
+                    'Tagged value [1] specified too many times for [2]',($tv-name,imf:string-group($stereotype)))"/>
             </xsl:for-each>
         </xsl:if> 
     </xsl:function>

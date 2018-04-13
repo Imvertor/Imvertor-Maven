@@ -23,6 +23,7 @@
         <!-- this is the cross-meta specification for SIM tagged values used in UGM systems -->
         
         <tv id="CFG-TV-SOURCE" cross-meta="SIM">
+            <name lang="nl">Herkomst</name>
             <derive>yes</derive>
             <stereotypes>
                 <stereo>stereotype-name-objecttype</stereo>
@@ -33,6 +34,8 @@
            Definition
         -->
         <tv id="CFG-TV-DEFINITION" cross-meta="SIM">
+            <name lang="nl">Definitie</name>
+            <name lang="en">Definition</name>
             <derive>yes</derive>
             <stereotypes>
                 <stereo>stereotype-name-objecttype</stereo>

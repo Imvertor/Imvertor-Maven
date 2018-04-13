@@ -23,6 +23,10 @@
 
     <desc lang="en">Metamodel for Dutch Best Practices based registrations</desc>
     
+    <features>
+        <feature name="role-based">false</feature>
+    </features>
+    
     <stereotypes xml:id="stereotypes">
 
         <!-- 
