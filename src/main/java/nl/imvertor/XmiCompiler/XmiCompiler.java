@@ -36,6 +36,7 @@ import nl.imvertor.common.exceptions.EnvironmentException;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.EapFile;
+import nl.imvertor.common.file.OutputFolder;
 import nl.imvertor.common.file.XmiFile;
 import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.file.XslFile;
@@ -131,6 +132,9 @@ public class XmiCompiler extends Step {
 					String projectname = configurator.getXParm("cli/owner") + ": " + configurator.getXParm("cli/project");
 					String modelname = (configurator.isTrue("cli", "sys_supportsexternal",true)) ? null : configurator.getXParm("cli/application");
 					
+					// clean the XMI folder here
+					(new OutputFolder(configurator.getXParm("system/work-xmi-folder-path",true))).clear(false);
+					
 					// Export images here. The type of image is set to PNG. The images are stored in /XMI folder under /Images.
 					if (configurator.isTrue(configurator.getXParm("cli/createimagemap"))) 
 						((EapFile) passedFile).setExportDiagrams(EapFile.EXPORT_IMAGE_TYPE_PNG);
@@ -189,7 +193,7 @@ public class XmiCompiler extends Step {
 			if (succeeds) {
 				// first copy this source file to xmi folder when requested; this does not include the images!
 				if (configurator.isTrue("cli","copyxmi",false)) {
-					File targetFile = new File(configurator.getXParm("system/work-xmi-folder-path"),"model.xmi");
+					File targetFile = new File(configurator.getXParm("system/work-xmi-s-folder-path"),"model.xmi");
 					activeFile.copyFile(targetFile);
 				}
 				

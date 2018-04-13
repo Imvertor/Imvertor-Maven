@@ -389,7 +389,7 @@ public class Configurator {
 		setXParm(workConfiguration,"system/work-shacl-folder-path",   wf + s + "app" + s + "shacl", true);
 		setXParm(workConfiguration,"system/work-cat-folder-path",     wf + s + "app" + s + "cat", true);
 		setXParm(workConfiguration,"system/work-yaml-folder-path",    wf + s + "app" + s + "yaml", true);
-		setXParm(workConfiguration,"system/work-xmi-folder-path",     wf + s + "app" + s + "xmi", true);
+		setXParm(workConfiguration,"system/work-xmi-s-folder-path",   wf + s + "app" + s + "xmi", true);
 					
 		setXParm(workConfiguration,"system/work-rep-folder-path",     wf + s + "rep", true);
 		setXParm(workConfiguration,"system/work-imvert-folder-path",  wf + s + "imvert", true);
@@ -397,8 +397,9 @@ public class Configurator {
 		setXParm(workConfiguration,"system/work-profile-folder-path", wf + s + "profile", true);
 		setXParm(workConfiguration,"system/work-debug-folder-path",   wf + s + "debug", true);
 		setXParm(workConfiguration,"system/work-log-folder-path",     wf + s + "log", true);
-		
-		// clear the workfolder
+		setXParm(workConfiguration,"system/work-xmi-folder-path",     wf + s + "xmi", true);
+			
+		// clear the workfolder, but not XMI folder (faster development environment)
 		(new OutputFolder(getXParm(workConfiguration,"system/work-app-folder-path",true))).clear(false);
 		(new OutputFolder(getXParm(workConfiguration,"system/work-rep-folder-path",true))).clear(false);
 		(new OutputFolder(getXParm(workConfiguration,"system/work-imvert-folder-path",true))).clear(false);
@@ -406,7 +407,6 @@ public class Configurator {
 		(new OutputFolder(getXParm(workConfiguration,"system/work-profile-folder-path",true))).clear(false);
 		(new OutputFolder(getXParm(workConfiguration,"system/work-debug-folder-path",true))).clear(false);
 		(new OutputFolder(getXParm(workConfiguration,"system/work-log-folder-path",true))).clear(false);
-		(new OutputFolder(getXParm(workConfiguration,"system/work-xmi-folder-path",true))).clear(false);
 				
 		setXParm(workConfiguration,"system/managedoutputfolder", outputFolder.getCanonicalPath(), true);
 		setXParm(workConfiguration,"system/managedinstallfolder", baseFolder.getCanonicalPath(), true);
