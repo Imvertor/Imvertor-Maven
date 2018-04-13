@@ -129,8 +129,11 @@
                         </xsl:choose>
                         <namespace prefix="xlink" uri="http://www.w3.org/1999/xlink"/> 
                     </xsl:when>
-                    <xsl:when test="count(distinct-values($schema-def/imvert:namespace)) ne 1">
-                        <xsl:sequence select="imf:msg('ERROR', 'The qualifier [1] is not associated with a single namespace: [2]',($prefix,imf:string-group(distinct-values($schema-def/imvert:namespace))))"/>
+                    <xsl:when test="count(distinct-values($schema-def/imvert:namespace)) eq 0">
+                        <xsl:sequence select="imf:msg('ERROR', 'The qualifier [1] is not associated with a namespace',($prefix))"/>
+                    </xsl:when>
+                    <xsl:when test="count(distinct-values($schema-def/imvert:namespace)) gt 1">
+                        <xsl:sequence select="imf:msg('ERROR', 'The qualifier [1] is associated with multiple namespaces: [2]',($prefix,imf:string-group(distinct-values($schema-def/imvert:namespace))))"/>
                     </xsl:when>
                     <xsl:when test="exists($schema-subpath)">
                         <!-- schema found. This is a generated schema. -->

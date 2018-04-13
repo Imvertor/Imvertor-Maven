@@ -32,6 +32,7 @@
     version="2.0">
     
     <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="../common/Imvert-common-validation.xsl"/>
     
     <!-- 
         This stylesheet pre-processes the UML in accordance with 10-129r1_Geography_Markup_Language_GML_Version_3.3.pdf 
@@ -120,6 +121,62 @@
         
     </xsl:template>
     
+    <!-- Jira http://ota-portal.so.kadaster.nl/jira/browse/IM-556 -->
+    
+    <xsl:template match="imvert:package[imvert:stereotype/@id = 'stereotype-name-domain-package']">
+        <xsl:variable name="tv-featurecollection" select="imf:get-tagged-value(.,'##CFG-TV-FEATURECOLLECTION')"/>
+        <xsl:variable name="el-featurecollection" select="imf:class[imvert:stereotype/@id = 'stereotype-name-featurecollection']"/>
+        
+        <xsl:choose>
+            <xsl:when test="exists($tv-featurecollection) and exists($el-featurecollection)">
+                <xsl:sequence select="imf:report-error(.,true(),'Feature collections should have a [1] tagged value or a [2] class, but not both',
+                    (imf:get-config-name-by-id('CFG-TV-FEATURECOLLECTION'),imf:get-config-name-by-id('stereotype-name-featurecollection')))"/>
+            </xsl:when>
+            <xsl:when test="exists($tv-featurecollection)">
+                <!-- transform to method B -->
+                <xsl:copy>
+                    <xsl:apply-templates select="*"/>
+                    <imvert:class display-name="STUB"
+                        formal-name="STUB">
+                        <imvert:name original="{$tv-featurecollection}"><xsl:value-of select="$tv-featurecollection"/></imvert:name>
+                        <imvert:id>FC_<xsl:value-of select="generate-id(.)"/></imvert:id>
+                        <imvert:designation>class</imvert:designation>
+                        <imvert:stereotype id="stereotype-name-featurecollection">OBJECTVERZAMELING</imvert:stereotype>
+                        <imvert:associations>
+                            <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = 'stereotype-name-objecttype']" mode="featuremember"/>
+                        </imvert:associations>
+                    </imvert:class>
+                </xsl:copy>
+            </xsl:when>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template match="imvert:class" mode="featuremember">
+        <imvert:association display-name="STUB.featureMember (assoc)"
+            formal-name="STUB"
+            type-display-name="{imf:get-display-name(.)}"
+            type-formal-name="STUB">
+            <imvert:name original="featureMember">featureMember</imvert:name>
+            <imvert:id>FM_<xsl:value-of select="generate-id(.)"/></imvert:id>
+            <imvert:type-name original="{imvert:name/@original}"><xsl:value-of select="imvert:name"/></imvert:type-name>
+            <imvert:type-id><xsl:value-of select="imvert:id"/>></imvert:type-id>
+            <imvert:type-package><xsl:value-of select="../imvert:name"/></imvert:type-package>
+            <imvert:min-occurs>0</imvert:min-occurs>
+            <imvert:max-occurs>unbounded</imvert:max-occurs>
+            <imvert:min-occurs-source>1</imvert:min-occurs-source>
+            <imvert:max-occurs-source>1</imvert:max-occurs-source>
+            <imvert:position original="200">200</imvert:position>
+            <imvert:source>
+                <imvert:navigable>false</imvert:navigable>
+            </imvert:source>
+            <imvert:target>
+                <imvert:stereotype id="stereotype-name-relation-role"><xsl:value-of select="imf:get-config-name-by-id('stereotype-name-relation-role')"/></imvert:stereotype>
+                <imvert:role original="featureMember">featureMember</imvert:role>
+                <imvert:navigable>true</imvert:navigable>
+            </imvert:target>
+        </imvert:association>
+        
+    </xsl:template>
     <!-- =========== common ================== -->
     
     <xsl:template match="node()|@*" mode="#all">

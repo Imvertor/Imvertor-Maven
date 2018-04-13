@@ -38,6 +38,7 @@
     -->
 
     <xsl:import href="../common/Imvert-common.xsl"/>
+    <xsl:import href="../common/Imvert-common-validation.xsl"/>
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
     <xsl:import href="../common/Imvert-common-doc.xsl"/>
     
@@ -244,9 +245,16 @@
         
         <xsl:variable name="package-name" select="parent::imvert:package/imvert:name"/>
         <xsl:variable name="type-name" select="imvert:name"/>
+        <xsl:variable name="targets" select="imvert:associations/imvert:association/imvert:target"/>
+        
+        <!-- validate: check if the target roles are all called "featureMember"; this is an UML requirement -->
+        
+        <xsl:sequence select="imf:report-error(.,
+            ($targets/imvert:role != 'featureMember'),
+            'Any [1] association to a feature member must be named [2]',(imf:get-config-name-by-id('stereotype-name-featurecollection'),'featureMember'))"/>
         
         <xs:element name="{$type-name}" 
-            type="{imf:get-type($type-name,$package-name)}" 
+            type="{imf:get-type($type-name,$package-name)}Type" 
             substitutionGroup="gml:AbstractGML"/>
         <xs:complexType name="{$type-name}Type">
             <xs:complexContent>

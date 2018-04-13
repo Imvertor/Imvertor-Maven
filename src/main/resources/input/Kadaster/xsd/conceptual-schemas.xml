@@ -124,7 +124,7 @@
                 <release>20070906</release>
             </releases>
 
-            <!-- introducea construct to reference as a sentinel when creating GML schema's without any GML construct references -->
+            <!-- introduce a construct to reference as a sentinel when creating GML schema's without any GML construct references -->
             <construct>
                 <name>GM_SENTINEL</name>
                 <sentinel>true</sentinel>
