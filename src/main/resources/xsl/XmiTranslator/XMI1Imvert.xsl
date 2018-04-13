@@ -315,11 +315,9 @@
                     <xsl:sequence select="imf:fetch-additional-tagged-values($content/UML:Model)"/>
                 </xsl:if>
             </xsl:variable>
-            <xsl:if test="exists($seq)">
-                <imvert:tagged-values>
-                    <xsl:sequence select="$seq/*"/>
-                </imvert:tagged-values>           
-            </xsl:if>
+            <imvert:tagged-values>
+                <xsl:sequence select="$seq/*"/>
+            </imvert:tagged-values>           
             
             <!-- get package wide constraints -->
             <xsl:sequence select="imf:get-constraint-info(.)"/>
@@ -893,7 +891,7 @@
             <xsl:sequence select="imf:create-output-element('imvert:navigable',if ($source-parse[@name='Navigable'] = 'Navigable') then 'true' else 'false')"/>
             <xsl:sequence select="imf:create-output-element('imvert:alias',normalize-space($source-parse[@name='alias']))"/>
             <xsl:sequence select="imf:create-output-element('imvert:documentation',imf:get-documentation-info($source,'description'),(),false(),false())"/>
-            <xsl:sequence select="imf:create-output-element('imvert:tagged-values',imf:fetch-additional-tagged-values($source)/*,(),false(),false())"/>
+            <xsl:sequence select="imf:fetch-additional-tagged-values($source)"/>
         </imvert:source>
         
         <imvert:target>
@@ -902,7 +900,7 @@
             <xsl:sequence select="imf:create-output-element('imvert:navigable',if ($target-parse[@name='Navigable'] = 'Navigable') then 'true' else 'false')"/>
             <xsl:sequence select="imf:create-output-element('imvert:alias',normalize-space($target-parse[@name='alias']))"/>
             <xsl:sequence select="imf:create-output-element('imvert:documentation',imf:get-documentation-info($target,'description'),(),false(),false())"/>
-            <xsl:sequence select="imf:create-output-element('imvert:tagged-values',imf:fetch-additional-tagged-values($target)/*,(),false(),false())"/>
+            <xsl:sequence select="imf:fetch-additional-tagged-values($target)"/>
         </imvert:target>
                
     </xsl:function>
@@ -1702,8 +1700,10 @@
                 </xsl:if>
             </xsl:for-each>
         </xsl:variable>
-        <xsl:sequence select="imf:create-output-element('imvert:tagged-values',$seq,(),false())"/>
-
+        <imvert:tagged-values>
+            <xsl:sequence select="$seq"/>
+        </imvert:tagged-values>
+    
     </xsl:function>
     
     <xsl:function name="imf:get-tagged-values-quick" as="element(UML:TaggedValue)*">
