@@ -560,12 +560,10 @@ public class AnyFile extends File  {
 	public static Charset getCharsetForEncoding(String encoding) throws Exception {
 		if (encoding == null)
 			return StandardCharsets.UTF_8;
-		else if (encoding.equals("UTF-8"))
-			return StandardCharsets.UTF_8;
 		else if (encoding.equals("WINDOWS-1252"))
-			 return StandardCharsets.ISO_8859_1;
+			return StandardCharsets.ISO_8859_1;
 		else 
-			throw new Exception("Unsupported encoding: " + encoding);
+			return StandardCharsets.UTF_8;
 	}
 	
 	private static String match(String s, String regex) {
