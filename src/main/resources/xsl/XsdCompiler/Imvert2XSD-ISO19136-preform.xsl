@@ -148,6 +148,9 @@
                     </imvert:class>
                 </xsl:copy>
             </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
     
