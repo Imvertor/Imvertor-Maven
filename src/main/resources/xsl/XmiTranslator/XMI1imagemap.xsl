@@ -84,6 +84,10 @@
         </imvert-imap:diagram>
     </xsl:template>
     
+    <xsl:template match="UML:Diagram[not(@diagramType = 'ClassDiagram')]">
+        <!-- skip other types of diagrams -->
+    </xsl:template>
+    
     <!-- example:
         <UML:DiagramElement 
             geometry="Left=164;Top=781;Right=279;Bottom=836;imgL=149;imgT=796;imgR=264;imgB=851;" 
