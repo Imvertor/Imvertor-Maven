@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<image-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <name>BRO</name>
+    
+    <desc>BRO specific requirements on image/diagram processing.</desc>
+    
+    <!--
+        Determine the type by suffix, i.e. the diagram name after "-" as in "Objecttypen  – overzicht" 
+    -->
+    <diagram-type-strategy>suffix</diagram-type-strategy>
+   
+    <!-- 
+        a rule that specifies what to do when a diagram is found that is marked as "overview" 
+    -->
+    <diagram-rule id="CFG-DIAGRAM-OVERVIEW">
+        <name lang="nl">overzicht</name>
+        <name lang="en">overview</name>
+        <render-as>OVERVIEW</render-as>
+    </diagram-rule>
+    
+    <diagram-rule id="CFG-DIAGRAM-DETAIL">
+        <name lang="nl">detail</name>
+        <name lang="en">detail</name>
+        <render-as>DETAIL</render-as>
+    </diagram-rule>
+    
+    <!-- untyped diagrams -->
+    <diagram-rule id="CFG-DIAGRAM-NONE">
+        <name lang="nl">#none</name>
+        <name lang="en">#none</name>
+        <render-as><!-- do not render --></render-as>
+    </diagram-rule>
+    
+</image-rules>
