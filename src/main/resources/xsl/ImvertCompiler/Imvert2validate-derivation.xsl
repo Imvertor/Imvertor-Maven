@@ -343,12 +343,12 @@
     <xsl:function name="imf:check-tagged-value-occurs" as="element()*">
         <xsl:param name="this" as="element()"/> <!-- any element that may have tagged values-->
         <xsl:if test="$validate-tv-missing">
-            <xsl:variable name="stereotype" select="$this/imvert:stereotype"/>
-            <xsl:for-each select="$config-tagged-values[stereotypes/stereo = $stereotype]"> <!-- i.e. <tv> elements -->
+            <xsl:variable name="stereotype-id" select="$this/imvert:stereotype/@id"/>
+            <xsl:for-each select="$config-tagged-values[stereotypes/stereo/@id = $stereotype-id]"> <!-- i.e. <tv> elements -->
                 <xsl:variable name="tv-name" select="name"/>
                 <xsl:variable name="tv-id" select="@id"/>
                 <xsl:variable name="tv-is-derivable" select="derive = 'yes'"/>
-                <xsl:variable name="selected-stereotype" select="stereotypes/stereo[. = $stereotype]"/>
+                <xsl:variable name="selected-stereotype" select="stereotypes/stereo[@id = $stereotype-id]"/>
              
                 <xsl:variable name="minmax" select="tokenize($selected-stereotype[1]/@minmax,'\.\.')"/>
                 <xsl:variable name="min" select="xs:integer(($minmax[1],'1')[1])"/>

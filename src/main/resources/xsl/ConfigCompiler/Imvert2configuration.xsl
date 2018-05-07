@@ -149,6 +149,7 @@
                     <!-- note that several names may be assigned to the same stereotype ID. assume the last. -->
                     <xsl:variable name="applicable-name" select="($stereo-def/name)[last()]"/>
                     <xsl:copy-of select="$applicable-name/@original"/>
+                    <xsl:attribute name="id" select="$name-element"/>
                     <xsl:value-of select="$applicable-name"/>
                 </xsl:element>
             </xsl:when>
