@@ -361,6 +361,7 @@
             <xsl:apply-templates select="imvert:association[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]" mode="#current"/>
         </xsl:variable>
         <xsl:variable name="r2" as="element()*">
+            <xsl:apply-templates select="../imvert:supertype" mode="#current"/>
             <xsl:apply-templates select="imvert:association[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]/imvert:target" mode="#current"/>
         </xsl:variable>
         <xsl:if test="exists(($r1,$r2))">
