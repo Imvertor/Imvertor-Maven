@@ -484,7 +484,7 @@
         <!-- additional release checks -->
         <xsl:sequence select="imf:report-error(., 
             imvert:ref-release and not(matches(imvert:ref-release,$release-pattern)), 
-            'Reference release must take the form YYYMMDD')"/>
+            'Reference release must take the form YYYYMMDD')"/>
         <xsl:sequence select="imf:report-error(., 
             imvert:base and (imvert:release lt imvert:base/imvert:release),
             'Client release date is before supplier release date.')"/>
