@@ -158,7 +158,7 @@
         <m ns="" old="{.}" new="{.}"/> <!-- no change needed; automatic import will reset all GUIDs -->
     </xsl:template>
     
-    <xsl:template match="@*" mode="#all">
+    <xsl:template match="@*" mode="model-package domain-package">
         <xsl:variable name="attname" select="local-name(.)"/>
         <xsl:variable name="attval" select="."/>
         <xsl:variable name="mappedval" select="$idmap[@old=$attval]/@new"/>
@@ -176,7 +176,7 @@
         </xsl:choose>
     </xsl:template>
  
-    <xsl:template match="node()" mode="#all">
+    <xsl:template match="node()" mode="model-package domain-package">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*" mode="#current"/>
         </xsl:copy>
