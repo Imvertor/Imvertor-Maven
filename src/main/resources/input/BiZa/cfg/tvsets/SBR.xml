@@ -123,8 +123,8 @@
         <!-- system defined tagged values -->
         
         <tv norm="space" id="CFG-TV-NAME">
-            <name lang="nl">Naam</name>
-            <name lang="en">Name</name>
+            <name lang="nl">Alternatieve naam</name>
+            <name lang="en">Alternative name</name>
             <desc lang="nl">De naam in natuurlijke of formele taal; afhankelijk van gekozen aanpak. Een alternatieve naam.</desc>
             <desc lang="en">The name in natural or formal language; depends on the chosen approach. An alternative name.</desc>
             <derive>yes</derive>
