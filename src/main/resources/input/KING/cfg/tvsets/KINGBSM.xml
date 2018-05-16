@@ -124,6 +124,18 @@
                 <value>Fo02</value>
                 <!--  een foutbericht als functionele synchrone respons -->
                 <value>Fo03</value>
+                <!--  een json+hal response op een GET bericht voor een collection met pagination, met expand. -->
+                <value>Gc01</value>
+                <!--  een json+hal response op een GET bericht voor een collection zonder pagination, met expand. -->
+                <value>Gc02</value>
+                <!--  een json+hal response op een GET bericht voor een collection met pagination, zonder expand. -->
+                <value>Gc03</value>
+                <!--  een json+hal response op een GET bericht voor een collection zonder pagination, zonder expand. -->
+                <value>Gc04</value>
+                <!--  een json+hal response op een GET bericht voor een resource zonder pagination, met expand. -->
+                <value>Gr01</value>
+                <!--  een json+hal response op een GET bericht voor een resource zonder pagination, zonder expand. -->
+                <value>Gr02</value>
                 <!--  een foutbericht als technische synchrone respons op een asynchroon bericht -->
                 <value>La01</value>
                 <!--  een synchroon antwoordbericht met alleen actuele gegevens -->
