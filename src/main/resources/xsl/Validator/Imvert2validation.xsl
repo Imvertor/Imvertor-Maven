@@ -187,13 +187,9 @@
     <xsl:template match="imvert:package[imf:member-of(..,$application-package)]" priority="102">
         <!-- redmine #487837 Packages in <<application>> moeten bekend stereotype hebben -->
         <xsl:sequence select="imf:report-error(., 
-            empty(imvert:stereotype = imf:get-normalized-names(
-            ('imvert-stereotype-domain','imvert-stereotype-intern','imvert-stereotype-recyclebin'),'stereotype-name')), 
-            'Package with unexpected stereotype(s): [1]', imvert:stereotype/@original)"/>
-        <!-- en moeten een stereo hebben! -->
-        <xsl:sequence select="imf:report-error(., 
-            empty(imvert:stereotype), 
-            'Package within application model must be stereotyped')"/>        
+            not(imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-internal-package','stereotype-name-recyclebin','stereotype-name-group-package')), 
+            'Package with unexpected stereotype(s): [1]', imvert:stereotype)"/>
+      
         <xsl:next-match/>
     </xsl:template>
     
@@ -236,15 +232,17 @@
         <!--setup-->
         <xsl:variable name="this-package" select="."/>
         <xsl:variable name="root-release" select="imvert:release" as="xs:string?"/>
-        <xsl:variable name="subpackage-releases" select="imvert:package/imvert:release[not(.=('99999999','00000000'))]" as="xs:string*"/>
-        <xsl:variable name="collections" select="imvert:package/imvert:class[imvert:stereotype/@id = ('stereotype-name-collection')]"/>
+       
+        <xsl:variable name="domain-packages" select=".//imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package')]"/>
+        <xsl:variable name="subpackage-releases" select="$domain-packages/imvert:release[not(.=('99999999','00000000'))]" as="xs:string*"/>
+        <xsl:variable name="collections" select="$domain-packages/imvert:class[imvert:stereotype/@id = ('stereotype-name-collection')]"/>
         <!--validation-->
 
         <xsl:sequence select="imf:report-error(., 
             not(imf:test-file-name-convention($this-package/imvert:name)), 
             'Package name holds invalid characters')"/>
         <xsl:sequence select="imf:report-error(., 
-            not($document-packages/imvert:stereotype/@id = ('stereotype-name-domain-package')), 
+            empty($domain-packages), 
             'No domain subpackages found')"/>
         <xsl:sequence select="imf:report-error(., 
             not($root-release), 
@@ -368,7 +366,7 @@
         <!--setup-->
         <!--validation -->
         <xsl:sequence select="imf:report-warning(., 
-            normalize-space(imvert:stereotype), 
+            not(imvert:stereotype/@id = ('stereotype-name-group-package')), 
             'Package has stereotype(s) [1] but will be merged with domain package',(imvert:stereotype))"/>
         <!-- check as regular package -->
         <xsl:next-match/>

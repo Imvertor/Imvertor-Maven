@@ -137,6 +137,6 @@
     <!-- Return all packages that the element is part of, that are (within) a domain package -->
     <xsl:function name="imf:get-package-structure" as="element()*">
         <xsl:param name="this" as="element()"/>
-        <xsl:sequence select="$this/ancestor-or-self::imvert:package[ancestor-or-self::imvert:package/imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package')]"/>
+        <xsl:sequence select="$this/ancestor-or-self::imvert:package"/>
     </xsl:function>
 </xsl:stylesheet>

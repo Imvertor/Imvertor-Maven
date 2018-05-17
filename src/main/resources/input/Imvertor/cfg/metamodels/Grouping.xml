@@ -27,7 +27,7 @@
         <stereo id="stereotype-name-domain-package">
             <name lang="en">Domain</name>
             <name lang="nl">Domein</name>
-            <desc lang="nl">Een package waarvan de daarin opgenomen constructies ls één geheel worden beheerd, en waarvan dus een gezamenlijke versie wordt onderhouden</desc>
+            <desc lang="nl">Een package waarvan de daarin opgenomen constructies als één geheel worden beheerd, en waarvan dus een gezamenlijke versie wordt onderhouden</desc>
             <construct>package</construct>
         </stereo>
         
@@ -54,7 +54,8 @@
             <name lang="nl">Extern</name>
             <desc lang="nl">
                 Een groepering van constructies die een externe instantie beheert en beschikbaar stelt aan een informatiemodel 
-                Voorbeeld: het external package NEN3610 met datatype NEN3610ID. Het datatype van attribuutsoort Identificatie wegdeel in RSGB verwijst naar het datatype NEN3610ID zoals opgenomen in de external package.</desc>
+                Voorbeeld: het external package NEN3610 met datatype NEN3610ID. Het datatype van attribuutsoort Identificatie wegdeel in RSGB verwijst naar het 
+                datatype NEN3610ID zoals opgenomen in de external package.</desc>
             <construct>package</construct>
         </stereo>
         
@@ -65,10 +66,18 @@
             <construct>package</construct>
         </stereo>
         
-           <stereo id="stereotype-name-interface">
+        <stereo id="stereotype-name-group-package">
+            <name lang="en">Group</name>
+            <name lang="nl">Groep</name>
+            <desc lang="nl">Een package dat alléén bedoeld is om andere UML constructies (packagaes, klassen) te groeperen, en geen verdere rol speelt in de interpretatie van het model.
+            Binnen een model worden alle packages die geen stereotype hebben opgevat als een Groep package.</desc>
+            <construct>package</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-interface">
             <name lang="en">Interface</name>
             <name lang="nl">Interface</name>
-            <desc lang="nl">Een constructie in een external package, welke een compleet modelelement in dat externe package representeert.</desc>
+            <desc lang="nl">Een constructie in een gemeenschappelijk maar niet opgenomen model, welke een compleet modelelement in dat model representeert.</desc>
             <construct>class</construct>
             <construct>datatype</construct>
         </stereo>

@@ -49,6 +49,17 @@
         <xsl:sequence select="$step2"/>
     </xsl:template>
     
+    <!-- assign the <<group>> stereo to all subpacks without stereo -->
+    <xsl:template match="imvert:package[empty(imvert:stereotype)]">
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
+            <imvert:stereotype id="stereotype-name-group-package" origin="system">
+                <xsl:value-of select="imf:get-config-name-by-id('stereotype-name-group-package')"/>
+            </imvert:stereotype>
+            <xsl:apply-templates/>
+        </xsl:copy>
+    </xsl:template>
+    
     <!-- generate the correct name here -->
     <xsl:template match="imvert:found-name">
         <xsl:variable name="type" select="
