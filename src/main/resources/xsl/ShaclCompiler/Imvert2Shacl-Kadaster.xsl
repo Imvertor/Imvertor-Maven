@@ -169,7 +169,7 @@
 
             </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="imf:msg(.,'ERROR','Unable to determine the rdfs:type',())"/>
+                <xsl:sequence select="imf:msg(.,'ERROR','Unable to determine the rdfs:type, stereotype is: [1]',(imf:string-group(imvert:stereotype)))"/>
             </xsl:otherwise>
         </xsl:choose>
         
