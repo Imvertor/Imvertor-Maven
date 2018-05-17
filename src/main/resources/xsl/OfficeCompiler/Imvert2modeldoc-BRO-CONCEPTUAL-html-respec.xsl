@@ -140,6 +140,12 @@
                 </xsl:element>
                 <xsl:apply-templates mode="detail"/>
             </xsl:when>
+            <xsl:when test="@type = 'SHORT-TYPERELATIONS'">
+                <xsl:element name="{concat('h',$level)}">
+                    <xsl:value-of select="imf:translate-i3n('SHORT-TYPERELATIONS',$language-model,())"/>
+                </xsl:element>
+                <xsl:apply-templates mode="detail"/>
+            </xsl:when>
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ATTRIBUTE'">
                 <xsl:variable name="composer" select="content[not(@approach='association')]/part[@type = 'COMPOSER']/item[1]"/>
                 <xsl:sequence select="imf:create-anchors(.)"/>
@@ -265,8 +271,12 @@
                         <colgroup width="100%"/>
                 </xsl:when>
                 <xsl:when test="$type = 'SHORT-ASSOCIATIONS'"> <!-- 50 50 -->
-                        <colgroup width="50%"/>
-                        <colgroup width="50%"/>
+                    <colgroup width="50%"/>
+                    <colgroup width="50%"/>
+                </xsl:when>
+                <xsl:when test="$type = 'SHORT-TYPERELATIONS'"> <!-- 50 50 -->
+                    <colgroup width="50%"/>
+                    <colgroup width="50%"/>
                 </xsl:when>
                 <xsl:when test="$type = 'SHORT-ATTRIBUTES'"> <!-- 30 50 10 10 -->
                     <colgroup width="30%"/>
@@ -341,6 +351,14 @@
                         <xsl:if test="@type = 'COMPOSED'">- </xsl:if>
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                         <xsl:if test="@type = 'COMPOSER'">:</xsl:if>
+                    </td>
+                    <td>
+                        <xsl:apply-templates select="item[2]" mode="#current"/>
+                    </td>
+                </xsl:when>
+                <xsl:when test="$type = 'SHORT-TYPERELATIONS'"> <!-- 50 50 -->
+                    <td>
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
                     </td>
                     <td>
                         <xsl:apply-templates select="item[2]" mode="#current"/>

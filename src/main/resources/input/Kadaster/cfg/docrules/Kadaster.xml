@@ -337,13 +337,17 @@
         <name lang="nl">Formeel patroon</name>
         <name lang="en">Formal pattern</name>
         <levels>
-            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
-            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
-            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
-            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
-            <level show="force" compile="full" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
+            
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
         </levels>
     </doc-rule>
+    
     <doc-rule id="CFG-DOC-FORMAAT">
         <name lang="nl">Formaat</name>
         <name lang="en">Format</name>

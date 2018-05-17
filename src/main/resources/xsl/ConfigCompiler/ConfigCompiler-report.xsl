@@ -230,7 +230,7 @@
                                     </tr>
                                 </xsl:for-each>            
                             </xsl:variable>
-                            <xsl:sequence select="imf:create-result-table-by-tr($subrows,'name:40,original name:40,required:20',concat('table-tvs-',generate-id(.)))"/>
+                            <xsl:sequence select="imf:create-result-table-by-tr($subrows,'name:40,original name:40,minmax:20',concat('table-tvs-',generate-id(.)))"/>
                         </td>
                         <td>
                             <xsl:value-of select="name[1]/@src"/>

@@ -85,8 +85,11 @@
             <section type="OVERVIEW-UNION">
                 <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]"/>
             </section>
-            <section type="OVERVIEW-DATATYPE">
+            <section type="OVERVIEW-STRUCTUREDDATATYPE">
                 <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]"/>
+            </section>
+            <section type="OVERVIEW-PRIMITIVEDATATYPE">
+                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]"/>
             </section>
             <section type="OVERVIEW-CODELIST">
                 <content>
@@ -111,8 +114,11 @@
                 <section type="DETAILS-UNION">
                     <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]" mode="detail"/>
                 </section>
-                <section type="DETAILS-DATATYPE">
+                <section type="DETAILS-STRUCTUREDDATATYPE">
                     <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]" mode="detail"/>
+                </section>
+                <section type="DETAILS-PRIMITIVEDATATYPE">
+                    <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]" mode="detail"/>
                 </section>
                 <section type="DETAILS-CODELIST">
                     <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="detail"/>
@@ -162,6 +168,8 @@
             </content>
             <!-- hier alle attributen; als ingebedde tabel -->
             <xsl:apply-templates select="imvert:attributes" mode="short"/>
+            <!-- hier alle type relaties -->
+            <xsl:apply-templates select="." mode="type-relations"/>
             <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>
     </xsl:template>
@@ -174,22 +182,38 @@
             </content>
             <!-- hier alle attributen; als ingebedde tabel -->
             <xsl:apply-templates select="imvert:attributes" mode="short"/>
+            <!-- hier alle type relaties -->
+            <xsl:apply-templates select="." mode="type-relations"/>
             <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]">
-        <section name="{imf:get-name(.,true())}" type="DATATYPE" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
+        <section name="{imf:get-name(.,true())}" type="STRUCTUREDDATATYPE" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
-                <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-DATATYPE')"/>
+                <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-STRUCTUREDDATATYPE')"/>
             </content>
             <!-- hier alle attributen; als ingebedde tabel -->
             <xsl:apply-templates select="imvert:attributes" mode="short"/>
+            <!-- hier alle type relaties -->
+            <xsl:apply-templates select="." mode="type-relations"/>
             <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
         </section>
     </xsl:template>
     
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]">
+        <section name="{imf:get-name(.,true())}" type="PRIMITIVEDATATYPE" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
+            <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
+            <content>
+                <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-PRIMITIVEDATATYPE')"/>
+            </content>
+            <!-- hier alle type relaties -->
+            <xsl:apply-templates select="." mode="type-relations"/>
+            <xsl:sequence select="imf:create-toelichting(imf:get-formatted-tagged-value(.,'CFG-TV-DESCRIPTION'))"/>
+        </section>
+    </xsl:template>
+  
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist')]">
         <xsl:variable name="naam" select="imf:get-name(.,true())"/>
         <part>
@@ -197,6 +221,8 @@
                 <xsl:sequence select="imf:create-idref(.,'detail')"/>
                 <xsl:sequence select="imf:create-content($naam)"/>          
             </item>
+            <!-- hier alle type relaties -->
+            <xsl:apply-templates select="." mode="type-relations"/>
             <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
         </part>
      </xsl:template>
@@ -355,6 +381,28 @@
        </part>
     </xsl:template>
     
+    <xsl:template match="imvert:class" mode="type-relations">
+        <xsl:variable name="r1" as="element()*">
+            <xsl:apply-templates select="imvert:supertype" mode="short"/>
+        </xsl:variable>
+        <xsl:if test="exists($r1)">
+            <section type="SHORT-TYPERELATIONS">
+                <content approach="association">
+                    <itemtype/>
+                    <itemtype type="SUPERTYPE-NAME"/>
+                    <itemtype type="SUPERTYPE-DEFINITION"/>
+                    <xsl:sequence select="$r1"/>
+                </content>
+                <content approach="target">
+                    <itemtype/>
+                    <itemtype type="SUPERTYPE-NAME"/>
+                    <itemtype type="SUPERTYPE-DEFINITION"/>
+                    <xsl:sequence select="$r1"/>
+                </content>
+            </section>
+        </xsl:if>
+    </xsl:template>
+    
     <xsl:template match="imvert:associations" mode="short gegevensgroeptype">
         <xsl:variable name="r1" as="element()*">
             <xsl:apply-templates select="../imvert:supertype" mode="#current"/>
@@ -440,7 +488,7 @@
                 <item>
                     <xsl:value-of select="imf:plugin-translate-i3n('ISSPECIALISATIONOF',true())"/>
                 </item>
-                <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imvert:type-name/@original))"/>
+                <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',(imvert:type-name/@original,string(imvert:conceptual-schema-type))[1]))"/>
             </item>
             <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value($type,'CFG-TV-DEFINITION'))"/>
         </part>
