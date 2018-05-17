@@ -95,7 +95,7 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	protected static final int WFCODE_FATAL = 3;
 
 	// create a pattern that matches <?xml ... ?>
-	public static String xmlRegex = "<\\?(x|X)(m|M)(l|L).*?\\?>";
+	public static String xmlPiRegex = "<\\?(x|X)(m|M)(l|L).*?\\?>";
 		
 	// parameters die de verwerking van het XML file bepalen
 

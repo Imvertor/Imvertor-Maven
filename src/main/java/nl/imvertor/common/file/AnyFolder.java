@@ -182,7 +182,7 @@ public class AnyFolder extends AnyFile {
     				type = "xml";
     				XmlFile fx = new XmlFile(f);
         			if (fx.isWellFormed()) 
-         	    		contentString = cleanXmlPI(fx);
+         	    		contentString = cleanXmlPI(fx.getContent());
         			else
         				contentString = "<!--not wellformed-->";
 	      		} else {
@@ -242,8 +242,8 @@ public class AnyFolder extends AnyFile {
 			+ " fullpath = \"" + file.getCanonicalPath() + "\"";
 	}
 	
-	private String cleanXmlPI(XmlFile fx) throws IOException {
-		return StringUtils.removePattern(fx.getContent(), XmlFile.xmlRegex);
+	private String cleanXmlPI(String xmlString) {
+		return StringUtils.removePattern(xmlString, XmlFile.xmlPiRegex);
 	}
 	
 	/*
