@@ -179,7 +179,7 @@
         <key>RELATIEKLASSE</key>
         <key>ASSOCIATIONCLASS</key>
         <trans lang="nl">Relatieklasse</trans>       
-        <trans lang="en">AssociationClass</trans>
+        <trans lang="en">Association class</trans>
         
     </item>
     <item>
@@ -220,20 +220,19 @@
         <trans lang="en">Choice element</trans>
     </item>
     <item>
-        <key>GESTRUCTUREERD DATATYPE</key>
         <key>STRUCTUREDDATATYPE</key>
         <trans lang="nl">Gestructureerd datatype</trans>
         <trans lang="en">Structured datatype</trans>
     </item>
     <item>
-        <key>DATATYPE</key>
+        <key>PRIMITIVEDATATYPE</key>
         <trans lang="nl">Primitief datatype</trans>
-        <trans lang="en">PrimitiveDatatype</trans>
+        <trans lang="en">Primitive datatype</trans>
     </item>
     <item>
         <key>DATA ELMENT</key>
         <trans lang="nl">Data element</trans>
-        <trans lang="en">DataElement</trans>
+        <trans lang="en">Data element</trans>
     </item>
     <item>
         <key>GEGEVENSGROEPTYPE</key>
@@ -292,9 +291,14 @@
         <trans lang="en">Unions</trans>
     </item>
     <item>
-        <key>OVERVIEW-DATATYPE</key>
+        <key>OVERVIEW-PRIMITIVEDATATYPE</key>
         <trans lang="nl">Primitieve datatypen</trans>
         <trans lang="en">Primitive types</trans>
+    </item>
+    <item>
+        <key>OVERVIEW-STRUCTUREDDATATYPE</key>
+        <trans lang="nl">Gestruktureerde datatypen</trans>
+        <trans lang="en">Structured datatypes</trans>
     </item>
     <item>
         <key>DETAILS</key>

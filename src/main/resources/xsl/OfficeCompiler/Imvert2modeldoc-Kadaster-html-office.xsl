@@ -188,6 +188,10 @@
                 <xsl:sequence select="imf:create-nonheader(imf:translate-i3n('SHORT-ASSOCIATIONS',$language-model,()))"/>
                 <xsl:apply-templates mode="detail"/>
             </xsl:when>
+            <xsl:when test="@type = 'SHORT-TYPERELATIONS'">
+                <xsl:sequence select="imf:create-nonheader(imf:translate-i3n('SHORT-TYPERELATIONS',$language-model,()))"/>
+                <xsl:apply-templates mode="detail"/>
+            </xsl:when>
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ATTRIBUTE'">
                 <xsl:variable name="level" select="imf:get-section-level(.)"/>
                 <xsl:variable name="composer" select="content[not(@approach='target')]/part[@type = 'COMPOSER']/item[1]"/>
@@ -302,6 +306,15 @@
                         <xsl:if test="@type = 'COMPOSED'">- </xsl:if>
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                         <xsl:if test="@type = 'COMPOSER'">:</xsl:if>
+                    </td>
+                    <td width="50%">
+                        <xsl:apply-templates select="item[2]" mode="#current"/>
+                    </td>
+                </xsl:when>
+                <xsl:when test="$type = 'SHORT-TYPERELATIONS'">
+                    <td width="5%">&#160;</td>
+                    <td width="45%">
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
                     </td>
                     <td width="50%">
                         <xsl:apply-templates select="item[2]" mode="#current"/>
