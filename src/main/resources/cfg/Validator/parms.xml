@@ -36,9 +36,9 @@
          <required>true</required>
       </cli-parm> 
       <cli-parm>
-         <name>validatetvmissing</name>
+         <name>validatetvoccurs</name>
          <arg>yes|no</arg>
-         <tip>Yes if tagged values that are required are specified</tip>
+         <tip>Yes if tagged values multiplicity should be checked (min/max occurs)</tip>
          <required>true</required>
       </cli-parm> 
       <cli-parm>

@@ -342,7 +342,7 @@
     
     <xsl:function name="imf:check-tagged-value-occurs" as="element()*">
         <xsl:param name="this" as="element()"/> <!-- any element that may have tagged values-->
-        <xsl:if test="$validate-tv-missing">
+        <xsl:if test="$validate-tv-occurs">
             <xsl:variable name="stereotype-id" select="$this/imvert:stereotype/@id"/>
             <xsl:for-each select="$config-tagged-values[stereotypes/stereo/@id = $stereotype-id]"> <!-- i.e. <tv> elements -->
                 <xsl:variable name="tv-name" select="name"/>
