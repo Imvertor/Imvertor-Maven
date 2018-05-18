@@ -52,7 +52,7 @@
                 
                 <stereo minmax="1..1">stereotype-name-data-element</stereo>
                 <stereo minmax="1..1">stereotype-name-union-element</stereo>
-                <stereo minmax="1..1">stereotype-name-enum</stereo>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
                 
                 <stereo minmax="1..1">stereotype-name-external-package</stereo>
                 <stereo minmax="1..1">stereotype-name-view-package</stereo>
