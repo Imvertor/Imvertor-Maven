@@ -1,364 +1,365 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>Imvertor</groupId>
-	<artifactId>Imvertor</artifactId>
-	<version>1-SNAPSHOT</version>
-	<name>Imvertor</name>
+<project 
+  xmlns="http://maven.apache.org/POM/4.0.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<description>Imvertor under Maven</description>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>Imvertor</groupId>
+  <artifactId>Imvertor</artifactId>
+  <version>1-SNAPSHOT</version>
+  <name>Imvertor</name>
 
-    <!-- ASL = The Apache Software License, Version 2.0, http://www.apache.org/licenses/LICENSE-2.0.txt -->
-	<!-- MSL = mozilla license, https://www.mozilla.org/en-US/MPL/2.0/ -->
-	<!-- ESL = Eclipse software license, http://www.eclipse.org/legal/epl-v10.html -->
-	
-	<dependencies>
+  <description>Imvertor under Maven</description>
 
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.15</version>
-			<!-- ASL -->
-			<exclusions>
-				<exclusion>
-					<groupId>com.sun.jmx</groupId>
-					<artifactId>jmxri</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.sun.jdmk</groupId>
-					<artifactId>jmxtools</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>javax.jms</groupId>
-					<artifactId>jms</artifactId>
-				</exclusion>
-			</exclusions>
+  <!-- ASL = The Apache Software License, Version 2.0, http://www.apache.org/licenses/LICENSE-2.0.txt -->
+  <!-- MSL = mozilla license, https://www.mozilla.org/en-US/MPL/2.0/ -->
+  <!-- ESL = Eclipse software license, http://www.eclipse.org/legal/epl-v10.html -->
 
-		</dependency>
+  <dependencies>
 
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<version>1.9.2</version>
-			<!-- ASL -->
-		</dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.15</version>
+      <!-- ASL -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.sun.jmx</groupId>
+          <artifactId>jmxri</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.sun.jdmk</groupId>
+          <artifactId>jmxtools</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>javax.jms</groupId>
+          <artifactId>jms</artifactId>
+        </exclusion>
+      </exclusions>
 
-		<dependency>
-			<groupId>commons-cli</groupId>
-			<artifactId>commons-cli</artifactId>
-			<version>1.2</version>
-			<!-- ASL -->
-		</dependency>
+    </dependency>
 
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.4</version>
-			<!-- ASL -->
-		</dependency>
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <version>1.9.2</version>
+      <!-- ASL -->
+    </dependency>
 
-		<dependency>
-			<groupId>commons-jxpath</groupId>
-			<artifactId>commons-jxpath</artifactId>
-			<version>1.3</version>
-			<!-- ASL -->
-		</dependency>
+    <dependency>
+      <groupId>commons-cli</groupId>
+      <artifactId>commons-cli</artifactId>
+      <version>1.2</version>
+      <!-- ASL -->
+    </dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
-		<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-text</artifactId>
-		    <version>1.1</version>
-		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-		<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-lang3</artifactId>
-		    <version>3.6</version>
-		</dependency>
-				
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-configuration2</artifactId>
-			<version>2.0</version> <!-- 2.0beta1 version not found -->
-			<!-- ASL -->
-		</dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.4</version>
+      <!-- ASL -->
+    </dependency>
 
-		<!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
-		<dependency>
-			<groupId>commons-net</groupId>
-			<artifactId>commons-net</artifactId>
-			<version>3.3</version>
-			<!-- ASL -->
-		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
-		<dependency>
-		    <groupId>org.apache.httpcomponents</groupId>
-		    <artifactId>httpclient</artifactId>
-		    <version>4.5.2</version>
-		</dependency>
+    <dependency>
+      <groupId>commons-jxpath</groupId>
+      <artifactId>commons-jxpath</artifactId>
+      <version>1.3</version>
+      <!-- ASL -->
+    </dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime -->
-		<dependency>
-		    <groupId>org.apache.httpcomponents</groupId>
-		    <artifactId>httpmime</artifactId>
-		    <version>4.5.2</version>
-		</dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>1.1</version>
+    </dependency>
 
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1.3</version>
-			<!-- ASL -->
-		</dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.6</version>
+    </dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-exec -->
-		<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-exec</artifactId>
-		    <version>1.3</version>
-		</dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-configuration2</artifactId>
+      <version>2.0</version>
+      <!-- 2.0beta1 version not found -->
+      <!-- ASL -->
+    </dependency>
 
-		<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
-		<dependency>
-		    <groupId>commons-codec</groupId>
-		    <artifactId>commons-codec</artifactId>
-		    <version>1.4</version>
-		</dependency>
+    <!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
+    <dependency>
+      <groupId>commons-net</groupId>
+      <artifactId>commons-net</artifactId>
+      <version>3.3</version>
+      <!-- ASL -->
+    </dependency>
 
-		<dependency>
-			<groupId>org.eclipse.birt.runtime.3_7_1</groupId>
-			<artifactId>org.apache.xerces</artifactId>
-			<version>2.9.0</version>
-			<!-- ASL -->
-		</dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.2</version>
+    </dependency>
 
-		<dependency>
-			<groupId>net.sf.saxon</groupId>
-			<artifactId>Saxon-HE</artifactId>
-			<version>9.6.0-7</version>
-			<!-- MSL -->
-		</dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime -->
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpmime</artifactId>
+      <version>4.5.2</version>
+    </dependency>
 
-		<dependency>
-			<groupId>xmlunit</groupId>
-			<artifactId>xmlunit</artifactId>
-			<version>1.5</version>
-			<!-- ASL -->
-		</dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.1.3</version>
+      <!-- ASL -->
+    </dependency>
 
-		<dependency>
-			<groupId>org.ccil.cowan.tagsoup</groupId>
-			<artifactId>tagsoup</artifactId>
-			<version>1.2.1</version>
-			<!-- ASL -->
-		</dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-exec -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-exec</artifactId>
+      <version>1.3</version>
+    </dependency>
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<!-- ESL -->
-		</dependency>
+    <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.4</version>
+    </dependency>
 
-		<dependency>
-			<groupId>net.sourceforge.jexcelapi</groupId>
-			<artifactId>jxl</artifactId>
-			<version>2.6.12</version>
-		</dependency>
+    <dependency>
+      <groupId>org.eclipse.birt.runtime.3_7_1</groupId>
+      <artifactId>org.apache.xerces</artifactId>
+      <version>2.9.0</version>
+      <!-- ASL -->
+    </dependency>
 
-		<dependency>
-			<groupId>com.googlecode.juniversalchardet</groupId>
-			<artifactId>juniversalchardet</artifactId>
-			<version>1.0.3</version>
-		</dependency>
+    <dependency>
+      <groupId>net.sf.saxon</groupId>
+      <artifactId>Saxon-HE</artifactId>
+      <version>9.6.0-7</version>
+      <!-- MSL -->
+    </dependency>
 
-		<!-- https://mvnrepository.com/artifact/xml-resolver/xml-resolver -->
-		<dependency>
-			<groupId>xml-resolver</groupId>
-			<artifactId>xml-resolver</artifactId>
-			<version>1.2</version>
-		</dependency>
+    <dependency>
+      <groupId>xmlunit</groupId>
+      <artifactId>xmlunit</artifactId>
+      <version>1.5</version>
+      <!-- ASL -->
+    </dependency>
 
-		<dependency>
-			<groupId>org.eclipse.rdf4j</groupId>
-			<artifactId>rdf4j-runtime</artifactId>
-			<version>2.2.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.rdf4j</groupId>
-			<artifactId>rdf4j-rio-rdfxml</artifactId>
-			<version>2.2.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.rdf4j</groupId>
-			<artifactId>rdf4j-rio-turtle</artifactId>
-			<version>2.2.1</version>
-		</dependency>
+    <dependency>
+      <groupId>org.ccil.cowan.tagsoup</groupId>
+      <artifactId>tagsoup</artifactId>
+      <version>1.2.1</version>
+      <!-- ASL -->
+    </dependency>
 
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-nop</artifactId>
-			<version>1.7.25</version>
-		</dependency>
-		
-		<!-- non-mavenized depencies below; dependency on enterprise architect 
-			should be removed -->
-		<!-- note that they might have to distributed seperately due to copyright 
-			issues -->
-		<dependency>
-			<groupId>enterprise.architect</groupId>
-			<artifactId>java-api</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${env.EAPATH}\eaapi.jar</systemPath>
-		</dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <!-- ESL -->
+    </dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.json/json -->
-		<dependency>
-		    <groupId>org.json</groupId>
-		    <artifactId>json</artifactId>
-		    <version>20160810</version>
-		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/de.odysseus.staxon/staxon -->
-		<dependency>
-		    <groupId>de.odysseus.staxon</groupId>
-		    <artifactId>staxon</artifactId>
-		    <version>1.3</version>
-		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-		<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-core</artifactId>
-		    <version>2.9.4</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml -->
-		<dependency>
-		    <groupId>com.fasterxml.jackson.dataformat</groupId>
-		    <artifactId>jackson-dataformat-yaml</artifactId>
-		    <version>2.9.2</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-		<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-databind</artifactId>
-		    <version>2.9.2</version>
-		</dependency>
-			
-		<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-core -->
-		<dependency>
-		    <groupId>org.apache.jena</groupId>
-		    <artifactId>jena-core</artifactId>
-		    <version>3.4.0</version>
-		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/org.topbraid/shacl -->
-		<dependency>
-		    <groupId>org.topbraid</groupId>
-		    <artifactId>shacl</artifactId>
-		    <version>1.0.1</version>
-		</dependency>
-				
-	    <dependency>
-	      <groupId>org.eclipse.jgit</groupId>
-	      <artifactId>org.eclipse.jgit</artifactId>
-	      <version>4.9.2.201712150930-r</version>
-	    </dependency>
-	
-	</dependencies>
+    <dependency>
+      <groupId>net.sourceforge.jexcelapi</groupId>
+      <artifactId>jxl</artifactId>
+      <version>2.6.12</version>
+    </dependency>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
+    <dependency>
+      <groupId>com.googlecode.juniversalchardet</groupId>
+      <artifactId>juniversalchardet</artifactId>
+      <version>1.0.3</version>
+    </dependency>
 
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>license-maven-plugin</artifactId>
-				<version>1.12</version>
-				<executions>
-					<execution>
-						<id>download-licenses</id>
-						<goals>
-							<goal>download-licenses</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+    <!-- https://mvnrepository.com/artifact/xml-resolver/xml-resolver -->
+    <dependency>
+      <groupId>xml-resolver</groupId>
+      <artifactId>xml-resolver</artifactId>
+      <version>1.2</version>
+    </dependency>
 
-			<!-- 
-	      <plugin>
-	        <artifactId>maven-assembly-plugin</artifactId>
-	        <executions>
-	          <execution>
-	            <phase>package</phase>
-	            <goals>
-	              <goal>single</goal>
-	            </goals>
-	          </execution>
-	        </executions>
-	        <configuration>
-	          <descriptorRefs>
-	            <descriptorRef>jar-with-dependencies</descriptorRef>
-	          </descriptorRefs>
-	        </configuration>
-	      </plugin>
-	      -->
-	      <plugin>
-		      <!-- Build an executable JAR -->
-		     <artifactId>maven-assembly-plugin</artifactId>
-	          <executions>
-	          <execution>
-	            <phase>package</phase>
-	            <goals>
-	              <goal>single</goal>
-	            </goals>
-	          </execution>
-	        </executions>
-		      <configuration>
-			      <descriptorRefs>
-		            <descriptorRef>jar-with-dependencies</descriptorRef>
-		          </descriptorRefs>
-	            <archive>
+    <dependency>
+      <groupId>org.eclipse.rdf4j</groupId>
+      <artifactId>rdf4j-runtime</artifactId>
+      <version>2.2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.rdf4j</groupId>
+      <artifactId>rdf4j-rio-rdfxml</artifactId>
+      <version>2.2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.rdf4j</groupId>
+      <artifactId>rdf4j-rio-turtle</artifactId>
+      <version>2.2.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-nop</artifactId>
+      <version>1.7.25</version>
+    </dependency>
+
+    <!-- non-mavenized depencies below; dependency on enterprise architect should be removed -->
+    <!-- note that they might have to distributed seperately due to copyright issues -->
+    <dependency>
+      <groupId>enterprise.architect</groupId>
+      <artifactId>java-api</artifactId>
+      <version>1.0</version>
+      <scope>system</scope>
+      <systemPath>${env.EAPATH}\eaapi.jar</systemPath>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.json/json -->
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20160810</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/de.odysseus.staxon/staxon -->
+    <dependency>
+      <groupId>de.odysseus.staxon</groupId>
+      <artifactId>staxon</artifactId>
+      <version>1.3</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.9.4</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-yaml</artifactId>
+      <version>2.9.2</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.9.2</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.apache.jena/jena-core -->
+    <dependency>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>jena-core</artifactId>
+      <version>3.4.0</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.topbraid/shacl -->
+    <dependency>
+      <groupId>org.topbraid</groupId>
+      <artifactId>shacl</artifactId>
+      <version>1.0.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jgit</groupId>
+      <artifactId>org.eclipse.jgit</artifactId>
+      <version>4.9.2.201712150930-r</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>1.12</version>
+        <executions>
+          <execution>
+            <id>download-licenses</id>
+            <goals>
+              <goal>download-licenses</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <!--
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
 		          <manifest>
-		          <!--  
-		            <addClasspath>true</addClasspath>
-		            <classpathPrefix>lib/</classpathPrefix>
-		            --><mainClass>nl.imvertor.ChainTranslateAndReport</mainClass>
+		            <mainClass>nl.imvertor.ChainTranslateAndReport</mainClass>
 		          </manifest>
 		        </archive>
-		      </configuration>
-		   </plugin>
-		   <plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-shade-plugin</artifactId>
-		        <version>3.1.1</version>
-		        <executions>
-		          <execution>
-		            <goals>
-		              <goal>shade</goal>
-		            </goals>
-		            <configuration>
-		              <transformers>
-		                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-		              </transformers>
-		            </configuration>
-		          </execution>
-		        </executions>
-		    </plugin>
-		</plugins>
-	</build>
+        </configuration>
+      </plugin>
+      -->
 
-	<url>http://www.imvertor.org/</url>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.1.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <finalName>Imvertor-1-SNAPSHOT-jar-with-dependencies</finalName>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>nl.imvertor.ChainTranslateAndReport</mainClass>
+                </transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+              </transformers>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+    </plugins>
+  </build>
+
+  <url>http://www.imvertor.org/</url>
 </project>
