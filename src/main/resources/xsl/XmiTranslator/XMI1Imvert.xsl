@@ -330,6 +330,7 @@
     </xsl:template>
     
     <xsl:template match="UML:Class" mode="class-normal">
+        <xsl:variable name="this" select="."/>
         <xsl:variable name="id" select="@xmi.id"/>
         <xsl:variable name="supertype-ids" select="$document-generalizations-type[@subtype=$id]/@supertype"/>
         <xsl:variable name="attributes" select="UML:Classifier.feature/UML:Attribute"/>
@@ -362,8 +363,12 @@
                 <xsl:for-each select="$supertype-ids">
                     <xsl:variable name="supertype-id" select="."/>
                     <xsl:variable name="supertype" select="imf:element-by-id($supertype-id)"/>
+                   
+                    <xsl:variable name="generalizations" select="imf:get-key($xmi-document,'key-document-generalizations', concat($id,'#',$supertype-id))"/>
+                    <xsl:variable name="generalization" select="$generalizations[1]"/>
                     
-                    <xsl:variable name="generalization" select="imf:get-key($xmi-document,'key-document-generalizations', concat($id,'#',$supertype-id))"/>
+                    <xsl:sequence select="if ($generalizations[2]) then imf:msg($this,'WARNING','Cannot handle multiple references to same supertype [1]',($supertype/@name)) else ()"/>
+                    
                     <xsl:variable name="stereotypes" select="imf:get-stereotypes($generalization)"/>
                     
                     <xsl:choose>
