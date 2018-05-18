@@ -145,7 +145,7 @@
       <EXTERNAL_XSD_FOLDER>${system/inp-folder-path}/xsd</EXTERNAL_XSD_FOLDER>
       
       <!-- 
-         KING Koppelvlakken schema's (BSM)
+         KING Koppelvlakken StUF schema's (BSM)
       -->
       
       <IMVERTOR_METAMODEL_KINGBSM_XSDSOURCE>system</IMVERTOR_METAMODEL_KINGBSM_XSDSOURCE>
@@ -185,6 +185,20 @@
        -->
       <KINGBSM_EPFORMAAT_XMLPATH>${system/inp-folder-path}/etc/EP/ep-stuf-onderlaag.xml</KINGBSM_EPFORMAAT_XMLPATH>
       
+
+      <!-- 
+         KING Koppelvlakken Open API schema's (BSM)
+      -->
+      
+      <IMVERTOR_METAMODEL_KINGBSM_ROUGH_OPENAPI_ENDPRODUCT_XML_XSLPATH alias="EPROUGH">Imvert2XSD-KING-create-OpenAPI-endproduct-rough-structure.xsl</IMVERTOR_METAMODEL_KINGBSM_ROUGH_OPENAPI_ENDPRODUCT_XML_XSLPATH>
+      <IMVERTOR_METAMODEL_KINGBSM_OPENAPI_ENDPRODUCT_XML_XSLPATH alias="EPXML">Imvert2XSD-KING-OpenAPI-endproduct-xml.xsl</IMVERTOR_METAMODEL_KINGBSM_OPENAPI_ENDPRODUCT_XML_XSLPATH>
+
+      <!-- intermediate result files -->
+      
+      <ROUGH_OPENAPI_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.70.rough-OpenAPI-endproduct-xml.xml</ROUGH_OPENAPI_ENDPRODUCT_XML_FILE_PATH>
+      <RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.71.OpenAPI-endproduct-xml.xml</RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH>   
+
+
       <!-- 
          UGM transformation to Basisentiteiten schema 
       --> 

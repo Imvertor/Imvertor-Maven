@@ -226,6 +226,118 @@
             </declared-values>
         </tv>
         
+        <tv norm="space" validate="" rules="" id="CFG-TV-EXPAND">
+            <name lang="nl">Expand</name>
+            <derive>no</derive>
+            <inherit>yes</inherit>
+            <stereotypes>
+                <?x stereo minmax="1..1">stereotype-name-vraagberichttype</stereo ?>
+                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
+                <?x stereo minmax="1..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-vrijberichttype</stereo ?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <!-- In Json relaties expanden. -->
+                <value>true</value>
+                <!-- In Json relaties niet expanden. -->
+                <value>false</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="CFG-TV-FIELDS">
+            <name lang="nl">Fields</name>
+            <derive>no</derive>
+            <inherit>yes</inherit>
+            <stereotypes>
+                <?x stereo minmax="1..1">stereotype-name-vraagberichttype</stereo ?>
+                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
+                <?x stereo minmax="1..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-vrijberichttype</stereo ?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <!-- Fields in request parameters YAML opnemen. -->
+                <value>true</value>
+                <!-- Fields niet in request parameters YAML opnemen. -->
+                <value>false</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="CFG-TV-SORT">
+            <name lang="nl">Sort</name>
+            <derive>no</derive>
+            <inherit>yes</inherit>
+            <stereotypes>
+                <?x stereo minmax="1..1">stereotype-name-vraagberichttype</stereo ?>
+                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
+                <?x stereo minmax="1..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-vrijberichttype</stereo ?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <!-- Sorteer in request parameters YAML opnemen. -->
+                <value>true</value>
+                <!-- Sorteer niet in request parameters YAML opnemen. -->
+                <value>false</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="CFG-TV-GROUPING">
+            <name lang="nl">Grouping</name>
+            <derive>no</derive>
+            <inherit>yes</inherit>
+            <stereotypes>
+                <?x stereo minmax="1..1">stereotype-name-vraagberichttype</stereo ?>
+                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
+                <?x stereo minmax="1..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-vrijberichttype</stereo ?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <!-- Grouping is binnen json niet van toepassing, het betreft immers maar een enkele resource. -->
+                <value>resource</value>
+                <!-- Grouping is binnen json wel van toepassing, het kunnen meerdere resources zijn. -->
+                <value>collection</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="CFG-TV-PAGE">
+            <name lang="nl">Page</name>
+            <derive>no</derive>
+            <inherit>yes</inherit>
+            <stereotypes>
+                <?x stereo minmax="1..1">stereotype-name-vraagberichttype</stereo ?>
+                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
+                <?x stereo minmax="1..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-vrijberichttype</stereo ?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <!-- Pagination is binnen json van toepassing op het bericht. -->
+                <value>true</value>
+                <!-- Pagination is binnen json niet van toepassing op het bericht. -->
+                <value>false</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="CFG-TV-SERIALISATION">
+            <name lang="nl">Serialisation</name>
+            <derive>no</derive>
+            <inherit>yes</inherit>
+            <stereotypes>
+                <?x stereo minmax="1..1">stereotype-name-vraagberichttype</stereo ?>
+                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
+                <?x stereo minmax="1..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-vrijberichttype</stereo ?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <!-- Voorlopig is alleen json+hal mogelijk. -->
+                <value>json+hal</value>
+            </declared-values>
+        </tv>
+        
         <tv norm="space" validate="" rules="" id="CFG-TV-VOORWAARDE">
             <name lang="nl">Voorwaarde</name>
             <desc>Opnemen ter documentatie van een bericht.</desc>
