@@ -37,5 +37,21 @@
     
     <xsl:import href="Imvert2validation-KadasterKKG.xsl"/>
    
-
+    <xsl:template match="imvert:class" priority="1"> <!-- in aanvulling op standaard kadaster checks -->
+        
+        <!-- setup -->
+        <xsl:variable name="this-id" select="imvert:id"/>
+        <xsl:variable name="is-associationclass" select="$document-classes//imvert:association-class/imvert:type-id = $this-id"/>
+        
+        <!-- only allow association classes; do not allow on regular classes -->
+        <xsl:sequence select="imf:report-error(., 
+            $is-associationclass and not(imvert:stereotype/@id = ('stereotype-name-relatieklasse')), 
+            'Association class must be stereotyped as [1]',imf:get-config-stereotypes('stereotype-name-relatieklasse'))"/>
+        <xsl:sequence select="imf:report-error(., 
+            not($is-associationclass) and imvert:stereotype/@id = ('stereotype-name-relatieklasse'), 
+            'Class that is not an association class may not be stereotyped as [1]',imf:get-config-stereotypes('stereotype-name-relatieklasse'))"/>
+        
+        <xsl:next-match/>
+    </xsl:template>
+    
 </xsl:stylesheet>
