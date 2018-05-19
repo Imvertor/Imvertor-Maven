@@ -39,7 +39,7 @@
         <tv norm="space" id="CFG-TV-INDICATIEINONDERZOEK">
             <name lang="nl">Indicatie in onderzoek</name>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
-            <desc>
+            <desc lang="nl">
                 De indicatie of te bevragen is dat er twijfel is of is geweest aan de juistheid van de attribuutwaarde en dat een onderzoek wordt 
                 of is uitgevoerd naar de juistheid van de attribuutwaarde. 
             </desc>
@@ -57,7 +57,7 @@
         <tv norm="space" id="CFG-TV-SOURCEOFDEFINITION">
             <name lang="nl">Herkomst definitie</name>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
-            <desc>
+            <desc lang="nl">
                 De basisregistratie of het informatiemodel waaruit de definitie is overgenomen dan wel een aanduiding die 
                 aangeeft uit welke bronnen de defintie is samengesteld.
             </desc>
@@ -135,7 +135,7 @@
         <tv norm="space" id="CFG-TV-SOURCE">
             <name lang="nl">Herkomst</name>
             <derive>yes</derive><!-- SIM kan altijd terugvallen op een supplier SIM -->
-            <desc>
+            <desc lang="nl">
                 De basisregistratie in wiens catalogus het objecttype is gespecificeerd (oftewel de basisregistratie waar het 
                 objecttype deel van uitmaakt). Deze specificatie is toegevoegd omdat het wel duidelijk moet zijn in 
                 welke (basis)registratie of informatiemodel het objecttype voorkomt (indien van toepassing).

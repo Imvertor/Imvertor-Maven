@@ -79,17 +79,17 @@
       <!-- REDMINE #487891 -->
       <stereo id="stereotype-name-att-proxy">
          <name lang="nl">Attribuutsoort_proxy</name>
-         <desc>A proxy is TODO</desc>
+         <desc lang="en">A proxy is TODO</desc>
          <construct>attribute</construct>
       </stereo>
       <stereo id="stereotype-name-obj-proxy">
          <name lang="nl">Objecttype_proxy</name>
-         <desc>A proxy is TODO</desc>
+         <desc lang="en">A proxy is TODO</desc>
          <construct>class</construct>
       </stereo>
       <stereo id="stereotype-name-grp-proxy">
          <name lang="nl">Gegevensgroeptype_proxy</name>
-         <desc>A proxy is TODO</desc>
+         <desc lang="en">A proxy is TODO</desc>
          <construct>class</construct>
       </stereo>
       

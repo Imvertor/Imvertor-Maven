@@ -6,7 +6,7 @@
     
     <name>BRO</name>
     
-    <desc>BRO specific requirements on image/diagram processing.</desc>
+    <desc lang="en">BRO specific requirements on image/diagram processing.</desc>
     
     <!--
         Determine the type by suffix, i.e. the diagram name after "-" as in "Objecttypen  – overzicht" 

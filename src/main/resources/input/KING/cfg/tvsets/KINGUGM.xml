@@ -201,7 +201,7 @@
         <tv norm="space"  id="CFG-TV-SUBSETLABEL">
             <name lang="nl">Restriction identifier</name>
             <name lang="en">Restriction identifier</name>
-            <desc>A label assigned to any construct to be used for disambiguation in subset (restriction) constructs.</desc>
+            <desc lang="nl">A label assigned to any construct to be used for disambiguation in subset (restriction) constructs.</desc>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-objecttype</stereo>

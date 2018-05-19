@@ -23,7 +23,7 @@
     
     <name>KINGSIM-scalar</name>
 
-    <desc>Metamodel for KING/VNG information models, scalars</desc>
+    <desc lang="en">Metamodel for KING/VNG information models, scalars</desc>
     
     <scalars xml:id="king-sim-scalars">
         

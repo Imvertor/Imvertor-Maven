@@ -6,7 +6,7 @@
   
     <name>BRO</name>
     
-    <desc>BRO specific requirements on documentation.</desc>
+    <desc lang="en">BRO specific requirements on documentation.</desc>
     
     <link-by>NAME</link-by><!-- link by EAID or NAME -->
     

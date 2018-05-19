@@ -21,14 +21,14 @@
  
     <name>KKG-scalar</name>
 
-    <desc>Metamodel voor informatiemodellen door KING en Kadaster en Geonovum: Scalars </desc>
+    <desc lang="nl">Metamodel voor informatiemodellen door KING en Kadaster en Geonovum: Scalars </desc>
     
     <scalars xml:id="scalars">
         
         <scalar id="scalar-string">
             <name lang="nl">CHARACTERSTRING</name>
             <name lang="en">CHARACTERSTRING</name>
-            <desc>A CharacterString is an arbitrary-length sequence of characters including accents and special characters from
+            <desc lang="en">A CharacterString is an arbitrary-length sequence of characters including accents and special characters from
                 repertoire of one of the adopted character sets (ISO 19103, Draft Technical Specification 19103, Geographic information - Conceptual
                 schema language)</desc>
             <type-map formal-lang="xs">string</type-map>

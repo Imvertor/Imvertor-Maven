@@ -167,7 +167,7 @@
             <name lang="en">Length</name>
             <desc lang="nl">TODO</desc>
             <desc lang="en">TODO</desc>
-            <desc>Lengte van de waarde in posities.</desc>
+            <desc lang="nl">Lengte van de waarde in posities.</desc>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>

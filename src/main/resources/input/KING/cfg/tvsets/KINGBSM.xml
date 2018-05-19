@@ -340,7 +340,7 @@
         
         <tv norm="space" validate="" rules="" id="CFG-TV-VOORWAARDE">
             <name lang="nl">Voorwaarde</name>
-            <desc>Opnemen ter documentatie van een bericht.</desc>
+            <desc lang="nl">Opnemen ter documentatie van een bericht.</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-application-package</stereo>
@@ -354,7 +354,7 @@
         
         <tv norm="space" validate="" rules="" id="CFG-TV-TRIGGER">
             <name lang="nl">Trigger</name>
-            <desc>Opnemen ter documentatie van een bericht.</desc>
+            <desc lang="nl">Opnemen ter documentatie van een bericht.</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
@@ -367,7 +367,7 @@
         
         <tv norm="space" validate="" rules="" id="CFG-TV-DIRECTGEVOLG">
             <name lang="nl">Direct gevolg</name>
-            <desc>Opnemen ter documentatie van een bericht.</desc>
+            <desc lang="nl">Opnemen ter documentatie van een bericht.</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
@@ -380,7 +380,7 @@
         
         <tv norm="space" validate="" rules="" id="CFG-TV-BIJZONDERHEDEN">
             <name lang="nl">Bijzonderheden</name>
-            <desc>Opnemen ter documentatie van een bericht.</desc>
+            <desc lang="nl">Opnemen ter documentatie van een bericht.</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
@@ -472,7 +472,7 @@
         
         <tv norm="space" id="CFG-TV-EMPTYENUMERATIONALLOWED">
             <name lang="nl">Lege enumeration toegestaan</name>
-            <desc>
+            <desc lang="nl">
                 Geeft aan of er aan elke enumeratie simpleType ook een lege enumeratie toegevoegd moet worden.
                 Standaard wordt dit mee gegenereerd. Kan zowel op Koppelvlak niveau als op attribuut niveau worden 
                 gedefinieerd waarbij die op attribuutniveau die op op Koppelvlak niveau overrulled. 
@@ -489,7 +489,7 @@
         
         <tv norm="space" id="CFG-TV-NOVALUEALLOWED">
             <name lang="nl">noValue toegestaan</name>
-            <desc>
+            <desc lang="nl">
                 Geeft aan of het StUF:noValue attribute in de XML-schema's mee gegenereerd wordt.
                 Standaard wordt dit mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
             </desc>
@@ -504,7 +504,7 @@
         
         <tv norm="space" id="CFG-TV-E-TYPESALLOWED">
             <name lang="nl">e-types genereren</name>
-            <desc>
+            <desc lang="nl">
                 Geeft aan of de -e complexTypes in de XML-schema's mee gegenereerd moeten worden.
                 Standaard worden deze mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
             </desc>
@@ -519,7 +519,7 @@
              
         <tv norm="space" id="CFG-TV-TIJDVAKGELDIGHEIDALLOWED">
             <name lang="nl">tijdvakGeldigheid genereren</name>
-            <desc>
+            <desc lang="nl">
                 Geeft aan of en zo ja hoe in de XML-schema's de 'tijdvakGeldigheid' elementen worden mee gegenereerd.
                 Standaard worden deze optioneel mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
             </desc>
@@ -535,7 +535,7 @@
         
         <tv norm="space" id="CFG-TV-TIJDSTIPREGISTRATIEALLOWED">
             <name lang="nl">tijdstipRegistratie genereren</name>
-            <desc>
+            <desc lang="nl">
                 Geeft aan of en zo ja hoe in de XML-schema's de 'tijdstipRegistratie' elementen worden mee gegenereerd.
                 Standaard worden deze optioneel mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
             </desc>
@@ -552,7 +552,7 @@
  
         <tv norm="space" id="CFG-TV-EXTRAELEMENTENALLOWED">
             <name lang="nl">extraElementen genereren</name>
-            <desc>
+            <desc lang="nl">
                 Geeft aan of er in de XML-schema's 'extraElementen' elementen moeten worden mee gegenereerd.
                 Standaard worden deze optioneel mee gegenereerd. Kan alleen op Koppelvlak niveau worden gedefinieerd. 
             </desc>
@@ -568,7 +568,7 @@
  
         <tv norm="space" id="CFG-TV-AANVULLENDEELEMENTENALLOWED">
             <name lang="nl">aanvullendeElementen genereren</name>
-            <desc>
+            <desc lang="nl">
                 Geeft aan of er in de XML-schema's 'aanvullendeElementen' elementen moeten worden mee gegenereerd.
                 Standaard worden deze optioneel mee gegenereerd. Kan alleen op  Koppelvlak niveau worden gedefinieerd. 
             </desc>

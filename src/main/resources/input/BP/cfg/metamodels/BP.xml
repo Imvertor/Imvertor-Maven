@@ -36,7 +36,7 @@
         <stereo id="stereotype-name-relatieklasse">
             <name lang="nl">Relatieklasse</name>
             <name lang="en">Relation class</name>
-            <desc>	
+            <desc lang="nl">	
                 Een relatiesoort waarover gegevens over de relatie tussen twee soorten objecten (in de 	vorm van een derde soort object) worden vastgelegd.
                 Voorbeeld: relatieklasse OUDER-KIND RELATIE, relatieklasse FUNCTIONARIS
             </desc>
@@ -46,7 +46,7 @@
         <stereo id="stereotype-name-composite">
             <name lang="en">GroupType</name>
             <name lang="nl">Gegevensgroeptype</name>
-            <desc>
+            <desc lang="nl">
                 De verzameling van gegevens van een object van een type die gelijktijdig muteren en onderhouden worden.
                 De gegevensgroeptype is als source van een composite relatie opgenomen bij een Objecttype.
                 Voorbeeld: gegevensgroeptype Geboorte bij INGESCHREVEN NATUURLIJK PERSOON, 	gegevensgroeptype Koopsom bij KADASTRALE ONROERENDE ZAAK
@@ -56,19 +56,19 @@
         <stereo id="stereotype-name-attribute">
             <name lang="en">Attributekind</name>
             <name lang="nl">Attribuutsoort</name>
-            <desc>De soort waartoe een attribuut kan behoren.</desc>
+            <desc lang="nl">De soort waartoe een attribuut kan behoren.</desc>
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-relatiesoort">
             <name lang="en">Relationkind</name>
             <name lang="nl">Relatiesoort</name>
-            <desc>De soort waartoe een relatie kan behoren.</desc>
+            <desc lang="nl">De soort waartoe een relatie kan behoren.</desc>
             <construct>association</construct>
         </stereo>
         <stereo id="stereotype-name-externekoppeling">
             <name lang="nl">Externe koppeling</name>
             <name lang="en">External link</name>
-            <desc>Een associatie waarmee vanuit het perspectief van het eigen informatiemodel een objecttype van een extern informatiemodel 
+            <desc lang="nl">Een associatie waarmee vanuit het perspectief van het eigen informatiemodel een objecttype van een extern informatiemodel 
                 gekoppeld wordt aan een objecttype uit het ‘eigen’ informatiemodel. </desc>
             <construct>association</construct>
         </stereo>
@@ -76,14 +76,14 @@
         <stereo id="stereotype-name-data-element">
             <name lang="nl">Data element</name>
             <name lang="en">Data element</name>
-            <desc>Een onderdeel van een Complex datatype uitgedrukt in een eigenschap van een class (attribute).</desc>
+            <desc lang="nl">Een onderdeel van een Complex datatype uitgedrukt in een eigenschap van een class (attribute).</desc>
             <construct>attribute</construct>
         </stereo>
 
         <stereo id="stereotype-name-association-to-composite">
             <name lang="nl">Gegevensgroep compositie</name>
             <name lang="en">Datagroup compositon</name>
-            <desc>
+            <desc lang="nl">
                 Een verbijzondering van een relatiesoort waarbij een object van het objecttype of een 
                 gegevensgroep van een gegevensgroeptype of een asscociationclass van een relatieklasse 	samengesteld is uit gegevensgroepen 
                 van een gegevensgroeptype en deze 	gegevensgroepen  maken altijd deel uit van één compositie.
@@ -94,7 +94,7 @@
         <stereo id="stereotype-name-union">
             <name lang="nl">Union</name>
             <name lang="en">Union</name>
-            <desc>
+            <desc lang="nl">
                 Gestructureerd datatype zonder identiteit waarvan precies één van de
                 (ten minste twee) onderdelen (attributes) aanwezig is in elke instantie. 
                 Voorbeeld: Union LineOrPolygon. Union element Line of union element Polygon is van toepassing bij een instantie.
@@ -104,7 +104,7 @@
         <stereo id="stereotype-name-union-element">
             <name lang="en">Union element</name>
             <name lang="nl">Union element</name>
-            <desc>
+            <desc lang="nl">
                 Een onderdeel van een Union uitgedrukt in een eigenschap van een class (attribute) die als keuze binnen de Union is gerepresenteerd.
                 Voorbeeld: union element Line, union element Polygon beiden onderdeel uitmakend van Union LineOrPolygon
             </desc>
@@ -114,7 +114,7 @@
         <stereo id="stereotype-name-enumeration">
             <name lang="en">Enumeration</name>
             <name lang="nl">Enumeration</name>
-            <desc>
+            <desc lang="nl">
                 Een lijst met een opsomming van de mogelijke domeinwaarden oftewel constanten van een Docent789
                 attribuutsoort die onveranderlijk is.
             </desc>
@@ -125,19 +125,19 @@
         <stereo id="stereotype-name-enum">
             <name lang="en">Enum</name>
             <name lang="nl">Enum</name>
-            <desc>Één element in een enumeratie.</desc>
+            <desc lang="nl">Één element in een enumeratie.</desc>
             <construct>attribute</construct>
         </stereo>
         <stereo id="stereotype-name-simpletype">
             <name lang="en">Datatype</name>
             <name lang="nl">Datatype</name>
-            <desc></desc>
+            <desc lang="nl"></desc>
             <construct>datatype</construct>
         </stereo>
         <stereo id="stereotype-name-complextype">
             <name lang="en">Complex datatype</name>
             <name lang="nl">Complex datatype</name>
-            <desc>
+            <desc lang="nl">
                 Gestructureerd datatype zonder identiteit samengesteld uit minimaal twee onderdelen.
                 Voorbeeld: Complex datatype Bedrag bestaat uit de data elementen som en valuta.
                 De eigenschappen tezamen vormen de identiteit (een complex datatype “identificeert zichzelf” zoals er maar één “4 liter” bestaat, 
@@ -149,7 +149,7 @@
         <stereo id="stereotype-name-objecttype">
             <name lang="en">Objecttype</name>
             <name lang="nl">Objecttype</name>
-            <desc>
+            <desc lang="nl">
                 De soort waartoe een object kan behoren.
                 Toelichting:
                 Een soort is ondubbelzinnig gedefinieerd als met behulp van de definitie van elk 	aangeboden object ondubbelzinnigheid bepaald 
@@ -166,7 +166,7 @@
         <stereo id="stereotype-name-referentielijst">
             <name lang="nl">Referentielijst</name>
             <name lang="en">Reference list</name>
-            <desc>
+            <desc lang="nl">
                 Een lijst met een opsomming van de mogelijke domeinwaarden van een attribuutsoort die in de loop van de tijd kan veranderen.
                 Voorbeeld: referentielijst LAND, referentielijst NATIONALITEIT
                (Een "rij" in de "tabel".)
@@ -177,7 +177,7 @@
         <stereo id="stereotype-name-referentie-element">
             <name lang="nl">Referentie element</name>
             <name lang="en">Reference element</name>
-            <desc>
+            <desc lang="nl">
                 Een eigenschap van een referentielijst in de vorm van een gegeven.
                 Voorbeeld: referentie element Landcode ISO bij referentielijst LAND, referentie element 	
                 Nationaliteitcode bij referentielijst NATIONALITEIT
@@ -189,19 +189,19 @@
         <stereo id="stereotype-name-system-reference-package">
             <name lang="en">System-reference-package</name>
             <name lang="nl">System-reference-package</name>
-            <desc>Een package dat door het systeem is aangemaakt om referentie-elementen te bevatten.</desc>
+            <desc lang="nl">Een package dat door het systeem is aangemaakt om referentie-elementen te bevatten.</desc>
             <construct>package</construct>
         </stereo>
         <stereo id="stereotype-name-system-reference-class">
             <name lang="en">System-reference-class</name>
             <name lang="nl">System-reference-class</name>
-            <desc>Een class welke door het systeem is aangemaakt als referentie-element.</desc>
+            <desc lang="nl">Een class welke door het systeem is aangemaakt als referentie-element.</desc>
             <construct>class</construct>
         </stereo>
         <stereo id="stereotype-name-reference">
             <name lang="en">Reference</name>
             <name lang="nl">Referentie</name>
-            <desc>Een complex datatype met de naam *AltRef die door de gebruiker is geïntroduceerd als referentie klasse. Zie IM-137. 
+            <desc lang="nl">Een complex datatype met de naam *AltRef die door de gebruiker is geïntroduceerd als referentie klasse. Zie IM-137. 
                 Het betreft een referentie naar een objecttype uit een ander informatiemodel. 
                 De referentie naar dit object zit in scope van het eigen model, maar het gerefereerde object niet. 
                 Voorbeeld: de referentie naar een Persoon uit de BRP, in de vorm van alleen de identificatie die de BRP aan dit objecttype heeft toegekend. 
@@ -222,7 +222,7 @@
         <stereo id="stereotype-name-composite-id">
             <name lang="en">Isid</name>
             <name lang="nl">Isid</name>
-            <desc>Aanduiding dat een relatiesoort onderdeel uitmaakt van de unieke aanduiding van een object.</desc>
+            <desc lang="nl">Aanduiding dat een relatiesoort onderdeel uitmaakt van de unieke aanduiding van een object.</desc>
             <construct>association</construct>
         </stereo>
       

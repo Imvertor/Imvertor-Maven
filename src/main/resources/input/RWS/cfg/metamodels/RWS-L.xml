@@ -37,7 +37,7 @@
     <stereo id="stereotype-name-composite-id">
         <name lang="en">Isid</name>
         <name lang="nl">Isid</name>
-        <desc>TODO</desc>
+        <desc lang="nl">TODO</desc>
         <construct>association</construct>
     </stereo>
     

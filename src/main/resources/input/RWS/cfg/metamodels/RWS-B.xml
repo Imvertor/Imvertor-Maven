@@ -32,27 +32,27 @@
       <stereo id="stereotype-name-application-package">
          <name lang="en">Messageset</name>
          <name lang="nl">Koppelvlak</name>
-         <desc>TODO</desc>
+         <desc lang="nl">TODO</desc>
          <construct>package</construct>
       </stereo>
       <stereo id="stereotype-name-domain-package">
          <name lang="en">Message</name>
          <name lang="nl">Bericht</name>
-         <desc>TODO</desc>
+         <desc lang="nl">TODO</desc>
          <construct>package</construct>
       </stereo>
       
       <stereo id="stereotype-name-entiteitrelatie">
          <name lang="en">Entityrelation</name>
          <name lang="nl">Entiteitrelatie</name>
-         <desc>TODO</desc>
+         <desc lang="nl">TODO</desc>
          <construct>association</construct>
       </stereo>
       
       <stereo id="stereotype-name-berichtrelatie">
          <name lang="en">Messagerelation</name>
          <name lang="nl">Berichtrelatie</name>
-         <desc>TODO</desc>
+         <desc lang="nl">TODO</desc>
          <construct>association</construct>
       </stereo>
       
@@ -62,7 +62,7 @@
       <stereo id="stereotype-name-vrijberichttype">
          <name lang="en">Free message type</name>
          <name lang="nl">Vrij berichttype</name>
-         <desc>TODO</desc>
+         <desc lang="nl">TODO</desc>
          <construct>class</construct>
          <toplevel>true</toplevel>
          <!-- relaties vanuit vrij bericht mogen een willekeurige naam hebben -->
@@ -70,7 +70,7 @@
       <stereo id="stereotype-name-vraagberichttype">
          <name lang="en">Request message type</name>
          <name lang="nl">Vraagberichttype</name>
-         <desc>TODO</desc>
+         <desc lang="nl">TODO</desc>
          <construct>class</construct>
          <toplevel>true</toplevel>
          <entity-relation-constraint>
@@ -86,14 +86,14 @@
       <stereo id="stereotype-name-antwoordberichttype">
          <name lang="en">Response message type</name>
          <name lang="nl">Antwoordberichttype</name>
-         <desc>TODO</desc>
+         <desc lang="nl">TODO</desc>
          <construct>class</construct>
          <toplevel>true</toplevel>
       </stereo>
       <stereo id="stereotype-name-kennisgevingberichttype">
          <name lang="en">Push message type</name>
          <name lang="nl">Kennisgevingberichttype</name>
-         <desc>TODO</desc>
+         <desc lang="nl">TODO</desc>
          <construct>class</construct>
          <toplevel>true</toplevel>
          <entity-relation-constraint>
@@ -105,7 +105,7 @@
       <stereo id="stereotype-name-synchronisatieberichttype">
          <name lang="en">Synchronisation message type</name>
          <name lang="nl">Synchronisatieberichttype</name>
-         <desc>TODO</desc>
+         <desc lang="nl">TODO</desc>
          <construct>class</construct>
          <toplevel>true</toplevel>
          <entity-relation-constraint>

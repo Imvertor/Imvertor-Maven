@@ -8,7 +8,7 @@
     <desc lang="en">Metamodel for ISO conformant KKG extensions</desc>
     <desc lang="nl">Metamodel voor ISO vereiste KKG uitbreidingen</desc>
     
-    <desc> This is the profile of KKG for ISO compliance.</desc>
+    <desc lang="en"> This is the profile of KKG for ISO compliance.</desc>
     
     <tagged-values>
         
