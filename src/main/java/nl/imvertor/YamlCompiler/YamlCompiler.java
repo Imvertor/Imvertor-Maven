@@ -86,14 +86,18 @@ public class YamlCompiler extends Step {
 	
 		runner.debug(logger,"CHAIN","Generating YAML to " + yamlApplicationFolder);
 		
-		succeeds = succeeds && transformer.transformStep("properties/RESULT_CLEANED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_YAMLHEADER_FILE_PATH", "properties/IMVERTOR_METAMODEL_KING_YAMLHEADER_XSLPATH");
-		succeeds = succeeds && transformer.transformStep("properties/RESULT_CLEANED_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_YAMLBODY_FILE_PATH", "properties/IMVERTOR_METAMODEL_KING_YAMLBODY_XSLPATH");
-			
+		succeeds = succeeds && transformer.transformStep("properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_YAMLHEADER_FILE_PATH", "properties/IMVERTOR_METAMODEL_KING_YAMLHEADER2_XSLPATH");
+		succeeds = succeeds && transformer.transformStep("properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_YAMLBODY_FILE_PATH", "properties/IMVERTOR_METAMODEL_KING_YAMLBODY2_XSLPATH");
+
+		transformer.setXslParm("json-version","2.0");
+		succeeds = succeeds && transformer.transformStep("properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_YAMLBODY_FILE_PATH2", "properties/IMVERTOR_METAMODEL_KING_YAMLBODY2_XSLPATH");
+		
 		if (succeeds) {
 			// concatenate
 			YamlFile headerFile = new YamlFile(configurator.getXParm("properties/RESULT_YAMLHEADER_FILE_PATH"));
 			JsonFile bodyFile = new JsonFile(configurator.getXParm("properties/RESULT_YAMLBODY_FILE_PATH"));
 			YamlFile yamlFile = new YamlFile(configurator.getXParm("properties/RESULT_YAML_FILE_PATH"));
+			JsonFile bodyFile2 = new JsonFile(configurator.getXParm("properties/RESULT_YAMLBODY_FILE_PATH2"));
 			
 			// validate
 			String hc = headerFile.getContent();
@@ -109,8 +113,10 @@ public class YamlCompiler extends Step {
 			// copy to the app folder
 			AnyFile appYamlFile = new AnyFile(yamlFolder,schemaName + ".yaml");
 			AnyFile appJsonFile = new AnyFile(yamlFolder,schemaName + ".json");
+			AnyFile appJson2File = new AnyFile(yamlFolder,schemaName + "-2.0.json");
 			yamlFile.copyFile(appYamlFile);
 			bodyFile.copyFile(appJsonFile);
+			bodyFile2.copyFile(appJson2File);
 		} 
 		configurator.setXParm("system/yaml-created",succeeds);
 		
