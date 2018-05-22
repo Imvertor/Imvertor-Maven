@@ -580,7 +580,35 @@
                 <value default="yes">Ja</value>
             </declared-values>
         </tv>
-
+        <!-- 
+           Definition
+        -->
+        <tv id="CFG-TV-DEFINITION">
+            <name lang="nl">Definitie</name>
+            <name lang="en">Definition</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-union</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-view-package</stereo>
+            </stereotypes>
+        </tv>
+        
     </tagged-values>
 </tagset>
 
