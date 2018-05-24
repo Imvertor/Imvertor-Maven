@@ -1051,9 +1051,9 @@
         <xsl:param name="this" as="element()"/>
         <xsl:variable name="base" select="$this/imvert:base"/>
         <xsl:variable name="results" as="xs:integer*">
-            <xsl:for-each select="$base/imvert:stereotype">
-                <xsl:if test="@id = $copy-down-stereotypes-realization">
-                    <xsl:value-of select="if ($this/imvert:stereotype/@id = @id) then 1 else 0"/>
+            <xsl:for-each select="$base/imvert:stereotype/@id">
+                <xsl:if test=". = $copy-down-stereotypes-realization">
+                    <xsl:value-of select="if ($this/imvert:stereotype/@id = .) then 1 else 0"/>
                 </xsl:if>
             </xsl:for-each>
         </xsl:variable>
@@ -1140,6 +1140,7 @@
     <!-- 
         Check if each stereotype assigned to the construct is allowed for that construct. 
     -->
+    <!-- TODO alles op basis van stereo /@id inrichten -->
     <xsl:function name="imf:check-stereotype-assignment" as="element()*">
         <xsl:param name="this" as="element()"/> <!-- any element that may have stereotype -->
         <xsl:variable name="result" as="xs:string*">
@@ -1210,7 +1211,7 @@
     <xsl:function name="imf:check-tagged-value-assignment" as="element()*">
         <xsl:param name="this" as="element()"/> <!-- any element that may have stereotype and tagged values-->
         
-        <xsl:variable name="stereotype" select="$this/imvert:stereotype"/>
+        <xsl:variable name="stereotype-id" select="$this/imvert:stereotype/@id"/>
         <xsl:if test="$validate-tv-assignment">
             <xsl:for-each-group select="$this/imvert:tagged-values/imvert:tagged-value" group-by="@id">
                 <xsl:variable name="first-in-group" select="."/>
@@ -1224,7 +1225,7 @@
                     
                     <xsl:variable name="value-derived" select="imf:boolean($declared/derive)"/>
                     
-                    <xsl:variable name="minmax" select="tokenize($declared/stereotypes/stereo[. = $stereotype][1]/@minmax,'\.\.')"/>
+                    <xsl:variable name="minmax" select="tokenize($declared/stereotypes/stereo[@id = $stereotype-id][1]/@minmax,'\.\.')"/>
                     <xsl:variable name="min" select="xs:integer(($minmax[1],'1')[1])"/>
                     <xsl:variable name="max" select="xs:integer(for $m in ($minmax[2],'1')[1] return if ($m = '*') then '1000' else $m)"/>
                     
@@ -1233,8 +1234,8 @@
                     
                     <xsl:variable name="value-listing" select="$declared/declared-values/value"/>
                     
-                    <xsl:variable name="valid-for-stereotype" select="$declared/stereotypes/stereo = $stereotype"/>
-                    <xsl:variable name="valid-omitted" select="empty($stereotype) and $declared/stereotypes/stereo = $normalized-stereotype-none"/>
+                    <xsl:variable name="valid-for-stereotype" select="$declared/stereotypes/stereo/@id = $stereotype-id"/>
+                    <xsl:variable name="valid-omitted" select="empty($stereotype-id) and $declared/stereotypes/stereo = $normalized-stereotype-none"/>
                     <xsl:variable name="valid-from-listing" select="$value = $value-listing"/>
                     
                     <xsl:variable name="is-first-in-group" select=". is $first-in-group"/>
@@ -1248,7 +1249,7 @@
                             <xsl:sequence select="imf:report-warning($this, true(), 'Tagged value not expected or unknown: [1]',$name/@original)"/>
                         </xsl:when>
                         <xsl:when test="$is-first-in-group and not($valid-for-stereotype)">
-                            <xsl:sequence select="imf:report-warning($this, true(), 'Tagged value [1] not expected on stereotype [2]',($name/@original,$stereotype))"/>
+                            <xsl:sequence select="imf:report-warning($this, true(), 'Tagged value [1] not expected on stereotype [2]',($name/@original,imf:get-config-name-by-id($stereotype-id)))"/>
                         </xsl:when>
                         <xsl:when test="$is-first-in-group and $value-required and not(normalize-space($value))">
                             <xsl:sequence select="imf:report-error($this, true(), 'Tagged value [1] has no value',($name/@original))"/>
@@ -1272,7 +1273,6 @@
     <xsl:function name="imf:check-tagged-value-multi" as="element()*">
         <xsl:param name="this" as="element()"/> <!-- any element that may have tagged values-->
         <xsl:if test="not($allow-multiple-tv)">
-            <xsl:variable name="stereotype" select="$this/imvert:stereotype"/>
             <xsl:for-each-group select="$this/imvert:tagged-values/imvert:tagged-value" group-by="imvert:name">
                 <xsl:sequence select="imf:report-error($this, count(current-group()) gt 1, 'Duplicate tagged values: [1]',current-grouping-key())"/>
             </xsl:for-each-group>
@@ -1353,9 +1353,8 @@
     
     <xsl:function name="imf:is-toplevel">
         <xsl:param name="class"/>
-        <xsl:variable name="stereos" select="$class/imvert:stereotype"/>
-        <xsl:variable name="stereos-ids" select="imf:get-stereotypes-ids($stereos)"/>
-        <xsl:sequence select="imf:get-config-stereotype-is-toplevel($stereos-ids)"/>
+        <xsl:variable name="stereo-ids" select="$class/imvert:stereotype/@id"/>
+        <xsl:sequence select="imf:get-config-stereotype-is-toplevel($stereo-ids)"/>
     </xsl:function>
      
     <xsl:function name="imf:is-known-baretype">
