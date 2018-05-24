@@ -115,7 +115,11 @@
         
         <xsl:variable name="currentMessage" select="."/>
         <xsl:variable name="id" select="ep:id" as="xs:string"/>
+        
+        <!-- TODO: De eerste variabele geeft om de eoa reden geen resultaat daarom is de tweede variabele geintroduceerd.
+                   Nagaan waarom dat zo is en de werking van de eerste herstellen zodat de tweede kan komen te vervallen. -->
         <xsl:variable name="message-construct" select="imf:get-class-construct-by-id($id,$packages)"/>
+        <xsl:variable name="this-construct" select="$packages//imvert:*[imvert:id = $id]"/>
         
         <!-- TODO: UItzoeken of documentation gewenst is. -->
         <xsl:variable name="doc">
@@ -124,7 +128,6 @@
 
 
 
-            <xsl:variable name="this-construct" select="$packages//imvert:*[imvert:id = $id]"/>
             <xsl:if test="not(empty(imf:merge-documentation($this-construct,'CFG-TV-DEFINITION')))">
                 <ep:definition>
                     <xsl:sequence select="imf:merge-documentation($this-construct,'CFG-TV-DEFINITION')"/>
@@ -143,36 +146,22 @@
                 </ep:pattern>
             </xsl:if>
             
-
-
-
-
-<?x            <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DEFINITION')))">
-                <ep:definition>
-                    <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DEFINITION')"/>
-                </ep:definition>
-            </xsl:if>
-            <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DESCRIPTION')))">
-                <ep:description>
-                    <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DESCRIPTION')"/>
-                </ep:description>
-            </xsl:if>
-            <xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')))">
-                <ep:pattern>
-                    <ep:p>
-                        <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')"/>
-                    </ep:p>
-                </ep:pattern>
-            </xsl:if>
-?>
-            
         </xsl:variable>
-        <xsl:variable name="expand" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-EXPAND')"/>
-        <xsl:variable name="fields" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-FIELDS')"/>
-        <xsl:variable name="grouping" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-GROUPING')"/>
-        <xsl:variable name="pagination" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PAGE')"/>
-        <xsl:variable name="serialisation" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-SERIALISATION')"/>
-        <xsl:variable name="sort" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-SORT')"/>
+        <xsl:variable name="berichtcode" select="imf:get-most-relevant-compiled-taggedvalue($message-construct, '##CFG-TV-BERICHTCODE')"/>
+        <xsl:sequence select="imf:create-debug-comment($berichtcode,$debugging)"/>
+        
+        <xsl:variable name="berichtsjabloon" select="$packages//imvert:package[imvert:alias='/www.kinggemeenten.nl/BSM/Berichtstrukturen/Model']//imvert:class[.//imvert:tagged-value[@id='CFG-TV-BERICHTCODE']/imvert:value=$berichtcode]"/>
+
+        <xsl:result-document href="{concat('file:/c:/temp/message/construct-',$id,'-',generate-id(),'.xml')}">
+            <xsl:copy-of select="$berichtsjabloon"/>
+        </xsl:result-document>
+        
+        <xsl:variable name="expand" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-EXPAND')"/>
+        <xsl:variable name="fields" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-FIELDS')"/>
+        <xsl:variable name="grouping" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-GROUPING')"/>
+        <xsl:variable name="pagination" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-PAGE')"/>
+        <xsl:variable name="serialisation" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-SERIALISATION')"/>
+        <xsl:variable name="sort" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-SORT')"/>
         
         <xsl:variable name="name" select="$message-construct/imvert:name/@original" as="xs:string"/>
         <xsl:variable name="tech-name" select="imf:get-normalized-name($message-construct/imvert:name, 'element-name')" as="xs:string"/>
@@ -202,9 +191,6 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-<?x        <xsl:result-document href="{concat('file:/c:/temp/construct-',ep:id,'-',generate-id(),'.xml')}">
-            <xsl:copy-of select="$message-construct"/>
-        </xsl:result-document>    ?>
 
         <xsl:sequence select="imf:create-debug-comment('Debuglocation OAS00500',$debugging)"/>
         
@@ -301,42 +287,44 @@
                 </xsl:when>
             </xsl:choose>
 
-            <xsl:choose>
-                <xsl:when test="ep:id and @type = 'association'">
-                    <xsl:sequence select="imf:msg('WARNING','OAS00700')"/>
-                </xsl:when>
-                <xsl:when test="ep:id and @type = 'groepCompositie'">
-                    <xsl:sequence select="imf:msg('WARNING','OAS00750')"/>
-                </xsl:when>
-                <xsl:when test="ep:id and @type = 'association-class'">
-                    <xsl:sequence select="imf:msg('WARNING','OAS00800')"/>
-                </xsl:when>
-                <xsl:when test="ep:id-refering-association and @type = 'class'">
-                    <xsl:sequence select="imf:msg('WARNING','OAS00825')"/>
-                </xsl:when>
-                <xsl:when test="ep:id and @type = 'class'">
-                    <xsl:sequence select="imf:msg('WARNING','OAS00850')"/>
-                </xsl:when>
-                <!-- TOD: Nagaan of deze when correct is. Wordt nl. niet in een when statement in bovenstaande variable afgevangen. -->
-                <xsl:when test="ep:id and @type = 'subclass'">
-                    <xsl:sequence select="imf:msg('WARNING','OAS00900')"/>
-                </xsl:when>
-                <xsl:when test="ep:id and @type = 'attribute'">
-                    <xsl:sequence select="imf:msg('WARNING','OAS00950')"/>
-                </xsl:when>
-                <xsl:when test="ep:type-id and @type = 'complex-datatype'">
-                    <xsl:sequence select="imf:msg('WARNING','OAS01000')"/>
-                </xsl:when>
-                <xsl:when test="ep:type-id">
-                    <xsl:sequence select="imf:msg('WARNING','OAS01050')"/>
-                </xsl:when>
-            </xsl:choose>
+            <xsl:if test="$debugging">
+                <xsl:choose>
+                    <xsl:when test="ep:id and @type = 'association'">
+                        <xsl:sequence select="imf:msg('WARNING','OAS00700')"/>
+                    </xsl:when>
+                    <xsl:when test="ep:id and @type = 'groepCompositie'">
+                        <xsl:sequence select="imf:msg('WARNING','OAS00750')"/>
+                    </xsl:when>
+                    <xsl:when test="ep:id and @type = 'association-class'">
+                        <xsl:sequence select="imf:msg('WARNING','OAS00800')"/>
+                    </xsl:when>
+                    <xsl:when test="ep:id-refering-association and @type = 'class'">
+                        <xsl:sequence select="imf:msg('WARNING','OAS00825')"/>
+                    </xsl:when>
+                    <xsl:when test="ep:id and @type = 'class'">
+                        <xsl:sequence select="imf:msg('WARNING','OAS00850')"/>
+                    </xsl:when>
+                    <!-- TOD: Nagaan of deze when correct is. Wordt nl. niet in een when statement in bovenstaande variable afgevangen. -->
+                    <xsl:when test="ep:id and @type = 'subclass'">
+                        <xsl:sequence select="imf:msg('WARNING','OAS00900')"/>
+                    </xsl:when>
+                    <xsl:when test="ep:id and @type = 'attribute'">
+                        <xsl:sequence select="imf:msg('WARNING','OAS00950')"/>
+                    </xsl:when>
+                    <xsl:when test="ep:type-id and @type = 'complex-datatype'">
+                        <xsl:sequence select="imf:msg('WARNING','OAS01000')"/>
+                    </xsl:when>
+                    <xsl:when test="ep:type-id">
+                        <xsl:sequence select="imf:msg('WARNING','OAS01050')"/>
+                    </xsl:when>
+                </xsl:choose>
+            </xsl:if>
         </xsl:if>
 
         <!-- The construct variable holds the imvert construct which has an imvert:id equal to the 'id' variable. So sometimes it's an attribute, sometimes 
              an association amd sometimes a class. -->
         <xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)"/>
-
+        
 <?x        <xsl:variable name="doc">
             <xsl:variable name="this-construct" select="$packages//imvert:*[imvert:id = $id]"/>
             <xsl:if test="not(empty(imf:merge-documentation($this-construct,'CFG-TV-DEFINITION')))">
@@ -357,9 +345,9 @@
                 </ep:pattern>
             </xsl:if>
         </xsl:variable> ?>
-<?x        <xsl:result-document href="{concat('file:/c:/temp/construct-',$name,'-',generate-id(),'.xml')}">
+<?x        <xsl:result-document href="{concat('file:/c:/temp/construct-29180524-',$name,'-',generate-id(),'.xml')}">
             <xsl:copy-of select="$construct"/>
-        </xsl:result-document>    ?>
+        </xsl:result-document>  ?> 
         
         <xsl:choose>
             <!-- If the current ep:construct is an association-class no ep:construct element is generated. All attributes of that related class are directly placed 
@@ -391,7 +379,13 @@
                 <xsl:variable name="type-id" select="ep:type-id"/>
                 <xsl:variable name="classconstruct" select="imf:get-construct-by-id($type-id,$packages)"/>
                 <xsl:variable name="type-name" select="$classconstruct/imvert:name"/>
+                <xsl:variable name="meervoudsnaam">
+                    <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-TARGETROLEPLURAL')"/>
+                </xsl:variable>
                 <ep:construct type="{@type}">
+                    <xsl:if test="not(empty($meervoudsnaam))">
+                        <xsl:attribute name="meervoudsnaam" select="$meervoudsnaam"/>
+                    </xsl:if>
                     <xsl:sequence select="imf:create-debug-comment(concat('OAS01200, id: ',$id),$debugging)"/>
                     <xsl:sequence select="imf:create-output-element('ep:name', $type-name)"/>
                     <xsl:sequence select="imf:create-output-element('ep:tech-name', $type-name)"/>
@@ -403,7 +397,15 @@
             </xsl:when>
             <!-- In all othert cases this branch applies. -->
             <xsl:otherwise>
+                <xsl:variable name="typeid" select="$construct//imvert:type-id"/>
+                <xsl:variable name="relatedconstruct" select="imf:get-construct-by-id($typeid,$packages)"/>
+                <xsl:variable name="meervoudsnaam">
+                    <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($relatedconstruct, '##CFG-TV-NAMEPLURAL')"/>
+                </xsl:variable>
                 <ep:construct type="{@type}">
+                    <xsl:if test="not(empty($meervoudsnaam))">
+                        <xsl:attribute name="meervoudsnaam" select="$meervoudsnaam"/>
+                    </xsl:if>
                     <xsl:sequence select="imf:create-debug-comment(concat('OAS01250, id: ',$id),$debugging)"/>
                     <xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
                     <xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
@@ -473,9 +475,9 @@
                 <xsl:sequence select="imf:msg('WARNING',$msg)"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:result-document href="{concat('file:/c:/temp/construct-',$name,'-',generate-id(),'.xml')}">
+<?x                <xsl:result-document href="{concat('file:/c:/temp/construct-',$name,'-',generate-id(),'.xml')}">
                     <xsl:sequence select="$construct"/>
-                </xsl:result-document>
+                </xsl:result-document> ?>
             </xsl:otherwise>
         </xsl:choose>
         <xsl:variable name="doc">
@@ -526,6 +528,13 @@
             <!-- ep:constructs of type 'association-class' aren't processed at all.
                  The content of that kind of constructs is already embedded within its parents constructs. -->
             <xsl:when test="@type='association-class'"/>
+            <!-- TODO: Nagaan of er situaties zijn dat een association terecht geen attributes heeft. Wellicht asl het zelf een association heeft. -->
+            <xsl:when test="@type='association' and not($construct//imvert:attributes/imvert:attribute)">
+                <xsl:sequence select="imf:create-debug-comment(concat('OAS01550, id: ',$id),$debugging)"/>
+                <xsl:variable name="msg"
+                    select="concat('The construct ',$construct/imvert:class/imvert:name,' (id ',$construct/imvert:class/imvert:id,') does not have attributes.')"/>
+                <xsl:sequence select="imf:msg('WARNING', $msg)"/>                
+            </xsl:when>
             <xsl:when test="@type='association' and $construct//imvert:attributes/imvert:attribute">
                 <xsl:sequence select="imf:create-debug-comment(concat('OAS01600, id: ',$id),$debugging)"/>
                 <xsl:copy>
@@ -780,8 +789,18 @@
         <xsl:variable name="supplier" select="imf:get-trace-suppliers-for-construct(.,1)[@project='SIM'][1]"/>
         <xsl:variable name="construct" select="if ($supplier) then imf:get-trace-construct-by-supplier($supplier,$imvert-document) else ()"/>
         <xsl:variable name="SIM-name" select="($construct/imvert:name, imvert:name)[1]"/>
+        <xsl:variable name="SIM-alias" select="($construct/imvert:alias, imvert:alias)[1]"/>
         
-        <ep:enum><xsl:value-of select="$SIM-name"/></ep:enum>
+        <ep:enum>
+           <xsl:choose>
+               <xsl:when test="empty($SIM-alias)">
+                   <xsl:value-of select="$SIM-name"/>
+               </xsl:when>
+               <xsl:otherwise>
+                   <xsl:value-of select="$SIM-alias"/>
+               </xsl:otherwise>
+           </xsl:choose>
+        </ep:enum>
         
     </xsl:template>
 
