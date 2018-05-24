@@ -81,7 +81,6 @@
             </desc>
             <desc lang="nl">
                 De verzameling van gegevens van een object van een type die gelijktijdig muteren en onderhouden worden.
-                TODO  De gegevensgroeptype is als source van een composite relatie opgenomen bij een Objecttype.
                 Voorbeeld: gegevensgroeptype Geboorte bij INGESCHREVEN NATUURLIJK PERSOON, 	gegevensgroeptype Koopsom bij KADASTRALE ONROERENDE ZAAK
             </desc>
             <construct>class</construct>
@@ -299,6 +298,20 @@
             <construct>association</construct>
         </stereo>
        
+        <stereo id="stereotype-name-relatiesoort">
+            <name lang="en">Relationkind</name>
+            <name lang="nl">Relatiesoort</name>
+            <desc lang="nl">De soort waartoe een relatie kan behoren.</desc>
+            <construct>association</construct>
+        </stereo>
+        
+        <stereo id="stereotype-name-relation-role">
+            <name lang="nl">Relatierol</name>
+            <name lang="en">AssociationRole</name>
+            <desc lang="nl">De benaming van de manier waarop een object deelneemt aan een relatie met een ander object.</desc>
+            <construct>associationend</construct>
+        </stereo>
+        
         <!-- generic -->
       
         <stereo id="stereotype-name-generalization">

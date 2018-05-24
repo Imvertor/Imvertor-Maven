@@ -48,7 +48,6 @@
                 <!-- optional for the following stereo's -->
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
-                <stereo minmax="0..1">stereotype-name-composite</stereo>
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <declared-values lang="nl">
@@ -72,7 +71,6 @@
                 <!-- optional for the following stereo's -->
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
-                <stereo minmax="0..1">stereotype-name-composite</stereo>
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <declared-values lang="nl">
@@ -96,7 +94,6 @@
                 <!-- optional for inherited stereos -->
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
-                <stereo minmax="0..1">stereotype-name-composite</stereo>
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
@@ -147,7 +144,6 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
-                <stereo minmax="0..1">stereotype-name-composite</stereo>
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
                 <stereo minmax="0..1">stereotype-name-voidable</stereo>
@@ -174,6 +170,7 @@
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
                 <stereo minmax="0..1">stereotype-name-union-element</stereo>
                 <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
             </stereotypes>
         </tv>
         
@@ -188,6 +185,7 @@
             </stereotypes>
         </tv>
         
+        <?x
         <tv norm="space" id="CFG-TV-RELATION">
             <name lang="nl">Relatie</name>
             <name lang="en">Relation</name>
@@ -197,6 +195,7 @@
             <stereotypes>
             </stereotypes>
         </tv>
+        ?>
         
         <tv id="CFG-TV-DEFINITION" origin="system">
             <stereotypes>

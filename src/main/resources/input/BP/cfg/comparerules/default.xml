@@ -179,9 +179,8 @@
         <!-- 
             any specific config typically lists the tagged values and the mode in which they should be compared. 
         -->
-        <elms level="model">
-            <elm use="DIVR"  form="tv_(enter name here)">Tagged value: (Enter explain here))</elm>
-        </elms>
+        <elm use="IVR"  form="tv_(enter name here)">Tagged value: (Enter explain here))</elm>
+
        
     </elms>
 </compare-rules>
