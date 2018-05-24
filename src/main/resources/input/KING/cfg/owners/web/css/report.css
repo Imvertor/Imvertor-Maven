@@ -30,7 +30,7 @@ p.supplierMark {
 }
 
 .tid {
-    display: block;
+    display: inline;
     font-size: 70%;
     color: gray;  
 }
