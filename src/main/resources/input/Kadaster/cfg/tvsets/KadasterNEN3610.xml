@@ -16,8 +16,8 @@
         <tv norm="space" id="CFG-TV-DATERECORDED">
             <derive>yes</derive>
             <stereotypes>
-                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
-                <stereo minmax="0..1">stereotype-name-meervoudige-relatieklasse</stereo>
+                <stereo minmax="1..1">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="1..1">stereotype-name-meervoudige-relatieklasse</stereo>
             </stereotypes>
         </tv>
         
@@ -44,16 +44,16 @@
         <tv norm="space" id="CFG-TV-SOURCE">
             <derive>yes</derive>
             <stereotypes>
-                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
-                <stereo minmax="0..1">stereotype-name-meervoudige-relatieklasse</stereo>
+                <stereo minmax="1..1">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="1..1">stereotype-name-meervoudige-relatieklasse</stereo>
             </stereotypes>
         </tv>
         
         <tv norm="space" id="CFG-TV-SOURCEOFDEFINITION">
             <derive>yes</derive>
             <stereotypes>
-                <stereo minmax="0..1">stereotype-name-koppelklasse</stereo>
-                <stereo minmax="0..1">stereotype-name-meervoudige-relatieklasse</stereo>
+                <stereo minmax="1..1">stereotype-name-koppelklasse</stereo>
+                <stereo minmax="1..1">stereotype-name-meervoudige-relatieklasse</stereo>
             </stereotypes>
         </tv>
         
@@ -87,6 +87,7 @@
             <name lang="nl">Begrip</name>
             <name lang="en">Concept</name>
             <derive>yes</derive>
+            <desc lang="nl">Een referentie naar een begrip in een begrippenlijst/kennismodel middels een URI, of de naam van een begrip, welke kan worden afgebeeld op een URI.</desc>
             <stereotypes>
                 <stereo minmax="0..*">stereotype-name-objecttype</stereo>
                 <stereo minmax="0..*">stereotype-name-koppelklasse</stereo>

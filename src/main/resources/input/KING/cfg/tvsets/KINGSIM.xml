@@ -24,7 +24,7 @@
     <!-- KING refines grouping -->
     <xi:include href="Grouping.xml"/>
     
-    <name>KING</name>
+    <name>KINGSIM</name>
     <tagged-values>
       
         <tv norm="space" id="CFG-TV-AANDUIDINGSTRIJDIGHEIDNIETIGHEID">
@@ -69,6 +69,7 @@
                 <stereo minmax="1..1">stereotype-name-union-element</stereo>
                 <stereo minmax="1..1">stereotype-name-complextype</stereo>
                 <stereo minmax="1..1">stereotype-name-data-element</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo><!-- verplicht voor SIM -->
             </stereotypes>
         </tv>
         <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
@@ -142,6 +143,7 @@
             </desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="1..1">stereotype-name-composite</stereo><!-- verplicht voor SIM -->
             </stereotypes>
         </tv>
 
@@ -149,6 +151,12 @@
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="note" id="CFG-TV-DEFINITION">  
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-composite</stereo> <!-- verplicht voor SIM -->
             </stereotypes>
         </tv>
         <tv norm="note" id="CFG-TV-DESCRIPTION">   <!-- in aanvulling op SBR -->

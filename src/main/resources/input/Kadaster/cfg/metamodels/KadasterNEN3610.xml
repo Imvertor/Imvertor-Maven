@@ -38,6 +38,10 @@
         </profile>
     </profiles>
     
+    <features>
+        <feature name="role-based">false</feature>
+    </features>
+    
     <stereotypes xml:id="stereotypes">
     
         <stereo id="stereotype-name-featurecollection">

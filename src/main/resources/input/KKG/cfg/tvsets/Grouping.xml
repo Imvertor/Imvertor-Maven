@@ -22,7 +22,7 @@
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
                 <stereo minmax="1..1">stereotype-name-codelist</stereo>
-                <stereo minmax="1..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
                 <stereo minmax="1..1">stereotype-name-view-package</stereo>
             </stereotypes>
         </tv>

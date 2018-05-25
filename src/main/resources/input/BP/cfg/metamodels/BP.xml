@@ -48,7 +48,6 @@
             <name lang="nl">Gegevensgroeptype</name>
             <desc lang="nl">
                 De verzameling van gegevens van een object van een type die gelijktijdig muteren en onderhouden worden.
-                De gegevensgroeptype is als source van een composite relatie opgenomen bij een Objecttype.
                 Voorbeeld: gegevensgroeptype Geboorte bij INGESCHREVEN NATUURLIJK PERSOON, 	gegevensgroeptype Koopsom bij KADASTRALE ONROERENDE ZAAK
             </desc>
             <construct>class</construct>

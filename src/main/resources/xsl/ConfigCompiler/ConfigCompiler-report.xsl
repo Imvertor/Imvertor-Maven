@@ -66,6 +66,7 @@
                         <h1>Metamodel: stereotypes</h1>
                         <xsl:apply-templates select="." mode="metamodel-stereos"/>
                         <xsl:apply-templates select="." mode="metamodel-stereos-desc"/>
+                        <xsl:apply-templates select="." mode="metamodel-stereos-tv"/>
                     </div>  
                     <div>
                         <h1>Metamodel: tagged values</h1>
@@ -107,10 +108,7 @@
                 <xsl:sort select="name[1]"/>
                 <tr>
                     <td>
-                        <xsl:value-of select="string-join(name,', ')"/>
-                        <span class="tid">
-                            <xsl:value-of select="@id"/>
-                        </span>
+                        <xsl:sequence select="imf:show-name(.,position() != last())"/>
                     </td>
                     <td>
                         <xsl:value-of select="name[1]/@src"/>
@@ -141,10 +139,7 @@
                     <xsl:sort select="name[1]"/>
                     <tr>
                         <td>
-                            <xsl:value-of select="string-join(name,', ')"/>
-                            <span class="tid">
-                                <xsl:value-of select="@id"/>
-                            </span>
+                            <xsl:sequence select="imf:show-name(.,position() != last())"/>
                         </td>
                         <td>
                             <xsl:value-of select="string-join(construct,', ')"/>
@@ -167,10 +162,7 @@
                     <xsl:sort select="name[1]"/>
                     <tr>
                         <td>
-                            <xsl:value-of select="string-join(name,', ')"/>
-                            <span class="tid">
-                                <xsl:value-of select="@id"/>
-                            </span>
+                            <xsl:sequence select="imf:show-name(.,position() != last())"/>
                         </td>
                         <td>
                             <xsl:value-of select="string-join(desc,', ')"/>
@@ -179,6 +171,30 @@
                 </xsl:for-each>
             </xsl:variable>
             <xsl:sequence select="imf:create-result-table-by-tr($rows,'stereo:20,description:80','table-stereo-desc')"/>
+        </div>
+    </xsl:template>
+    
+    <xsl:template match="/config" mode="metamodel-stereos-tv">
+        <div>
+            <h2>Stereotype applicable tagged values</h2>
+            <xsl:variable name="rows" as="element(tr)*">
+                <xsl:for-each select="$configuration-metamodel-file//stereotypes/stereo">
+                    <xsl:sort select="name[1]"/>
+                    <xsl:variable name="stereo-id" select="@id"/>
+                    <tr>
+                        <td>
+                            <xsl:sequence select="imf:show-name(.,position() != last())"/>
+                        </td>
+                        <td>
+                            <xsl:for-each select="$configuration-tvset-file//tv[stereotypes/stereo/@id = $stereo-id]">
+                                <xsl:sort select="name"/>
+                                <xsl:sequence select="imf:show-name(.,position() != last())"/>
+                            </xsl:for-each>    
+                        </td>
+                    </tr>
+                </xsl:for-each>
+            </xsl:variable>
+            <xsl:sequence select="imf:create-result-table-by-tr($rows,'stereo:20,applicable tagged values:80','table-stereo-tv')"/>
         </div>
     </xsl:template>
     
@@ -211,11 +227,8 @@
                     <xsl:sort select="name[1]"/>
                     <tr>
                         <td>
-                            <xsl:value-of select="string-join(name,', ')"/>
-                            <span class="tid">
-                                <xsl:value-of select="@id"/>
-                            </span>
-                            <xsl:value-of select="if (normalize-space(@cross-meta)) then concat('Cross meta: ', @cross-meta) else ''"/>
+                            <xsl:sequence select="imf:show-name(.,position() != last())"/>
+                            <xsl:value-of select="if (normalize-space(@cross-meta)) then concat(' -- Cross meta: ', @cross-meta) else ''"/>
                         </td>
                         <td>
                            <xsl:value-of select="derive"/>
@@ -250,10 +263,7 @@
                     <xsl:sort select="name[1]"/>
                     <tr>
                         <td>
-                            <xsl:value-of select="string-join(name,', ')"/>
-                            <span class="tid">
-                                <xsl:value-of select="@id"/>
-                            </span>
+                            <xsl:sequence select="imf:show-name(.,position() != last())"/>
                         </td>
                         <td>
                             <xsl:value-of select="desc"/>
@@ -264,4 +274,19 @@
             <xsl:sequence select="imf:create-result-table-by-tr($rows,'tagged value:20,description:80','table-tvs-desc')"/>
         </div>
     </xsl:template>
+    
+    <xsl:function name="imf:show-name">
+        <xsl:param name="element"/>
+        <xsl:param name="add-newline"/>
+        
+        <xsl:value-of select="string-join($element/name,', ')"/>
+        <span class="tid">
+            <xsl:value-of select="' ('"/>
+            <xsl:value-of select="$element/@id"/>
+            <xsl:value-of select="')'"/>
+        </span>
+        <xsl:if test="$add-newline">
+            <br/>
+        </xsl:if>
+    </xsl:function>
 </xsl:stylesheet>

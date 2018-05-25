@@ -152,6 +152,7 @@
             </stereotypes>
         </tv>
         
+        <?x
         <tv norm="space" id="CFG-TV-RELATION">
             <name lang="nl">Relatie</name>
             <name lang="en">Relation</name>
@@ -160,6 +161,7 @@
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
+        x?>
         
         <tv norm="space" id="CFG-TV-FORMALPATTERN">
             <name lang="nl">Patroon</name>

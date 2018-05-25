@@ -20,7 +20,7 @@
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
     <!-- Geonovum NEN3610 follows KKG ISO requirements -->
-    <xi:include href="../../../KKG/cfg/metamodels/KKG-ISO.xml"/>
+    <xi:include href="../../../KKG/cfg/metamodels/KKG.xml"/>
    
     <name>NEN3610</name>
     
@@ -85,6 +85,7 @@
                 eigenschap. [ISO/TS 19103:2005]
             </desc>
             <construct>attribute</construct>
+            <construct>association</construct>
             <construct>associationrole</construct>
         </stereo>
         

@@ -8,4 +8,15 @@
     
     <name>Kadaster NEN3610</name>
   
+    <notes-rule lang="en">
+        <section title="Concept" tagged-value="CFG-TV-CONCEPT" process="lines">
+            <!-- content is URI; may be several lines where each line holds a TV value  -->
+        </section>
+    </notes-rule>
+    
+    <notes-rule lang="nl">
+        <section title="Begrip" tagged-value="CFG-TV-CONCEPT" process="lines">
+            <!-- content is URI; may be several lines where each line holds a TV value  -->
+        </section>
+    </notes-rule>
 </notes-rules>

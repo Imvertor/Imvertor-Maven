@@ -13,6 +13,11 @@
     <desc lang="en">Tagset for NEN3610 conformant KKG-ISO extensions</desc>
     <desc lang="nl">Tags voor NEN3610 vereiste KKG-ISO uitbreidingen</desc>
     
-  
+    <tv norm="space" id="CFG-TV-DATERECORDED">
+        <derive>yes</derive>
+        <stereotypes>
+            <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
+        </stereotypes>
+    </tv>
     
 </tagset>

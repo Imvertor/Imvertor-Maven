@@ -47,23 +47,6 @@
     </features>
     
     <stereotypes xml:id="stereotypes">
-
-        <stereo id="stereotype-name-relation-role">
-            <name lang="nl">Relatierol</name>
-            <name lang="en">AssociationRole</name>
-            <construct>associationend</construct>
-        </stereo>
-      
-        <stereo id="stereotype-name-codelist">
-            <name lang="nl">Codelijst</name>
-        </stereo>
-
-        <stereo id="stereotype-name-union">
-            <name lang="nl">Keuze</name>
-        </stereo>
-        <stereo id="stereotype-name-union-element">
-            <name lang="nl">Keuze element</name>
-        </stereo>
-        
+                
     </stereotypes>
 </metamodel>

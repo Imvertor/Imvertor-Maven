@@ -653,7 +653,7 @@
    
     <xsl:function name="imf:get-xsd-filepath" as="xs:string">
         <xsl:param name="this" as="node()"/>
-        <xsl:value-of select="(imf:get-profile-tagged-value($this,'location'),imf:get-profile-tagged-value($this,'xsd-location'))[1]"/>
+        <xsl:value-of select="imf:get-profile-tagged-value($this,'location')[1]"/>
     </xsl:function>
     
     <xsl:function name="imf:get-client-release" as="xs:string">
