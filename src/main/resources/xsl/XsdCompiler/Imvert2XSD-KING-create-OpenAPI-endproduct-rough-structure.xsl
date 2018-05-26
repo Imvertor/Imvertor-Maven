@@ -185,7 +185,8 @@
 		<!-- If the class hasn't been processed before it can be processed, else processing is canceled to prevent recursion and a Warning is generated.
 			 Recursion should be prevented in the model. -->
 		
-		<!-- TODO: Er is sprake van dat enige mate van recursion toch wordt toegestaan. Zo ja dan moeten we dat nog uitwerken. -->
+		<!-- TODO: Er is sprake van dat enige mate van recursion toch wordt toegestaan. Daarom is de message bij recursion uitgeschakeld.
+				   Indien recursion toch niet gewenst is dan kan deze weer wordn ingeschakeld. -->
 		<xsl:choose>
 			<xsl:when test="not(contains($id-trail, concat('#', $id, '#')))">
 				<xsl:choose>
@@ -274,10 +275,10 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
-			<xsl:otherwise>
-				<xsl:variable name="msg" select="concat('De class ',imvert:name,' komt recursief voor in het BSM model. Bij een Open API koppelvlak is dat niet toegestaan. Pas het model aan.')" as="xs:string"/>
+			<xsl:otherwise/>
+<?x				<xsl:variable name="msg" select="concat('De class ',imvert:name,' komt recursief voor in het BSM model. Bij een Open API koppelvlak is dat niet toegestaan. Pas het model aan.')" as="xs:string"/>
 				<xsl:sequence select="imf:msg('WARNING',$msg)"/>
-			</xsl:otherwise>
+			</xsl:otherwise> ?>
 		</xsl:choose>
 		
 		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)"/>
