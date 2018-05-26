@@ -66,11 +66,11 @@
             <construct>package</construct>
         </stereo>
         
-        <stereo id="stereotype-name-group-package">
-            <name lang="en">Group</name>
-            <name lang="nl">Groep</name>
+        <stereo id="stereotype-name-folder-package">
+            <name lang="en">Folder</name>
+            <name lang="nl">Folder</name>
             <desc lang="nl">Een package dat alléén bedoeld is om andere UML constructies (packagaes, klassen) te groeperen, en geen verdere rol speelt in de interpretatie van het model.
-            Binnen een model worden alle packages die geen stereotype hebben opgevat als een Groep package.</desc>
+            Binnen een model worden alle packages die geen stereotype hebben opgevat als een Folder package.</desc>
             <construct>package</construct>
         </stereo>
         

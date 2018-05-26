@@ -187,7 +187,7 @@
     <xsl:template match="imvert:package[imf:member-of(..,$application-package)]" priority="102">
         <!-- redmine #487837 Packages in <<application>> moeten bekend stereotype hebben -->
         <xsl:sequence select="imf:report-error(., 
-            not(imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-internal-package','stereotype-name-recyclebin','stereotype-name-group-package','stereotype-name-view-package')), 
+            not(imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-internal-package','stereotype-name-recyclebin','stereotype-name-folder-package','stereotype-name-view-package')), 
             'Package with unexpected stereotype(s): [1]', imvert:stereotype)"/>
       
         <xsl:next-match/>
@@ -366,7 +366,7 @@
         <!--setup-->
         <!--validation -->
         <xsl:sequence select="imf:report-warning(., 
-            not(imvert:stereotype/@id = ('stereotype-name-group-package')), 
+            not(imvert:stereotype/@id = ('stereotype-name-folder-package')), 
             'Package has stereotype(s) [1] but will be merged with domain package',(imvert:stereotype))"/>
         <!-- check as regular package -->
         <xsl:next-match/>
