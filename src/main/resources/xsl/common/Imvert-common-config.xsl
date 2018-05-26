@@ -436,9 +436,10 @@
         </xsl:choose>
     </xsl:function>
     
+    <!-- TODO in de configuratie moteten @id alleen worden toegekend aan constructs die dat ID hebben, niet aan verwijzingen daarnaar. Overal doorvoeren! -->
     <xsl:function name="imf:get-config-name-by-id" as="xs:string">
         <xsl:param name="id"/> <!-- any ID -->
-        <xsl:sequence select="$configuration-file//*[@id=$id]/name[@lang=($language,'#all')]"/>
+        <xsl:sequence select="distinct-values($configuration-file//*[@id=$id]/name[@lang=($language,'#all')])"/>
     </xsl:function>
     
     <!-- return all nodes the result from parsing the EA note string. This is a sequence of text line .-->  
