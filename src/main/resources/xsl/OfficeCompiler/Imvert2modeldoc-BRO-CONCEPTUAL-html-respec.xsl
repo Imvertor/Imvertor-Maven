@@ -33,7 +33,6 @@
            <br/>
             Wanneer je technische fouten of onvolkomenheden aantreft, geef dit dan door aan <i><xsl:value-of select="imf:get-config-string('cli','supportemail')"/></i> en geef de code 
             <i>"<xsl:value-of select="imf:get-config-string('appinfo','release-name')"/>"</i> door. 
-            Voor inhoudelijke fouten neem contact op met het modellenteam: <i><xsl:value-of select="imf:get-config-string('cli','contactemail')"/></i>.
         </p>
         <xsl:apply-templates select="section" mode="domain"/>
     </xsl:template>
