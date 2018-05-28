@@ -41,7 +41,7 @@
     <xsl:function name="imf:msg" as="item()*">
         <xsl:param name="type" as="xs:string"/>
         <xsl:param name="text" as="xs:string"/>
-        <xsl:sequence select="imf:msg($document,$type,$text,())"/>
+        <xsl:sequence select="imf:msg((),$type,$text,())"/>
     </xsl:function>
     
     <!-- simple message, type, text and info inserted within text -->
@@ -49,7 +49,7 @@
         <xsl:param name="type" as="xs:string"/>
         <xsl:param name="text" as="xs:string"/>
         <xsl:param name="info" as="item()*"/>
-        <xsl:sequence select="imf:msg($document,$type,$text,$info)"/>
+        <xsl:sequence select="imf:msg((),$type,$text,$info)"/>
     </xsl:function>
     
     <!-- 
@@ -58,14 +58,18 @@
         The message is stored when valid debug mode or when other type of message.
     -->
     <xsl:function name="imf:msg" as="empty-sequence()">
-        <xsl:param name="this" as="node()"/>
+        <xsl:param name="this" as="node()*"/>
         <xsl:param name="type" as="xs:string"/>
         <xsl:param name="text" as="xs:string"/>
         <xsl:param name="info" as="item()*"/>
         
         <xsl:if test="not($type = 'DEBUG') or imf:debug-mode()">
-            <xsl:variable name="name" select="if ($this=$document) then '(ROOT)' else imf:get-construct-name($this)"/>
-            <xsl:variable name="id" select="$this/imvert:id"/>
+            <xsl:variable name="mthis" select="$this[1]"/>
+            <xsl:variable name="name" select="
+                if (empty($mthis)) then '(NO CONTEXT)' else 
+                if ($this[2]) then '(MULTIPLE CONTEXTS)' else 
+                imf:get-construct-name($mthis)"/>
+            <xsl:variable name="id" select="$mthis/imvert:id"/>
             <xsl:variable name="ctext" select="imf:msg-insert-parms($text,$info)"/>
             <xsl:variable name="wiki" select="if ($type = ('ERROR', 'WARNING', 'FATAL')) then imf:get-wiki-key($text) else ''"/>
             <xsl:message>
