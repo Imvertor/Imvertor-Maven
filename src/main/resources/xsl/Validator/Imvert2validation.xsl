@@ -1211,7 +1211,7 @@
     <xsl:function name="imf:check-tagged-value-assignment" as="element()*">
         <xsl:param name="this" as="element()"/> <!-- any element that may have stereotype and tagged values-->
         
-        <xsl:variable name="stereotype-id" select="$this/imvert:stereotype/@id"/>
+        <xsl:variable name="stereotype-ids" select="$this/imvert:stereotype/@id"/>
         <xsl:if test="$validate-tv-assignment">
             <xsl:for-each-group select="$this/imvert:tagged-values/imvert:tagged-value" group-by="@id">
                 <xsl:variable name="first-in-group" select="."/>
@@ -1225,7 +1225,7 @@
                     
                     <xsl:variable name="value-derived" select="imf:boolean($declared/derive)"/>
                     
-                    <xsl:variable name="minmax" select="tokenize($declared/stereotypes/stereo[@id = $stereotype-id][1]/@minmax,'\.\.')"/>
+                    <xsl:variable name="minmax" select="tokenize($declared/stereotypes/stereo[@id = $stereotype-ids][1]/@minmax,'\.\.')"/>
                     <xsl:variable name="min" select="xs:integer(($minmax[1],'1')[1])"/>
                     <xsl:variable name="max" select="xs:integer(for $m in ($minmax[2],'1')[1] return if ($m = '*') then '1000' else $m)"/>
                     
@@ -1234,8 +1234,8 @@
                     
                     <xsl:variable name="value-listing" select="$declared/declared-values/value"/>
                     
-                    <xsl:variable name="valid-for-stereotype" select="$declared/stereotypes/stereo/@id = $stereotype-id"/>
-                    <xsl:variable name="valid-omitted" select="empty($stereotype-id) and $declared/stereotypes/stereo = $normalized-stereotype-none"/>
+                    <xsl:variable name="valid-for-stereotype" select="$declared/stereotypes/stereo/@id = $stereotype-ids"/>
+                    <xsl:variable name="valid-omitted" select="empty($stereotype-ids) and $declared/stereotypes/stereo = $normalized-stereotype-none"/>
                     <xsl:variable name="valid-from-listing" select="$value = $value-listing"/>
                     
                     <xsl:variable name="is-first-in-group" select=". is $first-in-group"/>
@@ -1249,7 +1249,7 @@
                             <xsl:sequence select="imf:report-warning($this, true(), 'Tagged value not expected or unknown: [1]',$name/@original)"/>
                         </xsl:when>
                         <xsl:when test="$is-first-in-group and not($valid-for-stereotype)">
-                            <xsl:sequence select="imf:report-warning($this, true(), 'Tagged value [1] not expected on stereotype [2]',($name/@original,imf:get-config-name-by-id($stereotype-id)))"/>
+                            <xsl:sequence select="imf:report-warning($this, true(), 'Tagged value [1] not expected on stereotype [2]',($name/@original,imf:string-group(for $s in $stereotype-ids return imf:get-config-name-by-id($s))))"/>
                         </xsl:when>
                         <xsl:when test="$is-first-in-group and $value-required and not(normalize-space($value))">
                             <xsl:sequence select="imf:report-error($this, true(), 'Tagged value [1] has no value',($name/@original))"/>
