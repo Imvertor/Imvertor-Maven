@@ -191,11 +191,11 @@
       <!--validate-->
       <IMVERTOR_METAMODEL_KOOP-CONCEPTUAL_VALIDATE_XSLPATH>Imvert2validation-BRO.xsl</IMVERTOR_METAMODEL_KOOP-CONCEPTUAL_VALIDATE_XSLPATH>
       
-      <WORK_INTERFACE_FILE>${system/work-imvert-folder-path}/imvertor.031.interface.xml</WORK_INTERFACE_FILE>
-      <IMVERTOR_INTERFACE_XSLPATH>Imvert2interface.xsl</IMVERTOR_INTERFACE_XSLPATH>
-      
-      <WORK_PROXY_FILE>${system/work-imvert-folder-path}/imvertor.032.proxy.xml</WORK_PROXY_FILE>
+      <WORK_PROXY_FILE>${system/work-imvert-folder-path}/imvertor.031.proxy.xml</WORK_PROXY_FILE>
       <IMVERTOR_PROXY_XSLPATH>Imvert2proxy.xsl</IMVERTOR_PROXY_XSLPATH>
+      
+      <WORK_INTERFACE_FILE>${system/work-imvert-folder-path}/imvertor.032.interface.xml</WORK_INTERFACE_FILE>
+      <IMVERTOR_INTERFACE_XSLPATH>Imvert2interface.xsl</IMVERTOR_INTERFACE_XSLPATH>
       
    </properties>
 </config>

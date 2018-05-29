@@ -29,7 +29,7 @@
     version="2.0">
 
     <!-- 
-         Canonization of the input, common to all metamodels.
+         Resolve all proxies.
          
          ADAPTION IN ACCORDANCE WITH https://kinggemeenten.plan.io/issues/487891 
     -->
@@ -43,14 +43,62 @@
     
     <xsl:variable name="local-constructs" select="('name', 'id')"/> <!-- 'attributes', 'associations', ? -->
     
+    <xsl:variable name="root-package" select="//imvert:package[imf:boolean(imvert:is-root-package)]"/>
+    <xsl:variable name="outside-package" select="//imvert:package[imvert:id = 'OUTSIDE']"/>
+    
+    <!-- proxy the root package content. This drags in all proxied constructs, except for outside constructs that are not referenced by the application itself -->
+    <xsl:variable name="proxied-content" as="node()*">
+        <xsl:apply-templates select="$root-package/*" mode="client"/>
+    </xsl:variable>
+    
+    <!-- Compile a list of all outside constructs required by the root package -->
+    <xsl:variable name="proxied-content-outside" as="element(imvert:class)*">
+        <xsl:sequence select="$outside-package/imvert:class"/>
+    </xsl:variable>
+    
     <xsl:template match="/imvert:packages">
         <xsl:copy>
             <xsl:sequence select="imf:compile-imvert-header(.)"/>
+            
             <xsl:apply-templates select="imvert:package" mode="client"/>
+            
+            <!-- 
+                Create a standard package for outside package; even if no such external references occur.
+                For outside packages, check if all references on the proxied content to outside constructs are resolved. 
+                If not, add them based on the current mappings. 
+            --> 
+            <imvert:package>
+                <imvert:stereotype id="stereotype-name-folder-package" origin="system">FOLDER</imvert:stereotype>
+                <imvert:id>OUTSIDE</imvert:id>
+                
+                <!-- pass on the contents of the outside package -->
+                <xsl:sequence select="$outside-package/imvert:class"/>
+             
+                <!-- and add anything required by proxy -->
+                
+                <xsl:variable name="known-outside-classes" select="$proxied-content//imvert:*[imvert:type-package = 'OUTSIDE' and empty(imvert:proxy-to-outside)]"/>
+                <xsl:variable name="proxied-outside-classes" select="$proxied-content//imvert:*[imvert:proxy-to-outside]"/>
+                
+                <xsl:for-each-group select="$proxied-outside-classes" group-by="imvert:proxy-to-outside">
+                    <xsl:if test="not($known-outside-classes/imvert:type-name = current-grouping-key())">
+                        <imvert:class origin="stub" umltype="Class">
+                            <xsl:comment>REQUIRED BY PROXY</xsl:comment>
+                            <imvert:name original="{current-grouping-key()}">
+                                <xsl:value-of select="current-grouping-key()"/>
+                            </imvert:name>
+                            <imvert:id>
+                                <xsl:value-of select="current-group()[1]/imvert:type-id"/>
+                            </imvert:id>
+                        </imvert:class>
+                    </xsl:if>
+                </xsl:for-each-group>
+                
+            </imvert:package>
+            
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="imvert:package[imf:boolean(imvert:is-root-package)]" mode="client">
+    <xsl:template match="imvert:package[. is $root-package]" mode="client">
         <xsl:variable name="this-package" select="."/>
         
         <xsl:variable name="package-proxies" select=".//*[imvert:stereotype/@id = $stereotype-proxy]"/>
@@ -69,22 +117,16 @@
             </xsl:when>
             <xsl:otherwise>
                 <!-- resolve all proxies. This introduces (drags) types that occur as the type of a proxied attribute. -->
-                <xsl:variable name="proxied-content" as="node()*">
-                    <xsl:apply-templates mode="client"/>
-                </xsl:variable>
                 <imvert:package>
-                    <xsl:apply-templates select="@*"/>
                     <xsl:sequence select="$proxied-content"/>
                 </imvert:package>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
     
-    <xsl:template match="imvert:package[imf:boolean(imvert:is-root-package)]/imvert:package" mode="client">
+    <xsl:template match="imvert:package[. is $root-package]/imvert:package" mode="client">
        
-        <xsl:variable name="root-package" select=".."/>
-
-        <xsl:variable name="proxied-content" as="node()*">
+         <xsl:variable name="proxied-content" as="node()*">
             <xsl:apply-templates mode="client"/>
         </xsl:variable>
         
@@ -104,7 +146,7 @@
                         <xsl:for-each select="$supplier-subpaths">
                             <xsl:variable name="supplier-doc" select="imf:get-imvert-supplier-doc(.)"/>
                             <xsl:variable name="supplier" select="imf:get-construct-by-id($type-id,$supplier-doc)"/>
-                            <xsl:sequence select="$supplier"/>
+                            <xsl:apply-templates select="$supplier" mode="dragged"/>
                         </xsl:for-each>
                     </xsl:variable>
                     <!-- determine which release these ID's are taken from -->
@@ -137,6 +179,10 @@
         </imvert:package>
     </xsl:template>
 
+    <xsl:template match="imvert:package[. is $outside-package]" mode="client">
+        <!-- skip; processed elsewhere -->
+    </xsl:template>
+    
     <!--TODO inlezen van losse documenten tegengaan; volg het gecompileerde suppliers document -->
     <xsl:template match="imvert:class[imvert:stereotype/@id = $stereotype-proxy] | imvert:attribute[imvert:stereotype/@id = $stereotype-proxy]" mode="client">
         <xsl:variable name="client" select="."/>
@@ -219,6 +265,33 @@
             </xsl:choose>
         </xsl:copy>
     </xsl:template>
+ 
+    <!--
+        Replace/remove constructs dragged in by proxy, which are resolved in de dragged content, and should be re-interpreted in the client.       
+    -->
+    
+    <xsl:template match="imvert:conceptual-schema-type" mode="dragged">
+        <!-- remove, but insert an signal -->
+        <imvert:proxy-to-outside>
+            <xsl:value-of select="."/>
+        </imvert:proxy-to-outside>
+    </xsl:template>
+    
+    <xsl:template match="imvert:type-package-id[../imvert:conceptual-schema-type]" mode="dragged">
+       <!-- remove -->
+    </xsl:template>
+   
+    <xsl:template match="imvert:type-name[../imvert:conceptual-schema-type]" mode="dragged">
+        <!-- replace by the referencing name, GM_point in stead of "Point" -->
+        <xsl:variable name="type" select="../imvert:conceptual-schema-type"/>
+        <imvert:type-name original="{$type}">
+            <xsl:value-of select="$type"/>
+        </imvert:type-name>
+    </xsl:template>
+    
+    <xsl:template match="imvert:type-package[../imvert:conceptual-schema-type]" mode="dragged">
+        <imvert:type-package original="OUTSIDE">OUTSIDE</imvert:type-package>
+    </xsl:template>
     
     <xsl:template match="
         imvert:id | 
@@ -236,7 +309,6 @@
     <xsl:template match="imvert:tagged-value[@ID = ('CFG-TV-RULES','CFG-TV-DESCRIPTION')]" mode="supplier">
         <!-- skip; never copy these from the supplier. -->
     </xsl:template>
-    
     
     <?x
     <!-- 
@@ -258,7 +330,7 @@
     </xsl:template>
     x?>
     
-    <xsl:template match="node()" mode="#all">
+    <xsl:template match="node()" mode="client supplier dragged">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <xsl:apply-templates mode="#current"/>

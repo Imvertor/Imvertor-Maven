@@ -81,12 +81,12 @@ public class Validator extends Step {
 				break;
 		}
 		
-		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_INTERFACE_FILE", "properties/IMVERTOR_INTERFACE_XSLPATH","system/cur-imvertor-filepath") : false ;
-
 		if (configurator.isTrue("system", "supports-proxy")) {
 			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_PROXY_FILE", "properties/IMVERTOR_PROXY_XSLPATH","system/cur-imvertor-filepath") : false ;
 		}
 		
+		succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_INTERFACE_FILE", "properties/IMVERTOR_INTERFACE_XSLPATH","system/cur-imvertor-filepath") : false ;
+
 		if (succeeds) {
 			// VALIDATION IN STEPS
 			int j = 1;

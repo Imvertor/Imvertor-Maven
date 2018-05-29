@@ -127,7 +127,7 @@
                     <imvert:sentinel>true</imvert:sentinel>
                 </xsl:if>
                 <imvert:id>
-                    <xsl:value-of select="concat('GENERATED-PACKAGE-ID-',position())"/>
+                    <xsl:value-of select="concat('OUTSIDE-',position())"/>
                 </imvert:id>
                 <imvert:version>
                     <xsl:value-of select="current-group()[1]/@ve"/>
@@ -161,7 +161,7 @@
         <xsl:variable name="type-id" select="../imvert:type-id"/>
         <xsl:variable name="outside-class" select="$outside-mapped-classes[imvert:id = $type-id]"/>
         <xsl:variable name="outside-package-name" select="$outside-class/@cn"/>
-        <imvert:type-package original="$outside-package-name" origin="OUTSIDE">
+        <imvert:type-package original="{$outside-package-name}" origin="OUTSIDE">
             <xsl:value-of select="$outside-package-name"/>
         </imvert:type-package>
     </xsl:template>
