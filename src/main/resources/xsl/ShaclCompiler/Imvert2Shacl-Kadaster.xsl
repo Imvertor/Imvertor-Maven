@@ -263,8 +263,6 @@
         
         <xsl:value-of select="imf:ttl((concat($prefixShacl,':',$this/@formal-name,'Shape'),'rdf:type','sh:NodeShape',';'))"/>
         
-        <xsl:value-of select="imf:ttl(('sh:targetNode',concat($prefixData,':',$this/@formal-name)))"/>
-        
         <!-- loop door alle attributen en associaties heen, en plaats een property (predicate object), dus een link naar het attribuut -->
         <xsl:apply-templates select="$this/imvert:attributes/imvert:attribute[imvert:stereotype/@id = ('stereotype-name-attribute')]" mode="mode-shacl-object"/>
         <xsl:apply-templates select="$this/imvert:attributes/imvert:attribute[imvert:stereotype/@id = ('stereotype-name-attributegroup')]" mode="mode-shacl-object"/>
@@ -340,17 +338,20 @@
         <xsl:variable name="this" select="."/>
         
         <xsl:value-of select="imf:ttl((concat($prefixShacl,':',$this/@formal-name,'Shape'),'rdf:type','sh:PropertyShape',';'))"/>
+        <xsl:value-of select="imf:ttl(('sh:name',imf:ttl-value($this/imvert:name,'2q')))"/>
         <xsl:value-of select="imf:ttl(('sh:path',concat($prefixData,':',$this/@formal-name)))"/>
-      
+        
         <xsl:choose>
-            <xsl:when test="empty(imf:baretype)"> <!-- an enum value -->
-                <!-- niks -->
+            <xsl:when test="empty(imvert:baretype)"> <!-- an enum value -->
+                <xsl:value-of select="imf:ttl(('rdf:type','owl:DatatypeProperty'))"/>
             </xsl:when>
             <xsl:when test="empty(imvert:type-id)">
+                <xsl:value-of select="imf:ttl(('rdf:type','owl:ObjectProperty'))"/>
                 <xsl:value-of select="imf:ttl(('sh:datatype',imf:get-shacl-primitive-type(imvert:type-name)))"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="imf:ttl(('sh:class',imf:get-construct-by-id(imvert:type-id)/@formal-name))"/>
+                <xsl:value-of select="imf:ttl(('rdf:type','owl:ObjectProperty'))"/>
+                <xsl:value-of select="imf:ttl(('sh:targetClass',concat($prefixData,':',imf:get-construct-by-id(imvert:type-id)/@formal-name)))"/>
             </xsl:otherwise>
         </xsl:choose>
         
