@@ -438,7 +438,7 @@
     
     <!-- TODO in de configuratie moteten @id alleen worden toegekend aan constructs die dat ID hebben, niet aan verwijzingen daarnaar. Overal doorvoeren! -->
     <xsl:function name="imf:get-config-name-by-id" as="xs:string">
-        <xsl:param name="id"/> <!-- any ID -->
+        <xsl:param name="id" as="xs:string"/> <!-- any ID -->
         <xsl:sequence select="distinct-values($configuration-file//*[@id=$id]/name[@lang=($language,'#all')])"/>
     </xsl:function>
     
