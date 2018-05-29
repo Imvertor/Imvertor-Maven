@@ -73,10 +73,16 @@
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="imvert:association[imvert:stereotype/@id = ('stereotype-name-tekentechnisch')]" priority="-1">
+    <xsl:template match="imvert:association[imvert:stereotype/@id = ('stereotype-name-tekentechnisch')]">
         <!-- remove -->
     </xsl:template>
-
+    
+    <!-- verwijder alle outside klassen die alléén maar een rol spelen in een tekentechnische relatie --> 
+    <xsl:variable name="niet-tekentechnische-relaties-target-ids" select="//imvert:*[not(imvert:stereotype/@id = ('stereotype-name-tekentechnisch'))]/imvert:type-id"/>
+    <xsl:template match="imvert:package[imvert:id = 'OUTSIDE']/imvert:class[not(imvert:id = $niet-tekentechnische-relaties-target-ids)]">
+        <xsl:comment select="concat('Removed construct that is solely referenced by ignorable relation: ', imvert:name)"/>
+    </xsl:template>
+    
     <!-- TODO match phases to defined phases -->
     <xsl:template match="imvert:phase">
         <xsl:copy>

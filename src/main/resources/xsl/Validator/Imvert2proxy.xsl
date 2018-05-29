@@ -293,6 +293,10 @@
         <imvert:type-package original="OUTSIDE">OUTSIDE</imvert:type-package>
     </xsl:template>
     
+    <xsl:template match="imvert:class[imvert:conceptual-schema-class-name]" mode="dragged">
+        <!-- remove -->
+    </xsl:template>
+    
     <xsl:template match="
         imvert:id | 
         imvert:class/imvert:name | 
