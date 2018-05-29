@@ -199,7 +199,7 @@
                         <xsl:if test="imf:boolean($mapped-xsd-type/@primitive)">
                             <xsl:sequence select="imf:create-output-element('imvert:primitive',$mapped-xsd-type/@name)"/>
                         </xsl:if>
-                        <xsl:sequence select="imf:create-output-element(name(.),$mapped-xsd-type)"/>
+                        <xsl:sequence select="imf:create-output-element(name(.),$mapped-xsd-type/@name)"/>
                         <xsl:variable name="att-name" select="$mapped-xsd-type/@asAttribute"/>
                         <xsl:variable name="att-desig" select="$mapped-xsd-type/@asAttributeDesignation"/>
                         <xsl:variable name="att-hasNilreason" select="$mapped-xsd-type/@hasNilreason"/>
@@ -207,7 +207,7 @@
                         <xsl:choose>
                             <!-- when in context of attribute, and not a union element, check if an asAttribute is specified -->
                             <xsl:when test="parent::imvert:attribute and $att-name and not($is-union-element)">
-                               <xsl:sequence select="imf:create-output-element('imvert:attribute-type-name',$att-name)"/>
+                                <xsl:sequence select="imf:create-output-element('imvert:attribute-type-name',$att-name)"/>
                                 <xsl:sequence select="imf:create-output-element('imvert:attribute-type-designation',$att-desig)"/>
                                 <xsl:sequence select="imf:create-output-element('imvert:attribute-type-hasnilreason',$att-hasNilreason)"/>
                             </xsl:when>
