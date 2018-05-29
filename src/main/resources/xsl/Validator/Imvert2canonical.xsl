@@ -53,7 +53,7 @@
     <xsl:template match="imvert:package[empty(imvert:stereotype)]">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
-                <imvert:stereotype id="stereotype-name-folder-package" origin="system">
+            <imvert:stereotype id="stereotype-name-folder-package" origin="system">
                 <xsl:value-of select="imf:get-config-name-by-id('stereotype-name-folder-package')"/>
             </imvert:stereotype>
             <xsl:apply-templates/>
