@@ -3,6 +3,8 @@ Imvertor is developed by Dutch Cadastre, and made available under GPL (https://n
 
 Imvertor may be compiled as a Java application. It will not run "out of the box". You need to add configuration files.
 
+<i>The following guidelines need revision. This is planned for june 2018.</i>
+
 Let's suppose you installed imvertor at 
 <pre> %installdir% = D:\projects\gitprojects\Imvertor-Maven </pre>
 
