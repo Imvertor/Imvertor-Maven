@@ -47,6 +47,12 @@
          <tip>Yes if the notes fields that are required must be checked (for content)</tip>
          <required>true</required>
       </cli-parm> 
+      <cli-parm>
+         <name>stub_requiresalias</name>
+         <arg>yes|no</arg>
+         <tip>No if aliases for objects and relations should not be tested (STUB)</tip>
+         <required>false</required>
+      </cli-parm> 
    </cli-parms>
    <properties>
         
