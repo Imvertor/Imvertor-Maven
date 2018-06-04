@@ -213,6 +213,7 @@
                                    
                                     <xsl:apply-templates select="$client/imvert:name" mode="client"/>
                                     <xsl:apply-templates select="$client/imvert:id" mode="client"/>
+                                    <xsl:apply-templates select="$client/imvert:is-id" mode="client"/>
                                     
                                     <imvert:proxy origin="system" original-location="{.}">
                                         <xsl:value-of select="$supplier/imvert:id"/>
@@ -298,7 +299,8 @@
     </xsl:template>
     
     <xsl:template match="
-        imvert:id | 
+        imvert:id |
+        imvert:is-id |
         imvert:class/imvert:name | 
         imvert:supertype | 
         imvert:attribute/imvert:name | 
