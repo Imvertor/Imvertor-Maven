@@ -137,11 +137,16 @@
         <xsl:variable name="defining-superclasses" select="imf:get-superclasses($defining-class)"/>
         <xsl:variable name="target-has-id" select="($defining-class,$defining-superclasses)/imvert:attributes/imvert:attribute/imvert:is-id = 'true'"/>
         
+        <!-- vervallen, zie https://kinggemeenten.plan.io/issues/490086 -->
+        <?x
         <xsl:sequence select="imf:report-error(., 
             not($source-has-id), 
             'Source class [1] must have or inherit an attribute that is an ID', 
             imf:get-construct-name($class))"/>
+        x?>
         
+        <!-- vervallen, zie https://kinggemeenten.plan.io/issues/490086 -->
+        <?x
         <xsl:if test="exists(imvert:type-id) and exists($defining-class)">
             <xsl:sequence select="imf:report-error(., 
                 not($target-has-id), 
@@ -153,6 +158,7 @@
                 'Target class [1] must have stereotype [2] because the target in relation [3] is stereotyped as [4]', 
                 (imf:get-construct-name($defining-class),imf:get-config-stereotypes('stereotype-name-objecttype'), imvert:name, imf:get-config-stereotypes('stereotype-name-composite-id') ))"/>
         </xsl:if>
+        x?>
         
         <xsl:next-match/>
     </xsl:template>
