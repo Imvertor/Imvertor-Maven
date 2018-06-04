@@ -183,6 +183,11 @@
                 <!-- when taken from intern, all external references are already resolved. -->
                 <xsl:next-match/>
             </xsl:when>
+            <xsl:when test="../imvert:conceptual-schema-type">
+                <!--TODO: for now, assume resolved; however proxies should be resolved more robust, see VNG REDMINE 490086 -->
+                <xsl:comment>TODO may not be resolved!</xsl:comment>
+                <xsl:next-match/>
+            </xsl:when>
             <xsl:when test="empty($class)">
                 <xsl:next-match/>
             </xsl:when>
