@@ -156,7 +156,13 @@
             <xsl:copy-of select="$berichtsjabloon"/>
         </xsl:result-document>
         
-        <xsl:variable name="expand" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-EXPAND')"/>
+<?x        <xsl:variable name="expand" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-EXPAND')"/>  ?>
+        <xsl:variable name="expand">
+            <xsl:choose>
+                <xsl:when test=".//ep:construct[@type = 'association']//ep:expand = 'true'">true</xsl:when>
+                <xsl:otherwise>false</xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         <xsl:variable name="fields" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-FIELDS')"/>
         <xsl:variable name="grouping" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-GROUPING')"/>
         <xsl:variable name="pagination" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-PAGE')"/>
@@ -375,7 +381,30 @@
             </xsl:when>
             <!-- If the current ep:construct is an association or an groupCompositie a ep:construct element is generated with all necessary properties.
                  This when statement differs from the one above by the value of the ep:name and ep:tech-name. -->
-            <xsl:when test="@type=('association','groepCompositie')">
+            <xsl:when test="@type='association'">
+                <xsl:variable name="type-id" select="ep:type-id"/>
+                <xsl:variable name="classconstruct" select="imf:get-construct-by-id($type-id,$packages)"/>
+                <xsl:variable name="type-name" select="$classconstruct/imvert:name"/>
+                <xsl:variable name="meervoudsnaam">
+                    <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-TARGETROLEPLURAL')"/>
+                </xsl:variable>
+                <ep:construct type="{@type}">
+                    <xsl:if test="not(empty($meervoudsnaam))">
+                        <xsl:attribute name="meervoudsnaam" select="$meervoudsnaam"/>
+                    </xsl:if>
+                    <xsl:if test=".//ep:expand = 'true'">
+                        <xsl:attribute name="expand" select="'true'"/>
+                    </xsl:if>
+                    <xsl:sequence select="imf:create-debug-comment(concat('OAS01200, id: ',$id),$debugging)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:name', $type-name)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:tech-name', $type-name)"/>
+<?x                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/> ?>
+                    <xsl:sequence select="imf:create-output-element('ep:min-occurs', $construct/imvert:min-occurs)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:max-occurs', $construct/imvert:max-occurs)"/>                      
+                    <xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name(imf:get-normalized-name($type-name, 'element-name'),'type-name'))"/>            
+                </ep:construct> 
+            </xsl:when>
+            <xsl:when test="@type='groepCompositie'">
                 <xsl:variable name="type-id" select="ep:type-id"/>
                 <xsl:variable name="classconstruct" select="imf:get-construct-by-id($type-id,$packages)"/>
                 <xsl:variable name="type-name" select="$classconstruct/imvert:name"/>
@@ -389,15 +418,36 @@
                     <xsl:sequence select="imf:create-debug-comment(concat('OAS01200, id: ',$id),$debugging)"/>
                     <xsl:sequence select="imf:create-output-element('ep:name', $type-name)"/>
                     <xsl:sequence select="imf:create-output-element('ep:tech-name', $type-name)"/>
-<?x                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/> ?>
+                    <?x                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/> ?>
                     <xsl:sequence select="imf:create-output-element('ep:min-occurs', $construct/imvert:min-occurs)"/>
                     <xsl:sequence select="imf:create-output-element('ep:max-occurs', $construct/imvert:max-occurs)"/>
                     <xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name($type-name,'type-name'))"/>            
                 </ep:construct> 
             </xsl:when>
             <!-- In all othert cases this branch applies. -->
+            <xsl:when test="@type = 'subclass'">
+                <!-- TODO: Uitzoeken waarom '$construct/imvert:class/imvert:type-id' en 
+                           '$construct//imvert:class/imvert:type-id' niet werken. -->
+                <xsl:variable name="meervoudsnaam">
+                    <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-NAMEPLURAL')"/>
+                </xsl:variable>
+                <ep:construct type="{@type}">
+                    <xsl:if test="not(empty($meervoudsnaam))">
+                        <xsl:attribute name="meervoudsnaam" select="$meervoudsnaam"/>
+                    </xsl:if>
+                    <xsl:sequence select="imf:create-debug-comment(concat('OAS01225, id: ',$id),$debugging)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
+<?x                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/> ?>
+                    <xsl:sequence select="imf:create-output-element('ep:min-occurs', $construct/imvert:min-occurs)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:max-occurs', $construct/imvert:max-occurs)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name($tech-name,'type-name'))"/>            
+                </ep:construct>
+            </xsl:when>
             <xsl:otherwise>
-                <xsl:variable name="typeid" select="$construct//imvert:type-id"/>
+                <!-- TODO: Uitzoeken waarom '$construct/imvert:class/imvert:type-id' en 
+                           '$construct//imvert:class/imvert:type-id' niet werken. -->
+                <xsl:variable name="typeid" select="$construct/imvert:type-id"/>
                 <xsl:variable name="relatedconstruct" select="imf:get-construct-by-id($typeid,$packages)"/>
                 <xsl:variable name="meervoudsnaam">
                     <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($relatedconstruct, '##CFG-TV-NAMEPLURAL')"/>
@@ -409,14 +459,9 @@
                     <xsl:sequence select="imf:create-debug-comment(concat('OAS01250, id: ',$id),$debugging)"/>
                     <xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
                     <xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
-<?x                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/> ?>
+                    <?x                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/> ?>
                     <!-- Depending on the type the min- and max-occurs are set or aren't set at all. -->
                     <xsl:choose>
-                        <xsl:when test="@type = 'subclass'">
-                            <xsl:sequence select="imf:create-debug-comment(concat('OAS01300, id: ',$id),$debugging)"/>
-                            <xsl:sequence select="imf:create-output-element('ep:min-occurs', 0)"/>
-                            <xsl:sequence select="imf:create-output-element('ep:max-occurs', 1)"/>
-                        </xsl:when>
                         <xsl:when test="$minOccurs = '-'">
                             <xsl:sequence select="imf:create-debug-comment(concat('OAS01350, id: ',$id),$debugging)"/>
                         </xsl:when>
@@ -535,6 +580,11 @@
                     select="concat('The construct ',$construct/imvert:class/imvert:name,' (id ',$construct/imvert:class/imvert:id,') does not have attributes.')"/>
                 <xsl:sequence select="imf:msg('WARNING', $msg)"/>                
             </xsl:when>
+            
+            
+            
+            <!-- TODO: De naam van associations moet waarschijnlijk vervangen worden door de source en/of target role naam in meervoud. 
+                       Op deze wijze levert onderstaande when echter geen goed resultaat op. -->
             <xsl:when test="@type='association' and $construct//imvert:attributes/imvert:attribute">
                 <xsl:sequence select="imf:create-debug-comment(concat('OAS01600, id: ',$id),$debugging)"/>
                 <xsl:copy>
@@ -553,6 +603,9 @@
                     </ep:seq>
                 </xsl:copy>
             </xsl:when>
+            
+            
+            
             <!-- if the ep:constructs itself has a ep:construct or ep:superconstruct or if it is of type 'class' and that class has attributes it is processed here.
                  The ep:construct is replicated and ep:constructs for imvert:attributes relates to that construct are placed. 
                  Also the child ep:superconstructs and ep:constructs (if present) are processed. -->
@@ -570,6 +623,9 @@
                 </xsl:variable>
                 <xsl:copy>
                     <xsl:attribute name="type" select="$type"/>
+                    <xsl:if test="not(parent::ep:rough-message) and .//ep:expand = 'true'">
+                        <xsl:attribute name="expand" select="'true'"/>
+                    </xsl:if>
                     <xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
                     <xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($tech-name,'type-name'))"/>      
                     <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>

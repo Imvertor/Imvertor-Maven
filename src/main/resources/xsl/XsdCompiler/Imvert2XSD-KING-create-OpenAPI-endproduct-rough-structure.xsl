@@ -365,6 +365,10 @@
 
 		<xsl:sequence select="imf:create-debug-comment('debug:start A00130 /debug:start',$debugging)"/>
 		
+		<xsl:if test="empty(imvert:is-id)">
+			<ep:expand>true</ep:expand>
+		</xsl:if>
+		
 		<xsl:if test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype[@id = 'stereotype-name-complextype']">
 			<xsl:sequence select="imf:create-debug-comment('A00140]',$debugging)"/>
 			<ep:construct type="complex-datatype">
