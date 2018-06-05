@@ -250,6 +250,10 @@
         <trans lang="nl">Datatype overzicht</trans>
     </item>
     <item>
+        <key>OVERVIEW-STRUCTUREDDATATYPE</key>
+        <trans lang="nl">Complexe datatypen</trans>
+    </item>
+    <item>
         <key>DETAILS</key>
         <trans lang="nl">Attribuut- en relatiesoorten</trans>
     </item>
@@ -277,6 +281,10 @@
     <item>
         <key>DETAILS-DATATYPE</key>
         <trans lang="nl">Datatypen</trans>
+    </item>
+    <item>
+        <key>DETAILS-STRUCTUREDDATATYPE</key>
+        <trans lang="nl">Complexe datatypen</trans>
     </item>
 
     <item>
