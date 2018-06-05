@@ -229,7 +229,7 @@
         <tv norm="space" validate="" rules="" id="CFG-TV-EXPAND">
             <name lang="nl">Expand</name>
             <derive>no</derive>
-            <inherit>yes</inherit>
+            <inherit>no</inherit>
             <stereotypes>
                 <?x stereo minmax="1..1">stereotype-name-vraagberichttype</stereo ?>
                 <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
@@ -245,16 +245,20 @@
             </declared-values>
         </tv>
         
-        <tv norm="space" validate="" rules="" id="CFG-TV-FIELDS">
+        <tv norm="space" id="CFG-TV-FIELDS">
             <name lang="nl">Fields</name>
+            <desc lang="nl">
+                Bepaald of de request parameter 'Fields' moet worden opgenomen in het bericht. 
+            </desc>
             <derive>no</derive>
-            <inherit>yes</inherit>
+            <inherit>no</inherit>
             <stereotypes>
-                <?x stereo minmax="1..1">stereotype-name-vraagberichttype</stereo ?>
+                <!-- bericht typen -->
                 <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
-                <?x stereo minmax="1..1">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo minmax="1..1">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo minmax="1..1">stereotype-name-vrijberichttype</stereo ?>
+                <stereo minmax="0..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vrijberichttype</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <!-- Fields in request parameters YAML opnemen. -->
@@ -264,48 +268,33 @@
             </declared-values>
         </tv>
         
-        <tv norm="space" validate="" rules="" id="CFG-TV-SORT">
+        <tv norm="space" id="CFG-TV-SORT">
             <name lang="nl">Sort</name>
+            <desc lang="nl">
+                Bepaald of de request parameter 'Sort' moet worden opgenomen in het bericht. 
+            </desc>
             <derive>no</derive>
-            <inherit>yes</inherit>
+            <inherit>no</inherit>
             <stereotypes>
-                <?x stereo minmax="1..1">stereotype-name-vraagberichttype</stereo ?>
+                <!-- bericht typen -->
                 <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
-                <?x stereo minmax="1..1">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo minmax="1..1">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo minmax="1..1">stereotype-name-vrijberichttype</stereo ?>
+                <stereo minmax="0..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-vrijberichttype</stereo>
             </stereotypes>
             <declared-values lang="nl">
-                <!-- Sorteer in request parameters YAML opnemen. -->
+                <!-- Sort in request parameters YAML opnemen. -->
                 <value>true</value>
-                <!-- Sorteer niet in request parameters YAML opnemen. -->
+                <!-- Sort niet in request parameters YAML opnemen. -->
                 <value>false</value>
-            </declared-values>
-        </tv>
-        
-        <tv norm="space" validate="" rules="" id="CFG-TV-GROUPING">
-            <name lang="nl">Grouping</name>
-            <derive>no</derive>
-            <inherit>yes</inherit>
-            <stereotypes>
-                <?x stereo minmax="1..1">stereotype-name-vraagberichttype</stereo ?>
-                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
-                <?x stereo minmax="1..1">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo minmax="1..1">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo minmax="1..1">stereotype-name-vrijberichttype</stereo ?>
-            </stereotypes>
-            <declared-values lang="nl">
-                <!-- Grouping is binnen json niet van toepassing, het betreft immers maar een enkele resource. -->
-                <value>resource</value>
-                <!-- Grouping is binnen json wel van toepassing, het kunnen meerdere resources zijn. -->
-                <value>collection</value>
             </declared-values>
         </tv>
         
         <tv norm="space" validate="" rules="" id="CFG-TV-PAGE">
             <name lang="nl">Page</name>
             <derive>no</derive>
-            <inherit>yes</inherit>
+            <inherit>no</inherit>
             <stereotypes>
                 <?x stereo minmax="1..1">stereotype-name-vraagberichttype</stereo ?>
                 <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
@@ -324,7 +313,7 @@
         <tv norm="space" validate="" rules="" id="CFG-TV-SERIALISATION">
             <name lang="nl">Serialisation</name>
             <derive>no</derive>
-            <inherit>yes</inherit>
+            <inherit>no</inherit>
             <stereotypes>
                 <?x stereo minmax="1..1">stereotype-name-vraagberichttype</stereo ?>
                 <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
