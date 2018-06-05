@@ -187,6 +187,10 @@
         <trans lang="nl">Union element</trans>
     </item>
     <item>
+        <key>STRUCTUREDDATATYPE</key>
+        <trans lang="nl">Complex datatype</trans>
+    </item>
+    <item>
         <key>COMPLEX DATATYPE</key>
         <trans lang="nl">Complex datatype</trans>
     </item>
@@ -332,6 +336,10 @@
         <key>SHORT-UNIONELEMENTS</key>
         <trans lang="nl">Overzicht union elementen</trans>
     </item>
+    <item>
+        <key>SHORT-REFERENCEELEMENTS</key>
+        <trans lang="nl">Overzicht referentie elementen</trans>
+    </item>
     
     <item>
         <key>EXPLANATION</key>
@@ -400,6 +408,23 @@
         <trans lang="nl">Card</trans>
     </item>
    
+    <item>
+        <key>REFERENCEELEMENT-NAME</key>
+        <trans lang="nl">Referentie element</trans>
+    </item>
+    <item>
+        <key>REFERENCEELEMENT-DEFINITION</key>
+        <trans lang="nl">Definitie</trans>
+    </item>
+    <item>
+        <key>REFERENCEELEMENT-FORMAT</key>
+        <trans lang="nl">Formaat</trans>
+    </item>
+    <item>
+        <key>REFERENCEELEMENT-CARD</key>
+        <trans lang="nl">Card</trans>
+    </item>
+
     <item>
         <key>ASSOCIATION-NAME</key>
         <trans lang="nl">Relatienaam met kardinaliteiten</trans>

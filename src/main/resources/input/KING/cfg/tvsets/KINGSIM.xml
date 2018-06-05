@@ -153,6 +153,13 @@
                 <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
             </stereotypes>
         </tv>
+        <tv norm="note" id="CFG-TV-QUALITY">   <!-- in aanvulling op SBR -->
+            <name lang="nl">Kwaliteitsbegrip</name>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
+            </stereotypes>
+        </tv>
         <tv norm="note" id="CFG-TV-DEFINITION">  
             <derive>yes</derive>
             <stereotypes>
@@ -160,6 +167,7 @@
             </stereotypes>
         </tv>
         <tv norm="note" id="CFG-TV-DESCRIPTION">   <!-- in aanvulling op SBR -->
+            <name lang="nl">Toelichting</name>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-obj-proxy</stereo>
