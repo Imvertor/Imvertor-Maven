@@ -838,10 +838,30 @@
     <xsl:template match="imvert:class" mode="mode-global-enumeration">
         <xsl:sequence select="imf:create-debug-comment('OAS02200',$debugging)"/>
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
+        <xsl:variable name="doc">
+            <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DEFINITION')))">
+                <ep:definition>
+                    <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DEFINITION')"/>
+                </ep:definition>
+            </xsl:if>
+            <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DESCRIPTION')))">
+                <ep:description>
+                    <xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DESCRIPTION')"/>
+                </ep:description>
+            </xsl:if>
+            <xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')))">
+                <ep:pattern>
+                    <ep:p>
+                        <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')"/>
+                    </ep:p>
+                </ep:pattern>
+            </xsl:if>
+        </xsl:variable>
         
         <ep:construct>
             <xsl:sequence select="imf:create-output-element('ep:name', imf:capitalize($compiled-name))"/>
             <xsl:sequence select="imf:create-output-element('ep:tech-name', imf:capitalize($compiled-name))"/>
+            <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
             <xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-string')"/>
             <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-enum"/>
         </ep:construct>

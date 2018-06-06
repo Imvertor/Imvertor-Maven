@@ -668,6 +668,7 @@
 
 		<xsl:value-of select="'&quot;enum&quot;: ['"/>
 		
+		
 <!--		<xsl:if test="$debugging">
 			"//<xsl:value-of select="concat('OAS00700: ',generate-id())"/>": "",
 		</xsl:if>-->
@@ -693,6 +694,10 @@
 		
 		<xsl:value-of select="']'"/>
 
+		<xsl:if test="ep:documentation">
+			,<xsl:value-of select="'&quot;description&quot; : &quot;'"/><xsl:apply-templates select="ep:documentation"/><xsl:value-of select="'&quot;'"/>		
+		</xsl:if>
+
         <xsl:value-of select="'}'"/>
         
  		<xsl:if test="$debugging">
@@ -700,6 +705,19 @@
 				"Debug": "AOS00300"
 			}
 		</xsl:if>
+   </xsl:template>
+   
+   <xsl:template match="ep:documentation">
+	   <xsl:apply-templates select="ep:description"/>
+   </xsl:template>
+
+   <xsl:template match="ep:description">
+	   <xsl:apply-templates select="ep:p"/>
+   </xsl:template>
+
+   <xsl:template match="ep:p">
+	   <xsl:value-of select="."/>
+	   <xsl:if test="following-sibling::ep:p"><xsl:text> </xsl:text></xsl:if>
    </xsl:template>
     
 	<!-- TODO: Het onderstaande template en ook de aanroep daarvan zijn is op dit moment onnodig omdat we er nu vanuit gaan dat er altijd json+hal gegenereerd moet worden.
