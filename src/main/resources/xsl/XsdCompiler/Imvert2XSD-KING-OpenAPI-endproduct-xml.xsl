@@ -405,8 +405,9 @@
                         <xsl:attribute name="expand" select="'true'"/>
                     </xsl:if>
                     <xsl:sequence select="imf:create-debug-comment(concat('OAS01200, id: ',$id),$debugging)"/>
-                    <xsl:sequence select="imf:create-output-element('ep:name', $type-name)"/>
-                    <xsl:sequence select="imf:create-output-element('ep:tech-name', $type-name)"/>
+                    <xsl:sequence select="imf:create-output-element('ep:name', $construct/imvert:name)"/>
+                    <xsl:sequence
+                        select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($construct/imvert:name, 'element-name'))"/>
 <?x                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/> ?>
                     <xsl:sequence select="imf:create-output-element('ep:min-occurs', $construct/imvert:min-occurs)"/>
                     <xsl:sequence select="imf:create-output-element('ep:max-occurs', $construct/imvert:max-occurs)"/>                      
@@ -596,7 +597,7 @@
                        Op deze wijze levert onderstaande when echter geen goed resultaat op. -->
             <xsl:when test="@type='association' and $construct//imvert:attributes/imvert:attribute">
                 <xsl:sequence select="imf:create-debug-comment(concat('OAS01600, id: ',$id),$debugging)"/>
-                <xsl:copy>
+<?x                <xsl:copy>
                     <xsl:attribute name="type" select="@type"/>
                     <xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
                     <xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($tech-name,'type-name'))"/>      
@@ -610,7 +611,7 @@
                         <xsl:apply-templates select="ep:construct[@type!='class']" mode="as-content"/>
                         <xsl:sequence select="imf:create-debug-comment(concat('OAS01680, id: ',$id),$debugging)"/>
                     </ep:seq>
-                </xsl:copy>
+                </xsl:copy> ?>
             </xsl:when>
             
             
@@ -831,6 +832,9 @@
     </xsl:template>
 
     <!-- Following template creates global ep:constructs for enumeration/ -->
+    <!-- TODO: Op dit moment worden alle enumerations, ook al worden ze niet gebruikt, omgezet naar ep:constructs.
+               Hoewel de niet gebruikte er in de volgdende stap uitgefilterd worden zou het netjes zijn ze al niet in het EP bestand te genereren.
+               Die taak moet nog een keer worden uitgevoerd. -->
     <xsl:template match="imvert:class" mode="mode-global-enumeration">
         <xsl:sequence select="imf:create-debug-comment('OAS02200',$debugging)"/>
         <xsl:variable name="compiled-name" select="imf:get-compiled-name(.)"/>
