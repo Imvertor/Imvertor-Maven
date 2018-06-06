@@ -388,10 +388,19 @@
                 <xsl:variable name="meervoudsnaam">
                     <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-TARGETROLEPLURAL')"/>
                 </xsl:variable>
+                <xsl:variable name="targetrole">
+                    <xsl:sequence select="$construct/imvert:target/imvert:role"/>
+                </xsl:variable>
+                <xsl:sequence select="imf:create-debug-comment('At this level the expand attribute is neccessary to determine if an _embedded property has to be created. This is only the case if the attribute has the value true.',$debugging)"/>
                 <ep:construct type="{@type}">
-                    <xsl:if test="not(empty($meervoudsnaam))">
-                        <xsl:attribute name="meervoudsnaam" select="$meervoudsnaam"/>
-                    </xsl:if>
+                    <xsl:choose>
+                        <xsl:when test="not(empty($meervoudsnaam))">
+                            <xsl:attribute name="meervoudsnaam" select="$meervoudsnaam"/>
+                        </xsl:when>
+                        <xsl:when test="not(empty($targetrole))">
+                            <xsl:attribute name="targetrole" select="$targetrole"/>
+                        </xsl:when>
+                    </xsl:choose>
                     <xsl:if test=".//ep:expand = 'true'">
                         <xsl:attribute name="expand" select="'true'"/>
                     </xsl:if>
@@ -623,9 +632,6 @@
                 </xsl:variable>
                 <xsl:copy>
                     <xsl:attribute name="type" select="$type"/>
-                    <xsl:if test="not(parent::ep:rough-message) and .//ep:expand = 'true'">
-                        <xsl:attribute name="expand" select="'true'"/>
-                    </xsl:if>
                     <xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
                     <xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($tech-name,'type-name'))"/>      
                     <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>

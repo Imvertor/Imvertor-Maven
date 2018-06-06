@@ -10,14 +10,14 @@
 	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
 	
 	<!-- De eerste variabele is bedoelt voor de server omgeving, de tweede voor gebruik bij ontwikkeling in XML-Spy. -->
-	<!--<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>-->
-	<xsl:variable name="debugging" select="true()" as="xs:boolean"/>
+	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
+	<!--<xsl:variable name="debugging" select="true()" as="xs:boolean"/>-->
 	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
 		 * 3.0	
 		 The default value is 3.0. -->
-	<xsl:param name="json-version" select="'2.0'"/>
+	<xsl:param name="json-version" select="'3.0'"/>
 	
 	<!-- TODO: De volgende variabelen moeten op een andere wijze dan in het stylesheet geconfigureerd worden.
 			   Hoe is echter nog de vraag, vanuit het model, via parameters of via een configuration profiel. -->
@@ -1025,7 +1025,20 @@
     
 	<!-- This template generates for each association a links properties with a reference to a link type. -->
     <xsl:template match="ep:construct[@type='association']" mode="_links">
-        <xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
+        <!--<xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>-->
+        <xsl:variable name="elementName">
+			<xsl:choose>
+				<xsl:when test="not(empty(@meervoudsnaam))">
+					<xsl:value-of select="@meervoudsnaam"/>
+				</xsl:when>
+				<xsl:when test="not(empty(@targetrole))">
+					<xsl:value-of select="@targetrole"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="translate(ep:tech-name,'.','_')"/>
+				</xsl:otherwise>
+			</xsl:choose>
+        </xsl:variable>
         
         <xsl:value-of select="concat('&quot;',$elementName,'&quot;: {')"/>
         <xsl:value-of select="'&quot;type&quot;: &quot;array&quot;,'"/>
@@ -1050,24 +1063,23 @@
     
 	<!-- This template generates for each association an embedded properties with a reference to an embedded type. -->
     <xsl:template match="ep:construct" mode="embedded">
-        <xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
+        <xsl:variable name="elementName">
+			<xsl:choose>
+				<xsl:when test="not(empty(@meervoudsnaam))">
+					<xsl:value-of select="@meervoudsnaam"/>
+				</xsl:when>
+				<xsl:when test="not(empty(@targetrole))">
+					<xsl:value-of select="@targetrole"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="translate(ep:tech-name,'.','_')"/>
+				</xsl:otherwise>
+			</xsl:choose>
+        </xsl:variable>
         <xsl:variable name="typeName" select="ep:type-name"/>
         
 
-						<xsl:value-of select="'&quot;'"/>
-						<xsl:choose>
-							<xsl:when test="@meervoudsnaam">
-								<xsl:value-of select="@meervoudsnaam"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="$elementName"/>
-							</xsl:otherwise>
-						</xsl:choose>
-						<xsl:value-of select="'&quot;: {'"/>
-
-
-
-
+        <xsl:value-of select="concat('&quot;',$elementName,'&quot;: {')"/>
         <xsl:value-of select="'&quot;type&quot;: &quot;array&quot;,'"/>
         <xsl:value-of select="'&quot;items&quot;: {'"/>
         <xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$typeName,'&quot;')"/>

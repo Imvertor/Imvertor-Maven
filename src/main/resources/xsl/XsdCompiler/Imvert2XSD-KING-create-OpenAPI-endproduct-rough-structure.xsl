@@ -105,14 +105,14 @@
 					<xsl:variable name="msg" select="concat('In de messageclass ',imvert:name,' komt geen association voor met als stereotype &quot;entiteitrelatie&quot;, alleen associations met als stereotype &quot;entiteitrelatie&quot; worden verwerkt.')" as="xs:string"/>
 					<xsl:sequence select="imf:msg('WARNING',$msg)"/>
 				</xsl:when>
-				<!-- Only in case of an Lv message type it's required to have one than one association of the 'entiteitrelatie' type with the name 'gelijk' and allowed 
-					 to have one association of the 'entiteitrelatie' type with the name 'start'. -->
-				<xsl:when test="(contains($berichtcode,'Gr') or contains($berichtcode,'Gc')) and (not(count(imvert:associations/imvert:association[imvert:name = 'gelijk']) = 1))">
-					<xsl:variable name="msg" select="concat('In de messageclass ',imvert:name,' komt geen of meer dan 1 entiteitrelatie association voor met de naam &quot;gelijk&quot;. Voor Open API koppelvlakken is dat niet toegestaan.')" as="xs:string"/>
+				<!-- Only in case of an Gr or Gc message type it's required to have one than one association of the 'entiteitrelatie' type with the name 'gelijk' or 'response' and allowed 
+					 to have one association of the 'entiteitrelatie' type with the name 'start' or 'request'. -->
+				<xsl:when test="(contains($berichtcode,'Gr') or contains($berichtcode,'Gc')) and (not(count(imvert:associations/imvert:association[imvert:name = ('gelijk','response')]) = 1))">
+					<xsl:variable name="msg" select="concat('In de messageclass ',imvert:name,' komt geen of meer dan 1 entiteitrelatie association voor met de naam &quot;gelijk&quot; of &quot;response&quot;. Voor Open API koppelvlakken is dat niet toegestaan.')" as="xs:string"/>
 					<xsl:sequence select="imf:msg('WARNING',$msg)"/>
 				</xsl:when>
-				<xsl:when test="(contains($berichtcode,'Gr') or contains($berichtcode,'Gc')) and count(imvert:associations/imvert:association[imvert:name = 'start']) > 1">
-					<xsl:variable name="msg" select="concat('In de messageclass ',imvert:name,' komen meer dan 1 entiteitrelatie associations met de naam &quot;start&quot;. Voor Open API koppelvlakken is dat niet toegestaan.')" as="xs:string"/>
+				<xsl:when test="(contains($berichtcode,'Gr') or contains($berichtcode,'Gc')) and count(imvert:associations/imvert:association[imvert:name = ('start','request')]) > 1">
+					<xsl:variable name="msg" select="concat('In de messageclass ',imvert:name,' komen meer dan 1 entiteitrelatie associations met de naam &quot;start&quot; of &quot;request&quot;. Voor Open API koppelvlakken is dat niet toegestaan.')" as="xs:string"/>
 					<xsl:sequence select="imf:msg('WARNING',$msg)"/>
 				</xsl:when>
 				<xsl:when test="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]">
@@ -123,7 +123,7 @@
 						<xsl:sequence select="imf:create-output-element('ep:name', imvert:name/@original)"/>
 						<xsl:sequence select="imf:create-output-element('ep:id', imvert:id)"/>
 						<xsl:sequence select="imf:create-output-element('ep:type-id', imvert:type-id)"/>
-						<!-- In case of a vraagberichttype it's decided for now only to proces associations with the name 'gelijk'. -->
+						<!-- In case of a vraagberichttype it's decided for now only to proces associations with the name 'gelijk' or 'response'. -->
 	
 						<!-- TODO: De bovenstaande beslissing is in overleg met Johan Boer genomen maar moet nog geformaliseerd worden. -->
 						<xsl:apply-templates
@@ -154,7 +154,7 @@
 			<xsl:with-param name="id-refering-association" select="imvert:id"/>
 			<xsl:with-param name="association-function">
 					<xsl:choose>
-						<xsl:when test="imvert:name = 'start'">
+						<xsl:when test="imvert:name = 'start' or imvert:name = 'request'">
 							<xsl:value-of select="'requestParameters'"/>
 						</xsl:when>
 						<xsl:otherwise>
