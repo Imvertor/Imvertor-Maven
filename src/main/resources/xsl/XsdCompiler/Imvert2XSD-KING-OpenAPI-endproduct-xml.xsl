@@ -113,7 +113,6 @@
     <xsl:template match="ep:rough-message">
         <xsl:sequence select="imf:create-debug-comment('Debuglocation OAS00400',$debugging)"/>
         
-        <xsl:variable name="currentMessage" select="."/>
         <xsl:variable name="id" select="ep:id" as="xs:string"/>
         
         <!-- TODO: De eerste variabele geeft om de eoa reden geen resultaat daarom is de tweede variabele geintroduceerd.
@@ -147,14 +146,16 @@
             </xsl:if>
             
         </xsl:variable>
-        <xsl:variable name="berichtcode" select="imf:get-most-relevant-compiled-taggedvalue($message-construct, '##CFG-TV-BERICHTCODE')"/>
+        <xsl:variable name="berichtcode" select="@berichtcode"/>
         <xsl:sequence select="imf:create-debug-comment($berichtcode,$debugging)"/>
         
         <xsl:variable name="berichtsjabloon" select="$packages//imvert:package[imvert:alias='/www.kinggemeenten.nl/BSM/Berichtstrukturen/Model']//imvert:class[.//imvert:tagged-value[@id='CFG-TV-BERICHTCODE']/imvert:value=$berichtcode]"/>
 
-        <xsl:result-document href="{concat('file:/c:/temp/message/construct-',$id,'-',generate-id(),'.xml')}">
-            <xsl:copy-of select="$berichtsjabloon"/>
-        </xsl:result-document>
+        <xsl:if test="$debugging">
+            <xsl:result-document href="{concat('file:/c:/temp/message/construct-',$id,'-',generate-id(),'.xml')}">
+                <xsl:copy-of select="$berichtsjabloon"/>
+            </xsl:result-document>
+        </xsl:if>
         
 <?x        <xsl:variable name="expand" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-EXPAND')"/>  ?>
         <xsl:variable name="expand">
@@ -200,7 +201,23 @@
 
         <xsl:sequence select="imf:create-debug-comment('Debuglocation OAS00500',$debugging)"/>
         
-        <ep:message expand="{$expand}" fields="{$fields}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}" sort="{$sort}">
+        <ep:message>
+            <xsl:choose>
+                <xsl:when test="@messagetype = 'response'">
+                    <xsl:attribute name="messagetype" select="@messagetype"/>
+                    <xsl:attribute name="servicename" select="@servicename"/>
+                    <xsl:attribute name="expand" select="$expand"/>
+                    <xsl:attribute name="fields" select="$fields"/>
+                    <xsl:attribute name="grouping" select="$grouping"/>
+                    <xsl:attribute name="pagination" select="$pagination"/>
+                    <xsl:attribute name="serialisation" select="$serialisation"/>
+                    <xsl:attribute name="sort" select="$sort"/>
+                </xsl:when>
+                <xsl:when test="@messagetype = 'request'">
+                    <xsl:attribute name="messagetype" select="@messagetype"/>
+                    <xsl:attribute name="servicename" select="@servicename"/>
+                </xsl:when>
+            </xsl:choose>
             <xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
             <xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
             <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
@@ -239,6 +256,9 @@
                 <xsl:when test="ep:id-refering-association and @type = 'class'">
                     <xsl:value-of select="ep:id-refering-association"/>
                 </xsl:when>
+                <xsl:when test="ep:id-refering-association and @type = 'requestclass'">
+                    <xsl:value-of select="ep:id-refering-association"/>
+                </xsl:when>
                 <xsl:when test="ep:id and @type = 'class'">
                     <xsl:variable name="id" select="ep:id"/>
                     <xsl:value-of select="$packages//imvert:association[imvert:type-id = $id][1]/imvert:id"/>
@@ -274,7 +294,10 @@
                     <xsl:sequence select="imf:create-debug-comment(concat('OAS00800, id: ',$id),$debugging)"/>
                 </xsl:when>
                 <xsl:when test="ep:id-refering-association and @type = 'class'">
-                    <xsl:sequence select="imf:create-debug-comment(concat('OAS00825, id: ',$id),$debugging)"/>
+                    <xsl:sequence select="imf:create-debug-comment(concat('OAS00820, id: ',$id),$debugging)"/>
+                </xsl:when>
+                <xsl:when test="ep:id-refering-association and @type = 'requestclass'">
+                    <xsl:sequence select="imf:create-debug-comment(concat('OAS00835, id: ',$id),$debugging)"/>
                 </xsl:when>
                 <xsl:when test="ep:id and @type = 'class'">
                     <xsl:sequence select="imf:create-debug-comment(concat('OAS00850, id: ',$id),$debugging)"/>
@@ -292,39 +315,6 @@
                     <xsl:sequence select="imf:create-debug-comment(concat('OAS01050, id: ',$id),$debugging)"/>
                 </xsl:when>
             </xsl:choose>
-
-            <xsl:if test="$debugging">
-                <xsl:choose>
-                    <xsl:when test="ep:id and @type = 'association'">
-                        <xsl:sequence select="imf:msg('WARNING','OAS00700')"/>
-                    </xsl:when>
-                    <xsl:when test="ep:id and @type = 'groepCompositie'">
-                        <xsl:sequence select="imf:msg('WARNING','OAS00750')"/>
-                    </xsl:when>
-                    <xsl:when test="ep:id and @type = 'association-class'">
-                        <xsl:sequence select="imf:msg('WARNING','OAS00800')"/>
-                    </xsl:when>
-                    <xsl:when test="ep:id-refering-association and @type = 'class'">
-                        <xsl:sequence select="imf:msg('WARNING','OAS00825')"/>
-                    </xsl:when>
-                    <xsl:when test="ep:id and @type = 'class'">
-                        <xsl:sequence select="imf:msg('WARNING','OAS00850')"/>
-                    </xsl:when>
-                    <!-- TOD: Nagaan of deze when correct is. Wordt nl. niet in een when statement in bovenstaande variable afgevangen. -->
-                    <xsl:when test="ep:id and @type = 'subclass'">
-                        <xsl:sequence select="imf:msg('WARNING','OAS00900')"/>
-                    </xsl:when>
-                    <xsl:when test="ep:id and @type = 'attribute'">
-                        <xsl:sequence select="imf:msg('WARNING','OAS00950')"/>
-                    </xsl:when>
-                    <xsl:when test="ep:type-id and @type = 'complex-datatype'">
-                        <xsl:sequence select="imf:msg('WARNING','OAS01000')"/>
-                    </xsl:when>
-                    <xsl:when test="ep:type-id">
-                        <xsl:sequence select="imf:msg('WARNING','OAS01050')"/>
-                    </xsl:when>
-                </xsl:choose>
-            </xsl:if>
         </xsl:if>
 
         <!-- The construct variable holds the imvert construct which has an imvert:id equal to the 'id' variable. So sometimes it's an attribute, sometimes 

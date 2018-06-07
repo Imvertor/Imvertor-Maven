@@ -10,14 +10,14 @@
 	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
 	
 	<!-- De eerste variabele is bedoelt voor de server omgeving, de tweede voor gebruik bij ontwikkeling in XML-Spy. -->
-	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
-	<!--<xsl:variable name="debugging" select="true()" as="xs:boolean"/>-->
+	<!--<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>-->
+	<xsl:variable name="debugging" select="true()" as="xs:boolean"/>
 	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
 		 * 3.0	
 		 The default value is 3.0. -->
-	<xsl:param name="json-version" select="'3.0'"/>
+	<xsl:param name="json-version" select="'2.0'"/>
 	
 	<!-- TODO: De volgende variabelen moeten op een andere wijze dan in het stylesheet geconfigureerd worden.
 			   Hoe is echter nog de vraag, vanuit het model, via parameters of via een configuration profiel. -->
@@ -82,10 +82,10 @@
 		</xsl:choose>
 
         <!-- Loop over messages. -->
-		<xsl:apply-templates select="ep:message-set/ep:message"/>,
+		<xsl:apply-templates select="ep:message-set/ep:message[@messagetype='response']"/>,
 		
         <!-- Loop over constructs which are refered to from the constructs within the messages but aren't enumeration constructs. -->
-        <xsl:for-each select="ep:message-set/ep:construct[ep:tech-name = //ep:message/ep:seq/ep:construct/ep:type-name and not(ep:enum)]">
+        <xsl:for-each select="ep:message-set/ep:construct[ep:tech-name = //ep:message[@messagetype='response' and @grouping!='resource']/ep:seq/ep:construct/ep:type-name and not(ep:enum)]">
             <xsl:variable name="type-name" select="ep:type-name"/>
             <!-- The regular constructs are generated here. -->
             <xsl:call-template name="construct"/>
@@ -118,10 +118,10 @@
         </xsl:for-each>
         
         <!-- If the next loop is relevant a comma separator has to be generated. -->
-        <xsl:if test="ep:message-set/ep:construct[(ep:tech-name = //ep:message-set/ep:construct/ep:seq/ep:construct/ep:type-name) and not(ep:tech-name = //ep:message/ep:seq/ep:construct/ep:type-name) and not(ep:enum)]">,</xsl:if>
+        <xsl:if test="ep:message-set/ep:construct[(ep:tech-name = //ep:message-set/ep:construct/ep:seq/ep:construct/ep:type-name) and not(ep:tech-name = //ep:message[@messagetype='response']/ep:seq/ep:construct/ep:type-name) and not(ep:enum)]">,</xsl:if>
        
         <!-- Loop over constructs which are refered to from the global constructs but aren't enumeration constructs. -->
-        <xsl:for-each select="ep:message-set/ep:construct[(ep:tech-name = //ep:message-set/ep:construct/ep:seq/ep:construct/ep:type-name) and not(ep:tech-name = //ep:message/ep:seq/ep:construct/ep:type-name) and not(ep:enum)]">
+        <xsl:for-each select="ep:message-set/ep:construct[(ep:tech-name = //ep:message-set/ep:construct/ep:seq/ep:construct/ep:type-name) and not(ep:tech-name = //ep:message[@messagetype='response']/ep:seq/ep:construct/ep:type-name) and not(ep:enum)]">
             <xsl:variable name="type-name" select="ep:type-name"/>
             
             <!-- Only regular constructs are generated. -->
@@ -400,20 +400,14 @@
     
 	<!-- With this template message properties are generated.  -->
     <xsl:template match="ep:message">
-        <xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
+        <xsl:variable name="elementName" select="translate(ep:seq/ep:construct/ep:type-name,'.','_')"/>
         <xsl:variable name="grouping" select="@grouping"/>
         <!-- TODO: Volgende variabele moet uiteindelijk dezelfde variabele op globaal niveau gaan vervangen. -->
         
-        <xsl:variable name="messageName">
+        <xsl:variable name="topComponentName">
 			<xsl:choose>
-				<xsl:when test="$grouping = 'resource' and $debugging">
-					<xsl:value-of select="concat($elementName,'_message')"/>
-				</xsl:when>
 				<xsl:when test="$grouping = 'resource'">
 					<xsl:value-of select="$elementName"/>
-				</xsl:when>
-				<xsl:when test="$debugging">
-					<xsl:value-of select="concat($elementName,'_collection_message')"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="concat($elementName,'_collection')"/>
@@ -427,7 +421,7 @@
 			},
 		</xsl:if>
 
-        <xsl:value-of select="concat('&quot;', $messageName,'&quot;: {' )"/>
+        <xsl:value-of select="concat('&quot;', $topComponentName,'&quot;: {' )"/>
 
 		<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
 		
