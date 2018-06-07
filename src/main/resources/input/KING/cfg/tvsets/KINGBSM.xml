@@ -291,6 +291,25 @@
             </declared-values>
         </tv>
         
+        <tv norm="space" validate="" rules="" id="CFG-TV-GROUPING">
+            <name lang="nl">Grouping</name>
+            <derive>no</derive>
+            <inherit>no</inherit>
+            <stereotypes>
+                <?x stereo minmax="1..1">stereotype-name-vraagberichttype</stereo ?>
+                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
+                <?x stereo minmax="1..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-vrijberichttype</stereo ?>
+            </stereotypes>
+            <declared-values lang="nl">
+                <!-- Grouping is binnen json niet van toepassing, het betreft immers maar een enkele resource. -->
+                <value>resource</value>
+                <!-- Grouping is binnen json wel van toepassing, het kunnen meerdere resources zijn. -->
+                <value>collection</value>
+            </declared-values>
+        </tv>
+        
         <tv norm="space" validate="" rules="" id="CFG-TV-PAGE">
             <name lang="nl">Page</name>
             <derive>no</derive>

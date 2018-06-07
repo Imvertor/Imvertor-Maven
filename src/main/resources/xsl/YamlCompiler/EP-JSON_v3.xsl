@@ -13,10 +13,10 @@
 	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
 	<!--<xsl:variable name="debugging" select="true()" as="xs:boolean"/>-->
 	
-	<!-- This parameter defines if it must be able to expand relations within the messages, it can take the next values:
+	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
 		 * 3.0	
-		 Heeft standaard de waarde 3.0. -->
+		 The default value is 3.0. -->
 	<xsl:param name="json-version" select="'3.0'"/>
 	
 	<!-- TODO: De volgende variabelen moeten op een andere wijze dan in het stylesheet geconfigureerd worden.
@@ -43,7 +43,7 @@
 	<!-- This variabele defines if it must be able to expand relations within the messages, it can take the next values:
 		 * true()
 		 * false()-->
-    <xsl:variable name="expand" select="true()"/>
+<?x    <xsl:variable name="expand" select="true()"/>	?>
    
 	<!-- The json topstructure depends on its version:
 		 * if its version 2.0 the topstructure is #/definitions
@@ -153,7 +153,8 @@
 				
 				<xsl:value-of select="'&quot;self&quot;: {'"/>
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/link&quot;')"/>
-				<xsl:value-of select="'},'"/>
+				<xsl:value-of select="'}'"/>
+				<xsl:if test=".//ep:construct[@type ='association' and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]">,</xsl:if>
 				<xsl:apply-templates select=".//ep:construct[@type ='association' and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]" mode="_links"/>
 				<xsl:value-of select="'}'"/>
 				<xsl:value-of select="'}'"/>
@@ -172,13 +173,13 @@
 				</xsl:if>
 			</xsl:for-each>
 			
-			<!-- When expand applies in the interface the following if is relevant. -->
-			<xsl:if test="$expand">
+			<!-- When expand applies in one or more messages the following if is relevant. -->
+			<xsl:if test="ep:message-set/ep:message[@expand = 'true']">
 				<!-- If the next loop is relevant a comma separator has to be generated. -->
-				<xsl:if test="ep:message-set/ep:construct[.//ep:construct[@type='association']]">,</xsl:if>
+				<xsl:if test="ep:message-set/ep:construct[.//ep:construct[@type='association' and @expand = 'true']]">,</xsl:if>
 
 				<!-- For all global constructs who have at least one association construct a global embedded version has to be generated. -->
-				<xsl:for-each select="ep:message-set/ep:construct[.//ep:construct[@type='association']]">
+				<xsl:for-each select="ep:message-set/ep:construct[.//ep:construct[@type='association' and @expand = 'true']]">
 
 					<xsl:if test="$debugging">
 						"--------------Debuglocatie-00700-<xsl:value-of select="generate-id()"/>": {
@@ -346,7 +347,7 @@
 			  "invalid-params" : {
 				"type" : "array",
 				"items" : {
-				  "$ref" : "<xsl:value-of select="$json-topstructure"/>/schemas/paramFoutDetails"
+				  "$ref" : "<xsl:value-of select="$json-topstructure"/>/paramFoutDetails"
 				},
 				"description" : "Foutmelding per fout in een parameter. Alle gevonden fouten worden één keer teruggemeld."
 			  }
@@ -402,12 +403,17 @@
         <xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
         <xsl:variable name="grouping" select="@grouping"/>
         <!-- TODO: Volgende variabele moet uiteindelijk dezelfde variabele op globaal niveau gaan vervangen. -->
-        <xsl:variable name="expand2" select="@expand"/>
         
         <xsl:variable name="messageName">
 			<xsl:choose>
+				<xsl:when test="$grouping = 'resource' and $debugging">
+					<xsl:value-of select="concat($elementName,'_message')"/>
+				</xsl:when>
 				<xsl:when test="$grouping = 'resource'">
 					<xsl:value-of select="$elementName"/>
+				</xsl:when>
+				<xsl:when test="$debugging">
+					<xsl:value-of select="concat($elementName,'_collection_message')"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="concat($elementName,'_collection')"/>
@@ -432,7 +438,6 @@
 				<xsl:for-each select="//ep:message-set/ep:construct[ep:tech-name = $type-name]">
 					<xsl:call-template name="construct">
 						<xsl:with-param name="grouping" select="$grouping"/>
-						<xsl:with-param name="expand2" select="$expand2"/>
 					</xsl:call-template>
 				</xsl:for-each>
 			</xsl:when>
@@ -545,7 +550,6 @@
 	<!-- With this template global properties are generated.  -->
     <xsl:template name="construct">
 		<xsl:param name="grouping" select="''"/>
-		<xsl:param name="expand2" select="''"/>
 
         <xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
 
@@ -627,7 +631,7 @@
 			
 			<!-- When expand applies in the interface also an embedded version has to be generated.
 				 At this place only a reference to such a type is generated. -->
-			<xsl:if test="$expand">
+			<xsl:if test=".//ep:construct[@type='association' and @expand = 'true']">
 				<xsl:value-of select="',&quot;_embedded&quot;: {'"/>
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$elementName,'_embedded&quot;}')"/>
 			</xsl:if>
@@ -664,6 +668,7 @@
 
 		<xsl:value-of select="'&quot;enum&quot;: ['"/>
 		
+		
 <!--		<xsl:if test="$debugging">
 			"//<xsl:value-of select="concat('OAS00700: ',generate-id())"/>": "",
 		</xsl:if>-->
@@ -689,6 +694,10 @@
 		
 		<xsl:value-of select="']'"/>
 
+		<xsl:if test="ep:documentation">
+			,<xsl:value-of select="'&quot;description&quot; : &quot;'"/><xsl:apply-templates select="ep:documentation"/><xsl:value-of select="'&quot;'"/>		
+		</xsl:if>
+
         <xsl:value-of select="'}'"/>
         
  		<xsl:if test="$debugging">
@@ -696,6 +705,19 @@
 				"Debug": "AOS00300"
 			}
 		</xsl:if>
+   </xsl:template>
+   
+   <xsl:template match="ep:documentation">
+	   <xsl:apply-templates select="ep:description"/>
+   </xsl:template>
+
+   <xsl:template match="ep:description">
+	   <xsl:apply-templates select="ep:p"/>
+   </xsl:template>
+
+   <xsl:template match="ep:p">
+	   <xsl:value-of select="."/>
+	   <xsl:if test="following-sibling::ep:p"><xsl:text> </xsl:text></xsl:if>
    </xsl:template>
     
 	<!-- TODO: Het onderstaande template en ook de aanroep daarvan zijn is op dit moment onnodig omdat we er nu vanuit gaan dat er altijd json+hal gegenereerd moet worden.
@@ -1021,7 +1043,20 @@
     
 	<!-- This template generates for each association a links properties with a reference to a link type. -->
     <xsl:template match="ep:construct[@type='association']" mode="_links">
-        <xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
+        <!--<xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>-->
+        <xsl:variable name="elementName">
+			<xsl:choose>
+				<xsl:when test="not(empty(@meervoudsnaam))">
+					<xsl:value-of select="@meervoudsnaam"/>
+				</xsl:when>
+				<xsl:when test="not(empty(@targetrole))">
+					<xsl:value-of select="@targetrole"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="translate(ep:tech-name,'.','_')"/>
+				</xsl:otherwise>
+			</xsl:choose>
+        </xsl:variable>
         
         <xsl:value-of select="concat('&quot;',$elementName,'&quot;: {')"/>
         <xsl:value-of select="'&quot;type&quot;: &quot;array&quot;,'"/>
@@ -1046,24 +1081,23 @@
     
 	<!-- This template generates for each association an embedded properties with a reference to an embedded type. -->
     <xsl:template match="ep:construct" mode="embedded">
-        <xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
+        <xsl:variable name="elementName">
+			<xsl:choose>
+				<xsl:when test="not(empty(@meervoudsnaam))">
+					<xsl:value-of select="@meervoudsnaam"/>
+				</xsl:when>
+				<xsl:when test="not(empty(@targetrole))">
+					<xsl:value-of select="@targetrole"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="translate(ep:tech-name,'.','_')"/>
+				</xsl:otherwise>
+			</xsl:choose>
+        </xsl:variable>
         <xsl:variable name="typeName" select="ep:type-name"/>
         
 
-						<xsl:value-of select="'&quot;'"/>
-						<xsl:choose>
-							<xsl:when test="@meervoudsnaam">
-								<xsl:value-of select="@meervoudsnaam"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="$elementName"/>
-							</xsl:otherwise>
-						</xsl:choose>
-						<xsl:value-of select="'&quot;: {'"/>
-
-
-
-
+        <xsl:value-of select="concat('&quot;',$elementName,'&quot;: {')"/>
         <xsl:value-of select="'&quot;type&quot;: &quot;array&quot;,'"/>
         <xsl:value-of select="'&quot;items&quot;: {'"/>
         <xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$typeName,'&quot;')"/>
