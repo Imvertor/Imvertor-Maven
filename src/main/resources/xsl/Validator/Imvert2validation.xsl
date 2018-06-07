@@ -366,8 +366,8 @@
         <!--setup-->
         <!--validation -->
         <xsl:sequence select="imf:report-warning(., 
-            not(imvert:stereotype/@id = ('stereotype-name-folder-package')), 
-            'Package has stereotype(s) [1] but will be merged with domain package',(imvert:stereotype))"/>
+            exists(imvert:stereotype) and not(imvert:stereotype/@id = ('stereotype-name-folder-package')), 
+            'Package has stereotype(s) [1] but will be merged with domain package',(imf:string-group(imvert:stereotype)))"/>
         <!-- check as regular package -->
         <xsl:next-match/>
     </xsl:template>
