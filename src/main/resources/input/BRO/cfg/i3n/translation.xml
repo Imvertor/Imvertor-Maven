@@ -219,13 +219,16 @@
         <trans lang="nl">Keuze element</trans>
         <trans lang="en">Choice element</trans>
     </item>
+    
     <item>
         <key>STRUCTUREDDATATYPE</key>
+        <key>GESTRUCTUREERD DATATYPE</key>
         <trans lang="nl">Gestructureerd datatype</trans>
         <trans lang="en">Structured datatype</trans>
     </item>
     <item>
         <key>PRIMITIVEDATATYPE</key>
+        <key>PRIMITIEF DATATYPE</key>
         <trans lang="nl">Primitief datatype</trans>
         <trans lang="en">Primitive datatype</trans>
     </item>
@@ -337,6 +340,10 @@
         <trans lang="en">Union details</trans>
     </item>
     <item>
+        <key>DETAILS-STRUCTUREDDATATYPE</key>
+        <trans lang="nl">Gestructureerde datatypen</trans>
+    </item>
+    <item>
         <key>DETAILS-DATATYPE</key>
         <trans lang="nl">Primitief type details</trans>
         <trans lang="en">Primitive type details</trans>
@@ -417,10 +424,18 @@
     <item>
         <key>SHORT-DATAELEMENTS</key>
         <trans lang="nl">Overzicht data elementen</trans>
+        <trans lang="en">Data elements overview</trans>
     </item>
     <item>
         <key>SHORT-UNIONELEMENTS</key>
         <trans lang="nl">Overzicht keuze elementen</trans>
+        <trans lang="en">Union elements overview</trans>
+        
+    </item>
+    <item>
+        <key>SHORT-REFERENCEELEMENTS</key>
+        <trans lang="nl">Overzicht referentie elementen</trans>
+        <trans lang="en">Reference elements overview</trans>
     </item>
     
     <item>
@@ -513,35 +528,66 @@
     <item>
         <key>DATAELEMENT-NAME</key>
         <trans lang="nl">Data element</trans>
+        <trans lang="en">Data element</trans>
     </item>
     <item>
         <key>DATAELEMENT-DEFINITION</key>
         <trans lang="nl">Definitie</trans>
+        <trans lang="en">Definition</trans>
     </item>
     <item>
         <key>DATAELEMENT-FORMAT</key>
         <trans lang="nl">Formaat</trans>
+        <trans lang="en">Format</trans>
     </item>
     <item>
         <key>DATAELEMENT-CARD</key>
         <trans lang="nl">Card</trans>
+        <trans lang="en">Card</trans>
     </item>
     
     <item>
         <key>UNIONELEMENT-NAME</key>
         <trans lang="nl">Union element</trans>
+        <trans lang="en">Union element</trans>
     </item>
     <item>
         <key>UNIONELEMENT-DEFINITION</key>
         <trans lang="nl">Definitie</trans>
+        <trans lang="en">Definition</trans>
     </item>
     <item>
         <key>UNIONELEMENT-FORMAT</key>
         <trans lang="nl">Formaat</trans>
+        <trans lang="en">Format</trans>
     </item>
     <item>
         <key>UNIONELEMENT-CARD</key>
         <trans lang="nl">Card</trans>
+        <trans lang="en">Card</trans>
+    </item>
+    
+    <item>
+        <key>REFERENCEELEMENT-NAME</key>
+        <trans lang="nl">Referentie element</trans>
+        <trans lang="en">Reference element</trans>
+        
+    </item>
+    <item>
+        <key>REFERENCEELEMENT-DEFINITION</key>
+        <trans lang="nl">Definitie</trans>
+        <trans lang="en">Definition</trans>
+        
+    </item>
+    <item>
+        <key>REFERENCEELEMENT-FORMAT</key>
+        <trans lang="nl">Formaat</trans>
+        <trans lang="en">Foermat</trans>
+    </item>
+    <item>
+        <key>REFERENCEELEMENT-CARD</key>
+        <trans lang="nl">Card</trans>
+        <trans lang="en">Card</trans>
     </item>
     
     <!-- intermediate text -->

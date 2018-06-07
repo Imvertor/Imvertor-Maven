@@ -295,6 +295,12 @@
                     <colgroup width="10%"/>
                     <colgroup width="10%"/>
                 </xsl:when>
+                <xsl:when test="$type = 'SHORT-REFERENCEELEMENTS'"> <!-- 30 50 10 10 -->
+                    <colgroup width="30%"/>
+                    <colgroup width="50%"/>
+                    <colgroup width="10%"/>
+                    <colgroup width="10%"/>
+                </xsl:when>
                 <xsl:when test="$type = ('DETAIL-ENUMERATION','DETAIL-CODELIST') and $items = 2"> <!-- 40 60 -->
                         <colgroup width="40%"/>
                         <colgroup width="60%"/>
@@ -394,6 +400,20 @@
                     </td>
                 </xsl:when>
                 <xsl:when test="$type = 'SHORT-UNIONELEMENTS'">
+                    <td>
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
+                    </td>
+                    <td>
+                        <xsl:apply-templates select="item[2]" mode="#current"/>
+                    </td>
+                    <td>
+                        <xsl:apply-templates select="item[3]" mode="#current"/>
+                    </td>
+                    <td>
+                        <xsl:apply-templates select="item[4]" mode="#current"/>
+                    </td>
+                </xsl:when>
+                <xsl:when test="$type = 'SHORT-REFERENCEELEMENTS'">
                     <td>
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                     </td>

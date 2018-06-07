@@ -533,6 +533,23 @@
         <trans lang="nl">Card</trans>
     </item>
     
+    <item>
+        <key>REFERENCEELEMENT-NAME</key>
+        <trans lang="nl">Referentie element</trans>
+    </item>
+    <item>
+        <key>REFERENCEELEMENT-DEFINITION</key>
+        <trans lang="nl">Definitie</trans>
+    </item>
+    <item>
+        <key>REFERENCEELEMENT-FORMAT</key>
+        <trans lang="nl">Formaat</trans>
+    </item>
+    <item>
+        <key>REFERENCEELEMENT-CARD</key>
+        <trans lang="nl">Card</trans>
+    </item>
+    
     <!-- intermediate text -->
     
     <item>
