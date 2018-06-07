@@ -43,7 +43,8 @@
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
-            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
@@ -89,7 +90,8 @@
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
-            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
@@ -110,7 +112,8 @@
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
-            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
@@ -133,7 +136,8 @@
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
-            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
@@ -155,8 +159,9 @@
         <!--    <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level> -->
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
-        <!--    <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level> -->
-            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
@@ -197,8 +202,8 @@
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-KWALITEITSBEGRIP">
-        <name lang="nl">Indicatie kwaliteit</name>
-        <name lang="en">Indication quality</name>
+        <name lang="nl">Kwaliteit</name>
+        <name lang="en">Quality</name>
         <levels>
             <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
             
@@ -326,12 +331,12 @@
         <name lang="nl">Patroon</name>
         <name lang="en">Pattern</name>
         <levels>
-            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
-            
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+            <level show="force" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
         </levels>
     </doc-rule>
@@ -364,7 +369,8 @@
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-DATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
             
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
