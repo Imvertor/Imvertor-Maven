@@ -417,6 +417,10 @@
         <key>SHORT-UNIONELEMENTS</key>
         <trans lang="nl">Overzicht keuze elementen</trans>
     </item>
+    <item>
+        <key>SHORT-REFERENCEELEMENTS</key>
+        <trans lang="nl">Overzicht referentie elementen</trans>
+    </item>
     
     <item>
         <key>EXPLANATION</key>
