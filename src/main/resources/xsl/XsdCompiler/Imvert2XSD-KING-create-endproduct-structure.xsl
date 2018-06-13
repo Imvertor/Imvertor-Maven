@@ -589,8 +589,8 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:variable name="max-occurs" select="imvert:max-occurs-source"/>
-		<xsl:variable name="min-occurs" select="imvert:min-occurs-source"/>
+		<xsl:variable name="max-occurs" select="imvert:max-occurs"/>
+		<xsl:variable name="min-occurs" select="imvert:min-occurs"/>
 		<xsl:variable name="position" select="imvert:position"/>
 		<xsl:variable name="id" select="imvert:id"/>
 		<xsl:variable name="matchgegeven" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-INDICATIEMATCHGEGEVEN')"/>
@@ -1603,53 +1603,59 @@
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034x',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':','Entiteittype'))"/>
 							</xsl:when>
-							<xsl:when test="ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen' and imf:get-most-relevant-compiled-taggedvalue(ancestor::imvert:class, '##CFG-TV-SUBSETLABEL')">
+							<xsl:when test="not(imvert:type-id) and ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen' and imf:get-most-relevant-compiled-taggedvalue(ancestor::imvert:class, '##CFG-TV-SUBSETLABEL')">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034y',$debugging)"/>
 								<xsl:variable name="subsetLabel" select="imf:get-most-relevant-compiled-taggedvalue(ancestor::imvert:class, '##CFG-TV-SUBSETLABEL')"/>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',concat(imf:capitalize($name),'-',$subsetLabel)))"/>
 							</xsl:when>
-							<xsl:when test="imvert:type-name = 'scalar-date' and $global-e-types-allowed = 'Ja'">
+							<xsl:when test="ancestor::imvert:class/imvert:alias = '/www.kinggemeenten.nl/BSM/Berichtstrukturen' and imf:get-most-relevant-compiled-taggedvalue(ancestor::imvert:class, '##CFG-TV-SUBSETLABEL')">
 								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034z',$debugging)"/>
+								<xsl:variable name="compiled-typename" select="imf:get-compiled-typename(.)"/>
+								<xsl:variable name="subsetLabel" select="imf:get-most-relevant-compiled-taggedvalue(ancestor::imvert:class, '##CFG-TV-SUBSETLABEL')"/>
+								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':',concat(imf:capitalize($compiled-typename),'-',$subsetLabel)))"/>
+							</xsl:when>
+							<xsl:when test="imvert:type-name = 'scalar-date' and $global-e-types-allowed = 'Ja'">
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034aa',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':Datum-e'))"/>
 							</xsl:when>
 							<xsl:when test="imvert:type-name = 'scalar-date' and $global-e-types-allowed = 'Nee'">
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034aa',$debugging)"/>
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034ab',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':Datum-r'))"/>
 							</xsl:when>
 							<xsl:when test="imvert:type-name = 'scalar-datetime' and $global-e-types-allowed = 'Ja'">
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034ab',$debugging)"/>
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034ac',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':Tijdstip-e'))"/>
 							</xsl:when>
 							<xsl:when test="imvert:type-name = 'scalar-datetime' and $global-e-types-allowed = 'Nee'">
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034ac',$debugging)"/>
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034ad',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':Tijdstip-r'))"/>
 							</xsl:when>
 							<xsl:when test="imvert:type-name = 'scalar-year' and $global-e-types-allowed = 'Ja'">
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034ad',$debugging)"/>
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034ae',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':Jaar-e'))"/>
 							</xsl:when>
 							<xsl:when test="imvert:type-name = 'scalar-year' and $global-e-types-allowed = 'Nee'">
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034ae',$debugging)"/>
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034af',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':Jaar-r'))"/>
 							</xsl:when>
 							<xsl:when test="imvert:type-name = 'scalar-yearmonth'">
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034af',$debugging)"/>
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034ag',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':JaarMaand-e'))"/>
 							</xsl:when>
 							<xsl:when test="imvert:type-name = 'scalar-postcode'">
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034ag',$debugging)"/>
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034ah',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':Postcode-e'))"/>
 							</xsl:when>
 							<xsl:when test="imvert:type-name = 'scalar-boolean'">
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034ah',$debugging)"/>
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034ai',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', concat($StUF-prefix,':INDIC-e'))"/>
 							</xsl:when>
 							<xsl:when test="starts-with(imvert:type-name,'GM_')">
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034ai',$debugging)"/>
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034aj',$debugging)"/>
 								<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-external-type-name(.,true()))"/>
 							</xsl:when>
 							<xsl:when test="not(contains(imvert:type-name,'scalar'))">
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034aj',$debugging)"/>
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034ak',$debugging)"/>
 								<xsl:choose>
 									<xsl:when test="$global-e-types-allowed = 'Ja'">
 										<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',imf:capitalize(imvert:type-name),$vraagIndicatie,'-e'))"/>
@@ -1660,7 +1666,7 @@
 								</xsl:choose>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034ak',$debugging)"/>
+								<xsl:sequence select="imf:create-debug-comment('Debuglocation 1034al',$debugging)"/>
 								<xsl:choose>
 									<xsl:when test="$global-e-types-allowed = 'Ja'">
 										<xsl:sequence select="imf:create-output-element('ep:type-name', concat($construct-Prefix,':',$tokens[1],$vraagIndicatie,'-e'))"/>

@@ -2456,7 +2456,7 @@
         
         <xsl:variable name="supplier" select="imf:get-trace-suppliers-for-construct(.,1)[@project='SIM'][1]"/>
         <xsl:variable name="construct" select="if ($supplier) then imf:get-trace-construct-by-supplier($supplier,$imvert-document) else ()"/>
-        <xsl:variable name="SIM-name" select="($construct/imvert:name, imvert:name)[1]"/>
+        <xsl:variable name="SIM-name" select="($construct/imvert:name/@original, imvert:name/@original)[1]"/>
         
         <ep:enum><xsl:value-of select="$SIM-name"/></ep:enum>
         
@@ -2568,8 +2568,8 @@
             </xsl:choose>
         </xsl:variable>
         <xsl:variable name="type-name" select="imvert:type-name"/>
-        <xsl:variable name="max-occurs" select="imvert:max-occurs-source"/>
-        <xsl:variable name="min-occurs" select="imvert:min-occurs-source"/>
+        <xsl:variable name="max-occurs" select="imvert:max-occurs"/>
+        <xsl:variable name="min-occurs" select="imvert:min-occurs"/>
         <xsl:variable name="position" select="imvert:position"/>
         <xsl:variable name="id" select="imvert:id"/>
         <xsl:variable name="doc">
@@ -3338,6 +3338,84 @@
                 <xsl:value-of select="$content"/>
             </xsl:element>
         </xsl:if>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-compiled-typename">
+        <xsl:param name="this" as="element()"/>
+        <xsl:variable name="type" select="local-name($this)"/>
+        <xsl:variable name="stereotype" select="imf:get-stereotype($this)"/>
+        <xsl:variable name="alias" select="$this/imvert:alias"/>
+        <xsl:variable name="typename-raw" select="$this/imvert:type-name"/>
+        <xsl:variable name="typename-form" select="replace(imf:strip-accents($typename-raw),'[^\p{L}0-9.\-]+','_')"/>
+        
+        <xsl:variable name="name" select="$typename-form"/>
+        
+        <xsl:choose>
+<?x            <xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-composite')">
+                <xsl:value-of select="concat(imf:capitalize($name),'Grp')"/>
+            </xsl:when>
+            <xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-objecttype')">
+                <xsl:value-of select="$alias"/>
+            </xsl:when>
+            <xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-relatieklasse')">
+                <xsl:value-of select="$alias"/>
+            </xsl:when>
+            <xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-referentielijst')">
+                <xsl:value-of select="$alias"/>
+            </xsl:when>
+            <xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-complextype')">
+                <xsl:value-of select="$name"/>
+            </xsl:when>
+            <xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-enumeration')">
+                <xsl:value-of select="$name"/>
+            </xsl:when>
+            <xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-union')">
+                <xsl:value-of select="$name"/>
+            </xsl:when>
+            <xsl:when test="$type = 'class' and $stereotype = ('stereotype-name-interface')">
+                <!-- this must be an external -->
+                <xsl:variable name="external-name" select="imf:get-external-type-name($this,true())"/>
+                <xsl:value-of select="$external-name"/>
+            </xsl:when> ?>
+            <xsl:when test="$type = 'attribute' and $stereotype = ('stereotype-name-attribute')">
+                <xsl:value-of select="$name"/>
+            </xsl:when>
+            <xsl:when test="$type = 'attribute' and $stereotype = ('stereotype-name-referentie-element')">
+                <xsl:value-of select="$name"/>
+            </xsl:when>
+            <xsl:when test="$type = 'attribute' and $stereotype = ('stereotype-name-data-element')">
+                <xsl:value-of select="$name"/>
+            </xsl:when>
+            <xsl:when test="$type = 'attribute' and $stereotype = ('stereotype-name-enum')">
+                <xsl:value-of select="$name"/>
+            </xsl:when>
+            <xsl:when test="$type = 'attribute' and $stereotype = ('stereotype-name-union-element')">
+                <xsl:value-of select="imf:useable-attribute-name($name,$this)"/>
+            </xsl:when>
+<?x            <xsl:when test="$type = 'association' and $stereotype = ('stereotype-name-relatiesoort') and normalize-space($alias)">
+                <!-- if this relation occurs multiple times, add the alias of the target object -->
+                <xsl:value-of select="$alias"/>
+            </xsl:when>
+            <xsl:when test="$type = 'association' and $this/imvert:aggregation = 'composite'">
+                <xsl:value-of select="$name"/>
+            </xsl:when>
+            <xsl:when test="$type = 'association' and $stereotype = ('stereotype-name-relatiesoort')">
+                <xsl:sequence select="imf:msg($this,'ERROR','No alias',())"/>
+                <xsl:value-of select="lower-case($name)"/>
+            </xsl:when>
+            <xsl:when test="$type = 'association' and normalize-space($alias)"> <!-- composite -->
+                <xsl:value-of select="$alias"/>
+            </xsl:when>
+            <xsl:when test="$type = 'association'">
+                <xsl:sequence select="imf:msg($this,'ERROR','No alias',())"/>
+                <xsl:value-of select="lower-case($name)"/>
+            </xsl:when> ?>
+            <!-- TODO meer soorten namen uitwerken? -->
+            <xsl:otherwise>
+                <xsl:sequence select="imf:msg($this,'ERROR','Unknown type [1] with stereo [2]', ($type, string-join($stereotype,', ')))"/>
+            </xsl:otherwise>
+        </xsl:choose>
+        
     </xsl:function>
     
     <xsl:function name="imf:get-compiled-name">
