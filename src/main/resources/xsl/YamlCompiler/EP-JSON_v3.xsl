@@ -10,14 +10,14 @@
 	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
 	
 	<!-- De eerste variabele is bedoelt voor de server omgeving, de tweede voor gebruik bij ontwikkeling in XML-Spy. -->
-	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
-	<!--<xsl:variable name="debugging" select="true()" as="xs:boolean"/>-->
+	<!--<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>-->
+	<xsl:variable name="debugging" select="true()" as="xs:boolean"/>
 	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
 		 * 3.0	
 		 The default value is 3.0. -->
-	<xsl:param name="json-version" select="'3.0'"/>
+	<xsl:param name="json-version" select="'2.0'"/>
 	
 	<!-- TODO: De volgende variabelen moeten op een andere wijze dan in het stylesheet geconfigureerd worden.
 			   Hoe is echter nog de vraag, vanuit het model, via parameters of via een configuration profiel. -->
@@ -82,9 +82,15 @@
 		</xsl:choose>
 
         <!-- Loop over messages. -->
-		<xsl:apply-templates select="ep:message-set/ep:message[@messagetype='response']"/>,
-		
-        <!-- Loop over constructs which are refered to from the constructs within the messages but aren't enumeration constructs. -->
+		<xsl:apply-templates select="ep:message-set/ep:message[@messagetype='response']"/>
+
+		<!-- If the next loop is relevant a comma separator has to be generated. -->
+		<xsl:if
+			test="ep:message-set/ep:construct[ep:tech-name = //ep:message[@messagetype='response' and @grouping!='resource']/ep:seq/ep:construct/ep:type-name and not(ep:enum)]">
+			,
+		</xsl:if>
+
+		<!-- Loop over constructs which are refered to from the constructs within the messages but aren't enumeration constructs. -->
         <xsl:for-each select="ep:message-set/ep:construct[ep:tech-name = //ep:message[@messagetype='response' and @grouping!='resource']/ep:seq/ep:construct/ep:type-name and not(ep:enum)]">
             <xsl:variable name="type-name" select="ep:type-name"/>
             <!-- The regular constructs are generated here. -->
@@ -206,6 +212,51 @@
 						<xsl:value-of select="','"/>
 					</xsl:if>
 				</xsl:for-each>
+
+
+				<xsl:if
+					test="//ep:message-set/ep:construct[ep:tech-name = //ep:message[@expand='true']//ep:construct/ep:type-name]">
+					,
+				</xsl:if>
+
+				<!-- For all global constructs who have at least one association construct 
+					a global embedded version has to be generated. -->
+				<xsl:for-each
+					select="//ep:message-set/ep:construct[ep:tech-name = //ep:message[@expand='true']//ep:construct/ep:type-name]">
+
+					<xsl:if test="$debugging">
+						"--------------Debuglocatie-00725-<xsl:value-of select="generate-id()" />": {
+						"Debug": "AOS00725"
+						},
+					</xsl:if>
+
+					<xsl:value-of
+						select="concat('&quot;', translate(ep:tech-name,'.','_'),'_embedded&quot;: {' )" />
+					<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'" />
+					<xsl:value-of select="'&quot;properties&quot;: {'" />
+					<xsl:apply-templates
+						select=".//ep:construct[@type ='association' and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]"
+						mode="embedded" />
+					<xsl:value-of select="'}'" />
+					<xsl:value-of select="'}'" />
+
+					<xsl:if test="$debugging">
+						,"--------------Einde-00725-<xsl:value-of select="generate-id()" />": {
+						"Debug": "AOS00725"
+						}
+					</xsl:if>
+
+					<!-- As long as the current construct isn't the last global constructs 
+						(that has at least one association construct) a comma separator as to be 
+						generated. -->
+					<xsl:if test="position() != last()">
+						<xsl:value-of select="','" />
+					</xsl:if>
+				</xsl:for-each>
+
+
+
+
 
 				<!-- TODO: het volgende uitbecommentarieerde deel is waarschijnlijk niet nodig. De embedded types worden immers 
 						   al in het ep:message-set template gegenereerd. --> 
@@ -395,6 +446,54 @@
 				<xsl:value-of select="'}'"/>
 			</xsl:when>
 		</xsl:choose>
+		<xsl:if test="$json-version = '3.0'">
+			<xsl:text>,
+  "headers": {
+    "api_version": {
+	  "schema": {
+	    "type": "integer",
+	    "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep.",
+	    "example": "1.0.1"
+        }
+    },
+    "X_Pagination_Count": {
+	  "schema": {
+	    "type": "integer",
+	    "description": "Totaal aantal paginas.",
+	    "example": "16"
+	    }
+    },
+    "X_Pagination_Page":  { 
+	  "schema": { 
+	    "type": "integer",
+	    "description": "Huidige pagina.",
+	    "example": "3"
+	    }
+    },
+    "X_Pagination_Limit": {
+	  "schema": {
+	    "type": "integer",
+	    "description": "Aantal resultaten per pagina.",
+	    "example": "20"
+	    }
+    },
+    "X_Rate_Limit_Limit": {
+	  "schema": {
+	    "type": "integer"
+	    }
+    },
+    "X_Rate_Limit_Remaining": {
+	  "schema": {
+	    "type": "integer"
+	    }
+    },
+    "X_Rate_Limit_Reset": {
+	  "schema": {
+	    "type": "integer"
+	    }
+    }
+  }</xsl:text>
+		</xsl:if>
         <xsl:value-of select="'}'"/>
     </xsl:template>
     
@@ -421,7 +520,7 @@
 			},
 		</xsl:if>
 
-        <xsl:value-of select="concat('&quot;', $topComponentName,'&quot;: {' )"/>
+        <xsl:value-of select="concat('&quot;/', $topComponentName,'&quot;: {' )"/>
 
 		<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
 		
@@ -445,13 +544,13 @@
 						<xsl:value-of select="'&quot;$ref&quot;: &quot;#/definitions/pagineerlinks&quot;'"/>
 					</xsl:when>
 					<xsl:when test="@pagination='true'">
-						<xsl:value-of select="'&quot;$ref&quot;: &quot;#/components/pagineerlinks&quot;'"/>
+						<xsl:value-of select="'&quot;$ref&quot;: &quot;#/components/schemas/pagineerlinks&quot;'"/>
 					</xsl:when>
 					<xsl:when test="$json-version = '2.0'">
 						<xsl:value-of select="'&quot;$ref&quot;: &quot;#/definitions/selflink&quot;'"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="'&quot;$ref&quot;: &quot;#/components/selflink&quot;'"/>
+						<xsl:value-of select="'&quot;$ref&quot;: &quot;#/components/schemas/selflink&quot;'"/>
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:value-of select="'},'"/>
@@ -535,7 +634,7 @@
 		</xsl:if>
 
 		<!-- As long as the current message isn't the last message a comma separator has to be generated. -->
-		<xsl:if test="position() != last()">
+		<xsl:if test="following-sibling::ep:message[@messagetype='response']">
 			<xsl:value-of select="','"/>
 		</xsl:if>
 
