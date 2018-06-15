@@ -520,7 +520,7 @@
 			},
 		</xsl:if>
 
-        <xsl:value-of select="concat('&quot;/', $topComponentName,'&quot;: {' )"/>
+        <xsl:value-of select="concat('&quot;', $topComponentName,'&quot;: {' )"/>
 
 		<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
 		
@@ -716,8 +716,10 @@
 		</xsl:for-each>
 		
 
-		<xsl:if test=".//ep:construct[@type='association']">
+		<xsl:if test=".//ep:construct[@type='association' and ../ep:construct[not(@type = 'association')]]">
 			<xsl:value-of select="','"/>
+		</xsl:if>
+		<xsl:if test=".//ep:construct[@type='association']">
 			<xsl:value-of select="'&quot;_links&quot;: {'"/>
 
 			<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$elementName,'_links&quot;}')"/>
