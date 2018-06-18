@@ -372,7 +372,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name($type-name,'type-name'))" />
 				</ep:construct>
 			</xsl:when>
-			<!-- If the current ep:construct is an association or an groupCompositie a ep:construct element is generated with all necessary properties. 
+			<!-- If the current ep:construct is an association a ep:construct element is generated with all necessary properties. 
 				 This when statement differs from the one above by the value of the ep:name and ep:tech-name. -->
 			<xsl:when test="@type='association'">
 				<xsl:variable name="type-id" select="ep:type-id" />
@@ -386,17 +386,20 @@
 				</xsl:variable>
 				<xsl:sequence select="imf:create-debug-comment('At this level the expand attribute is neccessary to determine if an _embedded property has to be created. This is only the case if the attribute has the value true.',$debugging)" />
 				<ep:construct type="{@type}">
-					<xsl:choose>
-						<xsl:when test="not(empty($meervoudsnaam))">
-							<xsl:attribute name="meervoudsnaam" select="$meervoudsnaam" />
-						</xsl:when>
-						<xsl:when test="not(empty($targetrole))">
-							<xsl:attribute name="targetrole" select="$targetrole" />
-						</xsl:when>
-					</xsl:choose>
 					<xsl:if test=".//ep:expand = 'true'">
 						<xsl:attribute name="expand" select="'true'" />
 					</xsl:if>
+					<xsl:choose>
+						<xsl:when test="$meervoudsnaam=''">
+							<xsl:if test="not($targetrole='')">
+								<xsl:attribute name="targetrole" select="$targetrole" />
+							</xsl:if>
+							<xsl:sequence select="imf:msg(.,'WARNING','The construct [1] does not have a tagged value Target role in meervoud, define one.',ep:name)"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:attribute name="meervoudsnaam" select="$meervoudsnaam" />
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS01200, id: ',$id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $construct/imvert:name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($construct/imvert:name, 'element-name'))" />
@@ -406,6 +409,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name(imf:get-normalized-name($type-name, 'element-name'),'type-name'))" />
 				</ep:construct>
 			</xsl:when>
+			<!-- If the current ep:construct is a groepcompositie an ep:construct element is generated with all necessary properties.  -->
 			<xsl:when test="@type='groepCompositie'">
 				<xsl:variable name="type-id" select="ep:type-id" />
 				<xsl:variable name="classconstruct" select="imf:get-construct-by-id($type-id,$packages)" />
@@ -415,9 +419,6 @@
 						select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-TARGETROLEPLURAL')" />
 				</xsl:variable>
 				<ep:construct type="{@type}">
-					<xsl:if test="not(empty($meervoudsnaam))">
-						<xsl:attribute name="meervoudsnaam" select="$meervoudsnaam" />
-					</xsl:if>
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS01200, id: ',$id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $type-name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $type-name)" />
@@ -427,7 +428,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name($type-name,'type-name'))" />
 				</ep:construct>
 			</xsl:when>
-			<!-- In all othert cases this branch applies. -->
+			<!-- If the current ep:construct is a subclass an ep:construct element is generated with all necessary properties.  -->
 			<xsl:when test="@type = 'subclass'">
 				<!-- TODO: Uitzoeken waarom '$construct/imvert:class/imvert:type-id' en 
 						   '$construct//imvert:class/imvert:type-id' niet werken. -->
@@ -435,15 +436,53 @@
 					<xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-NAMEPLURAL')" />
 				</xsl:variable>
 				<ep:construct type="{@type}">
-					<xsl:if test="not(empty($meervoudsnaam))">
-						<xsl:attribute name="meervoudsnaam" select="$meervoudsnaam" />
-					</xsl:if>
+					<xsl:choose>
+						<xsl:when test="$meervoudsnaam=''">
+							<xsl:sequence select="imf:msg(.,'WARNING','The construct [1] does not have a tagged value meervoudsnaam, define one.',ep:name)"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:attribute name="meervoudsnaam" select="$meervoudsnaam" />
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS01225, id: ',$id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
 <?x                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/> ?>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', $construct/imvert:min-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', $construct/imvert:max-occurs)" />
+					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name($tech-name,'type-name'))" />
+				</ep:construct>
+			</xsl:when>
+			<!-- If the construct is the top-level construct within a message no meervoudsnaam attribute has to be generated. -->
+			<xsl:when test="parent::ep:rough-message">
+				<!-- TODO: Uitzoeken waarom '$construct/imvert:class/imvert:type-id' en
+						   '$construct//imvert:class/imvert:type-id' niet werken. -->
+				<xsl:variable name="typeid" select="$construct/imvert:type-id" />
+				<xsl:variable name="relatedconstruct" select="imf:get-construct-by-id($typeid,$packages)" />
+				<xsl:variable name="meervoudsnaam">
+					<xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($relatedconstruct, '##CFG-TV-NAMEPLURAL')" />
+				</xsl:variable>
+				<ep:construct type="{@type}">
+					<xsl:sequence select="imf:create-debug-comment(concat('OAS01250, id: ',$id),$debugging)" />
+					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
+					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
+					<?x                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/> ?>
+					<!-- Depending on the type the min- and max-occurs are set or aren't set at all. -->
+					<xsl:choose>
+						<xsl:when test="$minOccurs = '-'">
+							<xsl:sequence select="imf:create-debug-comment(concat('OAS01350, id: ',$id),$debugging)" />
+						</xsl:when>
+						<xsl:when test="not($minOccurs = '')">
+							<xsl:sequence select="imf:create-debug-comment(concat('OAS01400, id: ',$id),$debugging)" />
+							<xsl:sequence select="imf:create-output-element('ep:min-occurs', $minOccurs)" />
+							<xsl:sequence select="imf:create-output-element('ep:max-occurs', $maxOccurs)" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="imf:create-debug-comment(concat('OAS01450, id: ',$id),$debugging)" />
+							<xsl:sequence select="imf:create-output-element('ep:min-occurs', $construct/imvert:min-occurs)" />
+							<xsl:sequence select="imf:create-output-element('ep:max-occurs', $construct/imvert:max-occurs)" />
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name($tech-name,'type-name'))" />
 				</ep:construct>
 			</xsl:when>
@@ -456,9 +495,16 @@
 					<xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($relatedconstruct, '##CFG-TV-NAMEPLURAL')" />
 				</xsl:variable>
 				<ep:construct type="{@type}">
-					<xsl:if test="not(empty($meervoudsnaam))">
-						<xsl:attribute name="meervoudsnaam" select="$meervoudsnaam" />
-					</xsl:if>
+					<xsl:choose>
+						<xsl:when test="$meervoudsnaam=''">
+							<xsl:sequence select="imf:msg(.,'WARNING','The construct [1] does not have a tagged value meervoudsnaam, define one.',ep:name)"/>
+							<xsl:sequence select="imf:create-debug-comment('The construct does not have a tagged value Target role in meervoud, define one.',$debugging)" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:attribute name="meervoudsnaam" select="$meervoudsnaam" />
+							<xsl:sequence select="imf:create-debug-comment('The construct does have a tagged value Target role in meervoud.',$debugging)" />
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS01250, id: ',$id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
