@@ -10,14 +10,14 @@
 	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
 	
 	<!-- De eerste variabele is bedoelt voor de server omgeving, de tweede voor gebruik bij ontwikkeling in XML-Spy. -->
-	<!--<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>-->
-	<xsl:variable name="debugging" select="true()" as="xs:boolean"/>
+	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
+	<!--<xsl:variable name="debugging" select="true()" as="xs:boolean"/>-->
 	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
 		 * 3.0	
 		 The default value is 3.0. -->
-	<xsl:param name="json-version" select="'2.0'"/>
+	<xsl:param name="json-version" select="'3.0'"/>
 	
 	<!-- TODO: De volgende variabelen moeten op een andere wijze dan in het stylesheet geconfigureerd worden.
 			   Hoe is echter nog de vraag, vanuit het model, via parameters of via een configuration profiel. -->
