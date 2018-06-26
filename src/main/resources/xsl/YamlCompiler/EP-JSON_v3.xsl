@@ -1071,6 +1071,10 @@
                         </xsl:with-param>
                     </xsl:call-template>
                 </xsl:variable>
+                <xsl:variable name="example">
+                    <xsl:call-template name="deriveExample"/>
+                </xsl:variable>
+
                 <xsl:value-of select="concat('&quot;type&quot;: &quot;',$datatype,'&quot;')"/>
 
 				<xsl:variable name="documentation">
@@ -1082,6 +1086,7 @@
 				<xsl:value-of select="'&quot;'"/>
                 <xsl:value-of select="$format"/>
                 <xsl:value-of select="$facets"/>
+                <xsl:value-of select="$example"/>
             </xsl:when>
  			<!-- If a construct [B] exists which has a type-name and which tech-name is equal to the type-name of the current construct [A] a $ref to the has to be 
 				 generated using the B-type-name. -->
@@ -1204,6 +1209,17 @@
 				<xsl:if test="ep:max-value">
 					<xsl:value-of select="concat(',&quot;maximum&quot;: ',ep:max-value)"/>
 				</xsl:if>
+            </xsl:when>
+            <xsl:otherwise/>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template name="deriveExample">
+        
+  		<!-- Some scalar typse can have one or more facets which restrict the allowed value. -->
+       <xsl:choose>
+            <xsl:when test="ep:example != ''">
+					<xsl:value-of select="concat(',&quot;example&quot;: &quot;',ep:example,'&quot;')"/>
             </xsl:when>
             <xsl:otherwise/>
         </xsl:choose>

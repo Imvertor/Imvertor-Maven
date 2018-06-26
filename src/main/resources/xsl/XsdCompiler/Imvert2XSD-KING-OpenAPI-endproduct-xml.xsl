@@ -837,7 +837,7 @@
 				</ep:pattern>
 			</xsl:if>
 		</xsl:variable>
-
+		<xsl:variable name="example" select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-EXAMPLE')" />
 
 		<xsl:variable name="suppliers" as="element(ep:suppliers)">
 			<ep:suppliers>
@@ -902,6 +902,7 @@
 							<xsl:sequence select="imf:create-output-element('ep:max-waarde', $max-waarde)" />
 							<!--xsl:sequence select="imf:create-output-element('ep:min-length', $min-length)"/ -->
 							<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
+							<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
 						</ep:construct>
 					</xsl:otherwise>
 				</xsl:choose>
@@ -925,6 +926,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name(imvert:type-name,'type-name'))" />
+					<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
 				</ep:construct>
 			</xsl:when>
 			<!-- In all other cases the imvert:attribute itself and its properties are processed. -->
@@ -983,6 +985,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:max-value', $max-waarde)" />
 					<xsl:sequence select="imf:create-output-element('ep:min-length', $min-length)" />
 					<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
+					<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
 				</ep:construct>
 			</xsl:otherwise>
 		</xsl:choose>
