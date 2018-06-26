@@ -1206,4 +1206,11 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
+    
+    <!-- two subpaths are deemed equal when they are the same irrespective of letter case -->
+    <xsl:function name="imf:is-same-subpath" as="xs:boolean">
+        <xsl:param name="subpath-1" as="xs:string?"/>
+        <xsl:param name="subpath-2" as="xs:string?"/>
+        <xsl:sequence select="exists($subpath-1) and exists($subpath-2) and (lower-case($subpath-1) eq lower-case($subpath-2))"/>
+    </xsl:function>
 </xsl:stylesheet>

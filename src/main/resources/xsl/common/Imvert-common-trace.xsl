@@ -229,7 +229,7 @@
     -->
     <xsl:function name="imf:get-trace-supplier-application" as="element(imvert:packages)?">
         <xsl:param name="supplier-subpath" as="xs:string?"/>
-        <xsl:sequence select="$all-derived-models[@subpath=$supplier-subpath]/imvert:packages"/>
+        <xsl:sequence select="$all-derived-models[imf:is-same-subpath(@subpath,$supplier-subpath)]/imvert:packages"/>
     </xsl:function>
     
     <xsl:function name="imf:get-trace-supplier-subpath" as="xs:string">
