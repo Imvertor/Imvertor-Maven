@@ -709,7 +709,7 @@
     <xsl:function name="imf:get-display-name" as="xs:string">
         <xsl:param name="this" as="node()?"/>
         <xsl:choose>
-            <xsl:when test="$this">
+            <xsl:when test="exists($this)">
                 <xsl:variable name="display-name" select="imf:get-construct-name($this)"/>
                 <xsl:value-of select="$display-name"/>
             </xsl:when>

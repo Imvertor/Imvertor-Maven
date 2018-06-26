@@ -154,21 +154,26 @@
 		<xsl:variable name="traceable-construct" select="if ($construct/self::imvert:target) then $construct/.. else $construct"/> 
 		
 		<xsl:variable name="suppliers" select="imf:get-trace-suppliers-for-construct($traceable-construct,1)"/>
-		
 		<xsl:variable name="tvs" as="element()*">
 			<!-- 
 				haal alle tagged values op die bekend zijn voor dit model, dus in de configuratie voorkomen; deze zijn al ontdubbeld.
 			-->
-			<xsl:for-each select="imf:get-config-tagged-values()"> 
+			<xsl:for-each select="imf:get-config-tagged-values()"> <!-- returns <tv> elements --> 
 				<xsl:variable name="tv-id" select="@id"/>
-				<xsl:for-each select="if (imf:boolean(derive)) then $suppliers else $suppliers[1]">
+				<xsl:variable name="derive" select="imf:boolean(derive)"/>
+				<!-- 
+					neem alleen de tagged values op die lokaal zijn gedefinieerd als die tv niet afgeleid kan worden. 
+					Anders neem je alle tagged values, van client naar supplier 
+				-->
+				<xsl:for-each select="if ($derive) then $suppliers else $suppliers[1]">
 					<xsl:variable name="supplier" select="."/>
 					<xsl:variable name="supplier-construct" select="imf:get-trace-construct-by-supplier($supplier,$imvert-document)"/>
-					
+				
 					<!-- if target, then check the tv of the targets -->
 					<xsl:variable name="providing-construct" select="if ($construct/self::imvert:target) then $supplier-construct/imvert:target else $supplier-construct"/>
 					
 					<xsl:variable name="tv" select="($providing-construct/imvert:tagged-values/imvert:tagged-value[@id=$tv-id and normalize-space(imvert:value)])[1]"/>
+
 					<xsl:if test="exists($tv)">
 						<tv 
 							id="{$tv-id}" 

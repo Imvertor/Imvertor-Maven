@@ -17,6 +17,9 @@
             <label title="DEFINITION"/>
             <label title="URI"/>
         </section>
+        <section title="Definition" tagged-value="CFG-TV-DEFINITION">
+            <label title="URI"/>
+        </section>
     </notes-rule>
     
     <notes-rule lang="nl" default="Toelichting">
@@ -26,6 +29,9 @@
             <label title="NOOT"/>
             <label title="VOORBEELD"/>
             <label title="DEFINITIE"/>
+            <label title="URI"/>
+        </section>
+        <section title="Definitie" tagged-value="CFG-TV-DEFINITION">
             <label title="URI"/>
         </section>
     </notes-rule>
