@@ -12,7 +12,7 @@
 	<xsl:import href="../common/Imvert-common-validation.xsl" />
 	<xsl:import href="../common/extension/Imvert-common-text.xsl" />
 	<xsl:import href="../common/Imvert-common-derivation.xsl" />
-	<xsl:import href="Imvert2XSD-KING-common.xsl" />
+	<xsl:import href="../XsdCompiler/Imvert2XSD-KING-common.xsl" />
 
 	<xsl:output indent="yes" method="xml" encoding="UTF-8" />
 

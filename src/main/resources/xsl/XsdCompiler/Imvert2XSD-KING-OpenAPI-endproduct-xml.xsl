@@ -19,9 +19,9 @@
 	<xsl:import href="../common/Imvert-common-validation.xsl" />
 	<xsl:import href="../common/extension/Imvert-common-text.xsl" />
 	<xsl:import href="../common/Imvert-common-derivation.xsl" />
-	<xsl:import href="Imvert2XSD-KING-common.xsl" />
+	<xsl:import href="../XsdCompiler/Imvert2XSD-KING-common.xsl" />
 
-	<xsl:include href="Imvert2XSD-KING-common-checksum.xsl" />
+	<xsl:include href="../XsdCompiler/Imvert2XSD-KING-common-checksum.xsl" />
 
 	<xsl:output indent="yes" method="xml" encoding="UTF-8" />
 
@@ -88,6 +88,16 @@
 
 				<!-- xxxxx -->
 				<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS00250',$debugging)" />
+
+
+
+
+				<xsl:for-each-group 
+					select="//ep:superconstruct"
+					group-by="ep:name">
+					<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS00275',$debugging)" />
+					<xsl:apply-templates select="current-group()[1]" mode="as-content" />
+				</xsl:for-each-group>
 				<xsl:for-each-group 
 					select="//ep:construct[@type!='complex-datatype']"
 					group-by="ep:name">
@@ -224,7 +234,14 @@
 			</xsl:choose>
 			<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 			<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
-			<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+			<xsl:choose>
+				<xsl:when test="(empty($doc) or $doc='') and $debugging">
+					<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:if test=".//ep:construct">
 				<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS00600',$debugging)" />
 				<ep:seq>
@@ -320,33 +337,29 @@
 				</xsl:when>
 			</xsl:choose>
 		</xsl:if>
-		<!-- The construct variable holds the imvert construct which has an imvert:id equal to the 'id' variable. So sometimes it's an attribute, sometimes 
-			 an association amd sometimes a class. -->
+		<!-- The construct variable holds the imvert construct which has an imvert:id equal to the 'id' variable. 
+			 So sometimes it's an attribute, sometimes an association amd sometimes a class. -->
 		<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
         
-<?x        <xsl:variable name="doc">
-            <xsl:variable name="this-construct" select="$packages//imvert:*[imvert:id = $id]"/>
-            <xsl:if test="not(empty(imf:merge-documentation($this-construct,'CFG-TV-DEFINITION')))">
+        <xsl:variable name="doc">
+            <xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DEFINITION')))">
                 <ep:definition>
-                    <xsl:sequence select="imf:merge-documentation($this-construct,'CFG-TV-DEFINITION')"/>
+                    <xsl:sequence select="imf:merge-documentation($construct,'CFG-TV-DEFINITION')"/>
                 </ep:definition>
             </xsl:if>
-            <xsl:if test="not(empty(imf:merge-documentation($this-construct,'CFG-TV-DESCRIPTION')))">
+            <xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DESCRIPTION')))">
                 <ep:description>
-                    <xsl:sequence select="imf:merge-documentation($this-construct,'CFG-TV-DESCRIPTION')"/>
+                    <xsl:sequence select="imf:merge-documentation($construct,'CFG-TV-DESCRIPTION')"/>
                 </ep:description>
             </xsl:if>
-            <xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue($this-construct, '##CFG-TV-PATTERN')))">
+            <xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-PATTERN')))">
                 <ep:pattern>
                     <ep:p>
-                        <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($this-construct, '##CFG-TV-PATTERN')"/>
+                        <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-PATTERN')"/>
                     </ep:p>
                 </ep:pattern>
             </xsl:if>
-        </xsl:variable> ?>
-<?x        <xsl:result-document href="{concat('file:/c:/temp/construct-29180524-',$name,'-',generate-id(),'.xml')}">
-            <xsl:copy-of select="$construct"/>
-        </xsl:result-document>  ?>
+        </xsl:variable>
 
 		<xsl:choose>
 			<!-- If the current ep:construct is an association-class no ep:construct element is generated. All attributes of that related class are directly placed 
@@ -354,7 +367,7 @@
 			<xsl:when test="@type='association-class'">
 				<xsl:sequence select="imf:create-debug-comment(concat('OAS01100, id: ',$id),$debugging)" />
 				<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
-				<xsl:apply-templates select="ep:superconstruct" mode="as-content" />
+				<xsl:apply-templates select="ep:superconstruct" mode="as-ref" />
 				<xsl:apply-templates select="ep:construct" mode="as-content" />
 			</xsl:when>
 			<!-- If the current ep:construct is an complex-datatype a ep:construct element is generated with all necessary properties. -->
@@ -366,7 +379,14 @@
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS01150, id: ',$id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
-<?x                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/> ?>
+					<xsl:choose>
+						<xsl:when test="(empty($doc) or $doc='') and $debugging">
+							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', $construct/imvert:min-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', $construct/imvert:max-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name($type-name,'type-name'))" />
@@ -403,7 +423,14 @@
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS01200, id: ',$id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $construct/imvert:name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($construct/imvert:name, 'element-name'))" />
-<?x                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/> ?>
+					<xsl:choose>
+						<xsl:when test="(empty($doc) or $doc='') and $debugging">
+							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', $construct/imvert:min-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', $construct/imvert:max-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name(imf:get-normalized-name($type-name, 'element-name'),'type-name'))" />
@@ -422,7 +449,14 @@
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS01200, id: ',$id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $type-name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $type-name)" />
-                    <?x                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/> ?>
+					<xsl:choose>
+						<xsl:when test="(empty($doc) or $doc='') and $debugging">
+							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', $construct/imvert:min-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', $construct/imvert:max-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name($type-name,'type-name'))" />
@@ -447,7 +481,14 @@
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS01225, id: ',$id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
-<?x                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/> ?>
+					<xsl:choose>
+						<xsl:when test="(empty($doc) or $doc='') and $debugging">
+							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', $construct/imvert:min-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', $construct/imvert:max-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name($tech-name,'type-name'))" />
@@ -455,6 +496,10 @@
 			</xsl:when>
 			<!-- If the construct is the top-level construct within a message no meervoudsnaam attribute has to be generated. -->
 			<xsl:when test="parent::ep:rough-message">
+				<xsl:result-document href="{concat('file:/c:/temp/construct-20180622-b-',$name,'-',generate-id(),'.xml')}">
+		            <xsl:copy-of select="$construct"/>
+		        </xsl:result-document>
+				
 				<!-- TODO: Uitzoeken waarom '$construct/imvert:class/imvert:type-id' en
 						   '$construct//imvert:class/imvert:type-id' niet werken. -->
 				<xsl:variable name="typeid" select="$construct/imvert:type-id" />
@@ -466,7 +511,15 @@
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS01250, id: ',$id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
-					<?x                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/> ?>
+					<xsl:choose>
+						<xsl:when test="$construct//imvert:name = 'response' or $construct//imvert:name = 'request'"/>
+						<xsl:when test="(empty($doc) or $doc='') and $debugging">
+							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+						</xsl:otherwise>
+					</xsl:choose>
 					<!-- Depending on the type the min- and max-occurs are set or aren't set at all. -->
 					<xsl:choose>
 						<xsl:when test="$minOccurs = '-'">
@@ -505,22 +558,29 @@
 							<xsl:sequence select="imf:create-debug-comment('The construct does have a tagged value Target role in meervoud.',$debugging)" />
 						</xsl:otherwise>
 					</xsl:choose>
-					<xsl:sequence select="imf:create-debug-comment(concat('OAS01250, id: ',$id),$debugging)" />
+					<xsl:sequence select="imf:create-debug-comment(concat('OAS01460, id: ',$id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
-                    <?x                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/> ?>
+					<xsl:choose>
+						<xsl:when test="(empty($doc) or $doc='') and $debugging">
+							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+						</xsl:otherwise>
+					</xsl:choose>
 					<!-- Depending on the type the min- and max-occurs are set or aren't set at all. -->
 					<xsl:choose>
 						<xsl:when test="$minOccurs = '-'">
-							<xsl:sequence select="imf:create-debug-comment(concat('OAS01350, id: ',$id),$debugging)" />
+							<xsl:sequence select="imf:create-debug-comment(concat('OAS01470, id: ',$id),$debugging)" />
 						</xsl:when>
 						<xsl:when test="not($minOccurs = '')">
-							<xsl:sequence select="imf:create-debug-comment(concat('OAS01400, id: ',$id),$debugging)" />
+							<xsl:sequence select="imf:create-debug-comment(concat('OAS01480, id: ',$id),$debugging)" />
 							<xsl:sequence select="imf:create-output-element('ep:min-occurs', $minOccurs)" />
 							<xsl:sequence select="imf:create-output-element('ep:max-occurs', $maxOccurs)" />
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:sequence select="imf:create-debug-comment(concat('OAS01450, id: ',$id),$debugging)" />
+							<xsl:sequence select="imf:create-debug-comment(concat('OAS01490, id: ',$id),$debugging)" />
 							<xsl:sequence select="imf:create-output-element('ep:min-occurs', $construct/imvert:min-occurs)" />
 							<xsl:sequence select="imf:create-output-element('ep:max-occurs', $construct/imvert:max-occurs)" />
 						</xsl:otherwise>
@@ -533,18 +593,43 @@
 
 	<!-- Processing of an ep:superconstruct means all attributes of that related class are directly placed 
 		 within the current ep:construct. Also the child ep:superconstructs and ep:constructs (if present) are processed. -->
-	<xsl:template match="ep:superconstruct" mode="as-content">
+	<xsl:template match="ep:superconstruct" mode="as-ref">
 
 		<xsl:variable name="id" select="ep:id" />
 		<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
-		<xsl:sequence select="imf:create-debug-comment(concat('OAS01500, id: ',$id),$debugging)" />
-
-		<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
+		<xsl:variable name="tech-name" select="imf:get-normalized-name($construct/imvert:name, 'type-name')" as="xs:string" />
+		<xsl:sequence select="imf:create-debug-comment(concat('OAS01485, id: ',$id),$debugging)" />
+		
+<?x		<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
 		<xsl:apply-templates select="ep:superconstruct" mode="as-content" />
-		<xsl:apply-templates select="ep:construct" mode="as-content" />
+		<xsl:apply-templates select="ep:construct" mode="as-content" /> ?>
+
+		<ep:construct>
+			<ep:name><xsl:value-of select="$construct/imvert:name/@original"/></ep:name>
+			<ep:ref><xsl:value-of select="$tech-name"/></ep:ref>
+		</ep:construct>
 
 	</xsl:template>
 
+	<xsl:template match="ep:superconstruct" mode="as-content">
+		
+		<xsl:variable name="id" select="ep:id" />
+		<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
+		<xsl:variable name="tech-name" select="imf:get-normalized-name($construct/imvert:name, 'type-name')" as="xs:string" />
+		<xsl:sequence select="imf:create-debug-comment(concat('OAS01500, id: ',$id),$debugging)" />
+		
+		<ep:construct  type="superclass">
+			<ep:name><xsl:value-of select="$construct/imvert:name/@original"/></ep:name>
+			<ep:tech-name><xsl:value-of select="$tech-name"/></ep:tech-name>
+			<ep:seq>
+				<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
+				<xsl:apply-templates select="ep:superconstruct" mode="as-content" />
+				<xsl:apply-templates select="ep:construct" mode="as-content" />
+			</ep:seq>
+		</ep:construct>
+		
+	</xsl:template>
+	
 	<!-- This template processes al ep:constructs refered to form the ep:message constructs and refered to from these constructs itself. -->
 	<xsl:template match="ep:construct" mode="as-type">
 		<xsl:variable name="name" select="ep:name" as="xs:string" />
@@ -670,7 +755,14 @@
 					<xsl:attribute name="type" select="$type" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($tech-name,'type-name'))" />
-					<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+					<xsl:choose>
+						<xsl:when test="(empty($doc) or $doc='') and $debugging">
+							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+						</xsl:otherwise>
+					</xsl:choose>
 					<ep:seq>
 						<!--xsl:result-document href="{concat('file:/c:/temp/construct-',$name,'-',generate-id(),'.xml')}"> 
 							<xsl:copy-of select="$construct"/> 
@@ -680,7 +772,7 @@
 							<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
 						</xsl:if>
 						<xsl:sequence select="imf:create-debug-comment(concat('OAS01740, id: ',$id),$debugging)" />
-						<xsl:apply-templates select="ep:superconstruct" mode="as-content" />
+						<xsl:apply-templates select="ep:superconstruct" mode="as-ref" />
 						<xsl:sequence select="imf:create-debug-comment(concat('OAS01760, id: ',$id),$debugging)" />
 						<xsl:apply-templates select="ep:construct[@type!='class']" mode="as-content" />
 						<xsl:sequence select="imf:create-debug-comment(concat('OAS01780, id: ',$id),$debugging)" />
@@ -697,12 +789,19 @@
 					<xsl:attribute name="type" select="$type" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $construct/imvert:class/imvert:name/@original)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($complex-datatype-tech-name,'type-name'))" />
-					<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+					<xsl:choose>
+						<xsl:when test="(empty($doc) or $doc='') and $debugging">
+							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+						</xsl:otherwise>
+					</xsl:choose>
 					<ep:seq>
 						<xsl:sequence select="imf:create-debug-comment(concat('OAS01900, id: ',$id),$debugging)" />
 						<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
 						<xsl:sequence select="imf:create-debug-comment(concat('OAS01950, id: ',$id),$debugging)" />
-						<xsl:apply-templates select="ep:superconstruct" mode="as-content" />
+						<xsl:apply-templates select="ep:superconstruct" mode="as-ref" />
 
 						<!-- TODO: Nagaan of er in een complex-datatype type ep:construct geen associations voor kunnen komen. 
 							 Indien dat wel het geval is dan moet hier ook een apply-templates komen op een ep:construct en moet ook het rough-messages stylesheets 
@@ -717,21 +816,23 @@
 	<xsl:template match="imvert:attribute">
 		<xsl:variable name="name" select="imvert:name/@original" as="xs:string" />
 		<xsl:variable name="tech-name" select="imf:get-normalized-name(imvert:name, 'element-name')" as="xs:string" />
+		<xsl:variable name="id" select="imvert:id"/>
+		<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
 		<xsl:variable name="doc">
-			<xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DEFINITION')))">
+			<xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DEFINITION')))">
 				<ep:definition>
-					<xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DEFINITION')" />
+					<xsl:sequence select="imf:merge-documentation($construct,'CFG-TV-DEFINITION')" />
 				</ep:definition>
 			</xsl:if>
-			<xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DESCRIPTION')))">
+			<xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DESCRIPTION')))">
 				<ep:description>
-					<xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DESCRIPTION')" />
+					<xsl:sequence select="imf:merge-documentation($construct,'CFG-TV-DESCRIPTION')" />
 				</ep:description>
 			</xsl:if>
-			<xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')))">
+			<xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-PATTERN')))">
 				<ep:pattern>
 					<ep:p>
-						<xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')" />
+						<xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-PATTERN')" />
 					</ep:p>
 				</ep:pattern>
 			</xsl:if>
@@ -774,7 +875,14 @@
 							<xsl:sequence select="imf:create-debug-comment(concat('OAS02050, id: ',imvert:id),$debugging)" />
 							<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 							<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
-							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+							<xsl:choose>
+								<xsl:when test="(empty($doc) or $doc='') and $debugging">
+									<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+								</xsl:otherwise>
+							</xsl:choose>
 							<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)" />
 							<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)" />
 							<xsl:sequence select="imf:create-output-element('ep:data-type', $tabelEntiteit//imvert:attribute[imvert:is-id = 'true']/imvert:type-name)" />
@@ -806,7 +914,14 @@
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS02100, id: ',imvert:id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
-					<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+					<xsl:choose>
+						<xsl:when test="(empty($doc) or $doc='') and $debugging">
+							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name(imvert:type-name,'type-name'))" />
@@ -826,7 +941,14 @@
 						<ep:tagged-values>
 							<xsl:copy-of select="$tvs" />
 							<ep:found-tagged-values>
-								<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+								<xsl:choose>
+									<xsl:when test="(empty($doc) or $doc='') and $debugging">
+										<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+									</xsl:otherwise>
+								</xsl:choose>
 							</ep:found-tagged-values>
 						</ep:tagged-values>
 					</xsl:if>
@@ -834,7 +956,14 @@
 
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
-					<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+					<xsl:choose>
+						<xsl:when test="(empty($doc) or $doc='') and $debugging">
+							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:data-type', imvert:type-name)" />
@@ -889,7 +1018,14 @@
 		<ep:construct>
 			<xsl:sequence select="imf:create-output-element('ep:name', imf:capitalize($compiled-name))" />
 			<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:capitalize($compiled-name))" />
-			<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+			<xsl:choose>
+				<xsl:when test="(empty($doc) or $doc='') and $debugging">
+					<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-string')" />
 			<xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-enum" />
 		</ep:construct>
