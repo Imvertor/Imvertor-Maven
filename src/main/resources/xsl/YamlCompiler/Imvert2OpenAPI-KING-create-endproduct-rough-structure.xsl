@@ -111,6 +111,8 @@
 			select="imf:get-tagged-value(.,'##CFG-TV-BERICHTCODE')" />
 		<xsl:variable name="servicename"
 			select="imf:get-tagged-value(.,'##CFG-TV-SERVICENAME')" />
+		<xsl:variable name="fields" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-FIELDS')" />
+		<xsl:variable name="sort" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-SORT')" />
 		<xsl:variable name="messagename" select="imvert:name/@original" />
 		<xsl:variable name="messageid" select="imvert:id" />
 		<xsl:variable name="messagetypeid" select="imvert:type-id" />

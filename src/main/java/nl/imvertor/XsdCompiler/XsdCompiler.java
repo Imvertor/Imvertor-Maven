@@ -239,8 +239,8 @@ public class XsdCompiler extends Step {
 			// Migrate between models. This is a stub stylesHeet, which transforms any metamodel to the StUF defined & required metamodel
 			valid = valid && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_METAMODEL_KINGBSM_XSD_MIGRATE", "properties/IMVERTOR_METAMODEL_KINGBSM_XSD_MIGRATE_XSLPATH","system/work-config-path");
 			
-			valid = valid && transformer.transformStep("system/work-config-path","properties/ROUGH_OPENAPI_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ROUGH_OPENAPI_ENDPRODUCT_XML_XSLPATH");
-			valid = valid && transformer.transformStep("properties/ROUGH_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_OPENAPI_ENDPRODUCT_XML_XSLPATH");
+			// valid = valid && transformer.transformStep("system/work-config-path","properties/ROUGH_OPENAPI_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ROUGH_OPENAPI_ENDPRODUCT_XML_XSLPATH");
+			// valid = valid && transformer.transformStep("properties/ROUGH_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_OPENAPI_ENDPRODUCT_XML_XSLPATH");
 		
 			valid = valid && transformer.transformStep("system/work-config-path","properties/ROUGH_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ROUGH_ENDPRODUCT_XML_XSLPATH");
 			valid = valid && transformer.transformStep("properties/ROUGH_ENDPRODUCT_XML_FILE_PATH","properties/ENRICHED_ROUGH_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ENRICHED_ROUGH_ENDPRODUCT_XML_XSLPATH");

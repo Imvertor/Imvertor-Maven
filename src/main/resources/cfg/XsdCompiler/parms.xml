@@ -187,19 +187,6 @@
       
 
       <!-- 
-         KING Koppelvlakken Open API schema's (BSM)
-      -->
-      
-      <IMVERTOR_METAMODEL_KINGBSM_ROUGH_OPENAPI_ENDPRODUCT_XML_XSLPATH alias="EPROUGH">Imvert2XSD-KING-create-OpenAPI-endproduct-rough-structure.xsl</IMVERTOR_METAMODEL_KINGBSM_ROUGH_OPENAPI_ENDPRODUCT_XML_XSLPATH>
-      <IMVERTOR_METAMODEL_KINGBSM_OPENAPI_ENDPRODUCT_XML_XSLPATH alias="EPXML">Imvert2XSD-KING-OpenAPI-endproduct-xml.xsl</IMVERTOR_METAMODEL_KINGBSM_OPENAPI_ENDPRODUCT_XML_XSLPATH>
-
-      <!-- intermediate result files -->
-      
-      <ROUGH_OPENAPI_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.70.rough-OpenAPI-endproduct-xml.xml</ROUGH_OPENAPI_ENDPRODUCT_XML_FILE_PATH>
-      <RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.71.OpenAPI-endproduct-xml.xml</RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH>   
-
-
-      <!-- 
          UGM transformation to Basisentiteiten schema 
       --> 
       <IMVERTOR_METAMODEL_KINGUGM_XSD_MIGRATE_XSLPATH>Imvert2XSD-KING-UGM-Basisentiteiten-migrate.xsl</IMVERTOR_METAMODEL_KINGUGM_XSD_MIGRATE_XSLPATH>

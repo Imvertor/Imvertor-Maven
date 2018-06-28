@@ -49,7 +49,7 @@
 		<xsl:sequence select="imf:get-config-tagged-values()" />
 	</xsl:variable>
 
-	<xsl:variable name="messages" select="imf:document(imf:get-config-string('properties','RESULT_METAMODEL_KINGBSM_XSD_MIGRATE'))" />
+	<xsl:variable name="messages" select="imf:document(imf:get-config-string('properties','RESULT_METAMODEL_KINGBSM_OPENAPI_MIGRATE'))" />
 	<xsl:variable name="packages" select="$messages/imvert:packages" />
 
 	<xsl:variable name="imvert-document" select="if (exists($messages/imvert:packages)) then $messages else ()" />
@@ -177,11 +177,11 @@
 				<xsl:otherwise>false</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:variable name="fields" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-FIELDS')" />
+		<xsl:variable name="fields" select="@fields" />
 		<xsl:variable name="grouping" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-GROUPING')" />
 		<xsl:variable name="pagination" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-PAGE')" />
 		<xsl:variable name="serialisation" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-SERIALISATION')" />
-		<xsl:variable name="sort" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-SORT')" />
+		<xsl:variable name="sort" select="@sort" />
 
 		<xsl:variable name="name" select="$message-construct/imvert:name/@original" as="xs:string" />
 		<xsl:variable name="tech-name" select="imf:get-normalized-name($message-construct/imvert:name, 'element-name')" as="xs:string" />
@@ -220,6 +220,7 @@
 					<xsl:attribute name="expand" select="$expand" />
 					<xsl:attribute name="grouping" select="$grouping" />
 					<xsl:attribute name="pagination" select="$pagination" />
+					<xsl:attribute name="berichtcode" select="$berichtcode" />
 				</xsl:when>
 				<xsl:when test="@messagetype = 'request'">
 					<xsl:attribute name="messagetype" select="@messagetype" />
@@ -230,6 +231,23 @@
 					<xsl:attribute name="pagination" select="$pagination" />
 					<xsl:attribute name="serialisation" select="$serialisation" />
 					<xsl:attribute name="sort" select="$sort" />
+					<xsl:attribute name="berichtcode" select="$berichtcode" />
+					<xsl:variable name="meervoudigeNaam">
+						<xsl:variable name="messageName" select="ep:name"/>
+						<xsl:variable name="id" select="//ep:rough-message[@messagetype='response' and ep:name = $messageName]/ep:construct/ep:id"/>
+						<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
+						<xsl:choose>
+							<xsl:when test="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-NAMEPLURAL') = ''">
+								<xsl:sequence select="imf:msg(.,'WARNING','The construct [1] does not have a tagged value Naam in meervoud, define one.',$construct/imvert:name)"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-NAMEPLURAL')"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+					<xsl:if test="$meervoudigeNaam != ''">
+						<xsl:attribute name="meervoudigeNaam" select="$meervoudigeNaam" />
+					</xsl:if>
 				</xsl:when>
 			</xsl:choose>
 			<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
@@ -767,7 +785,7 @@
 						<!--xsl:result-document href="{concat('file:/c:/temp/construct-',$name,'-',generate-id(),'.xml')}"> 
 							<xsl:copy-of select="$construct"/> 
 						</xsl:result-document -->
-						<xsl:if test="@type='class'">
+						<xsl:if test="@type=('class','requestclass')">
 							<xsl:sequence select="imf:create-debug-comment(concat('OAS01720, id: ',$id),$debugging)" />
 							<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
 						</xsl:if>
@@ -817,6 +835,7 @@
 		<xsl:variable name="name" select="imvert:name/@original" as="xs:string" />
 		<xsl:variable name="tech-name" select="imf:get-normalized-name(imvert:name, 'element-name')" as="xs:string" />
 		<xsl:variable name="id" select="imvert:id"/>
+		<xsl:variable name="is-id" select="imvert:is-id"/>
 		<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
 		<xsl:variable name="doc">
 			<xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DEFINITION')))">
@@ -872,6 +891,9 @@
 					</xsl:when>
 					<xsl:otherwise>
 						<ep:construct>
+							<xsl:if test="$is-id = 'true'">
+								<xsl:attribute name="is-id" select="'true'"/>
+							</xsl:if>
 							<xsl:sequence select="imf:create-debug-comment(concat('OAS02050, id: ',imvert:id),$debugging)" />
 							<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 							<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
@@ -912,6 +934,9 @@
 			<xsl:when test="imvert:type-id">
 				<!--ep:construct type="attribute" -->
 				<ep:construct>
+					<xsl:if test="$is-id = 'true'">
+						<xsl:attribute name="is-id" select="'true'"/>
+					</xsl:if>
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS02100, id: ',imvert:id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
@@ -933,9 +958,10 @@
 			<xsl:otherwise>
 				<!--ep:construct type="attribute" -->
 				<ep:construct>
+					<xsl:if test="$is-id = 'true'">
+						<xsl:attribute name="is-id" select="'true'"/>
+					</xsl:if>
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS02150, id: ',imvert:id),$debugging)" />
-
-
 					<xsl:if test="$debugging">
 						<ep:suppliers>
 							<xsl:copy-of select="$suppliers" />

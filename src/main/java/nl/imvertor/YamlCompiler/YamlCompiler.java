@@ -86,6 +86,12 @@ public class YamlCompiler extends Step {
 	
 		runner.debug(logger,"CHAIN","Generating YAML to " + yamlApplicationFolder);
 		
+		// Migrate between models. This is a stub stylesHeet, which transforms any metamodel to the StUF defined & required metamodel
+		succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_METAMODEL_KINGBSM_OPENAPI_MIGRATE", "properties/IMVERTOR_METAMODEL_KINGBSM_OPENAPI_MIGRATE_XSLPATH");
+
+		succeeds = succeeds && transformer.transformStep("properties/RESULT_METAMODEL_KINGBSM_OPENAPI_MIGRATE","properties/ROUGH_OPENAPI_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ROUGH_OPENAPI_ENDPRODUCT_XML_XSLPATH");
+		succeeds = succeeds && transformer.transformStep("properties/ROUGH_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_OPENAPI_ENDPRODUCT_XML_XSLPATH");
+
 		succeeds = succeeds && transformer.transformStep("properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_YAMLHEADER_FILE_PATH", "properties/IMVERTOR_METAMODEL_KING_YAMLHEADER2_XSLPATH");
 		succeeds = succeeds && transformer.transformStep("properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_YAMLBODY_FILE_PATH", "properties/IMVERTOR_METAMODEL_KING_YAMLBODY2_XSLPATH");
 

@@ -35,6 +35,14 @@
   
    <properties>
    
+      <!-- intermediate result files -->
+      
+      <ROUGH_OPENAPI_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.70.rough-OpenAPI-endproduct-xml.xml</ROUGH_OPENAPI_ENDPRODUCT_XML_FILE_PATH>
+      <RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH>${system/work-imvert-folder-path}/imvertor.71.OpenAPI-endproduct-xml.xml</RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH>   
+      
+      <!-- result files -->
+      <RESULT_METAMODEL_KINGBSM_OPENAPI_MIGRATE>${system/work-imvert-folder-path}/imvertor.25.3.xsd-migrate.xml</RESULT_METAMODEL_KINGBSM_OPENAPI_MIGRATE>
+      
       <RESULT_YAMLHEADER_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.1.yaml-header.yml</RESULT_YAMLHEADER_FILE_PATH>   
       <RESULT_YAMLBODY_FILE_PATH>${system/work-imvert-folder-path}/imvertor.80.2.yaml-body.yml</RESULT_YAMLBODY_FILE_PATH>   
       <RESULT_YAMLBODY_FILE_PATH2>${system/work-imvert-folder-path}/imvertor.80.3.yaml-body.yml</RESULT_YAMLBODY_FILE_PATH2>   
@@ -48,9 +56,15 @@
       
       <!--IMVERTOR_METAMODEL_KING_YAMLHEADER_XSLPATH>Imvert2Yaml-header.xsl</IMVERTOR_METAMODEL_KING_YAMLHEADER_XSLPATH>
       <IMVERTOR_METAMODEL_KING_YAMLBODY_XSLPATH>Imvert2Yaml-body.xsl</IMVERTOR_METAMODEL_KING_YAMLBODY_XSLPATH-->
+
+      <IMVERTOR_METAMODEL_KINGBSM_OPENAPI_MIGRATE_XSLPATH>Imvert2OPENAPI-KING-BSM-migrate.xsl</IMVERTOR_METAMODEL_KINGBSM_OPENAPI_MIGRATE_XSLPATH>
+      
+      <IMVERTOR_METAMODEL_KINGBSM_ROUGH_OPENAPI_ENDPRODUCT_XML_XSLPATH alias="EPROUGH">Imvert2OpenAPI-KING-create-endproduct-rough-structure.xsl</IMVERTOR_METAMODEL_KINGBSM_ROUGH_OPENAPI_ENDPRODUCT_XML_XSLPATH>
+      <IMVERTOR_METAMODEL_KINGBSM_OPENAPI_ENDPRODUCT_XML_XSLPATH alias="EPXML">Imvert2OpenAPI-KING-endproduct-xml.xsl</IMVERTOR_METAMODEL_KINGBSM_OPENAPI_ENDPRODUCT_XML_XSLPATH>
       
       <IMVERTOR_METAMODEL_KING_YAMLHEADER2_XSLPATH>Imvert2Yaml-header2.xsl</IMVERTOR_METAMODEL_KING_YAMLHEADER2_XSLPATH>
       <IMVERTOR_METAMODEL_KING_YAMLBODY2_XSLPATH>Imvert2Yaml-body2.xsl</IMVERTOR_METAMODEL_KING_YAMLBODY2_XSLPATH>
+      
       
    </properties>
    
