@@ -20,17 +20,15 @@
 
 package nl.imvertor.YamlCompiler;
 
-import org.apache.jena.sparql.function.library.leviathan.cartesian;
 import org.apache.log4j.Logger;
-import org.json.JSONException;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.JsonFile;
-import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.file.YamlFile;
+import nl.imvertor.common.xsl.extensions.ImvertorStripAccents;
 
 public class YamlCompiler extends Step {
 
@@ -72,6 +70,8 @@ public class YamlCompiler extends Step {
 		
 		// create a transformer
 		Transformer transformer = new Transformer();
+		// requires accent stripper
+		transformer.setExtensionFunction(new ImvertorStripAccents());
 						
 		boolean succeeds = true;
 		

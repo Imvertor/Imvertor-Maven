@@ -193,9 +193,8 @@ public class ChainTranslateAndReport {
 				    if (configurator.isTrue("cli","createshacl",false)) 
 				    	succeeds = succeeds && (new ShaclCompiler()).run();
 		
-					if (configurator.isTrue("cli","createxmlschema",false))
-					    if (configurator.isTrue("cli","createyaml",false)) 
-				    		succeeds = succeeds && (new YamlCompiler()).run();
+				    if (configurator.isTrue("cli","createyaml",false)) 
+			    		succeeds = succeeds && (new YamlCompiler()).run();
 						
 			    }
 			} catch (Exception e) {
