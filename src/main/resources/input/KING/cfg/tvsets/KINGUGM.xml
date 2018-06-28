@@ -266,14 +266,6 @@
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="CFG-TV-EXAMPLE">
-            <name lang="nl">Example</name>
-            <name lang="en">Example</name>
-            <derive>no</derive>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-attribute</stereo>
-            </stereotypes>
-        </tv>
         
     </tagged-values>
 </tagset>
