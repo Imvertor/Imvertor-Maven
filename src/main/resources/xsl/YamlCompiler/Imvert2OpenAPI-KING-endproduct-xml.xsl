@@ -52,12 +52,13 @@
 	<xsl:variable name="messages" select="imf:document(imf:get-config-string('properties','RESULT_METAMODEL_KINGBSM_OPENAPI_MIGRATE'))" />
 	<xsl:variable name="packages" select="$messages/imvert:packages" />
 
+	<xsl:variable name="kv-prefix" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
+	<xsl:variable name="version" select="$packages/imvert:version"/>
+	
 	<xsl:variable name="imvert-document" select="if (exists($messages/imvert:packages)) then $messages else ()" />
 
 	<!-- needed for disambiguation of duplicate attribute names -->
 	<xsl:variable name="all-simpletype-attributes" select="$packages//imvert:attribute[empty(imvert:type)]" />
-
-	<xsl:variable name="version" select="$packages/imvert:version"/>
 
 	<xsl:variable name="endproduct">
 		<xsl:apply-templates select="/ep:rough-messages" />
@@ -65,6 +66,8 @@
 
 	<!-- Starts the creation of the rough-message constructs and the constructs relates to those message constructs. -->
 	<xsl:template match="ep:rough-messages">
+		<xsl:sequence select="imf:set-config-string('appinfo','kv-yaml-schema-name',concat($kv-prefix,$version))"/>
+		
 		<ep:message-sets>
 			<ep:message-set KV-namespace="yes">
 				<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS00100',$debugging)" />

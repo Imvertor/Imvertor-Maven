@@ -114,7 +114,7 @@ public class YamlCompiler extends Step {
 			// in all cases copy results to app folder
 			yamlFile.setContent(hc + "\n" + bc);
 		
-			String schemaName = configurator.getXParm("appinfo/kv-schema-name");
+			String schemaName = configurator.getXParm("appinfo/kv-yaml-schema-name");
 		
 			// copy to the app folder
 			AnyFile appYamlFile = new AnyFile(yamlFolder,schemaName + ".yaml");
