@@ -11,7 +11,7 @@
 	
 	<!-- De eerste variabele is bedoelt voor de server omgeving, de tweede voor gebruik bij ontwikkeling in XML-Spy. -->
 	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
-	<!--<xsl:variable name="debugging" select="true()" as="xs:boolean"/>-->
+	<!--<xsl:variable name="debugging" select="false()" as="xs:boolean"/>-->
 	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
@@ -150,15 +150,6 @@
 				<xsl:value-of select="','"/>
 			</xsl:if>
         </xsl:for-each>
-
-
-
-
-
-
-
-
-
 		<!-- Only if json+hal applies this if is relevant -->
         <xsl:if test="$uitvoerformaat = 'json+hal'">
 			<!-- If the next loop is relevant a comma separator has to be generated. -->
@@ -282,40 +273,10 @@
 						<xsl:value-of select="','" />
 					</xsl:if>
 				</xsl:for-each>
-
-
-
-
-
-				<!-- TODO: het volgende uitbecommentarieerde deel is waarschijnlijk niet nodig. De embedded types worden immers 
-						   al in het ep:message-set template gegenereerd. --> 
-<?x
-				<!-- If the next loop is relevant a comma separator has to be generated. -->
-				<xsl:if test="ep:message-set/ep:construct//ep:construct[@type='association' and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]">,</xsl:if>
-
-				<!-- For all association constructs also a global embedded version has to be generated. -->
-				
-				<xsl:for-each select="ep:message-set/ep:construct//ep:construct[@type='association' and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]">
-					<xsl:call-template name="construct_embedded"/>
-					<!-- As long as the current construct isn't the last association constructs a comma separator as 
-						 to be generated. -->
-					<xsl:if test="position() != last()">
-						<xsl:value-of select="','"/>
-					</xsl:if>
-				</xsl:for-each> ?>
-
 			</xsl:if> 
 
 			<!-- Since json+hal applies the following properties are generated. -->    
 			,
-<?x			"selflink": {
-				"type": "object",
-				"properties": {
-					"self": {
-						"$ref": "<xsl:value-of select="$json-topstructure"/>/link"
-					}
-				}
-			},				?>
 			<!-- If pagination is desired, collections apply, the following properties are generated. -->    
 			<xsl:if test="$pagination">
 			"Pagineerlinks" : {
@@ -399,17 +360,6 @@
 				}
 			  },
 			</xsl:if>
-<?x			"link": {
-				"type": "object",
-				"description": "url naar een resource",
-				"properties": {
-					"href": {
-						"type": "string",
-						"format": "uri",
-						"example": "https://datapunt.voorbeeldgemeente.nl/service/api/v1/resourcenaam"
-					}
-				}
-			}	?>
 		</xsl:if>
 		<!-- The following properties have to be generated always. -->    
 			"Foutbericht" : {
@@ -487,7 +437,6 @@
 			</xsl:if>
         </xsl:for-each>
 
-        <xsl:value-of select="'}'"/>
         <xsl:choose>
 			<xsl:when test="$json-version = '2.0'"/>
 			<xsl:when test="$json-version = '3.0'">
@@ -542,6 +491,7 @@
     }
   }</xsl:text>
 		</xsl:if>
+        <xsl:value-of select="'}'"/>
         <xsl:value-of select="'}'"/>
     </xsl:template>
     
@@ -800,9 +750,6 @@
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$elementName,'_embedded&quot;}')"/>
 			</xsl:if>
 		</xsl:if>
-
-
-
 		<xsl:value-of select="'}'"/>
 
 		<xsl:if test="ep:seq/ep:construct[ep:ref]">
@@ -990,42 +937,7 @@
 			}
 		</xsl:if>
    </xsl:template> ?>
-    
-	<!-- TODO: het volgende uitbecommentarieerde template is waarschijnlijk niet nodig evenals zijn aanroep. De embedded types worden immers 
-			   al in het ep:message-set template gegenereerd. --> 
-
-<?x	<!-- Embedded types are generated here. -->
-    <xsl:template name="construct_embedded">
-        <xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
-        <xsl:variable name="typeName" select="translate(ep:type-name,'.','_')"/>
-
-			<xsl:if test="$debugging">
-				"--------------Debuglocatie-00500-<xsl:value-of select="generate-id()"/>": {
-					"Debug": "AOS00500"
-				},
-			</xsl:if>
-	
-			<xsl:value-of select="concat('&quot;', $elementName,'_embedded&quot;: {' )"/>
-	
-			<xsl:value-of select="'&quot;allOf&quot;: ['"/>
-	
-			<!-- An '_embedded' property is generated based on the same elementname. -->
-			<xsl:value-of select="concat('{&quot;$ref&quot;: &quot;',$json-topstructure,'/',$typeName,'&quot;},')"/>
-			<xsl:value-of select="'{&quot;type&quot;: &quot;object&quot;}],'"/>
-	
-			<xsl:value-of select="'&quot;properties&quot;: {'"/>
-			<xsl:value-of select="'&quot;_links&quot;: {'"/>
-			<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/selflink&quot;}')"/>
-			<xsl:value-of select="'}'"/>
-			<xsl:value-of select="'}'"/>
-	
-			<xsl:if test="$debugging">
-				,"--------------Einde-00500-<xsl:value-of select="generate-id()"/>": {
-					"Debug": "AOS00500"
-				}
-			</xsl:if>
-   </xsl:template> ?>
-    
+        
 	<!-- The properties representing an uml attribute are generated here.
 		 To be able to do that it uses the derivePropertyContent template which on its turn uses the deriveDataType, deriveFormat and deriveFacets templates. -->
     <xsl:template name="property">  

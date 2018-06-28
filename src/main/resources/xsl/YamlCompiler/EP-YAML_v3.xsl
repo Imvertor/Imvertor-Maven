@@ -217,12 +217,12 @@ info:
        $ref: '#/components/headers/api_version'</xsl:text>
 			<xsl:if test="@grouping='collection'">
 				<xsl:text>
-		  X-Pagination-Count:
-		   $ref: '#/components/headers/X_Pagination_Count'
-		  X-Pagination-Page:  
-		   $ref: '#/components/headers/X_Pagination_Page'
-		  X-Pagination-Limit:
-		   $ref: '#/components/headers/X_Pagination_Limit'</xsl:text>
+	  X-Pagination-Count:
+	   $ref: '#/components/headers/X_Pagination_Count'
+	  X-Pagination-Page:  
+	   $ref: '#/components/headers/X_Pagination_Page'
+	  X-Pagination-Limit:
+	   $ref: '#/components/headers/X_Pagination_Limit'</xsl:text>
 			</xsl:if>
 			<xsl:text>
       X-Rate-Limit-Limit:
@@ -249,6 +249,14 @@ info:
 				</xsl:choose>
 				<xsl:text>'</xsl:text>
 			</xsl:for-each>
+			<xsl:text>
+	"default":
+	  description: Er is een onverwachte fout opgetreden.
+	  content:
+		application/problem+json:
+		  schema:  
+			$ref: '#/components/schemas/Foutbericht'
+			</xsl:text>
 		</xsl:for-each>
 	</xsl:template>
 
