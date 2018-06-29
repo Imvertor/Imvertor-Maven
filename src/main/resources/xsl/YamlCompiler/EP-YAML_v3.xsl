@@ -250,7 +250,7 @@ info:
 				<xsl:text>'</xsl:text>
 			</xsl:for-each>
 			<xsl:text>
-	"default":
+	default:
 	  description: Er is een onverwachte fout opgetreden.
 	  content:
 		application/problem+json:
