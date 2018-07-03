@@ -199,12 +199,13 @@
 						</xsl:if>
 						<xsl:for-each select="$calculatedUriStructure/ep:uriStructure">
 							<ep:uriStructure>
-								<xsl:call-template name="checkUriStructure">
+								<xsl:sequence select="imf:checkUriStructure($determinedUriStructure,$calculatedUriStructure,1,$messageName)"/>
+								<!--<xsl:call-template name="checkUriStructure">
 									<xsl:with-param name="uriPart2Check" select="1"/>
 									<xsl:with-param name="determinedUriStructure" select="$determinedUriStructure"/>
 									<xsl:with-param name="calculatedUriStructure" select="$calculatedUriStructure"/>
 									<xsl:with-param name="messageName" select="$messageName"/>
-								</xsl:call-template>
+								</xsl:call-template>-->
 							</ep:uriStructure>
 						</xsl:for-each>
 					</xsl:otherwise>
@@ -351,7 +352,7 @@
 							<xsl:text>&#xa;          example: </xsl:text><xsl:value-of select="ep:example"/>
 						</xsl:if>
 					</xsl:for-each>
-					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[empty(@path)]">
+					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[empty(@path) or @path = 'false']">
 						<xsl:variable name="facets">
 							<xsl:call-template name="deriveFacets">
 								<xsl:with-param name="incomingType">
@@ -483,188 +484,183 @@
 		</xsl:for-each>
 	</xsl:template>
 
-<xsl:template name="checkUriStructure">
-	<xsl:param name="determinedUriStructure"/>
-	<xsl:param name="calculatedUriStructure"/>
-	<xsl:param name="uriPart2Check"/>
-	<xsl:param name="messageName"/>
-	
-	<xsl:for-each select="ep:uriPart[position() = $uriPart2Check]">
-		<xsl:variable name="entityName" select="ep:entityName"/>
-		<ep:uriPart>
-			<xsl:choose>
-				<xsl:when test="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:entityName = $entityName">
-					<xsl:comment select="'ROME1'"/>
-					<ep:entityName path="true"><xsl:value-of select="$entityName"/></ep:entityName>
-				</xsl:when>
-				<xsl:when test="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:entityName != $entityName">
-					<xsl:message select="concat('WARNING: The entityname ',$entityName,' within the message ',$messageName,' is not available within the query tree or is not on the right position within the path.')"/>
-					<!--<xsl:sequence select="imf:msg(.,'WARNING','The entityname [1] within the message [2] is not available within the query tree or is not on the right position within the path.', ($entityName,$messageName))" />-->			
-					<ep:entityName path="false"><xsl:value-of select="$entityName"/></ep:entityName>
-				</xsl:when>
-			</xsl:choose>
-			<xsl:for-each select="ep:param">
-				<xsl:comment select="'ROME2'"/>
-				<xsl:variable name="paramName" select="ep:name"/>
-				<xsl:variable name="is-id">
-					<xsl:choose>
-						<xsl:when test="@is-id = 'true'">true</xsl:when>
-						<xsl:otherwise>false</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-
-				<xsl:variable name="data-type">
-					<xsl:value-of select="ep:data-type"/>
-				</xsl:variable>
-				<xsl:variable name="max-length">
-					<xsl:value-of select="ep:max-length"/>
-				</xsl:variable>
-				<xsl:variable name="min-waarde">
-					<xsl:value-of select="ep:min-waarde"/>
-				</xsl:variable>
-				<xsl:variable name="max-waarde">
-					<xsl:value-of select="ep:max-waarde"/>
-				</xsl:variable>
-				<xsl:variable name="patroon">
-					<xsl:value-of select="ep:patroon"/>
-				</xsl:variable>
-				<xsl:variable name="example">
-					<xsl:value-of select="ep:example"/>
-				</xsl:variable>
+	<xsl:function name="imf:checkUriStructure">
+<!--	<xsl:template name="checkUriStructure">-->
+		<xsl:param name="determinedUriStructure"/>
+		<xsl:param name="calculatedUriStructure"/>
+		<xsl:param name="uriPart2Check"/>
+		<xsl:param name="messageName"/>
+		
+		<xsl:for-each select="ep:uriPart[position() = $uriPart2Check]">
+			<xsl:variable name="entityName" select="ep:entityName"/>
+			<ep:uriPart>
 				<xsl:choose>
-					<xsl:when test="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:param/ep:name = $paramName and $is-id = 'true'">
-						<xsl:comment select="'ROME3'"/>
-						<ep:param path="true">
-							<ep:name><xsl:value-of select="$paramName"/></ep:name>
-							<ep:data-type><xsl:value-of select="$data-type"/></ep:data-type>
-							<ep:documentation><xsl:value-of select="normalize-space(ep:documentation)"/></ep:documentation>
-							<xsl:if test="$max-length != ''">
-								<ep:max-length><xsl:value-of select="$max-length"/></ep:max-length>
-							</xsl:if>
-							<xsl:if test="$min-waarde != ''">
-								<ep:min-waarde><xsl:value-of select="$min-waarde"/></ep:min-waarde>
-							</xsl:if>
-							<xsl:if test="$max-waarde != ''">
-								<ep:max-waarde><xsl:value-of select="$max-waarde"/></ep:max-waarde>
-							</xsl:if>
-							<xsl:if test="$patroon != ''">
-								<ep:patroon><xsl:value-of select="$patroon"/></ep:patroon>
-							</xsl:if>
-							<xsl:if test="$example != ''">
-								<ep:example><xsl:value-of select="$example"/></ep:example>
-							</xsl:if>
-<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
-							<xsl:sequence select="imf:create-output-element('ep:min-waarde', $min-waarde)" />
-							<xsl:sequence select="imf:create-output-element('ep:max-waarde', $max-waarde)" />
-							<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
-							<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
-						</ep:param>
+					<xsl:when test="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:entityName = $entityName">
+						<ep:entityName path="true"><xsl:value-of select="$entityName"/></ep:entityName>
 					</xsl:when>
-					<xsl:when test="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:param/ep:name = $paramName and $is-id = 'false'">
-						<xsl:comment select="'ROME4'"/>
-						<xsl:message select="concat('WARNING: The path parameter ',$paramName,' within the message ',$messageName,' is not an id attribute.')"/>
-						<!--<xsl:sequence select="imf:msg(.,'WARNING','The path parameter ([1]) within the message [2] is not an id attribute.', ($paramName,$messageName))" />-->			
-						<ep:param path="false">
-							<ep:name><xsl:value-of select="$paramName"/></ep:name>
-							<ep:data-type><xsl:value-of select="$data-type"/></ep:data-type>
-							<ep:documentation><xsl:value-of select="normalize-space(ep:documentation)"/></ep:documentation>
-							<xsl:if test="$max-length != ''">
-								<ep:max-length><xsl:value-of select="$max-length"/></ep:max-length>
-							</xsl:if>
-							<xsl:if test="$min-waarde != ''">
-								<ep:min-waarde><xsl:value-of select="$min-waarde"/></ep:min-waarde>
-							</xsl:if>
-							<xsl:if test="$max-waarde != ''">
-								<ep:max-waarde><xsl:value-of select="$max-waarde"/></ep:max-waarde>
-							</xsl:if>
-							<xsl:if test="$patroon != ''">
-								<ep:patroon><xsl:value-of select="$patroon"/></ep:patroon>
-							</xsl:if>
-							<xsl:if test="$example != ''">
-								<ep:example><xsl:value-of select="$example"/></ep:example>
-							</xsl:if>
-<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
-							<xsl:sequence select="imf:create-output-element('ep:min-waarde', $min-waarde)" />
-							<xsl:sequence select="imf:create-output-element('ep:max-waarde', $max-waarde)" />
-							<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
-							<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
-						</ep:param>
+					<xsl:when test="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:entityName != $entityName">
+						<xsl:message select="concat('WARNING: The entityname ',$entityName,' within the message ',$messageName,' is not available within the query tree or is not on the right position within the path.')"/>
+						<!--<xsl:sequence select="imf:msg(.,'WARNING','The entityname [1] within the message [2] is not available within the query tree or is not on the right position within the path.', ($entityName,$messageName))" />-->			
+						<ep:entityName path="false"><xsl:value-of select="$entityName"/></ep:entityName>
 					</xsl:when>
-					<xsl:otherwise>
-						<xsl:comment select="'ROME5'"/>
-						<ep:param>
-							<ep:name><xsl:value-of select="$paramName"/></ep:name>
-							<ep:data-type><xsl:value-of select="$data-type"/></ep:data-type>
-							<ep:documentation><xsl:value-of select="normalize-space(ep:documentation)"/></ep:documentation>
-							<xsl:if test="$max-length != ''">
-								<ep:max-length><xsl:value-of select="$max-length"/></ep:max-length>
-							</xsl:if>
-							<xsl:if test="$min-waarde != ''">
-								<ep:min-waarde><xsl:value-of select="$min-waarde"/></ep:min-waarde>
-							</xsl:if>
-							<xsl:if test="$max-waarde != ''">
-								<ep:max-waarde><xsl:value-of select="$max-waarde"/></ep:max-waarde>
-							</xsl:if>
-							<xsl:if test="$patroon != ''">
-								<ep:patroon><xsl:value-of select="$patroon"/></ep:patroon>
-							</xsl:if>
-							<xsl:if test="$example != ''">
-								<ep:example><xsl:value-of select="$example"/></ep:example>
-							</xsl:if>
-<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
-							<xsl:sequence select="imf:create-output-element('ep:min-waarde', $min-waarde)" />
-							<xsl:sequence select="imf:create-output-element('ep:max-waarde', $max-waarde)" />
-							<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
-							<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
-						</ep:param>
-					</xsl:otherwise>
 				</xsl:choose>
-				<xsl:for-each select="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:param">
-					<xsl:comment select="'ROME6'"/>
+				<xsl:for-each select="ep:param">
 					<xsl:variable name="paramName" select="ep:name"/>
-					<xsl:if test="not($calculatedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:param/ep:name = $paramName)">
-						<xsl:message select="concat('WARNING: The path parameter ',$paramName,' within the message ',$messageName,' is not avalable as query parameter or is not on the right position within the path.')"/>
-						<!--<xsl:sequence select="imf:msg(.,'WARNING','The path parameter ([1]) within the message [2] is not avalable as query parameter.', ($paramName,$messageName))" />-->			
-						<ep:param path="false">
-							<ep:name><xsl:value-of select="$paramName"/></ep:name>
-							<ep:data-type><xsl:value-of select="$data-type"/></ep:data-type>
-							<ep:documentation><xsl:value-of select="normalize-space(ep:documentation)"/></ep:documentation>
-							<xsl:if test="$max-length != ''">
-								<ep:max-length><xsl:value-of select="$max-length"/></ep:max-length>
-							</xsl:if>
-							<xsl:if test="$min-waarde != ''">
-								<ep:min-waarde><xsl:value-of select="$min-waarde"/></ep:min-waarde>
-							</xsl:if>
-							<xsl:if test="$max-waarde != ''">
-								<ep:max-waarde><xsl:value-of select="$max-waarde"/></ep:max-waarde>
-							</xsl:if>
-							<xsl:if test="$patroon != ''">
-								<ep:patroon><xsl:value-of select="$patroon"/></ep:patroon>
-							</xsl:if>
-							<xsl:if test="$example != ''">
-								<ep:example><xsl:value-of select="$example"/></ep:example>
-							</xsl:if>
-<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
-							<xsl:sequence select="imf:create-output-element('ep:min-waarde', $min-waarde)" />
-							<xsl:sequence select="imf:create-output-element('ep:max-waarde', $max-waarde)" />
-							<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
-							<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
-						</ep:param>
-					</xsl:if>
+					<xsl:variable name="is-id">
+						<xsl:choose>
+							<xsl:when test="@is-id = 'true'">true</xsl:when>
+							<xsl:otherwise>false</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+					<xsl:variable name="data-type">
+						<xsl:value-of select="ep:data-type"/>
+					</xsl:variable>
+					<xsl:variable name="max-length">
+						<xsl:value-of select="ep:max-length"/>
+					</xsl:variable>
+					<xsl:variable name="min-waarde">
+						<xsl:value-of select="ep:min-waarde"/>
+					</xsl:variable>
+					<xsl:variable name="max-waarde">
+						<xsl:value-of select="ep:max-waarde"/>
+					</xsl:variable>
+					<xsl:variable name="patroon">
+						<xsl:value-of select="ep:patroon"/>
+					</xsl:variable>
+					<xsl:variable name="example">
+						<xsl:value-of select="ep:example"/>
+					</xsl:variable>
+					<xsl:choose>
+						<xsl:when test="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:param/ep:name = $paramName and $is-id = 'true'">
+							<ep:param path="true">
+								<ep:name><xsl:value-of select="$paramName"/></ep:name>
+								<ep:data-type><xsl:value-of select="$data-type"/></ep:data-type>
+								<ep:documentation><xsl:value-of select="normalize-space(ep:documentation)"/></ep:documentation>
+								<xsl:if test="$max-length != ''">
+									<ep:max-length><xsl:value-of select="$max-length"/></ep:max-length>
+								</xsl:if>
+								<xsl:if test="$min-waarde != ''">
+									<ep:min-waarde><xsl:value-of select="$min-waarde"/></ep:min-waarde>
+								</xsl:if>
+								<xsl:if test="$max-waarde != ''">
+									<ep:max-waarde><xsl:value-of select="$max-waarde"/></ep:max-waarde>
+								</xsl:if>
+								<xsl:if test="$patroon != ''">
+									<ep:patroon><xsl:value-of select="$patroon"/></ep:patroon>
+								</xsl:if>
+								<xsl:if test="$example != ''">
+									<ep:example><xsl:value-of select="$example"/></ep:example>
+								</xsl:if>
+	<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
+								<xsl:sequence select="imf:create-output-element('ep:min-waarde', $min-waarde)" />
+								<xsl:sequence select="imf:create-output-element('ep:max-waarde', $max-waarde)" />
+								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
+								<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
+							</ep:param>
+						</xsl:when>
+						<xsl:when test="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:param/ep:name = $paramName and $is-id = 'false'">
+							<xsl:message select="concat('WARNING: The path parameter ',$paramName,' within the message ',$messageName,' is not an id attribute.')"/>
+							<!--<xsl:sequence select="imf:msg(.,'WARNING','The path parameter ([1]) within the message [2] is not an id attribute.', ($paramName,$messageName))" />-->			
+							<ep:param path="false">
+								<ep:name><xsl:value-of select="$paramName"/></ep:name>
+								<ep:data-type><xsl:value-of select="$data-type"/></ep:data-type>
+								<ep:documentation><xsl:value-of select="normalize-space(ep:documentation)"/></ep:documentation>
+								<xsl:if test="$max-length != ''">
+									<ep:max-length><xsl:value-of select="$max-length"/></ep:max-length>
+								</xsl:if>
+								<xsl:if test="$min-waarde != ''">
+									<ep:min-waarde><xsl:value-of select="$min-waarde"/></ep:min-waarde>
+								</xsl:if>
+								<xsl:if test="$max-waarde != ''">
+									<ep:max-waarde><xsl:value-of select="$max-waarde"/></ep:max-waarde>
+								</xsl:if>
+								<xsl:if test="$patroon != ''">
+									<ep:patroon><xsl:value-of select="$patroon"/></ep:patroon>
+								</xsl:if>
+								<xsl:if test="$example != ''">
+									<ep:example><xsl:value-of select="$example"/></ep:example>
+								</xsl:if>
+	<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
+								<xsl:sequence select="imf:create-output-element('ep:min-waarde', $min-waarde)" />
+								<xsl:sequence select="imf:create-output-element('ep:max-waarde', $max-waarde)" />
+								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
+								<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
+							</ep:param>
+						</xsl:when>
+						<xsl:otherwise>
+							<ep:param>
+								<ep:name><xsl:value-of select="$paramName"/></ep:name>
+								<ep:data-type><xsl:value-of select="$data-type"/></ep:data-type>
+								<ep:documentation><xsl:value-of select="normalize-space(ep:documentation)"/></ep:documentation>
+								<xsl:if test="$max-length != ''">
+									<ep:max-length><xsl:value-of select="$max-length"/></ep:max-length>
+								</xsl:if>
+								<xsl:if test="$min-waarde != ''">
+									<ep:min-waarde><xsl:value-of select="$min-waarde"/></ep:min-waarde>
+								</xsl:if>
+								<xsl:if test="$max-waarde != ''">
+									<ep:max-waarde><xsl:value-of select="$max-waarde"/></ep:max-waarde>
+								</xsl:if>
+								<xsl:if test="$patroon != ''">
+									<ep:patroon><xsl:value-of select="$patroon"/></ep:patroon>
+								</xsl:if>
+								<xsl:if test="$example != ''">
+									<ep:example><xsl:value-of select="$example"/></ep:example>
+								</xsl:if>
+	<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
+								<xsl:sequence select="imf:create-output-element('ep:min-waarde', $min-waarde)" />
+								<xsl:sequence select="imf:create-output-element('ep:max-waarde', $max-waarde)" />
+								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
+								<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
+							</ep:param>
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:for-each select="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:param">
+						<xsl:variable name="paramName" select="ep:name"/>
+						<xsl:if test="not($calculatedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:param/ep:name = $paramName)">
+							<xsl:message select="concat('WARNING: The path parameter ',$paramName,' within the message ',$messageName,' is not avalable as query parameter or is not on the right position within the path.')"/>
+							<!--<xsl:sequence select="imf:msg(.,'WARNING','The path parameter ([1]) within the message [2] is not avalable as query parameter.', ($paramName,$messageName))" />-->			
+							<ep:param path="false">
+								<ep:name><xsl:value-of select="$paramName"/></ep:name>
+								<ep:data-type><xsl:value-of select="$data-type"/></ep:data-type>
+								<ep:documentation><xsl:value-of select="normalize-space(ep:documentation)"/></ep:documentation>
+								<xsl:if test="$max-length != ''">
+									<ep:max-length><xsl:value-of select="$max-length"/></ep:max-length>
+								</xsl:if>
+								<xsl:if test="$min-waarde != ''">
+									<ep:min-waarde><xsl:value-of select="$min-waarde"/></ep:min-waarde>
+								</xsl:if>
+								<xsl:if test="$max-waarde != ''">
+									<ep:max-waarde><xsl:value-of select="$max-waarde"/></ep:max-waarde>
+								</xsl:if>
+								<xsl:if test="$patroon != ''">
+									<ep:patroon><xsl:value-of select="$patroon"/></ep:patroon>
+								</xsl:if>
+								<xsl:if test="$example != ''">
+									<ep:example><xsl:value-of select="$example"/></ep:example>
+								</xsl:if>
+	<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
+								<xsl:sequence select="imf:create-output-element('ep:min-waarde', $min-waarde)" />
+								<xsl:sequence select="imf:create-output-element('ep:max-waarde', $max-waarde)" />
+								<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
+								<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
+							</ep:param>
+						</xsl:if>
+					</xsl:for-each>
 				</xsl:for-each>
-			</xsl:for-each>
-		</ep:uriPart>
-	</xsl:for-each>
-	<xsl:if test="not($uriPart2Check + 1 > count($calculatedUriStructure//ep:uriPart))">
-		<xsl:comment select="'ROME7'"/>
-		<xsl:call-template name="checkUriStructure">
-			<xsl:with-param name="uriPart2Check" select="$uriPart2Check + 1"/>
-			<xsl:with-param name="determinedUriStructure" select="$determinedUriStructure"/>
-			<xsl:with-param name="calculatedUriStructure" select="$calculatedUriStructure"/>
-			<xsl:with-param name="messageName" select="$messageName"/>
-		</xsl:call-template>
-	</xsl:if>
-</xsl:template>
+			</ep:uriPart>
+		</xsl:for-each>
+		<xsl:if test="not($uriPart2Check + 1 > count($calculatedUriStructure//ep:uriPart))">
+			<xsl:sequence select="imf:checkUriStructure($determinedUriStructure,$calculatedUriStructure,$uriPart2Check + 1,$messageName)"/>
+			<!--<xsl:call-template name="checkUriStructure">
+				<xsl:with-param name="uriPart2Check" select="$uriPart2Check + 1"/>
+				<xsl:with-param name="determinedUriStructure" select="$determinedUriStructure"/>
+				<xsl:with-param name="calculatedUriStructure" select="$calculatedUriStructure"/>
+				<xsl:with-param name="messageName" select="$messageName"/>
+			</xsl:call-template>-->
+		</xsl:if>
+	<!--</xsl:template>-->
+	</xsl:function>
 
     <xsl:template name="deriveFacets">
         <xsl:param name="incomingType"/>
@@ -701,5 +697,4 @@
             <xsl:otherwise/>
         </xsl:choose>
     </xsl:template>
-
 </xsl:stylesheet>
