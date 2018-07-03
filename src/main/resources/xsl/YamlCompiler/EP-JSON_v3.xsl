@@ -1094,8 +1094,8 @@
   		<!-- Some scalar typse can have one or more facets which restrict the allowed value. -->
        <xsl:choose>
             <xsl:when test="$incomingType = 'string'">
-				<xsl:if test="ep:patroon and $json-version != '2.0'">
-					<xsl:value-of select="concat(',&quot;pattern&quot;: &quot;^',ep:patroon,'$&quot;')"/>
+				<xsl:if test="ep:pattern and $json-version != '2.0'">
+					<xsl:value-of select="concat(',&quot;pattern&quot;: &quot;^',ep:pattern,'$&quot;')"/>
 				</xsl:if>
 				<xsl:if test="ep:max-length">
 					<xsl:value-of select="concat(',&quot;maxLength&quot;: ',ep:max-length)"/>
