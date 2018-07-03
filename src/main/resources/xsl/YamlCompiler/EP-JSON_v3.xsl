@@ -581,8 +581,8 @@
 						<!-- TODO: De naam van het _embedded type moet uiteindelijk de naam van het entiteittype in meervoud zijn. -->
 						<xsl:value-of select="'&quot;'"/>
 						<xsl:choose>
-							<xsl:when test="ep:seq/ep:construct[@type!='requestclass']/@meervoudsnaam">
-								<xsl:value-of select="ep:seq/ep:construct[@type!='requestclass']/@meervoudsnaam"/>
+							<xsl:when test="ep:seq/ep:construct[@type!='requestclass']/@meervoudigeNaam">
+								<xsl:value-of select="ep:seq/ep:construct[@type!='requestclass']/@meervoudigeNaam"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:value-of select="translate(ep:seq/ep:construct[@type!='requestclass']/ep:tech-name,'.','_')"/>
@@ -658,9 +658,7 @@
 			<xsl:value-of select="concat('{&quot;$ref&quot;: &quot;',$json-topstructure,'/',$ref,'&quot;},')"/>
 			<xsl:value-of select="'{'"/>
 		</xsl:if>
-		<xsl:if test="$grouping != 'resource' or ep:seq/ep:construct[ep:ref]">
-			<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
-		</xsl:if>
+		<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
 		
 		<xsl:variable name="documentation">
 			<xsl:value-of select="ep:documentation//ep:p"/>
@@ -1142,8 +1140,8 @@
         <!--<xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>-->
         <xsl:variable name="elementName">
 			<xsl:choose>
-				<xsl:when test="not(empty(@meervoudsnaam))">
-					<xsl:value-of select="@meervoudsnaam"/>
+				<xsl:when test="not(empty(@meervoudigeNaam))">
+					<xsl:value-of select="@meervoudigeNaam"/>
 				</xsl:when>
 				<xsl:when test="not(empty(@targetrole))">
 					<xsl:value-of select="@targetrole"/>
@@ -1192,8 +1190,8 @@
     <xsl:template match="ep:construct" mode="embedded">
         <xsl:variable name="elementName">
 			<xsl:choose>
-				<xsl:when test="not(empty(@meervoudsnaam))">
-					<xsl:value-of select="@meervoudsnaam"/>
+				<xsl:when test="not(empty(@meervoudigeNaam))">
+					<xsl:value-of select="@meervoudigeNaam"/>
 				</xsl:when>
 				<xsl:when test="not(empty(@targetrole))">
 					<xsl:value-of select="@targetrole"/>
