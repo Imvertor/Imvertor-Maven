@@ -36,6 +36,7 @@
     
     <xsl:import href="Imvert2report-quickview.xsl"/>
     <xsl:import href="Imvert2report-compactview.xsl"/>
+    <xsl:import href="Imvert2report-shortview.xsl"/>
     <xsl:import href="Imvert2report-typelisting.xsl"/>
     <xsl:import href="Imvert2report-valuelists.xsl"/>
     <xsl:import href="Imvert2report-state.xsl"/>
@@ -70,6 +71,7 @@
             </summary>
             <xsl:apply-templates select="$imvert-document/imvert:packages" mode="quickview"/>
             <xsl:apply-templates select="$imvert-document/imvert:packages" mode="compactview"/>
+            <xsl:apply-templates select="$imvert-document/imvert:packages" mode="shortview"/>
             <xsl:apply-templates select="$imvert-document/imvert:packages" mode="typelisting"/>
             <xsl:apply-templates select="$imvert-document/imvert:packages" mode="valuelists"/>
             <xsl:apply-templates select="$imvert-document/imvert:packages" mode="state"/>

@@ -52,7 +52,6 @@ public class Reporter extends Step {
 		runner.info(logger,"Compiling final report");
 
 		// copy the HTML stuff to the result documentation workfolder
-		String owner = configurator.getXParm("cli/owner");
 		String sourceHtml = configurator.getXParm("system/configuration-owner-web-folder");
 		AnyFolder sourceHtmlFolder = new AnyFolder(sourceHtml);
 		if (!sourceHtmlFolder.isDirectory())

@@ -154,3 +154,7 @@ img.home-logo {
     font-weight:bold;
     color: red;
 }
+tr.shortviewHeader {
+    background-color: #ccc;
+    font-weight: bold;
+}

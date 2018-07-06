@@ -37,16 +37,10 @@
     <xsl:variable name="chop" select="imf:boolean(imf:get-config-string('cli','chop','no'))"/>
     
     <xsl:template match="/imvert:packages">
-        <xsl:variable name="step1">
-            <imvert:packages>
-                <xsl:sequence select="imf:compile-imvert-header(.)"/>
-                <xsl:apply-templates select="imvert:package"/>
-            </imvert:packages>
-        </xsl:variable>
-        <xsl:variable name="step2">
-            <xsl:apply-templates select="$step1" mode="mode-tv"/>
-        </xsl:variable>
-        <xsl:sequence select="$step2"/>
+        <imvert:packages>
+            <xsl:sequence select="imf:compile-imvert-header(.)"/>
+            <xsl:apply-templates select="imvert:package"/>
+        </imvert:packages>
     </xsl:template>
     
     <!-- assign the <<group>> stereo to all subpacks without stereo -->
@@ -228,7 +222,7 @@
     <!-- 
         transform INSPIRE like structured notes fields to tagged values 
     -->
-    <xsl:template match="imvert:tagged-values" mode="mode-tv">
+    <xsl:template match="imvert:tagged-values">
         <xsl:copy>
             <!-- first copy all existing; only when a value is specified  -->
             <xsl:apply-templates select="imvert:tagged-value[normalize-space(imvert:value)]"/>
@@ -292,10 +286,10 @@
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="node()|@*" mode="#default mode-tv">
+    <xsl:template match="node()|@*">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
-            <xsl:apply-templates mode="#current"/>
+            <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
    

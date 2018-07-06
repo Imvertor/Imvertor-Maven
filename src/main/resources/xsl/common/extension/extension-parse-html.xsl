@@ -32,7 +32,7 @@
         <xsl:param name="html-string" as="xs:string"/>
         <xsl:param name="is-escaped" as="xs:boolean"/>
         <xsl:choose>
-            <xsl:when test="contains($html-string,'&gt;') or contains($html-string,'&amp;')">
+            <xsl:when test="contains($html-string,'&gt;')">
                 <xsl:sequence select="ext:imvertorParseHTML($html-string,$is-escaped)"/>
             </xsl:when>
             <xsl:otherwise>

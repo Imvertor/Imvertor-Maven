@@ -38,7 +38,7 @@
     <xsl:function name="imf:eadoc-to-xhtml" as="element()*">
         <xsl:param name="eadoc" as="xs:string?"/>
         <xsl:choose>
-            <xsl:when test="contains($eadoc,'&gt;') or contains($eadoc,'&amp;')">
+            <xsl:when test="contains($eadoc,'&gt;')">
                 <xsl:variable name="lis" select="replace($eadoc,'&lt;/li&gt;(&#xA;)+','&lt;/li&gt;')"/>
                 <xsl:variable name="startp" select="concat('&#xA;',$lis)"/>
                 <xsl:variable name="nl" select="replace($startp,'&#xA;','&lt;p&gt;')"/>

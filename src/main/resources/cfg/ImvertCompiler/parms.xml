@@ -56,7 +56,13 @@
       <cli-parm>
          <name>chop</name>
          <arg>yes|no</arg>
-         <tip>Yes is all references to classes/datatypes outside the application should be removed</tip>
+         <tip>Yes if all references to classes/datatypes outside the application should be removed</tip>
+         <required>false</required>
+      </cli-parm>
+      <cli-parm>
+         <name>reportshortview</name>
+         <arg>yes|no</arg>
+         <tip>Yes if a short view on the model must be generated as part of the report.</tip>
          <required>false</required>
       </cli-parm>
    </cli-parms>
