@@ -263,7 +263,7 @@
     
     <xsl:function name="imf:get-safe-string">
         <xsl:param name="string"/>
-        <xsl:value-of select="replace($string,'[^A-Za-z0-9_]+',$sep)"/>
+        <xsl:value-of select="replace(upper-case($string),'[^A-Z0-9_]+',$sep)"/>
     </xsl:function>
     
     <xsl:function name="imf:get-compos-name" as="xs:string">
@@ -286,7 +286,7 @@
             <xsl:sequence select="imf:create-row(*:shortName)"/>
             <xsl:sequence select="imf:create-row(*:alias)"/>
             <xsl:sequence select="imf:create-row(*:namespace)"/>
-            <xsl:sequence select="imf:create-row(*:stereotype)"/>
+            <xsl:sequence select="imf:create-row(*:stereotypes/*:stereotype)"/>
             <xsl:sequence select="imf:create-row(*:trace)"/>
             <xsl:sequence select="imf:create-row(*:scope)"/>
             <xsl:sequence select="imf:create-row(*:visibility)"/>
@@ -362,7 +362,7 @@
             <!-- only one -->
             <xsl:for-each select="*:TaggedValue">
                 <xsl:sort select="*:name"/>
-                <xsl:element name="{ concat('tv_',imf:get-safe-string(*:name)) }">
+                <xsl:element name="{ concat('tv_',*:id) }">
                     <xsl:value-of select="*:value"/>
                 </xsl:element>
             </xsl:for-each>
@@ -528,7 +528,7 @@
     </xsl:template>
     
     <xsl:template match="*:TaggedValue" mode="name-mapping">
-        <map orig="{*:name} (tv)" elm="{concat('tv_', imf:get-safe-string(*:name))}"/>
+        <map orig="{*:name} (tv)" elm="{concat('tv_', *:id)}"/>
     </xsl:template>
     
     <xsl:template match="*:Constraint" mode="name-mapping">

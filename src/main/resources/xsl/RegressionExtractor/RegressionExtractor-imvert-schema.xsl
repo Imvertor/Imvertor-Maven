@@ -59,7 +59,7 @@
         <xsl:call-template name="ignore"/>
     </xsl:template>
     
-    <xsl:template match="imvert-result:TaggedValue[imvert-result:name = 'svnid']" mode="mode-intermediate-imvert-schema"> <!-- TODO is geworden CFG-TV-VERSIOnID -->
+    <xsl:template match="imvert-result:TaggedValue[imvert-result:id = 'CFG-TV-VERSIONID']" mode="mode-intermediate-imvert-schema">
         <xsl:call-template name="ignore"/>
     </xsl:template>
 

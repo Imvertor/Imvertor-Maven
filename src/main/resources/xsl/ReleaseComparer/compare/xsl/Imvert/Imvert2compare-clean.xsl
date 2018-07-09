@@ -68,16 +68,16 @@
             The key must be same as the @form on any elm element in the config. 
         -->
         <xsl:variable name="use-name" select="
-            if (self::imvert-result:TaggedValue) then concat('tv_',imvert-result:name) else 
+            if (self::imvert-result:TaggedValue) then concat('tv_',imvert-result:id) else 
             if (self::imvert-result:Constraint) then concat('ct_',imvert-result:name) else 
             local-name()"/>
         <xsl:variable name="info" select="key('imvert-compare-config',$use-name,$imvert-compare-config-doc)[last()]"/>
         
-        <xsl:variable name="must-copy" select="contains($info/@use,$imvert-compare-mode)"/>
+        <xsl:variable name="must-copy" select="empty($info) or contains($info/@use,$imvert-compare-mode)"/>
         
        <xsl:sequence select="imf:msg(.,'DEBUG', 
            'Compare key [1], local name [2], use name [3], info [4], use [5], compare mode [6], must copy [7]',
-           ($compare-key, local-name(.), $use-name, $info, $info/@use, $imvert-compare-mode, $must-copy))"/>
+           ($compare-key, local-name(.), imf:string-group($use-name), imf:string-group($info), imf:string-group($info/@use), imf:string-group($imvert-compare-mode), $must-copy))"/>
         
         <xsl:choose>
             <xsl:when test="$include-reference-packages = 'false' and exists(imvert-result:reference)">
@@ -100,6 +100,9 @@
                     <xsl:copy-of select="@*"/>
                     <xsl:apply-templates/>
                 </xsl:copy>
+            </xsl:when>
+            <xsl:when test="starts-with($use-name,'tv_') or starts-with($use-name,'ct_')">
+                <!-- have been handled; ignore -->
             </xsl:when>
             <xsl:when test="exists(imvert-result:*)">
                 <!-- there are subelements; this is probably a wrapper -->

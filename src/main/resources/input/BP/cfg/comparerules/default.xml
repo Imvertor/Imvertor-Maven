@@ -179,8 +179,11 @@
         <!-- 
             any specific config typically lists the tagged values and the mode in which they should be compared. 
         -->
-        <elm use="IVR"  form="tv_(enter name here)">Tagged value: (Enter explain here))</elm>
-
-       
+        <elm use="IVR"  form="tv_CFG-TV-DEFINITION">Definition</elm><!-- not in docrelease compare -->
+        <elm use="IVR"  form="tv_CFG-TV-DESCRIPTION">Description</elm><!-- not in docrelease compare -->
+        <elm use="IVR"  form="tv_CFG-TV-CONCEPT">Concept</elm><!-- not in docrelease compare -->
+        
+        <elm use="DIVR" form="tv_CFG-TV-SOURCE">Herkomst</elm><!-- not in docrelease compare -->
+        
     </elms>
 </compare-rules>
