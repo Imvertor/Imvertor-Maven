@@ -939,6 +939,18 @@
         <xsl:next-match/>
     </xsl:template>
     
+    <xsl:template match="imvert:position">
+        <!--setup-->
+        <xsl:variable name="position" select="."/>
+        
+        <!--validation-->
+        <xsl:sequence select="imf:report-error(.., 
+            not(matches($position,'^(\+|\-)?\d+$')), 
+            'Position must be an integer value, found: [1]', $position)"/>
+        
+        <xsl:next-match/>
+    </xsl:template>
+    
     <xsl:template match="*" mode="unique-id">
         <xsl:variable name="id" select="imvert:id"/>
         <xsl:choose>
