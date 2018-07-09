@@ -493,7 +493,7 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		valid = valid && transformer.transform(controlSimpleFile,listingXml,listingXsl,null);
 		
 		// get the number of differences found
-		int differences = ((NodeList) listingXml.xpathToObject("/*/*",null,XPathConstants.NODESET)).getLength();
+		int differences = ((NodeList) listingXml.xpathToObject("/*:report/*:diffs/*",null,XPathConstants.NODESET)).getLength();
 		configurator.setXParm("appinfo/compare-differences-" + compareLabel, differences);
 
 		// Build report
