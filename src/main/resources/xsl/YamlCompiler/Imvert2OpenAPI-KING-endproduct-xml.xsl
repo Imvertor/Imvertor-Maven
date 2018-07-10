@@ -831,7 +831,7 @@
 					<xsl:attribute name="messagetype" select="$messagetype" />
 					
 					<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
-					<xsl:if test="not(ep:superconstruct) and not(@type='groepCompositie')">
+					<xsl:if test="not(ep:superconstruct) and not(@type='groepCompositie') and not(ancestor::ep:*[@type='groepCompositie'])">
 						<xsl:variable name="meervoudigeNaam">
 							<xsl:variable name="tvMeervoudigeNaam" select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-NAMEPLURAL')"/>
 							<xsl:choose>

@@ -5,6 +5,8 @@
 	xmlns:functx="http://www.functx.com" version="2.0">
 	<xsl:output method="text" indent="yes" omit-xml-declaration="yes" />
 
+	<xsl:variable name="message-sets" select="/ep:message-sets" />
+
 	<!-- Deze functies halen alleen unieke nodes op uit een node collectie. 
 		Hierdoor worden dubbelingen verwijderd -->
 	<xsl:function name="functx:is-node-in-sequence-deep-equal"
@@ -367,12 +369,32 @@
 									</xsl:with-param>
 								</xsl:call-template>
 							</xsl:variable>
+							<xsl:variable name="datatype">
+								<xsl:choose>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'date'">string</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'datetime'">string</xsl:when>
+									<xsl:when test="ep:type-name">
+										<xsl:variable name="type" select="ep:type-name"/>
+										<xsl:variable name="enumtype" select="$message-sets//ep:message-set/ep:construct[ep:tech-name = $type]/ep:data-type"/>
+										<xsl:choose>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'date'">string</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'datetime'">string</xsl:when>
+											<xsl:otherwise>
+												<xsl:value-of select="$enumtype"/>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:variable>
 							<xsl:text>&#xa;        - in: path</xsl:text>
 							<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
-							<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="ep:documentation" /><xsl:text>"</xsl:text>
+							<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
 							<xsl:text>&#xa;          required: true</xsl:text>
 							<xsl:text>&#xa;          schema:</xsl:text>
-							<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="substring-after(ep:data-type, 'scalar-')" />
+							<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
 							<xsl:value-of select="$facets"/>
 							<xsl:if test="ep:example">
 								<xsl:text>&#xa;          example: </xsl:text><xsl:value-of select="ep:example"/>
@@ -386,12 +408,32 @@
 									</xsl:with-param>
 								</xsl:call-template>
 							</xsl:variable>
+							<xsl:variable name="datatype">
+								<xsl:choose>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'date'">string</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'datetime'">string</xsl:when>
+									<xsl:when test="ep:type-name">
+										<xsl:variable name="type" select="ep:type-name"/>
+										<xsl:variable name="enumtype" select="$message-sets//ep:message-set/ep:construct[ep:tech-name = $type]/ep:data-type"/>
+										<xsl:choose>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'date'">string</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'datetime'">string</xsl:when>
+											<xsl:otherwise>
+												<xsl:value-of select="substring-after($enumtype, 'scalar-')"/>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:variable>
 							<xsl:text>&#xa;        - in: query</xsl:text>
 							<xsl:text>&#xa;          name: </xsl:text><xsl:value-of select="ep:name" />
-							<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="ep:documentation" /><xsl:text>"</xsl:text>
+							<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
 							<xsl:text>&#xa;          required: false</xsl:text>
 							<xsl:text>&#xa;          schema:</xsl:text>
-							<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="substring-after(ep:data-type, 'scalar-')" />
+							<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
 							<xsl:value-of select="$facets"/>
 							<xsl:if test="ep:example">
 								<xsl:text>&#xa;          example: </xsl:text><xsl:value-of select="ep:example"/>
@@ -511,7 +553,14 @@
 				</xsl:if>
 				<ep:name><xsl:value-of select="lower-case(ep:name)"/></ep:name>
 				<ep:documentation><xsl:value-of select="ep:documentation"/></ep:documentation>
-				<ep:data-type><xsl:value-of select="ep:data-type"/></ep:data-type>
+				<xsl:choose>
+					<xsl:when test="ep:data-type">
+						<ep:data-type><xsl:value-of select="ep:data-type"/></ep:data-type>
+					</xsl:when>
+					<xsl:when test="ep:type-name">
+						<ep:type-name><xsl:value-of select="ep:type-name"/></ep:type-name>
+					</xsl:when>
+				</xsl:choose>
 				<xsl:if test="ep:max-length != ''">
 					<ep:max-length><xsl:value-of select="ep:max-length"/></ep:max-length>
 				</xsl:if>
@@ -586,6 +635,9 @@
 					<xsl:variable name="data-type">
 						<xsl:value-of select="ep:data-type"/>
 					</xsl:variable>
+					<xsl:variable name="type-name">
+						<xsl:value-of select="ep:type-name"/>
+					</xsl:variable>
 					<xsl:variable name="max-length">
 						<xsl:value-of select="ep:max-length"/>
 					</xsl:variable>
@@ -605,7 +657,14 @@
 						<xsl:when test="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:param/ep:name = $paramName and $is-id = 'true'">
 							<ep:param path="true">
 								<ep:name><xsl:value-of select="$paramName"/></ep:name>
-								<ep:data-type><xsl:value-of select="$data-type"/></ep:data-type>
+								<xsl:choose>
+									<xsl:when test="string-length($data-type)">
+										<ep:data-type><xsl:value-of select="$data-type"/></ep:data-type>
+									</xsl:when>
+									<xsl:when test="string-length($type-name)">
+										<ep:type-name><xsl:value-of select="$type-name"/></ep:type-name>
+									</xsl:when>
+								</xsl:choose>
 								<ep:documentation><xsl:value-of select="normalize-space(ep:documentation)"/></ep:documentation>
 								<xsl:if test="$max-length != ''">
 									<ep:max-length><xsl:value-of select="$max-length"/></ep:max-length>
@@ -634,7 +693,14 @@
 							<xsl:sequence select="imf:msg(.,'WARNING','The path parameter ([1]) within the message [2] is not an id attribute.', ($paramName,$messageName))" />			
 							<ep:param path="false">
 								<ep:name><xsl:value-of select="$paramName"/></ep:name>
-								<ep:data-type><xsl:value-of select="$data-type"/></ep:data-type>
+								<xsl:choose>
+									<xsl:when test="string-length($data-type)">
+										<ep:data-type><xsl:value-of select="$data-type"/></ep:data-type>
+									</xsl:when>
+									<xsl:when test="string-length($type-name)">
+										<ep:type-name><xsl:value-of select="$type-name"/></ep:type-name>
+									</xsl:when>
+								</xsl:choose>
 								<ep:documentation><xsl:value-of select="normalize-space(ep:documentation)"/></ep:documentation>
 								<xsl:if test="$max-length != ''">
 									<ep:max-length><xsl:value-of select="$max-length"/></ep:max-length>
@@ -661,7 +727,14 @@
 						<xsl:otherwise>
 							<ep:param>
 								<ep:name><xsl:value-of select="$paramName"/></ep:name>
-								<ep:data-type><xsl:value-of select="$data-type"/></ep:data-type>
+								<xsl:choose>
+									<xsl:when test="string-length($data-type)">
+										<ep:data-type><xsl:value-of select="$data-type"/></ep:data-type>
+									</xsl:when>
+									<xsl:when test="string-length($type-name)">
+										<ep:type-name><xsl:value-of select="$type-name"/></ep:type-name>
+									</xsl:when>
+								</xsl:choose>
 								<ep:documentation><xsl:value-of select="normalize-space(ep:documentation)"/></ep:documentation>
 								<xsl:if test="$max-length != ''">
 									<ep:max-length><xsl:value-of select="$max-length"/></ep:max-length>
@@ -693,7 +766,14 @@
 							<xsl:sequence select="imf:msg(.,'WARNING','The path parameter ([1]) within the message [2] is not avalable as query parameter.', ($paramName,$messageName))" />			
 							<ep:param path="false">
 								<ep:name><xsl:value-of select="$paramName"/></ep:name>
-								<ep:data-type><xsl:value-of select="$data-type"/></ep:data-type>
+								<xsl:choose>
+									<xsl:when test="string-length($data-type)">
+										<ep:data-type><xsl:value-of select="$data-type"/></ep:data-type>
+									</xsl:when>
+									<xsl:when test="string-length($type-name)">
+										<ep:type-name><xsl:value-of select="$type-name"/></ep:type-name>
+									</xsl:when>
+								</xsl:choose>
 								<ep:documentation><xsl:value-of select="normalize-space(ep:documentation)"/></ep:documentation>
 								<xsl:if test="$max-length != ''">
 									<ep:max-length><xsl:value-of select="$max-length"/></ep:max-length>
