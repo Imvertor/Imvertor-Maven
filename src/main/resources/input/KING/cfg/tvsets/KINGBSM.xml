@@ -204,6 +204,8 @@
                 <value>Lv13</value>
                 <!--  een synchroon vraagbericht naar materiële en formele historie voor de gevraagde objecten op groepniveau -->
                 <value>Lv14</value>
+                <!--  een json+hal POST bericht voor een resource. -->
+                <value>Po01</value>
                 <!--  een asynchroon vraagbericht naar materiële en formele historie voor de gevraagde objecten op groepniveau -->
                 <value>Sa01</value>
                 <!--  een asynchroon synchronisatiebericht voor de actuele gegevens -->

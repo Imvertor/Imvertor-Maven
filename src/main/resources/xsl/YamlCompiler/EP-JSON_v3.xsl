@@ -11,8 +11,8 @@
 	
 	<!-- De eerste variabele is bedoelt voor de server omgeving, de tweede voor gebruik bij ontwikkeling in XML-Spy. -->
 	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
-	<!--<xsl:variable name="debugging" select="false()" as="xs:boolean"/>-->
-	
+<!--	<xsl:variable name="debugging" select="true()" as="xs:boolean"/>
+-->	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
 		 * 3.0	
@@ -82,17 +82,31 @@
 		</xsl:choose>
 
         <!-- Loop over messages. -->
-		<xsl:apply-templates select="ep:message-set/ep:message[@messagetype='response']"/>
+		<xsl:apply-templates select="ep:message-set/ep:message
+				[
+					((contains(@berichtcode,'Gr') or contains(@berichtcode,'Gc')) and @messagetype='response')
+				 or (contains(@berichtcode,'Po') and @messagetype='request')
+				]"/>
 
 		<!-- If the next loop is relevant a comma separator has to be generated. -->
 		<xsl:if
-			test="ep:message-set/ep:construct[ep:tech-name = //ep:message[@messagetype='response' and @grouping!='resource']/ep:seq/ep:construct/ep:type-name and not(ep:enum)]">
+			test="ep:message-set/ep:construct[ep:tech-name = //ep:message
+				[(
+					((contains(@berichtcode,'Gr') or contains(@berichtcode,'Gc')) and @messagetype='response')
+				 or (contains(@berichtcode,'Po') and @messagetype='request')
+				 )
+				 and @grouping!='resource']/ep:seq/ep:construct/ep:type-name and not(ep:enum)
+				]">
 			,
 		</xsl:if>
 
 		<!-- Loop over constructs which are refered to from the constructs within the messages but aren't enumeration constructs. -->
-        <xsl:for-each select="ep:message-set/ep:construct[ep:tech-name = //ep:message[@messagetype='response' and @grouping!='resource']/ep:seq/ep:construct/ep:type-name and not(ep:enum)]">
+        <xsl:for-each select="ep:message-set/ep:construct[ep:tech-name = //ep:message
+				[(((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response')
+				 or (contains(@berichtcode,'Po') and @messagetype='request'))
+				 and @grouping!='resource']/ep:seq/ep:construct/ep:type-name and not(ep:enum)]">
             <xsl:variable name="type-name" select="ep:type-name"/>
+
             <!-- The regular constructs are generated here. -->
             <xsl:call-template name="construct"/>
             
@@ -127,7 +141,8 @@
         <xsl:if test="ep:message-set/ep:construct[(ep:tech-name = //ep:message-set/ep:construct/ep:seq/ep:construct/ep:type-name) and not(ep:tech-name = //ep:message[@messagetype='response']/ep:seq/ep:construct/ep:type-name) and not(ep:enum)]">,</xsl:if>
        
         <!-- Loop over constructs which are refered to from the global constructs but aren't enumeration constructs. -->
-        <xsl:for-each select="ep:message-set/ep:construct[(ep:tech-name = //ep:message-set/ep:construct/ep:seq/ep:construct/ep:type-name) and not(ep:tech-name = //ep:message[@messagetype='response']/ep:seq/ep:construct/ep:type-name) and not(ep:enum)]">
+        <xsl:for-each select="ep:message-set/ep:construct[(ep:tech-name = //ep:message-set/ep:construct/ep:seq/ep:construct/ep:type-name) and not(ep:tech-name = //ep:message[@messagetype='response']/ep:seq/ep:construct/ep:type-name) and not(ep:enum) and (( contains(@berichtcode,'Po') and @messagetype='request') or 
+													((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response'))]">
             
             <!-- Only regular constructs are generated. -->
             <xsl:call-template name="construct"/>
@@ -157,7 +172,8 @@
 
 			<!-- Loop over global constructs who do have themself a construct of 'association' type.
 				 Global types are generated. -->
-			<xsl:for-each select="ep:message-set/ep:construct[.//ep:construct[@type='association']]">
+			<xsl:for-each select="ep:message-set/ep:construct[.//ep:construct[@type='association'] and (( contains(@berichtcode,'Po') and @messagetype='request') or 
+													((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response'))]">
 
 				<xsl:if test="$debugging">
 					"--------------Debuglocatie-00600-<xsl:value-of select="generate-id()"/>": {
@@ -171,7 +187,7 @@
 				
 				<xsl:value-of select="'&quot;self&quot;: {'"/>
 				<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
-				<xsl:value-of select="'&quot;readonly&quot;: true,'"/>
+				<xsl:value-of select="'&quot;readOnly&quot;: true,'"/>
 				<xsl:value-of select="'&quot;description&quot;: &quot;url naar deze resource&quot;,'"/>
 				<xsl:value-of select="'&quot;properties&quot;: {'"/>
 				<xsl:value-of select="'&quot;href&quot;: {'"/>
@@ -499,11 +515,12 @@
     <xsl:template match="ep:message">
         <xsl:variable name="elementName" select="translate(ep:seq/ep:construct/ep:type-name,'.','_')"/>
         <xsl:variable name="grouping" select="@grouping"/>
+        <xsl:variable name="berichtcode" select="@berichtcode"/>
         <!-- TODO: Volgende variabele moet uiteindelijk dezelfde variabele op globaal niveau gaan vervangen. -->
         
         <xsl:variable name="topComponentName">
 			<xsl:choose>
-				<xsl:when test="$grouping = 'resource'">
+				<xsl:when test="$grouping = 'resource' or contains(@berichtcode,'Po')">
 					<xsl:value-of select="$elementName"/>
 				</xsl:when>
 				<xsl:otherwise>
@@ -521,11 +538,14 @@
         <xsl:value-of select="concat('&quot;', $topComponentName,'&quot;: {' )"/>
 
 		
-		<xsl:variable name="type-name" select="ep:seq/ep:construct[@type!='requestclass']/ep:type-name"/>
+		<xsl:variable name="type-name" select="ep:seq/ep:construct[(contains($berichtcode,'Po') and @type='requestclass') or ((contains($berichtcode,'Gc') or contains($berichtcode,'Gr')) and @type!='requestclass')]/ep:type-name"/>
 		
 		<xsl:choose>
-			<xsl:when test="$grouping = 'resource'">
-				<xsl:for-each select="//ep:message-set/ep:construct[ep:tech-name = $type-name]">
+			<xsl:when test="((contains($berichtcode,'Gc') or contains($berichtcode,'Gr')) and $grouping = 'resource') or contains($berichtcode,'Po')">
+				<xsl:for-each select="//ep:message-set/ep:construct[ep:tech-name = $type-name and 
+													(( contains(@berichtcode,'Po') and @messagetype='request') or 
+													((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response'))
+													]">
 					<xsl:call-template name="construct">
 						<xsl:with-param name="grouping" select="$grouping"/>
 					</xsl:call-template>
@@ -580,9 +600,13 @@
 						<xsl:value-of select="'&quot;properties&quot; : {'"/>
 						<!-- TODO: De naam van het _embedded type moet uiteindelijk de naam van het entiteittype in meervoud zijn. -->
 						<xsl:value-of select="'&quot;'"/>
+						<xsl:variable name="responseEntiteitId">
+							<xsl:value-of select="ep:seq/ep:construct[@type!='requestclass']/ep:type-name"/>
+						</xsl:variable>
 						<xsl:choose>
-							<xsl:when test="ep:seq/ep:construct[@type!='requestclass']/@meervoudigeNaam">
-								<xsl:value-of select="ep:seq/ep:construct[@type!='requestclass']/@meervoudigeNaam"/>
+							<xsl:when test="//ep:message-set/ep:construct[ep:tech-name = $responseEntiteitId]">
+							<!--<xsl:when test="ep:seq/ep:construct[@type!='requestclass']/@meervoudigeNaam">-->
+								<xsl:value-of select="/ep:message-set/ep:construct[ep:tech-name = $responseEntiteitId]/@meervoudigeNaam"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:value-of select="translate(ep:seq/ep:construct[@type!='requestclass']/ep:tech-name,'.','_')"/>

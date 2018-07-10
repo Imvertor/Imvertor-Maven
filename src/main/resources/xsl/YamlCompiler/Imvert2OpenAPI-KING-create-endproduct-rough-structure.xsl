@@ -25,9 +25,7 @@
 		$Id: Imvert2XSD-KING-create-OpenAPI-endproduct-rough-structure.xsl 1
 		2018-04-16 13:32:00Z RobertMelskens $
 	</xsl:variable>
-	<xsl:variable name="stylesheet-code" as="xs:string">
-		OAS
-	</xsl:variable>
+	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
 	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"
 		as="xs:boolean" />
 
@@ -121,96 +119,144 @@
 			has a berichttype with the value 'Gcxx' or 'Grxx' and contains 1 association 
 			with a stereotype 'entiteitRelatie'. This means classes only containing associations 
 			with a stereotype 'berichtRelatie' aren't processed. -->
-		<xsl:if test="contains($berichtcode,'Gc') or contains($berichtcode,'Gr')">
-			<xsl:choose>
-				<!-- It's not allowed to have none associations of type 'entiteitrelatie'. -->
-				<xsl:when
-					test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]) = 0">
-					<xsl:variable name="msg"
-						select="concat('In de messageclass ',imvert:name,' komt geen association voor met als stereotype &quot;entiteitrelatie&quot;, alleen associations met als stereotype &quot;entiteitrelatie&quot; worden verwerkt.')"
-						as="xs:string" />
-					<xsl:sequence select="imf:msg('WARNING',$msg)" />
-				</xsl:when>
-				<!-- Only in case of an Gr or Gc message type it's required to have one 
-					than one association of the 'entiteitrelatie' type with the name 'gelijk' 
-					or 'response' and allowed to have one association of the 'entiteitrelatie' 
-					type with the name 'start' or 'request'. -->
-				<xsl:when
-					test="(contains($berichtcode,'Gr') or contains($berichtcode,'Gc')) and (not(count(imvert:associations/imvert:association[imvert:name = ('gelijk','response')]) = 1))">
-					<xsl:variable name="msg"
-						select="concat('In de messageclass ',imvert:name,' komt geen of meer dan 1 entiteitrelatie association voor met de naam &quot;gelijk&quot; of &quot;response&quot;. Voor Open API koppelvlakken is dat niet toegestaan.')"
-						as="xs:string" />
-					<xsl:sequence select="imf:msg('WARNING',$msg)" />
-				</xsl:when>
-				<xsl:when
-					test="(contains($berichtcode,'Gr') or contains($berichtcode,'Gc')) and count(imvert:associations/imvert:association[imvert:name = ('start','request')]) > 1">
-					<xsl:variable name="msg"
-						select="concat('In de messageclass ',imvert:name,' komen meer dan 1 entiteitrelatie associations met de naam &quot;start&quot; of &quot;request&quot;. Voor Open API koppelvlakken is dat niet toegestaan.')"
-						as="xs:string" />
-					<xsl:sequence select="imf:msg('WARNING',$msg)" />
-				</xsl:when>
-				<xsl:when
-					test="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]">
-					<xsl:for-each
-						select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = ('gelijk','response')]">
-						<ep:rough-message messagetype="response"
-							berichtcode="{$berichtcode}" servicename="{$servicename}">
-							<xsl:sequence select="imf:create-debug-comment('A00010]',$debugging)" />
-							<xsl:sequence
-								select="imf:create-debug-track(concat('Constructing the rough-response-message: ',imvert:name/@original),$debugging)" />
-
-							<xsl:sequence
-								select="imf:create-output-element('ep:name', $messagename)" />
-							<xsl:sequence select="imf:create-output-element('ep:id', $messageid)" />
-							<xsl:sequence
-								select="imf:create-output-element('ep:type-id', $messagetypeid)" />
-							<!-- In case of a vraagberichttype it's decided for now only to proces 
-								associations with the name 'gelijk' or 'response'. -->
-
-							<!-- TODO: De bovenstaande beslissing is in overleg met Johan Boer 
-								genomen maar moet nog geformaliseerd worden. -->
-<?x							<xsl:apply-templates
-								select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and 
-								not(imvert:name = ('scope','vanaf','tot en met'))]"
-								mode="create-rough-message-content"/>	?>
-							<xsl:apply-templates select="."
-								mode="create-rough-message-content" />
-						</ep:rough-message>
-						<ep:rough-message messagetype="request"
-							berichtcode="{$berichtcode}" servicename="{$servicename}">
-							<xsl:sequence select="imf:create-debug-comment('A00015]',$debugging)" />
-							<xsl:sequence
-								select="imf:create-debug-track(concat('Constructing the rough-request-message: ',imvert:name/@original),$debugging)" />
-
-							<xsl:sequence
-								select="imf:create-output-element('ep:name', $messagename)" />
-							<xsl:sequence select="imf:create-output-element('ep:id', $messageid)" />
-							<xsl:sequence
-								select="imf:create-output-element('ep:type-id', $messagetypeid)" />
-							<xsl:for-each
-								select="../../imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = ('start','request')]">
+		<xsl:choose>
+			<xsl:when test="contains($berichtcode,'Gc') or contains($berichtcode,'Gr')">
+				<xsl:sequence select="imf:create-debug-comment('A00001]',$debugging)" />
+				<xsl:choose>
+					<!-- It's not allowed to have none associations of type 'entiteitrelatie'. -->
+					<xsl:when
+						test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]) = 0">
+						<xsl:variable name="msg"
+							select="concat('Within the messageclass ',imvert:name,' no association with the stereotype &quot;entiteitrelatie&quot; occurs, only associations with that kind of stereotype ere processed.')"
+							as="xs:string" />
+						<xsl:sequence select="imf:msg('WARNING',$msg)" />
+					</xsl:when>
+					<!-- Only in case of an Gr or Gc message type it's required to have one 
+						than one association of the 'entiteitrelatie' type with the name 'gelijk' 
+						or 'response' and allowed to have one association of the 'entiteitrelatie' 
+						type with the name 'request'. -->
+					<xsl:when
+						test="not(count(imvert:associations/imvert:association[imvert:name = 'response']) = 1)">
+						<xsl:variable name="msg"
+							select="concat('Within the messageclass ',imvert:name,' no or more than 1 association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;response&quot; occurs. For Open API koppelvlakken this is not allowed.')"
+							as="xs:string" />
+						<xsl:sequence select="imf:msg('WARNING',$msg)" />
+					</xsl:when>
+					<xsl:when
+						test="not(count(imvert:associations/imvert:association[imvert:name = 'request']) = 1)">
+						<xsl:variable name="msg"
+							select="concat('Within the messageclass ',imvert:name,' no or more than 1 association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;request&quot; occurs. For Open API koppelvlakken this is not allowed..')"
+							as="xs:string" />
+						<xsl:sequence select="imf:msg('WARNING',$msg)" />
+					</xsl:when>
+					<xsl:when
+						test="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]">
+						<xsl:sequence select="imf:create-debug-comment('A00005]',$debugging)" />
+						<xsl:for-each
+							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'response']">
+							<ep:rough-message messagetype="response"
+								berichtcode="{$berichtcode}" servicename="{$servicename}">
+								<xsl:sequence
+									select="imf:create-debug-track(concat('Constructing the rough-response-message: ',imvert:name/@original),$debugging)" />
+	
+								<xsl:sequence
+									select="imf:create-output-element('ep:name', $messagename)" />
+								<xsl:sequence select="imf:create-output-element('ep:id', $messageid)" />
+								<xsl:sequence
+									select="imf:create-output-element('ep:type-id', $messagetypeid)" />
 								<!-- In case of a vraagberichttype it's decided for now only to proces 
 									associations with the name 'gelijk' or 'response'. -->
-
+	
 								<!-- TODO: De bovenstaande beslissing is in overleg met Johan Boer 
 									genomen maar moet nog geformaliseerd worden. -->
-									<?x							<xsl:apply-templates
-										select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and 
-										not(imvert:name = ('scope','vanaf','tot en met'))]"
-										mode="create-rough-message-content"/>	?>
 								<xsl:apply-templates select="."
 									mode="create-rough-message-content" />
-							</xsl:for-each>
-						</ep:rough-message>
-					</xsl:for-each>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:sequence
-						select="imf:create-debug-comment('Otherwise-tak',$debugging)" />
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:if>
+							</ep:rough-message>
+							<ep:rough-message messagetype="request"
+								berichtcode="{$berichtcode}" servicename="{$servicename}">
+								<xsl:sequence select="imf:create-debug-comment('A00010]',$debugging)" />
+								<xsl:sequence
+									select="imf:create-debug-track(concat('Constructing the rough-request-message: ',imvert:name/@original),$debugging)" />
+	
+								<xsl:sequence
+									select="imf:create-output-element('ep:name', $messagename)" />
+								<xsl:sequence select="imf:create-output-element('ep:id', $messageid)" />
+								<xsl:sequence
+									select="imf:create-output-element('ep:type-id', $messagetypeid)" />
+								<xsl:for-each
+									select="../../imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'request']">
+									<!-- In case of a vraagberichttype it's decided for now only to proces 
+										associations with the name 'gelijk' or 'response'. -->
+	
+									<!-- TODO: De bovenstaande beslissing is in overleg met Johan Boer 
+										genomen maar moet nog geformaliseerd worden. -->
+										<?x							<xsl:apply-templates
+											select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and 
+											not(imvert:name = ('scope','vanaf','tot en met'))]"
+											mode="create-rough-message-content"/>	?>
+									<xsl:apply-templates select="."
+										mode="create-rough-message-content" />
+								</xsl:for-each>
+							</ep:rough-message>
+	
 
+						</xsl:for-each>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:sequence
+							select="imf:create-debug-comment('Otherwise-tak',$debugging)" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="contains($berichtcode,'Po')">
+				<xsl:sequence select="imf:create-debug-comment('A00011]',$debugging)" />
+				<xsl:choose>
+					<!-- It's not allowed to have none associations of type 'entiteitrelatie'. -->
+					<xsl:when
+						test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]) = 0">
+						<xsl:variable name="msg"
+							select="concat('Within the messageclass ',imvert:name,' no association with the stereotype &quot;entiteitrelatie&quot; occurs, only associations with that kind of stereotype are processed.')"
+							as="xs:string" />
+						<xsl:sequence select="imf:msg('WARNING',$msg)" />
+					</xsl:when>
+					<xsl:when
+						test="contains($berichtcode,'Po') and (not(count(imvert:associations/imvert:association[imvert:name = 'request']) = 1))">
+						<xsl:variable name="msg"
+							select="concat('Within the messageclass ',imvert:name,' no or more than 1 association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;request&quot; occurs. For Open API koppelvlakken this is not allowed..')"
+							as="xs:string" />
+						<xsl:sequence select="imf:msg('WARNING',$msg)" />
+					</xsl:when>
+					<xsl:when
+						test="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]">
+						<xsl:for-each
+							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'request']">
+							<ep:rough-message messagetype="request"
+								berichtcode="{$berichtcode}" servicename="{$servicename}">
+								<xsl:sequence select="imf:create-debug-comment('A00015]',$debugging)" />
+								<xsl:sequence
+									select="imf:create-debug-track(concat('Constructing the rough-request-message: ',imvert:name/@original),$debugging)" />
+								
+								<xsl:sequence
+									select="imf:create-output-element('ep:name', $messagename)" />
+								<xsl:sequence select="imf:create-output-element('ep:id', $messageid)" />
+								<xsl:sequence
+									select="imf:create-output-element('ep:type-id', $messagetypeid)" />
+								<!-- In case of a antwoordberichttype it's decided for now only to proces 
+									associations with the name 'request'. -->
+								
+								<!-- TODO: De bovenstaande beslissing is door Robert genomen maar moet nog geformaliseerd worden. -->
+								<xsl:apply-templates select="."
+									mode="create-rough-message-content" />
+							</ep:rough-message>
+						</xsl:for-each>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:sequence
+							select="imf:create-debug-comment('Otherwise-tak',$debugging)" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+		</xsl:choose>
 	</xsl:template>
 
 	<!-- This template transforms an 'imvert:association' element of stereotype 
@@ -231,7 +277,7 @@
 			<xsl:with-param name="id-refering-association" select="imvert:id" />
 			<xsl:with-param name="association-function">
 				<xsl:choose>
-					<xsl:when test="imvert:name = 'start' or imvert:name = 'request'">
+					<xsl:when test="imvert:name = 'request'">
 						<xsl:value-of select="'requestParameters'" />
 					</xsl:when>
 					<xsl:otherwise>
