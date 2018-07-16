@@ -283,13 +283,6 @@
             <construct>class</construct>
         </stereo>
     
-        <stereo id="stereotype-name-codelist">
-            <name lang="nl">Codelist</name>
-            <name lang="en">Codelist</name> 
-            <construct>class</construct>
-            <construct>datatype</construct>
-        </stereo>
-        
         <stereo id="stereotype-name-composite-id">
             <name lang="en">Isid</name>
             <name lang="nl">Isid</name>
