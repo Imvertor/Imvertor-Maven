@@ -65,8 +65,8 @@
     
     <xsl:template match="imvert:attribute" mode="valuelists">
         <xsl:variable name="list" select="imf:get-construct-by-id(imvert:type-id)"/>
-        <xsl:variable name="my-location" select="imvert:data-location"/>
-        <xsl:variable name="its-location" select="$list/imvert:data-location"/>
+        <xsl:variable name="my-location" select="imf:get-data-location(.)"/>
+        <xsl:variable name="its-location" select="imf:get-data-location($list)"/>
         <xsl:variable name="url" select="if ($my-location) then $my-location else $its-location"/>
         <xsl:variable name="url-origin" select="if ($my-location) then 'attribute' else 'list'"/>
         <tr>

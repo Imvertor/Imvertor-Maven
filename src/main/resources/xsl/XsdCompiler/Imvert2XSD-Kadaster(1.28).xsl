@@ -221,55 +221,7 @@
             </xs:schema>
         
         </imvert:schema>
-        
-        <?x uitfaseren?
-            
-        <xsl:variable name="must-cva" select="imf:boolean(imf:get-config-string('cli','create-cva-files'))"/>
-        <xsl:variable name="atts" select="$this-package//imvert:attribute[imvert:type-name=imf:get-config-parameter('class-name-waardelijst')]"/>
-        <xsl:if test="$must-cva and $atts[1]">
-        
-            <xsl:variable name="infos" as="element()*">
-                <xsl:for-each select="$atts">
-                    <xsl:sequence select="imf:get-cva-info(.)"/>
-                </xsl:for-each>
-            </xsl:variable>
-            
-            <xsl:variable name="xsd-filename" select="substring-before(tokenize($schema-subpath,'/')[last()],'.xsd')"/>
-            <xsl:variable name="cva-localname" select="concat('rules-', $xsd-filename)"/>
-            <xsl:variable name="cvafile" select="concat(substring-before($schemafile, '.xsd'),'.cva')"/>
-            
-            <imvert:cva>
-                <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$xsd-filename)"/>
-                <xsl:sequence select="imf:create-info-element('imvert:cva-local-name',$cva-localname)"/>
-                <xsl:sequence select="imf:create-info-element('imvert:result-file-fullpath',$cvafile)"/>
-                
-                <cva:ContextValueAssociation 
-                    xmlns:cva="http://docs.oasis-open.org/codelist/ns/ContextValueAssociation/1.0/"
-                    queryBinding="xslt"
-                    name="{$cva-localname}"
-                    >
-                    <xsl:for-each select="$infos">
-                        <xsl:namespace name="{@prefix}" select="@ns"/>
-                    </xsl:for-each>
-                    <!-- set the namespace of the referenced elements in xpath -->
-                    <Title>This is a context/value association file for the XML schema at <xsl:value-of select="concat('http://www.imvertor.org/schema/',$schema-subpath)"/>.</Title>
-                    <ValueLists>
-                        <xsl:for-each-group select="$atts" group-by="imvert:data-location">
-                            <xsl:variable name="info" select="imf:get-cva-info(current-group()[1])"/>
-                            <ValueList xml:id="{$info/@id}" uri="{$info/@uri}" key="Code"/>
-                        </xsl:for-each-group>
-                    </ValueLists>
-                    <Contexts>
-                        <xsl:for-each select="$infos">
-                            <Context item="{@item}" scope="{@scope}" values="{@id}"/>
-                        </xsl:for-each>
-                    </Contexts>
-                </cva:ContextValueAssociation>
-            </imvert:cva>
-    
-        </xsl:if>
-        ?>
-        
+           
     </xsl:template>
         
     <xsl:template match="imvert:class[imvert:stereotype=imf:get-config-stereotypes('stereotype-name-enumeration')]">
@@ -1444,7 +1396,7 @@
     
     <xsl:function name="imf:get-appinfo-location" as="node()*">
         <xsl:param name="this" as="node()"/>
-        <xsl:sequence select="imf:create-doc-element('xs:appinfo','http://www.imvertor.org/data-info/uri',$this/imvert:data-location)"/>
+        <xsl:sequence select="imf:create-doc-element('xs:appinfo','http://www.imvertor.org/data-info/uri',imf:get-data-location($this))"/>
     </xsl:function>
     
     <xsl:function name="imf:create-doc-element" as="node()*">
@@ -1655,22 +1607,6 @@
             <xsl:sequence select="."/>
             <xsl:sequence select="imf:get-substitution-classes(.)"/>
         </xsl:for-each>
-    </xsl:function>
-        
-    <xsl:function name="imf:get-cva-info" as="element()">
-        <xsl:param name="attribute" as="element()"/>
-        <xsl:variable name="class" select="$attribute/../.."/>
-        <xsl:variable name="package" select="$class/.."/>
-        <xsl:variable name="ns" select="imf:get-namespace($package)"/>
-        <xsl:variable name="ns-name" select="$package/imvert:name"/>
-        <xsl:variable name="parent-name" select="$class/imvert:name"/>
-        <xsl:variable name="child-name" select="$attribute/imvert:name"/>
-        <xsl:variable name="uri" select="$attribute/imvert:data-location"/>
-        <xsl:variable name="file" select="concat($attribute/imvert:data-location,'.xml')"/>
-        <xsl:variable name="id" select="substring-after($attribute/imvert:data-location,imf:get-config-parameter('url-prefix-schema-waardelijsten'))"/>
-        <xsl:variable name="scope" select="concat($ns-name,':',$parent-name)"/>
-        <xsl:variable name="item" select="concat($ns-name,':',$child-name)"/>
-        <info id="{$id}" uri="{$uri}" file="{$file}" scope="{$scope}" item="{$item}" prefix="{$ns-name}" ns="{$ns}"/>  
     </xsl:function>
     
     <xsl:function name="imf:debug" as="node()*">

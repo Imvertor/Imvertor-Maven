@@ -630,22 +630,12 @@
  
     <xsl:function name="imf:get-external-resources-info" as="node()*">
         <xsl:param name="this" as="node()"/>
-        <!-- 
-            Wanneer referentie naar externe data (waardenlijst), haal URI op.
-            Als die niet is gespecificeerd op de relatie, neem dan de data locatie van de gerefereneerde waardelijst klasse op.
-        -->
+        <!-- imvert:data-location now removed (1.46) -->
         <xsl:variable name="type-id" select="$this/UML:StructuralFeature.type/UML:Classifier/@xmi.idref"/>
         <xsl:variable name="type-name" select="$this/UML:ModelElement.taggedValue/UML:TaggedValue[@tag='type']/@value"/>
         <xsl:variable name="vl" select="imf:element-by-id($type-id)"/>
-        <xsl:variable name="dataloc" select="if (exists($vl)) then (imf:get-profile-tagged-value($vl,'data-location'),imf:get-profile-tagged-value($vl,'Data locatie')) else ()"/>
         <xsl:variable name="webloc" select="if (exists($vl)) then (imf:get-profile-tagged-value($vl,'web-location'),imf:get-profile-tagged-value($vl,'Web locatie')) else ()"/>
-        <xsl:sequence select="imf:create-output-element('imvert:data-location',
-            (imf:get-profile-tagged-value($this,'data-location'),
-            imf:get-profile-tagged-value($this,'Data locatie'),
-            imf:get-profile-tagged-value($this,'Location'),
-            imf:get-profile-tagged-value($this,'Locatie'),
-            $dataloc)[1])"/>
-        <xsl:sequence select="imf:create-output-element('imvert:web-location',
+       <xsl:sequence select="imf:create-output-element('imvert:web-location',
             (imf:get-profile-tagged-value($this,'web-location'),
              imf:get-profile-tagged-value($this,'Web locatie'),
              $webloc)[1])"/>

@@ -1102,6 +1102,12 @@
         </xsl:choose>
     </xsl:function>
     
+    <!-- data location used to be a part of the imvert schema, but is removed in 1.45. In stead, just query the tagged value -->
+    <xsl:function name="imf:get-data-location" as="xs:string?">
+        <xsl:param name="this"/>
+        <xsl:sequence select="imf:get-tagged-value($this,'##CFG-TV-DATALOCATION')"/>
+    </xsl:function>
+    
     <!-- =========== optimization ============== -->
     
     <!--

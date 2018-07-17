@@ -175,7 +175,6 @@
             <xsl:apply-templates select="imvert:fraction-digits"/>
             <xsl:apply-templates select="imvert:total-digits"/>
             
-            <xsl:apply-templates select="imvert:data-location"/>
             <xsl:apply-templates select="imvert:position"/>
             
             <xsl:apply-templates select="imvert:attribute-type-name"/>
@@ -202,7 +201,6 @@
     <xsl:template match="imvert:attribute[imvert:type-name][imvert:stereotype/@id = 'stereotype-name-enumeration']">
         <imvert-result:Attribute>
             
-            <xsl:apply-templates select="imvert:data-location"/>
             <xsl:apply-templates select="imvert:position"/>
             
             <xsl:call-template name="_Identifiable">

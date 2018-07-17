@@ -115,6 +115,19 @@
          <tip>When specified, pass the release number of Imvertor which nilreason approach must be used. Currently supported: 1.28.</tip>
          <required>false</required>
       </cli-parm>
+      <cli-parm>
+         <name>codelistoption</name>
+         <arg>Name</arg>
+         <tip>The codelist option to apply in the ISO19136 schema.</tip>
+         <required>false</required>
+      </cli-parm>
+      <cli-parm>
+         <name>gmlversion</name>
+         <arg>version nr</arg>
+         <tip>The GML version to be used for ISO19136 schemas. Example: "3.3".</tip>
+         <required>false</required>
+      </cli-parm>
+      
    </cli-parms>
   
    <properties>

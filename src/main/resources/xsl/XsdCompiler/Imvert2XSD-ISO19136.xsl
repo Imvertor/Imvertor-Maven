@@ -85,6 +85,9 @@
     <xsl:variable name="Type-suffix">Type</xsl:variable>
     <xsl:variable name="PropertyType-suffix">PropertyType</xsl:variable>
     
+    <xsl:variable name="codelist-option" select="imf:get-config-string('cli','codelistoption','UNSPECIFIED')"/>
+    <xsl:variable name="gml-version" select="imf:get-config-string('cli','gmlversion','UNSPECIFIED')"/>
+    
     <xsl:template match="imvert:class" mode="type-in-package">
         <type 
             name="{imvert:name}"
@@ -95,67 +98,80 @@
     </xsl:template>
     
     <xsl:template match="/">
-        <imvert:schemas>
-            <xsl:sequence select="imf:create-info-element('imvert:exporter',$imvert-document/imvert:packages/imvert:exporter)"/>
-            <xsl:sequence select="imf:create-info-element('imvert:schema-exported',$imvert-document/imvert:packages/imvert:exported)"/>
-            <xsl:sequence select="imf:create-info-element('imvert:schema-filter-version',imf:get-svn-id-info($imvert-document/imvert:packages/imvert:filters/imvert:filter/imvert:version))"/>
-            <xsl:sequence select="imf:create-info-element('imvert:latest-svn-revision',concat($char-dollar,'Id',$char-dollar))"/>
-            
-            <!-- Schemas for external packages are not generated, but added to the release manually. -->
-            <xsl:apply-templates select="$imvert-document/imvert:packages/imvert:package[not(imvert:name = $external-schema-names)]"/>
-            
-            <!-- 
-                Do we need to reference external schema's? 
-                If so, a reference is made to the name of the external schema. 
-            -->
-            <xsl:variable name="externals" select="//(imvert:type-package|imvert:supertype[not(imvert:stereotype/@id = ('stereotype-name-static-generalization'))]/imvert:type-package)[.=$external-schema-names]"/>
-            <xsl:for-each-group select="$externals" group-by=".">
-                <xsl:for-each select="current-group()[1]"><!-- singleton imvert:type-package element--> 
-                    <xsl:variable name="external-package" select="imf:get-construct-by-id(../imvert:type-package-id)"/>
-                    <imvert:schema>
-                        <xsl:sequence select="imf:create-info-element('imvert:name',$external-package/imvert:name)"/>
-                        <xsl:sequence select="imf:create-info-element('imvert:prefix',$external-package/imvert:short-name)"/>
-                        <xsl:sequence select="imf:create-info-element('imvert:namespace',$external-package/imvert:namespace)"/>
-                        <xsl:choose>
-                            <xsl:when test="imf:boolean($external-schemas-reference-by-url)">
-                                <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$external-package/imvert:location)"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:variable name="schema-subpath" select="imf:get-xsd-filesubpath($external-package)"/>
-                                <xsl:variable name="file-fullpath" select="imf:get-xsd-filefullpath($external-package)"/>
-                                <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$schema-subpath)"/>
-                                <xsl:sequence select="imf:create-info-element('imvert:result-file-fullpath',$file-fullpath)"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </imvert:schema>
-                </xsl:for-each>
-            </xsl:for-each-group>
-            
-            <!-- add an external package that is a sentinel if not yet added -->
-            <xsl:for-each select="$imvert-document/imvert:packages/imvert:package[imf:boolean(imvert:sentinel) and not(imvert:name = $externals)]">
-                <xsl:variable name="external-package" select="."/>
-                <imvert:schema>
-                    <xsl:sequence select="imf:create-info-element('imvert:name',$external-package/imvert:name)"/>
-                    <xsl:sequence select="imf:create-info-element('imvert:prefix',$external-package/imvert:short-name)"/>
-                    <xsl:sequence select="imf:create-info-element('imvert:namespace',$external-package/imvert:namespace)"/>
-                    <xsl:choose>
-                        <xsl:when test="imf:boolean($external-schemas-reference-by-url)">
-                            <xsl:comment>Referenced by URL</xsl:comment>
-                            <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$external-package/imvert:location)"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:comment>Referenced by local path</xsl:comment>
-                            <xsl:variable name="schema-subpath" select="imf:get-xsd-filesubpath($external-package)"/>
-                            <xsl:variable name="file-fullpath" select="imf:get-xsd-filefullpath($external-package)"/>
-                            <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$schema-subpath)"/>
-                            <xsl:sequence select="imf:create-info-element('imvert:result-file-fullpath',$file-fullpath)"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </imvert:schema>
-            </xsl:for-each>
-            
-        </imvert:schemas>
-    </xsl:template>
+        <xsl:choose>
+            <!-- preliminary validation -->
+            <xsl:when test="empty($gml-version)">
+                <xsl:sequence select="imf:msg(.,'ERROR', 'No required GML version specified')"/> 
+            </xsl:when>
+            <xsl:when test="empty($codelist-option)">
+                <xsl:sequence select="imf:msg(.,'ERROR', 'No codelist option specified')"/> 
+            </xsl:when>
+            <xsl:when test="not($codelist-option = ('Option1','Option2','Option3'))">
+                <xsl:sequence select="imf:msg(.,'ERROR', 'Invalid codelist option [1] for GML version [2]',($codelist-option,$gml-version))"/> 
+            </xsl:when>
+            <xsl:otherwise>
+                <imvert:schemas>
+                    <xsl:sequence select="imf:create-info-element('imvert:exporter',$imvert-document/imvert:packages/imvert:exporter)"/>
+                    <xsl:sequence select="imf:create-info-element('imvert:schema-exported',$imvert-document/imvert:packages/imvert:exported)"/>
+                    <xsl:sequence select="imf:create-info-element('imvert:schema-filter-version',imf:get-svn-id-info($imvert-document/imvert:packages/imvert:filters/imvert:filter/imvert:version))"/>
+                    <xsl:sequence select="imf:create-info-element('imvert:latest-svn-revision',concat($char-dollar,'Id',$char-dollar))"/>
+                    
+                    <!-- Schemas for external packages are not generated, but added to the release manually. -->
+                    <xsl:apply-templates select="$imvert-document/imvert:packages/imvert:package[not(imvert:name = $external-schema-names)]"/>
+                    
+                    <!-- 
+                        Do we need to reference external schema's? 
+                        If so, a reference is made to the name of the external schema. 
+                    -->
+                    <xsl:variable name="externals" select="//(imvert:type-package|imvert:supertype[not(imvert:stereotype/@id = ('stereotype-name-static-generalization'))]/imvert:type-package)[.=$external-schema-names]"/>
+                    <xsl:for-each-group select="$externals" group-by=".">
+                        <xsl:for-each select="current-group()[1]"><!-- singleton imvert:type-package element--> 
+                            <xsl:variable name="external-package" select="imf:get-construct-by-id(../imvert:type-package-id)"/>
+                            <imvert:schema>
+                                <xsl:sequence select="imf:create-info-element('imvert:name',$external-package/imvert:name)"/>
+                                <xsl:sequence select="imf:create-info-element('imvert:prefix',$external-package/imvert:short-name)"/>
+                                <xsl:sequence select="imf:create-info-element('imvert:namespace',$external-package/imvert:namespace)"/>
+                                <xsl:choose>
+                                    <xsl:when test="imf:boolean($external-schemas-reference-by-url)">
+                                        <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$external-package/imvert:location)"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:variable name="schema-subpath" select="imf:get-xsd-filesubpath($external-package)"/>
+                                        <xsl:variable name="file-fullpath" select="imf:get-xsd-filefullpath($external-package)"/>
+                                        <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$schema-subpath)"/>
+                                        <xsl:sequence select="imf:create-info-element('imvert:result-file-fullpath',$file-fullpath)"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </imvert:schema>
+                        </xsl:for-each>
+                    </xsl:for-each-group>
+                    
+                    <!-- add an external package that is a sentinel if not yet added -->
+                    <xsl:for-each select="$imvert-document/imvert:packages/imvert:package[imf:boolean(imvert:sentinel) and not(imvert:name = $externals)]">
+                        <xsl:variable name="external-package" select="."/>
+                        <imvert:schema>
+                            <xsl:sequence select="imf:create-info-element('imvert:name',$external-package/imvert:name)"/>
+                            <xsl:sequence select="imf:create-info-element('imvert:prefix',$external-package/imvert:short-name)"/>
+                            <xsl:sequence select="imf:create-info-element('imvert:namespace',$external-package/imvert:namespace)"/>
+                            <xsl:choose>
+                                <xsl:when test="imf:boolean($external-schemas-reference-by-url)">
+                                    <xsl:comment>Referenced by URL</xsl:comment>
+                                    <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$external-package/imvert:location)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:comment>Referenced by local path</xsl:comment>
+                                    <xsl:variable name="schema-subpath" select="imf:get-xsd-filesubpath($external-package)"/>
+                                    <xsl:variable name="file-fullpath" select="imf:get-xsd-filefullpath($external-package)"/>
+                                    <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$schema-subpath)"/>
+                                    <xsl:sequence select="imf:create-info-element('imvert:result-file-fullpath',$file-fullpath)"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </imvert:schema>
+                    </xsl:for-each>
+                </imvert:schemas>
+            </xsl:otherwise>
+        </xsl:choose>
+      </xsl:template>
     
     <!-- Internal packages processed here. -->
     <xsl:template match="imvert:package">
@@ -297,15 +313,26 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]">
-        <xsl:sequence select="imf:create-comment(.,'A codelist')"/>
-        <xsl:variable name="codespace" select="imf:get-tagged-value(.,'##CFG-TV-DATALOCATION')"/>
-        <xs:complexType name="{imvert:name}{$Type-suffix}">
-            <xs:simpleContent>
-                <xs:restriction base="gml:CodeWithAuthorityType">
-                    <xs:attribute name="codeSpace" type="xs:anyURI" use="required" fixed="{$codespace}" />
-                </xs:restriction>
-            </xs:simpleContent>
-        </xs:complexType>
+
+        <xsl:variable name="codespace" select="imf:get-data-location(.)"/>
+
+        <xsl:choose>
+            <xsl:when test="$codelist-option = 'Option3'">
+                <xsl:variable name="codespace" select="imf:get-data-location(.)"/>
+                <xsl:sequence select="imf:create-comment(.,concat('A codelist at ',$codelist-option))"/>
+                <xs:complexType name="{imvert:name}{$Type-suffix}">
+                    <xs:simpleContent>
+                        <xs:restriction base="gml:CodeWithAuthorityType">
+                            <xs:attribute name="codeSpace" type="xs:anyURI" use="required" fixed="{$codespace}" />
+                        </xs:restriction>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- all encoded at the attribute level -->
+            </xsl:otherwise>
+        </xsl:choose>
+        
     </xsl:template>    
 
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]">
@@ -373,29 +400,36 @@
         <xsl:variable name="is-objecttype" select="imvert:stereotype/@id = ('stereotype-name-objecttype')"/>
         <xsl:variable name="is-grouptype" select="imvert:stereotype/@id = ('stereotype-name-composite')"/>
         
-        <xs:element name="{$type-name}" type="{imf:get-type($type-name,$package-name)}{$Type-suffix}" abstract="{$abstract}">
-            <xsl:choose>
-                <xsl:when test="not($supertype-name) and $is-objecttype">
-                    <xsl:attribute name="substitutionGroup" select="'gml:AbstractFeature'"/>
-                </xsl:when>
-                <xsl:when test="not($supertype-name) and $is-grouptype">
-                    <!--<xsl:attribute name="substitutionGroup" select="'gml:AbstractFeature'"/>-->
-                </xsl:when>
-                <xsl:when test="not($supertype-name)">
-                    <!--<xsl:attribute name="substitutionGroup" select="'gml:AbstractObject'"/>-->
-                </xsl:when>
-                <xsl:when test="$supertype-substitutiongroup = $name-none">
-                    <!-- nothing: explicit skip of this link to the subsitution group -->
-                </xsl:when>
-                <xsl:when test="$supertype-substitutiongroup">
-                    <xsl:attribute name="substitutionGroup" select="imf:get-type($supertype-substitutiongroup,$supertype-package-name)"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:attribute name="substitutionGroup" select="imf:get-type($supertype-name,$supertype-package-name)"/>
-                </xsl:otherwise>
-            </xsl:choose>
-            <xsl:sequence select="imf:get-annotation(.,$data-location,())"/> 
-        </xs:element>
+        <!-- only generate elements for constructs thet may be referenced as an element. This is: all constructs but
+            AttributeGroupType
+            
+            https://github.com/Imvertor/Imvertor-Maven/issues/41
+        -->
+        <xsl:if test="not($is-grouptype)">
+            <xs:element name="{$type-name}" type="{imf:get-type($type-name,$package-name)}{$Type-suffix}" abstract="{$abstract}">
+                <xsl:choose>
+                    <xsl:when test="not($supertype-name) and $is-objecttype">
+                        <xsl:attribute name="substitutionGroup" select="'gml:AbstractFeature'"/>
+                    </xsl:when>
+                    <xsl:when test="not($supertype-name) and $is-grouptype">
+                        <!--<xsl:attribute name="substitutionGroup" select="'gml:AbstractFeature'"/>-->
+                    </xsl:when>
+                    <xsl:when test="not($supertype-name)">
+                        <!--<xsl:attribute name="substitutionGroup" select="'gml:AbstractObject'"/>-->
+                    </xsl:when>
+                    <xsl:when test="$supertype-substitutiongroup = $name-none">
+                        <!-- nothing: explicit skip of this link to the subsitution group -->
+                    </xsl:when>
+                    <xsl:when test="$supertype-substitutiongroup">
+                        <xsl:attribute name="substitutionGroup" select="imf:get-type($supertype-substitutiongroup,$supertype-package-name)"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:attribute name="substitutionGroup" select="imf:get-type($supertype-name,$supertype-package-name)"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:sequence select="imf:get-annotation(.,$data-location,())"/> 
+            </xs:element>
+        </xsl:if>
         
         <xsl:variable name="content" as="element()?">
             <xsl:choose>
@@ -739,9 +773,26 @@
         <xsl:variable name="min-occurs-assoc" select="if ($this/imvert:min-occurs='0') then '0' else '1'"/>
         <xsl:variable name="min-occurs-target" select="if ($this/imvert:min-occurs='0') then '1' else $this/imvert:min-occurs"/>
         
-        <xsl:variable name="data-location" select="imf:get-appinfo-location($this)"/>
+        <xsl:variable name="codespace" select="(imf:get-data-location($this),if ($defining-class) then imf:get-data-location($defining-class) else ())"/>
+        
+        <xsl:variable name="appinfo-data-location" select="imf:get-appinfo-location($this)"/>
+        <xsl:variable name="appinfo-codelist">
+            <xs:appinfo>
+                <CodeListName>
+                    <xsl:value-of select="$this/imvert:type-name"/>
+                </CodeListName>
+                <CodeListURI>
+                    <xsl:value-of select="$codespace"/>
+                </CodeListURI>
+            </xs:appinfo>
+        </xsl:variable>
         
         <xsl:choose>
+            <!-- preliminary -->
+            <xsl:when test="$codespace[2]">
+                <xsl:sequence select="imf:msg($this,'ERROR','Codespace set on attribute as well as on type: [1] and [2]', ($codespace))"/>
+            </xsl:when>
+            
             <!-- any type, i.e. #any -->
             <xsl:when test="$is-any">
                 <xsl:variable name="package-name" select="$this/imvert:any-from-package"/>
@@ -798,7 +849,7 @@
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:attribute name="nillable">true</xsl:attribute>
                     <xsl:sequence select="imf:create-comment($this,'A voidable incomplete datetime, date or time')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                     <xs:complexType>
                         <xs:simpleContent>
                             <xsl:variable name="fixtype">
@@ -829,7 +880,7 @@
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:sequence select="imf:create-comment($this,'An incomplete datetime, date or time')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                 </xs:element>
             </xsl:when>
             
@@ -840,7 +891,7 @@
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:attribute name="nillable">true</xsl:attribute>
                     <xsl:sequence select="imf:create-comment($this,'A voidable primitive type')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                     <xs:complexType>
                         <xs:simpleContent>
                             <!-- 
@@ -862,7 +913,7 @@
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:sequence select="imf:create-comment($this,'A restriction on a primitive type')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                     <xsl:choose>
                         <xsl:when test="false() and $is-estimation"> <!-- deactivated! -->
                             <!-- TODO research / This is a restriction on xs:string datatype, but also extension as attributes are added. How? -->
@@ -891,7 +942,7 @@
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:sequence select="imf:create-comment($this,'A string')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                     <xs:simpleType>
                         <xs:restriction base="{$type}">
                             <xs:pattern value="\S.*"/> <!-- Note: do not use xs:minLength as this allows for a single space -->
@@ -921,34 +972,36 @@
                     <xsl:sequence select="imf:get-annotation($this)"/>
                 </xs:element>
             </xsl:when>
-            <!--
             <xsl:when test="$is-codelist and $is-nillable">
-                <xsl:variable name="added-appinfo" as="element()">
-                    <xs:appinfo>
-                        <gmlexr:targetCodeList>
-                            <xsl:value-of select="$this/imvert:type-name"/>
-                        </gmlexr:targetCodeList>
-                    </xs:appinfo>
-                </xsl:variable>
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
-                    <xsl:attribute name="type" select="'gml:ReferenceType'"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-comment($this,'A codelist type')"/>
-                    <xsl:sequence select="imf:get-annotation($this,imf:get-appinfo-location($defining-class),$added-appinfo)"/>
+                    <xsl:attribute name="nillable">true</xsl:attribute>
+                    <xsl:attribute name="type" select="if ($codelist-option = 'Option1') then 'gml:ReferenceType' else if ($codelist-option = 'Option2') then 'gml:CodeType' else concat($type,'Type')"/>
+                    <xsl:sequence select="imf:create-comment($this,concat('A nillable codelist attribute at ', $codelist-option))"/>
+                    <xsl:sequence select="imf:get-annotation($this,(),$appinfo-codelist)"/>
                 </xs:element>
-             </xsl:when>
-            -->
-            <xsl:when test="($is-enumeration or $is-codelist) and $is-nillable">
-                <!-- an enumeration or a datatype such as postcode -->
+            </xsl:when>
+            <xsl:when test="$is-codelist">
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:attribute name="type" select="if ($codelist-option = 'Option1') then 'gml:ReferenceType' else if ($codelist-option = 'Option2') then 'gml:CodeType' else concat($type,'Type')"/>
+                    <xsl:sequence select="imf:create-comment($this,concat('A codelist attribute at ', $codelist-option))"/>
+                    <xsl:sequence select="imf:get-annotation($this,(),$appinfo-codelist)"/>
+                </xs:element>
+            </xsl:when>
+            <xsl:when test="$is-enumeration and $is-nillable">
+                <!-- an enumeration  -->
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:attribute name="nillable">true</xsl:attribute>
-                    <xsl:sequence select="imf:create-comment($this,'A voidable enumeration or codelist')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xsl:sequence select="imf:create-comment($this,'A voidable enumeration')"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                     <xs:complexType>
                         <xs:simpleContent>
                             <xs:extension base="{$type}{$Type-suffix}">
@@ -965,7 +1018,7 @@
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:attribute name="nillable">true</xsl:attribute>
                     <xsl:sequence select="imf:create-comment($this,'A voidable complex type')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                     <xs:complexType>
                         <xsl:variable name="ext">
                             <xs:extension base="{$type}{$Type-suffix}">
@@ -996,7 +1049,7 @@
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:sequence select="imf:create-comment($this,'A conceptual complex type')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                 </xs:element>
             </xsl:when>
             <xsl:when test="$is-complextype">
@@ -1007,7 +1060,7 @@
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:sequence select="imf:create-comment($this,'A complex type')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                 </xs:element>
             </xsl:when>
             <xsl:when test="$is-datatype and $is-nillable">
@@ -1017,7 +1070,7 @@
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:attribute name="nillable">true</xsl:attribute>
                     <xsl:sequence select="imf:create-comment($this,'A voidable datatype')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                     <xs:complexType>
                         <xs:simpleContent>
                             <xs:extension base="{$type}">
@@ -1027,14 +1080,14 @@
                     </xs:complexType>
                 </xs:element>
             </xsl:when>
-            <xsl:when test="$is-enumeration or $is-codelist or $is-datatype">
+            <xsl:when test="$is-enumeration or $is-datatype">
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="type" select="concat($type,$Type-suffix)"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-comment($this,'An enumeration or codelist or datatype')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xsl:sequence select="imf:create-comment($this,'An enumeration or datatype')"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                 </xs:element>
             </xsl:when>
             <xsl:when test="not($name) and $is-external">
@@ -1044,7 +1097,7 @@
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:sequence select="imf:create-comment($this,'No name and the type is external')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                 </xs:element>
             </xsl:when>
             <xsl:when test="$is-choice and $is-nillable"> 
@@ -1103,7 +1156,7 @@
                     <xsl:attribute name="maxOccurs" select="1"/>
                     <xsl:attribute name="nillable">true</xsl:attribute>
                     <xsl:sequence select="imf:create-comment($this,'A voidable external type')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                     <xs:complexType>
                         <xs:sequence>
                             <xs:element ref="{$type}" minOccurs="{$min-occurs-target}" maxOccurs="{$this/imvert:max-occurs}"/>
@@ -1118,7 +1171,7 @@
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="1"/>
                     <xsl:sequence select="imf:create-comment($this,'An external type')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                     <!-- TODO continue: introduce correct reference / see IM-59 -->
                     <xsl:variable name="reftype" select="$type"/>
                     <xs:complexType>
@@ -1140,7 +1193,7 @@
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:sequence select="imf:create-comment($this,'An unnamed association')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                 </xs:element>
             </xsl:when>
             <xsl:otherwise>
@@ -1169,7 +1222,7 @@
                     </xsl:choose>
                     
                     <xsl:sequence select="imf:create-comment($this,'An objecttype')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                 </xs:element>
             </xsl:otherwise>
         </xsl:choose>
@@ -1288,7 +1341,7 @@
     
     <xsl:function name="imf:get-appinfo-location" as="node()*">
         <xsl:param name="this" as="node()"/>
-        <xsl:sequence select="imf:create-doc-element('xs:appinfo','http://www.imvertor.org/data-info/uri',$this/imvert:data-location)"/>
+        <xsl:sequence select="imf:create-doc-element('xs:appinfo','http://www.imvertor.org/data-info/uri',imf:get-data-location($this))"/>
     </xsl:function>
     
     <xsl:function name="imf:create-doc-element" as="node()*">
@@ -1476,22 +1529,6 @@
         </xsl:for-each>
     </xsl:function>
         
-    <xsl:function name="imf:get-cva-info" as="element()">
-        <xsl:param name="attribute" as="element()"/>
-        <xsl:variable name="class" select="$attribute/../.."/>
-        <xsl:variable name="package" select="$class/.."/>
-        <xsl:variable name="ns" select="imf:get-namespace($package)"/>
-        <xsl:variable name="ns-name" select="$package/imvert:name"/>
-        <xsl:variable name="parent-name" select="$class/imvert:name"/>
-        <xsl:variable name="child-name" select="$attribute/imvert:name"/>
-        <xsl:variable name="uri" select="$attribute/imvert:data-location"/>
-        <xsl:variable name="file" select="concat($attribute/imvert:data-location,'.xml')"/>
-        <xsl:variable name="id" select="substring-after($attribute/imvert:data-location,imf:get-config-parameter('url-prefix-schema-waardelijsten'))"/>
-        <xsl:variable name="scope" select="concat($ns-name,':',$parent-name)"/>
-        <xsl:variable name="item" select="concat($ns-name,':',$child-name)"/>
-        <info id="{$id}" uri="{$uri}" file="{$file}" scope="{$scope}" item="{$item}" prefix="{$ns-name}" ns="{$ns}"/>  
-    </xsl:function>
-    
     <!-- return all associations to this class -->
     <xsl:function name="imf:get-references">
         <xsl:param name="class" as="element()"/>
