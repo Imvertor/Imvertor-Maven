@@ -281,7 +281,9 @@
                     </xsl:for-each-group>
                 </name-value-mapping>
           
-                <xsl:sequence select="$schema-rules//specify-xsd-occurrence[last()]"/>
+                <xsl:for-each-group select="$schema-rules//parameter" group-by="@name">
+                    <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                </xsl:for-each-group>
           
             </schema-rules>
 

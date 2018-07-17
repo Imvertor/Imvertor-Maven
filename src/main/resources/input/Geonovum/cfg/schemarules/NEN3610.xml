@@ -25,7 +25,14 @@
     <desc lang="en">Rule for processing NEN3610 models to XML schemas</desc>
     <desc lang="nl">Regels voor het verwerken van NEN3610 modellen tot XML schema's</desc>
     
-       <!-- 
-        Geonovum NEN3610 specific rules 
+   <!-- 
+    Geonovum NEN3610 specific rules 
     -->
+    
+    <!-- specify if version or release or none must be inserted into the XSD namespaces -->
+    <parameter name="namespace-composition">version</parameter><!-- only applies to ISO19136 -->
+    
+    <!-- specify the minOccurs/maxOccurs when needed ("default") or "always" -->
+    <parameter name="specify-xsd-occurrence">default</parameter><!-- only applies to ISO19136 -->
+    
 </schema-rules>

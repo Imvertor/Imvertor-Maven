@@ -22,6 +22,7 @@
     <xi:include href="../../../Geonovum/cfg/schemarules/NEN3610.xml"/>
     
     <name>DSO</name>
+    
     <!-- 
         DSO specific rules 
     -->

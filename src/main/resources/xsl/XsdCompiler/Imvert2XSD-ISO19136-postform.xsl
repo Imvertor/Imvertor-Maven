@@ -44,7 +44,7 @@
         3/ redirect NE3610IDPropertyType to NEN3610ID type. This is a patch for non conforming NEN3610 schema.
    
     -->
-    <xsl:variable name="specify-xsd-occurrence-always" select="imf:get-config-schemarules()/specify-xsd-occurrence = 'always'"/>
+    <xsl:variable name="specify-xsd-occurrence-always" select="imf:get-config-schemarules()/parameter[@name='specify-xsd-occurrence'] = 'always'"/>
     
     <xsl:template match="/">
         <xsl:apply-templates/>

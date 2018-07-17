@@ -87,6 +87,8 @@
     
     <xsl:variable name="codelist-option" select="imf:get-config-string('cli','codelistoption','UNSPECIFIED')"/>
     <xsl:variable name="gml-version" select="imf:get-config-string('cli','gmlversion','UNSPECIFIED')"/>
+
+    <xsl:variable name="model-version" select="/imvert:packages/imvert:version"/>
     
     <xsl:template match="imvert:class" mode="type-in-package">
         <type 
@@ -193,7 +195,6 @@
         
         <xsl:variable name="schema-version" select="imvert:version"/>
         <xsl:variable name="schema-phase" select="imvert:phase"/>
-        <xsl:variable name="schema-release" select="imf:get-release(.)"/>
         
         <!-- historical note: we removed nsim-tally, and introduced a second step: the import XSL -->
         
@@ -1373,9 +1374,18 @@
     
     <xsl:function name="imf:get-namespace" as="xs:string">
         <xsl:param name="this" as="node()"/>
+
+        <xsl:variable name="namespace-composition" select="imf:get-config-schemarules()/parameter[@name='namespace-composition']"/>
+        
         <xsl:choose>
             <xsl:when test="$this/imvert:stereotype/@id = ('stereotype-name-external-package')">
                 <xsl:value-of select="$this/imvert:namespace"/>
+            </xsl:when>
+            <xsl:when test="$namespace-composition = 'none'">
+                <xsl:value-of select="$this/imvert:namespace"/>
+            </xsl:when>
+            <xsl:when test="$namespace-composition = 'version'">
+                <xsl:value-of select="concat($this/imvert:namespace,'/', $model-version)"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="concat($this/imvert:namespace,'/v', imf:get-release($this))"/>

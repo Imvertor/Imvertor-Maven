@@ -25,7 +25,10 @@
     <!-- 
         Kadaster specific rules 
     -->
-    <!-- specify the minOccurs/maxOccurs when needed ("default" or "always") -->
-    <specify-xsd-occurrence>default</specify-xsd-occurrence><!-- only applies to ISO19136 -->
-
+    <!-- specify if version or release or none must be inserted into the XSD namespaces -->
+    <parameter name="namespace-composition">release</parameter><!-- only applies to ISO19136 -->
+    
+    <!-- specify the minOccurs/maxOccurs when needed ("default") or "always" -->
+    <parameter name="specify-xsd-occurrence">default</parameter><!-- only applies to ISO19136 -->
+    
 </schema-rules>
