@@ -75,9 +75,10 @@ public class RunAnalyzer extends Step {
 			profilesDoc.setContent(tally);
 		}	
 		
-		if (configurator.getXParm("system/cur-imvertor-filepath",false) != null) {
+		if (configurator.getXParm("properties/WORK_CONFIG_FILE",false) != null) {
 			Transformer transformer = new Transformer();
-			transformer.transformStep("system/cur-imvertor-filepath", "properties/WORK_ANALYZER_FILE", "properties/RUN_ANALYZER_XSL"); 
+			// note: properties/WORK_CONFIG_FILE is just a kick-off file
+			transformer.transformStep("properties/WORK_CONFIG_FILE", "properties/WORK_ANALYZER_FILE", "properties/RUN_ANALYZER_XSL"); 
 			//TODO general: also provide default empty input, and default empty output files.
 		}
 			
