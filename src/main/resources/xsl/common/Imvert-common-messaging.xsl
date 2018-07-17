@@ -68,6 +68,7 @@
             <xsl:variable name="name" select="
                 if (empty($mthis)) then '(NO CONTEXT)' else 
                 if ($this[2]) then '(MULTIPLE CONTEXTS)' else 
+                if ($this is root($this)) then '(MODEL)' else 
                 imf:get-construct-name($mthis)"/>
             <xsl:variable name="id" select="$mthis/imvert:id"/>
             <xsl:variable name="ctext" select="imf:msg-insert-parms($text,$info)"/>
