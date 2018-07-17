@@ -29,6 +29,7 @@
     xmlns:ekf="http://EliotKimber/functions"
     
     xmlns:gmlexr="http://www.opengis.net/gml/3.3/xer"
+    xmlns:gmlsf="http://www.opengis.net/gmlsf/2.0"
     
     exclude-result-prefixes="#all"
     version="2.0">
@@ -87,9 +88,10 @@
     
     <xsl:variable name="codelist-option" select="imf:get-config-string('cli','codelistoption','UNSPECIFIED')"/>
     <xsl:variable name="gml-version" select="imf:get-config-string('cli','gmlversion','UNSPECIFIED')"/>
-
-    <xsl:variable name="model-version" select="/imvert:packages/imvert:version"/>
+    <xsl:variable name="sf-conformance-level" select="imf:get-config-string('cli','sfconformance','UNSPECIFIED')"/>
     
+    <xsl:variable name="model-version" select="/imvert:packages/imvert:version"/>
+  
     <xsl:template match="imvert:class" mode="type-in-package">
         <type 
             name="{imvert:name}"
@@ -222,6 +224,18 @@
                 
                 <!-- version info -->
                 <xsl:sequence select="imf:get-annotation(.,imf:get-schema-info(.),imf:get-appinfo-version(.))"/>
+                
+                <!-- simple feature -->
+                <xsl:if test="not($sf-conformance-level = 'UNSPECIFIED')">
+                    <xs:annotation> 
+                        <xs:appinfo
+                            source="http://schemas.opengis.net/gmlsfProfile/2.0/gmlsfLevels.xsd"> 
+                            <gmlsf:ComplianceLevel>
+                                <xsl:value-of select="$sf-conformance-level"/>
+                            </gmlsf:ComplianceLevel> 
+                        </xs:appinfo> 
+                    </xs:annotation>
+                </xsl:if>
                 
                 <!-- XSD complextypes -->
                 <xsl:sequence select="imf:create-comment(.,'ALL PRODUCTS')"/>

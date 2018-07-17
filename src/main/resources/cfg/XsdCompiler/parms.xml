@@ -127,6 +127,12 @@
          <tip>The GML version to be used for ISO19136 schemas. Example: "3.3".</tip>
          <required>false</required>
       </cli-parm>
+      <cli-parm>
+         <name>sfconformance</name>
+         <arg>level nr</arg>
+         <tip>The GM 3.2 Simple Feature profile conformance level. Possible values are 0, 1 2.</tip>
+         <required>false</required>
+      </cli-parm>
       
    </cli-parms>
   

@@ -71,9 +71,7 @@
                 <imvert:name original="{imvert:name}">
                     <xsl:value-of select="imvert:name"/>
                 </imvert:name>
-                <imvert:id>
-                    <xsl:value-of select="imvert:id"/>
-                </imvert:id>
+                <xsl:sequence select="imvert:id"/>
                 <xsl:if test="exists($construct/catalog) ">
                     <imvert:catalog>
                         <xsl:sequence select="imf:create-catalog-url($construct)"/>     

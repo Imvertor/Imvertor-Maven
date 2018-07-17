@@ -7,11 +7,13 @@
     <mapping name="NEN3610_GML321">
         <use>NEN3610</use>
         <use>GML321</use>
+        <use>GMLSF</use>
     </mapping>
     
     <mapping name="NEN3610_GML321_ENV">
         <use>NEN3610</use>
         <use>GML321</use>
+        <use>GMLSF</use>
         <use>ENVPROD</use>
         <use>ENVPROC</use>
         <use>ENVLOG</use>
@@ -601,6 +603,36 @@
                 <xsd-type name="CI_Citation"/>
                 <managed-ids/>
             </construct>  
+        </map>
+    </conceptual-schema>
+    
+    <conceptual-schema>
+        <name>GML Simple Feature Profile</name>
+        <url>http://www.kadaster.nl/conceptual-schemas/GMLSF</url>
+        
+        <short-name>gmlsf</short-name>
+        
+        <description>Simple Feature Profile</description>
+        
+        <map 
+            name="GMLSF" 
+            namespace="http://www.opengis.net/gmlsf/2.0" 
+            version="2.0" 
+            phase="3" 
+            location="http://schemas.opengis.net/gmlsfProfile/2.0/gmlsfLevels.xsd">
+            
+            <description>TODO</description>
+            
+            <releases>
+                <release>20110101</release>
+            </releases>
+            
+            <!-- introduce a construct to reference as a sentinel when creating GML schema's according to SFP -->
+            <construct>
+                <name>GMLSF_SENTINEL</name>
+                <sentinel>true</sentinel>
+            </construct>
+            
         </map>
     </conceptual-schema>
     
