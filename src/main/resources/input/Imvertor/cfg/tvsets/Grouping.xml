@@ -127,6 +127,8 @@
         <tv norm="space" id="CFG-TV-SUPPLIERPROJECT">
             <name lang="nl">Supplier-project</name>
             <name lang="en">Supplier-project</name>
+            <desc lang="nl">De naam van het supplier project. Alleen opnemen wanneer van afleiding sprake is.</desc>
+            <desc lang="en">The name of the supplier project. Include only when models is derived.</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-base-package</stereo>
@@ -137,6 +139,8 @@
             <name lang="nl">Supplier-name</name>
             <name lang="en">Supplier-name</name>
             <!--<name lang="nl">Supplier name</name>-->
+            <desc lang="nl">De naam van het supplier model. Alleen opnemen wanneer van afleiding sprake is.</desc>
+            <desc lang="en">The name of the supplier model. Include only when models is derived.</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-base-package</stereo>
@@ -146,6 +150,7 @@
         <tv norm="space" id="CFG-TV-SUPPLIERPACKAGENAME">
             <name lang="nl">Supplier-package-name</name>
             <name lang="en">Supplier-package-name</name>
+            <desc lang="nl">De naam van de supplier (domein of view) package. Deze naam wordt opgegeven als deze niet gelijk is aan de naam van het package waar de tagged value op geplaatst is.</desc>
             <!--<name lang="nl">Supplier package name</name>-->
             <derive>no</derive>
             <stereotypes>
@@ -157,6 +162,9 @@
             <name lang="nl">Supplier-release</name>
             <name lang="en">Supplier-release</name>
             <!--<name lang="nl">Supplier release</name>-->
+            <desc lang="nl">De release van het supplier model. Alleen opnemen wanneer van afleiding sprake is.</desc>
+            <desc lang="en">The release of the supplier model. Include only when models is derived.</desc>
+            
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-base-package</stereo>
@@ -230,6 +238,8 @@
             <name lang="en">Is derived</name>
             <desc lang="nl">Deze constructie is al dan niet afgeleid van een "supplier model". 
                 Wanneer je niks opgeeft wordt afleiding vastgesteld op basis van het package waarin het voorkomt.</desc>
+            <desc lang="en">This construction may or may not be derived from a "supplier model".
+                When you give up nothing, distraction is determined on the basis of the package in which it occurs.</desc>
             <derive>no</derive>
             <stereotypes>
                 <!-- packages -->
