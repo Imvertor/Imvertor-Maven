@@ -591,7 +591,7 @@
         
         <xsl:variable name="doctext" select="imf:get-system-tagged-value($this,$name,'')"/>
         <xsl:variable name="xhtml-doctext" select="imf:eadoc-to-xhtml($doctext)"/>
-        <xsl:variable name="relevant-doc-string" select="imf:fetch-relevant-doc-string(string-join($xhtml-doctext,''))"/>
+        <xsl:variable name="relevant-doc-string" select="imf:fetch-relevant-doc-string(string-join($xhtml-doctext,'&#10;'))"/>
         <xsl:variable name="sections" as="element(section)*">
             <!-- Parse into sections; raw text is section titled "Raw" --> 
             <xsl:variable name="sections" select="imf:inspire-notes($relevant-doc-string)" as="element(section)*"/>
