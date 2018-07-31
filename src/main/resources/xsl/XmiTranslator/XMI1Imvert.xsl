@@ -1157,7 +1157,7 @@
     <xsl:function name="imf:get-position-value" as="xs:string?">
         <xsl:param name="this" as="node()"/>
         <xsl:param name="default" as="xs:string"/>
-        <xsl:variable name="positions" select="imf:get-tagged-values($this,('positie','position'),true())/@value"/>
+        <xsl:variable name="positions" select="imf:get-tagged-values($this,('positie','position','Positie','Position'),true())/@value"/>
         <xsl:variable name="positions-1" select="if (matches($positions[1],'\d+')) then $positions[1] else ()"/>
         <xsl:variable name="positions-2" select="if (matches($positions[2],'\d+')) then $positions[2] else ()"/>
         <xsl:value-of select="normalize-space(
@@ -1763,7 +1763,7 @@
     <xsl:function name="imf:compile-sort-key" as="xs:integer">
         <xsl:param name="this" as="element()"/>
         <xsl:variable name="tag" select="$this/UML:ModelElement.taggedValue/UML:TaggedValue[@tag='tpos'][1]/@value"/>
-        <xsl:variable name="pos" select="$this/UML:ModelElement.taggedValue/UML:TaggedValue[@tag=('position','positie')][1]/@value"/>
+        <xsl:variable name="pos" select="$this/UML:ModelElement.taggedValue/UML:TaggedValue[@tag=('positie','position','Positie','Position')][1]/@value"/>
         <xsl:choose>
             <xsl:when test="matches($pos,'^\d+$')">
                 <xsl:value-of select="xs:integer($pos)"/>

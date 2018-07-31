@@ -335,12 +335,33 @@
             <desc lang="en">The position of the construct in products in which sequences play a role.</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <!-- packages -->
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+                <stereo minmax="0..1">stereotype-name-external-package</stereo>
+                <stereo minmax="0..1">stereotype-name-internal-package</stereo>
+                
+                <!-- constructs -->
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
-                <stereo minmax="0..1">stereotype-name-union-element</stereo>
-                <stereo minmax="0..1">stereotype-name-enum</stereo>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
                 <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-union</stereo>
+                <stereo minmax="0..1">stereotype-name-union-element</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-enumeration</stereo>
+                <stereo minmax="0..1">stereotype-name-enum</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-complextype</stereo>
+                <stereo minmax="0..1">stereotype-name-simpletype</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-interface</stereo>
             </stereotypes>
         </tv>
         
