@@ -178,8 +178,7 @@
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:for-each select="$content/UML:Model/UML:Namespace.ownedElement/UML:Package[not(imf:is-diagram-package(.))]">
-                        <xsl:sort select="@name"/>
-                        <xsl:sort select="imf:get-alias(.,'P')"/>
+                        <xsl:sort select="imf:compile-sort-key(.)"/>
                         <xsl:apply-templates select="."/>
                     </xsl:for-each>
                     
@@ -292,12 +291,12 @@
             <xsl:sequence select="imf:get-config-info(.)"/>
             
             <xsl:for-each select="UML:Namespace.ownedElement/UML:Class"> <!-- was: [not(imf:get-stereotype-local-names(*/UML:Stereotype/@name)='enumeration')] -->
-                <xsl:sort select="replace(@name,'_','')"/>
+                <xsl:sort select="imf:compile-sort-key(.)"/>
                 <xsl:apply-templates select="." mode="class-normal"/>
             </xsl:for-each>
             <xsl:for-each select="UML:Namespace.ownedElement/UML:Package[not(imf:is-diagram-package(.))]">
-                <xsl:sort select="@name"/>
-                <xsl:sort select="imf:get-alias(.,'P')"/>
+                <xsl:sort select="imf:compile-sort-key(.)"/>
+                <!--<xsl:sort select="imf:get-alias(.,'P')"/>-->
                 <xsl:apply-templates select=".">
                     <xsl:with-param name="parent-is-derived" select="$is-derived"/>
                 </xsl:apply-templates>
@@ -447,6 +446,7 @@
                         </imvert:attributes>
                         <imvert:associations>
                             <xsl:for-each select="$associations">
+                                <xsl:sort select="imf:compile-sort-key(.)"></xsl:sort>
                                 <imvert:association>
                                     <xsl:sequence select="imf:get-id-info(.,'R')"/>
                                     <xsl:sequence select="imf:get-scope-info(.)"/>
@@ -1157,7 +1157,7 @@
     <xsl:function name="imf:get-position-value" as="xs:string?">
         <xsl:param name="this" as="node()"/>
         <xsl:param name="default" as="xs:string"/>
-        <xsl:variable name="positions" select="imf:get-tagged-values($this,'position',true())"/>
+        <xsl:variable name="positions" select="imf:get-tagged-values($this,('positie','position'),true())/@value"/>
         <xsl:variable name="positions-1" select="if (matches($positions[1],'\d+')) then $positions[1] else ()"/>
         <xsl:variable name="positions-2" select="if (matches($positions[2],'\d+')) then $positions[2] else ()"/>
         <xsl:value-of select="normalize-space(
@@ -1760,4 +1760,20 @@
         </imvert:support>
     </xsl:function>
     
+    <xsl:function name="imf:compile-sort-key" as="xs:integer">
+        <xsl:param name="this" as="element()"/>
+        <xsl:variable name="tag" select="$this/UML:ModelElement.taggedValue/UML:TaggedValue[@tag='tpos'][1]/@value"/>
+        <xsl:variable name="pos" select="$this/UML:ModelElement.taggedValue/UML:TaggedValue[@tag=('position','positie')][1]/@value"/>
+        <xsl:choose>
+            <xsl:when test="matches($pos,'^\d+$')">
+                <xsl:value-of select="xs:integer($pos)"/>
+            </xsl:when>
+            <xsl:when test="matches($tag,'^\d+$')">
+                <xsl:value-of select="xs:integer($tag)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="10000"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
 </xsl:stylesheet>
