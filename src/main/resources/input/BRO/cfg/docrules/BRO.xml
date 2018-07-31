@@ -270,7 +270,19 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
-            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>        </levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>        
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-REGELS-IMBROA">
+        <name lang="nl">Regels IMBRO/A</name>
+        <name lang="en">Rules IMBRO/A</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>        
+        </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-PATROON">
         <name lang="nl">Patroon</name>

@@ -8,5 +8,16 @@
     
     <name>BRO</name>
     
+    <notes-rule lang="nl">
+        <section title="Regels" tagged-value="CFG-TV-RULES">
+            <!-- geen labels -->
+        </section>
+    </notes-rule>
+    
+    <notes-rule lang="nl">
+        <section title="Regels IMBRO/A" tagged-value="CFG-TV-RULES-IMBROA">
+            <!-- geen labels -->
+        </section>
+    </notes-rule>
     
 </notes-rules>

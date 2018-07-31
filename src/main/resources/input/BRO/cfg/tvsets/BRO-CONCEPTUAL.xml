@@ -11,4 +11,18 @@
     
     <name>BRO</name>
     
+    <tagged-values>
+        <tv norm="note" id="CFG-TV-RULES-IMBROA">
+            <name lang="nl">Regels IMBRO/A</name>
+            <name lang="en">Rules IMBRO/A</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo> 
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+    </tagged-values>
+    
 </tagset>
