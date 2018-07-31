@@ -19,8 +19,8 @@
             <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo> 
                 <stereo minmax="0..1">stereotype-name-attribute</stereo> 
-                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
     </tagged-values>
