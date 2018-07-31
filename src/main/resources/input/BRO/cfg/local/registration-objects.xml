@@ -6,7 +6,8 @@
     <desc lang="nl"> 
         Een lijst van domeinen en registratie objecten, met alle info die nodig is voor documentatie oid.
         Aangeleverd door Alterra. 
-        Deze info is vastgesteld door TNO. 
+        Deze info is vastgesteld door TNO.
+        Op 31-07-2018 is Geotechnisch booronderzoek toegevoegd.
     </desc>
     <domein>
         <name lang="nl">Voorbeeld domein</name>
@@ -75,6 +76,11 @@
             <abbrev>BHR-P</abbrev>
         </registratieobject>
         <registratieobject>
+            <name lang="nl">Geotechnisch booronderzoek</name>
+            <name lang="en">Borehole research-Geotechnics</name>
+            <abbrev>BHR-GT</abbrev>
+        </registratieobject>
+        <registratieobject>
             <name lang="nl">Bodemkundig profielkuilonderzoek</name>
             <name lang="en">Soil pit research</name>
             <abbrev>SPR</abbrev>
@@ -95,7 +101,7 @@
             <abbrev>SAR</abbrev>
         </registratieobject>
     </domein>
-
+    
     <domein>
         <name lang="nl">Grondwater-monitoring</name>
         <name lang="en">Groundwater Monitoring</name>
@@ -131,7 +137,7 @@
             <abbrev>GQS</abbrev>
         </registratieobject>
     </domein>
-  
+    
     <domein>
         <name lang="nl">Mijnbouwwet</name>
         <name lang="en">Exploration&amp; Production</name>
@@ -167,7 +173,7 @@
             <abbrev>HRD</abbrev>
         </registratieobject>
     </domein>
-
+    
     <domein>
         <name lang="nl">Grondwater-gebruik</name>
         <name lang="en">Groundwater Utilisation</name>
@@ -183,7 +189,7 @@
             <abbrev>GPD</abbrev>
         </registratieobject>
     </domein>
-
+    
     <domein>
         <name lang="nl">Modellen</name>
         <name lang="en">Models and Maps</name>
