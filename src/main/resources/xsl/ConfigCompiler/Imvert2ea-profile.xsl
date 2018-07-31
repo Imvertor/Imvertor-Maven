@@ -93,7 +93,11 @@
                                     <xsl:variable name="tv-type" select="if (exists(declared-values/value)) then 'enumeration' else ()"/>
                                     <xsl:variable name="tv-note" select="normalize-space(desc)"/>
                                     <xsl:variable name="tv-unit" select="''"/>
-                                    <xsl:variable name="tv-default" select="declared-values/value[@default='yes']/@original"/>
+                                    
+                                    <xsl:variable name="tv-default-enum" select="declared-values/value[@default='yes']/@original"/>
+                                    <xsl:variable name="tv-default-set" select="stereotypes/stereo/@default"/>
+                                    <xsl:variable name="tv-default" select="($tv-default-set,$tv-default-enum)[1]"/>
+                                    
                                     <Tag name="{$tv-name}" type="{$tv-type}" description="{$tv-note}" unit="{$tv-unit}" values="{$tv-values}" default="{$tv-default}"/>
 
                                 </xsl:for-each>

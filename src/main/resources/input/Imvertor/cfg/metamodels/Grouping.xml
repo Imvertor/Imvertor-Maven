@@ -34,7 +34,7 @@
         <stereo id="stereotype-name-application-package">
             <name lang="en">Application</name>
             <name lang="nl">Toepassing</name>
-            <desc lang="nl">Een package dat een volledige applicatie beschrijft, end dus niet slechts bedoeld is als basis voor afgeleide toepassingen.</desc>
+            <desc lang="nl">Een package dat een volledige applicatie beschrijft, en dus niet slechts bedoeld is als basis voor afgeleide toepassingen.</desc>
             <construct>package</construct>
         </stereo>
         <stereo id="stereotype-name-project-package">

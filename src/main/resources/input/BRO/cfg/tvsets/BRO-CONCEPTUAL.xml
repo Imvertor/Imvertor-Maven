@@ -8,21 +8,8 @@
         BRO follows KKG ISO
     --> 
     <xi:include href="../../../KKG/cfg/tvsets/KKG-ISO.xml"/>
+    <xi:include href="BRO.xml"/>
     
-    <name>BRO</name>
-    
-    <tagged-values>
-        <tv norm="note" id="CFG-TV-RULES-IMBROA">
-            <name lang="nl">Regels IMBRO/A</name>
-            <name lang="en">Rules IMBRO/A</name>
-            <desc lang="nl">TODO</desc>
-            <desc lang="en">TODO</desc>
-            <derive>yes</derive>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-objecttype</stereo> 
-                <stereo minmax="0..1">stereotype-name-attribute</stereo> 
-            </stereotypes>
-        </tv>
-    </tagged-values>
+    <name>BRO CONCEPTUAL</name>
     
 </tagset>

@@ -4,11 +4,34 @@
 -->
 <tagset type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
-    <!-- 
-        BRO follows KKG
-    --> 
-    <xi:include href="../../../Geonovum/cfg/tvsets/NEN3610.xml"/>
+  <name>BRO</name>
+  
+  <!-- add specs here to be merged with the calling tvsets -->
     
-    <name>BRO</name>
-    
+    <tagged-values xml:id="tagset">
+        <tv id="CFG-TV-SOURCE">
+            <stereotypes>
+                <stereo minmax="1..1" default="BRO">stereotype-name-objecttype</stereo>
+                <stereo minmax="1..1" default="BRO">stereotype-name-complextype</stereo>
+                <stereo minmax="1..1" default="BRO">stereotype-name-data-element</stereo>
+                <stereo minmax="1..1" default="BRO">stereotype-name-attribute</stereo>
+                <stereo minmax="1..1" default="BRO">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1" default="BRO">stereotype-name-composite</stereo><!-- TODO remove? -->
+                <stereo minmax="1..1" default="BRO">stereotype-name-referentielijst</stereo>
+                <stereo minmax="1..1" default="BRO">stereotype-name-referentie-element</stereo>
+                <stereo minmax="1..1" default="BRO">stereotype-name-union</stereo>
+                <stereo minmax="1..1" default="BRO">stereotype-name-union-element</stereo>
+                <stereo minmax="1..1" default="BRO">stereotype-name-relation-role</stereo>
+            </stereotypes>
+        </tv>
+        <tv id="CFG-TV-SOURCEOFDEFINITION">
+            <stereotypes>
+                <stereo minmax="1..1" default="BRO">stereotype-name-objecttype</stereo>
+                <stereo minmax="1..1" default="BRO">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1" default="BRO">stereotype-name-composite</stereo><!-- TODO remove? -->
+                <stereo minmax="1..1" default="BRO">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1" default="BRO">stereotype-name-relation-role</stereo>
+            </stereotypes>
+        </tv>
+    </tagged-values>
 </tagset>

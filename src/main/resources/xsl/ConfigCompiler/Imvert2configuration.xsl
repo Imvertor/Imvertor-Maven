@@ -313,7 +313,7 @@
                                     <xsl:apply-templates select="$stereo-group[last()]" mode="#current"/>
                                 </xsl:for-each-group>
                             </stereotypes>                                
-                            <declared-values> <!-- TOD must also take @lang in to account -->
+                            <declared-values> <!-- TODO must also take @lang in to account -->
                                 <xsl:for-each-group select="$tv-group/declared-values[@lang=($language,'#all')]/value" group-by=".">
                                     <xsl:variable name="dec-group" select="current-group()"/>
                                     <xsl:apply-templates select="$dec-group[last()]" mode="#current"/>

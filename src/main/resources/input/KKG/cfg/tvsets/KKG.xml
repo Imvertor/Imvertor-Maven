@@ -96,6 +96,14 @@
                 <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
+            <declared-values lang="nl">
+                <value default="yes">Ja</value>
+                <value>Nee</value>
+            </declared-values>
+            <declared-values lang="en">
+                <value default="yes">Yes</value>
+                <value>No</value>
+            </declared-values>
         </tv>
         <tv norm="note" id="CFG-TV-DESCRIPTION">
             <!-- in aanvulling op SBR -->

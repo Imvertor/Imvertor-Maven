@@ -8,7 +8,8 @@
         BRO follows NEN3610
     --> 
     <xi:include href="../../../Geonovum/cfg/tvsets/NEN3610.xml"/>
+    <xi:include href="BRO.xml"/>
     
-    <name>BRO</name>
+    <name>BRO LOGICAL</name>
     
 </tagset>
