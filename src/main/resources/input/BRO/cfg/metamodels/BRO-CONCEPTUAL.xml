@@ -30,13 +30,13 @@
         </profile>
     </profiles>
     
-   <!-- <stereotypes>
+   <stereotypes>
         <stereo id="stereotype-name-IMBRO/A">
             <name lang="en">IMBRO/A</name>
             <name lang="nl">IMBRO/A</name>
-            <construct>attribute</construct>
+            <construct>attribute</construct><!-- TODO This concerns the ea profile. Constrain to enum values, how? -->
             <toplevel>false</toplevel>
         </stereo>
-    </stereotypes> -->
+    </stereotypes>
     
 </metamodel>
