@@ -30,9 +30,9 @@
         'stereotype-name-relation-role'
         )]" priority="1">
         
-        <xsl:sequence select="imf:report-error(., 
+        <xsl:sequence select="imf:report-warning(., 
             empty(imvert:alias), 
-            'Alias is required for [1]',imf:string-group(imf:get-config-stereotypes(imvert:stereotype/@id)))"/>
+            'No alias specified for [1]',imf:string-group(imf:get-config-stereotypes(imvert:stereotype/@id)))"/>
         
         <xsl:next-match/>
     </xsl:template>
