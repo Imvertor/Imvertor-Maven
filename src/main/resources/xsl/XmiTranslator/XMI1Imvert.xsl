@@ -1491,8 +1491,7 @@
                                 <xsl:value-of select="$name"/>
                             </imvert:stereotype>
                         </xsl:for-each>
-                        <xsl:sequence select="imf:create-output-element('imvert:type',imf:get-system-tagged-value(.,'documentation'))"/>
-                        
+                        <xsl:sequence select="imf:create-output-element('imvert:definition',imf:get-system-tagged-value(.,'documentation'))"/>
                         <xsl:sequence select="imf:create-output-element('imvert:name',@name)"/>
                         <xsl:sequence select="imf:create-output-element('imvert:type',imf:get-system-tagged-value(.,'type'))"/>
                         <xsl:sequence select="imf:create-output-element('imvert:weight',imf:get-system-tagged-value(.,'weight'))"/>
