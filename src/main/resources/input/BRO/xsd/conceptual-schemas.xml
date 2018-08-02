@@ -11,7 +11,6 @@
         <use>GML321</use>
         <use>SWE201</use>
         
-        
         <use>ISO19115</use>
         <use>INSPIRE</use>
         <use>NEN3610</use>
@@ -228,7 +227,7 @@
                    
                 </desc>
                 <catalog-entry>#Measure</catalog-entry>
-                <xsd-type name="MeasureType" asAttributeDesignation="complextype" asAttribute="MeasureType"/>
+                <xsd-type name="Measure" asAttributeDesignation="complextype" asAttribute="MeasureType"/>
                 <managed-ids/>
             </construct>
         </map>

@@ -790,7 +790,7 @@
        
         <xsl:sequence select="imf:report-error(., 
             $class/imvert:stereotype/@id = ('stereotype-name-complextype') and not(imvert:stereotype/@id = 'stereotype-name-data-element'), 
-            'Complex datatype must have attributes that are stereotyped as: [1]',imf:get-config-stereotype-names('stereotype-name-data-element'))"/>
+            '[1] must have attributes that are stereotyped as: [2]',(imf:get-config-stereotypes('stereotype-name-complextype'),imf:get-config-stereotypes('stereotype-name-data-element')))"/>
         
         <xsl:next-match/>
     </xsl:template>
