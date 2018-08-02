@@ -329,12 +329,10 @@
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]">
 
-        <xsl:variable name="codespace" select="imf:get-data-location(.)"/>
-
         <xsl:choose>
             <xsl:when test="$codelist-option = 'Option3'">
-                <xsl:variable name="codespace" select="imf:get-data-location(.)"/>
-                <xsl:sequence select="imf:create-comment(.,concat('A codelist at ',$codelist-option))"/>
+                <xsl:variable name="codespace" select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DATALOCATION')"/>
+                <xsl:sequence select="imf:create-comment(.,concat('A codelist at option: ',$codelist-option))"/>
                 <xs:complexType name="{imvert:name}{$Type-suffix}">
                     <xs:simpleContent>
                         <xs:restriction base="gml:CodeWithAuthorityType">
