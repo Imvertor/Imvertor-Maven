@@ -43,6 +43,10 @@
         </profile>
     </profiles>
     
+    <features>
+        <feature name="role-based">true</feature>
+    </features>
+    
     <stereotypes xml:id="stereotypes">
         
         <!-- 

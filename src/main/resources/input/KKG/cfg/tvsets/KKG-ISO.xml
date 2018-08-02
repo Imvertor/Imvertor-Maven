@@ -67,5 +67,11 @@
                 <stereo minmax="1..1">stereotype-name-relation-role</stereo> 
             </stereotypes>
         </tv>
+        
+        <tv id="CFG-TV-POSITION">
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-relation-role</stereo>
+            </stereotypes>
+        </tv>
     </tagged-values>
 </tagset>
