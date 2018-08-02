@@ -12,8 +12,13 @@
         <use>SWE201</use>
         
         <use>ISO19115</use>
+       
         <use>INSPIRE</use>
+        <use>INSPIRE-GEO</use>
+        <use>INSPIRE-SOIL</use>
+        
         <use>NEN3610</use>
+        
         <use>BRO</use> <!-- cross references between BRO models -->
         <!-- samples -->
         <use>BRO-SAMPLE1</use>
@@ -181,6 +186,13 @@
                 <xsd-type name="MultiSurface" asAttributeDesignation="complextype" asAttribute="MultiSurfaceType"/>
                 <managed-ids/>
             </construct>
+            <construct>
+                <name>GM_MultiSolid</name>
+                <catalog-entry>#MultiSolid</catalog-entry>
+                <xsd-type name="MultiSolid" asAttributeDesignation="complextype" asAttribute="MultiSolidType"/>
+                <managed-ids/>
+            </construct>
+            
             
             <!-- TODO verplaatsen? is onderdeel van GML toch? -->
             <construct>
@@ -230,6 +242,7 @@
                 <xsd-type name="Measure" asAttributeDesignation="complextype" asAttribute="MeasureType"/>
                 <managed-ids/>
             </construct>
+            
         </map>
         
     </conceptual-schema>
@@ -413,19 +426,66 @@
             version="1.0" 
             phase="3" 
             location="http://inspire.ec.europa.eu/sample1.xsd">
+            
             <desc>
                 Links to the INSPIRE cataloque and schemas.
             </desc>
             <releases>
                 <release>2006</release> 
             </releases>
-            
             <construct>
                 <name>ActivityComplex</name>
                 <catalog-entry>ActivityComplex</catalog-entry>
                 <xsd-type name="ActivityComplex" asAttributeDesignation="complextype" asAttribute="ActivityComplexType"/>
                 <managed-ids/>
             </construct>
+         
+        </map>
+        <map 
+            name="INSPIRE-GEO" 
+            namespace="http://inspire.ec.europa.eu/" 
+            version="1.0" 
+            phase="3" 
+            location="http://inspire.ec.europa.eu/schemas/ge-core/4.0/GeologyCore.xsd ">
+            
+            <desc>
+                Links to the INSPIRE Geo core cataloque and schemas.
+            </desc>
+            <releases>
+                <release>4.0</release> 
+            </releases>
+            <construct>
+                <name>MappedFeature</name>
+                <catalog-entry>MappedFeature</catalog-entry>
+                <xsd-type name="MappedFeature" asAttributeDesignation="complextype" asAttribute="MappedFeatureType"/>
+                <managed-ids/>
+            </construct> 
+        </map>
+        <map 
+            name="INSPIRE-SOIL" 
+            namespace="http://inspire.ec.europa.eu/" 
+            version="1.0" 
+            phase="3" 
+            location="http://inspire.ec.europa.eu/schemas/so/4.0/Soil.xsd">
+            
+            <desc>
+                Links to the INSPIRE Soil cataloque and schemas.
+            </desc>
+            <releases>
+                <release>4.0</release> 
+            </releases>
+            <construct>
+                <name>SoilHorizon</name>
+                <catalog-entry>SoilHorizon</catalog-entry>
+                <xsd-type name="SoilHorizon" asAttributeDesignation="complextype" asAttribute="SoilHorizonType"/>
+                <managed-ids/>
+            </construct> 
+            <construct>
+                <name>SoilLayer</name>
+                <catalog-entry>SoilLayer</catalog-entry>
+                <xsd-type name="SoilLayer" asAttributeDesignation="complextype" asAttribute="SoilLayerType"/>
+                <managed-ids/>
+            </construct> 
         </map>
     </conceptual-schema>
     
