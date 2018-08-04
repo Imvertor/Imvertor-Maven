@@ -10,7 +10,7 @@
     --> 
     <xi:include href="../../../KKG/cfg/metamodels/KKG-ISO.xml"/>
     
-    <name>BRO</name>
+    <name>CM</name>
     
     <profiles>
         <!-- adaptions: 
@@ -31,7 +31,7 @@
     </profiles>
     
    <stereotypes>
-        <stereo id="stereotype-name-IMBRO/A">
+        <stereo id="stereotype-name-imbroa">
             <name lang="en">IMBRO/A</name>
             <name lang="nl">IMBRO/A</name>
             <construct>attribute</construct><!-- TODO This concerns the ea profile. Constrain to enum values, how? -->

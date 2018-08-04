@@ -10,7 +10,7 @@
     --> 
     <xi:include href="../../../Geonovum/cfg/metamodels/NEN3610.xml"/>
     
-    <name>BRO</name>
+    <name>LM</name>
     
     <profiles>
         <profile lang="nl"> 
