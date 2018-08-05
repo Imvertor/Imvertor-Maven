@@ -344,14 +344,20 @@
         
         <xsl:choose>
             <xsl:when test="empty(imvert:baretype)"> <!-- an enum value -->
+                <?x
                 <xsl:value-of select="imf:ttl(('rdf:type','owl:DatatypeProperty'))"/>
+                ?>
             </xsl:when>
             <xsl:when test="empty(imvert:type-id)">
+                <?x
                 <xsl:value-of select="imf:ttl(('rdf:type','owl:ObjectProperty'))"/>
+                ?>
                 <xsl:value-of select="imf:ttl(('sh:datatype',imf:get-shacl-primitive-type(imvert:type-name)))"/>
             </xsl:when>
             <xsl:otherwise>
+                <?x
                 <xsl:value-of select="imf:ttl(('rdf:type','owl:ObjectProperty'))"/>
+                ?>
                 <xsl:value-of select="imf:ttl(('sh:targetClass',concat($prefixData,':',imf:get-construct-by-id(imvert:type-id)/@formal-name)))"/>
             </xsl:otherwise>
         </xsl:choose>
