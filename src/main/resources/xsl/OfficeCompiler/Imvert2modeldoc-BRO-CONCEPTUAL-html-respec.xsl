@@ -44,7 +44,7 @@
                 <xsl:variable name="level" select="imf:get-section-level(.)"/>
                 <xsl:sequence select="imf:create-anchors(.)"/>
                 <section id="{$id}">
-                    <xsl:element name="{concat('h',$level)}">
+                    <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                         <xsl:value-of select="' '"/>
                         <xsl:value-of select="@name"/>
@@ -109,7 +109,7 @@
             <!-- de kop van de details sectie. -->
             <xsl:when test="@type = 'DETAILS'">
                 <section id="{$id}">
-                    <xsl:element name="{concat('h',$level)}">
+                    <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                     </xsl:element>
                     <xsl:apply-templates mode="#current"/>
@@ -121,26 +121,26 @@
             </xsl:when>
             <xsl:when test="@type = 'EXPLANATION'">
                 <section id="{$id}" class="notoc">
-                    <xsl:element name="{concat('h',$level)}">
+                    <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n('EXPLANATION',$language-model,())"/>
                     </xsl:element>
                     <xsl:apply-templates select="content[not(@approach='association')]/part/item" mode="#current"/>
                 </section>
             </xsl:when>
             <xsl:when test="@type = 'SHORT-ATTRIBUTES'">
-                <xsl:element name="{concat('h',$level)}">
+                <xsl:element name="{imf:get-section-header-element-name($level)}">
                     <xsl:value-of select="imf:translate-i3n('SHORT-ATTRIBUTES',$language-model,())"/>
                 </xsl:element>
                 <xsl:apply-templates mode="detail"/>
             </xsl:when>
             <xsl:when test="@type = 'SHORT-ASSOCIATIONS'">
-                <xsl:element name="{concat('h',$level)}">
+                <xsl:element name="{imf:get-section-header-element-name($level)}">
                     <xsl:value-of select="imf:translate-i3n('SHORT-ASSOCIATIONS',$language-model,())"/>
                 </xsl:element>
                 <xsl:apply-templates mode="detail"/>
             </xsl:when>
             <xsl:when test="@type = 'SHORT-TYPERELATIONS'">
-                <xsl:element name="{concat('h',$level)}">
+                <xsl:element name="{imf:get-section-header-element-name($level)}">
                     <xsl:value-of select="imf:translate-i3n('SHORT-TYPERELATIONS',$language-model,())"/>
                 </xsl:element>
                 <xsl:apply-templates mode="detail"/>
@@ -149,7 +149,7 @@
                 <xsl:variable name="composer" select="content[not(@approach='association')]/part[@type = 'COMPOSER']/item[1]"/>
                 <xsl:sequence select="imf:create-anchors(.)"/>
                 <section id="{$id}" class="notoc">
-                    <xsl:element name="{concat('h',$level)}">
+                    <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n('ATTRIBUTE',$language-model,())"/>
                         <xsl:value-of select="' '"/>
                         <xsl:value-of select="@name"/>
@@ -164,7 +164,7 @@
                 <xsl:variable name="composer" select="content[not(@approach='association')]/part[@type = 'COMPOSER']/item[1]"/>
                 <xsl:sequence select="imf:create-anchors(.)"/>
                 <section id="{$id}" class="notoc">
-                    <xsl:element name="{concat('h',$level)}">
+                    <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n('ASSOCIATION',$language-model,())"/>
                         <xsl:value-of select="' '"/>
                         <xsl:value-of select="@name"/>
@@ -178,7 +178,7 @@
             </xsl:when>
             <xsl:when test="starts-with(@type,'OVERVIEW-')">
                 <section id="{$id}">
-                    <xsl:element name="{concat('h',$level)}">
+                    <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                         <xsl:value-of select="' '"/>
                         <xsl:value-of select="@name"/>
@@ -189,7 +189,7 @@
             <xsl:when test="@type = ('OBJECTTYPE')"> <!-- objecttypes are in TOC -->
                 <xsl:sequence select="imf:create-anchors(.)"/>
                 <section id="{$id}">
-                    <xsl:element name="{concat('h',$level)}">
+                    <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                         <xsl:value-of select="' '"/>
                         <xsl:value-of select="@name"/>
@@ -201,7 +201,7 @@
             <xsl:when test="starts-with(@type,'DETAIL-')">
                 <xsl:sequence select="imf:create-anchors(.)"/>
                 <section id="{$id}">
-                    <xsl:element name="{concat('h',$level)}">
+                    <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                         <xsl:value-of select="' '"/>
                         <a href="#{../@id-global}">
@@ -216,7 +216,7 @@
             <xsl:otherwise>
                 <xsl:sequence select="imf:create-anchors(.)"/>
                 <section id="{$id}">
-                    <xsl:element name="{concat('h',$level)}">
+                    <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                         <xsl:value-of select="' '"/>
                         <xsl:value-of select="@name"/>
@@ -519,6 +519,18 @@
     <xsl:function name="imf:get-section-level" as="xs:integer">
         <xsl:param name="section" as="element(section)"/>
         <xsl:value-of select="count($section/ancestor::section) + (if ($has-multiple-domains) then 3 else 2)"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-section-header-element-name" as="xs:string">
+        <xsl:param name="level" as="xs:integer"/>
+        <xsl:choose>
+            <xsl:when test="$level lt 7">
+                <xsl:value-of select="concat('h',$level)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="'strong'"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     
 </xsl:stylesheet>
