@@ -94,6 +94,8 @@
     <xsl:template match="imvert:class" mode="mode-data-subject">
         <xsl:variable name="this" select="."/>
         
+        <xsl:value-of select="imf:ttl-debug(.,'mode-data-subject')"/>
+        
         <xsl:value-of select="imf:ttl-start($this)"/>
         
         <xsl:value-of select="imf:ttl(('kkg:indicatieAbstractObject ',if (imf:boolean($this/imvert:abstract)) then imf:ttl-value($this/imvert:abstract,'2q') else ()))"/>
@@ -181,6 +183,8 @@
     <xsl:template match="imvert:attribute" mode="mode-data-subject">
         <xsl:variable name="this" select="."/>
         
+        <xsl:value-of select="imf:ttl-debug(.,'mode-data-subject 1')"/>
+        
         <xsl:value-of select="imf:ttl-start($this)"/>
         
         <xsl:value-of select="imf:ttl(('kkg:identificerend',imf:ttl-value($this/imvert:is-id,'2q')))"/>
@@ -188,6 +192,7 @@
         
         <!-- stereotype-name-attribute -->
         <xsl:if test="imvert:stereotype/@id = ('stereotype-name-attribute')">
+            <xsl:value-of select="imf:ttl(('rdf:type','owl:DatatypeProperty'))"/>
         </xsl:if>
         <!-- stereotype-name-attributegroup -->
         <xsl:if test="imvert:stereotype/@id = ('stereotype-name-attributegroup')">
@@ -211,6 +216,8 @@
     <xsl:template match="imvert:attribute[imvert:stereotype/@id = ('stereotype-name-enum')]" mode="mode-data-subject">
         <xsl:variable name="this" select="."/>
         
+        <xsl:value-of select="imf:ttl-debug(.,'mode-data-subject 2')"/>
+        
         <xsl:value-of select="imf:ttl-start($this)"/>
 
         <!-- géén rdf type, het is alleen een label -->
@@ -223,6 +230,8 @@
         
     <xsl:template match="imvert:association" mode="mode-data-subject">
         <xsl:variable name="this" select="."/>
+        
+        <xsl:value-of select="imf:ttl-debug(.,'mode-data-subject')"/>
         
         <xsl:value-of select="imf:ttl-start($this)"/>
         
@@ -261,6 +270,8 @@
     
     <xsl:template match="imvert:class" mode="mode-shacl-subject">
         <xsl:variable name="this" select="."/>
+        
+        <xsl:value-of select="imf:ttl-debug(.,'mode-shacl-subject')"/>
         
         <xsl:value-of select="imf:ttl((concat($prefixShacl,':',$this/@formal-name,'Shape'),'rdf:type','sh:NodeShape',';'))"/>
         
@@ -331,12 +342,17 @@
     
     <xsl:template match="imvert:attribute" mode="mode-shacl-object">
         <xsl:variable name="this" select="."/>
+        
+        <xsl:value-of select="imf:ttl-debug(.,'mode-shacl-object 1')"/>
+        
         <xsl:value-of select="imf:ttl(('sh:property',concat($prefixShacl,':',$this/@formal-name,'Shape')))"/>
         
     </xsl:template>
     
     <xsl:template match="imvert:attribute | imvert:association" mode="mode-shacl-subject">
         <xsl:variable name="this" select="."/>
+        
+        <xsl:value-of select="imf:ttl-debug(.,'mode-shacl-subject 2')"/>
         
         <xsl:value-of select="imf:ttl((concat($prefixShacl,':',$this/@formal-name,'Shape'),'rdf:type','sh:PropertyShape',';'))"/>
         <xsl:value-of select="imf:ttl(('sh:name',imf:ttl-value($this/imvert:name,'2q')))"/>
@@ -428,6 +444,14 @@
     <xsl:function name="imf:ttl-comment" as="xs:string">
         <xsl:param name="parts" as="item()*"/>
         <xsl:value-of select="concat(if ($parts[1]) then '# ' else '', string-join($parts,' '),'&#10;')"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:ttl-debug" as="xs:string?">
+        <xsl:param name="this" as="item()*"/>
+        <xsl:param name="parts" as="item()*"/>
+        <xsl:if test="$debugging">
+            <xsl:value-of select="imf:ttl-comment(('DEBUG: ', imf:get-display-name($this), string-join($this/imvert:stereotype,' | '), $parts))"/>
+        </xsl:if>
     </xsl:function>
     
     <!-- return (name, type) sequence -->

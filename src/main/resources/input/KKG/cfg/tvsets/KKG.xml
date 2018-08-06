@@ -97,12 +97,18 @@
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
             <declared-values lang="nl">
-                <value default="yes">Ja</value>
-                <value>Nee</value>
+                <value default="yes">Authentiek</value>
+                <value>Basisgegeven</value>
+                <value>Landelijk kerngegeven</value>
+                <value>Gemeentelijk kerngegeven</value>
+                <value>Overig</value>
             </declared-values>
             <declared-values lang="en">
-                <value default="yes">Yes</value>
-                <value>No</value>
+                <value default="yes">TODO-Authentiek</value>
+                <value>TODO-Basisgegeven</value>
+                <value>TODO-Landelijk kerngegeven</value>
+                <value>TODO-Gemeentelijk kerngegeven</value>
+                <value>TODO-Overig</value>
             </declared-values>
         </tv>
         <tv norm="note" id="CFG-TV-DESCRIPTION">
@@ -112,6 +118,7 @@
                 <!-- vervallen in 0.98
                     <stereo minmax="0..1">stereotype-name-enumeration</stereo>-->
                 <stereo minmax="0..1">stereotype-name-codelist</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
             </stereotypes>
         </tv> 
         <tv norm="space" id="CFG-TV-PATTERN"><!-- MIG -->
@@ -184,12 +191,13 @@
         
         <tv norm="space" id="CFG-TV-SOURCE">
             <stereotypes>
-                <stereo minmax="1..1">stereotype-name-enumeration</stereo>
                 <stereo minmax="1..1">stereotype-name-codelist</stereo>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-SOURCEOFDEFINITION">
             <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
             </stereotypes>
         </tv>
         
