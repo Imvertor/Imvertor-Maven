@@ -24,7 +24,6 @@ import org.json.JSONObject;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 
@@ -43,6 +42,16 @@ public class JsonFile extends AnyFile {
 	
 	static JsonXMLConfig config;
 		 
+	public static void main(String[] args) {
+		JsonFile file = new JsonFile("c:/temp/sample.js");
+		try {
+			file.jsonToXml(new XmlFile("c:/temp/sample.xml"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public JsonFile(File file) throws IOException {
 		super(file);
     }

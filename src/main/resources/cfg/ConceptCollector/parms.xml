@@ -37,17 +37,14 @@
       <CONCEPT_DOCUMENTATION_PATH>${system/managedoutputfolder}/concepts/concepts-[release].xml</CONCEPT_DOCUMENTATION_PATH>
       
       <!--  concept documentation. Enter [year], [month] or [day] to be inserted by the system; these will be replaced by the release date. -->
-      <CONCEPT_DOCUMENTATION_LISTING_URI>http://brk.kadaster.nl/doc/[year]/[month]/[day]/stelsel/begrippen?format=rdf%2Bxml</CONCEPT_DOCUMENTATION_LISTING_URI>
-      <CONCEPT_DOCUMENTATION_URI>http://brk.kadaster.nl/doc/[year]/[month]/[day]/begrip/[key]?format=rdf%2Bxml</CONCEPT_DOCUMENTATION_URI>
-      <!--  specify the base url as found in RDF, and then the URL as used to access available RDF triple store. These may be identical. -->
-      <CONCEPT_DOCUMENTATION_URL_MAPPING>http://brk.kadaster.nl/id/begrippen http://brk.kadaster.nl/id/begrippen</CONCEPT_DOCUMENTATION_URL_MAPPING>
+      <CONCEPT_DOCUMENTATION_LISTING_URI>https://brk.basisregistraties.overheid.nl/doc/[year]/[month]/[day]/stelsel/begrippen?format=xml</CONCEPT_DOCUMENTATION_LISTING_URI>
+         <!-- example: https://brk.basisregistraties.overheid.nl/doc/stelsel/begrippen?format=xml -->
       
+      <CONCEPT_DOCUMENTATION_URI>https://brk.basisregistraties.overheid.nl/doc/begrip/[key]?format=xml</CONCEPT_DOCUMENTATION_URI>
+      <!-- example: https://brk.basisregistraties.overheid.nl/doc/begrip/Perceel?format=xml -->
 
-      <!-- TODO Vaststelen wat de status is van concept URL's / kenniskluis -->
-      
-      <CONCEPT_DOCUMENTATION_CLASS>http://brk.kadaster.nl/resource?uri=${properties/http%3A%2F%2Fbrk.kadaster.nl%2Fdef%2Fgegevenselement%2F[class]%23[property]}&amp;format=rdf%2Bxml</CONCEPT_DOCUMENTATION_CLASS>
-      <CONCEPT_DOCUMENTATION_CLASS_PROPERTY>http://brk.kadaster.nl/resource?uri={http%3A%2F%2Fbrk.kadaster.nl%2Fdef%2Fgegevenselement%2F[class]%23[property]}&amp;format=rdf%2Bxml</CONCEPT_DOCUMENTATION_CLASS_PROPERTY>
-      <CONCEPT_DOCUMENTATION_VALUELIST>http://brk.kadaster.nl/resource?uri={http%3A%2F%2Fbrk.kadaster.nl%2Fdef%2Fwaardelijst%2F[name]}&amp;format=rdf%2Bxml</CONCEPT_DOCUMENTATION_VALUELIST>
+      <!--  specify the base url as found in RDF, and then the URL as used to access available RDF triple store. These may be identical. -->
+      <CONCEPT_DOCUMENTATION_URL_MAPPING>https://brk.basisregistraties.overheid.nl/id/begrippen https://brk.basisregistraties.overheid.nl/id/begrippen</CONCEPT_DOCUMENTATION_URL_MAPPING>
       
    </properties>
 </config>

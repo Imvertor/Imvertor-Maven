@@ -35,6 +35,8 @@
 	
 	<xsl:import href="../common/Imvert-common.xsl"/>	
 	
+	<xsl:param name="x-api-key"/>
+	
 	<!--
      Read all info from kenniskluis. Parse into a local representation of all concepts.
     -->
@@ -189,6 +191,7 @@
 	<!-- RDF content negotiation is currently supplied by ?format=rdf%2Bxml parameter in URL passed -->
 	<xsl:function name="imf:get-rdf-document" as="document-node()?">
 		<xsl:param name="uri" as="xs:string"/>
+		
 		<xsl:sequence select="imf:document($uri,false())"/>
 	</xsl:function>
 	

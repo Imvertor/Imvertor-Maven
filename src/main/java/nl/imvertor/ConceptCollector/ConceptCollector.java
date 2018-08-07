@@ -75,6 +75,10 @@ public class ConceptCollector extends Step {
 			// create a transformer
 			Transformer transformer = new Transformer();
 			    
+			// pass the api key
+			String apikey = configurator.getServerProperty("catalog.x.api.key"); // key to access the API
+			transformer.setXslParm("x-api-key", apikey);
+			
 		    // transform; if anything goes wrong remove the concept file so that next time try again.
 			//IM-216
 			
