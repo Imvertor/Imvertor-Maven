@@ -97,7 +97,9 @@
         <xsl:value-of select="imf:ttl-debug(.,'mode-data-subject')"/>
         
         <xsl:value-of select="imf:ttl-start($this)"/>
-        
+
+        <xsl:value-of select="imf:ttl(('sh:targetClass',concat($prefixShacl,':',$this/@formal-name)))"/>
+
         <xsl:value-of select="imf:ttl(('kkg:indicatieAbstractObject ',if (imf:boolean($this/imvert:abstract)) then imf:ttl-value($this/imvert:abstract,'2q') else ()))"/>
 
         <xsl:value-of select="for $super in imf:get-superclass($this) return imf:ttl(('rdfs:subClassOf',imf:ttl-get-uri-name($super)))"/>
@@ -271,9 +273,11 @@
     <xsl:template match="imvert:class" mode="mode-shacl-subject">
         <xsl:variable name="this" select="."/>
         
-        <xsl:value-of select="imf:ttl-debug(.,'mode-shacl-subject')"/>
+        <xsl:value-of select="imf:ttl-debug(.,'mode-shacl-subject 1')"/>
         
         <xsl:value-of select="imf:ttl((concat($prefixShacl,':',$this/@formal-name,'Shape'),'rdf:type','sh:NodeShape',';'))"/>
+        
+        <xsl:value-of select="imf:ttl(('sh:targetClass',concat($prefixData,':',$this/@formal-name)))"/>
         
         <!-- loop door alle attributen en associaties heen, en plaats een property (predicate object), dus een link naar het attribuut -->
         <xsl:apply-templates select="$this/imvert:attributes/imvert:attribute[imvert:stereotype/@id = ('stereotype-name-attribute')]" mode="mode-shacl-object"/>
