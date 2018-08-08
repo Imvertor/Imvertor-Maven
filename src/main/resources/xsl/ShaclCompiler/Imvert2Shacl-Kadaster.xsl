@@ -98,8 +98,6 @@
         
         <xsl:value-of select="imf:ttl-start($this)"/>
 
-        <xsl:value-of select="imf:ttl(('sh:targetClass',concat($prefixShacl,':',$this/@formal-name)))"/>
-
         <xsl:value-of select="imf:ttl(('kkg:indicatieAbstractObject ',if (imf:boolean($this/imvert:abstract)) then imf:ttl-value($this/imvert:abstract,'2q') else ()))"/>
 
         <xsl:value-of select="for $super in imf:get-superclass($this) return imf:ttl(('rdfs:subClassOf',imf:ttl-get-uri-name($super)))"/>
