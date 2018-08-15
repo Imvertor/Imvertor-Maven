@@ -472,6 +472,8 @@
 				<xsl:variable name="targetrole">
 					<xsl:sequence select="$construct/imvert:target/imvert:role" />
 				</xsl:variable>
+				<xsl:variable name="messagename" select="ancestor::ep:rough-message/ep:name"/>
+				
 				<xsl:sequence select="imf:create-debug-comment('At this level the expand attribute is neccessary to determine if an _embedded property has to be created. This is only the case if the attribute has the value true.',$debugging)" />
 				<ep:construct type="{@type}">
 					<xsl:if test=".//ep:expand = 'true'">
@@ -482,7 +484,7 @@
 							<xsl:if test="not($targetrole='')">
 								<xsl:attribute name="targetrole" select="$targetrole" />
 							</xsl:if>
-							<xsl:sequence select="imf:msg(.,'WARNING','The construct [1] does not have a tagged value Target role in meervoud, define one.',ep:name)"/>
+							<xsl:sequence select="imf:msg(.,'WARNING','The construct [1] within message [2] does not have a tagged value Target role in meervoud, define one.',(ep:name,$messagename))"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:attribute name="meervoudigeNaam" select="$meervoudigeNaam" />
@@ -829,6 +831,7 @@
 					<xsl:attribute name="type" select="$type" />
 					<xsl:attribute name="berichtcode" select="$berichtcode" />
 					<xsl:attribute name="messagetype" select="$messagetype" />
+					<xsl:variable name="messagename" select="ancestor::ep:rough-message/ep:name"/>
 					
 					<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
 					<xsl:if test="not(ep:superconstruct) and not(@type='groepCompositie') and not(ancestor::ep:*[@type='groepCompositie'])">
@@ -836,7 +839,7 @@
 							<xsl:variable name="tvMeervoudigeNaam" select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-NAMEPLURAL')"/>
 							<xsl:choose>
 								<xsl:when test="string-length($tvMeervoudigeNaam) = 0">
-									<xsl:sequence select="imf:msg(.,'WARNING','The construct [1] does not have a tagged value Naam in meervoud, define one.',$construct/imvert:name)"/>
+									<xsl:sequence select="imf:msg(.,'WARNING','The construct [1] within message [2] does not have a tagged value Naam in meervoud, define one.',($construct/imvert:name,$messagename))"/>
 								</xsl:when>
 								<xsl:otherwise>
 									<xsl:sequence select="$tvMeervoudigeNaam"/>

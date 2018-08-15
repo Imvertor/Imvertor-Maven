@@ -656,7 +656,8 @@
 		</xsl:if>
 
 		<!-- As long as the current message isn't the last message a comma separator has to be generated. -->
-		<xsl:if test="following-sibling::ep:message[@messagetype='response']">
+		<xsl:if test="following-sibling::ep:message[((contains(@berichtcode,'Gr') or contains(@berichtcode,'Gc')) and @messagetype='response')
+													or (contains(@berichtcode,'Po') and @messagetype='request')]">
 			<xsl:value-of select="','"/>
 		</xsl:if>
 

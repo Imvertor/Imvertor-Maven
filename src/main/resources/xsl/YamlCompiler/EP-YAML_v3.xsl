@@ -616,7 +616,6 @@
 						<ep:entityName path="true"><xsl:value-of select="$entityName"/></ep:entityName>
 					</xsl:when>
 					<xsl:when test="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:entityName != $entityName">
-						<!--<xsl:message select="concat('WARNING: The entityname ',$entityName,' within the message ',$messageName,' is not available within the query tree or is not on the right position within the path.')"/>-->
 						<xsl:sequence select="imf:msg(.,'WARNING','The entityname [1] within the message [2] is not available within the query tree or is not on the right position within the path.', ($entityName,$messageName))" />			
 						<ep:entityName path="false"><xsl:value-of select="$entityName"/></ep:entityName>
 					</xsl:when>
@@ -762,7 +761,6 @@
 					<xsl:for-each select="$determinedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:param">
 						<xsl:variable name="paramName" select="ep:name"/>
 						<xsl:if test="not($calculatedUriStructure/ep:uriStructure/ep:uriPart[position() = $uriPart2Check]/ep:param/ep:name = $paramName)">
-							<!--<xsl:message select="concat('WARNING: The path parameter ',$paramName,' within the message ',$messageName,' is not avalable as query parameter or is not on the right position within the path.')"/>-->
 							<xsl:sequence select="imf:msg(.,'WARNING','The path parameter ([1]) within the message [2] is not avalable as query parameter.', ($paramName,$messageName))" />			
 							<ep:param path="false">
 								<ep:name><xsl:value-of select="$paramName"/></ep:name>
