@@ -83,15 +83,13 @@
 
 		<!-- The following apply-templates processes all classes representing a 
 			messagetype. -->
-		<!-- <xsl:variable name="OAS-messages"> <xsl:for-each select="imvert:class[(imvert:stereotype/@id 
-			= 'stereotype-name-vraagberichttype')]"> <xsl:variable name="berichtcode" 
-			select="imf:get-tagged-value(.,'##CFG-TV-BERICHTCODE')"/> <xsl:value-of select="concat($berichtcode,';')"/> 
-			</xsl:for-each> </xsl:variable> <xsl:if test="not(contains($OAS-messages,'Gr')) 
-			and not(contains($OAS-messages,'Gc'))"> <xsl:variable name="msg" select="'In 
-			dit koppelvlak zijn geen OAS berichten gedefinieerd.'" as="xs:string"/> <xsl:sequence 
-			select="imf:msg('WARNING',$msg)"/> </xsl:if> -->
 		<xsl:apply-templates
-			select="imvert:class[(imvert:stereotype/@id = ('stereotype-name-vraagberichttype',
+			select="imvert:class[(imvert:stereotype/@id = ('stereotype-name-getberichttype',
+			'stereotype-name-patchberichttype',
+			'stereotype-name-postberichttype',
+			'stereotype-name-putberichttype',
+			'stereotype-name-deleteberichttype',
+			'stereotype-name-vraagberichttype',
 			'stereotype-name-antwoordberichttype',
 			'stereotype-name-kennisgevingberichttype',
 			'stereotype-name-synchronisatieberichttype',
@@ -116,11 +114,28 @@
 		<xsl:variable name="messagetypeid" select="imvert:type-id" />
 		<xsl:sequence select="imf:create-debug-comment($berichtcode,$debugging)" />
 		<!-- create the message but only if the class representing the message 
-			has a berichttype with the value 'Gcxx' or 'Grxx' and contains 1 association 
+			has a berichtcode with the value 'Gcxx', 'Grxx' or 'Poxx' and contains at least 1 association 
 			with a stereotype 'entiteitRelatie'. This means classes only containing associations 
 			with a stereotype 'berichtRelatie' aren't processed. -->
 		<xsl:choose>
-			<xsl:when test="empty(imvert:supertype)">
+			<!-- ROME: De volgende when bevat een warning message. De daaropvolgende dezelfde message maar in de error variant.
+					   De eerste variant geldt als de StUF berichttypes gebruikt worden. De tweede als de OAS berichttypes gebruikt worden.
+					   De eerste kan verwijderd worden zodra in de BSM modellen het gebruik van de StUF berichttypes in geval van OAS is aangepast. -->
+			<xsl:when test="empty(imvert:supertype) and imvert:stereotype/@id = ('stereotype-name-vraagberichttype',
+				'stereotype-name-antwoordberichttype',
+				'stereotype-name-kennisgevingberichttype',
+				'stereotype-name-synchronisatieberichttype',
+				'stereotype-name-vrijberichttype')">
+				<xsl:variable name="msg"
+					select="concat('The messageclass ',imvert:name,' has no interface to a supertype from the Berichtstructuren package.')"
+					as="xs:string" />
+				<xsl:sequence select="imf:msg('WARNING',$msg)" />
+			</xsl:when>
+			<xsl:when test="empty(imvert:supertype) and imvert:stereotype/@id = ('stereotype-name-getberichttype',
+				'stereotype-name-patchberichttype',
+				'stereotype-name-postberichttype',
+				'stereotype-name-putberichttype',
+				'stereotype-name-deleteberichttype')">
 				<xsl:variable name="msg"
 					select="concat('The messageclass ',imvert:name,' has no interface to a supertype from the Berichtstructuren package.')"
 					as="xs:string" />

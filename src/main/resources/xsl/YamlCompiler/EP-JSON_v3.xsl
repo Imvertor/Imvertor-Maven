@@ -11,13 +11,13 @@
 	
 	<!-- De eerste variabele is bedoelt voor de server omgeving, de tweede voor gebruik bij ontwikkeling in XML-Spy. -->
 	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
-<!--	<xsl:variable name="debugging" select="true()" as="xs:boolean"/>
--->	
+	<!--<xsl:variable name="debugging" select="true()" as="xs:boolean"/>-->
+	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
 		 * 3.0	
 		 The default value is 3.0. -->
-	<xsl:param name="json-version" select="'3.0'"/>
+	<xsl:param name="json-version" select="'2.0'"/>
 	
 	<!-- TODO: De volgende variabelen moeten op een andere wijze dan in het stylesheet geconfigureerd worden.
 			   Hoe is echter nog de vraag, vanuit het model, via parameters of via een configuration profiel. -->
@@ -971,7 +971,7 @@
         </xsl:variable>
         
 		<!-- The following if only applies if the current construct has an ep:type-name or a ep:data-type and if it isn't an association type construct. -->
-        <xsl:if test="(exists(ep:type-name) or exists(ep:data-type)) and not(@type='association')">
+        <xsl:if test="((exists(ep:type-name) or exists(ep:data-type)) and not(@type='association') or @type = 'GM-external')">
  			<xsl:value-of select="concat('&quot;', translate(ep:tech-name,'.','_'),'&quot;: {' )"/>
 			<xsl:value-of select="$derivedPropertyContent"/>
 			<xsl:value-of select="'}'"/>
@@ -983,6 +983,17 @@
         <xsl:param name="typeName"/>
         <xsl:param name="typePrefix"/>
         <xsl:choose>
+        	<xsl:when test="@type = 'GM-external'">
+        		<xsl:variable name="documentation">
+        			<xsl:value-of select="ep:documentation//ep:p"/>
+        		</xsl:variable>
+        		<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
+        		<!-- Double quotes in documentation text is replaced by a  grave accent. -->
+        		<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+        		<xsl:value-of select="' Conform geojson, zie http://geojson.org.'"/>
+        		<xsl:value-of select="'&quot;,'"/>
+        		<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;'"/>
+        	</xsl:when>
 			<!-- If the construct has a data-type a type, a description, an optional format and, also optional, some facets have to be generated. -->
             <xsl:when test="exists(ep:data-type)">
                 <xsl:variable name="datatype">
@@ -1284,4 +1295,5 @@
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
+		
 </xsl:stylesheet>

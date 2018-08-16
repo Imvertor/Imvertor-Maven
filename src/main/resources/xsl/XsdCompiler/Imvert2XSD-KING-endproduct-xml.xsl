@@ -3596,7 +3596,11 @@
                 <xsl:when test="empty(imvert:type-package)">
                     <!-- TODO -->
                 </xsl:when>
-                <xsl:when test="contains(imvert:baretype,'GM_')">
+                <!-- ROME: Volgende when is waarschijnlijk overbodig. Zo ja, dan kan deze functie naar een hoger nveau getild worden.
+                           Deze wordt dan nl. op 3 plaatsen gebruikt. Hier, bij het genereren van de Basisentiteiten en bij de generatie van OAS. 
+                
+                           Vooralsnog is deze when uitgeschakeld. -->
+        <?x        <xsl:when test="contains(imvert:baretype,'GM_')">
                     <xsl:variable name="type-suffix" select="if ($as-type) then 'Type' else ''"/>
                     <xsl:variable name="type-prefix">
                         <xsl:choose>
@@ -3626,7 +3630,7 @@
                         </xsl:choose>
                     </xsl:variable>
                     <xsl:value-of select="concat($type-prefix,$type-suffix)"/>
-                </xsl:when>
+                </xsl:when> ?>
                 <xsl:otherwise>
                     <!-- geen andere externe packages bekend -->
                     <xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the external package [1]', imvert:type-package)"/>

@@ -28,10 +28,6 @@
 	<!-- TODO: Kijken of de volgende key's wel nodig zijn. -->
 	<xsl:key name="class" match="imvert:class" use="imvert:id" />
 	<xsl:key name="enumerationClass" match="imvert:class" use="imvert:name" />
-	<!-- This key is used within the for-each instruction further in this code. -->
-	<xsl:key name="construct-id" match="ep:construct" use="concat(ep:id,@verwerkingsModus)" />
-	<xsl:key name="construct-id-in-vrijbericht" match="ep:construct" use="concat(ep:id,@verwerkingsModus,@entiteitOrBerichtRelatie)" />
-
 
 	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
 	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean" />
@@ -951,8 +947,28 @@
 			</ep:tagged-values>
 		</xsl:variable>
 
+		<xsl:variable name="type-is-GM-external" select="exists(imvert:conceptual-schema-type) and contains(imvert:conceptual-schema-type,'GM_')"/>		
 
 		<xsl:choose>
+			<xsl:when test="$type-is-GM-external">
+				<ep:construct>
+					<xsl:attribute name="type" select="'GM-external'"/>
+					<xsl:sequence select="imf:create-debug-comment(concat('OAS01975, id: ',imvert:id),$debugging)" />
+					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
+					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
+					<xsl:choose>
+						<xsl:when test="(empty($doc) or $doc='') and $debugging">
+							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)" />
+					<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)" />
+					<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
+				</ep:construct>
+			</xsl:when>
 			<!-- Attributes of complex datatype type are not resolved within this template but with one of the ep:construct templates since they are present 
 				 within the rough message structure. -->
 			<xsl:when test="imvert:type-id and imvert:type-id = $packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]/imvert:id">
@@ -1332,38 +1348,42 @@
 				</xsl:when>
 				<xsl:when test="empty(imvert:type-package)">
 					<!-- TODO -->
-				</xsl:when>
-				<xsl:when test="contains(imvert:baretype,'GM_')">
-					<xsl:variable name="type-suffix" select="if ($as-type) then 'Type' else ''" />
-					<xsl:variable name="type-prefix">
-						<xsl:choose>
-							<xsl:when test="imvert:baretype = 'GM_Point'">gml:Point</xsl:when>
-							<xsl:when test="imvert:baretype = 'GM_Curve'">gml:Curve</xsl:when>
-							<xsl:when test="imvert:baretype = 'GM_Surface'">gml:Surface</xsl:when>
-							<xsl:when test="imvert:baretype = 'GM_MultiPoint'">gml:MultiPoint</xsl:when>
-							<xsl:when test="imvert:baretype = 'GM_MultiSurface'">gml:MultiSurface</xsl:when>
-							<xsl:when test="imvert:baretype = 'GM_MultiCurve'">gml:MultiCurve</xsl:when>
-							<xsl:when test="imvert:baretype = 'GM_Geometry'">gml:Geometry</xsl:when>
-							<xsl:when test="imvert:baretype = 'GM_MultiGeometry'">ml:MultiGeometry</xsl:when>
-							<xsl:when test="imvert:baretype = 'GM_ArcString'">gml:ArcString</xsl:when>
-							<xsl:when test="imvert:baretype = 'GM_LineString'">gml:LineString</xsl:when>
-							<xsl:when test="imvert:baretype = 'GM_Polygon'">gml:Polygon</xsl:when>
-							<xsl:when test="imvert:baretype = 'GM_Object'">gml:GeometryProperty</xsl:when><!-- see http://www.geonovum.nl/onderwerpen/geography-markup-language-gml/documenten/handreiking-geometrie-model-en-gml-10 -->
-							<xsl:when test="imvert:baretype = 'GM_Primitive'">gml:Primitive</xsl:when>
-							<xsl:when test="imvert:baretype = 'GM_Position'">gml:Position</xsl:when>
-							<xsl:when test="imvert:baretype = 'GM_PointArray'">gml:PointArray</xsl:when>
-							<xsl:when test="imvert:baretype = 'GM_Solid'">gml:Solid</xsl:when>
-							<xsl:when test="imvert:baretype = 'GM_OrientableCurve'">gml:OrientableCurve</xsl:when>
-							<xsl:when test="imvert:baretype = 'GM_OrientableSurface'">gml:OrientableSurface</xsl:when>
-							<xsl:when test="imvert:baretype = 'GM_CompositePoint'">gml:CompositePoint</xsl:when>
-							<xsl:when test="imvert:baretype = 'GM_MultiSolid'">gml:MultiSolid</xsl:when>
-							<xsl:otherwise>
-								<xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the [1] type [2]', (imvert:type-package,imvert:baretype))" />
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:variable>
-					<xsl:value-of select="concat($type-prefix,$type-suffix)" />
-				</xsl:when>
+				</xsl:when>				
+				<!-- ROME: Volgende when is waarschijnlijk overbodig. Zo ja, dan kan deze functie naar een hoger nveau getild worden.
+                           Deze wordt dan nl. op 3 plaatsen gebruikt. Hier, bij het genereren van de Basisentiteiten en bij de generatie van Koppelvlak XSD's. 
+                
+                           Vooralsnog is deze when uitgeschakeld. -->
+				<?x        <xsl:when test="contains(imvert:baretype,'GM_')">
+                    <xsl:variable name="type-suffix" select="if ($as-type) then 'Type' else ''"/>
+                    <xsl:variable name="type-prefix">
+                        <xsl:choose>
+                            <xsl:when test="imvert:baretype = 'GM_Point'">gml:Point</xsl:when>
+                            <xsl:when test="imvert:baretype = 'GM_Curve'">gml:Curve</xsl:when>
+                            <xsl:when test="imvert:baretype = 'GM_Surface'">gml:Surface</xsl:when>
+                            <xsl:when test="imvert:baretype = 'GM_MultiPoint'">gml:MultiPoint</xsl:when>
+                            <xsl:when test="imvert:baretype = 'GM_MultiSurface'">gml:MultiSurface</xsl:when>
+                            <xsl:when test="imvert:baretype = 'GM_MultiCurve'">gml:MultiCurve</xsl:when>
+                            <xsl:when test="imvert:baretype = 'GM_Geometry'">gml:Geometry</xsl:when>
+                            <xsl:when test="imvert:baretype = 'GM_MultiGeometry'">gml:MultiGeometry</xsl:when>
+                            <xsl:when test="imvert:baretype = 'GM_ArcString'">gml:ArcString</xsl:when>
+                            <xsl:when test="imvert:baretype = 'GM_LineString'">gml:LineString</xsl:when>
+                            <xsl:when test="imvert:baretype = 'GM_Polygon'">gml:Polygon</xsl:when>
+                            <xsl:when test="imvert:baretype = 'GM_Object'">gml:GeometryProperty</xsl:when><!-- see http://www.geonovum.nl/onderwerpen/geography-markup-language-gml/documenten/handreiking-geometrie-model-en-gml-10 -->
+                            <xsl:when test="imvert:baretype = 'GM_Primitive'">gml:Primitive</xsl:when>
+                            <xsl:when test="imvert:baretype = 'GM_Position'">gml:Position</xsl:when>
+                            <xsl:when test="imvert:baretype = 'GM_PointArray'">gml:PointArray</xsl:when>
+                            <xsl:when test="imvert:baretype = 'GM_Solid'">gml:Solid</xsl:when>
+                            <xsl:when test="imvert:baretype = 'GM_OrientableCurve'">gml:OrientableCurve</xsl:when>
+                            <xsl:when test="imvert:baretype = 'GM_OrientableSurface'">gml:OrientableSurface</xsl:when>
+                            <xsl:when test="imvert:baretype = 'GM_CompositePoint'">gml:CompositePoint</xsl:when>
+                            <xsl:when test="imvert:baretype = 'GM_MultiSolid'">gml:MultiSolid</xsl:when>
+                            <xsl:otherwise>
+                                <xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the [1] type [2]', (imvert:type-package,imvert:baretype))"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:variable>
+                    <xsl:value-of select="concat($type-prefix,$type-suffix)"/>
+                </xsl:when> ?>
 				<xsl:otherwise>
 					<!-- geen andere externe packages bekend -->
 					<xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the external package [1]', imvert:type-package)" />

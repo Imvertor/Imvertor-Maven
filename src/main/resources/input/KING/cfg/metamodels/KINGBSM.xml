@@ -74,7 +74,7 @@
       
      
       <!-- classes -->
-  
+      <!-- StUF berichttypen -->
       <stereo id="stereotype-name-vrijberichttype">
          <name lang="en">Free message type</name>
          <name lang="nl">Vrij berichttype</name>
@@ -131,6 +131,59 @@
             <relation lang="nl">parameters</relation>
          </entity-relation-constraint>
       </stereo>
-     
+
+      <!-- REST berichttypen -->
+      <stereo id="stereotype-name-getberichttype">
+         <name lang="en">Getberichttype</name>
+         <name lang="nl">Getberichttype</name>
+         <desc lang="nl">TODO</desc>
+         <construct>class</construct>
+         <toplevel>true</toplevel>
+         <entity-relation-constraint>
+            <relation lang="nl">request</relation>
+            <relation lang="nl">response</relation>
+         </entity-relation-constraint>
+      </stereo>
+      <stereo id="stereotype-name-postberichttype">
+         <name lang="en">Postberichttype</name>
+         <name lang="nl">Postberichttype</name>
+         <desc lang="nl">TODO</desc>
+         <construct>class</construct>
+         <toplevel>true</toplevel>
+         <entity-relation-constraint>
+            <relation lang="nl">request</relation>
+         </entity-relation-constraint>
+      </stereo>
+      <stereo id="stereotype-name-putberichttype">
+         <name lang="en">Putberichttype</name>
+         <name lang="nl">Putberichttype</name>
+         <desc lang="nl">TODO</desc>
+         <construct>class</construct>
+         <toplevel>true</toplevel>
+         <entity-relation-constraint>
+            <relation lang="nl">request</relation>
+         </entity-relation-constraint>
+      </stereo>
+      <stereo id="stereotype-name-patchberichttype">
+         <name lang="en">Patchberichttype</name>
+         <name lang="nl">Patchberichttype</name>
+         <desc lang="nl">TODO</desc>
+         <construct>class</construct>
+         <toplevel>true</toplevel>
+         <entity-relation-constraint>
+            <relation lang="nl">request</relation>
+         </entity-relation-constraint>
+      </stereo>
+      <stereo id="stereotype-name-deleteberichttype">
+         <name lang="en">Deleteberichttype</name>
+         <name lang="nl">Deleteberichttype</name>
+         <desc lang="nl">TODO</desc>
+         <construct>class</construct>
+         <toplevel>true</toplevel>
+         <entity-relation-constraint>
+            <relation lang="nl">request</relation>
+         </entity-relation-constraint>
+      </stereo>
+      
    </stereotypes>
 </metamodel>
