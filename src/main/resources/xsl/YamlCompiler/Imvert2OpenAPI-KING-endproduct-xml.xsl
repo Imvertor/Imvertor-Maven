@@ -19,6 +19,7 @@
 	<xsl:import href="../common/Imvert-common-validation.xsl" />
 	<xsl:import href="../common/extension/Imvert-common-text.xsl" />
 	<xsl:import href="../common/Imvert-common-derivation.xsl" />
+	<xsl:import href="../common/Imvert-common-external.xsl"/>
 	<xsl:import href="../XsdCompiler/Imvert2XSD-KING-common.xsl" />
 
 	<xsl:include href="../XsdCompiler/Imvert2XSD-KING-common-checksum.xsl" />
@@ -1304,93 +1305,6 @@
 				<xsl:value-of select="$name" />
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:function>
-
-	<xsl:function name="imf:get-external-type-name">
-		<xsl:param name="attribute" />
-		<xsl:param name="as-type" as="xs:boolean" />
-		<!-- determine the name; hard koderen -->
-		<xsl:for-each select="$attribute"> <!-- singleton -->
-			<xsl:choose>
-				<xsl:when test="imvert:type-package='Geography Markup Language 3'">
-					<xsl:variable name="type-suffix" select="if ($as-type) then 'Type' else ''" />
-					<xsl:variable name="type-prefix">
-						<xsl:choose>
-							<xsl:when test="empty(imvert:conceptual-schema-type)">
-								<xsl:sequence select="imf:msg(.,'ERROR','No conceptual schema type specified',())" />
-							</xsl:when>
-							<xsl:when test="imvert:conceptual-schema-type = 'GM_Point'">gml:Point</xsl:when>
-							<xsl:when test="imvert:conceptual-schema-type = 'GM_Curve'">gml:Curve</xsl:when>
-							<xsl:when test="imvert:conceptual-schema-type = 'GM_Surface'">gml:Surface</xsl:when>
-							<xsl:when test="imvert:conceptual-schema-type = 'GM_MultiPoint'">gml:MultiPoint</xsl:when>
-							<xsl:when test="imvert:conceptual-schema-type = 'GM_MultiSurface'">gml:MultiSurface</xsl:when>
-							<xsl:when test="imvert:conceptual-schema-type = 'GM_MultiCurve'">gml:MultiCurve</xsl:when>
-							<xsl:when test="imvert:conceptual-schema-type = 'GM_Geometry'">gml:Geometry</xsl:when>
-							<xsl:when test="imvert:conceptual-schema-type = 'GM_MultiGeometry'">gml:MultiGeometry</xsl:when>
-							<xsl:when test="imvert:conceptual-schema-type = 'GM_ArcString'">gml:ArcString</xsl:when>
-							<xsl:when test="imvert:conceptual-schema-type = 'GM_LineString'">gml:LineString</xsl:when>
-							<xsl:when test="imvert:conceptual-schema-type = 'GM_Polygon'">gml:Polygon</xsl:when>
-							<xsl:when test="imvert:conceptual-schema-type = 'GM_Object'">gml:GeometryProperty</xsl:when><!-- see http://www.geonovum.nl/onderwerpen/geography-markup-language-gml/documenten/handreiking-geometrie-model-en-gml-10 -->
-							<xsl:when test="imvert:conceptual-schema-type = 'GM_Primitive'">gml:Primitive</xsl:when>
-							<xsl:when test="imvert:conceptual-schema-type = 'GM_Position'">gml:Position</xsl:when>
-							<xsl:when test="imvert:conceptual-schema-type = 'GM_PointArray'">gml:PointArray</xsl:when>
-							<xsl:when test="imvert:conceptual-schema-type = 'GM_Solid'">gml:Solid</xsl:when>
-							<xsl:when test="imvert:conceptual-schema-type = 'GM_OrientableCurve'">gml:OrientableCurve</xsl:when>
-							<xsl:when test="imvert:conceptual-schema-type = 'GM_OrientableSurface'">gml:OrientableSurface</xsl:when>
-							<xsl:when test="imvert:conceptual-schema-type = 'GM_CompositePoint'">gml:CompositePoint</xsl:when>
-							<xsl:when test="imvert:conceptual-schema-type = 'GM_MultiSolid'">gml:MultiSolid</xsl:when>
-							<xsl:otherwise>
-								<xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the [1] type [2]', (imvert:type-package,imvert:conceptual-schema-type))" />
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:variable>
-					<xsl:value-of select="concat($type-prefix,$type-suffix)" />
-				</xsl:when>
-				<xsl:when test="empty(imvert:type-package)">
-					<!-- TODO -->
-				</xsl:when>				
-				<!-- ROME: Volgende when is waarschijnlijk overbodig. Zo ja, dan kan deze functie naar een hoger nveau getild worden.
-                           Deze wordt dan nl. op 3 plaatsen gebruikt. Hier, bij het genereren van de Basisentiteiten en bij de generatie van Koppelvlak XSD's. 
-                
-                           Vooralsnog is deze when uitgeschakeld. -->
-				<?x        <xsl:when test="contains(imvert:baretype,'GM_')">
-                    <xsl:variable name="type-suffix" select="if ($as-type) then 'Type' else ''"/>
-                    <xsl:variable name="type-prefix">
-                        <xsl:choose>
-                            <xsl:when test="imvert:baretype = 'GM_Point'">gml:Point</xsl:when>
-                            <xsl:when test="imvert:baretype = 'GM_Curve'">gml:Curve</xsl:when>
-                            <xsl:when test="imvert:baretype = 'GM_Surface'">gml:Surface</xsl:when>
-                            <xsl:when test="imvert:baretype = 'GM_MultiPoint'">gml:MultiPoint</xsl:when>
-                            <xsl:when test="imvert:baretype = 'GM_MultiSurface'">gml:MultiSurface</xsl:when>
-                            <xsl:when test="imvert:baretype = 'GM_MultiCurve'">gml:MultiCurve</xsl:when>
-                            <xsl:when test="imvert:baretype = 'GM_Geometry'">gml:Geometry</xsl:when>
-                            <xsl:when test="imvert:baretype = 'GM_MultiGeometry'">gml:MultiGeometry</xsl:when>
-                            <xsl:when test="imvert:baretype = 'GM_ArcString'">gml:ArcString</xsl:when>
-                            <xsl:when test="imvert:baretype = 'GM_LineString'">gml:LineString</xsl:when>
-                            <xsl:when test="imvert:baretype = 'GM_Polygon'">gml:Polygon</xsl:when>
-                            <xsl:when test="imvert:baretype = 'GM_Object'">gml:GeometryProperty</xsl:when><!-- see http://www.geonovum.nl/onderwerpen/geography-markup-language-gml/documenten/handreiking-geometrie-model-en-gml-10 -->
-                            <xsl:when test="imvert:baretype = 'GM_Primitive'">gml:Primitive</xsl:when>
-                            <xsl:when test="imvert:baretype = 'GM_Position'">gml:Position</xsl:when>
-                            <xsl:when test="imvert:baretype = 'GM_PointArray'">gml:PointArray</xsl:when>
-                            <xsl:when test="imvert:baretype = 'GM_Solid'">gml:Solid</xsl:when>
-                            <xsl:when test="imvert:baretype = 'GM_OrientableCurve'">gml:OrientableCurve</xsl:when>
-                            <xsl:when test="imvert:baretype = 'GM_OrientableSurface'">gml:OrientableSurface</xsl:when>
-                            <xsl:when test="imvert:baretype = 'GM_CompositePoint'">gml:CompositePoint</xsl:when>
-                            <xsl:when test="imvert:baretype = 'GM_MultiSolid'">gml:MultiSolid</xsl:when>
-                            <xsl:otherwise>
-                                <xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the [1] type [2]', (imvert:type-package,imvert:baretype))"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:variable>
-                    <xsl:value-of select="concat($type-prefix,$type-suffix)"/>
-                </xsl:when> ?>
-				<xsl:otherwise>
-					<!-- geen andere externe packages bekend -->
-					<xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the external package [1]', imvert:type-package)" />
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:for-each>
-
 	</xsl:function>
 
 </xsl:stylesheet>

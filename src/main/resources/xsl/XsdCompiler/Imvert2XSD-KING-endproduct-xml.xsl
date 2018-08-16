@@ -22,6 +22,7 @@
     <xsl:import href="../common/Imvert-common-validation.xsl"/>
     <xsl:import href="../common/extension/Imvert-common-text.xsl"/>   
     <xsl:import href="../common/Imvert-common-derivation.xsl"/>
+    <xsl:import href="../common/Imvert-common-external.xsl"/>
     
     <xsl:import href="Imvert2XSD-KING-enrich-excel.xsl"/>
     
@@ -3553,7 +3554,7 @@
         <xsl:sequence select="$this/imvert:stereotype/@id"/>
     </xsl:function>
     
-    <xsl:function name="imf:get-external-type-name">
+<?x    <xsl:function name="imf:get-external-type-name">
         <xsl:param name="attribute"/>
         <xsl:param name="as-type" as="xs:boolean"/>
         <!-- determine the name; hard koderen -->
@@ -3600,7 +3601,7 @@
                            Deze wordt dan nl. op 3 plaatsen gebruikt. Hier, bij het genereren van de Basisentiteiten en bij de generatie van OAS. 
                 
                            Vooralsnog is deze when uitgeschakeld. -->
-        <?x        <xsl:when test="contains(imvert:baretype,'GM_')">
+                <xsl:when test="contains(imvert:baretype,'GM_')">
                     <xsl:variable name="type-suffix" select="if ($as-type) then 'Type' else ''"/>
                     <xsl:variable name="type-prefix">
                         <xsl:choose>
@@ -3630,7 +3631,7 @@
                         </xsl:choose>
                     </xsl:variable>
                     <xsl:value-of select="concat($type-prefix,$type-suffix)"/>
-                </xsl:when> ?>
+                </xsl:when> 
                 <xsl:otherwise>
                     <!-- geen andere externe packages bekend -->
                     <xsl:sequence select="imf:msg(.,'ERROR','Cannot handle the external package [1]', imvert:type-package)"/>
@@ -3638,6 +3639,6 @@
             </xsl:choose>
         </xsl:for-each>
         
-    </xsl:function>
-    
+    </xsl:function> ?>
+
 </xsl:stylesheet>
