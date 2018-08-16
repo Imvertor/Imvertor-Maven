@@ -101,6 +101,11 @@
                 <stereo minmax="1..1">stereotype-name-kennisgevingberichttype</stereo>
                 <stereo minmax="1..1">stereotype-name-synchronisatieberichttype</stereo>
                 <stereo minmax="1..1">stereotype-name-vrijberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-getberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-patchberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-postberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-putberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-deleteberichttype</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <value>Bv01</value>
@@ -110,6 +115,8 @@
                 <value>Bv03</value>
                 <!--  een bevestigingsbericht als technische synchrone respons op een asynchroon bericht waarbij het bericht op basis van berichtstuurgegevens verwerkbaar wordt geacht -->
                 <value>Bv04</value>
+                <!--  een OAS deletebericht -->
+                <value>De01</value>
                 <!--  een bevestigingsbericht als technische synchrone respons op een asynchroon bericht, dat een check op verwerkbaarheid op basis van de berichtstuurgegevens ontkent -->
                 <value>Di01</value>
                 <!--  een asynchroon inkomend vrij bericht -->
@@ -204,8 +211,12 @@
                 <value>Lv13</value>
                 <!--  een synchroon vraagbericht naar materiële en formele historie voor de gevraagde objecten op groepniveau -->
                 <value>Lv14</value>
-                <!--  een json+hal POST bericht voor een resource. -->
+                <!--  een REST patchbericht -->
+                <value>Pa01</value>
+                <!--  een REST postbericht -->
                 <value>Po01</value>
+                <!--  een REST putbericht -->
+                <value>Pu01</value>
                 <!--  een asynchroon vraagbericht naar materiële en formele historie voor de gevraagde objecten op groepniveau -->
                 <value>Sa01</value>
                 <!--  een asynchroon synchronisatiebericht voor de actuele gegevens -->
@@ -256,11 +267,11 @@
             <inherit>no</inherit>
             <stereotypes>
                 <!-- bericht typen -->
-                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-vrijberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-getberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-patchberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-postberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-putberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-deleteberichttype</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <!-- Fields in request parameters YAML opnemen. -->
@@ -279,11 +290,11 @@
             <inherit>no</inherit>
             <stereotypes>
                 <!-- bericht typen -->
-                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-vrijberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-getberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-patchberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-postberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-putberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-deleteberichttype</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <!-- Sort in request parameters YAML opnemen. -->
@@ -298,11 +309,11 @@
             <derive>no</derive>
             <inherit>no</inherit>
             <stereotypes>
-                <?x stereo minmax="1..1">stereotype-name-vraagberichttype</stereo ?>
-                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
-                <?x stereo minmax="1..1">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo minmax="1..1">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo minmax="1..1">stereotype-name-vrijberichttype</stereo ?>
+                <stereo minmax="0..1">stereotype-name-getberichttype</stereo>
+                <?x <stereo minmax="0..1">stereotype-name-patchberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-postberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-putberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-deleteberichttype</stereo> ?>
             </stereotypes>
             <declared-values lang="nl">
                 <!-- Grouping is binnen json niet van toepassing, het betreft immers maar een enkele resource. -->
@@ -317,11 +328,11 @@
             <derive>no</derive>
             <inherit>no</inherit>
             <stereotypes>
-                <?x stereo minmax="1..1">stereotype-name-vraagberichttype</stereo ?>
-                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
-                <?x stereo minmax="1..1">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo minmax="1..1">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo minmax="1..1">stereotype-name-vrijberichttype</stereo ?>
+                <stereo minmax="0..1">stereotype-name-getberichttype</stereo>
+                <?x <stereo minmax="0..1">stereotype-name-patchberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-postberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-putberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-deleteberichttype</stereo> ?>
             </stereotypes>
             <declared-values lang="nl">
                 <!-- Pagination is binnen json van toepassing op het bericht. -->
@@ -336,11 +347,11 @@
             <derive>no</derive>
             <inherit>no</inherit>
             <stereotypes>
-                <?x stereo minmax="1..1">stereotype-name-vraagberichttype</stereo ?>
-                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
-                <?x stereo minmax="1..1">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo minmax="1..1">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo minmax="1..1">stereotype-name-vrijberichttype</stereo ?>
+                <stereo minmax="0..1">stereotype-name-getberichttype</stereo>
+                <?x <stereo minmax="0..1">stereotype-name-patchberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-postberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-putberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-deleteberichttype</stereo> ?>
             </stereotypes>
             <declared-values lang="nl">
                 <!-- Voorlopig is alleen json+hal mogelijk. -->
@@ -411,6 +422,13 @@
                 <stereo minmax="0..1">stereotype-name-kennisgevingberichttype</stereo>
                 <stereo minmax="0..1">stereotype-name-synchronisatieberichttype</stereo>
                 <stereo minmax="0..1">stereotype-name-vrijberichttype</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-getberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-patchberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-postberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-putberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-deleteberichttype</stereo>
+                
             </stereotypes>
             <declared-values lang="nl">
                 <value>request</value>
@@ -428,6 +446,12 @@
                 <stereo minmax="0..1">stereotype-name-kennisgevingberichttype</stereo>
                 <stereo minmax="0..1">stereotype-name-synchronisatieberichttype</stereo>
                 <stereo minmax="0..1">stereotype-name-vrijberichttype</stereo>
+                
+                <stereo minmax="0..1">stereotype-name-getberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-patchberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-postberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-putberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-deleteberichttype</stereo>                
             </stereotypes>
         </tv>
         
@@ -474,6 +498,12 @@
                 <stereo minmax="0..1">stereotype-name-synchronisatieberichttype</stereo>
                 <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
                 <stereo minmax="0..1">stereotype-name-vrijberichttype</stereo>
+ 
+                <stereo minmax="0..1">stereotype-name-getberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-patchberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-postberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-putberichttype</stereo>
+                <stereo minmax="0..1">stereotype-name-deleteberichttype</stereo>
                 
                 <stereo minmax="0..1">stereotype-name-entiteitrelatie</stereo>
                 <stereo minmax="0..1">stereotype-name-berichtrelatie</stereo>
