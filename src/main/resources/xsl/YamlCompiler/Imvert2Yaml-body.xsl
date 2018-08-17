@@ -32,7 +32,7 @@
     version="2.0">
 
     <xsl:import href="../common/Imvert-common.xsl"/>
-    <xsl:import href="EP-JSON_v2.xsl"/>
+    <xsl:import href="EP-JSON.xsl"/>
     
     <xsl:variable name="stylesheet-code">YAMLB</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>

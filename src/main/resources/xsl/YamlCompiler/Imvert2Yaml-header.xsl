@@ -32,7 +32,7 @@
     version="2.0">
 
     <xsl:import href="../common/Imvert-common.xsl"/>
-    <xsl:import href="EP-YAML_v2.xsl"/>
+    <xsl:import href="EP-YAML.xsl"/>
     
     <xsl:variable name="stylesheet-code">YAMLH</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
