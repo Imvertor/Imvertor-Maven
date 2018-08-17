@@ -353,9 +353,13 @@
 					<xsl:variable name="id" select="ep:id" />
 					<xsl:value-of select="$packages//imvert:attribute[imvert:type-id = $id][1]/imvert:id" />
 				</xsl:when>
-				<xsl:when test="ep:type-id and @type = 'complex-datatype'">
+				<?x <xsl:when test="ep:type-id and @type = 'complex-datatype'">
 					<xsl:variable name="type-id" select="ep:type-id" />
 					<xsl:value-of select="$packages//imvert:attribute[imvert:type-id = $type-id][1]/imvert:id" />
+				</xsl:when> ?>
+				<xsl:when test="ep:type-id and @type = 'complex-datatype'">
+					<xsl:variable name="type-id" select="ep:type-id" />
+					<xsl:value-of select="$packages//imvert:attribute[imvert:name = $name and imvert:type-id = $type-id][1]/imvert:id" />
 				</xsl:when>
 				<xsl:when test="ep:type-id">
 					<xsl:variable name="type-id" select="ep:type-id" />

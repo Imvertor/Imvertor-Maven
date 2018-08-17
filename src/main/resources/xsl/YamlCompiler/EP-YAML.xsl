@@ -161,37 +161,43 @@
 				<xsl:variable name="calculatedUriStructure">
 					<ep:uriStructure>
 						<xsl:choose>
-							<xsl:when test="@berichtcode = 'Gr01'">
+							<xsl:when test="@berichtcode = ('Gr01','Gc01','Gc02')">
 								<xsl:variable name="parameterConstruct" select="./ep:seq/ep:construct/ep:type-name"/>
-								<xsl:if test="not(empty(//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]))">
-									<xsl:variable name="meervoudigeNaam" select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]/@meervoudigeNaam"/>
-									<ep:uriPart>
-										<ep:entityName><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
-										<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]" mode="getParameters"/>
-									</ep:uriPart>
-									<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]" mode="getUriPart"/>
-								</xsl:if>
+								<xsl:choose>
+									<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct])">
+										<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1].',$parameterConstruct)"/>
+									</xsl:when>
+									<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]/@meervoudigeNaam)">
+										<xsl:sequence select="imf:msg(.,'WARNING','The class [1] within message [2] does not have a tagged value naam in meervoud, define one.',($parameterConstruct,$messageName))"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:variable name="meervoudigeNaam" select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]/@meervoudigeNaam"/>
+										<ep:uriPart>
+											<ep:entityName><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
+											<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]" mode="getParameters"/>
+										</ep:uriPart>
+										<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]" mode="getUriPart"/>
+									</xsl:otherwise>
+								</xsl:choose>
 							</xsl:when>
 							<xsl:when test="@berichtcode = 'Gr02'">
 							</xsl:when>
 							<xsl:when test="@berichtcode = 'Gr03'">
-							</xsl:when>
-							<xsl:when test="@berichtcode = ('Gc01','Gc02')">
-								<xsl:variable name="parameterConstruct" select="./ep:seq/ep:construct/ep:type-name"/>
-								<xsl:if test="not(empty(//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]))">
-									<xsl:variable name="meervoudigeNaam" select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]/@meervoudigeNaam"/>
-									<ep:uriPart>
-										<ep:entityName><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
-										<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]" mode="getParameters"/>
-									</ep:uriPart>
-									<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]" mode="getUriPart"/>
-								</xsl:if>
 							</xsl:when>
 							<xsl:when test="@berichtcode = ('Gc01','Gc02','Gc03','Gc04','Gc05','Gc06')">
 							</xsl:when>
 						</xsl:choose>
 					</ep:uriStructure>
 				</xsl:variable>
+
+				<xsl:if test="$debugging">
+					<xsl:result-document href="{concat('file:/c:/temp/determinedUriStructure',ep:name,'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
+						<xsl:sequence select="$determinedUriStructure"/>
+					</xsl:result-document> 
+					<xsl:result-document href="{concat('file:/c:/temp/calculatedUriStructure',ep:name,'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
+						<xsl:sequence select="$calculatedUriStructure"/>
+					</xsl:result-document>
+				</xsl:if>
 				
 				<!-- Within the following variable  the determinedUriStructure and the calculatedUriStructure are compared with eachother. 
 					 If differences are perceived errors or warnings are generated. -->

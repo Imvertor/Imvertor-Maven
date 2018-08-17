@@ -758,7 +758,8 @@
 		</xsl:for-each>
 		
 
-		<xsl:if test=".//ep:construct[@type='association' and ../ep:construct[not(@type = 'association') and not(ep:ref)]]">
+		<!--<xsl:if test=".//ep:construct[@type='association' and ../ep:construct[not(@type = 'association') and not(ep:ref)]]">-->
+		<xsl:if test=".//ep:construct[@type='association'] and ep:seq/ep:construct[not(ep:seq) and not(@type = 'association') and not(ep:ref)]">
 			<xsl:value-of select="','"/>
 		</xsl:if>
 		<xsl:if test=".//ep:construct[@type='association']">
