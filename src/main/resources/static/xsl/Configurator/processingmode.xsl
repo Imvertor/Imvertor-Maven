@@ -6,8 +6,8 @@
     
     <xsl:output method="text" indent="no"/>
     
-    <xsl:param name="owner"/>
-    <xsl:param name="metastage"/>
+    <xsl:param name="owner"/> <!-- e.g. Kadaster -->
+    <xsl:param name="metastage"/> <!-- e.g. NEN3610: uitgebreid -->
     
     <xsl:template match="/worksheets/worksheet[@name = $owner]">
         <xsl:sequence select="imf:line('processingmode_owner',$owner)"/>
