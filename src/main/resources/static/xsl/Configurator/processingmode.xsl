@@ -7,30 +7,23 @@
     <xsl:output method="text" indent="no"/>
     
     <xsl:param name="owner"/>
-    <xsl:param name="meta"/>
-    <xsl:param name="stage"/> <!-- e.g. minimum uitgebreid opleveren docrelease --> 
+    <xsl:param name="metastage"/>
     
     <xsl:template match="/worksheets/worksheet[@name = $owner]">
         <xsl:sequence select="imf:line('processingmode_owner',$owner)"/>
-        <xsl:sequence select="imf:line('processingmode_meta',$meta)"/>
-        <xsl:sequence select="imf:line('processingmode_stage',$stage)"/>
+        <xsl:sequence select="imf:line('processingmode_metastage',$metastage)"/>
         
         <xsl:variable name="owner-sheet" select="."/>
-        <xsl:variable name="meta-columns" select="row[@nr='1']/cell[. = 'Meta']/@nr"/>
-        <xsl:variable name="stage-columns" select="row[@nr='1']/cell[. = 'Stage']/@nr"/>
+        <xsl:variable name="config-columns" select="row[@nr='1']/cell[. = 'Config']/@nr"/>
         <xsl:variable name="name-column"  select="row[@nr='1']/cell[. = 'Name']/@nr"/><!-- fixed: the property name -->
         <xsl:variable name="required-column"  select="row[@nr='1']/cell[. = 'Required']/@nr"/><!-- fixed: TRUE or FALSE -->
         <xsl:variable name="static-column"  select="row[@nr='1']/cell[. = 'Static']/@nr"/><!-- any value of the property should not be altered. -->
         
-        <xsl:variable name="meta-column"  select="row[@nr='2']/cell[@nr = $meta-columns and . = $meta]/@nr"/>
-        <xsl:variable name="stage-column"  select="row[@nr='2']/cell[@nr = $stage-columns and . = $stage]/@nr"/>
+        <xsl:variable name="metastage-column"  select="row[@nr='2']/cell[@nr = $config-columns and . = $metastage]/@nr"/>
         
         <xsl:choose>
-            <xsl:when test="empty($meta-column)">
-                <xsl:sequence select="imf:line('processingmode_error',concat('Cannot find a Meta representation for: ',$meta))"/>
-            </xsl:when>
-            <xsl:when test="empty($stage-column)">
-                <xsl:sequence select="imf:line('processingmode_error',concat('Cannot find a Stage representation for: ',$stage))"/>
+            <xsl:when test="empty($metastage-column)">
+                <xsl:sequence select="imf:line('processingmode_error',concat('Cannot find a Meta/Stage representation for: ',$metastage))"/>
             </xsl:when>
         </xsl:choose>
 
@@ -38,10 +31,9 @@
             <xsl:variable name="name" select="cell[@nr = $name-column]"/>
             <xsl:variable name="required" select="cell[@nr = $required-column] = 'TRUE'"/>
             <xsl:variable name="static" select="cell[@nr = $static-column]"/>
-            <xsl:variable name="meta" select="cell[@nr = $meta-column]"/>
-            <xsl:variable name="stage" select="cell[@nr = $stage-column]"/>
+            <xsl:variable name="metastage" select="cell[@nr = $metastage-column]"/>
             
-            <xsl:variable name="value" select="($stage,$meta,$static)[1]"/>
+            <xsl:variable name="value" select="($metastage,$static)[1]"/>
             <xsl:variable name="effective-value" select="if ($value) then $value else if ($required) then '(unspecified)' else ()"/>
             <xsl:sequence select="imf:line($name,$effective-value)"/>
         </xsl:for-each>

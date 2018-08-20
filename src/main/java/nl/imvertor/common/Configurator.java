@@ -1040,8 +1040,8 @@ public class Configurator {
 		
 		// get the column names
 		String[] cols = StringUtils.split(processingmode,":");
-		if (cols.length != 3)
-			throw new Exception("Incomplete format for processingmode: \"" + processingmode + "\", should be \"[owner]:[meta]:[stage]\"");
+		if (cols.length != 2)
+			throw new Exception("Incomplete format for processingmode: \"" + processingmode + "\", should be \"[owner]:[configname]\"");
 				
 		OOXmlFile excelFile = new OOXmlFile(commonStoreFile);
 		
@@ -1054,8 +1054,7 @@ public class Configurator {
 		XslFile propsXsl = new XslFile(Configurator.getInstance().getResource("static/xsl/Configurator/processingmode.xsl"));
 		HashMap<String,String> parms = propsXsl.getInitialParms();
 		parms.put("owner", StringUtils.normalizeSpace(cols[0]));
-		parms.put("meta", StringUtils.normalizeSpace(cols[1]));
-		parms.put("stage", StringUtils.normalizeSpace(cols[2]));
+		parms.put("metastage", StringUtils.normalizeSpace(cols[1]));
 		propsXsl.transform( tempFile.getCanonicalPath(), propFile.getCanonicalPath());		
 		//tempFile.copyFile("c:/temp/r.xml");
 		//propFile.copyFile("c:/temp/r.properties");
