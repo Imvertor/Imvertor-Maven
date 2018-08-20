@@ -41,24 +41,26 @@
   
     <xsl:variable name="configuration-owner-name" select="imf:get-config-string('system','configuration-owner-file')"/>
     <xsl:variable name="configuration-metamodel-name" select="imf:get-config-string('system','configuration-metamodel-file')"/>
-    <xsl:variable name="configuration-schemarules-name" select="imf:get-config-string('system','configuration-schemarules-file')"/>
     <xsl:variable name="configuration-tvset-name" select="imf:get-config-string('system','configuration-tvset-file')"/>
     <xsl:variable name="configuration-notesrules-name" select="imf:get-config-string('system','configuration-notesrules-file')"/>
     <xsl:variable name="configuration-docrules-name" select="imf:get-config-string('system','configuration-docrules-file')"/>
     <xsl:variable name="configuration-versionrules-name" select="imf:get-config-string('system','configuration-versionrules-file')"/>
+   
+    <xsl:variable name="configuration-schemarules-name" select="imf:get-config-string('system','configuration-schemarules-file','/none')"/>
     <xsl:variable name="configuration-shaclrules-name" select="imf:get-config-string('system','configuration-shaclrules-file','/none')"/>
     
     <xsl:variable name="configuration-file" select="imf:document(imf:get-config-string('properties','WORK_CONFIG_FILE'),true())"/>
     
     <xsl:variable name="configuration-owner-file" select="$configuration-file/config/project-owner"/>
     <xsl:variable name="configuration-metamodel-file" select="$configuration-file/config/metamodel"/>
-    <xsl:variable name="configuration-schemarules-file" select="$configuration-file/config/schema-rules"/>
     <xsl:variable name="configuration-tvset-file" select="$configuration-file/config/tagset"/>
     <xsl:variable name="configuration-notesrules-file" select="$configuration-file/config/notes-rules"/>
     <xsl:variable name="configuration-docrules-file" select="$configuration-file/config/doc-rules"/>
     <xsl:variable name="configuration-versionrules-file" select="$configuration-file/config/version-rules"/>
-    <xsl:variable name="configuration-shaclrules-file" select="$configuration-file/config/shacl-rules"/>
     <xsl:variable name="configuration-prologue" select="$configuration-file/config/prologue"/>
+
+    <xsl:variable name="configuration-schemarules-file" select="$configuration-file/config/schema-rules"/>
+    <xsl:variable name="configuration-shaclrules-file" select="$configuration-file/config/shacl-rules"/>
     
     <xsl:variable name="configuration-i3n-name" select="imf:get-config-string('system','configuration-i3n-file')"/>
     <xsl:variable name="configuration-i3n-file" select="imf:document($configuration-i3n-name,true())"/>

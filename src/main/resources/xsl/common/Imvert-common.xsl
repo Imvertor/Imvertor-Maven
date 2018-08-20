@@ -1219,4 +1219,14 @@
         <xsl:param name="subpath-2" as="xs:string?"/>
         <xsl:sequence select="exists($subpath-1) and exists($subpath-2) and (lower-case($subpath-1) eq lower-case($subpath-2))"/>
     </xsl:function>
+    
+    <!-- should augment functx -->
+    <xsl:function name="imf:left-pad-string-to-length" as="xs:string">
+        <xsl:param name="stringToPad"/>
+        <xsl:param name="padChar"/>
+        <xsl:param name="length" as="xs:integer"/>
+        <xsl:value-of select="substring(
+            string-join((for $i in (1 to $length) return $padChar,$stringToPad),''),string-length($stringToPad))"/>
+    </xsl:function>
+    
 </xsl:stylesheet>

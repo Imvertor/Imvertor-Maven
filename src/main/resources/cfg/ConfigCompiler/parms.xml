@@ -34,7 +34,7 @@
          <name>schemarules</name>
          <arg>name</arg>
          <tip>Name of the configuration folder for schema rules</tip>
-         <required>true</required>
+         <required>false</required>
       </cli-parm> 
       <cli-parm>
          <name>notesrules</name>

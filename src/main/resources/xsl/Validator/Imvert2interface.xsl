@@ -53,7 +53,7 @@
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:variable name="referencing-construct" select="(//*[imvert:type-id = current()/imvert:id])[1]"/>
-                        <xsl:sequence select="imf:msg($referencing-construct,'ERROR','Reference to [1] in outside model could not be resolved when using mapping [2]',(imvert:name,$conceptual-schema-mapping-name))"/>
+                        <xsl:sequence select="imf:msg($referencing-construct,'ERROR','Reference to [1] in outside model could not be resolved when using mapping [2]',(imf:string-group(imvert:name),$conceptual-schema-mapping-name))"/>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:variable>

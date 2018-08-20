@@ -85,8 +85,9 @@
         https://service.pre.omgevingswet.overheid.nl/publiek/catalogus/api/opvragen/v1/concept?subject=http%3A%2F%2Fwetgeving.omgevingswet.overheid.nl%2Fid%2Fconcept%2FAfvalstoffen
         (opvragen met een API key zie (x-api-key)
     -->
-    <parameter name="concept-uri-template">https://service.pre.omgevingswet.overheid.nl/publiek/catalogus/api/opvragen/v1/concept?subject=[concept]</parameter>
-    
+    <!--parameter name="concept-uri-template">https://service.pre.omgevingswet.overheid.nl/publiek/catalogus/api/opvragen/v1/concept?subject=[concept]</parameter-->
+    <parameter name="concept-uri-template">https://brk.basisregistraties.overheid.nl/doc/begrip/[concept]?format=xml</parameter>
+   
     <!-- allow client scalars to be compared to any type of supplier? -->  
     <parameter name="derivation-client-scalar-check">true</parameter>
     
