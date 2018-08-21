@@ -888,6 +888,8 @@
 				<xsl:variable name="complex-datatype-tech-name" select="$construct/imvert:class/imvert:name" />
 				<xsl:copy>
 					<xsl:attribute name="type" select="$type" />
+					<xsl:attribute name="berichtcode" select="$berichtcode" />
+					<xsl:attribute name="messagetype" select="$messagetype" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $construct/imvert:class/imvert:name/@original)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($complex-datatype-tech-name,'type-name'))" />
 					<xsl:choose>
