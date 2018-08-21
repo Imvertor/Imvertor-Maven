@@ -598,15 +598,13 @@
 						<xsl:value-of select="'&quot;_embedded&quot; : {'"/>
 						<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
 						<xsl:value-of select="'&quot;properties&quot; : {'"/>
-						<!-- TODO: De naam van het _embedded type moet uiteindelijk de naam van het entiteittype in meervoud zijn. -->
 						<xsl:value-of select="'&quot;'"/>
 						<xsl:variable name="responseEntiteitId">
 							<xsl:value-of select="ep:seq/ep:construct[@type!='requestclass']/ep:type-name"/>
 						</xsl:variable>
 						<xsl:choose>
 							<xsl:when test="//ep:message-set/ep:construct[ep:tech-name = $responseEntiteitId]">
-							<!--<xsl:when test="ep:seq/ep:construct[@type!='requestclass']/@meervoudigeNaam">-->
-								<xsl:value-of select="/ep:message-set/ep:construct[ep:tech-name = $responseEntiteitId]/@meervoudigeNaam"/>
+								<xsl:value-of select="//ep:message-set/ep:construct[ep:tech-name = $responseEntiteitId]/@meervoudigeNaam"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:value-of select="translate(ep:seq/ep:construct[@type!='requestclass']/ep:tech-name,'.','_')"/>
