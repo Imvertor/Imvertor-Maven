@@ -206,15 +206,13 @@
 						<!-- TODO: Kijken of ik hier nog preciesere foutmeldingen kan geven. -->
 						
 						<xsl:when test="count($determinedUriStructure//ep:uriPart) > count($calculatedUriStructure//ep:uriPart) or not($calculatedUriStructure//ep:uriPart)">
-							<!--<xsl:message select="concat('WARNING: The amount of entities within the message ',$messageName, ' is larger than the amount of entities within the query tree.')"/>-->
 							<xsl:sequence select="imf:msg(.,'WARNING','The amount of entities within the message [1] is larger than the amount of entities within the query tree.', ($messageName))" />			
 							<ep:uriStructure/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:for-each select="$calculatedUriStructure/ep:uriStructure">
 								<ep:uriStructure>
-	<!--								<xsl:sequence select="imf:checkUriStructure($determinedUriStructure,$calculatedUriStructure,1,$messageName)"/>
-	-->								<xsl:call-template name="checkUriStructure">
+									<xsl:call-template name="checkUriStructure">
 										<xsl:with-param name="uriPart2Check" select="1"/>
 										<xsl:with-param name="determinedUriStructure" select="$determinedUriStructure"/>
 										<xsl:with-param name="calculatedUriStructure" select="$calculatedUriStructure"/>
@@ -225,7 +223,6 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-				<!--<xsl:if test="count($calculatedUriStructure//ep:uriPart) > count($determinedUriStructure//ep:uriPart)">-->
 				<xsl:if test="$checkedUriStructure//ep:uriPart[ep:entityName/@path='false' and count(ep:param)=0 and empty(following-sibling::ep:uriPart[ep:param])]">
 					<xsl:variable name="falseAndEmptyUriParts">
 						<xsl:for-each select="$checkedUriStructure//ep:uriPart[ep:entityName/@path='false' and count(ep:param)=0]">
@@ -237,29 +234,28 @@
 					</xsl:variable>
 					<xsl:choose>
 						<xsl:when test="contains($falseAndEmptyUriParts,',')">
-							<!--<xsl:message select="concat('WARNING: The request tree of the message ',$messageName,' contains empty entities (',$falseAndEmptyUriParts,') which are not part of the message.')"/>-->
 							<xsl:sequence select="imf:msg(.,'WARNING','The request tree of the message [1] contains empty entities ([2]) which are not part of the message.', ($messageName,$falseAndEmptyUriParts))" />			
 						</xsl:when>
 						<xsl:otherwise>
-							<!--<xsl:message select="concat('WARNING: The request tree of the message ',$messageName,' contains the empty entity (',$falseAndEmptyUriParts,') which is not part of the message.')"/>-->
 							<xsl:sequence select="imf:msg(.,'WARNING','The request tree of the message [1] contains the empty entity ([2]) which is not part of the message.', ($messageName,$falseAndEmptyUriParts))" />			
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:if>
-				<xsl:result-document method="xml" href="{concat('file:/c:/temp/message/message-',ep:tech-name,'-',generate-id(),'.xml')}">
-					<uriStructure>
-						<determinedUriStructure>
-							<xsl:sequence select="$determinedUriStructure" />
-						</determinedUriStructure>
-						<calculatedUriStructure>
-							<xsl:sequence select="$calculatedUriStructure" />
-						</calculatedUriStructure>
-						<checkedUriStructure>
-							<xsl:sequence select="$checkedUriStructure" />
-						</checkedUriStructure>
-					</uriStructure>
-				</xsl:result-document>
-				
+				<xsl:if test="$debugging">
+					<xsl:result-document method="xml" href="{concat('file:/c:/temp/message/message-',ep:tech-name,'-',generate-id(),'.xml')}">
+						<uriStructure>
+							<determinedUriStructure>
+								<xsl:sequence select="$determinedUriStructure" />
+							</determinedUriStructure>
+							<calculatedUriStructure>
+								<xsl:sequence select="$calculatedUriStructure" />
+							</calculatedUriStructure>
+							<checkedUriStructure>
+								<xsl:sequence select="$checkedUriStructure" />
+							</checkedUriStructure>
+						</uriStructure>
+					</xsl:result-document>
+				</xsl:if>
 <?x				<xsl:variable name="calculatedMessageName">
 					<xsl:for-each select="$calculatedUriStructure//ep:uriPart">
 						<xsl:text>/</xsl:text><xsl:value-of select="ep:entityName"/>
@@ -279,14 +275,6 @@
 					<xsl:text>"</xsl:text><xsl:apply-templates select="ep:documentation" /><xsl:text>"</xsl:text>
 				</xsl:variable>
 				<xsl:variable name="method">get</xsl:variable>
-	<!--				<xsl:choose>
-						<xsl:when test="substring(@berichtcode,1,1) = 'G'">get</xsl:when>
-						<xsl:when test="substring(@berichtcode,1,1) = 'Po'">post</xsl:when>
-						<xsl:when test="substring(@berichtcode,1,1) = 'Pu'">put</xsl:when>
-						<xsl:when test="substring(@berichtcode,1,1) = 'Pa'">patch</xsl:when>
-						<xsl:when test="substring(@berichtcode,1,1) = 'De'">delete</xsl:when>
-					</xsl:choose>
-				</xsl:variable>-->
 				<xsl:variable name="pagination">
 					<xsl:if test="@pagination = 'true'">
 						<xsl:value-of select="true()"/>
@@ -468,10 +456,10 @@
 				<xsl:text>&#xa;            X-Rate-Limit-Reset:</xsl:text>
 				<xsl:text>&#xa;              $ref: '#/components/headers/X_Rate_Limit_Reset'  </xsl:text>
 				<xsl:text>&#xa;          content:</xsl:text>
-				<xsl:text>&#xa;            application/json:</xsl:text>
+				<xsl:text>&#xa;            application/hal+json:</xsl:text>
 				<xsl:text>&#xa;              schema:</xsl:text>
 				<xsl:for-each
-					select="../ep:message[@messagetype = 'response' and @servicename=$serviceName and ep:name = $messageName]">
+					select="../ep:message[@messagetype = 'response' and ep:name = $messageName]">
 					<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text>
 					<xsl:choose>
 						<xsl:when test="@grouping = 'resource'">

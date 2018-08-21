@@ -249,6 +249,7 @@
                 <?x stereo minmax="1..1">stereotype-name-kennisgevingberichttype</stereo>
                 <stereo minmax="1..1">stereotype-name-synchronisatieberichttype</stereo>
                 <stereo minmax="1..1">stereotype-name-vrijberichttype</stereo ?>
+                <stereo minmax="0..1">stereotype-name-getberichttype</stereo>
             </stereotypes>
             <declared-values lang="nl">
                 <!-- In Json relaties expanden. -->

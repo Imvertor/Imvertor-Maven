@@ -168,13 +168,20 @@
 		<!-- Only if json+hal applies this if is relevant -->
         <xsl:if test="$uitvoerformaat = 'json+hal'">
 			<!-- If the next loop is relevant a comma separator has to be generated. -->
-			<xsl:if test="ep:message-set/ep:construct[.//ep:construct[@type='association']]">,</xsl:if>
+        	
+        	<!-- ROME: if conditie aangepast omdat blijkbaar bij elke voorkomende entiteit in een model een '_links' component moet worden gegenereerd. RM #490164 -->
+        	<!--xsl:if test="ep:message-set/ep:construct[.//ep:construct[@type='association']]">,</xsl:if-->
+        	<xsl:if test="ep:message-set/ep:construct">,</xsl:if>
 
 			<!-- Loop over global constructs who do have themself a construct of 'association' type.
 				 Global types are generated. -->
-			<xsl:for-each select="ep:message-set/ep:construct[.//ep:construct[@type='association'] and (( contains(@berichtcode,'Po') and @messagetype='request') or 
-													((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response'))]">
-
+        	
+        	<!-- ROME: if conditie aangepast omdat blijkbaar bij elke voorkomende entiteit in een model een '_links' component moet worden gegenereerd. RM #490164 -->
+        	<!--xsl:for-each select="ep:message-set/ep:construct[.//ep:construct[@type='association'] and (( contains(@berichtcode,'Po') and @messagetype='request') or 
+													((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response'))]"-->
+			<xsl:for-each select="ep:message-set/ep:construct[(( contains(@berichtcode,'Po') and @messagetype='request') or 
+				((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response'))]">
+					
 				<xsl:if test="$debugging">
 					"--------------Debuglocatie-00600-<xsl:value-of select="generate-id()"/>": {
 						"Debug": "AOS00600"
@@ -756,11 +763,16 @@
 		</xsl:for-each>
 		
 
-		<!--<xsl:if test=".//ep:construct[@type='association' and ../ep:construct[not(@type = 'association') and not(ep:ref)]]">-->
-		<xsl:if test=".//ep:construct[@type='association'] and ep:seq/ep:construct[not(ep:seq) and not(@type = 'association') and not(ep:ref)]">
+    	<!-- ROME: if conditie aangepast omdat blijkbaar bij elke voorkomende entiteit in een model een '_links' component moet worden gegenereerd en hier dus 
+				   altijd een komma moet komen als er ook andere properties dan associations zijn. --> 
+		<!-- xsl:if test=".//ep:construct[@type='association'] and ep:seq/ep:construct[not(ep:seq) and not(@type = 'association') and not(ep:ref)]"-->
+		<xsl:if test=".//ep:construct[not(@type='association')]">
 			<xsl:value-of select="','"/>
 		</xsl:if>
-		<xsl:if test=".//ep:construct[@type='association']">
+
+    	<!-- ROME: if conditie verwijderd omdat blijkbaar bij elke voorkomende entiteit in een model een '_links' component moet worden gegenereerd en hier dus een 
+    		 verwijzing daarheen. RM #490164 -->
+    	<!--xsl:if test=".//ep:construct[@type='association']"-->
 			<xsl:value-of select="'&quot;_links&quot;: {'"/>
 
 			<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$elementName,'_links&quot;}')"/>
@@ -771,7 +783,7 @@
 				<xsl:value-of select="',&quot;_embedded&quot;: {'"/>
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$elementName,'_embedded&quot;}')"/>
 			</xsl:if>
-		</xsl:if>
+		<!--/xsl:if-->
 		<xsl:value-of select="'}'"/>
 
 		<xsl:if test="ep:seq/ep:construct[ep:ref]">
@@ -1203,16 +1215,20 @@
 		<!-- Double quotes in documentation text is replaced by a  grave accent. -->
 		<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
 		<xsl:value-of select="'&quot;,'"/>
-        <xsl:value-of select="'&quot;items&quot;: {'"/>
-		<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
-		<xsl:value-of select="'&quot;description&quot;: &quot;url naar deze resource&quot;,'"/>
+    	<xsl:if test="$type = 'array'">
+			<xsl:value-of select="'&quot;items&quot;: {'"/>
+			<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
+			<xsl:value-of select="'&quot;description&quot;: &quot;url naar deze resource&quot;,'"/>
+   		</xsl:if>
 		<xsl:value-of select="'&quot;properties&quot;: {'"/>
 		<xsl:value-of select="'&quot;href&quot;: {'"/>
 		<xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
 		<xsl:value-of select="'&quot;format&quot;: &quot;uri&quot;'"/>
         <xsl:value-of select="'}'"/>
         <xsl:value-of select="'}'"/>
-        <xsl:value-of select="'}'"/>
+		<xsl:if test="$type = 'array'">
+			<xsl:value-of select="'}'"/>
+		</xsl:if>
         <xsl:value-of select="'}'"/>
 		<!-- As long as the current construct isn't the last association type construct a comma separator has to be generated. -->
 		<xsl:if test="position() != last()">
