@@ -73,9 +73,22 @@
                 <xsl:value-of select="UML:ModelElement.taggedValue/UML:TaggedValue[@tag = 'documentation']/@value"/>
             </imvert-imap:documentation>
             
-            <xsl:variable name="tk" select="for $c in tokenize(@name,'-') return normalize-space($c)"/>
-            <xsl:variable name="purpose" select="$configuration-docrules-file/image-purpose[marker = $tk[last()]]"/>
-            <xsl:if test="$purpose">
+            <xsl:variable name="purpose" as="element(image-purpose)?">
+                <xsl:choose>
+                    <xsl:when test="$configuration-docrules-file/diagram-type-strategy eq 'prefix'">
+                        <xsl:variable name="tk" select="for $c in tokenize(@name,':') return normalize-space($c)"/>
+                        <xsl:sequence select="$configuration-docrules-file/image-purpose[marker = $tk[1]]"/>
+                    </xsl:when>
+                    <xsl:when test="$configuration-docrules-file/diagram-type-strategy eq 'suffix'">
+                        <xsl:variable name="tk" select="for $c in tokenize(@name,'-') return normalize-space($c)"/>
+                        <xsl:sequence select="$configuration-docrules-file/image-purpose[marker = $tk[last()]]"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <!-- cannot determine purpose, return nothing -->
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:variable>
+            <xsl:if test="exists($purpose)">
                 <imvert-imap:purpose>
                     <xsl:value-of select="$purpose/@id"/>
                 </imvert-imap:purpose>

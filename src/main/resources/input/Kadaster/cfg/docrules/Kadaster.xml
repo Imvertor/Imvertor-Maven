@@ -11,7 +11,12 @@
     <link-by>NAME</link-by><!-- link by EAID or NAME -->
 
     <explanation-location>at-bottom</explanation-location> <!-- at-bottom or as-row --> 
-
+    
+    <!--
+        Determine the type of any diagram image by suffix, i.e. the diagram name after "-" as in "Objecttypen  – overzicht" 
+    -->
+    <diagram-type-strategy>suffix</diagram-type-strategy>
+    
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>
         <name lang="en">Overview diagram</name>

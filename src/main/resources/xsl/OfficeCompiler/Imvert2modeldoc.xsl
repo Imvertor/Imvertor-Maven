@@ -1171,22 +1171,24 @@
             <xsl:when test="$insert-diagrams and exists($diagrams-in-construct)">
                 <section type="IMAGEMAPS" name="{imf:plugin-get-model-name($construct)}-imagemap" id="{imf:plugin-get-link-name($construct,'imagemap')}">
                     <xsl:for-each select="$diagrams-in-construct">
-                        <section type="IMAGEMAP" name="{imvert-imap:name}" id="{imvert-imap:id}">
-                            <content>
-                                <part type="CFG-DOC-NAAM">
-                                    <item>
-                                        <xsl:value-of select="imf:plugin-translate-i3n('DIAGRAM-NAME',true())"/>
-                                    </item>
-                                    <item><xsl:value-of select="imvert-imap:name"/></item>
-                                </part>
-                                <part type="CFG-DOC-DESCRIPTION">
-                                    <item>
-                                        <xsl:value-of select="imf:plugin-translate-i3n('DIAGRAM-DESCRIPTION',true())"/>
-                                    </item>
-                                    <item><xsl:value-of select="imvert-imap:documentation"/></item>
-                                </part>
-                            </content>
-                        </section>    
+                        <xsl:if test="exists(imvert-imap:purpose)">
+                            <section type="IMAGEMAP" name="{imvert-imap:name}" id="{imvert-imap:id}">
+                                <content>
+                                    <part type="CFG-DOC-NAAM">
+                                        <item>
+                                            <xsl:value-of select="imf:plugin-translate-i3n('DIAGRAM-NAME',true())"/>
+                                        </item>
+                                        <item><xsl:value-of select="imvert-imap:name"/></item>
+                                    </part>
+                                    <part type="CFG-DOC-DESCRIPTION">
+                                        <item>
+                                            <xsl:value-of select="imf:plugin-translate-i3n('DIAGRAM-DESCRIPTION',true())"/>
+                                        </item>
+                                        <item><xsl:value-of select="imvert-imap:documentation"/></item>
+                                    </part>
+                                </content>
+                            </section>    
+                        </xsl:if>
                     </xsl:for-each>
                 </section>
             </xsl:when>

@@ -137,8 +137,11 @@
                     <xsl:variable name="diagram-id" select="@id"/>
                     <xsl:variable name="diagram" select="$imagemap/imvert-imap:diagram[imvert-imap:id = $diagram-id]"/>
                     <xsl:variable name="diagram-path" select="concat('Images/',$diagram-id,'.png')"/><!-- TODO as configured -->
-                    <xsl:variable name="diagram-css-class" select="if ($diagram/imvert-imap:purpose = 'CFG-IMG-OVERVIEW') then 'overview' else ''"/>
-                        
+                    <xsl:variable name="diagram-css-class" select="
+                        if ($diagram/imvert-imap:purpose = 'CFG-IMG-OVERVIEW') then 'overview' else 
+                        if ($diagram/imvert-imap:purpose = 'CFG-IMG-DETAIL') then 'detail' else 
+                        ''"/>
+             
                     <div class="imageinfo {$diagram-css-class}">
                         <img src="{$diagram-path}" usemap="#imagemap-{$diagram-id}"/>
                         <map name="imagemap-{$diagram-id}">
@@ -163,9 +166,8 @@
                             </b>
                             <xsl:value-of select="if (normalize-space($caption-desc)) then concat(' &#8212; ',$caption-desc) else ()"/>
                         </p>    
-                    </div>
+                    </div>        
                 </xsl:for-each>
-     
             </xsl:when>
             <xsl:when test="@type = 'EXPLANATION'">
                 <xsl:sequence select="imf:create-nonheader(imf:translate-i3n('EXPLANATION',$language-model,()))"/>
