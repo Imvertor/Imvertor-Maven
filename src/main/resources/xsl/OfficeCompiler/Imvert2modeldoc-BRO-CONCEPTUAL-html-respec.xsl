@@ -29,7 +29,7 @@
       <h2>Catalogus</h2>
         <p class="note" title="Over deze catalogus">
             Deze catalogus is automatisch samengesteld op basis van het UML model 
-            "<xsl:value-of select="@name"/>" door <xsl:value-of select="@generator-version"/> op <xsl:value-of select="imf:format-dateTime(@generator-date)"/>.
+            "<xsl:value-of select="@name"/>" door Imvertor <xsl:value-of select="@generator-version"/> op <xsl:value-of select="imf:format-dateTime(@generator-date)"/>.
            <br/>
             Wanneer je technische fouten of onvolkomenheden aantreft, geef dit dan door aan <i><xsl:value-of select="imf:get-config-string('cli','supportemail')"/></i> en geef de code 
             <i>"<xsl:value-of select="imf:get-config-string('appinfo','release-name')"/>"</i> door. 
