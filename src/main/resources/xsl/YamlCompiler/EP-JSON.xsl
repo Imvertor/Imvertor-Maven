@@ -10,8 +10,8 @@
 	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
 	
 	<!-- De eerste variabele is bedoelt voor de server omgeving, de tweede voor gebruik bij ontwikkeling in XML-Spy. -->
-	<!--<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>-->
-	<xsl:variable name="debugging" select="true()" as="xs:boolean"/>
+	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
+	<!--<xsl:variable name="debugging" select="false()" as="xs:boolean"/>-->
 	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
@@ -136,7 +136,6 @@
 					 not(ep:enum)
 				]">
             <xsl:variable name="type-name" select="ep:type-name"/>
-
             <!-- The regular constructs are generated here. -->
             <xsl:call-template name="construct"/>
             
@@ -172,7 +171,7 @@
        
         <!-- Loop over constructs which are refered to from the global constructs but aren't enumeration constructs. -->
         <xsl:for-each select="ep:message-set/ep:construct[(ep:tech-name = //ep:message-set/ep:construct/ep:seq/ep:construct/ep:type-name) and not(ep:tech-name = //ep:message[@messagetype='response']/ep:seq/ep:construct/ep:type-name) and not(ep:enum) and (( contains(@berichtcode,'Po') and @messagetype='request') or 
-													((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response'))]">
+													((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response')) and not(@type='superclass' and ep:tech-name = //ep:message-set/ep:construct//ep:construct/ep:ref)]">
             
             <!-- Only regular constructs are generated. -->
             <xsl:call-template name="construct"/>
@@ -210,11 +209,11 @@
         	<!--xsl:for-each select="ep:message-set/ep:construct[.//ep:construct[@type='association'] and (( contains(@berichtcode,'Po') and @messagetype='request') or 
 													((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response'))]"-->
 			<xsl:for-each select="ep:message-set/ep:construct[(( contains(@berichtcode,'Po') and @messagetype='request') or 
-				((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response')) and @type!='complex-datatype']">
+				((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response')) and @type!='complex-datatype' and @type!='groepCompositie' and @type!='groepCompositieAssociation']">
 					
 				<xsl:if test="$debugging">
-					"--------------Debuglocatie-00600-<xsl:value-of select="generate-id()"/>": {
-						"Debug": "AOS00600"
+					"--------------Debuglocatie-00500-<xsl:value-of select="generate-id()"/>": {
+						"Debug": "OAS00500"
 					},
 				</xsl:if>
 
@@ -239,8 +238,8 @@
 				<xsl:value-of select="'}'"/>
 
 				<xsl:if test="$debugging">
-					,"--------------Einde-00600-<xsl:value-of select="generate-id()"/>": {
-						"Debug": "AOS00600"
+					,"--------------Einde-01000-<xsl:value-of select="generate-id()"/>": {
+						"Debug": "OAS01000"
 					}
 
 				</xsl:if>
@@ -261,8 +260,8 @@
 				<xsl:for-each select="ep:message-set/ep:construct[.//ep:construct[@type='association' and @expand = 'true']]">
 
 					<xsl:if test="$debugging">
-						"--------------Debuglocatie-00700-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "AOS00700"
+						"--------------Debuglocatie-01500-<xsl:value-of select="generate-id()"/>": {
+							"Debug": "OAS01500"
 						},
 					</xsl:if>
 
@@ -274,8 +273,8 @@
 					<xsl:value-of select="'}'"/>
 
 					<xsl:if test="$debugging">
-						,"--------------Einde-00700-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "AOS00700"
+						,"--------------Einde-02000-<xsl:value-of select="generate-id()"/>": {
+							"Debug": "OAS02000"
 						}
 					</xsl:if>
 
@@ -298,8 +297,8 @@
 					select="//ep:message-set/ep:construct[ep:tech-name = //ep:message[@expand='true']//ep:construct/ep:type-name]">
 
 					<xsl:if test="$debugging">
-						"--------------Debuglocatie-00725-<xsl:value-of select="generate-id()" />": {
-						"Debug": "AOS00725"
+						"--------------Debuglocatie-03000-<xsl:value-of select="generate-id()" />": {
+						"Debug": "OAS03000"
 						},
 					</xsl:if>
 
@@ -314,8 +313,8 @@
 					<xsl:value-of select="'}'" />
 
 					<xsl:if test="$debugging">
-						,"--------------Einde-00725-<xsl:value-of select="generate-id()" />": {
-						"Debug": "AOS00725"
+						,"--------------Einde-03500-<xsl:value-of select="generate-id()" />": {
+						"Debug": "OAS03500"
 						}
 					</xsl:if>
 
@@ -567,8 +566,8 @@
         </xsl:variable>
 
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-00100-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "AOS00100"
+			"--------------Debuglocatie-04000-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS04000"
 			},
 		</xsl:if>
 
@@ -685,8 +684,8 @@
         <xsl:value-of select="'}'"/>
 
 		<xsl:if test="$debugging">
-			,"--------------Einde-00100-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "AOS00100"
+			,"--------------Einde-04500-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS04500"
 			}
 		</xsl:if>
 
@@ -705,8 +704,8 @@
         <xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
 
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-00200-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "AOS00200"
+			"--------------Debuglocatie-05000-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS05000"
 			},
 		</xsl:if>
 		<xsl:if test="$grouping != 'resource'">
@@ -793,11 +792,11 @@
 		</xsl:for-each>
 		
 
-		<xsl:if test="@type!='complex-datatype' and ep:seq/ep:construct[not(ep:seq) and not(@type = 'association') and not(@type = 'superclass') and not(ep:ref)]">
+		<xsl:if test="@type!='complex-datatype' and @type!='groepCompositie' and ep:seq/ep:construct[not(ep:seq) and not(@type = 'association') and not(@type = 'superclass') and not(ep:ref)]">
 			<xsl:value-of select="','"/>
 		</xsl:if>
 		
-		<xsl:if test="@type!='complex-datatype'">
+		<xsl:if test="@type!='complex-datatype' and @type!='groepCompositie'">
 
 			<xsl:value-of select="'&quot;_links&quot;: {'"/>
 	
@@ -819,8 +818,8 @@
 		<xsl:if test="$grouping != 'resource'">
 			<xsl:value-of select="'}'"/>
 			<xsl:if test="$debugging">
-				,"--------------Einde-00200-<xsl:value-of select="generate-id()"/>": {
-					"Debug": "AOS00200"
+				,"--------------Einde-05500-<xsl:value-of select="generate-id()"/>": {
+					"Debug": "OAS05500"
 				}
 			</xsl:if>
 		</xsl:if>
@@ -832,8 +831,8 @@
         <xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
 
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-00300-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "AOS00300"
+			"--------------Debuglocatie-06000-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS06000"
 			},
 		</xsl:if>
 
@@ -876,8 +875,8 @@
         <xsl:value-of select="'}'"/>
         
  		<xsl:if test="$debugging">
-			,"--------------Einde-00300-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "AOS00300"
+			,"--------------Einde-06500-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS06500"
 			}
 		</xsl:if>
    </xsl:template>
@@ -903,8 +902,8 @@
         <xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
 
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-00400-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "AOS00400"
+			"--------------Debuglocatie-07000-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS07000"
 			},
 		</xsl:if>
  
@@ -992,8 +991,8 @@
 		<xsl:value-of select="'}'"/>
 
 		<xsl:if test="$debugging">
-			,"--------------Einde-00400-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "AOS00400"
+			,"--------------Einde-07500-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS07500"
 			}
 		</xsl:if>
    </xsl:template> ?>
