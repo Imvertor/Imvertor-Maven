@@ -367,6 +367,7 @@
 								<xsl:choose>
 									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'date'">string</xsl:when>
 									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'datetime'">string</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'postcode'">string</xsl:when>
 									<xsl:when test="ep:type-name">
 										<xsl:variable name="type" select="ep:type-name"/>
 										<xsl:variable name="enumtype" select="$message-sets//ep:message-set/ep:construct[ep:tech-name = $type]/ep:data-type"/>
@@ -837,7 +838,10 @@
 					<xsl:text>&#xa;            maximum: </xsl:text><xsl:value-of select="ep:max-value"/>
 				</xsl:if>
             </xsl:when>
-            <xsl:otherwise/>
+       	<xsl:when test="$incomingType = 'postcode'">
+       		<xsl:text>&#xa;            pattern: ^[1-9]{1}[0-9]{3}[A-Z]{2}$</xsl:text>
+       	</xsl:when>
+       	<xsl:otherwise/>
         </xsl:choose>
     </xsl:template>
 </xsl:stylesheet>
