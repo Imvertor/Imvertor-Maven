@@ -74,7 +74,7 @@
 		<!-- This processes the package containing the interface messages. -->
 
 		<xsl:sequence
-			select="imf:create-debug-comment('debug:start A00000 /debug:start',$debugging)" />
+			select="imf:create-debug-comment('debug:start A10500 /debug:start',$debugging)" />
 		<xsl:sequence
 			select="imf:create-debug-track(concat('Constructing the rough-messages for package: ',imvert:name),$debugging)" />
 
@@ -148,7 +148,7 @@
 				<xsl:sequence select="imf:msg('ERROR',$msg)" />
 			</xsl:when>
 			<xsl:when test="contains($berichtcode,'Gc') or contains($berichtcode,'Gr')">
-				<xsl:sequence select="imf:create-debug-comment('A00001]',$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment('A11000]',$debugging)" />
 				<xsl:choose>
 					<!-- It's not allowed to have none associations of type 'entiteitrelatie'. -->
 					<xsl:when
@@ -178,7 +178,7 @@
 					</xsl:when>
 					<xsl:when
 						test="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]">
-						<xsl:sequence select="imf:create-debug-comment('A00005]',$debugging)" />
+						<xsl:sequence select="imf:create-debug-comment('A11500]',$debugging)" />
 						<xsl:for-each
 							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'response']">
 							<ep:rough-message messagetype="response"
@@ -201,7 +201,7 @@
 							</ep:rough-message>
 							<ep:rough-message messagetype="request"
 								berichtcode="{$berichtcode}" servicename="{$servicename}">
-								<xsl:sequence select="imf:create-debug-comment('A00010]',$debugging)" />
+								<xsl:sequence select="imf:create-debug-comment('A12000]',$debugging)" />
 								<xsl:sequence
 									select="imf:create-debug-track(concat('Constructing the rough-request-message: ',imvert:name/@original),$debugging)" />
 	
@@ -236,7 +236,7 @@
 				</xsl:choose>
 			</xsl:when>
 			<xsl:when test="contains($berichtcode,'Po')">
-				<xsl:sequence select="imf:create-debug-comment('A00011]',$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment('A12500]',$debugging)" />
 				<xsl:choose>
 					<!-- It's not allowed to have none associations of type 'entiteitrelatie'. -->
 					<xsl:when
@@ -259,7 +259,7 @@
 							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'request']">
 							<ep:rough-message messagetype="request"
 								berichtcode="{$berichtcode}" servicename="{$servicename}">
-								<xsl:sequence select="imf:create-debug-comment('A00015]',$debugging)" />
+								<xsl:sequence select="imf:create-debug-comment('A13000]',$debugging)" />
 								<xsl:sequence
 									select="imf:create-debug-track(concat('Constructing the rough-request-message: ',imvert:name/@original),$debugging)" />
 								
@@ -296,7 +296,7 @@
 		<xsl:variable name="type-id" select="imvert:type-id" />
 
 		<xsl:sequence
-			select="imf:create-debug-comment('debug:start A00020 /debug:start',$debugging)" />
+			select="imf:create-debug-comment('debug:start A13500 /debug:start',$debugging)" />
 		<xsl:sequence select="imf:create-debug-comment(imvert:name,$debugging)" />
 
 		<xsl:apply-templates select="key('class',$type-id)"
@@ -330,7 +330,7 @@
 		<xsl:variable name="id" select="imvert:id" />
 
 		<xsl:sequence
-			select="imf:create-debug-comment('debug:start A00030 /debug:start',$debugging)" />
+			select="imf:create-debug-comment('debug:start A14000 /debug:start',$debugging)" />
 		<xsl:sequence
 			select="imf:create-debug-comment(concat('Classname: ',imvert:name),$debugging)" />
 
@@ -357,11 +357,14 @@
 					</xsl:when>
 					<xsl:when test="$proces-type = 'as-normal'">
 						<xsl:sequence
-							select="imf:create-debug-comment('debug:start A00030a /debug:start',$debugging)" />
+							select="imf:create-debug-comment('debug:start A14500 /debug:start',$debugging)" />
 						<ep:construct>
 							<xsl:choose>
 								<xsl:when test="$association-function = 'requestParameters'">
 									<xsl:attribute name="type" select="'requestclass'" />
+								</xsl:when>
+								<xsl:when test="$id-refering-association!='' and //imvert:association[imvert:id = $id-refering-association]/imvert:stereotype/@id = 'stereotype-name-association-to-composite'">
+									<xsl:attribute name="type" select="'groepCompositie'" />
 								</xsl:when>
 								<xsl:otherwise>
 									<xsl:attribute name="type" select="$type" />
@@ -383,7 +386,7 @@
 								belonging to the current class. Attributes aren't important for the rough 
 								structure but need to be processed here to determine the processtype of the 
 								classes containing the attributes. -->
-							<xsl:sequence select="imf:create-debug-comment('A00040]',$debugging)" />
+							<xsl:sequence select="imf:create-debug-comment('A15000]',$debugging)" />
 							<xsl:apply-templates select="imvert:attributes/imvert:attribute">
 								<xsl:with-param name="id-trail"
 									select="concat('#', $id, '#', $id-trail)" />
@@ -416,7 +419,7 @@
 								belonging to the current class. Attributes aren't important for the rough 
 								structure but need to be processed here to determine the processtype of the 
 								classes containing the attributes. -->
-							<xsl:sequence select="imf:create-debug-comment('A00050]',$debugging)" />
+							<xsl:sequence select="imf:create-debug-comment('A15500]',$debugging)" />
 							<xsl:apply-templates select="imvert:attributes/imvert:attribute">
 								<xsl:with-param name="id-trail"
 									select="concat('#', $id, '#', $id-trail)" />
@@ -434,7 +437,7 @@
 						</ep:superconstruct>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:sequence select="imf:create-debug-comment('A00060]',$debugging)" />
+						<xsl:sequence select="imf:create-debug-comment('A16000]',$debugging)" />
 						<xsl:apply-templates select="imvert:attributes/imvert:attribute">
 							<xsl:with-param name="id-trail"
 								select="concat('#', $id, '#', $id-trail)" />
@@ -467,7 +470,7 @@
 		<xsl:param name="id-trail" />
 
 		<xsl:sequence
-			select="imf:create-debug-comment('debug:start A00070 /debug:start',$debugging)" />
+			select="imf:create-debug-comment('debug:start A16500 /debug:start',$debugging)" />
 
 		<xsl:variable name="type-id" select="imvert:type-id" />
 		<xsl:apply-templates select="key('class',$type-id)"
@@ -487,29 +490,33 @@
 		<xsl:variable name="type-id" select="imvert:type-id" />
 
 		<xsl:sequence
-			select="imf:create-debug-comment('debug:start A00080 /debug:start',$debugging)" />
+			select="imf:create-debug-comment('debug:start A17000 /debug:start',$debugging)" />
 
 		<ep:construct type="association">
-			<xsl:choose>
-				<xsl:when
-					test="imvert:stereotype/@id = 'stereotype-name-association-to-composite'">
-					<xsl:attribute name="type" select="'groepCompositie'" />
-				</xsl:when>
-				<xsl:when test="imvert:stereotype/@id = 'stereotype-name-relatiesoort'">
-					<xsl:attribute name="type" select="'association'" />
-				</xsl:when>
-			</xsl:choose>
 			<xsl:if test="$debugging">
 				<xsl:attribute name="package"
 					select="ancestor::imvert:package/imvert:name" />
 			</xsl:if>
-			<xsl:sequence select="imf:create-debug-comment('A00090]',$debugging)" />
+			<xsl:choose>
+				<xsl:when
+					test="imvert:stereotype/@id = 'stereotype-name-association-to-composite'">
+					<xsl:attribute name="type" select="'groepCompositieAssociation'" />
+					<xsl:sequence select="imf:create-debug-comment('A17500]',$debugging)" />
+					<xsl:sequence
+						select="imf:create-output-element('ep:name', 'noName')" />
+					<xsl:sequence
+						select="imf:create-output-element('ep:tech-name', 'noName')" />
+				</xsl:when>
+				<xsl:when test="imvert:stereotype/@id = 'stereotype-name-relatiesoort'">
+					<xsl:attribute name="type" select="'association'" />
+					<xsl:sequence select="imf:create-debug-comment('A18000]',$debugging)" />
+					<xsl:sequence
+						select="imf:create-output-element('ep:name', imvert:name/@original)" />
+					<xsl:sequence
+						select="imf:create-output-element('ep:tech-name', imf:get-normalized-name(imvert:name, 'element-name'))" />
+				</xsl:when>
+			</xsl:choose>
 
-			<xsl:sequence
-				select="imf:create-output-element('ep:name', imvert:name/@original)" />
-			<xsl:sequence
-				select="imf:create-output-element('ep:tech-name', imf:get-normalized-name(imvert:name, 'element-name'))" />
-			<xsl:sequence select="imf:create-debug-comment('A00100]',$debugging)" />
 			<xsl:sequence select="imf:create-output-element('ep:type-id', $type-id)" />
 			<xsl:sequence select="imf:create-output-element('ep:id', imvert:id)" />
 
@@ -538,7 +545,7 @@
 		<xsl:variable name="type-id" select="imvert:type-id" />
 
 		<xsl:sequence
-			select="imf:create-debug-comment('debug:start A00120 /debug:start',$debugging)" />
+			select="imf:create-debug-comment('debug:start A18500 /debug:start',$debugging)" />
 
 		<xsl:apply-templates select="key('class',$type-id)"
 			mode="create-rough-message-content">
@@ -554,7 +561,7 @@
 		<xsl:variable name="type-id" select="imvert:type-id" />
 
 		<xsl:sequence
-			select="imf:create-debug-comment('debug:start A00130 /debug:start',$debugging)" />
+			select="imf:create-debug-comment('debug:start A19000 /debug:start',$debugging)" />
 
 		<xsl:if test="empty(imvert:is-id)">
 			<ep:expand>true</ep:expand>
@@ -562,7 +569,7 @@
 
 		<xsl:if
 			test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype[@id = 'stereotype-name-complextype']">
-			<xsl:sequence select="imf:create-debug-comment('A00140]',$debugging)" />
+			<xsl:sequence select="imf:create-debug-comment('A19500]',$debugging)" />
 			<ep:construct type="complex-datatype">
 				<xsl:sequence
 					select="imf:create-output-element('ep:name', imvert:name/@original)" />
@@ -574,7 +581,7 @@
 				<xsl:variable name="gerelateerde"
 					select="imf:get-class-construct-by-id($type-id,$embellish-file)" />
 
-				<xsl:sequence select="imf:create-debug-comment('A00150]',$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment('A10000]',$debugging)" />
 				<xsl:apply-templates select="$gerelateerde"
 					mode="create-rough-message-content">
 					<!-- The 'id-trail' parameter has been introduced to be able to prevent 

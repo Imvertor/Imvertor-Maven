@@ -11,7 +11,7 @@
 	
 	<!-- De eerste variabele is bedoelt voor de server omgeving, de tweede voor gebruik bij ontwikkeling in XML-Spy. -->
 	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
-	<!--<xsl:variable name="debugging" select="true()" as="xs:boolean"/>-->
+	<!--<xsl:variable name="debugging" select="false()" as="xs:boolean"/>-->
 	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
@@ -84,29 +84,58 @@
         <!-- Loop over messages. -->
 		<xsl:apply-templates select="ep:message-set/ep:message
 				[
-					((contains(@berichtcode,'Gr') or contains(@berichtcode,'Gc')) and @messagetype='response')
-				 or (contains(@berichtcode,'Po') and @messagetype='request')
+					(
+						(contains(@berichtcode,'Gr') or contains(@berichtcode,'Gc')) and @messagetype='response'
+					)
+				 or 
+					(
+						contains(@berichtcode,'Po') and @messagetype='request'
+					)
 				]"/>
 
 		<!-- If the next loop is relevant a comma separator has to be generated. -->
 		<xsl:if
 			test="ep:message-set/ep:construct[ep:tech-name = //ep:message
-				[(
-					((contains(@berichtcode,'Gr') or contains(@berichtcode,'Gc')) and @messagetype='response')
-				 or (contains(@berichtcode,'Po') and @messagetype='request')
-				 )
-				 and @grouping!='resource']/ep:seq/ep:construct/ep:type-name and not(ep:enum)
+				[
+					(
+						(
+							(contains(@berichtcode,'Gr') or contains(@berichtcode,'Gc')) 
+						 and 
+							 @messagetype='response'
+						)
+					or 
+						(
+							contains(@berichtcode,'Po') and @messagetype='request'
+						)
+					)
+				 and 
+					@grouping!='resource']/ep:seq/ep:construct/ep:type-name 
+				 and 
+					not(ep:enum)
 				]">
 			,
 		</xsl:if>
 
 		<!-- Loop over constructs which are refered to from the constructs within the messages but aren't enumeration constructs. -->
         <xsl:for-each select="ep:message-set/ep:construct[ep:tech-name = //ep:message
-				[(((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response')
-				 or (contains(@berichtcode,'Po') and @messagetype='request'))
-				 and @grouping!='resource']/ep:seq/ep:construct/ep:type-name and not(ep:enum)]">
+				[
+					(
+						(
+							(contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) 
+						and 
+							@messagetype='response'
+						)
+					 or 
+						(
+							contains(@berichtcode,'Po') and @messagetype='request'
+						)
+					)
+				 and 
+					 @grouping!='resource']/ep:seq/ep:construct/ep:type-name 
+				 and 
+					 not(ep:enum)
+				]">
             <xsl:variable name="type-name" select="ep:type-name"/>
-
             <!-- The regular constructs are generated here. -->
             <xsl:call-template name="construct"/>
             
@@ -142,7 +171,7 @@
        
         <!-- Loop over constructs which are refered to from the global constructs but aren't enumeration constructs. -->
         <xsl:for-each select="ep:message-set/ep:construct[(ep:tech-name = //ep:message-set/ep:construct/ep:seq/ep:construct/ep:type-name) and not(ep:tech-name = //ep:message[@messagetype='response']/ep:seq/ep:construct/ep:type-name) and not(ep:enum) and (( contains(@berichtcode,'Po') and @messagetype='request') or 
-													((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response'))]">
+													((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response')) and not(@type='superclass' and ep:tech-name = //ep:message-set/ep:construct//ep:construct/ep:ref)]">
             
             <!-- Only regular constructs are generated. -->
             <xsl:call-template name="construct"/>
@@ -168,16 +197,23 @@
 		<!-- Only if json+hal applies this if is relevant -->
         <xsl:if test="$uitvoerformaat = 'json+hal'">
 			<!-- If the next loop is relevant a comma separator has to be generated. -->
-			<xsl:if test="ep:message-set/ep:construct[.//ep:construct[@type='association']]">,</xsl:if>
+        	
+        	<!-- ROME: if conditie aangepast omdat blijkbaar bij elke voorkomende entiteit in een model een '_links' component moet worden gegenereerd. RM #490164 -->
+        	<!--xsl:if test="ep:message-set/ep:construct[.//ep:construct[@type='association']]">,</xsl:if-->
+        	<xsl:if test="ep:message-set/ep:construct">,</xsl:if>
 
 			<!-- Loop over global constructs who do have themself a construct of 'association' type.
 				 Global types are generated. -->
-			<xsl:for-each select="ep:message-set/ep:construct[.//ep:construct[@type='association'] and (( contains(@berichtcode,'Po') and @messagetype='request') or 
-													((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response'))]">
-
+        	
+        	<!-- ROME: if conditie aangepast omdat blijkbaar bij elke voorkomende entiteit in een model een '_links' component moet worden gegenereerd. RM #490164 -->
+        	<!--xsl:for-each select="ep:message-set/ep:construct[.//ep:construct[@type='association'] and (( contains(@berichtcode,'Po') and @messagetype='request') or 
+													((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response'))]"-->
+			<xsl:for-each select="ep:message-set/ep:construct[(( contains(@berichtcode,'Po') and @messagetype='request') or 
+				((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response')) and @type!='complex-datatype' and @type!='groepCompositie' and @type!='groepCompositieAssociation']">
+					
 				<xsl:if test="$debugging">
-					"--------------Debuglocatie-00600-<xsl:value-of select="generate-id()"/>": {
-						"Debug": "AOS00600"
+					"--------------Debuglocatie-00500-<xsl:value-of select="generate-id()"/>": {
+						"Debug": "OAS00500"
 					},
 				</xsl:if>
 
@@ -202,8 +238,8 @@
 				<xsl:value-of select="'}'"/>
 
 				<xsl:if test="$debugging">
-					,"--------------Einde-00600-<xsl:value-of select="generate-id()"/>": {
-						"Debug": "AOS00600"
+					,"--------------Einde-01000-<xsl:value-of select="generate-id()"/>": {
+						"Debug": "OAS01000"
 					}
 
 				</xsl:if>
@@ -224,8 +260,8 @@
 				<xsl:for-each select="ep:message-set/ep:construct[.//ep:construct[@type='association' and @expand = 'true']]">
 
 					<xsl:if test="$debugging">
-						"--------------Debuglocatie-00700-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "AOS00700"
+						"--------------Debuglocatie-01500-<xsl:value-of select="generate-id()"/>": {
+							"Debug": "OAS01500"
 						},
 					</xsl:if>
 
@@ -237,8 +273,8 @@
 					<xsl:value-of select="'}'"/>
 
 					<xsl:if test="$debugging">
-						,"--------------Einde-00700-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "AOS00700"
+						,"--------------Einde-02000-<xsl:value-of select="generate-id()"/>": {
+							"Debug": "OAS02000"
 						}
 					</xsl:if>
 
@@ -261,8 +297,8 @@
 					select="//ep:message-set/ep:construct[ep:tech-name = //ep:message[@expand='true']//ep:construct/ep:type-name]">
 
 					<xsl:if test="$debugging">
-						"--------------Debuglocatie-00725-<xsl:value-of select="generate-id()" />": {
-						"Debug": "AOS00725"
+						"--------------Debuglocatie-03000-<xsl:value-of select="generate-id()" />": {
+						"Debug": "OAS03000"
 						},
 					</xsl:if>
 
@@ -277,8 +313,8 @@
 					<xsl:value-of select="'}'" />
 
 					<xsl:if test="$debugging">
-						,"--------------Einde-00725-<xsl:value-of select="generate-id()" />": {
-						"Debug": "AOS00725"
+						,"--------------Einde-03500-<xsl:value-of select="generate-id()" />": {
+						"Debug": "OAS03500"
 						}
 					</xsl:if>
 
@@ -530,8 +566,8 @@
         </xsl:variable>
 
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-00100-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "AOS00100"
+			"--------------Debuglocatie-04000-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS04000"
 			},
 		</xsl:if>
 
@@ -648,8 +684,8 @@
         <xsl:value-of select="'}'"/>
 
 		<xsl:if test="$debugging">
-			,"--------------Einde-00100-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "AOS00100"
+			,"--------------Einde-04500-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS04500"
 			}
 		</xsl:if>
 
@@ -668,8 +704,8 @@
         <xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
 
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-00200-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "AOS00200"
+			"--------------Debuglocatie-05000-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS05000"
 			},
 		</xsl:if>
 		<xsl:if test="$grouping != 'resource'">
@@ -740,7 +776,7 @@
 		</xsl:if>-->
 
 		<!-- All constructs (that don't have association type constructs) within the current construct are processed here. -->
-		<xsl:for-each select="ep:seq/ep:construct[not(ep:seq) and not(@type = 'association') and not(ep:ref)]">
+		<xsl:for-each select="ep:seq/ep:construct[not(ep:seq) and not(@type = 'association') and not(@type = 'superclass') and not(ep:ref)]">
 			<xsl:variable name="name" select="substring-after(ep:type-name, ':')"/>
 
 <!--			<xsl:if test="$debugging">
@@ -756,21 +792,22 @@
 		</xsl:for-each>
 		
 
-		<!--<xsl:if test=".//ep:construct[@type='association' and ../ep:construct[not(@type = 'association') and not(ep:ref)]]">-->
-		<xsl:if test=".//ep:construct[@type='association'] and ep:seq/ep:construct[not(ep:seq) and not(@type = 'association') and not(ep:ref)]">
+		<xsl:if test="@type!='complex-datatype' and @type!='groepCompositie' and ep:seq/ep:construct[not(ep:seq) and not(@type = 'association') and not(@type = 'superclass') and not(ep:ref)]">
 			<xsl:value-of select="','"/>
 		</xsl:if>
-		<xsl:if test=".//ep:construct[@type='association']">
-			<xsl:value-of select="'&quot;_links&quot;: {'"/>
+		
+		<xsl:if test="@type!='complex-datatype' and @type!='groepCompositie'">
 
+			<xsl:value-of select="'&quot;_links&quot;: {'"/>
+	
 			<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$elementName,'_links&quot;}')"/>
-			
-			<!-- When expand applies in the interface also an embedded version has to be generated.
-				 At this place only a reference to such a type is generated. -->
-			<xsl:if test=".//ep:construct[@type='association' and @expand = 'true']">
-				<xsl:value-of select="',&quot;_embedded&quot;: {'"/>
-				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$elementName,'_embedded&quot;}')"/>
-			</xsl:if>
+		</xsl:if>
+		
+		<!-- When expand applies in the interface also an embedded version has to be generated.
+			 At this place only a reference to such a type is generated. -->
+		<xsl:if test=".//ep:construct[@type='association' and @expand = 'true']">
+			<xsl:value-of select="',&quot;_embedded&quot;: {'"/>
+			<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$elementName,'_embedded&quot;}')"/>
 		</xsl:if>
 		<xsl:value-of select="'}'"/>
 
@@ -781,8 +818,8 @@
 		<xsl:if test="$grouping != 'resource'">
 			<xsl:value-of select="'}'"/>
 			<xsl:if test="$debugging">
-				,"--------------Einde-00200-<xsl:value-of select="generate-id()"/>": {
-					"Debug": "AOS00200"
+				,"--------------Einde-05500-<xsl:value-of select="generate-id()"/>": {
+					"Debug": "OAS05500"
 				}
 			</xsl:if>
 		</xsl:if>
@@ -794,8 +831,8 @@
         <xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
 
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-00300-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "AOS00300"
+			"--------------Debuglocatie-06000-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS06000"
 			},
 		</xsl:if>
 
@@ -838,8 +875,8 @@
         <xsl:value-of select="'}'"/>
         
  		<xsl:if test="$debugging">
-			,"--------------Einde-00300-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "AOS00300"
+			,"--------------Einde-06500-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS06500"
 			}
 		</xsl:if>
    </xsl:template>
@@ -865,8 +902,8 @@
         <xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
 
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-00400-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "AOS00400"
+			"--------------Debuglocatie-07000-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS07000"
 			},
 		</xsl:if>
  
@@ -954,8 +991,8 @@
 		<xsl:value-of select="'}'"/>
 
 		<xsl:if test="$debugging">
-			,"--------------Einde-00400-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "AOS00400"
+			,"--------------Einde-07500-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS07500"
 			}
 		</xsl:if>
    </xsl:template> ?>
@@ -1203,16 +1240,20 @@
 		<!-- Double quotes in documentation text is replaced by a  grave accent. -->
 		<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
 		<xsl:value-of select="'&quot;,'"/>
-        <xsl:value-of select="'&quot;items&quot;: {'"/>
-		<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
-		<xsl:value-of select="'&quot;description&quot;: &quot;url naar deze resource&quot;,'"/>
+    	<xsl:if test="$type = 'array'">
+			<xsl:value-of select="'&quot;items&quot;: {'"/>
+			<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
+			<xsl:value-of select="'&quot;description&quot;: &quot;url naar deze resource&quot;,'"/>
+   		</xsl:if>
 		<xsl:value-of select="'&quot;properties&quot;: {'"/>
 		<xsl:value-of select="'&quot;href&quot;: {'"/>
 		<xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
 		<xsl:value-of select="'&quot;format&quot;: &quot;uri&quot;'"/>
         <xsl:value-of select="'}'"/>
         <xsl:value-of select="'}'"/>
-        <xsl:value-of select="'}'"/>
+		<xsl:if test="$type = 'array'">
+			<xsl:value-of select="'}'"/>
+		</xsl:if>
         <xsl:value-of select="'}'"/>
 		<!-- As long as the current construct isn't the last association type construct a comma separator has to be generated. -->
 		<xsl:if test="position() != last()">
