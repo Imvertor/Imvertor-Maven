@@ -294,7 +294,7 @@
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-GERELATEERDOBJECTTYPE">
-        <name lang="nl">Gerelateerd obecttype</name>
+        <name lang="nl">Gerelateerd objecttype</name>
         <name lang="en">Associated objecttype</name>
         <levels>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
