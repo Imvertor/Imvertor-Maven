@@ -8,14 +8,30 @@
     
     <desc>Kadaster specific requirements on documentation.</desc>
     
-    <link-by>NAME</link-by><!-- link by EAID or NAME -->
-
-    <explanation-location>at-bottom</explanation-location> <!-- at-bottom or as-row --> 
+    <!-- 
+        Linking strategy: link by EAID or NAME 
+    -->
+    <link-by>NAME</link-by>
+    
+    <!--
+        Where to show the explanation? (at-bottom or as-row)
+    -->
+    <explanation-location>at-bottom</explanation-location>
+    
+    <!-- 
+        Append the role name at end of the association name? 
+    --> 
+    <append-role-name>no</append-role-name>
     
     <!--
         Determine the type of any diagram image by suffix, i.e. the diagram name after "-" as in "Objecttypen  – overzicht" 
     -->
     <diagram-type-strategy>suffix</diagram-type-strategy>
+    
+    <!--
+        Include incoming associations in the short overview?
+    -->
+    <include-incoming-associations>yes</include-incoming-associations>
     
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>

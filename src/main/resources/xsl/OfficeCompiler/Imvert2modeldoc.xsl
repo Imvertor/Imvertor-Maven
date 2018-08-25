@@ -54,6 +54,8 @@
     <xsl:variable name="imagemap-path" select="imf:get-config-string('properties','WORK_BASE_IMAGEMAP_FILE')"/>
     <xsl:variable name="imagemap" select="imf:document($imagemap-path)/imvert-imap:diagrams"/>
     
+    <xsl:variable name="include-incoming-associations" select="imf:boolean($configuration-docrules-file/include-incoming-associations)"/>
+        
     <xsl:template match="/imvert:packages">
         <book name="{imvert:application}" subpath="{$subpath}" type="{imvert:stereotype}" id="{imvert:id}" generator-version="{$imvertor-version}" generator-date="{$generation-date}">
        
@@ -421,13 +423,27 @@
     </xsl:template>
     
     <xsl:template match="imvert:associations" mode="short gegevensgroeptype">
+        <xsl:variable name="id" select="../imvert:id"/>
+        <xsl:variable name="incoming-assocs" select="root(.)//imvert:association[imvert:type-id = $id]"/>
+        <xsl:variable name="incoming-assocs-non-recursive" select="$incoming-assocs[../../imvert:id ne $id]"/>
+        
         <xsl:variable name="r1" as="element()*">
             <xsl:apply-templates select="../imvert:supertype" mode="#current"/>
             <xsl:apply-templates select="imvert:association[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]" mode="#current"/>
+            <xsl:if test="$include-incoming-associations">
+                <xsl:apply-templates select="$incoming-assocs-non-recursive[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]" mode="#current">
+                    <xsl:with-param name="incoming" select="true()"/>
+                </xsl:apply-templates>
+            </xsl:if>
         </xsl:variable>
         <xsl:variable name="r2" as="element()*">
             <xsl:apply-templates select="../imvert:supertype" mode="#current"/>
             <xsl:apply-templates select="imvert:association[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]/imvert:target" mode="#current"/>
+            <xsl:if test="$include-incoming-associations">
+                <xsl:apply-templates select="$incoming-assocs-non-recursive[not(imvert:stereotype/@id = ('stereotype-name-association-to-composite'))]/imvert:target" mode="#current">
+                    <xsl:with-param name="incoming" select="true()"/>
+                </xsl:apply-templates>
+            </xsl:if>
         </xsl:variable>
         <xsl:if test="exists(($r1,$r2))">
             <section type="SHORT-ASSOCIATIONS">
@@ -448,6 +464,8 @@
     </xsl:template>
     
     <xsl:template match="imvert:association" mode="short gegevensgroeptype">
+        <xsl:param name="incoming" as="xs:boolean" select="false()"/>
+        
         <xsl:variable name="type" select="imf:get-construct-by-id(imvert:type-id)"/>
         <part>
             <item>
@@ -460,10 +478,10 @@
                 <xsl:variable name="target" select="imvert:target/imvert:role"/>
                 <xsl:variable name="relation-original-name" select="if (exists($relation) and exists($target)) then concat($relation/@original,': ',$target/@original) else ($relation/@original,$target/@original)"/>
                 
-                <xsl:sequence select="imf:create-element('item',string(../../imvert:name/@original))"/>
+                <xsl:sequence select="imf:create-element('item',if ($incoming) then imf:create-link(../..,'global',../../imvert:name/@original) else string(../../imvert:name/@original))"/>
                 <xsl:sequence select="imf:create-element('item',('[',imf:get-cardinality(imvert:min-occurs-source,imvert:max-occurs-source),']'))"/>
                 <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',$relation-original-name))"/>
-                <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',imvert:type-name/@original))"/>
+                <xsl:sequence select="imf:create-element('item',if ($incoming) then string(imvert:type-name/@original) else imf:create-link($type,'global',imvert:type-name/@original))"/>
                 <xsl:sequence select="imf:create-element('item',('[',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs),']'))"/>
             </item>
             <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
@@ -472,6 +490,8 @@
     </xsl:template>
   
     <xsl:template match="imvert:association/imvert:target" mode="short gegevensgroeptype">
+        <xsl:param name="incoming" as="xs:boolean" select="false()"/>
+     
         <xsl:variable name="type" select="imf:get-construct-by-id(../imvert:type-id)"/>
         <part>
             <item>
@@ -482,10 +502,10 @@
                 <xsl:variable name="target" select="imvert:role"/>
                 <xsl:variable name="relation-original-name" select="if (exists($relation) and exists($target)) then concat($relation/@original,': ',$target/@original) else ($relation/@original,$target/@original)"/>
                 
-                <xsl:sequence select="imf:create-element('item',string(../../../imvert:name/@original))"/>
+                <xsl:sequence select="imf:create-element('item',if ($incoming) then imf:create-link(../../..,'global',../../../imvert:name/@original) else string(../../../imvert:name/@original))"/>
                 <xsl:sequence select="imf:create-element('item',('[',imf:get-cardinality(../imvert:min-occurs-source,../imvert:max-occurs-source),']'))"/>
                 <xsl:sequence select="imf:create-element('item',imf:create-link(.,'detail',$relation-original-name))"/>
-                <xsl:sequence select="imf:create-element('item',imf:create-link($type,'global',../imvert:type-name/@original))"/>
+                <xsl:sequence select="imf:create-element('item',if ($incoming) then string(../imvert:type-name/@original) else imf:create-link($type,'global',../imvert:type-name/@original))"/>
                 <xsl:sequence select="imf:create-element('item',('[',imf:get-cardinality(../imvert:min-occurs,../imvert:max-occurs),']'))"/>
             </item>
             <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>

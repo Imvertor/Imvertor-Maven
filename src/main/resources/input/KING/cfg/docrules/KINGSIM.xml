@@ -4,20 +4,11 @@
 -->
 <doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
   
+    <xi:include href="KING.xml"/>
+    
     <name>KING SIM</name>
     
     <desc>KING SIM specific requirements on documentation.</desc>
-    
-    <link-by>NAME</link-by><!-- link by EAID or NAME -->
-    
-    <explanation-location>at-bottom</explanation-location> <!-- at-bottom or as-row --> 
-    
-    <append-role-name>no</append-role-name> <!-- do not append the role name at end of the association name --> 
-    
-    <!--
-        Determine the type of any diagram image by suffix, i.e. the diagram name after "-" as in "Objecttypen  – overzicht" 
-    -->
-    <diagram-type-strategy>suffix</diagram-type-strategy>
     
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>
