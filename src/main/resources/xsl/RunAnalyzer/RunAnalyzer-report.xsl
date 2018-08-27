@@ -43,6 +43,7 @@
     <xsl:variable name="status-message" select="imf:get-config-string('appinfo','status-message')"/>
     
     <xsl:variable name="schema-error-count" select="imf:get-config-string('appinfo','schema-error-count','0')"/>
+    <xsl:variable name="message-collapse-keys" select="tokenize(imf:get-config-string('appinfo','message-collapse-keys',''),'\s+')"/>
     
     <xsl:variable name="messages" select="/config/messages/message[type = ('FATAL','ERROR','WARNING','INFO','DEBUG','TRACE')]"/>
     
@@ -88,33 +89,82 @@
                                 </p>
                             </xsl:if>
                         </div>
-                        <xsl:for-each-group select="$messages" group-by="src">
+                        <xsl:if test="$messages/wiki = $message-collapse-keys">
                             <div>
-                                <h1>
-                                    <xsl:value-of select="current-grouping-key()"/>
-                                </h1>
+                                <h1>Short overview</h1>
+                                <p>This overview is compacted such that a number of message types is collapsed, showing only the first occurrence of the message.</p>
+                                <p>The types of messages to be collapsed is defined as a runtime parameter.</p>
                                 <table class="tablesorter"> 
                                     <xsl:variable name="rows" as="element(tr)*">
-                                        <xsl:for-each select="current-group()">
-                                            <tr class="{type}">
-                                                <td><xsl:value-of select="type"/></td>
-                                                <td>
-                                                    <xsl:value-of select="stepconstruct"/>
-                                                    <span class="tid">
-                                                        <xsl:value-of select="id"/>
-                                                    </span></td>
-                                                <td>
-                                                    <xsl:value-of select="if (exists(steptext)) then steptext else text"/>
-                                                    <span class="tid">
-                                                        <xsl:value-of select="stepname"/>
-                                                    </span></td>
-                                            </tr>
-                                        </xsl:for-each>
+                                        <xsl:for-each-group select="$messages" group-by="wiki">
+                                            <xsl:choose>
+                                                <xsl:when test="current-grouping-key() = $message-collapse-keys">
+                                                    <xsl:variable name="this" select="current-group()[1]"/>
+                                                    <tr class="{$this/type}">
+                                                        <td><xsl:value-of select="$this/type"/></td>
+                                                        <td>
+                                                            <xsl:value-of select="$this/stepconstruct"/>
+                                                        </td>
+                                                        <td>
+                                                            <xsl:value-of select="concat(count(current-group()), ' similar')"/>
+                                                        </td>
+                                                        <td>
+                                                            <xsl:value-of select="if ($this/steptext) then $this/steptext else $this/text"/>
+                                                        </td>
+                                                    </tr>
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                    <xsl:for-each select="current-group()">
+                                                        <xsl:variable name="this" select="."/>
+                                                        <tr class="{$this/type}">
+                                                            <td><xsl:value-of select="$this/type"/></td>
+                                                            <td>
+                                                                <xsl:value-of select="$this/stepconstruct"/>
+                                                            </td>
+                                                            <td> </td>
+                                                            <td>
+                                                                <xsl:value-of select="if ($this/steptext) then $this/steptext else $this/text"/>
+                                                            </td>
+                                                        </tr>
+                                                    </xsl:for-each>
+                                                </xsl:otherwise>
+                                            </xsl:choose>
+                                        </xsl:for-each-group>
                                     </xsl:variable>
-                                    <xsl:sequence select="imf:create-result-table-by-tr($rows,'Type:10,Element:30,Message:60',concat('table-run-',position()))"/>
+                                    <xsl:sequence select="imf:create-result-table-by-tr($rows,'Type:10,Element:30,Collapse:10,Message:50',concat('table-run-short-',position()))"/>
                                 </table>
                             </div>
-                        </xsl:for-each-group>
+                        </xsl:if>
+                        <div>
+                            <h1>Full overview</h1>
+                            <p>This overview is complete, showing all messages including the identifier of the construct and the stylesheet responsible for the message.</p>
+                            <table class="tablesorter"> 
+                                <xsl:variable name="rows" as="element(tr)*">
+                                    <xsl:for-each select="$messages">
+                                        <tr class="{type}">
+                                            <td><xsl:value-of select="type"/></td>
+                                            <td>
+                                                <xsl:value-of select="stepconstruct"/>
+                                                <xsl:text> </xsl:text>
+                                                <span class="tid">
+                                                    <xsl:value-of select="id"/>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <xsl:value-of select="if (steptext) then steptext else text"/>
+                                                <xsl:text> </xsl:text>
+                                                <span class="tid">
+                                                    <xsl:value-of select="stepname"/>
+                                                    /
+                                                    <xsl:value-of select="src"/>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </xsl:for-each>
+                                </xsl:variable>
+                                <xsl:sequence select="imf:create-result-table-by-tr($rows,'Type:10,Element:30,Message:60',concat('table-run-full-',position()))"/>
+                            </table>
+                        </div>
                     </content>
                 </page>
             </xsl:if>

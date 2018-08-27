@@ -95,4 +95,11 @@
     <parameter name="application-version-regex">^\S+$</parameter>
     <parameter name="domain-version-regex">^(\d+\.\d+\.\d+)$</parameter>
     x-->
+    
+    <!-- 
+        Which messages may be collapsed in the EA interface? 
+        This is a set defined by this owner which may be referenced as [system/collapse-key-set] as the value of -messagecollapsekeys 
+    -->  
+    <parameter name="message-collapse-keys">TV1NSBRF2 NAFFA NAFF1 TCBR1</parameter>
+    
 </project-owner>

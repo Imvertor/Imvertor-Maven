@@ -102,4 +102,10 @@
     <!-- Validatie wordt uitgevoerd door het bericht als Soap aanroep (ingepakt in Soap envelop) te sturen naar: -->
     <parameter name="complyextractor-URL">http://87.250.154.42:7080/opentunnel/201512345678/wus/stvadhoc</parameter>
     
+    <!-- 
+        Which messages may be collapsed in the EA interface? 
+        This is a set defined by this owner which may be referenced as [system/collapse-key-set] as the value of -messagecollapsekeys 
+    -->  
+    <parameter name="message-collapse-keys">TV1NSBRF2 NAFFA NAFF1 TCBR1</parameter>
+    
 </project-owner>    

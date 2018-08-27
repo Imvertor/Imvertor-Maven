@@ -85,7 +85,12 @@
         <xsl:variable name="proxy" select="imf:get-config-stereotypes(('stereotype-name-att-proxy','stereotype-name-obj-proxy','stereotype-name-grp-proxy','stereotype-name-prd-proxy'), false())"/>
         <xsl:sequence select="imf:set-config-string('system','supports-proxy',if ($proxy = '#unknown') then 'no' else 'yes')"/>
         
-       <!--x
+        <xsl:variable name="okeys" select="$config-compact/config/project-owner/parameter[@name = 'message-collapse-keys']"/>
+        <xsl:sequence select="imf:set-config-string('system','message-collapse-keys',$okeys)"/>
+        <xsl:variable name="keys" select="imf:merge-parms(imf:get-config-string('cli','messagecollapsekeys'))"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','message-collapse-keys',$keys)"/>
+        
+        <!--x
        <xsl:result-document href="file:/c:/temp/config.xml">
             <debug>
                 <xsl:sequence select="imf:document($configuration-metamodel-name,true())"></xsl:sequence>
