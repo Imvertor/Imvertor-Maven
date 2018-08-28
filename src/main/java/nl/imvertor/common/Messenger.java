@@ -150,7 +150,7 @@ public class Messenger extends SequenceWriter {
 	public void writeMsg(String src, String type, String name, String text, String id, String wiki) {
 		if (exists(src) && exists(type) && exists(text)) {
 			XMLConfiguration cfg = Configurator.getInstance().getXmlConfiguration();
-			if (cfg != null) {
+			if (cfg != null) { 
 				int messageIndex = cfg.getMaxIndex("messages/message") + 2;   // -1 when no messages.
 				cfg.addProperty("messages/message", "");
 				cfg.addProperty("messages/message[" + messageIndex + "]/src", src);
@@ -165,7 +165,7 @@ public class Messenger extends SequenceWriter {
 					cfg.addProperty("messages/message[" + messageIndex + "]/steptext", m.group(3));
 				}
 				if (id != null) cfg.addProperty("messages/message[" + messageIndex + "]/id", id);
-				if (wiki != null) cfg.addProperty("messages/message[" + messageIndex + "]/wiki", wiki);
+				cfg.addProperty("messages/message[" + messageIndex + "]/wiki", (wiki != null) ? wiki : "NOWIKI");
 			}
 		}
 	}
