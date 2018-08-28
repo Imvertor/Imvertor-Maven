@@ -361,7 +361,8 @@
 				</xsl:when> ?>
 				<xsl:when test="ep:type-id and @type = 'complex-datatype'">
 					<xsl:variable name="type-id" select="ep:type-id" />
-					<xsl:value-of select="$packages//imvert:attribute[imvert:name = $name and imvert:type-id = $type-id][1]/imvert:id" />
+					<!--xsl:value-of select="$packages//imvert:attribute[imvert:name = $name and imvert:type-id = $type-id][1]/imvert:id" /-->
+					<xsl:value-of select="$packages//imvert:attribute[imvert:name = $name and imvert:type-id = $type-id][not(following::imvert:attribute[imvert:name = $name and imvert:type-id = $type-id])]/imvert:id" />				
 				</xsl:when>
 				<xsl:when test="ep:type-id">
 					<xsl:variable name="type-id" select="ep:type-id" />
