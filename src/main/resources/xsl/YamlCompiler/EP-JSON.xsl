@@ -11,7 +11,7 @@
 	
 	<!-- De eerste variabele is bedoelt voor de server omgeving, de tweede voor gebruik bij ontwikkeling in XML-Spy. -->
 	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
-	<!--<xsl:variable name="debugging" select="false()" as="xs:boolean"/>-->
+	<!--<xsl:variable name="debugging" select="true()" as="xs:boolean"/>-->
 	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
@@ -1134,15 +1134,15 @@
                 <xsl:value-of select="',&quot;format&quot;: &quot;date&quot;'"/>
             </xsl:when>
             <xsl:when test="$incomingType = 'year'">
-                <xsl:value-of select="',&quot;format&quot;: &quot;jaar&quot;,'"/>
+                <xsl:value-of select="',&quot;format&quot;: &quot;jaar&quot;'"/>
                 <xsl:if test="$json-version != '2.0'">
-					<xsl:value-of select="',&quot;pattern&quot;: &quot;^[1-2]{1}[0-9]{3}$&quot;,'"/>
+					<xsl:value-of select="',&quot;pattern&quot;: &quot;^[1-2]{1}[0-9]{3}$&quot;'"/>
                 </xsl:if>
             </xsl:when>
             <xsl:when test="$incomingType = 'yearmonth'">
-                <xsl:value-of select="',&quot;format&quot;: &quot;jaarmaand&quot;,'"/>
+                <xsl:value-of select="',&quot;format&quot;: &quot;jaarmaand&quot;'"/>
                 <xsl:if test="$json-version != '2.0'">
-					<xsl:value-of select="',&quot;pattern&quot;: &quot;^[1-2]{1}[0-9]{3}-^[0-1]{1}[0-9]{1}$&quot;,'"/>
+					<xsl:value-of select="',&quot;pattern&quot;: &quot;^[1-2]{1}[0-9]{3}-^[0-1]{1}[0-9]{1}$&quot;'"/>
 				</xsl:if>
             </xsl:when>
             <xsl:when test="$incomingType = 'dateTime'">
