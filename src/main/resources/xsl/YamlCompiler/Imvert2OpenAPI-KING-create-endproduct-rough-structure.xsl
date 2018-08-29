@@ -105,6 +105,12 @@
 			select="imf:create-debug-track(concat('Constructing the rough-message class for class: ',imvert:name),$debugging)" />
 		<xsl:variable name="berichtcode"
 			select="imf:get-tagged-value(.,'##CFG-TV-BERICHTCODE')" />
+		<xsl:if test="$berichtcode = ''">
+			<xsl:variable name="msg"
+				select="concat('The messageclass ',imvert:name/@original,' does not have a value for the tagged value berichtcode or the tagged value lacks.')"
+				as="xs:string" />
+			<xsl:sequence select="imf:msg('ERROR',$msg)" />
+		</xsl:if>
 		<xsl:variable name="servicename"
 			select="imf:get-tagged-value(.,'##CFG-TV-SERVICENAME')" />
 		<xsl:variable name="fields" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-FIELDS')" />
