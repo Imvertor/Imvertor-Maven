@@ -148,11 +148,11 @@
 							<xsl:when test="contains($messageName,'{') and contains($messageName,'/')">
 								<xsl:sequence select="imf:determineUriStructure(substring-after($messageName,'/'))"/>
 							</xsl:when>
-							<xsl:otherwise>
+							<xsl:when test="contains($messageName,'/')">
 								<ep:uriPart>
 									<ep:entityName><xsl:value-of select="lower-case(substring-after($messageName,'/'))"/></ep:entityName>
 								</ep:uriPart>
-							</xsl:otherwise>
+							</xsl:when>
 						</xsl:choose>
 					</ep:uriStructure>
 				</xsl:variable>
@@ -179,12 +179,6 @@
 										<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]" mode="getUriPart"/>
 									</xsl:otherwise>
 								</xsl:choose>
-							</xsl:when>
-							<xsl:when test="@berichtcode = 'Gr02'">
-							</xsl:when>
-							<xsl:when test="@berichtcode = 'Gr03'">
-							</xsl:when>
-							<xsl:when test="@berichtcode = ('Gc01','Gc02','Gc03','Gc04','Gc05','Gc06')">
 							</xsl:when>
 						</xsl:choose>
 					</ep:uriStructure>
@@ -275,31 +269,11 @@
 					<xsl:text>"</xsl:text><xsl:apply-templates select="ep:documentation" /><xsl:text>"</xsl:text>
 				</xsl:variable>
 				<xsl:variable name="method">get</xsl:variable>
-				<xsl:variable name="pagination">
-					<xsl:if test="@pagination = 'true'">
-						<xsl:value-of select="true()"/>
-					</xsl:if>
-				</xsl:variable>			
-				<xsl:variable name="expand">
-					<xsl:if test="@expand = 'true'">
-						<xsl:value-of select="true()"/>
-					</xsl:if>
-				</xsl:variable>			
-				<xsl:variable name="fields">
-					<xsl:if test="@Fields = 'true'">
-						<xsl:value-of select="true()"/>
-					</xsl:if>
-				</xsl:variable>			
-				<xsl:variable name="sort">
-					<xsl:if test="@Sort = 'true'">
-						<xsl:value-of select="true()"/>
-					</xsl:if>
-				</xsl:variable>			
 				<xsl:variable name="parametersRequired">
-					<xsl:if test="$pagination">J</xsl:if>
-					<xsl:if test="$expand">J</xsl:if>
-					<xsl:if test="$fields">J</xsl:if>
-					<xsl:if test="$sort">J</xsl:if>
+					<xsl:if test="@pagination = 'true'">J</xsl:if>
+					<xsl:if test="@expand = 'true'">J</xsl:if>
+					<xsl:if test="@fields = 'true'">J</xsl:if>
+					<xsl:if test="@sort = 'true'">J</xsl:if>
 					
 				</xsl:variable>
 	
@@ -307,9 +281,11 @@
 				<xsl:text>&#xa;      summary: '</xsl:text><xsl:value-of select="$documentation" /><xsl:text>'</xsl:text>
 				<xsl:text>&#xa;      operationId: </xsl:text><xsl:value-of select="ep:tech-name" />
 				<xsl:choose>
-					<xsl:when test="contains($parametersRequired,'J')">
+					<xsl:when test="contains($parametersRequired,'J') or 
+									$checkedUriStructure//ep:uriPart/ep:param[@path='true'] or 
+									$checkedUriStructure//ep:uriPart/ep:param[empty(@path) or @path = 'false']">
 						<xsl:text>&#xa;      parameters: </xsl:text>
-						<xsl:if test="$pagination">
+						<xsl:if test="@pagination = 'true'">
 							<xsl:text>&#xa;        - in: query</xsl:text>
 							<xsl:text>&#xa;          name: page</xsl:text>
 							<xsl:text>&#xa;          description: Een pagina binnen de gepagineerde resultatenset.</xsl:text>
@@ -318,7 +294,7 @@
 							<xsl:text>&#xa;            type: integer</xsl:text>
 							<xsl:text>&#xa;            minimum: 1</xsl:text>
 						</xsl:if>
-						<xsl:if test="$expand">
+						<xsl:if test="@expand = 'true'">
 							<xsl:text>&#xa;        - in: query</xsl:text>
 							<xsl:text>&#xa;          name: expand</xsl:text>
 							<xsl:text>&#xa;          description: "Hier kan aangegeven worden welke gerelateerde resources meegeladen moeten worden. Als expand=true wordt meegegeven, dan worden alle geneste resources geladen en in _embedded meegegeven. Ook kunnen de specifieke resources en velden van resources die gewenst zijn in de expand parameter kommagescheiden worden opgegeven. Specifieke velden van resource kunnen worden opgegeven door het opgeven van de resource-naam gevolgd door de veldnaam, met daartussen een punt."</xsl:text>
@@ -327,7 +303,7 @@
 							<xsl:text>&#xa;            type: string</xsl:text>
 							<xsl:text>&#xa;            example: kinderen,adressen.postcode,adressen.huisnummer</xsl:text>
 									</xsl:if>
-						<xsl:if test="$fields">
+						<xsl:if test="@fields = 'true'">
 							<xsl:text>&#xa;        - in: query</xsl:text>
 							<xsl:text>&#xa;          name: fields</xsl:text>
 							<xsl:text>&#xa;          description: "Geeft de mogelijkheid de inhoud van de body van het antwoord naar behoefte aan te passen. Bevat een door komma's gescheiden lijst van veldennamen. Als niet-bestaande veldnamen worden meegegeven wordt een 400 Bad Request teruggegeven. Wanneer de parameter fields niet is opgenomen, worden alle gedefinieerde velden die een waarde hebben teruggegeven."</xsl:text>

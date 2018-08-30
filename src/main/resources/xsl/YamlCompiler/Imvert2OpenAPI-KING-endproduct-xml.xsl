@@ -180,11 +180,6 @@
 
 		<!-- TODO: UItzoeken of documentation gewenst is. -->
 		<xsl:variable name="doc">
-
-
-
-
-
 			<xsl:if
 				test="not(empty(imf:merge-documentation($this-construct,'CFG-TV-DEFINITION')))">
 				<ep:definition>
@@ -205,19 +200,18 @@
 					</ep:p>
 				</ep:pattern>
 			</xsl:if>
-
 		</xsl:variable>
 		<xsl:variable name="berichtcode" select="@berichtcode" />
 		<xsl:variable name="messagetype" select="@messagetype" />
 		<xsl:sequence select="imf:create-debug-comment($berichtcode,$debugging)" />
 
-		<xsl:variable name="berichtsjabloon" select="$packages//imvert:package[imvert:alias='/www.kinggemeenten.nl/BSM/Berichtstrukturen/Model']//imvert:class[.//imvert:tagged-value[@id='CFG-TV-BERICHTCODE']/imvert:value=$berichtcode]" />
+<?x		<xsl:variable name="berichtsjabloon" select="$packages//imvert:package[imvert:alias='/www.kinggemeenten.nl/BSM/Berichtstrukturen/Model']//imvert:class[.//imvert:tagged-value[@id='CFG-TV-BERICHTCODE']/imvert:value=$berichtcode]" />
 
 		<xsl:if test="$debugging">
 			<xsl:result-document href="{concat('file:/c:/temp/message/construct-',$id,'-',generate-id(),'.xml')}">
 				<xsl:copy-of select="$berichtsjabloon" />
 			</xsl:result-document>
-		</xsl:if>
+		</xsl:if> ?>
         
 <?x        <xsl:variable name="expand" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-EXPAND')"/>  ?>
 		<xsl:variable name="expand">
@@ -226,11 +220,11 @@
 				<xsl:otherwise>false</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:variable name="fields" select="@fields" />
+<?x		<xsl:variable name="fields" select="@fields" />
 		<xsl:variable name="grouping" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-GROUPING')" />
 		<xsl:variable name="pagination" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-PAGE')" />
 		<xsl:variable name="serialisation" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-SERIALISATION')" />
-		<xsl:variable name="sort" select="@sort" />
+		<xsl:variable name="sort" select="@sort" /> ?>
 
 		<xsl:variable name="name" select="$message-construct/imvert:name/@original" as="xs:string" />
 		<xsl:variable name="tech-name" select="imf:get-normalized-name($message-construct/imvert:name, 'element-name')" as="xs:string" />
@@ -264,22 +258,27 @@
 		<ep:message>
 			<xsl:choose>
 				<xsl:when test="(contains($berichtcode,'Gr') or contains($berichtcode,'Gc')) and $messagetype = 'response'">
-					<xsl:attribute name="messagetype" select="$messagetype" />
+					<xsl:attribute name="messagetype" select="@messagetype" />
 					<xsl:attribute name="servicename" select="@servicename" />
 					<xsl:attribute name="expand" select="$expand" />
-					<xsl:attribute name="grouping" select="$grouping" />
-					<xsl:attribute name="pagination" select="$pagination" />
+					<xsl:attribute name="grouping" select="@grouping" />
+					<xsl:attribute name="pagination" select="@pagination" />
+					<xsl:attribute name="serialisation" select="@serialisation" />
 					<xsl:attribute name="berichtcode" select="$berichtcode" />
 				</xsl:when>
 				<xsl:when test="(contains($berichtcode,'Gr') or contains($berichtcode,'Gc')) and $messagetype = 'request'">
-					<xsl:attribute name="messagetype" select="$messagetype" />
+					<xsl:attribute name="messagetype" select="@messagetype" />
 					<xsl:attribute name="servicename" select="@servicename" />
 					<xsl:attribute name="expand" select="$expand" />
-					<xsl:attribute name="fields" select="$fields" />
-					<xsl:attribute name="grouping" select="$grouping" />
-					<xsl:attribute name="pagination" select="$pagination" />
-					<xsl:attribute name="serialisation" select="$serialisation" />
-					<xsl:attribute name="sort" select="$sort" />
+					<xsl:attribute name="grouping" select="@grouping" />
+					<xsl:attribute name="pagination" select="@pagination" />
+					<xsl:attribute name="serialisation" select="@serialisation" />
+					<xsl:if test="@fields">
+						<xsl:attribute name="fields" select="@fields" />
+					</xsl:if>
+					<xsl:if test="@sort">
+						<xsl:attribute name="sort" select="@sort" />
+					</xsl:if>
 					<xsl:attribute name="berichtcode" select="$berichtcode" />
 <?x					<xsl:variable name="meervoudigeNaam">
 						<xsl:variable name="messageName" select="ep:name"/>

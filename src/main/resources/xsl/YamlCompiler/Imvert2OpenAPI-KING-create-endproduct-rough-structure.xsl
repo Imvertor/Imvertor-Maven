@@ -111,10 +111,16 @@
 				as="xs:string" />
 			<xsl:sequence select="imf:msg('ERROR',$msg)" />
 		</xsl:if>
+		
+		<xsl:variable name="berichtsjabloon" select="$packages//imvert:package[imvert:alias='/www.kinggemeenten.nl/BSM/Berichtstrukturen/Model']//imvert:class[.//imvert:tagged-value[@id='CFG-TV-BERICHTCODE']/imvert:value=$berichtcode]" />
 		<xsl:variable name="servicename"
 			select="imf:get-tagged-value(.,'##CFG-TV-SERVICENAME')" />
 		<xsl:variable name="fields" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-FIELDS')" />
 		<xsl:variable name="sort" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-SORT')" />
+		<xsl:variable name="grouping" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-GROUPING')" />
+		<xsl:variable name="pagination" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-PAGE')" />
+		<xsl:variable name="serialisation" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-SERIALISATION')" />
+		
 		<xsl:variable name="messagename" select="imvert:name/@original" />
 		<xsl:variable name="messageid" select="imvert:id" />
 		<xsl:variable name="messagetypeid" select="imvert:type-id" />
@@ -189,6 +195,9 @@
 							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'response']">
 							<ep:rough-message messagetype="response"
 								berichtcode="{$berichtcode}" servicename="{$servicename}">
+								<xsl:attribute name="grouping" select="$grouping" />
+								<xsl:attribute name="pagination" select="$pagination" />
+								<xsl:attribute name="serialisation" select="$serialisation" />
 								<xsl:sequence
 									select="imf:create-debug-track(concat('Constructing the rough-response-message: ',imvert:name/@original),$debugging)" />
 	
@@ -207,6 +216,26 @@
 							</ep:rough-message>
 							<ep:rough-message messagetype="request"
 								berichtcode="{$berichtcode}" servicename="{$servicename}">
+								<xsl:attribute name="grouping" select="$grouping" />
+								<xsl:attribute name="pagination" select="$pagination" />
+								<xsl:attribute name="serialisation" select="$serialisation" />
+								<xsl:if test="not(empty($fields))">
+									<xsl:attribute name="fields" select="$fields"/>
+								</xsl:if>
+								<xsl:choose>
+									<xsl:when test="not(empty($sort)) and contains($berichtcode,'Gr')">
+										<xsl:variable name="msg"
+											select="concat('The tagged value sort is not allowed on a ',$berichtcode,' messageclass.')"
+											as="xs:string" />
+										<xsl:sequence select="imf:msg('ERROR',$msg)" />
+									</xsl:when>
+									<xsl:when test="not(empty($sort)) and contains($berichtcode,'Gc')">
+										<xsl:attribute name="sort" select="$sort"/>
+									</xsl:when>
+								</xsl:choose>
+								<xsl:if test="not(empty($sort))">
+									<xsl:attribute name="fields" select="$sort"/>
+								</xsl:if>
 								<xsl:sequence select="imf:create-debug-comment('A12000]',$debugging)" />
 								<xsl:sequence
 									select="imf:create-debug-track(concat('Constructing the rough-request-message: ',imvert:name/@original),$debugging)" />
@@ -265,6 +294,9 @@
 							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'request']">
 							<ep:rough-message messagetype="request"
 								berichtcode="{$berichtcode}" servicename="{$servicename}">
+								<xsl:attribute name="grouping" select="$grouping" />
+								<xsl:attribute name="pagination" select="$pagination" />
+								<xsl:attribute name="serialisation" select="$serialisation" />
 								<xsl:sequence select="imf:create-debug-comment('A13000]',$debugging)" />
 								<xsl:sequence
 									select="imf:create-debug-track(concat('Constructing the rough-request-message: ',imvert:name/@original),$debugging)" />
