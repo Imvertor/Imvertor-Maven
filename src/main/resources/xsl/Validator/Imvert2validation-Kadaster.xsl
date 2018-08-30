@@ -165,6 +165,18 @@
         <xsl:next-match/>
     </xsl:template>
     
+    <xsl:template match="imvert:attribute[../../imvert:stereotype/@id = ('stereotype-name-composite','stereotype-name-complextype')]">
+        <!--setup-->
+        <xsl:variable name="class" select="../.."/>
+        
+        <!--validation-->
+        <xsl:sequence select="imf:report-error(., 
+            imvert:is-id = 'true', 
+            'A class stereotyped as [1] may not have an identifying attribute',$class/imvert:stereotype[@id = ('stereotype-name-composite','stereotype-name-complextype')])"/>
+        
+        <xsl:next-match/>
+    </xsl:template>
+    
     <!--
         Rules for the domain packages
     -->

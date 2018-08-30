@@ -783,11 +783,6 @@
         <xsl:variable name="class" select="../.."/>
         <xsl:variable name="defining-class" select="if (imvert:type-id) then imf:get-construct-by-id(imvert:type-id) else ()"/>
         
-        <!--validation-->
-        <xsl:sequence select="imf:report-error(., 
-            imvert:is-id = 'true', 
-            'A class stereotyped as [1] may not have an identifying attribute',../../imvert:stereotype[@id = ('stereotype-name-composite','stereotype-name-complextype')])"/>
-       
         <xsl:sequence select="imf:report-error(., 
             $class/imvert:stereotype/@id = ('stereotype-name-complextype') and not(imvert:stereotype/@id = 'stereotype-name-data-element'), 
             '[1] must have attributes that are stereotyped as: [2]',(imf:get-config-stereotypes('stereotype-name-complextype'),imf:get-config-stereotypes('stereotype-name-data-element')))"/>
