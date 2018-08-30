@@ -126,6 +126,7 @@
                                         <xsl:value-of select="@display-name"/>
                                     </xsl:otherwise>
                                 </xsl:choose>
+                                <xsl:text> </xsl:text>
                                 <span class="tid">
                                     <xsl:value-of select="@id"/>
                                 </span>
