@@ -111,12 +111,21 @@
                         <xsl:sequence select="imf:show-name(.,position() != last())"/>
                     </td>
                     <td>
+                        <xsl:value-of select="desc"/>
+                    </td>
+                    <td>
+                        <xsl:value-of select="if (type-map) then concat('Type map for ', imf:get-lang(type-map/@formal-lang), ': ', type-map, '. ') else ()"/>
+                        <xsl:value-of select="if (max-length) then 'Max length may be set. ' else ()"/>
+                        <xsl:value-of select="if (fraction-digits) then 'Fraction digits may be set. ' else ()"/>
+                        <xsl:value-of select="if (type-modifier) then 'A type modifier applies. ' else ()"/>
+                    </td>
+                    <td>
                         <xsl:value-of select="name[1]/@src"/>
                     </td>
                 </tr>
             </xsl:for-each>
         </xsl:variable>
-        <xsl:sequence select="imf:create-result-table-by-tr($rows,'scalar:80,config:20','table-scalars')"/>
+        <xsl:sequence select="imf:create-result-table-by-tr($rows,'scalar:20,desc:40,info:20,config:20','table-scalars')"/>
     </xsl:template>
     
     <!--
@@ -288,5 +297,14 @@
         <xsl:if test="$add-newline">
             <br/>
         </xsl:if>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-lang">
+        <xsl:param name="prefix"/>
+        <xsl:choose>
+            <xsl:when test="$prefix = 'xs'">XML Schema (xs)</xsl:when>
+            <xsl:otherwise>Unknown formal language (<xsl:value-of select="$prefix"/>)</xsl:otherwise>
+        </xsl:choose>
+            
     </xsl:function>
 </xsl:stylesheet>
