@@ -719,6 +719,7 @@
 		<xsl:variable name="id" select="ep:id" />
 		<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
 		<xsl:variable name="tech-name" select="imf:get-normalized-name($construct/imvert:name, 'type-name')" as="xs:string" />
+		
 		<xsl:sequence select="imf:create-debug-comment(concat('OAS18000, id: ',$id),$debugging)" />
 
 		<ep:construct>
@@ -735,11 +736,41 @@
 		<xsl:variable name="id" select="ep:id" />
 		<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
 		<xsl:variable name="tech-name" select="imf:get-normalized-name($construct/imvert:name, 'type-name')" as="xs:string" />
+
+
+		<xsl:variable name="doc">
+			<xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DEFINITION')))">
+				<ep:definition>
+					<xsl:sequence select="imf:merge-documentation($construct,'CFG-TV-DEFINITION')"/>
+				</ep:definition>
+			</xsl:if>
+			<xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DESCRIPTION')))">
+				<ep:description>
+					<xsl:sequence select="imf:merge-documentation($construct,'CFG-TV-DESCRIPTION')"/>
+				</ep:description>
+			</xsl:if>
+			<xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-PATTERN')))">
+				<ep:pattern>
+					<ep:p>
+						<xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-PATTERN')"/>
+					</ep:p>
+				</ep:pattern>
+			</xsl:if>
+		</xsl:variable>
+
 		<xsl:sequence select="imf:create-debug-comment(concat('OAS18500, id: ',$id),$debugging)" />
 		
 		<ep:construct  type="superclass" berichtcode="{$berichtcode}" messagetype="{$messagetype}">
 			<ep:name><xsl:value-of select="$construct/imvert:name/@original"/></ep:name>
 			<ep:tech-name><xsl:value-of select="$tech-name"/></ep:tech-name>
+			<xsl:choose>
+				<xsl:when test="(empty($doc) or $doc='') and $debugging">
+					<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+				</xsl:otherwise>
+			</xsl:choose>
 			<ep:seq>
 				<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
 				<xsl:apply-templates select="ep:superconstruct" mode="as-ref">
