@@ -1313,14 +1313,17 @@
 		<xsl:variable name="SIM-alias" select="($construct/imvert:alias, imvert:alias)[1]" />
 
 		<ep:enum>
-			<xsl:choose>
+			<!-- ROME: I.v.m. het project Zaak- Document Services is besloten om de waarde in een enumeration te plaatsen en niet de codes.
+					   Voor het geval daarop wordt teruggekomen is de XSLT-code voor het opnemen van de code bewaard. -->
+			<xsl:value-of select="$SIM-name" />
+			<!--xsl:choose>
 				<xsl:when test="empty($SIM-alias)">
 					<xsl:value-of select="$SIM-name" />
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="$SIM-alias" />
 				</xsl:otherwise>
-			</xsl:choose>
+			</xsl:choose-->
 		</ep:enum>
 
 	</xsl:template>

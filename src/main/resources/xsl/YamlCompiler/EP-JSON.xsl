@@ -4,7 +4,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:imf="http://www.imvertor.org/xsl/functions"
 	xmlns:ep="http://www.imvertor.org/schema/endproduct" version="2.0">
-	
+
 	<xsl:output method="text" indent="yes" omit-xml-declaration="yes"/>
 
 	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
@@ -937,9 +937,14 @@
    
    <xsl:template match="ep:documentation">
 	   <xsl:apply-templates select="ep:description"/>
+	   <xsl:apply-templates select="ep:definition"/>
    </xsl:template>
 
    <xsl:template match="ep:description">
+	   <xsl:apply-templates select="ep:p"/>
+   </xsl:template>
+
+   <xsl:template match="ep:definition">
 	   <xsl:apply-templates select="ep:p"/>
    </xsl:template>
 
