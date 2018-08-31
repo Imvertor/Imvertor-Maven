@@ -602,7 +602,7 @@
 			select="imf:create-debug-comment('debug:start A19000 /debug:start',$debugging)" />
 
 		<xsl:if test="empty(imvert:is-id)">
-			<ep:expand>true</ep:expand>
+			<ep:contains-non-id-attributes>true</ep:contains-non-id-attributes>
 		</xsl:if>
 
 		<xsl:if

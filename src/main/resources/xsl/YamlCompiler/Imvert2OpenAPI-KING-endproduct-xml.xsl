@@ -216,7 +216,7 @@
 <?x        <xsl:variable name="expand" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-EXPAND')"/>  ?>
 		<xsl:variable name="expand">
 			<xsl:choose>
-				<xsl:when test=".//ep:construct[@type = 'association']//ep:expand = 'true'">true</xsl:when>
+				<xsl:when test=".//ep:construct[@type = 'association']//ep:contains-non-id-attributes = 'true'">true</xsl:when>
 				<xsl:otherwise>false</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -511,8 +511,8 @@
 							<xsl:attribute name="type" select="@type"/>
 						</xsl:otherwise>
 					</xsl:choose>
-					<xsl:if test=".//ep:expand = 'true'">
-						<xsl:attribute name="expand" select="'true'" />
+					<xsl:if test=".//ep:contains-non-id-attributes = 'true'">
+						<xsl:attribute name="contains-non-id-attributes" select="'true'" />
 					</xsl:if>
 					<xsl:choose>
 						<xsl:when test="$meervoudigeNaam=''">

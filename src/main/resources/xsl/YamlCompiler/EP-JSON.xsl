@@ -308,10 +308,10 @@
 			<!-- When expand applies in one or more messages the following if is relevant. -->
 			<xsl:if test="ep:message-set/ep:message[@expand = 'true']">
 				<!-- If the next loop is relevant a comma separator has to be generated. -->
-				<xsl:if test="ep:message-set/ep:construct[.//ep:construct[@type='association' and @expand = 'true']]">,</xsl:if>
+				<xsl:if test="ep:message-set/ep:construct[.//ep:construct[@type='association' and @contains-non-id-attributes = 'true']]">,</xsl:if>
 
 				<!-- For all global constructs who have at least one association construct a global embedded version has to be generated. -->
-				<xsl:for-each select="ep:message-set/ep:construct[.//ep:construct[@type='association' and @expand = 'true']]">
+				<xsl:for-each select="ep:message-set/ep:construct[.//ep:construct[@type='association' and @contains-non-id-attributes = 'true']]">
 
 					<xsl:if test="$debugging">
 						"--------------Debuglocatie-01500-<xsl:value-of select="generate-id()"/>": {
@@ -859,7 +859,7 @@
 		
 		<!-- When expand applies in the interface also an embedded version has to be generated.
 			 At this place only a reference to such a type is generated. -->
-		<xsl:if test=".//ep:construct[(@type='association' or @type='supertype-association') and @expand = 'true']">
+		<xsl:if test=".//ep:construct[(@type='association' or @type='supertype-association') and @contains-non-id-attributes = 'true']">
 			<xsl:value-of select="',&quot;_embedded&quot;: {'"/>
 			<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$elementName,'_embedded&quot;}')"/>
 		</xsl:if>
@@ -1037,9 +1037,9 @@
 			<xsl:value-of select="'&quot;_links&quot;: {'"/>
 			<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$elementName,'_links&quot;}')"/>
 			
-			<!-- When expand applies in the interface also an embedded version has to be generated.
+			<!-- When the construct also had attributes which are not id-type attributes in the interface also an embedded version has to be generated.
 				 At this place only a reference to such a type is generated. -->
-			<xsl:if test="$expand">
+			<xsl:if test="$contains-non-id-attributes">
 				<xsl:value-of select="',&quot;_embedded&quot;: {'"/>
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$elementName,'_embedded&quot;}')"/>
 			</xsl:if>
