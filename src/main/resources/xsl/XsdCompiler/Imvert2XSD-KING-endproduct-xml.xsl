@@ -248,8 +248,6 @@
                     </xsl:choose>
                 </xsl:variable>
                 <xsl:variable name="berichtCode" select="imf:get-tagged-value($message-construct,'##CFG-TV-BERICHTCODE')" as="xs:string"/>
-                <xsl:variable name="serviceName" select="imf:get-tagged-value($message-construct,'##CFG-TV-SERVICENAME')" as="xs:string"/>
-                <xsl:variable name="messageType" select="imf:get-tagged-value($message-construct,'##CFG-TV-MESSAGETYPE')" as="xs:string"/>
                 <xsl:variable name="doc">
                     <xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DEFINITION')))">
                         <ep:definition>
@@ -281,26 +279,6 @@
                 </xsl:if>
                 
                 <ep:message prefix="{$prefix}">
-                    <xsl:choose>
-                        <xsl:when test="not(empty($serviceName))">
-                            <xsl:attribute name="servicename" select="$serviceName"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:variable name="msg"
-                                select="concat('The tagged value [servicename] is not set for the message ',$tech-name,'. If you want to create correct Open API documentation you need to set it.')"/>
-                            <xsl:sequence select="imf:msg('WARNING', $msg)"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                    <xsl:choose>
-                        <xsl:when test="not(empty($messageType))">
-                            <xsl:attribute name="messagetype" select="$messageType"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:variable name="msg"
-                                select="concat('The tagged value [messagetype] is not set for the message ',$tech-name,'. If you want to create correct Open API documentation you need to set it.')"/>
-                            <xsl:sequence select="imf:msg('WARNING', $msg)"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
                     <xsl:sequence select="imf:create-output-element('ep:code', $berichtCode)"/>
                     <xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
                     <xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)"/>
