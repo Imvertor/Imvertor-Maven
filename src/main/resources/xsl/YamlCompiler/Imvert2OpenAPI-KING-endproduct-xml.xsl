@@ -115,7 +115,7 @@
 					</xsl:apply-templates>
 				</xsl:for-each-group>
 				<xsl:for-each-group 
-					select="//ep:construct[@type!='complex-datatype']"
+					select="//ep:construct[@type!='complex-datatype' and @type!='groepCompositieAssociation']"
 					group-by="ep:name">
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS02500',$debugging)" />
 					<xsl:sequence select="imf:create-debug-comment(concat('Groupname: ',ep:name),$debugging)" />
@@ -511,7 +511,33 @@
 							<xsl:attribute name="type" select="@type"/>
 						</xsl:otherwise>
 					</xsl:choose>
-					<xsl:if test=".//ep:contains-non-id-attributes = 'true'">
+					
+					<xsl:variable name="contains-non-id-attributes">
+						<xsl:if test="ep:construct[@type='subclass']">
+							<xsl:for-each select="ep:construct[@type='subclass']">
+								<xsl:choose>
+									<xsl:when test="ep:contains-non-id-attributes = 'true'">
+										<xsl:text>#true</xsl:text>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:text>#false</xsl:text>
+									</xsl:otherwise>
+								</xsl:choose>
+								<xsl:sequence select="imf:checkSuperclassesOnId(./ep:superconstruct[@type='superclass'])"/>
+							</xsl:for-each>
+						</xsl:if>
+						<xsl:for-each select="ep:construct[@type='class']">
+							<xsl:choose>
+								<xsl:when test="ep:contains-non-id-attributes = 'true'">
+									<xsl:text>#true</xsl:text>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:text>#false</xsl:text>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:for-each>
+					</xsl:variable>
+					<xsl:if test="contains($contains-non-id-attributes,'#true')">
 						<xsl:attribute name="contains-non-id-attributes" select="'true'" />
 					</xsl:if>
 					<xsl:choose>
@@ -525,6 +551,7 @@
 							<xsl:attribute name="meervoudigeNaam" select="$meervoudigeNaam" />
 						</xsl:otherwise>
 					</xsl:choose>
+					<xsl:sequence select="imf:create-debug-comment(concat('Result check on id attributes: ',$contains-non-id-attributes),$debugging)" />
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS12000, id: ',$id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $construct/imvert:name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($construct/imvert:name, 'element-name'))" />
@@ -711,6 +738,23 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
+	<xsl:function name="imf:checkSuperclassesOnId">
+		<xsl:param name="superclass"/>
+
+		<xsl:choose>
+			<xsl:when test="$superclass/ep:contains-non-id-attributes = 'true'">
+				<xsl:text>#true</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>#false</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:if test="$superclass/ep:superconstruct/@type='superclass'">
+			<xsl:variable name="nextLevelSuperclass" select="$superclass/ep:superconstruct[@type='superclass']"/>
+			<xsl:sequence select="imf:checkSuperclassesOnId($nextLevelSuperclass)"/>
+		</xsl:if>
+	</xsl:function>
 
 	<!-- Processing of an ep:superconstruct means all attributes of that related class are directly placed 
 		 within the current ep:construct. Also the child ep:superconstructs and ep:constructs (if present) are processed. -->
@@ -898,11 +942,9 @@
 			<!-- TODO: Nagaan of er situaties zijn dat een association terecht geen attributes en associations heeft. -->
 			<xsl:when test="@type='association' and not($construct//imvert:attributes/imvert:attribute) and not($construct//imvert:associations/imvert:association)">
 				<xsl:sequence select="imf:create-debug-comment(concat('OAS19500, id: ',$id),$debugging)" />
-				<xsl:variable name="msg" select="concat('The construct ',$construct/imvert:class/imvert:name,' (id ',$construct/imvert:class/imvert:id,') does not have attributes or associations.')" />
-				<xsl:sequence select="imf:msg('WARNING', $msg)" />
+				<xsl:variable name="class-name" select="$construct/imvert:class/imvert:name/@original"/>
+				<xsl:sequence select="imf:msg($construct,'WARNING','The construct [1] does not have attributes or associations.',($class-name))"/>
 			</xsl:when>
-
-
 
 			<!-- TODO: De naam van associations moet waarschijnlijk vervangen worden door de source en/of target role naam in meervoud. 
 				 Op deze wijze levert onderstaande when echter geen goed resultaat op. -->

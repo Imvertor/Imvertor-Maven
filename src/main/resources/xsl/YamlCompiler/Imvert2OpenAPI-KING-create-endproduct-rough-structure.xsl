@@ -386,6 +386,8 @@
 						are placed as a construct in a sequence within that relation. -->
 					<xsl:when
 						test="$proces-type = 'as-normal' and $packages//imvert:class[imvert:supertype/imvert:type-id = $id]">
+						<xsl:sequence
+							select="imf:create-debug-comment('debug:start A14250',$debugging)" />
 						<xsl:apply-templates
 							select="$packages//imvert:class[imvert:supertype/imvert:type-id = $id]"
 							mode="create-rough-message-content">
@@ -443,6 +445,7 @@
 					</xsl:when>
 					<xsl:when test="$proces-type = 'as-supertype'">
 						<ep:superconstruct type="superclass">
+							<xsl:sequence select="imf:create-debug-comment('A15500]',$debugging)" />
 							<xsl:sequence
 								select="imf:create-output-element('ep:name', imvert:name/@original)" />
 							<xsl:sequence
@@ -457,7 +460,6 @@
 								belonging to the current class. Attributes aren't important for the rough 
 								structure but need to be processed here to determine the processtype of the 
 								classes containing the attributes. -->
-							<xsl:sequence select="imf:create-debug-comment('A15500]',$debugging)" />
 							<xsl:apply-templates select="imvert:attributes/imvert:attribute">
 								<xsl:with-param name="id-trail"
 									select="concat('#', $id, '#', $id-trail)" />
@@ -493,10 +495,19 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
-			<xsl:otherwise />
-<?x				<xsl:variable name="msg" select="concat('De class ',imvert:name,' komt recursief voor in het BSM model. Bij een Open API koppelvlak is dat niet toegestaan. Pas het model aan.')" as="xs:string"/>
-				<xsl:sequence select="imf:msg('WARNING',$msg)"/>
-			</xsl:otherwise> ?>
+			<xsl:otherwise>
+				<!-- The association is an association refering to itself. -->
+				<xsl:sequence select="imf:create-debug-comment('A16250]',$debugging)" />
+				<ep:construct type="class">
+					<xsl:apply-templates select="imvert:attributes/imvert:attribute">
+						<xsl:with-param name="id-trail"
+							select="concat('#', $id, '#', $id-trail)" />
+					</xsl:apply-templates>
+				</ep:construct>
+					<?x				<xsl:variable name="msg" select="concat('De class ',imvert:name,' komt recursief voor in het BSM model. Bij een Open API koppelvlak is dat niet toegestaan. Pas het model aan.')" as="xs:string"/>
+					<xsl:sequence select="imf:msg('WARNING',$msg)"/>
+				 ?>
+			</xsl:otherwise>
 		</xsl:choose>
 
 		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)" />
@@ -529,7 +540,13 @@
 
 		<xsl:sequence
 			select="imf:create-debug-comment('debug:start A17000 /debug:start',$debugging)" />
-
+		
+		<xsl:if test="ancestor::imvert:class[imvert:stereotype/@id='stereotype-name-composite']">
+			<xsl:variable name="class-name" select="ancestor::imvert:class/imvert:name/@original"/>
+			<xsl:variable name="association-name" select="imvert:name/@original"/>
+			<xsl:sequence select="imf:msg(.,'WARNING','The association [1] within the class [2] is not allowed since the class is a group composite.',($association-name,$class-name))"/>
+		</xsl:if>
+		
 		<ep:construct type="association">
 			<xsl:if test="$debugging">
 				<xsl:attribute name="package"
@@ -558,15 +575,18 @@
 			<xsl:sequence select="imf:create-output-element('ep:type-id', $type-id)" />
 			<xsl:sequence select="imf:create-output-element('ep:id', imvert:id)" />
 
+			<xsl:sequence select="imf:create-debug-comment('A18250]',$debugging)" />
 			<xsl:apply-templates select="imvert:association-class"
 				mode="create-rough-message-content">
 				<xsl:with-param name="id-trail" select="$id-trail" />
 			</xsl:apply-templates>
+			<xsl:sequence select="imf:create-debug-comment('A18500]',$debugging)" />
 			<xsl:apply-templates select="key('class',$type-id)"
 				mode="create-rough-message-content">
 				<xsl:with-param name="id-trail" select="$id-trail" />
+				<xsl:with-param name="proces-type" select="'as-normal'" />
 				<!-- Within the construct refering to a class we need to be able to trace 
-					which association refered to that class since more than one association can. -->
+					which association refered to that class since more than one association can refer to the class. -->
 				<xsl:with-param name="id-refering-association"
 					select="imvert:id" />
 			</xsl:apply-templates>

@@ -10,8 +10,8 @@
 	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
 	
 	<!-- De eerste variabele is bedoelt voor de server omgeving, de tweede voor gebruik bij ontwikkeling in XML-Spy. -->
-	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
-	<!--<xsl:variable name="debugging" select="false()" as="xs:boolean"/>-->
+	<!--<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>-->
+	<xsl:variable name="debugging" select="false()" as="xs:boolean"/>
 	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
@@ -62,14 +62,14 @@
 		 It can have the following values and is only applicable with json schema 2.0:
 		 * true()
 		 * false()	-->
-    <xsl:variable name="json-schemadeclaration" select="'true()'"/>
+    <xsl:variable name="json-schemadeclaration" select="true()"/>
     
     <xsl:template match="ep:message-sets">
         
         <xsl:value-of select="'{'"/>
         <xsl:choose>
 			<xsl:when test="$json-version = '2.0'">
-				<xsl:if test="$json-schemadeclaration">
+				<xsl:if test="$json-schemadeclaration = true()">
 					"$schema": "http://json-schema.org/draft-04/schema#",
 					"description": "Comment describing your JSON Schema",
 				</xsl:if>
@@ -384,7 +384,7 @@
 			<!-- Since json+hal applies the following properties are generated. -->    
 			,
 			<!-- If pagination is desired, collections apply, the following properties are generated. -->    
-			<xsl:if test="$pagination">
+			<xsl:if test="$pagination = true()">
 			"Pagineerlinks" : {
 				"type" : "object",
 				"properties" : {
@@ -559,6 +559,24 @@
 	    "example": "1.0.1"
         }
     },
+    "warning": {
+      "schema": {
+        "type": "string", 
+        "description": "zie RFC 7234. In het geval een major versie wordt uitgefaseerd, gebruiken we warn-code 299 ('Miscellaneous Persistent Warning') en het API end-point (inclusief versienummer) als de warn-agent van de warning, gevolgd door de warn-text met de human-readable waarschuwing",
+        "example": "299 https://service.../api/.../v1 'Deze versie van de API is verouderd en zal uit dienst worden genomen op 2018-02-01. Raadpleeg voor meer informatie hier de documentatie: https://omgevingswet.../api/.../v1'."
+        }
+    },</xsl:text>
+	<xsl:if test="//ep:message[@grouping='collection']">
+			<xsl:text>
+    "X_Total_Count": {
+      "schema": {
+        "type": "integer",
+        "description": "Totaal aantal paginas.",
+        "example": "163"
+        }
+    },</xsl:text>
+		<xsl:if test="$pagination = true()">
+			<xsl:text>
     "X_Pagination_Count": {
 	  "schema": {
 	    "type": "integer",
@@ -579,7 +597,10 @@
 	    "description": "Aantal resultaten per pagina.",
 	    "example": "20"
 	    }
-    },
+    },</xsl:text>
+		</xsl:if>
+	</xsl:if>
+			<xsl:text>
     "X_Rate_Limit_Limit": {
 	  "schema": {
 	    "type": "integer"
@@ -654,11 +675,20 @@
 					<xsl:when test="@pagination='true'">
 						<xsl:value-of select="'&quot;$ref&quot;: &quot;#/components/schemas/Pagineerlinks&quot;'"/>
 					</xsl:when>
-					<xsl:when test="$json-version = '2.0'">
-						<xsl:value-of select="'&quot;$ref&quot;: &quot;#/definitions/selflink&quot;'"/>
-					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="'&quot;$ref&quot;: &quot;#/components/schemas/selflink&quot;'"/>
+						<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
+						<xsl:value-of select="'&quot;properties&quot;: {'"/>
+						<xsl:value-of select="'&quot;self&quot;: {'"/>
+						<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
+						<xsl:value-of select="'&quot;description&quot;: &quot;uri van de api aanroep die tot dit resultaat heeft geleid&quot;,'"/>
+						<xsl:value-of select="'&quot;properties&quot;: {'"/>
+						<xsl:value-of select="'&quot;href&quot;: {'"/>
+						<xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
+						<xsl:value-of select="'&quot;format&quot;: &quot;uri&quot;'"/>
+						<xsl:value-of select="'}'"/>
+						<xsl:value-of select="'}'"/>
+						<xsl:value-of select="'}'"/>
+						<xsl:value-of select="'}'"/>
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:value-of select="'},'"/>
@@ -873,7 +903,7 @@
 			<xsl:value-of select="'}'"/>
 			<xsl:if test="$debugging">
 				,"--------------Einde-05500-<xsl:value-of select="generate-id()"/>": {
-					"Debug": "OAS05500"
+					"Debug": "OAS05000"
 				}
 			</xsl:if>
 		</xsl:if>
@@ -1394,9 +1424,10 @@
         </xsl:variable>
         <xsl:variable name="typeName" select="ep:type-name"/>
         
-
         <xsl:value-of select="concat('&quot;',$elementName,'&quot;: {')"/>
-        <xsl:value-of select="concat('&quot;type&quot;: &quot;',$type,'&quot;,')"/>
+		<xsl:if test="not($type != 'array' and @type ='association')">
+			<xsl:value-of select="concat('&quot;type&quot;: &quot;',$type,'&quot;,')"/>
+        </xsl:if>
         
 		<xsl:variable name="documentation">
 			<xsl:value-of select="ep:documentation//ep:p"/>

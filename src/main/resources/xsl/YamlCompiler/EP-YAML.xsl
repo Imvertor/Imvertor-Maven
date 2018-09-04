@@ -264,7 +264,6 @@
 					<xsl:sequence select="imf:msg(.,'WARNING','The messagename ([1]) is not correct, according to the request tree in the model it should be [2].', ($messageName,$calculatedMessageName))" />			
 				</xsl:if> ?>
 
-				<xsl:variable name="serviceName" select="@servicename" />
 				<xsl:variable name="documentation">
 					<xsl:text>"</xsl:text><xsl:apply-templates select="ep:documentation" /><xsl:text>"</xsl:text>
 				</xsl:variable>
@@ -418,13 +417,19 @@
 				<xsl:text>&#xa;          headers:</xsl:text>
 				<xsl:text>&#xa;            api-version:</xsl:text>
 				<xsl:text>&#xa;              $ref: '#/components/headers/api_version'</xsl:text>
+				<xsl:text>&#xa;            warning:</xsl:text>
+				<xsl:text>&#xa;              $ref: '#/components/headers/warning'</xsl:text>
 				<xsl:if test="@grouping='collection'">
-					<xsl:text>&#xa;            X-Pagination-Count:</xsl:text>
-					<xsl:text>&#xa;              $ref: '#/components/headers/X_Pagination_Count'</xsl:text>
-					<xsl:text>&#xa;            X-Pagination-Page:</xsl:text>
-					<xsl:text>&#xa;              $ref: '#/components/headers/X_Pagination_Page'</xsl:text>
-					<xsl:text>&#xa;            X-Pagination-Limit:</xsl:text>
-					<xsl:text>&#xa;              $ref: '#/components/headers/X_Pagination_Limit'</xsl:text>
+					<xsl:text>&#xa;            X-Total-Count:</xsl:text>
+					<xsl:text>&#xa;              $ref: '#/components/headers/X_Total_Count'</xsl:text>
+					<xsl:if test="@pagination='true'">
+						<xsl:text>&#xa;            X-Pagination-Count:</xsl:text>
+						<xsl:text>&#xa;              $ref: '#/components/headers/X_Pagination_Count'</xsl:text>
+						<xsl:text>&#xa;            X-Pagination-Page:</xsl:text>
+						<xsl:text>&#xa;              $ref: '#/components/headers/X_Pagination_Page'</xsl:text>
+						<xsl:text>&#xa;            X-Pagination-Limit:</xsl:text>
+						<xsl:text>&#xa;              $ref: '#/components/headers/X_Pagination_Limit'</xsl:text>
+					</xsl:if>
 				</xsl:if>
 				<xsl:text>&#xa;            X-Rate-Limit-Limit:</xsl:text>
 				<xsl:text>&#xa;              $ref: '#/components/headers/X_Rate_Limit_Limit'</xsl:text>
@@ -458,7 +463,6 @@
 			</xsl:when>
 			<xsl:when test="contains(@berichtcode,'Po') and @messagetype = 'request'">
 				<xsl:variable name="messageName" select="ep:name" />
-				<xsl:variable name="serviceName" select="@servicename" />
 				<xsl:variable name="documentation">
 					<xsl:text>"</xsl:text><xsl:apply-templates select="ep:documentation" /><xsl:text>"</xsl:text>
 				</xsl:variable>
