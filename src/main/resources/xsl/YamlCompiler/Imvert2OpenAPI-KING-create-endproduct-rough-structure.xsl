@@ -100,9 +100,15 @@
 	</xsl:template>
 
 	<xsl:template match="imvert:class" mode="create-rough-messages">
+		
+		<xsl:variable name="messagetype">
+			<xsl:value-of select="substring-after(substring-before(imvert:stereotype/@id,'berichttype'),'stereotype-name-')"/>
+		</xsl:variable>
+		<xsl:variable name="pad-id" select="./imvert:associations/imvert:association[imvert:name/@original='pad']/imvert:type-id"/>
+		<xsl:variable name="messagename" select="$packages//imvert:class[imvert:id = $pad-id]/imvert:name/@original"/>
 
 		<xsl:sequence
-			select="imf:create-debug-track(concat('Constructing the rough-message class for class: ',imvert:name),$debugging)" />
+			select="imf:create-debug-track(concat('Constructing the rough-message class for the ',$messagetype,' message: ',$messagename),$debugging)" />
 		<xsl:variable name="berichtcode"
 			select="imf:get-tagged-value(.,'##CFG-TV-BERICHTCODE')" />
 		<xsl:if test="$berichtcode = ''">
@@ -121,7 +127,7 @@
 		<xsl:variable name="pagination" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-PAGE')" />
 		<xsl:variable name="serialisation" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-SERIALISATION')" />
 		
-		<xsl:variable name="messagename" select="imvert:name/@original" />
+		<!--xsl:variable name="messagename" select="imvert:name/@original" /-->
 		<xsl:variable name="messageid" select="imvert:id" />
 		<xsl:variable name="messagetypeid" select="imvert:type-id" />
 		<xsl:sequence select="imf:create-debug-comment($berichtcode,$debugging)" />

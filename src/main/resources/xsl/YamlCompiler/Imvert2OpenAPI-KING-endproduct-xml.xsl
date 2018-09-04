@@ -226,9 +226,11 @@
 		<xsl:variable name="serialisation" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-SERIALISATION')" />
 		<xsl:variable name="sort" select="@sort" /> ?>
 
-		<xsl:variable name="name" select="$message-construct/imvert:name/@original" as="xs:string" />
-		<xsl:variable name="tech-name" select="imf:get-normalized-name($message-construct/imvert:name, 'element-name')" as="xs:string" />
-
+<?x		<xsl:variable name="name" select="$message-construct/imvert:name/@original" as="xs:string" />
+		<xsl:variable name="tech-name" select="imf:get-normalized-name($message-construct/imvert:name, 'element-name')" as="xs:string" /> ?>
+		<xsl:variable name="name" select="ep:name" as="xs:string" />
+		<xsl:variable name="tech-name" select="imf:get-normalized-name(ep:name, 'element-name')" as="xs:string" />
+		
 		<!-- TODO: Nagaan of het wel noodzakelijk is om over de min- en maxoccurs van de entiteitrelaties te kunnen beschikken. -->
 		<xsl:variable name="minOccursAssociation">
 			<xsl:choose>
@@ -1046,8 +1048,7 @@
 						<xsl:if test="$meervoudigeNaam != ''">
 							<xsl:attribute name="meervoudigeNaam" select="$meervoudigeNaam" />
 						</xsl:if>
-					</xsl:if>
-					
+					</xsl:if>					
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name1', imf:get-normalized-name($tech-name,'type-name'))" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($classconstruct/imvert:name, 'type-name'))" />
