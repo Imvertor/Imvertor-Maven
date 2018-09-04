@@ -425,23 +425,25 @@
 		<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
         
         <xsl:variable name="doc">
-            <xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DEFINITION')))">
-                <ep:definition>
-                    <xsl:sequence select="imf:merge-documentation($construct,'CFG-TV-DEFINITION')"/>
-                </ep:definition>
-            </xsl:if>
-            <xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DESCRIPTION')))">
-                <ep:description>
-                    <xsl:sequence select="imf:merge-documentation($construct,'CFG-TV-DESCRIPTION')"/>
-                </ep:description>
-            </xsl:if>
-            <xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-PATTERN')))">
-                <ep:pattern>
-                    <ep:p>
-                        <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-PATTERN')"/>
-                    </ep:p>
-                </ep:pattern>
-            </xsl:if>
+        	<xsl:if test="not(empty($construct))">
+	            <xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DEFINITION')))">
+	                <ep:definition>
+	                    <xsl:sequence select="imf:merge-documentation($construct,'CFG-TV-DEFINITION')"/>
+	                </ep:definition>
+	            </xsl:if>
+	            <xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DESCRIPTION')))">
+	                <ep:description>
+	                    <xsl:sequence select="imf:merge-documentation($construct,'CFG-TV-DESCRIPTION')"/>
+	                </ep:description>
+	            </xsl:if>
+	            <xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-PATTERN')))">
+	                <ep:pattern>
+	                    <ep:p>
+	                        <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-PATTERN')"/>
+	                    </ep:p>
+	                </ep:pattern>
+	            </xsl:if>
+        	</xsl:if>
         </xsl:variable>
 
 		<xsl:choose>
@@ -1044,7 +1046,8 @@
 						<xsl:if test="$meervoudigeNaam != ''">
 							<xsl:attribute name="meervoudigeNaam" select="$meervoudigeNaam" />
 						</xsl:if>
-					</xsl:if>					
+					</xsl:if>
+					
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name1', imf:get-normalized-name($tech-name,'type-name'))" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($classconstruct/imvert:name, 'type-name'))" />
