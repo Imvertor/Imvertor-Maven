@@ -104,6 +104,9 @@
 		<xsl:variable name="messagetype">
 			<xsl:value-of select="substring-after(substring-before(imvert:stereotype/@id,'berichttype'),'stereotype-name-')"/>
 		</xsl:variable>
+		<xsl:if test="empty(./imvert:associations/imvert:association[imvert:name/@original='pad']/imvert:type-id)">
+			<xsl:sequence select="imf:msg('ERROR','The messageclass [1] does not have an association to a pad class. This is neccessary to determine the name of the message.',(imvert:name/@original))" />
+		</xsl:if>
 		<xsl:variable name="pad-id" select="./imvert:associations/imvert:association[imvert:name/@original='pad']/imvert:type-id"/>
 		<xsl:variable name="messagename" select="$packages//imvert:class[imvert:id = $pad-id]/imvert:name/@original"/>
 
@@ -112,10 +115,7 @@
 		<xsl:variable name="berichtcode"
 			select="imf:get-tagged-value(.,'##CFG-TV-BERICHTCODE')" />
 		<xsl:if test="$berichtcode = ''">
-			<xsl:variable name="msg"
-				select="concat('The messageclass ',imvert:name/@original,' does not have a value for the tagged value berichtcode or the tagged value lacks.')"
-				as="xs:string" />
-			<xsl:sequence select="imf:msg('ERROR',$msg)" />
+			<xsl:sequence select="imf:msg('ERROR','The messageclass [1] does not have a value for the tagged value berichtcode or the tagged value lacks.',(imvert:name/@original))" />
 		</xsl:if>
 		
 		<xsl:variable name="berichtsjabloon" select="$packages//imvert:package[imvert:alias='/www.kinggemeenten.nl/BSM/Berichtstrukturen/Model']//imvert:class[.//imvert:tagged-value[@id='CFG-TV-BERICHTCODE']/imvert:value=$berichtcode]" />
