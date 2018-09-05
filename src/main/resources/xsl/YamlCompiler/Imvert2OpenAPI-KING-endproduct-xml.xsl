@@ -29,7 +29,7 @@
 	<!-- TODO: Kijken of de volgende key's wel nodig zijn. -->
 	<xsl:key name="class" match="imvert:class" use="imvert:id" />
 	<xsl:key name="enumerationClass" match="imvert:class" use="imvert:name" />
-
+	
 	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
 	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean" />
 
@@ -115,7 +115,7 @@
 					</xsl:apply-templates>
 				</xsl:for-each-group>
 				<xsl:for-each-group 
-					select="//ep:construct[@type!='complex-datatype' and @type!='groepCompositieAssociation']"
+					select="//ep:construct[@type!='complex-datatype' and @type!='table-datatype' and @type!='groepCompositieAssociation']"
 					group-by="ep:name">
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS02500',$debugging)" />
 					<xsl:sequence select="imf:create-debug-comment(concat('Groupname: ',ep:name),$debugging)" />
@@ -146,6 +146,24 @@
 				<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS03000',$debugging)" />
 				<xsl:for-each-group 
 					select="//ep:construct[@type='complex-datatype']"
+					group-by="ep:type-id">
+					<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS035000',$debugging)" />
+					<!-- All global constructs need to be provided with the berichtcode and messagetype they apply to, 
+						 to be able to decide how to proces them in a following step. -->
+					<xsl:variable name="berichtcode" select="ancestor::ep:rough-message/@berichtcode"/>
+					<xsl:variable name="messagetype" select="ancestor::ep:rough-message/@messagetype"/>
+					<!-- All global constructs need to be provided with the berichtcode and messagetype they apply to, 
+						 to be able to decide how to proces them in a following step. -->
+					<xsl:apply-templates select="current-group()[1]" mode="as-type">
+						<xsl:with-param name="berichtcode" select="$berichtcode"/>
+						<xsl:with-param name="messagetype" select="$messagetype"/>
+					</xsl:apply-templates>
+				</xsl:for-each-group>
+				
+				<!-- The next for-each takes care of creating global ep:constructs for tabel entiteiten. -->
+				<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS03500',$debugging)" />
+				<xsl:for-each-group 
+					select="//ep:construct[@type='table-datatype']"
 					group-by="ep:type-id">
 					<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS035000',$debugging)" />
 					<!-- All global constructs need to be provided with the berichtcode and messagetype they apply to, 
@@ -375,7 +393,7 @@
 					<xsl:variable name="type-id" select="ep:type-id" />
 					<xsl:value-of select="$packages//imvert:attribute[imvert:type-id = $type-id][1]/imvert:id" />
 				</xsl:when> ?>
-				<xsl:when test="ep:type-id and @type = 'complex-datatype'">
+				<xsl:when test="ep:type-id and (@type = 'complex-datatype' or @type = 'table-datatype')">
 					<xsl:variable name="type-id" select="ep:type-id" />
 					<!--xsl:value-of select="$packages//imvert:attribute[imvert:name = $name and imvert:type-id = $type-id][1]/imvert:id" /-->
 					<xsl:value-of select="$packages//imvert:attribute[imvert:name = $name and imvert:type-id = $type-id][not(following::imvert:attribute[imvert:name = $name and imvert:type-id = $type-id])]/imvert:id" />				
@@ -414,7 +432,7 @@
 				<xsl:when test="ep:id and @type = 'attribute'">
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS09500, id: ',$id),$debugging)" />
 				</xsl:when>
-				<xsl:when test="ep:type-id and @type = 'complex-datatype'">
+				<xsl:when test="ep:type-id and (@type = 'complex-datatype' or @type = 'table-datatype')">
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS10000, id: ',$id),$debugging)" />
 				</xsl:when>
 				<xsl:when test="ep:type-id">
@@ -461,10 +479,11 @@
 				</xsl:apply-templates>
 			</xsl:when>
 			<!-- If the current ep:construct is an complex-datatype a ep:construct element is generated with all necessary properties. -->
-			<xsl:when test="@type='complex-datatype'">
+			<xsl:when test="@type='complex-datatype' or @type='table-datatype'">
 				<xsl:variable name="type-id" select="ep:type-id" />
 				<xsl:variable name="classconstruct" select="imf:get-construct-by-id($type-id,$packages)" />
 				<xsl:variable name="type-name" select="$classconstruct/imvert:name" />
+
 				<ep:construct type="{@type}" berichtcode="{$berichtcode}" messagetype="{$messagetype}">
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS11500, id: ',$id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
@@ -991,6 +1010,7 @@
 					</xsl:choose>
 					<ep:seq>
 						<xsl:sequence select="imf:create-debug-comment(concat('OAS23000, id: ',$id),$debugging)" />
+						<xsl:sequence select="imf:create-debug-comment(concat('Type-id: ',$type-id),$debugging)" />
 						<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
 						<xsl:sequence select="imf:create-debug-comment(concat('OAS23500, id: ',$id),$debugging)" />
 						<xsl:apply-templates select="ep:superconstruct" mode="as-ref" />
@@ -1126,6 +1146,35 @@
 					</ep:seq>
 				</xsl:copy>
 			</xsl:when>
+			<xsl:when test="@type = 'table-datatype'">
+				<xsl:sequence select="imf:create-debug-comment(concat('OAS28100, id: ',$id),$debugging)" />
+				<xsl:variable name="type" select="@type" />
+				<xsl:variable name="complex-datatype-tech-name" select="$construct/imvert:class/imvert:name" />
+				<xsl:copy>
+					<xsl:attribute name="type" select="$type" />
+					<xsl:attribute name="berichtcode" select="$berichtcode" />
+					<xsl:attribute name="messagetype" select="$messagetype" />
+					<xsl:sequence select="imf:create-output-element('ep:name', $construct/imvert:class/imvert:name/@original)" />
+					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($complex-datatype-tech-name,'type-name'))" />
+					<xsl:choose>
+						<xsl:when test="(empty($doc) or $doc='') and $debugging">
+							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+						</xsl:otherwise>
+					</xsl:choose>
+					<ep:seq>
+						<xsl:sequence select="imf:create-debug-comment(concat('OAS28200, id: ',$id),$debugging)" />
+						<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute[position()=1 or position()=2]" />
+						
+						<!-- TODO: Nagaan of er in een complex-datatype type ep:construct geen associations voor kunnen komen. 
+							 Indien dat wel het geval is dan moet hier ook een apply-templates komen op een ep:construct en moet ook het rough-messages stylesheets 
+							 daar rekening mee houden. -->
+					</ep:seq>
+				</xsl:copy>
+			</xsl:when>
+			
 		</xsl:choose>
 	</xsl:template>
 
@@ -1210,9 +1259,6 @@
 					</xsl:when>
 					<xsl:otherwise>
 						<ep:construct>
-							<xsl:if test="$is-id = 'true'">
-								<xsl:attribute name="is-id" select="'true'"/>
-							</xsl:if>
 							<xsl:sequence select="imf:create-debug-comment(concat('OAS29500, id: ',imvert:id),$debugging)" />
 							<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 							<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
@@ -1226,23 +1272,7 @@
 							</xsl:choose>
 							<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)" />
 							<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)" />
-							<xsl:sequence select="imf:create-output-element('ep:data-type', $tabelEntiteit//imvert:attribute[imvert:is-id = 'true']/imvert:type-name)" />
-
-							<xsl:variable name="max-length" select="$tabelEntiteit//imvert:attribute[imvert:is-id = 'true']/imvert:max-length" />
-							<xsl:variable name="total-digits" select="$tabelEntiteit//imvert:attribute[imvert:is-id = 'true']/imvert:total-digits" />
-							<xsl:variable name="fraction-digits" select="$tabelEntiteit//imvert:attribute[imvert:is-id = 'true']/imvert:fraction-digits" />
-							<xsl:variable name="min-waarde" select="imf:get-tagged-value($tabelEntiteit//imvert:attribute[imvert:is-id = 'true'],'##CFG-TV-MINVALUEINCLUSIVE')" />
-							<xsl:variable name="max-waarde" select="imf:get-tagged-value($tabelEntiteit//imvert:attribute[imvert:is-id = 'true'],'##CFG-TV-MAXVALUEINCLUSIVE')" />
-							<xsl:variable name="min-length" select="xs:integer(imf:get-tagged-value($tabelEntiteit//imvert:attribute[imvert:is-id = 'true'],'##CFG-TV-MINLENGTH'))" />
-							<xsl:variable name="pattern" select="$tabelEntiteit//imvert:attribute[imvert:is-id = 'true']/imvert:pattern" />
-
-							<xsl:sequence select="imf:create-output-element('ep:max-length', $max-length)" />
-							<!--xsl:sequence select="imf:create-output-element('ep:total-digits', $total-digits)"/> 
-							<xsl:sequence select="imf:create-output-element('ep:fraction-digits', $fraction-digits)"/ -->
-							<xsl:sequence select="imf:create-output-element('ep:min-value', $min-waarde)" />
-							<xsl:sequence select="imf:create-output-element('ep:max-value', $max-waarde)" />
-							<!--xsl:sequence select="imf:create-output-element('ep:min-length', $min-length)"/ -->
-							<xsl:sequence select="imf:create-output-element('ep:pattern', $pattern)" />
+							<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name(imvert:type-name,'type-name'))" />
 							<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
 						</ep:construct>
 					</xsl:otherwise>

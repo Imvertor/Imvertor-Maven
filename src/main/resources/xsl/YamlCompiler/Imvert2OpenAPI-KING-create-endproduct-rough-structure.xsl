@@ -88,12 +88,7 @@
 			'stereotype-name-patchberichttype',
 			'stereotype-name-postberichttype',
 			'stereotype-name-putberichttype',
-			'stereotype-name-deleteberichttype',
-			'stereotype-name-vraagberichttype',
-			'stereotype-name-antwoordberichttype',
-			'stereotype-name-kennisgevingberichttype',
-			'stereotype-name-synchronisatieberichttype',
-			'stereotype-name-vrijberichttype'))]"
+			'stereotype-name-deleteberichttype'))]"
 			mode="create-rough-messages" />
 
 		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)" />
@@ -139,13 +134,13 @@
 			<!-- ROME: De volgende when bevat een warning message. De daaropvolgende dezelfde message maar in de error variant.
 					   De eerste variant geldt als de StUF berichttypes gebruikt worden. De tweede als de OAS berichttypes gebruikt worden.
 					   De eerste kan verwijderd worden zodra in de BSM modellen het gebruik van de StUF berichttypes in geval van OAS is aangepast. -->
-			<xsl:when test="empty(imvert:supertype) and imvert:stereotype/@id = ('stereotype-name-vraagberichttype',
+			<xsl:when test="imvert:stereotype/@id = ('stereotype-name-vraagberichttype',
 				'stereotype-name-antwoordberichttype',
 				'stereotype-name-kennisgevingberichttype',
 				'stereotype-name-synchronisatieberichttype',
 				'stereotype-name-vrijberichttype')">
 				<xsl:variable name="msg"
-					select="concat('The messageclass ',imvert:name,' has no interface to a supertype from the Berichtstructuren package.')"
+					select="concat('The stereotype of the messageclass ',imvert:name,' is not suitable for OAS messages. Change it if this is not the purpose.')"
 					as="xs:string" />
 				<xsl:sequence select="imf:msg('WARNING',$msg)" />
 			</xsl:when>
@@ -553,7 +548,7 @@
 			<xsl:sequence select="imf:msg(.,'WARNING','The association [1] within the class [2] is not allowed since the class is a group composite.',($association-name,$class-name))"/>
 		</xsl:if>
 		
-		<ep:construct type="association">
+		<ep:construct>
 			<xsl:if test="$debugging">
 				<xsl:attribute name="package"
 					select="ancestor::imvert:package/imvert:name" />
@@ -626,15 +621,23 @@
 
 		<xsl:sequence
 			select="imf:create-debug-comment('debug:start A19000 /debug:start',$debugging)" />
-
+		<xsl:sequence
+			select="imf:create-debug-comment(concat('type-id: ',$type-id),$debugging)" />
+		
 		<xsl:if test="empty(imvert:is-id)">
 			<ep:contains-non-id-attributes>true</ep:contains-non-id-attributes>
 		</xsl:if>
 
 		<xsl:if
-			test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype[@id = 'stereotype-name-complextype']">
+			test="imvert:type-id and //imvert:class[imvert:id = $type-id]/imvert:stereotype[@id = 'stereotype-name-complextype' or @id = 'stereotype-name-referentielijst']">
 			<xsl:sequence select="imf:create-debug-comment('A19500]',$debugging)" />
-			<ep:construct type="complex-datatype">
+			<xsl:variable name="type">
+				<xsl:choose>
+					<xsl:when test="//imvert:class[imvert:id = $type-id]/imvert:stereotype/@id = 'stereotype-name-complextype'">complex-datatype</xsl:when>
+					<xsl:when test="//imvert:class[imvert:id = $type-id]/imvert:stereotype/@id = 'stereotype-name-referentielijst'">table-datatype</xsl:when>
+				</xsl:choose>
+			</xsl:variable>
+			<ep:construct type="{$type}">
 				<xsl:sequence
 					select="imf:create-output-element('ep:name', imvert:name/@original)" />
 				<xsl:sequence

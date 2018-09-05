@@ -11,7 +11,7 @@
 	
 	<!-- De eerste variabele is bedoelt voor de server omgeving, de tweede voor gebruik bij ontwikkeling in XML-Spy. -->
 	<!--<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>-->
-	<xsl:variable name="debugging" select="false()" as="xs:boolean"/>
+	<xsl:variable name="debugging" select="true()" as="xs:boolean"/>
 	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
@@ -254,7 +254,7 @@
         	<!-- ROME: if conditie aangepast omdat blijkbaar bij elke voorkomende entiteit in een model een '_links' component moet worden gegenereerd. RM #490164 -->
         	<!--xsl:if test="ep:message-set/ep:construct[.//ep:construct[@type='association']]">,</xsl:if-->
         	<xsl:if test="ep:message-set/ep:construct[(( contains(@berichtcode,'Po') and @messagetype='request') or 
-				((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response')) and @type!='complex-datatype' and @type!='groepCompositie' and @type!='groepCompositieAssociation' and @type != '']">,</xsl:if>
+				((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response')) and @type!='complex-datatype' and @type!='table-datatype' and @type!='groepCompositie' and @type!='groepCompositieAssociation' and @type != '']">,</xsl:if>
 
 			<!-- Loop over global constructs who do have themself a construct of 'association' type.
 				 Global types are generated. -->
@@ -263,7 +263,7 @@
         	<!--xsl:for-each select="ep:message-set/ep:construct[.//ep:construct[@type='association'] and (( contains(@berichtcode,'Po') and @messagetype='request') or 
 													((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response'))]"-->
 			<xsl:for-each select="ep:message-set/ep:construct[(( contains(@berichtcode,'Po') and @messagetype='request') or 
-				((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response')) and @type!='complex-datatype' and @type!='groepCompositie' and @type!='groepCompositieAssociation' and @type != '']">
+				((contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')) and @messagetype='response')) and @type!='complex-datatype' and @type!='table-datatype' and @type!='groepCompositie' and @type!='groepCompositieAssociation' and @type != '']">
 					
 				<xsl:if test="$debugging">
 					"--------------Debuglocatie-00500-<xsl:value-of select="generate-id()"/>": {
@@ -876,11 +876,11 @@
 		</xsl:for-each>
 		
 
-		<xsl:if test="@type!='complex-datatype' and @type!='groepCompositie' and ep:seq/ep:construct[not(ep:seq) and not(@type = 'association') and not(@type = 'superclass') and not(ep:ref)]">
+		<xsl:if test="@type!='complex-datatype' and @type!='table-datatype' and @type!='groepCompositie' and ep:seq/ep:construct[not(ep:seq) and not(@type = 'association') and not(@type = 'superclass') and not(ep:ref)]">
 			<xsl:value-of select="','"/>
 		</xsl:if>
 		
-		<xsl:if test="@type!='complex-datatype' and @type!='groepCompositie'">
+		<xsl:if test="@type!='complex-datatype' and @type!='table-datatype' and @type!='groepCompositie'">
 
 			<xsl:value-of select="'&quot;_links&quot;: {'"/>
 	
