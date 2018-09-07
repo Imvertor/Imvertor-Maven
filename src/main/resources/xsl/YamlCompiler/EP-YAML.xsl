@@ -277,8 +277,8 @@
 				</xsl:variable>
 	
 				<xsl:text>&#xa;    </xsl:text><xsl:value-of select="$method"/><xsl:text>:</xsl:text>
-				<xsl:text>&#xa;      summary: '</xsl:text><xsl:value-of select="$documentation" /><xsl:text>'</xsl:text>
 				<xsl:text>&#xa;      operationId: </xsl:text><xsl:value-of select="ep:tech-name" />
+				<xsl:text>&#xa;      description: '</xsl:text><xsl:value-of select="$documentation" /><xsl:text>'</xsl:text>
 				<xsl:choose>
 					<xsl:when test="contains($parametersRequired,'J') or 
 									$checkedUriStructure//ep:uriPart/ep:param[@path='true'] or 
@@ -530,8 +530,8 @@
 				</xsl:variable>
 	
 				<xsl:text>&#xa;    </xsl:text><xsl:value-of select="$method"/><xsl:text>:</xsl:text>
-				<xsl:text>&#xa;      summary: '</xsl:text><xsl:value-of select="$documentation" /><xsl:text>'</xsl:text>
 				<xsl:text>&#xa;      operationId: </xsl:text>post<xsl:value-of select="ep:tech-name" />
+				<xsl:text>&#xa;      description: '</xsl:text><xsl:value-of select="$documentation" /><xsl:text>'</xsl:text>
 				<xsl:text>&#xa;      requestBody:</xsl:text>
 				<xsl:text>&#xa;        content:</xsl:text>
 				<xsl:text>&#xa;          application/hal+json:</xsl:text>
