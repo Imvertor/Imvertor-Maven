@@ -85,7 +85,7 @@
 	<xsl:template match="ep:message-set">
 	
 		<xsl:variable name="KVname">
-			<xsl:value-of select="'Moet nog een keer bepaald worden waar deze vandaan moet komen'"/>
+			<xsl:value-of select="../ep:name"/>
 		</xsl:variable>
 		<xsl:variable name="chars2bTranslated" select="translate($KVname,'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ','')"/>
 		<xsl:variable name="normalizedKVname">

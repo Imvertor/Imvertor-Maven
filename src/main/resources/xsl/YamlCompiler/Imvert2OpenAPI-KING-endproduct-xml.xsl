@@ -73,8 +73,8 @@
 	<!-- Starts the creation of the rough-message constructs and the constructs relates to those message constructs. -->
 	<xsl:template match="ep:rough-messages">
 		<xsl:sequence select="imf:set-config-string('appinfo','kv-yaml-schema-name',concat($kv-prefix,$version))"/>
-		
 		<ep:message-sets>
+			<ep:name><xsl:value-of select="ep:name"/></ep:name>
 			<ep:message-set KV-namespace="yes">
 				<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS00500',$debugging)" />
 

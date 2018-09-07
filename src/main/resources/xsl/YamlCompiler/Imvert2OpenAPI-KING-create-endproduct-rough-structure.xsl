@@ -42,6 +42,10 @@
 			de Berichtstructuren package of mogen we er gewoon vanuit gaan dat dat package 
 			niet gebruikt wordt in de OAS context? -->
 		<ep:rough-messages>
+			<ep:name>
+				<xsl:value-of select="$packages/imvert:tagged-values/imvert:tagged-value[@id='CFG-TV-INTERFACE-NAME']/imvert:value"/>
+				<!--xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($packages/imvert:packages, '##CFG-TV-INTERFACE-NAME')"/-->
+			</ep:name>
 			<xsl:apply-templates
 				select="$packages/imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package') and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]"
 				mode="create-rough-message-structure" />
@@ -77,7 +81,7 @@
 			select="imf:create-debug-comment('debug:start A10500 /debug:start',$debugging)" />
 		<xsl:sequence
 			select="imf:create-debug-track(concat('Constructing the rough-messages for package: ',imvert:name),$debugging)" />
-
+		
 		<!-- TODO: De vraag is of bij OpenAPI generatie nog wel het onderscheid 
 			tussen de verschillende berichttypen gemaakt moet kunnen worden. -->
 

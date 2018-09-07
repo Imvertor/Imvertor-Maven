@@ -25,6 +25,14 @@
     
     <tagged-values>
         
+        <tv norm="space" id="CFG-TV-INTERFACE-NAME">
+            <name lang="nl">Koppelvlak-naam</name>
+            <desc lang="nl">De naam van het koppelvlak.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
         <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONAUTHENTIC">
             <derive>yes</derive>
             <stereotypes>
