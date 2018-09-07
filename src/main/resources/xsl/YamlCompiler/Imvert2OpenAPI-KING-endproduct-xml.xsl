@@ -1068,7 +1068,8 @@
 						<xsl:if test="$meervoudigeNaam != ''">
 							<xsl:attribute name="meervoudigeNaam" select="$meervoudigeNaam" />
 						</xsl:if>
-					</xsl:if>					
+					</xsl:if>
+					
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name1', imf:get-normalized-name($tech-name,'type-name'))" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($classconstruct/imvert:name, 'type-name'))" />
@@ -1178,7 +1179,9 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<!-- All imvert:attribute elements found in the classes refered to are processed here. -->
+	<!-- Some of the imvert:attribute elements found in the classes refered to are processed here.
+		 Some because imvert:attribute elements having a stereotype of 'stereotype-name-complextype' and 
+		 'stereotype-name-referentielijst' are processed in the ep:construct template with mode="as-content". -->
 	<xsl:template match="imvert:attribute">
 		<xsl:variable name="name" select="imvert:name/@original" as="xs:string" />
 		<xsl:variable name="tech-name" select="imf:get-normalized-name(imvert:name, 'element-name')" as="xs:string" />
@@ -1247,7 +1250,7 @@
 			<!-- The content of ep:constructs based on attributes which refer to a tabelentiteit is determined by the imvert:attribute in that tabelentiteit class 
 				 which serves as a unique key. So it get all properties of that unique key. -->
 			<xsl:when test="imvert:type-id and imvert:type-id = $packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]/imvert:id">
-				<xsl:variable name="type-id" select="imvert:type-id" />
+<?x				<xsl:variable name="type-id" select="imvert:type-id" />
 				<xsl:variable name="tabelEntiteit">
 					<xsl:sequence select="$packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst') and imvert:id = $type-id]" />
 				</xsl:variable>
@@ -1276,7 +1279,7 @@
 							<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
 						</ep:construct>
 					</xsl:otherwise>
-				</xsl:choose>
+				</xsl:choose> ?>
 			</xsl:when>
 			<!-- imvert:attribute having an imvert:type-id result in an ep:construct which refers to a global ep:construct. This is for example the case 
 				 when it's an attribute with a enumeration type. -->

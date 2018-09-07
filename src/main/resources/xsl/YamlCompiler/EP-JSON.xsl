@@ -1208,6 +1208,9 @@
             <xsl:when test="$incomingType = 'uri'">
                 <xsl:value-of select="'string'"/>
             </xsl:when>
+            <xsl:when test="$incomingType = 'txt'">
+                <xsl:value-of select="'string'"/>
+            </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="'string'"/>
             </xsl:otherwise>

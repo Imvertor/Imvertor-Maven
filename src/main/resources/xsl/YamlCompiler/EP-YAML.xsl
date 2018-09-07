@@ -380,21 +380,77 @@
 							</xsl:variable>
 							<xsl:variable name="datatype">
 								<xsl:choose>
-									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'date'">string</xsl:when>
-									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'datetime'">string</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'date'">
+										<xsl:value-of select="'string'"/>
+									</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'year'">
+										<xsl:value-of select="'integer'"/>
+									</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'yearmonth'">
+										<xsl:value-of select="'integer'"/>
+									</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'dateTime'">
+										<xsl:value-of select="'string'"/>
+									</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'postcode'">
+										<xsl:value-of select="'string'"/>
+									</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'boolean'">
+										<xsl:value-of select="'boolean'"/>
+									</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'string'">
+										<xsl:value-of select="'string'"/>
+									</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'integer'">
+										<xsl:value-of select="'integer'"/>
+									</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'decimal'">
+										<xsl:value-of select="'number'"/>
+									</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'uri'">
+										<xsl:value-of select="'string'"/>
+									</xsl:when>
 									<xsl:when test="ep:type-name">
 										<xsl:variable name="type" select="ep:type-name"/>
 										<xsl:variable name="enumtype" select="$message-sets//ep:message-set/ep:construct[ep:tech-name = $type]/ep:data-type"/>
 										<xsl:choose>
-											<xsl:when test="substring-after($enumtype, 'scalar-') = 'date'">string</xsl:when>
-											<xsl:when test="substring-after($enumtype, 'scalar-') = 'datetime'">string</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'date'">
+												<xsl:value-of select="'string'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'year'">
+												<xsl:value-of select="'integer'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'yearmonth'">
+												<xsl:value-of select="'integer'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'dateTime'">
+												<xsl:value-of select="'string'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'postcode'">
+												<xsl:value-of select="'string'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'boolean'">
+												<xsl:value-of select="'boolean'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'string'">
+												<xsl:value-of select="'string'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'integer'">
+												<xsl:value-of select="'integer'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'decimal'">
+												<xsl:value-of select="'number'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'uri'">
+												<xsl:value-of select="'string'"/>
+											</xsl:when>
 											<xsl:otherwise>
-												<xsl:value-of select="substring-after($enumtype, 'scalar-')"/>
+												<xsl:value-of select="'string'"/>
 											</xsl:otherwise>
 										</xsl:choose>
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
+										<xsl:value-of select="'string'"/>
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:variable>
