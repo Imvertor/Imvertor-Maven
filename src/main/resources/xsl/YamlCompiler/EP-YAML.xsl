@@ -320,7 +320,7 @@
 							<xsl:text>&#xa;            type: string</xsl:text>
 							<xsl:text>&#xa;            example: -prio,aanvraag_datum</xsl:text>
 						</xsl:if>
-						<xsl:variable name="typelist" as="node()*">
+<?x						<xsl:variable name="typelist" as="node()*">
 							<xsl:for-each select="ep:seq/ep:construct/ep:type-name">
 								<xsl:variable name="name" select="." />
 								<xsl:for-each
@@ -328,34 +328,82 @@
 									<xsl:copy-of select="." />
 								</xsl:for-each>
 							</xsl:for-each>
-						</xsl:variable>
+						</xsl:variable> ?>
 			
 						<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[@path='true']">
-							<xsl:variable name="facets">
-								<xsl:call-template name="deriveFacets">
-									<xsl:with-param name="incomingType">
-										<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
-									</xsl:with-param>
-								</xsl:call-template>
-							</xsl:variable>
 							<xsl:variable name="datatype">
 								<xsl:choose>
-									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'date'">string</xsl:when>
-									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'datetime'">string</xsl:when>
-									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'postcode'">string</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'date'">
+										<xsl:value-of select="'string'"/>
+									</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'year'">
+										<xsl:value-of select="'integer'"/>
+									</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'yearmonth'">
+										<xsl:value-of select="'integer'"/>
+									</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'dateTime'">
+										<xsl:value-of select="'string'"/>
+									</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'postcode'">
+										<xsl:value-of select="'string'"/>
+									</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'boolean'">
+										<xsl:value-of select="'boolean'"/>
+									</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'string'">
+										<xsl:value-of select="'string'"/>
+									</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'integer'">
+										<xsl:value-of select="'integer'"/>
+									</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'decimal'">
+										<xsl:value-of select="'number'"/>
+									</xsl:when>
+									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'uri'">
+										<xsl:value-of select="'string'"/>
+									</xsl:when>
 									<xsl:when test="ep:type-name">
 										<xsl:variable name="type" select="ep:type-name"/>
 										<xsl:variable name="enumtype" select="$message-sets//ep:message-set/ep:construct[ep:tech-name = $type]/ep:data-type"/>
 										<xsl:choose>
-											<xsl:when test="substring-after($enumtype, 'scalar-') = 'date'">string</xsl:when>
-											<xsl:when test="substring-after($enumtype, 'scalar-') = 'datetime'">string</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'date'">
+												<xsl:value-of select="'string'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'year'">
+												<xsl:value-of select="'integer'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'yearmonth'">
+												<xsl:value-of select="'integer'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'dateTime'">
+												<xsl:value-of select="'string'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'postcode'">
+												<xsl:value-of select="'string'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'boolean'">
+												<xsl:value-of select="'boolean'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'string'">
+												<xsl:value-of select="'string'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'integer'">
+												<xsl:value-of select="'integer'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'decimal'">
+												<xsl:value-of select="'number'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'uri'">
+												<xsl:value-of select="'string'"/>
+											</xsl:when>
 											<xsl:otherwise>
-												<xsl:value-of select="$enumtype"/>
+												<xsl:value-of select="'string'"/>
 											</xsl:otherwise>
 										</xsl:choose>
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
+										<xsl:value-of select="'string'"/>
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:variable>
@@ -364,20 +412,27 @@
 							<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
 							<xsl:text>&#xa;          required: true</xsl:text>
 							<xsl:text>&#xa;          schema:</xsl:text>
-							<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
-							<xsl:value-of select="$facets"/>
-							<xsl:if test="ep:example">
-								<xsl:text>&#xa;          example: </xsl:text><xsl:value-of select="ep:example"/>
-							</xsl:if>
+							<xsl:choose>
+								<xsl:when test="ep:data-type">
+									<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
+									<xsl:variable name="facets">
+										<xsl:call-template name="deriveFacets">
+											<xsl:with-param name="incomingType">
+												<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
+											</xsl:with-param>
+										</xsl:call-template>
+									</xsl:variable>
+									<xsl:value-of select="$facets"/>
+									<xsl:if test="ep:example">
+										<xsl:text>&#xa;          example: </xsl:text><xsl:value-of select="ep:example"/>
+									</xsl:if>
+								</xsl:when>
+								<xsl:when test="ep:type-name">
+									<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',ep:type-name,'&quot;')"/>
+								</xsl:when>
+							</xsl:choose>
 						</xsl:for-each>
 						<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[empty(@path) or @path = 'false']">
-							<xsl:variable name="facets">
-								<xsl:call-template name="deriveFacets">
-									<xsl:with-param name="incomingType">
-										<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
-									</xsl:with-param>
-								</xsl:call-template>
-							</xsl:variable>
 							<xsl:variable name="datatype">
 								<xsl:choose>
 									<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'date'">
@@ -459,11 +514,25 @@
 							<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate(ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
 							<xsl:text>&#xa;          required: false</xsl:text>
 							<xsl:text>&#xa;          schema:</xsl:text>
-							<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
-							<xsl:value-of select="$facets"/>
-							<xsl:if test="ep:example">
-								<xsl:text>&#xa;          example: </xsl:text><xsl:value-of select="ep:example"/>
-							</xsl:if>
+							<xsl:choose>
+								<xsl:when test="ep:data-type">
+									<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
+									<xsl:variable name="facets">
+										<xsl:call-template name="deriveFacets">
+											<xsl:with-param name="incomingType">
+												<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
+											</xsl:with-param>
+										</xsl:call-template>
+									</xsl:variable>
+									<xsl:value-of select="$facets"/>
+									<xsl:if test="ep:example">
+										<xsl:text>&#xa;          example: </xsl:text><xsl:value-of select="ep:example"/>
+									</xsl:if>
+								</xsl:when>
+								<xsl:when test="ep:type-name">
+									<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',ep:type-name,'&quot;')"/>
+								</xsl:when>
+							</xsl:choose>
 						</xsl:for-each>
 					</xsl:when>
 				</xsl:choose>
