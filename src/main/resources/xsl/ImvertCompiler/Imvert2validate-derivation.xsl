@@ -84,6 +84,8 @@
             $client-package/imvert:subpath
             ))"/>
         
+        <xsl:sequence select="imf:check-tagged-value-occurs(.)"/>
+    
         <xsl:next-match/>
         
     </xsl:template>
