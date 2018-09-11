@@ -157,7 +157,7 @@
 					</ep:uriStructure>
 				</xsl:variable>
 	
-				<!-- The following variable contains an similar structure but this time determined from the request tree. -->
+				<!-- The following variable contains a similar structure but this time determined from the request tree. -->
 				<xsl:variable name="calculatedUriStructure">
 					<ep:uriStructure>
 						<xsl:choose>
@@ -676,12 +676,11 @@
 				<xsl:if test="ep:example != ''">
 					<ep:example><xsl:value-of select="ep:example"/></ep:example>
 				</xsl:if>
-<?x							<xsl:sequence select="imf:create-output-element('ep:max-length', $min-length)" />
-				<xsl:sequence select="imf:create-output-element('ep:min-waarde', $min-waarde)" />
-				<xsl:sequence select="imf:create-output-element('ep:max-waarde', $max-waarde)" />
-				<xsl:sequence select="imf:create-output-element('ep:patroon', $patroon)" />
-				<xsl:sequence select="imf:create-output-element('ep:example', $example)" /> ?>
 			</ep:param>
+		</xsl:for-each>
+		<xsl:for-each select="ep:seq/ep:construct[@type = 'groepCompositie']">
+			<xsl:variable name="parameterConstruct" select="ep:type-name"/>
+			<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]" mode="getParameters"/>
 		</xsl:for-each>
 	</xsl:template>
 

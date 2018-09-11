@@ -10,8 +10,8 @@
 	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
 	
 	<!-- De eerste variabele is bedoelt voor de server omgeving, de tweede voor gebruik bij ontwikkeling in XML-Spy. -->
-	<!--<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>-->
-	<xsl:variable name="debugging" select="true()" as="xs:boolean"/>
+	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
+	<!--<xsl:variable name="debugging" select="true()" as="xs:boolean"/>-->
 	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
@@ -348,7 +348,7 @@
 				<!-- For all global constructs who have at least one association construct 
 					a global embedded version has to be generated. -->
 				<xsl:for-each
-					select="//ep:message-set/ep:construct[ep:tech-name = //ep:message[@expand='true']//ep:construct/ep:type-name]">
+					select="//ep:message-set/ep:construct[ep:tech-name = //ep:message[@expand='true' and (@messagetype != 'request' and (contains(@berichtcode,'Gc') or contains(@berichtcode,'Gr')))]//ep:construct/ep:type-name]">
 
 					<xsl:if test="$debugging">
 						"--------------Debuglocatie-03000-<xsl:value-of select="generate-id()" />": {
