@@ -82,7 +82,14 @@
                 <xsl:sequence select="current-group()[1]"/>
             </xsl:for-each-group>
         </xsl:variable>
-        <!--<xsl:sequence select="imf:create-file(concat('c:\temp\data\',local-name($client-construct),'-',$client-construct/imvert:id,'-',generate-id($client-construct),'.xml'),($level, $suppliers,$client-construct))"/>-->
+        
+        <!--
+        <xsl:variable name="levelelem">
+            <xsl:comment select="concat('level: ',$level)"/>
+        </xsl:variable>
+        <xsl:sequence select="imf:create-file(concat('c:\temp\data\',local-name($client-construct),'-',$client-construct/imvert:id,'-',generate-id($client-construct),'.xml'),
+            ($levelelem, $suppliers,$client-construct))"/>
+        -->
         <xsl:sequence select="$suppliers"/>
     </xsl:function>
     <!--
