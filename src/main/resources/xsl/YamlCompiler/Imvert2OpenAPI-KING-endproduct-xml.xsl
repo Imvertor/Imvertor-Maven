@@ -1051,7 +1051,7 @@
 					<xsl:variable name="messagename" select="ancestor::ep:rough-message/ep:name"/>
 					
 					<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
-					<xsl:if test="not(ep:superconstruct) and not(@type='groepCompositie') and not(ancestor::ep:*[@type='groepCompositie'])">
+					<xsl:if test="not(@type='groepCompositie') and not(ancestor::ep:*[@type='groepCompositie'])">
 						<xsl:variable name="meervoudigeNaam">
 							<xsl:sequence select="imf:getMeervoudigeNaam('5',$construct,'entiteit',$messagename)"/>
 						</xsl:variable> 

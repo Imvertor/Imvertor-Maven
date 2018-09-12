@@ -10,8 +10,8 @@
 	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
 	
 	<!-- De eerste variabele is bedoelt voor de server omgeving, de tweede voor gebruik bij ontwikkeling in XML-Spy. -->
-	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
-	<!--<xsl:variable name="debugging" select="true()" as="xs:boolean"/>-->
+	<!--<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>-->
+	<xsl:variable name="debugging" select="true()" as="xs:boolean"/>
 	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
@@ -719,6 +719,8 @@
 						<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
 						<xsl:value-of select="'&quot;properties&quot; : {'"/>
 						<xsl:value-of select="'&quot;'"/>
+
+
 						<xsl:variable name="responseEntiteitId">
 							<xsl:value-of select="ep:seq/ep:construct[@type!='requestclass']/ep:type-name"/>
 						</xsl:variable>
@@ -730,6 +732,9 @@
 								<xsl:value-of select="translate(ep:seq/ep:construct[@type!='requestclass']/ep:tech-name,'.','_')"/>
 							</xsl:otherwise>
 						</xsl:choose>
+						
+						
+						
 						<xsl:value-of select="'&quot;: {'"/>
 						<xsl:value-of select="'&quot;type&quot;: &quot;array&quot;,'"/>
 						<xsl:value-of select="'&quot;items&quot;: {'"/>
