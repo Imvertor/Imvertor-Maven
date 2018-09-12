@@ -293,7 +293,6 @@
 			<xsl:choose>
 				<xsl:when test="(contains($berichtcode,'Gr') or contains($berichtcode,'Gc')) and $messagetype = 'response'">
 					<xsl:attribute name="messagetype" select="@messagetype" />
-					<xsl:attribute name="servicename" select="@servicename" />
 					<xsl:attribute name="expand" select="$expand" />
 					<xsl:attribute name="grouping" select="@grouping" />
 					<xsl:attribute name="pagination" select="@pagination" />
@@ -302,7 +301,6 @@
 				</xsl:when>
 				<xsl:when test="(contains($berichtcode,'Gr') or contains($berichtcode,'Gc')) and $messagetype = 'request'">
 					<xsl:attribute name="messagetype" select="@messagetype" />
-					<xsl:attribute name="servicename" select="@servicename" />
 					<xsl:attribute name="expand" select="$expand" />
 					<xsl:attribute name="grouping" select="@grouping" />
 					<xsl:attribute name="pagination" select="@pagination" />
@@ -334,7 +332,6 @@
 				<!-- ROME: Welke attributen zijn van toepassing op een POST bericht. -->
 				<xsl:when test="contains($berichtcode,'Po') and $messagetype = 'request'">
 					<xsl:attribute name="messagetype" select="@messagetype" />
-					<xsl:attribute name="servicename" select="@servicename" />
 					<xsl:attribute name="berichtcode" select="$berichtcode" />
 				</xsl:when>
 			</xsl:choose>

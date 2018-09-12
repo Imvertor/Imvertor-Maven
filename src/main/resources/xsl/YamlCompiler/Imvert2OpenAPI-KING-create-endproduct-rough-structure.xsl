@@ -118,8 +118,6 @@
 		</xsl:if>
 		
 		<xsl:variable name="berichtsjabloon" select="$packages//imvert:package[imvert:alias='/www.kinggemeenten.nl/BSM/Berichtstrukturen/Model']//imvert:class[.//imvert:tagged-value[@id='CFG-TV-BERICHTCODE']/imvert:value=$berichtcode]" />
-		<xsl:variable name="servicename"
-			select="imf:get-tagged-value(.,'##CFG-TV-SERVICENAME')" />
 		<xsl:variable name="fields" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-FIELDS')" />
 		<xsl:variable name="sort" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-SORT')" />
 		<xsl:variable name="grouping" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-GROUPING')" />
@@ -199,7 +197,7 @@
 						<xsl:for-each
 							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'response']">
 							<ep:rough-message messagetype="response"
-								berichtcode="{$berichtcode}" servicename="{$servicename}">
+								berichtcode="{$berichtcode}">
 								<xsl:attribute name="grouping" select="$grouping" />
 								<xsl:attribute name="pagination" select="$pagination" />
 								<xsl:attribute name="serialisation" select="$serialisation" />
@@ -220,7 +218,7 @@
 									mode="create-rough-message-content" />
 							</ep:rough-message>
 							<ep:rough-message messagetype="request"
-								berichtcode="{$berichtcode}" servicename="{$servicename}">
+								berichtcode="{$berichtcode}">
 								<xsl:attribute name="grouping" select="$grouping" />
 								<xsl:attribute name="pagination" select="$pagination" />
 								<xsl:attribute name="serialisation" select="$serialisation" />
@@ -298,7 +296,7 @@
 						<xsl:for-each
 							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'request']">
 							<ep:rough-message messagetype="request"
-								berichtcode="{$berichtcode}" servicename="{$servicename}">
+								berichtcode="{$berichtcode}">
 								<xsl:attribute name="grouping" select="$grouping" />
 								<xsl:attribute name="pagination" select="$pagination" />
 								<xsl:attribute name="serialisation" select="$serialisation" />
