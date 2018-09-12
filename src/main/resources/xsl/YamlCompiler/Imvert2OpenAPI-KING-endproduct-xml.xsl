@@ -59,6 +59,17 @@
 			</ep:description>
 		</xsl:if>
 	</xsl:variable>
+	<xsl:variable name="project-url">
+		<xsl:choose>
+			<xsl:when test="string-length(imf:get-tagged-value($packages,'##CFG-TV-PROJECT-URL')) != 0">
+				<xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-PROJECT-URL')"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:sequence select="imf:msg('WARNING', 'No tagged value project_url has been defined on the interface, define one.')" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="administrator-e-mail" select="imf:get-tagged-value($packages,'##CFG-TV-E-MAIL-ADMINISTRATOR')"/>
 	<xsl:variable name="version" select="$packages/imvert:version"/>
 	
 	<xsl:variable name="imvert-document" select="if (exists($messages/imvert:packages)) then $messages else ()" />
@@ -73,7 +84,10 @@
 	<!-- Starts the creation of the rough-message constructs and the constructs relates to those message constructs. -->
 	<xsl:template match="ep:rough-messages">
 		<xsl:sequence select="imf:set-config-string('appinfo','kv-yaml-schema-name',concat($kv-prefix,$version))"/>
-		<ep:message-sets>
+		<ep:message-sets project-url="{$project-url}">
+			<xsl:if test="$administrator-e-mail!=''">
+				<xsl:attribute name="administrator-e-mail" select="$administrator-e-mail"/>
+			</xsl:if>
 			<ep:name><xsl:value-of select="ep:name"/></ep:name>
 			<ep:message-set KV-namespace="yes">
 				<xsl:sequence select="imf:create-debug-comment('Debuglocation OAS00500',$debugging)" />
@@ -1183,12 +1197,6 @@
 			</xsl:when>
 			<xsl:when test="string-length(imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-NAMEPLURAL')) != 0">
 				<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-NAMEPLURAL')"/>
-			</xsl:when>
-			<xsl:when test="$debugging and $type = 'association'">
-				<xsl:sequence select="imf:msg($construct,'WARNING','[1].1. The construct [2] within message [3] does not have a tagged value target role in meervoud, define one.',($debugnr,$construct/imvert:name,$messagename))"/>
-			</xsl:when>
-			<xsl:when test="$debugging and $type = 'association'">
-				<xsl:sequence select="imf:msg($construct,'WARNING','[1].2. The construct [2] within message [3] does not have a tagged value naam in meervoud, define one.',($debugnr,$construct/imvert:name,$messagename))"/>
 			</xsl:when>
 			<xsl:when test="$type = 'association'">
 				<xsl:sequence select="imf:msg($construct,'WARNING','The construct [1] within message [2] does not have a tagged value target role in meervoud, define one.',($construct/imvert:name,$messagename))"/>

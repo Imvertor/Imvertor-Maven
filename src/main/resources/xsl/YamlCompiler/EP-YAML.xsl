@@ -118,13 +118,17 @@
         <xsl:text>&#xa;servers:</xsl:text>
 		<xsl:text>&#xa;  - description: SwaggerHub API Auto Mocking</xsl:text>
 		<xsl:text>&#xa;    url: https://virtserver.swaggerhub.com/VNGRealisatie/api/</xsl:text><xsl:value-of select="concat($normalizedKVname,'/v', $major-version)"/>
-
+		<xsl:text>&#xa;  - description: Referentie-implementatie</xsl:text>
+		<xsl:text>&#xa;    url: https://www.voorbeeldgemeente.nl/api/</xsl:text><xsl:value-of select="concat($normalizedKVname,'/v', $major-version)"/>
         <xsl:text>&#xa;info:</xsl:text>
-        <xsl:text>&#xa;  description: "</xsl:text> <xsl:value-of select="normalize-space(ep:documentation)"/><xsl:text>"</xsl:text>
+		<xsl:text>&#xa;  title: </xsl:text><xsl:value-of select="$KVname"/>
+		<xsl:text>&#xa;  description: "</xsl:text> <xsl:value-of select="normalize-space(ep:documentation)"/><xsl:text>"</xsl:text>
         <xsl:text>&#xa;  version: "</xsl:text><xsl:value-of select="ep:patch-number"/><xsl:text>"</xsl:text>
-        <xsl:text>&#xa;  title: </xsl:text><xsl:value-of select="$KVname"/>
         <xsl:text>&#xa;  contact:</xsl:text>
-        <xsl:text>&#xa;    email: voornaam.achternaam@vng.nl</xsl:text>
+		<xsl:text>&#xa;    url: </xsl:text><xsl:value-of select="/ep:message-sets/@project-url"/>
+		<xsl:if test="/ep:message-sets/@administrator-e-mail">
+			<xsl:text>&#xa;    email: </xsl:text><xsl:value-of select="/ep:message-sets/@administrator-e-mail"/>
+		</xsl:if>
         <xsl:text>&#xa;  license:</xsl:text>
         <xsl:text>&#xa;    name: European Union Public License, version 1.2 (EUPL-1.2)</xsl:text>
         <xsl:text>&#xa;    url: https://eupl.eu/1.2/nl/</xsl:text>

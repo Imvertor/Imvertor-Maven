@@ -33,6 +33,24 @@
                 <stereo minmax="1..1">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
+        <tv norm="space" id="CFG-TV-PROJECT-URL">
+            <name lang="nl">project_url</name>
+            <desc lang="nl">Url van het bij het koppelvlak horende GitHub project.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-E-MAIL-ADMINISTRATOR">
+            <name lang="nl">beheerder_email</name>
+            <desc lang="nl">e-Mailadres van de beheerder van het koppelvlak.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        
         <tv norm="space" rules="NOC" id="CFG-TV-INDICATIONAUTHENTIC">
             <derive>yes</derive>
             <stereotypes>
