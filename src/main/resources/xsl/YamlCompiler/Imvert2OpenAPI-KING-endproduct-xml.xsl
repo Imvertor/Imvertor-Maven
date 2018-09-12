@@ -964,7 +964,7 @@
 			<!-- TODO: Nagaan of er situaties zijn dat een ep:construct van het type association terecht geen attributes en associations heeft. -->
 			<xsl:when test="@type='association' and not($construct//imvert:attributes/imvert:attribute) and not($construct//imvert:associations/imvert:association)">
 				<xsl:sequence select="imf:create-debug-comment(concat('OAS19500, id: ',$id),$debugging)" />
-				<xsl:variable name="class-name" select="$construct/imvert:class/imvert:name/@original"/>
+				<xsl:variable name="class-name" select="$construct/imvert:name/@original"/>
 				<xsl:sequence select="imf:msg($construct,'WARNING','The construct [1] does not have attributes or associations.',($class-name))"/>
 			</xsl:when>
 
