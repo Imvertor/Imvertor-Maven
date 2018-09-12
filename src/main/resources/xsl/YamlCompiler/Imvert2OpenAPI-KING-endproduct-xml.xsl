@@ -1237,6 +1237,11 @@
 		</xsl:variable>
 		<xsl:variable name="example" select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-EXAMPLE')" />
 
+		<xsl:variable name="SIM-supplier" select="imf:get-trace-suppliers-for-construct(.,1)[@project='SIM'][1]" />
+		<xsl:variable name="SIM-construct" select="if ($SIM-supplier) then imf:get-trace-construct-by-supplier($SIM-supplier,$imvert-document) else ()" />
+		<xsl:variable name="SIM-name" select="($SIM-construct/imvert:name, imvert:name)[1]" />
+		
+
 		<xsl:variable name="suppliers" as="element(ep:suppliers)">
 			<ep:suppliers>
 				<xsl:copy-of select="imf:get-UGM-suppliers(.)" />
@@ -1254,6 +1259,9 @@
 			<xsl:when test="$type-is-GM-external">
 				<ep:construct>
 					<xsl:attribute name="type" select="'GM-external'"/>
+					<xsl:if test="$SIM-name != ''">
+						<xsl:attribute name="SIM-name" select="$SIM-name"/>
+					</xsl:if>
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS28500, id: ',imvert:id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
@@ -1317,6 +1325,9 @@
 					<xsl:if test="$is-id = 'true'">
 						<xsl:attribute name="is-id" select="'true'"/>
 					</xsl:if>
+					<xsl:if test="$SIM-name != ''">
+						<xsl:attribute name="SIM-name" select="$SIM-name"/>
+					</xsl:if>
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS30000, id: ',imvert:id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
@@ -1340,6 +1351,9 @@
 				<ep:construct>
 					<xsl:if test="$is-id = 'true'">
 						<xsl:attribute name="is-id" select="'true'"/>
+					</xsl:if>
+					<xsl:if test="$SIM-name != ''">
+						<xsl:attribute name="SIM-name" select="$SIM-name"/>
 					</xsl:if>
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS30500, id: ',imvert:id),$debugging)" />
 					<xsl:if test="$debugging">

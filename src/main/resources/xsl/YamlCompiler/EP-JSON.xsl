@@ -1112,6 +1112,7 @@
         		<xsl:variable name="documentation">
         			<xsl:value-of select="ep:documentation//ep:p"/>
         		</xsl:variable>
+                <xsl:value-of select="concat('&quot;title&quot;: &quot;',@SIM-name,'&quot;,')"/>
         		<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
         		<!-- Double quotes in documentation text is replaced by a  grave accent. -->
         		<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
@@ -1145,8 +1146,9 @@
                 <xsl:variable name="example">
                     <xsl:call-template name="deriveExample"/>
                 </xsl:variable>
-
+				
                 <xsl:value-of select="concat('&quot;type&quot;: &quot;',$datatype,'&quot;')"/>
+                <xsl:value-of select="concat(',&quot;title&quot;: &quot;',@SIM-name,'&quot;')"/>
 
 				<xsl:variable name="documentation">
 					<xsl:value-of select="ep:documentation//ep:p"/>
