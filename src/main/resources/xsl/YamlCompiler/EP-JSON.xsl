@@ -627,6 +627,7 @@
 	    }
     },
     "X_Pagination_Page":  { 
+      "required": true,
 	  "schema": { 
 	    "type": "integer",
 	    "description": "Huidige pagina.",
@@ -634,6 +635,7 @@
 	    }
     },
     "X_Pagination_Limit": {
+      "required": true,
 	  "schema": {
 	    "type": "integer",
 	    "description": "Aantal resultaten per pagina.",
