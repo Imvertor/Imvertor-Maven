@@ -491,6 +491,7 @@
                 
                 <stereo minmax="0..1">stereotype-name-entiteitrelatie</stereo>
                 <stereo minmax="0..1">stereotype-name-berichtrelatie</stereo>
+                <stereo minmax="0..1">stereotype-name-padrelatie</stereo>
             </stereotypes>
         </tv>
         
