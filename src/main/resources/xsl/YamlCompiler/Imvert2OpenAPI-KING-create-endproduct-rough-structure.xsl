@@ -545,9 +545,14 @@
 			select="imf:create-debug-comment('debug:start A17000 /debug:start',$debugging)" />
 		
 		<xsl:if test="ancestor::imvert:class[imvert:stereotype/@id='stereotype-name-composite']">
+			
+			<!-- ROME: Aangezien nog niet duidelijk is hoe we omgaan met relatie vanuit een groep
+					   Is de onderstaande waarschuwing vooralsnog uitgeschakeld. 
+					   Deze zal later vervangen worden door de gewenste code. -->
+<!--			
 			<xsl:variable name="class-name" select="ancestor::imvert:class/imvert:name/@original"/>
 			<xsl:variable name="association-name" select="imvert:name/@original"/>
-			<xsl:sequence select="imf:msg(.,'WARNING','The association [1] within the class [2] is not allowed since the class is a group composite.',($association-name,$class-name))"/>
+			<xsl:sequence select="imf:msg(.,'WARNING','The association [1] within the class [2] is not allowed since the class is a group composite.',($association-name,$class-name))"/>  -->
 		</xsl:if>
 		
 		<ep:construct>
