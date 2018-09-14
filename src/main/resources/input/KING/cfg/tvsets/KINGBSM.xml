@@ -477,21 +477,23 @@
         <tv id="CFG-TV-ISDERIVED">
             <stereotypes>
                 <!-- bericht typen -->
-                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-vraagberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-vrijberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-antwoordberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-kennisgevingberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-synchronisatieberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-vraagberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-vrijberichttype</stereo>
  
-                <stereo minmax="0..1">stereotype-name-getberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-patchberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-postberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-putberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-deleteberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-getberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-patchberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-postberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-putberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-deleteberichttype</stereo>
                 
-                <stereo minmax="0..1">stereotype-name-entiteitrelatie</stereo>
-                <stereo minmax="0..1">stereotype-name-berichtrelatie</stereo>
-                <stereo minmax="0..1">stereotype-name-padrelatie</stereo>
+                <stereo minmax="1..1">stereotype-name-padtype</stereo>
+
+                <stereo minmax="1..1">stereotype-name-entiteitrelatie</stereo>
+                <stereo minmax="1..1">stereotype-name-berichtrelatie</stereo>
+                <stereo minmax="1..1">stereotype-name-padrelatie</stereo>
             </stereotypes>
         </tv>
         

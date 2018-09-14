@@ -58,6 +58,13 @@
          <construct>package</construct>
       </stereo>
      
+      <stereo id="stereotype-name-padtype">
+         <name lang="en">Path type</name>
+         <name lang="nl">Padtype</name>
+         <desc lang="nl">TODO</desc>
+         <construct>class</construct>
+      </stereo>
+
       <stereo id="stereotype-name-entiteitrelatie">
          <name lang="en">Entityrelation</name>
          <name lang="nl">Entiteitrelatie</name>
