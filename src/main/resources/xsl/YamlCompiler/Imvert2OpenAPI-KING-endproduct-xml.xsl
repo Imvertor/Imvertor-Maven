@@ -80,10 +80,39 @@
 	<xsl:variable name="endproduct">
 		<xsl:apply-templates select="/ep:rough-messages" />
 	</xsl:variable>
+	
+	<!-- ROME: Bij het bepalen van de waarde van de volgende variabele moet misschien nog de waarde van een evt. 
+		 tv expand worden meegenomen. Zie RM #490314. -->
+	<xsl:variable name="expandconfigurations">
+		<ep:expandconfiguration>
+			<xsl:for-each select="/ep:rough-messages/ep:rough-message[@messagetype='response']">
+				<ep:message messagetype="{@messagetype}" berichtcode="{@berichtcode}">
+					<ep:name><xsl:value-of select="ep:name"/></ep:name>
+					<xsl:choose>
+						<xsl:when test=".//ep:construct[@type = 'association']//ep:contains-non-id-attributes = 'true'">
+							<ep:expand>true</ep:expand>
+						</xsl:when>
+						<xsl:otherwise>
+							<ep:expand>false</ep:expand>
+						</xsl:otherwise>
+					</xsl:choose>
+				</ep:message>
+			</xsl:for-each>
+		</ep:expandconfiguration>
+	</xsl:variable>
+	
 
 	<!-- Starts the creation of the rough-message constructs and the constructs relates to those message constructs. -->
 	<xsl:template match="ep:rough-messages">
 		<xsl:sequence select="imf:set-config-string('appinfo','kv-yaml-schema-name',concat($kv-prefix,$version))"/>
+
+		<xsl:if test="$debugging">
+			<xsl:result-document href="file:/c:/temp/message/expandconfiguration.xml">
+				<xsl:copy-of select="$expandconfigurations" />
+			</xsl:result-document>
+		</xsl:if>
+		
+
 		<ep:message-sets project-url="{$project-url}">
 			<xsl:if test="$administrator-e-mail!=''">
 				<xsl:attribute name="administrator-e-mail" select="$administrator-e-mail"/>
@@ -246,22 +275,23 @@
 		</xsl:if> ?>
         
 <?x        <xsl:variable name="expand" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-EXPAND')"/>  ?>
-		<xsl:variable name="expand">
+<?x		<xsl:variable name="expand">
 			<xsl:choose>
 				<xsl:when test=".//ep:construct[@type = 'association']//ep:contains-non-id-attributes = 'true'">true</xsl:when>
 				<xsl:otherwise>false</xsl:otherwise>
 			</xsl:choose>
-		</xsl:variable>
-<?x		<xsl:variable name="fields" select="@fields" />
-		<xsl:variable name="grouping" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-GROUPING')" />
-		<xsl:variable name="pagination" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-PAGE')" />
-		<xsl:variable name="serialisation" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-SERIALISATION')" />
-		<xsl:variable name="sort" select="@sort" /> ?>
-
-<?x		<xsl:variable name="name" select="$message-construct/imvert:name/@original" as="xs:string" />
-		<xsl:variable name="tech-name" select="imf:get-normalized-name($message-construct/imvert:name, 'element-name')" as="xs:string" /> ?>
+		</xsl:variable> ?>
+<?x		<xsl:variable name="expand">
+			<xsl:choose>
+				<xsl:when test=".//ep:construct[@type = 'association']//ep:contains-non-id-attributes = 'true'">true</xsl:when>
+				<xsl:otherwise>false</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable> ?>
 		<xsl:variable name="name" select="ep:name" as="xs:string" />
 		<xsl:variable name="tech-name" select="imf:get-normalized-name(ep:name, 'element-name')" as="xs:string" />
+		<xsl:variable name="expand">
+			<xsl:value-of select="$expandconfigurations//ep:message[ep:name=$name and @berichtcode=$berichtcode]/ep:expand"/>
+		</xsl:variable>
 		
 		<!-- TODO: Nagaan of het wel noodzakelijk is om over de min- en maxoccurs van de entiteitrelaties te kunnen beschikken. -->
 		<xsl:variable name="minOccursAssociation">
@@ -653,7 +683,6 @@
 					</xsl:choose>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', $construct/imvert:min-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', $construct/imvert:max-occurs)" />
-					<xsl:sequence select="imf:create-output-element('ep:type-name1', imf:get-normalized-name($tech-name,'type-name'))" />
 					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name($type-name,'type-name'))" />
 				</ep:construct>
 			</xsl:when>
@@ -703,7 +732,6 @@
 					<xsl:variable name="classconstruct" select="imf:get-construct-by-id($type-id,$packages)" />
 					<xsl:variable name="type-name" select="$classconstruct/imvert:name" />
 					
-					<xsl:sequence select="imf:create-output-element('ep:type-name1', imf:get-normalized-name($tech-name,'type-name'))" />
 					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name($classconstruct/imvert:name,'type-name'))" />
 				</ep:construct>
 			</xsl:when>
@@ -815,9 +843,17 @@
 			</xsl:if>
 		</xsl:variable>
 
-		<xsl:sequence select="imf:create-debug-comment(concat('OAS18500, id: ',$id),$debugging)" />
+		<xsl:variable name="name" select="ancestor::ep:rough-message/ep:name"/>
+		<xsl:variable name="expand">
+			<xsl:value-of select="$expandconfigurations//ep:message[ep:name=$name and @berichtcode=$berichtcode and @messagetype=$messagetype]/ep:expand"/>
+		</xsl:variable>
+
+		<xsl:sequence select="imf:create-debug-comment(concat('OAS18500, id: ',$id,', ',$name),$debugging)" />
 		
-		<ep:construct  type="superclass" berichtcode="{$berichtcode}" messagetype="{$messagetype}">
+		<ep:construct  type="superclass" berichtcode="{$berichtcode}" messagetype="{$messagetype}" expand="{$expand}">
+			<xsl:if test="$construct/imvert:abstract='true'">
+				<xsl:attribute name="abstract" select="'true'"/>
+			</xsl:if>
 			<ep:name><xsl:value-of select="$construct/imvert:name/@original"/></ep:name>
 			<ep:tech-name><xsl:value-of select="$tech-name"/></ep:tech-name>
 			<xsl:choose>
@@ -932,6 +968,9 @@
 				<xsl:variable name="classconstruct" select="imf:get-construct-by-id($type-id,$packages)" />
 				<xsl:variable name="type-name" select="$classconstruct/imvert:name" />
 				<xsl:variable name="messagename" select="ancestor::ep:rough-message/ep:name"/>
+				<xsl:variable name="expand">
+					<xsl:value-of select="$expandconfigurations//ep:message[ep:name=$messagename and @berichtcode=$berichtcode and @messagetype=$messagetype]/ep:expand"/>
+				</xsl:variable>
 				
 				<xsl:sequence select="imf:create-debug-comment(concat('OAS19250, id: ',$id),$debugging)" />
 				<ep:construct>
@@ -1043,10 +1082,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
+				<xsl:variable name="messagename" select="ancestor::ep:rough-message/ep:name"/>
+				<xsl:variable name="expand">
+					<xsl:value-of select="$expandconfigurations//ep:message[ep:name=$messagename and @berichtcode=$berichtcode and @messagetype=$messagetype]/ep:expand"/>
+				</xsl:variable>
 				<xsl:copy>
 					<xsl:attribute name="type" select="$type" />
 					<xsl:attribute name="berichtcode" select="$berichtcode" />
 					<xsl:attribute name="messagetype" select="$messagetype" />
+					<xsl:if test="$expand != ''">
+						<xsl:attribute name="expand" select="$expand"/>
+					</xsl:if>
 
 					<xsl:variable name="messagename" select="ancestor::ep:rough-message/ep:name"/>
 					
@@ -1061,7 +1107,6 @@
 					</xsl:if>
 					
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
-					<xsl:sequence select="imf:create-output-element('ep:tech-name1', imf:get-normalized-name($tech-name,'type-name'))" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($classconstruct/imvert:name, 'type-name'))" />
 					<xsl:choose>
 						<xsl:when test="(empty($doc) or $doc='') and $debugging">
@@ -1250,7 +1295,7 @@
 			</ep:tagged-values>
 		</xsl:variable>
 
-		<xsl:variable name="type-is-GM-external" select="exists(imvert:conceptual-schema-type) and contains(imvert:conceptual-schema-type,'GM_')"/>		
+		<xsl:variable name="type-is-GM-external" select="(exists(imvert:conceptual-schema-type) and contains(imvert:conceptual-schema-type,'GM_')) or contains(imvert:baretype,'GM_')"/>		
 
 		<xsl:choose>
 			<xsl:when test="$type-is-GM-external">
