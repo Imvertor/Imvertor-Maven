@@ -1202,7 +1202,7 @@
 					</xsl:choose>
 					<ep:seq>
 						<xsl:sequence select="imf:create-debug-comment(concat('OAS28200, id: ',$id),$debugging)" />
-						<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute[position()=1 or position()=2]" />
+						<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
 						
 						<!-- TODO: Nagaan of er in een complex-datatype type ep:construct geen associations voor kunnen komen. 
 							 Indien dat wel het geval is dan moet hier ook een apply-templates komen op een ep:construct en moet ook het rough-messages stylesheets 
