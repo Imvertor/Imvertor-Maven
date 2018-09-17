@@ -161,12 +161,14 @@
 					</ep:uriStructure>
 				</xsl:variable>
 	
+				<xsl:variable name="parameterConstruct" select="./ep:seq/ep:construct/ep:type-name"/>
+				<xsl:variable name="meervoudigeNaam" select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]/@meervoudigeNaam"/>
+
 				<!-- The following variable contains a similar structure but this time determined from the request tree. -->
 				<xsl:variable name="calculatedUriStructure">
 					<ep:uriStructure>
 						<xsl:choose>
 							<xsl:when test="@berichtcode = ('Gr01','Gc01','Gc02')">
-								<xsl:variable name="parameterConstruct" select="./ep:seq/ep:construct/ep:type-name"/>
 								<xsl:choose>
 									<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct])">
 										<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1].',$parameterConstruct)"/>
@@ -175,7 +177,6 @@
 										<xsl:sequence select="imf:msg(.,'WARNING','The class [1] within message [2] does not have a tagged value naam in meervoud, define one.',($parameterConstruct,$messageName))"/>
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:variable name="meervoudigeNaam" select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]/@meervoudigeNaam"/>
 										<ep:uriPart>
 											<ep:entityName><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
 											<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]" mode="getParameters"/>
@@ -589,9 +590,13 @@
 				<xsl:text>&#xa;            application/problem+json:</xsl:text>
 				<xsl:text>&#xa;              schema:  </xsl:text>
 				<xsl:text>&#xa;                $ref: '#/components/schemas/Foutbericht'</xsl:text>
+				<xsl:text>&#xa;      tags: </xsl:text>
+				<xsl:text>&#xa;      - </xsl:text><xsl:value-of select="$meervoudigeNaam" />
 			</xsl:when>
 			<xsl:when test="contains(@berichtcode,'Po') and @messagetype = 'request'">
 				<xsl:variable name="messageName" select="ep:name" />
+				<xsl:variable name="parameterConstruct" select="./ep:seq/ep:construct/ep:type-name"/>
+				<xsl:variable name="meervoudigeNaam" select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]/@meervoudigeNaam"/>
 				<xsl:variable name="documentation">
 					<xsl:text>"</xsl:text><xsl:apply-templates select="ep:documentation" /><xsl:text>"</xsl:text>
 				</xsl:variable>
@@ -630,6 +635,8 @@
 				<xsl:text>&#xa;            application/problem+problem:</xsl:text>
 				<xsl:text>&#xa;              schema:  </xsl:text>
 				<xsl:text>&#xa;                $ref: '#/components/schemas/Foutbericht'</xsl:text>
+				<xsl:text>&#xa;      tags: </xsl:text>
+				<xsl:text>&#xa;      - </xsl:text><xsl:value-of select="$meervoudigeNaam" />
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>

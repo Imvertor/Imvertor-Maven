@@ -18,41 +18,28 @@
 
 	<xsl:key name="class" match="imvert:class" use="imvert:id" />
 
-	<xsl:variable name="stylesheet">
-		Imvert2XSD-KING-create-openapi-endproduct-rough-structure
-	</xsl:variable>
+	<xsl:variable name="stylesheet" select="'Imvert2XSD-KING-create-openapi-endproduct-rough-structure'"/>
 	<xsl:variable name="stylesheet-version">
 		$Id: Imvert2XSD-KING-create-OpenAPI-endproduct-rough-structure.xsl 1
 		2018-04-16 13:32:00Z RobertMelskens $
 	</xsl:variable>
-	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
-	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"
-		as="xs:boolean" />
-
+	<xsl:variable name="stylesheet-code" as="xs:string" select="'OAS'"/>
+	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean" />
 	<xsl:variable name="embellish-file" select="/" />
 	<xsl:variable name="packages" select="$embellish-file/imvert:packages" />
-
 	<xsl:variable name="version" select="$packages/imvert:version" />
-
 	<xsl:variable name="rough-messages">
-
-		<!-- The 'Berichtstructuren' package isn't of any importance at OpenAPI 
-			interface creation. -->
-		<!-- TODO: Is het nog wel van belang om dan te checken op de alias van 
-			de Berichtstructuren package of mogen we er gewoon vanuit gaan dat dat package 
-			niet gebruikt wordt in de OAS context? -->
 		<ep:rough-messages>
 			<ep:name>
 				<xsl:value-of select="$packages/imvert:tagged-values/imvert:tagged-value[@id='CFG-TV-INTERFACE-NAME']/imvert:value"/>
 				<!--xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($packages/imvert:packages, '##CFG-TV-INTERFACE-NAME')"/-->
 			</ep:name>
+			<!-- The 'Berichtstructuren' package doesn't hold the actual message classes for the interface so it's neglected in this stage. -->
 			<xsl:apply-templates
 				select="$packages/imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package') and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]"
 				mode="create-rough-message-structure" />
 		</ep:rough-messages>
-
 	</xsl:variable>
-
 
 	<xsl:key name="associations" match="imvert:association"
 		use="concat(imvert:type-id,ancestor::imvert:package/imvert:id)" />
@@ -60,8 +47,8 @@
 	<!-- ======= Block of templates used to create the message structure. ======= -->
 
 	<!-- This template is used to start generating a rough ep structure for 
-		the individual messages. This rough ep structure is used as a base for creating 
-		the final ep structure. -->
+		 the individual messages. This rough ep structure is used as a base for creating 
+		 the final ep structure. -->
 
 	<xsl:template match="/">
 		<xsl:sequence select="imf:track('Constructing the rough message-structure')" />
@@ -82,11 +69,8 @@
 		<xsl:sequence
 			select="imf:create-debug-track(concat('Constructing the rough-messages for package: ',imvert:name),$debugging)" />
 		
-		<!-- TODO: De vraag is of bij OpenAPI generatie nog wel het onderscheid 
-			tussen de verschillende berichttypen gemaakt moet kunnen worden. -->
-
 		<!-- The following apply-templates processes all classes representing a 
-			messagetype. -->
+			 messagetype. -->
 		<xsl:apply-templates
 			select="imvert:class[(imvert:stereotype/@id = ('stereotype-name-getberichttype',
 			'stereotype-name-patchberichttype',
@@ -101,9 +85,11 @@
 	<xsl:template match="imvert:class" mode="create-rough-messages">
 		
 		<xsl:variable name="messagetype">
+			<!-- Is it a get, post, put, patch or delete message? -->
 			<xsl:value-of select="substring-after(substring-before(imvert:stereotype/@id,'berichttype'),'stereotype-name-')"/>
 		</xsl:variable>
 		<xsl:if test="empty(./imvert:associations/imvert:association[imvert:name/@original='pad']/imvert:type-id)">
+			<!-- A pad class is neccessary so if it lacks an error message is generated. -->
 			<xsl:sequence select="imf:msg('ERROR','The messageclass [1] does not have an association to a pad class. This is neccessary to determine the name of the message.',(imvert:name/@original))" />
 		</xsl:if>
 		<xsl:variable name="pad-id" select="./imvert:associations/imvert:association[imvert:name/@original='pad']/imvert:type-id"/>
@@ -114,90 +100,98 @@
 		<xsl:variable name="berichtcode"
 			select="imf:get-tagged-value(.,'##CFG-TV-BERICHTCODE')" />
 		<xsl:if test="$berichtcode = ''">
-			<xsl:sequence select="imf:msg('ERROR','The messageclass [1] does not have a value for the tagged value berichtcode or the tagged value lacks.',(imvert:name/@original))" />
+			<!-- For now a berichtcode is neccessary so if it lacks or if it's empty an error message is generated. -->
+			<xsl:sequence select="imf:msg('ERROR','The messageclass &quot;[1]&quot; does not have a value for the tagged value berichtcode or the tagged value lacks.',(imvert:name/@original))" />
 		</xsl:if>
 		
+		<!-- All message-classes refer to a class within the 'Berichtstructuren' package. It contains standard configuration for specific
+			 messagetypes. These configurations are picked-up here. -->
 		<xsl:variable name="berichtsjabloon" select="$packages//imvert:package[imvert:alias='/www.kinggemeenten.nl/BSM/Berichtstrukturen/Model']//imvert:class[.//imvert:tagged-value[@id='CFG-TV-BERICHTCODE']/imvert:value=$berichtcode]" />
-		<xsl:variable name="fields" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-FIELDS')" />
-		<xsl:variable name="sort" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-SORT')" />
 		<xsl:variable name="grouping" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-GROUPING')" />
 		<xsl:variable name="pagination" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-PAGE')" />
 		<xsl:variable name="serialisation" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-SERIALISATION')" />
 		
-		<!--xsl:variable name="messagename" select="imvert:name/@original" /-->
+		<!-- The values for the fields and sort parameters are saved on the message-classes themself. They are picked-up here. -->
+		<xsl:variable name="fields" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-FIELDS')" />
+		<xsl:variable name="sort" select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-SORT')" />
+		
 		<xsl:variable name="messageid" select="imvert:id" />
 		<xsl:variable name="messagetypeid" select="imvert:type-id" />
 		<xsl:sequence select="imf:create-debug-comment($berichtcode,$debugging)" />
+
 		<!-- create the message but only if the class representing the message 
-			has a berichtcode with the value 'Gcxx', 'Grxx' or 'Poxx' and contains at least 1 association 
-			with a stereotype 'entiteitRelatie'. This means classes only containing associations 
-			with a stereotype 'berichtRelatie' aren't processed. -->
+			 is a REST get, patch, post, put or delete message and contains at least 1 association 
+			 with a stereotype 'entiteitRelatie'. This means classes only containing associations 
+			 with a stereotype 'berichtRelatie' or 'padRelatie' aren't processed. -->
 		<xsl:choose>
-			<!-- ROME: De volgende when bevat een warning message. De daaropvolgende dezelfde message maar in de error variant.
-					   De eerste variant geldt als de StUF berichttypes gebruikt worden. De tweede als de OAS berichttypes gebruikt worden.
-					   De eerste kan verwijderd worden zodra in de BSM modellen het gebruik van de StUF berichttypes in geval van OAS is aangepast. -->
-			<xsl:when test="imvert:stereotype/@id = ('stereotype-name-vraagberichttype',
-				'stereotype-name-antwoordberichttype',
-				'stereotype-name-kennisgevingberichttype',
-				'stereotype-name-synchronisatieberichttype',
-				'stereotype-name-vrijberichttype')">
-				<xsl:variable name="msg"
-					select="concat('The stereotype of the messageclass ',imvert:name,' is not suitable for OAS messages. Change it if this is not the purpose.')"
-					as="xs:string" />
-				<xsl:sequence select="imf:msg('WARNING',$msg)" />
-			</xsl:when>
 			<xsl:when test="empty(imvert:supertype) and imvert:stereotype/@id = ('stereotype-name-getberichttype',
 				'stereotype-name-patchberichttype',
 				'stereotype-name-postberichttype',
 				'stereotype-name-putberichttype',
 				'stereotype-name-deleteberichttype')">
+				<!-- If the messageclass has no supertype relation to an interface which is refering to a REST berichttype class within the
+					 'Berichtstructuren' package an error message is generated. -->
 				<xsl:variable name="msg"
-					select="concat('The messageclass ',imvert:name,' has no interface to a supertype from the Berichtstructuren package.')"
+					select="concat('The messageclass &quot;',imvert:name,'&quot; has no interface to a supertype from the &quot;Berichtstructuren&quot; package.')"
 					as="xs:string" />
 				<xsl:sequence select="imf:msg('ERROR',$msg)" />
 			</xsl:when>
 			<xsl:when test="not(contains(imvert:supertype/imvert:type-name,$berichtcode))">
+				<!-- If the type-name of the interface class has a value which doesn't correspondent to the 'berichtcode' of the message-class
+					 (e.g. it has the value 'Gr01-Getresource' while the berichtcode has the value 'Gc01') an error message is generated. -->
 				<xsl:variable name="msg"
-					select="concat('The berichtcode ',$berichtcode,' of the messageclass ',imvert:name,' does not correspond with the superclass ',imvert:supertype/imvert:type-name,' it refers to.')"
+					select="concat('The berichtcode &quot;',$berichtcode,'&quot; of the messageclass &quot;',imvert:name,'&quot; does not correspond with the superclass &quot;',imvert:supertype/imvert:type-name,'&quot; it refers to.')"
 					as="xs:string" />
 				<xsl:sequence select="imf:msg('ERROR',$msg)" />
 			</xsl:when>
 			<xsl:when test="contains($berichtcode,'Gc') or contains($berichtcode,'Gr')">
 				<xsl:sequence select="imf:create-debug-comment('A11000]',$debugging)" />
 				<xsl:choose>
-					<!-- It's not allowed to have none associations of type 'entiteitrelatie'. -->
 					<xsl:when
 						test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]) = 0">
+						<!-- It's not allowed to have no associations of type 'entiteitrelatie'. If that's the case an error message is generated. -->
 						<xsl:variable name="msg"
-							select="concat('Within the messageclass ',imvert:name,' no association with the stereotype &quot;entiteitrelatie&quot; occurs, only associations with that kind of stereotype are processed for messages with berichttype ',$berichtcode,'.')"
+							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no association with the stereotype &quot;entiteitrelatie&quot; occurs, only associations with that kind of stereotype are processed for messages with berichttype ',$berichtcode,'.')"
 							as="xs:string" />
 						<xsl:sequence select="imf:msg('ERROR',$msg)" />
 					</xsl:when>
-					<!-- Only in case of an Gr or Gc message type it's required to have one 
-						than one association of the 'entiteitrelatie' type with the name 'gelijk' 
-						or 'response' and allowed to have one association of the 'entiteitrelatie' 
-						type with the name 'request'. -->
 					<xsl:when
 						test="not(count(imvert:associations/imvert:association[imvert:name = 'response']) = 1)">
+						<!-- In case of a Gr or Gc messagetype it's required to have one and not more than one association with the name 'response'. 
+						     If this isn't the case an error message is generated. -->
 						<xsl:variable name="msg"
-							select="concat('Within the messageclass ',imvert:name,' no or more than 1 association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;response&quot; occurs. For messages with berichttype ',$berichtcode,' this is not allowed.')"
+							select="concat('Within the messageclass &quot;',imvert:name,'&quot; 1 (and only 1) association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;response&quot; has to be present. For messages with berichttype &quot;',$berichtcode,'&quot; this is not allowed.')"
 							as="xs:string" />
 						<xsl:sequence select="imf:msg('ERROR',$msg)" />
 					</xsl:when>
 					<xsl:when
 						test="not(count(imvert:associations/imvert:association[imvert:name = 'request']) = 1)">
+						<!-- In case of a Gr or Gc messagetype it's required to have one and not more than one association with the name 'request'. 
+						     If this isn't the case an error message is generated. -->
 						<xsl:variable name="msg"
-							select="concat('Within the messageclass ',imvert:name,' no or more than 1 association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;request&quot; occurs. For messages with berichttype ',$berichtcode,' this is not allowed.')"
+							select="concat('Within the messageclass &quot;',imvert:name,'&quot; 1 (and only 1) association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;request&quot; has to be present. For messages with berichttype &quot;',$berichtcode,'&quot; this is not allowed.')"
+							as="xs:string" />
+						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+					</xsl:when>
+					<xsl:when
+						test="imvert:associations/imvert:association[imvert:name != 'request' and imvert:name != 'response' and imvert:name != 'pad']">
+						<!-- In case the Gr or Gc messagetype has one or more associations not having the name 'response', 'request' or 'pad' an error
+						     message is generated. -->
+						<xsl:variable name="msg"
+							select="concat('Within the messageclass &quot;',imvert:name,'&quot; one or more associations are present with a name not equal to &quot;response&quot;, &quot;request&quot; or &quot;pad&quot;. For messages with berichttype &quot;',$berichtcode,'&quot; this is not allowed.')"
 							as="xs:string" />
 						<xsl:sequence select="imf:msg('ERROR',$msg)" />
 					</xsl:when>
 					<xsl:when
 						test="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]">
 						<xsl:sequence select="imf:create-debug-comment('A11500]',$debugging)" />
+						<!-- For the get messages a ep:rough-message structure representing the 'response' tree is generated but also one respresenting
+							 the 'request' tree.  -->
 						<xsl:for-each
 							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'response']">
-							<ep:rough-message messagetype="response"
-								berichtcode="{$berichtcode}">
+							
+							<xsl:sequence select="imf:create-debug-comment('A11750]',$debugging)" />
+							<ep:rough-message messagetype="response" berichtcode="{$berichtcode}">
 								<xsl:attribute name="grouping" select="$grouping" />
 								<xsl:attribute name="pagination" select="$pagination" />
 								<xsl:attribute name="serialisation" select="$serialisation" />
@@ -209,16 +203,14 @@
 								<xsl:sequence select="imf:create-output-element('ep:id', $messageid)" />
 								<xsl:sequence
 									select="imf:create-output-element('ep:type-id', $messagetypeid)" />
-								<!-- In case of a vraagberichttype it's decided for now only to proces 
-									associations with the name 'gelijk' or 'response'. -->
-	
-								<!-- TODO: De bovenstaande beslissing is in overleg met Johan Boer 
-									genomen maar moet nog geformaliseerd worden. -->
-								<xsl:apply-templates select="."
-									mode="create-rough-message-content" />
+								<xsl:apply-templates select="." mode="create-rough-message-content" />
 							</ep:rough-message>
-							<ep:rough-message messagetype="request"
-								berichtcode="{$berichtcode}">
+						</xsl:for-each>
+						<xsl:for-each
+							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'request']">
+
+							<xsl:sequence select="imf:create-debug-comment('A12000]',$debugging)" />
+							<ep:rough-message messagetype="request"	berichtcode="{$berichtcode}">
 								<xsl:attribute name="grouping" select="$grouping" />
 								<xsl:attribute name="pagination" select="$pagination" />
 								<xsl:attribute name="serialisation" select="$serialisation" />
@@ -239,7 +231,6 @@
 								<xsl:if test="not(empty($sort))">
 									<xsl:attribute name="fields" select="$sort"/>
 								</xsl:if>
-								<xsl:sequence select="imf:create-debug-comment('A12000]',$debugging)" />
 								<xsl:sequence
 									select="imf:create-debug-track(concat('Constructing the rough-request-message: ',imvert:name/@original),$debugging)" />
 	
@@ -248,26 +239,12 @@
 								<xsl:sequence select="imf:create-output-element('ep:id', $messageid)" />
 								<xsl:sequence
 									select="imf:create-output-element('ep:type-id', $messagetypeid)" />
-								<xsl:for-each
-									select="../../imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'request']">
-									<!-- In case of a vraagberichttype it's decided for now only to proces 
-										associations with the name 'gelijk' or 'response'. -->
-	
-									<!-- TODO: De bovenstaande beslissing is in overleg met Johan Boer 
-										genomen maar moet nog geformaliseerd worden. -->
-										<?x							<xsl:apply-templates
-											select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and 
-											not(imvert:name = ('scope','vanaf','tot en met'))]"
-											mode="create-rough-message-content"/>	?>
-									<xsl:apply-templates select="."
-										mode="create-rough-message-content" />
-								</xsl:for-each>
+									<xsl:apply-templates select="." mode="create-rough-message-content" />
 							</ep:rough-message>
-	
-
 						</xsl:for-each>
 					</xsl:when>
 					<xsl:otherwise>
+						<!-- This otherwise can occur when. -->
 						<xsl:sequence
 							select="imf:create-debug-comment('Otherwise-tak',$debugging)" />
 					</xsl:otherwise>
@@ -276,18 +253,27 @@
 			<xsl:when test="contains($berichtcode,'Po')">
 				<xsl:sequence select="imf:create-debug-comment('A12500]',$debugging)" />
 				<xsl:choose>
-					<!-- It's not allowed to have none associations of type 'entiteitrelatie'. -->
-					<xsl:when
-						test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]) = 0">
+					<xsl:when test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]) = 0">
+						<!-- It's not allowed to have no associations of type 'entiteitrelatie'. If that's the case an error message is generated. -->
 						<xsl:variable name="msg"
 							select="concat('Within the messageclass ',imvert:name,' no association with the stereotype &quot;entiteitrelatie&quot; occurs, only associations with that kind of stereotype are processed for messages with berichttype ',$berichtcode,'.')"
 							as="xs:string" />
 						<xsl:sequence select="imf:msg('ERROR',$msg)" />
 					</xsl:when>
-					<xsl:when
-						test="contains($berichtcode,'Po') and (not(count(imvert:associations/imvert:association[imvert:name = 'request']) = 1))">
+					<xsl:when test="contains($berichtcode,'Po') and (not(count(imvert:associations/imvert:association[imvert:name = 'request']) = 1))">
+						<!-- In case of a Po messagetype it's required to have one and not more than one association with the name 'request'. 
+						     If this isn't the case an error message is generated. -->
 						<xsl:variable name="msg"
-							select="concat('Within the messageclass ',imvert:name,' no or more than 1 association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;request&quot; occurs. For messages with berichttype ',$berichtcode,' this is not allowed.')"
+							select="concat('Within the messageclass ',imvert:name,' 1 (and only 1) association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;request&quot; has to be present. For messages with berichttype ',$berichtcode,' this is not allowed.')"
+							as="xs:string" />
+						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+					</xsl:when>
+					<xsl:when
+						test="imvert:associations/imvert:association[imvert:name != 'request' and imvert:name != 'pad']">
+						<!-- In case the Gr or Gc messagetype has one or more associations not having the name 'response', 'request' or 'pad' an error
+						     message is generated. -->
+						<xsl:variable name="msg"
+							select="concat('Within the messageclass &quot;',imvert:name,'&quot; one or more associations with a name not equal to &quot;response&quot;, &quot;request&quot; or &quot;pad&quot;. For messages with berichttype &quot;',$berichtcode,'&quot; this is not allowed.')"
 							as="xs:string" />
 						<xsl:sequence select="imf:msg('ERROR',$msg)" />
 					</xsl:when>
@@ -295,6 +281,8 @@
 						test="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]">
 						<xsl:for-each
 							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'request']">
+							<!-- For the post messages the ep:rough-message structure only represents the 'request' tree. So only that part of the message is
+							     processed here. -->
 							<ep:rough-message messagetype="request"
 								berichtcode="{$berichtcode}">
 								<xsl:attribute name="grouping" select="$grouping" />
@@ -309,16 +297,13 @@
 								<xsl:sequence select="imf:create-output-element('ep:id', $messageid)" />
 								<xsl:sequence
 									select="imf:create-output-element('ep:type-id', $messagetypeid)" />
-								<!-- In case of a antwoordberichttype it's decided for now only to proces 
-									associations with the name 'request'. -->
-								
-								<!-- TODO: De bovenstaande beslissing is door Robert genomen maar moet nog geformaliseerd worden. -->
 								<xsl:apply-templates select="."
 									mode="create-rough-message-content" />
 							</ep:rough-message>
 						</xsl:for-each>
 					</xsl:when>
 					<xsl:otherwise>
+						<!-- This otherwise should never occur. -->
 						<xsl:sequence
 							select="imf:create-debug-comment('Otherwise-tak',$debugging)" />
 					</xsl:otherwise>
@@ -332,14 +317,16 @@
 	<xsl:template
 		match="imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]"
 		mode="create-rough-message-content">
-		<xsl:param name="id-trail" />
 
 		<xsl:variable name="type-id" select="imvert:type-id" />
 
 		<xsl:sequence
 			select="imf:create-debug-comment('debug:start A13500 /debug:start',$debugging)" />
 		<xsl:sequence select="imf:create-debug-comment(imvert:name,$debugging)" />
-
+		
+		<!-- The imvert:class related to the current imvert:association is processed. 
+			 To be able to trace back to the refering association the id of that association (id-refering-association) is 
+			 forwarded to the template. --> 
 		<xsl:apply-templates select="key('class',$type-id)"
 			mode="create-rough-message-content">
 			<xsl:with-param name="id-refering-association" select="imvert:id" />
@@ -359,8 +346,8 @@
 	</xsl:template>
 
 	<!-- Declaration of the content of a superclass, an 'imvert:association' 
-		and 'imvert:association-class' finaly always takes place within an 'imvert:class' 
-		element. This element is processed within this template. -->
+		 and 'imvert:association-class' finaly always takes place within an 'imvert:class' 
+		 element. This element is processed within this template. -->
 	<xsl:template match="imvert:class" mode="create-rough-message-content">
 		<xsl:param name="id-trail" />
 		<xsl:param name="proces-type" select="'as-normal'" />
@@ -375,20 +362,48 @@
 		<xsl:sequence
 			select="imf:create-debug-comment(concat('Classname: ',imvert:name),$debugging)" />
 
-		<!-- If the class hasn't been processed before it can be processed, else 
-			processing is canceled to prevent recursion and a Warning is generated. Recursion 
-			should be prevented in the model. -->
-
-		<!-- TODO: Er is sprake van dat enige mate van recursion toch wordt toegestaan. 
-			Daarom is de message bij recursion uitgeschakeld. Indien recursion toch niet 
-			gewenst is dan kan deze weer wordn ingeschakeld. -->
 		<xsl:choose>
 			<xsl:when test="not(contains($id-trail, concat('#', $id, '#')))">
+				<!-- The class hasn't been processed before within the current tree so it can be processed. -->
 				<xsl:choose>
-					<!-- If a supertype is refered to as an association the related subtypes 
-						are placed as a construct in a sequence within that relation. -->
+					<xsl:when test="$proces-type = 'as-supertype'">
+						<!--  -->
+						<ep:superconstruct type="superclass">
+							<xsl:sequence select="imf:create-debug-comment('A15500]',$debugging)" />
+							<xsl:sequence
+								select="imf:create-output-element('ep:name', imvert:name/@original)" />
+							<xsl:sequence
+								select="imf:create-output-element('ep:tech-name', imf:get-normalized-name(imvert:name, 'element-name'))" />
+							<xsl:sequence select="imf:create-output-element('ep:id', $id)" />
+							
+							<!-- TODO: Klopt onderstaande nog wel. Attributes worden nu volgens 
+								mij ook geprocessed als het om een attribute gaat dat verwijst naar een tabel 
+								entiteit. -->
+							
+							<!-- The following takes care of ignoring the processing of the attributes 
+								belonging to the current class. Attributes aren't important for the rough 
+								structure but need to be processed here to determine the processtype of the 
+								classes containing the attributes. -->
+							<xsl:apply-templates select="imvert:attributes/imvert:attribute">
+								<xsl:with-param name="id-trail"
+									select="concat('#', $id, '#', $id-trail)" />
+							</xsl:apply-templates>
+							<xsl:apply-templates select="imvert:supertype"
+								mode="create-rough-message-content">
+								<xsl:with-param name="id-trail"
+									select="concat('#', $id, '#', $id-trail)" />
+							</xsl:apply-templates>
+							<xsl:apply-templates select="imvert:associations/imvert:association"
+								mode="create-rough-message-content">
+								<xsl:with-param name="id-trail"
+									select="concat('#', $id, '#', $id-trail)" />
+							</xsl:apply-templates>
+						</ep:superconstruct>
+					</xsl:when>
 					<xsl:when
 						test="$proces-type = 'as-normal' and $packages//imvert:class[imvert:supertype/imvert:type-id = $id]">
+						<!-- If a supertype is refered to from an association the related subtypes 
+						 are placed, as a construct, within a sequence within that association. -->
 						<xsl:sequence
 							select="imf:create-debug-comment('debug:start A14250',$debugging)" />
 						<xsl:apply-templates
@@ -446,39 +461,6 @@
 							</xsl:apply-templates>
 						</ep:construct>
 					</xsl:when>
-					<xsl:when test="$proces-type = 'as-supertype'">
-						<ep:superconstruct type="superclass">
-							<xsl:sequence select="imf:create-debug-comment('A15500]',$debugging)" />
-							<xsl:sequence
-								select="imf:create-output-element('ep:name', imvert:name/@original)" />
-							<xsl:sequence
-								select="imf:create-output-element('ep:tech-name', imf:get-normalized-name(imvert:name, 'element-name'))" />
-							<xsl:sequence select="imf:create-output-element('ep:id', $id)" />
-
-							<!-- TODO: Klopt onderstaande nog wel. Attributes worden nu volgens 
-								mij ook geprocessed als het om een attribute gaat dat verwijst naar een tabel 
-								entiteit. -->
-
-							<!-- The following takes care of ignoring the processing of the attributes 
-								belonging to the current class. Attributes aren't important for the rough 
-								structure but need to be processed here to determine the processtype of the 
-								classes containing the attributes. -->
-							<xsl:apply-templates select="imvert:attributes/imvert:attribute">
-								<xsl:with-param name="id-trail"
-									select="concat('#', $id, '#', $id-trail)" />
-							</xsl:apply-templates>
-							<xsl:apply-templates select="imvert:supertype"
-								mode="create-rough-message-content">
-								<xsl:with-param name="id-trail"
-									select="concat('#', $id, '#', $id-trail)" />
-							</xsl:apply-templates>
-							<xsl:apply-templates select="imvert:associations/imvert:association"
-								mode="create-rough-message-content">
-								<xsl:with-param name="id-trail"
-									select="concat('#', $id, '#', $id-trail)" />
-							</xsl:apply-templates>
-						</ep:superconstruct>
-					</xsl:when>
 					<xsl:otherwise>
 						<xsl:sequence select="imf:create-debug-comment('A16000]',$debugging)" />
 						<xsl:apply-templates select="imvert:attributes/imvert:attribute">
@@ -499,7 +481,8 @@
 				</xsl:choose>
 			</xsl:when>
 			<xsl:otherwise>
-				<!-- The association is an association refering to itself. -->
+				<!-- The class has been processed before within the current tree so processing of supertypes and association of the current class 
+					 is canceled to prevent recursion. -->
 				<xsl:sequence select="imf:create-debug-comment('A16250]',$debugging)" />
 				<ep:construct type="class">
 					<xsl:apply-templates select="imvert:attributes/imvert:attribute">
@@ -507,8 +490,11 @@
 							select="concat('#', $id, '#', $id-trail)" />
 					</xsl:apply-templates>
 				</ep:construct>
-					<?x				<xsl:variable name="msg" select="concat('De class ',imvert:name,' komt recursief voor in het BSM model. Bij een Open API koppelvlak is dat niet toegestaan. Pas het model aan.')" as="xs:string"/>
-					<xsl:sequence select="imf:msg('WARNING',$msg)"/>
+				<!-- TODO: Er is sprake van dat enige mate van recursion toch wordt toegestaan. 
+						   Daarom is deze message bij recursion uitgeschakeld. Indien recursion toch niet 
+						   gewenst is dan kan deze weer worden ingeschakeld. -->
+				<?x				<xsl:variable name="msg" select="concat('De class ',imvert:name,' komt recursief voor in het BSM model. Bij een Open API koppelvlak is dat niet toegestaan. Pas het model aan.')" as="xs:string"/>
+					<xsl:sequence select="imf:msg(.,'WARNING',$msg)"/>
 				 ?>
 			</xsl:otherwise>
 		</xsl:choose>
