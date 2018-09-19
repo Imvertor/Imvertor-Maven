@@ -155,7 +155,7 @@
 					<xsl:variable name="berichtcode" select="ancestor::ep:rough-message/@berichtcode"/>
 					<xsl:variable name="messagetype" select="ancestor::ep:rough-message/@messagetype"/>
 					<xsl:sequence select="imf:create-debug-comment(concat('Berichtcode=',$berichtcode),$debugging)" />
-					<xsl:apply-templates select="current-group()[1]" mode="as-type">
+					<xsl:apply-templates select="current-group()[1]" mode="as-global-type">
 						<xsl:with-param name="berichtcode" select="$berichtcode"/>
 						<xsl:with-param name="messagetype" select="$messagetype"/>
 					</xsl:apply-templates>
@@ -174,7 +174,7 @@
 						 to be able to decide how to proces them in a following step. -->
 					<xsl:variable name="berichtcode" select="ancestor::ep:rough-message/@berichtcode"/>
 					<xsl:variable name="messagetype" select="ancestor::ep:rough-message/@messagetype"/>
-					<xsl:apply-templates select="current-group()[1]" mode="as-type">
+					<xsl:apply-templates select="current-group()[1]" mode="as-global-type">
 						<xsl:with-param name="berichtcode" select="$berichtcode"/>
 						<xsl:with-param name="messagetype" select="$messagetype"/>
 					</xsl:apply-templates>
@@ -190,7 +190,7 @@
 						 to be able to decide how to proces them in a following step. -->
 					<xsl:variable name="berichtcode" select="ancestor::ep:rough-message/@berichtcode"/>
 					<xsl:variable name="messagetype" select="ancestor::ep:rough-message/@messagetype"/>
-					<xsl:apply-templates select="current-group()[1]" mode="as-type">
+					<xsl:apply-templates select="current-group()[1]" mode="as-global-type">
 						<xsl:with-param name="berichtcode" select="$berichtcode"/>
 						<xsl:with-param name="messagetype" select="$messagetype"/>
 					</xsl:apply-templates>
@@ -206,7 +206,7 @@
 						 to be able to decide how to proces them in a following step. -->
 					<xsl:variable name="berichtcode" select="ancestor::ep:rough-message/@berichtcode"/>
 					<xsl:variable name="messagetype" select="ancestor::ep:rough-message/@messagetype"/>
-					<xsl:apply-templates select="current-group()[1]" mode="as-type">
+					<xsl:apply-templates select="current-group()[1]" mode="as-global-type">
 						<xsl:with-param name="berichtcode" select="$berichtcode"/>
 						<xsl:with-param name="messagetype" select="$messagetype"/>
 					</xsl:apply-templates>
@@ -215,7 +215,7 @@
 				<!-- Following apply creates all global ep:constructs elements containing enumeration lists. -->
 				<xsl:apply-templates select="$packages//imvert:package[not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]/
                                              imvert:class[imf:get-stereotype(.) = ('stereotype-name-enumeration') and generate-id(.) = 
-                                             generate-id(key('enumerationClass',imvert:name,$packages)[1])]" mode="mode-global-enumeration" />
+                                             generate-id(key('enumerationClass',imvert:name,$packages)[1])]" mode="as-global-enumeration" />
 			</ep:message-set>
 		</ep:message-sets>
 	</xsl:template>
@@ -361,7 +361,7 @@
 				<ep:seq>
 					<!-- Within the template call the cardinality params get the value '-' to express cardinality is of no importance 
 						 in this situation. -->
-					<xsl:apply-templates select="ep:construct" mode="as-content">
+					<xsl:apply-templates select="ep:construct" mode="as-local-type">
 						<xsl:with-param name="berichtcode" select="$berichtcode"/>
 						<xsl:with-param name="messagetype" select="$messagetype"/>
 						<xsl:with-param name="minOccurs" select="'-'" />
@@ -372,7 +372,7 @@
 		</ep:message>
 	</xsl:template>
 
-	<xsl:template match="ep:construct" mode="as-content">
+	<xsl:template match="ep:construct" mode="as-local-type">
 		<!-- This template is applicable if the ep:construct element has to be processed as content of another ep:construct element 
 			 not if it has to processed as a global ep:construct element. -->
 		<xsl:param name="berichtcode" />
@@ -494,7 +494,7 @@
 				<xsl:sequence select="imf:create-debug-comment(concat('OAS11000, id: ',$id),$debugging)" />
 				<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
 				<xsl:apply-templates select="ep:superconstruct" mode="as-ref" />
-				<xsl:apply-templates select="ep:construct" mode="as-content">
+				<xsl:apply-templates select="ep:construct" mode="as-local-type">
 					<xsl:with-param name="berichtcode" select="$berichtcode"/>
 					<xsl:with-param name="messagetype" select="$messagetype"/>
 				</xsl:apply-templates>
@@ -646,7 +646,7 @@
 			</xsl:when>
 			<xsl:when test="@type='groepCompositieAssociation'">
 				<!-- If the current ep:construct is an association to a groepcompositie the groepcompositie construct is processed.  -->
-				<xsl:apply-templates select="ep:construct" mode="as-content">
+				<xsl:apply-templates select="ep:construct" mode="as-local-type">
 					<xsl:with-param name="berichtcode" select="$berichtcode"/>
 					<xsl:with-param name="messagetype" select="$messagetype"/>
 				</xsl:apply-templates>
@@ -845,25 +845,6 @@
 		</xsl:choose>
 	</xsl:template>
 	
-	<xsl:function name="imf:checkSuperclassesOnId">
-		<!-- This function checks if within a superclass attributes are present which are not id type attributes.
-			 Neccessary for supporting determining the neccessity of embedded types. -->
-		<xsl:param name="superclass"/>
-
-		<xsl:choose>
-			<xsl:when test="$superclass/ep:contains-non-id-attributes = 'true'">
-				<xsl:text>#true</xsl:text>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text>#false</xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
-		<xsl:if test="$superclass/ep:superconstruct/@type='superclass'">
-			<xsl:variable name="nextLevelSuperclass" select="$superclass/ep:superconstruct[@type='superclass']"/>
-			<xsl:sequence select="imf:checkSuperclassesOnId($nextLevelSuperclass)"/>
-		</xsl:if>
-	</xsl:function>
-
 	<xsl:template match="ep:superconstruct" mode="as-ref">
 		<!-- This template is applicable if the ep:superconstruct element has to be processed as content of another ep:construct element. 
 			 In that case a siimple construct is generated with an ep:ref element refering to the global construct representing the 
@@ -882,7 +863,7 @@
 
 	</xsl:template>
 
-	<xsl:template match="ep:superconstruct" mode="as-type">
+	<xsl:template match="ep:superconstruct" mode="as-global-type">
 		<!-- This template is applicable if the ep:superconstruct element has to be processed as a global ep:construct element. -->
 		<xsl:param name="berichtcode"/>
 		<xsl:param name="messagetype"/>
@@ -966,7 +947,7 @@
 					<xsl:with-param name="berichtcode" select="$berichtcode"/>
 					<xsl:with-param name="messagetype" select="$messagetype"/>
 				</xsl:apply-templates>
-				<xsl:apply-templates select="ep:construct" mode="as-content" >
+				<xsl:apply-templates select="ep:construct" mode="as-local-type" >
 					<xsl:with-param name="berichtcode" select="$berichtcode"/>
 					<xsl:with-param name="messagetype" select="$messagetype"/>
 				</xsl:apply-templates>
@@ -975,7 +956,7 @@
 		
 	</xsl:template>
 	
-	<xsl:template match="ep:construct" mode="as-type">
+	<xsl:template match="ep:construct" mode="as-global-type">
 		<!-- This template is applicable if the ep:construct element has to be processed as a global ep:construct element. -->
 		<xsl:param name="berichtcode"/>
 		<xsl:param name="messagetype"/>
@@ -1088,8 +1069,8 @@
 							<xsl:sequence select="imf:create-output-element('ep:value', $messagetype)" />
 						</ep:parameter>
 						<ep:parameter>
-							<xsl:sequence select="imf:create-output-element('ep:name', @type)" />
-							<xsl:sequence select="imf:create-output-element('ep:value', 'superclass')" />
+							<xsl:sequence select="imf:create-output-element('ep:name', 'type')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', @type)" />
 						</ep:parameter>
 						<xsl:if test="$meervoudigeNaam != ''">
 							<ep:parameter>
@@ -1110,7 +1091,7 @@
 						</xsl:otherwise>
 					</xsl:choose>
 					<ep:choice>
-						<xsl:apply-templates select="ep:construct" mode="as-content" />
+						<xsl:apply-templates select="ep:construct" mode="as-local-type" />
 					</ep:choice>
 				</ep:construct>
 				
@@ -1134,15 +1115,15 @@
                         <xsl:sequence select="imf:create-debug-comment(concat('OAS20500, id: ',$id),$debugging)"/>
                         <xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute"/>
                         <xsl:sequence select="imf:create-debug-comment(concat('OAS21000, id: ',$id),$debugging)"/>                   
-                        <xsl:apply-templates select="ep:superconstruct" mode="as-content"/>
+                        <xsl:apply-templates select="ep:superconstruct" mode="as-local-type"/>
                         <xsl:sequence select="imf:create-debug-comment(concat('OAS21500, id: ',$id),$debugging)"/>
-                        <xsl:apply-templates select="ep:construct[@type!='class']" mode="as-content"/>
+                        <xsl:apply-templates select="ep:construct[@type!='class']" mode="as-local-type"/>
                         <xsl:sequence select="imf:create-debug-comment(concat('OAS22000, id: ',$id),$debugging)"/>
                     </ep:seq>
                 </xsl:copy> ?>
 			</xsl:when>
-			<!-- if the ep:constructs is of 'groepCompositie' ..... -->
 			<xsl:when test="@type = 'groepCompositie'">
+				<!-- if the ep:constructs is of 'groepCompositie' a global construct is generated. -->
 				<xsl:sequence select="imf:create-debug-comment(concat('OAS22500, id: ',$id),$debugging)" />
 				<xsl:variable name="type" select="@type" />
 				<xsl:variable name="complex-datatype-tech-name" select="$construct/imvert:name" />
@@ -1150,6 +1131,20 @@
 					<xsl:attribute name="type" select="$type" />
 					<xsl:attribute name="berichtcode" select="$berichtcode" />
 					<xsl:attribute name="messagetype" select="$messagetype" />
+					<ep:parameters>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $berichtcode)" />
+						</ep:parameter>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'messagetype')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $messagetype)" />
+						</ep:parameter>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'type')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', @type)" />
+						</ep:parameter>
+					</ep:parameters>
 					<xsl:sequence select="imf:create-output-element('ep:name', $complex-datatype-tech-name/@original)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($complex-datatype-tech-name,'type-name'))" />
 					<xsl:choose>
@@ -1161,13 +1156,13 @@
 						</xsl:otherwise>
 					</xsl:choose>
 					<ep:seq>
+						<!-- Within the groep all its attributes are adopted.
+							 Also eventual associated constructs are processed. -->
 						<xsl:sequence select="imf:create-debug-comment(concat('OAS23000, id: ',$id),$debugging)" />
 						<xsl:sequence select="imf:create-debug-comment(concat('Type-id: ',$type-id),$debugging)" />
 						<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
 						<xsl:sequence select="imf:create-debug-comment(concat('OAS23500, id: ',$id),$debugging)" />
-						<xsl:apply-templates select="ep:superconstruct" mode="as-ref" />
-						<xsl:sequence select="imf:create-debug-comment(concat('OAS24000, id: ',$id),$debugging)" />
-						<xsl:apply-templates select="ep:construct[@type!='class']" mode="as-content" >
+						<xsl:apply-templates select="ep:construct[@type!='class']" mode="as-local-type" >
 							<xsl:with-param name="berichtcode" select="$berichtcode"/>
 							<xsl:with-param name="messagetype" select="$messagetype"/>
 						</xsl:apply-templates>
@@ -1178,14 +1173,14 @@
 					</ep:seq>
 				</xsl:copy>
 			</xsl:when>
-			<!-- if the ep:constructs itself has a ep:construct or ep:superconstruct or if it is of type 'class' and that class has attributes it is processed here. 
-				 The ep:construct is replicated and ep:constructs for imvert:attributes related to that construct are placed. 
-				 Also the child ep:superconstructs and ep:constructs (if present) are processed. -->
-			<!--xsl:when test="ep:construct or ep:superconstruct or ((@type='class' or @type='requestclass') and $construct//imvert:attributes/imvert:attribute)"-->
 			<xsl:when test="ep:construct or ep:superconstruct or @type='class' or @type='requestclass'">
+				<!-- if the ep:constructs itself has a ep:construct or ep:superconstruct or if it is of type 'class' or 'requestclass' 
+					 it is processed here. 
+					 The ep:construct is replicated and in case of 'class','requestclass' type ep:constructs for imvert:attributes related to 
+					 that construct are placed. 
+					 Also the child ep:superconstructs and ep:constructs (if present) are processed. -->
 				<xsl:sequence select="imf:create-debug-comment(concat('OAS24500, id: ',$id),$debugging)" />
 				<xsl:variable name="classconstruct" select="imf:get-construct-by-id($id,$packages)" />
-				<xsl:variable name="type-name" select="$classconstruct/imvert:name" />
 				<xsl:variable name="type">
 					<xsl:choose>
 						<xsl:when test="@type = 'subclass'">
@@ -1207,8 +1202,6 @@
 					<xsl:if test="$expand != ''">
 						<xsl:attribute name="expand" select="$expand"/>
 					</xsl:if>
-
-					<xsl:variable name="messagename" select="ancestor::ep:rough-message/ep:name"/>
 					
 					<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
 					<xsl:if test="not(@type='groepCompositie') and not(ancestor::ep:*[@type='groepCompositie'])">
@@ -1218,7 +1211,37 @@
 						<xsl:if test="$meervoudigeNaam != ''">
 							<xsl:attribute name="meervoudigeNaam" select="$meervoudigeNaam" />
 						</xsl:if>
-					</xsl:if>
+					</xsl:if>					<ep:parameters>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $berichtcode)" />
+						</ep:parameter>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'messagetype')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $messagetype)" />
+						</ep:parameter>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'type')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $type)" />
+						</ep:parameter>
+						<xsl:if test="$expand != ''">
+							<ep:parameter>
+								<xsl:sequence select="imf:create-output-element('ep:name', 'expand')" />
+								<xsl:sequence select="imf:create-output-element('ep:value', $expand)" />
+							</ep:parameter>
+						</xsl:if>
+						<xsl:if test="not(@type='groepCompositie') and not(ancestor::ep:*[@type='groepCompositie'])">
+							<xsl:variable name="meervoudigeNaam">
+								<xsl:sequence select="imf:getMeervoudigeNaam('5',$construct,'entiteit',$messagename)"/>
+							</xsl:variable> 
+							<xsl:if test="$meervoudigeNaam != ''">
+								<ep:parameter>
+									<xsl:sequence select="imf:create-output-element('ep:name', 'meervoudigeNaam')" />
+									<xsl:sequence select="imf:create-output-element('ep:value', $meervoudigeNaam)" />
+								</ep:parameter>
+							</xsl:if>
+						</xsl:if>
+					</ep:parameters>
 					
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($classconstruct/imvert:name, 'type-name'))" />
@@ -1231,9 +1254,6 @@
 						</xsl:otherwise>
 					</xsl:choose>
 					<ep:seq>
-						<!--xsl:result-document href="{concat('file:/c:/temp/construct-',$name,'-',generate-id(),'.xml')}"> 
-							<xsl:copy-of select="$construct"/> 
-						</xsl:result-document -->
 						<xsl:if test="@type=('class','requestclass')">
 							<xsl:sequence select="imf:create-debug-comment(concat('OAS25000, id: ',$id),$debugging)" />
 							<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
@@ -1241,32 +1261,18 @@
 						<xsl:sequence select="imf:create-debug-comment(concat('OAS25500, id: ',$id),$debugging)" />
 						<xsl:apply-templates select="ep:superconstruct" mode="as-ref" />
 						<xsl:sequence select="imf:create-debug-comment(concat('OAS26000, id: ',$id),$debugging)" />
-						<xsl:apply-templates select="ep:construct[@type!='class']" mode="as-content" >
+						<xsl:apply-templates select="ep:construct[@type!='class']" mode="as-local-type" >
 							<xsl:with-param name="berichtcode" select="$berichtcode"/>
 							<xsl:with-param name="messagetype" select="$messagetype"/>
 						</xsl:apply-templates>
-						
-						
-						
-						
-						
-						
-						<!--xsl:apply-templates select="ep:construct[@type='class']" mode="as-content" >
-							<xsl:with-param name="berichtcode" select="$berichtcode"/>
-							<xsl:with-param name="messagetype" select="$messagetype"/>
-						</xsl:apply-templates-->
-						
-						
-						
-						
-						
 						<xsl:sequence select="imf:create-debug-comment(concat('OAS26500, id: ',$id),$debugging)" />
 					</ep:seq>
 				</xsl:copy>
 			</xsl:when>
-			<!-- if the ep:constructs is of 'complex-datatype' type its name differs from the one in the when above. 
-				 It's name isn't based on the attribute using the type since it is more generic and used by more than one ep:construct. -->
 			<xsl:when test="@type = 'complex-datatype'">
+				<!-- if the ep:constructs is of 'complex-datatype' type its name differs from the one in the when above. 
+					 It's name isn't based on the attribute using the type since it is more generic and used by more than one ep:construct.
+					 Also it's attributes and -->
 				<xsl:sequence select="imf:create-debug-comment(concat('OAS27000, id: ',$id),$debugging)" />
 				<xsl:variable name="type" select="@type" />
 				<xsl:variable name="complex-datatype-tech-name" select="$construct/imvert:name" />
@@ -1274,6 +1280,20 @@
 					<xsl:attribute name="type" select="$type" />
 					<xsl:attribute name="berichtcode" select="$berichtcode" />
 					<xsl:attribute name="messagetype" select="$messagetype" />
+					<ep:parameters>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $berichtcode)" />
+						</ep:parameter>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'messagetype')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $messagetype)" />
+						</ep:parameter>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'type')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $type)" />
+						</ep:parameter>
+					</ep:parameters>
 					<xsl:sequence select="imf:create-output-element('ep:name', $complex-datatype-tech-name/@original)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($complex-datatype-tech-name,'type-name'))" />
 					<xsl:choose>
@@ -1290,13 +1310,16 @@
 						<xsl:sequence select="imf:create-debug-comment(concat('OAS28000, id: ',$id),$debugging)" />
 						<xsl:apply-templates select="ep:superconstruct" mode="as-ref" />
 
-						<!-- TODO: Nagaan of er in een complex-datatype type ep:construct geen associations voor kunnen komen. 
-							 Indien dat wel het geval is dan moet hier ook een apply-templates komen op een ep:construct en moet ook het rough-messages stylesheets 
-							 daar rekening mee houden. -->
+						<!-- TODO: Nagaan of er in een complex-datatype type ep:construct associations voor kunnen komen. 
+							 Indien dat wel het geval is dan moet hier ook een apply-templates komen op een ep:construct en moet ook het 
+							 rough-messages stylesheets daar rekening mee houden. Ook is de vraag of complex-datatypes supertypes kunnen hebben. 
+							 Indien dit beide niet het geval is en hetzelfde geldt voor table-datatypes dan kunnen beide when's samengevoegd worden. -->
 					</ep:seq>
 				</xsl:copy>
 			</xsl:when>
 			<xsl:when test="@type = 'table-datatype'">
+				<!-- if the ep:constructs is of 'table-datatype' type its name differs from the one in the when above. 
+					 It's name isn't based on the attribute using the type since it is more generic and used by more than one ep:construct. -->
 				<xsl:sequence select="imf:create-debug-comment(concat('OAS28100, id: ',$id),$debugging)" />
 				<xsl:variable name="type" select="@type" />
 				<xsl:variable name="complex-datatype-tech-name" select="$construct/imvert:name" />
@@ -1318,9 +1341,10 @@
 						<xsl:sequence select="imf:create-debug-comment(concat('OAS28200, id: ',$id),$debugging)" />
 						<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
 						
-						<!-- TODO: Nagaan of er in een complex-datatype type ep:construct geen associations voor kunnen komen. 
-							 Indien dat wel het geval is dan moet hier ook een apply-templates komen op een ep:construct en moet ook het rough-messages stylesheets 
-							 daar rekening mee houden. -->
+						<!-- TODO: Nagaan of er in een table-datatype type ep:construct associations voor kunnen komen. 
+							 Indien dat wel het geval is dan moet hier ook een apply-templates komen op een ep:construct en moet ook het 
+							 rough-messages stylesheets daar rekening mee houden. Ook is de vraag of table-datatypes supertypes kunnen hebben. 
+							 Indien dit beide niet het geval is en hetzelfde geldt voor complex-datatypes dan kunnen beide when's samengevoegd worden. -->
 					</ep:seq>
 				</xsl:copy>
 			</xsl:when>
@@ -1328,45 +1352,10 @@
 		</xsl:choose>
 	</xsl:template>
 
-
-	<!--					<xsl:variable name="tvMeervoudigeNaam" select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-TARGETROLEPLURAL')"/>
-					<xsl:choose>
-						<xsl:when test="string-length($tvMeervoudigeNaam) = 0">
-							<xsl:sequence select="imf:msg(.,'WARNING','1. The construct [1] within message [2] does not have a tagged value Target role in meervoud, define one.',($construct/imvert:name,ancestor::ep:rough-message/ep:name))"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:sequence select="$tvMeervoudigeNaam"/>
-						</xsl:otherwise>
-					</xsl:choose> -->
-	
-
-
-	<xsl:function name="imf:getMeervoudigeNaam">
-		<xsl:param name="debugnr"/>
-		<xsl:param name="construct"/>
-		<xsl:param name="type"/>
-		<xsl:param name="messagename"/>
-
-		<xsl:choose>
-			<xsl:when test="string-length(imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-TARGETROLEPLURAL')) != 0">
-				<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-TARGETROLEPLURAL')"/>
-			</xsl:when>
-			<xsl:when test="string-length(imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-NAMEPLURAL')) != 0">
-				<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-NAMEPLURAL')"/>
-			</xsl:when>
-			<xsl:when test="$type = 'association'">
-				<xsl:sequence select="imf:msg($construct,'WARNING','The construct [1] within message [2] does not have a tagged value target role in meervoud, define one.',($construct/imvert:name,$messagename))"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:sequence select="imf:msg($construct,'WARNING','The construct [1] within message [2] does not have a tagged value naam in meervoud, define one.',($construct/imvert:name,$messagename))"/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:function>
-
-	<!-- Some of the imvert:attribute elements found in the classes refered to are processed here.
-		 Some because imvert:attribute elements having a stereotype of 'stereotype-name-complextype' and 
-		 'stereotype-name-referentielijst' are processed in the ep:construct template with mode="as-content". -->
 	<xsl:template match="imvert:attribute">
+		<!-- Some of the imvert:attribute elements found in the classes refered to are processed here.
+			 Not all because imvert:attribute elements having a stereotype of 'stereotype-name-complextype' and 
+			 'stereotype-name-referentielijst' are processed in the ep:construct template with mode="as-local-type". -->
 		<xsl:variable name="name" select="imvert:name/@original" as="xs:string" />
 		<xsl:variable name="tech-name" select="imf:get-normalized-name(imvert:name, 'element-name')" as="xs:string" />
 		<xsl:variable name="id" select="imvert:id"/>
@@ -1413,11 +1402,25 @@
 
 		<xsl:choose>
 			<xsl:when test="$type-is-GM-external">
+				<!-- If the attribute is a gml type attribute no reference to a type is neccessary since all these types are processed 
+					 the same way. -->
 				<ep:construct>
 					<xsl:attribute name="type" select="'GM-external'"/>
 					<xsl:if test="$SIM-name != ''">
 						<xsl:attribute name="SIM-name" select="$SIM-name"/>
 					</xsl:if>
+					<ep:parameters>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'type')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', 'GM-external')" />
+						</ep:parameter>
+						<xsl:if test="$SIM-name != ''">
+							<ep:parameter>
+								<xsl:sequence select="imf:create-output-element('ep:name', 'SIM-name')" />
+								<xsl:sequence select="imf:create-output-element('ep:value', $SIM-name)" />
+							</ep:parameter>
+						</xsl:if>
+					</ep:parameters>
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS28500, id: ',imvert:id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
@@ -1434,49 +1437,18 @@
 					<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
 				</ep:construct>
 			</xsl:when>
-			<!-- Attributes of complex datatype type are not resolved within this template but with one of the ep:construct templates since they are present 
-				 within the rough message structure. -->
 			<xsl:when test="imvert:type-id and imvert:type-id = $packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]/imvert:id">
+				<!-- Attributes of complex datatype type are not resolved within this template but with one of the ep:construct templates since 
+					 they are present within the rough message structure. -->
 				<xsl:sequence select="imf:create-debug-comment(concat('OAS29000, id: ',imvert:id),$debugging)" />
 			</xsl:when>
-			<!-- The content of ep:constructs based on attributes which refer to a tabelentiteit is determined by the imvert:attribute in that tabelentiteit class 
-				 which serves as a unique key. So it get all properties of that unique key. -->
 			<xsl:when test="imvert:type-id and imvert:type-id = $packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]/imvert:id">
-<?x				<xsl:variable name="type-id" select="imvert:type-id" />
-				<xsl:variable name="tabelEntiteit">
-					<xsl:sequence select="$packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst') and imvert:id = $type-id]" />
-				</xsl:variable>
-				<!--ep:construct type="attribute" -->
-				<xsl:choose>
-					<xsl:when test="not($tabelEntiteit//imvert:attribute[imvert:is-id = 'true'])">
-						<xsl:variable name="msg" select="concat('The &quot;tabelenitiet&quot; ',$tabelEntiteit/imvert:name,'does not have an attribute defined as an id.')" />
-						<xsl:sequence select="imf:msg('WARNING', $msg)" />
-					</xsl:when>
-					<xsl:otherwise>
-						<ep:construct>
-							<xsl:sequence select="imf:create-debug-comment(concat('OAS29500, id: ',imvert:id),$debugging)" />
-							<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
-							<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
-							<xsl:choose>
-								<xsl:when test="(empty($doc) or $doc='') and $debugging">
-									<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
-								</xsl:otherwise>
-							</xsl:choose>
-							<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)" />
-							<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)" />
-							<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name(imvert:type-name,'type-name'))" />
-							<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
-						</ep:construct>
-					</xsl:otherwise>
-				</xsl:choose> ?>
+				<!-- The content of ep:constructs based on attributes which refer to a tabelentiteit is determined by the imvert:attribute in 
+					 that tabelentiteit class which serves as a unique key. So it gets all properties of the table entity with that unique key. -->
 			</xsl:when>
-			<!-- imvert:attribute having an imvert:type-id result in an ep:construct which refers to a global ep:construct. This is for example the case 
-				 when it's an attribute with a enumeration type. -->
 			<xsl:when test="imvert:type-id">
-				<!--ep:construct type="attribute" -->
+				<!-- imvert:attributes having an imvert:type-id result in an ep:construct which refers to a global ep:construct. This is for 
+					 example the case when it's an attribute with a enumeration type. -->
 				<ep:construct>
 					<xsl:if test="$is-id = 'true'">
 						<xsl:attribute name="is-id" select="'true'"/>
@@ -1484,6 +1456,22 @@
 					<xsl:if test="$SIM-name != ''">
 						<xsl:attribute name="SIM-name" select="$SIM-name"/>
 					</xsl:if>
+					<xsl:if test="$is-id = 'true' or $SIM-name != ''">
+						<ep:parameters>
+							<xsl:if test="$is-id = 'true'">
+								<ep:parameter>
+									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
+									<xsl:sequence select="imf:create-output-element('ep:value', 'true')" />
+								</ep:parameter>
+							</xsl:if>
+							<xsl:if test="$SIM-name != ''">
+								<ep:parameter>
+									<xsl:sequence select="imf:create-output-element('ep:name', 'SIM-name')" />
+									<xsl:sequence select="imf:create-output-element('ep:value', $SIM-name)" />
+								</ep:parameter>
+							</xsl:if>
+						</ep:parameters>
+					</xsl:if>	
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS30000, id: ',imvert:id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
@@ -1501,9 +1489,8 @@
 					<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
 				</ep:construct>
 			</xsl:when>
-			<!-- In all other cases the imvert:attribute itself and its properties are processed. -->
 			<xsl:otherwise>
-				<!--ep:construct type="attribute" -->
+				<!-- In all other cases the imvert:attribute itself and its properties are processed. -->
 				<ep:construct>
 					<xsl:if test="$is-id = 'true'">
 						<xsl:attribute name="is-id" select="'true'"/>
@@ -1511,8 +1498,24 @@
 					<xsl:if test="$SIM-name != ''">
 						<xsl:attribute name="SIM-name" select="$SIM-name"/>
 					</xsl:if>
+					<xsl:if test="$is-id = 'true' or $SIM-name != ''">
+						<ep:parameters>
+							<xsl:if test="$is-id = 'true'">
+								<ep:parameter>
+									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
+									<xsl:sequence select="imf:create-output-element('ep:value', 'true')" />
+								</ep:parameter>
+							</xsl:if>
+							<xsl:if test="$SIM-name != ''">
+								<ep:parameter>
+									<xsl:sequence select="imf:create-output-element('ep:name', 'SIM-name')" />
+									<xsl:sequence select="imf:create-output-element('ep:value', $SIM-name)" />
+								</ep:parameter>
+							</xsl:if>
+						</ep:parameters>
+					</xsl:if>	
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS30500, id: ',imvert:id),$debugging)" />
-					<xsl:if test="$debugging">
+<?x					<xsl:if test="$debugging">
 						<ep:suppliers>
 							<xsl:copy-of select="$suppliers" />
 						</ep:suppliers>
@@ -1529,7 +1532,7 @@
 								</xsl:choose>
 							</ep:found-tagged-values>
 						</ep:tagged-values>
-					</xsl:if>
+					</xsl:if> ?>
 
 
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
@@ -1567,11 +1570,11 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<!-- Following template creates global ep:constructs for enumeration/ -->
 	<!-- TODO: Op dit moment worden alle enumerations, ook al worden ze niet gebruikt, omgezet naar ep:constructs. 
 			   Hoewel de niet gebruikte er in de volgdende stap uitgefilterd worden zou het netjes zijn ze al niet in het EP bestand te genereren. 
 			   Die taak moet nog een keer worden uitgevoerd. -->
-	<xsl:template match="imvert:class" mode="mode-global-enumeration">
+	<xsl:template match="imvert:class" mode="as-global-enumeration">
+		<!-- Following template creates global ep:constructs for enumeration/ -->
 		<xsl:sequence select="imf:create-debug-comment('OAS31000',$debugging)" />
 		<xsl:variable name="compiled-name" select="imf:get-compiled-name(.)" />
 		<xsl:variable name="doc">
@@ -1606,14 +1609,12 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:sequence select="imf:create-output-element('ep:data-type', 'scalar-string')" />
-			<xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="mode-local-enum" />
+			<xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="as-local-enumeration" />
 		</ep:construct>
 	</xsl:template>
 
-	<xsl:template match="imvert:attribute" mode="mode-local-enum">
+	<xsl:template match="imvert:attribute" mode="as-local-enumeration">
 		<xsl:sequence select="imf:create-debug-comment('OAS32000',$debugging)" />
-
-		<!-- STUB De naam van een enumeratie is die overgenomen uit SIM. Niet camelcase. Vooralsnog ook daar ophalen. -->
 
 		<xsl:variable name="supplier" select="imf:get-trace-suppliers-for-construct(.,1)[@project='SIM'][1]" />
 		<xsl:variable name="construct" select="if ($supplier) then imf:get-trace-construct-by-supplier($supplier,$imvert-document) else ()" />
@@ -1621,9 +1622,9 @@
 		<xsl:variable name="SIM-alias" select="($construct/imvert:alias, imvert:alias)[1]" />
 
 		<ep:enum>
-			<!-- ROME: I.v.m. het project Zaak- Document Services is besloten om de waarde in een enumeration te plaatsen en niet de codes.
-					   Voor het geval daarop wordt teruggekomen is de XSLT-code voor het opnemen van de code bewaard. -->
 			<xsl:value-of select="$SIM-name" />
+			<!-- ROME: I.v.m. het project Zaak- Document Services is besloten om de waarde in een enumeration te plaatsen en niet de codes.
+					   Voor het geval daarop wordt teruggekomen is de XSLT-code voor het opnemen van de code hieronder bewaard. -->
 			<!--xsl:choose>
 				<xsl:when test="empty($SIM-alias)">
 					<xsl:value-of select="$SIM-name" />
@@ -1636,6 +1637,47 @@
 
 	</xsl:template>
 
+	<xsl:function name="imf:checkSuperclassesOnId">
+		<!-- This function checks if within a superclass attributes are present which are not id type attributes.
+			 Neccessary for supporting determining the neccessity of embedded types. -->
+		<xsl:param name="superclass"/>
+		
+		<xsl:choose>
+			<xsl:when test="$superclass/ep:contains-non-id-attributes = 'true'">
+				<xsl:text>#true</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>#false</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:if test="$superclass/ep:superconstruct/@type='superclass'">
+			<xsl:variable name="nextLevelSuperclass" select="$superclass/ep:superconstruct[@type='superclass']"/>
+			<xsl:sequence select="imf:checkSuperclassesOnId($nextLevelSuperclass)"/>
+		</xsl:if>
+	</xsl:function>
+	
+	<xsl:function name="imf:getMeervoudigeNaam">
+		<xsl:param name="debugnr"/>
+		<xsl:param name="construct"/>
+		<xsl:param name="type"/>
+		<xsl:param name="messagename"/>
+		
+		<xsl:choose>
+			<xsl:when test="string-length(imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-TARGETROLEPLURAL')) != 0">
+				<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-TARGETROLEPLURAL')"/>
+			</xsl:when>
+			<xsl:when test="string-length(imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-NAMEPLURAL')) != 0">
+				<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-NAMEPLURAL')"/>
+			</xsl:when>
+			<xsl:when test="$type = 'association'">
+				<xsl:sequence select="imf:msg($construct,'WARNING','The construct [1] within message [2] does not have a tagged value target role in meervoud, define one.',($construct/imvert:name,$messagename))"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:sequence select="imf:msg($construct,'WARNING','The construct [1] within message [2] does not have a tagged value naam in meervoud, define one.',($construct/imvert:name,$messagename))"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:function>
+	
 	<!-- This function merges all documentation from the highest layer up to the current layer. -->
 	<xsl:function name="imf:merge-documentation">
 		<xsl:param name="this" />
@@ -1668,7 +1710,6 @@
 		<xsl:param name="this" />
 		<xsl:sequence select="$this/imvert:stereotype/@id" />
 	</xsl:function>
-
 
 	<xsl:function name="imf:get-compiled-name">
 		<xsl:param name="this" as="element()" />
