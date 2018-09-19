@@ -652,7 +652,8 @@
 				</xsl:apply-templates>
 			</xsl:when>
 			<xsl:when test="@type='groepCompositie'">
-				<!-- If the current ep:construct is a groepcompositie an ep:construct element is generated with a reference to a type.  -->
+				<!-- If the current ep:construct is a groepcompositie an ep:construct element is generated with a reference to a type and
+					 as its name the name of the refering groep compositie relation.  -->
 				<xsl:variable name="id" select="ep:id" />
 				<xsl:variable name="classconstruct" select="imf:get-construct-by-id($id,$packages)" />
 				<xsl:variable name="type-name" select="$classconstruct/imvert:name" />
@@ -666,8 +667,8 @@
 					
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS12500, id: ',$id),$debugging)" />
 					
-					<xsl:sequence select="imf:create-output-element('ep:name', $type-name)" />
-					<xsl:sequence select="imf:create-output-element('ep:tech-name', $type-name)" />
+					<xsl:sequence select="imf:create-output-element('ep:name', ../ep:name)" />
+					<xsl:sequence select="imf:create-output-element('ep:tech-name', ../ep:tech-name)" />
 					<xsl:choose>
 						<xsl:when test="(empty($doc) or $doc='') and $debugging">
 							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
@@ -1122,7 +1123,7 @@
 			</xsl:when>
 			<xsl:when test="@type='association' and ($construct//imvert:attributes/imvert:attribute or $construct//imvert:associations/imvert:association)">
 				<!-- The association construct refering to a class construct doesn't have to be reproduced itself
-					 since relation aren't represented within json. -->
+					 since in most cases (relations to groups are the exception) relation aren't represented within json. -->
 				<xsl:sequence select="imf:create-debug-comment(concat('OAS20000, id: ',$id),$debugging)" />
 <?x                <xsl:copy>
                     <xsl:attribute name="type" select="@type"/>

@@ -555,9 +555,9 @@
 					<xsl:attribute name="type" select="'groepCompositieAssociation'" />
 					<xsl:sequence select="imf:create-debug-comment('A17500]',$debugging)" />
 					<xsl:sequence
-						select="imf:create-output-element('ep:name', 'noName')" />
+						select="imf:create-output-element('ep:name', imvert:name/@original)" />
 					<xsl:sequence
-						select="imf:create-output-element('ep:tech-name', 'noName')" />
+						select="imf:create-output-element('ep:tech-name', imf:get-normalized-name(imvert:name, 'element-name'))" />
 				</xsl:when>
 				<xsl:when test="imvert:stereotype/@id = 'stereotype-name-relatiesoort'">
 					<!-- In other cases part of it is processed here. -->
