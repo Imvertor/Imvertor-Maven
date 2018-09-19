@@ -41,7 +41,7 @@
                 <stereo minmax="0..1">stereotype-name-application-package</stereo>
             </stereotypes>
         </tv>
-        <tv norm="space" id="CFG-TV-E-MAIL-ADMINISTRATOR">
+        <tv norm="space" id="CFG-TV-E-MAIL-KV-ADMINISTRATOR">
             <name lang="nl">beheerder_email</name>
             <desc lang="nl">e-Mailadres van de beheerder van het koppelvlak.</desc>
             <derive>no</derive>
