@@ -73,24 +73,27 @@
                 <xsl:value-of select="UML:ModelElement.taggedValue/UML:TaggedValue[@tag = 'documentation']/@value"/>
             </imvert-imap:documentation>
             
-            <xsl:variable name="purpose" as="element(image-purpose)?">
+            <xsl:variable name="purpose-id" as="xs:string?">
                 <xsl:choose>
                     <xsl:when test="$configuration-docrules-file/diagram-type-strategy eq 'prefix'">
                         <xsl:variable name="tk" select="for $c in tokenize(@name,':') return normalize-space($c)"/>
-                        <xsl:sequence select="$configuration-docrules-file/image-purpose[marker = $tk[1]]"/>
+                        <xsl:sequence select="$configuration-docrules-file/image-purpose[marker = $tk[1]]/@id"/>
                     </xsl:when>
                     <xsl:when test="$configuration-docrules-file/diagram-type-strategy eq 'suffix'">
                         <xsl:variable name="tk" select="for $c in tokenize(@name,'-') return normalize-space($c)"/>
-                        <xsl:sequence select="$configuration-docrules-file/image-purpose[marker = $tk[last()]]"/>
+                        <xsl:sequence select="$configuration-docrules-file/image-purpose[marker = $tk[last()]]/@id"/>
+                    </xsl:when>
+                    <xsl:when test="$configuration-docrules-file/diagram-type-strategy eq 'none'">
+                        <xsl:sequence select="'CFG-IMG-NONE'"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <!-- cannot determine purpose, return nothing -->
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:variable>
-            <xsl:if test="exists($purpose)">
+            <xsl:if test="exists($purpose-id)">
                 <imvert-imap:purpose>
-                    <xsl:value-of select="$purpose/@id"/>
+                    <xsl:value-of select="$purpose-id"/>
                 </imvert-imap:purpose>
             </xsl:if>
             <xsl:apply-templates select="UML:Diagram.element/UML:DiagramElement"/>

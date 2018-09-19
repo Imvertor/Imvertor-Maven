@@ -24,29 +24,15 @@
     <append-role-name>no</append-role-name>
     
     <!--
-        Determine the type of any diagram image by suffix, i.e. the diagram name after "-" as in "Objecttypen  – overzicht" 
+        Determine the type of any diagram image by "suffix", i.e. the diagram name after "-" as in "Objecttypen  – overzicht".
+        If no stategy ("none"), include all diagrams.
     -->
-    <diagram-type-strategy>suffix</diagram-type-strategy>
+    <diagram-type-strategy>none</diagram-type-strategy>
     
     <!--
         Include incoming associations in the short overview?
     -->
     <include-incoming-associations>yes</include-incoming-associations>
-    
-    <image-purpose id="CFG-IMG-OVERVIEW">
-        <name lang="nl">Overzichtsdiagram</name>
-        <name lang="en">Overview diagram</name>
-        <!-- markers are placed after the name of the diagram, as in "Sample simple constructs - overzicht" -->
-        <marker lang="nl">overzicht</marker>
-        <marker lang="en">overview</marker>
-    </image-purpose>
-
-    <image-purpose id="CFG-IMG-DETAIL">
-        <name lang="nl">Detaildiagram</name>
-        <name lang="en">Detail diagram</name>
-        <marker lang="nl">detail</marker>
-        <marker lang="en">detail</marker>
-    </image-purpose>
     
     <doc-rule id="CFG-DOC-NORMNAAM">
         <name lang="nl">Naam (genormaliseerd)</name>
