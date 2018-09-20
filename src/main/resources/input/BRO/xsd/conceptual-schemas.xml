@@ -198,6 +198,13 @@
                 <rdf-type name="rdfs:Datatype"/>
                 <managed-ids/>
             </construct>
+            <construct>
+                <name>GM_Solid</name>
+                <xsd-type name="Solid" asAttributeDesignation="complextype" asAttribute="SolidPropertyType"/>
+                <rdf-type name="rdfs:Datatype"/>
+                <managed-ids/>
+            </construct>
+            
             
             
             <!-- TODO verplaatsen? is onderdeel van GML toch? -->
@@ -447,6 +454,14 @@
                 <name>ActivityComplex</name>
                 <catalog-entry>ActivityComplex</catalog-entry>
                 <xsd-type name="ActivityComplex" asAttributeDesignation="complextype" asAttribute="ActivityComplexType"/>
+                <managed-ids/>
+            </construct>
+            
+            <!-- TODO is dit de juiste plek?? -->
+            <construct>
+                <name>Identifier</name>
+                <catalog-entry>Identifier</catalog-entry>
+                <xsd-type name="Identifier" asAttributeDesignation="complextype" asAttribute="IdentifierType"/>
                 <managed-ids/>
             </construct>
          
