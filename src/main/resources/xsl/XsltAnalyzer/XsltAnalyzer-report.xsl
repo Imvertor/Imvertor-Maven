@@ -43,6 +43,7 @@
             </summary>
             <page>
                 <title>Title of the first Xslt Analysis reporting page</title>
+                <intro/>
                 <content>
                     <div>
                         <h1>First report page</h1>
@@ -58,6 +59,7 @@
             </page>
             <page>
                 <title>Title of the second Xslt Analysis reporting page</title>
+                <intro/>
                 <content>
                     <div>
                         <h1>First report page</h1>

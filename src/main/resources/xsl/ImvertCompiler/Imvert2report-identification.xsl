@@ -33,29 +33,27 @@
     <xsl:template match="imvert:packages" mode="identification">
         <page>
             <title>Identification</title>
+            <intro>
+                <p>
+                    This overview shows which classes can be shared or may be identified (externally).
+                    For each class the following is specified:
+                </p>
+                <ul>
+                    <li>Identifier? Instances of the class can referenced externally by some identifier: any attribute is stereotyped as the external identifier attribute.
+                    </li>
+                    <li>Shared? The class is stereotyped as an Object type, and therefore has a local ID
+                    </li>
+                </ul>
+                <p>When inherit, the class may be identified because some superclass may be identified.</p>
+            </intro>
             <content>
-                <div>
-                    <div class="intro">
-                        <p>
-                            This overview shows which classes can be shared or may be identified (externally).
-                            For each class the following is specified:
-                        </p>
-                        <ul>
-                            <li>Identifier? Instances of the class can referenced externally by some identifier: any attribute is stereotyped as the external identifier attribute.
-                            </li>
-                            <li>Shared? The class is stereotyped as an Object type, and therefore has a local ID
-                            </li>
-                        </ul>
-                        <p>When inherit, the class may be identified because some superclass may be identified.</p>
-                    </div>
-                    <xsl:variable name="rows" as="node()*">
-                        <xsl:for-each select="imvert:package[not(imvert:ref-master)]">
-                            <xsl:sort select="imvert:name" order="ascending"/>
-                            <xsl:apply-templates select="imvert:class" mode="identification"/>
-                        </xsl:for-each> 
-                    </xsl:variable>
-                    <xsl:sequence select="imf:create-result-table($rows,'class:80,identifier?:10,shared?:10')"/>
-                </div>
+                <xsl:variable name="rows" as="node()*">
+                    <xsl:for-each select="imvert:package[not(imvert:ref-master)]">
+                        <xsl:sort select="imvert:name" order="ascending"/>
+                        <xsl:apply-templates select="imvert:class" mode="identification"/>
+                    </xsl:for-each> 
+                </xsl:variable>
+                <xsl:sequence select="imf:create-result-table($rows,'class:80,identifier?:10,shared?:10')"/>
             </content>
         </page>
     </xsl:template>

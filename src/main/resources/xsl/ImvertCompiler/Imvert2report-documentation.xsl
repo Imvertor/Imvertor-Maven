@@ -99,37 +99,35 @@
     <xsl:template match="imvert:packages" mode="documentation">
         <page>
             <title>Documentation</title>
+            <intro>
+                <p>
+                    This table reports all documentation available on all constructs of this application. 
+                </p>
+                <p>
+                    The list shows the name of the construct, and next to it the documentation strings. 
+                    This is compiled from the underlying model (if any), and the documentation added to this model. 
+                    The applicable releases are show right of the name of the application. 
+                </p>
+                <xsl:if test="$must-show-keywords">
+                    <p>
+                        If concepts are available in the concept store, these are specified below the documentation text; a link to 
+                        the concept store is added.
+                        This link is not automatically added to any documentation, but inserted here for reference. 
+                        The creator may decide to manually insert as a hash mark key (such as: #schip) for this documentation.</p>
+                    <p>
+                        If documentation is specified below the documentation separator (---), this is removed 
+                        and is not made part of the user documentation.
+                    </p>
+                </xsl:if>
+            </intro>                        
             <content>
-                <div>
-                    <div class="intro">
-                        <p>
-                            This table reports all documentation available on all constructs of this application. 
-                        </p>
-                        <p>
-                            The list shows the name of the construct, and next to it the documentation strings. 
-                            This is compiled from the underlying model (if any), and the documentation added to this model. 
-                            The applicable releases are show right of the name of the application. 
-                        </p>
-                        <xsl:if test="$must-show-keywords">
-                            <p>
-                                If concepts are available in the concept store, these are specified below the documentation text; a link to 
-                                the concept store is added.
-                                This link is not automatically added to any documentation, but inserted here for reference. 
-                                The creator may decide to manually insert as a hash mark key (such as: #schip) for this documentation.</p>
-                            <p>
-                                If documentation is specified below the documentation separator (---), this is removed 
-                                and is not made part of the user documentation.
-                            </p>
-                        </xsl:if>
-                    </div>                        
-                    <xsl:variable name="rows" as="element(row)*">
-                        <xsl:for-each select="imvert:package">
-                            <xsl:sort select="imvert:name" order="ascending"/>
-                            <xsl:apply-templates select="." mode="documentation"/>
-                        </xsl:for-each> 
-                    </xsl:variable>
-                    <xsl:sequence select="imf:create-result-table($rows,'construct:30,documentation:70','table-doc')"/>
-                </div>
+                <xsl:variable name="rows" as="element(row)*">
+                    <xsl:for-each select="imvert:package">
+                        <xsl:sort select="imvert:name" order="ascending"/>
+                        <xsl:apply-templates select="." mode="documentation"/>
+                    </xsl:for-each> 
+                </xsl:variable>
+                <xsl:sequence select="imf:create-result-table($rows,'construct:30,documentation:70','table-doc')"/>
             </content>
         </page>
     </xsl:template>

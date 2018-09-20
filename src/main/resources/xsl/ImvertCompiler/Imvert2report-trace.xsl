@@ -45,58 +45,57 @@
             <!--TODO how to represent proxy? -->
             <page>
                 <title>Derivation Traces</title>
+                <intro>
+                    <p>
+                        This is a technical overview of all traces explicitly created between classes, attributes and associations. 
+                    </p>
+                    <p>
+                        The full name of the construct is shown (Package::Class.property), along with the ID. 
+                        Each construct in a column on the right represents a supplier for some construct in a column on the left.
+                    </p>
+                </intro>
                 <content>
-                    <div>
-                        <div class="intro">
-                            <p>
-                                This is a technical overview of all traces explicitly created between classes, attributes and associations. 
-                            </p>
-                            <p>
-                                The full name of the construct is shown (Package::Class.property), along with the ID. 
-                                Each construct in a column on the right represents a supplier for some construct in a column on the left.
-                            </p>
-                        </div>
-                        <xsl:variable name="rows" as="element(tr)*">
-                            <xsl:for-each select=".//*[local-name() = $all-traced-construct-names]">
-                                <!-- fetch the suppliers -->
-                                <xsl:variable name="suppliers" select="imf:get-trace-suppliers-for-construct(.,1)"/>
-                                <xsl:for-each select="$suppliers[1]"><!-- singleton, start at client and process columns by all suppliers -->
-                                    <xsl:choose>
-                                        <xsl:when test="@type = 'class'">
-                                            <tr>
-                                                <td>
-                                                    <xsl:value-of select="@type"/>
-                                                </td>
-                                                <xsl:sequence select="imf:get-trace-documentation-columns($suppliers,$supplier-subpaths)"/>
-                                            </tr>
-                                        </xsl:when>
-                                        <xsl:when test="@type = ('attribute','enumeration')">
-                                            <tr>
-                                                <td>&#160;&#8212;<xsl:value-of select="@type"/></td>
-                                                <xsl:sequence select="imf:get-trace-documentation-columns($suppliers,$supplier-subpaths)"/>
-                                            </tr>
-                                        </xsl:when>
-                                        <xsl:when test="@type = ('association','composition')">
-                                            <tr>
-                                                <td>&#160;&#8212;<xsl:value-of select="@type"/></td>
-                                                <xsl:sequence select="imf:get-trace-documentation-columns($suppliers,$supplier-subpaths)"/>
-                                            </tr>
-                                        </xsl:when>
-                                    </xsl:choose>
-                                </xsl:for-each>
+                    <xsl:variable name="rows" as="element(tr)*">
+                        <xsl:for-each select=".//*[local-name() = $all-traced-construct-names]">
+                            <!-- fetch the suppliers -->
+                            <xsl:variable name="suppliers" select="imf:get-trace-suppliers-for-construct(.,1)"/>
+                            <xsl:for-each select="$suppliers[1]"><!-- singleton, start at client and process columns by all suppliers -->
+                                <xsl:choose>
+                                    <xsl:when test="@type = 'class'">
+                                        <tr>
+                                            <td>
+                                                <xsl:value-of select="@type"/>
+                                            </td>
+                                            <xsl:sequence select="imf:get-trace-documentation-columns($suppliers,$supplier-subpaths)"/>
+                                        </tr>
+                                    </xsl:when>
+                                    <xsl:when test="@type = ('attribute','enumeration')">
+                                        <tr>
+                                            <td>&#160;&#8212;<xsl:value-of select="@type"/></td>
+                                            <xsl:sequence select="imf:get-trace-documentation-columns($suppliers,$supplier-subpaths)"/>
+                                        </tr>
+                                    </xsl:when>
+                                    <xsl:when test="@type = ('association','composition')">
+                                        <tr>
+                                            <td>&#160;&#8212;<xsl:value-of select="@type"/></td>
+                                            <xsl:sequence select="imf:get-trace-documentation-columns($suppliers,$supplier-subpaths)"/>
+                                        </tr>
+                                    </xsl:when>
+                                </xsl:choose>
                             </xsl:for-each>
-                        </xsl:variable>
-                        <!-- 
-                            When no suppliers, a single supplier is returned. 
-                            This must be shown as it clearly indicates that a construct is *not* traced. 
-                        -->
-                        <xsl:variable name="cols" select="count($supplier-subpaths)"/>
-                        <xsl:variable name="colwidth" select="90 div (if ($cols = 0) then 1 else $cols)"/>
-                        <xsl:variable name="h2" select="string-join(($supplier-subpaths,''),concat(':',$colwidth,','))"/>
-                        <xsl:variable name="h3" select="concat('type:10,',$h2)"/>
-                            
-                        <xsl:sequence select="imf:create-result-table-by-tr($rows,$h3,'table-trace')"/>
-                    </div>
+                        </xsl:for-each>
+                    </xsl:variable>
+                    <!-- 
+                        When no suppliers, a single supplier is returned. 
+                        This must be shown as it clearly indicates that a construct is *not* traced. 
+                    -->
+                    <xsl:variable name="cols" select="count($supplier-subpaths)"/>
+                    <xsl:variable name="colwidth" select="90 div (if ($cols = 0) then 1 else $cols)"/>
+                    <xsl:variable name="h2" select="string-join(($supplier-subpaths,''),concat(':',$colwidth,','))"/>
+                    <xsl:variable name="h3" select="concat('type:10,',$h2)"/>
+                        
+                    <xsl:sequence select="imf:create-result-table-by-tr($rows,$h3,'table-trace')"/>
+
                 </content>
             </page>
         </xsl:if>

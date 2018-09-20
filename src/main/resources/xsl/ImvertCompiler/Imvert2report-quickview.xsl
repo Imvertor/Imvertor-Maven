@@ -47,46 +47,42 @@
         <xsl:variable name="title">Quick view</xsl:variable>
         <page>
             <title>Quick view</title>
+            <intro>
+                <p>
+                    This table reports all packages, contained classes, and contained properties, i.e. attributes (attrib) and associations (assoc).
+                </p>
+                <p>
+                    There are 
+                    <xsl:value-of select="count($domain-packages)"/> domain packages, with 
+                    <xsl:value-of select="count($domain-packages/imvert:class)"/> classes, with
+                    <xsl:value-of select="count($domain-packages/imvert:class/*/imvert:attribute)"/> attributes and 
+                    <xsl:value-of select="count($domain-packages/imvert:class/*/imvert:association)"/> associations.
+                    This may include system generated classes.
+                </p>
+                <p>
+                    For each class the following is specified:
+                </p>
+                <ul>
+                    <li>Is this a natural root class? Only classes that are nit (indirectly) referenced are natural roots.</li>
+                    <li>P::C in which P = package C = class</li>
+                    <li>Stereotype</li>
+                    <li>Supertype</li>
+                </ul>
+                <p>
+                    For each class property the following is specified:
+                </p>
+                <ul>
+                    <li>Number in sequence (order of the elements in the XML schema, higher number after lower number)</li>
+                    <li>P::C.p in which P = package C = class, p = property</li>
+                    <li>Type of the property</li>
+                    <li>Multiplicity</li>
+                    <li>Stereotype</li>
+                </ul>
+            </intro>
             <content>
-                <div>
-                    <div class="intro">
-                        <p>
-                            This table reports all packages, contained classes, and contained properties, i.e. attributes (attrib) and associations (assoc).
-                        </p>
-                        <p>
-                            There are 
-                            <xsl:value-of select="count($domain-packages)"/> domain packages, with 
-                            <xsl:value-of select="count($domain-packages/imvert:class)"/> classes, with
-                            <xsl:value-of select="count($domain-packages/imvert:class/*/imvert:attribute)"/> attributes and 
-                            <xsl:value-of select="count($domain-packages/imvert:class/*/imvert:association)"/> associations.
-                            This may include system generated classes.
-                        </p>
-                        <p>
-                            For each class the following is specified:
-                        </p>
-                        <ul>
-                            <li>Is this a natural root class? Only classes that are nit (indirectly) referenced are natural roots.</li>
-                            <li>P::C in which P = package C = class</li>
-                            <li>Stereotype</li>
-                            <li>Supertype</li>
-                        </ul>
-                        <p>
-                            For each class property the following is specified:
-                        </p>
-                        <ul>
-                            <li>Number in sequence (order of the elements in the XML schema, higher number after lower number)</li>
-                            <li>P::C.p in which P = package C = class, p = property</li>
-                            <li>Type of the property</li>
-                            <li>Multiplicity</li>
-                            <li>Stereotype</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="content">
-                    <table>
-                        <xsl:apply-templates select="$domain-packages" mode="quickview"/>
-                    </table>
-                </div>
+                <table>
+                    <xsl:apply-templates select="$domain-packages" mode="quickview"/>
+                </table>
             </content>
         </page>
     </xsl:template>

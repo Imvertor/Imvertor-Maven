@@ -42,62 +42,60 @@
     <xsl:template match="config" mode="xslt-calls">
         <page>
             <title>Transformations overview</title>
+            <intro>
+                <p>
+                    Info on the XSLT transformations made.
+                </p>
+                <p>Type columns signs are:</p>
+                <ul>
+                    <li>[ <xsl:value-of select="$sign-step"/> ] A step result used in a subsequent transformation</li>
+                    <li>[ <xsl:value-of select="$sign-final"/> ] A step result that is final</li>
+                    <li>[ <xsl:value-of select="$sign-dummy"/> ] A step result used that is created by several transformations and may be considerd dummy output</li>
+                    <li>[ <xsl:value-of select="$sign-identity"/> ] A step result that replaces the input</li>
+                </ul>
+            </intro> 
             <content>
-                <div>
-                    <h1>Overview</h1>
-                    <div class="intro">
-                        <p>
-                            Info on the XSLT transformations made.
-                        </p>
-                        <p>Type columns signs are:</p>
-                        <ul>
-                            <li>[ <xsl:value-of select="$sign-step"/> ] A step result used in a subsequent transformation</li>
-                            <li>[ <xsl:value-of select="$sign-final"/> ] A step result that is final</li>
-                            <li>[ <xsl:value-of select="$sign-dummy"/> ] A step result used that is created by several transformations and may be considerd dummy output</li>
-                            <li>[ <xsl:value-of select="$sign-identity"/> ] A step result that replaces the input</li>
-                        </ul>
-                    </div> 
-                    <table class="tablesorter"> 
-                        <xsl:variable name="rows" as="element(tr)*">
-                            <xsl:for-each select="$calls-doc/calls/call">
-                                <tr class="{if (@input = 'parms.xml') then 'cmp-system' else ''}">
-                                    <td>
-                                        <xsl:value-of select="@step"/> 
-                                    </td>
-                                    <td>
-                                        <xsl:value-of select="@input"/>
-                                    </td>
-                                    <td>
-                                        <xsl:value-of select="@xslt"/>
-                                    </td>
-                                    <td>
-                                        <xsl:value-of select="@output"/>
-                                    </td>
-                                    <td>
-                                        <xsl:choose>
-                                            <xsl:when test="@input = @output">
-                                                <xsl:value-of select="$sign-identity"/> 
-                                            </xsl:when>
-                                            <xsl:when test="count($calls-doc/calls/call/@output = current()/@output) gt 1">
-                                                <xsl:value-of select="$sign-dummy"/> 
-                                            </xsl:when>
-                                            <xsl:when test="$calls-doc/calls/call/@input = current()/@output">
-                                                <xsl:value-of select="$sign-step"/> <!-- curly arrow -->
-                                            </xsl:when>
-                                            <xsl:otherwise>
-                                                <xsl:value-of select="$sign-final"/> <!-- final result -->
-                                            </xsl:otherwise>
-                                        </xsl:choose>
-                                    </td>
-                                    <td>
-                                        <xsl:value-of select="@duration"/>
-                                    </td>
-                                </tr>
-                            </xsl:for-each>
-                        </xsl:variable>
-                        <xsl:sequence select="imf:create-result-table-by-tr($rows,'Step:10,Input:25,XSLT:25,Output:25,Ty:5,Dur:10','table-calls')"/>
-                    </table>
-                </div>
+                <table class="tablesorter"> 
+                    <xsl:variable name="rows" as="element(tr)*">
+                        <xsl:for-each select="$calls-doc/calls/call">
+                            <tr class="{if (@input = 'parms.xml') then 'cmp-system' else ''}">
+                                <td>
+                                    <xsl:value-of select="@step"/> 
+                                </td>
+                                <td>
+                                    <xsl:value-of select="@input"/>
+                                </td>
+                                <td>
+                                    <xsl:value-of select="@xslt"/>
+                                </td>
+                                <td>
+                                    <xsl:value-of select="@output"/>
+                                </td>
+                                <td>
+                                    <xsl:choose>
+                                        <xsl:when test="@input = @output">
+                                            <xsl:value-of select="$sign-identity"/> 
+                                        </xsl:when>
+                                        <xsl:when test="count($calls-doc/calls/call/@output = current()/@output) gt 1">
+                                            <xsl:value-of select="$sign-dummy"/> 
+                                        </xsl:when>
+                                        <xsl:when test="$calls-doc/calls/call/@input = current()/@output">
+                                            <xsl:value-of select="$sign-step"/> <!-- curly arrow -->
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:value-of select="$sign-final"/> <!-- final result -->
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </td>
+                                <td>
+                                    <xsl:value-of select="@duration"/>
+                                </td>
+                            </tr>
+                        </xsl:for-each>
+                    </xsl:variable>
+                    <xsl:sequence select="imf:create-result-table-by-tr($rows,'Step:10,Input:25,XSLT:25,Output:25,Ty:5,Dur:10','table-calls')"/>
+                </table>
+
             </content>
         </page>
     </xsl:template>

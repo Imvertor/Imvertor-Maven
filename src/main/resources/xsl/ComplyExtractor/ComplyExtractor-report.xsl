@@ -52,68 +52,64 @@
                     <info>
                         <xsl:value-of select="concat('(', $errors,' exceptions, ')"/>
                     </info>
-                    <content>
-                        <div>
-                            <h1>Explanation</h1>
-                            <p>This is the overview of all exceptions (errors and warnings) on processing the compliancy test instances generated. 
-                                When a file has XML exceptions, STP will not be tested.</p>
-                            <p>
-                                <xsl:value-of select="if ($errors eq -1) then 'No validation performed.' else concat($errors, ' exceptions for this run.')"/> 
-                            </p>
-                        </div>
-                        <xsl:if test="$errors gt 0">
+                    <intro>
+                        <p>This is the overview of all exceptions (errors and warnings) on processing the compliancy test instances generated. 
+                            When a file has XML exceptions, STP will not be tested.</p>
+                        <p>
+                            <xsl:value-of select="if ($errors eq -1) then 'No validation performed.' else concat($errors, ' exceptions for this run.')"/> 
+                        </p>
+                    </intro>
+                    <xsl:if test="$errors gt 0">
+                        <content>
                             <div>
-                                <h1>Exceptions</h1>
-                                <div>
-                                    <table id="table-errors" class="tablesorter">
-                                        <col style="width:10%"/>
-                                        <col style="width:20%"/>
-                                        <col style="width:70%"/>
-                                        <thead>
-                                            <tr class="tableHeader">
-                                                <th>Type</th>
-                                                <th>File</th>
-                                                <th>Message</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <xsl:for-each select="$messages[type='COMPLY']">
-                                                <xsl:variable name="parts" as="xs:string*">
-                                                    <xsl:analyze-string select="text" regex="^(STP:)?\((.*?)\)(.*)$">
-                                                        <xsl:matching-substring>
-                                                            <xsl:value-of select="regex-group(1)"/>
-                                                            <xsl:value-of select="regex-group(2)"/>
-                                                            <xsl:value-of select="regex-group(3)"/>
-                                                        </xsl:matching-substring>
-                                                    </xsl:analyze-string>
-                                                </xsl:variable>
-                                                <xsl:if test="$parts[2]">
-                                                    <tr class="{type}">
-                                                        <td>
-                                                            <xsl:value-of select="if ($parts[1] eq 'STP:') then 'STP' else 'XML'"/>
-                                                        </td>
-                                                        <td>
-                                                            <xsl:value-of select="$parts[2]"/>
-                                                        </td>
-                                                        <td>
-                                                            <xsl:choose>
-                                                                <xsl:when test="$parts[1] eq 'STP:'">
-                                                                    <xsl:sequence select="imf:render-STP-message($parts[3])"/>
-                                                                </xsl:when>
-                                                                <xsl:otherwise>
-                                                                    <xsl:sequence select="imf:render-XML-message($parts[3])"/>
-                                                                </xsl:otherwise>
-                                                            </xsl:choose>
-                                                        </td>
-                                                    </tr>
-                                                </xsl:if>
-                                            </xsl:for-each>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <table id="table-errors" class="tablesorter">
+                                    <col style="width:10%"/>
+                                    <col style="width:20%"/>
+                                    <col style="width:70%"/>
+                                    <thead>
+                                        <tr class="tableHeader">
+                                            <th>Type</th>
+                                            <th>File</th>
+                                            <th>Message</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <xsl:for-each select="$messages[type='COMPLY']">
+                                            <xsl:variable name="parts" as="xs:string*">
+                                                <xsl:analyze-string select="text" regex="^(STP:)?\((.*?)\)(.*)$">
+                                                    <xsl:matching-substring>
+                                                        <xsl:value-of select="regex-group(1)"/>
+                                                        <xsl:value-of select="regex-group(2)"/>
+                                                        <xsl:value-of select="regex-group(3)"/>
+                                                    </xsl:matching-substring>
+                                                </xsl:analyze-string>
+                                            </xsl:variable>
+                                            <xsl:if test="$parts[2]">
+                                                <tr class="{type}">
+                                                    <td>
+                                                        <xsl:value-of select="if ($parts[1] eq 'STP:') then 'STP' else 'XML'"/>
+                                                    </td>
+                                                    <td>
+                                                        <xsl:value-of select="$parts[2]"/>
+                                                    </td>
+                                                    <td>
+                                                        <xsl:choose>
+                                                            <xsl:when test="$parts[1] eq 'STP:'">
+                                                                <xsl:sequence select="imf:render-STP-message($parts[3])"/>
+                                                            </xsl:when>
+                                                            <xsl:otherwise>
+                                                                <xsl:sequence select="imf:render-XML-message($parts[3])"/>
+                                                            </xsl:otherwise>
+                                                        </xsl:choose>
+                                                    </td>
+                                                </tr>
+                                            </xsl:if>
+                                        </xsl:for-each>
+                                    </tbody>
+                                </table>
                             </div>
-                        </xsl:if>
-                   </content>
+                        </content>
+                    </xsl:if>
                 </page>
             </xsl:if>
            </report>

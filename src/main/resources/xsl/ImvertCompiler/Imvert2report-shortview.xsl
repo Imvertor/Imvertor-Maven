@@ -46,6 +46,7 @@
             <xsl:variable name="title">Short view</xsl:variable>
             <page>
                 <title>Short view</title>
+                <intro/>
                 <content>
                     <div>
                         <h1>Object types</h1>

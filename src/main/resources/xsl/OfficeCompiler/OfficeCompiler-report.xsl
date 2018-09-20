@@ -50,9 +50,9 @@
             </summary>
             <page>
                 <title>Office documentation</title>
+                <intro/>
                 <content>
                     <div>
-                        <h1>Documentation</h1>
                         <xsl:choose>
                             <xsl:when test="$remote-url">
                                 <p>This documentation is intended to be published remotely. Please check 

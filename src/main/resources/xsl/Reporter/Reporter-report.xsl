@@ -276,6 +276,7 @@
                             <h1>
                                 <xsl:value-of select="title"/>
                             </h1>
+                            <xsl:apply-templates select="intro" mode="content-body"/>
                             <xsl:apply-templates select="content" mode="content-toc"/>
                             <xsl:apply-templates select="content" mode="content-body"/>
                         </body>
@@ -288,10 +289,10 @@
         </xsl:choose>
     </xsl:template>
     
-    <!-- create a document-local TOC when more than one div -->
+    <!-- create a document-local TOC when any div found with h1 title-->
     <xsl:template match="content" mode="content-toc">
         <xsl:choose>
-            <xsl:when test=".//div[2]">
+            <xsl:when test=".//div[h1]">
                 <p>Contents:</p>
                 <ol>
                     <xsl:apply-templates select="div" mode="content-toc"/>
@@ -317,7 +318,7 @@
     </xsl:template>
     
     <!-- create a representation of the step report or summary values: mostly a copy but output may be enhanced. -->
-    <xsl:template match="content" mode="content-body">
+    <xsl:template match="intro | content" mode="content-body">
         <xsl:apply-templates select="*" mode="content-body"/>
     </xsl:template>
     

@@ -40,43 +40,40 @@
         <xsl:variable name="total-run" select="xs:float(@total) * 1000000"/>
         <page>
             <title>Profile info</title>
+            <intro>
+                <p>
+                    This is the complete listing of all profile info on the selected stylesheets.
+                    The profile selected as a CLI parameter is: <xsl:value-of select="imf:get-config-string('cli','profilemode')"/>.
+                </p>
+                <p>
+                    Total time for all transformations registered by profiler is: 
+                    <xsl:value-of select="imf:format($total-xsl)"/>  seconds
+                    of an overall runtime of 
+                    <xsl:value-of select="imf:format($total-run)"/> seconds (excluding windup).
+                </p>
+                <p>
+                    <b>All times in the listing below are in milliseconds.</b>
+                </p>
+                <p>
+                    In order to understand the most time consuming parts of the transformation process, look at the number of calls to a routine, in combination with the net time for that routine.
+                    For example, a routine that is reasonably fast but called a huge number of times will slow down. It may be sensible to improve that code.
+                    A routine that is slow but called a few times, may not have great impact on the total run time.
+                    
+                </p>
+                <p>
+                    Columns are:
+                    <ul>
+                        <li>Routine - name of the routine and the file from which it is called</li>
+                        <li>In files - number of files fromw hich it is called</li>
+                        <li>Count - total number of calls</li>
+                        <li>Average time (gross) - Mean time including all subroutines</li>
+                        <li>Total time (gross) - Total time including all subroutines</li>
+                        <li>Average time (net) - Mean time excluding all subroutines</li>
+                        <li>Total time (net) - Total time excluding all subroutines</li>
+                    </ul>
+                </p>
+            </intro>
             <content>
-                <div>
-                    <h1>Introduction</h1>
-                    <div class="intro">
-                        <p>
-                            This is the complete listing of all profile info on the selected stylesheets.
-                            The profile selected as a CLI parameter is: <xsl:value-of select="imf:get-config-string('cli','profilemode')"/>.
-                        </p>
-                        <p>
-                            Total time for all transformations registered by profiler is: 
-                            <xsl:value-of select="imf:format($total-xsl)"/>  seconds
-                            of an overall runtime of 
-                            <xsl:value-of select="imf:format($total-run)"/> seconds (excluding windup).
-                        </p>
-                        <p>
-                            <b>All times in the listing below are in milliseconds.</b>
-                        </p>
-                        <p>
-                            In order to understand the most time consuming parts of the transformation process, look at the number of calls to a routine, in combination with the net time for that routine.
-                            For example, a routine that is reasonably fast but called a huge number of times will slow down. It may be sensible to improve that code.
-                            A routine that is slow but called a few times, may not have great impact on the total run time.
-                            
-                        </p>
-                        <p>
-                            Columns are:
-                            <ul>
-                                <li>Routine - name of the routine and the file from which it is called</li>
-                                <li>In files - number of files fromw hich it is called</li>
-                                <li>Count - total number of calls</li>
-                                <li>Average time (gross) - Mean time including all subroutines</li>
-                                <li>Total time (gross) - Total time including all subroutines</li>
-                                <li>Average time (net) - Mean time excluding all subroutines</li>
-                                <li>Total time (net) - Total time excluding all subroutines</li>
-                            </ul>
-                        </p>
-                    </div> 
-                </div>
                 <div>
                     <h1>Overall profile</h1>
                     <table class="tablesorter"> 

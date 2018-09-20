@@ -53,6 +53,9 @@
             </summary>
             <page>
                 <title>Configuration</title>
+                <intro>
+                    <p>This is a representation of the configuration used in processing the model.</p>
+                </intro>
                 <content>
                     <div>
                         <h1>Owner</h1>

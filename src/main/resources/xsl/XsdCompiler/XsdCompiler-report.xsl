@@ -83,42 +83,40 @@
                     </summary>
                     <page>
                         <title>XML Schema info</title>
+                        <intro>
+                            <p>
+                                Deze tabel geeft een opsomming van eigenschappen die moeten worden opgenomen in de berichtschema's.
+                                Eigenschappen zijn attributen of relaties.
+                            </p><p>    
+                                Deze tabel moet als volgt worden gelezen.
+                            </p>
+                            <ul>
+                                <li>Als een <b>typeBericht</b> bericht wordt gemaakt en daarin komt een <b>entiteit</b> voor, 
+                                    dan moet het <b>attribuut</b> worden opgenomen of verwijderd, 
+                                    afhankelijk van de opgegeven <b>kardinaliteit</b>. 
+                                    Dit kan een attribuut of een relatie betreffen.
+                                    Voorbeeld: In standaard antwoordberichten is van een natuurlijk persoon de achternaam verplicht.</li>
+                                <li> Als de <b>kardinaliteit</b> 0 is, niet opnemen.
+                                    Voorbeeld: in speciaal bericht x moet de voornaam worden verwijderd.</li>
+                                <li>Als een <b>relatie</b> is benoemd, dan moet de regel worden gevolgd alléén 
+                                    als de genoemde <b>entiteit</b> deze inkomende relate heeft.
+                                    Voorbeeld: van een natuurlijk persoon wordt alleen het BSN opgenomen als het als kind wordt opgenomen. 
+                                </li>
+                                <li>Als er een <b>berichtnaam</b> is opgegeven, dan betreft de regel alleen voor niet-standaard berichten,
+                                    dus die deze specifieke naam hebben.</li>
+                                <li>De naam van het betreffende bericht is opgebouwd uit <b>entiteittype</b> en <b>berichtcode</b>, 
+                                    eventueel uitgebreid met de <b>berichtnaam</b>. 
+                                    Voorbeeld: npsLa01, npsLa01-alternatief.</li>
+                            </ul>
+                        </intro>
                         <content>
-                            <div>
-                                <div class="intro">
-                                    <p>
-                                        Deze tabel geeft een opsomming van eigenschappen die moeten worden opgenomen in de berichtschema's.
-                                        Eigenschappen zijn attributen of relaties.
-                                    </p><p>    
-                                        Deze tabel moet als volgt worden gelezen.
-                                    </p>
-                                    <ul>
-                                        <li>Als een <b>typeBericht</b> bericht wordt gemaakt en daarin komt een <b>entiteit</b> voor, 
-                                            dan moet het <b>attribuut</b> worden opgenomen of verwijderd, 
-                                            afhankelijk van de opgegeven <b>kardinaliteit</b>. 
-                                            Dit kan een attribuut of een relatie betreffen.
-                                            Voorbeeld: In standaard antwoordberichten is van een natuurlijk persoon de achternaam verplicht.</li>
-                                        <li> Als de <b>kardinaliteit</b> 0 is, niet opnemen.
-                                            Voorbeeld: in speciaal bericht x moet de voornaam worden verwijderd.</li>
-                                        <li>Als een <b>relatie</b> is benoemd, dan moet de regel worden gevolgd alléén 
-                                            als de genoemde <b>entiteit</b> deze inkomende relate heeft.
-                                            Voorbeeld: van een natuurlijk persoon wordt alleen het BSN opgenomen als het als kind wordt opgenomen. 
-                                        </li>
-                                        <li>Als er een <b>berichtnaam</b> is opgegeven, dan betreft de regel alleen voor niet-standaard berichten,
-                                            dus die deze specifieke naam hebben.</li>
-                                        <li>De naam van het betreffende bericht is opgebouwd uit <b>entiteittype</b> en <b>berichtcode</b>, 
-                                            eventueel uitgebreid met de <b>berichtnaam</b>. 
-                                            Voorbeeld: npsLa01, npsLa01-alternatief.</li>
-                                    </ul>
-                                </div>
-                                <table class="tablesorter"> 
-                                    <xsl:variable name="header" select="string-join(for $c in $selected-cols[normalize-space(.)] return concat($c,':10'),',')"/>
-                                    <xsl:variable name="rows" as="element(tr)*">
-                                        <xsl:apply-templates select="$berichten-table//row" mode="workbook-berichtschema"/>
-                                    </xsl:variable>
-                                    <xsl:sequence select="imf:create-result-table-by-tr($rows,$header,'table-schema')"/>
-                                </table>
-                            </div>
+                            <table class="tablesorter"> 
+                                <xsl:variable name="header" select="string-join(for $c in $selected-cols[normalize-space(.)] return concat($c,':10'),',')"/>
+                                <xsl:variable name="rows" as="element(tr)*">
+                                    <xsl:apply-templates select="$berichten-table//row" mode="workbook-berichtschema"/>
+                                </xsl:variable>
+                                <xsl:sequence select="imf:create-result-table-by-tr($rows,$header,'table-schema')"/>
+                            </table>
                         </content>
                     </page>
                                     

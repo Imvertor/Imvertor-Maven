@@ -35,25 +35,23 @@
     <xsl:template match="imvert:packages" mode="state">
         <page>
             <title>State</title>
+            <intro>
+                <p>
+                    This overview lists all packages, the namespace URI, and version:
+                </p>
+                <ul>
+                    <li>Name: The technical name of the package</li>
+                    <li>Package: The URI of the package, and the resulting namespace (including the release). This links to an internet location where more info can be found.</li>
+                    <li>Versions: The subversion reference (revision number and date), if available, as well as the combination of version and phase.</li>
+                </ul>
+            </intro>
             <content>
-                <div>
-                    <div class="intro">
-                        <p>
-                            This overview lists all packages, the namespace URI, and version:
-                        </p>
-                        <ul>
-                            <li>Name: The technical name of the package</li>
-                            <li>Package: The URI of the package, and the resulting namespace (including the release). This links to an internet location where more info can be found.</li>
-                            <li>Versions: The subversion reference (revision number and date), if available, as well as the combination of version and phase.</li>
-                        </ul>
-                    </div>
-                    <table class="tablesorter"> 
-                        <xsl:variable name="rows" as="element(tr)*">
-                            <xsl:apply-templates select="imvert:package" mode="state"/>
-                        </xsl:variable>
-                        <xsl:sequence select="imf:create-result-table-by-tr($rows,'name:20,package:60,versions:20','table-state')"/>
-                    </table>
-                </div>
+                <table class="tablesorter"> 
+                    <xsl:variable name="rows" as="element(tr)*">
+                        <xsl:apply-templates select="imvert:package" mode="state"/>
+                    </xsl:variable>
+                    <xsl:sequence select="imf:create-result-table-by-tr($rows,'name:20,package:60,versions:20','table-state')"/>
+                </table>
             </content>
         </page>
     </xsl:template>

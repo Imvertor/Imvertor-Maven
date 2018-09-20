@@ -35,29 +35,27 @@
         <xsl:if test="exists($lists)">
             <page>
                 <title>Reference and code lists</title>
+                <intro>
+                    <p>
+                        This overview shows all reference/code lists in use, and which property has a value taken from this list.
+                    </p>
+                    <p>
+                        For each list the following is specified:
+                    </p>
+                    <ul>
+                        <li>Attribute for which the value is taken from the list, in the form P::C.p in which P = package C = class, p = property</li>
+                        <li>Type of list</li>
+                        <li>The URL formal name of the list. This is its Location, and gives access to the published information on this list.</li>
+                        <li>Origin of the data location</li>
+                    </ul>
+                </intro>
                 <content>
-                    <div>
-                        <div class="intro">
-                            <p>
-                                This overview shows all reference/code lists in use, and which property has a value taken from this list.
-                            </p>
-                            <p>
-                                For each list the following is specified:
-                            </p>
-                            <ul>
-                                <li>Attribute for which the value is taken from the list, in the form P::C.p in which P = package C = class, p = property</li>
-                                <li>Type of list</li>
-                                <li>The URL formal name of the list. This is its Location, and gives access to the published information on this list.</li>
-                                <li>Origin of the data location</li>
-                            </ul>
-                        </div>
-                        <table class="tablesorter"> 
-                            <xsl:variable name="rows" as="element(tr)*">
-                                <xsl:apply-templates select="$lists" mode="valuelists"/> 
-                            </xsl:variable>
-                            <xsl:sequence select="imf:create-result-table-by-tr($rows,'attribute:30,type:10,location:50,origin:10,','table-values')"/>
-                        </table>
-                    </div>
+                    <table class="tablesorter"> 
+                        <xsl:variable name="rows" as="element(tr)*">
+                            <xsl:apply-templates select="$lists" mode="valuelists"/> 
+                        </xsl:variable>
+                        <xsl:sequence select="imf:create-result-table-by-tr($rows,'attribute:30,type:10,location:50,origin:10,','table-values')"/>
+                    </table>
                 </content>
             </page>
         </xsl:if>

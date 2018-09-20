@@ -38,41 +38,39 @@
             <xsl:variable name="cf" select="imf:document($conceptual-schema-mapping-file,true())/conceptual-schemas"/>
             <page>
                 <title>Conceptual schemas</title>
+                <intro>
+                    <p>This overview shows which conceptual schemas were accessed and to what schemas they have been resolved.</p>
+                    <ul>
+                        <li>The Conceptual schema mapping name is set to <xsl:value-of select="$conceptual-schema-mapping-name"/>, stored in <xsl:value-of select="$conceptual-schema-mapping-file"/>, version <xsl:value-of select="$cf/svn-id"/>.</li>
+                        <li>The overview below shows the conceptual package info, and the classes that are part of these conceptual schema packages.</li>
+                    </ul>
+                </intro>
                 <content>
-                    <div>
-                        <div class="intro">
-                            <p>This overview shows which conceptual schemas were accessed and to what schemas they have been resolved.</p>
-                            <ul>
-                                <li>The Conceptual schema mapping name is set to <xsl:value-of select="$conceptual-schema-mapping-name"/>, stored in <xsl:value-of select="$conceptual-schema-mapping-file"/>, version <xsl:value-of select="$cf/svn-id"/>.</li>
-                                <li>The overview below shows the conceptual package info, and the classes that are part of these conceptual schema packages.</li>
-                            </ul>
-                        </div>
-                        <xsl:for-each select="imvert:package[imvert:conceptual-schema-namespace]">
-                            <xsl:sort select="imf:get-construct-name(.)" order="ascending"/>
-                            <xsl:variable name="row" as="element()">
+                    <xsl:for-each select="imvert:package[imvert:conceptual-schema-namespace]">
+                        <xsl:sort select="imf:get-construct-name(.)" order="ascending"/>
+                        <xsl:variable name="row" as="element()">
+                            <row xmlns="">
+                                <xsl:sequence select="imf:create-output-element('cell',imf:get-construct-name(.),$empty)"/>
+                                <xsl:sequence select="imf:create-output-element('cell',imvert:conceptual-schema-namespace,$empty)"/>
+                                <xsl:sequence select="imf:create-output-element('cell',imvert:conceptual-schema-version,$empty)"/>
+                                <xsl:sequence select="imf:create-output-element('cell',imvert:conceptual-schema-phase,$empty)"/>
+                                <xsl:sequence select="imf:create-output-element('cell',imvert:conceptual-schema-release,$empty)"/>
+                                <xsl:sequence select="imf:create-output-element('cell',imvert:conceptual-schema-author,$empty)"/>
+                                <xsl:sequence select="imf:create-output-element('cell',imvert:conceptual-schema-svn-string,$empty)"/>
+                            </row>
+                        </xsl:variable>
+                        <xsl:sequence select="imf:create-result-table($row,'package:10,namespace:35,version:5,phase:5,release:10,author:10,SVN:25')"/>
+                        <xsl:variable name="rows" as="element(row)*">
+                            <xsl:for-each select="imvert:class">
+                                <xsl:sort select="imvert:name" order="ascending"/>
                                 <row xmlns="">
                                     <xsl:sequence select="imf:create-output-element('cell',imf:get-construct-name(.),$empty)"/>
-                                    <xsl:sequence select="imf:create-output-element('cell',imvert:conceptual-schema-namespace,$empty)"/>
-                                    <xsl:sequence select="imf:create-output-element('cell',imvert:conceptual-schema-version,$empty)"/>
-                                    <xsl:sequence select="imf:create-output-element('cell',imvert:conceptual-schema-phase,$empty)"/>
-                                    <xsl:sequence select="imf:create-output-element('cell',imvert:conceptual-schema-release,$empty)"/>
-                                    <xsl:sequence select="imf:create-output-element('cell',imvert:conceptual-schema-author,$empty)"/>
-                                    <xsl:sequence select="imf:create-output-element('cell',imvert:conceptual-schema-svn-string,$empty)"/>
+                                    <xsl:sequence select="imf:create-output-element('cell',imvert:conceptual-schema-class-name,$empty)"/>
                                 </row>
-                            </xsl:variable>
-                            <xsl:sequence select="imf:create-result-table($row,'package:10,namespace:35,version:5,phase:5,release:10,author:10,SVN:25')"/>
-                            <xsl:variable name="rows" as="element(row)*">
-                                <xsl:for-each select="imvert:class">
-                                    <xsl:sort select="imvert:name" order="ascending"/>
-                                    <row xmlns="">
-                                        <xsl:sequence select="imf:create-output-element('cell',imf:get-construct-name(.),$empty)"/>
-                                        <xsl:sequence select="imf:create-output-element('cell',imvert:conceptual-schema-class-name,$empty)"/>
-                                    </row>
-                                </xsl:for-each> 
-                            </xsl:variable>
-                            <xsl:sequence select="imf:create-result-table($rows,'class name:40,conceptual class name:40')"/>
-                        </xsl:for-each> 
-                    </div>
+                            </xsl:for-each> 
+                        </xsl:variable>
+                        <xsl:sequence select="imf:create-result-table($rows,'class name:40,conceptual class name:40')"/>
+                    </xsl:for-each> 
                 </content>
             </page>
         </xsl:if>

@@ -37,82 +37,79 @@
     <xsl:template match="config" mode="doc-parameters">
         <page>
             <title>Runtime parameters passed</title>
+            <intro>
+                <p>
+                    Info on the parameters passed for this run, and their values.
+                </p>
+                <p>
+                    Arguments are passed in files, in this order:
+                    <ol>
+                        <xsl:for-each select="reverse($xparms-doc/xparms/xparm[@name = 'cli/arguments'])">
+                            <li>
+                                <xsl:if test="position() != 1">
+                                    includes: 
+                                </xsl:if>
+                                <xsl:value-of select="imf:recognize-file(@value)"/>
+                            </li>
+                        </xsl:for-each>
+                    </ol>
+                </p>
+            </intro> 
             <content>
-                <div>
-                    <h1>Parameters</h1>
-                    <div class="intro">
-                        <p>
-                            Info on the parameters passed for this run, and their values.
-                        </p>
-                        <p>
-                            Arguments are passed in files, in this order:
-                            <ol>
-                                <xsl:for-each select="reverse($xparms-doc/xparms/xparm[@name = 'cli/arguments'])">
-                                    <li>
-                                        <xsl:if test="position() != 1">
-                                            includes: 
-                                        </xsl:if>
-                                        <xsl:value-of select="imf:recognize-file(@value)"/>
-                                    </li>
-                                </xsl:for-each>
-                            </ol>
-                        </p>
-                    </div> 
-                    <!--
-                    <xmp>
-                        <xsl:sequence select="$configuration/config"></xsl:sequence>
-                    </xmp>
-                    -->
-                    <table class="tablesorter"> 
-                        <xsl:variable name="rows" as="element(tr)*">
-                            <xsl:for-each select="$configuration/config/clispecs/clispec[not(longKey = 'arguments')]">
-                                <xsl:sort select="longKey"/>
+                <!--
+                <xmp>
+                    <xsl:sequence select="$configuration/config"></xsl:sequence>
+                </xmp>
+                -->
+                <table class="tablesorter"> 
+                    <xsl:variable name="rows" as="element(tr)*">
+                        <xsl:for-each select="$configuration/config/clispecs/clispec[not(longKey = 'arguments')]">
+                            <xsl:sort select="longKey"/>
 
-                                <xsl:variable name="cli-info" select="."/>
-                                <xsl:variable name="name" select="longKey"/>
-                                <xsl:variable name="value" select="$configuration/config/cli/*[name() = $name]"/>
-                                
-                                <tr class="{if (empty($value)) then 'cmp-system' else ''}">
-                                    <td>
-                                        <xsl:value-of select="$name"/> 
-                                    </td>
-                                    <td>
-                                        <xsl:value-of select="$cli-info/argKey"/>
-                                    </td>
-                                    <td>
-                                        <b><xsl:value-of select="imf:recognize-file($value)"/></b>
-                                    </td>
-                                    <td>
-                                        <xsl:value-of select="$cli-info/description"/>
-                                    </td>
-                                    <td>
-                                        <xsl:value-of select="$cli-info/isRequired"/>
-                                    </td>
-                                    <td>
-                                        <xsl:value-of select="$cli-info/stepName"/> 
-                                    </td>
-                                    <td>
-                                        <xsl:for-each select="reverse($xparms-doc/xparms/xparm[@name = concat('cli/',$name)])">
-                                            <xsl:value-of select="imf:recognize-file(@origin)"/>:
-                                            <xsl:choose>
-                                                <xsl:when test="position() = 1">
-                                                    <b>
-                                                        <xsl:value-of select="imf:recognize-file(@value)"/> 
-                                                    </b>
-                                                </xsl:when>
-                                                <xsl:otherwise>
+                            <xsl:variable name="cli-info" select="."/>
+                            <xsl:variable name="name" select="longKey"/>
+                            <xsl:variable name="value" select="$configuration/config/cli/*[name() = $name]"/>
+                            
+                            <tr class="{if (empty($value)) then 'cmp-system' else ''}">
+                                <td>
+                                    <xsl:value-of select="$name"/> 
+                                </td>
+                                <td>
+                                    <xsl:value-of select="$cli-info/argKey"/>
+                                </td>
+                                <td>
+                                    <b><xsl:value-of select="imf:recognize-file($value)"/></b>
+                                </td>
+                                <td>
+                                    <xsl:value-of select="$cli-info/description"/>
+                                </td>
+                                <td>
+                                    <xsl:value-of select="$cli-info/isRequired"/>
+                                </td>
+                                <td>
+                                    <xsl:value-of select="$cli-info/stepName"/> 
+                                </td>
+                                <td>
+                                    <xsl:for-each select="reverse($xparms-doc/xparms/xparm[@name = concat('cli/',$name)])">
+                                        <xsl:value-of select="imf:recognize-file(@origin)"/>:
+                                        <xsl:choose>
+                                            <xsl:when test="position() = 1">
+                                                <b>
                                                     <xsl:value-of select="imf:recognize-file(@value)"/> 
-                                                </xsl:otherwise>
-                                            </xsl:choose>
-                                            <br/>
-                                        </xsl:for-each>
-                                    </td>
-                                </tr>
-                            </xsl:for-each>
-                        </xsl:variable>
-                        <xsl:sequence select="imf:create-result-table-by-tr($rows,'Name:10,Args:10,Value:10,Explain:20,Required?:10,Step:10,Defined in:30','table-cli')"/>
-                    </table>
-                </div>
+                                                </b>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:value-of select="imf:recognize-file(@value)"/> 
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        <br/>
+                                    </xsl:for-each>
+                                </td>
+                            </tr>
+                        </xsl:for-each>
+                    </xsl:variable>
+                    <xsl:sequence select="imf:create-result-table-by-tr($rows,'Name:10,Args:10,Value:10,Explain:20,Required?:10,Step:10,Defined in:30','table-cli')"/>
+                </table>
             </content>
         </page>
     </xsl:template>

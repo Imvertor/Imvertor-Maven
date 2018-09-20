@@ -45,6 +45,9 @@
             </summary>
             <page>
                 <title>Title of the first Tester reporting page</title>
+                <intro>
+                    <p>Introduction here</p>
+                </intro>
                 <content>
                     <div>
                         <h1>First report page</h1>
@@ -60,6 +63,9 @@
             </page>
             <page>
                 <title>Title of the second Tester reporting page</title>
+                <intro>
+                    <p>Introduction here</p>
+                </intro>
                 <content>
                     <div>
                         <h1>First report page</h1>

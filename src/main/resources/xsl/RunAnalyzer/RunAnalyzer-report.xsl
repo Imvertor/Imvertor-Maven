@@ -46,7 +46,9 @@
     <xsl:variable name="message-collapse-keys" select="tokenize(imf:get-config-string('appinfo','message-collapse-keys',''),'\s+')"/>
     
     <xsl:variable name="messages" select="/config/messages/message[type = ('FATAL','ERROR','WARNING','INFO','DEBUG','TRACE')]"/>
-    
+
+    <xsl:variable name="collapsed-exists" select="$messages/wiki = $message-collapse-keys"/>
+
     <xsl:template match="/config">
         
         <report>
@@ -76,20 +78,19 @@
                     <info>
                         <xsl:value-of select="concat('(', $error-count,' errors, ', $warning-count, ' warnings)')"/>
                     </info>
+                    <intro>
+                        <p>This is the overview of all errors and warnings.</p>
+                        <p>If hints are show, these are intended to support the user of this release to assess the impact on current implementations</p>
+                        <xsl:if test="$schema-error-count ne '0'">
+                            <p>
+                                This table also reports errors found when parsing the result XML schema(s). 
+                                These messages should not occur here, and indicate an error in the software.
+                                Please contact your system administrator, providing the orginal resources, as well as this report.
+                            </p>
+                        </xsl:if>
+                    </intro>
                     <content>
-                        <div>
-                            <h1>Explanation</h1>
-                            <p>This is the overview of all errors and warnings.</p>
-                            <p>If hints are show, these are intended to support the user of this release to assess the impact on current implementations</p>
-                            <xsl:if test="$schema-error-count ne '0'">
-                                <p>
-                                    This table also reports errors found when parsing the result XML schema(s). 
-                                    These messages should not occur here, and indicate an error in the software.
-                                    Please contact your system administrator, providing the orginal resources, as well as this report.
-                                </p>
-                            </xsl:if>
-                        </div>
-                        <xsl:if test="$messages/wiki = $message-collapse-keys">
+                        <xsl:if test="$collapsed-exists">
                             <div>
                                 <h1>Short overview</h1>
                                 <p>This overview is compacted such that a number of message types is collapsed, showing only the first occurrence of the message.</p>
@@ -136,7 +137,9 @@
                             </div>
                         </xsl:if>
                         <div>
-                            <h1>Full overview</h1>
+                            <xsl:if test="$collapsed-exists">
+                                <h1>Full overview</h1>
+                            </xsl:if>
                             <p>This overview is complete, showing all messages including the identifier of the construct and the stylesheet responsible for the message.</p>
                             <table class="tablesorter"> 
                                 <xsl:variable name="rows" as="element(tr)*">
@@ -165,7 +168,7 @@
                                 <xsl:sequence select="imf:create-result-table-by-tr($rows,'Type:10,Element:30,Message:60',concat('table-run-full-',position()))"/>
                             </table>
                         </div>
-                    </content>
+                     </content>
                 </page>
             </xsl:if>
             

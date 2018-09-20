@@ -37,6 +37,7 @@
     <xsl:template match="imvert:packages" mode="tv">
         <page>
             <title>Tagged values</title>
+            <intro/>
             <content>
                 <div>
                     <h1>Tagged values statistics</h1>

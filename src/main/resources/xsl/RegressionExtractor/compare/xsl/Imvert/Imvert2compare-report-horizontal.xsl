@@ -42,10 +42,10 @@
             <info>
                 <xsl:sequence select="$info"/>
             </info>
+            <intro>
+                <xsl:sequence select="$intro"/>
+            </intro>
             <content>
-                <div class="intro">
-                    <xsl:sequence select="$intro"/>
-                </div>   
                 <xsl:choose>
                     <xsl:when test="exists(/imvert:report/imvert:diffs[imvert:diff])">
                         <table class="compare">
