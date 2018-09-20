@@ -192,6 +192,12 @@
                 <xsd-type name="MultiSolid" asAttributeDesignation="complextype" asAttribute="MultiSolidType"/>
                 <managed-ids/>
             </construct>
+            <construct>
+                <name>GM_MultiCurve</name>
+                <xsd-type name="MultiCurve" asAttributeDesignation="complextype" asAttribute="MultiCurvePropertyType" />
+                <rdf-type name="rdfs:Datatype"/>
+                <managed-ids/>
+            </construct>
             
             
             <!-- TODO verplaatsen? is onderdeel van GML toch? -->
@@ -207,7 +213,11 @@
                 <xsd-type name="TimePeriod" asAttributeDesignation="complextype" asAttribute="TimePeriodType"/>
                 <managed-ids/>
             </construct>
-      
+            <construct>
+                <name>CV_Coverage</name>
+                <managed-ids/>
+            </construct>
+            
             <!-- TODO verplaatsen naar generic conceptual model, base types, INSPIRE base types: Identifier -->
             <construct>
                 <name>Identifier</name>
