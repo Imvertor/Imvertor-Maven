@@ -1,0 +1,64 @@
+/*  XML compare  */
+.xcomp {
+    font-family: monospace;
+}
+ .b {
+  cursor: pointer;
+  color: red;
+  font-weight: bold;
+  text-decoration: none;
+  padding-right: 2px;
+}
+.e {
+  border: 0px;
+  padding: 0px;
+  margin: 0px 0px 0px 1.5em;
+  text-indent: -1em;
+}
+.en {
+  color: #000096;
+  # color: #000088;
+  font-weight: bold;
+}
+.an {
+  color: #F5844C;
+  # color: #880000;
+}
+.av {
+  color: #993300;
+  # color: #888888;
+}
+.avi {
+  background-color: #CCFFCC;
+}
+.avd {
+  background-color: #FFCCCC;
+}
+.c {
+  color: #006400;
+  # color: #008800;
+}
+.t {
+  color: black
+}
+.m {
+  color: navy
+}
+.pi {
+  color: red
+}
+.ins {
+  color: black;
+  background-color: #CCFFCC; 
+}
+.del {
+  color: black;
+  background-color: #FFCCCC;
+}
+.arrow {
+  background-color: #D3D3D3;
+}
+pre {
+  margin: 0px;
+  display: inline
+}

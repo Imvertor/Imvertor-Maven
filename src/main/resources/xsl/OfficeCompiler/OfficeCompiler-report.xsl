@@ -67,6 +67,227 @@
                         </xsl:choose>
                         <p>Packaged documentation files are <a href="{concat('../../cat/',$office-filename,'.html')}">here</a>.</p>
                     </div>
+                    <xsl:if test="false()">
+                        <div>
+                            <h1>VOORBEELD WEERGAVE VAN ALLE XML COMPARES</h1>
+                            <div>
+                                <h2>VOORBEELD WEERGAVE VAN ÉÉN XML COMPARE</h2>
+                                <div class="xcomp">
+                                    <div class="e">
+                                        <div>
+                                            <span class="b" onclick="click(event)">-</span>
+                                            <span class="m">&lt;</span>
+                                            <span class="en">model</span>
+                                            <w>
+                                                <span class="an">identifier</span>
+                                                <span class="m">="</span>
+                                                <span class="avd">id-7ac0592f-72c0-4c19-8894-d67a8d109282</span>
+                                                <span class="arrow"> ⇨ </span>
+                                                <span class="avi">id-5395f4bb-65dc-4236-9a07-09020940f82e</span>
+                                                <span class="m">"</span>
+                                                <span class="an">xsi:schemaLocation</span>
+                                                <span class="m">="</span>
+                                                <span class="av">http://www.opengroup.org/xsd/archimate http://www.opengroup.org/xsd/archimate/archimate_v2p1.xsd http://purl.org/dc/elements/1.1/ http://dublincore.org/schemas/xmls/qdc/2008/02/11/dc.xsd</span>
+                                                <span class="m">"</span>
+                                            </w>
+                                            <w>
+                                                <span class="an">xmlns</span>
+                                                <span class="m">="</span>
+                                                <span class="av">http://www.opengroup.org/xsd/archimate</span>
+                                                <span class="m">"</span>
+                                                <span class="an">xmlns:dc</span>
+                                                <span class="m">="</span>
+                                                <span class="av">http://purl.org/dc/elements/1.1/</span>
+                                                <span class="m">"</span>
+                                                <span class="an">xmlns:xsi</span>
+                                                <span class="m">="</span>
+                                                <span class="av">http://www.w3.org/2001/XMLSchema-instance</span>
+                                                <span class="m">"</span>
+                                            </w>
+                                            <span class="m">&gt;</span>
+                                        </div>
+                                        <div>
+                                            <div class="e">
+                                                <div>
+                                                    <span class="b" onclick="click(event)">-</span>
+                                                    <span class="m">&lt;</span>
+                                                    <span class="en">metadata</span>
+                                                    <span class="m">&gt;</span>
+                                                </div>
+                                                <div>
+                                                    <div class="e">
+                                                        <span class="m">&lt;</span>
+                                                        <span class="en">schema</span>
+                                                        <span class="m">&gt;</span>
+                                                        <span class="t">
+                                                            <span class="t">Dublin Core</span>
+                                                        </span>
+                                                        <span class="m">&lt;/</span>
+                                                        <span class="en">schema</span>
+                                                        <span class="m">&gt;</span>
+                                                    </div>
+                                                    <div class="e">
+                                                        <span class="m">&lt;</span>
+                                                        <span class="en">schemaversion</span>
+                                                        <span class="m">&gt;</span>
+                                                        <span class="t">
+                                                            <span class="t">1.1</span>
+                                                        </span>
+                                                        <span class="m">&lt;/</span>
+                                                        <span class="en">schemaversion</span>
+                                                        <span class="m">&gt;</span>
+                                                    </div>
+                                                    <div>
+                                                        <span class="m">&lt;/</span>
+                                                        <span class="en">metadata</span>
+                                                        <span class="m">&gt;</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="e">
+                                                <span class="m">&lt;</span>
+                                                <span class="en">name</span>
+                                                <w>
+                                                    <span class="an">xml:lang</span>
+                                                    <span class="m">="</span>
+                                                    <span class="av">nl</span>
+                                                    <span class="m">"</span>
+                                                </w>
+                                                <span class="m">&gt;</span>
+                                                <span class="t">
+                                                    <span class="t">GEMMA kennismodel</span>
+                                                </span>
+                                                <span class="m">&lt;/</span>
+                                                <span class="en">name</span>
+                                                <span class="m">&gt;</span>
+                                            </div>
+                                            <div class="e">
+                                                <span class="m">&lt;</span>
+                                                <span class="en">documentation</span>
+                                                <w>
+                                                    <span class="an">xml:lang</span>
+                                                    <span class="m">="</span>
+                                                    <span class="av">nl</span>
+                                                    <span class="m">"</span>
+                                                </w>
+                                                <span class="m">&gt;</span>
+                                                <span class="t">
+                                                    <span class="t">Het kennismodel toont de in de GEMMA gebruikte ArchiMate concepten.</span>
+                                                    <span class="del"> De modelleerafspraken zijn vervolgens een weergave van de opbouw van de GEMMA architectuurrepository en toont de verbinding met pakketten en koppelingen in het exportbestand van de Softwarecatalogus.</span>
+                                                </span>
+                                                <span class="m">&lt;/</span>
+                                                <span class="en">documentation</span>
+                                                <span class="m">&gt;</span>
+                                            </div>
+                                            <div class="e">
+                                                <div>
+                                                    <span class="b" onclick="click(event)">-</span>
+                                                    <span class="m">&lt;</span>
+                                                    <span class="en">properties</span>
+                                                    <span class="m">&gt;</span>
+                                                </div>
+                                                <div>
+                                                    <div class="del">
+                                                        <div class="e">
+                                                            <div>
+                                                                <span class="b" onclick="click(event)">-</span>
+                                                                <span class="m">&lt;</span>
+                                                                <span class="en">property</span>
+                                                                <w>
+                                                                    <span class="an">identifierref</span>
+                                                                    <span class="m">="</span>
+                                                                    <span class="av">KNG_DocRemark</span>
+                                                                    <span class="m">"</span>
+                                                                </w>
+                                                                <span class="m">&gt;</span>
+                                                            </div>
+                                                            <div>
+                                                                <div class="e">
+                                                                    <span class="m">&lt;</span>
+                                                                    <span class="en">value</span>
+                                                                    <w>
+                                                                        <span class="an">xml:lang</span>
+                                                                        <span class="m">="</span>
+                                                                        <span class="av">nl</span>
+                                                                        <span class="m">"</span>
+                                                                    </w>
+                                                                    <span class="m">&gt;</span>
+                                                                    <span class="t">
+                                                                        <span class="t"> 21-11-2016 Landelijke voorzieningen schrijven standaard voor, SWC leidt hier de in gebruik zijnde versies van af 12-10-2016 Kennismodel voor Softwarecatalogus ArchiMate export </span>
+                                                                    </span>
+                                                                    <span class="m">&lt;/</span>
+                                                                    <span class="en">value</span>
+                                                                    <span class="m">&gt;</span>
+                                                                </div>
+                                                                <div>
+                                                                    <span class="m">&lt;/</span>
+                                                                    <span class="en">property</span>
+                                                                    <span class="m">&gt;</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="e">
+                                                        <div>
+                                                            <span class="b" onclick="click(event)">-</span>
+                                                            <span class="m">&lt;</span>
+                                                            <span class="en">property</span>
+                                                            <w>
+                                                                <span class="an">identifierref</span>
+                                                                <span class="m">="</span>
+                                                                <span class="av">KNG_ModelPublish</span>
+                                                                <span class="m">"</span>
+                                                            </w>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h2>VOORBEELD WEERGAVE VAN NOG EEN XML COMPARE</h2>
+                                <div class="xcomp">
+                                    <div class="e">
+                                        <div>
+                                            <span class="b" onclick="click(event)">-</span>
+                                            <span class="m">&lt;</span>
+                                            <span class="en">model</span>
+                                            <w>
+                                                <span class="an">identifier</span>
+                                                <span class="m">="</span>
+                                                <span class="avd">id-7ac0592f-72c0-4c19-8894-d67a8d109282</span>
+                                                <span class="arrow"> ⇨ </span>
+                                                <span class="avi">id-5395f4bb-65dc-4236-9a07-09020940f82e</span>
+                                                <span class="m">"</span>
+                                                <span class="an">xsi:schemaLocation</span>
+                                                <span class="m">="</span>
+                                                <span class="av">http://www.opengroup.org/xsd/archimate http://www.opengroup.org/xsd/archimate/archimate_v2p1.xsd http://purl.org/dc/elements/1.1/ http://dublincore.org/schemas/xmls/qdc/2008/02/11/dc.xsd</span>
+                                                <span class="m">"</span>
+                                            </w>
+                                            <w>
+                                                <span class="an">xmlns</span>
+                                                <span class="m">="</span>
+                                                <span class="av">http://www.opengroup.org/xsd/archimate</span>
+                                                <span class="m">"</span>
+                                                <span class="an">xmlns:dc</span>
+                                                <span class="m">="</span>
+                                                <span class="av">http://purl.org/dc/elements/1.1/</span>
+                                                <span class="m">"</span>
+                                                <span class="an">xmlns:xsi</span>
+                                                <span class="m">="</span>
+                                                <span class="av">http://www.w3.org/2001/XMLSchema-instance</span>
+                                                <span class="m">"</span>
+                                            </w>
+                                            <span class="m">&gt;</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>      
+                    </xsl:if>
+                  
                 </content>
             </page>
         </report>

@@ -306,15 +306,24 @@
     
     <xsl:template match="div" mode="content-toc">
         <xsl:variable name="level" select="(h1|h2|h3|h4|h5|h6|h7)[1]"/>
-        <li>
-            <a href="#{generate-id($level)}">
-                <xsl:sequence select="$level/node()"/>
-            </a>
-            <xsl:if test=".//div[2]">
-                <ol>
-                    <xsl:apply-templates select="div" mode="#current"/>
-                </ol>
-            </xsl:if>        </li>
+        <xsl:choose>
+            <xsl:when test="$level">
+                <li>
+                    <a href="#{generate-id($level)}">
+                        <xsl:sequence select="$level/node()"/>
+                    </a>
+                    <xsl:if test=".//div[2]">
+                        <ol>
+                            <xsl:apply-templates select="div" mode="#current"/>
+                        </ol>
+                    </xsl:if>
+                </li>
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- do not represent level-less divs in the TOC; check embedded divs for levels. -->
+                <xsl:apply-templates select="div" mode="#current"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <!-- create a representation of the step report or summary values: mostly a copy but output may be enhanced. -->
