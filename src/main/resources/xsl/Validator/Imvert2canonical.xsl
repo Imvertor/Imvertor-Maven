@@ -162,6 +162,7 @@
         generate name of the target class on that composition relation,
         and when no stereotype, put the composition stereotype there 
     -->
+    <!-- TODO https://github.com/Imvertor/Imvertor-Maven/issues/47 -->
     <xsl:template match="imvert:association[imvert:aggregation='composite']">
         <xsl:variable name="defining-class" select="imf:get-construct-by-id(imvert:type-id)"/>
         <xsl:choose>
@@ -179,7 +180,7 @@
                     </xsl:choose>
                     <xsl:choose>
                         <xsl:when test="empty(imvert:stereotype)">
-                            <imvert:stereotype id="stereotype-name-association-to-composite">
+                            <imvert:stereotype id="stereotype-name-association-to-composite" origin="system">
                                 <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-association-to-composite')"/>
                             </imvert:stereotype>
                         </xsl:when>
