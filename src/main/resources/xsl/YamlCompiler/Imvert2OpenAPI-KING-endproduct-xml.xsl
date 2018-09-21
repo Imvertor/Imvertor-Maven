@@ -1108,6 +1108,12 @@
 				<xsl:sequence select="imf:create-debug-comment(concat('OAS20000, id: ',$id),$debugging)" />
 <?x                <xsl:copy>
                     <xsl:attribute name="type" select="@type"/>
+					<ep:parameters>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'type')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', @typel)" />
+						</ep:parameter>
+					</ep:parameters>
                     <xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
                     <xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($tech-name,'type-name'))"/>      
                     <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
@@ -1327,6 +1333,20 @@
 					<xsl:attribute name="type" select="$type" />
 					<xsl:attribute name="berichtcode" select="$berichtcode" />
 					<xsl:attribute name="messagetype" select="$messagetype" />
+					<ep:parameters>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcodeype')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $berichtcode)" />
+						</ep:parameter>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'messagetype')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $messagetype)" />
+						</ep:parameter>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'type')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $type)" />
+						</ep:parameter>
+					</ep:parameters>
 					<xsl:sequence select="imf:create-output-element('ep:name', $complex-datatype-tech-name/@original)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($complex-datatype-tech-name,'type-name'))" />
 					<xsl:choose>
