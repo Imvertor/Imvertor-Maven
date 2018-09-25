@@ -102,11 +102,8 @@
 			</xsl:result-document>
 		</xsl:if>
 		
-		<ep:message-sets project-url="{$project-url}">
+		<ep:message-sets>
 			<!-- The ep:message-sets element contains the metadata for the complete interface and of-course the actual message-set. -->
-			<xsl:if test="$kv-administrator-e-mail!=''">
-				<xsl:attribute name="administrator-e-mail" select="$kv-administrator-e-mail"/>
-			</xsl:if>
 			<ep:parameters>
 				<ep:parameter>
 					<xsl:sequence select="imf:create-output-element('ep:name', 'project-url')" />
@@ -277,18 +274,6 @@
 		<ep:message>
 			<xsl:choose>
 				<xsl:when test="(contains($berichtcode,'Gr') or contains($berichtcode,'Gc'))">
-					<xsl:attribute name="messagetype" select="@messagetype" />
-					<xsl:attribute name="berichtcode" select="$berichtcode" />
-					<xsl:attribute name="expand" select="$expand" />
-					<xsl:attribute name="grouping" select="@grouping" />
-					<xsl:attribute name="pagination" select="@pagination" />
-					<xsl:attribute name="serialisation" select="@serialisation" />
-					<xsl:if test="$messagetype = 'request' and @fields">
-						<xsl:attribute name="fields" select="@fields" />
-					</xsl:if>
-					<xsl:if test="$messagetype = 'request' and @sort">
-						<xsl:attribute name="sort" select="@sort" />
-					</xsl:if>
 					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'messagetype')" />
@@ -330,8 +315,6 @@
 				</xsl:when>
 				<!-- ROME: Zijn er nog meer attributen van toepassing op een POST bericht. -->
 				<xsl:when test="contains($berichtcode,'Po') and $messagetype = 'request'">
-					<xsl:attribute name="messagetype" select="@messagetype" />
-					<xsl:attribute name="berichtcode" select="$berichtcode" />
 					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'messagetype')" />
@@ -505,7 +488,7 @@
 				<xsl:variable name="classconstruct" select="imf:get-construct-by-id($type-id,$packages)" />
 				<xsl:variable name="type-name" select="$classconstruct/imvert:name" />
 
-				<ep:construct type="{@type}" berichtcode="{$berichtcode}" messagetype="{$messagetype}">
+				<ep:construct>
 					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'messagetype')" />
@@ -561,14 +544,6 @@
 				<xsl:sequence select="imf:create-debug-comment(concat('Meervoudige naam: ',$meervoudigeNaam),$debugging)" />
 
 				<ep:construct>
-					<xsl:choose>
-						<xsl:when test="ep:construct[@type='subclass']">
-							<xsl:attribute name="type" select="concat('supertype-',@type)"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:attribute name="type" select="@type"/>
-						</xsl:otherwise>
-					</xsl:choose>
 					<xsl:variable name="contains-non-id-attributes">
 						<xsl:if test="ep:construct[@type='subclass']">
 							<xsl:for-each select="ep:construct[@type='subclass']">
@@ -594,12 +569,6 @@
 							</xsl:choose>
 						</xsl:for-each>
 					</xsl:variable>
-					<xsl:if test="contains($contains-non-id-attributes,'#true')">
-						<xsl:attribute name="contains-non-id-attributes" select="'true'" />
-					</xsl:if>
-					<xsl:if test="$meervoudigeNaam!=''">
-						<xsl:attribute name="meervoudigeNaam" select="$meervoudigeNaam" />
-					</xsl:if>
 					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'type')" />
@@ -657,7 +626,7 @@
 				<xsl:variable name="id" select="ep:id" />
 				<xsl:variable name="classconstruct" select="imf:get-construct-by-id($id,$packages)" />
 				<xsl:variable name="type-name" select="$classconstruct/imvert:name" />
-				<ep:construct type="{@type}">
+				<ep:construct>
 					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'type')" />
@@ -692,10 +661,7 @@
 				<xsl:variable name="classconstruct" select="imf:get-construct-by-id($type-id,$packages)" />
 				<xsl:variable name="type-name" select="$classconstruct/imvert:name" />
 				
-				<ep:construct type="{@type}">
-					<xsl:if test="$meervoudigeNaam!=''">
-						<xsl:attribute name="meervoudigeNaam" select="$meervoudigeNaam" />
-					</xsl:if>
+				<ep:construct>
 					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'type')" />
@@ -733,7 +699,7 @@
 		        </xsl:result-document> ?>
 				
 				<xsl:variable name="typeid" select="$construct/imvert:type-id" />
-				<ep:construct type="{@type}">
+				<ep:construct>
 					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'type')" />
@@ -792,10 +758,7 @@
 				<xsl:variable name="meervoudigeNaam">
 					<xsl:sequence select="imf:getMeervoudigeNaam('3',$construct,'entiteit',ancestor::ep:rough-message/ep:name)"/>
 				</xsl:variable> 
-				<ep:construct type="{@type}">
-					<xsl:if test="$meervoudigeNaam!=''">
-						<xsl:attribute name="meervoudigeNaam" select="$meervoudigeNaam" />
-					</xsl:if>
+				<ep:construct>
 					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'type')" />
@@ -901,10 +864,7 @@
 
 		<xsl:sequence select="imf:create-debug-comment(concat('OAS18500, id: ',$id,', ',$name),$debugging)" />
 		
-		<ep:construct  type="superclass" berichtcode="{$berichtcode}" messagetype="{$messagetype}" expand="{$expand}">
-			<xsl:if test="$construct/imvert:abstract='true'">
-				<xsl:attribute name="abstract" select="'true'"/>
-			</xsl:if>
+		<ep:construct>
 			<ep:parameters>
 				<ep:parameter>
 					<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
@@ -1054,12 +1014,6 @@
 					<xsl:variable name="meervoudigeNaam">
 						<xsl:sequence select="imf:getMeervoudigeNaam('2',$construct,'entiteit',$messagename)"/>
 					</xsl:variable> 
-					<xsl:if test="$meervoudigeNaam != ''">
-						<xsl:attribute name="meervoudigeNaam" select="$meervoudigeNaam" />
-					</xsl:if>
-					<xsl:attribute name="type" select="@type" />
-					<xsl:attribute name="berichtcode" select="$berichtcode" />
-					<xsl:attribute name="messagetype" select="$messagetype" />
 					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
@@ -1135,9 +1089,6 @@
 				<xsl:variable name="type" select="@type" />
 				<xsl:variable name="complex-datatype-tech-name" select="$construct/imvert:name" />
 				<xsl:copy>
-					<xsl:attribute name="type" select="$type" />
-					<xsl:attribute name="berichtcode" select="$berichtcode" />
-					<xsl:attribute name="messagetype" select="$messagetype" />
 					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
@@ -1203,22 +1154,8 @@
 					<xsl:value-of select="$expandconfigurations//ep:message[ep:name=$messagename and @berichtcode=$berichtcode and @messagetype=$messagetype]/ep:expand"/>
 				</xsl:variable>
 				<xsl:copy>
-					<xsl:attribute name="type" select="$type" />
-					<xsl:attribute name="berichtcode" select="$berichtcode" />
-					<xsl:attribute name="messagetype" select="$messagetype" />
-					<xsl:if test="$expand != ''">
-						<xsl:attribute name="expand" select="$expand"/>
-					</xsl:if>
-					
 					<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
-					<xsl:if test="not(@type='groepCompositie') and not(ancestor::ep:*[@type='groepCompositie'])">
-						<xsl:variable name="meervoudigeNaam">
-							<xsl:sequence select="imf:getMeervoudigeNaam('5',$construct,'entiteit',$messagename)"/>
-						</xsl:variable> 
-						<xsl:if test="$meervoudigeNaam != ''">
-							<xsl:attribute name="meervoudigeNaam" select="$meervoudigeNaam" />
-						</xsl:if>
-					</xsl:if>					<ep:parameters>
+					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
 							<xsl:sequence select="imf:create-output-element('ep:value', $berichtcode)" />
@@ -1284,9 +1221,6 @@
 				<xsl:variable name="type" select="@type" />
 				<xsl:variable name="complex-datatype-tech-name" select="$construct/imvert:name" />
 				<xsl:copy>
-					<xsl:attribute name="type" select="$type" />
-					<xsl:attribute name="berichtcode" select="$berichtcode" />
-					<xsl:attribute name="messagetype" select="$messagetype" />
 					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
@@ -1331,9 +1265,6 @@
 				<xsl:variable name="type" select="@type" />
 				<xsl:variable name="complex-datatype-tech-name" select="$construct/imvert:name" />
 				<xsl:copy>
-					<xsl:attribute name="type" select="$type" />
-					<xsl:attribute name="berichtcode" select="$berichtcode" />
-					<xsl:attribute name="messagetype" select="$messagetype" />
 					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
@@ -1426,10 +1357,6 @@
 				<!-- If the attribute is a gml type attribute no reference to a type is neccessary since all these types are processed 
 					 the same way. -->
 				<ep:construct>
-					<xsl:attribute name="type" select="'GM-external'"/>
-					<xsl:if test="$SIM-name != ''">
-						<xsl:attribute name="SIM-name" select="$SIM-name"/>
-					</xsl:if>
 					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'type')" />
@@ -1471,12 +1398,6 @@
 				<!-- imvert:attributes having an imvert:type-id result in an ep:construct which refers to a global ep:construct. This is for 
 					 example the case when it's an attribute with a enumeration type. -->
 				<ep:construct>
-					<xsl:if test="$is-id = 'true'">
-						<xsl:attribute name="is-id" select="'true'"/>
-					</xsl:if>
-					<xsl:if test="$SIM-name != ''">
-						<xsl:attribute name="SIM-name" select="$SIM-name"/>
-					</xsl:if>
 					<xsl:if test="$is-id = 'true' or $SIM-name != ''">
 						<ep:parameters>
 							<xsl:if test="$is-id = 'true'">
@@ -1513,12 +1434,6 @@
 			<xsl:otherwise>
 				<!-- In all other cases the imvert:attribute itself and its properties are processed. -->
 				<ep:construct>
-					<xsl:if test="$is-id = 'true'">
-						<xsl:attribute name="is-id" select="'true'"/>
-					</xsl:if>
-					<xsl:if test="$SIM-name != ''">
-						<xsl:attribute name="SIM-name" select="$SIM-name"/>
-					</xsl:if>
 					<xsl:if test="$is-id = 'true' or $SIM-name != ''">
 						<ep:parameters>
 							<xsl:if test="$is-id = 'true'">
@@ -1710,7 +1625,8 @@
 		<xsl:for-each select="$vals">
 			<xsl:variable name="p" select="normalize-space(imf:get-clean-documentation-string(imf:get-tv-value.local(.)))" />
 			<xsl:if test="not($p = '')">
-				<ep:p subpath="{imf:get-subpath(@project,@application,@nrelease)}">
+				<ep:p>
+				<!--ep:p subpath="{imf:get-subpath(@project,@application,@nrelease)}"-->
 					<xsl:value-of select="$p" />
 				</ep:p>
 			</xsl:if>
