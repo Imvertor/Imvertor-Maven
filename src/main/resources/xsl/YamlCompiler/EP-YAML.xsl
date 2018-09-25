@@ -57,9 +57,9 @@
 		<xsl:text>&#xa;  description: "</xsl:text> <xsl:value-of select="normalize-space(ep:documentation)"/><xsl:text>"</xsl:text>
         <xsl:text>&#xa;  version: "</xsl:text><xsl:value-of select="ep:patch-number"/><xsl:text>"</xsl:text>
         <xsl:text>&#xa;  contact:</xsl:text>
-		<xsl:text>&#xa;    url: </xsl:text><xsl:value-of select="/ep:message-sets/@project-url"/>
-		<xsl:if test="/ep:message-sets/@administrator-e-mail">
-			<xsl:text>&#xa;    email: </xsl:text><xsl:value-of select="/ep:message-sets/@administrator-e-mail"/>
+		<xsl:text>&#xa;    url: </xsl:text><xsl:value-of select="/ep:message-sets/ep:parameters/ep:parameter[ep:name='project-url']/ep:value"/>
+		<xsl:if test="/ep:message-sets/ep:parameters/ep:parameter[ep:name='administrator-e-mail']/ep:value">
+			<xsl:text>&#xa;    email: </xsl:text><xsl:value-of select="/ep:message-sets/ep:parameters/ep:parameter[ep:name='administrator-e-mail']/ep:value"/>
 		</xsl:if>
         <xsl:text>&#xa;  license:</xsl:text>
         <xsl:text>&#xa;    name: European Union Public License, version 1.2 (EUPL-1.2)</xsl:text>
@@ -76,7 +76,7 @@
 	<xsl:template match="ep:message">
 		<!-- This template processes all ep:message elements grouped by their name. -->
 		<xsl:choose>
-			<xsl:when test="(contains(@berichtcode,'Gr') or contains(@berichtcode,'Gc')) and @messagetype = 'request'">
+			<xsl:when test="(contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr') or contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc')) and ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'request'">
 				<!-- This processes al ep:message elements represent the request tree of the Gr and Gc messages. -->
 				<xsl:variable name="messageName" select="ep:name" />
 				<xsl:variable name="determinedUriStructure">
@@ -96,19 +96,19 @@
 				</xsl:variable>
 	
 				<xsl:variable name="parameterConstruct" select="./ep:seq/ep:construct/ep:type-name"/>
-				<xsl:variable name="meervoudigeNaam" select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]/@meervoudigeNaam"/>
+				<xsl:variable name="meervoudigeNaam" select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
 
 				<xsl:variable name="calculatedUriStructure">
 					<!-- This  variable contains a similar structure as the variable determinedUriStructure but this time determined from 
 						 the request tree. -->
 					<ep:uriStructure>
 						<xsl:choose>
-							<xsl:when test="@berichtcode = ('Gr01','Gc01','Gc02')">
+							<xsl:when test="ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value = ('Gr01','Gc01','Gc02')">
 								<xsl:choose>
 									<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct])">
 										<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1].',$parameterConstruct)"/>
 									</xsl:when>
-									<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]/@meervoudigeNaam)">
+									<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam'])">
 										<xsl:sequence select="imf:msg(.,'WARNING','The class [1] within message [2] does not have a tagged value naam in meervoud, define one.',($parameterConstruct,$messageName))"/>
 									</xsl:when>
 									<xsl:otherwise>
@@ -217,10 +217,10 @@
 				</xsl:variable>
 				<xsl:variable name="method">get</xsl:variable>
 				<xsl:variable name="parametersRequired">
-					<xsl:if test="@pagination = 'true'">J</xsl:if>
-					<xsl:if test="@expand = 'true'">J</xsl:if>
-					<xsl:if test="@fields = 'true'">J</xsl:if>
-					<xsl:if test="@sort = 'true'">J</xsl:if>
+					<xsl:if test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value = 'true'">J</xsl:if>
+					<xsl:if test="ep:parameters/ep:parameter[ep:name='expand']/ep:value = 'true'">J</xsl:if>
+					<xsl:if test="ep:parameters/ep:parameter[ep:name='fields']/ep:value = 'true'">J</xsl:if>
+					<xsl:if test="ep:parameters/ep:parameter[ep:name='sort']/ep:value = 'true'">J</xsl:if>
 				</xsl:variable>
 	
 				<!-- For each message the next structure is generated. -->
@@ -232,7 +232,7 @@
 								$checkedUriStructure//ep:uriPart/ep:param[empty(@path) or @path = 'false']">
 					<!-- If parameters apply the parameters section is generated. -->
 					<xsl:text>&#xa;      parameters: </xsl:text>
-					<xsl:if test="@pagination = 'true'">
+					<xsl:if test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value = 'true'">
 						<xsl:text>&#xa;        - in: query</xsl:text>
 						<xsl:text>&#xa;          name: page</xsl:text>
 						<xsl:text>&#xa;          description: Een pagina binnen de gepagineerde resultatenset.</xsl:text>
@@ -241,7 +241,7 @@
 						<xsl:text>&#xa;            type: integer</xsl:text>
 						<xsl:text>&#xa;            minimum: 1</xsl:text>
 					</xsl:if>
-					<xsl:if test="@expand = 'true'">
+					<xsl:if test="ep:parameters/ep:parameter[ep:name='expand']/ep:value = 'true'">
 						<xsl:text>&#xa;        - in: query</xsl:text>
 						<xsl:text>&#xa;          name: expand</xsl:text>
 						<xsl:text>&#xa;          description: "Hier kan aangegeven worden welke gerelateerde resources meegeladen moeten worden. Als expand=true wordt meegegeven, dan worden alle geneste resources geladen en in _embedded meegegeven. Ook kunnen de specifieke resources en velden van resources die gewenst zijn in de expand parameter kommagescheiden worden opgegeven. Specifieke velden van resource kunnen worden opgegeven door het opgeven van de resource-naam gevolgd door de veldnaam, met daartussen een punt."</xsl:text>
@@ -250,7 +250,7 @@
 						<xsl:text>&#xa;            type: string</xsl:text>
 						<xsl:text>&#xa;            example: kinderen,adressen.postcode,adressen.huisnummer</xsl:text>
 								</xsl:if>
-					<xsl:if test="@fields = 'true'">
+					<xsl:if test="ep:parameters/ep:parameter[ep:name='fields']/ep:value = 'true'">
 						<xsl:text>&#xa;        - in: query</xsl:text>
 						<xsl:text>&#xa;          name: fields</xsl:text>
 						<xsl:text>&#xa;          description: "Geeft de mogelijkheid de inhoud van de body van het antwoord naar behoefte aan te passen. Bevat een door komma's gescheiden lijst van veldennamen. Als niet-bestaande veldnamen worden meegegeven wordt een 400 Bad Request teruggegeven. Wanneer de parameter fields niet is opgenomen, worden alle gedefinieerde velden die een waarde hebben teruggegeven."</xsl:text>
@@ -259,7 +259,7 @@
 						<xsl:text>&#xa;            type: string</xsl:text>
 						<xsl:text>&#xa;            example: id,onderwerp,aanvrager,wijzig_datum</xsl:text>
 					</xsl:if>
-					<xsl:if test="@sort = 'true'">
+					<xsl:if test="ep:parameters/ep:parameter[ep:name='sort']/ep:value = 'true'">
 						<xsl:text>&#xa;        - in: query</xsl:text>
 						<xsl:text>&#xa;          name: sorteer</xsl:text>
 						<xsl:text>&#xa;          description: "Aangeven van de sorteerrichting van resultaten. Deze query-parameter accepteert een lijst van velden waarop gesorteerd moet worden gescheiden door een komma. Door een minteken (“-”) voor de veldnaam te zetten wordt het veld in aflopende sorteervolgorde gesorteerd."</xsl:text>
@@ -484,11 +484,11 @@
 				<xsl:text>&#xa;              $ref: '#/components/headers/api_version'</xsl:text>
 				<xsl:text>&#xa;            warning:</xsl:text>
 				<xsl:text>&#xa;              $ref: '#/components/headers/warning'</xsl:text>
-				<xsl:if test="@grouping='collection'">
+				<xsl:if test="ep:parameters/ep:parameter[ep:name='grouping']/ep:value='collection'">
 					<!-- In case of a collection type message create the following properties. -->
 					<xsl:text>&#xa;            X-Total-Count:</xsl:text>
 					<xsl:text>&#xa;              $ref: '#/components/headers/X_Total_Count'</xsl:text>
-					<xsl:if test="@pagination='true'">
+					<xsl:if test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value='true'">
 						<!-- In case of a collection type message and if pagination applies create the following properties. -->
 						<xsl:text>&#xa;            X-Pagination-Count:</xsl:text>
 						<xsl:text>&#xa;              $ref: '#/components/headers/X_Pagination_Count'</xsl:text>
@@ -508,12 +508,12 @@
 				<xsl:text>&#xa;            application/hal+json:</xsl:text>
 				<xsl:text>&#xa;              schema:</xsl:text>
 				<xsl:for-each
-					select="../ep:message[@messagetype = 'response' and ep:name = $messageName]">
+					select="../ep:message[ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:name = $messageName]">
 					<!-- For the response type message related to the current message generate the next refs to the toplevel component within the 
 						 json part of the yaml file. -->
 					<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text>
 					<xsl:choose>
-						<xsl:when test="@grouping = 'resource'">
+						<xsl:when test="ep:parameters/ep:parameter[ep:name='grouping']/ep:value = 'resource'">
 							<xsl:value-of select="ep:seq/ep:construct/ep:type-name" />
 						</xsl:when>
 						<xsl:otherwise>
@@ -532,11 +532,11 @@
 				<xsl:text>&#xa;      tags: </xsl:text>
 				<xsl:text>&#xa;      - </xsl:text><xsl:value-of select="$meervoudigeNaam" />
 			</xsl:when>
-			<xsl:when test="contains(@berichtcode,'Po') and @messagetype = 'request'">
+			<xsl:when test="contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') and ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'request'">
 				<!-- This processes al ep:message elements represent the request tree of the Po messages. -->
 				<xsl:variable name="messageName" select="ep:name" />
 				<xsl:variable name="parameterConstruct" select="./ep:seq/ep:construct/ep:type-name"/>
-				<xsl:variable name="meervoudigeNaam" select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]/@meervoudigeNaam"/>
+				<xsl:variable name="meervoudigeNaam" select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
 				<xsl:variable name="documentation">
 					<xsl:text>"</xsl:text><xsl:apply-templates select="ep:documentation" /><xsl:text>"</xsl:text>
 				</xsl:variable>
@@ -544,7 +544,7 @@
 				<xsl:variable name="exampleSleutelEntiteittype">
 					<xsl:variable name="id" select=".//ep:type-name"/>
 					<xsl:variable name="construct" select="//ep:message-set/ep:construct[ep:tech-name = $id]"/>
-					<xsl:value-of select="$construct//ep:construct[@is-id='true']/ep:example"/>
+					<xsl:value-of select="$construct//ep:construct[ep:parameters/ep:parameter[ep:name='is-id']/ep:value='true']/ep:example"/>
 				</xsl:variable>
 	
 				<!-- For each message the next structure is generated. -->
@@ -598,9 +598,9 @@
 	</xsl:template>
 
 	<xsl:template match="ep:construct" mode="getParameters">
-		<xsl:for-each select="ep:seq/ep:construct[empty(@type)]">
+		<xsl:for-each select="ep:seq/ep:construct[empty(ep:parameters/ep:parameter[ep:name='type'])]">
 			<ep:param>
-				<xsl:if test="@is-id = 'true'">
+				<xsl:if test="ep:parameters/ep:parameter[ep:name='is-id']/ep:value = 'true'">
 					<xsl:attribute name="is-id" select="'true'"/>
 				</xsl:if>
 				<ep:name><xsl:value-of select="lower-case(ep:name)"/></ep:name>
@@ -630,18 +630,18 @@
 				</xsl:if>
 			</ep:param>
 		</xsl:for-each>
-		<xsl:for-each select="ep:seq/ep:construct[@type = 'groepCompositie']">
+		<xsl:for-each select="ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value = 'groepCompositie']">
 			<xsl:variable name="parameterConstruct" select="ep:type-name"/>
 			<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]" mode="getParameters"/>
 		</xsl:for-each>
 	</xsl:template>
 
 	<xsl:template match="ep:construct" mode="getUriPart">
-		<xsl:if test="count(ep:seq/ep:construct[@type = 'association']) > 1">
+		<xsl:if test="count(ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association']) > 1">
 			<xsl:sequence select="imf:msg(.,'ERROR','There are more than one relations connected to the request class [1] this is not allowed.', (ep:name))" />			
 		</xsl:if>
-		<xsl:for-each select="ep:seq/ep:construct[@type = 'association']">
-			<xsl:variable name="meervoudigeNaam" select="@meervoudigeNaam"/>
+		<xsl:for-each select="ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association']">
+			<xsl:variable name="meervoudigeNaam" select="ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
 			<xsl:variable name="parameterConstruct" select="ep:type-name"/>
 			<ep:uriPart>
 				<ep:entityName><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>

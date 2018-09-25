@@ -858,6 +858,7 @@
 
 		<ep:construct>
 			<ep:name><xsl:value-of select="$construct/imvert:name/@original"/></ep:name>
+			<ep:tech-name><xsl:value-of select="$construct/imvert:name"/></ep:tech-name>
 			<ep:ref><xsl:value-of select="$tech-name"/></ep:ref>
 		</ep:construct>
 
@@ -1335,7 +1336,7 @@
 					<xsl:attribute name="messagetype" select="$messagetype" />
 					<ep:parameters>
 						<ep:parameter>
-							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcodeype')" />
+							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
 							<xsl:sequence select="imf:create-output-element('ep:value', $berichtcode)" />
 						</ep:parameter>
 						<ep:parameter>
