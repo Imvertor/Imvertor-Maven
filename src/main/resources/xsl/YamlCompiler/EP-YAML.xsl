@@ -48,9 +48,9 @@
 		<!-- Here the yaml header is generated. -->
 		<xsl:text>openapi: 3.0.0</xsl:text>
         <xsl:text>&#xa;servers:</xsl:text>
-		<xsl:text>&#xa;  - description: SwaggerHub API Auto Mocking</xsl:text>
+		<xsl:text>&#xa;  - description: "SwaggerHub API Auto Mocking"</xsl:text>
 		<xsl:text>&#xa;    url: https://virtserver.swaggerhub.com/VNGRealisatie/api/</xsl:text><xsl:value-of select="concat($normalizedKVname,'/v', $major-version)"/>
-		<xsl:text>&#xa;  - description: Referentie-implementatie</xsl:text>
+		<xsl:text>&#xa;  - description: "Referentie-implementatie"</xsl:text>
 		<xsl:text>&#xa;    url: https://www.voorbeeldgemeente.nl/api/</xsl:text><xsl:value-of select="concat($normalizedKVname,'/v', $major-version)"/>
         <xsl:text>&#xa;info:</xsl:text>
 		<xsl:text>&#xa;  title: </xsl:text><xsl:value-of select="$KVname"/>
@@ -213,7 +213,7 @@
 				</xsl:if> ?>
 
 				<xsl:variable name="documentation">
-					<xsl:text>"</xsl:text><xsl:apply-templates select="ep:documentation" /><xsl:text>"</xsl:text>
+					<xsl:text></xsl:text><xsl:apply-templates select="ep:documentation" /><xsl:text></xsl:text>
 				</xsl:variable>
 				<xsl:variable name="method">get</xsl:variable>
 				<xsl:variable name="parametersRequired">
@@ -226,7 +226,7 @@
 				<!-- For each message the next structure is generated. -->
 				<xsl:text>&#xa;    </xsl:text><xsl:value-of select="$method"/><xsl:text>:</xsl:text>
 				<xsl:text>&#xa;      operationId: </xsl:text><xsl:value-of select="ep:tech-name" />
-				<xsl:text>&#xa;      description: '</xsl:text><xsl:value-of select="$documentation" /><xsl:text>'</xsl:text>
+				<xsl:text>&#xa;      description: "</xsl:text><xsl:value-of select="$documentation" /><xsl:text>"</xsl:text>
 				<xsl:if test="contains($parametersRequired,'J') or 
 								$checkedUriStructure//ep:uriPart/ep:param[@path='true'] or 
 								$checkedUriStructure//ep:uriPart/ep:param[empty(@path) or @path = 'false']">
@@ -235,7 +235,7 @@
 					<xsl:if test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value = 'true'">
 						<xsl:text>&#xa;        - in: query</xsl:text>
 						<xsl:text>&#xa;          name: page</xsl:text>
-						<xsl:text>&#xa;          description: Een pagina binnen de gepagineerde resultatenset.</xsl:text>
+						<xsl:text>&#xa;          description: "Een pagina binnen de gepagineerde resultatenset."</xsl:text>
 						<xsl:text>&#xa;          required: false</xsl:text>
 						<xsl:text>&#xa;          schema:</xsl:text>
 						<xsl:text>&#xa;            type: integer</xsl:text>
@@ -478,7 +478,7 @@
 				</xsl:if>
 				<xsl:text>&#xa;      responses:</xsl:text>
 				<xsl:text>&#xa;        '200':</xsl:text>
-				<xsl:text>&#xa;          description: Zoekactie geslaagd</xsl:text>
+				<xsl:text>&#xa;          description: "Zoekactie geslaagd"</xsl:text>
 				<xsl:text>&#xa;          headers:</xsl:text>
 				<xsl:text>&#xa;            api-version:</xsl:text>
 				<xsl:text>&#xa;              $ref: '#/components/headers/api_version'</xsl:text>
@@ -524,7 +524,7 @@
 					<xsl:text>'</xsl:text>
 				</xsl:for-each>
 				<xsl:text>&#xa;        default:</xsl:text>
-				<xsl:text>&#xa;          description: Er is een onverwachte fout opgetreden.</xsl:text>
+				<xsl:text>&#xa;          description: "Er is een onverwachte fout opgetreden."</xsl:text>
 				<xsl:text>&#xa;          content:</xsl:text>
 				<xsl:text>&#xa;            application/problem+json:</xsl:text>
 				<xsl:text>&#xa;              schema:  </xsl:text>
@@ -538,7 +538,7 @@
 				<xsl:variable name="parameterConstruct" select="./ep:seq/ep:construct/ep:type-name"/>
 				<xsl:variable name="meervoudigeNaam" select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
 				<xsl:variable name="documentation">
-					<xsl:text>"</xsl:text><xsl:apply-templates select="ep:documentation" /><xsl:text>"</xsl:text>
+					<xsl:text></xsl:text><xsl:apply-templates select="ep:documentation" /><xsl:text></xsl:text>
 				</xsl:variable>
 				<xsl:variable name="method">post</xsl:variable>
 				<xsl:variable name="exampleSleutelEntiteittype">
@@ -550,7 +550,7 @@
 				<!-- For each message the next structure is generated. -->
 				<xsl:text>&#xa;    </xsl:text><xsl:value-of select="$method"/><xsl:text>:</xsl:text>
 				<xsl:text>&#xa;      operationId: </xsl:text>post<xsl:value-of select="ep:tech-name" />
-				<xsl:text>&#xa;      description: '</xsl:text><xsl:value-of select="$documentation" /><xsl:text>'</xsl:text>
+				<xsl:text>&#xa;      description: "</xsl:text><xsl:value-of select="$documentation" /><xsl:text>"</xsl:text>
 				<xsl:text>&#xa;      requestBody:</xsl:text>
 				<xsl:text>&#xa;        content:</xsl:text>
 				<xsl:text>&#xa;          application/hal+json:</xsl:text>
@@ -558,10 +558,10 @@
 				<xsl:text>&#xa;              $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
 				<xsl:text>&#xa;      responses:</xsl:text>
 				<xsl:text>&#xa;        '201':</xsl:text>
-				<xsl:text>&#xa;          description: OK</xsl:text>
+				<xsl:text>&#xa;          description: "OK"</xsl:text>
 				<xsl:text>&#xa;          headers:</xsl:text>
 				<xsl:text>&#xa;            Location:</xsl:text>
-				<xsl:text>&#xa;              description: URI van de nieuwe resource</xsl:text>
+				<xsl:text>&#xa;              description: "URI van de nieuwe resource"</xsl:text>
 				<xsl:text>&#xa;              schema:</xsl:text>
 				<xsl:text>&#xa;                type: string</xsl:text>
 				<xsl:text>&#xa;                format: uri</xsl:text>
@@ -571,7 +571,7 @@
 				<xsl:text>&#xa;              schema:</xsl:text>
 				<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
 				<xsl:text>&#xa;        default:</xsl:text>
-				<xsl:text>&#xa;          description: Bad Request.</xsl:text>
+				<xsl:text>&#xa;          description: "Bad Request."</xsl:text>
 				<xsl:text>&#xa;          content:</xsl:text>
 				<xsl:text>&#xa;            application/problem+problem:</xsl:text>
 				<xsl:text>&#xa;              schema:  </xsl:text>
