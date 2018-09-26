@@ -443,15 +443,7 @@
 					<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
 					<xsl:value-of select="'&quot;properties&quot;: {'"/>
 					<xsl:value-of select="'&quot;self&quot;: {'"/>
-					<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
-					<xsl:value-of select="'&quot;readOnly&quot;: true,'"/>
-					<xsl:value-of select="'&quot;description&quot;: &quot;url naar deze resource&quot;,'"/>
-					<xsl:value-of select="'&quot;properties&quot;: {'"/>
-					<xsl:value-of select="'&quot;href&quot;: {'"/>
-					<xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
-					<xsl:value-of select="'&quot;format&quot;: &quot;uri&quot;'"/>
-					<xsl:value-of select="'}'"/>
-					<xsl:value-of select="'}'"/>
+					<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/Link&quot;')"/>
 					<xsl:value-of select="'}'"/>
 					<xsl:if test=".//ep:construct[(ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' or ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association') and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]">,</xsl:if>
 					<xsl:apply-templates select=".//ep:construct[(ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' or ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association')  and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]" mode="_links"/>
@@ -1004,8 +996,7 @@
 						<xsl:value-of select="'&quot;description&quot;: &quot;uri van de api aanroep die tot dit resultaat heeft geleid&quot;,'"/>
 						<xsl:value-of select="'&quot;properties&quot;: {'"/>
 						<xsl:value-of select="'&quot;href&quot;: {'"/>
-						<xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
-						<xsl:value-of select="'&quot;format&quot;: &quot;uri&quot;'"/>
+						<xsl:value-of select="'&quot;$ref&quot;: &quot;',$json-topstructure,'/Href&quot;'"/>
 						<xsl:value-of select="'}'"/>
 						<xsl:value-of select="'}'"/>
 						<xsl:value-of select="'}'"/>
@@ -1611,34 +1602,25 @@
 			<!-- Depending on the occurence-type and the type of construct content is generated. -->
 			<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
 				<xsl:value-of select="'&quot;items&quot;: {'"/>
-				<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
-				<xsl:value-of select="'&quot;description&quot;: &quot;url naar deze resource&quot;,'"/>
-				<xsl:value-of select="'&quot;properties&quot;: {'"/>
-				<xsl:value-of select="'&quot;href&quot;: {'"/>
-				<xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
-				<xsl:value-of select="'&quot;format&quot;: &quot;uri&quot;'"/>
-				<xsl:value-of select="'}'"/>
-				<xsl:value-of select="'}'"/>
+				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/Link&quot;')"/>
 				<xsl:value-of select="'}'"/>
 			</xsl:when>
 			<xsl:when test="$occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
 				<xsl:value-of select="'&quot;properties&quot;: {'"/>
 				<xsl:value-of select="'&quot;href&quot;: {'"/>
-				<xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
-				<xsl:value-of select="'&quot;format&quot;: &quot;uri&quot;'"/>
+				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/Href&quot;')"/>
 				<xsl:value-of select="'}'"/>
 				<xsl:value-of select="'}'"/>
 			</xsl:when>
 			<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
 				<xsl:value-of select="'&quot;items&quot;: {'"/>
 				<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
-				<xsl:value-of select="'&quot;properties&quot;: {'"/>
-				<xsl:value-of select="'&quot;href&quot;: {'"/>
-				<xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
-				<xsl:value-of select="'&quot;format&quot;: &quot;uri&quot;,'"/>
 				<xsl:value-of select="'&quot;description&quot;: &quot;uri van een van de volgende mogelijke typen ',$elementName,': '"/>
 				<xsl:apply-templates select="//ep:construct[ep:tech-name = $type-name]" mode="supertype-association-in-links"/>
-				<xsl:value-of select="'&quot;'"/>
+				<xsl:value-of select="'&quot;,'"/>
+				<xsl:value-of select="'&quot;properties&quot;: {'"/>
+				<xsl:value-of select="'&quot;href&quot;: {'"/>
+				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/Href&quot;')"/>
 				<xsl:value-of select="'}'"/>
 				<xsl:value-of select="'}'"/>
 				<xsl:value-of select="'}'"/>
@@ -1646,11 +1628,7 @@
 			<xsl:when test="$occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
 				<xsl:value-of select="'&quot;properties&quot;: {'"/>
 				<xsl:value-of select="'&quot;href&quot;: {'"/>
-				<xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
-				<xsl:value-of select="'&quot;format&quot;: &quot;uri&quot;,'"/>
-				<xsl:value-of select="'&quot;description&quot;: &quot;uri van een van de volgende mogelijke typen ',$elementName,': '"/>
-				<xsl:apply-templates select="//ep:construct[ep:tech-name = $type-name]" mode="supertype-association-in-links"/>
-				<xsl:value-of select="'&quot;'"/>
+				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/Href&quot;')"/>
 				<xsl:value-of select="'}'"/>
 				<xsl:value-of select="'}'"/>
 			</xsl:when>
