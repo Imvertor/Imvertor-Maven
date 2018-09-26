@@ -18,7 +18,7 @@
 		</xsl:variable>
 		
 		<xsl:variable name="chars2bTranslated" select="translate($KVname,'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ','')">
-			<!-- Contains all characters which need to bee translated which are all characters execept the a to z and A to Z. -->
+			<!-- Contains all characters which need to be translated which are all characters execept the a to z and A to Z. -->
 		</xsl:variable>
 		<xsl:variable name="normalizedKVname">
 			<!-- The normalized name of the interface is equal the the name of the interface except that all characters other 
@@ -511,17 +511,31 @@
 					select="../ep:message[ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:name = $messageName]">
 					<!-- For the response type message related to the current message generate the next refs to the toplevel component within the 
 						 json part of the yaml file. -->
-					<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text>
 					<xsl:choose>
 						<xsl:when test="ep:parameters/ep:parameter[ep:name='grouping']/ep:value = 'resource'">
-							<xsl:value-of select="ep:seq/ep:construct/ep:type-name" />
+							<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
 						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of
-								select="concat(ep:seq/ep:construct/ep:type-name,'_collection')" />
-						</xsl:otherwise>
+						<xsl:when test="contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc')">
+							<xsl:text>&#xa;               type: object</xsl:text>
+							<xsl:text>&#xa;               properties:</xsl:text>
+							<xsl:text>&#xa;                 _links:</xsl:text>
+							<xsl:choose>
+								<xsl:when test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value = 'true'">
+									<xsl:text>&#xa;                   $ref: '#/components/schemas/Pagineerlinks'</xsl:text>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:text>&#xa;                   $ref: '#/components/schemas/Collectionlinks'</xsl:text>
+								</xsl:otherwise>
+							</xsl:choose>
+							<xsl:text>&#xa;                 _embedded:</xsl:text>
+							<xsl:text>&#xa;                   type: object</xsl:text>
+							<xsl:text>&#xa;                   properties:</xsl:text>
+							<xsl:text>&#xa;                     </xsl:text><xsl:value-of select="$meervoudigeNaam"/><xsl:text>:</xsl:text>
+							<xsl:text>&#xa;                       type: array</xsl:text>
+							<xsl:text>&#xa;                       items:</xsl:text>
+							<xsl:text>&#xa;                         $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
+						</xsl:when>
 					</xsl:choose>
-					<xsl:text>'</xsl:text>
 				</xsl:for-each>
 				<xsl:text>&#xa;        default:</xsl:text>
 				<xsl:text>&#xa;          description: "Er is een onverwachte fout opgetreden."</xsl:text>

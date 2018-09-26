@@ -628,85 +628,103 @@
 				,
 				<!-- If pagination is desired, collections apply, the following properties are generated. -->
 				<xsl:if test="$pagination = true()">
-				"Pagineerlinks" : {
-					"type" : "object",
-					"properties" : {
-					  "self" : {
-						"type" : "object",
-						"description" : "uri van de api aanroep die tot dit resultaat heeft geleid",
-						"properties" : {
-						  "href" : {
-							"type" : "string",
-							"format" : "uri",
-							"example" : "https://datapunt.voorbeeldgemeente.nl/service/api/v1/resourcenaam?page=4"
-						  },
-						  "title" : {
-							"type" : "string",
-							"example" : "Huidige pagina"
+				  "Pagineerlinks" : {
+					"allOf" : [ {
+					  "$ref" : "#/components/schemas/Collectionlinks"
+					}, {
+					  "type" : "object",
+					  "properties" : {
+						"first" : {
+						  "type" : "object",
+						  "description" : "uri voor het opvragen van de eerste pagina van deze collectie",
+						  "properties" : {
+							"href" : {
+							  "type" : "string",
+							  "format" : "uri",
+							  "example" : "https://datapunt.voorbeeldgemeente.nl/service/api/v1/resourcenaam?page=1"
+							},
+							"title" : {
+							  "type" : "string",
+							  "example" : "Eerste pagina"
+							}
 						  }
-						}
-					  },
-					  "next" : {
-						"type" : "object",
-						"description" : "uri voor het opvragen van de volgende pagina van deze collectie",
-						"properties" : {
-						  "href" : {
-							"type" : "string",
-							"format" : "uri",
-							"example" : "https://datapunt.voorbeeldgemeente.nl/service/api/v1/resourcenaam?page=5"
-						  },
-						  "title" : {
-							"type" : "string",
-							"example" : "Volgende pagina"
+						},
+						"previous" : {
+						  "type" : "object",
+						  "description" : "uri voor het opvragen van de vorige pagina van deze collectie",
+						  "properties" : {
+							"href" : {
+							  "type" : "string",
+							  "format" : "uri",
+							  "example" : "https://datapunt.voorbeeldgemeente.nl/service/api/v1/resourcenaam?page=3"
+							},
+							"title" : {
+							  "type" : "string",
+							  "example" : "Vorige pagina"
+							}
 						  }
-						}
-					  },
-					  "previous" : {
-						"type" : "object",
-						"description" : "uri voor het opvragen van de vorige pagina van deze collectie",
-						"properties" : {
-						  "href" : {
-							"type" : "string",
-							"format" : "uri",
-							"example" : "https://datapunt.voorbeeldgemeente.nl/service/api/v1/resourcenaam?page=3"
-						  },
-						  "title" : {
-							"type" : "string",
-							"example" : "Vorige pagina"
+						},
+						"next" : {
+						  "type" : "object",
+						  "description" : "uri voor het opvragen van de volgende pagina van deze collectie",
+						  "properties" : {
+							"href" : {
+							  "type" : "string",
+							  "format" : "uri",
+							  "example" : "https://datapunt.voorbeeldgemeente.nl/service/api/v1/resourcenaam?page=5"
+							},
+							"title" : {
+							  "type" : "string",
+							  "example" : "Volgende pagina"
+							}
 						  }
-						}
-					  },
-					  "first" : {
-						"type" : "object",
-						"description" : "uri voor het opvragen van de eerste pagina van deze collectie",
-						"properties" : {
-						  "href" : {
-							"type" : "string",
-							"format" : "uri",
-							"example" : "https://datapunt.voorbeeldgemeente.nl/service/api/v1/resourcenaam?page=1"
-						  },
-						  "title" : {
-							"type" : "string",
-							"example" : "Eerste pagina"
-						  }
-						}
-					  },
-					  "last" : {
-						"type" : "object",
-						"description" : "uri voor het opvragen van de laatste pagina van deze collectie",
-						"properties" : {
-						  "href" : {
-							"type" : "string",
-							"format" : "uri",
-							"example" : "https://datapunt.voorbeeldgemeente.nl/service/api/v1/resourcenaam?page=8"
-						  },
-						  "title" : {
-							"type" : "string",
-							"example" : "Laatste pagina"
+						},
+						"last" : {
+						  "type" : "object",
+						  "description" : "uri voor het opvragen van de laatste pagina van deze collectie",
+						  "properties" : {
+							"href" : {
+							  "type" : "string",
+							  "format" : "uri",
+							  "example" : "https://datapunt.voorbeeldgemeente.nl/service/api/v1/resourcenaam?page=8"
+							},
+							"title" : {
+							  "type" : "string",
+							  "example" : "Laatste pagina"
+							}
 						  }
 						}
 					  }
+					} ]
+				  },
+				</xsl:if>
+				<!-- If at least on eof the messages is a Gc-type message the 'Collectionslinks' component is generated. -->
+				"Href" : {
+				  "type" : "string",
+				  "format" : "uri"
+				},
+				"Link" : {
+				  "type" : "object",
+				  "properties" : {
+					"href" : {
+					  "$ref" : "#/components/schemas/Href"
 					}
+				  }
+				},
+				<xsl:if test="//ep:message[contains(ep:parameters/ep:parameter[ep:name = 'berichtcode']/ep:value,'Gc')]">
+				  "Collectionlinks" : {
+					  "type" : "object",
+					  "properties" : {
+					    "self" : {
+						  "type" : "object",
+						  "description" : "uri van de api aanroep die tot dit resultaat heeft geleid",
+						  "properties" : {
+						    "href" : {
+						      "$ref" : "#/components/schemas/Href"
+						    }
+						  }
+					    }
+					  }
 				  },
 				</xsl:if>
 			</xsl:when>
@@ -901,40 +919,72 @@
 				"Debug": "OAS04000"
 			},
 		</xsl:if>
-		<xsl:value-of select="concat('&quot;', $topComponentName,'&quot;: {' )"/>
 		<xsl:choose>
 			<xsl:when test="$isResource">
 				<!-- Loop over global constructs which are refered to from constructs directly within the current (non-collection) 
 					 ep:message elements. -->
-				<xsl:for-each select="//ep:message-set/ep:construct
-									   [
-										 ep:tech-name = $type-name 
-										 and 
-										 (
-										   ( 
-											 contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+				<xsl:value-of select="concat('&quot;', $topComponentName,'&quot;: {' )"/>
+					<xsl:for-each select="//ep:message-set/ep:construct
+										   [
+											 ep:tech-name = $type-name 
 											 and 
-											 ep:parameters/ep:parameter[ep:name='messagetype']/ep:value='request'
-										   ) 
-										   or 
-										   (
 											 (
-											   contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
+											   ( 
+												 contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+												 and 
+												 ep:parameters/ep:parameter[ep:name='messagetype']/ep:value='request'
+											   ) 
 											   or 
-											   contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
-											 ) 
-											 and 
-											 ep:parameters/ep:parameter[ep:name='messagetype']/ep:value='response'
-										   )
-										 )
-									   ]">
-					<xsl:call-template name="construct">
-						<xsl:with-param name="grouping" select="$grouping"/>
-					</xsl:call-template>
-				</xsl:for-each>
+											   (
+												 (
+												   contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
+												   or 
+												   contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
+												 ) 
+												 and 
+												 ep:parameters/ep:parameter[ep:name='messagetype']/ep:value='response'
+											   )
+											 )
+										   ]">
+						<xsl:call-template name="construct">
+							<xsl:with-param name="grouping" select="$grouping"/>
+						</xsl:call-template>
+					</xsl:for-each>
+				<xsl:value-of select="'}'"/>
+				<xsl:if test="$debugging">
+					,"--------------Einde-04500-<xsl:value-of select="generate-id()"/>": {
+						"Debug": "OAS04500"
+					}
+				</xsl:if>
+				<!-- As long as the current message isn't the last message a comma separator has to be generated. -->
+				<xsl:if test="following-sibling::ep:message
+									[
+									  (
+										contains(ep:parameters/ep:parameter
+												 [ep:name='berichtcode']
+												 /ep:value,'Gr') 
+										and 
+										ep:parameters/ep:parameter
+										[ep:name='messagetype']
+										/ep:value='response'
+									  )
+									  or 
+									  (
+										contains(ep:parameters/ep:parameter
+												 [ep:name='berichtcode']
+												 /ep:value,'Po') 
+										and 
+										ep:parameters/ep:parameter
+										[ep:name='messagetype']
+										/ep:value='request'
+									  )
+									]">
+					<xsl:value-of select="','"/>
+				</xsl:if>
 			</xsl:when>
 			<xsl:otherwise>
-				<!-- If the current ep:message element represents a collection message the following content has to be generated. -->
+<?X				<!-- If the current ep:message element represents a collection message the following content has to be generated. -->
+				<xsl:value-of select="concat('&quot;', $topComponentName,'&quot;: {' )"/>
 				<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
 				<xsl:value-of select="'&quot;properties&quot;: {'"/>
 				<!-- If pagination is desired a reference to the 'Pagineerlinks' property is generated.
@@ -1020,19 +1070,9 @@
 					</xsl:when>
 				</xsl:choose>
 				<xsl:value-of select="'}'"/>
+				<xsl:value-of select="'}'"/> ?>
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:value-of select="'}'"/>
-		<xsl:if test="$debugging">
-			,"--------------Einde-04500-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS04500"
-			}
-		</xsl:if>
-		<!-- As long as the current message isn't the last message a comma separator has to be generated. -->
-		<xsl:if test="following-sibling::ep:message[((contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr') or contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc')) and ep:parameters/ep:parameter[ep:name='messagetype']/ep:value='response')
-													or (contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') and ep:parameters/ep:parameter[ep:name='messagetype']/ep:value='request')]">
-			<xsl:value-of select="','"/>
-		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template name="construct">
@@ -1146,21 +1186,48 @@
 		</xsl:if>
 		<xsl:value-of select="concat('&quot;', $elementName,'&quot;: {' )"/>
 		<xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
-		<xsl:value-of select="'&quot;enum&quot;: ['"/>
-		<xsl:for-each select="ep:enum">
-			<!-- Loop over all enum elements. -->
-			<xsl:value-of select="concat('&quot;',.,'&quot;')"/>
-			<xsl:if test="position() != last()">
-				<!-- As long as the current construct isn't the last construct a comma separator has to be generated. -->
-				<xsl:value-of select="','"/>
-			</xsl:if>
-		</xsl:for-each>
-		<xsl:value-of select="']'"/>
-		<xsl:if test="ep:documentation">
-			,<xsl:value-of select="'&quot;description&quot; : &quot;'"/>
-			<xsl:apply-templates select="ep:documentation"/>
-			<xsl:value-of select="'&quot;'"/>
-		</xsl:if>
+		
+		<xsl:choose>
+			<xsl:when test="$json-version = '2.0'">
+				<xsl:value-of select="'&quot;description&quot; : &quot;'"/>
+				<xsl:if test="ep:documentation">
+					<xsl:apply-templates select="ep:documentation"/>
+				</xsl:if>
+				<xsl:for-each select="ep:enum">
+					<xsl:value-of select="concat(' * ',ep:alias,' - ',ep:name)"/>
+				</xsl:for-each>
+				<xsl:value-of select="'&quot;,'"/>
+				<xsl:value-of select="'&quot;enum&quot;: ['"/>
+				<xsl:for-each select="ep:enum">
+					<!-- Loop over all enum elements. -->
+					<xsl:value-of select="concat('&quot;',ep:alias,'&quot;')"/>
+					<xsl:if test="position() != last()">
+						<!-- As long as the current construct isn't the last construct a comma separator has to be generated. -->
+						<xsl:value-of select="','"/>
+					</xsl:if>
+				</xsl:for-each>
+				<xsl:value-of select="']'"/>
+			</xsl:when>
+			<xsl:otherwise>
+
+				<xsl:if test="ep:documentation">
+					<xsl:value-of select="'&quot;description&quot; : &quot;'"/>
+					<xsl:apply-templates select="ep:documentation"/>
+					<xsl:value-of select="'&quot;,'"/>
+				</xsl:if>
+				<xsl:value-of select="'&quot;enum&quot;: ['"/>
+				<xsl:for-each select="ep:enum">
+					<!-- Loop over all enum elements. -->
+					<xsl:value-of select="concat('{&quot;const&quot; : &quot;',ep:alias,'&quot;,')"/>
+					<xsl:value-of select="concat('&quot;description&quot; : &quot;',ep:name,'&quot;}')"/>
+					<xsl:if test="position() != last()">
+						<!-- As long as the current construct isn't the last construct a comma separator has to be generated. -->
+						<xsl:value-of select="','"/>
+					</xsl:if>
+				</xsl:for-each>
+				<xsl:value-of select="']'"/>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:value-of select="'}'"/>
 		<xsl:if test="$debugging">
 			,"--------------Einde-06500-<xsl:value-of select="generate-id()"/>": {
@@ -1701,4 +1768,5 @@
 			<xsl:value-of select="','"/>
 		</xsl:if>
 	</xsl:template>
+
 </xsl:stylesheet>

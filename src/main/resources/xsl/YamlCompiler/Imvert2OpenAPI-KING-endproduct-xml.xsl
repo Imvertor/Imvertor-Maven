@@ -1558,17 +1558,37 @@
 		<xsl:variable name="SIM-alias" select="($construct/imvert:alias, imvert:alias)[1]" />
 
 		<ep:enum>
-			<xsl:value-of select="$SIM-name" />
 			<!-- ROME: I.v.m. het project Zaak- Document Services is besloten om de waarde in een enumeration te plaatsen en niet de codes.
 					   Voor het geval daarop wordt teruggekomen is de XSLT-code voor het opnemen van de code hieronder bewaard. -->
-			<!--xsl:choose>
+			<xsl:choose>
 				<xsl:when test="empty($SIM-alias)">
-					<xsl:value-of select="$SIM-name" />
+					<xsl:variable name="chars2bTranslated" select="translate($SIM-name,'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ','')">
+						<!-- Contains all characters which need to be translated which are all characters execept the a to z and A to Z and the space. -->
+					</xsl:variable>
+					<xsl:variable name="normalizedName">
+						<!-- The normalized name of the interface is equal the the name of the interface except that all characters other 
+							 than a to z and A to Z are translated to underscores. -->
+						<xsl:variable name="chars2bTranslated2">
+							<!-- Within the translate function for each char to be translated there has to be an underscore. Since the amount of special 
+								 chars is variable we have to determine the amount of underscores to be used within the translate function. -->
+							<xsl:variable name="lengthChars2bTranslated" select="string-length($chars2bTranslated)" as="xs:integer"/>
+							<xsl:sequence select="imf:determineAmountOfSpaces($lengthChars2bTranslated)"/>
+						</xsl:variable>
+						<!-- Finally the string is actually translated using the variable. -->
+						<xsl:value-of select="normalize-space(translate($SIM-name,$chars2bTranslated,$chars2bTranslated2))"/>
+						<!--xsl:value-of select="translate(translate($SIM-name,$chars2bTranslated,$chars2bTranslated2),'_')"/-->
+					</xsl:variable>
+					<xsl:if test="$SIM-name != $normalizedName">
+						<xsl:sequence select="imf:msg($construct,'WARNING','The source for the enumeration value [1] does not have an alias and its description contains characters other than a-z, A-Z or the space character, check the resulting enumeration value.',(imvert:name))"/>						
+					</xsl:if>
+					<ep:name><xsl:value-of select="$SIM-name" /></ep:name>
+					<ep:alias><xsl:value-of select="$normalizedName" /></ep:alias>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="$SIM-alias" />
+					<ep:name><xsl:value-of select="$SIM-name" /></ep:name>
+					<ep:alias><xsl:value-of select="$SIM-alias" /></ep:alias>
 				</xsl:otherwise>
-			</xsl:choose-->
+			</xsl:choose>
 		</ep:enum>
 
 	</xsl:template>
@@ -1738,5 +1758,13 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:function>
-
+	
+	<xsl:function name="imf:determineAmountOfSpaces">
+		<xsl:param name="length"/>
+		<xsl:if test="$length > 0">
+			<xsl:value-of select="' '"/>
+			<xsl:sequence select="imf:determineAmountOfSpaces($length - 1)"/>
+		</xsl:if>
+	</xsl:function>
+	
 </xsl:stylesheet>
