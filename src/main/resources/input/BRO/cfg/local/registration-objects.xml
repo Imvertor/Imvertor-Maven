@@ -219,5 +219,10 @@
             <name lang="en">Hydrocarbon accumulation</name>
             <abbrev>HCA</abbrev>
         </registratieobject>
+        <registratieobject>
+            <name lang="nl">Digitaal Geografisch Model</name>
+            <name lang="en">Digital Geographical Model</name>
+            <abbrev>DGM</abbrev>
+        </registratieobject>
     </domein>
 </domeinen>
