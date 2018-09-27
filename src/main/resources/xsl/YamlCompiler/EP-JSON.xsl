@@ -5,8 +5,8 @@
 	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
 	
 	<!-- The first variable is meant for the server environment, the second one is used during development in XML-Spy. -->
-	<!--<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>-->
-	<xsl:variable name="debugging" select="true()" as="xs:boolean"/>
+	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
+	<!--<xsl:variable name="debugging" select="false()" as="xs:boolean"/>-->
 	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
@@ -71,6 +71,8 @@
 				<xsl:value-of select="'&quot;schemas&quot;: {'"/>
 			</xsl:when>
 		</xsl:choose>
+
+<?x		"messages": {},
 		<!-- Then for each global construct a component is generated. -->
 		<!-- First loop over all message constructs. -->
 		<xsl:apply-templates select="ep:message-set/ep:message
@@ -118,10 +120,11 @@
 						   /ep:*/ep:construct/ep:type-name 
 						   and 
 						   not( ep:enum )
-						]">,</xsl:if>
+						]">,</xsl:if> ?>
+
 		<!-- Loop over global constructs which are refered to from constructs directly within the (collection) ep:message 
 			 elements but aren't enumeration constructs. -->
-		<xsl:for-each select="ep:message-set/ep:construct
+<!--		<xsl:for-each select="ep:message-set/ep:construct
 								 [ 
 								   ep:tech-name = //ep:message
 								   [
@@ -144,6 +147,32 @@
 									 )
 									 and 
 									 ep:parameters/ep:parameter[ep:name='grouping']/ep:value != 'resource'
+								   ]
+								   /ep:*/ep:construct/ep:type-name 
+								   and 
+								   not( ep:enum )
+								]"> -->
+		<xsl:for-each select="ep:message-set/ep:construct
+								 [ 
+								   ep:tech-name = //ep:message
+								   [
+								     (
+								       (
+								         (
+								           contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
+										   or 
+										   contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
+										 ) 
+										 and 
+										 ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response'
+									   )
+									   or 
+									   (							
+										 contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po' ) 
+										 and 
+										 ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'request'
+									   )
+									 )
 								   ]
 								   /ep:*/ep:construct/ep:type-name 
 								   and 

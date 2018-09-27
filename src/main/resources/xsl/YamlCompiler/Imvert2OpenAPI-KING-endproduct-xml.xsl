@@ -1217,7 +1217,7 @@
 				<!-- if the ep:constructs is of 'complex-datatype' type its name differs from the one in the when above. 
 					 It's name isn't based on the attribute using the type since it is more generic and used by more than one ep:construct.
 					 Also it's attributes and -->
-				<xsl:sequence select="imf:create-debug-comment(concat('OAS27000, id: ',$id),$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment(concat('OAS27000, type-id: ',$type-id),$debugging)" />
 				<xsl:variable name="type" select="@type" />
 				<xsl:variable name="complex-datatype-tech-name" select="$construct/imvert:name" />
 				<xsl:copy>
@@ -1246,9 +1246,9 @@
 						</xsl:otherwise>
 					</xsl:choose>
 					<ep:seq>
-						<xsl:sequence select="imf:create-debug-comment(concat('OAS27500, id: ',$id),$debugging)" />
+						<xsl:sequence select="imf:create-debug-comment(concat('OAS27500, type-id: ',$type-id),$debugging)" />
 						<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
-						<xsl:sequence select="imf:create-debug-comment(concat('OAS28000, id: ',$id),$debugging)" />
+						<xsl:sequence select="imf:create-debug-comment(concat('OAS28000, type-id: ',$type-id),$debugging)" />
 						<xsl:apply-templates select="ep:superconstruct" mode="as-ref" />
 
 						<!-- TODO: Nagaan of er in een complex-datatype type ep:construct associations voor kunnen komen. 
