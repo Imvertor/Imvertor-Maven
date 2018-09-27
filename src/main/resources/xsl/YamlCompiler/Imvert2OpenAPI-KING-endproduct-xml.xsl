@@ -660,6 +660,12 @@
 				<xsl:variable name="type-id" select="ep:id" />
 				<xsl:variable name="classconstruct" select="imf:get-construct-by-id($type-id,$packages)" />
 				<xsl:variable name="type-name" select="$classconstruct/imvert:name" />
+				<xsl:variable name="abstract">
+					<xsl:choose>
+						<xsl:when test="$classconstruct/imvert:abstract = 'true'">true</xsl:when>
+						<xsl:otherwise>false</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				
 				<ep:construct>
 					<ep:parameters>
@@ -673,6 +679,10 @@
 								<xsl:sequence select="imf:create-output-element('ep:value', $meervoudigeNaam)" />
 							</ep:parameter>
 						</xsl:if>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'abstract')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $abstract)" />
+						</ep:parameter>
 					</ep:parameters>
 
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS13000, id: ',$id),$debugging)" />
@@ -758,6 +768,12 @@
 				<xsl:variable name="meervoudigeNaam">
 					<xsl:sequence select="imf:getMeervoudigeNaam('3',$construct,'entiteit',ancestor::ep:rough-message/ep:name)"/>
 				</xsl:variable> 
+				<xsl:variable name="abstract">
+					<xsl:choose>
+						<xsl:when test="$construct/imvert:abstract = 'true'">true</xsl:when>
+						<xsl:otherwise>false</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				<ep:construct>
 					<ep:parameters>
 						<ep:parameter>
@@ -770,6 +786,10 @@
 								<xsl:sequence select="imf:create-output-element('ep:value', $meervoudigeNaam)" />
 							</ep:parameter>
 						</xsl:if>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'abstract')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $abstract)" />
+						</ep:parameter>
 					</ep:parameters>
 					
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS16000, id: ',$id),$debugging)" />
@@ -835,6 +855,12 @@
 		<xsl:variable name="id" select="ep:id" />
 		<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
 		<xsl:variable name="tech-name" select="imf:get-normalized-name($construct/imvert:name, 'type-name')" as="xs:string" />
+		<xsl:variable name="abstract">
+			<xsl:choose>
+				<xsl:when test="$construct/imvert:abstract = 'true'">true</xsl:when>
+				<xsl:otherwise>false</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 
 
 		<xsl:variable name="doc">
@@ -888,6 +914,10 @@
 						<xsl:sequence select="imf:create-output-element('ep:value', ' true')" />
 					</ep:parameter>
 				</xsl:if>
+				<ep:parameter>
+					<xsl:sequence select="imf:create-output-element('ep:name', 'abstract')" />
+					<xsl:sequence select="imf:create-output-element('ep:value', $abstract)" />
+				</ep:parameter>
 			</ep:parameters>
 			
 			<ep:name><xsl:value-of select="$construct/imvert:name/@original"/></ep:name>
@@ -1139,6 +1169,12 @@
 					 Also the child ep:superconstructs and ep:constructs (if present) are processed. -->
 				<xsl:sequence select="imf:create-debug-comment(concat('OAS24500, id: ',$id),$debugging)" />
 				<xsl:variable name="classconstruct" select="imf:get-construct-by-id($id,$packages)" />
+				<xsl:variable name="abstract">
+					<xsl:choose>
+						<xsl:when test="$classconstruct/imvert:abstract = 'true'">true</xsl:when>
+						<xsl:otherwise>false</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				<xsl:variable name="type">
 					<xsl:choose>
 						<xsl:when test="@type = 'subclass'">
@@ -1185,6 +1221,10 @@
 								</ep:parameter>
 							</xsl:if>
 						</xsl:if>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'abstract')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $abstract)" />
+						</ep:parameter>
 					</ep:parameters>
 					
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
@@ -1217,7 +1257,7 @@
 				<!-- if the ep:constructs is of 'complex-datatype' type its name differs from the one in the when above. 
 					 It's name isn't based on the attribute using the type since it is more generic and used by more than one ep:construct.
 					 Also it's attributes and -->
-				<xsl:sequence select="imf:create-debug-comment(concat('OAS27000, type-id: ',$type-id),$debugging)" />
+				<xsl:sequence select="imf:create-debug-comment(concat('OAS27000, id: ',$id),$debugging)" />
 				<xsl:variable name="type" select="@type" />
 				<xsl:variable name="complex-datatype-tech-name" select="$construct/imvert:name" />
 				<xsl:copy>
@@ -1246,9 +1286,9 @@
 						</xsl:otherwise>
 					</xsl:choose>
 					<ep:seq>
-						<xsl:sequence select="imf:create-debug-comment(concat('OAS27500, type-id: ',$type-id),$debugging)" />
+						<xsl:sequence select="imf:create-debug-comment(concat('OAS27500, id: ',$id),$debugging)" />
 						<xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute" />
-						<xsl:sequence select="imf:create-debug-comment(concat('OAS28000, type-id: ',$type-id),$debugging)" />
+						<xsl:sequence select="imf:create-debug-comment(concat('OAS28000, id: ',$id),$debugging)" />
 						<xsl:apply-templates select="ep:superconstruct" mode="as-ref" />
 
 						<!-- TODO: Nagaan of er in een complex-datatype type ep:construct associations voor kunnen komen. 
