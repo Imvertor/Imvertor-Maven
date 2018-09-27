@@ -72,86 +72,10 @@
 			</xsl:when>
 		</xsl:choose>
 
-<?x		"messages": {},
-		<!-- Then for each global construct a component is generated. -->
-		<!-- First loop over all message constructs. -->
-		<xsl:apply-templates select="ep:message-set/ep:message
-				[
-					(
-						(
-						  contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr') 
-						  or 
-						  contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc')
-						) 
-						and ep:parameters/ep:parameter[ep:name='messagetype']/ep:value='response'
-					)
-					or 
-					(
-						contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
-						and 
-						ep:parameters/ep:parameter[ep:name='messagetype']/ep:value='request'
-					)
-				]"/>
-		<!-- If the for each after this if is relevant a comma separator has to be generated here. -->
-		<xsl:if test="ep:message-set/ep:construct
-						 [ 
-						   ep:tech-name = //ep:message
-						   [ 
-						     (
-						       (
-						         ( 
-						           contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
-								   or 
-								   contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
-								 ) 
-								 and 
-								 ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response'
-							   )
-							   or 
-							   (							
-								 contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
-								 and 
-								 ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'request'
-							   )
-							 )
-							 and 
-							 ep:parameters/ep:parameter[ep:name='grouping']/ep:value != 'resource'
-						   ]
-						   /ep:*/ep:construct/ep:type-name 
-						   and 
-						   not( ep:enum )
-						]">,</xsl:if> ?>
+		<!-- For each global construct a component is generated. -->
 
 		<!-- Loop over global constructs which are refered to from constructs directly within the (collection) ep:message 
 			 elements but aren't enumeration constructs. -->
-<!--		<xsl:for-each select="ep:message-set/ep:construct
-								 [ 
-								   ep:tech-name = //ep:message
-								   [
-								     (
-								       (
-								         (
-								           contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
-										   or 
-										   contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
-										 ) 
-										 and 
-										 ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response'
-									   )
-									   or 
-									   (							
-										 contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po' ) 
-										 and 
-										 ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'request'
-									   )
-									 )
-									 and 
-									 ep:parameters/ep:parameter[ep:name='grouping']/ep:value != 'resource'
-								   ]
-								   /ep:*/ep:construct/ep:type-name 
-								   and 
-								   not( ep:enum )
-								]"> -->
 		<xsl:for-each select="ep:message-set/ep:construct
 								 [ 
 								   ep:tech-name = //ep:message
