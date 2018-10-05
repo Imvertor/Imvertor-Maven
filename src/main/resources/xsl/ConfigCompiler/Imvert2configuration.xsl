@@ -386,11 +386,30 @@
         <xsl:copy/>
     </xsl:template>
    
+   <!-- 
+       determine the distinct values, based on what is considered to be distinct in processing configuration elements 
+       That is: the content and all attributes are the same. The config elements are duplicated in this sense.
+   -->
     <xsl:function name="imf:distinct" as="element()*">
         <xsl:param name="elms" as="element()*"/>
-        <xsl:for-each-group select="$elms" group-by="concat(string(.),@lang)">
+        <xsl:for-each-group select="$elms" group-by="imf:serialize(.)">
             <xsl:sequence select="current-group()[last()]"/>
         </xsl:for-each-group>
+    </xsl:function>
+    
+    <xsl:function name="imf:serialize" as="xs:string">
+        <xsl:param name="elm" as="element()"/>
+        <xsl:variable name="r">
+            <xsl:for-each select="$elm/descendant-or-self::*">
+                <xsl:value-of select="name(.)"/>
+                <xsl:value-of select="string(.)"/>
+                <xsl:for-each select="@*">
+                    <xsl:value-of select="name(.)"/>
+                    <xsl:value-of select="string(.)"/>
+                </xsl:for-each>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:value-of select="$r"/>
     </xsl:function>
     
 </xsl:stylesheet>
