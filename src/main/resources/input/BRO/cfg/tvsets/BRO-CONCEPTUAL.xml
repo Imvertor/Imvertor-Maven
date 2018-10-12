@@ -12,4 +12,21 @@
     
     <name>BRO CONCEPTUAL</name>
     
+    <tagged-values xml:id="tagset">
+        
+        <tv norm="note" id="CFG-TV-RULES-IMBROA">
+            <name lang="nl">Regels IMBRO/A</name>
+            <name lang="en">Rules IMBRO/A</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo> <!-- TODO niet op KKG -->
+                <stereo minmax="0..1">stereotype-name-composite</stereo><!-- TODO remove? -->
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+        
+    </tagged-values>
+    
 </tagset>
