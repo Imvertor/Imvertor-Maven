@@ -204,10 +204,12 @@
                     <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                         <xsl:value-of select="' '"/>
-                        <a href="#{../@id-global}">
-                            <xsl:value-of select="../@name"/>
-                        </a>
-                        <xsl:value-of select="' '"/>
+                        <xsl:if test="exists(../@id-global)">
+                            <a href="#{../@id-global}">
+                                <xsl:value-of select="../@name"/>
+                            </a>
+                            <xsl:value-of select="' '"/>
+                        </xsl:if>
                         <xsl:value-of select="@name"/>
                     </xsl:element>
                     <xsl:apply-templates mode="detail"/>
