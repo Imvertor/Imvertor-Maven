@@ -33,5 +33,16 @@
                 <stereo minmax="1..1" default="BRO">stereotype-name-relation-role</stereo>
             </stereotypes>
         </tv>
+        <tv id="CFG-TV-UNITOFMEASURE">
+            <name lang="nl">Meeteenheid</name>/name>
+            <name lang="en">Unit of measure</name>
+            <desc lang="nl">De meeteenheid van de opgegeven waarde.</desc>
+            <desc lang="en">The unit of measure of the value specified.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1" default="BRO">stereotype-name-attribute</stereo>
+            </stereotypes>
+        </tv>
+        
     </tagged-values>
 </tagset>

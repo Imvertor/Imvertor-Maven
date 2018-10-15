@@ -893,6 +893,9 @@
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-AANDUIDINGSTRIJDIGHEIDNIETIGHEID'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-AANDUIDINGSTRIJDIGHEIDNIETIGHEID'))"/>
                 </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-UNITOFMEASURE'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-UNITOFMEASURE'))"/>
+                </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEKARDINALITEIT'">
                     <xsl:variable name="min" select="$relation/imvert:min-occurs"/>
                     <xsl:variable name="max" select="$relation/imvert:max-occurs"/>

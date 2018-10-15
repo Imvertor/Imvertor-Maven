@@ -379,6 +379,13 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
         </levels>
     </doc-rule>
+    <doc-rule id="CFG-DOC-UNITOFMEASURE">
+        <name lang="nl">Meeteenheid</name>
+        <name lang="en">Unit of measure</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+        </levels>
+    </doc-rule>
     <doc-rule id="CFG-DOC-TRACE">
         <name lang="nl">Onderliggende constructies</name>
         <name lang="en">Underlying constructs</name>
