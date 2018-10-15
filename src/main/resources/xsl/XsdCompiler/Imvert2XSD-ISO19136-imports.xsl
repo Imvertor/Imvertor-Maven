@@ -94,7 +94,10 @@
             <xsl:sequence select="for $qname in .//xs:restriction/@base return imf:get-prefix($qname)"/>
             <xsl:sequence select="for $qname in $uniontokens return imf:get-prefix($qname)"/>
             
-            <xsl:sequence select="for $elm in .//xs:appinfo//* return if (contains(name($elm),':')) then imf:get-prefix(name($elm)) else ()"/>
+            <!-- https://github.com/Imvertor/Imvertor-Maven/issues/48
+                this is not required:
+                <xsl:sequence select="for $elm in .//xs:appinfo//* return if (contains(name($elm),':')) then imf:get-prefix(name($elm)) else ()"/> 
+            -->
         </xsl:variable>
         
         <xsl:variable name="imports" as="node()*">

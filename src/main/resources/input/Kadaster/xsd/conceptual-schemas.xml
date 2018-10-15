@@ -621,6 +621,8 @@
             phase="3" 
             location="http://schemas.opengis.net/gmlsfProfile/2.0/gmlsfLevels.xsd">
             
+            <!-- see https://github.com/Imvertor/Imvertor-Maven/issues/48 -->
+            
             <description>TODO</description>
             
             <releases>
