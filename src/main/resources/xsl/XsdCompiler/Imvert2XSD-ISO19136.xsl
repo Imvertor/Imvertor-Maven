@@ -800,7 +800,10 @@
             </xs:appinfo>
         </xsl:variable>
         
+        <xsl:variable name="is-gml-measure" select="$this/imvert:conceptual-schema-type = 'Measure' and $this/imvert:type-package = 'Geography Markup Language 3'"/>
+        
         <xsl:choose>
+            
             <!-- preliminary -->
             <xsl:when test="$codespace[2]">
                 <xsl:sequence select="imf:msg($this,'ERROR','Codespace set on attribute as well as on type: [1] and [2]', ($codespace))"/>
@@ -1051,6 +1054,24 @@
                                 </xs:complexContent>
                             </xsl:otherwise>
                         </xsl:choose>
+                    </xs:complexType>
+                </xs:element>
+            </xsl:when>
+            
+            <xsl:when test="$is-gml-measure">
+                <xsl:variable name="uom" select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-UNITOFMEASURE')"/>
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:sequence select="imf:create-comment($this,'A conceptual complex type, a GML Measure')"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:restriction base="gml:MeasureType">
+                                <xs:attribute name="uom" type="gml:UomIdentifier" use="required" fixed="{$uom}" />
+                            </xs:restriction>
+                        </xs:simpleContent>
                     </xs:complexType>
                 </xs:element>
             </xsl:when>
