@@ -465,8 +465,12 @@
                                     <xsl:sequence select="imf:create-comment(.,'A choice member, which is a datatype')"/>
                                     <xsl:sequence select="imf:create-element-property(.)"/>
                                 </xsl:when>
+                                <xsl:when test="empty($defining-class) and $allow-scalar-in-union">
+                                    <xsl:sequence select="imf:create-comment(.,'A choice member, which is a scalar type')"/>
+                                    <xsl:sequence select="imf:create-element-property(.)"/>
+                                </xsl:when>
                                 <xsl:when test="empty($defining-class)">
-                                    <xsl:sequence select="imf:msg(.,'ERROR', 'Unable to create a union of scalar types',())"/> <!-- IM-291 -->
+                                    <xsl:sequence select="imf:msg(.,'ERROR', 'Unable to create a union of scalar types',())"/> <!-- IM-291, https://github.com/Imvertor/Imvertor-Maven/issues/44 -->
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:sequence select="imf:create-comment(.,'A choice member')"/>

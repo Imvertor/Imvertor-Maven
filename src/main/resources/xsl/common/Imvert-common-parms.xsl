@@ -96,4 +96,6 @@
     
     <xsl:variable name="template-file-model-guid" select="imf:get-config-string('system','template-file-model-guid','unknown')"/>
  
+    <xsl:variable name="allow-scalar-in-union" select="imf:boolean(imf:get-config-string('cli','allowscalarinunion','yes'))"/>
+    
 </xsl:stylesheet>

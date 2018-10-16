@@ -53,6 +53,12 @@
          <tip>No if aliases for objects and relations should not be tested (STUB)</tip>
          <required>false</required>
       </cli-parm> 
+      <cli-parm>
+         <name>allowscalarinunion</name>
+         <arg>yes|no</arg>
+         <tip>Yes if scalar values may occur in unions</tip>
+         <required>false</required>
+      </cli-parm> 
    </cli-parms>
    <properties>
         

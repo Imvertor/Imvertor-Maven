@@ -611,11 +611,14 @@
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]">
         <!--setup-->
         <xsl:variable name="types" select="imvert:attributes/imvert:attribute/imvert:type-name"/>
+        <xsl:variable name="types-are-scalars" select="exists(imvert:attributes/imvert:attribute[empty(imvert:type-id)])"/>
         <!--validation-->
-        <!-- union elements must all be of a different datatype -->
         <xsl:sequence select="imf:report-error(.,
-            count($types) ne count(distinct-values($types)), 
-            'Union elements must all be of a different datatype.')"/>
+            not($allow-scalar-in-union) and $types-are-scalars, 
+            'Union elements must not be a scalar')"/>
+        <xsl:sequence select="imf:report-error(.,
+            not($types-are-scalars) and count($types) ne count(distinct-values($types)), 
+            'Union elements must all be of a different datatype')"/>
         <xsl:next-match/>
     </xsl:template>
     
