@@ -91,7 +91,7 @@
     <xsl:variable name="sf-conformance-level" select="imf:get-config-string('cli','sfconformance','UNSPECIFIED')"/>
     
     <xsl:variable name="model-version" select="/imvert:packages/imvert:version"/>
-  
+    
     <xsl:template match="imvert:class" mode="type-in-package">
         <type 
             name="{imvert:name}"
@@ -196,6 +196,7 @@
         </xsl:variable>
         
         <xsl:variable name="schema-version" select="imvert:version"/>
+        
         <xsl:variable name="schema-phase" select="imvert:phase"/>
         
         <!-- historical note: we removed nsim-tally, and introduced a second step: the import XSL -->
@@ -1410,8 +1411,11 @@
     </xsl:function>
     
     <xsl:function name="imf:get-namespace" as="xs:string">
-        <xsl:param name="this" as="node()"/>
-
+        <xsl:param name="this" as="element(imvert:package)"/> 
+        
+        <xsl:variable name="schema-version" select="$this/imvert:version"/>
+        <xsl:variable name="schema-version-majorminor" select="string-join(subsequence(tokenize($schema-version,'\.'),1,2),'.')"/>
+        
         <xsl:variable name="namespace-composition" select="imf:get-config-schemarules()/parameter[@name='namespace-composition']"/>
         
         <xsl:choose>
@@ -1422,7 +1426,10 @@
                 <xsl:value-of select="$this/imvert:namespace"/>
             </xsl:when>
             <xsl:when test="$namespace-composition = 'version'">
-                <xsl:value-of select="concat($this/imvert:namespace,'/', $model-version)"/>
+                <xsl:value-of select="concat($this/imvert:namespace,'/', $schema-version)"/>
+            </xsl:when>
+            <xsl:when test="$namespace-composition = 'versionMajorMinor'">
+                <xsl:value-of select="concat($this/imvert:namespace,'/', $schema-version-majorminor)"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="concat($this/imvert:namespace,'/v', imf:get-release($this))"/>

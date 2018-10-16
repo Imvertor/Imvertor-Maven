@@ -26,6 +26,9 @@
     <!-- 
         BRO specific rules 
     -->
+    
+    <!-- specify if version or release or none must be inserted into the XSD namespaces -->
+    <parameter name="namespace-composition">versionMajorMinor</parameter>
   
     <!-- specify the minOccurs/maxOccurs when needed ("default") or "always" -->
     <parameter name="specify-xsd-occurrence">always</parameter><!-- only applies to ISO19136 -->
