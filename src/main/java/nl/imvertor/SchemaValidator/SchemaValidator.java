@@ -50,15 +50,25 @@ public class SchemaValidator extends Step {
 		prepare();
 
 		// set some status info
-		configurator.setXParm("appinfo/schema-validation-status",
+		String approach = configurator.getXParm("appinfo/xml-schemalocation-approach",false);
+		String xs = 
+				(approach != null && approach.equals("absolute")) ? "impossible" : 
 				configurator.isTrue("cli","validateschema") ? "requested" : runner.isFinal() ? "required" : 
-				configurator.isTrue("cli","createxmlschema") ? "skipped" : "schemas not generated");
+				configurator.isTrue("cli","createxmlschema") ? "skipped" : "schemas not generated";
 		
-		runner.info(logger,"Validating XML schemas");
+		configurator.setXParm("appinfo/schema-validation-status", xs);
 		
-		validateSchemas(); // ignore result boolean
+		if (xs.equals("requested") || xs.equals("required")) {
+			runner.info(logger,"Validating XML schemas");
+			
+			validateSchemas(); // ignore result boolean
+
+		} else if (xs.equals("impossible")) {
+			runner.info(logger,"Not validating XML schemas, because schemas will be relocated");
+		}
+		
 		configurator.setStepDone(STEP_NAME);
-		
+
 		// save any changes to the work configuration for report and future steps
 	    configurator.save();
 	    

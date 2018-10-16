@@ -38,6 +38,8 @@
   
     <xsl:variable name="schema-defs" select="/imvert:schemas/imvert:schema"/>
   
+    <xsl:variable name="xml-schemalocation-approach" select="imf:get-config-schemarules()/parameter[@name='xml-schemalocation-approach']"/>
+    
     <xsl:template match="/imvert:schemas">
         
        <!-- 
@@ -51,9 +53,13 @@
             <imvert:result-file-fullpath>file:/D:/projects/validprojects/Kadaster-Imvertor/Imvertor-OS-work/default/app/xsd/PersoonZoekenEnOpvoeren/CDMKAD-adres/v20150201/PersoonZoekenEnOpvoeren_Adres_v1_8_0.xsd</imvert:result-file-fullpath>
         </imvert:schema>
       -->
+        
         <imvert:schemas>
             <xsl:apply-templates select="imvert:schema"/>
         </imvert:schemas>  
+        
+        <!-- and pass the XML schema location approach to the parms. -->
+        <xsl:sequence select="imf:set-config-string('appinfo','xml-schemalocation-approach',$xml-schemalocation-approach,true())"/>
         
     </xsl:template>
   
@@ -141,7 +147,17 @@
                     </xsl:when>
                     <xsl:when test="exists($schema-subpath)">
                         <!-- schema found. This is a generated schema. -->
-                        <xs:import namespace="{$schema-namespace}" schemaLocation="{$steps-back}{$schema-subpath}"/>
+                        
+                        <!-- see https://github.com/Imvertor/Imvertor-Maven/issues/51 -->
+                        <xsl:variable name="relative-url" select="concat($steps-back,$schema-subpath)"/>
+                        <xsl:variable name="absolute-url" select="$schema-def[1]/imvert:result-url"/>
+                        
+                        <xs:import namespace="{$schema-namespace}" schemaLocation="{if ($xml-schemalocation-approach = 'absolute') then $absolute-url else $relative-url}"/>
+                        
+                        <xsl:if test="$xml-schemalocation-approach = 'absolute' and not(normalize-space($absolute-url))">
+                            <xsl:sequence select="imf:msg('ERROR', 'XML schema locations must be absolute but no URL provided',())"/> <!-- https://github.com/Imvertor/Imvertor-Maven/issues/51 -->
+                        </xsl:if>
+                        
                         <namespace prefix="{$prefix}" uri="{$schema-namespace}"/> 
                     </xsl:when>
                     <xsl:otherwise>

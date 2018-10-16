@@ -137,13 +137,16 @@
                                 <xsl:sequence select="imf:create-info-element('imvert:namespace',$external-package/imvert:namespace)"/>
                                 <xsl:choose>
                                     <xsl:when test="imf:boolean($external-schemas-reference-by-url)">
+                                        <!-- TODO vervalt? -->
                                         <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$external-package/imvert:location)"/>
                                     </xsl:when>
                                     <xsl:otherwise>
                                         <xsl:variable name="schema-subpath" select="imf:get-xsd-filesubpath($external-package)"/>
                                         <xsl:variable name="file-fullpath" select="imf:get-xsd-filefullpath($external-package)"/>
+                                        <xsl:variable name="file-url" select="$external-package/imvert:location"/>
                                         <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$schema-subpath)"/>
                                         <xsl:sequence select="imf:create-info-element('imvert:result-file-fullpath',$file-fullpath)"/>
+                                        <xsl:sequence select="imf:create-info-element('imvert:result-url',$file-url)"/>
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </imvert:schema>
@@ -157,8 +160,10 @@
                             <xsl:sequence select="imf:create-info-element('imvert:name',$external-package/imvert:name)"/>
                             <xsl:sequence select="imf:create-info-element('imvert:prefix',$external-package/imvert:short-name)"/>
                             <xsl:sequence select="imf:create-info-element('imvert:namespace',$external-package/imvert:namespace)"/>
+                            
                             <xsl:choose>
                                 <xsl:when test="imf:boolean($external-schemas-reference-by-url)">
+                                    <!-- TODO vervalt? -->
                                     <xsl:comment>Referenced by URL</xsl:comment>
                                     <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$external-package/imvert:location)"/>
                                 </xsl:when>
@@ -166,10 +171,13 @@
                                     <xsl:comment>Referenced by local path</xsl:comment>
                                     <xsl:variable name="schema-subpath" select="imf:get-xsd-filesubpath($external-package)"/>
                                     <xsl:variable name="file-fullpath" select="imf:get-xsd-filefullpath($external-package)"/>
+                                    <xsl:variable name="file-url" select="$external-package/imvert:location"/>
                                     <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$schema-subpath)"/>
                                     <xsl:sequence select="imf:create-info-element('imvert:result-file-fullpath',$file-fullpath)"/>
+                                    <xsl:sequence select="imf:create-info-element('imvert:result-url',$file-url)"/>
                                 </xsl:otherwise>
                             </xsl:choose>
+
                         </imvert:schema>
                     </xsl:for-each>
                 </imvert:schemas>
@@ -210,7 +218,10 @@
             <xsl:sequence select="imf:create-info-element('imvert:namespace',imf:get-namespace(.))"/>
             <xsl:sequence select="imf:create-info-element('imvert:result-file-subpath',$schema-subpath)"/>
             <xsl:sequence select="imf:create-info-element('imvert:result-file-fullpath',$schemafile)"/>
-        
+            
+            <xsl:variable name="file-url" select="imf:get-most-relevant-compiled-taggedvalue($this-package,'##CFG-TV-XSDLOCATION')"/>
+            <xsl:sequence select="imf:create-info-element('imvert:result-url',$file-url)"/>
+            
             <xs:schema>
                 <!-- schema attributes -->
                 <xsl:attribute name="targetNamespace" select="imf:get-namespace(.)"/>

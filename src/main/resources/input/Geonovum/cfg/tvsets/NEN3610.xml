@@ -22,4 +22,17 @@
         </tv>
     </tagged-values>
     
+    <tagged-values>
+        <tv norm="space" id="CFG-TV-XSDLOCATION">
+            <name lang="nl">XML Schema locatie</name>
+            <name lang="en">XML Schema location</name>
+            <desc lang="nl">De URL op basis waarvan de locatie van het corresponderende XML schema kan worden bepaald</desc>
+            <desc lang="en">The URL based on which the location of the XML Schema can be determined</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-domain-package</stereo>
+            </stereotypes>
+        </tv>
+    </tagged-values>
+    
 </tagset>
