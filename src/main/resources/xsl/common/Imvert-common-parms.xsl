@@ -92,8 +92,6 @@
     <xsl:variable name="external-schemas-reference-by-url" select="imf:get-config-string('cli','externalurl')"/>
     <xsl:variable name="anonymous-components" select="false()"/> <!-- IM-83 STALLED! -->
     
-    <xsl:variable name="variant-package-name" select="''"/> <!--TODO remove: not specified -->
-    
     <xsl:variable name="template-file-model-guid" select="imf:get-config-string('system','template-file-model-guid','unknown')"/>
  
     <xsl:variable name="allow-scalar-in-union" select="imf:boolean(imf:get-config-string('cli','allowscalarinunion','yes'))"/>

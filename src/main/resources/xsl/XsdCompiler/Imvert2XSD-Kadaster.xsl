@@ -1382,7 +1382,7 @@
     -->
     <xsl:function name="imf:get-xsd-filename" as="xs:string">
         <xsl:param name="this" as="node()"/>
-        <xsl:value-of select="concat($variant-package-name,$application-package-name,'_',$this/imvert:name,'_v',replace($this/imvert:version,'\.','_'),'.xsd')"/>
+        <xsl:value-of select="concat($application-package-name,'_',$this/imvert:name,'_v',replace($this/imvert:version,'\.','_'),'.xsd')"/>
     </xsl:function>
     
     <!-- 
