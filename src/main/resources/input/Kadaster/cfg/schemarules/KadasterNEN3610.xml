@@ -28,5 +28,7 @@
     <!-- 
         Kadaster specific rules 
     -->
+    <!-- specify if strings must be non-empty -->
+    <parameter name="strings-nonempty">false</parameter>
     
 </schema-rules>

@@ -26,6 +26,8 @@
     <!-- 
         BRO specific rules 
     -->
+    <!-- specify if strings must be non-empty -->
+    <parameter name="strings-nonempty">false</parameter>
     
     <!-- specify if the schema location must be absolute or relative. When absolute, XML schema location must be specified as a tagged value. -->
     <parameter name="xml-schemalocation-approach">absolute</parameter>

@@ -92,6 +92,10 @@
     
     <xsl:variable name="model-version" select="/imvert:packages/imvert:version"/>
     
+    <xsl:variable name="namespace-composition" select="imf:get-config-schemarules()/parameter[@name='namespace-composition']"/>
+
+    <xsl:variable name="strings-nonempty" select="imf:get-config-schemarules()/parameter[@name='strings-nonempty']"/><!-- https://github.com/Imvertor/Imvertor-Maven/issues/52 -->
+    
     <xsl:template match="imvert:class" mode="type-in-package">
         <type 
             name="{imvert:name}"
@@ -968,18 +972,29 @@
                     </xsl:choose>
                 </xs:element>
             </xsl:when>
-            <xsl:when test="$type=('xs:string') and not($this/imvert:baretype='TXT')"> <!-- these types could be, but may may not be empty -->
+            <xsl:when test="$type=('xs:string') and not($this/imvert:baretype='TXT')"> 
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-comment($this,'A string')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
-                    <xs:simpleType>
-                        <xs:restriction base="{$type}">
-                            <xs:pattern value="\S.*"/> <!-- Note: do not use xs:minLength as this allows for a single space -->
-                        </xs:restriction>
-                    </xs:simpleType>
+                    <xsl:variable name="nonempty" select="imf:create-nonempty-constraint($this)"/>
+                    <xsl:choose>
+                        <xsl:when test="exists($nonempty)">
+                            <!-- strings may not be empty -->
+                            <xsl:sequence select="imf:create-comment($this,'A string, mode 1')"/>
+                            <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
+                            <xs:simpleType>
+                                <xs:restriction base="{$type}">
+                                    <xsl:sequence select="$nonempty"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="type" select="$type"/>
+                            <xsl:sequence select="imf:create-comment($this,'A string, mode 2')"/>
+                            <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xs:element>
             </xsl:when>
             <xsl:when test="starts-with($type,'xs:')"> 
@@ -1427,8 +1442,6 @@
         <xsl:variable name="schema-version" select="$this/imvert:version"/>
         <xsl:variable name="schema-version-majorminor" select="string-join(subsequence(tokenize($schema-version,'\.'),1,2),'.')"/>
         
-        <xsl:variable name="namespace-composition" select="imf:get-config-schemarules()/parameter[@name='namespace-composition']"/>
-        
         <xsl:choose>
             <xsl:when test="$this/imvert:stereotype/@id = ('stereotype-name-external-package')">
                 <xsl:value-of select="$this/imvert:namespace"/>
@@ -1450,7 +1463,7 @@
 
     <xsl:function name="imf:create-nonempty-constraint" as="item()*">
         <xsl:param name="type" as="xs:string?"/>
-        <xsl:if test="$type=('scalar-string', 'scalar-uri') or not($type)">
+        <xsl:if test="$type=('scalar-string', 'scalar-uri') or not($type) and imf:boolean($strings-nonempty)">
             <xs:pattern value="\S.*"/> <!-- Note: do not use xs:minLength as this allows for a single space -->
         </xsl:if>
     </xsl:function>
