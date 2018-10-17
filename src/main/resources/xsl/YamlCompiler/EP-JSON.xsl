@@ -1149,8 +1149,8 @@
 		<xsl:value-of select="concat('&quot;', $elementName,'&quot;: {' )"/>
 		<xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
 		
-		<xsl:choose>
-			<xsl:when test="$json-version = '2.0'">
+		<?x xsl:choose>
+			<xsl:when test="$json-version = '2.0'" ?>
 				<xsl:value-of select="'&quot;description&quot; : &quot;'"/>
 				<xsl:if test="ep:documentation">
 					<xsl:apply-templates select="ep:documentation"/>
@@ -1169,7 +1169,7 @@
 					</xsl:if>
 				</xsl:for-each>
 				<xsl:value-of select="']'"/>
-			</xsl:when>
+			<?x /xsl:when>
 			<xsl:otherwise>
 
 				<xsl:if test="ep:documentation">
@@ -1189,7 +1189,7 @@
 				</xsl:for-each>
 				<xsl:value-of select="']'"/>
 			</xsl:otherwise>
-		</xsl:choose>
+		</xsl:choose ?>
 		<xsl:value-of select="'}'"/>
 		<xsl:if test="$debugging">
 			,"--------------Einde-06500-<xsl:value-of select="generate-id()"/>": {
