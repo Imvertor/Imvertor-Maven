@@ -1462,23 +1462,12 @@
 			</xsl:when>
 			<xsl:when test="$incomingType = 'year'">
 				<xsl:value-of select="',&quot;format&quot;: &quot;jaar&quot;'"/>
-				<xsl:if test="$json-version != '2.0'">
-					<xsl:value-of select="',&quot;pattern&quot;: &quot;^[1-2]{1}[0-9]{3}$&quot;'"/>
-				</xsl:if>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'yearmonth'">
 				<xsl:value-of select="',&quot;format&quot;: &quot;jaarmaand&quot;'"/>
-				<xsl:if test="$json-version != '2.0'">
-					<xsl:value-of select="',&quot;pattern&quot;: &quot;^[1-2]{1}[0-9]{3}-^[0-1]{1}[0-9]{1}$&quot;'"/>
-				</xsl:if>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'dateTime'">
 				<xsl:value-of select="',&quot;format&quot;: &quot;date-time&quot;'"/>
-			</xsl:when>
-			<xsl:when test="$incomingType = 'postcode'">
-				<xsl:if test="$json-version != '2.0'">
-					<xsl:value-of select="',&quot;pattern&quot;: &quot;^[1-9]{1}[0-9]{3}[A-Z]{2}$&quot;'"/>
-				</xsl:if>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'uri'">
 				<xsl:value-of select="',&quot;format&quot;: &quot;uri&quot;'"/>
@@ -1516,6 +1505,21 @@
 				</xsl:if>
 				<xsl:if test="ep:max-value">
 					<xsl:value-of select="concat(',&quot;maximum&quot;: ',ep:max-value)"/>
+				</xsl:if>
+			</xsl:when>
+			<xsl:when test="$incomingType = 'year'">
+				<xsl:if test="$json-version != '2.0'">
+					<xsl:value-of select="',&quot;pattern&quot;: &quot;^[1-2]{1}[0-9]{3}$&quot;'"/>
+				</xsl:if>
+			</xsl:when>
+			<xsl:when test="$incomingType = 'yearmonth'">
+				<xsl:if test="$json-version != '2.0'">
+					<xsl:value-of select="',&quot;pattern&quot;: &quot;^[1-2]{1}[0-9]{3}-^[0-1]{1}[0-9]{1}$&quot;'"/>
+				</xsl:if>
+			</xsl:when>
+			<xsl:when test="$incomingType = 'postcode'">
+				<xsl:if test="$json-version != '2.0'">
+					<xsl:value-of select="',&quot;pattern&quot;: &quot;^[1-9]{1}[0-9]{3}[A-Z]{2}$&quot;'"/>
 				</xsl:if>
 			</xsl:when>
 			<xsl:otherwise/>
