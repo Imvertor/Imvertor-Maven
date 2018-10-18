@@ -355,6 +355,13 @@
 						<xsl:choose>
 							<xsl:when test="ep:data-type">
 								<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
+								<xsl:variable name="format">
+									<xsl:call-template name="deriveFormat">
+										<xsl:with-param name="incomingType">
+											<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
+										</xsl:with-param>
+									</xsl:call-template>
+								</xsl:variable>
 								<xsl:variable name="facets">
 									<xsl:call-template name="deriveFacets">
 										<xsl:with-param name="incomingType">
@@ -362,6 +369,7 @@
 										</xsl:with-param>
 									</xsl:call-template>
 								</xsl:variable>
+								<xsl:value-of select="$format"/>
 								<xsl:value-of select="$facets"/>
 								<xsl:if test="ep:example">
 									<xsl:text>&#xa;          example: </xsl:text><xsl:value-of select="ep:example"/>
@@ -458,6 +466,13 @@
 						<xsl:choose>
 							<xsl:when test="ep:data-type">
 								<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
+								<xsl:variable name="format">
+									<xsl:call-template name="deriveFormat">
+										<xsl:with-param name="incomingType">
+											<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
+										</xsl:with-param>
+									</xsl:call-template>
+								</xsl:variable>
 								<xsl:variable name="facets">
 									<xsl:call-template name="deriveFacets">
 										<xsl:with-param name="incomingType">
@@ -465,6 +480,7 @@
 										</xsl:with-param>
 									</xsl:call-template>
 								</xsl:variable>
+								<xsl:value-of select="$format"/>
 								<xsl:value-of select="$facets"/>
 								<xsl:if test="ep:example">
 									<xsl:text>&#xa;          example: </xsl:text><xsl:value-of select="ep:example"/>
@@ -890,7 +906,30 @@
 			</xsl:call-template>
 		</xsl:if>
 	</xsl:template>
-
+	
+	<xsl:template name="deriveFormat">
+		<xsl:param name="incomingType"/>
+		<xsl:choose>
+			<!-- Some scalar typse resolve to a format and/or pattern. -->
+			<xsl:when test="$incomingType = 'date'">
+				<xsl:text>&#xa;            format: date</xsl:text>
+			</xsl:when>
+			<xsl:when test="$incomingType = 'year'">
+				<xsl:text>&#xa;            format: jaar</xsl:text>
+			</xsl:when>
+			<xsl:when test="$incomingType = 'yearmonth'">
+				<xsl:text>&#xa;            format: jaarmaand</xsl:text>
+			</xsl:when>
+			<xsl:when test="$incomingType = 'dateTime'">
+				<xsl:text>&#xa;            format: date-time</xsl:text>
+			</xsl:when>
+			<xsl:when test="$incomingType = 'uri'">
+				<xsl:text>&#xa;            format: uri</xsl:text>
+			</xsl:when>
+			<xsl:otherwise/>
+		</xsl:choose>
+	</xsl:template>
+	
     <xsl:template name="deriveFacets">
         <xsl:param name="incomingType"/>
         
@@ -923,10 +962,16 @@
 					<xsl:text>&#xa;            maximum: </xsl:text><xsl:value-of select="ep:max-value"/>
 				</xsl:if>
             </xsl:when>
-       	<xsl:when test="$incomingType = 'postcode'">
-       		<xsl:text>&#xa;            pattern: ^[1-9]{1}[0-9]{3}[A-Z]{2}$</xsl:text>
-       	</xsl:when>
-       	<xsl:otherwise/>
+	       	<xsl:when test="$incomingType = 'year'">
+	       		<xsl:text>&#xa;            pattern: ^[1-2]{1}[0-9]{3}</xsl:text>
+	       	</xsl:when>
+	       	<xsl:when test="$incomingType = 'yearmonth'">
+	       		<xsl:text>&#xa;            pattern: ^[1-2]{1}[0-9]{3}-^[0-1]{1}[0-9]{1}</xsl:text>
+	       	</xsl:when>
+	       	<xsl:when test="$incomingType = 'postcode'">
+	       		<xsl:text>&#xa;            pattern: ^[1-9]{1}[0-9]{3}[A-Z]{2}</xsl:text>
+	       	</xsl:when>
+	       	<xsl:otherwise/>
         </xsl:choose>
     </xsl:template>
 
