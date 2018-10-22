@@ -10,6 +10,7 @@
     <mapping name="BRO_GEOSTANDAARDEN">
         <use>GML321</use>
         <use>SWE201</use>
+        <use>OM200</use>
         
         <use>ISO19115</use>
        
@@ -20,6 +21,7 @@
         <use>NEN3610</use>
         
         <use>BRO</use> <!-- cross references between BRO models -->
+        
         <!-- samples -->
         <use>BRO-SAMPLE1</use>
         <use>BRO-SAMPLE2</use>
@@ -91,7 +93,7 @@
             namespace="http://www.opengis.net/gml/3.2" 
             version="0.0.2-3.2.1" 
             phase="3" 
-            location="http://www.opengis.net/gml/3.2/gml-profile.xsd"> 
+            location="https://schema.broservices.nl/profile/gml/1.0/gml-profile.xsd"> 
             
             <releases>
                 <release>BROPROFILE</release>
@@ -267,7 +269,7 @@
     <conceptual-schema>
         <name>SWE Common profile for BRO</name>
         <short-name>swe</short-name>
-        <description>...TODO...</description>
+        <description>SWE Common profile for BRO.</description>
         <url>http://www.bro.nl/conceptual-schemas/SWE</url>
         <catalog>http://www.opengeospatial.org/standards/swe[entry]</catalog>        
         
@@ -286,6 +288,35 @@
                 <name>UnitReference</name>
                 <catalog-entry>#UnitReference</catalog-entry>
                 <xsd-type name="UnitReference" asAttributeDesignation="complextype" asAttribute="UnitReference"/>
+                <managed-ids/>
+            </construct>
+            <!-- TODO etc -->
+        </map>
+        
+    </conceptual-schema>
+    
+    <conceptual-schema>
+        <name>Observations &amp; Measurements profile for BRO</name>
+        <short-name>om</short-name>
+        <description>Observation profile for BRO.</description>
+        <url>http://www.bro.nl/conceptual-schemas/OM</url>
+        <catalog>http://www.opengeospatial.org/standards/om[entry]</catalog>        
+        
+        <map 
+            name="OM200" 
+            namespace="http://www.opengis.net/om/2.0" 
+            version="2.0.0" 
+            phase="3" 
+            location="https://schema.broservices.nl/profile/om/1.0/om-profile.xsd"> 
+            
+            <releases>
+                <release>OMPROFILE</release>
+            </releases>
+            
+            <construct>
+                <name>OM_Observation</name>
+                <catalog-entry>#Observation</catalog-entry>
+                <xsd-type name="OM_Observation" asAttributeDesignation="complextype" asAttribute="OM_ObservationType"/>
                 <managed-ids/>
             </construct>
             <!-- TODO etc -->
