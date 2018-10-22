@@ -1551,9 +1551,11 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+		<xsl:variable name="maxOccurs" select="ep:max-occurs"/>
+		<xsl:variable name="minOccurs" select="ep:min-occurs"/>
 		<xsl:variable name="occurence-type">
 			<xsl:choose>
-				<xsl:when test="ep:max-occurs = 'unbounded'">array</xsl:when>
+				<xsl:when test="$maxOccurs = 'unbounded' or $maxOccurs > 1">array</xsl:when>
 				<xsl:otherwise>object</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -1576,6 +1578,12 @@
 		<xsl:choose>
 			<!-- Depending on the occurence-type and the type of construct content is generated. -->
 			<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
+				<xsl:if test="$maxOccurs != 'unbounded'">
+					<xsl:value-of select="concat('&quot;maxItems&quot;: &quot;',$maxOccurs,'&quot;,')"/>
+				</xsl:if>
+				<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+					<xsl:value-of select="concat('&quot;minItems&quot;: &quot;',$minOccurs,'&quot;,')"/>
+				</xsl:if>
 				<xsl:value-of select="'&quot;items&quot;: {'"/>
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/Link&quot;')"/>
 				<xsl:value-of select="'}'"/>
@@ -1588,6 +1596,12 @@
 				<xsl:value-of select="'}'"/>
 			</xsl:when>
 			<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
+				<xsl:if test="$maxOccurs != 'unbounded'">
+					<xsl:value-of select="concat('&quot;maxItems&quot;: &quot;',$maxOccurs,'&quot;,')"/>
+				</xsl:if>
+				<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+					<xsl:value-of select="concat('&quot;minItems&quot;: &quot;',$minOccurs,'&quot;,')"/>
+				</xsl:if>
 				<xsl:value-of select="'&quot;items&quot;: {'"/>
 				<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
 				<xsl:value-of select="'&quot;description&quot;: &quot;uri van een van de volgende mogelijke typen ',$elementName,': '"/>
@@ -1645,9 +1659,11 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+		<xsl:variable name="maxOccurs" select="ep:max-occurs"/>
+		<xsl:variable name="minOccurs" select="ep:min-occurs"/>
 		<xsl:variable name="occurence-type">
 			<xsl:choose>
-				<xsl:when test="ep:max-occurs = 'unbounded'">array</xsl:when>
+				<xsl:when test="$maxOccurs = 'unbounded' or $maxOccurs > 1">array</xsl:when>
 				<xsl:otherwise>object</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -1674,6 +1690,12 @@
 				<!-- Double quotes in documentation text is replaced by a  grave accent. -->
 				<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
 				<xsl:value-of select="'&quot;,'"/>
+				<xsl:if test="$maxOccurs != 'unbounded'">
+					<xsl:value-of select="concat('&quot;maxItems&quot;: &quot;',$maxOccurs,'&quot;,')"/>
+				</xsl:if>
+				<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+					<xsl:value-of select="concat('&quot;minItems&quot;: &quot;',$minOccurs,'&quot;,')"/>
+				</xsl:if>
 				<xsl:value-of select="'&quot;items&quot;: {'"/>
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$typeName,'&quot;')"/>
 				<xsl:value-of select="'}'"/>
@@ -1686,6 +1708,12 @@
 				<!-- Double quotes in documentation text is replaced by a  grave accent. -->
 				<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
 				<xsl:value-of select="'&quot;,'"/>
+				<xsl:if test="$maxOccurs != 'unbounded'">
+					<xsl:value-of select="concat('&quot;maxItems&quot;: &quot;',$maxOccurs,'&quot;,')"/>
+				</xsl:if>
+				<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+					<xsl:value-of select="concat('&quot;minItems&quot;: &quot;',$minOccurs,'&quot;,')"/>
+				</xsl:if>
 				<xsl:value-of select="'&quot;items&quot;: {'"/>
 				<xsl:apply-templates select="//ep:construct[ep:tech-name = $type-name]" mode="supertype-association-in-embedded"/>
 				<xsl:value-of select="'}'"/>
