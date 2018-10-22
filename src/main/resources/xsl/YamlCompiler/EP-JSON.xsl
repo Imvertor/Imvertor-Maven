@@ -1149,8 +1149,8 @@
 		<xsl:value-of select="concat('&quot;', $elementName,'&quot;: {' )"/>
 		<xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
 		
-		<xsl:choose>
-			<xsl:when test="$json-version = '2.0'">
+		<?x xsl:choose>
+			<xsl:when test="$json-version = '2.0'" ?>
 				<xsl:value-of select="'&quot;description&quot; : &quot;'"/>
 				<xsl:if test="ep:documentation">
 					<xsl:apply-templates select="ep:documentation"/>
@@ -1169,7 +1169,7 @@
 					</xsl:if>
 				</xsl:for-each>
 				<xsl:value-of select="']'"/>
-			</xsl:when>
+			<?x /xsl:when>
 			<xsl:otherwise>
 
 				<xsl:if test="ep:documentation">
@@ -1189,7 +1189,7 @@
 				</xsl:for-each>
 				<xsl:value-of select="']'"/>
 			</xsl:otherwise>
-		</xsl:choose>
+		</xsl:choose ?>
 		<xsl:value-of select="'}'"/>
 		<xsl:if test="$debugging">
 			,"--------------Einde-06500-<xsl:value-of select="generate-id()"/>": {
@@ -1462,23 +1462,12 @@
 			</xsl:when>
 			<xsl:when test="$incomingType = 'year'">
 				<xsl:value-of select="',&quot;format&quot;: &quot;jaar&quot;'"/>
-				<xsl:if test="$json-version != '2.0'">
-					<xsl:value-of select="',&quot;pattern&quot;: &quot;^[1-2]{1}[0-9]{3}$&quot;'"/>
-				</xsl:if>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'yearmonth'">
 				<xsl:value-of select="',&quot;format&quot;: &quot;jaarmaand&quot;'"/>
-				<xsl:if test="$json-version != '2.0'">
-					<xsl:value-of select="',&quot;pattern&quot;: &quot;^[1-2]{1}[0-9]{3}-^[0-1]{1}[0-9]{1}$&quot;'"/>
-				</xsl:if>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'dateTime'">
 				<xsl:value-of select="',&quot;format&quot;: &quot;date-time&quot;'"/>
-			</xsl:when>
-			<xsl:when test="$incomingType = 'postcode'">
-				<xsl:if test="$json-version != '2.0'">
-					<xsl:value-of select="',&quot;pattern&quot;: &quot;^[1-9]{1}[0-9]{3}[A-Z]{2}$&quot;'"/>
-				</xsl:if>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'uri'">
 				<xsl:value-of select="',&quot;format&quot;: &quot;uri&quot;'"/>
@@ -1518,6 +1507,21 @@
 					<xsl:value-of select="concat(',&quot;maximum&quot;: ',ep:max-value)"/>
 				</xsl:if>
 			</xsl:when>
+			<xsl:when test="$incomingType = 'year'">
+				<xsl:if test="$json-version != '2.0'">
+					<xsl:value-of select="',&quot;pattern&quot;: &quot;^[1-2]{1}[0-9]{3}$&quot;'"/>
+				</xsl:if>
+			</xsl:when>
+			<xsl:when test="$incomingType = 'yearmonth'">
+				<xsl:if test="$json-version != '2.0'">
+					<xsl:value-of select="',&quot;pattern&quot;: &quot;^[1-2]{1}[0-9]{3}-^[0-1]{1}[0-9]{1}$&quot;'"/>
+				</xsl:if>
+			</xsl:when>
+			<xsl:when test="$incomingType = 'postcode'">
+				<xsl:if test="$json-version != '2.0'">
+					<xsl:value-of select="',&quot;pattern&quot;: &quot;^[1-9]{1}[0-9]{3}[A-Z]{2}$&quot;'"/>
+				</xsl:if>
+			</xsl:when>
 			<xsl:otherwise/>
 		</xsl:choose>
 	</xsl:template>
@@ -1547,9 +1551,11 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+		<xsl:variable name="maxOccurs" select="ep:max-occurs"/>
+		<xsl:variable name="minOccurs" select="ep:min-occurs"/>
 		<xsl:variable name="occurence-type">
 			<xsl:choose>
-				<xsl:when test="ep:max-occurs = 'unbounded'">array</xsl:when>
+				<xsl:when test="$maxOccurs = 'unbounded' or $maxOccurs > 1">array</xsl:when>
 				<xsl:otherwise>object</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -1572,6 +1578,12 @@
 		<xsl:choose>
 			<!-- Depending on the occurence-type and the type of construct content is generated. -->
 			<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
+				<xsl:if test="$maxOccurs != 'unbounded'">
+					<xsl:value-of select="concat('&quot;maxItems&quot;: &quot;',$maxOccurs,'&quot;,')"/>
+				</xsl:if>
+				<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+					<xsl:value-of select="concat('&quot;minItems&quot;: &quot;',$minOccurs,'&quot;,')"/>
+				</xsl:if>
 				<xsl:value-of select="'&quot;items&quot;: {'"/>
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/Link&quot;')"/>
 				<xsl:value-of select="'}'"/>
@@ -1584,6 +1596,12 @@
 				<xsl:value-of select="'}'"/>
 			</xsl:when>
 			<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
+				<xsl:if test="$maxOccurs != 'unbounded'">
+					<xsl:value-of select="concat('&quot;maxItems&quot;: &quot;',$maxOccurs,'&quot;,')"/>
+				</xsl:if>
+				<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+					<xsl:value-of select="concat('&quot;minItems&quot;: &quot;',$minOccurs,'&quot;,')"/>
+				</xsl:if>
 				<xsl:value-of select="'&quot;items&quot;: {'"/>
 				<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
 				<xsl:value-of select="'&quot;description&quot;: &quot;uri van een van de volgende mogelijke typen ',$elementName,': '"/>
@@ -1641,9 +1659,11 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+		<xsl:variable name="maxOccurs" select="ep:max-occurs"/>
+		<xsl:variable name="minOccurs" select="ep:min-occurs"/>
 		<xsl:variable name="occurence-type">
 			<xsl:choose>
-				<xsl:when test="ep:max-occurs = 'unbounded'">array</xsl:when>
+				<xsl:when test="$maxOccurs = 'unbounded' or $maxOccurs > 1">array</xsl:when>
 				<xsl:otherwise>object</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -1670,6 +1690,12 @@
 				<!-- Double quotes in documentation text is replaced by a  grave accent. -->
 				<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
 				<xsl:value-of select="'&quot;,'"/>
+				<xsl:if test="$maxOccurs != 'unbounded'">
+					<xsl:value-of select="concat('&quot;maxItems&quot;: &quot;',$maxOccurs,'&quot;,')"/>
+				</xsl:if>
+				<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+					<xsl:value-of select="concat('&quot;minItems&quot;: &quot;',$minOccurs,'&quot;,')"/>
+				</xsl:if>
 				<xsl:value-of select="'&quot;items&quot;: {'"/>
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$typeName,'&quot;')"/>
 				<xsl:value-of select="'}'"/>
@@ -1682,6 +1708,12 @@
 				<!-- Double quotes in documentation text is replaced by a  grave accent. -->
 				<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
 				<xsl:value-of select="'&quot;,'"/>
+				<xsl:if test="$maxOccurs != 'unbounded'">
+					<xsl:value-of select="concat('&quot;maxItems&quot;: &quot;',$maxOccurs,'&quot;,')"/>
+				</xsl:if>
+				<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+					<xsl:value-of select="concat('&quot;minItems&quot;: &quot;',$minOccurs,'&quot;,')"/>
+				</xsl:if>
 				<xsl:value-of select="'&quot;items&quot;: {'"/>
 				<xsl:apply-templates select="//ep:construct[ep:tech-name = $type-name]" mode="supertype-association-in-embedded"/>
 				<xsl:value-of select="'}'"/>
