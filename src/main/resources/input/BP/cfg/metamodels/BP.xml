@@ -227,4 +227,32 @@
       
     </stereotypes>
     
+    <!-- this is a set of stereotypes that is essential for constraint processing -->
+
+    <stereotypes>
+        <stereo id="stereotype-name-constraint-invariant">
+            <name lang="en">invariant</name>
+            <name lang="nl">invariant</name>
+            <desc lang="en">An invariant is something that must always be true throughout the use case. e.g. The user's ID matches an ID from the Users table in the database</desc>
+            <construct>constraint</construct>
+        </stereo>
+        <stereo id="stereotype-name-constraint-precondition">
+            <name lang="en">pre-condition</name>
+            <name lang="nl">pre-condition</name>
+            <desc lang="en">A pre condition is something that must be true before the use case is invoked. e.g. a precondition for a use case "Buy Book on WebSite" might be "The user has accessed the website and wants to buy a book".</desc>
+            <construct>constraint</construct>
+        </stereo>
+        <stereo id="stereotype-name-constraint-postcondition">
+            <name lang="en">post-condition</name>
+            <name lang="nl">post-condition</name>
+            <desc lang="en">A post condition is something that must be true after the use case is finished. e.g. The user has successfully purchased a book.</desc>
+            <construct>constraint</construct>
+        </stereo>
+        <stereo id="stereotype-name-constraint-process">
+            <name lang="en">process</name>
+            <name lang="nl">process</name>
+            <desc lang="en">TODO</desc>
+            <construct>constraint</construct>
+        </stereo>
+    </stereotypes>
 </metamodel>

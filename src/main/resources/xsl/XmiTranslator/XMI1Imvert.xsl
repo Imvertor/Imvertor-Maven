@@ -1484,7 +1484,7 @@
             <imvert:constraints>
                 <xsl:for-each select="$constraints">
                     <imvert:constraint>
-                        <xsl:variable name="stereotype-name" select="imf:get-normalized-name(.,'stereotype-name')"/>
+                        <xsl:variable name="stereotype-name" select="imf:get-normalized-name(UML:ModelElement.stereotype/UML:Stereotype/@name,'stereotype-name')"/>
                         <xsl:for-each select="imf:get-stereotypes-ids($stereotype-name)">
                             <imvert:stereotype id="{.}">
                                 <xsl:value-of select="$stereotype-name"/>
@@ -1494,7 +1494,7 @@
                         <xsl:sequence select="imf:create-output-element('imvert:type',imf:get-system-tagged-value(.,'type'))"/>
                         <xsl:sequence select="imf:create-output-element('imvert:weight',imf:get-system-tagged-value(.,'weight'))"/>
                         <xsl:sequence select="imf:create-output-element('imvert:status',imf:get-system-tagged-value(.,'status'))"/>
-                        <xsl:sequence select="imf:create-output-element('imvert:definition',imf:get-system-tagged-value(.,'description'))"/>
+                        <xsl:sequence select="imf:create-output-element('imvert:definition',(imf:get-system-tagged-value(.,'description'),imf:get-system-tagged-value(.,'documentation'))[1])"/>
                        
                         <!-- when constraint on association: -->
                         <xsl:variable name="links" select="imf:get-system-tagged-value(.,'relatedlinks')"/>
