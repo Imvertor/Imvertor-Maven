@@ -1484,7 +1484,8 @@
             <imvert:constraints>
                 <xsl:for-each select="$constraints">
                     <imvert:constraint>
-                        <xsl:variable name="stereotype-name" select="imf:get-normalized-name(UML:ModelElement.stereotype/UML:Stereotype/@name,'stereotype-name')"/>
+                        <xsl:variable name="name" select="UML:ModelElement.stereotype/UML:Stereotype/@name"/>
+                        <xsl:variable name="stereotype-name" select="if ($name) then imf:get-normalized-name($name,'stereotype-name') else ()"/>
                         <xsl:for-each select="imf:get-stereotypes-ids($stereotype-name)">
                             <imvert:stereotype id="{.}">
                                 <xsl:value-of select="$stereotype-name"/>
