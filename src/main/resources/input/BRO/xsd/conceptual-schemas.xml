@@ -300,7 +300,7 @@
         <short-name>om</short-name>
         <description>Observation profile for BRO.</description>
         <url>http://www.bro.nl/conceptual-schemas/OM</url>
-        <catalog>http://www.opengeospatial.org/standards/om[entry]</catalog>        
+        <catalog>http://defs.opengis.net/sissvoc/ogc-def/concept?anylabel=[entry]</catalog>        
         
         <map 
             name="OM200" 
