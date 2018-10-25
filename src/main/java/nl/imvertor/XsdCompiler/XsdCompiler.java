@@ -157,7 +157,7 @@ public class XsdCompiler extends Step {
 		AnyFolder xsdFolder = new AnyFolder(configurator.getXParm("system/work-xsd-folder-path"));
 		xsdFolder.mkdirs();
 				
-		AnyFolder xsdApplicationFolder = new AnyFolder(configurator.getXParm("properties/RESULT_XSD_APPLICATION_FOLDER"));
+		AnyFolder xsdApplicationFolder = new AnyFolder(configurator.mergeParms(configurator.getXParm("properties/RESULT_XSD_APPLICATION_FOLDER")));
 		xsdApplicationFolder.mkdirs();
 		configurator.setXParm("system/xsd-application-folder-path", configurator.mergeParms(xsdApplicationFolder.getCanonicalPath()));
 		
