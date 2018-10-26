@@ -1152,13 +1152,16 @@
 		<?x xsl:choose>
 			<xsl:when test="$json-version = '2.0'" ?>
 				<xsl:value-of select="'&quot;description&quot; : &quot;'"/>
-				<xsl:if test="ep:documentation">
-					<xsl:apply-templates select="ep:documentation"/>
-				</xsl:if>
-				<xsl:for-each select="ep:enum">
-					<xsl:value-of select="concat(' * ',ep:alias,' - ',ep:name)"/>
-				</xsl:for-each>
-				<xsl:value-of select="'&quot;,'"/>
+				<xsl:variable name="enumeration-documentation">
+					<xsl:if test="ep:documentation">
+						<xsl:apply-templates select="ep:documentation"/><xsl:text>:</xsl:text>
+					</xsl:if>
+					<xsl:for-each select="ep:enum">
+						<xsl:value-of select="concat(' * ',ep:alias,' - ',ep:name)"/>
+					</xsl:for-each>
+					<xsl:value-of select="'&quot;,'"/>
+				</xsl:variable>
+				<xsl:sequence select="$enumeration-documentation"/>
 				<xsl:value-of select="'&quot;enum&quot;: ['"/>
 				<xsl:for-each select="ep:enum">
 					<!-- Loop over all enum elements. -->
@@ -1579,10 +1582,10 @@
 			<!-- Depending on the occurence-type and the type of construct content is generated. -->
 			<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
 				<xsl:if test="$maxOccurs != 'unbounded'">
-					<xsl:value-of select="concat('&quot;maxItems&quot;: &quot;',$maxOccurs,'&quot;,')"/>
+					<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
 				</xsl:if>
 				<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
-					<xsl:value-of select="concat('&quot;minItems&quot;: &quot;',$minOccurs,'&quot;,')"/>
+					<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
 				</xsl:if>
 				<xsl:value-of select="'&quot;items&quot;: {'"/>
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/Link&quot;')"/>
@@ -1597,10 +1600,10 @@
 			</xsl:when>
 			<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
 				<xsl:if test="$maxOccurs != 'unbounded'">
-					<xsl:value-of select="concat('&quot;maxItems&quot;: &quot;',$maxOccurs,'&quot;,')"/>
+					<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
 				</xsl:if>
 				<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
-					<xsl:value-of select="concat('&quot;minItems&quot;: &quot;',$minOccurs,'&quot;,')"/>
+					<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
 				</xsl:if>
 				<xsl:value-of select="'&quot;items&quot;: {'"/>
 				<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
@@ -1691,10 +1694,10 @@
 				<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
 				<xsl:value-of select="'&quot;,'"/>
 				<xsl:if test="$maxOccurs != 'unbounded'">
-					<xsl:value-of select="concat('&quot;maxItems&quot;: &quot;',$maxOccurs,'&quot;,')"/>
+					<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
 				</xsl:if>
 				<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
-					<xsl:value-of select="concat('&quot;minItems&quot;: &quot;',$minOccurs,'&quot;,')"/>
+					<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
 				</xsl:if>
 				<xsl:value-of select="'&quot;items&quot;: {'"/>
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$typeName,'&quot;')"/>
@@ -1709,10 +1712,10 @@
 				<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
 				<xsl:value-of select="'&quot;,'"/>
 				<xsl:if test="$maxOccurs != 'unbounded'">
-					<xsl:value-of select="concat('&quot;maxItems&quot;: &quot;',$maxOccurs,'&quot;,')"/>
+					<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
 				</xsl:if>
 				<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
-					<xsl:value-of select="concat('&quot;minItems&quot;: &quot;',$minOccurs,'&quot;,')"/>
+					<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
 				</xsl:if>
 				<xsl:value-of select="'&quot;items&quot;: {'"/>
 				<xsl:apply-templates select="//ep:construct[ep:tech-name = $type-name]" mode="supertype-association-in-embedded"/>
