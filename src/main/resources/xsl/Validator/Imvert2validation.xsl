@@ -610,7 +610,7 @@
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]">
         <!--setup-->
-        <xsl:variable name="types" select="for $a in imvert:attributes/imvert:attribute return concat(imvert:type-package,'::',imvert:type-name)"/>
+        <xsl:variable name="types" select="for $a in imvert:attributes/imvert:attribute return concat($a/imvert:type-package,'::',$a/imvert:type-name)"/>
         <xsl:variable name="types-are-scalars" select="exists(imvert:attributes/imvert:attribute[empty(imvert:type-id)])"/>
         <!--validation-->
         <xsl:sequence select="imf:report-error(.,
