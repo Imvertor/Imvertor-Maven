@@ -5,8 +5,8 @@
 	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
 	
 	<!-- The first variable is meant for the server environment, the second one is used during development in XML-Spy. -->
-	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
-	<!--<xsl:variable name="debugging" select="false()" as="xs:boolean"/>-->
+	<!--<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>-->
+	<xsl:variable name="debugging" select="true()" as="xs:boolean"/>
 	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
@@ -104,6 +104,11 @@
 								]">
 			<xsl:variable name="type-name" select="ep:type-name"/>
 			<!-- The regular constructs are generated here. -->
+		<xsl:if test="$debugging">
+			"--------------Debuglocatie-ROME1-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "ROME1"
+			},
+		</xsl:if>
 			<xsl:call-template name="construct"/>
 			<xsl:if test="position() != last()">
 				<!-- As long as the current construct isn't the last constructs that's refered to from the constructs within the messages 
@@ -176,7 +181,11 @@
 		<!-- Loop over global constructs which are refered to from constructs within global constructs but aren't enumeration and superclass constructs. -->
 		<xsl:for-each select="ep:message-set/ep:construct
 						[ 
-							ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:type-name 
+							(
+								ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:type-name
+								or
+								ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:choice/ep:construct/ep:type-name
+							) 
 							and 
 							not(
 							   ep:tech-name = //ep:message
@@ -231,6 +240,11 @@
 							)
 						]">
 			<!-- Only regular constructs are generated. -->
+		<xsl:if test="$debugging">
+			"--------------Debuglocatie-ROME2-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "ROME2"
+			},
+		</xsl:if>
 			<xsl:call-template name="construct"/>
 			<xsl:if test="position() != last()">
 				<!-- As long as the current construct isn't the last constructs that's refered to from constructs within global constructs a 
@@ -274,6 +288,11 @@
 								  )
 								]">
 			<!-- Only regular constructs are generated. -->
+		<xsl:if test="$debugging">
+			"--------------Debuglocatie-ROME3-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "ROME3"
+			},
+		</xsl:if>
 			<xsl:call-template name="construct"/>
 			<xsl:if test="position() != last()">
 				<!-- As long as the current construct isn't the last constructs that's refered to from the global constructs a comma separator 
@@ -409,7 +428,10 @@
 							<xsl:value-of select="'}'"/>
 							<xsl:if test=".//ep:construct[(ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' or ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association') and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]">,</xsl:if>
 						</xsl:if>
-						<xsl:apply-templates select=".//ep:construct[(ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' or ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association')  and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]" mode="_links"/>
+						<xsl:for-each select="ep:seq/ep:choice">
+							<xsl:apply-templates select="ep:construct[(ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' or ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association')  and ep:type-name = //ep:message-set/ep:construct/ep:tech-name][1]" mode="_links"/>
+						</xsl:for-each>
+						<xsl:apply-templates select=".//ep:seq/ep:construct[(ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' or ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association')  and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]" mode="_links"/>
 						<xsl:value-of select="'}'"/>
 						<xsl:value-of select="'}'"/>
 						<xsl:if test="$debugging">
@@ -482,11 +504,121 @@
 								"Debug": "OAS01500"
 							},
 						</xsl:if>
+						<xsl:variable name="typeName" select="ep:type-name"/>
 						<xsl:value-of select="concat('&quot;', translate(ep:tech-name,'.','_'),'_embedded&quot;: {' )"/>
 						<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
 						<xsl:value-of select="'&quot;properties&quot;: {'"/>
-						<!-- Only for the association constructs properties have to be generated. This is not applicable for supertype-association constructs. -->
-						<xsl:apply-templates select=".//ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]" mode="embedded"/>
+
+						<xsl:apply-templates select="ep:seq">
+							<xsl:with-param name="typeName" select="$typeName"/>
+						</xsl:apply-templates>
+<?x						<xsl:for-each select="ep:seq/ep:choice">
+							<xsl:variable name="firstChoice" select=".//ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
+														 and ep:type-name = //ep:message-set/ep:construct/ep:tech-name][1]"/>
+							<xsl:variable name="elementName">
+								<xsl:choose>
+									<xsl:when test="not(empty($firstChoice/ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value))">
+										<xsl:value-of select="$firstChoice/ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
+									</xsl:when>
+									<xsl:when test="not(empty($firstChoice/ep:parameters/ep:parameter[ep:name='targetrole']/ep:value))">
+										<xsl:value-of select="$firstChoice/ep:parameters/ep:parameter[ep:name='targetrole']/ep:value"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="translate($firstChoice/ep:tech-name,'.','_')"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:variable>
+							<xsl:variable name="maxOccurs" select="$firstChoice/ep:max-occurs"/>
+							<xsl:variable name="minOccurs" select="$firstChoice/ep:min-occurs"/>
+							<xsl:variable name="occurence-type">
+								<xsl:choose>
+									<xsl:when test="$maxOccurs = 'unbounded' or $maxOccurs > 1">array</xsl:when>
+									<xsl:otherwise>object</xsl:otherwise>
+								</xsl:choose>
+							</xsl:variable>
+							<xsl:variable name="typeName" select="$firstChoice/ep:type-name"/>
+							<xsl:value-of select="concat('&quot;',$elementName,'&quot;: {')"/>
+							
+							<xsl:value-of select="concat('&quot;type&quot;: &quot;',$occurence-type,'&quot;,')"/>
+							<xsl:variable name="documentation">
+								<xsl:value-of select="$firstChoice/ep:documentation//ep:p"/>
+							</xsl:variable>
+							<xsl:choose>
+								<!-- Depending on the occurence-type and the type of construct content is generated. -->
+								<xsl:when test="$firstChoice/ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
+									<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
+									<!-- Double quotes in documentation text is replaced by a  grave accent. -->
+									<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+									<xsl:value-of select="'&quot;,'"/>
+									<xsl:if test="$maxOccurs != 'unbounded'">
+										<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
+									</xsl:if>
+									<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+										<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
+									</xsl:if>
+									<xsl:choose>
+										<xsl:when test="$occurence-type = 'array'">
+											<xsl:value-of select="'&quot;items&quot;: {'"/>
+											<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
+											<xsl:apply-templates select=".//ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
+																		 and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]" mode="embeddedchoices"/>
+											<xsl:value-of select="']'"/>
+											<xsl:value-of select="'}'"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
+											<xsl:apply-templates select=".//ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
+																		 and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]" mode="embeddedchoices"/>
+											<xsl:value-of select="']'"/>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:when>
+								<xsl:when test="$firstChoice/ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
+									<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
+									<!-- Double quotes in documentation text is replaced by a  grave accent. -->
+									<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+									<xsl:value-of select="'&quot;,'"/>
+									<xsl:if test="$maxOccurs != 'unbounded'">
+										<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
+									</xsl:if>
+									<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+										<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
+									</xsl:if>
+									<xsl:choose>
+										<xsl:when test="$occurence-type = 'array'">
+											<xsl:value-of select="'&quot;items&quot;: {'"/>
+											<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
+											<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
+											<xsl:value-of select="']'"/>
+											<xsl:value-of select="'}'"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
+											<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
+											<xsl:value-of select="']'"/>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:when>
+							</xsl:choose>
+							<xsl:value-of select="'}'"/>
+							<xsl:choose>
+								<xsl:when test="following-sibling::ep:choice">
+									<!-- As long as the current construct isn't the last global constructs (that has at least one association construct) a comma separator as 
+										 to be generated. -->
+									<xsl:value-of select="','"/>
+								</xsl:when>
+								<xsl:when test=".//ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
+											  and $typeName = //ep:message-set/ep:construct/ep:tech-name]">
+									<!-- As long as the current construct isn't the last association type construct a comma separator has to be generated. -->
+									<xsl:value-of select="','"/>
+								</xsl:when>
+							</xsl:choose>
+							,"test": "test",
+						</xsl:for-each>
+							<!-- Only for the association constructs properties have to be generated. This is not applicable for supertype-association 
+								 constructs. -->
+						<xsl:apply-templates select="ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
+													 and $typeName = //ep:message-set/ep:construct/ep:tech-name]" mode="embedded"/> ?>
 						<xsl:value-of select="'}'"/>
 						<xsl:value-of select="'}'"/>
 						<xsl:if test="$debugging">
@@ -901,6 +1033,11 @@
 											   )
 											 )
 										   ]">
+		<xsl:if test="$debugging">
+			"--------------Debuglocatie-ROME4-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "ROME4"
+			},
+		</xsl:if>
 						<xsl:call-template name="construct">
 							<xsl:with-param name="grouping" select="$grouping"/>
 						</xsl:call-template>
@@ -1029,6 +1166,230 @@
 		</xsl:choose>
 	</xsl:template>
 	
+	<xsl:template match="ep:seq">
+		<xsl:param name="typeName"/>
+
+		<xsl:if test="$debugging">
+			"--------------Debuglocatie-01500-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS04520"
+			},
+		</xsl:if>
+	<?x	<xsl:for-each select="ep:choice">
+			<xsl:variable name="firstChoice" select=".//ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
+										 and ep:type-name = //ep:message-set/ep:construct/ep:tech-name][1]"/>
+			<xsl:variable name="elementName">
+				<xsl:choose>
+					<xsl:when test="not(empty($firstChoice/ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value))">
+						<xsl:value-of select="$firstChoice/ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
+					</xsl:when>
+					<xsl:when test="not(empty($firstChoice/ep:parameters/ep:parameter[ep:name='targetrole']/ep:value))">
+						<xsl:value-of select="$firstChoice/ep:parameters/ep:parameter[ep:name='targetrole']/ep:value"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="translate($firstChoice/ep:tech-name,'.','_')"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:variable name="maxOccurs" select="$firstChoice/ep:max-occurs"/>
+			<xsl:variable name="minOccurs" select="$firstChoice/ep:min-occurs"/>
+			<xsl:variable name="occurence-type">
+				<xsl:choose>
+					<xsl:when test="$maxOccurs = 'unbounded' or $maxOccurs > 1">array</xsl:when>
+					<xsl:otherwise>object</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:variable name="typeName" select="$firstChoice/ep:type-name"/>
+			<xsl:value-of select="concat('&quot;',$elementName,'&quot;: {')"/>
+			
+			<xsl:value-of select="concat('&quot;type&quot;: &quot;',$occurence-type,'&quot;,')"/>
+			<xsl:variable name="documentation">
+				<xsl:value-of select="$firstChoice/ep:documentation//ep:p"/>
+			</xsl:variable>
+			<xsl:choose>
+				<!-- Depending on the occurence-type and the type of construct content is generated. -->
+				<xsl:when test="$firstChoice/ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
+					<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
+					<!-- Double quotes in documentation text is replaced by a  grave accent. -->
+					<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+					<xsl:value-of select="'&quot;,'"/>
+					<xsl:if test="$maxOccurs != 'unbounded'">
+						<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
+					</xsl:if>
+					<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+						<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
+					</xsl:if>
+					<xsl:choose>
+						<xsl:when test="$occurence-type = 'array'">
+							<xsl:value-of select="'&quot;items&quot;: {'"/>
+							<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
+							<xsl:apply-templates select=".//ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
+														 and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]" mode="embeddedchoices"/>
+							<xsl:value-of select="']'"/>
+							<xsl:value-of select="'}'"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
+							<xsl:apply-templates select=".//ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
+														 and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]" mode="embeddedchoices"/>
+							<xsl:value-of select="']'"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:when test="$firstChoice/ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
+					<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
+					<!-- Double quotes in documentation text is replaced by a  grave accent. -->
+					<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+					<xsl:value-of select="'&quot;,'"/>
+					<xsl:if test="$maxOccurs != 'unbounded'">
+						<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
+					</xsl:if>
+					<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+						<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
+					</xsl:if>
+					<xsl:choose>
+						<xsl:when test="$occurence-type = 'array'">
+							<xsl:value-of select="'&quot;items&quot;: {'"/>
+							<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
+							<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
+							<xsl:value-of select="']'"/>
+							<xsl:value-of select="'}'"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
+							<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
+							<xsl:value-of select="']'"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+			</xsl:choose>
+			<xsl:value-of select="'}'"/>
+			<xsl:choose>
+				<xsl:when test="following-sibling::ep:choice">
+					<!-- As long as the current construct isn't the last global constructs (that has at least one association construct) a comma separator as 
+						 to be generated. -->
+					<xsl:value-of select="','"/>
+				</xsl:when>
+				<xsl:when test=".//ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
+							  and $typeName = //ep:message-set/ep:construct/ep:tech-name]">
+					<!-- As long as the current construct isn't the last association type construct a comma separator has to be generated. -->
+					<xsl:value-of select="','"/>
+				</xsl:when>
+			</xsl:choose>
+			,"test": "test",
+		</xsl:for-each> ?>
+		<xsl:apply-templates select="ep:choice">
+			<xsl:with-param name="typeName" select="$typeName"/>
+		</xsl:apply-templates>
+			<!-- Only for the association constructs properties have to be generated. This is not applicable for supertype-association 
+				 constructs. -->
+		 <xsl:if test="ep:choice and ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association']">,</xsl:if>
+		<xsl:apply-templates select="ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association']" mode="embedded"/>
+	</xsl:template>
+
+	<xsl:template match="ep:choice">
+			<xsl:param name="typeName"/>
+
+		<xsl:if test="$debugging">
+			"--------------Debuglocatie-01500-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS04560"
+			},
+		</xsl:if>
+
+			<xsl:variable name="firstChoice" select="ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
+										 and ep:type-name = //ep:message-set/ep:construct/ep:tech-name][1]"/>
+			<xsl:variable name="elementName">
+				<xsl:choose>
+					<xsl:when test="not(empty($firstChoice/ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value))">
+						<xsl:value-of select="$firstChoice/ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
+					</xsl:when>
+					<xsl:when test="not(empty($firstChoice/ep:parameters/ep:parameter[ep:name='targetrole']/ep:value))">
+						<xsl:value-of select="$firstChoice/ep:parameters/ep:parameter[ep:name='targetrole']/ep:value"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="translate($firstChoice/ep:tech-name,'.','_')"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:variable name="maxOccurs" select="$firstChoice/ep:max-occurs"/>
+			<xsl:variable name="minOccurs" select="$firstChoice/ep:min-occurs"/>
+			<xsl:variable name="occurence-type">
+				<xsl:choose>
+					<xsl:when test="$maxOccurs = 'unbounded' or $maxOccurs > 1">array</xsl:when>
+					<xsl:otherwise>object</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:variable name="typeName" select="$firstChoice/ep:type-name"/>
+			<xsl:value-of select="concat('&quot;',$elementName,'&quot;: {')"/>
+			
+			<xsl:value-of select="concat('&quot;type&quot;: &quot;',$occurence-type,'&quot;,')"/>
+			<xsl:variable name="documentation">
+				<xsl:value-of select="$firstChoice/ep:documentation//ep:p"/>
+			</xsl:variable>
+			<xsl:choose>
+				<!-- Depending on the occurence-type and the type of construct content is generated. -->
+				<xsl:when test="$firstChoice/ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
+					<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
+					<!-- Double quotes in documentation text is replaced by a  grave accent. -->
+					<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+					<xsl:value-of select="'&quot;,'"/>
+					<xsl:if test="$maxOccurs != 'unbounded'">
+						<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
+					</xsl:if>
+					<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+						<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
+					</xsl:if>
+					<xsl:choose>
+						<xsl:when test="$occurence-type = 'array'">
+							<xsl:value-of select="'&quot;items&quot;: {'"/>
+							<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
+							<xsl:apply-templates select="ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
+														 and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]" mode="embeddedchoices"/>
+							<xsl:value-of select="']'"/>
+							<xsl:value-of select="'}'"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
+							<xsl:apply-templates select="ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
+														 and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]" mode="embeddedchoices"/>
+							<xsl:value-of select="']'"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:when test="$firstChoice/ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
+					<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
+					<!-- Double quotes in documentation text is replaced by a  grave accent. -->
+					<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+					<xsl:value-of select="'&quot;,'"/>
+					<xsl:if test="$maxOccurs != 'unbounded'">
+						<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
+					</xsl:if>
+					<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+						<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
+					</xsl:if>
+					<xsl:choose>
+						<xsl:when test="$occurence-type = 'array'">
+							<xsl:value-of select="'&quot;items&quot;: {'"/>
+							<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
+							<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
+							<xsl:value-of select="']'"/>
+							<xsl:value-of select="'}'"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
+							<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
+							<xsl:value-of select="']'"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+			</xsl:choose>
+			<xsl:value-of select="'}'"/>
+			<xsl:if test="following-sibling::ep:choice">
+				<!-- As long as the current construct isn't the last global constructs (that has at least one association construct) a comma separator as 
+					 to be generated. -->
+				<xsl:value-of select="','"/>
+			</xsl:if>
+	</xsl:template>
+
 	<xsl:template name="construct">
 		<!-- With this template global properties are generated.  -->
 		<xsl:param name="grouping" select="''"/>
@@ -1157,7 +1518,7 @@
 						<xsl:apply-templates select="ep:documentation"/><xsl:text>:</xsl:text>
 					</xsl:if>
 					<xsl:for-each select="ep:enum">
-						<xsl:value-of select="concat(' * ',ep:alias,' - ',ep:name)"/>
+						<xsl:value-of select="concat('\n* ',ep:alias,' - ',ep:name)"/>
 					</xsl:for-each>
 					<xsl:value-of select="'&quot;,'"/>
 				</xsl:variable>
@@ -1566,12 +1927,23 @@
 
 
 		<!-- ROME: Deze toevoeging (nav #490159) geeft een warning in Swaggerhub. -->
-		<xsl:value-of select="concat('&quot;title&quot;: &quot;',ep:name,'&quot;,')"/>
+		<xsl:if test="empty(parent::ep:choice)">
+			<xsl:value-of select="concat('&quot;title&quot;: &quot;',ep:name,'&quot;,')"/>
+		</xsl:if>
 
 
 		<xsl:value-of select="concat('&quot;type&quot;: &quot;',$occurence-type,'&quot;,')"/>
 		<xsl:variable name="documentation">
 			<xsl:value-of select="ep:documentation//ep:p"/>
+			<xsl:if test="$debugging">
+				<xsl:value-of select="ep:name"/>
+			</xsl:if>
+			<xsl:if test="parent::ep:choice">
+				<xsl:text>\nLink naar een van de volgende mogelijke typen </xsl:text><xsl:value-of select="$elementName"/><xsl:text>:</xsl:text>
+				<xsl:for-each select="../ep:construct">
+					<xsl:text>\n* </xsl:text><xsl:value-of select="ep:type-name"/>
+				</xsl:for-each>
+			</xsl:if>
 		</xsl:variable>
 		<xsl:variable name="type-name" select="ep:type-name"/>
 		<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
@@ -1685,7 +2057,6 @@
 		<xsl:variable name="documentation">
 			<xsl:value-of select="ep:documentation//ep:p"/>
 		</xsl:variable>
-		<xsl:variable name="type-name" select="ep:type-name"/>
 		<xsl:choose>
 			<!-- Depending on the occurence-type and the type of construct content is generated. -->
 			<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
@@ -1718,7 +2089,7 @@
 					<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
 				</xsl:if>
 				<xsl:value-of select="'&quot;items&quot;: {'"/>
-				<xsl:apply-templates select="//ep:construct[ep:tech-name = $type-name]" mode="supertype-association-in-embedded"/>
+				<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
 				<xsl:value-of select="'}'"/>
 			</xsl:when>
 			<xsl:when test="$occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
@@ -1726,7 +2097,7 @@
 				<!-- Double quotes in documentation text is replaced by a  grave accent. -->
 				<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
 				<xsl:value-of select="'&quot;,'"/>
-				<xsl:apply-templates select="//ep:construct[ep:tech-name = $type-name]" mode="supertype-association-in-embedded"/>
+				<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
 			</xsl:when>
 		</xsl:choose>
 		<xsl:value-of select="'}'"/>
@@ -1734,6 +2105,32 @@
 			<!-- As long as the current construct isn't the last association type construct a comma separator has to be generated. -->
 			<xsl:value-of select="','"/>
 		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="ep:construct" mode="embeddedchoices">
+		<!-- This template generates for each association an embedded properties with a reference to an embedded type. -->
+		<xsl:variable name="typeName" select="ep:type-name"/>
+		<xsl:choose>
+			<!-- Depending on the occurence-type and the type of construct content is generated. -->
+			<xsl:when test="ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
+				<xsl:value-of select="'{'"/>
+					<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$typeName,'&quot;')"/>
+				<xsl:value-of select="'}'"/>
+				<xsl:if test="position() != last()">
+					<!-- As long as the current construct isn't the last association type construct a comma separator has to be generated. -->
+					<xsl:value-of select="','"/>
+				</xsl:if>
+			</xsl:when>
+			<xsl:when test="ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
+				<xsl:value-of select="'{'"/>
+					<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
+				<xsl:value-of select="'}'"/>
+				<xsl:if test="position() != last()">
+					<!-- As long as the current construct isn't the last association type construct a comma separator has to be generated. -->
+					<xsl:value-of select="','"/>
+				</xsl:if>
+			</xsl:when>
+		</xsl:choose>
 	</xsl:template>
 	
 	<xsl:template match="//ep:construct" mode="supertype-association-in-embedded">

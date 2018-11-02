@@ -102,6 +102,27 @@
 			</xsl:result-document>
 		</xsl:if>
 		
+		<xsl:for-each select="//ep:construct[@xor]">
+			<xsl:variable name="xorId" select="@xor"/>
+			<xsl:variable name="naam" select="ep:name"/>
+			<xsl:variable name="id" select="ep:id"/>
+			<xsl:variable name="this" select="$packages//imvert:association[imvert:id = $id]"/>
+			<xsl:variable name="minOccurs" select="$this/imvert:min-occurs"/>
+			<xsl:variable name="maxOccurs" select="$this/imvert:max-occurs"/>
+			<xsl:for-each select="following-sibling::ep:construct[@xor = $xorId]">
+				<xsl:if test="ep:name != $naam">
+					<xsl:sequence select="imf:msg($this,'WARNING','The associations name [1] is not equal to the name of the other association(s) within the related xor constraint.', ($naam))" />
+				</xsl:if>
+				<xsl:variable name="idNextConstruct" select="ep:id"/>
+				<xsl:variable name="nextConstruct" select="$packages//imvert:association[imvert:id = $idNextConstruct]"/>
+				<xsl:variable name="minOccursNextConstruct" select="$nextConstruct/imvert:min-occurs"/>
+				<xsl:variable name="maxOccursNextConstruct" select="$nextConstruct/imvert:max-occurs"/>
+				<xsl:if test="$minOccurs != $minOccursNextConstruct or $maxOccurs != $maxOccursNextConstruct">
+					<xsl:sequence select="imf:msg($this,'WARNING','The cardinality of the association [1] is not equal to the cardinality of other association(s) within the related xor constraint.', ($naam))" />
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:for-each>
+		
 		<ep:message-sets>
 			<!-- The ep:message-sets element contains the metadata for the complete interface and of-course the actual message-set. -->
 			<ep:parameters>
@@ -938,13 +959,39 @@
 					<xsl:with-param name="berichtcode" select="$berichtcode"/>
 					<xsl:with-param name="messagetype" select="$messagetype"/>
 				</xsl:apply-templates>
-				<xsl:apply-templates select="ep:construct" mode="as-local-type" >
+				
+				<xsl:for-each-group select="ep:construct[@xor]" group-by="@xor">
+					<xsl:sequence select="imf:create-debug-comment(concat('OAS18520, tech-name: ',ep:tech-name),$debugging)" />
+					<xsl:call-template name="constraint">
+						<xsl:with-param name="constraintType" select="'xor'"/>
+					</xsl:call-template>
+				</xsl:for-each-group>
+				<xsl:for-each-group select="ep:construct[@or]" group-by="@or">
+					<xsl:sequence select="imf:create-debug-comment(concat('OAS18540, tech-name: ',ep:tech-name),$debugging)" />
+					<xsl:call-template name="constraint">
+						<xsl:with-param name="constraintType" select="'or'"/>
+					</xsl:call-template>
+				</xsl:for-each-group>
+				<xsl:sequence select="imf:create-debug-comment(concat('OAS18560, tech-name: ',ep:tech-name),$debugging)" />
+				<xsl:apply-templates select="ep:construct[empty(@xor) and empty(@or)]" mode="as-local-type" >
 					<xsl:with-param name="berichtcode" select="$berichtcode"/>
 					<xsl:with-param name="messagetype" select="$messagetype"/>
 				</xsl:apply-templates>
 			</ep:seq>
 		</ep:construct>
-		
+	</xsl:template>
+	
+	<xsl:template name="constraint">
+		<xsl:param name="constraintType"/>
+		<ep:choice>
+			<ep:parameters>
+				<ep:parameter>
+					<xsl:sequence select="imf:create-output-element('ep:name', 'constraintType')" />
+					<xsl:sequence select="imf:create-output-element('ep:value', $constraintType)" />					
+				</ep:parameter>
+			</ep:parameters>
+			<xsl:apply-templates select="current-group()" mode="as-local-type"/>
+		</ep:choice>
 	</xsl:template>
 	
 	<xsl:template match="ep:construct" mode="as-global-type">
@@ -1076,6 +1123,12 @@
 						</xsl:otherwise>
 					</xsl:choose>
 					<ep:choice>
+						<ep:parameters>
+							<ep:parameter>
+								<ep:name>constraintType</ep:name>
+								<ep:value>xor</ep:value>
+							</ep:parameter>
+						</ep:parameters>
 						<xsl:apply-templates select="ep:construct" mode="as-local-type" />
 					</ep:choice>
 				</ep:construct>
@@ -1245,7 +1298,20 @@
 						<xsl:sequence select="imf:create-debug-comment(concat('OAS25500, id: ',$id),$debugging)" />
 						<xsl:apply-templates select="ep:superconstruct" mode="as-ref" />
 						<xsl:sequence select="imf:create-debug-comment(concat('OAS26000, id: ',$id),$debugging)" />
-						<xsl:apply-templates select="ep:construct[@type!='class']" mode="as-local-type" >
+						<xsl:for-each-group select="ep:construct[@xor and @type!='class']" group-by="@xor">
+							<xsl:call-template name="constraint">
+								<xsl:with-param name="constraintType" select="'xor'"/>
+							</xsl:call-template>
+						</xsl:for-each-group>
+						<xsl:sequence select="imf:create-debug-comment(concat('OAS26150, id: ',$id),$debugging)" />
+						<xsl:for-each-group select="ep:construct[@or and @type!='class']" group-by="@or">
+							<xsl:call-template name="constraint">
+								<xsl:with-param name="constraintType" select="'or'"/>
+							</xsl:call-template>
+						</xsl:for-each-group>
+						<xsl:sequence select="imf:create-debug-comment(concat('OAS26300, id: ',$id),$debugging)" />
+						<xsl:apply-templates select="ep:construct[empty(@xor) and empty(@or) and @type!='class']" mode="as-local-type" >
+						<!--xsl:apply-templates select="ep:construct[@type!='class']" mode="as-local-type"-->
 							<xsl:with-param name="berichtcode" select="$berichtcode"/>
 							<xsl:with-param name="messagetype" select="$messagetype"/>
 						</xsl:apply-templates>
@@ -1686,7 +1752,9 @@
 			<xsl:variable name="p" select="normalize-space(imf:get-clean-documentation-string(imf:get-tv-value.local(.)))" />
 			<xsl:if test="not($p = '')">
 				<ep:p>
-				<!--ep:p subpath="{imf:get-subpath(@project,@application,@nrelease)}"-->
+					<xsl:if test="$debugging">
+						<xsl:attribute name="subpath" select="imf:get-subpath(@project,@application,@nrelease)"/>
+					</xsl:if>
 					<xsl:value-of select="$p" />
 				</ep:p>
 			</xsl:if>

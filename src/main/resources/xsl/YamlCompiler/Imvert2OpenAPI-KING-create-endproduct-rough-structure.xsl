@@ -99,7 +99,7 @@
 			select="imf:create-debug-track(concat('Constructing the rough-message class for the ',$messagetype,' message: ',$messagename),$debugging)" />
 		<xsl:variable name="berichtcode"
 			select="imf:get-tagged-value(.,'##CFG-TV-BERICHTCODE')" />
-		<xsl:if test="$berichtcode = ''">
+		<xsl:if test="$berichtcode = '' or empty($berichtcode)">
 			<!-- For now a berichtcode is neccessary so if it lacks or if it's empty an error message is generated. -->
 			<xsl:sequence select="imf:msg('ERROR','The messageclass &quot;[1]&quot; does not have a value for the tagged value berichtcode or the tagged value lacks.',(imvert:name/@original))" />
 		</xsl:if>
@@ -528,7 +528,16 @@
 		<xsl:param name="id-trail" />
 
 		<xsl:variable name="type-id" select="imvert:type-id" />
+		<xsl:variable name="id" select="imvert:id" />
+		
+		<xsl:variable name="xorAssociation">
+			<xsl:if test="ancestor::imvert:package//imvert:constraints/imvert:constraint[imvert:definition = 'xor']/imvert:connectors/imvert:connector = $id"><xsl:value-of select="generate-id(ancestor::imvert:package//imvert:constraints/imvert:constraint[imvert:definition = 'xor' and imvert:connectors/imvert:connector = $id])"/></xsl:if>
+		</xsl:variable>
 
+		<xsl:variable name="orAssociation">
+			<xsl:if test="ancestor::imvert:package//imvert:constraints/imvert:constraint[imvert:definition = 'or']/imvert:connectors/imvert:connector = $id"><xsl:value-of select="generate-id(ancestor::imvert:package//imvert:constraints/imvert:constraint[imvert:definition = 'xor' and imvert:connectors/imvert:connector = $id])"/></xsl:if>
+		</xsl:variable>
+		
 		<xsl:sequence
 			select="imf:create-debug-comment('debug:start A17000 /debug:start',$debugging)" />
 		
@@ -547,6 +556,12 @@
 			<xsl:if test="$debugging">
 				<xsl:attribute name="package"
 					select="ancestor::imvert:package/imvert:name" />
+			</xsl:if>
+			<xsl:if test="not(empty($xorAssociation)) and $xorAssociation!=''">
+				<xsl:attribute name="xor" select="$xorAssociation"/>
+			</xsl:if>
+			<xsl:if test="not(empty($orAssociation)) and $orAssociation!=''">
+				<xsl:attribute name="or" select="$orAssociation"/>
 			</xsl:if>
 			<xsl:choose>
 				<xsl:when
