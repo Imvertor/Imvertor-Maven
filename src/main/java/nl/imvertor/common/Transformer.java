@@ -53,7 +53,6 @@ import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.file.XslFile;
-import nl.imvertor.common.log.XsltCallLogger;
 import nl.imvertor.common.trace.XmlTimingTraceListener;
 import nl.imvertor.common.xsl.extensions.ImvertorFileSpec;
 import nl.imvertor.common.xsl.extensions.ImvertorMergeParms;
