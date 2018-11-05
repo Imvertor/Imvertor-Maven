@@ -15,7 +15,9 @@ import java.util.Map.Entry;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -24,7 +26,9 @@ import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -35,15 +39,37 @@ public class HttpFile extends AnyFile {
 	public final static int METHOD_POST_FILE = 0;
 	public final static int METHOD_POST_CONTENT = 1;
 	
+	private CredentialsProvider provider;
+	private UsernamePasswordCredentials credentials;
+	private CloseableHttpClient client;
+		
 	private int status = -1;
-
+	
 	public HttpFile(File file) {
 		super(file);
+		init();
 	}
 	public HttpFile(String file) {
 		super(file);
+		init();
+	}
+	
+	public void setUserPass(String user, String pass) {
+		init(user,pass);
 	}
 
+	private void init() {
+		provider = new BasicCredentialsProvider();
+		client = HttpClients.createDefault();
+	}
+	
+	private void init(String user, String pass) {
+		provider = new BasicCredentialsProvider();
+ 		credentials = new UsernamePasswordCredentials(user, pass);
+ 		provider.setCredentials(AuthScope.ANY, credentials);
+ 		client = HttpClientBuilder.create().setDefaultCredentialsProvider(provider).build();
+	}
+	
 	/**
      * Get info from URL.
      *      
@@ -51,7 +77,7 @@ public class HttpFile extends AnyFile {
      * @throws Exception 
      */
 	public String get(URI url, Map<String, String> headerMap, HashMap<String, String> parms) throws Exception {
-		
+
 		// create a request builder
 		RequestBuilder builder = RequestBuilder.get();
 		builder.setUri(url);
@@ -64,19 +90,18 @@ public class HttpFile extends AnyFile {
 				builder.addHeader(e.getKey().toString(), e.getValue().toString());
 			}
 		}
-		
-	   // add parms
- 		if (parms != null) {
- 			Iterator<Entry<String,String>> paramIterator = parms.entrySet().iterator();
- 			List<NameValuePair> params = new ArrayList<NameValuePair>();
- 		 	while (paramIterator.hasNext()) {
- 		 		Entry<String,String> e = paramIterator.next();
- 		 		builder.addParameter(new BasicNameValuePair(e.getKey().toString(), e.getValue().toString()));
- 	 		}
- 	    }
-		
+
+		// add parms
+		if (parms != null) {
+			Iterator<Entry<String,String>> paramIterator = parms.entrySet().iterator();
+			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			while (paramIterator.hasNext()) {
+				Entry<String,String> e = paramIterator.next();
+				builder.addParameter(new BasicNameValuePair(e.getKey().toString(), e.getValue().toString()));
+			}
+		}
+
 		// build and execute the request
-		HttpClient client = HttpClients.custom().build();
 		HttpUriRequest request = builder.build();
 		HttpResponse response = client.execute(request);
 
@@ -85,6 +110,45 @@ public class HttpFile extends AnyFile {
 
 		// get the contents of the response
 		return getResponseBody(response);
+
+	}
+	
+	public void put(URI url, Map<String, String> headerMap, HashMap<String, String> parms) throws Exception {
+		
+		String body = getContent("UTF-8"); 
+		
+		// create a request builder
+		RequestBuilder builder = RequestBuilder.put();
+	
+		builder.setUri(url);
+		builder.setEntity(new StringEntity(body));
+
+		// add headers
+		if (headerMap != null) {
+			Iterator<Entry<String,String>> it = headerMap.entrySet().iterator();
+			while (it.hasNext()) {
+				Entry<String,String> e = it.next();
+				builder.addHeader(e.getKey().toString(), e.getValue().toString());
+			}
+		}
+		
+	    // add parms
+ 		if (parms != null) {
+ 			Iterator<Entry<String,String>> paramIterator = parms.entrySet().iterator();
+ 			while (paramIterator.hasNext()) {
+ 		 		Entry<String,String> e = paramIterator.next();
+ 		 		builder.addParameter(new BasicNameValuePair(e.getKey().toString(), e.getValue().toString()));
+ 	 		}
+ 	    }
+		
+		// build and execute the request
+		HttpUriRequest request = builder.build();
+		HttpResponse response = client.execute(request);
+
+		// get the status of the response
+		this.status = response.getStatusLine().getStatusCode();
+
+		// no other response
 	
 	}
 	
@@ -101,8 +165,7 @@ public class HttpFile extends AnyFile {
 	 */
 	public String post(int method, URI url, Map<String, String> headerMap, HashMap<String, String> parms, String[] payload) throws Exception {
 		
-		CloseableHttpClient client = HttpClients.createDefault();
-	    HttpPost httpPost = new HttpPost(url);
+		HttpPost httpPost = new HttpPost(url);
 	 
 	 	// add headers
 	    if (headerMap != null) {
