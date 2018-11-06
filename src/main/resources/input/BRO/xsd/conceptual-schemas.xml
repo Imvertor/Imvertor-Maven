@@ -11,6 +11,7 @@
         <use>GML321</use>
         <use>SWE201</use>
         <use>OM200</use>
+        <use>SF202</use>
         
         <use>ISO19115</use>
        
@@ -296,6 +297,35 @@
     </conceptual-schema>
     
     <conceptual-schema>
+        <name>samplingFeature profile for BRO</name>
+        <short-name>sam</short-name>
+        <description>samplingFeature profile for BRO.</description>
+        <url>http://www.bro.nl/conceptual-schemas/SAM</url>
+        <catalog>http://www.opengeospatial.org/standards/sam[entry]</catalog>        
+        
+        <map 
+            name="SAM202" 
+            namespace="http://www.opengis.net/sam/2.0" 
+            version="2.0.2" 
+            phase="3" 
+            location="http://www.opengis.net/swe/2.0/sam-profile.xsd"> 
+            
+            <releases>
+                <release>SAMPROFILE</release>
+            </releases>
+            
+            <construct>
+                <name>SF_SamplingFeature</name>
+                <catalog-entry>#SF_SamplingFeature</catalog-entry>
+                <xsd-type name="SF_SamplingFeature" asAttributeDesignation="complextype" asAttribute="SF_SamplingFeatureType"/>
+                <managed-ids/>
+            </construct>
+            <!-- TODO etc -->
+        </map>
+        
+    </conceptual-schema>
+    
+    <conceptual-schema>
         <name>Observations &amp; Measurements profile for BRO</name>
         <short-name>om</short-name>
         <description>Observation profile for BRO.</description>
@@ -319,7 +349,12 @@
                 <xsd-type name="OM_Observation" asAttributeDesignation="complextype" asAttribute="OM_ObservationType"/>
                 <managed-ids/>
             </construct>
-            <!-- TODO etc -->
+            <construct>
+                <name>OM_Process</name>
+                <catalog-entry>#Process</catalog-entry>
+                <xsd-type name="OM_Process" asAttributeDesignation="complextype" asAttribute="OM_ProcessType"/>
+                <managed-ids/>
+            </construct>
         </map>
         
     </conceptual-schema>
