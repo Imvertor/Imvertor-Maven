@@ -11,7 +11,7 @@
         <use>GML321</use>
         <use>SWE201</use>
         <use>OM200</use>
-        <use>SF202</use>
+        <use>SAM202</use>
         
         <use>ISO19115</use>
        
@@ -282,7 +282,7 @@
             location="http://www.opengis.net/swe/2.0/swe-profile.xsd"> 
             
             <releases>
-                <release>SWEPROFILE</release>
+                <release>BROPROFILE</release>
             </releases>
             
             <construct>
@@ -305,13 +305,13 @@
         
         <map 
             name="SAM202" 
-            namespace="http://www.opengis.net/sam/2.0" 
+            namespace="http://www.opengis.net/sampling/2.0" 
             version="2.0.2" 
             phase="3" 
-            location="http://www.opengis.net/swe/2.0/sam-profile.xsd"> 
+            location="http://www.opengis.net/sampling/2.0/sam-profile.xsd"> 
             
             <releases>
-                <release>SAMPROFILE</release>
+                <release>BROPROFILE</release>
             </releases>
             
             <construct>
@@ -340,7 +340,7 @@
             location="https://schema.broservices.nl/profile/om/1.0/om-profile.xsd"> 
             
             <releases>
-                <release>OMPROFILE</release>
+                <release>BROPROFILE</release>
             </releases>
             
             <construct>
