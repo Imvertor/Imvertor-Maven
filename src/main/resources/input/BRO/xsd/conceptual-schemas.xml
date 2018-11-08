@@ -105,7 +105,7 @@
             -->
             <construct>
                 <!-- this is the name of the construct in the UML model -->
-                <name>AbstractFeature</name>
+                <name>GFI_Feature</name>
                 <!-- catalog reference -->
                 <catalog-entry>#AbstractFeature</catalog-entry>
                 <!-- this is a mapping to the XSD constructs within the schema -->
