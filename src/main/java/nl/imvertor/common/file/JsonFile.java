@@ -187,17 +187,26 @@ public class JsonFile extends AnyFile {
 	}
 	
 	/**
-	 * Pretty printer for any Json string. Will throw exception when not valid Json.
+	 * Pretty printer for any Json string. 
 	 * 
 	 * Check https://stackoverflow.com/questions/4105795/pretty-print-json-in-java
 	 * 
 	 * @param jsonString
-	 * @return
-	 * @throws JSONException
+	 * @return Formatted string.
+	 * @throws JSONException Will throw exception when not valid Json.
 	 */
-	public static String prettyPrint(String jsonString) throws JSONException {
+	public static String prettyPrintString(String jsonString) throws JSONException {
 		JSONObject json = new JSONObject(jsonString); // Convert text to object
 		return json.toString(3); // Print it with specified indentation
+	}
+	/**
+	 * Pretty print the contents of the Json file, replacing the current file content.
+	 * 
+	 * @throws IOException When file cannot be read.
+	 * @throws JSONException Will throw exception when not valid Json.
+	 */
+	public void prettyPrint() throws JSONException, IOException {
+		setContent(prettyPrintString(getContent()));
 	}
 
 	/**
@@ -208,7 +217,7 @@ public class JsonFile extends AnyFile {
 	 * @throws ConfiguratorException 
 	 * @throws IOException 
 	 */
-	public static boolean validate(Configurator configurator, String jsonString) throws IOException, ConfiguratorException {
+	public static boolean validateString(Configurator configurator, String jsonString) throws IOException, ConfiguratorException {
 		try {
 			new JSONObject(jsonString); // Convert text to object
 		} catch (Exception e) {
@@ -216,6 +225,10 @@ public class JsonFile extends AnyFile {
 			return false;
 		}
 		return true;
+	}
+	
+	public boolean validate(Configurator configurator) throws IOException, ConfiguratorException {
+		return validateString(configurator, getContent());
 	}
 	
 	public boolean convertToYaml(Configurator configurator, YamlFile resultYamlFile) throws IOException, ConfiguratorException {
@@ -231,5 +244,13 @@ public class JsonFile extends AnyFile {
 			configurator.getRunner().error(logger,"Error parsing Json: " + e.getLocalizedMessage());
 		}
 		return true;
+	}
+	
+	/**
+	 * Remove the root sequence with key "JSON", returning a regular sequence. 
+	 * @throws IOException 
+	 */
+	public void stripJSONroot() throws IOException {
+		setContent(StringUtils.replacePattern(getContent(),"^\\{\\s*\"JSON\"\\s*:\\s*(.*?)\\s*\\}\\s*$","$1"));
 	}
 }

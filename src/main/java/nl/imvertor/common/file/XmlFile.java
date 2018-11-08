@@ -23,7 +23,6 @@ package nl.imvertor.common.file;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -37,7 +36,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpHeaders;
 import org.apache.log4j.Logger;
 import org.custommonkey.xmlunit.DetailedDiff;
 import org.custommonkey.xmlunit.Difference;
@@ -119,28 +117,31 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	
 	public static void main(String[] args) throws Exception {
 		
-		//XmlFile file = new XmlFile("D:\\projects\\arjan\\Java development\\CommonHandlers\\sandbox\\EHcache\\config\\ehcache.xml");
-	
-		/*
-	    XmlFile file = new XmlFile("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-work\\KING-comply-extract\\app\\tests\\npsla09-1.xml");
-	    System.out.println(file.isValid());
-		file.getMessages();
-		*/		
-		JsonFile jfile1, jfile2;
-		XmlFile xfile;
+		int test = 2;
 		
-		jfile1 = new JsonFile("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-work\\Tasks-Kadaster-JIRA\\app\\yaml\\20150101-2.0.json");
-		jfile2 = new JsonFile("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-work\\Tasks-Kadaster-JIRA\\app\\yaml\\20150101-2.0.roundtrip.json");
-		xfile = new XmlFile("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-work\\Tasks-Kadaster-JIRA\\app\\yaml\\20150101-2.0.json.xml");
-		jfile1.jsonToXml(xfile);
-		xfile.xmltoJson(jfile2);
-		
-		jfile1 = new JsonFile("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-testing\\trunk\\input\\eap\\Kadaster\\MIM2Json\\Omgevingswet poging 12 september(CLEAN).json");
-		jfile2 = new JsonFile("c:\\temp\\jfile2.json");
-		xfile = new XmlFile("c:\\temp\\jfile1.json.xml");
-		jfile1.jsonToXml(xfile);
-		xfile.xmlToJson(jfile2);
-				
+		if (test == 1) {
+			//XmlFile file = new XmlFile("D:\\projects\\arjan\\Java development\\CommonHandlers\\sandbox\\EHcache\\config\\ehcache.xml");
+		    XmlFile file = new XmlFile("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-work\\KING-comply-extract\\app\\tests\\npsla09-1.xml");
+		    System.out.println(file.isValid());
+			file.getMessages();
+			
+		}
+		if (test ==2) {
+			JsonFile jfile1, jfile2;
+			XmlFile xfile;
+			
+			jfile1 = new JsonFile("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-work\\Tasks-Kadaster-JIRA\\app\\yaml\\20150101-2.0.json");
+			jfile2 = new JsonFile("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-work\\Tasks-Kadaster-JIRA\\app\\yaml\\20150101-2.0.roundtrip.json");
+			xfile = new XmlFile("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-work\\Tasks-Kadaster-JIRA\\app\\yaml\\20150101-2.0.json.xml");
+			jfile1.jsonToXml(xfile);
+			xfile.xmlToJson(jfile2);
+			
+			jfile1 = new JsonFile("D:\\projects\\validprojects\\Kadaster-Imvertor\\Imvertor-OS-testing\\trunk\\input\\eap\\Kadaster\\MIM2Json\\Omgevingswet poging 12 september(CLEAN).json");
+			jfile2 = new JsonFile("c:\\temp\\jfile2.json");
+			xfile = new XmlFile("c:\\temp\\jfile1.json.xml");
+			jfile1.jsonToXml(xfile);
+			xfile.xmlToJson(jfile2);
+		}
 	}
 	
 	public XmlFile(String pathname) {
@@ -622,7 +623,7 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 	}
 	
 	public void xmlToJson(JsonFile targetFile) throws Exception {
-    	targetFile.setContent(JsonFile.xmlToJson(getContent()));
+    	targetFile.setContent(JsonFile.deescapeJsonOperator(JsonFile.xmlToJson(getContent())));
     }
 
 }
