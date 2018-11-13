@@ -104,11 +104,11 @@
 								]">
 			<xsl:variable name="type-name" select="ep:type-name"/>
 			<!-- The regular constructs are generated here. -->
-		<xsl:if test="$debugging">
-			"--------------Debuglocatie-ROME1-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "ROME1"
-			},
-		</xsl:if>
+			<xsl:if test="$debugging">
+				"--------------Debuglocatie-ROME1-<xsl:value-of select="generate-id()"/>": {
+					"Debug": "ROME1"
+				},
+			</xsl:if>
 			<xsl:call-template name="construct"/>
 			<xsl:if test="position() != last()">
 				<!-- As long as the current construct isn't the last constructs that's refered to from the constructs within the messages 
@@ -240,11 +240,11 @@
 							)
 						]">
 			<!-- Only regular constructs are generated. -->
-		<xsl:if test="$debugging">
-			"--------------Debuglocatie-ROME2-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "ROME2"
-			},
-		</xsl:if>
+			<xsl:if test="$debugging">
+				"--------------Debuglocatie-ROME2-<xsl:value-of select="generate-id()"/>": {
+					"Debug": "ROME2"
+				},
+			</xsl:if>
 			<xsl:call-template name="construct"/>
 			<xsl:if test="position() != last()">
 				<!-- As long as the current construct isn't the last constructs that's refered to from constructs within global constructs a 
@@ -288,11 +288,11 @@
 								  )
 								]">
 			<!-- Only regular constructs are generated. -->
-		<xsl:if test="$debugging">
-			"--------------Debuglocatie-ROME3-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "ROME3"
-			},
-		</xsl:if>
+			<xsl:if test="$debugging">
+				"--------------Debuglocatie-ROME3-<xsl:value-of select="generate-id()"/>": {
+					"Debug": "ROME3"
+				},
+			</xsl:if>
 			<xsl:call-template name="construct"/>
 			<xsl:if test="position() != last()">
 				<!-- As long as the current construct isn't the last constructs that's refered to from the global constructs a comma separator 

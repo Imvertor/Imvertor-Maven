@@ -88,21 +88,52 @@
 			<!-- Is it a get, post, put, patch or delete message? -->
 			<xsl:value-of select="substring-after(substring-before(imvert:stereotype/@id,'berichttype'),'stereotype-name-')"/>
 		</xsl:variable>
-		<xsl:if test="empty(./imvert:associations/imvert:association[imvert:name/@original='pad']/imvert:type-id)">
-			<!-- A pad class is neccessary so if it lacks an error message is generated. -->
-			<xsl:sequence select="imf:msg('ERROR','The messageclass [1] does not have an association to a pad class. This is neccessary to determine the name of the message.',(imvert:name/@original))" />
-		</xsl:if>
-		<xsl:variable name="pad-id" select="./imvert:associations/imvert:association[imvert:name/@original='pad']/imvert:type-id"/>
-		<xsl:variable name="messagename" select="$packages//imvert:class[imvert:id = $pad-id]/imvert:name/@original"/>
-
+		<xsl:variable name="pad-id">
+			<xsl:choose>
+				<xsl:when test="./imvert:associations/imvert:association[imvert:stereotype/@id='stereotype-name-padrelatie']">
+					<xsl:value-of select="./imvert:associations/imvert:association[imvert:stereotype/@id='stereotype-name-padrelatie']/imvert:type-id"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:sequence select="imf:msg('ERROR','The messageclass [1] does not have an association to a pad class or the association has the wrong stereotype. This is neccessary to determine the name of the message.',(imvert:name/@original))" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="padClass" as="element()">
+			<xsl:choose>
+				<xsl:when test="$packages//imvert:class[imvert:id=$pad-id]/imvert:stereotype/@id='stereotype-name-padtype'">
+					<xsl:sequence select="$packages//imvert:class[imvert:id=$pad-id]"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:sequence select="imf:msg('WARNING','The padclass [1] has the wrong stereotype. It should be [2].',($packages//imvert:class[imvert:id=$pad-id],'Padtype'))" />
+					<xsl:sequence select="$packages//imvert:class[imvert:id=$pad-id]"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="messagename">
+			<xsl:choose>
+				<xsl:when test="empty($padClass)">
+					<xsl:value-of select="'onbekend'"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$padClass/imvert:name/@original"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="customPathFacet">
+			<xsl:if test="not(empty($padClass))">
+				<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($padClass, '##CFG-TV-CUSTOMPATHFACET')"/>
+			</xsl:if>
+		</xsl:variable>
+		
 		<xsl:sequence
 			select="imf:create-debug-track(concat('Constructing the rough-message class for the ',$messagetype,' message: ',$messagename),$debugging)" />
 		<xsl:variable name="berichtcode"
 			select="imf:get-tagged-value(.,'##CFG-TV-BERICHTCODE')" />
 		<xsl:if test="$berichtcode = '' or empty($berichtcode)">
 			<!-- For now a berichtcode is neccessary so if it lacks or if it's empty an error message is generated. -->
-			<xsl:sequence select="imf:msg('ERROR','The messageclass &quot;[1]&quot; does not have a value for the tagged value berichtcode or the tagged value lacks.',(imvert:name/@original))" />
+			<xsl:sequence select="imf:msg('ERROR','The messageclass [1] does not have a value for the tagged value berichtcode or the tagged value lacks.',(imvert:name/@original))" />
 		</xsl:if>
+		<xsl:variable name="tag" select="imf:get-tagged-value(., '##CFG-TV-TAG')" />
 		
 		<!-- All message-classes refer to a class within the 'Berichtstructuren' package. It contains standard configuration for specific
 			 messagetypes. These configurations are picked-up here. -->
@@ -191,13 +222,9 @@
 							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'response']">
 							
 							<xsl:sequence select="imf:create-debug-comment('A11750]',$debugging)" />
-							<ep:rough-message messagetype="response" berichtcode="{$berichtcode}">
-								<xsl:attribute name="grouping" select="$grouping" />
-								<xsl:attribute name="pagination" select="$pagination" />
-								<xsl:attribute name="serialisation" select="$serialisation" />
+							<ep:rough-message messagetype="response" berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}">
 								<xsl:sequence
 									select="imf:create-debug-track(concat('Constructing the rough-response-message: ',imvert:name/@original),$debugging)" />
-	
 								<xsl:sequence
 									select="imf:create-output-element('ep:name', $messagename)" />
 								<xsl:sequence select="imf:create-output-element('ep:id', $messageid)" />
@@ -210,12 +237,12 @@
 							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'request']">
 
 							<xsl:sequence select="imf:create-debug-comment('A12000]',$debugging)" />
-							<ep:rough-message messagetype="request"	berichtcode="{$berichtcode}">
-								<xsl:attribute name="grouping" select="$grouping" />
-								<xsl:attribute name="pagination" select="$pagination" />
-								<xsl:attribute name="serialisation" select="$serialisation" />
+							<ep:rough-message messagetype="request"	berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}">
 								<xsl:if test="not(empty($fields))">
 									<xsl:attribute name="fields" select="$fields"/>
+								</xsl:if>
+								<xsl:if test="not(empty($customPathFacet))">
+									<xsl:attribute name="customPathFacet" select="$customPathFacet"/>
 								</xsl:if>
 								<xsl:choose>
 									<xsl:when test="not(empty($sort)) and contains($berichtcode,'Gr')">
@@ -283,11 +310,10 @@
 							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'request']">
 							<!-- For the post messages the ep:rough-message structure only represents the 'request' tree. So only that part of the message is
 							     processed here. -->
-							<ep:rough-message messagetype="request"
-								berichtcode="{$berichtcode}">
-								<xsl:attribute name="grouping" select="$grouping" />
-								<xsl:attribute name="pagination" select="$pagination" />
-								<xsl:attribute name="serialisation" select="$serialisation" />
+							<ep:rough-message messagetype="request" berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}">
+								<xsl:if test="not(empty($customPathFacet))">
+									<xsl:attribute name="customPathFacet" select="$customPathFacet"/>
+								</xsl:if>
 								<xsl:sequence select="imf:create-debug-comment('A13000]',$debugging)" />
 								<xsl:sequence
 									select="imf:create-debug-track(concat('Constructing the rough-request-message: ',imvert:name/@original),$debugging)" />
