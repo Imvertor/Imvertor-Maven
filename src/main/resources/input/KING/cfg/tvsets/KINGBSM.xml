@@ -644,6 +644,28 @@
             </stereotypes>
         </tv>
         
+        
+        <tv norm="space" id="CFG-TV-CUSTOMPATHFACET">
+            <name lang="nl">custom_path_facet</name>
+            <name lang="en">custom_path_facet</name>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-padtype</stereo>
+            </stereotypes>
+        </tv>
+
+        <tv norm="space" id="CFG-TV-TAG">
+            <name lang="nl">tag</name>
+            <desc lang="nl">Naam waarmee een aantal gerelateerde berichten gegroepeerd worden.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-getberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-patchberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-postberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-putberichttype</stereo>
+                <stereo minmax="1..1">stereotype-name-deleteberichttype</stereo>
+            </stereotypes>
+        </tv>
     </tagged-values>
 </tagset>
 
