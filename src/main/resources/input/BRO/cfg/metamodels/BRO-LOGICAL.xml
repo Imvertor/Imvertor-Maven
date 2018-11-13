@@ -25,6 +25,10 @@
         </profile>
     </profiles>
     
+    <features>
+        <feature name="allow-multiple-supertypes">false</feature>
+    </features>
+    
    <!-- <stereotypes>
         <stereo id="stereotype-name-IMBRO/A">
             <name lang="en">IMBRO/A</name>
@@ -33,5 +37,6 @@
             <toplevel>false</toplevel>
         </stereo>
     </stereotypes> -->
+    
     
 </metamodel>

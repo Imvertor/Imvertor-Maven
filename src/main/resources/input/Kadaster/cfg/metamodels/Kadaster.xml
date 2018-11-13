@@ -62,6 +62,11 @@
         </tv>
     </naming>
     
+    <features>
+        <feature name="role-based">false</feature>
+        <feature name="allow-multiple-supertypes">false</feature>
+    </features>
+    
     <stereotypes>
 
         <stereo id="stereotype-name-collection">

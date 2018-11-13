@@ -45,6 +45,7 @@
     
     <features>
         <feature name="role-based">true</feature>
+        <feature name="allow-multiple-supertypes">false</feature>
     </features>
     
     <stereotypes xml:id="stereotypes">

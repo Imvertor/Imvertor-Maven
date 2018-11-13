@@ -510,6 +510,7 @@
         <xsl:variable name="is-abstract" select="imvert:abstract = 'true'"/>
         <xsl:variable name="is-toplevel" select="imf:is-toplevel($this)"/>
         <xsl:variable name="is-association-class" select="$document-classes/imvert:associations/imvert:association/imvert:association-class/imvert:type-id = $this-id"/>
+        <xsl:variable name="allow-multiple-supertypes" select="imf:boolean($configuration-metamodel-file//features/feature[@name='allow-multiple-supertypes'])"/>
         
         <!--validation-->
         <xsl:sequence select="imf:report-warning(., 
@@ -520,7 +521,7 @@
             'Duplicate class name.')"/>
 
         <xsl:sequence select="imf:report-error(., 
-            $supertypes[2], 
+            $supertypes[2] and not($allow-multiple-supertypes), 
             'Multiple supertypes are not supported.')"/>
         <xsl:sequence select="imf:report-error(., 
             $is-proper-class-tree and not(imf:check-inherited-stereotypes(.)), 

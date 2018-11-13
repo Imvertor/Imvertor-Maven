@@ -52,6 +52,7 @@
     
     <features>
         <feature name="role-based"><!-- specify in concrete metamodel: true|false --></feature>
+        <feature name="allow-multiple-supertypes"><!-- specify in concrete metamodel: true|false --></feature>
     </features>
     
     <stereotypes xml:id="stereotypes">
