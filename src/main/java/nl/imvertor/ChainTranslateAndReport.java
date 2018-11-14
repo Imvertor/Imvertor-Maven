@@ -29,6 +29,7 @@ import nl.imvertor.ConfigCompiler.ConfigCompiler;
 import nl.imvertor.EapCompiler.EapCompiler;
 import nl.imvertor.HistoryCompiler.HistoryCompiler;
 import nl.imvertor.ImvertCompiler.ImvertCompiler;
+import nl.imvertor.JsonSchemaCompiler.JsonSchemaCompiler;
 import nl.imvertor.ModelHistoryAnalyzer.ModelHistoryAnalyzer;
 import nl.imvertor.OfficeCompiler.OfficeCompiler;
 import nl.imvertor.ReadmeCompiler.ReadmeCompiler;
@@ -82,6 +83,7 @@ public class ChainTranslateAndReport {
 			configurator.getCli(ImvertCompiler.STEP_NAME);
 			configurator.getCli(XsdCompiler.STEP_NAME);
 			configurator.getCli(ShaclCompiler.STEP_NAME);
+			configurator.getCli(JsonSchemaCompiler.STEP_NAME);
 			configurator.getCli(YamlCompiler.STEP_NAME);
 			configurator.getCli(ReleaseComparer.STEP_NAME);
 			configurator.getCli(SchemaValidator.STEP_NAME);
@@ -173,8 +175,12 @@ public class ChainTranslateAndReport {
 					if (configurator.isTrue("cli","createxmlschema",false))
 						if (configurator.isTrue("cli","validateschema",false) || configurator.getRunner().isFinal())
 							succeeds = succeeds && (new SchemaValidator()).run();
-								
-					// compile the history info 
+					
+					// Generate a json schema
+				    if (configurator.isTrue("cli","createjsonschema",false)) 
+			    		succeeds = succeeds && (new JsonSchemaCompiler()).run();
+
+				    // compile the history info 
 					if (configurator.isTrue("cli","createhistory",false))
 						succeeds = succeeds && (new HistoryCompiler()).run();
 								
