@@ -24,6 +24,8 @@
 
 	<xsl:include href="../XsdCompiler/Imvert2XSD-KING-common-checksum.xsl" />
 
+	<xsl:param name="processable-base-file"/> <!-- this is embellish, or any derived (optimized) variant thereof -->
+	
 	<xsl:output indent="yes" method="xml" encoding="UTF-8" />
 
 	<xsl:key name="enumerationClass" match="imvert:class" use="imvert:name" />
@@ -36,7 +38,7 @@
 			$Id: Imvert2XSD-KING-OpenAPI-endproduct-xml.xsl 
 			2018-09-18 10:55:00Z Robert Melskens $</xsl:variable>
 
-	<xsl:variable name="messages" select="imf:document(imf:get-config-string('properties','RESULT_METAMODEL_KINGBSM_OPENAPI_MIGRATE'))" />
+	<xsl:variable name="messages" select="imf:document($processable-base-file)" />
 	<xsl:variable name="packages" select="$messages/imvert:packages" />
 
 	<xsl:variable name="kv-prefix" select="imf:get-tagged-value($packages,'##CFG-TV-VERKORTEALIAS')"/>
@@ -51,6 +53,10 @@
 	</xsl:variable>
 	<xsl:variable name="project-url">
 		<xsl:choose>
+			<xsl:when test="not($packages/imvert:stereotype/@id = ('stereotype-name-application-package'))">
+				<xsl:sequence select="imf:msg('ERROR', 'Unable to create endproduct for a package that is not stereotyped as [1]', imf:string-group(imf:get-config-name-by-id('stereotype-name-application-package')))" />
+				<!-- test only applies to koppelvlak-->	
+			</xsl:when>
 			<xsl:when test="string-length(imf:get-tagged-value($packages,'##CFG-TV-PROJECT-URL')) != 0">
 				<xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-PROJECT-URL')"/>
 			</xsl:when>
@@ -94,7 +100,7 @@
 	
 	<xsl:template match="ep:rough-messages">
 		<!-- This template starts the creation of the message constructs and the constructs related to those message constructs. -->
-		<xsl:sequence select="imf:set-config-string('appinfo','kv-yaml-schema-name',concat($kv-prefix,$version))"/>
+		<xsl:sequence select="imf:set-config-string('appinfo','OpenAPI-schema-name',concat($kv-prefix,$version))"/>
 
 		<xsl:if test="$debugging">
 			<xsl:result-document href="file:/c:/temp/message/expandconfiguration.xml">

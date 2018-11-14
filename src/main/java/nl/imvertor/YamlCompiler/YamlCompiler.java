@@ -27,6 +27,7 @@ import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.JsonFile;
+import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.file.YamlFile;
 import nl.imvertor.common.xsl.extensions.ImvertorStripAccents;
 
@@ -46,9 +47,14 @@ public class YamlCompiler extends Step {
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
 		
-		runner.info(logger,"Compiling YAML");
-		generateYAML();
-	
+		String schemarules = configurator.getSchemarules();
+		if (schemarules.equals("KadasterNEN3610")) {
+			generateKadaster();
+		} else if (schemarules.equals("KINGBSM")) {
+			generateKING();
+		} else
+			runner.error(logger,"Schemarules not implemented: " + schemarules);
+		
 		configurator.setStepDone(STEP_NAME);
 		
 		// save any changes to the work configuration for report and future steps
@@ -60,13 +66,13 @@ public class YamlCompiler extends Step {
 	}
 
 	/**
-	 * Generate YAML compiled EP file.
+	 * Generate YAML and Json based on intermediate EP file.
 	 * 
 	 * See https://code.google.com/archive/p/yamlbeans/ for validator
 	 * 
 	 * @throws Exception
 	 */
-	public boolean generateYAML() throws Exception {
+	public boolean generateKING() throws Exception {
 		
 		// create a transformer
 		Transformer transformer = new Transformer();
@@ -86,11 +92,12 @@ public class YamlCompiler extends Step {
 	
 		runner.debug(logger,"CHAIN","Generating YAML to " + yamlApplicationFolder);
 		
-		// Migrate between models. This is a stub stylesHeet, which transforms any metamodel to the StUF defined & required metamodel
-		transformer.setXslParm("json-version","3.0");
-		succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_METAMODEL_KINGBSM_OPENAPI_MIGRATE", "properties/IMVERTOR_METAMODEL_KINGBSM_OPENAPI_MIGRATE_XSLPATH");
+		// the file that holds all usable model information as an Imvert XML.
+		transformer.setXslParm("processable-base-file",configurator.getXParm("properties/WORK_EMBELLISH_FILE"));
+		
+		succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/ROUGH_OPENAPI_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ROUGH_OPENAPI_ENDPRODUCT_XML_XSLPATH");
 
-		succeeds = succeeds && transformer.transformStep("properties/RESULT_METAMODEL_KINGBSM_OPENAPI_MIGRATE","properties/ROUGH_OPENAPI_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ROUGH_OPENAPI_ENDPRODUCT_XML_XSLPATH");
+		transformer.setXslParm("json-version","3.0");
 		succeeds = succeeds && transformer.transformStep("properties/ROUGH_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_OPENAPI_ENDPRODUCT_XML_XSLPATH");
 
 		succeeds = succeeds && transformer.transformStep("properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_YAMLHEADER_FILE_PATH", "properties/IMVERTOR_METAMODEL_KING_YAMLHEADER_XSLPATH");
@@ -103,8 +110,10 @@ public class YamlCompiler extends Step {
 			// concatenate
 			YamlFile headerFile = new YamlFile(configurator.getXParm("properties/RESULT_YAMLHEADER_FILE_PATH"));
 			JsonFile bodyFile = new JsonFile(configurator.getXParm("properties/RESULT_YAMLBODY_FILE_PATH"));
+					 bodyFile.prettyPrint();
 			YamlFile yamlFile = new YamlFile(configurator.getXParm("properties/RESULT_YAML_FILE_PATH"));
 			JsonFile bodyFile2 = new JsonFile(configurator.getXParm("properties/RESULT_YAMLBODY_FILE_PATH2"));
+				 	 bodyFile2.prettyPrint();
 			
 			// validate
 			String hc = headerFile.getContent();
@@ -115,7 +124,7 @@ public class YamlCompiler extends Step {
 			// in all cases copy results to app folder
 			yamlFile.setContent(hc + "\n" + bc);
 		
-			String schemaName = configurator.getXParm("appinfo/kv-yaml-schema-name");
+			String schemaName = configurator.getXParm("appinfo/OpenAPI-schema-name");
 		
 			// copy to the app folder
 			AnyFile appYamlFile = new AnyFile(yamlFolder,schemaName + ".yaml");
@@ -130,5 +139,78 @@ public class YamlCompiler extends Step {
 		return succeeds;
 	}
 	
+	/**
+	 * Generate Json based on intermediate EP file.
+	 * 
+	 * See https://code.google.com/archive/p/yamlbeans/ for validator
+	 * 
+	 * @throws Exception
+	 */
+	public boolean generateKadaster() throws Exception {
+		
+		// create a transformer
+		Transformer transformer = new Transformer();
+		// requires accent stripper
+		transformer.setExtensionFunction(new ImvertorStripAccents());
+						
+		boolean succeeds = true;
+		
+		// Create the folder; it is not expected to exist yet.
+		AnyFolder yamlFolder = new AnyFolder(configurator.getXParm("system/work-yaml-folder-path"));
+		yamlFolder.mkdirs();
+				
+		configurator.setXParm("system/yaml-folder-path", yamlFolder.toURI().toString());
+	
+		runner.debug(logger,"CHAIN","Generating YAML to " + yamlFolder);
+		
+		// Migrate between models. This is a stub stylesheet, which transforms any metamodel to the StUF defined & required metamodel
+		succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/RESULT_METAMODEL_KINGBSM_OPENAPI_MIGRATE", "properties/IMVERTOR_METAMODEL_KINGBSM_OPENAPI_MIGRATE_XSLPATH");
+		
+		// now add stubs for messaging, that is NOT part of the Kadaster requirements 
+		succeeds = succeeds && transformer.transformStep("properties/RESULT_METAMODEL_KINGBSM_OPENAPI_MIGRATE","properties/RESULT_METAMODEL_NEN3610_BSM_MIGRATE", "properties/IMVERTOR_METAMODEL_NEN3610_BSM_MIGRATE_XSLPATH");
+		
+		// now generated EP; pas the file that holds all usable model information as an Imvert XML.
+		transformer.setXslParm("processable-base-file",configurator.getXParm("properties/RESULT_METAMODEL_NEN3610_BSM_MIGRATE"));
+		succeeds = succeeds && transformer.transformStep("properties/RESULT_METAMODEL_NEN3610_BSM_MIGRATE","properties/ROUGH_OPENAPI_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_ROUGH_OPENAPI_ENDPRODUCT_XML_XSLPATH");
+		succeeds = succeeds && transformer.transformStep("properties/ROUGH_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH", "properties/IMVERTOR_METAMODEL_KINGBSM_OPENAPI_ENDPRODUCT_XML_XSLPATH");
+		
+		transformer.setXslParm("json-version","3.0");
+		succeeds = succeeds && transformer.transformStep("properties/RESULT_OPENAPI_ENDPRODUCT_XML_FILE_PATH","properties/RESULT_YAMLBODY_FILE_PATH", "properties/IMVERTOR_METAMODEL_KING_YAMLBODY_XSLPATH");
+
+		JsonFile halJsonFile = new JsonFile(configurator.getXParm("properties/RESULT_YAMLBODY_FILE_PATH"));
+		// Debug: test if json is okay
+		succeeds = succeeds && halJsonFile.validate(configurator);
+		
+		// STUB: transform json to XML, remove HAL, and serialize back to json.
+		if (succeeds) {
+			halJsonFile.prettyPrint();
+			
+			XmlFile  halXmlFile = new XmlFile(configurator.getXParm("properties/WORK_JSON_HAL_FILE_PATH"));
+			XmlFile nohalXmlFile = new XmlFile(configurator.getXParm("properties/WORK_JSON_NOHAL_FILE_PATH"));
+			
+			halJsonFile.jsonToXml(halXmlFile);
+			
+			succeeds = succeeds && transformer.transformStep("properties/WORK_JSON_HAL_FILE_PATH","properties/WORK_JSON_NOHAL_FILE_PATH", "properties/IMVERTOR_JSON_NOHAL_XSLPATH");
+		
+			JsonFile jsonFile = new JsonFile(configurator.getXParm("properties/RESULT_JSON_NOHAL_FILE_PATH"));
+			nohalXmlFile.xmlToJson(jsonFile);
+			jsonFile.prettyPrint();
+			
+			// strip the root
+			jsonFile.stripJSONroot();
+			
+			// validate
+			succeeds = succeeds && jsonFile.validate(configurator);
+		
+			String schemaName = configurator.getXParm("appinfo/OpenAPI-schema-name");
+		
+			// copy to the app folder
+			AnyFile appJsonFile = new AnyFile(yamlFolder,schemaName + ".json");
+			jsonFile.copyFile(appJsonFile);
+		}
+		configurator.setXParm("system/json-created",succeeds);
+		
+		return succeeds;
+	}
 	
 }

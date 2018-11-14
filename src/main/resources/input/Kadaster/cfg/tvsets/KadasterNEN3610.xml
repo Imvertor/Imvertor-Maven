@@ -130,5 +130,63 @@
             </stereotypes>
         </tv>
         
+        <!-- voor de JSON schema's: -->
+        
+        <tv norm="space" id="CFG-TV-PROJECT-URL">
+            <name lang="nl">project_url</name>
+            <desc lang="nl">Url van het bij het koppelvlak horende GitHub project.</desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="CFG-TV-BERICHTCODE">
+            <!-- deze is erg teruggebracht, zie VNG voor complete set -->
+            <name lang="nl">Berichtcode</name>
+            <derive>no</derive>
+            <inherit>yes</inherit>
+            <stereotypes>
+                <stereo minmax="1..1">stereotype-name-getberichttype</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value>Gr01</value>
+                <!--  een json+hal response op een GET bericht voor een resource zonder pagination, zonder expand. -->
+           </declared-values>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-TARGETROLEPLURAL">
+            <name lang="nl">Target role in meervoud</name>
+            <desc lang="nl">
+                De meervoudsnaam van de target role. 
+            </desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+            </stereotypes>
+        </tv>
+        
+        <tv norm="space" validate="" rules="" id="CFG-TV-SERIALISATION">
+            <name lang="nl">Serialisation</name>
+            <derive>no</derive>
+            <inherit>no</inherit>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-getberichttype</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <!-- Voorlopig is alleen json+hal mogelijk. -->
+                <value>json+hal</value>
+            </declared-values>
+        </tv>
+        
+        <tv norm="space" id="CFG-TV-NAMEPLURAL">
+            <name lang="nl">Naam in meervoud</name>
+            <desc lang="nl">
+                De meervoudsnaam van de entiteit. 
+            </desc>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+            </stereotypes>
+        </tv>
+        
     </tagged-values>
 </tagset>
