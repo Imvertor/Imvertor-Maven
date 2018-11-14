@@ -110,10 +110,10 @@ public class YamlCompiler extends Step {
 			// concatenate
 			YamlFile headerFile = new YamlFile(configurator.getXParm("properties/RESULT_YAMLHEADER_FILE_PATH"));
 			JsonFile bodyFile = new JsonFile(configurator.getXParm("properties/RESULT_YAMLBODY_FILE_PATH"));
-					 bodyFile.prettyPrint();
+					 //bodyFile.prettyPrint();
 			YamlFile yamlFile = new YamlFile(configurator.getXParm("properties/RESULT_YAML_FILE_PATH"));
 			JsonFile bodyFile2 = new JsonFile(configurator.getXParm("properties/RESULT_YAMLBODY_FILE_PATH2"));
-				 	 bodyFile2.prettyPrint();
+				 	 //bodyFile2.prettyPrint();
 			
 			// validate
 			String hc = headerFile.getContent();
