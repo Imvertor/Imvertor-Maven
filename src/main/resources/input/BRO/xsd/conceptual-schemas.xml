@@ -109,7 +109,7 @@
                 <!-- catalog reference -->
                 <catalog-entry>#AbstractFeature</catalog-entry>
                 <!-- this is a mapping to the XSD constructs within the schema -->
-                <xsd-type name="AbstractFeature" asAttributeDesignation="complextype" asAttribute="AbstractFeatureType"/>
+                <xsd-type name="Feature" asAttributeDesignation="complextype" asAttribute="FeatureType"/>
                 <!-- this is a list of possible ID's, that can be used when conflicts occur (several constructs with same Name) -->
                 <managed-ids/>
             </construct>
