@@ -386,6 +386,20 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
         </levels>
     </doc-rule>
+    <doc-rule id="CFG-DOC-MINIMUMVALUE">
+        <name lang="nl">Minimumwaarde</name>
+        <name lang="en">MinInclusive</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-MAXIMUMVALUE">
+        <name lang="nl">Maximumwaarde</name>
+        <name lang="en">MaxInclusive</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+        </levels>
+    </doc-rule>
     <doc-rule id="CFG-DOC-TRACE">
         <name lang="nl">Onderliggende constructies</name>
         <name lang="en">Underlying constructs</name>

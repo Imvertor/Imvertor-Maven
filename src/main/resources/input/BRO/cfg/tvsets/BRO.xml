@@ -43,6 +43,26 @@
                 <stereo minmax="0..1" default="BRO">stereotype-name-attribute</stereo>
             </stereotypes>
         </tv>
+        <tv id="CFG-TV-MINIMUMVALUE">
+            <name lang="nl">Minimumwaarde</name>/name>
+            <name lang="en">MinInclusive</name>
+            <desc lang="nl">De ondergrens (inclusief) voor de waarde van een getal.</desc>
+            <desc lang="en">Defines lower bounds for numeric values including this number.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1" default="BRO">stereotype-name-attribute</stereo>
+            </stereotypes>
+        </tv>
+        <tv id="CFG-TV-MAXIMUMVALUE">
+            <name lang="nl">Maximumwaarde</name>/name>
+            <name lang="en">MaxInclusive</name>
+            <desc lang="nl">De boven (inclusief) voor de waarde van een getal.</desc>
+            <desc lang="en">Defines upper bounds for numeric values including this number.</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1" default="BRO">stereotype-name-attribute</stereo>
+            </stereotypes>
+        </tv>
         
     </tagged-values>
 </tagset>
