@@ -1768,6 +1768,12 @@
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/', /ep:message-sets//ep:construct[ep:tech-name = $typeName]/ep:type-name, '&quot;')"/>
 			</xsl:when>
 			<!-- In all othert cases a $ref to the type-name of the current construct has to be generated. -->
+			<xsl:when test="ep:max-occurs = 'unbounded' or ep:max-occurs > 1">
+				<xsl:value-of select="'&quot;type&quot;: &quot;array&quot;,'"/>
+				<xsl:value-of select="'&quot;items&quot;: {'"/>
+				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/', $typeName, '&quot;')"/>
+				<xsl:value-of select="'}'"/>
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/', $typeName, '&quot;')"/>
 			</xsl:otherwise>

@@ -673,7 +673,9 @@
 				<!-- If the current ep:construct is a groepcompositie an ep:construct element is generated with a reference to a type and
 					 as its name the name of the refering groep compositie relation.  -->
 				<xsl:variable name="id" select="ep:id" />
+				<xsl:variable name="id-refering-association" select="ep:id-refering-association" />
 				<xsl:variable name="classconstruct" select="imf:get-construct-by-id($id,$packages)" />
+				<xsl:variable name="refering-associationclassconstruct" select="imf:get-construct-by-id($id-refering-association,$packages)" />
 				<xsl:variable name="type-name" select="$classconstruct/imvert:name" />
 				<ep:construct>
 					<ep:parameters>
@@ -695,8 +697,8 @@
 							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
 						</xsl:otherwise>
 					</xsl:choose>
-					<xsl:sequence select="imf:create-output-element('ep:min-occurs', $construct/imvert:min-occurs)" />
-					<xsl:sequence select="imf:create-output-element('ep:max-occurs', $construct/imvert:max-occurs)" />
+					<xsl:sequence select="imf:create-output-element('ep:min-occurs', $refering-associationclassconstruct/imvert:min-occurs)" />
+					<xsl:sequence select="imf:create-output-element('ep:max-occurs', $refering-associationclassconstruct/imvert:max-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name($type-name,'type-name'))" />
 				</ep:construct>
 			</xsl:when>
