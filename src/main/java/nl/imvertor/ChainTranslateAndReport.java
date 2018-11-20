@@ -27,6 +27,7 @@ import nl.imvertor.ComplyCompiler.ComplyCompiler;
 import nl.imvertor.ConceptCollector.ConceptCollector;
 import nl.imvertor.ConfigCompiler.ConfigCompiler;
 import nl.imvertor.EapCompiler.EapCompiler;
+import nl.imvertor.EpCompiler.EpCompiler;
 import nl.imvertor.HistoryCompiler.HistoryCompiler;
 import nl.imvertor.ImvertCompiler.ImvertCompiler;
 import nl.imvertor.JsonSchemaCompiler.JsonSchemaCompiler;
@@ -83,6 +84,7 @@ public class ChainTranslateAndReport {
 			configurator.getCli(ImvertCompiler.STEP_NAME);
 			configurator.getCli(XsdCompiler.STEP_NAME);
 			configurator.getCli(ShaclCompiler.STEP_NAME);
+			configurator.getCli(EpCompiler.STEP_NAME);
 			configurator.getCli(JsonSchemaCompiler.STEP_NAME);
 			configurator.getCli(YamlCompiler.STEP_NAME);
 			configurator.getCli(ReleaseComparer.STEP_NAME);
@@ -166,8 +168,8 @@ public class ChainTranslateAndReport {
 				    // Eg. check if this only concerns a "documentation release". If so, must not be different from existing release.
 				    // also includes other types of release comparisons
 				    succeeds = succeeds && (new ReleaseComparer()).run();
-				    			
-					// generate the XSD 
+				    
+				    // generate the XSD 
 					if (configurator.isTrue("cli","createxmlschema",false))
 						succeeds = succeeds && (new XsdCompiler()).run();
 								
@@ -177,9 +179,10 @@ public class ChainTranslateAndReport {
 							succeeds = succeeds && (new SchemaValidator()).run();
 					
 					// Generate a json schema
-				    if (configurator.isTrue("cli","createjsonschema",false)) 
-			    		succeeds = succeeds && (new JsonSchemaCompiler()).run();
-
+				    if (configurator.isTrue("cli","createjsonschema",false)) {
+			    		succeeds = succeeds && (new EpCompiler()).run();
+		    			succeeds = succeeds && (new JsonSchemaCompiler()).run();
+					}
 				    // compile the history info 
 					if (configurator.isTrue("cli","createhistory",false))
 						succeeds = succeeds && (new HistoryCompiler()).run();

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Dit schema is gegenereerd door XML spy, en daarna handmatig bewerkt.
+	
+	Aanpassingen:
+  - 20181117 (Eerste integratie in Imvertor)
+  - element <ep:id> toegevoegd, ep:ref zal nu verwijzen naar ep:id
+  - <ep:parameters> mag leeg zijn.
+  - ep:pattern en ep:eq zijn niet mixed (mixed=-false).
+  - global construct mag ook ep:seq bevatten. 
+    Dit om domeinen (=schemas) mogelijk te maken. 
+    (TODO naast ep:construct ook ep:schema gaan ondersteunen?)
+    nb. enige verschil tussen global en locat constructs is dat globals geen choice kennen.
+    (TODO verschil opheffen?) 
+  - min-occurs en max-occurs zijn verplaatst naar een hogere plek. 
+	Wat nu wordt uitgedrukt op construct is: hoe vaak mag deze construct voorkomen in de parent? 
+
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://www.imvertor.org/schema/endproduct"
+	xmlns:ep="http://www.imvertor.org/schema/endproduct"
+	targetNamespace="http://www.imvertor.org/schema/endproduct" elementFormDefault="qualified">
+
+	<xs:element name="alias" type="xs:string"/>
+	<xs:element name="choice">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ep:parameters"/>
+				<xs:element ref="construct" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="construct" type="ep:globalConstruct"/>
+	<xs:complexType name="globalConstruct">
+		<xs:sequence>
+			<xs:element ref="parameters" minOccurs="0"/>
+			<xs:element ref="id" minOccurs="0"/>
+			<xs:element ref="name"/>
+			<xs:element ref="tech-name"/>
+			<xs:element ref="documentation" minOccurs="0"/>
+			<xs:element ref="min-occurs" minOccurs="0"/>
+			<xs:element ref="max-occurs" minOccurs="0"/>
+			<xs:choice>
+				<xs:choice>
+					<xs:sequence>
+						<xs:element ref="data-type"/>
+						<xs:element ref="min-value" minOccurs="0"/>
+						<xs:element ref="max-value" minOccurs="0"/>
+						<xs:element ref="max-length" minOccurs="0"/>
+						<xs:element ref="pattern" minOccurs="0"/>
+						<xs:element ref="example" minOccurs="0"/>
+						<xs:element ref="enum" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+					<xs:sequence>
+						<xs:element ref="type-name"/>
+						<xs:element ref="example" minOccurs="0"/>
+					</xs:sequence>
+				</xs:choice>
+				<xs:element ref="seq"/>
+				<xs:element ref="choice"/>
+				<xs:element ref="ref"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="localConstruct">
+		<xs:sequence>
+			<xs:element ref="parameters" minOccurs="0"/>
+			<xs:element ref="id" minOccurs="0"/>
+			<xs:element ref="name"/>
+			<xs:element ref="tech-name"/>
+			<xs:element ref="documentation" minOccurs="0"/>
+			<xs:element ref="min-occurs" minOccurs="0"/>
+			<xs:element ref="max-occurs" minOccurs="0"/>
+			<xs:choice>
+				<xs:choice>
+					<xs:sequence minOccurs="0">
+						<xs:element ref="data-type"/>
+						<xs:element ref="min-value" minOccurs="0"/>
+						<xs:element ref="max-value" minOccurs="0"/>
+						<xs:element ref="max-length" minOccurs="0"/>
+						<xs:element ref="pattern" minOccurs="0"/>
+						<xs:element ref="example" minOccurs="0"/>
+						<xs:element ref="enum" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+					<xs:sequence>
+						<xs:element ref="type-name"/>
+						<xs:element ref="example" minOccurs="0"/>
+					</xs:sequence>
+				</xs:choice>
+				<xs:element ref="seq"/>
+				<xs:element ref="ref"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="data-type" type="xs:string"/>
+	<xs:element name="date" type="xs:date"/>
+	<xs:element name="definition">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ep:p" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="description">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ep:p" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="documentation">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="definition" minOccurs="0"/>
+				<xs:element ref="description" minOccurs="0"/>
+				<xs:element ref="pattern" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="enum">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ep:name"/>
+				<xs:element ref="ep:alias"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="example" type="xs:string"/>
+	<xs:element name="max-length" type="xs:short"/>
+	<xs:element name="max-occurs" type="xs:string"/>
+	<xs:element name="message">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ep:parameters"/>
+				<xs:element ref="ep:name"/>
+				<xs:element ref="ep:tech-name"/>
+				<xs:element ref="ep:documentation"/>
+				<xs:element ref="ep:seq"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="message-set">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ep:name"/>
+				<xs:element ref="ep:release"/>
+				<xs:element ref="ep:date"/>
+				<xs:element ref="ep:patch-number"/>
+				<xs:element ref="ep:documentation" minOccurs="0"/>
+				<xs:element ref="ep:message" maxOccurs="unbounded"/>
+				<xs:element name="construct" type="globalConstruct" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="message-sets">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ep:parameters"/>
+				<xs:element ref="ep:name"/>
+				<xs:element ref="ep:message-set"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="min-occurs" type="xs:int"/>
+	<xs:element name="name" type="xs:string"/>
+	<xs:element name="id" type="xs:string"/>
+	<xs:element name="p">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute name="subpath">
+						<xs:simpleType>
+							<xs:restriction base="xs:string"/>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="parameter">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ep:name"/>
+				<xs:element ref="ep:value"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="parameters">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ep:parameter" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="patch-number" type="xs:string"/>
+	<xs:element name="pattern">
+		<xs:complexType mixed="true">
+			<xs:sequence>
+				<xs:element ref="ep:p" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ref" type="xs:string"/>
+	<xs:element name="release" type="xs:int"/>
+	<xs:element name="seq">
+		<xs:complexType mixed="true">
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="choice"/>
+				<xs:element name="construct" type="localConstruct" maxOccurs="unbounded"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="tech-name" type="xs:string"/>
+	<xs:element name="type-name" type="xs:string"/>
+	<xs:element name="value" type="xs:string"/>
+	<xs:element name="min-value" type="xs:int"/>
+	<xs:element name="max-value" type="xs:int"/>
+</xs:schema>

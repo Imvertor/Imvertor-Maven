@@ -18,27 +18,23 @@
  *
  */
 
-package nl.imvertor.JsonSchemaCompiler;
+package nl.imvertor.EpCompiler;
 
 import org.apache.log4j.Logger;
 
+import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
-import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
-import nl.imvertor.common.file.JsonFile;
+import nl.imvertor.common.file.XmlFile;
 
-/**
- * The json schema compiler takes an EP file and transforms it to a Json schema file.
- * 
- * @author arjan
- *
- */
-public class JsonSchemaCompiler extends Step {
+// see also https://github.com/Imvertor/Imvertor-Maven/issues/56
 
-	protected static final Logger logger = Logger.getLogger(JsonSchemaCompiler.class);
+public class EpCompiler extends Step {
+
+	protected static final Logger logger = Logger.getLogger(EpCompiler.class);
 	
-	public static final String STEP_NAME = "JsonSchemaCompiler";
+	public static final String STEP_NAME = "EpCompiler";
 	public static final String VC_IDENTIFIER = "$Id: $";
 
 	/**
@@ -67,9 +63,7 @@ public class JsonSchemaCompiler extends Step {
 	}
 
 	/**
-	 * Generate Json based on intermediate EP file.
-	 * 
-	 * See https://code.google.com/archive/p/yamlbeans/ for validator
+	 * Generate EP file suited for Kadaster Json schema.
 	 * 
 	 * @throws Exception
 	 */
@@ -80,29 +74,28 @@ public class JsonSchemaCompiler extends Step {
 						
 		boolean succeeds = true;
 		
-		runner.debug(logger,"CHAIN","Generating Json");
+		runner.debug(logger,"CHAIN","Generating EP");
 		
-		// Transform previously generated EP to Json
-		succeeds = succeeds && transformer.transformStep("properties/WORK_EP_XMLPATH","properties/WORK_SCHEMA_JSONPATH", "properties/IMVERTOR_JSON_XSLPATH");
+		transformer.setXslParm("ep-schema-path","../etc/xsd/EP/EP.xsd");
 		
-		// Debug: test if json is okay
-		JsonFile jsonFile = new JsonFile(configurator.getXParm("properties/WORK_SCHEMA_JSONPATH"));
-		succeeds = succeeds && jsonFile.validate(configurator);
+		// Create EP
+		succeeds = succeeds && transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/WORK_EP_XMLPATH", "properties/IMVERTOR_EP_XSLPATH");
 		
-		// pretty print and store to json folder
+		// if this succeeds, copy the EP schema to the app and validate
 		if (succeeds) {
-		
-			// copy to the app folder
-			String schemaName = configurator.mergeParms(configurator.getXParm("cli/jsonschemaname"));
+			AnyFolder workAppFolder = new AnyFolder(Configurator.getInstance().getXParm("system/work-app-folder-path"));
 			
-			// Create the folder; it is not expected to exist yet.
-			AnyFolder jsonFolder = new AnyFolder(configurator.getXParm("system/work-json-folder-path"));
-			AnyFile appJsonFile = new AnyFile(jsonFolder,schemaName + ".json");
-			jsonFolder.mkdirs();
-			jsonFile.copyFile(appJsonFile);
+			XmlFile resultEpFile = new XmlFile(configurator.getXParm("properties/WORK_EP_XMLPATH"));
+			XmlFile targetEpFile = new XmlFile(workAppFolder.getCanonicalPath() + "/ep/ep.xml"); // TODO nette naam, bepaald door gebruiker oid.
+			resultEpFile.copyFile(targetEpFile);
+			
+			XmlFile managedSchemaFile = new XmlFile(Configurator.getInstance().getBaseFolder().getCanonicalPath() + "/etc/xsd/EP/EP.xsd");
+			XmlFile targetSchemaFile = new XmlFile(workAppFolder.getCanonicalPath() + "/etc/xsd/EP/EP.xsd");
+			managedSchemaFile.copyFile(targetSchemaFile);
+			
+			// Debug: test if EP is okay
+			succeeds = succeeds && resultEpFile.isValid();
 		}
-		configurator.setXParm("system/json-schema-created",succeeds);
-		
 		return succeeds;
 	}
 }

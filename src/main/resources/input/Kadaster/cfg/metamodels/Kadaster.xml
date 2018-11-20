@@ -149,5 +149,13 @@
             <desc lang="nl">A proxy is TODO</desc>
             <construct>class</construct>
         </stereo>
+        
+        <!-- stub: allow for a keyed element to be produced in a schema. This is when any class (structures datatype) has an attribute with stereo "key" -->
+        <stereo id="stereotype-name-key">
+            <name lang="nl">Key</name>
+            <name lang="en">Key</name>
+            <construct>attribute</construct>
+        </stereo>
+
     </stereotypes>
 </metamodel>

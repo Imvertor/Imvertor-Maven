@@ -429,12 +429,14 @@
         <xsl:variable name="is-objecttype" select="imvert:stereotype/@id = ('stereotype-name-objecttype')"/>
         <xsl:variable name="is-grouptype" select="imvert:stereotype/@id = ('stereotype-name-composite')"/>
         
+        <xsl:variable name="is-keyed" select="imvert:attributes/imvert:attribute/imvert:stereotype/@id = 'stereotype-name-key'"/><!-- keyed classes are never represented on their own -->
+        
         <!-- only generate elements for constructs thet may be referenced as an element. This is: all constructs but
             AttributeGroupType
             
             https://github.com/Imvertor/Imvertor-Maven/issues/41
         -->
-        <xsl:if test="not($is-grouptype)">
+        <xsl:if test="not($is-grouptype or $is-keyed)">
             <xs:element name="{$type-name}" type="{imf:get-type($type-name,$package-name)}{$Type-suffix}" abstract="{$abstract}">
                 <xsl:choose>
                     <xsl:when test="not($supertype-name) and $is-objecttype">
@@ -553,6 +555,10 @@
         </xsl:variable>
         
         <xsl:choose>
+            <xsl:when test="$is-keyed">
+                <!-- skip -->
+            </xsl:when>
+         
             <xsl:when test="$content/self::complex">
                 <xs:complexType>
                     <xsl:attribute name="name" select="concat($type-name,$Type-suffix)"/>
@@ -821,6 +827,8 @@
         </xsl:variable>
         
         <xsl:variable name="is-gml-measure" select="$this/imvert:conceptual-schema-type = 'Measure' and $this/imvert:type-package = 'Geography Markup Language 3'"/>
+
+        <xsl:variable name="has-key" select="$defining-class/imvert:attributes/imvert:attribute[imvert:stereotype/@id = 'stereotype-name-key']"/>
         
         <xsl:choose>
             
@@ -858,6 +866,22 @@
                         <!-- TODO how to define possible elements in mixed contents? -->
                     </xs:complexType>
                 </xs:element>
+            </xsl:when>
+            
+            <xsl:when test="exists($has-key)">
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:sequence select="imf:create-comment($this,'A keyed value')"/>
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute name="{$has-key/imvert:name}" type="xs:string"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>  
             </xsl:when>
             
             <!--x

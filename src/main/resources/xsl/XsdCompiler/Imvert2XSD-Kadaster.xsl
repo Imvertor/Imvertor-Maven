@@ -394,9 +394,11 @@
         <!-- all classes are element + complex type declaration; except for datatypes (<<datatype>>). -->
         <xsl:variable name="is-choice-member" select="$document-classes[imvert:stereotype/@id = ('stereotype-name-union') and imvert:attributes/imvert:attribute/imvert:type-id = $type-id]"/>
         
+        <xsl:variable name="is-keyed" select="imvert:attributes/imvert:attribute/imvert:stereotype/@id = 'stereotype-name-key'"/><!-- keyed classes are never represented on their own -->
+        
         <xsl:sequence select="imf:debug(.,'Base class processing')"/>
-        <xsl:if test="not(imvert:stereotype/@id = ('stereotype-name-simpletype')) or $is-choice-member">
-            <xsl:sequence select="imf:debug(.,'A union element, or not a datatype')"/>
+        <xsl:if test="(not(imvert:stereotype/@id = ('stereotype-name-simpletype')) or $is-choice-member) and not($is-keyed)">
+            <xsl:sequence select="imf:debug(.,'A union element, or not a datatype and not keyed')"/>
             <xs:element name="{$type-name}" type="{imf:get-type($type-name,$package-name)}" abstract="{$abstract}">
                 <xsl:choose>
                     <xsl:when test="not($supertype-name and not($avoid-substitutions))">
@@ -533,6 +535,9 @@
         </xsl:variable>
         
         <xsl:choose>
+            <xsl:when test="$is-keyed">
+                <!-- skip -->
+            </xsl:when>
             <xsl:when test="$content/self::complex">
                 <xs:complexType>
                     <xsl:attribute name="name" select="$type-name"/>
@@ -751,6 +756,8 @@
         
         <xsl:variable name="data-location" select="imf:get-appinfo-location($this)"/>
         
+        <xsl:variable name="has-key" select="$defining-class/imvert:attributes/imvert:attribute[imvert:stereotype/@id = 'stereotype-name-key']"/>
+        
         <mark nillable="{$is-nillable}" nilreason="{$has-nilreason}">
             <xsl:choose>
             <!-- any type, i.e. #any -->
@@ -782,6 +789,22 @@
                         <!-- TODO how to define possible elements in mixed contents? -->
                     </xs:complexType>
                 </xs:element>
+            </xsl:when>
+            
+            <xsl:when test="exists($has-key)">
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:sequence select="imf:debug($this,'A keyed value')"/>
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute name="{$has-key/imvert:name}" type="xs:string"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>  
             </xsl:when>
             
             <xsl:when test="$type=('postcode')"> <!--TODO remove -->
