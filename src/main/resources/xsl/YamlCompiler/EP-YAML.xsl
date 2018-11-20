@@ -286,7 +286,7 @@
 					<xsl:if test="ep:parameters/ep:parameter[ep:name='expand']/ep:value = 'true'">
 						<xsl:text>&#xa;        - in: query</xsl:text>
 						<xsl:text>&#xa;          name: expand</xsl:text>
-						<xsl:text>&#xa;          description: "Hier kan aangegeven worden welke gerelateerde resources meegeladen moeten worden. Als expand=true wordt meegegeven, dan worden alle geneste resources geladen en in _embedded meegegeven. Ook kunnen de specifieke resources en velden van resources die gewenst zijn in de expand parameter kommagescheiden worden opgegeven. Specifieke velden van resource kunnen worden opgegeven door het opgeven van de resource-naam gevolgd door de veldnaam, met daartussen een punt."</xsl:text>
+						<xsl:text>&#xa;          description: "Hier kan aangegeven worden welke gerelateerde resources meegeladen moeten worden. Resources en velden van resources die gewenst zijn kunnen in de expand parameter kommagescheiden worden opgegeven. Specifieke velden van resource kunnen worden opgegeven door het opgeven van de resource-naam gevolgd door de veldnaam, met daartussen een punt."</xsl:text>
 						<xsl:text>&#xa;          required: false</xsl:text>
 						<xsl:text>&#xa;          schema:</xsl:text>
 						<xsl:text>&#xa;            type: string</xsl:text>

@@ -380,7 +380,7 @@
 			<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
 			<xsl:choose>
 				<xsl:when test="(empty($doc) or $doc='') and $debugging">
-					<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+					<xsl:call-template name="documentationUnknown"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
@@ -557,7 +557,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
 					<xsl:choose>
 						<xsl:when test="(empty($doc) or $doc='') and $debugging">
-							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+							<xsl:call-template name="documentationUnknown"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
@@ -651,7 +651,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($construct/imvert:name, 'element-name'))" />
 					<xsl:choose>
 						<xsl:when test="(empty($doc) or $doc='') and $debugging">
-							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+							<xsl:call-template name="documentationUnknown"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
@@ -689,7 +689,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', ../ep:tech-name)" />
 					<xsl:choose>
 						<xsl:when test="(empty($doc) or $doc='') and $debugging">
-							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+							<xsl:call-template name="documentationUnknown"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
@@ -739,7 +739,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
 					<xsl:choose>
 						<xsl:when test="(empty($doc) or $doc='') and $debugging">
-							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+							<xsl:call-template name="documentationUnknown"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
@@ -779,7 +779,7 @@
 						</xsl:when>
 						<xsl:when test="(empty($doc) or $doc='') and $debugging">
 							<ep:tst2/>
-							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+							<xsl:call-template name="documentationUnknown"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<ep:tst3/>
@@ -847,7 +847,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
 					<xsl:choose>
 						<xsl:when test="(empty($doc) or $doc='') and $debugging">
-							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+							<xsl:call-template name="documentationUnknown"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
@@ -973,7 +973,7 @@
 			<ep:tech-name><xsl:value-of select="$tech-name"/></ep:tech-name>
 			<xsl:choose>
 				<xsl:when test="(empty($doc) or $doc='') and $debugging">
-					<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+					<xsl:call-template name="documentationUnknown"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
@@ -1144,7 +1144,7 @@
 					
 					<xsl:choose>
 						<xsl:when test="(empty($doc) or $doc='') and $debugging">
-							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+							<xsl:call-template name="documentationUnknown"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
@@ -1218,7 +1218,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($complex-datatype-tech-name,'type-name'))" />
 					<xsl:choose>
 						<xsl:when test="(empty($doc) or $doc='') and $debugging">
-							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+							<xsl:call-template name="documentationUnknown"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
@@ -1312,7 +1312,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($classconstruct/imvert:name, 'type-name'))" />
 					<xsl:choose>
 						<xsl:when test="(empty($doc) or $doc='') and $debugging">
-							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+							<xsl:call-template name="documentationUnknown"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
@@ -1373,7 +1373,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($complex-datatype-tech-name,'type-name'))" />
 					<xsl:choose>
 						<xsl:when test="(empty($doc) or $doc='') and $debugging">
-							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+							<xsl:call-template name="documentationUnknown"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
@@ -1417,7 +1417,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($complex-datatype-tech-name,'type-name'))" />
 					<xsl:choose>
 						<xsl:when test="(empty($doc) or $doc='') and $debugging">
-							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+							<xsl:call-template name="documentationUnknown"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
@@ -1508,7 +1508,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
 					<xsl:choose>
 						<xsl:when test="(empty($doc) or $doc='') and $debugging">
-							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+							<xsl:call-template name="documentationUnknown"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
@@ -1553,7 +1553,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
 					<xsl:choose>
 						<xsl:when test="(empty($doc) or $doc='') and $debugging">
-							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+							<xsl:call-template name="documentationUnknown"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
@@ -1594,7 +1594,7 @@
 							<ep:found-tagged-values>
 								<xsl:choose>
 									<xsl:when test="(empty($doc) or $doc='') and $debugging">
-										<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+										<xsl:call-template name="documentationUnknown"/>
 									</xsl:when>
 									<xsl:otherwise>
 										<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
@@ -1609,7 +1609,7 @@
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
 					<xsl:choose>
 						<xsl:when test="(empty($doc) or $doc='') and $debugging">
-							<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+							<xsl:call-template name="documentationUnknown"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
@@ -1672,7 +1672,7 @@
 			<xsl:sequence select="imf:create-output-element('ep:tech-name', imf:capitalize($compiled-name))" />
 			<xsl:choose>
 				<xsl:when test="(empty($doc) or $doc='') and $debugging">
-					<xsl:sequence select="imf:create-output-element('ep:documentation', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+					<xsl:call-template name="documentationUnknown"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
@@ -1725,6 +1725,14 @@
 			</xsl:choose>
 		</ep:enum>
 
+	</xsl:template>
+	
+	<xsl:template name="documentationUnknown">
+		<ep:documentation>
+			<ep:description>
+				<xsl:sequence select="imf:create-output-element('ep:p', 'Documentatie (nog) niet kunnen achterhalen.','',false(),false())" />
+			</ep:description>
+		</ep:documentation>
 	</xsl:template>
 
 	<xsl:function name="imf:checkSuperclassesOnId">
