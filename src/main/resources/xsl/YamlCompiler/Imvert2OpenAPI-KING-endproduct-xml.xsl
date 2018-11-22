@@ -50,6 +50,14 @@
 				</ep:p>
 			</ep:description>
 		</xsl:if>
+		<?x
+			Volgende werkt niet maar zou n.m.m. wel moeten werken. 
+		<xsl:if test="not(empty(imf:merge-documentation($packages,'##CFG-TV-DESCRIPTION')))">
+			<ep:description>
+				<xsl:sequence select="imf:merge-documentation($packages,'##CFG-TV-DESCRIPTION')" />
+			</ep:description>
+		</xsl:if>
+		?>
 	</xsl:variable>
 	<xsl:variable name="project-url">
 		<xsl:choose>
@@ -1498,6 +1506,20 @@
 							<xsl:sequence select="imf:create-output-element('ep:name', 'type')" />
 							<xsl:sequence select="imf:create-output-element('ep:value', 'GM-external')" />
 						</ep:parameter>
+						<xsl:choose>
+							<xsl:when test="$is-id = 'true'">
+								<ep:parameter>
+									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
+									<xsl:sequence select="imf:create-output-element('ep:value', 'true')" />
+								</ep:parameter>
+							</xsl:when>
+							<xsl:otherwise>
+								<ep:parameter>
+									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
+									<xsl:sequence select="imf:create-output-element('ep:value', 'false')" />
+								</ep:parameter>
+							</xsl:otherwise>
+						</xsl:choose>
 						<xsl:if test="$SIM-name != ''">
 							<ep:parameter>
 								<xsl:sequence select="imf:create-output-element('ep:name', 'SIM-name')" />
@@ -1534,22 +1556,29 @@
 				<!-- imvert:attributes having an imvert:type-id result in an ep:construct which refers to a global ep:construct. This is for 
 					 example the case when it's an attribute with a enumeration type. -->
 				<ep:construct>
-					<xsl:if test="$is-id = 'true' or $SIM-name != ''">
-						<ep:parameters>
-							<xsl:if test="$is-id = 'true'">
+					<ep:parameters>
+						<xsl:choose>
+							<xsl:when test="$is-id = 'true'">
 								<ep:parameter>
 									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
 									<xsl:sequence select="imf:create-output-element('ep:value', 'true')" />
 								</ep:parameter>
-							</xsl:if>
-							<xsl:if test="$SIM-name != ''">
+							</xsl:when>
+							<xsl:otherwise>
 								<ep:parameter>
-									<xsl:sequence select="imf:create-output-element('ep:name', 'SIM-name')" />
-									<xsl:sequence select="imf:create-output-element('ep:value', $SIM-name)" />
+									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
+									<xsl:sequence select="imf:create-output-element('ep:value', 'false')" />
 								</ep:parameter>
-							</xsl:if>
-						</ep:parameters>
-					</xsl:if>	
+							</xsl:otherwise>
+						</xsl:choose>
+						<xsl:if test="$SIM-name != ''">
+							<ep:parameter>
+								<xsl:sequence select="imf:create-output-element('ep:name', 'SIM-name')" />
+								<xsl:sequence select="imf:create-output-element('ep:value', $SIM-name)" />
+							</ep:parameter>
+						</xsl:if>
+					</ep:parameters>
+
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS30000, id: ',imvert:id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
 					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
@@ -1570,22 +1599,29 @@
 			<xsl:otherwise>
 				<!-- In all other cases the imvert:attribute itself and its properties are processed. -->
 				<ep:construct>
-					<xsl:if test="$is-id = 'true' or $SIM-name != ''">
-						<ep:parameters>
-							<xsl:if test="$is-id = 'true'">
+					<ep:parameters>
+						<xsl:choose>
+							<xsl:when test="$is-id = 'true'">
 								<ep:parameter>
 									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
 									<xsl:sequence select="imf:create-output-element('ep:value', 'true')" />
 								</ep:parameter>
-							</xsl:if>
-							<xsl:if test="$SIM-name != ''">
+							</xsl:when>
+							<xsl:otherwise>
 								<ep:parameter>
-									<xsl:sequence select="imf:create-output-element('ep:name', 'SIM-name')" />
-									<xsl:sequence select="imf:create-output-element('ep:value', $SIM-name)" />
+									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
+									<xsl:sequence select="imf:create-output-element('ep:value', 'false')" />
 								</ep:parameter>
-							</xsl:if>
-						</ep:parameters>
-					</xsl:if>	
+							</xsl:otherwise>
+						</xsl:choose>
+						<xsl:if test="$SIM-name != ''">
+							<ep:parameter>
+								<xsl:sequence select="imf:create-output-element('ep:name', 'SIM-name')" />
+								<xsl:sequence select="imf:create-output-element('ep:value', $SIM-name)" />
+							</ep:parameter>
+						</xsl:if>
+					</ep:parameters>
+
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS30500, id: ',imvert:id),$debugging)" />
 <?x					<xsl:if test="$debugging">
 						<ep:suppliers>
