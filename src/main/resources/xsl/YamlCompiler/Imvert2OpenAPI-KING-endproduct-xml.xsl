@@ -1172,14 +1172,15 @@
 				</ep:construct>
 				
 			</xsl:when>
-			<xsl:when test="@type='association' and not($construct//imvert:attributes/imvert:attribute) and not($construct//imvert:associations/imvert:association)">
+<?x			<xsl:when test="@type='association' and not($construct//imvert:attributes/imvert:attribute) and not($construct//imvert:associations/imvert:association)">
 				<!-- If the class the association is refering to doesn't have attributes and associations a warning is generated. -->
 				<xsl:sequence select="imf:create-debug-comment(concat('OAS19500, id: ',$id),$debugging)" />
 				<xsl:variable name="class-name" select="$construct/imvert:name/@original"/>
 				<xsl:sequence select="imf:msg($construct,'WARNING','The construct [1] the association [2] is refering to does not have attributes or associations.',($class-name, ep:tech-name))"/>
 			</xsl:when>
-			<xsl:when test="@type='association' and ($construct//imvert:attributes/imvert:attribute or $construct//imvert:associations/imvert:association)">
-				<!-- The association construct refering to a class construct doesn't have to be reproduced itself
+			<xsl:when test="@type='association' and ($construct//imvert:attributes/imvert:attribute or $construct//imvert:associations/imvert:association)"> ?>
+			<xsl:when test="@type='association'">
+					<!-- The association construct refering to a class construct doesn't have to be reproduced itself
 					 since in most cases (relations to groups are the exception) relation aren't represented within json. -->
 				<xsl:sequence select="imf:create-debug-comment(concat('OAS20000, id: ',$id),$debugging)" />
 <?x                <xsl:copy>
