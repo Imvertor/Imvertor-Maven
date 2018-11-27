@@ -1735,7 +1735,7 @@
 					   Voor het geval daarop wordt teruggekomen is de XSLT-code voor het opnemen van de code hieronder bewaard. -->
 			<xsl:choose>
 				<xsl:when test="empty($SIM-alias)">
-					<xsl:variable name="chars2bTranslated" select="translate($SIM-name,'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ','')">
+					<xsl:variable name="chars2bTranslated" select="translate($SIM-name,'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_','')">
 						<!-- Contains all characters which need to be translated which are all characters execept the a to z and A to Z and the space. -->
 					</xsl:variable>
 					<xsl:variable name="normalizedName">
@@ -1752,7 +1752,8 @@
 						<!--xsl:value-of select="translate(translate($SIM-name,$chars2bTranslated,$chars2bTranslated2),'_')"/-->
 					</xsl:variable>
 					<xsl:if test="$SIM-name != $normalizedName">
-						<xsl:sequence select="imf:msg($construct,'WARNING','The source for the enumeration value [1] does not have an alias and its description contains characters other than a-z, A-Z or the space character, check the resulting enumeration value.',(imvert:name))"/>						
+						<!-- If the normalized-name isn't equal to the SIM-name a warning has to be generated. The goal of this warning is only point the attention of the messagedeveloper to the enumeration and ask him to cehck it. -->
+						<xsl:sequence select="imf:msg($construct,'WARNING','The source for the enumeration value [1] does not have an alias. Therefore it has been generated from its description. This however contains characters other than a-z, A-Z or an underscore. Check if the resulting enumeration value is as desired ([2],[3]).',(imvert:name,$SIM-name,$normalizedName))"/>						
 					</xsl:if>
 					<ep:name><xsl:value-of select="$SIM-name" /></ep:name>
 					<ep:alias><xsl:value-of select="$normalizedName" /></ep:alias>
