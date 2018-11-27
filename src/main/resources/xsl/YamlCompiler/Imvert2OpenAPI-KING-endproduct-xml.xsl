@@ -1172,14 +1172,15 @@
 				</ep:construct>
 				
 			</xsl:when>
-			<xsl:when test="@type='association' and not($construct//imvert:attributes/imvert:attribute) and not($construct//imvert:associations/imvert:association)">
+<?x			<xsl:when test="@type='association' and not($construct//imvert:attributes/imvert:attribute) and not($construct//imvert:associations/imvert:association)">
 				<!-- If the class the association is refering to doesn't have attributes and associations a warning is generated. -->
 				<xsl:sequence select="imf:create-debug-comment(concat('OAS19500, id: ',$id),$debugging)" />
 				<xsl:variable name="class-name" select="$construct/imvert:name/@original"/>
 				<xsl:sequence select="imf:msg($construct,'WARNING','The construct [1] the association [2] is refering to does not have attributes or associations.',($class-name, ep:tech-name))"/>
 			</xsl:when>
-			<xsl:when test="@type='association' and ($construct//imvert:attributes/imvert:attribute or $construct//imvert:associations/imvert:association)">
-				<!-- The association construct refering to a class construct doesn't have to be reproduced itself
+			<xsl:when test="@type='association' and ($construct//imvert:attributes/imvert:attribute or $construct//imvert:associations/imvert:association)"> ?>
+			<xsl:when test="@type='association'">
+					<!-- The association construct refering to a class construct doesn't have to be reproduced itself
 					 since in most cases (relations to groups are the exception) relation aren't represented within json. -->
 				<xsl:sequence select="imf:create-debug-comment(concat('OAS20000, id: ',$id),$debugging)" />
 <?x                <xsl:copy>
@@ -1734,7 +1735,7 @@
 					   Voor het geval daarop wordt teruggekomen is de XSLT-code voor het opnemen van de code hieronder bewaard. -->
 			<xsl:choose>
 				<xsl:when test="empty($SIM-alias)">
-					<xsl:variable name="chars2bTranslated" select="translate($SIM-name,'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ','')">
+					<xsl:variable name="chars2bTranslated" select="translate($SIM-name,'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_','')">
 						<!-- Contains all characters which need to be translated which are all characters execept the a to z and A to Z and the space. -->
 					</xsl:variable>
 					<xsl:variable name="normalizedName">
@@ -1751,7 +1752,8 @@
 						<!--xsl:value-of select="translate(translate($SIM-name,$chars2bTranslated,$chars2bTranslated2),'_')"/-->
 					</xsl:variable>
 					<xsl:if test="$SIM-name != $normalizedName">
-						<xsl:sequence select="imf:msg($construct,'WARNING','The source for the enumeration value [1] does not have an alias and its description contains characters other than a-z, A-Z or the space character, check the resulting enumeration value.',(imvert:name))"/>						
+						<!-- If the normalized-name isn't equal to the SIM-name a warning has to be generated. The goal of this warning is only point the attention of the messagedeveloper to the enumeration and ask him to cehck it. -->
+						<xsl:sequence select="imf:msg($construct,'WARNING','The source for the enumeration value [1] does not have an alias. Therefore it has been generated from its description. This however contains characters other than a-z, A-Z or an underscore. Check if the resulting enumeration value is as desired ([2],[3]).',(imvert:name,$SIM-name,$normalizedName))"/>						
 					</xsl:if>
 					<ep:name><xsl:value-of select="$SIM-name" /></ep:name>
 					<ep:alias><xsl:value-of select="$normalizedName" /></ep:alias>

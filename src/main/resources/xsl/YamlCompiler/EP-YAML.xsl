@@ -179,7 +179,17 @@
 					<!-- Within this variable the variables determinedUriStructure and the calculatedUriStructure are compared with eachother
 						 and durng that process a comparable structure as in those variables is generated. It's also determined if a parameter
 						 is a query or a path parameter. -->
+					<xsl:variable name="checkOnParameters">
+						<xsl:for-each select="$determinedUriStructure//ep:uriPart">
+							<xsl:if test="contains(ep:entityName,'{') or contains(ep:entityName,'}')">Y</xsl:if>
+						</xsl:for-each>
+					</xsl:variable>
 					<xsl:choose>
+						<xsl:when test="contains($checkOnParameters,'Y')">
+							<!-- Within the path 2 parameter uriparts are placed after eachother. -->
+							<xsl:sequence select="imf:msg(.,'WARNING','Within the message [1] 2 parameters are placed after eachother.', ($rawMessageName))" />			
+							<ep:uriStructure/>
+						</xsl:when>
 						<xsl:when test="count($determinedUriStructure//ep:uriPart) > count($calculatedUriStructure//ep:uriPart) or not($calculatedUriStructure//ep:uriPart)">
 							<!-- If the amount of entities withn the detremined structure is larger than withn the calculated structure
 								 comparisson isn't possible and a warnings is generated. -->
