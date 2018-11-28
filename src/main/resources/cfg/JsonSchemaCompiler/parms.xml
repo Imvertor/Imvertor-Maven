@@ -41,10 +41,11 @@
    <properties>
    
       <WORK_EP_XMLPATH>${system/work-imvert-folder-path}/imvertor.26.ep.xml</WORK_EP_XMLPATH>   
-      <WORK_SCHEMA_JSONPATH>${system/work-imvert-folder-path}/imvertor.27.schema.json</WORK_SCHEMA_JSONPATH>   
+      <WORK_JSONXML_XMLPATH>${system/work-imvert-folder-path}/imvertor.27.jsonxml.xml</WORK_JSONXML_XMLPATH>   
+      <WORK_SCHEMA_JSONPATH>${system/work-imvert-folder-path}/imvertor.28.schema.json</WORK_SCHEMA_JSONPATH>   
      
       <IMVERTOR_EP_XSLPATH>Imvert2EP.xsl</IMVERTOR_EP_XSLPATH>
-      <IMVERTOR_JSON_XSLPATH>EP2Json.xsl</IMVERTOR_JSON_XSLPATH>
+      <IMVERTOR_JSONXML_XSLPATH>EP2Json.xsl</IMVERTOR_JSONXML_XSLPATH>
       
    </properties>
    

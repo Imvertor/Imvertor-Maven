@@ -27,6 +27,7 @@ import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.JsonFile;
+import nl.imvertor.common.file.XmlFile;
 
 /**
  * The json schema compiler takes an EP file and transforms it to a Json schema file.
@@ -49,6 +50,8 @@ public class JsonSchemaCompiler extends Step {
 		// set up the configuration for this step
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
+		
+		runner.info(logger,"Compiling JSON");
 		
 		String schemarules = configurator.getSchemarules();
 		if (schemarules.equals("KadasterNEN3610")) {
@@ -82,11 +85,15 @@ public class JsonSchemaCompiler extends Step {
 		
 		runner.debug(logger,"CHAIN","Generating Json");
 		
-		// Transform previously generated EP to Json
-		succeeds = succeeds && transformer.transformStep("properties/WORK_EP_XMLPATH","properties/WORK_SCHEMA_JSONPATH", "properties/IMVERTOR_JSON_XSLPATH");
+		// Transform previously generated EP to Json XML
+		succeeds = succeeds && transformer.transformStep("properties/WORK_EP_XMLPATH","properties/WORK_JSONXML_XMLPATH", "properties/IMVERTOR_JSONXML_XSLPATH");
+		
+		// convert the json xml to Json.
+		XmlFile jsonXmlFile = new XmlFile(configurator.getXParm("properties/WORK_JSONXML_XMLPATH"));
+		JsonFile jsonFile = new JsonFile(configurator.getXParm("properties/WORK_SCHEMA_JSONPATH"));
+		jsonXmlFile.xmlToJson(jsonFile);
 		
 		// Debug: test if json is okay
-		JsonFile jsonFile = new JsonFile(configurator.getXParm("properties/WORK_SCHEMA_JSONPATH"));
 		succeeds = succeeds && jsonFile.validate(configurator);
 		
 		// pretty print and store to json folder

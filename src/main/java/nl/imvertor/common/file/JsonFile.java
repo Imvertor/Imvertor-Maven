@@ -43,7 +43,7 @@ public class JsonFile extends AnyFile {
 	static JsonXMLConfig config;
 		 
 	public static void main(String[] args) {
-		JsonFile file = new JsonFile("c:/temp/sample.js");
+		JsonFile file = new JsonFile("c:/temp/sample.json");
 		try {
 			file.jsonToXml(new XmlFile("c:/temp/sample.xml"));
 		} catch (Exception e) {
