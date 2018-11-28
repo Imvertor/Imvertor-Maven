@@ -46,6 +46,8 @@ public class EpCompiler extends Step {
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
 		
+		runner.info(logger,"Compiling EP");
+		
 		String schemarules = configurator.getSchemarules();
 		if (schemarules.equals("KadasterNEN3610")) {
 			generateKadaster();

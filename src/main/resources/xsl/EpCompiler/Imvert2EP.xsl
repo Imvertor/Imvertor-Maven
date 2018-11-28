@@ -13,23 +13,26 @@
     <xsl:param name="ep-schema-path">somewhere</xsl:param>
     
     <xsl:variable name="stylesheet-code">EP</xsl:variable>
-    <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
+    <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/> 
     
     <xsl:variable name="domain-packages" select="/imvert:packages/imvert:package[imvert:stereotype/@id = 'stereotype-name-domain-package']"/>
     
     <xsl:template match="/imvert:packages">
-        <ep:construct 
-            xsi:schemaLocation="http://www.imvertor.org/schema/endproduct {$ep-schema-path}">
-            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Start hier------------------------------------------------------------------------------------------',())"/>
-            <ep:parameters>
-                <xsl:sequence select="imf:set-parameter('subpath',imvert:subpath)"/>
-            </ep:parameters>
-            <xsl:sequence select="imf:get-names(.)"/>
-            <xsl:sequence select="imf:get-documentation(.)"/>
-            <ep:seq>
-                <xsl:apply-templates select="imvert:package"/>
-            </ep:seq>
-        </ep:construct>
+        <xsl:variable name="body" as="element()">
+            <ep:construct 
+                xsi:schemaLocation="http://www.imvertor.org/schema/endproduct {$ep-schema-path}">
+                <xsl:sequence select="imf:msg-comment(.,'DEBUG','Start hier------------------------------------------------------------------------------------------',())"/>
+                <ep:parameters>
+                    <xsl:sequence select="imf:set-parameter('subpath',imvert:subpath)"/>
+                </ep:parameters>
+                <xsl:sequence select="imf:get-names(.)"/>
+                <xsl:sequence select="imf:get-documentation(.)"/>
+                <ep:seq>
+                    <xsl:apply-templates select="imvert:package"/>
+                </ep:seq>
+            </ep:construct>
+        </xsl:variable>
+        <xsl:apply-templates select="$body" mode="remove-empty-elements"/>
     </xsl:template>
     
     <xsl:template match="imvert:package[imvert:stereotype/@id = 'stereotype-name-domain-package']">
@@ -149,6 +152,18 @@
         </ep:construct>
     </xsl:template>
     
+    <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-enumeration']">
+        <ep:construct>
+            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Enumeratie',())"/>
+            <ep:parameters>
+            </ep:parameters>
+            <xsl:sequence select="imf:get-id(.)"/>
+            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-documentation(.)"/>
+            <xsl:apply-templates select="imvert:attributes/imvert:attribute"/><!-- allemaal <<enum>> -->
+        </ep:construct>
+    </xsl:template>
+    
     <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-interface']">
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Interface (extern)',())"/>
@@ -198,6 +213,8 @@
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-cardinality(.)"/>
             <xsl:sequence select="imf:get-type(.)"/>
+            <xsl:sequence select="imf:get-props(.)"/>
+            <xsl:sequence select="imf:get-meta(.)"/>
         </ep:construct>
     </xsl:template>
 
@@ -222,6 +239,7 @@
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-cardinality(.)"/>
             <xsl:sequence select="imf:get-type(.)"/>
+            <xsl:sequence select="imf:get-props(.)"/>
         </ep:construct>
     </xsl:template>
     
@@ -229,12 +247,22 @@
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een data element',())"/>
             <ep:parameters>
+                <xsl:sequence select="imf:set-parameter('use','data-element')"/>
             </ep:parameters>
             <xsl:sequence select="imf:get-names(.)"/>
             <xsl:sequence select="imf:get-documentation(.)"/>
             <xsl:sequence select="imf:get-cardinality(.)"/>
             <xsl:sequence select="imf:get-type(.)"/>
+            <xsl:sequence select="imf:get-props(.)"/>
+            <xsl:sequence select="imf:get-meta(.)"/>
         </ep:construct>
+    </xsl:template>
+    
+    <xsl:template match="imvert:attribute[imvert:stereotype/@id = 'stereotype-name-enum']">
+        <ep:enum>
+            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een enumeratie waarde',())"/>
+            <xsl:value-of select="imvert:name/@original"/>
+        </ep:enum>
     </xsl:template>
     
     <xsl:template match="imvert:association[imvert:stereotype/@id = 'stereotype-name-relatiesoort']">
@@ -268,6 +296,21 @@
     </xsl:template>
     
     <!--
+        Remove certain elements that are empty.
+    -->    
+    <xsl:template match="ep:min-occurs | ep:max-occurs | ep:documentation | ep:parameters | ep:seq | ep:min-length | ep:max-length | ep:min-value | ep:max-value | ep:pattern | ep:example" mode="remove-empty-elements">
+        <xsl:if test="normalize-space()">
+            <xsl:next-match/>
+        </xsl:if>
+    </xsl:template>
+    
+    <xsl:template match="node()" mode="remove-empty-elements">
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
+            <xsl:apply-templates mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    <!--
         FUNCTIONS 
     -->    
     <xsl:function name="imf:get-id" as="element()*">
@@ -299,7 +342,7 @@
         <ep:documentation>
             <ep:definition>
                 <ep:p>
-                    <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($this,'CFG-TV-DEFINITION')"/>
+                    <xsl:value-of select="normalize-space(imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-DEFINITION'))"/>
                 </ep:p>
             </ep:definition>
         </ep:documentation>
@@ -308,10 +351,10 @@
     <xsl:function name="imf:get-cardinality" as="element()*">
         <xsl:param name="this"/>
         <ep:min-occurs>
-            <xsl:value-of select="($this/imvert:min-occurs,'1')[1]"/>
+            <xsl:value-of select="$this/imvert:min-occurs[. ne '1']"/>
         </ep:min-occurs>
         <ep:max-occurs>
-            <xsl:value-of select="($this/imvert:max-occurs,'1')[1]"/>
+            <xsl:value-of select="$this/imvert:max-occurs[. ne '1']"/>
         </ep:max-occurs>
     </xsl:function>
     
@@ -326,8 +369,17 @@
             <xsl:when test="$this/imvert:type-name = 'scalar-string'">
                 <ep:data-type>ep:string</ep:data-type>
             </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-integer'">
+                <ep:data-type>ep:integer</ep:data-type>
+            </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-year'">
+                <ep:data-type>ep:year</ep:data-type>
+            </xsl:when>
             <xsl:when test="$this/imvert:type-name = 'scalar-date'">
                 <ep:data-type>ep:date</ep:data-type>
+            </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-datetime'">
+                <ep:data-type>ep:datetime</ep:data-type>
             </xsl:when>
             <xsl:when test="$this/imvert:type-name = 'scalar-decimal'">
                 <ep:data-type>ep:decimal</ep:data-type>
@@ -336,6 +388,34 @@
                 <xsl:sequence select="imf:msg-comment($this,'WARNING','Unknown (data)type: [1]',($this/imvert:type-name, $this/imvert:baretype)[1])"/>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-props" as="element()*">
+        <xsl:param name="this"/>
+        <ep:min-value>
+            <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-MINVALUEINCLUSIVE')"/>
+        </ep:min-value>
+        <ep:max-value>
+            <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-MAXVALUEINCLUSIVE')"/>
+        </ep:max-value>
+        <ep:min-length>
+            <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-MINLENGTH')"/>            
+        </ep:min-length>
+        <ep:max-length>
+            <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-LENGTH')"/>            
+        </ep:max-length>
+        <ep:pattern>
+            <ep:p>
+                <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-PATTERN')"/>
+            </ep:p>        
+        </ep:pattern>
+    </xsl:function>
+    
+    <xsl:function name="imf:get-meta" as="element()*">
+        <xsl:param name="this"/>
+        <ep:example>
+            <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-EXAMPLE')"/>
+        </ep:example>
     </xsl:function>
     
     <xsl:function name="imf:set-parameter" as="element(ep:parameter)*">

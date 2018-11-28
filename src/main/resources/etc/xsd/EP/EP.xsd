@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	Dit schema is gegenereerd door XML spy, en daarna handmatig bewerkt.
+	Dit schema is gegenereerd door XML spy, en daarna handmatig bewerkt tbv.Kadaster Json schema generatie.
 	
 	Aanpassingen:
   - 20181117 (Eerste integratie in Imvertor)
-  - element <ep:id> toegevoegd, ep:ref zal nu verwijzen naar ep:id
-  - <ep:parameters> mag leeg zijn.
-  - ep:pattern en ep:eq zijn niet mixed (mixed=-false).
-  - global construct mag ook ep:seq bevatten. 
-    Dit om domeinen (=schemas) mogelijk te maken. 
-    (TODO naast ep:construct ook ep:schema gaan ondersteunen?)
-    nb. enige verschil tussen global en locat constructs is dat globals geen choice kennen.
-    (TODO verschil opheffen?) 
-  - min-occurs en max-occurs zijn verplaatst naar een hogere plek. 
-	Wat nu wordt uitgedrukt op construct is: hoe vaak mag deze construct voorkomen in de parent? 
+	  - element <ep:id> toegevoegd, ep:ref zal nu verwijzen naar ep:id
+	  - <ep:parameters> (in model) mag leeg zijn, en is nergens verplicht
+	  - ep:pattern en ep:eq zijn niet mixed (mixed=false).
+	  - global construct mag ook ep:seq bevatten. 
+	    Dit om domeinen (=schemas) mogelijk te maken. 
+	    (TODO naast ep:construct ook ep:schema gaan ondersteunen?)
+	    nb. enige verschil tussen global en locat constructs is dat globals geen choice kennen.
+	    (TODO verschil opheffen?) 
+	  - min-occurs en max-occurs zijn verplaatst naar een hogere plek. 
+		Wat nu wordt uitgedrukt op construct is: hoe vaak mag deze construct voorkomen in de parent? 
+	  - localconstruct kan naast seq ook choice bevatten.
+      - enkele ep-elementen worden niet door Kadaster gebruikt: minvalue, maxvalue, example, etc. - dat zou dan aanpassing van het metamdoel betekenen.
+      - 
 
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -25,7 +28,7 @@
 	<xs:element name="choice">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="ep:parameters"/>
+				<xs:element ref="ep:parameters" minOccurs="0"/>
 				<xs:element ref="construct" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
@@ -88,6 +91,7 @@
 					</xs:sequence>
 				</xs:choice>
 				<xs:element ref="seq"/>
+				<xs:element ref="choice"/>
 				<xs:element ref="ref"/>
 			</xs:choice>
 		</xs:sequence>
