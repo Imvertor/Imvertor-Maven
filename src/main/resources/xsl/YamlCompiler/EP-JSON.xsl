@@ -5,8 +5,8 @@
 	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
 	
 	<!-- The first variable is meant for the server environment, the second one is used during development in XML-Spy. -->
-	<!--<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>-->
-	<xsl:variable name="debugging" select="true()" as="xs:boolean"/>
+<!--	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>-->
+	<xsl:variable name="debugging" select="false()" as="xs:boolean"/>
 	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
@@ -16,9 +16,18 @@
 	
 	<!-- This variabele defines the type of output and can take the next values:
 		 * json
-		 * json+hal
+		 * hal+json
 		 * geojson	-->
-	<xsl:variable name="uitvoerformaat" select="'json+hal'"/>
+	<xsl:variable name="serialisation">
+		<xsl:choose>
+			<xsl:when test="empty(/ep:message-sets/ep:parameters/ep:parameter[ep:name='serialisation'])">
+				<xsl:value-of select="'hal+json'"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="/ep:message-sets/ep:parameters/ep:parameter[ep:name='serialisation']/ep:value"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 	
 	<!-- This variabele defines if pagination applies to at least one message, it can take the next values:
 		 * true()
@@ -105,8 +114,8 @@
 			<xsl:variable name="type-name" select="ep:type-name"/>
 			<!-- The regular constructs are generated here. -->
 			<xsl:if test="$debugging">
-				"--------------Debuglocatie-ROME1-<xsl:value-of select="generate-id()"/>": {
-					"Debug": "ROME1"
+				"--------------Debuglocatie-01000-<xsl:value-of select="generate-id()"/>": {
+					"Debug": "OAS01000"
 				},
 			</xsl:if>
 			<xsl:call-template name="construct"/>
@@ -117,160 +126,297 @@
 			</xsl:if>
 		</xsl:for-each>
 		<xsl:if test="$debugging">
-			,"--------------Debuglocatie-04100-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS04100"
+			,"--------------Debuglocatie-02000-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS02000"
 			}
 		</xsl:if>
-		<!-- If the for each after this if is relevant a comma separator has to be generated here. -->
-		<xsl:if test="ep:message-set/ep:construct
-						[ 
-						  ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:type-name 
-						  and 
-						  not(
-						       ep:tech-name = //ep:message
-							   [
-							     ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response' 
-							   ]
-							   /ep:*/ep:construct/ep:type-name
-						  ) 
-						  and 
-						  not(ep:enum) 
-						  and 
-						  (
-						    ( 
-								contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
-								and 
-								ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'request'
-							) 
-							or 
-							(
-							  (
-							    contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
-								or 	
-								contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
-							  ) 
-							  and 
-							  ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response'
-							)
-						  )
-						  and 
-						  not(
-							   ep:parameters/ep:parameter[ep:name='type']/ep:value='superclass' 
-							   and 
-							   ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:ref
-						  )
-						  and
-						  not(
-								ep:tech-name = //ep:message-set/ep:construct/ep:choice/ep:construct
-								[ ep:parameters/ep:parameter[ep:name='type']/ep:value = 'subclass']
-								/ep:type-name
-						  )
-						  and
-						  (
-							(
-							  ep:parameters/ep:parameter[ep:name='type']/ep:value != '' 
-							  and 
-							  ep:parameters/ep:parameter[ep:name='expand']/ep:value = 'true'
-							) 
-							or 
-							(
-							  ep:parameters/ep:parameter[ep:name='type']/ep:value = ('complex-datatype','groepCompositie','table-datatype')
-							)
-						  )
-						  and
-						  not(
-							  ep:parameters[not(ep:parameter[ep:name='type' and ep:value='groepCompositie'])] 
-							  and 
-							  ep:parameters[not(ep:parameter[ep:name='type' and ep:value='requestclass'])] 
-							  and 
-							  not(.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id' and ep:value='false']]])
-						  )
-						]">,</xsl:if>
-		<!-- Loop over global constructs which are refered to from constructs within global constructs but aren't enumeration and superclass constructs. -->
-		<xsl:for-each select="ep:message-set/ep:construct
-						[ 
-							(
-								ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:type-name
-								or
-								ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:choice/ep:construct/ep:type-name
-							) 
-							and 
-							not(
-							   ep:tech-name = //ep:message
-							   [
-							     ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response' 
-							   ]
-							   /ep:*/ep:construct/ep:type-name
-							) 
-							and 
-							not(ep:enum) 
-							and 
-							(
-							  (
-							    contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
-								and 
-								ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'request'
-							  ) 
-							  or 
-							  (
-								( 
-								  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
-								  or 	
-								  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
-								) 
-								and 
-								ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response'
-							  )
-							)
-							and 
-							not(
-							   ep:parameters/ep:parameter[ep:name='type']/ep:value='superclass' 
-							   and 
-							   ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:ref
-							)
-							and
-							not(
-								ep:tech-name = //ep:message-set/ep:construct/ep:choice/ep:construct
-								[ ep:parameters/ep:parameter[ep:name='type']/ep:value = 'subclass']
-								/ep:type-name
-							)
-							and
-							(
-							  (
-								ep:parameters/ep:parameter[ep:name='type']/ep:value != '' 
-								and 
-								ep:parameters/ep:parameter[ep:name='expand']/ep:value = 'true'
-							  ) 
-							  or 
-							  (
-								ep:parameters/ep:parameter[ep:name='type']/ep:value = ('complex-datatype','groepCompositie','table-datatype')
-							  )
-							)
-							and
-							not(
-								ep:parameters[not(ep:parameter[ep:name='type' and ep:value='groepCompositie'])] 
-								and 
-								ep:parameters[not(ep:parameter[ep:name='type' and ep:value='requestclass'])] 
-								and 
-								not(.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id' and ep:value='false']]])
-							)
-						]">
-			<!-- Only regular constructs are generated. -->
-			<xsl:if test="$debugging">
-				"--------------Debuglocatie-ROME2-<xsl:value-of select="generate-id()"/>": {
-					"Debug": "ROME2"
-				},
-			</xsl:if>
-			<xsl:call-template name="construct"/>
-			<xsl:if test="position() != last()">
-				<!-- As long as the current construct isn't the last constructs that's refered to from constructs within global constructs a 
-					 comma separator has to be generated. -->
-				<xsl:value-of select="','"/>
-			</xsl:if>
-		</xsl:for-each>
+
+		<xsl:choose>
+			<xsl:when test="$serialisation = 'hal+json'">
+				<!-- If the for each after this if is relevant a comma separator has to be generated here. -->
+				<xsl:if test="ep:message-set/ep:construct
+								[ 
+								  ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:type-name 
+								  and 
+								  not(
+									   ep:tech-name = //ep:message
+									   [
+										 ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response' 
+									   ]
+									   /ep:*/ep:construct/ep:type-name
+								  ) 
+								  and 
+								  not(ep:enum) 
+								  and 
+								  (
+									( 
+										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+										and 
+										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'request'
+									) 
+									or 
+									(
+									  (
+										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
+										or 	
+										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
+									  ) 
+									  and 
+									  ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response'
+									)
+								  )
+								  and 
+								  not(
+									   ep:parameters/ep:parameter[ep:name='type']/ep:value='superclass' 
+									   and 
+									   ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:ref
+								  )
+								  and
+								  not(
+										ep:tech-name = //ep:message-set/ep:construct/ep:choice/ep:construct
+										[ ep:parameters/ep:parameter[ep:name='type']/ep:value = 'subclass']
+										/ep:type-name
+								  )
+								  and
+								  (
+									(
+									  ep:parameters/ep:parameter[ep:name='type']/ep:value != '' 
+									  and 
+									  ep:parameters/ep:parameter[ep:name='expand']/ep:value = 'true'
+									) 
+									or 
+									(
+									  ep:parameters/ep:parameter[ep:name='type']/ep:value = ('complex-datatype','groepCompositie','table-datatype')
+									)
+								  )
+								  and
+								  not(
+									  ep:parameters[not(ep:parameter[ep:name='type' and ep:value='groepCompositie'])] 
+									  and 
+									  ep:parameters[not(ep:parameter[ep:name='type' and ep:value='requestclass'])] 
+									  and 
+									  not(.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id' and ep:value='false']]])
+								  )
+								]">,</xsl:if>
+				<!-- Loop over global constructs which are refered to from constructs within global constructs but aren't enumeration and superclass constructs.
+					 This is only applicable when the serialisation is hal+json. -->
+				<xsl:for-each select="ep:message-set/ep:construct
+								[ 
+									(
+										ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:type-name
+										or
+										ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:choice/ep:construct/ep:type-name
+									) 
+									and 
+									not(
+									   ep:tech-name = //ep:message
+									   [
+										 ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response' 
+									   ]
+									   /ep:*/ep:construct/ep:type-name
+									) 
+									and 
+									not(ep:enum) 
+									and 
+									(
+									  (
+										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+										and 
+										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'request'
+									  ) 
+									  or 
+									  (
+										( 
+										  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
+										  or 	
+										  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
+										) 
+										and 
+										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response'
+									  )
+									)
+									and 
+									not(
+									   ep:parameters/ep:parameter[ep:name='type']/ep:value='superclass' 
+									   and 
+									   ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:ref
+									)
+									and
+									not(
+										ep:tech-name = //ep:message-set/ep:construct/ep:choice/ep:construct
+										[ ep:parameters/ep:parameter[ep:name='type']/ep:value = 'subclass']
+										/ep:type-name
+									)
+									and
+									(
+									  (
+										ep:parameters/ep:parameter[ep:name='type']/ep:value != '' 
+										and 
+										ep:parameters/ep:parameter[ep:name='expand']/ep:value = 'true'
+									  ) 
+									  or 
+									  (
+										ep:parameters/ep:parameter[ep:name='type']/ep:value = ('complex-datatype','groepCompositie','table-datatype')
+									  )
+									)
+									and
+									not(
+										ep:parameters[not(ep:parameter[ep:name='type' and ep:value='groepCompositie'])] 
+										and 
+										ep:parameters[not(ep:parameter[ep:name='type' and ep:value='requestclass'])] 
+										and 
+										not(.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id' and ep:value='false']]])
+									)
+								]">
+					<!-- Only regular constructs are generated. -->
+					<xsl:if test="$debugging">
+						"--------------Debuglocatie-03000-<xsl:value-of select="generate-id()"/>": {
+							"Debug": "OAS03000"
+						},
+					</xsl:if>
+					<xsl:call-template name="construct"/>
+					<xsl:if test="position() != last()">
+						<!-- As long as the current construct isn't the last constructs that's refered to from constructs within global constructs a 
+							 comma separator has to be generated. -->
+						<xsl:value-of select="','"/>
+					</xsl:if>
+				</xsl:for-each>
+			</xsl:when>
+			<xsl:when test="$serialisation = 'json'">
+				<!-- If the for each after this if is relevant a comma separator has to be generated here. -->
+				<xsl:if test="ep:message-set/ep:construct
+								[ 
+								  ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:type-name 
+								  and 
+								  not(
+									   ep:tech-name = //ep:message
+									   [
+										 ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response' 
+									   ]
+									   /ep:*/ep:construct/ep:type-name
+								  ) 
+								  and 
+								  not(ep:enum) 
+								  and 
+								  (
+									( 
+										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+										and 
+										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'request'
+									) 
+									or 
+									(
+									  (
+										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
+										or 	
+										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
+									  ) 
+									  and 
+									  ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response'
+									)
+								  )
+								  and 
+								  not(
+									   ep:parameters/ep:parameter[ep:name='type']/ep:value='superclass' 
+									   and 
+									   ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:ref
+								  )
+								  and
+								  not(
+										ep:tech-name = //ep:message-set/ep:construct/ep:choice/ep:construct
+										[ ep:parameters/ep:parameter[ep:name='type']/ep:value = 'subclass']
+										/ep:type-name
+								  )
+								  and
+									ep:parameters/ep:parameter[ep:name='type']/ep:value = ('complex-datatype','groepCompositie','table-datatype')
+								  and
+								  not(
+									  ep:parameters[not(ep:parameter[ep:name='type' and ep:value='groepCompositie'])] 
+									  and 
+									  ep:parameters[not(ep:parameter[ep:name='type' and ep:value='requestclass'])] 
+									  and 
+									  not(.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id' and ep:value='false']]])
+								  )
+								]">,</xsl:if>
+				<!-- Loop over global constructs which are refered to from constructs within global constructs but aren't enumeration and superclass constructs.
+					 This is only applicable when the serialisation is hal+json. -->
+				<xsl:for-each select="ep:message-set/ep:construct
+								[ 
+									(
+										ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:type-name
+										or
+										ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:choice/ep:construct/ep:type-name
+									) 
+									and 
+									not(
+									   ep:tech-name = //ep:message
+									   [
+										 ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response' 
+									   ]
+									   /ep:*/ep:construct/ep:type-name
+									) 
+									and 
+									not(ep:enum) 
+									and 
+									(
+									  (
+										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+										and 
+										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'request'
+									  ) 
+									  or 
+									  (
+										( 
+										  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
+										  or 	
+										  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
+										) 
+										and 
+										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response'
+									  )
+									)
+									and 
+									not(
+									   ep:parameters/ep:parameter[ep:name='type']/ep:value='superclass' 
+									   and 
+									   ep:tech-name = //ep:message-set/ep:construct/ep:*/ep:construct/ep:ref
+									)
+									and
+									not(
+										ep:tech-name = //ep:message-set/ep:construct/ep:choice/ep:construct
+										[ ep:parameters/ep:parameter[ep:name='type']/ep:value = 'subclass']
+										/ep:type-name
+									)
+									and
+										ep:parameters/ep:parameter[ep:name='type']/ep:value = ('complex-datatype','groepCompositie','table-datatype')
+									and
+									not(
+										ep:parameters[not(ep:parameter[ep:name='type' and ep:value='groepCompositie'])] 
+										and 
+										ep:parameters[not(ep:parameter[ep:name='type' and ep:value='requestclass'])] 
+										and 
+										not(.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id' and ep:value='false']]])
+									)
+								]">
+					<!-- Only regular constructs are generated. -->
+					<xsl:if test="$debugging">
+						"--------------Debuglocatie-03000-<xsl:value-of select="generate-id()"/>": {
+							"Debug": "OAS03000"
+						},
+					</xsl:if>
+					<xsl:call-template name="construct"/>
+					<xsl:if test="position() != last()">
+						<!-- As long as the current construct isn't the last constructs that's refered to from constructs within global constructs a 
+							 comma separator has to be generated. -->
+						<xsl:value-of select="','"/>
+					</xsl:if>
+				</xsl:for-each>
+			</xsl:when>
+		</xsl:choose>
+
 		<xsl:if test="$debugging">
-			,"--------------Debuglocatie-04000-<xsl:value-of select="generate-id()"/>": {
-				"Einde Debug": "OAS04100"
+			,"--------------Debuglocatie-02500-<xsl:value-of select="generate-id()"/>": {
+				"Einde Debug": "OAS02500"
 			}
 		</xsl:if>
 		<!-- If the for each after this if is relevant a comma separator has to be generated here. -->
@@ -305,8 +451,8 @@
 								]">
 			<!-- Only regular constructs are generated. -->
 			<xsl:if test="$debugging">
-				"--------------Debuglocatie-ROME3-<xsl:value-of select="generate-id()"/>": {
-					"Debug": "ROME3"
+				"--------------Debuglocatie-04000-<xsl:value-of select="generate-id()"/>": {
+					"Debug": "OAS04000"
 				},
 			</xsl:if>
 			<xsl:call-template name="construct"/>
@@ -317,8 +463,8 @@
 			</xsl:if>
 		</xsl:for-each>
 		<xsl:choose>
-			<xsl:when test="$uitvoerformaat = 'json+hal'">
-				<!-- Only if json+hal applies this when is relevant -->
+			<xsl:when test="$serialisation = 'hal+json'">
+				<!-- Only if hal+json applies this when is relevant -->
 				<!-- If the for each after this if is relevant a comma separator has to be generated here. -->
 				<!-- ROME: if conditie aangepast omdat blijkbaar bij elke voorkomende entiteit in een model een '_links' component moet 
 						   worden gegenereerd. RM #490164 -->
@@ -447,8 +593,8 @@
 											)
 										]">
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-00500-<xsl:value-of select="generate-id()"/>": {
-								"Debug": "OAS00500"
+							"--------------Debuglocatie-05000-<xsl:value-of select="generate-id()"/>": {
+								"Debug": "OAS05000"
 							},
 						</xsl:if>
 						<xsl:value-of select="concat('&quot;', translate(ep:tech-name,'.','_'),'_links&quot;: {' )"/>
@@ -467,8 +613,8 @@
 						<xsl:value-of select="'}'"/>
 						<xsl:value-of select="'}'"/>
 						<xsl:if test="$debugging">
-							,"--------------Einde-01000-<xsl:value-of select="generate-id()"/>": {
-								"Debug": "OAS01000"
+							,"--------------Einde-05500-<xsl:value-of select="generate-id()"/>": {
+								"Debug": "OAS05500"
 							}
 		
 						</xsl:if>
@@ -503,8 +649,8 @@
 										]
 									]">,
 										<xsl:if test="$debugging">
-											"---------------01250-<xsl:value-of select="generate-id()"/>": {
-												"Debug": "OAS01250"
+											"--------------Debuglocatie-06000-<xsl:value-of select="generate-id()"/>": {
+												"Debug": "OAS06000"
 											},						
 										</xsl:if>
 					</xsl:if>
@@ -542,8 +688,8 @@
 						
 						<xsl:if test="contains($content,'{')">
 							<xsl:if test="$debugging">
-								"--------------Debuglocatie-01500-<xsl:value-of select="generate-id()"/>": {
-									"Debug": "OAS01500"
+								"--------------Debuglocatie-07000-<xsl:value-of select="generate-id()"/>": {
+									"Debug": "OAS07000"
 								},
 							</xsl:if>
 							<xsl:value-of select="concat('&quot;', translate(ep:tech-name,'.','_'),'_embedded&quot;: {' )"/>
@@ -663,8 +809,8 @@
 							<xsl:value-of select="'}'"/>
 							<xsl:value-of select="'}'"/>
 							<xsl:if test="$debugging">
-								,"--------------Einde-02000-<xsl:value-of select="generate-id()"/>": {
-									"Debug": "OAS02000"
+								,"--------------Einde-07500-<xsl:value-of select="generate-id()"/>": {
+									"Debug": "OAS07500"
 								}
 							</xsl:if>
 							<xsl:if test="position() != last()">
@@ -701,8 +847,8 @@
 								]">
 						,
 						<xsl:if test="$debugging">
-							"---------------02500-<xsl:value-of select="generate-id()"/>": {
-								"Debug": "OAS02500"
+							"--------------Debuglocatie-08000-<xsl:value-of select="generate-id()"/>": {
+								"Debug": "OAS08000"
 							},						
 						</xsl:if>
 					</xsl:if>
@@ -730,8 +876,8 @@
 												   [ep:parameters/ep:parameter[ep:name='type']/ep:value='association']/ep:type-name
 								  ]">
 						<xsl:if test="$debugging">
-							"--------------Debuglocatie-03000-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "OAS03000"
+							"--------------Debuglocatie-09000-<xsl:value-of select="generate-id()"/>": {
+							"Debug": "OAS09000"
 							},
 						</xsl:if>
 						<xsl:value-of select="concat('&quot;', translate(ep:tech-name,'.','_'),'_embedded&quot;: {' )"/>
@@ -741,8 +887,8 @@
 						<xsl:value-of select="'}'"/>
 						<xsl:value-of select="'}'"/>
 						<xsl:if test="$debugging">
-							,"--------------Einde-03500-<xsl:value-of select="generate-id()"/>": {
-							"Debug": "OAS03500"
+							,"--------------Einde-09500-<xsl:value-of select="generate-id()"/>": {
+							"Debug": "OAS09500"
 							}
 						</xsl:if>
 						<xsl:if test="position() != last()">
@@ -753,7 +899,7 @@
 						</xsl:if>
 					</xsl:for-each>
 				</xsl:if>
-				<!-- Since json+hal applies the following properties are generated. -->    
+				<!-- Since hal+json applies the following properties are generated. -->    
 				,
 				<!-- If pagination is desired, collections apply, the following properties are generated. -->
 				<xsl:if test="$pagination = true()">
@@ -858,8 +1004,7 @@
 				</xsl:if>
 			</xsl:when>
 			<xsl:otherwise>
-				<!-- Else only a comma is generated. -->
-				,
+				<!-- If serialisation isn't hal+json no _links en _embedded components have to be generated, only a comma. -->,
 			</xsl:otherwise>
 		</xsl:choose>
 		<!-- The following properties have to be generated always. -->    
@@ -1014,340 +1159,56 @@
 		<xsl:value-of select="'}'"/>
 	</xsl:template>
 	
-	<xsl:template match="ep:message">
-		<!-- With this template the global components are generated which define the toplevel structure of a message.  -->
-		<xsl:variable name="elementName" select="translate(ep:seq/ep:construct/ep:type-name,'.','_')"/>
-		<xsl:variable name="grouping" select="ep:parameters/ep:parameter[ep:name='grouping']/ep:value"/>
-		<xsl:variable name="berichtcode" select="ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value"/>
-		<!-- The name of the toplevel component depends on the type of message and if de grouping is of 'resource' or 'collection' type. -->
-		<xsl:variable name="isResource" as="xs:boolean">
-			<xsl:choose>
-				<xsl:when test="$grouping = 'resource' or contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po')">
-					<xsl:value-of select="true()"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="false()"/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-		<xsl:variable name="topComponentName">
-			<xsl:choose>
-				<xsl:when test="$isResource">
-					<!-- When the ep:message is not a collection message the name of the top component isn't suffixed with '_collection'. -->
-					<xsl:value-of select="$elementName"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<!-- When the ep:message is a collection message the name of the top component is suffixed with '_collection'. -->
-					<xsl:value-of select="concat($elementName,'_collection')"/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-		<xsl:variable name="type-name" select="ep:seq/ep:construct[(contains($berichtcode,'Po') and ep:parameters/ep:parameter[ep:name='type']/ep:value='requestclass') or ((contains($berichtcode,'Gc') or contains($berichtcode,'Gr')) and ep:parameters/ep:parameter[ep:name='type']/ep:value!='requestclass')]/ep:type-name"/>
-		<xsl:if test="$debugging">
-			"--------------Debuglocatie-04000-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS04000"
-			},
-		</xsl:if>
-		<xsl:choose>
-			<xsl:when test="$isResource">
-				<!-- Loop over global constructs which are refered to from constructs directly within the current (non-collection) 
-					 ep:message elements. -->
-				<xsl:value-of select="concat('&quot;', $topComponentName,'&quot;: {' )"/>
-					<xsl:for-each select="//ep:message-set/ep:construct
-										   [
-											 ep:tech-name = $type-name 
-											 and 
-											 (
-											   ( 
-												 contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
-												 and 
-												 ep:parameters/ep:parameter[ep:name='messagetype']/ep:value='request'
-											   ) 
-											   or 
-											   (
-												 (
-												   contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
-												   or 
-												   contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
-												 ) 
-												 and 
-												 ep:parameters/ep:parameter[ep:name='messagetype']/ep:value='response'
-											   )
-											 )
-										   ]">
-		<xsl:if test="$debugging">
-			"--------------Debuglocatie-ROME4-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "ROME4"
-			},
-		</xsl:if>
-						<xsl:call-template name="construct">
-							<xsl:with-param name="grouping" select="$grouping"/>
-						</xsl:call-template>
-					</xsl:for-each>
-				<xsl:value-of select="'}'"/>
-				<xsl:if test="$debugging">
-					,"--------------Einde-04500-<xsl:value-of select="generate-id()"/>": {
-						"Debug": "OAS04500"
-					}
-				</xsl:if>
-				<!-- As long as the current message isn't the last message a comma separator has to be generated. -->
-				<xsl:if test="following-sibling::ep:message
-									[
-									  (
-										contains(ep:parameters/ep:parameter
-												 [ep:name='berichtcode']
-												 /ep:value,'Gr') 
-										and 
-										ep:parameters/ep:parameter
-										[ep:name='messagetype']
-										/ep:value='response'
-									  )
-									  or 
-									  (
-										contains(ep:parameters/ep:parameter
-												 [ep:name='berichtcode']
-												 /ep:value,'Po') 
-										and 
-										ep:parameters/ep:parameter
-										[ep:name='messagetype']
-										/ep:value='request'
-									  )
-									]">
-					<xsl:value-of select="','"/>
-				</xsl:if>
-			</xsl:when>
-			<xsl:otherwise>
-<?X				<!-- If the current ep:message element represents a collection message the following content has to be generated. -->
-				<xsl:value-of select="concat('&quot;', $topComponentName,'&quot;: {' )"/>
-				<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
-				<xsl:value-of select="'&quot;properties&quot;: {'"/>
-				<!-- If pagination is desired a reference to the 'Pagineerlinks' property is generated.
-					 If not a reference to the selflink property is generated. -->
-				<xsl:value-of select="'&quot;_links&quot;: {'"/>
-				<xsl:choose>
-					<xsl:when test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value='true'">
-						<!-- If pagination applies a link to the Pagineerlinks component is generated. -->
-						<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/Pagineerlinks&quot;')"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<!-- If pagination doesn't apply a self link is generated. -->
-						<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
-						<xsl:value-of select="'&quot;properties&quot;: {'"/>
-						<xsl:value-of select="'&quot;self&quot;: {'"/>
-						<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
-						<xsl:value-of select="'&quot;description&quot;: &quot;uri van de api aanroep die tot dit resultaat heeft geleid&quot;,'"/>
-						<xsl:value-of select="'&quot;properties&quot;: {'"/>
-						<xsl:value-of select="'&quot;href&quot;: {'"/>
-						<xsl:value-of select="'&quot;$ref&quot;: &quot;',$json-topstructure,'/Href&quot;'"/>
-						<xsl:value-of select="'}'"/>
-						<xsl:value-of select="'}'"/>
-						<xsl:value-of select="'}'"/>
-						<xsl:value-of select="'}'"/>
-					</xsl:otherwise>
-				</xsl:choose>
-				<xsl:value-of select="'},'"/>
-				<xsl:choose>
-					<xsl:when test="$uitvoerformaat = 'json'">
-						<!-- If json applies a reference to a regular type is generated. -->
-						<xsl:value-of select="concat('&quot;',translate(ep:seq/ep:construct/ep:tech-name,'.','_'),'&quot;: {')"/>
-						<xsl:value-of select="'&quot;type&quot;: &quot;array&quot;,'"/>
-						<xsl:value-of select="'&quot;items&quot;: {'"/>
-						<xsl:value-of select="'&quot;$ref&quot;: &quot;#'"/>
-						<xsl:choose>
-							<xsl:when test="$json-version = '2.0'">
-								<xsl:value-of select="'/definitions/'"/>
-							</xsl:when>
-							<xsl:when test="$json-version = '3.0'">
-								<xsl:value-of select="'/components/schemas/'"/>
-							</xsl:when>
-						</xsl:choose>
-						<xsl:value-of select="concat(ep:seq/ep:construct/ep:type-name,'&quot;')"/>
-						<xsl:value-of select="'}'"/>
-						<xsl:value-of select="'}'"/>
-					</xsl:when>
-					<xsl:when test="$uitvoerformaat = 'json+hal'">
-						<!-- Only if json+hal applies a reference to the HAL type _embedded is generated. -->
-						<xsl:value-of select="'&quot;_embedded&quot; : {'"/>
-						<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
-						<xsl:value-of select="'&quot;properties&quot; : {'"/>
-						<xsl:value-of select="'&quot;'"/>
-						<xsl:variable name="responseEntiteitId">
-							<xsl:value-of select="ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value!='requestclass']/ep:type-name"/>
-						</xsl:variable>
-						<xsl:choose>
-							<xsl:when test="//ep:message-set/ep:construct[ep:tech-name = $responseEntiteitId]">
-								<xsl:value-of select="//ep:message-set/ep:construct[ep:tech-name = $responseEntiteitId]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="translate(ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value!='requestclass']/ep:tech-name,'.','_')"/>
-							</xsl:otherwise>
-						</xsl:choose>
-						<xsl:value-of select="'&quot;: {'"/>
-						<xsl:value-of select="'&quot;type&quot;: &quot;array&quot;,'"/>
-						<xsl:value-of select="'&quot;items&quot;: {'"/>
-						<xsl:value-of select="'&quot;$ref&quot;: &quot;#'"/>
-						<xsl:choose>
-							<xsl:when test="$json-version = '2.0'">
-								<xsl:value-of select="'/definitions/'"/>
-							</xsl:when>
-							<xsl:when test="$json-version = '3.0'">
-								<xsl:value-of select="'/components/schemas/'"/>
-							</xsl:when>
-						</xsl:choose>
-						<xsl:value-of select="ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value!='requestclass']/ep:type-name"/>
-						<xsl:value-of select="'&quot;'"/>
-						<xsl:value-of select="'}'"/>
-						<xsl:value-of select="'}'"/>
-						<xsl:value-of select="'}'"/>
-						<xsl:value-of select="'}'"/>
-					</xsl:when>
-				</xsl:choose>
-				<xsl:value-of select="'}'"/>
-				<xsl:value-of select="'}'"/> ?>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-	
 	<xsl:template match="ep:seq">
 		<xsl:param name="typeName"/>
 
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-01500-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS04520"
+			"--------------Debuglocatie-12000-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS12000"
 			},
 		</xsl:if>
-	<?x	<xsl:for-each select="ep:choice">
-			<xsl:variable name="firstChoice" select=".//ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
-										 and ep:type-name = //ep:message-set/ep:construct/ep:tech-name][1]"/>
-			<xsl:variable name="elementName">
-				<xsl:choose>
-					<xsl:when test="not(empty($firstChoice/ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value))">
-						<xsl:value-of select="$firstChoice/ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
-					</xsl:when>
-					<xsl:when test="not(empty($firstChoice/ep:parameters/ep:parameter[ep:name='targetrole']/ep:value))">
-						<xsl:value-of select="$firstChoice/ep:parameters/ep:parameter[ep:name='targetrole']/ep:value"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="translate($firstChoice/ep:tech-name,'.','_')"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:variable>
-			<xsl:variable name="maxOccurs" select="$firstChoice/ep:max-occurs"/>
-			<xsl:variable name="minOccurs" select="$firstChoice/ep:min-occurs"/>
-			<xsl:variable name="occurence-type">
-				<xsl:choose>
-					<xsl:when test="$maxOccurs = 'unbounded' or $maxOccurs > 1">array</xsl:when>
-					<xsl:otherwise>object</xsl:otherwise>
-				</xsl:choose>
-			</xsl:variable>
-			<xsl:variable name="typeName" select="$firstChoice/ep:type-name"/>
-			<xsl:value-of select="concat('&quot;',$elementName,'&quot;: {')"/>
-			
-			<xsl:value-of select="concat('&quot;type&quot;: &quot;',$occurence-type,'&quot;,')"/>
-			<xsl:variable name="documentation">
-				<xsl:value-of select="$firstChoice/ep:documentation//ep:p"/>
-			</xsl:variable>
-			<xsl:choose>
-				<!-- Depending on the occurence-type and the type of construct content is generated. -->
-				<xsl:when test="$firstChoice/ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
-					<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
-					<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-					<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
-					<xsl:value-of select="'&quot;,'"/>
-					<xsl:if test="$maxOccurs != 'unbounded'">
-						<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
-					</xsl:if>
-					<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
-						<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
-					</xsl:if>
-					<xsl:choose>
-						<xsl:when test="$occurence-type = 'array'">
-							<xsl:value-of select="'&quot;items&quot;: {'"/>
-							<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
-							<xsl:apply-templates select=".//ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
-														 and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]" mode="embeddedchoices"/>
-							<xsl:value-of select="']'"/>
-							<xsl:value-of select="'}'"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
-							<xsl:apply-templates select=".//ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
-														 and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]" mode="embeddedchoices"/>
-							<xsl:value-of select="']'"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:when>
-				<xsl:when test="$firstChoice/ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
-					<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
-					<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-					<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
-					<xsl:value-of select="'&quot;,'"/>
-					<xsl:if test="$maxOccurs != 'unbounded'">
-						<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
-					</xsl:if>
-					<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
-						<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
-					</xsl:if>
-					<xsl:choose>
-						<xsl:when test="$occurence-type = 'array'">
-							<xsl:value-of select="'&quot;items&quot;: {'"/>
-							<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
-							<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
-							<xsl:value-of select="']'"/>
-							<xsl:value-of select="'}'"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
-							<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
-							<xsl:value-of select="']'"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:when>
-			</xsl:choose>
-			<xsl:value-of select="'}'"/>
-			<xsl:choose>
-				<xsl:when test="following-sibling::ep:choice">
-					<!-- As long as the current construct isn't the last global constructs (that has at least one association construct) a comma separator as 
-						 to be generated. -->
-					<xsl:value-of select="','"/>
-				</xsl:when>
-				<xsl:when test=".//ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
-							  and $typeName = //ep:message-set/ep:construct/ep:tech-name]">
-					<!-- As long as the current construct isn't the last association type construct a comma separator has to be generated. -->
-					<xsl:value-of select="','"/>
-				</xsl:when>
-			</xsl:choose>
-			,"test": "test",
-		</xsl:for-each> ?>
 		<xsl:apply-templates select="ep:choice">
 			<xsl:with-param name="typeName" select="$typeName"/>
 		</xsl:apply-templates>
+		<xsl:if test="$debugging">
+			"--------------Debuglocatie-13000-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS13000"
+			},
+		</xsl:if>
 			<!-- Only for the association constructs properties have to be generated. This is not applicable for supertype-association 
 				 constructs. -->
-		<xsl:variable name="indicatorNonIdProperties">
-			<xsl:choose>
-				<xsl:when test="ep:construct/ep:parameters[ep:parameter[ep:name='type']/ep:value ='association' and
-											 ep:parameter[ep:name='contains-non-id-attributes']/ep:value ='true']">
-					<xsl:value-of select="true()"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="false()"/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-		<xsl:if test="$indicatorNonIdProperties">
-			<xsl:if test="ep:choice and ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association']">,</xsl:if>
-			<xsl:apply-templates select="ep:construct[ep:parameters[ep:parameter[ep:name='type']/ep:value ='association' and
-																    ep:parameter[ep:name='contains-non-id-attributes']/ep:value ='true']]" mode="embedded"/>
-		</xsl:if>
+		<xsl:choose>
+			<xsl:when test="$serialisation = 'hal+json'">
+				<xsl:variable name="indicatorNonIdProperties">
+					<xsl:choose>
+						<xsl:when test="ep:construct/ep:parameters[ep:parameter[ep:name='type']/ep:value ='association' and
+													 ep:parameter[ep:name='contains-non-id-attributes']/ep:value ='true']">
+							<xsl:value-of select="true()"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="false()"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:if test="$indicatorNonIdProperties">
+					<xsl:if test="ep:choice and ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association']">,##</xsl:if>
+					<xsl:apply-templates select="ep:construct[ep:parameters[ep:parameter[ep:name='type']/ep:value ='association' and
+																			ep:parameter[ep:name='contains-non-id-attributes']/ep:value ='true']]" mode="embedded"/>
+				</xsl:if>
+			</xsl:when>
+			<xsl:when test="$serialisation = 'json'">
+				<xsl:if test="ep:choice and (ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'] or ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'])">,</xsl:if>
+				<xsl:apply-templates select="ep:construct[ep:parameters[ep:parameter[ep:name='type']/ep:value ='association' or ep:parameter[ep:name='type']/ep:value ='supertype-association']]" mode="embedded"/>
+			</xsl:when>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="ep:choice">
 			<xsl:param name="typeName"/>
 
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-01500-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS04560"
+			"--------------Debuglocatie-14000-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS14000"
 			},
 		</xsl:if>
 
@@ -1375,64 +1236,65 @@
 				</xsl:choose>
 			</xsl:variable>
 			<xsl:variable name="typeName" select="$firstChoice/ep:type-name"/>
-			<xsl:value-of select="concat('&quot;',$elementName,'&quot;: {')"/>
 			
+			<xsl:if test="$serialisation = 'json'">,</xsl:if>
+			
+			<xsl:value-of select="concat('&quot;',$elementName,'&quot;: {')"/>	
 			<xsl:value-of select="concat('&quot;type&quot;: &quot;',$occurence-type,'&quot;,')"/>
 			<xsl:variable name="documentation">
 				<xsl:value-of select="$firstChoice/ep:documentation//ep:p"/>
 			</xsl:variable>
+			<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
+			<!-- Double quotes in documentation text is replaced by a  grave accent. -->
+			<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+			<xsl:value-of select="'&quot;,'"/>
+			<xsl:if test="$occurence-type = 'array'">
+				<xsl:if test="$maxOccurs != 'unbounded'">
+					<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
+				</xsl:if>
+				<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+					<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
+				</xsl:if>
+				<xsl:if test="$maxOccurs != 'unbounded'">
+					<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
+				</xsl:if>
+				<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+					<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
+				</xsl:if>
+			</xsl:if>
 			<xsl:choose>
 				<!-- Depending on the occurence-type and the type of construct content is generated. -->
-				<xsl:when test="$firstChoice/ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
-					<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
-					<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-					<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
-					<xsl:value-of select="'&quot;,'"/>
-					<xsl:if test="$maxOccurs != 'unbounded'">
-						<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
-					</xsl:if>
-					<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
-						<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
-					</xsl:if>
-					<xsl:choose>
-						<xsl:when test="$occurence-type = 'array'">
-							<xsl:value-of select="'&quot;items&quot;: {'"/>
-							<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
-							<xsl:apply-templates select="ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
-														 and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]" mode="embeddedchoices"/>
-							<xsl:value-of select="']'"/>
-							<xsl:value-of select="'}'"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
-							<xsl:apply-templates select="ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
-														 and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]" mode="embeddedchoices"/>
-							<xsl:value-of select="']'"/>
-						</xsl:otherwise>
-					</xsl:choose>
+				<xsl:when test="$serialisation = 'json'">
+					<xsl:value-of select="'&quot;enum&quot;: [&quot;string&quot;]'"/>
 				</xsl:when>
-				<xsl:when test="$firstChoice/ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
-					<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
-					<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-					<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
-					<xsl:value-of select="'&quot;,'"/>
-					<xsl:if test="$maxOccurs != 'unbounded'">
-						<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
-					</xsl:if>
-					<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
-						<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
-					</xsl:if>
+				<xsl:when test="$serialisation = 'hal+json'">
 					<xsl:choose>
 						<xsl:when test="$occurence-type = 'array'">
 							<xsl:value-of select="'&quot;items&quot;: {'"/>
 							<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
-							<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
+							<xsl:choose>
+								<xsl:when test="$firstChoice/ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
+									<xsl:apply-templates select="ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
+																 and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]" mode="embeddedchoices"/>
+								</xsl:when>
+								<xsl:when test="$firstChoice/ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
+									<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
+								</xsl:when>
+							</xsl:choose>
 							<xsl:value-of select="']'"/>
 							<xsl:value-of select="'}'"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
-							<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
+							<xsl:choose>
+								<xsl:when test="$firstChoice/ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
+									<xsl:apply-templates select="ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
+																 and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]" mode="embeddedchoices"/>
+								</xsl:when>
+								<xsl:when test="$firstChoice/ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
+									<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
+								</xsl:when>
+							</xsl:choose>
 							<xsl:value-of select="']'"/>
 						</xsl:otherwise>
 					</xsl:choose>
@@ -1452,8 +1314,8 @@
 		<xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
 		<xsl:variable name="expand" select="ep:parameters/ep:parameter[ep:name='expand']/ep:value"/>
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-05000-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS05000"
+			"--------------Debuglocatie-15000-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS15000"
 			},
 		</xsl:if>
 		<xsl:if test="$grouping != 'resource'">
@@ -1506,6 +1368,16 @@
 			<xsl:value-of select="',&quot;properties&quot;: {'"/>
 			<!-- Loop over all constructs (that don't have association type, supertype-association type and superclass type constructs) 
 				 within the current construct. -->
+			<xsl:if test="$serialisation = 'json'">
+				<xsl:value-of select="'&quot;url&quot; : {'"/>
+				<xsl:value-of select="'&quot;title&quot; : &quot;Url&quot;,'"/>
+				<xsl:value-of select="'&quot;type&quot; : &quot;string&quot;,'"/>
+				<xsl:value-of select="'&quot;format&quot; : &quot;uri&quot;,'"/>
+				<xsl:value-of select="'&quot;readOnly&quot; : true'"/>
+				<xsl:value-of select="'}'"/>
+				<xsl:if test="ep:seq/ep:construct[not(ep:seq) and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association') and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'supertype-association') 
+					and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'superclass') and not(ep:ref)]">,</xsl:if>
+			</xsl:if>
 			<xsl:for-each select="ep:seq/ep:construct[not(ep:seq) and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association') and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'supertype-association') 
 				and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'superclass') and not(ep:ref)]">
 				<xsl:call-template name="property"/>
@@ -1515,42 +1387,79 @@
 					<xsl:value-of select="','"/>
 				</xsl:if>
 			</xsl:for-each>
-			<xsl:if test="(empty(ep:parameters/ep:parameter[ep:name='abstract']) or ep:parameters/ep:parameter[ep:name='abstract']/ep:value = 'false') and ep:parameters/ep:parameter[ep:name='type']/ep:value != 'complex-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value != 'table-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value != 'groepCompositie' 
-				and ep:seq/ep:construct[not(ep:seq) and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association') and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'superclass') and not(ep:ref)]">
-				<!-- If the next if applies generate a comma. -->
-				<xsl:value-of select="','"/>
-			</xsl:if>
-			<xsl:if test="(empty(ep:parameters/ep:parameter[ep:name='abstract']) or ep:parameters/ep:parameter[ep:name='abstract']/ep:value = 'false') and ep:parameters/ep:parameter[ep:name='type']/ep:value != 'complex-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value != 'table-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value != 'groepCompositie'">
-				<!-- If the current construct isn't a complex-datatype, table-datatype, groupscomposition and not abstract a 
-					 _links component variant of the current construct has to be generated.
-					 At this place only a reference to such a componenttype is generated. -->
-				<xsl:value-of select="'&quot;_links&quot;: {'"/>
-				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$elementName,'_links&quot;}')"/>
-			</xsl:if>
+			<xsl:choose>
+				<xsl:when test="$serialisation = 'hal+json'">
+					<xsl:if test="(empty(ep:parameters/ep:parameter[ep:name='abstract']) or ep:parameters/ep:parameter[ep:name='abstract']/ep:value = 'false') and ep:parameters/ep:parameter[ep:name='type']/ep:value != 'complex-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value != 'table-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value != 'groepCompositie' 
+						and ep:seq/ep:construct[not(ep:seq) and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association') and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'superclass') and not(ep:ref)]">
+						<!-- If the current construct:
+							 * isn't abstract, 
+							 * isn't of type 'complex-datatype' or 'table-datatype' or 'groepCompositie' 
+							 * doesn't have an ep:seq with an ep:construct:
+							   - containing an ep:seq
+							   - being an association
+							   - being a superclass
+							   - containing an ep:ref. 
+							 generate a comma.-->
+						<xsl:value-of select="','"/>
+					</xsl:if>
+					<xsl:if test="(empty(ep:parameters/ep:parameter[ep:name='abstract']) or ep:parameters/ep:parameter[ep:name='abstract']/ep:value = 'false') and ep:parameters/ep:parameter[ep:name='type']/ep:value != 'complex-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value != 'table-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value != 'groepCompositie'">
+						<!-- If the current construct isn't a complex-datatype, table-datatype, groupscomposition and not abstract a 
+							 _links component variant of the current construct has to be generated.
+							 At this place only a reference to such a componenttype is generated. -->
+						<xsl:value-of select="'&quot;_links&quot;: {'"/>
+						<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$elementName,'_links&quot;}')"/>
+					</xsl:if>
+				</xsl:when>
+				<xsl:when test="$serialisation = 'json'">
+					<xsl:if test="(empty(ep:parameters/ep:parameter[ep:name='abstract']) or ep:parameters/ep:parameter[ep:name='abstract']/ep:value = 'false') and ep:parameters/ep:parameter[ep:name='type']/ep:value != 'complex-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value != 'table-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value != 'groepCompositie' 
+						and ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association']">
+						<!-- If the current construct:
+							 * isn't abstract, 
+							 * isn't of type 'complex-datatype' or 'table-datatype' or 'groepCompositie' 
+							 * does have an ep:seq with an ep:construct:
+							   - being an association
+							 generate a comma.-->
+						<xsl:value-of select="','"/>
+					</xsl:if>
+				</xsl:when>
+			</xsl:choose>
 			
 			<!-- The reference to the embedded component must only be generated when the related embedded component is generated. That is only the case if that component has content.
 				 That is determined here. For now this is only determined for one _embedded level. If this must be determined for more levels or even recursive a more thorough solution has to be implemented. -->
-			<xsl:variable name="contentRelatedEmbeddedConstruct">
-				<xsl:variable name="relatedGlobalConstruct">
-					<xsl:copy-of select="/ep:message-sets/ep:message-set/ep:construct[ep:tech-name=$elementName]"/>
-				</xsl:variable>
-				<xsl:variable name="typeName" select="$relatedGlobalConstruct/ep:type-name"/>
-				<xsl:apply-templates select="/ep:message-sets/ep:message-set/ep:construct[ep:tech-name=$elementName]/ep:seq">
-					<xsl:with-param name="typeName" select="$typeName"/>
-				</xsl:apply-templates>
-			</xsl:variable>
-
-			<xsl:if test=".[ep:parameters/ep:parameter[ep:name='type']/ep:value!='complex-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value!='table-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value!='groepCompositie']//ep:construct[(ep:parameters/ep:parameter[ep:name='type']/ep:value='association' 
-				or ep:parameters/ep:parameter[ep:name='type']/ep:value='supertype-association') and ep:parameters/ep:parameter[ep:name='contains-non-id-attributes']/ep:value = 'true'] and contains($contentRelatedEmbeddedConstruct,'{')">
-				<!-- When expand applies in the interface also an embedded variant of the current construct has to be generated..
-					 At this place only a reference to such a componenttype is generated. -->
-				<xsl:value-of select="',&quot;_embedded&quot;: {'"/>
-				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$elementName,'_embedded&quot;}')"/>
-			</xsl:if>
+			<xsl:choose>
+				<xsl:when test="$serialisation = 'hal+json'">
+					<xsl:variable name="contentRelatedEmbeddedConstruct">
+						<xsl:variable name="relatedGlobalConstruct">
+							<xsl:copy-of select="/ep:message-sets/ep:message-set/ep:construct[ep:tech-name=$elementName]"/>
+						</xsl:variable>
+						<xsl:variable name="typeName" select="$relatedGlobalConstruct/ep:type-name"/>
+						<xsl:apply-templates select="/ep:message-sets/ep:message-set/ep:construct[ep:tech-name=$elementName]/ep:seq">
+							<xsl:with-param name="typeName" select="$typeName"/>
+						</xsl:apply-templates>
+					</xsl:variable>
+		
+					<xsl:if test=".[ep:parameters/ep:parameter[ep:name='type']/ep:value!='complex-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value!='table-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value!='groepCompositie']//ep:construct[(ep:parameters/ep:parameter[ep:name='type']/ep:value='association' 
+						or ep:parameters/ep:parameter[ep:name='type']/ep:value='supertype-association') and ep:parameters/ep:parameter[ep:name='contains-non-id-attributes']/ep:value = 'true'] and contains($contentRelatedEmbeddedConstruct,'{')">
+						<!-- When expand applies in the interface also an embedded variant of the current construct has to be generated..
+							 At this place only a reference to such a componenttype is generated. -->
+						<xsl:value-of select="',&quot;_embedded&quot;: {'"/>
+						<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$elementName,'_embedded&quot;}')"/>
+					</xsl:if>
+				</xsl:when>
+				<xsl:when test="$serialisation = 'json'">
+					<xsl:if test=".[ep:parameters/ep:parameter[ep:name='type']/ep:value!='complex-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value!='table-datatype' and ep:parameters/ep:parameter[ep:name='type']/ep:value!='groepCompositie']//ep:construct[(ep:parameters/ep:parameter[ep:name='type']/ep:value='association' 
+						or ep:parameters/ep:parameter[ep:name='type']/ep:value='supertype-association')]">
+						<xsl:variable name="typeName" select="ep:type-name"/>
+						<xsl:apply-templates select="ep:seq">
+							<xsl:with-param name="typeName" select="$typeName"/>
+						</xsl:apply-templates>
+					</xsl:if>
+				</xsl:when>
+			</xsl:choose>
 			<xsl:value-of select="'}'"/>
 		</xsl:variable>
 
-		<xsl:if test="$debugging">
+		<xsl:if test="$debugging and $serialisation = 'hal+json'">
 			<xsl:variable name="relatedGlobalConstruct">
 				<xsl:copy-of select="/ep:message-sets/ep:message-set/ep:construct[ep:tech-name=$elementName]"/>
 			</xsl:variable>
@@ -1578,8 +1487,8 @@
 		<xsl:if test="$grouping != 'resource'">
 			<xsl:value-of select="'}'"/>
 			<xsl:if test="$debugging">
-				,"--------------Einde-05500-<xsl:value-of select="generate-id()"/>": {
-					"Debug": "OAS05500"
+				,"--------------Einde-15500-<xsl:value-of select="generate-id()"/>": {
+					"Debug": "OAS15500"
 				}
 			</xsl:if>
 		</xsl:if>
@@ -1589,8 +1498,8 @@
 		<!-- Enummeration constructs are processed here. -->
 		<xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-06000-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS06000"
+			"--------------Debuglocatie-16000-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS16000"
 			},
 		</xsl:if>
 		<xsl:value-of select="concat('&quot;', $elementName,'&quot;: {' )"/>
@@ -1642,8 +1551,8 @@
 		</xsl:choose ?>
 		<xsl:value-of select="'}'"/>
 		<xsl:if test="$debugging">
-			,"--------------Einde-06500-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS06500"
+			,"--------------Einde-16500-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS16500"
 			}
 		</xsl:if>
 	</xsl:template>
@@ -1668,7 +1577,7 @@
 		</xsl:if>
 	</xsl:template>
 	
-	<!-- TODO: Het onderstaande template en ook de aanroep daarvan zijn is op dit moment onnodig omdat we er nu vanuit gaan dat er altijd json+hal 
+	<!-- TODO: Het onderstaande template en ook de aanroep daarvan zijn is op dit moment onnodig omdat we er nu vanuit gaan dat er altijd hal+json 
 			   gegenereerd moet worden.
 			   Alleen als we later besluiten dat er ook af en toe geen json_hal gegenereerd moet worden kan deze if weer opportuun worden. 
 			   Voor nu is het template uitgeschakeld. -->
@@ -1677,8 +1586,8 @@
         <xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
 
 		<xsl:if test="$debugging">
-			"--------------Debuglocatie-07000-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS07000"
+			"--------------Debuglocatie-17000-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS17000"
 			},
 		</xsl:if>
  
@@ -1766,8 +1675,8 @@
 		<xsl:value-of select="'}'"/>
 
 		<xsl:if test="$debugging">
-			,"--------------Einde-07500-<xsl:value-of select="generate-id()"/>": {
-				"Debug": "OAS07500"
+			,"--------------Einde-17500-<xsl:value-of select="generate-id()"/>": {
+				"Debug": "OAS17500"
 			}
 		</xsl:if>
    </xsl:template> ?>
@@ -2137,59 +2046,127 @@
 		<xsl:variable name="typeName" select="ep:type-name"/>
 		<xsl:value-of select="concat('&quot;',$elementName,'&quot;: {')"/>
 		
-		<!-- ROME: Deze toevoeging (nav #490159) geeft een warning in Swaggerhub. -->
-		<xsl:if test="not($occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association')">
-			<xsl:value-of select="concat('&quot;title&quot;: &quot;',ep:name,'&quot;,')"/>
-		</xsl:if>
-		
-		
-		<xsl:if test="not($occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association')">
-			<xsl:value-of select="concat('&quot;type&quot;: &quot;',$occurence-type,'&quot;,')"/>
-		</xsl:if>
-		<xsl:variable name="documentation">
-			<xsl:value-of select="ep:documentation//ep:p"/>
-		</xsl:variable>
 		<xsl:choose>
-			<!-- Depending on the occurence-type and the type of construct content is generated. -->
-			<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
-				<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
-				<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-				<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
-				<xsl:value-of select="'&quot;,'"/>
-				<xsl:if test="$maxOccurs != 'unbounded'">
-					<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
+			<xsl:when test="$serialisation = 'hal+json'">
+		
+				<!-- ROME: Deze toevoeging (nav #490159) geeft een warning in Swaggerhub. -->
+				<xsl:if test="not($occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association')">
+					<xsl:value-of select="concat('&quot;title&quot;: &quot;',ep:name,'&quot;,')"/>
 				</xsl:if>
-				<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
-					<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
+				
+				
+				<xsl:if test="not($occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association')">
+					<xsl:value-of select="concat('&quot;type&quot;: &quot;',$occurence-type,'&quot;,')"/>
 				</xsl:if>
-				<xsl:value-of select="'&quot;items&quot;: {'"/>
-				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$typeName,'&quot;')"/>
-				<xsl:value-of select="'}'"/>
+				<xsl:variable name="documentation">
+					<xsl:value-of select="ep:documentation//ep:p"/>
+				</xsl:variable>
+				<xsl:choose>
+					<!-- Depending on the occurence-type and the type of construct content is generated. -->
+					<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
+						<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
+						<!-- Double quotes in documentation text is replaced by a  grave accent. -->
+						<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+						<xsl:value-of select="'&quot;,'"/>
+						<xsl:if test="$maxOccurs != 'unbounded'">
+							<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
+						</xsl:if>
+						<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+							<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
+						</xsl:if>
+						<xsl:value-of select="'&quot;items&quot;: {'"/>
+						<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$typeName,'&quot;')"/>
+						<xsl:value-of select="'}'"/>
+					</xsl:when>
+					<xsl:when test="$occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
+						<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$typeName,'&quot;')"/>
+					</xsl:when>
+					<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
+						<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
+						<!-- Double quotes in documentation text is replaced by a  grave accent. -->
+						<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+						<xsl:value-of select="'&quot;,'"/>
+						<xsl:if test="$maxOccurs != 'unbounded'">
+							<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
+						</xsl:if>
+						<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+							<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
+						</xsl:if>
+						<xsl:value-of select="'&quot;items&quot;: {'"/>
+						<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
+						<xsl:value-of select="'}'"/>
+					</xsl:when>
+					<xsl:when test="$occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
+						<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
+						<!-- Double quotes in documentation text is replaced by a  grave accent. -->
+						<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+						<xsl:value-of select="'&quot;,'"/>
+						<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
+					</xsl:when>
+				</xsl:choose>
 			</xsl:when>
-			<xsl:when test="$occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
-				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/',$typeName,'&quot;')"/>
-			</xsl:when>
-			<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
-				<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
-				<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-				<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
-				<xsl:value-of select="'&quot;,'"/>
-				<xsl:if test="$maxOccurs != 'unbounded'">
-					<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
+			<xsl:when test="$serialisation = 'json'">
+		
+				<!-- ROME: Deze toevoeging (nav #490159) geeft een warning in Swaggerhub. -->
+				<xsl:if test="not($occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association')">
+					<xsl:value-of select="concat('&quot;title&quot;: &quot;',ep:name,'&quot;,')"/>
 				</xsl:if>
-				<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
-					<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
+				
+				<xsl:if test="not($occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association')">
+					<xsl:value-of select="concat('&quot;type&quot;: &quot;',$occurence-type,'&quot;,')"/>
 				</xsl:if>
-				<xsl:value-of select="'&quot;items&quot;: {'"/>
-				<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
-				<xsl:value-of select="'}'"/>
-			</xsl:when>
-			<xsl:when test="$occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
-				<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
-				<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-				<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
-				<xsl:value-of select="'&quot;,'"/>
-				<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
+				<xsl:variable name="documentation">
+					<xsl:value-of select="ep:documentation//ep:p"/>
+				</xsl:variable>
+				<xsl:choose>
+					<!-- Depending on the occurence-type and the type of construct content is generated. -->
+					<xsl:when test="$occurence-type = 'array' and (ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' or ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association')">
+						<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
+						<!-- Double quotes in documentation text is replaced by a  grave accent. -->
+						<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+						<xsl:value-of select="'&quot;,'"/>
+						<xsl:if test="$maxOccurs != 'unbounded'">
+							<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
+						</xsl:if>
+						<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+							<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
+						</xsl:if>
+						<xsl:value-of select="'&quot;items&quot;: {'"/>
+						<xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
+						<xsl:value-of select="'&quot;format&quot;: &quot;uri&quot;'"/>
+						<xsl:value-of select="'},'"/>
+						<xsl:value-of select="'&quot;readOnly&quot;: true,'"/>
+						<xsl:value-of select="'&quot;uniqueItems&quot;: true'"/>
+					</xsl:when>
+					<xsl:when test="$occurence-type != 'array' and (ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' or ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association')">
+						<xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
+						<xsl:value-of select="'&quot;format&quot;: &quot;uri&quot;,'"/>
+						<xsl:value-of select="'&quot;readOnly&quot;: true'"/>
+					</xsl:when>
+<?x					<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
+						<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
+						<!-- Double quotes in documentation text is replaced by a  grave accent. -->
+						<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+						<xsl:value-of select="'&quot;,'"/>
+						<xsl:if test="$maxOccurs != 'unbounded'">
+							<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
+						</xsl:if>
+						<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
+							<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
+						</xsl:if>
+						<xsl:value-of select="'&quot;items&quot;: {'"/>
+						<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
+						<xsl:value-of select="'}'"/>
+					</xsl:when>
+					<xsl:when test="$occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
+						<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
+						<!-- Double quotes in documentation text is replaced by a  grave accent. -->
+						<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+						<xsl:value-of select="'&quot;,'"/>
+						<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
+					</xsl:when> ?>
+				</xsl:choose>
+					
 			</xsl:when>
 		</xsl:choose>
 		<xsl:value-of select="'}'"/>

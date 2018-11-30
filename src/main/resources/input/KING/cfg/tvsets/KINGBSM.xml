@@ -369,23 +369,6 @@
             </declared-values>
         </tv>
         
-        <tv norm="space" validate="" rules="" id="CFG-TV-SERIALISATION">
-            <name lang="nl">Serialisation</name>
-            <derive>no</derive>
-            <inherit>no</inherit>
-            <stereotypes>
-                <stereo minmax="0..1">stereotype-name-getberichttype</stereo>
-                <?x <stereo minmax="0..1">stereotype-name-patchberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-postberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-putberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-deleteberichttype</stereo> ?>
-            </stereotypes>
-            <declared-values lang="nl">
-                <!-- Voorlopig is alleen json+hal mogelijk. -->
-                <value>json+hal</value>
-            </declared-values>
-        </tv>
-        
         <tv norm="space" validate="" rules="" id="CFG-TV-VOORWAARDE">
             <name lang="nl">Voorwaarde</name>
             <desc lang="nl">Opnemen ter documentatie van een bericht.</desc>
@@ -665,6 +648,20 @@
                 <stereo minmax="1..1">stereotype-name-putberichttype</stereo>
                 <stereo minmax="1..1">stereotype-name-deleteberichttype</stereo>
             </stereotypes>
+        </tv>
+        <tv norm="space" id="CFG-TV-SERIALISATION">
+            <name lang="nl">serialisatie</name>
+            <desc lang="nl">Het formaat waarin het koppelvlak uitgevoerd moet worden.</desc>
+            <derive>no</derive>
+            <inherit>no</inherit>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <!-- Voorlopig is alleen json+hal mogelijk. -->
+                <value>hal+json</value>
+                <value>json</value>
+            </declared-values>
         </tv>
     </tagged-values>
 </tagset>

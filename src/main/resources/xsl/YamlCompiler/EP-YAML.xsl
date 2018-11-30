@@ -7,6 +7,12 @@
 
 	<xsl:variable name="message-sets" select="/ep:message-sets" />
 
+	<!-- This variabele defines the type of output and can take the next values:
+		 * json
+		 * hal+json
+		 * geojson	-->
+	<xsl:variable name="serialisation" select="$message-sets/ep:parameters/ep:parameter[ep:name='serialisation']/ep:value"/>
+	
 	<xsl:template match="ep:message-sets">
 		<xsl:apply-templates select="ep:message-set"/>
 	</xsl:template>
@@ -554,10 +560,10 @@
 				<xsl:text>&#xa;              $ref: '#/components/headers/warning'</xsl:text>
 				<xsl:if test="ep:parameters/ep:parameter[ep:name='grouping']/ep:value='collection'">
 					<!-- In case of a collection type message create the following properties. -->
-					<xsl:text>&#xa;            X-Total-Count:</xsl:text>
-					<xsl:text>&#xa;              $ref: '#/components/headers/X_Total_Count'</xsl:text>
 					<xsl:if test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value='true'">
 						<!-- In case of a collection type message and if pagination applies create the following properties. -->
+						<xsl:text>&#xa;            X-Total-Count:</xsl:text>
+						<xsl:text>&#xa;              $ref: '#/components/headers/X_Total_Count'</xsl:text>
 						<xsl:text>&#xa;            X-Pagination-Count:</xsl:text>
 						<xsl:text>&#xa;              $ref: '#/components/headers/X_Pagination_Count'</xsl:text>
 						<xsl:text>&#xa;            X-Pagination-Page:</xsl:text>
@@ -573,13 +579,18 @@
 				<xsl:text>&#xa;            X-Rate-Limit-Reset:</xsl:text>
 				<xsl:text>&#xa;              $ref: '#/components/headers/X_Rate_Limit_Reset'  </xsl:text>
 				<xsl:text>&#xa;          content:</xsl:text>
-				<xsl:text>&#xa;            application/hal+json:</xsl:text>
+				<xsl:text>&#xa;            application/</xsl:text><xsl:value-of select="$serialisation"/><xsl:text>:</xsl:text>
 				<xsl:text>&#xa;              schema:</xsl:text>
 				<xsl:for-each
 					select="../ep:message[ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:name = $rawMessageName]">
 					<!-- For the response type message related to the current message generate the next refs to the toplevel component within the 
 						 json part of the yaml file. -->
 					<xsl:choose>
+						<xsl:when test="$serialisation = 'json'">
+							<xsl:text>&#xa;                       type: array</xsl:text>
+							<xsl:text>&#xa;                       items:</xsl:text>
+							<xsl:text>&#xa;                         $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
+						</xsl:when>
 						<xsl:when test="ep:parameters/ep:parameter[ep:name='grouping']/ep:value = 'resource'">
 							<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
 						</xsl:when>
@@ -635,7 +646,7 @@
 				<xsl:text>&#xa;      description: "</xsl:text><xsl:value-of select="$documentation" /><xsl:text>"</xsl:text>
 				<xsl:text>&#xa;      requestBody:</xsl:text>
 				<xsl:text>&#xa;        content:</xsl:text>
-				<xsl:text>&#xa;          application/hal+json:</xsl:text>
+				<xsl:text>&#xa;          application/</xsl:text><xsl:value-of select="$serialisation"/><xsl:text>:</xsl:text>
 				<xsl:text>&#xa;            schema:</xsl:text>
 				<xsl:text>&#xa;              $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
 				<xsl:text>&#xa;      responses:</xsl:text>
@@ -649,7 +660,7 @@
 				<xsl:text>&#xa;                format: uri</xsl:text>
 				<xsl:text>&#xa;                example: '</xsl:text><xsl:value-of select="concat($messageName,'/',$exampleSleutelEntiteittype)" /><xsl:text>'</xsl:text>
 				<xsl:text>&#xa;          content:</xsl:text>
-				<xsl:text>&#xa;            application/hal+json:</xsl:text>
+				<xsl:text>&#xa;            application/</xsl:text><xsl:value-of select="$serialisation"/><xsl:text>:</xsl:text>
 				<xsl:text>&#xa;              schema:</xsl:text>
 				<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
 				<xsl:text>&#xa;        default:</xsl:text>

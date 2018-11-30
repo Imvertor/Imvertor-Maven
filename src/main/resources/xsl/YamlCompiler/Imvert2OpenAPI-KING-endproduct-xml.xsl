@@ -74,6 +74,16 @@
 		</xsl:choose>
 	</xsl:variable>
 	<xsl:variable name="kv-administrator-e-mail" select="imf:get-tagged-value($packages,'##CFG-TV-E-MAIL-KV-ADMINISTRATOR')"/>
+	<xsl:variable name="kv-serialisation">
+		<xsl:choose>
+			<xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-SERIALISATION'))">
+				<xsl:sequence select="imf:msg($packages,'WARNING','For an Open API interface a serialisation must be defined. Define one using the tv Serialisatie.', ())" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-SERIALISATION')"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 	<xsl:variable name="version" select="$packages/imvert:version"/>
 	
 	<xsl:variable name="imvert-document" select="if (exists($messages/imvert:packages)) then $messages else ()" />
@@ -150,6 +160,20 @@
 						<xsl:sequence select="imf:create-output-element('ep:value', $kv-administrator-e-mail)" />
 					</ep:parameter>
 				</xsl:if>
+				<xsl:choose>
+					<xsl:when test="$kv-serialisation!=''">
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'serialisation')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $kv-serialisation)" />
+						</ep:parameter>
+					</xsl:when>
+					<xsl:otherwise>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'serialisation')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', 'hal+json')" />
+						</ep:parameter>
+					</xsl:otherwise>
+				</xsl:choose>
 			</ep:parameters>
 			<ep:name><xsl:value-of select="ep:name"/></ep:name>
 			<ep:message-set>
@@ -1753,7 +1777,7 @@
 					</xsl:variable>
 					<xsl:if test="$SIM-name != $normalizedName">
 						<!-- If the normalized-name isn't equal to the SIM-name a warning has to be generated. The goal of this warning is only point the attention of the messagedeveloper to the enumeration and ask him to cehck it. -->
-						<xsl:sequence select="imf:msg($construct,'WARNING','The source for the enumeration value [1] does not have an alias. Therefore it has been generated from its description. This however contains characters other than a-z, A-Z or an underscore. Check if the resulting enumeration value is as desired ([2],[3]).',(imvert:name,$SIM-name,$normalizedName))"/>						
+						<xsl:sequence select="imf:msg($construct,'WARNING','The source for the enumeration value [1] does not have an alias. Therefore it has been generated from its description. This however contains characters other than a-z, A-Z or an underscore. Check if the resulting enumeration value is as desired.',(imvert:name))"/>						
 					</xsl:if>
 					<ep:name><xsl:value-of select="$SIM-name" /></ep:name>
 					<ep:alias><xsl:value-of select="$normalizedName" /></ep:alias>
