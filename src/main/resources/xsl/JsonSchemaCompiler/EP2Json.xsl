@@ -110,7 +110,7 @@
                             <xsl:sequence select="imf:ep-to-namevaluepair('type','array')"/>
                             <xsl:for-each select="ep:enum">
                                 <items>
-                                    <xsl:value-of select="."/>
+                                    <xsl:value-of select="ep:name"/>
                                 </items>
                             </xsl:for-each>
                         </xsl:when>
