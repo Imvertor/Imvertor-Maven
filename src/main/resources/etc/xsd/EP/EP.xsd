@@ -16,7 +16,9 @@
 		Wat nu wordt uitgedrukt op construct is: hoe vaak mag deze construct voorkomen in de parent? 
 	  - localconstruct kan naast seq ook choice bevatten.
       - enkele ep-elementen worden niet door Kadaster gebruikt: minvalue, maxvalue, example, etc. - dat zou dan aanpassing van het metamdoel betekenen.
-      - 
+      - ep:formal-pattern toegevoegd naast ep:pattern.
+      - ep:min-length naast ep:max-length opgenomen
+      - ep:alias is niet verplicht op een enum.
 
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -49,8 +51,10 @@
 						<xs:element ref="data-type"/>
 						<xs:element ref="min-value" minOccurs="0"/>
 						<xs:element ref="max-value" minOccurs="0"/>
+						<xs:element ref="min-length" minOccurs="0"/>
 						<xs:element ref="max-length" minOccurs="0"/>
 						<xs:element ref="pattern" minOccurs="0"/>
+						<xs:element ref="formal-pattern" minOccurs="0"/>
 						<xs:element ref="example" minOccurs="0"/>
 						<xs:element ref="enum" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
@@ -80,8 +84,10 @@
 						<xs:element ref="data-type"/>
 						<xs:element ref="min-value" minOccurs="0"/>
 						<xs:element ref="max-value" minOccurs="0"/>
+						<xs:element ref="min-length" minOccurs="0"/>
 						<xs:element ref="max-length" minOccurs="0"/>
 						<xs:element ref="pattern" minOccurs="0"/>
+						<xs:element ref="formal-pattern" minOccurs="0"/>
 						<xs:element ref="example" minOccurs="0"/>
 						<xs:element ref="enum" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
@@ -125,11 +131,12 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="ep:name"/>
-				<xs:element ref="ep:alias"/>
+				<xs:element ref="ep:alias" minOccurs="0"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="example" type="xs:string"/>
+	<xs:element name="min-length" type="xs:short"/>
 	<xs:element name="max-length" type="xs:short"/>
 	<xs:element name="max-occurs" type="xs:string"/>
 	<xs:element name="message">
@@ -204,6 +211,7 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+	<xs:element name="formal-pattern" type="xs:string"/>
 	<xs:element name="ref" type="xs:string"/>
 	<xs:element name="release" type="xs:int"/>
 	<xs:element name="seq">

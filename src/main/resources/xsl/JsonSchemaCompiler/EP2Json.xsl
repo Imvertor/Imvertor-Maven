@@ -27,11 +27,13 @@
     
     <xsl:template match="ep:construct">
         <xsl:variable name="n" select="concat('EP: ', ep:tech-name, ' ID: ', ep:id)"/>
+        <xsl:variable name="nillable" select="imf:get-ep-parameter(.,'nillable') = 'true'"/>
         <xsl:element name="{ep:tech-name}">
             <xsl:choose>
                 <xsl:when test="imf:get-ep-parameter(.,'use') eq 'data-element'">
                     <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Data element [1]',$n)"/>
-                    <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type))"/>
+                    <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type), $nillable)"/>
+                    <xsl:sequence select="imf:ep-to-namevaluepair('format',imf:map-dataformat-to-ep-type(ep:data-type))"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:sequence select="imf:ep-to-namevaluepair('title',ep:name)"/>
@@ -94,6 +96,15 @@
                                 </xsl:otherwise>
                             </xsl:choose>
                         </xsl:when>
+                        <xsl:when test="ep:choice">
+                            <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Choice [1]',$n)"/>
+                            <xsl:for-each select="ep:choice/ep:construct">
+                                <oneOf>
+                                    <xsl:variable name="target" select="//ep:construct[ep:id = current()/ep:ref]"/>
+                                    <xsl:sequence select="imf:ep-to-namevaluepair('JSONOP_ref',concat('#/definitions/',$target/ep:tech-name))"/>
+                                </oneOf>
+                            </xsl:for-each>
+                        </xsl:when>
                         <xsl:when test="ep:enum">
                             <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Enum [1]',$n)"/>
                             <xsl:sequence select="imf:ep-to-namevaluepair('type','array')"/>
@@ -103,14 +114,22 @@
                                 </items>
                             </xsl:for-each>
                         </xsl:when>
+                   
+                        <xsl:when test="ep:data-type and imf:get-ep-parameter(.,'use') eq 'codelist'">
+                            <properties>
+                                <xsl:sequence select="imf:ep-to-namevaluepair('code',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>
+                            </properties>
+                        </xsl:when>
                         
                         <xsl:when test="ep:data-type">
                             <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Datatype [1]',$n)"/>
-                            <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type))"/>
+                            <xsl:sequence select="imf:ep-to-namevaluepair('type',imf:map-datatype-to-ep-type(ep:data-type),$nillable)"/>
+                            <xsl:sequence select="imf:ep-to-namevaluepair('format',imf:map-dataformat-to-ep-type(ep:data-type))"/>
                             <xsl:sequence select="imf:ep-to-namevaluepair('minValue',ep:min-value)"/>
                             <xsl:sequence select="imf:ep-to-namevaluepair('maxValue',ep:max-value)"/>
                             <xsl:sequence select="imf:ep-to-namevaluepair('minLength',ep:min-length)"/>
                             <xsl:sequence select="imf:ep-to-namevaluepair('maxLength',ep:max-length)"/>
+                            <xsl:sequence select="imf:ep-to-namevaluepair('pattern',ep:formal-pattern)"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:sequence select="imf:msg-comment(.,'WARN', 'Ken dit type niet: [1]',$n)"/>
@@ -129,14 +148,30 @@
         functions 
     -->
     
+    <xsl:function name="imf:ep-to-namevaluepair" as="node()*">
+        <xsl:param name="name" as="xs:string"/>
+        <xsl:param name="value" as="xs:string?"/>
+        <xsl:param name="nillable"/>
+        <xsl:if test="normalize-space($value)">
+            <xsl:choose>
+                <xsl:when test="$nillable">
+                    <xsl:processing-instruction name="xml-multiple">type</xsl:processing-instruction>
+                    <xsl:sequence select="imf:ep-to-namevaluepair('type',$value)"/>
+                    <xsl:sequence select="imf:ep-to-namevaluepair('type','null')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:element name="{$name}">
+                        <xsl:value-of select="$value"/>
+                    </xsl:element>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:if>
+    </xsl:function>
+    
     <xsl:function name="imf:ep-to-namevaluepair" as="element()?">
         <xsl:param name="name" as="xs:string"/>
         <xsl:param name="value" as="xs:string?"/>
-        <xsl:if test="normalize-space($value)">
-            <xsl:element name="{$name}">
-                <xsl:value-of select="$value"/>
-            </xsl:element>       
-        </xsl:if>
+        <xsl:sequence select="imf:ep-to-namevaluepair($name,$value,false())"/>       
     </xsl:function>
     
     <xsl:function name="imf:msg-comment" as="element()?">
@@ -164,10 +199,24 @@
             <xsl:when test="$data-type = 'ep:date'">string</xsl:when>
             <xsl:when test="$data-type = 'ep:datetime'">string</xsl:when>
             <xsl:when test="$data-type = 'ep:year'">string</xsl:when>
+            <xsl:when test="$data-type = 'ep:uri'">uri</xsl:when>
             <xsl:when test="$data-type = 'ep:decimal'">number</xsl:when>
             <xsl:when test="$data-type = 'ep:integer'">integer</xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="concat('UNKNOWN-DATATYPE: ',$data-type)"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
+    <xsl:function name="imf:map-dataformat-to-ep-type" as="xs:string?">
+        <xsl:param name="data-type"/> 
+        <xsl:choose>
+            <xsl:when test="$data-type = 'ep:date'">date</xsl:when>
+            <xsl:when test="$data-type = 'ep:datetime'">datetime</xsl:when>
+            <xsl:when test="$data-type = 'ep:year'">year</xsl:when>
+            <xsl:when test="$data-type = 'ep:uri'">uri</xsl:when>
+            <xsl:otherwise>
+                <!--  no format -->
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
