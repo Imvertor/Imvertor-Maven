@@ -6,7 +6,7 @@
 	
 	<!-- The first variable is meant for the server environment, the second one is used during development in XML-Spy. -->
 <!--	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>-->
-	<xsl:variable name="debugging" select="false()" as="xs:boolean"/>
+	<xsl:variable name="debugging" select="true()" as="xs:boolean"/>
 	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
@@ -1783,7 +1783,7 @@
 				<xsl:value-of select="'string'"/>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'year'">
-				<xsl:value-of select="'integer'"/>
+				<xsl:value-of select="'string'"/>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'yearmonth'">
 				<xsl:value-of select="'integer'"/>
@@ -1826,7 +1826,7 @@
 				<xsl:value-of select="',&quot;format&quot;: &quot;date&quot;'"/>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'year'">
-				<xsl:value-of select="',&quot;format&quot;: &quot;jaar&quot;'"/>
+				<xsl:value-of select="',&quot;format&quot;: &quot;date_fullyear&quot;'"/>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'yearmonth'">
 				<xsl:value-of select="',&quot;format&quot;: &quot;jaarmaand&quot;'"/>
