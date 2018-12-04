@@ -663,6 +663,17 @@
                 <value>json</value>
             </declared-values>
         </tv>
+        <tv id="CFG-TV-GROUPNAME">
+            <name lang="nl">Groepsnaam</name>
+            <name lang="en">Groupname</name>
+            <desc lang="nl">
+                De groepsnaam van een groep. 
+            </desc>
+            <derive>no</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+            </stereotypes>
+        </tv>
     </tagged-values>
 </tagset>
 

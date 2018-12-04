@@ -709,6 +709,18 @@
 				<xsl:variable name="classconstruct" select="imf:get-construct-by-id($id,$packages)" />
 				<xsl:variable name="refering-associationclassconstruct" select="imf:get-construct-by-id($id-refering-association,$packages)" />
 				<xsl:variable name="type-name" select="$classconstruct/imvert:name" />
+
+
+				<xsl:variable name="groupname">
+					<xsl:choose>
+						<xsl:when test="string-length(imf:get-most-relevant-compiled-taggedvalue($classconstruct, '##CFG-TV-GROUPNAME')) != 0">
+							<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-GROUPNAME')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="../ep:tech-name"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				<ep:construct>
 					<ep:parameters>
 						<ep:parameter>
@@ -720,7 +732,7 @@
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS12500, id: ',$id),$debugging)" />
 					
 					<xsl:sequence select="imf:create-output-element('ep:name', ../ep:name)" />
-					<xsl:sequence select="imf:create-output-element('ep:tech-name', ../ep:tech-name)" />
+					<xsl:sequence select="imf:create-output-element('ep:tech-name', $groupname)" />
 					<xsl:choose>
 						<xsl:when test="(empty($doc) or $doc='') and $debugging">
 							<xsl:call-template name="documentationUnknown"/>
