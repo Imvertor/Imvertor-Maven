@@ -466,8 +466,6 @@
 			<xsl:when test="$serialisation = 'hal+json'">
 				<!-- Only if hal+json applies this when is relevant -->
 				<!-- If the for each after this if is relevant a comma separator has to be generated here. -->
-				<!-- ROME: if conditie aangepast omdat blijkbaar bij elke voorkomende entiteit in een model een '_links' component moet 
-						   worden gegenereerd. RM #490164 -->
 				<xsl:if test="ep:message-set/ep:construct
 								[
 									not(
@@ -519,19 +517,26 @@
 									  or 
 									  ep:tech-name = //ep:message/ep:seq/ep:construct/ep:type-name
 									)
-									and
-									not(
-										ep:parameters[not(ep:parameter[ep:name='type' and ep:value='groepCompositie'])] 
-										and 
-										ep:parameters[not(ep:parameter[ep:name='type' and ep:value='requestclass'])] 
-										and 
-										not(.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id' and ep:value='false']]])
+									and (
+									.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id' and ep:value='false']]]
+									or
+									empty(.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id']]])
 									)
+									and ep:seq/ep:*
 								]">,</xsl:if>
-				<!-- Loop over global constructs who do have themself a construct of 'association' type.
-					 global _link types (and under certain circumstances global _embedded types) are generated. -->
-				<!-- ROME: if conditie aangepast omdat blijkbaar bij elke voorkomende entiteit in een model een '_links' component moet 
-						   worden gegenereerd. RM #490164 -->
+				<!-- Loop over global constructs which 
+					 * aren't reffered to from ep:construct elements of type 'subclass' which are child of an ep:choice;
+					 * aren't abstract;
+					 * are part of the requesttree of a Po message or in the responsetree of an Gc or Gr message;
+					 * aren't of type 'complex-datatype';
+					 * aren't of type 'table-datatype';
+					 * aren't of type 'groepCompositie';
+					 * aren't of type 'groepCompositieAssociation';
+					 * do have a type;
+					 * are part of a message which must be expanded or do have themself an ep:construct of 'association' type  or are reffered to from a 
+					   top-level ep:construct within an ep:message;
+					 * has attributes which aren't part of the id of the ep:construct.
+					 in those case a global _link types (and under certain circumstances global _embedded types) are generated. -->
 				<xsl:for-each select="ep:message-set/ep:construct
 										[
 										  	not(
@@ -583,14 +588,12 @@
 											  or 
 											  ep:tech-name = //ep:message/ep:seq/ep:construct/ep:type-name
 											)
-											and
-											not(
-												ep:parameters[not(ep:parameter[ep:name='type' and ep:value='groepCompositie'])] 
-												and 
-												ep:parameters[not(ep:parameter[ep:name='type' and ep:value='requestclass'])] 
-												and 
-												not(.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id' and ep:value='false']]])
+											and (
+											.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id' and ep:value='false']]]
+											or
+											empty(.//ep:construct[ep:parameters[ep:parameter[ep:name='is-id']]])
 											)
+											and ep:seq/ep:*
 										]">
 						<xsl:if test="$debugging">
 							"--------------Debuglocatie-05000-<xsl:value-of select="generate-id()"/>": {
