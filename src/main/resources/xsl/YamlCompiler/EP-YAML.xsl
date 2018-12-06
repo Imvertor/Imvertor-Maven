@@ -12,6 +12,7 @@
 		 * hal+json
 		 * geojson	-->
 	<xsl:variable name="serialisation" select="$message-sets/ep:parameters/ep:parameter[ep:name='serialisation']/ep:value"/>
+	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
 	
 	<xsl:template match="ep:message-sets">
 		<xsl:apply-templates select="ep:message-set"/>
@@ -82,45 +83,52 @@
 	<xsl:template match="ep:message">
 		<!-- This template processes all ep:message elements grouped by their name. -->
 		<xsl:variable name="tag" select="ep:parameters/ep:parameter[ep:name='tag']/ep:value"/>
+		<xsl:variable name="rawMessageName" select="ep:name" />
+		<xsl:variable name="rawCustomPathFacet" select="ep:parameters/ep:parameter[ep:name='customPathFacet']/ep:value"/>
+		<xsl:variable name="customPathFacet">
+			<xsl:choose>
+				<xsl:when test="substring($rawCustomPathFacet,1,1) = '/' and substring($rawCustomPathFacet,string-length($rawCustomPathFacet),1) = '/'">
+					<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] within the message [2] contains 2 slashes. Remove them..',($rawCustomPathFacet,$rawMessageName))"/>
+					<xsl:value-of select="substring-before(substring-after($rawCustomPathFacet,'/'),'/')"/>
+				</xsl:when>
+				<xsl:when test="substring($rawCustomPathFacet,1,1) = '/'">
+					<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] within the message [2] contains a slash. Remove it.',($rawCustomPathFacet,$rawMessageName))"/>
+					<xsl:value-of select="substring-after($rawCustomPathFacet,'/')"/>
+				</xsl:when>
+				<xsl:when test="substring($rawCustomPathFacet,string-length($rawCustomPathFacet),1) = '/'">
+					<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] within the message [2] contains a slash. Remove it.',($rawCustomPathFacet,$rawMessageName))"/>
+					<xsl:value-of select="substring-before($rawCustomPathFacet,'/')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$rawCustomPathFacet"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="messageName">
+			<xsl:choose>
+				<xsl:when test="not(empty(ep:parameters/ep:parameter[ep:name='customPathFacet'])) and contains($rawMessageName,$customPathFacet)">
+					<xsl:value-of select="substring-before($rawMessageName,concat('/',$customPathFacet))"/><xsl:value-of select="substring-after($rawMessageName,concat('/',$customPathFacet))"/>
+				</xsl:when>
+				<xsl:when test="not(empty(ep:parameters/ep:parameter[ep:name='customPathFacet'])) and not(contains($rawMessageName,$customPathFacet))">
+					<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] has been declared but it is not used within the message [2].',($customPathFacet,$rawMessageName))"/>
+					<xsl:value-of select="$rawMessageName"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$rawMessageName"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="parameterConstruct" select="./ep:seq/ep:construct/ep:type-name"/>
+		<xsl:variable name="meervoudigeNaam" select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
+		<xsl:variable name="documentation">
+			<xsl:text></xsl:text><xsl:apply-templates select="ep:documentation" /><xsl:text></xsl:text>
+		</xsl:variable>
+		<xsl:variable name="berichttype" select="ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value"/>
+		<xsl:variable name="messagetype" select="ep:parameters/ep:parameter[ep:name='messagetype']/ep:value"/>
 		<xsl:choose>
-			<xsl:when test="(contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr') or contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc')) and ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'request'">
+			<xsl:when test="(contains($berichttype,'Gr') or contains($berichttype,'Gc')) and $messagetype = 'request'">
 				<!-- This processes al ep:message elements represent the request tree of the Gr and Gc messages. -->
-				<xsl:variable name="rawMessageName" select="ep:name" />
 				<!-- The tv custom_path_facet should, if present, have the correct format without a slash. We remove slashes from the tv but also generate a warning if a slash is present. -->
-				<xsl:variable name="rawCustomPathFacet" select="ep:parameters/ep:parameter[ep:name='customPathFacet']/ep:value"/>
-				<xsl:variable name="customPathFacet">
-					<xsl:choose>
-						<xsl:when test="substring($rawCustomPathFacet,1,1) = '/' and substring($rawCustomPathFacet,string-length($rawCustomPathFacet),1) = '/'">
-							<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] within the message [2] contains 2 slashes. Remove them..',($rawCustomPathFacet,$rawMessageName))"/>
-							<xsl:value-of select="substring-before(substring-after($rawCustomPathFacet,'/'),'/')"/>
-						</xsl:when>
-						<xsl:when test="substring($rawCustomPathFacet,1,1) = '/'">
-							<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] within the message [2] contains a slash. Remove it.',($rawCustomPathFacet,$rawMessageName))"/>
-							<xsl:value-of select="substring-after($rawCustomPathFacet,'/')"/>
-						</xsl:when>
-						<xsl:when test="substring($rawCustomPathFacet,string-length($rawCustomPathFacet),1) = '/'">
-							<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] within the message [2] contains a slash. Remove it.',($rawCustomPathFacet,$rawMessageName))"/>
-							<xsl:value-of select="substring-before($rawCustomPathFacet,'/')"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="$rawCustomPathFacet"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-				<xsl:variable name="messageName">
-					<xsl:choose>
-						<xsl:when test="not(empty(ep:parameters/ep:parameter[ep:name='customPathFacet'])) and contains($rawMessageName,$customPathFacet)">
-							<xsl:value-of select="substring-before($rawMessageName,concat('/',$customPathFacet))"/><xsl:value-of select="substring-after($rawMessageName,concat('/',$customPathFacet))"/>
-						</xsl:when>
-						<xsl:when test="not(empty(ep:parameters/ep:parameter[ep:name='customPathFacet'])) and not(contains($rawMessageName,$customPathFacet))">
-							<xsl:sequence select="imf:msg(.,'WARNING','The custom-path-facet [1] has been declared but it is not used within the message [2].',($customPathFacet,$rawMessageName))"/>
-							<xsl:value-of select="$rawMessageName"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="$rawMessageName"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
 				<xsl:variable name="determinedUriStructure">
 					<!-- This variable contains a structure determined from the messageName. -->
 					<ep:uriStructure name="{$rawMessageName}" customPathFacet="{$customPathFacet}">
@@ -136,10 +144,6 @@
 						</xsl:choose>
 					</ep:uriStructure>
 				</xsl:variable>
-	
-				<xsl:variable name="parameterConstruct" select="./ep:seq/ep:construct/ep:type-name"/>
-				<xsl:variable name="meervoudigeNaam" select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
-				
 				<xsl:variable name="relatedResponseMessage">
 					<xsl:sequence select="//ep:message[ep:name = $rawMessageName and ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response']"/>
 				</xsl:variable>
@@ -150,25 +154,23 @@
 					<!-- This  variable contains a similar structure as the variable determinedUriStructure but this time determined from 
 						 the request tree. -->
 					<ep:uriStructure name="{$rawMessageName}" customPathFacet="{$customPathFacet}">
-						<xsl:choose>
-							<xsl:when test="ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value = ('Gr01','Gc01','Gc02')">
-								<xsl:choose>
-									<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct])">
-										<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1].',$parameterConstruct)"/>
-									</xsl:when>
-									<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam'])">
-										<xsl:sequence select="imf:msg(.,'WARNING','The class [1] within message [2] does not have a tagged value naam in meervoud, define one.',($parameterConstruct,$rawMessageName))"/>
-									</xsl:when>
-									<xsl:otherwise>
-										<ep:uriPart>
-											<ep:entityName><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
-											<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]" mode="getParameters"/>
-										</ep:uriPart>
-										<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]" mode="getUriPart"/>
-									</xsl:otherwise>
-								</xsl:choose>
-							</xsl:when>
-						</xsl:choose>
+						<xsl:if test="ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value = ('Gr01','Gc01','Gc02')">
+							<xsl:choose>
+								<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct])">
+									<xsl:sequence select="imf:msg(.,'WARNING','There is no global construct [1].',$parameterConstruct)"/>
+								</xsl:when>
+								<xsl:when test="empty(//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam'])">
+									<xsl:sequence select="imf:msg(.,'WARNING','The class [1] within message [2] does not have a tagged value naam in meervoud, define one.',($parameterConstruct,$rawMessageName))"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<ep:uriPart>
+										<ep:entityName><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
+										<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]" mode="getParameters"/>
+									</ep:uriPart>
+									<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]" mode="getUriPart"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:if>
 					</ep:uriStructure>
 				</xsl:variable>
 
@@ -270,9 +272,6 @@
 					<xsl:sequence select="imf:msg(.,'WARNING','The messagename ([1]) is not correct, according to the request tree in the model it should be [2].', ($messageName,$calculatedMessageName))" />			
 				</xsl:if> ?>
 				
-				<xsl:variable name="documentation">
-					<xsl:text></xsl:text><xsl:apply-templates select="ep:documentation" /><xsl:text></xsl:text>
-				</xsl:variable>
 				<xsl:variable name="method">get</xsl:variable>
 				<xsl:variable name="parametersRequired">
 					<xsl:if test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value = 'true'">J</xsl:if>
@@ -286,7 +285,7 @@
 				<xsl:text>&#xa;      operationId: </xsl:text><xsl:value-of select="ep:tech-name" />
 				<xsl:text>&#xa;      description: "</xsl:text><xsl:value-of select="$documentation" /><xsl:text>"</xsl:text>
 				<xsl:if test="contains($parametersRequired,'J') or 
-								$checkedUriStructure//ep:uriPart/ep:param[@path='true'] or 
+								$checkedUriStructure//ep:uriPart/ep:param[@path = 'true'] or 
 								$checkedUriStructure//ep:uriPart/ep:param[empty(@path) or @path = 'false']">
 					<!-- If parameters apply the parameters section is generated. -->
 					<xsl:text>&#xa;      parameters: </xsl:text>
@@ -327,7 +326,7 @@
 						<xsl:text>&#xa;            example: -prio,aanvraag_datum</xsl:text>
 					</xsl:if>
 		
-					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[@path='true']">
+					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[@path = 'true']">
 						<!-- Loop over de path ep:param elements within the checkeduristructure and generate for each of them a path parameter. -->
 						<xsl:variable name="datatype">
 							<xsl:choose>
@@ -616,23 +615,18 @@
 						</xsl:when>
 					</xsl:choose>
 				</xsl:for-each>
-				<xsl:text>&#xa;        default:</xsl:text>
-				<xsl:text>&#xa;          description: "Er is een onverwachte fout opgetreden."</xsl:text>
-				<xsl:text>&#xa;          content:</xsl:text>
-				<xsl:text>&#xa;            application/problem+json:</xsl:text>
-				<xsl:text>&#xa;              schema:  </xsl:text>
-				<xsl:text>&#xa;                $ref: '#/components/schemas/Foutbericht'</xsl:text>
+
+				<xsl:variable name="queryParamsPresent" select="boolean($checkedUriStructure//ep:uriPart/ep:param[@path = 'false'] or empty($checkedUriStructure//ep:uriPart/ep:param/@path))"/>
+				<xsl:variable name="pathParamsPresent" select="boolean($checkedUriStructure//ep:uriPart/ep:param[@path = 'true'])"/>
+				<!-- TODO: De volgende parameter moet nog een waarde krijgen. Dat gebeurd pas als issue #490153 wordt ingevuld. -->
+				<xsl:variable name="CrsParamPresent" select="false()"/>
+
+				<xsl:sequence select="imf:Foutresponses($berichttype,$queryParamsPresent,$pathParamsPresent,$CrsParamPresent)"/>
 				<xsl:text>&#xa;      tags: </xsl:text>
 				<xsl:text>&#xa;      - </xsl:text><xsl:value-of select="$tag" />
 			</xsl:when>
-			<xsl:when test="contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') and ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'request'">
+			<xsl:when test="contains($berichttype,'Po') and $messagetype = 'request'">
 				<!-- This processes al ep:message elements represent the request tree of the Po messages. -->
-				<xsl:variable name="messageName" select="ep:name" />
-				<xsl:variable name="parameterConstruct" select="./ep:seq/ep:construct/ep:type-name"/>
-				<xsl:variable name="meervoudigeNaam" select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
-				<xsl:variable name="documentation">
-					<xsl:text></xsl:text><xsl:apply-templates select="ep:documentation" /><xsl:text></xsl:text>
-				</xsl:variable>
 				<xsl:variable name="method">post</xsl:variable>
 				<xsl:variable name="exampleSleutelEntiteittype">
 					<xsl:variable name="id" select=".//ep:type-name"/>
@@ -658,22 +652,64 @@
 				<xsl:text>&#xa;              schema:</xsl:text>
 				<xsl:text>&#xa;                type: string</xsl:text>
 				<xsl:text>&#xa;                format: uri</xsl:text>
-				<xsl:text>&#xa;                example: '</xsl:text><xsl:value-of select="concat($messageName,'/',$exampleSleutelEntiteittype)" /><xsl:text>'</xsl:text>
+				<xsl:text>&#xa;                example: '</xsl:text><xsl:value-of select="concat($rawMessageName,'/',$exampleSleutelEntiteittype)" /><xsl:text>'</xsl:text>
 				<xsl:text>&#xa;          content:</xsl:text>
 				<xsl:text>&#xa;            application/</xsl:text><xsl:value-of select="$serialisation"/><xsl:text>:</xsl:text>
 				<xsl:text>&#xa;              schema:</xsl:text>
 				<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
-				<xsl:text>&#xa;        default:</xsl:text>
-				<xsl:text>&#xa;          description: "Bad Request."</xsl:text>
-				<xsl:text>&#xa;          content:</xsl:text>
-				<xsl:text>&#xa;            application/problem+problem:</xsl:text>
-				<xsl:text>&#xa;              schema:  </xsl:text>
-				<xsl:text>&#xa;                $ref: '#/components/schemas/Foutbericht'</xsl:text>
+
+				<!-- TODO: De 2e t/m 4e variabele moeten nog op een andere wijze een waarde krijgen. Daarvoor moeten eerst de in het hoofdstuk voor het POST bericht
+						       beschreven wijzigingen in het algoritme behorende bij issue #490151 worden geimplementeerd.
+							   Die beschrijving moet overigens nog aangepast worden omdat bij een POST bericht de request tree wordt gebruikt voor de 
+							   content van het bericht en deze volgens mij niet ook nog eens voor de parameters gebruikt kan worden. -->
+				<xsl:variable name="queryParamsPresent" select="false()"/>
+				<xsl:variable name="pathParamsPresent" select="false()"/>
+				<xsl:variable name="CrsParamPresent" select="false()"/>
+
+				<xsl:sequence select="imf:Foutresponses($berichttype,$queryParamsPresent,$pathParamsPresent,$CrsParamPresent)"/>
 				<xsl:text>&#xa;      tags: </xsl:text>
 				<xsl:text>&#xa;      - </xsl:text><xsl:value-of select="$tag" />
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
+
+	<xsl:function name="imf:Foutresponses">
+		<xsl:param name="berichttype"/>
+		<xsl:param name="queryParamsPresent"/>
+		<xsl:param name="pathParamsPresent"/>
+		<xsl:param name="CrsParamPresent"/>
+		
+		<xsl:if test="contains($berichttype,'Po') or $queryParamsPresent">
+			<xsl:sequence select="imf:Foutresponse('400','Bad Request')"/>
+		</xsl:if>
+		<xsl:sequence select="imf:Foutresponse('401','Unauthorized')"/>
+		<xsl:sequence select="imf:Foutresponse('403','Forbidden')"/>
+		<xsl:if test="$pathParamsPresent">
+			<xsl:sequence select="imf:Foutresponse('404','Not Found')"/>
+		</xsl:if>
+		<xsl:sequence select="imf:Foutresponse('406','Not Acceptable')"/>
+		<xsl:sequence select="imf:Foutresponse('409','Conflict')"/>
+		<xsl:sequence select="imf:Foutresponse('410','Gone')"/>
+		<xsl:if test="$CrsParamPresent">
+			<xsl:sequence select="imf:Foutresponse('412','Precondition Failed')"/>
+		</xsl:if>
+		<xsl:sequence select="imf:Foutresponse('415','Unsupported Media Type')"/>
+		<xsl:sequence select="imf:Foutresponse('429','Too Many Requests')"/>
+		<xsl:sequence select="imf:Foutresponse('500','Internal Server Error')"/>
+		<xsl:sequence select="imf:Foutresponse('default','Er is een onverwachte fout opgetreden.')"/>
+	</xsl:function>
+	
+	<xsl:function name="imf:Foutresponse">
+		<xsl:param name="foutcode"/>
+		<xsl:param name="omschrijving"/>
+		
+		<xsl:text>&#xa;        '</xsl:text><xsl:value-of select="$foutcode"/><xsl:text>':</xsl:text>
+		<xsl:text>&#xa;          description: </xsl:text><xsl:value-of select="$omschrijving"/>
+		<xsl:text>&#xa;          content:</xsl:text>
+		<xsl:text>&#xa;            application/problem+json:</xsl:text>
+		<xsl:text>&#xa;              schema:</xsl:text>
+		<xsl:text>&#xa;                $ref: 'https://raw.githubusercontent.com/VNG-Realisatie/Bevragingen-ingeschreven-personen/master/api-specificatie/components.yaml#/Foutbericht'</xsl:text>
+	</xsl:function>
 
 	<xsl:template match="ep:documentation">
 		<xsl:apply-templates select="ep:description" />
