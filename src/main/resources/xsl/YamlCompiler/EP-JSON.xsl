@@ -1003,72 +1003,13 @@
 						  }
 					    }
 					  }
-				  },
+				  }
 				</xsl:if>
 			</xsl:when>
 			<xsl:otherwise>
-				<!-- If serialisation isn't hal+json no _links en _embedded components have to be generated, only a comma. -->,
+				<!-- If serialisation isn't hal+json no _links en _embedded components have to be generated, only a comma. -->
 			</xsl:otherwise>
 		</xsl:choose>
-		<!-- The following properties have to be generated always. -->    
-			"Foutbericht" : {
-        		"type" : "object",
-        		"description" : "Terugmelding bij een fout",
-				"properties" : {
-			  		"type" : {
-						"type" : "string",
-						"format" : "uri",
-						"description" : "Link naar meer informatie over deze fout",
-						"example" : "https://www.gemmaonline.nl/standaarden/api/ValidatieFout"
-			  		},
-			  		"title" : {
-						"type" : "string",
-						"description" : "Beschrijving van de fout",
-						"example" : "Hier staat wat er is misgegaan..."
-			  		},
-			  		"status" : {
-						"type" : "integer",
-						"description" : "Http status code",
-						"example" : 400
-			  		},
-			  		"detail" : {
-						"type" : "string",
-						"description" : "Details over de fout",
-						"example" : "Meer details over de fout staan hier..."
-			  		},
-			  		"instance" : {
-						"type" : "string",
-						"format" : "uri",
-						"description" : "Uri van de aanroep die de fout heeft veroorzaakt",
-						"example" : "https://datapunt.voorbeeldgemeente.nl/service/api/v1/resourcenaam?parameter=waarde"
-			  		},
-			  		"invalid-params" : {
-						"type" : "array",
-						"items" : {
-				  			"$ref" : "<xsl:value-of select="$json-topstructure"/>/ParamFoutDetails"
-						},
-						"description" : "Foutmelding per fout in een parameter. Alle gevonden fouten worden één keer teruggemeld."
-			  		}
-				}
-		  	},
-		  	"ParamFoutDetails" : {
-				"type" : "object",
-				"description" : "Details over fouten in opgegeven parameters",
-				"properties" : {
-			  		"type" : {
-						"type" : "string",
-						"format" : "uri"
-			  		},
-			  		"name" : {
-						"type" : "string",
-						"description" : "Naam van de parameter"
-			  		},
-			  		"reason" : {
-						"type" : "string",
-						"description" : "Beschrijving van de fout op de parameterwaarde"
-			  		}
-				}
-		  	}
         <!-- If for each after this if is relevant a comma separator has to be generated. -->
 		<xsl:if test="ep:message-set/ep:construct[ep:tech-name = //ep:message-set/ep:construct/ep:seq/ep:construct/ep:type-name and ep:enum]">,</xsl:if>
 		<!-- Loop over all enumeration constructs. -->

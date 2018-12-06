@@ -191,7 +191,7 @@
 						<!-- In case of a Gr or Gc messagetype it's required to have one and not more than one association with the name 'response'. 
 						     If this isn't the case an error message is generated. -->
 						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; 1 (and only 1) association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;response&quot; has to be present. For messages with berichttype &quot;',$berichtcode,'&quot; this is not allowed.')"
+							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no or more than 1 association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;response&quot; is present. For messages with berichttype &quot;',$berichtcode,'&quot; 1 (and only 1) has to be present.')"
 							as="xs:string" />
 						<xsl:sequence select="imf:msg('ERROR',$msg)" />
 					</xsl:when>
@@ -200,7 +200,7 @@
 						<!-- In case of a Gr or Gc messagetype it's required to have one and not more than one association with the name 'request'. 
 						     If this isn't the case an error message is generated. -->
 						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; 1 (and only 1) association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;request&quot; has to be present. For messages with berichttype &quot;',$berichtcode,'&quot; this is not allowed.')"
+							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no or more than 1 association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;request&quot; is present. For messages with berichttype &quot;',$berichtcode,'&quot; 1 (and only 1) has to be present.')"
 							as="xs:string" />
 						<xsl:sequence select="imf:msg('ERROR',$msg)" />
 					</xsl:when>
