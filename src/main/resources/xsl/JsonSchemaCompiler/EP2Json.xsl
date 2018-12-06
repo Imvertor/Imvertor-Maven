@@ -211,8 +211,8 @@
     <xsl:function name="imf:map-dataformat-to-ep-type" as="xs:string?">
         <xsl:param name="data-type"/> 
         <xsl:choose>
-            <xsl:when test="$data-type = 'ep:date'">date</xsl:when>
-            <xsl:when test="$data-type = 'ep:datetime'">datetime</xsl:when>
+            <xsl:when test="$data-type = 'ep:date'">date-time</xsl:when>
+            <xsl:when test="$data-type = 'ep:datetime'">date-time</xsl:when>
             <xsl:when test="$data-type = 'ep:year'">year</xsl:when>
             <xsl:when test="$data-type = 'ep:uri'">uri</xsl:when>
             <xsl:otherwise>
