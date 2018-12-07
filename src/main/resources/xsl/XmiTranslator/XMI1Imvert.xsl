@@ -315,7 +315,9 @@
                 </xsl:if>
             </xsl:variable>
             <imvert:tagged-values>
-                <xsl:sequence select="$seq/*"/>
+                <xsl:for-each-group select="$seq/*" group-by="@id">
+                    <xsl:sequence select="current-group()[1]"/>
+                </xsl:for-each-group>
             </imvert:tagged-values>           
             
             <!-- get package wide constraints -->
