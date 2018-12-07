@@ -3,6 +3,9 @@
 	xmlns:ep="http://www.imvertor.org/schema/endproduct" xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:imf="http://www.imvertor.org/xsl/functions"
 	xmlns:functx="http://www.functx.com" version="2.0">
+
+	<xsl:import href="../common/Imvert-common.xsl"/>
+	
 	<xsl:output method="text" indent="yes" omit-xml-declaration="yes" />
 
 	<xsl:variable name="message-sets" select="/ep:message-sets" />
@@ -700,13 +703,14 @@
 	<xsl:function name="imf:Foutresponse">
 		<xsl:param name="foutcode"/>
 		<xsl:param name="omschrijving"/>
-		
+		<xsl:variable name="url" select="imf:get-config-parameter('standard-json-components-url')"/>
 		<xsl:text>&#xa;        '</xsl:text><xsl:value-of select="$foutcode"/><xsl:text>':</xsl:text>
 		<xsl:text>&#xa;          description: </xsl:text><xsl:value-of select="$omschrijving"/>
 		<xsl:text>&#xa;          content:</xsl:text>
 		<xsl:text>&#xa;            application/problem+json:</xsl:text>
 		<xsl:text>&#xa;              schema:</xsl:text>
-		<xsl:text>&#xa;                $ref: 'https://raw.githubusercontent.com/VNG-Realisatie/Bevragingen-ingeschreven-personen/master/api-specificatie/components.yaml#/Foutbericht'</xsl:text>
+		<xsl:text>&#xa;                $ref: </xsl:text>
+		<xsl:value-of select="concat('&quot;',$url,'Foutbericht&quot;')"/>
 	</xsl:function>
 
 	<xsl:template match="ep:documentation">

@@ -108,4 +108,7 @@
     -->  
     <parameter name="message-collapse-keys">TV1NSBRF2 NAFFA NAFF1 TCBR1</parameter>
     
-</project-owner>    
+    <!-- URL of the standard JSON components are available --> 
+    <parameter name="standard-json-components-url">https://raw.githubusercontent.com/VNG-Realisatie/Bevragingen-ingeschreven-personen/master/api-specificatie/components.yaml#/</parameter>
+    
+ </project-owner>    
