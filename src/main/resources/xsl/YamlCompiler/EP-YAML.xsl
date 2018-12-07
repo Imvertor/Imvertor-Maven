@@ -4,8 +4,6 @@
 	xmlns:imf="http://www.imvertor.org/xsl/functions"
 	xmlns:functx="http://www.functx.com" version="2.0">
 
-	<xsl:import href="../common/Imvert-common.xsl"/>
-	
 	<xsl:output method="text" indent="yes" omit-xml-declaration="yes" />
 
 	<xsl:variable name="message-sets" select="/ep:message-sets" />
