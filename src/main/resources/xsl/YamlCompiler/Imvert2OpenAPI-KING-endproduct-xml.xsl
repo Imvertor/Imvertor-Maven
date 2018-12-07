@@ -385,7 +385,7 @@
 					</ep:parameters>
 				</xsl:when>
 				<!-- ROME: Zijn er nog meer attributen van toepassing op een POST bericht. -->
-				<xsl:when test="contains($berichtcode,'Po') and $messagetype = 'request'">
+				<xsl:when test="contains($berichtcode,'Po')">
 					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'messagetype')" />
@@ -395,10 +395,12 @@
 							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
 							<xsl:sequence select="imf:create-output-element('ep:value', $berichtcode)" />
 						</ep:parameter>
-						<ep:parameter>
-							<xsl:sequence select="imf:create-output-element('ep:name', 'tag')" />
-							<xsl:sequence select="imf:create-output-element('ep:value', @tag)" />
-						</ep:parameter>
+						<xsl:if test="$messagetype = 'request'">
+							<ep:parameter>
+								<xsl:sequence select="imf:create-output-element('ep:name', 'tag')" />
+								<xsl:sequence select="imf:create-output-element('ep:value', @tag)" />
+							</ep:parameter>
+						</xsl:if>
 						<xsl:if test="@customPathFacet and @customPathFacet!=''">
 							<ep:parameter>
 								<xsl:sequence select="imf:create-output-element('ep:name', 'customPathFacet')" />

@@ -182,7 +182,7 @@
 						test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]) = 0">
 						<!-- It's not allowed to have no associations of type 'entiteitrelatie'. If that's the case an error message is generated. -->
 						<xsl:variable name="msg"
-							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no association with the stereotype &quot;entiteitrelatie&quot; occurs, only associations with that kind of stereotype are processed for messages with berichttype ',$berichtcode,'.')"
+							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no association with the stereotype &quot;entiteitrelatie&quot; occurs, only associations with that kind of stereotype or of stereotype &quot;padrelatie&quot; are processed for messages with berichttype ',$berichtcode,'.')"
 							as="xs:string" />
 						<xsl:sequence select="imf:msg('ERROR',$msg)" />
 					</xsl:when>
@@ -201,6 +201,23 @@
 						     If this isn't the case an error message is generated. -->
 						<xsl:variable name="msg"
 							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no or more than 1 association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;request&quot; is present. For messages with berichttype &quot;',$berichtcode,'&quot; 1 (and only 1) has to be present.')"
+							as="xs:string" />
+						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+					</xsl:when>
+					<xsl:when
+						test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-padrelatie')]) = 0">
+						<!-- It's not allowed to have no associations of type 'padrelatie'. If that's the case an error message is generated. -->
+						<xsl:variable name="msg"
+							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no association with the stereotype &quot;padrelatie&quot; occurs, only associations with that kind of stereotype or of stereotype &quot;entiteitrelatie&quot; are processed for messages with berichttype ',$berichtcode,'.')"
+							as="xs:string" />
+						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+					</xsl:when>
+					<xsl:when
+						test="not(count(imvert:associations/imvert:association[imvert:name = 'pad']) = 1)">
+						<!-- In case of a Gr or Gc messagetype it's required to have one and not more than one association with the name 'pad'. 
+						     If this isn't the case an error message is generated. -->
+						<xsl:variable name="msg"
+							select="concat('Within the messageclass &quot;',imvert:name,'&quot; no or more than 1 association with the stereotype &quot;padrelatie&quot; and the name &quot;pad&quot; is present. For messages with berichttype &quot;',$berichtcode,'&quot; 1 (and only 1) has to be present.')"
 							as="xs:string" />
 						<xsl:sequence select="imf:msg('ERROR',$msg)" />
 					</xsl:when>
@@ -287,17 +304,48 @@
 							as="xs:string" />
 						<xsl:sequence select="imf:msg('ERROR',$msg)" />
 					</xsl:when>
-					<xsl:when test="contains($berichtcode,'Po') and (not(count(imvert:associations/imvert:association[imvert:name = 'request']) = 1))">
+					<xsl:when test="not(count(imvert:associations/imvert:association[imvert:name = 'request']) = 1)">
 						<!-- In case of a Po messagetype it's required to have one and not more than one association with the name 'request'. 
 						     If this isn't the case an error message is generated. -->
 						<xsl:variable name="msg"
-							select="concat('Within the messageclass ',imvert:name,' 1 (and only 1) association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;request&quot; has to be present. For messages with berichttype ',$berichtcode,' this is not allowed.')"
+							select="concat('Within the messageclass ',imvert:name,' 1 (and only 1) association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;request&quot; has to be present.')"
+							as="xs:string" />
+						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+					</xsl:when>
+					<xsl:when test="not(count(imvert:associations/imvert:association[imvert:name = 'response']) = 1)">
+						<!-- In case of a Po messagetype it's required to have one and not more than one association with the name 'response'. 
+						     If this isn't the case an error message is generated. -->
+						<xsl:variable name="msg"
+							select="concat('Within the messageclass ',imvert:name,' 1 (and only 1) association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;response&quot; has to be present.')"
+							as="xs:string" />
+						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+					</xsl:when>
+					<xsl:when test="not(count(imvert:associations/imvert:association[imvert:name = 'requestbody']) = 1)">
+						<!-- In case of a Po messagetype it's required to have one and not more than one association with the name 'requestbody'. 
+						     If this isn't the case an error message is generated. -->
+						<xsl:variable name="msg"
+							select="concat('Within the messageclass ',imvert:name,' 1 (and only 1) association with the stereotype &quot;entiteitrelatie&quot; and the name &quot;requestbody&quot; has to be present.')"
+							as="xs:string" />
+						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+					</xsl:when>
+					<xsl:when test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-padrelatie')]) = 0">
+						<!-- It's not allowed to have no associations of type padrelatie'. If that's the case an error message is generated. -->
+						<xsl:variable name="msg"
+							select="concat('Within the messageclass ',imvert:name,' no association with the stereotype &quot;padrelatie&quot; occurs, only associations with that kind of stereotype are processed for messages with berichttype ',$berichtcode,'.')"
+							as="xs:string" />
+						<xsl:sequence select="imf:msg('ERROR',$msg)" />
+					</xsl:when>
+					<xsl:when test="not(count(imvert:associations/imvert:association[imvert:name = 'pad']) = 1)">
+						<!-- In case of a Po messagetype it's required to have one and not more than one association with the name 'pad'. 
+						     If this isn't the case an error message is generated. -->
+						<xsl:variable name="msg"
+							select="concat('Within the messageclass ',imvert:name,' 1 (and only 1) association with the stereotype &quot;padrelatie&quot; and the name &quot;pad&quot; has to be present.')"
 							as="xs:string" />
 						<xsl:sequence select="imf:msg('ERROR',$msg)" />
 					</xsl:when>
 					<xsl:when
-						test="imvert:associations/imvert:association[imvert:name != 'request' and imvert:name != 'pad']">
-						<!-- In case the Gr or Gc messagetype has one or more associations not having the name 'response', 'request' or 'pad' an error
+						test="imvert:associations/imvert:association[imvert:name != 'request' and imvert:name != 'response' and imvert:name != 'requestbody' and imvert:name != 'pad']">
+						<!-- In case of a Po messagetype has one or more associations not having the name 'response', 'request','requestbody or 'pad' an error
 						     message is generated. -->
 						<xsl:variable name="msg"
 							select="concat('Within the messageclass &quot;',imvert:name,'&quot; one or more associations with a name not equal to &quot;response&quot;, &quot;request&quot; or &quot;pad&quot;. For messages with berichttype &quot;',$berichtcode,'&quot; this is not allowed.')"
@@ -306,6 +354,42 @@
 					</xsl:when>
 					<xsl:when
 						test="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]">
+						<xsl:for-each
+							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'response']">
+							
+							<xsl:sequence select="imf:create-debug-comment('A12750]',$debugging)" />
+							<ep:rough-message messagetype="response" berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}">
+								<xsl:sequence
+									select="imf:create-debug-track(concat('Constructing the rough-response-message: ',imvert:name/@original),$debugging)" />
+								<xsl:sequence
+									select="imf:create-output-element('ep:name', $messagename)" />
+								<xsl:sequence select="imf:create-output-element('ep:id', $messageid)" />
+								<xsl:sequence
+									select="imf:create-output-element('ep:type-id', $messagetypeid)" />
+								<xsl:apply-templates select="." mode="create-rough-message-content" />
+							</ep:rough-message>
+						</xsl:for-each>
+						<xsl:for-each
+							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'requestbody']">
+							<!-- For the post messages the ep:rough-message structure only represents the 'request' tree. So only that part of the message is
+							     processed here. -->
+							<ep:rough-message messagetype="requestbody" berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}">
+								<xsl:if test="not(empty($customPathFacet))">
+									<xsl:attribute name="customPathFacet" select="$customPathFacet"/>
+								</xsl:if>
+								<xsl:sequence select="imf:create-debug-comment('A13000]',$debugging)" />
+								<xsl:sequence
+									select="imf:create-debug-track(concat('Constructing the rough-requestbody-message: ',imvert:name/@original),$debugging)" />
+								
+								<xsl:sequence
+									select="imf:create-output-element('ep:name', $messagename)" />
+								<xsl:sequence select="imf:create-output-element('ep:id', $messageid)" />
+								<xsl:sequence
+									select="imf:create-output-element('ep:type-id', $messagetypeid)" />
+								<xsl:apply-templates select="."
+									mode="create-rough-message-content" />
+							</ep:rough-message>
+						</xsl:for-each>
 						<xsl:for-each
 							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'request']">
 							<!-- For the post messages the ep:rough-message structure only represents the 'request' tree. So only that part of the message is

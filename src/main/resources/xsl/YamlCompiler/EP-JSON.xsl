@@ -5,8 +5,8 @@
 	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
 	
 	<!-- The first variable is meant for the server environment, the second one is used during development in XML-Spy. -->
-<!--	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>-->
-	<xsl:variable name="debugging" select="true()" as="xs:boolean"/>
+	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
+	<!--<xsl:variable name="debugging" select="true()" as="xs:boolean"/>-->
 	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
@@ -92,6 +92,8 @@
 								     (
 								       (
 								         (
+								           contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+								           or
 								           contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
 										   or 
 										   contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
@@ -103,7 +105,7 @@
 									   (							
 										 contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po' ) 
 										 and 
-										 ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'request'
+										 ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'requestbody'
 									   )
 									 )
 								   ]
@@ -152,12 +154,14 @@
 									( 
 										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
 										and 
-										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'request'
+										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'requestbody'
 									) 
 									or 
 									(
 									  (
-										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
+									    contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+									    or
+									    contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
 										or 	
 										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
 									  ) 
@@ -222,11 +226,13 @@
 									  (
 										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
 										and 
-										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'request'
+										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'requestbody'
 									  ) 
 									  or 
 									  (
 										( 
+										  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+										  or
 										  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
 										  or 	
 										  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
@@ -302,12 +308,14 @@
 									( 
 										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
 										and 
-										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'request'
+										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'requestbody'
 									) 
 									or 
 									(
 									  (
-										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
+									    contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+									    or
+									    contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
 										or 	
 										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
 									  ) 
@@ -362,11 +370,13 @@
 									  (
 										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
 										and 
-										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'request'
+										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'requestbody'
 									  ) 
 									  or 
 									  (
 										( 
+										  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+										  or
 										  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
 										  or 	
 										  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
@@ -486,14 +496,16 @@
 									  (
 									    contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
 									    and 
-									    ep:parameters/ep:parameter[ep:name='messagetype']/ep:value='request'
+									    ep:parameters/ep:parameter[ep:name='messagetype']/ep:value='requestbody'
 									  ) 
 									  or 
 									  (
 									    (
-											contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
-											or 
-											contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
+									      contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+									      or
+									      contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
+										  or 
+										  contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
 										) 
 										and 
 										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value='response'
@@ -557,12 +569,14 @@
 											  (
 												contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
 												and 
-												ep:parameters/ep:parameter[ep:name='messagetype']/ep:value='request'
+												ep:parameters/ep:parameter[ep:name='messagetype']/ep:value='requestbody'
 											  ) 
 											  or 
 											  (
 											    (
-													contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
+											      contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+											      or
+											      contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
 													or 
 													contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gr')
 												) 
@@ -988,9 +1002,9 @@
 					  "$ref" : "#/components/schemas/Href"
 					}
 				  }
-				},
+				}
 				<xsl:if test="//ep:message[contains(ep:parameters/ep:parameter[ep:name = 'berichtcode']/ep:value,'Gc')]">
-				  "Collectionlinks" : {
+				  ,"Collectionlinks" : {
 					  "type" : "object",
 					  "properties" : {
 					    "self" : {
@@ -1413,7 +1427,6 @@
 					<xsl:with-param name="typeName" select="$typeName"/>
 				</xsl:apply-templates>
 			</xsl:variable>
-
 			<xsl:result-document href="{concat('file:/c:/temp/contentRelatedEmbeddedConstruct/',$elementName,'.json')}" method="text">
 				<xsl:copy-of select="$contentRelatedEmbeddedConstruct" />
 			</xsl:result-document>
