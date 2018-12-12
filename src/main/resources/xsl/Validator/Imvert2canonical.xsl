@@ -166,7 +166,7 @@
     <xsl:template match="imvert:association[imvert:aggregation='composite']">
         <xsl:variable name="defining-class" select="imf:get-construct-by-id(imvert:type-id)"/>
         <xsl:choose>
-            <xsl:when test="$defining-class/imvert:stereotype/@id = ('stereotype-name-composite')">
+            <xsl:when test="$defining-class/imvert:stereotype/@id = ('stereotype-name-composite','stereotype-name-grp-proxy')">
                 <imvert:association>
                     <xsl:choose>
                         <xsl:when test="empty(imvert:found-name)">

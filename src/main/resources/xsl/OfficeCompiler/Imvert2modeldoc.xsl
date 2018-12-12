@@ -1160,7 +1160,7 @@
     </xsl:function>
     
     <!-- geef de naam terug van de construct, en de target naam als het een associatie betreft. -->
-    <xsl:function name="imf:get-name">
+    <xsl:function name="imf:get-name" as="xs:string?">
         <xsl:param name="this"/>
         <xsl:param name="original" as="xs:boolean"/>
 
@@ -1174,16 +1174,24 @@
         
         <xsl:variable name="construct-name" select="if (exists($relation-name) and exists($target-name)) then concat($relation-name,': ',$target-name) else ($relation-name,$target-name)"/>
         <xsl:variable name="construct-original-name" select="if (exists($relation-name) and exists($target-name)) then concat($relation-name/@original,': ',$target-name/@original) else ($relation-name/@original,$target-name/@original)"/>
-
+        <xsl:variable name="name">
+            <xsl:choose>
+                <xsl:when test="$original">
+                    <xsl:value-of select="$construct-original-name"/>                
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="$construct-name"/>                
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         <xsl:choose>
-            <xsl:when test="$original">
-                <xsl:value-of select="$construct-original-name"/>                
+            <xsl:when test="normalize-space($name)">
+                <xsl:value-of select="$name"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="$construct-name"/>                
+                <xsl:sequence select="imf:msg($this,'ERROR','Cannot determine the name of this construct',())"/>
             </xsl:otherwise>
-        </xsl:choose>
-        
+        </xsl:choose>  
     </xsl:function>
     
     <xsl:function name="imf:get-tv-value">
