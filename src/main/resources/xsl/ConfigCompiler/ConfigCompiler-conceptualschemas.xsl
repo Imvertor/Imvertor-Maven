@@ -20,10 +20,11 @@
             
     </xsl:template>    
         
+    <?x    
     <xsl:template match="conceptual-schema" mode="metamodel-cs">
         <div>
             <h2>Conceptual schema for: <xsl:value-of select="name"/></h2>
-            <p><xsl:sequence select="imf:report-label('Description',description)"/></p>
+            <p><xsl:sequence select="imf:report-label('Description',desc)"/></p>
             <ul>
                 <li><xsl:sequence select="imf:report-label('Short-name',short-name)"/></li>
                 <li><xsl:sequence select="imf:report-label('URL',imf:get-xhtml-link(url,(),true()),true())"/></li>
@@ -35,7 +36,7 @@
     <xsl:template match="map" mode="metamodel-cs">
         <div>
             <h3>Map: <xsl:value-of select="@name"/></h3>
-            <p><xsl:sequence select="imf:report-label('Description',description)"/></p>
+            <p><xsl:sequence select="imf:report-label('Description',desc)"/></p>
             <ul>
                 <li><xsl:sequence select="imf:report-label('Namespace',imf:get-xhtml-link(@namespace,(),true()),true())"/></li>
                 <li><xsl:sequence select="imf:report-label('Location',imf:get-xhtml-link(@location,(),true()),true())"/></li>
@@ -112,5 +113,6 @@
             <xsl:value-of select="if (normalize-space($text)) then $text else $url"/>
         </a>
     </xsl:function>
+    ?>
     
 </xsl:stylesheet>

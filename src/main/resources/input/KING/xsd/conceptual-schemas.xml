@@ -1,344 +1,520 @@
-<!-- 
-    Mappings for conceptual schemas 
--->
-<conceptual-schemas>
-    <svn-id>$Id: conceptual-schemas.xml 7209 2015-08-25 12:28:42Z arjan $</svn-id>
-    <mapping name="NEN3610_GML321">
-        <use>GML321</use>
-    </mapping>
-    <conceptual-schema>
-        <name>Geography Markup Language 3</name>
-        <!-- 
-            The prefix as used in the schemas (also namespace prefix in qualified name).
-            Note that this "gml" short name is used as a prefix in XSD, and that this prefix is hardcoded in XSD generation XSLT.
-        -->
-        <short-name>gml</short-name>
-        <!-- 
-            Description for documentation purposes
-        -->
-        <description>ISO19107 Geographic information – Spatial schema</description>
-        
-        <url>http://www.kadaster.nl/conceptual-schemas/ISO19107</url>
-        <!--
-        <web>http://www.iso.org/iso/catalogue_detail.htm?csnumber=26012</web>
-        <web>http://de.wikipedia.org/wiki/ISO_19107</web>
-        <web>http://www.spatial.maine.edu/ISAmodel/documents/ISO19107-SpatialSchema.pdf</web>
-        -->
-        <!-- 
-            This conceptual schema is mapped onto all kinds of XML constructs.  
-        -->
-     
-        <map 
-            name="GML321" 
-            namespace="http://www.opengis.net/gml/3.2" 
-            version="3.2.1" 
-            phase="3" 
-            location="http://schemas.opengis.net/gml/3.2.1/gml.xsd">
-            
-            <releases>
-                <release>20070906</release>
-                <release>20100128</release>
-            </releases>
-            <!-- 
-                NEN3610:2011/Geonovum requires Simple Feature Profile, see http://www.ogcnetwork.net/gml-sf 
-            -->
-            <construct>
-                <name>GM_AbstractFeature</name>
-                <xsd-type name="AbstractFeature"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GM_AbstractFeatureType</name>
-                <xsd-type name="AbstractFeatureType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_AbstractFeatureCollection</name>
-                <xsd-type name="AbstractFeatureCollection"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GM_AbstractFeatureCollectionType</name>
-                <xsd-type name="AbstractFeatureCollectionType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_AbstractFeatureMember</name>
-                <xsd-type name="AbstractFeatureMember"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GM_AbstractFeatureMemberType</name>
-                <xsd-type name="AbstractFeatureMemberType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_AbstractGML</name>
-                <xsd-type name="AbstractGML"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GM_AbstractGMLType</name>
-                <xsd-type name="AbstractGMLType"/>
-                <managed-ids/>
-            </construct>
-
-            <!-- see mapping listed at 
-                Table D.2 — Implementation of types from the ISO 19100 series of International Standards -->
-
-            <!-- TODO aanvullen -->
-
-            <!-- Instructions on what GML types to use: 
-			Preferably use: 
-			http://www.geonovum.nl/wegwijzer/standaarden/opengis%C2%AE-gml-simple-features-profile 
-			10-100r3_Geography_Markup_Language_GML_simple_features_profile_with_Corrigendum.pdf 
-
-			From this source: 
-            This approved OGC Implementation Standard defines a Simple Features profile of the Geography Markup Language version 3.2. This Simple Features Profile has been aligned with the OGC Simple Features standard for SQL version 1.2. 
-			Simple Features include: Point, Curve (LineString), Surface (Polygon), Geometry, MultiPoint, MultiCurve, MultiSurface, and MultiGeometry.
-			
-			Restricting to only SF types is not essential for an IM* model from a basisregistratie. However, if possible, it is desired. 
-			However, if additional, non-SF, GML types are needed, then that is ok too. Do restrict these to the Standaard GML types: Table 6 — Supported GML Geometric Property Types
-		
-			If several of these types are applicable for the same attribute, still try to use the above types. Design a choice of these types in your UML / XSD. Do not use a supertype. 
-			If a specific subtype is needed, still use the above type. If several subtypes are needed, but other subtypes are not, still use the above type. 
-
-			For each GM type there are three representations: 1. Element, 2. Type (without xlink) and 3. PropertyType (with xlink support). 
-			Always use PropertyType. That is the convention. (1. Elements are not supported by Imvertor. 2. Even when xlink support for a type is not needed, still use PropertyType. 
-			Even tough xlink is generally only needed for Objects, not for attributes or (GML) types, then still define the type with a PropertyType because tools and software is always implemented (correctly, consistently) for this type, 
-			which is not always (less) the case for other types, like AbstractSurfaceType of AbstractCurveType. Add extra documentation that the implementation will, of will not, use xlink and/or will or will not use certain subtypes.
-			
-			 -->
-            <construct>
-                <name>GM_Point</name>
-                <xsd-type name="Point" asAttributeDesignation="complextype" asAttribute="PointPropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_Curve</name>
-                <xsd-type name="Curve" asAttributeDesignation="complextype" asAttribute="CurvePropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_Surface</name>
-                <xsd-type name="Surface" asAttributeDesignation="complextype" asAttribute="SurfacePropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_MultiPoint</name>
-                <xsd-type name="MultiPoint" asAttributeDesignation="complextype" asAttribute="MultiPointPropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_MultiSurface</name>
-                <xsd-type name="MultiSurface" asAttributeDesignation="complextype" asAttribute="MultiSurfacePropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_MultiCurve</name>
-                <xsd-type name="MultiCurve" asAttributeDesignation="complextype" asAttribute="MultiCurvePropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_Geometry</name>
-                <xsd-type name="Geometry" asAttributeDesignation="complextype" asAttribute="GeometryPropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_MultiGeometry</name>
-                <xsd-type name="MultiGeometry" asAttributeDesignation="complextype" asAttribute="MultiGeometryPropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <!-- preferable not to be used in  schema's - also, types below are not yet edited to always be PropertyType: -->
-
-            <construct>
-                <name>GM_ArcString</name>
-                <xsd-type name="ArcString" asAttributeDesignation="complextype" asAttribute="ArcStringPropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_LineString</name>
-                <xsd-type name="LineStringSegment" asAttributeDesignation="complextype" asAttribute="LineStringPropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_Polygon</name>
-                <xsd-type name="PolygonPatch" asAttributeDesignation="complextype" asAttribute="PolygonPatchType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_Object</name>
-                <xsd-type name="Object" asAttributeDesignation="complextype" asAttribute="GeometryPropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_Primitive</name>
-                <xsd-type name="Primitve" asAttributeDesignation="complextype" asAttribute="GeometricPrimtivePropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_Position</name>
-                <xsd-type name="Position" asAttributeDesignation="complextype" asAttribute="geometricPositionGroup"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_PointArray</name>
-                <xsd-type name="PointArray" asAttributeDesignation="complextype" asAttribute="geometricPositionListGroup"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_Solid</name>
-                <xsd-type name="Solid" asAttributeDesignation="complextype" asAttribute="SolidPropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_OrientableCurve</name>
-                <xsd-type name="OrientableCurve" asAttributeDesignation="complextype" asAttribute="CurvePropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_OrientableSurface</name>
-                <xsd-type name="OrientableSurface" asAttributeDesignation="complextype" asAttribute="SurfacePropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_CompositePoint</name>
-                <xsd-type name="CompositePoint" asAttributeDesignation="complextype" asAttribute="PointPropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_Complex</name>
-                <xsd-type name="Complex" asAttributeDesignation="complextype" asAttribute="GeometricComplexPropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_Aggregate</name>
-                <xsd-type name="Aggregate" asAttributeDesignation="complextype" asAttribute="MultiGeometryPropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_MultiSolid</name>
-                <xsd-type name="MultiSolid" asAttributeDesignation="complextype" asAttribute="MultiMultiSolidPropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_MultiPrimitive</name>
-                <xsd-type name="MultiPrimitive" asAttributeDesignation="complextype" asAttribute="MultiGeometryPropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_Aggregate</name>
-                <xsd-type name="MultiGeometry" asAttributeDesignation="complextype" asAttribute="MultiGeometryPropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>GM_MultiPrimtive</name>
-                <xsd-type name="MultiGeometry" asAttributeDesignation="complextype" asAttribute="MultiGeometryPropertyType"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>Measure</name>
-                <xsd-type name="MeasureType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>Binary</name>
-                <xsd-type name="xs:binary" primitive="true"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>Boolean</name>
-                <xsd-type name="xs:boolean" primitive="true"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>CharacterString</name>
-                <xsd-type name="xs:string" primitive="true"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>Date</name>
-                <xsd-type name="xs:date" primitive="true"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>DateTime</name>
-                <xsd-type name="xs:dateTime" primitive="true"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>Integer</name>
-                <xsd-type name="xs:integer" primitive="true"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>Real</name>
-                <xsd-type name="xs:real" primitive="true"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>Time</name>
-                <xsd-type name="xs:time" primitive="true"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>URI</name>
-                <xsd-type name="xs:AnyURI" primitive="true"/>
-                <managed-ids/>
-            </construct>
-        </map>
-    </conceptual-schema>
-    
-    <!--x
-    <conceptual-schema>
-        <description>KING gemeenten generieke datatypen SIM</description>
-        <url>http://www.kinggemeenten.nl/conceptual-schemas/SIM/GeneriekeDatatypen</url>
-        <map 
-            name="SIM-GeneriekeDatatypen" 
-            namespace="http://www.kinggemeenten.nl/conceptual-schemas/SIM/GeneriekeDatatypen" 
-            version="1.0.0" 
-            phase="2" 
-            location="http://www.kinggemeenten.nl">
-
-            <releases>
-                <release>20160701</release> 
-            </releases>
-            
-            <construct><name>NEN3610ID</name><xsd-type name="NEN3610ID"/><managed-ids/></construct> 
-            <construct><name>PuntLijn(Multi)Vlak</name><xsd-type name="PuntLijnMultiVlak"/><managed-ids/></construct> 
-            <construct><name>PuntLijnVlak</name><xsd-type name="PuntLijnVlak"/><managed-ids/></construct> 
-            <construct><name>postadresType</name><xsd-type name="postadresType"/><managed-ids/></construct> 
-            
-        </map>
-    </conceptual-schema>
-    x-->
-    
-</conceptual-schemas>
+<?xml version="1.0" encoding="UTF-8"?>
+<cs:ConceptualSchemas xmlns:xlink="http://www.w3.org/1999/xlink"
+                      xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+                      xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                      xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210 
+                      ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
+   <cs:mappings>
+      <cs:Mapping>
+         <cs:name>NEN3610_GML321</cs:name>
+         <cs:use>
+            <cs-ref:MapRef xlink:href="#GML321"/>
+         </cs:use>
+      </cs:Mapping>
+   </cs:mappings>
+   <cs:components>
+      <cs:ConceptualSchemasComponents>
+         <cs:ConceptualSchema>
+            <cs:id>GML</cs:id>
+            <cs:shortName>gml</cs:shortName>
+            <cs:desc>ISO19107 Geographic information – Spatial schema</cs:desc>
+            <cs:url>http://www.kadaster.nl/conceptual-schemas/ISO19107</cs:url>
+         </cs:ConceptualSchema>
+         <cs:Map>
+            <cs:id>GML321</cs:id>
+            <cs:namespace>http://www.opengis.net/gml/3.2</cs:namespace>
+            <cs:location>http://schemas.opengis.net/gml/3.2.1/gml.xsd</cs:location>
+            <cs:phase>3</cs:phase>
+            <cs:version>3.2.1</cs:version>
+            <cs:release>20070906</cs:release>
+            <cs:release>20100128</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#GML"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>GM_AbstractFeature</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>AbstractFeature</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_AbstractFeatureType</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>AbstractFeatureType</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_AbstractFeatureCollection</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>AbstractFeatureCollection</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_AbstractFeatureCollectionType</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>AbstractFeatureCollectionType</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_AbstractFeatureMember</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>AbstractFeatureMember</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_AbstractFeatureMemberType</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>AbstractFeatureMemberType</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_AbstractGML</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>AbstractGML</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_AbstractGMLType</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>AbstractGMLType</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_Point</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Point</cs:name>
+                        <cs:asAttribute>PointPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_Curve</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Curve</cs:name>
+                        <cs:asAttribute>CurvePropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_Surface</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Surface</cs:name>
+                        <cs:asAttribute>SurfacePropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_MultiPoint</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>MultiPoint</cs:name>
+                        <cs:asAttribute>MultiPointPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_MultiSurface</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>MultiSurface</cs:name>
+                        <cs:asAttribute>MultiSurfacePropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_MultiCurve</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>MultiCurve</cs:name>
+                        <cs:asAttribute>MultiCurvePropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_Geometry</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Geometry</cs:name>
+                        <cs:asAttribute>GeometryPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_MultiGeometry</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>MultiGeometry</cs:name>
+                        <cs:asAttribute>MultiGeometryPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_ArcString</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>ArcString</cs:name>
+                        <cs:asAttribute>ArcStringPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_LineString</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>LineStringSegment</cs:name>
+                        <cs:asAttribute>LineStringPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_Polygon</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>PolygonPatch</cs:name>
+                        <cs:asAttribute>PolygonPatchType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_Object</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Object</cs:name>
+                        <cs:asAttribute>GeometryPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_Primitive</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Primitve</cs:name>
+                        <cs:asAttribute>GeometricPrimtivePropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_Position</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Position</cs:name>
+                        <cs:asAttribute>geometricPositionGroup</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_PointArray</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>PointArray</cs:name>
+                        <cs:asAttribute>geometricPositionListGroup</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_Solid</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Solid</cs:name>
+                        <cs:asAttribute>SolidPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_OrientableCurve</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>OrientableCurve</cs:name>
+                        <cs:asAttribute>CurvePropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_OrientableSurface</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>OrientableSurface</cs:name>
+                        <cs:asAttribute>SurfacePropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_CompositePoint</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>CompositePoint</cs:name>
+                        <cs:asAttribute>PointPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_Complex</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Complex</cs:name>
+                        <cs:asAttribute>GeometricComplexPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_Aggregate</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Aggregate</cs:name>
+                        <cs:asAttribute>MultiGeometryPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_MultiSolid</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>MultiSolid</cs:name>
+                        <cs:asAttribute>MultiMultiSolidPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_MultiPrimitive</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>MultiPrimitive</cs:name>
+                        <cs:asAttribute>MultiGeometryPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_Aggregate</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>MultiGeometry</cs:name>
+                        <cs:asAttribute>MultiGeometryPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_MultiPrimtive</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>MultiGeometry</cs:name>
+                        <cs:asAttribute>MultiGeometryPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Measure</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>MeasureType</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Binary</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>xs:binary</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Boolean</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>xs:boolean</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>CharacterString</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>xs:string</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Date</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>xs:date</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>DateTime</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>xs:dateTime</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Integer</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>xs:integer</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Real</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>xs:real</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Time</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>xs:time</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>URI</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>xs:AnyURI</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+      </cs:ConceptualSchemasComponents>
+   </cs:components>
+</cs:ConceptualSchemas>

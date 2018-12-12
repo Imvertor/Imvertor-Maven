@@ -25,6 +25,10 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+    xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    
     exclude-result-prefixes="#all" 
     version="2.0">
 
@@ -42,11 +46,11 @@
     -->
     <xsl:variable name="outside-mapped-classes" as="element(imvert:class)*">
         <xsl:for-each select="//imvert:package[imvert:id = 'OUTSIDE']/imvert:class"> <!-- all stubs -->
-            <xsl:variable name="constructs" select="$conceptual-schema-mapping//construct[name = current()/imvert:name]" as="element(construct)*"/>
-            <xsl:variable name="construct" as="element(construct)?">
+            <xsl:variable name="constructs" select="$conceptual-schema-mapping//cs:Construct[cs:name = current()/imvert:name]" as="element(cs:Construct)*"/>
+            <xsl:variable name="construct" as="element(cs:Construct)?">
                 <xsl:choose>
                     <xsl:when test="$constructs[2]">
-                        <xsl:sequence select="$constructs[managed-ids/id = current()/imvert:id][1]"/>
+                        <xsl:sequence select="$constructs[cs:managedID = current()/imvert:id][1]"/>
                     </xsl:when>
                     <xsl:when test="$constructs[1]">
                         <xsl:sequence select="$constructs"/>
@@ -61,23 +65,28 @@
                 We have drilled down to single construct (or none if error) 
                 Get the URL of the conceptual schema this is part of.
             -->
-            <xsl:variable name="cs" select="($construct/ancestor::conceptual-schema/url)[1]"/>
-            <xsl:variable name="cn" select="($construct/ancestor::conceptual-schema/name)[1]"/>
-            <xsl:variable name="sn" select="($construct/ancestor::conceptual-schema/short-name)[1]"/>
-            <xsl:variable name="ve" select="($construct/ancestor::map/@version)[1]"/>
-            <xsl:variable name="ph" select="($construct/ancestor::map/@phase)[1]"/>
+            
+            <xsl:variable name="schema" select="imf:get-schema-for-construct($construct)"/>
+            <xsl:variable name="map" select="$construct/../.."/>
+            
+            <xsl:variable name="cs" select="($schema/cs:url)[1]"/>
+            <xsl:variable name="cn" select="($schema/cs:id)[1]"/>
+            <xsl:variable name="sn" select="($schema/cs:shortName)[1]"/>
+        
+            <xsl:variable name="ve" select="($map/cs:version)[1]"/>
+            <xsl:variable name="ph" select="($map/cs:phase)[1]"/>
             
             <imvert:class origin="system" cs="{$cs}" cn="{$cn}" sn="{$sn}" ve="{$ve}" ph="{$ph}">
                 <imvert:name original="{imvert:name}">
                     <xsl:value-of select="imvert:name"/>
                 </imvert:name>
                 <xsl:sequence select="imvert:id"/>
-                <xsl:if test="exists($construct/catalog) ">
+                <xsl:if test="exists($construct/cs:catalogEntries/cs:CatalogEntry) ">
                     <imvert:catalog>
                         <xsl:sequence select="imf:create-catalog-url($construct)"/>     
                     </imvert:catalog>
                 </xsl:if>
-                <xsl:if test="imf:boolean($construct/sentinel)">
+                <xsl:if test="imf:boolean($construct/cs:sentinel)">
                     <imvert:sentinel>true</imvert:sentinel>
                 </xsl:if> 
                 <imvert:stereotype id="stereotype-name-interface">

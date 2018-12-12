@@ -1,652 +1,1128 @@
-<!-- 
-    Mappings for conceptual schemas fro BRO
--->
-<conceptual-schemas>
-  
-    <mapping name="BRO_GITHUB">
-        <use>SampleExternalModelA</use>
-    </mapping>
-    
-    <mapping name="BRO_GEOSTANDAARDEN">
-        <use>GML321</use>
-        <use>SWE201</use>
-        <use>OM200</use>
-        <use>SAM202</use>
-        
-        <use>ISO19115</use>
-       
-        <use>INSPIRE</use>
-        <use>INSPIRE-GEO</use>
-        <use>INSPIRE-SOIL</use>
-        
-        <use>NEN3610</use>
-        
-        <use>BRO</use> <!-- cross references between BRO models -->
-        
-        <!-- samples -->
-        <use>BRO-SAMPLE1</use>
-        <use>BRO-SAMPLE2</use>
-    </mapping>
-    
-    <conceptual-schema>
-        <name>Sample1</name>
-        <description>Sample conceptual schema, see «Application» Github-14-metamodel links</description>
-        <!-- 
-            This URL is the formal name fo the schema witin the EA project. 
-            Insert it as the alias of the <<external>> package. 
-        -->
-        <url>http://www.bro.nl/conceptual-schemas/SampleExternalModelA</url>
-         
-        <short-name>sample</short-name>
-        
-        <map 
-            name="SampleExternalModelA" 
-            namespace="http://www.bro.nl/SampleExternalModelA" 
-            version="1.0.0" 
-            phase="1" 
-            location="http://www.bro.nl/schemas/1.0.0/SampleExternalModelA.xsd">
-
-            <releases>
-                <release>20170302</release>
-            </releases>
-
-            <construct>
-                <name>EM_AC1</name>
-                <xsd-type name="AC1" asAttributeDesignation="complextype" asAttribute="AC1type"/>
-                <managed-ids/>
-            </construct>
-
-            <construct>
-                <name>EM_AC2</name>
-                <xsd-type name="AC2" asAttributeDesignation="complextype" asAttribute="AC2type"/>
-                <managed-ids/>
-            </construct>
-
-        </map>
-    </conceptual-schema>
-    
-    <conceptual-schema>
-        <!--
-            name for documentation purposes
-        -->
-        <name>Geography Markup Language 3</name>
-        <!-- 
-            The prefix as used in the schemas (also namespace prefix in qualified name).
-            Note that this "gml" short name is used as a prefix in XSD, and that this prefix is hardcoded in XSD generation XSLT.
-        -->
-        <short-name>gml</short-name>
-        <!-- 
-            Description for documentation purposes
-        -->
-        <description>ISO19107 Geographic information – Spatial schema</description>
-        <!-- 
-            This URL is the formal name fo the schema witin the EA project. 
-            Insert it as the alias of the <<external>> package. 
-        -->
-        <url>http://www.bro.nl/conceptual-schemas/ISO19107</url>
-        <!-- 
-            base catalog template, where the [entry] is replaced by the catalog name provides for each construct
-        -->
-        <catalog>http://www.opengeospatial.org/standards/gml[entry]</catalog>        
-        
-        <map 
-            name="GML321" 
-            namespace="http://www.opengis.net/gml/3.2" 
-            version="0.0.2-3.2.1" 
-            phase="3" 
-            location="https://schema.broservices.nl/profile/gml/1.0/gml-profile.xsd"> 
-            
-            <releases>
-                <release>BROPROFILE</release>
-            </releases>
-           
-            <!-- 
-               GML 3.2.1 profile for BRO.
-            -->
-            <construct>
-                <!-- this is the name of the construct in the UML model -->
-                <name>GFI_Feature</name>
-                <!-- catalog reference -->
-                <catalog-entry>#AbstractFeature</catalog-entry>
-                <!-- this is a mapping to the XSD constructs within the schema -->
-                <xsd-type name="Feature" asAttributeDesignation="complextype" asAttribute="FeatureType"/>
-                <!-- this is a list of possible ID's, that can be used when conflicts occur (several constructs with same Name) -->
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GM_LineString</name>
-                <catalog-entry>#LineString</catalog-entry>
-                <xsd-type name="LineString" asAttributeDesignation="complextype" asAttribute="LineStringType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GM_Point</name>
-                <catalog-entry>#Point</catalog-entry>
-                <xsd-type name="Point" asAttributeDesignation="complextype" asAttribute="PointPropertyType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GM_Polygon</name>
-                <catalog-entry>#Polygon</catalog-entry>
-                <xsd-type name="Polygon" asAttributeDesignation="complextype" asAttribute="PolygonType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GM_Envelope</name>
-                <catalog-entry>#Envelope</catalog-entry>
-                <xsd-type name="Envelope" asAttributeDesignation="complextype" asAttribute="EnvelopeType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GM_AbstractGeometry</name>
-                <catalog-entry>#AbstractGeometry</catalog-entry>
-                <xsd-type name="AbstractGeometry" asAttributeDesignation="complextype" asAttribute="AbstractGeometryType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GM_AbstractCurve</name>
-                <catalog-entry>#AbstractCurve</catalog-entry>
-                <xsd-type name="AbstractCurve" asAttributeDesignation="complextype" asAttribute="AbstractCurveType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GM_AbstractSurface</name>
-                <catalog-entry>#AbstractSurface</catalog-entry>
-                <xsd-type name="AbstractSurface" asAttributeDesignation="complextype" asAttribute="AbstractSurfaceType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GM_AbstractRing</name>
-                <catalog-entry>#AbstractRing</catalog-entry>
-                <xsd-type name="AbstractRing" asAttributeDesignation="complextype" asAttribute="AbstractRingType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>LinearRing</name>
-                <desc>
-                    LinearRing is in GML / ISO19136 gedefinieerd. Het heeft geen corresponderende klasse in ISO19107 maar is in GML toegevoegd als convenience type, 
-                    een simpelere vorm van GM_Ring en formeel een subklasse daarvan. 
-                </desc>
-                <catalog-entry>#LinearRing</catalog-entry>
-                <xsd-type name="LinearRing" asAttributeDesignation="complextype" asAttribute="LinearRingType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GM_Object</name>
-                <catalog-entry>#GM_Object</catalog-entry>
-                <xsd-type name="AbstractGeometry" asAttributeDesignation="complextype" asAttribute="AbstractGeometryType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GM_Surface</name>
-                <catalog-entry>#Surface</catalog-entry>
-                <xsd-type name="Surface" asAttributeDesignation="complextype" asAttribute="SurfacePropertyType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GM_MultiSurface</name>
-                <catalog-entry>#MultiSurface</catalog-entry>
-                <xsd-type name="MultiSurface" asAttributeDesignation="complextype" asAttribute="MultiSurfaceType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GM_MultiSolid</name>
-                <catalog-entry>#MultiSolid</catalog-entry>
-                <xsd-type name="MultiSolid" asAttributeDesignation="complextype" asAttribute="MultiSolidType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GM_MultiCurve</name>
-                <xsd-type name="MultiCurve" asAttributeDesignation="complextype" asAttribute="MultiCurvePropertyType" />
-                <rdf-type name="rdfs:Datatype"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GM_Solid</name>
-                <xsd-type name="Solid" asAttributeDesignation="complextype" asAttribute="SolidPropertyType"/>
-                <rdf-type name="rdfs:Datatype"/>
-                <managed-ids/>
-            </construct>
-            
-            
-            
-            <!-- TODO verplaatsen? is onderdeel van GML toch? -->
-            <construct>
-                <name>TM_Instant</name>
-                <catalog-entry>#TimeInstant</catalog-entry>
-                <xsd-type name="TimeInstant" asAttributeDesignation="complextype" asAttribute="TimeInstantType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>TM_Period</name>
-                <catalog-entry>#TimePeriod</catalog-entry>
-                <xsd-type name="TimePeriod" asAttributeDesignation="complextype" asAttribute="TimePeriodType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>CV_Coverage</name>
-                <managed-ids/>
-            </construct>
-            
-            <!-- TODO verplaatsen naar generic conceptual model, base types, INSPIRE base types: Identifier -->
-            <construct>
-                <name>Identifier</name>
-                <catalog-entry>#Identifier</catalog-entry>
-                <xsd-type name="Identifier" asAttributeDesignation="complextype" asAttribute="IdentifierType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>OtherSoilNameType</name>
-                <catalog-entry>#OtherSoilNameType</catalog-entry>
-                <xsd-type name="OtherSoilNameType" asAttributeDesignation="complextype" asAttribute="OtherSoilNameType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>WRBSoilNameType</name>
-                <catalog-entry>#WRBSoilNameType</catalog-entry>
-                <xsd-type name="WRBSoilNameType" asAttributeDesignation="complextype" asAttribute="WRBSoilNameType"/>
-                <managed-ids/>
-            </construct>
-            
-            <construct>
-                <name>GM_SENTINEL</name>
-                <sentinel>true</sentinel>
-            </construct>
-            
-            <construct>
-                <name>Measure</name>
-                <desc>
-                   
-                </desc>
-                <catalog-entry>#Measure</catalog-entry>
-                <xsd-type name="Measure" asAttributeDesignation="complextype" asAttribute="MeasureType"/>
-                <managed-ids/>
-            </construct>
-            
-        </map>
-        
-    </conceptual-schema>
-    
-    <conceptual-schema>
-        <name>SWE Common profile for BRO</name>
-        <short-name>swe</short-name>
-        <description>SWE Common profile for BRO.</description>
-        <url>http://www.bro.nl/conceptual-schemas/SWE</url>
-        <catalog>http://www.opengeospatial.org/standards/swe[entry]</catalog>        
-        
-        <map 
-            name="SWE201" 
-            namespace="http://www.opengis.net/swe/2.0" 
-            version="2.0.1" 
-            phase="3" 
-            location="http://www.opengis.net/swe/2.0/swe-profile.xsd"> 
-            
-            <releases>
-                <release>BROPROFILE</release>
-            </releases>
-            
-            <construct>
-                <name>UnitReference</name>
-                <catalog-entry>#UnitReference</catalog-entry>
-                <xsd-type name="UnitReference" asAttributeDesignation="complextype" asAttribute="UnitReference"/>
-                <managed-ids/>
-            </construct>
-            <!-- TODO etc -->
-        </map>
-        
-    </conceptual-schema>
-    
-    <conceptual-schema>
-        <name>samplingFeature profile for BRO</name>
-        <short-name>sam</short-name>
-        <description>samplingFeature profile for BRO.</description>
-        <url>http://www.bro.nl/conceptual-schemas/SAM</url>
-        <catalog>http://www.opengeospatial.org/standards/sam[entry]</catalog>        
-        
-        <map 
-            name="SAM202" 
-            namespace="http://www.opengis.net/sampling/2.0" 
-            version="2.0.2" 
-            phase="3" 
-            location="http://www.opengis.net/sampling/2.0/sam-profile.xsd"> 
-            
-            <releases>
-                <release>BROPROFILE</release>
-            </releases>
-            
-            <construct>
-                <name>SF_SamplingFeature</name>
-                <catalog-entry>#SF_SamplingFeature</catalog-entry>
-                <xsd-type name="SF_SamplingFeature" asAttributeDesignation="complextype" asAttribute="SF_SamplingFeatureType"/>
-                <managed-ids/>
-            </construct>
-            <!-- TODO etc -->
-        </map>
-        
-    </conceptual-schema>
-    
-    <conceptual-schema>
-        <name>Observations &amp; Measurements profile for BRO</name>
-        <short-name>om</short-name>
-        <description>Observation profile for BRO.</description>
-        <url>http://www.bro.nl/conceptual-schemas/OM</url>
-        <catalog>http://defs.opengis.net/sissvoc/ogc-def/concept?anylabel=[entry]</catalog>        
-        
-        <map 
-            name="OM200" 
-            namespace="http://www.opengis.net/om/2.0" 
-            version="2.0.0" 
-            phase="3" 
-            location="https://schema.broservices.nl/profile/om/1.0/om-profile.xsd"> 
-            
-            <releases>
-                <release>BROPROFILE</release>
-            </releases>
-            
-            <construct>
-                <name>OM_Observation</name>
-                <catalog-entry>#Observation</catalog-entry>
-                <xsd-type name="OM_Observation" asAttributeDesignation="complextype" asAttribute="OM_ObservationType"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>OM_Process</name>
-                <catalog-entry>#Process</catalog-entry>
-                <xsd-type name="OM_Process" asAttributeDesignation="complextype" asAttribute="OM_ProcessType"/>
-                <managed-ids/>
-            </construct>
-        </map>
-        
-    </conceptual-schema>
-    
-    <conceptual-schema>
-        
-        <name>Citation and responsible party information</name>
-        <short-name>cit</short-name>
-        <description>ISO TC211 / ISO 19115:2006 Metadata (Corrigendum) - Citation and responsible party information</description>
-        <url>http://www.bro.nl/conceptual-schemas/iso/19115/metadata/cit</url>
-        
-        <map 
-            name="ISO19115" 
-            namespace="http://standards.iso.org/iso/19115/-3/cit/1.0" 
-            version="1.0" 
-            phase="3" 
-            location="http://standards.iso.org/iso/19115/-3/cit/1.0/cit.xsd">
-            <desc>
-                Citation and responsible party information
-            </desc>
-            <releases>
-                <release>2006</release> 
-            </releases>
-           
-            <construct>
-                <name>CI_Citation</name>
-                <xsd-type name="CI_Citation" asAttributeDesignation="complextype" asAttribute="CI_Citation_PropertyType"/>
-                <managed-ids>
-                    <id>EAID_5AB3D01D_E919_49ee_ACD0_281BAA7FE584</id>
-                </managed-ids>
-            </construct>
-        </map>
-    </conceptual-schema>
-    
-    <conceptual-schema>
-        
-        <name>Extent information</name>
-        <short-name>gex</short-name>
-        <description>ISO TC211 / ISO 19115:2006 Metadata (Corrigendum) - Extent information</description>
-        <url>http://www.bro.nl/conceptual-schemas/iso/19115/metadata/gex</url>
-        
-        <map 
-            name="ISO19115" 
-            namespace="http://standards.iso.org/iso/19115/-3/gex/1.0" 
-            version="1.0" 
-            phase="3" 
-            location="http://standards.iso.org/iso/19115/-3/gex/1.0/gex.xsd">
-            <desc>
-                Extent information
-            </desc>
-            <releases>
-                <release>2006</release> 
-            </releases>
-            <construct>
-                <name>EX_Extent</name>
-                <xsd-type name="EX_Extent" asAttributeDesignation="complextype" asAttribute="EX_Extent_PropertyType"/>
-                <managed-ids/>
-            </construct>
-        </map>
-    </conceptual-schema>
-
-    <conceptual-schema>
-        
-        <name>BRO registration objects</name>
-        <short-name>bro</short-name>
-        <description>All registration object aspects that can be referenced between models</description>
-        <url>http://www.bro.nl/conceptual-schemas/bro/1.0/</url>
-        
-        <catalog>https://broprogramma.github.io/SAMPLE/[entry]</catalog>        
-        
-        <map 
-            name="BRO" 
-            namespace="http://determine/" 
-            version="1.0" 
-            phase="3" 
-            location="http://determine/BRO.xsd">
-            <desc>
-               Registratie objecten en aanpalende constructies 
-            </desc>
-            <releases>
-                <release>2017</release> 
-            </releases>
-            
-           <!-- TODO -->
-            
-        </map>
-        <map 
-            name="BRO-SAMPLE1" 
-            namespace="http://determine/" 
-            version="1.0" 
-            phase="3" 
-            location="http://determine/sample1.xsd">
-            <desc>
-                Test voor relatie BRO-003 Sample 1
-            </desc>
-            <releases>
-                <release>2006</release> 
-            </releases>
-            
-            <construct>
-                <name>SampleClass1</name>
-                <catalog-entry>#global_class_Model_Biker<!-- een stub!--></catalog-entry>
-                <xsd-type name="SampleClass1" asAttributeDesignation="complextype" asAttribute="SampleClass1Type"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>SampleClass3</name>
-                <catalog-entry>#global_class_Model_Brick<!-- een stub!--></catalog-entry>
-                <xsd-type name="SampleClass3" asAttributeDesignation="complextype" asAttribute="SampleClass3Type"/>
-                <managed-ids/>
-            </construct>
-        </map>
-        <map 
-            name="BRO-SAMPLE2" 
-            namespace="http://determine/" 
-            version="1.0" 
-            phase="3" 
-            location="http://determine/sample2.xsd">
-            <desc>
-                Test voor relatie BRO-003 Sample 2
-            </desc>
-            <releases>
-                <release>2006</release> 
-            </releases>
-       
-            <construct>
-                <name>SampleClass2</name>
-                <catalog-entry>#global_class_Model_Bike<!-- een stub!--></catalog-entry>
-                <xsd-type name="SampleClass2" asAttributeDesignation="complextype" asAttribute="SampleClass2Type"/>
-                <managed-ids/>
-            </construct>
-        </map>
-    </conceptual-schema>
-    
-    <conceptual-schema>
-        
-        <name>INSPIRE</name>
-        <short-name>INSPIRE</short-name>
-        <description>
-            The INSPIRE Feature Concept Dictionary (IFCD) acts as a common feature concept dictionary for all 
-            INSPIRE data specifications. The common feature concept dictionary contains terms and definitions 
-            required for specifying thematic spatial object types and it is main role is in particular to 
-            support the harmonisation effort and to identify conflicts between the specifications of the spatial 
-            object types in the different themes.</description>
-        <url>http://www.bro.nl/conceptual-schemas/INSPIRE</url>
-        
-        <catalog>http://inspire.ec.europa.eu/featureconcept/[entry]</catalog>        
-        
-        <map 
-            name="INSPIRE" 
-            namespace="http://inspire.ec.europa.eu/" 
-            version="1.0" 
-            phase="3" 
-            location="http://inspire.ec.europa.eu/sample1.xsd">
-            
-            <desc>
-                Links to the INSPIRE cataloque and schemas.
-            </desc>
-            <releases>
-                <release>2006</release> 
-            </releases>
-            <construct>
-                <name>ActivityComplex</name>
-                <catalog-entry>ActivityComplex</catalog-entry>
-                <xsd-type name="ActivityComplex" asAttributeDesignation="complextype" asAttribute="ActivityComplexType"/>
-                <managed-ids/>
-            </construct>
-            
-            <!-- TODO is dit de juiste plek?? -->
-            <construct>
-                <name>Identifier</name>
-                <catalog-entry>Identifier</catalog-entry>
-                <xsd-type name="Identifier" asAttributeDesignation="complextype" asAttribute="IdentifierType"/>
-                <managed-ids/>
-            </construct>
-         
-        </map>
-        <map 
-            name="INSPIRE-GEO" 
-            namespace="http://inspire.ec.europa.eu/" 
-            version="1.0" 
-            phase="3" 
-            location="http://inspire.ec.europa.eu/schemas/ge-core/4.0/GeologyCore.xsd ">
-            
-            <desc>
-                Links to the INSPIRE Geo core cataloque and schemas.
-            </desc>
-            <releases>
-                <release>4.0</release> 
-            </releases>
-            <construct>
-                <name>MappedFeature</name>
-                <catalog-entry>MappedFeature</catalog-entry>
-                <xsd-type name="MappedFeature" asAttributeDesignation="complextype" asAttribute="MappedFeatureType"/>
-                <managed-ids/>
-            </construct> 
-        </map>
-        <map 
-            name="INSPIRE-SOIL" 
-            namespace="http://inspire.ec.europa.eu/" 
-            version="1.0" 
-            phase="3" 
-            location="http://inspire.ec.europa.eu/schemas/so/4.0/Soil.xsd">
-            
-            <desc>
-                Links to the INSPIRE Soil cataloque and schemas.
-            </desc>
-            <releases>
-                <release>4.0</release> 
-            </releases>
-            <construct>
-                <name>SoilHorizon</name>
-                <catalog-entry>SoilHorizon</catalog-entry>
-                <xsd-type name="SoilHorizon" asAttributeDesignation="complextype" asAttribute="SoilHorizonType"/>
-                <managed-ids/>
-            </construct> 
-            <construct>
-                <name>SoilLayer</name>
-                <catalog-entry>SoilLayer</catalog-entry>
-                <xsd-type name="SoilLayer" asAttributeDesignation="complextype" asAttribute="SoilLayerType"/>
-                <managed-ids/>
-            </construct> 
-        </map>
-    </conceptual-schema>
-    
-    <conceptual-schema>
-        <name>NEN3610</name>
-        <description>NEN3610 (2011)</description>
-        <url>http://www.bro.nl/conceptual-schemas/nen3610/1.0/</url>
-        <short-name>nen3610</short-name>
-        <map 
-            name="NEN3610" 
-            namespace="http://www.geonovum.nl/NEN3610/schemas/v20110301" 
-            version="2011" 
-            phase="3" 
-            location="http://www.geonovum.nl/NEN3610/v20110301/NEN3610_NEN3610_v1_0_0.xsd">
-            
-            <releases>
-                <release>20110301</release>
-            </releases>
-            
-            <construct>
-                <name>NEN3610ID</name>
-                <catalog-entry>https://www.geonovum.nl/onderwerpen/basismodel-geo-informatie-nen3610</catalog-entry>
-                <xsd-type name="NEN3610ID" asAttributeDesignation="complextype" asAttribute="NEN3610ID"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>GeoObject</name>
-                <catalog-entry>https://www.geonovum.nl/onderwerpen/basismodel-geo-informatie-nen3610</catalog-entry>
-                <xsd-type name="GeoObject" asAttributeDesignation="complextype" asAttribute="GeoObject"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>Historie</name>
-                <catalog-entry>https://www.geonovum.nl/onderwerpen/basismodel-geo-informatie-nen3610</catalog-entry>
-                <xsd-type name="Historie" asAttributeDesignation="complextype" asAttribute="Historie"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>Levensduur</name>
-                <catalog-entry>https://www.geonovum.nl/onderwerpen/basismodel-geo-informatie-nen3610</catalog-entry>
-                <xsd-type name="Levensduur" asAttributeDesignation="complextype" asAttribute="Levensduur"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>VoidReasonValue</name>
-                <catalog-entry>https://www.geonovum.nl/onderwerpen/basismodel-geo-informatie-nen3610</catalog-entry>
-                <xsd-type name="VoidReasonValue" asAttributeDesignation="complextype" asAttribute="VoidReasonValue"/>
-                <managed-ids/>
-            </construct>
-            
-            <construct>
-                <name>Gebouw</name>
-                <catalog-entry>http://definities.geostandaarden.nl/nen3610/id/begrip/Gebouw</catalog-entry>
-                <xsd-type name="Gebouw" asAttributeDesignation="complextype" asAttribute="Gebouw"/>
-                <managed-ids/>
-            </construct>
-            <construct>
-                <name>RegistratiefGebied</name>
-                <catalog-entry>http://definities.geostandaarden.nl/nen3610/id/begrip/RegistratiefGebied</catalog-entry>
-                <xsd-type name="RegistratiefGebied" asAttributeDesignation="complextype" asAttribute="RegistratiefGebied"/>
-                <managed-ids/>
-            </construct>  
-            <construct>
-                <name>GeoObject</name>
-                <catalog-entry>http://definities.geostandaarden.nl/nen3610/id/begrip/GeoObject</catalog-entry>
-                <xsd-type name="RegistratiefGebied" asAttributeDesignation="complextype" asAttribute="GeoObject"/>
-                <managed-ids/>
-            </construct>  
-     
-        </map>
-    </conceptual-schema>
-    
-</conceptual-schemas>
+<?xml version="1.0" encoding="UTF-8"?>
+<cs:ConceptualSchemas xmlns:xlink="http://www.w3.org/1999/xlink"
+                      xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+                      xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                      xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210
+                      ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
+   <cs:mappings>
+      <cs:Mapping>
+         <cs:name>BRO_GITHUB</cs:name>
+         <cs:use>
+            <cs-ref:MapRef xlink:href="#SampleExternalModelA"/>
+         </cs:use>
+      </cs:Mapping>
+      <cs:Mapping>
+         <cs:name>BRO_GEOSTANDAARDEN</cs:name>
+         <cs:use>
+            <cs-ref:MapRef xlink:href="#GML321"/>
+            <cs-ref:MapRef xlink:href="#SWE201"/>
+            <cs-ref:MapRef xlink:href="#OM200"/>
+            <cs-ref:MapRef xlink:href="#SAM202"/>
+            <cs-ref:MapRef xlink:href="#ISO19115"/>
+            <cs-ref:MapRef xlink:href="#INSPIRE"/>
+            <cs-ref:MapRef xlink:href="#INSPIRE-GEO"/>
+            <cs-ref:MapRef xlink:href="#INSPIRE-SOIL"/>
+            <cs-ref:MapRef xlink:href="#NEN3610"/>
+            <cs-ref:MapRef xlink:href="#BRO"/>
+            <cs-ref:MapRef xlink:href="#BRO-SAMPLE1"/>
+            <cs-ref:MapRef xlink:href="#BRO-SAMPLE2"/>
+         </cs:use>
+      </cs:Mapping>
+   </cs:mappings>
+   <cs:components>
+      <cs:ConceptualSchemasComponents>
+         <cs:ConceptualSchema>
+            <cs:id>Sample1</cs:id>
+            <cs:shortName>sample</cs:shortName>
+            <cs:desc>Sample conceptual schema, see «Application» Github-14-metamodel links</cs:desc>
+            <cs:url>http://www.bro.nl/conceptual-schemas/SampleExternalModelA</cs:url>
+         </cs:ConceptualSchema>
+         <cs:ConceptualSchema>
+            <cs:id>GML3</cs:id>
+            <cs:shortName>gml</cs:shortName>
+            <cs:desc>ISO19107 Geographic information – Spatial schema (Geography Markup Language 3)</cs:desc>
+            <cs:url>http://www.bro.nl/conceptual-schemas/ISO19107</cs:url>
+            <cs:catalogUrl>http://www.opengeospatial.org/standards/gml[entry]</cs:catalogUrl>
+         </cs:ConceptualSchema>
+         <cs:ConceptualSchema>
+            <cs:id>SWE-CP-BRO</cs:id>
+            <cs:shortName>swe</cs:shortName>
+            <cs:desc>SWE Common profile for BRO.</cs:desc>
+            <cs:url>http://www.bro.nl/conceptual-schemas/SWE</cs:url>
+            <cs:catalogUrl>http://www.opengeospatial.org/standards/swe[entry]</cs:catalogUrl>
+         </cs:ConceptualSchema>
+         <cs:ConceptualSchema>
+            <cs:id>SF-CP-BRO</cs:id>
+            <cs:shortName>sam</cs:shortName>
+            <cs:desc>SamplingFeature profile for BRO.</cs:desc>
+            <cs:url>http://www.bro.nl/conceptual-schemas/SAM</cs:url>
+            <cs:catalogUrl>http://www.opengeospatial.org/standards/sam[entry]</cs:catalogUrl>
+         </cs:ConceptualSchema>
+         <cs:ConceptualSchema>
+            <cs:id>OM-CP-BRO</cs:id>
+            <cs:shortName>om</cs:shortName>
+            <cs:desc>Observations &amp; Measurements profile for BRO</cs:desc>
+            <cs:url>http://www.bro.nl/conceptual-schemas/OM</cs:url>
+            <cs:catalogUrl>http://defs.opengis.net/sissvoc/ogc-def/concept?anylabel=[entry]</cs:catalogUrl>
+         </cs:ConceptualSchema>
+         <cs:ConceptualSchema>
+            <cs:id>CPI</cs:id>
+            <cs:shortName>cit</cs:shortName>
+            <cs:desc>ISO TC211 / ISO 19115:2006 Metadata (Corrigendum) - Citation and responsible party information</cs:desc>
+            <cs:url>http://www.bro.nl/conceptual-schemas/iso/19115/metadata/cit</cs:url>
+         </cs:ConceptualSchema>
+         <cs:ConceptualSchema>
+            <cs:id>EI</cs:id>
+            <cs:shortName>gex</cs:shortName>
+            <cs:desc>ISO TC211 / ISO 19115:2006 Metadata (Corrigendum) - Extent information</cs:desc>
+            <cs:url>http://www.bro.nl/conceptual-schemas/iso/19115/metadata/gex</cs:url>
+         </cs:ConceptualSchema>
+         <cs:ConceptualSchema>
+            <cs:id>RO-BRO</cs:id>
+            <cs:shortName>bro</cs:shortName>
+            <cs:desc>All registration object aspects that can be referenced between models</cs:desc>
+            <cs:url>http://www.bro.nl/conceptual-schemas/bro/1.0/</cs:url>
+            <cs:catalogUrl>https://broprogramma.github.io/SAMPLE/[entry]</cs:catalogUrl>
+         </cs:ConceptualSchema>
+         <cs:ConceptualSchema>
+            <cs:id>INSPIRE</cs:id>
+            <cs:shortName>INSPIRE</cs:shortName>
+            <cs:desc>The INSPIRE Feature Concept Dictionary (IFCD) acts as a common feature concept dictionary for all INSPIRE data specifications. The common feature concept dictionary contains terms and definitions required for specifying thematic spatial object types and it is main role is in particular to support the harmonisation effort and to identify conflicts between the specifications of the spatial object types in the different themes.</cs:desc>
+            <cs:url>http://www.bro.nl/conceptual-schemas/INSPIRE</cs:url>
+            <cs:catalogUrl>http://inspire.ec.europa.eu/featureconcept/[entry]</cs:catalogUrl>
+         </cs:ConceptualSchema>
+         <cs:ConceptualSchema>
+            <cs:id>NEN3610</cs:id>
+            <cs:shortName>nen3610</cs:shortName>
+            <cs:desc>NEN3610 (2011)</cs:desc>
+            <cs:url>http://www.bro.nl/conceptual-schemas/nen3610/1.0/</cs:url>
+         </cs:ConceptualSchema>
+         <cs:Map>
+            <cs:id>SampleExternalModelA</cs:id>
+            <cs:namespace>http://www.bro.nl/SampleExternalModelA</cs:namespace>
+            <cs:location>http://www.bro.nl/schemas/1.0.0/SampleExternalModelA.xsd</cs:location>
+            <cs:phase>1</cs:phase>
+            <cs:version>1.0.0</cs:version>
+            <cs:release>20170302</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#Sample1"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>EM_AC1</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>AC1</cs:name>
+                        <cs:asAttribute>AC1type</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>EM_AC2</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>AC2</cs:name>
+                        <cs:asAttribute>AC2type</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         <cs:Map>
+            <cs:id>GML321</cs:id>
+            <cs:namespace>http://www.opengis.net/gml/3.2</cs:namespace>
+            <cs:location>https://schema.broservices.nl/profile/gml/1.0/gml-profile.xsd</cs:location>
+            <cs:phase>3</cs:phase>
+            <cs:version>0.0.2-3.2.1</cs:version>
+            <cs:release>BROPROFILE</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#GML3"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>GFI_Feature</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#AbstractFeature</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Feature</cs:name>
+                        <cs:asAttribute>FeatureType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_LineString</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#LineString</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>LineString</cs:name>
+                        <cs:asAttribute>LineStringType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_Point</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#Point</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Point</cs:name>
+                        <cs:asAttribute>PointPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_Polygon</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#Polygon</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Polygon</cs:name>
+                        <cs:asAttribute>PolygonType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_Envelope</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#Envelope</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Envelope</cs:name>
+                        <cs:asAttribute>EnvelopeType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_AbstractGeometry</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#AbstractGeometry</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>AbstractGeometry</cs:name>
+                        <cs:asAttribute>AbstractGeometryType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_AbstractCurve</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#AbstractCurve</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>AbstractCurve</cs:name>
+                        <cs:asAttribute>AbstractCurveType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_AbstractSurface</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#AbstractSurface</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>AbstractSurface</cs:name>
+                        <cs:asAttribute>AbstractSurfaceType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_AbstractRing</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#AbstractRing</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>AbstractRing</cs:name>
+                        <cs:asAttribute>AbstractRingType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>LinearRing</cs:name>
+                  <cs:desc>LinearRing is in GML / ISO19136 gedefinieerd. Het heeft geen corresponderende klasse in ISO19107 maar is in GML toegevoegd als convenience type, een simpelere vorm van GM_Ring en formeel een subklasse daarvan.</cs:desc>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#LinearRing</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>LinearRing</cs:name>
+                        <cs:asAttribute>LinearRingType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_Object</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#GM_Object</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>AbstractGeometry</cs:name>
+                        <cs:asAttribute>AbstractGeometryType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_Surface</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#Surface</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Surface</cs:name>
+                        <cs:asAttribute>SurfacePropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_MultiSurface</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#MultiSurface</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>MultiSurface</cs:name>
+                        <cs:asAttribute>MultiSurfaceType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_MultiSolid</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#MultiSolid</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>MultiSolid</cs:name>
+                        <cs:asAttribute>MultiSolidType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_MultiCurve</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>MultiCurve</cs:name>
+                        <cs:asAttribute>MultiCurvePropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+                  <cs:rdfTypes>
+                     <cs:RdfType>
+                        <cs:name>rdfs:Datatype</cs:name>
+                     </cs:RdfType>
+                  </cs:rdfTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_Solid</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Solid</cs:name>
+                        <cs:asAttribute>SolidPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+                  <cs:rdfTypes>
+                     <cs:RdfType>
+                        <cs:name>rdfs:Datatype</cs:name>
+                     </cs:RdfType>
+                  </cs:rdfTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>TM_Instant</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#TimeInstant</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>TimeInstant</cs:name>
+                        <cs:asAttribute>TimeInstantType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>TM_Period</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#TimePeriod</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>TimePeriod</cs:name>
+                        <cs:asAttribute>TimePeriodType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>CV_Coverage</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Identifier</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#Identifier</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Identifier</cs:name>
+                        <cs:asAttribute>IdentifierType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>OtherSoilNameType</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#OtherSoilNameType</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>OtherSoilNameType</cs:name>
+                        <cs:asAttribute>OtherSoilNameType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>WRBSoilNameType</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#WRBSoilNameType</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>WRBSoilNameType</cs:name>
+                        <cs:asAttribute>WRBSoilNameType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GM_SENTINEL</cs:name>
+                  <cs:sentinel>true</cs:sentinel>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Measure</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#Measure</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Measure</cs:name>
+                        <cs:asAttribute>MeasureType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         <cs:Map>
+            <cs:id>SWE201</cs:id>
+            <cs:namespace>http://www.opengis.net/swe/2.0</cs:namespace>
+            <cs:location>http://www.opengis.net/swe/2.0/swe-profile.xsd</cs:location>
+            <cs:phase>3</cs:phase>
+            <cs:version>2.0.1</cs:version>
+            <cs:release>BROPROFILE</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#SWE-CP-BRO"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>UnitReference</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#UnitReference</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>UnitReference</cs:name>
+                        <cs:asAttribute>UnitReference</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         <cs:Map>
+            <cs:id>SAM202</cs:id>
+            <cs:namespace>http://www.opengis.net/sampling/2.0</cs:namespace>
+            <cs:location>http://www.opengis.net/sampling/2.0/sam-profile.xsd</cs:location>
+            <cs:phase>3</cs:phase>
+            <cs:version>2.0.2</cs:version>
+            <cs:release>BROPROFILE</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#SF-CP-BRO"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>SF_SamplingFeature</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#SF_SamplingFeature</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>SF_SamplingFeature</cs:name>
+                        <cs:asAttribute>SF_SamplingFeatureType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         <cs:Map>
+            <cs:id>OM200</cs:id>
+            <cs:namespace>http://www.opengis.net/om/2.0</cs:namespace>
+            <cs:location>https://schema.broservices.nl/profile/om/1.0/om-profile.xsd</cs:location>
+            <cs:phase>3</cs:phase>
+            <cs:version>2.0.0</cs:version>
+            <cs:release>BROPROFILE</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#OM-CP-BRO"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>OM_Observation</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#Observation</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>OM_Observation</cs:name>
+                        <cs:asAttribute>OM_ObservationType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>OM_Process</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#Process</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>OM_Process</cs:name>
+                        <cs:asAttribute>OM_ProcessType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         <cs:Map>
+            <cs:id>ISO19115</cs:id>
+            <cs:namespace>http://standards.iso.org/iso/19115/-3/cit/1.0</cs:namespace>
+            <cs:desc>Citation and responsible party information</cs:desc>
+            <cs:location>http://standards.iso.org/iso/19115/-3/cit/1.0/cit.xsd</cs:location>
+            <cs:phase>3</cs:phase>
+            <cs:version>1.0</cs:version>
+            <cs:release>2006</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#CPI"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>CI_Citation</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>CI_Citation</cs:name>
+                        <cs:asAttribute>CI_Citation_PropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         <cs:Map>
+            <cs:id>ISO19115</cs:id>
+            <cs:namespace>http://standards.iso.org/iso/19115/-3/gex/1.0</cs:namespace>
+            <cs:desc>Extent information</cs:desc>
+            <cs:location>http://standards.iso.org/iso/19115/-3/gex/1.0/gex.xsd</cs:location>
+            <cs:phase>3</cs:phase>
+            <cs:version>1.0</cs:version>
+            <cs:release>2006</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#EI"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>EX_Extent</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>EX_Extent</cs:name>
+                        <cs:asAttribute>EX_Extent_PropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         <cs:Map>
+            <cs:id>BRO</cs:id>
+            <cs:namespace>http://determine/</cs:namespace>
+            <cs:desc>Registratie objecten en aanpalende constructies</cs:desc>
+            <cs:location>http://determine/BRO.xsd</cs:location>
+            <cs:phase>3</cs:phase>
+            <cs:version>1.0</cs:version>
+            <cs:release>2017</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#RO-BRO"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>Sample</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#global_class_Model_Sample</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Sample</cs:name>
+                        <cs:asAttribute>SampleType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         <cs:Map>
+            <cs:id>BRO-SAMPLE1</cs:id>
+            <cs:namespace>http://determine/</cs:namespace>
+            <cs:desc>Test voor relatie BRO-003 Sample 1</cs:desc>
+            <cs:location>http://determine/sample1.xsd</cs:location>
+            <cs:phase>3</cs:phase>
+            <cs:version>1.0</cs:version>
+            <cs:release>2006</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#RO-BRO"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>SampleClass1</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#global_class_Model_Biker</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>SampleClass1</cs:name>
+                        <cs:asAttribute>SampleClass1Type</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>SampleClass3</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#global_class_Model_Brick</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>SampleClass3</cs:name>
+                        <cs:asAttribute>SampleClass3Type</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         <cs:Map>
+            <cs:id>BRO-SAMPLE2</cs:id>
+            <cs:namespace>http://determine/</cs:namespace>
+            <cs:desc>Test voor relatie BRO-003 Sample 2</cs:desc>
+            <cs:location>http://determine/sample2.xsd</cs:location>
+            <cs:phase>3</cs:phase>
+            <cs:version>1.0</cs:version>
+            <cs:release>2006</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#RO-BRO"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>SampleClass2</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>#global_class_Model_Bike</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>SampleClass2</cs:name>
+                        <cs:asAttribute>SampleClass2Type</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         <cs:Map>
+            <cs:id>INSPIRE</cs:id>
+            <cs:namespace>http://inspire.ec.europa.eu/</cs:namespace>
+            <cs:desc>Links to the INSPIRE cataloque and schemas.</cs:desc>
+            <cs:location>http://inspire.ec.europa.eu/sample1.xsd</cs:location>
+            <cs:phase>3</cs:phase>
+            <cs:version>1.0</cs:version>
+            <cs:release>2006</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#INSPIRE"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>ActivityComplex</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>ActivityComplex</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>ActivityComplex</cs:name>
+                        <cs:asAttribute>ActivityComplexType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Identifier</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>Identifier</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Identifier</cs:name>
+                        <cs:asAttribute>IdentifierType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         <cs:Map>
+            <cs:id>INSPIRE-GEO</cs:id>
+            <cs:namespace>http://inspire.ec.europa.eu/</cs:namespace>
+            <cs:desc>Links to the INSPIRE Geo core cataloque and schemas.</cs:desc>
+            <cs:location>http://inspire.ec.europa.eu/schemas/ge-core/4.0/GeologyCore.xsd </cs:location>
+            <cs:phase>3</cs:phase>
+            <cs:version>1.0</cs:version>
+            <cs:release>4.0</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#INSPIRE"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>MappedFeature</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>MappedFeature</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>MappedFeature</cs:name>
+                        <cs:asAttribute>MappedFeatureType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         <cs:Map>
+            <cs:id>INSPIRE-SOIL</cs:id>
+            <cs:namespace>http://inspire.ec.europa.eu/</cs:namespace>
+            <cs:desc>Links to the INSPIRE Soil cataloque and schemas.</cs:desc>
+            <cs:location>http://inspire.ec.europa.eu/schemas/so/4.0/Soil.xsd</cs:location>
+            <cs:phase>3</cs:phase>
+            <cs:version>1.0</cs:version>
+            <cs:release>4.0</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#INSPIRE"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>SoilHorizon</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>SoilHorizon</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>SoilHorizon</cs:name>
+                        <cs:asAttribute>SoilHorizonType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>SoilLayer</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>SoilLayer</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>SoilLayer</cs:name>
+                        <cs:asAttribute>SoilLayerType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         <cs:Map>
+            <cs:id>NEN3610</cs:id>
+            <cs:namespace>http://www.geonovum.nl/NEN3610/schemas/v20110301</cs:namespace>
+            <cs:location>http://www.geonovum.nl/NEN3610/v20110301/NEN3610_NEN3610_v1_0_0.xsd</cs:location>
+            <cs:phase>3</cs:phase>
+            <cs:version>2011</cs:version>
+            <cs:release>20110301</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#NEN3610"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>NEN3610ID</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>https://www.geonovum.nl/onderwerpen/basismodel-geo-informatie-nen3610</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>NEN3610ID</cs:name>
+                        <cs:asAttribute>NEN3610ID</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GeoObject</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>https://www.geonovum.nl/onderwerpen/basismodel-geo-informatie-nen3610</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>GeoObject</cs:name>
+                        <cs:asAttribute>GeoObject</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Historie</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>https://www.geonovum.nl/onderwerpen/basismodel-geo-informatie-nen3610</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Historie</cs:name>
+                        <cs:asAttribute>Historie</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Levensduur</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>https://www.geonovum.nl/onderwerpen/basismodel-geo-informatie-nen3610</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Levensduur</cs:name>
+                        <cs:asAttribute>Levensduur</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>VoidReasonValue</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>https://www.geonovum.nl/onderwerpen/basismodel-geo-informatie-nen3610</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>VoidReasonValue</cs:name>
+                        <cs:asAttribute>VoidReasonValue</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Gebouw</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>http://definities.geostandaarden.nl/nen3610/id/begrip/Gebouw</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>Gebouw</cs:name>
+                        <cs:asAttribute>Gebouw</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>RegistratiefGebied</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>http://definities.geostandaarden.nl/nen3610/id/begrip/RegistratiefGebied</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>RegistratiefGebied</cs:name>
+                        <cs:asAttribute>RegistratiefGebied</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>GeoObject</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>http://definities.geostandaarden.nl/nen3610/id/begrip/GeoObject</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>RegistratiefGebied</cs:name>
+                        <cs:asAttribute>GeoObject</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+      </cs:ConceptualSchemasComponents>
+   </cs:components>
+</cs:ConceptualSchemas>

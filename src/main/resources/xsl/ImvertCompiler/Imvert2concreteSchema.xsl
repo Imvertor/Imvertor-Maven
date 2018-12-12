@@ -25,6 +25,9 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+    xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+    
     exclude-result-prefixes="#all"
     version="2.0">
     
@@ -53,7 +56,7 @@
         <xsl:choose>
             <xsl:when test="imf:is-conceptual(.)">
                 <xsl:variable name="maps" select="imf:get-conceptual-schema-map(imvert:namespace,$conceptual-schema-mapping-name)"/>
-                <xsl:variable name="map" select="$maps[construct/name = current()/imvert:class/imvert:name]"/><!-- select the map that declares any of the conceptual constructs -->
+                <xsl:variable name="map" select="$maps[cs:constructs/cs:Construct/cs:name = current()/imvert:class/imvert:name]"/><!-- select the map that declares any of the conceptual constructs -->
                 <xsl:choose>
                     <xsl:when test="exists($map[2])">
                         <xsl:sequence select="imf:msg('FATAL','More than one applicable map for namespace [1] when using mapping [2]',(imvert:namespace,$conceptual-schema-mapping-name))"/>
@@ -78,16 +81,16 @@
     </xsl:template>
  
     <xsl:template match="imvert:package/imvert:namespace" mode="conceptual">
-        <xsl:param name="map" as="element()+"/>
-        <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-name',$map/@name)"/>
+        <xsl:param name="map" as="element(cs:Map)+"/>
+        <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-name',$map/cs:id)"/>
         <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-namespace',.)"/>
-        <xsl:sequence select="imf:create-output-element('imvert:namespace',$map/@namespace)"/>
-        <xsl:sequence select="imf:create-output-element('imvert:location',$map/@location)"/>
+        <xsl:sequence select="imf:create-output-element('imvert:namespace',$map/cs:namespace)"/>
+        <xsl:sequence select="imf:create-output-element('imvert:location',$map/cs:location)"/>
         <!--
              when a release is specified, use that, only when known; otherise take the default release as defined in map
         -->
         <xsl:variable name="specified-release" select="../imvert:release"/>
-        <xsl:variable name="known-releases" select="$map/releases/release"/>
+        <xsl:variable name="known-releases" select="$map/cs:release"/> <!-- may be multiple -->
         <xsl:choose>
             <xsl:when test="exists($specified-release) and not($specified-release = $known-releases)">
                 <xsl:sequence select="imf:msg(..,'ERROR','No such release [1] configured for external package known as [2]',($specified-release,.))"/>
@@ -107,20 +110,20 @@
     
     <!-- replace the short name by the short name configured in the conceptual map --> 
     <xsl:template match="imvert:package/imvert:short-name" mode="conceptual">
-        <xsl:param name="map" as="element()"/>
-        <xsl:sequence select="imf:create-output-element('imvert:short-name',$map/parent::conceptual-schema/short-name)"/>
+        <xsl:param name="map" as="element(cs:Map)"/>
+        <xsl:sequence select="imf:create-output-element('imvert:short-name',imf:resolve-ref($map/cs:forSchema/cs-ref:ConceptualSchemaRef,'ConceptualSchema')/cs:shortName)"/>
     </xsl:template>
    
     <xsl:template match="imvert:package/imvert:version" mode="conceptual">
-        <xsl:param name="map" as="element()"/>
+        <xsl:param name="map" as="element(cs:Map)"/>
         <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-version',.)"/>
-        <xsl:sequence select="imf:create-output-element('imvert:version',$map/@version)"/>
+        <xsl:sequence select="imf:create-output-element('imvert:version',$map/cs:version)"/>
     </xsl:template>
     
     <xsl:template match="imvert:package/imvert:phase" mode="conceptual">
-        <xsl:param name="map" as="element()"/>
+        <xsl:param name="map" as="element(cs:Map)"/>
         <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-phase',.)"/>
-        <xsl:sequence select="imf:create-output-element('imvert:phase',$map/@phase)"/>
+        <xsl:sequence select="imf:create-output-element('imvert:phase',$map/cs:phase)"/>
     </xsl:template>
     
     <xsl:template match="imvert:package/imvert:release" mode="conceptual">
@@ -128,19 +131,19 @@
     </xsl:template>
     
     <xsl:template match="imvert:package/imvert:author" mode="conceptual">
-        <xsl:param name="map" as="element()"/>
+        <xsl:param name="map" as="element(cs:Map)"/>
         <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-author',.)"/>
         <xsl:sequence select="imf:create-output-element('imvert:author','(system)')"/>
     </xsl:template>
     
     <xsl:template match="imvert:package/imvert:svn-string" mode="conceptual">
-        <xsl:param name="map" as="element()"/>
+        <xsl:param name="map" as="element(cs:Map)"/>
         <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-svn-string',.)"/>
         <xsl:sequence select="imf:create-output-element('imvert:svn-string','(unspecified)')"/>
     </xsl:template>
     
     <xsl:template match="imvert:package/imvert:class" mode="conceptual">
-        <xsl:param name="map" as="element()"/>
+        <xsl:param name="map" as="element(cs:Map)"/>
         <imvert:class>
             <xsl:apply-templates mode="conceptual">
                 <xsl:with-param name="map" select="$map"/>
@@ -149,14 +152,14 @@
     </xsl:template>
     
     <xsl:template match="imvert:class/imvert:name" mode="conceptual">
-        <xsl:param name="map" as="element()"/>
-        <xsl:variable name="mapped-construct" select="$map/construct[name = current()/@original]"/>
+        <xsl:param name="map" as="element(cs:Map)"/>
+        <xsl:variable name="mapped-construct" select="$map//cs:Construct[cs:name = current()/@original]"/>
         <xsl:choose>
             <xsl:when test="$mapped-construct">
                 <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-class-name',.)"/>
                 <imvert:name>
                     <xsl:copy-of select="@*"/>
-                    <xsl:value-of select="$mapped-construct/xsd-type/@name"/>
+                    <xsl:value-of select="$mapped-construct/cs:xsdTypes/cs:XsdType/cs:name"/>
                 </imvert:name>
             </xsl:when>
             <xsl:otherwise>
@@ -197,17 +200,23 @@
             <xsl:when test="imf:is-conceptual($class)">
                 <!-- class in a conceptual schema package -->
                 <xsl:variable name="map" select="imf:get-conceptual-schema-map($pack/imvert:namespace,$conceptual-schema-mapping-name)"/>
-                <xsl:variable name="mapped-xsd-type" select="$map/construct[name = current()/@original]/xsd-type"/>
+                <xsl:variable name="mapped-xsd-type" select="$map/cs:constructs/cs:Construct[cs:name = current()/@original]/cs:xsdTypes/cs:XsdType"/>
                 <xsl:choose>
+                    <xsl:when test="empty($map)">
+                        <xsl:message>NO SUCH MAP <xsl:value-of select="$pack/imvert:namespace"/></xsl:message>
+                    </xsl:when>
+                    <xsl:when test="empty($map/cs:constructs/cs:Construct[cs:name = current()/@original])">
+                        <xsl:message>NO SUCH CONSTRUCT <xsl:value-of select="@original"/></xsl:message>
+                   </xsl:when>
                     <xsl:when test="$mapped-xsd-type">
                         <xsl:sequence select="imf:create-output-element('imvert:conceptual-schema-type',.)"/>
-                        <xsl:if test="imf:boolean($mapped-xsd-type/@primitive)">
-                            <xsl:sequence select="imf:create-output-element('imvert:primitive',$mapped-xsd-type/@name)"/>
+                        <xsl:if test="imf:boolean($mapped-xsd-type/cs:primitive)">
+                            <xsl:sequence select="imf:create-output-element('imvert:primitive',$mapped-xsd-type/cs:name)"/>
                         </xsl:if>
-                        <xsl:sequence select="imf:create-output-element(name(.),$mapped-xsd-type/@name)"/>
-                        <xsl:variable name="att-name" select="$mapped-xsd-type/@asAttribute"/>
-                        <xsl:variable name="att-desig" select="$mapped-xsd-type/@asAttributeDesignation"/>
-                        <xsl:variable name="att-hasNilreason" select="$mapped-xsd-type/@hasNilreason"/>
+                        <xsl:sequence select="imf:create-output-element(name(.),$mapped-xsd-type/cs:name)"/>
+                        <xsl:variable name="att-name" select="$mapped-xsd-type/cs:asAttribute"/>
+                        <xsl:variable name="att-desig" select="$mapped-xsd-type/cs:asAttributeDesignation"/>
+                        <xsl:variable name="att-hasNilreason" select="$mapped-xsd-type/cs:hasNilreason"/>
                         <xsl:variable name="is-union-element" select="parent::imvert:attribute/imvert:stereotype/@id = ('stereotype-name-union-element')"/>
                         <xsl:choose>
                             <!-- when in context of attribute, and not a union element, check if an asAttribute is specified -->

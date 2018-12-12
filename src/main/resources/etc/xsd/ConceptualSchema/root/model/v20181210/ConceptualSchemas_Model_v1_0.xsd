@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:Model="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:imvert="http://www.imvertor.org/schema/system"
+           xmlns:Model-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+           targetNamespace="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="1.0-1">
+   <xs:annotation>
+      <xs:appinfo source="http://www.imvertor.org/schema-info/uri">http://www.imvertor.org/metamodels/conceptualschemas/model</xs:appinfo>
+      <xs:appinfo source="http://www.imvertor.org/schema-info/version">1.0</xs:appinfo>
+      <xs:appinfo source="http://www.imvertor.org/schema-info/phase">1</xs:appinfo>
+      <xs:appinfo source="http://www.imvertor.org/schema-info/release">20181210</xs:appinfo>
+      <xs:appinfo source="http://www.imvertor.org/schema-info/generated">2018-12-12T11:54:48Z</xs:appinfo>
+      <xs:appinfo source="http://www.imvertor.org/schema-info/generator">1.48.3</xs:appinfo>
+      <xs:appinfo source="http://www.imvertor.org/schema-info/owner">Kadaster</xs:appinfo>
+      <xs:documentation source="http://www.imvertor.org/schema-info/file-location">root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd</xs:documentation>
+      <xs:documentation source="http://www.imvertor.org/schema-info/conversion">
+        This schema is based on an UML specification, which is transformed by the Imvertor software. Imvertor modules are in the public domain, see http://www.imvertor.org.
+    </xs:documentation>
+   </xs:annotation>
+   <xs:import namespace="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+              schemaLocation="../../../root/model-ref/v20181210/ConceptualSchemas_ModelRef_v1_0.xsd"/>
+   <xs:element name="XsdType" type="Model:XsdType" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Information in the XSD construct, to be used when XML schemas are created and external schemas are to be imported.</xs:documentation>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="XsdType" abstract="false">
+      <xs:sequence>
+         <xs:element name="name" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="asAttribute" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="asAttributeDesignation" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="primitive" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+         <xs:element name="hasNilreason"
+                     type="xs:boolean"
+                     minOccurs="0"
+                     maxOccurs="1"/>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:ID" use="optional"/>
+   </xs:complexType>
+   <xs:element name="RdfType" type="Model:RdfType" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Information on an RDF type.</xs:documentation>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="RdfType" abstract="false">
+      <xs:sequence>
+         <xs:element name="name" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:ID" use="optional"/>
+   </xs:complexType>
+   <xs:element name="Mapping" type="Model:Mapping" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">A mapping is a set of maps that collectively are named and may be referenced when starting an Imvertor run.For each run, a single mapping is selected. All constructs within that map will be available for reference (as an external object or the like).BRO_GEOSTANDAARDEN is used as the value of CLI parameter mapping. This mapping holds for example the Map INSPIRE-SOIL, which among others defines the Construct SoilHorizon.</xs:documentation>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="Mapping" abstract="false">
+      <xs:sequence>
+         <xs:element name="name" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">The name of the mapping.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="use" minOccurs="1" maxOccurs="1">
+            <xs:complexType>
+               <xs:choice minOccurs="1" maxOccurs="unbounded">
+                  <xs:element ref="Model-ref:MapRef"/>
+               </xs:choice>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:ID" use="optional"/>
+   </xs:complexType>
+   <xs:element name="ConceptualSchema"
+               type="Model:ConceptualSchema"
+               abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">A conceptual schema defines a schema that is not created by imvertor, but available in the outer world, and which components may be referenced. In order to reference the constructs we use maps.</xs:documentation>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="ConceptualSchema" abstract="false">
+      <xs:sequence>
+         <xs:element name="id" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">The id of the Conceptual schema.This ID is unique for a Conceptual schema within the set of ConceptuaSchemas.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="shortName" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">The prefix as used in the schemas (also namespace prefix in qualified name).</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="desc" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="url" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">This URL is the formal name fo the schema witin the EA project.Insert it as the alias of the &gt; package.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="catalogUrl" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Base catalog template, where the [entry] is replaced by the catalog name provides for each construct</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:ID" use="optional"/>
+   </xs:complexType>
+   <xs:element name="Construct" type="Model:Construct" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">Any construct that is available in the Map for a Conceptual schema. A Construct may be anything that plays a role in the model but is not defined within the model.</xs:documentation>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="Construct" abstract="false">
+      <xs:sequence>
+         <xs:element name="name" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">The name of the Construct.The name is unique within the Map it is part of.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="desc" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="sentinel" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+         <xs:element name="managedID" minOccurs="0" maxOccurs="unbounded">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="catalogEntries" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="Model:CatalogEntry" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="xsdTypes" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="Model:XsdType" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="rdfTypes" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="Model:RdfType" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:ID" use="optional"/>
+   </xs:complexType>
+   <xs:element name="Map" type="Model:Map" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">A map holds a number of Constructs that may be referenced from within an Model.</xs:documentation>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="Map" abstract="false">
+      <xs:sequence>
+         <xs:element name="id" minOccurs="1" maxOccurs="1">
+            <xs:annotation>
+               <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">The id of the Map.This ID is unique for a Map within the set of ConceptuaSchemas.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="namespace" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="desc" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="location" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="phase" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="version" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="release" minOccurs="1" maxOccurs="unbounded">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="forSchema" minOccurs="1" maxOccurs="1">
+            <xs:complexType>
+               <xs:choice minOccurs="1" maxOccurs="1">
+                  <xs:element ref="Model-ref:ConceptualSchemaRef"/>
+               </xs:choice>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="constructs" minOccurs="0" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="Model:Construct" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:ID" use="optional"/>
+   </xs:complexType>
+   <xs:element name="ConceptualSchemas"
+               type="Model:ConceptualSchemas"
+               abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">A collection of conceptual schemas, and a set of mappings.</xs:documentation>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="ConceptualSchemas" abstract="false">
+      <xs:sequence>
+         <xs:element name="mappings" minOccurs="1" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="Model:Mapping" minOccurs="1" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="components" minOccurs="1" maxOccurs="1">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element ref="Model:ConceptualSchemasComponents" minOccurs="1" maxOccurs="1"/>
+               </xs:sequence>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="ConceptualSchemasComponents"
+               type="Model:ConceptualSchemasComponents"
+               abstract="false"/>
+   <xs:complexType name="ConceptualSchemasComponents" abstract="false">
+      <xs:sequence>
+         <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element ref="Model:XsdType"/>
+         </xs:choice>
+         <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element ref="Model:RdfType"/>
+         </xs:choice>
+         <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element ref="Model:Mapping"/>
+         </xs:choice>
+         <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element ref="Model:ConceptualSchema"/>
+         </xs:choice>
+         <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element ref="Model:Construct"/>
+         </xs:choice>
+         <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element ref="Model:Map"/>
+         </xs:choice>
+         <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element ref="Model:CatalogEntry"/>
+         </xs:choice>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="CatalogEntry" type="Model:CatalogEntry" abstract="false">
+      <xs:annotation>
+         <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">An entry in a catalog. The catalog is available on the internet, accessible by URL, and the entry is any identifier that may take part in the URL. The catalog URL may be set on the entry or is defined on the associated ConceptualSchema.</xs:documentation>
+      </xs:annotation>
+   </xs:element>
+   <xs:complexType name="CatalogEntry" abstract="false">
+      <xs:sequence>
+         <xs:element name="name" minOccurs="1" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="url" minOccurs="0" maxOccurs="1">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:pattern value="\S.*"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:ID" use="optional"/>
+   </xs:complexType>
+</xs:schema>

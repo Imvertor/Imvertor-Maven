@@ -1,42 +1,63 @@
-<!-- 
-    Mappings for conceptual schemas fro KOOP
--->
-<conceptual-schemas>
-    
-    <mapping name="DEFAULT">
-        <use>default</use>
-    </mapping>
-    
-    <conceptual-schema>
-        <name>default</name>
-        <description>default</description>
-        <url>http://www.koop.nl/conceptual-schemas/default</url>
-        
-        <short-name>default</short-name>
-        
-        <map 
-            name="SampleExternalModelA" 
-            namespace="http://www.bro.nl/SampleExternalModelA" 
-            version="1.0.0" 
-            phase="1" 
-            location="http://www.bro.nl/schemas/1.0.0/SampleExternalModelA.xsd">
-            
-            <releases>
-                <release>20170302</release>
-            </releases>
-            
-            <construct>
-                <name>EM_AC1</name>
-                <xsd-type name="AC1" asAttributeDesignation="complextype" asAttribute="AC1type"/>
-                <managed-ids/>
-            </construct>
-            
-            <construct>
-                <name>EM_AC2</name>
-                <xsd-type name="AC2" asAttributeDesignation="complextype" asAttribute="AC2type"/>
-                <managed-ids/>
-            </construct>
-            
-        </map>
-    </conceptual-schema>
-</conceptual-schemas>
+<?xml version="1.0" encoding="UTF-8"?>
+<cs:ConceptualSchemas xmlns:xlink="http://www.w3.org/1999/xlink"
+                      xmlns:cs="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210"
+                      xmlns:cs-ref="http://www.imvertor.org/metamodels/conceptualschemas/model-ref/v20181210"
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                      xsi:schemaLocation="http://www.imvertor.org/metamodels/conceptualschemas/model/v20181210 
+                      ../../../etc/xsd/ConceptualSchema/root/model/v20181210/ConceptualSchemas_Model_v1_0.xsd">
+   <cs:mappings>
+      <cs:Mapping>
+         <cs:name>DEFAULT</cs:name>
+         <cs:use>
+            <cs-ref:MapRef xlink:href="#default"/>
+         </cs:use>
+      </cs:Mapping>
+   </cs:mappings>
+   <cs:components>
+      <cs:ConceptualSchemasComponents>
+         <cs:ConceptualSchema>
+            <cs:id>default</cs:id>
+            <cs:shortName>default</cs:shortName>
+            <cs:desc>default</cs:desc>
+            <cs:url>http://www.koop.nl/conceptual-schemas/default</cs:url>
+         </cs:ConceptualSchema>
+         <cs:Map>
+            <cs:id>SampleExternalModelA</cs:id>
+            <cs:namespace>http://www.bro.nl/SampleExternalModelA</cs:namespace>
+            <cs:location>http://www.bro.nl/schemas/1.0.0/SampleExternalModelA.xsd</cs:location>
+            <cs:phase>1</cs:phase>
+            <cs:version>1.0.0</cs:version>
+            <cs:release>20170302</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#default"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>EM_AC1</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>AC1</cs:name>
+                        <cs:asAttribute>AC1type</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>EM_AC2</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>AC2</cs:name>
+                        <cs:asAttribute>AC2type</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+      </cs:ConceptualSchemasComponents>
+   </cs:components>
+</cs:ConceptualSchemas>
