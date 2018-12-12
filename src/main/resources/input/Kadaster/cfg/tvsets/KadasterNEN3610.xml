@@ -130,11 +130,14 @@
             </stereotypes>
         </tv>
         
+        <?x
         <!-- voor de JSON schema's: -->
-        
-        <tv norm="space" id="CFG-TV-PROJECT-URL">
+       
+       <tv norm="space" id="CFG-TV-PROJECT-URL">
+            <name lang="en">project_url</name>
             <name lang="nl">project_url</name>
             <desc lang="nl">Url van het bij het koppelvlak horende GitHub project.</desc>
+            <name lang="en">project_url</name>
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-application-package</stereo>
@@ -143,6 +146,7 @@
         
         <tv norm="space" validate="" rules="" id="CFG-TV-BERICHTCODE">
             <!-- deze is erg teruggebracht, zie VNG voor complete set -->
+            <name lang="en">Messagecode</name>
             <name lang="nl">Berichtcode</name>
             <derive>no</derive>
             <inherit>yes</inherit>
@@ -156,6 +160,7 @@
         </tv>
         
         <tv norm="space" id="CFG-TV-TARGETROLEPLURAL">
+            <name lang="en">Target role plural</name>
             <name lang="nl">Target role in meervoud</name>
             <desc lang="nl">
                 De meervoudsnaam van de target role. 
@@ -166,6 +171,7 @@
         </tv>
         
         <tv norm="space" validate="" rules="" id="CFG-TV-SERIALISATION">
+            <name lang="en">Serialisation</name>
             <name lang="nl">Serialisation</name>
             <derive>no</derive>
             <inherit>no</inherit>
@@ -187,6 +193,7 @@
                 <stereo minmax="0..1">stereotype-name-objecttype</stereo>
             </stereotypes>
         </tv>
+        ?>
         
     </tagged-values>
 </tagset>
