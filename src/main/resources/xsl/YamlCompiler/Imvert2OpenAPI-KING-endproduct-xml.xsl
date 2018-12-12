@@ -565,8 +565,9 @@
 					<xsl:with-param name="messagetype" select="$messagetype"/>
 				</xsl:apply-templates>
 			</xsl:when>
-			<xsl:when test="@type='complex-datatype' or @type='table-datatype'">
-				<!-- If the current ep:construct is a complex-datatype an ep:construct element is generated with all necessary properties. -->
+			<xsl:when test="(@type='complex-datatype' and $construct//imvert:name != 'NEN3610ID') or @type='table-datatype'">
+				<!-- If the current ep:construct is a complex-datatype or a table-datatype an ep:construct element is generated 
+					 with all necessary properties, except when its name is NEN3610ID. In that case no reference to a complex-datatype is created. -->
 				<xsl:variable name="type-id" select="ep:type-id" />
 				<xsl:variable name="classconstruct" select="imf:get-construct-by-id($type-id,$packages)" />
 				<xsl:variable name="type-name" select="$classconstruct/imvert:name" />
@@ -1210,38 +1211,10 @@
 				</ep:construct>
 				
 			</xsl:when>
-<?x			<xsl:when test="@type='association' and not($construct//imvert:attributes/imvert:attribute) and not($construct//imvert:associations/imvert:association)">
-				<!-- If the class the association is refering to doesn't have attributes and associations a warning is generated. -->
-				<xsl:sequence select="imf:create-debug-comment(concat('OAS19500, id: ',$id),$debugging)" />
-				<xsl:variable name="class-name" select="$construct/imvert:name/@original"/>
-				<xsl:sequence select="imf:msg($construct,'WARNING','The construct [1] the association [2] is refering to does not have attributes or associations.',($class-name, ep:tech-name))"/>
-			</xsl:when>
-			<xsl:when test="@type='association' and ($construct//imvert:attributes/imvert:attribute or $construct//imvert:associations/imvert:association)"> ?>
 			<xsl:when test="@type='association'">
 					<!-- The association construct refering to a class construct doesn't have to be reproduced itself
 					 since in most cases (relations to groups are the exception) relation aren't represented within json. -->
 				<xsl:sequence select="imf:create-debug-comment(concat('OAS20000, id: ',$id),$debugging)" />
-<?x                <xsl:copy>
-                    <xsl:attribute name="type" select="@type"/>
-					<ep:parameters>
-						<ep:parameter>
-							<xsl:sequence select="imf:create-output-element('ep:name', 'type')" />
-							<xsl:sequence select="imf:create-output-element('ep:value', @typel)" />
-						</ep:parameter>
-					</ep:parameters>
-                    <xsl:sequence select="imf:create-output-element('ep:name', $name)"/>
-                    <xsl:sequence select="imf:create-output-element('ep:tech-name', imf:get-normalized-name($tech-name,'type-name'))"/>      
-                    <xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())"/>
-                    <ep:seq>
-                        <xsl:sequence select="imf:create-debug-comment(concat('OAS20500, id: ',$id),$debugging)"/>
-                        <xsl:apply-templates select="$construct//imvert:attributes/imvert:attribute"/>
-                        <xsl:sequence select="imf:create-debug-comment(concat('OAS21000, id: ',$id),$debugging)"/>                   
-                        <xsl:apply-templates select="ep:superconstruct" mode="as-local-type"/>
-                        <xsl:sequence select="imf:create-debug-comment(concat('OAS21500, id: ',$id),$debugging)"/>
-                        <xsl:apply-templates select="ep:construct[@type!='class']" mode="as-local-type"/>
-                        <xsl:sequence select="imf:create-debug-comment(concat('OAS22000, id: ',$id),$debugging)"/>
-                    </ep:seq>
-                </xsl:copy> ?>
 			</xsl:when>
 			<xsl:when test="@type = 'groepCompositie'">
 				<!-- if the ep:constructs is of 'groepCompositie' a global construct is generated. -->
@@ -1396,8 +1369,27 @@
 					</ep:seq>
 				</xsl:copy>
 			</xsl:when>
+			<xsl:when test="@type = 'complex-datatype' and $construct/imvert:name = 'NEN3610ID'">
+				<!-- if the ep:constructs is of 'complex-datatype' type and it's type-name is 'NEN3610ID' it's ignored
+					 doesn't have to be reproduced. There will be refered to a standard json component. -->
+			</xsl:when>
 			<xsl:when test="@type = 'complex-datatype'">
-				<!-- if the ep:constructs is of 'complex-datatype' type its name differs from the one in the when above. 
+
+
+
+
+				<xsl:result-document href="{concat('file:/c:/temp/construct/',generate-id(),'.xml')}">
+					<xsl:copy-of select="$construct" />
+				</xsl:result-document>
+				
+				
+				
+
+
+
+
+
+				<!-- if the ep:constructs is of 'complex-datatype' type its name differs from the one in the 5th when above. 
 					 It's name isn't based on the attribute using the type since it is more generic and used by more than one ep:construct.
 					 Also it's attributes and -->
 				<xsl:sequence select="imf:create-debug-comment(concat('OAS27000, id: ',$id),$debugging)" />
@@ -1536,6 +1528,47 @@
 		<xsl:variable name="type-is-GM-external" select="(exists(imvert:conceptual-schema-type) and contains(imvert:conceptual-schema-type,'GM_')) or contains(imvert:baretype,'GM_')"/>		
 
 		<xsl:choose>
+			<xsl:when test="imvert:type-name = 'NEN3610ID'">
+				<ep:construct>
+					<ep:parameters>
+						<xsl:choose>
+							<xsl:when test="$is-id = 'true'">
+								<ep:parameter>
+									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
+									<xsl:sequence select="imf:create-output-element('ep:value', 'true')" />
+								</ep:parameter>
+							</xsl:when>
+							<xsl:otherwise>
+								<ep:parameter>
+									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
+									<xsl:sequence select="imf:create-output-element('ep:value', 'false')" />
+								</ep:parameter>
+							</xsl:otherwise>
+						</xsl:choose>
+						<xsl:if test="$SIM-name != ''">
+							<ep:parameter>
+								<xsl:sequence select="imf:create-output-element('ep:name', 'SIM-name')" />
+								<xsl:sequence select="imf:create-output-element('ep:value', $SIM-name)" />
+							</ep:parameter>
+						</xsl:if>
+					</ep:parameters>
+					<xsl:sequence select="imf:create-debug-comment(concat('OAS28300, id: ',imvert:id),$debugging)" />
+					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
+					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
+					<xsl:choose>
+						<xsl:when test="(empty($doc) or $doc='') and $debugging">
+							<xsl:call-template name="documentationUnknown"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)" />
+					<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)" />
+					<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
+					<xsl:sequence select="imf:create-output-element('ep:type-name', 'NEN3610ID')" />
+				</ep:construct>
+			</xsl:when>
 			<xsl:when test="$type-is-GM-external">
 				<!-- If the attribute is a gml type attribute no reference to a type is neccessary since all these types are processed 
 					 the same way. -->

@@ -110,5 +110,7 @@
     
     <!-- URL of the standard JSON components are available --> 
     <parameter name="standard-json-components-url">https://raw.githubusercontent.com/VNG-Realisatie/Bevragingen-ingeschreven-personen/master/api-specificatie/components.yaml#/</parameter>
+    <parameter name="standard-yaml-headers-url">https://raw.githubusercontent.com/VNG-Realisatie/Bevragingen-ingeschreven-personen/master/api-specificatie/headers.yaml#/</parameter>
+    <parameter name="standard-geojson-components-url">https://raw.githubusercontent.com/VNG-Realisatie/Bevragingen-ingeschreven-personen/master/api-specificatie/geojson.yaml#/</parameter>
     
  </project-owner>    

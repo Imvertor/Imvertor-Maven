@@ -7,6 +7,11 @@
 	<!-- The first variable is meant for the server environment, the second one is used during development in XML-Spy. -->
 	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
 	<!--<xsl:variable name="debugging" select="true()" as="xs:boolean"/>-->
+	<xsl:variable name="standard-json-components-url" select="imf:get-config-parameter('standard-json-components-url')"/>
+	<xsl:variable name="standard-geojson-components-url" select="imf:get-config-parameter('standard-geojson-components-url')"/>
+	
+	<!--<xsl:variable name="standard-json-components-url" select="'http://www.test.nl/'"/>	-->
+	
 	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
 		 * 2.0
@@ -63,7 +68,7 @@
 		 * false()	-->
 		 
 	<xsl:variable name="json-schemadeclaration" select="true()"/>
-	
+
 	<xsl:template match="ep:message-sets">
 		<!-- First the JSON top-level structure is generated. -->
 		<xsl:value-of select="'{'"/>
@@ -619,7 +624,7 @@
 						<xsl:value-of select="'&quot;properties&quot;: {'"/>
 						<xsl:if test="empty(ep:parameters/ep:parameter[ep:name = 'abstract']) or ep:parameters/ep:parameter[ep:name = 'abstract']/ep:value = 'false'">
 							<xsl:value-of select="'&quot;self&quot;: {'"/>
-							<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/Link&quot;')"/>
+							<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-json-components-url,'HalLink&quot;')"/>
 							<xsl:value-of select="'}'"/>
 							<xsl:if test=".//ep:construct[(ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' or ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association') and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]">,</xsl:if>
 						</xsl:if>
@@ -916,109 +921,6 @@
 						</xsl:if>
 					</xsl:for-each>
 				</xsl:if>
-				<!-- Since hal+json applies the following properties are generated. -->    
-				,
-				<!-- If pagination is desired, collections apply, the following properties are generated. -->
-				<xsl:if test="$pagination = true()">
-				  "Pagineerlinks" : {
-					"allOf" : [ {
-					  "$ref" : "#/components/schemas/Collectionlinks"
-					}, {
-					  "type" : "object",
-					  "properties" : {
-						"first" : {
-						  "type" : "object",
-						  "description" : "uri voor het opvragen van de eerste pagina van deze collectie",
-						  "properties" : {
-							"href" : {
-							  "type" : "string",
-							  "format" : "uri",
-							  "example" : "https://datapunt.voorbeeldgemeente.nl/service/api/v1/resourcenaam?page=1"
-							},
-							"title" : {
-							  "type" : "string",
-							  "example" : "Eerste pagina"
-							}
-						  }
-						},
-						"previous" : {
-						  "type" : "object",
-						  "description" : "uri voor het opvragen van de vorige pagina van deze collectie",
-						  "properties" : {
-							"href" : {
-							  "type" : "string",
-							  "format" : "uri",
-							  "example" : "https://datapunt.voorbeeldgemeente.nl/service/api/v1/resourcenaam?page=3"
-							},
-							"title" : {
-							  "type" : "string",
-							  "example" : "Vorige pagina"
-							}
-						  }
-						},
-						"next" : {
-						  "type" : "object",
-						  "description" : "uri voor het opvragen van de volgende pagina van deze collectie",
-						  "properties" : {
-							"href" : {
-							  "type" : "string",
-							  "format" : "uri",
-							  "example" : "https://datapunt.voorbeeldgemeente.nl/service/api/v1/resourcenaam?page=5"
-							},
-							"title" : {
-							  "type" : "string",
-							  "example" : "Volgende pagina"
-							}
-						  }
-						},
-						"last" : {
-						  "type" : "object",
-						  "description" : "uri voor het opvragen van de laatste pagina van deze collectie",
-						  "properties" : {
-							"href" : {
-							  "type" : "string",
-							  "format" : "uri",
-							  "example" : "https://datapunt.voorbeeldgemeente.nl/service/api/v1/resourcenaam?page=8"
-							},
-							"title" : {
-							  "type" : "string",
-							  "example" : "Laatste pagina"
-							}
-						  }
-						}
-					  }
-					} ]
-				  },
-				</xsl:if>
-				<!-- If at least on eof the messages is a Gc-type message the 'Collectionslinks' component is generated. -->
-				"Href" : {
-				  "type" : "string",
-				  "format" : "uri"
-				},
-				"Link" : {
-				  "type" : "object",
-				  "properties" : {
-					"href" : {
-					  "$ref" : "#/components/schemas/Href"
-					}
-				  }
-				}
-				<xsl:if test="//ep:message[contains(ep:parameters/ep:parameter[ep:name = 'berichtcode']/ep:value,'Gc')]">
-				  ,"Collectionlinks" : {
-					  "type" : "object",
-					  "properties" : {
-					    "self" : {
-						  "type" : "object",
-						  "description" : "uri van de api aanroep die tot dit resultaat heeft geleid",
-						  "properties" : {
-						    "href" : {
-						      "$ref" : "#/components/schemas/Href"
-						    }
-						  }
-					    }
-					  }
-				  }
-				</xsl:if>
 			</xsl:when>
 			<xsl:otherwise>
 				<!-- If serialisation isn't hal+json no _links en _embedded components have to be generated, only a comma. -->
@@ -1042,77 +944,6 @@
 				<xsl:value-of select="'}'"/>
 			</xsl:when>
 		</xsl:choose>
-		<xsl:if test="$json-version = '3.0'">
-			<xsl:text>,
-  "headers": {
-    "api_version": {
-	  "schema": {
-	    "type": "integer",
-	    "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep.",
-	    "example": "1.0.1"
-        }
-    },
-    "warning": {
-      "schema": {
-        "type": "string", 
-        "description": "zie RFC 7234. In het geval een major versie wordt uitgefaseerd, gebruiken we warn-code 299 ('Miscellaneous Persistent Warning') en het API end-point (inclusief versienummer) als de warn-agent van de warning, gevolgd door de warn-text met de human-readable waarschuwing",
-        "example": "299 https://service.../api/.../v1 'Deze versie van de API is verouderd en zal uit dienst worden genomen op 2018-02-01. Raadpleeg voor meer informatie hier de documentatie: https://omgevingswet.../api/.../v1'."
-        }
-    },</xsl:text>
-			<xsl:if test="//ep:message[ep:parameters/ep:parameter[ep:name='grouping']/ep:value='collection']">
-				<xsl:text>
-    "X_Total_Count": {
-      "schema": {
-        "type": "integer",
-        "description": "Totaal aantal paginas.",
-        "example": "163"
-        }
-    },</xsl:text>
-				<xsl:if test="$pagination = true()">
-					<xsl:text>
-    "X_Pagination_Count": {
-	  "schema": {
-	    "type": "integer",
-	    "description": "Totaal aantal paginas.",
-	    "example": "16"
-	    }
-    },
-    "X_Pagination_Page":  { 
-      "required": true,
-	  "schema": { 
-	    "type": "integer",
-	    "description": "Huidige pagina.",
-	    "example": "3"
-	    }
-    },
-    "X_Pagination_Limit": {
-      "required": true,
-	  "schema": {
-	    "type": "integer",
-	    "description": "Aantal resultaten per pagina.",
-	    "example": "20"
-	    }
-    },</xsl:text>
-				</xsl:if>
-			</xsl:if>
-			<xsl:text>
-    "X_Rate_Limit_Limit": {
-	  "schema": {
-	    "type": "integer"
-	    }
-    },
-    "X_Rate_Limit_Remaining": {
-	  "schema": {
-	    "type": "integer"
-	    }
-    },
-    "X_Rate_Limit_Reset": {
-	  "schema": {
-	    "type": "integer"
-	    }
-    }
-  }</xsl:text>
-		</xsl:if>
 		<xsl:value-of select="'}'"/>
 		<xsl:value-of select="'}'"/>
 	</xsl:template>
@@ -1664,7 +1495,7 @@
 			<xsl:when test="ep:parameters/ep:parameter[ep:name='type']/ep:value = 'GM-external'">
 				<!-- If the property is a gml type this when applies. In all these case a standard content (except the documentation)
 					 is generated. -->
-				<xsl:variable name="documentation">
+	<?x			<xsl:variable name="documentation">
 					<xsl:value-of select="ep:documentation//ep:p"/>
 				</xsl:variable>
 				<xsl:value-of select="concat('&quot;title&quot;: &quot;',ep:parameters/ep:parameter[ep:name='SIM-name']/ep:value,'&quot;,')"/>
@@ -1673,7 +1504,8 @@
 				<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
 				<xsl:value-of select="' Conform geojson, zie http://geojson.org.'"/>
 				<xsl:value-of select="'&quot;,'"/>
-				<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;'"/>
+				<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;'"/> ?>
+				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-geojson-components-url,'GeoJSONGeometry&quot;')"/>
 			</xsl:when>
 			<xsl:when test="exists(ep:data-type)">
 				<!-- If the construct has a ep:data-type element, a description, an optional format and, also optional, some facets have to be generated. -->
@@ -1725,6 +1557,9 @@
 				<xsl:value-of select="'&quot;items&quot;: {'"/>
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/', $typeName, '&quot;')"/>
 				<xsl:value-of select="'}'"/>
+			</xsl:when>
+			<xsl:when test="$typeName = 'NEN3610ID'">
+				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-json-components-url,'Nen3610Id&quot;')"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/', $typeName, '&quot;')"/>
@@ -1918,13 +1753,13 @@
 					<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
 				</xsl:if>
 				<xsl:value-of select="'&quot;items&quot;: {'"/>
-				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/Link&quot;')"/>
+				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-json-components-url,'HalLink&quot;')"/>
 				<xsl:value-of select="'}'"/>
 			</xsl:when>
 			<xsl:when test="$occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
 				<xsl:value-of select="'&quot;properties&quot;: {'"/>
 				<xsl:value-of select="'&quot;href&quot;: {'"/>
-				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/Href&quot;')"/>
+				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-json-components-url,'Href&quot;')"/>
 				<xsl:value-of select="'}'"/>
 				<xsl:value-of select="'}'"/>
 			</xsl:when>
@@ -1942,7 +1777,7 @@
 				<xsl:value-of select="'&quot;,'"/>
 				<xsl:value-of select="'&quot;properties&quot;: {'"/>
 				<xsl:value-of select="'&quot;href&quot;: {'"/>
-				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/Href&quot;')"/>
+				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-json-components-url,'Href&quot;')"/>
 				<xsl:value-of select="'}'"/>
 				<xsl:value-of select="'}'"/>
 				<xsl:value-of select="'}'"/>
@@ -1950,7 +1785,7 @@
 			<xsl:when test="$occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
 				<xsl:value-of select="'&quot;properties&quot;: {'"/>
 				<xsl:value-of select="'&quot;href&quot;: {'"/>
-				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/Href&quot;')"/>
+				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-json-components-url,'Href&quot;')"/>
 				<xsl:value-of select="'}'"/>
 				<xsl:value-of select="'}'"/>
 			</xsl:when>

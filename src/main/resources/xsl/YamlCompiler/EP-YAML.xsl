@@ -13,6 +13,8 @@
 		 * geojson	-->
 	<xsl:variable name="serialisation" select="$message-sets/ep:parameters/ep:parameter[ep:name='serialisation']/ep:value"/>
 	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
+	<xsl:variable name="standard-yaml-headers-url" select="imf:get-config-parameter('standard-yaml-headers-url')"/>
+	<xsl:variable name="standard-json-components-url" select="imf:get-config-parameter('standard-json-components-url')"/>
 	
 	<xsl:template match="ep:message-sets">
 		<xsl:apply-templates select="ep:message-set"/>
@@ -133,7 +135,7 @@
 					<xsl:sequence select="//ep:message[ep:name = $rawMessageName and ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response']"/>
 				</xsl:variable>
 				<xsl:variable name="responseConstruct" select="$relatedResponseMessage/ep:message/ep:seq/ep:construct/ep:type-name"/>
-				<xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstruct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
+				<xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstruct]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameter[ep:name='berichtcode']/ep:value = $berichttype]/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
 				
 				<xsl:variable name="determinedUriStructure">
 					<!-- This variable contains a structure determined from the messageName. -->
@@ -543,29 +545,25 @@
 				<xsl:text>&#xa;          description: "Zoekactie geslaagd"</xsl:text>
 				<xsl:text>&#xa;          headers:</xsl:text>
 				<xsl:text>&#xa;            api-version:</xsl:text>
-				<xsl:text>&#xa;              $ref: '#/components/headers/api_version'</xsl:text>
+				<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'api_version&quot;')"/>
 				<xsl:text>&#xa;            warning:</xsl:text>
-				<xsl:text>&#xa;              $ref: '#/components/headers/warning'</xsl:text>
+				<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'warning&quot;')"/>
 				<xsl:if test="ep:parameters/ep:parameter[ep:name='grouping']/ep:value='collection'">
 					<!-- In case of a collection type message create the following properties. -->
 					<xsl:if test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value='true'">
 						<!-- In case of a collection type message and if pagination applies create the following properties. -->
-						<xsl:text>&#xa;            X-Total-Count:</xsl:text>
-						<xsl:text>&#xa;              $ref: '#/components/headers/X_Total_Count'</xsl:text>
-						<xsl:text>&#xa;            X-Pagination-Count:</xsl:text>
-						<xsl:text>&#xa;              $ref: '#/components/headers/X_Pagination_Count'</xsl:text>
 						<xsl:text>&#xa;            X-Pagination-Page:</xsl:text>
-						<xsl:text>&#xa;              $ref: '#/components/headers/X_Pagination_Page'</xsl:text>
+						<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Pagination_Page&quot;')"/>
 						<xsl:text>&#xa;            X-Pagination-Limit:</xsl:text>
-						<xsl:text>&#xa;              $ref: '#/components/headers/X_Pagination_Limit'</xsl:text>
+						<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Pagination_Limit&quot;')"/>
 					</xsl:if>
 				</xsl:if>
 				<xsl:text>&#xa;            X-Rate-Limit-Limit:</xsl:text>
-				<xsl:text>&#xa;              $ref: '#/components/headers/X_Rate_Limit_Limit'</xsl:text>
+				<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Rate_Limit_Limit&quot;')"/>
 				<xsl:text>&#xa;            X-Rate-Limit-Remaining:</xsl:text>
-				<xsl:text>&#xa;              $ref: '#/components/headers/X_Rate_Limit_Remaining'</xsl:text>
+				<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Rate_Limit_Remaining&quot;')"/>
 				<xsl:text>&#xa;            X-Rate-Limit-Reset:</xsl:text>
-				<xsl:text>&#xa;              $ref: '#/components/headers/X_Rate_Limit_Reset'  </xsl:text>
+				<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Rate_Limit_Reset&quot;')"/>
 				<xsl:text>&#xa;          content:</xsl:text>
 				<xsl:text>&#xa;            application/</xsl:text><xsl:value-of select="$serialisation"/><xsl:text>:</xsl:text>
 				<xsl:text>&#xa;              schema:</xsl:text>
@@ -575,32 +573,32 @@
 						 json part of the yaml file. -->
 					<xsl:choose>
 						<xsl:when test="$serialisation = 'json'">
-							<xsl:text>&#xa;                       type: array</xsl:text>
-							<xsl:text>&#xa;                       items:</xsl:text>
-							<xsl:text>&#xa;                         $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
+							<xsl:text>&#xa;                type: array</xsl:text>
+							<xsl:text>&#xa;                items:</xsl:text>
+							<xsl:text>&#xa;                  $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
 						</xsl:when>
 						<xsl:when test="ep:parameters/ep:parameter[ep:name='grouping']/ep:value = 'resource'">
 							<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
 						</xsl:when>
 						<xsl:when test="contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc')">
-							<xsl:text>&#xa;               type: object</xsl:text>
-							<xsl:text>&#xa;               properties:</xsl:text>
-							<xsl:text>&#xa;                 _links:</xsl:text>
+							<xsl:text>&#xa;                type: object</xsl:text>
+							<xsl:text>&#xa;                properties:</xsl:text>
+							<xsl:text>&#xa;                  _links:</xsl:text>
 							<xsl:choose>
 								<xsl:when test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value = 'true'">
-									<xsl:text>&#xa;                   $ref: '#/components/schemas/Pagineerlinks'</xsl:text>
+									<xsl:text>&#xa;                    $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-components-url,'HalPaginationLinks&quot;')"/>
 								</xsl:when>
 								<xsl:otherwise>
-									<xsl:text>&#xa;                   $ref: '#/components/schemas/Collectionlinks'</xsl:text>
+									<xsl:text>&#xa;                    $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-components-url,'HalCollectionLinks&quot;')"/>
 								</xsl:otherwise>
 							</xsl:choose>
-							<xsl:text>&#xa;                 _embedded:</xsl:text>
-							<xsl:text>&#xa;                   type: object</xsl:text>
-							<xsl:text>&#xa;                   properties:</xsl:text>
-							<xsl:text>&#xa;                     </xsl:text><xsl:value-of select="$meervoudigeNaamResponseTree"/><xsl:text>:</xsl:text>
-							<xsl:text>&#xa;                       type: array</xsl:text>
-							<xsl:text>&#xa;                       items:</xsl:text>
-							<xsl:text>&#xa;                         $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
+							<xsl:text>&#xa;                  _embedded:</xsl:text>
+							<xsl:text>&#xa;                    type: object</xsl:text>
+							<xsl:text>&#xa;                    properties:</xsl:text>
+							<xsl:text>&#xa;                      </xsl:text><xsl:value-of select="$meervoudigeNaamResponseTree"/><xsl:text>:</xsl:text>
+							<xsl:text>&#xa;                        type: array</xsl:text>
+							<xsl:text>&#xa;                        items:</xsl:text>
+							<xsl:text>&#xa;                          $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
 						</xsl:when>
 					</xsl:choose>
 				</xsl:for-each>
@@ -1042,9 +1040,9 @@
 				<xsl:text>&#xa;                format: uri</xsl:text>
 				<xsl:text>&#xa;                example: '</xsl:text><xsl:value-of select="concat($rawMessageName,'/',$exampleSleutelEntiteittype)" /><xsl:text>'</xsl:text>
 				<xsl:text>&#xa;            api-version:</xsl:text>
-				<xsl:text>&#xa;              $ref: 'https://raw.githubusercontent.com/VNG-Realisatie/Bevragingen-ingeschreven-personen/master/api-specificatie/headers.yaml#/api_version'</xsl:text>
+				<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'api_version&quot;')"/>
 				<xsl:text>&#xa;            warning:</xsl:text>
-				<xsl:text>&#xa;              $ref: 'https://raw.githubusercontent.com/VNG-Realisatie/Bevragingen-ingeschreven-personen/master/api-specificatie/headers.yaml#/warning'</xsl:text>
+				<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'warning&quot;')"/>
 				<xsl:text>&#xa;          content:</xsl:text>
 				<xsl:text>&#xa;            application/</xsl:text><xsl:value-of select="$serialisation"/><xsl:text>:</xsl:text>
 				<xsl:text>&#xa;              schema:</xsl:text>
@@ -1090,14 +1088,13 @@
 	<xsl:function name="imf:Foutresponse">
 		<xsl:param name="foutcode"/>
 		<xsl:param name="omschrijving"/>
-		<xsl:variable name="url" select="imf:get-config-parameter('standard-json-components-url')"/>
 		<xsl:text>&#xa;        '</xsl:text><xsl:value-of select="$foutcode"/><xsl:text>':</xsl:text>
 		<xsl:text>&#xa;          description: </xsl:text><xsl:value-of select="$omschrijving"/>
 		<xsl:text>&#xa;          content:</xsl:text>
 		<xsl:text>&#xa;            application/problem+json:</xsl:text>
 		<xsl:text>&#xa;              schema:</xsl:text>
 		<xsl:text>&#xa;                $ref: </xsl:text>
-		<xsl:value-of select="concat('&quot;',$url,'Foutbericht&quot;')"/>
+		<xsl:value-of select="concat('&quot;',$standard-json-components-url,'Foutbericht&quot;')"/>
 	</xsl:function>
 
 	<xsl:template match="ep:documentation">
