@@ -589,7 +589,7 @@
          <cs:Map>
             <cs:id>SAM202</cs:id>
             <cs:namespace>http://www.opengis.net/sampling/2.0</cs:namespace>
-            <cs:location>http://www.opengis.net/sampling/2.0/sam-profile.xsd</cs:location>
+            <cs:location>https://schema.broservices.nl/profile/sa/1.0/sa-profile.xsd</cs:location>
             <cs:phase>3</cs:phase>
             <cs:version>2.0.2</cs:version>
             <cs:release>BROPROFILE</cs:release>
