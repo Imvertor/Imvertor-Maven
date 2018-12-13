@@ -57,7 +57,7 @@
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:variable name="referencing-construct" select="(//*[imvert:type-id = current()/imvert:id])[1]"/>
-                        <xsl:sequence select="imf:msg($referencing-construct,'ERROR','Reference to [1] in outside model could not be resolved when using mapping [2]',(imf:string-group(imvert:name),$conceptual-schema-mapping-name))"/>
+                        <xsl:sequence select="imf:msg($referencing-construct,'WARNING','Reference to [1] in outside model could not be resolved when using mapping [2]',(imf:string-group(imvert:name),$conceptual-schema-mapping-name))"/>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:variable>
@@ -65,34 +65,36 @@
                 We have drilled down to single construct (or none if error) 
                 Get the URL of the conceptual schema this is part of.
             -->
-            
-            <xsl:variable name="schema" select="imf:get-schema-for-construct($construct)"/>
-            <xsl:variable name="map" select="$construct/../.."/>
-            
-            <xsl:variable name="cs" select="($schema/cs:url)[1]"/>
-            <xsl:variable name="cn" select="($schema/cs:id)[1]"/>
-            <xsl:variable name="sn" select="($schema/cs:shortName)[1]"/>
-        
-            <xsl:variable name="ve" select="($map/cs:version)[1]"/>
-            <xsl:variable name="ph" select="($map/cs:phase)[1]"/>
-            
-            <imvert:class origin="system" cs="{$cs}" cn="{$cn}" sn="{$sn}" ve="{$ve}" ph="{$ph}">
-                <imvert:name original="{imvert:name}">
-                    <xsl:value-of select="imvert:name"/>
-                </imvert:name>
-                <xsl:sequence select="imvert:id"/>
-                <xsl:if test="exists($construct/cs:catalogEntries/cs:CatalogEntry) ">
-                    <imvert:catalog>
-                        <xsl:sequence select="imf:create-catalog-url($construct)"/>     
-                    </imvert:catalog>
-                </xsl:if>
-                <xsl:if test="imf:boolean($construct/cs:sentinel)">
-                    <imvert:sentinel>true</imvert:sentinel>
-                </xsl:if> 
-                <imvert:stereotype id="stereotype-name-interface">
-                    <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-interface')"/>
-                </imvert:stereotype>
-            </imvert:class>
+            <xsl:if test="exists($construct)">
+                <xsl:variable name="schema" select="imf:get-schema-for-construct($construct)"/>
+                <xsl:variable name="map" select="$construct/../.."/>
+                
+                <xsl:variable name="cs" select="($schema/cs:url)[1]"/>
+                <xsl:variable name="cn" select="($schema/cs:id)[1]"/>
+                <xsl:variable name="sn" select="($schema/cs:shortName)[1]"/>
+                
+                <xsl:variable name="ve" select="($map/cs:version)[1]"/>
+                <xsl:variable name="ph" select="($map/cs:phase)[1]"/>
+                
+                <imvert:class origin="system" cs="{$cs}" cn="{$cn}" sn="{$sn}" ve="{$ve}" ph="{$ph}">
+                    <imvert:name original="{imvert:name}">
+                        <xsl:value-of select="imvert:name"/>
+                    </imvert:name>
+                    <xsl:sequence select="imvert:id"/>
+                    <xsl:if test="exists($construct/cs:catalogEntries/cs:CatalogEntry) ">
+                        <imvert:catalog>
+                            <xsl:sequence select="imf:create-catalog-url($construct)"/>     
+                        </imvert:catalog>
+                    </xsl:if>
+                    <xsl:if test="imf:boolean($construct/cs:sentinel)">
+                        <imvert:sentinel>true</imvert:sentinel>
+                    </xsl:if> 
+                    <imvert:stereotype id="stereotype-name-interface">
+                        <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-interface')"/>
+                    </imvert:stereotype>
+                </imvert:class>
+            </xsl:if> 
+      
         </xsl:for-each>
     </xsl:variable>    
     
