@@ -81,9 +81,9 @@
             <abbrev>BHR-GT</abbrev>
         </registratieobject>
         <registratieobject>
-            <name lang="nl">Bodemkundig profielkuilonderzoek</name>
-            <name lang="en">Soil pit research</name>
-            <abbrev>SPR</abbrev>
+            <name lang="nl">Bodemkundig wandonderzoek</name>
+            <name lang="en">Soil face research</name>
+            <abbrev>SFR</abbrev>
         </registratieobject>
     </domein>
     <domein>
