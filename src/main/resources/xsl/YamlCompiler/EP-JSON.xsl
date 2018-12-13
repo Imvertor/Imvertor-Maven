@@ -10,7 +10,8 @@
 	<xsl:variable name="standard-json-components-url" select="imf:get-config-parameter('standard-json-components-url')"/>
 	<xsl:variable name="standard-geojson-components-url" select="imf:get-config-parameter('standard-geojson-components-url')"/>
 	
-	<!--<xsl:variable name="standard-json-components-url" select="'http://www.test.nl/'"/>	-->
+	<!--<xsl:variable name="standard-json-components-url" select="'http://www.test.nl/'"/>	
+	<xsl:variable name="standard-geojson-components-url" select="'http://www.test.nl/'"/>-->
 	
 	
 	<!-- This parameter defines which version of JSON has to be generated, it can take the next values:
@@ -1129,7 +1130,10 @@
 		<xsl:variable name="requiredproperties" as="xs:boolean">
 			<!-- The variable requiredproperties confirms if at least one of the properties of the current construct is required. -->
 			<xsl:choose>
-				<xsl:when test="ep:seq/ep:construct[(ep:parameters/ep:parameter[ep:name='type']/ep:value != 'association' or empty(ep:parameters/ep:parameter[ep:name='type']/ep:value)) and not(ep:seq) and not(empty(ep:min-occurs)) and ep:min-occurs > 0]">
+				<xsl:when test="$serialisation='hal+json' and ep:seq/ep:construct[(ep:parameters/ep:parameter[ep:name='type']/ep:value != 'association' or empty(ep:parameters/ep:parameter[ep:name='type']/ep:value)) and not(ep:seq) and not(empty(ep:min-occurs)) and ep:min-occurs > 0]">
+					<xsl:value-of select="true()"/>
+				</xsl:when>
+				<xsl:when test="$serialisation='json' and ep:seq/ep:construct[not(ep:seq) and not(empty(ep:min-occurs)) and ep:min-occurs > 0]">
 					<xsl:value-of select="true()"/>
 				</xsl:when>
 				<xsl:otherwise>
@@ -1140,16 +1144,39 @@
 		<xsl:if test="$requiredproperties">
 			<!-- Only if the variable requiredproperties is true a 'required' section has to be generated. -->
 			<xsl:value-of select="',&quot;required&quot;: ['"/>
-			<xsl:for-each select="ep:seq/ep:construct[(ep:parameters/ep:parameter[ep:name='type']/ep:value != 'association' or empty(ep:parameters/ep:parameter[ep:name='type']/ep:value)) and not(ep:seq) and not(empty(ep:min-occurs)) and ep:min-occurs > 0]">
-				<!-- Loops over requred constructs, which are required, are no associations and have no ep:seq. -->
-				<xsl:value-of select="'&quot;'"/>
-				<xsl:value-of select="translate(ep:tech-name,'.','_')"/>
-				<xsl:value-of select="'&quot;'"/>
-				<xsl:if test="position() != last()">
-					<!-- As long as the current construct isn't the last required construct a comma separator has to be generated. -->
-					<xsl:value-of select="','"/>
-				</xsl:if>
-			</xsl:for-each>
+			<xsl:choose>
+				<xsl:when test="$serialisation='hal+json'">
+					<xsl:for-each select="ep:seq/ep:construct[(ep:parameters/ep:parameter[ep:name='type']/ep:value != 'association' or empty(ep:parameters/ep:parameter[ep:name='type']/ep:value)) and not(ep:seq) and not(empty(ep:min-occurs)) and ep:min-occurs > 0]">
+						<!-- Loops over requred constructs, which are required, are no associations and have no ep:seq. -->
+						<xsl:value-of select="'&quot;'"/>
+						<xsl:value-of select="translate(ep:tech-name,'.','_')"/>
+						<xsl:value-of select="'&quot;'"/>
+						<xsl:if test="position() != last()">
+							<!-- As long as the current construct isn't the last required construct a comma separator has to be generated. -->
+							<xsl:value-of select="','"/>
+						</xsl:if>
+					</xsl:for-each>
+				</xsl:when>
+				<xsl:when test="$serialisation='json'">
+					<xsl:for-each select="ep:seq/ep:construct[not(ep:seq) and not(empty(ep:min-occurs)) and ep:min-occurs > 0]">
+						<!-- Loops over requred constructs, which are required, are no associations and have no ep:seq. -->
+						<xsl:value-of select="'&quot;'"/>
+						<xsl:choose>
+							<xsl:when test="ep:parameters/ep:parameter[ep:name='meervoudigeNaam']">
+								<xsl:value-of select="translate(ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value,'.','_')"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="translate(ep:tech-name,'.','_')"/>
+							</xsl:otherwise>
+						</xsl:choose>
+						<xsl:value-of select="'&quot;'"/>
+						<xsl:if test="position() != last()">
+							<!-- As long as the current construct isn't the last required construct a comma separator has to be generated. -->
+							<xsl:value-of select="','"/>
+						</xsl:if>
+					</xsl:for-each>
+				</xsl:when>
+			</xsl:choose>
 			<xsl:value-of select="']'"/>
 		</xsl:if>
 		
