@@ -130,6 +130,22 @@
             </stereotypes>
         </tv>
         
+        <tv norm="note" id="CFG-TV-EXAMPLE">
+            <name lang="nl">Voorbeeld</name>
+            <name lang="en">Example</name>
+            <desc lang="nl">Een of meerdere voorbeelden van het gebryuik van deze constructie.</desc>
+            <desc lang="en">TODO</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="0..1">stereotype-name-referentielijst</stereo>
+                <stereo minmax="0..1">stereotype-name-referentie-element</stereo>
+            </stereotypes>
+        </tv> 
+        
         <?x
         <!-- voor de JSON schema's: -->
        

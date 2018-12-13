@@ -296,7 +296,7 @@
                         <xsl:apply-templates select="item[4]" mode="#current"/>
                     </td>
                 </xsl:when> 
-                <xsl:when test="$type = 'EXPLANATION'">
+                <xsl:when test="$type = ('EXPLANATION','EXAMPLE')">
                     <td width="5%">&#160;</td>
                     <td width="95%">
                         <xsl:apply-templates select="item" mode="#current"/>

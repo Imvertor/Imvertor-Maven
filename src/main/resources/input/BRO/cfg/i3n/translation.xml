@@ -95,6 +95,11 @@
         <trans lang="en">Description</trans>
     </item>
     <item>
+        <key>VOORBEELD</key>
+        <trans lang="nl">Voorbeeld</trans>
+        <trans lang="en">Example</trans>
+    </item>
+    <item>
         <key>DATUMOPNAME</key>
         <trans lang="nl">Datum opname</trans>
         <trans lang="en">Date recorded</trans>

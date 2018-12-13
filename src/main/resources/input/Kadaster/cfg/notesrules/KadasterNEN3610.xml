@@ -19,4 +19,13 @@
             <!-- content is URI; may be several lines where each line holds a TV value  -->
         </section>
     </notes-rule>
+    
+    <notes-rule lang="en">
+        <section title="Example" tagged-value="CFG-TV-EXAMPLE" process="lines"/>
+    </notes-rule>
+    
+    <notes-rule lang="nl">
+        <section title="Voorbeeld" tagged-value="CFG-TV-EXAMPLE" process="lines"/>
+    </notes-rule>
+    
 </notes-rules>

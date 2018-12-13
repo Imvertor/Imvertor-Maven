@@ -3,7 +3,10 @@
     
     <!-- grouping translations -->
     
-    <xi:include href="../../../Imvertor/cfg/i3n/translation.xml"/>
+    <!-- for english, follow the BRO translations. -->
+    <!-- TODO move to a standard location -->
+    
+    <xi:include href="../../../BRO/cfg/i3n/translation.xml"/>
     
     <!-- tagged values -->
 
@@ -402,7 +405,7 @@
         <key>EXPLANATION</key>
         <trans lang="nl">Toelichting</trans>
     </item>
-   
+    
     <item>
         <key>DIAGRAM-TYPE</key>
         <trans lang="nl">Diagram type</trans>
