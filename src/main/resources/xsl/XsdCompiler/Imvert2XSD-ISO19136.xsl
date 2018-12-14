@@ -826,7 +826,7 @@
             </xs:appinfo>
         </xsl:variable>
         
-        <xsl:variable name="is-gml-measure" select="$this/imvert:conceptual-schema-type = 'Measure' and $this/imvert:type-package = 'Geography Markup Language 3'"/>
+        <xsl:variable name="is-gml-measure" select="$this/imvert:conceptual-schema-type = 'Measure' and $this/imvert:type-package = 'GML3'"/>
 
         <xsl:variable name="has-key" select="$defining-class/imvert:attributes/imvert:attribute[imvert:stereotype/@id = 'stereotype-name-key']"/>
         

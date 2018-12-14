@@ -12,7 +12,7 @@
         <!-- determine the name; hard koderen -->
         <xsl:for-each select="$attribute"> <!-- singleton -->
             <xsl:choose>
-                <xsl:when test="imvert:type-package='Geography Markup Language 3'">
+                <xsl:when test="imvert:type-package='GML3'">
                     <xsl:variable name="type-suffix" select="if ($as-type) then 'Type' else ''"/>
                     <xsl:variable name="type-prefix">
                         <xsl:choose>
