@@ -30,7 +30,7 @@ public class HttpTester {
 		
 		HashMap<String, String> parms = new HashMap<String, String>();
 		
-		f.put(new URI("https://linkedmatter.plan.io/projects/imvertor-publiek/wiki/TestSub.xml"), headerMap, parms);
+		f.put(new URI("https://armatiek-solutions.plan.io/projects/imvertor-publiek/wiki/TestSub.xml"), headerMap, parms);
 		System.out.println(f.getStatus());
 	}
 	

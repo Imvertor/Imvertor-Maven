@@ -53,7 +53,7 @@
       <cli-parm>
          <name>executor</name>
          <arg>URL</arg>
-         <tip>The URL of the instance of Imvertor executor, for example: http://imvertor.linkedmatter.com/imvertor-executor</tip>
+         <tip>The URL of the instance of Imvertor executor, for example: http://imvertor.armatiek.nl/imvertor-executor</tip>
          <required>true</required>
       </cli-parm> 
       x?>
