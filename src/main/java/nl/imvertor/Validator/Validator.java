@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
-import nl.imvertor.common.xsl.extensions.ImvertorStripAccents;
+import nl.imvertor.common.file.XmlFile;
 import nl.imvertor.common.xsl.extensions.ImvertorValidateRegex;
 
 
@@ -54,14 +54,20 @@ public class Validator extends Step {
 		runner.info(logger,"Validating model");
 
 		String mm = configurator.getXParm("cli/metamodel");
-				
+			
+		boolean succeeds = true;
+
+		// the conceptual schema file holds a spec that must be validated before processed.
+		XmlFile csFile = new XmlFile(configurator.getXParm("properties/CONCEPTUAL_SCHEMA_MAPPING_FILE"));
+		if (!csFile.isValid()) {
+			configurator.getRunner().error(logger,"Conceptual schema file errors - Please notify your system administrator: " + csFile.getMessages().get(0));
+			succeeds = false;
+		}
+		
 		// create a transformer
 		Transformer transformer = new Transformer();
 		transformer.setExtensionFunction(new ImvertorValidateRegex());
 		    
-	    // transform 
-		boolean succeeds = true;
-
 		// CANONIZATION IN STEPS; 
 		// each second, third... step is known as _2, _3 etc. in the parameter sequence as configured.
 		// first step has no sequence number.
