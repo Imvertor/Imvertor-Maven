@@ -498,8 +498,11 @@
                     <xsl:apply-templates mode="#current"/>
                 </a>
             </xsl:when>
-            <xsl:otherwise>
+            <xsl:when test="exists(item)">
                 <xsl:apply-templates mode="#current"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:create-formatted-text(.)"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -534,5 +537,16 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
+    
+    <xsl:function name="imf:create-formatted-text">
+        <xsl:param name="text"/>
+        <xsl:for-each select="tokenize($text,'\n')">
+            <xsl:value-of select="."/>
+            <xsl:if test="position() != last()">
+                <br/>
+            </xsl:if>
+        </xsl:for-each>
+    </xsl:function>
+    
     
 </xsl:stylesheet>

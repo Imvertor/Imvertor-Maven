@@ -434,7 +434,7 @@
                <!-- this is the client info, do not show that subpath. -->         
             </xsl:otherwise>
         </xsl:choose>
-        <xsl:apply-templates select="item[not(@type = 'SUPPLIER')]" mode="#current"/>
+        <xsl:sequence select="imf:create-formatted-text(item[not(@type = 'SUPPLIER')])"/>
     </xsl:template>
     
     <xsl:template match="item" mode="#all">
@@ -451,8 +451,11 @@
                     <xsl:apply-templates mode="#current"/>
                 </a>
             </xsl:when>
-            <xsl:otherwise>
+            <xsl:when test="exists(item)">
                 <xsl:apply-templates mode="#current"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="imf:create-formatted-text(.)"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -489,6 +492,16 @@
     <xsl:function name="imf:get-section-level" as="xs:integer">
         <xsl:param name="section" as="element(section)"/>
         <xsl:value-of select="count($section/ancestor::section) + (if ($has-multiple-domains) then 2 else 1)"/>
+    </xsl:function>
+    
+    <xsl:function name="imf:create-formatted-text">
+        <xsl:param name="text"/>
+        <xsl:for-each select="tokenize($text,'\n')">
+            <xsl:value-of select="."/>
+            <xsl:if test="position() != last()">
+                <br/>
+            </xsl:if>
+        </xsl:for-each>
     </xsl:function>
     
 </xsl:stylesheet>
