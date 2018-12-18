@@ -844,6 +844,8 @@
         <xsl:variable name="defining-class-is-group" select="$defining-class/imvert:stereotype/@id = ('stereotype-name-composite')"/>
         <xsl:variable name="meta-is-role-based" select="imf:boolean($configuration-metamodel-file//features/feature[@name='role-based'])"/>
         
+        <xsl:variable name="applicable-name" select="if ($meta-is-role-based) then imvert:target/imvert:name else imvert:name"/>
+            
         <!--validation-->
         
         <xsl:sequence select="imf:report-error(., 
@@ -859,7 +861,7 @@
             not($is-collection) and $this/imvert:name and not(imf:test-name-convention($this)), 
             'Association name does not obey convention')"/>
         <xsl:sequence select="imf:report-error(., 
-            (not($is-collection) and not($is-process) and not($defining-class-is-group) and empty($association-class-id) and not(imvert:name)), 
+            (not($is-collection) and not($is-process) and not($defining-class-is-group) and empty($association-class-id) and empty($applicable-name)), 
             'Association without name.')"/>
         <xsl:sequence select="imf:report-error(., 
             not(imf:check-multiplicity(imvert:min-occurs,imvert:max-occurs)), 
