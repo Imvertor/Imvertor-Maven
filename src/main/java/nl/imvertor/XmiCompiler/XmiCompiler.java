@@ -299,6 +299,12 @@ public class XmiCompiler extends Step {
 	 * @throws Exception 
 	 */
 	private void cleanXMI(XmlFile xmiFile) throws Exception {
+		
+		String c = xmiFile.getContent();
+		if (c.contains("&#5"))
+			xmiFile.setContent(StringUtils.replacePattern(c, "&#5[0-9]{4};", "?"));
+		
+		/*
 		AnyFile outFile = new AnyFile(File.createTempFile("cleanXMI.", ".xmi"));
 		outFile.deleteOnExit();
 		FileWriter writer = outFile.getWriter(false);
@@ -311,6 +317,8 @@ public class XmiCompiler extends Step {
 		writer.flush();
 		writer.close();
 		outFile.copyFile(xmiFile);
+		*/
+		
 	}
 	
 	private void migrateXMI(XmlFile xmiFile) throws Exception {
