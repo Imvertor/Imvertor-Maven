@@ -41,7 +41,6 @@
     
     <features>
         <feature name="allow-multiple-supertypes">true</feature>
-        <feature name="role-based">false</feature>
     </features>
     
 </metamodel>
