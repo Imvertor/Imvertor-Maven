@@ -109,8 +109,9 @@
     <parameter name="message-collapse-keys">TV1NSBRF2 NAFFA NAFF1 TCBR1</parameter>
     
     <!-- URL of the standard JSON components are available --> 
-    <parameter name="standard-json-components-url">https://raw.githubusercontent.com/VNG-Realisatie/Bevragingen-ingeschreven-personen/master/api-specificatie/components.yaml#/</parameter>
-    <parameter name="standard-yaml-headers-url">https://raw.githubusercontent.com/VNG-Realisatie/Bevragingen-ingeschreven-personen/master/api-specificatie/headers.yaml#/</parameter>
-    <parameter name="standard-geojson-components-url">https://raw.githubusercontent.com/VNG-Realisatie/Bevragingen-ingeschreven-personen/master/api-specificatie/geojson.yaml#/</parameter>
+    <parameter name="standard-components-url">https://raw.githubusercontent.com/VNG-Realisatie/Bevragingen-ingeschreven-personen/master/api-specificatie/</parameter>
+    <parameter name="standard-json-components-file">components.yaml#/</parameter>
+    <parameter name="standard-yaml-headers-file">headers.yaml#/</parameter>
+    <parameter name="standard-geojson-components-file">geojson.yaml#/</parameter>
     
  </project-owner>    

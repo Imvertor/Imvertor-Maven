@@ -13,8 +13,8 @@
 		 * geojson	-->
 	<xsl:variable name="serialisation" select="$message-sets/ep:parameters/ep:parameter[ep:name='serialisation']/ep:value"/>
 	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
-	<xsl:variable name="standard-yaml-headers-url" select="imf:get-config-parameter('standard-yaml-headers-url')"/>
-	<xsl:variable name="standard-json-components-url" select="imf:get-config-parameter('standard-json-components-url')"/>
+	<xsl:variable name="standard-yaml-headers-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-yaml-headers-file'))"/>
+	<xsl:variable name="standard-json-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-json-components-file'))"/>
 	
 	<xsl:template match="ep:message-sets">
 		<xsl:apply-templates select="ep:message-set"/>
@@ -1094,7 +1094,17 @@
 		<xsl:text>&#xa;            application/problem+json:</xsl:text>
 		<xsl:text>&#xa;              schema:</xsl:text>
 		<xsl:text>&#xa;                $ref: </xsl:text>
-		<xsl:value-of select="concat('&quot;',$standard-json-components-url,'Foutbericht&quot;')"/>
+		<xsl:variable name="FoutBerichtType">
+			<xsl:choose>
+				<xsl:when test="$foutcode = '400'">
+					<xsl:value-of select="'ValidatieFoutbericht'"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="'Foutbericht'"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:value-of select="concat('&quot;',$standard-json-components-url,$FoutBerichtType,'&quot;')"/>
 	</xsl:function>
 
 	<xsl:template match="ep:documentation">
