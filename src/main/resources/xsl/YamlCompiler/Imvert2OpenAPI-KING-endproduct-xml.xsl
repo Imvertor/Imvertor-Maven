@@ -84,6 +84,16 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
+	<xsl:variable name="description-level">
+		<xsl:choose>
+			<xsl:when test="empty(imf:get-tagged-value($packages,'##CFG-TV-INSERTDESCRIPTIONFROM'))">
+				<xsl:value-of select="'SIM'"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="imf:get-tagged-value($packages,'##CFG-TV-INSERTDESCRIPTIONFROM')"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 	<xsl:variable name="version" select="$packages/imvert:version"/>
 	
 	<xsl:variable name="imvert-document" select="if (exists($messages/imvert:packages)) then $messages else ()" />
@@ -286,7 +296,6 @@
 				   Nagaan waarom dat zo is en de werking van de eerste herstellen zodat de tweede kan komen te vervallen. -->
 		<xsl:variable name="message-construct" select="imf:get-class-construct-by-id($id,$packages)" />
 		<xsl:variable name="this-construct" select="$packages//imvert:*[imvert:id = $id]" />
-
 		<xsl:variable name="doc">
 			<xsl:if
 				test="not(empty(imf:merge-documentation($this-construct,'CFG-TV-DEFINITION')))">
@@ -295,9 +304,12 @@
 				</ep:definition>
 			</xsl:if>
 			<xsl:if
-				test="not(empty(imf:merge-documentation($this-construct,'CFG-TV-DESCRIPTION')))">
+				test="not(empty(imf:merge-documentation-up-to-level($this-construct,'CFG-TV-DESCRIPTION',$description-level)))">
 				<ep:description>
-					<xsl:sequence select="imf:merge-documentation($this-construct,'CFG-TV-DESCRIPTION')" />
+					<xsl:if test="$debugging">
+						<xsl:attribute name="level" select="$description-level"/>
+					</xsl:if>
+					<xsl:sequence select="imf:merge-documentation-up-to-level($this-construct,'CFG-TV-DESCRIPTION',$description-level)" />
 				</ep:description>
 			</xsl:if>
 			<xsl:if
@@ -529,7 +541,6 @@
 		<!-- The construct variable holds the imvert construct which has an imvert:id equal to the 'id' variable. 
 			 So sometimes it's an attribute, sometimes an association amd sometimes a class. -->
 		<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
-        
         <xsl:variable name="doc">
         	<xsl:if test="not(empty($construct))">
 	            <xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DEFINITION')))">
@@ -537,9 +548,12 @@
 	                    <xsl:sequence select="imf:merge-documentation($construct,'CFG-TV-DEFINITION')"/>
 	                </ep:definition>
 	            </xsl:if>
-	            <xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DESCRIPTION')))">
+        		<xsl:if test="not(empty(imf:merge-documentation-up-to-level($construct,'CFG-TV-DESCRIPTION',$description-level)))">
 	                <ep:description>
-	                    <xsl:sequence select="imf:merge-documentation($construct,'CFG-TV-DESCRIPTION')"/>
+	                	<xsl:if test="$debugging">
+	                		<xsl:attribute name="level" select="$description-level"/>
+	                	</xsl:if>
+	                	<xsl:sequence select="imf:merge-documentation-up-to-level($construct,'CFG-TV-DESCRIPTION',$description-level)"/>
 	                </ep:description>
 	            </xsl:if>
 	            <xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-PATTERN')))">
@@ -959,17 +973,18 @@
 				<xsl:otherwise>false</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-
-
 		<xsl:variable name="doc">
 			<xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DEFINITION')))">
 				<ep:definition>
 					<xsl:sequence select="imf:merge-documentation($construct,'CFG-TV-DEFINITION')"/>
 				</ep:definition>
 			</xsl:if>
-			<xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DESCRIPTION')))">
+			<xsl:if test="not(empty(imf:merge-documentation-up-to-level($construct,'CFG-TV-DESCRIPTION',$description-level)))">
 				<ep:description>
-					<xsl:sequence select="imf:merge-documentation($construct,'CFG-TV-DESCRIPTION')"/>
+					<xsl:if test="$debugging">
+						<xsl:attribute name="level" select="$description-level"/>
+					</xsl:if>
+					<xsl:sequence select="imf:merge-documentation-up-to-level($construct,'CFG-TV-DESCRIPTION',$description-level)"/>
 				</ep:description>
 			</xsl:if>
 			<xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-PATTERN')))">
@@ -1111,9 +1126,12 @@
 							<xsl:sequence select="imf:merge-documentation($this-construct,'CFG-TV-DEFINITION')" />
 						</ep:definition>
 					</xsl:if>
-					<xsl:if test="not(empty(imf:merge-documentation($this-construct,'CFG-TV-DESCRIPTION')))">
+					<xsl:if test="not(empty(imf:merge-documentation-up-to-level($this-construct,'CFG-TV-DESCRIPTION',$description-level)))">
 						<ep:description>
-							<xsl:sequence select="imf:merge-documentation($this-construct,'CFG-TV-DESCRIPTION')" />
+							<xsl:if test="$debugging">
+								<xsl:attribute name="level" select="$description-level"/>
+							</xsl:if>
+							<xsl:sequence select="imf:merge-documentation-up-to-level($this-construct,'CFG-TV-DESCRIPTION',$description-level)" />
 						</ep:description>
 					</xsl:if>
 					<xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue($this-construct, '##CFG-TV-PATTERN')))">
@@ -1131,9 +1149,12 @@
 							<xsl:sequence select="imf:merge-documentation($this-construct,'CFG-TV-DEFINITION')" />
 						</ep:definition>
 					</xsl:if>
-					<xsl:if test="not(empty(imf:merge-documentation($this-construct,'CFG-TV-DESCRIPTION')))">
+					<xsl:if test="not(empty(imf:merge-documentation-up-to-level($this-construct,'CFG-TV-DESCRIPTION',$description-level)))">
 						<ep:description>
-							<xsl:sequence select="imf:merge-documentation($this-construct,'CFG-TV-DESCRIPTION')" />
+							<xsl:if test="$debugging">
+								<xsl:attribute name="level" select="$description-level"/>
+							</xsl:if>
+							<xsl:sequence select="imf:merge-documentation-up-to-level($this-construct,'CFG-TV-DESCRIPTION',$description-level)" />
 						</ep:description>
 					</xsl:if>
 					<xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue($this-construct, '##CFG-TV-PATTERN')))">
@@ -1494,9 +1515,12 @@
 					<xsl:sequence select="imf:merge-documentation($construct,'CFG-TV-DEFINITION')" />
 				</ep:definition>
 			</xsl:if>
-			<xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DESCRIPTION')))">
+			<xsl:if test="not(empty(imf:merge-documentation-up-to-level($construct,'CFG-TV-DESCRIPTION',$description-level)))">
 				<ep:description>
-					<xsl:sequence select="imf:merge-documentation($construct,'CFG-TV-DESCRIPTION')" />
+					<xsl:if test="$debugging">
+						<xsl:attribute name="level" select="$description-level"/>
+					</xsl:if>
+					<xsl:sequence select="imf:merge-documentation-up-to-level($construct,'CFG-TV-DESCRIPTION',$description-level)" />
 				</ep:description>
 			</xsl:if>
 			<xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-PATTERN')))">
@@ -1763,9 +1787,12 @@
 					<xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DEFINITION')" />
 				</ep:definition>
 			</xsl:if>
-			<xsl:if test="not(empty(imf:merge-documentation(.,'CFG-TV-DESCRIPTION')))">
+			<xsl:if test="not(empty(imf:merge-documentation-up-to-level(.,'CFG-TV-DESCRIPTION',$description-level)))">
 				<ep:description>
-					<xsl:sequence select="imf:merge-documentation(.,'CFG-TV-DESCRIPTION')" />
+					<xsl:if test="$debugging">
+						<xsl:attribute name="level" select="$description-level"/>
+					</xsl:if>
+					<xsl:sequence select="imf:merge-documentation-up-to-level(.,'CFG-TV-DESCRIPTION',$description-level)" />
 				</ep:description>
 			</xsl:if>
 			<xsl:if test="not(empty(imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-PATTERN')))">
@@ -1892,7 +1919,6 @@
 		<xsl:param name="this" />
 		<xsl:param name="tv-id" />
 
-
 		<xsl:variable name="all-tv" select="imf:get-all-compiled-tagged-values($this,false())" />
 		<xsl:variable name="vals" select="$all-tv[@id = $tv-id]" />
 		<xsl:for-each select="$vals">
@@ -1900,12 +1926,79 @@
 			<xsl:if test="not($p = '')">
 				<ep:p>
 					<xsl:if test="$debugging">
-						<xsl:attribute name="subpath" select="imf:get-subpath(@project,@application,@nrelease)"/>
+						<xsl:attribute name="subpath" select="imf:get-subpath(@project,@application,@release)"/>
 					</xsl:if>
 					<xsl:value-of select="$p" />
 				</ep:p>
 			</xsl:if>
 		</xsl:for-each>
+	</xsl:function>
+
+	<!-- This function merges all documentation from the provided layer up to the current layer. -->
+	<xsl:function name="imf:merge-documentation-up-to-level">
+		<xsl:param name="this" />
+		<xsl:param name="tv-id" />
+		<xsl:param name="level"/>
+		
+		<xsl:variable name="all-tv" select="imf:get-all-compiled-tagged-values($this,false())" />
+		<xsl:variable name="vals" select="$all-tv[@id = $tv-id]" />
+		<xsl:for-each select="$vals">
+			<xsl:variable name="p" select="normalize-space(imf:get-clean-documentation-string(imf:get-tv-value.local(.)))" />
+			<xsl:choose>
+				<xsl:when test="$level = 'SIM' and not($p = '')">
+					<ep:p>
+						<xsl:if test="$debugging">
+							<xsl:attribute name="subpath" select="imf:get-subpath(@project,@application,@release)"/>
+							<xsl:attribute name="val-level" select="@level"/>
+							<xsl:attribute name="level" select="$level"/>
+						</xsl:if>
+						<xsl:value-of select="$p" />
+					</ep:p>
+				</xsl:when>
+				<xsl:when test="$level = 'UGM' and (@project = 'UGM' or @project = 'BSM') and not($p = '')">
+					<ep:p>
+						<xsl:if test="$debugging">
+							<xsl:attribute name="subpath" select="imf:get-subpath(@project,@application,@release)"/>
+							<xsl:attribute name="val-level" select="@level"/>
+							<xsl:attribute name="level" select="$level"/>
+						</xsl:if>
+						<xsl:value-of select="$p" />
+					</ep:p>
+				</xsl:when>
+				<xsl:when test="$level = 'BSM' and @project = 'BSM' and not($p = '')">
+					<ep:p>
+						<xsl:if test="$debugging">
+							<xsl:attribute name="subpath" select="imf:get-subpath(@project,@application,@release)"/>
+							<xsl:attribute name="val-level" select="@level"/>
+							<xsl:attribute name="level" select="$level"/>
+						</xsl:if>
+						<xsl:value-of select="$p" />
+					</ep:p>
+				</xsl:when>
+			</xsl:choose>
+<?x			<xsl:if test="not($p = '')">
+				<ep:p>
+					<xsl:if test="$debugging">
+						<xsl:attribute name="subpath" select="imf:get-subpath(@project,@application,@release)"/>
+						<xsl:attribute name="val-level" select="@level"/>
+						<xsl:attribute name="level" select="$level"/>
+					</xsl:if>
+					<xsl:value-of select="$p" />
+				</ep:p>
+			</xsl:if>
+		</xsl:for-each>
+		<xsl:for-each select="$vals[not(@level &lt; $level)]">
+			<xsl:variable name="p" select="normalize-space(imf:get-clean-documentation-string(imf:get-tv-value.local(.)))" />
+			<xsl:if test="not($p = '') and $debugging">
+				<ep:p2>
+					<xsl:attribute name="subpath" select="imf:get-subpath(@project,@application,@release)"/>
+					<xsl:attribute name="val-level" select="@level"/>
+					<xsl:attribute name="level" select="$level"/>
+					<xsl:value-of select="$p" />
+				</ep:p2>
+			</xsl:if> ?>
+		</xsl:for-each> 
+		
 	</xsl:function>
 
 	<xsl:function name="imf:get-tv-value.local">

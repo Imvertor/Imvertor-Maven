@@ -658,9 +658,22 @@
                 <stereo minmax="0..1">stereotype-name-application-package</stereo>
             </stereotypes>
             <declared-values lang="nl">
-                <!-- Voorlopig is alleen json+hal mogelijk. -->
                 <value>hal+json</value>
                 <value>json</value>
+            </declared-values>
+        </tv>
+        <tv norm="space" id="CFG-TV-INSERTDESCRIPTIONFROM">
+            <name lang="nl">toelichting opnemen vanaf</name>
+            <desc lang="nl">Het model van waaraf de toelichting moet worden opgenomen.</desc>
+            <derive>no</derive>
+            <inherit>no</inherit>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-application-package</stereo>
+            </stereotypes>
+            <declared-values lang="nl">
+                <value default="yes">SIM</value>
+                <value>UGM</value>
+                <value>BSM</value>
             </declared-values>
         </tv>
     </tagged-values>
