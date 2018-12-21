@@ -294,7 +294,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
-			<xsl:when test="contains($berichtcode,'Po')">
+			<xsl:when test="contains($berichtcode,'Pa') or contains($berichtcode,'Po') or contains($berichtcode,'Pu')">
 				<xsl:sequence select="imf:create-debug-comment('A12500]',$debugging)" />
 				<xsl:choose>
 					<xsl:when test="count(imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie')]) = 0">

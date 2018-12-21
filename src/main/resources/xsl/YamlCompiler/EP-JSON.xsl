@@ -98,7 +98,11 @@
 								     (
 								       (
 								         (
+								           contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
+								           or
 								           contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+								           or
+								           contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
 								           or
 								           contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
 										   or 
@@ -109,7 +113,14 @@
 									   )
 									   or 
 									   (							
+										 (
+										 contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa' ) 
+										 or
 										 contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po' ) 
+										 or
+										 contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu' ) 
+										 
+										 )
 										 and 
 										 ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'requestbody'
 									   )
@@ -158,14 +169,24 @@
 								  and 
 								  (
 									( 
+										(
+										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
+										or
 										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+										or
+										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
+										)
 										and 
 										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'requestbody'
 									) 
 									or 
 									(
 									  (
+									    contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
+									    or
 									    contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+									    or
+									    contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
 									    or
 									    contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
 										or 	
@@ -230,14 +251,24 @@
 									and 
 									(
 									  (
+										(
+										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
+										or
 										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+										or
+										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
+										)
 										and 
 										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'requestbody'
 									  ) 
 									  or 
 									  (
 										( 
+										  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
+										  or
 										  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+										  or
+										  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
 										  or
 										  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
 										  or 	
@@ -312,14 +343,24 @@
 								  and 
 								  (
 									( 
+										(
+										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
+										or
 										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+										or
+										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
+										)
 										and 
 										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'requestbody'
 									) 
 									or 
 									(
 									  (
+									    contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
+									    or
 									    contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+									    or
+									    contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
 									    or
 									    contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
 										or 	
@@ -374,14 +415,24 @@
 									and 
 									(
 									  (
+										(
+										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
+										or
 										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+										or
+										contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
+										)
 										and 
 										ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'requestbody'
 									  ) 
 									  or 
 									  (
 										( 
+										  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
+										  or
 										  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+										  or
+										  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
 										  or
 										  contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
 										  or 	
@@ -500,14 +551,24 @@
 									and 
 									(
 									  (
+									    (
+									    contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
+									    or
 									    contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+									    or
+									    contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
+									    )
 									    and 
 									    ep:parameters/ep:parameter[ep:name='messagetype']/ep:value='requestbody'
 									  ) 
 									  or 
 									  (
 									    (
+									      contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
+									      or
 									      contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+									      or
+									      contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
 									      or
 									      contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
 										  or 
@@ -573,14 +634,24 @@
 											and 
 											(
 											  (
+												(
+												contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
+												or
 												contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+												or
+												contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
+												)
 												and 
 												ep:parameters/ep:parameter[ep:name='messagetype']/ep:value='requestbody'
 											  ) 
 											  or 
 											  (
 											    (
+											      contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') 
+											      or
 											      contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Po') 
+											      or
+											      contains( ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu') 
 											      or
 											      contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') 
 													or 

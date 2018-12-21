@@ -136,6 +136,7 @@
 				</xsl:variable>
 				<xsl:variable name="responseConstruct" select="$relatedResponseMessage/ep:message/ep:seq/ep:construct/ep:type-name"/>
 				<xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstruct]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameter[ep:name='berichtcode']/ep:value = $berichttype]/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
+				<!-- <xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstruct]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response']/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/> -->
 				
 				<xsl:variable name="determinedUriStructure">
 					<!-- This variable contains a structure determined from the messageName. -->
@@ -541,68 +542,11 @@
 					</xsl:for-each>
 				</xsl:if>
 				<xsl:text>&#xa;      responses:</xsl:text>
-				<xsl:text>&#xa;        '200':</xsl:text>
-				<xsl:text>&#xa;          description: "Zoekactie geslaagd"</xsl:text>
-				<xsl:text>&#xa;          headers:</xsl:text>
-				<xsl:text>&#xa;            api-version:</xsl:text>
-				<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'api_version&quot;')"/>
-				<xsl:text>&#xa;            warning:</xsl:text>
-				<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'warning&quot;')"/>
-				<xsl:if test="ep:parameters/ep:parameter[ep:name='grouping']/ep:value='collection'">
-					<!-- In case of a collection type message create the following properties. -->
-					<xsl:if test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value='true'">
-						<!-- In case of a collection type message and if pagination applies create the following properties. -->
-						<xsl:text>&#xa;            X-Pagination-Page:</xsl:text>
-						<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Pagination_Page&quot;')"/>
-						<xsl:text>&#xa;            X-Pagination-Limit:</xsl:text>
-						<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Pagination_Limit&quot;')"/>
-					</xsl:if>
-				</xsl:if>
-				<xsl:text>&#xa;            X-Rate-Limit-Limit:</xsl:text>
-				<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Rate_Limit_Limit&quot;')"/>
-				<xsl:text>&#xa;            X-Rate-Limit-Remaining:</xsl:text>
-				<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Rate_Limit_Remaining&quot;')"/>
-				<xsl:text>&#xa;            X-Rate-Limit-Reset:</xsl:text>
-				<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Rate_Limit_Reset&quot;')"/>
-				<xsl:text>&#xa;          content:</xsl:text>
-				<xsl:text>&#xa;            application/</xsl:text><xsl:value-of select="$serialisation"/><xsl:text>:</xsl:text>
-				<xsl:text>&#xa;              schema:</xsl:text>
-				<xsl:for-each
-					select="../ep:message[ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameter[ep:name='berichtcode']/ep:value = $berichttype] and ep:name = $rawMessageName]">
-					<!-- For the response type message related to the current message generate the next refs to the toplevel component within the 
-						 json part of the yaml file. -->
-					<xsl:choose>
-						<xsl:when test="$serialisation = 'json'">
-							<xsl:text>&#xa;                type: array</xsl:text>
-							<xsl:text>&#xa;                items:</xsl:text>
-							<xsl:text>&#xa;                  $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
-						</xsl:when>
-						<xsl:when test="ep:parameters/ep:parameter[ep:name='grouping']/ep:value = 'resource'">
-							<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
-						</xsl:when>
-						<xsl:when test="contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc')">
-							<xsl:text>&#xa;                type: object</xsl:text>
-							<xsl:text>&#xa;                properties:</xsl:text>
-							<xsl:text>&#xa;                  _links:</xsl:text>
-							<xsl:choose>
-								<xsl:when test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value = 'true'">
-									<xsl:text>&#xa;                    $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-components-url,'HalPaginationLinks&quot;')"/>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:text>&#xa;                    $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-components-url,'HalCollectionLinks&quot;')"/>
-								</xsl:otherwise>
-							</xsl:choose>
-							<xsl:text>&#xa;                  _embedded:</xsl:text>
-							<xsl:text>&#xa;                    type: object</xsl:text>
-							<xsl:text>&#xa;                    properties:</xsl:text>
-							<xsl:text>&#xa;                      </xsl:text><xsl:value-of select="$meervoudigeNaamResponseTree"/><xsl:text>:</xsl:text>
-							<xsl:text>&#xa;                        type: array</xsl:text>
-							<xsl:text>&#xa;                        items:</xsl:text>
-							<xsl:text>&#xa;                          $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
-						</xsl:when>
-					</xsl:choose>
-				</xsl:for-each>
-
+				<xsl:call-template name="response200">
+					<xsl:with-param name="berichttype" select="$berichttype"/>
+					<xsl:with-param name="meervoudigeNaamResponseTree" select="$meervoudigeNaamResponseTree"/>
+					<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
+				</xsl:call-template>
 				<xsl:variable name="queryParamsPresent" select="boolean($checkedUriStructure//ep:uriPart/ep:param[@path = 'false'] or empty($checkedUriStructure//ep:uriPart/ep:param/@path))"/>
 				<xsl:variable name="pathParamsPresent" select="boolean($checkedUriStructure//ep:uriPart/ep:param[@path = 'true'])"/>
 
@@ -610,19 +554,29 @@
 				<xsl:text>&#xa;      tags: </xsl:text>
 				<xsl:text>&#xa;      - </xsl:text><xsl:value-of select="$tag" />
 			</xsl:when>
-			<xsl:when test="contains($berichttype,'Po') and $messagetype = 'request'">
-				<!-- This processes al ep:message elements represent the request tree of the Po messages. -->
-				<xsl:variable name="method">post</xsl:variable>
+			<xsl:when test="(contains($berichttype,'Po') or contains($berichttype,'Pa') or contains($berichttype,'Pu')) and $messagetype = 'request'">
+				<xsl:variable name="messageCategory" select="substring-before($berichttype,'01')"/>
+				<!-- This processes al ep:message elements represent the request tree of the Po messages. -->		
+				<xsl:variable name="method">
+					<xsl:choose>
+						<xsl:when test="$messageCategory = 'Pa'">patch</xsl:when>
+						<xsl:when test="$messageCategory = 'Po'">post</xsl:when>
+						<xsl:when test="$messageCategory = 'Pu'">put</xsl:when>
+					</xsl:choose>
+				</xsl:variable>
 				
 				<xsl:variable name="requestbodymessage">
 					<xsl:sequence select="//ep:message[ep:name = $rawMessageName and ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'requestbody'and ep:parameter[ep:name='berichtcode']/ep:value = $berichttype]]"/>
 				</xsl:variable>
-				<xsl:variable name="responsemessage">
+				<xsl:variable name="relatedResponseMessage">
 					<xsl:sequence select="//ep:message[ep:name = $rawMessageName and ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response'and ep:parameter[ep:name='berichtcode']/ep:value = $berichttype]]"/>
 				</xsl:variable>
+				<xsl:variable name="responseConstruct" select="$relatedResponseMessage/ep:message/ep:seq/ep:construct/ep:type-name"/>
+				<xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstruct]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameter[ep:name='berichtcode']/ep:value = $berichttype]/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
+				<!--xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstruct]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response']/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/-->
 				
 				<xsl:variable name="requestbodyConstructName" select="$requestbodymessage//ep:type-name"/>
-				<xsl:variable name="responseConstructName" select="$responsemessage//ep:type-name"/>
+				<xsl:variable name="responseConstructName" select="$relatedResponseMessage//ep:type-name"/>
 
 				<xsl:variable name="exampleSleutelEntiteittype">
 					<xsl:variable name="construct" select="//ep:message-set/ep:construct[ep:tech-name = $requestbodyConstructName]"/>
@@ -724,13 +678,15 @@
 					</xsl:choose>
 				</xsl:if>
 				<xsl:if test="$debugging">
-					<xsl:result-document method="xml" href="{concat('file:/c:/temp/message/postmessage-',ep:tech-name,'-',generate-id(),'.xml')}">
-						<ep:postmessage requestbodyConstructName="{$requestbodyConstructName}" responseConstructName="{$responseConstructName}">
+					<xsl:result-document method="xml" href="{concat('file:/c:/temp/message/',$messageCategory,'message-',ep:tech-name,'-',generate-id(),'.xml')}">
+						<xsl:element name="{concat('ep:',$messageCategory,'message')}">
+							<xsl:attribute name="requestbodyConstructName" select="$requestbodyConstructName"/>
+							<xsl:attribute name="responseConstructName" select="$responseConstructName"/>
 							<xsl:sequence select="$requestbodymessage"/>
-							<xsl:sequence select="$responsemessage"/>
-						</ep:postmessage>
+							<xsl:sequence select="$relatedResponseMessage"/>
+						</xsl:element>
 					</xsl:result-document>
-					<xsl:result-document method="xml" href="{concat('file:/c:/temp/message/message-',ep:tech-name,'-',generate-id(),'.xml')}">
+					<xsl:result-document method="xml" href="{concat('file:/c:/temp/message/message-',$messageCategory,'-',ep:tech-name,'-',generate-id(),'.xml')}">
 						<uriStructure>
 							<determinedUriStructure>
 								<xsl:sequence select="$determinedUriStructure" />
@@ -762,10 +718,10 @@
 				</xsl:variable>
 								
 				<xsl:if test="$debugging">
-					<xsl:result-document href="{concat('file:/c:/temp/determinedUriStructure/',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
+					<xsl:result-document href="{concat('file:/c:/temp/determinedUriStructure/',$messageCategory,'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
 						<xsl:sequence select="$determinedUriStructure"/>
 					</xsl:result-document> 
-					<xsl:result-document href="{concat('file:/c:/temp/calculatedUriStructure/',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
+					<xsl:result-document href="{concat('file:/c:/temp/calculatedUriStructure/',$messageCategory,'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
 						<xsl:sequence select="$calculatedUriStructure"/>
 					</xsl:result-document>
 				</xsl:if>					
@@ -785,7 +741,13 @@
 				
 				<!-- For each message the next structure is generated. -->
 				<xsl:text>&#xa;    </xsl:text><xsl:value-of select="$method"/><xsl:text>:</xsl:text>
-				<xsl:text>&#xa;      operationId: </xsl:text>post<xsl:value-of select="ep:tech-name" />
+				<xsl:text>&#xa;      operationId: </xsl:text>
+				<xsl:choose>
+					<xsl:when test="$messageCategory = 'Pa'">patch</xsl:when>
+					<xsl:when test="$messageCategory = 'Po'">post</xsl:when>
+					<xsl:when test="$messageCategory = 'Pu'">put</xsl:when>
+				</xsl:choose>
+				<xsl:value-of select="ep:tech-name" />
 				<xsl:text>&#xa;      description: "</xsl:text><xsl:value-of select="$documentation" /><xsl:text>"</xsl:text>
 				<xsl:if test="$contentCrsParamPresent or 
 							  $acceptCrsParamPresent or 
@@ -1030,24 +992,22 @@
 				<xsl:text>&#xa;            schema:</xsl:text>
 				<xsl:text>&#xa;              $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$requestbodyConstructName" /><xsl:text>'</xsl:text>
 				<xsl:text>&#xa;      responses:</xsl:text>
-				<xsl:text>&#xa;        '201':</xsl:text>
-				<xsl:text>&#xa;          description: "OK"</xsl:text>
-				<xsl:text>&#xa;          headers:</xsl:text>
-				<xsl:text>&#xa;            Location:</xsl:text>
-				<xsl:text>&#xa;              description: "URI van de nieuwe resource"</xsl:text>
-				<xsl:text>&#xa;              schema:</xsl:text>
-				<xsl:text>&#xa;                type: string</xsl:text>
-				<xsl:text>&#xa;                format: uri</xsl:text>
-				<xsl:text>&#xa;                example: '</xsl:text><xsl:value-of select="concat($rawMessageName,'/',$exampleSleutelEntiteittype)" /><xsl:text>'</xsl:text>
-				<xsl:text>&#xa;            api-version:</xsl:text>
-				<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'api_version&quot;')"/>
-				<xsl:text>&#xa;            warning:</xsl:text>
-				<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'warning&quot;')"/>
-				<xsl:text>&#xa;          content:</xsl:text>
-				<xsl:text>&#xa;            application/</xsl:text><xsl:value-of select="$serialisation"/><xsl:text>:</xsl:text>
-				<xsl:text>&#xa;              schema:</xsl:text>
-				<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" /><xsl:text>'</xsl:text>
-
+				<xsl:choose>
+					<xsl:when test="$messageCategory = 'Pa' or $messageCategory = 'Pu'">
+						<xsl:call-template name="response200">
+							<xsl:with-param name="berichttype" select="$berichttype"/>
+							<xsl:with-param name="meervoudigeNaamResponseTree" select="$meervoudigeNaamResponseTree"/>
+							<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
+						</xsl:call-template>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:call-template name="response201">
+							<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
+							<xsl:with-param name="responseConstructName" select="$responseConstructName"/>
+							<xsl:with-param name="exampleSleutelEntiteittype" select="$exampleSleutelEntiteittype"/>
+						</xsl:call-template>
+					</xsl:otherwise>
+				</xsl:choose>
 				<!-- TODO: De 2e t/m 4e variabele moeten nog op een andere wijze een waarde krijgen. Daarvoor moeten eerst de in het hoofdstuk voor het POST bericht
 						       beschreven wijzigingen in het algoritme behorende bij issue #490151 worden geimplementeerd.
 							   Die beschrijving moet overigens nog aangepast worden omdat bij een POST bericht de request tree wordt gebruikt voor de 
@@ -1058,7 +1018,99 @@
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
+	
+	<xsl:template name="response200">
+		<xsl:param name="berichttype"/>
+		<xsl:param name="meervoudigeNaamResponseTree"/>
+		<xsl:param name="rawMessageName"/>
+		
+		<xsl:text>&#xa;        '200':</xsl:text>
+		<xsl:text>&#xa;          description: "Zoekactie geslaagd"</xsl:text>
+		<xsl:text>&#xa;          headers:</xsl:text>
+		<xsl:text>&#xa;            api-version:</xsl:text>
+		<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'api_version&quot;')"/>
+		<xsl:text>&#xa;            warning:</xsl:text>
+		<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'warning&quot;')"/>
+		<xsl:if test="ep:parameters/ep:parameter[ep:name='grouping']/ep:value='collection'">
+			<!-- In case of a collection type message create the following properties. -->
+			<xsl:if test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value='true'">
+				<!-- In case of a collection type message and if pagination applies create the following properties. -->
+				<xsl:text>&#xa;            X-Pagination-Page:</xsl:text>
+				<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Pagination_Page&quot;')"/>
+				<xsl:text>&#xa;            X-Pagination-Limit:</xsl:text>
+				<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Pagination_Limit&quot;')"/>
+			</xsl:if>
+		</xsl:if>
+		<xsl:text>&#xa;            X-Rate-Limit-Limit:</xsl:text>
+		<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Rate_Limit_Limit&quot;')"/>
+		<xsl:text>&#xa;            X-Rate-Limit-Remaining:</xsl:text>
+		<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Rate_Limit_Remaining&quot;')"/>
+		<xsl:text>&#xa;            X-Rate-Limit-Reset:</xsl:text>
+		<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Rate_Limit_Reset&quot;')"/>
+		<xsl:text>&#xa;          content:</xsl:text>
+		<xsl:text>&#xa;            application/</xsl:text><xsl:value-of select="$serialisation"/><xsl:text>:</xsl:text>
+		<xsl:text>&#xa;              schema:</xsl:text>
+		<xsl:for-each
+			select="../ep:message[ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameter[ep:name='berichtcode']/ep:value = $berichttype] and ep:name = $rawMessageName]">
+			<!-- For the response type message related to the current message generate the next refs to the toplevel component within the 
+						 json part of the yaml file. -->
+			<xsl:choose>
+				<xsl:when test="$serialisation = 'json'">
+					<xsl:text>&#xa;                type: array</xsl:text>
+					<xsl:text>&#xa;                items:</xsl:text>
+					<xsl:text>&#xa;                  $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
+				</xsl:when>
+				<xsl:when test="ep:parameters/ep:parameter[ep:name='grouping']/ep:value = 'resource'">
+					<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
+				</xsl:when>
+				<xsl:when test="contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Gc') or contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pa') or contains(ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value,'Pu')">
+					<xsl:text>&#xa;                type: object</xsl:text>
+					<xsl:text>&#xa;                properties:</xsl:text>
+					<xsl:text>&#xa;                  _links:</xsl:text>
+					<xsl:choose>
+						<xsl:when test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value = 'true'">
+							<xsl:text>&#xa;                    $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-components-url,'HalPaginationLinks&quot;')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:text>&#xa;                    $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-json-components-url,'HalCollectionLinks&quot;')"/>
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:text>&#xa;                  _embedded:</xsl:text>
+					<xsl:text>&#xa;                    type: object</xsl:text>
+					<xsl:text>&#xa;                    properties:</xsl:text>
+					<xsl:text>&#xa;                      </xsl:text><xsl:value-of select="$meervoudigeNaamResponseTree"/><xsl:text>:</xsl:text>
+					<xsl:text>&#xa;                        type: array</xsl:text>
+					<xsl:text>&#xa;                        items:</xsl:text>
+					<xsl:text>&#xa;                          $ref: '#/components/schemas/</xsl:text><xsl:value-of select="ep:seq/ep:construct/ep:type-name" /><xsl:text>'</xsl:text>
+				</xsl:when>
+			</xsl:choose>
+		</xsl:for-each>
+	</xsl:template>
 
+	<xsl:template name="response201">
+		<xsl:param name="rawMessageName"/>
+		<xsl:param name="responseConstructName"/>
+		<xsl:param name="exampleSleutelEntiteittype"/>
+
+		<xsl:text>&#xa;        '201':</xsl:text>
+		<xsl:text>&#xa;          description: "OK"</xsl:text>
+		<xsl:text>&#xa;          headers:</xsl:text>
+		<xsl:text>&#xa;            Location:</xsl:text>
+		<xsl:text>&#xa;              description: "URI van de nieuwe resource"</xsl:text>
+		<xsl:text>&#xa;              schema:</xsl:text>
+		<xsl:text>&#xa;                type: string</xsl:text>
+		<xsl:text>&#xa;                format: uri</xsl:text>
+		<xsl:text>&#xa;                example: '</xsl:text><xsl:value-of select="concat($rawMessageName,'/',$exampleSleutelEntiteittype)" /><xsl:text>'</xsl:text>
+		<xsl:text>&#xa;            api-version:</xsl:text>
+		<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'api_version&quot;')"/>
+		<xsl:text>&#xa;            warning:</xsl:text>
+		<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'warning&quot;')"/>
+		<xsl:text>&#xa;          content:</xsl:text>
+		<xsl:text>&#xa;            application/</xsl:text><xsl:value-of select="$serialisation"/><xsl:text>:</xsl:text>
+		<xsl:text>&#xa;              schema:</xsl:text>
+		<xsl:text>&#xa;                $ref: '#/components/schemas/</xsl:text><xsl:value-of select="$responseConstructName" /><xsl:text>'</xsl:text>
+	</xsl:template>
+	
 	<xsl:function name="imf:Foutresponses">
 		<xsl:param name="berichttype"/>
 		<xsl:param name="queryParamsPresent"/>

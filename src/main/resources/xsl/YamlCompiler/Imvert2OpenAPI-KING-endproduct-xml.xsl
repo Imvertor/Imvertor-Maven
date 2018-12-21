@@ -397,7 +397,7 @@
 					</ep:parameters>
 				</xsl:when>
 				<!-- ROME: Zijn er nog meer attributen van toepassing op een POST bericht. -->
-				<xsl:when test="contains($berichtcode,'Po')">
+				<xsl:when test="contains($berichtcode,'Pa') or contains($berichtcode,'Po') or contains($berichtcode,'Pu')">
 					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'messagetype')" />

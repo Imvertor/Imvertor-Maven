@@ -166,6 +166,8 @@
          <construct>class</construct>
          <toplevel>true</toplevel>
          <entity-relation-constraint>
+            <relation lang="nl">response</relation>
+            <relation lang="nl">requestbody</relation>
             <relation lang="nl">request</relation>
             <relation lang="nl">pad</relation>
          </entity-relation-constraint>
@@ -177,6 +179,8 @@
          <construct>class</construct>
          <toplevel>true</toplevel>
          <entity-relation-constraint>
+            <relation lang="nl">response</relation>
+            <relation lang="nl">requestbody</relation>
             <relation lang="nl">request</relation>
             <relation lang="nl">pad</relation>
          </entity-relation-constraint>
@@ -188,6 +192,8 @@
          <construct>class</construct>
          <toplevel>true</toplevel>
          <entity-relation-constraint>
+            <relation lang="nl">response</relation>
+            <relation lang="nl">requestbody</relation>
             <relation lang="nl">request</relation>
             <relation lang="nl">pad</relation>
          </entity-relation-constraint>
