@@ -280,6 +280,22 @@
         </ep:construct>
     </xsl:template>
     
+    <xsl:template match="imvert:attribute[imvert:stereotype/@id = 'stereotype-name-referentie-element']">
+        <ep:construct>
+            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een referentie element',())"/>
+            <ep:parameters>
+                <xsl:sequence select="imf:set-parameter('use','referentie-element')"/>
+                <xsl:sequence select="imf:get-nillable(.)"/>
+            </ep:parameters>
+            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-documentation(.)"/>
+            <xsl:sequence select="imf:get-cardinality(.)"/>
+            <xsl:sequence select="imf:get-type(.)"/>
+            <xsl:sequence select="imf:get-props(.)"/>
+            <xsl:sequence select="imf:get-meta(.)"/>
+        </ep:construct>
+    </xsl:template>
+    
     <xsl:template match="imvert:attribute[imvert:stereotype/@id = 'stereotype-name-enum']">
         <ep:enum>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een enumeratie waarde',())"/>
@@ -421,6 +437,9 @@
             <xsl:when test="$this/imvert:type-name = 'scalar-integer'">
                 <ep:data-type>ep:integer</ep:data-type>
             </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-boolean'">
+                <ep:data-type>ep:boolean</ep:data-type>
+            </xsl:when>
             <xsl:when test="$this/imvert:type-name = 'scalar-year'">
                 <ep:data-type>ep:year</ep:data-type>
             </xsl:when>
@@ -433,7 +452,7 @@
             <xsl:when test="$this/imvert:type-name = 'scalar-decimal'">
                 <ep:data-type>ep:decimal</ep:data-type>
             </xsl:when>
-            <xsl:when test="$this/imvert:type-name = 'scalar-URI'">
+            <xsl:when test="$this/imvert:type-name = 'scalar-uri'">
                 <ep:data-type>ep:uri</ep:data-type>
             </xsl:when>
             <xsl:otherwise>
