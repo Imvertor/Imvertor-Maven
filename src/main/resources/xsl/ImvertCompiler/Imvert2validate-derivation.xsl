@@ -85,7 +85,9 @@
             ))"/>
         
         <xsl:sequence select="imf:check-tagged-value-occurs(.)"/>
-    
+        
+        <xsl:sequence select="imf:check-model-derivation-releases(.)"/>
+        
         <xsl:next-match/>
         
     </xsl:template>
@@ -385,13 +387,26 @@
             </xsl:for-each>
         </xsl:if> 
     </xsl:function>
-    
+  
     <xsl:function name="imf:mm">
         <xsl:param name="mmb"/>
         <xsl:variable name="toks" select="tokenize($mmb,'\.')"/>
         <xsl:value-of select="xs:integer($toks[1]) * 100 + xs:integer($toks[2])"/>
     </xsl:function>
-    
+  
+    <!-- https://github.com/Imvertor/Imvertor-Maven/issues/60 -->
+    <xsl:function name="imf:check-model-derivation-releases">
+        <xsl:param name="this" as="element(imvert:packages)"/>
+        <xsl:variable name="client-release" select="$this/imvert:release"/>
+        <!-- check if suppliers are more recent than client -->
+        <xsl:for-each select="$this/imvert:supplier">
+            <xsl:variable name="supplier-release" select="imvert:supplier-release"/>
+            <xsl:sequence select="imf:report-warning($this, 
+                $client-release lt $supplier-release,
+                'Supplier release [1] is more recent that client release [2]',($supplier-release,$client-release))"/>
+        </xsl:for-each>
+    </xsl:function>
+
     <!--
         Get the supplier models for the model passed. 
         Empty when no derivation tree is available. 
