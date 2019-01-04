@@ -249,7 +249,7 @@
         <stereo id="stereotype-name-enum">
             <name lang="nl">Enumeratiewaarde</name>
             <name lang="en">Enum</name>
-            <desc lang="en">TODO</desc>
+            <desc lang="en">A single element in an enumeration</desc>
             <desc lang="nl">Één element in een enumeratie.</desc>
             <construct>attribute</construct>
         </stereo>

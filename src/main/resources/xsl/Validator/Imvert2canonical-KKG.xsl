@@ -43,6 +43,32 @@
     </xsl:template>
     
     <!-- 
+        enumerations and enums are not required when designation is enumeration. Add when not already specified by the UML 
+        see https://github.com/Imvertor/Imvertor-Maven/issues/63
+    -->
+    <xsl:template match="imvert:class[imvert:designation = 'enumeration']">
+        <xsl:copy>
+            <xsl:apply-templates/>
+            <xsl:if test="not(imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist'))">
+                <imvert:stereotype id="stereotype-name-enumeration" origin="system">
+                    <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-enumeration')"/>
+                </imvert:stereotype>
+            </xsl:if>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="imvert:class[imvert:designation = 'enumeration']/imvert:attributes/imvert:attribute">
+        <xsl:copy>
+            <xsl:apply-templates/>
+            <xsl:if test="not(imvert:stereotype/@id = ('stereotype-name-enum'))">
+                <imvert:stereotype id="stereotype-name-enum" origin="system">
+                    <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-enum')"/>
+                </imvert:stereotype>
+            </xsl:if>
+        </xsl:copy>
+    </xsl:template>
+    
+    <!-- 
         add facets when these are specified as a tagged value 
     -->
     <xsl:template match="imvert:attribute[imvert:type-name = 'scalar-integer']">
