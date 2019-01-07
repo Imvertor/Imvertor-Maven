@@ -385,17 +385,15 @@
         <xsl:variable name="type" select="imf:get-construct-by-id(imvert:type-id)"/>
        <part type="COMPOSER">
           <item>
-              <xsl:sequence select="imf:create-element('value',imf:create-link($type,'detail',imf:get-name(.,true())))"/>
+              <xsl:sequence select="imf:create-link($type,'detail',imf:get-name(.,true()))"/>
           </item>
           <item>
-              <xsl:sequence select="imf:create-element('value',imf:get-formatted-tagged-value($type,'CFG-TV-DEFINITION'))"/>
+              <xsl:sequence select="imf:get-formatted-tagged-value($type,'CFG-TV-DEFINITION')"/>
           </item>
           <item>
-             <!--<xsl:sequence select="imf:create-element('value',imf:plugin-translate-i3n(imvert:baretype,false()))"/>-->
-              <!-- empty-->
           </item>
           <item>
-             <xsl:sequence select="imf:create-element('value',imf:get-cardinality(imvert:min-occurs,imvert:max-occurs))"/>
+             <xsl:sequence select="imf:get-cardinality(imvert:min-occurs,imvert:max-occurs)"/>
           </item>
        </part>
     </xsl:template>
