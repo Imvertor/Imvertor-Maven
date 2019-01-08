@@ -752,6 +752,11 @@
         <!--setup-->
         <xsl:variable name="class" select="../.."/>
         <!--validation-->
+        
+        <xsl:sequence select="imf:report-warning(., 
+            exists(imvert:baretype), 
+            'Enumerative values should not be typed: [1]', (imvert:baretype))"/>
+        
         <xsl:next-match/>
     </xsl:template>
     

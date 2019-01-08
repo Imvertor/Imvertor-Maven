@@ -45,8 +45,11 @@
     <!-- 
         enumerations and enums are not required when designation is enumeration. Add when not already specified by the UML 
         see https://github.com/Imvertor/Imvertor-Maven/issues/63
+   
+        we add priorities in the code below as we do not yet validate but type assignments may have been made to enumerations (which is invalid).
+        
     -->
-    <xsl:template match="imvert:class[imvert:designation = 'enumeration']">
+    <xsl:template match="imvert:class[imvert:designation = 'enumeration']" priority="1">
         <xsl:copy>
             <xsl:apply-templates/>
             <xsl:if test="not(imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist'))">
@@ -57,7 +60,7 @@
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:designation = 'enumeration']/imvert:attributes/imvert:attribute">
+    <xsl:template match="imvert:class[imvert:designation = 'enumeration']/imvert:attributes/imvert:attribute" priority="2">
         <xsl:copy>
             <xsl:apply-templates/>
             <xsl:if test="not(imvert:stereotype/@id = ('stereotype-name-enum'))">
@@ -71,7 +74,7 @@
     <!-- 
         add facets when these are specified as a tagged value 
     -->
-    <xsl:template match="imvert:attribute[imvert:type-name = 'scalar-integer']">
+    <xsl:template match="imvert:attribute[imvert:type-name = 'scalar-integer']" priority="3">
         <xsl:variable name="parse" select="imf:parse-scalar-length(imf:get-tagged-value(.,'##CFG-TV-LENGTH'))"/>
         <xsl:copy>
             <xsl:apply-templates/>
@@ -79,7 +82,7 @@
             <xsl:sequence select="if ($parse/error) then imf:msg(.,$parse/error) else ()"/>
         </xsl:copy>
     </xsl:template>
-    <xsl:template match="imvert:attribute[imvert:type-name = 'scalar-decimal']">
+    <xsl:template match="imvert:attribute[imvert:type-name = 'scalar-decimal']" priority="4">
         <xsl:variable name="parse" select="imf:parse-scalar-length(imf:get-tagged-value(.,'##CFG-TV-LENGTH'))"/>
         <xsl:copy>
             <xsl:apply-templates/>
@@ -94,7 +97,7 @@
             </xsl:choose>
         </xsl:copy>
     </xsl:template>
-    <xsl:template match="imvert:attribute[imvert:type-name = 'scalar-string']">
+    <xsl:template match="imvert:attribute[imvert:type-name = 'scalar-string']" priority="5">
         <xsl:variable name="pat" select="if (imvert:pattern) then () else imf:get-tagged-value(.,'##CFG-TV-FORMALPATTERN')"/>
         <xsl:variable name="parse" select="if (imvert:max-length) then () else imf:parse-scalar-length(imf:get-tagged-value(.,'##CFG-TV-LENGTH'))"/>
         <xsl:copy>
