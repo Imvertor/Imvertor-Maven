@@ -6,7 +6,7 @@
 	
 	<!-- The first variable is meant for the server environment, the second one is used during development in XML-Spy. -->
 	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
-	<!--<xsl:variable name="debugging" select="true()" as="xs:boolean"/>-->
+	<!--<xsl:variable name="debugging" select="false()" as="xs:boolean"/>-->
 	<xsl:variable name="standard-json-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-json-components-file'))"/>
 	<xsl:variable name="standard-geojson-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-geojson-components-file'))"/>
 	
@@ -1399,7 +1399,7 @@
 						<xsl:apply-templates select="ep:documentation"/><xsl:text>:</xsl:text>
 					</xsl:if>
 					<xsl:for-each select="ep:enum">
-						<xsl:value-of select="concat('\n* ',ep:alias,' - ',ep:name)"/>
+						<xsl:value-of select="concat('\n* `',ep:alias,'` - ',ep:name)"/>
 					</xsl:for-each>
 					<xsl:value-of select="'&quot;,'"/>
 				</xsl:variable>
