@@ -1255,7 +1255,7 @@
 			<xsl:value-of select="',&quot;properties&quot;: {'"/>
 			<!-- Loop over all constructs (that don't have association type, supertype-association type and superclass type constructs) 
 				 within the current construct. -->
-			<xsl:if test="$serialisation = 'json'">
+			<xsl:if test="$serialisation = 'json' and ep:parameters/ep:parameter[ep:name = 'type']/ep:value != 'groepCompositie'">
 				<xsl:value-of select="'&quot;url&quot; : {'"/>
 				<xsl:value-of select="'&quot;title&quot; : &quot;Url&quot;,'"/>
 				<xsl:value-of select="'&quot;type&quot; : &quot;string&quot;,'"/>
@@ -1934,23 +1934,33 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="typeName" select="ep:type-name"/>
+		<xsl:variable name="title">
+			<xsl:choose>
+				<xsl:when test="not(empty(ep:parameters/ep:parameter[ep:name='SIM-name']/ep:value))">
+					<xsl:value-of select="ep:parameters/ep:parameter[ep:name='SIM-name']/ep:value"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="ep:name"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:value-of select="concat('&quot;',$elementName,'&quot;: {')"/>
+		<xsl:variable name="documentation">
+			<xsl:value-of select="ep:documentation//ep:p"/>
+		</xsl:variable>
 		
 		<xsl:choose>
 			<xsl:when test="$serialisation = 'hal+json'">
 		
 				<!-- ROME: Deze toevoeging (nav #490159) geeft een warning in Swaggerhub. -->
 				<xsl:if test="not($occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association')">
-					<xsl:value-of select="concat('&quot;title&quot;: &quot;',ep:name,'&quot;,')"/>
+					<xsl:value-of select="concat('&quot;title&quot;: &quot;',$title,'&quot;,')"/>
 				</xsl:if>
 				
 				
 				<xsl:if test="not($occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association')">
 					<xsl:value-of select="concat('&quot;type&quot;: &quot;',$occurence-type,'&quot;,')"/>
 				</xsl:if>
-				<xsl:variable name="documentation">
-					<xsl:value-of select="ep:documentation//ep:p"/>
-				</xsl:variable>
 				<xsl:choose>
 					<!-- Depending on the occurence-type and the type of construct content is generated. -->
 					<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
@@ -1997,24 +2007,25 @@
 			</xsl:when>
 			<xsl:when test="$serialisation = 'json'">
 		
-				<!-- ROME: Deze toevoeging (nav #490159) geeft een warning in Swaggerhub. -->
-				<xsl:if test="not($occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association')">
-					<xsl:value-of select="concat('&quot;title&quot;: &quot;',ep:name,'&quot;,')"/>
-				</xsl:if>
-				
 				<xsl:if test="not($occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association')">
 					<xsl:value-of select="concat('&quot;type&quot;: &quot;',$occurence-type,'&quot;,')"/>
 				</xsl:if>
+
+				<!--<xsl:if test="not($occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association')">-->
+					<xsl:value-of select="concat('&quot;title&quot;: &quot;',$title,'&quot;,')"/>
+				<!--</xsl:if>-->
+				
+				<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
+				<!-- Double quotes in documentation text is replaced by a  grave accent. -->
+				<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+				<xsl:value-of select="'&quot;,'"/>
+				
 				<xsl:variable name="documentation">
 					<xsl:value-of select="ep:documentation//ep:p"/>
 				</xsl:variable>
 				<xsl:choose>
 					<!-- Depending on the occurence-type and the type of construct content is generated. -->
 					<xsl:when test="$occurence-type = 'array' and (ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' or ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association')">
-						<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
-						<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-						<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
-						<xsl:value-of select="'&quot;,'"/>
 						<xsl:if test="$maxOccurs != 'unbounded'">
 							<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
 						</xsl:if>
@@ -2026,12 +2037,14 @@
 						<xsl:value-of select="'&quot;format&quot;: &quot;uri&quot;'"/>
 						<xsl:value-of select="'},'"/>
 						<xsl:value-of select="'&quot;readOnly&quot;: true,'"/>
-						<xsl:value-of select="'&quot;uniqueItems&quot;: true'"/>
+						<xsl:value-of select="'&quot;uniqueItems&quot;: true,'"/>
+						<xsl:value-of select="concat('&quot;example&quot;: &quot;datapunt.voorbeeldgemeente.nl/api/v1/',$elementName,'/123456789&quot;')"/>
 					</xsl:when>
 					<xsl:when test="$occurence-type != 'array' and (ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' or ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association')">
 						<xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
 						<xsl:value-of select="'&quot;format&quot;: &quot;uri&quot;,'"/>
-						<xsl:value-of select="'&quot;readOnly&quot;: true'"/>
+						<xsl:value-of select="'&quot;readOnly&quot;: true,'"/>
+						<xsl:value-of select="concat('&quot;example&quot;: &quot;datapunt.voorbeeldgemeente.nl/api/v1/',$elementName,'/123456789&quot;')"/>
 					</xsl:when>
 <?x					<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
 						<xsl:value-of select="'&quot;description&quot;: &quot;'"/>

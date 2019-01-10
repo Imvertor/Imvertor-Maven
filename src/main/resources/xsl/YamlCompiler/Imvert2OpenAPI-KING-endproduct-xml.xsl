@@ -462,6 +462,7 @@
 		
 		<xsl:variable name="name" select="ep:name" as="xs:string" />
 		<xsl:variable name="tech-name" select="imf:get-normalized-name(ep:tech-name, 'element-name')" as="xs:string" />
+
 		<!-- Sometimes we like to process the imvert construct which has a reference to a class and sometime the class itself. 
 			 For that reason the 'id' variable sometimes gets the value of the imvert:id element of the association, sometimes of the attribute 
 			 and sometimes of the class. -->
@@ -618,6 +619,11 @@
 				</ep:construct>
 			</xsl:when>
 			<xsl:when test="@type='association'">
+
+				<xsl:variable name="SIM-supplier" select="imf:get-trace-suppliers-for-construct($construct,1)[@project='SIM'][1]" />
+				<xsl:variable name="SIM-construct" select="if ($SIM-supplier) then imf:get-trace-construct-by-supplier($SIM-supplier,$imvert-document) else ()" />
+				<xsl:variable name="SIM-name" select="($SIM-construct/imvert:name, imvert:name)[1]" />
+				
 				<!-- If the current ep:construct is an association an ep:construct element is generated with all necessary properties. 
 					 This when statement differs from the one above by the value of the ep:name and ep:tech-name. -->
 				<xsl:variable name="type-id" select="ep:type-id" />
@@ -691,6 +697,17 @@
 								<xsl:sequence select="imf:create-output-element('ep:value', $meervoudigeNaam)" />
 							</ep:parameter>
 						</xsl:if>
+						<xsl:choose>
+							<xsl:when test="$SIM-name != ''">
+								<ep:parameter>
+									<xsl:sequence select="imf:create-output-element('ep:name', 'SIM-name')" />
+									<xsl:sequence select="imf:create-output-element('ep:value', $SIM-name)" />
+								</ep:parameter>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:sequence select="imf:msg('WARNING','It wasn&quot;t possible to retrieve the SIM-name of the construct [1].', ($construct/imvert:name))" />
+							</xsl:otherwise>
+						</xsl:choose>
 					</ep:parameters>
 					
 					<xsl:sequence select="imf:create-debug-comment(concat('Result check on id attributes: ',$contains-non-id-attributes),$debugging)" />
