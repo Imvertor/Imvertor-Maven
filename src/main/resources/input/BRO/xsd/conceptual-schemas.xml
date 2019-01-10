@@ -929,6 +929,24 @@
             </cs:forSchema>
             <cs:constructs>
                <cs:Construct>
+                  <cs:name>ProfileElement</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>ProfileElement</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>ProfileElement</cs:name>
+                        <cs:asAttribute>ProfileElementType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
                   <cs:name>SoilHorizon</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:catalogEntries>
