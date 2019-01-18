@@ -1209,7 +1209,11 @@
 					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
-							<xsl:sequence select="imf:create-output-element('ep:value', $berichtcode)" />
+							
+							<xsl:variable name="berichtcodes" select="//ep:rough-message[@messagetype = $messagetype and .//ep:construct/ep:name=$name]/@berichtcode"/>
+							<xsl:sequence select="imf:create-output-element('ep:value', $berichtcodes)" />
+
+							<!--xsl:sequence select="imf:create-output-element('ep:value', $berichtcode)" /-->
 						</ep:parameter>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'messagetype')" />
@@ -1263,7 +1267,11 @@
 					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
-							<xsl:sequence select="imf:create-output-element('ep:value', $berichtcode)" />
+
+							<xsl:variable name="berichtcodes" select="//ep:rough-message[@messagetype = $messagetype and .//ep:construct/ep:name=$name]/@berichtcode"/>
+							<xsl:sequence select="imf:create-output-element('ep:value', $berichtcodes)" />
+
+							<!--xsl:sequence select="imf:create-output-element('ep:value', $berichtcode)" /-->
 						</ep:parameter>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'messagetype')" />
@@ -1335,7 +1343,11 @@
 					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
-							<xsl:sequence select="imf:create-output-element('ep:value', $berichtcode)" />
+
+							<xsl:variable name="berichtcodes" select="//ep:rough-message[@messagetype = $messagetype and .//ep:construct/ep:name=$name]/@berichtcode"/>
+							<xsl:sequence select="imf:create-output-element('ep:value', $berichtcodes)" />
+
+							<!--xsl:sequence select="imf:create-output-element('ep:value', $berichtcode)" /-->
 						</ep:parameter>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'messagetype')" />
@@ -1437,7 +1449,11 @@
 					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
-							<xsl:sequence select="imf:create-output-element('ep:value', $berichtcode)" />
+
+							<xsl:variable name="berichtcodes" select="//ep:rough-message[@messagetype = $messagetype and .//ep:construct/ep:name=$name]/@berichtcode"/>
+							<xsl:sequence select="imf:create-output-element('ep:value', $berichtcodes)" />
+
+							<!--xsl:sequence select="imf:create-output-element('ep:value', $berichtcode)" /-->
 						</ep:parameter>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'messagetype')" />
@@ -1481,7 +1497,11 @@
 					<ep:parameters>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
-							<xsl:sequence select="imf:create-output-element('ep:value', $berichtcode)" />
+
+							<xsl:variable name="berichtcodes" select="//ep:rough-message[@messagetype = $messagetype and .//ep:construct/ep:name=$name]/@berichtcode"/>
+							<xsl:sequence select="imf:create-output-element('ep:value', $berichtcodes)" />
+
+							<!--xsl:sequence select="imf:create-output-element('ep:value', $berichtcode)" /-->
 						</ep:parameter>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'messagetype')" />

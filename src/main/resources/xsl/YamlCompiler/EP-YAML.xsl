@@ -134,9 +134,11 @@
 				<xsl:variable name="relatedResponseMessage">
 					<xsl:sequence select="//ep:message[ep:name = $rawMessageName and ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response']"/>
 				</xsl:variable>
-				<xsl:variable name="responseConstruct" select="$relatedResponseMessage/ep:message/ep:seq/ep:construct/ep:type-name"/>
-				<xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstruct]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameter[ep:name='berichtcode']/ep:value = $berichttype]/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
-				<!-- <xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstruct]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response']/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/> -->
+				<xsl:variable name="responseConstructName" select="$relatedResponseMessage/ep:message/ep:seq/ep:construct/ep:type-name"/>
+
+				<xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstructName]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameter[ep:name='berichtcode' and contains(ep:value,$berichttype)]]/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
+				<!--xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstructName]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameter[ep:name='berichtcode']/ep:value = $berichttype]/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/-->
+				<!--xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstructName]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response']/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/-->
 				
 				<xsl:variable name="determinedUriStructure">
 					<!-- This variable contains a structure determined from the messageName. -->
@@ -210,6 +212,23 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
+
+				<xsl:variable name="analyzedResponseStructure">
+					<!-- Within this variable it's searched for characteristics of the message. -->
+					<ep:analyzedStructure name="{$rawMessageName}" responseConstructName="{$responseConstructName}">
+						<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $responseConstructName]" mode="getCharacteristics"/>
+						<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $responseConstructName]" mode="getConstruct4Characteristics"/>
+					</ep:analyzedStructure>
+				</xsl:variable>
+
+				<xsl:if test="$debugging">
+					<xsl:result-document href="{concat('file:/c:/temp/analyzedResponseStructure/get',generate-id($analyzedResponseStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
+						<xsl:sequence select="$analyzedResponseStructure"/>
+					</xsl:result-document>
+				</xsl:if>					
+				
+				<!-- If the message contains GM types the following variable is true. -->
+				<xsl:variable name="acceptCrsParamPresent" select="boolean($analyzedResponseStructure//ep:hasGMtype)"/>
 				
 				<xsl:if test="$checkedUriStructure//ep:uriPart[ep:entityName/@path='false' and count(ep:param)=0 
 								and empty(following-sibling::ep:uriPart[ep:param])]">
@@ -276,11 +295,16 @@
 				<xsl:text>&#xa;    </xsl:text><xsl:value-of select="$method"/><xsl:text>:</xsl:text>
 				<xsl:text>&#xa;      operationId: </xsl:text><xsl:value-of select="ep:tech-name" />
 				<xsl:text>&#xa;      description: "</xsl:text><xsl:value-of select="$documentation" /><xsl:text>"</xsl:text>
-				<xsl:if test="contains($parametersRequired,'J') or 
+				<xsl:if test="$acceptCrsParamPresent or
+								contains($parametersRequired,'J') or 
 								$checkedUriStructure//ep:uriPart/ep:param[@path = 'true'] or 
 								$checkedUriStructure//ep:uriPart/ep:param[empty(@path) or @path = 'false']">
 					<!-- If parameters apply the parameters section is generated. -->
 					<xsl:text>&#xa;      parameters: </xsl:text>
+					<xsl:if test="$acceptCrsParamPresent">
+						<!-- If accpet-Crs-parameter applies that parameter is generated. -->
+						<xsl:text>&#xa;        - $ref: 'https://cdn.jsdelivr.net/gh/geonovum/kp-api-guidelines@1.0.0/components/parameters.yaml#/acceptCrs'</xsl:text>
+					</xsl:if>
 					<xsl:if test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value = 'true'">
 						<xsl:text>&#xa;        - in: query</xsl:text>
 						<xsl:text>&#xa;          name: page</xsl:text>
@@ -549,8 +573,7 @@
 				</xsl:call-template>
 				<xsl:variable name="queryParamsPresent" select="boolean($checkedUriStructure//ep:uriPart/ep:param[@path = 'false'] or empty($checkedUriStructure//ep:uriPart/ep:param/@path))"/>
 				<xsl:variable name="pathParamsPresent" select="boolean($checkedUriStructure//ep:uriPart/ep:param[@path = 'true'])"/>
-
-				<xsl:sequence select="imf:Foutresponses($berichttype,$queryParamsPresent,$pathParamsPresent,false())"/>
+				<xsl:sequence select="imf:Foutresponses($berichttype,$queryParamsPresent,$pathParamsPresent,$acceptCrsParamPresent)"/>
 				<xsl:text>&#xa;      tags: </xsl:text>
 				<xsl:text>&#xa;      - </xsl:text><xsl:value-of select="$tag" />
 			</xsl:when>
@@ -572,9 +595,32 @@
 					<xsl:sequence select="//ep:message[ep:name = $rawMessageName and ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response'and ep:parameter[ep:name='berichtcode']/ep:value = $berichttype]]"/>
 				</xsl:variable>
 				<xsl:variable name="responseConstruct" select="$relatedResponseMessage/ep:message/ep:seq/ep:construct/ep:type-name"/>
-				<xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstruct]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameter[ep:name='berichtcode']/ep:value = $berichttype]/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
+
+
+
+
+
+
+
+
+
+				<!-- De uitwerking in de uitbecommentarieerde variabele kreeg alleen een waarde als de betreffende responseConstruct ook een parameter met de naam 'berichtcode' had die gelijk was aan de in bewerking zijnde 
+					 berichttype (Pa01, Pu01, Po01, etc...).
+				     Aangezien een responseConstruct die in meerdere berichten gebruikt wordt in het EP formaat maar voor 1 van die berichten wordt uitgewerkt kan het voorkomen dat voor de andere berichten geen meervoudige 
+				     naam kan worden gevonden wat in de yaml code resulteert in een fout. Vandaar dat de tweede vorm van deze variabele is uitgewerkt.
+					 De kans is echter dat deze uitwerking weer tot andere fouten leidt. -->
+				<xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstruct]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameter[ep:name='berichtcode' and contains(ep:value,$berichttype)]]/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
+				<!--xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstruct]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response' and ep:parameter[ep:name='berichtcode']/ep:value = $berichttype]/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/-->
 				<!--xsl:variable name="meervoudigeNaamResponseTree" select="//ep:message-set/ep:construct[ep:tech-name = $responseConstruct]/ep:parameters[ep:parameter[ep:name='messagetype']/ep:value = 'response']/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/-->
-				
+
+
+
+
+
+
+
+
+
 				<xsl:variable name="requestbodyConstructName" select="$requestbodymessage//ep:type-name"/>
 				<xsl:variable name="responseConstructName" select="$relatedResponseMessage//ep:type-name"/>
 
@@ -704,14 +750,14 @@
 				<!-- With the following it's determined if geo-type attributes are present within the requesttree of the post message. -->
 				<xsl:variable name="analyzedRequestbodyStructure">
 					<!-- Within this variable it's searched for characteristics of the message. -->
-					<ep:analyzedStructure name="{$rawMessageName}">
+					<ep:analyzedStructure name="{$rawMessageName}" requestbodyConstructName="{$requestbodyConstructName}">
 						<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $requestbodyConstructName]" mode="getCharacteristics"/>
 						<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $requestbodyConstructName]" mode="getConstruct4Characteristics"/>
 					</ep:analyzedStructure>
 				</xsl:variable>
 				<xsl:variable name="analyzedResponseStructure">
 					<!-- Within this variable it's searched for characteristics of the message. -->
-					<ep:analyzedStructure name="{$rawMessageName}">
+					<ep:analyzedStructure name="{$rawMessageName}" responseConstructName="{$responseConstructName}">
 						<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $responseConstructName]" mode="getCharacteristics"/>
 						<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $responseConstructName]" mode="getConstruct4Characteristics"/>
 					</ep:analyzedStructure>
@@ -724,31 +770,19 @@
 					<xsl:result-document href="{concat('file:/c:/temp/calculatedUriStructure/',$messageCategory,generate-id($calculatedUriStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
 						<xsl:sequence select="$calculatedUriStructure"/>
 					</xsl:result-document>
+					<xsl:result-document href="{concat('file:/c:/temp/analyzedRequestbodyStructure/',$messageCategory,generate-id($analyzedRequestbodyStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
+						<xsl:sequence select="$analyzedRequestbodyStructure"/>
+					</xsl:result-document>
+					<xsl:result-document href="{concat('file:/c:/temp/analyzedResponseStructure/',$messageCategory,generate-id($analyzedResponseStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
+						<xsl:sequence select="$analyzedResponseStructure"/>
+					</xsl:result-document>
 				</xsl:if>					
 
 				<xsl:variable name="queryParamsPresent" select="false()"/>
 				<xsl:variable name="pathParamsPresent" select="false()"/>
-				<xsl:variable name="contentCrsParamPresent">
-					<xsl:choose>
-						<xsl:when test="$analyzedRequestbodyStructure//ep:hasGMtype">
-							<xsl:value-of select="true()"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="false()"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-				<xsl:variable name="acceptCrsParamPresent">
-					<xsl:choose>
-						<xsl:when test="$analyzedResponseStructure//ep:hasGMtype">
-							<xsl:value-of select="true()"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="false()"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-				
+				<xsl:variable name="contentCrsParamPresent" select="boolean($analyzedRequestbodyStructure//ep:hasGMtype)"/>
+				<xsl:variable name="acceptCrsParamPresent" select="boolean($analyzedResponseStructure//ep:hasGMtype)"/>
+					
 				<!-- For each message the next structure is generated. -->
 				<xsl:text>&#xa;    </xsl:text><xsl:value-of select="$method"/><xsl:text>:</xsl:text>
 				<xsl:text>&#xa;      operationId: </xsl:text>
@@ -759,19 +793,15 @@
 				</xsl:choose>
 				<xsl:value-of select="ep:tech-name" />
 				<xsl:text>&#xa;      description: "</xsl:text><xsl:value-of select="$documentation" /><xsl:text>"</xsl:text>
-				<xsl:if test="$contentCrsParamPresent = true() or 
-							  $acceptCrsParamPresent = true() or 
+				<xsl:if test="($messageCategory = 'Po' and ($contentCrsParamPresent or 
+							  $acceptCrsParamPresent)) or
 							  $checkedUriStructure//ep:uriPart/ep:param[@path = 'true'] or 
 							  $checkedUriStructure//ep:uriPart/ep:param[empty(@path) or @path = 'false']">
 					<!-- If Crs-parameters, path or query parameters apply the parameters section is generated. -->
 					<xsl:text>&#xa;      parameters: </xsl:text>
-					<xsl:if test="$contentCrsParamPresent = true()">
+					<xsl:if test="$messageCategory = 'Po' and $contentCrsParamPresent">
 						<!-- If content-Crs-parameter applies that parameter is generated. -->
 						<xsl:text>&#xa;        - $ref: 'https://cdn.jsdelivr.net/gh/geonovum/kp-api-guidelines@1.0.0/components/parameters.yaml#/contentCrs'</xsl:text>
-					</xsl:if>
-					<xsl:if test="$acceptCrsParamPresent = true()">
-						<!-- If accpet-Crs-parameter applies that parameter is generated. -->
-						<xsl:text>&#xa;        - $ref: 'https://cdn.jsdelivr.net/gh/geonovum/kp-api-guidelines@1.0.0/components/parameters.yaml#/acceptCrs'</xsl:text>
 					</xsl:if>
 					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[@path = 'true']">
 						<!-- Loop over de path ep:param elements within the checkeduristructure and generate for each of them a path parameter. -->
@@ -1015,6 +1045,8 @@
 							<xsl:with-param name="rawMessageName" select="$rawMessageName"/>
 							<xsl:with-param name="responseConstructName" select="$responseConstructName"/>
 							<xsl:with-param name="exampleSleutelEntiteittype" select="$exampleSleutelEntiteittype"/>
+							<xsl:with-param name="acceptCrsParamPresent" select="$acceptCrsParamPresent"/>
+							<xsl:with-param name="messageCategory" select="$messageCategory"/>
 						</xsl:call-template>
 					</xsl:otherwise>
 				</xsl:choose>
@@ -1022,7 +1054,8 @@
 						       beschreven wijzigingen in het algoritme behorende bij issue #490151 worden geimplementeerd.
 							   Die beschrijving moet overigens nog aangepast worden omdat bij een POST bericht de request tree wordt gebruikt voor de 
 							   content van het bericht en deze volgens mij niet ook nog eens voor de parameters gebruikt kan worden. -->
-				<xsl:sequence select="imf:Foutresponses($berichttype,$queryParamsPresent,$pathParamsPresent,($contentCrsParamPresent or $acceptCrsParamPresent))"/>
+				<xsl:sequence select="imf:Foutresponses($berichttype,$queryParamsPresent,$pathParamsPresent,($messageCategory = 'Po' and ($contentCrsParamPresent or 
+					$acceptCrsParamPresent)))"/>
 				<xsl:text>&#xa;      tags: </xsl:text>
 				<xsl:text>&#xa;      - </xsl:text><xsl:value-of select="$tag" />
 			</xsl:when>
@@ -1101,6 +1134,8 @@
 		<xsl:param name="rawMessageName"/>
 		<xsl:param name="responseConstructName"/>
 		<xsl:param name="exampleSleutelEntiteittype"/>
+		<xsl:param name="acceptCrsParamPresent"/>
+		<xsl:param name="messageCategory"/>
 
 		<xsl:text>&#xa;        '201':</xsl:text>
 		<xsl:text>&#xa;          description: "OK"</xsl:text>
@@ -1115,6 +1150,11 @@
 		<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'api_version&quot;')"/>
 		<xsl:text>&#xa;            warning:</xsl:text>
 		<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'warning&quot;')"/>
+		<xsl:if test="$messageCategory = 'Po' and $acceptCrsParamPresent">
+			<xsl:text>&#xa;            parameters: </xsl:text>
+			<!-- If accpet-Crs-parameter applies that parameter is generated. -->
+			<xsl:text>&#xa;              $ref: 'https://cdn.jsdelivr.net/gh/geonovum/kp-api-guidelines@1.0.0/components/parameters.yaml#/acceptCrs'</xsl:text>
+		</xsl:if>
 		<xsl:text>&#xa;          content:</xsl:text>
 		<xsl:text>&#xa;            application/</xsl:text><xsl:value-of select="$serialisation"/><xsl:text>:</xsl:text>
 		<xsl:text>&#xa;              schema:</xsl:text>
@@ -1125,7 +1165,7 @@
 		<xsl:param name="berichttype"/>
 		<xsl:param name="queryParamsPresent"/>
 		<xsl:param name="pathParamsPresent"/>
-		<xsl:param name="CrsParamPresent"/>
+		<xsl:param name="crsParamPresent"/>
 		
 		<xsl:if test="contains($berichttype,'Po') or $queryParamsPresent">
 			<xsl:sequence select="imf:Foutresponse('400','Bad Request')"/>
@@ -1138,7 +1178,7 @@
 		<xsl:sequence select="imf:Foutresponse('406','Not Acceptable')"/>
 		<xsl:sequence select="imf:Foutresponse('409','Conflict')"/>
 		<xsl:sequence select="imf:Foutresponse('410','Gone')"/>
-		<xsl:if test="$CrsParamPresent">
+		<xsl:if test="$crsParamPresent">
 			<xsl:sequence select="imf:Foutresponse('412','Precondition Failed')"/>
 		</xsl:if>
 		<xsl:sequence select="imf:Foutresponse('415','Unsupported Media Type')"/>
@@ -1240,7 +1280,8 @@
 
 	<xsl:template match="ep:construct" mode="getCharacteristics">
 		<xsl:variable name="hasGMtype">
-			<xsl:if test="ep:seq/ep:construct/ep:parameters[empty(ep:parameter[ep:name='type'])]/ep:parameter[ep:name='type']/ep:value = 'GM-external'">
+			<!--xsl:if test="ep:seq/ep:construct/ep:parameters[empty(ep:parameter[ep:name='type'])]/ep:parameter[ep:name='type']/ep:value = 'GM-external'"-->
+			<xsl:if test="ep:seq/ep:construct/ep:parameters/ep:parameter[ep:name='type']/ep:value = 'GM-external'">
 				<xsl:value-of select="'true'"/>
 			</xsl:if>
 		</xsl:variable>
@@ -1258,12 +1299,17 @@
 	</xsl:template>
 	
 	<xsl:template match="ep:construct" mode="getConstruct4Characteristics">
+		<xsl:param name="constructNames" select="''"/>
 		<xsl:for-each select="ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association']">
 			<xsl:variable name="meervoudigeNaam" select="ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
 			<xsl:variable name="constructName" select="ep:type-name"/>
-
+			
 			<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $constructName]" mode="getCharacteristics"/>
-			<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $constructName]" mode="getConstruct4Characteristics"/>
+			<xsl:if test="not(contains($constructNames,$constructName))">
+				<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $constructName]" mode="getConstruct4Characteristics">
+					<xsl:with-param name="constructNames" select="concat($constructNames,';',$constructName)"/>
+				</xsl:apply-templates>
+			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
 	
