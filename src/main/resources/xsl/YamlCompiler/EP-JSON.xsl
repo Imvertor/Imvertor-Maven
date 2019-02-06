@@ -6,7 +6,7 @@
 	
 	<!-- The first variable is meant for the server environment, the second one is used during development in XML-Spy. -->
 	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
-	<!--<xsl:variable name="debugging" select="false()" as="xs:boolean"/>-->
+	<!--<xsl:variable name="debugging" select="true()" as="xs:boolean"/>-->
 	<xsl:variable name="standard-json-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-json-components-file'))"/>
 	<xsl:variable name="standard-geojson-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-geojson-components-file'))"/>
 	
@@ -1253,8 +1253,7 @@
 		
 		<xsl:variable name="properties">
 			<xsl:value-of select="',&quot;properties&quot;: {'"/>
-			<!-- Loop over all constructs (that don't have association type, supertype-association type and superclass type constructs) 
-				 within the current construct. -->
+			<!-- In case of plain json an if the current construct isn't a groepComposition the property 'url' has to be generated. -->
 			<xsl:if test="$serialisation = 'json' and ep:parameters/ep:parameter[ep:name = 'type']/ep:value != 'groepCompositie'">
 				<xsl:value-of select="'&quot;url&quot; : {'"/>
 				<xsl:value-of select="'&quot;title&quot; : &quot;Url&quot;,'"/>
@@ -1265,6 +1264,8 @@
 				<xsl:if test="ep:seq/ep:construct[not(ep:seq) and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association') and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'supertype-association') 
 					and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'superclass') and not(ep:ref)]">,</xsl:if>
 			</xsl:if>
+			<!-- Loop over all constructs withn the current construct (that don't have association type, supertype-association type and superclass type constructs) 
+				 within the current construct. -->
 			<xsl:for-each select="ep:seq/ep:construct[not(ep:seq) and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association') and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'supertype-association') 
 				and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'superclass') and not(ep:ref)]">
 				<xsl:call-template name="property"/>
@@ -1311,10 +1312,11 @@
 				</xsl:when>
 			</xsl:choose>
 			
-			<!-- The reference to the embedded component must only be generated when the related embedded component is generated. That is only the case if that component has content.
-				 That is determined here. For now this is only determined for one _embedded level. If this must be determined for more levels or even recursive a more thorough solution has to be implemented. -->
+			<!-- Now all constructs being an association has to be processed. How depends on the serialisation. -->
 			<xsl:choose>
 				<xsl:when test="$serialisation = 'hal+json'">
+					<!-- The reference to the embedded component must only be generated when the related embedded component is generated. That is only the case if that component has content.
+						 That is determined here. For now this is only determined for one _embedded level. If this must be determined for more levels or even recursive a more thorough solution has to be implemented. -->
 					<xsl:variable name="contentRelatedEmbeddedConstruct">
 						<xsl:variable name="relatedGlobalConstruct">
 							<xsl:copy-of select="/ep:message-sets/ep:message-set/ep:construct[ep:tech-name=$elementName]"/>
@@ -1604,6 +1606,54 @@
 				<xsl:value-of select="'&quot;,'"/>
 				<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;'"/> ?>
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-geojson-components-url,'GeoJSONGeometry&quot;')"/>
+			</xsl:when>
+			<xsl:when test="exists(ep:data-type) and (ep:max-occurs = 'unbounded' or ep:max-occurs > 1)">
+				<!-- If the construct has a ep:data-type element, a description, an optional format and, also optional, some facets have to be generated. -->
+				<xsl:variable name="datatype">
+					<xsl:call-template name="deriveDataType">
+						<xsl:with-param name="incomingType">
+							<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:variable name="format">
+					<xsl:call-template name="deriveFormat">
+						<xsl:with-param name="incomingType">
+							<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:variable name="facets">
+					<xsl:call-template name="deriveFacets">
+						<xsl:with-param name="incomingType">
+							<xsl:value-of select="substring-after(ep:data-type, 'scalar-')"/>
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:variable name="example">
+					<xsl:call-template name="deriveExample"/>
+				</xsl:variable>
+				<xsl:value-of select="'&quot;type&quot;: &quot;array&quot;,'"/>
+				<xsl:value-of select="concat('&quot;title&quot;: &quot;',ep:parameters/ep:parameter[ep:name='SIM-name']/ep:value,'&quot;')"/>
+				<xsl:variable name="documentation">
+					<xsl:value-of select="ep:documentation//ep:p"/>
+				</xsl:variable>
+				<xsl:value-of select="',&quot;description&quot;: &quot;'"/>
+				<!-- Double quotes in documentation text is replaced by a  grave accent. -->
+				<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+				<xsl:value-of select="'&quot;'"/>
+				<xsl:if test="ep:min-occurs">
+					<xsl:value-of select="concat(',&quot;minItems&quot;: ',ep:min-occurs,',')"/>
+				</xsl:if>
+				<xsl:if test="ep:max-occurs != 'unbounded'">
+					<xsl:value-of select="concat(',&quot;maxItems&quot;: ',ep:max-occurs,',')"/>
+				</xsl:if>
+				<xsl:value-of select="'&quot;items&quot;: {'"/>
+				<xsl:value-of select="concat('&quot;type&quot;: &quot;',$datatype,'&quot;')"/>
+				<xsl:value-of select="$format"/>
+				<xsl:value-of select="$facets"/>
+				<xsl:value-of select="$example"/>
+				<xsl:value-of select="'}'"/>
 			</xsl:when>
 			<xsl:when test="exists(ep:data-type)">
 				<!-- If the construct has a ep:data-type element, a description, an optional format and, also optional, some facets have to be generated. -->
