@@ -11,6 +11,8 @@
 	xmlns:imf="http://www.imvertor.org/xsl/functions"
 	xmlns:imvert-result="http://www.imvertor.org/schema/imvertor/application/v20160201"
 	xmlns:ep="http://www.imvertor.org/schema/endproduct" 
+	xmlns:math="http://exslt.org/math"
+	
 	
 	version="2.0">
 
@@ -1794,7 +1796,17 @@
 					<xsl:variable name="total-digits" select="imvert:total-digits" />
 					<xsl:variable name="fraction-digits" select="imvert:fraction-digits" />
 					<xsl:variable name="min-value" select="imf:get-tagged-value(.,'##CFG-TV-MINVALUEINCLUSIVE')" />
-					<xsl:variable name="max-value" select="imf:get-tagged-value(.,'##CFG-TV-MAXVALUEINCLUSIVE')" />
+					<xsl:variable name="max-value">
+						<xsl:choose>
+							<xsl:when test="not(empty(imf:get-tagged-value(.,'##CFG-TV-MAXVALUEINCLUSIVE')))">
+								<xsl:value-of select="imf:get-tagged-value(.,'##CFG-TV-MAXVALUEINCLUSIVE')"/>
+							</xsl:when>
+							<xsl:when test="imvert:total-digits">
+								<xsl:variable name="power" select="imvert:total-digits" />
+								<xsl:value-of select="imf:power($power,10,0)-1" />
+							</xsl:when>
+						</xsl:choose>
+					</xsl:variable>
 					<xsl:variable name="min-length" select="xs:integer(imf:get-tagged-value(.,'##CFG-TV-MINLENGTH'))" />
 					<xsl:variable name="pattern" select="imvert:pattern" />
 
@@ -1802,7 +1814,9 @@
 					<!--xsl:sequence select="imf:create-output-element('ep:total-digits', $total-digits)" />
 					<xsl:sequence select="imf:create-output-element('ep:fraction-digits', $fraction-digits)" /-->
 					<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
-					<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
+					<xsl:if test="$max-value != ''">
+						<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
+					</xsl:if>
 					<!--xsl:sequence select="imf:create-output-element('ep:min-length', $min-length)" /-->
 					<xsl:sequence select="imf:create-output-element('ep:pattern', $pattern)" />
 					<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
@@ -2150,6 +2164,31 @@
 			<xsl:value-of select="' '"/>
 			<xsl:sequence select="imf:determineAmountOfSpaces($length - 1)"/>
 		</xsl:if>
+	</xsl:function>
+	
+	<xsl:function name="imf:power">
+		<xsl:param name="power"/>
+		<xsl:param name="num"/>
+		<xsl:param name="value"/>
+		
+		<xsl:choose>
+			<xsl:when test="$value = 0 and $power = 0">
+				<xsl:value-of select="0"/>
+			</xsl:when>
+			<xsl:when test="$value = 0 and $power = 1">
+				<xsl:value-of select="$num"/>
+			</xsl:when>
+			<xsl:when test="$value = 0">
+				<xsl:value-of select="imf:power($power - 1,$num,$num)"/>
+			</xsl:when>
+			<xsl:when test="$power > 1">
+				<xsl:variable name="product" select="$value * $num"/>
+				<xsl:value-of select="imf:power($power - 1,$num,$product)"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$value * $num"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:function>
 	
 </xsl:stylesheet>
