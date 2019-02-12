@@ -33,6 +33,7 @@ import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import net.sf.saxon.s9api.SaxonApiException;
 import nl.imvertor.common.exceptions.ConfiguratorException;
 import nl.imvertor.common.file.AnyFile;
 
@@ -256,9 +257,15 @@ public class Runner {
 		messenger.writeMsg(logger.getName(), "ERROR", "", text, id, wiki);
 		logger.error(text,e);
 	}
+	
 	public void error(Logger logger, String text, Exception e) throws IOException, ConfiguratorException {
-		error(logger, text, e, null, null);
+		if (e instanceof SaxonApiException) 
+			error(logger,((SaxonApiException) e).getSystemId() + ":" + ((SaxonApiException) e).getLineNumber() + ": " + text, e, null, null);
+		else 
+			error(logger, text, e, null, null);
 	}
+	
+	
 	/**
 	 * The ERROR level designates error events that might still allow the application to continue running.
 	 * 
@@ -380,6 +387,7 @@ public class Runner {
 	public void fatal(Logger logger, String text, Exception e, String wiki)  {
 		fatal(logger, text, e, null, wiki);
 	}
+	
 	/**
 	 * Tracker intended for external applications, keeping track of states the process is in. 
 	 * Typically read in parallel, focussing on the last line.
