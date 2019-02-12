@@ -582,7 +582,7 @@
 					<xsl:with-param name="messagetype" select="$messagetype"/>
 				</xsl:apply-templates>
 			</xsl:when>
-			<xsl:when test="(@type='complex-datatype' and $construct//imvert:name != 'NEN3610ID') or @type='table-datatype'">
+			<xsl:when test="(@type='complex-datatype' and $construct//imvert:name != 'NEN3610ID')">
 				<!-- If the current ep:construct is a complex-datatype or a table-datatype an ep:construct element is generated 
 					 with all necessary properties, except when its name is NEN3610ID. In that case no reference to a complex-datatype is created. -->
 				<xsl:variable name="type-id" select="ep:type-id" />
@@ -618,6 +618,58 @@
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', $construct/imvert:min-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', $construct/imvert:max-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name($type-name,'type-name'))" />
+				</ep:construct>
+			</xsl:when>
+			<xsl:when test="@type='table-datatype'">
+				<!-- If the current ep:construct is a complex-datatype or a table-datatype an ep:construct element is generated 
+					 with all necessary properties, except when its name is NEN3610ID. In that case no reference to a complex-datatype is created. -->
+				<xsl:variable name="type-id" select="ep:type-id" />
+				<xsl:variable name="classconstruct" select="imf:get-construct-by-id($type-id,$packages)" />
+				<xsl:variable name="type-name" select="$classconstruct/imvert:name" />
+				
+				<ep:construct>
+					<ep:parameters>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'messagetype')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $messagetype)" />
+						</ep:parameter>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'berichtcode')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', $berichtcode)" />
+						</ep:parameter>
+						<xsl:choose>
+							<xsl:when test="count($classconstruct//imvert:attribute) = 1">
+								<xsl:apply-templates select="$classconstruct//imvert:attributes/imvert:attribute"  mode="onlyParameters"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<ep:parameter>
+									<xsl:sequence select="imf:create-output-element('ep:name', 'type')" />
+									<xsl:sequence select="imf:create-output-element('ep:value', @type)" />
+								</ep:parameter>
+							</xsl:otherwise>
+						</xsl:choose>
+					</ep:parameters>
+					<xsl:sequence select="imf:create-debug-comment(concat('OAS11500, id: ',$id),$debugging)" />
+					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
+					<xsl:sequence select="imf:create-output-element('ep:tech-name', $tech-name)" />
+					<xsl:choose>
+						<xsl:when test="(empty($doc) or $doc='') and $debugging">
+							<xsl:call-template name="documentationUnknown"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="imf:create-output-element('ep:documentation', $doc,'',false(),false())" />
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:sequence select="imf:create-output-element('ep:min-occurs', $construct/imvert:min-occurs)" />
+					<xsl:sequence select="imf:create-output-element('ep:max-occurs', $construct/imvert:max-occurs)" />
+					<xsl:choose>
+						<xsl:when test="count($classconstruct//imvert:attribute) = 1">
+							<xsl:apply-templates select="$classconstruct//imvert:attributes/imvert:attribute"  mode="onlyFacets"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name($type-name,'type-name'))" />
+						</xsl:otherwise>
+					</xsl:choose>
 				</ep:construct>
 			</xsl:when>
 			<xsl:when test="@type='association'">
@@ -1546,7 +1598,7 @@
 		<xsl:variable name="name" select="imvert:name/@original" as="xs:string" />
 		<xsl:variable name="tech-name" select="imf:get-normalized-name(imvert:name, 'element-name')" as="xs:string" />
 		<xsl:variable name="id" select="imvert:id"/>
-		<xsl:variable name="is-id" select="imvert:is-id"/>
+		<!--xsl:variable name="is-id" select="imvert:is-id"/-->
 		<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
 		<xsl:variable name="doc">
 			<xsl:if test="not(empty(imf:merge-documentation($construct,'CFG-TV-DEFINITION')))">
@@ -1570,14 +1622,14 @@
 				</ep:pattern>
 			</xsl:if>
 		</xsl:variable>
-		<xsl:variable name="example" select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-EXAMPLE')" />
+		<!--xsl:variable name="example" select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-EXAMPLE')" /-->
 
-		<xsl:variable name="SIM-supplier" select="imf:get-trace-suppliers-for-construct(.,1)[@project='SIM'][1]" />
+		<!--xsl:variable name="SIM-supplier" select="imf:get-trace-suppliers-for-construct(.,1)[@project='SIM'][1]" />
 		<xsl:variable name="SIM-construct" select="if ($SIM-supplier) then imf:get-trace-construct-by-supplier($SIM-supplier,$imvert-document) else ()" />
-		<xsl:variable name="SIM-name" select="($SIM-construct/imvert:name, imvert:name)[1]" />
+		<xsl:variable name="SIM-name" select="($SIM-construct/imvert:name, imvert:name)[1]" /-->
 		
 
-		<xsl:variable name="suppliers" as="element(ep:suppliers)">
+		<!--xsl:variable name="suppliers" as="element(ep:suppliers)">
 			<ep:suppliers>
 				<xsl:copy-of select="imf:get-UGM-suppliers(.)" />
 			</ep:suppliers>
@@ -1586,7 +1638,7 @@
 			<ep:tagged-values>
 				<xsl:copy-of select="imf:get-compiled-tagged-values(., true())" />
 			</ep:tagged-values>
-		</xsl:variable>
+		</xsl:variable-->
 
 		<xsl:variable name="type-is-GM-external" select="(exists(imvert:conceptual-schema-type) and contains(imvert:conceptual-schema-type,'GM_')) or contains(imvert:baretype,'GM_')"/>		
 
@@ -1594,26 +1646,7 @@
 			<xsl:when test="imvert:type-name = 'NEN3610ID'">
 				<ep:construct>
 					<ep:parameters>
-						<xsl:choose>
-							<xsl:when test="$is-id = 'true'">
-								<ep:parameter>
-									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
-									<xsl:sequence select="imf:create-output-element('ep:value', 'true')" />
-								</ep:parameter>
-							</xsl:when>
-							<xsl:otherwise>
-								<ep:parameter>
-									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
-									<xsl:sequence select="imf:create-output-element('ep:value', 'false')" />
-								</ep:parameter>
-							</xsl:otherwise>
-						</xsl:choose>
-						<xsl:if test="$SIM-name != ''">
-							<ep:parameter>
-								<xsl:sequence select="imf:create-output-element('ep:name', 'SIM-name')" />
-								<xsl:sequence select="imf:create-output-element('ep:value', $SIM-name)" />
-							</ep:parameter>
-						</xsl:if>
+						<xsl:call-template name="attributeParameters"/>
 					</ep:parameters>
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS28300, id: ',imvert:id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
@@ -1628,8 +1661,7 @@
 					</xsl:choose>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)" />
-					<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
-					<xsl:sequence select="imf:create-output-element('ep:type-name', 'NEN3610ID')" />
+					<xsl:call-template name="attributeFacets"/>
 				</ep:construct>
 			</xsl:when>
 			<xsl:when test="$type-is-GM-external">
@@ -1637,30 +1669,7 @@
 					 the same way. -->
 				<ep:construct>
 					<ep:parameters>
-						<ep:parameter>
-							<xsl:sequence select="imf:create-output-element('ep:name', 'type')" />
-							<xsl:sequence select="imf:create-output-element('ep:value', 'GM-external')" />
-						</ep:parameter>
-						<xsl:choose>
-							<xsl:when test="$is-id = 'true'">
-								<ep:parameter>
-									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
-									<xsl:sequence select="imf:create-output-element('ep:value', 'true')" />
-								</ep:parameter>
-							</xsl:when>
-							<xsl:otherwise>
-								<ep:parameter>
-									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
-									<xsl:sequence select="imf:create-output-element('ep:value', 'false')" />
-								</ep:parameter>
-							</xsl:otherwise>
-						</xsl:choose>
-						<xsl:if test="$SIM-name != ''">
-							<ep:parameter>
-								<xsl:sequence select="imf:create-output-element('ep:name', 'SIM-name')" />
-								<xsl:sequence select="imf:create-output-element('ep:value', $SIM-name)" />
-							</ep:parameter>
-						</xsl:if>
+						<xsl:call-template name="attributeParameters"/>
 					</ep:parameters>
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS28500, id: ',imvert:id),$debugging)" />
 					<xsl:sequence select="imf:create-output-element('ep:name', $name)" />
@@ -1675,7 +1684,7 @@
 					</xsl:choose>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)" />
-					<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
+					<xsl:call-template name="attributeFacets"/>
 				</ep:construct>
 			</xsl:when>
 			<xsl:when test="imvert:type-id and imvert:type-id = $packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]/imvert:id">
@@ -1692,26 +1701,7 @@
 					 example the case when it's an attribute with a enumeration type. -->
 				<ep:construct>
 					<ep:parameters>
-						<xsl:choose>
-							<xsl:when test="$is-id = 'true'">
-								<ep:parameter>
-									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
-									<xsl:sequence select="imf:create-output-element('ep:value', 'true')" />
-								</ep:parameter>
-							</xsl:when>
-							<xsl:otherwise>
-								<ep:parameter>
-									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
-									<xsl:sequence select="imf:create-output-element('ep:value', 'false')" />
-								</ep:parameter>
-							</xsl:otherwise>
-						</xsl:choose>
-						<xsl:if test="$SIM-name != ''">
-							<ep:parameter>
-								<xsl:sequence select="imf:create-output-element('ep:name', 'SIM-name')" />
-								<xsl:sequence select="imf:create-output-element('ep:value', $SIM-name)" />
-							</ep:parameter>
-						</xsl:if>
+						<xsl:call-template name="attributeParameters"/>
 					</ep:parameters>
 
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS30000, id: ',imvert:id),$debugging)" />
@@ -1727,34 +1717,14 @@
 					</xsl:choose>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)" />
-					<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name(imvert:type-name,'type-name'))" />
-					<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
+					<xsl:call-template name="attributeFacets"/>
 				</ep:construct>
 			</xsl:when>
 			<xsl:otherwise>
 				<!-- In all other cases the imvert:attribute itself and its properties are processed. -->
 				<ep:construct>
 					<ep:parameters>
-						<xsl:choose>
-							<xsl:when test="$is-id = 'true'">
-								<ep:parameter>
-									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
-									<xsl:sequence select="imf:create-output-element('ep:value', 'true')" />
-								</ep:parameter>
-							</xsl:when>
-							<xsl:otherwise>
-								<ep:parameter>
-									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
-									<xsl:sequence select="imf:create-output-element('ep:value', 'false')" />
-								</ep:parameter>
-							</xsl:otherwise>
-						</xsl:choose>
-						<xsl:if test="$SIM-name != ''">
-							<ep:parameter>
-								<xsl:sequence select="imf:create-output-element('ep:name', 'SIM-name')" />
-								<xsl:sequence select="imf:create-output-element('ep:value', $SIM-name)" />
-							</ep:parameter>
-						</xsl:if>
+						<xsl:call-template name="attributeParameters"/>
 					</ep:parameters>
 
 					<xsl:sequence select="imf:create-debug-comment(concat('OAS30500, id: ',imvert:id),$debugging)" />
@@ -1790,41 +1760,194 @@
 					</xsl:choose>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)" />
-					<xsl:sequence select="imf:create-output-element('ep:data-type', imvert:type-name)" />
-
-					<xsl:variable name="max-length" select="imvert:max-length" />
-					<xsl:variable name="total-digits" select="imvert:total-digits" />
-					<xsl:variable name="fraction-digits" select="imvert:fraction-digits" />
-					<xsl:variable name="min-value" select="imf:get-tagged-value(.,'##CFG-TV-MINVALUEINCLUSIVE')" />
-					<xsl:variable name="max-value">
-						<xsl:choose>
-							<xsl:when test="not(empty(imf:get-tagged-value(.,'##CFG-TV-MAXVALUEINCLUSIVE')))">
-								<xsl:value-of select="imf:get-tagged-value(.,'##CFG-TV-MAXVALUEINCLUSIVE')"/>
-							</xsl:when>
-							<xsl:when test="imvert:total-digits">
-								<xsl:variable name="power" select="imvert:total-digits" />
-								<xsl:value-of select="imf:power($power,10,0)-1" />
-							</xsl:when>
-						</xsl:choose>
-					</xsl:variable>
-					<xsl:variable name="min-length" select="xs:integer(imf:get-tagged-value(.,'##CFG-TV-MINLENGTH'))" />
-					<xsl:variable name="pattern" select="imvert:pattern" />
-
-					<xsl:sequence select="imf:create-output-element('ep:max-length', $max-length)" />
-					<!--xsl:sequence select="imf:create-output-element('ep:total-digits', $total-digits)" />
-					<xsl:sequence select="imf:create-output-element('ep:fraction-digits', $fraction-digits)" /-->
-					<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
-					<xsl:if test="$max-value != ''">
-						<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
-					</xsl:if>
-					<!--xsl:sequence select="imf:create-output-element('ep:min-length', $min-length)" /-->
-					<xsl:sequence select="imf:create-output-element('ep:pattern', $pattern)" />
-					<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
+					<xsl:call-template name="attributeFacets"/>
 				</ep:construct>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 
+	<xsl:template match="imvert:attribute" mode="onlyParameters">
+		<!-- If a table, refered to by an attribute, only has 1 attribute the facets of that attribute are used to build the properties of the attribute refering.
+			 In that case no ref to a table is generated and ep:parameters have to be generated based on the tables attribute. -->
+		
+		<xsl:call-template name="attributeParameters"/>
+	</xsl:template>
+	
+	<xsl:template name="attributeParameters">
+		
+		<xsl:variable name="is-id" select="imvert:is-id"/>
+		<xsl:variable name="SIM-supplier" select="imf:get-trace-suppliers-for-construct(.,1)[@project='SIM'][1]" />
+		<xsl:variable name="SIM-construct" select="if ($SIM-supplier) then imf:get-trace-construct-by-supplier($SIM-supplier,$imvert-document) else ()" />
+		<xsl:variable name="SIM-name" select="($SIM-construct/imvert:name, imvert:name)[1]" />
+		<xsl:variable name="type-is-GM-external" select="(exists(imvert:conceptual-schema-type) and contains(imvert:conceptual-schema-type,'GM_')) or contains(imvert:baretype,'GM_')"/>		
+		
+		<xsl:choose>
+			<xsl:when test="imvert:type-name = 'NEN3610ID'">
+				<xsl:choose>
+					<xsl:when test="$is-id = 'true'">
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', 'true')" />
+						</ep:parameter>
+					</xsl:when>
+					<xsl:otherwise>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', 'false')" />
+						</ep:parameter>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:if test="$SIM-name != ''">
+					<ep:parameter>
+						<xsl:sequence select="imf:create-output-element('ep:name', 'SIM-name')" />
+						<xsl:sequence select="imf:create-output-element('ep:value', $SIM-name)" />
+					</ep:parameter>
+				</xsl:if>
+			</xsl:when>
+			<xsl:when test="$type-is-GM-external">
+				<!-- If the attribute is a gml type attribute no reference to a type is neccessary since all these types are processed 
+					 the same way. -->
+				<ep:parameter>
+					<xsl:sequence select="imf:create-output-element('ep:name', 'type')" />
+					<xsl:sequence select="imf:create-output-element('ep:value', 'GM-external')" />
+				</ep:parameter>
+				<xsl:choose>
+					<xsl:when test="$is-id = 'true'">
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', 'true')" />
+						</ep:parameter>
+					</xsl:when>
+					<xsl:otherwise>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', 'false')" />
+						</ep:parameter>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:if test="$SIM-name != ''">
+					<ep:parameter>
+						<xsl:sequence select="imf:create-output-element('ep:name', 'SIM-name')" />
+						<xsl:sequence select="imf:create-output-element('ep:value', $SIM-name)" />
+					</ep:parameter>
+				</xsl:if>
+			</xsl:when>
+			<xsl:when test="imvert:type-id and imvert:type-id = $packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]/imvert:id"/>
+			<xsl:when test="imvert:type-id and imvert:type-id = $packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]/imvert:id"/>
+			<xsl:when test="imvert:type-id">
+				<!-- imvert:attributes having an imvert:type-id result in an ep:construct which refers to a global ep:construct. This is for 
+					 example the case when it's an attribute with a enumeration type. -->
+				<xsl:choose>
+					<xsl:when test="$is-id = 'true'">
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', 'true')" />
+						</ep:parameter>
+					</xsl:when>
+					<xsl:otherwise>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', 'false')" />
+						</ep:parameter>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:if test="$SIM-name != ''">
+					<ep:parameter>
+						<xsl:sequence select="imf:create-output-element('ep:name', 'SIM-name')" />
+						<xsl:sequence select="imf:create-output-element('ep:value', $SIM-name)" />
+					</ep:parameter>
+				</xsl:if>
+			</xsl:when>
+			<xsl:otherwise>
+				<!-- In all other cases the imvert:attribute itself and its properties are processed. -->
+				<xsl:choose>
+					<xsl:when test="$is-id = 'true'">
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', 'true')" />
+						</ep:parameter>
+					</xsl:when>
+					<xsl:otherwise>
+						<ep:parameter>
+							<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', 'false')" />
+						</ep:parameter>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:if test="$SIM-name != ''">
+					<ep:parameter>
+						<xsl:sequence select="imf:create-output-element('ep:name', 'SIM-name')" />
+						<xsl:sequence select="imf:create-output-element('ep:value', $SIM-name)" />
+					</ep:parameter>
+				</xsl:if>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template match="imvert:attribute" mode="onlyFacets">
+		<!-- If a table, refered to by an attribute, only has 1 attribute the facets of that attribute are used to build the properties of the attribute refering.
+			 In that case no ref to a table is generated. -->
+		
+		<xsl:call-template name="attributeFacets"/>
+	</xsl:template>
+	
+
+	<xsl:template name="attributeFacets">
+
+		<xsl:variable name="id" select="imvert:id"/>
+		<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
+		<xsl:variable name="example" select="imf:get-most-relevant-compiled-taggedvalue($construct, '##CFG-TV-EXAMPLE')" />
+		<xsl:variable name="type-is-GM-external" select="(exists(imvert:conceptual-schema-type) and contains(imvert:conceptual-schema-type,'GM_')) or contains(imvert:baretype,'GM_')"/>		
+		
+		<xsl:choose>
+			<xsl:when test="imvert:type-name = 'NEN3610ID'">
+				<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
+				<xsl:sequence select="imf:create-output-element('ep:type-name', 'NEN3610ID')" />
+			</xsl:when>
+			<xsl:when test="$type-is-GM-external">
+				<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
+			</xsl:when>
+			<xsl:when test="imvert:type-id and imvert:type-id = $packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]/imvert:id"/>
+			<xsl:when test="imvert:type-id and imvert:type-id = $packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]/imvert:id"/>
+			<xsl:when test="imvert:type-id">
+				<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name(imvert:type-name,'type-name'))" />
+				<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:sequence select="imf:create-output-element('ep:data-type', imvert:type-name)" />
+				
+				<xsl:variable name="max-length" select="imvert:max-length" />
+				<xsl:variable name="total-digits" select="imvert:total-digits" />
+				<xsl:variable name="fraction-digits" select="imvert:fraction-digits" />
+				<xsl:variable name="min-value" select="imf:get-tagged-value(.,'##CFG-TV-MINVALUEINCLUSIVE')" />
+				<xsl:variable name="max-value">
+					<xsl:choose>
+						<xsl:when test="not(empty(imf:get-tagged-value(.,'##CFG-TV-MAXVALUEINCLUSIVE')))">
+							<xsl:value-of select="imf:get-tagged-value(.,'##CFG-TV-MAXVALUEINCLUSIVE')"/>
+						</xsl:when>
+						<xsl:when test="imvert:total-digits">
+							<xsl:variable name="power" select="imvert:total-digits" />
+							<xsl:value-of select="imf:power($power,10,0)-1" />
+						</xsl:when>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:variable name="min-length" select="xs:integer(imf:get-tagged-value(.,'##CFG-TV-MINLENGTH'))" />
+				<xsl:variable name="pattern" select="imvert:pattern" />
+				
+				<xsl:sequence select="imf:create-output-element('ep:max-length', $max-length)" />
+				<!--xsl:sequence select="imf:create-output-element('ep:total-digits', $total-digits)" />
+				<xsl:sequence select="imf:create-output-element('ep:fraction-digits', $fraction-digits)" /-->
+				<xsl:sequence select="imf:create-output-element('ep:min-value', $min-value)" />
+				<xsl:if test="$max-value != ''">
+					<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
+				</xsl:if>
+				<!--xsl:sequence select="imf:create-output-element('ep:min-length', $min-length)" /-->
+				<xsl:sequence select="imf:create-output-element('ep:pattern', $pattern)" />
+				<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
 	<!-- TODO: Op dit moment worden alle enumerations, ook al worden ze niet gebruikt, omgezet naar ep:constructs. 
 			   Hoewel de niet gebruikte er in de volgdende stap uitgefilterd worden zou het netjes zijn ze al niet in het EP bestand te genereren. 
 			   Die taak moet nog een keer worden uitgevoerd. -->
