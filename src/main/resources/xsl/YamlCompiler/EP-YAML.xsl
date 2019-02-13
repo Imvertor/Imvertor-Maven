@@ -12,8 +12,10 @@
 		 * hal+json
 		 * geojson	-->
 	<xsl:variable name="serialisation" select="$message-sets/ep:parameters/ep:parameter[ep:name='serialisation']/ep:value"/>
-	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
+	<xsl:variable name="stylesheet-code" as="xs:string">YAMLH</xsl:variable>
 	<xsl:variable name="standard-yaml-headers-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-yaml-headers-file'))"/>
+	<xsl:variable name="standard-yaml-parameters-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-yaml-parameters-file'))"/>
+	<xsl:variable name="geonovum-yaml-parameters-url" select="concat(imf:get-config-parameter('geonovum-components-url'),imf:get-config-parameter('standard-yaml-parameters-file'))"/>
 	<xsl:variable name="standard-json-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-json-components-file'))"/>
 	
 	<xsl:template match="ep:message-sets">
@@ -131,6 +133,7 @@
 			<xsl:when test="(contains($berichttype,'Gr') or contains($berichttype,'Gc')) and $messagetype = 'request'">
 				<!-- This processes al ep:message elements represent the request tree of the Gr and Gc messages. -->
 				<!-- The tv custom_path_facet should, if present, have the correct format without a slash. We remove slashes from the tv but also generate a warning if a slash is present. -->
+				<xsl:variable name="messageCategory" select="substring-before($berichttype,'0')"/>
 				<xsl:variable name="relatedResponseMessage">
 					<xsl:sequence select="//ep:message[ep:name = $rawMessageName and ep:parameters/ep:parameter[ep:name='messagetype']/ep:value = 'response']"/>
 				</xsl:variable>
@@ -192,9 +195,10 @@
 							<ep:uriStructure/>
 						</xsl:when>
 						<xsl:when test="count($determinedUriStructure//ep:uriPart) > count($calculatedUriStructure//ep:uriPart) or not($calculatedUriStructure//ep:uriPart)">
-							<!-- If the amount of entities withn the detremined structure is larger than withn the calculated structure
-								 comparisson isn't possible and a warnings is generated. -->
-							<xsl:sequence select="imf:msg(.,'WARNING','The amount of entities within the message [1] is larger than the amount of entities within the query tree.', ($rawMessageName))" />			
+							<!-- If the amount of entities withn the determined structure is larger than within the calculated structure
+								 comparisson isn't possible and a warnings is generated. The structure within the padtype class doesn't fit with the structure within the query tree.
+								 This might be caused by names not being equal within both structures or by missing structure parts within the query tree. -->
+							<xsl:sequence select="imf:msg(.,'WARNING','The structure of the padtype class within the message [1] does not comply with the structure within the query tree.', ($rawMessageName))" />			
 							<ep:uriStructure/>
 						</xsl:when>
 						<xsl:otherwise>
@@ -252,7 +256,15 @@
 					</xsl:choose>
 				</xsl:if>
 				<xsl:if test="$debugging">
-					<xsl:result-document method="xml" href="{concat('file:/c:/temp/message/message-',ep:tech-name,'-',generate-id(),'.xml')}">
+					<!--xsl:result-document method="xml" href="{concat('file:/c:/temp/message/',$messageCategory,'message-',ep:tech-name,'-',generate-id(),'.xml')}">
+						<xsl:element name="{concat('ep:',$messageCategory,'message')}">
+							<xsl:attribute name="requestbodyConstructName" select="$requestbodyConstructName"/>
+							<xsl:attribute name="responseConstructName" select="$responseConstructName"/>
+							<xsl:sequence select="$requestbodymessage"/>
+							<xsl:sequence select="$relatedResponseMessage"/>
+						</xsl:element>
+					</xsl:result-document-->
+					<xsl:result-document method="xml" href="{concat('file:/c:/temp/message/uriStructure-message-',$messageCategory,'-',ep:tech-name,'-',generate-id(),'.xml')}">
 						<uriStructure>
 							<determinedUriStructure>
 								<xsl:sequence select="$determinedUriStructure" />
@@ -284,11 +296,49 @@
 				</xsl:if> ?>
 				
 				<xsl:variable name="method">get</xsl:variable>
+				<xsl:variable name="expand" as="xs:boolean">
+					<xsl:choose>
+						<xsl:when test="ep:parameters/ep:parameter[ep:name='expand']/ep:value = 'true' and $serialisation = 'hal+json'">
+							<xsl:value-of select="true()"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="false()"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:choose>
+					<xsl:when test="$checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand'] and $serialisation = 'json'">
+						<xsl:sequence select="imf:msg(.,'WARNING',' The serialisation for this OAS3 interface is json, an expand attribute is only applicable for hal+json.', ($messageName))" />			
+					</xsl:when>
+					<xsl:when test="$expand = false() and $checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand']">
+						<xsl:sequence select="imf:msg(.,'WARNING','An expand attribute is not applicable for the [1] message.', ($messageName))" />			
+					</xsl:when>
+				</xsl:choose>
+				<xsl:variable name="pagination" as="xs:boolean">
+					<xsl:choose>
+						<xsl:when test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value = 'true'">
+							<xsl:value-of select="true()"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="false()"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:variable name="sort" as="xs:boolean">
+					<xsl:choose>
+						<xsl:when test="ep:parameters/ep:parameter[ep:name='sort']/ep:value = 'true'">
+							<xsl:value-of select="true()"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="false()"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				<xsl:variable name="parametersRequired">
-					<xsl:if test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value = 'true'">J</xsl:if>
-					<xsl:if test="ep:parameters/ep:parameter[ep:name='expand']/ep:value = 'true'">J</xsl:if>
-					<xsl:if test="ep:parameters/ep:parameter[ep:name='fields']/ep:value = 'true'">J</xsl:if>
-					<xsl:if test="ep:parameters/ep:parameter[ep:name='sort']/ep:value = 'true'">J</xsl:if>
+					<xsl:if test="$pagination = true()">J</xsl:if>
+					<xsl:if test="$expand = true()">J</xsl:if>
+					<!--xsl:if test="ep:parameters/ep:parameter[ep:name='fields']/ep:value = 'true'">J</xsl:if-->
+					<xsl:if test="$sort = true()">J</xsl:if>
 				</xsl:variable>
 	
 				<!-- For each message the next structure is generated. -->
@@ -298,14 +348,14 @@
 				<xsl:if test="$acceptCrsParamPresent or
 								contains($parametersRequired,'J') or 
 								$checkedUriStructure//ep:uriPart/ep:param[@path = 'true'] or 
-								$checkedUriStructure//ep:uriPart/ep:param[empty(@path) or @path = 'false']">
+								$checkedUriStructure//ep:uriPart/ep:param[empty(@path) or @path = 'false' and ep:name != 'expand']">
 					<!-- If parameters apply the parameters section is generated. -->
 					<xsl:text>&#xa;      parameters: </xsl:text>
 					<xsl:if test="$acceptCrsParamPresent">
 						<!-- If accpet-Crs-parameter applies that parameter is generated. -->
-						<xsl:text>&#xa;        - $ref: 'https://cdn.jsdelivr.net/gh/geonovum/kp-api-guidelines@1.0.0/components/parameters.yaml#/acceptCrs'</xsl:text>
+						<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$geonovum-yaml-parameters-url,'acceptCrs&quot;')"/>
 					</xsl:if>
-					<xsl:if test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value = 'true'">
+					<xsl:if test="$pagination = true()">
 						<xsl:text>&#xa;        - in: query</xsl:text>
 						<xsl:text>&#xa;          name: page</xsl:text>
 						<xsl:text>&#xa;          description: "Een pagina binnen de gepagineerde resultatenset."</xsl:text>
@@ -314,25 +364,123 @@
 						<xsl:text>&#xa;            type: integer</xsl:text>
 						<xsl:text>&#xa;            minimum: 1</xsl:text>
 					</xsl:if>
-					<xsl:if test="ep:parameters/ep:parameter[ep:name='expand']/ep:value = 'true'">
-						<xsl:text>&#xa;        - in: query</xsl:text>
-						<xsl:text>&#xa;          name: expand</xsl:text>
-						<xsl:text>&#xa;          description: "Hier kan aangegeven worden welke gerelateerde resources meegeladen moeten worden. Resources en velden van resources die gewenst zijn kunnen in de expand parameter kommagescheiden worden opgegeven. Specifieke velden van resource kunnen worden opgegeven door het opgeven van de resource-naam gevolgd door de veldnaam, met daartussen een punt."</xsl:text>
-						<xsl:text>&#xa;          required: false</xsl:text>
-						<xsl:text>&#xa;          schema:</xsl:text>
-						<xsl:text>&#xa;            type: string</xsl:text>
-						<xsl:text>&#xa;            example: kinderen,adressen.postcode,adressen.huisnummer</xsl:text>
-								</xsl:if>
-					<xsl:if test="ep:parameters/ep:parameter[ep:name='fields']/ep:value = 'true'">
-						<xsl:text>&#xa;        - in: query</xsl:text>
-						<xsl:text>&#xa;          name: fields</xsl:text>
-						<xsl:text>&#xa;          description: "Geeft de mogelijkheid de inhoud van de body van het antwoord naar behoefte aan te passen. Bevat een door komma's gescheiden lijst van veldennamen. Als niet-bestaande veldnamen worden meegegeven wordt een 400 Bad Request teruggegeven. Wanneer de parameter fields niet is opgenomen, worden alle gedefinieerde velden die een waarde hebben teruggegeven."</xsl:text>
-						<xsl:text>&#xa;          required: false</xsl:text>
-						<xsl:text>&#xa;          schema:</xsl:text>
-						<xsl:text>&#xa;            type: string</xsl:text>
-						<xsl:text>&#xa;            example: id,onderwerp,aanvrager,wijzig_datum</xsl:text>
-					</xsl:if>
-					<xsl:if test="ep:parameters/ep:parameter[ep:name='sort']/ep:value = 'true'">
+					<xsl:choose>
+						<xsl:when test="$expand = true() and $checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand']">
+							<xsl:variable name="expandParam" select="$checkedUriStructure//ep:uriPart/ep:param[ep:name = 'expand']"/>
+							<xsl:variable name="datatype">
+								<xsl:choose>
+									<xsl:when test="substring-after($expandParam/ep:data-type, 'scalar-') = 'date'">
+										<xsl:value-of select="'string'"/>
+									</xsl:when>
+									<xsl:when test="substring-after($expandParam/ep:data-type, 'scalar-') = 'year'">
+										<xsl:value-of select="'integer'"/>
+									</xsl:when>
+									<xsl:when test="substring-after($expandParam/ep:data-type, 'scalar-') = 'yearmonth'">
+										<xsl:value-of select="'integer'"/>
+									</xsl:when>
+									<xsl:when test="substring-after($expandParam/ep:data-type, 'scalar-') = 'dateTime'">
+										<xsl:value-of select="'string'"/>
+									</xsl:when>
+									<xsl:when test="substring-after($expandParam/ep:data-type, 'scalar-') = 'postcode'">
+										<xsl:value-of select="'string'"/>
+									</xsl:when>
+									<xsl:when test="substring-after($expandParam/ep:data-type, 'scalar-') = 'boolean'">
+										<xsl:value-of select="'boolean'"/>
+									</xsl:when>
+									<xsl:when test="substring-after($expandParam/ep:data-type, 'scalar-') = 'string'">
+										<xsl:value-of select="'string'"/>
+									</xsl:when>
+									<xsl:when test="substring-after($expandParam/ep:data-type, 'scalar-') = 'integer'">
+										<xsl:value-of select="'integer'"/>
+									</xsl:when>
+									<xsl:when test="substring-after($expandParam/ep:data-type, 'scalar-') = 'decimal'">
+										<xsl:value-of select="'number'"/>
+									</xsl:when>
+									<xsl:when test="substring-after($expandParam/ep:data-type, 'scalar-') = 'uri'">
+										<xsl:value-of select="'string'"/>
+									</xsl:when>
+									<xsl:when test="ep:type-name">
+										<xsl:variable name="type" select="$expandParam/ep:type-name"/>
+										<xsl:variable name="enumtype" select="$message-sets//ep:message-set/ep:construct[ep:tech-name = $type]/ep:data-type"/>
+										<xsl:choose>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'date'">
+												<xsl:value-of select="'string'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'year'">
+												<xsl:value-of select="'integer'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'yearmonth'">
+												<xsl:value-of select="'integer'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'dateTime'">
+												<xsl:value-of select="'string'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'postcode'">
+												<xsl:value-of select="'string'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'boolean'">
+												<xsl:value-of select="'boolean'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'string'">
+												<xsl:value-of select="'string'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'integer'">
+												<xsl:value-of select="'integer'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'decimal'">
+												<xsl:value-of select="'number'"/>
+											</xsl:when>
+											<xsl:when test="substring-after($enumtype, 'scalar-') = 'uri'">
+												<xsl:value-of select="'string'"/>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:value-of select="'string'"/>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="'string'"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:variable>
+							<xsl:text>&#xa;        - in: query</xsl:text>
+							<xsl:text>&#xa;          name: expand</xsl:text>
+							<xsl:text>&#xa;          description: "</xsl:text><xsl:value-of select="translate($expandParam/ep:documentation,'&quot;',' ')" /><xsl:text>"</xsl:text>
+							<xsl:text>&#xa;          required: false</xsl:text>
+							<xsl:text>&#xa;          schema:</xsl:text>
+							<xsl:choose>
+								<xsl:when test="$expandParam/ep:data-type">
+									<xsl:text>&#xa;            type: </xsl:text><xsl:value-of select="$datatype" />
+									<xsl:variable name="format">
+										<xsl:call-template name="deriveFormat">
+											<xsl:with-param name="incomingType">
+												<xsl:value-of select="substring-after($expandParam/ep:data-type, 'scalar-')"/>
+											</xsl:with-param>
+										</xsl:call-template>
+									</xsl:variable>
+									<xsl:variable name="facets">
+										<xsl:call-template name="deriveFacets">
+											<xsl:with-param name="incomingType">
+												<xsl:value-of select="substring-after($expandParam/ep:data-type, 'scalar-')"/>
+											</xsl:with-param>
+										</xsl:call-template>
+									</xsl:variable>
+									<xsl:value-of select="$format"/>
+									<xsl:value-of select="$facets"/>
+									<xsl:if test="$expandParam/ep:example">
+										<xsl:text>&#xa;            example: </xsl:text><xsl:value-of select="$expandParam/ep:example"/>
+									</xsl:if>
+								</xsl:when>
+								<xsl:when test="$expandParam/ep:type-name">
+									<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;#/components/schemas/',$expandParam/ep:type-name,'&quot;')"/>
+								</xsl:when>
+							</xsl:choose>
+						</xsl:when>
+						<xsl:when test="$expand = true()">
+							<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-parameters-url,'expand&quot;')"/>
+						</xsl:when>
+					</xsl:choose>
+					<xsl:if test="$sort = true()">
 						<xsl:text>&#xa;        - in: query</xsl:text>
 						<xsl:text>&#xa;          name: sorteer</xsl:text>
 						<xsl:text>&#xa;          description: "Aangeven van de sorteerrichting van resultaten. Deze query-parameter accepteert een lijst van velden waarop gesorteerd moet worden gescheiden door een komma. Door een minteken (“-”) voor de veldnaam te zetten wordt het veld in aflopende sorteervolgorde gesorteerd."</xsl:text>
@@ -453,7 +601,7 @@
 							</xsl:when>
 						</xsl:choose>
 					</xsl:for-each>
-					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[empty(@path) or @path = 'false']">
+					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[ep:name != 'expand' and (empty(@path) or @path = 'false')]">
 						<!-- Loop over de query ep:param elements within the checkeduristructure and generate for each of them a query parameter. -->
 						<xsl:variable name="datatype">
 							<xsl:choose>
@@ -556,7 +704,7 @@
 								<xsl:value-of select="$format"/>
 								<xsl:value-of select="$facets"/>
 								<xsl:if test="ep:example">
-									<xsl:text>&#xa;          example: </xsl:text><xsl:value-of select="ep:example"/>
+									<xsl:text>&#xa;            example: </xsl:text><xsl:value-of select="ep:example"/>
 								</xsl:if>
 							</xsl:when>
 							<xsl:when test="ep:type-name">
@@ -732,7 +880,7 @@
 							<xsl:sequence select="$relatedResponseMessage"/>
 						</xsl:element>
 					</xsl:result-document>
-					<xsl:result-document method="xml" href="{concat('file:/c:/temp/message/message-',$messageCategory,'-',ep:tech-name,'-',generate-id(),'.xml')}">
+					<xsl:result-document method="xml" href="{concat('file:/c:/temp/message/uriStructure-message-',$messageCategory,'-',ep:tech-name,'-',generate-id(),'.xml')}">
 						<uriStructure>
 							<determinedUriStructure>
 								<xsl:sequence select="$determinedUriStructure" />
@@ -801,7 +949,7 @@
 					<xsl:text>&#xa;      parameters: </xsl:text>
 					<xsl:if test="$messageCategory = 'Po' and $contentCrsParamPresent">
 						<!-- If content-Crs-parameter applies that parameter is generated. -->
-						<xsl:text>&#xa;        - $ref: 'https://cdn.jsdelivr.net/gh/geonovum/kp-api-guidelines@1.0.0/components/parameters.yaml#/contentCrs'</xsl:text>
+						<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$geonovum-yaml-parameters-url,'contentCrs&quot;')"/>
 					</xsl:if>
 					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[@path = 'true']">
 						<!-- Loop over de path ep:param elements within the checkeduristructure and generate for each of them a path parameter. -->
@@ -1152,8 +1300,8 @@
 		<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'warning&quot;')"/>
 		<xsl:if test="$messageCategory = 'Po' and $acceptCrsParamPresent">
 			<xsl:text>&#xa;            parameters: </xsl:text>
-			<!-- If accpet-Crs-parameter applies that parameter is generated. -->
-			<xsl:text>&#xa;              $ref: 'https://cdn.jsdelivr.net/gh/geonovum/kp-api-guidelines@1.0.0/components/parameters.yaml#/acceptCrs'</xsl:text>
+			<!-- If accept-Crs-parameter applies that parameter is generated. -->
+			<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$geonovum-yaml-parameters-url,'acceptCrs&quot;')"/>
 		</xsl:if>
 		<xsl:text>&#xa;          content:</xsl:text>
 		<xsl:text>&#xa;            application/</xsl:text><xsl:value-of select="$serialisation"/><xsl:text>:</xsl:text>

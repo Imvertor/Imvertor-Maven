@@ -110,8 +110,10 @@
     
     <!-- URL of the standard JSON components are available --> 
     <parameter name="standard-components-url">https://raw.githubusercontent.com/VNG-Realisatie/Bevragingen-ingeschreven-personen/master/api-specificatie/</parameter>
+    <parameter name="geonovum-components-url">https://cdn.jsdelivr.net/gh/geonovum/kp-api-guidelines@1.0.0/components/</parameter>
     <parameter name="standard-json-components-file">components.yaml#/</parameter>
     <parameter name="standard-yaml-headers-file">headers.yaml#/</parameter>
+    <parameter name="standard-yaml-parameters-file">parameters.yaml#/</parameter>
     <parameter name="standard-geojson-components-file">geojson.yaml#/</parameter>
     
  </project-owner>    

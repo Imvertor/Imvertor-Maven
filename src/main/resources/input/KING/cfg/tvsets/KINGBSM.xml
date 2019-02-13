@@ -285,29 +285,6 @@
             </declared-values>
         </tv>
         
-        <tv norm="space" id="CFG-TV-FIELDS">
-            <name lang="nl">Fields</name>
-            <desc lang="nl">
-                Bepaald of de request parameter 'Fields' moet worden opgenomen in het bericht. 
-            </desc>
-            <derive>no</derive>
-            <inherit>no</inherit>
-            <stereotypes>
-                <!-- bericht typen -->
-                <stereo minmax="0..1">stereotype-name-getberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-patchberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-postberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-putberichttype</stereo>
-                <stereo minmax="0..1">stereotype-name-deleteberichttype</stereo>
-            </stereotypes>
-            <declared-values lang="nl">
-                <!-- Fields in request parameters YAML opnemen. -->
-                <value>true</value>
-                <!-- Fields niet in request parameters YAML opnemen. -->
-                <value>false</value>
-            </declared-values>
-        </tv>
-        
         <tv norm="space" id="CFG-TV-SORT">
             <name lang="nl">Sort</name>
             <desc lang="nl">
