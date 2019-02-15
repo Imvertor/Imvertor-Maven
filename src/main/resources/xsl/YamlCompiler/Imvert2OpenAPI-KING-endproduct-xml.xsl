@@ -586,11 +586,28 @@
 				<!-- If the current ep:construct is a complex-datatype or a table-datatype an ep:construct element is generated 
 					 with all necessary properties, except when its name is NEN3610ID. In that case no reference to a complex-datatype is created. -->
 				<xsl:variable name="type-id" select="ep:type-id" />
+				<xsl:variable name="id" select="ep:id" />
 				<xsl:variable name="classconstruct" select="imf:get-construct-by-id($type-id,$packages)" />
+				<xsl:variable name="attributeconstruct" select="imf:get-construct-by-id($id,$packages)" />
 				<xsl:variable name="type-name" select="$classconstruct/imvert:name" />
-
+				<xsl:variable name="is-id" select="$attributeconstruct/imvert:is-id"/>
+				
 				<ep:construct>
 					<ep:parameters>
+						<xsl:choose>
+							<xsl:when test="$is-id = 'true'">
+								<ep:parameter>
+									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
+									<xsl:sequence select="imf:create-output-element('ep:value', 'true')" />
+								</ep:parameter>
+							</xsl:when>
+							<xsl:otherwise>
+								<ep:parameter>
+									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
+									<xsl:sequence select="imf:create-output-element('ep:value', 'false')" />
+								</ep:parameter>
+							</xsl:otherwise>
+						</xsl:choose>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'messagetype')" />
 							<xsl:sequence select="imf:create-output-element('ep:value', $messagetype)" />
@@ -624,11 +641,28 @@
 				<!-- If the current ep:construct is a complex-datatype or a table-datatype an ep:construct element is generated 
 					 with all necessary properties, except when its name is NEN3610ID. In that case no reference to a complex-datatype is created. -->
 				<xsl:variable name="type-id" select="ep:type-id" />
+				<xsl:variable name="id" select="ep:id" />
 				<xsl:variable name="classconstruct" select="imf:get-construct-by-id($type-id,$packages)" />
+				<xsl:variable name="attributeconstruct" select="imf:get-construct-by-id($id,$packages)" />
 				<xsl:variable name="type-name" select="$classconstruct/imvert:name" />
+				<xsl:variable name="is-id" select="$attributeconstruct/imvert:is-id"/>
 				
 				<ep:construct>
 					<ep:parameters>
+						<xsl:choose>
+							<xsl:when test="$is-id = 'true'">
+								<ep:parameter>
+									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
+									<xsl:sequence select="imf:create-output-element('ep:value', 'true')" />
+								</ep:parameter>
+							</xsl:when>
+							<xsl:otherwise>
+								<ep:parameter>
+									<xsl:sequence select="imf:create-output-element('ep:name', 'is-id')" />
+									<xsl:sequence select="imf:create-output-element('ep:value', 'false')" />
+								</ep:parameter>
+							</xsl:otherwise>
+						</xsl:choose>
 						<ep:parameter>
 							<xsl:sequence select="imf:create-output-element('ep:name', 'messagetype')" />
 							<xsl:sequence select="imf:create-output-element('ep:value', $messagetype)" />

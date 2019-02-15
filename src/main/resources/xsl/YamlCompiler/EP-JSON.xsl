@@ -2,11 +2,11 @@
 <xsl:stylesheet xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:imf="http://www.imvertor.org/xsl/functions" xmlns:ep="http://www.imvertor.org/schema/endproduct" version="2.0">
 	<xsl:output method="text" indent="yes" omit-xml-declaration="yes"/>
 	
-	<xsl:variable name="stylesheet-code" as="xs:string">OAS</xsl:variable>
+	<xsl:variable name="stylesheet-code" as="xs:string">YAMLB</xsl:variable>
 	
 	<!-- The first variable is meant for the server environment, the second one is used during development in XML-Spy. -->
 	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
-	<!--<xsl:variable name="debugging" select="true()" as="xs:boolean"/>-->
+	<!--<xsl:variable name="debugging" select="false()" as="xs:boolean"/>-->
 	<xsl:variable name="standard-json-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-json-components-file'))"/>
 	<xsl:variable name="standard-geojson-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-geojson-components-file'))"/>
 	
@@ -230,7 +230,8 @@
 								  )
 								]">,</xsl:if>
 				<!-- Loop over global constructs which are refered to from constructs within global constructs but aren't enumeration and superclass constructs.
-					 This is only applicable when the serialisation is hal+json. -->
+					 This is only applicable when the serialisation is hal+json.
+					 See 'Imvertor-Maven\src\main\resources\xsl\YamlCompiler\documentatie\Explanation query constructions.xlsx' tab 'Query1' for an explanation on this query. -->
 				<xsl:for-each select="ep:message-set/ep:construct
 								[ 
 									(
@@ -394,7 +395,7 @@
 								  )
 								]">,</xsl:if>
 				<!-- Loop over global constructs which are refered to from constructs within global constructs but aren't enumeration and superclass constructs.
-					 This is only applicable when the serialisation is hal+json. -->
+					 This is only applicable when the serialisation is json. -->
 				<xsl:for-each select="ep:message-set/ep:construct
 								[ 
 									(
@@ -467,7 +468,7 @@
 								]">
 					<!-- Only regular constructs are generated. -->
 					<xsl:if test="$debugging">
-						"--------------Debuglocatie-03000-<xsl:value-of select="generate-id()"/>": {
+						"--------------Debuglocatie-03010-<xsl:value-of select="generate-id()"/>": {
 							"Debug": "OAS03000"
 						},
 					</xsl:if>

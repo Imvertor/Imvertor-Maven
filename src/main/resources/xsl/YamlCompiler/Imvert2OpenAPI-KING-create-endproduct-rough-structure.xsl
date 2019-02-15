@@ -771,6 +771,7 @@
 					select="imf:create-output-element('ep:name', imvert:name/@original)" />
 				<xsl:sequence
 					select="imf:create-output-element('ep:tech-name', imf:get-normalized-name(imvert:name, 'element-name'))" />
+				<xsl:sequence select="imf:create-output-element('ep:id', imvert:id)" />
 				<xsl:sequence
 					select="imf:create-output-element('ep:type-id', imvert:type-id)" />
 				
