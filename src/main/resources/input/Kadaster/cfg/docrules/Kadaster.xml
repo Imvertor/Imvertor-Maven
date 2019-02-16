@@ -34,6 +34,11 @@
     -->
     <include-incoming-associations>yes</include-incoming-associations>
     
+    <!-- 
+        collect the codelist and enumeration contents in a separate section?
+    -->
+    <lists-to-listing>true</lists-to-listing>
+    
     <doc-rule id="CFG-DOC-NORMNAAM">
         <name lang="nl">Naam (genormaliseerd)</name>
         <name lang="en">Name (normalized)</name>

@@ -28,4 +28,8 @@
     -->
     <include-incoming-associations>yes</include-incoming-associations>
     
+    <!-- 
+        collect the codelist and enumeration contents in a separate section?
+    -->
+    <lists-to-listing>false</lists-to-listing>
 </doc-rules>

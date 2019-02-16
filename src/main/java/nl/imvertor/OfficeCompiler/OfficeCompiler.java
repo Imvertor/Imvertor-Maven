@@ -69,8 +69,10 @@ public class OfficeCompiler extends Step {
 			
 			boolean succeeds = true;
 			
+			// append codelists and reference lists to imvertor file when referenced and when required.
+			succeeds = succeeds ? transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/WORK_LISTS_FILE", "properties/IMVERTOR_LISTS_XSLPATH") : false;
 			// creates an XML modeldoc intermediate file which is the basis for output
-			succeeds = succeeds ? transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/WORK_MODELDOC_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_XSLPATH") : false;
+			succeeds = succeeds ? transformer.transformStep("properties/WORK_LISTS_FILE","properties/WORK_MODELDOC_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_XSLPATH") : false;
 			// creates an html file 
 			succeeds = succeeds ? transformer.transformStep("properties/WORK_MODELDOC_FILE","properties/WORK_OFFICE_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_OFFICE_XSLPATH") : false;
 			

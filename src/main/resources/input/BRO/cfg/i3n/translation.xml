@@ -259,6 +259,16 @@
     <!-- heading labels -->
 
     <item>
+        <key>CHAPTER-CATALOG</key>
+        <trans lang="nl">Catalogus</trans>
+        <trans lang="en">Catalog</trans>
+    </item>
+    <item>
+        <key>CHAPTER-LISTS</key>
+        <trans lang="nl">Inhoud van enumeraties en codelijsten</trans>
+        <trans lang="en">Contents of enumerations and codelists</trans>
+    </item>
+    <item>
         <key>IMAGEMAPS</key>
         <trans lang="nl">Overzichtsdiagrammen</trans>
         <trans lang="en">Overview diagrams</trans>
