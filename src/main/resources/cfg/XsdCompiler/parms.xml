@@ -30,6 +30,12 @@
          <required>false</required>
       </cli-parm> 
       <cli-parm>
+         <name>createxmlschemavariant</name>
+         <arg>ISO19136|default</arg>
+         <tip>The name of the variant of the XML schema generated. When default specified, use the organisation name.</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
          <name>createcvafile</name>
          <arg>yes|no</arg>
          <tip>Yes if CVA files must be generated</tip>
