@@ -83,10 +83,14 @@
                 <p>
                     ID: <xsl:value-of select="@id"/>
                 </p>
-                <xsl:apply-templates select="section" mode="domain"/>
+                <xsl:apply-templates select="chapter" mode="domain"/>
             </body>
         </html>
         
+    </xsl:template>
+    
+    <xsl:template match="chapter" mode="domain">
+        <xsl:apply-templates select="section" mode="domain"/>
     </xsl:template>
     
     <xsl:template match="section" mode="domain">
