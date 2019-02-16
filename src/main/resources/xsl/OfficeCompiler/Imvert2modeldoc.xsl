@@ -55,21 +55,36 @@
     <xsl:variable name="imagemap" select="imf:document($imagemap-path)/imvert-imap:diagrams"/>
     
     <xsl:variable name="include-incoming-associations" select="imf:boolean($configuration-docrules-file/include-incoming-associations)"/>
-        
+    <xsl:variable name="lists-to-listing" select="imf:boolean($configuration-docrules-file/lists-to-listing)"/>
+    
     <xsl:template match="/imvert:packages">
         <book name="{imvert:application}" subpath="{$subpath}" type="{imvert:stereotype}" id="{imvert:id}" generator-version="{$imvertor-version}" generator-date="{$generation-date}">
-       
-            <!-- first call a general initialization function -->
-            <xsl:sequence select="imf:initialize-modeldoc()"/>
             
-            <!-- then generate the contents -->
-            <xsl:variable name="sections" as="element()*">
-                <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
-                <!-- exclude package replacements (resolved stereotype internal) -->
-                <xsl:apply-templates select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package') and empty(imvert:package-replacement)]"/>
-            </xsl:variable>
-            <xsl:apply-templates select="$sections" mode="section-cleanup"/>    
+            <!-- call a general initialization function -->
+            <xsl:sequence select="imf:initialize-modeldoc()"/>
 
+            <chapter title="CHAPTER-CATALOG" type="cat">
+                <xsl:variable name="sections" as="element()*">
+                    <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
+                    <!-- exclude package replacements (resolved stereotype internal) -->
+                    <xsl:apply-templates select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package') and empty(imvert:package-replacement)]"/>
+                </xsl:variable>
+                <xsl:apply-templates select="$sections" mode="section-cleanup"/>    
+            </chapter>
+            
+            <xsl:if test="$lists-to-listing">
+                <xsl:variable name="domain-packages" select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package') and empty(imvert:package-replacement)]"/>
+
+                <chapter title="CHAPTER-LISTS" type="lis">
+                    <section type="DETAILS-CODELIST">
+                        <xsl:apply-templates select="$domain-packages/imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="detail"/>
+                    </section>
+                    <section type="DETAILS-ENUMERATION">
+                        <xsl:apply-templates select="$domain-packages/imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]" mode="detail"/>
+                    </section>
+                </chapter>
+            </xsl:if>
+            
         </book>
     </xsl:template>
     
@@ -125,12 +140,14 @@
                 <section type="DETAILS-PRIMITIVEDATATYPE">
                     <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]" mode="detail"/>
                 </section>
-                <section type="DETAILS-CODELIST">
-                    <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="detail"/>
-                </section>
-                <section type="DETAILS-ENUMERATION">
-                    <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]" mode="detail"/>
-                </section>
+                <xsl:if test="not($lists-to-listing)">
+                    <section type="DETAILS-CODELIST">
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="detail"/>
+                    </section>
+                    <section type="DETAILS-ENUMERATION">
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]" mode="detail"/>
+                    </section>
+                </xsl:if>
             </section>
         </section>
    
@@ -547,7 +564,7 @@
         </section>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="detail">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="detail listing">
         <section name="{imf:get-name(.,true())}" type="DETAIL-CODELIST" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
             <content>
                 <part>
@@ -564,7 +581,7 @@
         </section>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]" mode="detail">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]" mode="detail listing">
         <section name="{imf:get-name(.,true())}" type="DETAIL-ENUMERATION" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
             <content>
                 <part>
@@ -765,7 +782,7 @@
     <xsl:function name="imf:get-tagged-value-unieke-aanduiding">
         <xsl:param name="this"/>
         <xsl:variable name="id-attribute" select="$this/imvert:attributes/imvert:attribute[imf:boolean(imvert:is-id)]"/>
-        <xsl:sequence select="if (exists($id-attribute)) then imf:get-name($id-attribute,true()) else ''"/>
+        <xsl:sequence select="string-join(for $i in $id-attribute return imf:get-name($i,true()),' + ')"/>
     </xsl:function>
     
    <xsl:function name="imf:create-part-2" as="element(part)*"> 
@@ -1029,9 +1046,29 @@
         <xsl:param name="relatieklasse"/>
         <xsl:variable name="id" select="$relatieklasse/imvert:id"/>
         <xsl:variable name="assoc-class" select="$document-classes//imvert:association-class[imvert:type-id = $id]"/>
-        <xsl:variable name="fromclass" select="$assoc-class/ancestor::imvert:class"/>
-        <xsl:variable name="assoc" select="$assoc-class/.."/>
-        <xsl:value-of select="concat(imf:get-name($fromclass,true()), ' ',imf:get-name($assoc,true()),' ',$assoc/imvert:type-name/@original)"/>
+        <xsl:choose>
+            <xsl:when test="empty($assoc-class)"><!-- relatieklasse zoals kadaster hanteert -->
+                <!--
+                <xsl:variable name="source-assoc" select="$document-classes//imvert:class/imvert:associations/imvert:association[imvert:type-id = $id]"/>
+                <xsl:variable name="source-class" select="$source-assoc/../.."/>
+                <xsl:variable name="target-assoc" select="imvert:associations/imvert:association[1]"/>
+                <xsl:variable name="target-class" select="$document-classes//imvert:class[imvert:id = $target-assoc/imvert:type-id]"/>
+                <xsl:value-of select="concat(
+                    imf:get-name($source-class,true()), ' ',
+                    imf:get-name($source-assoc,true()), ' ',
+                    imf:get-name($relatieklasse,true()),' ',
+                    imf:get-name($target-assoc,true()), ' ', 
+                    imf:get-name($target-class,true()))"/>
+                -->
+                <xsl:value-of select="'TODO NAMING PATH'"/>
+            </xsl:when>
+            <xsl:otherwise><!-- echte associatieklasse -->
+                <xsl:variable name="fromclass" select="$assoc-class/ancestor::imvert:class"/>
+                <xsl:variable name="assoc" select="$assoc-class/.."/>
+                <xsl:value-of select="concat(imf:get-name($fromclass,true()), ' ',imf:get-name($assoc,true()),' ',$assoc/imvert:type-name/@original)"/>
+            </xsl:otherwise>
+        </xsl:choose>
+       
     </xsl:function>
     
     
@@ -1162,7 +1199,7 @@
     
     <!-- geef de naam terug van de construct, en de target naam als het een associatie betreft. -->
     <xsl:function name="imf:get-name" as="xs:string?">
-        <xsl:param name="this"/>
+        <xsl:param name="this" as="element()"/>
         <xsl:param name="original" as="xs:boolean"/>
 
         <xsl:variable name="isrole" select="exists($this/self::imvert:target)"/>

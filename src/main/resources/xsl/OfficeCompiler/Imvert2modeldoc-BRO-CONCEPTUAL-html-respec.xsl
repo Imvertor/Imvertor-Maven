@@ -23,24 +23,21 @@
     <xsl:variable name="imagemap-path" select="imf:get-config-string('properties','WORK_BASE_IMAGEMAP_FILE')"/>
     <xsl:variable name="imagemap" select="imf:document($imagemap-path)/imvert-imap:diagrams"/>
     
-    <xsl:variable name="has-multiple-domains" select="count(/book/section[@type='DOMAIN']) gt 1"/>
+    <xsl:variable name="has-multiple-domains" select="count(/book/chapter/section[@type='DOMAIN']) gt 1"/>
     
-    <xsl:template match="/book">
-      <h2>Catalogus</h2>
-        <p class="note" title="Over deze catalogus">
-            Deze tekst is normatief.
-            <!--
-            Deze catalogus is automatisch samengesteld op basis van het UML model 
-            "<xsl:value-of select="@name"/>" door Imvertor <xsl:value-of select="@generator-version"/> op <xsl:value-of select="imf:format-dateTime(@generator-date)"/>.
-           <br/>
-            Wanneer je technische fouten of onvolkomenheden aantreft, geef dit dan door aan <i><xsl:value-of select="imf:get-config-string('cli','supportemail')"/></i> en geef de code 
-            <i>"<xsl:value-of select="imf:get-config-string('appinfo','release-name')"/>"</i> door. 
-            -->
-            <xsl:comment>
-                <xsl:value-of select="imf:get-config-string('appinfo','release-name')"/> imvertor <xsl:value-of select="@generator-version"/>
-            </xsl:comment>
-        </p>
-        <xsl:apply-templates select="section" mode="domain"/>
+    <xsl:template match="/book/chapter">
+        <section id='{@type}' class="normative"> 
+            <h2>
+                <xsl:value-of select="imf:translate-i3n(@title,$language-model,())"/>
+            </h2>
+            <p>
+                <b>Deze tekst is normatief.</b>
+                <xsl:comment>
+                    <xsl:value-of select="imf:get-config-string('appinfo','release-name')"/> imvertor <xsl:value-of select="@generator-version"/>
+                </xsl:comment>
+            </p>
+            <xsl:apply-templates select="section" mode="domain"/>
+        </section>
     </xsl:template>
     
     <xsl:template match="section" mode="domain">

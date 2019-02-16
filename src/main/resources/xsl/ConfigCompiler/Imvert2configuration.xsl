@@ -349,6 +349,7 @@
                 <xsl:apply-templates select="$doc-rules//explanation-location[last()]" mode="#current"/>
                 <xsl:apply-templates select="$doc-rules//diagram-type-strategy[last()]" mode="#current"/>
                 <xsl:apply-templates select="$doc-rules//include-incoming-associations[last()]" mode="#current"/>
+                <xsl:apply-templates select="$doc-rules//lists-to-listing[last()]" mode="#current"/>
                 
                 <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#all')]" group-by="@id">
                     <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
