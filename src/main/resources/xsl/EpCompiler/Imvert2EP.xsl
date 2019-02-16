@@ -48,7 +48,21 @@
             </ep:seq>
         </ep:construct>
     </xsl:template>
- 
+    
+    <xsl:template match="imvert:package[imvert:stereotype/@id = 'stereotype-name-view-package']">
+        <ep:construct>
+            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een View',())"/>
+            <ep:parameters>
+                <xsl:sequence select="imf:set-parameter('namespace',imvert:namespace)"/>
+            </ep:parameters>
+            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-documentation(.)"/>
+            <ep:seq>
+                <xsl:apply-templates select="imvert:class"/>
+            </ep:seq>
+        </ep:construct>
+    </xsl:template>
+    
     <xsl:template match="imvert:package[imvert:stereotype/@id = 'stereotype-name-external-package']">
         <xsl:variable name="defs" as="node()*">
             <xsl:for-each select="imvert:class">
@@ -109,9 +123,43 @@
         </ep:construct>
     </xsl:template>
     
+    <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-koppelklasse']">
+        <ep:construct>
+            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Koppelklasse',())"/>
+            <ep:parameters>
+                <xsl:sequence select="imf:get-supers(.)"/>
+            </ep:parameters>
+            <xsl:sequence select="imf:get-id(.)"/>
+            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-documentation(.)"/>
+            <ep:seq>
+                <xsl:apply-templates select="(imvert:attributes/imvert:attribute, imvert:associations/imvert:association)">
+                    <xsl:sort select="imvert:position" data-type="number"/>
+                </xsl:apply-templates>
+            </ep:seq>
+        </ep:construct>
+    </xsl:template>
+    
     <xsl:template match="imvert:class[imvert:stereotype/@id = 'stereotype-name-composite']">
         <ep:construct>
             <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Gegevensgroeptype',())"/>
+            <ep:parameters>
+                <xsl:sequence select="imf:get-supers(.)"/>
+            </ep:parameters>
+            <xsl:sequence select="imf:get-id(.)"/>
+            <xsl:sequence select="imf:get-names(.)"/>
+            <xsl:sequence select="imf:get-documentation(.)"/>
+            <ep:seq>
+                <xsl:apply-templates select="(imvert:attributes/imvert:attribute, imvert:associations/imvert:association)">
+                    <xsl:sort select="imvert:position" data-type="number"/>
+                </xsl:apply-templates>
+            </ep:seq>
+        </ep:construct>
+    </xsl:template>
+    
+    <xsl:template match="imvert:association[imvert:stereotype/@id = 'stereotype-name-externekoppeling']">
+        <ep:construct>
+            <xsl:sequence select="imf:msg-comment(.,'DEBUG','Een Externe koppeling',())"/>
             <ep:parameters>
                 <xsl:sequence select="imf:get-supers(.)"/>
             </ep:parameters>
@@ -323,16 +371,16 @@
     
     <!-- fallback -->
     <xsl:template match="imvert:package">
-        <xsl:sequence select="imf:msg-comment(.,'WARNING','Unknown package type [1]', imf:string-group(imvert:stereotype/@id))"/>
+        <xsl:sequence select="imf:msg-comment(.,'WARNING','Unknown package type, stereotype is: [1]', imf:string-group(imvert:stereotype/@id))"/>
     </xsl:template>
     <xsl:template match="imvert:class">
-        <xsl:sequence select="imf:msg-comment(.,'WARNING','Unknown class type [1]', imf:string-group(imvert:stereotype/@id))"/>
+        <xsl:sequence select="imf:msg-comment(.,'WARNING','Unknown class type, stereotype is: [1]', imf:string-group(imvert:stereotype/@id))"/>
     </xsl:template>
     <xsl:template match="imvert:attribute">
-        <xsl:sequence select="imf:msg-comment(.,'WARNING','Unknown att type [1]',imf:string-group(imvert:stereotype/@id))"/>
+        <xsl:sequence select="imf:msg-comment(.,'WARNING','Unknown att type, stereotype is: [1]',imf:string-group(imvert:stereotype/@id))"/>
     </xsl:template>
     <xsl:template match="imvert:association">
-        <xsl:sequence select="imf:msg-comment(.,'WARNING','Unknown association type [1]',imf:string-group(imvert:stereotype/@id))"/>
+        <xsl:sequence select="imf:msg-comment(.,'WARNING','Unknown association type, stereotype is: [1]',imf:string-group(imvert:stereotype/@id))"/>
     </xsl:template>
     
     <xsl:template match="*">
@@ -390,6 +438,7 @@
     
     <xsl:function name="imf:get-supers" as="element()*">
         <xsl:param name="this"/>
+        <!-- TODO let op: in xml schema generatie moet static een copy-down worden! -->
         <xsl:for-each select="$this/imvert:supertype/imvert:type-id">
             <xsl:sequence select="imf:set-parameter('super',.)"/>
         </xsl:for-each>

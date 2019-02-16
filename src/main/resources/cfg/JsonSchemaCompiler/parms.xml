@@ -31,6 +31,12 @@
          <required>false</required>
       </cli-parm> 
       <cli-parm>
+         <name>createjsonschemavariant</name>
+         <arg>name</arg>
+         <tip>The name of the variant of the JSON schema generated. When none specified, use the organisation name</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
          <name>jsonschemaname</name>
          <arg>string</arg>
          <tip>Thee name of the json schema generated</tip>

@@ -16,13 +16,15 @@
     <xsl:output method="xml" encoding="UTF-8"/>
     
     <xsl:template match="/ep:construct">
-        <json>
+        <JSON> <!-- this root element will be stripped, the json is completely wrapped within { .. } -->
             <xsl:sequence select="imf:ep-to-namevaluepair('JSONOP_schema','http://json-schema.org/draft-05/schema#')"></xsl:sequence>
             <xsl:sequence select="imf:ep-to-namevaluepair('title',imf:get-ep-parameter(.,'subpath'))"/>
-            <definitions>
-                <xsl:apply-templates select="ep:seq/ep:construct/ep:seq/ep:construct"/>
-            </definitions>
-        </json>
+            <json>
+                <definitions>
+                    <xsl:apply-templates select="ep:seq/ep:construct/ep:seq/ep:construct"/>
+                </definitions>
+            </json>
+        </JSON>
     </xsl:template>
     
     <xsl:template match="ep:construct">
@@ -81,10 +83,12 @@
                             <xsl:variable name="super" select="imf:get-ep-parameter(.,'super')"/>
                             <xsl:choose>
                                 <xsl:when test="exists($super)">
-                                    <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Seq with super [1]',$n)"/>
+                                    <xsl:sequence select="imf:msg-comment(.,'DEBUG', 'Seq with super [1]',imf:string-group($n))"/>
                                     <allOf>
                                         <xsl:variable name="target" select="//ep:construct[ep:id = $super]"/>
-                                        <xsl:sequence select="imf:ep-to-namevaluepair('JSONOP_ref',concat('#/definitions/',$target/ep:tech-name))"/>
+                                        <xsl:for-each select="$target">
+                                            <xsl:sequence select="imf:ep-to-namevaluepair('JSONOP_ref',concat('#/definitions/',ep:tech-name))"/>
+                                        </xsl:for-each>
                                     </allOf>
                                     <allOf>
                                         <xsl:sequence select="$body"/>
@@ -186,7 +190,7 @@
         </xsl:if>
     </xsl:function>
     
-    <xsl:function name="imf:get-ep-parameter" as="xs:string?">
+    <xsl:function name="imf:get-ep-parameter" as="xs:string*">
         <xsl:param name="this"/>
         <xsl:param name="parameter-name"/>
         <xsl:sequence select="$this/ep:parameters/ep:parameter[ep:name = $parameter-name]/ep:value"/>

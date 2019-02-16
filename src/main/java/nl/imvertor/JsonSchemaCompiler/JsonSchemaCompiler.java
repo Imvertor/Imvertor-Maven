@@ -93,6 +93,9 @@ public class JsonSchemaCompiler extends Step {
 		JsonFile jsonFile = new JsonFile(configurator.getXParm("properties/WORK_SCHEMA_JSONPATH"));
 		jsonXmlFile.xmlToJson(jsonFile);
 		
+		// remove the wrapper element
+		jsonFile.stripJSONroot();
+		
 		// Debug: test if json is okay
 		succeeds = succeeds && jsonFile.validate(configurator);
 		
