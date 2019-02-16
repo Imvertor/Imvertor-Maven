@@ -227,10 +227,10 @@ public class ChainTranslateAndReport {
 			configurator.windup();
 			
 			configurator.getRunner().windup();
-			configurator.getRunner().info(logger, "Done, chain process " + (succeeds ? "succeeds" : "fails") + " in " + configurator.runtimeForDisplay());
+			configurator.getRunner().info(logger, "Done, job \"" + System.getProperty("job.id") + "\" " + (succeeds ? "succeeds" : "fails") + " in " + configurator.runtimeForDisplay());
 		    if (configurator.getSuppressWarnings() && configurator.getRunner().hasWarnings())
 		    	configurator.getRunner().info(logger, "** Warnings have been suppressed");
-
+		    
 		} catch (Exception e) {
 			configurator.getRunner().fatal(logger,"Chain-level system error - Please notify your administrator: " + e.getMessage(),e,"PNYSA");
 		}
