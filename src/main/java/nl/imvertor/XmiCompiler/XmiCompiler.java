@@ -21,14 +21,9 @@
 package nl.imvertor.XmiCompiler;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Iterator;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.sparx.Package;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
@@ -246,6 +241,7 @@ public class XmiCompiler extends Step {
 	}
 	*/
 	
+	/*
 	private XmlFile exportEapToXmi(EapFile eapFile, XmlFile xmifile) throws Exception {
 		eapFile.open();
 		String rootPackageGUID = eapFile.getRootPackageGUID();
@@ -257,6 +253,7 @@ public class XmiCompiler extends Step {
 	private XmlFile exportEapToXmi(EapFile eapFile, XmlFile xmifile, String projectName) throws Exception {
 		return exportEapToXmi(eapFile, xmifile,projectName,null);
 	}
+	*/
 	
 	private XmlFile exportEapToXmi(EapFile eapFile, XmlFile xmifile, String projectName, String modelName) throws Exception {
 		eapFile.open();

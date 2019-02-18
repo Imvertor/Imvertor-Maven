@@ -24,7 +24,6 @@ import org.apache.log4j.Logger;
 
 import nl.imvertor.ComplyExtractor.ComplyExtractor;
 import nl.imvertor.ConfigCompiler.ConfigCompiler;
-import nl.imvertor.ReadmeCompiler.ReadmeCompiler;
 import nl.imvertor.ReleaseCompiler.ReleaseCompiler;
 import nl.imvertor.Reporter.Reporter;
 import nl.imvertor.RunAnalyzer.RunAnalyzer;
