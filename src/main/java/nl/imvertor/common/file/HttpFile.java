@@ -94,7 +94,6 @@ public class HttpFile extends AnyFile {
 		// add parms
 		if (parms != null) {
 			Iterator<Entry<String,String>> paramIterator = parms.entrySet().iterator();
-			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			while (paramIterator.hasNext()) {
 				Entry<String,String> e = paramIterator.next();
 				builder.addParameter(new BasicNameValuePair(e.getKey().toString(), e.getValue().toString()));
