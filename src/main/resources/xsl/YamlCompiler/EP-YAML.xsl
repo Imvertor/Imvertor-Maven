@@ -1340,6 +1340,9 @@
 		<xsl:param name="omschrijving"/>
 		<xsl:text>&#xa;        '</xsl:text><xsl:value-of select="$foutcode"/><xsl:text>':</xsl:text>
 		<xsl:text>&#xa;          description: </xsl:text><xsl:value-of select="$omschrijving"/>
+		<xsl:text>&#xa;          headers:</xsl:text>
+		<xsl:text>&#xa;            api-version:</xsl:text>
+		<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'api_version&quot;')"/>
 		<xsl:text>&#xa;          content:</xsl:text>
 		<xsl:text>&#xa;            application/problem+json:</xsl:text>
 		<xsl:text>&#xa;              schema:</xsl:text>
