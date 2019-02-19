@@ -38,7 +38,7 @@
     <xsl:variable name="configuration-owner-files" select="string-join($configuration-owner-file//name[parent::project-owner],', ')"/>
     <xsl:variable name="configuration-metamodel-files" select="string-join($configuration-metamodel-file//name[parent::metamodel],', ')"/>
     <xsl:variable name="configuration-tagset-files" select="string-join($configuration-tvset-file//name[parent::tagset],', ')"/>
-    <xsl:variable name="configuration-schemarules-files" select="string-join($configuration-schemarules-file//name[parent::schema-rules],', ')"/>
+    <xsl:variable name="configuration-xmlschemarules-files" select="string-join($configuration-xmlschemarules-file//name[parent::xmlschema-rules],', ')"/>
 
     <xsl:template match="/config">
         <report>
@@ -48,7 +48,7 @@
                     <xsl:sequence select="imf:report-label('Owner', $configuration-owner-files)"/>
                     <xsl:sequence select="imf:report-label('Metamodel',$configuration-metamodel-files )"/>
                     <xsl:sequence select="imf:report-label('Tagged values',$configuration-tagset-files)"/>
-                    <xsl:sequence select="imf:report-label('Schema rules',$configuration-schemarules-files )"/>
+                    <xsl:sequence select="imf:report-label('XML Schema rules',$configuration-xmlschemarules-files )"/>
                 </info>
             </summary>
             <page>

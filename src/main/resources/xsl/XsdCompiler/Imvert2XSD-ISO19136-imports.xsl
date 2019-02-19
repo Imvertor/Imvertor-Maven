@@ -38,7 +38,7 @@
   
     <xsl:variable name="schema-defs" select="/imvert:schemas/imvert:schema"/>
   
-    <xsl:variable name="xml-schemalocation-approach" select="imf:get-config-schemarules()/parameter[@name='xml-schemalocation-approach']"/>
+    <xsl:variable name="xml-schemalocation-approach" select="imf:get-config-xmlschemarules()/parameter[@name='xml-schemalocation-approach']"/>
     
     <xsl:template match="/imvert:schemas">
         

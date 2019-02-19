@@ -17,25 +17,28 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<schema-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+<xmlschema-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <xi:include href="../../../Geonovum/cfg/schemarules/XML-ISO19136.xml"/>
     
-    <xi:include href="../../../Geonovum/cfg/schemarules/NEN3610.xml"/>
+    <name>Kadaster XML ISO19136</name>
     
-    <name>BRO</name>
-    
+    <desc lang="en">Rules for processing Kadaster NEN3610 models to ISO 19136 (GML) XML schemas</desc>
+    <desc lang="nl">Regels voor het verwerken van Kadaster NEN3610 modellen tot ISO 19136 (GML) XML schema's</desc>
+     
     <!-- 
-        BRO specific rules 
+        Kadaster specific rules 
     -->
+    <!-- specify if strings must be non-empty -->
+    <parameter name="xml-schema-variant">IS019136</parameter>
+ 
     <!-- specify if strings must be non-empty -->
     <parameter name="strings-nonempty">false</parameter>
     
-    <!-- specify if the schema location must be absolute or relative. When absolute, XML schema location must be specified as a tagged value. -->
-    <parameter name="xml-schemalocation-approach">absolute</parameter>
-    
     <!-- specify if version or release or none must be inserted into the XSD namespaces -->
-    <parameter name="namespace-composition">versionMajorMinor</parameter>
+    <parameter name="namespace-composition">release</parameter><!-- only applies to ISO19136 -->
     
     <!-- specify the minOccurs/maxOccurs when needed ("default") or "always" -->
-    <parameter name="specify-xsd-occurrence">always</parameter><!-- only applies to ISO19136 -->
+    <parameter name="specify-xsd-occurrence">default</parameter><!-- only applies to ISO19136 -->
     
-</schema-rules>
+</xmlschema-rules>

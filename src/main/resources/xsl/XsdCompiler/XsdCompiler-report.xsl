@@ -53,7 +53,7 @@
     
     <xsl:template match="/config">
         <xsl:variable name="schema-requested" select="imf:boolean(imf:get-config-string('cli','createxmlschema'))"/>
-        <xsl:variable name="schemarules" select="imf:get-config-string('cli','schemarules')"/>
+        <xsl:variable name="schemarules" select="concat('XML-',imf:get-config-string('cli','createxmlschemavariant'))"/>
         <xsl:variable name="berichten-infoset" select="imf:document(imf:get-config-string('properties','RESULT_ENDPRODUCT_MSG_FILE_PATH'),false())"/>
         <report>
             <step-display-name>XML Schema compiler</step-display-name>
@@ -61,19 +61,19 @@
                 <xsl:when test="not($schema-requested)">
                     <!-- skip -->
                 </xsl:when>
-                <xsl:when test="$schemarules = 'Kadaster'">
+                <xsl:when test="$schemarules = 'XML-Kadaster'">
                     <status/>
                     <summary>
                         <xsl:sequence select="imf:report-label('Schemas', '(TODO Kadaster)')"/>
                     </summary>
                 </xsl:when>
-                <xsl:when test="$schemarules = 'BRO'">
+                <xsl:when test="$schemarules = 'XML-ISO19136'">
                     <status/>
                     <summary>
-                        <xsl:sequence select="imf:report-label('Schemas', '(TODO KKG)')"/>
+                        <xsl:sequence select="imf:report-label('Schemas', '(TODO ISO19136)')"/>
                     </summary>
                 </xsl:when>
-                <xsl:when test="$schemarules = ('KINGUGM','KINGBSM', 'RWS-L', 'RWS-B')">
+                <xsl:when test="$schemarules = ('XML-KINGUGM','XML-KINGBSM', 'XML-RWS-L', 'XML-RWS-B')">
                     <xsl:variable name="berichten-table" select="imf:create-berichten-table($berichten-infoset/berichten/*)"/>
                     <status/>
                     <summary>
@@ -121,19 +121,7 @@
                     </page>
                                     
                 </xsl:when>
-                <xsl:when test="$schemarules = 'ISO19136'">
-                    <status/>
-                    <summary>
-                        <xsl:sequence select="imf:report-label('Schemas', '(TODO ISO19136)')"/>
-                    </summary>
-                </xsl:when>
-                <xsl:when test="$schemarules = 'KadasterNEN3610'">
-                    <status/>
-                    <summary>
-                        <xsl:sequence select="imf:report-label('Schemas', '(TODO KadasterNEN3610)')"/>
-                    </summary>
-                </xsl:when>
-                <xsl:when test="$schemarules = 'RWS'">
+                <xsl:when test="$schemarules = 'XML-RWS'">
                     <status/>
                     <summary>
                         <xsl:sequence select="imf:report-label('Schemas', '(TODO RWS)')"/>

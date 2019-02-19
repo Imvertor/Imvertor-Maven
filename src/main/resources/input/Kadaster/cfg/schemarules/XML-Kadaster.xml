@@ -17,22 +17,20 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<schema-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
- 
-    <xi:include href="../../../ISO/cfg/schemarules/ISO19136.xml"/>
+<xmlschema-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <name>Kadaster XML schema's</name>
     
-    <name>NEN3610</name>
-    <desc lang="en">Rule for processing NEN3610 models to XML schemas</desc>
-    <desc lang="nl">Regels voor het verwerken van NEN3610 modellen tot XML schema's</desc>
-    
-   <!-- 
-    Geonovum NEN3610 specific rules 
+    <desc lang="en">Rules for processing Kadaster NEN3610 models to Kadaster XML schemas</desc>
+    <desc lang="nl">Regels voor het verwerken van Kadaster NEN3610 modellen tot Kadaster XML schema's</desc>
+     
+    <!-- 
+        Kadaster specific rules 
     -->
+    <!-- specify if strings must be non-empty -->
+    <parameter name="xml-schema-variant">Kadaster</parameter>
+ 
+    <!-- specify if strings must be non-empty -->
+    <parameter name="strings-nonempty">true</parameter>
     
-    <!-- specify if version or release or none must be inserted into the XSD namespaces -->
-    <parameter name="namespace-composition">version</parameter><!-- only applies to ISO19136 -->
-    
-    <!-- specify the minOccurs/maxOccurs when needed ("default") or "always" -->
-    <parameter name="specify-xsd-occurrence">default</parameter><!-- only applies to ISO19136 -->
-    
-</schema-rules>
+</xmlschema-rules>

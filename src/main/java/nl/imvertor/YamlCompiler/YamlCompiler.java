@@ -47,13 +47,11 @@ public class YamlCompiler extends Step {
 		configurator.setActiveStepName(STEP_NAME);
 		prepare();
 		
-		String schemarules = configurator.getSchemarules();
-		if (schemarules.equals("KadasterNEN3610")) {
-			generateKadaster();
-		} else if (schemarules.equals("KINGBSM")) {
+		String jsonschemarules = configurator.getJsonSchemarules();
+	    if (jsonschemarules.equals("JSON-KINGBSM")) {
 			generateKING();
 		} else
-			runner.error(logger,"Schemarules not implemented: " + schemarules);
+			runner.error(logger,"Schemarules not implemented: " + jsonschemarules);
 		
 		configurator.setStepDone(STEP_NAME);
 		

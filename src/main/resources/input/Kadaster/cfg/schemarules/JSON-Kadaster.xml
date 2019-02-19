@@ -17,12 +17,18 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<schema-rules type="config">
-    <!-- 
-        KING specific rules for UGM schemas
-    -->
-    <name>KINGUGM</name>
-    <desc lang="en">Rule for processing UGM models to XML schemas</desc>
-    <desc lang="nl">Regels voor het verwerken van UGM modellen tot XML schema's</desc>
+<jsonschema-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <name>Kadaster Json schema's</name>
     
-</schema-rules>
+    <desc lang="en">Rules for processing Kadaster models to JSON schemas</desc>
+    <desc lang="nl">Regels voor het verwerken van Kadaster modellen tot JSON schema's</desc>
+     
+    <!-- specify which Json version to generate -->
+    <parameter name="json-version">6</parameter>
+    
+    <!-- specify if Json must use HAL conventions -->
+    <parameter name="json-hal">false</parameter>
+    
+    
+</jsonschema-rules>

@@ -58,31 +58,28 @@ public class XsdCompiler extends Step {
 		
 		runner.info(logger,"Compiling XML schemas");
 		
-		String schemarules = configurator.getSchemarules();
-		if (schemarules.equals("Kadaster")) {
+		String xmlschemarules = configurator.getXmlSchemarules();
+		if (xmlschemarules.equals("XML-Kadaster")) {
 			generateXsdKadaster();
 			supplyExternalSchemas();
-		} else if (schemarules.equals("BRO")) {
+		} else if (xmlschemarules.equals("XML-BRO")) {
 			generateXsdBRO();
 			supplyExternalSchemas();
-		} else if (schemarules.equals("KINGUGM") || schemarules.equals("RWS-L")) {
+		} else if (xmlschemarules.equals("XML-KINGUGM") || xmlschemarules.equals("XML-RWS-L")) {
 			generateUgmXsdKING();
-		} else if (schemarules.equals("KINGBSM") || schemarules.equals("RWS-B")) {
+		} else if (xmlschemarules.equals("XML-KINGBSM") || xmlschemarules.equals("XML-RWS-B")) {
 			generateBsmXsdKING();
-		} else if (schemarules.equals("ISO19136")) {
+		} else if (xmlschemarules.equals("XML-ISO19136")) {
 			generateXsdISO19136();
 			supplyExternalSchemas();
-		} else if (schemarules.equals("RWS")) {
+		} else if (xmlschemarules.equals("XML-RWS")) {
 			generateXsdISO19136();
 			supplyExternalSchemas();
-		} else if (schemarules.equals("KadasterNEN3610")) {
-			generateXsdISO19136();
-			supplyExternalSchemas();
-		} else if (schemarules.equals("KOOP")) {
+		} else if (xmlschemarules.equals("XML-KOOP")) {
 			generateXsdISO19136();
 			supplyExternalSchemas();
 		} else
-			runner.error(logger,"Schemarules not implemented: " + schemarules);
+			runner.error(logger,"Schemarules not implemented: " + xmlschemarules);
 		
 		// note: schema validation is a separate step
 		configurator.setStepDone(STEP_NAME);

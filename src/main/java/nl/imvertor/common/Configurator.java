@@ -104,7 +104,6 @@ public class Configurator {
 	
 	public static final String NAMESPACE_EXTENSION_FUNCTIONS = "http://www.imvertor.org/xsl/extensions";
 	public static final String DEFAULT_METAMODEL = "BP";
-	public static final String DEFAULT_SCHEMARULES = "BP";
 	
 	public static final Integer RUN_MODE_RUN = 1;
 	public static final Integer RUN_MODE_DEVELOPMENT = 2;
@@ -132,7 +131,9 @@ public class Configurator {
 	private Boolean eaEnabled;
 	
 	private String metamodel;
-	private String schemarules;
+	
+	private String xmlschemarules;
+	private String jsonschemarules;
 	
 	private Options options;
 	private HashMap<String,Boolean> requiredOption = new HashMap<String,Boolean> ();
@@ -247,8 +248,12 @@ public class Configurator {
 		return metamodel;
 	}
 
-	public String getSchemarules() {
-		return schemarules;
+	public String getXmlSchemarules() {
+		return xmlschemarules;
+	}
+
+	public String getJsonSchemarules() {
+		return jsonschemarules;
 	}
 
 	public XmlFile getStepConfigFile(String stepName) {
@@ -653,9 +658,9 @@ public class Configurator {
 			metamodel = (metamodel == null) ? DEFAULT_METAMODEL : metamodel;
 			
 			// schema rules used
-			schemarules = getParm(workConfiguration,"cli","schemarules",false);
-			schemarules = (schemarules == null) ? DEFAULT_SCHEMARULES : schemarules;
-			
+			xmlschemarules = "XML-"+ getParm(workConfiguration,"cli","createxmlschemavariant",false);
+			jsonschemarules = "JSON-"+ getParm(workConfiguration,"cli","createjsonschemavariant",false);
+				
 			// set the task
 			setXParm(workConfiguration,"appinfo/task",getParm(workConfiguration,"cli","task",true),true);
 			

@@ -44,7 +44,8 @@
     <xsl:variable name="configuration-docrules-doc" select="imf:document($configuration-docrules-name,true())"/>
     <xsl:variable name="configuration-versionrules-doc" select="imf:document($configuration-versionrules-name,true())"/>
    
-    <xsl:variable name="configuration-schemarules-doc" select="imf:document($configuration-schemarules-name)"/><!-- not required -->
+    <xsl:variable name="configuration-xmlschemarules-doc" select="imf:document($configuration-xmlschemarules-name)"/><!-- not required -->
+    <xsl:variable name="configuration-jsonschemarules-doc" select="imf:document($configuration-jsonschemarules-name)"/><!-- not required -->
     <xsl:variable name="configuration-shaclrules-doc" select="imf:document($configuration-shaclrules-name)"/><!-- not required -->
     
     <xsl:variable name="configuration-owner-file" select="imf:prepare-config($configuration-owner-doc)"/>
@@ -54,11 +55,11 @@
     <xsl:variable name="configuration-docrules-file" select="imf:prepare-config($configuration-docrules-doc)"/>
     <xsl:variable name="configuration-versionrules-file" select="imf:prepare-config($configuration-versionrules-doc)"/>
   
-    <xsl:variable name="configuration-schemarules-file" select="imf:prepare-config($configuration-schemarules-doc)"/><!-- not required -->
+    <xsl:variable name="configuration-xmlschemarules-file" select="imf:prepare-config($configuration-xmlschemarules-doc)"/><!-- not required -->
+    <xsl:variable name="configuration-jsonschemarules-file" select="imf:prepare-config($configuration-jsonschemarules-doc)"/><!-- not required -->
     <xsl:variable name="configuration-shaclrules-file" select="imf:prepare-config($configuration-shaclrules-doc)"/><!-- not required -->
    
     <xsl:variable name="metamodel-name" select="imf:get-normalized-name(imf:get-config-string('cli','metamodel'),'system-name')"/>
-    <xsl:variable name="schemarules-name" select="imf:get-normalized-name(imf:get-config-string('cli','schemarules'),'system-name')"/>
     <xsl:variable name="tvset-name" select="imf:get-normalized-name(imf:get-config-string('cli','tvset'),'system-name')"/>
     
     <xsl:template match="/">
@@ -68,7 +69,8 @@
             <config>
                 <xsl:sequence select="$configuration-owner-file"/>
                 <xsl:sequence select="$configuration-metamodel-file"/>
-                <xsl:sequence select="$configuration-schemarules-file"/>
+                <xsl:sequence select="$configuration-xmlschemarules-file"/>
+                <xsl:sequence select="$configuration-jsonschemarules-file"/>
                 <xsl:sequence select="$configuration-tvset-file"/>
                 <xsl:sequence select="$configuration-notesrules-file"/>
                 <xsl:sequence select="$configuration-docrules-file"/>
@@ -273,12 +275,12 @@
                 
             </metamodel>
             
-            <schema-rules root="true">
-                <xsl:variable name="schema-rules" select="schema-rules"/> 
-                <xsl:apply-templates select="imf:distinct($schema-rules/name[@lang=($language,'#all')])" mode="#current"/>
+            <xmlschema-rules root="true">
+                <xsl:variable name="xmlschema-rules" select="xmlschema-rules"/> 
+                <xsl:apply-templates select="imf:distinct($xmlschema-rules/name[@lang=($language,'#all')])" mode="#current"/>
                 
                 <name-value-mapping>
-                    <xsl:for-each-group select="$schema-rules//tagged-values/tv" group-by="@id">
+                    <xsl:for-each-group select="$xmlschema-rules//tagged-values/tv" group-by="@id">
                         <tv id="{current-grouping-key()}">
                             <xsl:variable name="tv-group" select="current-group()"/>
                             <xsl:apply-templates select="imf:distinct($tv-group/name[@lang=($language,'#all')])" mode="#current"/>
@@ -288,12 +290,23 @@
                     </xsl:for-each-group>
                 </name-value-mapping>
           
-                <xsl:for-each-group select="$schema-rules//parameter" group-by="@name">
+                <xsl:for-each-group select="$xmlschema-rules//parameter" group-by="@name">
                     <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
                 </xsl:for-each-group>
           
-            </schema-rules>
+            </xmlschema-rules>
 
+
+            <jsonschema-rules root="true">
+                <xsl:variable name="jsonschema-rules" select="jsonschema-rules"/> 
+                <xsl:apply-templates select="imf:distinct($jsonschema-rules/name[@lang=($language,'#all')])" mode="#current"/>
+                
+                <xsl:for-each-group select="$jsonschema-rules//parameter" group-by="@name">
+                    <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
+                </xsl:for-each-group>
+                
+            </jsonschema-rules>
+            
             <tagset root="true">
                 <xsl:variable name="tagset" select="tagset"/> 
                 <xsl:apply-templates select="imf:distinct($tagset/name[@lang=($language,'#all')])" mode="#current"/>

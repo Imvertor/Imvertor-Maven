@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<schema-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+<xmlschema-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
     <xi:include href="../../../Geonovum/cfg/schemarules/NEN3610.xml"/>
     
@@ -27,4 +27,4 @@
         KOOP specific rules 
     -->
     
-</schema-rules>
+</xmlschema-rules>

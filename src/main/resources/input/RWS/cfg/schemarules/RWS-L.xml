@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<schema-rules type="config">
+<xmlschema-rules type="config">
     <!-- 
         RWS specific rules for L schemas
     -->
@@ -25,4 +25,4 @@
     <desc lang="en">Rules for processing logical models to XML schemas</desc>
     <desc lang="nl">Regels voor het verwerken van logische modellen tot XML schema's</desc>
     
-</schema-rules>
+</xmlschema-rules>

@@ -53,7 +53,7 @@
     <xsl:variable name="GML-prefix" select="'gml'"/>
     
     <xsl:variable name="config-schemarules">
-        <xsl:sequence select="imf:get-config-schemarules()"/>
+        <xsl:sequence select="imf:get-config-xmlschemarules()"/>
     </xsl:variable> 
     <xsl:variable name="config-tagged-values">
         <xsl:sequence select="imf:get-config-tagged-values()"/>

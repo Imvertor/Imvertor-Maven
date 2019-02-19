@@ -92,9 +92,9 @@
     
     <xsl:variable name="model-version" select="/imvert:packages/imvert:version"/>
     
-    <xsl:variable name="namespace-composition" select="imf:get-config-schemarules()/parameter[@name='namespace-composition']"/>
+    <xsl:variable name="namespace-composition" select="imf:get-config-xmlschemarules()/parameter[@name='namespace-composition']"/>
 
-    <xsl:variable name="strings-nonempty" select="imf:get-config-schemarules()/parameter[@name='strings-nonempty']"/><!-- https://github.com/Imvertor/Imvertor-Maven/issues/52 -->
+    <xsl:variable name="strings-nonempty" select="imf:get-config-xmlschemarules()/parameter[@name='strings-nonempty']"/><!-- https://github.com/Imvertor/Imvertor-Maven/issues/52 -->
     
     <xsl:template match="imvert:class" mode="type-in-package">
         <type 
@@ -696,7 +696,7 @@
     <!-- 
         get a type name based on the type specified, that is suited for XSD 
         
-        The type may be somting like:
+        The type may be something like:
         
         Class1
         scalar-string
@@ -959,6 +959,7 @@
                                 When basetype, the type referenced in the extension is the generated type, 'Basetype_*', introduced at the end of the schema 
                             -->
                             <xsl:variable name="effective-type" select="if ($is-restriction) then imf:get-type($basetype-name,$package-name) else $type"/>
+                            <xsl:sequence select="imf:create-comment($this,if ($is-restriction) then 'A restriction on a primitive' else 'Not a restriction on a primitive')"/>
                             <xs:extension base="{$effective-type}">
                                 <xsl:sequence select="imf:create-nilreason($is-conceptual-hasnilreason)"/>
                                 <xsl:sequence select="imf:create-estimation($is-estimation)"/>

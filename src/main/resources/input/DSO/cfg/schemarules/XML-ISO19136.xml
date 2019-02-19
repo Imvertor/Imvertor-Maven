@@ -17,21 +17,14 @@
  * You should have received a copy of the GNU General Public License
  * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<schema-rules type="config">
-    <name>Kadaster</name>
-    <desc lang="en">Rule for processing Kadaster models to XML schemas</desc>
-    <desc lang="nl">Regels voor het verwerken van Kadaster modellen tot XML schema's</desc>
+<xmlschema-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+    <xi:include href="../../../Geonovum/cfg/schemarules/XML-ISO19136.xml"/>
+    
+    <name>DSO ISO19136</name>
     
     <!-- 
-        Kadaster specific rules 
+        DSO specific rules 
     -->
-    <!-- specify if strings must be non-empty -->
-    <parameter name="strings-nonempty">true</parameter>
     
-    <!-- specify if version or release or none must be inserted into the XSD namespaces -->
-    <parameter name="namespace-composition">release</parameter><!-- only applies to ISO19136 -->
-    
-    <!-- specify the minOccurs/maxOccurs when needed ("default") or "always" -->
-    <parameter name="specify-xsd-occurrence">default</parameter><!-- only applies to ISO19136 -->
-    
-</schema-rules>
+</xmlschema-rules>

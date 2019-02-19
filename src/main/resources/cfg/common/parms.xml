@@ -92,26 +92,6 @@
          <tip>ID of the user who started this run</tip>
          <required>true</required>
       </cli-parm> 
-      <!--
-      <cli-parm>
-         <name>owner</name>
-         <arg>name</arg>
-         <tip>Name of the project owner</tip>
-         <required>true</required>
-      </cli-parm> 
-      <cli-parm>
-         <name>schemarules</name>
-         <arg>name</arg>
-         <tip>Name of the configuration folder for schema rules</tip>
-         <required>true</required>
-      </cli-parm> 
-      <cli-parm>
-         <name>tvset</name>
-         <arg>name</arg>
-         <tip>Name of the configuration folder for tagged value set definitions</tip>
-         <required>true</required>
-      </cli-parm> 
-      -->
       <cli-parm>
          <name>project</name>
          <arg>name</arg>
@@ -234,7 +214,8 @@
       <configuration-owner-web-folder>${system/inp-folder-path}/cfg/owners/web</configuration-owner-web-folder>
       <configuration-owner-file>${system/inp-folder-path}/cfg/owners/${cli/owner}.xml</configuration-owner-file>
       <configuration-tvset-file>${system/inp-folder-path}/cfg/tvsets/${cli/tvset}.xml</configuration-tvset-file>
-      <configuration-schemarules-file>${system/inp-folder-path}/cfg/schemarules/${cli/schemarules}.xml</configuration-schemarules-file>
+      <configuration-xmlschemarules-file>${system/inp-folder-path}/cfg/schemarules/XML-${cli/createxmlschemavariant}.xml</configuration-xmlschemarules-file>
+      <configuration-jsonschemarules-file>${system/inp-folder-path}/cfg/schemarules/JSON-${cli/createjsonschemavariant}.xml</configuration-jsonschemarules-file>
       <configuration-notesrules-file>${system/inp-folder-path}/cfg/notesrules/${cli/notesrules}.xml</configuration-notesrules-file>
       <configuration-docrules-file>${system/inp-folder-path}/cfg/docrules/${cli/docrules}.xml</configuration-docrules-file>
       <configuration-versionrules-file>${system/inp-folder-path}/cfg/versionrules/${cli/versionrules}.xml</configuration-versionrules-file>

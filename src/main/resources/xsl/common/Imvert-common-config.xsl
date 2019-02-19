@@ -46,7 +46,8 @@
     <xsl:variable name="configuration-docrules-name" select="imf:get-config-string('system','configuration-docrules-file')"/>
     <xsl:variable name="configuration-versionrules-name" select="imf:get-config-string('system','configuration-versionrules-file')"/>
    
-    <xsl:variable name="configuration-schemarules-name" select="imf:get-config-string('system','configuration-schemarules-file','/none')"/>
+    <xsl:variable name="configuration-xmlschemarules-name" select="imf:get-config-string('system','configuration-xmlschemarules-file','/none')"/>
+    <xsl:variable name="configuration-jsonschemarules-name" select="imf:get-config-string('system','configuration-jsonschemarules-file','/none')"/>
     <xsl:variable name="configuration-shaclrules-name" select="imf:get-config-string('system','configuration-shaclrules-file','/none')"/>
     
     <xsl:variable name="configuration-file" select="imf:document(imf:get-config-string('properties','WORK_CONFIG_FILE'),true())"/>
@@ -59,7 +60,8 @@
     <xsl:variable name="configuration-versionrules-file" select="$configuration-file/config/version-rules"/>
     <xsl:variable name="configuration-prologue" select="$configuration-file/config/prologue"/>
 
-    <xsl:variable name="configuration-schemarules-file" select="$configuration-file/config/schema-rules"/>
+    <xsl:variable name="configuration-xmlschemarules-file" select="$configuration-file/config/xmlschema-rules"/>
+    <xsl:variable name="configuration-jsonschemarules-file" select="$configuration-file/config/jsonschema-rules"/>
     <xsl:variable name="configuration-shaclrules-file" select="$configuration-file/config/shacl-rules"/>
     
     <xsl:variable name="configuration-i3n-name" select="imf:get-config-string('system','configuration-i3n-file')"/>
@@ -70,10 +72,14 @@
     <xsl:variable name="concept-uri-template" select="imf:get-config-parameter('concept-uri-template')"/>
     <xsl:variable name="concept-uri-resolve" select="imf:boolean(imf:get-config-string('cli','resolveconcepturi','false'))"/>
     
-    <xsl:function name="imf:get-config-schemarules" as="element(schema-rules)?">
-        <xsl:sequence select="$configuration-schemarules-file"/>
+    <xsl:function name="imf:get-config-xmlschemarules" as="element(xmlschema-rules)?">
+        <xsl:sequence select="$configuration-xmlschemarules-file"/>
     </xsl:function>
 
+    <xsl:function name="imf:get-config-jsonschemarules" as="element(jsonschema-rules)?">
+        <xsl:sequence select="$configuration-jsonschemarules-file"/>
+    </xsl:function>
+    
     <xsl:function name="imf:get-config-tagged-values" as="element(tv)*">
         <xsl:sequence select="$configuration-tvset-file//tagged-values/tv"/>
     </xsl:function>

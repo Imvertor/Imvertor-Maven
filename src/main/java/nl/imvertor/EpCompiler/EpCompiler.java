@@ -48,11 +48,11 @@ public class EpCompiler extends Step {
 		
 		runner.info(logger,"Compiling EP");
 		
-		String schemarules = configurator.getSchemarules();
-		if (schemarules.equals("KadasterNEN3610")) {
+		String jsonschemarules = configurator.getJsonSchemarules();
+		if (jsonschemarules.equals("JSON-Kadaster")) {
 			generateKadaster();
 		} else
-			runner.error(logger,"Schemarules not implemented: " + schemarules);
+			runner.error(logger,"Schemarules not implemented: " + jsonschemarules);
 		
 		configurator.setStepDone(STEP_NAME);
 		
