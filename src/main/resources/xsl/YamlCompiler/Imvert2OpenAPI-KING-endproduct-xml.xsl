@@ -396,6 +396,10 @@
 								<xsl:sequence select="imf:create-output-element('ep:value', @customPathFacet)" />
 							</ep:parameter>
 						</xsl:if>
+						<ep:parameter> 
+							<xsl:sequence select="imf:create-output-element('ep:name', 'operationId')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', @operationId)" />
+						</ep:parameter>
 					</ep:parameters>
 				</xsl:when>
 				<!-- ROME: Zijn er nog meer attributen van toepassing op een POST bericht. -->
@@ -421,6 +425,10 @@
 								<xsl:sequence select="imf:create-output-element('ep:value', @customPathFacet)" />
 							</ep:parameter>
 						</xsl:if>
+						<ep:parameter> 
+							<xsl:sequence select="imf:create-output-element('ep:name', 'operationId')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', @operationId)" />
+						</ep:parameter>
 					</ep:parameters>
 				</xsl:when>
 			</xsl:choose>

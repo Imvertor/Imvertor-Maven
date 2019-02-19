@@ -132,6 +132,16 @@
 		<xsl:choose>
 			<xsl:when test="(contains($berichttype,'Gr') or contains($berichttype,'Gc')) and $messagetype = 'request'">
 				<!-- This processes al ep:message elements represent the request tree of the Gr and Gc messages. -->
+				<xsl:variable name="operationId">
+					<xsl:choose>
+						<xsl:when test="ep:parameters/ep:parameter[ep:name='operationId']/ep:value !=''">
+							<xsl:value-of select="ep:parameters/ep:parameter[ep:name='operationId']/ep:value"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="ep:tech-name"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				<!-- The tv custom_path_facet should, if present, have the correct format without a slash. We remove slashes from the tv but also generate a warning if a slash is present. -->
 				<xsl:variable name="messageCategory" select="substring-before($berichttype,'0')"/>
 				<xsl:variable name="relatedResponseMessage">
@@ -343,7 +353,7 @@
 	
 				<!-- For each message the next structure is generated. -->
 				<xsl:text>&#xa;    </xsl:text><xsl:value-of select="$method"/><xsl:text>:</xsl:text>
-				<xsl:text>&#xa;      operationId: </xsl:text><xsl:value-of select="ep:tech-name" />
+				<xsl:text>&#xa;      operationId: </xsl:text><xsl:value-of select="$operationId" />
 				<xsl:text>&#xa;      description: "</xsl:text><xsl:value-of select="$documentation" /><xsl:text>"</xsl:text>
 				<xsl:if test="$acceptCrsParamPresent or
 								contains($parametersRequired,'J') or 
@@ -727,6 +737,21 @@
 			</xsl:when>
 			<xsl:when test="(contains($berichttype,'Po') or contains($berichttype,'Pa') or contains($berichttype,'Pu')) and $messagetype = 'request'">
 				<xsl:variable name="messageCategory" select="substring-before($berichttype,'01')"/>
+				<xsl:variable name="operationId">
+					<xsl:choose>
+						<xsl:when test="ep:parameters/ep:parameter[ep:name='operationId']/ep:value !=''">
+							<xsl:value-of select="ep:parameters/ep:parameter[ep:name='operationId']/ep:value"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:choose>
+								<xsl:when test="$messageCategory = 'Pa'">patch</xsl:when>
+								<xsl:when test="$messageCategory = 'Po'">post</xsl:when>
+								<xsl:when test="$messageCategory = 'Pu'">put</xsl:when>
+							</xsl:choose>
+							<xsl:value-of select="ep:tech-name" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				<!-- This processes al ep:message elements represent the request tree of the Po messages. -->		
 				<xsl:variable name="method">
 					<xsl:choose>
@@ -933,13 +958,7 @@
 					
 				<!-- For each message the next structure is generated. -->
 				<xsl:text>&#xa;    </xsl:text><xsl:value-of select="$method"/><xsl:text>:</xsl:text>
-				<xsl:text>&#xa;      operationId: </xsl:text>
-				<xsl:choose>
-					<xsl:when test="$messageCategory = 'Pa'">patch</xsl:when>
-					<xsl:when test="$messageCategory = 'Po'">post</xsl:when>
-					<xsl:when test="$messageCategory = 'Pu'">put</xsl:when>
-				</xsl:choose>
-				<xsl:value-of select="ep:tech-name" />
+				<xsl:text>&#xa;      operationId: </xsl:text><xsl:value-of select="$operationId" />
 				<xsl:text>&#xa;      description: "</xsl:text><xsl:value-of select="$documentation" /><xsl:text>"</xsl:text>
 				<xsl:if test="($messageCategory = 'Po' and ($contentCrsParamPresent or 
 							  $acceptCrsParamPresent)) or
