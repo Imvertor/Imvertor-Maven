@@ -1793,7 +1793,7 @@
 				<xsl:if test="ep:max-length">
 					<xsl:value-of select="concat(',&quot;maxLength&quot;: ',ep:max-length)"/>
 				</xsl:if>
-				<xsl:if test="ep:min-length">
+				<xsl:if test="ep:min-length and empty(ep:pattern)">
 					<xsl:value-of select="concat(',&quot;minLength&quot;: ',ep:min-length)"/>
 				</xsl:if>
 			</xsl:when>
