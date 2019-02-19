@@ -125,9 +125,9 @@ public class YamlCompiler extends Step {
 			String schemaName = configurator.getXParm("appinfo/OpenAPI-schema-name");
 		
 			// copy to the app folder
-			AnyFile appYamlFile = new AnyFile(yamlFolder,schemaName + ".yaml");
-			AnyFile appJsonFile = new AnyFile(yamlFolder,schemaName + ".json");
-			AnyFile appJson2File = new AnyFile(yamlFolder,schemaName + "-2.0.json");
+			AnyFile appYamlFile = new AnyFile(yamlFolder,"openapi.yaml");
+			AnyFile appJsonFile = new AnyFile(yamlFolder,"openapi.json");
+			AnyFile appJson2File = new AnyFile(yamlFolder,"openapi_draft04.json");
 			yamlFile.copyFile(appYamlFile);
 			bodyFile.copyFile(appJsonFile);
 			bodyFile2.copyFile(appJson2File);
