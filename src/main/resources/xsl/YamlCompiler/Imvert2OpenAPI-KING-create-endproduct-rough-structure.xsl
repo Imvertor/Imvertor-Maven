@@ -124,6 +124,14 @@
 				<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($padClass, '##CFG-TV-CUSTOMPATHFACET')"/>
 			</xsl:if>
 		</xsl:variable>
+		<xsl:variable name="operationId">
+			<xsl:choose>
+				<xsl:when test="not(empty(imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-SERVICENAME')))">
+					<xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(., '##CFG-TV-SERVICENAME')"/>
+				</xsl:when>
+				<xsl:otherwise/>
+			</xsl:choose>
+		</xsl:variable>
 		
 		<xsl:sequence
 			select="imf:create-debug-track(concat('Constructing the rough-message class for the ',$messagetype,' message: ',$messagename),$debugging)" />
@@ -239,7 +247,7 @@
 							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'response']">
 							
 							<xsl:sequence select="imf:create-debug-comment('A11750]',$debugging)" />
-							<ep:rough-message messagetype="response" berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}">
+							<ep:rough-message messagetype="response" berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}" operationId="{$operationId}">
 								<xsl:sequence
 									select="imf:create-debug-track(concat('Constructing the rough-response-message: ',imvert:name/@original),$debugging)" />
 								<xsl:sequence
@@ -254,7 +262,7 @@
 							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'request']">
 
 							<xsl:sequence select="imf:create-debug-comment('A12000]',$debugging)" />
-							<ep:rough-message messagetype="request"	berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}">
+							<ep:rough-message messagetype="request"	berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}" operationId="{$operationId}">
 								<xsl:if test="not(empty($fields))">
 									<xsl:attribute name="fields" select="$fields"/>
 								</xsl:if>
@@ -358,7 +366,7 @@
 							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'response']">
 							
 							<xsl:sequence select="imf:create-debug-comment('A12750]',$debugging)" />
-							<ep:rough-message messagetype="response" berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}">
+							<ep:rough-message messagetype="response" berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}" operationId="{$operationId}">
 								<xsl:sequence
 									select="imf:create-debug-track(concat('Constructing the rough-response-message: ',imvert:name/@original),$debugging)" />
 								<xsl:sequence
@@ -373,7 +381,7 @@
 							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'requestbody']">
 							<!-- For the post messages the ep:rough-message structure only represents the 'request' tree. So only that part of the message is
 							     processed here. -->
-							<ep:rough-message messagetype="requestbody" berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}">
+							<ep:rough-message messagetype="requestbody" berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}" operationId="{$operationId}">
 								<xsl:if test="not(empty($customPathFacet))">
 									<xsl:attribute name="customPathFacet" select="$customPathFacet"/>
 								</xsl:if>
@@ -394,7 +402,7 @@
 							select="imvert:associations/imvert:association[imvert:stereotype/@id = ('stereotype-name-entiteitrelatie') and imvert:name = 'request']">
 							<!-- For the post messages the ep:rough-message structure only represents the 'request' tree. So only that part of the message is
 							     processed here. -->
-							<ep:rough-message messagetype="request" berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}">
+							<ep:rough-message messagetype="request" berichtcode="{$berichtcode}" tag="{$tag}" grouping="{$grouping}" pagination="{$pagination}" serialisation="{$serialisation}" operationId="{$operationId}">
 								<xsl:if test="not(empty($customPathFacet))">
 									<xsl:attribute name="customPathFacet" select="$customPathFacet"/>
 								</xsl:if>

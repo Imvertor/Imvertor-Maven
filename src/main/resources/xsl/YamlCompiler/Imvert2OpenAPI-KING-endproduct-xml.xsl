@@ -396,6 +396,10 @@
 								<xsl:sequence select="imf:create-output-element('ep:value', @customPathFacet)" />
 							</ep:parameter>
 						</xsl:if>
+						<ep:parameter> 
+							<xsl:sequence select="imf:create-output-element('ep:name', 'operationId')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', @operationId)" />
+						</ep:parameter>
 					</ep:parameters>
 				</xsl:when>
 				<!-- ROME: Zijn er nog meer attributen van toepassing op een POST bericht. -->
@@ -421,6 +425,10 @@
 								<xsl:sequence select="imf:create-output-element('ep:value', @customPathFacet)" />
 							</ep:parameter>
 						</xsl:if>
+						<ep:parameter> 
+							<xsl:sequence select="imf:create-output-element('ep:name', 'operationId')" />
+							<xsl:sequence select="imf:create-output-element('ep:value', @operationId)" />
+						</ep:parameter>
 					</ep:parameters>
 				</xsl:when>
 			</xsl:choose>
@@ -698,7 +706,9 @@
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', $construct/imvert:max-occurs)" />
 					<xsl:choose>
 						<xsl:when test="count($classconstruct//imvert:attribute) = 1">
-							<xsl:apply-templates select="$classconstruct//imvert:attributes/imvert:attribute"  mode="onlyFacets"/>
+							<xsl:apply-templates select="$classconstruct//imvert:attributes/imvert:attribute"  mode="onlyFacets">
+								<xsl:with-param name="min-Occurs" select="$construct/imvert:min-occurs"/>
+							</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:sequence select="imf:create-output-element('ep:type-name', imf:get-normalized-name($type-name,'type-name'))" />
@@ -1695,7 +1705,9 @@
 					</xsl:choose>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)" />
-					<xsl:call-template name="attributeFacets"/>
+					<xsl:call-template name="attributeFacets">
+						<xsl:with-param name="min-Occurs" select="imvert:min-occurs"/>
+					</xsl:call-template>
 				</ep:construct>
 			</xsl:when>
 			<xsl:when test="$type-is-GM-external">
@@ -1718,7 +1730,9 @@
 					</xsl:choose>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)" />
-					<xsl:call-template name="attributeFacets"/>
+					<xsl:call-template name="attributeFacets">
+						<xsl:with-param name="min-Occurs" select="imvert:min-occurs"/>
+					</xsl:call-template>
 				</ep:construct>
 			</xsl:when>
 			<xsl:when test="imvert:type-id and imvert:type-id = $packages//imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]/imvert:id">
@@ -1751,7 +1765,9 @@
 					</xsl:choose>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)" />
-					<xsl:call-template name="attributeFacets"/>
+					<xsl:call-template name="attributeFacets">
+						<xsl:with-param name="min-Occurs" select="imvert:min-occurs"/>
+					</xsl:call-template>
 				</ep:construct>
 			</xsl:when>
 			<xsl:otherwise>
@@ -1794,7 +1810,9 @@
 					</xsl:choose>
 					<xsl:sequence select="imf:create-output-element('ep:min-occurs', imvert:min-occurs)" />
 					<xsl:sequence select="imf:create-output-element('ep:max-occurs', imvert:max-occurs)" />
-					<xsl:call-template name="attributeFacets"/>
+					<xsl:call-template name="attributeFacets">
+						<xsl:with-param name="min-Occurs" select="imvert:min-occurs"/>
+					</xsl:call-template>
 				</ep:construct>
 			</xsl:otherwise>
 		</xsl:choose>
@@ -1919,14 +1937,18 @@
 	</xsl:template>
 	
 	<xsl:template match="imvert:attribute" mode="onlyFacets">
+		<xsl:param name="min-Occurs"/>
 		<!-- If a table, refered to by an attribute, only has 1 attribute the facets of that attribute are used to build the properties of the attribute refering.
 			 In that case no ref to a table is generated. -->
 		
-		<xsl:call-template name="attributeFacets"/>
+		<xsl:call-template name="attributeFacets">
+			<xsl:with-param name="min-Occurs" select="$min-Occurs"/>
+		</xsl:call-template>
 	</xsl:template>
 	
 
 	<xsl:template name="attributeFacets">
+		<xsl:param name="min-Occurs"/>
 
 		<xsl:variable name="id" select="imvert:id"/>
 		<xsl:variable name="construct" select="imf:get-construct-by-id($id,$packages)" />
@@ -1965,7 +1987,16 @@
 						</xsl:when>
 					</xsl:choose>
 				</xsl:variable>
-				<xsl:variable name="min-length" select="xs:integer(imf:get-tagged-value(.,'##CFG-TV-MINLENGTH'))" />
+				<xsl:variable name="min-length">
+					<xsl:choose>
+						<xsl:when test="$min-Occurs > 0 and (empty(xs:integer(imf:get-tagged-value(.,'##CFG-TV-MINLENGTH'))) or xs:integer(imf:get-tagged-value(.,'##CFG-TV-MINLENGTH')) = 1)">
+							<xsl:value-of select="1"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="xs:integer(imf:get-tagged-value(.,'##CFG-TV-MINLENGTH'))"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				<xsl:variable name="pattern" select="imvert:pattern" />
 				
 				<xsl:sequence select="imf:create-output-element('ep:max-length', $max-length)" />
@@ -1975,7 +2006,9 @@
 				<xsl:if test="$max-value != ''">
 					<xsl:sequence select="imf:create-output-element('ep:max-value', $max-value)" />
 				</xsl:if>
-				<!--xsl:sequence select="imf:create-output-element('ep:min-length', $min-length)" /-->
+				<xsl:if test="$min-length != ''">
+					<xsl:sequence select="imf:create-output-element('ep:min-length', $min-length)" />
+				</xsl:if>
 				<xsl:sequence select="imf:create-output-element('ep:pattern', $pattern)" />
 				<xsl:sequence select="imf:create-output-element('ep:example', $example)" />
 			</xsl:otherwise>
