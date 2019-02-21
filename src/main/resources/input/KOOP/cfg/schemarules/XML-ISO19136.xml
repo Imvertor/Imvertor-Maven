@@ -19,7 +19,7 @@
 -->
 <xmlschema-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
     
-    <xi:include href="../../../Geonovum/cfg/schemarules/NEN3610.xml"/>
+    <xi:include href="../../../Geonovum/cfg/schemarules/XML-ISO19136.xml"/>
     
     <name>KOOP</name>
     

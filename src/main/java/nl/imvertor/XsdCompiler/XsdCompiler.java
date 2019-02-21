@@ -50,7 +50,7 @@ public class XsdCompiler extends Step {
 	/**
 	 *  run the main translation
 	 */
-	public boolean run() throws Exception{
+	public boolean run() throws Exception {
 		
 		// set up the configuration for this step
 		configurator.setActiveStepName(STEP_NAME);
@@ -58,28 +58,55 @@ public class XsdCompiler extends Step {
 		
 		runner.info(logger,"Compiling XML schemas");
 		
+		String owner = configurator.getXParm("cli/owner");
 		String xmlschemarules = configurator.getXmlSchemarules();
-		if (xmlschemarules.equals("XML-Kadaster")) {
-			generateXsdKadaster();
-			supplyExternalSchemas();
-		} else if (xmlschemarules.equals("XML-BRO")) {
-			generateXsdBRO();
-			supplyExternalSchemas();
-		} else if (xmlschemarules.equals("XML-KINGUGM") || xmlschemarules.equals("XML-RWS-L")) {
-			generateUgmXsdKING();
-		} else if (xmlschemarules.equals("XML-KINGBSM") || xmlschemarules.equals("XML-RWS-B")) {
-			generateBsmXsdKING();
-		} else if (xmlschemarules.equals("XML-ISO19136")) {
-			generateXsdISO19136();
-			supplyExternalSchemas();
-		} else if (xmlschemarules.equals("XML-RWS")) {
-			generateXsdISO19136();
-			supplyExternalSchemas();
-		} else if (xmlschemarules.equals("XML-KOOP")) {
-			generateXsdISO19136();
-			supplyExternalSchemas();
-		} else
-			runner.error(logger,"Schemarules not implemented: " + xmlschemarules);
+		
+		Boolean done = false;
+        if (owner.equals("Kadaster")) {
+			if (xmlschemarules.equals("XML-ISO19136")) {
+				generateXsdISO19136();
+				supplyExternalSchemas();
+				done = true;
+			} else if (xmlschemarules.equals("XML-Kadaster")) {
+				generateXsdKadaster();
+				supplyExternalSchemas();
+				done = true;
+			} 
+		} else if (owner.equals("KING")) {
+			if (xmlschemarules.equals("XML-KINGUGM")) {
+				generateUgmXsdKING();
+				done = true;
+			} else if (xmlschemarules.equals("XML-KINGBSM")) {
+				generateBsmXsdKING();
+				done = true;
+			}  
+		} else if (owner.equals("BRO")) {
+			if (xmlschemarules.equals("XML-ISO19136")) {
+				generateXsdBRO();
+				supplyExternalSchemas();
+				done = true;
+			} 
+		} else if (owner.equals("RWS")) {
+			if (xmlschemarules.equals("XML-RWS-L")) {
+				generateUgmXsdKING();
+				done = true;
+			} else if (xmlschemarules.equals("XML-RWS-B")) {
+				generateBsmXsdKING();
+				done = true;
+			} if (xmlschemarules.equals("XML-ISO19136")) {
+				generateXsdISO19136();
+				done = true;
+			} 		
+		} else if (owner.equals("KOOP")) {
+			if (xmlschemarules.equals("XML-ISO19136")) {
+				generateXsdISO19136();
+				supplyExternalSchemas();
+				done = true;
+			} 		
+		} 
+		
+        if (!done) 
+        	runner.error(logger,"Schemarules " + xmlschemarules + " not implemented for owner " + owner);
 		
 		// note: schema validation is a separate step
 		configurator.setStepDone(STEP_NAME);
