@@ -326,7 +326,7 @@
 				</xsl:choose>
 				<xsl:variable name="pagination" as="xs:boolean">
 					<xsl:choose>
-						<xsl:when test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value = 'true'">
+						<xsl:when test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value = 'true' and $serialisation = 'hal+json'">
 							<xsl:value-of select="true()"/>
 						</xsl:when>
 						<xsl:otherwise>
@@ -1241,15 +1241,12 @@
 		<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'api_version&quot;')"/>
 		<xsl:text>&#xa;            warning:</xsl:text>
 		<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'warning&quot;')"/>
-		<xsl:if test="ep:parameters/ep:parameter[ep:name='grouping']/ep:value='collection'">
-			<!-- In case of a collection type message create the following properties. -->
-			<xsl:if test="ep:parameters/ep:parameter[ep:name='pagination']/ep:value='true'">
-				<!-- In case of a collection type message and if pagination applies create the following properties. -->
-				<xsl:text>&#xa;            X-Pagination-Page:</xsl:text>
-				<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Pagination_Page&quot;')"/>
-				<xsl:text>&#xa;            X-Pagination-Limit:</xsl:text>
-				<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Pagination_Limit&quot;')"/>
-			</xsl:if>
+		<xsl:if test="ep:parameters/ep:parameter[ep:name='grouping']/ep:value='collection' and ep:parameters/ep:parameter[ep:name='pagination']/ep:value='true' and $serialisation = 'hal+json'">
+			<!-- In case of a collection type message and if pagination and hal+json applies create the following properties. -->
+			<xsl:text>&#xa;            X-Pagination-Page:</xsl:text>
+			<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Pagination_Page&quot;')"/>
+			<xsl:text>&#xa;            X-Pagination-Limit:</xsl:text>
+			<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Pagination_Limit&quot;')"/>
 		</xsl:if>
 		<xsl:text>&#xa;            X-Rate-Limit-Limit:</xsl:text>
 		<xsl:text>&#xa;              $ref: </xsl:text><xsl:value-of select="concat('&quot;',$standard-yaml-headers-url,'X_Rate_Limit_Limit&quot;')"/>
