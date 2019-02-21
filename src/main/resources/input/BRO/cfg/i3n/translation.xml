@@ -132,6 +132,17 @@
         <trans lang="en">Association type</trans>
     </item>
     
+    <item>
+        <key>IMBRO</key>
+        <trans lang="nl">IMBRO</trans>
+        <trans lang="en">IMBRO</trans>
+    </item>
+    <item>
+        <key>IMBROA</key>
+        <trans lang="nl">IMBRO/A</trans>
+        <trans lang="en">IMBRO/A</trans>
+    </item>
+    
     <!-- system defined types -->
 
     <item>

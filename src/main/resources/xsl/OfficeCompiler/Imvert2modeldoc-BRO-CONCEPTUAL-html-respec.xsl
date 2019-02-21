@@ -315,6 +315,12 @@
                         <colgroup width="30%"/>
                         <colgroup width="60%"/>
                 </xsl:when>
+                <xsl:when test="$type = ('DETAIL-ENUMERATION','DETAIL-CODELIST') and $items = 4"> <!-- 30 10 10 50 -->
+                    <colgroup width="30%"/>
+                    <colgroup width="10%"/>
+                    <colgroup width="10%"/>
+                    <colgroup width="50%"/>
+                </xsl:when>
                 <xsl:when test="$items = 2"> <!-- DEFAULT TWO COLUMNS --> <!-- 30 70 -->
                         <colgroup width="30%"/>
                         <colgroup width="70%"/>
@@ -449,6 +455,20 @@
                     </td>
                     <td>
                         <xsl:apply-templates select="item[3]" mode="#current"/>
+                    </td>
+                </xsl:when>
+                <xsl:when test="$type = ('DETAIL-ENUMERATION','DETAIL-CODELIST') and $items = 4"> <!-- 30 10 10 50 this is the imbroa case.-->
+                    <td>
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
+                    </td>
+                    <td>
+                        <xsl:apply-templates select="item[2]" mode="#current"/>
+                    </td>
+                    <td>
+                        <xsl:apply-templates select="item[3]" mode="#current"/>
+                    </td>
+                    <td>
+                        <xsl:apply-templates select="item[4]" mode="#current"/>
                     </td>
                 </xsl:when>
                 <xsl:when test="$items = 2"> <!-- DEFAULT TWO COLUMNS --> <!-- 30 70 -->

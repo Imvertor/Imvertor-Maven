@@ -80,7 +80,8 @@
         </xsl:choose>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]">
+    <!-- codelists that have no entries are assumed to be external, therefore try to read these entries from the TV "data location" -->
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist') and empty(imvert:attributes/imvert:attribute)]">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
              <!-- fetch the code list contents -->
@@ -125,9 +126,9 @@
         </xsl:copy>
     </xsl:template>
    
-    <xsl:template match="node()|@*" mode="#all">
+    <xsl:template match="node()|@*">
         <xsl:copy>
-            <xsl:apply-templates select="node() | @*" mode="#current"/>
+            <xsl:apply-templates select="node() | @*"/>
         </xsl:copy>
     </xsl:template>    
     
@@ -148,41 +149,65 @@
         </imvert:entry>
     </xsl:template>
     
-    <!-- when reading from XML listing -->
+    <!-- when reading from BRO XML listing -->
     <xsl:template match="/domeintabel" mode="list">
         <imvert:attributes>
-            <xsl:apply-templates select="*" mode="#current"/>
+            <xsl:variable name="values" as="element(imvert:attribute)*">
+                <xsl:apply-templates select="*" mode="#current"/>
+            </xsl:variable>
+            <!-- when no values found; assume the list is noty defined -->
+            <xsl:choose>
+                <xsl:when test="exists($values)">
+                    <xsl:sequence select="$values"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:sequence select="imf:msg(.,'ERROR','Unknown type of entries in codelist (domeintabel): [1]',name(*[1]))"/>
+                </xsl:otherwise>
+            </xsl:choose>
         </imvert:attributes>
     </xsl:template>
- 
-    <xsl:template match="/domeintabel/*" mode="list">
+  
+    <xsl:template match="/domeintabel/*" mode="list" priority="-1">
+        <!-- return nothing; unknown type of domeintabel -->
+    </xsl:template>
+    
+    <xsl:template match="
+        /domeintabel/Waardebepalingsmethode
+        | /domeintabel/Waardebepalingstechniek
+        " mode="list">
         <imvert:attribute>
-            <imvert:name original="{Omschrijving}">
-                <xsl:value-of select="Omschrijving"/>
+            <imvert:name original="{Code}">
+                <xsl:value-of select="Code"/>
             </imvert:name>
             <imvert:id>
                 <xsl:value-of select="concat(local-name(.),'_',ID)"/>
             </imvert:id>
             <imvert:visibility>public</imvert:visibility>
             <imvert:stereotype id="stereotype-name-enum">ENUMERATIEWAARDE</imvert:stereotype>
-            <imvert:tagged-value id="CFG-TV-CODE">
-                <imvert:value>
-                    <xsl:value-of select="Code"/>
-                </imvert:value>
-            </imvert:tagged-value>
-            <!-- TODO 
             <imvert:tagged-value id="CFG-TV-DEFINITION">
                 <imvert:value>
                     <xsl:value-of select="Omschrijving"/>
                 </imvert:value>
             </imvert:tagged-value>
-            <imvert:tagged-value id="CFG-TV-DESCRIPTION">
+        </imvert:attribute>
+    </xsl:template>
+    
+    <xsl:template match="domeintabel/OeverType" mode="list">
+        <imvert:attribute>
+            <imvert:name original="{ID}">
+                <xsl:value-of select="ID"/>
+            </imvert:name>
+            <imvert:id>
+                <xsl:value-of select="concat(local-name(.),'_',ID)"/>
+            </imvert:id>
+            <imvert:visibility>public</imvert:visibility>
+            <imvert:stereotype id="stereotype-name-enum">ENUMERATIEWAARDE</imvert:stereotype>
+            <imvert:tagged-value id="CFG-TV-DEFINITION">
                 <imvert:value>
-                    <xsl:value-of select="TODO"/>
+                    <xsl:value-of select="Omschrijving"/>
                 </imvert:value>
             </imvert:tagged-value>
-            -->
         </imvert:attribute>
-      </xsl:template>
+    </xsl:template>
     
 </xsl:stylesheet>

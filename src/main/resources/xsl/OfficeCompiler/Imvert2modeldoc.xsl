@@ -565,6 +565,8 @@
     </xsl:template>
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="detail listing">
+        <!-- determine if this is an IMBRO/A table. Assume an imbro/a table, holding 4 columns, when any attribute is stereotyped as such.  -->
+        <xsl:variable name="imbroa" select="imvert:attributes/imvert:attribute/imvert:stereotype/@id = ('stereotype-name-imbroa')"/>
         <section name="{imf:get-name(.,true())}" type="DETAIL-CODELIST" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
             <content>
                 <part>
@@ -573,10 +575,21 @@
                 </part>
             </content>
             <content>
-                <itemtype type="CODE"/>
-                <itemtype type="NAME"/>
-                <itemtype type="DEFINITION"/>
-                <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="detail-enumeratie"/><!-- same as enumeration -->
+                <xsl:choose>
+                    <xsl:when test="$imbroa">
+                        <itemtype type="NAME"/>
+                        <itemtype type="IMBRO"/>
+                        <itemtype type="IMBROA"/>
+                        <itemtype type="DEFINITION"/>
+                        <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="detail-enumeratie-imbroa"/><!-- same as enumeration -->
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <itemtype type="CODE"/>
+                        <itemtype type="NAME"/>
+                        <itemtype type="DEFINITION"/>
+                        <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="detail-enumeratie"/><!-- same as enumeration -->
+                    </xsl:otherwise>
+                </xsl:choose>
             </content>
         </section>
     </xsl:template>
@@ -653,7 +666,16 @@
             <xsl:sequence select="imf:create-element('item',imvert:alias)"/>
             <xsl:sequence select="imf:create-element('item',imf:get-name(.,true()))"/>
             <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
-       </part>
+        </part>
+    </xsl:template>
+    <xsl:template match="imvert:attribute" mode="detail-enumeratie-imbroa">
+        <xsl:variable name="imbroa" select="imvert:stereotype/@id = ('stereotype-name-imbroa')"/>
+        <part>
+            <xsl:sequence select="imf:create-element('item',imf:get-name(.,true()))"/>
+            <xsl:sequence select="imf:create-element('item',if (not($imbroa)) then '&#x2714;' else '')"/>
+            <xsl:sequence select="imf:create-element('item','&#x2714;')"/>
+            <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+        </part>
     </xsl:template>
     
     <xsl:template match="imvert:attribute" mode="detail-gegevensgroeptype">
