@@ -334,7 +334,6 @@
 				<xsl:copy-of select="$berichtsjabloon" />
 			</xsl:result-document>
 		</xsl:if> ?>
-<?x     <xsl:variable name="expand" select="imf:get-most-relevant-compiled-taggedvalue($berichtsjabloon, '##CFG-TV-EXPAND')"/>  ?>
 
 		<xsl:variable name="name" select="ep:name" as="xs:string" />
 		<xsl:variable name="tech-name" select="imf:get-normalized-name(ep:name, 'element-name')" as="xs:string" />
@@ -739,7 +738,7 @@
 					</xsl:choose>
 				</xsl:variable>
 				<xsl:variable name="meervoudigeNaam">
-					<xsl:sequence select="imf:getMeervoudigeNaam('1',$construct,'association',ancestor::ep:rough-message/ep:name)"/>
+					<xsl:sequence select="imf:getMeervoudigeNaam($construct,'association',ancestor::ep:rough-message/ep:name)"/>
 				</xsl:variable> 
 				
 				<xsl:sequence select="imf:create-debug-comment('At this level the expand attribute is neccessary to determine if an _embedded property has to be created. This is only the case if the attribute has the value true.',$debugging)" />
@@ -881,7 +880,7 @@
 			<xsl:when test="@type = 'subclass'">
 				<!-- If the current ep:construct is a subclass an ep:construct element is generated with all neccessary properties.  -->
 				<xsl:variable name="meervoudigeNaam">
-					<xsl:sequence select="imf:getMeervoudigeNaam('4',$construct,'entiteit',ancestor::ep:rough-message/ep:name)"/>
+					<xsl:sequence select="imf:getMeervoudigeNaam($construct,'entiteit',ancestor::ep:rough-message/ep:name)"/>
 				</xsl:variable> 
 				
 				<xsl:variable name="type-id" select="ep:id" />
@@ -993,7 +992,7 @@
 				<!-- In all other cases this option applies. -->
 				<xsl:variable name="typeid" select="$construct/imvert:type-id" />
 				<xsl:variable name="meervoudigeNaam">
-					<xsl:sequence select="imf:getMeervoudigeNaam('3',$construct,'entiteit',ancestor::ep:rough-message/ep:name)"/>
+					<xsl:sequence select="imf:getMeervoudigeNaam($construct,'entiteit',ancestor::ep:rough-message/ep:name)"/>
 				</xsl:variable> 
 				<xsl:variable name="abstract">
 					<xsl:choose>
@@ -1302,7 +1301,7 @@
 				<xsl:sequence select="imf:create-debug-comment(concat('OAS19250, id: ',$id),$debugging)" />
 				<ep:construct>
 					<xsl:variable name="meervoudigeNaam">
-						<xsl:sequence select="imf:getMeervoudigeNaam('2',$construct,'entiteit',$messagename)"/>
+						<xsl:sequence select="imf:getMeervoudigeNaam($construct,'entiteit',$messagename)"/>
 					</xsl:variable> 
 					<ep:parameters>
 						<ep:parameter>
@@ -1463,7 +1462,7 @@
 						</xsl:if>
 						<xsl:if test="not(@type='groepCompositie') and not(ancestor::ep:*[@type='groepCompositie'])">
 							<xsl:variable name="meervoudigeNaam">
-								<xsl:sequence select="imf:getMeervoudigeNaam('5',$construct,'entiteit',$messagename)"/>
+								<xsl:sequence select="imf:getMeervoudigeNaam($construct,'entiteit',$messagename)"/>
 							</xsl:variable> 
 							<xsl:if test="$meervoudigeNaam != ''">
 								<ep:parameter>
@@ -2134,7 +2133,6 @@
 	</xsl:function>
 	
 	<xsl:function name="imf:getMeervoudigeNaam">
-		<xsl:param name="debugnr"/>
 		<xsl:param name="construct"/>
 		<xsl:param name="type"/>
 		<xsl:param name="messagename"/>

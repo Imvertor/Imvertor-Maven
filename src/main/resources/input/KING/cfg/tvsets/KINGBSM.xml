@@ -118,6 +118,7 @@
         
         <tv norm="space" validate="" rules="" id="CFG-TV-BERICHTCODE">
             <name lang="nl">Berichtcode</name>
+            <desc lang="nl">Code waarmee de aard van een bericht uniek geidentificeerd kan worden.</desc>
             <derive>no</derive>
             <inherit>yes</inherit>
             <stereotypes>
@@ -162,14 +163,8 @@
                 <!--  een json+hal response op een GET bericht voor een collection zonder pagination, met expand. -->
                 <value>Gc02</value>
                 <!--  een json+hal response op een GET bericht voor een collection met pagination, zonder expand. -->
-                <value>Gc03</value>
-                <!--  een json+hal response op een GET bericht voor een collection zonder pagination, zonder expand. -->
-                <value>Gc04</value>
-                <!--  een json+hal response op een GET bericht voor een resource zonder pagination, met expand. -->
                 <value>Gr01</value>
                 <!--  een json+hal response op een GET bericht voor een resource zonder pagination, zonder expand. -->
-                <value>Gr02</value>
-                <!--  een foutbericht als technische synchrone respons op een asynchroon bericht -->
                 <value>La01</value>
                 <!--  een synchroon antwoordbericht met alleen actuele gegevens -->
                 <value>La02</value>
@@ -265,30 +260,10 @@
             </declared-values>
         </tv>
         
-        <tv norm="space" validate="" rules="" id="CFG-TV-EXPAND">
-            <name lang="nl">Expand</name>
-            <derive>no</derive>
-            <inherit>no</inherit>
-            <stereotypes>
-                <?x stereo minmax="1..1">stereotype-name-vraagberichttype</stereo ?>
-                <stereo minmax="0..1">stereotype-name-antwoordberichttype</stereo>
-                <?x stereo minmax="1..1">stereotype-name-kennisgevingberichttype</stereo>
-                <stereo minmax="1..1">stereotype-name-synchronisatieberichttype</stereo>
-                <stereo minmax="1..1">stereotype-name-vrijberichttype</stereo ?>
-                <stereo minmax="0..1">stereotype-name-getberichttype</stereo>
-            </stereotypes>
-            <declared-values lang="nl">
-                <!-- In Json relaties expanden. -->
-                <value>true</value>
-                <!-- In Json relaties niet expanden. -->
-                <value>false</value>
-            </declared-values>
-        </tv>
-        
         <tv norm="space" id="CFG-TV-SORT">
             <name lang="nl">Sort</name>
             <desc lang="nl">
-                Bepaald of de request parameter 'Sort' moet worden opgenomen in het bericht. 
+                Indicatie waarmee wordt aangegeven of de request parameter 'Sort' moet worden opgenomen in het bericht. 
             </desc>
             <derive>no</derive>
             <inherit>no</inherit>
@@ -310,6 +285,7 @@
         
         <tv norm="space" validate="" rules="" id="CFG-TV-GROUPING">
             <name lang="nl">Grouping</name>
+            <desc lang="nl">Indicatie waarmee wordt aangegeven of de response meerdere resultaten kan teruggeven (collection) of slechts 1 resultaat (resource).</desc>
             <derive>no</derive>
             <inherit>no</inherit>
             <stereotypes>
@@ -329,6 +305,8 @@
         
         <tv norm="space" validate="" rules="" id="CFG-TV-PAGE">
             <name lang="nl">Page</name>
+            <desc lang="nl">Indicatie waarmee wordt aangegeven of de response geschikt moet zijn voor hal+json pagination. 
+                Natuurlijk alleen van toepassing als de serialisatie ook hal+json is.</desc>
             <derive>no</derive>
             <inherit>no</inherit>
             <stereotypes>
@@ -401,6 +379,7 @@
         
         <tv norm="space" validate="" rules="" id="CFG-TV-SERVICENAME">
             <name lang="nl">servicename</name>
+            <desc lang="nl">OperationId van de OAS3 service.</desc>
             <derive>no</derive>
             <inherit>yes</inherit>
             <stereotypes>
@@ -480,7 +459,7 @@
             <name lang="nl">Lege enumeration toegestaan</name>
             <desc lang="nl">
                 Geeft aan of er aan elke enumeratie simpleType ook een lege enumeratie toegevoegd moet worden.
-                Standaard wordt dit mee gegenereerd. Kan zowel op Koppelvlak niveau als op attribuut niveau worden 
+                Standaard wordt dit mee gegenereerd. Kan zowel op Koppelvlak niveau als op enumeration niveau worden 
                 gedefinieerd waarbij die op attribuutniveau die op op Koppelvlak niveau overrulled. 
             </desc>
             <stereotypes>
@@ -592,6 +571,7 @@
         <tv id="CFG-TV-DEFINITION">
             <name lang="nl">Definitie</name>
             <name lang="en">Definition</name>
+            <desc lang="nl">Gebruikt om het definitie deel van de documentatie te vullen.</desc>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-objecttype</stereo>
@@ -617,6 +597,7 @@
         <tv norm="space" id="CFG-TV-EXAMPLE">
             <name lang="nl">Example</name>
             <name lang="en">Example</name>
+            <desc lang="nl">Voorbeeldwaarde van een property.</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
@@ -627,6 +608,9 @@
         <tv norm="space" id="CFG-TV-CUSTOMPATHFACET">
             <name lang="nl">custom_path_facet</name>
             <name lang="en">custom_path_facet</name>
+            <desc lang="nl">Het deel van de messagenaam dat niet uit het model afgeled kan worden. 
+                Om de messagenaam toch te kunnen verifieren tegen het model wordt daar eerst de custom_path_facet uit verwijderd. 
+                Deze tv mag geen ‘/’ (slashes) bevatten.</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-padtype</stereo>

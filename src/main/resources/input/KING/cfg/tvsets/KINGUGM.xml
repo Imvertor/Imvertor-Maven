@@ -58,6 +58,7 @@
         
         <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIONMATERIALHISTORY">
             <name lang="nl">Indicatie materiële historie</name>
+            <desc lang="nl">Voorziening waarmee aangegeven kan worden of materiële historie van toepassing is op de constructie.</desc>
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-attribute</stereo><!--SIM Attribuutsoort-->
@@ -74,6 +75,7 @@
         </tv>
         <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIONFORMALHISTORY">
             <name lang="nl">Indicatie formele historie</name>
+            <desc lang="nl">Voorziening waarmee aangegeven kan worden of formele historie van toepassing is op de constructie.</desc>
             <derive>yes</derive><!-- Als niet ingevoerd, dan overnemen uit SIM. -->
             <stereotypes>
                 <stereo minmax="1..1">stereotype-name-attribute</stereo><!--SIM Attribuutsoort-->
@@ -145,6 +147,7 @@
         
         <tv norm="space" id="CFG-TV-MINLENGTH">
             <name lang="nl">Minimum lengte</name>
+            <desc lang="nl">De minimale lengte die een attribuut moet hebben.</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
@@ -154,6 +157,7 @@
         
         <tv norm="space" id="CFG-TV-MINVALUEINCLUSIVE">
             <name lang="nl">Minimum waarde (inclusief)</name>
+            <desc lang="nl">De minimale waarde (inclusief) dat een attribuut moet hebben</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
@@ -163,6 +167,7 @@
         
         <tv norm="space" id="CFG-TV-MAXVALUEINCLUSIVE">
             <name lang="nl">Maximum waarde (inclusief)</name>
+            <desc lang="nl">DDe maximale waarde (inclusief) dat een attribuut mag hebben.</desc>
             <derive>no</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
@@ -173,6 +178,7 @@
         <tv id="CFG-TV-DESCRIPTION">
             <name lang="nl">Toelichting</name>
             <name lang="en">Description</name>
+            <desc lang="nl">Gebruikt om het description deel van de documentatie te vullen.</desc>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-objecttype</stereo>
@@ -196,7 +202,8 @@
         <tv norm="space"  id="CFG-TV-SUBSETLABEL">
             <name lang="nl">Restriction identifier</name>
             <name lang="en">Restriction identifier</name>
-            <desc lang="nl">A label assigned to any construct to be used for disambiguation in subset (restriction) constructs.</desc>
+            <desc lang="nl">Een label dat aan een construct kan worden toegekend om onderscheid mogelijk te maken tussen aangescherpte constructs die afgeleid zijn van eenzelfde construct.</desc>
+            <desc lang="en">A label assigned to any construct to be used for disambiguation in subset (restriction) constructs.</desc>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-objecttype</stereo>
@@ -219,6 +226,7 @@
         <!-- TODO PATCH, must be removed! -->
         <tv norm="compact" rules="NOC" id="CFG-TV-INDICATIEKERNGEGEVEN">
             <name lang="nl">Indicatie kerngegeven</name>
+            <desc lang="nl">Indicatie om aan te kunnen geven of een gegeven deel uit maakt van de matchgegevens. Een groep van gegevens waarmee een entiteit gevonden kan worden.</desc>
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo>
@@ -235,7 +243,7 @@
         <tv norm="space" id="CFG-TV-NAMEPLURAL">
             <name lang="nl">Naam in meervoud</name>
             <desc lang="nl">
-                De meervoudsnaam van de entiteit. 
+                Voorziening om een entiteit een meervoudsnaam te kunnen geven. Deze wordt gebruikt als propertynaam van een entiteit in het yaml bestand. 
             </desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-objecttype</stereo>
@@ -245,7 +253,7 @@
         <tv norm="space" id="CFG-TV-TARGETROLEPLURAL">
             <name lang="nl">Target role in meervoud</name>
             <desc lang="nl">
-                De meervoudsnaam van de target role. 
+                Voorziening om de target role een meervoudsnaam te kunnen geven. Deze wordt gebruikt als propertynaam van een relatie in het yaml bestand.
             </desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
@@ -255,7 +263,7 @@
         <tv norm="space" id="CFG-TV-SOURCEROLEPLURAL">
             <name lang="nl">Source role in meervoud</name>
             <desc lang="nl">
-                De meervoudsnaam van de source role. 
+                Voorziening om de source role een meervoudsnaam te kunnen geven. Op dit moment niet in gebruik. 
             </desc>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
@@ -265,7 +273,7 @@
             <name lang="nl">Groepsnaam</name>
             <name lang="en">Groupname</name>
             <desc lang="nl">
-                De groepsnaam van een groep. 
+                Voorziening om een groep aangepaste naam te kunnen geven. 
             </desc>
             <derive>no</derive>
             <stereotypes>
