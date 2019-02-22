@@ -150,6 +150,8 @@
     </xsl:template>
     
     <!-- when reading from BRO XML listing -->
+  
+    <!-- BRO lists -->
     <xsl:template match="/domeintabel" mode="list">
         <imvert:attributes>
             <xsl:variable name="values" as="element(imvert:attribute)*">
@@ -167,15 +169,17 @@
         </imvert:attributes>
     </xsl:template>
   
+    <!-- BRO lists -->
     <xsl:template match="/domeintabel/*" mode="list" priority="-1">
         <!-- return nothing; unknown type of domeintabel -->
     </xsl:template>
     
+    <!-- BRO lists -->
     <xsl:template match="
         /domeintabel/Waardebepalingsmethode
         | /domeintabel/Waardebepalingstechniek
         " mode="list">
-        <imvert:attribute>
+        <imvert:attribute origin="system">
             <imvert:name original="{Code}">
                 <xsl:value-of select="Code"/>
             </imvert:name>
@@ -184,6 +188,9 @@
             </imvert:id>
             <imvert:visibility>public</imvert:visibility>
             <imvert:stereotype id="stereotype-name-enum">ENUMERATIEWAARDE</imvert:stereotype>
+            <xsl:if test="Kwaliteitsregime = 'IMBRO/A'">
+                <imvert:stereotype id="stereotype-name-imbroa">IMBRO/A</imvert:stereotype>
+            </xsl:if>
             <imvert:tagged-value id="CFG-TV-DEFINITION">
                 <imvert:value>
                     <xsl:value-of select="Omschrijving"/>
@@ -192,8 +199,10 @@
         </imvert:attribute>
     </xsl:template>
     
+    <!-- BRO lists -->
     <xsl:template match="domeintabel/OeverType" mode="list">
-        <imvert:attribute>
+        <imvert:attribute origin="system">
+            <xsl:comment select="local-name(.)"/>
             <imvert:name original="{ID}">
                 <xsl:value-of select="ID"/>
             </imvert:name>
@@ -202,6 +211,9 @@
             </imvert:id>
             <imvert:visibility>public</imvert:visibility>
             <imvert:stereotype id="stereotype-name-enum">ENUMERATIEWAARDE</imvert:stereotype>
+            <xsl:if test="Kwaliteitsregime = 'IMBRO/A'">
+                <imvert:stereotype id="stereotype-name-imbroa">IMBRO/A</imvert:stereotype>
+            </xsl:if>
             <imvert:tagged-value id="CFG-TV-DEFINITION">
                 <imvert:value>
                     <xsl:value-of select="Omschrijving"/>
