@@ -1254,17 +1254,6 @@
 		
 		<xsl:variable name="properties">
 			<xsl:value-of select="',&quot;properties&quot;: {'"/>
-			<!-- In case of plain json an if the current construct isn't a groepComposition the property 'url' has to be generated. -->
-			<xsl:if test="$serialisation = 'json' and ep:parameters/ep:parameter[ep:name = 'type']/ep:value != 'groepCompositie'">
-				<xsl:value-of select="'&quot;url&quot; : {'"/>
-				<xsl:value-of select="'&quot;title&quot; : &quot;Url&quot;,'"/>
-				<xsl:value-of select="'&quot;type&quot; : &quot;string&quot;,'"/>
-				<xsl:value-of select="'&quot;format&quot; : &quot;uri&quot;,'"/>
-				<xsl:value-of select="'&quot;readOnly&quot; : true'"/>
-				<xsl:value-of select="'}'"/>
-				<xsl:if test="ep:seq/ep:construct[not(ep:seq) and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association') and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'supertype-association') 
-					and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'superclass') and not(ep:ref)]">,</xsl:if>
-			</xsl:if>
 			<!-- Loop over all constructs withn the current construct (that don't have association type, supertype-association type and superclass type constructs) 
 				 within the current construct. -->
 			<xsl:for-each select="ep:seq/ep:construct[not(ep:seq) and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association') and not(ep:parameters/ep:parameter[ep:name='type']/ep:value = 'supertype-association') 
