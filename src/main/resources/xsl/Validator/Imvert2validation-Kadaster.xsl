@@ -126,22 +126,31 @@
             (imvert:name=imf:get-config-parameter('fixed-identification-attribute-name') and not(imvert:is-id = 'true')), 
             'Identification attribute is not marked as ID')"/>
         
+        <?x
+            Identification stereotype is not required. 
+        
         <xsl:sequence select="imf:report-warning(., 
             (imvert:is-id = 'true' and not(imvert:stereotype/@id = ('stereotype-name-identification'))), 
             'Attribute is marked as ID but is not stereotyped as [1]', imf:get-config-stereotypes('stereotype-name-identification'))"/>
-                
+        x?>
+        
         <xsl:next-match/>
     </xsl:template>
     
     <xsl:template match="imvert:class | imvert:attribute |imvert:association" priority="10">
-        <xsl:variable name="tv" select="imf:get-tagged-value(.,'##CFG-TV-VOIDABLE')"/>
+        <xsl:variable name="is-tv-voidable" select="imf:boolean(imf:get-tagged-value(.,'##CFG-TV-VOIDABLE'))"/>
             
         <xsl:sequence select="imf:report-warning(., 
-            imvert:stereotype/@id = ('stereotype-name-voidable') and empty($tv), 
-            'Voidable, but missing required tagged value [1]',imf:get-config-tagged-values('CFG-TV-VOIDABLE'))"/>
+            imvert:stereotype/@id = ('stereotype-name-voidable') and not($is-tv-voidable), 
+            'Stereotype is [1], but tagged value [2] is not true',(imf:get-config-stereotypes('stereotype-name-voidable'), imf:get-config-tagged-values('CFG-TV-VOIDABLE')))"/>
+        
+        <?x
+            Voidable stereotype is not required. 
+            
         <xsl:sequence select="imf:report-warning(., 
-            empty(imvert:stereotype/@id = ('stereotype-name-voidable')) and exists($tv), 
-            'Tagged value [1] found, but not stereotyped as voidable',imf:get-config-tagged-values('CFG-TV-VOIDABLE'))"/>
+            not(imvert:stereotype/@id = ('stereotype-name-voidable')) and $is-tv-voidable, 
+            'Tagged value [2] set to true, but not stereotyped as [1]',(imf:get-config-stereotypes('stereotype-name-voidable'), imf:get-config-tagged-values('CFG-TV-VOIDABLE')))"/>
+        x?>
         
         <xsl:next-match/>
     </xsl:template>

@@ -126,7 +126,6 @@
             <derive>yes</derive>
             <stereotypes>
                 <stereo minmax="0..1">stereotype-name-data-element</stereo>
-                <stereo minmax="0..1">stereotype-name-voidable</stereo>
             </stereotypes>
         </tv>
         <tv norm="space" id="CFG-TV-INDICATIONAUTHENTIC">
