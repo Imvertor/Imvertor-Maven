@@ -26,13 +26,13 @@
     <scalars xml:id="scalars">
         
         <scalar id="scalar-time">
-            <name lang="nl">TIJD</name>
+            <name lang="nl">TIME</name>
             <name lang="en">TIME</name>
             <type-map formal-lang="xs">time</type-map>
         </scalar>   
         
         <scalar id="scalar-yearmonth">
-            <name lang="nl">JAARMAAND</name>
+            <name lang="nl">YEARMONTH</name>
             <name lang="en">YEARMONTH</name>
             <type-map formal-lang="xs">gYearMonth</type-map>
         </scalar>
