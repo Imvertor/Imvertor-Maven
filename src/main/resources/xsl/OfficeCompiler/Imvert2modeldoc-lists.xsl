@@ -191,11 +191,13 @@
             <xsl:if test="Kwaliteitsregime = 'IMBRO/A'">
                 <imvert:stereotype id="stereotype-name-imbroa">IMBRO/A</imvert:stereotype>
             </xsl:if>
-            <imvert:tagged-value id="CFG-TV-DEFINITION">
-                <imvert:value>
-                    <xsl:value-of select="Omschrijving"/>
-                </imvert:value>
-            </imvert:tagged-value>
+            <imvert:tagged-values>
+                <imvert:tagged-value id="CFG-TV-DEFINITION">
+                    <imvert:value>
+                        <xsl:value-of select="Omschrijving"/>
+                    </imvert:value>
+                </imvert:tagged-value>
+            </imvert:tagged-values>
         </imvert:attribute>
     </xsl:template>
     
@@ -214,11 +216,13 @@
             <xsl:if test="Kwaliteitsregime = 'IMBRO/A'">
                 <imvert:stereotype id="stereotype-name-imbroa">IMBRO/A</imvert:stereotype>
             </xsl:if>
-            <imvert:tagged-value id="CFG-TV-DEFINITION">
-                <imvert:value>
-                    <xsl:value-of select="Omschrijving"/>
-                </imvert:value>
-            </imvert:tagged-value>
+            <imvert:tagged-values>
+                <imvert:tagged-value id="CFG-TV-DEFINITION">
+                    <imvert:value>
+                        <xsl:value-of select="Omschrijving"/>
+                    </imvert:value>
+                </imvert:tagged-value>
+            </imvert:tagged-values>
         </imvert:attribute>
     </xsl:template>
     
