@@ -41,6 +41,8 @@
     
     <features>
         <feature name="allow-multiple-supertypes">true</feature>
+        <feature name="allow-scalar-in-union">true</feature>
+        
     </features>
     
 </metamodel>

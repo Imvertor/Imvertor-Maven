@@ -27,6 +27,8 @@
     
     <features>
         <feature name="allow-multiple-supertypes">false</feature>
+        <feature name="allow-scalar-in-union">true</feature>
+        
     </features>
     
    <!-- <stereotypes>

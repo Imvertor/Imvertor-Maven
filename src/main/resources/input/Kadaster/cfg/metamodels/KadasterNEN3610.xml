@@ -21,7 +21,13 @@
    
     <xi:include href="../../../Geonovum/cfg/metamodels/NEN3610.xml"/>
     
+    <!-- 
+       Additional scalars 
+    -->
+    <xi:include href="Kadaster-NEN3610-scalar.xml"/>
+    
     <name>Kadaster NEN3610</name>
+    
     <desc lang="en">Metamodel for Kadaster specific NEN3610 extensions</desc>
     <desc lang="nl">Metamodel voor Kadaster specifieke NEN3610 uitbreidingen</desc>
     
@@ -45,9 +51,11 @@
             <format>LowerCamel</format>
         </element>
     </naming>
+    
     <features>
         <feature name="role-based">false</feature>
         <feature name="allow-multiple-supertypes">false</feature>
+        <feature name="allow-scalar-in-union">true</feature>
     </features>
     
     <stereotypes xml:id="stereotypes">

@@ -147,6 +147,9 @@
          'stereotype-name-interface',
          'stereotype-name-enumeration')"/>
     
+    
+    <xsl:variable name="allow-scalar-in-union" select="imf:boolean($configuration-metamodel-file//features/feature[@name='allow-scalar-in-union'])"/>
+    
     <xsl:key name="key-unique-id" match="//*[imvert:id]" use="imvert:id"/>
     
     <!-- 
@@ -634,6 +637,15 @@
             not($collection-classes/imvert:associations/imvert:association/imvert:type-id=$id), 
             'This class does not occur in a collection, but cannot be embedded into the application.')"/>
         -->
+        <xsl:next-match/>
+    </xsl:template>
+    
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-complextype')]">
+        <!--setup-->
+        <!--validation-->
+        <xsl:sequence select="imf:report-error(.,
+            empty(imvert:attributes/imvert:attribute), 
+            'Datatypes with stereotype [1] must have attributes',imf:get-config-stereotypes('stereotype-name-complextype'))"/>
         <xsl:next-match/>
     </xsl:template>
     
