@@ -60,6 +60,8 @@
     
     <xsl:variable name="is-forced-nillable" select="imf:boolean(imf:get-config-string('cli','forcenillable'))"/>
     
+    <xsl:variable name="allow-scalar-in-union" select="imf:boolean($configuration-metamodel-file//features/feature[@name='allow-scalar-in-union'])"/>
+
     <!-- 
         What types result in an attribute in stead of an element? 
         This is always the case for ID values.
@@ -439,6 +441,10 @@
                             <xsl:choose>
                                 <xsl:when test="$defining-class-is-datatype">
                                     <xsl:sequence select="imf:debug(.,'A choice member, which is a datatype')"/>
+                                    <xsl:sequence select="imf:create-element-property(.)"/>
+                                </xsl:when>
+                                <xsl:when test="empty($defining-class) and $allow-scalar-in-union">
+                                    <xsl:sequence select="imf:debug(.,'A choice member, which is a scalar type')"/>
                                     <xsl:sequence select="imf:create-element-property(.)"/>
                                 </xsl:when>
                                 <xsl:when test="empty($defining-class)">
