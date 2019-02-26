@@ -486,11 +486,26 @@
             <xsl:when test="$this/imvert:type-name = 'scalar-integer'">
                 <ep:data-type>ep:integer</ep:data-type>
             </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-decimal'">
+                <ep:data-type>ep:decimal</ep:data-type>
+            </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-real'">
+                <ep:data-type>ep:real</ep:data-type>
+            </xsl:when>
             <xsl:when test="$this/imvert:type-name = 'scalar-boolean'">
                 <ep:data-type>ep:boolean</ep:data-type>
             </xsl:when>
             <xsl:when test="$this/imvert:type-name = 'scalar-year'">
                 <ep:data-type>ep:year</ep:data-type>
+            </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-month'">
+                <ep:data-type>ep:month</ep:data-type>
+            </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-day'">
+                <ep:data-type>ep:day</ep:data-type>
+            </xsl:when>
+            <xsl:when test="$this/imvert:type-name = 'scalar-yearmonth'">
+                <ep:data-type>ep:yearmonth</ep:data-type>
             </xsl:when>
             <xsl:when test="$this/imvert:type-name = 'scalar-date'">
                 <ep:data-type>ep:date</ep:data-type>
@@ -498,8 +513,8 @@
             <xsl:when test="$this/imvert:type-name = 'scalar-datetime'">
                 <ep:data-type>ep:datetime</ep:data-type>
             </xsl:when>
-            <xsl:when test="$this/imvert:type-name = 'scalar-decimal'">
-                <ep:data-type>ep:decimal</ep:data-type>
+            <xsl:when test="$this/imvert:type-name = 'scalar-time'">
+                <ep:data-type>ep:time</ep:data-type>
             </xsl:when>
             <xsl:when test="$this/imvert:type-name = 'scalar-uri'">
                 <ep:data-type>ep:uri</ep:data-type>

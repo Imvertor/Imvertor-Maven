@@ -202,8 +202,12 @@
             <xsl:when test="$data-type = 'ep:string'">string</xsl:when>
             <xsl:when test="$data-type = 'ep:date'">string</xsl:when>
             <xsl:when test="$data-type = 'ep:datetime'">string</xsl:when>
+            <xsl:when test="$data-type = 'ep:day'">string</xsl:when>
             <xsl:when test="$data-type = 'ep:year'">string</xsl:when>
+            <xsl:when test="$data-type = 'ep:yearmonth'">string</xsl:when>
+            <xsl:when test="$data-type = 'ep:month'">string</xsl:when>
             <xsl:when test="$data-type = 'ep:uri'">uri</xsl:when>
+            <xsl:when test="$data-type = 'ep:real'">number</xsl:when>
             <xsl:when test="$data-type = 'ep:decimal'">number</xsl:when>
             <xsl:when test="$data-type = 'ep:integer'">integer</xsl:when>
             <xsl:otherwise>
