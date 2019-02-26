@@ -37,6 +37,12 @@
             <type-map formal-lang="xs">gYearMonth</type-map>
         </scalar>
         
+        <scalar id="scalar-decimal">
+            <name lang="nl">DECIMAL</name>
+            <name lang="en">DECIMAL</name>
+            <type-map formal-lang="xs">decimal</type-map>
+        </scalar>
+        
     </scalars>
     
 </metamodel>
