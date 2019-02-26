@@ -49,7 +49,7 @@
     <xsl:param name="config-file-path">unknown-file</xsl:param>
    
     <xsl:variable name="work-xsd-folder-url" select="imf:file-to-url(imf:get-config-string('system','work-xsd-folder-path'))"/>
-    <xsl:variable name="xsd-subpath" select="encode-for-uri(imf:merge-parms(imf:get-config-string('cli','xsdsubpath')))"/>
+    <xsl:variable name="xsd-subpath" select="imf:merge-parms(imf:get-config-string('cli','xsdsubpath'))"/>
     
     <xsl:variable name="is-forced-nillable" select="imf:boolean(imf:get-config-string('cli','forcenillable'))"/>
     
@@ -95,6 +95,8 @@
     <xsl:variable name="namespace-composition" select="imf:get-config-xmlschemarules()/parameter[@name='namespace-composition']"/>
 
     <xsl:variable name="strings-nonempty" select="imf:get-config-xmlschemarules()/parameter[@name='strings-nonempty']"/><!-- https://github.com/Imvertor/Imvertor-Maven/issues/52 -->
+    
+    <xsl:variable name="allow-scalar-in-union" select="imf:boolean($configuration-metamodel-file//features/feature[@name='allow-scalar-in-union'])"/>
     
     <xsl:template match="imvert:class" mode="type-in-package">
         <type 
@@ -277,6 +279,12 @@
                 <xsl:sequence select="imf:create-comment(.,'ALL UNIONS')"/>
                 <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]"/>
                 
+                <!-- simple type attributes for attributes types that restrict a simple type; needed to set nilReason attribute -->
+                <xsl:apply-templates 
+                    select="imvert:class/imvert:attributes/imvert:attribute[(imvert:stereotype/@id = ('stereotype-name-voidable') or $is-forced-nillable) and imf:is-restriction(.)]"
+                    mode="nil-reason">
+                    <xsl:with-param name="package-name" select="$this-package/imvert:name"/>
+                </xsl:apply-templates>
             </xs:schema>
         
         </imvert:schema>
@@ -733,9 +741,13 @@
                         else 
                             if (not($package-name) or imf:is-system-package($package-name)) 
                             then $uml-type-name 
-                            else ''"/>
+                            else ()"/>
                 
                 <xsl:variable name="scalar" select="$all-scalars[@id=$base-type][last()]"/>
+                
+                <?x 
+                <xsl:message select="concat('/',$uml-type, '/',$package-name, '/',imf:get-display-name($defining-class), '/',$uml-type-name, '/',$primitive-type, '/',$base-type, '/')"></xsl:message>
+                x?>                
                 
                 <xsl:choose>
                     <xsl:when test="$base-type"> 
@@ -1520,7 +1532,7 @@
                 <xsl:value-of select="imf:get-uri-parts($this/imvert:location)/path"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="concat(encode-for-uri($xsd-subpath), '/', imf:get-xsd-filefolder($this), '/', encode-for-uri(imf:get-xsd-filename($this)))"/>
+                <xsl:value-of select="concat($xsd-subpath, '/', imf:get-xsd-filefolder($this), '/', imf:get-xsd-filename($this))"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -1548,7 +1560,7 @@
     -->    
     <xsl:function name="imf:get-xsd-filefolder" as="xs:string">
         <xsl:param name="this" as="node()"/> <!-- an imvert:package -->
-        <xsl:variable name="localpath" select="encode-for-uri(substring-after($this/imvert:namespace,concat($base-namespace,'/')))"/>
+        <xsl:variable name="localpath" select="substring-after($this/imvert:namespace,concat($base-namespace,'/'))"/>
         <xsl:value-of select="concat(if (normalize-space($localpath)) then $localpath else 'unknown','/v',$this/imvert:release)"/>
     </xsl:function>
     

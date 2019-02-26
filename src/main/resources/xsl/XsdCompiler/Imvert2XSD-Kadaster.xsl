@@ -220,12 +220,14 @@
                 <!-- XSD enumerations -->
                 <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist')]"/>
                 
+                <?x
                 <!-- simple type attributes for attributes types that restrict a simple type; needed to set nilReason attribute -->
                 <xsl:apply-templates 
                     select="imvert:class/imvert:attributes/imvert:attribute[(imvert:stereotype/@id = ('stereotype-name-voidable') or $is-forced-nillable) and imf:is-restriction(.)]"
                     mode="nil-reason">
                     <xsl:with-param name="package-name" select="$this-package/imvert:name"/>
                 </xsl:apply-templates>
+                x?>
                 
                 <xsl:if test="imvert:class/imvert:attributes/imvert:attribute[imvert:type-name='scalar-date' and imvert:type-modifier='?']">
                     <xs:simpleType name="Fixtype_incompleteDate">
@@ -581,6 +583,7 @@
                 
     </xsl:template>
     
+    <?x
     <!-- 
         Create a simpletype from which a voidable simpletype can inherit (through restriction); needed to add a nilreason.
         See also http://stackoverflow.com/questions/626319/add-attributes-to-a-simpletype-or-restrictrion-to-a-complextype-in-xml-schema
@@ -600,6 +603,7 @@
             </xs:restriction>
         </xs:simpleType>
     </xsl:template>
+    x?>
     
     <xsl:template match="*|@*|text()">
         <xsl:apply-templates/>
@@ -675,7 +679,7 @@
                         else 
                             if (not($package-name) or imf:is-system-package($package-name)) 
                             then $uml-type-name 
-                            else ''"/>
+                            else ()"/>
                 
                 <xsl:variable name="scalar" select="$all-scalars[@id=$base-type][last()]"/>
                 
@@ -732,7 +736,6 @@
         <xsl:variable name="defining-class" select="imf:get-defining-class($this)"/>                            
         <xsl:variable name="is-enumeration" select="$defining-class/imvert:stereotype/@id = ('stereotype-name-enumeration')"/>
         <xsl:variable name="is-datatype" select="$defining-class/imvert:stereotype/@id = ('stereotype-name-simpletype')"/>
-        <xsl:variable name="is-complextype" select="$defining-class/imvert:stereotype/@id = (('stereotype-name-complextype','stereotype-name-referentielijst'))"/>
         <xsl:variable name="is-complextype" select="$defining-class/imvert:stereotype/@id = (('stereotype-name-complextype','stereotype-name-referentielijst'))"/>
         
         <xsl:variable name="is-conceptual-complextype" select="$this/imvert:attribute-type-designation='complextype'"/>
@@ -867,6 +870,7 @@
                     </xs:simpleType>
                 </xs:element>
             </xsl:when>
+            <?x            
             <xsl:when test="starts-with($type,'xs:')"> 
                 <!-- 
                     Determine the effective type, this is the actual type such as xs:string or a generated basetype 
@@ -882,6 +886,7 @@
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                 </xs:element>
             </xsl:when>
+            x?>
             <xsl:when test="starts-with($type,'xs:')"> 
                 <!-- any xsd primitve type such as xs:integer, and the TXT type -->
                 <xs:element>
