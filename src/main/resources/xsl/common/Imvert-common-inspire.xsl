@@ -77,14 +77,14 @@
     
     <xsl:function name="imf:inspire-notes-lines" as="element(line)*">
         <xsl:param name="text"/>
-        <xsl:for-each select="tokenize($text,'\n')">
-            <xsl:variable name="v" select="normalize-space(.)"/>
-            <xsl:if test="$v">
-                <line>
-                    <xsl:value-of select="$v"/>
-                </line>
-            </xsl:if>
-        </xsl:for-each>
+        <xsl:analyze-string select="$text" regex="^\n*(.+?)\n*$" flags="s">
+            <xsl:matching-substring>
+                <xsl:for-each select="tokenize(regex-group(1),'\n')">
+                    <line>
+                        <xsl:value-of select="."/>
+                    </line>
+                </xsl:for-each>            </xsl:matching-substring>        
+        </xsl:analyze-string>
     </xsl:function>
     
     <xsl:template match="sec" mode="inspire-notes">

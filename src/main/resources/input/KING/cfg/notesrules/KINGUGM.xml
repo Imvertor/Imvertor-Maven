@@ -8,6 +8,8 @@
     
     <desc>KINGUGM does not introduce definitions, only descriptions.</desc>
     
+    <notes-format>plain</notes-format><!-- plain, markdown, mediawiki -->
+    
     <notes-rule lang="nl" default="Omschrijving">
         <section title="Omschrijving" tagged-value="CFG-TV-DESCRIPTION">
             <!-- no labels -->

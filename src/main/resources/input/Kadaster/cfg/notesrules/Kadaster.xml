@@ -8,6 +8,8 @@
     
     <desc>Kadaster allows a few markers to occur in notes field.</desc>
     
+    <notes-format>markdown</notes-format><!-- plain, markdown, mediawiki -->
+ 
     <notes-rule lang="en" default="Definition">
         <!-- when nothing marked, assume Definition -->
         

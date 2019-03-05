@@ -51,9 +51,9 @@
 					<xsl:sequence select="node()"/>
 				</xsl:when>
 				<xsl:when test="imf:boolean($derive-documentation)">
-					<p class="supplierMark" xmlns="http://www.w3.org/1999/xhtml">
+					<html:p class="supplierMark">
 						<xsl:value-of select="concat(imf:get-config-parameter('documentation-separator'),@application,' (', @release, ')',imf:get-config-parameter('documentation-separator'))"/>
-					</p>
+					</html:p>
 					<xsl:sequence select="node()"/>
 				</xsl:when>
 			</xsl:choose>
@@ -97,7 +97,7 @@
 		
 		<xsl:variable name="suppliers" select="imf:get-trace-suppliers-for-construct($construct,1)"/>
 		
-		<xsl:variable name="tvs" as="element()*">
+		<xsl:variable name="tvs" as="element(tv)*">
 			<!-- 
 				haal alle tagged values op die bekend zijn voor dit model, dus in de configuratie voorkomen; deze zijn al ontdubbeld.
 			-->
@@ -123,18 +123,19 @@
 							id="{$tv-id}" 
 							name="{$supplier/name}" 
 							original-name="{$tv/imvert:name/@original}" 
-							value="{$tv/imvert:value}" 
 							original-value="{$tv/imvert:value/@original}" 
 							project="{$supplier/@project}"
 							application="{$supplier/@application}"
 							release="{$supplier/@release}"
 							level="{$supplier/@level}"
-						/>
+							>
+							<xsl:sequence select="$tv/imvert:value/node()"/>
+						</tv>
 					</xsl:for-each>
 				</xsl:for-each>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:sequence select="if ($include-empty) then $tvs else $tvs[normalize-space(@value)]"/>
+		<xsl:sequence select="if ($include-empty) then $tvs else $tvs[normalize-space(.)]"/>
 	</xsl:function>
 	
 	<!-- 
@@ -154,7 +155,7 @@
 		<xsl:variable name="traceable-construct" select="if ($construct/self::imvert:target) then $construct/.. else $construct"/> 
 		
 		<xsl:variable name="suppliers" select="imf:get-trace-suppliers-for-construct($traceable-construct,1)"/>
-		<xsl:variable name="tvs" as="element()*">
+		<xsl:variable name="tvs" as="element(tv)*">
 			<!-- 
 				haal alle tagged values op die bekend zijn voor dit model, dus in de configuratie voorkomen; deze zijn al ontdubbeld.
 			-->
@@ -179,18 +180,19 @@
 							id="{$tv-id}" 
 							name="{$tv/imvert:name}" 
 							original-name="{$tv/imvert:name/@original}" 
-							value="{$tv/imvert:value}" 
 							original-value="{$tv/imvert:value/@original}" 
 							project="{$supplier/@project}"
 							application="{$supplier/@application}"
 							release="{$supplier/@release}"
 							level="{$supplier/@level}"
-						/>
+							>
+							<xsl:sequence select="$tv/imvert:value/node()"/>
+						</tv>
 					</xsl:if>
 				</xsl:for-each>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:sequence select="if ($include-empty) then $tvs else $tvs[normalize-space(@value)]"/>
+		<xsl:sequence select="if ($include-empty) then $tvs else $tvs[normalize-space(.)]"/>
 	</xsl:function>
 	
 	<xsl:function name="imf:get-UGM-suppliers" as="element(supplier)*">
@@ -226,11 +228,11 @@
 		</xsl:for-each-group>
 	</xsl:function>
 	
-	<xsl:function name="imf:get-most-relevant-compiled-taggedvalue" as="xs:string?">
+	<xsl:function name="imf:get-most-relevant-compiled-taggedvalue" as="item()*">
 		<xsl:param name="this" as="element()"/>
 		<xsl:param name="tv-id" as="xs:string"/>
 		<xsl:variable name="elm" select="imf:get-most-relevant-compiled-taggedvalue-element($this,$tv-id)"/>
-		<xsl:sequence select="if (exists($elm)) then string($elm/@value) else ()"/>
+		<xsl:sequence select="if (exists($elm)) then $elm/node() else ()"/>
 	</xsl:function>
 	
 	<xsl:function name="imf:get-most-relevant-compiled-taggedvalue-element" as="element(tv)?">
@@ -269,8 +271,17 @@
 		<xsl:value-of select="lower-case(string-join(tokenize($name,'_'),''))"/>
 	</xsl:function>
 	
-	<xsl:function name="imf:get-clean-documentation-string">
-		<xsl:param name="doc-string"/>
+	<xsl:function name="imf:get-clean-documentation-string" as="item()*">
+		<xsl:param name="doc-string" as="item()*"/>
+		<xsl:choose>
+			<xsl:when test="$doc-string/*">
+				<xsl:sequence select="$doc-string/*"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$doc-string"/>
+			</xsl:otherwise>
+		</xsl:choose>
+		<?x
 		<xsl:variable name="r1" select="substring-after($doc-string,'&lt;memo&gt;')"/>
 		<xsl:variable name="r2" select="if (normalize-space($r1)) then $r1 else $doc-string"/>
 		<xsl:variable name="r3" select="if (starts-with($r2,'[newline]')) then substring($r2,10) else $r2"/>
@@ -278,6 +289,7 @@
 		<xsl:variable name="r5" select="replace($r4,'&lt;.*?&gt;','')"/>
 		<xsl:variable name="r6" select="replace($r5,'Description:','')"/>
 		<xsl:value-of select="$r6"/>
+		x?>
 	</xsl:function>
 	
 </xsl:stylesheet>

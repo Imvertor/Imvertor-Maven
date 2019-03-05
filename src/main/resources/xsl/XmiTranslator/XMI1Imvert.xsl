@@ -25,7 +25,7 @@
     xmlns:thecustomprofile="http://www.sparxsystems.com/profiles/thecustomprofile/1.0"
     xmlns:EAUML="http://www.sparxsystems.com/profiles/EAUML/1.0"
     xmlns:xmi="http://schema.omg.org/spec/XMI/2.1"
-    
+    xmlns:html="http://www.w3.org/1999/xhtml"
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
@@ -40,6 +40,8 @@
     <xsl:import href="../common/Imvert-common-entity.xsl"/>
     <xsl:import href="../common/Imvert-common-inspire.xsl"/>
     
+    <xsl:import href="Note-field.xsl"/>
+   
     <xsl:variable name="stylesheet-code">IMV</xsl:variable>
     <xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)"/>
     
@@ -199,7 +201,7 @@
                                     <imvert:conceptual-schema-name>XLINKS</imvert:conceptual-schema-name>
                                     <imvert:namespace>http://www.w3.org/1999/xlink</imvert:namespace>
                                     <imvert:documentation>
-                                        <body xmlns="http://www.w3.org/1999/xhtml">XLinks is an external specification. For documentation please consult http://www.w3.org/TR/xlink/</body>
+                                        <html:body><html:p>XLinks is an external specification. For documentation please consult http://www.w3.org/TR/xlink/</html:p></html:body>
                                     </imvert:documentation>
                                     <imvert:created>2014-10-30T17:01:50</imvert:created>
                                     <imvert:modified>2014-10-30T17:01:50</imvert:modified>
@@ -601,10 +603,14 @@
     <xsl:function name="imf:get-documentation-info" as="item()*">
         <xsl:param name="this" as="node()"/>
         <xsl:param name="name" as="xs:string"/>
-        
         <xsl:variable name="doctext" select="imf:get-system-tagged-value($this,$name,'')"/>
         <xsl:variable name="xhtml-doctext" select="imf:eadoc-to-xhtml($doctext)"/>
-        <xsl:variable name="relevant-doc-string" select="imf:fetch-relevant-doc-string(string-join($xhtml-doctext,'&#10;'))"/>
+        
+        <xsl:variable name="formatted-doctext">
+            <xsl:apply-templates select="$xhtml-doctext" mode="notes"/>
+        </xsl:variable>
+        
+        <xsl:variable name="relevant-doc-string" select="imf:fetch-relevant-doc-string(string-join($formatted-doctext,'&#10;'))"/>
         <xsl:variable name="sections" as="element(section)*">
             <!-- Parse into sections; raw text is section titled "Raw" --> 
             <xsl:variable name="sections" select="imf:inspire-notes($relevant-doc-string)" as="element(section)*"/>
@@ -629,7 +635,6 @@
                 <xsl:value-of select="$relevant-doc-string"/>
             </xsl:when>
         </xsl:choose>
-       
     </xsl:function>
     
     <xsl:function name="imf:get-history-info" as="node()*">
@@ -1559,12 +1564,6 @@
                 </s>
             </xsl:matching-substring>
         </xsl:analyze-string>
-    </xsl:function>
-    
-    <!-- return all nodes the result from parsing the EA note string. This is a sequence of text line .-->  
-    <xsl:function name="imf:import-ea-note" as="item()*">
-        <xsl:param name="note-ea" as="xs:string"/>
-        <xsl:value-of select="$note-ea"/><!-- pass as-is -->
     </xsl:function>
     
     <!-- 

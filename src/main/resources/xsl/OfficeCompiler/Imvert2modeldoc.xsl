@@ -783,11 +783,11 @@
         
     </xsl:template>
     
-    <xsl:function name="imf:get-formatted-tagged-value" as="xs:string">        
+    <xsl:function name="imf:get-formatted-tagged-value" as="item()*">        
         <xsl:param name="this" />
         <xsl:param name="tv-id"/>
         <xsl:variable name="tv-element" select="imf:get-most-relevant-compiled-taggedvalue-element($this,concat('##',$tv-id))"/>
-        <xsl:value-of select="imf:get-clean-documentation-string(imf:get-tv-value($tv-element))"/>
+        <xsl:sequence select="imf:get-clean-documentation-string(imf:get-tv-value($tv-element))"/>
     </xsl:function>
     
     <xsl:function name="imf:get-formatted-tagged-value-cfg" as="item()*">        
@@ -804,14 +804,14 @@
                             <xsl:value-of select="imf:get-subpath(@project,@application,@release)"/>
                         </item>
                         <item>
-                            <xsl:value-of select="imf:get-clean-documentation-string(imf:get-tv-value(.))"/>
+                            <xsl:sequence select="imf:get-clean-documentation-string(imf:get-tv-value(.))"/>
                         </item>
                     </item>
                 </xsl:for-each>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:variable name="tv-element" select="imf:get-most-relevant-compiled-taggedvalue-element($this,concat('##',$tv-id))"/>
-                <xsl:value-of select="imf:get-clean-documentation-string(imf:get-tv-value($tv-element))"/>
+                <xsl:sequence select="imf:get-clean-documentation-string(imf:get-tv-value($tv-element))"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -1138,16 +1138,16 @@
         </xsl:if>
     </xsl:function>
 
-    <xsl:function name="imf:create-element">
-        <xsl:param name="name"/>
-        <xsl:param name="content"/>
+    <xsl:function name="imf:create-element" as="element()">
+        <xsl:param name="name" as="xs:string"/>
+        <xsl:param name="content" as="item()*"/>
         <xsl:element name="{$name}">
             <xsl:sequence select="imf:create-content($content)"/>
         </xsl:element>
     </xsl:function>
     
-    <xsl:function name="imf:create-content">
-        <xsl:param name="content"/>
+    <xsl:function name="imf:create-content" as="item()*">
+        <xsl:param name="content" as="item()*"/>
         <xsl:sequence select="if ($content instance of attribute()) then string($content) else $content"/>
     </xsl:function>
     
@@ -1269,9 +1269,9 @@
         </xsl:choose>  
     </xsl:function>
     
-    <xsl:function name="imf:get-tv-value">
+    <xsl:function name="imf:get-tv-value" as="item()*">
         <xsl:param name="tv-element" as="element(tv)?"/>
-        <xsl:value-of select="if (normalize-space($tv-element/@original-value)) then $tv-element/@original-value else $tv-element/@value"/>
+        <xsl:sequence select="if (normalize-space($tv-element/@original-value)) then $tv-element/@original-value else $tv-element/node()"/>
     </xsl:function>
     
     <xsl:function name="imf:create-section-for-diagrams">

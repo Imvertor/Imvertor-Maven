@@ -8,6 +8,8 @@
     
     <desc>KING only allows definitions to occur in notes field.</desc>
     
+    <notes-format>plain</notes-format><!-- plain, markdown, mediawiki -->
+    
     <notes-rule lang="nl" default="Definitie">
         <section title="Definitie" tagged-value="CFG-TV-DEFINITION">
             <!-- no labels -->

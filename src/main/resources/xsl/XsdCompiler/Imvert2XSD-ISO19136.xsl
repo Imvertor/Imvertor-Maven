@@ -31,6 +31,8 @@
     xmlns:gmlexr="http://www.opengis.net/gml/3.3/xer"
     xmlns:gmlsf="http://www.opengis.net/gmlsf/2.0"
     
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"
+    
     exclude-result-prefixes="#all"
     version="2.0">
 
@@ -1732,9 +1734,10 @@
         <xsl:variable name="name" select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-NAME')"/>
         <xsl:variable name="definition" select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-DEFINITION')"/>
         <xsl:variable name="explanation" select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-DESCRIPTION')"/>
+        <xsl:message select="name($definition[1])"/>
         <xsl:variable name="pnam" select="if ($name) then concat('Name: ', $name) else ()"/>
-        <xsl:variable name="pdef" select="if ($definition) then concat('Definition: ', $definition) else ()"/>
-        <xsl:variable name="pexp" select="if ($explanation) then concat('Explanation: ', $explanation) else ()"/>
+        <xsl:variable name="pdef" select="if ($definition) then concat('Definition: ', normalize-space(string-join($definition,' '))) else ()"/>
+        <xsl:variable name="pexp" select="if ($explanation) then concat('Explanation: ', normalize-space(string-join($explanation,' '))) else ()"/>
         <xsl:value-of select="string-join(($pnam,$pdef,$pexp),'&#10;')"/>
     </xsl:function>
     

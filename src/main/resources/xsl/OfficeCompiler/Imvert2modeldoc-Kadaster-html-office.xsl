@@ -103,8 +103,10 @@
                 <p>
                     ID: <xsl:value-of select="@id"/>
                 </p>
-                <xsl:apply-templates select="section[not(@type='DOMAIN')]" mode="detail"/>
-                <xsl:apply-templates select="section[@type='DOMAIN']" mode="domain"/>
+                <xsl:apply-templates select="chapter[@type='cat']/section[not(@type='DOMAIN')]" mode="detail"/>
+                <xsl:apply-templates select="chapter[@type='cat']/section[@type='DOMAIN']" mode="domain"/>
+        
+                <xsl:apply-templates select="chapter[@type='lis']/section" mode="detail"/>
             </body>
         </html>
         
@@ -164,7 +166,7 @@
                             <b>
                                 <xsl:value-of select="content/part[@type='CFG-DOC-NAAM']/item[2]"/>
                             </b>
-                            <xsl:value-of select="if (normalize-space($caption-desc)) then concat(' &#8212; ',$caption-desc) else ()"/>
+                            <xsl:sequence select="if (normalize-space($caption-desc)) then (' &#8212; ',$caption-desc) else ()"/>
                         </p>    
                     </div>        
                 </xsl:for-each>
@@ -434,7 +436,7 @@
                <!-- this is the client info, do not show that subpath. -->         
             </xsl:otherwise>
         </xsl:choose>
-        <xsl:sequence select="imf:create-formatted-text(item[not(@type = 'SUPPLIER')])"/>
+        <xsl:sequence select="item[not(@type = 'SUPPLIER')]/node()"/>
     </xsl:template>
     
     <xsl:template match="item" mode="#all">
@@ -496,12 +498,7 @@
     
     <xsl:function name="imf:create-formatted-text">
         <xsl:param name="text"/>
-        <xsl:for-each select="tokenize($text,'\n')">
-            <xsl:value-of select="."/>
-            <xsl:if test="position() != last()">
-                <br/>
-            </xsl:if>
-        </xsl:for-each>
+       <xsl:sequence select="$text"/>
     </xsl:function>
     
 </xsl:stylesheet>

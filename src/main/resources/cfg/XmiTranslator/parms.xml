@@ -39,7 +39,7 @@
       <!--  names of the file created by the primary Imvertor file  -->
       <WORK_BASE_FILE>${system/work-imvert-folder-path}/imvertor.01.base.xml</WORK_BASE_FILE>
       <!--  names of the step stylesheets  -->
-      <XMI_IMVERTOR_XSLPATH>XMI1Imvert.xsl</XMI_IMVERTOR_XSLPATH>
+      <XMI_IMVERTOR_XSLPATH alias="IMV">XMI1Imvert.xsl</XMI_IMVERTOR_XSLPATH>
 
       <!-- rules for parsing notes field -->
       <configuration-notesrules-file>${system/inp-folder-path}/cfg/notesrules/${cli/notesrules}.xml</configuration-notesrules-file>

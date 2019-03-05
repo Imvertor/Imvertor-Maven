@@ -274,21 +274,37 @@
       <version>4.9.2.201712150930-r</version>
     </dependency>
 
-	<?X
-	<!-- https://mvnrepository.com/artifact/org.eclipse.mylyn.wikitext/core -->
-	<dependency>
-	    <groupId>org.eclipse.mylyn.wikitext</groupId>
-	    <artifactId>core</artifactId>
-	    <version>1.7.2-v20120916-1200</version>
-	</dependency>
-	<!-- https://mvnrepository.com/artifact/org.eclipse.mylyn.wikitext.core/ant -->
-	<dependency>
-	    <groupId>org.eclipse.mylyn.wikitext.core</groupId>
-	    <artifactId>ant</artifactId>
-	    <version>org.eclipse.mylyn.wikitext:core:jar:1.7.2-v20120916-1200</version>
-	</dependency>
-	X?>
-
+	  <dependency>
+      <groupId>org.eclipse.mylyn.docs</groupId>
+      <artifactId>org.eclipse.mylyn.wikitext.textile</artifactId>
+      <version>3.0.25</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.mylyn.docs</groupId>
+      <artifactId>org.eclipse.mylyn.wikitext.markdown</artifactId>
+      <version>3.0.25</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.mylyn.docs</groupId>
+      <artifactId>org.eclipse.mylyn.wikitext.tracwiki</artifactId>
+      <version>3.0.25</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.mylyn.docs</groupId>
+      <artifactId>org.eclipse.mylyn.wikitext.mediawiki</artifactId>
+      <version>3.0.25</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.mylyn.docs</groupId>
+      <artifactId>org.eclipse.mylyn.wikitext.confluence</artifactId>
+      <version>3.0.25</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.mylyn.docs</groupId>
+      <artifactId>org.eclipse.mylyn.wikitext.twiki</artifactId>
+      <version>3.0.25</version>
+    </dependency>
+    
   </dependencies>
 
   <build>

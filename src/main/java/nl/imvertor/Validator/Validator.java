@@ -26,6 +26,8 @@ import org.apache.log4j.Logger;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
 import nl.imvertor.common.file.XmlFile;
+import nl.imvertor.common.xsl.extensions.ImvertorParseHTML;
+import nl.imvertor.common.xsl.extensions.ImvertorParseWiki;
 import nl.imvertor.common.xsl.extensions.ImvertorValidateRegex;
 
 
@@ -67,6 +69,8 @@ public class Validator extends Step {
 		// create a transformer
 		Transformer transformer = new Transformer();
 		transformer.setExtensionFunction(new ImvertorValidateRegex());
+		transformer.setExtensionFunction(new ImvertorParseHTML());
+		transformer.setExtensionFunction(new ImvertorParseWiki());
 		    
 		// CANONIZATION IN STEPS; 
 		// each second, third... step is known as _2, _3 etc. in the parameter sequence as configured.

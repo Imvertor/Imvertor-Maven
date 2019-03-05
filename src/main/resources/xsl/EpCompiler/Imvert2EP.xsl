@@ -5,6 +5,8 @@
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     xmlns:ep="http://www.imvertor.org/schema/endproduct"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"
+    
     >
     
     <xsl:import href="../common/Imvert-common.xsl"/>
@@ -383,6 +385,10 @@
         <xsl:sequence select="imf:msg-comment(.,'WARNING','Unknown association type, stereotype is: [1]',imf:string-group(imvert:stereotype/@id))"/>
     </xsl:template>
     
+    <xsl:template match="xhtml:*">
+        <xsl:sequence select="."/>
+    </xsl:template>
+    
     <xsl:template match="*">
         <xsl:sequence select="imf:msg-comment(.,'ERROR','Unknown element [1]',name(.))"/>
     </xsl:template>
@@ -448,9 +454,8 @@
         <xsl:param name="this"/>
         <ep:documentation>
             <ep:definition>
-                <ep:p>
-                    <xsl:value-of select="normalize-space(imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-DEFINITION'))"/>
-                </ep:p>
+                <xsl:variable name="def" select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-DEFINITION')"/>
+                <xsl:sequence select="imf:get-note-value($def)"/>  
             </ep:definition>
         </ep:documentation>
     </xsl:function>
@@ -545,7 +550,8 @@
         
         <ep:pattern>
             <ep:p>
-                <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-PATTERN')"/>
+                <xsl:variable name="pat" select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-PATTERN')"/>
+                <xsl:sequence select="imf:get-note-value($pat)"/>  
             </ep:p>        
         </ep:pattern>
         <ep:formal-pattern>
@@ -556,7 +562,8 @@
     <xsl:function name="imf:get-meta" as="element()*">
         <xsl:param name="this"/>
         <ep:example>
-            <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-EXAMPLE')"/>
+            <xsl:variable name="xmp" select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-EXAMPLE')"/>
+            <xsl:sequence select="imf:get-note-value($xmp)"/>  
         </ep:example>
     </xsl:function>
     
@@ -587,4 +594,25 @@
         <xsl:sequence select="imf:msg($this,$type,$text,$info)"/>
         
     </xsl:function>
+    
+    <xsl:function name="imf:get-note-value" as="item()*">
+        <xsl:param name="note-field"/>
+        <xsl:choose>
+            <xsl:when test="$note-field/*">
+                <xsl:apply-templates select="$note-field/*" mode="copy"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <ep:p>
+                    <xsl:value-of select="$note-field"/>
+                </ep:p>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
+    <xsl:template match="node()|@*" mode="copy">
+        <xsl:copy>
+            <xsl:apply-templates select="node()|@*"/>
+        </xsl:copy>
+    </xsl:template>
+    
 </xsl:stylesheet>

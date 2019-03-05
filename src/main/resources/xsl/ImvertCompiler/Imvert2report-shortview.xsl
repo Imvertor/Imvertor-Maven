@@ -114,11 +114,11 @@
             <td><!-- empty by design --></td>
             <td><!-- empty by design --></td>
             <td>
-                <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DEFINITION')"/>
+                <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DEFINITION')"/>
             </td>
             <td><!-- empty by design --></td>
             <td>
-                <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DESCRIPTION')"/>
+                <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DESCRIPTION')"/>
             </td>
             <td><!-- empty by design --></td>
         </tr>
@@ -142,13 +142,13 @@
                 <xsl:value-of select="imvert:type-name/@original"/>
             </td>
             <td>
-                <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DEFINITION')"/>
+                <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DEFINITION')"/>
             </td>
             <td>
-                <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-RULES')"/>
+                <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-RULES')"/>
             </td>
             <td>
-                <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DESCRIPTION')"/>
+                <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DESCRIPTION')"/>
             </td>
             <td><!-- empty by design --></td>
             
@@ -172,10 +172,10 @@
             <td><!-- empty by design --></td>
             <td><!-- empty by design --></td>
             <td>
-                <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DEFINITION')"/>
+                <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DEFINITION')"/>
             </td>
             <td>
-                <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DESCRIPTION')"/>
+                <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DESCRIPTION')"/>
             </td>
         </tr>
         <xsl:apply-templates select="imvert:attributes/imvert:attribute" mode="#current"/>
@@ -193,10 +193,10 @@
                 <!-- imbro -->
             </td>
             <td>
-                <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DEFINITION')"/>
+                <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DEFINITION')"/>
             </td>
             <td>
-                <xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DESCRIPTION')"/>
+                <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue(.,'##CFG-TV-DESCRIPTION')"/>
             </td>
         </tr>
     </xsl:template>

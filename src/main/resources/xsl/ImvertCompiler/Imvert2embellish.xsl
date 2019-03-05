@@ -182,7 +182,7 @@
                                     <xsl:value-of select="@name"/>
                                 </imvert:name>
                                 <imvert:value original="{@original-value}">
-                                    <xsl:value-of select="@value"/>
+                                    <xsl:sequence select="node()"/>
                                 </imvert:value>
                             </imvert:tagged-value>
                         </xsl:for-each>

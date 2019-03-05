@@ -587,13 +587,7 @@
     
     <xsl:function name="imf:create-formatted-text">
         <xsl:param name="text"/>
-        <xsl:for-each select="tokenize($text,'\n')">
-            <xsl:value-of select="."/>
-            <xsl:if test="position() != last()">
-                <br/>
-            </xsl:if>
-        </xsl:for-each>
+        <xsl:sequence select="$text"/>
     </xsl:function>
-    
     
 </xsl:stylesheet>

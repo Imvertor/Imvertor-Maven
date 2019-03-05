@@ -33,7 +33,8 @@
     -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
-   
+    <xsl:import href="../common/extension/extension-parse-wiki.xsl"/>
+    
     <xsl:variable name="chop" select="imf:boolean(imf:get-config-string('cli','chop','no'))"/>
     
     <xsl:template match="/imvert:packages">
@@ -279,8 +280,21 @@
                                 <imvert:name original="{$title}"><!-- Natural name -->
                                     <xsl:value-of select="$norm-title"/> 
                                 </imvert:name>
+                                <xsl:variable name="value-normalization" select="imf:get-config-tagged-values()[@id = $target-tv-id]/@norm"/>
+                                <xsl:variable name="value-format" select="$configuration-notesrules-file//notes-format"/>
                                 <imvert:value>
-                                    <xsl:value-of select="."/>
+                                    <xsl:choose>
+                                        <xsl:when test="$value-normalization = 'note' and lower-case($value-format) = 'plain'">
+                                            <xsl:value-of select="."/>
+                                        </xsl:when>
+                                        <xsl:when test="$value-normalization = 'note'">
+                                            <xsl:attribute name="format" select="$value-format"/>
+                                            <xsl:sequence select="imf:parse-wiki(.,lower-case($value-format))"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:value-of select="."/>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
                                 </imvert:value>
                             </imvert:tagged-value>
                         </xsl:for-each>

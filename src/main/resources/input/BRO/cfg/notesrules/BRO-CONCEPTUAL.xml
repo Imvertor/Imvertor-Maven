@@ -8,6 +8,8 @@
     
     <name>BRO</name>
     
+    <notes-format>markdown</notes-format><!-- plain, markdown, mediawiki -->
+    
     <notes-rule lang="nl">
         <section title="Regels" tagged-value="CFG-TV-RULES">
             <!-- geen labels -->

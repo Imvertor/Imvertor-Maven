@@ -492,7 +492,7 @@
             <xsl:variable name="tv" select="imf:get-most-relevant-compiled-taggedvalue-element($this,concat('##',.))"/>
             <xsl:variable name="map" select="imf:ttl-map($tv/@id)"/>
             <xsl:if test="exists($tv) and exists($map)">
-                <xsl:value-of select="imf:ttl(($map, imf:ttl-value($tv/@value,$map/@type)))"/>
+                <xsl:value-of select="imf:ttl(($map, imf:ttl-value(string($tv),$map/@type)))"/>
             </xsl:if>
         </xsl:for-each>
     </xsl:function>

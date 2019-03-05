@@ -8,6 +8,8 @@
     
     <desc>These are the schemes to apply to notes fields in order to determine the tagged values.</desc>
     
+    <notes-format>markdown</notes-format><!-- plain, markdown, mediawiki -->
+    
     <notes-rule lang="en" default="Definition">
         <!-- when nothing marked, assume Definition -->
         

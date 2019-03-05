@@ -122,7 +122,7 @@ public class YamlCompiler extends Step {
 			// in all cases copy results to app folder
 			yamlFile.setContent(hc + "\n" + bc);
 		
-			String schemaName = configurator.getXParm("appinfo/OpenAPI-schema-name");
+			//String schemaName = configurator.getXParm("appinfo/OpenAPI-schema-name");
 		
 			// copy to the app folder
 			AnyFile appYamlFile = new AnyFile(yamlFolder,"openapi.yaml");

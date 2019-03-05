@@ -39,8 +39,9 @@
         <xsl:param name="eadoc" as="xs:string?"/>
         <xsl:choose>
             <xsl:when test="contains($eadoc,'&gt;')">
-                <xsl:variable name="lis" select="replace($eadoc,'&lt;/li&gt;(&#xA;)+','&lt;/li&gt;')"/>
-                <xsl:variable name="startp" select="concat('&#xA;',$lis)"/>
+                <xsl:variable name="lis1" select="replace($eadoc,'(&#xA;)+\s*?&lt;li&gt;','&lt;li&gt;')"/>
+                <xsl:variable name="lis2" select="replace($lis1,'&lt;/li&gt;\s+?(&#xA;)+','&lt;/li&gt;')"/>
+                <xsl:variable name="startp" select="concat('&#xA;',$lis2)"/>
                 <xsl:variable name="nl" select="replace($startp,'&#xA;','&lt;p&gt;')"/>
                 <xsl:variable name="inet" select="imf:replace-inet-references($nl)"/>
                 <xsl:variable name="xhtml" select="imf:parse-html($inet,true())"/>
@@ -50,9 +51,9 @@
                 <xsl:sequence select="$clean/*/*"/> <!-- all within body element -->
             </xsl:when>
             <xsl:otherwise>
-                <p xmlns="http://www.w3.org/1999/xhtml">
+                <html:p>
                     <xsl:sequence select="imf:replace-inet-references($eadoc)"/>
-                </p>
+                </html:p>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -94,6 +95,10 @@
     
     <xsl:template match="html:ul[not(*)]" mode="clean-xhtml"/>
     <xsl:template match="html:ol[not(*)]" mode="clean-xhtml"/>
+  
+    <xsl:template match="html:p[html:li|html:ol|html:ul]" mode="clean-xhtml">
+        <xsl:apply-templates select="*" mode="#current"/>
+    </xsl:template>
     
     <!-- remove the constructs: 
         <p/>
