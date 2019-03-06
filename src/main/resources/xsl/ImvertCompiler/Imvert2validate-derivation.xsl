@@ -360,10 +360,10 @@
           
                 <xsl:variable name="values" select="$this/imvert:tagged-values/imvert:tagged-value[@id = $tv-id]/imvert:value"/>
                 
-                <xsl:variable name="applicable-values" as="xs:string*">
+                <xsl:variable name="applicable-values" as="item()*">
                     <xsl:choose>
                         <xsl:when test="empty($values) and $tv-is-derivable">
-                            <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue($this,concat('##',$tv-id))"/>
+                            <xsl:sequence select="imf:get-most-relevant-compiled-taggedvalue-element($this,concat('##',$tv-id))"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:sequence select="$values"/>
