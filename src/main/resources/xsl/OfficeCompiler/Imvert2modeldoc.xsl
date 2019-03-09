@@ -835,7 +835,7 @@
        <xsl:variable name="compile" select="$level/@compile"/> <!-- single or full -->
        <xsl:variable name="format" select="$level/@format"/> <!-- plain or ? -->
        
-       <xsl:variable name="exists-waarde" select="normalize-space(string-join($waarde,''))"/>
+       <xsl:variable name="exists-waarde" select="imf:is-content($waarde)"/>
        
        <xsl:variable name="display-waarde" as="item()*">
            <xsl:choose>
@@ -1068,7 +1068,7 @@
     
     <xsl:function name="imf:create-toelichting">
         <xsl:param name="documentatie"/>
-        <xsl:if test="normalize-space($documentatie) and $explanation-location = 'at-bottom'">
+        <xsl:if test="imf:is-content($documentatie) and $explanation-location = 'at-bottom'">
             <section type="EXPLANATION">
                 <content>
                     <part>
@@ -1310,6 +1310,11 @@
         </xsl:choose>
     </xsl:function>
 
+    <xsl:function name="imf:is-content" as="xs:boolean">
+        <xsl:param name="content" as="item()*"/>
+        <xsl:sequence select="imf:boolean-or(for $c in $content return if (normalize-space($c)) then true() else false())"/> 
+    </xsl:function>
+    
     <!-- ======== cleanup all section structure: remove empties =========== -->
     
     <xsl:template match="section" mode="section-cleanup">
