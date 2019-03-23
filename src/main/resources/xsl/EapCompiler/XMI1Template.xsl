@@ -35,16 +35,18 @@
     
     <xsl:import href="../common/Imvert-common.xsl"/>
     
-    <xsl:param name="original-project-name" select="imf:get-config-string('appinfo','original-project-name')"/>
     <xsl:param name="original-application-name" select="imf:get-config-string('appinfo','original-application-name')"/>
     
     <xsl:param name="new-application-name" select="concat($application-package-name, ' (template)')"/>
     <xsl:param name="new-application-author" select="'NEWAUTHOR'"/>
-    
+   
+   <?x
     <!-- get all ID values -->
     <!--TODO optimize, see jira IM-423 Must be a keydef?-->
     <xsl:variable name="idmap" as="element()+">
-        <xsl:apply-templates select="//@xmi.id" mode="idmap"/>
+        <xsl:for-each select="//@xmi.id">
+            <m ns="" old="{.}" new="{.}"/> <!-- no change needed; automatic import will reset all GUIDs -->
+        </xsl:for-each>
     </xsl:variable>
     
     <!-- determine which element/attributes are typed as ID -->
@@ -60,9 +62,9 @@
             <xsl:sequence select="current-group()[1]"/>
         </xsl:for-each-group>
     </xsl:variable>
+    x?>
     
-    <xsl:variable name="project-package" select="/XMI/XMI.content/UML:Model/UML:Namespace.ownedElement/UML:Package/UML:Namespace.ownedElement/UML:Package[@name = $original-project-name]"/>
-    <xsl:variable name="model-package" select="$project-package/UML:Namespace.ownedElement/UML:Package[@name = $original-application-name][1]"/>
+    <xsl:variable name="model-package" select="//UML:Namespace.ownedElement/UML:Package[@name = $original-application-name][1]"/>
     <xsl:variable name="domain-package" select="$model-package/UML:Namespace.ownedElement/UML:Package"/>
     
     <xsl:variable name="model-package-id" select="$model-package/@xmi.id"/>
@@ -100,7 +102,11 @@
  
     <!-- change the stereotype of the application -->
     
-    <xsl:template match="UML:ClassifierRole[@name=$original-application-name]/UML:ModelElement.stereotype/UML:Stereotype"  mode="model-package">
+    <xsl:template match="
+        UML:ClassifierRole[@name=$original-application-name]/UML:ModelElement.stereotype/UML:Stereotype
+        |
+        UML:Package[@name=$original-application-name]/UML:ModelElement.stereotype/UML:Stereotype
+        "  mode="model-package">
         <UML:Stereotype name="toepassing"/>
     </xsl:template>
     
@@ -154,10 +160,7 @@
         </xsl:choose>
     </xsl:template>
     
-    <xsl:template match="@xmi.id" mode="idmap">
-        <m ns="" old="{.}" new="{.}"/> <!-- no change needed; automatic import will reset all GUIDs -->
-    </xsl:template>
-    
+    <?x
     <xsl:template match="@*" mode="model-package domain-package">
         <xsl:variable name="attname" select="local-name(.)"/>
         <xsl:variable name="attval" select="."/>
@@ -175,13 +178,14 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
- 
-    <xsl:template match="node()" mode="model-package domain-package">
+    x?>
+    
+    <xsl:template match="node()|@*" mode="model-package domain-package #default">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*" mode="#current"/>
         </xsl:copy>
     </xsl:template>
-
+    
     <xsl:function name="imf:create-documentation">
         <xsl:param name="tagged-value"/>
         <xsl:for-each select="$tagged-value"><!-- singleton-->
