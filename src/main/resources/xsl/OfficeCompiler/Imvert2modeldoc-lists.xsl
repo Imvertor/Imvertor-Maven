@@ -81,7 +81,11 @@
     </xsl:template>
     
     <!-- codelists that have no entries are assumed to be external, therefore try to read these entries from the TV "data location" -->
-    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist') and empty(imvert:attributes/imvert:attribute)]">
+    <xsl:template match="imvert:class[
+        imvert:stereotype/@id = ('stereotype-name-codelist') and empty(imvert:attributes/imvert:attribute) 
+        or
+        imvert:stereotype/@id = ('stereotype-name-referentielijst') 
+        ]">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
              <!-- fetch the code list contents -->
@@ -95,7 +99,7 @@
             
             <xsl:choose>
                 <xsl:when test="exists($loc) and exists($referring-attributes-loc)">
-                    <xsl:sequence select="imf:msg(.,'ERROR','Codelist contents specified on both attributes and codelist. Attributes are: [1]',imf:string-group(for $a in $referring-attributes-loc return imf:get-display-name($a)))"/>
+                    <xsl:sequence select="imf:msg(.,'ERROR','List contents specified on both attribute(s) and list. Attributes are: [1]',imf:string-group(for $a in $referring-attributes-loc return imf:get-display-name($a)))"/>
                 </xsl:when>
                 <xsl:when test="not($includedoclist)">
                     <!-- skip -->
@@ -105,14 +109,21 @@
                 </xsl:when>
                 <xsl:when test="normalize-space($loc)">
                     <xsl:variable name="url" select="imf:merge-parms($doclist-xml-url)"/>
-                    <xsl:sequence select="imf:msg(.,'DEBUG','Reading codelist entries from: [1]',$url)"/>
+                    <xsl:sequence select="imf:msg(.,'DEBUG','Reading [1] entries from: [2]',(imf:get-config-stereotypes(imvert:stereotype/@id),$url))"/>
                     <xsl:variable name="xml" select="if (unparsed-text-available($url)) then document($url) else ()"/>
                     <xsl:choose>
-                        <xsl:when test="exists($xml)">
-                            <xsl:apply-templates select="$xml" mode="list"/>
+                        <xsl:when test="exists($xml) and imvert:stereotype/@id = 'stereotype-name-codelist'">
+                            <xsl:apply-templates select="$xml" mode="codelist">
+                                <xsl:with-param name="construct" select="."/>
+                            </xsl:apply-templates>
+                        </xsl:when>
+                        <xsl:when test="exists($xml) and imvert:stereotype/@id = 'stereotype-name-referentielijst'">
+                            <xsl:apply-templates select="$xml" mode="reflist">
+                                <xsl:with-param name="construct" select="."/>
+                            </xsl:apply-templates>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:sequence select="imf:msg(.,'WARNING','Codelist contents cannot be retrieved from location [1], tried [2]',($loc, $url))"/>
+                            <xsl:sequence select="imf:msg(.,'WARNING','List contents cannot be retrieved from location [1], tried [2]',($loc, $url))"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:when>
@@ -134,13 +145,13 @@
     
     <!-- when reading from RDF -->
     
-    <xsl:template match="/rdf:RDF" mode="list">
+    <xsl:template match="/rdf:RDF" mode="codelist">
         <xsl:apply-templates select="rdf:Description[rdf:type/@rdf:resource='http://www.w3.org/ns/dcat#Dataset']/dcat:theme" mode="#current">
             <xsl:with-param name="rdf" select="."/>
         </xsl:apply-templates>
     </xsl:template>
     
-    <xsl:template match="dcat:theme" mode="list">
+    <xsl:template match="dcat:theme" mode="codelist">
         <xsl:param name="rdf" as="element(rdf:RDF)"/><!-- the rdf root -->
         <xsl:variable name="resource" select="@rdf:resource"/>
         <imvert:entry uri="{$resource}">
@@ -152,33 +163,37 @@
     <!-- when reading from BRO XML listing -->
   
     <!-- BRO lists -->
-    <xsl:template match="/domeintabel" mode="list">
+    <xsl:template match="/domeintabel" mode="codelist reflist">
+        <xsl:param name="construct" as="element()"/>
         <imvert:attributes>
-            <xsl:variable name="values" as="element(imvert:attribute)*">
+            <xsl:variable name="values" as="element()*"> <!-- imvert:attribute or imvert:refelement -->
                 <xsl:apply-templates select="*" mode="#current"/>
             </xsl:variable>
-            <!-- when no values found; assume the list is noty defined -->
+            <!-- when no values found; assume the list is not defined -->
             <xsl:choose>
                 <xsl:when test="exists($values)">
                     <xsl:sequence select="$values"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:sequence select="imf:msg(.,'ERROR','Unknown type of entries in codelist (domeintabel): [1]',name(*[1]))"/>
+                    <xsl:sequence select="imf:msg($construct,'ERROR','Unknown type of entries in list (domeintabel): [1]',name(*[1]))"/>
                 </xsl:otherwise>
             </xsl:choose>
         </imvert:attributes>
     </xsl:template>
   
     <!-- BRO lists -->
-    <xsl:template match="/domeintabel/*" mode="list" priority="-1">
+    
+    <xsl:template match="/domeintabel/*" mode="codelist reflist" priority="-1">
         <!-- return nothing; unknown type of domeintabel -->
     </xsl:template>
     
-    <!-- BRO lists -->
+    <!-- BRO codelists -->
+ 
     <xsl:template match="
-        /domeintabel/Waardebepalingsmethode
+          /domeintabel/Waardebepalingsmethode
         | /domeintabel/Waardebepalingstechniek
-        " mode="list">
+        | /domeintabel/Meetapparaat
+        " mode="codelist">
         <imvert:attribute origin="system">
             <imvert:name original="{Code}">
                 <xsl:value-of select="Code"/>
@@ -186,7 +201,6 @@
             <imvert:id>
                 <xsl:value-of select="concat(local-name(.),'_',ID)"/>
             </imvert:id>
-            <imvert:visibility>public</imvert:visibility>
             <imvert:stereotype id="stereotype-name-enum">ENUMERATIEWAARDE</imvert:stereotype>
             <xsl:if test="Kwaliteitsregime = 'IMBRO/A'">
                 <imvert:stereotype id="stereotype-name-imbroa">IMBRO/A</imvert:stereotype>
@@ -201,17 +215,14 @@
         </imvert:attribute>
     </xsl:template>
     
-    <!-- BRO lists -->
-    <xsl:template match="domeintabel/OeverType" mode="list">
+    <xsl:template match="domeintabel/OeverType" mode="codelist">
         <imvert:attribute origin="system">
-            <xsl:comment select="local-name(.)"/>
             <imvert:name original="{ID}">
                 <xsl:value-of select="ID"/>
             </imvert:name>
             <imvert:id>
                 <xsl:value-of select="concat(local-name(.),'_',ID)"/>
             </imvert:id>
-            <imvert:visibility>public</imvert:visibility>
             <imvert:stereotype id="stereotype-name-enum">ENUMERATIEWAARDE</imvert:stereotype>
             <xsl:if test="Kwaliteitsregime = 'IMBRO/A'">
                 <imvert:stereotype id="stereotype-name-imbroa">IMBRO/A</imvert:stereotype>
@@ -226,4 +237,16 @@
         </imvert:attribute>
     </xsl:template>
     
+    <!-- BRO reference lists -->
+    
+    <xsl:template match="/domeintabel/Parameter" mode="reflist">
+        <imvert:refelement>
+            <xsl:for-each select="*">
+                <imvert:element>
+                    <xsl:value-of select="."/>
+                </imvert:element>
+            </xsl:for-each>
+        </imvert:refelement>
+    </xsl:template>
+        
 </xsl:stylesheet>

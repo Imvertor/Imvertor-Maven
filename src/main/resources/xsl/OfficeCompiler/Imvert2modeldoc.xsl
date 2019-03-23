@@ -76,11 +76,14 @@
                 <xsl:variable name="domain-packages" select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package') and empty(imvert:package-replacement)]"/>
 
                 <chapter title="CHAPTER-LISTS" type="lis">
-                    <section type="DETAILS-CODELIST">
-                        <xsl:apply-templates select="$domain-packages/imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="detail"/>
+                    <section type="CONTENTS-REFERENCELIST">
+                        <xsl:apply-templates select="$domain-packages/imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]" mode="content"/>
                     </section>
-                    <section type="DETAILS-ENUMERATION">
-                        <xsl:apply-templates select="$domain-packages/imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]" mode="detail"/>
+                    <section type="CONTENTS-CODELIST">
+                        <xsl:apply-templates select="$domain-packages/imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="content"/>
+                    </section>
+                    <section type="CONTENTS-ENUMERATION">
+                        <xsl:apply-templates select="$domain-packages/imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]" mode="content"/>
                     </section>
                 </chapter>
             </xsl:if>
@@ -128,9 +131,6 @@
                 <section type="DETAILS-ASSOCIATIONCLASS">
                     <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-relatieklasse')]" mode="detail"/>
                 </section>
-                <section type="DETAILS-REFERENCELIST">
-                    <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]" mode="detail"/>
-                </section>
                 <section type="DETAILS-UNION">
                     <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-union')]" mode="detail"/>
                 </section>
@@ -141,11 +141,14 @@
                     <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-simpletype')]" mode="detail"/>
                 </section>
                 <xsl:if test="not($lists-to-listing)">
+                    <section type="DETAILS-REFERENCELIST">
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]" mode="detail"/>
+                    </section>
                     <section type="DETAILS-CODELIST">
                         <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]" mode="detail"/>
                     </section>
                     <section type="DETAILS-ENUMERATION">
-                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]" mode="detail"/>
+                        <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-enumeration')]" mode="content"/>
                     </section>
                 </xsl:if>
             </section>
@@ -564,7 +567,7 @@
         </section>
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist','stereotype-name-enumeration')]" mode="detail listing">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist','stereotype-name-enumeration')]" mode="content">
         <xsl:variable name="is-codelist" select="imvert:stereotype/@id = ('stereotype-name-codelist')"/>
         <!-- All BRO tables are IMBRO/A tables, holding 4 columns.  -->
         <xsl:variable name="is-imbro-list" select="imf:get-config-string('cli','owner') eq 'BRO'"/>
@@ -623,6 +626,33 @@
                         </xsl:apply-templates>
                     </xsl:otherwise>
                 </xsl:choose>
+            </content>
+        </section>
+    </xsl:template>
+  
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-referentielijst')]" mode="content">
+        <xsl:variable name="is-imbro-list" select="imf:get-config-string('cli','owner') eq 'BRO'"/>
+        <section 
+            name="{imf:get-name(.,true())}" 
+            type="CONTENTS-REFERENCELIST" 
+            id="{imf:plugin-get-link-name(.,'detail')}" 
+            id-global="{imf:plugin-get-link-name(.,'global')}" 
+            uuid="{imvert:id}">
+            <content>
+                <part>
+                    <xsl:sequence select="imf:create-element('item',imf:plugin-translate-i3n('DEFINITIE',true()))"/>
+                    <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+                </part>
+            </content>
+            <content>
+                <!-- the attributes are the names of the reference list columns. -->
+                <xsl:for-each select="imvert:attributes/imvert:attribute">
+                    <itemtype type="LABEL">
+                        <xsl:value-of select="imvert:name"/>
+                    </itemtype>
+                </xsl:for-each>
+                <!-- and the add the columns for this reference list -->
+                <xsl:apply-templates select="imvert:attributes/imvert:refelement" mode="detail-refelement"/>
             </content>
         </section>
     </xsl:template>
@@ -690,6 +720,14 @@
                 <xsl:sequence select="imf:create-element('item','&#x2714;')"/>
             </xsl:if>
             <xsl:sequence select="imf:create-element('item',imf:get-formatted-tagged-value(.,'CFG-TV-DEFINITION'))"/>
+        </part>
+    </xsl:template>
+    
+    <xsl:template match="imvert:refelement" mode="detail-refelement">
+        <part>
+            <xsl:for-each select="imvert:element">
+                <xsl:sequence select="imf:create-element('item',string(.))"/>
+            </xsl:for-each>
         </part>
     </xsl:template>
     

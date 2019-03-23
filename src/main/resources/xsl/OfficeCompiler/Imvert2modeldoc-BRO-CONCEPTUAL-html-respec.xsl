@@ -254,7 +254,10 @@
     
     <xsl:template match="itemtype" mode="detail">
         <th>
-            <xsl:value-of select="if (@type) then imf:translate-i3n(@type,$language-model,()) else ''"/>
+            <xsl:value-of select="
+                if (normalize-space(.)) then string(.) else
+                if (@type) then imf:translate-i3n(@type,$language-model,()) else ''
+                "/>
         </th>
     </xsl:template>
     
@@ -306,28 +309,36 @@
                     <colgroup width="10%"/>
                     <colgroup width="10%"/>
                 </xsl:when>
-                <xsl:when test="$type = ('DETAIL-ENUMERATION','DETAIL-CODELIST') and $items = 2"> <!-- 40 60 -->
-                        <colgroup width="40%"/>
-                        <colgroup width="60%"/>
+                
+                <xsl:when test="$type = ('CONTENTS-ENUMERATION','CONTENTS-CODELIST') and $items = 2"> <!-- 40 60 -->
+                    <colgroup width="40%"/>
+                    <colgroup width="60%"/>
                 </xsl:when>
-                <xsl:when test="$type = ('DETAIL-ENUMERATION','DETAIL-CODELIST') and $items = 3"> <!-- 10 30 60 -->
-                        <colgroup width="10%"/>
-                        <colgroup width="30%"/>
-                        <colgroup width="60%"/>
+                <xsl:when test="$type = ('CONTENTS-ENUMERATION','CONTENTS-CODELIST') and $items = 3"> <!-- 10 30 60 -->
+                    <colgroup width="10%"/>
+                    <colgroup width="30%"/>
+                    <colgroup width="60%"/>
                 </xsl:when>
-                <xsl:when test="$type = ('DETAIL-ENUMERATION','DETAIL-CODELIST') and $items = 4"> <!-- 30 10 10 50 -->
+                <xsl:when test="$type = ('CONTENTS-ENUMERATION','CONTENTS-CODELIST') and $items = 4"> <!-- 30 10 10 50 -->
                     <colgroup width="30%"/>
                     <colgroup width="10%"/>
                     <colgroup width="10%"/>
                     <colgroup width="50%"/>
                 </xsl:when>
-                <xsl:when test="$type = ('DETAIL-ENUMERATION','DETAIL-CODELIST') and $items = 5"> <!-- 30 10 10 50 -->
+                <xsl:when test="$type = ('CONTENTS-ENUMERATION','CONTENTS-CODELIST') and $items = 5"> <!-- 30 10 10 50 -->
                     <colgroup width="20%"/>
                     <colgroup width="20%"/>
                     <colgroup width="10%"/>
                     <colgroup width="10%"/>
                     <colgroup width="40%"/>
                 </xsl:when>
+                <xsl:when test="$type = ('CONTENTS-REFERENCELIST')">
+                    <xsl:variable name="column-size" select="100 div $items"/>
+                    <xsl:for-each select="for $i in (1 to $items) return $i">
+                        <colgroup width="{$column-size}%"/>
+                    </xsl:for-each>
+                </xsl:when>
+         
                 <xsl:when test="$items = 2"> <!-- DEFAULT TWO COLUMNS --> <!-- 30 70 -->
                         <colgroup width="30%"/>
                         <colgroup width="70%"/>
@@ -445,7 +456,7 @@
                         <xsl:apply-templates select="item[4]" mode="#current"/>
                     </td>
                 </xsl:when>
-                <xsl:when test="$type = ('DETAIL-ENUMERATION','DETAIL-CODELIST') and $items = 2"> <!-- normal without code -->
+                <xsl:when test="$type = ('CONTENTS-ENUMERATION','CONTENTS-CODELIST') and $items = 2"> <!-- normal without code -->
                     <th>
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                     </th>
@@ -453,7 +464,7 @@
                         <xsl:apply-templates select="item[2]" mode="#current"/>
                     </td>
                 </xsl:when>
-                <xsl:when test="$type = ('DETAIL-ENUMERATION','DETAIL-CODELIST') and $items = 3"> <!-- normal with code -->
+                <xsl:when test="$type = ('CONTENTS-ENUMERATION','CONTENTS-CODELIST') and $items = 3"> <!-- normal with code -->
                     <td>
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                     </td>
@@ -464,7 +475,7 @@
                         <xsl:apply-templates select="item[3]" mode="#current"/>
                     </td>
                 </xsl:when>
-                <xsl:when test="$type = ('DETAIL-ENUMERATION','DETAIL-CODELIST') and $items = 4"> <!-- imbroa without code -->
+                <xsl:when test="$type = ('CONTENTS-ENUMERATION','CONTENTS-CODELIST') and $items = 4"> <!-- imbroa without code -->
                     <td>
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                     </td>
@@ -494,6 +505,13 @@
                     <td>
                         <xsl:apply-templates select="item[5]" mode="#current"/>
                     </td>
+                </xsl:when>
+                <xsl:when test="$type = ('CONTENTS-REFERENCELIST')">
+                    <xsl:for-each select="item">
+                        <td>
+                            <xsl:apply-templates select="." mode="#current"/>
+                        </td>
+                    </xsl:for-each>
                 </xsl:when>
                 <xsl:when test="$items = 2"> <!-- DEFAULT TWO COLUMNS --> <!-- 30 70 -->
                     <th>

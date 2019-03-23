@@ -276,8 +276,8 @@
     </item>
     <item>
         <key>CHAPTER-LISTS</key>
-        <trans lang="nl">Inhoud van enumeraties en codelijsten</trans>
-        <trans lang="en">Contents of enumerations and codelists</trans>
+        <trans lang="nl">Inhoud van waardenlijsten</trans>
+        <trans lang="en">Contents of value lists</trans>
     </item>
     <item>
         <key>IMAGEMAPS</key>
@@ -415,6 +415,23 @@
         <trans lang="nl">Gegevensgroeptype details</trans>
         <trans lang="en">GroupType details</trans>
     </item>
+    
+    <item>
+        <key>CONTENTS-REFERENCELIST</key>
+        <trans lang="nl">Referentielijst inhoud</trans>
+        <trans lang="en">Reference list contents</trans>
+    </item>
+    <item>
+        <key>CONTENTS-CODELIST</key>
+        <trans lang="nl">Codelijst inhoud</trans>
+        <trans lang="en">Codelist contents</trans>
+    </item>
+    <item>
+        <key>CONTENTS-ENUMERATION</key>
+        <trans lang="nl">Enumeratie inhoud</trans>
+        <trans lang="en">Enumeration contents</trans>
+    </item>
+    
     <item>
         <key>ATTRIBUTE</key>
         <trans lang="nl">Attribuutsoort</trans>
