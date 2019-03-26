@@ -647,8 +647,8 @@
             <content>
                 <!-- the attributes are the names of the reference list columns. -->
                 <xsl:for-each select="imvert:attributes/imvert:attribute">
-                    <itemtype type="LABEL">
-                        <xsl:value-of select="imvert:name"/>
+                    <itemtype type="LABEL" name="{imvert:name}">
+                        <xsl:value-of select="imvert:name/@original"/>
                     </itemtype>
                 </xsl:for-each>
                 <!-- and the add the columns for this reference list -->
