@@ -281,17 +281,19 @@
                                     <xsl:value-of select="$norm-title"/> 
                                 </imvert:name>
                                 <xsl:variable name="value-normalization" select="imf:get-config-tagged-values()[@id = $target-tv-id]/@norm"/>
-                                <xsl:variable name="value-format" select="$configuration-notesrules-file//notes-format"/>
+                                <xsl:variable name="value-format" select="lower-case($configuration-notesrules-file//notes-format)"/>
                                 <imvert:value>
                                     <xsl:choose>
-                                        <xsl:when test="$value-normalization = 'note' and lower-case($value-format) = 'plain'">
+                                        <xsl:when test="$value-normalization = 'note' and $value-format = 'plain'">
+                                            <xsl:attribute name="format" select="$value-format"/>
                                             <xsl:value-of select="."/>
                                         </xsl:when>
                                         <xsl:when test="$value-normalization = 'note'">
                                             <xsl:attribute name="format" select="$value-format"/>
-                                            <xsl:sequence select="imf:parse-wiki(.,lower-case($value-format))"/>
+                                            <xsl:sequence select="imf:parse-wiki(.,$value-format)"/>
                                         </xsl:when>
                                         <xsl:otherwise>
+                                            <xsl:attribute name="format">unknown</xsl:attribute>
                                             <xsl:value-of select="."/>
                                         </xsl:otherwise>
                                     </xsl:choose>
