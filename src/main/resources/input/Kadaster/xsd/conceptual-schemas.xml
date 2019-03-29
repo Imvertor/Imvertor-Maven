@@ -25,12 +25,12 @@
             <cs-ref:MapRef xlink:href="#ENVLOG"/>
          </cs:use>
       </cs:Mapping>
-      <cs:Mapping>
+      <!--<cs:Mapping>
          <cs:name>CERTIFICATES</cs:name>
          <cs:use>
             <cs-ref:MapRef xlink:href="#CERTIF"/>
          </cs:use>
-      </cs:Mapping>
+      </cs:Mapping>-->
    </cs:mappings>
    <cs:components>
       <cs:ConceptualSchemasComponents>
