@@ -92,13 +92,13 @@
         <xsl:param name="use-mapping" as="xs:string"/>
         
         <xsl:variable name="conceptual-schema-ids" select="$conceptual-schema-mapping//cs:ConceptualSchema[cs:url = $url]/cs:id"/>
-        <xsl:variable name="maps" select="$conceptual-schema-mapping/cs:components/cs:ConceptualSchemasComponents/cs:Map[imf:resolve-ref(cs:forSchema/cs-ref:ConceptualSchemaRef,'ConceptualSchema')/cs:id = $conceptual-schema-ids]"/>
+        <xsl:variable name="maps" select="$conceptual-schema-mapping/cs:components/cs:ConceptualSchemasComponents/cs:Map[imf:resolve-cs-ref(cs:forSchema/cs-ref:ConceptualSchemaRef,'ConceptualSchema')/cs:id = $conceptual-schema-ids]"/>
         
         <!-- select maps that are in the mapping -->
         <xsl:variable name="used-maps" select="$conceptual-schema-mapping/cs:mappings/cs:Mapping[cs:name = $use-mapping]"/>
         <xsl:variable name="selected-mapping" as="element(cs:Map)*">
             <xsl:for-each select="$maps">
-                <xsl:if test="cs:id = (for $m in $used-maps/cs:use/cs-ref:MapRef return imf:resolve-ref($m,'Map')/cs:id)">
+                <xsl:if test="cs:id = (for $m in $used-maps/cs:use/cs-ref:MapRef return imf:resolve-cs-ref($m,'Map')/cs:id)">
                     <xsl:sequence select="."/>
                 </xsl:if>
             </xsl:for-each>
@@ -120,24 +120,24 @@
         
     </xsl:function>
     
-    <xsl:function name="imf:resolve-ref" as="element()?">
+    <xsl:function name="imf:resolve-cs-ref" as="element()?">
         <xsl:param name="element" as="element()"/> <!-- a cs-ref:* element -->
         <xsl:param name="element-type" as="xs:string+"/> <!-- local name(s) of the element(s) for which this ID is valid -->
         <xsl:variable name="id" select="substring($element/@xlink:href,2)"/>
-        <xsl:variable name="target" select="$conceptual-schema-mapping/cs:components/cs:ConceptualSchemasComponents/cs:*[cs:id = $id and local-name(.) = $element-type]"/>
+        <xsl:variable name="target" select="root($element)/cs:ConceptualSchemas/cs:components/cs:ConceptualSchemasComponents/cs:*[cs:id = $id and local-name(.) = $element-type]"/>
         <xsl:choose>
             <xsl:when test="count($target) = 1">
                 <xsl:sequence select="$target"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="imf:msg($conceptual-schema-mapping,'FATAL','Found [1] items with id [2] allowed for names [3], in mapping named [4]', (count($target), $id, imf:string-group($element-type), $conceptual-schema-mapping-name))"/>
+                <xsl:sequence select="imf:msg(root($element),'FATAL','Found [1] items with id [2] allowed for names [3], in mapping named [4]', (count($target), $id, imf:string-group($element-type), $conceptual-schema-mapping-name))"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
     
     <xsl:function name="imf:get-schema-for-construct">
         <xsl:param name="construct" as="element(cs:Construct)"/>
-        <xsl:sequence select="imf:resolve-ref($construct/../../cs:forSchema/cs-ref:ConceptualSchemaRef,'ConceptualSchema')"/>
+        <xsl:sequence select="imf:resolve-cs-ref($construct/../../cs:forSchema/cs-ref:ConceptualSchemaRef,'ConceptualSchema')"/>
     </xsl:function>
     
  </xsl:stylesheet>

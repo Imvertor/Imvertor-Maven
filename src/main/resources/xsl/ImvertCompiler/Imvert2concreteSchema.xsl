@@ -111,7 +111,7 @@
     <!-- replace the short name by the short name configured in the conceptual map --> 
     <xsl:template match="imvert:package/imvert:short-name" mode="conceptual">
         <xsl:param name="map" as="element(cs:Map)"/>
-        <xsl:sequence select="imf:create-output-element('imvert:short-name',imf:resolve-ref($map/cs:forSchema/cs-ref:ConceptualSchemaRef,'ConceptualSchema')/cs:shortName)"/>
+        <xsl:sequence select="imf:create-output-element('imvert:short-name',imf:resolve-cs-ref($map/cs:forSchema/cs-ref:ConceptualSchemaRef,'ConceptualSchema')/cs:shortName)"/>
     </xsl:template>
    
     <xsl:template match="imvert:package/imvert:version" mode="conceptual">
