@@ -150,7 +150,7 @@
                         </xsl:for-each>
                     </xsl:variable>
                     <!-- determine which release these ID's are taken from -->
-                    <xsl:variable name="stamps" select="for $s in $result return concat($s/imvert:created,'',$s/imvert:modified)"/>
+                    <xsl:variable name="stamps" select="for $s in $result return concat('Created: ',$s/imvert:created,', Modified: ',$s/imvert:modified)"/>
                     <xsl:variable name="names" select="for $s in $result return $s/imvert:name"/>
                     <xsl:choose>
                         <xsl:when test="$result[2] and distinct-values($names)[2]">
