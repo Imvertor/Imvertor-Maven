@@ -320,7 +320,16 @@
    </xs:complexType>
    <xs:element name="ConceptualSchemasComponents"
                type="Model:ConceptualSchemasComponents"
-               abstract="false"/>
+               abstract="false">
+      <xs:unique name="mapKey">
+         <xs:selector xpath="Model:Map"/>
+         <xs:field xpath="Model:id"/>
+      </xs:unique>
+      <xs:unique name="mapConceptualSchema">
+         <xs:selector xpath="Model:ConceptualSchema"/>
+         <xs:field xpath="Model:id"/>
+      </xs:unique>
+   </xs:element>
    <xs:complexType name="ConceptualSchemasComponents" abstract="false">
       <xs:sequence>
          <xs:choice minOccurs="0" maxOccurs="unbounded">
