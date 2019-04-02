@@ -18,8 +18,9 @@
             <cs-ref:MapRef xlink:href="#GML321"/>
             <cs-ref:MapRef xlink:href="#SWE201"/>
             <cs-ref:MapRef xlink:href="#OM200"/>
+            <cs-ref:MapRef xlink:href="#CIT10"/>
+            <cs-ref:MapRef xlink:href="#GEX10"/>
             <cs-ref:MapRef xlink:href="#SAM202"/>
-            <cs-ref:MapRef xlink:href="#ISO19115"/>
             <cs-ref:MapRef xlink:href="#INSPIRE"/>
             <cs-ref:MapRef xlink:href="#INSPIRE-GEO"/>
             <cs-ref:MapRef xlink:href="#INSPIRE-SOIL"/>
@@ -667,7 +668,7 @@
             </cs:constructs>
          </cs:Map>
          <cs:Map>
-            <cs:id>ISO19115</cs:id>
+            <cs:id>CIT10</cs:id>
             <cs:namespace>http://standards.iso.org/iso/19115/-3/cit/1.0</cs:namespace>
             <cs:desc>Citation and responsible party information</cs:desc>
             <cs:location>http://standards.iso.org/iso/19115/-3/cit/1.0/cit.xsd</cs:location>
@@ -694,7 +695,7 @@
             </cs:constructs>
          </cs:Map>
          <cs:Map>
-            <cs:id>ISO19115</cs:id>
+            <cs:id>GEX10</cs:id>
             <cs:namespace>http://standards.iso.org/iso/19115/-3/gex/1.0</cs:namespace>
             <cs:desc>Extent information</cs:desc>
             <cs:location>http://standards.iso.org/iso/19115/-3/gex/1.0/gex.xsd</cs:location>
