@@ -104,6 +104,9 @@
                 <xsl:when test="not($includedoclist)">
                     <!-- skip -->
                 </xsl:when>
+                <xsl:when test="starts-with($loc,'urn:')">
+                    <!-- ignore -->
+                </xsl:when>
                 <xsl:when test="empty($doclist-xml-url)">
                     <xsl:sequence select="imf:msg(.,'FATAL','Owner parameter doclist-xml-url not defined',())"/>
                 </xsl:when>
