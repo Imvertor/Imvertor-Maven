@@ -785,7 +785,10 @@
         <xsl:variable name="is-property" select="exists(($this/self::imvert:attribute,$this/self::imvert:association))"/>
         <xsl:variable name="force-nillable" select="$is-property and $is-forced-nillable"/>
         
-        <xsl:variable name="is-voidable" select="$this/imvert:stereotype/@id = ('stereotype-name-voidable')"/>
+        <xsl:variable name="is-voidable" select="
+            $this/imvert:stereotype/@id = ('stereotype-name-voidable')
+            or
+            imf:boolean(imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-VOIDABLE'))"/>
         <xsl:variable name="is-nillable" select="$is-voidable or $force-nillable"/>
         
         <xsl:variable name="is-restriction" select="imf:is-restriction($this)"/>
