@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<notes-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <xi:include href="../../../KKG/cfg/notesrules/KKG-ISO.xml"/>
+    
+    <name>EIGENAAR</name>
+    
+    
+</notes-rules>
