@@ -99,7 +99,8 @@
             
             <xsl:choose>
                 <xsl:when test="exists($loc) and exists($referring-attributes-loc)">
-                    <xsl:sequence select="imf:msg(.,'ERROR','List contents specified on both attribute(s) and list. Attributes are: [1]',imf:string-group(for $a in $referring-attributes-loc return imf:get-display-name($a)))"/>
+                    <xsl:sequence select="imf:msg(.,'WARNING','List contents specified on both attribute(s) and list. Attributes are: [1]',imf:string-group(for $a in $referring-attributes-loc return imf:get-display-name($a)))"/>
+                    <!-- ignore -->
                 </xsl:when>
                 <xsl:when test="not($includedoclist)">
                     <!-- skip -->
