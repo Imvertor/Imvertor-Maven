@@ -33,6 +33,11 @@
     -->
     <include-incoming-associations>yes</include-incoming-associations>
     
+    <!--
+        Show the gegevensgroep type name in the attribute listings?
+    -->
+    <reveal-composition-name>yes</reveal-composition-name>
+    
     <!-- 
         collect the codelist and enumeration contents in a separate section?
     -->

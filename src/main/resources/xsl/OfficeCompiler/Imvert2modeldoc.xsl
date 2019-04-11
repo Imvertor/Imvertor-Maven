@@ -56,6 +56,7 @@
     
     <xsl:variable name="include-incoming-associations" select="imf:boolean($configuration-docrules-file/include-incoming-associations)"/>
     <xsl:variable name="lists-to-listing" select="imf:boolean($configuration-docrules-file/lists-to-listing)"/>
+    <xsl:variable name="reveal-composition-name" select="imf:boolean($configuration-docrules-file/reveal-composition-name)"/>
     
     <xsl:template match="/imvert:packages">
         <book name="{imvert:application}" subpath="{$subpath}" type="{imvert:stereotype}" id="{imvert:id}" generator-version="{$imvertor-version}" generator-date="{$generation-date}">
@@ -403,9 +404,12 @@
     <xsl:template match="imvert:attribute | imvert:association" mode="composition">
         <!-- toon alsof het een attribuut is -->
         <xsl:variable name="type" select="imf:get-construct-by-id(imvert:type-id)"/>
-       <part type="COMPOSER">
-          <item>
-              <xsl:sequence select="imf:create-link($type,'detail',imf:get-name(.,true()))"/>
+        <part type="COMPOSER">
+           <item uuid="{imvert:type-id}">
+              <xsl:variable name="attname" select="imf:get-name(.,true())"/>
+              <xsl:variable name="typname" select="imf:get-name($type,true())"/>
+              <xsl:variable name="name" select="if ($reveal-composition-name) then concat($attname,' (', $typname, ')') else ($attname)"/>
+              <xsl:sequence select="imf:create-link($type,'detail',$name)"/>
           </item>
           <item>
               <xsl:sequence select="imf:get-formatted-tagged-value($type,'CFG-TV-DEFINITION')"/>
@@ -825,7 +829,9 @@
         <xsl:param name="this" />
         <xsl:param name="tv-id"/>
         <xsl:variable name="tv-element" select="imf:get-most-relevant-compiled-taggedvalue-element($this,concat('##',$tv-id))"/>
-        <xsl:sequence select="imf:get-clean-documentation-string(imf:get-tv-value($tv-element))"/>
+        <xsl:variable name="default-value" select="$configuration-tvset-file//tagged-values/tv[@id = $tv-id]/declared-values/value[imf:boolean(@default)]"/>
+        <xsl:variable name="value" select="if ($tv-element) then imf:get-clean-documentation-string(imf:get-tv-value($tv-element)) else $default-value"/>
+        <xsl:sequence select="$value"/>
     </xsl:function>
     
     <xsl:function name="imf:get-formatted-tagged-value-cfg" as="item()*">        

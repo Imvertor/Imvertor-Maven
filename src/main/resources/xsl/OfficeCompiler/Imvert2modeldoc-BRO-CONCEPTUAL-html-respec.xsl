@@ -26,7 +26,7 @@
     <xsl:variable name="has-multiple-domains" select="count(/book/chapter/section[@type='DOMAIN']) gt 1"/>
     
     <xsl:template match="/book/chapter">
-        <section id='{@type}' class="normative"> 
+        <section id='{@type}' class="normative" level="1"> 
             <h2>
                 <xsl:value-of select="imf:translate-i3n(@title,$language-model,())"/>
             </h2>
@@ -36,7 +36,10 @@
                     <xsl:value-of select="imf:get-config-string('appinfo','release-name')"/> imvertor <xsl:value-of select="@generator-version"/>
                 </xsl:comment>
             </p>
-            <xsl:apply-templates select="section" mode="domain"/>
+            <xsl:variable name="r" as="item()*">
+                <xsl:apply-templates select="section" mode="domain"/>
+            </xsl:variable>
+            <xsl:apply-templates select="$r" mode="remove-deep-sections"/>
         </section>
     </xsl:template>
     
@@ -46,7 +49,7 @@
             <xsl:when test="$has-multiple-domains">
                 <xsl:variable name="level" select="imf:get-section-level(.)"/>
                 <xsl:sequence select="imf:create-anchors(.)"/>
-                <section id="{$id}">
+                <section id="{$id}" level="{$level}">
                     <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                         <xsl:value-of select="' '"/>
@@ -81,7 +84,7 @@
                         <map name="imagemap-{$diagram-id}">
                             <xsl:for-each select="$diagram/imvert-imap:map">
                                 <xsl:variable name="section-id" select="imvert-imap:for-id"/>
-                                <xsl:variable name="section" select="$document//section[@uuid = $section-id]"/>
+                                <xsl:variable name="section" select="$document//*[@uuid = $section-id]"/><!-- expected are: section or item; but can be anything referenced from within graph by imagemap -->
                                 <xsl:if test="$section">
                                     <xsl:variable name="section-name" select="$section/name"/>
                                     <area 
@@ -111,7 +114,7 @@
             </xsl:when>
             <!-- de kop van de details sectie. -->
             <xsl:when test="@type = 'DETAILS'">
-                <section id="{$id}">
+                <section id="{$id}" level="{$level}">
                     <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                     </xsl:element>
@@ -123,7 +126,7 @@
                 <xsl:apply-templates mode="#current"/>
             </xsl:when>
             <xsl:when test="@type = 'EXPLANATION'">
-                <section id="{$id}" class="notoc">
+                <section id="{$id}" class="notoc" level="{$level}">
                     <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n('EXPLANATION',$language-model,())"/>
                     </xsl:element>
@@ -151,7 +154,7 @@
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ATTRIBUTE'">
                 <xsl:variable name="composer" select="content[not(@approach='association')]/part[@type = 'COMPOSER']/item[1]"/>
                 <xsl:sequence select="imf:create-anchors(.)"/>
-                <section id="{$id}" class="notoc">
+                <section id="{$id}" class="notoc" level="{$level}">
                     <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n('ATTRIBUTE',$language-model,())"/>
                         <xsl:value-of select="' '"/>
@@ -166,7 +169,7 @@
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ASSOCIATION'">
                 <xsl:variable name="composer" select="content[not(@approach='association')]/part[@type = 'COMPOSER']/item[1]"/>
                 <xsl:sequence select="imf:create-anchors(.)"/>
-                <section id="{$id}" class="notoc">
+                <section id="{$id}" class="notoc" level="{$level}">
                     <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n('ASSOCIATION',$language-model,())"/>
                         <xsl:value-of select="' '"/>
@@ -180,7 +183,7 @@
                 </section>
             </xsl:when>
             <xsl:when test="starts-with(@type,'OVERVIEW-')">
-                <section id="{$id}">
+                <section id="{$id}" level="{$level}">
                     <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                         <xsl:value-of select="' '"/>
@@ -191,7 +194,7 @@
             </xsl:when> 
             <xsl:when test="@type = ('OBJECTTYPE')"> <!-- objecttypes are in TOC -->
                 <xsl:sequence select="imf:create-anchors(.)"/>
-                <section id="{$id}">
+                <section id="{$id}" level="{$level}">
                     <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                         <xsl:value-of select="' '"/>
@@ -203,7 +206,7 @@
             <!-- een detail sectie, deze krijgen geen TOC ingang -->
             <xsl:when test="starts-with(@type,'DETAIL-')">
                 <xsl:sequence select="imf:create-anchors(.)"/>
-                <section id="{$id}">
+                <section id="{$id}" level="{$level}">
                     <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                         <xsl:value-of select="' '"/>
@@ -220,7 +223,7 @@
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence select="imf:create-anchors(.)"/>
-                <section id="{$id}">
+                <section id="{$id}" level="{$level}">
                     <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                         <xsl:value-of select="' '"/>
@@ -359,8 +362,19 @@
                 <xsl:when test="@type = 'COMPOSER' and $type='DETAIL-COMPOSITE-ATTRIBUTE'">
                     <!-- skip, do not show in detail listings -->
                 </xsl:when>
+                <xsl:when test="@type = 'CFG-DOC-INDICATIEAUTHENTIEK'">
+                   <!-- add suffix info string -->
+                    <th>
+                        <xsl:apply-templates select="item[1]" mode="#current"/>
+                    </th>
+                    <td>
+                        <xsl:apply-templates select="item[2]" mode="#current"/>
+                        <xsl:if test="item[2] eq 'Basisgegeven'">
+                            <xsl:text> (niet-authentiek)</xsl:text>
+                        </xsl:if> 
+                    </td>
+                </xsl:when>
                 <xsl:when test="@type = 'COMPOSER'"> <!-- 30 50 10 10 -->
-                   
                     <td>
                         <xsl:apply-templates select="item[1]" mode="#current"/>
                         <xsl:text>:</xsl:text>
@@ -549,9 +563,8 @@
     </xsl:template>
     
     <xsl:template match="item" mode="#all">
-        <xsl:if test="@id"><!-- this hasd been introduced to support the case of listed enumerations -->
-            <a class="anchor" name="{@id}"/>
-        </xsl:if>
+        <xsl:sequence select="imf:create-anchors(.)"/>
+        <!-- this has been introduced to support the case of listed enumerations, and to support the case of graph links to compositions i.e. gegevensgroeptype -->
         <xsl:choose>
             <xsl:when test="exists(@idref) and @idref-type='external'">
                 <a class="external-link" href="{@idref}"> <!--this is an URL -->
@@ -575,7 +588,18 @@
     <xsl:template match="text()">
         <xsl:value-of select="."/>
     </xsl:template>
-   
+    
+    <xsl:template match="node()|@*" mode="remove-deep-sections">
+        <xsl:copy>
+            <xsl:apply-templates select="node()|@*" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    <xsl:template match="section[@level ge '7']" mode="remove-deep-sections">
+        <div>
+            <xsl:apply-templates select="node()|@*" mode="#current"/>
+        </div>
+    </xsl:template>
+    
     <xsl:function name="imf:create-anchors" as="element()*">
         <xsl:param name="section-or-item"/>
         <xsl:if test="$section-or-item/@uuid">
@@ -593,14 +617,7 @@
     
     <xsl:function name="imf:get-section-header-element-name" as="xs:string">
         <xsl:param name="level" as="xs:integer"/>
-        <xsl:choose>
-            <xsl:when test="$level lt 7">
-                <xsl:value-of select="concat('h',$level)"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="'strong'"/>
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:value-of select="concat('h',$level)"/>
     </xsl:function>
     
     <xsl:function name="imf:create-formatted-text">
