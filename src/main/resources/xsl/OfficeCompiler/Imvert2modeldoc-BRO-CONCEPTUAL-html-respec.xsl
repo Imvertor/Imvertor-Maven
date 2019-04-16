@@ -153,7 +153,6 @@
             </xsl:when>
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ATTRIBUTE'">
                 <xsl:variable name="composer" select="content[not(@approach='association')]/part[@type = 'COMPOSER']/item[1]"/>
-                <xsl:sequence select="imf:create-anchors(.)"/>
                 <section id="{$id}" class="notoc" level="{$level}">
                     <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n('ATTRIBUTE',$language-model,())"/>
@@ -168,7 +167,6 @@
             </xsl:when>
             <xsl:when test="@type = 'DETAIL-COMPOSITE-ASSOCIATION'">
                 <xsl:variable name="composer" select="content[not(@approach='association')]/part[@type = 'COMPOSER']/item[1]"/>
-                <xsl:sequence select="imf:create-anchors(.)"/>
                 <section id="{$id}" class="notoc" level="{$level}">
                     <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n('ASSOCIATION',$language-model,())"/>

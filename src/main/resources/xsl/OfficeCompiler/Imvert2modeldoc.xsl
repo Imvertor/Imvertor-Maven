@@ -405,7 +405,7 @@
         <!-- toon alsof het een attribuut is -->
         <xsl:variable name="type" select="imf:get-construct-by-id(imvert:type-id)"/>
         <part type="COMPOSER">
-           <item uuid="{imvert:type-id}">
+           <item>
               <xsl:variable name="attname" select="imf:get-name(.,true())"/>
               <xsl:variable name="typname" select="imf:get-name($type,true())"/>
               <xsl:variable name="name" select="if ($reveal-composition-name) then concat($attname,' (', $typname, ')') else ($attname)"/>
@@ -663,7 +663,7 @@
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-composite')]" mode="detail">
         
-        <section name="{imf:get-name(.,true())}" type="DETAIL-COMPOSITE" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}">
+        <section name="{imf:get-name(.,true())}" type="DETAIL-COMPOSITE" id="{imf:plugin-get-link-name(.,'detail')}" id-global="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
             <content>
                 <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-DETAIL-COMPOSITE')"/>
             </content>
