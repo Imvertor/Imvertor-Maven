@@ -27,7 +27,7 @@
         <xsl:variable name="effective-package-name" select="($supplier-package-name,$package-name)[1]"/>
         <!-- note that for classes and properties we do not support alternative names (yet) -->
         <xsl:variable name="effective-class-name" select="$this/ancestor-or-self::imvert:class[1]/imvert:name"/>
-        <xsl:variable name="effective-prop-name" select="$this[self::imvert:attribute | self::association]/imvert:name"/> 
+        <xsl:variable name="effective-prop-name" select="$this[self::imvert:attribute | self::imvert:association]/imvert:name"/> 
         <xsl:sequence select="imf:compile-construct-formal-name($type-name,$effective-package-name,$effective-class-name,$effective-prop-name)"/>
     </xsl:function>
     
