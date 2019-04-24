@@ -28,6 +28,7 @@
             <cs-ref:MapRef xlink:href="#BRO"/>
             <cs-ref:MapRef xlink:href="#BRO-SAMPLE1"/>
             <cs-ref:MapRef xlink:href="#BRO-SAMPLE2"/>
+            <cs-ref:MapRef xlink:href="#BRO-COMMON"/>
          </cs:use>
       </cs:Mapping>
    </cs:mappings>
@@ -829,6 +830,38 @@
                         <cs:asAttribute>SampleClass2Type</cs:asAttribute>
                         <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
                         <cs:primitive>false</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+            </cs:constructs>
+         </cs:Map>
+         <cs:Map>
+            <cs:id>BRO-COMMON</cs:id>
+            <cs:namespace>http://www.broservices.nl/xsd/brocommon/3.0</cs:namespace>
+            <cs:desc>Common constructies BRO</cs:desc>
+            <cs:location>hhttps://schema.broservices.nl/xsd/brocommon/3.0/brocommon.xsd</cs:location>
+            <cs:phase>0</cs:phase>
+            <cs:version>3.0.3</cs:version>
+            <cs:release>20190321</cs:release>
+            <cs:forSchema>
+               <cs-ref:ConceptualSchemaRef xlink:href="#RO-BRO"/>
+            </cs:forSchema>
+            <cs:constructs>
+               <cs:Construct>
+                  <cs:name>IndicatieJaNee</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:catalogEntries>
+                     <cs:CatalogEntry>
+                        <cs:name>https://www.basisregistratieondergrond.nl/</cs:name>
+                     </cs:CatalogEntry>
+                  </cs:catalogEntries>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>IndicationYesNoEnumeration</cs:name>
+                        <cs:asAttribute>IndicationYesNoEnumeration</cs:asAttribute>
+                        <cs:asAttributeDesignation>enumeration</cs:asAttributeDesignation>
+                        <cs:primitive>true</cs:primitive>
                         <cs:hasNilreason>false</cs:hasNilreason>
                      </cs:XsdType>
                   </cs:xsdTypes>
