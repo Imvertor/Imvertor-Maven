@@ -849,13 +849,128 @@
             </cs:forSchema>
             <cs:constructs>
                <cs:Construct>
+                  <cs:name>Aantal4</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <!-- klopt dit? niet zeker van de mapping -->
+                        <cs:name>xs:integer</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Datum</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <!-- klopt dit? niet zeker van de mapping -->
+                        <cs:name>xs:date</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>DatumTijd</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <!-- klopt dit? niet zeker van de mapping -->
+                        <cs:name>xs:dateTime</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>KvK-nummer</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>ChamberOfCommerceNumberType</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>               
+               <cs:Construct>
+                  <cs:name>Meetwaarde</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <!-- klopt dit? kan dit type niet vinden in brocommon xsd -->
+                        <cs:name>MeasuredValue</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>        
+               <cs:Construct>
+                  <cs:name>Nummer2</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <!-- klopt dit? niet zeker van de mapping -->
+                        <cs:name>xs:integer</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Organisatie</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <!-- klopt dit? kan dit type niet vinden in brocommon xsd -->
+                        <cs:name>Organization</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Registratieobjectcode</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <!-- klopt dit? kan dit type niet vinden in brocommon xsd -->
+                        <cs:name>RegistrationObjectCodeType</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Tekst100</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <!-- klopt dit? niet zeker van de mapping -->
+                        <cs:name>xs:string</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Tekst40</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <!-- klopt dit? niet zeker van de mapping -->
+                        <cs:name>xs:string</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Tekst200</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <!-- klopt dit? niet zeker van de mapping -->
+                        <cs:name>xs:string</cs:name>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
                   <cs:name>IndicatieJaNee</cs:name>
                   <cs:sentinel>false</cs:sentinel>
-                  <cs:catalogEntries>
-                     <cs:CatalogEntry>
-                        <cs:name>https://www.basisregistratieondergrond.nl/</cs:name>
-                     </cs:CatalogEntry>
-                  </cs:catalogEntries>
                   <cs:xsdTypes>
                      <cs:XsdType>
                         <cs:name>IndicationYesNoEnumeration</cs:name>
@@ -863,6 +978,45 @@
                         <cs:asAttributeDesignation>enumeration</cs:asAttributeDesignation>
                         <cs:primitive>true</cs:primitive>
                         <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct><!--
+                  Volgens mij is deze niet nodig hadden we laatst als data-analisten geconstateerd: wordt alleen gebruikt onder IMBRO/A regime en staat dan in tagged value. 
+                  Voor de zekerheid nog wel opgenomen. -->
+               <cs:Construct>
+                  <cs:name>IndicatieJaNeeOnbekend</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>IndicationYesNoUnknownEnumeration</cs:name>
+                        <cs:asAttribute>IndicationYesNoUnknownEnumeration</cs:asAttribute>
+                        <cs:asAttributeDesignation>enumeration</cs:asAttributeDesignation>
+                        <cs:primitive>true</cs:primitive>
+                        <cs:hasNilreason>false</cs:hasNilreason>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Kwaliteitsregime</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>QualityRegimeEnumeration</cs:name>
+                        <cs:asAttributeDesignation>enumeration</cs:asAttributeDesignation>
+                        <cs:primitive>true</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
+                  <cs:name>Coördinatenpaar</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <!-- klopt dit? niet zeker van de mapping -->
+                        <cs:name>Point</cs:name>
+                        <cs:asAttribute>PointPropertyType</cs:asAttribute>
+                        <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
+                        <cs:primitive>false</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
