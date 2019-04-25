@@ -16,7 +16,7 @@
     <!--
         Where to show the explanation? (at-bottom or as-row)
     -->
-    <explanation-location>at-bottom</explanation-location>
+    <explanation-location>as-row</explanation-location>
     
     <!-- 
         Append the role name at end of the association name? 
@@ -169,6 +169,30 @@
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
             <level show="force" compile="full" format="plain">DISPLAY-DETAIL-ENUMERATION</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-TOELICHTING">
+        <name lang="nl">Toelichting</name>
+        <name lang="en">Explanation</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-ASSOCIATIONCLASS</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REFERENCELIST</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-CODELIST</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-UNION</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+            
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-REFERENCEELEMENT</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ENUMERATION</level>
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-VOORBEELD">
