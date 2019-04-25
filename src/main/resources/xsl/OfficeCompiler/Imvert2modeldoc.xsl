@@ -98,7 +98,7 @@
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             
             <section type="OVERVIEW-OBJECTTYPE">
-                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype')]"/>
+                <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype','stereotype-name-koppelklasse')]"/>
             </section>
             <section type="OVERVIEW-ASSOCIATIONCLASS">
                 <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-relatieklasse')]"/>
@@ -157,7 +157,7 @@
    
     </xsl:template>
     
-    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype')]">
+    <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype','stereotype-name-koppelklasse')]">
         <section name="{imf:get-name(.,true())}" type="OBJECTTYPE" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
             <content>
