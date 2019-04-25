@@ -68,13 +68,13 @@
                 <xsl:variable name="sections" as="element()*">
                     <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
                     <!-- exclude package replacements (resolved stereotype internal) -->
-                    <xsl:apply-templates select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package') and empty(imvert:package-replacement)]"/>
+                    <xsl:apply-templates select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package') and empty(imvert:package-replacement)]"/>
                 </xsl:variable>
                 <xsl:apply-templates select="$sections" mode="section-cleanup"/>    
             </chapter>
             
             <xsl:if test="$lists-to-listing">
-                <xsl:variable name="domain-packages" select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package') and empty(imvert:package-replacement)]"/>
+                <xsl:variable name="domain-packages" select="imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package','stereotype-name-view-package') and empty(imvert:package-replacement)]"/>
 
                 <chapter title="CHAPTER-LISTS" type="lis">
                     <section type="CONTENTS-REFERENCELIST">
@@ -92,7 +92,7 @@
         </book>
     </xsl:template>
     
-    <xsl:template match="imvert:package"><!-- only domain packs -->
+    <xsl:template match="imvert:package"><!-- only domain or view packs -->
         <section type="DOMAIN" name="{imf:plugin-get-model-name(.)}" id="{imf:plugin-get-link-name(.,'global')}">
             
             <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
@@ -127,7 +127,7 @@
             </section>
             <section type="DETAILS">
                 <section type="DETAILS-OBJECTTYPE">
-                    <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype')]" mode="detail"/>
+                    <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-objecttype','stereotype-name-koppelklasse')]" mode="detail"/>
                 </section>
                 <section type="DETAILS-ASSOCIATIONCLASS">
                     <xsl:apply-templates select="imvert:class[imvert:stereotype/@id = ('stereotype-name-relatieklasse')]" mode="detail"/>
