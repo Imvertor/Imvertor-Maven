@@ -179,6 +179,10 @@
         <trans lang="nl">Objecttype</trans>
     </item>
     <item>
+        <key>KOPPELKLASSE</key>
+        <trans lang="nl">Koppelklasse</trans>
+    </item>
+    <item>
         <key>RELATIEKLASSE</key>
         <key>ASSOCIATIONCLASS</key>
         <trans lang="nl">Relatieklasse</trans>

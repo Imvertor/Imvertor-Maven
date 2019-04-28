@@ -617,7 +617,7 @@
     
     <xsl:function name="imf:create-formatted-text">
         <xsl:param name="text"/>
-        <xsl:sequence select="$text"/>
+        <xsl:sequence select="$text/node()"/>
     </xsl:function>
     
 </xsl:stylesheet>

@@ -840,9 +840,17 @@
         <xsl:param name="tv-id"/>
         <xsl:choose>
             <xsl:when test="$level/@compile = 'full'">
-                <xsl:variable name="all-tv" select="imf:get-all-compiled-tagged-values($this,false())"/>
+                <xsl:variable name="all-tv" select="imf:get-all-compiled-tagged-values($this,false())" as="element(tv)*"/>
                 <xsl:variable name="vals" select="$all-tv[@id = $tv-id]"/>
-                <xsl:for-each select="$vals">
+                
+                <!-- ontdubbelen -->
+                <xsl:variable name="vals-single" as="element(tv)*">
+                    <xsl:for-each-group select="$vals" group-by="lower-case(normalize-space(.))">
+                        <xsl:sequence select="current-group()[1]"/>
+                    </xsl:for-each-group>
+                </xsl:variable>
+                
+                <xsl:for-each select="$vals-single">
                     <item type="TRACED">
                         <item type="SUPPLIER">
                             <xsl:value-of select="imf:get-subpath(@project,@application,@release)"/>
