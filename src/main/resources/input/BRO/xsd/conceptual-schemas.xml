@@ -840,7 +840,7 @@
             <cs:id>BRO-COMMON</cs:id>
             <cs:namespace>http://www.broservices.nl/xsd/brocommon/3.0</cs:namespace>
             <cs:desc>Common constructies BRO</cs:desc>
-            <cs:location>hhttps://schema.broservices.nl/xsd/brocommon/3.0/brocommon.xsd</cs:location>
+            <cs:location>https://schema.broservices.nl/xsd/brocommon/3.0/brocommon.xsd</cs:location>
             <cs:phase>0</cs:phase>
             <cs:version>3.0.3</cs:version>
             <cs:release>20190321</cs:release>
@@ -853,7 +853,6 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <!-- klopt dit? niet zeker van de mapping -->
                         <cs:name>xs:integer</cs:name>
                         <cs:primitive>true</cs:primitive>
                      </cs:XsdType>
@@ -864,7 +863,6 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <!-- klopt dit? niet zeker van de mapping -->
                         <cs:name>xs:date</cs:name>
                         <cs:primitive>true</cs:primitive>
                      </cs:XsdType>
@@ -875,7 +873,6 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <!-- klopt dit? niet zeker van de mapping -->
                         <cs:name>xs:dateTime</cs:name>
                         <cs:primitive>true</cs:primitive>
                      </cs:XsdType>
@@ -886,6 +883,7 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
+                        <!-- HW; klopt dit? Moeten we KvK-nummer mappen naar brocommon:ChamberOfCommerceNumber of naar xs:string? -->
                         <cs:name>ChamberOfCommerceNumberType</cs:name>
                         <cs:primitive>true</cs:primitive>
                      </cs:XsdType>
@@ -897,6 +895,7 @@
                   <cs:xsdTypes>
                      <cs:XsdType>
                         <!-- klopt dit? kan dit type niet vinden in brocommon xsd -->
+                        <!-- HW; klopt dit? Moeten we Meetwaarde mappen naar gml:Measure of naar bijvoorbeeld xs:string? -->
                         <cs:name>MeasuredValue</cs:name>
                         <cs:primitive>true</cs:primitive>
                      </cs:XsdType>
@@ -907,7 +906,6 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <!-- klopt dit? niet zeker van de mapping -->
                         <cs:name>xs:integer</cs:name>
                         <cs:primitive>true</cs:primitive>
                      </cs:XsdType>
@@ -918,8 +916,7 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <!-- klopt dit? kan dit type niet vinden in brocommon xsd -->
-                        <cs:name>Organization</cs:name>
+                        <cs:name>OrganizationType</cs:name>
                         <cs:primitive>false</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>
@@ -929,7 +926,6 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <!-- klopt dit? kan dit type niet vinden in brocommon xsd -->
                         <cs:name>RegistrationObjectCodeType</cs:name>
                         <cs:primitive>true</cs:primitive>
                      </cs:XsdType>
@@ -940,7 +936,6 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <!-- klopt dit? niet zeker van de mapping -->
                         <cs:name>xs:string</cs:name>
                         <cs:primitive>true</cs:primitive>
                      </cs:XsdType>
@@ -951,7 +946,6 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <!-- klopt dit? niet zeker van de mapping -->
                         <cs:name>xs:string</cs:name>
                         <cs:primitive>true</cs:primitive>
                      </cs:XsdType>
@@ -962,7 +956,6 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <!-- klopt dit? niet zeker van de mapping -->
                         <cs:name>xs:string</cs:name>
                         <cs:primitive>true</cs:primitive>
                      </cs:XsdType>
@@ -973,23 +966,27 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <cs:name>IndicationYesNoEnumeration</cs:name>
-                        <cs:asAttribute>IndicationYesNoEnumeration</cs:asAttribute>
+                        <cs:name>IndicationYesNoType</cs:name>
+                        <cs:asAttribute>IndicationYesNoType</cs:asAttribute>
+                        <!-- HW; klopt dit? De betekenis en het gevolg zijn mij niet bekend -->
                         <cs:asAttributeDesignation>enumeration</cs:asAttributeDesignation>
                         <cs:primitive>true</cs:primitive>
                         <cs:hasNilreason>false</cs:hasNilreason>
                      </cs:XsdType>
                   </cs:xsdTypes>
-               </cs:Construct><!--
-                  Volgens mij is deze niet nodig hadden we laatst als data-analisten geconstateerd: wordt alleen gebruikt onder IMBRO/A regime en staat dan in tagged value. 
-                  Voor de zekerheid nog wel opgenomen. -->
+               </cs:Construct>
+               <!-- Volgens mij is IndicatieJaNeeOnbekend niet nodig hadden we laatst als data-analisten geconstateerd: wordt
+                    alleen gebruikt onder IMBRO/A regime en staat dan in tagged value.
+                    Voor de zekerheid nog wel opgenomen.
+               -->
                <cs:Construct>
                   <cs:name>IndicatieJaNeeOnbekend</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <cs:name>IndicationYesNoUnknownEnumeration</cs:name>
-                        <cs:asAttribute>IndicationYesNoUnknownEnumeration</cs:asAttribute>
+                        <cs:name>IndicationYesNoUnknownType</cs:name>
+                        <cs:asAttribute>IndicationYesNoUnknownType</cs:asAttribute>
+                        <!-- HW; klopt dit? De betekenis en het gevolg zijn mij niet bekend -->
                         <cs:asAttributeDesignation>enumeration</cs:asAttributeDesignation>
                         <cs:primitive>true</cs:primitive>
                         <cs:hasNilreason>false</cs:hasNilreason>
@@ -1001,7 +998,10 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <cs:name>QualityRegimeEnumeration</cs:name>
+                        <cs:name>QualityRegimeType</cs:name>
+                        <!-- HW; klopt het dat onderstaande regel ook nodig is? Voor de zekerheid toegevoegd. -->
+                        <cs:asAttribute>QualityRegimeType</cs:asAttribute>
+                        <!-- HW; klopt dit? De betekenis en het gevolg zijn mij niet bekend -->
                         <cs:asAttributeDesignation>enumeration</cs:asAttributeDesignation>
                         <cs:primitive>true</cs:primitive>
                      </cs:XsdType>
@@ -1014,7 +1014,9 @@
                      <cs:XsdType>
                         <!-- klopt dit? niet zeker van de mapping -->
                         <cs:name>Point</cs:name>
-                        <cs:asAttribute>PointPropertyType</cs:asAttribute>
+                        <!-- HW; klopt dit? Namespace gml ervoor gezet. -->
+                        <cs:asAttribute>gml:PointPropertyType</cs:asAttribute>
+                        <!-- HW; klopt dit? De betekenis en het gevolg zijn mij niet bekend -->
                         <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
                         <cs:primitive>false</cs:primitive>
                      </cs:XsdType>
