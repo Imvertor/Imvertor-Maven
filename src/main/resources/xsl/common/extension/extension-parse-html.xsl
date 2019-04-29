@@ -29,11 +29,20 @@
     version="2.0">
   
     <xsl:function name="imf:parse-html" as="item()*">
+        <xsl:param name="this" as="element()?"/>
         <xsl:param name="html-string" as="xs:string"/>
         <xsl:param name="is-escaped" as="xs:boolean"/>
         <xsl:choose>
             <xsl:when test="contains($html-string,'&gt;')">
-                <xsl:sequence select="ext:imvertorParseHTML($html-string,$is-escaped)"/>
+                <xsl:variable name="result-doc" select="ext:imvertorParseHTML($html-string,$is-escaped)"/>
+                <xsl:choose>
+                    <xsl:when test="exists($result-doc/@parse-exception)">
+                        <xsl:sequence select="imf:msg($this,'ERROR','Error parsing HTML: [1], escaped HTML string is [2]',($result-doc/@parse-exception,$html-string))"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:sequence select="$result-doc"/>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="$html-string"/>                

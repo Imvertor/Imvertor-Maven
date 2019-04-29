@@ -44,7 +44,7 @@
                 <xsl:variable name="startp" select="concat('&#xA;',$lis2)"/>
                 <xsl:variable name="nl" select="replace($startp,'&#xA;','&lt;p&gt;')"/>
                 <xsl:variable name="inet" select="imf:replace-inet-references($nl)"/>
-                <xsl:variable name="xhtml" select="imf:parse-html($inet,true())"/>
+                <xsl:variable name="xhtml" select="imf:parse-html((),$inet,true())"/>
                 <xsl:variable name="clean">
                     <xsl:apply-templates select="$xhtml" mode="clean-xhtml"/>
                 </xsl:variable>
