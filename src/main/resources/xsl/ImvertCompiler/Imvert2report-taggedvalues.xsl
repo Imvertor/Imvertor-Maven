@@ -125,9 +125,17 @@
                         <xsl:variable name="abbrev" select="tokenize(imvert:base-namespace,'/')[last()]" as="xs:string?"/>
                         
                         <xsl:variable name="rows" as="element(tr)*">
-                            <xsl:for-each select=".//imvert:tagged-value[@id = ('CFG-TV-RULES','CFG-TV-RULES-OMBROA')]">
-                                <xsl:variable name="class" select="../../../.."/>
-                                <xsl:variable name="attribute" select="../.."/>
+                            <xsl:variable name="set" as="element(imvert:tagged-value)*">
+                                <xsl:for-each select=".//imvert:class">
+                                    <xsl:sequence select="imvert:tagged-values/imvert:tagged-value[@id = ('CFG-TV-RULES','CFG-TV-RULES-IMBROA')]"/> 
+                                    <xsl:for-each select="imvert:attributes/imvert:attribute">
+                                        <xsl:sequence select="imvert:tagged-values/imvert:tagged-value[@id = ('CFG-TV-RULES','CFG-TV-RULES-IMBROA')]"/> 
+                                    </xsl:for-each>
+                                </xsl:for-each>
+                            </xsl:variable>
+                            <xsl:for-each select="$set">
+                                <xsl:variable name="class" select="ancestor-or-self::imvert:class"/>
+                                <xsl:variable name="attribute" select="ancestor-or-self::imvert:attribute"/>
                                 <xsl:variable name="pars" select="imvert:value/xhtml:body/xhtml:p"/>
                                 
                                 <!-- columns -->
