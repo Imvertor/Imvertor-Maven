@@ -39,6 +39,12 @@
     -->
     <lists-to-listing>true</lists-to-listing>
     
+    <!-- which sections to include in the modeldoc? --> 
+    <include-overview-section-level>no</include-overview-section-level>
+    <include-detail-section-level>yes</include-detail-section-level>
+    <include-overview-sections-by-type>yes</include-overview-sections-by-type>
+    <include-detail-sections-by-type>yes</include-detail-sections-by-type>
+    
     <doc-rule id="CFG-DOC-NORMNAAM">
         <name lang="nl">Naam (genormaliseerd)</name>
         <name lang="en">Name (normalized)</name>

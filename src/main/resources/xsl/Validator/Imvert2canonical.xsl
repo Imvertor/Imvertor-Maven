@@ -136,7 +136,7 @@
     <xsl:template match="imvert:class[imvert:designation = 'enumeration']">
         <xsl:copy>
             <xsl:apply-templates select="node()|@*"/>
-            <xsl:if test="not(imvert:stereotype/@id = 'stereotype-name-enumeration')">
+            <xsl:if test="not(imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist'))">
                 <imvert:stereotype origin="system" id="stereotype-name-enumeration">
                     <xsl:value-of select="imf:get-config-stereotypes('stereotype-name-enumeration')"/>
                 </imvert:stereotype>

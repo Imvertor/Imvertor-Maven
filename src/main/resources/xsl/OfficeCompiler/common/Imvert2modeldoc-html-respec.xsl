@@ -110,17 +110,13 @@
                 </xsl:for-each>
             </xsl:when>
             <!-- de kop van de details sectie. -->
-            <xsl:when test="@type = 'DETAILS'">
+            <xsl:when test="starts-with(@type,'DETAILS')"> <!-- bijv. DETAILS of DETAILS-OBJECTYPE -->
                 <section id="{$id}" level="{$level}">
                     <xsl:element name="{imf:get-section-header-element-name($level)}">
                         <xsl:value-of select="imf:translate-i3n(@type,$language-model,())"/>
                     </xsl:element>
                     <xsl:apply-templates mode="#current"/>
                 </section>
-            </xsl:when>
-            <!-- een ingang in de details sectie; komt niet in TOC -->
-            <xsl:when test="starts-with(@type,'DETAILS-')">
-                <xsl:apply-templates mode="#current"/>
             </xsl:when>
             <xsl:when test="@type = 'EXPLANATION'">
                 <section id="{$id}" class="notoc" level="{$level}">
