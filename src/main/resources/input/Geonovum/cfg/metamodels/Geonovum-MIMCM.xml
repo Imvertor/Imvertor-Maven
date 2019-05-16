@@ -8,7 +8,7 @@
         
         Including scalars.
     --> 
-    <xi:include href="../../../KKG/cfg/metamodels/KKG-ISO.xml"/>
+    <xi:include href="../../../KKG/cfg/metamodels/KKG.xml"/>
     
     <name>Geonovum</name>
     
