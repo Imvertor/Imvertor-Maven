@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<compare-rules xmlns:xi="http://www.w3.org/2001/XInclude">
+    <!-- 
+        Geonovum follows MIM
+    --> 
+    <xi:include href="../../../KKG/cfg/comparerules/KKG.xml"/>
+    
+    <name>Geonovum</name>
+    
+    <!-- for tagged values: -->
+   
+</compare-rules>

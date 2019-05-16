@@ -4,7 +4,7 @@
 -->
 <project-owner type="config">
     
-    <name>EIGENAAR</name>
+    <name>Geonovum</name>
     <!-- 
         enter a list of CSS, JS, anything to be copied to the outut file, separate with ";" 
     -->
@@ -30,8 +30,8 @@
         some constructs in UML have a fixed value
     -->
     <parameter name="fixed-identification-attribute-name">identificatie</parameter>
-    <parameter name="url-prefix-conceptual-schema">http://www.eigenaar.nl/conceptual-schemas/</parameter>
-    <parameter name="url-prefix-schema-waardelijsten">http://www.eigenaar.nl/schemas/waardelijsten/</parameter>
+    <parameter name="url-prefix-conceptual-schema">http://www.geonovum.nl/conceptual-schemas/</parameter>
+    <parameter name="url-prefix-schema-waardelijsten">http://www.geonovum.nl/schemas/waardelijsten/</parameter>
     <parameter name="class-name-waardelijst">Waardelijst</parameter>
     
     <!--
@@ -55,12 +55,12 @@
     <parameter name="documentation-separator">---</parameter>
     <parameter name="documentation-separator-pattern">---</parameter>
     <parameter name="documentation-newline">&#10;</parameter>
-    <parameter name="concept-documentation-state-obsolete-uri">http://www.EIGENAAR.nl/id/lifecycle/afgekeurd</parameter>
+    <parameter name="concept-documentation-state-obsolete-uri">http://www.geonovum.nl/id/lifecycle/afgekeurd</parameter>
 
     <parameter name="local-mapping-notification">
-        This schema is provided by EIGENAAR as a local copy, as a convenience to the user.
+        This schema is provided by Geonovum as a local copy, as a convenience to the user.
         This schema may itself reference a local copy of the schema originally referenced by URI. 
-        The local reference takes the form of a relative path, and is introduced by EIGENAAR.
+        The local reference takes the form of a relative path, and is introduced by Geonovum.
     </parameter>
     
     <parameter name="diagram-export-format">PNG</parameter>
