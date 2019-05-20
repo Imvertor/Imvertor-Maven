@@ -7,7 +7,7 @@
        Berichten specificaties worden conform NEN3610 opgezet.
        
     --> 
-    <xi:include href="../../../Geonovum/cfg/metamodels/NEN3610.xml"/>
+    <xi:include href="../../../Geonovum/cfg/metamodels/Geonovum-NEN3610.xml"/>
     
     <name>MIM-B-DSO</name>
     
