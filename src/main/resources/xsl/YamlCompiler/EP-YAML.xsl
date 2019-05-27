@@ -1762,13 +1762,13 @@
 				</xsl:if>
             </xsl:when>
 	       	<xsl:when test="$incomingType = 'year'">
-	       		<xsl:text>&#xa;            pattern: ^[1-2]{1}[0-9]{3}</xsl:text>
+	       		<xsl:text>&#xa;            pattern: ^[1-2]{1}[0-9]{3}$</xsl:text>
 	       	</xsl:when>
 	       	<xsl:when test="$incomingType = 'yearmonth'">
-	       		<xsl:text>&#xa;            pattern: ^[1-2]{1}[0-9]{3}-^[0-1]{1}[0-9]{1}</xsl:text>
+	       		<xsl:text>&#xa;            pattern: ^[1-2]{1}[0-9]{3}-^[0-1]{1}[0-9]{1}$</xsl:text>
 	       	</xsl:when>
 	       	<xsl:when test="$incomingType = 'postcode'">
-	       		<xsl:text>&#xa;            pattern: ^[1-9]{1}[0-9]{3}[A-Z]{2}</xsl:text>
+	       		<xsl:text>&#xa;            pattern: ^[1-9]{1}[0-9]{3}[A-Z]{2}$</xsl:text>
 	       	</xsl:when>
 	       	<xsl:otherwise/>
         </xsl:choose>
