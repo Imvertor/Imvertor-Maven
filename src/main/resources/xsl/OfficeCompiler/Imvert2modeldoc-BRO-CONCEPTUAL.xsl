@@ -53,9 +53,15 @@
         return a section name for a model passed as a package 
     -->
     <xsl:function name="imf:plugin-get-model-name">
-        <xsl:param name="package" as="element()"/><!-- imvert:package or imvert:packages -->
-        
-        <xsl:value-of select="$package/imvert:name/@original"/>
+        <xsl:param name="construct" as="element()"/><!-- imvert:package or imvert:packages -->
+        <xsl:choose>
+            <xsl:when test="$construct/self::imvert:packages">
+                <xsl:value-of select="$construct/imvert:application"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$construct/imvert:name/@original"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     
 </xsl:stylesheet>

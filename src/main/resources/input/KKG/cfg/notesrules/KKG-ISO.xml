@@ -40,6 +40,13 @@
             <label title="DEFINITIE"/>
             <label title="URI"/>
         </section>
+        <section title="Omschrijving" tagged-value="CFG-TV-DESCRIPTION">
+            <label title="BRON" tagged-value="Herkomst"/>
+            <label title="NOOT"/>
+            <label title="VOORBEELD"/>
+            <label title="DEFINITIE"/>
+            <label title="URI"/>
+        </section>
     </notes-rule>
 
 </notes-rules>

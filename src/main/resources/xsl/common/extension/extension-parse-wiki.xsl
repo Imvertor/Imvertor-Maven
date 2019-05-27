@@ -39,7 +39,7 @@
         <xsl:param name="wiki-language" as="xs:string"/>
 
         <xsl:variable name="raw" select="ext:imvertorParseWiki($wiki-string,$wiki-language)"/>
-        <xsl:variable name="xml" select="imf:parse-html($raw,false())"/>
+        <xsl:variable name="xml" select="imf:parse-html((),$raw,false())"/>
         <xsl:sequence select="$xml/xhtml:body"/>
     </xsl:function>
     

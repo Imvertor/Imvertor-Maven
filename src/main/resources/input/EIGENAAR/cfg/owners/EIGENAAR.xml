@@ -4,7 +4,7 @@
 -->
 <project-owner type="config">
     
-    <name>KOOP</name>
+    <name>EIGENAAR</name>
     <!-- 
         enter a list of CSS, JS, anything to be copied to the outut file, separate with ";" 
     -->
@@ -55,7 +55,7 @@
     <parameter name="documentation-separator">---</parameter>
     <parameter name="documentation-separator-pattern">---</parameter>
     <parameter name="documentation-newline">&#10;</parameter>
-    <parameter name="concept-documentation-state-obsolete-uri">http://brk.koop.nl/id/lifecycle/afgekeurd</parameter>
+    <parameter name="concept-documentation-state-obsolete-uri">http://www.EIGENAAR.nl/id/lifecycle/afgekeurd</parameter>
 
     <parameter name="local-mapping-notification">
         This schema is provided by EIGENAAR as a local copy, as a convenience to the user.

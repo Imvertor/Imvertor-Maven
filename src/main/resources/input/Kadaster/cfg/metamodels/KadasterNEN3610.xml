@@ -19,7 +19,7 @@
 -->
 <metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
    
-    <xi:include href="../../../Geonovum/cfg/metamodels/NEN3610.xml"/>
+    <xi:include href="../../../Geonovum/cfg/metamodels/Geonovum-NEN3610.xml"/>
     
     <!-- 
        Additional scalars 
