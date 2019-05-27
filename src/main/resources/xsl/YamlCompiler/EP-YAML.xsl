@@ -775,8 +775,6 @@
 
 
 
-
-
 				<!-- De uitwerking in de uitbecommentarieerde variabele kreeg alleen een waarde als de betreffende responseConstruct ook een parameter met de naam 'berichtcode' had die gelijk was aan de in bewerking zijnde 
 					 berichttype (Pa01, Pu01, Po01, etc...).
 				     Aangezien een responseConstruct die in meerdere berichten gebruikt wordt in het EP formaat maar voor 1 van die berichten wordt uitgewerkt kan het voorkomen dat voor de andere berichten geen meervoudige 
@@ -854,7 +852,7 @@
 							<ep:uriStructure/>
 						</xsl:when>
 						<xsl:when test="count($determinedUriStructure//ep:uriPart) > count($calculatedUriStructure//ep:uriPart) or not($calculatedUriStructure//ep:uriPart)">
-							<!-- If the amount of entities withn the detremined structure is larger than withn the calculated structure
+							<!-- If the amount of entities within the detremined structure is larger than withn the calculated structure
 								 comparisson isn't possible and a warnings is generated. -->
 							<xsl:sequence select="imf:msg(.,'WARNING','The amount of entities within the message [1] is larger than the amount of entities within the query tree.', ($rawMessageName))" />			
 							<ep:uriStructure/>
