@@ -84,6 +84,11 @@
             <name lang="nl">Bodemkundig wandonderzoek</name>
             <name lang="en">Soil face research</name>
             <abbrev>SFR</abbrev>
+        </registratieobject>        
+        <registratieobject>
+            <name lang="nl">Bodemkundig wandonderzoek test</name>
+            <name lang="en">Soil face research test</name>
+            <abbrev>SFR-test</abbrev>
         </registratieobject>
         <registratieobject>
             <name lang="nl">Grondwaterstandonderzoek</name>
