@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 
+-->
+<metamodel type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <!-- 
+        Geonovum follows KKG ISO (alt 2)
+        
+        Including scalars.
+    --> 
+    <xi:include href="../../../KKG/cfg/metamodels/KKG.xml"/>
+    
+    <name>Geonovum</name>
+    
+    <profiles>
+        <profile lang="nl"> 
+            <id>MCGGNL</id>
+            <release>0.9</release>
+            <desc>MIMCM-Geonovum Grouping (NL)</desc> 
+        </profile>
+        <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
+            <id>MCGGEN</id>
+            <release>0.9</release>
+            <desc>MIMCM-Geonovum Grouping (EN)</desc>
+        </profile>
+    </profiles>
+    
+</metamodel>

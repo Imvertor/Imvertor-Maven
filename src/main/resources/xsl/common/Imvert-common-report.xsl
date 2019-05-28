@@ -181,7 +181,7 @@
         <!-- then translate to HTML -->
         <xsl:variable name="doc1" select="replace($doc05,'\[newline\]','&amp;lt;br/&amp;gt;')"/>
         <xsl:variable name="doc2" select="replace($doc1,'\$inet','http')"/>
-        <xsl:variable name="doc3" select="imf:parse-html($doc2,true())"/>
+        <xsl:variable name="doc3" select="imf:parse-html((),$doc2,true())"/>
         <xsl:choose>
             <xsl:when test="normalize-space($doc1)">
             

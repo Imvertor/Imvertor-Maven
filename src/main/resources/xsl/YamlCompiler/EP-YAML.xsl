@@ -11,6 +11,7 @@
 		 * json
 		 * hal+json
 		 * geojson	-->
+	
 	<xsl:variable name="serialisation" select="$message-sets/ep:parameters/ep:parameter[ep:name='serialisation']/ep:value"/>
 	<xsl:variable name="stylesheet-code" as="xs:string">YAMLH</xsl:variable>
 	<xsl:variable name="standard-yaml-headers-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-yaml-headers-file'))"/>
@@ -775,8 +776,6 @@
 
 
 
-
-
 				<!-- De uitwerking in de uitbecommentarieerde variabele kreeg alleen een waarde als de betreffende responseConstruct ook een parameter met de naam 'berichtcode' had die gelijk was aan de in bewerking zijnde 
 					 berichttype (Pa01, Pu01, Po01, etc...).
 				     Aangezien een responseConstruct die in meerdere berichten gebruikt wordt in het EP formaat maar voor 1 van die berichten wordt uitgewerkt kan het voorkomen dat voor de andere berichten geen meervoudige 
@@ -854,7 +853,7 @@
 							<ep:uriStructure/>
 						</xsl:when>
 						<xsl:when test="count($determinedUriStructure//ep:uriPart) > count($calculatedUriStructure//ep:uriPart) or not($calculatedUriStructure//ep:uriPart)">
-							<!-- If the amount of entities withn the detremined structure is larger than withn the calculated structure
+							<!-- If the amount of entities within the detremined structure is larger than withn the calculated structure
 								 comparisson isn't possible and a warnings is generated. -->
 							<xsl:sequence select="imf:msg(.,'WARNING','The amount of entities within the message [1] is larger than the amount of entities within the query tree.', ($rawMessageName))" />			
 							<ep:uriStructure/>
@@ -1762,13 +1761,13 @@
 				</xsl:if>
             </xsl:when>
 	       	<xsl:when test="$incomingType = 'year'">
-	       		<xsl:text>&#xa;            pattern: ^[1-2]{1}[0-9]{3}</xsl:text>
+	       		<xsl:text>&#xa;            pattern: ^[1-2]{1}[0-9]{3}$</xsl:text>
 	       	</xsl:when>
 	       	<xsl:when test="$incomingType = 'yearmonth'">
-	       		<xsl:text>&#xa;            pattern: ^[1-2]{1}[0-9]{3}-^[0-1]{1}[0-9]{1}</xsl:text>
+	       		<xsl:text>&#xa;            pattern: ^[1-2]{1}[0-9]{3}-^[0-1]{1}[0-9]{1}$</xsl:text>
 	       	</xsl:when>
 	       	<xsl:when test="$incomingType = 'postcode'">
-	       		<xsl:text>&#xa;            pattern: ^[1-9]{1}[0-9]{3}[A-Z]{2}</xsl:text>
+	       		<xsl:text>&#xa;            pattern: ^[1-9]{1}[0-9]{3}[A-Z]{2}$</xsl:text>
 	       	</xsl:when>
 	       	<xsl:otherwise/>
         </xsl:choose>

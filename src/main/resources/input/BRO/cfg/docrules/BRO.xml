@@ -33,10 +33,21 @@
     -->
     <include-incoming-associations>yes</include-incoming-associations>
     
+    <!--
+        Show the gegevensgroep type name in the attribute listings?
+    -->
+    <reveal-composition-name>yes</reveal-composition-name>
+    
     <!-- 
         collect the codelist and enumeration contents in a separate section?
     -->
     <lists-to-listing>true</lists-to-listing>
+    
+    <!-- which sections to include in the modeldoc? --> 
+    <include-overview-section-level>no</include-overview-section-level>
+    <include-detail-section-level>yes</include-detail-section-level>
+    <include-overview-sections-by-type>yes</include-overview-sections-by-type>
+    <include-detail-sections-by-type>no</include-detail-sections-by-type>
     
     <image-purpose id="CFG-IMG-OVERVIEW">
         <name lang="nl">Overzichtsdiagram</name>

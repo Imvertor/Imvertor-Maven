@@ -22,6 +22,7 @@ package nl.imvertor.common.xsl.extensions;
 
 import java.io.StringReader;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -38,6 +39,7 @@ import org.ccil.cowan.tagsoup.HTMLSchema;
 import org.ccil.cowan.tagsoup.Schema;
 import org.ccil.cowan.tagsoup.jaxp.SAXParserImpl;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -67,6 +69,27 @@ import nl.imvertor.common.Configurator;
 public class ImvertorParseHTML extends ExtensionFunctionDefinition {
   
   private static final StructuredQName qName = new StructuredQName("", Configurator.NAMESPACE_EXTENSION_FUNCTIONS, "imvertorParseHTML");
+  
+  private static final Schema HTML_SCHEMA = new HTMLSchema();
+  
+  private static DocumentBuilderFactory dbf;
+  private static DocumentBuilder db;
+  private static SAXParser saxParser;
+  private static XMLReader reader;
+  
+  public ImvertorParseHTML() throws SAXException, ParserConfigurationException {
+
+	  dbf = DocumentBuilderFactory.newInstance();         
+      dbf.setNamespaceAware(true);
+      dbf.setValidating(false);        
+      dbf.setIgnoringElementContentWhitespace(true);
+      db = dbf.newDocumentBuilder();
+      
+      saxParser = SAXParserImpl.newInstance(null);
+      saxParser.setProperty(org.ccil.cowan.tagsoup.Parser.schemaProperty, HTML_SCHEMA);
+      reader = saxParser.getXMLReader();      
+
+  }
   
   @Override
   public StructuredQName getFunctionQName() {
@@ -100,30 +123,24 @@ public class ImvertorParseHTML extends ExtensionFunctionDefinition {
   
   private static class ParseHTMLCall extends ExtensionFunctionCall {
     
-    private static final Schema HTML_SCHEMA = new HTMLSchema();
-    
     private Document parseHTML(String html) throws SAXException, ParserConfigurationException, TransformerException {      
-      // Create SAXSource:      
-      SAXParser saxParser = SAXParserImpl.newInstance(null);
-      saxParser.setProperty(org.ccil.cowan.tagsoup.Parser.schemaProperty, HTML_SCHEMA);
-      XMLReader reader = saxParser.getXMLReader();      
-      SAXSource source = new SAXSource(reader, new InputSource(new StringReader(html)));
-      
       // Create resulting DOM document:        
-      DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();         
-      dbf.setNamespaceAware(true);
-      dbf.setValidating(false);        
-      dbf.setIgnoringElementContentWhitespace(true);
-      Document doc = dbf.newDocumentBuilder().newDocument();
-                  
-      // Use Saxon's or whatever TransformerFactoryImpl to execute identity transformation 
-      // and serialize SAX events to XML:
-      DOMResult result = new DOMResult(doc);
-      TransformerFactory factory = new TransformerFactoryImpl();
-      Transformer transformer = factory.newTransformer();            
-      transformer.transform(source, result);
-    
+      Document doc = db.newDocument();
+	  try { 
+		  // Create SAXSource:      
+	      SAXSource source = new SAXSource(reader, new InputSource(new StringReader(html)));
+	      
+	      // Use Saxon's or whatever TransformerFactoryImpl to execute identity transformation 
+	      // and serialize SAX events to XML:
+	      DOMResult result = new DOMResult(doc);
+	      TransformerFactory factory = new TransformerFactoryImpl();
+	      Transformer transformer = factory.newTransformer();            
+	      transformer.transform(source, result);
+	  } catch (Exception e) {
+		  doc.getDocumentElement().setAttribute("parse-exception", e.getLocalizedMessage());
+      }
       return doc;
+	     
     }
     
     protected NodeInfo source2NodeInfo(Source source, Configuration configuration) {        

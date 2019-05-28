@@ -8,5 +8,11 @@
         <trans lang="nl">Domein</trans>
         <trans lang="en">Domain</trans>
     </item>
-        
+
+    <item>
+        <key>MODEL</key>
+        <trans lang="nl">Model</trans>
+        <trans lang="en">Model</trans>
+    </item>
+    
 </picklist>

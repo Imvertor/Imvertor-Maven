@@ -25,6 +25,8 @@
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
     
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"
+    
     exclude-result-prefixes="#all" 
     version="2.0">
 
@@ -110,6 +112,72 @@
                             </xsl:for-each>
                         </xsl:variable>
                         <xsl:sequence select="imf:create-result-table-by-tr($rows,'construct:30,tagged value name:20,value:20,origin:30','table-tv2')"/>
+                    </table>
+                </div>
+                <div>
+                    <h1>Rules specified</h1>
+                    <div class="intro">
+                        <p>
+                            The list provids an overview of all rules, specified or derived.
+                        </p>
+                    </div>           
+                    <table class="tablesorter"> 
+                        <xsl:variable name="abbrev" select="tokenize(imvert:base-namespace,'/')[last()]" as="xs:string?"/>
+                        
+                        <xsl:variable name="rows" as="element(tr)*">
+                            <xsl:variable name="set" as="element(imvert:tagged-value)*">
+                                <xsl:for-each select=".//imvert:class">
+                                    <xsl:sequence select="imvert:tagged-values/imvert:tagged-value[@id = ('CFG-TV-RULES','CFG-TV-RULES-IMBROA')]"/> 
+                                    <xsl:for-each select="imvert:attributes/imvert:attribute">
+                                        <xsl:sequence select="imvert:tagged-values/imvert:tagged-value[@id = ('CFG-TV-RULES','CFG-TV-RULES-IMBROA')]"/> 
+                                    </xsl:for-each>
+                                </xsl:for-each>
+                            </xsl:variable>
+                            <xsl:for-each select="$set">
+                                <xsl:variable name="class" select="ancestor-or-self::imvert:class"/>
+                                <xsl:variable name="attribute" select="ancestor-or-self::imvert:attribute"/>
+                                <xsl:variable name="pars" select="imvert:value/xhtml:body/xhtml:p"/>
+                                
+                                <!-- columns -->
+                                <xsl:variable name="col-RO" select="$abbrev"/>
+                                <xsl:variable name="col-Regime" select="if (@id = 'CFG-TV-RULES') then 'IMBRO' else 'IMBRO/A'"/>
+                                <xsl:variable name="col-Entiteit" select="$class/imvert:name/@original"/>
+                                <xsl:variable name="col-Attribuut" select="$attribute/imvert:name/@original"/>
+                               
+                                <xsl:for-each select="$pars">
+                                    <xsl:variable name="subregel" select="node()"/>
+                                    <tr>
+                                        <td><!--A-->
+                                            <xsl:sequence select="$col-RO"/>
+                                        </td>
+                                        <td><!--B--></td>
+                                        <td><!--C-->
+                                            <xsl:sequence select="$col-Regime"/>
+                                        </td>
+                                        <td><!--D--></td>
+                                        <td><!--E--></td>
+                                        <td><!--F--></td>
+                                        <td><!--G-->
+                                            <xsl:value-of select="$col-Entiteit"/>
+                                        </td>
+                                        <td><!--H--></td>
+                                        <td><!--I-->
+                                            <xsl:value-of select="$col-Attribuut"/>
+                                        </td>
+                                        <td><!--J--></td>
+                                        <td><!--K--></td>
+                                        <td><!--L-->
+                                            <xsl:sequence select="$subregel"/>
+                                        </td>
+                                        <td><!--M--></td>
+                                        <td><!--N--></td>
+                                        <td><!--O--></td>
+                                        <td><!--P--></td>
+                                    </tr>
+                                </xsl:for-each>
+                            </xsl:for-each>
+                        </xsl:variable>
+                        <xsl:sequence select="imf:create-result-table-by-tr($rows,'RO:5,Geldig voor:5,Kwaliteitsregime:5,Story points:5,Story:5,Nr.:5,Entiteit:5,Nr.:5,Attribuut:5,Nr.:5,Regeltype:5,Regels:20,Cntrl:5,Standaard controle:5,Foutmelding:5','table-tv3')"/>
                     </table>
                 </div>
             </content>

@@ -22,7 +22,7 @@
     <!-- Geonovum NEN3610 follows KKG ISO requirements -->
     <xi:include href="../../../KKG/cfg/metamodels/KKG.xml"/>
    
-    <name>NEN3610</name>
+    <name>Geonovum NEN3610</name>
     
     <desc lang="en">
         Metamodel for Geonovum NEN3610 extensions.
@@ -32,14 +32,14 @@
     
     <profiles>
         <profile lang="nl">
-            <id>NGNL</id>
+            <id>NGGNL</id>
             <release>0.9</release>
-            <desc>NEN3610 Grouping (NL)</desc> 
+            <desc>NEN3610 Geonovum Grouping (NL)</desc> 
         </profile>
         <profile lang="en">
-            <id>NGEN</id>
+            <id>NGGEN</id>
             <release>0.9</release>
-            <desc>NEN3610 Grouping (EN)</desc>
+            <desc>NEN3610 Geonovum Grouping (EN)</desc>
         </profile>
     </profiles>
     
