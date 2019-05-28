@@ -11,6 +11,7 @@
 		 * json
 		 * hal+json
 		 * geojson	-->
+	
 	<xsl:variable name="serialisation" select="$message-sets/ep:parameters/ep:parameter[ep:name='serialisation']/ep:value"/>
 	<xsl:variable name="stylesheet-code" as="xs:string">YAMLH</xsl:variable>
 	<xsl:variable name="standard-yaml-headers-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-yaml-headers-file'))"/>
