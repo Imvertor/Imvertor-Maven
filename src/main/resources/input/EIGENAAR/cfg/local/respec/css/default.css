@@ -1,0 +1,27 @@
+span.TODO {
+    background-color: yellow;
+    color: black;
+    font-weight: bold;
+}
+span.code {
+    font-family: monospace;
+}
+span.underline {
+    text-decoration: underline;
+}
+div.box_note {
+    background-color: #fafaac;
+    padding: 1em;
+}
+div.box_warning {
+    background-color: #f6d99e;
+    padding: 1em;
+}
+div.box_quote {
+    background-color: #f0e9da;
+    padding: 1em;
+}
+div.box_quote_href {
+    text-align: right;
+    color: gray;
+}

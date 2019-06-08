@@ -73,7 +73,7 @@
                 <xsl:for-each select="section[@type = 'IMAGEMAP']">
                     <xsl:variable name="diagram-id" select="@id"/>
                     <xsl:variable name="diagram" select="$imagemap/imvert-imap:diagram[imvert-imap:id = $diagram-id]"/>
-                    <xsl:variable name="diagram-path" select="concat('data/Images/',$diagram-id,'.png')"/><!-- TODO as configured -->
+                    <xsl:variable name="diagram-path" select="imf:insert-diagram-path($diagram-id)"/>
                     <xsl:variable name="diagram-css-class" select="if ($diagram/imvert-imap:purpose = 'CFG-IMG-OVERVIEW') then 'overview' else ''"/>
                     
                     <div class="imageinfo {$diagram-css-class}">

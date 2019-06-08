@@ -20,7 +20,7 @@
             <head>
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
                 <title>
-                    <xsl:value-of select="concat('Catalogus conceptueel model: ',@name)"/>
+                    <xsl:value-of select="concat('Catalogus logisch model: ',@name)"/>
                 </title>
                 <script src="https://www.w3.org/Tools/respec/respec-w3c-common" class="remove"/>
                 <script class="remove">
@@ -36,38 +36,38 @@
                 </script>
                 <style type="text/css">
                     th, td {
-                        vertical-align: top;
+                    vertical-align: top;
                     }
                     th>p, td>p {
-                        margin: 0 0 1em;
+                    margin: 0 0 1em;
                     }
                     table {
-                        width: 100%;
+                    width: 100%;
                     }
                 </style>
             </head>
             <body>
                 <section id="abstract">
                     <p>
-                        Samenvatting conceptueel model..... INSERT HERE
+                        Samenvatting logisch model..... INSERT HERE
                     </p>
                 </section>
                 <section id="sotd">
                     <p>
-                        Deze documentatie van het conceptueel model is laatst bijgewerkt op <xsl:value-of select="imf:format-dateTime(current-dateTime())"/>.
+                        Deze documentatie van het logisch model is laatst bijgewerkt op <xsl:value-of select="imf:format-dateTime(current-dateTime())"/>.
                     </p>
                 </section>
                 <section id="prologue" class="informative" level="1">
                     <h1>Proloog</h1>
                     <p>
-                        Proloog conceptueel model hier.
+                        Proloog logisch model hier.
                     </p>
                 </section>
                 <xsl:apply-templates select="chapter"/><!-- calls upon the standard template for chapters such as CAT and REF -->
                 <section id="epilogue" class="informative" level="1">
                     <h1>Epiloog</h1>
                     <p>
-                        Epiloog conceptueel model hier.
+                        Epiloog logisch model hier.
                     </p>
                 </section>
             </body>
