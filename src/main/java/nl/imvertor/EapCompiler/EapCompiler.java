@@ -60,7 +60,7 @@ public class EapCompiler extends Step {
 		templateFile = new EapFile(configurator.getXParm("properties/TEMPLATE_TEMPLATE_FILE"));
 			
 		// compile EAP from template based on current Imvertor file.
-		boolean must = runner.getAppPhase() == Runner.APPLICATION_PHASE_FINAL;
+		boolean must = false; // runner.getAppPhase() == Runner.APPLICATION_PHASE_FINAL;
 		boolean wantTemplate = configurator.isTrue("cli","createtemplate");
 		boolean wantDocument = configurator.isTrue("cli","createumlreport"); // deprecated, function will be removed
 		boolean wantDerived = configurator.isTrue("cli","createderivedeap"); 
