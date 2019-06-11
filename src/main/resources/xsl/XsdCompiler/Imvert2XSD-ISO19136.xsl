@@ -1100,6 +1100,31 @@
                     </xs:complexType>
                 </xs:element>
             </xsl:when>
+            <xsl:when test="$is-gml-measure">
+                <xsl:variable name="uom" select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-UNITOFMEASURE')"/>
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:choose>
+                        <xsl:when test="$is-nillable">
+                            <xsl:attribute name="nillable">true</xsl:attribute>
+                            <xsl:sequence select="imf:create-comment($this,'A voidable conceptual complex type, a GML Measure')"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:sequence select="imf:create-comment($this,'A conceptual complex type, a GML Measure')"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:restriction base="gml:MeasureType">
+                                <xs:attribute name="uom" type="gml:UomIdentifier" use="required" fixed="{$uom}" />
+                            </xs:restriction>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+            </xsl:when>
             <xsl:when test="($is-complextype or $is-conceptual-complextype) and $is-nillable">
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
@@ -1131,23 +1156,6 @@
                 </xs:element>
             </xsl:when>
             
-            <xsl:when test="$is-gml-measure">
-                <xsl:variable name="uom" select="imf:get-most-relevant-compiled-taggedvalue($this,'##CFG-TV-UNITOFMEASURE')"/>
-                <xs:element>
-                    <xsl:attribute name="name" select="$name"/>
-                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
-                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:create-comment($this,'A conceptual complex type, a GML Measure')"/>
-                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
-                    <xs:complexType>
-                        <xs:simpleContent>
-                            <xs:restriction base="gml:MeasureType">
-                                <xs:attribute name="uom" type="gml:UomIdentifier" use="required" fixed="{$uom}" />
-                            </xs:restriction>
-                        </xs:simpleContent>
-                    </xs:complexType>
-                </xs:element>
-            </xsl:when>
             <xsl:when test="$is-conceptual-complextype">
                 <!-- note that we do not support avoiding substitution on complex datatypes -->
                 <xs:element>
