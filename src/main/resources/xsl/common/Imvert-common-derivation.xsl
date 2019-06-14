@@ -123,12 +123,22 @@
 							id="{$tv-id}" 
 							name="{$supplier/name}" 
 							original-name="{$tv/imvert:name/@original}" 
-							original-value="{$tv/imvert:value/@original}" 
 							project="{$supplier/@project}"
 							application="{$supplier/@application}"
 							release="{$supplier/@release}"
 							level="{$supplier/@level}"
 							>
+							<xsl:choose>
+								<xsl:when test="not(empty($tv/imvert:value/@original))">
+									<xsl:attribute name="original-value" select="$tv/imvert:value/@original"/>
+								</xsl:when>
+								<xsl:when test="not(empty($tv/imvert:value/@format))">
+									<!--xsl:if test="$tv/imvert:value/@format='unknown'">
+										<xsl:sequence select="imf:msg($construct,'WARNING','The configuration for the notes (notesrules) needs adaption. No format or a format unknown is specified.',(imvert:name))"/>						
+									</xsl:if-->
+									<xsl:attribute name="format" select="$tv/imvert:value/@format"/>
+								</xsl:when>
+							</xsl:choose>
 							<xsl:sequence select="$tv/imvert:value/node()"/>
 						</tv>
 					</xsl:for-each>
@@ -180,13 +190,26 @@
 							id="{$tv-id}" 
 							name="{$tv/imvert:name}" 
 							original-name="{$tv/imvert:name/@original}" 
-							original-value="{$tv/imvert:value/@original}" 
 							project="{$supplier/@project}"
 							application="{$supplier/@application}"
 							release="{$supplier/@release}"
 							level="{$supplier/@level}"
 							>
-							<xsl:sequence select="$tv/imvert:value/node()"/>
+							<!--xsl:sequence select="$tv/imvert:value/node()"/-->
+							<xsl:choose>
+								<xsl:when test="not(empty($tv/imvert:value/@original))">
+									<xsl:attribute name="original-value" select="$tv/imvert:value/@original"/>
+									<!--xsl:value-of select="$tv/imvert:value"/-->
+									<xsl:sequence select="$tv/imvert:value/node()"/>
+								</xsl:when>
+								<xsl:when test="not(empty($tv/imvert:value/@format))">
+									<!--xsl:if test="$tv/imvert:value/@format='unknown'">
+										<xsl:sequence select="imf:msg($construct,'WARNING','The configuration for the notes (notesrules) needs adaption. No format or a format unknown is specified.',(imvert:name))"/>						
+									</xsl:if-->
+									<xsl:attribute name="format" select="$tv/imvert:value/@format"/>
+									<xsl:sequence select="$tv/imvert:value/node()"/>
+								</xsl:when>
+							</xsl:choose>
 						</tv>
 					</xsl:if>
 				</xsl:for-each>

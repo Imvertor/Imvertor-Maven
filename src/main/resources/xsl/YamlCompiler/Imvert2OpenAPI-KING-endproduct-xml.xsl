@@ -16,8 +16,9 @@
 	
 	version="2.0">
 
-	<!--TODO: Kijken of de volgende imports en include nog wel nodig zijn. -->
 	<xsl:import href="../common/Imvert-common.xsl" />
+	
+	<!--TODO: Kijken of de volgende imports en include nog wel nodig zijn. -->
 	<xsl:import href="../common/Imvert-common-validation.xsl" />
 	<xsl:import href="../common/extension/Imvert-common-text.xsl" />
 	<xsl:import href="../common/Imvert-common-derivation.xsl" />
@@ -1243,7 +1244,7 @@
 					<xsl:if test="not(empty(imf:merge-documentation-up-to-level($this-construct,'CFG-TV-DESCRIPTION',$description-level)))">
 						<ep:description>
 							<xsl:if test="$debugging">
-								<xsl:attribute name="level" select="$description-level"/>
+								<xsl:attribute name="max-level" select="$description-level"/>
 							</xsl:if>
 							<xsl:sequence select="imf:merge-documentation-up-to-level($this-construct,'CFG-TV-DESCRIPTION',$description-level)" />
 						</ep:description>
@@ -2159,6 +2160,9 @@
 		<xsl:param name="tv-id" />
 
 		<xsl:variable name="all-tv" select="imf:get-all-compiled-tagged-values($this,false())" />
+		<!--ep:robert-merge-documentation tv-id="{$tv-id}">
+			<xsl:sequence select="$all-tv"/>
+		</ep:robert-merge-documentation-->
 		<xsl:variable name="vals" select="$all-tv[@id = $tv-id]" />
 		<xsl:for-each select="$vals">
 			<xsl:variable name="p" select="normalize-space(imf:get-clean-documentation-string(imf:get-tv-value.local(.)))" />
@@ -2166,6 +2170,8 @@
 				<ep:p>
 					<xsl:if test="$debugging">
 						<xsl:attribute name="subpath" select="imf:get-subpath(@project,@application,@release)"/>
+						<xsl:attribute name="val-level" select="@level"/>
+						<xsl:attribute name="level" select="@project"/>
 					</xsl:if>
 					<xsl:value-of select="$p" />
 				</ep:p>
@@ -2180,6 +2186,9 @@
 		<xsl:param name="level"/>
 		
 		<xsl:variable name="all-tv" select="imf:get-all-compiled-tagged-values($this,false())" />
+		<!--ep:robert-merge-documentation-up-to-level tv-id="{$tv-id}" level="{$level}">
+			<xsl:sequence select="$all-tv"/>
+		</ep:robert-merge-documentation-up-to-level-->
 		<xsl:variable name="vals" select="$all-tv[@id = $tv-id]" />
 		<xsl:for-each select="$vals">
 			<xsl:variable name="p" select="normalize-space(imf:get-clean-documentation-string(imf:get-tv-value.local(.)))" />
@@ -2189,7 +2198,7 @@
 						<xsl:if test="$debugging">
 							<xsl:attribute name="subpath" select="imf:get-subpath(@project,@application,@release)"/>
 							<xsl:attribute name="val-level" select="@level"/>
-							<xsl:attribute name="level" select="$level"/>
+							<xsl:attribute name="level" select="@project"/>
 						</xsl:if>
 						<xsl:value-of select="$p" />
 					</ep:p>
@@ -2199,7 +2208,7 @@
 						<xsl:if test="$debugging">
 							<xsl:attribute name="subpath" select="imf:get-subpath(@project,@application,@release)"/>
 							<xsl:attribute name="val-level" select="@level"/>
-							<xsl:attribute name="level" select="$level"/>
+							<xsl:attribute name="level" select="@project"/>
 						</xsl:if>
 						<xsl:value-of select="$p" />
 					</ep:p>
@@ -2209,7 +2218,7 @@
 						<xsl:if test="$debugging">
 							<xsl:attribute name="subpath" select="imf:get-subpath(@project,@application,@release)"/>
 							<xsl:attribute name="val-level" select="@level"/>
-							<xsl:attribute name="level" select="$level"/>
+							<xsl:attribute name="level" select="@project"/>
 						</xsl:if>
 						<xsl:value-of select="$p" />
 					</ep:p>
@@ -2238,11 +2247,6 @@
 			</xsl:if> ?>
 		</xsl:for-each> 
 		
-	</xsl:function>
-
-	<xsl:function name="imf:get-tv-value.local">
-		<xsl:param name="tv-element" as="element(tv)?" />
-		<xsl:value-of select="if (normalize-space($tv-element/@original-value)) then $tv-element/@original-value else $tv-element/@value" />
 	</xsl:function>
 
 	<xsl:function name="imf:capitalize">

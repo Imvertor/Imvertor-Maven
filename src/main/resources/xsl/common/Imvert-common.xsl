@@ -1229,4 +1229,13 @@
             string-join((for $i in (1 to $length) return $padChar,$stringToPad),''),string-length($stringToPad))"/>
     </xsl:function>
     
+    <xsl:function name="imf:get-tv-value.local">
+        <xsl:param name="tv-element" as="element(tv)?" />
+
+        <!--xsl:if test="$tv-element/@format='unknown'">
+            <xsl:sequence select="imf:msg($tv-element,'WARNING','The configuration for the notes (notesrules) needs adaption. No format or a format unknown is specified.')"/>						
+        </xsl:if-->
+        <xsl:sequence select="$tv-element/node()"/>
+    </xsl:function>
+
 </xsl:stylesheet>

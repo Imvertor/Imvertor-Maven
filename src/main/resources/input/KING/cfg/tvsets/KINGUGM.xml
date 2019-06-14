@@ -175,7 +175,7 @@
             </stereotypes>
         </tv>
         
-        <tv id="CFG-TV-DESCRIPTION">
+        <tv norm="note" id="CFG-TV-DESCRIPTION">
             <name lang="nl">Toelichting</name>
             <name lang="en">Description</name>
             <desc lang="nl">Gebruikt om het description deel van de documentatie te vullen.</desc>

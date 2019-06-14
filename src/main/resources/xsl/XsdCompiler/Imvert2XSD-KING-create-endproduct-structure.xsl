@@ -12,6 +12,8 @@
 	xmlns:ss="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
 	xmlns:xhtml="http://www.w3.org/1999/xhtml" version="2.0">
 
+	<xsl:import href="../common/Imvert-common.xsl" />
+
 	<xsl:output indent="yes" method="xml" encoding="UTF-8"/>
 
 	<xsl:variable name="stylesheet">Imvert2XSD-KING-create-endproduct-structure</xsl:variable>
@@ -3484,17 +3486,11 @@
 		<xsl:for-each select="$vals">
 			<xsl:variable name="p" select="normalize-space(imf:get-clean-documentation-string(imf:get-tv-value.local(.)))"/>
 			<xsl:if test="not($p = '')">
-				<ep:p subpath="{imf:get-subpath(@project,@application,@nrelease)}">
+				<ep:p subpath="{imf:get-subpath(@project,@application,@release)}">
 					<xsl:value-of select="$p"/>
 				</ep:p>
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:function>
-
-
-	<xsl:function name="imf:get-tv-value.local">
-		<xsl:param name="tv-element" as="element(tv)?"/>
-		<xsl:value-of select="if (normalize-space($tv-element/@original-value)) then $tv-element/@original-value else $tv-element/@value"/>
-	</xsl:function>	
 	
 </xsl:stylesheet>
