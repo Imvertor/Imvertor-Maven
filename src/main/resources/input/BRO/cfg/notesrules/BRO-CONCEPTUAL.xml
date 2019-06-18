@@ -21,5 +21,11 @@
             <!-- geen labels -->
         </section>
     </notes-rule>
+ 
+    <notes-rule lang="nl">
+        <section title="Domein IMBRO/A" tagged-value="CFG-TV-DOMAIN-IMBROA">
+            <!-- geen labels -->
+        </section>
+    </notes-rule>
     
 </notes-rules>

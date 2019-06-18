@@ -27,6 +27,18 @@
             </stereotypes>
         </tv>
         
+        <tv norm="note" id="CFG-TV-DOMAIN-IMBROA">
+            <name lang="nl">Domein IMBRO/A</name>
+            <name lang="en">Domain IMBRO/A</name>
+            <desc lang="nl">TODO</desc>
+            <desc lang="en">TODO</desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo> 
+                <stereo minmax="0..1">stereotype-name-composite</stereo>
+            </stereotypes>
+        </tv>
+        
     </tagged-values>
     
 </tagset>

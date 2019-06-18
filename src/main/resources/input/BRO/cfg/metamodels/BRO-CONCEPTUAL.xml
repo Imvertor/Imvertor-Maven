@@ -13,19 +13,14 @@
     <name>CM</name>
     
     <profiles>
-        <!-- adaptions: 
-            0.9     Start van de registratie van aanpassingen
-            0.9.1   Regels IMBRO/A toegevoegd
-        
-        -->
         <profile lang="nl"> 
             <id>MBGNL</id>
-            <release>0.9.1</release>
+            <release>0.9.3</release>
             <desc>MIM-BRO Grouping (NL)</desc> 
         </profile>
         <profile lang="en"> <!-- ACTUALLY, there is no english variant -->
             <id>MBGEN</id>
-            <release>0.9.1</release>
+            <release>0.9.3</release>
             <desc>MIM-BRO Grouping (EN)</desc>
         </profile>
     </profiles>

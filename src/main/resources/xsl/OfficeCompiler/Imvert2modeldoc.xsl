@@ -1041,6 +1041,9 @@
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-REGELS-IMBROA'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-RULES-IMBROA'))"/>
                 </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-DOMAIN-IMBROA'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-DOMAIN-IMBROA'))"/>
+                </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-UNIEKEAANDUIDING'">
                     <xsl:variable name="rel-aanduiding" select="$relation/imvert:associations/imvert:association[imvert:target/imvert:stereotype/@id = ('stereotype-name-composite-id')][1]"/>
                     <xsl:variable name="con-aanduiding" select="imf:get-construct-by-id-for-office($rel-aanduiding/imvert:type-id)"/>

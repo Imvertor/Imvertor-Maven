@@ -375,6 +375,15 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
         </levels>
     </doc-rule>
+    <doc-rule id="CFG-DOC-DOMAIN-IMBROA">
+        <name lang="nl">Formaat IMBRO/A</name>
+        <name lang="en">Format IMBRO/A</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+        </levels>
+    </doc-rule>
     <doc-rule id="CFG-DOC-RELATIESOORT">
         <name lang="nl">Relatiesoort</name>
         <levels>
