@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+    xmlns:gml="http://www.opengis.net/gml/3.2" 
+    xmlns:brocom="http://www.broservices.nl/xsd/brocommon/3.0" 
+    targetNamespace="http://www.broservices.nl/xsd/brocommon/3.0"
+    elementFormDefault="qualified" version="3.0.0">
+
+    <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="https://schema.broservices.nl/profile/gml/1.0/gml-profile.xsd" />
+
+    <annotation>
+        <documentation>
+            This XSD describes the complex types, simple types common to the entire BRO.
+            Changes compared to Version:2.5.6:
+            - New design for operations and messages with less operations and
+            logic based on SourceDocumentTypes
+            Version:2.5.6
+            Changes compared to Version:2.5.5:
+            - Added CorrectionTypeType and CorrectionRequestType.
+            - Grouped definitions into simpleTypes and
+            complexTypes and ordered alphabetically within group.
+        </documentation>
+    </annotation>
+
+    <!-- simpleTypes -->
+    <simpleType name="ChamberOfCommerceNumberType">
+        <restriction base="string" />
+    </simpleType>
+
+    <simpleType name="IndicationYesNoEnumeration">
+        <restriction base="string">
+            <enumeration value="ja" />
+            <enumeration value="nee" />
+        </restriction>
+    </simpleType>
+
+    <simpleType name="IndicationYesNoUnknownEnumeration">
+        <restriction base="string">
+            <enumeration value="ja" />
+            <enumeration value="nee" />
+            <enumeration value="onbekend" />
+        </restriction>
+    </simpleType>
+
+    <simpleType name="QualityRegimeEnumeration">
+        <restriction base="string">
+            <enumeration value="IMBRO" />
+            <enumeration value="IMBRO/A" />
+        </restriction>
+    </simpleType>
+
+    <simpleType name="RegistrationObjectCodeType">
+        <restriction base="string" />
+    </simpleType>
+
+    <simpleType name="IntakeResponseTypeEnumeration">
+        <restriction base="string">
+            <enumeration value="completion" />
+            <enumeration value="acceptance" />
+            <enumeration value="rejection" />
+        </restriction>
+    </simpleType>
+
+    <simpleType name="DispatchResponseTypeEnumeration">
+        <restriction base="string">
+            <enumeration value="dispatch" />
+            <enumeration value="rejection" />
+        </restriction>
+    </simpleType>
+
+    <simpleType name="VoidReasonEnumeration">
+        <restriction base="string">
+            <enumeration value="onbekend" />
+        </restriction>
+    </simpleType>
+
+    <!-- complexTypes -->
+    <complexType name="AbortReasonType">
+        <sequence>
+            <element name="sequenceNumber" type="integer" minOccurs="1" maxOccurs="1" />
+            <element name="specification" type="string" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+    
+    <complexType name="AreaType">
+        <choice minOccurs="1" maxOccurs="1">
+            <element name="enclosingCircle" type="brocom:CircleType" />
+            <element name="boundingBox" type="gml:EnvelopeType" />
+        </choice>
+    </complexType>
+
+    <complexType name="CharacteristicsType">
+        <sequence>
+            <element name="broId" type="brocom:RegistrationObjectCodeType" minOccurs="1" maxOccurs="1" />
+            <element name="deregistered" type="brocom:IndicationYesNoEnumeration" minOccurs="1" maxOccurs="1" />
+            <element name="deliveryAccountableParty" type="brocom:ChamberOfCommerceNumberType" minOccurs="0" maxOccurs="1" />
+            <element name="qualityRegime" type="brocom:QualityRegimeEnumeration" minOccurs="1" maxOccurs="1" />
+            <element name="objectRegistrationTime" type="dateTime" minOccurs="1" maxOccurs="1" />
+            <element name="latestCorrectionTime" type="dateTime" minOccurs="0" maxOccurs="1" />
+            <element name="underReview" type="brocom:IndicationYesNoEnumeration" minOccurs="1" maxOccurs="1" />
+            <element name="standardizedLocation" type="gml:PointType" minOccurs="1" maxOccurs="1" />
+            <element name="deliveredLocation" type="gml:PointType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="CircleType">
+        <sequence>
+            <element name="center" type="gml:DirectPositionType" minOccurs="1" maxOccurs="1" />
+            <element name="radius" type="brocom:RadiusType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+        <attribute name="srsName" type="anyURI" use="required" />
+    </complexType>
+
+    <complexType name="CorrectionRequestType">
+        <sequence>
+            <element name="requestReference" type="string" minOccurs="1" maxOccurs="1" />
+            <element name="deliveryAccountableParty" type="brocom:ChamberOfCommerceNumberType" minOccurs="0" maxOccurs="1" />
+            <element name="broId" type="brocom:RegistrationObjectCodeType" minOccurs="1" maxOccurs="1" />
+            <element name="qualityRegime" type="brocom:QualityRegimeEnumeration" minOccurs="1" maxOccurs="1" />
+            <element name="underPrivilege" type="brocom:IndicationYesNoEnumeration" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="CriterionErrorType">
+        <sequence>
+            <element name="sequenceNumber" type="integer" minOccurs="1" maxOccurs="1" />
+            <element name="specification" type="string" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="CriteriaSetType">
+        <sequence>
+            <element name="deliveryAccountableParty" type="brocom:ChamberOfCommerceNumberType" minOccurs="0" maxOccurs="1" />
+            <element name="qualityRegime" type="brocom:QualityRegimeEnumeration" minOccurs="0" maxOccurs="1" />
+            <element name="registrationPeriod" type="brocom:DatePeriodType" minOccurs="0" maxOccurs="1" />
+            <element name="correctionPeriod" type="brocom:DatePeriodType" minOccurs="0" maxOccurs="1" />
+            <element name="underReview" type="brocom:IndicationYesNoEnumeration" minOccurs="0" maxOccurs="1" />
+            <element name="area" type="brocom:AreaType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="DatePeriodType">
+        <sequence>
+            <element name="beginDate" type="date" minOccurs="1" maxOccurs="1" />
+            <element name="endDate" type="date" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="DeregisteredObjectType">
+        <complexContent>
+            <extension base="gml:AbstractFeatureType">        
+                <sequence>
+                    <element name="broId" type="brocom:RegistrationObjectCodeType" minOccurs="1" maxOccurs="1" />
+                    <element name="deregistered" type="brocom:IndicationYesNoEnumeration" minOccurs="1" maxOccurs="1" />
+                    <element name="deregistrationTime" type="dateTime" minOccurs="1" maxOccurs="1" />
+                </sequence>
+            </extension>
+        </complexContent>          
+    </complexType>
+
+    <complexType name="DispatchCharacteristicsRequestType">
+        <sequence>
+            <element name="requestReference" type="string" minOccurs="1" maxOccurs="1" />
+            <element name="criteria" type="brocom:CriteriaSetType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="DispatchDataRequestType">
+        <sequence>
+            <element name="requestReference" type="string" minOccurs="1" maxOccurs="1" />
+            <element name="broId" type="brocom:RegistrationObjectCodeType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="DispatchResponseType">
+        <sequence>
+            <element name="responseType" type="brocom:DispatchResponseTypeEnumeration" minOccurs="1" maxOccurs="1" />
+            <element name="requestReference" type="string" minOccurs="1" maxOccurs="1" />
+            <element name="rejectionTime" type="dateTime" minOccurs="0" maxOccurs="1" />
+            <element name="dispatchTime" type="dateTime" minOccurs="0" maxOccurs="1" />
+            <element name="rejectionReason" type="string" minOccurs="0" maxOccurs="1" />
+            <element name="criterionError" type="brocom:CriterionErrorType" minOccurs="0" maxOccurs="unbounded" />
+        </sequence>
+    </complexType>
+
+    <complexType name="CoordinateTransformationType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:CoordinateTransformation" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="IntakeResponseType">
+        <sequence>
+            <element name="responseType" type="brocom:IntakeResponseTypeEnumeration" minOccurs="1" maxOccurs="1" />
+            <element name="requestReference" type="string" minOccurs="1" maxOccurs="1" />
+            <element name="transactionId" type="string" minOccurs="1" maxOccurs="1" />
+            <element name="broId" type="brocom:RegistrationObjectCodeType" minOccurs="0" maxOccurs="1" />
+            <element name="objectIdAccountableParty" type="string" minOccurs="0" maxOccurs="1" />
+            <element name="acceptanceTime" type="dateTime" minOccurs="0" maxOccurs="1" />
+            <element name="completionTime" type="dateTime" minOccurs="0" maxOccurs="1" />
+            <element name="rejectionTime" type="dateTime" minOccurs="0" maxOccurs="1" />
+            <element name="rejectionReason" type="string" minOccurs="0" maxOccurs="1" />
+            <element name="sourceDocumentError" type="brocom:SourceDocumentErrorType" minOccurs="0" maxOccurs="unbounded" />
+        </sequence>
+    </complexType>
+
+    <element name="parseFault" type="brocom:ParseFaultType" />
+
+    <complexType name="ParseFaultType">
+        <sequence>
+            <element name="requestReference" type="string" minOccurs="0" maxOccurs="1" />
+            <element name="transactionId" type="string" minOccurs="0" maxOccurs="1" />
+            <element name="abortTime" type="dateTime" minOccurs="1" maxOccurs="1" />
+            <element name="abortReason" type="brocom:AbortReasonType" minOccurs="1" maxOccurs="unbounded" />
+        </sequence>
+    </complexType>
+
+    <complexType name="PartialDateType">
+        <choice>
+            <element name="date" type="date" />
+            <element name="yearMonth" type="gYearMonth" />
+            <element name="year" type="gYear" />
+            <element name="voidReason" type="brocom:VoidReasonEnumeration" />
+        </choice>
+    </complexType>
+
+    <complexType name="RadiusType">
+        <simpleContent>
+            <restriction base="gml:MeasureType">
+                <attribute name="uom" type="gml:UomIdentifier" use="required" fixed="km" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="RegistrationHistoryType">
+        <sequence>
+            <element name="objectRegistrationTime" type="dateTime" minOccurs="1" maxOccurs="1" />
+            <element name="registrationStatus" type="brocom:RegistrationStatusType" minOccurs="1" maxOccurs="1" />
+            <element name="latestAdditionTime" type="dateTime" minOccurs="0" maxOccurs="1" />
+            <element name="registrationCompletionTime" type="dateTime" minOccurs="0" maxOccurs="1" />
+            <element name="corrected" type="brocom:IndicationYesNoEnumeration" minOccurs="1" maxOccurs="1" />
+            <element name="latestCorrectionTime" type="dateTime" minOccurs="0" maxOccurs="1" />
+            <element name="underReview" type="brocom:IndicationYesNoEnumeration" minOccurs="1" maxOccurs="1" />
+            <element name="underReviewTime" type="dateTime" minOccurs="0" maxOccurs="1" />
+            <element name="deregistered" type="brocom:IndicationYesNoEnumeration" minOccurs="1" maxOccurs="1" />
+            <element name="deregistrationTime" type="dateTime" minOccurs="0" maxOccurs="1" />
+            <element name="reregistered" type="brocom:IndicationYesNoEnumeration" minOccurs="1" maxOccurs="1" />
+            <element name="reregistrationTime" type="dateTime" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="RegistrationObjectType">
+        <complexContent>
+            <extension base="gml:AbstractFeatureType">
+                <sequence>
+                    <element name="broId" type="brocom:RegistrationObjectCodeType" minOccurs="1" maxOccurs="1" />
+                    <element name="deliveryAccountableParty" type="brocom:ChamberOfCommerceNumberType" minOccurs="0" maxOccurs="1" />
+                    <element name="objectIdAccountableParty" type="string" minOccurs="0" maxOccurs="1" />
+                    <element name="deliveryResponsibleParty" type="brocom:ChamberOfCommerceNumberType" minOccurs="0" maxOccurs="1" />
+                    <element name="qualityRegime" type="brocom:QualityRegimeEnumeration" minOccurs="1" maxOccurs="1" />
+                </sequence>
+            </extension>
+        </complexContent>        
+    </complexType>
+
+    <complexType name="RegistrationRequestType">
+        <sequence>
+            <element name="requestReference" type="string" minOccurs="1" maxOccurs="1" />
+            <element name="deliveryAccountableParty" type="brocom:ChamberOfCommerceNumberType" minOccurs="0" maxOccurs="1" />
+            <element name="broId" type="brocom:RegistrationObjectCodeType" minOccurs="0" maxOccurs="1" />
+            <element name="qualityRegime" type="brocom:QualityRegimeEnumeration" minOccurs="1" maxOccurs="1" />
+            <element name="underPrivilege" type="brocom:IndicationYesNoEnumeration" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="RegistrationStatusType">
+        <simpleContent>
+            <restriction base="gml:CodeWithAuthorityType">
+                <attribute name="codeSpace" type="anyURI" use="required" fixed="urn:bro:RegistrationStatus" />
+            </restriction>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="SourceDocumentErrorType">
+        <sequence>
+            <element name="sequenceNumber" type="integer" minOccurs="1" maxOccurs="1" />
+            <element name="specification" type="string" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+    <complexType name="StandardizedLocationType">
+        <sequence>
+            <element name="location" type="gml:PointType" minOccurs="1" maxOccurs="1" />
+            <element name="coordinateTransformation" type="brocom:CoordinateTransformationType" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
+
+</schema>

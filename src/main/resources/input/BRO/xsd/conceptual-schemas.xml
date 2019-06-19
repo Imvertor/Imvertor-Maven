@@ -102,8 +102,8 @@
          </cs:ConceptualSchema>
          <cs:Map>
             <cs:id>SampleExternalModelA</cs:id>
-            <cs:namespace>http://www.bro.nl/SampleExternalModelA</cs:namespace>
-            <cs:location>http://www.bro.nl/schemas/1.0.0/SampleExternalModelA.xsd</cs:location>
+            <cs:namespace>http://www.broservices.nl/SampleExternalModelA</cs:namespace>
+            <cs:location>http://www.broservices.nl/schemas/1.0.0/SampleExternalModelA.xsd</cs:location>
             <cs:phase>1</cs:phase>
             <cs:version>1.0.0</cs:version>
             <cs:release>20170302</cs:release>
@@ -883,9 +883,8 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <!-- HW; klopt dit? Of moet er een namespace prefix voorstaan: brocom:ChamberOfCommerceNumber? -->
                         <cs:name>ChamberOfCommerceNumberType</cs:name>
-                        <cs:primitive>true</cs:primitive>
+                        <cs:primitive>false</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>               
@@ -935,7 +934,7 @@
                   <cs:xsdTypes>
                      <cs:XsdType>
                         <cs:name>RegistrationObjectCodeType</cs:name>
-                        <cs:primitive>true</cs:primitive>
+                        <cs:primitive>false</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
@@ -974,10 +973,10 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <cs:name>IndicationYesNoType</cs:name>
-                        <cs:asAttribute>IndicationYesNoType</cs:asAttribute>
+                        <cs:name>IndicationYesNoEnumeration</cs:name>
+                        <cs:asAttribute>IndicationYesNoEnumeration</cs:asAttribute>
                         <cs:asAttributeDesignation>enumeration</cs:asAttributeDesignation>
-                        <cs:primitive>true</cs:primitive>
+                        <cs:primitive>false</cs:primitive>
                         <cs:hasNilreason>false</cs:hasNilreason>
                      </cs:XsdType>
                   </cs:xsdTypes>
@@ -987,10 +986,10 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <cs:name>IndicationYesNoUnknownType</cs:name>
-                        <cs:asAttribute>IndicationYesNoUnknownType</cs:asAttribute>
+                        <cs:name>IndicationYesNoUnknownEnumeration</cs:name>
+                        <cs:asAttribute>IndicationYesNoUnknownEnumeration</cs:asAttribute>
                         <cs:asAttributeDesignation>enumeration</cs:asAttributeDesignation>
-                        <cs:primitive>true</cs:primitive>
+                        <cs:primitive>false</cs:primitive>
                         <cs:hasNilreason>false</cs:hasNilreason>
                      </cs:XsdType>
                   </cs:xsdTypes>
@@ -1003,7 +1002,7 @@
                         <cs:name>QualityRegimeType</cs:name>
                         <cs:asAttribute>QualityRegimeType</cs:asAttribute>
                         <cs:asAttributeDesignation>enumeration</cs:asAttributeDesignation>
-                        <cs:primitive>true</cs:primitive>
+                        <cs:primitive>false</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
@@ -1012,11 +1011,10 @@
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
-                        <!-- klopt dit? niet zeker van de betekenis van name en asAttribute -->
                         <cs:name>gml:PointType</cs:name>
                         <cs:asAttribute>gml:PointPropertyType</cs:asAttribute>
                         <cs:asAttributeDesignation>complextype</cs:asAttributeDesignation>
-                        <cs:primitive>false</cs:primitive>
+                        <cs:primitive>true</cs:primitive>
                      </cs:XsdType>
                   </cs:xsdTypes>
                </cs:Construct>
