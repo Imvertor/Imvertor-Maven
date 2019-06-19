@@ -72,7 +72,18 @@ public class XsdCompiler extends Step {
 					supplyExternalSchemas();
 					done = true;
 				} 
-		 } else if (owner.equals("Kadaster")) {
+		 } else if (owner.equals("Geonovum")) {
+				if (xmlschemarules.equals("XML-ISO19136")) {
+					generateXsdISO19136();
+					supplyExternalSchemas();
+					done = true;
+				} else if (xmlschemarules.equals("XML-Kadaster")) {
+					generateXsdKadaster();
+					supplyExternalSchemas();
+					done = true;
+				} 
+		} 
+		 else if (owner.equals("Kadaster")) {
 			if (xmlschemarules.equals("XML-ISO19136")) {
 				generateXsdISO19136();
 				supplyExternalSchemas();
