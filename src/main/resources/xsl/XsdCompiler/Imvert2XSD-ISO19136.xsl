@@ -809,6 +809,7 @@
         <xsl:variable name="is-complextype" select="$defining-class/imvert:stereotype/@id = (('stereotype-name-complextype','stereotype-name-referentielijst'))"/>
         <xsl:variable name="is-grouptype" select="$defining-class/imvert:stereotype/@id = ('stereotype-name-composite')"/>
         
+        <xsl:variable name="is-conceptual" select="exists($this/imvert:conceptual-schema-type)"/>
         <xsl:variable name="is-conceptual-complextype" select="$this/imvert:attribute-type-designation='complextype'"/>
         <xsl:variable name="is-conceptual-hasnilreason" select="imf:boolean($this/imvert:attribute-type-hasnilreason)"/> <!-- IM-477 the conceptual type in external schema is nillable and therefore has nilReason attribute -->
         <xsl:variable name="name-conceptual-type" select="if ($this/imvert:attribute-type-name) then imf:get-type($this/imvert:attribute-type-name,$this/imvert:type-package) else ()"/>
@@ -1294,6 +1295,17 @@
                             <xs:element ref="{$reftype}" minOccurs="{$min-occurs-target}" maxOccurs="{$this/imvert:max-occurs}"/>
                         </xs:sequence>
                     </xs:complexType>
+                </xs:element>
+            </xsl:when>
+            <xsl:when test="$is-conceptual">
+                <!--TODO dit is waarschijnlijk te beperkt. De externe modellen moeten beter afgehandeld worden. -->
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="minOccurs" select="$min-occurs-assoc"/>
+                    <xsl:attribute name="maxOccurs" select="1"/>
+                    <xsl:attribute name="type" select="$type"/>
+                    <xsl:sequence select="imf:create-comment($this,'A conceptual type')"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                 </xs:element>
             </xsl:when>
             <xsl:when test="not($defining-class)">
