@@ -168,7 +168,7 @@
    </xs:element>
    <xs:complexType name="Construct" abstract="false">
       <xs:sequence>
-         <xs:element name="name" minOccurs="1" maxOccurs="1">
+         <xs:element name="name" minOccurs="1" maxOccurs="unbounded">
             <xs:annotation>
                <xs:documentation source="http://www.imvertor.org/schema-info/technical-documentation">The name of the Construct.The name is unique within the Map it is part of.</xs:documentation>
             </xs:annotation>

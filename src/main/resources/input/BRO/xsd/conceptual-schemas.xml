@@ -880,6 +880,7 @@
                </cs:Construct>
                <cs:Construct>
                   <cs:name>KvK-nummer</cs:name>
+                  <cs:name>ChamberOfCommerceNumber</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
@@ -930,6 +931,7 @@
                </cs:Construct>
                <cs:Construct>
                   <cs:name>Registratieobjectcode</cs:name>
+                  <cs:name>RegistrationObjectCode</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
@@ -970,6 +972,7 @@
                </cs:Construct>
                <cs:Construct>
                   <cs:name>IndicatieJaNee</cs:name>
+                  <cs:name>IndicationYesNo</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>
@@ -996,6 +999,7 @@
                </cs:Construct>
                <cs:Construct>
                   <cs:name>Kwaliteitsregime</cs:name>
+                  <cs:name>QualityRegime</cs:name>
                   <cs:sentinel>false</cs:sentinel>
                   <cs:xsdTypes>
                      <cs:XsdType>

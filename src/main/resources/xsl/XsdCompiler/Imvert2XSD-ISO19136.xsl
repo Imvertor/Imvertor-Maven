@@ -87,6 +87,7 @@
 
     <xsl:variable name="Type-suffix">Type</xsl:variable>
     <xsl:variable name="PropertyType-suffix">PropertyType</xsl:variable>
+    <xsl:variable name="EnumerationType-suffix">Type</xsl:variable>
     
     <xsl:variable name="codelist-option" select="imf:get-config-string('cli','codelistoption','UNSPECIFIED')"/>
     <xsl:variable name="gml-version" select="imf:get-config-string('cli','gmlversion','UNSPECIFIED')"/>
@@ -811,6 +812,7 @@
         
         <xsl:variable name="is-conceptual" select="exists($this/imvert:conceptual-schema-type)"/>
         <xsl:variable name="is-conceptual-complextype" select="$this/imvert:attribute-type-designation='complextype'"/>
+        <xsl:variable name="is-conceptual-enumeration" select="$this/imvert:attribute-type-designation='enumeration'"/>
         <xsl:variable name="is-conceptual-hasnilreason" select="imf:boolean($this/imvert:attribute-type-hasnilreason)"/> <!-- IM-477 the conceptual type in external schema is nillable and therefore has nilReason attribute -->
         <xsl:variable name="name-conceptual-type" select="if ($this/imvert:attribute-type-name) then imf:get-type($this/imvert:attribute-type-name,$this/imvert:type-package) else ()"/>
         
@@ -1165,6 +1167,17 @@
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
                     <xsl:sequence select="imf:create-comment($this,'A conceptual complex type')"/>
+                    <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
+                </xs:element>
+            </xsl:when>
+            <xsl:when test="$is-conceptual-enumeration">
+                <!-- note that we do not support avoiding substitution on complex datatypes -->
+                <xs:element>
+                    <xsl:attribute name="name" select="$name"/>
+                    <xsl:attribute name="type" select="concat($type,$EnumerationType-suffix)"/>
+                    <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
+                    <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
+                    <xsl:sequence select="imf:create-comment($this,'A conceptual enumeration')"/>
                     <xsl:sequence select="imf:get-annotation($this,$appinfo-data-location,())"/>
                 </xs:element>
             </xsl:when>

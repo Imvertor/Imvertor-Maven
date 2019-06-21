@@ -105,19 +105,22 @@
             </p>
             <xsl:variable name="rows" as="element(tr)*">
                 <xsl:for-each select="cs:constructs/cs:Construct">
-                    <xsl:sort select="cs:name"/>
+                    <xsl:sort select="cs:name[1]"/>
                     <xsl:variable name="xt" select="cs:xsdTypes/cs:XsdType"/>
                     <xsl:variable name="rt" select="cs:rdfTypes/cs:RdfType"/>
                     <tr>
                         <td>
                             <xsl:variable name="curl" select="imf:create-catalog-url(.)"/>
-                            <xsl:sequence select="if ($curl) then imf:get-xhtml-link($curl,cs:name,true()) else cs:name"/>
+                            <xsl:sequence select="if ($curl) then imf:get-xhtml-link($curl,cs:name[1],true()) else cs:name[1]"/>
                             <xsl:for-each select="cs:catalogEntries/cs:CatalogEntry">
                                 <span class="tid">
                                     <xsl:sequence select="imf:get-xhtml-link(cs:url,cs:name,true())"/> 
                                 </span>
                                 <br/>
                             </xsl:for-each>
+                            <xsl:for-each select="subsequence(cs:name,2)">
+                                <xsl:value-of select="concat(' / ', .)"/>
+                            </xsl:for-each> 
                         </td>
                         <td>
                             <xsl:value-of select="$xt/cs:name"/>
