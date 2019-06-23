@@ -88,6 +88,19 @@
         <feature name="allow-scalar-in-union">true</feature>
     </features>
     
+    <scalars>
+        <scalar id="scalar-day">
+            <name lang="nl">DAG</name>
+            <name lang="en">DAY</name>
+            <type-map formal-lang="xs">gDay</type-map>
+        </scalar>
+        <scalar id="scalar-month">
+            <name lang="nl">MAAND</name>
+            <name lang="en">MONTH</name>
+            <type-map formal-lang="xs">gMonth</type-map>
+        </scalar>
+    </scalars>
+    
     <stereotypes xml:id="stereotypes">
 
         <stereo id="stereotype-name-relatieklasse">
