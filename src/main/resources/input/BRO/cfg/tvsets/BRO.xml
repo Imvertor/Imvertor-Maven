@@ -50,7 +50,7 @@
             <desc lang="en">Defines lower bounds for numeric values including this number.</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo minmax="0..1" default="BRO">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
         </tv>
         <tv id="CFG-TV-MAXIMUMVALUE">
@@ -60,7 +60,7 @@
             <desc lang="en">Defines upper bounds for numeric values including this number.</desc>
             <derive>yes</derive>
             <stereotypes>
-                <stereo minmax="0..1" default="BRO">stereotype-name-attribute</stereo>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
             </stereotypes>
         </tv>
         
