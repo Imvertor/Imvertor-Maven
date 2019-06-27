@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:imf="http://www.imvertor.org/xsl/functions" xmlns:ep="http://www.imvertor.org/schema/endproduct" version="2.0">
+<xsl:stylesheet 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+	xmlns:imf="http://www.imvertor.org/xsl/functions" 
+	xmlns:ep="http://www.imvertor.org/schema/endproduct"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	version="2.0">
+	
 	<xsl:output method="text" indent="yes" omit-xml-declaration="yes"/>
+	
+	<xsl:include href="Documentation.xsl"/> 
 	
 	<xsl:variable name="stylesheet-code" as="xs:string">YAMLB</xsl:variable>
 	
@@ -794,113 +803,6 @@
 							<xsl:apply-templates select="ep:seq">
 								<xsl:with-param name="typeName" select="$typeName"/>
 							</xsl:apply-templates>
-	<?x						<xsl:for-each select="ep:seq/ep:choice">
-								<xsl:variable name="firstChoice" select=".//ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
-															 and ep:type-name = //ep:message-set/ep:construct/ep:tech-name][1]"/>
-								<xsl:variable name="elementName">
-									<xsl:choose>
-										<xsl:when test="not(empty($firstChoice/ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value))">
-											<xsl:value-of select="$firstChoice/ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
-										</xsl:when>
-										<xsl:when test="not(empty($firstChoice/ep:parameters/ep:parameter[ep:name='targetrole']/ep:value))">
-											<xsl:value-of select="$firstChoice/ep:parameters/ep:parameter[ep:name='targetrole']/ep:value"/>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:value-of select="translate($firstChoice/ep:tech-name,'.','_')"/>
-										</xsl:otherwise>
-									</xsl:choose>
-								</xsl:variable>
-								<xsl:variable name="maxOccurs" select="$firstChoice/ep:max-occurs"/>
-								<xsl:variable name="minOccurs" select="$firstChoice/ep:min-occurs"/>
-								<xsl:variable name="occurence-type">
-									<xsl:choose>
-										<xsl:when test="$maxOccurs = 'unbounded' or $maxOccurs > 1">array</xsl:when>
-										<xsl:otherwise>object</xsl:otherwise>
-									</xsl:choose>
-								</xsl:variable>
-								<xsl:variable name="typeName" select="$firstChoice/ep:type-name"/>
-								<xsl:value-of select="concat('&quot;',$elementName,'&quot;: {')"/>
-								
-								<xsl:value-of select="concat('&quot;type&quot;: &quot;',$occurence-type,'&quot;,')"/>
-								<xsl:variable name="documentation">
-									<xsl:value-of select="$firstChoice/ep:documentation//ep:p"/>
-								</xsl:variable>
-								<xsl:choose>
-									<!-- Depending on the occurence-type and the type of construct content is generated. -->
-									<xsl:when test="$firstChoice/ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
-										<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
-										<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-										<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
-										<xsl:value-of select="'&quot;,'"/>
-										<xsl:if test="$maxOccurs != 'unbounded'">
-											<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
-										</xsl:if>
-										<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
-											<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
-										</xsl:if>
-										<xsl:choose>
-											<xsl:when test="$occurence-type = 'array'">
-												<xsl:value-of select="'&quot;items&quot;: {'"/>
-												<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
-												<xsl:apply-templates select=".//ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
-																			 and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]" mode="embeddedchoices"/>
-												<xsl:value-of select="']'"/>
-												<xsl:value-of select="'}'"/>
-											</xsl:when>
-											<xsl:otherwise>
-												<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
-												<xsl:apply-templates select=".//ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
-																			 and ep:type-name = //ep:message-set/ep:construct/ep:tech-name]" mode="embeddedchoices"/>
-												<xsl:value-of select="']'"/>
-											</xsl:otherwise>
-										</xsl:choose>
-									</xsl:when>
-									<xsl:when test="$firstChoice/ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
-										<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
-										<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-										<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
-										<xsl:value-of select="'&quot;,'"/>
-										<xsl:if test="$maxOccurs != 'unbounded'">
-											<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
-										</xsl:if>
-										<xsl:if test="not(empty($minOccurs)) and $minOccurs != 0 ">
-											<xsl:value-of select="concat('&quot;minItems&quot;: ',$minOccurs,',')"/>
-										</xsl:if>
-										<xsl:choose>
-											<xsl:when test="$occurence-type = 'array'">
-												<xsl:value-of select="'&quot;items&quot;: {'"/>
-												<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
-												<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
-												<xsl:value-of select="']'"/>
-												<xsl:value-of select="'}'"/>
-											</xsl:when>
-											<xsl:otherwise>
-												<xsl:value-of select="'&quot;oneOf&quot;: ['"/>
-												<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
-												<xsl:value-of select="']'"/>
-											</xsl:otherwise>
-										</xsl:choose>
-									</xsl:when>
-								</xsl:choose>
-								<xsl:value-of select="'}'"/>
-								<xsl:choose>
-									<xsl:when test="following-sibling::ep:choice">
-										<!-- As long as the current construct isn't the last global constructs (that has at least one association construct) a comma separator as 
-											 to be generated. -->
-										<xsl:value-of select="','"/>
-									</xsl:when>
-									<xsl:when test=".//ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
-												  and $typeName = //ep:message-set/ep:construct/ep:tech-name]">
-										<!-- As long as the current construct isn't the last association type construct a comma separator has to be generated. -->
-										<xsl:value-of select="','"/>
-									</xsl:when>
-								</xsl:choose>
-								,"test": "test",
-							</xsl:for-each>
-								<!-- Only for the association constructs properties have to be generated. This is not applicable for supertype-association 
-									 constructs. -->
-							<xsl:apply-templates select="ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value ='association' 
-														 and $typeName = //ep:message-set/ep:construct/ep:tech-name]" mode="embedded"/> ?>
 							<xsl:value-of select="'}'"/>
 							<xsl:value-of select="'}'"/>
 							<xsl:if test="$debugging">
@@ -1104,7 +1006,8 @@
 			<xsl:value-of select="concat('&quot;',$elementName,'&quot;: {')"/>	
 			<xsl:value-of select="concat('&quot;type&quot;: &quot;',$occurence-type,'&quot;,')"/>
 			<xsl:variable name="documentation">
-				<xsl:value-of select="$firstChoice/ep:documentation//ep:p"/>
+				<!--xsl:value-of select="$firstChoice/ep:documentation//ep:p"/-->
+				<!--xsl:text>Doc1: </xsl:text--><xsl:apply-templates select="$firstChoice/ep:documentation"/>
 			</xsl:variable>
 			<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
 			<!-- Double quotes in documentation text is replaced by a  grave accent. -->
@@ -1194,6 +1097,7 @@
 		<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
 		<xsl:variable name="documentation">
 			<xsl:value-of select="ep:documentation//ep:p"/>
+			<!--xsl:text>Doc2: </xsl:text><xsl:apply-templates select="ep:documentation"/-->
 		</xsl:variable>
 		<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
 		<!-- Double quotes in documentation text is replaced by a  grave accent. -->
@@ -1383,50 +1287,27 @@
 		<xsl:value-of select="concat('&quot;', $elementName,'&quot;: {' )"/>
 		<xsl:value-of select="'&quot;type&quot;: &quot;string&quot;,'"/>
 		
-		<?x xsl:choose>
-			<xsl:when test="$json-version = '2.0'" ?>
-				<xsl:value-of select="'&quot;description&quot; : &quot;'"/>
-				<xsl:variable name="enumeration-documentation">
-					<xsl:if test="ep:documentation">
-						<xsl:apply-templates select="ep:documentation"/><xsl:text>:</xsl:text>
-					</xsl:if>
-					<xsl:for-each select="ep:enum">
-						<xsl:value-of select="concat('\n* `',ep:alias,'` - ',ep:name)"/>
-					</xsl:for-each>
-					<xsl:value-of select="'&quot;,'"/>
-				</xsl:variable>
-				<xsl:sequence select="$enumeration-documentation"/>
-				<xsl:value-of select="'&quot;enum&quot;: ['"/>
-				<xsl:for-each select="ep:enum">
-					<!-- Loop over all enum elements. -->
-					<xsl:value-of select="concat('&quot;',ep:alias,'&quot;')"/>
-					<xsl:if test="position() != last()">
-						<!-- As long as the current construct isn't the last construct a comma separator has to be generated. -->
-						<xsl:value-of select="','"/>
-					</xsl:if>
-				</xsl:for-each>
-				<xsl:value-of select="']'"/>
-			<?x /xsl:when>
-			<xsl:otherwise>
-
-				<xsl:if test="ep:documentation">
-					<xsl:value-of select="'&quot;description&quot; : &quot;'"/>
-					<xsl:apply-templates select="ep:documentation"/>
-					<xsl:value-of select="'&quot;,'"/>
-				</xsl:if>
-				<xsl:value-of select="'&quot;enum&quot;: ['"/>
-				<xsl:for-each select="ep:enum">
-					<!-- Loop over all enum elements. -->
-					<xsl:value-of select="concat('{&quot;const&quot; : &quot;',ep:alias,'&quot;,')"/>
-					<xsl:value-of select="concat('&quot;description&quot; : &quot;',ep:name,'&quot;}')"/>
-					<xsl:if test="position() != last()">
-						<!-- As long as the current construct isn't the last construct a comma separator has to be generated. -->
-						<xsl:value-of select="','"/>
-					</xsl:if>
-				</xsl:for-each>
-				<xsl:value-of select="']'"/>
-			</xsl:otherwise>
-		</xsl:choose ?>
+		<xsl:value-of select="'&quot;description&quot; : &quot;'"/>
+		<xsl:variable name="enumeration-documentation">
+			<xsl:if test="ep:documentation">
+				<xsl:apply-templates select="ep:documentation"/><xsl:text>:</xsl:text>
+			</xsl:if>
+			<xsl:for-each select="ep:enum">
+				<xsl:value-of select="concat('\n* `',ep:alias,'` - ',ep:name)"/>
+			</xsl:for-each>
+			<xsl:value-of select="'&quot;,'"/>
+		</xsl:variable>
+		<xsl:sequence select="$enumeration-documentation"/>
+		<xsl:value-of select="'&quot;enum&quot;: ['"/>
+		<xsl:for-each select="ep:enum">
+			<!-- Loop over all enum elements. -->
+			<xsl:value-of select="concat('&quot;',ep:alias,'&quot;')"/>
+			<xsl:if test="position() != last()">
+				<!-- As long as the current construct isn't the last construct a comma separator has to be generated. -->
+				<xsl:value-of select="','"/>
+			</xsl:if>
+		</xsl:for-each>
+		<xsl:value-of select="']'"/>
 		<xsl:value-of select="'}'"/>
 		<xsl:if test="$debugging">
 			,"--------------Einde-16500-<xsl:value-of select="generate-id()"/>": {
@@ -1434,27 +1315,7 @@
 			}
 		</xsl:if>
 	</xsl:template>
-	
-	<xsl:template match="ep:documentation">
-		<xsl:apply-templates select="ep:description"/>
-		<xsl:apply-templates select="ep:definition"/>
-	</xsl:template>
-	
-	<xsl:template match="ep:description">
-		<xsl:apply-templates select="ep:p"/>
-	</xsl:template>
-	
-	<xsl:template match="ep:definition">
-		<xsl:apply-templates select="ep:p"/>
-	</xsl:template>
-	
-	<xsl:template match="ep:p">
-		<xsl:value-of select="."/>
-		<xsl:if test="following-sibling::ep:p">
-			<xsl:text> </xsl:text>
-		</xsl:if>
-	</xsl:template>
-	
+
 	<!-- TODO: Het onderstaande template en ook de aanroep daarvan zijn is op dit moment onnodig omdat we er nu vanuit gaan dat er altijd hal+json 
 			   gegenereerd moet worden.
 			   Alleen als we later besluiten dat er ook af en toe geen json_hal gegenereerd moet worden kan deze if weer opportuun worden. 
@@ -1475,7 +1336,8 @@
         <xsl:variable name="elementName" select="translate(ep:tech-name,'.','_')"/>
 
 		<xsl:variable name="documentation">
-			<xsl:value-of select="ep:documentation//ep:p"/>
+			<!--xsl:value-of select="ep:documentation//ep:p"/-->
+			<xsl:apply-templates select="ep:documentation"/>
 		</xsl:variable>
 		<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
 		<!-- Double quotes in documentation text is replaced by a  grave accent. -->
@@ -1585,16 +1447,6 @@
 			<xsl:when test="ep:parameters/ep:parameter[ep:name='type']/ep:value = 'GM-external'">
 				<!-- If the property is a gml type this when applies. In all these case a standard content (except the documentation)
 					 is generated. -->
-	<?x			<xsl:variable name="documentation">
-					<xsl:value-of select="ep:documentation//ep:p"/>
-				</xsl:variable>
-				<xsl:value-of select="concat('&quot;title&quot;: &quot;',ep:parameters/ep:parameter[ep:name='SIM-name']/ep:value,'&quot;,')"/>
-				<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
-				<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-				<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
-				<xsl:value-of select="' Conform geojson, zie http://geojson.org.'"/>
-				<xsl:value-of select="'&quot;,'"/>
-				<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;'"/> ?>
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-geojson-components-url,'GeoJSONGeometry&quot;')"/>
 			</xsl:when>
 			<xsl:when test="exists(ep:data-type) and (ep:max-occurs = 'unbounded' or ep:max-occurs > 1)">
@@ -1627,6 +1479,7 @@
 				<xsl:value-of select="concat('&quot;title&quot;: &quot;',ep:parameters/ep:parameter[ep:name='SIM-name']/ep:value,'&quot;')"/>
 				<xsl:variable name="documentation">
 					<xsl:value-of select="ep:documentation//ep:p"/>
+					<!--xsl:text>Doc3: </xsl:text><xsl:apply-templates select="ep:documentation"/-->
 				</xsl:variable>
 				<xsl:value-of select="',&quot;description&quot;: &quot;'"/>
 				<!-- Double quotes in documentation text is replaced by a  grave accent. -->
@@ -1675,6 +1528,7 @@
 				<xsl:value-of select="concat(',&quot;title&quot;: &quot;',ep:parameters/ep:parameter[ep:name='SIM-name']/ep:value,'&quot;')"/>
 				<xsl:variable name="documentation">
 					<xsl:value-of select="ep:documentation//ep:p"/>
+					<!--xsl:text>Doc4: </xsl:text><xsl:apply-templates select="ep:documentation"/-->
 				</xsl:variable>
 				<xsl:value-of select="',&quot;description&quot;: &quot;'"/>
 				<!-- Double quotes in documentation text is replaced by a  grave accent. -->
@@ -1760,6 +1614,12 @@
 			</xsl:when>
 			<xsl:when test="$incomingType = 'yearmonth'">
 				<xsl:value-of select="',&quot;format&quot;: &quot;jaarmaand&quot;'"/>
+			</xsl:when>
+			<xsl:when test="$incomingType = 'month'">
+				<xsl:value-of select="',&quot;format&quot;: &quot;date_month&quot;'"/>
+			</xsl:when>
+			<xsl:when test="$incomingType = 'day'">
+				<xsl:value-of select="',&quot;format&quot;: &quot;date_mday&quot;'"/>
 			</xsl:when>
 			<xsl:when test="$incomingType = 'dateTime'">
 				<xsl:value-of select="',&quot;format&quot;: &quot;date-time&quot;'"/>
@@ -1866,6 +1726,7 @@
 		<xsl:value-of select="concat('&quot;type&quot;: &quot;',$occurence-type,'&quot;,')"/>
 		<xsl:variable name="documentation">
 			<xsl:value-of select="ep:documentation//ep:p"/>
+			<!--xsl:text>Doc5: </xsl:text><xsl:apply-templates select="ep:documentation"/-->
 			<xsl:if test="$debugging">
 				<xsl:value-of select="ep:name"/>
 			</xsl:if>
@@ -1987,6 +1848,7 @@
 		<xsl:value-of select="concat('&quot;',$elementName,'&quot;: {')"/>
 		<xsl:variable name="documentation">
 			<xsl:value-of select="ep:documentation//ep:p"/>
+			<!--xsl:text>Doc6: </xsl:text><xsl:apply-templates select="ep:documentation"/-->
 		</xsl:variable>
 		
 		<xsl:choose>
@@ -2062,6 +1924,7 @@
 				
 				<xsl:variable name="documentation">
 					<xsl:value-of select="ep:documentation//ep:p"/>
+					<!--xsl:text>Doc7: </xsl:text><xsl:apply-templates select="ep:documentation"/-->
 				</xsl:variable>
 				<xsl:choose>
 					<!-- Depending on the occurence-type and the type of construct content is generated. -->

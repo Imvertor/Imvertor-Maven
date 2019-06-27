@@ -12,7 +12,7 @@
 	xmlns:imvert-result="http://www.imvertor.org/schema/imvertor/application/v20160201"
 	xmlns:ep="http://www.imvertor.org/schema/endproduct" 
 	xmlns:math="http://exslt.org/math"
-	
+	xmlns:html="http://www.w3.org/1999/xhtml"
 	
 	version="2.0">
 
@@ -2160,9 +2160,6 @@
 		<xsl:param name="tv-id" />
 
 		<xsl:variable name="all-tv" select="imf:get-all-compiled-tagged-values($this,false())" />
-		<!--ep:robert-merge-documentation tv-id="{$tv-id}">
-			<xsl:sequence select="$all-tv"/>
-		</ep:robert-merge-documentation-->
 		<xsl:variable name="vals" select="$all-tv[@id = $tv-id]" />
 		<xsl:for-each select="$vals">
 			<xsl:variable name="p" select="normalize-space(imf:get-clean-documentation-string(imf:get-tv-value.local(.)))" />
@@ -2178,6 +2175,19 @@
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:function>
+	
+	<xsl:template match="html:*">
+		<xsl:copy>
+			<xsl:choose>
+				<xsl:when test="html:*">
+					<xsl:apply-templates select="html:*|text()"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="normalize-space(.)"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:copy>
+	</xsl:template>
 
 	<!-- This function merges all documentation from the provided layer up to the current layer. -->
 	<xsl:function name="imf:merge-documentation-up-to-level">
@@ -2186,45 +2196,52 @@
 		<xsl:param name="level"/>
 		
 		<xsl:variable name="all-tv" select="imf:get-all-compiled-tagged-values($this,false())" />
-		<!--ep:robert-merge-documentation-up-to-level tv-id="{$tv-id}" level="{$level}">
-			<xsl:sequence select="$all-tv"/>
-		</ep:robert-merge-documentation-up-to-level-->
 		<xsl:variable name="vals" select="$all-tv[@id = $tv-id]" />
 		<xsl:for-each select="$vals">
-			<xsl:variable name="p" select="normalize-space(imf:get-clean-documentation-string(imf:get-tv-value.local(.)))" />
+			<!--xsl:variable name="p" select="normalize-space(imf:get-clean-documentation-string(imf:get-tv-value.local(.)))" /-->
+			<xsl:variable name="p">
+				<xsl:choose>
+					<xsl:when test=".//html:body">
+						<xsl:apply-templates select="html:*"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="normalize-space(imf:get-clean-documentation-string(imf:get-tv-value.local(.)))"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
 			<xsl:choose>
 				<xsl:when test="$level = 'SIM' and not($p = '')">
-					<ep:p>
+					<ep:p format="{$vals[1]/@format}">
 						<xsl:if test="$debugging">
 							<xsl:attribute name="subpath" select="imf:get-subpath(@project,@application,@release)"/>
 							<xsl:attribute name="val-level" select="@level"/>
 							<xsl:attribute name="level" select="@project"/>
 						</xsl:if>
-						<xsl:value-of select="$p" />
+						<xsl:sequence select="$p" />
 					</ep:p>
 				</xsl:when>
 				<xsl:when test="$level = 'UGM' and (@project = 'UGM' or @project = 'BSM') and not($p = '')">
-					<ep:p>
+					<ep:p format="{$vals[1]/@format}">
 						<xsl:if test="$debugging">
 							<xsl:attribute name="subpath" select="imf:get-subpath(@project,@application,@release)"/>
 							<xsl:attribute name="val-level" select="@level"/>
 							<xsl:attribute name="level" select="@project"/>
 						</xsl:if>
-						<xsl:value-of select="$p" />
+						<xsl:sequence select="$p" />
 					</ep:p>
 				</xsl:when>
 				<xsl:when test="$level = 'BSM' and @project = 'BSM' and not($p = '')">
-					<ep:p>
+					<ep:p format="{$vals[1]/@format}">
 						<xsl:if test="$debugging">
 							<xsl:attribute name="subpath" select="imf:get-subpath(@project,@application,@release)"/>
 							<xsl:attribute name="val-level" select="@level"/>
 							<xsl:attribute name="level" select="@project"/>
 						</xsl:if>
-						<xsl:value-of select="$p" />
+						<xsl:sequence select="$p" />
 					</ep:p>
 				</xsl:when>
 			</xsl:choose>
-<?x			<xsl:if test="not($p = '')">
+			<?x			<xsl:if test="not($p = '')">
 				<ep:p>
 					<xsl:if test="$debugging">
 						<xsl:attribute name="subpath" select="imf:get-subpath(@project,@application,@release)"/>
@@ -2248,7 +2265,7 @@
 		</xsl:for-each> 
 		
 	</xsl:function>
-
+	
 	<xsl:function name="imf:capitalize">
 		<xsl:param name="name" />
 		<xsl:value-of select="concat(upper-case(substring($name,1,1)),substring($name,2))" />

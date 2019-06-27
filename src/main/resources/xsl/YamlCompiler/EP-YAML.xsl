@@ -2,9 +2,14 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:ep="http://www.imvertor.org/schema/endproduct" xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:imf="http://www.imvertor.org/xsl/functions"
-	xmlns:functx="http://www.functx.com" version="2.0">
+	xmlns:functx="http://www.functx.com" 
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	version="2.0">
+	
 	<xsl:output method="text" indent="yes" omit-xml-declaration="yes" />
 
+	<xsl:include href="Documentation.xsl"/>
+	
 	<xsl:variable name="message-sets" select="/ep:message-sets" />
 
 	<!-- This variabele defines the type of output and can take the next values:
@@ -66,7 +71,8 @@
 		<xsl:text>&#xa;    url: https://www.voorbeeldgemeente.nl/api/</xsl:text><xsl:value-of select="concat($normalizedKVname,'/v', $major-version)"/>
         <xsl:text>&#xa;info:</xsl:text>
 		<xsl:text>&#xa;  title: </xsl:text><xsl:value-of select="$KVname"/>
-		<xsl:text>&#xa;  description: "</xsl:text> <xsl:value-of select="normalize-space(ep:documentation)"/><xsl:text>"</xsl:text>
+		<xsl:text>&#xa;  description: "</xsl:text> <xsl:apply-templates select="ep:documentation"><xsl:with-param name="definition" select="'no'"/><xsl:with-param name="pattern" select="'no'"/></xsl:apply-templates><xsl:text>"</xsl:text>
+		<!--xsl:text>&#xa;  description: "</xsl:text> <xsl:value-of select="normalize-space(ep:documentation)"/><xsl:text>"</xsl:text-->
         <xsl:text>&#xa;  version: "</xsl:text><xsl:value-of select="ep:patch-number"/><xsl:text>"</xsl:text>
         <xsl:text>&#xa;  contact:</xsl:text>
 		<xsl:text>&#xa;    url: </xsl:text><xsl:value-of select="/ep:message-sets/ep:parameters/ep:parameter[ep:name='project-url']/ep:value"/>
@@ -126,7 +132,7 @@
 		<xsl:variable name="construct" select="./ep:seq/ep:construct/ep:type-name"/>
 		<xsl:variable name="meervoudigeNaam" select="//ep:message-set/ep:construct[ep:tech-name = $construct]/ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
 		<xsl:variable name="documentation">
-			<xsl:text></xsl:text><xsl:apply-templates select="ep:documentation" /><xsl:text></xsl:text>
+			<xsl:text></xsl:text><xsl:apply-templates select="ep:documentation"><xsl:with-param name="definition" select="'no'"/><xsl:with-param name="pattern" select="'no'"/></xsl:apply-templates><xsl:text></xsl:text>
 		</xsl:variable>
 		<xsl:variable name="berichttype" select="ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value"/>
 		<xsl:variable name="messagetype" select="ep:parameters/ep:parameter[ep:name='messagetype']/ep:value"/>
@@ -1375,7 +1381,7 @@
 		<xsl:value-of select="concat('&quot;',$standard-json-components-url,$FoutBerichtType,'&quot;')"/>
 	</xsl:function>
 
-	<xsl:template match="ep:documentation">
+<?x	<xsl:template match="ep:documentation">
 		<xsl:apply-templates select="ep:description" />
 	</xsl:template>
 
@@ -1383,12 +1389,61 @@
 		<xsl:apply-templates select="ep:p" />
 	</xsl:template>
 
-	<xsl:template match="ep:p">
+	<!--xsl:template match="ep:p">
 		<xsl:value-of select="." />
 		<xsl:if test="following-sibling::ep:p">
 			<xsl:text> </xsl:text>
 		</xsl:if>
+	</xsl:template-->
+
+	<xsl:template match="ep:p">
+		<xsl:choose>
+			<xsl:when test="@format = 'plain'">
+				<xsl:text>(test)</xsl:text><xsl:value-of select="."/>
+				<xsl:if test="following-sibling::ep:p">
+					<xsl:text> </xsl:text>
+				</xsl:if>
+			</xsl:when>
+			<xsl:when test="@format = 'markdown'">
+				<xsl:apply-templates select="html:body"/>
+			</xsl:when>
+			<xsl:otherwise>De otherwise tak.</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
+	
+	<xsl:template match="html:body">
+		<xsl:value-of select="'# Titel'"/>
+		<xsl:apply-templates select="html:*"/>
+	</xsl:template>
+	
+	<xsl:template match="html:h2">
+		<xsl:value-of select="concat('## ',.)"/><xsl:text>
+			
+		</xsl:text>
+	</xsl:template>
+	
+	<xsl:template match="html:p">
+		<xsl:value-of select="."/>
+		<xsl:apply-templates select="html:*"/>
+	</xsl:template>
+	
+	<xsl:template match="html:ul">
+		<xsl:text>
+			
+		</xsl:text><xsl:apply-templates select="html:*"/>
+	</xsl:template>
+	
+	<xsl:template match="html:ol">
+		<xsl:text>
+			
+		</xsl:text><xsl:apply-templates select="html:*"/>
+	</xsl:template>
+	
+	<xsl:template match="html:li">
+		<xsl:value-of select="concat('* ',.)"/><xsl:text>
+			
+		</xsl:text>
+	</xsl:template> ?>
 
 	<xsl:template match="ep:construct" mode="getParameters">
 		<xsl:for-each select="ep:seq/ep:construct[empty(ep:parameters/ep:parameter[ep:name='type'])]">
