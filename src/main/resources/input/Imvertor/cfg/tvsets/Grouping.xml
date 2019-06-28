@@ -355,7 +355,6 @@
                 <stereo minmax="0..1">stereotype-name-enumeration</stereo>
                 <stereo minmax="0..1">stereotype-name-enum</stereo>
                 
-                <stereo minmax="0..1">stereotype-name-composite</stereo>
                 <stereo minmax="0..1">stereotype-name-relatieklasse</stereo>
                 
                 <stereo minmax="0..1">stereotype-name-complextype</stereo>

@@ -27,6 +27,12 @@
             </stereotypes>
         </tv>
         
+        <tv id="CFG-TV-POSITION"> <!-- extend -->
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attributegroup</stereo>
+            </stereotypes>
+        </tv>
+        
     </tagged-values>
     
 </tagset>
