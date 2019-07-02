@@ -241,6 +241,30 @@
         </imvert:attribute>
     </xsl:template>
     
+    <xsl:template match="
+        /domeintabel/Kleur
+        | /domeintabel/Kleursterkte
+        " mode="codelist">
+        <imvert:attribute origin="system">
+            <imvert:name original="{Waarde}">
+                <xsl:value-of select="Waarde"/>
+            </imvert:name>
+            <imvert:id>
+                <xsl:value-of select="concat(local-name(.),'_',ID)"/>
+            </imvert:id>
+            <imvert:stereotype id="stereotype-name-enum">ENUMERATIEWAARDE</imvert:stereotype>
+            <xsl:if test="Kwaliteitsregime = 'IMBRO/A'">
+                <imvert:stereotype id="stereotype-name-imbroa">IMBRO/A</imvert:stereotype>
+            </xsl:if>
+            <imvert:tagged-values>
+                <imvert:tagged-value id="CFG-TV-DEFINITION">
+                    <imvert:value>
+                        <xsl:value-of select="Omschrijving"/>
+                    </imvert:value>
+                </imvert:tagged-value>
+            </imvert:tagged-values>
+        </imvert:attribute>
+    </xsl:template>
     <!-- BRO reference lists -->
     
     <xsl:template match="/domeintabel/Parameter" mode="reflist">
