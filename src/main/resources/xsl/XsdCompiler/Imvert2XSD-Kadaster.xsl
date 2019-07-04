@@ -62,6 +62,8 @@
     
     <xsl:variable name="allow-scalar-in-union" select="imf:boolean($configuration-metamodel-file//features/feature[@name='allow-scalar-in-union'])"/>
 
+    <xsl:variable name="meta-is-role-based" select="imf:boolean($configuration-metamodel-file//features/feature[@name='role-based'])"/>
+    
     <!-- 
         What types result in an attribute in stead of an element? 
         This is always the case for ID values.
@@ -264,6 +266,7 @@
     </xsl:template>    
     
     <xsl:template match="imvert:class[imvert:stereotype/@id = ('stereotype-name-codelist')]">
+        <xsl:sequence select="imf:debug(.,'A codelist')"/>
         <xs:simpleType name="{imvert:name}">
             <xsl:sequence select="imf:get-annotation(.)"/>
             <xs:restriction base="xs:string">
@@ -437,7 +440,7 @@
                             <xsl:sort select="xs:integer(imvert:position)" order="ascending"/>
                             <xsl:variable name="defining-class" select="imf:get-defining-class(.)"/>   
                             <xsl:variable name="defining-class-is-datatype" select="$defining-class/imvert:stereotype/@id = (
-                                ('stereotype-name-simpletype','stereotype-name-enumeration','stereotype-name-complextype','stereotype-name-union'))"/>   
+                                ('stereotype-name-simpletype','stereotype-name-enumeration','stereotype-name-codelist','stereotype-name-complextype','stereotype-name-union'))"/>   
                             <xsl:choose>
                                 <xsl:when test="$defining-class-is-datatype">
                                     <xsl:sequence select="imf:debug(.,'A choice member, which is a datatype')"/>
@@ -733,14 +736,14 @@
         <xsl:variable name="basetype-name" select="if ($is-nillable) then imf:get-restriction-basetype-name($this) else ''"/>
         <xsl:variable name="package-name" select="$this/ancestor::imvert:package[last()]/imvert:name"/>
         
-        <xsl:variable name="name" select="$this/imvert:name"/>
+        <xsl:variable name="name" select="if ($this/self::imvert:association and $meta-is-role-based) then $this/imvert:target/imvert:role else $this/imvert:name"/>
         <xsl:variable name="found-type" select="imf:get-type($this/imvert:type-name,$this/imvert:type-package)"/>
       
         <xsl:variable name="is-any" select="$found-type = '#any'"/>
         <xsl:variable name="is-mix" select="$found-type = '#mix'"/>
         
         <xsl:variable name="defining-class" select="imf:get-defining-class($this)"/>                            
-        <xsl:variable name="is-enumeration" select="$defining-class/imvert:stereotype/@id = ('stereotype-name-enumeration')"/>
+        <xsl:variable name="is-enumeration-or-codelist" select="$defining-class/imvert:stereotype/@id = ('stereotype-name-enumeration','stereotype-name-codelist')"/>
         <xsl:variable name="is-datatype" select="$defining-class/imvert:stereotype/@id = ('stereotype-name-simpletype')"/>
         <xsl:variable name="is-complextype" select="$defining-class/imvert:stereotype/@id = (('stereotype-name-complextype','stereotype-name-referentielijst'))"/>
         
@@ -915,14 +918,14 @@
                     <xsl:sequence select="imf:get-annotation($this)"/>
                 </xs:element>
             </xsl:when>
-            <xsl:when test="$is-enumeration">
+            <xsl:when test="$is-enumeration-or-codelist">
                 <!-- an enumeration or a datatype such as postcode -->
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="type" select="$type"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:debug($this,'An enumeration')"/>
+                    <xsl:sequence select="imf:debug($this,'An enumeration or codelist')"/>
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                 </xs:element>
             </xsl:when>
@@ -937,13 +940,13 @@
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                 </xs:element>
             </xsl:when>
-            <xsl:when test="$is-enumeration or $is-datatype">
+            <xsl:when test="$is-datatype">
                 <xs:element>
                     <xsl:attribute name="name" select="$name"/>
                     <xsl:attribute name="type" select="$type"/>
                     <xsl:attribute name="minOccurs" select="$this/imvert:min-occurs"/>
                     <xsl:attribute name="maxOccurs" select="$this/imvert:max-occurs"/>
-                    <xsl:sequence select="imf:debug($this,'An enumeration or a datatype')"/>
+                    <xsl:sequence select="imf:debug($this,'A datatype')"/>
                     <xsl:sequence select="imf:get-annotation($this,$data-location,())"/>
                 </xs:element>
             </xsl:when>
