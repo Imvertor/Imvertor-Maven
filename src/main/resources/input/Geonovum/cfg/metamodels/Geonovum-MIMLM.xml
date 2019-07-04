@@ -25,4 +25,10 @@
         </profile>
     </profiles>
     
+    <stereotypes xml:id="stereotypes">
+        <stereo id="stereotype-name-codelist">
+            <name lang="nl">Codelist</name>
+        </stereo>       
+    </stereotypes>
+    
 </metamodel>
