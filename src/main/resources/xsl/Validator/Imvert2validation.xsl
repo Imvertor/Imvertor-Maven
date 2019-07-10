@@ -140,13 +140,15 @@
     
     <xsl:variable name="datatype-stereos" select="
         ('stereotype-name-simpletype',
-         'stereotype-name-complextype',
-         'stereotype-name-union',
-         'stereotype-name-referentielijst',
-         'stereotype-name-codelist',
-         'stereotype-name-interface',
-         'stereotype-name-enumeration')"/>
+        'stereotype-name-complextype',
+        'stereotype-name-union',
+        'stereotype-name-referentielijst',
+        'stereotype-name-codelist',
+        'stereotype-name-interface',
+        'stereotype-name-enumeration')"/>
     
+    <xsl:variable name="enumeration-stereos" select="
+        ('stereotype-name-enumeration')"/>
     
     <xsl:variable name="allow-scalar-in-union" select="imf:boolean($configuration-metamodel-file//features/feature[@name='allow-scalar-in-union'])"/>
     
@@ -652,9 +654,11 @@
     <xsl:template match="imvert:class[imvert:designation='datatype']" priority="1">
         <!--setup-->
         <!--validation-->
-        <xsl:sequence select="imf:report-warning(., 
-            not(imvert:stereotype/@id = ($datatype-stereos)), 
-            'UML datatypes should be stereotyped as: [1] and not [2]',(string-join(imf:get-config-stereotypes($datatype-stereos),' or '),imf:string-group(imvert:stereotype)))"/>
+        <xsl:for-each select="imvert:stereotype">
+            <xsl:sequence select="imf:report-error(.., 
+                not(@id = ($datatype-stereos)), 
+                'UML datatypes should be stereotyped as: [1] and not [2]',(string-join(imf:get-config-stereotypes($datatype-stereos),' or '),imf:string-group(.)))"/>
+        </xsl:for-each>
         <xsl:sequence select="imf:report-error(., 
             imvert:stereotype/@id = ('stereotype-name-simpletype') and imvert:attributes/imvert:attribute, 
             'Datatypes stereotyped as [1] may not have attributes',imf:string-group(imvert:stereotype))"/>
@@ -664,6 +668,19 @@
         <xsl:next-match/>
     </xsl:template>
     
+    <xsl:template match="imvert:class[imvert:designation='enumeration']" priority="1">
+        <!--setup-->
+        <!--validation-->
+        <xsl:for-each select="imvert:stereotype">
+            <xsl:sequence select="imf:report-error(.., 
+                not(@id = ($enumeration-stereos)), 
+                'UML enumerations should be stereotyped as: [1] and not [2]',(string-join(imf:get-config-stereotypes($enumeration-stereos),' or '),imf:string-group(.)))"/>
+        </xsl:for-each>
+        <xsl:sequence select="imf:report-error(., 
+            imvert:associations/imvert:association, 
+            'Enumerations may not have associations')"/>
+        <xsl:next-match/>
+    </xsl:template>
     <!-- 
         attribute validation 
     -->
