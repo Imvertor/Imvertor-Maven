@@ -97,6 +97,7 @@
             <construct>package</construct>
         </stereo>
 
+        <?x
         <!-- designations of constructs: -->
         <stereo id="stereotype-name-designation-datatype">
             <name lang="en">Datatype</name>
@@ -105,7 +106,8 @@
             <construct>class</construct>
             <construct>datatype</construct>
         </stereo>
-
+        x?>
+        
         <stereo id="stereotype-name-components-package">
             <name lang="en">Components</name>
             <name lang="nl">Componenten</name>
