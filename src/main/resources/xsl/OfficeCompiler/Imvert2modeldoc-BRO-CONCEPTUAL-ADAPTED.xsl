@@ -94,13 +94,23 @@
             
             <!-- relaties hierheen -->
             <xsl:variable name="r" as="element(item)*">
-                <xsl:for-each select="../section[@type = 'SHORT-ASSOCIATIONS']/content/part[1]/item[1]">
+                <xsl:for-each select="../section[@type = 'SHORT-ASSOCIATIONS']/content[@approach = 'target']/part/item[1]">
                     <!-- [bron objecttype] [naam relatiesoort] [kardinaliteit bij doel, uitgeschreven*] [doel objecttype] -->
                     <item>
-                        <xsl:apply-templates select="item[1]"/>
-                        <xsl:apply-templates select="item[3]"/>
-                        <xsl:apply-templates select="item[5]"/>
-                        <xsl:apply-templates select="item[4]"/>
+                        <xsl:choose>
+                            <xsl:when test="item[4]">
+                                <xsl:apply-templates select="item[1]"/>
+                                <xsl:apply-templates select="item[3]"/>
+                                <xsl:value-of select="imf:new-card(item[5])"/>
+                                <xsl:apply-templates select="item[4]"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:apply-templates select="item[1]"/>
+                                <xsl:value-of select="' '"/>
+                                <xsl:apply-templates select="item[2]"/>
+                                <xsl:apply-templates select="item[3]"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
                         <item><br/></item>
                     </item>
                 </xsl:for-each>
@@ -137,14 +147,14 @@
             </part>
             <part type="CFG-DOC-NAAM">
                 <item>Attribuut van</item>
-                <item><xsl:value-of select="../@name"/></item>
+                <item><xsl:value-of select="../../@name"/></item>
             </part>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-HERKOMST']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-DEFINITIE']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-HERKOMSTDEFINITIE']"/>
             <part type="CFG-DOC-NAAM">
                 <item>Kardinaliteit</item>
-                <item><xsl:value-of select="//section[@name = $oname and @type='OBJECTTYPE']/section[@type = 'SHORT-ATTRIBUTES']/content/part[item[1]/item = $aname]/item[4]"/></item>
+                <item><xsl:value-of select="imf:new-card(//section[@name = $oname and @type='OBJECTTYPE']/section[@type = 'SHORT-ATTRIBUTES']/content/part[item[1]/item = $aname]/item[4])"/></item>
             </part>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-INDICATIEAUTHENTIEK']"/>
             <part type="CFG-DOC-NAAM">
@@ -181,4 +191,28 @@
         </xsl:copy>
     </xsl:template>
     
+    <!-- zet card om: [ 0 .. * ] en [ 1 ] -->
+    <xsl:function name="imf:new-card">
+        <xsl:param name="card"/>
+        <xsl:if test="normalize-space($card)">
+            <xsl:analyze-string select="$card" regex="^\[\s(.)(\s\.\.\s(.))?\s\]$">
+                <xsl:matching-substring>
+                    <xsl:choose>
+                        <xsl:when test="regex-group(1) = '0' and regex-group(3) = '*'">
+                            <xsl:value-of select="'0, 1 of meer'"/>
+                        </xsl:when>
+                        <xsl:when test="normalize-space(regex-group(2)) = '*'">
+                            <xsl:value-of select="concat(regex-group(1),' of meer')"/>
+                        </xsl:when>
+                        <xsl:when test="normalize-space(regex-group(2))">
+                            <xsl:value-of select="concat(regex-group(1),'-',regex-group(3))"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="regex-group(1)"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:matching-substring>
+            </xsl:analyze-string>
+        </xsl:if>
+    </xsl:function>
 </xsl:stylesheet>
