@@ -61,7 +61,7 @@
     </item>
     <item>
         <key>GERELATEERDOBJECTTYPE</key>
-        <trans lang="nl">Gerelateerd objecttype</trans>
+        <trans lang="nl">Gerelateerd entiteittype</trans>
         <trans lang="en">Related featureType</trans>
     </item>
     <item>    
@@ -188,7 +188,7 @@
     <item>
         <key>OBJECTTYPE</key>
         <key>FEATURETYPE</key>
-        <trans lang="nl">Objecttype</trans>
+        <trans lang="nl">Entiteittype</trans>
         <trans lang="en">FeatureType</trans>
     </item>
     <item>
@@ -271,9 +271,26 @@
 
     <item>
         <key>CHAPTER-CATALOG</key>
-        <trans lang="nl">Catalogus</trans>
+        <trans lang="nl">Gegevensdefinitie</trans>
         <trans lang="en">Catalog</trans>
     </item>
+    <item>
+        <key>BRO-DOMAINMODEL</key>
+        <trans lang="nl">Het domeinmodel</trans>
+    </item>
+    <item>
+        <key>BRO-REGISTRATIONOBJECT</key>
+        <trans lang="nl">Registratieobject</trans>
+    </item>
+    <item>
+        <key>BRO-OTHEROBJECTS</key>
+        <trans lang="nl">Entiteittypen en attributen</trans>
+    </item>
+    <item>
+        <key>BRO-LISTS</key>
+        <trans lang="nl">Waardelijsten uitbreidbaar</trans>
+    </item>
+    
     <item>
         <key>CHAPTER-LISTS</key>
         <trans lang="nl">Inhoud van waardenlijsten</trans>
@@ -291,7 +308,7 @@
     </item>
     <item>
         <key>OVERVIEW-OBJECTTYPE</key>
-        <trans lang="nl">Objecttypen</trans>
+        <trans lang="nl">Entiteittypen</trans>
         <trans lang="en">Featuretypes</trans>
     </item>
     <item>
@@ -337,7 +354,7 @@
 
     <item>
         <key>DETAILS-OBJECTTYPE</key>
-        <trans lang="nl">Objecttype details</trans>
+        <trans lang="nl">Entiteittype details</trans>
         <trans lang="en">Featuretype details</trans>
     </item>
     <item>

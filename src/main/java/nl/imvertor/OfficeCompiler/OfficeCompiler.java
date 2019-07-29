@@ -70,11 +70,32 @@ public class OfficeCompiler extends Step {
 			boolean succeeds = true;
 			
 			// append codelists and reference lists to imvertor file when referenced and when required.
-			succeeds = succeeds ? transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/WORK_LISTS_FILE", "properties/IMVERTOR_LISTS_XSLPATH") : false;
+			succeeds = succeeds ? transformer.transformStep("properties/WORK_EMBELLISH_FILE","properties/WORK_LISTS_FILE", "properties/IMVERTOR_LISTS_XSLPATH","system/cur-imvertor-filepath") : false;
+		
 			// creates an XML modeldoc intermediate file which is the basis for output
+			// each second, third... step is known as _2, _3 etc. in the parameter sequence as configured.
+			// first step has no sequence number.
+						
+			/*
 			succeeds = succeeds ? transformer.transformStep("properties/WORK_LISTS_FILE","properties/WORK_MODELDOC_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_XSLPATH") : false;
+			*/
+			int i = 1;
+			while (true) {
+				String xslname = "IMVERTOR_METAMODEL_" + mm + "_MODELDOC_XSLPATH" + ((i == 1) ? "" : ("_" + i));
+				String outname = "WORK_MODELDOC_FILE" + ((i == 1) ? "" : ("_" + i));
+				if (configurator.getParm("properties", xslname, false) != null) {
+					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/" + outname, "properties/" + xslname, "system/cur-imvertor-filepath") : false ;
+					i += 1;
+				} else if (i == 0) {
+					// first canonization is required: for each metamodel a primary canonization must be configured 
+					runner.error(logger,"No such supported metamodel or invalid modeldoc configuration: " + mm);
+					break;
+				} else
+					break;
+			}
+			
 			// creates an html file 
-			succeeds = succeeds ? transformer.transformStep("properties/WORK_MODELDOC_FILE","properties/WORK_OFFICE_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_OFFICE_XSLPATH") : false;
+			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_OFFICE_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_OFFICE_XSLPATH") : false;
 			
 			if (succeeds) {
 				String template = configurator.getXParm("cli/officename");
@@ -86,9 +107,9 @@ public class OfficeCompiler extends Step {
 				infoOfficeFile.copyFile(officeFile);
 				
 				// copy the modeldoc file alongside.
-				AnyFile infoModeldocFile = new AnyFile(configurator.getXParm("properties/WORK_MODELDOC_FILE"));
-				AnyFile modeldocFile = new AnyFile(configurator.getXParm("system/work-cat-folder-path") + "/" + fn + ".modeldoc.xml");
-				infoModeldocFile.copyFile(modeldocFile);
+				//AnyFile infoModeldocFile = new AnyFile(configurator.getXParm("properties/WORK_MODELDOC_FILE"));
+				//AnyFile modeldocFile = new AnyFile(configurator.getXParm("system/work-cat-folder-path") + "/" + fn + ".modeldoc.xml");
+				//infoModeldocFile.copyFile(modeldocFile);
 				
 				// see if this result should be sent on to FTP
 				String target = configurator.getXParm("cli/passoffice",false);
