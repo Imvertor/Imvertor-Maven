@@ -220,7 +220,7 @@
                         <xsl:when test="regex-group(2) = '0' and regex-group(4) = '*'">
                             <xsl:value-of select="'0, 1 of meer'"/>
                         </xsl:when>
-                        <xsl:when test="normalize-space(regex-group(2)) = '*'">
+                        <xsl:when test="normalize-space(regex-group(4)) = '*'">
                             <xsl:value-of select="concat(regex-group(2),' of meer')"/>
                         </xsl:when>
                         <xsl:when test="normalize-space(regex-group(2)) and normalize-space(regex-group(4))">
