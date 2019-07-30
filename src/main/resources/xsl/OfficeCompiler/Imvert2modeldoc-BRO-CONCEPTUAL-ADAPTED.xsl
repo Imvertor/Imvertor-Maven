@@ -98,10 +98,11 @@
                     <!-- [bron objecttype] [naam relatiesoort] [kardinaliteit bij doel, uitgeschreven*] [doel objecttype] -->
                     <item>
                         <xsl:choose>
-                            <xsl:when test="item[4]">
+                            <xsl:when test="item[4]"><!-- -->
                                 <xsl:apply-templates select="item[1]"/>
                                 <xsl:apply-templates select="item[3]"/>
-                                <xsl:value-of select="imf:new-card(item[5])"/>
+                                <xsl:apply-templates select="item[5]" mode="new-card"/>
+                                <xsl:value-of select="' '"/>
                                 <xsl:apply-templates select="item[4]"/>
                             </xsl:when>
                             <xsl:otherwise>
@@ -154,7 +155,9 @@
             <xsl:apply-templates select="part[@type = 'CFG-DOC-HERKOMSTDEFINITIE']"/>
             <part type="CFG-DOC-NAAM">
                 <item>Kardinaliteit</item>
-                <item><xsl:value-of select="imf:new-card(//section[@name = $oname and @type='OBJECTTYPE']/section[@type = 'SHORT-ATTRIBUTES']/content/part[item[1]/item = $aname]/item[4])"/></item>
+                <item>
+                    <xsl:value-of select="imf:new-card(//section[@name = $oname and @type='OBJECTTYPE']/section[@type = 'SHORT-ATTRIBUTES']/content/part[item[1]/item = $aname]/item[4])"/>
+                </item>
             </part>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-INDICATIEAUTHENTIEK']"/>
             <part type="CFG-DOC-NAAM">
@@ -191,24 +194,30 @@
         </xsl:copy>
     </xsl:template>
     
-    <!-- zet card om: [ 0 .. * ] en [ 1 ] -->
+    <!-- zet card om: [ 0 .. * ] en [ 1 ] met of zonder [..] haakjes -->
+    <xsl:template match="item" mode="new-card">
+        <xsl:copy>
+            <xsl:value-of select="imf:new-card(.)"/>
+        </xsl:copy>
+    </xsl:template>
+ 
     <xsl:function name="imf:new-card">
         <xsl:param name="card"/>
         <xsl:if test="normalize-space($card)">
-            <xsl:analyze-string select="$card" regex="^\[\s(.)(\s\.\.\s(.))?\s\]$">
+            <xsl:analyze-string select="$card" regex="^(\[\s)?(.)(\s\.\.\s(.))?(\s\])?$">
                 <xsl:matching-substring>
                     <xsl:choose>
-                        <xsl:when test="regex-group(1) = '0' and regex-group(3) = '*'">
+                        <xsl:when test="regex-group(2) = '0' and regex-group(4) = '*'">
                             <xsl:value-of select="'0, 1 of meer'"/>
                         </xsl:when>
                         <xsl:when test="normalize-space(regex-group(2)) = '*'">
-                            <xsl:value-of select="concat(regex-group(1),' of meer')"/>
+                            <xsl:value-of select="concat(regex-group(2),' of meer')"/>
                         </xsl:when>
-                        <xsl:when test="normalize-space(regex-group(2))">
-                            <xsl:value-of select="concat(regex-group(1),'-',regex-group(3))"/>
+                        <xsl:when test="normalize-space(regex-group(2)) and normalize-space(regex-group(4))">
+                            <xsl:value-of select="concat(regex-group(2),'-',regex-group(4))"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="regex-group(1)"/>
+                            <xsl:value-of select="regex-group(2)"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:matching-substring>
