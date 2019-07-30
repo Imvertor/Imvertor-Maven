@@ -41,7 +41,7 @@
             </section>
             <section type="BRO-LISTS">
                 <!-- minder kopjes lijsten -->
-                <xsl:apply-templates select="/book/chapter[@type = 'lis']/section"/>
+                <xsl:apply-templates select="/book/chapter[@type = 'lis']/section/section"/>
             </section>
         </xsl:copy>
     </xsl:template>
@@ -100,7 +100,9 @@
                         <xsl:choose>
                             <xsl:when test="item[4]"><!-- -->
                                 <xsl:apply-templates select="item[1]"/>
-                                <xsl:apply-templates select="item[3]"/>
+                                <xsl:value-of select="' '"/>
+                                <xsl:apply-templates select="item[3]" mode="name-only"/> <!-- alleen de naam van de relatie, niet de rol -->
+                                <xsl:value-of select="' '"/>
                                 <xsl:apply-templates select="item[5]" mode="new-card"/>
                                 <xsl:value-of select="' '"/>
                                 <xsl:apply-templates select="item[4]"/>
@@ -109,6 +111,7 @@
                                 <xsl:apply-templates select="item[1]"/>
                                 <xsl:value-of select="' '"/>
                                 <xsl:apply-templates select="item[2]"/>
+                                <xsl:value-of select="' '"/>
                                 <xsl:apply-templates select="item[3]"/>
                             </xsl:otherwise>
                         </xsl:choose>
@@ -191,6 +194,13 @@
     <xsl:template match="node() | @*" mode="#all">
         <xsl:copy>
             <xsl:apply-templates select="node() | @*" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+
+    <!-- relatienamen zonder rollen -->
+    <xsl:template match="item" mode="name-only">
+        <xsl:copy>
+            <xsl:value-of select="tokenize(.,':')[1]"/>
         </xsl:copy>
     </xsl:template>
     

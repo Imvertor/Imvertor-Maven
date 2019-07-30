@@ -332,7 +332,13 @@
                         <colgroup width="{$column-size}%"/>
                     </xsl:for-each>
                 </xsl:when>
-         
+                <xsl:when test="$type = ('DETAIL-CODELIST','DETAIL-REFERENCELIST','DETAIL-ENUMERATION')"><!-- when collapsed -->
+                    <xsl:variable name="column-size" select="100 div $items"/>
+                    <xsl:for-each select="for $i in (1 to $items) return $i">
+                        <colgroup width="{$column-size}%"/>
+                    </xsl:for-each>
+                </xsl:when>
+                
                 <xsl:when test="$items = 2"> <!-- DEFAULT TWO COLUMNS --> <!-- 30 70 -->
                         <colgroup width="30%"/>
                         <colgroup width="70%"/>
@@ -512,6 +518,13 @@
                     </td>
                 </xsl:when>
                 <xsl:when test="$type = ('CONTENTS-REFERENCELIST')">
+                    <xsl:for-each select="item">
+                        <td>
+                            <xsl:apply-templates select="." mode="#current"/>
+                        </td>
+                    </xsl:for-each>
+                </xsl:when>
+                <xsl:when test="$type = ('DETAIL-CODELIST','DETAIL-REFERENCELIST','DETAIL-ENUMERATION')"><!-- when collapsed -->
                     <xsl:for-each select="item">
                         <td>
                             <xsl:apply-templates select="." mode="#current"/>

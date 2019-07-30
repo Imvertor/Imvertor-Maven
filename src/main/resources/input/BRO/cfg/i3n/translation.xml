@@ -188,7 +188,7 @@
     <item>
         <key>OBJECTTYPE</key>
         <key>FEATURETYPE</key>
-        <trans lang="nl">Entiteittype</trans>
+        <trans lang="nl"><!-- Entiteittype --></trans> <!-- excluded from heads -->
         <trans lang="en">FeatureType</trans>
     </item>
     <item>
@@ -256,7 +256,7 @@
     <item>
         <key>GEGEVENSGROEPTYPE</key>
         <key>COMPOSITE</key>
-        <trans lang="nl">Gegevensgroeptype</trans>
+        <trans lang="nl"><!--Gegevensgroeptype--></trans><!-- excluded from heads -->
         <trans lang="en">Grouptype</trans>
         
     </item>
