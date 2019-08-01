@@ -1,28 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" 
-    xmlns:gml="http://www.opengis.net/gml/3.2" 
-    xmlns:brocom="http://www.broservices.nl/xsd/brocommon/3.0" 
-    targetNamespace="http://www.broservices.nl/xsd/brocommon/3.0"
-    elementFormDefault="qualified" version="3.0.0">
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:gml="http://www.opengis.net/gml/3.2"
+        xmlns:brocom="http://www.broservices.nl/xsd/brocommon/3.0"
+        targetNamespace="http://www.broservices.nl/xsd/brocommon/3.0"
+        elementFormDefault="qualified"
+        version="3.0.4">
 
     <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="https://schema.broservices.nl/profile/gml/1.0/gml-profile.xsd" />
 
     <annotation>
         <documentation>
             This XSD describes the complex types, simple types common to the entire BRO.
-            Changes compared to Version:2.5.6:
-            - New design for operations and messages with less operations and
-            logic based on SourceDocumentTypes
             Version:2.5.6
             Changes compared to Version:2.5.5:
             - Added CorrectionTypeType and CorrectionRequestType.
-            - Grouped definitions into simpleTypes and
-            complexTypes and ordered alphabetically within group.
+            - Definitions grouped by simpleTypes and complexTypes.
+            - Definitions ordered alphabetically within group.
+            Version:2.5.7:
+            - New design for operations and messages with less operations and logic based on SourceDocumentTypes.
+            Version:3.0.1
+            - standardizedLocation, deliveredLocation optional.
+            Version:3.0.2
+            - RegistrationObject, DeregisteredObject, Enumeration Wrappers.
+            Version:3.0.3
+            - OrganizationType.
+            Version:3.0.4
+            - Added AbstractDispatchCharacteristicsRequestType.
+            - Removed attribute requestReference from complexType DispatchCharacteristicsRequest. 
+            - Split CharacteristicsType into broId and CommonCharacteristics.
+            - Added root element AbstractCharacteristics.
+            - Added AbstractCharacteristicsType.
         </documentation>
     </annotation>
 
     <!-- simpleTypes -->
     <simpleType name="ChamberOfCommerceNumberType">
+        <restriction base="string" />
+    </simpleType>
+
+    <simpleType name="EuropeanCompanyRegistrationNumberType">
         <restriction base="string" />
     </simpleType>
 
@@ -73,14 +89,50 @@
         </restriction>
     </simpleType>
 
+    <simpleType name="IndicationYesNoType">
+        <restriction base="brocom:IndicationYesNoEnumeration" />
+    </simpleType>
+    <simpleType name="IndicationYesNoUnknownType">
+        <restriction base="brocom:IndicationYesNoUnknownEnumeration" />
+    </simpleType>
+    <simpleType name="QualityRegimeType">
+        <restriction base="brocom:QualityRegimeEnumeration" />
+    </simpleType>
+    <simpleType name="IntakeResponseTypeType">
+        <restriction base="brocom:IntakeResponseTypeEnumeration" />
+    </simpleType>
+    <simpleType name="DispatchResponseTypeType">
+        <restriction base="brocom:DispatchResponseTypeEnumeration" />
+    </simpleType>
+    <simpleType name="VoidReasonType">
+        <restriction base="brocom:VoidReasonEnumeration" />
+    </simpleType>
+    
     <!-- complexTypes -->
+    <element name="AbstractRegistrationObject" type="brocom:AbstractRegistrationObjectType" substitutionGroup="gml:AbstractFeature"/>
+    <complexType name="AbstractRegistrationObjectType">
+        <complexContent>
+            <extension base="gml:AbstractFeatureType">
+                <sequence>
+                    <element name="broId" type="brocom:RegistrationObjectCodeType" minOccurs="1" maxOccurs="1"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="AbstractRegistrationObjectPropertyType">
+        <sequence minOccurs="0">
+            <element ref="brocom:AbstractRegistrationObject"/>
+        </sequence>
+        <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    </complexType>
+
     <complexType name="AbortReasonType">
         <sequence>
             <element name="sequenceNumber" type="integer" minOccurs="1" maxOccurs="1" />
             <element name="specification" type="string" minOccurs="1" maxOccurs="1" />
         </sequence>
     </complexType>
-    
+
     <complexType name="AreaType">
         <choice minOccurs="1" maxOccurs="1">
             <element name="enclosingCircle" type="brocom:CircleType" />
@@ -89,17 +141,46 @@
     </complexType>
 
     <complexType name="CharacteristicsType">
+        <annotation>
+            <appinfo>deprecated; use root element AbstractCharacteristics and complexType AbstractCharacteristicsType to derive RO-specific Characteristics instead.</appinfo>
+        </annotation>
         <sequence>
             <element name="broId" type="brocom:RegistrationObjectCodeType" minOccurs="1" maxOccurs="1" />
+            <group ref="brocom:CommonCharacteristics"/>
+        </sequence>
+    </complexType>
+    <group name="CommonCharacteristics">
+        <annotation>
+            <appinfo>deprecated; use root element AbstractCharacteristics and complexType AbstractCharacteristicsType to derive RO-specific Characteristics instead.</appinfo>
+        </annotation>
+        <sequence>
             <element name="deregistered" type="brocom:IndicationYesNoEnumeration" minOccurs="1" maxOccurs="1" />
             <element name="deliveryAccountableParty" type="brocom:ChamberOfCommerceNumberType" minOccurs="0" maxOccurs="1" />
             <element name="qualityRegime" type="brocom:QualityRegimeEnumeration" minOccurs="1" maxOccurs="1" />
             <element name="objectRegistrationTime" type="dateTime" minOccurs="1" maxOccurs="1" />
             <element name="latestCorrectionTime" type="dateTime" minOccurs="0" maxOccurs="1" />
             <element name="underReview" type="brocom:IndicationYesNoEnumeration" minOccurs="1" maxOccurs="1" />
-            <element name="standardizedLocation" type="gml:PointType" minOccurs="1" maxOccurs="1" />
-            <element name="deliveredLocation" type="gml:PointType" minOccurs="1" maxOccurs="1" />
+            <element name="standardizedLocation" type="gml:PointType" minOccurs="0" maxOccurs="1" />
+            <element name="deliveredLocation" type="gml:PointType" minOccurs="0" maxOccurs="1" />
         </sequence>
+    </group>
+
+    <element name="AbstractCharacteristics"
+                type="brocom:AbstractCharacteristicsType"
+                abstract="true"
+                substitutionGroup="brocom:AbstractRegistrationObject">
+        <annotation>
+            <documentation source="http://www.imvertor.org/model-info/technical-documentation">Definition: De entiteit AbstractCharacteristics bevat de registratieobject onafhankelijke kengegevens van een registratieobject dat niet uit registratie is genomen.</documentation>
+        </annotation>
+    </element>
+    <complexType name="AbstractCharacteristicsType" abstract="true">
+        <complexContent>
+            <extension base="brocom:AbstractRegistrationObjectType">
+                <sequence>
+                    <group ref="brocom:CommonCharacteristics"/>
+                </sequence>
+            </extension>
+        </complexContent>
     </complexType>
 
     <complexType name="CircleType">
@@ -145,23 +226,31 @@
         </sequence>
     </complexType>
 
+    <element name="BRO_DO" type="brocom:DeregisteredObjectType" substitutionGroup="brocom:AbstractRegistrationObject"/>
     <complexType name="DeregisteredObjectType">
         <complexContent>
-            <extension base="gml:AbstractFeatureType">        
+            <extension base="brocom:AbstractRegistrationObjectType">
                 <sequence>
-                    <element name="broId" type="brocom:RegistrationObjectCodeType" minOccurs="1" maxOccurs="1" />
                     <element name="deregistered" type="brocom:IndicationYesNoEnumeration" minOccurs="1" maxOccurs="1" />
                     <element name="deregistrationTime" type="dateTime" minOccurs="1" maxOccurs="1" />
                 </sequence>
             </extension>
-        </complexContent>          
+        </complexContent>
     </complexType>
 
-    <complexType name="DispatchCharacteristicsRequestType">
+    <complexType name="AbstractDispatchCharacteristicsRequestType" abstract="true">
         <sequence>
             <element name="requestReference" type="string" minOccurs="1" maxOccurs="1" />
-            <element name="criteria" type="brocom:CriteriaSetType" minOccurs="1" maxOccurs="1" />
         </sequence>
+    </complexType>
+    <complexType name="DispatchCharacteristicsRequestType">
+        <complexContent>
+              <extension base="brocom:AbstractDispatchCharacteristicsRequestType">
+                  <sequence>
+                      <element name="criteria" type="brocom:CriteriaSetType" minOccurs="1" maxOccurs="1" />
+                  </sequence>
+              </extension>
+        </complexContent>
     </complexType>
 
     <complexType name="DispatchDataRequestType">
@@ -171,6 +260,7 @@
         </sequence>
     </complexType>
 
+    <element name="DispatchResponse" type="brocom:DispatchResponseType"/>
     <complexType name="DispatchResponseType">
         <sequence>
             <element name="responseType" type="brocom:DispatchResponseTypeEnumeration" minOccurs="1" maxOccurs="1" />
@@ -205,8 +295,14 @@
         </sequence>
     </complexType>
 
-    <element name="parseFault" type="brocom:ParseFaultType" />
+    <complexType name="OrganizationType">
+        <choice>
+            <element name="chamberOfCommerceNumber" type="brocom:ChamberOfCommerceNumberType"/>
+            <element name="europeanCompanyRegistrationNumber" type="brocom:EuropeanCompanyRegistrationNumberType"/>
+        </choice>
+    </complexType>
 
+    <element name="parseFault" type="brocom:ParseFaultType" />
     <complexType name="ParseFaultType">
         <sequence>
             <element name="requestReference" type="string" minOccurs="0" maxOccurs="1" />
@@ -250,18 +346,18 @@
         </sequence>
     </complexType>
 
+    <element name="RegistrationObject" type="brocom:RegistrationObjectType" substitutionGroup="brocom:AbstractRegistrationObject"/>
     <complexType name="RegistrationObjectType">
         <complexContent>
-            <extension base="gml:AbstractFeatureType">
+            <extension base="brocom:AbstractRegistrationObjectType">
                 <sequence>
-                    <element name="broId" type="brocom:RegistrationObjectCodeType" minOccurs="1" maxOccurs="1" />
                     <element name="deliveryAccountableParty" type="brocom:ChamberOfCommerceNumberType" minOccurs="0" maxOccurs="1" />
                     <element name="objectIdAccountableParty" type="string" minOccurs="0" maxOccurs="1" />
                     <element name="deliveryResponsibleParty" type="brocom:ChamberOfCommerceNumberType" minOccurs="0" maxOccurs="1" />
                     <element name="qualityRegime" type="brocom:QualityRegimeEnumeration" minOccurs="1" maxOccurs="1" />
                 </sequence>
             </extension>
-        </complexContent>        
+        </complexContent>
     </complexType>
 
     <complexType name="RegistrationRequestType">
@@ -296,4 +392,5 @@
         </sequence>
     </complexType>
 
+    <element name="deliveryResponsibleParty" type="brocom:ChamberOfCommerceNumberType"/>
 </schema>
