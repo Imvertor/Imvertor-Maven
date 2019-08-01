@@ -1092,6 +1092,9 @@
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-FORMAAT'">
                     <xsl:sequence select="imf:create-part-2(.,imf:plugin-translate-i3n($relation/imvert:baretype,false()))"/>         
                 </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-LENGTH'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-LENGTH'))"/>         
+                </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-RELATIESOORT'">
                     <xsl:sequence select="imf:create-part-2(.,imf:get-relatiesoort($relation))"/>
                 </xsl:when>

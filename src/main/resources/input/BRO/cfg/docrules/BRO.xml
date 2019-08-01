@@ -375,6 +375,15 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-UNIONELEMENT</level>
         </levels>
     </doc-rule>
+    <doc-rule id="CFG-DOC-LENGTH">
+        <name lang="nl">Lengte</name>
+        <name lang="en">Length</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
+        </levels>
+    </doc-rule>
     <doc-rule id="CFG-DOC-DOMAIN-IMBROA">
         <name lang="nl">Formaat IMBRO/A</name>
         <name lang="en">Format IMBRO/A</name>

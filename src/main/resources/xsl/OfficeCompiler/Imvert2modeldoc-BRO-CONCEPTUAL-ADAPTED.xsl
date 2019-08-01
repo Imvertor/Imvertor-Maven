@@ -5,6 +5,7 @@
     xmlns:imvert="http://www.imvertor.org/schema/system"
     xmlns:ext="http://www.imvertor.org/xsl/extensions"
     xmlns:imf="http://www.imvertor.org/xsl/functions"
+    xmlns:bro="http://www.geostandaarden.nl/bro"
     
     exclude-result-prefixes="#all" 
     version="2.0">
@@ -131,9 +132,6 @@
                      </item>
                 </part>
             </xsl:if>
-            
-            <!-- figuur hierheen -->
-            <!-- TODO -->
         </content>
     </xsl:template>
     
@@ -162,11 +160,7 @@
                     <xsl:value-of select="imf:new-card(//section[@name = $oname and @type='OBJECTTYPE']/section[@type = 'SHORT-ATTRIBUTES']/content/part[item[1]/item = $aname]/item[4])"/>
                 </item>
             </part>
-            <xsl:apply-templates select="part[@type = 'CFG-DOC-INDICATIEAUTHENTIEK']"/>
-            <part type="CFG-DOC-NAAM">
-                <item>Domein</item>
-                <item>TODO</item>
-            </part>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-FORMAAT']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-REGELS-IMBROA']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-TOELICHTING']"/>
@@ -233,5 +227,232 @@
                 </xsl:matching-substring>
             </xsl:analyze-string>
         </xsl:if>
+    </xsl:function>
+    
+    <!-- formaten -->
+    <xsl:template match="part[@type='CFG-DOC-FORMAAT']">
+        <part>
+            <item>Domein</item>
+            <item/>
+        </part>
+        <xsl:copy-of select="bro:generate-domain(item[2], parent::node())"/>
+    </xsl:template>
+    
+    <!-- door lvdb 
+        functie wordt aangeroepen door stylesheet die een door imvertor gegenereerd modeldoc (tussenformaat tussen UML output en gegevenscat HTML) aanpast 
+        aan specifieke wensen van BRO
+-->
+    
+    <!-- genereert domein informatie zoals gewenst door BRO -->
+    <!--    input parameter 1: $item een item node met als tekstinhoud de naam van een domein 
+          bijvoorbeeld: <item type="global" idref="global_class_gmlMeasure">Meetwaarde</item>
+          input parameter 2: $context de complete section/content waarin het item zich bevindt, als node sequence -->
+    <!--    output: een node sequence -->
+    <xsl:function name="bro:generate-domain">
+        <xsl:param name="item" as="element()"/>
+        <xsl:param name="context" as="element()"/>
+        <xsl:choose>
+            <xsl:when test="$item/text() = 'Meetwaarde'">
+                <part>
+                    <item>&#160;&#160;Naam</item>
+                    <item>Meetwaarde</item>
+                </part>
+                <part>
+                    <item>&#160;&#160;Type</item>
+                    <item>Getal</item>
+                </part>
+                <!--alleen genereren als er een eenheid aanwezig is-->
+                <xsl:for-each select="$context/part[@type = 'CFG-DOC-UNITOFMEASURE']/item[2]">
+                    <part>
+                        <item>&#160;&#160;Eenheid</item>
+                        <item>
+                            <xsl:value-of select="bro:generate-unit(.)"/>
+                        </item>
+                    </part>
+                </xsl:for-each>
+                <!-- alleen genereren als er een minimum en/of een maximumwaarde aanwezig is -->
+                <xsl:for-each
+                    select="$context[part[@type = 'CFG-DOC-MINIMUMVALUE']/item[2]/text() | part[@type = 'CFG-DOC-MAXIMUMVALUE']/item[2]/text()]">
+                    <part>
+                        <item>&#160;&#160;Waardebereik</item>
+                        <item>
+                            <xsl:value-of
+                                select="bro:generate-minmax($context/part[@type = 'CFG-DOC-MINIMUMVALUE']/item[2]/text(), $context/part[@type = 'CFG-DOC-MAXIMUMVALUE']/item[2]/text())"
+                            />
+                        </item>
+                    </part>
+                </xsl:for-each>
+            </xsl:when>
+            <xsl:when test="$item/text()='Aantal'">
+                <part>
+                    <item>&#160;&#160;Naam</item>
+                    <item>Aantal <xsl:value-of select="$context/part[@type = 'CFG-DOC-LENGTH']/item[2]/text()"/></item>
+                </part>
+                <part>
+                    <item>&#160;&#160;Type</item>
+                    <item>Getal</item>
+                </part>
+                <!-- alleen genereren als er een minimum en/of een maximumwaarde aanwezig is -->
+                <xsl:for-each
+                    select="$context[part[@type = 'CFG-DOC-MINIMUMVALUE']/item[2]/text() | part[@type = 'CFG-DOC-MAXIMUMVALUE']/item[2]/text()]">
+                    <part>
+                        <item>&#160;&#160;Waardebereik</item>
+                        <item>
+                            <xsl:value-of
+                                select="bro:generate-minmax($context/part[@type = 'CFG-DOC-MINIMUMVALUE']/item[2]/text(), $context/part[@type = 'CFG-DOC-MAXIMUMVALUE']/item[2]/text())"
+                            />
+                        </item>
+                    </part>
+                </xsl:for-each>
+            </xsl:when>
+            <xsl:when test="$item/text()='Nummer'">
+                <part>
+                    <item>&#160;&#160;Naam</item>
+                    <item>Nummer <xsl:value-of select="$context/part[@type = 'CFG-DOC-LENGTH']/item[2]/text()"/></item>
+                </part>
+            </xsl:when>
+            <xsl:when test="$item/text()='Tekst'">
+                <part>
+                    <item>&#160;&#160;Naam</item>
+                    <item>Tekst <xsl:value-of select="$context/part[@type = 'CFG-DOC-LENGTH']/item[2]/text()"/></item>
+                </part>
+            </xsl:when>
+            <xsl:when test="$item/text()='Registratieobjectcode'">
+                <part>
+                    <item>&#160;&#160;Naam</item>
+                    <item>Registratieobjectcode</item>
+                </part>
+                <part>
+                    <item>&#160;&#160;Type</item>
+                    <item>Code</item>
+                </part>
+                <part>
+                    <item>&#160;&#160;Opbouw</item>
+                    <item><xsl:value-of select="$context/part[@type = 'CFG-DOC-PATROON']/item[2]/text()"/></item>
+                </part>
+            </xsl:when>
+            <xsl:when test="$item[text()=('Datum', 'DatumTijd')]">
+                <part>
+                    <item>&#160;&#160;Naam</item>
+                    <item><xsl:value-of select="$item"/></item>
+                </part>
+                <!-- alleen genereren als er een IMBRO/A domein is -->
+                <xsl:for-each select="$context/part[@type = 'CFG-DOC-DOMAIN-IMBROA']">
+                    <part>
+                        <item>&#160;&#160;Domein IMBRO/A</item>
+                        <item><xsl:value-of select="./item[2]/text()"/></item>
+                    </part>                    
+                </xsl:for-each>                
+                <!-- alleen genereren als er een minimum en/of een maximumwaarde aanwezig is -->
+                <xsl:for-each
+                    select="$context[part[@type = 'CFG-DOC-MINIMUMVALUE']/item[2]/text() | part[@type = 'CFG-DOC-MAXIMUMVALUE']/item[2]/text()]">
+                    <part>
+                        <item>&#160;&#160;Waardebereik</item>
+                        <item>
+                            <xsl:value-of
+                                select="bro:generate-minmax($context/part[@type = 'CFG-DOC-MINIMUMVALUE']/item[2]/text(), $context/part[@type = 'CFG-DOC-MAXIMUMVALUE']/item[2]/text())"
+                            />
+                        </item>
+                    </part>
+                </xsl:for-each>
+            </xsl:when>
+            <xsl:when test="$item[text()=('Coördinatenpaar', 'Gebiedsgrens')]">
+                <part>
+                    <item>&#160;&#160;Naam</item>
+                    <item><xsl:value-of select="$item"/></item>
+                </part>                
+            </xsl:when>
+            <xsl:when test="$item/text()='Organisatie'">                
+                <part>
+                    <item>&#160;&#160;Naam</item>
+                    <item>Organisatie</item>
+                </part>
+                <part>
+                    <item>&#160;&#160;Type</item>
+                    <item>Keuze</item>
+                </part>
+            </xsl:when>
+            <xsl:when test="$item/text() = ('IndicatieJaNee', 'Kwaliteitsregime')">   
+                <part>
+                    <item>&#160;&#160;Naam</item>
+                    <item><xsl:value-of select="$item"/></item>
+                </part>
+                <part>
+                    <item>&#160;&#160;Type</item>
+                    <item>Waardelijst niet uitbreidbaar</item>
+                </part>
+                <!-- alleen genereren als er een IMBRO/A domein is -->
+                <xsl:for-each select="$context/part[@type = 'CFG-DOC-DOMAIN-IMBROA']">
+                    <part>
+                        <item>&#160;&#160;Domein IMBRO/A</item>
+                        <item><xsl:value-of select="./item[2]/text()"/></item>
+                    </part>                    
+                </xsl:for-each>
+            </xsl:when>
+            <!-- anders is het een uitbreidbare waardelijst (codelist of referentielijst) -->
+            <xsl:otherwise> 
+                <part>
+                    <item>&#160;&#160;Naam</item>
+                    <item><xsl:value-of select="$item"/></item>
+                </part>
+                <part>
+                    <item>&#160;&#160;Type</item>
+                    <item>Waardelijst niet uitbreidbaar</item>
+                </part>
+                <!-- alleen genereren als er een IMBRO/A domein is -->
+                <xsl:for-each select="$context/part[@type = 'CFG-DOC-DOMAIN-IMBROA']">
+                    <part>
+                        <item>&#160;&#160;Domein IMBRO/A</item>
+                        <item><xsl:value-of select="./item[2]/text()"/></item>
+                    </part>                    
+                </xsl:for-each>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
+    <xsl:function name="bro:generate-unit">
+        <xsl:param name="unit-ucum"/>
+        <!-- mapping ucum eenheid - uitgeschreven eenheid -->
+        <xsl:choose>
+            <xsl:when test="$unit-ucum = '1'">dimensieloos</xsl:when>
+            <xsl:when test="$unit-ucum = '%'">% (procent)</xsl:when>
+            <xsl:when test="$unit-ucum = 'Cel'">°C (graden Celcius)</xsl:when>
+            <xsl:when test="$unit-ucum = 'deg'">° (graden)</xsl:when>
+            <xsl:when test="$unit-ucum = 'g/cm3'">g/cm3 (gram/kubieke centimeter)</xsl:when>
+            <xsl:when test="$unit-ucum = 'kPa'">kPa (kiloPascal)</xsl:when>
+            <xsl:when test="$unit-ucum = 'm'">m (meter)</xsl:when>
+            <xsl:when test="$unit-ucum = 'm/(24.h)'">m/24h (meters per etmaal)</xsl:when>
+            <xsl:when test="$unit-ucum = 'mm'">mm (millimeter)</xsl:when>
+            <xsl:when test="$unit-ucum = 'mm2'">mm2 (vierkante millimeter)</xsl:when>
+            <xsl:when test="$unit-ucum = 'MPa'">MPa (megaPascal)</xsl:when>
+            <xsl:when test="$unit-ucum = 'nT'">nT (nanoTesla)</xsl:when>
+            <xsl:when test="$unit-ucum = 's'">s (seconde)</xsl:when>
+            <xsl:when test="$unit-ucum = 'S/m'">S/m (Siemens/meter)</xsl:when>
+            <xsl:when test="$unit-ucum = 'um'">µm (micrometer)</xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$unit-ucum"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
+    <xsl:function name="bro:generate-minmax">
+        <xsl:param name="min"/>
+        <xsl:param name="max"/>
+        <xsl:choose>
+            <!-- bij min en max: waarde = [minimumwaarde] tot [maximumwaarde]-->
+            <xsl:when test="$min and $max">
+                <xsl:value-of select="concat($min, ' tot ', $max)"/>
+            </xsl:when>
+            <!-- bij alleen min: waarde = vanaf [minimumwaarde]-->
+            <xsl:when test="$min">
+                <xsl:value-of select="concat('Vanaf ', $min)"/>
+            </xsl:when>
+            <!-- bij alleen max: waarde = tot [maximumwaarde]-->
+            <xsl:when test="$max">
+                <xsl:value-of select="concat('Tot ', $max)"/>
+            </xsl:when>
+            <!-- in alle andere gevallen ontbreekt het gegeven"-->
+            <xsl:otherwise/>
+        </xsl:choose>
     </xsl:function>
 </xsl:stylesheet>

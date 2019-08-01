@@ -528,6 +528,13 @@ public class Configurator {
 	 */
 	public void windup() throws Exception {
 		
+		// first check if errors occurred.
+		
+		String cer = getXParm("appinfo/error-count",false); // errors found on the current mode; never replace a model by a model with errors 
+			if (cer != null && !cer.equals("0")) {
+			runner.setMayRelease(false); // note that this is signaled earlier based on finals; now also signal when error occurred.
+		} 
+		
 		setXParm("run/time",runtime());
 		
 		OutputFolder appWorkFolder = new OutputFolder(getXParm("system/work-app-folder-path"));
