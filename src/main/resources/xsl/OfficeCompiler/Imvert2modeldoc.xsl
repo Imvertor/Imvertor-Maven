@@ -846,10 +846,20 @@
     <xsl:function name="imf:get-formatted-tagged-value" as="item()*">        
         <xsl:param name="this" />
         <xsl:param name="tv-id"/>
+        
         <xsl:variable name="tv-element" select="imf:get-most-relevant-compiled-taggedvalue-element($this,concat('##',$tv-id))"/>
-        <xsl:variable name="default-value" select="$configuration-tvset-file//tagged-values/tv[@id = $tv-id]/declared-values/value[imf:boolean(@default)]"/>
-        <xsl:variable name="value" select="if ($tv-element) then imf:get-clean-documentation-string(imf:get-tv-value($tv-element)) else $default-value"/>
-        <xsl:sequence select="$value"/>
+        <xsl:choose>
+            <xsl:when test="exists($tv-element)">
+                <xsl:variable name="default-value" select="$configuration-tvset-file//tagged-values/tv[@id = $tv-id]/declared-values/value[imf:boolean(@default)]"/>
+                <xsl:variable name="value" select="if ($tv-element) then imf:get-clean-documentation-string(imf:get-tv-value($tv-element)) else $default-value"/>
+                <xsl:sequence select="$value"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- terugval optie: afgeleide tagged values niet beschikbaar voor lijstwaarden uitgelezen uit externe bronnen (modeldoc-lists) --> 
+                <xsl:variable name="tv-element-local" select="imf:get-tagged-value($this,concat('##',$tv-id))"/>
+                <xsl:value-of select="$tv-element-local"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     
     <xsl:function name="imf:get-formatted-tagged-value-cfg" as="item()*">        
