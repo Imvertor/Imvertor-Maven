@@ -360,6 +360,13 @@
             <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
         </levels>
     </doc-rule>
+    <doc-rule id="CFG-DOC-WAARDEAFLEIDBAAR">
+        <name lang="nl">Waarde afleidbaar</name>
+        <name lang="en">Value may be derived</name>
+        <levels>
+            <level show="force" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+        </levels>
+    </doc-rule>
     <doc-rule id="CFG-DOC-TRACE">
         <name lang="nl">Onderliggende constructies</name>
         <name lang="en">Underlying constructs</name>

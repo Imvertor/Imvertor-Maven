@@ -124,10 +124,6 @@
                 <part type="CFG-DOC-BRO-RELATIES">
                     <item>Relaties met andere entiteiten</item>
                     <item>
-                        <item>
-                            Omschrijving van de relaties: 
-                            <br/>
-                        </item>
                         <xsl:sequence select="$r"/>
                      </item>
                 </part>
@@ -151,6 +147,7 @@
                 <item>Attribuut van</item>
                 <item><xsl:value-of select="../../@name"/></item>
             </part>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-INDICATIEAUTHENTIEK']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-HERKOMST']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-DEFINITIE']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-HERKOMSTDEFINITIE']"/>
@@ -167,6 +164,40 @@
             <xsl:apply-templates select="part[@type = 'CFG-DOC-INDICATIEMATERIELEHISTORIE']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-INDICATIEAFLEIDBAAR']"/>
         </content>
+    </xsl:template>
+    
+    <!-- Vervang waarden van tagged values -->
+    <xsl:template match="part[@type = ('CFG-DOC-HERKOMST','CFG-DOC-HERKOMSTDEFINITIE')]">
+        <xsl:choose>
+            <xsl:when test="normalize-space(item[2]) = 'BRO'">
+                <!-- skip -->
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template match="part[@type = ('CFG-DOC-INDICATIEAUTHENTIEK')]/item[2]">
+        <xsl:choose>
+            <xsl:when test="normalize-space() = 'Basisgegeven'">
+                <xsl:copy>Basisgegeven (niet-authentiek)</xsl:copy>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template match="part[@type = ('CFG-DOC-INDICATIEAFLEIDBAAR')]">
+        <xsl:choose>
+            <xsl:when test="normalize-space(item[2]) ne 'Ja'">
+                <!-- skip -->
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <!-- gegevensgroepen -->

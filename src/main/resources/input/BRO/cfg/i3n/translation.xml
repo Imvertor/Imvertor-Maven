@@ -284,7 +284,7 @@
     </item>
     <item>
         <key>BRO-OTHEROBJECTS</key>
-        <trans lang="nl">Entiteittypen en attributen</trans>
+        <trans lang="nl">Entiteiten en attributen</trans>
     </item>
     <item>
         <key>BRO-LISTS</key>
@@ -394,8 +394,8 @@
 
     <item>
         <key>DETAIL-ATTRIBUTE</key>
-        <trans lang="nl">Attribuutsoort details</trans>
-        <trans lang="en">AttributeType details</trans>
+        <trans lang="nl"><!--Attribuutsoort details--></trans>
+        <trans lang="en"><!--AttributeType details--></trans>
     </item>
     <item>
         <key>DETAIL-ASSOCIATION</key>
@@ -424,19 +424,19 @@
     </item>
     <item>
         <key>DETAIL-CODELIST</key>
-        <trans lang="nl">Codelijst details</trans>
-        <trans lang="en">Codelist details</trans>
+        <trans lang="nl"><!--Codelijst details--></trans>
+        <trans lang="en"><!--Codelist details--></trans>
     </item>
     <item>
         <key>DETAIL-COMPOSITE</key>
-        <trans lang="nl">Gegevensgroeptype details</trans>
-        <trans lang="en">GroupType details</trans>
+        <trans lang="nl"><!--Gegevensgroeptype details--></trans>
+        <trans lang="en"><!--GroupType details--></trans>
     </item>
     
     <item>
         <key>CONTENTS-REFERENCELIST</key>
-        <trans lang="nl">Referentielijst inhoud</trans>
-        <trans lang="en">Reference list contents</trans>
+        <trans lang="nl"><!--Referentielijst inhoud--></trans>
+        <trans lang="en"><!--Reference list contents--></trans>
     </item>
     <item>
         <key>CONTENTS-CODELIST</key>

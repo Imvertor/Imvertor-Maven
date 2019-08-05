@@ -246,8 +246,8 @@
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-INDICATIEMATERIELEHISTORIE">
-        <name lang="nl">Indicatie materiële historie</name>
-        <name lang="en">Indication material history</name>
+        <name lang="nl">Materiële geschiedenis</name>
+        <name lang="en">Material history</name>
         <levels>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
@@ -257,8 +257,8 @@
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-INDICATIEFORMELEHISTORIE">
-        <name lang="nl">Indicatie formele historie</name>
-        <name lang="en">Indication formal history</name>
+        <name lang="nl">Formele geschiedenis</name>
+        <name lang="en">Formal history</name>
         <levels>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
@@ -303,8 +303,8 @@
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-INDICATIEAUTHENTIEK">
-        <name lang="nl">Indicatie authentiek</name>
-        <name lang="en">Indication authentic</name>
+        <name lang="nl">Juridische status</name>
+        <name lang="en">Legal status</name>
         <levels>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
@@ -407,8 +407,8 @@
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-INDICATIEAFLEIDBAAR">
-        <name lang="nl">Indicatie afleidbaar</name>
-        <name lang="en">May be derived</name>
+        <name lang="nl">Is afgeleid</name>
+        <name lang="en">Is derived</name>
         <levels>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
         </levels>
