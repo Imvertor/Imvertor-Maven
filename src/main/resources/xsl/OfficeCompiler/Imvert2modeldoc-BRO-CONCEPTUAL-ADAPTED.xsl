@@ -72,7 +72,8 @@
     <xsl:template match="section[@type = 'DETAIL-COMPOSITE']">
         <xsl:variable name="name" select="@name"/>
         <xsl:copy>
-            <xsl:apply-templates select="@*"/>
+            <xsl:apply-templates select="@*[not(local-name() = 'id-global')]"/>
+            <xsl:attribute name="type">OBJECTTYPE</xsl:attribute>
             <xsl:apply-templates select="content"/>
             <xsl:apply-templates select="section[@type = 'DETAIL-COMPOSITE-ATTRIBUTE']"/>
         </xsl:copy>            
@@ -133,6 +134,14 @@
     
     <xsl:template match="section[@type = ('SHORT-ATTRIBUTES', 'SHORT-ASSOCIATIONS')]">
         <!-- remove -->
+    </xsl:template>
+    
+    <xsl:template match="section[@type = 'DETAIL-COMPOSITE-ATTRIBUTE']">
+        <xsl:copy>
+            <xsl:apply-templates select="@*"/>
+            <xsl:attribute name="type">DETAIL-ATTRIBUTE</xsl:attribute>
+            <xsl:apply-templates select="node()"/>
+        </xsl:copy>
     </xsl:template>
     
     <xsl:template match="section[@type = ('DETAIL-ATTRIBUTE','DETAIL-COMPOSITE-ATTRIBUTE')]/content">
