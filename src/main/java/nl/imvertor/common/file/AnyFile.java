@@ -25,8 +25,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Writer;
@@ -87,11 +85,17 @@ public class AnyFile extends File  {
 	
 	public LinkedList<File> files;
 	
-	
 	private BufferedReader lineReader = null;
 	
-	private Charset charset;
+	protected String encoding; // default encoding is the system encoding
 	
+	public String getEncoding() {
+		return (encoding == null) ? System.getProperty("file.encoding") : encoding; 
+	}
+	
+	public void setEncoding(String encoding) {
+		this.encoding = encoding; 
+	}
 	
 	/**
 	 * Convenience method: fast read of file contents.
@@ -182,12 +186,6 @@ public class AnyFile extends File  {
 		return name;
 	}
 	
-	public String getContent() throws IOException {
-		String encoding = guessEncoding();
-		if (encoding == null) encoding = StandardCharsets.UTF_8.name();
-		return getContent(encoding);
-	}
-	
 	/**
 	 * Return a string containing the entire file contents. 
 	 * Pass encoding, i.e. the name of a character set.
@@ -197,9 +195,9 @@ public class AnyFile extends File  {
 	 * @return
 	 * @throws IOException
 	 */
-	public String getContent(String encoding) throws IOException {
+	public String getContent() throws IOException {
 		StringBuffer fileData = new StringBuffer(1000);
-	    BufferedReader reader = new BufferedReader(new InputStreamReader(getFileInputStream(), encoding));
+	    BufferedReader reader = new BufferedReader(new InputStreamReader(getFileInputStream(), getEncoding()));
         char[] buf = new char[1024];
         int numRead=0;
         while((numRead=reader.read(buf)) != -1){
@@ -217,7 +215,7 @@ public class AnyFile extends File  {
 	
 	public void setContent(String s, boolean append) throws IOException {
 		createFile();
-		FileWriterWithEncoding out = new FileWriterWithEncoding(this, "UTF-8", append);
+		FileWriterWithEncoding out = new FileWriterWithEncoding(this, getEncoding(), append);
         out.write(s);
         out.flush();
         out.close();
@@ -435,20 +433,10 @@ public class AnyFile extends File  {
 	 * @return
 	 * @throws IOException
 	 */
-	public FileWriterWithEncoding getWriterWithEncoding(String encoding, boolean append) throws IOException {
-		return new FileWriterWithEncoding(this,"UTF-8",append); 
+	public FileWriterWithEncoding getWriter(boolean append) throws IOException {
+		return new FileWriterWithEncoding(this,getEncoding(),append); 
 	}
-	/**
-	 * Return a file writer, which allow strings to be written to this file. 
-	 * If writing lines, append \n to the string.
-	 * 
-	 * @param append Append to the existing file?
-	 * @return
-	 * @throws IOException
-	 */
-	public FileWriter getWriter(boolean append) throws IOException {
-		return new FileWriter(this,append); 
-	}
+
 	/**
 	 * Return a buffered file writer, which allow strings to be written to this file. 
 	 * If writing lines, append \n to the string.
@@ -461,10 +449,10 @@ public class AnyFile extends File  {
 		return new BufferedWriter(getWriter(append)); 
 	}
 	
-	public FileReader getReader() throws IOException {
-		return new FileReader(this); 
+	public InputStreamReader getReader() throws IOException {
+		return new InputStreamReader(new FileInputStream(this), getEncoding()); 
 	}
-
+	
 	/** 
 	 * Write all file contents to the writer passed.
 	 * 
@@ -472,7 +460,7 @@ public class AnyFile extends File  {
 	 * @throws IOException
 	 */
 	public void readToWriter(Writer writer) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(this));
+		InputStreamReader reader = getReader();
         char[] buf = new char[1024];
         int numRead=0;
         while((numRead=reader.read(buf)) != -1){
@@ -579,30 +567,19 @@ public class AnyFile extends File  {
 	 * If  no more lines available, close the stream and return null. 
 	 * Next call, reopen the stream and start again.
 	 * 
-	 * Encoding is optional; when not provided guess the encoding of the file.
+	 * Encoding is as set for this file.
 	 * 
 	 * @return
 	 * @throws Exception 
 	 */
-	public String getNextLine() throws Exception {
-		if (charset == null) 
-			charset = getCharsetForEncoding(guessEncoding());
-		return getNextLine(charset);
-	}
-	
-	public String getNextLine(Charset cs) throws IOException {
-		if (charset == null) 
-			charset = cs;
-
+	public String getNextLine() throws IOException {
 		String line = null;
 		
-		if (lineReader == null) {
-			FileInputStream is = new FileInputStream(this);
-			InputStreamReader isr = new InputStreamReader(is, cs);
-			lineReader = new BufferedReader(isr);
-		}
+		if (lineReader == null)
+			lineReader = new BufferedReader(new InputStreamReader(new FileInputStream(this), getEncoding()));
+	
 		if (!(lineReader.ready() && (line = lineReader.readLine()) != null))
-				close();	
+				lineReader.close();	
 	
 		return line;
 	}

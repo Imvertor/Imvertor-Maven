@@ -66,6 +66,7 @@ public class OOXmlFile extends ZipFile {
 			serializeToXml(workFolder);
 			
 			XmlFile ooxmlFile = new XmlFile(workFolder,"__content.xml");
+			
 			//XmlFile resultFile = new XmlFile(workFolder,"__content.simple-workbook.xml");
 			
 			// create processable table format 
@@ -73,7 +74,7 @@ public class OOXmlFile extends ZipFile {
 			HashMap<String,String> extractMap = extractXsl.getInitialParms();
 			extractMap.put("workfolder", workFolder.getCanonicalPath());
 			
-			extractXsl.transform( ooxmlFile.getCanonicalPath(), outFile.getCanonicalPath());
+			extractXsl.transform( ooxmlFile, outFile);
 			
 			return outFile;
 		} else 

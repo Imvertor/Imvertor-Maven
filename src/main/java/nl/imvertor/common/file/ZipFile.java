@@ -223,7 +223,7 @@ public class ZipFile extends AnyFile {
     	decompress(workFolder);
     	// create a content file.
     	XmlFile content = new XmlFile(serializeFolder,"__content.xml");
-    	FileWriterWithEncoding contentWriter = content.getWriterWithEncoding("UTF-8", false);
+    	FileWriterWithEncoding contentWriter = content.getWriter(false);
     	// create a pattern that matches <?xml ... ?>
     	String xmlRegex = "<\\?(x|X)(m|M)(l|L).*?\\?>";
     	contentWriter.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?><cw:files xmlns:cw=\"" + ZIP_CONTENT_WRAPPER_NAMESPACE + "\">");

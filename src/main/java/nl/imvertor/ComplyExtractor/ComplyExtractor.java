@@ -233,7 +233,7 @@ public class ComplyExtractor extends Step {
 
 		// pass the contents as body to STP
 		XmlFile soapRequestXml = new XmlFile(configurator.getXParm("properties/IMVERTOR_COMPLY_EXTRACT_SOAP_REQUEST_FILE"));
-		String result = httpFile.post(HttpFile.METHOD_POST_CONTENT, url, headerMap, null, new String[] {soapRequestXml.getContent("UTF-8")});
+		String result = httpFile.post(HttpFile.METHOD_POST_CONTENT, url, headerMap, null, new String[] {soapRequestXml.getContent()});
 		
 		// transform to messages
 		XmlFile soapResponseXml = new XmlFile(configurator.getXParm("properties/IMVERTOR_COMPLY_EXTRACT_SOAP_RESPONSE_FILE"));

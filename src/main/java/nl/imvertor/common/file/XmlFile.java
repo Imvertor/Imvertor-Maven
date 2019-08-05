@@ -23,6 +23,7 @@ package nl.imvertor.common.file;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -158,6 +159,9 @@ public class XmlFile extends AnyFile implements ErrorHandler {
 		return "XML";
 	}
 		
+	public String getEncoding() {
+		return (encoding == null) ? StandardCharsets.UTF_8.name() : encoding; 
+	}
 	
 	/**
 	 * Lees een file in naar een DOM Document.

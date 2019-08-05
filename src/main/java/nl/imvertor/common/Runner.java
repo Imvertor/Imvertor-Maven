@@ -402,8 +402,9 @@ public class Runner {
 			String fulltext = Configurator.getInstance().runtimeForDisplay() + " - " + text;
 			AnyFile tf = Configurator.getInstance().getTrackerFile();
 			if (tf != null) {
+				tf.setEncoding("UTF-8");
 				if (trackerFileWriter == null) {
-					trackerFileWriter = tf.getWriterWithEncoding("UTF-8", true);
+					trackerFileWriter = tf.getWriter(true);
 				}
 				trackerFileWriter.append(fulltext + System.lineSeparator());
 				trackerFileWriter.flush();

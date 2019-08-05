@@ -20,8 +20,6 @@ public class GithubFile extends HttpFile {
 	
    	private static final long serialVersionUID = 1671504389004682658L;
 	
-	private String encoding = "UTF-8";
-
 	private String error = "";
 	private String stage = "init";
 	private URI url;
@@ -54,6 +52,10 @@ public class GithubFile extends HttpFile {
 		super(file);
 	}
 
+	public String getEncoding() {
+		return (encoding == null) ? StandardCharsets.UTF_8.name() : encoding; 
+	}
+	
     public void publish(
 			String USER,
 			String REPO,
@@ -90,7 +92,7 @@ public class GithubFile extends HttpFile {
 				break;
 			
 			stage = "POST Request: save sha-new-tree";
-			String escaped = StringEscapeUtils.escapeJson(getContent(StandardCharsets.UTF_8.name()));
+			String escaped = StringEscapeUtils.escapeJson(getContent());
 			payload = "{\"base_tree\": \""+SHA_TREE+"\",\"tree\": [{\"path\": \""+OUTFILE+"\",\"mode\": \"100644\",\"type\": \"blob\",\"content\": \""+escaped+"\"}]}"; //  
 			object = postToRemote(USER, REPO, OAUTH,"git/trees", payload);
 			
@@ -142,7 +144,7 @@ public class GithubFile extends HttpFile {
 		headerMap.put(HttpHeaders.AUTHORIZATION,"token " + OAUTH);
 		headerMap.put(HttpHeaders.ACCEPT, "application/json");
 		headerMap.put(HttpHeaders.CONTENT_TYPE, "application/json");
-		headerMap.put(HttpHeaders.CONTENT_ENCODING, encoding);
+		headerMap.put(HttpHeaders.CONTENT_ENCODING, getEncoding());
 		
 		String result = post(HttpFile.METHOD_POST_CONTENT, url, headerMap, null, new String[] {payload});
 		
@@ -174,7 +176,4 @@ public class GithubFile extends HttpFile {
 		return url;
 	}
 
-	public void setEncoding(String encoding) {
-		this.encoding= encoding;
-	}
 }

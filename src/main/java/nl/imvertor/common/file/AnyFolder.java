@@ -159,7 +159,7 @@ public class AnyFolder extends AnyFile {
     	// If from a previous run, remove
     	if (content.isFile()) content.delete();
     	// Build a writer
-    	FileWriterWithEncoding contentWriter = content.getWriterWithEncoding("UTF-8", false);
+    	FileWriterWithEncoding contentWriter = content.getWriter(false);
     	contentWriter.append(
     			"<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
     			+ "<cw:files xmlns:cw=\"" + FOLDER_CONTENT_WRAPPER_NAMESPACE + "\" role=\"" + roleInfo + "\">");

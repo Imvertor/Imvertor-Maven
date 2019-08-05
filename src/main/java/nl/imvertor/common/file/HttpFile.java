@@ -114,7 +114,7 @@ public class HttpFile extends AnyFile {
 	
 	public void put(URI url, Map<String, String> headerMap, HashMap<String, String> parms) throws Exception {
 		
-		String body = getContent("UTF-8"); 
+		String body = getContent(); 
 		
 		// create a request builder
 		RequestBuilder builder = RequestBuilder.put();
