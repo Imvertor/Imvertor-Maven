@@ -241,7 +241,7 @@
     <!-- door lvdb 
         functie wordt aangeroepen door stylesheet die een door imvertor gegenereerd modeldoc (tussenformaat tussen UML output en gegevenscat HTML) aanpast 
         aan specifieke wensen van BRO
--->
+    -->
     
     <!-- genereert domein informatie zoals gewenst door BRO -->
     <!--    input parameter 1: $item een item node met als tekstinhoud de naam van een domein 
@@ -308,13 +308,13 @@
             <xsl:when test="$item/text()='Nummer'">
                 <part>
                     <item>&#160;&#160;Naam</item>
-                    <item>Nummer <xsl:value-of select="$context/part[@type = 'CFG-DOC-LENGTH']/item[2]/text()"/></item>
+                    <item>Nummer <xsl:value-of select="$context/part[@type = 'CFG-DOC-LENGTE']/item[2]/text()"/></item>
                 </part>
             </xsl:when>
             <xsl:when test="$item/text()='Tekst'">
                 <part>
                     <item>&#160;&#160;Naam</item>
-                    <item>Tekst <xsl:value-of select="$context/part[@type = 'CFG-DOC-LENGTH']/item[2]/text()"/></item>
+                    <item>Tekst <xsl:value-of select="$context/part[@type = 'CFG-DOC-LENGTE']/item[2]/text()"/></item>
                 </part>
             </xsl:when>
             <xsl:when test="$item/text()='Registratieobjectcode'">
@@ -397,7 +397,7 @@
                 </part>
                 <part>
                     <item>&#160;&#160;Type</item>
-                    <item>Waardelijst niet uitbreidbaar</item>
+                    <item>Waardelijst uitbreidbaar</item>
                 </part>
                 <!-- alleen genereren als er een IMBRO/A domein is -->
                 <xsl:for-each select="$context/part[@type = 'CFG-DOC-DOMAIN-IMBROA']">
