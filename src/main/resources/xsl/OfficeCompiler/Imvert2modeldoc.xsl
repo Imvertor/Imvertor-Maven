@@ -1103,6 +1103,9 @@
                     <xsl:sequence select="imf:create-part-2(.,imf:create-link($defining-class,'global',$relation/imvert:type-name/@original))"/>
                 </xsl:when>
                 <xsl:when test="$doc-rule-id = 'CFG-DOC-INDICATIEAFLEIDBAAR'">
+                    <xsl:sequence select="imf:create-part-2(.,imf:get-formatted-tagged-value-cfg(.,$this,'CFG-TV-ISDERIVED'))"/>   
+                </xsl:when>
+                <xsl:when test="$doc-rule-id = 'CFG-DOC-WAARDEAFLEIDBAAR'">
                     <xsl:variable name="is-afleidbaar-text" select="if (imf:boolean($relation/imvert:is-value-derived)) then 'YES' else 'NO'"/>
                     <xsl:sequence select="imf:create-part-2(.,imf:plugin-translate-i3n($is-afleidbaar-text,false()))"/>
                 </xsl:when>
