@@ -940,6 +940,16 @@
                   </cs:xsdTypes>
                </cs:Construct>
                <cs:Construct>
+                  <cs:name>DatumOfDatumTijd</cs:name>
+                  <cs:sentinel>false</cs:sentinel>
+                  <cs:xsdTypes>
+                     <cs:XsdType>
+                        <cs:name>DateOrDateTimeType</cs:name>
+                        <cs:primitive>false</cs:primitive>
+                     </cs:XsdType>
+                  </cs:xsdTypes>
+               </cs:Construct>
+               <cs:Construct>
                   <cs:name>Registratieobjectcode</cs:name>
                   <cs:name>RegistrationObjectCode</cs:name>
                   <cs:sentinel>false</cs:sentinel>
