@@ -15,7 +15,7 @@
 	
 	<!-- The first variable is meant for the server environment, the second one is used during development in XML-Spy. -->
 	<xsl:variable name="debugging" select="imf:debug-mode($stylesheet-code)" as="xs:boolean"/>
-	<!--<xsl:variable name="debugging" select="true()" as="xs:boolean"/>-->
+	<!--<xsl:variable name="debugging" select="false()" as="xs:boolean"/>-->
 	
 	<xsl:variable name="standard-json-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-json-components-file'))"/>
 	<xsl:variable name="standard-geojson-components-url" select="concat(imf:get-config-parameter('standard-components-url'),imf:get-config-parameter('standard-geojson-components-file'))"/>
@@ -1006,12 +1006,10 @@
 			<xsl:value-of select="concat('&quot;',$elementName,'&quot;: {')"/>	
 			<xsl:value-of select="concat('&quot;type&quot;: &quot;',$occurence-type,'&quot;,')"/>
 			<xsl:variable name="documentation">
-				<!--xsl:value-of select="$firstChoice/ep:documentation//ep:p"/-->
-				<!--xsl:text>Doc1: </xsl:text--><xsl:apply-templates select="$firstChoice/ep:documentation"/>
+				<xsl:apply-templates select="$firstChoice/ep:documentation"/>
 			</xsl:variable>
 			<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
-			<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-			<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+			<xsl:sequence select="$documentation"/>
 			<xsl:value-of select="'&quot;,'"/>
 			<xsl:if test="$occurence-type = 'array'">
 				<xsl:if test="$maxOccurs != 'unbounded'">
@@ -1096,12 +1094,10 @@
 		</xsl:if>
 		<xsl:value-of select="'&quot;type&quot;: &quot;object&quot;,'"/>
 		<xsl:variable name="documentation">
-			<xsl:value-of select="ep:documentation//ep:p"/>
-			<!--xsl:text>Doc2: </xsl:text><xsl:apply-templates select="ep:documentation"/-->
+			<xsl:apply-templates select="ep:documentation"/>
 		</xsl:variable>
 		<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
-		<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-		<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+		<xsl:sequence select="$documentation"/>
 		<xsl:value-of select="'&quot;'"/>
 		<xsl:variable name="requiredproperties" as="xs:boolean">
 			<!-- The variable requiredproperties confirms if at least one of the properties of the current construct is required. -->
@@ -1242,7 +1238,7 @@
 			<xsl:value-of select="'}'"/>
 		</xsl:variable>
 
-		<xsl:if test="$debugging and $serialisation = 'hal+json'">
+		<!--<xsl:if test="$debugging and $serialisation = 'hal+json'">
 			<xsl:variable name="relatedGlobalConstruct">
 				<xsl:copy-of select="/ep:message-sets/ep:message-set/ep:construct[ep:tech-name=$elementName]"/>
 			</xsl:variable>
@@ -1255,7 +1251,7 @@
 			<xsl:result-document href="{concat('file:/c:/temp/contentRelatedEmbeddedConstruct/',$elementName,'.json')}" method="text">
 				<xsl:copy-of select="$contentRelatedEmbeddedConstruct" />
 			</xsl:result-document>
-		</xsl:if>
+		</xsl:if>-->
 
 		
 		<xsl:if test="$properties != ',&quot;properties&quot;: {}'">
@@ -1478,12 +1474,10 @@
 				<xsl:value-of select="'&quot;type&quot;: &quot;array&quot;,'"/>
 				<xsl:value-of select="concat('&quot;title&quot;: &quot;',ep:parameters/ep:parameter[ep:name='SIM-name']/ep:value,'&quot;')"/>
 				<xsl:variable name="documentation">
-					<xsl:value-of select="ep:documentation//ep:p"/>
-					<!--xsl:text>Doc3: </xsl:text><xsl:apply-templates select="ep:documentation"/-->
+					<xsl:apply-templates select="ep:documentation"/>
 				</xsl:variable>
 				<xsl:value-of select="',&quot;description&quot;: &quot;'"/>
-				<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-				<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+				<xsl:sequence select="$documentation"/>
 				<xsl:value-of select="'&quot;'"/>
 				<xsl:if test="ep:min-occurs">
 					<xsl:value-of select="concat(',&quot;minItems&quot;: ',ep:min-occurs,',')"/>
@@ -1527,12 +1521,10 @@
 				<xsl:value-of select="concat('&quot;type&quot;: &quot;',$datatype,'&quot;')"/>
 				<xsl:value-of select="concat(',&quot;title&quot;: &quot;',ep:parameters/ep:parameter[ep:name='SIM-name']/ep:value,'&quot;')"/>
 				<xsl:variable name="documentation">
-					<xsl:value-of select="ep:documentation//ep:p"/>
-					<!--xsl:text>Doc4: </xsl:text><xsl:apply-templates select="ep:documentation"/-->
+					<xsl:apply-templates select="ep:documentation"/>
 				</xsl:variable>
 				<xsl:value-of select="',&quot;description&quot;: &quot;'"/>
-				<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-				<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+				<xsl:sequence select="$documentation"/>
 				<xsl:value-of select="'&quot;'"/>
 				<xsl:value-of select="$format"/>
 				<xsl:value-of select="$facets"/>
@@ -1725,8 +1717,7 @@
 
 		<xsl:value-of select="concat('&quot;type&quot;: &quot;',$occurence-type,'&quot;,')"/>
 		<xsl:variable name="documentation">
-			<xsl:value-of select="ep:documentation//ep:p"/>
-			<!--xsl:text>Doc5: </xsl:text><xsl:apply-templates select="ep:documentation"/-->
+			<xsl:apply-templates select="ep:documentation"/>
 			<xsl:if test="$debugging">
 				<xsl:value-of select="ep:name"/>
 			</xsl:if>
@@ -1739,8 +1730,7 @@
 		</xsl:variable>
 		<xsl:variable name="type-name" select="ep:type-name"/>
 		<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
-		<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-		<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+		<xsl:sequence select="$documentation"/>
 		<xsl:value-of select="'&quot;,'"/>
 		<xsl:choose>
 			<!-- Depending on the occurence-type and the type of construct content is generated. -->
@@ -1847,8 +1837,7 @@
 		</xsl:variable>
 		<xsl:value-of select="concat('&quot;',$elementName,'&quot;: {')"/>
 		<xsl:variable name="documentation">
-			<xsl:value-of select="ep:documentation//ep:p"/>
-			<!--xsl:text>Doc6: </xsl:text><xsl:apply-templates select="ep:documentation"/-->
+			<xsl:apply-templates select="ep:documentation"/>
 		</xsl:variable>
 		
 		<xsl:choose>
@@ -1867,8 +1856,7 @@
 					<!-- Depending on the occurence-type and the type of construct content is generated. -->
 					<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='association'">
 						<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
-						<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-						<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+						<xsl:sequence select="$documentation"/>
 						<xsl:value-of select="'&quot;,'"/>
 						<xsl:if test="$maxOccurs != 'unbounded'">
 							<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
@@ -1885,8 +1873,7 @@
 					</xsl:when>
 					<xsl:when test="$occurence-type = 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
 						<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
-						<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-						<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+						<xsl:sequence select="$documentation"/>
 						<xsl:value-of select="'&quot;,'"/>
 						<xsl:if test="$maxOccurs != 'unbounded'">
 							<xsl:value-of select="concat('&quot;maxItems&quot;: ',$maxOccurs,',')"/>
@@ -1900,8 +1887,7 @@
 					</xsl:when>
 					<xsl:when test="$occurence-type != 'array' and ep:parameters/ep:parameter[ep:name='type']/ep:value ='supertype-association'">
 						<xsl:value-of select="'&quot;description&quot;: &quot;'"/>
-						<!-- Double quotes in documentation text is replaced by a  grave accent. -->
-						<xsl:value-of select="normalize-space(translate($documentation,'&quot;','&#96;'))"/>
+						<xsl:sequence select="$documentation"/>
 						<xsl:value-of select="'&quot;,'"/>
 						<xsl:apply-templates select="//ep:construct[ep:tech-name = $typeName]" mode="supertype-association-in-embedded"/>
 					</xsl:when>
@@ -1923,8 +1909,7 @@
 				<xsl:value-of select="'&quot;,'"/>
 				
 				<xsl:variable name="documentation">
-					<xsl:value-of select="ep:documentation//ep:p"/>
-					<!--xsl:text>Doc7: </xsl:text><xsl:apply-templates select="ep:documentation"/-->
+					<xsl:apply-templates select="ep:documentation"/>
 				</xsl:variable>
 				<xsl:choose>
 					<!-- Depending on the occurence-type and the type of construct content is generated. -->
