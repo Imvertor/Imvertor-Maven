@@ -512,7 +512,7 @@
     <item>
         <key>DIAGRAM-NAME</key>
         <trans lang="nl">Naam</trans>
-        <trans lang="en">Name</trans>
+        <trans lang="en">itemtype</trans>
     </item>
     <item>
         <key>DIAGRAM-DESCRIPTION</key>
@@ -528,9 +528,14 @@
         <trans lang="en">Name</trans>
     </item>
     <item>
+        <key>VALUE</key>
+        <trans lang="nl">Waarde</trans>
+        <trans lang="en">Value</trans>
+    </item>
+    <item>
         <key>DEFINITION</key>
-        <trans lang="nl">Definitie</trans>
-        <trans lang="en">Definition</trans>
+        <trans lang="nl">Omschrijving</trans>
+        <trans lang="en">Description</trans>
     </item>
     
     <item>

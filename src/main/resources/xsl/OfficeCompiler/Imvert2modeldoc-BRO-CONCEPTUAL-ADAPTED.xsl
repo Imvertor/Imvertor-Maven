@@ -37,8 +37,14 @@
             <!-- registratieobject wordt bovenaan apart gezet -->
             <xsl:apply-templates select="section[@type = 'OVERVIEW-OBJECTTYPE']/section[@type = 'OBJECTTYPE' and @name = ('Registratieobject','Baksteen')]"/>   
             <section type="BRO-OTHEROBJECTS">
-                <xsl:apply-templates select="section[@type = 'OVERVIEW-OBJECTTYPE']/section[@type = 'OBJECTTYPE' and not(@name = ('Registratieobject','Baksteen'))]"/>
-                <xsl:apply-templates select=".//section[@type = 'DETAIL-COMPOSITE']"/> <!-- omgezet naar objecttypen -->
+                <xsl:variable name="sections" as="element()*">
+                    <xsl:apply-templates select="section[@type = 'OVERVIEW-OBJECTTYPE']/section[@type = 'OBJECTTYPE' and not(@name = ('Registratieobject','Baksteen'))]"/>
+                    <xsl:apply-templates select=".//section[@type = 'DETAIL-COMPOSITE']"/> <!-- omgezet naar objecttypen -->
+                </xsl:variable>
+                <xsl:for-each select="$sections">
+                    <xsl:sort select="@position" order="ascending" data-type="number"/>
+                    <xsl:sequence select="."/>
+                </xsl:for-each>
             </section>
             <section type="BRO-LISTS">
                 <!-- minder kopjes lijsten -->
@@ -47,23 +53,11 @@
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="section[@type = 'IMAGEMAPS']">
-       <xsl:choose>
-           <xsl:when test="parent::section[@type = 'DOMAIN']">
-              <xsl:next-match/>
-           </xsl:when>
-           <xsl:otherwise>
-               <section type="IMAGEMAP-NOT-SUPPORTED-HERE">
-                   UNSUPPORTED 
-               </section>
-           </xsl:otherwise>
-       </xsl:choose> 
-    </xsl:template>
-   
     <xsl:template match="section[@type = 'OBJECTTYPE']">
         <xsl:variable name="name" select="@name"/>
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
+            <xsl:apply-templates select="section[@type = 'IMAGEMAPS']"/>
             <xsl:apply-templates select="content"/>
             <xsl:apply-templates select="/book/chapter[@type = 'cat']/section[@type = 'DOMAIN']/section[@type = 'DETAILS']/section[@name = $name]/section[@type = 'DETAIL-ATTRIBUTE']"/>
         </xsl:copy>            
@@ -172,6 +166,8 @@
             <xsl:apply-templates select="part[@type = 'CFG-DOC-TOELICHTING']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-INDICATIEMATERIELEHISTORIE']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-INDICATIEAFLEIDBAAR']"/>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-MOGELIJKGEENWAARDE']"/>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-EXPLAINNOVALUE']"/>
         </content>
     </xsl:template>
     
@@ -281,7 +277,7 @@
     <!-- door lvdb 
         functie wordt aangeroepen door stylesheet die een door imvertor gegenereerd modeldoc (tussenformaat tussen UML output en gegevenscat HTML) aanpast 
         aan specifieke wensen van BRO
-    -->
+-->
     
     <!-- genereert domein informatie zoals gewenst door BRO -->
     <!--    input parameter 1: $item een item node met als tekstinhoud de naam van een domein 
@@ -348,13 +344,13 @@
             <xsl:when test="$item/text()='Nummer'">
                 <part>
                     <item>&#160;&#160;Naam</item>
-                    <item>Nummer <xsl:value-of select="$context/part[@type = 'CFG-DOC-LENGTE']/item[2]/text()"/></item>
+                    <item>Nummer <xsl:value-of select="$context/part[@type = 'CFG-DOC-LENGTH']/item[2]/text()"/></item>
                 </part>
             </xsl:when>
             <xsl:when test="$item/text()='Tekst'">
                 <part>
                     <item>&#160;&#160;Naam</item>
-                    <item>Tekst <xsl:value-of select="$context/part[@type = 'CFG-DOC-LENGTE']/item[2]/text()"/></item>
+                    <item>Tekst <xsl:value-of select="$context/part[@type = 'CFG-DOC-LENGTH']/item[2]/text()"/></item>
                 </part>
             </xsl:when>
             <xsl:when test="$item/text()='Registratieobjectcode'">
@@ -379,7 +375,7 @@
                 <!-- alleen genereren als er een IMBRO/A domein is -->
                 <xsl:for-each select="$context/part[@type = 'CFG-DOC-DOMAIN-IMBROA']">
                     <part>
-                        <item>&#160;&#160;Domein IMBRO/A</item>
+                        <item>&#160;&#160;Naam IMBRO/A</item>
                         <item><xsl:value-of select="./item[2]/text()"/></item>
                     </part>                    
                 </xsl:for-each>                
@@ -417,23 +413,23 @@
                     <item>&#160;&#160;Naam</item>
                     <item><xsl:value-of select="$item"/></item>
                 </part>
+                <!-- alleen genereren als er een IMBRO/A domein is -->
+                <xsl:for-each select="$context/part[@type = 'CFG-DOC-DOMAIN-IMBROA']">
+                    <part>
+                        <item>&#160;&#160;Naam IMBRO/A</item>
+                        <item><xsl:value-of select="./item[2]/text()"/></item>
+                    </part>                    
+                </xsl:for-each>
                 <part>
                     <item>&#160;&#160;Type</item>
                     <item>Waardelijst niet uitbreidbaar</item>
                 </part>
-                <!-- alleen genereren als er een IMBRO/A domein is -->
-                <xsl:for-each select="$context/part[@type = 'CFG-DOC-DOMAIN-IMBROA']">
-                    <part>
-                        <item>&#160;&#160;Domein IMBRO/A</item>
-                        <item><xsl:value-of select="./item[2]/text()"/></item>
-                    </part>                    
-                </xsl:for-each>
             </xsl:when>
             <!-- anders is het een uitbreidbare waardelijst (codelist of referentielijst) -->
             <xsl:otherwise> 
                 <part>
                     <item>&#160;&#160;Naam</item>
-                    <item><xsl:value-of select="$item"/></item>
+                    <item><item idref="detail_class_Model_{$item}"><xsl:value-of select="$item"/></item></item>
                 </part>
                 <part>
                     <item>&#160;&#160;Type</item>

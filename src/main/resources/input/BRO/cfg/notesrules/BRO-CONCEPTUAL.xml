@@ -28,4 +28,12 @@
         </section>
     </notes-rule>
     
+    <notes-rule lang="nl">
+        <section title="Reden geen waarde" tagged-value="CFG-TV-EXPLAINNOVALUE">
+            <!-- geen labels -->
+        </section>
+    </notes-rule>
+    
+    
+    
 </notes-rules>

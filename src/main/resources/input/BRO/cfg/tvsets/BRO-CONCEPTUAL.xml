@@ -21,6 +21,7 @@
             <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo> <!-- TODO niet op KKG -->
                 <stereo minmax="0..1">stereotype-name-composite</stereo><!-- TODO remove? -->
                 <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
@@ -34,6 +35,7 @@
             <desc lang="en">TODO</desc>
             <derive>yes</derive>
             <stereotypes>
+                <stereo minmax="0..1">stereotype-name-objecttype</stereo>
                 <stereo minmax="0..1">stereotype-name-attribute</stereo> 
                 <stereo minmax="0..1">stereotype-name-composite</stereo>
             </stereotypes>

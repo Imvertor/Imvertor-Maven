@@ -245,6 +245,18 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
         </levels>
     </doc-rule>
+    <doc-rule id="CFG-DOC-EXPLAINNOVALUE">
+        <name lang="nl">Reden geen waarde</name>
+        <name lang="en">Void reason</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
+    
     <doc-rule id="CFG-DOC-INDICATIEMATERIELEHISTORIE">
         <name lang="nl">Materiële geschiedenis</name>
         <name lang="en">Material history</name>
@@ -318,6 +330,9 @@
         <name lang="nl">Regels</name>
         <name lang="en">Rules</name>
         <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+            
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-OBJECTTYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>
@@ -329,6 +344,9 @@
         <name lang="nl">Regels IMBRO/A</name>
         <name lang="en">Rules IMBRO/A</name>
         <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-OBJECTTYPE</level>
+            
+            <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-OBJECTTYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ATTRIBUTE</level>

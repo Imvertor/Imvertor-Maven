@@ -64,5 +64,16 @@
             </stereotypes>
         </tv>
         
+        <!-- niet te verwarren met cfg-tv-reasonnovalue -->
+        <tv norm="space" id="CFG-TV-EXPLAINNOVALUE">
+            <name lang="nl">Reden geen waarde</name>
+            <name lang="en">Reason no value</name>
+            <desc lang="nl"><!--TODO--></desc>
+            <derive>yes</derive>
+            <stereotypes>
+                <stereo minmax="0..1">stereotype-name-attribute</stereo>
+            </stereotypes>
+        </tv>
+        
     </tagged-values>
 </tagset>
