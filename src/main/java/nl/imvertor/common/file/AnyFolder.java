@@ -193,7 +193,7 @@ public class AnyFolder extends AnyFile {
 				String startWrapperString = 
 						"<cw:file"
 						+ " xmlns:cw=\"" + FOLDER_CONTENT_WRAPPER_NAMESPACE + "\""
-						+ " type=\"" + type + "\" path=\"" + relpath + "\"" + getSpecs(f) + ">";
+						+ " type=\"" + type + "\" path=\"" + XmlFile.xmlescape(relpath) + "\"" + getSpecs(f) + ">";
 				String endWrapperString = 
 						"</cw:file>";
      				
@@ -235,11 +235,11 @@ public class AnyFolder extends AnyFile {
 	
 	private String getSpecs(AnyFile file) throws IOException {
 		return " date = \"" + file.lastModified() + "\""
-			+ " name = \"" + file.getName() + "\""
+			+ " name = \"" + XmlFile.xmlescape(file.getName()) + "\""
 			+ " ishidden = \"" + file.isHidden() + "\""
 			+ " isreadonly = \"" + file.canRead() + "\""
-			+ " ext = \"" + file.getExtensionCS() + "\""
-			+ " fullpath = \"" + file.getCanonicalPath() + "\"";
+			+ " ext = \"" + XmlFile.xmlescape(file.getExtensionCS()) + "\""
+			+ " fullpath = \"" + XmlFile.xmlescape(file.getCanonicalPath()) + "\"";
 	}
 	
 	private String cleanXmlPI(String xmlString) {
