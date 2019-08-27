@@ -144,16 +144,12 @@
         <content>
             <part type="CFG-DOC-NAAM">
                 <item>Type gegeven</item>
-                <item>Attribuut</item>
+                <item>Attribuut van <xsl:value-of select="../../@name"/></item>
             </part>
-            <part type="CFG-DOC-NAAM">
-                <item>Attribuut van</item>
-                <item><xsl:value-of select="../../@name"/></item>
-            </part>
-            <xsl:apply-templates select="part[@type = 'CFG-DOC-INDICATIEAUTHENTIEK']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-HERKOMST']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-DEFINITIE']"/>
             <xsl:apply-templates select="part[@type = 'CFG-DOC-HERKOMSTDEFINITIE']"/>
+            <xsl:apply-templates select="part[@type = 'CFG-DOC-INDICATIEAUTHENTIEK']"/>
             <part type="CFG-DOC-NAAM">
                 <item>Kardinaliteit</item>
                 <item>
