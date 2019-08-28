@@ -106,6 +106,8 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ENUMERATION</level>
+   
+       
         </levels>
     </doc-rule>
     <doc-rule id="CFG-DOC-ALTERNATIEVENAAM">
@@ -166,6 +168,7 @@
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-STRUCTUREDDATATYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-PRIMITIVEDATATYPE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-COMPOSITE</level>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REGISTRATIEOBJECT</level><!-- special case! -->
             
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ATTRIBUTE</level>
@@ -227,13 +230,6 @@
         </levels>
     </doc-rule>
     
-    <doc-rule id="CFG-DOC-MNEMONIC">
-        <name lang="nl">Mnemonic</name>
-        <name lang="en">Mnemonic</name>
-        <levels>
-           <!-- NERGENS? -->
-        </levels>
-    </doc-rule>
     <doc-rule id="CFG-DOC-MOGELIJKGEENWAARDE">
         <name lang="nl">Mogelijk geen waarde</name>
         <name lang="en">Voidable</name>
@@ -473,6 +469,13 @@
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-DATAELEMENT</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-ASSOCIATION</level>
             <level show="implied" compile="single" format="plain">DISPLAY-DETAIL-COMPOSITE-ASSOCIATION</level>
+        </levels>
+    </doc-rule>
+    <doc-rule id="CFG-DOC-POPULATIE">
+        <name lang="nl">Populatie</name>
+        <name lang="en">Population</name>
+        <levels>
+            <level show="implied" compile="single" format="plain">DISPLAY-GLOBAL-REGISTRATIEOBJECT</level><!-- special case! -->
         </levels>
     </doc-rule>
     

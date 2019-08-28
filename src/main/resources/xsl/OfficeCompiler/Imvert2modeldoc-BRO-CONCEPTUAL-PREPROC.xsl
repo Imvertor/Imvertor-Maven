@@ -32,8 +32,7 @@
 
     <!-- 
         (1) verander alle gegevensgroeptypen in objecttypen
-        (2) verwijder de attribute op Registratieobjecttype
-        (3) maak nieuwe tagged values aan voor Registratieobjecttype
+        (2) selecteer specifieke tagged values voor Registratieobjecttype
     -->
     
     <xsl:import href="../common/Imvert-common.xsl"/>
@@ -83,28 +82,15 @@
     </xsl:template>    
     
     <!-- (2) -->
-    
-    <xsl:template match="imvert:class[imvert:name = 'Registratieobject']/imvert:attributes/imvert:attribute">
-        <!-- vervalt, zijn via static doorgekopieerd naar subtypen -->
-    </xsl:template>
-    
-    <!-- (3) -->
     <xsl:template match="imvert:class[imvert:name = 'Registratieobject']/imvert:tagged-values">
         <xsl:copy>
-            <imvert:tagged-value id="CFG-TV-NAME">
-                <imvert:value>
-                    <xsl:value-of select="$huidige-registratie-object/imvert:name/@orginal"/>
-                </imvert:value>
-            </imvert:tagged-value>
-            <imvert:tagged-value id="CFG-TV-CODE">
-                <imvert:value>
-                    <xsl:value-of select="tokenize(/imvert:packages/imvert:application,'\(|\)')[2]"/>
-                </imvert:value>
-            </imvert:tagged-value>
+            <xsl:apply-templates select="imvert:tagged-value[@id = 'CFG-TV-NAME']"/>
             <xsl:apply-templates select="imvert:tagged-value[@id = 'CFG-TV-DEFINITION']"/>
             <xsl:apply-templates select="imvert:tagged-value[@id = 'CFG-TV-POPULATION']"/>
         </xsl:copy>
     </xsl:template>
+    
+    <!-- defaults -->
     
     <xsl:template match="node()|@*">
         <xsl:copy>

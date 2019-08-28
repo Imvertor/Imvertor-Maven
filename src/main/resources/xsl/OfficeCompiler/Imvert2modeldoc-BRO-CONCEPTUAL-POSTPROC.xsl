@@ -35,10 +35,10 @@
                 <xsl:apply-templates select="section[@type = 'IMAGEMAPS']"/>
             </section>
             <!-- registratieobject wordt bovenaan apart gezet -->
-            <xsl:apply-templates select="section[@type = 'OVERVIEW-OBJECTTYPE']/section[@type = 'OBJECTTYPE' and @name = ('Registratieobject','Baksteen')]"/>   
+            <xsl:apply-templates select="section[@type = 'OVERVIEW-OBJECTTYPE']/section[@type = 'OBJECTTYPE' and @name = 'Registratieobject']"/>   
             <section type="BRO-OTHEROBJECTS">
                 <xsl:variable name="sections" as="element()*">
-                    <xsl:apply-templates select="section[@type = 'OVERVIEW-OBJECTTYPE']/section[@type = 'OBJECTTYPE' and not(@name = ('Registratieobject','Baksteen'))]"/>
+                    <xsl:apply-templates select="section[@type = 'OVERVIEW-OBJECTTYPE']/section[@type = 'OBJECTTYPE' and not(@name = 'Registratieobject')]"/>
                     <xsl:apply-templates select=".//section[@type = 'DETAIL-COMPOSITE']"/> <!-- omgezet naar objecttypen -->
                 </xsl:variable>
                 <xsl:for-each select="$sections">
@@ -53,7 +53,7 @@
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="section[@type = 'OBJECTTYPE']">
+    <xsl:template match="section[@type = 'OBJECTTYPE' and not(@name = 'Registratieobject') ]">
         <xsl:variable name="name" select="@name"/>
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
@@ -75,7 +75,7 @@
     
     <!-- aanpassingen aan het overzicht van eigenschappen -->
     
-    <xsl:template match="section[@type = ('OBJECTTYPE','DETAIL-COMPOSITE')]/content">
+    <xsl:template match="section[@type = ('OBJECTTYPE','DETAIL-COMPOSITE') and not(@name = 'Registratieobject')]/content">
         <content>
             <part type="CFG-DOC-NAAM">
                 <item>Type gegeven</item>

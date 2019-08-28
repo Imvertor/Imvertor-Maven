@@ -20,7 +20,31 @@
     
     <xsl:variable name="configuration-registration-objects-path" select="concat(imf:get-config-string('system','inp-folder-path'),'/cfg/local/registration-objects.xml')"/>
     <xsl:variable name="configuration-registration-objects-doc" select="imf:document($configuration-registration-objects-path,true())"/>
+   
+    <!-- zeer speciale verwerking van Registratieobject. precies 4 anders geinterpreteerde velden tonen. -->
     
+    <xsl:template match="imvert:class[imvert:name = 'Registratieobject']" >
+        <section name="{imf:get-name(.,true())}" type="OBJECTTYPE" id="{imf:plugin-get-link-name(.,'global')}" uuid="{imvert:id}">
+            <xsl:sequence select="imf:calculate-position(.)"/>
+            <xsl:sequence select="imf:create-section-for-diagrams(.)"/>
+            <content>
+                <part>
+                    <item>Naam</item>
+                    <item>
+                        <xsl:value-of select="tokenize(/imvert:packages/imvert:application,'\(|\)')[1]"/>
+                    </item>
+                </part>
+                <part>
+                    <item>Code</item>
+                    <item>
+                        <xsl:value-of select="tokenize(/imvert:packages/imvert:application,'\(|\)')[2]"/>
+                    </item>
+                </part>
+                <xsl:sequence select="imf:create-parts-cfg(.,'DISPLAY-GLOBAL-REGISTRATIEOBJECT')"/>
+            </content>
+        </section>
+    </xsl:template>
+   
     <!-- overrides the default -->
     <xsl:function name="imf:initialize-modeldoc" as="item()*">
         
@@ -63,5 +87,5 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
-    
+   
 </xsl:stylesheet>

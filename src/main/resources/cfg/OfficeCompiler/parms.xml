@@ -97,7 +97,7 @@
       <IMVERTOR_LISTS_XSLPATH alias="MDL">Imvert2modeldoc-lists.xsl</IMVERTOR_LISTS_XSLPATH>
       
       <WORK_LISTS_FILE>${system/work-imvert-folder-path}/imvertor.25.1.lists.xml</WORK_LISTS_FILE>
-      <WORK_MODELDOC_FILE>${system/work-imvert-folder-path}/imvertor.25.2.1.modeldoc.xml</WORK_MODELDOC_FILE>
+      <WORK_MODELDOC_FILE>${system/work-imvert-folder-path}/imvertor.25.2.1.embellish.xml</WORK_MODELDOC_FILE>
       <WORK_MODELDOC_FILE_2>${system/work-imvert-folder-path}/imvertor.25.2.2.modeldoc.xml</WORK_MODELDOC_FILE_2>
       <WORK_MODELDOC_FILE_3>${system/work-imvert-folder-path}/imvertor.25.2.3.modeldoc.xml</WORK_MODELDOC_FILE_3>
       <WORK_OFFICE_FILE>${system/work-imvert-folder-path}/imvertor.25.4.office.html</WORK_OFFICE_FILE>
