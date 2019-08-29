@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 2016 VNG/KING
+ * 
+ * This file is part of Imvertor.
+ *
+ * Imvertor is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Imvertor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Imvertor.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+   <id>
+      <name>MsWord Transformer</name>
+   </id>
+   <cli-parms>
+      <!-- specifiek voor deze chain -->
+      <cli-parm>
+         <name>mswordfile</name>
+         <arg>path</arg>
+         <tip>Full path to the MsWord document (DOCX) or the ZIP holding one or more MsWord files</tip>
+         <required>true</required>
+      </cli-parm> 
+      
+      <!-- relevant: -->
+      <cli-parm>
+         <name>debug</name>
+         <arg>yes|no</arg>
+         <tip>Yes if run in debug mode</tip>
+         <required>false</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>debugmode</name>
+         <arg>mode</arg>
+         <tip>Sets the debug mode</tip>
+         <required>false</required>
+      </cli-parm> 
+     
+      <cli-parm>
+         <name>owner</name>
+         <arg>name</arg>
+         <tip>Explain</tip>
+         <required>true</required>
+      </cli-parm>
+      <cli-parm>
+         <name>arguments</name>
+         <arg>path</arg>
+         <tip>Include these arguments</tip>
+         <required>false</required>
+      </cli-parm> 
+      
+      <!-- niet relevant; anders opzetten: -->
+      
+      <cli-parm>
+         <name>task</name>
+         <arg>compile</arg>
+         <tip>Explain</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>forcecompile</name>
+         <arg>false</arg>
+         <tip>Explain</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>project</name>
+         <arg>name</arg>
+         <tip>Explain</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>application</name>
+         <arg>name</arg>
+         <tip>Explain</tip>
+         <required>true</required>
+      </cli-parm> 
+      <cli-parm>
+         <name>metamodel</name>
+         <arg>name</arg>
+         <tip>Explain</tip>
+         <required>true</required>
+      </cli-parm> 
+      
+   </cli-parms>
+   
+   <properties>
+           
+   </properties>
+</config>
