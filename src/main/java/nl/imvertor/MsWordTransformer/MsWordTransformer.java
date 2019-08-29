@@ -116,9 +116,11 @@ public class MsWordTransformer extends Step {
 	
 		OsExecutor osExecutor = new OsExecutor();
 		
-		String toolloc = configurator.getServerProperty("full.batch.msword.transformer"); // location of the tool
+		String toolloc = (new AnyFile(configurator.getServerProperty("full.batch.msword.transformer"))).getCanonicalPath(); // location of the tool
 		long osExecutorJobTimeout = Long.parseLong(configurator.getServerProperty("full.batch.msword.transformer.timeout")); // location of the tool
 		boolean osExecutorInBackground = false;
+		
+		runner.info(logger, "Transforming: " + mswordFile.getName());
 		
 		OsExecutorResultHandler osExecutorResult = null;
 		
@@ -128,6 +130,8 @@ public class MsWordTransformer extends Step {
 		commandLine.addArgument(toolloc); // the tool folder
 		commandLine.addArgument(mswordFile.getParent()); // The work folder
 
+		runner.info(logger,commandLine.toString());
+		
 		try {
 			osExecutorResult = osExecutor.osexec(commandLine, osExecutorJobTimeout, osExecutorInBackground);
 			osExecutorResult.waitFor();
