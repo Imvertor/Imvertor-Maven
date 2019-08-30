@@ -76,9 +76,9 @@ public class MsWordTransformer extends Step {
 	
 	private boolean transformByFullBatch() throws Exception {	
 		
-		AnyFolder workFolder = new AnyFolder(new File(configurator.getXParm("system/work-folder-path")), "msword");
-		workFolder.deleteDirectory();
+		AnyFolder workFolder = new AnyFolder(configurator.getXParm("system/work-msword-folder-path"));
 		workFolder.mkdirs();
+		configurator.setXParm("system/msword-transformation-folder-path", workFolder.getCanonicalPath());
 		
 		AnyFile mswordFile = new AnyFile(configurator.getXParm("cli/mswordfile"));
 		if (!mswordFile.exists()) {
@@ -130,11 +130,11 @@ public class MsWordTransformer extends Step {
 		commandLine.addArgument(toolloc); // the tool folder
 		commandLine.addArgument(mswordFile.getParent()); // The work folder
 
-		runner.info(logger,commandLine.toString());
-		
 		try {
 			osExecutorResult = osExecutor.osexec(commandLine, osExecutorJobTimeout, osExecutorInBackground);
 			osExecutorResult.waitFor();
+			// assume the msword file * is transformed to *.respec.html
+			configurator.setXParm("appinfo/msword-transformation-result", mswordFile.getNameNoExtension() + ".respec.html",false);
 			return true;
 			
 		} catch (Exception e) {

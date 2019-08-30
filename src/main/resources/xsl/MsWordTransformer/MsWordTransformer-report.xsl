@@ -42,48 +42,22 @@
                 <info label="my label">My value</info>
             </summary>
             <page>
-                <title>Title of the first MsWord Transfomer reporting page</title>
-                <intro/>
+                <title>MsWord Transformer report</title>
+                <intro>
+                    Introduction text here...
+                </intro>
                 <content>
-                    <div>
-                        <h1>First report page</h1>
-                        <p>This is the report on the step Tester, the first "division" </p>
-                        <xsl:call-template name="show-some-info"/>
-                    </div>
-                    <div>
-                        <h1>Second report page</h1>
-                        <p>This is the report on the step Tester, the second "division" </p>
-                        <xsl:call-template name="show-some-info"/>
-                    </div>
-                </content>
-            </page>
-            <page>
-                <title>Title of the second MsWord Transfomer reporting page</title>
-                <intro/>
-                <content>
-                    <div>
-                        <h1>First report page</h1>
-                        <p>This is the report on the step Tester, the first "division" </p>
-                        <xsl:call-template name="show-some-info"/>
-                    </div>
-                    <div>
-                        <h1>Second report page</h1>
-                        <p>This is the report on the step Tester, the second "division" </p>
-                        <xsl:call-template name="show-some-info"/>
-                    </div>
+                    <p>The results of the transformation are listed here. Clicking on a report opens it in a separate browser window.</p>
+                    <ul>
+                        <xsl:for-each select="imf:get-xparm('appinfo/msword-transformation-result')">
+                            <li>
+                                Respec report: <a href="../../msword/{.}" target="respec"><xsl:value-of select="."/></a>.
+                            </li>
+                        </xsl:for-each>
+                    </ul>
                 </content>
             </page>
         </report>
     </xsl:template>
-    
-    <xsl:template name="show-some-info">
-        <table>
-            <xsl:for-each select="/config/messages/message">
-                <tr>
-                    <td><xsl:value-of select="type"/></td>
-                    <td><xsl:value-of select="text"/></td>
-                </tr>
-            </xsl:for-each>
-        </table>
-    </xsl:template>
+   
 </xsl:stylesheet>

@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 
 import nl.imvertor.ConfigCompiler.ConfigCompiler;
 import nl.imvertor.MsWordTransformer.MsWordTransformer;
+import nl.imvertor.ReadmeCompiler.ReadmeCompiler;
 import nl.imvertor.ReleaseCompiler.ReleaseCompiler;
 import nl.imvertor.Reporter.Reporter;
 import nl.imvertor.RunAnalyzer.RunAnalyzer;
@@ -66,10 +67,30 @@ public class ChainMsWordTransformer {
 		    configurator.getRunner().info(logger,"Processing application " + configurator.getXParm("cli/project") +"/"+ configurator.getXParm("cli/application"));
 	    	configurator.getRunner().setDebug();
 		    
+	    	 // initialize this run. 
+		    (new RunInitializer()).run();
+		    
 		    boolean succeeds = true;
 		   
-			succeeds = succeeds && (new MsWordTransformer()).run();
-		
+		    try {
+		    	// Build the configuration file
+		        succeeds = (new ConfigCompiler()).run();
+			    
+			    succeeds = succeeds && (new MsWordTransformer()).run();
+		    
+		    } catch (Exception e) {
+				configurator.getRunner().error(logger,"Step-level system error - Please notify your system administrator: " + e.getMessage(),e);
+			}   
+		    
+			 // Run the reporter in all cases; grabs all fragments and status info in parms.xml and compiles the documentation.
+			(new Reporter()).run();
+			
+			// Create a readme file that provides access to the documentation and xsds generated.
+			(new ReadmeCompiler()).run();
+			
+			// compile the release as well as the ZIP release
+			(new ReleaseCompiler()).run();
+			
 			configurator.getRunner().windup();
 			configurator.getRunner().info(logger, "Done, chain process " + (succeeds ? "succeeds" : "fails"));
 		    if (configurator.getSuppressWarnings() && configurator.getRunner().hasWarnings())

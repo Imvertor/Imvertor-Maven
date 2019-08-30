@@ -46,9 +46,9 @@
     <xsl:variable name="configuration-docrules-name" select="imf:get-config-string('system','configuration-docrules-file')"/>
     <xsl:variable name="configuration-versionrules-name" select="imf:get-config-string('system','configuration-versionrules-file')"/>
    
-    <xsl:variable name="configuration-xmlschemarules-name" select="imf:get-config-string('system','configuration-xmlschemarules-file','/none')"/>
-    <xsl:variable name="configuration-jsonschemarules-name" select="imf:get-config-string('system','configuration-jsonschemarules-file','/none')"/>
-    <xsl:variable name="configuration-shaclrules-name" select="imf:get-config-string('system','configuration-shaclrules-file','/none')"/>
+    <xsl:variable name="configuration-xmlschemarules-name" select="imf:get-config-string('system','configuration-xmlschemarules-file')"/>
+    <xsl:variable name="configuration-jsonschemarules-name" select="imf:get-config-string('system','configuration-jsonschemarules-file')"/>
+    <xsl:variable name="configuration-shaclrules-name" select="imf:get-config-string('system','configuration-shaclrules-file')"/>
     
     <xsl:variable name="configuration-file" select="imf:document(imf:get-config-string('properties','WORK_CONFIG_FILE'),true())"/>
     
