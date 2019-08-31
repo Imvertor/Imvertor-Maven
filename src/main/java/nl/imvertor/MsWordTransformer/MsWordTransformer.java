@@ -55,6 +55,9 @@ public class MsWordTransformer extends Step {
 		runner.info(logger,"Transforming MsWord");
 		
 		// STUB
+		configurator.setXParm("appinfo/project-name","#MSWORD");
+		configurator.setXParm("appinfo/error-count","0");
+		configurator.setXParm("appinfo/warning-count","0");
 		configurator.setXParm("appinfo/release","00000001");
 		
 		boolean succeeds = true;
@@ -81,6 +84,9 @@ public class MsWordTransformer extends Step {
 		configurator.setXParm("system/msword-transformation-folder-path", workFolder.getCanonicalPath());
 		
 		AnyFile mswordFile = new AnyFile(configurator.getXParm("cli/mswordfile"));
+		
+		configurator.setXParm("appinfo/application-name",mswordFile.getNameNoExtension());
+			
 		if (!mswordFile.exists()) {
 			runner.error(logger, "File not found: " + mswordFile.getName());
 			return false;

@@ -10,6 +10,10 @@
     
     
     <xsl:template match="/">
+        
+        <xsl:sequence select="imf:set-config-string('appinfo','project-name',imf:get-config-string('cli','project'))"/>
+        <xsl:sequence select="imf:set-config-string('appinfo','application-name',imf:get-config-string('cli','application'))"/>
+        
         <xsl:apply-templates/>
     </xsl:template>
    
