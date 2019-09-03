@@ -42,7 +42,15 @@
     <xsl:variable name="huidige-registratie-object" select="//imvert:class[imvert:supertype/imvert:type-name = 'Registratieobject']"/>
 
     <xsl:template match="/imvert:packages">
-        <xsl:next-match/>
+        <xsl:variable name="domains" select="imvert:package[imvert:stereotype/@id = 'stereotype-name-domain-package']"/>
+        <xsl:choose>
+            <xsl:when test="count($domains) gt 1">
+                <xsl:sequence select="imf:msg('ERROR','STUB Cannot yet process more than one domain for BRO: [1]', imf:string-group($domains/imvert:name/@original))"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:next-match/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
      
     <!-- (1) -->
@@ -58,15 +66,16 @@
             <!-- maak nieuwe relatie aan in plaats van attribuut van type gegevensgroep -->
             <xsl:variable name="ag" select="../imvert:attributes/imvert:attribute[imvert:stereotype/@id = 'stereotype-name-attributegroup']"/>
             <xsl:for-each select="$ag">
+                <xsl:variable name="current-ag" select="."/>
                 <imvert:association>
-                    <xsl:apply-templates select="$ag/*"/>
+                    <xsl:apply-templates select="$current-ag/*"/>
                     
                     <imvert:target>
                         <imvert:stereotype id="stereotype-name-relation-role">RELATIEROL</imvert:stereotype>
-                        <imvert:role original="{$ag/imvert:name/@original}"><xsl:value-of select="$ag/imvert:name"/></imvert:role>
+                        <imvert:role original="{$current-ag/imvert:name/@original}"><xsl:value-of select="$current-ag/imvert:name"/></imvert:role>
                         <imvert:navigable>true</imvert:navigable>
 
-                        <xsl:apply-templates select="$ag/imvert:tagged-values"/>
+                        <xsl:apply-templates select="$current-ag/imvert:tagged-values"/>
                     </imvert:target>
                 </imvert:association>
             </xsl:for-each>
