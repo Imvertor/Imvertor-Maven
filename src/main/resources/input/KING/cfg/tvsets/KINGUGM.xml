@@ -256,7 +256,7 @@
                 Voorziening om de target role een meervoudsnaam te kunnen geven. Deze wordt gebruikt als propertynaam van een relatie in het yaml bestand.
             </desc>
             <stereotypes>
-                <stereo minmax="0..1">stereotype-name-relatiesoort</stereo>
+                <stereo minmax="1..1">stereotype-name-relatiesoort</stereo>
             </stereotypes>
         </tv>
         
