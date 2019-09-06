@@ -21,6 +21,7 @@
 package nl.imvertor.OfficeCompiler;
 
 import org.apache.log4j.Logger;
+import org.springframework.util.StringUtils;
 
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
@@ -115,19 +116,20 @@ public class OfficeCompiler extends Step {
 				String target = configurator.getXParm("cli/passoffice",false);
 				if (target != null) 
 					if (target.equals("ftp")) {
-						String passftp  = configurator.getXParm("cli/passftp");
-						String passpath = configurator.getXParm("cli/passpath");
-						String passuser = configurator.getXParm("cli/passuser");
-						String passpass = configurator.getXParm("cli/passpass");
+						String passftp              = trim(configurator.getXParm("cli/passftp"));
+						String passpath 			= trim(configurator.getXParm("cli/passpath"));
+						String passprotocol 		= configurator.getXParm("cli/passprotocol",false);
+						String passuser 			= configurator.getXParm("cli/passuser");
+						String passpass 			= configurator.getXParm("cli/passpass");
 						
-						String targetpath = "ftp://" + passftp + passpath + officeFile.getName();
+						String targetpath = "ftp://" + passftp + "/" + passpath;
 						
-						runner.info(logger, "Uploading office HTML as " + officeFile.getName());
+						runner.info(logger, "Uploading office HTML to " + targetpath + "/" + officeFile.getName());
 						
 						FtpFolder ftpFolder = new FtpFolder();
 						
 						ftpFolder.server = passftp;
-						ftpFolder.protocol = "false";
+						ftpFolder.protocol = passprotocol;
 						ftpFolder.username = passuser;
 						ftpFolder.password = passpass;
 		
@@ -137,9 +139,10 @@ public class OfficeCompiler extends Step {
 		
 						try {
 							ftpFolder.login();
-							ftpFolder.upload(officeFile.getCanonicalPath(),passpath + officeFile.getName());
+							ftpFolder.upload(officeFile.getParentFile().getCanonicalPath(),passpath);
 							ftpFolder.logout();
 					    } catch (Exception e) {
+					    	runner.warn(logger, e.getMessage());
 							runner.warn(logger, "Cannot upload office HTML to " + targetpath);
 						}
 					} else if (target.equals("git")) {
@@ -180,5 +183,8 @@ public class OfficeCompiler extends Step {
 		} else {
 			runner.error(logger,"Transformation to Office format not implemented yet!");
 		}
+	}
+	private String trim(String urlfrag) {
+		return StringUtils.trimTrailingCharacter(StringUtils.trimLeadingCharacter(urlfrag,'/'),'/');
 	}
 }

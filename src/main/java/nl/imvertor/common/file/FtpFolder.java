@@ -28,6 +28,7 @@
 
 package nl.imvertor.common.file;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -42,6 +43,10 @@ import org.apache.commons.net.ftp.FTPHTTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPSClient;
 import org.apache.commons.net.util.TrustManagerUtils;
+
+import com.jcraft.jsch.ConfigRepository.Config;
+
+import nl.imvertor.common.Configurator;
 
 // see for full explanation:
 
@@ -189,7 +194,7 @@ public class FtpFolder {
     				// do nothing
     			}
     		}
-    		throw new IOException("Could not connect to server.");
+    		throw new IOException("Could not connect to server: " + e.getMessage());
     	}
           
 		if (!ftp.login(username, password)) {
@@ -205,13 +210,11 @@ public class FtpFolder {
 	public void upload(String localPath, String remotePath) throws IOException {
 		initializeTransfer();
 		
-		InputStream input;
-
-		input = new FileInputStream(localPath);
-
-		ftp.storeFile(remotePath, input);
-
-		input.close();
+		File localFile = new File(localPath);
+		if (localFile.isDirectory()) 
+			uploadDirectory(ftp, remotePath, localPath,"");
+		else 
+			uploadSingleFile(ftp, remotePath, localPath);
 	}
 
 	public void download(String remotePath, String localPath) throws IOException {
@@ -258,5 +261,80 @@ public class FtpFolder {
 
 		ftp.setUseEPSVwithIPv4(useEpsvWithIPv4);
 
+	}
+	
+	/**
+	 * Upload a whole directory (including its nested sub directories and files)
+	 * to a FTP server.
+	 *
+	 * @param ftpClient
+	 *            an instance of org.apache.commons.net.ftp.FTPClient class.
+	 * @param remoteDirPath
+	 *            Path of the destination directory on the server.
+	 * @param localParentDir
+	 *            Path of the local directory being uploaded.
+	 * @param remoteParentDir
+	 *            Path of the parent directory of the current directory on the
+	 *            server (used by recursive calls).
+	 * @throws IOException
+	 *             if any network or IO error occurred.
+	 */
+	public void uploadDirectory(FTPClient ftpClient, String remoteDirPath, String localParentDir, String remoteParentDir)
+	        throws IOException {
+	 
+	    File localDir = new File(localParentDir);
+	    File[] subFiles = localDir.listFiles();
+	    if (subFiles != null && subFiles.length > 0) {
+	        for (File item : subFiles) {
+	            String remoteFilePath = remoteDirPath + "/" + remoteParentDir + "/" + item.getName();
+	            if (remoteParentDir.equals("")) 
+	                remoteFilePath = remoteDirPath + "/" + item.getName();
+	            
+	            if (item.isFile()) {
+	                // upload the file
+	                String localFilePath = item.getAbsolutePath();
+	                boolean uploaded = uploadSingleFile(ftpClient, localFilePath, remoteFilePath);
+	                if (!uploaded) 
+	                    throw new IOException("Cannot upload to " + remoteFilePath);
+	            } else {
+	                // create directory on the server
+	                boolean created = ftpClient.makeDirectory(remoteFilePath);
+	                if (!created) 
+	                    throw new IOException("Cannot create remote folder " + remoteFilePath);
+	     	       
+	                // upload the sub directory
+	                String parent = remoteParentDir + "/" + item.getName();
+	                if (remoteParentDir.equals("")) 
+	                    parent = item.getName();
+	               
+	                localParentDir = item.getAbsolutePath();
+	                uploadDirectory(ftpClient, remoteDirPath, localParentDir, parent);
+	            }
+	        }
+	    }
+	}
+	/**
+	 * Upload a single file to the FTP server.
+	 *
+	 * @param ftpClient
+	 *            an instance of org.apache.commons.net.ftp.FTPClient class.
+	 * @param localFilePath
+	 *            Path of the file on local computer
+	 * @param remoteFilePath
+	 *            Path of the file on remote the server
+	 * @return true if the file was uploaded successfully, false otherwise
+	 * @throws IOException
+	 *             if any network or IO error occurred.
+	 */
+	public boolean uploadSingleFile(FTPClient ftpClient, String localFilePath, String remoteFilePath) throws IOException {
+	    File localFile = new File(localFilePath);
+	 
+	    InputStream inputStream = new FileInputStream(localFile);
+	    try {
+	        ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+	        return ftpClient.storeFile(remoteFilePath, inputStream);
+	    } finally {
+	        inputStream.close();
+	    }
 	}
 }

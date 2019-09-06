@@ -53,7 +53,7 @@
          <tip>Enter "ftp" when the documentation file should be passed on directly to FTP, "git" when updating Github.</tip>
          <required>false</required>
       </cli-parm>
-      <!--
+     
       <cli-parm>
          <name>passuser</name>
          <arg>username</arg>
@@ -78,7 +78,13 @@
          <tip>Path on server to the destination file e.g. /data/doc/result.html </tip>
          <required>When officepass is set to "ftp"</required>
       </cli-parm> 
-      -->
+      <cli-parm>
+         <name>passprotocol</name>
+         <arg>true|false</arg>
+         <tip>FTP user name</tip>
+         <required>false</required>
+      </cli-parm> 
+      
       <cli-parm>
          <name>gitpath</name>
          <arg>path</arg>
@@ -90,7 +96,8 @@
          <arg>yes|no</arg>
          <tip>Yes if codelists and reference lists that have a location must be read dynamically from that location and included in the model documentation.</tip>
          <required>false</required>
-      </cli-parm>  
+      </cli-parm> 
+      
    </cli-parms>
    <properties>
 
