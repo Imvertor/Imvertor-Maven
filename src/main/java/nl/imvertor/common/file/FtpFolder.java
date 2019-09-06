@@ -298,7 +298,9 @@ public class FtpFolder {
 	                    throw new IOException("Cannot upload to " + remoteFilePath);
 	            } else {
 	                // create directory on the server
-	                boolean created = ftpClient.makeDirectory(remoteFilePath);
+	            	removeRemoteFolder(ftpClient,remoteFilePath);
+	            	ftpClient.removeDirectory(remoteFilePath); // may succeed or not. 
+	            	boolean created = ftpClient.makeDirectory(remoteFilePath);
 	                if (!created) 
 	                    throw new IOException("Cannot create remote folder " + remoteFilePath);
 	     	       
@@ -336,5 +338,21 @@ public class FtpFolder {
 	    } finally {
 	        inputStream.close();
 	    }
+	}
+	
+	// from: https://stackoverflow.com/questions/23768703/how-to-delete-directory-using-java-after-uploading-files-to-remote-server
+	public void removeRemoteFolder(FTPClient ftpClient, String remotePath) throws IOException {
+	    FTPFile[] files=ftpClient.listFiles(remotePath);
+		if(files.length>0) {
+	        for (FTPFile ftpFile : files) {
+	            if(ftpFile.isDirectory())
+	            	removeRemoteFolder(ftpClient, remotePath + "/" + ftpFile.getName());
+	            else {
+	                String deleteFilePath = remotePath + "/" + ftpFile.getName();
+	                ftpClient.deleteFile(deleteFilePath);
+	            }
+	        }
+	    }
+        ftpClient.removeDirectory(remotePath);
 	}
 }
