@@ -57,6 +57,7 @@
     <xsl:variable name="include-incoming-associations" select="imf:boolean($configuration-docrules-file/include-incoming-associations)"/>
     <xsl:variable name="lists-to-listing" select="imf:boolean($configuration-docrules-file/lists-to-listing)"/>
     <xsl:variable name="reveal-composition-name" select="imf:boolean($configuration-docrules-file/reveal-composition-name)"/>
+    <xsl:variable name="show-properties" select="($configuration-docrules-file/show-properties,'config')[1]"/>
     
     <xsl:variable name="has-material-history" select="exists(//imvert:tagged-value[@id = 'CFG-TV-INDICATIONMATERIALHISTORY']/imvert:value[imf:boolean(.)])" as="xs:boolean"/>
     <xsl:variable name="has-formal-history" select="exists(//imvert:tagged-value[@id = 'CFG-TV-INDICATIONFORMALHISTORY']/imvert:value[imf:boolean(.)])" as="xs:boolean"/>
@@ -940,7 +941,7 @@
        <xsl:variable name="name" select="$doc-rule/name"/> 
        <xsl:variable name="doc-rule-id" select="$doc-rule/@id"/>
        
-       <xsl:variable name="show" select="$level/@show"/> <!-- force, implied or none -->
+       <xsl:variable name="show" select="$level/@show"/> <!-- force, implied, none, or missing -->
        <xsl:variable name="compile" select="$level/@compile"/> <!-- single or full -->
        <xsl:variable name="format" select="$level/@format"/> <!-- plain or ? -->
        
@@ -948,39 +949,44 @@
        
        <xsl:variable name="display-waarde" as="item()*">
            <xsl:choose>
-               <xsl:when test="$show = 'none'">
+               <xsl:when test="$show-properties = 'config' and $show = 'none'">
                    <!-- skip; this is forced by the configuration -->
                </xsl:when>
-               <xsl:when test="$show = 'implied' and not($exists-waarde)">
+               <xsl:when test="$exists-waarde">
+                   <xsl:sequence select="$waarde"/> <!-- show in all cases when waarde exists -->
+               </xsl:when>
+               <xsl:when test="$show-properties = 'config' and $show = 'force'">
+                   <xsl:sequence select="($waarde,' ')"/> <!-- show in all cases -->
+               </xsl:when>
+               <xsl:when test="$show-properties = 'config' and $show = 'implied' and not($exists-waarde)">
                    <!-- skip -->
                </xsl:when>
-               <xsl:when test="$show = 'missing' and not($exists-waarde)">
+               <xsl:when test="$show-properties = 'config' and $show = 'missing' and not($exists-waarde)">
                    <xsl:value-of select="'MISSING'"/>
                </xsl:when>
+               <xsl:when test="$show-properties = 'all' and not($exists-waarde)">
+                   <xsl:sequence select="'&#160;'"/><!-- force the value entry to be shown -->
+               </xsl:when>  
                <xsl:otherwise>
-                   <xsl:sequence select="$waarde"/>
+                   <!-- no value to pass -->
                </xsl:otherwise>
            </xsl:choose>
        </xsl:variable>
+   
+       <xsl:if test="exists($display-waarde)">
+           <part type="{$doc-rule-id}">
+               <xsl:sequence select="imf:create-element('item',string($name))"/>
+               <xsl:choose>
+                   <xsl:when test="$format = 'plain'">
+                       <xsl:sequence select="imf:create-element('item',$display-waarde)"/>          
+                   </xsl:when>
+                   <xsl:otherwise>
+                       <xsl:sequence select="imf:msg('FATAL','Unknown format: [1]',$format)"/>          
+                   </xsl:otherwise>
+               </xsl:choose>
+           </part>
+       </xsl:if> 
        
-       <xsl:choose>
-           <xsl:when test="$show = 'implied' and not($exists-waarde)">
-               <!-- skip -->
-           </xsl:when>
-           <xsl:otherwise>
-               <part type="{$doc-rule-id}">
-                   <xsl:sequence select="imf:create-element('item',string($name))"/>
-                   <xsl:choose>
-                       <xsl:when test="$format = 'plain'">
-                           <xsl:sequence select="imf:create-element('item',$display-waarde)"/>          
-                       </xsl:when>
-                       <xsl:otherwise>
-                           <xsl:sequence select="imf:msg('FATAL','Unknown format: [1]',$format)"/>          
-                       </xsl:otherwise>
-                   </xsl:choose>
-               </part>
-           </xsl:otherwise>
-       </xsl:choose>
    </xsl:function>
   
     <xsl:function name="imf:create-parts-cfg" as="element(part)*">

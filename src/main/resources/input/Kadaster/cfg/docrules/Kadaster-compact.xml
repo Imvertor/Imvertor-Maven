@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ * Copyright (C) 
+-->
+<doc-rules type="config" xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+    <name>Kadaster compact</name>
+    
+    <xi:include href="Kadaster.xml"/>
+    
+    <!-- visibility of properties: show in accordance with configuration (@show) or compact: only the specified parts -->
+    
+    <show-properties>compact</show-properties> <!-- config, all, compact -->
+    
+</doc-rules>

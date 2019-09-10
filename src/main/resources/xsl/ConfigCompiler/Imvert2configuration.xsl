@@ -359,16 +359,17 @@
             <doc-rules root="true">
                 <xsl:variable name="doc-rules" select="doc-rules"/> 
              
-                <xsl:apply-templates select="$doc-rules//link-by[last()]" mode="#current"/>
-                <xsl:apply-templates select="$doc-rules//explanation-location[last()]" mode="#current"/>
-                <xsl:apply-templates select="$doc-rules//diagram-type-strategy[last()]" mode="#current"/>
-                <xsl:apply-templates select="$doc-rules//include-incoming-associations[last()]" mode="#current"/>
-                <xsl:apply-templates select="$doc-rules//lists-to-listing[last()]" mode="#current"/>
-                <xsl:apply-templates select="$doc-rules//reveal-composition-name[last()]" mode="#current"/>
-                <xsl:apply-templates select="$doc-rules//include-overview-section-level[last()]" mode="#current"/>
-                <xsl:apply-templates select="$doc-rules//include-detail-section-level[last()]" mode="#current"/>
-                <xsl:apply-templates select="$doc-rules//include-overview-sections-by-type[last()]" mode="#current"/>
-                <xsl:apply-templates select="$doc-rules//include-detail-sections-by-type[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//link-by)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//explanation-location)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//diagram-type-strategy)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//include-incoming-associations)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//lists-to-listing)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//reveal-composition-name)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//include-overview-section-level)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//include-detail-section-level)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//include-overview-sections-by-type)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//include-detail-sections-by-type)[last()]" mode="#current"/>
+                <xsl:apply-templates select="($doc-rules//show-properties)[last()]" mode="#current"/>
                 
                 <xsl:for-each-group select="$doc-rules//doc-rule[name/@lang=($language,'#all')]" group-by="@id">
                     <xsl:apply-templates select="current-group()[last()]" mode="#current"/>
