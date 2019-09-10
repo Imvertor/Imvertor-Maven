@@ -84,10 +84,13 @@
         <xsl:text>&#xa;    url: https://eupl.eu/1.2/nl/</xsl:text>
 		<xsl:text>&#xa;paths:</xsl:text>
 		<xsl:for-each-group select="ep:message" group-by="ep:name">
+			<xsl:sort select="ep:name" order="ascending"/>
 			<!-- Loop over all ep:message elements. -->
 			<xsl:variable name="messageName" select="current-grouping-key()"/>
 			<xsl:text>&#xa;  </xsl:text><xsl:value-of select="$messageName" /><xsl:text>:</xsl:text>
-			<xsl:apply-templates select="current-group()"/>
+			<xsl:apply-templates select="current-group()">
+				<xsl:sort select="ep:parameters/ep:parameter[ep:name='berichtcode']/ep:value"/>
+			</xsl:apply-templates>
 		</xsl:for-each-group>
 	</xsl:template>
 	
@@ -508,7 +511,8 @@
 					</xsl:if>
 		
 					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[@path = 'true']">
-						<!-- Loop over de path ep:param elements within the checkeduristructure and generate for each of them a path parameter. -->
+						<xsl:sort select="ep:name" order="ascending"/>
+						<!-- Loop over de path ep:param elements in ascending order (by ep:name) within the checkeduristructure and generate for each of them a path parameter. -->
 						<xsl:variable name="datatype">
 							<xsl:choose>
 								<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'date'">
@@ -619,7 +623,8 @@
 						</xsl:choose>
 					</xsl:for-each>
 					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[ep:name != 'expand' and (empty(@path) or @path = 'false')]">
-						<!-- Loop over de query ep:param elements within the checkeduristructure and generate for each of them a query parameter. -->
+						<xsl:sort select="ep:name" order="ascending"/>
+						<!-- Loop over de query ep:param elements in ascending order (by ep:name) within the checkeduristructure and generate for each of them a query parameter. -->
 						<xsl:variable name="datatype">
 							<xsl:choose>
 								<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'date'">
@@ -976,7 +981,8 @@
 						<xsl:text>&#xa;        - $ref: </xsl:text><xsl:value-of select="concat('&quot;',$geonovum-yaml-parameters-url,'contentCrs&quot;')"/>
 					</xsl:if>
 					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[@path = 'true']">
-						<!-- Loop over de path ep:param elements within the checkeduristructure and generate for each of them a path parameter. -->
+						<xsl:sort select="ep:name" order="ascending"/>
+						<!-- Loop over de path ep:param elements in ascending order (by ep:name) within the checkeduristructure and generate for each of them a path parameter. -->
 						<xsl:variable name="datatype">
 							<xsl:choose>
 								<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'date'">
@@ -1087,7 +1093,8 @@
 						</xsl:choose>
 					</xsl:for-each>
 					<xsl:for-each select="$checkedUriStructure//ep:uriPart/ep:param[empty(@path) or @path = 'false']">
-						<!-- Loop over de query ep:param elements within the checkeduristructure and generate for each of them a query parameter. -->
+						<xsl:sort select="ep:name" order="ascending"/>
+						<!-- Loop over de query ep:param elements in ascending order (by ep:name) within the checkeduristructure and generate for each of them a query parameter. -->
 						<xsl:variable name="datatype">
 							<xsl:choose>
 								<xsl:when test="substring-after(ep:data-type, 'scalar-') = 'date'">

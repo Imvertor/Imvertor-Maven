@@ -216,7 +216,8 @@
       <artifactId>java-api</artifactId>
       <version>1.0</version>
       <scope>system</scope>
-      <systemPath>${env.EAPATH}\eaapi.jar</systemPath>
+      <!--  systemPath>${env.EAPATH}\eaapi.jar</systemPath -->
+      <systemPath>C:\Program Files (x86)\Sparx Systems\EA\Java API\eaapi.jar</systemPath>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.json/json -->

@@ -458,6 +458,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:with-param>
+			<xsl:with-param name="proces-type" select="'as-entiteitrelatie'" />
 		</xsl:apply-templates>
 
 		<xsl:sequence select="imf:create-debug-comment('debug:end',$debugging)" />
@@ -528,7 +529,7 @@
 							<xsl:with-param name="type" select="'subclass'" />
 						</xsl:apply-templates>
 					</xsl:when>
-					<xsl:when test="$proces-type = 'as-normal'">
+					<xsl:when test="$proces-type = ('as-normal','as-entiteitrelatie')">
 						<xsl:sequence
 							select="imf:create-debug-comment('debug:start A14500 /debug:start',$debugging)" />
 						<ep:construct>

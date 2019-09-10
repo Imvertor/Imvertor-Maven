@@ -374,10 +374,6 @@
 							<xsl:sequence select="imf:create-output-element('ep:name', 'pagination')" />
 							<xsl:sequence select="imf:create-output-element('ep:value', @pagination)" />
 						</ep:parameter>
-						<ep:parameter>
-							<xsl:sequence select="imf:create-output-element('ep:name', 'serialisation')" />
-							<xsl:sequence select="imf:create-output-element('ep:value', @serialisation)" />
-						</ep:parameter>
 						<xsl:if test="$messagetype = 'request' and @fields">
 							<ep:parameter>
 								<xsl:sequence select="imf:create-output-element('ep:name', 'fields')" />
