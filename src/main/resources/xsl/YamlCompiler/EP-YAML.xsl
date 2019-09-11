@@ -141,7 +141,7 @@
 		<xsl:variable name="messagetype" select="ep:parameters/ep:parameter[ep:name='messagetype']/ep:value"/>
 		<xsl:choose>
 			<xsl:when test="(contains($berichttype,'Gr') or contains($berichttype,'Gc')) and $messagetype = 'request'">
-				<!-- This processes al ep:message elements represent the request tree of the Gr and Gc messages. -->
+				<!-- This processes all ep:message elements representing the request tree of the Gr and Gc messages. -->
 				<xsl:variable name="operationId">
 					<xsl:choose>
 						<xsl:when test="ep:parameters/ep:parameter[ep:name='operationId']/ep:value !=''">
@@ -152,6 +152,10 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
+				<xsl:if test="count(//ep:message[ep:parameters[ep:parameter[ep:name='messagetype' and ep:value='request'] and ep:parameter[ep:name='operationId' and ep:value = $operationId]]]) > 1 
+							 or count(//ep:message/ep:tech-name = $operationId) > 1">
+					<xsl:sequence select="imf:msg(.,'ERROR','There is more than one message having the operationId [1].', ($operationId))" />								
+				</xsl:if>
 				<!-- The tv custom_path_facet should, if present, have the correct format without a slash. We remove slashes from the tv but also generate a warning if a slash is present. -->
 				<xsl:variable name="messageCategory" select="substring-before($berichttype,'0')"/>
 				<xsl:variable name="relatedResponseMessage">
@@ -245,17 +249,12 @@
 					</ep:analyzedStructure>
 				</xsl:variable>
 
-				<xsl:if test="$debugging">
-					<xsl:result-document href="{concat('file:/c:/temp/analyzedResponseStructure/get',generate-id($analyzedResponseStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
-						<xsl:sequence select="$analyzedResponseStructure"/>
-					</xsl:result-document>
-				</xsl:if>					
-				
 				<!-- If the message contains GM types the following variable is true. -->
 				<xsl:variable name="acceptCrsParamPresent" select="boolean($analyzedResponseStructure//ep:hasGMtype)"/>
 				
 				<xsl:if test="$checkedUriStructure//ep:uriPart[ep:entityName/@path='false' and count(ep:param)=0 
 								and empty(following-sibling::ep:uriPart[ep:param])]">
+
 					<!-- If the checkedUriStructure contains uriparts with entitynames that are not part of the path and without param elements
 						 a warning is generated. -->
 					<xsl:variable name="falseAndEmptyUriParts">
@@ -275,7 +274,13 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:if>
-				<xsl:if test="$debugging">
+
+				<xsl:if test="$debugging and ($checkedUriStructure//ep:uriPart[ep:entityName/@path='false' and count(ep:param)=0 
+					and empty(following-sibling::ep:uriPart[ep:param])])">
+					<xsl:result-document href="{concat('file:/c:/temp/analyzedResponseStructure/get',generate-id($analyzedResponseStructure/.),'message',translate(substring-after(ep:name,'/'),'/','-'),'.xml')}" method="xml" indent="yes" encoding="UTF-8" exclude-result-prefixes="#all">
+						<xsl:sequence select="$analyzedResponseStructure"/>
+					</xsl:result-document>
+
 					<!--xsl:result-document method="xml" href="{concat('file:/c:/temp/message/',$messageCategory,'message-',ep:tech-name,'-',generate-id(),'.xml')}">
 						<xsl:element name="{concat('ep:',$messageCategory,'message')}">
 							<xsl:attribute name="requestbodyConstructName" select="$requestbodyConstructName"/>
@@ -285,7 +290,7 @@
 						</xsl:element>
 					</xsl:result-document-->
 					<xsl:result-document method="xml" href="{concat('file:/c:/temp/message/uriStructure-message-',$messageCategory,'-',ep:tech-name,'-',generate-id(),'.xml')}">
-						<uriStructure>
+						<uriStructure construct="{$construct}">
 							<determinedUriStructure>
 								<xsl:sequence select="$determinedUriStructure" />
 							</determinedUriStructure>
@@ -906,7 +911,8 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:if>
-				<xsl:if test="$debugging">
+				<xsl:if test="$debugging and ($checkedUriStructure//ep:uriPart[ep:entityName/@path='false' and count(ep:param)=0 
+					and empty(following-sibling::ep:uriPart[ep:param])])">
 					<xsl:result-document method="xml" href="{concat('file:/c:/temp/message/',$messageCategory,'message-',ep:tech-name,'-',generate-id(),'.xml')}">
 						<xsl:element name="{concat('ep:',$messageCategory,'message')}">
 							<xsl:attribute name="requestbodyConstructName" select="$requestbodyConstructName"/>
@@ -1492,18 +1498,25 @@
 	</xsl:template>
 
 	<xsl:template match="ep:construct" mode="getUriPart">
-		<xsl:if test="count(ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association']) > 1">
-			<xsl:sequence select="imf:msg(.,'ERROR','There are more than one relations connected to the request class [1] this is not allowed.', (ep:name))" />			
-		</xsl:if>
-		<xsl:for-each select="ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association']">
-			<xsl:variable name="meervoudigeNaam" select="ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
-			<xsl:variable name="parameterConstruct" select="ep:type-name"/>
-			<ep:uriPart>
-				<ep:entityName><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
-				<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]" mode="getParameters"/>
-			</ep:uriPart>
-			<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]" mode="getUriPart"/>
-		</xsl:for-each>
+		<xsl:choose>
+			<xsl:when test="count(ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association']) > 1">
+				<xsl:sequence select="imf:msg(.,'ERROR','There are more than one associations connected to the request class [1] this is not allowed.', (ep:name))" />			
+			</xsl:when>
+			<xsl:when test="ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association' and (empty(ep:parameters/ep:parameter[ep:name='meervoudigeNaam']) or ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value = '')]">
+				<xsl:sequence select="imf:msg(.,'ERROR','The association connected to the request class [1] does not have a tagged value meervoudige naam, supply one.', (ep:name))" />			
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:for-each select="ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association']">
+					<xsl:variable name="meervoudigeNaam" select="ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value"/>
+					<xsl:variable name="parameterConstruct" select="ep:type-name"/>
+					<ep:uriPart>
+						<ep:entityName><xsl:value-of select="lower-case($meervoudigeNaam)"/></ep:entityName>
+						<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]" mode="getParameters"/>
+					</ep:uriPart>
+					<xsl:apply-templates select="//ep:message-set/ep:construct[ep:tech-name = $parameterConstruct]" mode="getUriPart"/>
+				</xsl:for-each>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="ep:construct" mode="getCharacteristics">
