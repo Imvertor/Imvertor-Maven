@@ -1555,6 +1555,19 @@
 				<xsl:value-of select="$facets"/>
 				<xsl:value-of select="$example"/>
 			</xsl:when>
+			<xsl:when test="ep:parameters/ep:parameter[ep:name='type']/ep:value = 'table-datatype' and exists(/ep:message-sets//ep:construct[ep:tech-name = $typeName]/ep:type-name)">
+				<!-- If a tableconstruct [B] exists which has a type-name and which tech-name is equal to the type-name of the current construct [A] 
+					 an allOf with a $ref to the construct B using the B-type-name and a title and description has to be generated. -->
+				<xsl:variable name="documentation">
+					<xsl:apply-templates select="ep:documentation"/>
+				</xsl:variable>
+				<xsl:value-of select="'&quot;allOf&quot;: [ {'"/>
+				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/', /ep:message-sets//ep:construct[ep:tech-name = $typeName]/ep:type-name, '&quot;')"/>
+				<xsl:value-of select="'}, {'"/>
+				<xsl:value-of select="concat('&quot;title&quot;: &quot;',ep:name,'&quot;,')"/>
+				<xsl:value-of select="concat('&quot;description&quot;: &quot;',$documentation,'&quot;')"/>
+				<xsl:value-of select="'&quot;allOf&quot;: ] }'"/>
+			</xsl:when>
 			<xsl:when test="exists(/ep:message-sets//ep:construct[ep:tech-name = $typeName]/ep:type-name)">
 				<!-- If a construct [B] exists which has a type-name and which tech-name is equal to the type-name of the current construct [A] 
 					 a $ref to the construct B has to be generated using the B-type-name. -->
@@ -1569,6 +1582,18 @@
 			</xsl:when>
 			<xsl:when test="$typeName = 'NEN3610ID'">
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$standard-json-components-url,'Nen3610Id&quot;')"/>
+			</xsl:when>
+			<xsl:when test="ep:parameters/ep:parameter[ep:name='type']/ep:value = 'table-datatype'">
+				<!-- If the current construct is an allOf with a $ref, a title and description has to be generated. -->
+				<xsl:variable name="documentation">
+					<xsl:apply-templates select="ep:documentation"/>
+				</xsl:variable>
+				<xsl:value-of select="'&quot;allOf&quot;: [ {'"/>
+				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/', $typeName, '&quot;')"/>
+				<xsl:value-of select="'}, {'"/>
+				<xsl:value-of select="concat('&quot;title&quot;: &quot;',ep:name,'&quot;,')"/>
+				<xsl:value-of select="concat('&quot;description&quot;: &quot;',$documentation,'&quot;')"/>
+				<xsl:value-of select="'} ]'"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="concat('&quot;$ref&quot;: &quot;',$json-topstructure,'/', $typeName, '&quot;')"/>
