@@ -74,7 +74,9 @@
 		<xsl:text>&#xa;  description: "</xsl:text> <xsl:apply-templates select="ep:documentation"><xsl:with-param name="definition" select="'no'"/><xsl:with-param name="pattern" select="'no'"/></xsl:apply-templates><xsl:text>"</xsl:text>
 		<!--xsl:text>&#xa;  description: "</xsl:text> <xsl:value-of select="normalize-space(ep:documentation)"/><xsl:text>"</xsl:text-->
         <xsl:text>&#xa;  version: "</xsl:text><xsl:value-of select="ep:patch-number"/><xsl:text>"</xsl:text>
-        <xsl:text>&#xa;  contact:</xsl:text>
+		<xsl:text>&#xa;  x-imvertor-generator-version: "</xsl:text><xsl:value-of select="../ep:imvertor-generator-version"/><xsl:text>"</xsl:text>
+		<xsl:text>&#xa;  x-yamlCompiler-stylesheets-version: "</xsl:text><xsl:value-of select="imf:get-config-parameter('yamlCompiler-stylesheets-version')"/><xsl:text>"</xsl:text>
+		<xsl:text>&#xa;  contact:</xsl:text>
 		<xsl:text>&#xa;    url: </xsl:text><xsl:value-of select="/ep:message-sets/ep:parameters/ep:parameter[ep:name='project-url']/ep:value"/>
 		<xsl:if test="/ep:message-sets/ep:parameters/ep:parameter[ep:name='administrator-e-mail']/ep:value">
 			<xsl:text>&#xa;    email: </xsl:text><xsl:value-of select="/ep:message-sets/ep:parameters/ep:parameter[ep:name='administrator-e-mail']/ep:value"/>
@@ -1503,7 +1505,7 @@
 				<xsl:sequence select="imf:msg(.,'ERROR','There are more than one associations connected to the request class [1] this is not allowed.', (ep:name))" />			
 			</xsl:when>
 			<xsl:when test="ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association' and (empty(ep:parameters/ep:parameter[ep:name='meervoudigeNaam']) or ep:parameters/ep:parameter[ep:name='meervoudigeNaam']/ep:value = '')]">
-				<xsl:sequence select="imf:msg(.,'ERROR','The association connected to the request class [1] does not have a tagged value meervoudige naam, supply one.', (ep:name))" />			
+				<xsl:sequence select="imf:msg(.,'ERROR','The association connected to and orginated from the request class [1] does not have a tagged value meervoudige naam, supply one.', (ep:name))" />			
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:for-each select="ep:seq/ep:construct[ep:parameters/ep:parameter[ep:name='type']/ep:value = 'association']">

@@ -34,6 +34,7 @@
 				<xsl:value-of select="$packages/imvert:tagged-values/imvert:tagged-value[@id='CFG-TV-INTERFACE-NAME']/imvert:value"/>
 				<!--xsl:value-of select="imf:get-most-relevant-compiled-taggedvalue($packages/imvert:packages, '##CFG-TV-INTERFACE-NAME')"/-->
 			</ep:name>
+			<ep:imvertor-generator-version><xsl:value-of select="$packages/imvert:generator"/></ep:imvertor-generator-version>
 			<!-- The 'Berichtstructuren' package doesn't hold the actual message classes for the interface so it's neglected in this stage. -->
 			<xsl:apply-templates
 				select="$packages/imvert:package[imvert:stereotype/@id = ('stereotype-name-domain-package') and not(contains(imvert:alias,'/www.kinggemeenten.nl/BSM/Berichtstrukturen'))]"
