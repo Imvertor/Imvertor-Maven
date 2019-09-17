@@ -20,11 +20,17 @@
 
 package nl.imvertor.OfficeCompiler;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Vector;
+
 import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 
+import nl.imvertor.common.Configurator;
 import nl.imvertor.common.Step;
 import nl.imvertor.common.Transformer;
+import nl.imvertor.common.exceptions.ConfiguratorException;
 import nl.imvertor.common.file.AnyFile;
 import nl.imvertor.common.file.AnyFolder;
 import nl.imvertor.common.file.FtpFolder;
@@ -95,96 +101,118 @@ public class OfficeCompiler extends Step {
 					break;
 			}
 			
-			// creates an html file 
-			succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_OFFICE_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_OFFICE_XSLPATH") : false;
+			// variants may be "office" or "respec"
+			Vector<String> vr = Configurator.split(configurator.getXParm("cli/createofficevariant"),"\\s+");
+			if (vr.contains("msword") || vr.contains("respec")) {
 			
-			if (succeeds) {
-				String template = configurator.getXParm("cli/officename");
+				String template = configurator.getXParm("cli/officename"); // e.g. resolved [project-name]-[application-name]-[phase]-[release]
 				String fn = configurator.mergeParms(template);
-				configurator.setXParm("appinfo/office-documentation-filename", fn);
-				
-				AnyFile infoOfficeFile = new AnyFile(configurator.getXParm("properties/WORK_OFFICE_FILE"));
-				AnyFile officeFile = new AnyFile(configurator.getXParm("system/work-cat-folder-path") + "/" + fn + ".html");
-				infoOfficeFile.copyFile(officeFile);
-				
-				// copy the modeldoc file alongside.
-				//AnyFile infoModeldocFile = new AnyFile(configurator.getXParm("properties/WORK_MODELDOC_FILE"));
-				//AnyFile modeldocFile = new AnyFile(configurator.getXParm("system/work-cat-folder-path") + "/" + fn + ".modeldoc.xml");
-				//infoModeldocFile.copyFile(modeldocFile);
-				
-				// see if this result should be sent on to FTP
-				String target = configurator.getXParm("cli/passoffice",false);
-				if (target != null) 
-					if (target.equals("ftp")) {
-						String passftp              = trim(configurator.getXParm("cli/passftp"));
-						String passpath 			= trim(configurator.getXParm("cli/passpath"));
-						String passprotocol 		= configurator.getXParm("cli/passprotocol",false);
-						String passuser 			= configurator.getXParm("cli/passuser");
-						String passpass 			= configurator.getXParm("cli/passpass");
-						
-						String targetpath = "ftp://" + passftp + "/" + passpath;
-						
-						runner.info(logger, "Uploading office HTML to " + targetpath + "/" + officeFile.getName());
-						
-						FtpFolder ftpFolder = new FtpFolder();
-						
-						ftpFolder.server = passftp;
-						ftpFolder.protocol = passprotocol;
-						ftpFolder.username = passuser;
-						ftpFolder.password = passpass;
-		
-						ftpFolder.connectTimeout = 120000;
-						ftpFolder.controlKeepAliveTimeout = 180;
-						ftpFolder.dataTimeout = 120000;
-		
-						try {
-							ftpFolder.login();
-							ftpFolder.upload(officeFile.getParentFile().getCanonicalPath(),passpath);
-							ftpFolder.logout();
-					    } catch (Exception e) {
-					    	runner.warn(logger, e.getMessage());
-							runner.warn(logger, "Cannot upload office HTML to " + targetpath);
-						}
-					} else if (target.equals("git")) {
-						
-						AnyFolder catfolder = new AnyFolder(officeFile.getParent());
-						
-						String gitemail     	        = configurator.getServerProperty("git.email"); // email address
-						String gituser     	            = configurator.getServerProperty("git.user"); // user name
-						String gitpass     	            = configurator.getServerProperty("git.pass"); // password
-						String gitlocal     	        = configurator.getServerProperty("git.local"); // location of local git repositories 
-							
-						String giturl     	            = configurator.mergeParms(configurator.getXParm("cli/giturl")); //url of web page
-						String gitpath     	            = configurator.mergeParms(configurator.getXParm("cli/gitpath")); //subpath to repos
-						String gitcomment 				= configurator.mergeParms(configurator.getXParm("cli/gitcomment")); // comment to set on update
-											
-						runner.info(logger, "GIT Pushing office HTML as " + officeFile.getName());
-						
-						AnyFolder gitfolder = new AnyFolder(gitlocal + gitpath);
-						
-						// must remove this folder, as pushes and pulls will not work from OTAPs.
-						if (gitfolder.isDirectory()) gitfolder.deleteDirectory();
-						
-						// create and prepare the GIT resource pusher
-						ResourcePusher rp = new ResourcePusher();
-						rp.prepare("https://github.com" + gitpath, gitfolder, gituser, gitpass, gitemail);
-						
-						// copy the files to the work folder
-						catfolder.copy(new AnyFolder(gitfolder,"data"));
-				        
-						// push with appropriate comment
-						rp.push(gitcomment);
-						
-						configurator.setXParm("properties/giturl-resolved", giturl);
-						
-					} 
-				// all other cases: do not pass anywhere. 
+			
+				if (vr.contains("msword")) {
+					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_MSWORD_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_MSWORD_XSLPATH") : false;
+					if (succeeds) processDoc(fn,"msword.html","appinfo/msword-documentation-filename","properties/WORK_MSWORD_FILE");
+				}
+				if (vr.contains("respec")) {
+					succeeds = succeeds ? transformer.transformStep("system/cur-imvertor-filepath","properties/WORK_RESPEC_FILE", "properties/IMVERTOR_METAMODEL_" + mm + "_MODELDOC_RESPEC_XSLPATH") : false;
+					if (succeeds) processDoc(fn,"respec.html","appinfo/respec-documentation-filename","properties/WORK_RESPEC_FILE");
+				}
+			} else {
+				runner.error(logger,"No (valid) office variant specified: " + vr.toString());
+				succeeds = false;
 			}
+			
 		} else {
 			runner.error(logger,"Transformation to Office format not implemented yet!");
 		}
 	}
 	private String trim(String urlfrag) {
 		return StringUtils.trimTrailingCharacter(StringUtils.trimLeadingCharacter(urlfrag,'/'),'/');
+	}
+	
+	/*
+	 * Copy the file from work to cat folder, and pass on to ftp/git when needed.
+	 */
+	private void processDoc(String documentname, String extension, String xparmOfficefile, String xparmWorkfile) throws Exception {
+		configurator.setXParm(xparmOfficefile, documentname + "." + extension);
+		
+		AnyFile infoOfficeFile = new AnyFile(configurator.getXParm(xparmWorkfile));
+		AnyFile officeFile = new AnyFile(configurator.getXParm("system/work-cat-folder-path") + "/" + documentname + "." + extension);
+		infoOfficeFile.copyFile(officeFile);
+		
+		// see if this result should be sent on to FTP/GIT
+		String target = configurator.getXParm("cli/passoffice",false);
+		if (target != null) 
+			if (target.equals("ftp")) {
+				passFTP(officeFile);
+			} else if (target.equals("git")) {
+				passGIThub(officeFile);
+			} else if (target.equals("none")) {
+				// ignore
+			} else 
+				runner.error(logger, "Not a known remote resource (passoffice): " + target);
+	}
+	
+	private void passFTP(File officeFile) throws IOException, ConfiguratorException {
+		String passftp              = trim(configurator.getXParm("cli/passftp"));
+		String passpath 			= trim(configurator.getXParm("cli/passpath"));
+		String passprotocol 		= configurator.getXParm("cli/passprotocol",false);
+		String passuser 			= configurator.getXParm("cli/passuser");
+		String passpass 			= configurator.getXParm("cli/passpass");
+		
+		String targetpath = "ftp://" + passftp + "/" + passpath;
+		
+		runner.info(logger, "Uploading to " + targetpath + "/" + officeFile.getName());
+		
+		FtpFolder ftpFolder = new FtpFolder();
+		
+		ftpFolder.server = passftp;
+		ftpFolder.protocol = passprotocol;
+		ftpFolder.username = passuser;
+		ftpFolder.password = passpass;
+
+		ftpFolder.connectTimeout = 120000;
+		ftpFolder.controlKeepAliveTimeout = 180;
+		ftpFolder.dataTimeout = 120000;
+
+		try {
+			ftpFolder.login();
+			ftpFolder.upload(officeFile.getParentFile().getCanonicalPath(),passpath);
+			ftpFolder.logout();
+	    } catch (Exception e) {
+	    	runner.warn(logger, e.getMessage());
+			runner.warn(logger, "Cannot upload to " + targetpath);
+		}
+
+	}
+	private void passGIThub(File officeFile) throws Exception {
+		AnyFolder catfolder = new AnyFolder(officeFile.getParent());
+		
+		String gitemail     	        = configurator.getServerProperty("git.email"); // email address
+		String gituser     	            = configurator.getServerProperty("git.user"); // user name
+		String gitpass     	            = configurator.getServerProperty("git.pass"); // password
+		String gitlocal     	        = configurator.getServerProperty("git.local"); // location of local git repositories 
+			
+		String giturl     	            = configurator.mergeParms(configurator.getXParm("cli/giturl")); //url of web page
+		String gitpath     	            = configurator.mergeParms(configurator.getXParm("cli/gitpath")); //subpath to repos
+		String gitcomment 				= configurator.mergeParms(configurator.getXParm("cli/gitcomment")); // comment to set on update
+							
+		runner.info(logger, "GIT Pushing as " + officeFile.getName());
+		
+		AnyFolder gitfolder = new AnyFolder(gitlocal + gitpath);
+		
+		// must remove this folder, as pushes and pulls will not work from OTAPs.
+		if (gitfolder.isDirectory()) gitfolder.deleteDirectory();
+		
+		// create and prepare the GIT resource pusher
+		ResourcePusher rp = new ResourcePusher();
+		rp.prepare("https://github.com" + gitpath, gitfolder, gituser, gitpass, gitemail);
+		
+		// copy the files to the work folder
+		catfolder.copy(new AnyFolder(gitfolder,"data"));
+        
+		// push with appropriate comment
+		rp.push(gitcomment);
+		
+		configurator.setXParm("properties/giturl-resolved", giturl);
 	}
 }

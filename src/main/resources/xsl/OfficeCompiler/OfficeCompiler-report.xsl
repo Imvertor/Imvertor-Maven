@@ -36,260 +36,62 @@
     <xsl:template match="/config">
         <xsl:variable name="messages" select="$configuration//messages/message[src='XMI1Imvert']"/>
         <xsl:variable name="errors" select="$messages[type=('FATAL','ERROR')]"/>
-        <xsl:variable name="office-filename" select="imf:get-config-string('appinfo','office-documentation-filename')"/>
+        <xsl:variable name="msword-filename" select="imf:get-config-string('appinfo','msword-documentation-filename')"/>
+        <xsl:variable name="respec-filename" select="imf:get-config-string('appinfo','respec-documentation-filename')"/>
         <xsl:variable name="remote-url" select="imf:get-config-string('properties','giturl-resolved',())"/>
         <report>
-            <step-display-name>Office compiler</step-display-name>
+            <step-display-name>Model documentation</step-display-name>
             <status>
                 <xsl:sequence select="if (count($errors) eq 0) then 'succeeds' else 'fails'"/>
             </status>
             <summary>
-                <info label="Office documentation">
+                <info label="MsWord documentation">
                     <xsl:sequence select="imf:report-key-label('Saved as','appinfo','office-documentation-filename')"/>
+                </info>
+                <info label="Respec documentation">
+                    <xsl:sequence select="imf:report-key-label('Saved as','appinfo','respec-documentation-filename')"/>
                 </info>
             </summary>
             <page>
-                <title>Office documentation</title>
-                <intro/>
+                <title>Model documentation</title>
+                <intro>
+                    <p>This is the documentation on the model. It contains a "catalog" of all constructs the make up the model.</p>
+                    <xsl:choose>
+                        <xsl:when test="$remote-url">
+                            <p>The model documentation is published remotely by Imvertor. Please check 
+                                <a href="{$remote-url}" target="remote-url">
+                                    <xsl:value-of select="$remote-url"/>
+                                </a>. 
+                            </p>
+                            <p>However, for archival purposes the documentation files are also packaged in this Imvertor model release.</p>
+                            <p><strong>The preview supplied may show flaws as the intended publication environment is not available here.</strong></p>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <p>The model documentation is packaged in this Imvertor model release for further processing.</p>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </intro>
                 <content>
                     <div>
-                        <xsl:choose>
-                            <xsl:when test="$remote-url">
-                                <p>This documentation is intended to be published remotely. Please check 
-                                    <a href="{$remote-url}" target="remote-url">
-                                        <xsl:value-of select="$remote-url"/>
-                                    </a>
-                                </p>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <p>This documentation is packaged for further processing.</p>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                        <p>Packaged documentation files are <a href="{concat('../../cat/',$office-filename,'.html')}">here</a>.</p>
+                        <xsl:if test="$msword-filename">
+                            <div>
+                                <h1>MsWord documentation</h1>
+                                <p>The HTML document may be opened in MsWord. 
+                                    In order to apply specific styles to the markup, the contents of the MsWord document may be copied to the clipboard, 
+                                    and pasted into a template document, or styles from a template document may be applied to the just created MsWord document.</p>
+                                <p>Packaged documentation files are <a href="{concat('../../cat/',$msword-filename)}">here</a>.</p>
+                            </div>
+                        </xsl:if>
+                        <xsl:if test="$respec-filename">
+                            <div>
+                                <h1>Respec documentation</h1>
+                                <p>Packaged documentation files are <a href="{concat('../../cat/',$respec-filename)}">here</a>.</p>
+                            </div>
+                        </xsl:if>
                     </div>
-                    <xsl:if test="false()">
-                        <div>
-                            <h1>VOORBEELD WEERGAVE VAN ALLE XML COMPARES</h1>
-                            <div>
-                                <h2>VOORBEELD WEERGAVE VAN ÉÉN XML COMPARE</h2>
-                                <div class="xcomp">
-                                    <div class="e">
-                                        <div>
-                                            <span class="b" onclick="click(event)">-</span>
-                                            <span class="m">&lt;</span>
-                                            <span class="en">model</span>
-                                            <w>
-                                                <span class="an">identifier</span>
-                                                <span class="m">="</span>
-                                                <span class="avd">id-7ac0592f-72c0-4c19-8894-d67a8d109282</span>
-                                                <span class="arrow"> ⇨ </span>
-                                                <span class="avi">id-5395f4bb-65dc-4236-9a07-09020940f82e</span>
-                                                <span class="m">"</span>
-                                                <span class="an">xsi:schemaLocation</span>
-                                                <span class="m">="</span>
-                                                <span class="av">http://www.opengroup.org/xsd/archimate http://www.opengroup.org/xsd/archimate/archimate_v2p1.xsd http://purl.org/dc/elements/1.1/ http://dublincore.org/schemas/xmls/qdc/2008/02/11/dc.xsd</span>
-                                                <span class="m">"</span>
-                                            </w>
-                                            <w>
-                                                <span class="an">xmlns</span>
-                                                <span class="m">="</span>
-                                                <span class="av">http://www.opengroup.org/xsd/archimate</span>
-                                                <span class="m">"</span>
-                                                <span class="an">xmlns:dc</span>
-                                                <span class="m">="</span>
-                                                <span class="av">http://purl.org/dc/elements/1.1/</span>
-                                                <span class="m">"</span>
-                                                <span class="an">xmlns:xsi</span>
-                                                <span class="m">="</span>
-                                                <span class="av">http://www.w3.org/2001/XMLSchema-instance</span>
-                                                <span class="m">"</span>
-                                            </w>
-                                            <span class="m">&gt;</span>
-                                        </div>
-                                        <div>
-                                            <div class="e">
-                                                <div>
-                                                    <span class="b" onclick="click(event)">-</span>
-                                                    <span class="m">&lt;</span>
-                                                    <span class="en">metadata</span>
-                                                    <span class="m">&gt;</span>
-                                                </div>
-                                                <div>
-                                                    <div class="e">
-                                                        <span class="m">&lt;</span>
-                                                        <span class="en">schema</span>
-                                                        <span class="m">&gt;</span>
-                                                        <span class="t">
-                                                            <span class="t">Dublin Core</span>
-                                                        </span>
-                                                        <span class="m">&lt;/</span>
-                                                        <span class="en">schema</span>
-                                                        <span class="m">&gt;</span>
-                                                    </div>
-                                                    <div class="e">
-                                                        <span class="m">&lt;</span>
-                                                        <span class="en">schemaversion</span>
-                                                        <span class="m">&gt;</span>
-                                                        <span class="t">
-                                                            <span class="t">1.1</span>
-                                                        </span>
-                                                        <span class="m">&lt;/</span>
-                                                        <span class="en">schemaversion</span>
-                                                        <span class="m">&gt;</span>
-                                                    </div>
-                                                    <div>
-                                                        <span class="m">&lt;/</span>
-                                                        <span class="en">metadata</span>
-                                                        <span class="m">&gt;</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="e">
-                                                <span class="m">&lt;</span>
-                                                <span class="en">name</span>
-                                                <w>
-                                                    <span class="an">xml:lang</span>
-                                                    <span class="m">="</span>
-                                                    <span class="av">nl</span>
-                                                    <span class="m">"</span>
-                                                </w>
-                                                <span class="m">&gt;</span>
-                                                <span class="t">
-                                                    <span class="t">GEMMA kennismodel</span>
-                                                </span>
-                                                <span class="m">&lt;/</span>
-                                                <span class="en">name</span>
-                                                <span class="m">&gt;</span>
-                                            </div>
-                                            <div class="e">
-                                                <span class="m">&lt;</span>
-                                                <span class="en">documentation</span>
-                                                <w>
-                                                    <span class="an">xml:lang</span>
-                                                    <span class="m">="</span>
-                                                    <span class="av">nl</span>
-                                                    <span class="m">"</span>
-                                                </w>
-                                                <span class="m">&gt;</span>
-                                                <span class="t">
-                                                    <span class="t">Het kennismodel toont de in de GEMMA gebruikte ArchiMate concepten.</span>
-                                                    <span class="del"> De modelleerafspraken zijn vervolgens een weergave van de opbouw van de GEMMA architectuurrepository en toont de verbinding met pakketten en koppelingen in het exportbestand van de Softwarecatalogus.</span>
-                                                </span>
-                                                <span class="m">&lt;/</span>
-                                                <span class="en">documentation</span>
-                                                <span class="m">&gt;</span>
-                                            </div>
-                                            <div class="e">
-                                                <div>
-                                                    <span class="b" onclick="click(event)">-</span>
-                                                    <span class="m">&lt;</span>
-                                                    <span class="en">properties</span>
-                                                    <span class="m">&gt;</span>
-                                                </div>
-                                                <div>
-                                                    <div class="del">
-                                                        <div class="e">
-                                                            <div>
-                                                                <span class="b" onclick="click(event)">-</span>
-                                                                <span class="m">&lt;</span>
-                                                                <span class="en">property</span>
-                                                                <w>
-                                                                    <span class="an">identifierref</span>
-                                                                    <span class="m">="</span>
-                                                                    <span class="av">KNG_DocRemark</span>
-                                                                    <span class="m">"</span>
-                                                                </w>
-                                                                <span class="m">&gt;</span>
-                                                            </div>
-                                                            <div>
-                                                                <div class="e">
-                                                                    <span class="m">&lt;</span>
-                                                                    <span class="en">value</span>
-                                                                    <w>
-                                                                        <span class="an">xml:lang</span>
-                                                                        <span class="m">="</span>
-                                                                        <span class="av">nl</span>
-                                                                        <span class="m">"</span>
-                                                                    </w>
-                                                                    <span class="m">&gt;</span>
-                                                                    <span class="t">
-                                                                        <span class="t"> 21-11-2016 Landelijke voorzieningen schrijven standaard voor, SWC leidt hier de in gebruik zijnde versies van af 12-10-2016 Kennismodel voor Softwarecatalogus ArchiMate export </span>
-                                                                    </span>
-                                                                    <span class="m">&lt;/</span>
-                                                                    <span class="en">value</span>
-                                                                    <span class="m">&gt;</span>
-                                                                </div>
-                                                                <div>
-                                                                    <span class="m">&lt;/</span>
-                                                                    <span class="en">property</span>
-                                                                    <span class="m">&gt;</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="e">
-                                                        <div>
-                                                            <span class="b" onclick="click(event)">-</span>
-                                                            <span class="m">&lt;</span>
-                                                            <span class="en">property</span>
-                                                            <w>
-                                                                <span class="an">identifierref</span>
-                                                                <span class="m">="</span>
-                                                                <span class="av">KNG_ModelPublish</span>
-                                                                <span class="m">"</span>
-                                                            </w>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <h2>VOORBEELD WEERGAVE VAN NOG EEN XML COMPARE</h2>
-                                <div class="xcomp">
-                                    <div class="e">
-                                        <div>
-                                            <span class="b" onclick="click(event)">-</span>
-                                            <span class="m">&lt;</span>
-                                            <span class="en">model</span>
-                                            <w>
-                                                <span class="an">identifier</span>
-                                                <span class="m">="</span>
-                                                <span class="avd">id-7ac0592f-72c0-4c19-8894-d67a8d109282</span>
-                                                <span class="arrow"> ⇨ </span>
-                                                <span class="avi">id-5395f4bb-65dc-4236-9a07-09020940f82e</span>
-                                                <span class="m">"</span>
-                                                <span class="an">xsi:schemaLocation</span>
-                                                <span class="m">="</span>
-                                                <span class="av">http://www.opengroup.org/xsd/archimate http://www.opengroup.org/xsd/archimate/archimate_v2p1.xsd http://purl.org/dc/elements/1.1/ http://dublincore.org/schemas/xmls/qdc/2008/02/11/dc.xsd</span>
-                                                <span class="m">"</span>
-                                            </w>
-                                            <w>
-                                                <span class="an">xmlns</span>
-                                                <span class="m">="</span>
-                                                <span class="av">http://www.opengroup.org/xsd/archimate</span>
-                                                <span class="m">"</span>
-                                                <span class="an">xmlns:dc</span>
-                                                <span class="m">="</span>
-                                                <span class="av">http://purl.org/dc/elements/1.1/</span>
-                                                <span class="m">"</span>
-                                                <span class="an">xmlns:xsi</span>
-                                                <span class="m">="</span>
-                                                <span class="av">http://www.w3.org/2001/XMLSchema-instance</span>
-                                                <span class="m">"</span>
-                                            </w>
-                                            <span class="m">&gt;</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>      
-                    </xsl:if>
-                  
                 </content>
             </page>
+          
         </report>
         
     </xsl:template>

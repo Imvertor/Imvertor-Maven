@@ -37,11 +37,14 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.TimeZone;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -1421,5 +1424,16 @@ public class Configurator {
 	public String getServerProperty(String key) throws IOException {
 		if (serverProperties == null) getServerProperties();
 		return serverProperties.getProperty(key);
+	}
+	
+	/*
+	 * Return a list of tokens found in a tokenized string, pass the pattern for each token.
+	 */
+	public static Vector<String> split(String string, String regex) {
+		String[] s = string.split(regex);
+		Vector<String> list = new Vector<String>();
+    	for (int i = 0; i < s.length; i++)
+    		list.add(s[i]);
+     	return list;
 	}
 }

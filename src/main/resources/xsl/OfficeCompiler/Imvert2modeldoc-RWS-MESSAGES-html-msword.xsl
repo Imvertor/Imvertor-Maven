@@ -9,6 +9,6 @@
     exclude-result-prefixes="#all" 
     version="2.0">
     
-    <xsl:import href="Imvert2modeldoc-RWS-LOGICAL-html-office.xsl"/>
+    <xsl:import href="Imvert2modeldoc-RWS-LOGICAL-html-msword.xsl"/>
    
 </xsl:stylesheet>

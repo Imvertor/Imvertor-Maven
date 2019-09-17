@@ -9,14 +9,6 @@
     exclude-result-prefixes="#all" 
     version="2.0">
     
-    <xsl:import href="Imvert2modeldoc-KINGUGM-html-office.xsl"/>
-    
-    <xsl:output method="html" indent="yes" omit-xml-declaration="yes"/>
-    
-    <!-- 
-        create a standard office oriented HTML representation of the section structure 
-    -->
-    
-    <!--TODO dit gaat nu nog even via UGM, moet apart worden uitgecodeerd of overgeslagen. -->
-
+    <xsl:import href="Imvert2modeldoc-KINGUGM-html-msword.xsl"/>
+   
 </xsl:stylesheet>

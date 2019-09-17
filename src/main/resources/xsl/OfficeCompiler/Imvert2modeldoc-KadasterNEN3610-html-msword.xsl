@@ -10,7 +10,7 @@
     version="2.0">
     
     <!-- delegate to kadaster -->
-    <xsl:include href="Imvert2modeldoc-Kadaster-html-office.xsl"/>
+    <xsl:include href="Imvert2modeldoc-Kadaster-html-msword.xsl"/>
    
 
 </xsl:stylesheet>
