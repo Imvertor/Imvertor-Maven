@@ -116,4 +116,6 @@
     <parameter name="standard-yaml-parameters-file">parameters.yaml#/</parameter>
     <parameter name="standard-geojson-components-file">geojson.yaml#/</parameter>
     
- </project-owner>    
+    <parameter name="yamlCompiler-stylesheets-version">20190912</parameter>
+    
+</project-owner>    
